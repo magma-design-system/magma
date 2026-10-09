@@ -10,6 +10,7 @@ import {
   EventEmitter,
   Watch,
   AttachInternals,
+  Listen,
 } from '@stencil/core';
 import { setFormValue } from '@common/form';
 import { updateValidity, ValidityProblem } from '@common/validity';
@@ -32,8 +33,12 @@ export class MdsInputDate {
   private isSlotted: boolean = false;
   // the rule the value breaks, reported to the form; undefined when the value is valid
   private problem?: ValidityProblem;
+  // the value at load, which a form reset brings back as the value attribute of a native input
+  private defaultValue = '';
   @State() empty: boolean | undefined = undefined;
   @State() isValid: boolean;
+  // true once the user has edited or left the field, or a stopped submit pointed at it: from then
+  // on the validation drives the variant, like :user-invalid on a native control
   @State() touched: boolean = false;
 
   /**
@@ -118,27 +123,34 @@ export class MdsInputDate {
     this.validateValue();
   }
 
+  /**
+   * Checks the value: the validity reported to the form and the required tip follow it at once,
+   * the variant and `mdsInputValidation` only once the field is touched.
+   */
   private validateValue(hasBadInput: boolean = false): void {
     const date = DateTime.fromISO(this.value);
 
     const hasValue = Boolean(this.value);
     const hasInvalidValue = hasValue && !date.isValid;
     this.problem = this.findProblem(date, hasBadInput || hasInvalidValue);
-
-    if (this.problem) {
-      this.isValid = false;
-      this.variant = 'error';
-      setFormValue(this.internals, null);
-      this.empty = hasBadInput || hasInvalidValue ? true : undefined;
-    } else {
-      this.isValid = true;
-      this.variant = 'primary';
-      setFormValue(this.internals, this.value);
-      this.empty = undefined;
-    }
-
-    this.validationEvent.emit(this.isValid);
+    this.isValid = this.problem === undefined;
+    setFormValue(this.internals, this.isValid ? this.value : null);
+    this.empty = hasBadInput || hasInvalidValue ? true : undefined;
     this.updateFormValidity();
+
+    if (!this.touched) return;
+    this.variant = this.isValid ? 'primary' : 'error';
+    this.validationEvent.emit(this.isValid);
+  }
+
+  /**
+   * A submit stopped by an invalid date, or a `checkValidity()` of its form, touches the field, so
+   * that it shows what is wrong.
+   */
+  @Listen('invalid')
+  protected invalidHandler(): void {
+    this.touched = true;
+    this.validateValue();
   }
 
   /** The rule the value breaks, `undefined` when it breaks none. */
@@ -206,8 +218,19 @@ export class MdsInputDate {
     return Promise.resolve(this.isValid ? null : { error: '' });
   }
 
+  /**
+   * Like a native input, a form reset brings back the value of load and forgets the interaction:
+   * the field looks pristine until the user edits or leaves it again.
+   */
   formResetCallback(): void {
-    setFormValue(this.internals, '');
+    const { touched } = this;
+    this.touched = false;
+    // the native input can hold a partial date that never reached the value
+    const input = this.host.shadowRoot?.querySelector<HTMLInputElement>('.input');
+    if (input) input.value = this.defaultValue;
+    this.value = this.defaultValue;
+    this.validateValue();
+    if (touched) this.variant = 'primary';
   }
 
   componentWillLoad(): void {
@@ -215,6 +238,7 @@ export class MdsInputDate {
       this.host.getAttribute('slot') === null || this.host.getAttribute('slot') === ''
     );
     this.value = this.value || '';
+    this.defaultValue = this.value;
     this.clampRange();
     this.validateValue();
   }
@@ -256,6 +280,7 @@ export class MdsInputDate {
   private onBlur = (ev: Event) => {
     const input = ev.target as HTMLInputElement;
     this.hasFocus = false;
+    this.touched = true;
     this.value = input.value;
     this.validateValue(input.validity.badInput);
   };
@@ -279,6 +304,7 @@ export class MdsInputDate {
   private readonly handleCalendarChange = (
     ev: CustomEvent<{ startDate: string; endDate?: string }>,
   ): void => {
+    this.touched = true;
     this.value = ev.detail.startDate;
 
     if (this.delay === 0) return;
@@ -308,6 +334,7 @@ export class MdsInputDate {
           type="date"
           disabled={this.disabled}
           name={this.name}
+          readOnly={this.readonly}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
           onInput={this.handleChange}
@@ -318,7 +345,8 @@ export class MdsInputDate {
             <mds-button
               id="calendar-dropdown"
               class="action-open-calendar"
-              disabled={this.disabled}
+              // a read-only date cannot change, from the calendar either
+              disabled={this.disabled || this.readonly}
               variant="dark"
               tone="text"
               icon={miBaselineCalendarToday}

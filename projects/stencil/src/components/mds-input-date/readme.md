@@ -13,19 +13,19 @@ The `<mds-input-date>` web component is the Magma Design System control for capt
 
 #### Semantic Behavior
 
-- **Form association**: The host participates natively in form submission and exposes its `value` under `name`; on form reset it clears the submitted value (the date shown in the field stays). An invalid value submits nothing, and its invalid state is reported to the form: like a native control, the field matches `:invalid` and stops the submit, with a message in the page language (a missing required date, a date out of the range, an unreadable one). A disabled or read-only field is left out, and `novalidate` on the `<form>` turns the check off.
+- **Form association**: The host participates natively in form submission and exposes its `value` under `name`; a form reset brings back the date the field had at load, both shown and submitted, and its pristine look, like a native input. An invalid value submits nothing, and its invalid state is reported to the form: like a native control, the field matches `:invalid` and stops the submit, with a message in the page language (a missing required date, a date out of the range, an unreadable one). A disabled or read-only field is left out, and `novalidate` on the `<form>` turns the check off.
 - **ISO value contract**: `value`, `min`, and `max` are all ISO date strings (`YYYY-MM-DD`); other formats are not accepted.
-- **Validation on change**: Validation runs when the component loads, on every value change and whenever `required`, `min` or `max` change (also after load, as with the React wrappers under SSR), and emits `mdsInputValidation` with a boolean. When the date is invalid, missing while `required`, or outside the `min`/`max` range, the component forces `variant` to `'error'` and submits no value; otherwise it restores `'primary'` and submits the value. An empty `required` field is therefore in the `'error'` variant from the start.
+- **Validation on change**: The value is checked when the component loads, on every value change and whenever `required`, `min` or `max` change (also after load, as with the React wrappers under SSR). The validity reported to the form, the submitted value and the required tip follow every check: a date invalid, missing while `required` or outside the `min`/`max` range submits no value. The look follows once the field is touched, like `:user-invalid` on a native control: after the user edits or leaves the field, picks a date from the calendar, or a stopped submit points at it, each check sets `variant` to `'error'` or `'primary'` and emits `mdsInputValidation` with a boolean. An empty `required` field therefore loads in its own variant, not in `'error'`.
 - **Range self-correction**: If `max` is earlier than `min`, at load or after a later change of either, `max` is snapped to equal `min`.
 - **Selection event**: `mdsInputDateSelect` fires with the new string value whenever `value` changes, whether typed or picked from the calendar.
 - **Calendar dropdown**: The trailing calendar button opens a single-date calendar; picking a day writes back the value and, after `delay`, auto-closes.
 - **Slotted mode**: When the host carries a `slot` attribute it is treated as embedded - the calendar button, dropdown, and calendar are not rendered, leaving only the bare input for composition inside a larger field.
 - **Contextual tips**: A tip surfaces `disabled`, `readonly`, and `required` states; the required tip expands on focus and reflects success once the value is valid.
-- **Read-only**: A read-only field shows its tip and auto-selects its text on focus. In the current release the native input is not made read-only and the calendar button stays active, so the value can still be changed.
+- **Read-only**: A read-only field shows its tip and auto-selects its text on focus; its native input is read-only and its calendar button disabled, so the value cannot be changed.
 
 #### Properties & Visual Configurations
 
-The shared `variant` ladder is defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). Note that `variant` is mutable here: the component overrides it to `'error'` / `'primary'` as validation dictates, already when it loads, so a variant set in the markup does not survive and one set from script lasts only until the next value change or blur.
+The shared `variant` ladder is defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). Note that `variant` is mutable here: once the field is touched, the component overrides it to `'error'` / `'primary'` as validation dictates, so a variant set in the markup or from script lasts until the user edits or leaves the field.
 
 #### Other behavioral props
 
@@ -58,7 +58,7 @@ Set `value` to an ISO date string (`YYYY-MM-DD`) to initialize the picker with a
 
 #### Required Field
 
-Add `required` to make an empty or invalid date fail validation. The component surfaces a tip on focus and keeps `variant` on `'error'`, already from load, until the user enters a valid date.
+Add `required` to make an empty or invalid date fail validation. The component surfaces a tip on focus; the field stops the submit while empty, and turns to `'error'` once the user leaves it empty or a stopped submit points at it, until a valid date is entered.
 
 ```html
 <mds-input-field label="Data di inizio *">
@@ -68,7 +68,7 @@ Add `required` to make an empty or invalid date fail validation. The component s
 
 #### Bounded Date Range
 
-Use `min` and `max` (both ISO strings) to restrict the selectable range. Dates outside the range invalidate the field and emit `mdsInputValidation` with `false`. If `max` is earlier than `min` at load time, the component snaps `max` to equal `min`.
+Use `min` and `max` (both ISO strings) to restrict the selectable range. Dates outside the range invalidate the field and, once it is touched, emit `mdsInputValidation` with `false`. If `max` is earlier than `min` at load time, the component snaps `max` to equal `min`.
 
 ```html
 <mds-input-date
@@ -100,7 +100,7 @@ Listen to `mdsInputDateSelect` (fires with the new ISO string) for every value c
 
 #### Programmatic Value via `setValue`
 
-Use the `setValue` method to set the value from JavaScript; it runs validation and emits both events, identical to a user interaction.
+Use the `setValue` method to set the value from JavaScript; it emits `mdsInputDateSelect` and checks the value. Unlike a user interaction it does not touch the field: on a pristine field the validity reaches the form, but the variant and `mdsInputValidation` wait for the user.
 
 ```html
 <mds-input-date id="datePicker" name="dataConsegna"></mds-input-date>
@@ -124,19 +124,19 @@ The calendar dropdown closes `delay` milliseconds after a date is picked (defaul
 
 #### Disabled and Read-only States
 
-`disabled` blocks all interaction and removes the field from the tab sequence. `readonly` shows a read-only tip and selects the text on focus, but in the current release it does not prevent editing: the native input and the calendar button stay active. Both surface a contextual tip.
+`disabled` blocks all interaction and removes the field from the tab sequence. `readonly` keeps the field in the tab sequence and selects its text on focus, but the date cannot be changed: the native input is read-only and the calendar button disabled. Both surface a contextual tip.
 
 ```html
 <!-- Disabled: no interaction at all -->
 <mds-input-date name="dataArchiviazione" disabled value="2025-01-01"></mds-input-date>
 
-<!-- Read-only: tip and selection on focus -->
+<!-- Read-only: focusable, not editable -->
 <mds-input-date name="dataCreazione" readonly value="2024-06-01"></mds-input-date>
 ```
 
 #### Form Participation
 
-`<mds-input-date>` is form-associated and submits its ISO value under `name`. A missing `required` date, or one out of the `min`/`max` range, stops the submit like a native control. On form reset the submitted value is cleared (the date shown in the field stays).
+`<mds-input-date>` is form-associated and submits its ISO value under `name`. A missing `required` date, or one out of the `min`/`max` range, stops the submit like a native control. A form reset brings back the date of load, both shown and submitted.
 
 ```html
 <form action="/prenota" method="post">
@@ -160,7 +160,7 @@ When the host carries a `slot` attribute, the component renders only the bare na
 
 #### Variant Override for External State Signalling
 
-`variant` is driven automatically by validation (`'error'` on invalid, `'primary'` on valid), which already runs when the component loads: a `variant` written in the markup is overwritten at once. To communicate an external state, set it from script once the component has loaded; it lasts until the next value change or blur. Values follow the theme input ladder: `primary` (default), `error`, `success`, `warning`, `info`, `ai`.
+`variant` is driven automatically by validation (`'error'` on invalid, `'primary'` on valid) once the field is touched. To communicate an external state, write it in the markup or set it from script: it lasts until the user edits or leaves the field. Values follow the theme input ladder: `primary` (default), `error`, `success`, `warning`, `info`, `ai`.
 
 ```html
 <mds-input-date id="dataConferma" name="dataConferma" value="2026-03-15"></mds-input-date>
@@ -205,7 +205,7 @@ Common incorrect uses of `<mds-input-date>`. Each entry pairs the wrong form wit
 
 #### Do Not Hardcode `variant="error"` to Signal Validation
 
-The component manages `variant` automatically: it sets `'error'` when validation fails and restores `'primary'` when it passes. Hardcoding `variant="error"` is overwritten as soon as the component loads and does not persist.
+The component manages `variant` automatically: it sets `'error'` when validation fails and restores `'primary'` when it passes. Hardcoding `variant="error"` shows an error before the user has done anything, does not stop the submit, and is overwritten as soon as the user touches the field.
 
 ```html
 <!-- INCORRECT -->

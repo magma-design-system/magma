@@ -171,7 +171,7 @@ describe('mds-input-date', () => {
 
 // The React wrappers under SSR set the props on an element that has already loaded (#786)
 describe('rules set after load', () => {
-  it('applies required', async () => {
+  it('applies required: red tip and errors, the variant waits for the field to be touched', async () => {
     const { root, waitForChanges } = await render<HTMLMdsInputDateElement>(
       '<mds-input-date></mds-input-date>',
     );
@@ -181,7 +181,7 @@ describe('rules set after load', () => {
 
     const tip = root.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
     expect(tip).toEqualAttribute('variant', 'required');
-    expect(root).toEqualAttribute('variant', 'error');
+    expect(root).toEqualAttribute('variant', 'primary');
     expect(await root.getErrors()).not.toBeNull();
   });
 
@@ -189,7 +189,20 @@ describe('rules set after load', () => {
     const { root, waitForChanges } = await render<HTMLMdsInputDateElement>(
       '<mds-input-date value="2026-01-10"></mds-input-date>',
     );
-    expect(root).toEqualAttribute('variant', 'primary');
+    expect(await root.getErrors()).toBeNull();
+
+    root.min = '2026-02-01';
+    await waitForChanges();
+
+    expect(await root.getErrors()).not.toBeNull();
+  });
+
+  it('shows a min set after load on a touched field', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date value="2026-01-10"></mds-input-date>',
+    );
+    root.shadowRoot!.querySelector('input')!.dispatchEvent(new Event('blur'));
+    await waitForChanges();
 
     root.min = '2026-02-01';
     await waitForChanges();
@@ -253,5 +266,112 @@ describe('form validity', () => {
     const { form } = await setupForm('required disabled');
 
     expect(form.checkValidity()).toBe(true);
+  });
+});
+
+// Like :user-invalid, the error look waits for the user or a stopped submit (#822)
+describe('validation look', () => {
+  const setupForm = async (attributes: string) => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(
+      `<form><mds-input-date name="d" ${attributes}></mds-input-date><button type="button">Blur</button></form>`,
+    );
+    return { form, date: form.querySelector('mds-input-date')!, waitForChanges };
+  };
+
+  it('does not start in error when required and empty', async () => {
+    const { date } = await setupForm('required');
+
+    expect(date).toEqualAttribute('variant', 'primary');
+    expect(date.matches(':invalid')).toBe(true);
+  });
+
+  it('keeps the variant written in the markup until the field is touched', async () => {
+    const { date } = await setupForm('variant="info" value="2026-01-10" min="2026-02-01"');
+
+    expect(date).toEqualAttribute('variant', 'info');
+    expect(date.matches(':invalid')).toBe(true);
+  });
+
+  it('shows the error once the user leaves the field', async () => {
+    const { form, date, waitForChanges } = await setupForm('required');
+
+    await userEvent.click(date.shadowRoot!.querySelector('input')!);
+    await userEvent.click(form.querySelector('button')!);
+    await waitForChanges();
+
+    expect(date).toEqualAttribute('variant', 'error');
+  });
+
+  it('shows the error on the field a stopped submit points at', async () => {
+    const { form, date, waitForChanges } = await setupForm('required');
+
+    form.requestSubmit();
+    await waitForChanges();
+
+    expect(date).toEqualAttribute('variant', 'error');
+  });
+});
+
+// Like a native input, a form reset brings back the value of load (#822)
+describe('form reset', () => {
+  it('brings back the value of load and the pristine look', async () => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(
+      '<form><mds-input-date name="d" value="2026-01-10" min="2026-01-01"></mds-input-date></form>',
+    );
+    const date = form.querySelector('mds-input-date')!;
+    const input = date.shadowRoot!.querySelector('input')!;
+    input.value = '2025-12-01';
+    input.dispatchEvent(new Event('input'));
+    await waitForChanges();
+    expect(date).toEqualAttribute('variant', 'error');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(date.value).toBe('2026-01-10');
+    expect(input.value).toBe('2026-01-10');
+    expect(new FormData(form).get('d')).toBe('2026-01-10');
+    expect(date).toEqualAttribute('variant', 'primary');
+  });
+
+  it('clears a date typed in part', async () => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(
+      '<form><mds-input-date name="d"></mds-input-date></form>',
+    );
+    const date = form.querySelector('mds-input-date')!;
+    const input = date.shadowRoot!.querySelector('input')!;
+    await userEvent.click(input);
+    await userEvent.keyboard('1');
+    expect(input.validity.badInput).toBe(true);
+
+    form.reset();
+    await waitForChanges();
+
+    expect(input.validity.badInput).toBe(false);
+    expect(date.matches(':invalid')).toBe(false);
+  });
+});
+
+// Like a native input, a read-only date cannot be changed (#822)
+describe('readonly', () => {
+  it('reaches the native input and the calendar button', async () => {
+    const { root } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date readonly value="2026-01-10"></mds-input-date>',
+    );
+
+    expect(root.shadowRoot!.querySelector('input')!.readOnly).toBe(true);
+    expect(root.shadowRoot!.querySelector('.action-open-calendar')).toHaveAttribute('disabled');
+  });
+
+  it('keeps the value when the user types', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date readonly value="2026-01-10"></mds-input-date>',
+    );
+
+    await userEvent.click(root.shadowRoot!.querySelector('input')!);
+    await userEvent.keyboard('{ArrowUp}2');
+    await waitForChanges();
+
+    expect(root.value).toBe('2026-01-10');
   });
 });
