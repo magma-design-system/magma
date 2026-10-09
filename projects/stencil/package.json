@@ -77,6 +77,7 @@
     "build.watch": "npm run build.icons && stencil build -c stencil.dev.config.ts --dev --watch",
     "build.watch-no-cache": "stencil build --no-cache --watch",
     "check.api-snapshot": "tsx --tsconfig script.tsconfig.json ./scripts/api-snapshot.ts --check",
+    "check.pr-risk": "tsx --tsconfig script.tsconfig.json ./scripts/pr-risk.ts",
     "check.ssr": "tsx --tsconfig script.tsconfig.json ./scripts/check-ssr.ts",
     "check.tokens": "tsx --tsconfig script.tsconfig.json ./scripts/check-dangling-tokens.ts",
     "check.treeshaking": "tsx --tsconfig script.tsconfig.json ./scripts/check-treeshaking.ts",
