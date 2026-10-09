@@ -122,3 +122,15 @@ describe('validator', () => {
     });
   });
 });
+
+describe('check', () => {
+  it('returns the errors without storing them', () => {
+    const checked = new Validator();
+    checked.addValidator(required);
+
+    expect(checked.check('')).toEqual({ required: 'string required' });
+    expect(checked.check('abc')).toBeNull();
+    expect(checked.errors).toBeNull();
+    expect(checked.isValid).toBe(true);
+  });
+});

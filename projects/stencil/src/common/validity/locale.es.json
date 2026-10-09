@@ -1,0 +1,15 @@
+{
+  "invalid": "Introduce un valor válido.",
+  "invalidDate": "Introduce una fecha válida.",
+  "max": "El valor debe ser como máximo {{max}}.",
+  "maxDate": "La fecha no puede ser posterior al {{max}}.",
+  "maxlength": [
+    "Usa como máximo {{maxlength}} carácter.",
+    "Usa como máximo {{maxlength}} caracteres."
+  ],
+  "min": "El valor debe ser como mínimo {{min}}.",
+  "minDate": "La fecha no puede ser anterior al {{min}}.",
+  "minlength": ["Usa al menos {{minlength}} carácter.", "Usa al menos {{minlength}} caracteres."],
+  "required": "Completa este campo.",
+  "requiredSelect": "Selecciona un elemento de la lista."
+}

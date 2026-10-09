@@ -373,3 +373,111 @@ describe('min and max', () => {
     expect(await mdsInput.getErrors()).toEqual({ min: 'valore minimo 0' });
   });
 });
+
+// Like a native control, an invalid field stops the submit of its form (#786)
+describe('form validity', () => {
+  let form: HTMLFormElement;
+  let submitted: boolean;
+
+  const setupForm = async (html: string): Promise<void> => {
+    const result = await render<HTMLFormElement>(`<form>${html}<button>Send</button></form>`);
+    form = result.root;
+    waitForChanges = result.waitForChanges;
+    mdsInput = form.querySelector('mds-input')!;
+    submitted = false;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      submitted = true;
+    });
+  };
+
+  it('stops the submit while a required field is empty', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+
+    expect(form.checkValidity()).toBe(false);
+    expect(mdsInput.matches(':invalid')).toBe(true);
+
+    form.requestSubmit();
+
+    expect(submitted).toBe(false);
+  });
+
+  it('submits once the required field is filled', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+
+    await type(mdsInput, 'abc');
+
+    expect(form.checkValidity()).toBe(true);
+    form.requestSubmit();
+    expect(submitted).toBe(true);
+  });
+
+  it('shows the error on the field a stopped submit points at', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+
+    form.requestSubmit();
+    await waitForChanges();
+
+    expect(mdsInput).toEqualAttribute('variant', 'error');
+  });
+
+  it('focuses the native input when a stopped submit points at the field', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+
+    form.requestSubmit();
+
+    expect(document.activeElement).toBe(mdsInput);
+    expect(mdsInput.shadowRoot!.activeElement).toBe(mdsInput.shadowRoot!.querySelector('input'));
+  });
+
+  it('follows a required set after load', async () => {
+    await setupForm('<mds-input name="email"></mds-input>');
+    expect(form.checkValidity()).toBe(true);
+
+    mdsInput.required = true;
+
+    expect(form.checkValidity()).toBe(false);
+  });
+
+  it('follows a value set by code, without waiting for a render', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+
+    mdsInput.value = 'abc';
+
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('stops the submit for the other rules too', async () => {
+    await setupForm('<mds-input name="n" type="number" max="10" value="50"></mds-input>');
+
+    expect(form.checkValidity()).toBe(false);
+
+    mdsInput.value = '5';
+
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('stops the submit for a custom validator, and no more once it is removed', async () => {
+    await setupForm('<mds-input name="code" value="abc"></mds-input>');
+    const upperCase = (value: string) =>
+      value.toUpperCase() === value ? null : { err: 'lower case' };
+
+    await mdsInput.addValidator(upperCase);
+    expect(form.checkValidity()).toBe(false);
+
+    await mdsInput.removeValidator(upperCase);
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('does not stop the submit when disabled', async () => {
+    await setupForm('<mds-input name="email" required disabled></mds-input>');
+
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('does not stop the submit when read-only, like a native input', async () => {
+    await setupForm('<mds-input name="email" required readonly></mds-input>');
+
+    expect(form.checkValidity()).toBe(true);
+  });
+});

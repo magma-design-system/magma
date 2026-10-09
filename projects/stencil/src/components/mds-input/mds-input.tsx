@@ -20,9 +20,11 @@ import {
   Prop,
   State,
   Watch,
+  Listen,
   h,
 } from '@stencil/core';
 import { setFormValue } from '@common/form';
+import { updateValidity } from '@common/validity';
 import { AutocompleteType } from '@type/autocomplete';
 import {
   InputTextType,
@@ -51,6 +53,7 @@ import {
   minValidator,
   requiredValidor,
 } from './meta/validators';
+import { validityProblem } from './meta/validity';
 import { hashRandomValue } from '@common/aria';
 import { preferenceStore } from '@common/preference';
 
@@ -102,7 +105,8 @@ export class MdsInput {
   private nativeInput?: HTMLInputElement | HTMLTextAreaElement;
   private tabindex?: number;
 
-  private inputValidation: InputValidationManager;
+  // replaced by buildValidation on load, a valid empty set before
+  private inputValidation: InputValidationManager = createInputValidationManager('text');
   // the validators added through addValidator, kept apart so that a rebuild of the rules keeps them
   private customValidators: MdsValidatorFn[] = [];
   private isValid: boolean;
@@ -331,6 +335,11 @@ export class MdsInput {
     this.variantChanged(this.variant ?? 'primary');
   }
 
+  componentDidRender(): void {
+    // after every render: the native control the message points at can be a new element
+    this.updateFormValidity();
+  }
+
   /**
    * Builds the validators from scratch: the ones of the type, the ones of the constraint props and
    * the custom ones. A rebuild instead of an append, so that a rule changed after load replaces
@@ -360,6 +369,34 @@ export class MdsInput {
   }
 
   /**
+   * Reports the validity of the value to the form, decided by the same validators that drive the
+   * variant: like a native `required`, an invalid field stops the submit of its form. Runs on every
+   * change of the value or of the rules, not on blur: the form can be submitted without a blur.
+   */
+  private updateFormValidity(): void {
+    const value = this.value ?? '';
+    const errors = this.inputValidation.validator.check(value);
+    const problem = errors
+      ? validityProblem(errors, value, {
+          max: this.numericBound(this.max),
+          maxlength: this.maxlength,
+          min: this.numericBound(this.min),
+          minlength: this.minlength,
+        })
+      : undefined;
+    updateValidity(this.internals, problem, this.nativeInput);
+  }
+
+  /**
+   * A submit stopped by an invalid field, or a `checkValidity()` of its form, validates the field
+   * as a blur does, so that it shows what is wrong.
+   */
+  @Listen('invalid')
+  protected invalidHandler(): void {
+    this.validateInput();
+  }
+
+  /**
    * Rebuilds the validators when a prop they derive from changes after load, as it does with the
    * React wrappers under SSR, which set the props on an element that has already loaded.
    */
@@ -371,6 +408,7 @@ export class MdsInput {
   @Watch('type')
   protected validationRulesChanged(): void {
     this.buildValidation();
+    this.updateFormValidity();
     if (!this.validated) {
       // pristine field: only the required tip follows, the variant waits for the first blur
       this.isValid = !(this.required && (this.value ?? '') === '');
@@ -393,6 +431,7 @@ export class MdsInput {
   protected valueChanged(): void {
     this.changeEvent.emit({ value: this.value });
     setFormValue(this.internals, this.value ?? null);
+    this.updateFormValidity();
     if (this.maxlength !== undefined) {
       this.countMaxLength();
     }
@@ -425,8 +464,8 @@ export class MdsInput {
   @Method()
   async addValidator(validator: MdsValidatorFn): Promise<void> {
     this.customValidators.push(validator);
-    // before load there are no rules yet: buildValidation picks it up from customValidators
-    this.inputValidation?.validator.addValidator(validator);
+    this.inputValidation.validator.addValidator(validator);
+    this.updateFormValidity();
     return Promise.resolve();
   }
 
@@ -437,7 +476,8 @@ export class MdsInput {
   @Method()
   async removeValidator(validator: MdsValidatorFn): Promise<void> {
     this.customValidators = this.customValidators.filter((custom) => custom !== validator);
-    this.inputValidation?.validator.removeValidator(validator);
+    this.inputValidation.validator.removeValidator(validator);
+    this.updateFormValidity();
   }
 
   /**
