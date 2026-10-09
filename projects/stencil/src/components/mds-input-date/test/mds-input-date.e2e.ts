@@ -168,3 +168,43 @@ describe('mds-input-date', () => {
     });
   });
 });
+
+// The React wrappers under SSR set the props on an element that has already loaded (#786)
+describe('rules set after load', () => {
+  it('applies required', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date></mds-input-date>',
+    );
+
+    root.required = true;
+    await waitForChanges();
+
+    const tip = root.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
+    expect(tip).toEqualAttribute('variant', 'required');
+    expect(root).toEqualAttribute('variant', 'error');
+    expect(await root.getErrors()).not.toBeNull();
+  });
+
+  it('checks the value against a min set after load', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date value="2026-01-10"></mds-input-date>',
+    );
+    expect(root).toEqualAttribute('variant', 'primary');
+
+    root.min = '2026-02-01';
+    await waitForChanges();
+
+    expect(root).toEqualAttribute('variant', 'error');
+  });
+
+  it('snaps a reversed range set after load', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date min="2026-02-01"></mds-input-date>',
+    );
+
+    root.max = '2026-01-01';
+    await waitForChanges();
+
+    expect(root.max).toBe('2026-02-01');
+  });
+});

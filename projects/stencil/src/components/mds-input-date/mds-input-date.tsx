@@ -180,15 +180,33 @@ export class MdsInputDate {
       this.host.getAttribute('slot') === null || this.host.getAttribute('slot') === ''
     );
     this.value = this.value || '';
+    this.clampRange();
+    this.validateValue();
+  }
 
-    // Se max è precedente a min, imposto max uguale a min
-    if (this.min !== null && this.min !== '' && this.max !== null && this.max !== '') {
-      const minDate = DateTime.fromISO(this.min);
-      const maxDate = DateTime.fromISO(this.max);
-      if (maxDate < minDate) {
-        this.max = this.min;
-      }
+  /**
+   * Snaps `max` to `min` when the range is reversed.
+   * @returns true when `max` changed
+   */
+  private clampRange(): boolean {
+    if (this.min === null || this.min === '' || this.max === null || this.max === '') return false;
+    if (DateTime.fromISO(this.max) < DateTime.fromISO(this.min)) {
+      this.max = this.min;
+      return true;
     }
+    return false;
+  }
+
+  /**
+   * Validates again when a rule changes after load, as it does with the React wrappers under SSR,
+   * which set the props on an element that has already loaded.
+   */
+  @Watch('max')
+  @Watch('min')
+  @Watch('required')
+  protected validationRulesChanged(): void {
+    // a reversed range snaps max to min, and that change runs this watcher again
+    if (this.clampRange()) return;
     this.validateValue();
   }
 
