@@ -14,9 +14,10 @@ The `<mds-pref-consumption>` web component is a preference control of the Magma 
 #### Semantic Behavior
 
 - **Usually inside `<mds-pref>`**: Placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it also works on its own, since it applies and stores the preference by itself.
-- **Mode resolution on render**: The active mode is resolved in priority order - the `mode` prop, then the persisted value, then the `high` default - so the control restores the last user choice across reloads.
+- **Mode resolution on load**: The active mode is resolved once, on load, in priority order - the `mode` prop, then the persisted value, then the `high` default - so the control restores the last user choice across reloads.
 - **Applies the preference globally**: Selecting a mode applies it across the whole document and persists the choice.
-- **Change event**: Each change emits `mdsPrefChange` with `{ preference: 'consumption' }`, and so does every render, page load included; the event fires before the new mode is stored. `consumption` requires a reload to fully apply, but the "reload required" notice of the parent `<mds-pref>` does not show in a visible panel (it listens only in `controller` mode).
+- **Change event**: Each change emits `mdsPrefChange` with `{ preference: 'consumption' }`, and so does the page load; the event fires before the new mode is stored. `consumption` requires a reload to fully apply, but the "reload required" notice of the parent `<mds-pref>` does not show in a visible panel (it listens only in `controller` mode).
+- **Instances stay in sync**: Instances mounted together (a hidden `<mds-pref controller>` and a visible settings panel) share the applied consumption: a pick in one is mirrored by the others, which neither apply it again nor emit `mdsPrefChange`. A `pref-consumption-*` class written on `<html>` by other code is mirrored the same way.
 
 #### Properties & Visual Configurations
 
@@ -58,7 +59,7 @@ Use the `size` prop on the control itself: outside `<mds-pref>`, and inside it t
 
 #### Reacting to Mode Changes
 
-Listen for the `mdsPrefChange` event to detect when the user picks a new consumption level. The event detail always carries `{ preference: "consumption" }`; the event also fires on every render, page load included, so do not read each one as a user's choice.
+Listen for the `mdsPrefChange` event to detect when the user picks a new consumption level. The event detail always carries `{ preference: "consumption" }`; the event also fires on page load, so do not read each one as a user's choice.
 
 ```html
 <mds-pref-consumption id="consumption-pref"></mds-pref-consumption>

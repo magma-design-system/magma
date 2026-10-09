@@ -22,6 +22,8 @@ export class MdsPrefContrast {
   private readonly localStorageAlias: string = 'mdsPrefContrast';
   private readonly customPropertyAlias: string = '--magma-pref-contrast';
   private readonly defaultMode: ContrastModeType = 'system';
+  private syncingFromStore: boolean = false;
+  private unsubscribeStore?: () => void;
   private readonly t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -66,13 +68,35 @@ export class MdsPrefContrast {
     },
   };
 
-  componentWillRender(): void {
+  // Applied once, on load, then mirrored from the shared store (see mds-pref-mode).
+  componentWillLoad(): void {
     this.setContrast(
       this.mode ??
         (localStorage.getItem(this.localStorageAlias) as ContrastModeType) ??
         this.defaultMode,
     );
   }
+
+  connectedCallback(): void {
+    this.unsubscribeStore = preferenceStore.onChange('contrast', this.syncContrast);
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribeStore?.();
+  }
+
+  /**
+   * Follows a contrast applied elsewhere (another instance, or a writer of the
+   * `<html>` classes) without applying it again: no event, no storage write.
+   */
+  private readonly syncContrast = (mode?: string): void => {
+    if (mode === undefined || mode === this.mode) {
+      return;
+    }
+    this.syncingFromStore = true;
+    this.mode = mode as ContrastModeType;
+    this.syncingFromStore = false;
+  };
 
   private readonly rollbackContrast = (): ContrastModeType => {
     if (typeof window === 'undefined') {
@@ -112,7 +136,7 @@ export class MdsPrefContrast {
 
   @Watch('mode')
   modeChanged(newValue: ContrastModeType, oldValue: ContrastModeType): void {
-    if (newValue !== oldValue) {
+    if (newValue !== oldValue && !this.syncingFromStore) {
       this.setContrast(newValue);
     }
   }

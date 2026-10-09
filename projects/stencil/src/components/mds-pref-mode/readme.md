@@ -17,7 +17,8 @@ The `<mds-pref-mode>` web component is the mode preference control of the Magma 
 - **Selection follows `mode`**: The active tab reflects whichever mode is currently applied, driven by the `mode` prop.
 - **Global mode application**: Selecting a mode applies it document-wide and persists the choice.
 - **Persistence on load**: The applied mode resolves from `mode` -> the stored value -> the `system` default, so a previously chosen mode is restored without an explicit prop.
-- **`mdsPrefChange` event**: Emits `mdsPrefChange` with `{ preference: 'mode' }` every time the mode is applied: on load, on each re-render and on each pick, so one pick can emit it more than once. It bubbles up to `<mds-pref>`; a mode change needs no reload, so it raises no reload notice.
+- **`mdsPrefChange` event**: Emits `mdsPrefChange` with `{ preference: 'mode' }` every time the mode is applied: on load and on each pick, so one pick can emit it more than once. It bubbles up to `<mds-pref>`; a mode change needs no reload, so it raises no reload notice.
+- **Instances stay in sync**: Instances mounted together (a hidden `<mds-pref controller>` and a visible settings panel) share the applied mode: a pick in one is mirrored by the others, which neither apply it again nor emit `mdsPrefChange`. A `pref-mode-*` class written on `<html>` by other code is mirrored the same way.
 - **Safari fallback**: On Safari the control disables itself and forces `mode` to `light`, since the transition overlay technique is unsupported there.
 - **System mode**: The `system` choice follows the OS `prefers-color-scheme` media query to resolve the effective light/dark scheme.
 
@@ -79,7 +80,7 @@ Pass `mode` to force the selector to start on a specific mode rather than readin
 
 #### Listening for Mode Changes
 
-The component emits `mdsPrefChange` with `{ preference: 'mode' }` each time the mode is applied, which includes the load and every re-render, so expect repeats with the same mode. Listen for this event to react in application code - for example to sync a preference state store - and read the current value from the `mode` prop.
+The component emits `mdsPrefChange` with `{ preference: 'mode' }` each time the mode is applied, on load and on each pick, so expect repeats with the same mode; another instance that mirrors the pick does not emit it. Listen for this event to react in application code - for example to sync a preference state store - and read the current value from the `mode` prop.
 
 ```html
 <mds-pref>
