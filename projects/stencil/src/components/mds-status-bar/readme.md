@@ -31,7 +31,7 @@ The `<mds-status-bar>` web component is a persistent action bar of the Magma Des
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-status-bar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-status-bar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Action Bar
 
@@ -73,7 +73,7 @@ Use the `position` prop to anchor the bar to the bottom-left or to the bottom-ce
 
 #### Programmatic Show / Hide
 
-Toggle the bar imperatively: set `visible = true` to show it and call `hide()` to dismiss it. Do not set `visible = false` - remove the attribute or call `hide()` instead.
+Toggle the bar imperatively: set `visible = true` to show it and call `hide()` to dismiss it (`visible = false` works too: the component normalizes it to `undefined`). In markup remove the attribute, never write `visible="false"`.
 
 ```html
 <mds-button id="edit-trigger">Modifica elementi</mds-button>
@@ -112,7 +112,7 @@ Show an in-flight state on the confirm button using `await`, then call `hide()` 
   confirm.addEventListener('click', async () => {
     cancel.disabled = true;
     confirm.await = true;
-    confirm.textContent = 'Salvataggio in corso...';
+    confirm.label = 'Salvataggio in corso...';
     await saveChanges();
     bar.hide();
   });
@@ -132,41 +132,41 @@ Set `overflow="auto"` to prevent the page from scrolling while the status bar is
 
 #### Styling Customization
 
-Customize the bar only through its documented `--mds-status-bar-*` CSS custom properties and the exposed `::part()` names (`status-bar`, `status-bar-area`, `actions`). Use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Customize the bar only through its documented `--mds-status-bar-*` CSS custom properties and the exposed `::part()` names (`status-bar`, `status-bar-area`, `actions`). Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
 mds-status-bar {
   --mds-status-bar-max-width: 700px;
-  --mds-status-bar-backdrop: rgb(var(--tone-neutral-01) / 0.2);
+  --mds-status-bar-backdrop: rgb(var(--magma-shadow-ink) / 0.2);
   --mds-status-bar-backdrop-filter: blur(6px);
 }
 
 mds-status-bar::part(status-bar) {
-  border: 1px solid rgb(var(--tone-neutral-02));
+  border: 1px solid rgb(var(--magma-border-default));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-status-bar>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-status-bar>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Set `visible="false"` to Hide the Bar
 
-`visible` is a boolean prop. The string `"false"` is a truthy value in HTML and keeps the bar open. Remove the attribute or call the `hide()` method instead.
+`visible` is a boolean prop. `visible="false"` leaves a `visible` attribute on the element that contradicts the hidden state, so attribute selectors and checks still read the bar as visible. Remove the attribute or call the `hide()` method instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-status-bar visible="false">
   <mds-button variant="primary" tone="strong">Salva</mds-button>
 </mds-status-bar>
 
-<!-- ✅ CORRECT - remove the attribute -->
+<!-- CORRECT - remove the attribute -->
 <mds-status-bar>
   <mds-button variant="primary" tone="strong">Salva</mds-button>
 </mds-status-bar>
 
-<!-- ✅ CORRECT - or call the method -->
+<!-- CORRECT - or call the method -->
 <script>
   document.querySelector('mds-status-bar').hide();
 </script>
@@ -177,13 +177,13 @@ Common incorrect uses of `<mds-status-bar>`. Each entry pairs the wrong form wit
 The default slot is intended for interactive content (recommended: `mds-button`). Bare text nodes render but receive no layout treatment and produce inaccessible output. Use the `description` prop for contextual text.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-status-bar visible>
   Stai modificando 4 elementi
   <mds-button variant="primary" tone="strong">Salva</mds-button>
 </mds-status-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-status-bar visible description="Stai modificando 4 elementi">
   <mds-button variant="primary" tone="strong">Salva</mds-button>
 </mds-status-bar>
@@ -191,15 +191,15 @@ The default slot is intended for interactive content (recommended: `mds-button`)
 
 #### Do Not Use an Undocumented `position` Value
 
-`position` accepts only `'bottom'`, `'bottom-left'`, or `'bottom-right'`. Using an undocumented value (e.g. `top`, `center`) silently falls back to the default and mispositions the bar.
+`position` accepts only `'bottom'`, `'bottom-left'`, or `'bottom-right'`. An undocumented value (e.g. `top`, `center`) is passed unchecked to the inner `<mds-modal>`, which moves the window there, while the bar's styling and slide-in animation assume the bottom edge.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-status-bar visible position="top">
   <mds-button variant="primary" tone="strong">Conferma</mds-button>
 </mds-status-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-status-bar visible position="bottom-left">
   <mds-button variant="primary" tone="strong">Conferma</mds-button>
 </mds-status-bar>
@@ -210,7 +210,7 @@ The default slot is intended for interactive content (recommended: `mds-button`)
 `::part()` is supported only for the three documented parts: `status-bar`, `status-bar-area`, and `actions`. Using undocumented internal selectors or `>>>` couples your styles to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-status-bar::part(description) {
   font-size: 14px;
 }
@@ -218,13 +218,13 @@ mds-status-bar >>> .status-bar {
   background: white;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-status-bar {
-  --mds-status-bar-backdrop: rgb(var(--tone-neutral-01) / 0.15);
+  --mds-status-bar-backdrop: rgb(var(--magma-shadow-ink) / 0.15);
   --mds-status-bar-max-width: 640px;
 }
 mds-status-bar::part(status-bar) {
-  border: 1px solid rgb(var(--tone-neutral-02));
+  border: 1px solid rgb(var(--magma-border-default));
 }
 ```
 
@@ -233,13 +233,13 @@ mds-status-bar::part(status-bar) {
 `description` is a prop. Slotting an `<mds-text>` or `<span>` into the default slot to mimic a description clutters the actions area and will compete with the layout of the slotted buttons.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-status-bar visible>
   <mds-text typography="caption">Modifica in corso</mds-text>
   <mds-button variant="primary" tone="strong">Salva</mds-button>
 </mds-status-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-status-bar visible description="Modifica in corso">
   <mds-button variant="primary" tone="strong">Salva</mds-button>
 </mds-status-bar>
@@ -250,15 +250,15 @@ mds-status-bar::part(status-bar) {
 The default slot is designed for action controls. Placing only decorative or static elements (icons, images, plain text) provides no user action and wastes the status-bar pattern. Use `mds-banner` or `mds-note` for passive status messages.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-status-bar visible description="Operazione completata">
   <mds-icon name="mi/baseline/check-circle"></mds-icon>
 </mds-status-bar>
 
-<!-- ✅ CORRECT - use mds-banner for passive messages -->
-<mds-banner variant="success" tone="weak" label="Operazione completata"></mds-banner>
+<!-- CORRECT - use mds-banner for passive messages -->
+<mds-banner variant="success" tone="weak" headline="Operazione completata"></mds-banner>
 
-<!-- ✅ CORRECT - or combine icon-button with a real action -->
+<!-- CORRECT - or combine icon-button with a real action -->
 <mds-status-bar visible description="Operazione completata">
   <mds-button
     icon="mi/baseline/check-circle"

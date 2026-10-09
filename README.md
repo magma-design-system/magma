@@ -1,6 +1,6 @@
 # Magma — Maggioli Design System
 
-Magma is the [Maggioli Design System][docs]: a library of ~115 web components (StencilJS), design tokens, SVG icons, brand assets and CSS/Tailwind 4 styles, each published as a separate npm package.
+Magma is the [Maggioli Design System][docs]: a library of 114 web components (StencilJS), design tokens, SVG icons, brand assets and CSS/Tailwind 4 styles, each published as a separate npm package.
 
 [docs]: https://magma.maggiolicloud.it/
 

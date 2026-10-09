@@ -21,15 +21,15 @@ The `<mds-input-tip-item>` web component is a single contextual hint row rendere
 
 #### Properties & Visual Configurations
 
-- **`variant`** is the only meaningful prop and selects both the message type and its source of text. Use `required` / `required-success` for required-field feedback (the success value swaps the label for a checkmark icon), `readonly` and `disabled` for field-state notices (auto-labeled from the dictionary), `text` for an arbitrary slotted hint, and the `count-*` family (`count-empty`, `count-incomplete`, `count-almost`, `count-almost-full`, `count-full`) for character-count feedback whose label text is slotted in by the parent. The full enumerated list lives in `readme.md` and the typed dictionary under `meta/`.
-- **`expanded`** controls visibility/expansion within the tip and is intended to be driven by the parent rather than set by hand.
+- **`variant`** is the only meaningful prop and selects both the message type and its source of text. Use `required` / `required-success` for required-field feedback (the success value swaps the label for a checkmark icon), `readonly` and `disabled` for field-state notices (auto-labeled from the dictionary), `text` for an arbitrary slotted hint, and the `count-*` family (`count-empty`, `count-incomplete`, `count-almost`, `count-almost-full`, `count-full`) for character-count feedback whose label text is slotted in by the parent. The full enumerated list lives in [`readme.md`](../readme.md).
+- **`expanded`** controls the expansion within the tip (collapsed, the item shrinks to a small colored dot without text) and is intended to be driven by the parent rather than set by hand.
 
-Styling hooks (`--mds-input-tip-item-background`, `--mds-input-tip-item-color`, `--mds-input-tip-item-icon-color`) are documented in `readme.md`.
+Styling hooks (`--mds-input-tip-item-background`, `--mds-input-tip-item-color`, `--mds-input-tip-item-icon-color`) are documented in [`readme.md`](../readme.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-input-tip-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant system documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-input-tip-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant system documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Required-Field Hint
 
@@ -102,42 +102,46 @@ The `count-*` variants express how full a character-limited field is. The parent
 
 #### Toggling Visibility with `expanded`
 
-The `expanded` attribute controls the reveal animation. Drive it from the parent's logic - for example, show the required hint only while the field is focused.
+The `expanded` attribute controls the reveal animation. Drive it from the parent's logic - for example, expand the required hint only while the field is focused. Collapsed, the item shrinks to a small colored dot without text.
 
 ```html
-<!-- Visibile: campo focalizzato -->
-<mds-input-tip-item variant="required" expanded></mds-input-tip-item>
+<!-- Espanso: campo focalizzato -->
+<mds-input-tip active>
+  <mds-input-tip-item variant="required" expanded></mds-input-tip-item>
+</mds-input-tip>
 
-<!-- Nascosto: campo non focalizzato (rimuovere l'attributo, non impostarlo a false) -->
-<mds-input-tip-item variant="required"></mds-input-tip-item>
+<!-- Compresso: campo non focalizzato (rimuovere l'attributo, non impostarlo a false) -->
+<mds-input-tip>
+  <mds-input-tip-item variant="required"></mds-input-tip-item>
+</mds-input-tip>
 ```
 
 #### Styling Customization
 
-Override the visual appearance only through the three documented CSS custom properties. Set them on the host element or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Override the visual appearance only through the three documented CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode keeps working.
 
 ```css
 .campo-personalizzato mds-input-tip-item {
-  --mds-input-tip-item-background: rgb(var(--variant-primary-05));
-  --mds-input-tip-item-color: rgb(var(--variant-primary-01));
-  --mds-input-tip-item-icon-color: rgb(var(--variant-primary-02));
+  --mds-input-tip-item-background: rgb(var(--magma-accent-emphasis));
+  --mds-input-tip-item-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-input-tip-item-icon-color: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-input-tip-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-tip-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Slot Text into Auto-Labeled Variants
 
 `variant="required"`, `variant="readonly"`, and `variant="disabled"` each produce their own localized label from the internal i18n dictionary. Slotted text is silently ignored for these variants, so any copy inside the element is dead markup.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-tip-item variant="required" expanded>Obbligatorio</mds-input-tip-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-tip-item variant="required" expanded></mds-input-tip-item>
 ```
 
@@ -146,38 +150,38 @@ Common incorrect uses of `<mds-input-tip-item>`. Each entry pairs the wrong form
 `variant="required-success"` renders a hardcoded checkmark icon (no text). Any slot content is also silently ignored, just like the auto-labeled variants above.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-tip-item variant="required-success" expanded>
   <mds-icon name="mi/baseline/done"></mds-icon>
 </mds-input-tip-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-tip-item variant="required-success" expanded></mds-input-tip-item>
 ```
 
 #### Do Not Set `expanded="false"` to Hide the Item
 
-`expanded` is a boolean attribute. Setting it to the string `"false"` is truthy in HTML and keeps the item expanded. Remove the attribute entirely to hide it.
+`expanded` is a boolean attribute: remove it entirely to collapse the item. A string value is fragile: `"false"` is read as `false` on this component, but the attribute stays on the element until the component renders (attribute selectors and scripts reading it see it set). Never write a boolean as a string.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-tip-item variant="required" expanded="false"></mds-input-tip-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-tip-item variant="required"></mds-input-tip-item>
 ```
 
 #### Do Not Use Outside `<mds-input-tip>`
 
-`<mds-input-tip-item>` is a compound child - it is designed to live as a direct slot child of [`<mds-input-tip>`](../../mds-input-tip). Using it standalone produces a collapsed, invisible chip with no context driving its state.
+`<mds-input-tip-item>` is a compound child - it is designed to live as a direct slot child of [`<mds-input-tip>`](../../mds-input-tip). Used standalone it renders a loose chip with no input to anchor to and nothing driving its state.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="hint-area">
   <mds-input-tip-item variant="text" expanded>Suggerimento</mds-input-tip-item>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-tip active>
   <mds-input-tip-item variant="text" expanded>Suggerimento</mds-input-tip-item>
 </mds-input-tip>
@@ -185,15 +189,15 @@ Common incorrect uses of `<mds-input-tip-item>`. Each entry pairs the wrong form
 
 #### Do Not Put HTML Elements in the Default Slot
 
-The default slot accepts plain text only (`variant="text"` and the `count-*` variants). Nested elements such as `<span>` or `<strong>` are not rendered correctly and may break the layout.
+The default slot accepts plain text only (`variant="text"` and the `count-*` variants). The chip is a single truncated line of fixed height: nested elements such as `<span>` or `<strong>` add nothing and can break it.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-tip-item variant="text" expanded>
   <strong>Nota:</strong> massimo 100 caratteri
 </mds-input-tip-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-tip-item variant="text" expanded>Nota: massimo 100 caratteri</mds-input-tip-item>
 ```
 
@@ -202,7 +206,7 @@ The default slot accepts plain text only (`variant="text"` and the `count-*` var
 The only supported customization surface is the three `--mds-input-tip-item-*` CSS custom properties. Targeting internal elements with `::part()`, `>>>`, or undocumented selectors will break on future releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-input-tip-item >>> .content {
   border-radius: 0;
 }
@@ -210,10 +214,10 @@ mds-input-tip-item::part(icon) {
   fill: hotpink;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-input-tip-item {
-  --mds-input-tip-item-background: rgb(var(--variant-primary-05));
-  --mds-input-tip-item-icon-color: rgb(var(--status-success-02));
+  --mds-input-tip-item-background: rgb(var(--magma-accent-emphasis));
+  --mds-input-tip-item-icon-color: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
