@@ -13,9 +13,10 @@ The `<mds-push-notification>` web component is the Magma Design System container
 
 #### Semantic Behavior
 
-- **Slot-driven lifecycle**: Items placed in the default slot are animated in automatically; each item animates out and is removed when closed.
+- **Slot-driven lifecycle**: Items placed in the default slot are animated in automatically; each item animates out and is removed when closed (an item shows its close button only with `deletable`).
+- **Built-in clear button**: The container always renders its own `Cancella notifiche` button, which animates out every item and hides the container.
 - **Auto vs. manual behavior**: With `behavior="auto"` the container shows itself as soon as one or more items are added; with `behavior="manual"` visibility is driven only by the `visible` prop or the imperative methods.
-- **Empty-stack auto-hide**: When the last remaining item animates out, the container hides itself regardless of behavior.
+- **Empty-stack auto-hide**: When the last remaining item animates out, the container hides itself regardless of behavior. The check counts every node in the slot, whitespace text included, so it fires only when the items are the slot's only nodes (as when they are appended from script); the clear button and `hide()` always hide it.
 - **Emitted events**: `mdsPushNotificationShow` fires when it becomes visible, `mdsPushNotificationHide` when hidden, and `mdsPushNotificationChange` on every transition carrying a `{ visible: boolean }` detail.
 - **Imperative API**: Exposes `show()` and `hide()` methods to control visibility programmatically, plus `removeNotification()` to dismiss one or an array of `mds-push-notification-item` elements with the standard outro animation.
 - **Animation timing**: Intro/outro durations and inter-item gap are read from CSS custom properties (`--mds-push-notification-items-intro-delay`, `--mds-push-notification-items-outro-delay`, `--mds-push-notification-items-gap`), so motion is themeable without code changes.
@@ -27,20 +28,21 @@ The container intentionally exposes a minimal prop surface; most configuration i
 #### Other behavioral props
 
 - **`behavior`** selects the visibility strategy: pick `'auto'` (default) when the stack should appear and disappear purely as a function of how many items it contains, and `'manual'` when you want explicit control over when the container is shown via `visible` or the `show()`/`hide()` methods.
-- **`visible`** is the controlled visibility flag; set it to drive the container open or closed, while reading it reflects the current animated state.
+- **`visible`** is the controlled visibility flag; set it to drive the container open or closed, while reading it returns the current visibility.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-push-notification>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-push-notification>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Minimal Auto-Managed Stack
 
-The default `behavior="auto"` configuration. Drop `mds-push-notification-item` children into the default slot and the container shows itself, animates each item in, and hides itself when all items have been dismissed.
+The default `behavior="auto"` configuration. Drop `mds-push-notification-item` children into the default slot and the container shows itself, animates each item in, and hides itself when all items have been dismissed. Set `deletable` on an item to give it its own close button.
 
 ```html
 <mds-push-notification>
   <mds-push-notification-item
+    deletable
     subject="Nuovo messaggio"
     message="Il documento e' pronto per la revisione."
   ></mds-push-notification-item>
@@ -65,7 +67,7 @@ Use `preview="avatar"` and `src` to show a user photo. Supply `initials` as a fa
 
 #### Items with Icon Preview
 
-Use `icon` (an iconsauce slug) instead of `src` when the notification represents an event or system action rather than a person.
+Use `icon` (an icon slug with its set prefix) instead of `src` when the notification represents an event or system action rather than a person.
 
 ```html
 <mds-push-notification>
@@ -179,17 +181,18 @@ panel.addEventListener('mdsPushNotificationHide', () => {
 });
 
 panel.addEventListener('mdsPushNotificationChange', (e) => {
-  console.info('Visibilita' cambiata:', e.detail.visible);
+  console.info('Visibilita cambiata:', e.detail.visible);
 });
 ```
 
 #### Item Tone and Variant
 
-Use `variant` and `tone` on the item to reflect the semantic nature of the notification (status or theme family). `tone` accepts `strong` or `weak` on this component.
+Use `variant` and `tone` on the item to reflect the semantic nature of the notification (status or theme family). `tone` accepts `strong` or `weak` on this component. They paint the item's icon or avatar preview, so they show only together with `icon` (or `preview="avatar"`).
 
 ```html
 <mds-push-notification>
   <mds-push-notification-item
+    icon="mi/baseline/check-circle"
     variant="success"
     tone="weak"
     subject="Operazione completata"
@@ -197,6 +200,7 @@ Use `variant` and `tone` on the item to reflect the semantic nature of the notif
   ></mds-push-notification-item>
 
   <mds-push-notification-item
+    icon="mi/baseline/error"
     variant="error"
     tone="strong"
     subject="Errore critico"
@@ -207,19 +211,19 @@ Use `variant` and `tone` on the item to reflect the semantic nature of the notif
 
 #### Styling Customization via CSS Custom Properties
 
-Override animation timing, inter-item gap, and the panel background through the documented `--mds-push-notification-*` properties. Set them on the host or a parent selector.
+Override animation timing, inter-item gap, and the panel background through the documented `--mds-push-notification-*` properties. Set them on the host or a parent selector; for colours name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
 
 ```css
 mds-push-notification {
   --mds-push-notification-items-intro-delay: 200ms;
   --mds-push-notification-items-outro-delay: 100ms;
   --mds-push-notification-items-duration: 250ms;
-  --mds-push-notification-items-gap: var(--spacing-300);
+  --mds-push-notification-items-gap: calc(var(--spacing) * 300);
   --mds-push-notification-fadeout-delay: 0.5s;
   --mds-push-notification-background: linear-gradient(
     to right,
-    rgb(255 255 255 / 0) 0%,
-    rgb(255 255 255 / 0.95) 100%
+    rgb(var(--magma-surface-overlay) / 0) 0%,
+    rgb(var(--magma-surface-overlay) / 0.95) 100%
   );
 }
 ```
@@ -227,14 +231,14 @@ mds-push-notification {
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-push-notification>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-push-notification>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put Arbitrary HTML in the Default Slot
 
 The default slot is designed for `mds-push-notification-item` children only. Placing raw HTML or other components breaks the animation lifecycle, event wiring, and the intro/outro sequencing the container manages.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-push-notification>
   <div class="my-notification">
     <strong>Avviso</strong>
@@ -242,7 +246,7 @@ The default slot is designed for `mds-push-notification-item` children only. Pla
   </div>
 </mds-push-notification>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-push-notification>
   <mds-push-notification-item
     subject="Avviso"
@@ -253,18 +257,18 @@ The default slot is designed for `mds-push-notification-item` children only. Pla
 
 #### Do Not Set `visible="false"` to Hide the Panel
 
-`visible` is a boolean prop. Setting it to the string `"false"` is truthy in HTML/Stencil and keeps the panel visible. Remove the attribute entirely - or call `hide()` - to close the panel.
+`visible` is a boolean prop: a false boolean is written by removing the attribute, the convention for every Magma boolean ([`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md)). Stencil does parse `"false"` as `false`, but the attribute stays in the markup until the component hydrates and its reflection removes it, so a `[visible]` selector or any code reading the attribute sees it set in the meantime. Remove the attribute entirely - or call `hide()` - to close the panel.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-push-notification visible="false"></mds-push-notification>
 
-<!-- ✅ CORRECT: remove the attribute -->
+<!-- CORRECT: remove the attribute -->
 <mds-push-notification></mds-push-notification>
 ```
 
 ```javascript
-// ✅ CORRECT: via imperative method
+// CORRECT: via imperative method
 document.querySelector('mds-push-notification').hide();
 ```
 
@@ -273,10 +277,10 @@ document.querySelector('mds-push-notification').hide();
 The component emits `mdsPushNotificationHide` when the panel hides. Listening for a native `close` event will never fire because the component does not dispatch it, and native DOM events from inside the shadow root do not reliably bubble to the light DOM.
 
 ```javascript
-// 🚫 INCORRECT
+// INCORRECT
 panel.addEventListener('close', () => updateUI());
 
-// ✅ CORRECT
+// CORRECT
 panel.addEventListener('mdsPushNotificationHide', () => updateUI());
 ```
 
@@ -285,7 +289,7 @@ panel.addEventListener('mdsPushNotificationHide', () => updateUI());
 With `behavior="manual"` the container never auto-shows when items are added; you must explicitly call `show()` or set `visible`. Leaving it on `manual` without wiring visibility logic means notifications are silently queued but never displayed.
 
 ```html
-<!-- 🚫 INCORRECT: items never appear because manual mode needs explicit show() -->
+<!-- INCORRECT: items never appear because manual mode needs explicit show() -->
 <mds-push-notification behavior="manual" id="notif-panel">
   <mds-push-notification-item
     subject="Nuovo messaggio"
@@ -293,7 +297,7 @@ With `behavior="manual"` the container never auto-shows when items are added; yo
   ></mds-push-notification-item>
 </mds-push-notification>
 
-<!-- ✅ CORRECT: call show() after adding items -->
+<!-- CORRECT: call show() after adding items -->
 <mds-push-notification behavior="manual" id="notif-panel">
   <mds-push-notification-item
     subject="Nuovo messaggio"
@@ -311,7 +315,7 @@ With `behavior="manual"` the container never auto-shows when items are added; yo
 The only supported customization surface for the container is the `--mds-push-notification-*` CSS custom properties plus the documented `::part(notifications)` part. Use per-item CSS custom properties (prefixed `--mds-push-notification-item-*`) for item-level styling. Do not reach into shadow parts that are not documented.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-push-notification >>> .notifications {
   background: white;
 }
@@ -319,29 +323,29 @@ mds-push-notification::part(content) {
   padding: 2rem;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-push-notification {
-  --mds-push-notification-background: rgb(255 255 255 / 0.9);
-  --mds-push-notification-items-gap: var(--spacing-300);
+  --mds-push-notification-background: rgb(var(--magma-surface-overlay) / 0.9);
+  --mds-push-notification-items-gap: calc(var(--spacing) * 300);
 }
 mds-push-notification::part(notifications) {
   /* documented part - safe to target */
-  padding-block: var(--spacing-200);
+  padding-block: calc(var(--spacing) * 200);
 }
 ```
 
 #### Do Not Slot Actions in the Wrong Slot
 
-Action buttons belong in the `action` slot of `mds-push-notification-item`, not in the default slot of `mds-push-notification`. Placing a button in the parent's default slot treats it like a notification item, breaks the animation sequence, and the button will be styled and animated as if it were a notification.
+Action buttons belong in the `action` slot of `mds-push-notification-item`, not in the default slot of `mds-push-notification`. Placing a button in the parent's default slot treats it like a notification item, breaks the animation sequence, and the button will be styled and animated as if it were a notification. A clear-all button is not needed either: the container renders its own.
 
 ```html
-<!-- 🚫 INCORRECT: button lands in the parent's default slot -->
+<!-- INCORRECT: button lands in the parent's default slot -->
 <mds-push-notification>
   <mds-button variant="dark">Cancella tutto</mds-button>
   <mds-push-notification-item subject="Avviso" message="Nuovo messaggio."></mds-push-notification-item>
 </mds-push-notification>
 
-<!-- ✅ CORRECT: action belongs on the item's action slot -->
+<!-- CORRECT: action belongs on the item's action slot -->
 <mds-push-notification>
   <mds-push-notification-item subject="Avviso" message="Nuovo messaggio.">
     <mds-button slot="action" variant="primary" tone="weak" size="sm">Apri</mds-button>
@@ -351,19 +355,21 @@ Action buttons belong in the `action` slot of `mds-push-notification-item`, not 
 
 #### Do Not Apply an Unsupported `tone` Value to Item
 
-`mds-push-notification-item` accepts `tone="strong"` or `tone="weak"` only (`ToneMinimalVariantType`). Using `tone="outline"` or `tone="text"` silently falls back to the default and the intended visual emphasis is lost.
+`mds-push-notification-item` accepts `tone="strong"` or `tone="weak"` only (`ToneMinimalVariantType`). Using `tone="outline"` (a tone of `mds-button` and `mds-badge`) silently falls back to the default `weak` look and the intended visual emphasis is lost. `variant` and `tone` paint only the item's icon or avatar, so pair them with `icon`.
 
 ```html
-<!-- 🚫 INCORRECT: outline and text are not supported tones for this component -->
+<!-- INCORRECT: outline and text are not supported tones for this component -->
 <mds-push-notification-item
+  icon="mi/baseline/error"
   variant="error"
   tone="outline"
   subject="Errore"
   message="Operazione fallita."
 ></mds-push-notification-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-push-notification-item
+  icon="mi/baseline/error"
   variant="error"
   tone="strong"
   subject="Errore"
