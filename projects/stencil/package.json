@@ -129,6 +129,7 @@
     "@storybook/addon-a11y": "10.5.10",
     "@storybook/addon-docs": "10.5.10",
     "@storybook/addon-vitest": "10.5.10",
+    "@storybook/icons": "2.1.0",
     "@storybook/react-vite": "10.5.10",
     "@tailwindcss/postcss": "4.3.3",
     "@types/crypto-js": "4.2.2",

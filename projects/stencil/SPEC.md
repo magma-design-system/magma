@@ -338,6 +338,12 @@ The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of section
   - Typed prop value sets → `components.d.ts` + `src/type/*.ts`
   - Full type metadata / cross-references (codemods, tooling) → `documentation.json` **if present**; otherwise build first or fall back to `components.d.ts`
 
+### Storybook
+
+The three files are also the component's **Docs page** in Storybook. `.storybook/usage-docs.jsx` replaces the autodocs template (`parameters.docs.page` in `.storybook/preview.jsx`) with the default blocks around the usage docs: title and subtitle, `1. Description.md` as the **Description** section, the primary story with its Controls table, then **Pattern** (`2. Pattern.md`) and **Antipattern** (`3. Antipattern.md`). The files are read at runtime through a Vite glob (`?raw`), so editing a `.md` updates the open page without a build; a table of contents (`parameters.docs.toc`) lists the sections and their headings. On the way the `####` headings of the files are shifted right below their section heading, and the repository-relative links (`docs/COMPONENTS.md`, `SPEC.md`, a sibling component) are pointed at GitHub, `dev` branch. Code blocks are left untouched. The transforms live in `.storybook/usage-markdown.ts`, with their spec in `src/storybook/test/`.
+
+A component without a stories file (a part of a compound component, e.g. `mds-table-cell`) has no autodocs page: it gets a `test/<name>.mdx` of a few lines that imports its three files and renders them with `UsageDocs`, under the title of its parent (`Layout / Table / Cell`). Copy one of them when adding such a component. The stories file of a use case (`mds-tree-apk.stories.tsx`) keeps the default autodocs page: only the file named after its component folder, or after a prefix of it (`mds-input-tip-item/test/mds-input-tip.stories.tsx`), carries the usage docs.
+
 ### Templates
 
 Authoring templates with inline rules and section prompts live in [`template/usage/`](../../projects/stencil/template/usage). Copy these when adding `usage/` docs to an existing component, or rely on the scaffolder for new ones.
