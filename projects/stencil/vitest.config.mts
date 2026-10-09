@@ -38,6 +38,15 @@ export default defineVitestConfig({
       },
       {
         extends: true,
+        // the build scripts' pure helpers (scripts/*.ts), plain Node: no component, no DOM
+        test: {
+          name: 'scripts',
+          environment: 'node',
+          include: ['scripts/**/*.spec.ts'],
+        },
+      },
+      {
+        extends: true,
         // dependencies imported by the tests from the sources, pre-bundled to avoid a reload mid-run
         optimizeDeps: { include: ['idb-keyval'] },
         test: {

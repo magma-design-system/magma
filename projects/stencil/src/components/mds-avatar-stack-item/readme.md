@@ -21,7 +21,7 @@ The `<mds-avatar-stack-item>` web component is a compound child that represents 
 
 #### Properties & Visual Configurations
 
-The shared `tone` / `variant` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); `tone` accepts only the minimal set (`weak` default, `strong`) and `variant` accepts the avatar color set.
+The shared `tone` / `variant` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); `tone` accepts only the minimal set (`weak` default, `strong`) and `variant` accepts the avatar color set.
 
 - **`src`**: Use for the primary case - a real user photo. When absent the avatar falls back to `initials`, and only when neither is provided do `tone` / `variant` define the placeholder appearance.
 - **`initials`**: Provide a short identifier when no image exists; prefer it over relying on color alone, since it both labels and visually separates users in a dense stack.
@@ -30,7 +30,7 @@ The shared `tone` / `variant` ladders are defined in [`projects/stencil/SPEC.md`
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-avatar-stack-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-avatar-stack-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Stack with Initials
 
@@ -46,7 +46,7 @@ The most common form: place one item per participant inside [`mds-avatar-stack`]
 
 #### Stack with Photos
 
-Use `src` when a real user photo is available. The avatar falls back to `initials` when the image cannot be loaded, and to the tone/variant placeholder when neither is provided.
+Use `src` when a real user photo is available. While `src` is set, `initials` is not displayed: an image that cannot be loaded is replaced by the generic person glyph. Items without `src` show their `initials`, and the tone/variant placeholder when neither is provided.
 
 ```html
 <mds-avatar-stack>
@@ -112,35 +112,35 @@ Size is not set per item - it is set once on the parent with `size` (`sm`, `md`,
 
 #### Styling Customization
 
-Style individual items through their documented `--mds-avatar-stack-item-*` CSS custom properties, or control the whole stack at once via the parent's `--mds-avatar-stack-*` counterparts (the item vars inherit from those). Use Magma color tokens with `rgb(var(--<token>))` so dark mode keeps working.
+Style individual items through their documented `--mds-avatar-stack-item-*` CSS custom properties, or control the whole stack at once via the parent's `--mds-avatar-stack-*` counterparts (the item vars inherit from those). Use semantic color roles with `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
 /* Override the separator ring color for the whole stack */
 .collab-panel mds-avatar-stack {
-  --mds-avatar-stack-background: rgb(var(--tone-neutral-09));
+  --mds-avatar-stack-background: rgb(var(--magma-surface-raised));
 }
 
 /* Override count badge colors for a specific stack */
 .collab-panel mds-avatar-stack {
-  --mds-avatar-stack-count-background-color: rgb(var(--variant-primary-03));
-  --mds-avatar-stack-count-color: rgb(var(--tone-kaolin-10));
+  --mds-avatar-stack-count-background-color: rgb(var(--magma-accent-emphasis));
+  --mds-avatar-stack-count-color: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-avatar-stack-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-avatar-stack-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `mds-avatar-stack`
 
-`<mds-avatar-stack-item>` is a compound child and relies on its parent for sizing and overlap CSS custom properties. Used standalone, it renders with undefined dimensions and no overlap offset.
+`<mds-avatar-stack-item>` is a compound child and relies on its parent for sizing, overlap and the overflow counter. Used standalone, it falls back to the medium size, with no stack container and no `size` / `total` control.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar-stack-item initials="mr"></mds-avatar-stack-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-avatar-stack>
   <mds-avatar-stack-item initials="mr"></mds-avatar-stack-item>
 </mds-avatar-stack>
@@ -151,12 +151,12 @@ Common incorrect uses of `<mds-avatar-stack-item>`. Each entry pairs the wrong f
 The child has no `size` prop; setting it as an attribute has no effect. Control the scale of every item in the stack with the `size` prop on the parent.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar-stack>
   <mds-avatar-stack-item initials="mr" size="lg"></mds-avatar-stack-item>
 </mds-avatar-stack>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-avatar-stack size="lg">
   <mds-avatar-stack-item initials="mr"></mds-avatar-stack-item>
 </mds-avatar-stack>
@@ -167,14 +167,14 @@ The child has no `size` prop; setting it as an attribute has no effect. Control 
 When `total` is set on the parent it auto-appends the overflow item. Adding a manual `count` item on top produces a double overflow indicator.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar-stack total="12">
   <mds-avatar-stack-item initials="mr"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="ac"></mds-avatar-stack-item>
   <mds-avatar-stack-item count="10"></mds-avatar-stack-item>
 </mds-avatar-stack>
 
-<!-- ✅ CORRECT - let the parent compute and render the overflow badge -->
+<!-- CORRECT - let the parent compute and render the overflow badge -->
 <mds-avatar-stack total="12">
   <mds-avatar-stack-item initials="mr"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="ac"></mds-avatar-stack-item>
@@ -183,10 +183,10 @@ When `total` is set on the parent it auto-appends the overflow item. Adding a ma
 
 #### Do Not Wrap Items in a Div
 
-The parent queries `:scope > mds-avatar-stack-item` to count children and compute the overflow. Wrapping items in a `<div>` or any other element breaks that query and also breaks the overlap layout driven by `:not(:first-child)` margin rules.
+The parent counts only its direct `mds-avatar-stack-item` children to compute the overflow. Wrapping items in a `<div>` or any other element breaks that count, and the parent's `size` (applied with `::slotted`) no longer reaches the items.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-avatar-stack total="5">
   <div>
     <mds-avatar-stack-item initials="mr"></mds-avatar-stack-item>
@@ -194,7 +194,7 @@ The parent queries `:scope > mds-avatar-stack-item` to count children and comput
   </div>
 </mds-avatar-stack>
 
-<!-- ✅ CORRECT - items must be direct slot children -->
+<!-- CORRECT - items must be direct slot children -->
 <mds-avatar-stack total="5">
   <mds-avatar-stack-item initials="mr"></mds-avatar-stack-item>
   <mds-avatar-stack-item initials="ac"></mds-avatar-stack-item>
@@ -206,30 +206,30 @@ The parent queries `:scope > mds-avatar-stack-item` to count children and comput
 `tone` and `variant` style the placeholder background but are overridden by `initials` and ignored when `src` is present. Relying on color alone to identify users is not accessible. Always provide `initials` or `src`.
 
 ```html
-<!-- 🚫 INCORRECT - color-only identity, no label for screen readers -->
+<!-- INCORRECT - color-only identity, no label for screen readers -->
 <mds-avatar-stack>
   <mds-avatar-stack-item variant="blue"></mds-avatar-stack-item>
   <mds-avatar-stack-item variant="green"></mds-avatar-stack-item>
 </mds-avatar-stack>
 
-<!-- ✅ CORRECT - initials provide a visible and screen-reader-friendly label -->
+<!-- CORRECT - initials provide a visible and screen-reader-friendly label -->
 <mds-avatar-stack>
-  <mds-avatar-stack-item initials="mr" variant="blue"></mds-avatar-stack-item>
-  <mds-avatar-stack-item initials="ac" variant="green"></mds-avatar-stack-item>
+  <mds-avatar-stack-item initials="mr"></mds-avatar-stack-item>
+  <mds-avatar-stack-item initials="ac"></mds-avatar-stack-item>
 </mds-avatar-stack>
 ```
 
 #### Do Not Use an Invalid `tone` Value
 
-`tone` on this component accepts only `weak` (default) and `strong` - the `ToneMinimalVariantType` set. Values like `outline` or `text`, valid on other components, are silently ignored here.
+`tone` on this component accepts only `weak` (default) and `strong` - the `ToneMinimalVariantType` set. Values like `outline` or `text`, valid on other components, match no style here: the avatar renders as with `strong`, not with the `weak` default.
 
 ```html
-<!-- 🚫 INCORRECT (tone="outline" is not in ToneMinimalVariantType) -->
+<!-- INCORRECT (tone="outline" is not in ToneMinimalVariantType) -->
 <mds-avatar-stack>
   <mds-avatar-stack-item initials="mr" tone="outline"></mds-avatar-stack-item>
 </mds-avatar-stack>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-avatar-stack>
   <mds-avatar-stack-item initials="mr" tone="strong"></mds-avatar-stack-item>
 </mds-avatar-stack>

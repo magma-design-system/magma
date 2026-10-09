@@ -16,12 +16,12 @@ The `<mds-accordion-timer>` web component is the orchestrating parent of an auto
 #### Semantic Behavior
 
 - **Compound parent**: Drives selection across its slotted `<mds-accordion-timer-item>` children; it is meaningless without item children.
-- **Initial selection**: The first child carrying `selected` becomes the active item and starts the timer on load; if none is selected, the timer stays idle until an item is activated.
+- **Initial selection**: The child carrying `selected` (the last one, if several do) becomes the active item and starts the timer on load; if none is selected, the timer stays idle until an item is activated.
 - **Auto-advance cycle**: When the active item elapses, the next item opens, wrapping back to the first after the last - producing a continuous loop.
 - **Per-item duration override**: Each item uses its own `duration` when set, otherwise falling back to the parent `duration`.
 - **Pause on hover**: Hovering the active item pauses the countdown and resumes on mouse-leave; this is suppressed while `paused` is set.
-- **Manual selection**: Clicking an item stops the running cycle and selects it (left paused), while programmatic selection restarts the timer from the beginning of that item.
-- **Emitted event**: `mdsAccordionTimerChange` with the new item `index` whenever the active item changes.
+- **Manual selection**: Clicking an item selects it and holds its countdown at the start until the pointer leaves the item, while programmatic selection restarts the timer from the beginning of that item. Both clear `paused`.
+- **Emitted event**: `mdsAccordionTimerChange` with the new item `index` whenever the active item changes; after a click or an auto-advance it fires twice with the same `index`.
 
 #### Properties & Visual Configurations
 
@@ -30,12 +30,12 @@ This component exposes only timing controls; it has no `variant` / `tone` / `siz
 #### Other behavioral props
 
 - **`duration`** is the fallback cycle length in milliseconds applied to every item that does not declare its own `duration`; it is the global pacing knob for the whole accordion.
-- **`paused`** freezes the countdown at its current remaining time when set and resumes it when cleared. While paused, hover-driven pause/resume is disabled, making it the authoritative external stop control.
+- **`paused`** freezes the countdown at its current remaining time when set and resumes it when cleared. While paused, hover-driven pause/resume is disabled; selecting an item, by click or from code, clears it.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-accordion-timer>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-accordion-timer>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Auto-Advancing Accordion
 
@@ -90,7 +90,7 @@ Set `duration` on individual `<mds-accordion-timer-item>` children to give each 
 
 #### Starting in a Paused State
 
-Set the `paused` attribute on the parent to start the accordion with the timer frozen. The selected item will display without advancing until `paused` is removed. Use this when the auto-advance should not begin until a user action occurs.
+Set the `paused` attribute on the parent to start the accordion with the timer frozen. The selected item will display without advancing until `paused` is removed or the user selects an item. Use this when the auto-advance should not begin until a user action occurs.
 
 ```html
 <mds-accordion-timer paused>
@@ -105,7 +105,7 @@ Set the `paused` attribute on the parent to start the accordion with the timer f
 
 #### Toggling Pause Programmatically
 
-Toggle the `paused` prop from JavaScript to freeze and resume the countdown at runtime - for example in response to a user preference or a visibility-change event. Remove the attribute (or set the prop to `undefined`) to resume; do not set it to `false`.
+Toggle the `paused` prop from JavaScript to freeze and resume the countdown at runtime - for example in response to a user preference or a visibility-change event. Set the prop to `undefined` or `false` (or remove the attribute) to resume; in markup never write `paused="false"`.
 
 ```html
 <mds-accordion-timer id="slideshow">
@@ -117,16 +117,16 @@ Toggle the `paused` prop from JavaScript to freeze and resume the countdown at r
   </mds-accordion-timer-item>
 </mds-accordion-timer>
 
-<mds-button id="btn-pause" label="Metti in pausa" variant="secondary" tone="outline"></mds-button>
+<mds-button id="btn-pause" label="Metti in pausa" variant="primary" tone="outline"></mds-button>
 <mds-button id="btn-resume" label="Riprendi" variant="primary" tone="strong"></mds-button>
 ```
 
 ```javascript
 const accordion = document.getElementById('slideshow');
-document.getElementById('btn-pause').addEventListener('mdsButtonClick', () => {
+document.getElementById('btn-pause').addEventListener('click', () => {
   accordion.paused = true;
 });
-document.getElementById('btn-resume').addEventListener('mdsButtonClick', () => {
+document.getElementById('btn-resume').addEventListener('click', () => {
   accordion.paused = undefined;
 });
 ```
@@ -153,12 +153,12 @@ items[2].selected = true;
 
 #### Customizing the Progress Bar via CSS Custom Properties
 
-Style the component only through its documented `--mds-accordion-timer-*` CSS custom properties. Set them on the parent host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode continues to work.
+Style the component only through its documented `--mds-accordion-timer-*` CSS custom properties. Set them on the parent host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode continues to work.
 
 ```css
 .promo-slider mds-accordion-timer {
-  --mds-accordion-timer-progress-bar-color: rgb(var(--variant-primary-03));
-  --mds-accordion-timer-progress-bar-background: rgb(var(--tone-neutral-09));
+  --mds-accordion-timer-progress-bar-color: rgb(var(--magma-accent-fg));
+  --mds-accordion-timer-progress-bar-background: rgb(var(--magma-wash-base));
   --mds-accordion-timer-progress-bar-thickness: 3px;
   --mds-accordion-timer-duration: 300ms;
 }
@@ -167,19 +167,19 @@ Style the component only through its documented `--mds-accordion-timer-*` CSS cu
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-accordion-timer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-accordion-timer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use mds-accordion-timer-item Outside mds-accordion-timer
 
 `<mds-accordion-timer-item>` is a compound child that only works when discovered by the parent at load time; the parent assigns `uuid` values, drives the selection, and feeds `progress`. Outside its parent the item has no timer, no auto-advance, and no sibling coordination.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion-timer-item selected description="Elemento isolato">
   <mds-text>Questo elemento non avra' mai un timer.</mds-text>
 </mds-accordion-timer-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item selected description="Elemento corretto">
     <mds-text>Il timer funziona correttamente all'interno del genitore.</mds-text>
@@ -189,10 +189,10 @@ Common incorrect uses of `<mds-accordion-timer>`. Each entry pairs the wrong for
 
 #### Do Not Mix Child Types Inside mds-accordion-timer
 
-The parent discovers children via `querySelectorAll('mds-accordion-timer-item')` and indexes them by position. Mixing in `<mds-accordion-item>` or other components corrupts the index sequence and breaks rotation; the SPEC explicitly forbids mixing child types in compound components.
+The parent discovers children via `querySelectorAll('mds-accordion-timer-item')` and indexes them by position. A mixed-in `<mds-accordion-item>` or other component is left out of the rotation and toggles on its own; [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) forbids mixing child types in compound components.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item selected description="Timed item">
     <mds-text>Pannello a timer.</mds-text>
@@ -202,7 +202,7 @@ The parent discovers children via `querySelectorAll('mds-accordion-timer-item')`
   </mds-accordion-item>
 </mds-accordion-timer>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item selected description="Primo pannello">
     <mds-text>Pannello a timer.</mds-text>
@@ -215,17 +215,17 @@ The parent discovers children via `querySelectorAll('mds-accordion-timer-item')`
 
 #### Do Not Set paused="false" to Resume the Timer
 
-`paused` is a boolean prop; any non-empty string value - including `"false"` - is truthy in HTML and keeps the timer frozen. Remove the attribute entirely (or set the property to `undefined`) to resume.
+`paused` is a boolean prop, and a false boolean is an absent attribute ([`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md)). Stencil reads the string `"false"` as `false` here, but the attribute stays on the element, so anything that checks `[paused]` still sees the timer as paused. Remove the attribute entirely (or set the property to `undefined` or `false`) to resume.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion-timer paused="false">
   <mds-accordion-timer-item selected description="Primo pannello">
-    <mds-text>Il timer e' ancora fermo.</mds-text>
+    <mds-text>L'attributo paused resta sull'elemento.</mds-text>
   </mds-accordion-timer-item>
 </mds-accordion-timer>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item selected description="Primo pannello">
     <mds-text>Il timer e' in esecuzione.</mds-text>
@@ -234,23 +234,23 @@ The parent discovers children via `querySelectorAll('mds-accordion-timer-item')`
 ```
 
 ```javascript
-// ✅ CORRECT (from code)
-accordion.paused = undefined; // not accordion.paused = false
+// CORRECT (from code)
+accordion.paused = undefined; // or false: the property takes a real boolean
 ```
 
 #### Do Not Set uuid or progress Manually
 
-`uuid` (item position index) and `progress` (0-100 fill value) are owned and continuously rewritten by the parent at runtime. Setting them from outside produces race conditions between your values and the parent's interval writes, leading to erratic progress bars and broken rotation.
+`uuid` (item position index) and `progress` (0-1 fill value) are owned and continuously rewritten by the parent at runtime. Setting them from outside produces race conditions between your values and the parent's interval writes, leading to erratic progress bars and broken rotation.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item uuid="0" progress="50" selected description="Progresso manuale">
     <mds-text>La barra di progresso verra' sovrascritta dal genitore.</mds-text>
   </mds-accordion-timer-item>
 </mds-accordion-timer>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item selected description="Progresso gestito">
     <mds-text>Il genitore gestisce uuid e progress automaticamente.</mds-text>
@@ -260,10 +260,10 @@ accordion.paused = undefined; // not accordion.paused = false
 
 #### Do Not Pierce the Shadow DOM to Restyle the Progress Bar
 
-The progress bar and label are internal shadow parts. Use the documented `--mds-accordion-timer-*` CSS custom properties on the host (or a parent selector) to change their appearance. Targeting internal class names or undocumented parts couples your code to the implementation and will break on minor releases.
+The progress bar and the label are exposed on each item only as the documented `progress` and `label` parts. Use the documented `--mds-accordion-timer-*` CSS custom properties on the host (or a parent selector) to change their appearance. Targeting internal class names or undocumented parts couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-accordion-timer >>> .progress-bar {
   background: red;
 }
@@ -271,22 +271,22 @@ mds-accordion-timer-item::part(unknown-part) {
   height: 4px;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-accordion-timer {
-  --mds-accordion-timer-progress-bar-color: rgb(var(--variant-primary-03));
+  --mds-accordion-timer-progress-bar-color: rgb(var(--magma-accent-fg));
   --mds-accordion-timer-progress-bar-thickness: 3px;
 }
 ```
 
 #### Do Not Listen for Native change Events Instead of mdsAccordionTimerChange
 
-The component emits `mdsAccordionTimerChange` when the active item changes. Native DOM events do not bubble out of shadow DOM the way you might expect. Listen to the documented `mds*` event name.
+The component emits `mdsAccordionTimerChange` when the active item changes; it emits no native `change` event. Listen to the documented `mds*` event name.
 
 ```javascript
-// 🚫 INCORRECT
-accordion.addEventListener('change', (e) => { /* may never fire */ });
+// INCORRECT
+accordion.addEventListener('change', (e) => { /* never fires */ });
 
-// ✅ CORRECT
+// CORRECT
 accordion.addEventListener('mdsAccordionTimerChange', (e) => {
   console.log('Indice attivo:', e.detail.index);
 });

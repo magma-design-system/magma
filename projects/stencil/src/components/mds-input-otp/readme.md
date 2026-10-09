@@ -15,21 +15,21 @@ The `<mds-input-otp>` web component is the Magma Design System control for enter
 
 - **Form association**: The joined digits are exposed as the form value, so it submits with the surrounding `<form>` with no extra wiring.
 - **Single-digit cells**: Renders `length` digit cells, each capped at one character; the host value is the concatenation of every cell.
-- **Numeric-only entry**: Non-digit keys produce no value change.
+- **Numeric-only entry**: Non-digit keys produce no value change, and their default action is blocked too (Backspace, Tab, the arrows); a digit typed on a filled cell overwrites it.
 - **Auto-advance focus**: After a valid digit, focus moves to the next cell automatically; entering a digit in the last cell blurs it.
 - **Paste handling**: Pasting numeric text distributes the digits across consecutive cells starting from the focused one; non-numeric pastes are ignored.
-- **Completion + submit**: When all `length` digits are present and `autosubmit` is set, the owning form is submitted.
+- **Completion + submit**: When a digit typed in the last cell completes all `length` digits and `autosubmit` is set, the owning form is submitted. A paste that reaches the last cell does not submit.
 
 #### Properties & Visual Configurations
 
 - **`length`** sets how many digit cells are rendered and therefore the expected code length; it doubles as the completeness threshold for auto-submit. Defaults to `6`.
 - **`autosubmit`** opts into automatic form submission the moment the code is complete - use it for flows where the OTP is the only field and no explicit confirm button is needed; leave it off when the user should review or trigger submission manually.
-- **`value`** holds the current concatenated code; read it to observe progress or set it to seed an initial value.
+- **`value`** holds the current concatenated code; read it to observe progress. It is an output: setting it does not fill the cells, and the next digit typed overwrites it.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-input-otp>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the component catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-input-otp>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Default Six-Digit Code
 
@@ -56,20 +56,12 @@ Set `length` to match the expected OTP length - 4 digits for a short PIN, 8 for 
 
 #### Auto-Submit on Completion
 
-Add the `autosubmit` boolean attribute when the OTP is the only field and no explicit confirm button is needed. The owning form is submitted the moment all cells are filled - do not set `autosubmit="false"` to disable it; remove the attribute instead.
+Add the `autosubmit` boolean attribute when the OTP is the only field and no explicit confirm button is needed. The owning form is submitted when a digit typed in the last cell completes the code (a paste does not trigger it) - do not set `autosubmit="false"` to disable it; remove the attribute instead.
 
 ```html
 <form action="/verify" method="post">
   <mds-input-otp name="otp" autosubmit></mds-input-otp>
 </form>
-```
-
-#### Seeding an Initial Value
-
-Set `value` to pre-fill the cells - useful when recovering a partially entered code or when testing with a known fixture.
-
-```html
-<mds-input-otp name="otp" value="123456"></mds-input-otp>
 ```
 
 #### Reading the Value Programmatically
@@ -80,7 +72,7 @@ Set `value` to pre-fill the cells - useful when recovering a partially entered c
 const otp = document.querySelector('mds-input-otp');
 
 // Poll current state
-console.log(otp.value); // e.g. "12_456" while in progress
+console.log(otp.value); // e.g. "124" while in progress: empty cells add nothing
 
 // React on form submit
 document.querySelector('form').addEventListener('submit', (e) => {
@@ -139,17 +131,17 @@ The host is an `inline-flex` container. Use a utility class to center it inside 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-input-otp>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-otp>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Set `autosubmit="false"` to Disable Auto-Submit
 
-Any non-empty string attribute is truthy in HTML and Stencil. Setting `autosubmit="false"` does not turn the feature off - it turns it on. Remove the attribute entirely to opt out.
+Stencil reads `"false"` as `false` and, since `autosubmit` is reflected, removes the attribute at the first render, so this happens to work; but the markup says the opposite of what it does, and on a prop that is not reflected the attribute stays in the DOM, where `[attr]` selectors still match it. Remove the attribute entirely to opt out.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-otp name="otp" autosubmit="false"></mds-input-otp>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-otp name="otp"></mds-input-otp>
 ```
 
@@ -158,7 +150,7 @@ Any non-empty string attribute is truthy in HTML and Stencil. Setting `autosubmi
 Hand-rolling digit cells with native `<input type="text" maxlength="1">` elements duplicates focus management, paste handling, and form association that `<mds-input-otp>` already provides, and breaks Magma theming.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="otp-row">
   <input type="text" maxlength="1">
   <input type="text" maxlength="1">
@@ -168,7 +160,7 @@ Hand-rolling digit cells with native `<input type="text" maxlength="1">` element
   <input type="text" maxlength="1">
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-otp name="otp"></mds-input-otp>
 ```
 
@@ -177,7 +169,7 @@ Hand-rolling digit cells with native `<input type="text" maxlength="1">` element
 The inner `mds-input` cells are Shadow DOM internals. Targeting them with descendant selectors or `>>>` will break silently on any internal refactor.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-input-otp mds-input {
   --mds-input-background: red;
 }
@@ -185,9 +177,9 @@ mds-input-otp >>> .input {
   border-radius: 0;
 }
 
-/* ✅ CORRECT - style the host layout only */
+/* CORRECT - style the host layout only */
 mds-input-otp {
-  gap: var(--spacing-600);
+  gap: calc(var(--spacing) * 600);
 }
 ```
 
@@ -196,10 +188,10 @@ mds-input-otp {
 `autosubmit` calls `internals.form.requestSubmit()`. Outside a `<form>` there is no owning form, so the call is silently ignored and the expected submission never fires.
 
 ```html
-<!-- 🚫 INCORRECT - no owning form, submit never fires -->
+<!-- INCORRECT - no owning form, submit never fires -->
 <mds-input-otp name="otp" autosubmit></mds-input-otp>
 
-<!-- ✅ CORRECT - wrapped in a form that handles the submit -->
+<!-- CORRECT - wrapped in a form that handles the submit -->
 <form action="/verify" method="post">
   <mds-input-otp name="otp" autosubmit></mds-input-otp>
 </form>
@@ -210,12 +202,12 @@ mds-input-otp {
 Native DOM events may not propagate out of shadow DOM the way you expect. Read the reflected `value` attribute or use form data on submit instead.
 
 ```javascript
-// 🚫 INCORRECT
+// INCORRECT
 document.querySelector('mds-input-otp').addEventListener('input', (e) => {
   console.log(e.target.value); // unreliable from outside shadow DOM
 });
 
-// ✅ CORRECT - read the reflected prop directly
+// CORRECT - read the reflected prop directly
 const otpEl = document.querySelector('mds-input-otp');
 document.querySelector('form').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -228,11 +220,11 @@ document.querySelector('form').addEventListener('submit', (e) => {
 `length` controls how many cells are rendered. A fractional or zero value produces no cells or the wrong number. Always pass a positive integer.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-otp name="otp" length="0"></mds-input-otp>
 <mds-input-otp name="otp" length="4.5"></mds-input-otp>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-otp name="otp" length="4"></mds-input-otp>
 ```
 

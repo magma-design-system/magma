@@ -3,11 +3,15 @@
  * entry-point packages (magma, magma-react, magma-angular).
  *
  * Single source of truth: docs/agents/ in the monorepo. This script copies the
- * relevant install track plus the shared assets core and usage guide into each
- * package, rewrites the repo-internal links so they resolve (or degrade to plain
- * text) inside node_modules, generates a component catalogue from
- * dist/documentation.json, and emits a version-stamped AGENTS.md entry point carrying
- * the detect-then-ask install procedure.
+ * relevant install track plus the shared fragments (one topic per file, see
+ * SHARED_FRAGMENTS) into each package, rewrites the repo-internal links so they
+ * resolve (or degrade to plain text) inside node_modules, generates the component
+ * catalogue linking each component's own docs, and emits a version-stamped AGENTS.md
+ * entry point: the detect-then-ask install procedure plus a routing table, so an agent
+ * reads only the fragment it needs.
+ *
+ * The per-component docs the catalogue links (dist/collection/components/<tag>/) are
+ * written after the stencil build by scripts/component-docs.ts.
  *
  * Do not hand-edit the generated files; edit docs/agents/ and re-run this.
  *
@@ -15,6 +19,7 @@
  */
 import fs from 'fs';
 import path from 'path';
+import { COMPONENT_DOCS_DIR, SHARED_FRAGMENTS, toAscii } from './agent-docs-lib';
 
 // cwd is the stencil package dir when run via npm script.
 const STENCIL_DIR = process.cwd();
@@ -54,7 +59,7 @@ const TARGETS: Target[] = [
   {
     pkgDir: '../stencil-angular/magma-angular',
     track: 'angular.md',
-    framework: 'Angular (>= 18.2)',
+    framework: 'Angular (>= 20)',
     wrapperPkg: '@maggioli-design-system/magma-angular',
     register:
       "import the standalone Mds* components from '@maggioli-design-system/magma-angular' (they self-register; MagmaModule.forRoot() is deprecated and a no-op)",
@@ -116,7 +121,7 @@ Inspect the consumer project before asking anything:
 | Framework | \`package.json\` deps: \`@angular/core\` -> Angular, \`react\`/\`next\` -> React, else vanilla |
 | Magma wrapper installed | presence of \`magma-angular\` / \`magma-react\` / \`magma\` in deps |
 | Bundler / static dir | \`angular.json\` (Angular CLI assets), \`vite.config.*\`, \`next.config.*\` (\`public/\`), webpack |
-| Tailwind + version | \`tailwindcss\` in deps (v3 vs v4 -> different preset) |
+| Tailwind + version | \`tailwindcss\` in deps: v4 -> the CSS imports, v3 -> the JS preset (see agents/assets.md) |
 | SSR | \`@angular/ssr\` / Angular Universal, or Next App Router |
 | Compatible versions | derive from the installed \`@maggioli-design-system/magma\` major (see matrix in install.md) |
 
@@ -147,25 +152,25 @@ the configured path. Report what was installed, the cascade order used, and the 
 
 ## Using the components
 
-Once installed, do not guess component APIs - read what ships with the package:
+Once installed, do not guess component APIs or rules - read only the file you need:
 
-- [\`agents/usage.md\`](agents/usage.md) - conventions (tone/variant, events, slots,
-  compound, icons, a11y) and app-level styling (token classes, typography, dark mode).
-- [\`agents/components.md\`](agents/components.md) - the catalogue: which component to reach for.
-- \`@maggioli-design-system/magma/dist/documentation.json\` - full per-component props,
-  events, slots, CSS vars and usage. \`dist/types/components.d.ts\` drives editor IntelliSense.
+| You need | Read |
+| -------- | ---- |
+| Which component to reach for | [\`agents/components.md\`](agents/components.md) - the catalogue, one line each |
+| One component's API (props with allowed values, events, methods, slots, parts, CSS vars) | its \`AGENTS.md\`, linked from the catalogue |
+| Correct usage and mistakes for one component | \`pattern.md\` / \`antipattern.md\` beside its \`AGENTS.md\` |
+| Rules shared by every component: naming, events, slots, compound, icons, a11y, styling from outside | [\`agents/conventions.md\`](agents/conventions.md) |
+| \`variant\` and \`tone\` values | [\`agents/variants.md\`](agents/variants.md) |
+| Mistakes to avoid with any component | [\`agents/anti-patterns.md\`](agents/anti-patterns.md) |
+| Coloring your own UI | [\`agents/color.md\`](agents/color.md) |
+| Typography utilities | [\`agents/typography.md\`](agents/typography.md) |
+| Dark mode, preferences, named themes, surface levels and elevation, global design decisions, corner geometry | [\`agents/theming.md\`](agents/theming.md) |
+
+Tooling that needs structured data reads \`documentation.json\`: one per component beside
+its \`AGENTS.md\`, or \`@maggioli-design-system/magma/dist/documentation.json\` for all of them
+(over 2 MB - do not load it into context). \`dist/types/components.d.ts\` drives editor
+IntelliSense.
 `;
-}
-
-/** Collapses common non-ASCII punctuation to ASCII, then drops anything left. */
-function toAscii(text: string): string {
-  return text
-    .replace(/[\u2013\u2014]/g, '-')
-    .replace(/[\u2018\u2019]/g, "'")
-    .replace(/[\u201C\u201D]/g, '"')
-    .replace(/\u2026/g, '...')
-    .replace(/\u00A0/g, ' ')
-    .replace(/[\u0080-\uFFFF]/g, '');
 }
 
 /** First sentence of a component's "1. Description" usage markdown, for the catalogue. */
@@ -192,7 +197,7 @@ function summarise(description: string): string {
  * dist/documentation.json - keeps generation independent of the stencil build, so it
  * can run before it (Stencil validates the package.json "files" array during build).
  */
-function buildComponentsMd(): string {
+function buildComponentsMd(docsPrefix: string): string {
   const entries: { tag: string; summary: string }[] = [];
   for (const dirent of fs.readdirSync(COMPONENTS_DIR, { withFileTypes: true })) {
     if (!dirent.isDirectory() || !dirent.name.startsWith('mds-')) continue;
@@ -202,14 +207,17 @@ function buildComponentsMd(): string {
     if (summary) entries.push({ tag: dirent.name, summary });
   }
   entries.sort((a, b) => a.tag.localeCompare(b.tag));
-  const rows = entries.map((e) => `| \`${e.tag}\` | ${e.summary} |`).join('\n');
+  const rows = entries
+    .map((e) => `| [\`${e.tag}\`](${docsPrefix}/${e.tag}/AGENTS.md) | ${e.summary} |`)
+    .join('\n');
 
   return `${BANNER}# Magma components catalogue (${entries.length} components)
 
-> Generated from each component's usage description. For a component's full props /
-> events / slots / CSS vars read \`@maggioli-design-system/magma/dist/documentation.json\`
-> or the types in \`dist/types/components.d.ts\`; for conventions and styling read
-> [\`usage.md\`](usage.md).
+> Generated from each component's usage description. Each tag links the component's
+> own \`AGENTS.md\` (its API, with \`pattern.md\` and \`antipattern.md\` beside it) in
+> \`@maggioli-design-system/magma/${COMPONENT_DOCS_DIR}/<tag>/\`. The rules shared by
+> every component: [\`conventions.md\`](conventions.md), [\`variants.md\`](variants.md),
+> [\`anti-patterns.md\`](anti-patterns.md).
 
 | Component | What it is |
 | --------- | ---------- |
@@ -227,23 +235,26 @@ function readVersion(pkgRoot: string): string {
 }
 
 function main(): void {
-  const assetsSrc = fs.readFileSync(path.join(SOURCE_DIR, 'assets.md'), 'utf8');
-  const usageSrc = fs.readFileSync(path.join(SOURCE_DIR, 'usage.md'), 'utf8');
-  const componentsMd = buildComponentsMd();
-
   for (const target of TARGETS) {
     const pkgRoot = path.resolve(STENCIL_DIR, target.pkgDir);
     const agentsDir = path.join(pkgRoot, 'agents');
+    // generated output only: start clean so a fragment dropped from the source does not linger
+    fs.rmSync(agentsDir, { recursive: true, force: true });
     ensureDir(agentsDir);
 
     const version = readVersion(pkgRoot);
     const trackSrc = fs.readFileSync(path.join(SOURCE_DIR, target.track), 'utf8');
+    // the wrappers link into the magma package they depend on, installed beside them
+    const docsPrefix =
+      target.pkgDir === '.' ? `../${COMPONENT_DOCS_DIR}` : `../../magma/${COMPONENT_DOCS_DIR}`;
 
     fs.writeFileSync(path.join(pkgRoot, 'AGENTS.md'), buildAgentsMd(target, version));
     fs.writeFileSync(path.join(agentsDir, 'install.md'), BANNER + rewriteLinks(trackSrc));
-    fs.writeFileSync(path.join(agentsDir, 'assets.md'), BANNER + rewriteLinks(assetsSrc));
-    fs.writeFileSync(path.join(agentsDir, 'usage.md'), BANNER + rewriteLinks(usageSrc));
-    fs.writeFileSync(path.join(agentsDir, 'components.md'), componentsMd);
+    for (const fragment of SHARED_FRAGMENTS) {
+      const src = fs.readFileSync(path.join(SOURCE_DIR, fragment), 'utf8');
+      fs.writeFileSync(path.join(agentsDir, fragment), BANNER + rewriteLinks(src));
+    }
+    fs.writeFileSync(path.join(agentsDir, 'components.md'), buildComponentsMd(docsPrefix));
 
     // eslint-disable-next-line no-console
     console.log(
