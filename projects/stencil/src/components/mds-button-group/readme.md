@@ -13,18 +13,18 @@ The `<mds-button-group>` web component is a layout container of the Magma Design
 
 #### Semantic Behavior
 
-- **Default slot is content**: Whatever buttons (or button-like controls) you place inside are projected as-is, in source order.
+- **Default slot is content**: Whatever buttons (or button-like controls) you place inside are projected in source order. The group joins its `<mds-button>` / `<mds-button-dropdown>` members: it flattens their inner corners and sets them 2px apart, so only the outer corners of the cluster stay rounded.
 - **Inline layout**: The group shrinks to fit its content with consistent spacing and stays inline with surrounding elements rather than spanning the full row width.
 - **No own semantics**: It exposes no role, ARIA attributes, form association, focus management, or keyboard handling of its own - accessibility and interaction live entirely in the slotted children. It is purely a visual grouping primitive.
 
 #### Properties & Visual Configurations
 
-This component has no configurable properties. Visual outcome is determined entirely by the slotted children - typically a set of `<mds-button>` elements sharing a common `variant` / `tone` (see the shared ladder in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system)) so the group reads as a cohesive cluster of actions.
+This component has no configurable properties. Visual outcome is determined entirely by the slotted children - typically a set of `<mds-button>` elements sharing a common `variant` / `tone` (see the shared ladder in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md)) so the group reads as a cohesive cluster of actions.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-button-group>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-button-group>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Toolbar of Icon-Only Actions
 
@@ -86,12 +86,10 @@ The default slot accepts any `<mds-button>` or `<mds-button-dropdown>` sibling c
 
 ```html
 <mds-button-group>
-  <mds-button label="Esporta CSV" variant="secondary" tone="outline"></mds-button>
-  <mds-button-dropdown label="Altre opzioni" variant="secondary" tone="outline">
-    <mds-list>
-      <mds-list-item label="Esporta PDF"></mds-list-item>
-      <mds-list-item label="Esporta Excel"></mds-list-item>
-    </mds-list>
+  <mds-button label="Esporta CSV" variant="primary" tone="weak"></mds-button>
+  <mds-button-dropdown label="Altre opzioni" variant="primary" tone="weak">
+    <mds-button variant="dark" tone="text" label="Esporta PDF"></mds-button>
+    <mds-button variant="dark" tone="text" label="Esporta Excel"></mds-button>
   </mds-button-dropdown>
 </mds-button-group>
 ```
@@ -110,20 +108,20 @@ Disable individual buttons with the `disabled` boolean attribute. Never use `dis
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-button-group>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-button-group>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Nest Raw `<button>` Elements Inside the Group
 
 The group is part of the Magma component system and is designed to host `<mds-button>` (and sibling `mds-*` action) components. Raw `<button>` elements bypass theming, focus styles, and accessibility defaults.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-button-group>
   <button class="btn">Salva</button>
   <button class="btn">Annulla</button>
 </mds-button-group>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button-group>
   <mds-button label="Salva" variant="primary" tone="strong"></mds-button>
   <mds-button label="Annulla" variant="dark" tone="outline"></mds-button>
@@ -135,47 +133,31 @@ The group is part of the Magma component system and is designed to host `<mds-bu
 `<mds-button-group>` contains interactive controls; nesting the whole group inside `<a>` creates nested interactives, breaks keyboard semantics, and fails accessibility audits. Use the `href` prop on individual `<mds-button>` elements instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <a href="/azioni">
   <mds-button-group>
     <mds-button label="Vai" variant="primary"></mds-button>
   </mds-button-group>
 </a>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button-group>
   <mds-button label="Vai" href="/azioni" variant="primary"></mds-button>
 </mds-button-group>
 ```
 
-#### Do Not Add a Role or ARIA to the Group Host
-
-The group is a pure layout primitive; adding `role="group"` or `aria-label` on it gives assistive technology a misleading landmark. Accessibility context belongs on the individual buttons via `aria-label` / `label`.
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-button-group role="group" aria-label="Azioni di formattazione">
-  <mds-button icon="mi/baseline/format-bold" variant="dark" tone="text"></mds-button>
-</mds-button-group>
-
-<!-- ✅ CORRECT -->
-<mds-button-group>
-  <mds-button icon="mi/baseline/format-bold" aria-label="Grassetto" variant="dark" tone="text"></mds-button>
-</mds-button-group>
-```
-
 #### Do Not Omit `aria-label` on Icon-Only Buttons Inside a Group
 
-Grouping icon-only buttons does not remove the requirement for an accessible name on each child. Screen readers cannot announce the button's purpose without it.
+Grouping icon-only buttons does not remove the requirement for an accessible name on each child. Without it `mds-button` falls back to the last segment of the icon slug ("undo"), which names the icon, not the action.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-button-group>
   <mds-button icon="mi/baseline/undo" variant="dark" tone="text"></mds-button>
   <mds-button icon="mi/baseline/redo" variant="dark" tone="text"></mds-button>
 </mds-button-group>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button-group>
   <mds-button icon="mi/baseline/undo" aria-label="Annulla" variant="dark" tone="text"></mds-button>
   <mds-button icon="mi/baseline/redo" aria-label="Ripristina" variant="dark" tone="text"></mds-button>
@@ -187,7 +169,7 @@ Grouping icon-only buttons does not remove the requirement for an accessible nam
 The component is a flat layout primitive; nesting groups creates redundant flex containers that break the consistent spacing and group visual coherence. Keep the hierarchy flat.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-button-group>
   <mds-button-group>
     <mds-button label="Salva" variant="primary" tone="strong"></mds-button>
@@ -196,7 +178,7 @@ The component is a flat layout primitive; nesting groups creates redundant flex 
   <mds-button label="Annulla" variant="dark" tone="text"></mds-button>
 </mds-button-group>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button-group>
   <mds-button label="Salva" variant="primary" tone="strong"></mds-button>
   <mds-button label="Bozza" variant="primary" tone="outline"></mds-button>
@@ -209,7 +191,7 @@ The component is a flat layout primitive; nesting groups creates redundant flex 
 The component manages its own gap via a design-token-backed CSS value. Setting inline `gap`, `margin`, or `padding` on the host or child buttons breaks the token contract and may produce inconsistent spacing across themes.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-button-group {
   gap: 16px;
 }
@@ -217,7 +199,7 @@ mds-button-group mds-button {
   margin-right: 8px;
 }
 
-/* ✅ CORRECT - let the component handle spacing; style only what it exposes */
+/* CORRECT - let the component handle spacing; style only what it exposes */
 mds-button-group {
   /* no gap or margin overrides needed */
 }

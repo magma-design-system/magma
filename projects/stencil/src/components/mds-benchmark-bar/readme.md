@@ -24,18 +24,18 @@ The `<mds-benchmark-bar>` web component is a read-only data-visualization elemen
 
 - **`value`** drives both the rendered value text and the fill of the progress bar; supply it on a 0-100 scale.
 - **`alias`** overrides how the value is displayed: when present it replaces the numeric `value` in the caption (and in the announced value), letting you show formatted or qualitative text (e.g. a graded label) instead of the raw number.
-- **`typography`** selects the text scale applied to both the label and value captions, choosing between `'label'` (the default, heavier caption styling) and `'option'` (lighter, denser styling for compact contexts).
+- **`typography`** selects the text scale applied to both the label and value captions, choosing between `'label'` (the default, larger caption) and `'option'` (smaller, for compact contexts).
 
-The shared `variant` and `size` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); `variant` sets the progress bar theme colors (defaulting to `'dark'`), and `size` controls the progress bar height (defaulting to `'md'`). This component does not add values beyond the shared sets.
+The shared `variant` and `size` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); `variant` sets the progress bar theme colors (defaulting to `'dark'`), and `size` controls the progress bar height (defaulting to `'md'`). This component does not add values beyond the shared sets.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-benchmark-bar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-benchmark-bar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Benchmark via `label` and `value`
 
-The canonical form. Set `label` for the caption text and `value` (0-100) for the fill. Both are reflected as attributes, so CSS attribute selectors work.
+The canonical form. Set `label` for the caption text and `value` (0-100) for the fill. `label` is reflected as an attribute; `value` is not, so a value set from JavaScript does not show up in attribute selectors.
 
 ```html
 <mds-benchmark-bar label="Soddisfazione clienti" value="72"></mds-benchmark-bar>
@@ -121,38 +121,38 @@ The inner progress bar is exposed as the `progress-bar` shadow part. Use it to a
 
 ```css
 .hero-metric mds-benchmark-bar::part(progress-bar) {
-  --mds-progress-color: rgb(var(--variant-ai-04));
+  --mds-progress-color: rgb(var(--magma-accent-ai-fg));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-benchmark-bar>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-benchmark-bar>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put HTML in the Default Slot
 
 The default slot is deprecated and accepts plain text only; HTML elements are unsupported and will not render correctly. Use the `label` prop for the caption.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-benchmark-bar value="60">
   <strong>Completamento attivita</strong>
 </mds-benchmark-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-benchmark-bar label="Completamento attivita" value="60"></mds-benchmark-bar>
 ```
 
 #### Do Not Set `value` Outside the 0-100 Range
 
-The component passes `value / 100` directly to the inner `<mds-progress>` fill. Values above 100 overflow the bar; negative values produce no fill and no error. Clamp the value in your data layer before binding.
+The component passes `value / 100` directly to the inner `<mds-progress>` fill. Values above 100 just fill the whole bar while the caption shows the raw number; negative values produce no fill and no error. Clamp the value in your data layer before binding.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-benchmark-bar label="Richieste elaborate" value="1540"></mds-benchmark-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <!-- normalize to 0-100 in your controller before binding -->
 <mds-benchmark-bar label="Richieste elaborate" value="100"></mds-benchmark-bar>
 ```
@@ -162,10 +162,10 @@ The component passes `value / 100` directly to the inner `<mds-progress>` fill. 
 `alias` replaces the numeric value with a plain string in both the visual caption and the accessible `aria-valuetext`. It is not a slot - do not attempt to bind rich HTML or icon markup to it.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-benchmark-bar label="Stato" value="80" alias="<mds-badge variant='success'>OK</mds-badge>"></mds-benchmark-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-benchmark-bar label="Stato" value="80" alias="Ottimo"></mds-benchmark-bar>
 ```
 
@@ -174,10 +174,10 @@ The component passes `value / 100` directly to the inner `<mds-progress>` fill. 
 `variant` is a semantic role (`primary`, `error`, `success`, `warning`, etc.). Do not choose it purely for the color it produces - choose it for what the metric means. Mixing semantic values for aesthetic reasons makes the chart misleading.
 
 ```html
-<!-- 🚫 INCORRECT: error red chosen because it "looks bold", not because it signals a problem -->
+<!-- INCORRECT: error red chosen because it "looks bold", not because it signals a problem -->
 <mds-benchmark-bar label="Popolarita del prodotto" value="88" variant="error"></mds-benchmark-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-benchmark-bar label="Popolarita del prodotto" value="88" variant="success"></mds-benchmark-bar>
 ```
 
@@ -186,14 +186,14 @@ The component passes `value / 100` directly to the inner `<mds-progress>` fill. 
 Use the documented `::part(progress-bar)` surface to style the inner bar. Reaching into the shadow DOM via `>>>` or undocumented class selectors couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-benchmark-bar >>> mds-progress {
   background-color: hotpink;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 .my-context mds-benchmark-bar::part(progress-bar) {
-  --mds-progress-color: rgb(var(--variant-primary-04));
+  --mds-progress-color: rgb(var(--magma-accent-fg));
 }
 ```
 

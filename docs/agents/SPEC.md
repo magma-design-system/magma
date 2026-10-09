@@ -20,7 +20,7 @@ Are you using a framework?
 │         => web-components.md   (@maggioli-design-system/magma)
 ├── React / Next.js
 │         => react.md            (@maggioli-design-system/magma-react)
-└── Angular (>= 18.2)
+└── Angular (>= 20)
           => angular.md          (@maggioli-design-system/magma-angular)
 ```
 
@@ -28,7 +28,7 @@ Are you using a framework?
 | ------ | ------- | ----- |
 | Plain HTML / vanilla JS | `@maggioli-design-system/magma` | [`web-components.md`](web-components.md) |
 | React / Next.js | `@maggioli-design-system/magma-react` | [`react.md`](react.md) |
-| Angular >= 18.2 | `@maggioli-design-system/magma-angular` | [`angular.md`](angular.md) |
+| Angular >= 20 | `@maggioli-design-system/magma-angular` | [`angular.md`](angular.md) |
 
 > Every track also requires the shared assets in [`assets.md`](assets.md). The track
 > files tell you when to jump there.
@@ -63,6 +63,7 @@ the body of each track file.
 ## See also
 
 - [`assets.md`](assets.md) - shared styles / fonts / icons / identity setup (canonical)
-- [`../../projects/styles/SPEC.md`](../../projects/styles/SPEC.md) - full styles, Tailwind, dark mode, preferences
+- [`conventions.md`](conventions.md) - the rules every component follows: naming, events, slots, icons, accessibility, styling
+- [`color.md`](color.md), [`typography.md`](typography.md), [`theming.md`](theming.md) - styling your own UI
+- [`../../projects/styles/SPEC.md`](../../projects/styles/SPEC.md) - full styles reference (contributors)
 - [`../ARCHITECTURE.md`](../ARCHITECTURE.md) - monorepo and sub-project overview
-- [`../../projects/stencil/SPEC.md`](../../projects/stencil/SPEC.md) - component conventions, icons, accessibility

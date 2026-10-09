@@ -57,4 +57,3 @@ window.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'));
 Still available, but not recommended for new code:
 
 - **`element.setSvgPath(path)`** — an `@Method()` on an `<mds-icon>` element; delegates to the same singleton but requires a mounted element just to set global config.
-- **`MdsIcon.setSvgPathStatic(path)`** — a static method reachable only through a deep import whose path is not a stable public API.
