@@ -684,12 +684,13 @@ export class MdsInput {
     const SpeechRecognition =
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
-    this.value = '';
 
     if (!SpeechRecognition) {
       this.onSpeechRecognitionError();
       return;
     }
+    // the dictation replaces the value, once it can start
+    this.value = '';
 
     this.recognition = new SpeechRecognition();
     this.recognition.continuous = true;

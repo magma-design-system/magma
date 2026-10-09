@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 
 let mdsInput: HTMLMdsInputElement;
@@ -596,4 +596,25 @@ describe('mdsInputKeydown', () => {
       expect(keys).toEqual(['a', 'Enter']);
     },
   );
+});
+
+describe('speech-to-text', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('keeps the value when the browser has no Speech API', async () => {
+    vi.stubGlobal('SpeechRecognition', undefined);
+    vi.stubGlobal('webkitSpeechRecognition', undefined);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await setup('<mds-input mic value="abc"></mds-input>');
+
+    mdsInput.shadowRoot!.querySelector<HTMLElement>('.mic-toggle-button')!.click();
+    await waitForChanges();
+
+    expect(mdsInput.value).toBe('abc');
+    expect(mdsInput.shadowRoot!.querySelector('.mic-toggle-button')).toHaveClass(
+      'toggle-button--error',
+    );
+  });
 });
