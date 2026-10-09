@@ -644,3 +644,21 @@ describe('email and url format', () => {
     expect(disagreements).toEqual([]);
   });
 });
+
+// The formats of the Magma types stop the submit like the native ones (#822)
+describe('piva and cc format', () => {
+  it.each([
+    ['piva', '12345678901', '12345678903'],
+    ['cc', '4111 1111 1111 1112', '4111 1111 1111 1111'],
+  ])('stops the submit of a %s that is not valid', async (inputType, invalid, valid) => {
+    const { root: form } = await render<HTMLFormElement>(
+      `<form><mds-input name="code" type="${inputType}" value="${invalid}"></mds-input></form>`,
+    );
+    const field = form.querySelector('mds-input')!;
+    expect(field.matches(':invalid')).toBe(true);
+
+    field.value = valid;
+
+    expect(field.matches(':invalid')).toBe(false);
+  });
+});

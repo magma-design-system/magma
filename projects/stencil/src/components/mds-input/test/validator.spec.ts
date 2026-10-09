@@ -1,9 +1,11 @@
 import {
   MdsValidatorFn,
   Validator,
+  ccValidatorFn,
   emailValidatorFn,
   isbnValidatorFn,
   patternValidator,
+  pivaValidatorFn,
   urlValidatorFn,
 } from '../meta/validators';
 
@@ -188,6 +190,50 @@ describe('urlValidatorFn', () => {
 
   it('leaves an empty value to required', () => {
     expect(urlValidatorFn('')).toBeNull();
+  });
+});
+
+// the formats of type="piva" and type="cc" (#822)
+describe('pivaValidatorFn', () => {
+  it.each(['02066400405', '12345678903'])('accepts %s', (piva) => {
+    expect(pivaValidatorFn(piva)).toBeNull();
+  });
+
+  it.each([
+    ['a wrong check digit', '12345678901'],
+    ['10 digits', '0206640040'],
+    ['the country prefix', 'IT02066400405'],
+    ['spaces', '020 6640 0405'],
+  ])('rejects %s', (_, piva) => {
+    expect(pivaValidatorFn(piva)).toEqual({ piva: 'partita iva non valida' });
+  });
+
+  it('leaves an empty value to required', () => {
+    expect(pivaValidatorFn('')).toBeNull();
+  });
+});
+
+describe('ccValidatorFn', () => {
+  it.each(['4111111111111111', '4111 1111 1111 1111', '4111-1111-1111-1111', '378282246310005'])(
+    'accepts %s',
+    (cc) => {
+      expect(ccValidatorFn(cc)).toBeNull();
+    },
+  );
+
+  it.each([
+    ['a number that fails the Luhn check', '4111111111111112'],
+    ['12 digits', '411111111111'],
+    ['20 digits', '41111111111111111111'],
+    ['a letter', '4111 1111 1111 111a'],
+    ['two separators in a row', '4111  1111 1111 1111'],
+    ['a leading separator', '-4111111111111111'],
+  ])('rejects %s', (_, cc) => {
+    expect(ccValidatorFn(cc)).toEqual({ cc: 'numero di carta non valido' });
+  });
+
+  it('leaves an empty value to required', () => {
+    expect(ccValidatorFn('')).toBeNull();
   });
 });
 

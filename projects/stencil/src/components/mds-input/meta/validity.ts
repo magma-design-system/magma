@@ -40,6 +40,10 @@ export const validityProblem = (
       return { rule: 'email' };
     case 'url':
       return { rule: 'url' };
+    case 'piva':
+      return { rule: 'vatNumber' };
+    case 'cc':
+      return { rule: 'cardNumber' };
     default:
       return { rule: 'invalid', message: typeErrors.includes(key) ? undefined : errors[key] };
   }

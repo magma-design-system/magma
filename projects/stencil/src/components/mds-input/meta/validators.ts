@@ -102,6 +102,46 @@ export const urlValidatorFn: MdsValidatorFn = (input: string) => {
   }
 };
 
+/**
+ * An Italian partita IVA: 11 digits, the last one the check digit of the first ten (the digits in
+ * odd position summed as they are, the ones in even position doubled, minus 9 above 9).
+ */
+export const pivaValidatorFn: MdsValidatorFn = (input: string) => {
+  if (input === '') return null; // don't validate empty values to allow optional controls
+  const error = { piva: 'partita iva non valida' };
+  if (!/^\d{11}$/.test(input)) return error;
+  const digits = input.split('').map(Number);
+  const sum = digits.slice(0, 10).reduce((total, digit, index) => {
+    if (index % 2 === 0) return total + digit;
+    const doubled = digit * 2;
+    return total + (doubled > 9 ? doubled - 9 : doubled);
+  }, 0);
+  return (10 - (sum % 10)) % 10 === digits[10] ? null : error;
+};
+
+/**
+ * A payment card number: 13 to 19 digits, in groups split by spaces or dashes, that pass the Luhn
+ * check.
+ */
+export const ccValidatorFn: MdsValidatorFn = (input: string) => {
+  if (input === '') return null; // don't validate empty values to allow optional controls
+  const error = { cc: 'numero di carta non valido' };
+  if (!/^\d+(?:[ -]\d+)*$/.test(input)) return error;
+  const digits = input.replace(/[ -]/g, '');
+  if (digits.length < 13 || digits.length > 19) return error;
+  // from the right, every second digit doubled, minus 9 above 9
+  const sum = digits
+    .split('')
+    .reverse()
+    .map(Number)
+    .reduce((total, digit, index) => {
+      if (index % 2 === 0) return total + digit;
+      const doubled = digit * 2;
+      return total + (doubled > 9 ? doubled - 9 : doubled);
+    }, 0);
+  return sum % 10 === 0 ? null : error;
+};
+
 export const isbnValidatorFn: MdsValidatorFn = (input: string) => {
   if (input === '') return null; // don't validate empty values to allow optional controls
 

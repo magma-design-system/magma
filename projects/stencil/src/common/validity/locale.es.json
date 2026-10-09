@@ -1,4 +1,5 @@
 {
+  "cardNumber": "Introduce un número de tarjeta válido.",
   "email": "Introduce una dirección de correo electrónico.",
   "invalid": "Introduce un valor válido.",
   "invalidDate": "Introduce una fecha válida.",
@@ -14,5 +15,6 @@
   "pattern": "Usa el formato solicitado.",
   "required": "Completa este campo.",
   "requiredSelect": "Selecciona un elemento de la lista.",
-  "url": "Introduce una URL."
+  "url": "Introduce una URL.",
+  "vatNumber": "Introduce un número de IVA válido."
 }
