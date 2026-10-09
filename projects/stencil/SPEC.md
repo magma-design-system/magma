@@ -208,6 +208,10 @@ The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of section
 - **`dist/documentation.json`** is a structured JSON mirror of the same content plus full prop type metadata and cross-references. It is **gitignored** and only exists after a local build - do not assume it is present in a fresh clone or on GitHub
 - Which file to read for which question: [`docs/COMPONENTS.md`](../../docs/COMPONENTS.md#which-file-should-the-agent-read)
 
+### Checked in CI
+
+`scripts/check-usage-docs.ts` (`npm run check.usage-docs`, after a build) checks every usage doc against the built API and the token layer, outside the INCORRECT half of the antipattern examples, which is wrong on purpose: every `mds-*` tag, attribute, enumerated value, slot, documented part, event, `--mds-*` property, token and icon slug must exist; no palette step (`--tone-*`, `--variant-*`, `--status-*`) where a semantic role belongs ([`docs/agents/color.md`](../../docs/agents/color.md)), no raw `--radius-*`, no `="false"` boolean, no self-closed `<mds-* />` (HTML leaves it open), no `>>>`, `dark:` or preference media query, a language on every fence, no emoji. It runs in CI on every stencil build; the pure checks are tested in `scripts/usage-docs-lib.spec.ts`.
+
 ### Templates
 
 Authoring templates with inline rules and section prompts live in [`template/usage/`](../../projects/stencil/template/usage). Copy these when adding `usage/` docs to an existing component, or rely on the scaffolder for new ones.
