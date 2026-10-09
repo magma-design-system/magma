@@ -295,7 +295,7 @@ there `inherits: true`, and give a value a component reads by name a `syntax` th
 actually written: `--magma-pref-theme` is `*` because the theme name is a bare identifier,
 which `<string>` rejects.
 
-`mds-pref` also toggles the `data-magma-pref` attribute on `<html>` while a controller is mounted; selectors use `:root:not([data-magma-pref])` to fall back to the OS preference (`@media`) when no controller is present.
+`mds-pref` also sets the `data-magma-pref` attribute on `<html>` while at least one instance is mounted (it is removed when the last one unmounts); selectors use `:root:not([data-magma-pref])` to fall back to the OS preference (`@media`) when no controller is present.
 
 The visible effect is produced **globally, at the palette level**: the published color CSS (`colors-rgb-*.css`) redefines the `--tone-*` (and related) tokens on `:root` for the dark and high-contrast states, with plain selectors plus `@media (prefers-color-scheme)` / `(prefers-contrast)`. This is light-DOM CSS, so it works in every browser and the tokens inherit into every component shadow DOM. Activating dark mode does not depend on any component-level rule. Per-component `*-pref-*.css` files only refine on top of this (see `projects/stencil/SPEC.md`).
 
