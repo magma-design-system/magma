@@ -15,7 +15,7 @@ The `<mds-table-header>` web component is the header region of a Magma table, us
 
 #### Semantic Behavior
 
-- **Compound child only**: Must be slotted directly inside `<mds-table>` alongside `mds-table-body` (and optionally `mds-table-footer`); it is not used standalone. Its own default slot accepts `mds-table-row` element(s).
+- **Compound child only**: Must be slotted directly inside `<mds-table>` alongside `mds-table-body` (and optionally `mds-table-footer`); it is not used standalone. It is itself the header row: its own default slot accepts `mds-table-header-cell` element(s), one per column.
 - **Parent-driven selection state**: When `selectable` is true the header renders a master checkbox that the parent keeps in sync - `indeterminate` for partial selection and `checked` when all rows are selected.
 - **Selection reported upward**: Toggling the master checkbox selects or deselects every row, after which the table re-emits its own `mdsTableSelectionChange` event.
 - **Automatic actions column**: When any row exposes a `[slot="action"]`, the header appends an extra header cell (exposed as the `actions` shadow part) labelled with the localized "actions" string.
@@ -27,12 +27,12 @@ This child is configured almost entirely by its parent rather than by author-set
 
 - **`selectable`**: Toggles rendering of the leading master-checkbox column. It is not normally set by hand - `<mds-table>` propagates its own `selectable` prop down to the header, so enabling selection on the table is what surfaces this control here.
 
-Beyond `selectable`, content is provided through the default slot (`mds-table-row` / header cells); there are no shared `variant`/`tone` ladders on this component.
+Beyond `selectable`, content is provided through the default slot (`mds-table-header-cell` elements); there are no shared `variant`/`tone` ladders on this component.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-table-header>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the table composition rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-table-header>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Column Headers
 
@@ -122,7 +122,7 @@ Listen for `mdsTableSelectionChange` on `<mds-table>` to receive the array of se
 
 #### Actions Column - Automatic Header Cell
 
-When any `<mds-table-row>` exposes a `[slot="action"]`, `<mds-table-header>` automatically appends a right-aligned "Azione" header cell. No extra markup is required in the header - just place your action buttons in the row slots.
+When any `<mds-table-row>` exposes a `[slot="action"]`, `<mds-table-header>` automatically appends a right-aligned, localized header cell ("Action", "Azione" in Italian). No extra markup is required in the header - just place your action buttons in the row slots.
 
 ```html
 <mds-table>
@@ -148,7 +148,7 @@ When any `<mds-table-row>` exposes a `[slot="action"]`, `<mds-table-header>` aut
 
 #### Batch Actions with Selection
 
-When `selectable` is set and the table has a `batch-action` slot, a batch-actions toolbar slides in whenever rows are selected. The toolbar is owned by `<mds-table>`, but the master checkbox in `<mds-table-header>` drives the count and triggers the toolbar visibility.
+When `selectable` is set and the table has a `batch-action` slot, a batch-actions toolbar slides in whenever rows are selected. The toolbar is owned by `<mds-table>`: every selection change, from a row checkbox or from the master checkbox in `<mds-table-header>`, updates its count and visibility.
 
 ```html
 <mds-table selectable>
@@ -167,7 +167,7 @@ When `selectable` is set and the table has a `batch-action` slot, a batch-action
     </mds-table-row>
   </mds-table-body>
   <mds-button slot="batch-action" label="Elimina selezionati" variant="error" tone="text"></mds-button>
-  <mds-button slot="batch-action" label="Esporta" variant="secondary" tone="outline"></mds-button>
+  <mds-button slot="batch-action" label="Esporta" variant="primary" tone="outline"></mds-button>
 </mds-table>
 ```
 
@@ -185,21 +185,21 @@ mds-table-header::part(actions) {
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-table-header>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-table-header>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-table-header>` Outside `<mds-table>`
 
-`<mds-table-header>` calls `this.host.closest('mds-table')` during load to wire up selection and action-column detection. Using it standalone or inside a raw `<table>` throws a runtime error and breaks every selection and sorting feature.
+`<mds-table-header>` calls `this.host.closest('mds-table')` during load to wire up selection and action-column detection. Used standalone or inside a raw `<table>` it finds no table: the actions column is never detected, the master checkbox selects nothing, and every selection and sorting feature breaks.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <table>
   <mds-table-header>
     <mds-table-header-cell label="Nome"></mds-table-header-cell>
   </mds-table-header>
 </table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-header>
     <mds-table-header-cell label="Nome"></mds-table-header-cell>
@@ -213,7 +213,7 @@ Common incorrect uses of `<mds-table-header>`. Each entry pairs the wrong form w
 The default slot of `<mds-table-header>` expects `<mds-table-header-cell>` elements - one per column. Slotting `<mds-table-row>` (a body-row component) into the header produces broken layout and wrong ARIA roles.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <mds-table-header>
     <mds-table-row>
@@ -224,7 +224,7 @@ The default slot of `<mds-table-header>` expects `<mds-table-header-cell>` eleme
   <mds-table-body><!-- rows --></mds-table-body>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-header>
     <mds-table-header-cell label="Cognome"></mds-table-header-cell>
@@ -236,10 +236,10 @@ The default slot of `<mds-table-header>` expects `<mds-table-header-cell>` eleme
 
 #### Do Not Set `selectable` Directly on `<mds-table-header>`
 
-`selectable` on the header is an internal prop driven by `<mds-table>` - when the table's `@Watch('selectable')` fires, it pushes the value down. Setting it by hand on the header bypasses that synchronisation path and can leave rows and the master checkbox out of sync.
+`selectable` on the header is an internal prop driven by `<mds-table>` - when the table loads and whenever its `selectable` changes, it pushes its own value down. Setting it by hand on the header bypasses that synchronisation path and can leave rows and the master checkbox out of sync.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <mds-table-header selectable>
     <mds-table-header-cell label="Utente"></mds-table-header-cell>
@@ -247,7 +247,7 @@ The default slot of `<mds-table-header>` expects `<mds-table-header-cell>` eleme
   <mds-table-body><!-- rows --></mds-table-body>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table selectable>
   <mds-table-header>
     <mds-table-header-cell label="Utente"></mds-table-header-cell>
@@ -261,7 +261,7 @@ The default slot of `<mds-table-header>` expects `<mds-table-header-cell>` eleme
 The component detects `[slot="action"]` children in the table body and appends the localized "Azione" header cell automatically. Adding your own header cell for actions doubles the column and misaligns the grid.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <mds-table-header>
     <mds-table-header-cell label="Nome"></mds-table-header-cell>
@@ -275,7 +275,7 @@ The component detects `[slot="action"]` children in the table body and appends t
   </mds-table-body>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-header>
     <mds-table-header-cell label="Nome"></mds-table-header-cell>
@@ -294,13 +294,13 @@ The component detects `[slot="action"]` children in the table body and appends t
 `setSelection(selectedItems, totalItems)` is an internal method called by `<mds-table>` after each row selection change. Calling it from application code duplicates the table's internal bookkeeping and can leave the checkbox in an inconsistent state. React to selection results via the `mdsTableSelectionChange` event instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <script>
   const header = document.querySelector('mds-table-header');
   header.setSelection(2, 5); // do not call this from app code
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <script>
   document.querySelector('mds-table').addEventListener('mdsTableSelectionChange', (e) => {
     console.log('Selezione corrente:', e.detail.rows);
@@ -310,10 +310,10 @@ The component detects `[slot="action"]` children in the table body and appends t
 
 #### Do Not Use Raw `<thead>` / `<th>` Instead of the Component
 
-Mixing raw HTML table elements with the Magma compound disrupts the internal ResizeObserver, selection wiring, and localization that `<mds-table-header>` provides.
+Mixing raw HTML table elements with the Magma compound disrupts the selection wiring, the automatic actions column, and the localized labels that `<mds-table-header>` provides.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table>
   <thead>
     <tr>
@@ -324,7 +324,7 @@ Mixing raw HTML table elements with the Magma compound disrupts the internal Res
   <mds-table-body><!-- rows --></mds-table-body>
 </mds-table>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-header>
     <mds-table-header-cell label="Nome"></mds-table-header-cell>

@@ -18,14 +18,14 @@ The `<mds-chip>` web component is the Magma Design System's compact element for 
 - **Static by default**: With no interaction props the chip is a passive, non-focusable label; it becomes a focusable, button-like control only when `clickable` is set.
 - **Selectable implies clickable**: Setting `selectable` automatically turns on `clickable`, so a selectable chip is always keyboard- and pointer-interactive.
 - **Selection toggle**: When `selectable`, activating the chip flips `selected`; an unselected chip carries no `selected` attribute (rather than `selected="false"`).
-- **Keyboard activation**: When interactive, Enter/Space activate the chip just like a pointer click.
+- **Keyboard activation**: When interactive, Enter activates the chip just like a pointer click (Space does not).
 - **Delete affordance**: When `deletable`, a trailing delete button is rendered with a localized title (el/en/es/it) and emits the delete event on activation.
 - **Emitted events**: `mdsChipClickLabel` fires on activation for non-selectable chips, `mdsChipSelect` fires (carrying the new `selected` value) for selectable chips, and `mdsChipDelete` fires from the delete button - all carrying the originating event and host element.
-- **Label is text, truncated**: Long labels are clipped on word boundaries rather than wrapping.
+- **Label is text, on one line**: Long labels do not wrap (`truncate="word"` on the inner text).
 
 #### Properties & Visual Configurations
 
-The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); the chip defaults to `variant="primary"` and `tone="strong"`, and accepts only the minimal `'strong'` / `'weak'` tone set.
+The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); the chip defaults to `variant="primary"` and `tone="strong"`, and accepts only the minimal `'strong'` / `'weak'` tone set. `variant` and `tone` paint the leading icon badge and the border of a selected chip; the body of the chip stays neutral for every variant.
 
 #### Other behavioral props
 
@@ -38,7 +38,7 @@ The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-chip>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-chip>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Static Tag (Label Only)
 
@@ -50,17 +50,17 @@ The simplest form. Use the required `label` prop to display a read-only tag. Wit
 
 #### Variant and Tone for Semantic Emphasis
 
-Pair the same `variant` with a different `tone` to express importance or category. Do not invent custom colors to dim or saturate.
+Pair the same `variant` with a different `tone` to express importance or category. Do not invent custom colors to dim or saturate. The variant paints the leading icon badge (and the border of a selected chip), not the body of the chip: give the chip an `icon` when its color has to carry meaning.
 
 ```html
 <!-- Status chips -->
-<mds-chip label="Completato" variant="success" tone="strong"></mds-chip>
-<mds-chip label="In attesa" variant="warning" tone="weak"></mds-chip>
-<mds-chip label="Errore" variant="error" tone="strong"></mds-chip>
+<mds-chip label="Completato" icon="mi/baseline/check-circle" variant="success" tone="strong"></mds-chip>
+<mds-chip label="In attesa" icon="mi/baseline/schedule" variant="warning" tone="weak"></mds-chip>
+<mds-chip label="Errore" icon="mi/baseline/error" variant="error" tone="strong"></mds-chip>
 
 <!-- Decorative label chips -->
-<mds-chip label="Natura" variant="green" tone="weak"></mds-chip>
-<mds-chip label="Tecnologia" variant="blue" tone="strong"></mds-chip>
+<mds-chip label="Natura" icon="mi/baseline/eco" variant="green" tone="weak"></mds-chip>
+<mds-chip label="Tecnologia" icon="mi/baseline/computer" variant="blue" tone="strong"></mds-chip>
 ```
 
 #### Chip with Leading Icon
@@ -85,7 +85,7 @@ Use `clickable` when the chip triggers an action but does not need a persistent 
   label="Apri dettagli"
   clickable
   icon="mi/baseline/open-in-new"
-  variant="secondary"
+  variant="primary"
   tone="weak"
 ></mds-chip>
 
@@ -98,7 +98,7 @@ Use `clickable` when the chip triggers an action but does not need a persistent 
 
 #### Selectable Chip (Toggle)
 
-Use `selectable` for filter or choice chips where the visual selected state matters. `selectable` implies `clickable` automatically. Activating the chip flips `selected`; the event `mdsChipSelect` carries the new value in `e.detail.selected`.
+Use `selectable` for filter or choice chips where the visual selected state matters. `selectable` implies `clickable` automatically. Activating the chip flips `selected`; the event `mdsChipSelect` carries the new value in `e.detail.selected` (`true`, or `undefined` when deselected).
 
 ```html
 <mds-chip
@@ -167,7 +167,7 @@ Combine `clickable` (or `selectable`) with `deletable` for chips that can both b
 
 #### Disabled Chip
 
-Set `disabled` to prevent all pointer and keyboard interaction. Do not use `disabled="false"` - remove the attribute to re-enable.
+Set the `disabled` attribute to dim the chip, block pointer interaction and set `aria-disabled="true"`. The styling keys on the attribute (the prop is not reflected), and keyboard activation is not blocked: a clickable label or a delete button stays focusable and Enter still fires its event. Do not use `disabled="false"` - remove the attribute to re-enable.
 
 ```html
 <mds-chip
@@ -180,33 +180,36 @@ Set `disabled` to prevent all pointer and keyboard interaction. Do not use `disa
 
 #### Styling Customization
 
-Style the chip only through its documented `--mds-chip-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working. Every token has a `-selected` twin (`--mds-chip-background-selected`, `--mds-chip-border-selected`, `--mds-chip-color-selected`, `--mds-chip-icon-background-selected`, `--mds-chip-icon-color-selected`, `--mds-chip-shadow-selected`); when `selected` is set the component swaps each token for its twin, so override the twin to restyle the selected state.
+Style the chip only through its documented `--mds-chip-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode, named themes and high contrast keep working. Every token has a `-selected` twin (`--mds-chip-background-selected`, `--mds-chip-border-selected`, `--mds-chip-color-selected`, `--mds-chip-icon-background-selected`, `--mds-chip-icon-color-selected`, `--mds-chip-shadow-selected`); when `selected` is set the component swaps each token for its twin, so override the twin to restyle the selected state. A resting token set on the host from outside wins over that swap: scope it to `:not([selected])`.
 
 ```css
+.filtri-categoria mds-chip:not([selected]) {
+  --mds-chip-background: rgb(var(--magma-accent-surface));
+  --mds-chip-color: rgb(var(--magma-accent-fg));
+}
+
 .filtri-categoria mds-chip {
-  --mds-chip-background: rgb(var(--variant-primary-09));
-  --mds-chip-color: rgb(var(--variant-primary-03));
-  --mds-chip-icon-background: rgb(var(--variant-primary-06));
-  --mds-chip-icon-color: rgb(var(--tone-neutral));
-  --mds-chip-background-selected: rgb(var(--variant-primary-04));
-  --mds-chip-color-selected: rgb(var(--tone-neutral));
+  --mds-chip-icon-background: rgb(var(--magma-accent-emphasis));
+  --mds-chip-icon-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-chip-background-selected: rgb(var(--magma-accent-emphasis));
+  --mds-chip-color-selected: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-chip>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-chip>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use a Clickable Chip Without `clickable` or `selectable`
 
 Without `clickable`, the chip has no `role`, no focus management, and no keyboard activation. Listening for click events on a static chip is a silent accessibility failure.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-chip label="Apri" variant="primary" onclick="doSomething()"></mds-chip>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-chip label="Apri" clickable variant="primary"></mds-chip>
 <script>
   document.querySelector('mds-chip').addEventListener('mdsChipClickLabel', doSomething);
@@ -218,25 +221,25 @@ Without `clickable`, the chip has no `role`, no focus management, and no keyboar
 `selected` only has visual and semantic meaning when `selectable` is also set. On a non-selectable chip the attribute renders the selected style but the selection can never be toggled and no event fires, misleading users.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-chip label="Attivo" selected variant="success"></mds-chip>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-chip label="Attivo" selectable selected variant="success"></mds-chip>
 ```
 
 #### Do Not Apply `tone` Values Outside the Minimal Ladder
 
-`mds-chip` accepts only `ToneMinimalVariantType`: `strong` and `weak`. Passing `outline`, `text`, or `box` is invalid and silently falls back to the default tone.
+`mds-chip` accepts only `ToneMinimalVariantType`: `strong` and `weak`. Passing `outline`, `text`, or `box` is invalid: no style matches it, so the chip silently loses its variant colors.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-chip label="Categoria" tone="outline" variant="primary"></mds-chip>
-<mds-chip label="Categoria" tone="text" variant="secondary"></mds-chip>
+<mds-chip label="Categoria" tone="text" variant="primary"></mds-chip>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-chip label="Categoria" tone="weak" variant="primary"></mds-chip>
-<mds-chip label="Categoria" tone="strong" variant="secondary"></mds-chip>
+<mds-chip label="Categoria" tone="strong" variant="primary"></mds-chip>
 ```
 
 #### Do Not Slot Content Into the Chip
@@ -244,13 +247,13 @@ Without `clickable`, the chip has no `role`, no focus management, and no keyboar
 `<mds-chip>` has no default or named slots - all content is driven by props (`label`, `icon`, `deletable`). Slotting HTML children is ignored by the Shadow DOM.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-chip>
   <span>Etichetta</span>
   <mds-icon name="mi/baseline/close"></mds-icon>
 </mds-chip>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-chip
   label="Etichetta"
   icon="mi/baseline/pets"
@@ -261,39 +264,31 @@ Without `clickable`, the chip has no `role`, no focus management, and no keyboar
 
 #### Do Not Pierce Shadow DOM to Style the Delete Button
 
-The inner `mds-button` used for the delete affordance is a Shadow DOM implementation detail. Target it with `>>>` or undocumented `::part()` names will break on minor releases.
+The inner `mds-button` used for the delete affordance is a Shadow DOM implementation detail with no styling API of its own: targeting it with `>>>` or undocumented `::part()` names will break on minor releases. Restyle the chip and its leading icon through the documented `--mds-chip-*` properties.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-chip >>> .button-delete {
   color: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-chip {
-  --mds-chip-icon-color: rgb(var(--status-error-04));
-  --mds-chip-icon-background: rgb(var(--status-error-09));
+  --mds-chip-icon-color: rgb(var(--magma-danger-fg));
+  --mds-chip-icon-background: rgb(var(--magma-danger-wash-base));
 }
 ```
 
 #### Do Not Forget to Remove `await`-Pattern Analogue: Removing `selected` by Setting It to `false`
 
-Setting `selected="false"` is treated as truthy in HTML; the correct way to deselect a chip programmatically is to remove the attribute or set the prop to `undefined`.
+With `selected="false"` the component reads the prop as `false` and drops the attribute when it renders, but until then the attribute is in the DOM and attribute selectors (`mds-chip[selected]`) match it. Remove the attribute; from JavaScript both `false` and `undefined` deselect the chip (the component turns `false` into `undefined` and drops the attribute).
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-chip label="Filtro" selectable selected="false" variant="primary"></mds-chip>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-chip label="Filtro" selectable variant="primary"></mds-chip>
-```
-
-```js
-// 🚫 INCORRECT
-chipEl.selected = false;
-
-// ✅ CORRECT
-chipEl.selected = undefined;
 ```
 
 #### Do Not Use `<mds-chip>` as a Navigation Link
@@ -301,12 +296,12 @@ chipEl.selected = undefined;
 `<mds-chip>` has no `href` prop. Wrapping it in an `<a>` creates a nested interactive element, breaks keyboard semantics, and fails accessibility audits. Use [`mds-button`](../../mds-button) with `href` instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <a href="/categoria/sport">
   <mds-chip label="Sport" variant="primary"></mds-chip>
 </a>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button
   label="Sport"
   href="/categoria/sport"

@@ -30,15 +30,15 @@ The `<mds-tooltip>` web component is the floating contextual hint of the Magma D
 #### Semantic Behavior
 
 - **Detached trigger model**: The tooltip is not wrapped around its trigger; the required `target` selector is resolved and the component binds itself to the first matching caller.
-- **Hover-driven visibility**: The bubble appears and disappears as the pointer enters and leaves the trigger.
+- **Hover-driven visibility**: The bubble appears and disappears as the pointer enters and leaves the trigger; keyboard focus does not show it. The tooltip takes `role="tooltip"` and, when it shares a DOM tree with the trigger, writes `aria-describedby` on it.
 - **Visibility is the source of truth**: Setting `visible` programmatically shows or dismisses the bubble, allowing the tooltip to be controlled without a hover.
-- **Live repositioning**: Changing any layout prop (`placement`, `offset`, `disableShift`, `shiftPadding`, `strategy`, `flip`, `disableAutoPlacement`, `hideArrow`) recomputes the floating position on the fly.
+- **Live repositioning**: Changing any layout prop (`placement`, `offset`, `disableShift`, `shiftPadding`, `strategy`, `flip`, `disableAutoPlacement`) recomputes the floating position on the fly.
 - **Text-only default slot**: The default slot is meant for a plain text string (exposed as the `text` shadow part); HTML elements or components should not be slotted in.
 
 #### Properties & Visual Configurations
 
 - **`target`** (required) is the CSS selector of the trigger element the tooltip listens to and anchors against; the first match wins.
-- **`placement`** chooses the preferred side and alignment relative to the caller (e.g. `'top'`, `'bottom-start'`); the system picks the best side automatically by default (**`disableAutoPlacement`** opts out and pins to `placement`) and **`flip`** allows falling back to the opposite side when the preferred one lacks space.
+- **`placement`** chooses the preferred side and alignment relative to the caller (e.g. `'top'`, `'bottom-start'`); the system picks the best side automatically by default (**`disableAutoPlacement`** opts out and pins to `placement`) and **`flip`** allows falling back to the opposite side when the preferred one lacks space (only together with `disableAutoPlacement`).
 - the bubble is kept inside the viewport by default (**`disableShift`** opts out), with **`shiftPadding`** reserving a safe gap from the viewport edges; **`offset`** sets the distance between the bubble and the caller.
 - **`strategy`** selects the CSS positioning strategy: `'fixed'` (default) escapes clipping ancestors, `'absolute'` anchors within the nearest positioned ancestor.
 - **`typography`** picks the text scale of the bubble (`'tip'`, `'caption'`, `'detail'`), where `'tip'` is the default compact hint sizing.
@@ -46,7 +46,7 @@ The `<mds-tooltip>` web component is the floating contextual hint of the Magma D
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-tooltip>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the component catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-tooltip>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Tooltip on a Button
 
@@ -68,10 +68,10 @@ The most common form. Give the trigger element an `id` (or any unique CSS select
 
 #### Placement and Preferred Side
 
-Override the default `top` placement with `placement` when layout requires a different side. Add `disable-auto-placement` to lock the side and prevent the system from overriding it.
+Override the default `top` placement with `placement` when layout requires a different side. Auto placement is on by default and picks the side by itself, so `placement` takes effect only together with `disable-auto-placement`, which locks the side.
 
 ```html
-<mds-button id="dettagli-btn" label="Dettagli" variant="secondary" tone="outline"></mds-button>
+<mds-button id="dettagli-btn" label="Dettagli" variant="primary" tone="outline"></mds-button>
 <mds-tooltip target="#dettagli-btn" placement="right" disable-auto-placement>
   Apre il pannello laterale con i dettagli completi
 </mds-tooltip>
@@ -81,7 +81,7 @@ Accepted values: `top`, `top-start`, `top-end`, `bottom`, `bottom-start`, `botto
 
 #### Flip Fallback When Space is Tight
 
-Enable `flip` so the tooltip moves to the opposite side if the preferred placement collides with the viewport edge. Combine with `disable-auto-placement` to keep a preferred side while allowing a single-axis fallback.
+Enable `flip` so the tooltip moves to the opposite side if the preferred placement collides with the viewport edge. It works only together with `disable-auto-placement`: it keeps a preferred side while allowing a single-axis fallback.
 
 ```html
 <mds-button id="azione-btn" label="Azione" variant="primary"></mds-button>
@@ -133,7 +133,7 @@ Set the `visible` attribute (or property) to control the tooltip without hover. 
 
 #### Typography Scale
 
-`typography` adjusts the text scale inside the bubble. Use `'tip'` (default) for compact hints, `'caption'` for slightly larger labels, and `'detail'` for the smallest footnote-style text.
+`typography` adjusts the text scale inside the bubble. Use `'tip'` (default) for compact hints, `'caption'` for slightly larger labels, and `'detail'` for the largest, body-size text.
 
 ```html
 <!-- Default compact hint -->
@@ -154,12 +154,12 @@ Use `strategy="absolute"` when the tooltip must be contained within a scrolling 
 
 #### Styling Customization
 
-Style the tooltip only through its documented `--mds-tooltip-*` CSS custom properties. Set them on the host element or a parent selector; use the Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the tooltip only through its documented `--mds-tooltip-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .onboarding-hint mds-tooltip {
-  --mds-tooltip-background: rgb(var(--variant-primary-03));
-  --mds-tooltip-arrow-background: rgb(var(--variant-primary-03));
+  --mds-tooltip-background: rgb(var(--magma-accent-surface));
+  --mds-tooltip-arrow-background: rgb(var(--magma-accent-surface));
   --mds-tooltip-delay: 0.25s;
   --mds-tooltip-duration: 0.3s;
   --mds-tooltip-z-index: 5000;
@@ -169,18 +169,18 @@ Style the tooltip only through its documented `--mds-tooltip-*` CSS custom prope
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-tooltip>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-tooltip>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use a Bare ID String as `target`
 
-Before Magma 4.0 the `target` attribute accepted a bare id without the `#` prefix. This is no longer valid; the value is now passed directly to `querySelector`, so a CSS selector is required.
+The value of `target` is passed directly to `querySelector`, so a CSS selector is required: a bare id (`hint-trigger`) looks for an element named `<hint-trigger>`, finds nothing, and the tooltip never attaches.
 
 ```html
-<!-- 🚫 INCORRECT (Magma 3.x style) -->
+<!-- INCORRECT -->
 <span id="hint-trigger">Aiuto</span>
 <mds-tooltip target="hint-trigger">Testo di aiuto</mds-tooltip>
 
-<!-- ✅ CORRECT (Magma 4.x querySelector selector) -->
+<!-- CORRECT -->
 <span id="hint-trigger">Aiuto</span>
 <mds-tooltip target="#hint-trigger">Testo di aiuto</mds-tooltip>
 ```
@@ -190,13 +190,13 @@ Before Magma 4.0 the `target` attribute accepted a bare id without the `#` prefi
 The default slot is text-only. Nesting HTML elements or Magma components breaks the inner layout and may produce unexpected rendering because the slot is wrapped in `<mds-text>`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tooltip target="#voce">
   <mds-icon name="mi/baseline/warning"></mds-icon>
   <strong>Attenzione:</strong> campo obbligatorio
 </mds-tooltip>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tooltip target="#voce">Attenzione: campo obbligatorio</mds-tooltip>
 ```
 
@@ -205,31 +205,31 @@ The default slot is text-only. Nesting HTML elements or Magma components breaks 
 `<mds-tooltip>` uses a detached trigger model - the tooltip is placed as a sibling in the DOM and linked via `target`, not wrapped around its trigger. Nesting the trigger breaks the floating position logic.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tooltip target="#btn">
   <mds-button id="btn" label="Elimina"></mds-button>
   Elimina il record selezionato
 </mds-tooltip>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button id="btn" label="Elimina" variant="error" tone="text"></mds-button>
 <mds-tooltip target="#btn">Elimina il record selezionato</mds-tooltip>
 ```
 
 #### Do Not Set `visible="false"` to Hide the Tooltip
 
-`visible` is a boolean attribute; setting it to the string `"false"` is truthy in HTML and keeps the tooltip visible. Remove the attribute (or set the property to `false`) to hide it.
+`visible` is a boolean attribute; setting it to the string `"false"` leaves the attribute on the element. The tooltip itself reads it as hidden, but every presence check (`[visible]`, `hasAttribute('visible')`) still reads it as visible. Remove the attribute (or set the property to `false`) to hide it.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tooltip target="#campo" visible="false">Testo nascosto</mds-tooltip>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tooltip target="#campo">Testo nascosto</mds-tooltip>
 ```
 
 ```js
-// ✅ CORRECT (programmatic)
+// CORRECT (programmatic)
 document.querySelector('mds-tooltip').visible = false;
 ```
 
@@ -238,7 +238,7 @@ document.querySelector('mds-tooltip').visible = false;
 The only supported customization surface is the set of `--mds-tooltip-*` CSS custom properties and the documented `text` shadow part. Targeting undocumented internal selectors couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-tooltip >>> .text {
   font-style: italic;
 }
@@ -246,9 +246,9 @@ mds-tooltip::part(arrow) {
   fill: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-tooltip {
-  --mds-tooltip-background: rgb(var(--variant-primary-03));
+  --mds-tooltip-background: rgb(var(--magma-accent-surface));
   --mds-tooltip-delay: 0.5s;
 }
 mds-tooltip::part(text) {
@@ -258,13 +258,13 @@ mds-tooltip::part(text) {
 
 #### Do Not Replace `<mds-tooltip>` with a Native `title` Attribute
 
-The native `title` tooltip is not keyboard-accessible, not styleable, and not announced consistently by screen readers on touch devices. Use `<mds-tooltip>` for all contextual hints.
+The native `title` tooltip is not styleable and not announced consistently by screen readers on touch devices. Use `<mds-tooltip>` for all contextual hints.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-button label="Elimina" title="Elimina il record selezionato"></mds-button>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button id="elimina-btn" label="Elimina" variant="error" tone="text"></mds-button>
 <mds-tooltip target="#elimina-btn">Elimina il record selezionato</mds-tooltip>
 ```
