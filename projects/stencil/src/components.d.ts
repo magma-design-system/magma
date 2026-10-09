@@ -43,6 +43,7 @@ import { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInput
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 import { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
+import { MdsInputSelectEventDetail } from "./components/mds-input-select/meta/event-detail";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -126,6 +127,7 @@ export { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInput
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 export { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
+export { MdsInputSelectEventDetail } from "./components/mds-input-select/meta/event-detail";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -3660,7 +3662,7 @@ declare global {
         new (): HTMLMdsInputRangeElement;
     };
     interface HTMLMdsInputSelectElementEventMap {
-        "mdsInputSelectChange": MdsInputEventDetail;
+        "mdsInputSelectChange": MdsInputSelectEventDetail;
     }
     interface HTMLMdsInputSelectElement extends Components.MdsInputSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputSelectElementEventMap>(type: K, listener: (this: HTMLMdsInputSelectElement, ev: MdsInputSelectCustomEvent<HTMLMdsInputSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -6045,9 +6047,9 @@ declare namespace LocalJSX {
          */
         "name"?: string;
         /**
-          * Emits an InputChangeEventDetail when the value of the input element changes
+          * Emits when the selection changes: `value` is the first selected option, `values` every selected one
          */
-        "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<MdsInputEventDetail>) => void;
+        "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<MdsInputSelectEventDetail>) => void;
         /**
           * Specifies a short hint that describes the expected value of the element
          */

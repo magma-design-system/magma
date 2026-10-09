@@ -142,3 +142,138 @@ describe('form validity', () => {
     expect(form.checkValidity()).toBe(true);
   });
 });
+
+const setupSelectForm = async (attributes: string, options: string) => {
+  const { root: form, waitForChanges } = await render<HTMLFormElement>(
+    `<form><mds-input-select ${attributes}>${options}</mds-input-select></form>`,
+  );
+  const select = form.querySelector('mds-input-select')!;
+  // the options reach the native select on slotchange, after the first render
+  await vi.waitFor(() =>
+    expect(select.shadowRoot!.querySelectorAll('option:not(.placeholder-option)').length).toBe(
+      (options.match(/<option/g) ?? []).length,
+    ),
+  );
+  return { form, select, native: select.shadowRoot!.querySelector('select')!, waitForChanges };
+};
+
+const abc = '<option value="a">A</option><option value="b">B</option><option value="c">C</option>';
+
+// Like a native multiple select, every selected option is submitted (#822)
+describe('multiple', () => {
+  it('keeps every option the user selects and submits them all', async () => {
+    const { form, select, native, waitForChanges } = await setupSelectForm(
+      'name="s" multiple',
+      abc,
+    );
+    const details: { value?: unknown; values: string[] }[] = [];
+    select.addEventListener('mdsInputSelectChange', (event) => details.push(event.detail));
+
+    await userEvent.selectOptions(native, ['a', 'c']);
+    await waitForChanges();
+
+    expect(Array.from(native.selectedOptions).map((option) => option.value)).toEqual(['a', 'c']);
+    expect(new FormData(form).getAll('s')).toEqual(['a', 'c']);
+    expect(select.value).toBe('a');
+    expect(details.at(-1)).toEqual({ value: 'a', values: ['a', 'c'] });
+  });
+
+  it('keeps the options the markup selects', async () => {
+    const { form } = await setupSelectForm(
+      'name="s" multiple',
+      '<option value="a">A</option><option value="b" selected>B</option><option value="c" selected>C</option>',
+    );
+
+    expect(new FormData(form).getAll('s')).toEqual(['b', 'c']);
+  });
+
+  it('selects one option alone for a value set by code, as select.value', async () => {
+    const { form, select, native, waitForChanges } = await setupSelectForm(
+      'name="s" multiple',
+      abc,
+    );
+    await userEvent.selectOptions(native, ['a', 'c']);
+
+    select.value = 'b';
+    await waitForChanges();
+
+    expect(new FormData(form).getAll('s')).toEqual(['b']);
+  });
+});
+
+// Like a native select, a form reset brings back the selection of load (#822)
+describe('form reset', () => {
+  it('brings back the value of load', async () => {
+    const { form, select, native, waitForChanges } = await setupSelectForm(
+      'name="s" value="b"',
+      abc,
+    );
+    await userEvent.selectOptions(native, 'c');
+    expect(select.value).toBe('c');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(select.value).toBe('b');
+    expect(native.value).toBe('b');
+    expect(new FormData(form).get('s')).toBe('b');
+  });
+
+  it.each(['', 'required'])('brings back the placeholder (%s)', async (required) => {
+    const { form, select, native, waitForChanges } = await setupSelectForm(
+      `name="s" placeholder="Choose" ${required}`,
+      abc,
+    );
+    await userEvent.selectOptions(native, 'a');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(select.value).toBe('');
+    expect(native.selectedOptions[0]).toHaveClass('placeholder-option');
+  });
+
+  it('brings back the options the markup selects', async () => {
+    const { form, native, waitForChanges } = await setupSelectForm(
+      'name="s" multiple',
+      '<option value="a">A</option><option value="b" selected>B</option><option value="c" selected>C</option>',
+    );
+    await userEvent.selectOptions(native, ['a']);
+
+    form.reset();
+    await waitForChanges();
+
+    expect(new FormData(form).getAll('s')).toEqual(['b', 'c']);
+  });
+});
+
+describe('placeholder set after load', () => {
+  it('adds one placeholder option, at the top', async () => {
+    const select = document.createElement('mds-input-select');
+    document.body.appendChild(select);
+    await vi.waitFor(() => expect(select).toHaveAttribute('hydrated'));
+
+    select.placeholder = 'Choose';
+    await vi.waitFor(() =>
+      expect(select.shadowRoot!.querySelector('option')!.textContent).toBe('Choose'),
+    );
+
+    const native = select.shadowRoot!.querySelector('select')!;
+    expect(Array.from(native.options).filter((option) => option.value === '')).toHaveLength(1);
+    select.remove();
+  });
+
+  it('leaves alone an element of the page with the same class', async () => {
+    const { root } = await render(
+      '<div><span class="placeholder-option">page</span><mds-input-select></mds-input-select></div>',
+    );
+    const select = root.querySelector('mds-input-select')!;
+
+    select.placeholder = 'Choose';
+    await vi.waitFor(() =>
+      expect(select.shadowRoot!.querySelector('option')!.textContent).toBe('Choose'),
+    );
+
+    expect(root.querySelector('span.placeholder-option')).not.toBeNull();
+  });
+});
