@@ -104,6 +104,8 @@ export interface MdsInputInterface {
 export class MdsInput {
   private nativeInput?: HTMLInputElement | HTMLTextAreaElement;
   private tabindex?: number;
+  // the value at load, which a form reset brings back as the value attribute of a native input
+  private defaultValue = '';
 
   // replaced by buildValidation on load, a valid empty set before
   private inputValidation: InputValidationManager = createInputValidationManager('text');
@@ -125,7 +127,6 @@ export class MdsInput {
   @State() currentLengthLabel: string;
   @State() countVariant: InputTipItemVariantType = 'count-empty';
   @State() isPasswordVisible = false;
-  // private valuePristine?: string
 
   private t: Locale = new Locale({
     el: localeEl,
@@ -302,8 +303,16 @@ export class MdsInput {
    */
   @Event({ eventName: 'mdsInputValidation' }) validationEvent!: EventEmitter<boolean>;
 
+  /**
+   * Like a native input, a form reset brings back the value of load and forgets the validation
+   * shown on blur: the field looks pristine until the next blur.
+   */
   formResetCallback(): void {
-    setFormValue(this.internals, '');
+    const validated = this.validated;
+    this.validated = false;
+    this.isValid = !(this.required && this.defaultValue === '');
+    this.value = this.defaultValue;
+    if (validated) this.variant = 'primary';
   }
 
   connectedCallback(): void {
@@ -311,7 +320,7 @@ export class MdsInput {
   }
 
   componentWillLoad(): void {
-    // this.valuePristine = this.value
+    this.defaultValue = this.value ?? '';
 
     // If the mds-input has a tabindex attribute we get the value
     // and pass it down to the native input, then remove it from the

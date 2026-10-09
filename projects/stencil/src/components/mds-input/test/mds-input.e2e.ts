@@ -481,3 +481,59 @@ describe('form validity', () => {
     expect(form.checkValidity()).toBe(true);
   });
 });
+
+// Like a native input, a form reset brings back the value of load (#822)
+describe('form reset', () => {
+  let form: HTMLFormElement;
+  let button: HTMLElement;
+
+  const setupForm = async (html: string): Promise<void> => {
+    const result = await render<HTMLFormElement>(
+      `<form>${html}<button type="button">Blur</button></form>`,
+    );
+    form = result.root;
+    waitForChanges = result.waitForChanges;
+    mdsInput = form.querySelector('mds-input')!;
+    button = form.querySelector('button')!;
+  };
+
+  it('brings back the value of load, in the field and in the form data', async () => {
+    await setupForm('<mds-input name="city" value="Rimini"></mds-input>');
+    await userEvent.tripleClick(mdsInput);
+    await userEvent.keyboard('Bologna');
+    expect(mdsInput.value).toBe('Bologna');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(mdsInput.value).toBe('Rimini');
+    expect(mdsInput.shadowRoot!.querySelector('input')!.value).toBe('Rimini');
+    expect(new FormData(form).get('city')).toBe('Rimini');
+  });
+
+  it('empties a field that had no value at load', async () => {
+    await setupForm('<mds-input name="city"></mds-input>');
+    await type(mdsInput, 'Bologna');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(mdsInput.value).toBe('');
+    expect(mdsInput.shadowRoot!.querySelector('input')!.value).toBe('');
+    expect(new FormData(form).get('city')).toBe('');
+  });
+
+  it('forgets the validation shown on blur', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+    await type(mdsInput, 'abc');
+    await blur(button);
+    expect(mdsInput).toEqualAttribute('variant', 'success');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(mdsInput).toEqualAttribute('variant', 'primary');
+    // still invalid for the form: the field is required and empty again
+    expect(mdsInput.matches(':invalid')).toBe(true);
+  });
+});

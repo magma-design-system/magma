@@ -18,7 +18,7 @@ The `<mds-input>` web component is the primary single- and multi-line text entry
 
 #### Semantic Behavior
 
-- **Form association**: The component reports its value to the surrounding `<form>`, so it submits natively. On `disabled` or form reset the reported value is cleared; in the current release a form reset does not clear the text shown in the field.
+- **Form association**: The component reports its value to the surrounding `<form>`, so it submits natively. On `disabled` the reported value is cleared. A form reset brings back the value the field had at load, both shown and submitted, and drops the `'success'` or `'error'` look of a past blur, like a native input.
 - **Form validity**: The validators below also decide the validity reported to the form, on every change of the value or of the rules: like a native control, an invalid field matches `:invalid` and stops the submit, the browser shows a message in the page language next to the field and focuses it, and the field switches to `'error'` as on blur. Disabled and read-only fields are left out, and `novalidate` on the `<form>` turns the check off. The format of `type="email"` and `type="url"` is not checked.
 - **Validation on blur**: Validation runs when the field loses focus (and re-runs on input once invalid). It drives the `variant` automatically to `'success'` or `'error'`, emits `mdsInputValidation` with the boolean result, and reverts to `'primary'` when an optional field is emptied.
 - **Type-aware validators**: The active validator set is derived from `type` - `cf` installs the codice fiscale format and length validators and `isbn` a checksum validator (`cc` and `piva` currently install none, and no type applies an input mask), while `required`, `min`/`max` (any number, `0` included) and `minlength`/`maxlength` add the corresponding constraint validators. The set is rebuilt whenever one of these props changes, also after load, as with the React wrappers under SSR: a pristine field only updates its required tip, a field already validated on blur is validated again. Custom validators can be attached at runtime through the `addValidator`/`removeValidator`/`hasValidator`/`getErrors` methods.
@@ -246,7 +246,7 @@ document.querySelector('mds-input').addEventListener('mdsInputValidation', (e) =
 
 #### Form Participation
 
-`<mds-input>` is form-associated. It submits natively inside a `<form>`; set `name` so the value is included in form data. Its validation is reported to the form too: an empty `required` field, or one that breaks another rule, stops the submit like a native input and shows the error. Add `novalidate` to the `<form>` when your own code validates on submit. In the current release a reset clears the submitted value but not the text shown in the field.
+`<mds-input>` is form-associated. It submits natively inside a `<form>`; set `name` so the value is included in form data. Its validation is reported to the form too: an empty `required` field, or one that breaks another rule, stops the submit like a native input and shows the error. Add `novalidate` to the `<form>` when your own code validates on submit. A reset brings every field back to its value at load and to its pristine look.
 
 ```html
 <form action="/salva" method="post">
