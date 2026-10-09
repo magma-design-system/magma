@@ -14,10 +14,11 @@ The `<mds-pref-contrast>` web component is a preference control that lets users 
 #### Semantic Behavior
 
 - **Usually inside `<mds-pref>`**: It is designed to be placed as a direct slot child of `<mds-pref>` alongside the other preference children (`mds-pref-animation`, `mds-pref-consumption`, `mds-pref-language`, `mds-pref-mode`, `mds-pref-theme`); it also works on its own, since it applies and stores the preference by itself.
-- **Mode resolution on render**: The active mode is resolved in order from the `mode` prop, the persisted value, then the `system` default, and applied immediately - so it acts on the document even before any user interaction.
+- **Mode resolution on load**: The active mode is resolved once, on load, in order from the `mode` prop, the persisted value, then the `system` default, and applied immediately - so it acts on the document even before any user interaction.
 - **Applies the preference globally**: Selecting a mode applies it across the whole document and persists the choice.
 - **System resolution**: With `system` the component writes `pref-contrast-system` on `<html>`, and the styles follow the OS `prefers-contrast` setting through their own media query; the component does not map the OS value itself.
-- **Change event**: Every mode change emits `mdsPrefChange` with `{ preference: 'contrast' }`, and so does every render, page load included; `<mds-pref>` listens for it only in `controller` mode.
+- **Change event**: Every mode change emits `mdsPrefChange` with `{ preference: 'contrast' }`, and so does the page load; `<mds-pref>` listens for it only in `controller` mode.
+- **Instances stay in sync**: Instances mounted together (a hidden `<mds-pref controller>` and a visible settings panel) share the applied contrast: a pick in one is mirrored by the others, which neither apply it again nor emit `mdsPrefChange`. A `pref-contrast-*` class written on `<html>` by other code is mirrored the same way.
 
 #### Properties & Visual Configurations
 
@@ -66,7 +67,7 @@ Set the `mode` prop explicitly when the host application needs to impose a contr
 
 #### Reacting to Contrast Changes
 
-Listen for `mdsPrefChange` to act whenever the user switches the contrast mode. The event detail carries `{ preference: 'contrast' }` so a single handler can distinguish between the different preference controls; the event also fires on every render, page load included, so do not read each one as a user's choice.
+Listen for `mdsPrefChange` to act whenever the user switches the contrast mode. The event detail carries `{ preference: 'contrast' }` so a single handler can distinguish between the different preference controls; the event also fires on page load, so do not read each one as a user's choice.
 
 ```html
 <mds-pref-contrast id="contrast-ctrl"></mds-pref-contrast>
@@ -96,7 +97,7 @@ Use the `size` prop when rendering `<mds-pref-contrast>` outside `<mds-pref>` an
 
 #### Restoring the Last Persisted Choice on Page Load
 
-Leave `mode` unset. On every render the component reads `localStorage` for the key `mdsPrefContrast` set during a previous session, falls back to `system` when nothing is stored, and applies the resolved class to `<html>` immediately - no application bootstrap code is needed.
+Leave `mode` unset. On load the component reads `localStorage` for the key `mdsPrefContrast` set during a previous session, falls back to `system` when nothing is stored, and applies the resolved class to `<html>` immediately - no application bootstrap code is needed.
 
 ```html
 <!-- mode is intentionally absent: the component self-restores -->

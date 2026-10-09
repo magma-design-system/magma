@@ -56,6 +56,8 @@ export class MdsPrefMode {
   private overlayTimer: NodeJS.Timeout;
   private overlaySmoothTimer: NodeJS.Timeout;
   private overlayShow: boolean = false;
+  private syncingFromStore: boolean = false;
+  private unsubscribeStore?: () => void;
 
   @State() disabled: boolean = false;
 
@@ -114,7 +116,10 @@ export class MdsPrefMode {
     },
   };
 
-  componentWillRender(): void {
+  // The stored mode is applied once, on load. After that each instance only mirrors
+  // the shared store: re-applying its own `mode` on every render made a second
+  // instance (a controller next to a settings page) revert what the other one chose.
+  componentWillLoad(): void {
     if (!isSafari()) {
       this.setMode(
         this.mode ??
@@ -127,17 +132,38 @@ export class MdsPrefMode {
     this.mode = 'light';
   }
 
+  connectedCallback(): void {
+    this.unsubscribeStore = preferenceStore.onChange('mode', this.syncMode);
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribeStore?.();
+  }
+
   componentDidLoad(): void {
     this.updateCSSCustomProps();
   }
 
   @Watch('mode')
   modeChanged(newValue: PreferenceModeType, oldValue: PreferenceModeType): void {
-    if (newValue === oldValue) {
+    if (newValue === oldValue || this.syncingFromStore) {
       return;
     }
     this.setMode(newValue);
   }
+
+  /**
+   * Follows a mode applied elsewhere (another instance, or a writer of the
+   * `<html>` classes) without applying it again: no event, no storage write.
+   */
+  private readonly syncMode = (mode?: string): void => {
+    if (mode === undefined || mode === this.mode || this.disabled) {
+      return;
+    }
+    this.syncingFromStore = true;
+    this.mode = mode as PreferenceModeType;
+    this.syncingFromStore = false;
+  };
 
   private readonly setMode = (mode: PreferenceModeType): void => {
     this.prefChangeEvent.emit({ preference: 'mode' });

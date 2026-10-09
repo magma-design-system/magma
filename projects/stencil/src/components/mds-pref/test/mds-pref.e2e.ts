@@ -7,6 +7,27 @@ describe('mds-pref', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
+  // #789: a settings page unmounting its own mds-pref used to drop the attribute
+  // while the app controller was still mounted, handing the palette back to the OS
+  it('keeps data-magma-pref on <html> until the last instance unmounts', async () => {
+    const { root, waitForChanges } = await render(`
+      <div>
+        <mds-pref controller class="controller"></mds-pref>
+        <mds-pref class="settings"></mds-pref>
+      </div>
+    `);
+    const html = document.documentElement;
+    expect(html).toHaveAttribute('data-magma-pref');
+
+    root.querySelector('.settings')!.remove();
+    await waitForChanges();
+    expect(html).toHaveAttribute('data-magma-pref');
+
+    root.querySelector('.controller')!.remove();
+    await waitForChanges();
+    expect(html).not.toHaveAttribute('data-magma-pref');
+  });
+
   describe('lock-dark coordination', () => {
     // `cool` stands in for a light-only theme here; only its `scheme` matters
     const markup = `
