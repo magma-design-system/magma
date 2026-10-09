@@ -7,6 +7,7 @@
   "min": "The value must be {{min}} or more.",
   "minDate": "The date must be {{min}} or later.",
   "minlength": ["Use at least {{minlength}} character.", "Use at least {{minlength}} characters."],
+  "pattern": "Match the requested format.",
   "required": "Fill in this field.",
   "requiredSelect": "Select an item in the list."
 }

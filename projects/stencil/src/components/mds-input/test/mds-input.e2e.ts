@@ -537,3 +537,47 @@ describe('form reset', () => {
     expect(mdsInput.matches(':invalid')).toBe(true);
   });
 });
+
+// Like the pattern attribute of a native input, pattern stops the submit (#822)
+describe('pattern', () => {
+  let form: HTMLFormElement;
+
+  const setupForm = async (html: string): Promise<void> => {
+    const result = await render<HTMLFormElement>(`<form>${html}</form>`);
+    form = result.root;
+    waitForChanges = result.waitForChanges;
+    mdsInput = form.querySelector('mds-input')!;
+  };
+
+  it('stops the submit while the value does not match', async () => {
+    await setupForm('<mds-input name="code" pattern="[A-Z]{3}"></mds-input>');
+
+    await type(mdsInput, 'AB');
+    expect(mdsInput.matches(':invalid')).toBe(true);
+
+    await userEvent.keyboard('C');
+    expect(mdsInput.matches(':invalid')).toBe(false);
+  });
+
+  it('leaves the pattern of the consumer on the native input', async () => {
+    await setupForm('<mds-input name="code" pattern="[A-Z]{3}"></mds-input>');
+
+    expect(mdsInput.shadowRoot!.querySelector('input')).toEqualAttribute('pattern', '[A-Z]{3}');
+  });
+
+  it('follows a pattern set after load', async () => {
+    await setupForm('<mds-input name="code" value="abc"></mds-input>');
+    expect(mdsInput.matches(':invalid')).toBe(false);
+
+    mdsInput.pattern = '[A-Z]{3}';
+    await waitForChanges();
+
+    expect(mdsInput.matches(':invalid')).toBe(true);
+  });
+
+  it('does not constrain a number, as on a native input', async () => {
+    await setupForm('<mds-input name="age" type="number" pattern="[0-9]" value="42"></mds-input>');
+
+    expect(mdsInput.matches(':invalid')).toBe(false);
+  });
+});

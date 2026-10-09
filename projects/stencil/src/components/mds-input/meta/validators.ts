@@ -56,6 +56,32 @@ export const minLenghtValidator = (length: number): MdsValidatorFn => {
   };
 };
 
+// the flag the browsers compile the pattern attribute with: v in the current HTML spec, u before it
+const patternFlags = ((): string => {
+  try {
+    return RegExp('', 'v').flags;
+  } catch {
+    return 'u';
+  }
+})();
+
+/**
+ * The rule of the `pattern` attribute of a native input: the whole value matches the expression.
+ * An expression that does not compile sets no rule, as in the browser: `null` then.
+ */
+export const patternValidator = (pattern: string): MdsValidatorFn | null => {
+  let expression: RegExp;
+  try {
+    expression = new RegExp(`^(?:${pattern})$`, patternFlags);
+  } catch {
+    return null;
+  }
+  return (input: string): MdsValidationErrors | null => {
+    if (input === '') return null; // don't validate empty values to allow optional controls
+    return expression.test(input) ? null : { pattern: 'formato non valido' };
+  };
+};
+
 export const isbnValidatorFn: MdsValidatorFn = (input: string) => {
   if (input === '') return null; // don't validate empty values to allow optional controls
 

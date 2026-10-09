@@ -29,6 +29,12 @@ describe('validityProblem', () => {
     });
   });
 
+  it('reports a value that does not match the pattern', () => {
+    expect(validityProblem({ pattern: 'formato non valido' }, 'abc', {})).toEqual({
+      rule: 'pattern',
+    });
+  });
+
   it('gives the type validators the localized message instead of their Italian one', () => {
     expect(validityProblem({ 'isbn-error': 'codice isbn non valido' }, '123', {})).toEqual({
       rule: 'invalid',

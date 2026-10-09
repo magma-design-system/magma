@@ -15,6 +15,7 @@ type ValidityRule =
   | 'min'
   | 'minDate'
   | 'minlength'
+  | 'pattern'
   | 'required'
   | 'requiredSelect';
 
@@ -35,6 +36,7 @@ const flags: Record<ValidityRule, keyof ValidityStateFlags> = {
   min: 'rangeUnderflow',
   minDate: 'rangeUnderflow',
   minlength: 'tooShort',
+  pattern: 'patternMismatch',
   required: 'valueMissing',
   requiredSelect: 'valueMissing',
 };

@@ -51,6 +51,7 @@ import {
   MdsValidatorFn,
   minLenghtValidator,
   minValidator,
+  patternValidator,
   requiredValidor,
 } from './meta/validators';
 import { validityProblem } from './meta/validity';
@@ -224,7 +225,8 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly name?: string;
 
   /**
-   * Specifies a regular expression that element\'s value is checked against
+   * Specifies a regular expression the whole value has to match, as the pattern attribute of a
+   * native input: a value that does not match stops the submit of the form
    */
   @Prop({ reflect: true }) readonly pattern?: string;
 
@@ -337,7 +339,6 @@ export class MdsInput {
   }
 
   componentDidLoad(): void {
-    this.nativeInput?.setAttribute('pattern', String(this.inputValidation.pattern));
     if (this.autofocus) {
       this.nativeInput?.focus();
     }
@@ -366,8 +367,18 @@ export class MdsInput {
       validator.addValidator(maxLenghtValidator(this.maxlength));
     if (this.minlength !== undefined && this.minlength !== 0 && !Number.isNaN(this.minlength))
       validator.addValidator(minLenghtValidator(this.minlength));
+    const pattern = this.patternApplies() ? patternValidator(this.pattern ?? '') : null;
+    if (pattern) validator.addValidator(pattern);
     validator.addValidator(this.customValidators);
     this.inputValidation = validation;
+  }
+
+  /** As on a native input, `pattern` constrains the text types, not a number, a date or a time. */
+  private patternApplies(): boolean {
+    return (
+      (this.pattern ?? '') !== '' &&
+      !['date', 'number', 'textarea', 'time'].includes(this.type ?? 'text')
+    );
   }
 
   /** The number held by `min` or `max`, `undefined` when the prop is unset or not a number. */
@@ -413,6 +424,7 @@ export class MdsInput {
   @Watch('maxlength')
   @Watch('min')
   @Watch('minlength')
+  @Watch('pattern')
   @Watch('required')
   @Watch('type')
   protected validationRulesChanged(): void {

@@ -1270,7 +1270,7 @@ export namespace Components {
          */
         "name"?: string;
         /**
-          * Specifies a regular expression that element\'s value is checked against
+          * Specifies a regular expression the whole value has to match, as the pattern attribute of a native input: a value that does not match stops the submit of the form
          */
         "pattern"?: string;
         /**
@@ -5712,7 +5712,7 @@ declare namespace LocalJSX {
          */
         "onMdsInputValidation"?: (event: MdsInputCustomEvent<boolean>) => void;
         /**
-          * Specifies a regular expression that element\'s value is checked against
+          * Specifies a regular expression the whole value has to match, as the pattern attribute of a native input: a value that does not match stops the submit of the form
          */
         "pattern"?: string;
         /**

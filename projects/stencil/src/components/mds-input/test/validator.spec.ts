@@ -1,4 +1,4 @@
-import { MdsValidatorFn, Validator, isbnValidatorFn } from '../meta/validators';
+import { MdsValidatorFn, Validator, isbnValidatorFn, patternValidator } from '../meta/validators';
 
 let validator = new Validator();
 
@@ -120,6 +120,32 @@ describe('validator', () => {
       });
       expect(validator.isValid).toBeFalsy();
     });
+  });
+});
+
+// the pattern attribute of a native input (#822)
+describe('patternValidator', () => {
+  it('checks the whole value, not a part of it', () => {
+    const pattern = patternValidator('[A-Z]{3}')!;
+
+    expect(pattern('ABC')).toBeNull();
+    expect(pattern('ABCD')).toEqual({ pattern: 'formato non valido' });
+    expect(pattern('xABC')).toEqual({ pattern: 'formato non valido' });
+  });
+
+  it('leaves an empty value to required', () => {
+    expect(patternValidator('[A-Z]{3}')!('')).toBeNull();
+  });
+
+  it('wraps the alternatives before anchoring them', () => {
+    const pattern = patternValidator('cat|dog')!;
+
+    expect(pattern('dog')).toBeNull();
+    expect(pattern('catdog')).toEqual({ pattern: 'formato non valido' });
+  });
+
+  it('sets no rule for an expression that does not compile, as the browser', () => {
+    expect(patternValidator('(')).toBeNull();
   });
 });
 

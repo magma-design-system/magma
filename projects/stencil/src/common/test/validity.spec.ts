@@ -38,6 +38,7 @@ describe('updateValidity', () => {
     [{ rule: 'min', context: { min: 1 } }, { rangeUnderflow: true }],
     [{ rule: 'minDate', context: { min: '1/1/2026' } }, { rangeUnderflow: true }],
     [{ rule: 'minlength', context: { minlength: 1 } }, { tooShort: true }],
+    [{ rule: 'pattern' }, { patternMismatch: true }],
     [{ rule: 'requiredSelect' }, { valueMissing: true }],
   ] as const)('reports %o with %o', (problem, flags) => {
     const { internals, setValidity } = internalsSpy();

@@ -13,8 +13,8 @@ export interface ValidityConstraints {
 
 /**
  * The problem reported to the form for the errors of a value. The first validator that fails
- * decides it: the ones of the type come first, then required, max, min, maxlength, minlength and
- * the custom ones last, which keep their own message.
+ * decides it: the ones of the type come first, then required, max, min, maxlength, minlength,
+ * pattern and the custom ones last, which keep their own message.
  */
 export const validityProblem = (
   errors: MdsValidationErrors,
@@ -34,6 +34,8 @@ export const validityProblem = (
       return constraints.maxlength !== undefined && value.length > constraints.maxlength
         ? { rule: 'maxlength', context: { maxlength: constraints.maxlength } }
         : { rule: 'minlength', context: { minlength: constraints.minlength! } };
+    case 'pattern':
+      return { rule: 'pattern' };
     default:
       return { rule: 'invalid', message: typeErrors.includes(key) ? undefined : errors[key] };
   }
