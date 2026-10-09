@@ -55,24 +55,6 @@ const mdsIconGet = async () => {
 mdsIconGet()
 ```
 
-### Via `setSvgPathStatic` static class function
-
-Last way to set it is by calling the static function present in the class, after the
-`defineCustomElements()` call. This relies on a deep import whose path is not a stable
-public API (it changes between builds), so prefer `IconsSetService` above.
-
-```javascript
-import { mds_icon } from '@maggioli-design-system/magma/dist/esm/mds-icon.entry'
-
-const mdsIconGet = async () => {
-  await customElements.whenDefined('mds-icon')
-
-  mds_icon.setSvgPathStatic('/assets/img/svg/')
-}
-
-mdsIconGet()
-```
-
 ## Force icon update
 
 In some cases it may happens that when setting the path to where the SVG are located, icons still fail to load them.
@@ -101,24 +83,24 @@ The `<mds-icon>` web component is the single glyph primitive of the Magma Design
 #### Semantic Behavior
 
 - **Decorative by default**: The icon contributes no accessible name; meaning must come from the surrounding labelled control or text.
-- **Source resolution**: `name` is interpreted three ways - a base64 `data:` SVG string is decoded inline, a raw `<svg>`/`<?xml>` markup string is used verbatim, and anything else is treated as an icon filename slug fetched from the configured SVG directory. Without a `name` (attribute missing or empty, property `undefined` or `null`) the icon renders nothing, sends no request and logs nothing; removing `name` clears the icon.
+- **Source resolution**: `name` is interpreted three ways - a string starting with `data:image/svg+xml;base64,` is decoded inline, a markup string starting with `<svg ` (with the space; `<?xml` is not recognised) is used verbatim, and anything else is treated as an icon filename slug fetched as `<svg directory><slug>.svg` (a name starting with `http` is fetched as it is). Without a `name` (attribute missing or empty, property `undefined` or `null`) the icon renders nothing, sends no request and logs nothing; removing `name` clears the icon.
 - **Async load**: When `name` is a slug the icon paints once the SVG arrives; a failed fetch renders empty rather than throwing. Only the latest `name` and SVG path count: a request that finishes after a newer one is discarded.
-- **Path configuration**: The SVG directory is set programmatically via the shared `IconsSetService.setSvgPath()` singleton (imported from `@maggioli-design-system/magma/services`), with the `mdsIconSvgPath` `sessionStorage` key as an optional fallback and the `setSvgPath` instance / `setSvgPathStatic` static methods as alternatives; icons that mounted before the path was configured reload themselves once it is set. An icon removed from the page stops listening for path changes; once it is put back it picks up a path set in the meantime.
+- **Path configuration**: The SVG directory is set programmatically via the shared `IconsSetService.setSvgPath()` singleton (imported from `@maggioli-design-system/magma/services`), with the `mdsIconSvgPath` `sessionStorage` key as an optional fallback and the `setSvgPath` instance method as an alternative; icons that mounted before the path was configured reload themselves once it is set. An icon removed from the page stops listening for path changes; once it is put back it picks up a path set in the meantime.
 
 #### Properties & Visual Configurations
 
 - **`name`** is the only configurable input and is overloaded: pass an icon filename slug to pull artwork from the shared library, a base64-encoded SVG `data:` URI for inline/dynamic artwork, or a full raw SVG string when the markup is generated at runtime.
 
-This component does not use the shared `variant` / `tone` / `size` ladders defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); color and dimensions are inherited from the host context via CSS (e.g. `currentColor` and font size), which is how parent components tint and scale their icons.
+This component does not use the shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); the color comes from the inherited CSS `fill` and the size from the host `width` (24px by default, the height follows the square aspect ratio), which is how parent components tint and scale their icons.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-icon>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the icon slug conventions documented in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-icon>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the icon slug conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the icon setup in [`docs/agents/assets.md`](../../../../../../docs/agents/assets.md).
 
 #### Icon Slug from the Shared Library
 
-The canonical form. Pass a slug string as `name`; the component fetches the matching SVG from the configured assets directory. Slugs follow the convention of the active iconsauce plugin: `mi/<variant>/<name>` for Material Icons, `mdi/<name>` for Material Design Icons, and a semantic name for the internal `mgg-icons` set.
+The canonical form. Pass a slug string as `name`; the component fetches the matching SVG from the configured assets directory. Slugs follow the convention of the active iconsauce plugin: `mi/<variant>/<name>` for Material Icons, `mdi/<name>` for Material Design Icons, and `mgg/<name>` for the internal Maggioli set.
 
 ```html
 <!-- Material Icons baseline variant -->
@@ -127,8 +109,8 @@ The canonical form. Pass a slug string as `name`; the component fetches the matc
 <!-- Material Design Icons -->
 <mds-icon name="mdi/alien"></mds-icon>
 
-<!-- Internal mgg-icons semantic slug -->
-<mds-icon name="action-email-send"></mds-icon>
+<!-- Internal Maggioli set -->
+<mds-icon name="mgg/action-email-send-wait"></mds-icon>
 ```
 
 #### Configuring the SVG Base Path via `IconsSetService` (recommended)
@@ -148,7 +130,7 @@ It can be called before or after the icons mount: instances mounted earlier re-f
 Set `mdsIconSvgPath` in `sessionStorage` before any `<mds-icon>` mounts; every icon instance falls back to this key when no path has been set programmatically. This one-liner is convenient but **may be blocked** by some browsers, privacy/incognito modes, storage partitioning, or sandboxed iframes - when that happens, use `IconsSetService.setSvgPath()` above instead.
 
 ```javascript
-window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
+window.sessionStorage.setItem('mdsIconSvgPath', '/assets/img/svg/');
 ```
 
 #### Forcing a Reload After Late Path Configuration
@@ -156,7 +138,7 @@ window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
 If icons are already in the DOM when the SVG path is set (for example, inside a lazy-loaded module), dispatch `mdsIconSvgPathUpdate` after configuring the path. Every mounted instance listens for this event and re-fetches.
 
 ```javascript
-window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
+window.sessionStorage.setItem('mdsIconSvgPath', '/assets/img/svg/');
 window.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'));
 ```
 
@@ -186,10 +168,10 @@ Pass a full SVG markup string as `name` when the artwork is generated or receive
 
 #### Base64-encoded SVG Data URI
 
-Pass a `data:image/svg+xml;base64,...` string when the icon is delivered from an API as a Base64 payload. The component decodes it inline - no external fetch occurs.
+Pass a `data:image/svg+xml;base64,...` string when the icon is delivered from an API as a Base64 payload. The component decodes it inline - no external fetch occurs. In the current release only the first `=` of the padding is stripped, so a payload ending in `==` fails to decode: strip the padding before passing it.
 
 ```html
-<mds-icon name="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmci..."></mds-icon>
+<mds-icon name="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJMMiAyMmgyMHoiLz48L3N2Zz4="></mds-icon>
 ```
 
 #### Sizing via CSS Width
@@ -198,7 +180,7 @@ Pass a `data:image/svg+xml;base64,...` string when the icon is delivered from an
 
 ```html
 <!-- Small icon using a Tailwind spacing utility -->
-<mds-icon name="mi/baseline/info" class="w-800"></mds-icon>
+<mds-icon name="mi/baseline/info" class="w-400"></mds-icon>
 
 <!-- Large icon -->
 <mds-icon name="mi/baseline/star" class="w-1200"></mds-icon>
@@ -206,14 +188,14 @@ Pass a `data:image/svg+xml;base64,...` string when the icon is delivered from an
 
 #### Coloring via `fill` Utility or `currentColor`
 
-The inlined SVG inherits `currentColor` from the host element, so setting `color` on a parent or a Tailwind `fill-*` utility on the host is enough to tint the artwork. Use Magma color tokens.
+The inlined SVG paints with the inherited CSS `fill`, so a Tailwind `fill-*` utility on the host, or `fill: currentColor` on a parent to follow its text color, is enough to tint the artwork; `color` alone does not tint it. Use Magma color roles, or a `label-*` colour for a category.
 
 ```html
 <!-- Tint with a Magma label token -->
 <mds-icon name="mi/baseline/check-circle" class="fill-label-green-06"></mds-icon>
 
-<!-- Inherit the current text color from a parent -->
-<p class="text-status-success-05">
+<!-- Follow the current text color of a parent -->
+<p class="text-success-fg fill-current">
   <mds-icon name="mi/baseline/check"></mds-icon>
   Operazione completata
 </p>
@@ -237,25 +219,25 @@ The single documented shadow part is `svg` - the `<i>` wrapper around the inline
 
 ```css
 mds-icon::part(svg) {
-  filter: drop-shadow(0 1px 2px rgb(var(--tone-kaolin-07)));
+  filter: drop-shadow(0 1px 2px rgb(var(--magma-shadow-ink) / 0.3));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-icon>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-icon>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<img>` or Inline `<svg>` Instead of `<mds-icon>`
 
-Using a raw `<img src="...svg">` or a hardcoded `<svg>` literal bypasses the iconsauce build pipeline (tree-shaking, caching, path management) and the shared theming surface. Use `<mds-icon name="...">` with the slug so the icon is tree-shaken, cached, and inherits color from CSS.
+Using a raw `<img src="...svg">` or a hardcoded `<svg>` literal bypasses the shared path management and cache (in memory and IndexedDB) and the shared theming surface. Use `<mds-icon name="...">` with the slug so the icon is cached and takes its color from CSS.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <img src="/assets/img/svg/mi/baseline/add.svg" alt="">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="..."/></svg>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-icon name="mi/baseline/add"></mds-icon>
 ```
 
@@ -264,28 +246,28 @@ Using a raw `<img src="...svg">` or a hardcoded `<svg>` literal bypasses the ico
 `<mds-icon>` has no slot and accepts no children. Other Magma components expose an `icon` prop that renders the SVG through the shared service with correct positioning. Slotting `<mds-icon>` into the default slot of another component is stripped or misaligned.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-button>
   <mds-icon name="mi/baseline/add"></mds-icon>
   Aggiungi
 </mds-button>
 
-<!-- ✅ CORRECT -->
-<mds-button label="Aggiungi" icon="mi/baseline/add" variant="secondary" tone="weak"></mds-button>
+<!-- CORRECT -->
+<mds-button label="Aggiungi" icon="mi/baseline/add" variant="primary" tone="weak"></mds-button>
 ```
 
 #### Do Not Configure the Path with a Bare Relative Value
 
-`setSvgPath` (on `IconsSetService`, the element, or the static method) treats an absolute path (starting with `/`) as relative to `window.location.origin`, and accepts full URLs. A bare relative value like `assets/svg/` is *accepted* but resolved against the **current page URL** (or the `<base href>`, when the page has one) on each request, so it silently breaks on nested routes (e.g. `/users/42/`). Always pass an absolute path or a full URL. Only an empty/whitespace value, or one that is not a URL (e.g. `http://`), throws (`Svg path not recognize …`).
+`setSvgPath` (on `IconsSetService` or the element) treats an absolute path (starting with `/`) as relative to `window.location.origin`, and accepts full URLs. A bare relative value like `assets/svg/` is *accepted* but resolved against the **current page URL** (or the `<base href>`, when the page has one) on each request, so it silently breaks on nested routes (e.g. `/users/42/`). Always pass an absolute path or a full URL. Only an empty/whitespace value, or one that is not a URL (e.g. `http://`), throws (`Svg path not recognize ...`).
 
 ```javascript
-// 🚫 FRAGILE - resolved relative to the current page, breaks on nested routes
+// FRAGILE - resolved relative to the current page, breaks on nested routes
 IconsSetService.setSvgPath('assets/svg/');
 
-// ✅ CORRECT - absolute path (prefixed with the origin)
+// CORRECT - absolute path (prefixed with the origin)
 IconsSetService.setSvgPath('/assets/svg/');
 
-// ✅ CORRECT - full URL (for example a CDN)
+// CORRECT - full URL (for example a CDN)
 IconsSetService.setSvgPath('https://cdn.example.com/svg/');
 ```
 
@@ -294,12 +276,12 @@ IconsSetService.setSvgPath('https://cdn.example.com/svg/');
 `<mds-icon>` renders its inner element with `aria-hidden="true"`. An icon used as the sole indicator inside an interactive control or next to no visible text provides no accessible name by itself. The surrounding control must carry the accessible name.
 
 ```html
-<!-- 🚫 INCORRECT - button has no accessible name -->
+<!-- INCORRECT - button has no accessible name -->
 <button>
   <mds-icon name="mi/baseline/delete"></mds-icon>
 </button>
 
-<!-- ✅ CORRECT - use mds-button with aria-label -->
+<!-- CORRECT - use mds-button with aria-label -->
 <mds-button
   icon="mi/baseline/delete"
   aria-label="Elimina elemento"
@@ -310,10 +292,10 @@ IconsSetService.setSvgPath('https://cdn.example.com/svg/');
 
 #### Do Not Pierce the Shadow DOM to Style the SVG
 
-The only supported styling surface is `::part(svg)` and CSS custom properties (color, fill) set on the host. Using `>>>`, `/deep/`, or descendant selectors on `.icon` or internal class names couples code to the Shadow DOM structure and breaks on minor releases.
+The only supported styling surface is `::part(svg)` and the inherited CSS `fill` set on the host. Using `>>>`, `/deep/`, or descendant selectors on `.icon` or internal class names couples code to the Shadow DOM structure and breaks on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-icon >>> .icon svg path {
   fill: red;
 }
@@ -321,9 +303,9 @@ mds-icon .icon {
   transform: rotate(45deg);
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-icon {
-  color: rgb(var(--status-error-05));
+  fill: rgb(var(--magma-danger-fg));
 }
 mds-icon::part(svg) {
   transform: rotate(45deg);
@@ -335,10 +317,10 @@ mds-icon::part(svg) {
 The slug passed to `name` must not include the `.svg` extension - the service appends it when building the fetch URL. Adding the extension causes a double-`.svg` path (`mi/baseline/close.svg.svg`) that returns a 404.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-icon name="mi/baseline/close.svg"></mds-icon>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-icon name="mi/baseline/close"></mds-icon>
 ```
 
@@ -347,10 +329,10 @@ The slug passed to `name` must not include the `.svg` extension - the service ap
 `<mds-icon>` is a custom element - HTML `width` and `height` attributes have no effect on it. Size is controlled by the CSS `width` property on the host (height follows from `aspect-ratio: 1`). Use a Tailwind width utility or a custom CSS rule.
 
 ```html
-<!-- 🚫 INCORRECT - attributes are ignored -->
+<!-- INCORRECT - attributes are ignored -->
 <mds-icon name="mi/baseline/star" width="32" height="32"></mds-icon>
 
-<!-- ✅ CORRECT - CSS width drives the size -->
+<!-- CORRECT - CSS width drives the size -->
 <mds-icon name="mi/baseline/star" class="w-1200"></mds-icon>
 ```
 

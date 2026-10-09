@@ -13,7 +13,7 @@ The `<mds-calendar-cell>` web component represents a single selectable day insid
 
 #### Semantic Behavior
 
-- **Compound child only**: It must be rendered as a child of `<mds-calendar>`, which generates one cell per day of the visible month grid; it is not used standalone, repeated outside that grid, or mixed with unrelated child types.
+- **Compound child only**: It is rendered only by `<mds-calendar>`, which generates one cell per day of the visible month grid inside its own shadow DOM (the calendar has no default slot): consumers never write it, neither standalone nor as a child of the calendar.
 - **Parent-driven selection**: The cell holds no internal selection state. The parent calendar drives the `date`, `selection` and `preview` attributes to paint range boundaries and intermediate days; the cell only reflects what it is given.
 - **No own events**: Clicks and hover are handled by the parent (range building, preview, and the `mdsCalendarChange` / `mdsCalendarPreselect` events from `<mds-calendar>`). The cell itself emits nothing.
 - **Disabled state**: When `disabled` is set the day cannot be activated; the parent applies this for days outside the calendar's `min`/`max` range.
@@ -23,8 +23,8 @@ The `<mds-calendar-cell>` web component represents a single selectable day insid
 
 Most props are state mirrors written by the parent rather than knobs a consumer tunes directly.
 
-- **`month`**: Distinguishes how the day relates to the displayed month - `current` for in-month days, `other` for leading/trailing days spilling in from adjacent months, and `weekend` for weekend styling.
-- **`selection`**: Marks the cell's position within an active range - `start`, `end`, `middle`, or `single` (a one-day or collapsed range); absence (or `none`) means unselected. This is what produces the connected range visuals across adjacent cells.
+- **`month`**: Distinguishes how the day relates to the displayed month - `current` for in-month days, `other` for leading/trailing days spilling in from adjacent months. The type also allows `weekend`, which the calendar never sets and which has no styling of its own: the weekend color comes from the cell's position (the last two columns of the week).
+- **`selection`**: Marks the cell's position within an active range - `start`, `end`, `middle`, or `single` (a one-day or collapsed range); absence means unselected (`none` is styled like a selected cell, so the calendar removes the attribute instead). This is what produces the connected range visuals across adjacent cells.
 - **`preview`**: When `true`, the current selection is a transient hover/preview rather than a committed selection, allowing distinct styling while the user is still choosing the second boundary.
 - **`orientation`**: Selection-connector direction. The type allows `horizontal`, `vertical`, and `both`, but only `horizontal` is currently supported.
 - **`date`**: The cell's ISO `YYYY-MM-DD` date; the parent matches against it to compute selection state, so it is required for the cell to participate in range logic.
@@ -32,117 +32,95 @@ Most props are state mirrors written by the parent rather than knobs a consumer 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-calendar-cell>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-calendar-cell>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
-Because `<mds-calendar-cell>` is an internal subpart, every pattern below shows it composed inside its real parent [`<mds-calendar>`](../../mds-calendar).
+`<mds-calendar-cell>` is an internal subpart: its real parent [`<mds-calendar>`](../../mds-calendar) renders one cell per day inside its own shadow DOM and has no default slot, so cells written as its children are never shown. Every pattern below shows the `<mds-calendar>` markup that puts the cells in each state.
 
 #### Basic Cell Inside a Calendar
 
-The typical form - let the parent drive all cell attributes. Providing `date` in ISO `YYYY-MM-DD` format is required for range logic to work.
+The typical form - let the parent render the cells and drive all their attributes (`date` in ISO `YYYY-MM-DD` format, `label`, `month`, `selection`, ...).
 
 ```html
-<mds-calendar start-date="2024-06-01" end-date="2024-06-15">
-  <mds-calendar-cell date="2024-06-10" label="10" month="current"></mds-calendar-cell>
-</mds-calendar>
+<mds-calendar start-date="2024-06-01" end-date="2024-06-15"></mds-calendar>
 ```
 
 #### Today Marker
 
-Set the `today` boolean attribute on the cell that matches the current date. The parent drives this automatically; when implementing a custom grid use it to apply the primary-tinted styling that distinguishes today from other days.
+The parent sets the `today` boolean attribute on the cell that matches the current date, which applies the accent-tinted styling that distinguishes today from other days. Set `hide-today` on the calendar to drop it.
 
 ```html
-<mds-calendar>
-  <mds-calendar-cell date="2024-06-05" label="5" month="current" today></mds-calendar-cell>
-</mds-calendar>
+<mds-calendar></mds-calendar>
+<mds-calendar hide-today></mds-calendar>
 ```
 
 #### Selection Range - Start, Middle, and End Positions
 
-Use `selection` to express where a cell falls inside the active range. The `start` and `end` values add rounded caps; `middle` fills the span between them; `single` applies both caps for a one-day selection.
+The parent sets `selection` to express where a cell falls inside the active range. The `start` and `end` values add rounded caps; `middle` fills the span between them; `single` applies both caps for a one-day selection.
 
 ```html
-<mds-calendar>
-  <mds-calendar-cell date="2024-06-03" label="3" month="current" selection="start"></mds-calendar-cell>
-  <mds-calendar-cell date="2024-06-04" label="4" month="current" selection="middle"></mds-calendar-cell>
-  <mds-calendar-cell date="2024-06-05" label="5" month="current" selection="end"></mds-calendar-cell>
-</mds-calendar>
+<!-- 3 June: start, 4 June: middle, 5 June: end -->
+<mds-calendar start-date="2024-06-03" end-date="2024-06-05"></mds-calendar>
 ```
 
 #### Single-Day Selection
 
-Use `selection="single"` when the selected range collapses to one day. This applies a fully rounded pill on both sides rather than an open-ended bar.
+The parent uses `selection="single"` for the day of a single picker, for a range whose two ends are the same day, and for the start of a range still waiting for its end. This applies a fully rounded pill on both sides rather than an open-ended bar.
 
 ```html
-<mds-calendar>
-  <mds-calendar-cell date="2024-06-10" label="10" month="current" selection="single"></mds-calendar-cell>
-</mds-calendar>
+<mds-calendar single-picker start-date="2024-06-10"></mds-calendar>
 ```
 
 #### Preview (Hover) Selection
 
-Set `preview` while the user is hovering toward the second boundary of a range. The cell renders distinct preview styling until the selection is committed.
+While the user hovers toward the second boundary of a range, the parent sets `preview` on the cells between the start and the hovered day. The cells render distinct preview styling until the selection is committed.
 
 ```html
-<mds-calendar>
-  <mds-calendar-cell date="2024-06-07" label="7" month="current" selection="start" preview></mds-calendar-cell>
-  <mds-calendar-cell date="2024-06-08" label="8" month="current" selection="middle" preview></mds-calendar-cell>
-</mds-calendar>
+<!-- range mode with a start and no end: hovering a later day previews the range -->
+<mds-calendar start-date="2024-06-07"></mds-calendar>
 ```
 
 #### Days from Adjacent Months
 
-Use `month="other"` for the leading and trailing days that fill the grid but belong to the previous or next month. These cells are visually dimmed and, unless selected, are hidden by default via the CSS `visibility` cascade.
+The parent renders the leading and trailing days that fill the grid but belong to the previous or next month with `month="other"`. Inside `<mds-calendar>` these cells are dimmed and visible; set `--mds-calendar-cell-other-month-visibility: hidden` on the calendar to hide them.
 
 ```html
-<mds-calendar>
-  <!-- last days of previous month, shown as padding -->
-  <mds-calendar-cell date="2024-05-30" label="30" month="other"></mds-calendar-cell>
-  <mds-calendar-cell date="2024-05-31" label="31" month="other"></mds-calendar-cell>
-  <!-- first day of the displayed month -->
-  <mds-calendar-cell date="2024-06-01" label="1" month="current"></mds-calendar-cell>
-</mds-calendar>
+<mds-calendar view-date="2024-06-01" style="--mds-calendar-cell-other-month-visibility: hidden;"></mds-calendar>
 ```
 
 #### Disabled Day
 
-Set the `disabled` boolean attribute on days that cannot be selected - for example, dates outside the allowed `min`/`max` range. A disabled cell removes pointer events and applies the muted color token automatically.
+The parent sets the `disabled` boolean attribute on days that cannot be selected - the dates outside its `min`/`max` range. A disabled cell removes pointer events and applies the disabled color (`--mds-calendar-cell-disabled-color`) automatically.
 
 ```html
-<mds-calendar min="2024-06-10">
-  <mds-calendar-cell date="2024-06-03" label="3" month="current" disabled></mds-calendar-cell>
-</mds-calendar>
+<mds-calendar view-date="2024-06-01" min="2024-06-10"></mds-calendar>
 ```
 
 #### Styling Customization
 
-Override the documented `--mds-calendar-cell-*` CSS custom properties to retheme cells. Set them on the `<mds-calendar>` host or a parent selector so every cell in the grid inherits the change together. Use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+The `--mds-calendar-cell-*` CSS custom properties are declared, with their defaults, on each cell inside the calendar's shadow DOM: a value set on the `<mds-calendar>` host or on a parent selector does not reach them. From outside, adjust the cells through the custom properties `<mds-calendar>` documents for them; the colors follow the semantic roles of the theme.
 
 ```css
 .booking-calendar mds-calendar {
-  --mds-calendar-cell-selection-current-month-background: rgb(var(--variant-success-04));
-  --mds-calendar-cell-selection-current-month-color: rgb(var(--tone-neutral));
-  --mds-calendar-cell-selection-boundaries-border-radius: var(--radius-sm);
-  --mds-calendar-cell-weekend-color: rgb(var(--variant-error-04));
+  --mds-calendar-cell-gap: calc(var(--spacing) * 100);
+  --mds-calendar-cell-other-month-visibility: hidden;
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-calendar-cell>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-calendar-cell>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use the Cell Outside Its Parent Calendar
 
-`<mds-calendar-cell>` is a compound child and must be a direct slot child of [`<mds-calendar>`](../../mds-calendar). Used in isolation it loses the gap context that drives range connector geometry and the parent cannot coordinate selection across cells.
+`<mds-calendar-cell>` is rendered by [`<mds-calendar>`](../../mds-calendar) itself, one per day inside its shadow DOM. Used in isolation it loses the gap context that drives range connector geometry and no parent coordinates selection across cells; slotted into `<mds-calendar>`, which has no default slot, it is never shown. Let the calendar generate the cells.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-calendar-cell date="2024-06-10" label="10" month="current" selection="single"></mds-calendar-cell>
 
-<!-- ✅ CORRECT -->
-<mds-calendar start-date="2024-06-10" end-date="2024-06-10">
-  <mds-calendar-cell date="2024-06-10" label="10" month="current" selection="single"></mds-calendar-cell>
-</mds-calendar>
+<!-- CORRECT -->
+<mds-calendar single-picker start-date="2024-06-10"></mds-calendar>
 ```
 
 #### Do Not Manage Selection State Locally in the Cell
@@ -150,47 +128,23 @@ Common incorrect uses of `<mds-calendar-cell>`. Each entry pairs the wrong form 
 The cell is purely presentational - it holds no internal state. Setting `selection` directly on isolated cells and keeping them in sync by hand duplicates the logic the parent calendar already owns and will diverge on re-renders.
 
 ```html
-<!-- 🚫 INCORRECT: manually wiring selection outside mds-calendar -->
+<!-- INCORRECT: manually wiring selection outside mds-calendar -->
 <div class="custom-grid">
   <mds-calendar-cell date="2024-06-03" label="3" selection="start"></mds-calendar-cell>
   <mds-calendar-cell date="2024-06-04" label="4" selection="middle"></mds-calendar-cell>
   <mds-calendar-cell date="2024-06-05" label="5" selection="end"></mds-calendar-cell>
 </div>
 
-<!-- ✅ CORRECT: let mds-calendar own range state and drive cell props -->
+<!-- CORRECT: let mds-calendar own range state and drive cell props -->
 <mds-calendar start-date="2024-06-03" end-date="2024-06-05"></mds-calendar>
-```
-
-#### Do Not Set Boolean Attributes to the String "false"
-
-`disabled`, `preview`, and `today` are boolean props. Any non-empty string is truthy in HTML - setting `disabled="false"` leaves the cell disabled. Remove the attribute entirely to turn it off.
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-calendar-cell date="2024-06-10" label="10" disabled="false" preview="false"></mds-calendar-cell>
-
-<!-- ✅ CORRECT -->
-<mds-calendar-cell date="2024-06-10" label="10"></mds-calendar-cell>
-```
-
-#### Do Not Use an Invalid `month` Value for Weekend Styling
-
-Weekend visual treatment comes from the `month="weekend"` value, not from a separate boolean attribute or a custom CSS class. Using `month="current"` on a weekend day loses the weekend color token.
-
-```html
-<!-- 🚫 INCORRECT: weekend day treated as a plain current-month day -->
-<mds-calendar-cell date="2024-06-08" label="8" month="current" class="weekend"></mds-calendar-cell>
-
-<!-- ✅ CORRECT: declare the cell as a weekend to activate weekend tokens -->
-<mds-calendar-cell date="2024-06-08" label="8" month="weekend"></mds-calendar-cell>
 ```
 
 #### Do Not Pierce the Shadow DOM to Style Internals
 
-The only supported customization surface is the documented `--mds-calendar-cell-*` CSS custom properties. Targeting the internal `.action`, `.inner-dot`, or `.area-background` parts via `>>>` or undocumented class selectors couples your code to the implementation and will break on minor releases.
+The cells live in the shadow DOM of `<mds-calendar>`, and their own `--mds-calendar-cell-*` properties are declared on each cell, so from outside they are adjusted only through the custom properties `<mds-calendar>` documents for them. Targeting the internal `.action`, `.inner-dot`, or `.area-background` elements via `>>>` or undocumented class selectors couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-calendar-cell >>> .area-background {
   background: hotpink;
 }
@@ -198,23 +152,11 @@ mds-calendar-cell >>> .inner-dot {
   display: none;
 }
 
-/* ✅ CORRECT */
-mds-calendar mds-calendar-cell {
-  --mds-calendar-cell-selection-current-month-background: rgb(var(--variant-primary-04));
-  --mds-calendar-cell-selection-boundaries-border-radius: var(--radius-sm);
+/* CORRECT */
+mds-calendar {
+  --mds-calendar-cell-gap: calc(var(--spacing) * 100);
+  --mds-calendar-cell-other-month-visibility: hidden;
 }
-```
-
-#### Do Not Omit the `date` Attribute
-
-Without `date` the parent calendar cannot match the cell against the selected range, so `selection`, `today`, and `disabled` computations all fail silently. Always provide the ISO `YYYY-MM-DD` string.
-
-```html
-<!-- 🚫 INCORRECT: parent cannot resolve range position -->
-<mds-calendar-cell label="10" month="current"></mds-calendar-cell>
-
-<!-- ✅ CORRECT -->
-<mds-calendar-cell date="2024-06-10" label="10" month="current"></mds-calendar-cell>
 ```
 
 

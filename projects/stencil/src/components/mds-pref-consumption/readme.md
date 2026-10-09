@@ -9,28 +9,28 @@
 
 ### 1. Description
 
-The `<mds-pref-consumption>` web component is a preference control of the Magma Design System that lets the user pick an energy-consumption mode (`low`, `medium`, `high`); it is a compound child of [`<mds-pref>`](../../mds-pref) and renders as a tab group with one option per mode, so it has no native HTML primitive equivalent.
+The `<mds-pref-consumption>` web component is a preference control of the Magma Design System that lets the user pick an energy-consumption mode (`low`, `medium`, `high`); it is usually a child of [`<mds-pref>`](../../mds-pref) and renders as a tab group with one option per mode, so it has no native HTML primitive equivalent.
 
 #### Semantic Behavior
 
-- **Compound child constraint**: Must be placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it is not used standalone or mixed with unrelated child types.
+- **Usually inside `<mds-pref>`**: Placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it also works on its own, since it applies and stores the preference by itself.
 - **Mode resolution on render**: The active mode is resolved in priority order - the `mode` prop, then the persisted value, then the `high` default - so the control restores the last user choice across reloads.
 - **Applies the preference globally**: Selecting a mode applies it across the whole document and persists the choice.
-- **Change event**: Each change emits `mdsPrefChange` with `{ preference: 'consumption' }`. Because `consumption` requires a reload to fully apply, the parent `<mds-pref>` surfaces its "reload required" notice.
+- **Change event**: Each change emits `mdsPrefChange` with `{ preference: 'consumption' }`, and so does every render, page load included; the event fires before the new mode is stored. `consumption` requires a reload to fully apply, but the "reload required" notice of the parent `<mds-pref>` does not show in a visible panel (it listens only in `controller` mode).
 
 #### Properties & Visual Configurations
 
 - **`mode`**: The selected consumption preference (`low` / `medium` / `high`). Leave it unset to let the component restore the persisted value or fall back to `high`; set it explicitly only to force an initial mode.
-- **`size`**: Sizes the nested tab items (`sm` / `md`). In normal use you do not set this directly - the parent `<mds-pref>` propagates its own `size` down to every `mds-pref-*` child, keeping the whole preference group visually consistent.
+- **`size`**: Sizes the nested tab items (`sm` / `md`). The parent `<mds-pref>` forwards a later change of its own `size` to every `mds-pref-*` child, but not the initial value, so set it on this component as well.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-pref-consumption>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the preference system documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-pref-consumption>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the preference system documented in [`docs/agents/theming.md`](../../../../../../docs/agents/theming.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Default Use Inside `mds-pref`
 
-The canonical form. Place `<mds-pref-consumption>` as a direct slot child of [`<mds-pref>`](../../mds-pref). Omit `mode` so the component restores the persisted user choice automatically; the parent propagates its own `size` down to every `mds-pref-*` child.
+The canonical form. Place `<mds-pref-consumption>` as a direct slot child of [`<mds-pref>`](../../mds-pref). Omit `mode` so the component restores the persisted user choice automatically; the parent forwards later changes of its own `size` to every `mds-pref-*` child.
 
 ```html
 <mds-pref>
@@ -50,7 +50,7 @@ Set `mode` explicitly only when the application needs to override the persisted 
 
 #### Controlling Size
 
-Use the `size` prop when you embed the control outside `<mds-pref>` and cannot rely on the parent to propagate a size. Accepted values are `"sm"` and `"md"`.
+Use the `size` prop on the control itself: outside `<mds-pref>`, and inside it too for the first render, since the parent forwards only later changes of its own `size`. Accepted values are `"sm"` and `"md"`.
 
 ```html
 <mds-pref-consumption size="sm"></mds-pref-consumption>
@@ -58,7 +58,7 @@ Use the `size` prop when you embed the control outside `<mds-pref>` and cannot r
 
 #### Reacting to Mode Changes
 
-Listen for the `mdsPrefChange` event to detect when the user picks a new consumption level. The event detail always carries `{ preference: "consumption" }`.
+Listen for the `mdsPrefChange` event to detect when the user picks a new consumption level. The event detail always carries `{ preference: "consumption" }`; the event also fires on every render, page load included, so do not read each one as a user's choice.
 
 ```html
 <mds-pref-consumption id="consumption-pref"></mds-pref-consumption>
@@ -74,7 +74,7 @@ Listen for the `mdsPrefChange` event to detect when the user picks a new consump
 
 #### Reading the Active Mode After a Change
 
-The `mode` prop is mutable and reflected as an attribute. After the user interacts, read the current value directly from the element's reflected attribute or prop.
+The `mode` prop is mutable and reflected as an attribute. The event is emitted before the new mode is stored, so inside the handler the element still holds the previous value: read it once the handler has returned.
 
 ```html
 <mds-pref-consumption id="consumption-pref"></mds-pref-consumption>
@@ -82,8 +82,8 @@ The `mode` prop is mutable and reflected as an attribute. After the user interac
 <script>
   const pref = document.querySelector('#consumption-pref');
   pref.addEventListener('mdsPrefChange', () => {
-    // mode is reflected - read it back from the element
-    console.log('Modalita attiva:', pref.mode);
+    // the new mode is stored right after the event: read it on the next task
+    setTimeout(() => console.log('Modalita attiva:', pref.mode));
   });
 </script>
 ```
@@ -91,19 +91,19 @@ The `mode` prop is mutable and reflected as an attribute. After the user interac
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-pref-consumption>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-pref-consumption>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `mds-pref` Without Acknowledging the Side Effects
 
-`<mds-pref-consumption>` applies its mode globally by adding a class to `<html>` and writing to `localStorage`, even when used standalone. Using it in an isolated context (a test harness, a settings widget separate from the preference panel) without a containing [`<mds-pref>`](../../mds-pref) still triggers the full document-level side effect - this is expected only inside a proper preferences flow.
+`<mds-pref-consumption>` applies its mode globally by adding a class to `<html>` and writing to `localStorage`, even when used standalone. Wrapping it in [`<mds-pref>`](../../mds-pref) does not change that: use the control only where the user is meant to set the document-wide preference (the preferences panel), never as a local toggle for one widget or in a test harness.
 
 ```html
-<!-- 🚫 INCORRECT - bare use in an arbitrary widget with no intent to change global doc state -->
+<!-- INCORRECT - a local toggle for one widget: it still changes the whole document -->
 <div class="settings-widget">
   <mds-pref-consumption></mds-pref-consumption>
 </div>
 
-<!-- ✅ CORRECT - wrap in mds-pref so the full preference flow is in place -->
+<!-- CORRECT - in the preferences panel, where a document-wide choice is meant -->
 <mds-pref>
   <mds-pref-consumption></mds-pref-consumption>
 </mds-pref>
@@ -111,14 +111,14 @@ Common incorrect uses of `<mds-pref-consumption>`. Each entry pairs the wrong fo
 
 #### Do Not Pass an Invalid `mode` Value
 
-`mode` is typed as `"low" | "medium" | "high"`. Passing any other string silently writes an unrecognised class to `<html>` and does not activate a valid consumption level.
+`mode` is typed as `"low" | "medium" | "high"`. Any other string has no entry in the component's mode table: applying it fails with an error, after the value has already been stored in `localStorage` (later loads fail too), and no consumption level is activated.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-consumption mode="auto"></mds-pref-consumption>
 <mds-pref-consumption mode="none"></mds-pref-consumption>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref-consumption mode="low"></mds-pref-consumption>
 <mds-pref-consumption mode="medium"></mds-pref-consumption>
 <mds-pref-consumption mode="high"></mds-pref-consumption>
@@ -129,26 +129,26 @@ Common incorrect uses of `<mds-pref-consumption>`. Each entry pairs the wrong fo
 The `mode` prop is not boolean. Setting it to an empty string or to the literal `"false"` does not clear or unset the preference - it corrupts the stored value. To defer mode resolution to the persisted value, leave the attribute absent entirely.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-consumption mode="false"></mds-pref-consumption>
 <mds-pref-consumption mode=""></mds-pref-consumption>
 
-<!-- ✅ CORRECT - omit the attribute to restore the persisted value or fall back to "high" -->
+<!-- CORRECT - omit the attribute to restore the persisted value or fall back to "high" -->
 <mds-pref-consumption></mds-pref-consumption>
 ```
 
 #### Do Not Listen for Native `change` or `input` Events
 
-`<mds-pref-consumption>` does not emit `change` or `input`. The documented event is `mdsPrefChange`. Native events do not bubble out of the shadow DOM as expected.
+`<mds-pref-consumption>` does not emit `change` or `input`. The documented event is `mdsPrefChange`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-consumption id="pref"></mds-pref-consumption>
 <script>
   document.querySelector('#pref').addEventListener('change', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref-consumption id="pref"></mds-pref-consumption>
 <script>
   document.querySelector('#pref').addEventListener('mdsPrefChange', handler);
@@ -160,10 +160,10 @@ The `mode` prop is not boolean. Setting it to an empty string or to the literal 
 The `size` prop controls the dimensions of the nested tab items. Overriding them with inline styles or external CSS breaks the internal layout and visual consistency of the preference group.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref-consumption style="width: 300px;"></mds-pref-consumption>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref-consumption size="sm"></mds-pref-consumption>
 ```
 
