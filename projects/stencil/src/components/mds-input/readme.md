@@ -18,26 +18,26 @@ The `<mds-input>` web component is the primary single- and multi-line text entry
 
 #### Semantic Behavior
 
-- **Form association**: The component reports its value to the surrounding `<form>`, so it submits and participates in reset natively. On `disabled` or form reset the reported value is cleared.
+- **Form association**: The component reports its value to the surrounding `<form>`, so it submits natively. On `disabled` or form reset the reported value is cleared; in the current release a form reset does not clear the text shown in the field, and the validation below is not reported to the form, so a `required` field does not block submission.
 - **Validation on blur**: Validation runs when the field loses focus (and re-runs on input once invalid). It drives the `variant` automatically to `'success'` or `'error'`, emits `mdsInputValidation` with the boolean result, and reverts to `'primary'` when an optional field is emptied.
-- **Type-aware validators**: The active validator set is derived from `type` - `cf`, `isbn`, `cc`, `piva` install format/mask validators, while `required`, `min`/`max` and `minlength`/`maxlength` add the corresponding constraint validators. Custom validators can be attached at runtime through the `addValidator`/`removeValidator`/`hasValidator`/`getErrors` methods.
+- **Type-aware validators**: The active validator set is derived from `type` - `cf` installs the codice fiscale format and length validators and `isbn` a checksum validator (`cc` and `piva` currently install none, and no type applies an input mask), while `required`, `min`/`max` and `minlength`/`maxlength` add the corresponding constraint validators. Custom validators can be attached at runtime through the `addValidator`/`removeValidator`/`hasValidator`/`getErrors` methods.
 - **Disabled / read-only tips**: `disabled` and `readonly` surface a persistent top tip describing the state; read-only fields also auto-select their text on focus.
 - **Character counter**: When `maxlength` is set a bottom counter tip shows `current / max` and shifts through fullness variants as the value approaches the limit. A `maxlength` of `0` or less is treated as unset.
 - **Password masking**: With `type="password"` a toggle button reveals/hides the value.
 - **Number steppers**: With `type="number"` increment/decrement buttons are rendered; their placement follows `controlsLayout` and their glyphs follow `controlsIcon`.
-- **Speech-to-text**: When `mic` is set a dictation button transcribes speech into the value, emitting `mdsInputSpeechEnd` when recognition stops; it degrades gracefully when unavailable.
-- **Emitted events**: `mdsInputChange` carries the new value, `mdsInputKeydown` forwards input keystrokes, and `mdsInputFocus`/`mdsInputBlur` fire on focus transitions.
+- **Speech-to-text**: When `mic` is set a dictation button transcribes speech into the value, replacing what was there, and emits `mdsInputSpeechEnd` when the user stops the dictation; when the Web Speech API is unavailable the button switches to an error state.
+- **Emitted events**: `mdsInputChange` carries the new value, `mdsInputKeydown` fires on every input event (despite its name and type, its detail is the native `InputEvent`, with no `key`), and `mdsInputFocus`/`mdsInputBlur` fire on focus transitions.
 
 #### Properties & Visual Configurations
 
-The shared `variant` ladder (color role) is defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); `<mds-input>` consumes it for both intent styling and validation feedback, but does not expose a `tone` prop. It uses the full shared set and adds no component-specific variants.
+The shared `variant` ladder (color role) is defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); `<mds-input>` consumes it for both intent styling and validation feedback, but does not expose a `tone` prop. It accepts `primary` (default), `ai`, `info`, `success`, `warning` and `error`.
 
-- **`type`** selects both the rendered control and the validation profile: it covers the native HTML types plus Italian-specific masked formats (`'cf'`, `'piva'`, `'isbn'`, `'cc'`) and switches the host to a multi-line `<textarea>` for `'textarea'`.
+- **`type`** selects both the rendered control and the validation profile: it covers the native HTML types plus format types (`'cf'`, `'piva'`, `'isbn'`, `'cc'`) and switches the host to a multi-line `<textarea>` for `'textarea'`.
 - **`variant="ai"`** auto-assigns the AI chatbot icon when no `icon` is otherwise provided, signposting AI-assisted fields.
 
 #### Other behavioral props
 
-- **`icon`** is an SVG filename slug from the Magma icon library shown at the trailing edge of the field; it is suppressed while `await` is active, since the spinner takes its place.
+- **`icon`** is an SVG filename slug from the Magma icon library shown at the leading (left) edge of the field; it is suppressed while `await` is active, since the spinner takes its place.
 - **`controlsLayout`** chooses between stacked (`'vertical'`) and split (`'horizontal'`) stepper buttons, and **`controlsIcon`** picks arrow vs. plus/minus glyphs - both apply only to `type="number"`.
 - **`datalist`** supplies suggestion options for `type="search"` style autocompletion.
 - **`tip`** renders inline helper text below the field, and **`typography`** selects the field's text scale.
@@ -45,7 +45,7 @@ The shared `variant` ladder (color role) is defined in [`projects/stencil/SPEC.m
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-input>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-input>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Text Input
 
@@ -60,7 +60,7 @@ The simplest form: set `name` for form participation and `placeholder` for a vis
 
 #### Required Field with `tip` Helper Text
 
-Use `required` to enforce non-empty submission and `tip` to explain the constraint. The component surfaces a top-tip when focused and drives `variant` to `'error'` or `'success'` on blur. When the field collects the user's own data, set the matching `autocomplete` token (`email`, `given-name`, `tel`, ...) so browsers can identify its purpose (WCAG 2.1 SC 1.3.5) and offer autofill; without it the component default `autocomplete="off"` applies.
+Use `required` to validate that the field is not empty and `tip` to explain the constraint. The component surfaces a top-tip when focused and drives `variant` to `'error'` or `'success'` on blur. When the field collects the user's own data, set the matching `autocomplete` token (`email`, `given-name`, `tel`, ...) so browsers can identify its purpose (WCAG 2.1 SC 1.3.5) and offer autofill; without it the component default `autocomplete="off"` applies.
 
 ```html
 <mds-input
@@ -158,7 +158,7 @@ Pair a username field carrying `autocomplete="username"` with a password field c
 
 #### Italian-Specific Masked Types
 
-`type="cf"`, `type="piva"`, `type="cc"`, and `type="isbn"` install a format-aware validator and apply the appropriate keyboard mask. Use them whenever a masked format is expected.
+`type="cf"` installs the codice fiscale format and length validators and `type="isbn"` a checksum validator. `type="piva"` and `type="cc"` currently install no validator, and no type applies a keyboard mask.
 
 ```html
 <mds-input name="codice_fiscale" type="cf" placeholder="RSSMRA80A01H501Z"></mds-input>
@@ -218,7 +218,7 @@ Set the `await` boolean attribute while an async operation (e.g. a lookup) is in
 
 #### Speech-to-Text Dictation
 
-Set the `mic` boolean attribute to render a dictation button. The component appends recognized speech to the current value and emits `mdsInputSpeechEnd` when recognition stops. It degrades gracefully if the Web Speech API is unavailable.
+Set the `mic` boolean attribute to render a dictation button. Starting a dictation clears the current value and writes the recognized speech in its place; the component emits `mdsInputSpeechEnd` when the user stops the dictation. If the Web Speech API is unavailable the button switches to an error state.
 
 ```html
 <mds-input
@@ -231,7 +231,7 @@ Set the `mic` boolean attribute to render a dictation button. The component appe
 
 #### Listening to Events
 
-Listen for `mdsInputChange` instead of native `input` or `change` - these native events may not bubble out of the shadow DOM reliably.
+Listen for `mdsInputChange` instead of native `input` or `change`: `change` does not cross the shadow boundary, and `input` reports only typing, not the values set by the steppers, the dictation or a script.
 
 ```javascript
 document.querySelector('mds-input').addEventListener('mdsInputChange', (e) => {
@@ -245,7 +245,7 @@ document.querySelector('mds-input').addEventListener('mdsInputValidation', (e) =
 
 #### Form Participation
 
-`<mds-input>` is form-associated. It submits, resets, and validates natively inside a `<form>`. Set `name` so the value is included in form data.
+`<mds-input>` is form-associated. It submits natively inside a `<form>`; set `name` so the value is included in form data. Its validation drives `variant` and `mdsInputValidation` but is not reported to the form (a `required` field does not block submission), and in the current release a reset clears the submitted value but not the text shown in the field.
 
 ```html
 <form action="/salva" method="post">
@@ -260,7 +260,7 @@ document.querySelector('mds-input').addEventListener('mdsInputValidation', (e) =
 
 #### Read-Only Display
 
-Use `readonly` when the value should be visible but not editable. A top tip describes the state on focus, and the field text is auto-selected on click for easy copying.
+Use `readonly` when the value should be visible but not editable. A persistent top tip describes the state, and the field text is auto-selected on focus for easy copying.
 
 ```html
 <mds-input
@@ -272,13 +272,13 @@ Use `readonly` when the value should be visible but not editable. A top tip desc
 
 #### Styling Customization
 
-Style the input only through its documented `--mds-input-*` CSS custom properties. Set them on the host or a parent selector. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the input only through its documented `--mds-input-*` CSS custom properties. Set them on the host or a parent selector. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .search-bar mds-input {
-  --mds-input-background: rgb(var(--tone-neutral-09));
-  --mds-input-placeholder-default-color: rgb(var(--tone-neutral-05));
-  --mds-input-icon-color: rgb(var(--variant-primary-03));
+  --mds-input-background: rgb(var(--magma-wash-base));
+  --mds-input-placeholder-default-color: rgb(var(--magma-text-disabled));
+  --mds-input-icon-color: rgb(var(--magma-accent-fg));
 }
 
 /* Textarea: fixed height, allow resize */
@@ -292,29 +292,29 @@ Style the input only through its documented `--mds-input-*` CSS custom propertie
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-input>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use a Raw `<input>` When `<mds-input>` Exists
 
 Reaching for a plain `<input>` bypasses theming, validation, tips, accessible state announcements, and form-reset behavior provided by the component.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <input type="text" name="nome" placeholder="Nome" class="my-input">
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input name="nome" type="text" placeholder="Nome"></mds-input>
 ```
 
 #### Do Not Set Boolean Attributes to the String `"false"`
 
-`disabled="false"`, `required="false"`, `readonly="false"`, `mic="false"`, and `await="false"` are all truthy in HTML - any non-empty string activates the attribute. Remove the attribute entirely to turn it off.
+`disabled`, `required`, `readonly`, `mic` and `await` are boolean attributes: remove the attribute entirely to turn it off. The runtime happens to read the string `"false"` as `false`, but the attribute stays in the markup until the component renders, and HTML, the browser's own handling of `disabled` on a form-associated element, attribute selectors and `hasAttribute()` all read a present attribute as set.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input name="note" disabled="false" required="false"></mds-input>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input name="note"></mds-input>
 ```
 
@@ -323,24 +323,24 @@ Reaching for a plain `<input>` bypasses theming, validation, tips, accessible st
 The component drives `variant` to `'success'` or `'error'` automatically on blur when validators are active. Setting `variant` manually overrides the feedback and breaks the visual contract.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input name="codice" variant="error" tip="Valore non valido"></mds-input>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input name="codice" required tip="Inserisci un valore valido"></mds-input>
 ```
 
 #### Do Not Listen to Native `input` or `change` Events
 
-Native DOM events may not bubble out of the shadow root reliably. Use the documented `mdsInputChange` event instead.
+The native `change` event does not cross the shadow boundary, and `input` reports only typing, not the values set by the steppers, the dictation or a script. Use the documented `mdsInputChange` event instead, which fires for every value change.
 
 ```javascript
-// 🚫 INCORRECT
+// INCORRECT
 document.querySelector('mds-input').addEventListener('input', (e) => {
   console.log(e.target.value);
 });
 
-// ✅ CORRECT
+// CORRECT
 document.querySelector('mds-input').addEventListener('mdsInputChange', (e) => {
   console.log(e.detail.value);
 });
@@ -351,10 +351,10 @@ document.querySelector('mds-input').addEventListener('mdsInputChange', (e) => {
 The component renders its own increment/decrement buttons and hides the native browser spinners. Do not try to re-enable them via CSS, and do not add inline JS `stepUp`/`stepDown` calls - use the `controlsLayout` and `controlsIcon` props to configure the built-in controls.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input type="number" style="-moz-appearance: auto;"></mds-input>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input
   type="number"
   controls-layout="horizontal"
@@ -366,27 +366,27 @@ The component renders its own increment/decrement buttons and hides the native b
 
 #### Do Not Use a Legacy or Invalid `type` Value
 
-`<mds-input>` accepts a specific set of `type` values: `text`, `email`, `number`, `password`, `search`, `tel`, `url`, `date`, `time`, `textarea`, `cf`, `piva`, `cc`, `isbn`. Supplying anything else (e.g. `"checkbox"`, `"radio"`, `"file"`) silently falls back to `text` behavior and ignores the type-specific logic. Use the dedicated Magma component for those controls.
+`<mds-input>` accepts a specific set of `type` values: `text`, `email`, `number`, `password`, `search`, `tel`, `url`, `date`, `time`, `textarea`, `cf`, `piva`, `cc`, `isbn`. Supplying anything else (e.g. `"checkbox"`, `"radio"`, `"file"`) is passed straight to the inner native `<input>`, which renders a bare native control that the component neither styles nor reports correctly to the form. Use the dedicated Magma component for those controls.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input type="checkbox" name="accetto"></mds-input>
 <mds-input type="file"     name="allegato"></mds-input>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-switch name="accetto"></mds-input-switch>
 <mds-input-upload name="allegato"></mds-input-upload>
 ```
 
 #### Do Not Use `placeholder` as the Accessible Label
 
-`placeholder` disappears on input and is never read as a label by assistive tech. Always pair `<mds-input>` with [`mds-input-field`](../../mds-input-field) (which provides the visible `<label>` association) or supply `aria-label` directly on the host.
+`placeholder` disappears on input and is never read as a label by assistive tech. Always pair `<mds-input>` with [`mds-input-field`](../../mds-input-field) (which shows a visible label and passes it down as the accessible name) or supply `aria-label` directly on the host.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input name="ricerca" placeholder="Cerca per nome"></mds-input>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-field label="Cerca per nome">
   <mds-input name="ricerca" placeholder="Cerca per nome"></mds-input>
 </mds-input-field>
@@ -397,15 +397,15 @@ The component renders its own increment/decrement buttons and hides the native b
 The supported customization surface is `--mds-input-*` CSS custom properties plus the documented shadow parts (`field`, `tip-top`, `tip-bottom`, `tip-count`, `password-toggle-button`, `counter-button-increase`, `counter-button-decrease`, `mic-toggle-button`). Targeting undocumented internals via `>>>` or arbitrary class names couples your code to the Shadow DOM implementation.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-input >>> .input {
   border: 2px solid red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-input {
-  --mds-input-ring: 0 0 0 2px rgb(var(--status-error-05));
-  --mds-input-background: rgb(var(--status-error-09));
+  --mds-input-ring: 0 0 0 2px rgb(var(--magma-danger-border));
+  --mds-input-background: rgb(var(--magma-danger-wash-base));
 }
 mds-input::part(field) {
   font-style: italic;

@@ -14,15 +14,15 @@ The `<mds-keyboard-key>` web component renders a single physical-looking keycap 
 #### Semantic Behavior
 
 - **Compound child only**: It must be a direct slot child of `<mds-keyboard>`; it is not used standalone or mixed with other element types, since the parent reads its `name` to build the key combination and inserts `+` separators between keys.
-- **Glyph resolution from `name`**: When `name` maps to a known icon (arrows, command, shift, enter, tab, space, etc.) it renders that icon; otherwise it renders the key's localized text.
-- **Keyboard-side indicator**: For keys that exist on both sides of the keyboard, it appends an `l` / `r` label.
+- **Glyph resolution from `name`**: When `name` maps to a known icon (arrows, command, shift, enter, tab, space, etc.) it renders that icon; otherwise it renders the key's alias from the dictionary (e.g. `Ctrl`, `Esc`).
+- **Keyboard-side indicator**: For the side-specific names (`shiftleft`, `controlright`, ...), it appends an `l` / `r` label.
 - **Pressed state is parent-driven**: The `pressed` prop is toggled by `<mds-keyboard>` during a verification test as the user types; it is not meant to be set manually for presentational use.
 - **Localized title**: The host receives a localized `title` describing the key (el/en/es/it).
 - **No interactive role**: The keycap is purely visual - it exposes no role, focus handling, or emitted events of its own.
 
 #### Properties & Visual Configurations
 
-This child has essentially no presentational configuration; it does not use the shared `variant` / `tone` ladders from [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system).
+This child has essentially no presentational configuration; it does not use the shared `variant` / `tone` ladders from [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 - **`name`** is the only meaningful authoring prop: set it to the canonical key code (one value from the keyboard key dictionary, e.g. `control`, `arrowup`, `c`) for the key this cap represents. It selects the displayed glyph or alias and feeds the parent's combination matching.
 - **`pressed`** is a state hook, not an authoring choice - let the parent set it during a test. Leave it unset for a static shortcut display.
@@ -30,7 +30,7 @@ This child has essentially no presentational configuration; it does not use the 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-keyboard-key>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-keyboard-key>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Single Key Inside `<mds-keyboard>`
 
@@ -105,7 +105,7 @@ Adjust the keycap appearance through the documented `--mds-keyboard-key-*` CSS c
 ```css
 /* Increase padding for a larger keycap feel */
 .keycap-large mds-keyboard-key {
-  --mds-keyboard-key-padding: var(--spacing-300);
+  --mds-keyboard-key-padding: calc(var(--spacing) * 300);
 }
 
 /* Slow down the press animation */
@@ -115,27 +115,27 @@ Adjust the keycap appearance through the documented `--mds-keyboard-key-*` CSS c
 
 /* Deepen the bottom shadow for more three-dimensional depth */
 .keycap-deep mds-keyboard-key {
-  --mds-keyboard-key-illumination-dark-size: var(--spacing-400);
-  --mds-keyboard-key-illumination-light-size: var(--spacing-100);
+  --mds-keyboard-key-illumination-dark-size: calc(var(--spacing) * 400);
+  --mds-keyboard-key-illumination-light-size: calc(var(--spacing) * 100);
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-keyboard-key>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-keyboard-key>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-keyboard-key>` Outside `<mds-keyboard>`
 
 The key is a compound child component and must be a direct slot child of [`<mds-keyboard>`](../../mds-keyboard). Used standalone it renders visually but has no separator wiring, no test capability, and violates the compound component contract.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-keyboard-key name="control"></mds-keyboard-key>
 <span>+</span>
 <mds-keyboard-key name="c"></mds-keyboard-key>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="control"></mds-keyboard-key>
   <mds-keyboard-key name="c"></mds-keyboard-key>
@@ -147,14 +147,14 @@ The key is a compound child component and must be a direct slot child of [`<mds-
 The parent `<mds-keyboard>` inserts `+` separators between child keys automatically. Adding them manually results in duplicate or misaligned separators.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="command"></mds-keyboard-key>
   <span>+</span>
   <mds-keyboard-key name="v"></mds-keyboard-key>
 </mds-keyboard>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="command"></mds-keyboard-key>
   <mds-keyboard-key name="v"></mds-keyboard-key>
@@ -166,13 +166,13 @@ The parent `<mds-keyboard>` inserts `+` separators between child keys automatica
 When `<mds-keyboard try>` is enabled, the parent owns `pressed` and sets it as the user types. Setting it manually conflicts with the parent state machine and produces incorrect visual feedback.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-keyboard try>
   <mds-keyboard-key name="control" pressed></mds-keyboard-key>
   <mds-keyboard-key name="z"></mds-keyboard-key>
 </mds-keyboard>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-keyboard try>
   <mds-keyboard-key name="control"></mds-keyboard-key>
   <mds-keyboard-key name="z"></mds-keyboard-key>
@@ -184,14 +184,14 @@ When `<mds-keyboard try>` is enabled, the parent owns `pressed` and sets it as t
 `name` is a `KeyboardKeyName` union type. Passing an arbitrary string (e.g. `"ctrl"`, `"cmd"`, `"esc"`) that is not in the dictionary causes a runtime lookup failure because the component reads `keyboardKeysData[name]` without a guard.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="ctrl"></mds-keyboard-key>
   <mds-keyboard-key name="cmd"></mds-keyboard-key>
   <mds-keyboard-key name="esc"></mds-keyboard-key>
 </mds-keyboard>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="control"></mds-keyboard-key>
   <mds-keyboard-key name="command"></mds-keyboard-key>
@@ -204,12 +204,12 @@ When `<mds-keyboard try>` is enabled, the parent owns `pressed` and sets it as t
 `<mds-keyboard-key>` exposes no default or named slot. Any slotted content is ignored; the glyph is derived entirely from the `name` prop.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="control">Ctrl</mds-keyboard-key>
 </mds-keyboard>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-keyboard>
   <mds-keyboard-key name="control"></mds-keyboard-key>
 </mds-keyboard>
@@ -220,14 +220,14 @@ When `<mds-keyboard try>` is enabled, the parent owns `pressed` and sets it as t
 The supported customization surface is the documented `--mds-keyboard-key-*` CSS custom properties. Piercing shadow DOM via `::part()` on undocumented internals, `>>>`, or class hacks couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-keyboard-key >>> .physical-key {
   background-color: blue;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-keyboard-key {
-  --mds-keyboard-key-padding: var(--spacing-300);
+  --mds-keyboard-key-padding: calc(var(--spacing) * 300);
   --mds-keyboard-key-transition-duration: 400ms;
 }
 ```
