@@ -33,4 +33,28 @@
     background-color: rgb(var(--magma-surface-default));
     color: rgb(var(--magma-text-default));
   }
+
+  /* The docs pages are Storybook's own typography, already capped at 1000px by its
+     container: the measure the reset sets on text and titles (max-w-text, max-w-title)
+     is meant for the apps and squeezes the docs paragraphs to a 240px column. */
+
+  .sbdocs-content :is(h1, h2, h3, h4, h5, h6, p, li, figcaption) {
+    max-width: none;
+  }
+}
+
+/* The table of contents of the docs pages ("On this page"). Storybook styles it with
+   unlayered rules, so these stay out of the layers to win the cascade: wider than its
+   10rem, so the headings of the usage docs stay on one or two lines; hidden when the
+   page has no heading to list (the same ones tocbot collects: the docs of a single
+   story, an MDX page without sections), so the content is centred like the other pages. */
+
+aside.sbdocs-toc--custom,
+aside.sbdocs-toc--custom > nav {
+  width: 16rem;
+}
+
+.sbdocs-wrapper:not(:has(.sbdocs-content :is(h2, h3):not(.skip-toc, .docs-story *)))
+  > aside.sbdocs-toc--custom {
+  display: none;
 }
