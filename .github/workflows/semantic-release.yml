@@ -117,7 +117,7 @@ jobs:
         run: git fetch origin "refs/notes/semantic-release:refs/notes/semantic-release" 2>/dev/null || true
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
 
