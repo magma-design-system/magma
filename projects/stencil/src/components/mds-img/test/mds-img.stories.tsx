@@ -51,7 +51,8 @@ const TemplateBook = (args) => (
       <div class="grid gap-100 auto-rows-min">
         <mds-text typography="h6">Consumption Low</mds-text>
         <mds-text typography="detail">
-          Set consumption to <b>low</b> in <b>Magma accessibility</b> tab in storybook.
+          Set consumption to <b>low</b> in the <b>Magma accessibility</b> menu of the Storybook
+          toolbar.
         </mds-text>
       </div>
     </div>
