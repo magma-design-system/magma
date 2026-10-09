@@ -8,10 +8,10 @@ identity. The per-target tracks ([`web-components.md`](web-components.md),
 [`react.md`](react.md), [`angular.md`](angular.md)) link here instead of repeating
 this. If something about styles/fonts/icons setup is unclear, this file wins.
 
-For the deeper styles reference (Tailwind config, color classes, typography
-utilities, dark mode, `--magma-*` global vars) see
-[`../../projects/styles/SPEC.md`](../../projects/styles/SPEC.md). This file is the
-minimum to get a consumer running.
+This file is the minimum to get a consumer running. Once it runs: coloring your own UI
+in [`color.md`](color.md), the typography utilities in [`typography.md`](typography.md),
+dark mode, preferences, named themes, the `--magma-*` global decisions and the corner
+geometry in [`theming.md`](theming.md).
 
 ## 1. Styles
 
@@ -37,19 +37,24 @@ in your global CSS entry point, or specificity conflicts and dark mode will brea
 /* Fonts - see section 2 */
 @import '@fontsource/karla/400.css' layer(vendor);
 @import '@fontsource/karla/700.css' layer(vendor);
+@import '@fontsource/merriweather/300.css' layer(vendor);
 @import '@fontsource/merriweather/400.css' layer(vendor);
 @import '@fontsource/merriweather/700.css' layer(vendor);
 @import '@fontsource/roboto/500.css' layer(vendor);
 @import '@fontsource/roboto/700.css' layer(vendor);
+@import '@fontsource/roboto/900.css' layer(vendor);
 @import '@fontsource/roboto-mono/400.css' layer(vendor);
 
 /* Magma styles */
 @import '@maggioli-design-system/styles/dist/css/colors-rgb.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/typography.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/reset.css' layer(reset);
 @import '@maggioli-design-system/styles/dist/css/hydrated.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/transitions.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/animations.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/globals.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/semantic.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/themes.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/base.css' layer(base);
 
 /* your Tailwind entry point, if any */
@@ -61,10 +66,13 @@ What each file provides:
 | File | Purpose |
 | ---- | ------- |
 | `colors-rgb.css` | RGB color tokens (`--tone-*`, `--status-*`, ...). Required by components and Tailwind. Also redefines tokens for dark / high-contrast |
+| `typography.css` | The non-color tokens as CSS vars: fonts, type sizes, spacing, radius, shadows (`--shadow-md-sharp`, ...). Components carry their own fallbacks; your CSS needs this file for `var(--shadow-*)`, `var(--radius-*)` and the `--magma-radius-*` corner scale |
 | `reset.css` | Opinionated CSS reset |
 | `hydrated.css` | Anti-FOUC for Stencil - hides components until hydrated |
 | `transitions.css`, `animations.css` | Shared motion |
 | `globals.css` | Global `--magma-*` design decisions |
+| `semantic.css` | The semantic color roles (`--magma-surface-*`, `--magma-text-*`, ..., see [`color.md`](color.md)). Required: without it the page `body` has no colour, the Tailwind role utilities paint nothing, and components lose named themes and high contrast |
+| `themes.css` | The named themes (`data-theme-name`): retint the semantic roles. Import it after `semantic.css` |
 | `base.css` | Base element styles (sets `--font-info` body font, etc.) |
 
 DO NOT import `colors-hex-*.css` when using components or Tailwind - they cannot be
@@ -72,18 +80,28 @@ used with opacity modifiers and bypass dark mode. Use `colors-rgb.css`.
 
 ### Tailwind (optional)
 
-If the consumer uses Tailwind, extend Magma's preset:
+With Tailwind 4, import Magma's Tailwind layer in your Tailwind entry point (the
+`./tailwind.css` of the block above), after Tailwind's own theme and utilities. Leave out
+`@import 'tailwindcss'`: its preflight would duplicate Magma's reset.
 
-```javascript
-// tailwind.config.js
-module.exports = {
-  content: ['./src/**/*.{ts,tsx,html}'],
-  presets: [require('@maggioli-design-system/styles')],
-};
+```css
+/* tailwind.css */
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import '@maggioli-design-system/styles/dist/tailwind/theme.css';
+@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import '@maggioli-design-system/styles/dist/tailwind/utilities.css';
 ```
 
-Tailwind 3 layers are also published under
-`@maggioli-design-system/styles/dist/tailwind3/`.
+`theme.css` brings the palette, the typography tokens and the semantic color utilities
+(`bg-surface-raised`, `text-fg-muted`, ..., see [`color.md`](color.md)), `typography.css`
+the `text-title-*` / `text-info-*` / `text-read-*` / `text-code-*` utilities,
+`utilities.css` the `focus-bounce` / `focus-zoom` helpers.
+
+Do not use the JS preset (`presets: [require('@maggioli-design-system/styles')]`) with
+Tailwind 4: it is the Tailwind 3 path (with the layers in
+`@maggioli-design-system/styles/dist/tailwind3/`), its colours are Tailwind 3 colour
+functions, and Tailwind 4 generates none of the Magma utilities from it.
 
 ## 2. Fonts
 
@@ -96,19 +114,21 @@ via [`@fontsource`](https://fontsource.org/):
 npm i @fontsource/karla @fontsource/merriweather @fontsource/roboto @fontsource/roboto-mono
 ```
 
-The `@import` lines are already in the section 1 block (under `layer(vendor)`). The
-weights listed (Karla 400/700, Merriweather 400/700, Roboto 500/700, Roboto Mono 400)
-are the minimum used by the type scale; add more weights as needed.
+The `@import` lines are already in the section 1 block (under `layer(vendor)`). They
+are the weights the type scale uses: Roboto 500/700/900 (actions, h6, h1-h5), Karla
+400/700, Merriweather 300/400 (reading paragraph and detail, caption) plus 700 for bold in
+reading text, Roboto Mono 400. Add more weights as needed.
 
 Self-hosting via `@fontsource` is preferred over a CDN `<link>` so the fonts respect
 the `vendor` cascade layer and ship offline.
 
 ## 3. Icons
 
-Icons are managed by **iconsauce** and consumed at runtime by `mds-icon`, which
-fetches each icon as an SVG file from a path the host app configures. See the icons
-section in [`../../projects/stencil/SPEC.md`](../../projects/stencil/SPEC.md) for how
-slugs resolve; this section is only the consumer-side wiring.
+Icons are consumed at runtime by `mds-icon`, which fetches each icon as an SVG file from
+a path the host app configures. A slug starts with its icon set (`mi/` Material Icons,
+`mdi/` Material Design Icons, `mgg/` Maggioli) and resolves to
+`<mdsIconSvgPath><slug>.svg`: with the path `/svg/`, `mi/baseline/email` is fetched from
+`/svg/mi/baseline/email.svg`.
 
 ### Package and asset copy
 
@@ -129,19 +149,22 @@ The value is the public URL of the folder you copied the SVGs into:
 window.sessionStorage.setItem('mdsIconSvgPath', '/svg/');
 ```
 
-Alternatives (after `defineCustomElements()` has run), documented in
+Alternatives, documented in
 [`../../projects/stencil/src/components/mds-icon/readme.md`](../../projects/stencil/src/components/mds-icon/readme.md):
 
-- `mdsIcon.setSvgPath('/svg/')` - instance method on a temporary `mds-icon` node
-- `MdsIcon.setSvgPathStatic('/svg/')` - static class method
+- `IconsSetService.setSvgPath('/svg/')`, imported from
+  `@maggioli-design-system/magma/services`: sets the path in code, without
+  `sessionStorage`, and reloads the icons already mounted
+- `mdsIcon.setSvgPath('/svg/')` - instance method on a temporary `mds-icon` node, after
+  `defineCustomElements()` has run
 - dispatch `new CustomEvent('mdsIconSvgPathUpdate')` on `window` to force a refresh
   after changing the path
 
 Reference an icon by slug, never inline SVG and never import from an icon-set package:
 
 ```html
-<mds-icon name="action-email-send"></mds-icon>
-<mds-button icon="action-email-send">Send</mds-button>
+<mds-icon name="mi/baseline/email"></mds-icon>
+<mds-button icon="mi/baseline/send">Send</mds-button>
 ```
 
 The mgg-icons webfont (`@maggioli-design-system/icons`) is an alternative output and

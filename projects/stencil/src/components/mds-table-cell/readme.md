@@ -15,7 +15,7 @@ The `<mds-table-cell>` web component is the data-cell building block of the Magm
 
 #### Semantic Behavior
 
-- **Compound child only**: Must be placed as a direct slot child of `<mds-table-row>`. It is not used standalone, and a row should not mix cells with unrelated child types. The parent also injects its own `mds-table-cell` instances for the selection checkbox and row actions.
+- **Compound child only**: Must be placed as a direct slot child of `<mds-table-row>` (or of `<mds-table-footer>`, which is itself a row). It is not used standalone, and a row should not mix cells with unrelated child types. The parent also injects its own `mds-table-cell` instances for the selection checkbox and row actions.
 - **Sorting contribution**: The cell does not sort anything itself, but its `value` is read by `mds-table-header-cell` when sorting a column. If `value` is unset, the header cell falls back to the cell's trimmed text content.
 - **Default slot passthrough**: Any text, HTML or component placed inside is projected as-is; there is no internal layout beyond styling.
 
@@ -23,14 +23,14 @@ The `<mds-table-cell>` web component is the data-cell building block of the Magm
 
 This component is essentially a layout/semantic child and exposes a single non-obvious prop:
 
-- **`value`**: Provide this when the cell's visible content is not directly comparable for sorting, when the displayed text differs from the value you want to sort by (e.g. a formatted date or currency string), or to force a numeric sort by passing a `number`. When omitted, the column sort uses the rendered text content instead.
+- **`value`**: Provide this when the cell's visible content is not directly comparable for sorting, when the displayed text differs from the value you want to sort by (e.g. a formatted date or currency string), or to get a numeric sort (two values that both read as numbers, such as `value="1250.50"`, are compared numerically). When omitted, the column sort uses the rendered text content instead.
 
-There are no `variant` or `tone` props; visual presentation is controlled through the documented CSS custom properties (background, alternate background, and text colors) defined in the readme.
+There are no `variant` or `tone` props; visual presentation is controlled through the documented CSS custom properties (background, alternate background, and text colors) listed in [`readme.md`](../readme.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-table-cell>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the table composition model documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-table-cell>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Plain Text Cell
 
@@ -73,7 +73,7 @@ When the column header is `sortable` and the displayed text is directly sortable
 
 #### Sortable Column - Explicit `value` for Formatted Data
 
-When the cell displays a formatted string (currency, localized date, percentage) that does not sort lexicographically, set `value` to the raw comparable form. Pass a `number` to force numeric sort order.
+When the cell displays a formatted string (currency, localized date, percentage) that does not sort lexicographically, set `value` to the raw comparable form. Values that both read as numbers are compared numerically.
 
 ```html
 <mds-table-header>
@@ -82,7 +82,7 @@ When the cell displays a formatted string (currency, localized date, percentage)
 </mds-table-header>
 <mds-table-body>
   <mds-table-row>
-    <!-- value as number for numeric sort -->
+    <!-- numeric value for numeric sort -->
     <mds-table-cell value="1250.50">
       <mds-text typography="detail">1.250,50 EUR</mds-text>
     </mds-table-cell>
@@ -115,14 +115,14 @@ The default slot accepts any HTML or component. Use this to embed status badges,
     <mds-badge variant="success" tone="weak" label="Attivo"></mds-badge>
   </mds-table-cell>
   <mds-table-cell>
-    <mds-avatar label="MR" size="sm"></mds-avatar>
+    <mds-avatar initials="MR"></mds-avatar>
   </mds-table-cell>
 </mds-table-row>
 ```
 
 #### Footer Cell
 
-`<mds-table-cell>` is used inside [`<mds-table-footer>`](../../mds-table-footer) for summary rows (totals, counts). The same `value` sorting prop can be set here too if the footer participates in column alignment logic.
+`<mds-table-cell>` is used inside [`<mds-table-footer>`](../../mds-table-footer) for summary rows (totals, counts). The footer is never sorted, so `value` has no effect there.
 
 ```html
 <mds-table-footer>
@@ -137,7 +137,7 @@ The default slot accepts any HTML or component. Use this to embed status badges,
 
 #### Full Table Composition
 
-The canonical structure. Each cell sits inside a row, which sits inside a section (`mds-table-body`, `mds-table-header`, `mds-table-footer`), all wrapped by [`<mds-table>`](../../mds-table).
+The canonical structure. Each cell sits inside an `mds-table-row` of `mds-table-body`, or directly inside `mds-table-footer` (the header holds `mds-table-header-cell` elements instead), all wrapped by [`<mds-table>`](../../mds-table).
 
 ```html
 <mds-table>
@@ -180,39 +180,33 @@ The canonical structure. Each cell sits inside a row, which sits inside a sectio
 
 #### Styling Customization
 
-Customize cell colors through the documented `--mds-table-cell-*` CSS custom properties. Set them on the host or on a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Customize cell colors through the documented `--mds-table-cell-*` CSS custom properties. Set them on the host or on a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
 /* Highlight a column of cells with a custom background */
 .tabella-fatture mds-table-cell.colonna-importo {
-  --mds-table-cell-background: rgb(var(--variant-info-01));
-  --mds-table-cell-color: rgb(var(--tone-kaolin-10));
-}
-
-/* Override the alternate (selected/striped) background */
-.tabella-fatture mds-table-cell {
-  --mds-table-cell-background-alt: rgb(var(--variant-primary-01));
-  --mds-table-cell-color-alt: rgb(var(--tone-kaolin-10));
+  --mds-table-cell-background: rgb(var(--magma-info-emphasis));
+  --mds-table-cell-color: rgb(var(--magma-info-on-emphasis));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-table-cell>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-table-cell>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-table-cell>` Outside Its Parent Hierarchy
 
 `<mds-table-cell>` is a compound child; it must be placed inside `<mds-table-row>` or `<mds-table-footer>` (themselves inside `<mds-table>`). Rendering it standalone breaks the table layout and ARIA semantics entirely.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="my-grid">
   <mds-table-cell>Nome</mds-table-cell>
   <mds-table-cell>Email</mds-table-cell>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-body>
     <mds-table-row>
@@ -228,13 +222,13 @@ Common incorrect uses of `<mds-table-cell>`. Each entry pairs the wrong form wit
 Using raw `<td>` inside `<mds-table-row>` bypasses Magma theming, the `selected`/`sorted` state styles, and the sort-value integration. Always use `<mds-table-cell>`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table-row>
   <td>Mario Rossi</td>
   <td>mario.rossi@esempio.it</td>
 </mds-table-row>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table-row>
   <mds-table-cell><mds-text typography="detail">Mario Rossi</mds-text></mds-table-cell>
   <mds-table-cell><mds-text typography="detail">mario.rossi@esempio.it</mds-text></mds-table-cell>
@@ -246,12 +240,12 @@ Using raw `<td>` inside `<mds-table-row>` bypasses Magma theming, the `selected`
 If a cell shows a formatted value (localized date, currency, percentage) and the column is sortable, omitting `value` causes the sort to compare the human-readable strings lexicographically, producing wrong order.
 
 ```html
-<!-- 🚫 INCORRECT: "12 marzo 2024" sorts before "2 gennaio 2024" lexicographically -->
+<!-- INCORRECT: "12 marzo 2024" sorts before "2 gennaio 2024" lexicographically -->
 <mds-table-cell>
   <mds-text typography="detail">12 marzo 2024</mds-text>
 </mds-table-cell>
 
-<!-- ✅ CORRECT: ISO date in value drives sort; display string is for humans -->
+<!-- CORRECT: ISO date in value drives sort; display string is for humans -->
 <mds-table-cell value="2024-03-12">
   <mds-text typography="detail">12 marzo 2024</mds-text>
 </mds-table-cell>
@@ -262,14 +256,14 @@ If a cell shows a formatted value (localized date, currency, percentage) and the
 `<mds-table-cell>` does not expose named `::part()` targets; the documented customization surface is `--mds-table-cell-background`, `--mds-table-cell-background-alt`, `--mds-table-cell-color`, and `--mds-table-cell-color-alt`. Targeting internals via `>>>` or undocumented selectors couples your code to implementation details that can change.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-table-cell >>> span {
   color: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-table-cell {
-  --mds-table-cell-color: rgb(var(--status-error-05));
+  --mds-table-cell-color: rgb(var(--magma-danger-fg));
 }
 ```
 
@@ -278,14 +272,14 @@ mds-table-cell {
 Inserting a `<div>` or `<span>` wrapper around `<mds-table-cell>` inside `<mds-table-row>` breaks the `display: table-cell` layout model and disrupts the column alignment.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table-row>
   <div class="cell-wrapper">
     <mds-table-cell><mds-text typography="detail">Cognome</mds-text></mds-table-cell>
   </div>
 </mds-table-row>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table-row>
   <mds-table-cell><mds-text typography="detail">Cognome</mds-text></mds-table-cell>
 </mds-table-row>

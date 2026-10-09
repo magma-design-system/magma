@@ -18,7 +18,7 @@ The `<mds-accordion-timer-item>` web component is the single collapsible panel o
 - **Compound child only**: Must be placed as a direct default-slot child of `<mds-accordion-timer>`, alongside other `<mds-accordion-timer-item>` siblings. It is not used standalone or mixed with other child types, since the parent drives the rotating timer across the items.
 - **Selection is parent-orchestrated**: `selected` represents the open state, but only one sibling is open at a time - the parent advances selection on the timer or on a user click.
 - **Click toggles and reports up**: Clicking the header toggles `selected` and, when opening, emits `mdsAccordionTimerItemClickSelect` so the parent can pause and re-anchor its timer on this item.
-- **Programmatic selection**: Setting `selected` from code emits `mdsAccordionTimerItemSelect` - distinct from the click event so the parent can restart (rather than pause) the countdown.
+- **Programmatic selection**: Setting `selected` to `true` emits `mdsAccordionTimerItemSelect`, and the parent restarts the countdown from the beginning of that item. A click changes `selected` too, so it emits this event as well, just before `mdsAccordionTimerItemClickSelect`.
 - **Hover pauses the countdown**: While selected, pointer enter/leave emit `mdsAccordionTimerItemMouseEnterSelect` / `mdsAccordionTimerItemMouseLeaveSelect`, which the parent uses to pause and resume the timer. These fire only when the item is currently selected.
 
 #### Properties & Visual Configurations
@@ -32,15 +32,15 @@ The `<mds-accordion-timer-item>` web component is the single collapsible panel o
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-accordion-timer-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-accordion-timer-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Timed Accordion
 
-The canonical form. Always place `<mds-accordion-timer-item>` as a direct child of [`<mds-accordion-timer>`](../../mds-accordion-timer). Provide a `description` for each item - it becomes the header label and the accessible name for the content region.
+The canonical form. Always place `<mds-accordion-timer-item>` as a direct child of [`<mds-accordion-timer>`](../../mds-accordion-timer). Provide a `description` for each item - it becomes the header label and the accessible name for the content region. Mark one item `selected`: without it the timer does not start.
 
 ```html
 <mds-accordion-timer>
-  <mds-accordion-timer-item description="Introduzione al progetto">
+  <mds-accordion-timer-item description="Introduzione al progetto" selected>
     <mds-text>Contenuto dell'introduzione al progetto.</mds-text>
   </mds-accordion-timer-item>
   <mds-accordion-timer-item description="Obiettivi principali">
@@ -73,7 +73,7 @@ Set `duration` (in milliseconds) on a single item to give it a different display
 
 ```html
 <mds-accordion-timer duration="5000">
-  <mds-accordion-timer-item description="Panoramica rapida" duration="2000">
+  <mds-accordion-timer-item description="Panoramica rapida" duration="2000" selected>
     <mds-text>Questa sezione scorre piu velocemente delle altre.</mds-text>
   </mds-accordion-timer-item>
   <mds-accordion-timer-item description="Dettagli tecnici" duration="12000">
@@ -122,11 +122,11 @@ The default slot accepts HTML elements and components, not only plain text. Use 
 
 #### Reacting to Item Changes
 
-Listen for `mdsAccordionTimerItemClickSelect` to detect user-initiated selection (hover state pauses the timer and triggers the event when the user manually opens an item). To detect code-driven or timer-driven advances, listen for `mdsAccordionTimerItemSelect` on the item, or listen for `mdsAccordionTimerChange` on the parent instead.
+Listen for `mdsAccordionTimerItemClickSelect` to detect user-initiated selection (it fires only when a click opens the item). `mdsAccordionTimerItemSelect` on the item fires on every selection - click, code or timer - and `mdsAccordionTimerChange` on the parent reports the new index.
 
 ```html
 <mds-accordion-timer id="timer">
-  <mds-accordion-timer-item description="Notizie in evidenza" id="item-0">
+  <mds-accordion-timer-item description="Notizie in evidenza" id="item-0" selected>
     <mds-text>Prima notizia in evidenza della giornata.</mds-text>
   </mds-accordion-timer-item>
   <mds-accordion-timer-item description="Aggiornamenti recenti" id="item-1">
@@ -147,14 +147,14 @@ Listen for `mdsAccordionTimerItemClickSelect` to detect user-initiated selection
 
 #### Styling Customization
 
-Style the item only through its documented `--mds-accordion-timer-item-*` CSS custom properties. Use Magma color tokens wrapped in `rgb(var(...))` so dark mode and high-contrast modes keep working. Note that these custom properties are also inherited from the parent's `--mds-accordion-timer-*` counterparts - setting them on the parent applies to all items at once.
+Style the item only through its documented `--mds-accordion-timer-item-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Note that these custom properties are also inherited from the parent's `--mds-accordion-timer-*` counterparts - setting them on the parent applies to all items at once.
 
 ```css
 /* Customise a single item by targeting its host */
 .featured-section mds-accordion-timer-item {
-  --mds-accordion-timer-item-color: rgb(var(--variant-primary-02));
-  --mds-accordion-timer-item-progress-bar-color: rgb(var(--variant-primary-04));
-  --mds-accordion-timer-item-progress-bar-background: rgb(var(--tone-neutral-09));
+  --mds-accordion-timer-item-color: rgb(var(--magma-accent-fg));
+  --mds-accordion-timer-item-progress-bar-color: rgb(var(--magma-accent-fg));
+  --mds-accordion-timer-item-progress-bar-background: rgb(var(--magma-wash-base));
   --mds-accordion-timer-item-progress-bar-thickness: 4px;
   --mds-accordion-timer-item-duration: 300ms;
 }
@@ -163,19 +163,19 @@ Style the item only through its documented `--mds-accordion-timer-item-*` CSS cu
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-accordion-timer-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-accordion-timer-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use the Item Outside Its Parent
 
 `<mds-accordion-timer-item>` is a compound child and relies on [`<mds-accordion-timer>`](../../mds-accordion-timer) to assign `uuid`, write `progress`, and drive selection. Standalone use produces a static, non-advancing disclosure with no progress bar updates.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion-timer-item description="Dettagli">
   <mds-text>Contenuto.</mds-text>
 </mds-accordion-timer-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item description="Dettagli">
     <mds-text>Contenuto.</mds-text>
@@ -185,10 +185,10 @@ Common incorrect uses of `<mds-accordion-timer-item>`. Each entry pairs the wron
 
 #### Do Not Mix with `mds-accordion-item`
 
-`<mds-accordion-timer-item>` and [`<mds-accordion-item>`](../../mds-accordion-item) are siblings in different compound families and must not be placed in the same parent. The timer accordion expects only `mds-accordion-timer-item` children; mixing types breaks the parent's indexing and timer logic.
+`<mds-accordion-timer-item>` and [`<mds-accordion-item>`](../../mds-accordion-item) are siblings in different compound families and must not be placed in the same parent. The timer accordion indexes only `mds-accordion-timer-item` children; a mixed-in `mds-accordion-item` is left out of the rotation and toggles on its own.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion-timer>
   <mds-accordion-item label="Primo">
     <mds-text>Contenuto.</mds-text>
@@ -198,7 +198,7 @@ Common incorrect uses of `<mds-accordion-timer-item>`. Each entry pairs the wron
   </mds-accordion-timer-item>
 </mds-accordion-timer>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item description="Primo">
     <mds-text>Contenuto.</mds-text>
@@ -214,14 +214,14 @@ Common incorrect uses of `<mds-accordion-timer-item>`. Each entry pairs the wron
 Both props are reserved for the parent's runtime orchestration. Setting them by hand breaks the timer's internal state tracking and produces incorrect progress bar rendering.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item description="Primo" uuid="0" progress="50">
     <mds-text>Contenuto.</mds-text>
   </mds-accordion-timer-item>
 </mds-accordion-timer>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item description="Primo">
     <mds-text>Contenuto.</mds-text>
@@ -231,10 +231,10 @@ Both props are reserved for the parent's runtime orchestration. Setting them by 
 
 #### Do Not Mark More Than One Item `selected`
 
-The parent enforces single-selection at load time, but marking multiple items `selected` in markup means only the first one the parent encounters will drive the timer - the intended initial state becomes ambiguous and may vary by browser.
+The parent does not enforce single selection at load: every item marked `selected` renders open, and the last one drives the timer until the first change closes the others.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item description="Primo" selected>
     <mds-text>Contenuto.</mds-text>
@@ -244,7 +244,7 @@ The parent enforces single-selection at load time, but marking multiple items `s
   </mds-accordion-timer-item>
 </mds-accordion-timer>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item description="Primo" selected>
     <mds-text>Contenuto.</mds-text>
@@ -260,7 +260,7 @@ The parent enforces single-selection at load time, but marking multiple items `s
 The documented customization surface is `--mds-accordion-timer-item-*` CSS custom properties plus the four shadow parts (`content`, `icon`, `label`, `progress`). Targeting undocumented internals couples code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-accordion-timer-item >>> .action {
   font-weight: bold;
 }
@@ -268,10 +268,10 @@ mds-accordion-timer-item::part(spinner) {
   color: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-accordion-timer-item {
-  --mds-accordion-timer-item-color: rgb(var(--variant-primary-02));
-  --mds-accordion-timer-item-progress-bar-color: rgb(var(--variant-primary-04));
+  --mds-accordion-timer-item-color: rgb(var(--magma-accent-fg));
+  --mds-accordion-timer-item-progress-bar-color: rgb(var(--magma-accent-fg));
 }
 mds-accordion-timer-item::part(label) {
   font-weight: 600;
@@ -283,14 +283,14 @@ mds-accordion-timer-item::part(label) {
 `description` is a required prop. It is the only text source for the header label and the accessible name of the content region. Omitting it leaves the button unlabelled and fails accessibility audits.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item>
     <mds-text>Contenuto senza titolo.</mds-text>
   </mds-accordion-timer-item>
 </mds-accordion-timer>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion-timer>
   <mds-accordion-timer-item description="Titolo della sezione">
     <mds-text>Contenuto della sezione.</mds-text>

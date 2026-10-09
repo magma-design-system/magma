@@ -60,30 +60,30 @@ The `<mds-dropdown>` web component is a floating overlay surface of the Magma De
 - **Backdrop**: When `backdrop` is set, a backdrop is shown while the dropdown is visible and removed on close.
 - **Emitted events**: `mdsDropdownChange` fires on every visibility transition; `mdsDropdownVisible` and `mdsDropdownHide` fire on open and close respectively. Each detail carries the resolved `caller` and the current `visible` state.
 - **Default slot is the panel content**: Anything in the default slot (text, HTML, or other components) is the surface shown when the dropdown is triggered.
-- **ARIA wiring**: The panel declares itself a `menu` and names the elements the slot receives as its entries (`role="menuitem"`, a role of their own being left alone); the caller receives `aria-haspopup`, an `aria-controls` pointing at the panel and an `aria-expanded` that follows `visible`. A panel that is not a list of actions declares its own `role` in the markup and keeps it, its contents then being left alone. A caller that exposes no role of its own - a generic host that keeps its control inside its shadow root, such as `mds-tab-item` - is left unwired, none of those attributes being valid on it.
+- **ARIA wiring**: The panel declares itself a `menu` and names the elements the slot receives as its entries (`role="menuitem"`, a role of their own other than `button` being left alone); the caller receives `aria-haspopup`, an `aria-controls` pointing at the panel and an `aria-expanded` that follows `visible`. A panel that is not a list of actions declares its own `role` in the markup and keeps it, its contents then being left alone. A caller that exposes no role of its own - a generic host that keeps its control inside its shadow root, such as `mds-tab-item` - is left unwired, none of those attributes being valid on it.
 
 #### Properties & Visual Configurations
 
-- **`interaction`** decides how the caller opens the panel: `'click'` toggles on caller click (with outside-click and Escape dismissal), `'mouseover'` opens on hover and closes on mouse leave, and `'none'` disables all automatic wiring so visibility is controlled programmatically through `visible`.
+- **`interaction`** decides how the caller opens the panel: `'click'` toggles on caller click (with outside-click and Escape dismissal), `'mouseover'` opens on hover and closes on mouse leave, and `'none'` wires nothing on the caller, so visibility is controlled programmatically through `visible` (an open panel still closes on outside click and Escape).
 - **`target`** (required) is the CSS selector of the external element the dropdown attaches to and positions against.
 
 #### Other behavioral props
 
-- **`placement`** sets the preferred side relative to the caller; the best side is chosen automatically by default (**`disableAutoPlacement`** opts out and pins to `placement`), **`flip`** allows falling back to the opposite side when space runs out, and the panel is shifted to stay inside the viewport with a safe margin by default — **`disableShift`** opts out of this and **`shiftPadding`** tunes the margin.
+- **`placement`** sets the side relative to the caller, honored only with **`disableAutoPlacement`**: by default the side with the most space is chosen automatically. **`flip`** allows falling back to the opposite side when space runs out, and works only together with `disableAutoPlacement`. The panel is shifted to stay inside the viewport with a safe margin by default - **`disableShift`** opts out of this and **`shiftPadding`** tunes the margin.
 - **`offset`** controls the gap between the panel and the caller; the pointer toward the caller is shown by default (**`hideArrow`** removes it) and **`arrowPadding`** insets it from the panel edges.
 - the panel tracks the caller smoothly as the page scrolls by default (**`disableSmooth`** opts out); **`strategy`** chooses the CSS positioning mode (`'absolute'` vs `'fixed'`) and **`zIndex`** sets the stacking order.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-dropdown>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-dropdown>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Dropdown Menu
 
 The minimal required setup: a trigger element with a unique `id` and a `<mds-dropdown>` with `target` pointing at it. The dropdown binds to the caller on `click` by default and dismisses on outside-click or Escape.
 
 ```html
-<mds-button id="menu-utente" label="Profilo" icon="mi/baseline/account-circle" variant="secondary" tone="weak"></mds-button>
+<mds-button id="menu-utente" label="Profilo" icon="mi/baseline/account-circle" variant="primary" tone="weak"></mds-button>
 
 <mds-dropdown target="#menu-utente">
   <mds-button icon="mi/baseline/settings" variant="dark" tone="text" label="Impostazioni account"></mds-button>
@@ -96,7 +96,7 @@ The minimal required setup: a trigger element with a unique `id` and a `<mds-dro
 The dropdown is a `menu` by default, a list of actions being what it holds most of the time. A panel that holds anything else - a calendar, a form, a paragraph with a link - declares its own `role`, which the component never overwrites: its contents are then left alone instead of being named entries of a menu.
 
 ```html
-<mds-button id="info-policy" label="Come usiamo i tuoi dati" variant="secondary" tone="weak"></mds-button>
+<mds-button id="info-policy" label="Come usiamo i tuoi dati" variant="primary" tone="weak"></mds-button>
 
 <mds-dropdown target="#info-policy" role="group">
   <mds-text typography="tip">I dati restano sui server di Maggioli.</mds-text>
@@ -109,7 +109,7 @@ The dropdown is a `menu` by default, a list of actions being what it holds most 
 The arrow pointer is shown by default to visually connect the panel to its caller; add `hide-arrow` to remove it. Adjust `arrow-padding` when the panel is narrow and the arrow would clip the rounded corners.
 
 ```html
-<mds-button id="aiuto-contestuale" label="Aiuto" icon="mi/baseline/help-outline" variant="secondary" tone="outline"></mds-button>
+<mds-button id="aiuto-contestuale" label="Aiuto" icon="mi/baseline/help-outline" variant="primary" tone="outline"></mds-button>
 
 <mds-dropdown target="#aiuto-contestuale" arrow-padding="16">
   <mds-text typography="h6">Come funziona?</mds-text>
@@ -153,7 +153,7 @@ Set `interaction="mouseover"` for navigation mega-menus or info tooltips that sh
 Set `interaction="none"` to disable automatic wiring and drive visibility yourself. This is useful when the trigger logic lives in app code - for example, opening on a keyboard shortcut or a programmatic state change.
 
 ```html
-<mds-button id="apri-manuale" label="Apri pannello" variant="secondary"></mds-button>
+<mds-button id="apri-manuale" label="Apri pannello" variant="primary"></mds-button>
 
 <mds-dropdown id="pannello-opzioni" target="#apri-manuale" interaction="none">
   <mds-text typography="detail">Pannello gestito dal codice applicativo.</mds-text>
@@ -181,7 +181,7 @@ Use `placement` to anchor the panel to a specific side of the caller. Auto-place
 </mds-dropdown>
 
 <!-- Auto-placement (default) for constrained viewports -->
-<mds-button id="opzioni-voce" label="Opzioni" variant="secondary" tone="weak"></mds-button>
+<mds-button id="opzioni-voce" label="Opzioni" variant="primary" tone="weak"></mds-button>
 <mds-dropdown target="#opzioni-voce">
   <mds-button label="Duplica" icon="mi/baseline/content-copy" variant="dark" tone="text"></mds-button>
 </mds-dropdown>
@@ -189,12 +189,12 @@ Use `placement` to anchor the panel to a specific side of the caller. Auto-place
 
 #### Flip and Shift for Viewport Safety
 
-Enable `flip` to let the panel jump to the opposite side when there is not enough space in the preferred direction. Shifting the panel to keep it inside the viewport is on by default; tune the safe margin with `shift-padding` (or set `disable-shift` to opt out).
+Enable `flip` to let the panel jump to the opposite side when there is not enough space in the preferred direction; it acts only with `disable-auto-placement`, since auto-placement already picks the side and ignores both `placement` and `flip`. Shifting the panel to keep it inside the viewport is on by default; tune the safe margin with `shift-padding` (or set `disable-shift` to opt out).
 
 ```html
 <mds-button id="btn-edge" label="Vicino al bordo" variant="primary"></mds-button>
 
-<mds-dropdown target="#btn-edge" placement="top" flip shift-padding="16">
+<mds-dropdown target="#btn-edge" placement="top" disable-auto-placement flip shift-padding="16">
   <mds-text typography="detail">Questo pannello si sposta automaticamente se manca spazio.</mds-text>
 </mds-dropdown>
 ```
@@ -204,7 +204,7 @@ Enable `flip` to let the panel jump to the opposite side when there is not enoug
 Listen for `mdsDropdownVisible`, `mdsDropdownHide`, or `mdsDropdownChange` to react to open/close transitions. Each event detail contains `caller` (the resolved trigger element) and `visible` (the new state).
 
 ```html
-<mds-button id="btn-notifica" label="Notifiche" icon="mi/baseline/notifications" variant="secondary"></mds-button>
+<mds-button id="btn-notifica" label="Notifiche" icon="mi/baseline/notifications" variant="primary"></mds-button>
 
 <mds-dropdown id="pannello-notifiche" target="#btn-notifica">
   <mds-text typography="detail">Nessuna nuova notifica.</mds-text>
@@ -226,7 +226,7 @@ Use `strategy="fixed"` when the dropdown is placed inside a scroll container, a 
 
 ```html
 <!-- Inside a modal or a sticky nav - use fixed positioning -->
-<mds-button id="menu-header" label="Menu" variant="secondary" tone="weak"></mds-button>
+<mds-button id="menu-header" label="Menu" variant="primary" tone="weak"></mds-button>
 
 <mds-dropdown target="#menu-header" strategy="fixed">
   <mds-button label="Pagina principale" icon="mi/baseline/home" variant="dark" tone="text"></mds-button>
@@ -243,7 +243,7 @@ Place `<mds-dropdown>` as a direct child of `<body>` (or as close as possible to
   <!-- Trigger lives inside a complex layout -->
   <div class="app-layout">
     <nav>
-      <mds-button id="btn-profilo" label="Profilo" variant="secondary"></mds-button>
+      <mds-button id="btn-profilo" label="Profilo" variant="primary"></mds-button>
     </nav>
   </div>
 
@@ -257,12 +257,12 @@ Place `<mds-dropdown>` as a direct child of `<body>` (or as close as possible to
 
 #### Styling Customization
 
-Customize the dropdown only through its documented `--mds-dropdown-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` to preserve dark-mode and high-contrast behavior.
+Customize the dropdown only through its documented `--mds-dropdown-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` to preserve dark-mode, named-theme and high-contrast behavior.
 
 ```css
 .my-context mds-dropdown {
-  --mds-dropdown-background: rgb(var(--tone-neutral-09));
-  --mds-dropdown-drop-shadow-color-rgb: var(--variant-primary-03);
+  --mds-dropdown-background: rgb(var(--magma-surface-overlay));
+  --mds-dropdown-drop-shadow-color-rgb: var(--magma-accent-emphasis);
   --mds-dropdown-duration: 0.3s;
   --mds-dropdown-mouseover-delay: 0.2s;
   --mds-dropdown-z-index: 5000;
@@ -272,14 +272,14 @@ Customize the dropdown only through its documented `--mds-dropdown-*` CSS custom
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-dropdown>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-dropdown>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Place the Dropdown Deep Inside a Scroll or Stacking Context
 
 Nesting `<mds-dropdown>` inside a transformed, sticky, or `overflow: hidden` ancestor breaks floating positioning and backdrop rendering. Place it as close to `<body>` as the page structure allows, or switch to `strategy="fixed"`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div style="overflow: hidden; position: relative;">
   <mds-button id="trigger" label="Apri" variant="primary"></mds-button>
   <mds-dropdown target="#trigger" backdrop>
@@ -287,7 +287,7 @@ Nesting `<mds-dropdown>` inside a transformed, sticky, or `overflow: hidden` anc
   </mds-dropdown>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <div style="overflow: hidden; position: relative;">
   <mds-button id="trigger" label="Apri" variant="primary"></mds-button>
 </div>
@@ -298,22 +298,22 @@ Nesting `<mds-dropdown>` inside a transformed, sticky, or `overflow: hidden` anc
 
 #### Do Not Use `visible="false"` to Close the Dropdown
 
-`visible` is a boolean prop. Setting it to the string `"false"` is truthy in HTML - the dropdown stays open. Remove the attribute or set the property to `false` in JavaScript to close it.
+`visible` is a boolean prop. The component reads the string `"false"` as `false` and drops the attribute when it renders, but until then the attribute is in the DOM and attribute selectors (`mds-dropdown[visible]`) match it. Remove the attribute or set the property to `false` in JavaScript to close it.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-dropdown target="#btn" visible="false">
   <mds-text>Contenuto</mds-text>
 </mds-dropdown>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-dropdown target="#btn">
   <mds-text>Contenuto</mds-text>
 </mds-dropdown>
 ```
 
 ```js
-// ✅ CORRECT - closing programmatically
+// CORRECT - closing programmatically
 document.querySelector('mds-dropdown').visible = false;
 ```
 
@@ -322,8 +322,8 @@ document.querySelector('mds-dropdown').visible = false;
 The dropdown manages its own interaction and emits `mdsDropdownVisible`, `mdsDropdownHide`, and `mdsDropdownChange`. Attaching a raw `click` listener to the caller can interfere with inside-click handling and may fire before the dropdown has updated its state.
 
 ```html
-<!-- 🚫 INCORRECT -->
-<mds-button id="btn-info" label="Info" variant="secondary"></mds-button>
+<!-- INCORRECT -->
+<mds-button id="btn-info" label="Info" variant="primary"></mds-button>
 <mds-dropdown target="#btn-info">...</mds-dropdown>
 
 <script>
@@ -333,8 +333,8 @@ The dropdown manages its own interaction and emits `mdsDropdownVisible`, `mdsDro
   });
 </script>
 
-<!-- ✅ CORRECT -->
-<mds-button id="btn-info" label="Info" variant="secondary"></mds-button>
+<!-- CORRECT -->
+<mds-button id="btn-info" label="Info" variant="primary"></mds-button>
 <mds-dropdown id="dd-info" target="#btn-info">...</mds-dropdown>
 
 <script>
@@ -349,13 +349,13 @@ The dropdown manages its own interaction and emits `mdsDropdownVisible`, `mdsDro
 `target` is resolved with `querySelector` at `componentDidLoad` time. If the selector does not match any element the dropdown has no caller and cannot position or open itself. Always verify the `id` is present in the DOM before the component loads.
 
 ```html
-<!-- 🚫 INCORRECT - typo: button has id "btn-salva", target points to "#salva" -->
+<!-- INCORRECT - typo: button has id "btn-salva", target points to "#salva" -->
 <mds-button id="btn-salva" label="Salva" variant="primary"></mds-button>
 <mds-dropdown target="#salva">
   <mds-text>Opzioni di salvataggio</mds-text>
 </mds-dropdown>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-button id="btn-salva" label="Salva" variant="primary"></mds-button>
 <mds-dropdown target="#btn-salva">
   <mds-text>Opzioni di salvataggio</mds-text>
@@ -367,14 +367,14 @@ The dropdown manages its own interaction and emits `mdsDropdownVisible`, `mdsDro
 [`mds-button-dropdown`](../../mds-button-dropdown) is a compound component that already embeds a trigger button and a dropdown. Use it for a simple action-button-plus-menu. Use `<mds-dropdown>` directly only when the caller is not an `mds-button`, or when you need full control over the trigger element.
 
 ```html
-<!-- 🚫 INCORRECT - re-implementing what mds-button-dropdown already does -->
+<!-- INCORRECT - re-implementing what mds-button-dropdown already does -->
 <mds-button id="btn-azioni" label="Azioni" icon="mi/baseline/expand-more" variant="primary"></mds-button>
 <mds-dropdown target="#btn-azioni">
   <mds-button label="Modifica" variant="dark" tone="text"></mds-button>
   <mds-button label="Elimina" variant="error" tone="text"></mds-button>
 </mds-dropdown>
 
-<!-- ✅ CORRECT - use the dedicated compound component -->
+<!-- CORRECT - use the dedicated compound component -->
 <mds-button-dropdown label="Azioni" variant="primary">
   <mds-button label="Modifica" variant="dark" tone="text"></mds-button>
   <mds-button label="Elimina" variant="error" tone="text"></mds-button>
@@ -386,7 +386,7 @@ The dropdown manages its own interaction and emits `mdsDropdownVisible`, `mdsDro
 The supported customization surface is the `--mds-dropdown-*` CSS custom properties. Targeting internal elements via `::part()` on non-documented parts, `>>>`, or class-name selectors couples your code to the Shadow DOM structure and breaks on any internal refactor.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-dropdown::part(panel) {
   border: 2px solid red;
 }
@@ -394,9 +394,9 @@ mds-dropdown >>> .arrow {
   display: none;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-dropdown {
-  --mds-dropdown-background: rgb(var(--tone-neutral-08));
+  --mds-dropdown-background: rgb(var(--magma-surface-overlay));
   --mds-dropdown-z-index: 6000;
 }
 ```

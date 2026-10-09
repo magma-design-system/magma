@@ -121,14 +121,14 @@ export default function RootLayout({
 
 Every component ships in two variants:
 
-- `@maggioli-design-system/magma-react` (or `…/mds-button.js`) — the client
+- `@maggioli-design-system/magma-react` (or `.../mds-button.js`) - the client
   wrapper. During SSR it emits a bare `<mds-button>` tag with **no** attributes,
   shadow DOM or geometry: the page shifts when the component hydrates.
-- `@maggioli-design-system/magma-react/mds-button.server.js` — the SSR wrapper.
+- `@maggioli-design-system/magma-react/mds-button.server.js` - the SSR wrapper.
   On the server it runs `renderToString` from `@maggioli-design-system/magma/hydrate`
-  and emits the full markup — attributes, `<template shadowrootmode="open">` with
-  the component styles, and the `hydrated` flag — so the HTML paints with its
-  final geometry (CLS ≈ 0). On the client it delegates to the client wrapper.
+  and emits the full markup - attributes, `<template shadowrootmode="open">` with
+  the component styles, and the `hydrated` flag - so the HTML paints with its
+  final geometry (CLS close to 0). On the client it delegates to the client wrapper.
 
 In an SSR app, import the `.server` variant:
 
@@ -148,8 +148,8 @@ export default function Page() {
 
 SSR notes:
 
-- There is no server barrel: import each component from its own
-  `…/mds-<name>.server.js` module.
+- Import each component from its own `.../mds-<name>.server.js` module, or all of them
+  from the server barrel `@maggioli-design-system/magma-react/components.server.js`.
 - The generated server wrappers carry a `'use client'` directive (an
   output-target quirk): in Next.js they behave as client components that are
   still server-rendered, which is exactly what produces the declarative shadow
@@ -157,7 +157,7 @@ SSR notes:
 - Events are not wired on the server wrapper; they attach after hydration via
   the client wrapper it delegates to.
 - Icons render empty server-side (the box is reserved, no layout shift) and the
-  default theme is rendered — see the SSR section in
+  default theme is rendered - see the SSR section in
   [`web-components.md`](web-components.md).
 - The hydrate module (`magma/hydrate`) bundles all 114 components (~3 MB,
   server-only). It is imported lazily behind a `typeof window` check and must
@@ -175,4 +175,4 @@ SSR notes:
 ## See also
 
 - [`assets.md`](assets.md) - styles / fonts / icons / identity (canonical)
-- [`../../projects/stencil/SPEC.md`](../../projects/stencil/SPEC.md) - component conventions, events, slots
+- [`conventions.md`](conventions.md) - component conventions, events, slots

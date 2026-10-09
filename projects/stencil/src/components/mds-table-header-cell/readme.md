@@ -16,7 +16,7 @@ The `<mds-table-header-cell>` web component is the column-header cell of a Magma
 - **Compound child only**: Must be placed as a direct slot child of `<mds-table-header>`; it is not used standalone, and its sorting acts on the body rows within the enclosing `mds-table`.
 - **Header role and ARIA sort**: Reflects its current sort state through `aria-sort`, mirroring the `direction` prop (`none` / `ascending` / `descending`).
 - **Position-based sorting**: The cell sorts the matching `mds-table-cell` of every body row by column position; values come from each cell's `value` (falling back to trimmed text), with numeric values compared numerically and others compared alphabetically.
-- **Tri-state sort cycle**: Each activation advances the column through `none` → `ascending` → `descending` and back to `none`; the `none` state restores the original row order.
+- **Tri-state sort cycle**: Each activation advances the column through `none` -> `ascending` -> `descending` and back to `none`; the `none` state restores the original row order.
 - **Single active sort column**: Sorting a column resets every sibling header cell to `none`, so only one column drives the order at a time.
 - **Conditional rendering**: When `sortable` is set the cell renders a clickable sorter (with an up / down / unfold-more icon reflecting `direction`); otherwise it renders a plain label with no interaction.
 
@@ -28,7 +28,7 @@ The `<mds-table-header-cell>` web component is the column-header cell of a Magma
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-table-header-cell>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound table structure documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-table-header-cell>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Plain Header Cell
 
@@ -135,13 +135,13 @@ When a column displays formatted text (currency, percentages) but should sort nu
 
 #### Programmatically Resetting Sort Direction
 
-Set `direction="none"` from outside to clear a column's active sort - for example when the user applies a server-side filter that invalidates the current order. Only the `none` value can be set externally; the component manages `ascending` / `descending` itself through click cycles.
+Set `direction="none"` from outside to clear a column's active sort - for example when the user applies a server-side filter that invalidates the current order. It resets the sort icon, `aria-sort` and the click cycle; it does not reorder the rows. Only the `none` value can be set externally; the component manages `ascending` / `descending` itself through click cycles, and setting them from outside sorts nothing.
 
 ```html
-<!-- Mark the column as sorted ascending on initial render -->
+<!-- A sortable column the user can sort by clicking -->
 <mds-table>
   <mds-table-header>
-    <mds-table-header-cell label="Data" sortable direction="ascending" id="col-data"></mds-table-header-cell>
+    <mds-table-header-cell label="Data" sortable id="col-data"></mds-table-header-cell>
     <mds-table-header-cell label="Categoria" sortable></mds-table-header-cell>
   </mds-table-header>
   <mds-table-body>
@@ -168,19 +168,19 @@ mds-table-header-cell::part(label) {
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-table-header-cell>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-table-header-cell>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `mds-table-header`
 
 `<mds-table-header-cell>` is a compound child component and relies on traversing the DOM to locate its sibling cells and the `<mds-table-body>` for sorting. Using it outside `<mds-table-header>` breaks both the layout and the sort logic.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="table-head">
   <mds-table-header-cell label="Nome" sortable></mds-table-header-cell>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-header>
     <mds-table-header-cell label="Nome" sortable></mds-table-header-cell>
@@ -194,10 +194,10 @@ Common incorrect uses of `<mds-table-header-cell>`. Each entry pairs the wrong f
 The `ascending` / `descending` states are managed by the internal click cycle; setting them from outside does not trigger a re-sort. Only `direction="none"` is safe to set externally - use it to clear a column back to the unsorted state.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table-header-cell label="Data" sortable direction="ascending"></mds-table-header-cell>
 
-<!-- ✅ CORRECT - let the user click to enter the sort cycle, or reset to none programmatically -->
+<!-- CORRECT - let the user click to enter the sort cycle, or reset to none programmatically -->
 <mds-table-header-cell label="Data" sortable></mds-table-header-cell>
 ```
 
@@ -208,13 +208,13 @@ document.querySelector('mds-table-header-cell').direction = 'none';
 
 #### Do Not Use `sortable="false"` to Disable Sorting
 
-`sortable` is a boolean attribute. Any non-empty string value - including `"false"` - is treated as `true` in HTML and Stencil. Remove the attribute entirely to produce a non-sortable header cell.
+`sortable` is a boolean attribute. Stencil reads the exact string `"false"` as `false`, but the attribute stays on the element, where attribute selectors and any code that tests for its presence still read it as set. Remove the attribute entirely to produce a non-sortable header cell.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table-header-cell label="Stato" sortable="false"></mds-table-header-cell>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table-header-cell label="Stato"></mds-table-header-cell>
 ```
 
@@ -223,12 +223,12 @@ document.querySelector('mds-table-header-cell').direction = 'none';
 The component renders its label through the `label` prop; there is no documented slot. Placing text or elements as children of the host puts them in an unsupported slot and they will not appear.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-table-header-cell sortable>
   <span>Cognome</span>
 </mds-table-header-cell>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table-header-cell label="Cognome" sortable></mds-table-header-cell>
 ```
 
@@ -237,12 +237,12 @@ The component renders its label through the `label` prop; there is no documented
 The sort button is an internal `<mds-button>` inside the shadow root. Use the documented `::part(action)` instead of undocumented selectors.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-table-header-cell >>> .action {
   background-color: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-table-header-cell::part(action) {
   /* use only documented part-level overrides */
 }
@@ -253,14 +253,14 @@ mds-table-header-cell::part(action) {
 `<mds-table-header-cell>` already carries `role="columnheader"` and manages `aria-sort`. Wrapping it inside a native `<th>` doubles the ARIA semantics and produces invalid table structure.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <thead>
   <tr>
     <th><mds-table-header-cell label="Nome"></mds-table-header-cell></th>
   </tr>
 </thead>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-table>
   <mds-table-header>
     <mds-table-header-cell label="Nome"></mds-table-header-cell>
