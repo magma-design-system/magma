@@ -1681,7 +1681,7 @@ export namespace Components {
          */
         "accept": string;
         /**
-          * Returns a promise of files uploaded as Filelist or null if there's none
+          * Returns a promise of the accepted files as a FileList, empty if there's none
          */
         "getFiles": () => Promise<FileList | null>;
         /**
@@ -1703,11 +1703,15 @@ export namespace Components {
          */
         "maxFiles": number;
         /**
+          * The name the accepted files are submitted under with the form, one entry per file
+         */
+        "name"?: string;
+        /**
           * Reset component's files
          */
         "reset": () => Promise<void>;
         /**
-          * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
+          * Specifies the order the files start sorted by, status or date of upload, and shows the sort tabs that let the user change it; if not defined the tabs are hidden and the order is the user's last choice
          */
         "sort"?: AttachmentSort;
     }
@@ -6184,7 +6188,7 @@ declare namespace LocalJSX {
          */
         "maxFiles"?: number;
         /**
-          * The name of the element, used when submitting an HTML form.
+          * The name the accepted files are submitted under with the form, one entry per file
          */
         "name"?: string;
         /**
@@ -6192,7 +6196,7 @@ declare namespace LocalJSX {
          */
         "onMdsInputUploadChange"?: (event: MdsInputUploadCustomEvent<FileList | null>) => void;
         /**
-          * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
+          * Specifies the order the files start sorted by, status or date of upload, and shows the sort tabs that let the user change it; if not defined the tabs are hidden and the order is the user's last choice
          */
         "sort"?: AttachmentSort;
     }
@@ -7845,6 +7849,7 @@ declare namespace LocalJSX {
     }
     interface MdsInputUploadAttributes {
         "accept": string;
+        "name": string;
         "maxFileSize": number;
         "maxFiles": number;
         "sort": AttachmentSort;
