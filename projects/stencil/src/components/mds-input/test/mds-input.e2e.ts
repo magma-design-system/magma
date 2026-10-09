@@ -242,3 +242,134 @@ describe('required', () => {
     expect(tip).toEqualAttribute('variant', 'required');
   });
 });
+
+// The React wrappers under SSR set the props on an element that has already loaded (#786)
+describe('rules set after load', () => {
+  let button: HTMLElement;
+
+  const requiredTip = (): Element | null =>
+    mdsInput.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
+
+  beforeEach(async () => {
+    button = await setup(`
+      <mds-input></mds-input>
+      <button></button>
+    `);
+  });
+
+  it('applies required: red tip, validator, error variant on blur', async () => {
+    mdsInput.required = true;
+    await waitForChanges();
+
+    expect(requiredTip()).toEqualAttribute('variant', 'required');
+    expect(await mdsInput.hasValidator()).toBe(true);
+
+    await userEvent.click(mdsInput);
+    await blur(button);
+
+    expect(mdsInput).toEqualAttribute('variant', 'error');
+    expect(await mdsInput.getErrors()).toEqual({ required: '' });
+
+    await type(mdsInput, 'abc');
+    await blur(button);
+
+    expect(mdsInput).toEqualAttribute('variant', 'success');
+    expect(requiredTip()).toEqualAttribute('variant', 'required-success');
+  });
+
+  it('goes back to the pristine look when required is removed from a field in error', async () => {
+    mdsInput.required = true;
+    await waitForChanges();
+    await userEvent.click(mdsInput);
+    await blur(button);
+    expect(mdsInput).toEqualAttribute('variant', 'error');
+
+    mdsInput.required = false;
+    await waitForChanges();
+
+    expect(mdsInput).toEqualAttribute('variant', 'primary');
+    expect(requiredTip()).toBeNull();
+    expect(await mdsInput.hasValidator()).toBe(false);
+  });
+
+  it('keeps the custom validators when a rule changes', async () => {
+    const upperCase = (value: string) =>
+      value.toUpperCase() === value ? null : { err: 'lower case' };
+    await mdsInput.addValidator(upperCase);
+
+    mdsInput.required = true;
+    await waitForChanges();
+
+    expect(await mdsInput.hasValidator(upperCase)).toBe(true);
+
+    await type(mdsInput, 'abc');
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toEqual({ err: 'lower case' });
+  });
+
+  it('replaces a rule instead of stacking it', async () => {
+    mdsInput.type = 'number';
+    mdsInput.max = '10';
+    await waitForChanges();
+    mdsInput.max = '100';
+    await waitForChanges();
+
+    await type(mdsInput, '50');
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toBeNull();
+    expect(mdsInput).toEqualAttribute('variant', 'success');
+  });
+
+  it('applies the validators of a type set after load', async () => {
+    mdsInput.type = 'isbn';
+    await waitForChanges();
+
+    await type(mdsInput, 'abcdefghi');
+    await blur(button);
+
+    expect(mdsInput).toEqualAttribute('variant', 'error');
+    expect(await mdsInput.getErrors()).not.toBeNull();
+  });
+});
+
+describe('min and max', () => {
+  it('checks min against its own value, not the one of max', async () => {
+    const button = await setup(`
+      <mds-input type="number" min="5" max="10"></mds-input>
+      <button></button>
+    `);
+
+    await type(mdsInput, '7');
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toBeNull();
+    expect(mdsInput).toEqualAttribute('variant', 'success');
+  });
+
+  it('rejects a value under min', async () => {
+    const button = await setup(`
+      <mds-input type="number" min="5" max="10"></mds-input>
+      <button></button>
+    `);
+
+    await type(mdsInput, '3');
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toEqual({ min: 'valore minimo 5' });
+    expect(mdsInput).toEqualAttribute('variant', 'error');
+  });
+
+  it('takes 0 as a bound', async () => {
+    const button = await setup(`
+      <mds-input type="number" min="0"></mds-input>
+      <button></button>
+    `);
+
+    await type(mdsInput, '-2');
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toEqual({ min: 'valore minimo 0' });
+  });
+});

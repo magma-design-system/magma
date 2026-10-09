@@ -103,7 +103,11 @@ export class MdsInput {
   private tabindex?: number;
 
   private inputValidation: InputValidationManager;
+  // the validators added through addValidator, kept apart so that a rebuild of the rules keeps them
+  private customValidators: MdsValidatorFn[] = [];
   private isValid: boolean;
+  // true once a blur has validated the field and driven its variant
+  private validated = false;
   private speechToTextLabelKey: string = 'speechToTextOn';
   private speechToTextIcon: string = miOutlineMic;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -315,12 +319,11 @@ export class MdsInput {
     }
     setFormValue(this.internals, this.value ?? null);
     this.maxLengthChanged(this.maxlength);
+    this.buildValidation();
     this.isValid = !(this.required && (this.value ?? '') === '');
   }
 
   componentDidLoad(): void {
-    this.inputValidation = createInputValidationManager(this.type!);
-    this.setValidators();
     this.nativeInput?.setAttribute('pattern', String(this.inputValidation.pattern));
     if (this.autofocus) {
       this.nativeInput?.focus();
@@ -328,16 +331,59 @@ export class MdsInput {
     this.variantChanged(this.variant ?? 'primary');
   }
 
-  private setValidators() {
-    if (this.required) this.inputValidation.validator.addValidator(requiredValidor);
-    if (this.max !== '' && Number(this.max) !== 0 && !Number.isNaN(Number(this.max)))
-      this.inputValidation.validator.addValidator(maxValidator(Number(this.max)));
-    if (this.min !== '' && Number(this.min) !== 0 && !Number.isNaN(Number(this.min)))
-      this.inputValidation.validator.addValidator(minValidator(Number(this.max)));
+  /**
+   * Builds the validators from scratch: the ones of the type, the ones of the constraint props and
+   * the custom ones. A rebuild instead of an append, so that a rule changed after load replaces
+   * the old one instead of stacking on it.
+   */
+  private buildValidation(): void {
+    const validation = createInputValidationManager(this.type ?? 'text');
+    const { validator } = validation;
+    const max = this.numericBound(this.max);
+    const min = this.numericBound(this.min);
+    if (this.required) validator.addValidator(requiredValidor);
+    if (max !== undefined) validator.addValidator(maxValidator(max));
+    if (min !== undefined) validator.addValidator(minValidator(min));
     if (this.maxlength !== undefined && this.maxlength !== 0 && !Number.isNaN(this.maxlength))
-      this.inputValidation.validator.addValidator(maxLenghtValidator(this.maxlength));
+      validator.addValidator(maxLenghtValidator(this.maxlength));
     if (this.minlength !== undefined && this.minlength !== 0 && !Number.isNaN(this.minlength))
-      this.inputValidation.validator.addValidator(minLenghtValidator(this.minlength));
+      validator.addValidator(minLenghtValidator(this.minlength));
+    validator.addValidator(this.customValidators);
+    this.inputValidation = validation;
+  }
+
+  /** The number held by `min` or `max`, `undefined` when the prop is unset or not a number. */
+  private numericBound(bound?: string | number | null): number | undefined {
+    if (bound === undefined || bound === null || bound === '') return undefined;
+    const value = Number(bound);
+    return Number.isNaN(value) ? undefined : value;
+  }
+
+  /**
+   * Rebuilds the validators when a prop they derive from changes after load, as it does with the
+   * React wrappers under SSR, which set the props on an element that has already loaded.
+   */
+  @Watch('max')
+  @Watch('maxlength')
+  @Watch('min')
+  @Watch('minlength')
+  @Watch('required')
+  @Watch('type')
+  protected validationRulesChanged(): void {
+    this.buildValidation();
+    if (!this.validated) {
+      // pristine field: only the required tip follows, the variant waits for the first blur
+      this.isValid = !(this.required && (this.value ?? '') === '');
+      return;
+    }
+    if (this.inputValidation.validator.hasValidator()) {
+      this.validateInput();
+      return;
+    }
+    // the last rule is gone: nothing is left to drive the variant, back to the pristine look
+    this.validated = false;
+    this.isValid = true;
+    this.variant = 'primary';
   }
 
   /**
@@ -378,7 +424,9 @@ export class MdsInput {
    */
   @Method()
   async addValidator(validator: MdsValidatorFn): Promise<void> {
-    this.inputValidation.validator.addValidator(validator);
+    this.customValidators.push(validator);
+    // before load there are no rules yet: buildValidation picks it up from customValidators
+    this.inputValidation?.validator.addValidator(validator);
     return Promise.resolve();
   }
 
@@ -388,7 +436,8 @@ export class MdsInput {
    */
   @Method()
   async removeValidator(validator: MdsValidatorFn): Promise<void> {
-    this.inputValidation.validator.removeValidator(validator);
+    this.customValidators = this.customValidators.filter((custom) => custom !== validator);
+    this.inputValidation?.validator.removeValidator(validator);
   }
 
   /**
@@ -413,10 +462,11 @@ export class MdsInput {
   private validateInput(): boolean {
     // validate input only when atleast one validator is present
     if (this.inputValidation.validator.hasValidator()) {
-      this.isValid = this.inputValidation.isValid(this.value);
+      this.validated = true;
+      this.isValid = this.inputValidation.isValid(this.value ?? '');
 
       // set variant attribute
-      if (this.value === '' && !this.required) this.variant = 'primary';
+      if ((this.value ?? '') === '' && !this.required) this.variant = 'primary';
       else this.variant = this.isValid ? 'success' : 'error';
 
       this.validationEvent.emit(this.isValid);
