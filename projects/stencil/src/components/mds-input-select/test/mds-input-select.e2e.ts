@@ -108,3 +108,37 @@ describe('mds-input-select', () => {
     });
   });
 });
+
+// Like a native select, a required one left empty stops the submit of its form (#786)
+describe('form validity', () => {
+  it('stops the submit while a required select is empty', async () => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(`
+      <form>
+        <mds-input-select name="s" placeholder="Choose" required>
+          <option value="a">A</option>
+        </mds-input-select>
+      </form>
+    `);
+    const select = form.querySelector('mds-input-select')!;
+
+    expect(form.checkValidity()).toBe(false);
+    expect(select.matches(':invalid')).toBe(true);
+
+    await select.setValue('a');
+    await waitForChanges();
+
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('does not stop the submit when the select is optional', async () => {
+    const { root: form } = await render<HTMLFormElement>(`
+      <form>
+        <mds-input-select name="s" placeholder="Choose">
+          <option value="a">A</option>
+        </mds-input-select>
+      </form>
+    `);
+
+    expect(form.checkValidity()).toBe(true);
+  });
+});
