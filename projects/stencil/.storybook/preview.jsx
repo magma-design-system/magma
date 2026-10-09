@@ -19,6 +19,7 @@ import devices from './devices.json';
 // import media from '@maggioli-design-system/design-tokens/dist/js/tailwind-screens'
 
 import { themes } from './theme.mjs';
+import { UsageDocsPage, UsageProvider } from './usage-docs.jsx';
 import {
   CHROME_MODE,
   DARK_QUERY,
@@ -135,9 +136,11 @@ const ThemedDocsContainer = ({ children, context }) => {
   }, []);
 
   return (
-    <DocsContainer context={context} theme={themes[scheme]}>
-      {children}
-    </DocsContainer>
+    <UsageProvider context={context}>
+      <DocsContainer context={context} theme={themes[scheme]}>
+        {children}
+      </DocsContainer>
+    </UsageProvider>
   );
 };
 
@@ -154,6 +157,10 @@ const parameters = {
   },
   docs: {
     container: ThemedDocsContainer,
+    // the Docs page of a component: its usage docs (usage/*.md) around the primary story
+    page: UsageDocsPage,
+    // the sections and the headings of the usage docs, in a table of contents next to the page
+    toc: { headingSelector: 'h2, h3', title: 'On this page' },
   },
   options: {
     storySort: {

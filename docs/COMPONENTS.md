@@ -20,6 +20,8 @@ Every component under [`projects/stencil/src/components/<name>/`](../projects/st
 
 **Build flow.** Only the three `usage/*.md` files are hand-authored. On build, Stencil bundles them into `dist/documentation.json` (all components, gitignored) and injects the content into `readme.md`; then `scripts/component-docs.ts` writes the per-component files of `dist/collection/components/<name>/`. As a consequence: never hand-edit `readme.md` or a generated file - they are regenerated and your edits will be lost. To change what a component's docs say, edit the matching `usage/*.md` (and the JSDoc of the props, events and CSS vars). Everything under `dist/` exists only after `nx run stencil:build`.
 
+**Storybook.** The same three files make up each component's Docs page in Storybook (sections Description, Pattern and Antipattern around the primary story), read at runtime from `usage/*.md`: see the Storybook paragraph of [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md#per-component-usage-docs).
+
 ### Which file should the agent read?
 
 Pick by task, not by preference:
