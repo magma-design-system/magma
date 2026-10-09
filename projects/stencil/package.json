@@ -139,7 +139,7 @@
     "esbuild": "0.28.2",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-storybook": "10.5.10",
-    "handlebars": "4.7.9",
+    "handlebars": "4.7.10",
     "normalize.css": "8.0.1",
     "p-queue": "6.6.2",
     "postcss": "8.5.29",
