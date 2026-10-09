@@ -12,6 +12,7 @@ import {
   AttachInternals,
 } from '@stencil/core';
 import { setFormValue } from '@common/form';
+import { updateValidity, ValidityProblem } from '@common/validity';
 import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
 import { preferenceStore } from '@common/preference';
@@ -29,6 +30,8 @@ export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement;
   @AttachInternals() internals: ElementInternals;
   private isSlotted: boolean = false;
+  // the rule the value breaks, reported to the form; undefined when the value is valid
+  private problem?: ValidityProblem;
   @State() empty: boolean | undefined = undefined;
   @State() isValid: boolean;
   @State() touched: boolean = false;
@@ -120,13 +123,9 @@ export class MdsInputDate {
 
     const hasValue = Boolean(this.value);
     const hasInvalidValue = hasValue && !date.isValid;
-    const isMissingRequiredValue = this.required && !hasValue;
-    const outOfRange =
-      date.isValid &&
-      ((this.max && DateTime.fromISO(this.max) < date) ||
-        (this.min && DateTime.fromISO(this.min) > date));
+    this.problem = this.findProblem(date, hasBadInput || hasInvalidValue);
 
-    if (hasBadInput || hasInvalidValue || isMissingRequiredValue || outOfRange) {
+    if (this.problem) {
       this.isValid = false;
       this.variant = 'error';
       setFormValue(this.internals, null);
@@ -139,6 +138,42 @@ export class MdsInputDate {
     }
 
     this.validationEvent.emit(this.isValid);
+    this.updateFormValidity();
+  }
+
+  /** The rule the value breaks, `undefined` when it breaks none. */
+  private findProblem(date: DateTime, isBadInput: boolean): ValidityProblem | undefined {
+    if (isBadInput) return { rule: 'invalidDate' };
+    if (this.required && (this.value ?? '') === '') return { rule: 'required' };
+    if (!date.isValid) return undefined;
+    if ((this.max ?? '') !== '' && DateTime.fromISO(this.max!) < date) {
+      return { rule: 'maxDate', context: { max: this.formatDate(this.max!) } };
+    }
+    if ((this.min ?? '') !== '' && DateTime.fromISO(this.min!) > date) {
+      return { rule: 'minDate', context: { min: this.formatDate(this.min!) } };
+    }
+    return undefined;
+  }
+
+  /** An ISO date as the page language writes it, for the messages. */
+  private formatDate(iso: string): string {
+    return DateTime.fromISO(iso)
+      .setLocale(preferenceStore.state.language)
+      .toLocaleString(DateTime.DATE_SHORT);
+  }
+
+  /**
+   * Reports the validity of the value to the form, with the rules that drive the variant: like a
+   * native control, an invalid date stops the submit of its form.
+   */
+  private updateFormValidity(): void {
+    const input = this.host.shadowRoot?.querySelector<HTMLInputElement>('.input') ?? undefined;
+    updateValidity(this.internals, this.problem, input);
+  }
+
+  componentDidRender(): void {
+    // the native input the message points at exists from the first render on
+    this.updateFormValidity();
   }
 
   /**
