@@ -16,7 +16,7 @@ The `<mds-progress>` web component is the progress indicator of the Magma Design
 #### Semantic Behavior
 
 - **Spoken step text**: As `progress` changes, the component maps the value onto the `steps` list and announces the matching label, so assistive technologies report a human-readable milestone rather than a raw number.
-- **Decorative opt-out**: When the host carries `aria-hidden="true"`, all progressbar semantics are stripped so the indicator can be used as purely decorative chrome.
+- **Decorative opt-out**: When the host carries `aria-hidden="true"` as it loads, all progressbar semantics are stripped so the indicator can be used as purely decorative chrome. The check runs once: adding or removing `aria-hidden` later does not strip or restore them.
 - **Radial delegation**: With `direction="radial"` the rendering is delegated to `mds-radial-progress`, which carries the typography and the textual percentage; the bar directions render a single fill instead.
 
 #### Properties & Visual Configurations
@@ -29,12 +29,12 @@ The `<mds-progress>` web component is the progress indicator of the Magma Design
 
 - **`direction`** chooses the geometry: `'horizontal'` and `'vertical'` render a linear fill bar, while `'radial'` renders a circular ring with a centered percentage via `mds-radial-progress`.
 
-The shared `variant` and `size` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); this component adds no values beyond the shared sets.
+`variant` takes `primary` (default), `ai`, the status values (`info`, `success`, `warning`, `error`) and the neutral `dark` / `light`, as described in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); `size` (`sm` default, `md`, `lg`, `xl`) sets the bar thickness.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-progress>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-progress>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Horizontal Progress Bar
 
@@ -139,7 +139,7 @@ When `<mds-progress>` is used purely as a visual indicator alongside a separate 
 
 #### Updating Progress Dynamically
 
-Set the `progress` attribute from JavaScript as the task advances. The component transitions the fill with `--mds-progress-duration` and updates `aria-valuenow` and `aria-valuetext` on each change.
+Set the `progress` property from JavaScript as the task advances. The component transitions the fill with `--mds-progress-duration` and updates `aria-valuenow` and `aria-valuetext` on each change.
 
 ```javascript
 const bar = document.querySelector('mds-progress');
@@ -154,12 +154,12 @@ async function runTask() {
 
 #### Styling Customization
 
-Override the documented `--mds-progress-*` CSS custom properties for one-off visual tweaks. Use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Override the documented `--mds-progress-*` CSS custom properties for one-off visual tweaks. Name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode keeps working.
 
 ```css
 .upload-widget mds-progress {
-  --mds-progress-background: rgb(var(--tone-neutral-09));
-  --mds-progress-color: rgb(var(--variant-secondary-03));
+  --mds-progress-background: rgb(var(--magma-wash-base));
+  --mds-progress-color: rgb(var(--magma-accent-emphasis-hover));
   --mds-progress-thickness: 16px;
   --mds-progress-duration: 400ms;
 }
@@ -168,17 +168,17 @@ Override the documented `--mds-progress-*` CSS custom properties for one-off vis
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-progress>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-progress>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use a Raw `<progress>` Element
 
 Replacing `<mds-progress>` with the native element loses the Magma theme, the step-announcement system, and automatic `aria-valuenow` wiring.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <progress value="40" max="100"></progress>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-progress progress="0.4" aria-label="Avanzamento operazione"></mds-progress>
 ```
 
@@ -187,10 +187,10 @@ Replacing `<mds-progress>` with the native element loses the Magma theme, the st
 `progress` is a fractional value between `0` and `1`, not a percentage. Passing `40` instead of `0.4` pins the bar at 100% fill and sets `aria-valuenow` to `4000`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-progress progress="40"></mds-progress>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-progress progress="0.4" aria-label="Avanzamento caricamento"></mds-progress>
 ```
 
@@ -199,13 +199,13 @@ Replacing `<mds-progress>` with the native element loses the Magma theme, the st
 Without `aria-label` (or `aria-labelledby`) and without `aria-hidden="true"`, the progressbar role has no text label and screen readers can only announce the numeric value with no context.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-progress progress="0.6"></mds-progress>
 
-<!-- ✅ CORRECT - informative bar with a label -->
+<!-- CORRECT - informative bar with a label -->
 <mds-progress progress="0.6" aria-label="Invio email in corso"></mds-progress>
 
-<!-- ✅ CORRECT - purely decorative, no label needed -->
+<!-- CORRECT - purely decorative, no label needed -->
 <mds-progress progress="0.6" aria-hidden="true"></mds-progress>
 ```
 
@@ -214,10 +214,10 @@ Without `aria-label` (or `aria-labelledby`) and without `aria-hidden="true"`, th
 The radial variant sizes itself from the host's width. Without an explicit width the ring expands to fill the container, often breaking the layout.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-progress progress="0.5" direction="radial"></mds-progress>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-progress progress="0.5" direction="radial" style="width: 80px;" aria-label="Completamento"></mds-progress>
 ```
 
@@ -226,10 +226,10 @@ The radial variant sizes itself from the host's width. Without an explicit width
 The `typography` prop controls the type scale of the centered percentage label rendered only when `direction="radial"`. Setting it on `horizontal` or `vertical` bars has no visual effect and misleads readers.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-progress progress="0.5" direction="horizontal" typography="label"></mds-progress>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-progress progress="0.5" direction="radial" typography="label" style="width: 64px;" aria-label="Avanzamento"></mds-progress>
 ```
 
@@ -238,32 +238,20 @@ The `typography` prop controls the type scale of the centered percentage label r
 `::part(progress)` is the supported way to reach the fill element; `>>>` or undocumented class names are not. Prefer the `--mds-progress-*` CSS custom properties for the most common overrides.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-progress >>> .progress {
   background: hotpink;
 }
 
-/* ✅ CORRECT - use the CSS custom property */
+/* CORRECT - use the CSS custom property */
 mds-progress {
-  --mds-progress-color: rgb(var(--variant-secondary-03));
+  --mds-progress-color: rgb(var(--magma-accent-emphasis-hover));
 }
 
-/* ✅ CORRECT - use the documented part only when a property is insufficient */
+/* CORRECT - use the documented part only when a property is insufficient */
 mds-progress::part(progress) {
-  border-radius: 0;
+  border-radius: var(--magma-radius-none);
 }
-```
-
-#### Do Not Set `aria-hidden="false"` to Re-enable Semantics
-
-`aria-hidden="false"` is a string attribute - it is truthy in HTML. To restore progressbar semantics after hiding the bar, remove the attribute entirely.
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-progress progress="0.5" aria-hidden="false" aria-label="Avanzamento"></mds-progress>
-
-<!-- ✅ CORRECT -->
-<mds-progress progress="0.5" aria-label="Avanzamento"></mds-progress>
 ```
 
 

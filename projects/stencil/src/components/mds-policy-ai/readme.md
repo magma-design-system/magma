@@ -28,12 +28,12 @@ The `<mds-policy-ai>` web component is the Magma Design System disclosure marker
 - **`headline`** sets the short title used by the `chip`, `icon`, and `banner` surfaces; **`description`** sets the longer disclaimer body shown across the variants that expose it.
 - **`href`** points to the AI policy page and defaults to the Maggioli EU AI-regulation article; override it to target a tenant-specific policy.
 
-The internal surfaces are fixed to `variant="ai"` / `tone="weak"` of their underlying Magma components and are not configurable from this component; the shared variant/tone ladder is documented in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system).
+The internal surfaces are fixed to `variant="ai"` of their underlying Magma components (the chip at its default `strong` tone, the banner and the buttons at `tone="weak"`) and are not configurable from this component; the shared variant/tone ladder is documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-policy-ai>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the component catalogue documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-policy-ai>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Default Chip - Inline Disclosure Next to Generated Text
 
@@ -73,7 +73,7 @@ Use `variant="icon"` when available space is too narrow for a chip - for example
 ```html
 <div class="relative">
   <mds-policy-ai variant="icon" class="absolute bottom-200 right-200 z-10"></mds-policy-ai>
-  <mds-img src="./copertina-documento.webp" class="rounded-md shadow-sm"></mds-img>
+  <mds-img src="./copertina-documento.webp" class="rounded-(--magma-radius-md) shadow-sm"></mds-img>
 </div>
 ```
 
@@ -113,36 +113,36 @@ The default `href` points to the Maggioli EU AI-regulation article. Override it 
 
 #### Styling via Shadow Parts
 
-Each variant exposes one named `::part()` that targets the root of the inner Magma component (`chip`, `icon`, `card`, `banner`). Use these only when the documented CSS custom properties of the inner component are insufficient.
+Each variant exposes one named `::part()`: `icon` and `banner` are the inner [`mds-help`](../../mds-help) and [`mds-banner`](../../mds-banner) elements, so their documented CSS custom properties can be set there; `card` is the card container and `chip` the wrapper around the chip and its dropdown. Use these only for a deep customization.
 
 ```css
-/* Increase the border radius of the chip surface */
-mds-policy-ai::part(chip) {
-  --mds-chip-radius: var(--radius-xl);
+/* Increase the border radius of the card surface */
+mds-policy-ai::part(card) {
+  border-radius: var(--magma-radius-xl);
 }
 
-/* Adjust banner background to match a dark section */
+/* Stronger tint for the banner cockade (the ring around the icon) */
 mds-policy-ai::part(banner) {
-  --mds-banner-cockade-background: rgb(var(--variant-ai-07));
+  --mds-banner-cockade-background: rgb(var(--magma-accent-ai-surface));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-policy-ai>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-policy-ai>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Slot Custom Content Into the Component
 
 `<mds-policy-ai>` has no public slots. All customization is done through the `headline`, `description`, and `href` props. Placing children inside the element has no effect - the shadow DOM ignores them entirely.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-policy-ai>
   <p>Contenuto generato con intelligenza artificiale.</p>
 </mds-policy-ai>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-policy-ai
   description="Contenuto generato con intelligenza artificiale."
 ></mds-policy-ai>
@@ -153,13 +153,13 @@ Common incorrect uses of `<mds-policy-ai>`. Each entry pairs the wrong form with
 `variant` is not a color knob. It selects the entire rendering surface (`icon`, `chip`, `card`, `banner`), each carrying a distinct placement intent. Choosing a value because it looks lighter or darker will produce the wrong layout for the context.
 
 ```html
-<!-- 🚫 INCORRECT - choosing "icon" because the space is small while also expecting a full description -->
+<!-- INCORRECT - choosing "icon" because the space is small while also expecting the description on the page: the icon shows it only in a hover tooltip -->
 <mds-policy-ai
   variant="icon"
   description="Questo testo e' stato generato con AI e potrebbe contenere inesattezze. Verifica le informazioni."
 ></mds-policy-ai>
 
-<!-- ✅ CORRECT - "card" renders the description body as intended in compact contexts -->
+<!-- CORRECT - "card" renders the description body as intended in compact contexts -->
 <mds-policy-ai
   variant="card"
   description="Questo testo e' stato generato con AI e potrebbe contenere inesattezze. Verifica le informazioni."
@@ -171,14 +171,14 @@ Common incorrect uses of `<mds-policy-ai>`. Each entry pairs the wrong form with
 The shadow parts `chip`, `icon`, `card`, and `banner` are the documented customization surface. Reaching into undocumented internals with `>>>`, `/deep/`, or class selectors will break on any minor release.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-policy-ai >>> mds-chip {
   background-color: red;
 }
 
-/* ✅ CORRECT - target the part and set the inner component's own CSS custom property */
-mds-policy-ai::part(chip) {
-  --mds-chip-radius: var(--radius-xl);
+/* CORRECT - target the part and set the inner component's own CSS custom property */
+mds-policy-ai::part(banner) {
+  --mds-banner-radius: var(--magma-radius-xl);
 }
 ```
 
@@ -187,12 +187,12 @@ mds-policy-ai::part(chip) {
 The component manages its own `href` routing on every variant. Nesting it inside an `<a>` creates overlapping interactive controls, breaks keyboard navigation, and does not override the internal link - it adds a second, outer link on top.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <a href="https://example.com/policy-ai">
   <mds-policy-ai variant="chip"></mds-policy-ai>
 </a>
 
-<!-- ✅ CORRECT - override the href prop to point to the tenant-specific page -->
+<!-- CORRECT - override the href prop to point to the tenant-specific page -->
 <mds-policy-ai
   variant="chip"
   href="https://example.com/policy-ai"
@@ -204,14 +204,14 @@ The component manages its own `href` routing on every variant. Nesting it inside
 The `card` variant does not render a headline - only `description` is shown. Passing `headline` to a card is silently ignored. Use `variant="banner"` when both a title and a body are required.
 
 ```html
-<!-- 🚫 INCORRECT - headline is ignored by variant="card" -->
+<!-- INCORRECT - headline is ignored by variant="card" -->
 <mds-policy-ai
   variant="card"
   headline="Contenuto generato con AI"
   description="Questo estratto e' stato generato automaticamente."
 ></mds-policy-ai>
 
-<!-- ✅ CORRECT - use banner when both headline and description must appear -->
+<!-- CORRECT - use banner when both headline and description must appear -->
 <mds-policy-ai
   variant="banner"
   headline="Contenuto generato con AI"

@@ -17,7 +17,7 @@ The `<mds-accordion>` web component is the compound container of the Magma Desig
 - **Compound parent/child**: The default slot accepts only `<mds-accordion-item>` elements.
 - **Single vs. multiple selection**: By default opening one item collapses the others. With `multiple` set, any number of children may stay open at once and selection state is reported as a comma-separated list of indices.
 - **Mandatory selection**: When `disable-close` is set, the user cannot collapse the currently open item by clicking it again - one panel always remains open.
-- **Emitted event**: `mdsAccordionChange` whenever the selected child set changes, carrying the live `children` NodeList and the `selected` index/indices as a string.
+- **Emitted event**: `mdsAccordionChange` when the user opens an item (with `multiple`, on every toggle), carrying the live `children` NodeList and the `selected` index/indices as a string. In single-selection mode, collapsing the open item emits nothing.
 
 #### Properties & Visual Configurations
 
@@ -33,7 +33,7 @@ Per-panel presentation - the visible `label`, heading `typography`, and the slot
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-accordion>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-accordion>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Accordion
 
@@ -155,7 +155,7 @@ The default slot of each `mds-accordion-item` accepts text, HTML elements, and o
   </mds-accordion-item>
   <mds-accordion-item label="Azioni disponibili">
     <mds-button label="Scarica" icon="mi/baseline/download" variant="primary"></mds-button>
-    <mds-button label="Condividi" icon="mi/baseline/share" variant="secondary" tone="outline"></mds-button>
+    <mds-button label="Condividi" icon="mi/baseline/share" variant="primary" tone="outline"></mds-button>
   </mds-accordion-item>
 </mds-accordion>
 ```
@@ -166,27 +166,26 @@ Style the accordion only through its documented `--mds-accordion-*` CSS custom p
 
 ```css
 .custom-faq mds-accordion {
-  --mds-accordion-border-color: rgb(var(--variant-primary-05));
-  --mds-accordion-border-width: 1px;
-  --mds-accordion-color: rgb(var(--tone-neutral-02));
-  --mds-accordion-description-color: rgb(var(--tone-neutral-04));
+  --mds-accordion-border-color: rgb(var(--magma-accent-border));
+  --mds-accordion-color: rgb(var(--magma-text-default));
+  --mds-accordion-description-color: rgb(var(--magma-text-muted));
   --mds-accordion-duration: 200ms;
-  --mds-accordion-padding-selected: var(--spacing-600) 0 var(--spacing-800) 0;
-  --mds-accordion-padding-unselected: var(--spacing-400) 0;
+  --mds-accordion-padding-selected: calc(var(--spacing) * 600) 0 calc(var(--spacing) * 800) 0;
+  --mds-accordion-padding-unselected: calc(var(--spacing) * 400) 0;
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-accordion>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-accordion>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Place Non-Item Children Directly in the Accordion Slot
 
 The default slot of `<mds-accordion>` is designed exclusively for `<mds-accordion-item>` elements. Placing raw HTML or other components there bypasses the parent's selection coordination and breaks the compound component communication.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion>
   <div>
     <h3>Sezione uno</h3>
@@ -194,7 +193,7 @@ The default slot of `<mds-accordion>` is designed exclusively for `<mds-accordio
   </div>
 </mds-accordion>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion>
   <mds-accordion-item label="Sezione uno">
     <mds-text>Contenuto della sezione.</mds-text>
@@ -207,12 +206,12 @@ The default slot of `<mds-accordion>` is designed exclusively for `<mds-accordio
 `<mds-accordion-item>` is a compound child and relies on the parent to assign its `id` and manage selection state. Used standalone it has no coordinator and its `mdsAccordionItemSelect` / `mdsAccordionItemUnselect` events go unanswered.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion-item label="Domanda frequente">
   <mds-text>Risposta alla domanda.</mds-text>
 </mds-accordion-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion>
   <mds-accordion-item label="Domanda frequente">
     <mds-text>Risposta alla domanda.</mds-text>
@@ -222,10 +221,10 @@ The default slot of `<mds-accordion>` is designed exclusively for `<mds-accordio
 
 #### Do Not Listen to Native `click` or `toggle` Instead of `mdsAccordionChange`
 
-The selection logic lives inside shadow DOM. Native `click` events from inside the shadow root may not propagate as expected, and there is no native `toggle` event on this component. Always listen for `mdsAccordionChange` to react to open/close changes.
+A native `click` bubbles up from anywhere inside the accordion, panel content included, and carries no selection state; there is no native `toggle` event on this component. Listen for `mdsAccordionChange`, whose `detail.selected` holds the open index/indices.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion id="my-accordion">
   <mds-accordion-item label="Sezione A">
     <mds-text>Contenuto A.</mds-text>
@@ -233,12 +232,12 @@ The selection logic lives inside shadow DOM. Native `click` events from inside t
 </mds-accordion>
 <script>
   document.getElementById('my-accordion').addEventListener('click', (e) => {
-    // unreliable - shadow DOM events may not surface correctly
+    // fires on any click, panel content included, and says nothing about the selection
     console.log('clicked');
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-accordion id="my-accordion">
   <mds-accordion-item label="Sezione A">
     <mds-text>Contenuto A.</mds-text>
@@ -256,16 +255,16 @@ The selection logic lives inside shadow DOM. Native `click` events from inside t
 [`mds-accordion-timer`](../../mds-accordion-timer) and its child [`mds-accordion-timer-item`](../../mds-accordion-timer-item) are a separate compound pair. Slotting timer items into a plain accordion (or vice versa) breaks internal event wiring because each parent only listens for its own child's events.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-accordion>
-  <mds-accordion-timer-item label="Avanzamento automatico">
+  <mds-accordion-timer-item description="Avanzamento automatico">
     <mds-text>Contenuto con timer.</mds-text>
   </mds-accordion-timer-item>
 </mds-accordion>
 
-<!-- ✅ CORRECT - use mds-accordion-timer with mds-accordion-timer-item -->
+<!-- CORRECT - use mds-accordion-timer with mds-accordion-timer-item -->
 <mds-accordion-timer>
-  <mds-accordion-timer-item label="Avanzamento automatico">
+  <mds-accordion-timer-item description="Avanzamento automatico">
     <mds-text>Contenuto con timer.</mds-text>
   </mds-accordion-timer-item>
 </mds-accordion-timer>
@@ -276,7 +275,7 @@ The selection logic lives inside shadow DOM. Native `click` events from inside t
 The only supported customization surface is the `--mds-accordion-*` CSS custom properties and the documented `::part()` names on `mds-accordion-item` (`content`, `icon`, `label`). Targeting undocumented internals via `>>>` or deep class selectors couples code to the Shadow DOM implementation and breaks on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-accordion >>> .action {
   font-weight: bold;
 }
@@ -284,10 +283,10 @@ mds-accordion-item::part(spinner) {
   display: none;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-accordion {
-  --mds-accordion-color: rgb(var(--tone-neutral-02));
-  --mds-accordion-border-color: rgb(var(--variant-primary-05));
+  --mds-accordion-color: rgb(var(--magma-text-default));
+  --mds-accordion-border-color: rgb(var(--magma-accent-border));
 }
 mds-accordion-item::part(label) {
   font-style: italic;

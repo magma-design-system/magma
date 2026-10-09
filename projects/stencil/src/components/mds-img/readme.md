@@ -15,15 +15,15 @@ The `<mds-img>` web component is the responsive image primitive of the Magma Des
 
 #### Semantic Behavior
 
-- **Automatic alt fallback**: When `alt` is omitted, it is derived from the trailing filename segment of `src` so the image is never left without an accessible name.
+- **Automatic alt fallback**: When `alt` is omitted or empty, it is derived from the trailing filename segment of `src` so the image is never left without an accessible name; `alt=""` therefore does not make the image decorative.
 - **Error state**: A failed load swaps the picture for a broken-image icon plus the `alt` text, emitting `mdsImgLoadError`; changing `src` clears the error and retries.
 - **Load events**: `mdsImgLoadSuccess` and `mdsImgLoadError` both carry the underlying `HTMLImageElement` in their detail, letting consumers read natural dimensions or react to failures.
-- **Consumption-aware loading**: When `srcsetConsumption` is set, the component reads the persisted consumption preference and picks the matching source; under the `low` preference the image is deferred behind a "click to load" placeholder until the user opts in.
+- **Consumption-aware loading**: When `srcsetConsumption` is set, the component reads the persisted consumption preference (the `mdsPrefConsumption` key that `mds-pref-consumption` writes, read once on load) and picks the matching source; under the `low` preference the image is deferred behind a "click to load" placeholder until the user opts in.
 - **Localized placeholder**: The deferred-load placeholder label is resolved through the shared locale system (el/en/es/it).
 
 #### Properties & Visual Configurations
 
-Most props are pass-throughs to the native image attributes of the same name (`src`, `srcset`, `sizes`, `width`, `height`, `loading`, `crossorigin`, `referrerpolicy`) and behave exactly as in HTML; pick values as you would for a plain `<img>`. `loading` defaults to `'lazy'`, so opt into `'eager'` only for above-the-fold imagery.
+Most props are pass-throughs to the native image attributes of the same name (`src`, `srcset`, `sizes`, `width`, `height`, `loading`) and behave as in HTML; pick values as you would for a plain `<img>`. `crossorigin` and `referrerpolicy` exist as props but the current release does not apply them to the inner image. `loading` defaults to `'lazy'`, so opt into `'eager'` only for above-the-fold imagery.
 
 #### Other behavioral props
 
@@ -33,7 +33,7 @@ Most props are pass-throughs to the native image attributes of the same name (`s
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-img>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-img>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Image with Alt Text
 
@@ -117,7 +117,7 @@ Listen to `mdsImgLoadSuccess` and `mdsImgLoadError` to react to image load outco
 
 #### Fixed Dimensions
 
-Set `width` and `height` (as string pixel values) to reserve layout space and prevent content reflow during load. The host element is `display: flex; width: 100%` by default - set both attributes only when a fixed pixel size is intended.
+Set `width` and `height` (as string pixel values) to reserve layout space and prevent content reflow during load: they give the inner image its aspect ratio. They do not fix the rendered size - the inner image follows the host, which is `display: flex; width: 100%` by default - so size the host with CSS when a fixed pixel size is intended.
 
 ```html
 <mds-img
@@ -130,15 +130,15 @@ Set `width` and `height` (as string pixel values) to reserve layout space and pr
 
 #### Styling Customization
 
-Style the component through its documented `--mds-img-*` CSS custom properties. Use Magma color tokens wrapped in `rgb(var(...))` so dark mode and high-contrast modes keep working.
+Style the component through its documented `--mds-img-*` CSS custom properties. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .card-copertina mds-img {
-  --mds-img-background: rgb(var(--variant-secondary-03));
-  --mds-img-color: rgb(var(--variant-secondary-09));
-  --mds-img-icon-color: rgb(var(--variant-secondary-07));
-  --mds-img-error-background: rgb(var(--status-error-09));
-  --mds-img-error-color: rgb(var(--status-error-04));
+  --mds-img-background: rgb(var(--magma-accent-emphasis-hover));
+  --mds-img-color: rgb(var(--magma-accent-surface));
+  --mds-img-icon-color: rgb(var(--magma-accent-border));
+  --mds-img-error-background: rgb(var(--magma-danger-wash-base));
+  --mds-img-error-color: rgb(var(--magma-danger-fg));
 }
 ```
 
@@ -148,7 +148,7 @@ When a CSS property must be applied directly to the inner `<img>` element (for e
 
 ```css
 .copertina-libro mds-img::part(media) {
-  border-radius: var(--radius-md);
+  border-radius: var(--magma-radius-md);
   object-fit: cover;
 }
 ```
@@ -156,17 +156,17 @@ When a CSS property must be applied directly to the inner `<img>` element (for e
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-img>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-img>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Replace `<mds-img>` with a Raw `<img>` Element
 
 Using a plain `<img>` bypasses the built-in error fallback, consumption-aware loading, and accessible-name defaults that `<mds-img>` provides.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <img src="/assets/img/copertina.jpg" alt="Copertina" loading="lazy">
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-img src="/assets/img/copertina.jpg" alt="Copertina"></mds-img>
 ```
 
@@ -175,26 +175,26 @@ Using a plain `<img>` bypasses the built-in error fallback, consumption-aware lo
 `<mds-img>` derives a fallback `alt` from the filename when none is supplied, but a raw filename slug is not a meaningful description. Supply a descriptive `alt` for every content image.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-img src="/assets/img/report-annuale-2024.jpg"></mds-img>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-img src="/assets/img/report-annuale-2024.jpg" alt="Report annuale 2024"></mds-img>
 ```
 
 #### Do Not Listen to the Native `load` or `error` Events
 
-The inner `<img>` lives in shadow DOM and its native events may not bubble to the light-DOM listener. Use the documented `mdsImgLoadSuccess` and `mdsImgLoadError` custom events instead.
+The inner `<img>` lives in shadow DOM, and its native `load` and `error` events do not bubble, so a listener on the host never receives them. Use the documented `mdsImgLoadSuccess` and `mdsImgLoadError` custom events instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-img id="foto" src="/assets/img/foto.jpg" alt="Foto"></mds-img>
 <script>
   document.getElementById('foto').addEventListener('load', handler);
   document.getElementById('foto').addEventListener('error', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-img id="foto" src="/assets/img/foto.jpg" alt="Foto"></mds-img>
 <script>
   document.getElementById('foto').addEventListener('mdsImgLoadSuccess', handler);
@@ -207,13 +207,13 @@ The inner `<img>` lives in shadow DOM and its native events may not bubble to th
 Each entry in `srcset-consumption` must end with `low`, `medium`, or `high`. Entries with any other tag are silently ignored, leaving that consumption level without a source.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-img
   srcset-consumption="/assets/img/small.jpg 1x, /assets/img/large.jpg 2x"
   alt="Immagine"
 ></mds-img>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-img
   srcset-consumption="/assets/img/small.jpg low, /assets/img/medium.jpg medium, /assets/img/large.jpg high"
   alt="Immagine"
@@ -225,15 +225,15 @@ Each entry in `srcset-consumption` must end with `low`, `medium`, or `high`. Ent
 Targeting internal selectors with `>>>`, `/deep/`, or undocumented class names couples your code to the shadow DOM structure and will break on minor releases. Use `--mds-img-*` CSS custom properties for color theming, and the documented `::part(media)` for geometry/object-fit overrides.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-img >>> img {
   border-radius: 8px;
   object-fit: cover;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-img::part(media) {
-  border-radius: var(--radius-md);
+  border-radius: var(--magma-radius-md);
   object-fit: cover;
 }
 ```
@@ -243,12 +243,12 @@ mds-img::part(media) {
 `loading` defaults to `"lazy"`, which is the correct behavior for most images. Setting `"eager"` on all images forces the browser to download every image immediately, degrading performance. Reserve `"eager"` for images that are visible on first paint.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-img src="/assets/img/thumbnail-1.jpg" alt="Anteprima 1" loading="eager"></mds-img>
 <mds-img src="/assets/img/thumbnail-2.jpg" alt="Anteprima 2" loading="eager"></mds-img>
 <mds-img src="/assets/img/thumbnail-3.jpg" alt="Anteprima 3" loading="eager"></mds-img>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-img src="/assets/img/hero.jpg" alt="Hero principale" loading="eager"></mds-img>
 <mds-img src="/assets/img/thumbnail-1.jpg" alt="Anteprima 1"></mds-img>
 <mds-img src="/assets/img/thumbnail-2.jpg" alt="Anteprima 2"></mds-img>

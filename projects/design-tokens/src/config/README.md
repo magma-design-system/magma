@@ -1,93 +1,75 @@
-Di seguito è rappresentato l'uso dei tokens e delle relative configurazioni di styledictionary per la creazione delle variabili nei corrispettivi formati.
+Di seguito l'uso dei token e delle configurazioni di Style Dictionary che li trasformano nei formati di output. `scripts/build.ts` le esegue in quest'ordine: colori, `typography.json`, `tailwind3.json`, `screens.json`, `tailwind4.json`, `transitions.json`.
 
+> Nota: le due configurazioni in ts (`sd-color-all-platforms.config.ts`, `sd-brand-color.config.ts`) non leggono file: ricevono l'albero dei colori in memoria da `createColorTokens` (`src/lib/color.mts`), il primo intero, il secondo un gruppo di export alla volta. I file in `tokens/color/generated/` sono SCRITTI dalla build (per `generate-figma-tokens` e come baseline del diff del playground), non letti da queste configurazioni.
 
-> Nota: le configurazioni in ts usano in maniera dinamica i colori generati dalla build della palette nella cartella tokens/color/generated
-
-
-### Configurazioni → File usati
+### Configurazioni -> file usati
 
 ```mermaid
 flowchart LR
-  %% css.json
-  css["css.json"] --> bradius["tokens/cosmetic/border-radius.json"]
-  css --> border["tokens/cosmetic/border.json"]
-  css --> bshadow["tokens/cosmetic/box-shadow.json"]
-  css --> csswild["tokens/css/**/*.json"]
-  css --> aspect["tokens/sizing/aspect-ratio.json"]
-  css --> gap["tokens/sizing/gap.json"]
-  css --> lead["tokens/typography/leading.json"]
-  css --> size["tokens/typography/size.json"]
-  css --> sizing["tokens/typography/sizing.json"]
-  css --> primitive["tokens/sizing/primitive.json"]
-
-  %% screens.json
-  screens["screens.json"] --> screenDefault["tokens/screen/default.json"]
-
-  %% tailwind4.json
-  tw["tailwind4.json"] --> spacing["tokens/sizing/spacing.json"]
-  tw --> aspect
-  tw --> defaultType["tokens/typography/default.json"]
-  tw --> lead
-  tw --> size
-  tw --> csswild
-  tw --> border
-  tw --> bshadow
-  tw --> screenDefault
-  tw --> primitive
-  tw --> sizing
-
-  %% typography.json
-  typo["typography.json"] --> defaultType
-  typo --> lead
-  typo --> size
-
-  %% sd-color-all-platforms.config.ts
-  colorAll["sd-color-all-platforms.config.ts"] --> defColor["tokens/color/generated/default.json"]
-
-  %% sd-brand-color.config.ts
-  brandColor["sd-brand-color.config.ts"] --> brandToken["tokens/color/generated/{brand}.json"]
+  typography_json["typography.json"] --> tokens_typography_default_json["tokens/typography/default.json"]
+  tailwind3_json["tailwind3.json"] --> tokens_cosmetic_border_radius_json["tokens/cosmetic/border-radius.json"]
+  tailwind3_json["tailwind3.json"] --> tokens_cosmetic_border_json["tokens/cosmetic/border.json"]
+  tailwind3_json["tailwind3.json"] --> tokens_cosmetic_box_shadow_json["tokens/cosmetic/box-shadow.json"]
+  tailwind3_json["tailwind3.json"] --> tokens_css______json["tokens/css/**/*.json"]
+  tailwind3_json["tailwind3.json"] --> tokens_sizing_aspect_ratio_json["tokens/sizing/aspect-ratio.json"]
+  tailwind3_json["tailwind3.json"] --> tokens_sizing_gap_json["tokens/sizing/gap.json"]
+  tailwind3_json["tailwind3.json"] --> tokens_typography_leading_json["tokens/typography/leading.json"]
+  tailwind3_json["tailwind3.json"] --> tokens_typography_size_json["tokens/typography/size.json"]
+  tailwind3_json["tailwind3.json"] --> tokens_typography_sizing_json["tokens/typography/sizing.json"]
+  screens_json["screens.json"] --> tokens_screen_default_json["tokens/screen/default.json"]
+  tailwind4_json["tailwind4.json"] --> tokens_sizing_spacing_json["tokens/sizing/spacing.json"]
+  tailwind4_json["tailwind4.json"] --> tokens_sizing_aspect_ratio_json["tokens/sizing/aspect-ratio.json"]
+  tailwind4_json["tailwind4.json"] --> tokens_sizing_radius_json["tokens/sizing/radius.json"]
+  tailwind4_json["tailwind4.json"] --> tokens_typography_default_json["tokens/typography/default.json"]
+  tailwind4_json["tailwind4.json"] --> tokens_typography_leading_json["tokens/typography/leading.json"]
+  tailwind4_json["tailwind4.json"] --> tokens_typography_size_json["tokens/typography/size.json"]
+  tailwind4_json["tailwind4.json"] --> tokens_css______json["tokens/css/**/*.json"]
+  tailwind4_json["tailwind4.json"] --> tokens_cosmetic_border_json["tokens/cosmetic/border.json"]
+  tailwind4_json["tailwind4.json"] --> tokens_cosmetic_box_shadow_json["tokens/cosmetic/box-shadow.json"]
+  tailwind4_json["tailwind4.json"] --> tokens_screen_default_json["tokens/screen/default.json"]
+  transitions_json["transitions.json"] --> tokens_css_transitions_duration_json["tokens/css/transitions/duration.json"]
+  transitions_json["transitions.json"] --> tokens_css_transitions_timing_functions_json["tokens/css/transitions/timing-functions.json"]
+  transitions_json["transitions.json"] --> tokens_css_transitions_default_json["tokens/css/transitions/default.json"]
 ```
 
-### File → Configurazioni che lo usano
+### File -> configurazioni che lo usano
 
 ```mermaid
 flowchart LR
-  %% File → css.json
-  bradius["tokens/cosmetic/border-radius.json"] --> css["css.json"]
-  border["tokens/cosmetic/border.json"] --> css
-  bshadow["tokens/cosmetic/box-shadow.json"] --> css
-  csswild["tokens/css/**/*.json"] --> css
-  aspect["tokens/sizing/aspect-ratio.json"] --> css
-  gap["tokens/sizing/gap.json"] --> css
-  lead["tokens/typography/leading.json"] --> css
-  size["tokens/typography/size.json"] --> css
-  sizing["tokens/typography/sizing.json"] --> css
-  primitive["tokens/sizing/primitive.json"] --> css
-
-  %% File → screens.json
-  screenDefault["tokens/screen/default.json"] --> screens["screens.json"]
-
-  %% File → tailwind4.json
-  spacing["tokens/sizing/spacing.json"] --> tw["tailwind4.json"]
-  aspect --> tw
-  defaultType["tokens/typography/default.json"] --> tw
-  lead --> tw
-  size --> tw
-  csswild --> tw
-  border --> tw
-  bshadow --> tw
-  screenDefault --> tw
-  primitive --> tw
-  sizing --> tw
-
-  %% File → typography.json
-  defaultType --> typo["typography.json"]
-  lead --> typo
-  size --> typo
-
-  %% File → sd-color-all-platforms.config.ts
-  defColor["tokens/color/generated/default.json"] --> colorAll["sd-color-all-platforms.config.ts"]
-
-  %% File → sd-brand-color.config.ts
-  brandToken["tokens/color/generated/{brand}.json"] --> brandColor["sd-brand-color.config.ts"]
+  tokens_typography_default_json["tokens/typography/default.json"] --> typography_json["typography.json"]
+  tokens_typography_default_json["tokens/typography/default.json"] --> tailwind4_json["tailwind4.json"]
+  tokens_cosmetic_border_radius_json["tokens/cosmetic/border-radius.json"] --> tailwind3_json["tailwind3.json"]
+  tokens_cosmetic_border_json["tokens/cosmetic/border.json"] --> tailwind3_json["tailwind3.json"]
+  tokens_cosmetic_border_json["tokens/cosmetic/border.json"] --> tailwind4_json["tailwind4.json"]
+  tokens_cosmetic_box_shadow_json["tokens/cosmetic/box-shadow.json"] --> tailwind3_json["tailwind3.json"]
+  tokens_cosmetic_box_shadow_json["tokens/cosmetic/box-shadow.json"] --> tailwind4_json["tailwind4.json"]
+  tokens_css______json["tokens/css/**/*.json"] --> tailwind3_json["tailwind3.json"]
+  tokens_css______json["tokens/css/**/*.json"] --> tailwind4_json["tailwind4.json"]
+  tokens_sizing_aspect_ratio_json["tokens/sizing/aspect-ratio.json"] --> tailwind3_json["tailwind3.json"]
+  tokens_sizing_aspect_ratio_json["tokens/sizing/aspect-ratio.json"] --> tailwind4_json["tailwind4.json"]
+  tokens_sizing_gap_json["tokens/sizing/gap.json"] --> tailwind3_json["tailwind3.json"]
+  tokens_typography_leading_json["tokens/typography/leading.json"] --> tailwind3_json["tailwind3.json"]
+  tokens_typography_leading_json["tokens/typography/leading.json"] --> tailwind4_json["tailwind4.json"]
+  tokens_typography_size_json["tokens/typography/size.json"] --> tailwind3_json["tailwind3.json"]
+  tokens_typography_size_json["tokens/typography/size.json"] --> tailwind4_json["tailwind4.json"]
+  tokens_typography_sizing_json["tokens/typography/sizing.json"] --> tailwind3_json["tailwind3.json"]
+  tokens_screen_default_json["tokens/screen/default.json"] --> screens_json["screens.json"]
+  tokens_screen_default_json["tokens/screen/default.json"] --> tailwind4_json["tailwind4.json"]
+  tokens_sizing_spacing_json["tokens/sizing/spacing.json"] --> tailwind4_json["tailwind4.json"]
+  tokens_sizing_radius_json["tokens/sizing/radius.json"] --> tailwind4_json["tailwind4.json"]
+  tokens_css_transitions_duration_json["tokens/css/transitions/duration.json"] --> transitions_json["transitions.json"]
+  tokens_css_transitions_timing_functions_json["tokens/css/transitions/timing-functions.json"] --> transitions_json["transitions.json"]
+  tokens_css_transitions_default_json["tokens/css/transitions/default.json"] --> transitions_json["transitions.json"]
 ```
+
+### Configurazioni -> output (sotto `dist/`)
+
+| Configurazione | Output |
+| --- | --- |
+| `sd-color-all-platforms.config.ts` | la palette intera: `css/colors-{hex,rgb}.css`, `js/colors-css-vars.js`, `js/tailwind-colors-css-vars.js`, `css/tailwind-theme-color.css`, e i formati nativi e di design (flutter, android, ios, scss, gimp, json) |
+| `sd-brand-color.config.ts` | un gruppo di export per volta: `css/colors-{hex,rgb}-<gruppo>.css`, `flutter/colors-<gruppo>.dart` |
+| `typography.json` | `js/tailwind-font-family.js`, `js/tailwind-font-size.js`, `js/tailwind-leading.js`, `flutter/fonts.dart` |
+| `tailwind3.json` | `js/tailwind-props.js` |
+| `screens.json` | `js/tailwind-screens.js` |
+| `tailwind4.json` | `css/tailwind-theme-typography.css`, `css/typography.css` |
+| `transitions.json` | `css/transitions.css` |
