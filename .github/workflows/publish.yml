@@ -174,7 +174,8 @@ jobs:
             directory: projects/stencil-react
             workflow: stencil
             artifact: stencil-react-build
-            artifact-path: projects/stencil-react/dist
+            # dist plus the agent docs, rooted at the package directory
+            artifact-path: projects/stencil-react
             release-tag: magma
           - component: magma-angular
             # publishes from the build output (ng-packagr layout), so the
@@ -293,6 +294,15 @@ jobs:
           # the published manifest itself (the ng-packagr output for magma-angular)
           # shellcheck disable=SC2086 # the list is split on purpose
           ./scripts/set-release-version.sh "$V" $MAGMA_LOCKSTEP_MANIFESTS "$MANIFEST"
+      - name: Check that the agent docs are in the tarball
+        if: ${{ steps.ver.outputs.proceed == 'true' && matrix.release-tag == 'magma' }}
+        working-directory: ${{ matrix.directory }}
+        run: |
+          # npm skips the `files` entries that do not exist without a warning,
+          # so a path missing from the artifact would publish silently (#809)
+          FILES=$(npm pack --dry-run --json | jq -r '.[0].files[].path')
+          echo "$FILES" | grep -qx 'AGENTS.md' || { echo "::error::AGENTS.md is missing from the ${{ matrix.component }} tarball"; exit 1; }
+          echo "$FILES" | grep -q '^agents/.*[.]md$' || { echo "::error::agents/*.md is missing from the ${{ matrix.component }} tarball"; exit 1; }
       - name: Publish to npm
         if: ${{ steps.ver.outputs.proceed == 'true' }}
         working-directory: ${{ matrix.directory }}

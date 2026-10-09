@@ -15,7 +15,7 @@ The `<mds-note>` web component is the annotation surface of the Magma Design Sys
 
 #### Semantic Behavior
 
-- **Note role**: Exposed to assistive technology as a standalone annotation regardless of theme, variant, or size.
+- **Note role**: Exposed to assistive technology as a standalone annotation (`role="note"`) regardless of theme or variant.
 - **Deletable mode**: When `deletable` is set, the component renders an embedded close button; activating it emits the delete event without removing the note itself, leaving the host application in control of dismissal.
 - **Delete event**: `mdsNoteDelete` fires when the close control is activated, signalling intent to cancel or remove the note.
 - **Keyboard handling**: While `deletable`, the close action is keyboard-reachable.
@@ -28,12 +28,12 @@ The `<mds-note>` web component is the annotation surface of the Magma Design Sys
 
 #### Component-specific variants and tones
 
-`<mds-note>` does **not** use the shared `tone` / `variant` ladders from [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system). Instead, its `variant` prop selects a flat **color palette** for the note paper (the `ThemeLabelVariantType` set, e.g. `'yellow'`, `'blue'`, `'green'`, `'red'`), defaulting to `'yellow'`. Choose the color to convey the note's category or urgency, not a hierarchy of emphasis.
+`<mds-note>` does **not** use the shared `tone` / `variant` ladders from [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). Instead, its `variant` prop selects a flat **color palette** for the note paper (the `ThemeLabelVariantType` set, e.g. `'yellow'`, `'blue'`, `'green'`, `'red'`), defaulting to `'yellow'`. Choose the color to convey the note's category, not a state or a hierarchy of emphasis: a label color never communicates state, for a warning or an error use [`mds-banner`](../../mds-banner).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-note>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the label-color variants documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-note>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the label-color variants documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Plain Note with Body Text
 
@@ -57,29 +57,29 @@ Use the named `title` slot for the heading and the default slot for the body. Bo
 </mds-note>
 ```
 
-#### Color Variant for Category or Urgency
+#### Color Variant for Category
 
-Choose `variant` based on the note's category or urgency, not on aesthetic preference. All twelve label colors are available.
+Choose `variant` based on the note's category, not on aesthetic preference; a label color never communicates state ([`docs/agents/variants.md`](../../../../../../docs/agents/variants.md)). All twelve label colors are available.
 
 ```html
-<!-- Reminder (neutral warm) -->
+<!-- Category: reminders -->
 <mds-note variant="yellow">
   <mds-text typography="detail">Scadenza domani: inviare il report trimestrale.</mds-text>
 </mds-note>
 
-<!-- Action required (attention) -->
+<!-- Category: approvals -->
 <mds-note variant="orange">
   <mds-text typography="detail">Approvazione in attesa - contattare il responsabile.</mds-text>
 </mds-note>
 
-<!-- Informational (cool) -->
+<!-- Category: review notes -->
 <mds-note variant="sky">
   <mds-text typography="detail">Questo blocco e' in sola lettura fino al completamento della revisione.</mds-text>
 </mds-note>
 
-<!-- Positive / done -->
+<!-- Category: configuration -->
 <mds-note variant="green">
-  <mds-text typography="detail">Configurazione completata con successo.</mds-text>
+  <mds-text typography="detail">Configurazione del modulo fatture: usare il profilo standard.</mds-text>
 </mds-note>
 ```
 
@@ -102,7 +102,7 @@ document.querySelector('mds-note').addEventListener('mdsNoteDelete', () => {
 
 #### Styling Customization via CSS Custom Properties
 
-Customize the note only through the documented `--mds-note-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working. The undocumented `--mds-note-fold-color` controls the decorative corner fold.
+Customize the note only through the documented `--mds-note-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .featured-note mds-note {
@@ -136,19 +136,19 @@ Place several notes in a layout container; each note is independent and carries 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-note>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-note>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Remove the Note Directly - Listen for `mdsNoteDelete`
 
 The component emits `mdsNoteDelete` when the close button is activated; it never removes itself. Removing the element without listening to the event means deletable notes can never be dismissed, while bypassing the event skips any cleanup logic the host application needs to run.
 
 ```html
-<!-- 🚫 INCORRECT: close button present but nothing removes the note -->
+<!-- INCORRECT: close button present but nothing removes the note -->
 <mds-note variant="yellow" deletable>
   <mds-text typography="detail">Questa nota non sparira' mai.</mds-text>
 </mds-note>
 
-<!-- ✅ CORRECT: listen for the event and remove programmatically -->
+<!-- CORRECT: listen for the event and remove programmatically -->
 <mds-note id="nota-avviso" variant="yellow" deletable>
   <mds-text typography="detail">Chiudi per rimuovere questa nota.</mds-text>
 </mds-note>
@@ -161,32 +161,32 @@ The component emits `mdsNoteDelete` when the close button is activated; it never
 
 #### Do Not Use `variant` Values from the Status or Brand Ladders
 
-`<mds-note>` uses `ThemeLabelVariantType` - the twelve decorative label colors (`yellow`, `blue`, `green`, `red`, `orange`, `sky`, `violet`, `lime`, `aqua`, `orchid`, `purple`, `amaranth`). Status values (`info`, `success`, `warning`, `error`) and brand values (`primary`, `secondary`) are not part of this type and will silently fall back to the default, breaking the intended color.
+`<mds-note>` uses `ThemeLabelVariantType` - the twelve decorative label colors (`yellow`, `blue`, `green`, `red`, `orange`, `sky`, `violet`, `lime`, `aqua`, `orchid`, `purple`, `amaranth`). Status values (`info`, `success`, `warning`, `error`) and brand values (`primary`, `secondary`) are not part of this type and silently fall back to the yellow base, breaking the intended color. A label color never communicates state: a status message is an [`mds-banner`](../../mds-banner).
 
 ```html
-<!-- 🚫 INCORRECT: status variant not accepted by mds-note -->
+<!-- INCORRECT: status variant not accepted by mds-note -->
 <mds-note variant="warning">
   <mds-text typography="detail">Operazione in corso.</mds-text>
 </mds-note>
 
-<!-- ✅ CORRECT: use a label color that communicates the same intent -->
-<mds-note variant="orange">
+<!-- CORRECT: a state is a banner with a status variant -->
+<mds-banner variant="warning">
   <mds-text typography="detail">Operazione in corso.</mds-text>
-</mds-note>
+</mds-banner>
 ```
 
 #### Do Not Put the Title in the Default Slot
 
-The component provides a dedicated named `title` slot for the note heading. Placing a heading element in the default slot renders it inside the body content area with no special heading styling or ordering.
+The component provides a dedicated named `title` slot for the note heading. Placing a heading element in the default slot renders it inside the body content area, without the fixed position of the `title` slot, which is always rendered before the body whatever the source order.
 
 ```html
-<!-- 🚫 INCORRECT: heading mixed into default body slot -->
+<!-- INCORRECT: heading mixed into default body slot -->
 <mds-note variant="blue">
   <mds-text typography="h5">Nota importante</mds-text>
   <mds-text typography="detail">Dettagli dell'annotazione qui.</mds-text>
 </mds-note>
 
-<!-- ✅ CORRECT: heading goes in the title slot -->
+<!-- CORRECT: heading goes in the title slot -->
 <mds-note variant="blue">
   <mds-text typography="h5" slot="title">Nota importante</mds-text>
   <mds-text typography="detail">Dettagli dell'annotazione qui.</mds-text>
@@ -195,15 +195,15 @@ The component provides a dedicated named `title` slot for the note heading. Plac
 
 #### Do Not Set `deletable="false"` to Disable the Close Button
 
-`deletable` is a boolean attribute. Any non-empty string value - including `"false"` - is truthy in HTML, so `deletable="false"` still renders the close button. Remove the attribute entirely to hide it.
+`deletable` is a boolean attribute, and a false boolean is an absent attribute ([`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md)). The runtime parses the string `"false"` as `false` and hides the button, but the prop is not reflected, so the attribute stays on the element and `[deletable]` selectors or any code that reads the markup see a deletable note. Remove the attribute entirely to hide it.
 
 ```html
-<!-- 🚫 INCORRECT: the close button is still rendered -->
+<!-- INCORRECT: the attribute still says the note is deletable -->
 <mds-note variant="green" deletable="false">
   <mds-text typography="detail">Questa nota dovrebbe essere fissa.</mds-text>
 </mds-note>
 
-<!-- ✅ CORRECT: omit the attribute -->
+<!-- CORRECT: omit the attribute -->
 <mds-note variant="green">
   <mds-text typography="detail">Questa nota e' fissa.</mds-text>
 </mds-note>
@@ -214,13 +214,13 @@ The component provides a dedicated named `title` slot for the note heading. Plac
 The only supported customization surface is the documented `--mds-note-*` CSS custom properties. Applying Tailwind background utilities or raw color values couples the note's appearance to the utility layer and breaks dark mode and high-contrast handling.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-note {
   background-color: #fffacd;
   color: #3a3000;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-note {
   --mds-note-background: rgb(var(--label-yellow-09));
   --mds-note-color: rgb(var(--label-yellow-02));

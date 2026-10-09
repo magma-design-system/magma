@@ -13,19 +13,19 @@ The `<mds-input-date>` web component is the Magma Design System control for capt
 
 #### Semantic Behavior
 
-- **Form association**: The host participates natively in form submission and exposes its `value` under `name`; on form reset it clears the submitted value.
+- **Form association**: The host participates natively in form submission and exposes its `value` under `name`; on form reset it clears the submitted value (the date shown in the field stays). An invalid value submits nothing, but the invalid state is not reported to the form, so it does not block submission.
 - **ISO value contract**: `value`, `min`, and `max` are all ISO date strings (`YYYY-MM-DD`); other formats are not accepted.
-- **Validation on change**: Every value change runs validation and emits `mdsInputValidation` with a boolean. When the date is invalid (and `required`) or falls outside the `min`/`max` range, the component forces `variant` to `'error'` and submits no value; otherwise it restores `'primary'` and submits the value.
+- **Validation on change**: Validation runs when the component loads and on every value change, and emits `mdsInputValidation` with a boolean. When the date is invalid, missing while `required`, or outside the `min`/`max` range, the component forces `variant` to `'error'` and submits no value; otherwise it restores `'primary'` and submits the value. An empty `required` field is therefore in the `'error'` variant from the start.
 - **Range self-correction**: If `max` is earlier than `min` at load, `max` is snapped to equal `min`.
 - **Selection event**: `mdsInputDateSelect` fires with the new string value whenever `value` changes, whether typed or picked from the calendar.
 - **Calendar dropdown**: The trailing calendar button opens a single-date calendar; picking a day writes back the value and, after `delay`, auto-closes.
 - **Slotted mode**: When the host carries a `slot` attribute it is treated as embedded - the calendar button, dropdown, and calendar are not rendered, leaving only the bare input for composition inside a larger field.
 - **Contextual tips**: A tip surfaces `disabled`, `readonly`, and `required` states; the required tip expands on focus and reflects success once the value is valid.
-- **Read-only**: A read-only field auto-selects its text on focus instead of allowing edits.
+- **Read-only**: A read-only field shows its tip and auto-selects its text on focus. In the current release the native input is not made read-only and the calendar button stays active, so the value can still be changed.
 
 #### Properties & Visual Configurations
 
-The shared `variant` ladder is defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system). Note that `variant` is mutable here: the component overrides it to `'error'` / `'primary'` as validation dictates, so an externally set variant is not authoritative once the user interacts.
+The shared `variant` ladder is defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). Note that `variant` is mutable here: the component overrides it to `'error'` / `'primary'` as validation dictates, already when it loads, so a variant set in the markup does not survive and one set from script lasts only until the next value change or blur.
 
 #### Other behavioral props
 
@@ -36,7 +36,7 @@ The shared `variant` ladder is defined in [`projects/stencil/SPEC.md`](../../../
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-input-date>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant ladder documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-input-date>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant ladder documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Date Input
 
@@ -44,7 +44,7 @@ The simplest form. Wrap in [`mds-input-field`](../../mds-input-field) to attach 
 
 ```html
 <mds-input-field label="Data di nascita">
-  <mds-input-date name="birthdate" slot="field"></mds-input-date>
+  <mds-input-date name="birthdate"></mds-input-date>
 </mds-input-field>
 ```
 
@@ -58,11 +58,11 @@ Set `value` to an ISO date string (`YYYY-MM-DD`) to initialize the picker with a
 
 #### Required Field
 
-Add `required` to make an empty or invalid date fail validation. The component surfaces a tip on focus and auto-flips `variant` to `'error'` until the user enters a valid date.
+Add `required` to make an empty or invalid date fail validation. The component surfaces a tip on focus and keeps `variant` on `'error'`, already from load, until the user enters a valid date.
 
 ```html
 <mds-input-field label="Data di inizio *">
-  <mds-input-date name="startDate" required slot="field"></mds-input-date>
+  <mds-input-date name="startDate" required></mds-input-date>
 </mds-input-field>
 ```
 
@@ -124,24 +124,24 @@ The calendar dropdown closes `delay` milliseconds after a date is picked (defaul
 
 #### Disabled and Read-only States
 
-`disabled` blocks all interaction and removes the field from the tab sequence. `readonly` allows focus and text selection but prevents editing. Both surface a contextual tip.
+`disabled` blocks all interaction and removes the field from the tab sequence. `readonly` shows a read-only tip and selects the text on focus, but in the current release it does not prevent editing: the native input and the calendar button stay active. Both surface a contextual tip.
 
 ```html
 <!-- Disabled: no interaction at all -->
 <mds-input-date name="dataArchiviazione" disabled value="2025-01-01"></mds-input-date>
 
-<!-- Read-only: selectable, not editable -->
+<!-- Read-only: tip and selection on focus -->
 <mds-input-date name="dataCreazione" readonly value="2024-06-01"></mds-input-date>
 ```
 
 #### Form Participation
 
-`<mds-input-date>` is form-associated and submits its ISO value under `name`. On form reset the submitted value is cleared.
+`<mds-input-date>` is form-associated and submits its ISO value under `name`. On form reset the submitted value is cleared (the date shown in the field stays).
 
 ```html
 <form action="/prenota" method="post">
   <mds-input-field label="Data prenotazione">
-    <mds-input-date name="bookingDate" required slot="field"></mds-input-date>
+    <mds-input-date name="bookingDate" required></mds-input-date>
   </mds-input-field>
   <mds-button type="submit" label="Conferma" variant="primary" tone="strong"></mds-button>
 </form>
@@ -160,66 +160,73 @@ When the host carries a `slot` attribute, the component renders only the bare na
 
 #### Variant Override for External State Signalling
 
-`variant` is driven automatically by validation (`'error'` on invalid, `'primary'` on valid), but you can set it initially to communicate an external state before the user interacts. Values follow the theme input ladder: `primary` (default), `error`, `success`, `warning`, `info`, `ai`.
+`variant` is driven automatically by validation (`'error'` on invalid, `'primary'` on valid), which already runs when the component loads: a `variant` written in the markup is overwritten at once. To communicate an external state, set it from script once the component has loaded; it lasts until the next value change or blur. Values follow the theme input ladder: `primary` (default), `error`, `success`, `warning`, `info`, `ai`.
 
 ```html
-<!-- Pre-mark as success when the date was already validated server-side -->
-<mds-input-date name="dataConferma" variant="success" value="2026-03-15"></mds-input-date>
+<mds-input-date id="dataConferma" name="dataConferma" value="2026-03-15"></mds-input-date>
+
+<script>
+  // Pre-mark as success when the date was already validated server-side
+  const field = document.getElementById('dataConferma');
+  field.componentOnReady().then(() => {
+    field.variant = 'success';
+  });
+</script>
 ```
 
 #### Styling Customization
 
-Style the component only through its documented `--mds-input-date-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast work automatically.
+Style the component only through its documented `--mds-input-date-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast work automatically.
 
 ```css
 .booking-widget mds-input-date {
-  --mds-input-date-background: rgb(var(--tone-neutral-09));
-  --mds-input-date-icon-color: rgb(var(--variant-primary-04));
-  --mds-input-date-ring: 0 0 0 2px rgb(var(--variant-primary-04) / 0.5);
+  --mds-input-date-background: rgb(var(--magma-wash-base));
+  --mds-input-date-icon-color: rgb(var(--magma-accent-fg));
+  --mds-input-date-ring: 0 0 0 2px rgb(var(--magma-border-focus) / 0.5);
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-input-date>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-date>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use Non-ISO Date Strings
 
-`value`, `min`, and `max` must be ISO 8601 date strings (`YYYY-MM-DD`). Any other format is passed to `DateTime.fromISO`, which marks the date invalid and immediately trips validation.
+`value`, `min`, and `max` must be ISO 8601 date strings (`YYYY-MM-DD`). Any other format is passed to `DateTime.fromISO`, which marks the date invalid: a non-ISO `value` immediately trips validation, and a non-ISO `min` / `max` is silently ignored.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date value="31/12/2026" max="31-12-2026"></mds-input-date>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date value="2026-12-31" max="2026-12-31"></mds-input-date>
 ```
 
 #### Do Not Hardcode `variant="error"` to Signal Validation
 
-The component manages `variant` automatically: it sets `'error'` when validation fails and restores `'primary'` when it passes. Hardcoding `variant="error"` is overwritten on the first user interaction and does not persist.
+The component manages `variant` automatically: it sets `'error'` when validation fails and restores `'primary'` when it passes. Hardcoding `variant="error"` is overwritten as soon as the component loads and does not persist.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date name="dataScadenza" variant="error"></mds-input-date>
 
-<!-- ✅ CORRECT - let validation drive variant; listen to mdsInputValidation instead -->
+<!-- CORRECT - let validation drive variant; listen to mdsInputValidation instead -->
 <mds-input-date name="dataScadenza" required></mds-input-date>
 ```
 
 #### Do Not Listen to the Native `change` or `input` Events
 
-The component emits `mdsInputDateSelect` (value string) and `mdsInputValidation` (boolean). Listening to native `change` or `input` may not bubble reliably through Shadow DOM and will miss calendar-driven picks.
+The component emits `mdsInputDateSelect` (value string) and `mdsInputValidation` (boolean). The native `change` event does not cross the shadow boundary, and `input` misses calendar-driven picks and values set from script.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date id="picker" name="data"></mds-input-date>
 <script>
   document.getElementById('picker').addEventListener('change', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date id="picker" name="data"></mds-input-date>
 <script>
   document.getElementById('picker').addEventListener('mdsInputDateSelect', handler);
@@ -231,22 +238,22 @@ The component emits `mdsInputDateSelect` (value string) and `mdsInputValidation`
 Replacing `<mds-input-date>` with a plain `<input type="date">` loses form-association conventions, theming, the calendar overlay, the contextual tip, and all Magma accessibility defaults.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <input type="date" name="dataEvento" />
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date name="dataEvento"></mds-input-date>
 ```
 
 #### Do Not Set `disabled="false"` or `readonly="false"` to Remove the State
 
-Boolean attributes must be absent to be off. Setting them to the string `"false"` is truthy in HTML and keeps the state active.
+Boolean attributes must be absent to be off. The runtime happens to read the string `"false"` as `false`, but the attribute stays in the markup until the component renders, and HTML, the browser's own handling of `disabled` on a form-associated element, attribute selectors and `hasAttribute()` all read a present attribute as set.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date name="data" disabled="false" readonly="false"></mds-input-date>
 
-<!-- ✅ CORRECT - remove the attribute entirely -->
+<!-- CORRECT - remove the attribute entirely -->
 <mds-input-date name="data"></mds-input-date>
 ```
 
@@ -255,17 +262,17 @@ Boolean attributes must be absent to be off. Setting them to the string `"false"
 The documented customization surface is `--mds-input-date-*` CSS custom properties plus the `::part(input-date)` part. Targeting internals with `>>>`, `/deep/`, or undocumented selectors will break on any minor release.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-input-date >>> .input {
   border: 2px solid red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-input-date {
-  --mds-input-date-ring: 0 0 0 2px rgb(var(--status-error-04) / 0.8);
+  --mds-input-date-ring: 0 0 0 2px rgb(var(--magma-danger-border) / 0.8);
 }
 mds-input-date::part(input-date) {
-  font-size: var(--font-size-sm);
+  font-size: var(--text-size-info-caption);
 }
 ```
 
@@ -274,10 +281,10 @@ mds-input-date::part(input-date) {
 Setting `value=""` is the correct way to clear; do not set `value` to a non-ISO string expecting the component to silently ignore it - it passes through validation and trips an error state.
 
 ```html
-<!-- 🚫 INCORRECT (non-ISO value to "reset") -->
+<!-- INCORRECT (non-ISO value to "reset") -->
 <mds-input-date name="data" value="clear"></mds-input-date>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date name="data" value=""></mds-input-date>
 ```
 

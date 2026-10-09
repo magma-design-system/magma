@@ -22,7 +22,17 @@ function safeReadJSON<T>(path: string): T | null {
 
 function updateComponentFouc(componentDirName: string) {
   const componentDir = join(COMPONENTS_DIR, componentDirName);
-  const documentationPath = join(componentDir, 'documentation.json');
+  // written by the build beside the component's output (scripts/component-docs.ts)
+  const documentationPath = join(
+    COMPONENTS_DIR,
+    '..',
+    '..',
+    'dist',
+    'collection',
+    'components',
+    componentDirName,
+    'documentation.json',
+  );
 
   if (!existsSync(documentationPath)) return;
 

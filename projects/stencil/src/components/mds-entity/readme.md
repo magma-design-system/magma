@@ -15,17 +15,17 @@ The `<mds-entity>` web component represents a person, organization, or resource 
 
 #### Semantic Behavior
 
-- **Avatar resolution**: The leading avatar renders only when one of `src`, `icon`, or `initials` is provided, following avatar priority (image, then icon, then initials).
+- **Avatar resolution**: The leading avatar renders only when one of `src`, `icon`, or `initials` is provided. The inner `mds-avatar` resolves a combination pairwise: `icon` hides the `src` image, `initials` hide the `icon`, `src` hides the `initials`, and with all three set it shows none of them.
 - **Await state**: While `await` is set the avatar is suppressed and a spinner is shown in its place, signalling that the entity is still loading.
 - **Conditional regions**: The `detail` and `action` regions are shown only while content is projected into those slots, also when it is added after the first render.
 - **Default slot is the name**: The default slot carries the entity's primary label (text, HTML, or components) and is always rendered inside the info column.
 
 #### Properties & Visual Configurations
 
-- **`src`** is the path to an entity image; **`icon`** is a Magma icon library slug used when no image is supplied; **`initials`** is the text fallback shown when neither image nor icon is set. Provide whichever best identifies the entity - they are mutually prioritised, not combined.
+- **`src`** is the path to an entity image; **`icon`** is a Magma icon library slug; **`initials`** is the text shown when no image or icon fits. Provide only the one that best identifies the entity - they are not combined.
 - **`await`** marks the entity as loading and takes visual precedence over any avatar source.
 
-The shared `tone` / `variant` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system) and color the inner avatar. `tone` is limited to the minimal `'strong'` / `'weak'` pair, and `variant` accepts the avatar colour set; pick them to colour the avatar chip in line with the entity's category.
+The shared `tone` / `variant` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and color the inner avatar. `tone` is limited to the minimal `'strong'` / `'weak'` pair, and `variant` accepts the avatar colour set; pick them to colour the avatar chip in line with the entity's category. With `initials` the avatar derives its colour from the letters and ignores `variant`.
 
 #### Slots
 
@@ -35,7 +35,7 @@ The shared `tone` / `variant` ladders are defined in [`projects/stencil/SPEC.md`
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-entity>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-entity>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Person Entity with Image
 
@@ -75,7 +75,7 @@ Project additional information (role, email, status) into the `detail` slot. It 
 <mds-entity src="/avatars/giulia-bianchi.png">
   <mds-text truncate="word" typography="h6">Giulia Bianchi</mds-text>
   <mds-text truncate="word" slot="detail" typography="caption">giulia@example.com</mds-text>
-  <mds-badge slot="detail" variant="success" tone="weak">Attiva</mds-badge>
+  <mds-badge slot="detail" variant="success" tone="weak" label="Attiva"></mds-badge>
 </mds-entity>
 ```
 
@@ -140,34 +140,34 @@ Combine `await` with `icon` and `variant` to drive a state machine: show the spi
 
 #### Styling Customization
 
-Style the entity only through its documented `--mds-entity-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the entity only through its documented `--mds-entity-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. `--mds-entity-icon-background` and `--mds-entity-icon-color` paint the avatar only while it has no `variant` (none set, and no `initials`, which derive one).
 
 ```css
 .entity-highlight mds-entity {
-  --mds-entity-background: rgb(var(--variant-primary-09));
-  --mds-entity-color: rgb(var(--variant-primary-02));
-  --mds-entity-detail-color: rgb(var(--variant-primary-04));
-  --mds-entity-icon-background: rgb(var(--variant-primary-07));
-  --mds-entity-icon-color: rgb(var(--variant-primary-03));
+  --mds-entity-background: rgb(var(--magma-accent-surface));
+  --mds-entity-color: rgb(var(--magma-accent-fg));
+  --mds-entity-detail-color: rgb(var(--magma-text-muted));
+  --mds-entity-icon-background: rgb(var(--magma-accent-surface-hover));
+  --mds-entity-icon-color: rgb(var(--magma-accent-fg));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-entity>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-entity>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put the Name as a Plain Text String in the Default Slot
 
 The default slot accepts HTML elements and components, and the component applies truncation to slotted nodes. Passing a bare string bypasses `<mds-text>` typography tokens and truncation utilities; the result may overflow or render with inconsistent styles.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-entity src="/avatars/mario-rossi.png">
   Mario Rossi
 </mds-entity>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-entity src="/avatars/mario-rossi.png">
   <mds-text truncate="word" typography="h6">Mario Rossi</mds-text>
 </mds-entity>
@@ -175,15 +175,15 @@ The default slot accepts HTML elements and components, and the component applies
 
 #### Do Not Use `await="false"` to Cancel the Loading State
 
-`await` is a boolean attribute. Setting `await="false"` is still a truthy string value - the spinner stays visible. Remove the attribute (or set the prop to `undefined`) to exit the loading state.
+`await` is a boolean attribute: turn it off by removing it (or setting the prop to `undefined`), as for every boolean ([`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md)). The runtime happens to read the string `"false"` as `false`, but the attribute stays in the markup until the component renders, and HTML, `[await]` selectors and `hasAttribute()` read a present attribute as set.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-entity await="false" src="/avatars/mario-rossi.png">
   <mds-text truncate="word" typography="h6">Mario Rossi</mds-text>
 </mds-entity>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-entity src="/avatars/mario-rossi.png">
   <mds-text truncate="word" typography="h6">Mario Rossi</mds-text>
 </mds-entity>
@@ -194,13 +194,13 @@ The default slot accepts HTML elements and components, and the component applies
 The `action` slot is sized and spaced for icon-only `<mds-button>` elements. Projecting arbitrary elements (raw `<button>`, `<a>`, large widgets) breaks the fixed square dimensions applied by `::slotted([slot='action'])`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-entity src="/avatars/mario-rossi.png">
   <mds-text truncate="word" typography="h6">Mario Rossi</mds-text>
   <button slot="action">Modifica</button>
 </mds-entity>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-entity src="/avatars/mario-rossi.png">
   <mds-text truncate="word" typography="h6">Mario Rossi</mds-text>
   <mds-button slot="action" icon="mdi/pencil" variant="primary" tone="strong" title="Modifica"></mds-button>
@@ -209,15 +209,15 @@ The `action` slot is sized and spaced for icon-only `<mds-button>` elements. Pro
 
 #### Do Not Combine `src`, `icon`, and `initials` Expecting All Three to Show
 
-The component resolves to a single avatar representation. Only one source is shown at a time - the priority order is `src`, then `icon`, then `initials`. Setting all three does not create a layered avatar; the lower-priority sources are silently ignored.
+The component resolves to a single avatar representation. Setting all three does not create a layered avatar: the inner `mds-avatar` lets `icon` hide the image, `initials` hide the icon and `src` hide the initials, so the chip renders none of them.
 
 ```html
-<!-- 🚫 INCORRECT (expects image, icon, and initials to all appear) -->
+<!-- INCORRECT (expects image, icon, and initials to all appear) -->
 <mds-entity src="/avatars/mario-rossi.png" icon="mi/baseline/person" initials="mr">
   <mds-text truncate="word" typography="h6">Mario Rossi</mds-text>
 </mds-entity>
 
-<!-- ✅ CORRECT - provide the most specific source available -->
+<!-- CORRECT - provide the most specific source available -->
 <mds-entity src="/avatars/mario-rossi.png">
   <mds-text truncate="word" typography="h6">Mario Rossi</mds-text>
 </mds-entity>
@@ -225,15 +225,15 @@ The component resolves to a single avatar representation. Only one source is sho
 
 #### Do Not Apply an Invalid `tone` Value
 
-`<mds-entity>` uses `ToneMinimalVariantType`, which accepts only `strong` and `weak`. Passing other tone values like `outline` or `text` is a type error and will silently fall back, leaving the avatar unstyled.
+`<mds-entity>` uses `ToneMinimalVariantType`, which accepts only `strong` and `weak`. Passing other tone values like `outline` or `text` is a type error and is silently ignored: the avatar renders with the `strong` colours.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-entity icon="mi/baseline/business" variant="primary" tone="outline">
   <mds-text truncate="word" typography="h6">Divisione Commerciale</mds-text>
 </mds-entity>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-entity icon="mi/baseline/business" variant="primary" tone="strong">
   <mds-text truncate="word" typography="h6">Divisione Commerciale</mds-text>
 </mds-entity>
@@ -241,10 +241,10 @@ The component resolves to a single avatar representation. Only one source is sho
 
 #### Do Not Pierce the Shadow DOM to Style the Avatar
 
-The component exposes a `::part(avatar)` surface for styling the inner `<mds-avatar>`, but only for documented properties. Use `--mds-entity-icon-background`, `--mds-entity-icon-color`, and other `--mds-entity-*` custom properties for color customization; do not target undocumented internals.
+The component exposes a `::part(avatar)` surface for styling the inner `<mds-avatar>`, but the part is the limit: the nodes inside it are not API. Use `--mds-entity-icon-background`, `--mds-entity-icon-color`, and other `--mds-entity-*` custom properties for color customization; do not target undocumented internals.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-entity::part(avatar) .inner-circle {
   background: hotpink;
 }
@@ -252,10 +252,10 @@ mds-entity >>> mds-avatar {
   width: 80px;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-entity {
-  --mds-entity-icon-background: rgb(var(--variant-primary-07));
-  --mds-entity-icon-color: rgb(var(--variant-primary-03));
+  --mds-entity-icon-background: rgb(var(--magma-accent-surface-hover));
+  --mds-entity-icon-color: rgb(var(--magma-accent-fg));
 }
 ```
 

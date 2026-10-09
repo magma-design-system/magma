@@ -24,12 +24,12 @@ The `<mds-price-table-list-item>` web component represents a single feature row 
 #### Properties & Visual Configurations
 
 - **`supported`**: Choose `true` for features included in the plan (check icon) and `false` for features not included (dash icon). It is the only semantic switch that changes the rendered icon, and is themeable via the `--mds-price-table-list-item-supported-*` / `-unsupported-*` CSS custom properties.
-- **`typography`**: Selects the text scale applied to both the icon wrapper and the label, accepting one of the shared read typography tokens (default `detail`). Use a larger value such as `paragraph` when the list should read at body size, or `caption` for denser tables.
+- **`typography`**: Selects the text scale applied to both the icon wrapper and the label (the icon itself keeps a fixed size), accepting one of the shared read typography tokens (default `detail`). Use a larger value such as `paragraph` when the list should read at body size, or `caption` for denser tables.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-price-table-list-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-price-table-list-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Supported Feature Row
 
@@ -81,7 +81,7 @@ The default slot accepts more than plain text. Slot an [`<mds-help>`](../../mds-
 
 #### Adjusting Typography Scale
 
-Use the `typography` prop to control text and icon size across the whole row. The default `detail` fits dense tables; switch to `paragraph` for a more readable presentation or `caption` for compact layouts.
+Use the `typography` prop to control the text size across the whole row; the icon keeps its fixed size. The default `detail` fits dense tables; switch to `paragraph` for a more readable presentation or `caption` for compact layouts.
 
 ```html
 <!-- Default (detail) -->
@@ -117,30 +117,29 @@ The full compound pattern: `<mds-price-table-list>` with header, items, a price,
 
 #### Styling Customization
 
-Override the icon colors only through the documented `--mds-price-table-list-item-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast keep working.
+Override the icon colors only through the documented `--mds-price-table-list-item-*` CSS custom properties. Name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast keep working. `--mds-price-table-list-item-supported-icon-color-hover` is declared but no hover state reads it today, so setting it has no effect.
 
 ```css
 .promo-column mds-price-table-list-item {
-  --mds-price-table-list-item-supported-icon-color: rgb(var(--variant-primary-05));
-  --mds-price-table-list-item-supported-icon-color-hover: rgb(var(--variant-primary-04));
-  --mds-price-table-list-item-unsupported-icon-color: rgb(var(--tone-neutral-06));
+  --mds-price-table-list-item-supported-icon-color: rgb(var(--magma-accent-fg));
+  --mds-price-table-list-item-unsupported-icon-color: rgb(var(--magma-text-subtle));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-price-table-list-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-price-table-list-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `<mds-price-table-list>`
 
-The component auto-assigns itself to the parent's `item` slot and is designed exclusively as a child of [`<mds-price-table-list>`](../../mds-price-table-list). Using it standalone produces unstyled output and the icon region becomes orphaned.
+The component auto-assigns itself to the parent's `item` slot and is designed exclusively as a child of [`<mds-price-table-list>`](../../mds-price-table-list). Standalone it still renders its icon and label, but outside the plan card it loses the card's background, separator and spacing, and the `slot="item"` it writes on itself points nowhere.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-list-item supported>Funzionalita inclusa</mds-price-table-list-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-list>
   <mds-price-table-list-item supported>Funzionalita inclusa</mds-price-table-list-item>
 </mds-price-table-list>
@@ -148,47 +147,47 @@ The component auto-assigns itself to the parent's `item` slot and is designed ex
 
 #### Do Not Pass `supported` as a String
 
-`supported` is a boolean prop. Setting `supported="false"` is not the same as omitting it - any non-empty string is truthy in HTML, so the check-circle icon appears even though you intended the unsupported state. Remove the attribute to turn the feature off.
+`supported` is a boolean prop: remove the attribute to turn the feature off, the convention for every Magma boolean ([`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md)). Stencil does parse `"false"` as `false`, but the attribute stays in the markup until the component hydrates and its reflection removes it, so a `[supported]` selector or any code reading the attribute sees it set in the meantime.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-list-item supported="false">Accesso API</mds-price-table-list-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-list-item>Accesso API</mds-price-table-list-item>
 ```
 
 #### Do Not Use an Unsupported `typography` Value
 
-`typography` accepts only `"caption"`, `"detail"`, and `"paragraph"` (the `TypographyReadType` set). Passing a value outside that set - such as `"h4"` or `"label"` - produces no error but silently breaks the layout because `mds-text` will not recognise the scale.
+`typography` accepts only `"caption"`, `"detail"`, and `"paragraph"` (the `TypographyReadType` set). Passing a value outside that set - such as `"h4"` or `"label"` - produces no error in HTML: it is forwarded to the inner `mds-text`, which sets the row in that heading or label scale, out of step with the other rows.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-list-item typography="h4" supported>Accesso base</mds-price-table-list-item>
 <mds-price-table-list-item typography="label">Analytics</mds-price-table-list-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-list-item typography="paragraph" supported>Accesso base</mds-price-table-list-item>
 <mds-price-table-list-item typography="caption">Analytics</mds-price-table-list-item>
 ```
 
 #### Do Not Pierce the Shadow DOM to Restyle the Icon
 
-The only supported customization surface for the icon is the four `--mds-price-table-list-item-*` CSS custom properties and the documented `::part(icon)` shadow part. Targeting internal selectors via `>>>`, `/deep/`, or undocumented class names couples your styles to the implementation and will break on minor releases.
+The only supported customization surface for the icon is the three `--mds-price-table-list-item-*` CSS custom properties and the documented `::part(icon)` shadow part. Targeting internal selectors via `>>>`, `/deep/`, or undocumented class names couples your styles to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-price-table-list-item >>> .icon {
   fill: green;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-price-table-list-item {
-  --mds-price-table-list-item-supported-icon-color: rgb(var(--variant-success-05));
+  --mds-price-table-list-item-supported-icon-color: rgb(var(--magma-success-fg));
 }
 /* or, for targeted SVG fill overrides: */
 mds-price-table-list-item::part(icon) {
-  fill: rgb(var(--variant-success-05));
+  fill: rgb(var(--magma-success-fg));
 }
 ```
 
@@ -197,7 +196,7 @@ mds-price-table-list-item::part(icon) {
 The default slot is for the feature label - plain text plus inline helpers such as `<mds-help>`. Inserting block elements, additional icons, or wrapper `<div>` structures breaks the flex row layout that aligns the icon and label.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-list-item supported>
   <div class="feature-row">
     <mds-icon name="mi/baseline/star"></mds-icon>
@@ -205,7 +204,7 @@ The default slot is for the feature label - plain text plus inline helpers such 
   </div>
 </mds-price-table-list-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-list-item supported>
   Analisi avanzata
   <mds-help>Disponibile solo nei piani premium.</mds-help>

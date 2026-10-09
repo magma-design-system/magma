@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Install Magma in an Angular app (>= 18.2) via the Angular wrapper
+Install Magma in an Angular app (>= 20) via the Angular wrapper
 `@maggioli-design-system/magma-angular`, which exposes the `mds-*` components as
 Angular standalone components.
 
@@ -15,7 +15,8 @@ This file only covers package install and Angular-specific registration.
 npm i @maggioli-design-system/magma-angular @maggioli-design-system/magma
 ```
 
-Peer dependencies: `@angular/common` and `@angular/core` `^18.2.0`. `magma-angular`
+Peer dependencies: `@angular/common` and `@angular/core` `>=20.0.0`, and the exact
+`@maggioli-design-system/magma` version the wrapper was generated against. `magma-angular`
 follows the same major version as `magma` (see [`SPEC.md`](SPEC.md) matrix). Then
 install the assets from [`assets.md`](assets.md):
 
@@ -44,7 +45,7 @@ Then use them in templates like native elements:
 
 ```html
 <mds-button variant="primary" tone="strong">Save</mds-button>
-<mds-icon name="action-email-send"></mds-icon>
+<mds-icon name="mi/baseline/email"></mds-icon>
 ```
 
 For Reactive Forms, import the matching `ControlValueAccessor` alongside the
@@ -116,10 +117,12 @@ client-only initializer.
   the supported path, and skipping them also skips the custom element registration.
 - Keep `magma` and `magma-angular` on the exact same version; the wrapper is
   generated against a specific `magma` build.
-- Custom events (`mdsButtonClick`, ...) bind via the wrapper's Angular outputs - see
-  [`../../projects/stencil/SPEC.md`](../../projects/stencil/SPEC.md) for event names.
+- Custom events (`mdsInputChange`, ...) bind via the wrapper's Angular outputs:
+  `(mdsInputChange)="onChange($event)"`. The event names of a component are in the Events
+  table of its `AGENTS.md` (see [`components.md`](components.md)); a component without
+  custom events, like `mds-button`, is bound with the native `(click)`.
 
 ## See also
 
 - [`assets.md`](assets.md) - styles / fonts / icons / identity (canonical)
-- [`../../projects/stencil/SPEC.md`](../../projects/stencil/SPEC.md) - component conventions, events, slots
+- [`conventions.md`](conventions.md) - component conventions, events, slots

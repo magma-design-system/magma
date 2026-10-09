@@ -16,11 +16,11 @@ The `<mds-header>` web component is the top-level page header container of the M
 #### Semantic Behavior
 
 - **Compound parent**: Hosts `<mds-header-bar>` children in the default slot and relays its `menu` and `nav` settings down to the bar.
-- **Mobile menu**: A `[slot="menu"]` child is rendered inside a right-positioned modal; when absent, the bar's menu mode is forced to `'none'`.
-- **Open/close control**: The menu modal is opened programmatically via the `setOpened()` method; closing it emits `mdsHeaderClose` (with the bound bar).
-- **Scroll-driven appearance**: When `appearanceSet` defines a threshold, `appearance` swaps between its initial and changed values as the page scrolls past the configured pixel threshold.
+- **Mobile menu**: A `[slot="menu"]` child is rendered inside a right-positioned modal. When it is absent there is no modal, but the bar still receives `menu` and shows its hamburger, which then opens nothing: set `menu="none"` in that case.
+- **Open/close control**: The menu modal is opened by the bar's hamburger or programmatically via the `setOpened()` method; when the user closes it, `mdsHeaderClose` is emitted (with the bound bar).
+- **Scroll-driven appearance**: When `appearanceSet` names two appearances, `appearance` swaps between them as the page scrolls past its pixel threshold (300 when the third token is omitted).
 - **Auto-hide on scroll**: When `autoHide` is set, scrolling down past that pixel offset hides the bar and scrolling up reveals it again, governed by `threshold` as the directional margin.
-- **Visibility event**: Any change to `visibility` (`'visible'`/`'hidden'`) emits `mdsHeaderVisibilityChange`.
+- **Visibility event**: Any change to `visibility` (`'visible'`/`'hidden'`) emits `mdsHeaderVisibilityChange`, whose `detail.visibility` is that string.
 
 #### Properties & Visual Configurations
 
@@ -35,14 +35,14 @@ The `<mds-header>` web component is the top-level page header container of the M
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-header>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-header>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Minimal Header with Navigation Bar
 
-The default form. Place exactly one `<mds-header-bar>` in the default slot. The bar receives the `menu` and `nav` breakpoint settings from the parent automatically.
+The default form. Place exactly one `<mds-header-bar>` in the default slot. The bar receives the `menu` and `nav` breakpoint settings from the parent automatically; without a `menu` slot set `menu="none"`, or the bar shows a hamburger that opens nothing.
 
 ```html
-<mds-header>
+<mds-header menu="none">
   <mds-header-bar>
     <mds-img class="w-800" src="/logo.svg" alt="Logo"></mds-img>
     <mds-button slot="nav" label="Accedi" variant="dark" tone="outline"></mds-button>
@@ -53,7 +53,7 @@ The default form. Place exactly one `<mds-header-bar>` in the default slot. The 
 
 #### Mobile Menu via the `menu` Slot
 
-Provide a `[slot="menu"]` child to enable the hamburger-triggered side modal. When this slot is filled, the mobile menu icon is shown according to the `menu` breakpoint prop; when absent, `menu` is forced to `'none'` automatically.
+Provide a `[slot="menu"]` child to enable the hamburger-triggered side modal. When this slot is filled, the mobile menu icon is shown according to the `menu` breakpoint prop; without it the hamburger still shows and opens nothing, so set `menu="none"`.
 
 ```html
 <mds-header menu="mobile">
@@ -132,7 +132,7 @@ Set `auto-hide` to the pixel offset at which the bar should start hiding when th
 
 #### Reacting to Visibility Changes
 
-Listen for `mdsHeaderVisibilityChange` to know when the bar is hidden or shown by auto-hide. The event detail carries a `visibility` boolean.
+Listen for `mdsHeaderVisibilityChange` to know when the bar is hidden or shown by auto-hide. The event detail carries `visibility` as the string `'visible'` or `'hidden'`.
 
 ```html
 <mds-header auto-hide="200" id="siteHeader">
@@ -193,12 +193,12 @@ Use the `setOpened()` method to open or close the mobile menu from JavaScript - 
 
 #### Styling Customization
 
-Customize the header through its documented `--mds-header-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast continue to work.
+Customize the header through its documented `--mds-header-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast continue to work.
 
 ```css
 mds-header {
-  --mds-header-color: rgb(var(--tone-neutral));
-  --mds-header-icon-color: rgb(var(--variant-primary-03));
+  --mds-header-color: rgb(var(--magma-text-muted));
+  --mds-header-icon-color: rgb(var(--magma-accent-fg));
   --mds-header-z-index: 200;
 }
 
@@ -212,19 +212,19 @@ mds-header[appearance='inline'] {
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-header>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-header>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Place `<mds-header-bar>` Outside `<mds-header>`
 
-`<mds-header-bar>` is a compound child; it must be a direct slot child of `<mds-header>`, which relays breakpoint and appearance state down to it. Using the bar standalone breaks that communication and leaves `menu`, `nav`, and auto-hide inoperative.
+`<mds-header-bar>` is a compound child; it must be a direct slot child of `<mds-header>`, which relays breakpoint and appearance state down to it. Using the bar standalone breaks that communication: its hamburger has no menu to open, and appearance and auto-hide do not apply.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-header-bar>
   <mds-img src="/logo.svg" alt="Logo"></mds-img>
 </mds-header-bar>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-header>
   <mds-header-bar>
     <mds-img src="/logo.svg" alt="Logo"></mds-img>
@@ -234,10 +234,10 @@ Common incorrect uses of `<mds-header>`. Each entry pairs the wrong form with th
 
 #### Do Not Drive Scroll Appearance with JavaScript When `appearance-set` Is Available
 
-Manually toggling `appearance` on a scroll listener duplicates what `appearance-set` already handles declaratively and risks conflicts with the component's own watcher.
+Manually toggling `appearance` on a scroll listener duplicates what `appearance-set` already handles declaratively, and once `appearance-set` is also set the component's own scroll handler rewrites `appearance` on every scroll.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-header id="hdr" appearance="inline">
   <mds-header-bar>...</mds-header-bar>
 </mds-header>
@@ -247,7 +247,7 @@ Manually toggling `appearance` on a scroll listener duplicates what `appearance-
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-header appearance-set="inline, stripe 300" appearance="inline">
   <mds-header-bar>...</mds-header-bar>
 </mds-header>
@@ -255,10 +255,10 @@ Manually toggling `appearance` on a scroll listener duplicates what `appearance-
 
 #### Do Not Omit the `menu` Slot When Providing a Hamburger-Only Nav
 
-If no `[slot="menu"]` child is present, the component forces `menu="none"` on the bar, so the hamburger icon never appears regardless of the `menu` prop. Always provide menu content when you want the mobile toggle to be visible.
+If no `[slot="menu"]` child is present there is no modal to open, but the bar still shows the hamburger icon on the viewports set by `menu`, and pressing it does nothing. Always provide menu content when you want the mobile toggle to be visible, or set `menu="none"`.
 
 ```html
-<!-- 🚫 INCORRECT: hamburger icon will never show -->
+<!-- INCORRECT: the hamburger icon shows but opens nothing -->
 <mds-header menu="mobile">
   <mds-header-bar>
     <mds-img src="/logo.svg" alt="Logo"></mds-img>
@@ -266,7 +266,7 @@ If no `[slot="menu"]` child is present, the component forces `menu="none"` on th
   </mds-header-bar>
 </mds-header>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-header menu="mobile">
   <mds-header-bar>
     <mds-img src="/logo.svg" alt="Logo"></mds-img>
@@ -283,7 +283,7 @@ If no `[slot="menu"]` child is present, the component forces `menu="none"` on th
 The component already emits `mdsHeaderVisibilityChange` when the bar flips between hidden and visible. Attaching a second `scroll` listener couples your code to the same threshold logic and risks running out of sync.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-header auto-hide="300" id="hdr">
   <mds-header-bar>...</mds-header-bar>
 </mds-header>
@@ -294,28 +294,28 @@ The component already emits `mdsHeaderVisibilityChange` when the bar flips betwe
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-header auto-hide="300" id="hdr">
   <mds-header-bar>...</mds-header-bar>
 </mds-header>
 <script>
   document.getElementById('hdr').addEventListener('mdsHeaderVisibilityChange', (e) => {
-    document.body.classList.toggle('header-hidden', !e.detail.visibility);
+    document.body.classList.toggle('header-hidden', e.detail.visibility === 'hidden');
   });
 </script>
 ```
 
 #### Do Not Pierce Shadow DOM to Style the Internal Modal
 
-The side-modal container is exposed as `::part(menu)` and its colors are controllable via `--mds-header-*` CSS custom properties. Do not use `>>>`, `/deep/`, or undocumented internal selectors.
+The side-modal container is exposed as `::part(menu)` and its stacking is controllable via `--mds-header-z-index`. Do not use `>>>`, `/deep/`, or undocumented internal selectors.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-header >>> .menu mds-modal {
   background: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-header {
   --mds-header-z-index: 500;
 }
