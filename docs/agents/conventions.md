@@ -107,7 +107,10 @@ Maggioli):
   element: they do not synthesize one.
 - Form components (`mds-input`, `mds-input-select`, ...) are form-associated
   (`formAssociated`) and participate in native form submission: place them inside
-  `<form>` and they submit / reset natively.
+  `<form>` and they submit / reset natively. `mds-input`, `mds-input-date` and
+  `mds-input-select` also report their validity: an empty `required` field (or one that
+  breaks another rule) matches `:invalid` and stops the submit, as a native control does.
+  Add `novalidate` to the `<form>` when your own code validates on submit.
 - Focus styles: apply `focus-bounce` (interactive elements) or `focus-zoom` (links /
   static elements). Do not write `:focus { outline: ... }`. Both are Tailwind utilities
   (`styles/dist/tailwind/utilities.css`); without Tailwind only `focus-zoom` has a plain

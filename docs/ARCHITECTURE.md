@@ -108,7 +108,7 @@ The wrappers are separate npm workspaces, `projects/stencil-react` and `projects
 
 ### 3.1 Shadow DOM vs Scoped
 
-Most components use `shadow: true` (full Shadow DOM encapsulation). Form-associated components (e.g. `mds-input`, `mds-input-select`) use `scoped: true` so the native `<input>` participates in form submission natively.
+Most components use `shadow: true` (full Shadow DOM encapsulation), the form-associated ones (`formAssociated: true`, e.g. `mds-input`, `mds-input-select`) included: a native control inside a shadow root does not belong to the outer `<form>`, so these components take part in it through `ElementInternals` (`@AttachInternals()`). They submit their value with `setFormValue` and report their validity with `setValidity` (`@common/validity`, which also holds the localized messages), so an invalid one stops the submit like a native control.
 
 ### 3.2 Component categories
 
