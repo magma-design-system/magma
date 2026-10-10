@@ -1,4 +1,8 @@
 import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
+
+const readCells = (otp: HTMLElement): string[] =>
+  Array.from(otp.shadowRoot!.querySelectorAll('mds-input')).map((cell) => cell.value ?? '');
 
 describe('mds-input-otp', () => {
   it('renders', async () => {
@@ -27,5 +31,62 @@ describe('mds-input-otp', () => {
 
       expect(first).toEqualAttribute('aria-label', 'Codice di verifica, Digit 1 of 2');
     });
+  });
+});
+
+// The value fills the cells, and a form reset brings back the code of load (#822)
+describe('value', () => {
+  const setupForm = async (attributes: string) => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(
+      `<form><mds-input-otp name="otp" length="4" ${attributes}></mds-input-otp></form>`,
+    );
+    return { form, otp: form.querySelector('mds-input-otp')!, waitForChanges };
+  };
+
+  it('puts the value of the markup in the cells and in the form', async () => {
+    const { form, otp } = await setupForm('value="12"');
+
+    expect(readCells(otp)).toEqual(['1', '2', '', '']);
+    expect(new FormData(form).get('otp')).toBe('12');
+  });
+
+  it('puts a value set by code in the cells, as many digits as there are cells', async () => {
+    const { form, otp, waitForChanges } = await setupForm('');
+
+    otp.value = '345678';
+    await waitForChanges();
+
+    expect(readCells(otp)).toEqual(['3', '4', '5', '6']);
+    expect(otp.value).toBe('3456');
+    expect(new FormData(form).get('otp')).toBe('3456');
+  });
+
+  it('keeps a typed digit in its own cell', async () => {
+    const { otp, waitForChanges } = await setupForm('');
+
+    await userEvent.click(otp.shadowRoot!.querySelectorAll('mds-input')[2]);
+    await userEvent.keyboard('7');
+    await waitForChanges();
+
+    expect(otp.value).toBe('7');
+    expect(readCells(otp)).toEqual(['', '', '7', '']);
+  });
+
+  it.each([
+    ['value="12"', ['1', '2', '', ''], '12'],
+    ['', ['', '', '', ''], ''],
+  ])('brings back the code of load on a form reset (%s)', async (attributes, cells, code) => {
+    const { form, otp, waitForChanges } = await setupForm(attributes);
+    await userEvent.click(otp.shadowRoot!.querySelectorAll('mds-input')[0]);
+    await userEvent.keyboard('9876');
+    await waitForChanges();
+    expect(otp.value).toBe('9876');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(readCells(otp)).toEqual(cells);
+    expect(otp.value).toBe(code);
+    expect(new FormData(form).get('otp')).toBe(code);
   });
 });

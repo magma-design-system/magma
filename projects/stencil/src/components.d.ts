@@ -1500,7 +1500,7 @@ export namespace Components {
          */
         "length": number;
         /**
-          * The current value of the OTP code
+          * The current value of the OTP code: a value set in the markup or by code fills the cells from the first one
           * @default ''
          */
         "value"?: string;
@@ -5965,7 +5965,7 @@ declare namespace LocalJSX {
          */
         "name"?: string;
         /**
-          * The current value of the OTP code
+          * The current value of the OTP code: a value set in the markup or by code fills the cells from the first one
           * @default ''
          */
         "value"?: string;
