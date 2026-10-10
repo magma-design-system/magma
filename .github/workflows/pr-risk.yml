@@ -1,0 +1,83 @@
+name: pr-risk
+
+# Sets the review level of every pull request (risk-contract, risk-behaviour,
+# risk-visual, risk-low) and posts what the reviewer should look at, so the
+# attention goes to the few PRs that change what consumers rely on (#843).
+#
+# The level and the semver check come from projects/stencil/scripts/pr-risk.ts,
+# which reads git only: the files the PR changes, the magma.api.txt of its base
+# and head, and its commits. The job fails when the commits declare less than
+# the API change needs (a removed or narrowed member shipped as a minor or a
+# patch). It trusts the committed snapshot: stencil.yml's api-snapshot job
+# checks it against the build.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  # the label and the comment; labels live in the issues API
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  risk:
+    # release PRs (dev -> main) carry commits already checked on their own PRs
+    if: ${{ github.head_ref != 'dev' }}
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.pull_request.number }}
+      # forks get a read-only token: they get the report in the job summary only
+      SAME_REPO: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          # the merge base with the target branch and the commits since
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --prefer-offline
+      - id: risk
+        continue-on-error: true
+        run: npx nx run stencil:check.pr-risk -- --base origin/${{ github.base_ref }} --report "$RUNNER_TEMP/pr-risk.md"
+      - if: ${{ steps.risk.outputs.tier != '' }}
+        run: cat "$RUNNER_TEMP/pr-risk.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Label the review level
+        if: ${{ steps.risk.outputs.tier != '' && env.SAME_REPO == 'true' }}
+        env:
+          LABEL: risk-${{ steps.risk.outputs.tier }}
+        run: |
+          # create the label from labels.yml if label-sync has not run yet
+          if ! gh label list --limit 200 --json name --jq '.[].name' | grep -qx "$LABEL"; then
+            color=$(yq ".[] | select(.name == \"$LABEL\") | .color" .github/ISSUE_TEMPLATE/labels.yml)
+            description=$(yq ".[] | select(.name == \"$LABEL\") | .description" .github/ISSUE_TEMPLATE/labels.yml)
+            gh label create "$LABEL" --color "$color" --description "$description"
+          fi
+          for stale in $(gh pr view "$PR" --json labels --jq '.labels[].name | select(startswith("risk-"))'); do
+            [ "$stale" = "$LABEL" ] || gh pr edit "$PR" --remove-label "$stale"
+          done
+          gh pr edit "$PR" --add-label "$LABEL"
+      - name: Post the report
+        if: ${{ steps.risk.outputs.tier != '' && env.SAME_REPO == 'true' }}
+        run: |
+          # one comment per PR, updated on every push
+          id=$(gh api "repos/${{ github.repository }}/issues/$PR/comments" --paginate \
+            --jq '.[] | select(.body | startswith("<!-- magma-pr-risk -->")) | .id' | head -n1)
+          if [ -n "$id" ]; then
+            gh api -X PATCH "repos/${{ github.repository }}/issues/comments/$id" -F "body=@$RUNNER_TEMP/pr-risk.md" > /dev/null
+          else
+            gh pr comment "$PR" --body-file "$RUNNER_TEMP/pr-risk.md"
+          fi
+      - if: ${{ steps.risk.outcome == 'failure' }}
+        run: |
+          echo "::error::the commits declare less than the API change needs, or the check could not run: see the report"
+          exit 1

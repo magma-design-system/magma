@@ -68,13 +68,16 @@
     "agents/"
   ],
   "scripts": {
-    "build": "npm run clean && npm run build.icons && npm run sync.agent-docs && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run patch.custom-elements && npm run build.component-docs",
+    "build": "npm run clean && npm run build.icons && npm run sync.agent-docs && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run patch.custom-elements && npm run build.component-docs && npm run build.api-snapshot",
+    "build.api-snapshot": "tsx --tsconfig script.tsconfig.json ./scripts/api-snapshot.ts",
     "build.component-docs": "tsx --tsconfig script.tsconfig.json ./scripts/component-docs.ts",
     "build.docs": "stencil docs",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.mjs --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg --output-dump-dictionary ./src/fixtures/icons-dictionary.json && npm run sort.icons-dictionary",
     "build.no-cache": "stencil build --no-cache",
     "build.watch": "npm run build.icons && stencil build -c stencil.dev.config.ts --dev --watch",
     "build.watch-no-cache": "stencil build --no-cache --watch",
+    "check.api-snapshot": "tsx --tsconfig script.tsconfig.json ./scripts/api-snapshot.ts --check",
+    "check.pr-risk": "tsx --tsconfig script.tsconfig.json ./scripts/pr-risk.ts",
     "check.ssr": "tsx --tsconfig script.tsconfig.json ./scripts/check-ssr.ts",
     "check.tokens": "tsx --tsconfig script.tsconfig.json ./scripts/check-dangling-tokens.ts",
     "check.treeshaking": "tsx --tsconfig script.tsconfig.json ./scripts/check-treeshaking.ts",
