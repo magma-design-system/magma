@@ -44,6 +44,10 @@ export class MdsInputSelect {
   @State() hasFocus = false;
   @AttachInternals() internals: ElementInternals;
 
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the native control in its shadow root
+  @State() private formDisabled = false;
+
   /**
    * The accessible name of the native control: the label a screen reader announces. An
    * `mds-input-field` around the component passes its own label down here, so the attribute
@@ -241,6 +245,12 @@ export class MdsInputSelect {
    * Like a native select, a form reset brings the options back to the selection of the markup,
    * the placeholder when the markup selects none, and the value of load on top.
    */
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
+
   formResetCallback(): void {
     if (this.selectEl == null) return;
     const options = Array.from(this.selectEl.querySelectorAll('option'));
@@ -400,7 +410,7 @@ export class MdsInputSelect {
           onFocus={this.onFocus}
           name={this.name}
           required={this.required}
-          disabled={this.disabled}
+          disabled={this.isDisabled()}
           multiple={this.multiple}
           size={this.size}
           part="select"
@@ -429,7 +439,9 @@ export class MdsInputSelect {
           <slot onSlotchange={this.onSlotChangeHandler}></slot>
         </div>
         <mds-input-tip position="top" active={this.hasFocus} part="tip-top">
-          {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
+          {this.isDisabled() && (
+            <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>
+          )}
           {this.required && (
             <mds-input-tip-item
               expanded={this.hasFocus}

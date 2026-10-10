@@ -277,3 +277,24 @@ describe('placeholder set after load', () => {
     expect(root.querySelector('span.placeholder-option')).not.toBeNull();
   });
 });
+
+// A disabled fieldset disables the form controls in it. It disabled the host, so the value was
+// left out of the form, but not the select in its shadow root, which stayed editable (#822)
+describe('in a disabled fieldset', () => {
+  it('is disabled like a native select, until the fieldset is enabled', async () => {
+    const { root, waitForChanges } = await render<HTMLFormElement>(
+      '<form><fieldset disabled><mds-input-select name="s"><option value="a">A</option><option value="b" selected>B</option></mds-input-select></fieldset></form>',
+    );
+    const field = root.querySelector('mds-input-select')!;
+    const native = () => field.shadowRoot!.querySelector('select')!;
+
+    await vi.waitFor(() => expect(native().disabled).toBe(true));
+    expect(new FormData(root).has('s')).toBe(false);
+
+    root.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(native().disabled).toBe(false);
+    expect(new FormData(root).get('s')).toBe('b');
+  });
+});
