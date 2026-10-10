@@ -431,6 +431,78 @@ describe('min and max', () => {
   });
 });
 
+// A native input is disabled by its own disabled or by a disabled fieldset. The range had neither:
+// in a disabled fieldset its fields followed the fieldset, its calendar button did not (#852)
+describe('disabled', () => {
+  const readControls = (host: HTMLElement) => ({
+    calendar:
+      !!host.shadowRoot!.querySelector<HTMLMdsButtonElement>('.action-open-calendar')!.disabled,
+    fields: Array.from(host.querySelectorAll('mds-input-date')).map(
+      (field) => field.shadowRoot!.querySelector('input')!.disabled,
+    ),
+  });
+
+  const setupForm = async (markup: string) => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(`<form>${markup}</form>`);
+    return { form, host: form.querySelector('mds-input-date-range')!, waitForChanges };
+  };
+
+  const RANGE = 'name="period" start-date="2026-01-01" end-date="2026-01-10"';
+
+  it('disables the calendar and the fields and leaves the dates out of the form, until it is enabled', async () => {
+    const { form, host, waitForChanges } = await setupForm(
+      `<mds-input-date-range ${RANGE} disabled>${SLOTTED_INPUTS}</mds-input-date-range>`,
+    );
+
+    await vi.waitFor(() =>
+      expect(readControls(host)).toEqual({ calendar: true, fields: [true, true] }),
+    );
+    expect(new FormData(form).has('period')).toBe(false);
+
+    host.disabled = false;
+    await waitForChanges();
+
+    expect(readControls(host)).toEqual({ calendar: false, fields: [false, false] });
+    expect(new FormData(form).has('period')).toBe(true);
+  });
+
+  it('leaves alone a field disabled on its own when the range is not disabled', async () => {
+    const { host } = await setupRange(
+      '',
+      '<mds-input-date slot="start" disabled></mds-input-date><mds-input-date slot="end"></mds-input-date>',
+    );
+
+    await vi.waitFor(() => expect(readControls(host).fields).toEqual([true, false]));
+  });
+
+  it('is disabled by a disabled fieldset, until the fieldset is enabled', async () => {
+    const { form, host, waitForChanges } = await setupForm(
+      `<fieldset disabled><mds-input-date-range ${RANGE}>${SLOTTED_INPUTS}</mds-input-date-range></fieldset>`,
+    );
+
+    await vi.waitFor(() =>
+      expect(readControls(host)).toEqual({ calendar: true, fields: [true, true] }),
+    );
+    expect(new FormData(form).has('period')).toBe(false);
+
+    form.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(readControls(host)).toEqual({ calendar: false, fields: [false, false] });
+    expect(new FormData(form).has('period')).toBe(true);
+  });
+
+  it('closes a calendar left open', async () => {
+    const range = await setupRange();
+    await openCalendar(range);
+
+    range.host.disabled = true;
+    await range.waitForChanges();
+
+    expect(range.host.shadowRoot!.querySelector('mds-dropdown')).not.toHaveAttribute('visible');
+  });
+});
+
 describe('preselections', () => {
   it('snaps the end of a preset that ends before it starts', async () => {
     const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsInputDateRangeElement>(`

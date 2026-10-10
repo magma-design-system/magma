@@ -1412,6 +1412,11 @@ export namespace Components {
          */
         "delay": number;
         /**
+          * Disables the range, like a disabled native input: the dates cannot be changed, from the fields or from the calendar, and are left out of the form. It disables the two slotted fields too. A disabled `<fieldset>` around the component does the same.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
           * Enables the linked dual-calendar range picker behavior.
           * @default false
          */
@@ -5853,7 +5858,8 @@ declare namespace LocalJSX {
          */
         "delay"?: number;
         /**
-          * If `true`, the user cannot interact with the element.
+          * Disables the range, like a disabled native input: the dates cannot be changed, from the fields or from the calendar, and are left out of the form. It disables the two slotted fields too. A disabled `<fieldset>` around the component does the same.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -7800,6 +7806,7 @@ declare namespace LocalJSX {
         "hideToday": boolean;
         "dualCalendar": boolean;
         "name": string;
+        "disabled": boolean;
     }
     interface MdsInputDateRangePreselectionAttributes {
         "selected": boolean;
