@@ -216,13 +216,13 @@ export class MdsInputSwitch {
     }
   }
 
-  /** Like a native checkbox or radio, a form reset brings back the checked state of load. */
   formDisabledCallback(disabled: boolean): void {
     this.formDisabled = disabled;
   }
 
   private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
+  /** Like a native checkbox or radio, a form reset brings back the checked state of load. */
   formResetCallback(): void {
     this.checked = this.loadChecked ? true : undefined;
     this.updateFormValue();

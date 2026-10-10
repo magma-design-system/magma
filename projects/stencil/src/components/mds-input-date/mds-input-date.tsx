@@ -222,16 +222,16 @@ export class MdsInputDate {
     return Promise.resolve(this.isValid ? null : { error: '' });
   }
 
-  /**
-   * Like a native input, a form reset brings back the value of load and forgets the interaction:
-   * the field looks pristine until the user edits or leaves it again.
-   */
   formDisabledCallback(disabled: boolean): void {
     this.formDisabled = disabled;
   }
 
   private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
+  /**
+   * Like a native input, a form reset brings back the value of load and forgets the interaction:
+   * the field looks pristine until the user edits or leaves it again.
+   */
   formResetCallback(): void {
     const { touched } = this;
     this.touched = false;

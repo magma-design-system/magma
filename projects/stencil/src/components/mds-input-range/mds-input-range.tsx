@@ -153,13 +153,13 @@ export class MdsInputRange {
     this.calculateProgress();
   }
 
-  /** Like a native input, a form reset brings back the value of load, thumb included. */
   formDisabledCallback(disabled: boolean): void {
     this.formDisabled = disabled;
   }
 
   private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
+  /** Like a native input, a form reset brings back the value of load, thumb included. */
   formResetCallback(): void {
     // an empty value makes the native input take its default, the middle of the range
     this.inputElement.value = this.loadValue === undefined ? '' : String(this.loadValue);
