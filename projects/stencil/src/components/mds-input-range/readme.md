@@ -15,10 +15,10 @@ The `<mds-input-range>` web component is the Magma Design System slider control 
 
 #### Semantic Behavior
 
-- **Form association**: Inside a `<form>` the selected number is reported under `name` with no extra wiring.
+- **Form association**: Inside a `<form>` the selected number is reported under `name` with no extra wiring. A form reset brings back the value of load, thumb and progress included, or the middle of the range when the markup sets no `value`, like a native input.
 - **Value clamping and snapping**: On input the value is clamped into `[min, max]` and snapped to the nearest `step` increment, so the committed `value` is always valid even when set programmatically out of range.
-- **Decimal awareness**: The number of decimal places is derived from `step`, letting fractional steps snap correctly; a `step` of zero or negative throws.
-- **Disabled state**: Blocks interaction and clears the reported form value while disabled.
+- **Decimal awareness**: The number of decimal places is derived from `step`, letting fractional steps snap correctly; as on a native input, a `step` that is not a positive number, from the start or set later, falls back to the default step, `1`.
+- **Disabled state**: Blocks interaction and clears the reported form value while disabled. A disabled `<fieldset>` around the component does the same, as it does a native input.
 - **Emitted event**: `mdsInputRangeChange` carries the new numeric value whenever `value` actually changes.
 - **Accessibility**: The control takes its accessible name from the slotted label text.
 - **Default slot is the label**: The default slot holds the field's text label, rendered in the header alongside the formatted current value.
@@ -29,12 +29,12 @@ The `<mds-input-range>` web component is the Magma Design System slider control 
 - **`value`** is the committed numeric selection, kept clamped and snapped - set it programmatically to move the thumb.
 - **`formatValue`** is a function `(value: number) => string` for presentation only: use it to render the header value as currency, a percentage, or a unit-suffixed label without changing the underlying numeric `value`.
 
-This component does not use the shared `variant` / `tone` ladders ([`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system)); appearance is tuned through the documented CSS custom properties (thumb and track colors and sizes) listed in `readme.md`.
+This component does not use the shared `variant` / `tone` ladders ([`docs/agents/variants.md`](../../../../../../docs/agents/variants.md)); appearance is tuned through the documented CSS custom properties (thumb and track colors and sizes) listed in [`readme.md`](../readme.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-input-range>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-input-range>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Slider with a Label
 
@@ -124,33 +124,33 @@ Use `::part(header)` to hide the label-and-value header when the surrounding UI 
 
 #### Styling Customization via CSS Custom Properties
 
-Override the documented `--mds-input-range-*` custom properties on the host or a parent selector to change thumb and track appearance. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast work correctly.
+Override the documented `--mds-input-range-*` custom properties on the host or a parent selector to change thumb and track appearance. Use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and high-contrast work correctly. The thumb is drawn inside the track: keep `--mds-input-range-thumb-size` smaller than `--mds-input-range-track-size` (16px inside 24px by default).
 
 ```css
 .slider-brand mds-input-range {
-  --mds-input-range-thumb-background: rgb(var(--variant-secondary-03));
-  --mds-input-range-track-progress-background: rgb(var(--variant-secondary-03));
-  --mds-input-range-track-background: rgb(var(--tone-neutral-09));
-  --mds-input-range-thumb-size: var(--spacing-500);
-  --mds-input-range-track-size: var(--spacing-200);
+  --mds-input-range-thumb-background: rgb(var(--magma-accent-emphasis-hover));
+  --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis-hover));
+  --mds-input-range-track-background: rgb(var(--magma-wash-base));
+  --mds-input-range-thumb-size: calc(var(--spacing) * 500);
+  --mds-input-range-track-size: calc(var(--spacing) * 700);
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-input-range>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-range>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use a Raw `<input type="range">` Instead of the Component
 
 Reaching for the native element bypasses the Magma-styled track, the progress fill, the labelled header, form association wiring, and the snapping logic.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <label for="v">Volume</label>
 <input type="range" id="v" name="volume" min="0" max="100">
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-range name="volume" min="0" max="100">Volume</mds-input-range>
 ```
 
@@ -159,22 +159,22 @@ Reaching for the native element bypasses the Magma-styled track, the progress fi
 Without slotted text the slider has no accessible name - screen readers cannot announce the control's purpose. Always put a meaningful text label in the default slot.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-range name="luminosita" min="0" max="100"></mds-input-range>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-range name="luminosita" min="0" max="100">Luminosita</mds-input-range>
 ```
 
 #### Do Not Use `disabled="false"` to Enable the Slider
 
-In HTML any non-empty string attribute is truthy, so `disabled="false"` keeps the component disabled. Remove the attribute entirely to enable it.
+Stencil reads `"false"` as `false` and, since `disabled` is reflected, removes the attribute at the first render, so this happens to work; but the markup says the opposite of what it does, and on a prop that is not reflected the attribute stays in the DOM, where `[attr]` selectors still match it. Remove the attribute entirely to enable it.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-range name="soglia" disabled="false">Soglia</mds-input-range>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-range name="soglia">Soglia</mds-input-range>
 ```
 
@@ -183,7 +183,7 @@ In HTML any non-empty string attribute is truthy, so `disabled="false"` keeps th
 Native events may not bubble out of shadow DOM the way you expect. Listen to `mdsInputRangeChange`, which the component emits on every committed value change.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-range id="r" name="valore">Valore</mds-input-range>
 <script>
   document.querySelector('#r').addEventListener('change', (e) => {
@@ -191,7 +191,7 @@ Native events may not bubble out of shadow DOM the way you expect. Listen to `md
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-range id="r" name="valore">Valore</mds-input-range>
 <script>
   document.querySelector('#r').addEventListener('mdsInputRangeChange', (e) => {
@@ -202,14 +202,14 @@ Native events may not bubble out of shadow DOM the way you expect. Listen to `md
 
 #### Do Not Set `step` to Zero or a Negative Number
 
-A `step` of zero or negative is invalid and throws at runtime. Use a positive integer or decimal.
+A `step` of zero or negative is invalid: as on a native input it is ignored and the default step, `1`, applies instead, which is rarely the granularity you meant. Use a positive integer or decimal.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-range name="q" step="0">Quantita</mds-input-range>
 <mds-input-range name="q" step="-1">Quantita</mds-input-range>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-range name="q" step="1">Quantita</mds-input-range>
 ```
 
@@ -218,7 +218,7 @@ A `step` of zero or negative is invalid and throws at runtime. Use a positive in
 The component exposes `::part(header)` and `::part(track)` plus the `--mds-input-range-*` CSS custom properties for all supported customization. Targeting internal class names via `>>>` or undocumented `::part()` names couples your code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-input-range >>> .track-progress {
   background-color: hotpink;
 }
@@ -226,10 +226,10 @@ mds-input-range::part(thumb) { /* "thumb" is not a documented part */
   border-radius: 0;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-input-range {
-  --mds-input-range-track-progress-background: rgb(var(--variant-secondary-03));
-  --mds-input-range-thumb-size: var(--spacing-500);
+  --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis-hover));
+  --mds-input-range-thumb-size: calc(var(--spacing) * 500);
 }
 mds-input-range::part(track) { /* "track" is a documented part */
   opacity: 0.8;
@@ -241,7 +241,7 @@ mds-input-range::part(track) { /* "track" is a documented part */
 `formatValue` is purely presentational - it only changes the header display string. The submitted form value is always the raw number. Do not rely on it for data transformation.
 
 ```html
-<!-- 🚫 INCORRECT: expecting the form to submit the formatted string -->
+<!-- INCORRECT: expecting the form to submit the formatted string -->
 <mds-input-range id="p" name="prezzo">Prezzo</mds-input-range>
 <script>
   // This changes what is shown but NOT what is submitted
@@ -249,7 +249,7 @@ mds-input-range::part(track) { /* "track" is a documented part */
   // form.submit() still sends a plain number for "prezzo"
 </script>
 
-<!-- ✅ CORRECT: format on the server or in a submit handler using event.detail -->
+<!-- CORRECT: format on the server or in a submit handler using event.detail -->
 <mds-input-range id="p" name="prezzo">Prezzo</mds-input-range>
 <script>
   document.querySelector('#p').formatValue = (v) =>

@@ -1,0 +1,11 @@
+.chip {
+  @apply rounded-xs bg-accent-surface-subtle text-accent-fg hover:bg-accent-surface-hover;
+}
+
+.panel {
+  @apply bg-tone-neutral-10 dark:bg-tone-neutral-09;
+}
+
+.legacy {
+  @apply bg-tone-slate-08 text-tone-neutral-600;
+}

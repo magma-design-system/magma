@@ -36,6 +36,8 @@ jobs:
         projects/stencil/assets
         projects/stencil-react/src
         projects/stencil/loader
+        projects/stencil/AGENTS.md
+        projects/stencil/agents
         projects/stencil-angular/magma-angular/src/stencil-generated
       artifact-download-path: projects
       run-tests: true
@@ -52,13 +54,13 @@ jobs:
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
       - name: Restore Nx cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -71,7 +73,7 @@ jobs:
           path: projects
       - run: npx nx run stencil-react:build
       - name: Restore Playwright browsers cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           # the browser revision is pinned by the playwright version in the lockfile
@@ -83,7 +85,12 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: stencil-react-build
-          path: projects/stencil-react/dist
+          # rooted at the package directory (the common ancestor): dist plus the
+          # agent docs, which publish.yml packs next to it (#809)
+          path: |
+            projects/stencil-react/dist
+            projects/stencil-react/AGENTS.md
+            projects/stencil-react/agents
           retention-days: 1
           include-hidden-files: true
 
@@ -92,13 +99,13 @@ jobs:
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
       - name: Restore Nx cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -127,13 +134,13 @@ jobs:
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
       - name: Restore Nx cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -156,13 +163,13 @@ jobs:
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
       - name: Restore Nx cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -175,6 +182,65 @@ jobs:
           path: projects
       - run: npx nx run stencil:check.tokens
 
+  # Guards the component usage docs against drift from the code: they ship as
+  # pattern.md / antipattern.md beside each component's AGENTS.md and agents copy
+  # their examples verbatim. Every tag, attribute, value, slot, part, event and
+  # custom property must exist in the built API and token layer, and no example
+  # may paint with a palette step or a raw radius (#815). Reads
+  # dist/documentation.json and the token layer, so it needs the build artifact.
+  usage-docs:
+    needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Restore Nx cache
+        uses: actions/cache@v6
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - run: npx nx run stencil:check.usage-docs
+
+  # Guards the public API snapshot: magma.api.txt lists every prop, event, method,
+  # slot, part and documented custom property, one line each, so a PR that changes
+  # the contract consumers rely on shows it as a short diff of that file (#843). The
+  # build writes it; this fails when the committed copy differs from the built API.
+  # Reads dist/documentation.json, so it needs the build artifact.
+  api-snapshot:
+    needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Restore Nx cache
+        uses: actions/cache@v6
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - run: npx nx run stencil:check.api-snapshot
+
   # Guards the tree-shaking of the three published packages: a consumer that
   # imports one component must not end up shipping all 114. Needs all three
   # builds, so it runs last.
@@ -183,13 +249,13 @@ jobs:
     if: ${{ needs.magma.outputs.changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
       - name: Restore Nx cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -203,7 +269,7 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: stencil-react-build
-          path: projects/stencil-react/dist
+          path: projects/stencil-react
       - uses: actions/download-artifact@v8
         with:
           name: stencil-angular-build

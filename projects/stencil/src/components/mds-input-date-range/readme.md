@@ -15,25 +15,27 @@ The `<mds-input-date-range>` web component is the Magma Design System control fo
 
 - **Compound parent**: Expects exactly two `<mds-input-date>` children assigned to the `start` and `end` named slots; the host keeps both in sync as a single range - it is not meant to be used with a default (text) slot.
 - **Form association**: The submitted value is a JSON string `{ startDate, endDate }`; an empty range submits no value. On form reset it restores the start/end dates present at first load.
-- **Range coercion**: When both dates are valid and the end falls before the start, the end is snapped to equal the start, so the committed range is never inverted.
-- **Min/max guard**: If `max` is earlier than `min` at load, `max` is clamped up to `min`; both bounds are forwarded to the calendar to block out-of-range selection.
+- **Disabled fieldset**: A disabled `<fieldset>` around the component disables its calendar button as `disabled` does, while the slotted fields, being inside the fieldset too, follow it themselves: the range cannot be changed and is left out of the form, until the fieldset is enabled.
+- **Range coercion**: When both dates are valid and the end falls before the start, the end is snapped to equal the start, also for a preselection that ends before it starts, so the committed range is never inverted.
+- **Min/max guard**: If `max` is earlier than `min` at load, `max` is clamped up to `min`; both bounds are forwarded to the calendar to block out-of-range selection, and to the slotted fields, which flag a date typed outside them and stop the submit; such a range is not emitted.
 - **Commit on blur**: Leaving the component validates the range, syncs the form value, and - when both dates are valid - emits selection.
 - **Calendar selection**: Picking a complete range in the pop-up calendar emits selection and, unless `delay` is `0`, auto-closes the dropdown after the delay.
-- **Preselection sync**: Slotted `mds-input-date-range-preselection` children act as quick-picks; activating one applies its range, and any external/calendar change re-evaluates which preset (if any) is marked selected.
-- **Emitted events**: `mdsInputDateRangeValueChange` fires when a full, valid range is committed (calendar pick or focus-out with two valid dates) and either bound actually changed since the last emit.
+- **Preselection sync**: Slotted `mds-input-date-range-preselection` children act as quick-picks; activating one applies its range, and any external/calendar change re-evaluates which preset (if any) is marked selected; a preset matching the dates of load is marked selected from the start.
+- **Emitted events**: `mdsInputDateRangeValueChange` fires when a full, valid range is committed (calendar pick, preset, or focus-out with two valid dates) and either bound actually changed since the last emit.
 - **Focus management**: Clicking the host or either field label focuses the corresponding date input; a built-in calendar icon button toggles the calendar dropdown.
 - **Localization**: The "from"/"to" field labels and the calendar honor the resolved language (el/en/es/it).
 
 #### Properties & Visual Configurations
 
 - **`startDate` / `endDate`** are the controlled range bounds in ISO `YYYY-MM-DD` form; changing them externally re-syncs the slotted inputs and the calendar.
-- **`min` / `max`** define the selectable window and are enforced both in the calendar and via the coercion rules above.
+- **`min` / `max`** define the selectable window: the calendar blocks the dates outside it, and the host passes both bounds to the slotted fields, which check a typed date against them. A bound the range does not set leaves the one written on a field alone; one changed after load reaches both fields.
+- **`disabled`** disables the range, like a disabled native input: the calendar button is disabled, a calendar left open closes, and the dates are left out of the form. It disables the two slotted fields too: at load only when it is set, so a field disabled on its own stays disabled; a change after load reaches both fields.
 - **`delay`** is the auto-close grace period (ms) after a complete selection; set it to `0` to keep the calendar open until the user dismisses it manually.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-input-date-range>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the slot conventions documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-input-date-range>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Minimal Range Picker
 
@@ -59,7 +61,7 @@ Use the `start-date` and `end-date` attributes to set an initial selection. Both
 
 #### Constraining the Selectable Window
 
-Use `min` and `max` to block out-of-window dates in both the text inputs and the calendar. Both are ISO `YYYY-MM-DD` strings.
+Use `min` and `max` to block out-of-window dates in the calendar. Both are ISO `YYYY-MM-DD` strings. The host passes them to the slotted fields too: a date typed out of the window turns its field to error, stops the submit of the form and is not emitted as a range.
 
 ```html
 <mds-input-date-range min="2026-01-01" max="2026-12-31">
@@ -70,7 +72,7 @@ Use `min` and `max` to block out-of-window dates in both the text inputs and the
 
 #### Listening to Range Events
 
-`mdsInputDateRangeValueChange` fires when a full, valid range is committed (calendar pick or focus-out with two valid dates) and either bound actually changed since the last emit. It delivers `{ startDate, endDate }` in `event.detail`.
+`mdsInputDateRangeValueChange` fires when a full, valid range is committed (calendar pick, preset, or focus-out with two valid dates) and either bound actually changed since the last emit. It delivers `{ startDate, endDate }` in `event.detail`.
 
 ```html
 <mds-input-date-range id="periodo">
@@ -102,7 +104,7 @@ Use `min` and `max` to block out-of-window dates in both the text inputs and the
 
 #### Quick-Pick Preselections
 
-Slot one or more [`mds-input-date-range-preselection`](../../mds-input-date-range-preselection) elements into the component. They appear inside the calendar dropdown and act as one-click range shortcuts. The host marks the matching preset as selected whenever the current range matches.
+Slot one or more [`mds-input-date-range-preselection`](../../mds-input-date-range-preselection) elements into the component. They appear inside the calendar dropdown and act as one-click range shortcuts. The host marks the matching preset as selected, from load on and whenever the range changes to match it. A preset whose end comes before its start applies its start as both ends.
 
 ```html
 <mds-input-date-range>
@@ -137,31 +139,31 @@ By default the calendar closes 500 ms after a complete range is picked. Set `del
 
 #### Styling Customization
 
-Style the component only through its documented `--mds-input-date-range-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Style the component only through its documented `--mds-input-date-range-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and themes keep working.
 
 ```css
 .filtro-avanzato mds-input-date-range {
-  --mds-input-date-range-background: rgb(var(--tone-neutral-02));
-  --mds-input-date-range-icon-color: rgb(var(--variant-secondary-03));
-  --mds-input-date-range-fields-gap: 0 var(--spacing-400);
+  --mds-input-date-range-background: rgb(var(--magma-surface-sunken));
+  --mds-input-date-range-icon-color: rgb(var(--magma-accent-fg));
+  --mds-input-date-range-fields-gap: 0 calc(var(--spacing) * 400);
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-input-date-range>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-date-range>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Omit the Named Slots
 
 The host renders two named slots (`start` and `end`) and wires them together internally. Without slotted `<mds-input-date>` children the component has no visible inputs and no data to commit.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date-range start-date="2026-01-01" end-date="2026-01-31">
 </mds-input-date-range>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date-range start-date="2026-01-01" end-date="2026-01-31">
   <mds-input-date slot="start"></mds-input-date>
   <mds-input-date slot="end"></mds-input-date>
@@ -173,14 +175,32 @@ The host renders two named slots (`start` and `end`) and wires them together int
 The `start` and `end` slots expect [`mds-input-date`](../../mds-input-date) children. The host calls `.setValue()` and `.focusInput()` on the assigned element; a native `<input>` does not expose those methods and will break internal orchestration.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date-range>
   <input type="date" slot="start" />
   <input type="date" slot="end" />
 </mds-input-date-range>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date-range>
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
+</mds-input-date-range>
+```
+
+#### Do Not Disable the Fields Instead of the Range
+
+Disabling the slotted fields leaves the calendar button of the range enabled, and the user can still change the dates from the calendar. Set `disabled` on the range: it disables its calendar button and the two fields, and leaves the dates out of the form.
+
+```html
+<!-- INCORRECT -->
+<mds-input-date-range name="period">
+  <mds-input-date slot="start" disabled></mds-input-date>
+  <mds-input-date slot="end" disabled></mds-input-date>
+</mds-input-date-range>
+
+<!-- CORRECT -->
+<mds-input-date-range name="period" disabled>
   <mds-input-date slot="start"></mds-input-date>
   <mds-input-date slot="end"></mds-input-date>
 </mds-input-date-range>
@@ -191,13 +211,13 @@ The `start` and `end` slots expect [`mds-input-date`](../../mds-input-date) chil
 `startDate`, `endDate`, `min`, and `max` all require `YYYY-MM-DD` ISO format. Passing a locale-formatted string (e.g. `"01/06/2026"`) is silently invalid for Luxon's `DateTime.fromISO()` and leaves the range empty or unguarded.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date-range start-date="01/06/2026" end-date="30/06/2026" min="01/01/2026">
   <mds-input-date slot="start"></mds-input-date>
   <mds-input-date slot="end"></mds-input-date>
 </mds-input-date-range>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date-range start-date="2026-06-01" end-date="2026-06-30" min="2026-01-01">
   <mds-input-date slot="start"></mds-input-date>
   <mds-input-date slot="end"></mds-input-date>
@@ -209,7 +229,7 @@ The `start` and `end` slots expect [`mds-input-date`](../../mds-input-date) chil
 The component emits `mdsInputDateRangeValueChange` as a documented custom event. Native `change` / `input` events originate from inside the shadow DOM and do not bubble out reliably.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date-range id="range">
   <mds-input-date slot="start"></mds-input-date>
   <mds-input-date slot="end"></mds-input-date>
@@ -218,7 +238,7 @@ The component emits `mdsInputDateRangeValueChange` as a documented custom event.
   document.querySelector('#range').addEventListener('change', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date-range id="range">
   <mds-input-date slot="start"></mds-input-date>
   <mds-input-date slot="end"></mds-input-date>
@@ -230,16 +250,16 @@ The component emits `mdsInputDateRangeValueChange` as a documented custom event.
 
 #### Do Not Set `delay="false"` to Disable Auto-Close
 
-`delay` is a numeric prop, not a boolean. Setting it to the string `"false"` is truthy and parsed as `NaN`, which produces unexpected behavior. Use `delay="0"` to keep the calendar open after selection.
+`delay` is a numeric prop, not a boolean. The string `"false"` is parsed as `NaN`, which is not `0`: the dropdown then closes at once instead of staying open. Use `delay="0"` to keep the calendar open after selection.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date-range delay="false">
   <mds-input-date slot="start"></mds-input-date>
   <mds-input-date slot="end"></mds-input-date>
 </mds-input-date-range>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date-range delay="0">
   <mds-input-date slot="start"></mds-input-date>
   <mds-input-date slot="end"></mds-input-date>
@@ -248,10 +268,10 @@ The component emits `mdsInputDateRangeValueChange` as a documented custom event.
 
 #### Do Not Slot Preselection Elements Without the Component's Calendar
 
-[`mds-input-date-range-preselection`](../../mds-input-date-range-preselection) children must be direct slotted children of `<mds-input-date-range>`. Placing them outside the component, or inside a wrapper div, breaks the internal query that wires preset clicks to the range.
+[`mds-input-date-range-preselection`](../../mds-input-date-range-preselection) children must be direct children of `<mds-input-date-range>`. Outside the component a click finds no range to apply (the preset looks for its closest `mds-input-date-range`); inside a wrapper div the preset is not slotted into the calendar dropdown and never shows.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-date-range>
   <mds-input-date slot="start"></mds-input-date>
   <mds-input-date slot="end"></mds-input-date>
@@ -260,7 +280,7 @@ The component emits `mdsInputDateRangeValueChange` as a documented custom event.
   Questo mese
 </mds-input-date-range-preselection>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-date-range>
   <mds-input-date slot="start"></mds-input-date>
   <mds-input-date slot="end"></mds-input-date>
@@ -275,7 +295,7 @@ The component emits `mdsInputDateRangeValueChange` as a documented custom event.
 Without `name` the component is form-associated but submits no named field, so the date range is invisible to the server and to `FormData`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <form action="/filtra" method="get">
   <mds-input-date-range>
     <mds-input-date slot="start"></mds-input-date>
@@ -283,7 +303,7 @@ Without `name` the component is form-associated but submits no named field, so t
   </mds-input-date-range>
 </form>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <form action="/filtra" method="get">
   <mds-input-date-range name="periodo">
     <mds-input-date slot="start"></mds-input-date>
@@ -296,17 +316,18 @@ Without `name` the component is form-associated but submits no named field, so t
 
 ## Properties
 
-| Property         | Attribute       | Description                                                                                                                                                                                                                                | Type                  | Default     |
-| ---------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- | ----------- |
-| `accessibleName` | `aria-label`    | The accessible name of the range: each of the two fields is named after it and after the end of the range it covers, the visible "from" and "to" labels living in this shadow root, where no IDREF of the slotted fields could reach them. | `string \| undefined` | `undefined` |
-| `delay`          | `delay`         | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close                                                                                                                    | `number`              | `500`       |
-| `dualCalendar`   | `dual-calendar` | Enables the linked dual-calendar range picker behavior.                                                                                                                                                                                    | `boolean`             | `false`     |
-| `endDate`        | `end-date`      | Specifies the end date of the range                                                                                                                                                                                                        | `string`              | `''`        |
-| `hideToday`      | `hide-today`    | Hides the highlight on today's date in the calendar.                                                                                                                                                                                       | `boolean`             | `false`     |
-| `max`            | `max`           | Specifies the max date of the range, user cannot set dates after this date                                                                                                                                                                 | `null \| string`      | `null`      |
-| `min`            | `min`           | Specifies the min date of the range, user cannot set dates before this date                                                                                                                                                                | `null \| string`      | `null`      |
-| `name`           | `name`          | Is needed to reference the form data after the form is submitted                                                                                                                                                                           | `string \| undefined` | `undefined` |
-| `startDate`      | `start-date`    | Specifies the start date of the range                                                                                                                                                                                                      | `string`              | `''`        |
+| Property         | Attribute       | Description                                                                                                                                                                                                                                            | Type                   | Default     |
+| ---------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
+| `accessibleName` | `aria-label`    | The accessible name of the range: each of the two fields is named after it and after the end of the range it covers, the visible "from" and "to" labels living in this shadow root, where no IDREF of the slotted fields could reach them.             | `string \| undefined`  | `undefined` |
+| `delay`          | `delay`         | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close                                                                                                                                | `number`               | `500`       |
+| `disabled`       | `disabled`      | Disables the range, like a disabled native input: the dates cannot be changed, from the fields or from the calendar, and are left out of the form. It disables the two slotted fields too. A disabled `<fieldset>` around the component does the same. | `boolean \| undefined` | `false`     |
+| `dualCalendar`   | `dual-calendar` | Enables the linked dual-calendar range picker behavior.                                                                                                                                                                                                | `boolean`              | `false`     |
+| `endDate`        | `end-date`      | Specifies the end date of the range                                                                                                                                                                                                                    | `string`               | `''`        |
+| `hideToday`      | `hide-today`    | Hides the highlight on today's date in the calendar.                                                                                                                                                                                                   | `boolean`              | `false`     |
+| `max`            | `max`           | Specifies the max date of the range, user cannot set dates after this date                                                                                                                                                                             | `null \| string`       | `null`      |
+| `min`            | `min`           | Specifies the min date of the range, user cannot set dates before this date                                                                                                                                                                            | `null \| string`       | `null`      |
+| `name`           | `name`          | Is needed to reference the form data after the form is submitted                                                                                                                                                                                       | `string \| undefined`  | `undefined` |
+| `startDate`      | `start-date`    | Specifies the start date of the range                                                                                                                                                                                                                  | `string`               | `''`        |
 
 
 ## Events

@@ -1,10 +1,11 @@
 /**
  * Collects per-file results and renders them for humans (diff + grouped
- * findings + summary table) and for machines (JSON). Exit-code policy: `0` on
+ * findings + summary table), as a Markdown worklist and for machines (JSON). Exit-code policy: `0` on
  * success (with or without warnings/flags/dynamic notes), `2` if any file
  * failed to parse.
  */
 import chalk from 'chalk';
+import { renderMarkdown } from './markdown.js';
 import {
   type FileReport,
   type Finding,
@@ -40,6 +41,12 @@ export class Reporter {
     this.errors.push(error);
   }
 
+  private readonly notes: string[] = [];
+
+  addNote(note: string): void {
+    if (!this.notes.includes(note)) this.notes.push(note);
+  }
+
   build(): Report {
     const summary: ReportSummary = {
       filesScanned: this.files.length + this.errors.length,
@@ -56,6 +63,7 @@ export class Reporter {
       dryRun: this.meta.dryRun,
       files: this.files,
       summary,
+      ...(this.notes.length > 0 ? { notes: [...this.notes] } : {}),
     };
   }
 
@@ -69,6 +77,11 @@ export class Reporter {
   /** Plain JSON report (errors included under a top-level key). */
   toJSON(report: Report): string {
     return JSON.stringify({ ...report, parseErrors: this.errors }, null, 2);
+  }
+
+  /** Markdown worklist (see `markdown.ts`); links are relative to `baseDir`. */
+  toMarkdown(report: Report, baseDir: string, cwd = process.cwd()): string {
+    return renderMarkdown(report, { baseDir, cwd, errors: this.errors });
   }
 
   renderHuman(report: Report, options: { showDiff: boolean } = { showDiff: true }): string {
@@ -143,6 +156,7 @@ const renderSummary = (report: Report): string => {
     `  flags         : ${s.flags ? chalk.yellow(String(s.flags)) : '0'}`,
     `  dynamic (manual): ${s.dynamic ? chalk.magenta(String(s.dynamic)) : '0'}`,
     `  parse errors  : ${s.errors ? chalk.red(String(s.errors)) : '0'}`,
+    ...(report.notes ?? []).map((note) => chalk.yellow(`\n  note: ${note}`)),
   ];
   return parts.join('\n');
 };

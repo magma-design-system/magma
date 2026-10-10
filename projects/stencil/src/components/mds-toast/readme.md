@@ -14,14 +14,14 @@ The `<mds-toast>` web component is the transient notification surface of the Mag
 #### Semantic Behavior
 
 - **Auto-dismiss timer**: When `visible` is true and `duration` is a positive number, an internal timer counts down and then sets `visible` back to `false`; setting `duration` to `0` (or falsy) keeps the toast on screen until it is closed intentionally.
-- **Close event**: After the outro animation completes, the component emits `mdsToastClose` - consumers should listen for this to remove the toast from the DOM or update queue state.
-- **Reactive timer**: Changing `visible` or `duration` at runtime restarts the timer, so toggling visibility re-arms the countdown rather than leaving a stale timer.
+- **Close event**: When the timer dismisses the toast, the component emits `mdsToastClose` after the outro animation - consumers should listen for this to remove the toast from the DOM or update queue state. Hiding it yourself (removing `visible`) emits nothing.
+- **Reactive timer**: Showing the toast again (`visible` back to true) or changing `duration` at runtime restarts the countdown; hiding it does not stop a running timer.
 - **Conditional regions**: The text region renders only when the host has inner content, and the action region is shown only while a `[slot="action"]` child is present, following the children added or removed later - empty slots produce no layout.
 - **Default-slot is text**: The default slot is intended for a plain text string only; icons go in the `icon` slot and interactive controls in the `action` slot.
 
 #### Properties & Visual Configurations
 
-The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); `<mds-toast>` consumes the theme variant set and the minimal tone set (`'strong'` / `'weak'`) without adding component-specific values.
+The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); `<mds-toast>` consumes the theme variant set and the minimal tone set (`'strong'` / `'weak'`) without adding component-specific values.
 
 #### Other behavioral props
 
@@ -36,7 +36,7 @@ The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-toast>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-toast>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Text Toast
 
@@ -76,7 +76,7 @@ Use `variant` to communicate the meaning of the feedback. The status family (`er
 
 #### Tone for Emphasis
 
-Pair `variant` with `tone` to adjust visual weight. `strong` (default) uses a saturated filled background; `weak` uses a lighter tint for lower emphasis.
+Pair `variant` with `tone` to adjust visual weight. `strong` (default) uses the stronger tint of the variant and a larger shadow; `weak` uses a softer tint and a smaller shadow for lower emphasis.
 
 ```html
 <!-- Forte enfasi: errore urgente -->
@@ -117,7 +117,7 @@ Use the `action` slot with an `<mds-button>` to offer a follow-up. The action re
 
 #### Persistent Toast (No Auto-Dismiss)
 
-Set `duration="0"` to keep the toast visible until the user explicitly acts. Use this when the message carries an action the user must not miss.
+Set `duration="0"` to keep the toast visible until the user explicitly acts. Use this when the message carries an action the user must not miss. The toast has no close control of its own: hide it from your action handler by removing `visible`.
 
 ```html
 <mds-toast visible variant="warning" duration="0">
@@ -166,7 +166,7 @@ Use `position` to anchor the toast to one of the six viewport edges. Pick the ed
 
 #### Listening for the Close Event
 
-Listen for `mdsToastClose` to remove the toast from the DOM or update queue state after the outro animation completes. Do not react to `visible` becoming `false` directly - the animation is still running at that point.
+Listen for `mdsToastClose` to remove the toast from the DOM or update queue state after the outro animation completes. It is emitted only when the `duration` timer dismisses the toast. Do not react to `visible` becoming `false` directly - the animation is still running at that point.
 
 ```javascript
 document.querySelector('mds-toast').addEventListener('mdsToastClose', () => {
@@ -177,13 +177,13 @@ document.querySelector('mds-toast').addEventListener('mdsToastClose', () => {
 
 #### Styling Customization
 
-Style the toast only through its documented `--mds-toast-*` CSS custom properties. Set them on the host element or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the toast only through its documented `--mds-toast-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .app-notifications mds-toast {
-  --mds-toast-background: rgb(var(--tone-neutral-01));
-  --mds-toast-color: rgb(var(--tone-neutral-10));
-  --mds-toast-icon-color: rgb(var(--variant-primary-05));
+  --mds-toast-background: rgb(var(--magma-surface-inverse));
+  --mds-toast-color: rgb(var(--magma-on-inverse));
+  --mds-toast-icon-color: rgb(var(--magma-on-inverse));
   --mds-toast-width: 480px;
   --mds-toast-shadow: var(--shadow-xl);
 }
@@ -192,20 +192,20 @@ Style the toast only through its documented `--mds-toast-*` CSS custom propertie
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-toast>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-toast>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put HTML in the Default Slot
 
-The default slot accepts plain text only; nested elements break the layout and may be stripped. Use the `icon` slot for an icon and the `action` slot for buttons.
+The default slot accepts plain text only; nested elements are rendered inside the caption text and break the layout. Use the `icon` slot for an icon and the `action` slot for buttons.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-toast visible variant="error">
   <strong>Errore:</strong> salvataggio fallito
   <mds-button>Riprova</mds-button>
 </mds-toast>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-toast visible variant="error">
   <mds-icon slot="icon" name="mi/baseline/error-outline"></mds-icon>
   Salvataggio fallito
@@ -218,12 +218,12 @@ The default slot accepts plain text only; nested elements break the layout and m
 Setting `duration="0"` explicitly disables auto-dismiss and keeps the toast on screen until the user closes it. To use the 5000 ms default, omit the attribute entirely.
 
 ```html
-<!-- 🚫 INCORRECT - disables auto-dismiss unintentionally -->
+<!-- INCORRECT - disables auto-dismiss unintentionally -->
 <mds-toast visible variant="success" duration="0">
   Documento salvato
 </mds-toast>
 
-<!-- ✅ CORRECT - default 5000 ms applies -->
+<!-- CORRECT - default 5000 ms applies -->
 <mds-toast visible variant="success">
   Documento salvato
 </mds-toast>
@@ -231,15 +231,15 @@ Setting `duration="0"` explicitly disables auto-dismiss and keeps the toast on s
 
 #### Do Not Use `visible="false"` to Hide the Toast
 
-Setting a boolean attribute to the string `"false"` is truthy in HTML. Remove the attribute entirely (or set the prop to `undefined`) to hide the toast.
+Setting a boolean attribute to the string `"false"` leaves the attribute on the element. The toast itself reads it as hidden, but every presence check (`[visible]`, `hasAttribute('visible')`, as in the cleanup code below) still reads it as visible. Remove the attribute entirely (or set the prop to `undefined`) to hide the toast.
 
 ```html
-<!-- 🚫 INCORRECT - the toast remains visible -->
+<!-- INCORRECT - presence checks still read the toast as visible -->
 <mds-toast visible="false" variant="info">
   Sincronizzazione in corso
 </mds-toast>
 
-<!-- ✅ CORRECT - attribute absent means hidden -->
+<!-- CORRECT - attribute absent means hidden -->
 <mds-toast variant="info">
   Sincronizzazione in corso
 </mds-toast>
@@ -250,7 +250,7 @@ Setting a boolean attribute to the string `"false"` is truthy in HTML. Remove th
 When the timer fires it sets `visible` to `false`, but the outro animation is still running. Listening to that attribute change too early removes the element mid-animation. Wait for `mdsToastClose`, which fires after the animation completes.
 
 ```javascript
-// 🚫 INCORRECT - element may still be animating
+// INCORRECT - element may still be animating
 const toast = document.querySelector('mds-toast');
 const observer = new MutationObserver(() => {
   if (!toast.hasAttribute('visible')) {
@@ -259,7 +259,7 @@ const observer = new MutationObserver(() => {
 });
 observer.observe(toast, { attributes: true });
 
-// ✅ CORRECT - fires after the outro animation
+// CORRECT - fires after the outro animation
 toast.addEventListener('mdsToastClose', () => {
   toast.remove();
 });
@@ -267,15 +267,15 @@ toast.addEventListener('mdsToastClose', () => {
 
 #### Do Not Use a Variant Without Checking Its Acceptance
 
-`<mds-toast>` accepts `variant` values from `ThemeVariantType` but ships CSS overrides only for `light`, `dark`, `error`, `warning`, `info`, and `success`. Using `variant="primary"` or `variant="ai"` is valid by type but produces no themed color overrides - the toast falls back to the default light palette. Stick to the six documented status variants.
+`<mds-toast>` accepts `variant` values from `ThemeVariantType` but ships CSS overrides only for `light`, `dark`, `error`, `warning`, `info`, and `success`. Using `variant="primary"` or `variant="ai"` is valid by type but produces no themed color overrides - the toast falls back to its base inverse colors, the same as `dark`. Stick to the six variants above.
 
 ```html
-<!-- 🚫 INCORRECT - no color override; looks identical to default -->
+<!-- INCORRECT - no color override; looks identical to variant="dark" -->
 <mds-toast visible variant="primary">
   Azione confermata
 </mds-toast>
 
-<!-- ✅ CORRECT - uses a variant with full CSS support -->
+<!-- CORRECT - uses a variant with full CSS support -->
 <mds-toast visible variant="success">
   Azione confermata
 </mds-toast>
@@ -286,12 +286,12 @@ toast.addEventListener('mdsToastClose', () => {
 `<mds-toast>` uses `ToneMinimalVariantType`, which accepts only `strong` and `weak`. Passing `tone="outline"` or `tone="text"` silently falls back to the default and produces no visual difference.
 
 ```html
-<!-- 🚫 INCORRECT - value not in ToneMinimalVariantType -->
+<!-- INCORRECT - value not in ToneMinimalVariantType -->
 <mds-toast visible variant="info" tone="outline">
   Aggiornamento disponibile
 </mds-toast>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-toast visible variant="info" tone="weak">
   Aggiornamento disponibile
 </mds-toast>
@@ -302,14 +302,15 @@ toast.addEventListener('mdsToastClose', () => {
 The supported surface is `--mds-toast-*` CSS custom properties. There are no documented `::part()` targets for `<mds-toast>`; targeting internal class names with `::part()`, `>>>`, or attribute-selector hacks couples your code to the shadow DOM implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-toast >>> .dialog {
   border-radius: 0;
 }
 
-/* ✅ CORRECT - use the documented custom properties */
+/* CORRECT - use the documented custom properties */
 mds-toast {
-  --mds-toast-background: rgb(var(--tone-neutral-01));
+  --mds-toast-background: rgb(var(--magma-surface-inverse));
+  --mds-toast-color: rgb(var(--magma-on-inverse));
   --mds-toast-width: 360px;
 }
 ```

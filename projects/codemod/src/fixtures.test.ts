@@ -32,9 +32,17 @@ describe('fixtures', () => {
         const caseDir = join(dir, name);
         const input = readFileSync(join(caseDir, `input.${cfg.ext}`), 'utf8');
         const expected = readFileSync(join(caseDir, `expected.${cfg.ext}`), 'utf8');
+        // Optional CLI-equivalent options for the case (e.g. category L's
+        // `semantic.accept`), merged into the transform context.
+        const ctxFile = join(caseDir, 'ctx.json');
+        const extra = existsSync(ctxFile)
+          ? (JSON.parse(readFileSync(ctxFile, 'utf8')) as Partial<TransformContext>)
+          : {};
 
         it(`${name}: transforms input into expected`, () => {
-          expect(cfg.run(input, { file: `${name}/input.${cfg.ext}` }).output).toBe(expected);
+          expect(cfg.run(input, { file: `${name}/input.${cfg.ext}`, ...extra }).output).toBe(
+            expected,
+          );
         });
 
         // A case with a RUN_ONCE file is not idempotent by construction: a v2 name
@@ -43,14 +51,14 @@ describe('fixtures', () => {
         // which is what the README's "run it once" warns about.
         if (existsSync(join(caseDir, 'RUN_ONCE'))) {
           it(`${name}: is NOT idempotent on expected (RUN_ONCE)`, () => {
-            const result = cfg.run(expected, { file: `${name}/expected.${cfg.ext}` });
+            const result = cfg.run(expected, { file: `${name}/expected.${cfg.ext}`, ...extra });
             expect(result.changed).toBe(true);
           });
           continue;
         }
 
         it(`${name}: is idempotent on expected`, () => {
-          const result = cfg.run(expected, { file: `${name}/expected.${cfg.ext}` });
+          const result = cfg.run(expected, { file: `${name}/expected.${cfg.ext}`, ...extra });
           expect(result.changed).toBe(false);
           expect(result.output).toBe(expected);
         });

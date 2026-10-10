@@ -21,6 +21,8 @@ export class MdsPrefAnimation {
   private readonly localStorageAlias: string = 'mdsPrefAnimation';
   private readonly customPropertyAlias: string = '--magma-pref-animation';
   private readonly defaultMode: AnimationModeType = 'system';
+  private syncingFromStore: boolean = false;
+  private unsubscribeStore?: () => void;
 
   private readonly t: Locale = new Locale({
     el: localeEl,
@@ -59,13 +61,35 @@ export class MdsPrefAnimation {
     },
   };
 
-  componentWillRender(): void {
+  // Applied once, on load, then mirrored from the shared store (see mds-pref-mode).
+  componentWillLoad(): void {
     this.setAnimation(
       this.mode ??
         (localStorage.getItem(this.localStorageAlias) as AnimationModeType) ??
         this.defaultMode,
     );
   }
+
+  connectedCallback(): void {
+    this.unsubscribeStore = preferenceStore.onChange('animation', this.syncAnimation);
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribeStore?.();
+  }
+
+  /**
+   * Follows an animation applied elsewhere (another instance, or a writer of the
+   * `<html>` classes) without applying it again: no event, no storage write.
+   */
+  private readonly syncAnimation = (mode?: string): void => {
+    if (mode === undefined || mode === this.mode) {
+      return;
+    }
+    this.syncingFromStore = true;
+    this.mode = mode as AnimationModeType;
+    this.syncingFromStore = false;
+  };
 
   private readonly setAnimation = (mode: AnimationModeType): void => {
     this.prefChangeEvent.emit({ preference: 'animation' });
@@ -87,6 +111,9 @@ export class MdsPrefAnimation {
 
   @Watch('mode')
   modeChanged(newValue: AnimationModeType): void {
+    if (this.syncingFromStore) {
+      return;
+    }
     this.setAnimation(newValue);
   }
 

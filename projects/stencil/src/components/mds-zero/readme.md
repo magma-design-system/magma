@@ -33,7 +33,7 @@ The `contents` and `actions` shadow parts expose the two wrapper zones for consu
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-zero>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the slot model documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-zero>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Full Empty-State Panel
 
@@ -41,7 +41,7 @@ The canonical form. Pair an illustration in the default slot with a heading and 
 
 ```html
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty-list.svg" />
+  <mds-img src="./assets/illustrations/empty-list.svg"></mds-img>
   <mds-text typography="h5" slot="content">Nessun elemento trovato</mds-text>
   <mds-text typography="detail" slot="content">
     Non ci sono elementi che corrispondono alla tua ricerca.
@@ -63,7 +63,7 @@ When there is no meaningful recovery action, omit `slot="action"` entirely. The 
 
 ```html
 <mds-zero>
-  <mds-img src="./assets/illustrations/no-results.svg" />
+  <mds-img src="./assets/illustrations/no-results.svg"></mds-img>
   <mds-text typography="h5" slot="content">Nessun risultato</mds-text>
   <mds-text typography="detail" slot="content">
     Prova a modificare i criteri di ricerca per trovare cio che cerchi.
@@ -97,7 +97,7 @@ When two peer actions are offered - for example a primary and a secondary CTA - 
 
 ```html
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty-inbox.svg" />
+  <mds-img src="./assets/illustrations/empty-inbox.svg"></mds-img>
   <mds-text typography="h5" slot="content">Nessun messaggio</mds-text>
   <mds-text typography="detail" slot="content">
     La tua casella e vuota. Inizia una nuova conversazione o invita i tuoi colleghi.
@@ -111,7 +111,7 @@ When two peer actions are offered - for example a primary and a secondary CTA - 
   <mds-button
     slot="action"
     label="Invita colleghi"
-    variant="secondary"
+    variant="primary"
     tone="outline"
   ></mds-button>
 </mds-zero>
@@ -146,20 +146,20 @@ Use `::part(contents)` or `::part(actions)` only when you need to change the zon
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-zero>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-zero>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put Text in the Default Slot
 
 The default slot is reserved for the illustration or image. Text placed there is not constrained by the `contents` max-width, is not centered consistently, and falls outside the structured three-zone layout. Put headings and descriptions in `slot="content"`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-zero>
   <mds-text typography="h5">Nessun elemento</mds-text>
   <mds-text typography="detail">Crea il primo elemento per iniziare.</mds-text>
 </mds-zero>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-zero>
   <mds-text typography="h5" slot="content">Nessun elemento</mds-text>
   <mds-text typography="detail" slot="content">Crea il primo elemento per iniziare.</mds-text>
@@ -171,15 +171,15 @@ The default slot is reserved for the illustration or image. Text placed there is
 Placing an image or `<mds-img>` inside `slot="content"` wraps it in the max-width-constrained, centered-text zone. The default slot renders above that zone with full layout freedom and is the correct home for illustrations.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg" slot="content" />
+  <mds-img src="./assets/illustrations/empty.svg" slot="content"></mds-img>
   <mds-text typography="h5" slot="content">Nessun documento</mds-text>
 </mds-zero>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg" />
+  <mds-img src="./assets/illustrations/empty.svg"></mds-img>
   <mds-text typography="h5" slot="content">Nessun documento</mds-text>
 </mds-zero>
 ```
@@ -189,16 +189,16 @@ Placing an image or `<mds-img>` inside `slot="content"` wraps it in the max-widt
 A button placed in `slot="content"` ends up inside the centered-text block rather than the footer zone; it loses the auto-centering and the correct spacing the `actions` zone provides. Use `slot="action"` for any interactive control.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg" />
+  <mds-img src="./assets/illustrations/empty.svg"></mds-img>
   <mds-text typography="h5" slot="content">Nessun progetto</mds-text>
   <mds-button label="Nuovo progetto" variant="primary" slot="content"></mds-button>
 </mds-zero>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg" />
+  <mds-img src="./assets/illustrations/empty.svg"></mds-img>
   <mds-text typography="h5" slot="content">Nessun progetto</mds-text>
   <mds-button label="Nuovo progetto" variant="primary" slot="action"></mds-button>
 </mds-zero>
@@ -209,16 +209,16 @@ A button placed in `slot="content"` ends up inside the centered-text block rathe
 The action slot is designed for `<mds-button>`. A raw `<button>` or `<a>` will not inherit Magma theming, focus styles, or size tokens. Use `<mds-button>` with `href` if link behavior is needed.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg" />
+  <mds-img src="./assets/illustrations/empty.svg"></mds-img>
   <mds-text typography="h5" slot="content">Nessun report</mds-text>
   <button slot="action" class="btn-primary">Crea report</button>
 </mds-zero>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg" />
+  <mds-img src="./assets/illustrations/empty.svg"></mds-img>
   <mds-text typography="h5" slot="content">Nessun report</mds-text>
   <mds-button slot="action" label="Crea report" variant="primary" tone="strong"></mds-button>
 </mds-zero>
@@ -229,12 +229,12 @@ The action slot is designed for `<mds-button>`. A raw `<button>` or `<a>` will n
 `::part(contents)` and `::part(actions)` are the documented customization surface for the wrapper zones. Do not target internal class names (`.contents`, `.actions`) via `>>>` or `/deep/` - those are implementation details that can change without notice.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-zero >>> .contents {
   max-width: 600px;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-zero {
   --mds-zero-contents-max-width: 600px;
 }

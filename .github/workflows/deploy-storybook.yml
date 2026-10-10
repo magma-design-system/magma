@@ -36,7 +36,7 @@ jobs:
     outputs:
       changed: ${{ steps.filter.outputs.storybook }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -69,8 +69,8 @@ jobs:
       # read the runs of the stencil workflow and download their artifact
       actions: read
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -140,7 +140,7 @@ jobs:
           github-token: ${{ github.token }}
       - name: Restore Nx cache
         if: ${{ steps.stencil.outputs.run-id == '' }}
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -155,7 +155,7 @@ jobs:
       # test job (play functions and a11y checks, Playwright Chromium)
       - name: Restore Playwright browsers cache
         if: ${{ steps.stencil.outputs.run-id == '' }}
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           # the browser revision is pinned by the playwright version in the lockfile

@@ -99,17 +99,17 @@ The `<mds-notification>` web component is a numeric badge/dot indicator of the M
 #### Semantic Behavior
 
 - **Target attachment**: The component anchors to the element matched by the `target` selector and tracks it as it scrolls or resizes.
-- **Missing target falls back**: If `target` is not set, positioning is disabled; if `target` is set but resolves to no element, it throws `No valid target found`.
-- **Zero-value hiding**: When `value` is `0` the badge renders empty, so it effectively disappears until there is a count to show.
+- **Missing target falls back**: If `target` is not set, positioning is disabled; if `target` is set but resolves to no element, it logs a console warning (`mds-notification: no valid target found`) and falls back to `strategy="disabled"` as well.
+- **Zero value**: When `value` is `0` the badge renders without a number, as a plain dot; it is not hidden.
 - **Count overflow**: When `max` is set and `value` exceeds it, the displayed text becomes `+max` (e.g. `+9`) instead of the raw number; otherwise the value is locale-formatted.
-- **Accessibility**: The badge labels its target with the current value.
+- **Accessibility**: The badge carries the current value as its own `aria-label` (the visible number is `aria-hidden`); it does not label the target.
 
 #### Properties & Visual Configurations
 
 - **`target`** is the CSS selector of the element the badge anchors to; it is effectively mandatory for positioned rendering.
-- **`value`** is the count shown in the badge and also the source of the accessible label; `0` hides the badge.
+- **`value`** is the count shown in the badge and also the source of the accessible label; `0` shows a plain dot without a number.
 - **`max`** caps the visible number - pick it when raw counts could grow large and you want a compact `+N` ceiling.
-- **`dismissed`** hides the badge independently of its value (the badge is shown by default).
+- **`dismissed`** hides the badge independently of its value (the badge is shown by default); it works with the floating strategies (`fixed`, `absolute`) only, with `disabled` the badge stays visible.
 
 #### Other behavioral props
 
@@ -118,14 +118,14 @@ The `<mds-notification>` web component is a numeric badge/dot indicator of the M
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-notification>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-notification>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Badge Inside `mds-button` via Named Slot
 
-The most common usage. Drop `<mds-notification>` into the `notification` slot of [`mds-button`](../../mds-button) so the badge is positioned and animated automatically by the button's internal layout. Set `strategy="disabled"` because the button handles placement; the component is no longer responsible for floating positioning.
+The most common usage. Drop `<mds-notification>` into the `notification` slot of [`mds-button`](../../mds-button) so the badge is positioned and animated automatically by the button's internal layout. Set `strategy="disabled"` because the button handles placement (without a `target` the component also switches to it by itself); the component is no longer responsible for floating positioning.
 
 ```html
-<mds-button label="Messaggi" icon="mdi/email" variant="secondary" tone="weak">
+<mds-button label="Messaggi" icon="mdi/email" variant="primary" tone="weak">
   <mds-notification slot="notification" value="5" strategy="disabled"></mds-notification>
 </mds-button>
 ```
@@ -162,11 +162,11 @@ Add the `dismissed` prop to hide the badge independently of its count. This is u
 
 #### Zero Value Produces an Empty Dot
 
-When `value` is `0` the badge renders without a number, appearing as a plain dot. Use this when you need a presence indicator without a count - for example to signal new activity without exposing a specific number.
+When `value` is `0` the badge renders without a number, appearing as a plain dot. Use this when you need an unread marker without a count - for example to signal new activity without exposing a specific number.
 
 ```html
 <mds-notification target="#attivita-recente" value="0"></mds-notification>
-<mds-button id="attivita-recente" label="Attivita" variant="secondary" tone="weak"></mds-button>
+<mds-button id="attivita-recente" label="Attivita" variant="primary" tone="weak"></mds-button>
 ```
 
 #### Absolute Positioning Strategy
@@ -176,7 +176,7 @@ Use `strategy="absolute"` when the badge must be positioned relative to a scroll
 ```html
 <div style="position: relative; overflow: auto;">
   <mds-notification target="#elemento-lista" value="2" strategy="absolute"></mds-notification>
-  <mds-button id="elemento-lista" label="Documenti" variant="secondary"></mds-button>
+  <mds-button id="elemento-lista" label="Documenti" variant="primary"></mds-button>
 </div>
 ```
 
@@ -201,8 +201,8 @@ Customize the badge only through the documented `--mds-notification-*` CSS custo
 ```css
 /* Colore di sfondo personalizzato, cerchio senza bordo */
 .header-nav mds-notification {
-  --mds-notification-dot-background: rgb(var(--status-warning-05));
-  --mds-notification-color: rgb(var(--tone-kaolin-10));
+  --mds-notification-dot-background: rgb(var(--magma-warning-emphasis));
+  --mds-notification-color: rgb(var(--magma-warning-on-emphasis));
   --mds-notification-ring-size: 0px;
   --mds-notification-size: 18px;
 }
@@ -211,20 +211,20 @@ Customize the badge only through the documented `--mds-notification-*` CSS custo
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-notification>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-notification>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use a Floating Strategy When Slotted Inside `mds-button`
 
-When `<mds-notification>` sits inside the `notification` slot of [`mds-button`](../../mds-button), the button's own layout handles placement. Keeping `strategy="fixed"` (the default) causes the badge to escape the slot and position itself relative to the viewport instead.
+When `<mds-notification>` sits inside the `notification` slot of [`mds-button`](../../mds-button), the button's own layout handles placement. Without a `target` the component switches itself to `strategy="disabled"`; giving it a `target` turns floating positioning back on, so the badge escapes the slot and positions itself relative to the viewport instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
-<mds-button label="Messaggi" icon="mdi/email" variant="secondary">
-  <mds-notification slot="notification" value="5"></mds-notification>
+<!-- INCORRECT -->
+<mds-button id="btn-messaggi" label="Messaggi" icon="mdi/email" variant="primary">
+  <mds-notification slot="notification" target="#btn-messaggi" value="5"></mds-notification>
 </mds-button>
 
-<!-- ✅ CORRECT -->
-<mds-button label="Messaggi" icon="mdi/email" variant="secondary">
+<!-- CORRECT -->
+<mds-button id="btn-messaggi" label="Messaggi" icon="mdi/email" variant="primary">
   <mds-notification slot="notification" value="5" strategy="disabled"></mds-notification>
 </mds-button>
 ```
@@ -234,25 +234,25 @@ When `<mds-notification>` sits inside the `notification` slot of [`mds-button`](
 Without `target`, the component cannot locate its anchor, automatically falls back to `strategy="disabled"`, and renders in document flow wherever the tag appears - usually in the wrong place.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-notification value="3"></mds-notification>
 <mds-icon id="icona-posta" name="mi/baseline/mail"></mds-icon>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-notification target="#icona-posta" value="3"></mds-notification>
 <mds-icon id="icona-posta" name="mi/baseline/mail"></mds-icon>
 ```
 
 #### Do Not Use `<mds-notification>` as a Status Dot Without a Count
 
-`<mds-notification>` is a numeric counter badge. For a purely visual status indicator with no count, use [`mds-badge`](../../mds-badge) instead, which is designed for dot, icon, and label status scenarios.
+`<mds-notification>` is a numeric counter badge. For a purely visual status indicator with no count, use [`mds-badge`](../../mds-badge) instead, which is designed for short status labels.
 
 ```html
-<!-- 🚫 INCORRECT - abusing notification as a plain dot indicator -->
+<!-- INCORRECT - abusing notification as a plain dot indicator -->
 <mds-notification target="#utente-online" value="0"></mds-notification>
 
-<!-- ✅ CORRECT - use mds-badge for status dots -->
-<mds-badge variant="success"></mds-badge>
+<!-- CORRECT - use mds-badge for status dots -->
+<mds-badge variant="success" label="Online"></mds-badge>
 ```
 
 #### Do Not Wrap the Target in a Relative Container and Use `strategy="fixed"`
@@ -260,13 +260,13 @@ Without `target`, the component cannot locate its anchor, automatically falls ba
 `strategy="fixed"` anchors the badge to the viewport coordinate system. If the target sits inside a CSS-transformed or `position: relative` parent, `fixed` positioning will not track it correctly. Switch to `strategy="absolute"` and ensure the containing block has a non-static position.
 
 ```html
-<!-- 🚫 INCORRECT - fixed badge inside transformed container -->
+<!-- INCORRECT - fixed badge inside transformed container -->
 <div style="transform: translateX(0);">
   <mds-notification target="#btn-azioni" value="2" strategy="fixed"></mds-notification>
   <mds-button id="btn-azioni" label="Azioni"></mds-button>
 </div>
 
-<!-- ✅ CORRECT - absolute strategy with positioned containing block -->
+<!-- CORRECT - absolute strategy with positioned containing block -->
 <div style="position: relative;">
   <mds-notification target="#btn-azioni" value="2" strategy="absolute"></mds-notification>
   <mds-button id="btn-azioni" label="Azioni"></mds-button>
@@ -278,14 +278,14 @@ Without `target`, the component cannot locate its anchor, automatically falls ba
 The internal `.dot` element is not a documented `::part()`. Targeting it with `::part(dot)` or deep-selector hacks breaks on any internal refactor. Use the documented `--mds-notification-*` CSS custom properties instead.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-notification::part(dot) {
   background-color: purple;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-notification {
-  --mds-notification-dot-background: rgb(var(--status-warning-05));
+  --mds-notification-dot-background: rgb(var(--magma-warning-emphasis));
 }
 ```
 

@@ -1,5 +1,6 @@
 /** Shared transformer contract used by every surface. */
 import { type Finding } from '../../report/types.js';
+import { type SemanticOptions } from './semantic-ops.js';
 
 export interface TransformContext {
   /** Path of the file being transformed (for findings). */
@@ -8,6 +9,8 @@ export interface TransformContext {
   only?: ReadonlySet<string>;
   /** These rule ids are skipped. */
   skip?: ReadonlySet<string>;
+  /** Category L: how far the semantic utility migration may write (default: report only). */
+  semantic?: SemanticOptions;
 }
 
 export interface TransformResult {

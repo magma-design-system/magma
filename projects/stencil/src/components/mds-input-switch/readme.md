@@ -16,13 +16,13 @@ The `<mds-input-switch>` web component is the binary/selectable input control of
 #### Semantic Behavior
 
 - **Type-driven rendering**: `type` selects the visual primitive. `'switch'` (default) renders the sliding toggle; `'checkbox'` and `'radio'` render the corresponding native control.
-- **Form association**: The host participates in a `<form>` natively - the form value is set to `value` when `checked` and cleared otherwise, including on form reset.
-- **Radio grouping**: When `type="radio"`, checking one instance unchecks every other `<mds-input-switch>` sharing the same `name` in the document.
+- **Form association**: The host participates in a `<form>` natively - the form value is `value` while `checked` and enabled, nothing otherwise, and it follows every change of `checked`, `value` or `disabled`, by the user or by code. A form reset brings back the `checked` state of load, like a native input.
+- **Radio grouping**: When `type="radio"`, checking one instance, by the user or by code, unchecks the other radios with the same `name` in the same form (or, outside a form, in the same document or shadow root), as native radios do, so the group submits one value. A radio without a `name` is a group of its own.
 - **Checked / indeterminate**: `checked` reflects selection; toggling it always clears `indeterminate`. The indeterminate glyph is only meaningful for `checkbox`.
-- **Disabled state**: Blocks interaction and clears the submitted form value while disabled.
+- **Disabled state**: Blocks interaction and clears the submitted form value while disabled. A disabled `<fieldset>` around the component does the same, as it does a native input.
 - **Keyboard operable**: The control responds to keyboard activation in addition to pointer clicks.
 - **Accessibility**: The control exposes a localized accessible label ("select"/"unselect") derived from slotted text (it/en/es/el).
-- **Change event**: `mdsInputSwitchChange` fires with `{ name, checked, value }` whenever the selection changes.
+- **Change event**: `mdsInputSwitchChange` fires with `{ name, checked, value }` whenever the user changes the selection; setting `checked` from code does not emit it.
 - **Default slot**: The default slot is the visible text label rendered beside the control; when empty, the label region collapses.
 
 #### Properties & Visual Configurations
@@ -34,12 +34,12 @@ The `<mds-input-switch>` web component is the binary/selectable input control of
 
 #### Other behavioral props
 
-- **`typography`** and **`variant`** style the slotted text label; they map to the shared typography ladders rather than the system tone/variant ladder defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system).
+- **`typography`** and **`variant`** style the slotted text label; they map to the shared typography ladders rather than the system tone/variant ladder defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-input-switch>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-input-switch>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Toggle Switch with a Text Label
 
@@ -98,7 +98,7 @@ Set `type="checkbox"` for multi-select use cases. The component renders the stan
 
 #### Radio Group
 
-Set `type="radio"` and share the same `name` across instances. Checking one automatically unchecks all others with the same name in the document.
+Set `type="radio"` and share the same `name` across instances. Checking one automatically unchecks the others with the same name in the same form, and the form submits the value of the checked one.
 
 ```html
 <mds-input-switch type="radio" name="piano" value="base">Piano base</mds-input-switch>
@@ -108,7 +108,7 @@ Set `type="radio"` and share the same `name` across instances. Checking one auto
 
 #### Form Participation
 
-`<mds-input-switch>` is form-associated. The form receives `value` when `checked`; if unchecked, no value is submitted. The control resets to its initial state on form reset.
+`<mds-input-switch>` is form-associated. The form receives `value` when `checked`; if unchecked, no value is submitted. A form reset brings back the `checked` state each switch had at load.
 
 ```html
 <form action="/preferenze" method="post">
@@ -148,17 +148,17 @@ Set `icon` to any slug from the Magma icon library to override the default check
 
 ```html
 <mds-input-switch name="opzione" value="1" typography="caption">Testo piccolo</mds-input-switch>
-<mds-input-switch name="titolo" value="1" typography="label" variant="title">Voce di titolo</mds-input-switch>
+<mds-input-switch name="lettura" value="1" typography="paragraph" variant="read">Testo di lettura</mds-input-switch>
 ```
 
 #### CSS Custom Property Customization
 
-Style the switch only through the documented `--mds-input-switch-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the switch only through the documented `--mds-input-switch-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and high-contrast modes keep working.
 
 ```css
 .settings-panel mds-input-switch {
-  --mds-input-switch-box-color-enabled-checked: rgb(var(--variant-success-04));
-  --mds-input-switch-toggle-color-enabled-checked: rgb(var(--tone-neutral));
+  --mds-input-switch-box-color-enabled-checked: rgb(var(--magma-success-emphasis));
+  --mds-input-switch-toggle-color-enabled-checked: rgb(var(--magma-success-on-emphasis));
   --mds-input-switch-duration: 200ms;
   --mds-input-switch-toggle-size: var(--mds-input-switch-toggle-size-lg);
 }
@@ -167,17 +167,17 @@ Style the switch only through the documented `--mds-input-switch-*` CSS custom p
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-input-switch>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-switch>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Set Boolean Props to the String "false"
 
-`checked`, `disabled`, `explicit`, and `indeterminate` are boolean attributes. Any non-empty string - including `"false"` - is truthy in HTML. Remove the attribute entirely to turn it off.
+`checked`, `disabled`, `explicit`, and `indeterminate` are boolean attributes. Stencil reads `"false"` as `false` and, since all four are reflected, removes the attribute at the first render, so this happens to work; but the markup says the opposite of what it does, and on a prop that is not reflected the attribute stays in the DOM, where `[attr]` selectors still match it. Remove the attribute entirely to turn it off.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-switch checked="false" disabled="false">Notifiche</mds-input-switch>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-switch>Notifiche</mds-input-switch>
 ```
 
@@ -186,12 +186,12 @@ Common incorrect uses of `<mds-input-switch>`. Each entry pairs the wrong form w
 Replacing the component with a raw `<input type="checkbox">` or `<input type="radio">` bypasses the design system's theming, accessibility defaults, label layout, and form integration.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <label>
   <input type="checkbox" name="notifiche" value="1"> Notifiche via e-mail
 </label>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-switch name="notifiche" value="1">Notifiche via e-mail</mds-input-switch>
 ```
 
@@ -200,10 +200,10 @@ Replacing the component with a raw `<input type="checkbox">` or `<input type="ra
 `explicit` surfaces a glyph inside the switch knob and `size` scales the knob - both are only honored when `type="switch"`. They are silently ignored on other types.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-switch type="checkbox" name="opt" value="1" explicit size="lg">Opzione</mds-input-switch>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-switch type="checkbox" name="opt" value="1">Opzione</mds-input-switch>
 
 <!-- correct use of explicit and size: only with type="switch" -->
@@ -215,13 +215,13 @@ Replacing the component with a raw `<input type="checkbox">` or `<input type="ra
 The component stops and prevents the native `change` event internally. Listen for the documented `mdsInputSwitchChange` event, which carries `{ name, checked, value }` in `event.detail`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-switch id="toggle" name="tema" value="scuro">Tema scuro</mds-input-switch>
 <script>
   document.querySelector('#toggle').addEventListener('change', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-switch id="toggle" name="tema" value="scuro">Tema scuro</mds-input-switch>
 <script>
   document.querySelector('#toggle').addEventListener('mdsInputSwitchChange', (e) => {
@@ -232,26 +232,26 @@ The component stops and prevents the native `change` event internally. Listen fo
 
 #### Do Not Use `indeterminate` on `type="switch"` or `type="radio"`
 
-The indeterminate glyph (`indeterminate-check-box`) is part of the checkbox icon variant only. Setting `indeterminate` on a switch or radio has no visual effect and misleads consumers about the control state.
+The indeterminate glyph (`indeterminate-check-box`) is part of the checkbox icon variant only. Setting `indeterminate` on a switch has no visual effect, on a radio it blanks the radio glyph, and on both it misleads consumers about the control state.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-switch type="switch" name="opt" value="1" indeterminate>Tutti i permessi</mds-input-switch>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-switch type="checkbox" name="tutti" value="all" indeterminate>Seleziona tutto</mds-input-switch>
 ```
 
 #### Do Not Omit `name` in a Radio Group
 
-Without a shared `name`, sibling radio items cannot uncheck each other. The `uncheckSiblings` behavior queries `[name="..."]` - an empty or missing name prevents mutual exclusivity.
+Without a shared `name`, the radios do not form a group: as with native radios, each nameless radio is a group of its own, so several can be checked at once, and none of them is submitted with the form.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-input-switch type="radio" value="a" checked>Opzione A</mds-input-switch>
 <mds-input-switch type="radio" value="b">Opzione B</mds-input-switch>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-input-switch type="radio" name="scelta" value="a" checked>Opzione A</mds-input-switch>
 <mds-input-switch type="radio" name="scelta" value="b">Opzione B</mds-input-switch>
 ```
@@ -261,7 +261,7 @@ Without a shared `name`, sibling radio items cannot uncheck each other. The `unc
 The only supported customization surface is the documented `--mds-input-switch-*` CSS custom properties. Targeting shadow internals via `::part()` on undocumented parts or via `>>>` will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-input-switch >>> .switch {
   border-radius: 4px;
 }
@@ -269,9 +269,9 @@ mds-input-switch::part(toggle) {
   box-shadow: none;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-input-switch {
-  --mds-input-switch-box-color-enabled-checked: rgb(var(--variant-success-04));
+  --mds-input-switch-box-color-enabled-checked: rgb(var(--magma-success-emphasis));
   --mds-input-switch-duration: 150ms;
 }
 ```

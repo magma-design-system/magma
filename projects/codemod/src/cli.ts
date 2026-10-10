@@ -20,9 +20,15 @@ Options:
   --force                                      allow --write on a dirty git working tree
   --ignore <glob>                              extra ignore globs (repeatable)
   --report <path>                              write the JSON report
+  --report-md <path>                           write a Markdown worklist: decisions by token (with alternatives)
+                                               and a checklist per file
   --only <ruleId,...>                          run only these rules
   --skip <ruleId,...>                          skip these rules
   --manifest <path>                            override the bundled manifest (JSON)
+  --accept-semantic <exact|near>               write the raw palette -> semantic role matches up to this
+                                               tier (default: report them only)
+  --keep-dark-overrides                        match semantic roles on light AND dark instead of dropping
+                                               the dark: overrides
   -h, --help                                   show this help
 `;
 
@@ -41,9 +47,12 @@ const main = async (): Promise<number> => {
     '--force': Boolean,
     '--ignore': [String],
     '--report': String,
+    '--report-md': String,
     '--only': String,
     '--skip': String,
     '--manifest': String,
+    '--accept-semantic': String,
+    '--keep-dark-overrides': Boolean,
     '--help': Boolean,
     '-h': '--help',
   });
@@ -60,6 +69,12 @@ const main = async (): Promise<number> => {
     return 2;
   }
 
+  const accept = args['--accept-semantic'] ?? 'none';
+  if (accept !== 'none' && accept !== 'exact' && accept !== 'near') {
+    console.error(chalk.red(`--accept-semantic takes \`exact\` or \`near\`, not \`${accept}\`.\n`));
+    return 2;
+  }
+
   const { report, reporter } = await runMigration({
     paths,
     framework: (args['--framework'] as Framework) ?? 'auto',
@@ -70,6 +85,8 @@ const main = async (): Promise<number> => {
     skip: split(args['--skip']),
     manifestPath: args['--manifest'],
     reportPath: args['--report'],
+    reportMarkdownPath: args['--report-md'],
+    semantic: { accept, keepDarkOverrides: args['--keep-dark-overrides'] === true },
   });
 
   console.log(reporter.renderHuman(report, { showDiff: true }));

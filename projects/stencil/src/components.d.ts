@@ -43,6 +43,7 @@ import { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInput
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 import { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
+import { MdsInputSelectEventDetail } from "./components/mds-input-select/meta/event-detail";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -126,6 +127,7 @@ export { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInput
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 export { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
+export { MdsInputSelectEventDetail } from "./components/mds-input-select/meta/event-detail";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -484,6 +486,10 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * The name sent with `value` to the form the button submits, as a native submit button does: buttons that submit the same form tell the receiver which one was chosen
+         */
+        "name"?: string;
+        /**
           * Specifies the size for the button
           * @default 'md'
          */
@@ -508,6 +514,10 @@ export namespace Components {
           * @default 'submit'
          */
         "type"?: ButtonType;
+        /**
+          * The value sent under `name` to the form the button submits
+         */
+        "value"?: string;
         /**
           * Specifies the color variant for the button
           * @default 'primary'
@@ -544,6 +554,10 @@ export namespace Components {
          */
         "label": string;
         /**
+          * The name sent with `value` to the form the primary action submits, as a native submit button does
+         */
+        "name"?: string;
+        /**
           * Specifies the size for the button
           * @default 'md'
          */
@@ -564,10 +578,14 @@ export namespace Components {
          */
         "truncate"?: TypographyTruncateType;
         /**
-          * The type of the button element
-          * @default 'submit'
+          * The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form the component is in, the chevron never does. Unlike `mds-button` it defaults to `'button'`
+          * @default 'button'
          */
         "type"?: ButtonType;
+        /**
+          * The value sent under `name` to the form the primary action submits
+         */
+        "value"?: string;
         /**
           * Specifies the color variant for the button
           * @default 'primary'
@@ -1270,7 +1288,7 @@ export namespace Components {
          */
         "name"?: string;
         /**
-          * Specifies a regular expression that element\'s value is checked against
+          * Specifies a regular expression the whole value has to match, as the pattern attribute of a native input: a value that does not match stops the submit of the form
          */
         "pattern"?: string;
         /**
@@ -1410,6 +1428,11 @@ export namespace Components {
          */
         "delay": number;
         /**
+          * Disables the range, like a disabled native input: the dates cannot be changed, from the fields or from the calendar, and are left out of the form. It disables the two slotted fields too. A disabled `<fieldset>` around the component does the same.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
           * Enables the linked dual-calendar range picker behavior.
           * @default false
          */
@@ -1493,12 +1516,17 @@ export namespace Components {
          */
         "autosubmit": boolean;
         /**
+          * Disables every cell of the code, like a disabled native input: the code cannot be changed and is left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
           * Number of digits in the OTP code
           * @default 6
          */
         "length": number;
         /**
-          * The current value of the OTP code
+          * The current value of the OTP code: a value set in the markup or by code fills the cells from the first one
           * @default ''
          */
         "value"?: string;
@@ -1681,7 +1709,12 @@ export namespace Components {
          */
         "accept": string;
         /**
-          * Returns a promise of files uploaded as Filelist or null if there's none
+          * Disables the component, like a disabled native file input: no file can be added, dropped or removed, and the files are left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Returns a promise of the accepted files as a FileList, empty if there's none
          */
         "getFiles": () => Promise<FileList | null>;
         /**
@@ -1703,11 +1736,15 @@ export namespace Components {
          */
         "maxFiles": number;
         /**
+          * The name the accepted files are submitted under with the form, one entry per file
+         */
+        "name"?: string;
+        /**
           * Reset component's files
          */
         "reset": () => Promise<void>;
         /**
-          * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
+          * Specifies the order the files start sorted by, status or date of upload, and shows the sort tabs that let the user change it; if not defined the tabs are hidden and the order is the user's last choice
          */
         "sort"?: AttachmentSort;
     }
@@ -2926,6 +2963,10 @@ export interface MdsBreadcrumbItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsBreadcrumbItemElement;
 }
+export interface MdsButtonDropdownCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsButtonDropdownElement;
+}
 export interface MdsCalendarCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsCalendarElement;
@@ -3271,7 +3312,18 @@ declare global {
         prototype: HTMLMdsButtonElement;
         new (): HTMLMdsButtonElement;
     };
+    interface HTMLMdsButtonDropdownElementEventMap {
+        "mdsButtonDropdownClick": void;
+    }
     interface HTMLMdsButtonDropdownElement extends Components.MdsButtonDropdown, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsButtonDropdownElementEventMap>(type: K, listener: (this: HTMLMdsButtonDropdownElement, ev: MdsButtonDropdownCustomEvent<HTMLMdsButtonDropdownElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsButtonDropdownElementEventMap>(type: K, listener: (this: HTMLMdsButtonDropdownElement, ev: MdsButtonDropdownCustomEvent<HTMLMdsButtonDropdownElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsButtonDropdownElement: {
         prototype: HTMLMdsButtonDropdownElement;
@@ -3656,7 +3708,7 @@ declare global {
         new (): HTMLMdsInputRangeElement;
     };
     interface HTMLMdsInputSelectElementEventMap {
-        "mdsInputSelectChange": MdsInputEventDetail;
+        "mdsInputSelectChange": MdsInputSelectEventDetail;
     }
     interface HTMLMdsInputSelectElement extends Components.MdsInputSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputSelectElementEventMap>(type: K, listener: (this: HTMLMdsInputSelectElement, ev: MdsInputSelectCustomEvent<HTMLMdsInputSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4875,7 +4927,7 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * The name of the element, used when submitting an HTML form.
+          * The name sent with `value` to the form the button submits, as a native submit button does: buttons that submit the same form tell the receiver which one was chosen
          */
         "name"?: string;
         /**
@@ -4904,6 +4956,10 @@ declare namespace LocalJSX {
          */
         "type"?: ButtonType;
         /**
+          * The value sent under `name` to the form the button submits
+         */
+        "value"?: string;
+        /**
           * Specifies the color variant for the button
           * @default 'primary'
          */
@@ -4927,6 +4983,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -4938,6 +4998,14 @@ declare namespace LocalJSX {
           * Specifies le text label of the component
          */
         "label"?: string;
+        /**
+          * The name sent with `value` to the form the primary action submits, as a native submit button does
+         */
+        "name"?: string;
+        /**
+          * Emits when the primary action is clicked or activated from the keyboard, unless the component is disabled or awaiting. The chevron and the menu items do not emit it, while a native `click` on the component also comes from the menu items
+         */
+        "onMdsButtonDropdownClick"?: (event: MdsButtonDropdownCustomEvent<void>) => void;
         /**
           * Specifies the size for the button
           * @default 'md'
@@ -4959,10 +5027,14 @@ declare namespace LocalJSX {
          */
         "truncate"?: TypographyTruncateType;
         /**
-          * The type of the button element
-          * @default 'submit'
+          * The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form the component is in, the chevron never does. Unlike `mds-button` it defaults to `'button'`
+          * @default 'button'
          */
         "type"?: ButtonType;
+        /**
+          * The value sent under `name` to the form the primary action submits
+         */
+        "value"?: string;
         /**
           * Specifies the color variant for the button
           * @default 'primary'
@@ -5708,7 +5780,7 @@ declare namespace LocalJSX {
          */
         "onMdsInputValidation"?: (event: MdsInputCustomEvent<boolean>) => void;
         /**
-          * Specifies a regular expression that element\'s value is checked against
+          * Specifies a regular expression the whole value has to match, as the pattern attribute of a native input: a value that does not match stops the submit of the form
          */
         "pattern"?: string;
         /**
@@ -5837,7 +5909,8 @@ declare namespace LocalJSX {
          */
         "delay"?: number;
         /**
-          * If `true`, the user cannot interact with the element.
+          * Disables the range, like a disabled native input: the dates cannot be changed, from the fields or from the calendar, and are left out of the form. It disables the two slotted fields too. A disabled `<fieldset>` around the component does the same.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -5942,7 +6015,8 @@ declare namespace LocalJSX {
          */
         "autosubmit"?: boolean;
         /**
-          * If `true`, the user cannot interact with the element.
+          * Disables every cell of the code, like a disabled native input: the code cannot be changed and is left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -5959,7 +6033,7 @@ declare namespace LocalJSX {
          */
         "name"?: string;
         /**
-          * The current value of the OTP code
+          * The current value of the OTP code: a value set in the markup or by code fills the cells from the first one
           * @default ''
          */
         "value"?: string;
@@ -6041,9 +6115,9 @@ declare namespace LocalJSX {
          */
         "name"?: string;
         /**
-          * Emits an InputChangeEventDetail when the value of the input element changes
+          * Emits when the selection changes: `value` is the first selected option, `values` every selected one
          */
-        "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<MdsInputEventDetail>) => void;
+        "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<MdsInputSelectEventDetail>) => void;
         /**
           * Specifies a short hint that describes the expected value of the element
          */
@@ -6162,7 +6236,8 @@ declare namespace LocalJSX {
          */
         "accept"?: string;
         /**
-          * If `true`, the user cannot interact with the element.
+          * Disables the component, like a disabled native file input: no file can be added, dropped or removed, and the files are left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -6184,7 +6259,7 @@ declare namespace LocalJSX {
          */
         "maxFiles"?: number;
         /**
-          * The name of the element, used when submitting an HTML form.
+          * The name the accepted files are submitted under with the form, one entry per file
          */
         "name"?: string;
         /**
@@ -6192,7 +6267,7 @@ declare namespace LocalJSX {
          */
         "onMdsInputUploadChange"?: (event: MdsInputUploadCustomEvent<FileList | null>) => void;
         /**
-          * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
+          * Specifies the order the files start sorted by, status or date of upload, and shows the sort tabs that let the user change it; if not defined the tabs are hidden and the order is the user's last choice
          */
         "sort"?: AttachmentSort;
     }
@@ -7564,6 +7639,8 @@ declare namespace LocalJSX {
         "icon": string;
         "iconPosition": ButtonIconPositionType;
         "type": ButtonType;
+        "name": string;
+        "value": string;
         "variant": ButtonVariantType;
         "tone": ToneBoxVariantType;
         "size": ButtonSizeType;
@@ -7579,6 +7656,8 @@ declare namespace LocalJSX {
         "autoFocus": boolean;
         "icon": string;
         "type": ButtonType;
+        "name": string;
+        "value": string;
         "variant": ButtonDropdownVariantType;
         "tone": ToneMinimalVariantType;
         "size": ButtonSizeType;
@@ -7782,6 +7861,7 @@ declare namespace LocalJSX {
         "hideToday": boolean;
         "dualCalendar": boolean;
         "name": string;
+        "disabled": boolean;
     }
     interface MdsInputDateRangePreselectionAttributes {
         "selected": boolean;
@@ -7797,6 +7877,7 @@ declare namespace LocalJSX {
         "accessibleName": string;
         "length": number;
         "autosubmit": boolean;
+        "disabled": boolean;
         "value": string;
     }
     interface MdsInputRangeAttributes {
@@ -7845,6 +7926,8 @@ declare namespace LocalJSX {
     }
     interface MdsInputUploadAttributes {
         "accept": string;
+        "disabled": boolean;
+        "name": string;
         "maxFileSize": number;
         "maxFiles": number;
         "sort": AttachmentSort;

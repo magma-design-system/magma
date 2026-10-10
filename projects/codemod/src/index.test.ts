@@ -58,6 +58,15 @@ describe('runMigration (dry-run over a temp tree)', () => {
     );
   });
 
+  it('collectFiles takes a directory literally, glob characters included', async () => {
+    const root = mkdtempSync(join(tmpdir(), 'magma-codemod-glob-'));
+    const nested = join(root, 'app', '(pages)', '[id]');
+    mkdirSync(nested, { recursive: true });
+    writeFileSync(join(nested, 'view.tsx'), 'export {};');
+    for (const p of [join(root, 'app', '(pages)'), nested])
+      expect(await collectFiles([p], root, [])).toEqual([join(nested, 'view.tsx')]);
+  });
+
   it('collectFiles expands directories and honours ignore', async () => {
     const files = await collectFiles([dir], dir, []);
     expect(files.some((f) => f.endsWith('page.html'))).toBe(true);

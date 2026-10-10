@@ -15,6 +15,7 @@ import {
   State,
   h,
   Watch,
+  forceUpdate,
 } from '@stencil/core';
 import { setFormValue, setValidity } from '@common/form';
 import {
@@ -33,6 +34,8 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
+const isSort = (value: unknown): value is AttachmentSort => value === 'date' || value === 'status';
+
 @Component({
   tag: 'mds-input-upload',
   styleUrl: 'mds-input-upload.css',
@@ -41,12 +44,12 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsInputUpload {
   private nativeInput?: HTMLInputElement;
-  private elDragArea?: HTMLElement;
   private extensions: string;
   private fileUploaded = 0;
   private cssMinCols: number = 1000;
   private idFile: number = 0;
-  private userSort: AttachmentSort;
+  // one object URL per previewed file, created once and revoked when the file leaves the list
+  private readonly previewUrls = new Map<File, string>();
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -60,11 +63,28 @@ export class MdsInputUpload {
   @State() files: FileStatus[] = [];
   @State() progress = 0;
   @State() animateText: boolean = false;
+  // the order applied to the files: sort at load, then the user's choice from the sort tabs
+  @State() activeSort: AttachmentSort = 'date';
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the controls in its shadow root
+  @State() private formDisabled = false;
 
   /**
    * Defines the file types the file input should accept
    */
   @Prop({ reflect: true }) readonly accept: string = '';
+
+  /**
+   * Disables the component, like a disabled native file input: no file can be added, dropped or
+   * removed, and the files are left out of the form. A disabled `<fieldset>` around the component
+   * does the same.
+   */
+  @Prop({ reflect: true }) readonly disabled?: boolean = false;
+
+  /**
+   * The name the accepted files are submitted under with the form, one entry per file
+   */
+  @Prop({ reflect: true }) readonly name?: string;
 
   /**
    * Specifies the max size of a single file that can be uploaded in MB
@@ -77,7 +97,7 @@ export class MdsInputUpload {
   @Prop({ reflect: true }) readonly maxFiles: number = 1;
 
   /**
-   * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
+   * Specifies the order the files start sorted by, status or date of upload, and shows the sort tabs that let the user change it; if not defined the tabs are hidden and the order is the user's last choice
    */
   @Prop({ reflect: true }) readonly sort?: AttachmentSort;
 
@@ -91,18 +111,38 @@ export class MdsInputUpload {
    */
   @Event({ eventName: 'mdsInputUploadChange' }) changedEvent: EventEmitter<FileList | null>;
 
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
+
   formResetCallback(): void {
     this.onReset();
   }
 
+  connectedCallback(): void {
+    // disconnectedCallback revoked the preview URLs: a moved component renders new ones
+    if (this.files.length > 0) forceUpdate(this);
+  }
+
   componentWillLoad(): void {
     this.extensions = this.getExtension();
-    this.userSort = (localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT) as AttachmentSort) ?? 'date';
+    const userSort = localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT);
+    this.activeSort = isSort(this.sort) ? this.sort : isSort(userSort) ? userSort : 'date';
     this.updateInitialValue(this.initialValue);
   }
 
   componentDidLoad(): void {
     this.updateCSSCustomProps();
+  }
+
+  componentDidRender(): void {
+    this.revokePreviewUrls(new Set(this.files.map((f) => f.file)));
+  }
+
+  disconnectedCallback(): void {
+    this.revokePreviewUrls(new Set());
   }
 
   @Watch('initialValue')
@@ -112,12 +152,25 @@ export class MdsInputUpload {
     }
   }
 
+  @Watch('name')
+  handleNameChange(): void {
+    this.updateFormValue();
+  }
+
+  @Watch('sort')
+  handleSortChange(newValue?: AttachmentSort): void {
+    if (isSort(newValue)) {
+      this.activeSort = newValue;
+      this.sortFiles(this.files, newValue);
+    }
+  }
+
   /**
-   * Returns a promise of files uploaded as Filelist or null if there's none
+   * Returns a promise of the accepted files as a FileList, empty if there's none
    */
   @Method()
   getFiles(): Promise<FileList | null> {
-    return Promise.resolve(this.nativeInput?.files ?? null);
+    return Promise.resolve(this.acceptedFiles());
   }
 
   /**
@@ -145,37 +198,47 @@ export class MdsInputUpload {
   };
 
   private readonly onDropHandler = (event: DragEvent) => {
-    if (this.nativeInput && event.dataTransfer) {
-      this.update(this.nativeInput, this.prepareFiles(event.dataTransfer.files));
-    }
     event.preventDefault();
+    this.dragging = false;
+    if (event.dataTransfer && !this.isDisabled()) {
+      this.onAdd(event.dataTransfer.files);
+    }
   };
 
   private readonly onDragOverHandler = (event: DragEvent) => {
+    // still handled when disabled: a file dropped on the page would otherwise be opened by the
+    // browser, so the drop is refused instead
     event.preventDefault();
+    if (this.isDisabled() && event.dataTransfer) event.dataTransfer.dropEffect = 'none';
   };
 
   private readonly onDragEnterHandler = (event: DragEvent) => {
+    if (this.isDisabled()) {
+      event.preventDefault();
+      return;
+    }
     this.dragging = true;
     this.animateText = true;
-    this.elDragArea?.classList.add('drag-area--on-drag-enter');
     event.preventDefault();
   };
 
   private readonly onDragLeaveHandler = (event: DragEvent) => {
     this.dragging = false;
-    this.elDragArea?.classList.remove('drag-area--on-drag-enter');
     event.preventDefault();
   };
 
-  private readonly onAdd = (event: Event | FileList | File[]) => {
-    if (!event) return;
-    if (event instanceof FileList || Array.isArray(event)) {
-      this.update(this.nativeInput, this.prepareFiles(event));
-    } else {
-      const input = event.target as HTMLInputElement;
-      this.update(input, this.prepareFiles(input.files));
-    }
+  private readonly onAdd = (fileList: FileList | File[] | null) => {
+    if (!fileList) return;
+    this.prepareFiles(fileList);
+    this.update();
+  };
+
+  private readonly onInputChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    this.onAdd(input.files);
+    // the input only picks the files, the list lives in this.files: clearing it lets the user
+    // pick a removed file again
+    input.value = '';
   };
 
   /**
@@ -184,26 +247,15 @@ export class MdsInputUpload {
    */
   private readonly onCancel = (filekey: string): void => {
     this.files = this.files.filter((f) => f.key !== filekey);
-    if (this.nativeInput) {
-      const data = new DataTransfer();
-      this.files.forEach((f) => {
-        if (f.status === Status.SUCCESS) {
-          data.items.add(f.file);
-        }
-      });
-      this.update(this.nativeInput, data.files);
-    }
+    this.update();
   };
 
   /**
    * Delete all files from upload
    */
   private readonly onReset = (): void => {
-    if (this.nativeInput) {
-      this.files = [];
-      this.nativeInput.value = '';
-      this.update(this.nativeInput, null);
-    }
+    this.files = [];
+    this.update(true);
   };
 
   /**
@@ -216,23 +268,22 @@ export class MdsInputUpload {
   }
 
   private readonly onChangeTab = (event: MdsTabEventDetail): void => {
-    if (event.value !== undefined && event.value !== '') {
-      this.sortFiles(this.files, event.value as AttachmentSort);
-      this.userSort = event.value as AttachmentSort;
-      localStorage.setItem(LOCALSTORAGE_KEY_USER_SORT, this.userSort);
-    }
+    // the tab reports the selection the component makes itself too (a new sort): only a
+    // different order is the user's choice
+    if (!isSort(event.value) || event.value === this.activeSort) return;
+    this.activeSort = event.value;
+    this.sortFiles(this.files, this.activeSort);
+    localStorage.setItem(LOCALSTORAGE_KEY_USER_SORT, this.activeSort);
   };
+
   /**
    * Prepare file to be submitted.
    * Limit number of file to maxFiles
    * Check size and type for every single file.
    * @param fileList list recieved from input selection or drag and drop
-   * @returns list of files accepted
    */
-  private prepareFiles(fileList: FileList | File[] | null): FileList | null {
-    if (!fileList) return null;
+  private prepareFiles(fileList: FileList | File[]): void {
     const files = fileList instanceof FileList ? Array.from(fileList) : fileList;
-    const data = new DataTransfer();
     // prepare new file added
     for (const file of files) {
       // update only file not added previously or files with errors
@@ -259,11 +310,7 @@ export class MdsInputUpload {
         }
       }
     }
-    // set input.files only uploadable file
-    this.files.filter((f) => f.status === Status.SUCCESS).forEach((f) => data.items.add(f.file));
-    this.sortFiles(this.files, this.sort ?? this.userSort);
-    // this.updateProgress()
-    return data.files;
+    this.sortFiles(this.files, this.activeSort);
   }
 
   // Stores the locale key, not the translated message: consumers translate at
@@ -286,10 +333,32 @@ export class MdsInputUpload {
     return { errorKey, type };
   }
 
-  private update(input: HTMLInputElement | undefined, files: FileList | null): void {
-    if (!input) return;
-    input.files = files;
+  // the files the form submits and getFiles() returns: the ones that passed the checks, in the
+  // order they were added whatever order the list shows
+  private acceptedFiles(): FileList {
+    const data = new DataTransfer();
+    this.files
+      .filter((f) => f.status === Status.SUCCESS)
+      .sort((a, b) => a.id - b.id)
+      .forEach((f) => data.items.add(f.file));
+    return data.files;
+  }
 
+  // one entry per file under the name, as a native file input submits them; a file input
+  // without a name submits nothing
+  private updateFormValue(): void {
+    const files = this.acceptedFiles();
+    const name = this.name ?? '';
+    if (name === '' || files.length === 0) {
+      setFormValue(this.internals, null);
+      return;
+    }
+    const data = new FormData();
+    Array.from(files).forEach((file) => data.append(name, file));
+    setFormValue(this.internals, data);
+  }
+
+  private update(reset = false): void {
     const validity: ValidityStateFlags = {};
     const errorMessage: Set<string> = new Set();
     this.files
@@ -308,10 +377,10 @@ export class MdsInputUpload {
         }
         errorMessage.add(this.t.get(error.errorKey!));
       });
-    setFormValue(this.internals, input.value);
+    this.updateFormValue();
     setValidity(this.internals, validity, Array.from(errorMessage).join(', '));
     this.updateProgress();
-    this.changedEvent.emit(files);
+    this.changedEvent.emit(reset ? null : this.acceptedFiles());
   }
 
   /**
@@ -388,6 +457,24 @@ export class MdsInputUpload {
     return b.id - a.id;
   }
 
+  private previewUrl(file: File): string {
+    let url = this.previewUrls.get(file);
+    if (url === undefined) {
+      url = URL.createObjectURL(file);
+      this.previewUrls.set(file, url);
+    }
+    return url;
+  }
+
+  private revokePreviewUrls(keep: Set<File>): void {
+    this.previewUrls.forEach((url, file) => {
+      if (!keep.has(file)) {
+        URL.revokeObjectURL(url);
+        this.previewUrls.delete(file);
+      }
+    });
+  }
+
   private isSortTabShown(): boolean {
     // the type has no empty sort, but the attribute can be empty or removed
     const sort: string = this.sort ?? '';
@@ -410,12 +497,11 @@ export class MdsInputUpload {
     return (
       <Host>
         <div
-          class="drag-area"
+          class={clsx('drag-area', this.dragging && 'drag-area--on-drag-enter')}
           onDrop={this.onDropHandler}
           onDragOver={this.onDragOverHandler}
           onDragEnter={this.onDragEnterHandler}
           onDragLeave={this.onDragLeaveHandler}
-          ref={(dragArea) => (this.elDragArea = dragArea)}
         >
           <div class="main-action">
             <div class="main-action-icon">
@@ -435,6 +521,7 @@ export class MdsInputUpload {
           <div class="main-actions">
             <mds-button
               variant="primary"
+              disabled={this.isDisabled()}
               onClick={this.handleAddFileClick}
               label={
                 this.files != null
@@ -445,6 +532,7 @@ export class MdsInputUpload {
             {this.files.length > 0 && (
               <mds-button
                 variant="error"
+                disabled={this.isDisabled()}
                 onClick={this.onReset}
                 label={this.t.get('cancel')}
               ></mds-button>
@@ -475,9 +563,10 @@ export class MdsInputUpload {
         <input
           type="file"
           accept={this.accept}
+          disabled={this.isDisabled()}
           hidden
           ref={(i) => (this.nativeInput = i)}
-          onChange={this.onAdd}
+          onChange={this.onInputChange}
           multiple={this.maxFiles > 1}
         />
         <div class="additional-infos">
@@ -494,14 +583,16 @@ export class MdsInputUpload {
           {this.isSortTabShown() && (
             <mds-tab class="action-sort" onMdsTabChange={this.handleTabChange}>
               <mds-tab-item
+                disabled={this.isDisabled()}
                 icon={iconSortById}
-                selected={this.userSort === 'date'}
+                selected={this.activeSort === 'date'}
                 title={this.t.get('sortByDate')}
                 value="date"
               ></mds-tab-item>
               <mds-tab-item
+                disabled={this.isDisabled()}
                 icon={iconSortByStatus}
-                selected={this.userSort === 'status'}
+                selected={this.activeSort === 'status'}
                 title={this.t.get('sortByStatus')}
                 value="status"
               ></mds-tab-item>
@@ -516,7 +607,7 @@ export class MdsInputUpload {
               case Status.ERROR:
                 return (
                   <mds-file-preview
-                    deletable
+                    deletable={!this.isDisabled()}
                     variant="error"
                     filename={file.file.name}
                     filesize={file.file.size.toString()}
@@ -527,11 +618,11 @@ export class MdsInputUpload {
               case Status.SUCCESS:
                 return (
                   <mds-file-preview
-                    deletable
+                    deletable={!this.isDisabled()}
                     filename={file.file.name}
                     filesize={file.file.size.toString()}
                     onMdsFileDelete={this.handleFileDelete(file.key)}
-                    src={URL.createObjectURL(file.file)}
+                    src={this.previewUrl(file.file)}
                   ></mds-file-preview>
                 );
             }

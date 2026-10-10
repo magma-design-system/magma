@@ -29,12 +29,12 @@ The only configurable prop is `type` (default `text`), which selects what the ce
 - Use `label` for the leading row-label cell describing the feature being compared.
 - Use `custom` when you need to slot arbitrary HTML or other components without the text wrapper, taking full control of the cell's content.
 
-The full set of accepted values lives in `meta/`; this component does not use the shared `variant` / `tone` ladders defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system).
+The full set of accepted values is in the Props table of [`readme.md`](../readme.md); this component does not use the shared `variant` / `tone` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-price-table-features-cell>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-price-table-features-cell>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Supported / Unsupported Icon Cells
 
@@ -57,7 +57,7 @@ Place `type="label"` on the first cell of every row to mark it as the feature de
 <mds-price-table-features-row>
   <mds-price-table-features-cell type="label">
     Larghezza di banda
-    <mds-help auto-placement="false" placement="top">
+    <mds-help disable-auto-placement placement="top">
       Calcolata per singolo utente attivo al mese.
     </mds-help>
   </mds-price-table-features-cell>
@@ -80,23 +80,20 @@ Place `type="label"` on the first cell of every row to mark it as the feature de
 </mds-price-table-features-row>
 ```
 
-#### Icon Cell with an Inline Help Tooltip
+#### Help Tooltip for an Icon Row
 
-Even when the icon speaks for itself, a help tooltip can add context. Slot an `<mds-help>` component alongside the implicit icon - the `custom` slot passthrough is not needed here because the tooltip is decoration, not a content replacement.
+Even when the icon speaks for itself, a help tooltip can add context. A `supported` / `unsupported` cell renders only its icon and drops any slotted content, so a tooltip slotted there never shows: put the `<mds-help>` in the row's `label` cell.
 
 ```html
 <mds-price-table-features-row>
-  <mds-price-table-features-cell type="label">Supporto dedicato</mds-price-table-features-cell>
-  <mds-price-table-features-cell type="supported">
-    <mds-help auto-placement="false" placement="top">
-      Disponibile nei giorni feriali dalle 9 alle 18.
+  <mds-price-table-features-cell type="label">
+    Supporto dedicato
+    <mds-help disable-auto-placement placement="top">
+      Disponibile nei giorni feriali dalle 9 alle 18, non incluso nel piano base.
     </mds-help>
   </mds-price-table-features-cell>
-  <mds-price-table-features-cell type="unsupported">
-    <mds-help auto-placement="false" placement="top">
-      Non incluso nel piano base.
-    </mds-help>
-  </mds-price-table-features-cell>
+  <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
+  <mds-price-table-features-cell type="unsupported"></mds-price-table-features-cell>
 </mds-price-table-features-row>
 ```
 
@@ -144,36 +141,36 @@ Cells must always be children of [`<mds-price-table-features-row>`](../../mds-pr
 
 #### Styling Customization
 
-Style the cell only through its documented `--mds-price-table-features-cell-*` CSS custom properties. Set them on the host or a parent selector; use the Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the cell only through its documented `--mds-price-table-features-cell-*` CSS custom properties. Set them on the host or a parent selector; name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working (the green of the supported icon is the categorical `label-green` palette, as in the component's own default).
 
 ```css
 mds-price-table-features-cell {
-  --mds-price-table-features-cell-padding: var(--spacing-400);
-  --mds-price-table-features-cell-border-color: rgb(var(--tone-neutral-06));
+  --mds-price-table-features-cell-padding: calc(var(--spacing) * 400);
+  --mds-price-table-features-cell-border-color: rgb(var(--magma-border-default));
   --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-07));
   --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-08));
-  --mds-price-table-features-cell-icon-unsupported-color: rgb(var(--tone-neutral-04));
-  --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--tone-neutral-05));
+  --mds-price-table-features-cell-icon-unsupported-color: rgb(var(--magma-text-subtle));
+  --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--magma-text-disabled));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-price-table-features-cell>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-price-table-features-cell>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use the Cell Outside Its Parent Hierarchy
 
 The cell is a compound subpart and renders as `display: table-cell`. Used outside [`<mds-price-table-features-row>`](../../mds-price-table-features-row) it loses all layout context and column alignment breaks.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div>
   <mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
   <mds-price-table-features-cell type="text">20 GB</mds-price-table-features-cell>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table>
   <mds-price-table-features label="Caratteristiche">
     <mds-price-table-features-row>
@@ -186,15 +183,15 @@ The cell is a compound subpart and renders as `display: table-cell`. Used outsid
 
 #### Do Not Slot Content Into `supported` or `unsupported` Cells to Override the Icon
 
-`type="supported"` and `type="unsupported"` always render the built-in icon regardless of slot content; slotting extra markup is ignored or misaligned. Use `type="custom"` if you need a different visual representation.
+`type="supported"` and `type="unsupported"` always render the built-in icon regardless of slot content; slotted markup is not rendered at all. Use `type="custom"` if you need a different visual representation.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-features-cell type="supported">
   <mds-icon name="mi/baseline/star"></mds-icon>
 </mds-price-table-features-cell>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-features-cell type="custom">
   <mds-icon name="mi/baseline/star"></mds-icon>
 </mds-price-table-features-cell>
@@ -205,14 +202,14 @@ The cell is a compound subpart and renders as `display: table-cell`. Used outsid
 Without `type="label"`, the first cell falls back to `type="text"` and its content is wrapped in `<mds-text typography="detail">`. This produces the wrong typographic weight for a row header and breaks the visual hierarchy.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-features-row>
   <mds-price-table-features-cell>Numero di utenti</mds-price-table-features-cell>
   <mds-price-table-features-cell type="text">5</mds-price-table-features-cell>
   <mds-price-table-features-cell type="text">25</mds-price-table-features-cell>
 </mds-price-table-features-row>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-features-row>
   <mds-price-table-features-cell type="label">Numero di utenti</mds-price-table-features-cell>
   <mds-price-table-features-cell type="text">5</mds-price-table-features-cell>
@@ -225,13 +222,13 @@ Without `type="label"`, the first cell falls back to `type="text"` and its conte
 `type="text"` wraps content in `<mds-text typography="detail">`; inserting block elements, interactive controls, or multiple children produces unpredictable layout inside that wrapper. Use `type="custom"` for anything more complex than a plain text string.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-price-table-features-cell type="text">
   <strong>20 GB</strong>
   <small> inclusi</small>
 </mds-price-table-features-cell>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-price-table-features-cell type="custom">
   <strong>20 GB</strong>
   <small> inclusi</small>
@@ -243,30 +240,18 @@ Without `type="label"`, the first cell falls back to `type="text"` and its conte
 The only supported customization surface for this component is `--mds-price-table-features-cell-*` CSS custom properties and the two documented shadow parts (`icon`, `text`). Targeting undocumented internal selectors will break on any minor release.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-price-table-features-cell >>> .icon--supported {
   fill: hotpink;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-price-table-features-cell {
-  --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-pink-06));
+  --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-orchid-06));
 }
 mds-price-table-features-cell::part(icon) {
   opacity: 0.8;
 }
-```
-
-#### Do Not Use the `variant` or `tone` Props
-
-`<mds-price-table-features-cell>` does not accept `variant` or `tone` attributes - it does not participate in the shared tone-and-variant system. Passing them has no effect and will produce a warning in strict type-checking builds.
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-price-table-features-cell type="supported" variant="success" tone="strong"></mds-price-table-features-cell>
-
-<!-- ✅ CORRECT -->
-<mds-price-table-features-cell type="supported"></mds-price-table-features-cell>
 ```
 
 

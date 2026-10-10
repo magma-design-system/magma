@@ -61,7 +61,7 @@ jobs:
     outputs:
       changed: ${{ steps.filter.outputs.project }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -79,13 +79,13 @@ jobs:
     if: ${{ needs.changes.outputs.changed == 'true' && inputs.nx-project != '' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
       - name: Restore Nx cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -108,15 +108,15 @@ jobs:
           (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci --prefer-offline
       - name: Restore Playwright browsers cache
         if: ${{ inputs.install-playwright-browsers }}
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           # the browser revision is pinned by the playwright version in the lockfile

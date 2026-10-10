@@ -8,6 +8,10 @@ import { TabSizeType } from '@type/button';
 import { PreferenceThemeSchemeType } from '@type/preference';
 import { MdsPrefThemeEventDetail } from '@event/theme';
 
+// The mounted instances: `data-magma-pref` stays on <html> while any of them is, so
+// a settings page unmounting its own mds-pref leaves the app controller in charge.
+const mountedPrefs = new Set<HTMLElement>();
+
 /**
  * @name Pref
  * @description This component is based on MdsTab component pattern
@@ -71,6 +75,7 @@ export class MdsPref {
   }
 
   componentDidLoad(): void {
+    mountedPrefs.add(this.host);
     if (typeof window !== 'undefined') {
       document.documentElement?.setAttribute('data-magma-pref', '');
     }
@@ -84,7 +89,8 @@ export class MdsPref {
   }
 
   disconnectedCallback(): void {
-    if (typeof window !== 'undefined') {
+    mountedPrefs.delete(this.host);
+    if (typeof window !== 'undefined' && mountedPrefs.size === 0) {
       document.documentElement?.removeAttribute('data-magma-pref');
     }
     this.removePerfEvents();

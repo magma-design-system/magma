@@ -1,4 +1,5 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
+import { AttachmentSort, LOCALSTORAGE_KEY_USER_SORT } from '../meta/types';
 
 type Upload = { upload: HTMLMdsInputUploadElement; waitForChanges: () => Promise<void> };
 
@@ -26,6 +27,15 @@ const mockFiles = (count: number, size = 5): File[] =>
     { length: count },
     (_, index) => new File(['m'.repeat(size)], `file-${index + 1}.txt`, { type: 'text/plain' }),
   );
+
+const namedFiles = (...names: string[]): File[] =>
+  names.map((name) => new File(['m'], name, { type: 'text/plain' }));
+
+const toFileList = (files: File[]): FileList => {
+  const dataTransfer = new DataTransfer();
+  files.forEach((file) => dataTransfer.items.add(file));
+  return dataTransfer.files;
+};
 
 const addFiles = async ({ upload, waitForChanges }: Upload, count: number): Promise<void> => {
   upload.initialValue = mockFiles(count);
@@ -146,16 +156,299 @@ describe('mds-input-upload', () => {
     expect(caption.textContent).toBe('You have uploaded 2 files');
   });
 
-  it('should set files', async () => {
-    const { upload, waitForChanges } = await setupUpload();
+  it('should set the files picked with the native input', async () => {
+    const { upload, waitForChanges } = await setupUpload('max-files="2"');
     const inputElement = upload.shadowRoot!.querySelector('input')!;
 
-    const dataTransfer = new DataTransfer();
-    mockFiles(2).forEach((file) => dataTransfer.items.add(file));
-    inputElement.files = dataTransfer.files;
+    inputElement.files = toFileList(mockFiles(2));
+    inputElement.dispatchEvent(new Event('change'));
     await waitForChanges();
 
     expect(await upload.getFiles()).toHaveLength(2);
+    // the files live in the component: the picker is cleared to pick a removed file again
+    expect(inputElement.value).toBe('');
+  });
+});
+
+// Like a native file input, the accepted files reach the form (#822)
+describe('mds-input-upload form participation', () => {
+  const setupForm = async (attributes: string) => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(
+      `<form><mds-input-upload ${attributes}></mds-input-upload></form>`,
+    );
+    return { form, upload: form.querySelector('mds-input-upload')!, waitForChanges };
+  };
+
+  it('submits every accepted file under its name', async () => {
+    const { form, upload, waitForChanges } = await setupForm('name="docs" max-files="2"');
+
+    upload.initialValue = namedFiles('a.txt', 'b.txt', 'c.txt');
+    await waitForChanges();
+
+    const entries = new FormData(form).getAll('docs');
+    // c.txt goes over max-files: it is shown as an error, not submitted
+    expect(entries.map((entry) => (entry as File).name)).toEqual(['a.txt', 'b.txt']);
+    expect(entries[0]).toBeInstanceOf(File);
+  });
+
+  it('submits nothing without a name, like a native file input', async () => {
+    const { form, upload, waitForChanges } = await setupForm('max-files="2"');
+
+    upload.initialValue = namedFiles('a.txt');
+    await waitForChanges();
+
+    expect(Array.from(new FormData(form).keys())).toEqual([]);
+  });
+
+  it('submits the files under a name set after they were added', async () => {
+    const { form, upload, waitForChanges } = await setupForm('name="docs" max-files="2"');
+    upload.initialValue = namedFiles('a.txt');
+    await waitForChanges();
+
+    upload.setAttribute('name', 'attachments');
+    await waitForChanges();
+
+    const data = new FormData(form);
+    expect(data.getAll('docs')).toHaveLength(0);
+    expect((data.get('attachments') as File).name).toBe('a.txt');
+  });
+
+  it('clears the files on a form reset', async () => {
+    const { form, upload, waitForChanges } = await setupForm('name="docs" max-files="2"');
+    upload.initialValue = namedFiles('a.txt', 'b.txt');
+    await waitForChanges();
+
+    form.reset();
+    await waitForChanges();
+
+    expect(new FormData(form).getAll('docs')).toHaveLength(0);
+    expect(await upload.getFiles()).toHaveLength(0);
+    expect(upload.shadowRoot!.querySelectorAll('mds-file-preview')).toHaveLength(0);
+  });
+
+  it('applies an initial value set before the component loads', async () => {
+    const form = document.createElement('form');
+    const upload = document.createElement('mds-input-upload');
+    upload.setAttribute('name', 'docs');
+    upload.setAttribute('max-files', '2');
+    upload.initialValue = namedFiles('a.txt', 'b.txt');
+    const changes: (FileList | null)[] = [];
+    upload.addEventListener('mdsInputUploadChange', (event) => changes.push(event.detail));
+    form.append(upload);
+    document.body.append(form);
+
+    try {
+      await upload.componentOnReady();
+
+      expect(await upload.getFiles()).toHaveLength(2);
+      expect(new FormData(form).getAll('docs')).toHaveLength(2);
+      expect(changes).toHaveLength(1);
+      expect(changes[0]).toHaveLength(2);
+    } finally {
+      form.remove();
+    }
+  });
+});
+
+describe('mds-input-upload sort', () => {
+  const readOrder = (upload: HTMLElement): string[] =>
+    Array.from(upload.shadowRoot!.querySelectorAll('mds-file-preview')).map((preview) =>
+      preview.getAttribute('filename')!,
+    );
+
+  const readTab = (upload: HTMLElement, value: AttachmentSort): HTMLMdsTabItemElement =>
+    upload.shadowRoot!.querySelector<HTMLMdsTabItemElement>(`mds-tab-item[value="${value}"]`)!;
+
+  afterEach(() => {
+    localStorage.removeItem(LOCALSTORAGE_KEY_USER_SORT);
+  });
+
+  it('keeps the order the user picked when files are added', async () => {
+    const result = await setupUpload('sort="status" max-files="5"');
+    result.upload.initialValue = namedFiles('a.txt', 'b.txt');
+    await result.waitForChanges();
+    expect(readOrder(result.upload)).toEqual(['a.txt', 'b.txt']);
+
+    readTab(result.upload, 'date').shadowRoot!.querySelector('mds-button')!.click();
+    await result.waitForChanges();
+    expect(readOrder(result.upload)).toEqual(['b.txt', 'a.txt']);
+
+    result.upload.initialValue = namedFiles('c.txt');
+    await result.waitForChanges();
+
+    expect(readOrder(result.upload)).toEqual(['c.txt', 'b.txt', 'a.txt']);
+    expect(readTab(result.upload, 'date')).toHaveAttribute('selected');
+    expect(localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT)).toBe('date');
+  });
+
+  it('starts from the sort attribute and highlights it, whatever the stored choice', async () => {
+    localStorage.setItem(LOCALSTORAGE_KEY_USER_SORT, 'date');
+    const result = await setupUpload('sort="status" max-files="5"');
+    result.upload.initialValue = namedFiles('a.txt', 'b.txt');
+    await result.waitForChanges();
+
+    expect(readOrder(result.upload)).toEqual(['a.txt', 'b.txt']);
+    expect(readTab(result.upload, 'status')).toHaveAttribute('selected');
+    expect(readTab(result.upload, 'date')).not.toHaveAttribute('selected');
+  });
+
+  it('applies a new sort attribute without storing it as the user choice', async () => {
+    const result = await setupUpload('sort="status" max-files="5"');
+    result.upload.initialValue = namedFiles('a.txt', 'b.txt');
+    await result.waitForChanges();
+
+    result.upload.setAttribute('sort', 'date');
+    await result.waitForChanges();
+
+    expect(readOrder(result.upload)).toEqual(['b.txt', 'a.txt']);
+    expect(readTab(result.upload, 'date')).toHaveAttribute('selected');
+    expect(localStorage.getItem(LOCALSTORAGE_KEY_USER_SORT)).toBeNull();
+  });
+});
+
+describe('mds-input-upload drag and drop', () => {
+  const readPrompt = (upload: HTMLElement): string =>
+    upload.shadowRoot!.querySelector<HTMLMdsTextElement>('.main-action mds-text')!.text!;
+
+  it('restores the prompt once the files are dropped', async () => {
+    const { upload, waitForChanges } = await setupUpload('max-files="2"');
+    const dragArea = upload.shadowRoot!.querySelector('.drag-area')!;
+
+    dragArea.dispatchEvent(new DragEvent('dragenter', { bubbles: true, cancelable: true }));
+    await waitForChanges();
+    expect(dragArea).toHaveClass('drag-area--on-drag-enter');
+    expect(readPrompt(upload)).toBe('Drop files to upload here');
+
+    const dataTransfer = new DataTransfer();
+    namedFiles('a.txt').forEach((file) => dataTransfer.items.add(file));
+    dragArea.dispatchEvent(
+      new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer }),
+    );
+    await waitForChanges();
+
+    expect(dragArea).not.toHaveClass('drag-area--on-drag-enter');
+    expect(readPrompt(upload)).toBe('Click and select or drag files to upload here');
+    expect(await upload.getFiles()).toHaveLength(1);
+  });
+});
+
+// A native file input is disabled by its own disabled or by a disabled fieldset. The component had
+// neither: in a disabled fieldset the user could still add and remove files the form left out (#852)
+describe('mds-input-upload disabled', () => {
+  const setupForm = async (markup: string) => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(`<form>${markup}</form>`);
+    const upload = form.querySelector('mds-input-upload')!;
+    upload.initialValue = namedFiles('a.txt');
+    await waitForChanges();
+    return { form, upload, waitForChanges };
+  };
+
+  const readControls = (upload: HTMLElement) => {
+    const root = upload.shadowRoot!;
+    return {
+      input: root.querySelector<HTMLInputElement>('input[type="file"]')!.disabled,
+      buttons: Array.from(
+        root.querySelectorAll<HTMLMdsButtonElement>('.main-actions mds-button'),
+      ).map((button) => !!button.disabled),
+      deletable: Array.from(
+        root.querySelectorAll<HTMLMdsFilePreviewElement>('mds-file-preview'),
+      ).map((preview) => !!preview.deletable),
+    };
+  };
+
+  const disabledControls = { input: true, buttons: [true, true], deletable: [false] };
+  const enabledControls = { input: false, buttons: [false, false], deletable: [true] };
+
+  it('refuses new files and leaves its files out of the form, until it is enabled', async () => {
+    const { form, upload, waitForChanges } = await setupForm(
+      '<mds-input-upload name="docs" max-files="3" disabled></mds-input-upload>',
+    );
+    const dragArea = upload.shadowRoot!.querySelector('.drag-area')!;
+    const dataTransfer = new DataTransfer();
+    namedFiles('b.txt').forEach((file) => dataTransfer.items.add(file));
+
+    expect(readControls(upload)).toEqual(disabledControls);
+    expect(new FormData(form).getAll('docs')).toHaveLength(0);
+
+    dragArea.dispatchEvent(new DragEvent('dragenter', { bubbles: true, cancelable: true }));
+    dragArea.dispatchEvent(
+      new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer }),
+    );
+    await waitForChanges();
+
+    expect(dragArea).not.toHaveClass('drag-area--on-drag-enter');
+    expect(await upload.getFiles()).toHaveLength(1);
+
+    upload.disabled = false;
+    await waitForChanges();
+
+    expect(readControls(upload)).toEqual(enabledControls);
+    expect(new FormData(form).getAll('docs')).toHaveLength(1);
+  });
+
+  it('is disabled by a disabled fieldset, until the fieldset is enabled', async () => {
+    const { form, upload, waitForChanges } = await setupForm(
+      '<fieldset disabled><mds-input-upload name="docs" max-files="3"></mds-input-upload></fieldset>',
+    );
+
+    await vi.waitFor(() => expect(readControls(upload)).toEqual(disabledControls));
+    expect(new FormData(form).getAll('docs')).toHaveLength(0);
+
+    form.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(readControls(upload)).toEqual(enabledControls);
+    expect(new FormData(form).getAll('docs')).toHaveLength(1);
+  });
+});
+
+describe('mds-input-upload previews', () => {
+  const readSources = (upload: HTMLElement): string[] =>
+    Array.from(upload.shadowRoot!.querySelectorAll('mds-file-preview')).map((preview) =>
+      preview.getAttribute('src')!,
+    );
+
+  it('creates one object URL per file and revokes it when the file is removed', async () => {
+    const { upload, waitForChanges } = await setupUpload('max-files="2"');
+    // spied after the render, which disconnects the components of the previous tests
+    const createObjectURL = vi.spyOn(URL, 'createObjectURL');
+    const revokeObjectURL = vi.spyOn(URL, 'revokeObjectURL');
+    upload.initialValue = namedFiles('a.txt', 'b.txt');
+    await waitForChanges();
+    const sources = readSources(upload);
+
+    // a render that does not touch the files, the drag prompt
+    const dragArea = upload.shadowRoot!.querySelector('.drag-area')!;
+    dragArea.dispatchEvent(new DragEvent('dragenter', { bubbles: true, cancelable: true }));
+    await waitForChanges();
+
+    expect(readSources(upload)).toEqual(sources);
+    expect(createObjectURL).toHaveBeenCalledTimes(2);
+
+    upload
+      .shadowRoot!.querySelector('mds-file-preview')!
+      .dispatchEvent(new CustomEvent('mdsFileDelete'));
+    await waitForChanges();
+
+    expect(revokeObjectURL).toHaveBeenCalledOnce();
+    expect(revokeObjectURL).toHaveBeenCalledWith(sources[0]);
+  });
+
+  it('renders new object URLs when the component is moved', async () => {
+    const { upload, waitForChanges } = await setupUpload('max-files="2"');
+    upload.initialValue = namedFiles('a.txt');
+    await waitForChanges();
+    const [source] = readSources(upload);
+
+    const parent = upload.parentElement!;
+    upload.remove();
+    parent.append(upload);
+    await waitForChanges();
+
+    const [moved] = readSources(upload);
+    expect(moved).not.toBe(source);
+    expect((await fetch(moved)).ok).toBe(true);
+    await expect(fetch(source)).rejects.toThrow();
   });
 });
 

@@ -59,16 +59,16 @@
     "@fontsource/merriweather": "5.1.0",
     "@fontsource/roboto": "5.1.0",
     "@fontsource/roboto-mono": "5.1.0",
-    "@maggioli-design-system/design-tokens": "15.0.1",
+    "@maggioli-design-system/design-tokens": "^15.0.1",
     "normalize.css": "8.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
-    "autoprefixer": "10.4.27",
-    "handlebars": "4.7.9",
+    "autoprefixer": "10.6.1",
+    "handlebars": "4.7.10",
     "postcss-cli": "11.0.1",
-    "postcss": "8.5.28",
-    "postcss-import": "16.1.1",
+    "postcss": "8.5.29",
+    "postcss-import": "16.2.0",
     "tailwindcss": "4.3.3"
   }
 }

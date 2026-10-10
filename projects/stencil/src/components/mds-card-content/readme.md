@@ -22,12 +22,12 @@ The `<mds-card-content>` web component is the body region of a [`<mds-card>`](..
 
 #### Slot semantics and layout role
 
-This component is intentionally prop-free. Its only API is the **default slot**, which accepts text strings, HTML elements, or other components that make up the card's main content. All visual configuration (responsive behavior, grid layout) is governed by the parent `<mds-card>` through its `disableAutoGrid` prop and the `--mds-card-gap` / `--mds-card-padding` custom properties; see the compound-component and slot rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+This component is intentionally prop-free. Its only API is the **default slot**, which accepts text strings, HTML elements, or other components that make up the card's main content. All visual configuration (responsive behavior, grid layout) is governed by the parent `<mds-card>` through its `disableAutoGrid` prop and the `--mds-card-gap` / `--mds-card-padding` custom properties; see the compound-component and slot rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-card-content>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound-component composition documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-card-content>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Card with Content
 
@@ -37,7 +37,7 @@ The most common use: a card with only a content region. Place `<mds-card-content
 <mds-card>
   <mds-card-content>
     <mds-text typography="label">Comune di Roma</mds-text>
-    <mds-text typography="body">Aggiornato il 5 giugno 2026</mds-text>
+    <mds-text typography="paragraph">Aggiornato il 5 giugno 2026</mds-text>
   </mds-card-content>
 </mds-card>
 ```
@@ -51,9 +51,11 @@ Use `<mds-card-content>` alongside [`<mds-card-header>`](../../mds-card-header),
   <mds-card-media>
     <mds-img src="copertina.jpg" alt="Immagine documento"></mds-img>
   </mds-card-media>
-  <mds-card-header label="Delibera n. 42"></mds-card-header>
+  <mds-card-header>
+    <mds-text typography="h6">Delibera n. 42</mds-text>
+  </mds-card-header>
   <mds-card-content>
-    <mds-text typography="body">
+    <mds-text typography="paragraph">
       Approvazione del piano triennale delle opere pubbliche per il periodo 2026-2028.
     </mds-text>
   </mds-card-content>
@@ -69,13 +71,15 @@ The default slot accepts any HTML or components. Use it for structured content l
 
 ```html
 <mds-card>
-  <mds-card-header label="Riepilogo pratiche"></mds-card-header>
+  <mds-card-header>
+    <mds-text typography="h6">Riepilogo pratiche</mds-text>
+  </mds-card-header>
   <mds-card-content>
-    <mds-banner variant="warning" tone="weak" label="3 pratiche in scadenza oggi"></mds-banner>
+    <mds-banner variant="warning" tone="weak">3 pratiche in scadenza oggi</mds-banner>
     <mds-list>
-      <mds-list-item label="Pratica SUAP 2026-001"></mds-list-item>
-      <mds-list-item label="Pratica SUAP 2026-002"></mds-list-item>
-      <mds-list-item label="Pratica SUAP 2026-003"></mds-list-item>
+      <mds-list-item>Pratica SUAP 2026-001</mds-list-item>
+      <mds-list-item>Pratica SUAP 2026-002</mds-list-item>
+      <mds-list-item>Pratica SUAP 2026-003</mds-list-item>
     </mds-list>
   </mds-card-content>
 </mds-card>
@@ -89,7 +93,7 @@ Omitting sibling regions is valid. A card holding only `<mds-card-content>` rend
 <mds-card>
   <mds-card-content>
     <mds-kpi>
-      <mds-kpi-item label="Pratiche aperte" value="142" variant="info"></mds-kpi-item>
+      <mds-kpi-item label="142" description="Pratiche aperte"></mds-kpi-item>
     </mds-kpi>
   </mds-card-content>
 </mds-card>
@@ -97,93 +101,93 @@ Omitting sibling regions is valid. A card holding only `<mds-card-content>` rend
 
 #### Adjusting Card Spacing via Parent Custom Properties
 
-`<mds-card-content>` has no CSS custom properties of its own. Control the gap and padding of the card composition - including the content region - through the parent's `--mds-card-gap` and `--mds-card-padding` properties. Set them on the `<mds-card>` host or on a parent selector.
+`<mds-card-content>` has no CSS custom properties of its own. Control the spacing of the card composition through the parent's `--mds-card-gap` (between the regions) and `--mds-card-padding` (around them) properties; the content region's own inner padding and gap are fixed. Set them on the `<mds-card>` host or on a parent selector.
 
 ```css
 .card-compatta mds-card {
-  --mds-card-gap: var(--spacing-200);
-  --mds-card-padding: var(--spacing-300);
+  --mds-card-gap: calc(var(--spacing) * 200);
+  --mds-card-padding: calc(var(--spacing) * 300);
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-card-content>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-card-content>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-card-content>` Outside `<mds-card>`
 
 `<mds-card-content>` is a compound child and relies on `<mds-card>`'s slot infrastructure and grid layout. Used standalone it renders with no container context and produces unpredictable visual output.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card-content>
-  <mds-text typography="body">Testo senza contesto.</mds-text>
+  <mds-text typography="paragraph">Testo senza contesto.</mds-text>
 </mds-card-content>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-content>
-    <mds-text typography="body">Testo senza contesto.</mds-text>
+    <mds-text typography="paragraph">Testo senza contesto.</mds-text>
   </mds-card-content>
 </mds-card>
 ```
 
 #### Do Not Set the `slot` Attribute Manually
 
-`<mds-card-content>` self-assigns `slot="content"` in its `Host` render. Adding the attribute externally is redundant and can produce a double-assignment that breaks the grid-area resolution.
+`<mds-card-content>` self-assigns `slot="content"` in its `Host` render. Adding the attribute externally is redundant: the component writes it itself, overwriting any other value when it renders.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-content slot="content">
-    <mds-text typography="body">Intestazione sezione principale.</mds-text>
+    <mds-text typography="paragraph">Intestazione sezione principale.</mds-text>
   </mds-card-content>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-content>
-    <mds-text typography="body">Intestazione sezione principale.</mds-text>
+    <mds-text typography="paragraph">Intestazione sezione principale.</mds-text>
   </mds-card-content>
 </mds-card>
 ```
 
 #### Do Not Replace `<mds-card-content>` with a Raw `<div slot="content">`
 
-A raw element placed directly in `slot="content"` bypasses the card-content component's internal grid and consistent padding, producing a layout that diverges from the design system baseline and breaks on card-region composition changes.
+A raw element placed directly in `slot="content"` bypasses the card-content component's internal grid and consistent padding, and the card, which infers its grid from the tag names of its children, does not recognise it as the content region: the managed layout breaks.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <div slot="content" style="padding: 16px;">
     <p>Descrizione pratica edilizia.</p>
   </div>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-content>
-    <mds-text typography="body">Descrizione pratica edilizia.</mds-text>
+    <mds-text typography="paragraph">Descrizione pratica edilizia.</mds-text>
   </mds-card-content>
 </mds-card>
 ```
 
 #### Do Not Try to Style Spacing via `<mds-card-content>` CSS Vars
 
-`<mds-card-content>` exposes no `--mds-card-content-*` custom properties. Setting them has no effect. Spacing is controlled through `--mds-card-gap` and `--mds-card-padding` on the parent `<mds-card>`.
+`<mds-card-content>` exposes no `--mds-card-content-*` custom properties. Setting them has no effect: its inner padding and gap are fixed. The spacing you can set is the card's, through `--mds-card-gap` (between the regions) and `--mds-card-padding` (around them) on the parent `<mds-card>`.
 
 ```css
-/* 🚫 INCORRECT - has no effect */
+/* INCORRECT - has no effect */
 mds-card-content {
-  --mds-card-content-padding: var(--spacing-600);
-  --mds-card-content-gap: var(--spacing-400);
+  --mds-card-content-padding: calc(var(--spacing) * 600);
+  --mds-card-content-gap: calc(var(--spacing) * 400);
 }
 
-/* ✅ CORRECT - set on the parent card host */
+/* CORRECT - set on the parent card host */
 mds-card {
-  --mds-card-gap: var(--spacing-200);
-  --mds-card-padding: var(--spacing-400);
+  --mds-card-gap: calc(var(--spacing) * 200);
+  --mds-card-padding: calc(var(--spacing) * 400);
 }
 ```
 
@@ -192,7 +196,7 @@ mds-card {
 Only one content region per card is supported. Multiple instances produce overlapping slot assignments and unpredictable grid output; consolidate all body content inside a single `<mds-card-content>`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-card>
   <mds-card-content>
     <mds-text typography="label">Sezione A</mds-text>
@@ -202,7 +206,7 @@ Only one content region per card is supported. Multiple instances produce overla
   </mds-card-content>
 </mds-card>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-card>
   <mds-card-content>
     <mds-text typography="label">Sezione A</mds-text>
