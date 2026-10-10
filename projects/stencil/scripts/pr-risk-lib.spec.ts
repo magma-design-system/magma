@@ -203,6 +203,25 @@ describe('apiChanges', () => {
     );
   });
 
+  it('needs a minor when an event detail becomes a type that extends the old one', () => {
+    const event = (detail: string) => `mds-x event mdsXChange: ${detail} [bubbles, composed]`;
+    const types = [
+      'interface D { id: string; }',
+      'interface E extends D { ids: string[]; }',
+      'interface F<T> extends E { open: T; }',
+    ].join('\n');
+    const api = (detail: string) => `${event(detail)}\n${types}`;
+
+    expect(one(api('D'), api('E'))).toEqual({
+      bump: 'minor',
+      why: 'the detail is now E, which extends D',
+    });
+    /* through the types it extends, generic ones too */
+    expect(one(api('D'), api('F<boolean>')).bump).toBe('minor');
+    /* the other way round, a listener loses the fields it read */
+    expect(one(api('E'), api('D')).bump).toBe('major');
+  });
+
   it('needs a major for a new method signature or encapsulation', () => {
     expect(
       one('mds-x method open() => Promise<void>', 'mds-x method open(id: string) => Promise<void>')
@@ -221,6 +240,28 @@ describe('apiChanges', () => {
     expect(one('interface D { id: string; }', 'interface D { id: number; }').bump).toBe('major');
     expect(one('type S = "a" | "b"', 'type S = "a" | "b" | "c"').bump).toBe('minor');
     expect(one('type S = "a" | "b"', 'type S = "a"').bump).toBe('major');
+  });
+
+  it('weighs the types an interface extends, not the JSDoc of its fields', () => {
+    const e = 'interface E extends D { ids: string[]; }';
+    expect(one(e, 'interface E extends D { ids: string[]; open: boolean; }')).toEqual({
+      bump: 'minor',
+      why: 'the interface also has open: boolean',
+    });
+    expect(one(e, 'interface E { ids: string[]; }')).toEqual({
+      bump: 'major',
+      why: 'no longer extends D',
+    });
+    expect(one(e, 'interface E extends D, C<string, number> { ids: string[]; }')).toEqual({
+      bump: 'minor',
+      why: 'now extends C<string, number>',
+    });
+    expect(
+      one(
+        'interface E { /** The ids. */ ids: string[]; }',
+        'interface E { /** * Every id, in order. */ ids: string[]; }',
+      ),
+    ).toEqual({ bump: 'patch', why: 'reformatted' });
   });
 
   it('splits unions only at the top level', () => {
