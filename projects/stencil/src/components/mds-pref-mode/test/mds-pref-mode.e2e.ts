@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 
 describe('mds-pref-mode', () => {
   it('renders', async () => {
@@ -71,5 +71,51 @@ describe('mds-pref-mode', () => {
 
     expect(root.mode).toBe('dark');
     expect(localStorage.getItem('mdsPrefMode')).toBe('dark');
+  });
+
+  // #789: an app-wide controller next to a settings page used to revert the
+  // settings pick on its next render, re-applying its own stale mode
+  describe('with a second instance', () => {
+    const markup = `
+      <div>
+        <mds-pref-mode class="controller"></mds-pref-mode>
+        <mds-pref-mode class="settings" transition="none"></mds-pref-mode>
+      </div>
+    `;
+
+    it('keeps the mode picked in the other instance, without applying it again', async () => {
+      const { root, waitForChanges } = await render(markup);
+      const controller = root.querySelector<HTMLMdsPrefModeElement>('.controller')!;
+      const settings = root.querySelector<HTMLMdsPrefModeElement>('.settings')!;
+      const controllerChange = vi.fn();
+      controller.addEventListener('mdsPrefChange', controllerChange);
+
+      settings.shadowRoot!.querySelector<HTMLElement>('.item--dark')!.click();
+      await waitForChanges();
+      // any re-render of the controller, then the settings page goes away
+      controller.size = 'sm';
+      await waitForChanges();
+      settings.remove();
+      await waitForChanges();
+
+      expect(document.documentElement).toHaveClass('pref-mode-dark');
+      expect(document.documentElement).not.toHaveClass('pref-mode-system');
+      expect(localStorage.getItem('mdsPrefMode')).toBe('dark');
+      expect(controller.mode).toBe('dark');
+      expect(controller.shadowRoot!.querySelector('.item--dark')).toHaveAttribute('selected');
+      expect(controllerChange).not.toHaveBeenCalled();
+    });
+
+    it('follows a mode written straight on <html>, without writing it back', async () => {
+      const { root, waitForChanges } = await render('<mds-pref-mode mode="light"></mds-pref-mode>');
+      const html = document.documentElement;
+
+      html.classList.replace('pref-mode-light', 'pref-mode-dark');
+      await waitForChanges();
+
+      expect(root.mode).toBe('dark');
+      expect(localStorage.getItem('mdsPrefMode')).toBe('light');
+      html.style.removeProperty('--magma-pref-mode');
+    });
   });
 });

@@ -14,6 +14,7 @@ import {
   Watch,
 } from '@stencil/core';
 import { setFormValue } from '@common/form';
+import { updateValidity } from '@common/validity';
 import { MdsInputEventDetail } from '@type/input';
 import { ThemeStatusVariantType } from '@type/variant';
 
@@ -121,6 +122,21 @@ export class MdsInputSelect {
     this.changeEvent.emit({ value: this.value?.toString() });
     this.setCurrentValue();
     setFormValue(this.internals, this.value?.toString() ?? null);
+    this.updateFormValidity();
+  }
+
+  @Watch('required')
+  protected requiredChanged(): void {
+    this.updateFormValidity();
+  }
+
+  /**
+   * Reports to the form a required select left empty: like a native `required`, it stops the
+   * submit of its form.
+   */
+  private updateFormValidity(): void {
+    const missing = this.required && (this.value ?? '') === '';
+    updateValidity(this.internals, missing ? { rule: 'requiredSelect' } : undefined, this.selectEl);
   }
 
   @Watch('disabled')
@@ -178,6 +194,11 @@ export class MdsInputSelect {
     ) {
       this.value = this.defaultValue;
     }
+  }
+
+  componentDidRender(): void {
+    // the select the message points at exists from the first render on
+    this.updateFormValidity();
   }
 
   componentDidLoad(): void {
@@ -306,7 +327,7 @@ export class MdsInputSelect {
           {this.required && (
             <mds-input-tip-item
               expanded={this.hasFocus}
-              variant={this.value === '' ? 'required' : 'required-success'}
+              variant={(this.value ?? '') === '' ? 'required' : 'required-success'}
             ></mds-input-tip-item>
           )}
         </mds-input-tip>

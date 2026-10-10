@@ -168,3 +168,90 @@ describe('mds-input-date', () => {
     });
   });
 });
+
+// The React wrappers under SSR set the props on an element that has already loaded (#786)
+describe('rules set after load', () => {
+  it('applies required', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date></mds-input-date>',
+    );
+
+    root.required = true;
+    await waitForChanges();
+
+    const tip = root.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
+    expect(tip).toEqualAttribute('variant', 'required');
+    expect(root).toEqualAttribute('variant', 'error');
+    expect(await root.getErrors()).not.toBeNull();
+  });
+
+  it('checks the value against a min set after load', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date value="2026-01-10"></mds-input-date>',
+    );
+    expect(root).toEqualAttribute('variant', 'primary');
+
+    root.min = '2026-02-01';
+    await waitForChanges();
+
+    expect(root).toEqualAttribute('variant', 'error');
+  });
+
+  it('snaps a reversed range set after load', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsInputDateElement>(
+      '<mds-input-date min="2026-02-01"></mds-input-date>',
+    );
+
+    root.max = '2026-01-01';
+    await waitForChanges();
+
+    expect(root.max).toBe('2026-02-01');
+  });
+});
+
+// Like a native control, an invalid date stops the submit of its form (#786)
+describe('form validity', () => {
+  const setupForm = async (attributes: string) => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(
+      `<form><mds-input-date name="d" ${attributes}></mds-input-date></form>`,
+    );
+    return { form, date: form.querySelector('mds-input-date')!, waitForChanges };
+  };
+
+  it('stops the submit while a required date is empty', async () => {
+    const { form, date } = await setupForm('required');
+
+    expect(form.checkValidity()).toBe(false);
+    expect(date.matches(':invalid')).toBe(true);
+
+    await date.setValue('2026-01-10');
+
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('stops the submit for a date out of the range', async () => {
+    const { form, date } = await setupForm('min="2026-02-01" max="2026-02-28"');
+
+    await date.setValue('2026-03-10');
+    expect(form.checkValidity()).toBe(false);
+
+    await date.setValue('2026-02-10');
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('follows a required set after load', async () => {
+    const { form, date, waitForChanges } = await setupForm('');
+    expect(form.checkValidity()).toBe(true);
+
+    date.required = true;
+    await waitForChanges();
+
+    expect(form.checkValidity()).toBe(false);
+  });
+
+  it('does not stop the submit when disabled', async () => {
+    const { form } = await setupForm('required disabled');
+
+    expect(form.checkValidity()).toBe(true);
+  });
+});

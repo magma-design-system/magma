@@ -13,10 +13,10 @@ The `<mds-input-date>` web component is the Magma Design System control for capt
 
 #### Semantic Behavior
 
-- **Form association**: The host participates natively in form submission and exposes its `value` under `name`; on form reset it clears the submitted value (the date shown in the field stays). An invalid value submits nothing, but the invalid state is not reported to the form, so it does not block submission.
+- **Form association**: The host participates natively in form submission and exposes its `value` under `name`; on form reset it clears the submitted value (the date shown in the field stays). An invalid value submits nothing, and its invalid state is reported to the form: like a native control, the field matches `:invalid` and stops the submit, with a message in the page language (a missing required date, a date out of the range, an unreadable one). A disabled or read-only field is left out, and `novalidate` on the `<form>` turns the check off.
 - **ISO value contract**: `value`, `min`, and `max` are all ISO date strings (`YYYY-MM-DD`); other formats are not accepted.
-- **Validation on change**: Validation runs when the component loads and on every value change, and emits `mdsInputValidation` with a boolean. When the date is invalid, missing while `required`, or outside the `min`/`max` range, the component forces `variant` to `'error'` and submits no value; otherwise it restores `'primary'` and submits the value. An empty `required` field is therefore in the `'error'` variant from the start.
-- **Range self-correction**: If `max` is earlier than `min` at load, `max` is snapped to equal `min`.
+- **Validation on change**: Validation runs when the component loads, on every value change and whenever `required`, `min` or `max` change (also after load, as with the React wrappers under SSR), and emits `mdsInputValidation` with a boolean. When the date is invalid, missing while `required`, or outside the `min`/`max` range, the component forces `variant` to `'error'` and submits no value; otherwise it restores `'primary'` and submits the value. An empty `required` field is therefore in the `'error'` variant from the start.
+- **Range self-correction**: If `max` is earlier than `min`, at load or after a later change of either, `max` is snapped to equal `min`.
 - **Selection event**: `mdsInputDateSelect` fires with the new string value whenever `value` changes, whether typed or picked from the calendar.
 - **Calendar dropdown**: The trailing calendar button opens a single-date calendar; picking a day writes back the value and, after `delay`, auto-closes.
 - **Slotted mode**: When the host carries a `slot` attribute it is treated as embedded - the calendar button, dropdown, and calendar are not rendered, leaving only the bare input for composition inside a larger field.
@@ -136,7 +136,7 @@ The calendar dropdown closes `delay` milliseconds after a date is picked (defaul
 
 #### Form Participation
 
-`<mds-input-date>` is form-associated and submits its ISO value under `name`. On form reset the submitted value is cleared (the date shown in the field stays).
+`<mds-input-date>` is form-associated and submits its ISO value under `name`. A missing `required` date, or one out of the `min`/`max` range, stops the submit like a native control. On form reset the submitted value is cleared (the date shown in the field stays).
 
 ```html
 <form action="/prenota" method="post">

@@ -18,6 +18,7 @@ The `<mds-input-select>` web component is the Magma Design System single- and mu
 - **Native select wrapping**: It renders a real `<select>` (exposed as the `select` part) so keyboard, type-ahead, and platform option lists work natively; the host owns theming and status only.
 - **Slotted options**: The default slot accepts `<option>` (and `<optgroup>`) markup; the current selection re-syncs whenever the slotted content changes.
 - **Form association**: The current `value` is pushed to the host form, a form reset clears the submitted value (the visible selection and `value` stay as they were), and toggling `disabled` removes the value from the submitted form data.
+- **Form validity**: A `required` select left empty is reported to the form as a native one: it matches `:invalid` and stops the submit, with a message in the page language. A disabled select is left out, and `novalidate` on the `<form>` turns the check off.
 - **Value syncing**: Changing `value` (by user input, the `setValue()` method, or the prop) emits `mdsInputSelectChange` with `{ value }` (the new value as a string) in `detail` and marks the matching `<option>` as selected.
 - **Placeholder option**: When `placeholder` is set, a leading empty-value `<option>` is injected as the first entry; if `required` is set that placeholder is disabled so it cannot be re-selected after a valid choice.
 - **Default selection fallback**: With no placeholder and no explicit value, the first available option becomes the value; a `defaultValue` seeds `value` at load.
@@ -52,7 +53,7 @@ The canonical form. Slot plain `<option>` elements as direct children. Set `plac
 
 #### Required Select Inside a Form
 
-Adding `required` enforces a non-empty submission and disables the placeholder option once a valid choice exists, so users cannot revert to the empty entry. Place the component inside a `<form>` - it is form-associated and submits natively.
+Adding `required` enforces a non-empty submission - an empty select stops the submit like a native one - and disables the placeholder option once a valid choice exists, so users cannot revert to the empty entry. Place the component inside a `<form>` - it is form-associated and submits natively.
 
 ```html
 <form action="/salva" method="post">

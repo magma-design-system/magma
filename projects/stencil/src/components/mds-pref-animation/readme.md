@@ -17,7 +17,8 @@ The `<mds-pref-animation>` web component is a preference control that lets users
 - **Tab-group selection**: Renders three options (reduce / system / no-preference); the active one is driven by the `mode` value, and clicking an option sets that mode.
 - **Applies the preference globally**: Choosing a mode applies it across the whole document and persists the choice, so it is restored on later visits.
 - **Initial mode resolution**: The effective mode is resolved in order from the `mode` prop, then the persisted value, then the `system` default.
-- **Change event**: `mdsPrefChange` (detail `{ preference: 'animation' }`) fires on every selection and also on every render, page load included; the parent `<mds-pref>` listens for it only in `controller` mode.
+- **Change event**: `mdsPrefChange` (detail `{ preference: 'animation' }`) fires on every selection and also on page load; the parent `<mds-pref>` listens for it only in `controller` mode.
+- **Instances stay in sync**: Instances mounted together (a hidden `<mds-pref controller>` and a visible settings panel) share the applied animation: a pick in one is mirrored by the others, which neither apply it again nor emit `mdsPrefChange`. A `pref-animation-*` class written on `<html>` by other code is mirrored the same way.
 
 #### Properties & Visual Configurations
 
@@ -64,7 +65,7 @@ Pass `mode` to override the persisted value and start from a known state - for e
 
 #### Listening for Changes
 
-Handle `mdsPrefChange` when the host application needs to react - for example, to announce the new setting or trigger a soft refresh. The event also fires on every render, page load included, so do not read each one as a user's choice.
+Handle `mdsPrefChange` when the host application needs to react - for example, to announce the new setting or trigger a soft refresh. The event also fires on page load, so do not read each one as a user's choice.
 
 ```html
 <mds-pref id="prefs">
