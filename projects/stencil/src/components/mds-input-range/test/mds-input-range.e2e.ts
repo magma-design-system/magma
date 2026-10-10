@@ -68,3 +68,24 @@ describe('form reset', () => {
     expect(new FormData(form).get('r')).toBe(String(expected));
   });
 });
+
+// A disabled fieldset disables the form controls in it. It disabled the host, so the value was
+// left out of the form, but not the input in its shadow root, which stayed editable (#822)
+describe('in a disabled fieldset', () => {
+  it('is disabled like a native range input, until the fieldset is enabled', async () => {
+    const { root, waitForChanges } = await render<HTMLFormElement>(
+      '<form><fieldset disabled><mds-input-range name="r" value="5"></mds-input-range></fieldset></form>',
+    );
+    const field = root.querySelector('mds-input-range')!;
+    const native = () => field.shadowRoot!.querySelector('input')!;
+
+    await vi.waitFor(() => expect(native().disabled).toBe(true));
+    expect(new FormData(root).has('r')).toBe(false);
+
+    root.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(native().disabled).toBe(false);
+    expect(new FormData(root).get('r')).toBe('5');
+  });
+});

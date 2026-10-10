@@ -34,6 +34,10 @@ export class MdsInputRange {
   @Element() private element: HTMLMdsInputRangeElement;
   @AttachInternals() internals: ElementInternals;
 
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the native control in its shadow root
+  @State() private formDisabled = false;
+
   /**
    * A function to custom how value is represented
    */
@@ -150,6 +154,12 @@ export class MdsInputRange {
   }
 
   /** Like a native input, a form reset brings back the value of load, thumb included. */
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
+
   formResetCallback(): void {
     // an empty value makes the native input take its default, the middle of the range
     this.inputElement.value = this.loadValue === undefined ? '' : String(this.loadValue);
@@ -197,7 +207,7 @@ export class MdsInputRange {
             ref={(el) => (this.inputElement = el as HTMLInputElement)}
             class="field"
             aria-label={this.label}
-            disabled={this.disabled}
+            disabled={this.isDisabled()}
             max={this.max}
             min={this.min}
             onInput={this.onInput}
