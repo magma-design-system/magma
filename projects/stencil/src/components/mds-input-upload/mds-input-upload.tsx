@@ -65,11 +65,21 @@ export class MdsInputUpload {
   @State() animateText: boolean = false;
   // the order applied to the files: sort at load, then the user's choice from the sort tabs
   @State() activeSort: AttachmentSort = 'date';
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the controls in its shadow root
+  @State() private formDisabled = false;
 
   /**
    * Defines the file types the file input should accept
    */
   @Prop({ reflect: true }) readonly accept: string = '';
+
+  /**
+   * Disables the component, like a disabled native file input: no file can be added, dropped or
+   * removed, and the files are left out of the form. A disabled `<fieldset>` around the component
+   * does the same.
+   */
+  @Prop({ reflect: true }) readonly disabled?: boolean = false;
 
   /**
    * The name the accepted files are submitted under with the form, one entry per file
@@ -100,6 +110,12 @@ export class MdsInputUpload {
    * Emits when the component files are changed
    */
   @Event({ eventName: 'mdsInputUploadChange' }) changedEvent: EventEmitter<FileList | null>;
+
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
   formResetCallback(): void {
     this.onReset();
@@ -184,16 +200,23 @@ export class MdsInputUpload {
   private readonly onDropHandler = (event: DragEvent) => {
     event.preventDefault();
     this.dragging = false;
-    if (event.dataTransfer) {
+    if (event.dataTransfer && !this.isDisabled()) {
       this.onAdd(event.dataTransfer.files);
     }
   };
 
   private readonly onDragOverHandler = (event: DragEvent) => {
+    // still handled when disabled: a file dropped on the page would otherwise be opened by the
+    // browser, so the drop is refused instead
     event.preventDefault();
+    if (this.isDisabled() && event.dataTransfer) event.dataTransfer.dropEffect = 'none';
   };
 
   private readonly onDragEnterHandler = (event: DragEvent) => {
+    if (this.isDisabled()) {
+      event.preventDefault();
+      return;
+    }
     this.dragging = true;
     this.animateText = true;
     event.preventDefault();
@@ -498,6 +521,7 @@ export class MdsInputUpload {
           <div class="main-actions">
             <mds-button
               variant="primary"
+              disabled={this.isDisabled()}
               onClick={this.handleAddFileClick}
               label={
                 this.files != null
@@ -508,6 +532,7 @@ export class MdsInputUpload {
             {this.files.length > 0 && (
               <mds-button
                 variant="error"
+                disabled={this.isDisabled()}
                 onClick={this.onReset}
                 label={this.t.get('cancel')}
               ></mds-button>
@@ -538,6 +563,7 @@ export class MdsInputUpload {
         <input
           type="file"
           accept={this.accept}
+          disabled={this.isDisabled()}
           hidden
           ref={(i) => (this.nativeInput = i)}
           onChange={this.onInputChange}
@@ -557,12 +583,14 @@ export class MdsInputUpload {
           {this.isSortTabShown() && (
             <mds-tab class="action-sort" onMdsTabChange={this.handleTabChange}>
               <mds-tab-item
+                disabled={this.isDisabled()}
                 icon={iconSortById}
                 selected={this.activeSort === 'date'}
                 title={this.t.get('sortByDate')}
                 value="date"
               ></mds-tab-item>
               <mds-tab-item
+                disabled={this.isDisabled()}
                 icon={iconSortByStatus}
                 selected={this.activeSort === 'status'}
                 title={this.t.get('sortByStatus')}
@@ -579,7 +607,7 @@ export class MdsInputUpload {
               case Status.ERROR:
                 return (
                   <mds-file-preview
-                    deletable
+                    deletable={!this.isDisabled()}
                     variant="error"
                     filename={file.file.name}
                     filesize={file.file.size.toString()}
@@ -590,7 +618,7 @@ export class MdsInputUpload {
               case Status.SUCCESS:
                 return (
                   <mds-file-preview
-                    deletable
+                    deletable={!this.isDisabled()}
                     filename={file.file.name}
                     filesize={file.file.size.toString()}
                     onMdsFileDelete={this.handleFileDelete(file.key)}

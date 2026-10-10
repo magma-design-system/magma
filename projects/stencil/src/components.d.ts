@@ -1688,6 +1688,11 @@ export namespace Components {
          */
         "accept": string;
         /**
+          * Disables the component, like a disabled native file input: no file can be added, dropped or removed, and the files are left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
           * Returns a promise of the accepted files as a FileList, empty if there's none
          */
         "getFiles": () => Promise<FileList | null>;
@@ -6174,7 +6179,8 @@ declare namespace LocalJSX {
          */
         "accept"?: string;
         /**
-          * If `true`, the user cannot interact with the element.
+          * Disables the component, like a disabled native file input: no file can be added, dropped or removed, and the files are left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -7858,6 +7864,7 @@ declare namespace LocalJSX {
     }
     interface MdsInputUploadAttributes {
         "accept": string;
+        "disabled": boolean;
         "name": string;
         "maxFileSize": number;
         "maxFiles": number;

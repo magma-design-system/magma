@@ -198,3 +198,5 @@
     flex-direction: column;
   }
 }
+
+@import './css/mds-input-upload-disabled.css';

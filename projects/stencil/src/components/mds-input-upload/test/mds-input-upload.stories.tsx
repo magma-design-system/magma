@@ -23,6 +23,11 @@ export default {
       options: attachmentSortDictionary,
       control: { type: 'select' },
     },
+    disabled: {
+      type: { name: 'boolean' },
+      description:
+        'Disables the component: no file can be added, dropped or removed, and the files are left out of the form',
+    },
   },
 };
 
