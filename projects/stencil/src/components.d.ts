@@ -43,6 +43,7 @@ import { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInput
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 import { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
+import { MdsInputSelectEventDetail } from "./components/mds-input-select/meta/event-detail";
 import { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 import { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 import { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -126,6 +127,7 @@ export { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInput
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 export { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
+export { MdsInputSelectEventDetail } from "./components/mds-input-select/meta/event-detail";
 export { InputSwitchSizeType, InputSwitchType } from "./components/mds-input-switch/meta/types";
 export { MdsInputSwitchEventDetail } from "./components/mds-input-switch/meta/event-detail";
 export { InputTipPositionType } from "./components/mds-input-tip/meta/types";
@@ -1270,7 +1272,7 @@ export namespace Components {
          */
         "name"?: string;
         /**
-          * Specifies a regular expression that element\'s value is checked against
+          * Specifies a regular expression the whole value has to match, as the pattern attribute of a native input: a value that does not match stops the submit of the form
          */
         "pattern"?: string;
         /**
@@ -1498,7 +1500,7 @@ export namespace Components {
          */
         "length": number;
         /**
-          * The current value of the OTP code
+          * The current value of the OTP code: a value set in the markup or by code fills the cells from the first one
           * @default ''
          */
         "value"?: string;
@@ -1681,7 +1683,7 @@ export namespace Components {
          */
         "accept": string;
         /**
-          * Returns a promise of files uploaded as Filelist or null if there's none
+          * Returns a promise of the accepted files as a FileList, empty if there's none
          */
         "getFiles": () => Promise<FileList | null>;
         /**
@@ -1703,11 +1705,15 @@ export namespace Components {
          */
         "maxFiles": number;
         /**
+          * The name the accepted files are submitted under with the form, one entry per file
+         */
+        "name"?: string;
+        /**
           * Reset component's files
          */
         "reset": () => Promise<void>;
         /**
-          * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
+          * Specifies the order the files start sorted by, status or date of upload, and shows the sort tabs that let the user change it; if not defined the tabs are hidden and the order is the user's last choice
          */
         "sort"?: AttachmentSort;
     }
@@ -3656,7 +3662,7 @@ declare global {
         new (): HTMLMdsInputRangeElement;
     };
     interface HTMLMdsInputSelectElementEventMap {
-        "mdsInputSelectChange": MdsInputEventDetail;
+        "mdsInputSelectChange": MdsInputSelectEventDetail;
     }
     interface HTMLMdsInputSelectElement extends Components.MdsInputSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputSelectElementEventMap>(type: K, listener: (this: HTMLMdsInputSelectElement, ev: MdsInputSelectCustomEvent<HTMLMdsInputSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -5708,7 +5714,7 @@ declare namespace LocalJSX {
          */
         "onMdsInputValidation"?: (event: MdsInputCustomEvent<boolean>) => void;
         /**
-          * Specifies a regular expression that element\'s value is checked against
+          * Specifies a regular expression the whole value has to match, as the pattern attribute of a native input: a value that does not match stops the submit of the form
          */
         "pattern"?: string;
         /**
@@ -5959,7 +5965,7 @@ declare namespace LocalJSX {
          */
         "name"?: string;
         /**
-          * The current value of the OTP code
+          * The current value of the OTP code: a value set in the markup or by code fills the cells from the first one
           * @default ''
          */
         "value"?: string;
@@ -6041,9 +6047,9 @@ declare namespace LocalJSX {
          */
         "name"?: string;
         /**
-          * Emits an InputChangeEventDetail when the value of the input element changes
+          * Emits when the selection changes: `value` is the first selected option, `values` every selected one
          */
-        "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<MdsInputEventDetail>) => void;
+        "onMdsInputSelectChange"?: (event: MdsInputSelectCustomEvent<MdsInputSelectEventDetail>) => void;
         /**
           * Specifies a short hint that describes the expected value of the element
          */
@@ -6184,7 +6190,7 @@ declare namespace LocalJSX {
          */
         "maxFiles"?: number;
         /**
-          * The name of the element, used when submitting an HTML form.
+          * The name the accepted files are submitted under with the form, one entry per file
          */
         "name"?: string;
         /**
@@ -6192,7 +6198,7 @@ declare namespace LocalJSX {
          */
         "onMdsInputUploadChange"?: (event: MdsInputUploadCustomEvent<FileList | null>) => void;
         /**
-          * Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose
+          * Specifies the order the files start sorted by, status or date of upload, and shows the sort tabs that let the user change it; if not defined the tabs are hidden and the order is the user's last choice
          */
         "sort"?: AttachmentSort;
     }
@@ -7845,6 +7851,7 @@ declare namespace LocalJSX {
     }
     interface MdsInputUploadAttributes {
         "accept": string;
+        "name": string;
         "maxFileSize": number;
         "maxFiles": number;
         "sort": AttachmentSort;

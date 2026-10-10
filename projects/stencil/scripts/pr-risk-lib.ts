@@ -13,7 +13,9 @@
  * the few PRs that change what consumers rely on.
  *
  * The semver check reads each changed line of the snapshot: a removal or a narrowing is
- * major, an addition or a widening is minor. The release the commits declare (the stock
+ * major, an addition or a widening is minor. An event is read the other way round, as
+ * what consumers receive: a detail that becomes a type extending the old one is minor, a
+ * listener still finds every field it read. The release the commits declare (the stock
  * commit-analyzer rules, as semantic-release reads them) must be at least that.
  */
 
@@ -113,8 +115,8 @@ export const memberKey = (line: string): string => {
   return `${tag} ${kind} ${rest}`;
 };
 
-/** The members of a top-level union, `"a" | "b" | undefined` -> a, b, undefined. */
-const unionMembers = (type: string): Set<string> => {
+/** A type split at the top level only, `A<B, C>, D` on `,` -> A<B, C>, D. */
+const splitTop = (type: string, separator: string): string[] => {
   const members: string[] = [];
   let depth = 0;
   let start = 0;
@@ -122,14 +124,17 @@ const unionMembers = (type: string): Set<string> => {
     const c = type[i];
     if ('([{<'.includes(c)) depth++;
     else if (')]}>'.includes(c)) depth--;
-    else if (c === '|' && depth === 0) {
+    else if (c === separator && depth === 0) {
       members.push(type.slice(start, i).trim());
       start = i + 1;
     }
   }
   members.push(type.slice(start).trim());
-  return new Set(members.filter(Boolean));
+  return members.filter(Boolean);
 };
+
+/** The members of a top-level union, `"a" | "b" | undefined` -> a, b, undefined. */
+const unionMembers = (type: string): Set<string> => new Set(splitTop(type, '|'));
 
 const compareSets = (
   before: Set<string>,
@@ -175,11 +180,44 @@ const undeprecated = (line: string) => line.replace(/ DEPRECATED$/, '');
 
 const PROP = /^\S+ prop \S+ \(([^)]*)\)(?: \[([^\]]*)\])?: (.*?)(?: = (.*))?$/;
 const EVENT = /^\S+ event \S+: (.*?)(?: \[([^\]]*)\])?$/;
-const INTERFACE = /^interface \w+(?:<[^>]*>)? \{ (.*) \}$/;
+const INTERFACE = /^interface \w+(?:<[^>]*>)?(?: extends (.*?))? \{ (.*) \}$/;
 const ALIAS = /^type \w+(?:<[^>]*>)? = (.*)$/;
 
+/** The line that declares a type in the snapshot, by name: `Detail<T>` finds `Detail`. */
+type Declared = (type: string) => string | undefined;
+
+/** The types an interface line extends, none for any other line. */
+const basesOf = (line: string | undefined): string[] => {
+  const match = line === undefined ? null : INTERFACE.exec(undeprecated(line));
+  return match ? splitTop(match[1] ?? '', ',') : [];
+};
+
+/** True when `type` extends `base`, directly or through the types it extends. */
+const extendsType = (
+  type: string,
+  base: string,
+  declared: Declared,
+  seen = new Set<string>(),
+): boolean => {
+  if (seen.has(type)) return false;
+  seen.add(type);
+  return basesOf(declared(type)).some(
+    (parent) => parent === base || extendsType(parent, base, declared, seen),
+  );
+};
+
+/* a base lost takes its fields away, a base gained brings new ones */
+const baseChanges = (before: string[], after: string[]): [Bump, string][] => [
+  ...before
+    .filter((base) => !after.includes(base))
+    .map((base): [Bump, string] => ['major', `no longer extends ${base}`]),
+  ...after
+    .filter((base) => !before.includes(base))
+    .map((base): [Bump, string] => ['minor', `now extends ${base}`]),
+];
+
 /** What a changed line does to consumers: every facet that differs, with its weight. */
-const changedLine = (before: string, after: string): [Bump, string][] => {
+const changedLine = (before: string, after: string, declared: Declared): [Bump, string][] => {
   const facets = deprecation(before, after);
   const b = undeprecated(before);
   const a = undeprecated(after);
@@ -202,26 +240,36 @@ const changedLine = (before: string, after: string): [Bump, string][] => {
 
   const events = [EVENT.exec(b), EVENT.exec(a)];
   if (events[0] && events[1]) {
-    if (events[0][1] !== events[1][1]) facets.push(['major', 'the detail type changed']);
+    const [detailBefore, detailAfter] = [events[0][1], events[1][1]];
+    if (detailBefore !== detailAfter)
+      facets.push(
+        extendsType(detailAfter, detailBefore, declared)
+          ? ['minor', `the detail is now ${detailAfter}, which extends ${detailBefore}`]
+          : ['major', 'the detail type changed'],
+      );
     facets.push(...flagChanges(flagSet(events[0][2]), flagSet(events[1][2])));
     return facets;
   }
 
   const interfaces = [INTERFACE.exec(b), INTERFACE.exec(a)];
   if (interfaces[0] && interfaces[1]) {
+    /* the declaration keeps the JSDoc of its fields: rewording it changes no field */
     const fields = (body: string) =>
       new Set(
         body
+          .replace(/\/\*[\s\S]*?\*\//g, '')
           .split(';')
           .map((f) => f.trim())
           .filter(Boolean),
       );
-    facets.push(
-      compareSets(fields(interfaces[0][1]), fields(interfaces[1][1]), 'the interface') ?? [
-        'patch',
-        'reformatted',
-      ],
+    const changes = baseChanges(basesOf(b), basesOf(a));
+    const fieldChange = compareSets(
+      fields(interfaces[0][2]),
+      fields(interfaces[1][2]),
+      'the interface',
     );
+    if (fieldChange) changes.push(fieldChange);
+    facets.push(...(changes.length > 0 ? changes : [['patch', 'reformatted'] as [Bump, string]]));
     return facets;
   }
 
@@ -252,12 +300,13 @@ export const apiChanges = (before: string, after: string): ApiChange[] => {
     );
   const b = index(before);
   const a = index(after);
+  const declared: Declared = (type) => a.get(`type ${type.replace(/<.*$/, '')}`);
   const changes: ApiChange[] = [];
   for (const [key, line] of b) {
     const now = a.get(key);
     if (now === undefined) changes.push({ key, before: line, bump: 'major', why: 'removed' });
     else if (now !== line) {
-      const facets = changedLine(line, now);
+      const facets = changedLine(line, now, declared);
       const bump = maxBump(facets.map(([f]) => f)) ?? 'patch';
       changes.push({
         key,

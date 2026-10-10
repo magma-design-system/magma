@@ -17,11 +17,12 @@ The `<mds-input-select>` web component is the Magma Design System single- and mu
 
 - **Native select wrapping**: It renders a real `<select>` (exposed as the `select` part) so keyboard, type-ahead, and platform option lists work natively; the host owns theming and status only.
 - **Slotted options**: The default slot accepts `<option>` (and `<optgroup>`) markup; the current selection re-syncs whenever the slotted content changes.
-- **Form association**: The current `value` is pushed to the host form, a form reset clears the submitted value (the visible selection and `value` stay as they were), and toggling `disabled` removes the value from the submitted form data.
+- **Form association**: The selection is pushed to the host form: a single select submits its `value`, a `multiple` one an entry per selected option under `name`, as a native select. A form reset brings back the selection of load, like a native select: the options the markup marks `selected` (or the placeholder), with the `value` of load on top. Toggling `disabled` removes the value from the submitted form data.
+- **Disabled fieldset**: A disabled `<fieldset>` around the component disables it as `disabled` does, like a native control: it cannot be changed and its value is left out of the form, until the fieldset is enabled.
 - **Form validity**: A `required` select left empty is reported to the form as a native one: it matches `:invalid` and stops the submit, with a message in the page language. A disabled select is left out, and `novalidate` on the `<form>` turns the check off.
-- **Value syncing**: Changing `value` (by user input, the `setValue()` method, or the prop) emits `mdsInputSelectChange` with `{ value }` (the new value as a string) in `detail` and marks the matching `<option>` as selected.
+- **Value syncing**: Changing the selection (by user input, the `setValue()` method, or the prop) emits `mdsInputSelectChange` with `{ value, values }` in `detail`: `value` is the first selected option as a string, `values` the values of every selected option, the placeholder left out. A `value` set by code selects its `<option>` alone, as `select.value` does, and a value cleared by code goes back to the placeholder.
 - **Placeholder option**: When `placeholder` is set, a leading empty-value `<option>` is injected as the first entry; if `required` is set that placeholder is disabled so it cannot be re-selected after a valid choice.
-- **Default selection fallback**: With no placeholder and no explicit value, the first available option becomes the value; a `defaultValue` seeds `value` at load.
+- **Default selection fallback**: With no explicit value, the options the markup marks `selected` become the selection; without them, the placeholder or, with no placeholder, the first option of a single select. A `defaultValue` seeds `value` at load.
 - **Status tip**: A status tip surfaces verbose state - a disabled notice, and for required fields a `required` / `required-success` message that expands while the control has focus.
 
 #### Properties & Visual Configurations
@@ -30,7 +31,7 @@ The `variant` prop applies a status appearance drawn from the shared status ladd
 
 #### Other behavioral props
 
-- **`multiple`** turns the control into a multi-select list box, but `value`, the `mdsInputSelectChange` detail and the submitted form value carry only the first selected option. **`size`** sets how many option rows are visible at once, as on a native `<select>`: above `1` it shows a list box even without `multiple`.
+- **`multiple`** turns the control into a multi-select list box: the form gets an entry per selected option and `values` in the `mdsInputSelectChange` detail lists them all, while `value` holds the first one, as `select.value` does. **`size`** sets how many option rows are visible at once, as on a native `<select>`: above `1` it shows a list box even without `multiple`.
 - **`defaultValue`** is the initial selection used to seed the value at load (notably for the React wrapper), distinct from the live `value` that reflects the current choice.
 - **`required`** both enforces a non-empty submission and locks the placeholder option so the empty entry cannot be chosen again.
 
@@ -88,7 +89,7 @@ Pass `value` to open the component with a specific option already chosen. The ma
 
 #### Listening to Value Changes
 
-Listen to `mdsInputSelectChange` - do not rely on the native `change` event, which may not bubble out of shadow DOM reliably. The event detail carries the chosen value as a string.
+Listen to `mdsInputSelectChange` - do not rely on the native `change` event, which may not bubble out of shadow DOM reliably. The event detail carries the chosen value as a string in `value`, and the values of every selected option in `values`.
 
 ```html
 <mds-input-select id="stato-pratica" name="stato" placeholder="Seleziona stato...">
@@ -137,12 +138,12 @@ Set `disabled` as a boolean attribute to block interaction and remove the value 
 
 #### Multi-select List Box
 
-`multiple` switches the component to a scrollable list that allows zero or more simultaneous selections. Use `size` to control how many rows are visible without scrolling. `value`, the `mdsInputSelectChange` detail and the submitted form value carry only the first selected option (in list order), and picking an option above it clears the other selections.
+`multiple` switches the component to a scrollable list that allows zero or more simultaneous selections. Use `size` to control how many rows are visible without scrolling. Mark the options to preselect with `selected`, as in a native `<select multiple>`. The form submits an entry per selected option under `name`, and `values` in the `mdsInputSelectChange` detail lists them all; `value` holds only the first one, as `select.value` does.
 
 ```html
-<mds-input-select name="competenze" multiple size="4" placeholder="Seleziona competenze...">
-  <option value="js">JavaScript</option>
-  <option value="ts">TypeScript</option>
+<mds-input-select name="competenze" multiple size="4">
+  <option value="js" selected>JavaScript</option>
+  <option value="ts" selected>TypeScript</option>
   <option value="css">CSS</option>
   <option value="html">HTML</option>
   <option value="react">React</option>
@@ -340,9 +341,9 @@ mds-input-select::part(select) {
 
 ## Events
 
-| Event                  | Description                                                                 | Type                               |
-| ---------------------- | --------------------------------------------------------------------------- | ---------------------------------- |
-| `mdsInputSelectChange` | Emits an InputChangeEventDetail when the value of the input element changes | `CustomEvent<MdsInputEventDetail>` |
+| Event                  | Description                                                                                         | Type                                     |
+| ---------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `mdsInputSelectChange` | Emits when the selection changes: `value` is the first selected option, `values` every selected one | `CustomEvent<MdsInputSelectEventDetail>` |
 
 
 ## Methods

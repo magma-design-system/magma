@@ -16,10 +16,10 @@ The `<mds-input-switch>` web component is the binary/selectable input control of
 #### Semantic Behavior
 
 - **Type-driven rendering**: `type` selects the visual primitive. `'switch'` (default) renders the sliding toggle; `'checkbox'` and `'radio'` render the corresponding native control.
-- **Form association**: The host participates in a `<form>` natively - the form value is set to `value` when `checked` and cleared otherwise. A form reset sets the submitted value to an empty string and does not restore `checked`.
-- **Radio grouping**: When `type="radio"`, checking one instance unchecks every other `<mds-input-switch>` sharing the same `name` in the document (the unchecked ones keep their submitted form value).
+- **Form association**: The host participates in a `<form>` natively - the form value is `value` while `checked` and enabled, nothing otherwise, and it follows every change of `checked`, `value` or `disabled`, by the user or by code. A form reset brings back the `checked` state of load, like a native input.
+- **Radio grouping**: When `type="radio"`, checking one instance, by the user or by code, unchecks the other radios with the same `name` in the same form (or, outside a form, in the same document or shadow root), as native radios do, so the group submits one value. A radio without a `name` is a group of its own.
 - **Checked / indeterminate**: `checked` reflects selection; toggling it always clears `indeterminate`. The indeterminate glyph is only meaningful for `checkbox`.
-- **Disabled state**: Blocks interaction and clears the submitted form value while disabled.
+- **Disabled state**: Blocks interaction and clears the submitted form value while disabled. A disabled `<fieldset>` around the component does the same, as it does a native input.
 - **Keyboard operable**: The control responds to keyboard activation in addition to pointer clicks.
 - **Accessibility**: The control exposes a localized accessible label ("select"/"unselect") derived from slotted text (it/en/es/el).
 - **Change event**: `mdsInputSwitchChange` fires with `{ name, checked, value }` whenever the user changes the selection; setting `checked` from code does not emit it.
@@ -98,7 +98,7 @@ Set `type="checkbox"` for multi-select use cases. The component renders the stan
 
 #### Radio Group
 
-Set `type="radio"` and share the same `name` across instances. Checking one automatically unchecks all others with the same name in the document.
+Set `type="radio"` and share the same `name` across instances. Checking one automatically unchecks the others with the same name in the same form, and the form submits the value of the checked one.
 
 ```html
 <mds-input-switch type="radio" name="piano" value="base">Piano base</mds-input-switch>
@@ -108,7 +108,7 @@ Set `type="radio"` and share the same `name` across instances. Checking one auto
 
 #### Form Participation
 
-`<mds-input-switch>` is form-associated. The form receives `value` when `checked`; if unchecked, no value is submitted. A form reset empties the submitted value but does not restore `checked`.
+`<mds-input-switch>` is form-associated. The form receives `value` when `checked`; if unchecked, no value is submitted. A form reset brings back the `checked` state each switch had at load.
 
 ```html
 <form action="/preferenze" method="post">
@@ -244,7 +244,7 @@ The indeterminate glyph (`indeterminate-check-box`) is part of the checkbox icon
 
 #### Do Not Omit `name` in a Radio Group
 
-Without a shared `name`, the radios do not form a group of their own. The `uncheckSiblings` behavior queries `[name="..."]`, and a missing name reflects as `name=""`: checking a nameless radio unchecks every other nameless `<mds-input-switch>` in the document, of any type.
+Without a shared `name`, the radios do not form a group: as with native radios, each nameless radio is a group of its own, so several can be checked at once, and none of them is submitted with the form.
 
 ```html
 <!-- INCORRECT -->

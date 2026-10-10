@@ -51,6 +51,7 @@ import {
   MdsValidatorFn,
   minLenghtValidator,
   minValidator,
+  patternValidator,
   requiredValidor,
 } from './meta/validators';
 import { validityProblem } from './meta/validity';
@@ -104,6 +105,8 @@ export interface MdsInputInterface {
 export class MdsInput {
   private nativeInput?: HTMLInputElement | HTMLTextAreaElement;
   private tabindex?: number;
+  // the value at load, which a form reset brings back as the value attribute of a native input
+  private defaultValue = '';
 
   // replaced by buildValidation on load, a valid empty set before
   private inputValidation: InputValidationManager = createInputValidationManager('text');
@@ -125,7 +128,6 @@ export class MdsInput {
   @State() currentLengthLabel: string;
   @State() countVariant: InputTipItemVariantType = 'count-empty';
   @State() isPasswordVisible = false;
-  // private valuePristine?: string
 
   private t: Locale = new Locale({
     el: localeEl,
@@ -135,6 +137,10 @@ export class MdsInput {
   });
 
   @AttachInternals() internals: ElementInternals;
+
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the native control in its shadow root
+  @State() private formDisabled = false;
 
   /**
    * The accessible name of the native control: the label a screen reader announces. An
@@ -223,7 +229,8 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly name?: string;
 
   /**
-   * Specifies a regular expression that element\'s value is checked against
+   * Specifies a regular expression the whole value has to match, as the pattern attribute of a
+   * native input: a value that does not match stops the submit of the form
    */
   @Prop({ reflect: true }) readonly pattern?: string;
 
@@ -302,8 +309,22 @@ export class MdsInput {
    */
   @Event({ eventName: 'mdsInputValidation' }) validationEvent!: EventEmitter<boolean>;
 
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
+
+  /**
+   * Like a native input, a form reset brings back the value of load and forgets the validation
+   * shown on blur: the field looks pristine until the next blur.
+   */
   formResetCallback(): void {
-    setFormValue(this.internals, '');
+    const validated = this.validated;
+    this.validated = false;
+    this.isValid = !(this.required && this.defaultValue === '');
+    this.value = this.defaultValue;
+    if (validated) this.variant = 'primary';
   }
 
   connectedCallback(): void {
@@ -311,7 +332,7 @@ export class MdsInput {
   }
 
   componentWillLoad(): void {
-    // this.valuePristine = this.value
+    this.defaultValue = this.value ?? '';
 
     // If the mds-input has a tabindex attribute we get the value
     // and pass it down to the native input, then remove it from the
@@ -328,7 +349,6 @@ export class MdsInput {
   }
 
   componentDidLoad(): void {
-    this.nativeInput?.setAttribute('pattern', String(this.inputValidation.pattern));
     if (this.autofocus) {
       this.nativeInput?.focus();
     }
@@ -357,8 +377,18 @@ export class MdsInput {
       validator.addValidator(maxLenghtValidator(this.maxlength));
     if (this.minlength !== undefined && this.minlength !== 0 && !Number.isNaN(this.minlength))
       validator.addValidator(minLenghtValidator(this.minlength));
+    const pattern = this.patternApplies() ? patternValidator(this.pattern ?? '') : null;
+    if (pattern) validator.addValidator(pattern);
     validator.addValidator(this.customValidators);
     this.inputValidation = validation;
+  }
+
+  /** As on a native input, `pattern` constrains the text types, not a number, a date or a time. */
+  private patternApplies(): boolean {
+    return (
+      (this.pattern ?? '') !== '' &&
+      !['date', 'number', 'textarea', 'time'].includes(this.type ?? 'text')
+    );
   }
 
   /** The number held by `min` or `max`, `undefined` when the prop is unset or not a number. */
@@ -404,6 +434,7 @@ export class MdsInput {
   @Watch('maxlength')
   @Watch('min')
   @Watch('minlength')
+  @Watch('pattern')
   @Watch('required')
   @Watch('type')
   protected validationRulesChanged(): void {
@@ -586,7 +617,10 @@ export class MdsInput {
       this.value = input.value;
       setFormValue(this.internals, this.value);
     }
-    this.keyDownEvent.emit(ev as Event as KeyboardEvent);
+  };
+
+  private onKeyDown = (ev: KeyboardEvent) => {
+    this.keyDownEvent.emit(ev);
   };
 
   private onBlur = () => {
@@ -610,14 +644,14 @@ export class MdsInput {
   };
 
   private stepUp = () => {
-    if (this.nativeInput && !this.readonly && !this.disabled) {
+    if (this.nativeInput && !this.readonly && !this.isDisabled()) {
       (this.nativeInput as HTMLInputElement).stepUp();
       this.value = this.nativeInput.value;
     }
   };
 
   private stepDown = () => {
-    if (this.nativeInput && !this.readonly && !this.disabled) {
+    if (this.nativeInput && !this.readonly && !this.isDisabled()) {
       (this.nativeInput as HTMLInputElement).stepDown();
       this.value = this.nativeInput.value;
     }
@@ -660,12 +694,13 @@ export class MdsInput {
     const SpeechRecognition =
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).SpeechRecognition ?? (window as any).webkitSpeechRecognition;
-    this.value = '';
 
     if (!SpeechRecognition) {
       this.onSpeechRecognitionError();
       return;
     }
+    // the dictation replaces the value, once it can start
+    this.value = '';
 
     this.recognition = new SpeechRecognition();
     this.recognition.continuous = true;
@@ -733,13 +768,14 @@ export class MdsInput {
               this.mic && 'has-right-icon',
             )}
             autoFocus={this.autofocus}
-            disabled={this.disabled}
+            disabled={this.isDisabled()}
             maxLength={this.maxlength}
             minLength={this.minlength}
             name={this.name}
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onInput={this.onInput}
+            onKeyDown={this.onKeyDown}
             part="field"
             placeholder={this.placeholder}
             readOnly={this.readonly}
@@ -758,7 +794,7 @@ export class MdsInput {
             )}
             autoComplete={this.autocomplete}
             autoFocus={this.autofocus}
-            disabled={this.disabled}
+            disabled={this.isDisabled()}
             max={this.max}
             maxLength={this.maxlength}
             min={this.min}
@@ -767,6 +803,7 @@ export class MdsInput {
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onInput={this.onInput}
+            onKeyDown={this.onKeyDown}
             pattern={this.pattern}
             list={this.datalistId}
             part="field"
@@ -852,7 +889,9 @@ export class MdsInput {
           ></mds-button>
         )}
         <mds-input-tip position="top" active={this.hasFocus} part="tip-top">
-          {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
+          {this.isDisabled() && (
+            <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>
+          )}
           {this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item>}
           {this.required && (
             <mds-input-tip-item

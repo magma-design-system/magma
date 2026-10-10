@@ -13,9 +13,9 @@ The `<mds-input-upload>` web component is the Magma Design System file-upload co
 
 #### Semantic Behavior
 
-- **Form association**: The form value is the `value` string of the inner file input (`C:\fakepath\` plus the name of the first accepted file), not the files themselves: to upload the files, read them with `getFiles()` or from `mdsInputUploadChange` and send them yourself. A form reset clears every selected file.
+- **Form association**: Like a native `<input type="file" multiple>`, the form submits every accepted file under `name`, one entry per file, in the order they were added; rejected files are not submitted, and without `name` nothing is. Post the form as `multipart/form-data` to send the file contents. A form reset clears every selected file.
 - **Validity reporting**: Per-file errors are reported as native validity flags - too many files, oversize, or wrong type - and the joined messages become the validation message.
-- **Drag-and-drop**: The drop zone reacts to drag events; on dragenter the prompt text swaps to a drag hint, restoring on dragleave.
+- **Drag-and-drop**: The drop zone reacts to drag events; on dragenter the prompt text swaps to a drag hint, restoring on dragleave or drop.
 - **Per-file validation**: Each added file is checked against `accept` (MIME, wildcard MIME, or extension), `maxFileSize`, and `maxFiles`; valid files render as success previews, invalid ones render as error previews with a localized message and are excluded from the form value.
 - **Change event**: `mdsInputUploadChange` fires with the current valid `FileList` (or `null`) on every add, cancel, or reset.
 - **Imperative API**: Exposes `getFiles()`, `getFilesError()`, and `reset()` methods for host-driven control.
@@ -26,8 +26,9 @@ The `<mds-input-upload>` web component is the Magma Design System file-upload co
 - **`accept`** declares the allowed file types as a comma-separated list of MIME types, wildcard MIME types (e.g. `image/*`), or extensions; it both filters the native picker and drives the human-readable extension hint shown to the user.
 - **`maxFileSize`** caps the size of any single file in MB (default `20`); files above it are rejected with a size error.
 - **`maxFiles`** caps how many files may be uploaded (default `1`) and enables multi-file selection when greater than one.
-- **`initialValue`** seeds the control with files already present; reassigning it re-runs the add pipeline. Files set before the first render show as previews but are not set on the inner input, so `getFiles()` and the form value miss them.
-- **`sort`** controls whether the sort chooser is shown. When `sort` is set to `'date'` or `'status'`, it is the order applied every time files are added, and the sort tab bar appears once more than one file is present and lets the user switch the order interactively; the user's choice persists to `localStorage` and the tab bar highlights that stored choice. When `sort` is omitted, no tab bar is shown and the last `localStorage` preference (defaulting to `'date'`) is applied silently.
+- **`name`** is the name the accepted files are submitted under with the form.
+- **`initialValue`** seeds the control with files already present, before or after the first render; reassigning it re-runs the add pipeline.
+- **`sort`** controls whether the sort chooser is shown. When `sort` is set to `'date'` or `'status'`, the files start in that order and the sort tab bar appears once more than one file is present; the user's choice from the tab bar then stays in place as files are added, the highlighted tab is always the order applied, and the choice persists to `localStorage`. Changing `sort` applies the new order. When `sort` is omitted, no tab bar is shown and the last `localStorage` preference (defaulting to `'date'`) is applied silently.
 
 
 ### 2. Pattern
@@ -36,10 +37,19 @@ Correct and idiomatic ways to use the `<mds-input-upload>` component, ordered fr
 
 #### Single-File Upload (Default)
 
-The simplest form. Without any attributes the drop zone accepts one file of any type up to 20 MB. Inside a `<form>` the field submits only the fake path of the first file (`C:\fakepath\<name>`), not the file: read the files with `getFiles()` and send them yourself.
+The simplest form. Without any attributes the drop zone accepts one file of any type up to 20 MB. Inside a `<form>` it submits the accepted files under its `name`, as a native file input does: post the form as `multipart/form-data` to send their contents.
 
 ```html
-<form id="modulo-upload" action="/upload" method="post">
+<form action="/upload" method="post" enctype="multipart/form-data">
+  <mds-input-upload name="allegato"></mds-input-upload>
+  <mds-button type="submit" label="Invia" variant="primary" tone="strong"></mds-button>
+</form>
+```
+
+To send the form with your own code, `new FormData(form)` carries the files too.
+
+```html
+<form id="modulo-upload" action="/upload">
   <mds-input-upload name="allegato"></mds-input-upload>
   <mds-button type="submit" label="Invia" variant="primary" tone="strong"></mds-button>
 </form>
@@ -47,10 +57,7 @@ The simplest form. Without any attributes the drop zone accepts one file of any 
 <script>
   document.querySelector('#modulo-upload').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const files = await e.target.querySelector('mds-input-upload').getFiles();
-    const data = new FormData();
-    Array.from(files ?? []).forEach((file) => data.append('allegato', file));
-    await fetch(e.target.action, { method: 'POST', body: data });
+    await fetch(e.target.action, { method: 'POST', body: new FormData(e.target) });
   });
 </script>
 ```
@@ -80,10 +87,11 @@ Set `max-file-size` (in MB) to reject files above that threshold. Each oversized
 
 #### Multi-File Upload
 
-Set `max-files` to a number greater than one to enable multiple selection. The native picker switches to multi-select mode automatically; the progress bar tracks how many slots are filled.
+Set `max-files` to a number greater than one to enable multiple selection. The native picker switches to multi-select mode automatically; the progress bar tracks how many slots are filled. The form submits one `name` entry per accepted file.
 
 ```html
 <mds-input-upload
+  name="allegati"
   accept=".pdf, image/jpeg, image/png"
   max-file-size="70"
   max-files="3"
@@ -92,7 +100,7 @@ Set `max-files` to a number greater than one to enable multiple selection. The n
 
 #### Seeding with Initial Files
 
-Pass a `FileList` or `File[]` to `initialValue` to prepopulate the control - useful when editing an existing record that already has attachments. Reassigning the prop re-runs the add pipeline, including validation. Assign it once the component has rendered: files set before the first render show as previews but do not reach `getFiles()` or the form value.
+Pass a `FileList` or `File[]` to `initialValue` to prepopulate the control - useful when editing an existing record that already has attachments. The files reach the previews, `getFiles()`, the form value and `mdsInputUploadChange` whether you assign them before or after the first render. Reassigning the prop re-runs the add pipeline, including validation.
 
 ```html
 <mds-input-upload id="allegati"></mds-input-upload>
@@ -119,7 +127,7 @@ The `mdsInputUploadChange` event fires with the current valid `FileList` (or `nu
 
 #### Programmatic Control via Methods
 
-Use the imperative API for host-driven workflows. `getFiles()` returns the current valid file list, `getFilesError()` returns any validation errors, and `reset()` clears all selections.
+Use the imperative API for host-driven workflows. `getFiles()` returns the accepted files (an empty `FileList` when there are none), `getFilesError()` returns any validation errors, and `reset()` clears all selections.
 
 ```html
 <mds-input-upload id="upload-contratto" accept=".pdf" max-file-size="10"></mds-input-upload>
@@ -146,7 +154,7 @@ Use the imperative API for host-driven workflows. `getFiles()` returns the curre
 
 #### Exposing the Sort Chooser
 
-Setting `sort` to `"date"` or `"status"` makes the sort tab bar visible once more than one file is present, letting the user switch between date and status order interactively; the choice is persisted to `localStorage`. `sort` is also the order applied every time files are added; the highlighted tab follows the stored choice. When `sort` is omitted, no tab bar is shown and the last `localStorage` preference is applied silently.
+Setting `sort` to `"date"` or `"status"` makes the sort tab bar visible once more than one file is present. The files start in the `sort` order; once the user picks another order from the tab bar, it stays in place as files are added, and the choice is persisted to `localStorage`. The highlighted tab is always the order applied. When `sort` is omitted, no tab bar is shown and the last `localStorage` preference is applied silently.
 
 ```html
 <!-- Mostra il selettore di ordinamento, avviato su "per data" -->
@@ -218,6 +226,31 @@ The internal `<input type="file">` lives inside shadow DOM; its native `change` 
   document.querySelector('#uploader').addEventListener('mdsInputUploadChange', (e) => {
     console.log(e.detail); // valid FileList or null
   });
+</script>
+```
+
+#### Do Not Append the Files to a `FormData` Built from the Form
+
+The component already submits its accepted files under `name`: a `FormData` built from the form carries them, and appending them again sends every file twice. Give the component a `name` and let the form carry the files.
+
+```html
+<!-- INCORRECT - every file is sent twice -->
+<form id="modulo">
+  <mds-input-upload name="allegati" max-files="3"></mds-input-upload>
+</form>
+<script type="module">
+  const form = document.querySelector('#modulo');
+  const data = new FormData(form);
+  const files = await form.querySelector('mds-input-upload').getFiles();
+  Array.from(files).forEach((file) => data.append('allegati', file));
+</script>
+
+<!-- CORRECT -->
+<form id="modulo">
+  <mds-input-upload name="allegati" max-files="3"></mds-input-upload>
+</form>
+<script type="module">
+  const data = new FormData(document.querySelector('#modulo'));
 </script>
 ```
 
@@ -300,13 +333,14 @@ mds-input-upload {
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                                                      | Type                              | Default     |
-| -------------- | --------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------- |
-| `accept`       | `accept`        | Defines the file types the file input should accept                                                              | `string`                          | `''`        |
-| `initialValue` | --              | Specifies initial files uploaded                                                                                 | `FileList \| File[] \| undefined` | `undefined` |
-| `maxFileSize`  | `max-file-size` | Specifies the max size of a single file that can be uploaded in MB                                               | `number`                          | `20`        |
-| `maxFiles`     | `max-files`     | Specifies the max number of files that can be uploaded                                                           | `number`                          | `1`         |
-| `sort`         | `sort`          | Specifies if the component should show a sort widget by status or date of upload, if not defined let user choose | `"date" \| "status" \| undefined` | `undefined` |
+| Property       | Attribute       | Description                                                                                                                                                                                              | Type                              | Default     |
+| -------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------- |
+| `accept`       | `accept`        | Defines the file types the file input should accept                                                                                                                                                      | `string`                          | `''`        |
+| `initialValue` | --              | Specifies initial files uploaded                                                                                                                                                                         | `FileList \| File[] \| undefined` | `undefined` |
+| `maxFileSize`  | `max-file-size` | Specifies the max size of a single file that can be uploaded in MB                                                                                                                                       | `number`                          | `20`        |
+| `maxFiles`     | `max-files`     | Specifies the max number of files that can be uploaded                                                                                                                                                   | `number`                          | `1`         |
+| `name`         | `name`          | The name the accepted files are submitted under with the form, one entry per file                                                                                                                        | `string \| undefined`             | `undefined` |
+| `sort`         | `sort`          | Specifies the order the files start sorted by, status or date of upload, and shows the sort tabs that let the user change it; if not defined the tabs are hidden and the order is the user's last choice | `"date" \| "status" \| undefined` | `undefined` |
 
 
 ## Events
@@ -320,7 +354,7 @@ mds-input-upload {
 
 ### `getFiles() => Promise<FileList | null>`
 
-Returns a promise of files uploaded as Filelist or null if there's none
+Returns a promise of the accepted files as a FileList, empty if there's none
 
 #### Returns
 
