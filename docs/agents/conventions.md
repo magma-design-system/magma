@@ -125,11 +125,9 @@ Maggioli):
     fields that have one waits for the user to edit or leave the field, or for a stopped
     submit. Add `novalidate` to the `<form>` when your own code validates on submit.
   - Disabled: `disabled`, or a disabled `<fieldset>` around them, disables `mds-input`,
-    `mds-input-date`, `mds-input-range`, `mds-input-select` and `mds-input-switch` as it
-    does a native control: they cannot be changed and their value is left out of the form.
-    `mds-input-otp`, `mds-input-upload` and the calendar of `mds-input-date-range` have no
-    disabled state yet: in a disabled fieldset their value is left out of the form, but
-    the user can still change it.
+    `mds-input-date`, `mds-input-date-range`, `mds-input-otp`, `mds-input-range`,
+    `mds-input-select`, `mds-input-switch` and `mds-input-upload` as it does a native
+    control: they cannot be changed and their value is left out of the form.
   - Buttons: in the button family only `mds-button` submits or resets a form, through its
     `type`; `mds-button-dropdown` does not, so use `mds-button` for the actions of a form.
     Its menu items are slotted `mds-button`, whose `type` defaults to `'submit'`: inside a
