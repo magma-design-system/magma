@@ -308,6 +308,39 @@ export const declaredRelease = (messages: string[]): Bump | null =>
 export const semverOk = (required: Bump | null, declared: Bump | null): boolean =>
   bumpRank(declared) >= bumpRank(required);
 
+/**
+ * The members the commits declare compatible, each with its reason, from footers like
+ * `API-Compatible: mds-x prop size: <reason>`, the member named as the report names it. It is
+ * for a change the snapshot rates as a break that no consumer can tell apart from the old
+ * API, as a new default for a value that never had an effect.
+ */
+export const compatibleMembers = (messages: string[]): Map<string, string> => {
+  const members = new Map<string, string>();
+  for (const message of messages) {
+    for (const [, member, reason] of message.matchAll(/^API-Compatible: (.+?): (.+)$/gm)) {
+      members.set(member.trim(), reason.trim());
+    }
+  }
+  return members;
+};
+
+/**
+ * Rates as minor the breaks the commits declare compatible: they stay in the report as API
+ * changes, with the reason, but no longer need a major release. Other changes are kept as they are.
+ */
+export const waiveCompatible = (
+  changes: ApiChange[],
+  compatible: Map<string, string>,
+): ApiChange[] =>
+  changes
+    .map((c): ApiChange => {
+      const reason = compatible.get(c.key);
+      return c.bump === 'major' && reason !== undefined
+        ? { ...c, bump: 'minor', why: `${c.why}; declared compatible: ${reason}` }
+        : c;
+    })
+    .sort((x, y) => bumpRank(y.bump) - bumpRank(x.bump) || x.key.localeCompare(y.key));
+
 /* ---- the report ------------------------------------------------------------------- */
 
 export const REPORT_MARKER = '<!-- magma-pr-risk -->';
@@ -377,7 +410,8 @@ export const renderReport = (r: RiskReport): string => {
         'so semantic-release would ship it as less than it is.',
       '',
       r.required === 'major'
-        ? 'If the break is intended, declare it: a commit with `!` after the type or scope (`feat(mds-button)!: ...`) or a `BREAKING CHANGE:` footer, and a migration note. If it is not, restore the members above.'
+        ? 'If the break is intended, declare it: a commit with `!` after the type or scope (`feat(mds-button)!: ...`) or a `BREAKING CHANGE:` footer, and a migration note. If it is not, restore the members above. ' +
+            'If no consumer can tell the change apart from the old API (a new default for a value that never had an effect, say), name the member in an `API-Compatible: <member>: <reason>` footer instead.'
         : 'Declare it with a `feat(<scope>): ...` commit, or restore the members above if the change is not intended.',
     );
   }

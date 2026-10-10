@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   apiChanges,
   commitRelease,
+  compatibleMembers,
   declaredRelease,
   fileTier,
   manifestReachesConsumers,
@@ -12,6 +13,7 @@ import {
   requiredBump,
   semverOk,
   type RiskReport,
+  waiveCompatible,
 } from './pr-risk-lib';
 import { inScope } from '../../../scripts/release/commit-scopes.mjs';
 
@@ -282,6 +284,47 @@ describe('semverOk', () => {
   });
 });
 
+describe('API-Compatible footer', () => {
+  const defaultType = (value: string) =>
+    `mds-x prop type (attr type) [reflect]: "button" | "submit" = '${value}'`;
+
+  it('reads every member a footer declares, with its reason', () => {
+    const declared = compatibleMembers([
+      'feat(mds-x): add name\n\nAPI-Compatible: mds-x prop type: the old default had no effect',
+      'build(stencil): snapshot\n\nAPI-Compatible: mds-y event mdsYChange: never fired\nRefs #1',
+      'fix(mds-z): mention API-Compatible: in the middle of a line',
+    ]);
+
+    expect([...declared]).toEqual([
+      ['mds-x prop type', 'the old default had no effect'],
+      ['mds-y event mdsYChange', 'never fired'],
+    ]);
+  });
+
+  it('rates a declared break as minor and keeps the reason in the report', () => {
+    const changes = apiChanges(`${defaultType('submit')}\nmds-x part icon`, defaultType('button'));
+    const waived = waiveCompatible(
+      changes,
+      new Map([['mds-x prop type', 'the old default had no effect']]),
+    );
+
+    expect(waived.map((c) => [c.key, c.bump, c.why])).toEqual([
+      ['mds-x part icon', 'major', 'removed'],
+      [
+        'mds-x prop type',
+        'minor',
+        "default 'submit' became 'button'; declared compatible: the old default had no effect",
+      ],
+    ]);
+    expect(requiredBump(waived)).toBe('major');
+  });
+
+  it('leaves a change that is no break as it is', () => {
+    const changes = apiChanges('', 'mds-x part icon');
+    expect(waiveCompatible(changes, new Map([['mds-x part icon', 'why not']]))).toEqual(changes);
+  });
+});
+
 describe('release scope (scripts/release/commit-scopes.mjs)', () => {
   it.each([
     ['feat(mds-button): a', true],
@@ -333,6 +376,7 @@ describe('renderReport', () => {
     expect(text).toContain('- mds-x part icon');
     expect(text).toContain('**Release: FAILS.**');
     expect(text).toContain('BREAKING CHANGE:');
+    expect(text).toContain('API-Compatible: <member>: <reason>');
   });
 
   it('passes a change the commits declare', () => {
