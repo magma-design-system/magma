@@ -486,6 +486,10 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * The name sent with `value` to the form the button submits, as a native submit button does: buttons that submit the same form tell the receiver which one was chosen
+         */
+        "name"?: string;
+        /**
           * Specifies the size for the button
           * @default 'md'
          */
@@ -510,6 +514,10 @@ export namespace Components {
           * @default 'submit'
          */
         "type"?: ButtonType;
+        /**
+          * The value sent under `name` to the form the button submits
+         */
+        "value"?: string;
         /**
           * Specifies the color variant for the button
           * @default 'primary'
@@ -546,6 +554,10 @@ export namespace Components {
          */
         "label": string;
         /**
+          * The name sent with `value` to the form the primary action submits, as a native submit button does
+         */
+        "name"?: string;
+        /**
           * Specifies the size for the button
           * @default 'md'
          */
@@ -566,10 +578,14 @@ export namespace Components {
          */
         "truncate"?: TypographyTruncateType;
         /**
-          * The type of the button element
-          * @default 'submit'
+          * The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form the component is in, the chevron never does. Unlike `mds-button` it defaults to `'button'`
+          * @default 'button'
          */
         "type"?: ButtonType;
+        /**
+          * The value sent under `name` to the form the primary action submits
+         */
+        "value"?: string;
         /**
           * Specifies the color variant for the button
           * @default 'primary'
@@ -2947,6 +2963,10 @@ export interface MdsBreadcrumbItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsBreadcrumbItemElement;
 }
+export interface MdsButtonDropdownCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsButtonDropdownElement;
+}
 export interface MdsCalendarCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsCalendarElement;
@@ -3292,7 +3312,18 @@ declare global {
         prototype: HTMLMdsButtonElement;
         new (): HTMLMdsButtonElement;
     };
+    interface HTMLMdsButtonDropdownElementEventMap {
+        "mdsButtonDropdownClick": void;
+    }
     interface HTMLMdsButtonDropdownElement extends Components.MdsButtonDropdown, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsButtonDropdownElementEventMap>(type: K, listener: (this: HTMLMdsButtonDropdownElement, ev: MdsButtonDropdownCustomEvent<HTMLMdsButtonDropdownElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsButtonDropdownElementEventMap>(type: K, listener: (this: HTMLMdsButtonDropdownElement, ev: MdsButtonDropdownCustomEvent<HTMLMdsButtonDropdownElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsButtonDropdownElement: {
         prototype: HTMLMdsButtonDropdownElement;
@@ -4896,7 +4927,7 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * The name of the element, used when submitting an HTML form.
+          * The name sent with `value` to the form the button submits, as a native submit button does: buttons that submit the same form tell the receiver which one was chosen
          */
         "name"?: string;
         /**
@@ -4925,6 +4956,10 @@ declare namespace LocalJSX {
          */
         "type"?: ButtonType;
         /**
+          * The value sent under `name` to the form the button submits
+         */
+        "value"?: string;
+        /**
           * Specifies the color variant for the button
           * @default 'primary'
          */
@@ -4948,6 +4983,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -4959,6 +4998,14 @@ declare namespace LocalJSX {
           * Specifies le text label of the component
          */
         "label"?: string;
+        /**
+          * The name sent with `value` to the form the primary action submits, as a native submit button does
+         */
+        "name"?: string;
+        /**
+          * Emits when the primary action is clicked or activated from the keyboard, unless the component is disabled or awaiting. The chevron and the menu items do not emit it, while a native `click` on the component also comes from the menu items
+         */
+        "onMdsButtonDropdownClick"?: (event: MdsButtonDropdownCustomEvent<void>) => void;
         /**
           * Specifies the size for the button
           * @default 'md'
@@ -4980,10 +5027,14 @@ declare namespace LocalJSX {
          */
         "truncate"?: TypographyTruncateType;
         /**
-          * The type of the button element
-          * @default 'submit'
+          * The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form the component is in, the chevron never does. Unlike `mds-button` it defaults to `'button'`
+          * @default 'button'
          */
         "type"?: ButtonType;
+        /**
+          * The value sent under `name` to the form the primary action submits
+         */
+        "value"?: string;
         /**
           * Specifies the color variant for the button
           * @default 'primary'
@@ -7588,6 +7639,8 @@ declare namespace LocalJSX {
         "icon": string;
         "iconPosition": ButtonIconPositionType;
         "type": ButtonType;
+        "name": string;
+        "value": string;
         "variant": ButtonVariantType;
         "tone": ToneBoxVariantType;
         "size": ButtonSizeType;
@@ -7603,6 +7656,8 @@ declare namespace LocalJSX {
         "autoFocus": boolean;
         "icon": string;
         "type": ButtonType;
+        "name": string;
+        "value": string;
         "variant": ButtonDropdownVariantType;
         "tone": ToneMinimalVariantType;
         "size": ButtonSizeType;

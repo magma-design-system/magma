@@ -162,7 +162,7 @@ If a referenced slug isn't resolvable by any configured plugin, iconsauce report
 - **The build writes it** (`npm run build.api-snapshot`, last step of `npm run build`), like `src/components.d.ts`: commit it with the change that produced it.
 - **Review its diff.** It is what the change does to the contract consumers rely on; a PR that leaves it untouched changes no component API. A removed or changed line is a breaking change unless it only widens what is accepted, or makes the detail of an event a type that extends the old one: a listener still finds every field it read.
 - **CI checks it** (`npm run check.api-snapshot`, after a build) and fails when the committed file differs from the built API. The pure reduction is tested in `scripts/api-snapshot-lib.spec.ts`.
-- **It drives the review level and the release check** of every PR (`docs/WORKFLOW.md` rule 6): a removed or narrowed member must ship as a declared breaking change.
+- **It drives the review level and the release check** of every PR (`docs/WORKFLOW.md` rule 6): a removed or narrowed member must ship as a declared breaking change, unless an `API-Compatible:` footer declares that no consumer can tell it apart from the old API.
 - **It sees only what is documented**: a custom property without `@prop` or a part without `@part` is missing from it, as it is from the generated docs.
 
 ## Tests
