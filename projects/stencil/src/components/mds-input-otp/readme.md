@@ -14,6 +14,7 @@ The `<mds-input-otp>` web component is the Magma Design System control for enter
 #### Semantic Behavior
 
 - **Form association**: The joined digits are exposed as the form value, so it submits with the surrounding `<form>` with no extra wiring. A form reset brings back the code of load, in the cells and in the form, like a native input.
+- **Disabled fieldset**: A disabled `<fieldset>` around the component disables it as `disabled` does, like a native control: the code cannot be changed and is left out of the form, until the fieldset is enabled.
 - **Single-digit cells**: Renders `length` digit cells, each capped at one character; the host value is the concatenation of every cell.
 - **Numeric-only entry**: Non-digit keys produce no value change, and their default action is blocked too (Backspace, Tab, the arrows); a digit typed on a filled cell overwrites it.
 - **Auto-advance focus**: After a valid digit, focus moves to the next cell automatically; entering a digit in the last cell blurs it.
@@ -23,6 +24,7 @@ The `<mds-input-otp>` web component is the Magma Design System control for enter
 #### Properties & Visual Configurations
 
 - **`length`** sets how many digit cells are rendered and therefore the expected code length; it doubles as the completeness threshold for auto-submit. Defaults to `6`.
+- **`disabled`** disables every cell, like a disabled native input: the code cannot be changed and is left out of the form. The cells take the disabled look without the disabled tip, which a single-digit cell has no room for.
 - **`autosubmit`** opts into automatic form submission the moment the code is complete - use it for flows where the OTP is the only field and no explicit confirm button is needed; leave it off when the user should review or trigger submission manually.
 - **`value`** holds the current concatenated code; read it to observe progress. A value written in the markup or set by code fills the cells from the first one, as many digits as there are cells, and reaches the form.
 
@@ -232,12 +234,13 @@ document.querySelector('form').addEventListener('submit', (e) => {
 
 ## Properties
 
-| Property         | Attribute    | Description                                                                                                                                                 | Type                  | Default     |
-| ---------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ----------- |
-| `accessibleName` | `aria-label` | The accessible name of the code: each digit is announced as a position inside it, the fields being separate controls a screen reader reaches one at a time. | `string \| undefined` | `undefined` |
-| `autosubmit`     | `autosubmit` | Automatically submits the form when the OTP code is complete                                                                                                | `boolean`             | `false`     |
-| `length`         | `length`     | Number of digits in the OTP code                                                                                                                            | `number`              | `6`         |
-| `value`          | `value`      | The current value of the OTP code: a value set in the markup or by code fills the cells from the first one                                                  | `string \| undefined` | `''`        |
+| Property         | Attribute    | Description                                                                                                                                                                        | Type                   | Default     |
+| ---------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ----------- |
+| `accessibleName` | `aria-label` | The accessible name of the code: each digit is announced as a position inside it, the fields being separate controls a screen reader reaches one at a time.                        | `string \| undefined`  | `undefined` |
+| `autosubmit`     | `autosubmit` | Automatically submits the form when the OTP code is complete                                                                                                                       | `boolean`              | `false`     |
+| `disabled`       | `disabled`   | Disables every cell of the code, like a disabled native input: the code cannot be changed and is left out of the form. A disabled `<fieldset>` around the component does the same. | `boolean \| undefined` | `false`     |
+| `length`         | `length`     | Number of digits in the OTP code                                                                                                                                                   | `number`               | `6`         |
+| `value`          | `value`      | The current value of the OTP code: a value set in the markup or by code fills the cells from the first one                                                                         | `string \| undefined`  | `''`        |
 
 
 ## Dependencies

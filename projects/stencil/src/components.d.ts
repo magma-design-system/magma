@@ -1495,6 +1495,11 @@ export namespace Components {
          */
         "autosubmit": boolean;
         /**
+          * Disables every cell of the code, like a disabled native input: the code cannot be changed and is left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
           * Number of digits in the OTP code
           * @default 6
          */
@@ -5948,7 +5953,8 @@ declare namespace LocalJSX {
          */
         "autosubmit"?: boolean;
         /**
-          * If `true`, the user cannot interact with the element.
+          * Disables every cell of the code, like a disabled native input: the code cannot be changed and is left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -7803,6 +7809,7 @@ declare namespace LocalJSX {
         "accessibleName": string;
         "length": number;
         "autosubmit": boolean;
+        "disabled": boolean;
         "value": string;
     }
     interface MdsInputRangeAttributes {
