@@ -198,11 +198,13 @@ mds-button prop href (attr href) [reflect]: string | undefined
 mds-button prop icon (attr icon) [reflect, mutable]: string | undefined
 mds-button prop iconPosition (attr icon-position) [reflect]: "left" | "right" | undefined = 'left'
 mds-button prop label (attr label) [reflect, mutable]: string | undefined
+mds-button prop name (attr name) [reflect]: string | undefined
 mds-button prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'md'
 mds-button prop target (attr target): "blank" | "self" = 'self'
 mds-button prop tone (attr tone) [reflect]: "box" | "outline" | "strong" | "text" | "weak" | undefined = 'strong'
 mds-button prop truncate (attr truncate) [reflect]: "all" | "none" | "word" | undefined = 'word'
 mds-button prop type (attr type) [reflect]: "a" | "button" | "reset" | "submit" | undefined = 'submit'
+mds-button prop value (attr value) [reflect]: string | undefined
 mds-button prop variant (attr variant) [reflect]: "ai" | "apple" | "dark" | "error" | "google" | "info" | "light" | "primary" | "secondary" | "success" | "warning" | undefined = 'primary'
 mds-button slot (default)
 mds-button slot notification
@@ -231,12 +233,15 @@ mds-button-dropdown prop disabled (attr disabled) [reflect, mutable]: boolean | 
 mds-button-dropdown prop href (attr href) [reflect]: string | undefined
 mds-button-dropdown prop icon (attr icon) [reflect, mutable]: string | undefined
 mds-button-dropdown prop label (attr label): string
+mds-button-dropdown prop name (attr name) [reflect]: string | undefined
 mds-button-dropdown prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'md'
 mds-button-dropdown prop target (attr target): "blank" | "self" = 'self'
 mds-button-dropdown prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'strong'
 mds-button-dropdown prop truncate (attr truncate) [reflect]: "all" | "none" | "word" | undefined = 'word'
-mds-button-dropdown prop type (attr type) [reflect]: "a" | "button" | "reset" | "submit" | undefined = 'submit'
+mds-button-dropdown prop type (attr type) [reflect]: "a" | "button" | "reset" | "submit" | undefined = 'button'
+mds-button-dropdown prop value (attr value) [reflect]: string | undefined
 mds-button-dropdown prop variant (attr variant) [reflect]: "ai" | "dark" | "error" | "info" | "light" | "primary" | "secondary" | "success" | "warning" | undefined = 'primary'
+mds-button-dropdown event mdsButtonDropdownClick: void [bubbles, cancelable, composed]
 mds-button-dropdown slot (default)
 mds-button-dropdown part dropdown
 mds-button-dropdown css --mds-button-dropdown-radius
