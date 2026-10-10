@@ -552,6 +552,10 @@ export namespace Components {
          */
         "label": string;
         /**
+          * The name sent with `value` to the form the primary action submits, as a native submit button does
+         */
+        "name"?: string;
+        /**
           * Specifies the size for the button
           * @default 'md'
          */
@@ -572,10 +576,14 @@ export namespace Components {
          */
         "truncate"?: TypographyTruncateType;
         /**
-          * The type of the button element
-          * @default 'submit'
+          * The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form the component is in, the chevron never does. Unlike `mds-button` it defaults to `'button'`
+          * @default 'button'
          */
         "type"?: ButtonType;
+        /**
+          * The value sent under `name` to the form the primary action submits
+         */
+        "value"?: string;
         /**
           * Specifies the color variant for the button
           * @default 'primary'
@@ -4939,6 +4947,10 @@ declare namespace LocalJSX {
          */
         "disabled"?: boolean;
         /**
+          * The `id` of a `<form>` element to associate this element with.
+         */
+        "form"?: string;
+        /**
           * Specifies the URL target of the button
          */
         "href"?: string;
@@ -4950,6 +4962,10 @@ declare namespace LocalJSX {
           * Specifies le text label of the component
          */
         "label"?: string;
+        /**
+          * The name sent with `value` to the form the primary action submits, as a native submit button does
+         */
+        "name"?: string;
         /**
           * Specifies the size for the button
           * @default 'md'
@@ -4971,10 +4987,14 @@ declare namespace LocalJSX {
          */
         "truncate"?: TypographyTruncateType;
         /**
-          * The type of the button element
-          * @default 'submit'
+          * The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form the component is in, the chevron never does. Unlike `mds-button` it defaults to `'button'`
+          * @default 'button'
          */
         "type"?: ButtonType;
+        /**
+          * The value sent under `name` to the form the primary action submits
+         */
+        "value"?: string;
         /**
           * Specifies the color variant for the button
           * @default 'primary'
@@ -7593,6 +7613,8 @@ declare namespace LocalJSX {
         "autoFocus": boolean;
         "icon": string;
         "type": ButtonType;
+        "name": string;
+        "value": string;
         "variant": ButtonDropdownVariantType;
         "tone": ToneMinimalVariantType;
         "size": ButtonSizeType;

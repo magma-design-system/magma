@@ -15,7 +15,8 @@ The `<mds-button-dropdown>` web component is a split-button control of the Magma
 
 - **Default slot is the menu**: Whatever you place in the default slot becomes the dropdown panel content; it is not treated as the button label (the visible label comes from the `label` prop).
 - **Chevron trigger**: The second button is icon-only (chevron) and toggles the dropdown.
-- **Shared configuration**: `active`, `autoFocus`, `await`, `disabled`, `href`, `target`, `size`, `tone`, `type` and `variant` are forwarded identically to both internal buttons, so the two halves always stay visually and behaviorally in sync.
+- **Shared configuration**: `active`, `autoFocus`, `await`, `disabled`, `href`, `target`, `size`, `tone` and `variant` are forwarded identically to both internal buttons, so the two halves always stay visually and behaviorally in sync.
+- **Form association**: The host is form-associated. With `type="submit"` the primary action submits the enclosing `<form>` (or the one its `form` attribute names) and sends `name=value`, like a native submit button; with `type="reset"` it resets it. The chevron never submits. Unlike `<mds-button>`, `type` defaults to `'button'`: a dropdown in a form submits it only when asked. The menu items are slotted `<mds-button>`, so they follow their own `type` (default `'submit'`), `name` and `value`, and the receiver tells all the actions apart by `name`.
 - **Disabled / await states**: Because these flags pass through to both buttons, disabling or putting the control in an awaiting state affects the action and the trigger together.
 - **Dropdown part**: The internal dropdown is exposed as the `dropdown` shadow part for external styling of the menu surface.
 
@@ -24,7 +25,8 @@ The `<mds-button-dropdown>` web component is a split-button control of the Magma
 The shared `variant` / `tone` / `size` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); they apply here as in `<mds-button>`, narrowed to `tone` `strong` / `weak` and without the `google` / `apple` variants, and are forwarded to both internal buttons. `variant` defaults to `'primary'`, `tone` defaults to `'strong'`, and `size` defaults to `'md'`.
 
 - **`label`** sets the text of the primary action button only; the chevron trigger is icon-only.
-- **`type`** defaults to `'submit'` and is forwarded to both internal buttons, but they live in the component's shadow root and are not associated with an enclosing `<form>`: the control never submits or resets a form, so handle its `click` in JavaScript. `href` makes a click navigate, with `target` choosing `'self'` vs `'blank'`; it is forwarded to the chevron too, which then navigates as well as opening the menu.
+- **`type`** (default `'button'`), **`name`** and **`value`** apply to the primary action only, as described under Form association.
+- **`href`** makes a click navigate instead of submitting, with `target` choosing `'self'` vs `'blank'`; it is forwarded to the chevron too, which then navigates as well as opening the menu.
 
 #### Other behavioral props
 
@@ -124,6 +126,27 @@ The `disabled` attribute blocks both halves of the control together.
 </mds-button-dropdown>
 ```
 
+#### Several Actions That Submit One Form
+
+Set `type="submit"` on the component and give the primary action and the menu items the same `name` with a different `value`: each action submits the form, and the receiver reads which one was chosen from `name`, as with native submit buttons. Give `type="button"` to the menu items that must not submit.
+
+```html
+<form action="/mail" method="post">
+  <mds-input-field label="Oggetto">
+    <mds-input name="subject"></mds-input>
+  </mds-input-field>
+
+  <!-- the receiver gets action=send, action=draft or action=schedule -->
+  <mds-button-dropdown type="submit" name="action" value="send" label="Invia" variant="primary">
+    <mds-button name="action" value="draft" variant="dark" tone="text" label="Salva come bozza"></mds-button>
+    <mds-button name="action" value="schedule" variant="dark" tone="text" label="Invio programmato"></mds-button>
+    <mds-button type="button" variant="dark" tone="text" label="Anteprima"></mds-button>
+  </mds-button-dropdown>
+</form>
+```
+
+When your code handles the submit, build the form data with `event.submitter`, as for [`mds-button`](../../mds-button): `new FormData(form, event.submitter)`.
+
 #### Hyperlink Split Button via `href`
 
 `href` and `target` on the component are forwarded to both internal buttons, the chevron included: a click on the chevron navigates as well as opening the menu. Keep `href` off the component, handle the primary action with a `click` listener, and put the links on the menu items (`target="blank"` opens them in a new tab).
@@ -193,6 +216,57 @@ The dropdown panel is designed for [`mds-button`](../../mds-button) elements. Sl
 </mds-button-dropdown>
 ```
 
+#### Do Not Count on the Default `type` to Submit a Form
+
+Unlike `<mds-button>`, the component defaults to `type="button"`: inside a form, the primary action submits nothing until you set `type="submit"`.
+
+```html
+<!-- INCORRECT: the primary action does not submit -->
+<form action="/mail" method="post">
+  <mds-button-dropdown name="action" value="send" label="Invia">
+    <mds-button name="action" value="draft" variant="dark" tone="text" label="Salva come bozza"></mds-button>
+  </mds-button-dropdown>
+</form>
+
+<!-- CORRECT -->
+<form action="/mail" method="post">
+  <mds-button-dropdown type="submit" name="action" value="send" label="Invia">
+    <mds-button name="action" value="draft" variant="dark" tone="text" label="Salva come bozza"></mds-button>
+  </mds-button-dropdown>
+</form>
+```
+
+#### Do Not Submit the Form from a `click` Listener
+
+A `click` listener on the component also runs for the chevron and for the menu items, whose clicks bubble to it: the form would be submitted by opening the menu, and without telling which action was chosen. Use `type="submit"` with `name` / `value`.
+
+```html
+<!-- INCORRECT -->
+<mds-button-dropdown id="send" label="Invia"></mds-button-dropdown>
+<script>
+  document.getElementById('send').addEventListener('click', () => form.requestSubmit());
+</script>
+
+<!-- CORRECT -->
+<mds-button-dropdown type="submit" name="action" value="send" label="Invia"></mds-button-dropdown>
+```
+
+#### Do Not Leave a Menu Item That Must Not Submit on the Default `type`
+
+The menu items are slotted `<mds-button>`, whose `type` defaults to `'submit'`: inside a form, an item that runs your own code (a preview, a copy) submits the form too. Give it `type="button"`.
+
+```html
+<!-- INCORRECT: "Anteprima" submits the form -->
+<mds-button-dropdown type="submit" name="action" value="send" label="Invia">
+  <mds-button variant="dark" tone="text" label="Anteprima"></mds-button>
+</mds-button-dropdown>
+
+<!-- CORRECT -->
+<mds-button-dropdown type="submit" name="action" value="send" label="Invia">
+  <mds-button type="button" variant="dark" tone="text" label="Anteprima"></mds-button>
+</mds-button-dropdown>
+```
+
 #### Do Not Use Unsupported `tone` Values
 
 `<mds-button-dropdown>` accepts `ToneMinimalVariantType`, which is `strong` and `weak` only. Passing `outline`, `text`, or `box` is not valid for this component: the value reaches the internal buttons unchecked, without the split-button styling that only `strong` and `weak` have.
@@ -248,21 +322,23 @@ mds-button-dropdown::part(dropdown) {
 
 ## Properties
 
-| Property    | Attribute    | Description                                                                | Type                                                                                                                | Default     |
-| ----------- | ------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `active`    | `active`     | Specifies if the button is active or not                                   | `boolean`                                                                                                           | `undefined` |
-| `autoFocus` | `auto-focus` | Specifies if the component is focused when is loaded on the viewport       | `boolean`                                                                                                           | `undefined` |
-| `await`     | `await`      | Specifies if the button is awaiting for a response                         | `boolean \| undefined`                                                                                              | `undefined` |
-| `disabled`  | `disabled`   | Specifies if the component is disabled or not                              | `boolean \| undefined`                                                                                              | `undefined` |
-| `href`      | `href`       | Specifies the URL target of the button                                     | `string \| undefined`                                                                                               | `undefined` |
-| `icon`      | `icon`       | The icon displayed in the button                                           | `string \| undefined`                                                                                               | `undefined` |
-| `label`     | `label`      | Specifies le text label of the component                                   | `string`                                                                                                            | `undefined` |
-| `size`      | `size`       | Specifies the size for the button                                          | `"lg" \| "md" \| "sm" \| "xl"`                                                                                      | `'md'`      |
-| `target`    | `target`     | Specifies the target of the URL, if self or blank                          | `"blank" \| "self"`                                                                                                 | `'self'`    |
-| `tone`      | `tone`       | Specifies the tone variant for the button                                  | `"strong" \| "weak" \| undefined`                                                                                   | `'strong'`  |
-| `truncate`  | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text | `"all" \| "none" \| "word" \| undefined`                                                                            | `'word'`    |
-| `type`      | `type`       | The type of the button element                                             | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                               | `'submit'`  |
-| `variant`   | `variant`    | Specifies the color variant for the button                                 | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
+| Property    | Attribute    | Description                                                                                                                                                                           | Type                                                                                                                | Default     |
+| ----------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `active`    | `active`     | Specifies if the button is active or not                                                                                                                                              | `boolean`                                                                                                           | `undefined` |
+| `autoFocus` | `auto-focus` | Specifies if the component is focused when is loaded on the viewport                                                                                                                  | `boolean`                                                                                                           | `undefined` |
+| `await`     | `await`      | Specifies if the button is awaiting for a response                                                                                                                                    | `boolean \| undefined`                                                                                              | `undefined` |
+| `disabled`  | `disabled`   | Specifies if the component is disabled or not                                                                                                                                         | `boolean \| undefined`                                                                                              | `undefined` |
+| `href`      | `href`       | Specifies the URL target of the button                                                                                                                                                | `string \| undefined`                                                                                               | `undefined` |
+| `icon`      | `icon`       | The icon displayed in the button                                                                                                                                                      | `string \| undefined`                                                                                               | `undefined` |
+| `label`     | `label`      | Specifies le text label of the component                                                                                                                                              | `string`                                                                                                            | `undefined` |
+| `name`      | `name`       | The name sent with `value` to the form the primary action submits, as a native submit button does                                                                                     | `string \| undefined`                                                                                               | `undefined` |
+| `size`      | `size`       | Specifies the size for the button                                                                                                                                                     | `"lg" \| "md" \| "sm" \| "xl"`                                                                                      | `'md'`      |
+| `target`    | `target`     | Specifies the target of the URL, if self or blank                                                                                                                                     | `"blank" \| "self"`                                                                                                 | `'self'`    |
+| `tone`      | `tone`       | Specifies the tone variant for the button                                                                                                                                             | `"strong" \| "weak" \| undefined`                                                                                   | `'strong'`  |
+| `truncate`  | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text                                                                                                            | `"all" \| "none" \| "word" \| undefined`                                                                            | `'word'`    |
+| `type`      | `type`       | The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form the component is in, the chevron never does. Unlike `mds-button` it defaults to `'button'` | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                               | `'button'`  |
+| `value`     | `value`      | The value sent under `name` to the form the primary action submits                                                                                                                    | `string \| undefined`                                                                                               | `undefined` |
+| `variant`   | `variant`    | Specifies the color variant for the button                                                                                                                                            | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Slots

@@ -1,5 +1,6 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { AttachInternals, Component, Host, h, Prop } from '@stencil/core';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
+import { requestSubmitAs } from '@common/form';
 import {
   ButtonSizeType,
   ButtonTargetType,
@@ -17,8 +18,12 @@ import { TypographyTruncateType } from '@type/text';
   tag: 'mds-button-dropdown',
   styleUrl: 'mds-button-dropdown.css',
   shadow: true,
+  formAssociated: true,
 })
 export class MdsButtonDropdown {
+  // the primary action lives in the shadow root, where it has no form: the host takes part in it
+  @AttachInternals() internals: ElementInternals;
+
   /**
    * Specifies le text label of the component
    */
@@ -35,9 +40,21 @@ export class MdsButtonDropdown {
   @Prop({ reflect: true, mutable: true }) icon?: string;
 
   /**
-   * The type of the button element
+   * The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form
+   * the component is in, the chevron never does. Unlike `mds-button` it defaults to `'button'`
    */
-  @Prop({ reflect: true }) readonly type?: ButtonType = 'submit';
+  @Prop({ reflect: true }) readonly type?: ButtonType = 'button';
+
+  /**
+   * The name sent with `value` to the form the primary action submits, as a native submit
+   * button does
+   */
+  @Prop({ reflect: true }) readonly name?: string;
+
+  /**
+   * The value sent under `name` to the form the primary action submits
+   */
+  @Prop({ reflect: true }) readonly value?: string;
 
   /**
    * Specifies the color variant for the button
@@ -84,6 +101,18 @@ export class MdsButtonDropdown {
    */
   @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word';
 
+  private primaryActionClick = (): void => {
+    const { form } = this.internals;
+    // a link navigates instead, from the button itself
+    if (!form || (this.href ?? '') !== '' || this.disabled || this.await) return;
+
+    if (this.type === 'submit') {
+      requestSubmitAs(form, this.name, this.value);
+    } else if (this.type === 'reset') {
+      form.reset();
+    }
+  };
+
   render() {
     return (
       <Host>
@@ -95,10 +124,10 @@ export class MdsButtonDropdown {
           disabled={this.disabled}
           href={this.href}
           icon={this.icon}
+          onClick={this.primaryActionClick}
           size={this.size}
           target={this.target}
           tone={this.tone}
-          type={this.type}
           variant={this.variant}
           label={this.label}
         ></mds-button>
@@ -113,7 +142,6 @@ export class MdsButtonDropdown {
           size={this.size}
           target={this.target}
           tone={this.tone}
-          type={this.type}
           variant={this.variant}
         ></mds-button>
         <mds-dropdown target=".dropdown-action" part="dropdown">
