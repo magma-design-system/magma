@@ -1,4 +1,6 @@
 {
+  "cardNumber": "Introduce un número de tarjeta válido.",
+  "email": "Introduce una dirección de correo electrónico.",
   "invalid": "Introduce un valor válido.",
   "invalidDate": "Introduce una fecha válida.",
   "max": "El valor debe ser como máximo {{max}}.",
@@ -10,6 +12,9 @@
   "min": "El valor debe ser como mínimo {{min}}.",
   "minDate": "La fecha no puede ser anterior al {{min}}.",
   "minlength": ["Usa al menos {{minlength}} carácter.", "Usa al menos {{minlength}} caracteres."],
+  "pattern": "Usa el formato solicitado.",
   "required": "Completa este campo.",
-  "requiredSelect": "Selecciona un elemento de la lista."
+  "requiredSelect": "Selecciona un elemento de la lista.",
+  "url": "Introduce una URL.",
+  "vatNumber": "Introduce un número de IVA válido."
 }

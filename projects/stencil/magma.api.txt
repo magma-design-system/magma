@@ -797,7 +797,7 @@ mds-input-select prop required (attr required) [reflect]: boolean | undefined = 
 mds-input-select prop size (attr size) [reflect]: number | undefined = 0
 mds-input-select prop value (attr value) [reflect]: null | number | string | undefined = ''
 mds-input-select prop variant (attr variant) [reflect]: "error" | "info" | "success" | "warning" | undefined
-mds-input-select event mdsInputSelectChange: MdsInputEventDetail [bubbles, cancelable, composed]
+mds-input-select event mdsInputSelectChange: MdsInputSelectEventDetail [bubbles, cancelable, composed]
 mds-input-select method setValue(value: string | number | null) => Promise<void>
 mds-input-select slot (default)
 mds-input-select part select
@@ -874,6 +874,7 @@ mds-input-upload prop accept (attr accept) [reflect]: string = ''
 mds-input-upload prop initialValue (no attr): FileList | File[] | undefined
 mds-input-upload prop maxFiles (attr max-files) [reflect]: number = 1
 mds-input-upload prop maxFileSize (attr max-file-size) [reflect]: number = 20
+mds-input-upload prop name (attr name) [reflect]: string | undefined
 mds-input-upload prop sort (attr sort) [reflect]: "date" | "status" | undefined
 mds-input-upload event mdsInputUploadChange: FileList | null [bubbles, cancelable, composed]
 mds-input-upload method getFiles() => Promise<FileList | null>
@@ -1688,7 +1689,7 @@ type InputTextType = "number" | "text" | "time" | "email" | "tel" | "url" | "dat
 type InputTipItemVariantType = "text" | "required" | "disabled" | "count-almost" | "count-almost-full" | "count-empty" | "count-full" | "count-incomplete" | "readonly" | "required-success"
 type InputTipPositionType = 'top' | 'bottom';
 type Interaction = 'click' | 'rightclick';
-type KeyboardKeyName = "option" | "a" | "1" | "2" | "b" | "i" | "p" | "q" | "s" | "u" | "end" | "0" | "3" | "4" | "5" | "6" | "7" | "shift" | "g" | "8" | "9" | "alt" | "altleft" | "altright" | "arrowdown" | "arrowleft" | "arrowright" | "arrowup" | "backspace" | "c" | "capslock" | "command" | "commandleft" | "commandright" | "control" | "controlleft" | "controlright" | "d" | "delete" | "e" | "enter" | "escape" | "f" | "f1" | "f10" | "f11" | "f12" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" | "f8" | "f9" | "h" | "home" | "j" | "k" | "l" | "m" | "n" | "o" | "optionleft" | "optionright" | "pagedown" | "pageup" | "r" | "shiftleft" | "shiftright" | "space" | "t" | "tab" | "v" | "w" | "windows" | "windowsleft" | "windowsright" | "x" | "y" | "z"
+type KeyboardKeyName = "option" | "a" | "1" | "2" | "b" | "i" | "p" | "q" | "s" | "u" | "end" | "0" | "3" | "4" | "5" | "6" | "7" | "v" | "shift" | "g" | "8" | "9" | "alt" | "altleft" | "altright" | "arrowdown" | "arrowleft" | "arrowright" | "arrowup" | "backspace" | "c" | "capslock" | "command" | "commandleft" | "commandright" | "control" | "controlleft" | "controlright" | "d" | "delete" | "e" | "enter" | "escape" | "f" | "f1" | "f10" | "f11" | "f12" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" | "f8" | "f9" | "h" | "home" | "j" | "k" | "l" | "m" | "n" | "o" | "optionleft" | "optionright" | "pagedown" | "pageup" | "r" | "shiftleft" | "shiftright" | "space" | "t" | "tab" | "w" | "windows" | "windowsleft" | "windowsright" | "x" | "y" | "z"
 type KeyboardTest = 'pass' | 'fail';
 type LoadingType = "eager" | "lazy"
 interface MdsAccordionEventDetail { children: NodeListOf<HTMLMdsAccordionItemElement>; selected: string; }
@@ -1707,6 +1708,7 @@ interface MdsHeaderEventDetail { bar: HTMLMdsHeaderBarElement; }
 interface MdsHeaderVisibilityEventDetail { visibility: boolean; }
 interface MdsImgEventDetail { image: HTMLImageElement; }
 interface MdsInputEventDetail { value?: File | string | FormData | null; }
+interface MdsInputSelectEventDetail extends MdsInputEventDetail { /** * The values of the selected options, the placeholder left out: one with a single select, every * selected one with `multiple`, where `value` holds only the first, as `select.value` does. */ values: string[]; }
 interface MdsInputSwitchEventDetail { name: string; checked: boolean; value: string; }
 type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType;
 interface MdsMentionEvent { event: Event; element: HTMLMdsMentionElement; }

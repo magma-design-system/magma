@@ -105,12 +105,35 @@ Maggioli):
   (`mi/baseline/send` -> "send"), which names the icon, not the action. Other components
   that accept `icon` without a label require `aria-label` (or `title`) on the host
   element: they do not synthesize one.
-- Form components (`mds-input`, `mds-input-select`, ...) are form-associated
-  (`formAssociated`) and participate in native form submission: place them inside
-  `<form>` and they submit / reset natively. `mds-input`, `mds-input-date` and
-  `mds-input-select` also report their validity: an empty `required` field (or one that
-  breaks another rule) matches `:invalid` and stops the submit, as a native control does.
-  Add `novalidate` to the `<form>` when your own code validates on submit.
+- Form components (`mds-input`, `mds-input-date`, `mds-input-date-range`, `mds-input-otp`,
+  `mds-input-range`, `mds-input-select`, `mds-input-switch`, `mds-input-upload`) are
+  form-associated (`formAssociated`) and behave like the native controls they replace:
+  place them inside `<form>` with a `name` and they submit / reset natively.
+  - Submitted value: what the native control would send. A `multiple` select and
+    `mds-input-upload` send one entry per selected option / accepted file (post the form
+    as `multipart/form-data` to send the file contents), a switch sends its `value` only
+    while checked, a radio group sends the one checked; `mds-input-date-range` sends the
+    JSON string `{ startDate, endDate }`.
+  - Form reset: each component goes back to its state of load (the `value` written in
+    the markup, `checked`, the options marked `selected`), shown and submitted.
+  - Validity: `mds-input`, `mds-input-date` and `mds-input-select` report it, and so do
+    the fields of `mds-input-date-range` (against its `min` / `max`) and
+    `mds-input-upload` (a rejected file). An empty `required` field, or one that breaks
+    another rule (`min` / `max`, `minlength` / `maxlength`, `pattern`, the format of the
+    `email`, `url`, `cf`, `isbn`, `piva` and `cc` types), matches `:invalid` and stops the
+    submit, as a native control does. Like `:user-invalid`, the `'error'` look of the
+    fields that have one waits for the user to edit or leave the field, or for a stopped
+    submit. Add `novalidate` to the `<form>` when your own code validates on submit.
+  - Disabled: `disabled`, or a disabled `<fieldset>` around them, disables `mds-input`,
+    `mds-input-date`, `mds-input-range`, `mds-input-select` and `mds-input-switch` as it
+    does a native control: they cannot be changed and their value is left out of the form.
+    `mds-input-otp`, `mds-input-upload` and the calendar of `mds-input-date-range` have no
+    disabled state yet: in a disabled fieldset their value is left out of the form, but
+    the user can still change it.
+  - Buttons: in the button family only `mds-button` submits or resets a form, through its
+    `type`; `mds-button-dropdown` does not, so use `mds-button` for the actions of a form.
+    Its menu items are slotted `mds-button`, whose `type` defaults to `'submit'`: inside a
+    form, give them `type="button"` unless they should submit it.
 - Focus styles: apply `focus-bounce` (interactive elements) or `focus-zoom` (links /
   static elements). Do not write `:focus { outline: ... }`. Both are Tailwind utilities
   (`styles/dist/tailwind/utilities.css`); without Tailwind only `focus-zoom` has a plain

@@ -367,3 +367,96 @@ describe('mds-input-date-range', () => {
     });
   });
 });
+
+const typeDate = async (field: HTMLMdsInputDateElement, date: string): Promise<void> => {
+  const input = field.shadowRoot!.querySelector('input')!;
+  input.value = date;
+  input.dispatchEvent(new Event('input'));
+  input.dispatchEvent(new Event('blur'));
+};
+
+// The range bounds both fields, as its JSDoc promises (#822)
+describe('min and max', () => {
+  const fields = (host: HTMLElement) => ({
+    start: host.querySelector<HTMLMdsInputDateElement>('mds-input-date[slot="start"]')!,
+    end: host.querySelector<HTMLMdsInputDateElement>('mds-input-date[slot="end"]')!,
+  });
+
+  it('reach the slotted fields, also when they change after load', async () => {
+    const { host, waitForChanges } = await setupRange('min="2026-01-01" max="2026-01-31"');
+    const { start, end } = fields(host);
+
+    expect([start.min, start.max, end.min, end.max]).toEqual([
+      '2026-01-01',
+      '2026-01-31',
+      '2026-01-01',
+      '2026-01-31',
+    ]);
+
+    host.max = '2026-02-28';
+    await waitForChanges();
+
+    expect([start.max, end.max]).toEqual(['2026-02-28', '2026-02-28']);
+  });
+
+  it('leave alone a bound written on a field when the range sets none', async () => {
+    const { host } = await setupRange(
+      '',
+      '<mds-input-date slot="start" min="2026-03-01"></mds-input-date><mds-input-date slot="end"></mds-input-date>',
+    );
+
+    expect(fields(host).start.min).toBe('2026-03-01');
+  });
+
+  it('stop the submit and the event for a date typed outside them', async () => {
+    const {
+      root: form,
+      waitForChanges,
+      spyOnEvent,
+    } = await render<HTMLFormElement>(
+      `<form><mds-input-date-range name="period" min="2026-01-01" max="2026-01-31">${SLOTTED_INPUTS}</mds-input-date-range></form>`,
+    );
+    const host = form.querySelector('mds-input-date-range')!;
+    const valueChange = spyOnEvent('mdsInputDateRangeValueChange');
+    const { start, end } = fields(host);
+
+    await typeDate(start, '2025-12-15');
+    await typeDate(end, '2026-01-10');
+    focusOut(host);
+    await waitForChanges();
+
+    expect(valueChanges(valueChange)).toEqual([]);
+    expect(start.matches(':invalid')).toBe(true);
+    expect(form.checkValidity()).toBe(false);
+  });
+});
+
+describe('preselections', () => {
+  it('snaps the end of a preset that ends before it starts', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsInputDateRangeElement>(`
+      <mds-input-date-range>
+        ${SLOTTED_INPUTS}
+        <mds-input-date-range-preselection start="2026-06-08" end="2026-06-02">
+          Intervallo rovesciato
+        </mds-input-date-range-preselection>
+      </mds-input-date-range>
+    `);
+    const range = { host: root, waitForChanges };
+    const valueChange = spyOnEvent('mdsInputDateRangeValueChange');
+
+    await openCalendar(range);
+    await clickPreselection(range);
+
+    expect(valueChanges(valueChange)).toEqual([{ startDate: '2026-06-08', endDate: '2026-06-08' }]);
+    expect(root.querySelector<HTMLMdsInputDateElement>('[slot="end"]')!.value).toBe('2026-06-08');
+  });
+
+  it('shows selected at load the preset that matches the dates of load', async () => {
+    const { host } = await setupRange(
+      'start-date="2026-06-02" end-date="2026-06-08"',
+      `${SLOTTED_INPUTS}${PRESELECTION}`,
+    );
+
+    expect(host.querySelector('mds-input-date-range-preselection')).toHaveAttribute('selected');
+  });
+});

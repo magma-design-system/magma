@@ -26,7 +26,7 @@ The `<mds-button-dropdown>` web component is a split-button control of the Magma
 The shared `variant` / `tone` / `size` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); they apply here as in `<mds-button>`, narrowed to `tone` `strong` / `weak` and without the `google` / `apple` variants, and are forwarded to both internal buttons. `variant` defaults to `'primary'`, `tone` defaults to `'strong'`, and `size` defaults to `'md'`.
 
 - **`label`** sets the text of the primary action button only; the chevron trigger is icon-only.
-- **`type`** (default `'button'`), **`name`** and **`value`** apply to the primary action only, as described under Form association.
+- **`type`** (default `'button'`), **`name`** and **`value`** apply to the primary action only, as described under Form association. The menu items follow their own `type`: inside a `<form>`, give `type="button"` to the ones that must not submit it.
 - **`href`** makes a click navigate instead of submitting, with `target` choosing `'self'` vs `'blank'`; it is forwarded to the chevron too, which then navigates as well as opening the menu.
 
 #### Other behavioral props

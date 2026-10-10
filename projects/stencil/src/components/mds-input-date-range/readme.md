@@ -15,11 +15,11 @@ The `<mds-input-date-range>` web component is the Magma Design System control fo
 
 - **Compound parent**: Expects exactly two `<mds-input-date>` children assigned to the `start` and `end` named slots; the host keeps both in sync as a single range - it is not meant to be used with a default (text) slot.
 - **Form association**: The submitted value is a JSON string `{ startDate, endDate }`; an empty range submits no value. On form reset it restores the start/end dates present at first load.
-- **Range coercion**: When both dates are valid and the end falls before the start, the end is snapped to equal the start, so the committed range is never inverted.
-- **Min/max guard**: If `max` is earlier than `min` at load, `max` is clamped up to `min`; both bounds are forwarded to the calendar to block out-of-range selection.
+- **Range coercion**: When both dates are valid and the end falls before the start, the end is snapped to equal the start, also for a preselection that ends before it starts, so the committed range is never inverted.
+- **Min/max guard**: If `max` is earlier than `min` at load, `max` is clamped up to `min`; both bounds are forwarded to the calendar to block out-of-range selection, and to the slotted fields, which flag a date typed outside them and stop the submit; such a range is not emitted.
 - **Commit on blur**: Leaving the component validates the range, syncs the form value, and - when both dates are valid - emits selection.
 - **Calendar selection**: Picking a complete range in the pop-up calendar emits selection and, unless `delay` is `0`, auto-closes the dropdown after the delay.
-- **Preselection sync**: Slotted `mds-input-date-range-preselection` children act as quick-picks; activating one applies its range, and any external/calendar change re-evaluates which preset (if any) is marked selected.
+- **Preselection sync**: Slotted `mds-input-date-range-preselection` children act as quick-picks; activating one applies its range, and any external/calendar change re-evaluates which preset (if any) is marked selected; a preset matching the dates of load is marked selected from the start.
 - **Emitted events**: `mdsInputDateRangeValueChange` fires when a full, valid range is committed (calendar pick, preset, or focus-out with two valid dates) and either bound actually changed since the last emit.
 - **Focus management**: Clicking the host or either field label focuses the corresponding date input; a built-in calendar icon button toggles the calendar dropdown.
 - **Localization**: The "from"/"to" field labels and the calendar honor the resolved language (el/en/es/it).
@@ -27,7 +27,7 @@ The `<mds-input-date-range>` web component is the Magma Design System control fo
 #### Properties & Visual Configurations
 
 - **`startDate` / `endDate`** are the controlled range bounds in ISO `YYYY-MM-DD` form; changing them externally re-syncs the slotted inputs and the calendar.
-- **`min` / `max`** define the selectable window of the calendar. The host does not pass them to the slotted fields, so a typed date is not checked against them.
+- **`min` / `max`** define the selectable window: the calendar blocks the dates outside it, and the host passes both bounds to the slotted fields, which check a typed date against them. A bound the range does not set leaves the one written on a field alone; one changed after load reaches both fields.
 - **`delay`** is the auto-close grace period (ms) after a complete selection; set it to `0` to keep the calendar open until the user dismisses it manually.
 
 
@@ -59,7 +59,7 @@ Use the `start-date` and `end-date` attributes to set an initial selection. Both
 
 #### Constraining the Selectable Window
 
-Use `min` and `max` to block out-of-window dates in the calendar. Both are ISO `YYYY-MM-DD` strings. The host does not pass them to the slotted fields: a date typed out of the window is not rejected.
+Use `min` and `max` to block out-of-window dates in the calendar. Both are ISO `YYYY-MM-DD` strings. The host passes them to the slotted fields too: a date typed out of the window turns its field to error, stops the submit of the form and is not emitted as a range.
 
 ```html
 <mds-input-date-range min="2026-01-01" max="2026-12-31">
@@ -102,7 +102,7 @@ Use `min` and `max` to block out-of-window dates in the calendar. Both are ISO `
 
 #### Quick-Pick Preselections
 
-Slot one or more [`mds-input-date-range-preselection`](../../mds-input-date-range-preselection) elements into the component. They appear inside the calendar dropdown and act as one-click range shortcuts. The host marks the matching preset as selected when the range changes to match it (a range set at first load is matched only after a change or a focus-out).
+Slot one or more [`mds-input-date-range-preselection`](../../mds-input-date-range-preselection) elements into the component. They appear inside the calendar dropdown and act as one-click range shortcuts. The host marks the matching preset as selected, from load on and whenever the range changes to match it. A preset whose end comes before its start applies its start as both ends.
 
 ```html
 <mds-input-date-range>

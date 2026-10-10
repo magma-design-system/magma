@@ -13,7 +13,7 @@ The `<mds-input-otp>` web component is the Magma Design System control for enter
 
 #### Semantic Behavior
 
-- **Form association**: The joined digits are exposed as the form value, so it submits with the surrounding `<form>` with no extra wiring.
+- **Form association**: The joined digits are exposed as the form value, so it submits with the surrounding `<form>` with no extra wiring. A form reset brings back the code of load, in the cells and in the form, like a native input.
 - **Single-digit cells**: Renders `length` digit cells, each capped at one character; the host value is the concatenation of every cell.
 - **Numeric-only entry**: Non-digit keys produce no value change, and their default action is blocked too (Backspace, Tab, the arrows); a digit typed on a filled cell overwrites it.
 - **Auto-advance focus**: After a valid digit, focus moves to the next cell automatically; entering a digit in the last cell blurs it.
@@ -24,7 +24,7 @@ The `<mds-input-otp>` web component is the Magma Design System control for enter
 
 - **`length`** sets how many digit cells are rendered and therefore the expected code length; it doubles as the completeness threshold for auto-submit. Defaults to `6`.
 - **`autosubmit`** opts into automatic form submission the moment the code is complete - use it for flows where the OTP is the only field and no explicit confirm button is needed; leave it off when the user should review or trigger submission manually.
-- **`value`** holds the current concatenated code; read it to observe progress. It is an output: setting it does not fill the cells, and the next digit typed overwrites it.
+- **`value`** holds the current concatenated code; read it to observe progress. A value written in the markup or set by code fills the cells from the first one, as many digits as there are cells, and reaches the form.
 
 
 ### 2. Pattern
@@ -66,7 +66,7 @@ Add the `autosubmit` boolean attribute when the OTP is the only field and no exp
 
 #### Reading the Value Programmatically
 
-`value` is a reflected attribute that updates as the user types. Read it directly from the element or listen for form data.
+`value` is a reflected attribute that updates as the user types. Read it directly from the element or listen for form data. Set it to fill the cells from code, for example to prefill a code the page already knows; a form reset brings back the value of load.
 
 ```javascript
 const otp = document.querySelector('mds-input-otp');
@@ -237,7 +237,7 @@ document.querySelector('form').addEventListener('submit', (e) => {
 | `accessibleName` | `aria-label` | The accessible name of the code: each digit is announced as a position inside it, the fields being separate controls a screen reader reaches one at a time. | `string \| undefined` | `undefined` |
 | `autosubmit`     | `autosubmit` | Automatically submits the form when the OTP code is complete                                                                                                | `boolean`             | `false`     |
 | `length`         | `length`     | Number of digits in the OTP code                                                                                                                            | `number`              | `6`         |
-| `value`          | `value`      | The current value of the OTP code                                                                                                                           | `string \| undefined` | `''`        |
+| `value`          | `value`      | The current value of the OTP code: a value set in the markup or by code fills the cells from the first one                                                  | `string \| undefined` | `''`        |
 
 
 ## Dependencies
