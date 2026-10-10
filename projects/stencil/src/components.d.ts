@@ -484,6 +484,10 @@ export namespace Components {
          */
         "label"?: string;
         /**
+          * The name sent with `value` to the form the button submits, as a native submit button does: buttons that submit the same form tell the receiver which one was chosen
+         */
+        "name"?: string;
+        /**
           * Specifies the size for the button
           * @default 'md'
          */
@@ -508,6 +512,10 @@ export namespace Components {
           * @default 'submit'
          */
         "type"?: ButtonType;
+        /**
+          * The value sent under `name` to the form the button submits
+         */
+        "value"?: string;
         /**
           * Specifies the color variant for the button
           * @default 'primary'
@@ -4875,7 +4883,7 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * The name of the element, used when submitting an HTML form.
+          * The name sent with `value` to the form the button submits, as a native submit button does: buttons that submit the same form tell the receiver which one was chosen
          */
         "name"?: string;
         /**
@@ -4903,6 +4911,10 @@ declare namespace LocalJSX {
           * @default 'submit'
          */
         "type"?: ButtonType;
+        /**
+          * The value sent under `name` to the form the button submits
+         */
+        "value"?: string;
         /**
           * Specifies the color variant for the button
           * @default 'primary'
@@ -7564,6 +7576,8 @@ declare namespace LocalJSX {
         "icon": string;
         "iconPosition": ButtonIconPositionType;
         "type": ButtonType;
+        "name": string;
+        "value": string;
         "variant": ButtonVariantType;
         "tone": ToneBoxVariantType;
         "size": ButtonSizeType;

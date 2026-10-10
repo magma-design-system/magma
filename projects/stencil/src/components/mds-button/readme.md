@@ -18,7 +18,7 @@ The `<mds-button>` web component is the primary interactive action control of th
 #### Semantic Behavior
 
 - **Button vs. link**: Providing `href` makes a click navigate to that URL (the host keeps `role="button"`, no anchor is rendered); `target` then controls window context.
-- **Form association**: Inside a `<form>` the component natively triggers submission or reset with no extra wiring; use `type="button"` to opt out.
+- **Form association**: Inside a `<form>` the component submits (`type="submit"`, default) or resets (`type="reset"`) it like a native button, with no extra wiring; use `type="button"` to opt out. With `name` set, a submit sends `name=value`, so buttons that submit the same form tell the receiver which one was chosen. A custom element cannot be a submitter, so `event.submitter` is a hidden native button that stands in for the component: it carries the same `name` and `value`, but it is not the `mds-button` element.
 - **Active state**: Mirrors a visual pressed state through the `active` attribute, safe to drive from CSS attribute selectors.
 - **Disabled state**: Blocks pointer and keyboard activation and removes the host from the tab sequence.
 - **Await state**: Renders an inline spinner, blocks pointer activation, and sets `aria-busy="true"` for assistive tech. Remove the attribute when done - do not set `await="false"`.
@@ -146,6 +146,32 @@ Set the `await` boolean attribute while a request is in flight. The component re
 </form>
 ```
 
+#### Several Actions That Submit One Form
+
+Give the buttons the same `name` and a different `value`, as with native submit buttons: the receiver reads which action was chosen from `name`.
+
+```html
+<form action="/mail" method="post">
+  <mds-input-field label="Oggetto">
+    <mds-input name="subject"></mds-input>
+  </mds-input-field>
+
+  <!-- the receiver gets action=send or action=draft -->
+  <mds-button name="action" value="send" label="Invia" variant="primary"></mds-button>
+  <mds-button name="action" value="draft" label="Salva come bozza" tone="outline"></mds-button>
+</form>
+```
+
+When your code handles the submit, build the form data with `event.submitter`, as for a native button: it carries the `name` / `value` of the button that was clicked.
+
+```js
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const data = new FormData(form, event.submitter);
+  data.get('action'); // 'send' or 'draft'
+});
+```
+
 #### Notification Badge via Named Slot
 
 The `notification` slot accepts an `<mds-notification>`. This is the documented exception to the default-slot-is-text rule.
@@ -229,6 +255,24 @@ When `label` is empty, the component derives `aria-label` / `title` from the las
 ></mds-button>
 ```
 
+#### Do Not Build the Form Data Without the Submitter
+
+`new FormData(form)` leaves out the `name` / `value` of the button that submitted the form, as it does for a native submit button. Pass `event.submitter` to read which action was chosen; do not track the clicked button in a variable or a hidden input.
+
+```js
+// INCORRECT: action is missing
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const data = new FormData(form);
+});
+
+// CORRECT
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const data = new FormData(form, event.submitter);
+});
+```
+
 #### Do Not Slot `<mds-icon>` to Add an Icon
 
 The component's `icon` prop renders the SVG through the shared icon-set service and positions it correctly via `icon-position`. Slotting `<mds-icon>` puts it in the text-only default slot, where it is stripped or misaligned.
@@ -285,23 +329,25 @@ mds-button::part(icon) {
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                | Type                                                                                                                                       | Default     |
-| -------------- | --------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| `active`       | `active`        | Specifies if the button is active or not                                   | `boolean`                                                                                                                                  | `undefined` |
-| `animation`    | `animation`     | Specifies if the text is animated when it is rendered                      | `"none" \| "yugop" \| undefined`                                                                                                           | `'none'`    |
-| `autoFocus`    | `auto-focus`    | Specifies if the component is focused when is loaded on the viewport       | `boolean`                                                                                                                                  | `undefined` |
-| `await`        | `await`         | Specifies if the button is awaiting for a response                         | `boolean \| undefined`                                                                                                                     | `undefined` |
-| `disabled`     | `disabled`      | Specifies if the component is disabled or not                              | `boolean \| undefined`                                                                                                                     | `undefined` |
-| `href`         | `href`          | Specifies the URL target of the button                                     | `string \| undefined`                                                                                                                      | `undefined` |
-| `icon`         | `icon`          | The icon displayed in the button                                           | `string \| undefined`                                                                                                                      | `undefined` |
-| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the button      | `"left" \| "right" \| undefined`                                                                                                           | `'left'`    |
-| `label`        | `label`         | The label of the button                                                    | `string \| undefined`                                                                                                                      | `undefined` |
-| `size`         | `size`          | Specifies the size for the button                                          | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                             | `'md'`      |
-| `target`       | `target`        | Specifies the target of the URL, if self or blank                          | `"blank" \| "self"`                                                                                                                        | `'self'`    |
-| `tone`         | `tone`          | Specifies the tone variant for the button                                  | `"box" \| "outline" \| "strong" \| "text" \| "weak" \| undefined`                                                                          | `'strong'`  |
-| `truncate`     | `truncate`      | Specifies if the text shoud be truncated or should behave as a normal text | `"all" \| "none" \| "word" \| undefined`                                                                                                   | `'word'`    |
-| `type`         | `type`          | The type of the button element                                             | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                                                      | `'submit'`  |
-| `variant`      | `variant`       | Specifies the color variant for the button                                 | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
+| Property       | Attribute       | Description                                                                                                                                                         | Type                                                                                                                                       | Default     |
+| -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `active`       | `active`        | Specifies if the button is active or not                                                                                                                            | `boolean`                                                                                                                                  | `undefined` |
+| `animation`    | `animation`     | Specifies if the text is animated when it is rendered                                                                                                               | `"none" \| "yugop" \| undefined`                                                                                                           | `'none'`    |
+| `autoFocus`    | `auto-focus`    | Specifies if the component is focused when is loaded on the viewport                                                                                                | `boolean`                                                                                                                                  | `undefined` |
+| `await`        | `await`         | Specifies if the button is awaiting for a response                                                                                                                  | `boolean \| undefined`                                                                                                                     | `undefined` |
+| `disabled`     | `disabled`      | Specifies if the component is disabled or not                                                                                                                       | `boolean \| undefined`                                                                                                                     | `undefined` |
+| `href`         | `href`          | Specifies the URL target of the button                                                                                                                              | `string \| undefined`                                                                                                                      | `undefined` |
+| `icon`         | `icon`          | The icon displayed in the button                                                                                                                                    | `string \| undefined`                                                                                                                      | `undefined` |
+| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the button                                                                                               | `"left" \| "right" \| undefined`                                                                                                           | `'left'`    |
+| `label`        | `label`         | The label of the button                                                                                                                                             | `string \| undefined`                                                                                                                      | `undefined` |
+| `name`         | `name`          | The name sent with `value` to the form the button submits, as a native submit button does: buttons that submit the same form tell the receiver which one was chosen | `string \| undefined`                                                                                                                      | `undefined` |
+| `size`         | `size`          | Specifies the size for the button                                                                                                                                   | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                             | `'md'`      |
+| `target`       | `target`        | Specifies the target of the URL, if self or blank                                                                                                                   | `"blank" \| "self"`                                                                                                                        | `'self'`    |
+| `tone`         | `tone`          | Specifies the tone variant for the button                                                                                                                           | `"box" \| "outline" \| "strong" \| "text" \| "weak" \| undefined`                                                                          | `'strong'`  |
+| `truncate`     | `truncate`      | Specifies if the text shoud be truncated or should behave as a normal text                                                                                          | `"all" \| "none" \| "word" \| undefined`                                                                                                   | `'word'`    |
+| `type`         | `type`          | The type of the button element                                                                                                                                      | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                                                      | `'submit'`  |
+| `value`        | `value`         | The value sent under `name` to the form the button submits                                                                                                          | `string \| undefined`                                                                                                                      | `undefined` |
+| `variant`      | `variant`       | Specifies the color variant for the button                                                                                                                          | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Slots

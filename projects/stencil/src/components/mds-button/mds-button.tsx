@@ -16,6 +16,7 @@ import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon';
 import { TypographyTruncateType } from '@type/text';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 import { preferenceStore } from '@common/preference';
+import { requestSubmitAs } from '@common/form';
 import mdiApple from '@icon/mdi/apple.svg';
 import logoGoogle from './asset/logo-google.svg';
 import { TextAnimationType } from '@component/mds-text/meta/types';
@@ -69,6 +70,17 @@ export class MdsButton {
    * The type of the button element
    */
   @Prop({ reflect: true }) readonly type?: ButtonType = 'submit';
+
+  /**
+   * The name sent with `value` to the form the button submits, as a native submit button
+   * does: buttons that submit the same form tell the receiver which one was chosen
+   */
+  @Prop({ reflect: true }) readonly name?: string;
+
+  /**
+   * The value sent under `name` to the form the button submits
+   */
+  @Prop({ reflect: true }) readonly value?: string;
 
   /**
    * Specifies the color variant for the button
@@ -177,7 +189,7 @@ export class MdsButton {
 
   private handleRequestSubmitForm = (e: MouseEvent) => {
     e.preventDefault();
-    this.internals.form?.requestSubmit();
+    if (this.internals.form) requestSubmitAs(this.internals.form, this.name, this.value);
   };
 
   private handleReset = (e: MouseEvent) => {
