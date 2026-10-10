@@ -315,6 +315,9 @@ export class MdsInput {
 
   private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
+  // the user can change the value: the buttons that change it (steppers, mic) follow it
+  private canEdit = (): boolean => !this.isDisabled() && !this.readonly;
+
   /**
    * Like a native input, a form reset brings back the value of load and forgets the validation
    * shown on blur: the field looks pristine until the next blur.
@@ -644,20 +647,22 @@ export class MdsInput {
   };
 
   private stepUp = () => {
-    if (this.nativeInput && !this.readonly && !this.isDisabled()) {
+    if (this.nativeInput && this.canEdit()) {
       (this.nativeInput as HTMLInputElement).stepUp();
       this.value = this.nativeInput.value;
     }
   };
 
   private stepDown = () => {
-    if (this.nativeInput && !this.readonly && !this.isDisabled()) {
+    if (this.nativeInput && this.canEdit()) {
       (this.nativeInput as HTMLInputElement).stepDown();
       this.value = this.nativeInput.value;
     }
   };
 
   private toggleTextRecognition = (): void => {
+    // a dictation can always be stopped, started only where the user can change the value
+    if (!this.isRecording && !this.canEdit()) return;
     this.isRecording = !this.isRecording;
 
     if (!this.isRecording) {
@@ -713,6 +718,11 @@ export class MdsInput {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.recognition.onresult = (event: any) => {
+      // the field was disabled or made read-only while dictating
+      if (!this.canEdit()) {
+        if (this.isRecording) this.toggleTextRecognition();
+        return;
+      }
       const speechResult = event.results;
       const interimResult = speechResult[progress];
       if (interimResult.isFinal) {
@@ -751,6 +761,7 @@ export class MdsInput {
           <mds-button
             class="counter-button counter-button--horizontal counter-button--decrease"
             icon={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}
+            disabled={!this.canEdit()}
             onClick={this.stepDown}
             tabindex="0"
             title={this.t.get('decrease')}
@@ -822,6 +833,7 @@ export class MdsInput {
             <mds-button
               class="counter-button"
               icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}
+              disabled={!this.canEdit()}
               onClick={this.stepUp}
               tabindex="0"
               title={this.t.get('increase')}
@@ -833,6 +845,7 @@ export class MdsInput {
             <mds-button
               class="counter-button"
               icon={this.controlsIcon === 'arrow' ? miBaselineArrowDown : miBaselineRemove}
+              disabled={!this.canEdit()}
               onClick={this.stepDown}
               tabindex="0"
               title={this.t.get('decrease')}
@@ -849,6 +862,7 @@ export class MdsInput {
             variant="dark"
             tone="text"
             icon={this.controlsIcon === 'arrow' ? miBaselineArrowUp : miBaselineAdd}
+            disabled={!this.canEdit()}
             onClick={this.stepUp}
             tabindex="0"
             title={this.t.get('increase')}
@@ -861,6 +875,7 @@ export class MdsInput {
             variant="dark"
             tone="text"
             icon={this.isPasswordVisible ? miBaselineVisibleOff : miBaselineVisible}
+            disabled={this.isDisabled()}
             onClick={this.handlePasswordToggleClick}
             tabindex="0"
             title={this.isPasswordVisible ? this.t.get('hidePassword') : this.t.get('showPassword')}
@@ -880,6 +895,7 @@ export class MdsInput {
           <mds-button
             class={clsx('mic-toggle-button', this.isRecording && 'mic-toggle-button--recording')}
             icon={this.speechToTextIcon}
+            disabled={!this.canEdit()}
             onClick={this.toggleTextRecognition}
             tabindex="0"
             title={this.t.get(this.speechToTextLabelKey)}
