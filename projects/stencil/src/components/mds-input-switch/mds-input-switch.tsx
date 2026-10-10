@@ -39,6 +39,10 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsInputSwitch {
   @AttachInternals() internals: ElementInternals;
+
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the native control in its shadow root
+  @State() private formDisabled = false;
   @Element() host: HTMLMdsInputSwitchElement;
   private km = new KeyboardManager();
   private label: string;
@@ -213,6 +217,12 @@ export class MdsInputSwitch {
   }
 
   /** Like a native checkbox or radio, a form reset brings back the checked state of load. */
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
+
   formResetCallback(): void {
     this.checked = this.loadChecked ? true : undefined;
     this.updateFormValue();
@@ -244,7 +254,7 @@ export class MdsInputSwitch {
           autoFocus={this.autofocus}
           checked={this.checked}
           class="field"
-          disabled={this.disabled}
+          disabled={this.isDisabled()}
           id="field"
           indeterminate={this.indeterminate}
           name={this.name}
