@@ -22,6 +22,7 @@ import { join } from 'node:path';
 import { PROJECT_DIR } from './meta';
 import {
   apiChanges,
+  compatibleMembers,
   declaredRelease,
   fileTier,
   manifestReachesConsumers,
@@ -29,6 +30,7 @@ import {
   renderReport,
   requiredBump,
   semverOk,
+  waiveCompatible,
 } from './pr-risk-lib';
 import { inScope } from '../../../scripts/release/commit-scopes.mjs';
 
@@ -70,20 +72,26 @@ const files = git('diff', '--name-only', base, head)
     ),
   }));
 
+/* every commit of the PR can declare a member compatible, in a release scope or not */
+const commits = git('log', '--no-merges', '--format=%B%x00', `${base}..${head}`)
+  .split('\0')
+  .map((m) => m.trim())
+  .filter(Boolean);
+
 const baseSnapshotFile = option('base-snapshot');
 const before = baseSnapshotFile ? readFileSync(baseSnapshotFile, 'utf8') : show(base, SNAPSHOT);
 const after = show(head, SNAPSHOT);
-const changes = before != null && after != null ? apiChanges(before, after) : null;
+const changes =
+  before != null && after != null
+    ? waiveCompatible(apiChanges(before, after), compatibleMembers(commits))
+    : null;
 
 const scope = /commit-scope:\s*(\S+)/.exec(readFileSync(join(REPO, RELEASE_WORKFLOW), 'utf8'))?.[1];
 if (!scope) {
   console.error(`no commit-scope in ${RELEASE_WORKFLOW}`);
   process.exit(2);
 }
-const messages = git('log', '--no-merges', '--format=%B%x00', `${base}..${head}`)
-  .split('\0')
-  .map((m) => m.trim())
-  .filter((m) => m && inScope(m, scope));
+const messages = commits.filter((m) => inScope(m, scope));
 
 const { tier, because } = prTier(files, Boolean(changes?.length));
 const required = changes ? requiredBump(changes) : null;
