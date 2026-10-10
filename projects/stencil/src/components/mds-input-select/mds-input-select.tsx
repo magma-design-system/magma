@@ -241,16 +241,16 @@ export class MdsInputSelect {
     }
   }
 
-  /**
-   * Like a native select, a form reset brings the options back to the selection of the markup,
-   * the placeholder when the markup selects none, and the value of load on top.
-   */
   formDisabledCallback(disabled: boolean): void {
     this.formDisabled = disabled;
   }
 
   private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
+  /**
+   * Like a native select, a form reset brings the options back to the selection of the markup,
+   * the placeholder when the markup selects none, and the value of load on top.
+   */
   formResetCallback(): void {
     if (this.selectEl == null) return;
     const options = Array.from(this.selectEl.querySelectorAll('option'));

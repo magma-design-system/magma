@@ -309,16 +309,16 @@ export class MdsInput {
    */
   @Event({ eventName: 'mdsInputValidation' }) validationEvent!: EventEmitter<boolean>;
 
-  /**
-   * Like a native input, a form reset brings back the value of load and forgets the validation
-   * shown on blur: the field looks pristine until the next blur.
-   */
   formDisabledCallback(disabled: boolean): void {
     this.formDisabled = disabled;
   }
 
   private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
+  /**
+   * Like a native input, a form reset brings back the value of load and forgets the validation
+   * shown on blur: the field looks pristine until the next blur.
+   */
   formResetCallback(): void {
     const validated = this.validated;
     this.validated = false;
