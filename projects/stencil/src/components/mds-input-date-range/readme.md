@@ -15,6 +15,7 @@ The `<mds-input-date-range>` web component is the Magma Design System control fo
 
 - **Compound parent**: Expects exactly two `<mds-input-date>` children assigned to the `start` and `end` named slots; the host keeps both in sync as a single range - it is not meant to be used with a default (text) slot.
 - **Form association**: The submitted value is a JSON string `{ startDate, endDate }`; an empty range submits no value. On form reset it restores the start/end dates present at first load.
+- **Disabled fieldset**: A disabled `<fieldset>` around the component disables its calendar button as `disabled` does, while the slotted fields, being inside the fieldset too, follow it themselves: the range cannot be changed and is left out of the form, until the fieldset is enabled.
 - **Range coercion**: When both dates are valid and the end falls before the start, the end is snapped to equal the start, also for a preselection that ends before it starts, so the committed range is never inverted.
 - **Min/max guard**: If `max` is earlier than `min` at load, `max` is clamped up to `min`; both bounds are forwarded to the calendar to block out-of-range selection, and to the slotted fields, which flag a date typed outside them and stop the submit; such a range is not emitted.
 - **Commit on blur**: Leaving the component validates the range, syncs the form value, and - when both dates are valid - emits selection.
@@ -28,6 +29,7 @@ The `<mds-input-date-range>` web component is the Magma Design System control fo
 
 - **`startDate` / `endDate`** are the controlled range bounds in ISO `YYYY-MM-DD` form; changing them externally re-syncs the slotted inputs and the calendar.
 - **`min` / `max`** define the selectable window: the calendar blocks the dates outside it, and the host passes both bounds to the slotted fields, which check a typed date against them. A bound the range does not set leaves the one written on a field alone; one changed after load reaches both fields.
+- **`disabled`** disables the range, like a disabled native input: the calendar button is disabled, a calendar left open closes, and the dates are left out of the form. It disables the two slotted fields too: at load only when it is set, so a field disabled on its own stays disabled; a change after load reaches both fields.
 - **`delay`** is the auto-close grace period (ms) after a complete selection; set it to `0` to keep the calendar open until the user dismisses it manually.
 
 
@@ -186,6 +188,24 @@ The `start` and `end` slots expect [`mds-input-date`](../../mds-input-date) chil
 </mds-input-date-range>
 ```
 
+#### Do Not Disable the Fields Instead of the Range
+
+Disabling the slotted fields leaves the calendar button of the range enabled, and the user can still change the dates from the calendar. Set `disabled` on the range: it disables its calendar button and the two fields, and leaves the dates out of the form.
+
+```html
+<!-- INCORRECT -->
+<mds-input-date-range name="period">
+  <mds-input-date slot="start" disabled></mds-input-date>
+  <mds-input-date slot="end" disabled></mds-input-date>
+</mds-input-date-range>
+
+<!-- CORRECT -->
+<mds-input-date-range name="period" disabled>
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
+</mds-input-date-range>
+```
+
 #### Do Not Use Non-ISO Date Strings
 
 `startDate`, `endDate`, `min`, and `max` all require `YYYY-MM-DD` ISO format. Passing a locale-formatted string (e.g. `"01/06/2026"`) is silently invalid for Luxon's `DateTime.fromISO()` and leaves the range empty or unguarded.
@@ -296,17 +316,18 @@ Without `name` the component is form-associated but submits no named field, so t
 
 ## Properties
 
-| Property         | Attribute       | Description                                                                                                                                                                                                                                | Type                  | Default     |
-| ---------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- | ----------- |
-| `accessibleName` | `aria-label`    | The accessible name of the range: each of the two fields is named after it and after the end of the range it covers, the visible "from" and "to" labels living in this shadow root, where no IDREF of the slotted fields could reach them. | `string \| undefined` | `undefined` |
-| `delay`          | `delay`         | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close                                                                                                                    | `number`              | `500`       |
-| `dualCalendar`   | `dual-calendar` | Enables the linked dual-calendar range picker behavior.                                                                                                                                                                                    | `boolean`             | `false`     |
-| `endDate`        | `end-date`      | Specifies the end date of the range                                                                                                                                                                                                        | `string`              | `''`        |
-| `hideToday`      | `hide-today`    | Hides the highlight on today's date in the calendar.                                                                                                                                                                                       | `boolean`             | `false`     |
-| `max`            | `max`           | Specifies the max date of the range, user cannot set dates after this date                                                                                                                                                                 | `null \| string`      | `null`      |
-| `min`            | `min`           | Specifies the min date of the range, user cannot set dates before this date                                                                                                                                                                | `null \| string`      | `null`      |
-| `name`           | `name`          | Is needed to reference the form data after the form is submitted                                                                                                                                                                           | `string \| undefined` | `undefined` |
-| `startDate`      | `start-date`    | Specifies the start date of the range                                                                                                                                                                                                      | `string`              | `''`        |
+| Property         | Attribute       | Description                                                                                                                                                                                                                                            | Type                   | Default     |
+| ---------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------- | ----------- |
+| `accessibleName` | `aria-label`    | The accessible name of the range: each of the two fields is named after it and after the end of the range it covers, the visible "from" and "to" labels living in this shadow root, where no IDREF of the slotted fields could reach them.             | `string \| undefined`  | `undefined` |
+| `delay`          | `delay`         | Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close                                                                                                                                | `number`               | `500`       |
+| `disabled`       | `disabled`      | Disables the range, like a disabled native input: the dates cannot be changed, from the fields or from the calendar, and are left out of the form. It disables the two slotted fields too. A disabled `<fieldset>` around the component does the same. | `boolean \| undefined` | `false`     |
+| `dualCalendar`   | `dual-calendar` | Enables the linked dual-calendar range picker behavior.                                                                                                                                                                                                | `boolean`              | `false`     |
+| `endDate`        | `end-date`      | Specifies the end date of the range                                                                                                                                                                                                                    | `string`               | `''`        |
+| `hideToday`      | `hide-today`    | Hides the highlight on today's date in the calendar.                                                                                                                                                                                                   | `boolean`              | `false`     |
+| `max`            | `max`           | Specifies the max date of the range, user cannot set dates after this date                                                                                                                                                                             | `null \| string`       | `null`      |
+| `min`            | `min`           | Specifies the min date of the range, user cannot set dates before this date                                                                                                                                                                            | `null \| string`       | `null`      |
+| `name`           | `name`          | Is needed to reference the form data after the form is submitted                                                                                                                                                                                       | `string \| undefined`  | `undefined` |
+| `startDate`      | `start-date`    | Specifies the start date of the range                                                                                                                                                                                                                  | `string`               | `''`        |
 
 
 ## Events

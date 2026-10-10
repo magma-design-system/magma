@@ -1428,6 +1428,11 @@ export namespace Components {
          */
         "delay": number;
         /**
+          * Disables the range, like a disabled native input: the dates cannot be changed, from the fields or from the calendar, and are left out of the form. It disables the two slotted fields too. A disabled `<fieldset>` around the component does the same.
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
           * Enables the linked dual-calendar range picker behavior.
           * @default false
          */
@@ -1510,6 +1515,11 @@ export namespace Components {
           * @default false
          */
         "autosubmit": boolean;
+        /**
+          * Disables every cell of the code, like a disabled native input: the code cannot be changed and is left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
+         */
+        "disabled"?: boolean;
         /**
           * Number of digits in the OTP code
           * @default 6
@@ -1698,6 +1708,11 @@ export namespace Components {
           * @default ''
          */
         "accept": string;
+        /**
+          * Disables the component, like a disabled native file input: no file can be added, dropped or removed, and the files are left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
+         */
+        "disabled"?: boolean;
         /**
           * Returns a promise of the accepted files as a FileList, empty if there's none
          */
@@ -5894,7 +5909,8 @@ declare namespace LocalJSX {
          */
         "delay"?: number;
         /**
-          * If `true`, the user cannot interact with the element.
+          * Disables the range, like a disabled native input: the dates cannot be changed, from the fields or from the calendar, and are left out of the form. It disables the two slotted fields too. A disabled `<fieldset>` around the component does the same.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -5999,7 +6015,8 @@ declare namespace LocalJSX {
          */
         "autosubmit"?: boolean;
         /**
-          * If `true`, the user cannot interact with the element.
+          * Disables every cell of the code, like a disabled native input: the code cannot be changed and is left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -6219,7 +6236,8 @@ declare namespace LocalJSX {
          */
         "accept"?: string;
         /**
-          * If `true`, the user cannot interact with the element.
+          * Disables the component, like a disabled native file input: no file can be added, dropped or removed, and the files are left out of the form. A disabled `<fieldset>` around the component does the same.
+          * @default false
          */
         "disabled"?: boolean;
         /**
@@ -7843,6 +7861,7 @@ declare namespace LocalJSX {
         "hideToday": boolean;
         "dualCalendar": boolean;
         "name": string;
+        "disabled": boolean;
     }
     interface MdsInputDateRangePreselectionAttributes {
         "selected": boolean;
@@ -7858,6 +7877,7 @@ declare namespace LocalJSX {
         "accessibleName": string;
         "length": number;
         "autosubmit": boolean;
+        "disabled": boolean;
         "value": string;
     }
     interface MdsInputRangeAttributes {
@@ -7906,6 +7926,7 @@ declare namespace LocalJSX {
     }
     interface MdsInputUploadAttributes {
         "accept": string;
+        "disabled": boolean;
         "name": string;
         "maxFileSize": number;
         "maxFiles": number;

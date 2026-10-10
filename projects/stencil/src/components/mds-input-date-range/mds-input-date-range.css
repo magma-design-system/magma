@@ -178,6 +178,7 @@ mds-dropdown {
   padding: 0;
 }
 
+@import './css/mds-input-date-range-disabled.css';
 @import './css/mds-input-date-range-pref-animation.css';
 @import './css/mds-input-date-range-pref-mode.css';
 @import './css/mds-input-date-range-pref-contrast.css';

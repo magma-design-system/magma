@@ -11,6 +11,9 @@
   text-align: center;
 }
 
-.input::part(tip-count) {
+/* a cell is too narrow for a tip: the disabled tip would cover its digit */
+
+.input::part(tip-count),
+.input::part(tip-top) {
   display: none;
 }

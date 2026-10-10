@@ -716,6 +716,7 @@ mds-input-date css --mds-input-tip-vertical-offset
 mds-input-date-range encapsulation shadow
 mds-input-date-range prop accessibleName (attr aria-label): string | undefined
 mds-input-date-range prop delay (attr delay) [reflect]: number = 500
+mds-input-date-range prop disabled (attr disabled) [reflect]: boolean | undefined = false
 mds-input-date-range prop dualCalendar (attr dual-calendar) [reflect]: boolean = false
 mds-input-date-range prop endDate (attr end-date) [reflect]: string = ''
 mds-input-date-range prop hideToday (attr hide-today) [reflect]: boolean = false
@@ -761,6 +762,7 @@ mds-input-field css --mds-input-field-message-color
 mds-input-otp encapsulation shadow
 mds-input-otp prop accessibleName (attr aria-label): string | undefined
 mds-input-otp prop autosubmit (attr autosubmit) [reflect]: boolean = false
+mds-input-otp prop disabled (attr disabled) [reflect]: boolean | undefined = false
 mds-input-otp prop length (attr length): number = 6
 mds-input-otp prop value (attr value) [reflect, mutable]: string | undefined = ''
 mds-input-range encapsulation shadow
@@ -871,6 +873,7 @@ mds-input-tip-item css --mds-input-tip-item-color
 mds-input-tip-item css --mds-input-tip-item-icon-color
 mds-input-upload encapsulation shadow
 mds-input-upload prop accept (attr accept) [reflect]: string = ''
+mds-input-upload prop disabled (attr disabled) [reflect]: boolean | undefined = false
 mds-input-upload prop initialValue (no attr): FileList | File[] | undefined
 mds-input-upload prop maxFiles (attr max-files) [reflect]: number = 1
 mds-input-upload prop maxFileSize (attr max-file-size) [reflect]: number = 20

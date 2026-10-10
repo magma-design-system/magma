@@ -617,6 +617,84 @@ describe('speech-to-text', () => {
       'toggle-button--error',
     );
   });
+
+  // the dictation wrote into a field the user cannot change
+  describe('on a field the user cannot change', () => {
+    /** A recognizer that records start / stop; the test plays the results through onresult. */
+    class FakeRecognition {
+      static last?: FakeRecognition;
+      started = false;
+      results: unknown[] = [];
+      onresult?: (event: { results: unknown[] }) => void;
+      constructor() {
+        FakeRecognition.last = this;
+      }
+      start(): void {
+        this.started = true;
+      }
+      stop(): void {
+        this.started = false;
+      }
+    }
+
+    // an event carries every result of the session so far, as a real recognizer gives them
+    const dictate = (recognition: FakeRecognition, transcript: string): void => {
+      recognition.results.push(Object.assign([{ transcript }], { isFinal: true }));
+      recognition.onresult!({ results: recognition.results });
+    };
+
+    beforeEach(() => {
+      FakeRecognition.last = undefined;
+      vi.stubGlobal('SpeechRecognition', FakeRecognition);
+    });
+
+    it.each(['disabled', 'readonly'])('does not start on a %s field', async (state) => {
+      await setup(`<mds-input mic value="abc" ${state}></mds-input>`);
+      const mic = mdsInput.shadowRoot!.querySelector<HTMLElement>('.mic-toggle-button')!;
+
+      expect(mic).toHaveAttribute('disabled');
+      mic.click();
+      await waitForChanges();
+
+      expect(FakeRecognition.last).toBeUndefined();
+      expect(mdsInput.value).toBe('abc');
+    });
+
+    it('stops when the field gets disabled while dictating', async () => {
+      await setup('<mds-input mic></mds-input>');
+      mdsInput.shadowRoot!.querySelector<HTMLElement>('.mic-toggle-button')!.click();
+      await waitForChanges();
+      const recognition = FakeRecognition.last!;
+      dictate(recognition, 'hello');
+      expect(mdsInput.value).toBe('hello');
+
+      mdsInput.disabled = true;
+      await waitForChanges();
+      dictate(recognition, ' world');
+      await waitForChanges();
+
+      expect(mdsInput.value).toBe('hello');
+      expect(recognition.started).toBe(false);
+    });
+  });
+});
+
+// the buttons inside the field looked and stayed active on a disabled field
+describe('the buttons of a disabled field', () => {
+  it.each([
+    ['number', '.counter-button'],
+    ['password', '.password-toggle-button'],
+  ])('are disabled with the field, type="%s"', async (type, selector) => {
+    await setup(`<mds-input type="${type}" value="1" disabled></mds-input>`);
+    const buttons = Array.from(mdsInput.shadowRoot!.querySelectorAll(selector));
+
+    expect(buttons.length).toBeGreaterThan(0);
+    buttons.forEach((button) => expect(button).toHaveAttribute('disabled'));
+
+    mdsInput.disabled = false;
+    await waitForChanges();
+    buttons.forEach((button) => expect(button).not.toHaveAttribute('disabled'));
+  });
 });
 
 // The formats a native type="email" and type="url" check stop the submit too (#822)

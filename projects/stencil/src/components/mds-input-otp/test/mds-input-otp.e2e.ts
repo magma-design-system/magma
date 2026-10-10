@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 
 const readCells = (otp: HTMLElement): string[] =>
@@ -88,5 +88,46 @@ describe('value', () => {
     expect(readCells(otp)).toEqual(cells);
     expect(otp.value).toBe(code);
     expect(new FormData(form).get('otp')).toBe(code);
+  });
+});
+
+// A native input is disabled by its own disabled or by a disabled fieldset. The component had
+// neither: in a disabled fieldset the cells stayed editable while the form left the code out (#852)
+describe('disabled', () => {
+  const readDisabled = (otp: HTMLElement): boolean[] =>
+    Array.from(otp.shadowRoot!.querySelectorAll('mds-input')).map(
+      (cell) => cell.shadowRoot!.querySelector('input')!.disabled,
+    );
+
+  it('disables every cell and leaves the code out of the form, until it is enabled', async () => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(
+      '<form><mds-input-otp name="otp" length="2" value="12" disabled></mds-input-otp></form>',
+    );
+    const otp = form.querySelector('mds-input-otp')!;
+
+    await vi.waitFor(() => expect(readDisabled(otp)).toEqual([true, true]));
+    expect(new FormData(form).has('otp')).toBe(false);
+
+    otp.disabled = false;
+    await waitForChanges();
+
+    expect(readDisabled(otp)).toEqual([false, false]);
+    expect(new FormData(form).get('otp')).toBe('12');
+  });
+
+  it('is disabled by a disabled fieldset, until the fieldset is enabled', async () => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(
+      '<form><fieldset disabled><mds-input-otp name="otp" length="2" value="12"></mds-input-otp></fieldset></form>',
+    );
+    const otp = form.querySelector('mds-input-otp')!;
+
+    await vi.waitFor(() => expect(readDisabled(otp)).toEqual([true, true]));
+    expect(new FormData(form).has('otp')).toBe(false);
+
+    form.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(readDisabled(otp)).toEqual([false, false]);
+    expect(new FormData(form).get('otp')).toBe('12');
   });
 });

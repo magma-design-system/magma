@@ -332,6 +332,76 @@ describe('mds-input-upload drag and drop', () => {
   });
 });
 
+// A native file input is disabled by its own disabled or by a disabled fieldset. The component had
+// neither: in a disabled fieldset the user could still add and remove files the form left out (#852)
+describe('mds-input-upload disabled', () => {
+  const setupForm = async (markup: string) => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(`<form>${markup}</form>`);
+    const upload = form.querySelector('mds-input-upload')!;
+    upload.initialValue = namedFiles('a.txt');
+    await waitForChanges();
+    return { form, upload, waitForChanges };
+  };
+
+  const readControls = (upload: HTMLElement) => {
+    const root = upload.shadowRoot!;
+    return {
+      input: root.querySelector<HTMLInputElement>('input[type="file"]')!.disabled,
+      buttons: Array.from(
+        root.querySelectorAll<HTMLMdsButtonElement>('.main-actions mds-button'),
+      ).map((button) => !!button.disabled),
+      deletable: Array.from(
+        root.querySelectorAll<HTMLMdsFilePreviewElement>('mds-file-preview'),
+      ).map((preview) => !!preview.deletable),
+    };
+  };
+
+  const disabledControls = { input: true, buttons: [true, true], deletable: [false] };
+  const enabledControls = { input: false, buttons: [false, false], deletable: [true] };
+
+  it('refuses new files and leaves its files out of the form, until it is enabled', async () => {
+    const { form, upload, waitForChanges } = await setupForm(
+      '<mds-input-upload name="docs" max-files="3" disabled></mds-input-upload>',
+    );
+    const dragArea = upload.shadowRoot!.querySelector('.drag-area')!;
+    const dataTransfer = new DataTransfer();
+    namedFiles('b.txt').forEach((file) => dataTransfer.items.add(file));
+
+    expect(readControls(upload)).toEqual(disabledControls);
+    expect(new FormData(form).getAll('docs')).toHaveLength(0);
+
+    dragArea.dispatchEvent(new DragEvent('dragenter', { bubbles: true, cancelable: true }));
+    dragArea.dispatchEvent(
+      new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer }),
+    );
+    await waitForChanges();
+
+    expect(dragArea).not.toHaveClass('drag-area--on-drag-enter');
+    expect(await upload.getFiles()).toHaveLength(1);
+
+    upload.disabled = false;
+    await waitForChanges();
+
+    expect(readControls(upload)).toEqual(enabledControls);
+    expect(new FormData(form).getAll('docs')).toHaveLength(1);
+  });
+
+  it('is disabled by a disabled fieldset, until the fieldset is enabled', async () => {
+    const { form, upload, waitForChanges } = await setupForm(
+      '<fieldset disabled><mds-input-upload name="docs" max-files="3"></mds-input-upload></fieldset>',
+    );
+
+    await vi.waitFor(() => expect(readControls(upload)).toEqual(disabledControls));
+    expect(new FormData(form).getAll('docs')).toHaveLength(0);
+
+    form.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(readControls(upload)).toEqual(enabledControls);
+    expect(new FormData(form).getAll('docs')).toHaveLength(1);
+  });
+});
+
 describe('mds-input-upload previews', () => {
   const readSources = (upload: HTMLElement): string[] =>
     Array.from(upload.shadowRoot!.querySelectorAll('mds-file-preview')).map((preview) =>

@@ -14,6 +14,10 @@ export default {
       type: { name: 'boolean' },
       description: 'Automatically submits the form when the OTP code is complete',
     },
+    disabled: {
+      type: { name: 'boolean' },
+      description: 'Disables every cell: the code cannot be changed and is left out of the form',
+    },
   },
 };
 

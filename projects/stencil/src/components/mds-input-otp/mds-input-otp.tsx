@@ -10,6 +10,7 @@ export interface MdsInputOtpInterface {
   length?: number;
   autosubmit?: boolean;
   value?: string;
+  disabled?: boolean;
 }
 
 @Component({
@@ -25,6 +26,9 @@ export class MdsInputOtp {
   private loadValue = '';
   // the digit of each cell, by position: value joins them and drops the empty ones
   @State() digits: string[] = [];
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the cells in its shadow root
+  @State() private formDisabled = false;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -49,6 +53,12 @@ export class MdsInputOtp {
   @Prop({ reflect: true }) readonly autosubmit: boolean = false;
 
   /**
+   * Disables every cell of the code, like a disabled native input: the code cannot be changed and
+   * is left out of the form. A disabled `<fieldset>` around the component does the same.
+   */
+  @Prop({ reflect: true }) readonly disabled?: boolean = false;
+
+  /**
    * The current value of the OTP code: a value set in the markup or by code fills the cells from
    * the first one
    */
@@ -60,6 +70,12 @@ export class MdsInputOtp {
     if ((newValue ?? '') === this.digits.join('')) return;
     this.fillCells(newValue ?? '');
   }
+
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
   /** Like a native input, a form reset brings back the code of load. */
   formResetCallback(): void {
@@ -164,6 +180,7 @@ export class MdsInputOtp {
           <mds-input
             aria-label={this.digitName(index)}
             class="input"
+            disabled={this.isDisabled()}
             maxlength={1}
             onKeyDown={this.handleKeyDown}
             onPaste={this.handlePaste}
