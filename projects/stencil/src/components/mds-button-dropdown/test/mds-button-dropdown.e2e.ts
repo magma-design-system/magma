@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 
 /**
  * Records each submit of `form` as the receiver gets it: the form data built with the
@@ -167,6 +168,34 @@ describe('mds-button-dropdown', () => {
       primaryAction(dropdown).click();
 
       expect(submits).toHaveLength(0);
+    });
+
+    // a disabled fieldset disables the host, but not the buttons in its shadow root, which
+    // the primary action is clicked through
+    it('neither submits nor emits in a disabled fieldset, until it is enabled', async () => {
+      const { root, waitForChanges } = await render<HTMLFormElement>(
+        '<form><fieldset disabled><mds-button-dropdown type="submit" name="action" value="send" label="Send"></mds-button-dropdown></fieldset></form>',
+      );
+      const submits = recordSubmits(root);
+      const dropdown = root.querySelector('mds-button-dropdown')!;
+      const clicks: Event[] = [];
+      dropdown.addEventListener('mdsButtonDropdownClick', (event) => clicks.push(event));
+      await waitForChanges();
+
+      await userEvent.click(primaryAction(dropdown), { force: true });
+      primaryAction(dropdown).click();
+
+      expect(submits).toHaveLength(0);
+      expect(clicks).toHaveLength(0);
+      expect(primaryAction(dropdown)).toHaveAttribute('disabled');
+      expect(chevron(dropdown)).toHaveAttribute('disabled');
+
+      root.querySelector('fieldset')!.disabled = false;
+      await waitForChanges();
+      await userEvent.click(primaryAction(dropdown));
+
+      expect(submits.map((data) => data.get('action'))).toEqual(['send']);
+      expect(clicks).toHaveLength(1);
     });
 
     it('leaves a link to navigate instead of submitting', async () => {

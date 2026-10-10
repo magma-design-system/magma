@@ -1,4 +1,13 @@
-import { AttachInternals, Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
+import {
+  AttachInternals,
+  Component,
+  Event,
+  EventEmitter,
+  Host,
+  h,
+  Prop,
+  State,
+} from '@stencil/core';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
 import { requestSubmitAs } from '@common/form';
 import {
@@ -23,6 +32,10 @@ import { TypographyTruncateType } from '@type/text';
 export class MdsButtonDropdown {
   // the primary action lives in the shadow root, where it has no form: the host takes part in it
   @AttachInternals() internals: ElementInternals;
+
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the buttons in its shadow root
+  @State() private formDisabled = false;
 
   /**
    * Specifies le text label of the component
@@ -108,8 +121,14 @@ export class MdsButtonDropdown {
    */
   @Event({ eventName: 'mdsButtonDropdownClick' }) clickEvent: EventEmitter<void>;
 
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
+
   private primaryActionClick = (): void => {
-    if (this.disabled || this.await) return;
+    if (this.isDisabled() || this.await) return;
     this.clickEvent.emit();
 
     const { form } = this.internals;
@@ -131,7 +150,7 @@ export class MdsButtonDropdown {
           autoFocus={this.autoFocus}
           class="dropdown-primary-action"
           await={this.await}
-          disabled={this.disabled}
+          disabled={this.isDisabled()}
           href={this.href}
           icon={this.icon}
           onClick={this.primaryActionClick}
@@ -146,7 +165,7 @@ export class MdsButtonDropdown {
           autoFocus={this.autoFocus}
           await={this.await}
           class="dropdown-action"
-          disabled={this.disabled}
+          disabled={this.isDisabled()}
           href={this.href}
           icon={miBaselineKeyboardArrowDown}
           size={this.size}

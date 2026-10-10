@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 import { mockIconFetch } from '@test/fetch';
 import { createSlottedChild, itReadsTheSlottedLabelWhenLabelIsNull } from '@test/slot';
 
@@ -224,6 +225,28 @@ describe('mds-button', () => {
 
       expect(submits).toHaveLength(0);
       expect(input.value).toBe('Hello');
+    });
+
+    // a disabled fieldset disables the form controls in it, a native button included: the
+    // browser blocked the clicks, but the button did not look disabled
+    it('neither submits nor takes the pointer in a disabled fieldset, until it is enabled', async () => {
+      const { root } = await render<HTMLFormElement>(
+        '<form><fieldset disabled><mds-button name="action" value="send" label="Send"></mds-button></fieldset></form>',
+      );
+      const submits = recordSubmits(root);
+      const button = root.querySelector('mds-button')!;
+
+      await userEvent.click(button, { force: true });
+      await userEvent.click(button.shadowRoot!.querySelector('.text')!, { force: true });
+      button.click();
+
+      expect(submits).toHaveLength(0);
+      expect(getComputedStyle(button).pointerEvents).toBe('none');
+
+      root.querySelector('fieldset')!.disabled = false;
+      await userEvent.click(button);
+
+      expect(submits.map(({ data }) => data.get('action'))).toEqual(['send']);
     });
   });
 
