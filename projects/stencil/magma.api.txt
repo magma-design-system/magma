@@ -1,0 +1,1782 @@
+# Public API of @maggioli-design-system/magma: one sorted line per member.
+# Generated from dist/documentation.json by the stencil build (nx run stencil:build.api-snapshot),
+# checked in CI (nx run stencil:check.api-snapshot). Its diff is what a change does to the contract.
+mds-accordion encapsulation shadow
+mds-accordion prop disableClose (attr disable-close): boolean | undefined = false
+mds-accordion prop multiple (attr multiple): boolean | undefined = false
+mds-accordion event mdsAccordionChange: MdsAccordionEventDetail [bubbles, cancelable, composed]
+mds-accordion slot (default)
+mds-accordion css --mds-accordion-border-color
+mds-accordion css --mds-accordion-color
+mds-accordion css --mds-accordion-description-color
+mds-accordion css --mds-accordion-duration
+mds-accordion css --mds-accordion-padding-selected
+mds-accordion css --mds-accordion-padding-unselected
+mds-accordion-item encapsulation shadow
+mds-accordion-item prop label (attr label) [required]: string
+mds-accordion-item prop selected (attr selected) [reflect, mutable]: boolean | undefined
+mds-accordion-item prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | undefined = 'h5'
+mds-accordion-item event mdsAccordionItemChange: MdsAccordionItemEventDetail [bubbles, cancelable, composed]
+mds-accordion-item event mdsAccordionItemSelect: MdsAccordionItemEventDetail [bubbles, cancelable, composed]
+mds-accordion-item event mdsAccordionItemUnselect: MdsAccordionItemEventDetail [bubbles, cancelable, composed]
+mds-accordion-item slot (default)
+mds-accordion-item part content
+mds-accordion-item part icon
+mds-accordion-item part label
+mds-accordion-item css --mds-accordion-item-border-color
+mds-accordion-item css --mds-accordion-item-border-width
+mds-accordion-item css --mds-accordion-item-color
+mds-accordion-item css --mds-accordion-item-description-color
+mds-accordion-item css --mds-accordion-item-duration
+mds-accordion-item css --mds-accordion-item-padding-selected
+mds-accordion-item css --mds-accordion-item-padding-unselected
+mds-accordion-timer encapsulation shadow
+mds-accordion-timer prop duration (attr duration) [reflect]: number = 10000
+mds-accordion-timer prop paused (attr paused) [reflect]: boolean | undefined
+mds-accordion-timer event mdsAccordionTimerChange: MdsAccordionTimerEventDetail [bubbles, cancelable, composed]
+mds-accordion-timer slot (default)
+mds-accordion-timer css --mds-accordion-timer-color
+mds-accordion-timer css --mds-accordion-timer-duration
+mds-accordion-timer css --mds-accordion-timer-progress-bar-background
+mds-accordion-timer css --mds-accordion-timer-progress-bar-color
+mds-accordion-timer css --mds-accordion-timer-progress-bar-thickness
+mds-accordion-timer-item encapsulation shadow
+mds-accordion-timer-item prop description (attr description) [required]: string
+mds-accordion-timer-item prop duration (attr duration) [reflect]: number | undefined
+mds-accordion-timer-item prop progress (attr progress): number = 0
+mds-accordion-timer-item prop selected (attr selected) [reflect]: boolean = false
+mds-accordion-timer-item prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" = 'h5'
+mds-accordion-timer-item prop uuid (attr uuid): number = 0
+mds-accordion-timer-item event mdsAccordionTimerItemClickSelect: MdsAccordionTimerItemEventDetail [bubbles, cancelable, composed]
+mds-accordion-timer-item event mdsAccordionTimerItemMouseEnterSelect: MdsAccordionTimerItemEventDetail [bubbles, cancelable, composed]
+mds-accordion-timer-item event mdsAccordionTimerItemMouseLeaveSelect: MdsAccordionTimerItemEventDetail [bubbles, cancelable, composed]
+mds-accordion-timer-item event mdsAccordionTimerItemSelect: MdsAccordionTimerItemEventDetail [bubbles, cancelable, composed]
+mds-accordion-timer-item slot (default)
+mds-accordion-timer-item part content
+mds-accordion-timer-item part icon
+mds-accordion-timer-item part label
+mds-accordion-timer-item part progress
+mds-accordion-timer-item css --mds-accordion-timer-item-color
+mds-accordion-timer-item css --mds-accordion-timer-item-duration
+mds-accordion-timer-item css --mds-accordion-timer-item-progress-bar-background
+mds-accordion-timer-item css --mds-accordion-timer-item-progress-bar-color
+mds-accordion-timer-item css --mds-accordion-timer-item-progress-bar-thickness
+mds-author encapsulation shadow
+mds-author slot (default)
+mds-author slot avatar
+mds-avatar encapsulation shadow
+mds-avatar prop count (attr count) [reflect, mutable]: number | undefined
+mds-avatar prop icon (attr icon) [reflect]: string | undefined
+mds-avatar prop initials (attr initials) [reflect, mutable]: string | undefined
+mds-avatar prop src (attr src) [reflect]: string | undefined
+mds-avatar prop tone (attr tone) [reflect]: "strong" | "weak" | undefined
+mds-avatar prop variant (attr variant) [reflect, mutable]: "amaranth" | "aqua" | "blue" | "error" | "green" | "info" | "lime" | "orange" | "orchid" | "primary" | "purple" | "red" | "sky" | "success" | "violet" | "warning" | "yellow" | undefined
+mds-avatar part icon
+mds-avatar part media
+mds-avatar part wrapper
+mds-avatar css --mds-avatar-background-color
+mds-avatar css --mds-avatar-background-color-pending
+mds-avatar css --mds-avatar-color
+mds-avatar css --mds-avatar-initials-padding
+mds-avatar css --mds-avatar-radius
+mds-avatar-stack encapsulation shadow
+mds-avatar-stack prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined
+mds-avatar-stack prop total (attr total) [reflect]: number | undefined
+mds-avatar-stack slot (default)
+mds-avatar-stack css --mds-avatar-stack-background
+mds-avatar-stack css --mds-avatar-stack-count-background-color
+mds-avatar-stack css --mds-avatar-stack-count-color
+mds-avatar-stack css --mds-avatar-stack-lg-border
+mds-avatar-stack css --mds-avatar-stack-lg-offset
+mds-avatar-stack css --mds-avatar-stack-lg-size
+mds-avatar-stack css --mds-avatar-stack-md-border
+mds-avatar-stack css --mds-avatar-stack-md-offset
+mds-avatar-stack css --mds-avatar-stack-md-size
+mds-avatar-stack css --mds-avatar-stack-sm-border
+mds-avatar-stack css --mds-avatar-stack-sm-offset
+mds-avatar-stack css --mds-avatar-stack-sm-size
+mds-avatar-stack-item encapsulation shadow
+mds-avatar-stack-item prop count (attr count) [reflect]: number | undefined
+mds-avatar-stack-item prop initials (attr initials) [reflect, mutable]: string | undefined
+mds-avatar-stack-item prop src (attr src) [reflect]: string | undefined
+mds-avatar-stack-item prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'weak'
+mds-avatar-stack-item prop variant (attr variant) [reflect]: "amaranth" | "aqua" | "blue" | "error" | "green" | "info" | "lime" | "orange" | "orchid" | "primary" | "purple" | "red" | "sky" | "success" | "violet" | "warning" | "yellow" | undefined
+mds-avatar-stack-item css --mds-avatar-stack-item-background
+mds-avatar-stack-item css --mds-avatar-stack-item-border
+mds-avatar-stack-item css --mds-avatar-stack-item-count-background-color
+mds-avatar-stack-item css --mds-avatar-stack-item-count-color
+mds-avatar-stack-item css --mds-avatar-stack-item-offset
+mds-avatar-stack-item css --mds-avatar-stack-item-offset-margin
+mds-avatar-stack-item css --mds-avatar-stack-item-size
+mds-badge encapsulation shadow
+mds-badge prop label (attr label) [reflect, mutable]: string | undefined
+mds-badge prop tone (attr tone) [reflect]: "outline" | "strong" | "weak" | undefined = 'weak'
+mds-badge prop typography (attr typography) [reflect]: "label" | "option" = 'option'
+mds-badge prop variant (attr variant) [reflect]: "amaranth" | "aqua" | "blue" | "dark" | "error" | "green" | "info" | "light" | "lime" | "orange" | "orchid" | "purple" | "red" | "sky" | "success" | "violet" | "warning" | "yellow" | undefined = 'green'
+mds-badge slot (default)
+mds-badge css --mds-badge-background
+mds-badge css --mds-badge-border-color
+mds-badge css --mds-badge-border-width
+mds-badge css --mds-badge-color
+mds-badge css --mds-badge-radius
+mds-banner encapsulation shadow
+mds-banner prop deletable (attr deletable): boolean | undefined
+mds-banner prop headline (attr headline): string | undefined
+mds-banner prop hideCockade (attr hide-cockade) [reflect]: boolean | undefined = false
+mds-banner prop icon (attr icon): string | undefined
+mds-banner prop tone (attr tone) [reflect]: "box" | "strong" | "weak" | undefined = 'weak'
+mds-banner prop variant (attr variant) [reflect]: "ai" | "dark" | "error" | "info" | "light" | "primary" | "success" | "warning" | undefined = 'primary'
+mds-banner event mdsBannerClose: void [bubbles, cancelable, composed]
+mds-banner slot (default)
+mds-banner slot action
+mds-banner part text
+mds-banner css --mds-banner-background
+mds-banner css --mds-banner-cockade-background
+mds-banner css --mds-banner-cockade-distance
+mds-banner css --mds-banner-color
+mds-banner css --mds-banner-content-gap
+mds-banner css --mds-banner-headline-color
+mds-banner css --mds-banner-icon-color
+mds-banner css --mds-banner-radius
+mds-banner css --mds-banner-shadow
+mds-banner css --mds-banner-transition-duration
+mds-banner css --mds-banner-transition-timing-function
+mds-benchmark-bar encapsulation shadow
+mds-benchmark-bar prop alias (attr alias): string | undefined
+mds-benchmark-bar prop label (attr label) [reflect, mutable]: string | undefined
+mds-benchmark-bar prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" | undefined = 'md'
+mds-benchmark-bar prop typography (attr typography): "label" | "option" | undefined = 'label'
+mds-benchmark-bar prop value (attr value): number = 0
+mds-benchmark-bar prop variant (attr variant) [reflect]: "ai" | "dark" | "error" | "info" | "light" | "primary" | "success" | "warning" | undefined = 'dark'
+mds-benchmark-bar slot (default)
+mds-benchmark-bar part progress-bar
+mds-bibliography encapsulation shadow
+mds-bibliography prop author (attr author): string | undefined
+mds-bibliography prop date (attr date): string | undefined
+mds-bibliography prop format (attr format): "apa" | "mla" | "turabian" = 'apa'
+mds-bibliography prop location (attr location): string | undefined
+mds-bibliography prop name (attr name): string | undefined
+mds-bibliography prop publisher (attr publisher): string | undefined
+mds-bibliography prop rel (attr rel): "author" | "external" = 'external'
+mds-bibliography prop typography (attr typography): "caption" | "detail" | "label" | "option" | "paragraph" | "tip" = 'detail'
+mds-bibliography prop url (attr url): string | undefined
+mds-bibliography prop variant (attr variant): "code" | "info" | "read" | "title" | undefined
+mds-bibliography css --mds-bibliography-color
+mds-bibliography css --mds-bibliography-text-decoration
+mds-bibliography css --mds-bibliography-text-decoration-hover
+mds-breadcrumb encapsulation shadow
+mds-breadcrumb prop hideBack (attr hide-back): boolean | undefined = false
+mds-breadcrumb event mdsBreadcrumbChange: MdsBreadcrumbEventDetail [bubbles, cancelable, composed]
+mds-breadcrumb slot (default)
+mds-breadcrumb css --mds-breadcrumb-arrow-depth-color
+mds-breadcrumb css --mds-breadcrumb-button-background
+mds-breadcrumb css --mds-breadcrumb-button-background-disabled
+mds-breadcrumb css --mds-breadcrumb-button-background-hover
+mds-breadcrumb css --mds-breadcrumb-button-color
+mds-breadcrumb css --mds-breadcrumb-button-color-current
+mds-breadcrumb css --mds-breadcrumb-button-color-hover
+mds-breadcrumb css --mds-breadcrumb-current-button-color
+mds-breadcrumb-item encapsulation shadow
+mds-breadcrumb-item prop label (attr label) [reflect]: string | undefined
+mds-breadcrumb-item prop selected (attr selected) [reflect, mutable]: boolean | undefined
+mds-breadcrumb-item event mdsBreadcrumbItemSelect: MdsBreadcrumbItemEventDetail [bubbles, cancelable, composed]
+mds-breadcrumb-item part button
+mds-breadcrumb-item css --mds-breadcrumb-item-arrow-depth-color
+mds-breadcrumb-item css --mds-breadcrumb-item-button-background
+mds-breadcrumb-item css --mds-breadcrumb-item-button-background-hover
+mds-breadcrumb-item css --mds-breadcrumb-item-button-background-selected
+mds-breadcrumb-item css --mds-breadcrumb-item-button-color
+mds-breadcrumb-item css --mds-breadcrumb-item-button-color-hover
+mds-breadcrumb-item css --mds-breadcrumb-item-button-color-selected
+mds-button encapsulation shadow
+mds-button prop active (attr active) [reflect, mutable]: boolean
+mds-button prop animation (attr animation) [reflect]: "none" | "yugop" | undefined = 'none'
+mds-button prop autoFocus (attr auto-focus): boolean
+mds-button prop await (attr await) [reflect, mutable]: boolean | undefined
+mds-button prop disabled (attr disabled) [reflect, mutable]: boolean | undefined
+mds-button prop href (attr href) [reflect]: string | undefined
+mds-button prop icon (attr icon) [reflect, mutable]: string | undefined
+mds-button prop iconPosition (attr icon-position) [reflect]: "left" | "right" | undefined = 'left'
+mds-button prop label (attr label) [reflect, mutable]: string | undefined
+mds-button prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'md'
+mds-button prop target (attr target): "blank" | "self" = 'self'
+mds-button prop tone (attr tone) [reflect]: "box" | "outline" | "strong" | "text" | "weak" | undefined = 'strong'
+mds-button prop truncate (attr truncate) [reflect]: "all" | "none" | "word" | undefined = 'word'
+mds-button prop type (attr type) [reflect]: "a" | "button" | "reset" | "submit" | undefined = 'submit'
+mds-button prop variant (attr variant) [reflect]: "ai" | "apple" | "dark" | "error" | "google" | "info" | "light" | "primary" | "secondary" | "success" | "warning" | undefined = 'primary'
+mds-button slot (default)
+mds-button slot notification
+mds-button part icon
+mds-button part label
+mds-button css --mds-button-await-duration
+mds-button css --mds-button-background
+mds-button css --mds-button-border-color-rgb
+mds-button css --mds-button-border-default-opacity
+mds-button css --mds-button-border-high-contrast-hover-width
+mds-button css --mds-button-border-high-contrast-width
+mds-button css --mds-button-border-hover-opacity
+mds-button css --mds-button-border-opacity
+mds-button css --mds-button-border-tone-outline-hover-width
+mds-button css --mds-button-border-tone-strong-hover-width
+mds-button css --mds-button-border-tone-weak-hover-width
+mds-button css --mds-button-border-width
+mds-button css --mds-button-color
+mds-button css --mds-button-gap
+mds-button css --mds-button-radius
+mds-button-dropdown encapsulation shadow
+mds-button-dropdown prop active (attr active) [reflect, mutable]: boolean
+mds-button-dropdown prop autoFocus (attr auto-focus): boolean
+mds-button-dropdown prop await (attr await) [reflect, mutable]: boolean | undefined
+mds-button-dropdown prop disabled (attr disabled) [reflect, mutable]: boolean | undefined
+mds-button-dropdown prop href (attr href) [reflect]: string | undefined
+mds-button-dropdown prop icon (attr icon) [reflect, mutable]: string | undefined
+mds-button-dropdown prop label (attr label): string
+mds-button-dropdown prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'md'
+mds-button-dropdown prop target (attr target): "blank" | "self" = 'self'
+mds-button-dropdown prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'strong'
+mds-button-dropdown prop truncate (attr truncate) [reflect]: "all" | "none" | "word" | undefined = 'word'
+mds-button-dropdown prop type (attr type) [reflect]: "a" | "button" | "reset" | "submit" | undefined = 'submit'
+mds-button-dropdown prop variant (attr variant) [reflect]: "ai" | "dark" | "error" | "info" | "light" | "primary" | "secondary" | "success" | "warning" | undefined = 'primary'
+mds-button-dropdown slot (default)
+mds-button-dropdown part dropdown
+mds-button-dropdown css --mds-button-dropdown-radius
+mds-button-group encapsulation shadow
+mds-button-group slot (default)
+mds-calendar encapsulation shadow
+mds-calendar prop disableMonthYearSelection (attr disable-month-year-selection): boolean = false
+mds-calendar prop endDate (attr end-date) [reflect]: null | string = null
+mds-calendar prop hideNextButton (attr hide-next-button): boolean = false
+mds-calendar prop hidePreselection (attr hide-preselection): boolean = false
+mds-calendar prop hidePreviousButton (attr hide-previous-button): boolean = false
+mds-calendar prop hideToday (attr hide-today): boolean = false
+mds-calendar prop hoverDate (attr hover-date) [reflect]: null | string = null
+mds-calendar prop max (attr max) [reflect]: null | string = null
+mds-calendar prop min (attr min) [reflect]: null | string = null
+mds-calendar prop singlePicker (attr single-picker): boolean = false
+mds-calendar prop startDate (attr start-date) [reflect]: null | string = null
+mds-calendar prop viewDate (attr view-date) [reflect]: null | string = null
+mds-calendar event mdsCalendarChange: { startDate: string; endDate?: string | undefined; } [bubbles, cancelable, composed]
+mds-calendar event mdsCalendarHover: { hoverDate: string | null; } [bubbles, cancelable, composed]
+mds-calendar event mdsCalendarNavigate: { currentDate: string; delta: number; } [bubbles, cancelable, composed]
+mds-calendar event mdsCalendarPreselect: void [bubbles, cancelable, composed]
+mds-calendar method updateCurrentDate(date: string) => Promise<void>
+mds-calendar slot preselection
+mds-calendar css --mds-calendar-background
+mds-calendar css --mds-calendar-border-radius
+mds-calendar css --mds-calendar-cell-gap
+mds-calendar css --mds-calendar-cell-other-month-visibility
+mds-calendar css --mds-calendar-day-number-color
+mds-calendar css --mds-calendar-max-width
+mds-calendar css --mds-calendar-padding
+mds-calendar css --mds-calendar-select-month-or-year-height
+mds-calendar css --mds-calendar-select-month-or-year-width
+mds-calendar-cell encapsulation shadow
+mds-calendar-cell prop date (attr date) [reflect]: string | undefined
+mds-calendar-cell prop disabled (attr disabled) [reflect]: boolean | undefined = undefined
+mds-calendar-cell prop label (attr label) [reflect]: string | undefined
+mds-calendar-cell prop month (attr month) [reflect]: "current" | "other" | "weekend" | undefined = 'current'
+mds-calendar-cell prop orientation (attr orientation) [reflect]: "both" | "horizontal" | "vertical" | undefined = 'horizontal'
+mds-calendar-cell prop preview (attr preview) [reflect]: boolean | undefined = false
+mds-calendar-cell prop selection (attr selection) [reflect]: "end" | "middle" | "none" | "single" | "start" | undefined
+mds-calendar-cell prop today (attr today) [reflect]: boolean | undefined = undefined
+mds-calendar-cell css --mds-calendar-cell-background
+mds-calendar-cell css --mds-calendar-cell-boundaries-background
+mds-calendar-cell css --mds-calendar-cell-boundaries-color
+mds-calendar-cell css --mds-calendar-cell-boundaries-padding
+mds-calendar-cell css --mds-calendar-cell-color
+mds-calendar-cell css --mds-calendar-cell-disabled-background
+mds-calendar-cell css --mds-calendar-cell-disabled-color
+mds-calendar-cell css --mds-calendar-cell-other-month-background
+mds-calendar-cell css --mds-calendar-cell-other-month-color
+mds-calendar-cell css --mds-calendar-cell-preselection-current-month-background
+mds-calendar-cell css --mds-calendar-cell-preselection-current-month-boundaries-background
+mds-calendar-cell css --mds-calendar-cell-preselection-current-month-boundaries-color
+mds-calendar-cell css --mds-calendar-cell-preselection-current-month-color
+mds-calendar-cell css --mds-calendar-cell-preselection-other-month-background
+mds-calendar-cell css --mds-calendar-cell-preselection-other-month-boundaries-background
+mds-calendar-cell css --mds-calendar-cell-preselection-other-month-boundaries-color
+mds-calendar-cell css --mds-calendar-cell-preselection-other-month-color
+mds-calendar-cell css --mds-calendar-cell-preselection-today-background
+mds-calendar-cell css --mds-calendar-cell-preselection-today-color
+mds-calendar-cell css --mds-calendar-cell-selection-boundaries-border-radius
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-background
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-boundaries-background
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-boundaries-color
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-color
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-background
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-boundaries-background
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-boundaries-color
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-color
+mds-calendar-cell css --mds-calendar-cell-selection-other-month-background
+mds-calendar-cell css --mds-calendar-cell-selection-other-month-boundaries-background
+mds-calendar-cell css --mds-calendar-cell-selection-other-month-boundaries-color
+mds-calendar-cell css --mds-calendar-cell-selection-other-month-color
+mds-calendar-cell css --mds-calendar-cell-selection-week-boundaries-border-radius
+mds-calendar-cell css --mds-calendar-cell-size
+mds-calendar-cell css --mds-calendar-cell-weekend-background
+mds-calendar-cell css --mds-calendar-cell-weekend-color
+mds-card encapsulation shadow
+mds-card prop disableAutoGrid (attr disable-auto-grid) [reflect]: boolean = false
+mds-card slot content
+mds-card slot footer
+mds-card slot header
+mds-card slot media
+mds-card part layout
+mds-card css --mds-card-gap
+mds-card css --mds-card-padding
+mds-card-content encapsulation shadow
+mds-card-content slot (default)
+mds-card-footer encapsulation shadow
+mds-card-footer slot (default)
+mds-card-header encapsulation shadow
+mds-card-header slot (default)
+mds-card-header slot action
+mds-card-media encapsulation shadow
+mds-card-media slot (default)
+mds-card-media slot content
+mds-card-media part content
+mds-chip encapsulation shadow
+mds-chip prop clickable (attr clickable) [reflect, mutable]: boolean | undefined
+mds-chip prop deletable (attr deletable): boolean | undefined
+mds-chip prop disabled (attr disabled): boolean | undefined = false
+mds-chip prop icon (attr icon): string | undefined
+mds-chip prop label (attr label) [reflect, required]: string
+mds-chip prop selectable (attr selectable) [reflect]: boolean | undefined = false
+mds-chip prop selected (attr selected) [reflect, mutable]: boolean | undefined
+mds-chip prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'strong'
+mds-chip prop variant (attr variant) [reflect]: "ai" | "amaranth" | "aqua" | "blue" | "dark" | "error" | "green" | "info" | "lime" | "orange" | "orchid" | "primary" | "purple" | "red" | "secondary" | "sky" | "success" | "violet" | "warning" | "yellow" | undefined = 'primary'
+mds-chip event mdsChipClickLabel: MdsChipEvent [bubbles, cancelable, composed]
+mds-chip event mdsChipDelete: MdsChipEvent [bubbles, cancelable, composed]
+mds-chip event mdsChipSelect: MdsChipEvent [bubbles, cancelable, composed]
+mds-chip css --mds-chip-background
+mds-chip css --mds-chip-background-selected
+mds-chip css --mds-chip-border
+mds-chip css --mds-chip-border-selected
+mds-chip css --mds-chip-color
+mds-chip css --mds-chip-color-selected
+mds-chip css --mds-chip-icon-background
+mds-chip css --mds-chip-icon-background-selected
+mds-chip css --mds-chip-icon-color
+mds-chip css --mds-chip-icon-color-selected
+mds-chip css --mds-chip-opacity-disabled
+mds-chip css --mds-chip-shadow
+mds-chip css --mds-chip-shadow-selected
+mds-details encapsulation shadow
+mds-details prop opened (attr opened) [reflect, mutable]: boolean = false
+mds-details event mdsDetailsChange: boolean [bubbles, cancelable, composed]
+mds-details slot (default)
+mds-details slot action
+mds-details slot icon
+mds-details slot title
+mds-details part content
+mds-details part header
+mds-details part title
+mds-details css --mds-details-duration
+mds-details css --mds-details-helper-icon-color
+mds-details css --mds-details-icon-color
+mds-dropdown encapsulation shadow
+mds-dropdown prop arrowPadding (attr arrow-padding): number = 24
+mds-dropdown prop backdrop (attr backdrop) [reflect]: boolean | undefined = false
+mds-dropdown prop disableAutoPlacement (attr disable-auto-placement): boolean = false
+mds-dropdown prop disableShift (attr disable-shift): boolean = false
+mds-dropdown prop disableSmooth (attr disable-smooth): boolean = false
+mds-dropdown prop flip (attr flip): boolean = false
+mds-dropdown prop hideArrow (attr hide-arrow) [reflect]: boolean = false
+mds-dropdown prop interaction (attr interaction) [reflect]: "click" | "mouseover" | "none" = 'click'
+mds-dropdown prop offset (attr offset): number = 24
+mds-dropdown prop placement (attr placement): "bottom" | "bottom-end" | "bottom-start" | "left" | "left-end" | "left-start" | "right" | "right-end" | "right-start" | "top" | "top-end" | "top-start" = 'bottom'
+mds-dropdown prop shiftPadding (attr shift-padding): number = 24
+mds-dropdown prop strategy (attr strategy): "absolute" | "fixed" = 'absolute'
+mds-dropdown prop target (attr target) [required]: string
+mds-dropdown prop visible (attr visible) [reflect, mutable]: boolean = false
+mds-dropdown prop zIndex (attr z-index): number
+mds-dropdown event mdsDropdownChange: MdsDropdownEventDetail [bubbles, cancelable, composed]
+mds-dropdown event mdsDropdownHide: MdsDropdownEventDetail [bubbles, cancelable, composed]
+mds-dropdown event mdsDropdownVisible: MdsDropdownEventDetail [bubbles, cancelable, composed]
+mds-dropdown slot (default)
+mds-dropdown css --mds-dropdown-arrow-background
+mds-dropdown css --mds-dropdown-backdrop-duration
+mds-dropdown css --mds-dropdown-backdrop-z-index
+mds-dropdown css --mds-dropdown-background
+mds-dropdown css --mds-dropdown-drop-shadow
+mds-dropdown css --mds-dropdown-drop-shadow-color-rgb
+mds-dropdown css --mds-dropdown-duration
+mds-dropdown css --mds-dropdown-ease
+mds-dropdown css --mds-dropdown-mouseover-delay
+mds-dropdown css --mds-dropdown-transform-from
+mds-dropdown css --mds-dropdown-transform-to
+mds-dropdown css --mds-dropdown-z-index
+mds-emoji encapsulation shadow
+mds-emoji prop name (attr name) [reflect]: "mia" | "simi" = 'mia'
+mds-emoji method agree() => Promise<void>
+mds-emoji method disagree(turnHappyDelay?: number) => Promise<void>
+mds-emoji method smile() => Promise<void>
+mds-emoji method startBlinking() => Promise<void>
+mds-emoji method startFollowMouse() => Promise<void>
+mds-emoji method startThinking(duration?: number) => Promise<void>
+mds-emoji method stopBlinking() => Promise<void>
+mds-emoji method stopFollowMouse() => Promise<void>
+mds-emoji method stopThinking(duration?: number) => Promise<void>
+mds-emoji css --mds-emoji-expression-follow-mouse-head-duration
+mds-emoji css --mds-emoji-expression-follow-mouse-traits-duration
+mds-emoji css --mds-emoji-expression-max-rotation
+mds-emoji css --mds-emoji-mia-eyes-color
+mds-emoji css --mds-emoji-mia-hands-color
+mds-emoji css --mds-emoji-mia-head-color
+mds-emoji css --mds-emoji-mia-head-stroke-color
+mds-emoji css --mds-emoji-mia-head-stroke-width
+mds-emoji css --mds-emoji-mia-mouth-color
+mds-emoji css --mds-emoji-offset-ears
+mds-emoji css --mds-emoji-offset-eyebrows
+mds-emoji css --mds-emoji-offset-eyes
+mds-emoji css --mds-emoji-offset-gadget
+mds-emoji css --mds-emoji-offset-hands
+mds-emoji css --mds-emoji-offset-head
+mds-emoji css --mds-emoji-offset-mouth
+mds-emoji css --mds-emoji-perspective
+mds-emoji css --mds-emoji-simi-eye
+mds-emoji css --mds-emoji-simi-eye-light
+mds-emoji css --mds-emoji-simi-eyebrow
+mds-emoji css --mds-emoji-simi-gadget
+mds-emoji css --mds-emoji-simi-mouth
+mds-emoji css --mds-emoji-simi-mouth-teeth
+mds-emoji css --mds-emoji-simi-mouth-throat
+mds-emoji css --mds-emoji-simi-nose
+mds-emoji css --mds-emoji-simi-nose-light
+mds-emoji css --mds-emoji-simi-outline
+mds-emoji css --mds-emoji-simi-skin
+mds-emoji css --mds-emoji-simi-skin-dark
+mds-emoji css --mds-emoji-simi-skin-light
+mds-entity encapsulation shadow
+mds-entity prop await (attr await) [reflect]: boolean | undefined
+mds-entity prop icon (attr icon) [reflect]: string | undefined
+mds-entity prop initials (attr initials) [reflect]: string | undefined
+mds-entity prop src (attr src) [reflect]: string | undefined
+mds-entity prop tone (attr tone) [reflect]: "strong" | "weak" | undefined
+mds-entity prop variant (attr variant) [reflect]: "amaranth" | "aqua" | "blue" | "error" | "green" | "info" | "lime" | "orange" | "orchid" | "primary" | "purple" | "red" | "sky" | "success" | "violet" | "warning" | "yellow" | undefined
+mds-entity slot (default)
+mds-entity slot action
+mds-entity slot detail
+mds-entity part avatar
+mds-entity part spinner
+mds-entity css --mds-entity-background
+mds-entity css --mds-entity-color
+mds-entity css --mds-entity-detail-color
+mds-entity css --mds-entity-icon-background
+mds-entity css --mds-entity-icon-color
+mds-file encapsulation shadow
+mds-file prop description (attr description): string | undefined
+mds-file prop filename (attr filename): string
+mds-file prop format (attr format) [reflect, mutable]: string | undefined
+mds-file prop hideDownloadedIcon (attr hide-downloaded-icon): boolean | undefined = false
+mds-file prop preview (attr preview): string | undefined
+mds-file prop suffix (attr suffix) [reflect]: "7z" | "ace" | "ai" | "db" | "default" | "dmg" | "doc" | "docm" | "docx" | "eml" | "eps" | "exe" | "flac" | "gif" | "heic" | "htm" | "html" | "jpe" | "jpeg" | "jpg" | "js" | "json" | "jsx" | "m2v" | "mp2" | "mp3" | "mp4" | "mp4v" | "mpeg" | "mpg" | "mpg4" | "mpga" | "odf" | "odp" | "ods" | "odt" | "ole" | "p7m" | "pdf" | "php" | "png" | "ppt" | "rar" | "rtf" | "sass" | "shtml" | "svg" | "tar" | "tiff" | "ts" | "tsd" | "txt" | "wav" | "webp" | "xar" | "xls" | "xlsx" | "xml" | "zip" | undefined
+mds-file event mdsFileDownload: MdsFileEventDetail [bubbles, cancelable, composed]
+mds-file css --mds-file-preview-color
+mds-file css --mds-file-preview-icon-background
+mds-file css --mds-file-preview-icon-color
+mds-file-preview encapsulation shadow
+mds-file-preview prop deletable (attr deletable) [reflect]: boolean | undefined
+mds-file-preview prop description (attr description) [reflect]: string | undefined
+mds-file-preview prop downloadable (attr downloadable) [reflect]: boolean | undefined
+mds-file-preview prop filename (attr filename) [reflect, required]: string
+mds-file-preview prop filesize (attr filesize) [reflect]: string | undefined
+mds-file-preview prop format (attr format) [reflect, mutable]: string | undefined
+mds-file-preview prop icon (attr icon) [reflect]: string
+mds-file-preview prop message (attr message) [reflect]: string | undefined
+mds-file-preview prop src (attr src) [reflect]: string | undefined
+mds-file-preview prop suffix (attr suffix) [reflect]: "7z" | "ace" | "ai" | "db" | "default" | "dmg" | "doc" | "docm" | "docx" | "eml" | "eps" | "exe" | "flac" | "gif" | "heic" | "htm" | "html" | "jpe" | "jpeg" | "jpg" | "js" | "json" | "jsx" | "m2v" | "mp2" | "mp3" | "mp4" | "mp4v" | "mpeg" | "mpg" | "mpg4" | "mpga" | "odf" | "odp" | "ods" | "odt" | "ole" | "p7m" | "pdf" | "php" | "png" | "ppt" | "rar" | "rtf" | "sass" | "shtml" | "svg" | "tar" | "tiff" | "ts" | "tsd" | "txt" | "wav" | "webp" | "xar" | "xls" | "xlsx" | "xml" | "zip" | undefined
+mds-file-preview prop truncate (attr truncate) [reflect]: "all" | "none" | "word" | undefined = 'word'
+mds-file-preview prop variant (attr variant) [reflect]: "amaranth" | "aqua" | "blue" | "error" | "green" | "info" | "lime" | "orange" | "orchid" | "primary" | "purple" | "red" | "sky" | "success" | "violet" | "warning" | "yellow" | undefined
+mds-file-preview event mdsFileDelete: MdsFilePreviewEventDetail [bubbles, cancelable, composed]
+mds-file-preview event mdsFileDownload: MdsFilePreviewEventDetail [bubbles, cancelable, composed]
+mds-file-preview part card
+mds-file-preview css --mds-file-preview-background-color
+mds-file-preview css --mds-file-preview-border-radius
+mds-file-preview css --mds-file-preview-color
+mds-file-preview css --mds-file-preview-icon-background
+mds-file-preview css --mds-file-preview-icon-color
+mds-filter encapsulation shadow
+mds-filter prop autoReset (attr auto-reset) [reflect]: boolean | undefined
+mds-filter prop label (attr label): string | undefined
+mds-filter prop multiple (attr multiple) [reflect]: boolean | undefined
+mds-filter prop reset (attr reset) [reflect]: boolean | undefined
+mds-filter event mdsFilterChange: MdsFilterEventDetail [bubbles, cancelable, composed]
+mds-filter slot (default)
+mds-filter css --mds-filter-items-background
+mds-filter css --mds-filter-items-background-active
+mds-filter css --mds-filter-items-gap
+mds-filter css --mds-filter-items-padding
+mds-filter css --mds-filter-items-radius
+mds-filter css --mds-filter-items-scroll-behavior
+mds-filter css --mds-filter-label-padding
+mds-filter css --mds-filter-wrapper-shadow
+mds-filter css --mds-filter-wrapper-shadow-color
+mds-filter css --mds-filter-wrapper-shadow-opacity
+mds-filter-item encapsulation shadow
+mds-filter-item prop count (attr count) [reflect]: string | undefined
+mds-filter-item prop disabled (attr disabled) [reflect]: boolean | undefined
+mds-filter-item prop icon (attr icon) [reflect]: string | undefined
+mds-filter-item prop label (attr label) [reflect]: string
+mds-filter-item prop selected (attr selected) [reflect, mutable]: boolean | undefined
+mds-filter-item prop value (attr value) [reflect]: string
+mds-filter-item event mdsFilterItemSelect: MdsFilterItemEventDetail [bubbles, cancelable, composed]
+mds-filter-item css --mds-filter-item-count-background-default
+mds-filter-item css --mds-filter-item-count-background-selected
+mds-filter-item css --mds-filter-item-count-color-default
+mds-filter-item css --mds-filter-item-count-color-selected
+mds-header encapsulation shadow
+mds-header prop appearance (attr appearance) [reflect, mutable]: string = 'stripe'
+mds-header prop appearanceSet (attr appearance-set) [reflect]: string | undefined
+mds-header prop autoHide (attr auto-hide) [reflect]: number | undefined
+mds-header prop hideBackdrop (attr hide-backdrop) [reflect]: boolean | undefined = false
+mds-header prop menu (attr menu) [reflect]: "all" | "desktop" | "mobile" | "none" = 'mobile'
+mds-header prop nav (attr nav) [reflect]: "all" | "desktop" | "mobile" | "none" = 'desktop'
+mds-header prop threshold (attr threshold) [reflect]: number = 1
+mds-header prop visibility (attr visibility) [reflect, mutable]: "hidden" | "visible" | undefined = 'visible'
+mds-header event mdsHeaderClose: MdsHeaderEventDetail [bubbles, cancelable, composed]
+mds-header event mdsHeaderVisibilityChange: MdsHeaderVisibilityEventDetail [bubbles, cancelable, composed]
+mds-header method setOpened(isOpened?: boolean) => Promise<void>
+mds-header slot (default)
+mds-header slot menu
+mds-header part menu
+mds-header css --mds-header-backdrop-background-image
+mds-header css --mds-header-backdrop-blur-strength
+mds-header css --mds-header-backdrop-height
+mds-header css --mds-header-backdrop-show
+mds-header css --mds-header-color
+mds-header css --mds-header-hidden-bar-translate-inline
+mds-header css --mds-header-hidden-bar-translate-stripe
+mds-header css --mds-header-icon-color
+mds-header css --mds-header-inline-margin
+mds-header css --mds-header-inline-margin-mobile
+mds-header css --mds-header-z-index
+mds-header-bar encapsulation shadow
+mds-header-bar prop menu (attr menu) [reflect]: "all" | "desktop" | "mobile" | "none" = 'mobile'
+mds-header-bar prop nav (attr nav) [reflect]: "all" | "desktop" | "mobile" | "none" = 'desktop'
+mds-header-bar event mdsHeaderBarOpen: void [bubbles, cancelable, composed]
+mds-header-bar method setOpened(isOpened?: boolean) => Promise<void>
+mds-header-bar slot (default)
+mds-header-bar slot nav
+mds-header-bar part actions
+mds-header-bar part content
+mds-header-bar part hamburger
+mds-header-bar part nav
+mds-header-bar css --mds-header-bar-hamburger-color
+mds-help encapsulation shadow
+mds-help prop disableAutoPlacement (attr disable-auto-placement) [reflect]: boolean | undefined = false
+mds-help prop icon (attr icon): string | undefined
+mds-help prop placement (attr placement) [reflect]: "bottom" | "bottom-end" | "bottom-start" | "left" | "left-end" | "left-start" | "right" | "right-end" | "right-start" | "top" | "top-end" | "top-start" | undefined = 'top'
+mds-help slot (default)
+mds-help part icon
+mds-help css --mds-help-tooltip-delay
+mds-help css --mds-help-tooltip-max-width
+mds-help css --mds-help-tooltip-min-width
+mds-help css --mds-help-tooltip-width
+mds-horizontal-scroll encapsulation shadow
+mds-horizontal-scroll prop controls (attr controls) [reflect, mutable]: "all" | "desktop" | "large" | "none" | "tablet" | "tv" | "wide" | "xlarge" | undefined = 'desktop'
+mds-horizontal-scroll prop navigation (attr navigation) [reflect]: "none" | "position" | "scrollbar" | undefined = 'position'
+mds-horizontal-scroll prop snap (attr snap) [reflect]: "center" | "end" | "none" | "start" | undefined = 'start'
+mds-horizontal-scroll slot (default)
+mds-horizontal-scroll part content
+mds-horizontal-scroll css --mds-horizontal-scroll-behavior
+mds-horizontal-scroll css --mds-horizontal-scroll-dot-area-background
+mds-horizontal-scroll css --mds-horizontal-scroll-dot-background
+mds-horizontal-scroll css --mds-horizontal-scroll-dot-max-width
+mds-horizontal-scroll css --mds-horizontal-scroll-max-width
+mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-margin
+mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-radius
+mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-size
+mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-thumb-background
+mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-track-background
+mds-hr encapsulation shadow
+mds-icon encapsulation shadow
+mds-icon prop name (attr name) [reflect, required]: string
+mds-icon method setSvgPath(svgPath: string) => Promise<void>
+mds-icon part svg
+mds-img encapsulation shadow
+mds-img prop alt (attr alt) [reflect, mutable]: string = ''
+mds-img prop crossorigin (attr crossorigin): "anonymous" | "use-credentials" | undefined = 'use-credentials'
+mds-img prop height (attr height): string | undefined
+mds-img prop loading (attr loading): "eager" | "lazy" | undefined = 'lazy'
+mds-img prop referrerpolicy (attr referrerpolicy): "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "unsafe-url" | undefined = 'no-referrer-when-downgrade'
+mds-img prop sizes (attr sizes): string | undefined
+mds-img prop src (attr src): string | undefined
+mds-img prop srcset (attr srcset): string | undefined
+mds-img prop srcsetConsumption (attr srcset-consumption): string | undefined
+mds-img prop width (attr width): string | undefined
+mds-img event mdsImgLoadError: MdsImgEventDetail [bubbles, cancelable, composed]
+mds-img event mdsImgLoadSuccess: MdsImgEventDetail [bubbles, cancelable, composed]
+mds-img part media
+mds-img css --mds-img-background
+mds-img css --mds-img-color
+mds-img css --mds-img-error-background
+mds-img css --mds-img-error-color
+mds-img css --mds-img-error-icon-color
+mds-img css --mds-img-icon-color
+mds-input encapsulation shadow
+mds-input prop accessibleName (attr aria-label): string | undefined
+mds-input prop autocomplete (attr autocomplete) [reflect]: "additional-name" | "address" | "address-level1" | "address-level2" | "address-level3" | "address-level4" | "address-line1" | "address-line2" | "address-line3" | "bday" | "bday-day" | "bday-month" | "bday-year" | "cc-additional-name" | "cc-csc" | "cc-exp" | "cc-exp-month" | "cc-exp-year" | "cc-family-name" | "cc-given-name" | "cc-name" | "cc-number" | "cc-type" | "country" | "country-name" | "current-password" | "email" | "family-name" | "given-name" | "honorific-prefix" | "honorific-suffix" | "impp" | "language" | "name" | "new-password" | "nickname" | "off" | "on" | "one-time-code" | "organization" | "organization-title" | "photo" | "postal-code" | "sex" | "street-address" | "tel" | "tel-area-code" | "tel-country-code" | "tel-extension" | "tel-local" | "tel-national" | "transaction-amount" | "transaction-currency" | "url" | "username" | undefined = 'off'
+mds-input prop autofocus (attr autofocus) [reflect]: boolean = false
+mds-input prop await (attr await) [reflect]: boolean = false
+mds-input prop controlsIcon (attr controls-icon) [reflect]: "arithmetic" | "arrow" | undefined = 'arrow'
+mds-input prop controlsLayout (attr controls-layout) [reflect]: "horizontal" | "vertical" | undefined = 'vertical'
+mds-input prop datalist (no attr): string[] | undefined
+mds-input prop disabled (attr disabled) [reflect]: boolean | undefined = false
+mds-input prop icon (attr icon) [reflect, mutable]: string | undefined
+mds-input prop max (attr max) [reflect]: number | string | undefined
+mds-input prop maxlength (attr maxlength) [reflect, mutable]: number | undefined
+mds-input prop mic (attr mic) [reflect]: boolean | undefined
+mds-input prop min (attr min) [reflect]: number | string | undefined
+mds-input prop minlength (attr minlength) [reflect]: number | undefined
+mds-input prop name (attr name) [reflect]: string | undefined
+mds-input prop pattern (attr pattern) [reflect]: string | undefined
+mds-input prop placeholder (attr placeholder) [reflect]: string | undefined
+mds-input prop readonly (attr readonly) [reflect]: boolean | undefined = false
+mds-input prop required (attr required) [reflect]: boolean | undefined = false
+mds-input prop step (attr step) [reflect]: string | undefined
+mds-input prop tip (attr tip) [reflect]: string | undefined
+mds-input prop type (attr type) [reflect]: "cc" | "cf" | "date" | "email" | "isbn" | "number" | "password" | "piva" | "search" | "tel" | "text" | "textarea" | "time" | "url" | undefined = 'text'
+mds-input prop typography (attr typography) [reflect]: "detail" | "snippet" = 'detail'
+mds-input prop value (attr value) [reflect, mutable]: string = ''
+mds-input prop variant (attr variant) [reflect, mutable]: "ai" | "error" | "info" | "primary" | "success" | "warning" | undefined = 'primary'
+mds-input event mdsInputBlur: void [bubbles, cancelable, composed]
+mds-input event mdsInputChange: MdsInputEventDetail [bubbles, cancelable, composed]
+mds-input event mdsInputFocus: void [bubbles, cancelable, composed]
+mds-input event mdsInputKeydown: KeyboardEvent [bubbles, cancelable, composed]
+mds-input event mdsInputSpeechEnd: void [bubbles, cancelable, composed]
+mds-input event mdsInputValidation: boolean [bubbles, cancelable, composed]
+mds-input method addValidator(validator: MdsValidatorFn) => Promise<void>
+mds-input method getErrors() => Promise<MdsValidationErrors | null>
+mds-input method getInputElement() => Promise<HTMLInputElement | HTMLTextAreaElement>
+mds-input method hasValidator(validator?: MdsValidatorFn) => Promise<boolean>
+mds-input method removeValidator(validator: MdsValidatorFn) => Promise<void>
+mds-input method setFocus() => Promise<void>
+mds-input part counter-button-decrease
+mds-input part counter-button-increase
+mds-input part field
+mds-input part mic-toggle-button
+mds-input part password-mask-item
+mds-input part password-mask-items
+mds-input part password-toggle-button
+mds-input part tip-bottom
+mds-input part tip-count
+mds-input part tip-top
+mds-input css --mds-input-background
+mds-input css --mds-input-icon-color
+mds-input css --mds-input-placeholder-default-color
+mds-input css --mds-input-placeholder-focus-color
+mds-input css --mds-input-placeholder-hover-color
+mds-input css --mds-input-ring
+mds-input css --mds-input-shadow
+mds-input css --mds-input-textarea-field-sizing
+mds-input css --mds-input-textarea-max-height
+mds-input css --mds-input-textarea-min-height
+mds-input css --mds-input-textarea-resize
+mds-input css --mds-input-tip-background
+mds-input css --mds-input-tip-horizontal-offset
+mds-input css --mds-input-tip-horizontal-offset-focused
+mds-input css --mds-input-tip-vertical-offset
+mds-input css --mds-input-variant-color-rgb
+mds-input-date encapsulation shadow
+mds-input-date prop accessibleName (attr aria-label): string | undefined
+mds-input-date prop delay (attr delay) [reflect]: number = 500
+mds-input-date prop disabled (attr disabled) [reflect]: boolean | undefined = false
+mds-input-date prop hideToday (attr hide-today) [reflect]: boolean = false
+mds-input-date prop max (attr max) [reflect, mutable]: null | string = null
+mds-input-date prop min (attr min) [reflect, mutable]: null | string = null
+mds-input-date prop name (attr name) [reflect]: string | undefined
+mds-input-date prop readonly (attr readonly) [reflect]: boolean | undefined = false
+mds-input-date prop required (attr required) [reflect]: boolean | undefined = false
+mds-input-date prop value (attr value) [reflect]: string = ''
+mds-input-date prop variant (attr variant) [reflect, mutable]: "ai" | "error" | "info" | "primary" | "success" | "warning" | undefined = 'primary'
+mds-input-date event mdsInputDateSelect: string [bubbles, cancelable, composed]
+mds-input-date event mdsInputValidation: boolean [bubbles, cancelable, composed]
+mds-input-date method focusInput() => Promise<void>
+mds-input-date method getErrors() => Promise<MdsValidationErrors | null>
+mds-input-date method setValue(value: string) => Promise<void>
+mds-input-date part input-date
+mds-input-date css --mds-input-date-background
+mds-input-date css --mds-input-date-field-background-empty
+mds-input-date css --mds-input-date-field-color-empty
+mds-input-date css --mds-input-date-icon-color
+mds-input-date css --mds-input-date-icon-color-rgb
+mds-input-date css --mds-input-date-ring
+mds-input-date css --mds-input-date-shadow
+mds-input-date css --mds-input-date-variant-color-rgb
+mds-input-date css --mds-input-tip-background
+mds-input-date css --mds-input-tip-horizontal-offset
+mds-input-date css --mds-input-tip-horizontal-offset-focused
+mds-input-date css --mds-input-tip-vertical-offset
+mds-input-date-range encapsulation shadow
+mds-input-date-range prop accessibleName (attr aria-label): string | undefined
+mds-input-date-range prop delay (attr delay) [reflect]: number = 500
+mds-input-date-range prop dualCalendar (attr dual-calendar) [reflect]: boolean = false
+mds-input-date-range prop endDate (attr end-date) [reflect]: string = ''
+mds-input-date-range prop hideToday (attr hide-today) [reflect]: boolean = false
+mds-input-date-range prop max (attr max) [reflect]: null | string = null
+mds-input-date-range prop min (attr min) [reflect]: null | string = null
+mds-input-date-range prop name (attr name) [reflect]: string | undefined
+mds-input-date-range prop startDate (attr start-date) [reflect]: string = ''
+mds-input-date-range event mdsInputDateRangeValueChange: { startDate: string; endDate: string; } [bubbles, cancelable, composed]
+mds-input-date-range method preselect(event: EventDate) => Promise<void>
+mds-input-date-range slot calendar-preselection
+mds-input-date-range slot end
+mds-input-date-range slot start
+mds-input-date-range css --mds-input-date-range-background
+mds-input-date-range css --mds-input-date-range-calendar-width
+mds-input-date-range css --mds-input-date-range-fields-firefox-justify-content
+mds-input-date-range css --mds-input-date-range-fields-gap
+mds-input-date-range css --mds-input-date-range-icon-color
+mds-input-date-range css --mds-input-date-range-ring
+mds-input-date-range css --mds-input-date-range-shadow
+mds-input-date-range css --mds-input-date-range-variant-color-rgb
+mds-input-date-range-preselection encapsulation shadow
+mds-input-date-range-preselection prop end (attr end) [reflect]: string | undefined
+mds-input-date-range-preselection prop selected (attr selected) [reflect, mutable]: boolean | undefined
+mds-input-date-range-preselection prop start (attr start) [reflect, required]: string
+mds-input-date-range-preselection slot (default)
+mds-input-date-range-preselection css --mds-date-range-preselection-default-background
+mds-input-date-range-preselection css --mds-date-range-preselection-default-border
+mds-input-date-range-preselection css --mds-date-range-preselection-default-color
+mds-input-date-range-preselection css --mds-date-range-preselection-hover-background
+mds-input-date-range-preselection css --mds-date-range-preselection-hover-border
+mds-input-date-range-preselection css --mds-date-range-preselection-hover-color
+mds-input-date-range-preselection css --mds-date-range-preselection-selected-background
+mds-input-date-range-preselection css --mds-date-range-preselection-selected-border
+mds-input-date-range-preselection css --mds-date-range-preselection-selected-color
+mds-input-field encapsulation shadow
+mds-input-field prop label (attr label) [mutable]: string | undefined
+mds-input-field prop message (attr message) [mutable]: string | undefined
+mds-input-field prop variant (attr variant) [reflect, mutable]: "ai" | "error" | "info" | "primary" | "success" | "warning" | undefined = 'primary'
+mds-input-field slot (default)
+mds-input-field part content
+mds-input-field css --mds-input-field-message-background
+mds-input-field css --mds-input-field-message-color
+mds-input-otp encapsulation shadow
+mds-input-otp prop accessibleName (attr aria-label): string | undefined
+mds-input-otp prop autosubmit (attr autosubmit) [reflect]: boolean = false
+mds-input-otp prop length (attr length): number = 6
+mds-input-otp prop value (attr value) [reflect, mutable]: string | undefined = ''
+mds-input-range encapsulation shadow
+mds-input-range prop disabled (attr disabled) [reflect, mutable]: boolean | undefined
+mds-input-range prop formatValue (no attr): ((value: number) => string) | undefined
+mds-input-range prop max (attr max): number = 100
+mds-input-range prop min (attr min): number = 0
+mds-input-range prop name (attr name) [reflect]: string | undefined
+mds-input-range prop step (attr step): number = 1
+mds-input-range prop value (attr value) [reflect, mutable]: number
+mds-input-range event mdsInputRangeChange: number [bubbles, cancelable, composed]
+mds-input-range slot (default)
+mds-input-range part header
+mds-input-range part track
+mds-input-range css --mds-input-range-thumb-background
+mds-input-range css --mds-input-range-thumb-background-disabled
+mds-input-range css --mds-input-range-thumb-cursor
+mds-input-range css --mds-input-range-thumb-size
+mds-input-range css --mds-input-range-track-background
+mds-input-range css --mds-input-range-track-background-disabled
+mds-input-range css --mds-input-range-track-progress-background
+mds-input-range css --mds-input-range-track-progress-background-disabled
+mds-input-range css --mds-input-range-track-size
+mds-input-select encapsulation shadow
+mds-input-select prop accessibleName (attr aria-label): string | undefined
+mds-input-select prop autocomplete (attr autocomplete) [reflect]: "on" | undefined
+mds-input-select prop autoFocus (attr auto-focus) [reflect]: boolean | undefined
+mds-input-select prop defaultValue (attr default-value) [reflect]: null | number | string | undefined
+mds-input-select prop disabled (attr disabled) [reflect]: boolean | undefined = false
+mds-input-select prop multiple (attr multiple) [reflect]: boolean | undefined = false
+mds-input-select prop name (attr name) [reflect]: string | undefined
+mds-input-select prop placeholder (attr placeholder) [reflect]: string | undefined
+mds-input-select prop required (attr required) [reflect]: boolean | undefined = false
+mds-input-select prop size (attr size) [reflect]: number | undefined = 0
+mds-input-select prop value (attr value) [reflect]: null | number | string | undefined = ''
+mds-input-select prop variant (attr variant) [reflect]: "error" | "info" | "success" | "warning" | undefined
+mds-input-select event mdsInputSelectChange: MdsInputSelectEventDetail [bubbles, cancelable, composed]
+mds-input-select method setValue(value: string | number | null) => Promise<void>
+mds-input-select slot (default)
+mds-input-select part select
+mds-input-select part tip-top
+mds-input-select css --mds-input-select-arrow-icon-background-color
+mds-input-select css --mds-input-select-arrow-icon-blur-background-color
+mds-input-select css --mds-input-select-arrow-icon-blur-color
+mds-input-select css --mds-input-select-arrow-icon-color
+mds-input-select css --mds-input-select-arrow-icon-hover-background-color
+mds-input-select css --mds-input-select-arrow-icon-hover-color
+mds-input-select css --mds-input-select-ring
+mds-input-select css --mds-input-select-shadow
+mds-input-select css --mds-input-select-variant-color-rgb
+mds-input-switch encapsulation shadow
+mds-input-switch prop autofocus (attr autofocus) [reflect]: boolean
+mds-input-switch prop checked (attr checked) [reflect, mutable]: boolean | undefined
+mds-input-switch prop disabled (attr disabled) [reflect, mutable]: boolean | undefined
+mds-input-switch prop explicit (attr explicit) [reflect]: boolean | undefined
+mds-input-switch prop icon (attr icon) [reflect]: string = ''
+mds-input-switch prop indeterminate (attr indeterminate) [reflect, mutable]: boolean | undefined
+mds-input-switch prop name (attr name) [reflect]: string = ''
+mds-input-switch prop size (attr size) [reflect]: "lg" | "md" | "sm" = 'md'
+mds-input-switch prop type (attr type) [reflect]: "checkbox" | "radio" | "switch" = 'switch'
+mds-input-switch prop typography (attr typography) [reflect]: "caption" | "detail" | "label" | "option" | "paragraph" | "tip" | undefined = 'detail'
+mds-input-switch prop value (attr value) [reflect, mutable]: string | undefined = ''
+mds-input-switch prop variant (attr variant) [reflect]: "code" | "info" | "read" | "title" | undefined
+mds-input-switch event mdsInputSwitchChange: MdsInputSwitchEventDetail [bubbles, cancelable, composed]
+mds-input-switch slot (default)
+mds-input-switch css --mds-input-switch-animation-timing-adjust
+mds-input-switch css --mds-input-switch-animation-timing-function
+mds-input-switch css --mds-input-switch-box-color-disabled-checked
+mds-input-switch css --mds-input-switch-box-color-disabled-unchecked
+mds-input-switch css --mds-input-switch-box-color-enabled-checked
+mds-input-switch css --mds-input-switch-box-color-enabled-unchecked
+mds-input-switch css --mds-input-switch-box-padding
+mds-input-switch css --mds-input-switch-box-padding-lg
+mds-input-switch css --mds-input-switch-box-padding-md
+mds-input-switch css --mds-input-switch-box-padding-sm
+mds-input-switch css --mds-input-switch-duration
+mds-input-switch css --mds-input-switch-icon-color-checked
+mds-input-switch css --mds-input-switch-icon-color-checked-disabled
+mds-input-switch css --mds-input-switch-icon-color-indeterminate
+mds-input-switch css --mds-input-switch-icon-color-indeterminate-disabled
+mds-input-switch css --mds-input-switch-icon-color-unchecked
+mds-input-switch css --mds-input-switch-icon-color-unchecked-disabled
+mds-input-switch css --mds-input-switch-icon-explicit-color
+mds-input-switch css --mds-input-switch-toggle-color-disabled-checked
+mds-input-switch css --mds-input-switch-toggle-color-disabled-unchecked
+mds-input-switch css --mds-input-switch-toggle-color-enabled-checked
+mds-input-switch css --mds-input-switch-toggle-color-enabled-unchecked
+mds-input-switch css --mds-input-switch-toggle-container-size
+mds-input-switch css --mds-input-switch-toggle-size
+mds-input-switch css --mds-input-switch-toggle-size-lg
+mds-input-switch css --mds-input-switch-toggle-size-md
+mds-input-switch css --mds-input-switch-toggle-size-sm
+mds-input-tip encapsulation shadow
+mds-input-tip prop active (attr active) [reflect]: boolean | undefined = false
+mds-input-tip prop position (attr position) [reflect]: "bottom" | "top" | undefined = 'top'
+mds-input-tip slot (default)
+mds-input-tip css --mds-input-tip-active-translate
+mds-input-tip css --mds-input-tip-background
+mds-input-tip css --mds-input-tip-horizontal-offset
+mds-input-tip css --mds-input-tip-horizontal-offset-focused
+mds-input-tip css --mds-input-tip-vertical-offset
+mds-input-tip-item encapsulation shadow
+mds-input-tip-item prop expanded (attr expanded) [reflect, mutable]: boolean | undefined
+mds-input-tip-item prop variant (attr variant) [reflect]: "count-almost" | "count-almost-full" | "count-empty" | "count-full" | "count-incomplete" | "disabled" | "readonly" | "required" | "required-success" | "text" | undefined = 'required'
+mds-input-tip-item slot (default)
+mds-input-tip-item css --mds-input-tip-item-background
+mds-input-tip-item css --mds-input-tip-item-color
+mds-input-tip-item css --mds-input-tip-item-icon-color
+mds-input-upload encapsulation shadow
+mds-input-upload prop accept (attr accept) [reflect]: string = ''
+mds-input-upload prop initialValue (no attr): FileList | File[] | undefined
+mds-input-upload prop maxFiles (attr max-files) [reflect]: number = 1
+mds-input-upload prop maxFileSize (attr max-file-size) [reflect]: number = 20
+mds-input-upload prop name (attr name) [reflect]: string | undefined
+mds-input-upload prop sort (attr sort) [reflect]: "date" | "status" | undefined
+mds-input-upload event mdsInputUploadChange: FileList | null [bubbles, cancelable, composed]
+mds-input-upload method getFiles() => Promise<FileList | null>
+mds-input-upload method getFilesError() => Promise<FileError[] | null>
+mds-input-upload method reset() => Promise<void>
+mds-input-upload css --mds-input-upload-drag-area-background-color
+mds-input-upload css --mds-input-upload-drag-area-background-color-on-drag
+mds-input-upload css --mds-input-upload-drag-area-border
+mds-input-upload css --mds-input-upload-drag-area-border-on-drag
+mds-input-upload css --mds-input-upload-min-cols
+mds-keyboard encapsulation shadow
+mds-keyboard prop test (attr test) [reflect, mutable]: "fail" | "pass" | undefined
+mds-keyboard prop try (attr try) [reflect]: boolean | undefined
+mds-keyboard slot (default)
+mds-keyboard css --mds-keyboard-background
+mds-keyboard css --mds-keyboard-background-default
+mds-keyboard css --mds-keyboard-background-fail
+mds-keyboard css --mds-keyboard-background-pass
+mds-keyboard css --mds-keyboard-color
+mds-keyboard css --mds-keyboard-fill-fail
+mds-keyboard css --mds-keyboard-fill-pass
+mds-keyboard css --mds-keyboard-illumination-dark
+mds-keyboard css --mds-keyboard-illumination-dark-opacity
+mds-keyboard css --mds-keyboard-illumination-dark-size
+mds-keyboard css --mds-keyboard-illumination-light
+mds-keyboard css --mds-keyboard-illumination-light-opacity
+mds-keyboard css --mds-keyboard-illumination-light-size
+mds-keyboard css --mds-keyboard-illumination-shadow
+mds-keyboard css --mds-keyboard-key-background
+mds-keyboard css --mds-keyboard-key-illumination-dark-opacity
+mds-keyboard css --mds-keyboard-key-illumination-light-opacity
+mds-keyboard css --mds-keyboard-key-illumination-shadow
+mds-keyboard css --mds-keyboard-padding
+mds-keyboard css --mds-keyboard-spinner-duration
+mds-keyboard-key encapsulation shadow
+mds-keyboard-key prop name (attr name) [reflect]: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "a" | "alt" | "altleft" | "altright" | "arrowdown" | "arrowleft" | "arrowright" | "arrowup" | "b" | "backspace" | "c" | "capslock" | "command" | "commandleft" | "commandright" | "control" | "controlleft" | "controlright" | "d" | "delete" | "e" | "end" | "enter" | "escape" | "f" | "f1" | "f10" | "f11" | "f12" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" | "f8" | "f9" | "g" | "h" | "home" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "option" | "optionleft" | "optionright" | "p" | "pagedown" | "pageup" | "q" | "r" | "s" | "shift" | "shiftleft" | "shiftright" | "space" | "t" | "tab" | "u" | "v" | "w" | "windows" | "windowsleft" | "windowsright" | "x" | "y" | "z"
+mds-keyboard-key prop pressed (attr pressed) [reflect]: boolean | undefined
+mds-keyboard-key css --mds-keyboard-key-illumination-dark
+mds-keyboard-key css --mds-keyboard-key-illumination-dark-size
+mds-keyboard-key css --mds-keyboard-key-illumination-light
+mds-keyboard-key css --mds-keyboard-key-illumination-light-size
+mds-keyboard-key css --mds-keyboard-key-padding
+mds-keyboard-key css --mds-keyboard-key-transition-duration
+mds-kpi encapsulation shadow
+mds-kpi slot (default)
+mds-kpi css --mds-kpi-text-animation-placeholder-char
+mds-kpi css --mds-kpi-text-animation-speed
+mds-kpi-item encapsulation shadow
+mds-kpi-item prop description (attr description): string | undefined
+mds-kpi-item prop icon (attr icon): string | undefined
+mds-kpi-item prop label (attr label): string | undefined
+mds-kpi-item prop threshold (attr threshold): number | undefined = 0
+mds-kpi-item part content
+mds-kpi-item part icon
+mds-kpi-item part icon-container
+mds-kpi-item css --mds-kpi-item-icon-color
+mds-kpi-item css --mds-kpi-item-info-background
+mds-kpi-item css --mds-kpi-item-text-animation-placeholder-char
+mds-kpi-item css --mds-kpi-item-text-animation-speed
+mds-label encapsulation shadow
+mds-label prop deletable (attr deletable): boolean = false
+mds-label prop label (attr label) [reflect]: string | undefined
+mds-label prop tone (attr tone) [reflect]: "strong" | "weak" = 'weak'
+mds-label prop truncate (attr truncate) [reflect]: "all" | "none" | "word" | undefined = 'word'
+mds-label prop typography (attr typography): "caption" | "detail" | "tip" = 'caption'
+mds-label prop variant (attr variant) [reflect]: "amaranth" | "aqua" | "blue" | "error" | "green" | "info" | "lime" | "orange" | "orchid" | "purple" | "red" | "sky" | "success" | "violet" | "warning" | "yellow" = 'sky'
+mds-label event mdsLabelDelete: void [bubbles, cancelable, composed]
+mds-label css --mds-label-background
+mds-label css --mds-label-button-background
+mds-label css --mds-label-button-background-hover
+mds-label css --mds-label-button-icon-color
+mds-label css --mds-label-color
+mds-label css --mds-label-icon-color
+mds-label css --mds-label-selection-background
+mds-label css --mds-label-selection-color
+mds-list encapsulation shadow
+mds-list slot (default)
+mds-list-item encapsulation shadow
+mds-list-item prop icon (attr icon): string | undefined
+mds-list-item prop typography (attr typography) [reflect]: "caption" | "detail" | "label" | "option" | "paragraph" | "tip" = 'detail'
+mds-list-item prop variant (attr variant): "info" | "read" | undefined = 'info'
+mds-list-item slot (default)
+mds-list-item part icon
+mds-list-item part text
+mds-list-item css --mds-list-item-icon-margin
+mds-mention encapsulation shadow
+mds-mention prop deletable (attr deletable) [reflect]: boolean | undefined
+mds-mention prop icon (attr icon) [reflect]: string | undefined
+mds-mention prop label (attr label) [reflect]: string | undefined
+mds-mention prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined = 'sm'
+mds-mention event mdsMentionDelete: MdsMentionEvent [bubbles, cancelable, composed]
+mds-mention css --mds-mention-icon-size
+mds-modal encapsulation shadow
+mds-modal prop accessibleName (attr aria-label): string | undefined
+mds-modal prop animation (attr animation) [reflect]: "3d" | "custom" | "slide" | undefined = 'slide'
+mds-modal prop hideBackdrop (attr hide-backdrop) [reflect, mutable]: boolean | undefined = false
+mds-modal prop interaction (attr interaction) [reflect]: "relaxed" | "strict" = 'relaxed'
+mds-modal prop opened (attr opened) [reflect, mutable]: boolean | undefined = false
+mds-modal prop overflow (attr overflow) [reflect]: "auto" | "manual" = 'auto'
+mds-modal prop position (attr position) [reflect, mutable]: "bottom" | "bottom-left" | "bottom-right" | "center" | "left" | "right" | "top" | "top-left" | "top-right" | undefined = 'center'
+mds-modal event mdsModalClose: void [bubbles, cancelable, composed]
+mds-modal event mdsModalHide: void [bubbles, cancelable, composed]
+mds-modal event mdsModalOpen: void [bubbles, cancelable, composed]
+mds-modal event mdsModalShow: void [bubbles, cancelable, composed]
+mds-modal method close() => Promise<void>
+mds-modal slot (default)
+mds-modal slot bottom
+mds-modal slot top
+mds-modal slot window
+mds-modal part action-close
+mds-modal part dialog
+mds-modal part window
+mds-modal css --mds-modal-custom-closed-transform
+mds-modal css --mds-modal-custom-window-distance
+mds-modal css --mds-modal-overlay-color
+mds-modal css --mds-modal-overlay-opacity
+mds-modal css --mds-modal-transition-duration
+mds-modal css --mds-modal-transition-timing-funciton
+mds-modal css --mds-modal-window-background
+mds-modal css --mds-modal-window-distance
+mds-modal css --mds-modal-window-max-width
+mds-modal css --mds-modal-window-min-width
+mds-modal css --mds-modal-window-overflow
+mds-modal css --mds-modal-window-radius
+mds-modal css --mds-modal-window-shadow
+mds-modal css --mds-modal-z-index
+mds-note encapsulation shadow
+mds-note prop deletable (attr deletable): boolean | undefined = false
+mds-note prop variant (attr variant) [reflect]: "amaranth" | "aqua" | "blue" | "green" | "lime" | "orange" | "orchid" | "purple" | "red" | "sky" | "violet" | "yellow" | undefined = 'yellow'
+mds-note event mdsNoteDelete: void [bubbles, cancelable, composed]
+mds-note slot (default)
+mds-note slot title
+mds-note css --mds-note-background
+mds-note css --mds-note-color
+mds-note css --mds-note-fold-size
+mds-note css --mds-note-selection-background
+mds-note css --mds-note-selection-color
+mds-notification encapsulation shadow
+mds-notification prop dismissed (attr dismissed) [reflect, mutable]: boolean = false
+mds-notification prop max (attr max) [reflect]: number | undefined
+mds-notification prop strategy (attr strategy) [reflect, mutable]: "absolute" | "disabled" | "fixed" = 'fixed'
+mds-notification prop target (attr target): string
+mds-notification prop value (attr value) [reflect, mutable]: number = 0
+mds-notification css --mds-notification-color
+mds-notification css --mds-notification-dot-background
+mds-notification css --mds-notification-dot-padding
+mds-notification css --mds-notification-min-width
+mds-notification css --mds-notification-ring-color
+mds-notification css --mds-notification-ring-size
+mds-notification css --mds-notification-size
+mds-notification css --mds-notification-transition-duration
+mds-notification css --mds-notification-transition-timing-function
+mds-notification css --mds-notification-translate
+mds-notification css --mds-notification-translate-offset-x
+mds-notification css --mds-notification-translate-offset-y
+mds-paginator encapsulation shadow
+mds-paginator prop currentPage (attr current-page) [reflect, mutable]: number = 1
+mds-paginator prop pages (attr pages): number = 0
+mds-paginator event mdsPaginatorChange: MdsPaginatorEventDetail [bubbles, cancelable, composed]
+mds-paginator css --mds-paginator-background
+mds-paginator css --mds-paginator-scroll-behavior
+mds-paginator-item encapsulation shadow
+mds-paginator-item prop disabled (attr disabled) [reflect]: boolean | undefined
+mds-paginator-item prop icon (attr icon) [reflect]: string | undefined
+mds-paginator-item prop selected (attr selected) [reflect]: boolean | undefined
+mds-paginator-item slot (default)
+mds-paginator-item css --mds-paginator-item-background
+mds-paginator-item css --mds-paginator-item-background-disabled
+mds-paginator-item css --mds-paginator-item-background-hover
+mds-paginator-item css --mds-paginator-item-background-selected
+mds-paginator-item css --mds-paginator-item-color
+mds-paginator-item css --mds-paginator-item-color-disabled
+mds-paginator-item css --mds-paginator-item-color-hover
+mds-paginator-item css --mds-paginator-item-color-selected
+mds-paginator-item css --mds-paginator-item-radius
+mds-paginator-item css --mds-paginator-item-shadow
+mds-paginator-item css --mds-paginator-item-shadow-disabled
+mds-paginator-item css --mds-paginator-item-shadow-hover
+mds-paginator-item css --mds-paginator-item-shadow-selected
+mds-paginator-item css --mds-paginator-item-size
+mds-policy-ai encapsulation shadow
+mds-policy-ai prop description (attr description) [reflect]: string | undefined
+mds-policy-ai prop headline (attr headline) [reflect]: string | undefined
+mds-policy-ai prop href (attr href) [reflect]: string | undefined = 'https://www.maggiolieditore.it/il-regolamento-europeo-sull-intelligenza-artificiale.html'
+mds-policy-ai prop variant (attr variant) [reflect]: "banner" | "card" | "chip" | "icon" | undefined = 'chip'
+mds-policy-ai part banner
+mds-policy-ai part card
+mds-policy-ai part chip
+mds-policy-ai part icon
+mds-pref encapsulation shadow
+mds-pref prop controller (attr controller) [reflect, mutable]: boolean | undefined
+mds-pref prop size (attr size) [reflect]: "md" | "sm" | undefined
+mds-pref slot (default)
+mds-pref-animation encapsulation shadow
+mds-pref-animation prop mode (attr mode) [reflect, mutable]: "no-preference" | "reduce" | "system" | undefined
+mds-pref-animation prop size (attr size) [reflect]: "md" | "sm" | undefined
+mds-pref-animation event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
+mds-pref-consumption encapsulation shadow
+mds-pref-consumption prop mode (attr mode) [reflect, mutable]: "high" | "low" | "medium" | undefined
+mds-pref-consumption prop size (attr size) [reflect]: "md" | "sm" | undefined
+mds-pref-consumption event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
+mds-pref-contrast encapsulation shadow
+mds-pref-contrast prop mode (attr mode) [reflect, mutable]: "more" | "no-preference" | "system" | undefined
+mds-pref-contrast prop size (attr size) [reflect]: "md" | "sm" | undefined
+mds-pref-contrast event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
+mds-pref-language encapsulation shadow
+mds-pref-language prop set (attr set) [reflect, mutable]: string = 'auto'
+mds-pref-language prop size (attr size) [reflect]: "md" | "sm" | undefined
+mds-pref-language event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
+mds-pref-language event mdsPrefLanguageChange: MdsPrefLanguageEventDetail [bubbles, cancelable, composed]
+mds-pref-language slot (default)
+mds-pref-language-item encapsulation shadow
+mds-pref-language-item prop code (attr code) [reflect]: string
+mds-pref-language-item prop selected (attr selected) [reflect]: boolean | undefined = false
+mds-pref-language-item event mdsPrefLanguageItemSelect: MdsPrefLanguageEventDetail [bubbles, cancelable, composed]
+mds-pref-mode encapsulation shadow
+mds-pref-mode prop lockedScheme (attr locked-scheme) [reflect]: "all" | "dark" | "light" | undefined
+mds-pref-mode prop mode (attr mode) [reflect, mutable]: "dark" | "light" | "system" | undefined
+mds-pref-mode prop size (attr size) [reflect]: "md" | "sm" | undefined
+mds-pref-mode prop transition (attr transition) [reflect, mutable]: "flash" | "none" | "smooth" = 'smooth'
+mds-pref-mode event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
+mds-pref-theme encapsulation shadow
+mds-pref-theme prop cornerShape (attr corner-shape) [reflect, mutable]: "bevel" | "default" | "notch" | "round" | "scoop" | "square" | "squircle" | undefined
+mds-pref-theme prop name (attr name) [reflect, mutable]: string = 'default'
+mds-pref-theme prop scheme (attr scheme) [reflect, mutable]: "all" | "dark" | "light" = 'all'
+mds-pref-theme prop size (attr size) [reflect]: "md" | "sm" | undefined
+mds-pref-theme event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
+mds-pref-theme event mdsPrefThemeChange: MdsPrefThemeEventDetail [bubbles, cancelable, composed]
+mds-pref-theme slot (default)
+mds-pref-theme-item encapsulation shadow
+mds-pref-theme-item prop label (attr label) [reflect, mutable]: string | undefined
+mds-pref-theme-item prop name (attr name) [reflect]: string = 'default'
+mds-pref-theme-item prop scheme (attr scheme) [reflect]: "all" | "dark" | "light" | undefined = 'all'
+mds-pref-theme-item prop selected (attr selected) [reflect]: boolean | undefined = false
+mds-pref-theme-item event mdsPrefThemeItemSelect: MdsPrefThemeEventDetail [bubbles, cancelable, composed]
+mds-pref-theme-item css --mds-pref-theme-item-color-background
+mds-pref-theme-item css --mds-pref-theme-item-color-status-error
+mds-pref-theme-item css --mds-pref-theme-item-color-status-success
+mds-pref-theme-item css --mds-pref-theme-item-color-status-warning
+mds-pref-theme-item css --mds-pref-theme-item-color-variant-primary
+mds-price-table encapsulation shadow
+mds-price-table slot (default)
+mds-price-table-features encapsulation shadow
+mds-price-table-features prop label (attr label): string | undefined
+mds-price-table-features slot (default)
+mds-price-table-features part header
+mds-price-table-features css --mds-price-table-features-border-color
+mds-price-table-features css --mds-price-table-features-padding
+mds-price-table-features-cell encapsulation shadow
+mds-price-table-features-cell prop type (attr type) [reflect]: "custom" | "label" | "supported" | "text" | "unsupported" | undefined = 'text'
+mds-price-table-features-cell slot (default)
+mds-price-table-features-cell part icon
+mds-price-table-features-cell part text
+mds-price-table-features-cell css --mds-price-table-features-cell-border-color
+mds-price-table-features-cell css --mds-price-table-features-cell-icon-supported-color
+mds-price-table-features-cell css --mds-price-table-features-cell-icon-supported-color-hover
+mds-price-table-features-cell css --mds-price-table-features-cell-icon-unsupported-color
+mds-price-table-features-cell css --mds-price-table-features-cell-icon-unsupported-color-hover
+mds-price-table-features-cell css --mds-price-table-features-cell-padding
+mds-price-table-features-row encapsulation shadow
+mds-price-table-features-row slot (default)
+mds-price-table-features-row css --mds-price-table-features-row-background
+mds-price-table-features-row css --mds-price-table-features-row-background-hover
+mds-price-table-features-row css --mds-price-table-features-row-color
+mds-price-table-features-row css --mds-price-table-features-row-color-hover
+mds-price-table-header encapsulation shadow
+mds-price-table-header slot (default)
+mds-price-table-list encapsulation shadow
+mds-price-table-list slot action
+mds-price-table-list slot header
+mds-price-table-list slot item
+mds-price-table-list slot price
+mds-price-table-list part content
+mds-price-table-list part footer
+mds-price-table-list part header
+mds-price-table-list css --mds-price-table-list-separator-color
+mds-price-table-list-item encapsulation shadow
+mds-price-table-list-item prop supported (attr supported) [reflect]: boolean = false
+mds-price-table-list-item prop typography (attr typography) [reflect]: "caption" | "detail" | "paragraph" = 'detail'
+mds-price-table-list-item slot (default)
+mds-price-table-list-item part icon
+mds-price-table-list-item css --mds-price-table-list-item-supported-icon-color
+mds-price-table-list-item css --mds-price-table-list-item-supported-icon-color-hover
+mds-price-table-list-item css --mds-price-table-list-item-unsupported-icon-color
+mds-progress encapsulation shadow
+mds-progress prop direction (attr direction) [reflect]: "horizontal" | "radial" | "vertical" | undefined = 'horizontal'
+mds-progress prop progress (attr progress): number = 0
+mds-progress prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" | undefined = 'sm'
+mds-progress prop steps (attr steps): string = 'Inizio,Un quarto,Metà,Tre quarti,Fine'
+mds-progress prop typography (attr typography): "label" | "option" | undefined = 'option'
+mds-progress prop variant (attr variant) [reflect]: "ai" | "dark" | "error" | "info" | "light" | "primary" | "success" | "warning" | undefined = 'primary'
+mds-progress part progress
+mds-progress part radial-progress
+mds-progress css --mds-progress-background
+mds-progress css --mds-progress-color
+mds-progress css --mds-progress-duration
+mds-progress css --mds-progress-radius
+mds-progress css --mds-progress-thickness
+mds-push-notification encapsulation shadow
+mds-push-notification prop behavior (attr behavior): "auto" | "manual" | undefined = 'auto'
+mds-push-notification prop visible (attr visible) [reflect, mutable]: boolean | undefined
+mds-push-notification event mdsPushNotificationChange: MdsPushNotificationEventDetail [bubbles, cancelable, composed]
+mds-push-notification event mdsPushNotificationHide: void [bubbles, cancelable, composed]
+mds-push-notification event mdsPushNotificationShow: void [bubbles, cancelable, composed]
+mds-push-notification method hide() => Promise<void>
+mds-push-notification method removeNotification(notification: HTMLMdsPushNotificationItemElement | HTMLMdsPushNotificationItemElement[]) => Promise<void>
+mds-push-notification method show() => Promise<void>
+mds-push-notification slot (default)
+mds-push-notification part notifications
+mds-push-notification css --mds-push-notification-background
+mds-push-notification css --mds-push-notification-fadeout-delay
+mds-push-notification css --mds-push-notification-gap
+mds-push-notification css --mds-push-notification-items-duration
+mds-push-notification css --mds-push-notification-items-gap
+mds-push-notification css --mds-push-notification-items-intro-delay
+mds-push-notification css --mds-push-notification-items-outro-delay
+mds-push-notification css --mds-push-notification-items-timing-function
+mds-push-notification-item encapsulation shadow
+mds-push-notification-item prop dateFormat (attr date-format) [reflect]: string = 'timeago'
+mds-push-notification-item prop datetime (attr datetime) [reflect, mutable]: string | undefined
+mds-push-notification-item prop deletable (attr deletable) [reflect, mutable]: boolean | undefined = false
+mds-push-notification-item prop icon (attr icon) [reflect]: string | undefined
+mds-push-notification-item prop initials (attr initials) [reflect, mutable]: string | undefined
+mds-push-notification-item prop message (attr message) [reflect]: string = 'Nessun messaggio disponibile'
+mds-push-notification-item prop preview (attr preview) [reflect]: "avatar" | "image" | undefined = 'image'
+mds-push-notification-item prop src (attr src) [reflect]: string | undefined
+mds-push-notification-item prop subject (attr subject) [reflect]: string | undefined
+mds-push-notification-item prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'weak'
+mds-push-notification-item prop variant (attr variant) [reflect]: "amaranth" | "aqua" | "blue" | "error" | "green" | "info" | "lime" | "orange" | "orchid" | "primary" | "purple" | "red" | "sky" | "success" | "violet" | "warning" | "yellow" | undefined
+mds-push-notification-item event mdsPushNotificationItemClose: MdsPushNotificationItemEventDetail [bubbles, cancelable, composed]
+mds-push-notification-item slot action
+mds-push-notification-item slot badge
+mds-push-notification-item part actions
+mds-push-notification-item part avatar
+mds-push-notification-item part content
+mds-push-notification-item part icon
+mds-push-notification-item part picture
+mds-push-notification-item css --mds-push-notification-item-duration
+mds-push-notification-item css --mds-push-notification-item-icon-background-color
+mds-push-notification-item css --mds-push-notification-item-icon-color
+mds-push-notification-item css --mds-push-notification-item-message-line-clamp
+mds-push-notification-item css --mds-push-notification-item-shadow
+mds-push-notification-item css --mds-push-notification-item-subject-line-clamp
+mds-push-notification-item css --mds-push-notification-item-timing-function
+mds-quote encapsulation shadow
+mds-quote prop tag (attr tag): "h1" | "h2" | "h3" | "h4" | "h5" | "h6" = 'h3'
+mds-quote prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" = 'h3'
+mds-quote slot (default)
+mds-quote slot author
+mds-radial-menu encapsulation shadow
+mds-radial-menu prop angleEnd (attr angle-end) [reflect]: number = 360
+mds-radial-menu prop angleStart (attr angle-start) [reflect]: number = 0
+mds-radial-menu prop backdrop (attr backdrop) [reflect]: boolean | undefined = false
+mds-radial-menu prop direction (attr direction) [reflect]: "clockwise" | "counterclockwise" = 'clockwise'
+mds-radial-menu prop disc (attr disc) [reflect, mutable]: boolean | undefined
+mds-radial-menu prop icon (attr icon) [reflect, mutable]: string | undefined
+mds-radial-menu prop interaction (attr interaction) [reflect]: "click" | "rightclick" = 'click'
+mds-radial-menu prop opened (attr opened) [reflect, mutable]: boolean | undefined
+mds-radial-menu prop radius (attr radius) [reflect]: number = 5
+mds-radial-menu prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'lg'
+mds-radial-menu prop tone (attr tone) [reflect]: "outline" | "strong" | "text" | "weak" | undefined = 'strong'
+mds-radial-menu prop variant (attr variant) [reflect]: "ai" | "apple" | "dark" | "error" | "google" | "info" | "light" | "primary" | "secondary" | "success" | "warning" | undefined = 'dark'
+mds-radial-menu slot item
+mds-radial-menu part radial-menu
+mds-radial-menu css --mds-radial-menu-angle-end
+mds-radial-menu css --mds-radial-menu-angle-start
+mds-radial-menu css --mds-radial-menu-context-menu-z-index
+mds-radial-menu css --mds-radial-menu-delay
+mds-radial-menu css --mds-radial-menu-direction
+mds-radial-menu css --mds-radial-menu-disc-background
+mds-radial-menu css --mds-radial-menu-disc-filter
+mds-radial-menu css --mds-radial-menu-disc-shadow
+mds-radial-menu css --mds-radial-menu-disc-size
+mds-radial-menu css --mds-radial-menu-radius
+mds-radial-menu css --mds-radial-menu-transition-duration
+mds-radial-menu css --mds-radial-menu-transition-timing-function
+mds-radial-menu-item encapsulation shadow
+mds-radial-menu-item prop icon (attr icon) [reflect, mutable]: string | undefined
+mds-radial-menu-item prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'lg'
+mds-radial-menu-item prop tone (attr tone) [reflect]: "outline" | "strong" | "text" | "weak" | undefined = 'weak'
+mds-radial-menu-item prop tooltip (attr tooltip) [reflect]: string | undefined
+mds-radial-menu-item prop variant (attr variant) [reflect]: "ai" | "apple" | "dark" | "error" | "google" | "info" | "light" | "primary" | "secondary" | "success" | "warning" | undefined = 'dark'
+mds-radial-menu-item css --mds-radial-menu-item-transition-duration
+mds-radial-menu-item css --mds-radial-menu-item-transition-timing-function
+mds-radial-progress encapsulation shadow
+mds-radial-progress prop icon (attr icon) [reflect]: string | undefined
+mds-radial-progress prop progress (attr progress): number = 0
+mds-radial-progress prop typography (attr typography) [reflect]: "label" | "option" | undefined = 'option'
+mds-radial-progress prop variant (attr variant) [reflect]: "ai" | "dark" | "error" | "info" | "light" | "primary" | "success" | "warning" | undefined = 'primary'
+mds-radial-progress part icon
+mds-radial-progress part value-container
+mds-separator encapsulation shadow
+mds-separator css --mds-separator-background
+mds-spinner encapsulation shadow
+mds-spinner prop running (attr running) [reflect, mutable]: boolean | undefined = false
+mds-spinner css --mds-spinner-duration
+mds-status-bar encapsulation shadow
+mds-status-bar prop description (attr description) [reflect]: string | undefined
+mds-status-bar prop overflow (attr overflow) [reflect]: "auto" | "manual" = 'manual'
+mds-status-bar prop position (attr position) [reflect]: "bottom" | "bottom-left" | "bottom-right" = 'bottom-right'
+mds-status-bar prop visible (attr visible) [reflect, mutable]: boolean | undefined
+mds-status-bar method hide() => Promise<void>
+mds-status-bar slot (default)
+mds-status-bar part actions
+mds-status-bar part status-bar
+mds-status-bar part status-bar-area
+mds-status-bar css --mds-status-bar-backdrop
+mds-status-bar css --mds-status-bar-backdrop-filter
+mds-status-bar css --mds-status-bar-max-width
+mds-stepper-bar encapsulation shadow
+mds-stepper-bar prop itemsDone (attr items-done): number = 1
+mds-stepper-bar prop navigation (attr navigation) [reflect]: "none" | "scrollbar" = 'none'
+mds-stepper-bar event mdsStepperBarChange: MdsStepperBarEventDetail [bubbles, cancelable, composed]
+mds-stepper-bar slot (default)
+mds-stepper-bar slot content
+mds-stepper-bar part contents
+mds-stepper-bar part items
+mds-stepper-bar css --mds-stepper-bar-gap
+mds-stepper-bar css --mds-stepper-bar-offset-margin
+mds-stepper-bar css --mds-stepper-bar-scroll-behavior
+mds-stepper-bar css --mds-stepper-bar-scrollbar-margin
+mds-stepper-bar css --mds-stepper-bar-scrollbar-radius
+mds-stepper-bar css --mds-stepper-bar-scrollbar-size
+mds-stepper-bar css --mds-stepper-bar-scrollbar-thumb-background
+mds-stepper-bar css --mds-stepper-bar-scrollbar-track-background
+mds-stepper-bar-item encapsulation shadow
+mds-stepper-bar-item prop badge (attr badge) [reflect, mutable]: boolean
+mds-stepper-bar-item prop current (attr current) [reflect, mutable]: boolean = false
+mds-stepper-bar-item prop done (attr done) [reflect]: boolean = false
+mds-stepper-bar-item prop icon (attr icon) [required]: string
+mds-stepper-bar-item prop iconChecked (attr icon-checked): string | undefined = this.icon
+mds-stepper-bar-item prop label (attr label) [required]: string
+mds-stepper-bar-item prop step (attr step): boolean
+mds-stepper-bar-item prop typography (attr typography): "action" | "caption" | "detail" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "hack" | "label" | "option" | "paragraph" | "snippet" | "tip" | undefined = 'h6'
+mds-stepper-bar-item prop value (attr value) [reflect]: string | undefined
+mds-stepper-bar-item event mdsStepperBarItemDone: MdsStepperBarItemEventDetail [bubbles, cancelable, composed]
+mds-stepper-bar-item part badge
+mds-stepper-bar-item css --mds-stepper-bar-item-color
+mds-stepper-bar-item css --mds-stepper-bar-item-duration
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-background
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-background-current
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-background-done
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-color
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-color-current
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-color-done
+mds-stepper-bar-item css --mds-stepper-bar-item-min-width
+mds-stepper-bar-item css --mds-stepper-bar-item-progress-background
+mds-stepper-bar-item css --mds-stepper-bar-item-progress-color
+mds-stepper-bar-item css --mds-stepper-bar-item-progress-thickness
+mds-tab encapsulation shadow
+mds-tab prop animation (attr animation) [reflect]: "fade" | "slide" | undefined = 'slide'
+mds-tab prop direction (attr direction) [reflect, mutable]: "horizontal" | "vertical" | undefined = 'horizontal'
+mds-tab prop fill (attr fill) [reflect, mutable]: boolean | undefined
+mds-tab prop overflow (attr overflow) [reflect, mutable]: boolean | undefined
+mds-tab prop scrollbar (attr scrollbar) [reflect, mutable]: boolean | undefined
+mds-tab prop size (attr size) [reflect, mutable]: "md" | "sm" | undefined
+mds-tab event mdsTabChange: MdsTabEventDetail [bubbles, cancelable, composed]
+mds-tab slot (default)
+mds-tab slot content
+mds-tab part contents
+mds-tab part slider
+mds-tab part tabs
+mds-tab css --mds-tab-direction-vertical-columns
+mds-tab css --mds-tab-item-default-background
+mds-tab css --mds-tab-item-default-color
+mds-tab css --mds-tab-item-default-shadow
+mds-tab css --mds-tab-item-hover-background
+mds-tab css --mds-tab-item-hover-color
+mds-tab css --mds-tab-item-hover-shadow
+mds-tab css --mds-tab-item-radius
+mds-tab css --mds-tab-item-selected-background
+mds-tab css --mds-tab-item-selected-color
+mds-tab css --mds-tab-item-selected-shadow
+mds-tab css --mds-tab-scroll-behavior
+mds-tab css --mds-tab-scroll-scrollbar-margin
+mds-tab css --mds-tab-scroll-scrollbar-radius
+mds-tab css --mds-tab-scroll-scrollbar-size
+mds-tab css --mds-tab-scroll-scrollbar-thumb-background
+mds-tab css --mds-tab-scroll-scrollbar-track-background
+mds-tab css --mds-tab-slide-delay
+mds-tab css --mds-tab-tabs-background
+mds-tab css --mds-tab-tabs-gap
+mds-tab css --mds-tab-tabs-overflow-shadow
+mds-tab css --mds-tab-tabs-overflow-shadow-size
+mds-tab css --mds-tab-tabs-padding
+mds-tab css --mds-tab-tabs-radius
+mds-tab css --mds-tab-tabs-wrapper-margin
+mds-tab css --mds-tab-tabs-wrapper-outline-opacity
+mds-tab css --mds-tab-tabs-wrapper-shadow
+mds-tab css --mds-tab-tabs-wrapper-shadow-color
+mds-tab css --mds-tab-transition-duration
+mds-tab css --mds-tab-transition-timing-function
+mds-tab-bar encapsulation shadow
+mds-tab-bar event mdsTabBarChange: MdsTabBarEventDetail [bubbles, cancelable, composed]
+mds-tab-bar slot (default)
+mds-tab-bar-item encapsulation shadow
+mds-tab-bar-item prop icon (attr icon): string = ''
+mds-tab-bar-item prop label (attr label) [reflect, mutable]: string | undefined
+mds-tab-bar-item prop selected (attr selected) [reflect, mutable]: boolean
+mds-tab-bar-item prop typography (attr typography): "option" | "tip" | undefined = 'tip'
+mds-tab-bar-item event mdsTabBarItemSelect: string [bubbles, cancelable, composed]
+mds-tab-bar-item slot (default)
+mds-tab-bar-item css --mds-tab-bar-item-background
+mds-tab-bar-item css --mds-tab-bar-item-background-selected
+mds-tab-bar-item css --mds-tab-bar-item-color
+mds-tab-bar-item css --mds-tab-bar-item-color-selected
+mds-tab-item encapsulation shadow
+mds-tab-item prop animation (attr animation) [reflect]: "fade" | "slide" | undefined
+mds-tab-item prop await (attr await) [reflect]: boolean
+mds-tab-item prop direction (attr direction) [reflect]: "horizontal" | "vertical" | undefined
+mds-tab-item prop disabled (attr disabled) [reflect, mutable]: boolean | undefined
+mds-tab-item prop expanded (attr expanded): boolean | undefined
+mds-tab-item prop href (attr href) [reflect]: string | undefined
+mds-tab-item prop icon (attr icon): string | undefined
+mds-tab-item prop iconPosition (attr icon-position): "left" | "right" | undefined = 'left'
+mds-tab-item prop label (attr label) [reflect]: string | undefined
+mds-tab-item prop selected (attr selected) [reflect, mutable]: boolean | undefined
+mds-tab-item prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" | undefined = 'md'
+mds-tab-item prop type (attr type): "a" | "button" | "reset" | "submit" | undefined = 'submit'
+mds-tab-item prop value (attr value) [reflect]: string | undefined
+mds-tab-item event mdsTabItemFocus: MdsTabItemEventDetail [bubbles, cancelable, composed]
+mds-tab-item event mdsTabItemSelect: MdsTabItemEventDetail [bubbles, cancelable, composed]
+mds-tab-item part button
+mds-tab-item css --mds-tab-item-default-background
+mds-tab-item css --mds-tab-item-default-shadow
+mds-tab-item css --mds-tab-item-hover-background
+mds-tab-item css --mds-tab-item-selected-background
+mds-tab-item css --mds-tab-item-selected-shadow
+mds-table encapsulation shadow
+mds-table prop interactive (attr interactive): boolean | undefined
+mds-table prop selectable (attr selectable): boolean | undefined
+mds-table prop selection (attr selection) [reflect, mutable]: boolean | undefined
+mds-table event mdsTableSelectionChange: MdsTableSelectionEventDetail [bubbles, cancelable, composed]
+mds-table method selectAll(select?: boolean) => Promise<void>
+mds-table method updateSelection() => Promise<void>
+mds-table slot (default)
+mds-table slot batch-action
+mds-table part batch-actions
+mds-table part batch-actions-wrapper
+mds-table part table
+mds-table part table-wrapper
+mds-table css --mds-table-actions-gap
+mds-table css --mds-table-background
+mds-table css --mds-table-background-alt
+mds-table css --mds-table-border-color
+mds-table css --mds-table-border-width
+mds-table css --mds-table-cell-padding
+mds-table css --mds-table-color
+mds-table css --mds-table-color-alt
+mds-table-body encapsulation shadow
+mds-table-body prop interactive (attr interactive) [reflect]: boolean | undefined
+mds-table-body prop selection (attr selection) [reflect]: boolean | undefined
+mds-table-body slot (default)
+mds-table-body css --mds-table-body-background
+mds-table-body css --mds-table-body-background-alt
+mds-table-body css --mds-table-body-background-hover
+mds-table-body css --mds-table-body-color
+mds-table-body css --mds-table-body-color-alt
+mds-table-cell encapsulation shadow
+mds-table-cell prop value (attr value) [reflect]: number | string | undefined
+mds-table-cell slot (default)
+mds-table-cell css --mds-table-cell-background
+mds-table-cell css --mds-table-cell-background-alt
+mds-table-cell css --mds-table-cell-color
+mds-table-cell css --mds-table-cell-color-alt
+mds-table-footer encapsulation shadow
+mds-table-footer slot (default)
+mds-table-header encapsulation shadow
+mds-table-header prop selectable (attr selectable): boolean | undefined
+mds-table-header method setSelection(selectedItems: number, totalItems: number) => Promise<void>
+mds-table-header slot (default)
+mds-table-header part actions
+mds-table-header-cell encapsulation shadow
+mds-table-header-cell prop direction (attr direction) [reflect, mutable]: "ascending" | "descending" | "none" = 'none'
+mds-table-header-cell prop label (attr label) [reflect]: string | undefined
+mds-table-header-cell prop sortable (attr sortable) [reflect]: boolean | undefined
+mds-table-header-cell part action
+mds-table-header-cell part label
+mds-table-row encapsulation shadow
+mds-table-row prop interactive (attr interactive) [reflect]: boolean | undefined
+mds-table-row prop overlayActions (attr overlay-actions) [reflect]: boolean
+mds-table-row prop selectable (attr selectable) [reflect]: boolean | undefined = undefined
+mds-table-row prop selected (attr selected) [reflect, mutable]: boolean | undefined
+mds-table-row prop selection (attr selection) [reflect]: boolean | undefined
+mds-table-row prop value (attr value) [reflect]: number | string | undefined
+mds-table-row slot (default)
+mds-table-row slot action
+mds-table-row css --mds-table-row-actions-gap
+mds-table-row css --mds-table-row-background-alt
+mds-table-row css --mds-table-row-background-hover
+mds-table-row css --mds-table-row-color-alt
+mds-table-row css --mds-table-row-color-hover
+mds-text encapsulation shadow
+mds-text prop animation (attr animation) [reflect]: "none" | "yugop" | undefined = 'none'
+mds-text prop tag (attr tag) [reflect, mutable]: "abbr" | "address" | "article" | "b" | "bdo" | "blockquote" | "cite" | "code" | "dd" | "del" | "details" | "dfn" | "div" | "dl" | "dt" | "em" | "figcaption" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "i" | "ins" | "kbd" | "label" | "legend" | "li" | "mark" | "ol" | "p" | "pre" | "q" | "rb" | "rt" | "ruby" | "s" | "samp" | "small" | "span" | "strong" | "sub" | "summary" | "sup" | "time" | "u" | "ul" | "var"
+mds-text prop text (attr text) [reflect]: string | undefined
+mds-text prop truncate (attr truncate) [reflect]: "all" | "none" | "word" | undefined
+mds-text prop typography (attr typography) [reflect]: "action" | "caption" | "detail" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "hack" | "label" | "option" | "paragraph" | "snippet" | "tip" = 'detail'
+mds-text prop variant (attr variant) [reflect]: "code" | "info" | "read" | "title" | undefined
+mds-text slot (default)
+mds-text css --mds-text-animation-placeholder-char
+mds-text css --mds-text-animation-speed
+mds-text css --mds-text-line-clamp
+mds-text css --mds-text-selection-background
+mds-text css --mds-text-selection-color
+mds-toast encapsulation shadow
+mds-toast prop duration (attr duration) [reflect, mutable]: number | undefined = 5000
+mds-toast prop position (attr position) [reflect, mutable]: "bottom-center" | "bottom-left" | "bottom-right" | "top-center" | "top-left" | "top-right" = 'bottom-center'
+mds-toast prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'strong'
+mds-toast prop variant (attr variant) [reflect]: "ai" | "dark" | "error" | "info" | "light" | "primary" | "success" | "warning" | undefined = 'light'
+mds-toast prop visible (attr visible) [reflect, mutable]: boolean | undefined
+mds-toast event mdsToastClose: void [bubbles, cancelable, composed]
+mds-toast slot (default)
+mds-toast slot action
+mds-toast slot icon
+mds-toast css --mds-toast-background
+mds-toast css --mds-toast-color
+mds-toast css --mds-toast-duration
+mds-toast css --mds-toast-icon-color
+mds-toast css --mds-toast-shadow
+mds-toast css --mds-toast-width
+mds-tooltip encapsulation shadow
+mds-tooltip prop disableAutoPlacement (attr disable-auto-placement) [reflect]: boolean = false
+mds-tooltip prop disableShift (attr disable-shift): boolean = false
+mds-tooltip prop flip (attr flip): boolean = false
+mds-tooltip prop offset (attr offset): number = 12
+mds-tooltip prop placement (attr placement) [reflect]: "bottom" | "bottom-end" | "bottom-start" | "left" | "left-end" | "left-start" | "right" | "right-end" | "right-start" | "top" | "top-end" | "top-start" = 'top'
+mds-tooltip prop shiftPadding (attr shift-padding): number = 12
+mds-tooltip prop strategy (attr strategy) [reflect]: "absolute" | "fixed" = 'fixed'
+mds-tooltip prop target (attr target) [reflect, required]: string
+mds-tooltip prop typography (attr typography): "caption" | "detail" | "tip" = 'tip'
+mds-tooltip prop visible (attr visible) [reflect, mutable]: boolean = false
+mds-tooltip slot (default)
+mds-tooltip part text
+mds-tooltip css --mds-tooltip-arrow-background
+mds-tooltip css --mds-tooltip-background
+mds-tooltip css --mds-tooltip-delay
+mds-tooltip css --mds-tooltip-dot-padding
+mds-tooltip css --mds-tooltip-drop-shadow
+mds-tooltip css --mds-tooltip-duration
+mds-tooltip css --mds-tooltip-ease
+mds-tooltip css --mds-tooltip-transform-from
+mds-tooltip css --mds-tooltip-transform-to
+mds-tooltip css --mds-tooltip-z-index
+mds-tree encapsulation shadow
+mds-tree prop actions (attr actions) [reflect]: "auto" | "visible" | undefined = 'auto'
+mds-tree prop appearance (attr appearance) [reflect]: "depth" | "none" = 'depth'
+mds-tree prop async (attr async) [reflect]: boolean | undefined
+mds-tree prop expanded (attr expanded) [reflect, mutable]: boolean | undefined
+mds-tree prop label (attr label): string
+mds-tree prop toggle (attr toggle) [reflect]: "chevron" | "folder" = 'chevron'
+mds-tree prop togglePosition (attr toggle-position) [reflect]: "left" | "right" = 'left'
+mds-tree prop truncate (attr truncate) [reflect]: "all" | "none" | "word" = 'word'
+mds-tree slot (default)
+mds-tree css --mds-tree-actions-border-radius
+mds-tree css --mds-tree-actions-gap
+mds-tree css --mds-tree-branch-border-color
+mds-tree css --mds-tree-branch-border-size
+mds-tree css --mds-tree-branch-dot-default-color
+mds-tree css --mds-tree-branch-dot-expanded-color
+mds-tree css --mds-tree-branch-use-rounded-border
+mds-tree css --mds-tree-label-default-background
+mds-tree css --mds-tree-label-hover-background
+mds-tree css --mds-tree-label-icon-default-color
+mds-tree css --mds-tree-label-icon-hover-color
+mds-tree css --mds-tree-line-clamp
+mds-tree css --mds-tree-toggle-gap
+mds-tree css --mds-tree-toggle-icon-async-background
+mds-tree css --mds-tree-toggle-icon-async-color
+mds-tree css --mds-tree-toggle-icon-chevron-default-background
+mds-tree css --mds-tree-toggle-icon-chevron-default-color
+mds-tree css --mds-tree-toggle-icon-chevron-expanded-background
+mds-tree css --mds-tree-toggle-icon-chevron-expanded-color
+mds-tree css --mds-tree-toggle-icon-folder-default-background
+mds-tree css --mds-tree-toggle-icon-folder-default-color
+mds-tree css --mds-tree-toggle-icon-folder-expanded-color
+mds-tree css --mds-tree-toggle-icon-position-right-default-background
+mds-tree css --mds-tree-toggle-icon-position-right-default-color
+mds-tree css --mds-tree-toggle-icon-position-right-expanded-background
+mds-tree css --mds-tree-toggle-icon-position-right-expanded-color
+mds-tree css --mds-tree-transition-duration
+mds-tree css --mds-tree-transition-timing-function
+mds-tree-item encapsulation shadow
+mds-tree-item prop actions (attr actions) [reflect]: "auto" | "visible" | undefined
+mds-tree-item prop appearance (attr appearance) [reflect]: "depth" | "none" | undefined
+mds-tree-item prop async (attr async) [reflect]: boolean | undefined
+mds-tree-item prop depth (attr depth) [reflect]: number | undefined
+mds-tree-item prop expanded (attr expanded) [reflect, mutable]: boolean | undefined
+mds-tree-item prop icon (attr icon): string | undefined
+mds-tree-item prop label (attr label): string
+mds-tree-item prop toggle (attr toggle) [reflect]: "chevron" | "folder" | undefined
+mds-tree-item prop togglePosition (attr toggle-position) [reflect]: "left" | "right" | undefined
+mds-tree-item prop truncate (attr truncate) [reflect]: "all" | "none" | "word" | undefined = 'word'
+mds-tree-item event mdsTreeItemCollapse: MdsTreeItemEventDetail [bubbles, cancelable, composed]
+mds-tree-item event mdsTreeItemExpand: MdsTreeItemEventDetail [bubbles, cancelable, composed]
+mds-tree-item method expand() => Promise<void>
+mds-tree-item method refreshActions() => Promise<void>
+mds-tree-item slot (default)
+mds-tree-item slot action
+mds-tree-item part actions-container
+mds-tree-item part actions-list
+mds-tree-item css --mds-tree-item-actions-border-radius
+mds-tree-item css --mds-tree-item-actions-gap
+mds-tree-item css --mds-tree-item-branch-border-color
+mds-tree-item css --mds-tree-item-branch-border-radius
+mds-tree-item css --mds-tree-item-branch-border-size
+mds-tree-item css --mds-tree-item-branch-dot-default-color
+mds-tree-item css --mds-tree-item-branch-dot-expanded-color
+mds-tree-item css --mds-tree-item-label-default-background
+mds-tree-item css --mds-tree-item-label-hover-background
+mds-tree-item css --mds-tree-item-label-icon-default-color
+mds-tree-item css --mds-tree-item-label-icon-hover-color
+mds-tree-item css --mds-tree-item-line-clamp
+mds-tree-item css --mds-tree-item-toggle-gap
+mds-tree-item css --mds-tree-item-toggle-icon-async-background
+mds-tree-item css --mds-tree-item-toggle-icon-async-color
+mds-tree-item css --mds-tree-item-toggle-icon-chevron-default-background
+mds-tree-item css --mds-tree-item-toggle-icon-chevron-default-color
+mds-tree-item css --mds-tree-item-toggle-icon-chevron-expanded-background
+mds-tree-item css --mds-tree-item-toggle-icon-chevron-expanded-color
+mds-tree-item css --mds-tree-item-toggle-icon-folder-default-background
+mds-tree-item css --mds-tree-item-toggle-icon-folder-default-color
+mds-tree-item css --mds-tree-item-toggle-icon-folder-expanded-background
+mds-tree-item css --mds-tree-item-toggle-icon-folder-expanded-color
+mds-tree-item css --mds-tree-item-toggle-icon-position-right-default-background
+mds-tree-item css --mds-tree-item-toggle-icon-position-right-default-color
+mds-tree-item css --mds-tree-item-toggle-icon-position-right-expanded-background
+mds-tree-item css --mds-tree-item-toggle-icon-position-right-expanded-color
+mds-tree-item css --mds-tree-item-toggle-size
+mds-tree-item css --mds-tree-item-transition-duration
+mds-tree-item css --mds-tree-item-transition-timing-function
+mds-url-view encapsulation shadow
+mds-url-view prop icon (attr icon) [reflect]: string | undefined
+mds-url-view prop label (attr label) [reflect]: string | undefined
+mds-url-view prop loading (attr loading) [reflect]: "eager" | "lazy" | undefined = 'lazy'
+mds-url-view prop src (attr src) [reflect, required]: string
+mds-url-view event mdsUrlViewClose: void [bubbles, cancelable, composed]
+mds-url-view css --mds-url-view-background
+mds-url-view css --mds-url-view-color
+mds-url-view css --mds-url-view-header-shadow
+mds-url-view css --mds-url-view-radius
+mds-url-view css --mds-url-view-shadow
+mds-usage encapsulation shadow
+mds-usage prop alias (attr alias): string | undefined
+mds-usage prop variant (attr variant): "do" | "dont" | "info" | "warn" = 'info'
+mds-usage slot (default)
+mds-usage part header
+mds-usage part icon
+mds-usage part label
+mds-usage css --mds-usage-border-color
+mds-usage css --mds-usage-header-background
+mds-usage css --mds-usage-header-color
+mds-video-wall encapsulation shadow
+mds-video-wall prop autoplay (attr autoplay): boolean = true
+mds-video-wall prop loop (attr loop): boolean = true
+mds-video-wall prop muted (attr muted): boolean = true
+mds-video-wall prop noise (attr noise): "classic" | "none" | "sharp" | "soft" | "tv" | undefined = 'none'
+mds-video-wall prop poster (attr poster): string | undefined
+mds-video-wall prop preload (attr preload): "auto" | "metadata" | "none" | undefined = 'auto'
+mds-video-wall prop src (attr src): string | undefined
+mds-video-wall slot (default)
+mds-video-wall slot content
+mds-video-wall css --mds-video-wall-noise-background-color
+mds-video-wall css --mds-video-wall-noise-background-size
+mds-video-wall css --mds-video-wall-noise-filter
+mds-video-wall css --mds-video-wall-video-fit
+mds-zero encapsulation shadow
+mds-zero slot (default)
+mds-zero slot action
+mds-zero slot content
+mds-zero part actions
+mds-zero part contents
+mds-zero css --mds-zero-contents-max-width
+type AnimationModeType = 'reduce' | 'no-preference' | 'system';
+type AttachmentSort = 'status' | 'date';
+type AutocompleteType = "address" | "email" | "additional-name" | "address-level1" | "address-level2" | "address-level3" | "address-level4" | "address-line1" | "address-line2" | "address-line3" | "bday" | "bday-day" | "bday-month" | "bday-year" | "cc-additional-name" | "cc-csc" | "cc-exp" | "cc-exp-month" | "cc-exp-year" | "cc-family-name" | "cc-given-name" | "cc-name" | "cc-number" | "cc-type" | "country" | "country-name" | "current-password" | "family-name" | "given-name" | "honorific-prefix" | "honorific-suffix" | "impp" | "language" | "name" | "new-password" | "nickname" | "off" | "on" | "one-time-code" | "organization" | "organization-title" | "photo" | "postal-code" | "sex" | "street-address" | "tel" | "tel-area-code" | "tel-country-code" | "tel-extension" | "tel-local" | "tel-national" | "transaction-amount" | "transaction-currency" | "url" | "username"
+type AvatarSizeType = 'sm' | 'md' | 'lg';
+type BenchmarkBarTypographyType = 'option' | 'label';
+type BibliographyFormatType = | 'apa' // American Psychological Association - Simmons, B. (2015, January 9). The tale of two Flaccos. Grantland. http://grantland.com/the-triangle/the-tale-of-two-flaccos/ | 'mla' // Modern Language Association - Author's Last name, First name. "Title of Source." Title of Container, Other contributors, Version, Numbers, Publisher, Publication Date, Location. | 'turabian';
+type BibliographyRelationshipType = 'author' | 'external';
+type ButtonDropdownVariantType = | ThemeLuminanceVariantType | ThemeBrandVariantType | ThemeStatusVariantType;
+type ButtonIconPositionType = "left" | "right"
+type ButtonSizeType = "sm" | "md" | "lg" | "xl"
+type ButtonTargetType = "blank" | "self"
+type ButtonType = (typeof buttonTypeDictionary)[number] | 'a';
+type ButtonVariantType = | 'apple' | 'google' | ThemeLuminanceVariantType | ThemeBrandVariantType | ThemeStatusVariantType;
+type CalendarCellSelectionOrieintationType = 'both' | 'horizontal' | 'vertical';
+type CalendarCellSelectionPositionType = 'end' | 'middle' | 'none' | 'start' | 'single';
+type CalendarCellType = 'other' | 'current' | 'weekend';
+type ChipVariantType = "info" | "error" | "success" | "warning" | "amaranth" | "red" | "aqua" | "blue" | "green" | "lime" | "orange" | "orchid" | "purple" | "sky" | "violet" | "yellow" | "dark" | "ai" | "primary" | "secondary"
+type ConsumptionModeType = "low" | "medium" | "high"
+type ContrastModeType = 'more' | 'no-preference' | 'system';
+type CrossoriginType = 'anonymous' | 'use-credentials';
+type Direction = 'clockwise' | 'counterclockwise';
+type DirectionType = 'horizontal' | 'vertical' | 'radial';
+type DirectionType = 'horizontal' | 'vertical';
+type DropdownInteractionType = 'click' | 'none' | 'mouseover';
+type EmojiNames = 'mia' | 'simi';
+interface EventDate { caller: HTMLMdsInputDateRangePreselectionElement; start: string; end?: string; }
+type ExtensionSuffixType = "ai" | "7z" | "ace" | "db" | "default" | "dmg" | "doc" | "docm" | "docx" | "eml" | "eps" | "exe" | "flac" | "gif" | "heic" | "htm" | "html" | "jpe" | "jpeg" | "jpg" | "js" | "json" | "jsx" | "m2v" | "mp2" | "mp3" | "mp4" | "mp4v" | "mpeg" | "mpg4" | "mpg" | "mpga" | "odf" | "odp" | "ods" | "odt" | "ole" | "p7m" | "pdf" | "php" | "png" | "ppt" | "rar" | "rtf" | "sass" | "shtml" | "svg" | "tar" | "tiff" | "ts" | "tsd" | "txt" | "wav" | "webp" | "xar" | "xls" | "xlsx" | "xml" | "zip"
+interface FileError { filename: string; errorMessage: string; }
+type FloatingUIPlacement = "left" | "right" | "bottom" | "bottom-end" | "bottom-start" | "left-end" | "left-start" | "right-end" | "right-start" | "top" | "top-end" | "top-start"
+type FloatingUIStrategy = "absolute" | "fixed"
+type HeaderBarMenuType = "none" | "all" | "desktop" | "mobile"
+type HeaderBarNavType = "none" | "all" | "desktop" | "mobile"
+type HorizontalActionsAnimationType = "slide" | "fade"
+type InputControlsIconType = "arrow" | "arithmetic"
+type InputControlsLayoutType = "horizontal" | "vertical"
+type InputSwitchSizeType = 'sm' | 'md' | 'lg';
+type InputSwitchType = 'checkbox' | 'radio' | 'switch';
+type InputTextType = "number" | "text" | "time" | "email" | "tel" | "url" | "date" | "password" | "search" | "textarea" | "cc" | "cf" | "isbn" | "piva"
+type InputTipItemVariantType = "text" | "required" | "disabled" | "count-almost" | "count-almost-full" | "count-empty" | "count-full" | "count-incomplete" | "readonly" | "required-success"
+type InputTipPositionType = 'top' | 'bottom';
+type Interaction = 'click' | 'rightclick';
+type KeyboardKeyName = "option" | "a" | "1" | "2" | "b" | "i" | "p" | "q" | "s" | "u" | "end" | "0" | "3" | "4" | "5" | "6" | "7" | "v" | "shift" | "g" | "8" | "9" | "alt" | "altleft" | "altright" | "arrowdown" | "arrowleft" | "arrowright" | "arrowup" | "backspace" | "c" | "capslock" | "command" | "commandleft" | "commandright" | "control" | "controlleft" | "controlright" | "d" | "delete" | "e" | "enter" | "escape" | "f" | "f1" | "f10" | "f11" | "f12" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" | "f8" | "f9" | "h" | "home" | "j" | "k" | "l" | "m" | "n" | "o" | "optionleft" | "optionright" | "pagedown" | "pageup" | "r" | "shiftleft" | "shiftright" | "space" | "t" | "tab" | "w" | "windows" | "windowsleft" | "windowsright" | "x" | "y" | "z"
+type KeyboardTest = 'pass' | 'fail';
+type LoadingType = "eager" | "lazy"
+interface MdsAccordionEventDetail { children: NodeListOf<HTMLMdsAccordionItemElement>; selected: string; }
+interface MdsAccordionItemEventDetail { id: string; selected: boolean; }
+interface MdsAccordionTimerEventDetail { index: number; }
+interface MdsAccordionTimerItemEventDetail { selected: boolean; uuid: number; }
+interface MdsBreadcrumbEventDetail { caller: HTMLMdsBreadcrumbItemElement; id: string; selected?: boolean; }
+interface MdsBreadcrumbItemEventDetail { id: string; selected: boolean; }
+interface MdsChipEvent { event: Event; selected?: boolean; element: HTMLMdsChipElement; }
+interface MdsDropdownEventDetail { caller: HTMLElement; visible: boolean; }
+interface MdsFileEventDetail { description: string; extension: string; filename: string; target: HTMLMdsFileElement; type: string; }
+interface MdsFilePreviewEventDetail { extension: string; filename: string; target: HTMLMdsFilePreviewElement; }
+interface MdsFilterEventDetail { children: NodeListOf<HTMLMdsFilterItemElement>; value: string; }
+interface MdsFilterItemEventDetail { id: string; selected: boolean; }
+interface MdsHeaderEventDetail { bar: HTMLMdsHeaderBarElement; }
+interface MdsHeaderVisibilityEventDetail { visibility: boolean; }
+interface MdsImgEventDetail { image: HTMLImageElement; }
+interface MdsInputEventDetail { value?: File | string | FormData | null; }
+interface MdsInputSelectEventDetail extends MdsInputEventDetail { /** * The values of the selected options, the placeholder left out: one with a single select, every * selected one with `multiple`, where `value` holds only the first, as `select.value` does. */ values: string[]; }
+interface MdsInputSwitchEventDetail { name: string; checked: boolean; value: string; }
+type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType;
+interface MdsMentionEvent { event: Event; element: HTMLMdsMentionElement; }
+interface MdsPaginatorEventDetail { caller?: HTMLMdsPaginatorItemElement; page: number; }
+interface MdsPrefChangeEventDetail { preference: UIPreferenceType; }
+interface MdsPrefLanguageEventDetail { /* A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}. * * `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.` */ language?: string; }
+interface MdsPrefThemeEventDetail { name?: string; scheme?: PreferenceThemeSchemeType; }
+interface MdsPushNotificationEventDetail { visible: boolean; }
+interface MdsPushNotificationItemEventDetail { id: string; }
+interface MdsStepperBarEventDetail { step: number; value: string; }
+interface MdsStepperBarItemEventDetail { value: string; }
+interface MdsTabBarEventDetail { index: number; }
+interface MdsTabEventDetail { id: number; value?: string; }
+interface MdsTabItemEventDetail { target: HTMLMdsTabItemElement; value?: string; }
+type MdsTableRowSelection = { index: number; value?: string | number; }
+interface MdsTableSelectionEventDetail { rows: MdsTableRowSelection[]; }
+interface MdsTreeItemEventDetail { element: HTMLMdsTreeItemElement; }
+interface MdsValidationErrors { [key: string]: string; }
+type MdsValidationErrors = any
+type MdsValidatorFn = (input: string) => null | MdsValidationErrors
+type MentionSize = 'sm' | 'md' | 'lg';
+type ModalAnimationStyleType = 'slide' | 'custom' | '3d';
+type ModalInteractionType = 'strict' | 'relaxed';
+type ModalOverflowType = 'auto' | 'manual';
+type ModalPositionType = | 'bottom' | 'bottom-left' | 'bottom-right' | 'center' | 'left' | 'right' | 'top' | 'top-left' | 'top-right';
+type NavigationType = 'none' | 'scrollbar' | 'position';
+type NoiseType = 'classic' | 'none' | 'sharp' | 'soft' | 'tv';
+type NotificationItemDateFormatType = string
+type NotificationItemPreviewType = 'avatar' | 'image';
+type PolicyAiVariant = 'icon' | 'chip' | 'card' | 'banner';
+type PreferenceCornerShapeChoiceType = "default" | "bevel" | "notch" | "round" | "scoop" | "square" | "squircle"
+type PreferenceModeType = "dark" | "light" | "system"
+type PreferenceThemeSchemeType = "dark" | "light" | "all"
+type PreferenceThemeTransitionType = "none" | "flash" | "smooth"
+type PreloadType = 'auto' | 'metadata' | 'none';
+type PriceTableFeaturesCellType = 'custom' | 'label' | 'supported' | 'text' | 'unsupported';
+type ProgressBarSizeType = "sm" | "md" | "lg" | "xl"
+type ReferrerpolicyType = | 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'origin-when-cross-origin' | 'unsafe-url';
+type SnapType = 'center' | 'end' | 'none' | 'start';
+type SortDirectionType = 'ascending' | 'descending' | 'none';
+type StatusBarPositionType = 'bottom' | 'bottom-left' | 'bottom-right';
+type StepperBarNavigationType = 'none' | 'scrollbar';
+type StrategyType = 'absolute' | 'fixed' | 'disabled';
+type TabSizeType = "sm" | "md"
+type TextAnimationType = 'none' | 'yugop';
+type ThemeFullVariantAvatarType = "info" | "error" | "success" | "warning" | "amaranth" | "red" | "aqua" | "blue" | "green" | "lime" | "orange" | "orchid" | "purple" | "sky" | "violet" | "yellow" | "primary"
+type ThemeFullVariantType = "info" | "error" | "success" | "warning" | "amaranth" | "red" | "aqua" | "blue" | "green" | "lime" | "orange" | "orchid" | "purple" | "sky" | "violet" | "yellow" | "dark" | "light"
+type ThemeInputVariantType = "info" | "error" | "success" | "warning" | "ai" | "primary"
+type ThemeLabelVariantType = "amaranth" | "red" | "aqua" | "blue" | "green" | "lime" | "orange" | "orchid" | "purple" | "sky" | "violet" | "yellow"
+type ThemeStatusVariantType = "info" | "error" | "success" | "warning"
+type ThemeVariantType = "info" | "error" | "success" | "warning" | "dark" | "light" | "ai" | "primary"
+type ToastPosition = | 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+type ToneBoxVariantType = "strong" | "weak" | "box" | "outline" | "text"
+type ToneMinimalBoxVariantType = "strong" | "weak" | "box"
+type ToneMinimalVariantType = "strong" | "weak"
+type ToneSmartVariantType = "strong" | "weak" | "outline"
+type ToneVariantType = "strong" | "weak" | "outline" | "text"
+type TreeActions = "visible" | "auto"
+type TreeAppearance = "none" | "depth"
+type TreeIcon = "folder" | "chevron"
+type TypographyHeadingTagType = "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+type TypographyInfoType = "caption" | "detail" | "label" | "option" | "paragraph" | "tip"
+type TypographyInputType = "snippet" | "detail"
+type TypographyLabelType = "label" | "option"
+type TypographyReadType = "caption" | "detail" | "paragraph"
+type TypographyReadingVariants = "info" | "read"
+type TypographySmallerType = "option" | "tip"
+type TypographyTagType = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "label" | "code" | "strong" | "abbr" | "address" | "article" | "b" | "bdo" | "blockquote" | "cite" | "dd" | "del" | "details" | "dfn" | "div" | "dl" | "dt" | "em" | "figcaption" | "i" | "ins" | "kbd" | "legend" | "li" | "mark" | "ol" | "p" | "pre" | "q" | "rb" | "rt" | "ruby" | "s" | "samp" | "small" | "span" | "sub" | "summary" | "sup" | "time" | "u" | "ul" | "var"
+type TypographyTechnicalType = "label" | "option"
+type TypographyTitleType = "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+type TypographyTooltipType = "caption" | "detail" | "tip"
+type TypographyTruncateType = "none" | "all" | "word"
+type TypographyType = "action" | "caption" | "snippet" | "detail" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "hack" | "label" | "option" | "paragraph" | "tip"
+type TypographyVariants = "title" | "info" | "read" | "code"
+type UsageType = 'do' | 'dont' | 'info' | 'warn';
+type ViewportType = | 'all' | 'tv' | 'xlarge' | 'large' | 'wide' | 'desktop' | 'tablet' | 'none';

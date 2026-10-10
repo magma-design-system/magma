@@ -30,6 +30,8 @@ describe('updateValidity', () => {
   });
 
   it.each([
+    [{ rule: 'cardNumber' }, { typeMismatch: true }],
+    [{ rule: 'email' }, { typeMismatch: true }],
     [{ rule: 'invalid' }, { customError: true }],
     [{ rule: 'invalidDate' }, { badInput: true }],
     [{ rule: 'max', context: { max: 1 } }, { rangeOverflow: true }],
@@ -38,7 +40,10 @@ describe('updateValidity', () => {
     [{ rule: 'min', context: { min: 1 } }, { rangeUnderflow: true }],
     [{ rule: 'minDate', context: { min: '1/1/2026' } }, { rangeUnderflow: true }],
     [{ rule: 'minlength', context: { minlength: 1 } }, { tooShort: true }],
+    [{ rule: 'pattern' }, { patternMismatch: true }],
     [{ rule: 'requiredSelect' }, { valueMissing: true }],
+    [{ rule: 'url' }, { typeMismatch: true }],
+    [{ rule: 'vatNumber' }, { typeMismatch: true }],
   ] as const)('reports %o with %o', (problem, flags) => {
     const { internals, setValidity } = internalsSpy();
 

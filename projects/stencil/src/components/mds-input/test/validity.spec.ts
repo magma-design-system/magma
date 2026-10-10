@@ -29,6 +29,22 @@ describe('validityProblem', () => {
     });
   });
 
+  it('reports a value that does not match the pattern', () => {
+    expect(validityProblem({ pattern: 'formato non valido' }, 'abc', {})).toEqual({
+      rule: 'pattern',
+    });
+  });
+
+  it('reports the format of an email or a URL as a native input does', () => {
+    expect(validityProblem({ email: '' }, 'mario', {})).toEqual({ rule: 'email' });
+    expect(validityProblem({ url: '' }, 'maggioli', {})).toEqual({ rule: 'url' });
+  });
+
+  it('reports a partita IVA or a card number that is not valid', () => {
+    expect(validityProblem({ piva: '' }, '123', {})).toEqual({ rule: 'vatNumber' });
+    expect(validityProblem({ cc: '' }, '123', {})).toEqual({ rule: 'cardNumber' });
+  });
+
   it('gives the type validators the localized message instead of their Italian one', () => {
     expect(validityProblem({ 'isbn-error': 'codice isbn non valido' }, '123', {})).toEqual({
       rule: 'invalid',

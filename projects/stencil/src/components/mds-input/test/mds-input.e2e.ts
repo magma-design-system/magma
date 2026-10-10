@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 
 let mdsInput: HTMLMdsInputElement;
@@ -479,5 +479,207 @@ describe('form validity', () => {
     await setupForm('<mds-input name="email" required readonly></mds-input>');
 
     expect(form.checkValidity()).toBe(true);
+  });
+});
+
+// Like a native input, a form reset brings back the value of load (#822)
+describe('form reset', () => {
+  let form: HTMLFormElement;
+  let button: HTMLElement;
+
+  const setupForm = async (html: string): Promise<void> => {
+    const result = await render<HTMLFormElement>(
+      `<form>${html}<button type="button">Blur</button></form>`,
+    );
+    form = result.root;
+    waitForChanges = result.waitForChanges;
+    mdsInput = form.querySelector('mds-input')!;
+    button = form.querySelector('button')!;
+  };
+
+  it('brings back the value of load, in the field and in the form data', async () => {
+    await setupForm('<mds-input name="city" value="Rimini"></mds-input>');
+    await userEvent.tripleClick(mdsInput);
+    await userEvent.keyboard('Bologna');
+    expect(mdsInput.value).toBe('Bologna');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(mdsInput.value).toBe('Rimini');
+    expect(mdsInput.shadowRoot!.querySelector('input')!.value).toBe('Rimini');
+    expect(new FormData(form).get('city')).toBe('Rimini');
+  });
+
+  it('empties a field that had no value at load', async () => {
+    await setupForm('<mds-input name="city"></mds-input>');
+    await type(mdsInput, 'Bologna');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(mdsInput.value).toBe('');
+    expect(mdsInput.shadowRoot!.querySelector('input')!.value).toBe('');
+    expect(new FormData(form).get('city')).toBe('');
+  });
+
+  it('forgets the validation shown on blur', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+    await type(mdsInput, 'abc');
+    await blur(button);
+    expect(mdsInput).toEqualAttribute('variant', 'success');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(mdsInput).toEqualAttribute('variant', 'primary');
+    // still invalid for the form: the field is required and empty again
+    expect(mdsInput.matches(':invalid')).toBe(true);
+  });
+});
+
+// Like the pattern attribute of a native input, pattern stops the submit (#822)
+describe('pattern', () => {
+  let form: HTMLFormElement;
+
+  const setupForm = async (html: string): Promise<void> => {
+    const result = await render<HTMLFormElement>(`<form>${html}</form>`);
+    form = result.root;
+    waitForChanges = result.waitForChanges;
+    mdsInput = form.querySelector('mds-input')!;
+  };
+
+  it('stops the submit while the value does not match', async () => {
+    await setupForm('<mds-input name="code" pattern="[A-Z]{3}"></mds-input>');
+
+    await type(mdsInput, 'AB');
+    expect(mdsInput.matches(':invalid')).toBe(true);
+
+    await userEvent.keyboard('C');
+    expect(mdsInput.matches(':invalid')).toBe(false);
+  });
+
+  it('leaves the pattern of the consumer on the native input', async () => {
+    await setupForm('<mds-input name="code" pattern="[A-Z]{3}"></mds-input>');
+
+    expect(mdsInput.shadowRoot!.querySelector('input')).toEqualAttribute('pattern', '[A-Z]{3}');
+  });
+
+  it('follows a pattern set after load', async () => {
+    await setupForm('<mds-input name="code" value="abc"></mds-input>');
+    expect(mdsInput.matches(':invalid')).toBe(false);
+
+    mdsInput.pattern = '[A-Z]{3}';
+    await waitForChanges();
+
+    expect(mdsInput.matches(':invalid')).toBe(true);
+  });
+
+  it('does not constrain a number, as on a native input', async () => {
+    await setupForm('<mds-input name="age" type="number" pattern="[0-9]" value="42"></mds-input>');
+
+    expect(mdsInput.matches(':invalid')).toBe(false);
+  });
+});
+
+// The event is named after keydown and typed KeyboardEvent: it carries the key (#822)
+describe('mdsInputKeydown', () => {
+  it.each(['<mds-input></mds-input>', '<mds-input type="textarea"></mds-input>'])(
+    'carries the KeyboardEvent of the key pressed in %s',
+    async (html) => {
+      await setup(html);
+      const keys: string[] = [];
+      mdsInput.addEventListener('mdsInputKeydown', (event) => keys.push(event.detail.key));
+
+      await type(mdsInput, 'a{Enter}');
+
+      expect(keys).toEqual(['a', 'Enter']);
+    },
+  );
+});
+
+describe('speech-to-text', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('keeps the value when the browser has no Speech API', async () => {
+    vi.stubGlobal('SpeechRecognition', undefined);
+    vi.stubGlobal('webkitSpeechRecognition', undefined);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await setup('<mds-input mic value="abc"></mds-input>');
+
+    mdsInput.shadowRoot!.querySelector<HTMLElement>('.mic-toggle-button')!.click();
+    await waitForChanges();
+
+    expect(mdsInput.value).toBe('abc');
+    expect(mdsInput.shadowRoot!.querySelector('.mic-toggle-button')).toHaveClass(
+      'toggle-button--error',
+    );
+  });
+});
+
+// The formats a native type="email" and type="url" check stop the submit too (#822)
+describe('email and url format', () => {
+  it.each([
+    [
+      'email',
+      ['mario.rossi@maggioli.it', 'a@b', 'mario', 'mario@', 'a b@c.it', 'a@-b.it', 'a@b..it'],
+    ],
+    ['url', ['https://www.maggioli.it', 'mailto:a@b.it', 'www.maggioli.it', '/path', 'http://']],
+  ])('agrees with a native type="%s" on every value', async (inputType, values) => {
+    const { root: form, waitForChanges: wait } = await render<HTMLFormElement>(
+      `<form><mds-input type="${inputType}"></mds-input><input type="${inputType}"></form>`,
+    );
+    await wait();
+    const field = form.querySelector('mds-input')!;
+    const native = form.querySelector<HTMLInputElement>('input:not([part])')!;
+
+    const disagreements = values.filter((value) => {
+      field.value = value;
+      native.value = value;
+      return field.matches(':invalid') !== !native.checkValidity();
+    });
+
+    expect(disagreements).toEqual([]);
+  });
+});
+
+// The formats of the Magma types stop the submit like the native ones (#822)
+describe('piva and cc format', () => {
+  it.each([
+    ['piva', '12345678901', '12345678903'],
+    ['cc', '4111 1111 1111 1112', '4111 1111 1111 1111'],
+  ])('stops the submit of a %s that is not valid', async (inputType, invalid, valid) => {
+    const { root: form } = await render<HTMLFormElement>(
+      `<form><mds-input name="code" type="${inputType}" value="${invalid}"></mds-input></form>`,
+    );
+    const field = form.querySelector('mds-input')!;
+    expect(field.matches(':invalid')).toBe(true);
+
+    field.value = valid;
+
+    expect(field.matches(':invalid')).toBe(false);
+  });
+});
+
+// A disabled fieldset disables the form controls in it. It disabled the host, so the value was
+// left out of the form, but not the input in its shadow root, which stayed editable (#822)
+describe('in a disabled fieldset', () => {
+  it('is disabled like a native input, until the fieldset is enabled', async () => {
+    const { root, waitForChanges } = await render<HTMLFormElement>(
+      '<form><fieldset disabled><mds-input name="subject" value="Hello"></mds-input></fieldset></form>',
+    );
+    const field = root.querySelector('mds-input')!;
+    const native = () => field.shadowRoot!.querySelector('input')!;
+
+    await vi.waitFor(() => expect(native().disabled).toBe(true));
+    expect(new FormData(root).has('subject')).toBe(false);
+
+    root.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(native().disabled).toBe(false);
+    expect(new FormData(root).get('subject')).toBe('Hello');
   });
 });

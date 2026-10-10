@@ -206,11 +206,23 @@ export class MdsInputDateRange {
     endDate: string;
   }>;
 
+  /** A date inside `min` and `max`, the bounds that are set. */
+  private isWithinRange(date: DateTime): boolean {
+    const min = DateTime.fromISO(this.min ?? '');
+    const max = DateTime.fromISO(this.max ?? '');
+    return !(min.isValid && date < min) && !(max.isValid && date > max);
+  }
+
   private getEmittableDateRangeDetail(): { startDate: string; endDate: string } | null {
     const startDate = DateTime.fromISO(this.internalStartDate);
     const endDate = DateTime.fromISO(this.internalEndDate);
 
     if (!startDate.isValid || !endDate.isValid) {
+      return null;
+    }
+
+    // a date typed outside the window is flagged by its field, not emitted as a range
+    if (!this.isWithinRange(startDate) || !this.isWithinRange(endDate)) {
       return null;
     }
 
@@ -246,6 +258,31 @@ export class MdsInputDateRange {
   @Watch('endDate')
   handleEndDateChange(newValue: string): void {
     this.syncExternalDate('end', newValue);
+  }
+
+  @Watch('min')
+  @Watch('max')
+  handleRangeChange(): void {
+    this.forwardRange(true);
+  }
+
+  /**
+   * Bounds both fields, as the range promises: min and max reach the slotted dates, which flag a
+   * date typed outside them and report it to the form. At load a bound the range does not set
+   * leaves the one written on the field alone; a bound changed later always reaches the fields.
+   */
+  private forwardRange(changed: boolean): void {
+    (['start', 'end'] as const).forEach((slotName) => {
+      const field = this.slottedField(slotName);
+      if (field == null) return;
+      if (changed || (this.min ?? '') !== '') field.min = this.min;
+      if (changed || (this.max ?? '') !== '') field.max = this.max;
+    });
+  }
+
+  private slottedField(slotName: 'start' | 'end'): HTMLMdsInputDateElement | undefined {
+    const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement;
+    return slot?.assignedElements()[0] as HTMLMdsInputDateElement | undefined;
   }
 
   componentWillLoad(): void {
@@ -312,6 +349,8 @@ export class MdsInputDateRange {
     } else {
       this.internalEndDate = event.start;
     }
+    // a preset ending before it starts snaps its end to the start, as a typed range does
+    this.validateDateRange();
     this.updateInputValue('end', this.internalEndDate);
     this.syncFormValue();
 
@@ -392,9 +431,12 @@ export class MdsInputDateRange {
 
   componentDidLoad(): void {
     this.nameSlottedFields();
+    this.forwardRange(false);
     this.updateInputListeners();
     this.updateInputValue('start', this.internalStartDate);
     this.updateInputValue('end', this.internalEndDate);
+    // a preset matching the dates of load shows selected from the start
+    this.checkPreselections();
     this.syncFormValue();
     this.host.addEventListener('focusout', this.handleFocusOut);
     this.host.shadowRoot?.addEventListener(
@@ -438,8 +480,7 @@ export class MdsInputDateRange {
   }
 
   private updateInputValue(slotName: 'start' | 'end', newValue: string): void {
-    const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement;
-    const input = slot?.assignedElements()[0] as HTMLMdsInputDateElement;
+    const input = this.slottedField(slotName);
     if (input != null) {
       this.syncingInputSlots.add(slotName);
       input.setValue(newValue).finally(() => {

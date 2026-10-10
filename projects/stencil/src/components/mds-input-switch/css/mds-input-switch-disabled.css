@@ -1,3 +1,6 @@
-:host([disabled]) {
+/* :disabled also covers a disabled fieldset around the switch, which sets no attribute */
+
+:host([disabled]),
+:host(:disabled) {
   pointer-events: none;
 }

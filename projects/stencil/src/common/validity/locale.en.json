@@ -1,4 +1,6 @@
 {
+  "cardNumber": "Enter a valid card number.",
+  "email": "Enter an email address.",
   "invalid": "Enter a valid value.",
   "invalidDate": "Enter a valid date.",
   "max": "The value must be {{max}} or less.",
@@ -7,6 +9,9 @@
   "min": "The value must be {{min}} or more.",
   "minDate": "The date must be {{min}} or later.",
   "minlength": ["Use at least {{minlength}} character.", "Use at least {{minlength}} characters."],
+  "pattern": "Match the requested format.",
   "required": "Fill in this field.",
-  "requiredSelect": "Select an item in the list."
+  "requiredSelect": "Select an item in the list.",
+  "url": "Enter a URL.",
+  "vatNumber": "Enter a valid VAT number."
 }
