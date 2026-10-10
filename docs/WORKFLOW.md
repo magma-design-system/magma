@@ -84,6 +84,7 @@ An issue opened for a problem found in another project (the docs site, a consume
 - An issue found in Magma itself (its Storybook, its tests, its own docs, a review) has no origin label.
 - The label is the filter, not the context: the body still says where and how the problem was seen (app, versions, steps).
 - A new project gets its label before its first issue: add `prd-<project>` (short, lowercase, kebab-case) to the Origin section of `.github/ISSUE_TEMPLATE/labels.yml`, in the same colour, and create it on the repository with the same name, colour and description (`gh label create`, or the `label-sync` workflow). A label that exists only on GitHub is deleted by the next `label-sync` run, which removes every label the file does not list.
+- The description reads `Reported from <project> (<repository>)`: agents working inside a consumer project find their label by matching the repository name. They follow `docs/agents/reporting.md`, shipped in the `magma`, `magma-react` and `magma-angular` packages as `agents/reporting.md`, and never create a label themselves: when their project has none, the issue body names the project and a maintainer adds the label.
 
 ## Summary for agents
 
