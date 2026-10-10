@@ -28,7 +28,9 @@ export class MdsInputRange {
   @State() private progress: number;
   private label: string;
   private inputElement: HTMLInputElement;
-  private decimalPlaces: number; // number of decimal places
+  // the value of load, which a form reset brings back as the value attribute of a native input;
+  // undefined when the markup sets none, and the native default (the middle of the range) applies
+  private loadValue?: number;
   @Element() private element: HTMLMdsInputRangeElement;
   @AttachInternals() internals: ElementInternals;
 
@@ -73,17 +75,24 @@ export class MdsInputRange {
    */
   @Event({ eventName: 'mdsInputRangeChange' }) changeEvent: EventEmitter<number>;
 
+  /** As on a native input, a step that is not a positive number falls back to the default, 1. */
+  private allowedStep(): number {
+    const step = Number(this.step);
+    return step > 0 ? step : 1;
+  }
+
   private calculateProgress(): void {
     // validate value
     let v = Number(this.inputElement.value);
+    const step = this.allowedStep();
     // multiplier is needed to manage decimal value and step, so we can work with integer value and avoid decimal division
-    const multiplier = Math.pow(10, this.decimalPlaces);
+    const multiplier = Math.pow(10, this.countDecimals(step));
     if (v > this.max) v = this.max;
     else if (v < this.min) v = this.min;
-    if (((v - this.min) * multiplier) % (this.step * multiplier) !== 0) {
+    if (((v - this.min) * multiplier) % (step * multiplier) !== 0) {
       v =
-        (Math.round((v * multiplier - this.min * multiplier) / (this.step * multiplier)) *
-          (this.step * multiplier) +
+        (Math.round((v * multiplier - this.min * multiplier) / (step * multiplier)) *
+          (step * multiplier) +
           this.min * multiplier) /
         multiplier;
     }
@@ -95,8 +104,7 @@ export class MdsInputRange {
   }
 
   private onInput = () => {
-    if (Number.isNaN(this.inputElement.value))
-      throw Error(`Entered value ${this.inputElement.value} is not a Number`);
+    // a range input always holds a number: the browser sanitizes anything else
     // trigger valueChanged that update progress and emit event
     this.value = Number(this.inputElement.value);
   };
@@ -138,17 +146,22 @@ export class MdsInputRange {
 
   @Watch('step')
   stepChanged(): void {
-    if (this.step <= 0) throw Error('step cant be negative or zero');
-    this.decimalPlaces = this.countDecimals(this.step);
     this.calculateProgress();
   }
 
+  /** Like a native input, a form reset brings back the value of load, thumb included. */
   formResetCallback(): void {
-    setFormValue(this.internals, '');
+    // an empty value makes the native input take its default, the middle of the range
+    this.inputElement.value = this.loadValue === undefined ? '' : String(this.loadValue);
+    this.onInput();
+  }
+
+  componentWillLoad(): void {
+    const value = Number(this.value ?? NaN);
+    this.loadValue = Number.isNaN(value) ? undefined : value;
   }
 
   componentDidLoad(): void {
-    this.decimalPlaces = this.countDecimals(this.step);
     this.onInput(); // define value
     this.label = this.element.textContent ?? '';
     this.calculateProgress();

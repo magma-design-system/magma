@@ -15,9 +15,9 @@ The `<mds-input-range>` web component is the Magma Design System slider control 
 
 #### Semantic Behavior
 
-- **Form association**: Inside a `<form>` the selected number is reported under `name` with no extra wiring.
+- **Form association**: Inside a `<form>` the selected number is reported under `name` with no extra wiring. A form reset brings back the value of load, thumb and progress included, or the middle of the range when the markup sets no `value`, like a native input.
 - **Value clamping and snapping**: On input the value is clamped into `[min, max]` and snapped to the nearest `step` increment, so the committed `value` is always valid even when set programmatically out of range.
-- **Decimal awareness**: The number of decimal places is derived from `step`, letting fractional steps snap correctly; changing `step` to zero or a negative number throws, and a zero `step` set from the start turns the value into `NaN`.
+- **Decimal awareness**: The number of decimal places is derived from `step`, letting fractional steps snap correctly; as on a native input, a `step` that is not a positive number, from the start or set later, falls back to the default step, `1`.
 - **Disabled state**: Blocks interaction and clears the reported form value while disabled.
 - **Emitted event**: `mdsInputRangeChange` carries the new numeric value whenever `value` actually changes.
 - **Accessibility**: The control takes its accessible name from the slotted label text.
@@ -202,7 +202,7 @@ Native events may not bubble out of shadow DOM the way you expect. Listen to `md
 
 #### Do Not Set `step` to Zero or a Negative Number
 
-A `step` of zero or negative is invalid: changing `step` to it throws at runtime, and a zero `step` set from the start turns the value into `NaN`. Use a positive integer or decimal.
+A `step` of zero or negative is invalid: as on a native input it is ignored and the default step, `1`, applies instead, which is rarely the granularity you meant. Use a positive integer or decimal.
 
 ```html
 <!-- INCORRECT -->
