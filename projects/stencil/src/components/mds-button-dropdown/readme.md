@@ -24,7 +24,7 @@ The `<mds-button-dropdown>` web component is a split-button control of the Magma
 The shared `variant` / `tone` / `size` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); they apply here as in `<mds-button>`, narrowed to `tone` `strong` / `weak` and without the `google` / `apple` variants, and are forwarded to both internal buttons. `variant` defaults to `'primary'`, `tone` defaults to `'strong'`, and `size` defaults to `'md'`.
 
 - **`label`** sets the text of the primary action button only; the chevron trigger is icon-only.
-- **`type`** defaults to `'submit'` and is forwarded to both internal buttons, but they live in the component's shadow root and are not associated with an enclosing `<form>`: the control never submits or resets a form, so handle its `click` in JavaScript. `href` makes a click navigate, with `target` choosing `'self'` vs `'blank'`; it is forwarded to the chevron too, which then navigates as well as opening the menu.
+- **`type`** defaults to `'submit'` and is forwarded to both internal buttons, but they live in the component's shadow root and are not associated with an enclosing `<form>`: the control never submits or resets a form, so handle its `click` in JavaScript. The menu items are different: they are `mds-button` in the light DOM, so inside a `<form>` they belong to it and, with their default `type="submit"`, submit it; give them `type="button"` unless they should. `href` makes a click navigate, with `target` choosing `'self'` vs `'blank'`; it is forwarded to the chevron too, which then navigates as well as opening the menu.
 
 #### Other behavioral props
 
