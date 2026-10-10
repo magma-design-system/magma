@@ -70,6 +70,21 @@ The same workflow checks the release. Each changed member of the snapshot needs 
 
 Keep a PR to one level when you can: a behaviour fix and a CSS touch-up in two PRs get two quick reviews instead of one careful one. Run the same check locally with `nx run stencil:check.pr-risk` (after committing; `-- --base-snapshot <file>` compares with another snapshot, e.g. a release's).
 
+## 7. Label issues by the project they come from
+
+An issue opened for a problem found in another project (the docs site, a consumer app) carries that project's **origin label**, `prd-<project>`, so that what each project reported can be listed with one filter, and the project can be told when its issues are fixed.
+
+| Label       | The issue comes from                      |
+| ----------- | ----------------------------------------- |
+| `prd-docs`  | the docs site, `magma-design-system/docs` |
+| `prd-mindy` | Mindy (`mindy-webapp`)                    |
+
+- Set it when the issue is opened, whoever opens it, agent or human.
+- It says where the problem was seen, not which package it affects: that is still the `prg-*` label, and an issue usually carries both (`prd-mindy` and `prg-stencil`). A problem reported by more than one project gets one origin label per project.
+- An issue found in Magma itself (its Storybook, its tests, its own docs, a review) has no origin label.
+- The label is the filter, not the context: the body still says where and how the problem was seen (app, versions, steps).
+- A new project gets its label before its first issue: add `prd-<project>` (short, lowercase, kebab-case) to the Origin section of `.github/ISSUE_TEMPLATE/labels.yml`, in the same colour, and create it on the repository with the same name, colour and description (`gh label create`, or the `label-sync` workflow). A label that exists only on GitHub is deleted by the next `label-sync` run, which removes every label the file does not list.
+
 ## Summary for agents
 
 | Action                                          | Allowed for an agent?                                    |
@@ -80,6 +95,7 @@ Keep a PR to one level when you can: a behaviour fix and a CSS touch-up in two P
 | Open a pull request from it into `dev`          | Yes, with `Closes #<issue>` in the body (see rule 3)     |
 | Change a component's behaviour without a test   | No - add or update a `spec` / `e2e` test (see rule 5)    |
 | Ship an API removal without declaring the break | No - `!` or a `BREAKING CHANGE:` footer (see rule 6)     |
+| Open an issue for a problem found elsewhere     | Yes, with its `prd-<project>` origin label (see rule 7)  |
 | Merge a branch into `dev` or `main`             | No - manual governance step                              |
 | Push directly to `dev` or `main`                | No - manual governance step                              |
 | Auto-merge a pull request into `dev` or `main`  | No - manual governance step                              |

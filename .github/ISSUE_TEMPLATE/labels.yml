@@ -61,6 +61,14 @@
   color: 0e8a16
   description: '@maggioli-design-system/identity'
 
+# --- Origin: the project the issue was reported from (docs/WORKFLOW.md rule 7) ---
+- name: prd-docs
+  color: 5319e7
+  description: 'Reported from the docs site (magma-design-system/docs)'
+- name: prd-mindy
+  color: 5319e7
+  description: 'Reported from Mindy (mindy-webapp)'
+
 # --- Review level (set on every PR by the pr-risk workflow, #843) ---
 - name: risk-contract
   color: b60205
