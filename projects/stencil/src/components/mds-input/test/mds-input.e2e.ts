@@ -662,3 +662,24 @@ describe('piva and cc format', () => {
     expect(field.matches(':invalid')).toBe(false);
   });
 });
+
+// A disabled fieldset disables the form controls in it. It disabled the host, so the value was
+// left out of the form, but not the input in its shadow root, which stayed editable (#822)
+describe('in a disabled fieldset', () => {
+  it('is disabled like a native input, until the fieldset is enabled', async () => {
+    const { root, waitForChanges } = await render<HTMLFormElement>(
+      '<form><fieldset disabled><mds-input name="subject" value="Hello"></mds-input></fieldset></form>',
+    );
+    const field = root.querySelector('mds-input')!;
+    const native = () => field.shadowRoot!.querySelector('input')!;
+
+    await vi.waitFor(() => expect(native().disabled).toBe(true));
+    expect(new FormData(root).has('subject')).toBe(false);
+
+    root.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(native().disabled).toBe(false);
+    expect(new FormData(root).get('subject')).toBe('Hello');
+  });
+});

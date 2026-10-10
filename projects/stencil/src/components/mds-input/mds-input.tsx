@@ -138,6 +138,10 @@ export class MdsInput {
 
   @AttachInternals() internals: ElementInternals;
 
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the native control in its shadow root
+  @State() private formDisabled = false;
+
   /**
    * The accessible name of the native control: the label a screen reader announces. An
    * `mds-input-field` around the component passes its own label down here, so the attribute
@@ -309,6 +313,12 @@ export class MdsInput {
    * Like a native input, a form reset brings back the value of load and forgets the validation
    * shown on blur: the field looks pristine until the next blur.
    */
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
+
   formResetCallback(): void {
     const validated = this.validated;
     this.validated = false;
@@ -634,14 +644,14 @@ export class MdsInput {
   };
 
   private stepUp = () => {
-    if (this.nativeInput && !this.readonly && !this.disabled) {
+    if (this.nativeInput && !this.readonly && !this.isDisabled()) {
       (this.nativeInput as HTMLInputElement).stepUp();
       this.value = this.nativeInput.value;
     }
   };
 
   private stepDown = () => {
-    if (this.nativeInput && !this.readonly && !this.disabled) {
+    if (this.nativeInput && !this.readonly && !this.isDisabled()) {
       (this.nativeInput as HTMLInputElement).stepDown();
       this.value = this.nativeInput.value;
     }
@@ -758,7 +768,7 @@ export class MdsInput {
               this.mic && 'has-right-icon',
             )}
             autoFocus={this.autofocus}
-            disabled={this.disabled}
+            disabled={this.isDisabled()}
             maxLength={this.maxlength}
             minLength={this.minlength}
             name={this.name}
@@ -784,7 +794,7 @@ export class MdsInput {
             )}
             autoComplete={this.autocomplete}
             autoFocus={this.autofocus}
-            disabled={this.disabled}
+            disabled={this.isDisabled()}
             max={this.max}
             maxLength={this.maxlength}
             min={this.min}
@@ -879,7 +889,9 @@ export class MdsInput {
           ></mds-button>
         )}
         <mds-input-tip position="top" active={this.hasFocus} part="tip-top">
-          {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
+          {this.isDisabled() && (
+            <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>
+          )}
           {this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item>}
           {this.required && (
             <mds-input-tip-item
