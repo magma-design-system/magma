@@ -26,6 +26,58 @@ describe('mds-button-dropdown', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
+  // a native click on the host also comes from the menu items, whose clicks bubble to it: the
+  // primary action could only be told apart by its target, which nothing documented (#849)
+  describe('mdsButtonDropdownClick', () => {
+    const toolbar = `<mds-button-dropdown label="Save">
+      <mds-button label="Save as copy"></mds-button>
+    </mds-button-dropdown>`;
+
+    const recordClicks = (dropdown: Element): Event[] => {
+      const clicks: Event[] = [];
+      dropdown.addEventListener('mdsButtonDropdownClick', (event) => clicks.push(event));
+      return clicks;
+    };
+
+    it('comes from the primary action only, not the chevron or the menu items', async () => {
+      const { root } = await render<HTMLElement>(toolbar);
+      const clicks = recordClicks(root);
+
+      primaryAction(root).click();
+      chevron(root).click();
+      root.querySelector('mds-button')!.click();
+
+      expect(clicks).toHaveLength(1);
+      expect(clicks[0].target).toBe(root);
+    });
+
+    it('comes from the keyboard too', async () => {
+      const { root } = await render<HTMLElement>(toolbar);
+      const clicks = recordClicks(root);
+
+      primaryAction(root).dispatchEvent(
+        new KeyboardEvent('keydown', { code: 'Enter', bubbles: true, composed: true }),
+      );
+
+      expect(clicks).toHaveLength(1);
+    });
+
+    it('is not emitted while disabled or awaiting', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsButtonDropdownElement>(toolbar);
+      const clicks = recordClicks(root);
+
+      root.disabled = true;
+      await waitForChanges();
+      primaryAction(root).click();
+      root.disabled = false;
+      root.await = true;
+      await waitForChanges();
+      primaryAction(root).click();
+
+      expect(clicks).toHaveLength(0);
+    });
+  });
+
   // the primary action lived in the shadow root, with no form: it never submitted (#849)
   describe('in a form', () => {
     // the mail composer of #849: one form, three actions the receiver tells apart

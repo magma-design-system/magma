@@ -1,4 +1,4 @@
-import { AttachInternals, Component, Host, h, Prop } from '@stencil/core';
+import { AttachInternals, Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
 import { requestSubmitAs } from '@common/form';
 import {
@@ -101,10 +101,20 @@ export class MdsButtonDropdown {
    */
   @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word';
 
+  /**
+   * Emits when the primary action is clicked or activated from the keyboard, unless the
+   * component is disabled or awaiting. The chevron and the menu items do not emit it, while a
+   * native `click` on the component also comes from the menu items
+   */
+  @Event({ eventName: 'mdsButtonDropdownClick' }) clickEvent: EventEmitter<void>;
+
   private primaryActionClick = (): void => {
+    if (this.disabled || this.await) return;
+    this.clickEvent.emit();
+
     const { form } = this.internals;
     // a link navigates instead, from the button itself
-    if (!form || (this.href ?? '') !== '' || this.disabled || this.await) return;
+    if (!form || (this.href ?? '') !== '') return;
 
     if (this.type === 'submit') {
       requestSubmitAs(form, this.name, this.value);

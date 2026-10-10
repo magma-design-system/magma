@@ -2942,6 +2942,10 @@ export interface MdsBreadcrumbItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsBreadcrumbItemElement;
 }
+export interface MdsButtonDropdownCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsButtonDropdownElement;
+}
 export interface MdsCalendarCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsCalendarElement;
@@ -3287,7 +3291,18 @@ declare global {
         prototype: HTMLMdsButtonElement;
         new (): HTMLMdsButtonElement;
     };
+    interface HTMLMdsButtonDropdownElementEventMap {
+        "mdsButtonDropdownClick": void;
+    }
     interface HTMLMdsButtonDropdownElement extends Components.MdsButtonDropdown, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsButtonDropdownElementEventMap>(type: K, listener: (this: HTMLMdsButtonDropdownElement, ev: MdsButtonDropdownCustomEvent<HTMLMdsButtonDropdownElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsButtonDropdownElementEventMap>(type: K, listener: (this: HTMLMdsButtonDropdownElement, ev: MdsButtonDropdownCustomEvent<HTMLMdsButtonDropdownElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsButtonDropdownElement: {
         prototype: HTMLMdsButtonDropdownElement;
@@ -4966,6 +4981,10 @@ declare namespace LocalJSX {
           * The name sent with `value` to the form the primary action submits, as a native submit button does
          */
         "name"?: string;
+        /**
+          * Emits when the primary action is clicked or activated from the keyboard, unless the component is disabled or awaiting. The chevron and the menu items do not emit it, while a native `click` on the component also comes from the menu items
+         */
+        "onMdsButtonDropdownClick"?: (event: MdsButtonDropdownCustomEvent<void>) => void;
         /**
           * Specifies the size for the button
           * @default 'md'

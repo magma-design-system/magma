@@ -18,6 +18,7 @@ The `<mds-button-dropdown>` web component is a split-button control of the Magma
 - **Shared configuration**: `active`, `autoFocus`, `await`, `disabled`, `href`, `target`, `size`, `tone` and `variant` are forwarded identically to both internal buttons, so the two halves always stay visually and behaviorally in sync.
 - **Form association**: The host is form-associated. With `type="submit"` the primary action submits the enclosing `<form>` (or the one its `form` attribute names) and sends `name=value`, like a native submit button; with `type="reset"` it resets it. The chevron never submits. Unlike `<mds-button>`, `type` defaults to `'button'`: a dropdown in a form submits it only when asked. The menu items are slotted `<mds-button>`, so they follow their own `type` (default `'submit'`), `name` and `value`, and the receiver tells all the actions apart by `name`.
 - **Disabled / await states**: Because these flags pass through to both buttons, disabling or putting the control in an awaiting state affects the action and the trigger together.
+- **Primary action event**: `mdsButtonDropdownClick` fires when the primary action is clicked or activated from the keyboard, and not while the component is `disabled` or awaiting. The chevron and the menu items do not fire it. A native `click` listener on the component also runs for the menu items, whose clicks bubble to it, so listen for `mdsButtonDropdownClick` to run the primary action in JavaScript.
 - **Dropdown part**: The internal dropdown is exposed as the `dropdown` shadow part for external styling of the menu surface.
 
 #### Properties & Visual Configurations
@@ -126,6 +127,21 @@ The `disabled` attribute blocks both halves of the control together.
 </mds-button-dropdown>
 ```
 
+#### Primary Action Handled in JavaScript
+
+Listen for `mdsButtonDropdownClick` to run the primary action: it comes from the primary action only, from a click or the keyboard, and not while the component is `disabled` or awaiting. Handle each menu item with its own `click`.
+
+```html
+<mds-button-dropdown id="save" label="Salva" variant="primary">
+  <mds-button id="save-copy" variant="dark" tone="text" label="Salva come copia"></mds-button>
+</mds-button-dropdown>
+
+<script>
+  document.getElementById('save').addEventListener('mdsButtonDropdownClick', () => save());
+  document.getElementById('save-copy').addEventListener('click', () => saveCopy());
+</script>
+```
+
 #### Several Actions That Submit One Form
 
 Set `type="submit"` on the component and give the primary action and the menu items the same `name` with a different `value`: each action submits the form, and the receiver reads which one was chosen from `name`, as with native submit buttons. Give `type="button"` to the menu items that must not submit.
@@ -149,7 +165,7 @@ When your code handles the submit, build the form data with `event.submitter`, a
 
 #### Hyperlink Split Button via `href`
 
-`href` and `target` on the component are forwarded to both internal buttons, the chevron included: a click on the chevron navigates as well as opening the menu. Keep `href` off the component, handle the primary action with a `click` listener, and put the links on the menu items (`target="blank"` opens them in a new tab).
+`href` and `target` on the component are forwarded to both internal buttons, the chevron included: a click on the chevron navigates as well as opening the menu. Keep `href` off the component, handle the primary action with `mdsButtonDropdownClick`, and put the links on the menu items (`target="blank"` opens them in a new tab).
 
 ```html
 <mds-button-dropdown
@@ -238,7 +254,7 @@ Unlike `<mds-button>`, the component defaults to `type="button"`: inside a form,
 
 #### Do Not Submit the Form from a `click` Listener
 
-A `click` listener on the component also runs for the chevron and for the menu items, whose clicks bubble to it: the form would be submitted by opening the menu, and without telling which action was chosen. Use `type="submit"` with `name` / `value`.
+A `click` listener on the component also runs for the menu items, whose clicks bubble to it: picking a menu item that submits ("Salva come bozza") submits the form twice, once with its `name` / `value` and once without, and the receiver cannot tell which action was chosen. Use `type="submit"` with `name` / `value`.
 
 ```html
 <!-- INCORRECT -->
@@ -249,6 +265,18 @@ A `click` listener on the component also runs for the chevron and for the menu i
 
 <!-- CORRECT -->
 <mds-button-dropdown type="submit" name="action" value="send" label="Invia"></mds-button-dropdown>
+```
+
+#### Do Not Listen to `click` for the Primary Action
+
+A `click` on the component also comes from the menu items, whose clicks bubble to it: the primary action would run whenever the user picks an entry of the menu. Listen for `mdsButtonDropdownClick`, which only the primary action emits.
+
+```js
+// INCORRECT: also runs for "Salva come copia"
+dropdown.addEventListener('click', () => save());
+
+// CORRECT
+dropdown.addEventListener('mdsButtonDropdownClick', () => save());
 ```
 
 #### Do Not Leave a Menu Item That Must Not Submit on the Default `type`
@@ -339,6 +367,13 @@ mds-button-dropdown::part(dropdown) {
 | `type`      | `type`       | The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form the component is in, the chevron never does. Unlike `mds-button` it defaults to `'button'` | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                               | `'button'`  |
 | `value`     | `value`      | The value sent under `name` to the form the primary action submits                                                                                                                    | `string \| undefined`                                                                                               | `undefined` |
 | `variant`   | `variant`    | Specifies the color variant for the button                                                                                                                                            | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
+
+
+## Events
+
+| Event                    | Description                                                                                                                                                                                                                                  | Type                |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `mdsButtonDropdownClick` | Emits when the primary action is clicked or activated from the keyboard, unless the component is disabled or awaiting. The chevron and the menu items do not emit it, while a native `click` on the component also comes from the menu items | `CustomEvent<void>` |
 
 
 ## Slots
