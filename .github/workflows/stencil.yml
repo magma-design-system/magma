@@ -194,7 +194,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -211,6 +211,35 @@ jobs:
           name: stencil-build
           path: projects
       - run: npx nx run stencil:check.usage-docs
+
+  # Guards the public API snapshot: magma.api.txt lists every prop, event, method,
+  # slot, part and documented custom property, one line each, so a PR that changes
+  # the contract consumers rely on shows it as a short diff of that file (#843). The
+  # build writes it; this fails when the committed copy differs from the built API.
+  # Reads dist/documentation.json, so it needs the build artifact.
+  api-snapshot:
+    needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Restore Nx cache
+        uses: actions/cache@v6
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - run: npx nx run stencil:check.api-snapshot
 
   # Guards the tree-shaking of the three published packages: a consumer that
   # imports one component must not end up shipping all 114. Needs all three

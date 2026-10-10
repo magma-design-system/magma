@@ -12,6 +12,7 @@
         "{projectRoot}/assets/svg",
         "{projectRoot}/src/fixtures",
         "{projectRoot}/src/components.d.ts",
+        "{projectRoot}/magma.api.txt",
         "{workspaceRoot}/projects/stencil-react/src",
         "{workspaceRoot}/projects/stencil-angular/magma-angular/src/stencil-generated",
         "{projectRoot}/AGENTS.md",

@@ -45,7 +45,10 @@ Closes #
 
 ## Breaking changes
 
-<!-- If none, write "None". Otherwise describe the break and the migration path. -->
+<!-- If none, write "None". Otherwise describe the break and the migration path.
+     The diff of projects/stencil/magma.api.txt is the component API change: a removed
+     or changed line there is breaking unless it only widens what is accepted. The pr-risk
+     comment lists each change with the release it needs, and fails an undeclared break. -->
 
 None
 

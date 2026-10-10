@@ -55,6 +55,21 @@ Every change to what a component **does** must ship, in the same branch, with a 
 
 A pull request that changes a component's behaviour without a covering test is not ready for review.
 
+## 6. Review by risk level
+
+Every pull request gets a review level from the `pr-risk` workflow: a `risk-*` label, and one comment (updated on every push) that says what to look at. The level is the highest the PR reaches, computed from git, not declared:
+
+| Label            | Set when                                                                                     | Review                                                                  |
+| ---------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `risk-contract`  | `projects/stencil/magma.api.txt` changes: the public component API                          | every member the comment lists: each must be intended, and the release must say so |
+| `risk-behaviour` | shipped code changes (components, wrappers, codemods, the consumer-facing fields of a manifest) | the tests that cover it: do they describe the new behaviour, would they fail on the old code? |
+| `risk-visual`    | only CSS, tokens, styles, icons or brand assets change                                        | the rendered result (the stories involved), not the CSS                 |
+| `risk-low`       | docs, tests, stories, tooling or CI only                                                      | a green CI is enough                                                    |
+
+The same workflow checks the release. Each changed member of the snapshot needs a release: a removal or a narrowing (fewer accepted values, a new default, a lost `reflect` or `bubbles`, a new required prop, a changed signature) is **major**, an addition or a widening is **minor**. The commits of the PR in magma's release scopes must declare at least that, the way semantic-release reads them (`docs/COMMITS.md`): otherwise the job fails, because the break would ship as a minor or a patch. Declare a break with `!` after the type or scope or a `BREAKING CHANGE:` footer.
+
+Keep a PR to one level when you can: a behaviour fix and a CSS touch-up in two PRs get two quick reviews instead of one careful one. Run the same check locally with `nx run stencil:check.pr-risk` (after committing; `-- --base-snapshot <file>` compares with another snapshot, e.g. a release's).
+
 ## Summary for agents
 
 | Action                                          | Allowed for an agent?                                    |
@@ -64,6 +79,7 @@ A pull request that changes a component's behaviour without a covering test is n
 | Merge `dev` into your feature branch            | Yes (to stay current before a push)                      |
 | Open a pull request from it into `dev`          | Yes, with `Closes #<issue>` in the body (see rule 3)     |
 | Change a component's behaviour without a test   | No - add or update a `spec` / `e2e` test (see rule 5)    |
+| Ship an API removal without declaring the break | No - `!` or a `BREAKING CHANGE:` footer (see rule 6)     |
 | Merge a branch into `dev` or `main`             | No - manual governance step                              |
 | Push directly to `dev` or `main`                | No - manual governance step                              |
 | Auto-merge a pull request into `dev` or `main`  | No - manual governance step                              |
