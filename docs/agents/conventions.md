@@ -130,10 +130,18 @@ Maggioli):
     `mds-input-otp`, `mds-input-upload` and the calendar of `mds-input-date-range` have no
     disabled state yet: in a disabled fieldset their value is left out of the form, but
     the user can still change it.
-  - Buttons: in the button family only `mds-button` submits or resets a form, through its
-    `type`; `mds-button-dropdown` does not, so use `mds-button` for the actions of a form.
-    Its menu items are slotted `mds-button`, whose `type` defaults to `'submit'`: inside a
-    form, give them `type="button"` unless they should submit it.
+  - Buttons: `mds-button` submits (`type="submit"`, the default) or resets
+    (`type="reset"`) its form like a native button. `mds-button-dropdown` does the same from
+    its primary action, but its `type` defaults to `'button'`, so set `type="submit"`; the
+    chevron never submits. With a `name`, the button that submits sends `name=value`, so the
+    receiver tells apart the actions that submit the same form. A custom element cannot be
+    a submitter: `event.submitter` is a hidden native button with the same `name` / `value`,
+    so build the form data with `new FormData(form, event.submitter)`. The menu items of the
+    dropdown are slotted `mds-button`, whose `type` defaults to `'submit'`: inside a form,
+    give `type="button"` to the ones that must not submit it. A disabled `<fieldset>`
+    disables both buttons, as it does a native one. To run the primary action of the
+    dropdown in your own code, listen for `mdsButtonDropdownClick`: a `click` on the
+    dropdown also comes from its menu items.
 - Focus styles: apply `focus-bounce` (interactive elements) or `focus-zoom` (links /
   static elements). Do not write `:focus { outline: ... }`. Both are Tailwind utilities
   (`styles/dist/tailwind/utilities.css`); without Tailwind only `focus-zoom` has a plain
