@@ -155,6 +155,16 @@ Iconsauce resolves slugs through async plugins, so the dump order is non-determi
 
 If a referenced slug isn't resolvable by any configured plugin, iconsauce reports it on build.
 
+## Public API snapshot
+
+`magma.api.txt` is the public API of the components, one sorted line per member: every prop (attribute, reflect, mutable, required, type, default), event (detail, bubbles, cancelable, composed), method signature, slot, part, `@prop`-documented CSS custom property and custom state, then the declarations of the types they reference. Prose is left out, so rewording a JSDoc does not touch it.
+
+- **The build writes it** (`npm run build.api-snapshot`, last step of `npm run build`), like `src/components.d.ts`: commit it with the change that produced it.
+- **Review its diff.** It is what the change does to the contract consumers rely on; a PR that leaves it untouched changes no component API. A removed or changed line is a breaking change unless it only widens what is accepted.
+- **CI checks it** (`npm run check.api-snapshot`, after a build) and fails when the committed file differs from the built API. The pure reduction is tested in `scripts/api-snapshot-lib.spec.ts`.
+- **It drives the review level and the release check** of every PR (`docs/WORKFLOW.md` rule 6): a removed or narrowed member must ship as a declared breaking change.
+- **It sees only what is documented**: a custom property without `@prop` or a part without `@part` is missing from it, as it is from the generated docs.
+
 ## Tests
 
 Every component keeps its tests in `test/` next to its sources (see the scaffold below):
