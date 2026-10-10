@@ -30,6 +30,10 @@ import { MdsValidationErrors } from 'src/components';
 export class MdsInputDate {
   @Element() host: HTMLMdsInputDateElement;
   @AttachInternals() internals: ElementInternals;
+
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the native control in its shadow root
+  @State() private formDisabled = false;
   private isSlotted: boolean = false;
   // the rule the value breaks, reported to the form; undefined when the value is valid
   private problem?: ValidityProblem;
@@ -222,6 +226,12 @@ export class MdsInputDate {
    * Like a native input, a form reset brings back the value of load and forgets the interaction:
    * the field looks pristine until the user edits or leaves it again.
    */
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
+
   formResetCallback(): void {
     const { touched } = this;
     this.touched = false;
@@ -332,7 +342,7 @@ export class MdsInputDate {
           class="input"
           part="input-date"
           type="date"
-          disabled={this.disabled}
+          disabled={this.isDisabled()}
           name={this.name}
           readOnly={this.readonly}
           onBlur={this.onBlur}
@@ -346,7 +356,7 @@ export class MdsInputDate {
               id="calendar-dropdown"
               class="action-open-calendar"
               // a read-only date cannot change, from the calendar either
-              disabled={this.disabled || this.readonly}
+              disabled={this.isDisabled() || this.readonly}
               variant="dark"
               tone="text"
               icon={miBaselineCalendarToday}
@@ -355,7 +365,9 @@ export class MdsInputDate {
           </div>
         )}
         <mds-input-tip position="top" active={this.hasFocus}>
-          {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
+          {this.isDisabled() && (
+            <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>
+          )}
           {this.readonly && <mds-input-tip-item expanded variant="readonly"></mds-input-tip-item>}
           {this.required && (
             <mds-input-tip-item

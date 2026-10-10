@@ -375,3 +375,26 @@ describe('readonly', () => {
     expect(root.value).toBe('2026-01-10');
   });
 });
+
+// A disabled fieldset disables the form controls in it. It disabled the host, so the value was
+// left out of the form, but not the input in its shadow root, which stayed editable (#822)
+describe('in a disabled fieldset', () => {
+  it('is disabled like a native date input, until the fieldset is enabled', async () => {
+    const { root, waitForChanges } = await render<HTMLFormElement>(
+      '<form><fieldset disabled><mds-input-date name="d" value="2026-01-10"></mds-input-date></fieldset></form>',
+    );
+    const field = root.querySelector('mds-input-date')!;
+    const native = () => field.shadowRoot!.querySelector('input')!;
+
+    await vi.waitFor(() => expect(native().disabled).toBe(true));
+    // the calendar would set a date the form leaves out
+    expect(field.shadowRoot!.querySelector('.action-open-calendar')).toHaveAttribute('disabled');
+    expect(new FormData(root).has('d')).toBe(false);
+
+    root.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(native().disabled).toBe(false);
+    expect(new FormData(root).get('d')).toBe('2026-01-10');
+  });
+});
