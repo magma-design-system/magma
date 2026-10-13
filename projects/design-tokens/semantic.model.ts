@@ -21,7 +21,7 @@ import {
  * once, for every output that needs them:
  *  - the styles generator (`../styles/scripts/semantic.ts`) prints them as
  *    `semantic.css`, the Tailwind bridge and `themes.css`;
- *  - the DTCG export of this package (`scripts/build-dtcg.ts`) writes them as
+ *  - the DTCG export of this package (`scripts/dtcg/`) writes them as
  *    aliases.
  * Both read the same declarations, so the CSS and the JSON cannot point a role at
  * two different primitives. Text roles come from A7's `--text-*` primitives;

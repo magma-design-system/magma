@@ -28,6 +28,57 @@ This package works also with yarn:
 yarn add @maggioli-design-system/design-tokens
 ```
 
+# Token data (DTCG)
+
+`dist/dtcg/` describes every global token of Magma in the [Design Tokens Community Group format, version 2025.10](https://www.designtokens.org/TR/2025.10/): the primitives of this package, the semantic layer (`--magma-*`) that `@maggioli-design-system/styles` publishes, and what changes in dark mode, under a named theme and under `prefers-contrast: more`. Read it to show, document or transform the tokens (a documentation site, a design tool, another platform). To style a page, use the stylesheets: the JSON describes them, it does not replace them.
+
+| File | Content |
+| :--- | :--- |
+| `magma.resolver.json` | Which sets to merge, and in which order, for one mode and one theme ([resolver module](https://www.designtokens.org/TR/2025.10/resolver/)) |
+| `base.tokens.json` | Every token, in light mode and in the default theme |
+| `mode-dark.tokens.json` | What dark mode changes: the palette, the ring shadows, the ink on solid fills |
+| `contrast-more.tokens.json` | The `pref-contrast-more` promotions of the default theme |
+| `theme-<name>.tokens.json` | What a named theme (`data-theme-name`) repoints |
+| `theme-<name>-contrast-more.tokens.json` | The contrast promotions of that theme, in its own family |
+
+Each set lists only what it changes. To get the tokens of one condition, merge the files that `resolutionOrder` names (the `base` set, then the `mode` context, then the `theme` context), let a later file replace a token of an earlier one, and resolve the aliases last. The result has the values the stylesheets give in the same condition, and a test checks it at every build.
+
+| Modifier | Contexts |
+| :--- | :--- |
+| `mode` | `light` (default), `dark` |
+| `theme` | `default` (default), `cool`, `warm`, and each of them with `-contrast-more` |
+
+The theme and the contrast preference are one modifier because they are not independent: under a named theme, the stylesheets restate the contrast promotions in the theme's own family. Dark mode with the `cool` theme and more contrast, for example, merges `base`, `mode-dark`, `contrast-more`, `theme-cool` and `theme-cool-contrast-more`.
+
+## Token tree
+
+| Path | Custom property | Content |
+| :--- | :--- | :--- |
+| `palette.<group>.<family>.<step>` | `--tone-neutral-08` | The color primitives. The family's own color is `$root` (`--status-info`), the paper of the mode is `seed`. Aliased families (`variant`) are aliases of the family they name. |
+| `magma.<group>.<key>` | `--magma-surface-default` | The semantic roles, as aliases of the primitive they point at. `magma.tint` holds the internal `--magma-tint-*` pointers that themes and contrast repoint; an accent with an infix is a group of its own (`magma.accent-ai`). |
+| `font.<family>` | `--font-title` | Font families. |
+| `text-size.<family>.<style>` | `--text-size-title-h1` | The size of a style (`$root`) and its `font-weight`, `letter-spacing`, `line-height`. |
+| `typography.<family>.<style>` | none | The same style as one `typography` token. |
+| `leading`, `spacing`, `container`, `breakpoint`, `aspect`, `border`, `radius`, `shadow`, `duration`, `ease` | `--leading-md`, `--spacing-xs`, ... | One group per CSS prefix. `spacing.$root` is `--spacing`, the multiplier of the numeric utilities. |
+| `size.<step>` | none | The primitive sizing scale that spacing, container, border and radius name. |
+
+Every token carries `$extensions["it.maggioli.magma"]`:
+
+- `css`: the custom property it is published as;
+- `tier`: `primitive` (a raw value or scale), `semantic` (a `--magma-*` role, what UI code paints with) or `internal` (a `--magma-tint-*` pointer, not an API);
+- `cssValue`: the CSS value, only where the CSS writes the same quantity differently.
+
+Where the JSON and the CSS write a value differently:
+
+- **Colors**: the CSS publishes channels (`--tone-neutral-08: 208 208 208`, read as `rgb(var(--tone-neutral-08))`); the JSON gives sRGB components and the hex.
+- **Letter spacing**: the CSS writes it in `em`, which DTCG does not allow; the JSON gives it in `rem` at the style's own font size, and keeps the `em` in `cssValue`.
+- **Line height** of a `typography` token: a multiplier of the font size, as DTCG defines it. The `line-height` token of the style keeps the length.
+- **Aspect ratios**: a `number` (`5/3` becomes `1.6666666666666667`); `cssValue` keeps the ratio.
+- **Ring shadows** (`--shadow-ring*`): the CSS draws them with `--tone-neutral-01`; the JSON resolves that color, so `mode-dark` restates them.
+- **No DTCG type**: the text measures `--spacing-phrase`, `-prose`, `-text`, `-title` (in `ch`) and the `--transition-property-*` lists are listed in the `cssOnly` extension of their group.
+
+Component tokens (`--mds-*`) are not in this data: they belong to each component.
+
 # Generate Custom Palette
 
 you can generate custom palettes via cli command, it takes a configuration file to create palettes
@@ -272,6 +323,8 @@ figma-magma-colors-dark.tokens.json
 In Figma, create a variable collection and import each file into its own mode (Light / Dark). Steps keep their numeric keys (`1`..`10`) and the base color is exposed as `seed`. The playground offers the same pair as a zip via **download > Figma tokens (DTCG)**, generated in the browser from the same mapping so it matches the build output.
 
 The non-color sizing/number tokens are still exported in the legacy Figma "Import/Export Variables" plugin format (`dist/json/figma-magma-tokens.json`); moving them to DTCG is tracked separately.
+
+These files follow an earlier DTCG draft (colors as hex strings) and cover the palette only. Every global token, the semantic layer included, is in [`dist/dtcg/`](#token-data-dtcg).
 
 ### Playground
 

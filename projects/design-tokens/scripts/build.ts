@@ -7,6 +7,7 @@ import { createColorTokens } from '../src/lib/color.mjs';
 import { getStyleDictionaryColorConfigAllPlatforms } from '../src/config/styledictionary/sd-color-all-platforms.config';
 import { getBrandColorConfig } from '../src/config/styledictionary/sd-brand-color.config';
 import { TOKENS_DIR } from './meta';
+import { writeDtcg } from './dtcg/write';
 
 const GENERATED_TOKEN_DIR = `${TOKENS_DIR}/color/generated`;
 
@@ -49,4 +50,7 @@ getColorsConfig().then((resultConfig) => {
 
   // build CSS transitions
   styleDictionary.extend('./src/config/styledictionary/transitions.json').buildAllPlatforms();
+
+  // every global token as DTCG JSON (#874)
+  return writeDtcg(tokens, resultConfig.config);
 });
