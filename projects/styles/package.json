@@ -4,12 +4,13 @@
   "description": "This module contains SCSS and CSS styles used by Maggioli Design System, it also makes available a Tailwind config based on Maggioli design tokens.",
   "main": "./tailwind.config.js",
   "scripts": {
-    "build": "npm run clean && npm run semantic && npm run corner && npm run properties && npm run editor.tokens && npm run copy && npm run hydrated && npm run tailwind.build",
+    "build": "npm run clean && npm run semantic && npm run corner && npm run properties && npm run editor.tokens && npm run copy && npm run hydrated && npm run dtcg && npm run tailwind.build",
     "clean": "tsx scripts/clean.ts",
     "semantic": "tsx scripts/semantic.ts",
     "properties": "tsx scripts/properties.ts",
     "corner": "tsx scripts/corner.ts",
     "editor.tokens": "tsx scripts/editor-tokens.ts",
+    "dtcg": "tsx scripts/dtcg.ts",
     "hydrated": "tsx scripts/hydrated.ts",
     "copy": "tsx scripts/copy.ts",
     "tailwind.base": "postcss ./postcss/base.css -o ./dist/css/base.css",
@@ -17,6 +18,7 @@
     "tailwind.layer": "postcss ./postcss/layer.css -o ./dist/css/layer.css",
     "tailwind.build": "npm run tailwind.base && npm run tailwind.reset && npm run tailwind.layer && npm run tailwind.typography",
     "tailwind.typography": "postcss ./postcss/typography.css -o ./dist/css/utility-typography.css",
+    "test": "vitest --run",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
