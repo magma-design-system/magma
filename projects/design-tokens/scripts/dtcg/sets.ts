@@ -75,11 +75,11 @@ export interface DtcgOutput {
   resolver: Record<string, unknown>;
 }
 
-const isToken = (node: unknown): node is DtcgToken =>
+export const isToken = (node: unknown): node is DtcgToken =>
   typeof node === 'object' && node !== null && '$value' in node;
 
 /** Put a token at `path`, refusing to overwrite a token or to nest one inside another. */
-const put = (tree: DtcgGroup, path: string[], token: DtcgToken): void => {
+export const put = (tree: DtcgGroup, path: string[], token: DtcgToken): void => {
   let node = tree;
   path.slice(0, -1).forEach((key, index) => {
     if (isToken(node[key]))
@@ -92,7 +92,7 @@ const put = (tree: DtcgGroup, path: string[], token: DtcgToken): void => {
   node[leaf] = token;
 };
 
-const token = (
+export const token = (
   $type: string,
   $value: unknown,
   extension: MagmaExtension,
@@ -103,7 +103,7 @@ const token = (
 const stepName = (step: string): string => (Number(step) < 10 ? `0${step}` : step);
 
 /** A curly-brace DTCG alias. */
-const alias = (path: string[]): string => `{${path.join('.')}}`;
+export const alias = (path: string[]): string => `{${path.join('.')}}`;
 
 export function buildDtcg({
   colors,
