@@ -11,11 +11,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-tab>` web component is the compound container that orchestrates a tabbed navigation in the Magma Design System. It is the parent wrapper around a set of `<mds-tab-item>` triggers and their associated content panels, providing the ARIA `tablist` structure, selection state, scrolling and the animated selection indicator.
+The `<mds-tab>` web component is the compound container that orchestrates a tabbed navigation in the Magma Design System. It is the parent wrapper around a set of `<mds-tab-item>` triggers and, when the component shows the content itself, their content panels, providing the ARIA `tablist` structure, selection state, scrolling and the animated selection indicator.
 
 #### Semantic Behavior
 
-- **Compound parent**: Expects `<mds-tab-item>` elements in the default slot; each panel in the named `content` slot is wired up automatically and paired by document order.
+- **Compound parent**: Expects `<mds-tab-item>` elements in the default slot; each panel in the named `content` slot is wired up automatically and paired by document order. The panels are optional: without them the component shows the strip alone, and the page shows the content, driven by `mdsTabChange` or by navigation.
+- **Navigation strip**: When every item has `href`, the items are links (announced as such, the selected one as current) and the strip is no longer a `tablist`: the browser follows the links, in a new tab on a modifier or middle click, and the strip keeps the selected item highlighted. A client-side router cancels the click on the item with `preventDefault()` and routes; a modifier click leaves the selection alone.
 - **Selection ownership**: The active tab is whichever `<mds-tab-item>` carries `selected`; the parent flips `selected` across siblings, shows the corresponding content panel and hides the rest.
 - **Change event**: Emits `mdsTabChange` with the selected item's index (`id`) and `value` whenever the active child changes.
 - **Focus restoration**: After a keyboard activation it re-focuses the selected item's button, so the user does not have to re-locate the tab.
@@ -190,7 +191,7 @@ Set `size` on the parent to scale all tabs uniformly. Do not set `size` on indiv
 
 #### Navigation Links (href on Tab Items)
 
-When each tab should navigate to an anchor or a separate URL, set `href` on `<mds-tab-item>`. The tab item then renders as a link. Omit the `content` slot - the page content is driven by navigation, not by the managed-panels mechanism.
+When each tab leads to an anchor, another page or a route, set `href` on every `<mds-tab-item>` and omit the `content` slot: the items render as links, the browser follows them (in a new tab on a modifier or middle click) and the strip keeps the selected item highlighted. The page content is driven by navigation, not by the managed-panels mechanism.
 
 ```html
 <mds-tab>
@@ -198,6 +199,38 @@ When each tab should navigate to an anchor or a separate URL, set `href` on `<md
   <mds-tab-item href="#sezione-2" label="Requisiti"></mds-tab-item>
   <mds-tab-item href="#sezione-3" label="Conclusioni"></mds-tab-item>
 </mds-tab>
+```
+
+#### Client-Side Routing (href on Tab Items)
+
+In a single-page app keep `href` on the items and register the router once with `NavigationService`, from `@maggioli-design-system/magma/services`: a plain click on an item is routed on the client and the selection still moves, with no listener per item. A modifier or middle click stays with the browser, which opens the link in a new tab while the strip stays as it is.
+
+```html
+<mds-tab id="sezioni">
+  <mds-tab-item href="/pratiche" label="Pratiche" selected></mds-tab-item>
+  <mds-tab-item href="/documenti" label="Documenti"></mds-tab-item>
+  <mds-tab-item href="/pagamenti" label="Pagamenti"></mds-tab-item>
+</mds-tab>
+
+<script type="module">
+  import { NavigationService } from '@maggioli-design-system/magma/services';
+
+  NavigationService.setHandler((href) => router.navigate(href));
+</script>
+```
+
+Without a registered router, cancel the click on the items and route by hand: the component honours `preventDefault()` and still moves the selection. Leave a modifier click alone.
+
+```html
+<script>
+  document.querySelectorAll('#sezioni mds-tab-item').forEach((item) => {
+    item.addEventListener('click', (event) => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      router.navigate(item.href);
+    });
+  });
+</script>
 ```
 
 #### Disabled Tab Item
@@ -278,6 +311,33 @@ Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document or
   <div slot="content"><mds-text>Pannello B.</mds-text></div>
   <div slot="content"><mds-text>Pannello C.</mds-text></div>
 </mds-tab>
+```
+
+#### Do Not Mix Link Items and Panel Tabs in One Strip
+
+A strip is either a `tablist` of tabs, each controlling a panel, or a navigation of links (`href` on every item): a link inside a tablist is not a child the role allows, and assistive technology announces the strip wrong. Keep the link out of the strip, as an `<mds-button>` next to it.
+
+```html
+<!-- INCORRECT -->
+<mds-tab>
+  <mds-tab-item label="Dettagli" selected></mds-tab-item>
+  <mds-tab-item label="Allegati"></mds-tab-item>
+  <mds-tab-item label="Portale" href="https://portale.example.com"></mds-tab-item>
+
+  <div slot="content"><mds-text>Dettagli.</mds-text></div>
+  <div slot="content"><mds-text>Allegati.</mds-text></div>
+  <div slot="content"></div>
+</mds-tab>
+
+<!-- CORRECT -->
+<mds-tab>
+  <mds-tab-item label="Dettagli" selected></mds-tab-item>
+  <mds-tab-item label="Allegati"></mds-tab-item>
+
+  <div slot="content"><mds-text>Dettagli.</mds-text></div>
+  <div slot="content"><mds-text>Allegati.</mds-text></div>
+</mds-tab>
+<mds-button label="Portale" href="https://portale.example.com" target="blank" tone="text"></mds-button>
 ```
 
 #### Do Not Put Tab Items Outside `<mds-tab>`
@@ -412,10 +472,10 @@ mds-tab::part(tabs) {
 
 ## Slots
 
-| Slot        | Description                                                      |
-| ----------- | ---------------------------------------------------------------- |
-|             | Add `mds-tab-item` element/s.                                    |
-| `"content"` | Add `HTML elements` or `components`, one per mds-tab-item added. |
+| Slot        | Description                                                                                                                                                                              |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|             | Add `mds-tab-item` element/s.                                                                                                                                                            |
+| `"content"` | Add `HTML elements` or `components`, one per mds-tab-item added; or none, when the items are links (`href`) to other pages or places and the page, not the component, shows the content. |
 
 
 ## Shadow Parts

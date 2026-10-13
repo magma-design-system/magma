@@ -140,8 +140,8 @@ Subparts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their 
 | `mds-paginator-item`   | -               | Used internally, not meant for direct use. Single page number / action inside `mds-paginator`. |
 | `mds-stepper-bar`      | -               | Visual progress through a multi-step process.                                                  |
 | `mds-stepper-bar-item` | -               | Single step inside `mds-stepper-bar`.                                                          |
-| `mds-tab`              | -               | Tabbed panel group displaying the selected `mds-tab-item`.                                     |
-| `mds-tab-item`         | -               | Single panel inside `mds-tab`.                                                                 |
+| `mds-tab`              | -               | Tabbed panel group displaying the selected `mds-tab-item`, or a strip of links without panels. |
+| `mds-tab-item`         | -               | Single tab inside `mds-tab`; a link when `href` is set.                                        |
 | `mds-tab-bar`          | -               | Standalone tab bar used for mobile applications (without managed panels).                      |
 | `mds-tab-bar-item`     | -               | Single tab button inside `mds-tab-bar`.                                                        |
 | `mds-header`           | `<header>`      | Top-of-page header with navigation, hamburger, and responsive collapse.                        |

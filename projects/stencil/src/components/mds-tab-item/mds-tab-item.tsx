@@ -84,7 +84,11 @@ export class MdsTabItem {
   @Prop({ reflect: true }) readonly value?: string;
 
   /**
-   * Specifies the URL target of the button
+   * Turns the tab into a link to this URL: the item renders a real anchor and is announced as a
+   * link, not as a tab, with `aria-current` when selected. A client-side router registered with
+   * `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`) takes the
+   * plain clicks over; without one, a click listener on the host can still cancel the navigation
+   * with `preventDefault()`.
    */
   @Prop({ reflect: true }) readonly href?: string;
 
@@ -104,8 +108,14 @@ export class MdsTabItem {
    */
   @Event({ eventName: 'mdsTabItemFocus' }) focusedEvent: EventEmitter<MdsTabItemEventDetail>;
 
-  private toggle = (): void => {
+  private isLink = (): boolean => (this.href ?? '') !== '';
+
+  private toggle = (event: MouseEvent): void => {
     if (this.disabled) {
+      return;
+    }
+    // a modifier click on a link opens it elsewhere (new tab or window): the strip stays as it is
+    if (this.isLink() && (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey)) {
       return;
     }
     this.isSelected = !this.isSelected;
@@ -120,6 +130,9 @@ export class MdsTabItem {
 
   @Watch('selected')
   validateActive(newValue?: boolean): void {
+    // the item that announced its selection gets `selected` back from the parent: it has
+    // announced it already, a second time would double the parent's mdsTabChange
+    if (this.isSelected === newValue) return;
     this.isSelected = newValue;
     if (this.isSelected) {
       this.selectedEvent.emit({ target: this.element, value: this.value });
@@ -147,7 +160,10 @@ export class MdsTabItem {
           onKeyDown={this.focus}
           onClick={this.toggle}
           part="button"
-          role="tab"
+          // a tab controls a panel; one with href is a link to another page or place, which
+          // ARIA names as such, the selected one being the current one
+          role={this.isLink() ? 'link' : 'tab'}
+          aria-current={this.isLink() && this.selected ? 'true' : undefined}
           // the tab is the inner button, so the state of the popup goes here and not on the
           // host, which is generic and accepts none of the attributes of a caller
           aria-expanded={this.expanded === undefined ? undefined : `${this.expanded}`}

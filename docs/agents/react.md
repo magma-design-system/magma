@@ -163,6 +163,38 @@ SSR notes:
   server-only). It is imported lazily behind a `typeof window` check and must
   never end up in a client bundle.
 
+## 6. Client-side routing
+
+The links of the components (`href` of `MdsButton`, `MdsTabItem`, ...) are real anchors
+the browser follows, loading the page. Register the router once, in the client wrapper of
+section 3, and every plain click on a component link is routed on the client instead; a
+modifier or middle click, `target="blank"` and a link to another origin stay with the browser.
+
+```tsx
+'use client';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { NavigationService } from '@maggioli-design-system/magma/services';
+
+export default function ClientGlobalsWrapper({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  const router = useRouter();
+
+  useEffect(() => {
+    sessionStorage.setItem('mdsIconSvgPath', '/svg/');
+  }, []);
+  // setHandler returns the function that removes the handler: the cleanup of the effect
+  useEffect(() => NavigationService.setHandler((href) => router.push(href)), [router]);
+
+  return <>{children}</>;
+}
+```
+
+With React Router the handler is `(href) => navigate(href)` from `useNavigate()`. Return
+`false` from the handler for a link the browser is to load. Without a registered router, an
+`onClick` on the component can still cancel the click with `preventDefault()` and route by hand.
+
 ## Gotchas
 
 - The icon path effect must run on the client. In Next.js App Router the wrapper that

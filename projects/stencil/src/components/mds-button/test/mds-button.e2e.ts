@@ -2,6 +2,7 @@ import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 import { mockIconFetch } from '@test/fetch';
 import { createSlottedChild, itReadsTheSlottedLabelWhenLabelIsNull } from '@test/slot';
+import { NavigationService } from '@common/navigation';
 
 /**
  * The awaiting spinner slides in over --duration-300 and the button's own width follows it,
@@ -247,6 +248,310 @@ describe('mds-button', () => {
       await userEvent.click(button);
 
       expect(submits.map(({ data }) => data.get('action'))).toEqual(['send']);
+    });
+  });
+
+  // the href used to be followed by a listener on the host, whatever the page decided (#806): a
+  // client-side router could not cancel the click, a modifier click landed in the same tab and
+  // the context menu had no link in it
+  describe('as a link, when href is set', () => {
+    // the host follows a click of its own on the next task: wait past it to see nothing happen
+    const settle = () => new Promise((resolve) => setTimeout(resolve, 50));
+    const link = (attributes = '') =>
+      render<HTMLMdsButtonElement>(
+        `<mds-button href="#elsewhere" label="Elsewhere" ${attributes}></mds-button>`,
+      );
+
+    afterEach(() => {
+      // the links are fragments, so the page stays: leave its URL as it was found
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    });
+
+    it('renders a real anchor to the URL, hidden behind the host that keeps the focus and the name', async () => {
+      const { root } = await link();
+      const anchor = root.shadowRoot!.querySelector('a')!;
+
+      expect(anchor).toEqualAttributes({
+        href: '#elsewhere',
+        'aria-hidden': 'true',
+        tabindex: '-1',
+      });
+      expect(anchor).not.toHaveAttribute('target');
+      expect(root).toEqualAttribute('role', 'link');
+    });
+
+    it('opens in a new tab through the anchor when target is blank', async () => {
+      const { root } = await link('target="blank"');
+
+      expect(root.shadowRoot!.querySelector('a')).toEqualAttribute('target', '_blank');
+    });
+
+    it('renders no anchor and stays a button without href', async () => {
+      const { root } = await render('<mds-button label="Elsewhere"></mds-button>');
+
+      expect(root.shadowRoot!.querySelector('a')).toBeNull();
+      expect(root).toEqualAttribute('role', 'button');
+    });
+
+    it('puts the anchor under the pointer, over the whole button', async () => {
+      const { root } = await link();
+      const anchor = root.shadowRoot!.querySelector('a')!;
+      const { left, top, width, height } = root.getBoundingClientRect();
+
+      // the corners are rounded: look a quarter in, and at the middle
+      [0.25, 0.5, 0.75].forEach((fraction) => {
+        const hit = root.shadowRoot!.elementFromPoint(
+          left + width * fraction,
+          top + height * fraction,
+        );
+        expect(hit).toBe(anchor);
+      });
+    });
+
+    it('follows the link on a click, when nobody cancels it', async () => {
+      const { root } = await link();
+
+      await userEvent.click(root);
+
+      await vi.waitFor(() => expect(window.location.hash).toBe('#elsewhere'));
+    });
+
+    it('lets a click listener on the host cancel the navigation, as a router does', async () => {
+      const { root } = await link();
+      const clicks: MouseEvent[] = [];
+      root.addEventListener('click', (event) => {
+        clicks.push(event);
+        event.preventDefault();
+      });
+
+      await userEvent.click(root);
+      await settle();
+
+      expect(clicks).toHaveLength(1);
+      expect(window.location.hash).toBe('');
+    });
+
+    it('leaves a modifier click to the browser, which opens the link elsewhere', async () => {
+      const { root } = await link();
+      const anchor = root.shadowRoot!.querySelector('a')!;
+      // a real Ctrl-click opens a tab the test runner cannot have: the document stands in for the
+      // browser, which gets the click uncancelled and takes it from there. A trusted click is
+      // cancelable; a synthetic one has to say so, or preventDefault() is a no-op
+      let cancelled: boolean | undefined;
+      document.addEventListener(
+        'click',
+        (event) => {
+          cancelled = event.defaultPrevented;
+          event.preventDefault();
+        },
+        { once: true },
+      );
+
+      const open = vi.spyOn(window, 'open').mockImplementation(() => null);
+      anchor.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true, composed: true, ctrlKey: true }),
+      );
+      await settle();
+
+      expect(open).not.toHaveBeenCalled();
+      expect(cancelled).toBe(false);
+      expect(window.location.hash).toBe('');
+    });
+
+    it('follows the link on Enter from the keyboard', async () => {
+      const { root } = await link();
+
+      root.focus();
+      await userEvent.keyboard('{Enter}');
+
+      await vi.waitFor(() => expect(window.location.hash).toBe('#elsewhere'));
+    });
+
+    // the click of a script, or of an assistive technology activating the host
+    it('follows the link on a click from a script, unless a listener cancels it', async () => {
+      const { root } = await link();
+      const cancel = (event: Event) => event.preventDefault();
+      root.addEventListener('click', cancel);
+
+      root.click();
+      await settle();
+
+      expect(window.location.hash).toBe('');
+
+      root.removeEventListener('click', cancel);
+      root.click();
+
+      await vi.waitFor(() => expect(window.location.hash).toBe('#elsewhere'));
+    });
+
+    it('opens a new tab from a script for target blank, and for a modifier click', async () => {
+      const open = vi.spyOn(window, 'open').mockImplementation(() => null);
+      const { root } = await link('target="blank"');
+
+      root.click();
+
+      await vi.waitFor(() => expect(open).toHaveBeenCalledWith('#elsewhere', '_blank'));
+
+      const plain = await link();
+      plain.root.dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true, ctrlKey: true }),
+      );
+
+      await vi.waitFor(() => expect(open).toHaveBeenCalledTimes(2));
+      expect(window.location.hash).toBe('');
+    });
+
+    it('does not follow the link while disabled', async () => {
+      const { root } = await link('disabled');
+
+      root.click();
+      await settle();
+
+      expect(window.location.hash).toBe('');
+    });
+
+    it('is the only tab stop: the anchor hands back the focus it gets', async () => {
+      const { root } = await link();
+
+      root.shadowRoot!.querySelector('a')!.focus();
+
+      expect(document.activeElement).toBe(root);
+      expect(root.shadowRoot!.activeElement).toBeNull();
+    });
+
+    it('becomes a link when href is set later, and a button again when it is removed', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsButtonElement>(
+        '<mds-button label="Elsewhere"></mds-button>',
+      );
+
+      root.href = '#elsewhere';
+      await waitForChanges();
+
+      expect(root).toEqualAttribute('role', 'link');
+      expect(root.shadowRoot!.querySelector('a')).toEqualAttribute('href', '#elsewhere');
+
+      root.href = undefined;
+      await waitForChanges();
+
+      expect(root).toEqualAttribute('role', 'button');
+      expect(root.shadowRoot!.querySelector('a')).toBeNull();
+    });
+
+    it('leaves a role set by the caller alone', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsButtonElement>(
+        '<mds-button role="tab" label="Elsewhere"></mds-button>',
+      );
+
+      root.href = '#elsewhere';
+      await waitForChanges();
+
+      expect(root).toEqualAttribute('role', 'tab');
+    });
+  });
+
+  // the router of a single-page app registers once through NavigationService and takes the
+  // links over, with no click listener on every button (#806)
+  describe('as a link, with a router registered through NavigationService', () => {
+    // the host follows a click of its own on the next task: wait past it to see nothing happen
+    const settle = () => new Promise((resolve) => setTimeout(resolve, 50));
+    const link = (attributes = '') =>
+      render<HTMLMdsButtonElement>(
+        `<mds-button href="#elsewhere" label="Elsewhere" ${attributes}></mds-button>`,
+      );
+    // a synthetic click has to be cancelable, as a trusted one is, or preventDefault() is a no-op
+    const click = (init: MouseEventInit = {}) =>
+      new MouseEvent('click', { bubbles: true, cancelable: true, composed: true, ...init });
+
+    afterEach(() => {
+      NavigationService.setHandler(undefined);
+      // the links are fragments, so the page stays: leave its URL as it was found
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    });
+
+    it('hands a plain click to the router, with the navigation already cancelled', async () => {
+      const router = vi.fn();
+      NavigationService.setHandler(router);
+      const { root } = await link();
+
+      await userEvent.click(root);
+      await settle();
+
+      expect(router).toHaveBeenCalledTimes(1);
+      const [href, event] = router.mock.calls[0] as [string, MouseEvent];
+      expect(href).toBe('#elsewhere');
+      expect(event.defaultPrevented).toBe(true);
+      expect(window.location.hash).toBe('');
+    });
+
+    it('loads the link itself when the router declines it', async () => {
+      NavigationService.setHandler(() => false);
+      const { root } = await link();
+
+      await userEvent.click(root);
+
+      await vi.waitFor(() => expect(window.location.hash).toBe('#elsewhere'));
+    });
+
+    it('hands the keyboard and a script to the router too', async () => {
+      const router = vi.fn();
+      NavigationService.setHandler(router);
+      const { root } = await link();
+
+      root.focus();
+      await userEvent.keyboard('{Enter}');
+      await vi.waitFor(() => expect(router).toHaveBeenCalledTimes(1));
+
+      root.click();
+      await vi.waitFor(() => expect(router).toHaveBeenCalledTimes(2));
+      await settle();
+
+      expect(router).toHaveBeenLastCalledWith('#elsewhere', expect.any(MouseEvent));
+      expect(window.location.hash).toBe('');
+    });
+
+    it('leaves a modifier click, another origin and a target blank to the browser', async () => {
+      const router = vi.fn();
+      NavigationService.setHandler(router);
+      const open = vi.spyOn(window, 'open').mockImplementation(() => null);
+      // a real Ctrl-click opens a tab the test runner cannot have, a link to another origin
+      // would take the page away: the document stands in for the browser, which gets the click
+      // uncancelled and takes it from there
+      const cancelled: boolean[] = [];
+      const browser = (event: MouseEvent) => {
+        cancelled.push(event.defaultPrevented);
+        event.preventDefault();
+      };
+
+      const { root } = await link();
+      document.addEventListener('click', browser, { once: true });
+      root.shadowRoot!.querySelector('a')!.dispatchEvent(click({ ctrlKey: true }));
+
+      const external = await render<HTMLMdsButtonElement>(
+        '<mds-button href="https://example.com/" label="Elsewhere"></mds-button>',
+      );
+      document.addEventListener('click', browser, { once: true });
+      external.root.shadowRoot!.querySelector('a')!.dispatchEvent(click());
+
+      const blank = await link('target="blank"');
+      blank.root.click();
+      await vi.waitFor(() => expect(open).toHaveBeenCalledWith('#elsewhere', '_blank'));
+      await settle();
+
+      expect(router).not.toHaveBeenCalled();
+      expect(cancelled).toEqual([false, false]);
+      expect(window.location.hash).toBe('');
+    });
+
+    it('removes the router with the function setHandler returns', async () => {
+      const router = vi.fn();
+      const remove = NavigationService.setHandler(router);
+      const { root } = await link();
+      remove();
+
+      await userEvent.click(root);
+
+      await vi.waitFor(() => expect(window.location.hash).toBe('#elsewhere'));
+      expect(router).not.toHaveBeenCalled();
     });
   });
 
