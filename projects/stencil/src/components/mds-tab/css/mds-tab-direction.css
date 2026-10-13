@@ -18,6 +18,13 @@
   align-self: auto;
 }
 
+/* without panels the column of the contents is empty, but it still takes its share of the
+   width: the strip spans it too */
+
+:host([direction='vertical']) .tabs-wrapper--no-content {
+  grid-column: 1 / -1;
+}
+
 :host([direction='vertical'])::slotted(mds-tab-item) {
   width: 100%;
 }

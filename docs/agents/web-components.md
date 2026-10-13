@@ -129,6 +129,23 @@ SSR caveats (by design):
 React consumers get this automatically through the generated server wrappers -
 see [`react.md`](react.md).
 
+## 6. Client-side routing
+
+The links of the components (`href` of `mds-button`, `mds-tab-item`, ...) are real anchors
+the browser follows, loading the page. In a single-page app register the router once and every
+plain click on a component link is routed on the client instead; a modifier or middle click,
+`target="blank"` and a link to another origin stay with the browser.
+
+```javascript
+import { NavigationService } from '@maggioli-design-system/magma/services';
+
+NavigationService.setHandler((href) => router.navigate(href));
+```
+
+`setHandler` returns the function that removes the handler. Return `false` from the handler
+for a link the browser is to load. Without a registered router, a click listener on the
+component can still cancel the event with `preventDefault()` and route by hand.
+
 ## Gotchas
 
 - Call `defineCustomElements()` exactly once. Calling it twice is harmless but
