@@ -62,6 +62,11 @@
       "description": "Babel",
       "groupName": "babel",
       "matchPackageNames": ["/^@babel/"]
+    },
+    {
+      "description": "TypeScript and typescript-eslint always update together: typescript-eslint peers on a TypeScript range",
+      "groupName": "typescript",
+      "matchPackageNames": ["typescript", "typescript-eslint", "/^@typescript-eslint/"]
     }
   ]
 }
