@@ -28,6 +28,11 @@
       "enabled": false
     },
     {
+      "description": "Node is updated by hand (.nvmrc, engines), never by Renovate",
+      "matchDepNames": ["node"],
+      "enabled": false
+    },
+    {
       "groupName": "docker-compose services",
       "matchManagers": ["docker-compose"]
     },
