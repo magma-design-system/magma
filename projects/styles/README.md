@@ -85,7 +85,11 @@ step only follows the mode.
 ```
 
 The values come from `dist/css/semantic.css`, the Tailwind utilities from
-`dist/tailwind/theme.css`. The roles, their pairing rules and the Magma 1 -> 2 map are
+`dist/tailwind/theme.css`. Every role of the Tailwind bridge carries its light default as
+the fallback of its `var()` (`rgb(var(--magma-surface-default, 242 242 242))`): Tailwind
+IntelliSense reads a utility's colour only from that literal, so the semantic utilities get
+a swatch in the editor. Without `semantic.css` they paint that light default, in every mode:
+the file is still required. The roles, their pairing rules and the Magma 1 -> 2 map are
 in the color guide shipped with the components package
 (`@maggioli-design-system/magma/agents/color.md`).
 
