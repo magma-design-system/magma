@@ -98,6 +98,65 @@ describe('mds-input-select', () => {
     select.remove();
   });
 
+  describe('the ring', () => {
+    /** Publishes the preferences on <html>, as the controllers do; the store follows them
+     * through a MutationObserver, so give it a tick. The reduced animation drops the
+     * transition, so the ring is read where it lands instead of on its way there. */
+    const choose = async (...classes: string[]): Promise<void> => {
+      document.documentElement.classList.add('pref-animation-reduce', ...classes);
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    };
+
+    /** The first of the shadows of the select: the ring, before the drop shadow. */
+    const ringOf = (host: HTMLElement): string =>
+      getComputedStyle(host.shadowRoot!.querySelector('.input')!)
+        .boxShadow.split(/,(?![^(]*\))/)[0]
+        .trim();
+
+    const markup = '<mds-input-select><option value="a">A</option></mds-input-select>';
+
+    it.each([
+      { preferences: 'none', classes: [] },
+      { preferences: 'dark', classes: ['pref-mode-dark'] },
+      { preferences: 'contrast more', classes: ['pref-contrast-more'] },
+      { preferences: 'dark and contrast more', classes: ['pref-mode-dark', 'pref-contrast-more'] },
+    ])('draws the 3px focus ring with the preferences: $preferences', async ({ classes }) => {
+      // the dark and contrast blocks set the ring on the host with selectors more specific
+      // than the focus one: in dark or with more contrast a focused select looked at rest
+      await choose(...classes);
+      const { root, waitForChanges } = await render(markup);
+
+      root.shadowRoot!.querySelector<HTMLSelectElement>('.input')!.focus();
+      await waitForChanges();
+
+      expect(ringOf(root)).toMatch(/ 0px 0px 0px 3px$/);
+    });
+
+    it('draws the 3px ring on hover in dark', async () => {
+      await choose('pref-mode-dark');
+      const { root, waitForChanges } = await render(markup);
+
+      await userEvent.hover(root);
+      await waitForChanges();
+
+      expect(ringOf(root)).toMatch(/ 0px 0px 0px 3px$/);
+    });
+
+    it('keeps the strong ring of more contrast at rest when dark is chosen too', async () => {
+      // the dark block beat the contrast one, so with both the select fell back to the dark
+      // ring. The tests load no palette, so the strong ring reads the same in both modes.
+      await choose('pref-contrast-more');
+      const { root, waitForChanges } = await render(markup);
+      const strongRing = ringOf(root);
+
+      await choose('pref-mode-dark');
+      await waitForChanges();
+
+      expect(root).toEqualAttribute('pref-mode', 'dark');
+      expect(ringOf(root)).toBe(strongRing);
+    });
+  });
+
   describe('accessible name', () => {
     it('names the select after the aria-label of the host', async () => {
       const { root } = await render<HTMLMdsInputSelectElement>(
