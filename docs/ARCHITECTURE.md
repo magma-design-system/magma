@@ -71,7 +71,7 @@ CSS and Tailwind 4 styles consumed by the web component library and consumer app
 | `dist/css/globals.css` | Global CSS custom properties (`--magma-*` design decisions) |
 | `dist/css/reset.css` | Opinionated CSS reset |
 | `dist/css/colors-rgb-*.css` | RGB color tokens (required for Tailwind and web components) |
-| `dist/css/hydrated.css` | FOUC prevention for StencilJS |
+| `dist/css/hydrated.css` | FOUC prevention for StencilJS, and the box of the hydrated components kept against page resets (Tailwind's preflight) |
 | `dist/css/animations.css` | Shared animations |
 | `dist/tailwind/` | Tailwind 4 layers: base, typography, utilities |
 | `dist/tailwind/consumption.json` | How each global token is consumed through Tailwind 4, keyed by its DTCG `css` name; generated from Tailwind's design system |

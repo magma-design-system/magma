@@ -11,3 +11,22 @@
   transition-duration: 0s;
   visibility: hidden;
 }
+
+/*
+  Once hydrated, a component keeps the box it gives itself on :host. A page reset such as
+  Tailwind's preflight (margin, padding and border of every element) is page CSS, and page CSS
+  beats :host whatever its layer: revert-layer hands each property back to the layers before
+  this one, down to the component's own :host rules. This file is imported into `base`, the
+  layer the preflight sits in, so the tag beats its `*`. Both forms of the flag: the browser
+  builds set the attribute, the server-rendered markup the class.
+*/
+
+{{#each components as | component | }}
+{{component}}:is([hydrated], .hydrated){{#unless @last}},{{/unless}}
+{{/each}}
+{
+  border: revert-layer;
+  display: revert-layer;
+  margin: revert-layer;
+  padding: revert-layer;
+}
