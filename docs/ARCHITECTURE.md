@@ -30,6 +30,7 @@ Generates design tokens for colors, typography, spacing, borders and other platf
 
 - Built on **Adobe Leonardo** (color palette generation with WCAG contrast ratios) and **Style Dictionary** (token transformation and output)
 - Outputs tokens in multiple formats: CSS custom properties, Tailwind 4 theme, Flutter/Dart, JSON
+- Describes every global token, the semantic layer included, as DTCG 2025.10 JSON in `dist/dtcg/` (sets per mode, theme and contrast, plus a resolver document). The semantic layer comes from `semantic.model.ts`, which both this export and the styles generator read
 - Color palette categories: `tone` (neutrals), `status` (info/success/warning/error), `label` (semantic accent colors), `variant` (primary/secondary/ai), `brand`
 - Token levels: **primitive** (raw values) → **semantic** (role-based) → **component** (component-scoped CSS vars)
 - Exposes a CLI (`npx magma-design-tokens`) to generate custom palettes from a config file

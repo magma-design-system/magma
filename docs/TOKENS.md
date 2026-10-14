@@ -69,6 +69,7 @@ Every ramp has a numeric ladder (`-01` ... `-10`) plus `-seed`. This is a **cont
 | **Primitive utility / var** | `bg-label-sky-09`, `rgb(var(--label-orchid-04))`                         | Only for colours that encode data or brand identity                                                                |
 | **SCSS variables**          | `$color-tone-neutral-light-3` (hex, one variable per mode)               | Legacy SCSS consumers only: no dark flip, no theme                                                                 |
 | **JS**                      | `@maggioli-design-system/design-tokens` exports `{ palette }`            | The Tailwind 3 colour functions behind the JS preset; Tailwind 3 only                                              |
+| **DTCG JSON**               | `@maggioli-design-system/design-tokens/dist/dtcg/`                       | To read the tokens, not to paint with them: documentation, design tools, other platforms (every global token, modes, themes, contrast) |
 | **JSON**                    | `@maggioli-design-system/design-tokens/dist/json/`                       | Design tools (Figma tokens)                                                                                        |
 | **Hex CSS files**           | `colors-hex-*.css` imports                                               | Only when the consumer cannot evaluate the `rgb(var(--...))` wrapper - never in Tailwind or web component contexts |
 
