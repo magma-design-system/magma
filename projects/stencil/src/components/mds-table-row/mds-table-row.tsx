@@ -151,7 +151,7 @@ export class MdsTableRow {
                 class="actions"
                 ref={(el) => (this.actions = el as HTMLDivElement)}
                 style={
-                  this.sizerWidth
+                  this.sizerWidth !== undefined
                     ? { marginRight: `calc(${this.sizerWidth} + var(--mds-table-cell-padding))` }
                     : undefined
                 }
