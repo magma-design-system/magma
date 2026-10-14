@@ -1,8 +1,5 @@
 # mds-input
 
-## Form interaction
-
-This component is `scoped` and not `shadowed`, so the inner `input` element interacts natively with `form` element.
 
 
 This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.
