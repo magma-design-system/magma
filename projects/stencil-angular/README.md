@@ -16,7 +16,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Running unit tests
 
-Run `npm test` to execute the unit tests once in a headless Chrome via [Karma](https://karma-runner.github.io); this is what `nx run stencil-angular:test` runs. Run `npm run test.watch` to keep Karma open in a Chrome window and re-run the specs on every change.
+Run `npm test` to execute the unit tests once with [Vitest](https://vitest.dev) in jsdom, through the experimental `@angular/build:unit-test` builder of Angular 20; this is what `nx run stencil-angular:test` runs. Run `npm run test.watch` to keep Vitest in watch mode and re-run the specs on every change. The builder takes the polyfills (`zone.js`) from the `test-build` target of `angular.json`, an application target that exists only for the tests: the library build of ng-packagr has none.
 
 The specs live in `magma-angular/src/lib/*.spec.ts` and exercise the wrapper library (module, generated proxies, `ControlValueAccessor` directives) against the Stencil build in `projects/stencil/dist`, so build `stencil` first.
 

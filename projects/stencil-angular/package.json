@@ -7,7 +7,9 @@
     "build": "ng build magma-angular",
     "build.treeshaking-probe": "ng build treeshaking-probe",
     "watch": "ng build magma-angular --watch --configuration development",
-    "test": "ng test magma-angular --watch=false --browsers=ChromeHeadless",
+    "pretest": "node -e \"require('fs').rmSync('dist/test-out', { recursive: true, force: true })\"",
+    "test": "ng test magma-angular --watch=false",
+    "pretest.watch": "node -e \"require('fs').rmSync('dist/test-out', { recursive: true, force: true })\"",
     "test.watch": "ng test magma-angular"
   },
   "private": true,
@@ -28,12 +30,7 @@
     "@angular/build": "20.3.39",
     "@angular/cli": "20.3.39",
     "@angular/compiler-cli": "20.3.33",
-    "@types/jasmine": "5.1.15",
-    "karma": "6.4.4",
-    "karma-chrome-launcher": "3.2.0",
-    "karma-coverage": "2.2.1",
-    "karma-jasmine": "5.1.0",
-    "karma-jasmine-html-reporter": "2.3.0",
+    "jsdom": "27.4.0",
     "ng-packagr": "20.3.2"
   }
 }

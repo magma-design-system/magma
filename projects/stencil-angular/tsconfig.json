@@ -33,5 +33,11 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "files": [],
+  "references": [
+    { "path": "./magma-angular/tsconfig.lib.json" },
+    { "path": "./magma-angular/tsconfig.spec.json" },
+    { "path": "./treeshaking-probe/tsconfig.json" }
+  ]
 }

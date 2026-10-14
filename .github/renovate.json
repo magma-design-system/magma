@@ -23,7 +23,7 @@
     },
     {
       "description": "Angular packages",
-      "matchPackageNames": ["/^@angular/", "zone.js", "/^karma", "ng-packagr"],
+      "matchPackageNames": ["/^@angular/", "zone.js", "ng-packagr"],
       "groupName": "Angular",
       "enabled": false
     },
