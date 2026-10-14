@@ -125,20 +125,149 @@ the `vendor` cascade layer and ship offline.
 ## 3. Icons
 
 Icons are consumed at runtime by `mds-icon`, which fetches each icon as an SVG file from
-a path the host app configures. A slug starts with its icon set (`mi/` Material Icons,
-`mdi/` Material Design Icons, `mgg/` Maggioli) and resolves to
-`<mdsIconSvgPath><slug>.svg`: with the path `/svg/`, `mi/baseline/email` is fetched from
-`/svg/mi/baseline/email.svg`.
+a path the host app configures. The components' own icons are inlined, so what needs
+serving is the icons the app names.
 
-### Package and asset copy
+### The contract
+
+Every slug the app uses must be served at `<mdsIconSvgPath><slug>.svg`: with the path
+`/svg/`, `mi/baseline/email` is fetched from `/svg/mi/baseline/email.svg`. A slug starts
+with its icon set, and each set comes from its own package, with its own layout:
+
+| Slug | Set | Package | File in the package |
+| ---- | --- | ------- | ------------------- |
+| `mi/<variant>/<name>` | Material Icons | `@material-icons/svg` | `svg/<name>/<variant>.svg` |
+| `mdi/<name>` | Material Design Icons | `@mdi/svg` | `svg/<name>.svg` |
+| `mgg/<name>` | Maggioli | `@maggioli-design-system/svg-icons` | `dist/svg/<name>.svg` |
+
+Magma ships only the `mgg/` set, and none of these packages is a dependency of `magma`,
+`magma-react` or `magma-angular`: the route you pick installs what it needs. Copying the
+`svg-icons` folder as it is does NOT follow the contract: its files sit directly in
+`dist/svg/`, while `mds-icon` asks for them under `mgg/`.
+
+`mds-usage` still fetches `mi/baseline/info` for its header: serve it too if the app
+uses that component.
+
+Any setup that follows the contract works. Two tested routes, both run before every dev
+start and build, with the output folder kept out of git:
+
+### Route 1: iconsauce (what Magma uses)
+
+iconsauce reads the sources the way Tailwind reads class names and writes only the icons
+they use, one SVG file per slug, in the folders `mds-icon` expects. Its plugins know the
+three sets and bring their packages along.
 
 ```bash
-npm i @maggioli-design-system/svg-icons
+npm i -D @iconsauce/core @iconsauce/material-icons @iconsauce/mdi-svg @iconsauce/mgg-icons
 ```
 
-Copy the SVG library to a publicly served path. The package ships the files under
-`@maggioli-design-system/svg-icons/dist/svg/`. Copy them to e.g. `public/svg/` (the
-mechanism depends on the bundler - see each track file).
+```js
+// iconsauce.config.mjs
+import mi from '@iconsauce/material-icons';
+import mdi from '@iconsauce/mdi-svg';
+import mgg from '@iconsauce/mgg-icons';
+
+export default {
+  content: ['./index.html', './src/**/*.{html,js,jsx,ts,tsx}'], // every file where icon slugs are written
+  plugin: [mi, mdi, mgg],
+};
+```
+
+```json
+"scripts": {
+  "icons": "iconsauce --config ./iconsauce.config.mjs --output-svg ./public/svg",
+  "predev": "npm run icons",
+  "prebuild": "npm run icons"
+}
+```
+
+A slug built at runtime (`'mi/baseline/' + name`) is invisible to iconsauce: write slugs
+in full, or list the computed ones in a file that `content` reads.
+
+### Route 2: serve the files yourself
+
+One renaming step: `@material-icons/svg` stores `<name>/<variant>.svg`, while the slug
+wants `mi/<variant>/<name>`. `mdi/` and `mgg/` are plain folder copies. This script covers
+the three sets with Node built-ins only, so it fits any bundler:
+
+```bash
+npm i -D @maggioli-design-system/svg-icons @material-icons/svg @mdi/svg
+```
+
+```js
+// scripts/copy-icons.mjs
+// Copies Magma's icon sets where mds-icon fetches them: <OUT>/<slug>.svg.
+//   node scripts/copy-icons.mjs icons.json   only the slugs listed in icons.json
+//   node scripts/copy-icons.mjs              every icon of the three sets (18,720 files, 73 MB)
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
+
+const OUT = 'public/svg'; // served at /svg/ by Vite, Next.js and the Angular CLI
+const require = createRequire(import.meta.url);
+const root = (pkg) => dirname(require.resolve(`${pkg}/package.json`));
+const MI = join(root('@material-icons/svg'), 'svg'); // <name>/<variant>.svg
+const MDI = join(root('@mdi/svg'), 'svg'); // <name>.svg
+const MGG = join(root('@maggioli-design-system/svg-icons'), 'dist/svg'); // <name>.svg
+
+// Source file of a slug: mi/<variant>/<name>, mdi/<name>, mgg/<name>.
+function source(slug) {
+  const [set, ...rest] = slug.split('/');
+  if (set === 'mi' && rest.length === 2) return join(MI, rest[1], `${rest[0]}.svg`);
+  if (set === 'mdi' && rest.length === 1) return join(MDI, `${rest[0]}.svg`);
+  if (set === 'mgg' && rest.length === 1) return join(MGG, `${rest[0]}.svg`);
+  throw new Error(`Not a Magma icon slug: ${slug}`);
+}
+
+function allSlugs() {
+  const names = (dir) => readdirSync(dir).map((file) => file.replace(/\.svg$/, ''));
+  return [
+    ...readdirSync(MI).flatMap((name) => names(join(MI, name)).map((variant) => `mi/${variant}/${name}`)),
+    ...names(MDI).map((name) => `mdi/${name}`),
+    ...names(MGG).map((name) => `mgg/${name}`),
+  ];
+}
+
+const slugs = process.argv[2] ? JSON.parse(readFileSync(process.argv[2], 'utf8')) : allSlugs();
+for (const slug of slugs) {
+  const file = source(slug);
+  if (!existsSync(file)) throw new Error(`No such icon: ${slug} (${file})`);
+  const target = join(OUT, `${slug}.svg`);
+  mkdirSync(dirname(target), { recursive: true });
+  copyFileSync(file, target);
+}
+console.log(`${slugs.length} icons in ${OUT}/`);
+```
+
+`icons.json` lists the slugs the app uses:
+
+```json
+["mi/baseline/email", "mi/baseline/send", "mdi/github", "mgg/abitazione-principale"]
+```
+
+```json
+"scripts": {
+  "icons": "node scripts/copy-icons.mjs icons.json",
+  "predev": "npm run icons",
+  "prebuild": "npm run icons"
+}
+```
+
+A slug that does not exist stops the script with an error. A slug used in the code but
+missing from `icons.json` gives a 404 at runtime: iconsauce avoids that by reading the
+sources. Without `icons.json` the script copies every icon of the three sets, all of
+them deployed: 18,720 files and 73 MB (`mi` 43 MB in five variants, `mdi` 29 MB, `mgg`
+1.3 MB).
+
+### Only the `mgg/` set
+
+An app that uses only Maggioli icons can copy the `svg-icons` folder, into `mgg/` under
+the served path: `@maggioli-design-system/svg-icons/dist/svg/` to `public/svg/mgg/`. With
+the Angular CLI that is an `assets` entry in `angular.json`:
+
+```json
+{ "glob": "**/*.svg", "input": "node_modules/@maggioli-design-system/svg-icons/dist/svg", "output": "/svg/mgg" }
+```
 
 ### Tell mds-icon where the icons are
 
@@ -193,7 +322,8 @@ them in the consumer project.
 - [ ] `styles` + `design-tokens` installed on the matching version row
 - [ ] Global CSS imports in the exact cascade-layer order above
 - [ ] `@fontsource` fonts installed and imported in the `vendor` layer
-- [ ] `svg-icons` SVGs copied to a public path
+- [ ] Every icon slug the app uses served at `<mdsIconSvgPath><slug>.svg` (iconsauce or
+      the copy script, run before dev and build, output folder out of git)
 - [ ] `mdsIconSvgPath` set to that public path before hydration
 - [ ] (optional) `identity` installed if brand assets are used
 - [ ] Components registered per your target track

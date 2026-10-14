@@ -18,7 +18,7 @@ npm i @maggioli-design-system/magma
 Then install the assets from [`assets.md`](assets.md):
 
 ```bash
-npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens @maggioli-design-system/svg-icons
+npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens
 npm i @fontsource/karla @fontsource/merriweather @fontsource/roboto @fontsource/roboto-mono
 ```
 
@@ -86,8 +86,9 @@ Before components hydrate (see [`assets.md`](assets.md) section 3):
 window.sessionStorage.setItem('mdsIconSvgPath', '/svg/');
 ```
 
-Make sure the SVG files from `@maggioli-design-system/svg-icons/dist/svg/` are served
-at that path.
+Serve the icons at that path with one of the routes of [`assets.md`](assets.md) section 3
+(iconsauce or the copy script, which also install the icon packages): with Vite the
+static folder is `public/`, so `public/svg/` is served at `/svg/`.
 
 ## 4. Anti-FOUC
 

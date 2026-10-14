@@ -21,7 +21,7 @@ follows the same major version as `magma` (see [`SPEC.md`](SPEC.md) matrix). The
 install the assets from [`assets.md`](assets.md):
 
 ```bash
-npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens @maggioli-design-system/svg-icons
+npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens
 npm i @fontsource/karla @fontsource/merriweather @fontsource/roboto @fontsource/roboto-mono
 ```
 
@@ -93,15 +93,20 @@ client-only initializer.
 
 ## 4. Serve the icon SVGs and styles
 
-- Copy `@maggioli-design-system/svg-icons/dist/svg/` to the served `/svg/` path. With
-  the Angular CLI, add an `assets` glob in `angular.json`:
+- Serve the icons at `/svg/` with one of the routes of [`assets.md`](assets.md)
+  section 3 (iconsauce or the copy script). New Angular CLI projects serve `public/` at
+  `/`, so both write to `public/svg/`. Run them from `prestart` and `prebuild`: `npm start`
+  runs `ng serve`, so a `predev` script never fires.
+- An app that uses only the `mgg/` set can let the CLI copy `svg-icons` instead
+  (`npm i -D @maggioli-design-system/svg-icons`), with an `assets` glob in `angular.json`
+  whose output is the `mgg/` folder `mds-icon` fetches from:
 
   ```json
   "assets": [
     {
       "glob": "**/*.svg",
       "input": "node_modules/@maggioli-design-system/svg-icons/dist/svg",
-      "output": "/svg"
+      "output": "/svg/mgg"
     }
   ]
   ```
