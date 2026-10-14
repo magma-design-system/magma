@@ -18,7 +18,7 @@ Every component under [`projects/stencil/src/components/<name>/`](../projects/st
 | `dist/collection/components/<name>/pattern.md`, `antipattern.md` | build (auto) | no | The shipped copies of `2. Pattern.md` / `3. Antipattern.md`, links rewritten |
 | `dist/collection/components/<name>/documentation.json` | build (auto) | no | Its entry of the docs JSON, with full type metadata                                |
 
-**Build flow.** Only the three `usage/*.md` files are hand-authored. On build, Stencil bundles them into `dist/documentation.json` (all components, gitignored) and injects the content into `readme.md`; then `scripts/component-docs.ts` writes the per-component files of `dist/collection/components/<name>/`. As a consequence: never hand-edit `readme.md` or a generated file - they are regenerated and your edits will be lost. To change what a component's docs say, edit the matching `usage/*.md` (and the JSDoc of the props, events and CSS vars). Everything under `dist/` exists only after `nx run stencil:build`.
+**Build flow.** Only the three `usage/*.md` files are hand-authored. On build, Stencil bundles them into `dist/documentation.json` (all components, gitignored) and injects the content into `readme.md`; then `scripts/component-docs.ts` writes the per-component files of `dist/collection/components/<name>/`. As a consequence: never hand-edit `readme.md` or a generated file - they are regenerated and your edits will be lost. The one exception is worse: Stencil keeps whatever sits above `<!-- Auto Generated Below -->` in a readme and ships it in the `readme` field of `dist/documentation.json`, where nobody keeps it current. Only the title and the generic intro belong there, and `check.usage-docs` fails on anything else. To change what a component's docs say, edit the matching `usage/*.md` (and the JSDoc of the props, events and CSS vars). Everything under `dist/` exists only after `nx run stencil:build`.
 
 **Storybook.** The same three files make up each component's Docs page in Storybook (sections Description, Pattern and Antipattern around the primary story), read at runtime from `usage/*.md`: see the Storybook paragraph of [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md#per-component-usage-docs).
 
@@ -273,7 +273,8 @@ packages as `agents/*.md`:
 | Typography utilities | [`agents/typography.md`](./agents/typography.md) |
 
 Contributor-only anti-pattern, on top of those: never hand-edit a component's
-`readme.md` or `components.d.ts` - both are regenerated on build.
+`readme.md` or `components.d.ts` - both are regenerated on build. Text written above the
+generated part of a readme survives the build instead, and goes stale: put it in `usage/`.
 
 ## Authoring new `usage/` docs
 
