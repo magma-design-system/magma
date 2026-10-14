@@ -85,7 +85,11 @@ step only follows the mode.
 ```
 
 The values come from `dist/css/semantic.css`, the Tailwind utilities from
-`dist/tailwind/theme.css`. The roles, their pairing rules and the Magma 1 -> 2 map are
+`dist/tailwind/theme.css`. Every role of the Tailwind bridge carries its light default as
+the fallback of its `var()` (`rgb(var(--magma-surface-default, 242 242 242))`): Tailwind
+IntelliSense reads a utility's colour only from that literal, so the semantic utilities get
+a swatch in the editor. Without `semantic.css` they paint that light default, in every mode:
+the file is still required. The roles, their pairing rules and the Magma 1 -> 2 map are
 in the color guide shipped with the components package
 (`@maggioli-design-system/magma/agents/color.md`).
 
@@ -262,6 +266,38 @@ Never import this file. It only holds light-theme defaults, so loading it would 
 token at the highest-priority origin and freeze theming; it is wrapped in a query that can
 never match, which makes an accidental import a no-op.
 
+Do not install `vunguyentuan.vscode-css-variables` next to it: it sorts alphabetically,
+never opens the list by itself and duplicates every entry. To share the setup with the
+team, recommend the extensions in `.vscode/extensions.json`:
+
+```json
+{
+  "recommendations": ["phoenisx.cssvar", "bradlc.vscode-tailwindcss"],
+  "unwantedRecommendations": ["vunguyentuan.vscode-css-variables"]
+}
+```
+
+#### Tailwind classes
+
+The classes complete through [Tailwind CSS IntelliSense][tailwind-intellisense], which
+reads the CSS entry importing Tailwind and Magma's theme (see Tailwind above). It finds
+that file on its own, split imports included; only if hovering a class shows nothing, add
+`"tailwindCSS.experimental.configFile": "<path of that CSS file>"` to the settings. Classes
+built through functions (`clsx`, `cva`, `cn`) complete once those functions are listed in
+`"tailwindCSS.classFunctions"`.
+
+To check it works: hovering `p-600` shows `1.5rem = 24px`, and `bg-surface-default` gets a
+swatch in the completion list (the semantic utilities carry their light default as a
+fallback for that; see Semantic colors).
+
+Two limits, with nothing to configure:
+
+- the utilities are listed alphabetically, whatever the order of the theme:
+  `bg-surface-bisque-*` comes before `bg-surface-default`;
+- the class list offers Tailwind's stock spacing steps (`p-1` ... `p-96`), not Magma's,
+  and with Magma's theme `p-1` is 0.04px. Write the Magma steps in full (`p-600`,
+  `gap-400`): they work and hover with their value, they are just not suggested.
+
 ---
 
 ### Token data
@@ -334,6 +370,7 @@ Tailwind 4 only; the Tailwind 3 preset is legacy.
 | `tailwind3` | Tailwind 3 | `base.css`, `components.css`, `reset.css`, `typography.css` |
 
 [mds]: https://magma.maggiolicloud.it/
-[css-variable-autocomplete]: https://marketplace.visualstudio.com/items?itemName=vunguyentuan.vscode-css-variables
+[css-variable-autocomplete]: https://marketplace.visualstudio.com/items?itemName=phoenisx.cssvar
+[tailwind-intellisense]: https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss
 [fontsource-var-fonts]: https://fontsource.org/docs/variable-fonts
 [tailwindcss-config]: https://github.com/magma-design-system/magma/blob/main/projects/styles/tailwind.config.js
