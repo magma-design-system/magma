@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 
 /**
@@ -206,8 +206,9 @@ describe('mds-button-dropdown', () => {
 
       primaryAction(root.querySelector('mds-button-dropdown')!).click();
 
+      // a click from a script is followed once every listener had its say
+      await vi.waitFor(() => expect(window.location.hash).toBe('#elsewhere'));
       expect(submits).toHaveLength(0);
-      expect(window.location.hash).toBe('#elsewhere');
       window.history.replaceState(null, '', window.location.pathname + window.location.search);
     });
   });

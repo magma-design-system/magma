@@ -64,6 +64,8 @@ const SOURCES: Source[] = [
   { file: path.join(BUILD_CSS_DIR, 'semantic.css'), group: 'semantic' },
   { file: path.join(BUILD_CSS_DIR, 'themes.css'), group: 'semantic: theme variants' },
   { file: path.join(SOURCE_CSS_DIR, 'globals.css'), group: 'globals' },
+  // appended to the published globals.css by the copy step: the --magma-radius-* steps
+  { file: path.join(BUILD_CSS_DIR, 'corner.css'), group: 'globals: corner' },
   { file: path.join(SOURCE_CSS_DIR, 'theme.css'), group: 'globals: theme' },
   { group: 'component', collect: () => collectComponents() },
 ];

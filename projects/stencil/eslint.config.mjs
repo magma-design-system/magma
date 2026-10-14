@@ -58,8 +58,7 @@ export default defineConfig([
       parser: tseslint.parser,
       parserOptions: {
         projectService: true,
-        project: './tsconfig.json', // important for rules requiring type info
-        tsconfigRootDir: import.meta.dirname, // ensure paths resolve correctly
+        tsconfigRootDir: import.meta.dirname,
         ecmaVersion: 'latest',
         sourceType: 'module',
       },

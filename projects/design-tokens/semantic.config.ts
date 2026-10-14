@@ -30,8 +30,7 @@
  * accents, so a theme retints its accents the same way it retints surfaces.
  */
 export type ThemeDef =
-  | string
-  | { surface?: string; accents?: Record<string, string>; scale?: string };
+  string | { surface?: string; accents?: Record<string, string>; scale?: string };
 
 /**
  * A contrast preference level that carries role promotions (spec 9.3). Only `more`
@@ -337,23 +336,39 @@ export const scaleStepList = (): string[] =>
 export const scaleFamily = (surface: string, scale?: string): string => scale ?? `tone-${surface}`;
 
 /**
+ * One declaration of the semantic layer, `--<name>: var(--<ref>);`, as data. Every
+ * generated output reads these instead of printing its own: the stylesheets of the
+ * styles package (`scripts/semantic.ts`), the playground theme export and the DTCG
+ * export of this package, so a role cannot point at one primitive in the CSS and at
+ * another in the JSON. Names are written without the leading `--`.
+ */
+export interface SemanticDecl {
+  /** The custom property it declares, e.g. `magma-surface-default`. */
+  name: string;
+  /** The custom property it resolves to, e.g. `magma-tint-default` or `tone-neutral-08`. */
+  ref: string;
+  /** The Tailwind colour name the bridge publishes it as. Set on public roles only. */
+  tw?: string;
+  /** A comment the stylesheet prints on its own line before the declaration. */
+  note?: string;
+  /** Set when the name is kept only for back-compat: says what replaces it. */
+  deprecated?: string;
+}
+
+/** A declaration the way every generated stylesheet prints it. */
+export const cssDecl = ({ name, ref }: SemanticDecl): string => `  --${name}: var(--${ref});`;
+
+/** The `--magma-tint-scale-*` pointers that aim the ramp at one family. */
+export const scaleTintDecls = (family: string): SemanticDecl[] =>
+  scaleStepList().map((step) => ({ name: `magma-tint-scale-${step}`, ref: `${family}-${step}` }));
+
+/**
  * The `--magma-tint-scale-*` lines pointing the ramp at one family. SHARED for the
  * same reason as `accentTintOverride`: the styles generator and the playground theme
  * export must emit byte-identical CSS.
  */
-export const scaleTintOverride = (family: string): string[] =>
-  scaleStepList().map((step) => `  --magma-tint-scale-${step}: var(--${family}-${step});`);
+export const scaleTintOverride = (family: string): string[] => scaleTintDecls(family).map(cssDecl);
 
-/**
- * The `--magma-tint-accent-*` lines that point an accent role at `family` (a
- * variant family): the quintet steps (surface/fg/border/emphasis) plus the
- * interaction states, prefixed per `accentInfix` (general accent = no infix,
- * `ai` = `ai-`). `on-emphasis` is family-independent (the seed) so it is not
- * repointed. SHARED so the styles generator (`scripts/semantic.ts`, both the base
- * layer and each named-theme override) and the playground theme export
- * (`playground/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
- * accent exactly the way the base layer declares it.
- */
 /**
  * The EMPHASIS-band states of `accentStateSteps`, i.e. the ones that describe a
  * solid fill and therefore apply to the colored hues as well as to the accents.
@@ -366,20 +381,36 @@ export const emphasisStateSteps = (): Record<string, string> =>
     Object.entries(semantic.accentStateSteps).filter(([state]) => state.startsWith('emphasis-')),
   );
 
-export const accentTintOverride = (role: string, family: string): string[] => {
+/** The `--magma-tint-accent-*` pointers of `accentTintOverride`, as data. */
+export const accentTintDecls = (role: string, family: string): SemanticDecl[] => {
   const { accentStateSteps } = semantic;
   const hueSteps = { ...semantic.hueSteps, ...semantic.accentSteps };
   const infix = accentInfix(role);
+  const pointer = (key: string, step: string): SemanticDecl => ({
+    name: `magma-tint-accent-${infix}${key}`,
+    ref: `${family}-${step}`,
+  });
   return [
-    `  --magma-tint-accent-${infix}surface: var(--${family}-${hueSteps.surface});`,
-    `  --magma-tint-accent-${infix}fg: var(--${family}-${hueSteps.fg});`,
-    `  --magma-tint-accent-${infix}border: var(--${family}-${hueSteps.border});`,
-    `  --magma-tint-accent-${infix}emphasis: var(--${family}-${hueSteps.emphasis});`,
-    ...Object.entries(accentStateSteps).map(
-      ([state, step]) => `  --magma-tint-accent-${infix}${state}: var(--${family}-${step});`,
-    ),
+    pointer('surface', hueSteps.surface),
+    pointer('fg', hueSteps.fg),
+    pointer('border', hueSteps.border),
+    pointer('emphasis', hueSteps.emphasis),
+    ...Object.entries(accentStateSteps).map(([state, step]) => pointer(state, step)),
   ];
 };
+
+/**
+ * The `--magma-tint-accent-*` lines that point an accent role at `family` (a
+ * variant family): the quintet steps (surface/fg/border/emphasis) plus the
+ * interaction states, prefixed per `accentInfix` (general accent = no infix,
+ * `ai` = `ai-`). `on-emphasis` is family-independent (the seed) so it is not
+ * repointed. SHARED so the styles generator (`scripts/semantic.ts`, both the base
+ * layer and each named-theme override) and the playground theme export
+ * (`playground/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
+ * accent exactly the way the base layer declares it.
+ */
+export const accentTintOverride = (role: string, family: string): string[] =>
+  accentTintDecls(role, family).map(cssDecl);
 
 /**
  * The `--magma-tint-*` lines that promote text + border to a STRONGER same-family
@@ -392,14 +423,21 @@ export const accentTintOverride = (role: string, family: string): string[] => {
  * styles generator emits byte-identical lines for the base layer and for every
  * named theme. Returns [] when the level declares no promotion.
  */
-export const contrastTintOverride = (family: string, level: ContrastLevel = 'more'): string[] => [
-  ...contrastLines(family, level, (axis, role) => `--magma-tint-${axis}-${role}`),
+export const contrastTintDecls = (
+  family: string,
+  level: ContrastLevel = 'more',
+): SemanticDecl[] => [
+  ...contrastDecls(family, level, (axis, role) => `magma-tint-${axis}-${role}`),
   // surfaces are tint pointers too (`--magma-tint-<role>`, no axis infix), and
   // only the tint block carries them: a hue has washes, not a surface ladder
-  ...Object.entries(semantic.contrast?.[level]?.surface ?? {}).map(
-    ([role, target]) => `  --magma-tint-${role}: var(--tone-${family}-${target});`,
-  ),
+  ...Object.entries(semantic.contrast?.[level]?.surface ?? {}).map(([role, target]) => ({
+    name: `magma-tint-${role}`,
+    ref: `tone-${family}-${target}`,
+  })),
 ];
+
+export const contrastTintOverride = (family: string, level: ContrastLevel = 'more'): string[] =>
+  contrastTintDecls(family, level).map(cssDecl);
 
 /**
  * The same promotions for a colored HUE's published roles (spec 9.3 + 6.4).
@@ -413,31 +451,40 @@ export const contrastTintOverride = (family: string, level: ContrastLevel = 'mor
  * NOT theme-scoped, unlike `contrastTintOverride`: a named theme leaves hues
  * alone, so the base block is the only place these can be stated.
  */
+export const hueContrastDecls = (
+  hue: string,
+  roleFamily: string,
+  level: ContrastLevel = 'more',
+): SemanticDecl[] =>
+  contrastDecls(roleFamily, level, (axis, role) => `magma-${hue}-${axis}-${role}`);
+
 export const hueContrastOverride = (
   hue: string,
   roleFamily: string,
   level: ContrastLevel = 'more',
-): string[] => contrastLines(roleFamily, level, (axis, role) => `--magma-${hue}-${axis}-${role}`);
+): string[] => hueContrastDecls(hue, roleFamily, level).map(cssDecl);
 
 /**
  * Shared body of the two overrides above: walk the level's promotion table and
- * emit one line per promoted role, naming the target through `name` so the tint
- * pointers and the hue roles cannot drift apart in what they promote or in the
+ * emit one declaration per promoted role, naming the target through `name` so the
+ * tint pointers and the hue roles cannot drift apart in what they promote or in the
  * order they promote it. Returns [] when the level declares no promotion.
  */
-function contrastLines(
+function contrastDecls(
   family: string,
   level: ContrastLevel,
   name: (axis: 'text' | 'border', role: string) => string,
-): string[] {
+): SemanticDecl[] {
   const promo = semantic.contrast?.[level];
   if (!promo) return [];
   return [
-    ...Object.entries(promo.text ?? {}).map(
-      ([role, stronger]) => `  ${name('text', role)}: var(--text-${family}-${stronger});`,
-    ),
-    ...Object.entries(promo.border ?? {}).map(
-      ([role, stronger]) => `  ${name('border', role)}: var(--border-${family}-${stronger});`,
-    ),
+    ...Object.entries(promo.text ?? {}).map(([role, stronger]) => ({
+      name: name('text', role),
+      ref: `text-${family}-${stronger}`,
+    })),
+    ...Object.entries(promo.border ?? {}).map(([role, stronger]) => ({
+      name: name('border', role),
+      ref: `border-${family}-${stronger}`,
+    })),
   ];
 }

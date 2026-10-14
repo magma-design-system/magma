@@ -8,6 +8,8 @@ The `dev` and `main` branches are protected governance targets. **Agents must ne
 
 An agent may prepare work up to (and including) a feature branch pushed to its own remote and a pull request opened from it into `dev`, but merging that pull request - the promotion of the work into `dev` or `main` - is a human decision.
 
+**No branch is merged into `dev` while its pipeline is red.** Every check of the pull request must pass on its head commit at the time of the merge; a red check is never bypassed, whatever the size of the change (a one-line dependency bump included). When the failure comes from outside the PR (a flaky job, an outage), rerun or fix it first. `dev` must install, build and lint at every commit: every other branch syncs from it (rule 4), so a red merge breaks all of them at once.
+
 When a maintainer promotes `dev` into `main`, the promotion must use a **merge commit** (never squash or rebase): release tags created on `dev` (e.g. `icons@*`, `svg-icons@*`) must stay reachable from `main`, otherwise the release workflow on `main` would keep recomputing already-released versions.
 
 The release on `main` (`release.yml`) handles every package in one run: it detects the next version of each package from its own commits, writes the new versions, updates the pins of the packages that depend on them (e.g. a new `design-tokens` is pinned in `styles` and `magma` before they are published) together with `package-lock.json`, and pushes all of it in **one** `chore(release)` commit, with one tag and one GitHub release per package. CI and the npm publish then run once, on that commit. Internal dependencies are pinned as caret ranges (`^<version>`), so a patch or minor of a dependency is accepted by the dependents already on npm and consumers keep a single copy of it; only `magma` is pinned to the exact version in `magma-react` and `magma-angular`, which are released in lockstep with it under the `magma@*` tag. A dependent without commits of its own gets the new pin but no new version: it ships the pin with its next release. A major of a dependency reaches the published dependents only with a release of their own. After a release, merge `main` back into `dev`, so that `dev` has the released versions and pins.
@@ -98,5 +100,6 @@ An issue opened for a problem found in another project (the docs site, a consume
 | Ship an API removal without declaring the break | No - `!` or a `BREAKING CHANGE:` footer (see rule 6)     |
 | Open an issue for a problem found elsewhere     | Yes, with its `prd-<project>` origin label (see rule 7)  |
 | Merge a branch into `dev` or `main`             | No - manual governance step                              |
+| Merge a branch with a red pipeline into `dev`   | No - nobody does, a red check is never bypassed (rule 1) |
 | Push directly to `dev` or `main`                | No - manual governance step                              |
 | Auto-merge a pull request into `dev` or `main`  | No - manual governance step                              |
