@@ -5,8 +5,16 @@
  * OS via @media; the scheme axis gates it. Cross-browser, no :host-context.
  *
  * Unchecked in dark: border-strong (#ababab) made the off track almost as loud as
- * the on one, so it drops to border-default and the knob takes the fill ink (the
- * page colour, as when checked): knob on track 3.35:1, over the 3:1 non-text floor. */
+ * the on one, so it drops to border-default. The knob on it is light, as in light mode:
+ * text-default, 4.90:1 on the track. It used to take the fill ink, which in dark is the
+ * page colour: 3.35:1, but a dark dot on a grey track reads as a hole, not as a handle.
+ * Checked, the knob stays the fill ink: the track is accent-emphasis, a light blue in
+ * dark, where the dark knob gets 10.19:1 and a light one would get 1.61:1, so the knob
+ * changes colour with the state, as in Material 3. Disabled, the unchecked knob is
+ * text-disabled: still light, 3.06:1 on wash-strong, below the enabled one.
+ * On the light off knob, the glyph of `explicit` takes the colour of the track, as if cut
+ * out of the knob: border-default at 4.90:1, wash-strong at 3.06:1 when disabled. The text
+ * roles it used are light in dark (text-subtle 1.46:1, text-disabled on itself 1:1). */
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
   --mds-input-switch-box-color-enabled-checked: rgb(var(--magma-accent-emphasis));
@@ -14,10 +22,12 @@
   --mds-input-switch-box-color-disabled-checked: rgb(var(--magma-wash-strong));
   --mds-input-switch-box-color-disabled-unchecked: rgb(var(--magma-wash-strong));
   --mds-input-switch-toggle-color-enabled-checked: rgb(var(--magma-text-on-emphasis));
-  --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--magma-text-on-emphasis));
+  --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--magma-text-default));
   --mds-input-switch-toggle-color-disabled-checked: rgb(var(--magma-text-on-emphasis));
-  --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--magma-text-on-emphasis));
+  --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--magma-text-disabled));
   --mds-input-switch-icon-color-checked: rgb(var(--magma-accent-border));
+  --mds-input-switch-icon-color-unchecked: rgb(var(--magma-border-default));
+  --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--magma-wash-strong));
   --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--magma-text-disabled));
   --mds-input-switch-icon-color-indeterminate: rgb(var(--magma-text-disabled));
 }
@@ -30,10 +40,12 @@
     --mds-input-switch-box-color-disabled-checked: rgb(var(--magma-wash-strong));
     --mds-input-switch-box-color-disabled-unchecked: rgb(var(--magma-wash-strong));
     --mds-input-switch-toggle-color-enabled-checked: rgb(var(--magma-text-on-emphasis));
-    --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--magma-text-on-emphasis));
+    --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--magma-text-default));
     --mds-input-switch-toggle-color-disabled-checked: rgb(var(--magma-text-on-emphasis));
-    --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--magma-text-on-emphasis));
+    --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--magma-text-disabled));
     --mds-input-switch-icon-color-checked: rgb(var(--magma-accent-border));
+    --mds-input-switch-icon-color-unchecked: rgb(var(--magma-border-default));
+    --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--magma-wash-strong));
     --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--magma-text-disabled));
     --mds-input-switch-icon-color-indeterminate: rgb(var(--magma-text-disabled));
   }

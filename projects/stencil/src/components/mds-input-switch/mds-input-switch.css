@@ -173,6 +173,11 @@
   width: var(--mds-input-switch-toggle-container-size);
 }
 
+/* The knob starts in the unchecked colour: it used to take the checked one until the first
+   change, because only the .dirty rule (there to keep the uncheck animation from running on
+   load) painted it unchecked. In light the two are near (white and wash-soft); in dark a
+   switch that was never touched showed the knob of a checked one. */
+
 .switch-toggle {
   align-items: center;
   animation-duration: calc(var(--mds-input-switch-duration) * 1.5);
@@ -181,7 +186,7 @@
   animation-name: none;
   animation-play-state: paused;
   animation-timing-function: var(--mds-input-switch-animation-timing-function);
-  background-color: var(--mds-input-switch-toggle-color-enabled-checked);
+  background-color: var(--mds-input-switch-toggle-color-enabled-unchecked);
   border-radius: var(--radius-full);
   box-shadow: var(--shadow);
   display: flex;
@@ -208,7 +213,6 @@
 .field:not(:checked) + .dirty .switch-toggle {
   animation-name: uncheck;
   animation-play-state: initial;
-  background-color: var(--mds-input-switch-toggle-color-enabled-unchecked);
 }
 
 .field:disabled + .switch-container .switch {
