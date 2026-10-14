@@ -6,6 +6,7 @@ import {
   relativeLinks,
   renderComponentAgentsMd,
   renderUsageFile,
+  rewriteGuideLinks,
   rewriteUsageLinks,
   type DocsComponent,
 } from './agent-docs-lib';
@@ -72,6 +73,63 @@ describe('rewriteUsageLinks', () => {
       '[`docs/agents/variants.md`](../../../../../../docs/agents/variants.md)',
     );
     expect(rewriteUsageLinks(once)).toBe(once);
+  });
+});
+
+describe('rewriteGuideLinks', () => {
+  const fromMagma = '../dist/collection/components';
+  const fromWrapper = '../../magma/dist/collection/components';
+  const readme =
+    'documented in [`../../projects/stencil/src/components/mds-icon/readme.md`](../../projects/stencil/src/components/mds-icon/readme.md):';
+
+  it("points a component's readme to its shipped AGENTS.md, from magma and from a wrapper", () => {
+    // it used to become the plain text "the mds-icon readme", which no consumer can open
+    expect(rewriteGuideLinks(readme, fromMagma)).toBe(
+      'documented in [`mds-icon/AGENTS.md`](../dist/collection/components/mds-icon/AGENTS.md):',
+    );
+    expect(rewriteGuideLinks(readme, fromWrapper)).toBe(
+      'documented in [`mds-icon/AGENTS.md`](../../magma/dist/collection/components/mds-icon/AGENTS.md):',
+    );
+  });
+
+  it("points a component's usage docs to its shipped AGENTS.md too", () => {
+    expect(
+      rewriteGuideLinks(
+        '[usage](../../projects/stencil/src/components/mds-table/usage/2.%20Pattern.md)',
+        fromMagma,
+      ),
+    ).toBe('[`mds-table/AGENTS.md`](../dist/collection/components/mds-table/AGENTS.md)');
+  });
+
+  it('leaves any other monorepo link in place, so the link check of the build reports it', () => {
+    const styles = 'see [`../../projects/styles/SPEC.md`](../../projects/styles/SPEC.md)';
+    const rewritten = rewriteGuideLinks(styles, fromMagma);
+    const root = path.resolve('/pkg');
+
+    expect(rewritten).toBe(styles);
+    expect(
+      brokenLinks(
+        rewritten,
+        (link) => path.resolve(root, 'agents', link),
+        [root],
+        () => true,
+      ),
+    ).toEqual(['../../projects/styles/SPEC.md']);
+  });
+
+  it('points the entry point and the per-target tracks to the files the package ships', () => {
+    expect(rewriteGuideLinks('see [`SPEC.md`](SPEC.md)', fromMagma)).toBe(
+      'see [`AGENTS.md`](../AGENTS.md)',
+    );
+    expect(
+      rewriteGuideLinks(
+        'the tracks ([`web-components.md`](web-components.md), [`react.md`](react.md), [`angular.md`](angular.md))',
+        fromMagma,
+      ),
+    ).toBe('the tracks ([`install.md`](install.md))');
+    expect(rewriteGuideLinks('[`angular.md`](angular.md)', fromMagma)).toBe(
+      '[`install.md`](install.md)',
+    );
   });
 });
 

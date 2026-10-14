@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 
 /** A selectable table with something in the batch-action slot: the counter only exists there. */
 const TABLE = `
@@ -31,6 +32,59 @@ describe('mds-table', () => {
     const { root } = await render('<mds-table></mds-table>');
 
     expect(root).toHaveAttribute('hydrated');
+  });
+
+  describe('the scroll area', () => {
+    const INTERACTIVE = `
+<mds-table interactive>
+  <mds-table-header>
+    <mds-table-header-cell label="Name"></mds-table-header-cell>
+  </mds-table-header>
+  <mds-table-body>
+    <mds-table-row><mds-table-cell value="Uno">Uno</mds-table-cell></mds-table-row>
+    <mds-table-row><mds-table-cell value="Due">Due</mds-table-cell></mds-table-row>
+  </mds-table-body>
+</mds-table>`;
+
+    /** The background of an element once the transitions of the rows have landed. */
+    const settledBackground = async (element: Element): Promise<string> => {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      let previous = '';
+      for (let attempt = 0; attempt < 60; attempt += 1) {
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+        const current = getComputedStyle(element).backgroundColor;
+        if (current === previous) return current;
+        previous = current;
+      }
+      return previous;
+    };
+
+    it('takes the colour of the rows that are not hovered while the pointer is on the body', async () => {
+      // the wrapper shows where a trackpad bounces the table past its first or last column:
+      // it kept the base colour, a white band next to the rows the hover had turned grey
+      const { root, waitForChanges } = await render(INTERACTIVE);
+      const [hovered, other] = Array.from(root.querySelectorAll('mds-table-cell'));
+
+      await userEvent.hover(hovered);
+      await waitForChanges();
+
+      const wrapper = root.shadowRoot!.querySelector('.table-wrapper')!;
+      expect(await settledBackground(other)).not.toBe(await settledBackground(hovered));
+      expect(await settledBackground(wrapper)).toBe(await settledBackground(other));
+    });
+
+    it('keeps the colour of the rows while the pointer is away', async () => {
+      const { root, waitForChanges } = await render(INTERACTIVE);
+      // the tests share the page, and the pointer stays where the last one left it
+      await userEvent.unhover(root);
+      await waitForChanges();
+
+      // at rest the rows paint nothing: what shows through them is the body
+      const wrapper = root.shadowRoot!.querySelector('.table-wrapper')!;
+      expect(await settledBackground(wrapper)).toBe(
+        await settledBackground(root.querySelector('mds-table-body')!),
+      );
+    });
   });
 
   describe('the batch actions counter', () => {

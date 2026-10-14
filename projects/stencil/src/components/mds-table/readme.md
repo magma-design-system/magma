@@ -546,16 +546,16 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                         | Description                                |
-| ---------------------------- | ------------------------------------------ |
-| `--mds-table-actions-gap`    | Gap between table action elements.         |
-| `--mds-table-background`     | Default background color of the table.     |
-| `--mds-table-background-alt` | Alternate background color for table rows. |
-| `--mds-table-border-color`   | Color of the table border.                 |
-| `--mds-table-border-width`   | Width of the table border.                 |
-| `--mds-table-cell-padding`   | Padding inside table cells.                |
-| `--mds-table-color`          | Default text color of the table.           |
-| `--mds-table-color-alt`      | Text color for alternate table rows.       |
+| Name                         | Description                                                                                                                 |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-table-actions-gap`    | Gap between table action elements.                                                                                          |
+| `--mds-table-background`     | Default background color of the table.                                                                                      |
+| `--mds-table-background-alt` | Alternate background color for table rows; in an interactive table also the scroll area, while the pointer is on the table. |
+| `--mds-table-border-color`   | Color of the table border.                                                                                                  |
+| `--mds-table-border-width`   | Width of the table border.                                                                                                  |
+| `--mds-table-cell-padding`   | Padding inside table cells.                                                                                                 |
+| `--mds-table-color`          | Default text color of the table.                                                                                            |
+| `--mds-table-color-alt`      | Text color for alternate table rows.                                                                                        |
 
 
 ## Dependencies
