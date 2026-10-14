@@ -5,7 +5,7 @@
  * Single source of truth: docs/agents/ in the monorepo. This script copies the
  * relevant install track plus the shared fragments (one topic per file, see
  * SHARED_FRAGMENTS) into each package, rewrites the repo-internal links so they
- * resolve (or degrade to plain text) inside node_modules, generates the component
+ * resolve inside node_modules (rewriteGuideLinks), generates the component
  * catalogue linking each component's own docs, and emits a version-stamped AGENTS.md
  * entry point: the detect-then-ask install procedure plus a routing table, so an agent
  * reads only the fragment it needs.
@@ -19,7 +19,7 @@
  */
 import fs from 'fs';
 import path from 'path';
-import { COMPONENT_DOCS_DIR, SHARED_FRAGMENTS, toAscii } from './agent-docs-lib';
+import { COMPONENT_DOCS_DIR, SHARED_FRAGMENTS, rewriteGuideLinks, toAscii } from './agent-docs-lib';
 
 // cwd is the stencil package dir when run via npm script.
 const STENCIL_DIR = process.cwd();
@@ -74,34 +74,6 @@ const BANNER = [
   '-->',
   '',
 ].join('\n');
-
-/**
- * Rewrites links that only make sense inside the monorepo so the published copy
- * resolves within the package (or degrades to plain text).
- */
-function rewriteLinks(md: string): string {
-  return (
-    md
-      // cross-project deep links -> friendly plain text (these files are not in node_modules)
-      .replace(/\[`?[^\]]*styles\/SPEC\.md`?\]\([^)]*\)/g, 'the Magma styles guide')
-      .replace(/\[`?[^\]]*stencil\/SPEC\.md`?\]\([^)]*\)/g, 'the Magma component conventions guide')
-      .replace(/\[`?[^\]]*mds-icon\/readme\.md`?\]\([^)]*\)/g, 'the mds-icon readme')
-      // any other repo-internal deep link -> keep the text only
-      .replace(/\[(`?[^\]]+`?)\]\(\.\.\/\.\.\/[^)]*\)/g, '$1')
-      // install entry point SPEC.md -> the package AGENTS.md (one level up from agents/)
-      .replace(/\[`?SPEC\.md`?\]\(SPEC\.md\)/g, '[`AGENTS.md`](../AGENTS.md)')
-      // collapse the "(web-components.md, react.md, angular.md)" group to the single shipped track
-      .replace(
-        /\(\[`?web-components\.md`?\]\([^)]*\),\s*\[`?react\.md`?\]\([^)]*\),\s*\[`?angular\.md`?\]\([^)]*\)\)/g,
-        '([`install.md`](install.md))',
-      )
-      // per-target track filenames -> the single track shipped here
-      .replace(
-        /\[`?(?:web-components|react|angular)\.md`?\]\((?:web-components|react|angular)\.md\)/g,
-        '[`install.md`](install.md)',
-      )
-  );
-}
 
 function buildAgentsMd(target: Target, version: string): string {
   return `${BANNER}# ${target.wrapperPkg} - agent install guide
@@ -175,8 +147,9 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 
 Tooling that needs structured data reads \`documentation.json\`: one per component beside
 its \`AGENTS.md\`, or \`@maggioli-design-system/magma/dist/documentation.json\` for all of them
-(over 2 MB - do not load it into context). \`dist/types/components.d.ts\` drives editor
-IntelliSense.
+(over 2 MB - do not load it into context). In both, the relative links of the \`usage\`
+texts resolve from the component's folder, \`dist/collection/components/<tag>/\`.
+\`dist/types/components.d.ts\` drives editor IntelliSense.
 `;
 }
 
@@ -256,10 +229,13 @@ function main(): void {
       target.pkgDir === '.' ? `../${COMPONENT_DOCS_DIR}` : `../../magma/${COMPONENT_DOCS_DIR}`;
 
     fs.writeFileSync(path.join(pkgRoot, 'AGENTS.md'), buildAgentsMd(target, version));
-    fs.writeFileSync(path.join(agentsDir, 'install.md'), BANNER + rewriteLinks(trackSrc));
+    fs.writeFileSync(
+      path.join(agentsDir, 'install.md'),
+      BANNER + rewriteGuideLinks(trackSrc, docsPrefix),
+    );
     for (const fragment of SHARED_FRAGMENTS) {
       const src = fs.readFileSync(path.join(SOURCE_DIR, fragment), 'utf8');
-      fs.writeFileSync(path.join(agentsDir, fragment), BANNER + rewriteLinks(src));
+      fs.writeFileSync(path.join(agentsDir, fragment), BANNER + rewriteGuideLinks(src, docsPrefix));
     }
     fs.writeFileSync(path.join(agentsDir, 'components.md'), buildComponentsMd(docsPrefix));
 
