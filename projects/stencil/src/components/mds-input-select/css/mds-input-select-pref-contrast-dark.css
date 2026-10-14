@@ -1,0 +1,33 @@
+/* Contrast over dark. The dark block sets the ring at rest with selectors as specific as
+ * :host([pref-mode='dark']:not([pref-theme-scheme='light'])), more than the contrast ones, so
+ * with both preferences the select lost the strong ring. These selectors name both axes, are
+ * as specific as the dark ones and come after them, so the contrast ring wins. The text needs
+ * nothing here: under pref-contrast-more the semantic layer promotes text-muted, the colour
+ * the dark block sets, to the default step. */
+
+:host([pref-contrast='more'][pref-mode='dark']) {
+  --mds-input-select-ring: var(--shadow-ring-strong-2);
+}
+
+@media (prefers-contrast: more) {
+  :host([pref-contrast='system'][pref-mode='dark']),
+  :host([pref-mode='dark']:not([pref-contrast])) {
+    --mds-input-select-ring: var(--shadow-ring-strong-2);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :host([pref-contrast='more'][pref-mode='system']),
+  :host([pref-contrast='more']:not([pref-mode])) {
+    --mds-input-select-ring: var(--shadow-ring-strong-2);
+  }
+}
+
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  :host([pref-contrast='system'][pref-mode='system']),
+  :host([pref-contrast='system']:not([pref-mode])),
+  :host([pref-mode='system']:not([pref-contrast])),
+  :host(:not([pref-contrast]):not([pref-mode])) {
+    --mds-input-select-ring: var(--shadow-ring-strong-2);
+  }
+}
