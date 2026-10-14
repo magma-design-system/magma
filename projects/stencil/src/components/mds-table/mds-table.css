@@ -2,7 +2,7 @@
 
 /**
  * @prop --mds-table-actions-gap: Gap between table action elements.
- * @prop --mds-table-background-alt: Alternate background color for table rows.
+ * @prop --mds-table-background-alt: Alternate background color for table rows; in an interactive table also the scroll area, while the pointer is on the table.
  * @prop --mds-table-background: Default background color of the table.
  * @prop --mds-table-border-color: Color of the table border.
  * @prop --mds-table-border-width: Width of the table border.
@@ -47,6 +47,17 @@
   display: flex;
   overflow: auto;
   width: 100%;
+}
+
+/* The wrapper is the scroll container: its background shows only where the table does not
+   cover it, as in the strip a trackpad uncovers when it bounces the table past its first or
+   last column. In an interactive table the pointer on the body paints every row but the
+   hovered one with --mds-table-background-alt, so while the pointer is on the table the
+   wrapper takes that colour too, and the bounce no longer shows a band of another colour
+   next to the rows. Away from the pointer the rows and the wrapper keep the base colour. */
+
+:host(:hover) .table-wrapper--interactive {
+  background-color: var(--mds-table-background-alt);
 }
 
 .table {
