@@ -71,6 +71,77 @@ describe('mds-text', () => {
       return samples;
     };
 
+    /** Records what the animated element holds, frame by frame, until it holds `text`. */
+    const recordUntil = async (
+      host: HTMLMdsTextElement,
+      text: string,
+      limit = 200,
+    ): Promise<string[]> => {
+      const painted = host.shadowRoot!.querySelector('.text')!;
+      const samples: string[] = [];
+      while (samples.length < limit && samples[samples.length - 1] !== text) {
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+        samples.push(painted.textContent ?? '');
+      }
+      return samples;
+    };
+
+    it('resolves a text that loaded before its host rendered the slot', async () => {
+      // outside the flat tree every custom property reads "", the :host ones included: read at
+      // load, the speed came out as 0 and the reveal froze on its first frame, forever
+      const { root: host } = await render<HTMLDivElement>('<div></div>', {
+        waitForReady: false,
+      });
+      host.attachShadow({ mode: 'open' });
+      const text = document.createElement('mds-text');
+      text.setAttribute('animation', 'yugop');
+      text.setAttribute('text', 'Click to copy');
+      host.append(text);
+      await text.componentOnReady();
+
+      host.shadowRoot!.innerHTML = '<slot></slot>';
+      text.setAttribute('text', 'Copied');
+      const samples = await recordUntil(text, 'Copied');
+
+      expect(samples[samples.length - 1]).toBe('Copied');
+      expect(samples.every((sample) => sample.length === 'Copied'.length)).toBe(true);
+    });
+
+    it('reads the speed when animation="yugop" is set after load', async () => {
+      // the custom properties were read at load, and only if the animation was already on:
+      // set later, it ran at a built-in speed and ignored --mds-text-animation-speed
+      const { root, waitForChanges } = await render<HTMLMdsTextElement>(
+        '<mds-text style="--mds-text-animation-speed: 1000"></mds-text>',
+      );
+      root.setAttribute('animation', 'yugop');
+      await waitForChanges();
+
+      const long = '0123456789'.repeat(12);
+      root.text = long;
+      const samples = await recordUntil(root, long);
+
+      // every character starts on the first frame, so the text resolves in as many frames as
+      // the farthest character is from its target (30 at most); at the built-in speed of 2 the
+      // last character would not even start before frame 60
+      expect(samples[samples.length - 1]).toBe(long);
+      expect(samples.length).toBeLessThan(45);
+    });
+
+    it('pads with the placeholder character of its custom property, one per character', async () => {
+      // a <string> custom property comes back quoted: '_' padded every character with three
+      const { root } = await render<HTMLMdsTextElement>(
+        `<mds-text animation="yugop" style="--mds-text-animation-placeholder-char: '_'"></mds-text>`,
+      );
+
+      const target = 'Copied to the clipboard';
+      root.text = target;
+      const samples = await recordUntil(root, target);
+
+      expect(samples[samples.length - 1]).toBe(target);
+      expect(samples.some((sample) => sample.includes('_'))).toBe(true);
+      expect(samples.every((sample) => sample.length === target.length)).toBe(true);
+    });
+
     it('never paints fewer characters than the string it is resolving', async () => {
       // every frame used to start from a slice of the character array, so the first ones
       // came out empty: no line box, and everything around the text jumped by a line
