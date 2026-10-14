@@ -129,10 +129,14 @@ Inspect the consumer project before asking anything:
 
 Ask the user only what detection left undecided. Typical questions:
 
-1. **Icons**: use the prebuilt set (\`@maggioli-design-system/svg-icons\`) or do you need
-   **iconsauce** for tree-shaking / custom icons? Most consumers do NOT need iconsauce -
-   Magma already ships resolved SVGs; iconsauce is an internal build dependency. Only
-   add \`@iconsauce/*\` if the user wants their own icon pipeline.
+1. **Icons**: which sets does the app use, and how should they be served? Every slug must
+   be served at \`<mdsIconSvgPath><slug>.svg\`, and each set comes from its own package:
+   Magma ships only \`mgg/\` (\`@maggioli-design-system/svg-icons\`), while \`mi/\` and
+   \`mdi/\` come from \`@material-icons/svg\` and \`@mdi/svg\`, and none of them is a
+   dependency of this package. The routes are in agents/assets.md section 3: **iconsauce**,
+   what Magma uses (it reads the sources and writes only the icons they name), or a copy
+   script that serves the files in the slug layout. Copying the \`svg-icons\` folder as it
+   is renders nothing: its files are not under \`mgg/\`.
 2. **Static assets path**: where are static files served from? This sets \`mdsIconSvgPath\`
    and the SVG copy destination.
 3. **Dark mode / preferences**: needed? If yes, wire the preference classes and components.
@@ -142,13 +146,15 @@ Ask the user only what detection left undecided. Typical questions:
 
 1. Install packages and the shared assets - see [\`agents/install.md\`](agents/install.md).
 2. Wire styles in the exact cascade-layer order - see [\`agents/assets.md\`](agents/assets.md).
-3. Copy the icon SVGs to the static path and set \`mdsIconSvgPath\`.
+3. Serve every icon slug the app uses at the static path, with the route from step 2, and
+   set \`mdsIconSvgPath\`.
 4. Register components: ${target.register}.
 
 ## Step 4 - verify
 
-Build the app and confirm an \`mds-*\` component renders and at least one icon loads from
-the configured path. Report what was installed, the cascade order used, and the icon path.
+Build the app and confirm an \`mds-*\` component renders and every icon it names loads
+from the configured path (no 404 on \`<path><slug>.svg\`). Report what was installed, the
+cascade order used, the icon route and the icon path.
 
 ## Using the components
 
