@@ -257,7 +257,6 @@ function main(): void {
     }
     fs.writeFileSync(path.join(agentsDir, 'components.md'), buildComponentsMd(docsPrefix));
 
-    // eslint-disable-next-line no-console
     console.log(
       `agent docs synced -> ${target.wrapperPkg} (${path.relative(STENCIL_DIR, pkgRoot) || '.'})`,
     );
