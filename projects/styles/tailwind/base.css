@@ -92,16 +92,7 @@
     @apply max-w-title;
   }
 
-  .hydrated {
-
-    /*
-      Revert all styles for hydrated web components
-      to avoid tailwind base unwanted overrides
-      all: revert-layer;
-    */
-    border: revert-layer;
-    display: revert-layer;
-    margin: revert-layer;
-    padding: revert-layer;
-  }
+  /* The box of the hydrated components (against Tailwind's preflight) is kept by
+   * hydrated.css: imported into `base` with layer(base), this file lands in a
+   * sublayer, and the rules of a sublayer lose to the ones of `base` itself. */
 }

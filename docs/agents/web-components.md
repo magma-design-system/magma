@@ -94,7 +94,10 @@ static folder is `public/`, so `public/svg/` is served at `/svg/`.
 
 `hydrated.css` (imported in the [`assets.md`](assets.md) block) hides components
 until Stencil sets the hydrated attribute. Keep it in the `base` layer and load it
-before the first render to avoid a flash of unstyled custom elements.
+before the first render to avoid a flash of unstyled custom elements. Once a component
+is hydrated, the same file hands back the margin, padding and border it gives itself,
+which a page reset such as Tailwind's preflight would zero: that works only from the
+`base` layer itself, next to the reset.
 
 ## 5. Server-side rendering (SSR)
 

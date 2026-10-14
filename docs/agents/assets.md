@@ -68,7 +68,7 @@ What each file provides:
 | `colors-rgb.css` | RGB color tokens (`--tone-*`, `--status-*`, ...). Required by components and Tailwind. Also redefines tokens for dark / high-contrast |
 | `typography.css` | The non-color tokens as CSS vars: fonts, type sizes, spacing, radius, shadows (`--shadow-md-sharp`, ...). Components carry their own fallbacks; your CSS needs this file for `var(--shadow-*)`, `var(--radius-*)` and the `--magma-radius-*` corner scale |
 | `reset.css` | Opinionated CSS reset |
-| `hydrated.css` | Anti-FOUC for Stencil - hides components until hydrated |
+| `hydrated.css` | Anti-FOUC for Stencil - hides components until hydrated, then keeps the margin, padding and border they give themselves against a page reset such as Tailwind's preflight. Import it into `base`, as above |
 | `transitions.css`, `animations.css` | Shared motion |
 | `globals.css` | Global `--magma-*` design decisions |
 | `semantic.css` | The semantic color roles (`--magma-surface-*`, `--magma-text-*`, ..., see [`color.md`](color.md)). Required: without it the page `body` has no colour, the Tailwind role utilities paint nothing, and components lose named themes and high contrast |
