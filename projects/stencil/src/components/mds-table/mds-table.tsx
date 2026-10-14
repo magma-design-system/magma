@@ -236,7 +236,10 @@ export class MdsTable {
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
-        <div class="table-wrapper" part="table-wrapper">
+        <div
+          class={clsx('table-wrapper', this.interactive && 'table-wrapper--interactive')}
+          part="table-wrapper"
+        >
           <table
             class={clsx('table', this.interactive && 'table--interactive')}
             role="table"
