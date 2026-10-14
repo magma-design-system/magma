@@ -142,11 +142,13 @@ describe('what Tailwind compiles', () => {
       }
   })
 
+  // compiles every class Tailwind knows (thousands): over 5s on the CI runners,
+  // past the default timeout, so it gets its own
   test('a variable with no namespace is read by no class', () => {
     const orphans = Object.values(map.tokens).filter((entry) => !entry.namespace).map(({ theme }) => theme)
     const all = compile(ds.getClassList().map(([name]) => name)).filter(Boolean).join('\n')
     for (const theme of orphans) expect(all, theme).not.toContain(`var(${theme})`)
-  })
+  }, 30_000)
 
   test('spacing: the multiplier and the roots that take a numeric step', () => {
     expect(map.spacing.multiplier).toBe('--spacing')
