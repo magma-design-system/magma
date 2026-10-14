@@ -161,7 +161,11 @@ export const FormActions = {
     await userEvent.click(dropdown.shadowRoot!.querySelector('.dropdown-primary-action')!);
     await expect(await canvas.findByText('send')).toBeInTheDocument();
 
+    const menu = dropdown.shadowRoot!.querySelector('mds-dropdown')!;
     await userEvent.click(dropdown.shadowRoot!.querySelector('.dropdown-action')!);
+    // the menu takes pointer events only once `visible` is reflected, on the render after the
+    // click: before it the entries inherit `pointer-events: none` and userEvent refuses them
+    await waitFor(() => expect(menu).toHaveAttribute('visible'));
     await userEvent.click(dropdown.querySelector('mds-button[value="draft"]')!);
     await expect(await canvas.findByText('draft')).toBeInTheDocument();
   },
