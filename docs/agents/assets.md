@@ -271,23 +271,27 @@ the Angular CLI that is an `assets` entry in `angular.json`:
 
 ### Tell mds-icon where the icons are
 
-The simplest way: set `mdsIconSvgPath` in `sessionStorage` before components hydrate.
-The value is the public URL of the folder you copied the SVGs into:
-
-```javascript
-window.sessionStorage.setItem('mdsIconSvgPath', '/svg/');
-```
-
-Alternatives, documented in
-[`../../projects/stencil/src/components/mds-icon/readme.md`](../../projects/stencil/src/components/mds-icon/readme.md):
+Set the public URL of the folder the icons are served from, before the first `mds-icon`
+renders. Two ways:
 
 - `IconsSetService.setSvgPath('/svg/')`, imported from
-  `@maggioli-design-system/magma/services`: sets the path in code, without
-  `sessionStorage`, and reloads the icons already mounted
-- `mdsIcon.setSvgPath('/svg/')` - instance method on a temporary `mds-icon` node, after
-  `defineCustomElements()` has run
-- dispatch `new CustomEvent('mdsIconSvgPathUpdate')` on `window` to force a refresh
-  after changing the path
+  `@maggioli-design-system/magma/services` (recommended): sets the path in code, without
+  `sessionStorage`, and reloads the icons already mounted.
+- the `mdsIconSvgPath` key in `sessionStorage`, a one-liner the install tracks use. Some
+  browsers block storage (private windows, sandboxed iframes, storage partitioning): there
+  only `IconsSetService` works.
+
+```javascript
+import { IconsSetService } from '@maggioli-design-system/magma/services';
+
+IconsSetService.setSvgPath('/svg/');
+// or: window.sessionStorage.setItem('mdsIconSvgPath', '/svg/');
+```
+
+Icons mounted before a path set through `sessionStorage` reload on
+`window.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'))`. Every option, with its
+snippet, is in the
+[`mds-icon` pattern](../../projects/stencil/src/components/mds-icon/usage/2.%20Pattern.md).
 
 Reference an icon by slug, never inline SVG and never import from an icon-set package:
 

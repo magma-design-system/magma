@@ -1,6 +1,6 @@
 # mds-help
 
-This component does not have shadow DOM enabled.
+
 
 This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.
 

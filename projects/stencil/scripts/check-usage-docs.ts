@@ -13,6 +13,10 @@
  * self-closed `<mds-* />` (HTML has no self-closing custom elements), no shadow piercing,
  * no `dark:` variants or preference media queries, every fence has a language, no emoji.
  *
+ * It also keeps the readme.md of every component free of hand-written text: above the
+ * generated part only the title and the generic intro, since the usage files are the only
+ * hand-authored docs (#842).
+ *
  * #815 area 4 fixed the 342 docs against these rules; this keeps them fixed. The rules
  * the docs follow: docs/agents/conventions.md, variants.md, color.md, theming.md.
  *
@@ -24,7 +28,12 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { PROJECT_DIR } from './meta';
-import { checkUsageDoc, type ApiComponent, type UsageModel } from './usage-docs-lib';
+import {
+  checkUsageDoc,
+  handWrittenReadme,
+  type ApiComponent,
+  type UsageModel,
+} from './usage-docs-lib';
 
 const REPO = join(PROJECT_DIR, '../..');
 const COMPONENTS = join(PROJECT_DIR, 'src/components');
@@ -108,6 +117,22 @@ for (const tag of readdirSync(COMPONENTS).sort()) {
     for (const f of findings)
       console.error(`  ${String(f.line).padStart(4)}  ${f.kind.padEnd(22)} ${f.what}`);
   }
+}
+
+// the readmes: Stencil keeps what is written above its marker and ships it in documentation.json
+const handWritten: string[] = [];
+for (const tag of readdirSync(COMPONENTS).sort()) {
+  const path = join(COMPONENTS, tag, 'readme.md');
+  if (existsSync(path) && handWrittenReadme(tag, readFileSync(path, 'utf8')))
+    handWritten.push(relative(REPO, path));
+}
+if (handWritten.length) {
+  console.error(
+    `\n${handWritten.length} readme(s) with hand-written text above "Auto Generated Below":\n` +
+      handWritten.map((path) => `  ${path}`).join('\n') +
+      '\nKeep only the title and the generic intro there: what a component needs goes in its usage/*.md.',
+  );
+  total += handWritten.length;
 }
 
 if (total) {

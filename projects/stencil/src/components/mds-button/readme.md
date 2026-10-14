@@ -1,10 +1,8 @@
 # mds-button
 
+
+
 This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.
-
-## Magma 2.0 migration guide
-
-- Button labels can be set via the `label` property or the `default` slot for convenience.
 
 <!-- Auto Generated Below -->
 

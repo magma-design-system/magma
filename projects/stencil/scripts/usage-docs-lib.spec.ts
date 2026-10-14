@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   checkUsageDoc,
+  handWrittenReadme,
   incorrectLines,
+  README_INTRO,
   splitMarkdown,
   type ApiComponent,
   type UsageModel,
@@ -229,5 +231,32 @@ describe('checkUsageDoc', () => {
   it('requires a language on every fence and no emoji', () => {
     expect(kinds('```\n<mds-button></mds-button>\n```')).toEqual(['fence-without-language']);
     expect(kinds('<!-- \u{1F6AB} INCORRECT -->')).toEqual(['emoji']);
+  });
+});
+
+describe('handWrittenReadme', () => {
+  const generated = '<!-- Auto Generated Below -->\n\n## Properties\n';
+
+  it('finds nothing in a readme with the title and the generic intro only', () => {
+    expect(
+      handWrittenReadme('mds-badge', `# mds-badge\n\n\n\n${README_INTRO}\n\n${generated}`),
+    ).toBe('');
+    expect(handWrittenReadme('mds-avatar-stack', `# mds-avatar-stack\n\n\n\n${generated}`)).toBe(
+      '',
+    );
+  });
+
+  it('returns a section written above the marker, wherever it sits', () => {
+    // the sections #842 removed: Magma 1 install steps, a migration note under the intro
+    expect(
+      handWrittenReadme(
+        'mds-button',
+        `# mds-button\n\n${README_INTRO}\n\n## Magma 2.0 migration guide\n\n- labels\n\n${generated}`,
+      ),
+    ).toBe('## Magma 2.0 migration guide\n\n- labels');
+  });
+
+  it('ignores the generated part', () => {
+    expect(handWrittenReadme('mds-chip', `# mds-chip\n\n${generated}## Usage\n\ntext`)).toBe('');
   });
 });
