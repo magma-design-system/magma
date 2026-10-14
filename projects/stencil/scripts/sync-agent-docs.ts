@@ -124,6 +124,7 @@ Inspect the consumer project before asking anything:
 | Tailwind + version | \`tailwindcss\` in deps: v4 -> the CSS imports, v3 -> the JS preset (see agents/assets.md) |
 | SSR | \`@angular/ssr\` / Angular Universal, or Next App Router |
 | Compatible versions | derive from the installed \`@maggioli-design-system/magma\` major (see matrix in install.md) |
+| Editor | a \`.vscode/\` folder -> VS Code; nothing -> ask (step 2) |
 
 ## Step 2 - ask only the gaps
 
@@ -141,6 +142,8 @@ Ask the user only what detection left undecided. Typical questions:
    and the SVG copy destination.
 3. **Dark mode / preferences**: needed? If yes, wire the preference classes and components.
 4. Confirm the version row if the installed major is ambiguous.
+5. **Editor**: VS Code? It gets token and class autocomplete through two files in
+   \`.vscode/\` (agents/assets.md section 5); for another editor only the token file applies.
 
 ## Step 3 - execute
 
@@ -149,12 +152,16 @@ Ask the user only what detection left undecided. Typical questions:
 3. Serve every icon slug the app uses at the static path, with the route from step 2, and
    set \`mdsIconSvgPath\`.
 4. Register components: ${target.register}.
+5. Set up editor autocomplete - see [\`agents/assets.md\`](agents/assets.md) section 5: MERGE the
+   keys into \`.vscode/settings.json\` and \`.vscode/extensions.json\`, never overwrite them.
 
 ## Step 4 - verify
 
 Build the app and confirm an \`mds-*\` component renders and every icon it names loads
-from the configured path (no 404 on \`<path><slug>.svg\`). Report what was installed, the
-cascade order used, the icon route and the icon path.
+from the configured path (no 404 on \`<path><slug>.svg\`). In VS Code, check both halves of
+the autocomplete: \`var(--magma-\` completes Magma tokens in a CSS file and, with Tailwind,
+\`bg-surface-default\` shows a swatch. Report what was installed, the cascade order used, the
+icon route and the icon path.
 
 ## Using the components
 

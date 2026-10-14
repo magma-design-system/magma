@@ -3,8 +3,8 @@
 ## Purpose
 
 Canonical setup for the assets every Magma consumer needs, **identical for all three
-targets** (web components, React, Angular): styles, fonts, icons and optional brand
-identity. The per-target tracks ([`web-components.md`](web-components.md),
+targets** (web components, React, Angular): styles, fonts, icons, optional brand
+identity and editor autocomplete. The per-target tracks ([`web-components.md`](web-components.md),
 [`react.md`](react.md), [`angular.md`](angular.md)) link here instead of repeating
 this. If something about styles/fonts/icons setup is unclear, this file wins.
 
@@ -317,6 +317,70 @@ Assets live under `@maggioli-design-system/identity/dist/`:
 These are static read-only files - serve them like any other asset, do not modify
 them in the consumer project.
 
+## 5. Editor autocomplete
+
+Two halves, one extension each. Set them up in VS Code; for another editor, point its CSS
+custom property completion at the same `tokens.editor.css` and leave the rest to the user.
+
+| Completes | Extension | Fed by |
+| --------- | --------- | ------ |
+| Magma tokens inside `var(--...)`, in scale order, with a swatch on colors | CSS Var Complete (`phoenisx.cssvar`) | `@maggioli-design-system/styles/dist/css/tokens.editor.css`, every public token once |
+| Tailwind classes (`bg-surface-default`, `p-600`), with their value | Tailwind CSS IntelliSense (`bradlc.vscode-tailwindcss`), only if the app uses Tailwind | the CSS entry that imports Tailwind and Magma's theme (section 1) |
+
+MERGE these keys into `.vscode/settings.json` and `.vscode/extensions.json`: never overwrite
+a file that exists, the user's own settings stay.
+
+```json
+{
+  "cssvar.files": ["node_modules/@maggioli-design-system/styles/dist/css/tokens.editor.css"],
+  "cssvar.ignore": [],
+  "cssvar.disableSort": true
+}
+```
+
+```json
+{
+  "recommendations": ["phoenisx.cssvar", "bradlc.vscode-tailwindcss"],
+  "unwantedRecommendations": ["vunguyentuan.vscode-css-variables"]
+}
+```
+
+Leave `bradlc.vscode-tailwindcss` out of `recommendations` when the app has no Tailwind.
+
+The traps, all measured:
+
+- `cssvar.ignore` must be `[]`: its default, `["**/node_modules/**"]`, is applied over
+  `cssvar.files`, so the path above is dropped and nothing completes.
+- `cssvar.disableSort: true` keeps the order of the file (a scale from its smallest step
+  up); without it the list is alphabetical.
+- `vunguyentuan.vscode-css-variables` goes in `unwantedRecommendations`: it sorts
+  alphabetically, never opens the list by itself and duplicates every entry next to CSS
+  Var Complete.
+- Never import `tokens.editor.css` in the app: it is for editors only, and holds light
+  defaults that would freeze theming (it is wrapped in a query that never matches, so an
+  import does nothing at best).
+
+Tailwind IntelliSense finds the CSS entry on its own, the split imports of section 1
+included. Only if hovering a class shows nothing, add
+`"tailwindCSS.experimental.configFile": "<path of that CSS file>"`. If the app builds class
+names through functions (`clsx`, `cva`, `cn`), list the ones it uses in
+`"tailwindCSS.classFunctions"`, so the classes inside their calls complete too.
+
+Verify, after reloading the window:
+
+- in a CSS file, `var(--magma-surface` lists the surface roles, in order, with swatches;
+- with Tailwind, in markup: hovering `p-600` shows `1.5rem = 24px`, and `bg-surface-default`
+  shows a swatch in the completion list. No swatch on the semantic classes means an older
+  `@maggioli-design-system/styles`: update it.
+
+Known limits, nothing to configure:
+
+- Tailwind IntelliSense lists the utilities alphabetically, whatever the order of the
+  theme: `bg-surface-bisque-*` comes before `bg-surface-default`. Type the role name.
+- The class list offers Tailwind's stock spacing steps (`p-1` ... `p-96`), not Magma's:
+  with Magma's theme `p-1` is 0.04px. Write the Magma steps in full (`p-600`, `gap-400`):
+  they work and hover with their value, they are just not suggested.
+
 ## Checklist
 
 - [ ] `styles` + `design-tokens` installed on the matching version row
@@ -327,3 +391,5 @@ them in the consumer project.
 - [ ] `mdsIconSvgPath` set to that public path before hydration
 - [ ] (optional) `identity` installed if brand assets are used
 - [ ] Components registered per your target track
+- [ ] (VS Code) the editor keys merged into `.vscode/settings.json` and `extensions.json`;
+      `var(--magma-` completes, and with Tailwind `bg-surface-default` shows a swatch
