@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import { mkdir, readFile, readdir, writeFile } from 'fs/promises';
 import { join, resolve } from 'path';
 import { BUILD_DIR, PROJECT_DIR } from './meta';
+import { lookupFromCss, resolve as resolveValue, type Tokens } from './css-resolve';
 import {
   cssDecl,
   scaleFamily,
@@ -66,8 +67,30 @@ if (model.dark.length) {
 
 // The Tailwind bridge re-exports every public role, in the order the layer declares them.
 const bridge = model.base.flatMap(({ decls }) => decls).filter((decl) => decl.tw);
-const bridgeBody = bridge.map(({ name, tw }) => `  --color-${tw}: rgb(var(--${name}));`).join('\n');
-const bridgeCss = `${HEADER('Tailwind bridge for the semantic color layer.')}\n@theme {\n${bridgeBody}\n}\n`;
+
+/**
+ * Each role of the bridge carries its light default as the fallback of its `var()`.
+ * Tailwind IntelliSense resolves the colour of a utility from `@theme` and from literal
+ * `var()` fallbacks only, never from the `:root` of semantic.css: without a literal the
+ * 111 semantic utilities came with no swatch, while the palette ones, which carry a
+ * fallback, had theirs. The value is the default (light) one, as every fallback in Magma,
+ * never the dark one; so a page without semantic.css paints a role in its light default.
+ */
+const bridgeCss = (lookup: Tokens): string => {
+  const unresolved: string[] = [];
+  const body = bridge.map(({ name, tw }) => {
+    const triplet = resolveValue(`var(--${name})`, lookup, '0.0025rem').replace(/\s+/g, ' ').trim();
+    if (!/^\d{1,3} \d{1,3} \d{1,3}$/.test(triplet)) unresolved.push(`--${name} -> ${triplet}`);
+    return `  --color-${tw}: rgb(var(--${name}, ${triplet}));`;
+  });
+  if (unresolved.length) {
+    throw new Error(
+      `${unresolved.length} semantic role(s) do not resolve to an rgb triplet for the bridge fallback:\n` +
+        unresolved.map((u) => `  ${u}`).join('\n'),
+    );
+  }
+  return `${HEADER('Tailwind bridge for the semantic color layer.')}\n@theme {\n${body.join('\n')}\n}\n`;
+};
 
 // Two selectors per scope, the same shape the global dark layer uses (see the
 // design-tokens css-vars-rgb template) and the per-component `*-pref-contrast.css`
@@ -132,15 +155,22 @@ const rampFamilies = new Map<string, string>([
  * whatever the fallback chain finds. The
  * step list is checked against the emitted primitives rather than assumed.
  */
-const assertRampsExist = async (): Promise<void> => {
+/** The stylesheets of design-tokens/dist/css, where the primitives the roles point at live. */
+const tokenSheets = async (): Promise<{ css: string; from: string }[]> => {
   const tokensDir = resolve(PROJECT_DIR, '../design-tokens/dist/css');
   const files = (await readdir(tokensDir)).filter((f) => f.endsWith('.css'));
+  return Promise.all(
+    files.map(async (file) => ({
+      css: await readFile(resolve(tokensDir, file), 'utf8'),
+      from: file,
+    })),
+  );
+};
+
+const assertRampsExist = async (sheets: { css: string }[]): Promise<void> => {
   const declared = new Set<string>();
-  for (const file of files)
-    for (const match of (await readFile(resolve(tokensDir, file), 'utf8')).matchAll(
-      /^\s*(--[a-z0-9-]+)\s*:/gim,
-    ))
-      declared.add(match[1]);
+  for (const { css } of sheets)
+    for (const match of css.matchAll(/^\s*(--[a-z0-9-]+)\s*:/gim)) declared.add(match[1]);
 
   const missing: string[] = [];
   for (const [theme, family] of rampFamilies)
@@ -159,13 +189,16 @@ const assertRampsExist = async (): Promise<void> => {
 };
 
 async function main() {
-  await assertRampsExist();
+  const sheets = await tokenSheets();
+  await assertRampsExist(sheets);
+  // the light default of every role: the primitives, then the layer just generated
+  const lookup = lookupFromCss([...sheets, { css: layerCss, from: 'semantic.css' }]);
   const cssDir = join(BUILD_DIR, 'css');
   const tailwindDir = join(BUILD_DIR, 'tailwind');
   await mkdir(cssDir, { recursive: true });
   await mkdir(tailwindDir, { recursive: true });
   await writeFile(join(cssDir, 'semantic.css'), layerCss, 'utf8');
-  await writeFile(join(tailwindDir, 'semantic.css'), bridgeCss, 'utf8');
+  await writeFile(join(tailwindDir, 'semantic.css'), bridgeCss(lookup), 'utf8');
   await writeFile(join(cssDir, 'themes.css'), themesCss, 'utf8');
   console.info(
     chalk.green(
