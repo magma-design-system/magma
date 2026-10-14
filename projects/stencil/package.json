@@ -59,7 +59,8 @@
     "./package.json": "./package.json"
   },
   "sideEffects": [
-    "**/*.css"
+    "**/*.css",
+    "./loader/index.js"
   ],
   "files": [
     "dist/",
