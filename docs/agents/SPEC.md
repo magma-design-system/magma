@@ -65,5 +65,6 @@ the body of each track file.
 - [`assets.md`](assets.md) - shared styles / fonts / icons / identity setup (canonical)
 - [`conventions.md`](conventions.md) - the rules every component follows: naming, events, slots, icons, accessibility, styling
 - [`color.md`](color.md), [`typography.md`](typography.md), [`theming.md`](theming.md) - styling your own UI
+- [`reporting.md`](reporting.md) - reporting a problem that is Magma's to the Magma repository, with the project's origin label
 - [`../../projects/styles/SPEC.md`](../../projects/styles/SPEC.md) - full styles reference (contributors)
 - [`../ARCHITECTURE.md`](../ARCHITECTURE.md) - monorepo and sub-project overview
