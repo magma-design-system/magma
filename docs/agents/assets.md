@@ -71,7 +71,7 @@ What each file provides:
 | `hydrated.css` | Anti-FOUC for Stencil - hides components until hydrated, then keeps the margin, padding and border they give themselves against a page reset such as Tailwind's preflight. Import it into `base`, as above |
 | `transitions.css`, `animations.css` | Shared motion |
 | `globals.css` | Global `--magma-*` design decisions |
-| `semantic.css` | The semantic color roles (`--magma-surface-*`, `--magma-text-*`, ..., see [`color.md`](color.md)). Required: without it the page `body` has no colour, the Tailwind role utilities paint nothing, and components lose named themes and high contrast |
+| `semantic.css` | The semantic color roles (`--magma-surface-*`, `--magma-text-*`, ..., see [`color.md`](color.md)). Required: without it the page `body` has no colour, the Tailwind role utilities are stuck on their light default (the fallback that gives editors a swatch), and components lose dark mode, named themes and high contrast |
 | `themes.css` | The named themes (`data-theme-name`): retint the semantic roles. Import it after `semantic.css` |
 | `base.css` | Base element styles (sets `--font-info` body font, etc.) |
 
