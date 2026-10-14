@@ -17,6 +17,7 @@ import { TypographyTruncateType } from '@type/text';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 import { preferenceStore } from '@common/preference';
 import { requestSubmitAs } from '@common/form';
+import { NavigationService } from '@common/navigation';
 import mdiApple from '@icon/mdi/apple.svg';
 import logoGoogle from './asset/logo-google.svg';
 import { TextAnimationType } from '@component/mds-text/meta/types';
@@ -36,6 +37,7 @@ import { TextAnimationType } from '@component/mds-text/meta/types';
 export class MdsButton {
   private typography?: TypographyType;
   private km = new KeyboardManager();
+  private anchor?: HTMLAnchorElement;
 
   @Element() host: HTMLMdsButtonElement;
 
@@ -113,7 +115,11 @@ export class MdsButton {
   @Prop({ reflect: true, mutable: true }) await?: boolean;
 
   /**
-   * Specifies the URL target of the button
+   * Turns the button into a link to this URL: a real anchor in its shadow root, so the browser
+   * gives it what it gives every link (new tab on a modifier or middle click, the context menu,
+   * drag). A client-side router takes the plain clicks over once registered with
+   * `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without
+   * one, a click listener on the host can still cancel the navigation with `preventDefault()`.
    */
   @Prop({ reflect: true }) readonly href?: string;
 
@@ -175,6 +181,17 @@ export class MdsButton {
     }
   }
 
+  // the role tells the assistive technology what the host is; one set by the caller
+  // (mds-tab-item names its button a tab) is theirs and stays
+  @Watch('href')
+  handleHrefChange(): void {
+    const role = this.host.getAttribute('role');
+    if (role === null || role === 'button' || role === 'link') {
+      this.host.setAttribute('role', this.isLink() ? 'link' : 'button');
+    }
+    this.handleTypeChange(this.isLink() ? 'link' : (this.type ?? ''));
+  }
+
   @Watch('variant')
   handleVariantChange(newValue?: ButtonVariantType): void {
     if (newValue === 'google') {
@@ -205,29 +222,65 @@ export class MdsButton {
     this.active = false;
   };
 
-  private redirectBlank = () => {
-    if (typeof window !== 'undefined') {
-      window.open(this.href, '_blank');
+  private isLink = (): boolean => (this.href ?? '') !== '';
+
+  // a link the browser opens in a new tab or window: asked by the button, or by the user
+  private opensElsewhere = (event: MouseEvent): boolean =>
+    this.target === 'blank' || event.ctrlKey || event.metaKey || event.shiftKey;
+
+  /**
+   * A click on the anchor is the browser's to follow, unless the router registered with
+   * `NavigationService` takes it over: then the navigation is cancelled here, before the page
+   * loads, and the router renders the route.
+   *
+   * A click that did not land on the anchor comes from the keyboard, a script or an assistive
+   * technology: the host follows the link as the anchor would, once every listener on the page
+   * had its say. The timeout is what lets a listener added after this one, or delegated to the
+   * document by a framework, cancel the navigation: a microtask could run between two listeners.
+   */
+  private handleLinkClick = (event: MouseEvent): void => {
+    if (!this.isLink() || this.disabled || this.await) return;
+    const href = this.href ?? '';
+    if (this.anchor && event.composedPath().includes(this.anchor)) {
+      if (this.opensElsewhere(event) || !NavigationService.canHandle(href, event)) return;
+      event.preventDefault();
+      this.route(href, event);
       return;
     }
-    throw Error('Object window is not defined');
+    setTimeout(() => {
+      if (!event.defaultPrevented) this.follow(event);
+    });
+  };
+
+  private follow = (event: MouseEvent): void => {
+    if (typeof window === 'undefined') return;
+    const href = this.href ?? '';
+    if (this.opensElsewhere(event)) {
+      window.open(href, '_blank');
+      return;
+    }
+    if (NavigationService.canHandle(href, event)) {
+      this.route(href, event);
+      return;
+    }
+    window.location.assign(href);
+  };
+
+  // the registered router renders the route; a link it declines is loaded as the browser would
+  private route = (href: string, event: MouseEvent): void => {
+    if (!NavigationService.handle(href, event)) window.location.assign(href);
+  };
+
+  // the host is the only tab stop: a click still focuses the anchor, which hands the focus back
+  private focusHost = (): void => {
+    this.host.focus();
   };
 
   componentWillLoad(): void {
     this.handleVariantChange(this.variant);
 
-    if ((this.href ?? '') !== '') {
-      this.host.addEventListener('click', (e: MouseEvent) => {
-        e.preventDefault();
-        if (this.target === 'blank') {
-          this.redirectBlank();
-          return;
-        }
-        if (typeof window !== 'undefined') {
-          window.location.href = this.href ?? ''; // TypeScript 5.0.2 bug: if (this.href) not checked
-        }
-      });
-    } else if (this.internals.form) {
+    if (this.isLink()) return;
+    if (this.internals.form) {
       if (this.type === 'submit') {
         this.host.addEventListener('click', this.handleRequestSubmitForm);
       } else if (this.type === 'reset') {
@@ -268,7 +321,7 @@ export class MdsButton {
       }
     }
 
-    setAttributeIfEmpty(this.host, 'role', 'button');
+    setAttributeIfEmpty(this.host, 'role', this.isLink() ? 'link' : 'button');
   }
 
   @Watch('await')
@@ -300,6 +353,7 @@ export class MdsButton {
       buttonSizeTypographyVariant.md) as TypographyType;
     return (
       <Host
+        onClick={this.handleLinkClick}
         onMouseDown={this.mouseDown}
         onMouseUp={this.mouseUp}
         onMouseOut={this.mouseUp}
@@ -308,6 +362,20 @@ export class MdsButton {
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
+        {this.isLink() && (
+          // the link under the pointer, over the whole button: the host keeps the focus, the
+          // role and the name, so the anchor is out of the tab order and hidden from the
+          // assistive technology
+          <a
+            aria-hidden="true"
+            class="link"
+            href={this.href}
+            onFocus={this.focusHost}
+            ref={(el) => (this.anchor = el)}
+            tabindex="-1"
+            target={this.target === 'blank' ? '_blank' : undefined}
+          ></a>
+        )}
         <div class="await">
           <mds-spinner class="spinner" running={this.await} />
         </div>

@@ -13,16 +13,16 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-button>` web component is the primary interactive action control of the Magma Design System. It renders as a button and navigates to a URL when `href` is set, handling form association, accessibility, loading state, and iconography natively.
+The `<mds-button>` web component is the primary interactive action control of the Magma Design System. It renders as a button, or as a link when `href` is set, handling form association, accessibility, loading state, and iconography natively.
 
 #### Semantic Behavior
 
-- **Button vs. link**: Providing `href` makes a click navigate to that URL (the host keeps `role="button"`, no anchor is rendered); `target` then controls window context.
+- **Button vs. link**: Providing `href` renders a real anchor inside the component and gives the host `role="link"`. The browser follows the link, so a modifier or middle click opens it in a new tab and the context menu offers the link actions; `target="blank"` opens a new tab on a plain click too. A `click` listener on the host cancels the navigation with `preventDefault()`, which is how a client-side router takes over. A click from the keyboard, a script or an assistive technology lands on the host and is followed the same way, unless cancelled.
 - **Form association**: Inside a `<form>` the component submits (`type="submit"`, default) or resets (`type="reset"`) it like a native button, with no extra wiring; use `type="button"` to opt out. With `name` set, a submit sends `name=value`, so buttons that submit the same form tell the receiver which one was chosen. A custom element cannot be a submitter, so `event.submitter` is a hidden native button that stands in for the component: it carries the same `name` and `value`, but it is not the `mds-button` element.
 - **Active state**: Mirrors a visual pressed state through the `active` attribute, safe to drive from CSS attribute selectors.
 - **Disabled state**: Blocks pointer and keyboard activation and removes the host from the tab sequence. A disabled `<fieldset>` around the button disables it the same way, as it does a native button, without setting `disabled`.
 - **Await state**: Renders an inline spinner, blocks pointer activation, and sets `aria-busy="true"` for assistive tech. Remove the attribute when done - do not set `await="false"`.
-- **Accessibility**: Sets `role="button"` on the host; the `label` prop (or slotted text) is rendered as the button text, which names it. Without a label, the component sets `aria-label` and `title` from the last segment of the icon slug (`mi/baseline/delete` -> "delete"), which names the icon, not the action: icon-only buttons need an explicit `aria-label` (or `title`).
+- **Accessibility**: Sets `role="button"` on the host, `role="link"` when `href` is set; the `label` prop (or slotted text) is rendered as the button text, which names it. Without a label, the component sets `aria-label` and `title` from the last segment of the icon slug (`mi/baseline/delete` -> "delete"), which names the icon, not the action: icon-only buttons need an explicit `aria-label` (or `title`).
 - **Sizing**: The `size` prop drives padding, font size, and minimum hit area. Do not override dimensions with inline `width` / `height`.
 - **Linking constraint**: `target` is effective only when `href` is set.
 
@@ -110,7 +110,7 @@ Omit `label` and provide `aria-label` (or `title`) explicitly. Without one, the 
 
 #### Hyperlink via `href`
 
-Setting `href` makes a click navigate to that URL (the host keeps `role="button"`). Use `target="blank"` to open in a new tab; default is `self`.
+Setting `href` renders a real link: the browser follows it, in a new tab on a modifier or middle click, and the context menu offers the link actions. Use `target="blank"` to open in a new tab on a plain click too; default is `self`.
 
 ```html
 <mds-button
@@ -120,6 +120,32 @@ Setting `href` makes a click navigate to that URL (the host keeps `role="button"
   variant="primary"
   tone="outline"
 ></mds-button>
+```
+
+#### Client-Side Routing via `href`
+
+In a single-page app keep `href` for the link it gives (new tab, context menu, crawlers) and register the router once with `NavigationService`, from `@maggioli-design-system/magma/services`: every component link is then routed on the client on a plain click, with no listener per button. A modifier or middle click, `target="blank"` and a link to another origin stay with the browser; return `false` from the handler for a link the browser is to load.
+
+```html
+<mds-button label="Pratiche" href="/pratiche" variant="primary" tone="text"></mds-button>
+
+<script type="module">
+  import { NavigationService } from '@maggioli-design-system/magma/services';
+
+  NavigationService.setHandler((href) => router.navigate(href));
+</script>
+```
+
+Without a registered router, cancel the click on the button and route by hand: the component honours `preventDefault()`. Leave a modifier click alone, so that the browser opens the link in a new tab.
+
+```html
+<script>
+  document.querySelector('mds-button[href]').addEventListener('click', (event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    router.navigate(event.currentTarget.href);
+  });
+</script>
 ```
 
 #### Async Loading via `await`
@@ -228,7 +254,7 @@ The default slot accepts plain text only; nested elements are stripped or break 
 
 #### Do Not Nest `<mds-button>` Inside an Anchor
 
-Wrapping the button in `<a>` creates nested interactive controls, breaks keyboard semantics, and fails accessibility audits. Use the `href` prop on the component instead - a click on the button then navigates to the URL.
+Wrapping the button in `<a>` creates nested interactive controls, breaks keyboard semantics, and fails accessibility audits. Use the `href` prop on the component instead - it renders the link itself.
 
 ```html
 <!-- INCORRECT -->
@@ -238,6 +264,24 @@ Wrapping the button in `<a>` creates nested interactive controls, breaks keyboar
 
 <!-- CORRECT -->
 <mds-button label="Accedi" href="/login"></mds-button>
+```
+
+#### Do Not Follow the `href` Yourself in a Click Listener
+
+With `href` set the component already renders a link the browser follows. Assigning `window.location` in a click listener loads the page a second time and takes a modifier click, which the browser would open in a new tab, into the current one. Either let the browser follow the link, or cancel the click and route on the client.
+
+```js
+// INCORRECT
+button.addEventListener('click', () => {
+  window.location.href = button.href;
+});
+
+// CORRECT: a client-side router cancels the click and routes
+button.addEventListener('click', (event) => {
+  if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  router.navigate(button.href);
+});
 ```
 
 #### Icon-Only Buttons Without an Accessible Name
@@ -331,25 +375,25 @@ mds-button::part(icon) {
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                                                                                                         | Type                                                                                                                                       | Default     |
-| -------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| `active`       | `active`        | Specifies if the button is active or not                                                                                                                            | `boolean`                                                                                                                                  | `undefined` |
-| `animation`    | `animation`     | Specifies if the text is animated when it is rendered                                                                                                               | `"none" \| "yugop" \| undefined`                                                                                                           | `'none'`    |
-| `autoFocus`    | `auto-focus`    | Specifies if the component is focused when is loaded on the viewport                                                                                                | `boolean`                                                                                                                                  | `undefined` |
-| `await`        | `await`         | Specifies if the button is awaiting for a response                                                                                                                  | `boolean \| undefined`                                                                                                                     | `undefined` |
-| `disabled`     | `disabled`      | Specifies if the component is disabled or not                                                                                                                       | `boolean \| undefined`                                                                                                                     | `undefined` |
-| `href`         | `href`          | Specifies the URL target of the button                                                                                                                              | `string \| undefined`                                                                                                                      | `undefined` |
-| `icon`         | `icon`          | The icon displayed in the button                                                                                                                                    | `string \| undefined`                                                                                                                      | `undefined` |
-| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the button                                                                                               | `"left" \| "right" \| undefined`                                                                                                           | `'left'`    |
-| `label`        | `label`         | The label of the button                                                                                                                                             | `string \| undefined`                                                                                                                      | `undefined` |
-| `name`         | `name`          | The name sent with `value` to the form the button submits, as a native submit button does: buttons that submit the same form tell the receiver which one was chosen | `string \| undefined`                                                                                                                      | `undefined` |
-| `size`         | `size`          | Specifies the size for the button                                                                                                                                   | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                             | `'md'`      |
-| `target`       | `target`        | Specifies the target of the URL, if self or blank                                                                                                                   | `"blank" \| "self"`                                                                                                                        | `'self'`    |
-| `tone`         | `tone`          | Specifies the tone variant for the button                                                                                                                           | `"box" \| "outline" \| "strong" \| "text" \| "weak" \| undefined`                                                                          | `'strong'`  |
-| `truncate`     | `truncate`      | Specifies if the text shoud be truncated or should behave as a normal text                                                                                          | `"all" \| "none" \| "word" \| undefined`                                                                                                   | `'word'`    |
-| `type`         | `type`          | The type of the button element                                                                                                                                      | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                                                      | `'submit'`  |
-| `value`        | `value`         | The value sent under `name` to the form the button submits                                                                                                          | `string \| undefined`                                                                                                                      | `undefined` |
-| `variant`      | `variant`       | Specifies the color variant for the button                                                                                                                          | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
+| Property       | Attribute       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                              | Type                                                                                                                                       | Default     |
+| -------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `active`       | `active`        | Specifies if the button is active or not                                                                                                                                                                                                                                                                                                                                                                                                                 | `boolean`                                                                                                                                  | `undefined` |
+| `animation`    | `animation`     | Specifies if the text is animated when it is rendered                                                                                                                                                                                                                                                                                                                                                                                                    | `"none" \| "yugop" \| undefined`                                                                                                           | `'none'`    |
+| `autoFocus`    | `auto-focus`    | Specifies if the component is focused when is loaded on the viewport                                                                                                                                                                                                                                                                                                                                                                                     | `boolean`                                                                                                                                  | `undefined` |
+| `await`        | `await`         | Specifies if the button is awaiting for a response                                                                                                                                                                                                                                                                                                                                                                                                       | `boolean \| undefined`                                                                                                                     | `undefined` |
+| `disabled`     | `disabled`      | Specifies if the component is disabled or not                                                                                                                                                                                                                                                                                                                                                                                                            | `boolean \| undefined`                                                                                                                     | `undefined` |
+| `href`         | `href`          | Turns the button into a link to this URL: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`. | `string \| undefined`                                                                                                                      | `undefined` |
+| `icon`         | `icon`          | The icon displayed in the button                                                                                                                                                                                                                                                                                                                                                                                                                         | `string \| undefined`                                                                                                                      | `undefined` |
+| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the button                                                                                                                                                                                                                                                                                                                                                                                    | `"left" \| "right" \| undefined`                                                                                                           | `'left'`    |
+| `label`        | `label`         | The label of the button                                                                                                                                                                                                                                                                                                                                                                                                                                  | `string \| undefined`                                                                                                                      | `undefined` |
+| `name`         | `name`          | The name sent with `value` to the form the button submits, as a native submit button does: buttons that submit the same form tell the receiver which one was chosen                                                                                                                                                                                                                                                                                      | `string \| undefined`                                                                                                                      | `undefined` |
+| `size`         | `size`          | Specifies the size for the button                                                                                                                                                                                                                                                                                                                                                                                                                        | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                             | `'md'`      |
+| `target`       | `target`        | Specifies the target of the URL, if self or blank                                                                                                                                                                                                                                                                                                                                                                                                        | `"blank" \| "self"`                                                                                                                        | `'self'`    |
+| `tone`         | `tone`          | Specifies the tone variant for the button                                                                                                                                                                                                                                                                                                                                                                                                                | `"box" \| "outline" \| "strong" \| "text" \| "weak" \| undefined`                                                                          | `'strong'`  |
+| `truncate`     | `truncate`      | Specifies if the text shoud be truncated or should behave as a normal text                                                                                                                                                                                                                                                                                                                                                                               | `"all" \| "none" \| "word" \| undefined`                                                                                                   | `'word'`    |
+| `type`         | `type`          | The type of the button element                                                                                                                                                                                                                                                                                                                                                                                                                           | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                                                      | `'submit'`  |
+| `value`        | `value`         | The value sent under `name` to the form the button submits                                                                                                                                                                                                                                                                                                                                                                                               | `string \| undefined`                                                                                                                      | `undefined` |
+| `variant`      | `variant`       | Specifies the color variant for the button                                                                                                                                                                                                                                                                                                                                                                                                               | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Slots
