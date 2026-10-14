@@ -264,6 +264,62 @@ never match, which makes an accidental import a no-op.
 
 ---
 
+### Token data
+
+Two kinds of generated JSON describe this package for tools that read tokens rather than
+paint with them (a documentation site, a design tool). They complete the DTCG export of
+`@maggioli-design-system/design-tokens` (its README, "Token data (DTCG)"), and use the
+same names: a token is keyed by the custom property it is published as, the
+`$extensions["it.maggioli.magma"].css` of its DTCG entry. To style a page, use the
+stylesheets.
+
+| File | Content |
+| :--- | :--- |
+| `dist/dtcg/globals.tokens.json` | The globals this package declares: the `--magma-*` of `globals.css`, the corner axis, the depth axis of `theme.css`. Same DTCG 2025.10 shape as design-tokens, aliasing its tokens where the CSS names one (`--magma-radius-md` is `{radius.squircle-md}`) |
+| `dist/dtcg/corner-shape-round.tokens.json`, `theme-depth-flat.tokens.json` | What `[data-corner-shape='round']` and `:root[data-theme-depth='flat']` change |
+| `dist/dtcg/magma.resolver.json` | The resolver of design-tokens plus these sets: `base`, `globals`, then the `mode`, `theme`, `corner-shape` and `theme-depth` modifiers |
+| `dist/tailwind/consumption.json` | How each token is consumed through Tailwind 4 |
+
+design-tokens' `base.tokens.json` and `globals.tokens.json` together hold every global
+token of `tokens.editor.css`. The resolver points at the files of design-tokens as
+`../../../design-tokens/dist/dtcg/`: the two packages sit side by side in
+`node_modules/@maggioli-design-system/`, as they do in this repository.
+
+#### consumption.json
+
+```json
+"--magma-text-muted": { "theme": "--color-fg-muted", "namespace": "--color", "key": "fg-muted" }
+```
+
+- **`tokens`**: `theme` is the `@theme` variable that publishes the token; `namespace` and
+  `key` split it the way Tailwind reads it. Its utilities are `<root>-<key>` for every
+  root of `namespaces[namespace].utilities` (`text-fg-muted`, `bg-fg-muted`,
+  `border-fg-muted`, ...), its variants the patterns of `namespaces[namespace].variants`
+  with the key for `*` (`max-tablet:`, `@md:`).
+- **`shadowed`**: the roots (or variant patterns) where that class reads another
+  variable, and which one (`null`: none of the theme). `--container-xs` has
+  `"max-w": "--spacing-xs"`: `max-w-xs` is 4px, the container is `max-w-(--container-xs)`.
+- **`namespace: null`**: no utility reads the variable. Tailwind 4 has no `--border-*`
+  or `--duration-*` namespace, so `border-xs` does not exist and `duration-200` is
+  Tailwind's own 200ms, not the token: write `border-(length:--border-xs)`.
+- **`property`**: a value that comes with another token, Tailwind's
+  `--<variable>--<property>` (`--text-size-title-h1--line-height`).
+- **`spacing`**: `--spacing: 0.0025rem` multiplies every numeric step, so `gap-400` is
+  `400 x 0.0025rem = 1rem`. `utilities` lists the roots that take a step, `keys` the named
+  ones (`xs` ... `4xl`, `phrase`, `prose`, ...), `steps` the numeric keys the theme
+  publishes explicitly.
+- **`utilities`**: every `@utility` of `dist/tailwind/*.css` and of the design-tokens
+  sheets they import, with where it is defined, what it `@apply`s, the tokens and the
+  Tailwind theme variables it reads (`text-title-h1` reads Tailwind's `--font-weight-black`)
+  and its compiled CSS.
+
+The map is generated from Tailwind's own design system (the version is in `tailwind`),
+loaded on the entry point of the [Tailwind](#tailwind) section (`entry`): every class and
+variant Tailwind can generate is compiled, and nothing is listed by hand. It covers
+Tailwind 4 only; the Tailwind 3 preset is legacy.
+
+---
+
 ### Dist folder
 
 | Folder | For | Files |
@@ -273,6 +329,8 @@ never match, which makes an accidental import a no-op.
 | `css` | editors only, never import | `tokens.editor.css` |
 | `css` | tailwind (copied from design-tokens) | `tailwind-theme-color.css`, `tailwind-theme-typography.css` |
 | `tailwind` | Tailwind 4 | `theme.css` (palette, typography tokens, semantic colors; imports `semantic.css`), `typography.css` (the `text-title-*`, `text-info-*`, ... utilities), `utilities.css` (`focus-bounce`, `focus-zoom`, ...), `base.css`, `reset.css`, `semantic.css` |
+| `tailwind` | tools that read tokens | `consumption.json` (the Tailwind map, see [Token data](#token-data)) |
+| `dtcg` | tools that read tokens | `globals.tokens.json`, `corner-shape-round.tokens.json`, `theme-depth-flat.tokens.json`, `magma.resolver.json` |
 | `tailwind3` | Tailwind 3 | `base.css`, `components.css`, `reset.css`, `typography.css` |
 
 [mds]: https://magma.maggiolicloud.it/
