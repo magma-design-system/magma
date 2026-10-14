@@ -469,7 +469,7 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the URL target of the button
+          * Turns the button into a link to this URL: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`.
          */
         "href"?: string;
         /**
@@ -2535,7 +2535,7 @@ export namespace Components {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the URL target of the button
+          * Turns the tab into a link to this URL: the item renders a real anchor and is announced as a link, not as a tab, with `aria-current` when selected. A client-side router registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`) takes the plain clicks over; without one, a click listener on the host can still cancel the navigation with `preventDefault()`.
          */
         "href"?: string;
         /**
@@ -4910,7 +4910,7 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
-          * Specifies the URL target of the button
+          * Turns the button into a link to this URL: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`.
          */
         "href"?: string;
         /**
@@ -7145,7 +7145,7 @@ declare namespace LocalJSX {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the URL target of the button
+          * Turns the tab into a link to this URL: the item renders a real anchor and is announced as a link, not as a tab, with `aria-current` when selected. A client-side router registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`) takes the plain clicks over; without one, a click listener on the host can still cancel the navigation with `preventDefault()`.
          */
         "href"?: string;
         /**

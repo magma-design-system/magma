@@ -25,7 +25,9 @@ import { DirectionType } from './meta/type';
  * @part contents - Selects the container of the tabbed contents elements.
  * @part slider - Selects the slider element which is visible when attribute `animation` is set to `slide`.
  * @part tabs - Selects the container of `mds-tab-item` list elements.
- * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added.
+ * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added; or none, when the
+ * items are links (`href`) to other pages or places and the page, not the component, shows the
+ * content.
  * @slot - Add `mds-tab-item` element/s.
  */
 
@@ -50,6 +52,9 @@ export class MdsTab {
   @State() sliderOffsetY: number = -1;
   @State() overflowLeft: boolean = false;
   @State() overflowRight: boolean = false;
+  /** every item is a link: the strip is a navigation, not a tablist */
+  @State() navigation: boolean = false;
+  @State() hasContent: boolean = false;
 
   /**
    * Sets if the component distributes item vertically or horzontally
@@ -91,6 +96,7 @@ export class MdsTab {
 
   componentWillLoad(): void {
     this.setTabsItems();
+    this.hasContent = this.queryContentItems().length > 0;
   }
 
   disconnectedCallback(): void {
@@ -115,6 +121,7 @@ export class MdsTab {
 
   private updateContentItems = (): void => {
     this.contentItems = this.queryContentItems();
+    this.hasContent = this.contentItems.length > 0;
     this.contentItems.forEach((item: HTMLElement, key: number): void => {
       setAttributeIfEmpty(item, 'role', 'tabpanel');
       setAttributeIfEmpty(item, 'aria-labelledby', this.tabItems[key].id);
@@ -127,6 +134,8 @@ export class MdsTab {
       this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item'),
     );
     this.currentItemIndex = -1;
+    this.navigation =
+      this.tabItems.length > 0 && this.tabItems.every((item) => (item.href ?? '') !== '');
     this.tabItems.forEach((item) => {
       item.size = this.size;
       item.direction = this.direction;
@@ -198,6 +207,8 @@ export class MdsTab {
   };
 
   private scrollTabs = (key: number): void => {
+    // no item selected: nothing to bring into view
+    if (key < 0 || key >= this.tabItems.length) return;
     const tabItem = this.tabItems[key];
     setTimeout(() => {
       this.tabs.scrollLeft =
@@ -313,7 +324,13 @@ export class MdsTab {
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
-        <div class={clsx('tabs-wrapper', this.fill && 'tabs-wrapper--fill')}>
+        <div
+          class={clsx(
+            'tabs-wrapper',
+            this.fill && 'tabs-wrapper--fill',
+            !this.hasContent && 'tabs-wrapper--no-content',
+          )}
+        >
           {this.overflow && (
             <div
               class={clsx(
@@ -330,7 +347,7 @@ export class MdsTab {
               )}
             ></div>
           )}
-          <div class="tabs" part="tabs" role="tablist">
+          <div class="tabs" part="tabs" role={this.navigation ? undefined : 'tablist'}>
             <slot />
             {this.animation === 'slide' && (
               <div
@@ -346,7 +363,7 @@ export class MdsTab {
             )}
           </div>
         </div>
-        <div class="contents" part="contents">
+        <div class={clsx('contents', !this.hasContent && 'contents--empty')} part="contents">
           <slot name="content" onSlotchange={this.updateContentItems} />
         </div>
       </Host>
