@@ -71,6 +71,35 @@ Keep in mind that:
 - `nx run stencil:generate` still scaffolds the Jest flavoured spec and e2e files: answer no and
   start from the snippet above.
 
+#### Server-side rendering and hydration
+
+The SSR consumers (the `magma-react` server wrappers, `renderToString` of `magma/hydrate`) render
+the components on the server and hydrate that markup in the browser: a path that `render()` never
+takes. `@test/ssr` runs it in the browser tests:
+
+- `renderToString(html)` renders the markup in Node with the hydrate build (`dist/hydrate`,
+  through the `renderToString` command of `vitest.config.mts`) and throws on its error
+  diagnostics;
+- `hydrate(markup, { hidden })` parses it into a new stage as a browser parses an SSR page
+  (declarative shadow roots, hydration ids) and resolves once the components have hydrated it;
+- `reveal(stage)` moves a hidden stage into a visible one, as React streaming reveals a Suspense
+  boundary: every component in it is disconnected and connected again.
+
+```ts
+import { hydrate, renderToString } from '@test/ssr';
+
+it('measures the actions once the server markup is hydrated', async () => {
+  const stage = await hydrate(await renderToString('<mds-table>...</mds-table>'));
+  const row = stage.querySelector('mds-table-row')!;
+  // assert on the hydrated row
+});
+```
+
+The command reads `dist/hydrate`, so these tests need a full build (`nx run stencil:test` runs
+one). The server markup already carries the `hydrated` flag, which therefore says nothing about
+the client: `hydrate` waits for `componentOnReady()` instead, and what the components do after
+loading (observers, re-renders) still needs `expect.poll`.
+
 ### Storybook tests
 
 The stories (`test/*.stories.tsx`) carry the visual, interaction and accessibility tests: `play`

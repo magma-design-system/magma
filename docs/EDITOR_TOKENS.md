@@ -44,15 +44,15 @@ Optional: `"colorInfo.languages": []` if you have Color Info installed - see
 generates `dist/css/tokens.editor.css` as build step `editor.tokens`, between `properties`
 and `copy`. It collects, deduplicating (first occurrence wins) and grouping:
 
-| group       | source                             | tokens emitted |
-| ----------- | ---------------------------------- | -------------- |
-| `scale`     | design-tokens `typography.css`     | 207            |
-| `motion`    | design-tokens `transitions.css`    | 2              |
-| `palette`   | design-tokens `colors-rgb.css`     | 381            |
-| `semantic`  | `build/css/semantic.css`           | 159            |
-| `globals`   | `css/globals.css`, `css/theme.css` | 38             |
-| `component` | per component, see below           | 804            |
-| **total**   |                                    | **1591**       |
+| group       | source                                                    | tokens emitted |
+| ----------- | --------------------------------------------------------- | -------------- |
+| `scale`     | design-tokens `typography.css`                            | 218            |
+| `motion`    | design-tokens `transitions.css`                           | 2              |
+| `palette`   | design-tokens `colors-rgb.css`                            | 381            |
+| `semantic`  | `build/css/semantic.css`, `build/css/themes.css`          | 150            |
+| `globals`   | `css/globals.css`, `build/css/corner.css`, `css/theme.css` | 52             |
+| `component` | per component, see below                                  | 784            |
+| **total**   |                                                           | **1587**       |
 
 The counts are what each group *emits*, after dedup against the groups before it: most of
 the motion scale (`--duration-*`, `--ease-*`) is already published by `typography.css`, so

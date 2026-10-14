@@ -109,6 +109,34 @@ client-only initializer.
 - Import the global CSS block from [`assets.md`](assets.md) in `styles.css` /
   `styles.scss` so the cascade-layer order is preserved.
 
+## 5. Client-side routing
+
+The links of the components (`href` of `mds-button`, `mds-tab-item`, ...) are real anchors
+the browser follows, loading the page. Register the Angular router once, at app startup, and
+every plain click on a component link is routed on the client instead; a modifier or middle
+click, `target="blank"` and a link to another origin stay with the browser.
+
+```typescript
+import { inject, provideAppInitializer } from '@angular/core';
+import { Router } from '@angular/router';
+import { NavigationService } from '@maggioli-design-system/magma/services';
+
+export const appConfig = {
+  providers: [
+    provideAppInitializer(() => {
+      const router = inject(Router);
+      NavigationService.setHandler((href) => {
+        router.navigateByUrl(href);
+      });
+    }),
+  ],
+};
+```
+
+Return `false` from the handler for a link the browser is to load. Without a registered
+router, a `(click)` binding on the component can still cancel the event with
+`preventDefault()` and route by hand.
+
 ## Gotchas
 
 - Use the generated proxies rather than raw custom elements. If you ever use `mds-*`

@@ -187,7 +187,9 @@ exist. The bridge names the text roles `fg-*` (`--magma-text-muted` -> `--color-
 a utility never reads `text-text-muted`; every other role keeps its name.
 
 The layer is GENERATED from `../design-tokens/semantic.config.ts` by `scripts/semantic.ts` (A9): that config
-is the tracked contract (which primitive each role points at), and the generator writes
+is the tracked contract (which primitive each role points at), `../design-tokens/semantic.model.ts`
+expands it into declarations (the same ones the DTCG export of design-tokens writes as aliases), and the
+generator writes
 `build/css/semantic.css` (the layer), `build/css/themes.css` (the named themes, section 8) and
 `build/tailwind/semantic.css` (the bridge), gitignored and never hand-edited; `scripts/copy.ts`
 ships them as `dist/css/semantic.css`, `dist/css/themes.css` and `dist/tailwind/semantic.css`

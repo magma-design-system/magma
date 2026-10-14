@@ -30,6 +30,7 @@ Generates design tokens for colors, typography, spacing, borders and other platf
 
 - Built on **Adobe Leonardo** (color palette generation with WCAG contrast ratios) and **Style Dictionary** (token transformation and output)
 - Outputs tokens in multiple formats: CSS custom properties, Tailwind 4 theme, Flutter/Dart, JSON
+- Describes every global token, the semantic layer included, as DTCG 2025.10 JSON in `dist/dtcg/` (sets per mode, theme and contrast, plus a resolver document). The semantic layer comes from `semantic.model.ts`, which both this export and the styles generator read
 - Color palette categories: `tone` (neutrals), `status` (info/success/warning/error), `label` (semantic accent colors), `variant` (primary/secondary/ai), `brand`
 - Token levels: **primitive** (raw values) → **semantic** (role-based) → **component** (component-scoped CSS vars)
 - Exposes a CLI (`npx magma-design-tokens`) to generate custom palettes from a config file
@@ -73,6 +74,8 @@ CSS and Tailwind 4 styles consumed by the web component library and consumer app
 | `dist/css/hydrated.css` | FOUC prevention for StencilJS |
 | `dist/css/animations.css` | Shared animations |
 | `dist/tailwind/` | Tailwind 4 layers: base, typography, utilities |
+| `dist/tailwind/consumption.json` | How each global token is consumed through Tailwind 4, keyed by its DTCG `css` name; generated from Tailwind's design system |
+| `dist/dtcg/` | The styles globals as DTCG 2025.10 (corner and depth sets), with a resolver that adds them to the design-tokens sets |
 
 CSS cascade layer order (consumer apps must respect this):
 ```

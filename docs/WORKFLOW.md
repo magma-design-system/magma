@@ -8,6 +8,8 @@ The `dev` and `main` branches are protected governance targets. **Agents must ne
 
 An agent may prepare work up to (and including) a feature branch pushed to its own remote and a pull request opened from it into `dev`, but merging that pull request - the promotion of the work into `dev` or `main` - is a human decision.
 
+**No branch is merged into `dev` while its pipeline is red.** Every check of the pull request must pass on its head commit at the time of the merge; a red check is never bypassed, whatever the size of the change (a one-line dependency bump included). When the failure comes from outside the PR (a flaky job, an outage), rerun or fix it first. `dev` must install, build and lint at every commit: every other branch syncs from it (rule 4), so a red merge breaks all of them at once.
+
 When a maintainer promotes `dev` into `main`, the promotion must use a **merge commit** (never squash or rebase): release tags created on `dev` (e.g. `icons@*`, `svg-icons@*`) must stay reachable from `main`, otherwise the release workflow on `main` would keep recomputing already-released versions.
 
 The release on `main` (`release.yml`) handles every package in one run: it detects the next version of each package from its own commits, writes the new versions, updates the pins of the packages that depend on them (e.g. a new `design-tokens` is pinned in `styles` and `magma` before they are published) together with `package-lock.json`, and pushes all of it in **one** `chore(release)` commit, with one tag and one GitHub release per package. CI and the npm publish then run once, on that commit. Internal dependencies are pinned as caret ranges (`^<version>`), so a patch or minor of a dependency is accepted by the dependents already on npm and consumers keep a single copy of it; only `magma` is pinned to the exact version in `magma-react` and `magma-angular`, which are released in lockstep with it under the `magma@*` tag. A dependent without commits of its own gets the new pin but no new version: it ships the pin with its next release. A major of a dependency reaches the published dependents only with a release of their own. After a release, merge `main` back into `dev`, so that `dev` has the released versions and pins.
@@ -70,6 +72,22 @@ The same workflow checks the release. Each changed member of the snapshot needs 
 
 Keep a PR to one level when you can: a behaviour fix and a CSS touch-up in two PRs get two quick reviews instead of one careful one. Run the same check locally with `nx run stencil:check.pr-risk` (after committing; `-- --base-snapshot <file>` compares with another snapshot, e.g. a release's).
 
+## 7. Label issues by the project they come from
+
+An issue opened for a problem found in another project (the docs site, a consumer app) carries that project's **origin label**, `prd-<project>`, so that what each project reported can be listed with one filter, and the project can be told when its issues are fixed.
+
+| Label       | The issue comes from                      |
+| ----------- | ----------------------------------------- |
+| `prd-docs`  | the docs site, `magma-design-system/docs` |
+| `prd-mindy` | Mindy (`mindy-webapp`)                    |
+
+- Set it when the issue is opened, whoever opens it, agent or human.
+- It says where the problem was seen, not which package it affects: that is still the `prg-*` label, and an issue usually carries both (`prd-mindy` and `prg-stencil`). A problem reported by more than one project gets one origin label per project.
+- An issue found in Magma itself (its Storybook, its tests, its own docs, a review) has no origin label.
+- The label is the filter, not the context: the body still says where and how the problem was seen (app, versions, steps).
+- A new project gets its label before its first issue: add `prd-<project>` (short, lowercase, kebab-case) to the Origin section of `.github/ISSUE_TEMPLATE/labels.yml`, in the same colour, and create it on the repository with the same name, colour and description (`gh label create`, or the `label-sync` workflow). A label that exists only on GitHub is deleted by the next `label-sync` run, which removes every label the file does not list.
+- The description reads `Reported from <project> (<repository>)`: agents working inside a consumer project find their label by matching the repository name. They follow `docs/agents/reporting.md`, shipped in the `magma`, `magma-react` and `magma-angular` packages as `agents/reporting.md`, and never create a label themselves: when their project has none, the issue body names the project and a maintainer adds the label.
+
 ## Summary for agents
 
 | Action                                          | Allowed for an agent?                                    |
@@ -80,6 +98,8 @@ Keep a PR to one level when you can: a behaviour fix and a CSS touch-up in two P
 | Open a pull request from it into `dev`          | Yes, with `Closes #<issue>` in the body (see rule 3)     |
 | Change a component's behaviour without a test   | No - add or update a `spec` / `e2e` test (see rule 5)    |
 | Ship an API removal without declaring the break | No - `!` or a `BREAKING CHANGE:` footer (see rule 6)     |
+| Open an issue for a problem found elsewhere     | Yes, with its `prd-<project>` origin label (see rule 7)  |
 | Merge a branch into `dev` or `main`             | No - manual governance step                              |
+| Merge a branch with a red pipeline into `dev`   | No - nobody does, a red check is never bypassed (rule 1) |
 | Push directly to `dev` or `main`                | No - manual governance step                              |
 | Auto-merge a pull request into `dev` or `main`  | No - manual governance step                              |

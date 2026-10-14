@@ -16,8 +16,8 @@ Every published entry point is tree-shakeable except the lazy loader, which regi
 | `magma`         | `/components/mds-button.js`                                       | one component per file                                                                             | ✅                                |
 | `magma`         | `/loader`                                                         | `defineCustomElements()`, registers everything lazily                                              | ❌ by design                      |
 | `magma`         | `/hydrate`                                                        | `renderToString()` for SSR (server-only bundle)                                                    | ❌ by design (server bundle)      |
-| `magma`         | `.`                                                               | lazy runtime + `IconsSetService` (no components)                                                   | n/a                               |
-| `magma`         | `/services`                                                       | `IconsSetService`                                                                                  | n/a                               |
+| `magma`         | `.`                                                               | lazy runtime + `IconsSetService`, `NavigationService` (no components)                              | n/a                               |
+| `magma`         | `/services`                                                       | `IconsSetService`, `NavigationService`                                                             | n/a                               |
 | `magma`         | `/AGENTS.md`, `/agents/*`                                         | the agent docs (install guide, `docs/agents/` fragments)                                           | n/a                               |
 | `magma`         | `/dist/documentation.json`, `/dist/collection/components/<tag>/*` | the docs JSON, and per component `AGENTS.md`, `pattern.md`, `antipattern.md`, `documentation.json` | n/a                               |
 | `magma-react`   | `.`                                                               | barrel of `Mds*` React wrappers                                                                    | ✅                                |
@@ -180,7 +180,7 @@ Rules:
 3. A bug fix's test should reproduce the bug: fail on the previous implementation, pass on the fix.
 4. **Split by tool**: Vitest (`spec` / `e2e`) owns the unit and component tests and is the mandatory part of rule 1; Storybook owns the visual, interaction and accessibility tests and the multi-component pages. Add or update a story when necessary: when the change affects the look, the user interaction, the accessibility or the composition with other components. A story never replaces a Vitest test.
 
-How to write and run the tests (Vitest + `@stencil/vitest`, `render` / `userEvent`, shared-page caveats; the stories via `npm run test-storybook`, the `storybook` Vitest project): [`HOWTO.md`](../../projects/stencil/HOWTO.md#tests).
+How to write and run the tests (Vitest + `@stencil/vitest`, `render` / `userEvent`, shared-page caveats, server-rendered markup hydrated in the browser with `@test/ssr`; the stories via `npm run test-storybook`, the `storybook` Vitest project): [`HOWTO.md`](../../projects/stencil/HOWTO.md#tests).
 
 ## Per-component usage docs
 

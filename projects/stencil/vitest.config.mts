@@ -3,8 +3,20 @@ import { defineVitestConfig } from '@stencil/vitest/config';
 import { stencilVitestPlugin } from '@stencil/vitest/plugin';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
+import type { BrowserCommand } from 'vitest/node';
 
 const src = (dir: string): string => path.resolve(import.meta.dirname, dir, '$1');
+
+// the server half of the SSR tests (src/test/ssr.ts): renders the markup in Node with the hydrate
+// build, as an SSR consumer does, for the browser to parse and the prebuilt components to hydrate
+const renderToString: BrowserCommand<[html: string]> = async (_context, html) => {
+  const hydrate = await import(path.resolve(import.meta.dirname, 'dist/hydrate/index.mjs'));
+  const { html: markup, diagnostics } = await hydrate.renderToString(html, {
+    fullDocument: false,
+    serializeShadowRoot: 'declarative-shadow-dom',
+  });
+  return { html: markup, diagnostics };
+};
 
 // @stencil/vitest does not read the tsconfig `paths`: mirror the aliases of stencil.config.ts
 const alias = [
@@ -62,6 +74,7 @@ export default defineVitestConfig({
             viewport: { width: 1280, height: 800 },
             screenshotFailures: false,
             instances: [{ browser: 'chromium' }],
+            commands: { renderToString },
           },
         },
       },
