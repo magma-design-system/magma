@@ -15,7 +15,8 @@ The `<mds-tab-item>` web component is the individual, clickable tab control of t
 
 #### Semantic Behavior
 
-- **Compound child only**: Must be a direct child of `<mds-tab>` placed in its default slot; it is not used standalone, and the matching panel content is added separately into the parent's `content` slot (one per `<mds-tab-item>`). Mixing it with other child types breaks the parent's pairing.
+- **Compound child only**: Must be a direct child of `<mds-tab>` placed in its default slot; it is not used standalone, and the matching panel content is added separately into the parent's `content` slot (one per `<mds-tab-item>`, or none when the page shows the content itself). Mixing it with other child types breaks the parent's pairing.
+- **Link item**: With `href` the item renders a real link instead of a tab: it is announced as a link, with `aria-current` when selected, and the browser follows it, in a new tab on a modifier or middle click. A `click` listener on the item cancels the navigation with `preventDefault()` to route on the client; the selection still moves, except on a modifier click, which the browser opens elsewhere.
 - **Selection driven by the parent**: Clicking the item emits `mdsTabItemSelect`; `<mds-tab>` sets `selected` on the chosen item, clears it on the others, and reveals the corresponding panel.
 - **Initial selection**: Marking one item `selected` in markup tells the parent which tab is active on load.
 - **Focus reporting**: A key press emits `mdsTabItemFocus`, which the parent uses to scroll the focused tab into view; both events carry `{ target, value }` so the parent can resolve the item even with a custom `id`.
@@ -27,7 +28,7 @@ The `<mds-tab-item>` web component is the individual, clickable tab control of t
 This child does not use the shared `variant`/`tone` ladders; its props mirror the underlying `<mds-button>`.
 
 - **`value`**: Set this to identify the tab in the `mdsTabItemSelect` payload (and the parent's `mdsTabChange`) when you need to react to selection without relying on DOM index or `id`.
-- **`type`**: Defaults to `submit`; pick `button` for a plain tab that does not interact with a surrounding form, or `a` together with `href` when the tab should navigate.
+- **`type`**: Defaults to `submit`; pick `button` for a plain tab that does not interact with a surrounding form. With `href` the item is a link and `type` has no effect.
 - **`icon`** / **`iconPosition`**: Add a leading (`left`, default) or trailing (`right`) glyph; use the trailing position for affordances like an external-link or dismiss hint.
 - **`await`**: Reflects the button's awaiting/loading state for tabs whose activation triggers an async operation.
 - **`size`**: Defaults to `md`, but is normally controlled by the parent's `size` prop, so set it on `<mds-tab>` for consistent sizing across all items.
@@ -126,18 +127,36 @@ Set `size` on `<mds-tab>` once; the parent propagates it to every child item aut
 </mds-tab>
 ```
 
-#### Link Tab via `href`
+#### Link Items via `href`
 
-Set `href` (and `type="a"`) to make a tab navigate to a URL instead of switching a panel. `<mds-tab-item>` has no `target` prop, so the link opens in the same window.
+Set `href` on every item to make the strip a navigation: each item is a link the browser follows instead of a tab switching a panel, so omit the `content` slot. `<mds-tab-item>` has no `target` prop, so a plain click opens the link in the same window; a modifier or middle click opens it in a new tab. In a single-page app, register the router once with `NavigationService` (from `@maggioli-design-system/magma/services`): a plain click on an item is then routed on the client, and the selection still moves.
 
 ```html
 <mds-tab>
-  <mds-tab-item label="Locale" selected></mds-tab-item>
-  <mds-tab-item label="Portale" href="https://portale.example.com" type="a"></mds-tab-item>
-
-  <div slot="content"><p>Vista locale.</p></div>
-  <div slot="content"></div>
+  <mds-tab-item label="Pratiche" href="/pratiche" selected></mds-tab-item>
+  <mds-tab-item label="Documenti" href="/documenti"></mds-tab-item>
+  <mds-tab-item label="Pagamenti" href="/pagamenti"></mds-tab-item>
 </mds-tab>
+
+<script type="module">
+  import { NavigationService } from '@maggioli-design-system/magma/services';
+
+  NavigationService.setHandler((href) => router.navigate(href));
+</script>
+```
+
+Without a registered router, cancel the click on the item and route by hand: the component honours `preventDefault()`. Leave a modifier click alone, so that the browser opens the link in a new tab.
+
+```html
+<script>
+  document.querySelectorAll('mds-tab-item[href]').forEach((item) => {
+    item.addEventListener('click', (event) => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      router.navigate(item.href);
+    });
+  });
+</script>
 ```
 
 #### Async Loading Tab via `await`
@@ -296,7 +315,7 @@ mds-tab-item::part(button) {
 
 #### Do Not Mix Content Panels and Tab Items Without a 1-to-1 Pairing
 
-The parent resolves each content panel by index, matching it to the `mds-tab-item` at the same position. A mismatch breaks it: with fewer `slot="content"` elements than tab items a tab shows no panel, with more the component throws while wiring them and no panel gets hidden.
+The parent resolves each content panel by index, matching it to the `mds-tab-item` at the same position. A mismatch breaks it: with fewer `slot="content"` elements than tab items a tab shows no panel, with more the component throws while wiring them and no panel gets hidden. No panel at all is fine: the strip then only reports the selection, or navigates when the items have `href`.
 
 ```html
 <!-- INCORRECT - two items, one content panel -->
@@ -315,25 +334,46 @@ The parent resolves each content panel by index, matching it to the `mds-tab-ite
 </mds-tab>
 ```
 
+#### Do Not Mix a Link Item with Panel Tabs
+
+A strip is either a `tablist` of tabs, each controlling a panel, or a navigation of links (`href` on every item): a link inside a tablist is not a child the role allows. Keep the link out of the strip, as an `<mds-button>` next to it (see [`mds-tab`](../../mds-tab)).
+
+```html
+<!-- INCORRECT -->
+<mds-tab>
+  <mds-tab-item label="Locale" selected></mds-tab-item>
+  <mds-tab-item label="Portale" href="https://portale.example.com"></mds-tab-item>
+  <div slot="content"><p>Vista locale.</p></div>
+  <div slot="content"></div>
+</mds-tab>
+
+<!-- CORRECT -->
+<mds-tab>
+  <mds-tab-item label="Locale" selected></mds-tab-item>
+  <div slot="content"><p>Vista locale.</p></div>
+</mds-tab>
+<mds-button label="Portale" href="https://portale.example.com" target="blank" tone="text"></mds-button>
+```
+
 
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                                                                                               | Type                                                  | Default     |
-| -------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------- |
-| `animation`    | `animation`     | Reflects the parent tab selection animation (set by mds-tab); drives the slide-variant styling without :host-context                                      | `"fade" \| "slide" \| undefined`                      | `undefined` |
-| `await`        | `await`         | Specifies if the button is awaiting for a response                                                                                                        | `boolean`                                             | `undefined` |
-| `direction`    | `direction`     | Reflects the parent tab layout direction (set by mds-tab); drives the vertical layout without :host-context                                               | `"horizontal" \| "vertical" \| undefined`             | `undefined` |
-| `disabled`     | `disabled`      | Specifies if the tab item is disabled or not                                                                                                              | `boolean \| undefined`                                | `undefined` |
-| `expanded`     | `expanded`      | Specifies whether the popup the tab item opens is showing. Left unset the tab says nothing about a popup, which is what a tab that opens none has to say. | `boolean \| undefined`                                | `undefined` |
-| `href`         | `href`          | Specifies the URL target of the button                                                                                                                    | `string \| undefined`                                 | `undefined` |
-| `icon`         | `icon`          | The icon displayed in the tab item                                                                                                                        | `string \| undefined`                                 | `undefined` |
-| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item                                                                                   | `"left" \| "right" \| undefined`                      | `'left'`    |
-| `label`        | `label`         | The label of the tab item                                                                                                                                 | `string \| undefined`                                 | `undefined` |
-| `selected`     | `selected`      | Specifies if the tab item is selected or not                                                                                                              | `boolean \| undefined`                                | `undefined` |
-| `size`         | `size`          | Specifies the size for the tab item                                                                                                                       | `"lg" \| "md" \| "sm" \| "xl" \| undefined`           | `'md'`      |
-| `type`         | `type`          | The type of the tab item element                                                                                                                          | `"a" \| "button" \| "reset" \| "submit" \| undefined` | `'submit'`  |
-| `value`        | `value`         | Specifies an optional value to get from mdsTabItemSelect event                                                                                            | `string \| undefined`                                 | `undefined` |
+| Property       | Attribute       | Description                                                                                                                                                                                                                                                                                                                                                                                              | Type                                                  | Default     |
+| -------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------- |
+| `animation`    | `animation`     | Reflects the parent tab selection animation (set by mds-tab); drives the slide-variant styling without :host-context                                                                                                                                                                                                                                                                                     | `"fade" \| "slide" \| undefined`                      | `undefined` |
+| `await`        | `await`         | Specifies if the button is awaiting for a response                                                                                                                                                                                                                                                                                                                                                       | `boolean`                                             | `undefined` |
+| `direction`    | `direction`     | Reflects the parent tab layout direction (set by mds-tab); drives the vertical layout without :host-context                                                                                                                                                                                                                                                                                              | `"horizontal" \| "vertical" \| undefined`             | `undefined` |
+| `disabled`     | `disabled`      | Specifies if the tab item is disabled or not                                                                                                                                                                                                                                                                                                                                                             | `boolean \| undefined`                                | `undefined` |
+| `expanded`     | `expanded`      | Specifies whether the popup the tab item opens is showing. Left unset the tab says nothing about a popup, which is what a tab that opens none has to say.                                                                                                                                                                                                                                                | `boolean \| undefined`                                | `undefined` |
+| `href`         | `href`          | Turns the tab into a link to this URL: the item renders a real anchor and is announced as a link, not as a tab, with `aria-current` when selected. A client-side router registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`) takes the plain clicks over; without one, a click listener on the host can still cancel the navigation with `preventDefault()`. | `string \| undefined`                                 | `undefined` |
+| `icon`         | `icon`          | The icon displayed in the tab item                                                                                                                                                                                                                                                                                                                                                                       | `string \| undefined`                                 | `undefined` |
+| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item                                                                                                                                                                                                                                                                                                                                  | `"left" \| "right" \| undefined`                      | `'left'`    |
+| `label`        | `label`         | The label of the tab item                                                                                                                                                                                                                                                                                                                                                                                | `string \| undefined`                                 | `undefined` |
+| `selected`     | `selected`      | Specifies if the tab item is selected or not                                                                                                                                                                                                                                                                                                                                                             | `boolean \| undefined`                                | `undefined` |
+| `size`         | `size`          | Specifies the size for the tab item                                                                                                                                                                                                                                                                                                                                                                      | `"lg" \| "md" \| "sm" \| "xl" \| undefined`           | `'md'`      |
+| `type`         | `type`          | The type of the tab item element                                                                                                                                                                                                                                                                                                                                                                         | `"a" \| "button" \| "reset" \| "submit" \| undefined` | `'submit'`  |
+| `value`        | `value`         | Specifies an optional value to get from mdsTabItemSelect event                                                                                                                                                                                                                                                                                                                                           | `string \| undefined`                                 | `undefined` |
 
 
 ## Events
