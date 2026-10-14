@@ -41,6 +41,10 @@ class RandomText {
 
   constructor(options: Options) {
     Object.assign(this, { ...RandomText.defaults, ...options });
+    // step() starts `speed` more characters on every frame and leaves the loop only once all of
+    // them have reached the text: with a speed of 0 (or less) none ever starts, and the loop
+    // would schedule itself on every frame, forever
+    if (!(this.speed > 0)) Object.assign(this, { speed: RandomText.defaults.speed });
   }
 
   start = (): void => {

@@ -7,6 +7,11 @@ import { typographyDefaultsVariant } from './meta/variants';
 import RandomText from '@common/yugop';
 import { preferenceStore, prefersReducedMotion } from '@common/preference';
 
+// the defaults of --mds-text-animation-speed and --mds-text-animation-placeholder-char in
+// mds-text.css, for when the custom properties give back nothing usable
+const defaultAnimationSpeed = 0.5;
+const defaultPlaceholderChar = ' ';
+
 /**
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  */
@@ -17,11 +22,7 @@ import { preferenceStore, prefersReducedMotion } from '@common/preference';
   shadow: true,
 })
 export class MdsText {
-  private cssTextAnimationSpeed: number = 2;
-  private cssTextAnimationPlaceholderChar: string = ' ';
   private randomTextOptions = {
-    speed: this.cssTextAnimationSpeed,
-    placeholderChar: this.cssTextAnimationPlaceholderChar,
     frameOffset: 10,
     charOffset: 20,
     charStep: 15,
@@ -63,31 +64,41 @@ export class MdsText {
 
   private animateText = (text: string): void => {
     const textElement = this.host.shadowRoot?.querySelector('.text') as HTMLElement;
-    this.randomTextOptions.speed = this.cssTextAnimationSpeed;
-    this.randomTextOptions.placeholderChar = this.cssTextAnimationPlaceholderChar;
-    // console.info('animateText', this.cssTextAnimationPlaceholderChar)
     this.randomText = new RandomText({
       str: text,
+      // text, never markup: the render prints `text` as a text node, and the last frame is
+      // `text` itself, so innerHTML would turn a string holding a tag into live HTML
       onProgress: (str: string) => {
-        textElement.innerHTML = str;
+        textElement.textContent = str;
       },
       ...this.randomTextOptions,
+      ...this.readAnimationCustomProps(),
     });
     this.randomText.start();
   };
 
-  private updateCSSCustomProps = (): void => {
-    if (typeof window === 'undefined') return;
-    const elementStyles = window.getComputedStyle(this.host);
-    this.cssTextAnimationSpeed = Number(
-      elementStyles.getPropertyValue('--mds-text-animation-speed'),
+  /**
+   * Read when the animation starts, not once at load. A text that loads outside the flat tree
+   * (in the light DOM of a host that has not rendered its `<slot>` yet) gets `""` for every
+   * custom property, its own `:host` ones included: a speed of 0 never lets the loop reach the
+   * text. By the time the text changes the host is rendered, and a value set after load (a
+   * theme, a class, `animation="yugop"` itself) is picked up too.
+   */
+  private readAnimationCustomProps = (): { speed: number; placeholderChar: string } => {
+    const styles = window.getComputedStyle(this.host);
+    const speed = Number(styles.getPropertyValue('--mds-text-animation-speed'));
+    // a <string> comes back quoted, and the placeholder stands for one character of the text:
+    // anything longer would change the length the box holds while the text resolves
+    const [placeholderChar] = Array.from(
+      styles
+        .getPropertyValue('--mds-text-animation-placeholder-char')
+        .trim()
+        .replace(/^(["'])(.*)\1$/, '$2'),
     );
-    const placeholderChar = elementStyles.getPropertyValue('--mds-text-animation-placeholder-char');
-    if (placeholderChar === '" "' || placeholderChar === "' '") {
-      this.cssTextAnimationPlaceholderChar = ' ';
-      return;
-    }
-    this.cssTextAnimationPlaceholderChar = placeholderChar;
+    return {
+      speed: Number.isFinite(speed) && speed > 0 ? speed : defaultAnimationSpeed,
+      placeholderChar: placeholderChar ?? defaultPlaceholderChar,
+    };
   };
 
   componentWillRender(): void {
@@ -96,10 +107,6 @@ export class MdsText {
     // instead of throwing out of the lifecycle.
     const { tag } = typographyDefaultsVariant[this.typography] ?? typographyDefaultsVariant.detail;
     this.tag = this.tag ?? (tag as TypographyTagType);
-  }
-
-  componentDidLoad(): void {
-    if (this.animation === 'yugop') this.updateCSSCustomProps();
   }
 
   @Watch('text')
