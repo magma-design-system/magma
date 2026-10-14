@@ -4,6 +4,11 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { MagmaModule } from '../public-api';
 
+// the custom elements build has no componentOnReady(): the host gets the `hydrated` attribute
+// (hydratedFlag of stencil.config.ts) after its first render, once its watchers are active
+const hydrated = (element: HTMLElement): Promise<void> =>
+  vi.waitFor(() => expect(element.hasAttribute('hydrated')).toBe(true));
+
 @Component({
   imports: [MagmaModule, ReactiveFormsModule],
   template: `
@@ -29,6 +34,8 @@ describe('Reactive Forms value accessors', () => {
     host = fixture.componentInstance;
     input = fixture.nativeElement.querySelector('mds-input');
     toggle = fixture.nativeElement.querySelector('mds-input-switch');
+    await hydrated(input);
+    await hydrated(toggle);
   });
 
   describe('TextValueAccessor on mds-input', () => {
@@ -51,33 +58,34 @@ describe('Reactive Forms value accessors', () => {
       input.dispatchEvent(new CustomEvent('mdsInputChange', { detail: { value: 'digitato' } }));
 
       expect(host.text.value).toBe('digitato');
-      expect(host.text.dirty).toBeTrue();
+      expect(host.text.dirty).toBe(true);
     });
 
     it('marks the control as touched on focusout', () => {
-      expect(host.text.touched).toBeFalse();
+      expect(host.text.touched).toBe(false);
 
       input.dispatchEvent(new Event('focusout'));
 
-      expect(host.text.touched).toBeTrue();
+      expect(host.text.touched).toBe(true);
     });
 
     it('mirrors the disabled state of the control on the element', () => {
       host.text.disable();
-      expect(input.disabled).toBeTrue();
+      expect(input.disabled).toBe(true);
 
       host.text.enable();
-      expect(input.disabled).toBeFalse();
+      expect(input.disabled).toBe(false);
     });
   });
 
   describe('BooleanValueAccessor on mds-input-switch', () => {
     it('writes the control value to the checked property', () => {
-      expect(toggle.checked).toBeTrue();
+      expect(toggle.checked).toBe(true);
 
       host.flag.setValue(false);
 
-      expect(toggle.checked).toBeFalse();
+      // once loaded, the component keeps an unchecked state as undefined, never as false
+      expect(toggle.checked).toBeFalsy();
     });
 
     it('updates the control when the element emits mdsInputSwitchChange', () => {
@@ -88,7 +96,9 @@ describe('Reactive Forms value accessors', () => {
         }),
       );
 
-      expect(host.flag.value).toBeFalse();
+      // the control mirrors the checked state of the element, which is unchecked
+      expect(host.flag.value).toBe(toggle.checked);
+      expect(host.flag.value).toBeFalsy();
     });
   });
 });

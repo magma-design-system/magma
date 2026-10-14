@@ -27,8 +27,8 @@ describe('MagmaModule', () => {
     for (const proxy of DIRECTIVES) {
       const selector = reflectComponentType(proxy as Type<unknown>)?.selector ?? '';
 
-      expect(selector).withContext(proxy.name).toMatch(/^mds-/);
-      expect(customElements.get(selector)).withContext(selector).toBeDefined();
+      expect(selector, proxy.name).toMatch(/^mds-/);
+      expect(customElements.get(selector), selector).toBeDefined();
     }
   });
 
@@ -38,14 +38,14 @@ describe('MagmaModule', () => {
     const button: HTMLMdsButtonElement = fixture.nativeElement.querySelector('mds-button');
 
     expect(button.label).toBe('Salva');
-    expect(button.disabled).toBeFalse();
+    expect(button.disabled).toBe(false);
 
     fixture.componentInstance.label = 'Invia';
     fixture.componentInstance.disabled = true;
     fixture.detectChanges();
 
     expect(button.label).toBe('Invia');
-    expect(button.disabled).toBeTrue();
+    expect(button.disabled).toBe(true);
   });
 
   it('delivers the custom element events to the template listeners', () => {
