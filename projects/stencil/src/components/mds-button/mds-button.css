@@ -74,6 +74,19 @@
   z-index: 10;
 }
 
+/* the link rendered when href is set: an empty anchor over the whole button, under the pointer,
+   so that the browser gives it what it gives every link (new tab on a modifier or middle click,
+   the context menu, drag, the URL in the status bar) while the host keeps the focus ring */
+
+.link {
+  border-radius: inherit;
+  corner-shape: inherit;
+  inset: 0;
+  outline: none;
+  position: absolute;
+  z-index: 1;
+}
+
 .text {
   --mds-text-line-clamp: var(--mds-button-line-clamp);
 }
