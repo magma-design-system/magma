@@ -79,6 +79,8 @@ Where the JSON and the CSS write a value differently:
 
 Component tokens (`--mds-*`) are not in this data: they belong to each component.
 
+The globals `@maggioli-design-system/styles` declares on top of these (the `--magma-*` of its `globals.css`, the corner and depth axes) are in its own `dist/dtcg/`, with a resolver that adds them to these sets, and how each token is consumed through Tailwind is its `dist/tailwind/consumption.json`, keyed by the same `css` names (its README, "Token data").
+
 # Generate Custom Palette
 
 you can generate custom palettes via cli command, it takes a configuration file to create palettes

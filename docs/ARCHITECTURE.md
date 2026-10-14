@@ -74,6 +74,8 @@ CSS and Tailwind 4 styles consumed by the web component library and consumer app
 | `dist/css/hydrated.css` | FOUC prevention for StencilJS |
 | `dist/css/animations.css` | Shared animations |
 | `dist/tailwind/` | Tailwind 4 layers: base, typography, utilities |
+| `dist/tailwind/consumption.json` | How each global token is consumed through Tailwind 4, keyed by its DTCG `css` name; generated from Tailwind's design system |
+| `dist/dtcg/` | The styles globals as DTCG 2025.10 (corner and depth sets), with a resolver that adds them to the design-tokens sets |
 
 CSS cascade layer order (consumer apps must respect this):
 ```
