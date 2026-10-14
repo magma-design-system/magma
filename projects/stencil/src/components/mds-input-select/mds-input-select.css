@@ -2,7 +2,7 @@
 
 /**
  * @prop --mds-input-select-variant-color-rgb: Base color used to derive all select component visual states
- * @prop --mds-input-select-ring: Focus ring applied around the select component
+ * @prop --mds-input-select-ring: Ring applied around the select at rest; hover and focus draw a 3px ring in the variant color
  * @prop --mds-input-select-shadow: Shadow applied to the select component
  * @prop --mds-input-select-arrow-icon-background-color: Background color behind the arrow icon
  * @prop --mds-input-select-arrow-icon-blur-background-color: Transparent background used for blurred states of the arrow icon
@@ -70,7 +70,6 @@
 :host(:hover),
 :host(:focus-within) {
   --mds-input-select-variant-color-rgb: var(--magma-accent-fg);
-  --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color-rgb) / 1);
   --mds-input-select-shadow:
     0 4px 6px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
     0 2px 4px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
@@ -78,6 +77,17 @@
     --mds-input-select-arrow-icon-hover-background-color
   );
   --mds-input-select-arrow-icon-color: var(--mds-input-select-arrow-icon-hover-color);
+}
+
+/* The hover and focus ring sits on the select itself, as the focus ring of mds-input does.
+   The dark and contrast blocks set the ring on the host, with selectors as specific as the
+   ones above or more: declared there, the focus ring lost to them and the select showed no
+   focus at all. A declaration on the element beats the value it inherits from the host, so
+   those blocks only change the ring at rest. */
+
+:host(:hover) .input,
+:host(:focus-within) .input {
+  --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color-rgb) / 1);
 }
 
 .input {
@@ -186,3 +196,4 @@ mds-input-tip {
 @import './css/mds-input-select-pref-animation.css';
 @import './css/mds-input-select-pref-mode.css';
 @import './css/mds-input-select-pref-contrast.css';
+@import './css/mds-input-select-pref-contrast-dark.css';
