@@ -142,6 +142,17 @@ describe('mds-text', () => {
       expect(samples.every((sample) => sample.length === target.length)).toBe(true);
     });
 
+    it('paints a text holding markup as text, as the render does', async () => {
+      // every frame went through innerHTML, so the last one turned the tag into an element
+      const { root } = await render<HTMLMdsTextElement>('<mds-text animation="yugop"></mds-text>');
+
+      root.text = '<b>bold</b>';
+      const samples = await recordUntil(root, '<b>bold</b>');
+
+      expect(samples[samples.length - 1]).toBe('<b>bold</b>');
+      expect(root.shadowRoot!.querySelector('.text b')).toBeNull();
+    });
+
     it('never paints fewer characters than the string it is resolving', async () => {
       // every frame used to start from a slice of the character array, so the first ones
       // came out empty: no line box, and everything around the text jumped by a line

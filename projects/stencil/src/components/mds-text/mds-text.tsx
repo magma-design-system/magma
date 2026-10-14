@@ -66,8 +66,10 @@ export class MdsText {
     const textElement = this.host.shadowRoot?.querySelector('.text') as HTMLElement;
     this.randomText = new RandomText({
       str: text,
+      // text, never markup: the render prints `text` as a text node, and the last frame is
+      // `text` itself, so innerHTML would turn a string holding a tag into live HTML
       onProgress: (str: string) => {
-        textElement.innerHTML = str;
+        textElement.textContent = str;
       },
       ...this.randomTextOptions,
       ...this.readAnimationCustomProps(),
