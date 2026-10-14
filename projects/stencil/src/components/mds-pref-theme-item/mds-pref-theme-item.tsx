@@ -55,17 +55,16 @@ export class MdsPrefThemeItem {
           icon={this.selected ? miBaselineCheckCircle : miOutlineCircle}
           variant="dark"
           tone="text"
-        >
-          <div class="label">
-            <div class="theme-preview">
-              <div class="theme-color theme-color--variant-primary"></div>
-              <div class="theme-color theme-color--status-success"></div>
-              <div class="theme-color theme-color--status-warning"></div>
-              <div class="theme-color theme-color--status-error"></div>
-            </div>
-            {this.label}
-          </div>
-        </mds-button>
+          label={this.label}
+        ></mds-button>
+        {/* next to the button, not in it: the default slot of mds-button takes text only, and
+            anything else put there disappears once the button has read its label from it */}
+        <span aria-hidden="true" class="theme-preview">
+          <span class="theme-color theme-color--variant-primary"></span>
+          <span class="theme-color theme-color--status-success"></span>
+          <span class="theme-color theme-color--status-warning"></span>
+          <span class="theme-color theme-color--status-error"></span>
+        </span>
       </Host>
     );
   }
