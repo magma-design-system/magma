@@ -16,7 +16,7 @@ The `<mds-tooltip>` web component is the floating contextual hint of the Magma D
 #### Semantic Behavior
 
 - **Detached trigger model**: The tooltip is not wrapped around its trigger; the required `target` selector is resolved and the component binds itself to the first matching caller.
-- **Hover-driven visibility**: The bubble appears and disappears as the pointer enters and leaves the trigger; keyboard focus does not show it. The tooltip takes `role="tooltip"` and, when it shares a DOM tree with the trigger, writes `aria-describedby` on it.
+- **Hover-driven visibility**: The bubble appears and disappears as the pointer enters and leaves the trigger; keyboard focus does not show it. The tooltip takes `role="tooltip"` and, when it shares a DOM tree with the trigger, writes `aria-describedby` on it, or `aria-labelledby` with `relation="label"`; an attribute the trigger already has is left alone.
 - **Visibility is the source of truth**: Setting `visible` programmatically shows or dismisses the bubble, allowing the tooltip to be controlled without a hover.
 - **Live repositioning**: Changing any layout prop (`placement`, `offset`, `disableShift`, `shiftPadding`, `strategy`, `flip`, `disableAutoPlacement`) recomputes the floating position on the fly.
 - **Text-only default slot**: The default slot is meant for a plain text string (exposed as the `text` shadow part); HTML elements or components should not be slotted in.
@@ -27,6 +27,7 @@ The `<mds-tooltip>` web component is the floating contextual hint of the Magma D
 - **`placement`** chooses the preferred side and alignment relative to the caller (e.g. `'top'`, `'bottom-start'`); the system picks the best side automatically by default (**`disableAutoPlacement`** opts out and pins to `placement`) and **`flip`** allows falling back to the opposite side when the preferred one lacks space (only together with `disableAutoPlacement`).
 - the bubble is kept inside the viewport by default (**`disableShift`** opts out), with **`shiftPadding`** reserving a safe gap from the viewport edges; **`offset`** sets the distance between the bubble and the caller.
 - **`strategy`** selects the CSS positioning strategy: `'fixed'` (default) escapes clipping ancestors, `'absolute'` anchors within the nearest positioned ancestor.
+- **`relation`** says what the tooltip is to its trigger: its `'description'` (default, `aria-describedby`), or its `'label'` (`aria-labelledby`), when the tooltip text is the only visible name of the trigger, as on an icon-only button. Changing it moves the attribute on the trigger.
 - **`typography`** picks the text scale of the bubble (`'tip'`, `'caption'`, `'detail'`), where `'tip'` is the default compact hint sizing.
 
 
@@ -41,6 +42,15 @@ The most common form. Give the trigger element an `id` (or any unique CSS select
 ```html
 <mds-button id="salva-btn" label="Salva documento" variant="primary" tone="strong"></mds-button>
 <mds-tooltip target="#salva-btn">Salva le modifiche correnti</mds-tooltip>
+```
+
+#### Naming an Icon-Only Button
+
+On an icon-only button the tooltip usually shows the name of the button. Set `relation="label"` so that the tooltip is the name (`aria-labelledby`) and not a description: the button needs no `aria-label`, and a screen reader does not read the same text twice. Use it only on an interactive trigger, a button or a link: ARIA does not allow a name on a generic element.
+
+```html
+<mds-button id="tokens-btn" icon="mi/baseline/palette" variant="dark" tone="text"></mds-button>
+<mds-tooltip target="#tokens-btn" relation="label">Tokens</mds-tooltip>
 ```
 
 #### Tooltip on a Non-Interactive Element
@@ -242,6 +252,20 @@ mds-tooltip::part(text) {
 }
 ```
 
+#### Do Not Repeat the Name of the Trigger as Its Description
+
+A tooltip describes its trigger by default. When its text is the name of the trigger, as on an icon-only button, an `aria-label` with the same text makes a screen reader read it twice, as the name and as the description. Make the tooltip the name instead.
+
+```html
+<!-- INCORRECT -->
+<mds-button id="tokens-btn" icon="mi/baseline/palette" aria-label="Tokens"></mds-button>
+<mds-tooltip target="#tokens-btn">Tokens</mds-tooltip>
+
+<!-- CORRECT -->
+<mds-button id="tokens-btn" icon="mi/baseline/palette"></mds-button>
+<mds-tooltip target="#tokens-btn" relation="label">Tokens</mds-tooltip>
+```
+
 #### Do Not Replace `<mds-tooltip>` with a Native `title` Attribute
 
 The native `title` tooltip is not styleable and not announced consistently by screen readers on touch devices. Use `<mds-tooltip>` for all contextual hints.
@@ -259,18 +283,19 @@ The native `title` tooltip is not styleable and not announced consistently by sc
 
 ## Properties
 
-| Property               | Attribute                | Description                                                                                       | Type                                                                                                                                                                 | Default     |
-| ---------------------- | ------------------------ | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `disableAutoPlacement` | `disable-auto-placement` | If set, the component will not be placed automatically near it's caller.                          | `boolean`                                                                                                                                                            | `false`     |
-| `disableShift`         | `disable-shift`          | If set, the component will not be kept inside the viewport.                                       | `boolean`                                                                                                                                                            | `false`     |
-| `flip`                 | `flip`                   | Specifies the placement of the component if no space is available where it is placed.             | `boolean`                                                                                                                                                            | `false`     |
-| `offset`               | `offset`                 | Sets distance between the tooltip and the caller.                                                 | `number`                                                                                                                                                             | `12`        |
-| `placement`            | `placement`              | Specifies where the component should be placed relative to the caller.                            | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start"` | `'top'`     |
-| `shiftPadding`         | `shift-padding`          | Sets a safe area distance between the tooltip and the viewport.                                   | `number`                                                                                                                                                             | `12`        |
-| `strategy`             | `strategy`               | Sets the CSS position strategy of the component.                                                  | `"absolute" \| "fixed"`                                                                                                                                              | `'fixed'`   |
-| `target` _(required)_  | `target`                 | Specifies the selector of the target element, this attribute is used with `querySelector` method. | `string`                                                                                                                                                             | `undefined` |
-| `typography`           | `typography`             | Specifies the font typography of the element                                                      | `"caption" \| "detail" \| "tip"`                                                                                                                                     | `'tip'`     |
-| `visible`              | `visible`                | Specifies the visibility of the component.                                                        | `boolean`                                                                                                                                                            | `false`     |
+| Property               | Attribute                | Description                                                                                                                                                                                                | Type                                                                                                                                                                 | Default         |
+| ---------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| `disableAutoPlacement` | `disable-auto-placement` | If set, the component will not be placed automatically near it's caller.                                                                                                                                   | `boolean`                                                                                                                                                            | `false`         |
+| `disableShift`         | `disable-shift`          | If set, the component will not be kept inside the viewport.                                                                                                                                                | `boolean`                                                                                                                                                            | `false`         |
+| `flip`                 | `flip`                   | Specifies the placement of the component if no space is available where it is placed.                                                                                                                      | `boolean`                                                                                                                                                            | `false`         |
+| `offset`               | `offset`                 | Sets distance between the tooltip and the caller.                                                                                                                                                          | `number`                                                                                                                                                             | `12`            |
+| `placement`            | `placement`              | Specifies where the component should be placed relative to the caller.                                                                                                                                     | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start"` | `'top'`         |
+| `relation`             | `relation`               | Sets what the tooltip is to its caller: its `description` (`aria-describedby`), or its `label` (`aria-labelledby`), when the tooltip holds the only visible name of the caller, as on an icon-only button. | `"description" \| "label"`                                                                                                                                           | `'description'` |
+| `shiftPadding`         | `shift-padding`          | Sets a safe area distance between the tooltip and the viewport.                                                                                                                                            | `number`                                                                                                                                                             | `12`            |
+| `strategy`             | `strategy`               | Sets the CSS position strategy of the component.                                                                                                                                                           | `"absolute" \| "fixed"`                                                                                                                                              | `'fixed'`       |
+| `target` _(required)_  | `target`                 | Specifies the selector of the target element, this attribute is used with `querySelector` method.                                                                                                          | `string`                                                                                                                                                             | `undefined`     |
+| `typography`           | `typography`             | Specifies the font typography of the element                                                                                                                                                               | `"caption" \| "detail" \| "tip"`                                                                                                                                     | `'tip'`         |
+| `visible`              | `visible`                | Specifies the visibility of the component.                                                                                                                                                                 | `boolean`                                                                                                                                                            | `false`         |
 
 
 ## Slots

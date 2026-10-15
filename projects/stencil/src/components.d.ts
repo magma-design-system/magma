@@ -24,7 +24,7 @@ import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } f
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
-import { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
+import { FloatingUIPlacement, FloatingUIRelation, FloatingUIStrategy } from "./type/floating-ui";
 import { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
 import { EmojiNames } from "./components/mds-emoji/meta/types";
 import { ExtensionSuffixType } from "./type/file-types";
@@ -108,7 +108,7 @@ export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } f
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
-export { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
+export { FloatingUIPlacement, FloatingUIRelation, FloatingUIStrategy } from "./type/floating-ui";
 export { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
 export { EmojiNames } from "./components/mds-emoji/meta/types";
 export { ExtensionSuffixType } from "./type/file-types";
@@ -2772,6 +2772,11 @@ export namespace Components {
           * @default 'top'
          */
         "placement": FloatingUIPlacement;
+        /**
+          * Sets what the tooltip is to its caller: its `description` (`aria-describedby`), or its `label` (`aria-labelledby`), when the tooltip holds the only visible name of the caller, as on an icon-only button.
+          * @default 'description'
+         */
+        "relation": FloatingUIRelation;
         /**
           * Sets a safe area distance between the tooltip and the viewport.
           * @default 12
@@ -7405,6 +7410,11 @@ declare namespace LocalJSX {
          */
         "placement"?: FloatingUIPlacement;
         /**
+          * Sets what the tooltip is to its caller: its `description` (`aria-describedby`), or its `label` (`aria-labelledby`), when the tooltip holds the only visible name of the caller, as on an icon-only button.
+          * @default 'description'
+         */
+        "relation"?: FloatingUIRelation;
+        /**
           * Sets a safe area distance between the tooltip and the viewport.
           * @default 12
          */
@@ -8256,6 +8266,7 @@ declare namespace LocalJSX {
         "target": string;
         "offset": number;
         "placement": FloatingUIPlacement;
+        "relation": FloatingUIRelation;
         "typography": TypographyTooltipType;
         "disableShift": boolean;
         "shiftPadding": number;

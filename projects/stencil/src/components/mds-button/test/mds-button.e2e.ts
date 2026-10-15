@@ -671,7 +671,6 @@ describe('mds-button', () => {
 
   itReadsTheSlottedLabelWhenLabelIsNull('mds-button');
 
-  // Angular and Vue bind null for a missing value
   // #913: past half its height the browser clamps the radius; where corner-shape cannot be
   // drawn, the fallback block of corner.css lowers --magma-corner-cap to the round look-alike
   describe('the radius', () => {
@@ -708,6 +707,47 @@ describe('mds-button', () => {
     });
   });
 
+  // #923: an mds-tooltip with relation="label" names an icon-only button, and the name taken
+  // from the icon slug would stack a native tooltip on top of it
+  describe('an icon-only button named by another element', () => {
+    it('takes no name from the icon slug when it has aria-labelledby', async () => {
+      mockIconFetch();
+      const { root } = await render(
+        '<mds-button icon="mdi/alien" aria-labelledby="name"></mds-button><span id="name">Alien</span>',
+      );
+
+      expect(root).not.toHaveAttribute('title');
+      expect(root).not.toHaveAttribute('aria-label');
+    });
+
+    it('drops the name from the icon slug when aria-labelledby comes later, and takes it back', async () => {
+      mockIconFetch();
+      const { root, waitForChanges } = await render('<mds-button icon="mdi/alien"></mds-button>');
+      expect(root).toEqualAttribute('title', 'alien');
+
+      root.setAttribute('aria-labelledby', 'name');
+      await waitForChanges();
+      expect(root).not.toHaveAttribute('title');
+
+      root.removeAttribute('aria-labelledby');
+      await waitForChanges();
+      expect(root).toEqualAttribute('title', 'alien');
+    });
+
+    it('keeps a title the author wrote', async () => {
+      mockIconFetch();
+      const { root, waitForChanges } = await render(
+        '<mds-button icon="mdi/alien" title="Alieno"></mds-button>',
+      );
+
+      root.setAttribute('aria-labelledby', 'name');
+      await waitForChanges();
+
+      expect(root).toEqualAttribute('title', 'Alieno');
+    });
+  });
+
+  // Angular and Vue bind null for a missing value
   describe('with null properties', () => {
     afterEach(() => {
       document.querySelectorAll('body > form, body > mds-button').forEach((el) => el.remove());

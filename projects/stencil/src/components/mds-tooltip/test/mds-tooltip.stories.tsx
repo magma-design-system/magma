@@ -1,4 +1,8 @@
-import { floatingUIPlacementDictionary, floatingUIStrategyDictionary } from '@type/floating-ui';
+import {
+  floatingUIPlacementDictionary,
+  floatingUIRelationDictionary,
+  floatingUIStrategyDictionary,
+} from '@type/floating-ui';
 import { h } from '@stencil/core';
 import { typographyTooltipDictionary } from '@type/typography';
 
@@ -30,6 +34,13 @@ export default {
       type: { name: 'string' },
       description: 'Specifies where the component should be placed relative to the caller',
       options: floatingUIPlacementDictionary,
+      control: { type: 'select' },
+    },
+    relation: {
+      type: { name: 'string' },
+      description:
+        'Sets what the tooltip is to its caller: its description, or its label when the tooltip holds the only visible name of the caller',
+      options: floatingUIRelationDictionary,
       control: { type: 'select' },
     },
     typography: {
@@ -84,6 +95,15 @@ const TemplateCustomContents = ({ layout, ...args }) => (
         <mds-text typography="caption">Software engineer</mds-text>
         <mds-text typography="caption">IT</mds-text>
       </mds-author>
+    </mds-tooltip>
+  </div>
+);
+
+const TemplateIconOnly = ({ layout, ...args }) => (
+  <div class={layout}>
+    <mds-button id="my-tooltip" icon="mi/baseline/palette" variant="dark" tone="text"></mds-button>
+    <mds-tooltip target="#my-tooltip" {...args}>
+      Tokens
     </mds-tooltip>
   </div>
 );
@@ -192,5 +212,16 @@ export const Visible = {
 
   args: {
     layout: 'flex justify-start',
+  },
+};
+
+// The tooltip is the name of an icon-only button: aria-labelledby on the button, no title from
+// the icon slug, nothing read twice (#923)
+export const LabelOfAnIconOnlyButton = {
+  render: TemplateIconOnly,
+
+  args: {
+    layout: 'flex justify-center',
+    relation: 'label',
   },
 };
