@@ -1,7 +1,7 @@
 {
   "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../dist/magma-angular",
-  "assets": ["./AGENTS.md", "./agents"],
+  "assets": ["./AGENTS.md", "./agents", "./CHANGELOG.md"],
   "lib": {
     "entryFile": "src/public-api.ts"
   }

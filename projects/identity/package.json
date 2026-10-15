@@ -3,7 +3,8 @@
   "version": "2.1.1",
   "description": "Maggioli brand identity assets",
   "files": [
-    "/dist/"
+    "/dist/",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "assets": "tsx scripts/build.ts",

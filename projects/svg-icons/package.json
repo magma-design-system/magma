@@ -3,7 +3,8 @@
   "version": "4.5.0",
   "description": "Maggioli Design System Icons is an icon font package based on Google Material Design Icons and Material Design Icons community icons.",
   "files": [
-    "dist"
+    "dist",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "npm run clean && npm run dictionary && npm run svg",
