@@ -4,6 +4,30 @@ Every release of `@maggioli-design-system/styles`, newest first. Each section is
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [styles@17.2.0] - 2026-10-15
+
+### Bug Fixes
+
+- *(styles)* Keep the box of the hydrated components against tailwind's preflight
+- *(styles)* Give every role of the semantic tailwind bridge its light default as fallback
+
+### Build
+
+- *(design-tokens,identity,styles,svg-icons,icons,magma)* Ship CHANGELOG.md in every package
+
+### Documentation
+
+- *(styles)* Add the tailwind half of editor autocomplete to the readme
+
+### Features
+
+- *(styles)* Carry the role descriptions into consumption.json and the editor sheet
+- *(styles)* Fall back to the round scale where corner-shape cannot be drawn
+
+### Refactor
+
+- *(styles)* Move the token resolver of properties.ts into css-resolve.ts
+
 ## [styles@17.1.0] - 2026-10-14
 
 ### Bug Fixes
