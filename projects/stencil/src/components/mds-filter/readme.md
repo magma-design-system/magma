@@ -18,7 +18,8 @@ The `<mds-filter>` web component is a compound container that groups a set of `<
 - **Compound parent**: Acts as the controller for slotted `<mds-filter-item>` children, driving their state in response to selection events.
 - **Group of toggles**: The host is a `group` named by `label`, and each item is a toggle button whose pressed state follows its selection: a screen reader hears which filters are on and how many results each one shows. Every item is a Tab stop; there is no arrow-key navigation.
 - **Selection coordination**: In single mode it enforces exclusive selection (selecting one deselects the others); in `multiple` mode it keeps every selected child active and tracks how many are selected.
-- **Combined change event**: `mdsFilterChange` fires whenever any child's selection changes, carrying both the `NodeList` of the children and a comma-joined string of the selected items' `value`s.
+- **Selection set by the application**: The selection lives on the items' `selected`. Setting or clearing it from the application, or rendering an item already selected, is taken in as after a click: in single mode only the last item set stays selected, the reset button shows or hides, the strip scrolls to the item. No `mdsFilterChange` is emitted for it, and `autoReset` does not apply: the application already knows. Two items `selected` in the markup of a single-mode bar leave the last one selected, as a `<select>` does.
+- **Combined change event**: `mdsFilterChange` fires whenever the user changes the selection (an item, or the reset button), carrying both the `NodeList` of the children and a comma-joined string of the selected items' `value`s.
 - **Reset control**: When `reset` is set, a clear-all button appears once a filter is active, named in the page language (the `lang` of `<html>`) ("Clear filters"). A click clears all selections and emits `mdsFilterChange` with an empty `value`. While no filter is active the button is scaled away, out of the tab order and of the accessibility tree; without `reset` it is not rendered at all.
 - **Auto-scroll**: On each selection the bar scrolls horizontally to center the most recently selected item.
 - **Default slot**: The default slot is for `<mds-filter-item>` elements only, not arbitrary text or markup.
@@ -116,7 +117,7 @@ Supply `icon` on individual `<mds-filter-item>` children to add a glyph alongsid
 
 #### Pre-Selected Item
 
-Set `selected` on a child at page load to reflect a filter that is already active (e.g. restored from a URL parameter or user preference). The parent picks up the initial state during `componentWillLoad`.
+Set `selected` on a child at page load to reflect a filter that is already active (e.g. restored from a URL parameter or user preference). The parent picks up the initial state when it loads.
 
 ```html
 <mds-filter label="Periodo">
@@ -124,6 +125,36 @@ Set `selected` on a child at page load to reflect a filter that is already activ
   <mds-filter-item label="Settimana corrente" value="week" selected></mds-filter-item>
   <mds-filter-item label="Mese corrente" value="month"></mds-filter-item>
 </mds-filter>
+```
+
+#### Setting the Selection from the Application
+
+When the filters live somewhere else - in the address, in a store, behind a "Clear filters" button outside the bar - set `selected` on the items: the bar follows as after the same clicks (single mode, reset button), without emitting `mdsFilterChange`. In a framework, bind `selected` on each item to the state.
+
+```html
+<mds-filter id="status" label="Stato" reset>
+  <mds-filter-item label="Nuove" value="new"></mds-filter-item>
+  <mds-filter-item label="Aperte" value="open"></mds-filter-item>
+  <mds-filter-item label="Chiuse" value="closed"></mds-filter-item>
+</mds-filter>
+<mds-button id="clear" label="Rimuovi i filtri" variant="dark" tone="text"></mds-button>
+```
+
+```js
+const items = [...document.querySelectorAll('#status mds-filter-item')];
+
+// restore the filter from the address on load
+const status = new URLSearchParams(location.search).get('status');
+items.forEach((item) => {
+  item.selected = item.value === status;
+});
+
+// clear it from a button outside the bar
+document.querySelector('#clear').addEventListener('click', () => {
+  items.forEach((item) => {
+    item.selected = false;
+  });
+});
 ```
 
 #### Disabled Item

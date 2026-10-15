@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import {
+  Build,
   Component,
   Element,
   Event,
@@ -41,6 +42,7 @@ export class MdsFilter {
   @State() active?: boolean;
   @State() itemsSelected = 0;
   private lastSelectedItem: number;
+  private selectionObserver?: MutationObserver;
 
   /**
    * Sets an automatic reset of active filters if all filters are triggered
@@ -97,6 +99,58 @@ export class MdsFilter {
     this.active = active;
   };
 
+  // in multiple mode an item that follows a selected one is marked `sibling`
+  private markSiblings = (items: HTMLMdsFilterItemElement[]): void => {
+    if (!this.multiple) {
+      return;
+    }
+    items.forEach((item, key) => {
+      item.classList.toggle('sibling', key > 0 && items[key - 1].selected === true);
+    });
+  };
+
+  /**
+   * The selection lives on the items: one the application selects or clears, or renders already
+   * selected, is taken in as after a click - one item at a time in single mode, the last one set
+   * winning, the reset button shown or hidden, the strip scrolled to it - but no `mdsFilterChange`
+   * is emitted, the application already knows. A click goes through here too, once its listener
+   * has done the same, and finds nothing left to change.
+   */
+  private syncSelection = (records: MutationRecord[]): void => {
+    const items = Array.from(this.queryItems());
+    let latest: HTMLMdsFilterItemElement | undefined;
+    records.forEach((record) => {
+      const nodes = record.type === 'childList' ? Array.from(record.addedNodes) : [record.target];
+      nodes.forEach((node) => {
+        const item = node as HTMLMdsFilterItemElement;
+        if (items.includes(item) && item.selected === true) {
+          latest = item;
+        }
+      });
+    });
+    if (!this.multiple) {
+      this.keepOneSelected(items, latest);
+    }
+    if (latest) {
+      this.lastSelectedItem = items.indexOf(latest);
+      this.scrollTabs();
+    }
+    this.markSiblings(items);
+    this.checkSelectedItem();
+  };
+
+  // single mode: of the selected items only `keep` stays, by default the last one, as in a select
+  private keepOneSelected = (
+    items: HTMLMdsFilterItemElement[],
+    keep = items.filter((item) => item.selected === true).pop(),
+  ): void => {
+    items.forEach((item) => {
+      if (item.selected === true && item !== keep) {
+        item.selected = false;
+      }
+    });
+  };
+
   private checkAutoReset = (): void => {
     if (!this.autoReset) {
       return;
@@ -134,37 +188,46 @@ export class MdsFilter {
     return list.toString();
   };
 
+  connectedCallback(): void {
+    this.selectionObserver?.disconnect();
+    if (!Build.isBrowser) {
+      return;
+    }
+    this.selectionObserver = new MutationObserver(this.syncSelection);
+    this.selectionObserver.observe(this.element, {
+      attributeFilter: ['selected'],
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.selectionObserver?.disconnect();
+    this.selectionObserver = undefined;
+  }
+
   componentWillLoad(): void {
     const items = this.queryItems();
     items.forEach((item, key) => {
       item.id = `item-${key}`;
     });
+    if (!this.multiple) {
+      this.keepOneSelected(Array.from(items));
+    }
     this.checkSelectedItem();
   }
 
   @Listen('mdsFilterItemSelect')
   activeEventHandler(event: CustomEvent<MdsFilterItemEventDetail>): void {
-    this.lastSelectedItem = Number(
-      event.detail.id !== '' ? event.detail.id.replace('item-', '') : 0,
-    );
+    const items = this.queryItems();
+    // the item itself, not its id: an item rendered after the load has none
+    const target = event.target as HTMLMdsFilterItemElement;
+    this.lastSelectedItem = Array.from(items).indexOf(target);
     this.scrollTabs();
 
-    const items = this.queryItems();
-
     if (this.multiple) {
-      let itemsSelected = 0;
-      const list: (HTMLMdsFilterItemElement | null)[] = [];
-      items.forEach((item, key) => {
-        list.push(item.selected ? item : null);
-        if (item.selected) {
-          itemsSelected += 1;
-        }
-        item.classList.remove('sibling');
-        if (list.length > 1 && list[key - 1] !== null) {
-          item.classList.add('sibling');
-        }
-      });
-      this.itemsSelected = itemsSelected;
+      this.markSiblings(Array.from(items));
+      this.itemsSelected = Array.from(items).filter((item) => item.selected === true).length;
       this.checkSelectedItem();
       if (this.itemsSelected === items.length) {
         this.checkAutoReset();
@@ -173,8 +236,8 @@ export class MdsFilter {
       return;
     }
 
-    items.forEach((item, key) => {
-      item.selected = `item-${key}` === event.detail.id && event.detail.selected;
+    items.forEach((item) => {
+      item.selected = item === target && event.detail.selected;
     });
     this.checkSelectedItem();
     this.changedEvent.emit({ children: items, value: this.itemsValues() });
