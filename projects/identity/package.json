@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "assets": "tsx scripts/build.ts",
-    "build": "npm run clean && npm run assets && npm run dir-tree",
+    "build": "npm run clean && npm run assets && npm run check.signatures && npm run dir-tree",
+    "check.signatures": "tsx scripts/check-signatures.ts",
     "clean": "tsx scripts/clean.ts",
     "dir-tree": "tsx scripts/dir-tree.ts",
     "lint": "eslint .",

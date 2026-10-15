@@ -133,9 +133,11 @@ const exportWEBP = async (item: string, size: number) => {
   const filetype = 'webp';
   const filePath = path.join(DIST_DIR, formatFilename(item, size, filetype));
 
+  // lossless: the artworks are flat-colour logos, which it keeps exact and still smaller than
+  // the PNG files. This used to call .png(), so every .webp shipped the bytes of the .png
   sharp(resource(item), { density, limitInputPixels: false })
     .resize(size)
-    .png()
+    .webp({ lossless: true })
     .toFile(filePath)
     .then((info) => {
       logFile({

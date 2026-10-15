@@ -9,11 +9,11 @@
 
 ### 1. Description
 
-The `<mds-pref-mode>` web component is the mode preference control of the Magma Design System, designed to live as a direct child of [`<mds-pref>`](../../mds-pref). It renders a labelled three-way tab (light / system / dark) that lets the user pick a color-scheme mode and applies it globally to the document.
+The `<mds-pref-mode>` web component is the mode preference control of the Magma Design System, usually a direct child of the [`<mds-pref>`](../../mds-pref) panel. It renders a labelled three-way tab (light / system / dark) that lets the user pick a color-scheme mode and applies it globally to the document.
 
 #### Semantic Behavior
 
-- **Compound child only**: It is meant to be placed directly in the default slot of `<mds-pref>` alongside the other `mds-pref-*` preference children; it is not used standalone or mixed with unrelated child types.
+- **Usually inside `<mds-pref>`**: Placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it also works on its own, since it applies and stores the mode by itself. What it gives up on its own is in the antipattern docs.
 - **Selection follows `mode`**: The active tab reflects whichever mode is currently applied, driven by the `mode` prop.
 - **Global mode application**: Selecting a mode applies it document-wide and persists the choice.
 - **Persistence on load**: The applied mode resolves from `mode` -> the stored value -> the `system` default, so a previously chosen mode is restored without an explicit prop.
