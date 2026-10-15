@@ -1022,7 +1022,7 @@ export namespace Components {
     }
     interface MdsFilterItem {
         /**
-          * Shows the number of items will be filtered by the component
+          * Shows the number of items will be filtered by the component, also read out after the label as a number of results
          */
         "count"?: string;
         /**
@@ -5526,7 +5526,7 @@ declare namespace LocalJSX {
     }
     interface MdsFilterItem {
         /**
-          * Shows the number of items will be filtered by the component
+          * Shows the number of items will be filtered by the component, also read out after the label as a number of results
          */
         "count"?: string;
         /**
