@@ -210,6 +210,34 @@ describe('password mask', () => {
     expect(maskStyle.borderBottomRightRadius).toBe('0px');
   });
 
+  // #913: the radius of a field is capped at a part of its height like mds-button's; a
+  // textarea is taller, nobody clamps it
+  describe('the radius', () => {
+    const radiusOf = (input: Element): string => getComputedStyle(input).borderTopLeftRadius;
+
+    it('stops at half the height of the field, what the browser clamps to', async () => {
+      const { root } = await render('<mds-input size="md"></mds-input>');
+
+      expect(radiusOf(root)).toBe('18px');
+    });
+
+    it('takes the part of the height that --magma-corner-cap gives, except on a textarea', async () => {
+      const { root } = await render(
+        `<div style="--magma-corner-cap: 0.25">
+           <mds-input size="sm"></mds-input>
+           <mds-input></mds-input>
+           <mds-input type="textarea"></mds-input>
+         </div>`,
+      );
+
+      expect(Array.from(root.querySelectorAll('mds-input')).map(radiusOf)).toEqual([
+        '7px',
+        '12px',
+        '36px',
+      ]);
+    });
+  });
+
   describe('accessible name', () => {
     it('names its native control after the aria-label of the host', async () => {
       await setup('<mds-input aria-label="Email"></mds-input><button></button>');

@@ -94,7 +94,13 @@
   --mds-tab-item-hover-background: transparent;
   --mds-tab-item-hover-color: rgb(var(--magma-text-default));
   --mds-tab-item-hover-shadow: transparent;
-  --mds-tab-item-radius: calc(var(--mds-tab-tabs-radius) - var(--mds-tab-tabs-padding));
+
+  /* the items are buttons: their radius is capped at a part of their height like mds-button's
+     (#913), and the strip, one row of them, at that radius plus its padding */
+  --mds-tab-item-radius: min(
+    calc(var(--mds-tab-tabs-radius) - var(--mds-tab-tabs-padding)),
+    var(--magma-corner-cap) * var(--private-tab-item-height)
+  );
   --mds-tab-item-selected-background: rgb(var(--magma-surface-overlay));
   --mds-tab-item-selected-color: rgb(var(--magma-text-default));
   --mds-tab-item-selected-shadow: var(--shadow-sm);
@@ -111,13 +117,19 @@
   --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) -2px
     rgb(0 0 0 / 0.375);
   --mds-tab-tabs-padding: --spacing(200);
-  --mds-tab-tabs-radius: var(--magma-radius-2xl);
+  --mds-tab-tabs-radius: min(
+    var(--magma-radius-2xl),
+    var(--magma-corner-cap) * var(--private-tab-item-height) + var(--mds-tab-tabs-padding)
+  );
   --mds-tab-tabs-wrapper-margin: 0;
   --mds-tab-tabs-wrapper-outline-opacity: 0.7;
   --mds-tab-tabs-wrapper-shadow-color: var(--mds-tab-tabs-background);
   --mds-tab-tabs-wrapper-shadow: 0 0 0 2px var(--mds-tab-tabs-wrapper-shadow-color) inset;
   --mds-tab-transition-duration: 0.5s;
   --private-tab-transition-duration: var(--mds-tab-transition-duration);
+
+  /* the height of an item, an mds-button md unless the tab sets size="sm" */
+  --private-tab-item-height: --spacing(900);
   --mds-tab-transition-timing-function: var(--ease-out-expo);
   --mds-tab-corner-shape: var(--magma-corner-shape);
 
@@ -139,6 +151,10 @@
   :host {
     --mds-tab-scroll-behavior: auto;
   }
+}
+
+:host([size='sm']) {
+  --private-tab-item-height: --spacing(700);
 }
 
 :host([animation='slide']) ::slotted(mds-tab-item) {

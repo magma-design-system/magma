@@ -81,6 +81,39 @@ describe('mds-tab', () => {
   // the background of the selected tab in the slide animation: it slides from tab to tab on a
   // selection, and is already in place when the strip is shown, on load or again after being
   // hidden. It used to grow from the corner every time the strip appeared (#924)
+  // #913: the items are buttons and their radius is capped like mds-button's, the strip at
+  // that radius plus its padding, so the two stay concentric
+  describe('the radius', () => {
+    const corners = (tab: HTMLElement) => ({
+      strip: getComputedStyle(tab.shadowRoot!.querySelector('.tabs')!).borderTopLeftRadius,
+      item: getComputedStyle(
+        tab.querySelector('mds-tab-item')!.shadowRoot!.querySelector('mds-button')!,
+      ).borderTopLeftRadius,
+    });
+
+    it('stops at half the height of the strip and of the items, what the browser clamps to', async () => {
+      const { root } = await render(strip);
+
+      expect(corners(root)).toEqual({ strip: '26px', item: '18px' });
+    });
+
+    it('takes the part of the item height that --magma-corner-cap gives, per size', async () => {
+      const { root } = await render(
+        `<div style="--magma-corner-cap: 0.25">${strip}${strip.replace('<mds-tab>', '<mds-tab size="sm">')}</div>`,
+      );
+      const [md, sm] = Array.from(root.querySelectorAll('mds-tab'));
+
+      expect(corners(md)).toEqual({ strip: '17px', item: '9px' });
+      expect(corners(sm)).toEqual({ strip: '15px', item: '7px' });
+    });
+
+    it('leaves the strip of a vertical tab, which is tall, on the token', async () => {
+      const { root } = await render(strip.replace('<mds-tab>', '<mds-tab direction="vertical">'));
+
+      expect(corners(root)).toEqual({ strip: '40px', item: '18px' });
+    });
+  });
+
   describe('the slider', () => {
     const second = `<mds-tab>
   <mds-tab-item label="First"></mds-tab-item>

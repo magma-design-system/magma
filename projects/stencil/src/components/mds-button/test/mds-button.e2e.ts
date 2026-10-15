@@ -672,6 +672,42 @@ describe('mds-button', () => {
   itReadsTheSlottedLabelWhenLabelIsNull('mds-button');
 
   // Angular and Vue bind null for a missing value
+  // #913: past half its height the browser clamps the radius; where corner-shape cannot be
+  // drawn, the fallback block of corner.css lowers --magma-corner-cap to the round look-alike
+  describe('the radius', () => {
+    const radii = (root: HTMLElement): string[] =>
+      Array.from(root.querySelectorAll('mds-button')).map(
+        (button) => getComputedStyle(button).borderTopLeftRadius,
+      );
+
+    it('stops at half the height, what the browser clamps to', async () => {
+      const { root } = await render('<mds-button label="Medium"></mds-button>');
+
+      expect(getComputedStyle(root).borderTopLeftRadius).toBe('18px');
+    });
+
+    it('takes the part of the height of each size that --magma-corner-cap gives', async () => {
+      const { root } = await render(
+        `<div style="--magma-corner-cap: 0.25">
+           <mds-button size="sm" label="sm"></mds-button>
+           <mds-button size="md" label="md"></mds-button>
+           <mds-button size="lg" label="lg"></mds-button>
+           <mds-button size="xl" label="xl"></mds-button>
+         </div>`,
+      );
+
+      expect(radii(root)).toEqual(['7px', '9px', '12px', '13px']);
+    });
+
+    it('keeps a radius set from outside', async () => {
+      const { root } = await render(
+        '<div style="--magma-corner-cap: 0.25"><mds-button label="Square" style="--mds-button-radius: 4px"></mds-button></div>',
+      );
+
+      expect(radii(root)).toEqual(['4px']);
+    });
+  });
+
   describe('with null properties', () => {
     afterEach(() => {
       document.querySelectorAll('body > form, body > mds-button').forEach((el) => el.remove());

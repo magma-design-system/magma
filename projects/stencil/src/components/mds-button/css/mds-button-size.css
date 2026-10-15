@@ -1,8 +1,10 @@
 :host([size='sm']) {
-  --mds-button-radius: var(--magma-radius-md);
+  --mds-button-radius: min(
+    var(--magma-radius-md),
+    var(--magma-corner-cap) * var(--private-button-height)
+  );
+  --private-button-height: --spacing(700);
 
-  min-height: --spacing(700);
-  min-width: --spacing(700);
   padding: 0 --spacing(300);
 
   .icon {
@@ -19,8 +21,8 @@
 }
 
 :host([size='md']) {
-  min-height: --spacing(900);
-  min-width: --spacing(900);
+  --private-button-height: --spacing(900);
+
   padding-left: --spacing(400);
   padding-right: --spacing(400);
 
@@ -34,8 +36,8 @@
 }
 
 :host([size='lg']) {
-  min-height: --spacing(1200);
-  min-width: --spacing(1200);
+  --private-button-height: --spacing(1200);
+
   padding-left: --spacing(500);
   padding-right: --spacing(500);
 
@@ -49,8 +51,8 @@
 }
 
 :host([size='xl']) {
-  min-height: --spacing(1300);
-  min-width: --spacing(1300);
+  --private-button-height: --spacing(1300);
+
   padding-left: --spacing(600);
   padding-right: --spacing(600);
 
