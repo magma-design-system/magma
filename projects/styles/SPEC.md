@@ -225,6 +225,29 @@ on their host. Past half the shorter side a squircle stops producing a pill and
 draws the filled superellipse of an app icon, so there is nothing to tune there,
 only something to stay out of.
 
+**Without `corner-shape`.** A browser that cannot draw it (Firefox, Safari) drops
+the declaration and draws every corner round: left on the squircle scale, each one
+would come out 1.715 times rounder than designed. `corner.ts` closes the file with
+`@supports not (corner-shape: squircle)`, which gives the default and every explicit
+`squircle` subtree the round shape and the round scale. An explicit `round` keeps its
+own block, pill included.
+
+**`--magma-corner-cap`** is the part of its height a corner may take. A control whose
+radius is always past half its height - `mds-button`, the strip and the items of
+`mds-tab`, `mds-input`, `mds-input-date`, `mds-input-date-range` - is clamped by the
+browser to half its height: a squircle cut to half the height, or a pill when round.
+The round look-alike of that squircle is a fraction of the height, not of the token,
+so these components spell their radius as a `min()`:
+
+```css
+border-radius: min(var(--magma-radius-2xl), var(--magma-corner-cap) * var(--private-button-height));
+```
+
+The cap is `0.5` in every shape block, where the `min()` gives exactly what the
+browser clamps to, and `0.5 / 1.715` (`0.2915`) in the fallback block: a 36px button
+that Chromium draws with an 18px squircle gets 10.5px round in Firefox, instead of a
+pill. A control of your own with the same problem does the same with its height.
+
 Consumers rarely write the attribute by hand: `mds-pref-theme` carries a
 `corner-shape` prop that writes it, persists the choice and emits `mdsPrefChange`,
 next to the theme name and scheme it already owns. Its `default` value REMOVES
@@ -354,6 +377,7 @@ These CSS custom properties on `:root` control system-wide visual behaviour. Ove
 | Property                   | Default                                      | Description                     |
 | -------------------------- | -------------------------------------------- | ------------------------------- |
 | `--magma-corner-shape`     | `squircle`                                   | Corner shape for all components (set it through `data-corner-shape`, see Corner geometry: alone it changes the shape without the scale) |
+| `--magma-corner-cap`       | `0.5`                                        | The part of its height a corner may take, for the controls whose radius is past half their height; `0.2915` where `corner-shape` cannot be drawn (see Corner geometry) |
 | `--magma-disabled-opacity` | `0.5`                                        | Opacity of disabled components  |
 | `--magma-backdrop-opacity` | `0.1`                                        | Opacity of modal backdrops      |
 | `--magma-on-backdrop`      | `252 252 252`                                | Ink drawn on the backdrop / overlay scrim (the modal close icon); fixed in both modes because the scrim is. Override it together with `--magma-backdrop-color` |
