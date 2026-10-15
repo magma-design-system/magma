@@ -741,6 +741,9 @@ describe('mds-button', () => {
     });
   });
 
+  // every declarative shadow root carries the whole stylesheet of its component, and a block
+  // larger than the 32KB window of gzip does not compress against its repeats: a page of 257
+  // buttons pre-rendered to 14MB of HTML, 97% of it CSS (#831)
   describe('server-side rendering', () => {
     const button = '<mds-button label="Item" variant="dark" tone="text"></mds-button>';
 
@@ -755,6 +758,14 @@ describe('mds-button', () => {
       const markup = await renderToString(button);
 
       expect(markup).not.toMatch(/-webkit-(box-shadow|transition|transform)|-ms-/);
+    });
+
+    // 52KB before #831, 22KB after: the ceiling leaves 2KB of room and fails on one more
+    // nested component or on a variant x tone matrix written out again
+    it('pre-renders well inside the window of gzip', async () => {
+      const markup = await renderToString(button);
+
+      expect(markup.length).toBeLessThan(24 * 1024);
     });
   });
 });
