@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State, Prop, Watch } from '@stencil/core';
+import { Component, Host, h, Element, Listen, State, Prop, Watch } from '@stencil/core';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
@@ -7,6 +7,7 @@ import localeIt from './meta/locale.it.json';
 import { TabSizeType } from '@type/button';
 import { PreferenceThemeSchemeType } from '@type/preference';
 import { MdsPrefThemeEventDetail } from '@event/theme';
+import { MdsPrefChangeEventDetail } from '@event/preference';
 
 // The mounted instances: `data-magma-pref` stays on <html> while any of them is, so
 // a settings page unmounting its own mds-pref leaves the app controller in charge.
@@ -74,75 +75,44 @@ export class MdsPref {
     });
   }
 
-  componentDidLoad(): void {
+  // A move disconnects the host and connects it again, while componentDidLoad runs
+  // once: the flag follows the connection, so a panel moved between a sidebar and a
+  // menu keeps the OS fallback off (#922).
+  connectedCallback(): void {
     mountedPrefs.add(this.host);
     if (typeof window !== 'undefined') {
       document.documentElement?.setAttribute('data-magma-pref', '');
     }
-    if (this.controller) {
-      this.addPerfEvents();
-    }
-    // The lock coordination drives the visible-mode UI (the controller mode is
-    // hidden via CSS), so it is wired regardless of the controller prop.
-    this.addThemeEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
+  }
+
+  componentDidLoad(): void {
     this.applyInitialSchemeLock();
   }
 
   disconnectedCallback(): void {
+    // In the lazy build the instance can hear of a disconnect after the host is back
+    // on the page: it is still mounted then
+    if (this.host.isConnected) return;
     mountedPrefs.delete(this.host);
     if (typeof window !== 'undefined' && mountedPrefs.size === 0) {
       document.documentElement?.removeAttribute('data-magma-pref');
     }
-    this.removePerfEvents();
-    this.removeThemeEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
   }
 
-  private addPerfEvents = (): void => {
-    this.addEvent(this.host.querySelector('mds-pref-consumption') as HTMLElement);
-    this.addEvent(this.host.querySelector('mds-pref-contrast') as HTMLElement);
-    this.addEvent(this.host.querySelector('mds-pref-language') as HTMLElement);
-    this.addEvent(this.host.querySelector('mds-pref-mode') as HTMLElement);
-    this.addEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
-  };
-
-  private removePerfEvents = (): void => {
-    this.removeEvent(this.host.querySelector('mds-pref-consumption') as HTMLElement);
-    this.removeEvent(this.host.querySelector('mds-pref-contrast') as HTMLElement);
-    this.removeEvent(this.host.querySelector('mds-pref-language') as HTMLElement);
-    this.removeEvent(this.host.querySelector('mds-pref-mode') as HTMLElement);
-    this.removeEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
-  };
-
-  private handlePrefChangeEvent = (e: CustomEvent): void => {
-    if (this.prefNeedsReload.includes(e.detail.preference)) {
+  // Host listeners: Stencil removes them on disconnect and adds them back on connect
+  @Listen('mdsPrefChange')
+  handlePrefChange(e: CustomEvent<MdsPrefChangeEventDetail>): void {
+    if (this.controller && this.prefNeedsReload.includes(e.detail?.preference)) {
       this.showReload = true;
     }
-  };
+  }
 
-  private addEvent = (element?: HTMLElement): void => {
-    if (!element) return;
-    element.addEventListener('mdsPrefChange', this.handlePrefChangeEvent.bind(this));
-  };
-
-  private removeEvent = (element?: HTMLElement): void => {
-    if (!element) return;
-    element.removeEventListener('mdsPrefChange', this.handlePrefChangeEvent.bind(this));
-  };
-
-  private handleThemeChangeEvent = (e: Event): void => {
-    const detail = (e as CustomEvent<MdsPrefThemeEventDetail>).detail;
-    this.applySchemeLock(detail?.scheme);
-  };
-
-  private addThemeEvent = (element?: HTMLElement): void => {
-    if (!element) return;
-    element.addEventListener('mdsPrefThemeChange', this.handleThemeChangeEvent);
-  };
-
-  private removeThemeEvent = (element?: HTMLElement): void => {
-    if (!element) return;
-    element.removeEventListener('mdsPrefThemeChange', this.handleThemeChangeEvent);
-  };
+  // The lock coordination drives the visible-mode UI (the controller mode is hidden
+  // via CSS), so it does not depend on the controller prop.
+  @Listen('mdsPrefThemeChange')
+  handleThemeChange(e: CustomEvent<MdsPrefThemeEventDetail>): void {
+    this.applySchemeLock(e.detail?.scheme);
+  }
 
   /**
    * Cross-lane coordination: a scheme-constrained theme locks the matching mode
