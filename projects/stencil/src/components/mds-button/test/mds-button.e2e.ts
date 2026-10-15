@@ -749,5 +749,12 @@ describe('mds-button', () => {
 
       expect(markup).not.toContain('<mds-spinner');
     });
+
+    // the prefixes Stencil added for iOS 9 and IE 11 (scripts/postcss-autoprefix.ts)
+    it('pre-renders no prefix that only an unsupported browser reads', async () => {
+      const markup = await renderToString(button);
+
+      expect(markup).not.toMatch(/-webkit-(box-shadow|transition|transform)|-ms-/);
+    });
   });
 });
