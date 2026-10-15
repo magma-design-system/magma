@@ -12,7 +12,7 @@
   --mds-pref-mode-overlay-z-index: var(--magma-theme-overlay-z-index);
 
   display: grid;
-  gap: --spacing(100);
+  gap: --spacing(200);
 }
 
 .item {

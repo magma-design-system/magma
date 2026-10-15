@@ -1,4 +1,9 @@
+/* a column of items is tall: the browser does not clamp the radius of the strip, nor does
+   the cap */
+
 :host([direction='vertical']) {
+  --mds-tab-tabs-radius: var(--magma-radius-2xl);
+
   grid-template-columns: var(--mds-tab-direction-vertical-columns);
   grid-template-rows: 1fr;
 }

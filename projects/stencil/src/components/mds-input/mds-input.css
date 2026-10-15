@@ -54,7 +54,12 @@
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-vertical-offset: --spacing(100);
   --mds-input-variant-color-rgb: var(--magma-accent-fg);
-  --mds-input-border-radius: var(--magma-radius-xl);
+
+  /* capped at a part of the height of the field like mds-button's (#913) */
+  --mds-input-border-radius: min(
+    var(--magma-radius-xl),
+    var(--magma-corner-cap) * var(--private-input-height)
+  );
   --mds-input-transition-duration: var(--duration-300);
 
   /* private */
@@ -137,6 +142,12 @@
   appearance: none;
   display: none;
   margin: 0;
+}
+
+/* a textarea is taller than the field: the browser does not clamp its radius, nor does the cap */
+
+:host([type='textarea']) {
+  --mds-input-border-radius: var(--magma-radius-xl);
 }
 
 :host textarea.input,
