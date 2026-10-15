@@ -65,6 +65,8 @@ feat(design-tokens,styles): give the neutral pills a wash band
 
 A `revert` counts for the packages of the header it reverts (`revert: feat(styles): …`).
 
+The release notes become the body of the package's GitHub release and, in the same `chore(release)` commit, the newest section of its `CHANGELOG.md`, which ships in the package (the notes of `magma` also in `magma-react` and `magma-angular`, released at its version). The subject of a commit is what a consumer reads there, so write it for them.
+
 For `magma` the bump is checked against the public API on every pull request: when `projects/stencil/magma.api.txt` loses or narrows a member, the commits must declare a breaking change (`feat(mds-button)!: ...` or a `BREAKING CHANGE:` footer), and when it gains one, at least a `feat`. A break no consumer can tell apart from the old API is declared with an `API-Compatible: <member>: <reason>` footer instead. See `docs/WORKFLOW.md` rule 6.
 
 ## Special rules
