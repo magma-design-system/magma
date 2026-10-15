@@ -1,0 +1,17 @@
+{
+  "owner": {
+    "id": "maggioli-editore",
+    "name": "Maggioli Editore"
+  },
+  "families": [
+    {
+      "id": "maggioli-editore",
+      "name": "Maggioli Editore",
+      "files": [
+        "logo-maggioli-editore",
+        "logo-maggioli-editore-black",
+        "logo-maggioli-editore-white"
+      ]
+    }
+  ]
+}

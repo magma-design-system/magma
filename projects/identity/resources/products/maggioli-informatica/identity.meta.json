@@ -1,0 +1,86 @@
+{
+  "owner": {
+    "id": "maggioli-informatica",
+    "name": "Maggioli Informatica"
+  },
+  "lines": {
+    "city-mat": "City MAT"
+  },
+  "families": [
+    {
+      "id": "argo",
+      "name": "Argo",
+      "files": [
+        "argo/logo-argo",
+        "argo/logo-argo-black",
+        "argo/logo-argo-white",
+        "argo/logo-argo-icon",
+        "argo/logo-argo-icon-black",
+        "argo/logo-argo-icon-white"
+      ]
+    },
+    {
+      "id": "city-mat-suite",
+      "name": "City MAT Suite",
+      "line": "city-mat",
+      "files": [
+        "city-mat/logo-city-mat-suite",
+        "city-mat/icon-city-mat-suite"
+      ]
+    },
+    {
+      "id": "city-mat-flussi-di-carico",
+      "name": "City MAT Flussi di Carico",
+      "line": "city-mat",
+      "files": [
+        "city-mat/logo-city-mat-flussi-di-carico",
+        "city-mat/icon-city-mat-flussi-di-carico"
+      ]
+    },
+    {
+      "id": "city-mat-gestione-entrate",
+      "name": "City MAT Gestione Entrate",
+      "line": "city-mat",
+      "files": [
+        "city-mat/logo-city-mat-gestione-entrate",
+        "city-mat/icon-city-mat-gestione-entrate"
+      ]
+    },
+    {
+      "id": "city-mat-ottico-web",
+      "name": "City MAT OtticoWeb",
+      "line": "city-mat",
+      "files": [
+        "city-mat/logo-city-mat-ottico-web",
+        "city-mat/icon-city-mat-ottico-web"
+      ]
+    },
+    {
+      "id": "city-mat-pago-net",
+      "name": "City MAT PagoNet",
+      "line": "city-mat",
+      "files": [
+        "city-mat/logo-city-mat-pago-net",
+        "city-mat/icon-city-mat-pago-net"
+      ]
+    },
+    {
+      "id": "city-mat-risco-net",
+      "name": "City MAT RiscoNet",
+      "line": "city-mat",
+      "files": [
+        "city-mat/logo-city-mat-risco-net",
+        "city-mat/icon-city-mat-risco-net"
+      ]
+    },
+    {
+      "id": "city-mat-sori-net",
+      "name": "City MAT SoriNet",
+      "line": "city-mat",
+      "files": [
+        "city-mat/logo-city-mat-sori-net",
+        "city-mat/icon-city-mat-sori-net"
+      ]
+    }
+  ]
+}
