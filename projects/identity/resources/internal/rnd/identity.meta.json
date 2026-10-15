@@ -1,0 +1,36 @@
+{
+  "owner": {
+    "id": "rnd",
+    "name": "Maggioli R&D"
+  },
+  "families": [
+    {
+      "id": "rnd-build",
+      "name": "R&D Build",
+      "files": [
+        "logo-rnd-build-blue",
+        "logo-rnd-build-black",
+        "logo-rnd-build-white"
+      ]
+    },
+    {
+      "id": "rnd-days",
+      "name": "R&D Days",
+      "files": [
+        "logo-rnd-days",
+        "logo-rnd-days-black",
+        "logo-rnd-days-white"
+      ]
+    },
+    {
+      "id": "rnd-dept",
+      "name": "R&D Dept",
+      "files": [
+        "logo-rnd-dept-gold",
+        "logo-rnd-dept-dark-gold",
+        "logo-rnd-dept-black",
+        "logo-rnd-dept-white"
+      ]
+    }
+  ]
+}
