@@ -1,5 +1,8 @@
 import { h } from '@stencil/core';
-import { useState, FC } from 'react';
+import { useEffect, useRef, useState, FC } from 'react';
+import { expect, waitFor } from 'storybook/test';
+import { MdsTableHeaderCellSortEventDetail } from '@component/mds-table-header-cell/meta/event-detail';
+import { MdsPaginatorEventDetail } from '@component/mds-paginator/meta/event-detail';
 
 export default {
   title: 'Layout / Table',
@@ -11,6 +14,12 @@ export default {
     selectable: {
       type: { name: 'boolean' },
       description: 'Specifies if the table rows are selectable by a checkbox',
+    },
+    sorting: {
+      type: { name: 'string' },
+      description: 'Specifies who sorts the rows when a sortable header cell changes direction',
+      options: ['internal', 'external'],
+      control: { type: 'select' },
     },
   },
 };
@@ -928,6 +937,88 @@ const TemplateAsyncSlottedContents = () => {
   );
 };
 
+// a table that shows one page of a larger set (#943): the headers ask for an order, and the back
+// end, an array here, answers with the page in that order
+const people = [
+  { number: 7, name: 'Grace Hopper' },
+  { number: 2, name: 'Alan Turing' },
+  { number: 11, name: 'Margaret Hamilton' },
+  { number: 4, name: 'Ada Lovelace' },
+  { number: 9, name: 'Edsger Dijkstra' },
+  { number: 1, name: 'Barbara Liskov' },
+  { number: 12, name: 'Donald Knuth' },
+  { number: 5, name: 'Frances Allen' },
+  { number: 10, name: 'Ken Thompson' },
+  { number: 3, name: 'Radia Perlman' },
+  { number: 8, name: 'John Backus' },
+  { number: 6, name: 'Hedy Lamarr' },
+];
+const pageSize = 4;
+
+const TemplateSortingExternal = (args) => {
+  const [sort, setSort] = useState<MdsTableHeaderCellSortEventDetail>({
+    direction: 'none',
+    index: 0,
+  });
+  const [page, setPage] = useState(1);
+  const table = useRef<HTMLMdsTableElement>(null);
+  const paginator = useRef<HTMLMdsPaginatorElement>(null);
+
+  useEffect(() => {
+    const onSort = (event: CustomEvent<MdsTableHeaderCellSortEventDetail>) => {
+      setSort(event.detail);
+      setPage(1);
+    };
+    const onPage = (event: CustomEvent<MdsPaginatorEventDetail>) => setPage(event.detail.page);
+    const tableElement = table.current;
+    const paginatorElement = paginator.current;
+    tableElement?.addEventListener('mdsTableHeaderCellSort', onSort);
+    paginatorElement?.addEventListener('mdsPaginatorChange', onPage);
+    return () => {
+      tableElement?.removeEventListener('mdsTableHeaderCellSort', onSort);
+      paginatorElement?.removeEventListener('mdsPaginatorChange', onPage);
+    };
+  }, []);
+
+  const key = sort.sortKey as 'number' | 'name' | undefined;
+  const sorted =
+    sort.direction === 'none' || key === undefined
+      ? people
+      : [...people].sort((a, b) => {
+          const order = key === 'number' ? a.number - b.number : a.name.localeCompare(b.name);
+          return sort.direction === 'ascending' ? order : -order;
+        });
+  const rows = sorted.slice((page - 1) * pageSize, page * pageSize);
+
+  return (
+    <div class="grid gap-400">
+      <mds-table {...args} ref={table}>
+        <mds-table-header>
+          <mds-table-header-cell sortable sort-key="number" label="Number"></mds-table-header-cell>
+          <mds-table-header-cell sortable sort-key="name" label="Name"></mds-table-header-cell>
+        </mds-table-header>
+        <mds-table-body>
+          {rows.map((person) => (
+            <mds-table-row key={person.number}>
+              <mds-table-cell>
+                <mds-text typography="detail">{person.number}</mds-text>
+              </mds-table-cell>
+              <mds-table-cell class="w-full">
+                <mds-text typography="detail">{person.name}</mds-text>
+              </mds-table-cell>
+            </mds-table-row>
+          ))}
+        </mds-table-body>
+      </mds-table>
+      <mds-paginator
+        ref={paginator}
+        current-page={page}
+        pages={Math.ceil(people.length / pageSize)}
+      ></mds-paginator>
+    </div>
+  );
+};
+
 export const Default = {
   render: Template,
 };
@@ -945,6 +1036,28 @@ export const Sortable = {
 
   args: {
     interactive: true,
+  },
+};
+
+export const SortingExternal = {
+  render: TemplateSortingExternal,
+
+  args: {
+    sorting: 'external',
+  },
+  play: async ({ canvasElement, userEvent }) => {
+    const header = canvasElement.querySelector<HTMLElement>('mds-table-header-cell')!;
+    const firstNumber = () =>
+      canvasElement.querySelector('mds-table-row mds-table-cell')!.textContent!.trim();
+    await waitFor(() => expect(header).toHaveAttribute('hydrated'));
+    await expect(firstNumber()).toBe('7');
+
+    // the whole set in order, not the four rows on screen: 1 is on another page at first
+    await userEvent.click(header.shadowRoot!.querySelector('.action')!);
+    await waitFor(() => expect(firstNumber()).toBe('1'));
+    await userEvent.click(header.shadowRoot!.querySelector('.action')!);
+    await waitFor(() => expect(firstNumber()).toBe('12'));
+    await expect(header).toHaveAttribute('aria-sort', 'descending');
   },
 };
 

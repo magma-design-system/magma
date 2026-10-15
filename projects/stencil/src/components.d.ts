@@ -80,9 +80,10 @@ import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 import { DirectionType as DirectionType2 } from "./components/mds-tab/meta/type";
 import { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
+import { MdsTableRowSelection, MdsTableSortingType } from "./components/mds-table/meta/type";
 import { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
-import { MdsTableRowSelection } from "./components/mds-table/meta/type";
 import { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
+import { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header-cell/meta/event-detail";
 import { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
 import { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
@@ -164,9 +165,10 @@ export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 export { DirectionType as DirectionType2 } from "./components/mds-tab/meta/type";
 export { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
+export { MdsTableRowSelection, MdsTableSortingType } from "./components/mds-table/meta/type";
 export { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
-export { MdsTableRowSelection } from "./components/mds-table/meta/type";
 export { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
+export { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header-cell/meta/event-detail";
 export { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
 export { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
@@ -2608,6 +2610,11 @@ export namespace Components {
          */
         "selection"?: boolean;
         /**
+          * Specifies who sorts the rows when a sortable header cell changes direction: `internal` moves them in the DOM, `external` leaves them to the application, which listens to `mdsTableHeaderCellSort` and renders the rows in the order asked (a table that shows one page of a larger set)
+          * @default 'internal'
+         */
+        "sorting"?: MdsTableSortingType;
+        /**
           * `internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance, works only if `selectable` is true.
          */
         "updateSelection": () => Promise<void>;
@@ -2644,7 +2651,7 @@ export namespace Components {
     }
     interface MdsTableHeaderCell {
         /**
-          * Specifies the current sort direction of the column.
+          * Specifies the current sort direction of the column. Set from outside, it sorts the rows like a click, or only shows the order when the table has `sorting="external"`.
           * @default 'none'
          */
         "direction": SortDirectionType;
@@ -2652,6 +2659,10 @@ export namespace Components {
           * Sets a label for the cell
          */
         "label"?: string;
+        /**
+          * Names the column in the `mdsTableHeaderCellSort` event, for example the field the back end sorts by
+         */
+        "sortKey"?: string;
         /**
           * Tells the component to make the cell able to sort the table columns items
          */
@@ -3155,6 +3166,10 @@ export interface MdsTabItemCustomEvent<T> extends CustomEvent<T> {
 export interface MdsTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsTableElement;
+}
+export interface MdsTableHeaderCellCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsTableHeaderCellElement;
 }
 export interface MdsToastCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -4372,7 +4387,18 @@ declare global {
         prototype: HTMLMdsTableHeaderElement;
         new (): HTMLMdsTableHeaderElement;
     };
+    interface HTMLMdsTableHeaderCellElementEventMap {
+        "mdsTableHeaderCellSort": MdsTableHeaderCellSortEventDetail;
+    }
     interface HTMLMdsTableHeaderCellElement extends Components.MdsTableHeaderCell, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsTableHeaderCellElementEventMap>(type: K, listener: (this: HTMLMdsTableHeaderCellElement, ev: MdsTableHeaderCellCustomEvent<HTMLMdsTableHeaderCellElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsTableHeaderCellElementEventMap>(type: K, listener: (this: HTMLMdsTableHeaderCellElement, ev: MdsTableHeaderCellCustomEvent<HTMLMdsTableHeaderCellElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsTableHeaderCellElement: {
         prototype: HTMLMdsTableHeaderCellElement;
@@ -7254,6 +7280,11 @@ declare namespace LocalJSX {
           * Indicates whether row selection is currently active in the table.
          */
         "selection"?: boolean;
+        /**
+          * Specifies who sorts the rows when a sortable header cell changes direction: `internal` moves them in the DOM, `external` leaves them to the application, which listens to `mdsTableHeaderCellSort` and renders the rows in the order asked (a table that shows one page of a larger set)
+          * @default 'internal'
+         */
+        "sorting"?: MdsTableSortingType;
     }
     interface MdsTableBody {
         /**
@@ -7281,7 +7312,7 @@ declare namespace LocalJSX {
     }
     interface MdsTableHeaderCell {
         /**
-          * Specifies the current sort direction of the column.
+          * Specifies the current sort direction of the column. Set from outside, it sorts the rows like a click, or only shows the order when the table has `sorting="external"`.
           * @default 'none'
          */
         "direction"?: SortDirectionType;
@@ -7289,6 +7320,14 @@ declare namespace LocalJSX {
           * Sets a label for the cell
          */
         "label"?: string;
+        /**
+          * Emits when the user changes the sort direction of the column, at every step of the cycle. With `sorting="external"` on the table the rows are not moved: the application renders them in the order asked.
+         */
+        "onMdsTableHeaderCellSort"?: (event: MdsTableHeaderCellCustomEvent<MdsTableHeaderCellSortEventDetail>) => void;
+        /**
+          * Names the column in the `mdsTableHeaderCellSort` event, for example the field the back end sorts by
+         */
+        "sortKey"?: string;
         /**
           * Tells the component to make the cell able to sort the table columns items
          */
@@ -8227,6 +8266,7 @@ declare namespace LocalJSX {
         "interactive": boolean;
         "selectable": boolean;
         "selection": boolean;
+        "sorting": MdsTableSortingType;
     }
     interface MdsTableBodyAttributes {
         "interactive": boolean;
@@ -8241,6 +8281,7 @@ declare namespace LocalJSX {
     interface MdsTableHeaderCellAttributes {
         "sortable": boolean;
         "label": string;
+        "sortKey": string;
         "direction": SortDirectionType;
     }
     interface MdsTableRowAttributes {
