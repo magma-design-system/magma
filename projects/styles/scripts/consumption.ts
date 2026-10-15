@@ -188,11 +188,15 @@ const byName = (a: string, b: string) => a.localeCompare(b);
 const main = async (): Promise<void> => {
   // --- the tokens, by custom property ------------------------------------------------
   const tokenNames = new Set<string>();
+  // what each token is for, when its source says it: the semantic roles all have one (#876)
+  const descriptions = new Map<string, string>();
   for (const file of DTCG_FILES)
-    for (const name of publishedTokens(
+    for (const [name, published] of publishedTokens(
       JSON.parse(await readFile(file, 'utf8')) as DtcgGroup,
-    ).keys())
+    )) {
       tokenNames.add(name);
+      if (published?.$description) descriptions.set(name, published.$description);
+    }
 
   // --- what Magma puts in the theme, and the @utility it defines ---------------------
   const themeVariables: ThemeVariable[] = [];
@@ -346,6 +350,7 @@ const main = async (): Promise<void> => {
   // --- the tokens ----------------------------------------------------------------------
   interface TokenEntry {
     theme: string;
+    description?: string;
     namespace: string | null;
     key?: string | null;
     property?: string;
@@ -364,7 +369,11 @@ const main = async (): Promise<void> => {
       const namespace = namespaceByPrefix(variable.name);
       if (namespace) at = { namespace, key: variable.name.slice(namespace.length + 1) || null };
     }
-    const entry: TokenEntry = { theme: variable.name, namespace: at?.namespace ?? null };
+    const entry: TokenEntry = {
+      theme: variable.name,
+      ...(descriptions.has(token) ? { description: descriptions.get(token) } : {}),
+      namespace: at?.namespace ?? null,
+    };
     if (at) entry.key = at.key;
     if (base && sub) entry.property = sub[2];
 

@@ -56,6 +56,8 @@ export interface PublishedToken {
   path: string[];
   $type: string;
   $value: unknown;
+  /** What the token is for, when its source says it (#876). */
+  $description?: string;
 }
 
 export interface GlobalsInputs {
@@ -144,7 +146,13 @@ export const publishedTokens = (tree: DtcgGroup): Map<string, PublishedToken | n
       if (key.startsWith('$') && key !== '$root') continue;
       if (isToken(child)) {
         const css = child.$extensions[NAMESPACE].css;
-        if (css) found.set(css, { path: [...path, key], $type: child.$type, $value: child.$value });
+        if (css)
+          found.set(css, {
+            path: [...path, key],
+            $type: child.$type,
+            $value: child.$value,
+            ...(typeof child.$description === 'string' ? { $description: child.$description } : {}),
+          });
       } else if (typeof child === 'object' && child !== null)
         walk(child as DtcgGroup, [...path, key]);
     }

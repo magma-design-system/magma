@@ -26,7 +26,8 @@
   "files": [
     "dist",
     "AGENTS.md",
-    "agents/"
+    "agents/",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"

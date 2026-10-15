@@ -353,7 +353,137 @@ export interface SemanticDecl {
   note?: string;
   /** Set when the name is kept only for back-compat: says what replaces it. */
   deprecated?: string;
+  /** What the role is for, one line: required on every public role (see roleDescription). */
+  description?: string;
 }
+
+/*
+  What each public role is for, in one line (#876): the text the DTCG export, the consumption
+  map of the styles package and the editor sheet carry next to the role. Taken from the role
+  tables of docs/agents/color.md, which stays the long form. A role is described by what it
+  is for, never by how it is built. Every public role needs one: semanticModel() fails on a
+  role it cannot describe, so a new role cannot ship bare.
+*/
+
+/** The neutral roles, the inverse pair and the shadow ink, by name without `magma-`. */
+export const roleDescriptions: Record<string, string> = {
+  'surface-sunken': 'Below the page: wells, insets, code blocks, tracks.',
+  'surface-muted': 'Same-plane grouping on the page: zebra rows, a subtle section.',
+  'surface-default': 'The page canvas, the background of the body.',
+  'surface-raised': 'Above the page: cards, panels, sticky headers.',
+  'surface-overlay': 'Floating above everything: modal, dropdown, popover, sheet.',
+  'wash-soft': 'A neutral pill or chip, the least marked.',
+  'wash-base': 'A neutral pill or chip, at its default prominence.',
+  'wash-strong': 'A neutral pill or chip, the most marked.',
+  'shadow-ink': 'The colour of a projected shadow, to compose with your own geometry and alpha.',
+  'text-default': 'Body text, titles and primary data.',
+  'text-muted': 'Secondary text that is still essential, such as an address or a phone number.',
+  'text-subtle': 'Non-essential text only: captions, units, hints.',
+  'text-disabled': 'The labels of disabled controls.',
+  'text-on-emphasis': 'Text and icons on a solid fill.',
+  'border-muted': 'Decorative borders: dividers, the grid of a table.',
+  'border-default': 'Functional outlines: inputs, cards.',
+  'border-strong': 'A border that conveys a state, such as selected.',
+  'border-focus': 'Focus indication; follows the accent.',
+  'neutral-fg': 'Neutral text and icons on a coloured context.',
+  'neutral-border': 'A neutral border on a coloured context.',
+  'surface-inverse': 'A chip that flips with the mode: dark on a light page, light on a dark one.',
+  'surface-inverse-muted': 'The inverse chip, one step quieter.',
+  'on-inverse': 'Text and icons on either inverse surface.',
+  'neutral-emphasis': 'Deprecated: the inverse surface under its old name.',
+  'neutral-on-emphasis': 'Deprecated: the ink on the inverse surface under its old name.',
+};
+
+/**
+ * The roles every status hue publishes, by kind; `<hue>` is the hue (info, danger...). The
+ * hue comes after `the`, never after `a`, so "an info" never reads "a info".
+ */
+export const hueRoleDescriptions: Record<string, string> = {
+  'wash-soft': 'The <hue> background, the least marked.',
+  'wash-base': 'The <hue> background, at its default prominence.',
+  'wash-strong': 'The <hue> background, the most marked: icons only, no essential text.',
+  'text-default': '<Hue> text on the <hue> background.',
+  'text-muted': 'Secondary <hue> text on the <hue> background.',
+  'text-subtle': 'Non-essential <hue> text on the <hue> background.',
+  'text-disabled': 'Disabled <hue> text on the <hue> background.',
+  'border-muted': 'The decorative <hue> border.',
+  'border-default': 'The functional <hue> border.',
+  'border-strong': 'The <hue> border that conveys a state.',
+  emphasis: 'The solid <hue> fill: a solid badge, a button.',
+  'emphasis-hover': 'The solid <hue> fill, hovered.',
+  'emphasis-active': 'The solid <hue> fill, pressed.',
+  'on-emphasis': 'Text and icons on the solid <hue> fill.',
+  surface: 'Shortcut for the <hue> background at its default prominence (wash-base).',
+  fg: 'Shortcut for the default <hue> text (text-default).',
+  border: 'Shortcut for the functional <hue> border (border-default).',
+};
+
+/** The roles every accent publishes, by kind; `<accent>` names the accent. */
+export const accentRoleDescriptions: Record<string, string> = {
+  emphasis: 'The solid fill of <accent>: the primary action.',
+  'emphasis-hover': 'The solid fill of <accent>, hovered.',
+  'emphasis-active': 'The solid fill of <accent>, pressed.',
+  'on-emphasis': 'Text and icons on the solid fill of <accent>.',
+  surface: 'A background tinted with <accent>: a selected row or chip.',
+  'surface-subtle': 'A background tinted with <accent>, lighter.',
+  'surface-hover': 'A background tinted with <accent>, hovered.',
+  fg: 'Text or an icon in <accent> on a neutral surface, such as a link.',
+  border: 'A border tinted with <accent>.',
+};
+
+/** How the accent descriptions name each accent of `semantic.accents`. */
+export const accentNames: Record<string, string> = {
+  accent: 'the brand accent',
+  ai: 'the AI accent',
+};
+
+/** The groups of the layer as the DTCG export names them: `magma.<group>.<role>`. */
+export const semanticGroupDescriptions: Record<string, string> = {
+  surface: 'The backgrounds of the page by elevation, and the inverse chip.',
+  wash: 'Neutral pills and chips, by how marked they are.',
+  shadow: 'The colour of projected shadows.',
+  text: 'Text and icons, by prominence.',
+  border: 'Borders, by prominence, and the focus ring.',
+  neutral: 'Neutral ink and borders on coloured contexts.',
+  on: 'Text and icons on the inverse surfaces.',
+  info: 'The info status: backgrounds, text, borders and fills.',
+  success: 'The success status: backgrounds, text, borders and fills.',
+  warning: 'The warning status: backgrounds, text, borders and fills.',
+  danger: 'The danger status (errors, destructive actions): backgrounds, text, borders and fills.',
+  accent: 'The brand accent: actions and selection.',
+  'accent-ai': 'The AI accent: actions and selection of AI-driven features.',
+  tint: 'Internal pointers of the active theme: not an API, never read outside this layer.',
+};
+
+/**
+ * The description of a public role, by its name without `magma-`: its own entry, else the
+ * entry of its kind for an accent (`accent-<kind>`, `accent-<infix>-<kind>`) or a status hue
+ * (`<hue>-<kind>`). Undefined when nothing describes it.
+ */
+export const roleDescription = (
+  role: string,
+  hues: string[],
+  accents: string[],
+): string | undefined => {
+  if (roleDescriptions[role]) return roleDescriptions[role];
+  for (const accent of accents) {
+    const prefix = accent === 'accent' ? 'accent-' : `accent-${accent}-`;
+    if (!role.startsWith(prefix)) continue;
+    const kind = role.slice(prefix.length);
+    // `accent-ai-surface` also starts with `accent-`: only a kind of the table counts
+    if (accentRoleDescriptions[kind] && accentNames[accent])
+      return accentRoleDescriptions[kind].replace(/<accent>/g, accentNames[accent]);
+  }
+  const hue = hues.find((name) => role.startsWith(`${name}-`));
+  if (hue) {
+    const template = hueRoleDescriptions[role.slice(hue.length + 1)];
+    if (template)
+      return template
+        .replace(/<Hue>/g, hue.charAt(0).toUpperCase() + hue.slice(1))
+        .replace(/<hue>/g, hue);
+  }
+  return undefined;
+};
 
 /** A declaration the way every generated stylesheet prints it. */
 export const cssDecl = ({ name, ref }: SemanticDecl): string => `  --${name}: var(--${ref});`;

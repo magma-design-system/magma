@@ -66,7 +66,8 @@
     "dist/",
     "loader/",
     "AGENTS.md",
-    "agents/"
+    "agents/",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "npm run clean && npm run build.icons && npm run sync.agent-docs && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run patch.custom-elements && npm run build.component-docs && npm run build.api-snapshot",

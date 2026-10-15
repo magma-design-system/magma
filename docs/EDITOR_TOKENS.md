@@ -58,6 +58,16 @@ The counts are what each group *emits*, after dedup against the groups before it
 the motion scale (`--duration-*`, `--ease-*`) is already published by `typography.css`, so
 `transitions.css` only adds the two names it owns alone.
 
+A semantic role carries what it is for as a comment at the end of its line, from
+`semantic.config.ts` (#876):
+
+```css
+--magma-surface-default: var(--magma-tint-default); /* The page canvas, the background of the body. */
+```
+
+A comment on a line of its own is a group heading; the trailing one stays out of the value,
+since the extensions parse the sheet as CSS.
+
 The component group merges both places a component token is published: the `@property`
 registrations aggregated by `properties.ts` (whose default is already resolved to a
 literal) and the declarations a component makes on its own `:host`. Two thirds of the

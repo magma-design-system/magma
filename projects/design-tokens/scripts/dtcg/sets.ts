@@ -11,7 +11,7 @@
 
   Pure: the caller loads the inputs and writes the files (./write.ts).
 */
-import { semantic } from '../../semantic.config';
+import { semantic, semanticGroupDescriptions } from '../../semantic.config';
 import type { SemanticDecl } from '../../semantic.config';
 import type { SemanticModel } from '../../semantic.model';
 import {
@@ -176,7 +176,11 @@ export function buildDtcg({
     const target = decl.ref.startsWith('magma-') ? magmaPath(decl.ref) : byCss.get(decl.ref);
     if (!target) throw new Error(`--${decl.name} points at --${decl.ref}, which is no token`);
     const tier: Tier = decl.name.startsWith('magma-tint-') ? 'internal' : 'semantic';
-    const extra = decl.deprecated ? { $deprecated: decl.deprecated } : {};
+    // what the role is for, on the base declaration only: the other sets restate the value
+    const extra = {
+      ...(decl.description ? { $description: decl.description } : {}),
+      ...(decl.deprecated ? { $deprecated: decl.deprecated } : {}),
+    };
     return [
       magmaPath(decl.name),
       token('color', alias(target), { css: `--${decl.name}`, tier }, extra),
@@ -191,6 +195,12 @@ export function buildDtcg({
     .flatMap(({ decls }) => decls)
     .map(semanticToken)
     .forEach(([path, value]) => put(base, path, value));
+  // the groups of the layer, described in semantic.config.ts next to their roles
+  for (const [group, node] of Object.entries((base.magma ?? {}) as Record<string, DtcgGroup>)) {
+    const description = semanticGroupDescriptions[group];
+    if (!description) throw new Error(`magma.${group} has no description in semantic.config.ts`);
+    node.$description = description;
+  }
   model.dark.map(semanticToken).forEach(([path, value]) => put(dark, path, value));
 
   // --- scale and motion: what typography.css and transitions.css publish -----------

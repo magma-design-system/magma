@@ -5,6 +5,7 @@ import {
   contrastTintDecls,
   emphasisStateSteps,
   hueContrastDecls,
+  roleDescription,
   scaleFamily,
   scaleTintDecls,
   type ContrastLevel,
@@ -381,12 +382,42 @@ const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
   return { name, ramp, decls, contrast };
 };
 
+/**
+ * Every public role of the base sections, with what it is for (#876): from the description
+ * tables of semantic.config.ts. A public role nothing describes stops every build that reads
+ * the layer, so a new role cannot ship bare.
+ */
+const describe = (sections: SemanticSection[]): SemanticSection[] => {
+  const missing: string[] = [];
+  const described = sections.map((section) => ({
+    ...section,
+    decls: section.decls.map((decl) => {
+      if (!decl.tw) return decl;
+      const description = roleDescription(
+        decl.name.replace(/^magma-/, ''),
+        Object.keys(hues),
+        Object.keys(accents),
+      );
+      if (!description) missing.push(`--${decl.name}`);
+      return { ...decl, description };
+    }),
+  }));
+  if (missing.length > 0) {
+    throw new Error(
+      `${missing.length} public role(s) have no description: add them to the description ` +
+        `tables of semantic.config.ts (roleDescriptions, hueRoleDescriptions, ` +
+        `accentRoleDescriptions):\n${missing.map((name) => `  ${name}`).join('\n')}`,
+    );
+  }
+  return described;
+};
+
 /** Expand semantic.config.ts into the declarations of every block of the layer. */
 export function semanticModel(): SemanticModel {
   return {
     tint,
     contrastLevel: CONTRAST_LEVEL,
-    base: [
+    base: describe([
       tintSection(),
       surfaceSection(),
       washSection(),
@@ -395,7 +426,7 @@ export function semanticModel(): SemanticModel {
       borderSection(),
       ...Object.entries(hues).map(([hue, def]) => hueSection(hue, def)),
       ...Object.entries(accents).map(([accentRole, family]) => accentSection(accentRole, family)),
-    ],
+    ]),
     dark: darkDecls(),
     contrast: contrastDecls(),
     themes: Object.entries(themes).map(([name, def]) => themeOf(name, def)),

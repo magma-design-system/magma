@@ -19,7 +19,7 @@ const TAILWIND = resolve(DIST, 'tailwind')
 const require = createRequire(join(PROJECT, 'package.json'))
 const TAILWIND_PACKAGE = dirname(require.resolve('tailwindcss/package.json'))
 
-type Entry = { theme: string, namespace: string | null, key?: string | null, property?: string, shadowed?: Record<string, string | null> }
+type Entry = { theme: string, description?: string, namespace: string | null, key?: string | null, property?: string, shadowed?: Record<string, string | null> }
 type Utility = { source: string | string[], apply?: string[], tokens: string[], theme: string[], css: string }
 type ConsumptionMap = {
   tailwind: string
@@ -54,10 +54,11 @@ for (const root of closure(join(TAILWIND, 'theme.css')))
     themeVariables.set(decl.prop, decl.value.replace(/\s+/g, ' ').trim())
   }))
 
-const dtcgNames = new Set([
-  ...publishedTokens(JSON.parse(readFileSync(resolve(PROJECT, '../design-tokens/dist/dtcg/base.tokens.json'), 'utf8'))).keys(),
-  ...publishedTokens(JSON.parse(readFileSync(join(DIST, 'dtcg', 'globals.tokens.json'), 'utf8'))).keys(),
+const dtcgTokens = new Map([
+  ...publishedTokens(JSON.parse(readFileSync(resolve(PROJECT, '../design-tokens/dist/dtcg/base.tokens.json'), 'utf8'))),
+  ...publishedTokens(JSON.parse(readFileSync(join(DIST, 'dtcg', 'globals.tokens.json'), 'utf8'))),
 ])
+const dtcgNames = new Set(dtcgTokens.keys())
 
 let ds: Awaited<ReturnType<typeof __unstable__loadDesignSystem>>
 const compile = (classes: string[]) => ds.candidatesToCss(classes)
@@ -104,6 +105,17 @@ describe('coverage', () => {
     expect(apply).toContain('text-size-title-h1')
     expect(tokens).toEqual(expect.arrayContaining(['--font-title', '--text-size-title-h1', '--text-size-title-h1--line-height']))
     expect(theme).toContain('--font-weight-black')
+  })
+
+  test('a token carries the $description of its dtcg token, every semantic role has one (#876)', () => {
+    const wrong = Object.entries(map.tokens).filter(
+      ([token, { description }]) => description !== dtcgTokens.get(token)?.$description,
+    )
+    expect(wrong.map(([token]) => token)).toEqual([])
+    expect(map.tokens['--magma-surface-default'].description).toBe('The page canvas, the background of the body.')
+    const roles = Object.entries(map.tokens).filter(([token]) => /^--magma-(?!tint-)/.test(token))
+    expect(roles.length).toBeGreaterThan(100)
+    expect(roles.filter(([, { description }]) => !description).map(([token]) => token)).toEqual([])
   })
 })
 

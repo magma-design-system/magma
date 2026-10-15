@@ -149,6 +149,16 @@ describe('coverage', () => {
     expect(names.filter((name) => !inJson.has(name))).toEqual([])
   })
 
+  test('tokens.editor.css shows the description of a semantic role at the end of its line (#876)', () => {
+    const editor = readFileSync(resolve(DIST, 'css', 'tokens.editor.css'), 'utf8')
+    const described = editor.split('\n').filter((line) => /^\s*--magma-[\w-]+: [^;]+; \/\* .+ \*\/$/.test(line))
+    expect(described.length).toBeGreaterThan(100)
+    expect(editor).toContain('--magma-surface-default: var(--magma-tint-default); /* The page canvas, the background of the body. */')
+    // the comment never ends up inside the value an editor reads
+    const root = postcss.parse(editor)
+    root.walkDecls('--magma-surface-default', (decl) => { expect(decl.value).toBe('var(--magma-tint-default)') })
+  })
+
   test('every global of the stylesheets is in the JSON, and only once', () => {
     const inJson = [...walk(globals).map(([, token]) => ext(token).css!), ...cssOnly(globals).map(({ css }) => css)]
     expect(new Set(inJson).size).toBe(inJson.length)
