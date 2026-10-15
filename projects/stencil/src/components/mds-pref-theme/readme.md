@@ -9,11 +9,11 @@
 
 ### 1. Description
 
-The `<mds-pref-theme>` web component is the theme-switcher segment of the Magma accessibility preferences panel, designed to live as a direct child of [`<mds-pref>`](../../mds-pref). It renders a labelled tab trigger that opens a dropdown of selectable named themes and, when a theme is chosen, applies it globally to the document.
+The `<mds-pref-theme>` web component is the theme-switcher segment of the Magma accessibility preferences panel, usually a direct child of [`<mds-pref>`](../../mds-pref). It renders a labelled tab trigger that opens a dropdown of selectable named themes and, when a theme is chosen, applies it globally to the document.
 
 #### Semantic Behavior
 
-- **Compound positioning**: It must be a direct slot child of `<mds-pref>` and is not used standalone.
+- **Usually inside `<mds-pref>`**: Placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it also works on its own, since it applies and stores the theme by itself. What it gives up on its own is in the antipattern docs.
 - **Acts as a sub-parent itself**: Its own default slot must contain one or more `mds-pref-theme-item` elements; it drives their selected state so only the active theme is marked selected.
 - **Global theme application**: Selecting an item applies the theme document-wide: it writes `data-theme-name` and the `pref-theme-scheme-*` class on `<html>`.
 - **Persistence and hydration**: The current name, scheme and corner shape are persisted and restored across reloads: a stored value outranks the matching prop.
