@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { useLanguage } from '@test/language';
 
 const ITEMS = [
   'Tutti',
@@ -65,6 +66,79 @@ describe('mds-filter', () => {
       // scroll ran to the end of the strip and left the item against the left edge
       await vi.waitFor(() => {
         expect(offCentre(root, 3)).toBeLessThan(24);
+      });
+    });
+  });
+
+  // #941: a menu bar of menu items announced a navigation menu, and the reset button was named
+  // after the SVG source of its icon
+  describe('for assistive technologies', () => {
+    const resetButton = (root: HTMLElement): HTMLElement | null =>
+      root.shadowRoot!.querySelector('.reset-button');
+
+    it('is a group named by its label', async () => {
+      const { root } = await render('<mds-filter label="Stato"></mds-filter>');
+
+      expect(root).toEqualAttributes({ role: 'group', 'aria-label': 'Stato' });
+    });
+
+    it('renders no reset button without reset', async () => {
+      const { root } = await render(
+        '<mds-filter><mds-filter-item label="Nuove" value="new" selected></mds-filter-item></mds-filter>',
+      );
+
+      // it used to be scaled away but still in the tab order
+      expect(resetButton(root)).toBeNull();
+    });
+
+    it('names the reset button, an action with no pressed state, hidden while nothing is selected', async () => {
+      const { root, waitForChanges } = await render(
+        '<mds-filter reset multiple><mds-filter-item label="Nuove" value="new"></mds-filter-item></mds-filter>',
+      );
+      const button = resetButton(root)!;
+
+      expect(button).toEqualAttributes({
+        role: 'button',
+        'aria-label': 'Clear filters',
+        'aria-hidden': 'true',
+        tabindex: '-1',
+      });
+      expect(button).not.toHaveAttribute('aria-pressed');
+
+      root.querySelector('mds-filter-item')!.click();
+      await waitForChanges();
+
+      expect(button).not.toHaveAttribute('aria-hidden');
+      expect(button).toEqualAttribute('tabindex', '0');
+      expect(button).not.toHaveAttribute('aria-pressed');
+    });
+
+    it('clears the selection from the reset button and tells the application', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render(
+        `<mds-filter reset multiple>
+           <mds-filter-item label="Nuove" value="new" selected></mds-filter-item>
+           <mds-filter-item label="Chiuse" value="closed" selected></mds-filter-item>
+         </mds-filter>`,
+      );
+      const change = spyOnEvent('mdsFilterChange');
+
+      resetButton(root)!.click();
+      await waitForChanges();
+
+      const items = Array.from(root.querySelectorAll('mds-filter-item'));
+      expect(items.map((item) => item.selected)).toEqual([false, false]);
+      expect(change).toHaveReceivedEventTimes(1);
+      expect(change.lastEvent?.detail.value).toBe('');
+      expect(resetButton(root)).toEqualAttribute('aria-hidden', 'true');
+    });
+
+    describe('in another language', () => {
+      useLanguage('it');
+
+      it('names the reset button in the language of the page', async () => {
+        const { root } = await render('<mds-filter reset></mds-filter>');
+
+        expect(resetButton(root)).toEqualAttribute('aria-label', 'Rimuovi i filtri');
       });
     });
   });

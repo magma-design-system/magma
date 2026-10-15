@@ -14,6 +14,11 @@ import { preferenceStore } from '@common/preference';
 import { MdsFilterEventDetail } from './meta/event-detail';
 import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-detail';
 import miBaselineClose from '@icon/mi/baseline/close.svg';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 /**
  * @slot - Add `mds-filter-item` element/s.
@@ -26,6 +31,12 @@ import miBaselineClose from '@icon/mi/baseline/close.svg';
 })
 export class MdsFilter {
   @Element() private element: HTMLMdsFilterElement;
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
 
   @State() active?: boolean;
   @State() itemsSelected = 0;
@@ -102,6 +113,16 @@ export class MdsFilter {
     this.active = false;
   };
 
+  // the reset button is an action of the filter: it clears the selection and tells the
+  // application, as a click on the items does
+  private handleResetClick = (): void => {
+    if (!this.active) {
+      return;
+    }
+    this.resetItems();
+    this.changedEvent.emit({ children: this.queryItems(), value: this.itemsValues() });
+  };
+
   private itemsValues = (): string => {
     const items = this.queryItems();
     const list: string[] = [];
@@ -168,29 +189,35 @@ export class MdsFilter {
     return (
       <Host
         aria-label={this.label}
-        role="menubar"
+        role="group"
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {this.label && (
-          <mds-text class="label" typography="label">
+          <mds-text aria-hidden="true" class="label" typography="label">
             {this.label}
           </mds-text>
         )}
         <div class="items-wrapper">
           <div class={clsx('items', this.active && 'active')}>
             <slot />
-            <div class={clsx('reset', this.active && 'reset--opened')}>
-              <mds-filter-item
-                selected={this.active}
-                disabled={!this.active && this.reset}
-                class={clsx('reset-button', this.active && 'reset-button-opened')}
-                icon={miBaselineClose}
-                onClick={this.resetItems}
-              />
-            </div>
+            {this.reset && (
+              <div class={clsx('reset', this.active && 'reset--opened')}>
+                {/* with no filter active the button is scaled away: out of the tab order and of
+                    the accessibility tree too */}
+                <mds-filter-item
+                  aria-hidden={this.active ? undefined : 'true'}
+                  aria-label={this.t.get('clearFilters')}
+                  selected={this.active}
+                  disabled={!this.active}
+                  class={clsx('reset-button', this.active && 'reset-button-opened')}
+                  icon={miBaselineClose}
+                  onClick={this.handleResetClick}
+                />
+              </div>
+            )}
           </div>
         </div>
       </Host>

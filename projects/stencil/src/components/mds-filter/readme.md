@@ -16,9 +16,10 @@ The `<mds-filter>` web component is a compound container that groups a set of `<
 #### Semantic Behavior
 
 - **Compound parent**: Acts as the controller for slotted `<mds-filter-item>` children, driving their state in response to selection events.
+- **Group of toggles**: The host is a `group` named by `label`, and each item is a toggle button whose pressed state follows its selection: a screen reader hears which filters are on and how many results each one shows. Every item is a Tab stop; there is no arrow-key navigation.
 - **Selection coordination**: In single mode it enforces exclusive selection (selecting one deselects the others); in `multiple` mode it keeps every selected child active and tracks how many are selected.
 - **Combined change event**: `mdsFilterChange` fires whenever any child's selection changes, carrying both the `NodeList` of the children and a comma-joined string of the selected items' `value`s.
-- **Reset control**: When `reset` is set, a clear-all control appears once a filter is active and clears all selections when clicked.
+- **Reset control**: When `reset` is set, a clear-all button appears once a filter is active, named in the page language (the `lang` of `<html>`) ("Clear filters"). A click clears all selections and emits `mdsFilterChange` with an empty `value`. While no filter is active the button is scaled away, out of the tab order and of the accessibility tree; without `reset` it is not rendered at all.
 - **Auto-scroll**: On each selection the bar scrolls horizontally to center the most recently selected item.
 - **Default slot**: The default slot is for `<mds-filter-item>` elements only, not arbitrary text or markup.
 
@@ -79,7 +80,7 @@ Set `multiple` when filters are additive rather than mutually exclusive. All sel
 
 #### Reset Button
 
-Set `reset` to show a clear-all control whenever at least one item is active. The reset control is hidden when no filter is selected and becomes visible automatically when a selection is made.
+Set `reset` to show a clear-all control whenever at least one item is active. The reset control is hidden when no filter is selected and becomes visible automatically when a selection is made. It is named in the page language ("Clear filters") and emits `mdsFilterChange` with an empty `value` when it clears the selection.
 
 ```html
 <mds-filter label="Tipo documento" multiple reset>
@@ -103,7 +104,7 @@ Use `auto-reset` together with `multiple` when selecting all items is semantical
 
 #### Filter Item with Icon
 
-Supply `icon` on individual `<mds-filter-item>` children to add a glyph alongside the label. The icon slug follows iconsauce conventions; `aria-label` is derived from `label` (or `icon` when no label is present).
+Supply `icon` on individual `<mds-filter-item>` children to add a glyph alongside the label. The icon slug follows iconsauce conventions; the spoken name comes from `label`, or from the icon slug when no label is present (`grid view` for `mi/baseline/grid-view`).
 
 ```html
 <mds-filter label="Formato">
@@ -127,7 +128,7 @@ Set `selected` on a child at page load to reflect a filter that is already activ
 
 #### Disabled Item
 
-Set `disabled` on individual `<mds-filter-item>` children to remove them from the tab order. In the current release a pointer click still toggles a disabled item and no disabled style is painted, so do not rely on it alone to block a selection.
+Set `disabled` on individual `<mds-filter-item>` children to block them: a disabled item leaves the tab order, ignores clicks and keys, is announced as unavailable (`aria-disabled`) and is painted in the disabled text colour.
 
 ```html
 <mds-filter label="Stato pratica">
