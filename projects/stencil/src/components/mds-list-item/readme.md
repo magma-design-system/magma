@@ -18,6 +18,7 @@ The `<mds-list-item>` web component is the single entry of a Magma list, designe
 - **Compound child only**: Must be placed as a direct default-slot child of `<mds-list>`; it is not used standalone or mixed with other element types.
 - **Leading icon is always present**: The component renders an icon before its text; when no `icon` is supplied it falls back to a built-in list-dot glyph, which is decorative.
 - **Text-only default slot**: The default slot is intended for a plain text string; adding HTML elements or other components here is discouraged.
+- **Inherited text colour**: The item sets no colour of its own: its text and its leading icon take the colour of the container, as `<mds-text>` does, so a list reads like the paragraphs around it and follows a container that sets its own colour (a tinted card, a banner). For a secondary list, set the muted role on `<mds-list>` or on its container (`text-fg-muted`).
 
 #### Properties & Visual Configurations
 
@@ -98,6 +99,17 @@ When every item shares the same icon - for example a checklist or a feature list
   <mds-list-item icon="mi/baseline/check">Supporto multilingua incluso</mds-list-item>
   <mds-list-item icon="mi/baseline/check">Aggiornamenti automatici</mds-list-item>
   <mds-list-item icon="mi/baseline/check">Assistenza prioritaria 24/7</mds-list-item>
+</mds-list>
+```
+
+#### Muted List
+
+The items take the colour of their container. When a list is secondary information (an address, a list of contacts under a title), give the muted role to `<mds-list>` or to its container rather than to each item.
+
+```html
+<mds-list class="text-fg-muted">
+  <mds-list-item>Via Carlo Farini 1, Santarcangelo di Romagna</mds-list-item>
+  <mds-list-item>0541 628111</mds-list-item>
 </mds-list>
 ```
 
