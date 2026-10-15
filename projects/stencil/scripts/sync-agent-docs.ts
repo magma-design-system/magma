@@ -151,6 +151,7 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 | Typography utilities | [\`agents/typography.md\`](agents/typography.md) |
 | Dark mode, preferences, named themes, surface levels and elevation, global design decisions, corner geometry | [\`agents/theming.md\`](agents/theming.md) |
 | Reporting a problem that is Magma's, not this project's (bug, wrong guide, missing token), with this project's origin label | [\`agents/reporting.md\`](agents/reporting.md) |
+| What changed between the installed version and a newer one, before upgrading | \`CHANGELOG.md\` of each Magma package, newest release first (\`magma-react\` and \`magma-angular\` carry the releases of \`magma\`) |
 
 Tooling that needs structured data reads \`documentation.json\`: one per component beside
 its \`AGENTS.md\`, or \`@maggioli-design-system/magma/dist/documentation.json\` for all of them
