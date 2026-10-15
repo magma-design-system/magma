@@ -25,6 +25,13 @@
   z-index: -1;
 }
 
+/* Drawn in place, not slid there: on load, after a change of the layout, when the strip is
+   shown again (#924). Only the geometry stops, a change of theme still fades the colours. */
+
+.slider--still {
+  transition-property: background-color, box-shadow;
+}
+
 ::slotted(mds-tab-item) {
   position: relative;
   z-index: 1;
