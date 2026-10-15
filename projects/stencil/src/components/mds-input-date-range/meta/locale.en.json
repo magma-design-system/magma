@@ -1,6 +1,7 @@
 {
   "endDate": "End date",
   "from": "From",
+  "openCalendar": "Open calendar",
   "startDate": "Start date",
   "to": "to"
 }

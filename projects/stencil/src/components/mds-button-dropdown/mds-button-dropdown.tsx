@@ -19,6 +19,11 @@ import {
 import { ToneMinimalVariantType } from '@type/tone';
 
 import { TypographyTruncateType } from '@type/text';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
@@ -30,6 +35,13 @@ import { TypographyTruncateType } from '@type/text';
   formAssociated: true,
 })
 export class MdsButtonDropdown {
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
+
   // the primary action lives in the shadow root, where it has no form: the host takes part in it
   @AttachInternals() internals: ElementInternals;
 
@@ -162,6 +174,7 @@ export class MdsButtonDropdown {
         ></mds-button>
         <mds-button
           active={this.active}
+          aria-label={this.t.get('moreActions')}
           autoFocus={this.autoFocus}
           await={this.await}
           class="dropdown-action"

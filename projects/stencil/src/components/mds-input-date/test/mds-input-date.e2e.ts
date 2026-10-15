@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { useLanguage } from '@test/language';
 import { userEvent } from 'vitest/browser';
 
 type Field = { host: HTMLMdsInputDateElement; waitForChanges: () => Promise<void> };
@@ -427,5 +428,19 @@ describe('size', () => {
 
     expect(button).toEqualAttribute('size', 'sm');
     expect(isInside(button, root)).toBe(true);
+  });
+});
+
+// #937: the calendar toggle is an icon-only button
+describe('mds-input-date calendar toggle', () => {
+  useLanguage('it');
+
+  it('is a button named in the current language', async () => {
+    const { root } = await render('<mds-input-date></mds-input-date>');
+
+    expect(root.shadowRoot!.querySelector('.action-open-calendar')).toEqualAttributes({
+      role: 'button',
+      'aria-label': 'Apri il calendario',
+    });
   });
 });

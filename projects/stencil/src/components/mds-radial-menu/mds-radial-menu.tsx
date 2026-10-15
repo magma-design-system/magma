@@ -8,6 +8,11 @@ import clsx from 'clsx';
 import { ToneVariantType } from '@type/tone';
 
 import { Backdrop } from '@common/floating-controller';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 /**
  * @slot item - Add `mds-radial-menu-item` elements or `components` to this slot.
@@ -18,6 +23,13 @@ import { Backdrop } from '@common/floating-controller';
   shadow: true,
 })
 export class MdsRadialMenu {
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
+
   @Element() private hostElement: HTMLMdsRadialMenuElement;
   private readonly backdropController: Backdrop = new Backdrop('mds-radial-menu-backdrop');
 
@@ -228,6 +240,7 @@ export class MdsRadialMenu {
     return (
       <Host>
         <mds-button
+          aria-label={this.t.get(this.opened ? 'closeMenu' : 'openMenu')}
           class={clsx('menu-button', this.interaction !== 'click' && 'menu-button--hidden')}
           icon={this.opened ? miBaselineClose : this.icon}
           tone={this.tone}

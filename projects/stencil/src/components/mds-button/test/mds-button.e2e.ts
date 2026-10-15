@@ -747,6 +747,25 @@ describe('mds-button', () => {
     });
   });
 
+  // #937: an icon given as markup used to skip the role, labelled or not
+  describe('with an icon given as markup', () => {
+    const svg =
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z"/></svg>';
+
+    it('takes the button role when it has a label', async () => {
+      const { root } = await render(`<mds-button icon='${svg}' label="Disegna"></mds-button>`);
+
+      expect(root).toEqualAttribute('role', 'button');
+    });
+
+    it('takes the button role and no name from the icon when it has none', async () => {
+      const { root } = await render(`<mds-button icon='${svg}' aria-label="Disegna"></mds-button>`);
+
+      expect(root).toEqualAttributes({ role: 'button', 'aria-label': 'Disegna' });
+      expect(root).not.toHaveAttribute('title');
+    });
+  });
+
   // Angular and Vue bind null for a missing value
   describe('with null properties', () => {
     afterEach(() => {
