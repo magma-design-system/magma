@@ -9,7 +9,8 @@ const fileDirTree = 'directory-tree.json';
 
 const createDirectoryTree = () => {
   const tree = dirTree('dist/', {
-    extensions: /\.(svg|png|pdf)$/,
+    // every format build.ts writes: the WebP files were missing from the tree
+    extensions: /\.(svg|png|webp|pdf)$/,
   });
 
   const jsonData = JSON.stringify(tree, null, 2);
