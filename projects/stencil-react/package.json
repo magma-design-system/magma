@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma-react",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "main": "dist/components.js",
   "module": "dist/components.js",
   "types": "dist/types/components.d.ts",
@@ -33,7 +33,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@maggioli-design-system/magma": "2.2.0",
+    "@maggioli-design-system/magma": "2.3.0",
     "@stencil/react-output-target": "1.6.2"
   },
   "repository": {

@@ -4,6 +4,16 @@ Every release of `@maggioli-design-system/design-tokens`, newest first. Each sec
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [design-tokens@15.2.0] - 2026-10-15
+
+### Build
+
+- *(design-tokens,identity,styles,svg-icons,icons,magma)* Ship CHANGELOG.md in every package
+
+### Features
+
+- *(design-tokens)* Describe every semantic role and group in the DTCG export
+
 ## [design-tokens@15.1.0] - 2026-10-14
 
 ### Documentation

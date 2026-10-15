@@ -4,6 +4,67 @@ Every release of `@maggioli-design-system/magma`, newest first. Each section is 
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [magma@2.3.0] - 2026-10-15
+
+### Bug Fixes
+
+- *(mds-text)* Read the animation custom properties when the reveal starts
+- *(mds-text)* Paint the revealed text as text, never as html
+- *(magma)* Keep the HTMLElement shim of the loader in consumer bundles
+- *(mds-input-switch)* Give the off knob of a switch a light colour in dark mode
+- *(mds-input-select)* Keep the hover and focus ring in dark mode and with more contrast
+- *(magma)* Keep the icon lists of the story controls out of the published collection
+- *(mds-table)* Paint the scroll area of an interactive table like its rows while hovered
+- *(mds-pref-theme-item)* Show the color preview next to the label
+- *(mds-pref-theme)* Show the label of the selected item in the trigger
+- *(mds-tab,mds-input-switch)* Animate the slider and the knob only on a change of state
+- *(mds-button)* Give back the icon slug title when another element names the button
+- *(mds-pref)* Keep the document flag and the listeners across a move in the DOM
+- *(mds-button)* Leave a button with an icon given as markup without a role again
+- *(magma)* Lay out the label and the tab of every mds-pref-* control alike
+- *(magma)* Cap the radius of buttons, tabs and fields at a part of their height
+- *(mds-file)* Show the downloaded indicator again and drop crypto-js
+- *(magma)* Name the icon-only buttons inside the components and give every mds-button its role
+- *(mds-filter,mds-filter-item)* Announce the selected state and the count, name the reset button
+- *(mds-filter)* Follow the selection the application sets on the items
+- *(mds-list-item)* Take the text colour of the container instead of painting the items muted
+
+### Build
+
+- *(magma)* Prepend the release notes to each package's CHANGELOG.md in the release commit
+- *(design-tokens,identity,styles,svg-icons,icons,magma)* Ship CHANGELOG.md in every package
+
+### Documentation
+
+- *(magma)* Say in the agent guides that hydrated.css keeps the box of the components
+- *(magma)* Point the no-bundler loader example of the readme at a real file
+- *(magma)* Document icon routes that serve every slug where mds-icon fetches it
+- *(mds-text)* Regenerate the readme with the usage docs of the yugop fix
+- *(magma)* Set up editor autocomplete in the agent guides, tokens and classes
+- *(magma)* Link the shipped component docs from the agent guides, never plain text
+- *(magma)* Say in the agent guides what the semantic utilities paint without semantic.css
+- *(stencil)* Drop the hand-written sections of the component readmes
+- *(magma)* Lead the icon path setup with IconsSetService and link the mds-icon pattern
+- *(magma)* Have a reporting agent propose the origin label its project lacks
+- *(magma)* Point the agent guides to the identity manifest
+- *(stencil)* Say every mds-pref-* control also works on its own
+- *(magma)* Point to the changelogs in AGENTS.md and in the commit convention
+- *(mds-tab,mds-input-switch)* Regenerate the readmes from the usage docs
+
+### Features
+
+- *(mds-input,mds-input-select,mds-input-date,mds-input-date-range)* Add size (sm, md, lg)
+- *(mds-tooltip)* Name the caller with relation="label"
+- *(mds-usage)* Give each variant its own header icon and add an icon prop
+- *(mds-table,mds-table-header-cell)* Emit mdsTableHeaderCellSort, let the back end sort the rows
+
+### Performance
+
+- *(mds-button)* Render the spinner only to await, the label without mds-text
+- *(mds-button)* Write each tone once, over the tokens each variant names
+- *(magma)* Prefix the component CSS for the supported browsers, not for IE 11
+- *(magma)* Drop the fallback links that can never resolve
+
 ## [magma@2.2.0] - 2026-10-14
 
 ### Bug Fixes
