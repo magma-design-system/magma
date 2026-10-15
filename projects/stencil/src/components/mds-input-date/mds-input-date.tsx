@@ -18,6 +18,7 @@ import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
 import { preferenceStore } from '@common/preference';
 import { ThemeInputVariantType } from '@type/variant';
+import { InputSizeType } from '@type/input';
 import { MdsValidationErrors } from 'src/components';
 
 // TODO add input validation manager for error message
@@ -86,6 +87,11 @@ export class MdsInputDate {
    * @description Default is 500
    */
   @Prop({ reflect: true }) readonly delay: number = 500;
+
+  /**
+   * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+   */
+  @Prop({ reflect: true }) readonly size?: InputSizeType = 'lg';
 
   /**
    * Hides the highlight on today's date in the calendar.
@@ -355,6 +361,8 @@ export class MdsInputDate {
             <mds-button
               id="calendar-dropdown"
               class="action-open-calendar"
+              // the default md button fills the 36px square of an md field; sm fits the 28px one
+              size={this.size === 'sm' ? 'sm' : undefined}
               // a read-only date cannot change, from the calendar either
               disabled={this.isDisabled() || this.readonly}
               variant="dark"

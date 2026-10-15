@@ -26,6 +26,12 @@
 */
 
 :host {
+
+  /* the size of the field, lg by default: its height and its padding; the calendar button sits
+     in a square as tall as the field */
+  --private-input-date-range-height: 3rem;
+  --private-input-date-range-padding-inline: --spacing(400);
+  --private-input-date-range-calendar-area: --spacing(1200);
   --mds-input-date-range-background: rgb(var(--magma-surface-overlay));
   --mds-input-date-range-calendar-width: 22rem;
   --mds-input-date-range-fields-firefox-justify-content: start;
@@ -74,10 +80,10 @@
   flex-wrap: wrap;
   gap: var(--mds-input-date-range-fields-gap);
   margin: 0;
-  min-height: 3rem;
+  min-height: var(--private-input-date-range-height);
   overflow: hidden;
-  padding-left: --spacing(400);
-  padding-right: --spacing(1200);
+  padding-left: var(--private-input-date-range-padding-inline);
+  padding-right: var(--private-input-date-range-calendar-area);
   text-overflow: ellipsis;
   transition-duration: var(--private-input-date-range-transition-duration);
   transition-property:
@@ -179,6 +185,7 @@ mds-dropdown {
 }
 
 @import './css/mds-input-date-range-disabled.css';
+@import './css/mds-input-date-range-size.css';
 @import './css/mds-input-date-range-pref-animation.css';
 @import './css/mds-input-date-range-pref-mode.css';
 @import './css/mds-input-date-range-pref-contrast.css';

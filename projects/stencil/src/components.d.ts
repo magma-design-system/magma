@@ -39,7 +39,7 @@ import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/t
 import { LoadingType } from "./type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "./type/autocomplete";
-import { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
+import { InputControlsIconType, InputControlsLayoutType, InputSizeType, InputTextType, MdsInputEventDetail } from "./type/input";
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 import { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
@@ -123,7 +123,7 @@ export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/t
 export { LoadingType } from "./type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "./type/autocomplete";
-export { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
+export { InputControlsIconType, InputControlsLayoutType, InputSizeType, InputTextType, MdsInputEventDetail } from "./type/input";
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 export { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
@@ -1315,6 +1315,11 @@ export namespace Components {
          */
         "setFocus": () => Promise<void>;
         /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A textarea keeps its own height (`--mds-input-textarea-min-height`)
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
+        /**
           * Specifies the interval between legal numbers in an input field
          */
         "step"?: string;
@@ -1405,6 +1410,11 @@ export namespace Components {
          */
         "setValue": (value: string) => Promise<void>;
         /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
+        /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
           * @default ''
@@ -1469,6 +1479,11 @@ export namespace Components {
           * @param event the preselection range to apply
          */
         "preselect": (event: EventDate) => Promise<void>;
+        /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).
@@ -1605,14 +1620,19 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * The number of option rows the list shows at once, as the `size` of a native `<select>`: with `multiple`, or above `1`, the select shows a list box
+          * @default 0
+         */
+        "rows"?: number;
+        /**
           * Sets the value of the component
          */
         "setValue": (value: string | number | null) => Promise<void>;
         /**
-          * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
-          * @default 0
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A number is still read as `rows`, the row count this prop used to set: that use is deprecated and goes in the next major
+          * @default 'lg'
          */
-        "size"?: number;
+        "size"?: InputSizeType | number;
         /**
           * Specifies the value of the component
           * @default ''
@@ -5798,6 +5818,11 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A textarea keeps its own height (`--mds-input-textarea-min-height`)
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
+        /**
           * Specifies the interval between legal numbers in an input field
          */
         "step"?: string;
@@ -5886,6 +5911,11 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
+        /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
           * @default ''
@@ -5956,6 +5986,11 @@ declare namespace LocalJSX {
     startDate: string;
     endDate: string;
   }>) => void;
+        /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).
@@ -6128,10 +6163,15 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
+          * The number of option rows the list shows at once, as the `size` of a native `<select>`: with `multiple`, or above `1`, the select shows a list box
           * @default 0
          */
-        "size"?: number;
+        "rows"?: number;
+        /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A number is still read as `rows`, the row count this prop used to set: that use is deprecated and goes in the next major
+          * @default 'lg'
+         */
+        "size"?: InputSizeType | number;
         /**
           * Specifies the value of the component
           * @default ''
@@ -7833,6 +7873,7 @@ declare namespace LocalJSX {
         "required": boolean;
         "variant": ThemeInputVariantType;
         "tip": string;
+        "size": InputSizeType;
         "step": string;
         "type": InputTextType;
         "typography": TypographyInputType;
@@ -7846,6 +7887,7 @@ declare namespace LocalJSX {
         "min": string | null;
         "max": string | null;
         "delay": number;
+        "size": InputSizeType;
         "hideToday": boolean;
         "disabled": boolean;
         "readonly": boolean;
@@ -7858,6 +7900,7 @@ declare namespace LocalJSX {
         "min": string | null;
         "max": string | null;
         "delay": number;
+        "size": InputSizeType;
         "hideToday": boolean;
         "dualCalendar": boolean;
         "name": string;
@@ -7897,7 +7940,8 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "required": boolean;
         "multiple": boolean;
-        "size": number;
+        "rows": number;
+        "size": string;
         "value": string;
         "defaultValue": string;
         "variant": ThemeStatusVariantType;

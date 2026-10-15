@@ -1,0 +1,17 @@
+{
+  "owner": {
+    "id": "magma-design-system",
+    "name": "Magma Design System"
+  },
+  "families": [
+    {
+      "id": "magma",
+      "name": "Magma",
+      "files": [
+        "logo-magma",
+        "logo-magma-black",
+        "logo-magma-white"
+      ]
+    }
+  ]
+}

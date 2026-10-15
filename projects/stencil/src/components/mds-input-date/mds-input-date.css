@@ -28,6 +28,12 @@
 */
 
 :host {
+
+  /* the size of the field, lg by default: its height and its padding; the calendar button sits
+     in a square as tall as the field */
+  --private-input-date-height: 3rem;
+  --private-input-date-padding-inline: --spacing(400);
+  --private-input-date-calendar-area: --spacing(1200);
   --mds-input-date-icon-color: rgb(var(--magma-accent-fg));
   --mds-input-date-background: rgb(var(--magma-surface-overlay));
   --mds-input-date-field-background-empty: rgb(var(--magma-danger-wash-soft));
@@ -106,9 +112,9 @@
 
   /* border-radius: var(--magma-radius-xs); */
   box-shadow: var(--mds-input-date-ring), var(--mds-input-date-shadow);
-  min-height: 3rem;
-  padding-left: --spacing(400);
-  padding-right: --spacing(1200);
+  min-height: var(--private-input-date-height);
+  padding-left: var(--private-input-date-padding-inline);
+  padding-right: var(--private-input-date-calendar-area);
   width: 100%;
 }
 
@@ -180,6 +186,7 @@ mds-input-tip {
 }
 
 @import './css/mds-input-date-fouc.css';
+@import './css/mds-input-date-size.css';
 @import './css/mds-input-date-pref-animation.css';
 @import './css/mds-input-date-pref-mode.css';
 @import './css/mds-input-date-pref-contrast.css';
