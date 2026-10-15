@@ -62,6 +62,20 @@
   --mds-input-controls-color: rgb(var(--magma-text-muted));
   --private-input-transition-duration: var(--mds-input-transition-duration);
 
+  /* the size of the field, lg by default: what makes up its height and its density */
+  --private-input-height: 3rem;
+  --private-input-padding-block: --spacing(300);
+  --private-input-padding-inline: --spacing(400);
+  --private-input-icon-size: 24px;
+  --private-input-icon-offset-block: --spacing(300);
+  --private-input-icon-offset-inline: --spacing(300);
+  --private-input-control-size: --spacing(1200);
+  --private-input-counter-width: --spacing(700);
+  --private-input-counter-height: --spacing(600);
+  --private-input-toggle-offset: --spacing(150);
+  --private-input-toggle-padding: --spacing(1000);
+  --private-input-toggle-area: --spacing(1200);
+
   border-radius: var(--mds-input-border-radius);
   container-type: inline-size;
   corner-shape: var(--magma-corner-shape);
@@ -92,9 +106,9 @@
   corner-shape: inherit;
   margin: 0;
   max-width: 100%;
-  min-height: 3rem;
+  min-height: var(--private-input-height);
   overflow: hidden;
-  padding: --spacing(300) --spacing(400);
+  padding: var(--private-input-padding-block) var(--private-input-padding-inline);
   text-overflow: ellipsis;
   transition-duration: var(--private-input-transition-duration);
   transition-property:
@@ -161,25 +175,29 @@
 }
 
 .input.has-icon {
-  padding-left: --spacing(1100);
+  padding-left: calc(
+    var(--private-input-icon-offset-inline) + var(--private-input-icon-size) + --spacing(200)
+  );
 }
 
 .input.has-right-icon {
-  padding-right: --spacing(1100);
+  padding-right: calc(
+    var(--private-input-icon-offset-inline) + var(--private-input-icon-size) + --spacing(200)
+  );
 }
 
 .await,
 .icon {
   fill: var(--mds-input-icon-color);
-  left: --spacing(300);
+  left: var(--private-input-icon-offset-inline);
   position: absolute;
-  top: --spacing(300);
+  top: var(--private-input-icon-offset-block);
 }
 
 .await {
   color: var(--mds-input-icon-color);
-  height: 24px;
-  width: 24px;
+  height: var(--private-input-icon-size);
+  width: var(--private-input-icon-size);
 }
 
 .counter {
@@ -196,9 +214,9 @@
   border: 0;
   border-radius: var(--mds-input-border-radius);
   fill: var(--mds-input-controls-color);
-  height: --spacing(600);
+  height: var(--private-input-counter-height);
   min-height: 0;
-  width: --spacing(700);
+  width: var(--private-input-counter-width);
 }
 
 /* .counter-button:hover {
@@ -221,10 +239,10 @@
 
 .counter-button--horizontal {
   bottom: 0;
-  height: --spacing(1200);
+  height: var(--private-input-control-size);
   position: absolute;
   top: 0;
-  width: --spacing(1200);
+  width: var(--private-input-control-size);
 }
 
 .counter-button--decrease {
@@ -244,15 +262,15 @@
 .password-toggle-button {
   fill: var(--mds-input-controls-color);
   position: absolute;
-  right: --spacing(150);
-  top: --spacing(150);
+  right: var(--private-input-toggle-offset);
+  top: var(--private-input-toggle-offset);
 }
 
 .mic-toggle-button {
   fill: var(--mds-input-controls-color);
   position: absolute;
-  right: --spacing(150);
-  top: --spacing(150);
+  right: var(--private-input-toggle-offset);
+  top: var(--private-input-toggle-offset);
 }
 
 .toggle-button--error {
@@ -270,26 +288,29 @@
 
   /* stylelint-disable-next-line property-no-vendor-prefix */
   -moz-appearance: textfield;
-  padding-right: --spacing(800);
+  padding-right: calc(var(--private-input-counter-width) + --spacing(100));
 }
 
 :host([type='number'][controls-layout='horizontal']) .input {
-  padding-left: --spacing(1400);
-  padding-right: --spacing(1400);
+  padding-left: calc(var(--private-input-control-size) + --spacing(200));
+  padding-right: calc(var(--private-input-control-size) + --spacing(200));
   text-align: center;
 }
 
 :host([type='number'][controls-layout='horizontal'][icon]) .input {
-  padding-left: --spacing(2400);
+  padding-left: calc(
+    var(--private-input-control-size) + var(--private-input-icon-offset-inline) * 2 +
+      var(--private-input-icon-size)
+  );
   text-align: left;
 }
 
 :host([type='number'][controls-layout='horizontal']) .icon {
-  left: --spacing(1500);
+  left: calc(var(--private-input-control-size) + var(--private-input-icon-offset-inline));
 }
 
 :host([type='password']) .input {
-  padding-right: --spacing(1000);
+  padding-right: var(--private-input-toggle-padding);
 }
 
 :host([type='password']) .input[type='text']:not(:placeholder-shown) {
@@ -326,6 +347,7 @@ mds-input-tip {
   }
 } */
 
+@import './css/mds-input-size.css';
 @import './css/mds-input-variant.css';
 @import './css/mds-input-pref-animation.css';
 @import './css/mds-input-pref-contrast.css';

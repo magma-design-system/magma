@@ -55,6 +55,11 @@
   --private-input-select-transition-duration: var(--mds-input-select-transition-duration);
   --private-input-select-icon-transition-duration: var(--mds-input-select-icon-transition-duration);
 
+  /* the size of the field, lg by default: its height, its padding and the box of the arrow */
+  --private-input-select-height: --spacing(1200);
+  --private-input-select-padding-inline: --spacing(400);
+  --private-input-select-arrow-area: --spacing(1200);
+
   @apply text-info-detail;
 
   color: rgb(var(--magma-text-default));
@@ -102,10 +107,10 @@
   color: rgb(var(--magma-text-default));
   cursor: pointer;
   margin: 0;
-  min-height: --spacing(1200);
+  min-height: var(--private-input-select-height);
   overflow: hidden;
-  padding-left: --spacing(400);
-  padding-right: --spacing(1200);
+  padding-left: var(--private-input-select-padding-inline);
+  padding-right: var(--private-input-select-arrow-area);
   text-overflow: ellipsis;
   transition-duration: var(--private-input-select-transition-duration);
   transition-property: background-color, border-color, box-shadow, color, fill;
@@ -152,10 +157,10 @@
   align-items: center;
   color: inherit;
   display: flex;
-  height: --spacing(1200);
+  height: var(--private-input-select-height);
   pointer-events: none;
   position: absolute;
-  right: --spacing(400);
+  right: var(--private-input-select-padding-inline);
 }
 
 .icon {
@@ -192,6 +197,7 @@ mds-input-tip {
   }
 }
 
+@import './css/mds-input-select-size.css';
 @import './css/mds-input-select-variant.css';
 @import './css/mds-input-select-pref-animation.css';
 @import './css/mds-input-select-pref-mode.css';

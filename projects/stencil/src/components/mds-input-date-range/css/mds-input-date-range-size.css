@@ -1,0 +1,15 @@
+/* The size of the field, with the heights of mds-button: md 36px and sm 28px here, lg 48px in
+ * the base sheet. The calendar button sits in a square as tall as the field: the default md
+ * button fills the one of an md field, an sm field gets an sm button (see the render). */
+
+:host([size='md']) {
+  --private-input-date-range-height: --spacing(900);
+  --private-input-date-range-padding-inline: --spacing(300);
+  --private-input-date-range-calendar-area: --spacing(1000);
+}
+
+:host([size='sm']) {
+  --private-input-date-range-height: --spacing(700);
+  --private-input-date-range-padding-inline: --spacing(200);
+  --private-input-date-range-calendar-area: --spacing(800);
+}
