@@ -1414,6 +1414,7 @@ mds-table encapsulation shadow
 mds-table prop interactive (attr interactive): boolean | undefined
 mds-table prop selectable (attr selectable): boolean | undefined
 mds-table prop selection (attr selection) [reflect, mutable]: boolean | undefined
+mds-table prop sorting (attr sorting) [reflect]: "external" | "internal" | undefined = 'internal'
 mds-table event mdsTableSelectionChange: MdsTableSelectionEventDetail [bubbles, cancelable, composed]
 mds-table method selectAll(select?: boolean) => Promise<void>
 mds-table method updateSelection() => Promise<void>
@@ -1458,6 +1459,8 @@ mds-table-header-cell encapsulation shadow
 mds-table-header-cell prop direction (attr direction) [reflect, mutable]: "ascending" | "descending" | "none" = 'none'
 mds-table-header-cell prop label (attr label) [reflect]: string | undefined
 mds-table-header-cell prop sortable (attr sortable) [reflect]: boolean | undefined
+mds-table-header-cell prop sortKey (attr sort-key) [reflect]: string | undefined
+mds-table-header-cell event mdsTableHeaderCellSort: MdsTableHeaderCellSortEventDetail [bubbles, cancelable, composed]
 mds-table-header-cell part action
 mds-table-header-cell part label
 mds-table-row encapsulation shadow
@@ -1734,8 +1737,10 @@ interface MdsStepperBarItemEventDetail { value: string; }
 interface MdsTabBarEventDetail { index: number; }
 interface MdsTabEventDetail { id: number; value?: string; }
 interface MdsTabItemEventDetail { target: HTMLMdsTabItemElement; value?: string; }
+interface MdsTableHeaderCellSortEventDetail { direction: SortDirectionType; index: number; sortKey?: string; }
 type MdsTableRowSelection = { index: number; value?: string | number; }
 interface MdsTableSelectionEventDetail { rows: MdsTableRowSelection[]; }
+type MdsTableSortingType = 'internal' | 'external';
 interface MdsTreeItemEventDetail { element: HTMLMdsTreeItemElement; }
 interface MdsValidationErrors { [key: string]: string; }
 type MdsValidationErrors = any

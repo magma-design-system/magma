@@ -12,7 +12,7 @@ import {
   State,
 } from '@stencil/core';
 import { MdsTableSelectionEventDetail } from './meta/event-detail';
-import { MdsTableRowSelection } from './meta/type';
+import { MdsTableRowSelection, MdsTableSortingType } from './meta/type';
 import { Locale } from '@common/locale';
 import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
@@ -70,6 +70,14 @@ export class MdsTable {
    * Indicates whether row selection is currently active in the table.
    */
   @Prop({ mutable: true, reflect: true }) selection?: boolean;
+
+  /**
+   * Specifies who sorts the rows when a sortable header cell changes direction: `internal` moves
+   * them in the DOM, `external` leaves them to the application, which listens to
+   * `mdsTableHeaderCellSort` and renders the rows in the order asked (a table that shows one page
+   * of a larger set)
+   */
+  @Prop({ reflect: true }) readonly sorting?: MdsTableSortingType = 'internal';
 
   /**
    * Dispatces when interactive property changes

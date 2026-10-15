@@ -1,16 +1,27 @@
-import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
+import {
+  Build,
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  Host,
+  h,
+  Prop,
+  Watch,
+} from '@stencil/core';
 import { preferenceStore } from '@common/preference';
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
 import miBaselineUnfoldMore from '@icon/mi/baseline/unfold-more.svg';
 import { SortDirectionType } from './meta/types';
+import { MdsTableHeaderCellSortEventDetail } from './meta/event-detail';
 import clsx from 'clsx';
 
-enum Sort {
-  ASC = 'ascending',
-  DESC = 'descending',
-  NONE = 'none',
-}
+const cycle: SortDirectionType[] = ['none', 'ascending', 'descending'];
+
+// the order the rows of a table body had before any column sorted them, brought back when the
+// last sorted column returns to none; rows that left the body in the meantime stay out
+const naturalOrder = new WeakMap<Element, HTMLMdsTableRowElement[]>();
 
 @Component({
   tag: 'mds-table-header-cell',
@@ -18,15 +29,10 @@ enum Sort {
   shadow: true,
 })
 export class MdsTableHeaderCell {
-  @State() isAscending: boolean = true;
   @Element() element: HTMLMdsTableHeaderCellElement;
-  private currentDirection = Sort.NONE;
-  private index: number = 0;
-  private tableBody: HTMLMdsTableBodyElement;
-  private tableHeader: HTMLMdsTableHeaderElement;
-  private tableHeaderCellSiblings: HTMLMdsTableHeaderCellElement[];
-  private tableRows: HTMLMdsTableRowElement[];
-  private tableRowsDefaultSorted: HTMLMdsTableRowElement[];
+  // set while the click writes `direction`: the watcher must not take it for a write from outside
+  private writingDirection = false;
+  private bodyObserver?: MutationObserver;
 
   /**
    * Tells the component to make the cell able to sort the table columns items
@@ -39,32 +45,57 @@ export class MdsTableHeaderCell {
   @Prop({ reflect: true }) readonly label?: string;
 
   /**
-   * Specifies the current sort direction of the column.
+   * Names the column in the `mdsTableHeaderCellSort` event, for example the field the back end
+   * sorts by
+   */
+  @Prop({ reflect: true }) readonly sortKey?: string;
+
+  /**
+   * Specifies the current sort direction of the column. Set from outside, it sorts the rows like a
+   * click, or only shows the order when the table has `sorting="external"`.
    */
   @Prop({ reflect: true, mutable: true }) direction: SortDirectionType = 'none';
 
+  /**
+   * Emits when the user changes the sort direction of the column, at every step of the cycle. With
+   * `sorting="external"` on the table the rows are not moved: the application renders them in the
+   * order asked.
+   */
+  @Event({ eventName: 'mdsTableHeaderCellSort' })
+  sortEvent: EventEmitter<MdsTableHeaderCellSortEventDetail>;
+
   componentDidLoad(): void {
-    this.prepareSorter();
+    if (this.direction !== 'none') {
+      this.applyDirection();
+    }
   }
 
-  private prepareSorter = (): void => {
-    if (
-      !this.sortable ||
-      (this.sortable &&
-        this.tableHeaderCellSiblings?.length !== undefined &&
-        this.tableHeaderCellSiblings?.length !== 0)
-    )
-      return;
-    this.tableBody = this.element
-      .closest('mds-table')
-      ?.querySelector('mds-table-body') as HTMLMdsTableBodyElement;
-    this.tableHeader = this.element.closest('mds-table-header') as HTMLMdsTableHeaderElement;
-    this.tableHeaderCellSiblings = Array.from(
-      this.tableHeader.children,
-    ) as HTMLMdsTableHeaderCellElement[];
-    this.index = this.tableHeaderCellSiblings.indexOf(this.element);
-    this.tableRows = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[];
-    this.tableRowsDefaultSorted = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[];
+  disconnectedCallback(): void {
+    this.bodyObserver?.disconnect();
+  }
+
+  private table = (): HTMLMdsTableElement | null => this.element.closest('mds-table');
+
+  private body = (): HTMLMdsTableBodyElement | null | undefined =>
+    this.table()?.querySelector('mds-table-body');
+
+  private rows = (body: HTMLMdsTableBodyElement): HTMLMdsTableRowElement[] =>
+    Array.from(body.children) as HTMLMdsTableRowElement[];
+
+  private index = (): number =>
+    Array.from(this.element.closest('mds-table-header')?.children ?? []).indexOf(this.element);
+
+  private siblings = (): HTMLMdsTableHeaderCellElement[] =>
+    Array.from(
+      this.element.closest('mds-table-header')?.querySelectorAll('mds-table-header-cell') ?? [],
+    ).filter((cell) => cell !== this.element);
+
+  private hasSortedSibling = (): boolean =>
+    this.siblings().some((cell) => cell.direction !== 'none');
+
+  private isExternal = (): boolean => {
+    const table = this.table();
+    return (table?.sorting ?? table?.getAttribute('sorting')) === 'external';
   };
 
   private getValue = (element: HTMLMdsTableCellElement): string | number => {
@@ -81,41 +112,34 @@ export class MdsTableHeaderCell {
       : '';
   };
 
-  private resetSortAttribute = (): void => {
-    this.tableHeaderCellSiblings.forEach((cell: HTMLMdsTableHeaderCellElement) => {
-      if (this.tableHeaderCellSiblings.indexOf(cell) !== this.index) {
-        cell.direction = 'none';
+  private sortRows = (body: HTMLMdsTableBodyElement): void => {
+    if (this.direction === 'none') {
+      // another column drives the order now: there is nothing of this one to undo
+      if (this.hasSortedSibling()) {
+        return;
       }
-    });
-
-    this.tableRows = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[];
-
-    this.tableRows.forEach((row: HTMLMdsTableRowElement) => {
-      const cells: HTMLMdsTableCellElement[] = Array.from(
-        row.children,
-      ) as HTMLMdsTableCellElement[];
-      cells.forEach((cell: HTMLMdsTableCellElement, index: number) => {
-        if (this.index === index && this.currentDirection !== Sort.NONE) {
-          cell.setAttribute('sorted', '');
-          return;
-        }
-        cell.removeAttribute('sorted');
-      });
-    });
-  };
-
-  private sortRows = (): void => {
-    if (this.currentDirection === Sort.NONE) {
-      this.tableRowsDefaultSorted.forEach((row) => this.tableBody.appendChild(row));
+      const natural = naturalOrder.get(body);
+      naturalOrder.delete(body);
+      if (!natural) {
+        return;
+      }
+      const known = new Set(natural);
+      const added = this.rows(body).filter((row) => !known.has(row));
+      [...natural.filter((row) => row.parentElement === body), ...added].forEach((row) =>
+        body.appendChild(row),
+      );
       return;
     }
 
-    this.tableRows = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[];
+    if (!naturalOrder.has(body)) {
+      naturalOrder.set(body, this.rows(body));
+    }
 
-    const sortedRows = [...this.tableRows].sort(
+    const index = this.index();
+    const sortedRows = [...this.rows(body)].sort(
       (a: HTMLMdsTableRowElement, b: HTMLMdsTableRowElement) => {
-        const cellA = this.getValue(a.querySelectorAll('mds-table-cell')[this.index]);
-        const cellB = this.getValue(b.querySelectorAll('mds-table-cell')[this.index]);
+        const cellA = this.getValue(a.querySelectorAll('mds-table-cell')[index]);
+        const cellB = this.getValue(b.querySelectorAll('mds-table-cell')[index]);
         const isNumeric = !isNaN(Number(cellA)) && !isNaN(Number(cellB));
         if (isNumeric) {
           return this.direction === 'ascending'
@@ -127,45 +151,81 @@ export class MdsTableHeaderCell {
           : String(cellB).localeCompare(String(cellA));
       },
     );
-    sortedRows.forEach((row) => this.tableBody.appendChild(row));
+    sortedRows.forEach((row) => body.appendChild(row));
   };
 
-  private updateDirection = (): void => {
-    this.currentDirection =
-      Object.values(Sort)[
-        (Object.values(Sort).indexOf(this.currentDirection) + 1) % Object.values(Sort).length
-      ];
-    this.direction = this.currentDirection.toString() as SortDirectionType;
-  };
-
-  private sort = (): void => {
-    this.updateDirection();
-    this.sortRows();
-    this.resetSortAttribute();
-    this.tableRows = Array.from(this.tableBody.children) as HTMLMdsTableRowElement[];
-
-    if (this.currentDirection !== Sort.NONE) {
-      this.tableRows.forEach((row: HTMLMdsTableRowElement) => {
+  // the rows of a sorted table and the cells of the sorted column carry `sorted`, which their
+  // styles read; a column that returns to none clears its own cells, and the rows only when no
+  // other column is sorted
+  private markRows = (body: HTMLMdsTableBodyElement): void => {
+    const index = this.index();
+    const sorted = this.direction !== 'none';
+    const keepRows = !sorted && this.hasSortedSibling();
+    this.rows(body).forEach((row) => {
+      if (sorted) {
         row.setAttribute('sorted', '');
-      });
-      return;
-    }
-    this.tableRows.forEach((row: HTMLMdsTableRowElement) => {
-      row.removeAttribute('sorted');
+      } else if (!keepRows) {
+        row.removeAttribute('sorted');
+      }
+      const cell = row.children[index];
+      if (sorted) {
+        cell?.setAttribute('sorted', '');
+      } else {
+        cell?.removeAttribute('sorted');
+      }
     });
   };
 
-  @Watch('sortable')
-  sortableHandler(): void {
-    this.prepareSorter();
-  }
+  // rows rendered after the sort, the page an application loads with `sorting="external"`, get
+  // the marks of the sorted column too
+  private observeRows = (body: HTMLMdsTableBodyElement): void => {
+    this.bodyObserver?.disconnect();
+    this.bodyObserver = undefined;
+    if (this.direction === 'none' || !Build.isBrowser) {
+      return;
+    }
+    this.bodyObserver = new MutationObserver(() => this.markRows(body));
+    this.bodyObserver.observe(body, { childList: true });
+  };
+
+  /**
+   * Brings the table in line with `direction`, whoever set it: one sorted column at a time, the
+   * rows in its order unless the table sorts them outside, the marks of the sorted column.
+   */
+  private applyDirection = (): void => {
+    const body = this.body();
+    if (!this.sortable || !body) {
+      return;
+    }
+    if (this.direction !== 'none') {
+      this.siblings().forEach((cell) => {
+        if (cell.direction !== 'none') {
+          cell.direction = 'none';
+        }
+      });
+    }
+    if (!this.isExternal()) {
+      this.sortRows(body);
+    }
+    this.markRows(body);
+    this.observeRows(body);
+  };
+
+  private sort = (): void => {
+    const direction = cycle[(cycle.indexOf(this.direction) + 1) % cycle.length];
+    this.writingDirection = true;
+    this.direction = direction;
+    this.writingDirection = false;
+    this.applyDirection();
+    this.sortEvent.emit({ direction, index: this.index(), sortKey: this.sortKey });
+  };
 
   @Watch('direction')
-  directionHandler(newValue: string): void {
-    if (newValue === 'none') {
-      this.direction = 'none';
-      this.currentDirection = Sort.NONE;
+  directionHandler(): void {
+    if (this.writingDirection) {
+      return;
     }
+    this.applyDirection();
   }
 
   render() {
