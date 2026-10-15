@@ -20,7 +20,7 @@ The `<mds-button>` web component is the primary interactive action control of th
 - **Active state**: Mirrors a visual pressed state through the `active` attribute, safe to drive from CSS attribute selectors.
 - **Disabled state**: Blocks pointer and keyboard activation and removes the host from the tab sequence. A disabled `<fieldset>` around the button disables it the same way, as it does a native button, without setting `disabled`.
 - **Await state**: Renders an inline spinner, blocks pointer activation, and sets `aria-busy="true"` for assistive tech. Remove the attribute when done - do not set `await="false"`.
-- **Accessibility**: Sets `role="button"` on the host, `role="link"` when `href` is set; the `label` prop (or slotted text) is rendered as the button text, which names it. Without a label, the component sets `aria-label` and `title` from the last segment of the icon slug (`mi/baseline/delete` -> "delete"), which names the icon, not the action: icon-only buttons need an explicit `aria-label` (or `title`).
+- **Accessibility**: Sets `role="button"` on the host, `role="link"` when `href` is set; the `label` prop (or slotted text) is rendered as the button text, which names it. Without a label, an `aria-label` or a `title`, the component sets `title` from the last segment of the icon slug (`mi/baseline/delete` -> "delete"), which names the icon, not the action: icon-only buttons need an explicit `aria-label` (or `title`), or an `mds-tooltip` with `relation="label"`. A host with `aria-labelledby` gets no name from the slug, and loses the one it had when the attribute comes later, as it does from the tooltip.
 - **Sizing**: The `size` prop drives padding, font size, and minimum hit area. Do not override dimensions with inline `width` / `height`.
 - **Linking constraint**: `target` is effective only when `href` is set.
 
@@ -104,6 +104,13 @@ Omit `label` and provide `aria-label` (or `title`) explicitly. Without one, the 
   variant="error"
   tone="text"
 ></mds-button>
+```
+
+When an `mds-tooltip` shows the name of the button, let the tooltip be the name with `relation="label"` instead: the button then needs no `aria-label`, and gets no `title` from the icon slug.
+
+```html
+<mds-button id="elimina-btn" icon="mi/baseline/delete" variant="error" tone="text"></mds-button>
+<mds-tooltip target="#elimina-btn" relation="label">Elimina elemento</mds-tooltip>
 ```
 
 #### Hyperlink via `href`
@@ -284,7 +291,7 @@ button.addEventListener('click', (event) => {
 
 #### Icon-Only Buttons Without an Accessible Name
 
-When `label` is empty, the component derives `aria-label` / `title` from the last segment of the icon slug ("delete"), which names the icon, not the action. Always supply an explicit `aria-label` (or `title`) for icon-only buttons.
+When `label` is empty, the component derives a `title` from the last segment of the icon slug ("delete"), which names the icon, not the action. Always supply an explicit `aria-label` (or `title`) for icon-only buttons, or an `mds-tooltip` with `relation="label"`.
 
 ```html
 <!-- INCORRECT -->

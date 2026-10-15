@@ -41,6 +41,8 @@ export class MdsButton {
   // the spinner is rendered from the first time the button awaits, and then kept: it slides out
   // when the button stops awaiting
   private hasAwaited = false;
+  // whether the title on the host is the one the button took from its icon slug
+  private iconTitle = false;
 
   @Element() host: HTMLMdsButtonElement;
 
@@ -303,6 +305,9 @@ export class MdsButton {
       this.host.focus();
     }
 
+    // An icon given as markup has no slug to name the button, and the button takes no role
+    // either: the components that render one without a label (mds-calendar, mds-input-date,
+    // mds-header, ...) would expose a button with no name
     if (isIconFormatIsBase64(this.icon)) {
       return;
     }
@@ -314,17 +319,35 @@ export class MdsButton {
       this.label = undefined;
     }
 
-    if ((this.label ?? '') === '' && this.icon != null && this.icon !== '') {
-      const iconTitle = unslugName(this.icon);
-      if (!this.host.hasAttribute('aria-label')) {
-        setAttributeIfEmpty(this.host, 'title', iconTitle);
-      }
-      if (!this.host.hasAttribute('title')) {
-        setAttributeIfEmpty(this.host, 'aria-label', iconTitle);
-      }
-    }
-
+    this.syncIconName();
     setAttributeIfEmpty(this.host, 'role', this.isLink() ? 'link' : 'button');
+  }
+
+  /**
+   * Without a label, an aria-label or a title, the button is named after the last segment of its
+   * icon slug, as a `title`. Another element that names it (`aria-labelledby`, which an
+   * `mds-tooltip` with `relation="label"` writes after the button has loaded) takes that name
+   * back: the slug would put a native tooltip on top of the real name (#923).
+   */
+  private readonly syncIconName = (): void => {
+    if (this.host.hasAttribute('aria-labelledby')) {
+      if (this.iconTitle) this.host.removeAttribute('title');
+      this.iconTitle = false;
+      return;
+    }
+    if (this.iconTitle || (this.label ?? '') !== '' || !this.icon) return;
+    // the watcher runs for an icon given as markup too
+    if (isIconFormatIsBase64(this.icon) || isIconFormatIsSVG(this.icon)) return;
+    if (this.host.hasAttribute('aria-label') || this.host.hasAttribute('title')) return;
+    this.host.setAttribute('title', unslugName(this.icon));
+    this.iconTitle = true;
+  };
+
+  // Stencil watches a native attribute too (it joins observedAttributes), the lint rule predates it
+  // eslint-disable-next-line stencil/no-unused-watch
+  @Watch('aria-labelledby')
+  handleAriaLabelledbyChange(): void {
+    this.syncIconName();
   }
 
   @Watch('await')

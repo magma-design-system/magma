@@ -1,5 +1,5 @@
 import { Component, Element, Host, Prop, h, Watch } from '@stencil/core';
-import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
+import { FloatingUIPlacement, FloatingUIRelation, FloatingUIStrategy } from '@type/floating-ui';
 import { TypographyTooltipType } from '@type/typography';
 import arrowSvg from './assets/arrow.svg';
 import { FloatingController, FloatingElement } from '@common/floating-controller';
@@ -54,6 +54,13 @@ export class MdsTooltip implements FloatingElement {
    * Specifies where the component should be placed relative to the caller.
    */
   @Prop({ reflect: true }) readonly placement: FloatingUIPlacement = 'top';
+
+  /**
+   * Sets what the tooltip is to its caller: its `description` (`aria-describedby`), or its
+   * `label` (`aria-labelledby`), when the tooltip holds the only visible name of the caller, as on
+   * an icon-only button.
+   */
+  @Prop({ reflect: true }) readonly relation: FloatingUIRelation = 'description';
 
   /**
    * Specifies the font typography of the element
@@ -122,6 +129,11 @@ export class MdsTooltip implements FloatingElement {
   @Watch('strategy')
   strategyChanged(): void {
     this.floatingController.updatePosition();
+  }
+
+  @Watch('relation')
+  relationChanged(): void {
+    this.floatingController?.rewire();
   }
 
   @Watch('visible')

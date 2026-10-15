@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 
 describe('mds-tooltip', () => {
   it('renders', async () => {
@@ -66,6 +67,83 @@ describe('mds-tooltip', () => {
     await waitForChanges();
 
     expect(warn).not.toHaveBeenCalled();
+  });
+
+  // #923: on an icon-only button the text of the tooltip is the name of the button
+  describe('naming its caller, with relation="label"', () => {
+    it('labels the caller instead of describing it', async () => {
+      const { root } = await render(
+        '<mds-tooltip target="#caller" relation="label">Tokens</mds-tooltip><button id="caller"></button>',
+      );
+      const caller = root.parentElement!.querySelector('#caller')!;
+
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-labelledby');
+      });
+
+      expect(caller.getAttribute('aria-labelledby')).toBe(root.id);
+      expect(caller).not.toHaveAttribute('aria-describedby');
+      expect(root).toEqualAttribute('role', 'tooltip');
+    });
+
+    it('leaves an icon-only mds-button with the tooltip as its only name', async () => {
+      mockIconFetch();
+      const { root } = await render(
+        `<div>
+           <mds-button id="caller" icon="mdi/alien"></mds-button>
+           <mds-tooltip id="tip" target="#caller" relation="label">Tokens</mds-tooltip>
+         </div>`,
+      );
+      const caller = root.querySelector('#caller')!;
+
+      await vi.waitFor(() => {
+        expect(caller).toEqualAttribute('aria-labelledby', 'tip');
+      });
+
+      // no native tooltip from the icon slug on top of the Magma one, no description repeating it
+      await vi.waitFor(() => {
+        expect(caller).not.toHaveAttribute('title');
+      });
+      expect(caller).not.toHaveAttribute('aria-label');
+      expect(caller).not.toHaveAttribute('aria-describedby');
+    });
+
+    it('moves from describing to labelling the caller and back when relation changes', async () => {
+      const { root } = await render(
+        '<mds-tooltip target="#caller">Tokens</mds-tooltip><button id="caller"></button>',
+      );
+      const tip = root as HTMLMdsTooltipElement;
+      const caller = root.parentElement!.querySelector('#caller')!;
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-describedby');
+      });
+
+      tip.relation = 'label';
+      await vi.waitFor(() => {
+        expect(caller).toEqualAttribute('aria-labelledby', tip.id);
+      });
+      expect(caller).not.toHaveAttribute('aria-describedby');
+
+      tip.relation = 'description';
+      await vi.waitFor(() => {
+        expect(caller).toEqualAttribute('aria-describedby', tip.id);
+      });
+      expect(caller).not.toHaveAttribute('aria-labelledby');
+    });
+
+    it('leaves alone a caller that is already labelled', async () => {
+      const { root } = await render(
+        '<mds-tooltip target="#caller" relation="label">Tokens</mds-tooltip><button id="caller" aria-labelledby="own"></button><span id="own">Own</span>',
+      );
+      const caller = root.parentElement!.querySelector('#caller')!;
+
+      // the id goes on the tooltip right before the caller is written
+      await vi.waitFor(() => {
+        expect(root.id).not.toBe('');
+      });
+
+      expect(caller).toEqualAttribute('aria-labelledby', 'own');
+    });
   });
 
   describe('a target that names nothing', () => {

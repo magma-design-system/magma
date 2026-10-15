@@ -16,3 +16,6 @@ export type FloatingUIPlacement = (typeof floatingUIPlacementDictionary)[number]
 
 export const floatingUIStrategyDictionary = ['absolute', 'fixed'] as const;
 export type FloatingUIStrategy = (typeof floatingUIStrategyDictionary)[number];
+
+export const floatingUIRelationDictionary = ['description', 'label'] as const;
+export type FloatingUIRelation = (typeof floatingUIRelationDictionary)[number];
