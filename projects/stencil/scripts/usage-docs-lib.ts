@@ -387,3 +387,23 @@ export function checkUsageDoc(md: string, model: UsageModel): UsageFinding[] {
   }
   return checker.findings.sort((a, b) => a.line - b.line);
 }
+
+/** The intro every component readme carries under its title, above the generated part. */
+export const README_INTRO =
+  "This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.";
+
+/**
+ * The hand-written text of a component readme: what sits above Stencil's
+ * `<!-- Auto Generated Below -->` besides the title and the generic intro. The usage files
+ * are the only hand-authored docs of a component (docs/COMPONENTS.md); a readme section
+ * reaches nobody but the readers of the `readme` field of dist/documentation.json, where
+ * it went stale or repeated the usage docs (#842). Empty for a clean readme.
+ */
+export function handWrittenReadme(tag: string, readme: string): string {
+  const marker = readme.indexOf('<!-- Auto Generated Below -->');
+  const head = marker === -1 ? readme : readme.slice(0, marker);
+  return head
+    .replace(new RegExp(`^# ${tag}[ \\t]*$`, 'm'), '')
+    .replace(README_INTRO, '')
+    .trim();
+}

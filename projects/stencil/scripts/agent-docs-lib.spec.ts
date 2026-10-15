@@ -92,10 +92,27 @@ describe('rewriteGuideLinks', () => {
     );
   });
 
-  it("points a component's usage docs to its shipped AGENTS.md too", () => {
+  it("points a component's Pattern and Antipattern to the shipped files, keeping the link text", () => {
     expect(
       rewriteGuideLinks(
-        '[usage](../../projects/stencil/src/components/mds-table/usage/2.%20Pattern.md)',
+        'in the [`mds-icon` pattern](../../projects/stencil/src/components/mds-icon/usage/2.%20Pattern.md)',
+        fromWrapper,
+      ),
+    ).toBe(
+      'in the [`mds-icon` pattern](../../magma/dist/collection/components/mds-icon/pattern.md)',
+    );
+    expect(
+      rewriteGuideLinks(
+        '[no](../../projects/stencil/src/components/mds-table/usage/3.%20Antipattern.md#do-not)',
+        fromMagma,
+      ),
+    ).toBe('[no](../dist/collection/components/mds-table/antipattern.md#do-not)');
+  });
+
+  it("points a component's description to its shipped AGENTS.md", () => {
+    expect(
+      rewriteGuideLinks(
+        '[usage](../../projects/stencil/src/components/mds-table/usage/1.%20Description.md)',
         fromMagma,
       ),
     ).toBe('[`mds-table/AGENTS.md`](../dist/collection/components/mds-table/AGENTS.md)');
