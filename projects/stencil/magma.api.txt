@@ -639,6 +639,7 @@ mds-input prop pattern (attr pattern) [reflect]: string | undefined
 mds-input prop placeholder (attr placeholder) [reflect]: string | undefined
 mds-input prop readonly (attr readonly) [reflect]: boolean | undefined = false
 mds-input prop required (attr required) [reflect]: boolean | undefined = false
+mds-input prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined = 'lg'
 mds-input prop step (attr step) [reflect]: string | undefined
 mds-input prop tip (attr tip) [reflect]: string | undefined
 mds-input prop type (attr type) [reflect]: "cc" | "cf" | "date" | "email" | "isbn" | "number" | "password" | "piva" | "search" | "tel" | "text" | "textarea" | "time" | "url" | undefined = 'text'
@@ -693,6 +694,7 @@ mds-input-date prop min (attr min) [reflect, mutable]: null | string = null
 mds-input-date prop name (attr name) [reflect]: string | undefined
 mds-input-date prop readonly (attr readonly) [reflect]: boolean | undefined = false
 mds-input-date prop required (attr required) [reflect]: boolean | undefined = false
+mds-input-date prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined = 'lg'
 mds-input-date prop value (attr value) [reflect]: string = ''
 mds-input-date prop variant (attr variant) [reflect, mutable]: "ai" | "error" | "info" | "primary" | "success" | "warning" | undefined = 'primary'
 mds-input-date event mdsInputDateSelect: string [bubbles, cancelable, composed]
@@ -723,6 +725,7 @@ mds-input-date-range prop hideToday (attr hide-today) [reflect]: boolean = false
 mds-input-date-range prop max (attr max) [reflect]: null | string = null
 mds-input-date-range prop min (attr min) [reflect]: null | string = null
 mds-input-date-range prop name (attr name) [reflect]: string | undefined
+mds-input-date-range prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined = 'lg'
 mds-input-date-range prop startDate (attr start-date) [reflect]: string = ''
 mds-input-date-range event mdsInputDateRangeValueChange: { startDate: string; endDate: string; } [bubbles, cancelable, composed]
 mds-input-date-range method preselect(event: EventDate) => Promise<void>
@@ -796,7 +799,8 @@ mds-input-select prop multiple (attr multiple) [reflect]: boolean | undefined = 
 mds-input-select prop name (attr name) [reflect]: string | undefined
 mds-input-select prop placeholder (attr placeholder) [reflect]: string | undefined
 mds-input-select prop required (attr required) [reflect]: boolean | undefined = false
-mds-input-select prop size (attr size) [reflect]: number | undefined = 0
+mds-input-select prop rows (attr rows) [reflect]: number | undefined = 0
+mds-input-select prop size (attr size) [reflect]: "lg" | "md" | "sm" | number | undefined = 'lg'
 mds-input-select prop value (attr value) [reflect]: null | number | string | undefined = ''
 mds-input-select prop variant (attr variant) [reflect]: "error" | "info" | "success" | "warning" | undefined
 mds-input-select event mdsInputSelectChange: MdsInputSelectEventDetail [bubbles, cancelable, composed]
@@ -1686,6 +1690,7 @@ type HeaderBarNavType = "none" | "all" | "desktop" | "mobile"
 type HorizontalActionsAnimationType = "slide" | "fade"
 type InputControlsIconType = "arrow" | "arithmetic"
 type InputControlsLayoutType = "horizontal" | "vertical"
+type InputSizeType = "sm" | "md" | "lg"
 type InputSwitchSizeType = 'sm' | 'md' | 'lg';
 type InputSwitchType = 'checkbox' | 'radio' | 'switch';
 type InputTextType = "number" | "text" | "time" | "email" | "tel" | "url" | "date" | "password" | "search" | "textarea" | "cc" | "cf" | "isbn" | "piva"
