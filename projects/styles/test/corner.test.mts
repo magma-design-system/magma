@@ -1,14 +1,15 @@
-// The corner axis of build/css/corner.css (corner.ts): every shape block carries the cap, and
-// a browser without corner-shape gets the round scale and the fallback cap back from a last
-// @supports block that leaves an explicit round alone (#913). Needs a build first (nx: test
-// dependsOn build).
+// The corner axis as it ships: corner.ts writes build/css/corner.css and copy.ts appends it to
+// dist/css/globals.css. Every shape block carries the cap, and a browser without corner-shape
+// gets the round scale and the fallback cap back from an @supports block, after the squircle
+// one, that leaves an explicit round alone (#913). Reads dist, not build: CI hands the test job
+// only dist. Needs a build first (nx: test dependsOn build).
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import postcss, { type AtRule, type Rule } from 'postcss'
 import { describe, expect, test } from 'vitest'
 
-const CORNER = resolve(__dirname, '../build/css/corner.css')
-const root = postcss.parse(readFileSync(CORNER, 'utf8'), { from: CORNER })
+const GLOBALS = resolve(__dirname, '../dist/css/globals.css')
+const root = postcss.parse(readFileSync(GLOBALS, 'utf8'), { from: GLOBALS })
 
 const declarations = (rule: Rule): Map<string, string> => {
   const map = new Map<string, string>()
@@ -18,14 +19,18 @@ const declarations = (rule: Rule): Map<string, string> => {
   return map
 }
 
-const rules = root.nodes.filter((node): node is Rule => node.type === 'rule')
-const blockOf = (selector: string): Map<string, string> => {
-  const rule = rules.find((node) => node.selector === selector)
-  if (!rule) throw new Error(`no ${selector} block in ${CORNER}`)
-  return declarations(rule)
+// globals.css has a :root of its own before the axis: a shape block is one that sets the shape
+const shapeBlocks = root.nodes.filter(
+  (node): node is Rule => node.type === 'rule' && declarations(node).has('--magma-corner-shape'),
+)
+const shapeBlock = (selector: string): Rule => {
+  const rule = shapeBlocks.find((node) => node.selector === selector)
+  if (!rule) throw new Error(`no ${selector} shape block in ${GLOBALS}`)
+  return rule
 }
+const blockOf = (selector: string): Map<string, string> => declarations(shapeBlock(selector))
 
-describe('corner.css', () => {
+describe('the corner axis of globals.css', () => {
   test.each([':root', "[data-corner-shape='round']", "[data-corner-shape='squircle']"])(
     '%s lets a corner take half the height, where the browser clamps',
     (selector) => {
@@ -35,14 +40,17 @@ describe('corner.css', () => {
 
   describe('without corner-shape', () => {
     const supports = root.nodes.filter(
-      (node): node is AtRule => node.type === 'atrule' && node.name === 'supports',
+      (node): node is AtRule =>
+        node.type === 'atrule' && node.name === 'supports' && node.params.includes('corner-shape'),
     )
     const fallback = supports[0]?.first as Rule
 
-    test('is the last block, so it wins over the squircle block of equal weight', () => {
+    test('comes after the squircle block, so it wins over it at equal weight', () => {
       expect(supports).toHaveLength(1)
       expect(supports[0].params).toBe('not (corner-shape: squircle)')
-      expect(root.last).toBe(supports[0])
+      expect(root.index(supports[0])).toBeGreaterThan(
+        root.index(shapeBlock("[data-corner-shape='squircle']")),
+      )
     })
 
     test('covers the default and an explicit squircle, never an explicit round', () => {
