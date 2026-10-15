@@ -13,13 +13,13 @@
   --mds-pref-theme-item-color-status-warning: rgb(var(--magma-warning-emphasis));
   --mds-pref-theme-item-color-variant-primary: rgb(var(--magma-accent-emphasis));
 
-  display: flex;
-}
-
-.label {
   align-items: center;
+  cursor: pointer;
   display: flex;
-  gap: --spacing(200);
+  gap: --spacing(400);
+
+  /* the previews line up at the end of the row, whatever the length of the labels */
+  justify-content: space-between;
 }
 
 .theme-preview {
@@ -28,6 +28,7 @@
   box-shadow: var(--shadow-ring-weak);
   box-sizing: border-box;
   display: inline-flex;
+  flex: none;
   flex-wrap: wrap;
   gap: --spacing(100);
   height: --spacing(600);

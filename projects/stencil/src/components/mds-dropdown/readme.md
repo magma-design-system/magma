@@ -1,43 +1,6 @@
 # mds-dropdown
 
-### Best practices of usage
 
-There are many situations where the component should be placed on the surface of the document:
-
-```html
-<body>
-  <mds-dropdown target="#ui-content">
-    <mds-text>Dropdown contents</mds-text>
-  </mds-dropdown>
-  <div>
-    <mds-text>Deep contents</mds-text>
-    <div>
-      <mds-text id="ui-content">Deeper contents</mds-text>
-    </div>
-  </div>
-</body>
-```
-
-The next use case couldn't be rendered correctly depending by relative/absolute/etc. positioning and `strategy` attribute mix.
-
-```html
-<body>
-  <div>
-    <mds-text>Deep contents</mds-text>
-    <div>
-      <mds-text id="ui-content">Deeper contents</mds-text>
-      <mds-dropdown target="#ui-content">
-        <mds-text>Dropdown contents</mds-text>
-      </mds-dropdown>
-    </div>
-  </div>
-</body>
-```
-
-Affected problems:
-
-- Wrong `backdrop` render
-- Wrong `mds-dropdown` positioning
 
 This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.
 

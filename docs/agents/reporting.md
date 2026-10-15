@@ -51,8 +51,11 @@ gh label list --repo magma-design-system/magma --search prd-
 
 Match it against this project's repository name (the `origin` remote, or the `name` in
 `package.json`). If none matches, do not create one: the Magma maintainers manage the
-labels of their repository. Open the issue without it and say in the body which project
-and repository it comes from, so they can add the label.
+labels of their repository, and a label missing from their configuration is deleted by
+the next sync. Open the issue without it, and propose its name in the body, so the
+maintainers add it as it is: `prd-` and the project's short name, lowercase, in
+kebab-case (`prd-mindy` for `mindy-webapp`, `prd-docs` for the docs site). Leave out
+generic words such as `app`, `webapp`, `frontend` or the organization's name.
 
 GitHub sets labels on a new issue only for users with write access to the repository,
 and drops them for everyone else, often without an error. After creating the issue,
@@ -91,6 +94,12 @@ The minimal markup or the steps, and the browser if it matters.
 What the project does meanwhile, if anything.
 
 Found in <project> (<repository>): <where in the app>.
+```
+
+When step 4 found no origin label, end the body with the one you propose:
+
+```markdown
+No origin label for this project yet: proposed `prd-<name>`.
 ```
 
 Read the installed versions from the lockfile or `npm ls`, not from the ranges in
