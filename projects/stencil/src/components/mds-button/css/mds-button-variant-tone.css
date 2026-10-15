@@ -1,100 +1,34 @@
 /* The light / dark variants are a pure-inversion pair: light is painted in the
  * paper of the mode, --tone-neutral-seed (#fff light / #000 dark), dark in the
  * ink of the mode. The seed is the intended value here, not a surface: no
- * elevation role is paper in both modes (SEMANTIC_COLOR_SPEC 10 and 15). */
+ * elevation role is paper in both modes (SEMANTIC_COLOR_SPEC 10 and 15).
+ * In the roles of mds-button-variant.css. */
 
 :host([variant='light']) {
-  --mds-button-background: rgb(var(--tone-neutral-seed));
-  --mds-button-border-color-rgb: var(--tone-neutral-seed);
-  --mds-button-color: rgb(var(--magma-text-muted));
-
-  &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--tone-neutral-seed));
-    --mds-button-border-color-rgb: var(--tone-neutral-seed);
-  }
-
-  &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--tone-neutral-seed));
-    --mds-button-border-color-rgb: var(--tone-neutral-seed);
-    --mds-button-color: rgb(var(--magma-text-muted));
-
-    fill: rgb(var(--magma-text-muted));
-  }
-
-  &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--tone-neutral-seed));
-    --mds-button-border-color-rgb: var(--tone-neutral-seed);
-    --mds-button-color: rgb(var(--magma-text-default));
-  }
-
-  &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--magma-text-on-emphasis);
-    --mds-button-color: rgb(var(--magma-text-on-emphasis));
-  }
-
-  &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--magma-text-on-emphasis);
-    --mds-button-color: rgb(var(--magma-text-on-emphasis));
-  }
-
-  &:host([tone='text']) {
-    --mds-button-color: rgb(var(--magma-text-on-emphasis));
-  }
-
-  &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--magma-on-inverse));
-    --mds-button-background: rgb(var(--magma-surface-inverse-muted));
-  }
-
-  &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--magma-text-on-emphasis));
-  }
+  --private-button-fill: var(--tone-neutral-seed);
+  --private-button-fill-hover: var(--private-button-fill);
+  --private-button-on-fill: var(--magma-text-muted);
+  --private-button-wash: var(--private-button-fill);
+  --private-button-wash-hover: var(--private-button-fill);
+  --private-button-ink: var(--private-button-on-fill);
+  --private-button-ink-hover: var(--magma-text-default);
+  --private-button-outline: var(--magma-text-on-emphasis);
+  --private-button-outline-ink: var(--private-button-outline);
+  --private-button-text-ink: var(--private-button-outline);
+  --private-button-text-ink-hover: var(--magma-on-inverse);
+  --private-button-text-wash: var(--magma-surface-inverse-muted);
 }
 
 :host([variant='dark']) {
-  --mds-button-background: rgb(var(--magma-surface-inverse));
-  --mds-button-border-color-rgb: var(--magma-surface-inverse);
-  --mds-button-color: rgb(var(--magma-on-inverse));
-
-  &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-surface-inverse-muted));
-    --mds-button-border-color-rgb: var(--magma-surface-inverse-muted);
-  }
-
-  &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--magma-wash-strong));
-    --mds-button-border-color-rgb: var(--magma-wash-strong);
-    --mds-button-color: rgb(var(--magma-text-default));
-
-    fill: rgb(var(--magma-text-default));
-  }
-
-  &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--magma-wash-strong));
-    --mds-button-border-color-rgb: var(--magma-border-strong);
-    --mds-button-color: rgb(var(--magma-text-default));
-  }
-
-  &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--magma-surface-inverse);
-    --mds-button-color: rgb(var(--magma-text-muted));
-  }
-
-  &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--magma-surface-inverse);
-    --mds-button-color: rgb(var(--magma-text-default));
-  }
-
-  &:host([tone='text']) {
-    --mds-button-color: rgb(var(--magma-text-default));
-  }
-
-  &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--magma-text-default));
-    --mds-button-background: rgb(var(--magma-wash-soft));
-  }
-
-  &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--magma-text-default));
-  }
+  --private-button-fill: var(--magma-surface-inverse);
+  --private-button-fill-hover: var(--magma-surface-inverse-muted);
+  --private-button-on-fill: var(--magma-on-inverse);
+  --private-button-wash: var(--magma-wash-strong);
+  --private-button-wash-hover: var(--private-button-wash);
+  --private-button-wash-hover-ring: var(--magma-border-strong);
+  --private-button-ink: var(--magma-text-default);
+  --private-button-outline-ink: var(--magma-text-muted);
+  --private-button-text-ink: var(--private-button-ink);
+  --private-button-text-ink-hover: var(--private-button-ink);
+  --private-button-text-wash: var(--magma-wash-soft);
 }

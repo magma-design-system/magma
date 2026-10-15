@@ -1,191 +1,57 @@
+/* The status variants, in the roles of mds-button-variant.css */
+
+:host([variant='info']),
+:host([variant='success']),
+:host([variant='warning']),
+:host([variant='error']) {
+  --private-button-text-ink-hover: var(--private-button-ink-hover);
+  --private-button-text-ink-active: var(--private-button-ink-hover);
+}
+
 :host([variant='info']) {
-  --mds-button-background: rgb(var(--magma-info-emphasis));
-  --mds-button-border-color-rgb: var(--magma-info-emphasis);
-  --mds-button-color: rgb(var(--magma-info-on-emphasis));
-
-  &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-info-emphasis-hover));
-    --mds-button-border-color-rgb: var(--magma-info-emphasis-hover);
-  }
-
-  &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--magma-info-wash-base));
-    --mds-button-border-color-rgb: var(--magma-info-wash-base);
-    --mds-button-color: rgb(var(--magma-info-text-subtle));
-
-    fill: rgb(var(--magma-info-text-subtle));
-  }
-
-  &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--magma-info-wash-strong));
-    --mds-button-border-color-rgb: var(--magma-info-wash-strong);
-    --mds-button-color: rgb(var(--magma-info-text-default));
-  }
-
-  &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--magma-info-emphasis);
-    --mds-button-color: rgb(var(--magma-info-text-subtle));
-  }
-
-  &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--magma-info-emphasis);
-    --mds-button-color: rgb(var(--magma-info-text-muted));
-  }
-
-  &:host([tone='text']) {
-    --mds-button-color: rgb(var(--magma-info-text-muted));
-  }
-
-  &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--magma-info-text-default));
-    --mds-button-background: rgb(var(--magma-info-wash-soft));
-  }
-
-  &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--magma-info-text-default));
-  }
+  --private-button-fill: var(--magma-info-emphasis);
+  --private-button-fill-hover: var(--magma-info-emphasis-hover);
+  --private-button-on-fill: var(--magma-info-on-emphasis);
+  --private-button-wash: var(--magma-info-wash-base);
+  --private-button-wash-hover: var(--magma-info-wash-strong);
+  --private-button-ink: var(--magma-info-text-subtle);
+  --private-button-ink-hover: var(--magma-info-text-default);
+  --private-button-text-ink: var(--magma-info-text-muted);
+  --private-button-text-wash: var(--magma-info-wash-soft);
 }
 
 :host([variant='success']) {
-  --mds-button-background: rgb(var(--magma-success-emphasis));
-  --mds-button-border-color-rgb: var(--magma-success-emphasis);
-  --mds-button-color: rgb(var(--magma-success-on-emphasis));
-
-  &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-success-emphasis-hover));
-    --mds-button-border-color-rgb: var(--magma-success-emphasis-hover);
-  }
-
-  &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--magma-success-wash-base));
-    --mds-button-border-color-rgb: var(--magma-success-wash-base);
-    --mds-button-color: rgb(var(--magma-success-text-subtle));
-
-    fill: rgb(var(--magma-success-text-subtle));
-  }
-
-  &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--magma-success-wash-strong));
-    --mds-button-border-color-rgb: var(--magma-success-wash-strong);
-    --mds-button-color: rgb(var(--magma-success-text-default));
-  }
-
-  &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--magma-success-emphasis);
-    --mds-button-color: rgb(var(--magma-success-text-subtle));
-  }
-
-  &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--magma-success-emphasis);
-    --mds-button-color: rgb(var(--magma-success-text-muted));
-  }
-
-  &:host([tone='text']) {
-    --mds-button-color: rgb(var(--magma-success-text-muted));
-  }
-
-  &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--magma-success-text-default));
-    --mds-button-background: rgb(var(--magma-success-wash-soft));
-  }
-
-  &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--magma-success-text-default));
-  }
+  --private-button-fill: var(--magma-success-emphasis);
+  --private-button-fill-hover: var(--magma-success-emphasis-hover);
+  --private-button-on-fill: var(--magma-success-on-emphasis);
+  --private-button-wash: var(--magma-success-wash-base);
+  --private-button-wash-hover: var(--magma-success-wash-strong);
+  --private-button-ink: var(--magma-success-text-subtle);
+  --private-button-ink-hover: var(--magma-success-text-default);
+  --private-button-text-ink: var(--magma-success-text-muted);
+  --private-button-text-wash: var(--magma-success-wash-soft);
 }
 
 :host([variant='warning']) {
-  --mds-button-background: rgb(var(--magma-warning-emphasis));
-  --mds-button-border-color-rgb: var(--magma-warning-emphasis);
-  --mds-button-color: rgb(var(--magma-warning-on-emphasis));
-
-  &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-warning-emphasis-hover));
-    --mds-button-border-color-rgb: var(--magma-warning-emphasis-hover);
-  }
-
-  &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--magma-warning-wash-base));
-    --mds-button-border-color-rgb: var(--magma-warning-wash-base);
-    --mds-button-color: rgb(var(--magma-warning-text-subtle));
-
-    fill: rgb(var(--magma-warning-text-subtle));
-  }
-
-  &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--magma-warning-wash-strong));
-    --mds-button-border-color-rgb: var(--magma-warning-wash-strong);
-    --mds-button-color: rgb(var(--magma-warning-text-default));
-  }
-
-  &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--magma-warning-emphasis);
-    --mds-button-color: rgb(var(--magma-warning-text-subtle));
-  }
-
-  &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--magma-warning-emphasis);
-    --mds-button-color: rgb(var(--magma-warning-text-muted));
-  }
-
-  &:host([tone='text']) {
-    --mds-button-color: rgb(var(--magma-warning-text-muted));
-  }
-
-  &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--magma-warning-text-default));
-    --mds-button-background: rgb(var(--magma-warning-wash-soft));
-  }
-
-  &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--magma-warning-text-default));
-  }
+  --private-button-fill: var(--magma-warning-emphasis);
+  --private-button-fill-hover: var(--magma-warning-emphasis-hover);
+  --private-button-on-fill: var(--magma-warning-on-emphasis);
+  --private-button-wash: var(--magma-warning-wash-base);
+  --private-button-wash-hover: var(--magma-warning-wash-strong);
+  --private-button-ink: var(--magma-warning-text-subtle);
+  --private-button-ink-hover: var(--magma-warning-text-default);
+  --private-button-text-ink: var(--magma-warning-text-muted);
+  --private-button-text-wash: var(--magma-warning-wash-soft);
 }
 
 :host([variant='error']) {
-  --mds-button-background: rgb(var(--magma-danger-emphasis));
-  --mds-button-border-color-rgb: var(--magma-danger-emphasis);
-  --mds-button-color: rgb(var(--magma-danger-on-emphasis));
-
-  &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-danger-emphasis-hover));
-    --mds-button-border-color-rgb: var(--magma-danger-emphasis-hover);
-  }
-
-  &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--magma-danger-wash-base));
-    --mds-button-border-color-rgb: var(--magma-danger-wash-base);
-    --mds-button-color: rgb(var(--magma-danger-text-subtle));
-
-    fill: rgb(var(--magma-danger-text-subtle));
-  }
-
-  &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--magma-danger-wash-strong));
-    --mds-button-border-color-rgb: var(--magma-danger-wash-strong);
-    --mds-button-color: rgb(var(--magma-danger-text-default));
-  }
-
-  &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--magma-danger-emphasis);
-    --mds-button-color: rgb(var(--magma-danger-text-subtle));
-  }
-
-  &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--magma-danger-emphasis);
-    --mds-button-color: rgb(var(--magma-danger-text-muted));
-  }
-
-  &:host([tone='text']) {
-    --mds-button-color: rgb(var(--magma-danger-text-muted));
-  }
-
-  &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--magma-danger-text-default));
-    --mds-button-background: rgb(var(--magma-danger-wash-soft));
-  }
-
-  &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--magma-danger-text-default));
-  }
+  --private-button-fill: var(--magma-danger-emphasis);
+  --private-button-fill-hover: var(--magma-danger-emphasis-hover);
+  --private-button-on-fill: var(--magma-danger-on-emphasis);
+  --private-button-wash: var(--magma-danger-wash-base);
+  --private-button-wash-hover: var(--magma-danger-wash-strong);
+  --private-button-ink: var(--magma-danger-text-subtle);
+  --private-button-ink-hover: var(--magma-danger-text-default);
+  --private-button-text-ink: var(--magma-danger-text-muted);
+  --private-button-text-wash: var(--magma-danger-wash-soft);
 }
