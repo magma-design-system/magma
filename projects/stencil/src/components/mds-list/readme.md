@@ -21,7 +21,7 @@ The `<mds-list>` web component is the structural container of the Magma Design S
 
 #### Properties & Visual Configurations
 
-This component exposes no configurable props; it carries no `variant`, `tone`, or `size` of its own. All appearance and behavior are delegated to the slotted `<mds-list-item>` children. For the shared ladders that govern the children, see [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
+This component exposes no configurable props; it carries no `variant`, `tone`, `size` or text colour of its own: the items take the colour of the container, and a class such as `text-fg-muted` on `<mds-list>` makes the whole list secondary. All appearance and behavior are delegated to the slotted `<mds-list-item>` children. For the shared ladders that govern the children, see [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).
 
 
 ### 2. Pattern
