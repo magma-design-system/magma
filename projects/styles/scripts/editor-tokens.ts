@@ -3,6 +3,7 @@ import postcss, { Declaration } from 'postcss';
 import { BUILD_DIR, PROJECT_DIR } from './meta';
 import { mkdir, readFile, readdir, writeFile } from 'fs/promises';
 import { logFileSavedTo } from '../../../scripts/log';
+import { semanticModel } from '../../design-tokens/semantic.model';
 
 /*
   Generate the single stylesheet an editor reads to autocomplete Magma tokens.
@@ -317,6 +318,15 @@ const main = async (): Promise<void> => {
   const chunks: string[] = [];
   let heading = '';
 
+  // what each semantic role is for (#876), on the line of its declaration: a comment on a line
+  // of its own is a group heading in this file
+  const descriptions = new Map(
+    semanticModel()
+      .base.flatMap(({ decls }) => decls)
+      .filter((decl) => decl.description)
+      .map((decl) => [`--${decl.name}`, decl.description as string]),
+  );
+
   for (const source of SOURCES) {
     const collected = source.collect !== undefined ? await source.collect() : await collect(source);
     const tokens = ordered(collected).filter((token) => {
@@ -333,7 +343,10 @@ const main = async (): Promise<void> => {
         chunks.push(`${chunks.length === 0 ? '' : '\n'}    /* ${label} */`);
         heading = label;
       }
-      chunks.push(`    ${token.name}: ${previewable(token.value)};`);
+      const description = descriptions.get(token.name);
+      chunks.push(
+        `    ${token.name}: ${previewable(token.value)};${description ? ` /* ${description} */` : ''}`,
+      );
     }
   }
 

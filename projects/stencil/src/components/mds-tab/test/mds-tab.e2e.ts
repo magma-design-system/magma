@@ -78,6 +78,97 @@ describe('mds-tab', () => {
     });
   });
 
+  // the background of the selected tab in the slide animation: it slides from tab to tab on a
+  // selection, and is already in place when the strip is shown, on load or again after being
+  // hidden. It used to grow from the corner every time the strip appeared (#924)
+  describe('the slider', () => {
+    const second = `<mds-tab>
+  <mds-tab-item label="First"></mds-tab-item>
+  <mds-tab-item label="Second" selected></mds-tab-item>
+</mds-tab>`;
+
+    const frame = (): Promise<number> => new Promise((resolve) => requestAnimationFrame(resolve));
+
+    const sliderOf = (tab: HTMLElement): HTMLElement => tab.shadowRoot!.querySelector('.slider')!;
+
+    /** Fails as soon as the slider runs a transition, in any of the next frames. */
+    const staysStill = async (tab: HTMLElement, frames = 30): Promise<void> => {
+      for (let count = 0; count < frames; count += 1) {
+        expect(sliderOf(tab).getAnimations()).toHaveLength(0);
+        await frame();
+      }
+    };
+
+    /** The slider covers the item, within a pixel of rounding. */
+    const coversItem = (tab: HTMLElement, item: Element): void => {
+      const slider = sliderOf(tab).getBoundingClientRect();
+      const box = item.getBoundingClientRect();
+      expect(Math.abs(slider.left - box.left)).toBeLessThanOrEqual(1);
+      expect(Math.abs(slider.width - box.width)).toBeLessThanOrEqual(1);
+    };
+
+    const settled = async (tab: HTMLElement, item: Element): Promise<void> => {
+      await vi.waitFor(() => {
+        expect(sliderOf(tab).getAnimations()).toHaveLength(0);
+        coversItem(tab, item);
+      });
+    };
+
+    it('is under the selected tab on load, without sliding there', async () => {
+      const { root } = await render(second);
+
+      await staysStill(root);
+      coversItem(root, root.querySelectorAll('mds-tab-item')[1]);
+    });
+
+    it('is under the selected tab when a strip hidden on load is shown', async () => {
+      const { root } = await render(`<div style="display: none">${second}</div>`);
+      const tab = root.querySelector('mds-tab')!;
+      await staysStill(tab, 5);
+
+      root.style.display = '';
+
+      await staysStill(tab);
+      coversItem(tab, tab.querySelectorAll('mds-tab-item')[1]);
+    });
+
+    it('is still in place when the strip is shown again after being hidden', async () => {
+      const { root } = await render(`<div>${second}</div>`);
+      const tab = root.querySelector('mds-tab')!;
+      const item = tab.querySelectorAll('mds-tab-item')[1];
+      await settled(tab, item);
+
+      root.style.display = 'none';
+      await staysStill(tab, 5);
+      root.style.display = '';
+
+      await staysStill(tab);
+      coversItem(tab, item);
+    });
+
+    it('follows a change of the layout without sliding', async () => {
+      const { root } = await render(second);
+      const [first, item] = Array.from(root.querySelectorAll('mds-tab-item'));
+      await settled(root, item);
+
+      first.label = 'A much longer first label';
+
+      await staysStill(root);
+      coversItem(root, item);
+    });
+
+    it('slides to the tab that is selected', async () => {
+      const { root } = await render(second);
+      const [first, item] = Array.from(root.querySelectorAll('mds-tab-item'));
+      await settled(root, item);
+
+      await userEvent.click(first.shadowRoot!.querySelector('mds-button')!);
+
+      await vi.waitFor(() => expect(sliderOf(root).getAnimations().length).toBeGreaterThan(0));
+      await settled(root, first);
+    });
+  });
+
   describe('as a navigation, when every item is a link', () => {
     const tabs = (root: HTMLElement): Element => root.shadowRoot!.querySelector('.tabs')!;
 

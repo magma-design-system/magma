@@ -49,7 +49,9 @@ export class MdsInputSwitch {
   // the checked state of load, which a form reset brings back as the checked attribute of a
   // native input
   private loadChecked = false;
-  @State() dirty = false;
+  // the knob slides only on a change of checked: on load, or shown again after being hidden, it
+  // is drawn in the place of its state (#924)
+  @State() private knobSliding = false;
   @State() hasText: boolean = false;
 
   private t: Locale = new Locale({
@@ -164,8 +166,15 @@ export class MdsInputSwitch {
     this.changeEvent.emit({ name: this.name, checked: this.checked, value });
   };
 
-  private handleDirty = (): void => {
-    this.dirty = true;
+  /**
+   * The knob has landed, or its slide was cut short by hiding the switch: either way it rests in
+   * the place of its state. A quick second toggle cancels the first slide for the opposite one,
+   * which still has to run.
+   */
+  private handleKnobSlideEnd = (event: AnimationEvent): void => {
+    if (event.target !== event.currentTarget) return;
+    if (event.animationName !== (this.checked ? 'check' : 'uncheck')) return;
+    this.knobSliding = false;
   };
 
   private checkFocusElement = (): void => {
@@ -194,7 +203,8 @@ export class MdsInputSwitch {
    * unchecks the others of its group, which clear their own form value.
    */
   @Watch('checked')
-  protected checkedChanged(newValue?: boolean): void {
+  protected checkedChanged(newValue?: boolean, oldValue?: boolean): void {
+    if (this.type === 'switch' && !!newValue !== !!oldValue) this.knobSliding = true;
     if (newValue === false) {
       // the watcher runs again with undefined
       this.checked = undefined;
@@ -245,7 +255,6 @@ export class MdsInputSwitch {
 
     return (
       <Host
-        onClick={this.handleDirty}
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
@@ -264,9 +273,16 @@ export class MdsInputSwitch {
           value={this.value ?? undefined}
         />
         {this.type === 'switch' ? (
-          <label htmlFor="field" class={clsx('switch-container', this.dirty !== false && 'dirty')}>
+          <label
+            htmlFor="field"
+            class={clsx('switch-container', this.knobSliding && 'switch-container--sliding')}
+          >
             <div class="switch">
-              <div class="switch-toggle">
+              <div
+                class="switch-toggle"
+                onAnimationEnd={this.handleKnobSlideEnd}
+                on-animationcancel={this.handleKnobSlideEnd}
+              >
                 {this.explicit && (
                   <mds-icon
                     class="icon-explicit"
