@@ -62,6 +62,14 @@ mds-text {
   @apply focus-bounce--focused;
 }
 
+/* a disabled item does nothing on click and leaves the tab order: it shows as disabled and drops
+ * the hover feedback of a control that answers */
+
+:host([disabled]:not([disabled='false'])) {
+  color: rgb(var(--magma-text-disabled));
+  pointer-events: none;
+}
+
 :host([icon]:not([label])) {
   height: --spacing(900);
   padding: 0;

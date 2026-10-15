@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { useLanguage } from '@test/language';
 import { userEvent } from 'vitest/browser';
 
 type DateRangeDetail = {
@@ -530,5 +531,50 @@ describe('preselections', () => {
     );
 
     expect(host.querySelector('mds-input-date-range-preselection')).toHaveAttribute('selected');
+  });
+});
+
+/** Whether the box of `inner` lies within the box of `outer`. */
+const isInside = (inner: Element, outer: Element): boolean => {
+  const a = inner.getBoundingClientRect();
+  const b = outer.getBoundingClientRect();
+  return a.top >= b.top && a.bottom <= b.bottom && a.left >= b.left && a.right <= b.right;
+};
+
+describe('size', () => {
+  // one height for every field, 48px, where mds-button has sm 28px, md 36px and lg 48px
+  it.each([
+    { size: undefined, height: 48 },
+    { size: 'lg', height: 48 },
+    { size: 'md', height: 36 },
+    { size: 'sm', height: 28 },
+  ])('is $height px tall with the size $size', async ({ size, height }) => {
+    const { root } = await render(
+      `<mds-input-date-range${size ? ` size="${size}"` : ''}></mds-input-date-range>`,
+    );
+
+    expect(root.getBoundingClientRect().height).toBe(height);
+  });
+
+  it('fits an sm calendar button in an sm field', async () => {
+    const { root } = await render('<mds-input-date-range size="sm"></mds-input-date-range>');
+    const button = root.shadowRoot!.querySelector('.action-open-calendar')!;
+
+    expect(button).toEqualAttribute('size', 'sm');
+    expect(isInside(button, root)).toBe(true);
+  });
+});
+
+// #937: the calendar toggle is an icon-only button
+describe('mds-input-date-range calendar toggle', () => {
+  useLanguage('it');
+
+  it('is a button named in the current language', async () => {
+    const { root } = await render('<mds-input-date-range></mds-input-date-range>');
+
+    expect(root.shadowRoot!.querySelector('.action-open-calendar')).toEqualAttributes({
+      role: 'button',
+      'aria-label': 'Apri il calendario',
+    });
   });
 });

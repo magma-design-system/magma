@@ -19,7 +19,7 @@ npm i @maggioli-design-system/magma-react @maggioli-design-system/magma
 matrix). Then install the assets from [`assets.md`](assets.md):
 
 ```bash
-npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens @maggioli-design-system/svg-icons
+npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens
 npm i @fontsource/karla @fontsource/merriweather @fontsource/roboto @fontsource/roboto-mono
 ```
 
@@ -111,9 +111,10 @@ export default function RootLayout({
 
 ## 4. Serve the icon SVGs and styles
 
-- Copy `@maggioli-design-system/svg-icons/dist/svg/` into the static folder served at
-  `/svg/` (Vite/CRA: `public/svg/`; Next.js: `public/svg/`). Match the path you pass
-  to `mdsIconSvgPath`.
+- Write the icons into the static folder served at `/svg/` (Vite and Next.js:
+  `public/svg/`) with one of the routes of [`assets.md`](assets.md) section 3
+  (iconsauce or the copy script, run from `predev` and `prebuild`). Match the path you
+  pass to `mdsIconSvgPath`.
 - Import the global CSS block from [`assets.md`](assets.md) in your global stylesheet
   (`app/globals.css`, `src/index.css`, ...) so the cascade-layer order is preserved.
 

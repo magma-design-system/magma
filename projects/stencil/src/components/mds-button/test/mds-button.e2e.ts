@@ -3,6 +3,7 @@ import { userEvent } from 'vitest/browser';
 import { mockIconFetch } from '@test/fetch';
 import { createSlottedChild, itReadsTheSlottedLabelWhenLabelIsNull } from '@test/slot';
 import { NavigationService } from '@common/navigation';
+import { renderToString } from '@test/ssr';
 
 /**
  * The awaiting spinner slides in over --duration-300 and the button's own width follows it,
@@ -63,14 +64,127 @@ describe('mds-button', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
-  it('falls back to the md typography for an unknown size', async () => {
-    const { root } = await render('<mds-button size="">Label</mds-button>');
+  describe('the label', () => {
+    const LONG = 'A label far longer than the width the button is given';
 
-    const text = root.shadowRoot!.querySelector('mds-text');
-    expect(text).toEqualAttribute('typography', 'action');
+    /** The font of the label next to the one of an mds-text in the typography it should take. */
+    const fontsOf = async (button: string, typography: string) => {
+      const { root } = await render(
+        `<div>${button}<mds-text typography="${typography}" tag="span">Label</mds-text></div>`,
+      );
+      await vi.waitFor(() => expect(root.querySelectorAll('[hydrated]')).toHaveLength(2));
+      const font = (element: Element) => {
+        const { fontFamily, fontSize, fontWeight, lineHeight } = getComputedStyle(element);
+        return { fontFamily, fontSize, fontWeight, lineHeight };
+      };
+      return {
+        label: font(root.querySelector('mds-button')!.shadowRoot!.querySelector('.text')!),
+        expected: font(root.querySelector('mds-text')!),
+      };
+    };
+
+    // every nested component is one more stylesheet in each declarative shadow root and one
+    // more component to hydrate: mds-text was 13KB of every pre-rendered button (#831)
+    it('is painted by the button itself, without a nested mds-text', async () => {
+      const { root } = await render('<mds-button label="Save"></mds-button>');
+
+      const label = root.shadowRoot!.querySelector('.text')!;
+      expect(label.localName).toBe('span');
+      expect(label).toHaveTextContent('Save');
+      expect(root.shadowRoot!.querySelector('mds-text')).toBeNull();
+    });
+
+    it('keeps mds-text for the animated label, which is the one that scrambles it', async () => {
+      const { root } = await render('<mds-button label="Save" animation="yugop"></mds-button>');
+
+      expect(root.shadowRoot!.querySelector('mds-text')).toEqualAttribute('animation', 'yugop');
+    });
+
+    it.each([
+      ['md', 'action'],
+      ['lg', 'h6'],
+      ['xl', 'h5'],
+    ])('takes the typography of its size: %s is %s', async (size, typography) => {
+      const { label, expected } = await fontsOf(
+        `<mds-button size="${size}" label="Label"></mds-button>`,
+        typography,
+      );
+
+      expect(label).toEqual(expected);
+    });
+
+    it('takes the action typography in medium weight at the small size', async () => {
+      const { label, expected } = await fontsOf(
+        '<mds-button size="sm" label="Label"></mds-button>',
+        'action',
+      );
+
+      expect(label.fontSize).toBe(expected.fontSize);
+      expect(label.lineHeight).toBe(expected.lineHeight);
+      expect(label.fontWeight).toBe('500');
+    });
+
+    it('falls back to the md typography for an unknown size', async () => {
+      const { label, expected } = await fontsOf(
+        '<mds-button size="" label="Label"></mds-button>',
+        'action',
+      );
+
+      expect(label).toEqual(expected);
+    });
+
+    it.each(['word', 'all'])(
+      'keeps a long label on one line with truncate %s',
+      async (truncate) => {
+        const { root } = await render(
+          `<div><mds-button label="Save"></mds-button><mds-button style="width: 160px" label="${LONG}" truncate="${truncate}"></mds-button></div>`,
+        );
+        const [short, long] = [...root.querySelectorAll('mds-button')];
+        await vi.waitFor(() => expect(long).toHaveAttribute('hydrated'));
+
+        expect(long.getBoundingClientRect().height).toBe(short.getBoundingClientRect().height);
+        expect(long.getBoundingClientRect().width).toBe(160);
+      },
+    );
+
+    it('wraps a long label onto more lines with truncate none', async () => {
+      const { root } = await render(
+        `<div><mds-button label="Save"></mds-button><mds-button style="width: 160px" label="${LONG}" truncate="none"></mds-button></div>`,
+      );
+      const [short, long] = [...root.querySelectorAll('mds-button')];
+      await vi.waitFor(() => expect(long).toHaveAttribute('hydrated'));
+
+      expect(long.getBoundingClientRect().height).toBeGreaterThan(
+        short.getBoundingClientRect().height,
+      );
+    });
   });
 
   describe('the awaiting state', () => {
+    // the spinner was rendered in every button, awaiting or not: one more component to hydrate
+    // and its stylesheet in each declarative shadow root (#831)
+    it('renders no spinner until it awaits', async () => {
+      const { root, waitForChanges } = await render('<mds-button label="Save"></mds-button>');
+
+      expect(root.shadowRoot!.querySelector('mds-spinner')).toBeNull();
+
+      (root as HTMLMdsButtonElement).await = true;
+      await waitForChanges();
+
+      expect(root.shadowRoot!.querySelector('mds-spinner')).toHaveAttribute('running');
+    });
+
+    it('keeps the spinner, stopped, while it slides out', async () => {
+      const { root, waitForChanges } = await render('<mds-button label="Save" await></mds-button>');
+
+      (root as HTMLMdsButtonElement).await = false;
+      await waitForChanges();
+
+      const spinner = root.shadowRoot!.querySelector('mds-spinner');
+      expect(spinner).not.toBeNull();
+      expect(spinner).not.toHaveAttribute('running');
+    });
+
     it('keeps the box of a button that has no label', async () => {
       // the button with no label is a square, so letting the spinner in beside the icon
       // grew it in BOTH axes - 36 to 56 - and pushed the line it sits in
@@ -557,6 +671,101 @@ describe('mds-button', () => {
 
   itReadsTheSlottedLabelWhenLabelIsNull('mds-button');
 
+  // #913: past half its height the browser clamps the radius; where corner-shape cannot be
+  // drawn, the fallback block of corner.css lowers --magma-corner-cap to the round look-alike
+  describe('the radius', () => {
+    const radii = (root: HTMLElement): string[] =>
+      Array.from(root.querySelectorAll('mds-button')).map(
+        (button) => getComputedStyle(button).borderTopLeftRadius,
+      );
+
+    it('stops at half the height, what the browser clamps to', async () => {
+      const { root } = await render('<mds-button label="Medium"></mds-button>');
+
+      expect(getComputedStyle(root).borderTopLeftRadius).toBe('18px');
+    });
+
+    it('takes the part of the height of each size that --magma-corner-cap gives', async () => {
+      const { root } = await render(
+        `<div style="--magma-corner-cap: 0.25">
+           <mds-button size="sm" label="sm"></mds-button>
+           <mds-button size="md" label="md"></mds-button>
+           <mds-button size="lg" label="lg"></mds-button>
+           <mds-button size="xl" label="xl"></mds-button>
+         </div>`,
+      );
+
+      expect(radii(root)).toEqual(['7px', '9px', '12px', '13px']);
+    });
+
+    it('keeps a radius set from outside', async () => {
+      const { root } = await render(
+        '<div style="--magma-corner-cap: 0.25"><mds-button label="Square" style="--mds-button-radius: 4px"></mds-button></div>',
+      );
+
+      expect(radii(root)).toEqual(['4px']);
+    });
+  });
+
+  // #923: an mds-tooltip with relation="label" names an icon-only button, and the name taken
+  // from the icon slug would stack a native tooltip on top of it
+  describe('an icon-only button named by another element', () => {
+    it('takes no name from the icon slug when it has aria-labelledby', async () => {
+      mockIconFetch();
+      const { root } = await render(
+        '<mds-button icon="mdi/alien" aria-labelledby="name"></mds-button><span id="name">Alien</span>',
+      );
+
+      expect(root).not.toHaveAttribute('title');
+      expect(root).not.toHaveAttribute('aria-label');
+    });
+
+    it('drops the name from the icon slug when aria-labelledby comes later, and takes it back', async () => {
+      mockIconFetch();
+      const { root, waitForChanges } = await render('<mds-button icon="mdi/alien"></mds-button>');
+      expect(root).toEqualAttribute('title', 'alien');
+
+      root.setAttribute('aria-labelledby', 'name');
+      await waitForChanges();
+      expect(root).not.toHaveAttribute('title');
+
+      root.removeAttribute('aria-labelledby');
+      await waitForChanges();
+      expect(root).toEqualAttribute('title', 'alien');
+    });
+
+    it('keeps a title the author wrote', async () => {
+      mockIconFetch();
+      const { root, waitForChanges } = await render(
+        '<mds-button icon="mdi/alien" title="Alieno"></mds-button>',
+      );
+
+      root.setAttribute('aria-labelledby', 'name');
+      await waitForChanges();
+
+      expect(root).toEqualAttribute('title', 'Alieno');
+    });
+  });
+
+  // #937: an icon given as markup used to skip the role, labelled or not
+  describe('with an icon given as markup', () => {
+    const svg =
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z"/></svg>';
+
+    it('takes the button role when it has a label', async () => {
+      const { root } = await render(`<mds-button icon='${svg}' label="Disegna"></mds-button>`);
+
+      expect(root).toEqualAttribute('role', 'button');
+    });
+
+    it('takes the button role and no name from the icon when it has none', async () => {
+      const { root } = await render(`<mds-button icon='${svg}' aria-label="Disegna"></mds-button>`);
+
+      expect(root).toEqualAttributes({ role: 'button', 'aria-label': 'Disegna' });
+      expect(root).not.toHaveAttribute('title');
+    });
+  });
+
   // Angular and Vue bind null for a missing value
   describe('with null properties', () => {
     afterEach(() => {
@@ -624,6 +833,34 @@ describe('mds-button', () => {
       const slot = root.shadowRoot!.querySelector('slot[name="notification"]') as HTMLSlotElement;
       expect(slot).not.toBeNull();
       expect(slot.assignedElements()).toHaveLength(1);
+    });
+  });
+
+  // every declarative shadow root carries the whole stylesheet of its component, and a block
+  // larger than the 32KB window of gzip does not compress against its repeats: a page of 257
+  // buttons pre-rendered to 14MB of HTML, 97% of it CSS (#831)
+  describe('server-side rendering', () => {
+    const button = '<mds-button label="Item" variant="dark" tone="text"></mds-button>';
+
+    it('pre-renders no spinner when it does not await', async () => {
+      const markup = await renderToString(button);
+
+      expect(markup).not.toContain('<mds-spinner');
+    });
+
+    // the prefixes Stencil added for iOS 9 and IE 11 (scripts/postcss-autoprefix.ts)
+    it('pre-renders no prefix that only an unsupported browser reads', async () => {
+      const markup = await renderToString(button);
+
+      expect(markup).not.toMatch(/-webkit-(box-shadow|transition|transform)|-ms-/);
+    });
+
+    // 52KB before #831, 22KB after: the ceiling leaves 2KB of room and fails on one more
+    // nested component or on a variant x tone matrix written out again
+    it('pre-renders well inside the window of gzip', async () => {
+      const markup = await renderToString(button);
+
+      expect(markup.length).toBeLessThan(24 * 1024);
     });
   });
 });

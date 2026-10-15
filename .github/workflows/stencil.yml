@@ -117,12 +117,15 @@ jobs:
           name: stencil-build
           path: projects
       - run: npx nx run stencil-angular:build
-      # Karma in the Chrome of the runner image, headless
+      # Vitest in jsdom through the Angular unit-test builder: no browser needed
       - run: npx nx run stencil-angular:test
       - uses: actions/upload-artifact@v7
         with:
           name: stencil-angular-build
-          path: projects/stencil-angular/dist
+          # without the test bundles the unit-test builder leaves behind
+          path: |
+            projects/stencil-angular/dist
+            !projects/stencil-angular/dist/test-out
           retention-days: 1
           include-hidden-files: true
 

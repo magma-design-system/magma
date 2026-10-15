@@ -56,6 +56,8 @@ export interface PublishedToken {
   path: string[];
   $type: string;
   $value: unknown;
+  /** What the token is for, when its source says it (#876). */
+  $description?: string;
 }
 
 export interface GlobalsInputs {
@@ -83,12 +85,24 @@ const oneLine = (value: string): string => value.replace(/\s+/g, ' ').trim();
 /**
  * The registrations and the top-level rules of a stylesheet. A custom property declared
  * anywhere else (inside `@media`, say) is a block this module does not model, so it
- * throws instead of leaving the token out.
+ * throws instead of leaving the token out. The one exception is `@supports`: there the
+ * corner axis puts back, for a browser without `corner-shape`, values its blocks already
+ * declare (corner.ts). That is a fallback of the browser, not a context of the resolver,
+ * so it is skipped, and it still throws if it declares a token no top-level rule does.
  */
 export const parseStylesheet = (css: string, from: string): Stylesheet => {
   const registrations: Stylesheet['registrations'] = [];
   const blocks: Block[] = [];
-  for (const node of postcss.parse(css, { from }).nodes) {
+  const parsed = postcss.parse(css, { from });
+  const declared = new Set<string>();
+  for (const node of parsed.nodes) {
+    if (node.type === 'rule') {
+      node.each((child) => {
+        if (child.type === 'decl') declared.add(child.prop);
+      });
+    }
+  }
+  for (const node of parsed.nodes) {
     if (node.type === 'atrule' && node.name === 'property') {
       const descriptor = (name: string) => {
         let value = '';
@@ -110,6 +124,7 @@ export const parseStylesheet = (css: string, from: string): Stylesheet => {
       blocks.push({ selector: oneLine(node.selector), decls });
     } else if (node.type === 'atrule') {
       node.walkDecls(/^--/, (decl) => {
+        if (node.name === 'supports' && declared.has(decl.prop)) return;
         throw new Error(`${from}: ${decl.prop} is declared inside @${node.name}, not modelled`);
       });
     }
@@ -144,7 +159,13 @@ export const publishedTokens = (tree: DtcgGroup): Map<string, PublishedToken | n
       if (key.startsWith('$') && key !== '$root') continue;
       if (isToken(child)) {
         const css = child.$extensions[NAMESPACE].css;
-        if (css) found.set(css, { path: [...path, key], $type: child.$type, $value: child.$value });
+        if (css)
+          found.set(css, {
+            path: [...path, key],
+            $type: child.$type,
+            $value: child.$value,
+            ...(typeof child.$description === 'string' ? { $description: child.$description } : {}),
+          });
       } else if (typeof child === 'object' && child !== null)
         walk(child as DtcgGroup, [...path, key]);
     }

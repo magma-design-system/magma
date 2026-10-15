@@ -71,10 +71,10 @@ CSS and Tailwind 4 styles consumed by the web component library and consumer app
 | `dist/css/globals.css` | Global CSS custom properties (`--magma-*` design decisions) |
 | `dist/css/reset.css` | Opinionated CSS reset |
 | `dist/css/colors-rgb-*.css` | RGB color tokens (required for Tailwind and web components) |
-| `dist/css/hydrated.css` | FOUC prevention for StencilJS |
+| `dist/css/hydrated.css` | FOUC prevention for StencilJS, and the box of the hydrated components kept against page resets (Tailwind's preflight) |
 | `dist/css/animations.css` | Shared animations |
 | `dist/tailwind/` | Tailwind 4 layers: base, typography, utilities |
-| `dist/tailwind/consumption.json` | How each global token is consumed through Tailwind 4, keyed by its DTCG `css` name; generated from Tailwind's design system |
+| `dist/tailwind/consumption.json` | How each global token is consumed through Tailwind 4, keyed by its DTCG `css` name, with the token's DTCG `$description` when it has one; generated from Tailwind's design system |
 | `dist/dtcg/` | The styles globals as DTCG 2025.10 (corner and depth sets), with a resolver that adds them to the design-tokens sets |
 
 CSS cascade layer order (consumer apps must respect this):
@@ -90,7 +90,9 @@ Dark mode is handled via palette-level CSS custom properties. Activation classes
 Global design decisions overridable via CSS custom properties on `:root`:
 - `data-corner-shape` — corner geometry: the shape AND the `--magma-radius-*` scale tuned for it,
   moved together (default: `squircle`, on a bare `:root`). Works on any element, so a subtree can
-  deviate. `--magma-corner-shape` alone changes the shape WITHOUT the scale
+  deviate. `--magma-corner-shape` alone changes the shape WITHOUT the scale. A browser without
+  `corner-shape` gets the round shape and scale from a `@supports not` block, and
+  `--magma-corner-cap` (0.5, 0.2915 there) caps the controls whose radius is past half their height
 - `--magma-disabled-opacity` — default: `0.5`
 - `--magma-outline-focus` — focus ring style
 - Z-index scale: header `1000` → notification `2000` → modal `3000` → backdrop `4000` → dropdown `5000` → tooltip `6000` → theme-overlay `7000` → context-menu `8000`
@@ -103,7 +105,7 @@ The web component library. 114 components built with StencilJS, compiled to stan
 - `@maggioli-design-system/magma-react` — React wrapper
 - `@maggioli-design-system/magma-angular` — Angular wrapper
 
-The wrappers are separate npm workspaces, `projects/stencil-react` and `projects/stencil-angular` (nx projects of the same name), siblings of `projects/stencil`. The Stencil build generates their sources (`projects/stencil-react/src`, `projects/stencil-angular/magma-angular/src/stencil-generated`) and their agent install docs; they only compile what `stencil` emitted. They live outside `projects/stencil` because npm never materializes the `node_modules` of a workspace nested inside another workspace (#666, #672). Each wrapper has its own tests against the stencil build (`nx run stencil-react:test`: Vitest, browser and node projects; `nx run stencil-angular:test`: Karma), run in CI by the `magma-react` and `magma-angular` jobs of the stencil workflow.
+The wrappers are separate npm workspaces, `projects/stencil-react` and `projects/stencil-angular` (nx projects of the same name), siblings of `projects/stencil`. The Stencil build generates their sources (`projects/stencil-react/src`, `projects/stencil-angular/magma-angular/src/stencil-generated`) and their agent install docs; they only compile what `stencil` emitted. They live outside `projects/stencil` because npm never materializes the `node_modules` of a workspace nested inside another workspace (#666, #672). Each wrapper has its own tests against the stencil build (`nx run stencil-react:test`: Vitest, browser and node projects; `nx run stencil-angular:test`: Vitest in jsdom, through the Angular unit-test builder), run in CI by the `magma-react` and `magma-angular` jobs of the stencil workflow.
 
 ---
 

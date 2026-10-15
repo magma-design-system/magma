@@ -29,6 +29,21 @@ import { BUILD_DIR, PROJECT_DIR } from './meta';
  * they are the round scale multiplied by 1.715 - the factor that preserves the
  * AREA the corner cuts - and then snapped to the nearest existing primitive so
  * the scale stays inside the system.
+ *
+ * A browser without `corner-shape` (Firefox, Safari) drops the declaration and
+ * draws every corner round: left on the squircle scale, each one would come out
+ * 1.715 times rounder than designed. Where the default or an explicit squircle
+ * cannot be drawn, a `@supports not` block puts the round scale back, so the
+ * page draws the round look-alike of what a squircle browser shows (#913).
+ *
+ * `--magma-corner-cap` is the part of its height a corner may take. A box whose
+ * radius is always past half its height (a button, the strip of a tab) is clamped
+ * by the browser to half the height: a squircle cut to half the height, or a pill
+ * when round. Its round look-alike is not the clamped token but a fraction of the
+ * height, so the components that know their height spell their radius as
+ * `min(<token>, var(--magma-corner-cap) * <height>)`. The cap is 0.5 in every
+ * shape block, where the min() gives exactly what the browser clamps to (the pill
+ * of an explicit round stays a pill), and 0.5 / 1.715 in the fallback block.
  */
 
 const TOKENS_CSS = path.resolve(PROJECT_DIR, '../design-tokens/dist/css/typography.css');
@@ -36,6 +51,15 @@ const OUT_FILE = path.resolve(BUILD_DIR, 'css', 'corner.css');
 
 /** The shape a consumer gets without writing a single attribute. */
 const DEFAULT_SHAPE = 'squircle';
+
+/** The part of its height a corner may take: half, where the browser clamps. */
+const CAP = 0.5;
+
+/** What a round corner is to the squircle that cuts the same area (radius.json). */
+const SQUIRCLE_FACTOR = 1.715;
+
+/** The cap of the fallback: the round look-alike of a squircle cut to half the height. */
+const FALLBACK_CAP = Number((CAP / SQUIRCLE_FACTOR).toFixed(4));
 
 /** Every shape that owns a scale. A shape with no `--radius-<shape>-*` steps
  * would produce a block identical to `round`, which is why the list is derived
@@ -85,20 +109,45 @@ const readScale = async (): Promise<Scale> => {
 };
 
 /**
- * One selector's worth of declarations: the shape itself, then every step of
- * the scale pointed at the source token that shape uses.
+ * One selector's worth of declarations: the shape itself and its cap, then every
+ * step of the scale pointed at the source token that shape uses. The fallback
+ * block declares `round`, with the round scale, and passes its own cap.
  */
-const block = (selector: string, shape: string, scale: Scale): string => {
-  const lines = [`  --magma-corner-shape: ${shape};`, ''];
+const block = (
+  selector: string,
+  shape: string,
+  scale: Scale,
+  { cap = CAP, indent = '' }: { cap?: number; indent?: string } = {},
+): string => {
+  const lines = [`--magma-corner-shape: ${shape};`, `--magma-corner-cap: ${cap};`, ''];
   for (const step of scale.steps) {
     const source =
       shape === SHAPE_WITH_SCALE && scale.shaped.has(step)
         ? `--radius-${SHAPE_WITH_SCALE}-${step}`
         : `--radius-${step}`;
-    lines.push(`  --magma-radius-${step}: var(${source});`);
+    lines.push(`--magma-radius-${step}: var(${source});`);
   }
-  return `${selector} {\n${lines.join('\n')}\n}`;
+  const body = lines.map((line) => (line ? `${indent}  ${line}` : '')).join('\n');
+  return `${indent}${selector} {\n${body}\n${indent}}`;
 };
+
+/**
+ * Where `corner-shape: squircle` cannot be drawn: the default, unless the root
+ * asks for round itself, and every explicit squircle subtree get the round shape,
+ * the round scale and the fallback cap. An explicit round is left alone, pill
+ * included. It comes last, so it wins over the squircle block of equal weight.
+ */
+const fallbackBlock = (scale: Scale): string =>
+  [
+    `@supports not (corner-shape: ${SHAPE_WITH_SCALE}) {`,
+    block(
+      `:root:not([data-corner-shape='round']),\n  [data-corner-shape='${SHAPE_WITH_SCALE}']`,
+      'round',
+      scale,
+      { cap: FALLBACK_CAP, indent: '  ' },
+    ),
+    '}',
+  ].join('\n');
 
 const main = async (): Promise<void> => {
   const scale = await readScale();
@@ -114,6 +163,10 @@ const main = async (): Promise<void> => {
     '',
     `  --magma-radius-full is the same under every shape on purpose: the pill is out`,
     '  of the axis (see corner.ts).',
+    '',
+    '  A browser without corner-shape gets the round scale back from the last block,',
+    '  and --magma-corner-cap, the part of its height a corner may take, drops from',
+    '  0.5 to the round look-alike of a squircle cut to half the height.',
     '*/',
     '',
   ].join('\n');
@@ -123,6 +176,7 @@ const main = async (): Promise<void> => {
     ...['round', SHAPE_WITH_SCALE].map((shape) =>
       block(`[data-corner-shape='${shape}']`, shape, scale),
     ),
+    fallbackBlock(scale),
   ];
 
   await mkdir(path.dirname(OUT_FILE), { recursive: true });

@@ -122,13 +122,16 @@ defineCustomElements();
 Do not mix the two entry points in the same app: they are separate builds of the same
 components.
 
-Alternatively, if you wanted to take advantage of ES Modules, you could include the components using an import statement.
+Without a bundler, a plain HTML page can load the ES2017 build of the loader as a file: it
+imports only relative paths, so it works from a CDN that serves npm packages or from your own
+copy of the package folder. The URL is a file path, not a package specifier, so `exports` does
+not apply.
 
 ```html
 <html>
   <head>
     <script type="module">
-      import { defineCustomElements } from '@maggioli-design-system/magma/loader/index.es2017.mjs';
+      import { defineCustomElements } from 'https://cdn.jsdelivr.net/npm/@maggioli-design-system/magma@2/loader/index.es2017.js';
       defineCustomElements();
     </script>
   </head>

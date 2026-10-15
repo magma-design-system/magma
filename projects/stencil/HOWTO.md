@@ -141,7 +141,7 @@ and the wrapper first.
 
 ```
 nx run stencil-react:test      # Vitest: browser (Playwright Chromium) + node projects
-nx run stencil-angular:test    # Karma + Jasmine, once, in a headless Chrome
+nx run stencil-angular:test    # Vitest in jsdom through the Angular unit-test builder, once
 ```
 
 - **React** (`projects/stencil-react/test/`, `vitest.config.mts`): the tests import the built
@@ -156,8 +156,12 @@ nx run stencil-angular:test    # Karma + Jasmine, once, in a headless Chrome
   `npm run test.watch` (from `projects/stencil-react`) keeps Vitest in watch mode.
 - **Angular** (`projects/stencil-angular/magma-angular/src/lib/*.spec.ts`): module wiring, generated
   proxies (inputs, outputs, one custom element per proxy), `ControlValueAccessor` directives with
-  Reactive Forms. The specs stay out of `stencil-generated/`, which the stencil build regenerates.
-  See `projects/stencil-angular/README.md` for the watch mode.
+  Reactive Forms. The specs run with Vitest in jsdom through the Angular `unit-test` builder
+  (`globals: true`, so `describe`, `it`, `expect` and `vi` need no import) against the real custom
+  elements, which load and render in jsdom: wait for the `hydrated` attribute before asserting on
+  the state of an element, since its watchers run only once it has loaded. The specs stay out of
+  `stencil-generated/`, which the stencil build regenerates. See
+  `projects/stencil-angular/README.md` for the watch mode.
 
 CI runs both in the `magma-react` and `magma-angular` jobs of the stencil workflow
 (`.github/workflows/stencil.yml`), on the build artifact of the `magma` job. Run them when a change

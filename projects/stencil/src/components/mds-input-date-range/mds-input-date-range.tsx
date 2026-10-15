@@ -22,6 +22,7 @@ import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
+import { InputSizeType } from '@type/input';
 
 export interface EventDate {
   caller: HTMLMdsInputDateRangePreselectionElement;
@@ -96,6 +97,11 @@ export class MdsInputDateRange {
    * @description Default is 500
    */
   @Prop({ reflect: true }) readonly delay: number = 500;
+
+  /**
+   * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+   */
+  @Prop({ reflect: true }) readonly size?: InputSizeType = 'lg';
 
   /**
    * Hides the highlight on today's date in the calendar.
@@ -768,7 +774,10 @@ export class MdsInputDateRange {
         </div>
         <div class="action-open-calendar-wrapper">
           <mds-button
+            aria-label={this.t.get('openCalendar')}
             class="action-open-calendar"
+            // the default md button fills the 36px square of an md field; sm fits the 28px one
+            size={this.size === 'sm' ? 'sm' : undefined}
             disabled={this.isDisabled()}
             variant="dark"
             tone="text"

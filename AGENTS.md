@@ -56,7 +56,7 @@ nx run stencil:test-storybook                        # run the stories' play fun
 nx run stencil:check.api-snapshot                    # after a build: fail if the committed magma.api.txt differs from the built component API
 nx run stencil:check.pr-risk                         # the review level of your branch and its semver check against dev (what the pr-risk workflow posts)
 nx run stencil-react:test                            # run the React wrapper tests (Vitest browser + node projects)
-nx run stencil-angular:test                          # run the Angular wrapper tests (Karma, headless Chrome)
+nx run stencil-angular:test                          # run the Angular wrapper tests (Vitest in jsdom, Angular unit-test builder)
 npm run lint                                         # ESLint + Stylelint on every project (also run in CI)
 ```
 

@@ -27,6 +27,7 @@ The `<mds-table>` web component is the root container of the Magma Design System
 - **`interactive`** highlights rows on mouseover; choose it for tables whose rows are clickable or navigable, not for purely static read-only data.
 - **`selectable`** turns on per-row checkbox selection and the aggregated header/batch-actions machinery; without it the selection methods and the `batch-action` slot are inert.
 - **`selection`** is a read-back flag that becomes true while at least one row is selected - it is managed internally, not something callers normally set.
+- **`sorting`** says who orders the rows when a sortable `mds-table-header-cell` changes direction. `internal` (default) moves the rows in the DOM; `external` leaves them where they are, so the application listens to `mdsTableHeaderCellSort` and renders the rows in the order asked. Choose `external` whenever the table shows one page of a larger set (with `mds-paginator`) or the order comes from a back end: sorting the DOM would only sort the page on screen.
 
 #### Other behavioral props
 
@@ -300,6 +301,36 @@ Slot `mds-button` elements with `slot="batch-action"` as direct children of `mds
 </mds-table>
 ```
 
+#### Sorting by the Back End, with Pages
+
+When the table shows one page of a larger set, set `sorting="external"`: a click on a sortable header emits `mdsTableHeaderCellSort` with the column (`index`, and `sortKey` when the cell has `sort-key`) and the `direction`, and moves no row. The application asks the back end for the first page in that order and renders it; the header shows the direction (icon and `aria-sort`). A `direction` set by the application, for example restored from the address, is shown the same way.
+
+```html
+<mds-table id="practices" sorting="external">
+  <mds-table-header>
+    <mds-table-header-cell label="Numero" sortable sort-key="number"></mds-table-header-cell>
+    <mds-table-header-cell label="Ricevuta il" sortable sort-key="received"></mds-table-header-cell>
+    <mds-table-header-cell label="Oggetto"></mds-table-header-cell>
+  </mds-table-header>
+  <mds-table-body>
+    <!-- the rows of the current page, rendered by the application -->
+  </mds-table-body>
+</mds-table>
+<mds-paginator id="pages" pages="12"></mds-paginator>
+```
+
+```js
+const table = document.querySelector('#practices');
+const pages = document.querySelector('#pages');
+
+table.addEventListener('mdsTableHeaderCellSort', async (event) => {
+  const { sortKey, direction } = event.detail;
+  // direction "none" asks for the order of the back end
+  await loadPage({ page: 1, sort: direction === 'none' ? undefined : { sortKey, direction } });
+  pages.currentPage = 1;
+});
+```
+
 #### Styling Customization
 
 Customize the table appearance only through its documented `--mds-table-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and themes keep working.
@@ -483,11 +514,12 @@ Selection state is communicated via the `mdsTableSelectionChange` custom event. 
 
 ## Properties
 
-| Property      | Attribute     | Description                                                       | Type                   | Default     |
-| ------------- | ------------- | ----------------------------------------------------------------- | ---------------------- | ----------- |
-| `interactive` | `interactive` | Specifies if the table rows are higlighted on mouseover event     | `boolean \| undefined` | `undefined` |
-| `selectable`  | `selectable`  | Specifies if the table rows are selectable by a checkbox          | `boolean \| undefined` | `undefined` |
-| `selection`   | `selection`   | Indicates whether row selection is currently active in the table. | `boolean \| undefined` | `undefined` |
+| Property      | Attribute     | Description                                                                                                                                                                                                                                                                              | Type                                    | Default      |
+| ------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | ------------ |
+| `interactive` | `interactive` | Specifies if the table rows are higlighted on mouseover event                                                                                                                                                                                                                            | `boolean \| undefined`                  | `undefined`  |
+| `selectable`  | `selectable`  | Specifies if the table rows are selectable by a checkbox                                                                                                                                                                                                                                 | `boolean \| undefined`                  | `undefined`  |
+| `selection`   | `selection`   | Indicates whether row selection is currently active in the table.                                                                                                                                                                                                                        | `boolean \| undefined`                  | `undefined`  |
+| `sorting`     | `sorting`     | Specifies who sorts the rows when a sortable header cell changes direction: `internal` moves them in the DOM, `external` leaves them to the application, which listens to `mdsTableHeaderCellSort` and renders the rows in the order asked (a table that shows one page of a larger set) | `"external" \| "internal" \| undefined` | `'internal'` |
 
 
 ## Events
@@ -546,16 +578,16 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                         | Description                                |
-| ---------------------------- | ------------------------------------------ |
-| `--mds-table-actions-gap`    | Gap between table action elements.         |
-| `--mds-table-background`     | Default background color of the table.     |
-| `--mds-table-background-alt` | Alternate background color for table rows. |
-| `--mds-table-border-color`   | Color of the table border.                 |
-| `--mds-table-border-width`   | Width of the table border.                 |
-| `--mds-table-cell-padding`   | Padding inside table cells.                |
-| `--mds-table-color`          | Default text color of the table.           |
-| `--mds-table-color-alt`      | Text color for alternate table rows.       |
+| Name                         | Description                                                                                                                 |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-table-actions-gap`    | Gap between table action elements.                                                                                          |
+| `--mds-table-background`     | Default background color of the table.                                                                                      |
+| `--mds-table-background-alt` | Alternate background color for table rows; in an interactive table also the scroll area, while the pointer is on the table. |
+| `--mds-table-border-color`   | Color of the table border.                                                                                                  |
+| `--mds-table-border-width`   | Width of the table border.                                                                                                  |
+| `--mds-table-cell-padding`   | Padding inside table cells.                                                                                                 |
+| `--mds-table-color`          | Default text color of the table.                                                                                            |
+| `--mds-table-color-alt`      | Text color for alternate table rows.                                                                                        |
 
 
 ## Dependencies

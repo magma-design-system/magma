@@ -4,6 +4,11 @@ import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg';
 import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg';
 import clsx from 'clsx';
 import { cssSizeToNumber } from '@common/unit';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 // TODO [fix] buttons now shows up when they should
 // TODO [fix] scrollbar not showing anymore
@@ -18,6 +23,13 @@ import { cssSizeToNumber } from '@common/unit';
   shadow: true,
 })
 export class MdsHorizontalScroll {
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
+
   @Element() private host: HTMLMdsHorizontalScrollElement;
   private elements: Node[];
   private contents: HTMLElement;
@@ -269,6 +281,7 @@ export class MdsHorizontalScroll {
         </div>
         {this.controls && this.controls !== 'none' && (
           <mds-button
+            aria-label={this.t.get('scrollBack')}
             onClick={this.moveBack}
             size="lg"
             class={clsx('navigation navigation--back', !this.showBack && 'navigation--disabled')}
@@ -277,6 +290,7 @@ export class MdsHorizontalScroll {
         )}
         {this.controls && this.controls !== 'none' && (
           <mds-button
+            aria-label={this.t.get('scrollForward')}
             onClick={this.moveForward}
             size="lg"
             class={clsx(

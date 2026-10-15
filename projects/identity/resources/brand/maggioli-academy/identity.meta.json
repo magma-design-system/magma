@@ -1,0 +1,17 @@
+{
+  "owner": {
+    "id": "maggioli-academy",
+    "name": "Maggioli Academy"
+  },
+  "families": [
+    {
+      "id": "maggioli-academy",
+      "name": "Maggioli Academy",
+      "files": [
+        "logo-maggioli-academy",
+        "logo-maggioli-academy-black",
+        "logo-maggioli-academy-white"
+      ]
+    }
+  ]
+}

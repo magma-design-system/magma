@@ -50,9 +50,11 @@ Tailwind names the TEXT roles `fg-*`, so a utility never reads `text-text-*`:
 `border-border-default`, `bg-accent-emphasis`, `bg-danger-wash-base`.
 
 Both faces need the setup in [`assets.md`](assets.md): the values come from
-`styles/dist/css/semantic.css` (without it every role paints nothing), the Tailwind
-utilities from `styles/dist/tailwind/theme.css`. A Tailwind modifier works as usual
-(`bg-surface-raised/80`).
+`styles/dist/css/semantic.css`, the Tailwind utilities from `styles/dist/tailwind/theme.css`.
+Without `semantic.css` a `var(--magma-*)` paints nothing, and a Tailwind utility paints the
+light default of its role, the fallback its bridge carries so editors can show a swatch: in
+dark mode, with a named theme or with more contrast it stays wrong, so the file is still
+required. A Tailwind modifier works as usual (`bg-surface-raised/80`).
 
 ## The roles
 

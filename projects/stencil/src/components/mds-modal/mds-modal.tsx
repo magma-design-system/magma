@@ -21,6 +21,11 @@ import {
 import { cssDurationToMilliseconds } from '@common/unit';
 import { preferenceStore } from '@common/preference';
 import miBaselineClose from '@icon/mi/baseline/close.svg';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 /**
  * @part action-close - Selects the close button of the modal.
@@ -37,6 +42,13 @@ import miBaselineClose from '@icon/mi/baseline/close.svg';
   shadow: true,
 })
 export class MdsModal {
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
+
   private animationDelayTimeout: NodeJS.Timeout;
   private dialogEl?: HTMLDialogElement;
   // Initialised on purpose: both readers compare it against '' (the strict boolean
@@ -416,6 +428,7 @@ export class MdsModal {
           )}
           {!this.hasWindow && (
             <mds-button
+              aria-label={this.t.get('close')}
               class="action-close"
               icon={miBaselineClose}
               variant="light"

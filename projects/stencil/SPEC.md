@@ -41,11 +41,11 @@ import { MdsButton } from '@maggioli-design-system/magma-angular';
 
 Three things hold the tree-shaking together; breaking any one of them silently ships the whole library:
 
-- **No module-level side effects in component sources.** All three packages declare `sideEffects` (`magma` allows only `**/*.css`). Code that must run once belongs in `connectedCallback`, not at module scope. Stencil annotates `proxyCustomElement(...)` with `/*@__PURE__*/`, and the React output target does the same on `createComponent(...)` - keep it that way.
+- **No module-level side effects in component sources.** All three packages declare `sideEffects` (`magma` allows only `**/*.css` and `./loader/index.js`, whose first statement is the shim that lets the ES5 build extend `HTMLElement`: a bundler that drops it ships components that throw on upgrade). Code that must run once belongs in `connectedCallback`, not at module scope. Stencil annotates `proxyCustomElement(...)` with `/*@__PURE__*/`, and the React output target does the same on `createComponent(...)` - keep it that way.
 - **One ES module per component.** Both output targets run with `esModules: true`, and `dist-custom-elements` with `customElementsExportBehavior: 'single-export-module'`. The barrels are pure re-exports.
 - **No eager `defineCustomElements()` in the wrappers.** The React and Angular proxies register their own custom element on demand. Importing `magma/loader` from wrapper code (as `MagmaModule.forRoot()` used to) pulls in every component: measured on a probe Angular app, 229 kB in 2 files became 1.9 MB in 142.
 
-`scripts/check-treeshaking.ts` (`npm run check.treeshaking`) asserts all three and guards the bundle size; it runs in CI on every stencil build.
+`scripts/check-treeshaking.ts` (`npm run check.treeshaking`) asserts all three, guards the bundle size and checks that a bundled `magma/loader` keeps its `HTMLElement` shim; it runs in CI on every stencil build.
 
 ## Authoring rules
 
@@ -77,6 +77,18 @@ z-index: var(--magma-modal-z-index, 4000);
 A bare `var(--magma-*)` the injector cannot resolve FAILS the build (`failOnMissing`, limited to
 `--magma-*` by `checkPrefixes`): it is a typo or a token that does not exist yet. Component-private
 names (`--mds-*`, `--private-*`) are not checked.
+
+The chain keeps only the links that can resolve: a role declared on the `:root` of
+`semantic.css` is defined wherever that sheet is loaded, so the indirection it points to in the
+same sheet (`--magma-tint-*`) is skipped for the design token behind it, which a consumer may
+load on its own (`var(--magma-accent-emphasis, var(--variant-primary-04, 36 103 231))`). Every
+link is repeated in each declarative shadow root of a pre-rendered page.
+
+### Vendor prefixes come from the build
+
+Write unprefixed CSS (`docs/CODING_STANDARDS.md`): `scripts/postcss-autoprefix.ts` runs
+autoprefixer after Tailwind for the browsers of the root `.browserslistrc`. Stencil's own pass
+(`autoprefixCss`) is off: it prefixes for iOS 9 and IE 11 and takes no browser list.
 
 ### Reading `<html>` preference state from inside a component
 

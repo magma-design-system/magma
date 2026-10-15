@@ -50,6 +50,8 @@ export class MdsTab {
   @State() sliderHeight: number = -1;
   @State() sliderOffsetX: number = -1;
   @State() sliderOffsetY: number = -1;
+  /** the slider slides only to follow a selection, any other move draws it in place */
+  @State() sliderSlides: boolean = false;
   @State() overflowLeft: boolean = false;
   @State() overflowRight: boolean = false;
   /** every item is a link: the strip is a navigation, not a tablist */
@@ -186,9 +188,19 @@ export class MdsTab {
     this.overflowRight = Math.ceil(scrollLeft + containerWidth) < tabsWidth - 1;
   };
 
-  private updateSliderPosition = (): void => {
+  /**
+   * Moves the slider under the selected item. It slides there only to follow a selection
+   * (`slide`): on load, after a change of the layout, or when the strip is shown again after
+   * being hidden, it is drawn in place, so the strip appears with the selected tab already
+   * marked (#924).
+   */
+  private updateSliderPosition = (slide = false): void => {
     if (this.animation === 'slide' && this.currentItemIndex >= 0) {
       self.requestAnimationFrame(() => {
+        // a hidden strip has no box, and every measure reads 0: the slider keeps its place
+        // instead of collapsing in the corner, and the observer moves it once the strip is shown
+        if (!this.currentItemEl.offsetWidth) return;
+        this.sliderSlides = slide;
         this.sliderWidth = this.currentItemEl.offsetWidth;
         this.sliderHeight = this.currentItemEl.offsetHeight;
         this.sliderOffsetX = this.currentItemEl.offsetLeft - this.tabsContainer.offsetLeft;
@@ -259,7 +271,7 @@ export class MdsTab {
       item.selected = undefined;
     });
     this.selectContentItem();
-    this.updateSliderPosition();
+    this.updateSliderPosition(true);
   }
 
   @Listen('mdsTabItemFocus')
@@ -351,7 +363,7 @@ export class MdsTab {
             <slot />
             {this.animation === 'slide' && (
               <div
-                class="slider"
+                class={clsx('slider', !this.sliderSlides && 'slider--still')}
                 part="slider"
                 style={{
                   '--mds-tab-slider-width': `${this.sliderWidth}px`,

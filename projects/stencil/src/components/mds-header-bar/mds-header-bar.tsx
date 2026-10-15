@@ -14,6 +14,11 @@ import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
 import { preferenceStore } from '@common/preference';
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 /**
  * @part actions - Selects the element which wraps `nav` and `hamburger` parts
@@ -29,6 +34,13 @@ import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
   shadow: true,
 })
 export class MdsHeaderBar {
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
+
   @State() hasNav: boolean;
   @Element() host: HTMLMdsHeaderBarElement;
   @State() isOpened: boolean;
@@ -89,6 +101,7 @@ export class MdsHeaderBar {
             </nav>
             {this.menu !== 'none' && (
               <mds-button
+                aria-label={this.t.get('openMenu')}
                 class="menu"
                 variant="dark"
                 tone="text"

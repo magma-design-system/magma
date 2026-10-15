@@ -10,7 +10,7 @@ import {
   Placement,
   shift,
 } from '@floating-ui/dom';
-import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
+import { FloatingUIPlacement, FloatingUIRelation, FloatingUIStrategy } from '@type/floating-ui';
 import { cssDurationToMilliseconds } from './unit';
 import { hashRandomValue, setAttributeIfEmpty } from './aria';
 import { HTMLStencilElement } from '@stencil/core/internal';
@@ -22,6 +22,8 @@ export interface FloatingElement extends PositionOptions {
 
 export interface HTMLFloatingElement extends HTMLStencilElement, PositionOptions {
   visible: boolean;
+  /** what a tooltip is to its caller: its description (the default) or its name */
+  relation?: FloatingUIRelation;
 }
 
 export interface PositionOptions {
@@ -101,6 +103,17 @@ export class FloatingController {
   }
 
   /**
+   * Takes back what the wiring wrote on the caller and writes it again, for a change of the host
+   * that changes what is written: the relation of a tooltip.
+   */
+  rewire(): void {
+    if (!this._caller) return;
+    this.unwireCaller();
+    this._wired = false;
+    void this.wireCaller();
+  }
+
+  /**
    * Lets go of the caller the target no longer names. Left alone it keeps pointing at a panel
    * that is not its own, with a state frozen on the last time it was open, and the panel keeps
    * being labelled by it - `setAttributeIfEmpty` writes the label once and the second caller
@@ -151,12 +164,15 @@ export class FloatingController {
     // a target change while we waited has already wired another caller
     if (caller !== this._caller) return;
 
-    // a tooltip is not a popup its caller controls: it only describes it, and a description
-    // reaches a screen reader whatever role the caller has, generic included
+    // a tooltip is not a popup its caller controls: it describes it, a description reaching a
+    // screen reader whatever role the caller has, generic included, or it names it, when its text
+    // is the only visible name of an icon-only control. A caller that already has a name of its
+    // own keeps it, `writeOnCaller` leaving an `aria-labelledby` that is there alone.
     if (this._role === 'tooltip') {
       if (this.sameRoot()) {
         const tipId = setAttributeIfEmpty(this._host, 'id', hashRandomValue('mds-tooltip'));
-        this.writeOnCaller('aria-describedby', tipId);
+        const relation = this._host.relation === 'label' ? 'aria-labelledby' : 'aria-describedby';
+        this.writeOnCaller(relation, tipId);
       }
       return;
     }

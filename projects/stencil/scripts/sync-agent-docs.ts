@@ -5,7 +5,7 @@
  * Single source of truth: docs/agents/ in the monorepo. This script copies the
  * relevant install track plus the shared fragments (one topic per file, see
  * SHARED_FRAGMENTS) into each package, rewrites the repo-internal links so they
- * resolve (or degrade to plain text) inside node_modules, generates the component
+ * resolve inside node_modules (rewriteGuideLinks), generates the component
  * catalogue linking each component's own docs, and emits a version-stamped AGENTS.md
  * entry point: the detect-then-ask install procedure plus a routing table, so an agent
  * reads only the fragment it needs.
@@ -19,7 +19,7 @@
  */
 import fs from 'fs';
 import path from 'path';
-import { COMPONENT_DOCS_DIR, SHARED_FRAGMENTS, toAscii } from './agent-docs-lib';
+import { COMPONENT_DOCS_DIR, SHARED_FRAGMENTS, rewriteGuideLinks, toAscii } from './agent-docs-lib';
 
 // cwd is the stencil package dir when run via npm script.
 const STENCIL_DIR = process.cwd();
@@ -75,34 +75,6 @@ const BANNER = [
   '',
 ].join('\n');
 
-/**
- * Rewrites links that only make sense inside the monorepo so the published copy
- * resolves within the package (or degrades to plain text).
- */
-function rewriteLinks(md: string): string {
-  return (
-    md
-      // cross-project deep links -> friendly plain text (these files are not in node_modules)
-      .replace(/\[`?[^\]]*styles\/SPEC\.md`?\]\([^)]*\)/g, 'the Magma styles guide')
-      .replace(/\[`?[^\]]*stencil\/SPEC\.md`?\]\([^)]*\)/g, 'the Magma component conventions guide')
-      .replace(/\[`?[^\]]*mds-icon\/readme\.md`?\]\([^)]*\)/g, 'the mds-icon readme')
-      // any other repo-internal deep link -> keep the text only
-      .replace(/\[(`?[^\]]+`?)\]\(\.\.\/\.\.\/[^)]*\)/g, '$1')
-      // install entry point SPEC.md -> the package AGENTS.md (one level up from agents/)
-      .replace(/\[`?SPEC\.md`?\]\(SPEC\.md\)/g, '[`AGENTS.md`](../AGENTS.md)')
-      // collapse the "(web-components.md, react.md, angular.md)" group to the single shipped track
-      .replace(
-        /\(\[`?web-components\.md`?\]\([^)]*\),\s*\[`?react\.md`?\]\([^)]*\),\s*\[`?angular\.md`?\]\([^)]*\)\)/g,
-        '([`install.md`](install.md))',
-      )
-      // per-target track filenames -> the single track shipped here
-      .replace(
-        /\[`?(?:web-components|react|angular)\.md`?\]\((?:web-components|react|angular)\.md\)/g,
-        '[`install.md`](install.md)',
-      )
-  );
-}
-
 function buildAgentsMd(target: Target, version: string): string {
   return `${BANNER}# ${target.wrapperPkg} - agent install guide
 
@@ -124,31 +96,44 @@ Inspect the consumer project before asking anything:
 | Tailwind + version | \`tailwindcss\` in deps: v4 -> the CSS imports, v3 -> the JS preset (see agents/assets.md) |
 | SSR | \`@angular/ssr\` / Angular Universal, or Next App Router |
 | Compatible versions | derive from the installed \`@maggioli-design-system/magma\` major (see matrix in install.md) |
+| Editor | a \`.vscode/\` folder -> VS Code; nothing -> ask (step 2) |
 
 ## Step 2 - ask only the gaps
 
 Ask the user only what detection left undecided. Typical questions:
 
-1. **Icons**: use the prebuilt set (\`@maggioli-design-system/svg-icons\`) or do you need
-   **iconsauce** for tree-shaking / custom icons? Most consumers do NOT need iconsauce -
-   Magma already ships resolved SVGs; iconsauce is an internal build dependency. Only
-   add \`@iconsauce/*\` if the user wants their own icon pipeline.
+1. **Icons**: which sets does the app use, and how should they be served? Every slug must
+   be served at \`<mdsIconSvgPath><slug>.svg\`, and each set comes from its own package:
+   Magma ships only \`mgg/\` (\`@maggioli-design-system/svg-icons\`), while \`mi/\` and
+   \`mdi/\` come from \`@material-icons/svg\` and \`@mdi/svg\`, and none of them is a
+   dependency of this package. The routes are in agents/assets.md section 3: **iconsauce**,
+   what Magma uses (it reads the sources and writes only the icons they name), or a copy
+   script that serves the files in the slug layout. Copying the \`svg-icons\` folder as it
+   is renders nothing: its files are not under \`mgg/\`.
 2. **Static assets path**: where are static files served from? This sets \`mdsIconSvgPath\`
    and the SVG copy destination.
 3. **Dark mode / preferences**: needed? If yes, wire the preference classes and components.
 4. Confirm the version row if the installed major is ambiguous.
+5. **Editor**: VS Code? It gets token and class autocomplete through two files in
+   \`.vscode/\` (agents/assets.md section 5); for another editor only the token file applies.
 
 ## Step 3 - execute
 
 1. Install packages and the shared assets - see [\`agents/install.md\`](agents/install.md).
 2. Wire styles in the exact cascade-layer order - see [\`agents/assets.md\`](agents/assets.md).
-3. Copy the icon SVGs to the static path and set \`mdsIconSvgPath\`.
+3. Serve every icon slug the app uses at the static path, with the route from step 2, and
+   set \`mdsIconSvgPath\`.
 4. Register components: ${target.register}.
+5. Set up editor autocomplete - see [\`agents/assets.md\`](agents/assets.md) section 5: MERGE the
+   keys into \`.vscode/settings.json\` and \`.vscode/extensions.json\`, never overwrite them.
 
 ## Step 4 - verify
 
-Build the app and confirm an \`mds-*\` component renders and at least one icon loads from
-the configured path. Report what was installed, the cascade order used, and the icon path.
+Build the app and confirm an \`mds-*\` component renders and every icon it names loads
+from the configured path (no 404 on \`<path><slug>.svg\`). In VS Code, check both halves of
+the autocomplete: \`var(--magma-\` completes Magma tokens in a CSS file and, with Tailwind,
+\`bg-surface-default\` shows a swatch. Report what was installed, the cascade order used, the
+icon route and the icon path.
 
 ## Using the components
 
@@ -166,11 +151,13 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 | Typography utilities | [\`agents/typography.md\`](agents/typography.md) |
 | Dark mode, preferences, named themes, surface levels and elevation, global design decisions, corner geometry | [\`agents/theming.md\`](agents/theming.md) |
 | Reporting a problem that is Magma's, not this project's (bug, wrong guide, missing token), with this project's origin label | [\`agents/reporting.md\`](agents/reporting.md) |
+| What changed between the installed version and a newer one, before upgrading | \`CHANGELOG.md\` of each Magma package, newest release first (\`magma-react\` and \`magma-angular\` carry the releases of \`magma\`) |
 
 Tooling that needs structured data reads \`documentation.json\`: one per component beside
 its \`AGENTS.md\`, or \`@maggioli-design-system/magma/dist/documentation.json\` for all of them
-(over 2 MB - do not load it into context). \`dist/types/components.d.ts\` drives editor
-IntelliSense.
+(over 2 MB - do not load it into context). In both, the relative links of the \`usage\`
+texts resolve from the component's folder, \`dist/collection/components/<tag>/\`.
+\`dist/types/components.d.ts\` drives editor IntelliSense.
 `;
 }
 
@@ -250,10 +237,13 @@ function main(): void {
       target.pkgDir === '.' ? `../${COMPONENT_DOCS_DIR}` : `../../magma/${COMPONENT_DOCS_DIR}`;
 
     fs.writeFileSync(path.join(pkgRoot, 'AGENTS.md'), buildAgentsMd(target, version));
-    fs.writeFileSync(path.join(agentsDir, 'install.md'), BANNER + rewriteLinks(trackSrc));
+    fs.writeFileSync(
+      path.join(agentsDir, 'install.md'),
+      BANNER + rewriteGuideLinks(trackSrc, docsPrefix),
+    );
     for (const fragment of SHARED_FRAGMENTS) {
       const src = fs.readFileSync(path.join(SOURCE_DIR, fragment), 'utf8');
-      fs.writeFileSync(path.join(agentsDir, fragment), BANNER + rewriteLinks(src));
+      fs.writeFileSync(path.join(agentsDir, fragment), BANNER + rewriteGuideLinks(src, docsPrefix));
     }
     fs.writeFileSync(path.join(agentsDir, 'components.md'), buildComponentsMd(docsPrefix));
 

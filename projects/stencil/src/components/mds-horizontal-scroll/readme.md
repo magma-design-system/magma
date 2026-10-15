@@ -16,7 +16,7 @@ The `<mds-horizontal-scroll>` web component is a horizontally scrolling containe
 #### Semantic Behavior
 
 - **Slotted children drive scrolling**: The default slot's children are the scrollable items.
-- **Navigation buttons**: When `controls` resolves to a viewport other than `'none'`, two arrow buttons are rendered; each advances the scroll position to the next/previous item not fully in the viewport. Browsers without the `scrollend` event get no arrows: the component clears `controls` there.
+- **Navigation buttons**: When `controls` resolves to a viewport other than `'none'`, two arrow buttons are rendered, icon-only and named in the page language (the `lang` of `<html>`) ("Scroll back", "Scroll forward"); each advances the scroll position to the next/previous item not fully in the viewport. Browsers without the `scrollend` event get no arrows: the component clears `controls` there.
 - **Auto-disabled arrows**: The back arrow hides/disables when the first item is fully visible and the forward arrow when the last item is.
 - **Position indicator**: With `navigation="position"` a proportional dot is rendered; its width reflects the visible/total ratio and it translates along its track as the container scrolls.
 - **No focus or form semantics**: This is a presentational scroll container - it is not form-associated, exposes no implicit ARIA role, and emits no custom events.

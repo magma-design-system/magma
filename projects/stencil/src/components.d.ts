@@ -24,7 +24,7 @@ import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } f
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
-import { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
+import { FloatingUIPlacement, FloatingUIRelation, FloatingUIStrategy } from "./type/floating-ui";
 import { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
 import { EmojiNames } from "./components/mds-emoji/meta/types";
 import { ExtensionSuffixType } from "./type/file-types";
@@ -39,7 +39,7 @@ import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/t
 import { LoadingType } from "./type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "./type/autocomplete";
-import { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
+import { InputControlsIconType, InputControlsLayoutType, InputSizeType, InputTextType, MdsInputEventDetail } from "./type/input";
 import { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 import { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 import { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
@@ -80,9 +80,10 @@ import { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 import { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 import { DirectionType as DirectionType2 } from "./components/mds-tab/meta/type";
 import { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
+import { MdsTableRowSelection, MdsTableSortingType } from "./components/mds-table/meta/type";
 import { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
-import { MdsTableRowSelection } from "./components/mds-table/meta/type";
 import { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
+import { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header-cell/meta/event-detail";
 import { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
 import { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
@@ -108,7 +109,7 @@ export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } f
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
-export { FloatingUIPlacement, FloatingUIStrategy } from "./type/floating-ui";
+export { FloatingUIPlacement, FloatingUIRelation, FloatingUIStrategy } from "./type/floating-ui";
 export { MdsDropdownEventDetail } from "./components/mds-dropdown/meta/event-detail";
 export { EmojiNames } from "./components/mds-emoji/meta/types";
 export { ExtensionSuffixType } from "./type/file-types";
@@ -123,7 +124,7 @@ export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/t
 export { LoadingType } from "./type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "./type/autocomplete";
-export { InputControlsIconType, InputControlsLayoutType, InputTextType, MdsInputEventDetail } from "./type/input";
+export { InputControlsIconType, InputControlsLayoutType, InputSizeType, InputTextType, MdsInputEventDetail } from "./type/input";
 export { MdsValidationErrors, MdsValidatorFn } from "./components/mds-input/meta/validators";
 export { MdsValidationErrors as MdsValidationErrors1, ModalOverflowType as ModalOverflowType1 } from "./components.d";
 export { EventDate } from "./components/mds-input-date-range/mds-input-date-range";
@@ -164,9 +165,10 @@ export { MdsTabEventDetail } from "./components/mds-tab/meta/event-detail";
 export { MdsTabBarEventDetail } from "./components/mds-tab-bar/meta/event-detail";
 export { DirectionType as DirectionType2 } from "./components/mds-tab/meta/type";
 export { MdsTabItemEventDetail } from "./components/mds-tab-item/meta/event-detail";
+export { MdsTableRowSelection, MdsTableSortingType } from "./components/mds-table/meta/type";
 export { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
-export { MdsTableRowSelection } from "./components/mds-table/meta/type";
 export { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
+export { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header-cell/meta/event-detail";
 export { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
 export { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
@@ -1022,7 +1024,7 @@ export namespace Components {
     }
     interface MdsFilterItem {
         /**
-          * Shows the number of items will be filtered by the component
+          * Shows the number of items will be filtered by the component, also read out after the label as a number of results
          */
         "count"?: string;
         /**
@@ -1315,6 +1317,11 @@ export namespace Components {
          */
         "setFocus": () => Promise<void>;
         /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A textarea keeps its own height (`--mds-input-textarea-min-height`)
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
+        /**
           * Specifies the interval between legal numbers in an input field
          */
         "step"?: string;
@@ -1405,6 +1412,11 @@ export namespace Components {
          */
         "setValue": (value: string) => Promise<void>;
         /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
+        /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
           * @default ''
@@ -1469,6 +1481,11 @@ export namespace Components {
           * @param event the preselection range to apply
          */
         "preselect": (event: EventDate) => Promise<void>;
+        /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).
@@ -1605,14 +1622,19 @@ export namespace Components {
          */
         "required"?: boolean;
         /**
+          * The number of option rows the list shows at once, as the `size` of a native `<select>`: with `multiple`, or above `1`, the select shows a list box
+          * @default 0
+         */
+        "rows"?: number;
+        /**
           * Sets the value of the component
          */
         "setValue": (value: string | number | null) => Promise<void>;
         /**
-          * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
-          * @default 0
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A number is still read as `rows`, the row count this prop used to set: that use is deprecated and goes in the next major
+          * @default 'lg'
          */
-        "size"?: number;
+        "size"?: InputSizeType | number;
         /**
           * Specifies the value of the component
           * @default ''
@@ -2588,6 +2610,11 @@ export namespace Components {
          */
         "selection"?: boolean;
         /**
+          * Specifies who sorts the rows when a sortable header cell changes direction: `internal` moves them in the DOM, `external` leaves them to the application, which listens to `mdsTableHeaderCellSort` and renders the rows in the order asked (a table that shows one page of a larger set)
+          * @default 'internal'
+         */
+        "sorting"?: MdsTableSortingType;
+        /**
           * `internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance, works only if `selectable` is true.
          */
         "updateSelection": () => Promise<void>;
@@ -2624,7 +2651,7 @@ export namespace Components {
     }
     interface MdsTableHeaderCell {
         /**
-          * Specifies the current sort direction of the column.
+          * Specifies the current sort direction of the column. Set from outside, it sorts the rows like a click, or only shows the order when the table has `sorting="external"`.
           * @default 'none'
          */
         "direction": SortDirectionType;
@@ -2632,6 +2659,10 @@ export namespace Components {
           * Sets a label for the cell
          */
         "label"?: string;
+        /**
+          * Names the column in the `mdsTableHeaderCellSort` event, for example the field the back end sorts by
+         */
+        "sortKey"?: string;
         /**
           * Tells the component to make the cell able to sort the table columns items
          */
@@ -2752,6 +2783,11 @@ export namespace Components {
           * @default 'top'
          */
         "placement": FloatingUIPlacement;
+        /**
+          * Sets what the tooltip is to its caller: its `description` (`aria-describedby`), or its `label` (`aria-labelledby`), when the tooltip holds the only visible name of the caller, as on an icon-only button.
+          * @default 'description'
+         */
+        "relation": FloatingUIRelation;
         /**
           * Sets a safe area distance between the tooltip and the viewport.
           * @default 12
@@ -2892,7 +2928,11 @@ export namespace Components {
          */
         "alias"?: string;
         /**
-          * Specifies the delay when the tooltip will trigger
+          * Specifies the icon displayed in the header; when not set or empty, the icon follows the `variant`
+         */
+        "icon"?: string;
+        /**
+          * Specifies the guidance category of the content, which drives colors, header label and icon
           * @default 'info'
          */
         "variant": UsageType;
@@ -3126,6 +3166,10 @@ export interface MdsTabItemCustomEvent<T> extends CustomEvent<T> {
 export interface MdsTableCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMdsTableElement;
+}
+export interface MdsTableHeaderCellCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMdsTableHeaderCellElement;
 }
 export interface MdsToastCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -4343,7 +4387,18 @@ declare global {
         prototype: HTMLMdsTableHeaderElement;
         new (): HTMLMdsTableHeaderElement;
     };
+    interface HTMLMdsTableHeaderCellElementEventMap {
+        "mdsTableHeaderCellSort": MdsTableHeaderCellSortEventDetail;
+    }
     interface HTMLMdsTableHeaderCellElement extends Components.MdsTableHeaderCell, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMdsTableHeaderCellElementEventMap>(type: K, listener: (this: HTMLMdsTableHeaderCellElement, ev: MdsTableHeaderCellCustomEvent<HTMLMdsTableHeaderCellElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMdsTableHeaderCellElementEventMap>(type: K, listener: (this: HTMLMdsTableHeaderCellElement, ev: MdsTableHeaderCellCustomEvent<HTMLMdsTableHeaderCellElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMdsTableHeaderCellElement: {
         prototype: HTMLMdsTableHeaderCellElement;
@@ -5497,7 +5552,7 @@ declare namespace LocalJSX {
     }
     interface MdsFilterItem {
         /**
-          * Shows the number of items will be filtered by the component
+          * Shows the number of items will be filtered by the component, also read out after the label as a number of results
          */
         "count"?: string;
         /**
@@ -5798,6 +5853,11 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A textarea keeps its own height (`--mds-input-textarea-min-height`)
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
+        /**
           * Specifies the interval between legal numbers in an input field
          */
         "step"?: string;
@@ -5886,6 +5946,11 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
+        /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
           * @default ''
@@ -5956,6 +6021,11 @@ declare namespace LocalJSX {
     startDate: string;
     endDate: string;
   }>) => void;
+        /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+          * @default 'lg'
+         */
+        "size"?: InputSizeType;
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).
@@ -6128,10 +6198,15 @@ declare namespace LocalJSX {
          */
         "required"?: boolean;
         /**
-          * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
+          * The number of option rows the list shows at once, as the `size` of a native `<select>`: with `multiple`, or above `1`, the select shows a list box
           * @default 0
          */
-        "size"?: number;
+        "rows"?: number;
+        /**
+          * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A number is still read as `rows`, the row count this prop used to set: that use is deprecated and goes in the next major
+          * @default 'lg'
+         */
+        "size"?: InputSizeType | number;
         /**
           * Specifies the value of the component
           * @default ''
@@ -7205,6 +7280,11 @@ declare namespace LocalJSX {
           * Indicates whether row selection is currently active in the table.
          */
         "selection"?: boolean;
+        /**
+          * Specifies who sorts the rows when a sortable header cell changes direction: `internal` moves them in the DOM, `external` leaves them to the application, which listens to `mdsTableHeaderCellSort` and renders the rows in the order asked (a table that shows one page of a larger set)
+          * @default 'internal'
+         */
+        "sorting"?: MdsTableSortingType;
     }
     interface MdsTableBody {
         /**
@@ -7232,7 +7312,7 @@ declare namespace LocalJSX {
     }
     interface MdsTableHeaderCell {
         /**
-          * Specifies the current sort direction of the column.
+          * Specifies the current sort direction of the column. Set from outside, it sorts the rows like a click, or only shows the order when the table has `sorting="external"`.
           * @default 'none'
          */
         "direction"?: SortDirectionType;
@@ -7240,6 +7320,14 @@ declare namespace LocalJSX {
           * Sets a label for the cell
          */
         "label"?: string;
+        /**
+          * Emits when the user changes the sort direction of the column, at every step of the cycle. With `sorting="external"` on the table the rows are not moved: the application renders them in the order asked.
+         */
+        "onMdsTableHeaderCellSort"?: (event: MdsTableHeaderCellCustomEvent<MdsTableHeaderCellSortEventDetail>) => void;
+        /**
+          * Names the column in the `mdsTableHeaderCellSort` event, for example the field the back end sorts by
+         */
+        "sortKey"?: string;
         /**
           * Tells the component to make the cell able to sort the table columns items
          */
@@ -7364,6 +7452,11 @@ declare namespace LocalJSX {
           * @default 'top'
          */
         "placement"?: FloatingUIPlacement;
+        /**
+          * Sets what the tooltip is to its caller: its `description` (`aria-describedby`), or its `label` (`aria-labelledby`), when the tooltip holds the only visible name of the caller, as on an icon-only button.
+          * @default 'description'
+         */
+        "relation"?: FloatingUIRelation;
         /**
           * Sets a safe area distance between the tooltip and the viewport.
           * @default 12
@@ -7508,7 +7601,11 @@ declare namespace LocalJSX {
          */
         "alias"?: string;
         /**
-          * Specifies the delay when the tooltip will trigger
+          * Specifies the icon displayed in the header; when not set or empty, the icon follows the `variant`
+         */
+        "icon"?: string;
+        /**
+          * Specifies the guidance category of the content, which drives colors, header label and icon
           * @default 'info'
          */
         "variant"?: UsageType;
@@ -7833,6 +7930,7 @@ declare namespace LocalJSX {
         "required": boolean;
         "variant": ThemeInputVariantType;
         "tip": string;
+        "size": InputSizeType;
         "step": string;
         "type": InputTextType;
         "typography": TypographyInputType;
@@ -7846,6 +7944,7 @@ declare namespace LocalJSX {
         "min": string | null;
         "max": string | null;
         "delay": number;
+        "size": InputSizeType;
         "hideToday": boolean;
         "disabled": boolean;
         "readonly": boolean;
@@ -7858,6 +7957,7 @@ declare namespace LocalJSX {
         "min": string | null;
         "max": string | null;
         "delay": number;
+        "size": InputSizeType;
         "hideToday": boolean;
         "dualCalendar": boolean;
         "name": string;
@@ -7897,7 +7997,8 @@ declare namespace LocalJSX {
         "disabled": boolean;
         "required": boolean;
         "multiple": boolean;
-        "size": number;
+        "rows": number;
+        "size": string;
         "value": string;
         "defaultValue": string;
         "variant": ThemeStatusVariantType;
@@ -8165,6 +8266,7 @@ declare namespace LocalJSX {
         "interactive": boolean;
         "selectable": boolean;
         "selection": boolean;
+        "sorting": MdsTableSortingType;
     }
     interface MdsTableBodyAttributes {
         "interactive": boolean;
@@ -8179,6 +8281,7 @@ declare namespace LocalJSX {
     interface MdsTableHeaderCellAttributes {
         "sortable": boolean;
         "label": string;
+        "sortKey": string;
         "direction": SortDirectionType;
     }
     interface MdsTableRowAttributes {
@@ -8212,6 +8315,7 @@ declare namespace LocalJSX {
         "target": string;
         "offset": number;
         "placement": FloatingUIPlacement;
+        "relation": FloatingUIRelation;
         "typography": TypographyTooltipType;
         "disableShift": boolean;
         "shiftPadding": number;
@@ -8249,6 +8353,7 @@ declare namespace LocalJSX {
     interface MdsUsageAttributes {
         "variant": UsageType;
         "alias": string;
+        "icon": string;
     }
     interface MdsVideoWallAttributes {
         "autoplay": true;

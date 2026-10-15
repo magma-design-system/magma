@@ -10,6 +10,10 @@
     "src/**/*.stories.tsx",
     "src/**/*.spec.*",
     "src/**/*.e2e.*",
-    "src/test"
+    "src/test",
+    // the icon lists of the story controls: they import the iconsauce output of the build
+    // (src/fixtures/icons.json, gitignored) and svg-icons, which no consumer has
+    "src/dictionary/icon.ts",
+    "src/type/icon.ts"
   ]
 }

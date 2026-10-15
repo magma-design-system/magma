@@ -1,5 +1,6 @@
 import { Component, Host, h, Prop } from '@stencil/core';
 import { UsageType } from './meta/types';
+import { usageVariantIcon } from './meta/variants';
 import { Locale } from '@common/locale';
 import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
@@ -25,7 +26,7 @@ export class MdsUsage {
   });
 
   /**
-   * Specifies the delay when the tooltip will trigger
+   * Specifies the guidance category of the content, which drives colors, header label and icon
    */
   @Prop() readonly variant: UsageType = 'info';
 
@@ -34,7 +35,15 @@ export class MdsUsage {
    */
   @Prop() readonly alias?: string;
 
+  /**
+   * Specifies the icon displayed in the header; when not set or empty, the icon follows the `variant`
+   */
+  @Prop() readonly icon?: string;
+
   render() {
+    // an unknown variant gets the info icon, as it gets the info styling
+    const icon = this.icon || (usageVariantIcon[this.variant] ?? usageVariantIcon.info);
+
     return (
       <Host
         pref-animation={preferenceStore.state.animation}
@@ -43,7 +52,7 @@ export class MdsUsage {
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <div class="header" part="header">
-          <mds-icon name="mi/baseline/info" part="icon" />
+          <mds-icon name={icon} part="icon" />
           <mds-text typography="label" class="label" part="label">
             {this.alias ?? this.t.get(this.variant)}
           </mds-text>

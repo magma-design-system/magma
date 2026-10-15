@@ -23,8 +23,6 @@
   --mds-button-await-duration: 0.725s;
   --mds-button-transition-duration: var(--duration-300);
   --private-button-transition-duration: var(--mds-button-transition-duration);
-  --mds-button-background: rgb(var(--mds-button-border-color-rgb));
-  --mds-button-border-color-rgb: var(--magma-accent-emphasis-active);
   --mds-button-border-hover-opacity: 0.75;
   --mds-button-border-high-contrast-hover-width: 3px;
   --mds-button-border-high-contrast-width: --spacing(50);
@@ -35,10 +33,18 @@
   --mds-button-border-default-opacity: 0;
   --mds-button-border-opacity: 0;
   --mds-button-border-width: --spacing(50);
-  --mds-button-color: rgb(var(--magma-text-on-emphasis));
   --mds-button-gap: --spacing(200);
   --mds-button-line-clamp: 1;
-  --mds-button-radius: var(--magma-radius-2xl);
+
+  /* past half the height the browser clamps the radius; where corner-shape cannot be
+     drawn, --magma-corner-cap gives the round look-alike of that clamp (#913) */
+  --mds-button-radius: min(
+    var(--magma-radius-2xl),
+    var(--magma-corner-cap) * var(--private-button-height)
+  );
+
+  /* the min-height of the size */
+  --private-button-height: --spacing(900);
 
   @apply focus-bounce;
 
@@ -57,8 +63,8 @@
   gap: var(--mds-button-gap);
   justify-content: center;
   justify-self: flex-start;
-  min-height: --spacing(900);
-  min-width: --spacing(900);
+  min-height: var(--private-button-height);
+  min-width: var(--private-button-height);
   padding: 0 --spacing(400);
   position: relative;
   transition-duration: var(--duration-200);
@@ -110,6 +116,7 @@
 @import './css/mds-button-await.css';
 @import './css/mds-button-disabled.css';
 @import './css/mds-button-size.css';
+@import './css/mds-button-label.css';
 @import './css/mds-button-no-text.css';
 
 @import './css/mds-button-variant.css';

@@ -147,6 +147,28 @@ const loadSemanticTokens = (): Tokens => {
 };
 
 /**
+ * The semantic names declared on the bare `:root` of the semantic sheet, outside any at-rule:
+ * defined wherever the sheet is loaded, whatever the preferences.
+ */
+const loadSemanticRootNames = (): Set<string> => {
+  const names = new Set<string>();
+  const file = SEMANTIC_CSS_CANDIDATES.find((candidate) => fs.existsSync(candidate));
+  if (!file) {
+    return names;
+  }
+  postcss.parse(fs.readFileSync(file, 'utf-8'), { from: file }).each((node) => {
+    if (node.type === 'rule' && node.selector.trim() === ':root') {
+      node.each((child) => {
+        if (child.type === 'decl' && child.prop.startsWith('--')) {
+          names.add(child.prop.slice(2));
+        }
+      });
+    }
+  });
+  return names;
+};
+
+/**
  * The generated corner axis (`projects/styles/build/css/corner.css`). Its default
  * block sits on a bare `:root` and the deviations on `[data-corner-shape]`, so
  * `buildLookup` already prefers the default - a component rendered without the
@@ -231,6 +253,8 @@ export interface TokenFallbackPluginOptions {
 // Bare `var(--name)` with no existing fallback (closing paren right after the
 // name). `var(--name, ...)` is intentionally NOT matched - it already has one.
 const BARE_VAR = /var\(\s*--([a-z0-9-_]+)\s*\)/g;
+// A value that is nothing but one bare `var()`: an indirection.
+const ONLY_VAR = /^var\(\s*--([a-z0-9-_]+)\s*\)$/;
 const MAX_DEPTH = 12;
 
 export default function tokenFallbackPlugin(
@@ -253,14 +277,45 @@ export default function tokenFallbackPlugin(
   // never collide, so a flat lookup is enough; later spreads win on the off
   // chance they do. Semantic entries are indirections resolved recursively by
   // `inject()` down to the primitive values loaded alongside them.
+  const designTokens = injectTokenFallbacks ? loadDesignTokens() : {};
+  const globalTokens = injectGlobalFallbacks ? loadGlobalTokens() : {};
+  const semanticTokens = injectSemanticFallbacks ? loadSemanticTokens() : {};
+  const cornerTokens = injectSemanticFallbacks ? loadCornerTokens() : {};
+  const componentDefaults = injectComponentDefaults ? loadComponentDefaults() : {};
   const lookup: Tokens = {
-    ...(injectTokenFallbacks ? loadDesignTokens() : {}),
+    ...designTokens,
     // Before the generated layers: a global that globals.css only registers (the
     // corner shape) must yield to the default block its generated layer emits.
-    ...(injectGlobalFallbacks ? loadGlobalTokens() : {}),
-    ...(injectSemanticFallbacks ? loadSemanticTokens() : {}),
-    ...(injectSemanticFallbacks ? loadCornerTokens() : {}),
-    ...(injectComponentDefaults ? loadComponentDefaults() : {}),
+    ...globalTokens,
+    ...semanticTokens,
+    ...cornerTokens,
+    ...componentDefaults,
+  };
+
+  // A role on the bare :root of the semantic sheet is defined wherever that sheet is loaded,
+  // and the indirection it points to (`--magma-accent-emphasis: var(--magma-tint-accent-
+  // emphasis)`) is a name of the same sheet: loaded, the role resolves first; not loaded, the
+  // indirection is not defined either. It can never be the link that resolves, so the chain
+  // skips it for the primitive behind it, which the design tokens may define on their own.
+  // A pre-rendered page repeats every chain in every declarative shadow root (#831).
+  const semanticRootNames = injectSemanticFallbacks ? loadSemanticRootNames() : new Set<string>();
+  const onlySemantic = (name: string): boolean =>
+    name in semanticTokens &&
+    !(name in designTokens) &&
+    !(name in globalTokens) &&
+    !(name in cornerTokens) &&
+    !(name in componentDefaults);
+  const fallbackOf = (name: string): string | undefined => {
+    let value = lookup[name];
+    if (value === undefined || !semanticRootNames.has(name)) {
+      return value;
+    }
+    let link = value.match(ONLY_VAR);
+    for (let hops = 0; link && onlySemantic(link[1]) && hops < MAX_DEPTH; hops += 1) {
+      value = lookup[link[1]];
+      link = value.match(ONLY_VAR);
+    }
+    return value;
   };
 
   const reported = new Set<string>();
@@ -270,7 +325,7 @@ export default function tokenFallbackPlugin(
       return value;
     }
     return value.replace(BARE_VAR, (whole, name: string) => {
-      const fallback = lookup[name];
+      const fallback = fallbackOf(name);
       if (fallback === undefined) {
         if ((failOnMissing || warnOnMissing) && isChecked(name) && !reported.has(name)) {
           reported.add(name);

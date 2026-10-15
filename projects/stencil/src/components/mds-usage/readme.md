@@ -15,7 +15,7 @@ The `<mds-usage>` web component is a documentation-oriented annotation block of 
 
 #### Semantic Behavior
 
-- **Status semantics via `variant`**: The chosen `variant` drives the border and header color from the shared status palette (success / info / error / warning), so the container reads as the matching guidance category.
+- **Status semantics via `variant`**: The chosen `variant` drives the border and header color from the shared status palette (success / info / error / warning) and the header icon (a tick for `do`, an X for `dont`, an info sign for `info`, a warning triangle for `warn`), so the container reads as the matching guidance category even without its color.
 - **Content role mapping**: The content region conveys an allowed-vs-disallowed nature to assistive technology - insertion for the `'do'` and `'info'` variants, deletion for `'dont'` and `'warn'`.
 - **Localized header label**: When `alias` is not provided, the header text is resolved from the bundled locale dictionary (el / en / es / it) keyed by `variant`, so the label follows the document language.
 - **Default slot is content**: The default (unnamed) slot accepts a text string, HTML elements, or other components - it is the body of the usage block, not the label.
@@ -32,6 +32,7 @@ The `<mds-usage>` web component is a documentation-oriented annotation block of 
 #### Other behavioral props
 
 - **`alias`** overrides the auto-generated, localized header phrase with a custom string when the default category label is not specific enough for the example being shown.
+- **`icon`** replaces the header icon of the `variant` with any icon slug; colors, label and content role still follow the `variant`. When not set or empty, the icon follows the `variant`. The header icon is decorative: the label carries the meaning.
 
 
 ### 2. Pattern
@@ -97,6 +98,16 @@ When the auto-generated, localized header ("Consentito", "Non consentito", etc.)
 </mds-usage>
 ```
 
+#### Custom Header Icon via `icon`
+
+Each `variant` has its own header icon. When a custom `alias` names a more specific category, pass `icon` with a slug that illustrates it; the `variant` still drives the colors, the label fallback and the content role. Keep the icon coherent with the `variant`.
+
+```html
+<mds-usage variant="do" alias="Struttura consigliata" icon="mi/baseline/account-tree">
+  <mds-text>Usare mds-card con header, content e footer separati.</mds-text>
+</mds-usage>
+```
+
 #### Side-by-Side Do / Dont Pair
 
 Pair a `do` block with a `dont` block to illustrate a correct and an incorrect approach in the same documentation section. No extra wrapper is needed - use a CSS grid or flex container.
@@ -152,7 +163,7 @@ Common incorrect uses of `<mds-usage>`. Each entry pairs the wrong form with the
 
 #### Do Not Use `variant` as the Shared Tone/Variant Ladder
 
-`<mds-usage>` does not use the system-wide `variant` ladder (`primary`, `secondary`, `error`, etc.). Its `variant` prop is component-specific (`do`, `dont`, `info`, `warn`). Passing a system variant silently falls back to the base info-like styling, with an empty header label (the locale has no entry for it).
+`<mds-usage>` does not use the system-wide `variant` ladder (`primary`, `secondary`, `error`, etc.). Its `variant` prop is component-specific (`do`, `dont`, `info`, `warn`). Passing a system variant silently falls back to the base info-like styling and the info icon, with an empty header label (the locale has no entry for it).
 
 ```html
 <!-- INCORRECT -->
@@ -163,6 +174,22 @@ Common incorrect uses of `<mds-usage>`. Each entry pairs the wrong form with the
 <!-- CORRECT -->
 <mds-usage variant="dont">
   <mds-text>Non consentito.</mds-text>
+</mds-usage>
+```
+
+#### Do Not Use an `icon` That Contradicts the `variant`
+
+`icon` replaces only the glyph: colors, label and content role still follow the `variant`. An icon that means the opposite (a tick on a `dont` block, a cross on a `do` block) sends two conflicting signals. To change the meaning, change the `variant`; use `icon` only to make the same meaning more specific.
+
+```html
+<!-- INCORRECT -->
+<mds-usage variant="dont" icon="mi/baseline/check-circle">
+  <mds-text>Non annidare mds-card all'interno di un'altra mds-card.</mds-text>
+</mds-usage>
+
+<!-- CORRECT -->
+<mds-usage variant="dont">
+  <mds-text>Non annidare mds-card all'interno di un'altra mds-card.</mds-text>
 </mds-usage>
 ```
 
@@ -231,10 +258,11 @@ mds-usage {
 
 ## Properties
 
-| Property  | Attribute | Description                                                         | Type                                 | Default     |
-| --------- | --------- | ------------------------------------------------------------------- | ------------------------------------ | ----------- |
-| `alias`   | `alias`   | Specifies the alias of the usage phrase on the top of the component | `string \| undefined`                | `undefined` |
-| `variant` | `variant` | Specifies the delay when the tooltip will trigger                   | `"do" \| "dont" \| "info" \| "warn"` | `'info'`    |
+| Property  | Attribute | Description                                                                                       | Type                                 | Default     |
+| --------- | --------- | ------------------------------------------------------------------------------------------------- | ------------------------------------ | ----------- |
+| `alias`   | `alias`   | Specifies the alias of the usage phrase on the top of the component                               | `string \| undefined`                | `undefined` |
+| `icon`    | `icon`    | Specifies the icon displayed in the header; when not set or empty, the icon follows the `variant` | `string \| undefined`                | `undefined` |
+| `variant` | `variant` | Specifies the guidance category of the content, which drives colors, header label and icon        | `"do" \| "dont" \| "info" \| "warn"` | `'info'`    |
 
 
 ## Slots

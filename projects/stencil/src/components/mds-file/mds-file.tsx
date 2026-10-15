@@ -1,4 +1,5 @@
 import {
+  Build,
   Component,
   Element,
   Event,
@@ -12,8 +13,8 @@ import {
 import { ExtensionSuffixType } from '@type/file-types';
 import { MdsFileEventDetail } from './meta/event-detail';
 import { ThemeFullVariantType } from '@type/variant';
-import { MD5 } from 'crypto-js';
 import { getFormatsVariant, getName, getSuffix, getExtensionInfos } from '@common/file';
+import { fnv1a } from '@common/hash';
 import miBaselineFileDownloadDone from '@icon/mi/baseline/file-download-done.svg';
 import miOutlineFileDownload from '@icon/mi/outline/file-download.svg';
 import { Locale } from '@common/locale';
@@ -89,30 +90,35 @@ export class MdsFile {
       target: this.host,
       type: format,
     });
-    localStorage.setItem(`mdsFile${MD5(this.filename).toString()}`, 'downloaded');
+    localStorage.setItem(this.downloadedStorageKey(), 'downloaded');
     this.checkWasDownloaded();
   };
 
-  private checkWasDownloaded = () => {
-    const filename = `mdsFile/${MD5(this.filename).toString()}`;
-    this.wasDownloaded = localStorage.getItem(filename) === 'downloaded';
+  /**
+   * The localStorage key that records the download of the filename: `mdsFile/` plus a short hash
+   * of the name, so the key stays short and uniform whatever the name holds. A plain hash, not a
+   * digest: the key is no security measure.
+   */
+  private downloadedStorageKey = (): string => `mdsFile/${fnv1a(this.filename)}`;
+
+  private checkWasDownloaded = (): void => {
+    // the hydrate app has a window but no storage of a user: the indicator is a client matter
+    if (!Build.isBrowser) return;
+    this.wasDownloaded = localStorage.getItem(this.downloadedStorageKey()) === 'downloaded';
   };
 
   private getDefaultDescription = (): string =>
     getExtensionInfos(this.filename, this.suffix).description;
 
   componentWillLoad(): void {
-    this.checkWasDownloaded();
     this.format = getExtensionInfos(this.filename, this.suffix).format;
-  }
-
-  componentDidUpdate(): void {
     this.checkWasDownloaded();
   }
 
   @Watch('filename')
   handleFilename(newValue: string): void {
     this.format = getExtensionInfos(newValue, this.suffix).format;
+    this.checkWasDownloaded();
   }
 
   render() {

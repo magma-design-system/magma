@@ -3,15 +3,18 @@
   "version": "2.1.1",
   "description": "Maggioli brand identity assets",
   "files": [
-    "/dist/"
+    "/dist/",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "assets": "tsx scripts/build.ts",
-    "build": "npm run clean && npm run assets && npm run dir-tree",
+    "build": "npm run clean && npm run manifest && npm run assets && npm run check.signatures && npm run dir-tree",
+    "check.signatures": "tsx scripts/check-signatures.ts",
     "clean": "tsx scripts/clean.ts",
     "dir-tree": "tsx scripts/dir-tree.ts",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "manifest": "tsx scripts/manifest.ts"
   },
   "keywords": [
     "asset",

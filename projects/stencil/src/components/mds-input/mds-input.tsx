@@ -30,6 +30,7 @@ import {
   InputTextType,
   InputControlsLayoutType,
   InputControlsIconType,
+  InputSizeType,
   MdsInputEventDetail,
 } from '@type/input';
 import { ThemeInputVariantType } from '@type/variant';
@@ -258,6 +259,12 @@ export class MdsInput {
    * Sets the word(s) of the tip of the input field
    */
   @Prop({ reflect: true }) readonly tip?: string;
+
+  /**
+   * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px.
+   * A textarea keeps its own height (`--mds-input-textarea-min-height`)
+   */
+  @Prop({ reflect: true }) readonly size?: InputSizeType = 'lg';
 
   /**
    * Specifies the interval between legal numbers in an input field
@@ -749,6 +756,11 @@ export class MdsInput {
     }
   };
 
+  /** The buttons inside the field: the default `md` fits a 48px field, `sm` the smaller ones. */
+  private buttonSize(): 'sm' | undefined {
+    return this.size === 'sm' || this.size === 'md' ? 'sm' : undefined;
+  }
+
   render() {
     return (
       <Host
@@ -872,6 +884,7 @@ export class MdsInput {
         {this.type === 'password' && (
           <mds-button
             class="password-toggle-button"
+            size={this.buttonSize()}
             variant="dark"
             tone="text"
             icon={this.isPasswordVisible ? miBaselineVisibleOff : miBaselineVisible}
@@ -894,6 +907,7 @@ export class MdsInput {
         {this.mic && (
           <mds-button
             class={clsx('mic-toggle-button', this.isRecording && 'mic-toggle-button--recording')}
+            size={this.buttonSize()}
             icon={this.speechToTextIcon}
             disabled={!this.canEdit()}
             onClick={this.toggleTextRecognition}

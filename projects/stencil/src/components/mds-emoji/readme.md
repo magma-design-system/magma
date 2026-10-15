@@ -1,6 +1,8 @@
 # mds-emoji
 
-Illustrations come from [Magma Emoji Figma](https://www.figma.com/design/09SuDQMZYyOKGyomr87G9c/Emoji?node-id=0-1&t=U3txjHfdwaMIRRAC-1) illustrations.
+
+
+This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.
 
 <!-- Auto Generated Below -->
 
@@ -9,7 +11,7 @@ Illustrations come from [Magma Emoji Figma](https://www.figma.com/design/09SuDQM
 
 ### 1. Description
 
-The `<mds-emoji>` web component renders one of the Magma Design System's animated mascot illustrations (`mia` or `simi`) as an interactive SVG. It is a decorative, expressive element with no native HTML equivalent: its personality is driven entirely through imperative animation methods rather than markup or props.
+The `<mds-emoji>` web component renders one of the Magma Design System's animated mascot illustrations (`mia` or `simi`) as an interactive SVG. It is a decorative, expressive element with no native HTML equivalent: its personality is driven entirely through imperative animation methods rather than markup or props. The illustrations are drawn in the [Magma Emoji](https://www.figma.com/design/09SuDQMZYyOKGyomr87G9c/Emoji?node-id=0-1&t=U3txjHfdwaMIRRAC-1) Figma file.
 
 #### Semantic Behavior
 

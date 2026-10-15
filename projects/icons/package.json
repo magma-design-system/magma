@@ -6,7 +6,8 @@
   "files": [
     "/index.ts",
     "/dist/",
-    "/resources/*.json"
+    "/resources/*.json",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsx ./scripts/font-icons.ts dictionary.json -- --website",

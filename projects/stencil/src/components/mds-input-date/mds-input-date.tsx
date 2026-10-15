@@ -18,7 +18,13 @@ import miBaselineCalendarToday from '@icon/mi/baseline/calendar-today.svg';
 import { DateTime } from 'luxon';
 import { preferenceStore } from '@common/preference';
 import { ThemeInputVariantType } from '@type/variant';
+import { InputSizeType } from '@type/input';
 import { MdsValidationErrors } from 'src/components';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 // TODO add input validation manager for error message
 @Component({
@@ -28,6 +34,13 @@ import { MdsValidationErrors } from 'src/components';
   formAssociated: true,
 })
 export class MdsInputDate {
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
+
   @Element() host: HTMLMdsInputDateElement;
   @AttachInternals() internals: ElementInternals;
 
@@ -86,6 +99,11 @@ export class MdsInputDate {
    * @description Default is 500
    */
   @Prop({ reflect: true }) readonly delay: number = 500;
+
+  /**
+   * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+   */
+  @Prop({ reflect: true }) readonly size?: InputSizeType = 'lg';
 
   /**
    * Hides the highlight on today's date in the calendar.
@@ -353,8 +371,11 @@ export class MdsInputDate {
         {!this.isSlotted && (
           <div class="action-open-calendar-wrapper">
             <mds-button
+              aria-label={this.t.get('openCalendar')}
               id="calendar-dropdown"
               class="action-open-calendar"
+              // the default md button fills the 36px square of an md field; sm fits the 28px one
+              size={this.size === 'sm' ? 'sm' : undefined}
               // a read-only date cannot change, from the calendar either
               disabled={this.isDisabled() || this.readonly}
               variant="dark"

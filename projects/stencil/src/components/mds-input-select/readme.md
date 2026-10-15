@@ -29,9 +29,11 @@ The `<mds-input-select>` web component is the Magma Design System single- and mu
 
 The `variant` prop applies a status appearance drawn from the shared status ladder in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) - use it to reflect validation outcome (`'error'`, `'success'`, `'warning'`, `'info'`) rather than decorative styling. This component exposes no separate `tone` prop.
 
+- **`size`** sets the height of the field, the same as [`<mds-button>`](../../mds-button): `sm` 28px, `md` 36px, `lg` 48px (default). Match it to the buttons next to the field, or go smaller in dense layouts (filter bars, table toolbars); the text style stays the same, the padding and the inner arrow scale with it.
+
 #### Other behavioral props
 
-- **`multiple`** turns the control into a multi-select list box: the form gets an entry per selected option and `values` in the `mdsInputSelectChange` detail lists them all, while `value` holds the first one, as `select.value` does. **`size`** sets how many option rows are visible at once, as on a native `<select>`: above `1` it shows a list box even without `multiple`.
+- **`multiple`** turns the control into a multi-select list box: the form gets an entry per selected option and `values` in the `mdsInputSelectChange` detail lists them all, while `value` holds the first one, as `select.value` does. **`rows`** sets how many option rows are visible at once, as the `size` of a native `<select>`: above `1` it shows a list box even without `multiple`. A number in `size`, the row count it used to set, still works as `rows` but warns: it is deprecated and goes in the next major.
 - **`defaultValue`** is the initial selection used to seed the value at load (notably for the React wrapper), distinct from the live `value` that reflects the current choice.
 - **`required`** both enforces a non-empty submission and locks the placeholder option so the empty entry cannot be chosen again.
 
@@ -138,10 +140,10 @@ Set `disabled` as a boolean attribute to block interaction and remove the value 
 
 #### Multi-select List Box
 
-`multiple` switches the component to a scrollable list that allows zero or more simultaneous selections. Use `size` to control how many rows are visible without scrolling. Mark the options to preselect with `selected`, as in a native `<select multiple>`. The form submits an entry per selected option under `name`, and `values` in the `mdsInputSelectChange` detail lists them all; `value` holds only the first one, as `select.value` does.
+`multiple` switches the component to a scrollable list that allows zero or more simultaneous selections. Use `rows` to control how many rows are visible without scrolling (`size` sets the height of the field). Mark the options to preselect with `selected`, as in a native `<select multiple>`. The form submits an entry per selected option under `name`, and `values` in the `mdsInputSelectChange` detail lists them all; `value` holds only the first one, as `select.value` does.
 
 ```html
-<mds-input-select name="competenze" multiple size="4">
+<mds-input-select name="competenze" multiple rows="4">
   <option value="js" selected>JavaScript</option>
   <option value="ts" selected>TypeScript</option>
   <option value="css">CSS</option>
@@ -187,7 +189,7 @@ Set `variant` to one of the status values (`error`, `success`, `warning`, `info`
 
 #### Styling Customization
 
-Customize the component only through its documented `--mds-input-select-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and high-contrast modes continue to work correctly. `--mds-input-select-variant-color-rgb` takes a bare RGB triplet (`var(--magma-<role>)`, no `rgb()`); the other properties take a color (`rgb(var(--magma-<role>))`).
+Customize the component only through its documented `--mds-input-select-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and high-contrast modes continue to work correctly. `--mds-input-select-variant-color-rgb` takes a bare RGB triplet (`var(--magma-<role>)`, no `rgb()`); the other properties take a color (`rgb(var(--magma-<role>))`). `--mds-input-select-ring` is the ring at rest: on hover and focus the select draws its own 3px ring in the variant color, so the focus stays visible whatever the ring at rest, in dark mode and with more contrast too; change its color through `--mds-input-select-variant-color-rgb`.
 
 ```css
 .sidebar-filter mds-input-select {
@@ -334,7 +336,8 @@ mds-input-select::part(select) {
 | `name`           | `name`          | Is needed to reference the form data after the form is submitted                                                                                                                                                                                                                                                                     | `string \| undefined`                                      | `undefined` |
 | `placeholder`    | `placeholder`   | Specifies a short hint that describes the expected value of the element                                                                                                                                                                                                                                                              | `string \| undefined`                                      | `undefined` |
 | `required`       | `required`      | Specifies that the element must be filled out before submitting the form                                                                                                                                                                                                                                                             | `boolean \| undefined`                                     | `false`     |
-| `size`           | `size`          | When `multiple` is set to `true`, represents the number or rows in the list that should be visible                                                                                                                                                                                                                                   | `number \| undefined`                                      | `0`         |
+| `rows`           | `rows`          | The number of option rows the list shows at once, as the `size` of a native `<select>`: with `multiple`, or above `1`, the select shows a list box                                                                                                                                                                                   | `number \| undefined`                                      | `0`         |
+| `size`           | `size`          | Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px. A number is still read as `rows`, the row count this prop used to set: that use is deprecated and goes in the next major                                                                                                               | `"lg" \| "md" \| "sm" \| number \| undefined`              | `'lg'`      |
 | `value`          | `value`         | Specifies the value of the component                                                                                                                                                                                                                                                                                                 | `null \| number \| string \| undefined`                    | `''`        |
 | `variant`        | `variant`       | Sets the variant of the component                                                                                                                                                                                                                                                                                                    | `"error" \| "info" \| "success" \| "warning" \| undefined` | `undefined` |
 
@@ -382,17 +385,17 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                                   | Description                                                      |
-| ------------------------------------------------------ | ---------------------------------------------------------------- |
-| `--mds-input-select-arrow-icon-background-color`       | Background color behind the arrow icon                           |
-| `--mds-input-select-arrow-icon-blur-background-color`  | Transparent background used for blurred states of the arrow icon |
-| `--mds-input-select-arrow-icon-blur-color`             | Color applied to the arrow icon in blurred states                |
-| `--mds-input-select-arrow-icon-color`                  | Default arrow icon color                                         |
-| `--mds-input-select-arrow-icon-hover-background-color` | Background color of the arrow icon when hovered                  |
-| `--mds-input-select-arrow-icon-hover-color`            | Color of the arrow icon when hovered                             |
-| `--mds-input-select-ring`                              | Focus ring applied around the select component                   |
-| `--mds-input-select-shadow`                            | Shadow applied to the select component                           |
-| `--mds-input-select-variant-color-rgb`                 | Base color used to derive all select component visual states     |
+| Name                                                   | Description                                                                                  |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| `--mds-input-select-arrow-icon-background-color`       | Background color behind the arrow icon                                                       |
+| `--mds-input-select-arrow-icon-blur-background-color`  | Transparent background used for blurred states of the arrow icon                             |
+| `--mds-input-select-arrow-icon-blur-color`             | Color applied to the arrow icon in blurred states                                            |
+| `--mds-input-select-arrow-icon-color`                  | Default arrow icon color                                                                     |
+| `--mds-input-select-arrow-icon-hover-background-color` | Background color of the arrow icon when hovered                                              |
+| `--mds-input-select-arrow-icon-hover-color`            | Color of the arrow icon when hovered                                                         |
+| `--mds-input-select-ring`                              | Ring applied around the select at rest; hover and focus draw a 3px ring in the variant color |
+| `--mds-input-select-shadow`                            | Shadow applied to the select component                                                       |
+| `--mds-input-select-variant-color-rgb`                 | Base color used to derive all select component visual states                                 |
 
 
 ## Dependencies

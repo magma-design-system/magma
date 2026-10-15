@@ -1,6 +1,7 @@
 {
   "endDate": "Fecha de fin",
   "from": "De",
+  "openCalendar": "Abrir el calendario",
   "startDate": "Fecha de inicio",
   "to": "a"
 }

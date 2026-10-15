@@ -16,9 +16,11 @@ The `<mds-filter>` web component is a compound container that groups a set of `<
 #### Semantic Behavior
 
 - **Compound parent**: Acts as the controller for slotted `<mds-filter-item>` children, driving their state in response to selection events.
+- **Group of toggles**: The host is a `group` named by `label`, and each item is a toggle button whose pressed state follows its selection: a screen reader hears which filters are on and how many results each one shows. Every item is a Tab stop; there is no arrow-key navigation.
 - **Selection coordination**: In single mode it enforces exclusive selection (selecting one deselects the others); in `multiple` mode it keeps every selected child active and tracks how many are selected.
-- **Combined change event**: `mdsFilterChange` fires whenever any child's selection changes, carrying both the `NodeList` of the children and a comma-joined string of the selected items' `value`s.
-- **Reset control**: When `reset` is set, a clear-all control appears once a filter is active and clears all selections when clicked.
+- **Selection set by the application**: The selection lives on the items' `selected`. Setting or clearing it from the application, or rendering an item already selected, is taken in as after a click: in single mode only the last item set stays selected, the reset button shows or hides, the strip scrolls to the item. No `mdsFilterChange` is emitted for it, and `autoReset` does not apply: the application already knows. Two items `selected` in the markup of a single-mode bar leave the last one selected, as a `<select>` does.
+- **Combined change event**: `mdsFilterChange` fires whenever the user changes the selection (an item, or the reset button), carrying both the `NodeList` of the children and a comma-joined string of the selected items' `value`s.
+- **Reset control**: When `reset` is set, a clear-all button appears once a filter is active, named in the page language (the `lang` of `<html>`) ("Clear filters"). A click clears all selections and emits `mdsFilterChange` with an empty `value`. While no filter is active the button is scaled away, out of the tab order and of the accessibility tree; without `reset` it is not rendered at all.
 - **Auto-scroll**: On each selection the bar scrolls horizontally to center the most recently selected item.
 - **Default slot**: The default slot is for `<mds-filter-item>` elements only, not arbitrary text or markup.
 
@@ -79,7 +81,7 @@ Set `multiple` when filters are additive rather than mutually exclusive. All sel
 
 #### Reset Button
 
-Set `reset` to show a clear-all control whenever at least one item is active. The reset control is hidden when no filter is selected and becomes visible automatically when a selection is made.
+Set `reset` to show a clear-all control whenever at least one item is active. The reset control is hidden when no filter is selected and becomes visible automatically when a selection is made. It is named in the page language ("Clear filters") and emits `mdsFilterChange` with an empty `value` when it clears the selection.
 
 ```html
 <mds-filter label="Tipo documento" multiple reset>
@@ -103,7 +105,7 @@ Use `auto-reset` together with `multiple` when selecting all items is semantical
 
 #### Filter Item with Icon
 
-Supply `icon` on individual `<mds-filter-item>` children to add a glyph alongside the label. The icon slug follows iconsauce conventions; `aria-label` is derived from `label` (or `icon` when no label is present).
+Supply `icon` on individual `<mds-filter-item>` children to add a glyph alongside the label. The icon slug follows iconsauce conventions; the spoken name comes from `label`, or from the icon slug when no label is present (`grid view` for `mi/baseline/grid-view`).
 
 ```html
 <mds-filter label="Formato">
@@ -115,7 +117,7 @@ Supply `icon` on individual `<mds-filter-item>` children to add a glyph alongsid
 
 #### Pre-Selected Item
 
-Set `selected` on a child at page load to reflect a filter that is already active (e.g. restored from a URL parameter or user preference). The parent picks up the initial state during `componentWillLoad`.
+Set `selected` on a child at page load to reflect a filter that is already active (e.g. restored from a URL parameter or user preference). The parent picks up the initial state when it loads.
 
 ```html
 <mds-filter label="Periodo">
@@ -125,9 +127,39 @@ Set `selected` on a child at page load to reflect a filter that is already activ
 </mds-filter>
 ```
 
+#### Setting the Selection from the Application
+
+When the filters live somewhere else - in the address, in a store, behind a "Clear filters" button outside the bar - set `selected` on the items: the bar follows as after the same clicks (single mode, reset button), without emitting `mdsFilterChange`. In a framework, bind `selected` on each item to the state.
+
+```html
+<mds-filter id="status" label="Stato" reset>
+  <mds-filter-item label="Nuove" value="new"></mds-filter-item>
+  <mds-filter-item label="Aperte" value="open"></mds-filter-item>
+  <mds-filter-item label="Chiuse" value="closed"></mds-filter-item>
+</mds-filter>
+<mds-button id="clear" label="Rimuovi i filtri" variant="dark" tone="text"></mds-button>
+```
+
+```js
+const items = [...document.querySelectorAll('#status mds-filter-item')];
+
+// restore the filter from the address on load
+const status = new URLSearchParams(location.search).get('status');
+items.forEach((item) => {
+  item.selected = item.value === status;
+});
+
+// clear it from a button outside the bar
+document.querySelector('#clear').addEventListener('click', () => {
+  items.forEach((item) => {
+    item.selected = false;
+  });
+});
+```
+
 #### Disabled Item
 
-Set `disabled` on individual `<mds-filter-item>` children to remove them from the tab order. In the current release a pointer click still toggles a disabled item and no disabled style is painted, so do not rely on it alone to block a selection.
+Set `disabled` on individual `<mds-filter-item>` children to block them: a disabled item leaves the tab order, ignores clicks and keys, is announced as unavailable (`aria-disabled`) and is painted in the disabled text colour.
 
 ```html
 <mds-filter label="Stato pratica">

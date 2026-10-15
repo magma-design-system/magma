@@ -6,6 +6,10 @@ export type InputControlsIconType = (typeof inputControlsIconDictionary)[number]
 
 export type InputValueType = null | number | string | undefined;
 
+/** The sizes of a text field, with the heights of mds-button: sm 28px, md 36px, lg 48px. */
+export const inputSizeDictionary = ['sm', 'md', 'lg'] as const;
+export type InputSizeType = (typeof inputSizeDictionary)[number];
+
 export const inputTextTypeDictionary = [
   'date',
   'email',

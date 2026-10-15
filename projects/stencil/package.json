@@ -59,13 +59,15 @@
     "./package.json": "./package.json"
   },
   "sideEffects": [
-    "**/*.css"
+    "**/*.css",
+    "./loader/index.js"
   ],
   "files": [
     "dist/",
     "loader/",
     "AGENTS.md",
-    "agents/"
+    "agents/",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "npm run clean && npm run build.icons && npm run sync.agent-docs && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run patch.custom-elements && npm run build.component-docs && npm run build.api-snapshot",
@@ -108,12 +110,11 @@
     "watch": "npm run build.icons && stencil build --docs-readme --watch"
   },
   "dependencies": {
-    "@floating-ui/dom": "1.6.12",
+    "@floating-ui/dom": "1.8.0",
     "@maggioli-design-system/design-tokens": "^15.1.0",
     "@maggioli-design-system/styles": "^17.1.0",
     "@stencil/core": "4.44.2",
     "clsx": "2.1.1",
-    "crypto-js": "4.2.0",
     "dayjs": "1.11.23",
     "filesize": "10.1.6",
     "fitty": "2.4.2",
@@ -137,19 +138,18 @@
     "@stencil/react-output-target": "1.6.2",
     "@stencil/store": "2.2.4",
     "@stencil/vitest": "1.15.0",
-    "@storybook/addon-a11y": "10.5.10",
-    "@storybook/addon-docs": "10.5.10",
-    "@storybook/addon-vitest": "10.5.10",
-    "@storybook/icons": "2.1.0",
-    "@storybook/react-vite": "10.5.10",
+    "@storybook/addon-a11y": "10.6.2",
+    "@storybook/addon-docs": "10.6.2",
+    "@storybook/addon-vitest": "10.6.2",
+    "@storybook/icons": "2.2.0",
+    "@storybook/react-vite": "10.6.2",
     "@tailwindcss/postcss": "4.3.3",
-    "@types/crypto-js": "4.2.2",
     "@types/mustache": "4.2.6",
     "autoprefixer": "10.6.1",
     "cssnano": "7.1.9",
     "esbuild": "0.28.2",
     "eslint-plugin-react": "7.37.5",
-    "eslint-plugin-storybook": "10.5.10",
+    "eslint-plugin-storybook": "10.6.2",
     "handlebars": "4.7.10",
     "normalize.css": "8.0.1",
     "p-queue": "6.6.2",
@@ -163,7 +163,7 @@
     "postcss-load-config": "6.0.1",
     "stdio": "2.1.3",
     "stencil-inline-svg": "1.1.0",
-    "storybook": "10.5.10",
+    "storybook": "10.6.2",
     "tailwindcss": "4.3.3",
     "vite": "8.3.4"
   },

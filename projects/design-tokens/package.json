@@ -38,7 +38,8 @@
   },
   "main": "dist/js/tailwind-colors-css-vars.js",
   "files": [
-    "/dist/"
+    "/dist/",
+    "CHANGELOG.md"
   ],
   "bin": {
     "magma-design-tokens": "dist/src/cli.mjs"

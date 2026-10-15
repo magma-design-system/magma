@@ -67,6 +67,45 @@ export function rewriteUsageLinks(md: string): string {
   );
 }
 
+/**
+ * Rewrites the links of a docs/agents/ fragment for its shipped copy in <package>/agents/.
+ * `componentDocs` is the folder of the per-component docs as seen from there: the magma
+ * package's dist/collection/components, `../../magma/...` from a wrapper. A component's
+ * Pattern and Antipattern become its shipped pattern.md and antipattern.md, any other doc of
+ * it its AGENTS.md, the install entry point and the per-target
+ * tracks become the files the package ships. Any other link into the monorepo is left as it
+ * is, so component-docs.ts fails the build on it: turned into plain text, it used to ship
+ * as a reference nobody outside the monorepo can open ("the mds-icon readme").
+ */
+export function rewriteGuideLinks(md: string, componentDocs: string): string {
+  return (
+    md
+      // a component's Pattern or Antipattern usage file -> its shipped pattern.md / antipattern.md
+      .replace(
+        /\[([^\]]*)\]\((?:\.\.\/)+projects\/stencil\/src\/components\/(mds-[a-z0-9-]+)\/usage\/[23]\.(?:%20| )(Pattern|Antipattern)\.md(#[a-z0-9-]+)?\)/g,
+        (_m, text: string, tag: string, file: string, anchor = '') =>
+          `[${text}](${componentDocs}/${tag}/${file.toLowerCase()}.md${anchor})`,
+      )
+      // any other doc of a component in the monorepo (readme, description) -> its shipped AGENTS.md
+      .replace(
+        /\[[^\]]*\]\((?:\.\.\/)+projects\/stencil\/src\/components\/(mds-[a-z0-9-]+)\/[^)]*\)/g,
+        (_m, tag: string) => `[\`${tag}/AGENTS.md\`](${componentDocs}/${tag}/AGENTS.md)`,
+      )
+      // install entry point SPEC.md -> the package AGENTS.md (one level up from agents/)
+      .replace(/\[`?SPEC\.md`?\]\(SPEC\.md\)/g, '[`AGENTS.md`](../AGENTS.md)')
+      // collapse the "(web-components.md, react.md, angular.md)" group to the single shipped track
+      .replace(
+        /\(\[`?web-components\.md`?\]\([^)]*\),\s*\[`?react\.md`?\]\([^)]*\),\s*\[`?angular\.md`?\]\([^)]*\)\)/g,
+        '([`install.md`](install.md))',
+      )
+      // per-target track filenames -> the single track shipped here
+      .replace(
+        /\[`?(?:web-components|react|angular)\.md`?\]\((?:web-components|react|angular)\.md\)/g,
+        '[`install.md`](install.md)',
+      )
+  );
+}
+
 /** Escapes a value for a single markdown table cell. */
 function cell(value: string | undefined): string {
   if (!value) return '-';

@@ -133,3 +133,18 @@ by itself changes the shape WITHOUT the scale.
 In your own CSS take radii from the `--magma-radius-*` scale (`none`, `3xs` ... `5xl`,
 `full`), which follows the axis: `border-radius: var(--magma-radius-lg)`. A raw
 `--radius-*` token or a pixel value stays the same under every shape.
+
+A browser without `corner-shape` (Firefox, Safari) gets round corners and the round
+scale on its own. A control of your own whose radius is past half its height
+(Chromium clamps it to half the height) needs one more step to keep its look there:
+cap the radius at a part of its height, as Magma's buttons and fields do.
+
+```css
+.my-control {
+  --my-control-height: 2.25rem;
+
+  border-radius: min(var(--magma-radius-2xl), var(--magma-corner-cap) * var(--my-control-height));
+  corner-shape: var(--magma-corner-shape);
+  min-height: var(--my-control-height);
+}
+```

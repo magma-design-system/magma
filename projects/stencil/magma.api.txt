@@ -639,6 +639,7 @@ mds-input prop pattern (attr pattern) [reflect]: string | undefined
 mds-input prop placeholder (attr placeholder) [reflect]: string | undefined
 mds-input prop readonly (attr readonly) [reflect]: boolean | undefined = false
 mds-input prop required (attr required) [reflect]: boolean | undefined = false
+mds-input prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined = 'lg'
 mds-input prop step (attr step) [reflect]: string | undefined
 mds-input prop tip (attr tip) [reflect]: string | undefined
 mds-input prop type (attr type) [reflect]: "cc" | "cf" | "date" | "email" | "isbn" | "number" | "password" | "piva" | "search" | "tel" | "text" | "textarea" | "time" | "url" | undefined = 'text'
@@ -693,6 +694,7 @@ mds-input-date prop min (attr min) [reflect, mutable]: null | string = null
 mds-input-date prop name (attr name) [reflect]: string | undefined
 mds-input-date prop readonly (attr readonly) [reflect]: boolean | undefined = false
 mds-input-date prop required (attr required) [reflect]: boolean | undefined = false
+mds-input-date prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined = 'lg'
 mds-input-date prop value (attr value) [reflect]: string = ''
 mds-input-date prop variant (attr variant) [reflect, mutable]: "ai" | "error" | "info" | "primary" | "success" | "warning" | undefined = 'primary'
 mds-input-date event mdsInputDateSelect: string [bubbles, cancelable, composed]
@@ -723,6 +725,7 @@ mds-input-date-range prop hideToday (attr hide-today) [reflect]: boolean = false
 mds-input-date-range prop max (attr max) [reflect]: null | string = null
 mds-input-date-range prop min (attr min) [reflect]: null | string = null
 mds-input-date-range prop name (attr name) [reflect]: string | undefined
+mds-input-date-range prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined = 'lg'
 mds-input-date-range prop startDate (attr start-date) [reflect]: string = ''
 mds-input-date-range event mdsInputDateRangeValueChange: { startDate: string; endDate: string; } [bubbles, cancelable, composed]
 mds-input-date-range method preselect(event: EventDate) => Promise<void>
@@ -796,7 +799,8 @@ mds-input-select prop multiple (attr multiple) [reflect]: boolean | undefined = 
 mds-input-select prop name (attr name) [reflect]: string | undefined
 mds-input-select prop placeholder (attr placeholder) [reflect]: string | undefined
 mds-input-select prop required (attr required) [reflect]: boolean | undefined = false
-mds-input-select prop size (attr size) [reflect]: number | undefined = 0
+mds-input-select prop rows (attr rows) [reflect]: number | undefined = 0
+mds-input-select prop size (attr size) [reflect]: "lg" | "md" | "sm" | number | undefined = 'lg'
 mds-input-select prop value (attr value) [reflect]: null | number | string | undefined = ''
 mds-input-select prop variant (attr variant) [reflect]: "error" | "info" | "success" | "warning" | undefined
 mds-input-select event mdsInputSelectChange: MdsInputSelectEventDetail [bubbles, cancelable, composed]
@@ -1410,6 +1414,7 @@ mds-table encapsulation shadow
 mds-table prop interactive (attr interactive): boolean | undefined
 mds-table prop selectable (attr selectable): boolean | undefined
 mds-table prop selection (attr selection) [reflect, mutable]: boolean | undefined
+mds-table prop sorting (attr sorting) [reflect]: "external" | "internal" | undefined = 'internal'
 mds-table event mdsTableSelectionChange: MdsTableSelectionEventDetail [bubbles, cancelable, composed]
 mds-table method selectAll(select?: boolean) => Promise<void>
 mds-table method updateSelection() => Promise<void>
@@ -1454,6 +1459,8 @@ mds-table-header-cell encapsulation shadow
 mds-table-header-cell prop direction (attr direction) [reflect, mutable]: "ascending" | "descending" | "none" = 'none'
 mds-table-header-cell prop label (attr label) [reflect]: string | undefined
 mds-table-header-cell prop sortable (attr sortable) [reflect]: boolean | undefined
+mds-table-header-cell prop sortKey (attr sort-key) [reflect]: string | undefined
+mds-table-header-cell event mdsTableHeaderCellSort: MdsTableHeaderCellSortEventDetail [bubbles, cancelable, composed]
 mds-table-header-cell part action
 mds-table-header-cell part label
 mds-table-row encapsulation shadow
@@ -1505,6 +1512,7 @@ mds-tooltip prop disableShift (attr disable-shift): boolean = false
 mds-tooltip prop flip (attr flip): boolean = false
 mds-tooltip prop offset (attr offset): number = 12
 mds-tooltip prop placement (attr placement) [reflect]: "bottom" | "bottom-end" | "bottom-start" | "left" | "left-end" | "left-start" | "right" | "right-end" | "right-start" | "top" | "top-end" | "top-start" = 'top'
+mds-tooltip prop relation (attr relation) [reflect]: "description" | "label" = 'description'
 mds-tooltip prop shiftPadding (attr shift-padding): number = 12
 mds-tooltip prop strategy (attr strategy) [reflect]: "absolute" | "fixed" = 'fixed'
 mds-tooltip prop target (attr target) [reflect, required]: string
@@ -1622,6 +1630,7 @@ mds-url-view css --mds-url-view-radius
 mds-url-view css --mds-url-view-shadow
 mds-usage encapsulation shadow
 mds-usage prop alias (attr alias): string | undefined
+mds-usage prop icon (attr icon): string | undefined
 mds-usage prop variant (attr variant): "do" | "dont" | "info" | "warn" = 'info'
 mds-usage slot (default)
 mds-usage part header
@@ -1680,12 +1689,14 @@ interface EventDate { caller: HTMLMdsInputDateRangePreselectionElement; start: s
 type ExtensionSuffixType = "ai" | "7z" | "ace" | "db" | "default" | "dmg" | "doc" | "docm" | "docx" | "eml" | "eps" | "exe" | "flac" | "gif" | "heic" | "htm" | "html" | "jpe" | "jpeg" | "jpg" | "js" | "json" | "jsx" | "m2v" | "mp2" | "mp3" | "mp4" | "mp4v" | "mpeg" | "mpg4" | "mpg" | "mpga" | "odf" | "odp" | "ods" | "odt" | "ole" | "p7m" | "pdf" | "php" | "png" | "ppt" | "rar" | "rtf" | "sass" | "shtml" | "svg" | "tar" | "tiff" | "ts" | "tsd" | "txt" | "wav" | "webp" | "xar" | "xls" | "xlsx" | "xml" | "zip"
 interface FileError { filename: string; errorMessage: string; }
 type FloatingUIPlacement = "left" | "right" | "bottom" | "bottom-end" | "bottom-start" | "left-end" | "left-start" | "right-end" | "right-start" | "top" | "top-end" | "top-start"
+type FloatingUIRelation = "label" | "description"
 type FloatingUIStrategy = "absolute" | "fixed"
 type HeaderBarMenuType = "none" | "all" | "desktop" | "mobile"
 type HeaderBarNavType = "none" | "all" | "desktop" | "mobile"
 type HorizontalActionsAnimationType = "slide" | "fade"
 type InputControlsIconType = "arrow" | "arithmetic"
 type InputControlsLayoutType = "horizontal" | "vertical"
+type InputSizeType = "sm" | "md" | "lg"
 type InputSwitchSizeType = 'sm' | 'md' | 'lg';
 type InputSwitchType = 'checkbox' | 'radio' | 'switch';
 type InputTextType = "number" | "text" | "time" | "email" | "tel" | "url" | "date" | "password" | "search" | "textarea" | "cc" | "cf" | "isbn" | "piva"
@@ -1726,8 +1737,10 @@ interface MdsStepperBarItemEventDetail { value: string; }
 interface MdsTabBarEventDetail { index: number; }
 interface MdsTabEventDetail { id: number; value?: string; }
 interface MdsTabItemEventDetail { target: HTMLMdsTabItemElement; value?: string; }
+interface MdsTableHeaderCellSortEventDetail { direction: SortDirectionType; index: number; sortKey?: string; }
 type MdsTableRowSelection = { index: number; value?: string | number; }
 interface MdsTableSelectionEventDetail { rows: MdsTableRowSelection[]; }
+type MdsTableSortingType = 'internal' | 'external';
 interface MdsTreeItemEventDetail { element: HTMLMdsTreeItemElement; }
 interface MdsValidationErrors { [key: string]: string; }
 type MdsValidationErrors = any

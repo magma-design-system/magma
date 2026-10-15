@@ -210,6 +210,34 @@ describe('password mask', () => {
     expect(maskStyle.borderBottomRightRadius).toBe('0px');
   });
 
+  // #913: the radius of a field is capped at a part of its height like mds-button's; a
+  // textarea is taller, nobody clamps it
+  describe('the radius', () => {
+    const radiusOf = (input: Element): string => getComputedStyle(input).borderTopLeftRadius;
+
+    it('stops at half the height of the field, what the browser clamps to', async () => {
+      const { root } = await render('<mds-input size="md"></mds-input>');
+
+      expect(radiusOf(root)).toBe('18px');
+    });
+
+    it('takes the part of the height that --magma-corner-cap gives, except on a textarea', async () => {
+      const { root } = await render(
+        `<div style="--magma-corner-cap: 0.25">
+           <mds-input size="sm"></mds-input>
+           <mds-input></mds-input>
+           <mds-input type="textarea"></mds-input>
+         </div>`,
+      );
+
+      expect(Array.from(root.querySelectorAll('mds-input')).map(radiusOf)).toEqual([
+        '7px',
+        '12px',
+        '36px',
+      ]);
+    });
+  });
+
   describe('accessible name', () => {
     it('names its native control after the aria-label of the host', async () => {
       await setup('<mds-input aria-label="Email"></mds-input><button></button>');
@@ -760,4 +788,51 @@ describe('in a disabled fieldset', () => {
     expect(native().disabled).toBe(false);
     expect(new FormData(root).get('subject')).toBe('Hello');
   });
+});
+
+/** Whether the box of `inner` lies within the box of `outer`. */
+const isInside = (inner: Element, outer: Element): boolean => {
+  const a = inner.getBoundingClientRect();
+  const b = outer.getBoundingClientRect();
+  return a.top >= b.top && a.bottom <= b.bottom && a.left >= b.left && a.right <= b.right;
+};
+
+describe('size', () => {
+  // one height for every field, 48px, where mds-button has sm 28px, md 36px and lg 48px: a
+  // field next to a default button was 12px taller, and dense layouts had no smaller field
+  it.each([
+    { size: undefined, height: 48 },
+    { size: 'lg', height: 48 },
+    { size: 'md', height: 36 },
+    { size: 'sm', height: 28 },
+  ])('is $height px tall with the size $size', async ({ size, height }) => {
+    const { root } = await render(`<mds-input${size ? ` size="${size}"` : ''}></mds-input>`);
+
+    expect(root.getBoundingClientRect().height).toBe(height);
+  });
+
+  it.each(['md', 'sm'])('keeps the password toggle inside a %s field', async (size) => {
+    const { root } = await render(
+      `<mds-input size="${size}" type="password" value="x"></mds-input>`,
+    );
+    const toggle = root.shadowRoot!.querySelector('.password-toggle-button')!;
+
+    expect(toggle).toEqualAttribute('size', 'sm');
+    expect(isInside(toggle, root)).toBe(true);
+  });
+
+  it.each(['md', 'sm'])(
+    'makes the side controls of a %s number as tall as the field',
+    async (size) => {
+      const { root } = await render(
+        `<mds-input size="${size}" type="number" controls-layout="horizontal" value="3"></mds-input>`,
+      );
+      const controls = root.shadowRoot!.querySelectorAll('.counter-button--horizontal');
+
+      expect(controls).toHaveLength(2);
+      controls.forEach((control) =>
+        expect(control.getBoundingClientRect().height).toBe(root.getBoundingClientRect().height),
+      );
+    },
+  );
 });
