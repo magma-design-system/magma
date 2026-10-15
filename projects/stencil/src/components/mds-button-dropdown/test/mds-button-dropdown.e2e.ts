@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { useLanguage } from '@test/language';
 import { userEvent } from 'vitest/browser';
 
 /**
@@ -210,6 +211,23 @@ describe('mds-button-dropdown', () => {
       await vi.waitFor(() => expect(window.location.hash).toBe('#elsewhere'));
       expect(submits).toHaveLength(0);
       window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    });
+  });
+});
+
+// #937: the chevron is an icon-only button, and with its role mds-dropdown can wire it
+describe('mds-button-dropdown chevron', () => {
+  useLanguage('it');
+
+  it('is a button named in the current language, that says it opens the menu', async () => {
+    const { root } = await render(
+      '<mds-button-dropdown label="Salva"><mds-button label="Salva come"></mds-button></mds-button-dropdown>',
+    );
+    const chevron = root.shadowRoot!.querySelector('.dropdown-action')!;
+
+    expect(chevron).toEqualAttributes({ role: 'button', 'aria-label': 'Altre azioni' });
+    await vi.waitFor(() => {
+      expect(chevron).toEqualAttribute('aria-expanded', 'false');
     });
   });
 });

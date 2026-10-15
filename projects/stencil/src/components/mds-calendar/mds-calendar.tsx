@@ -16,6 +16,11 @@ import { DateTime } from 'luxon';
 import { preferenceStore } from '@common/preference';
 import { sanitizeISO8601Date } from '@common/date';
 import clsx from 'clsx';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 /**
  * @slot preselection - Add `HTML elements` or `components` shown in the calendar preselection area.
@@ -26,6 +31,13 @@ import clsx from 'clsx';
   shadow: true,
 })
 export class MdsCalendar {
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
+
   @Element() private host: HTMLMdsCalendarElement;
 
   @State() hasPreselection: boolean = false;
@@ -823,7 +835,12 @@ export class MdsCalendar {
           <nav>
             {!this.hidePreviousButton && (
               <mds-button
+                aria-label={this.t.get(
+                  this.currentView === 'years' ? 'previousYears' : 'previousMonth',
+                )}
                 class="action-back"
+                // the months view has nothing to move back or forward to
+                disabled={this.currentView === 'months'}
                 icon={miBaselineBackIosNew}
                 variant="dark"
                 tone="text"
@@ -854,7 +871,9 @@ export class MdsCalendar {
             </div>
             {!this.hideNextButton && (
               <mds-button
+                aria-label={this.t.get(this.currentView === 'years' ? 'nextYears' : 'nextMonth')}
                 class="action-forward"
+                disabled={this.currentView === 'months'}
                 icon={miBaselineForwardIos}
                 variant="dark"
                 tone="text"
