@@ -1509,6 +1509,7 @@ mds-tooltip prop disableShift (attr disable-shift): boolean = false
 mds-tooltip prop flip (attr flip): boolean = false
 mds-tooltip prop offset (attr offset): number = 12
 mds-tooltip prop placement (attr placement) [reflect]: "bottom" | "bottom-end" | "bottom-start" | "left" | "left-end" | "left-start" | "right" | "right-end" | "right-start" | "top" | "top-end" | "top-start" = 'top'
+mds-tooltip prop relation (attr relation) [reflect]: "description" | "label" = 'description'
 mds-tooltip prop shiftPadding (attr shift-padding): number = 12
 mds-tooltip prop strategy (attr strategy) [reflect]: "absolute" | "fixed" = 'fixed'
 mds-tooltip prop target (attr target) [reflect, required]: string
@@ -1685,6 +1686,7 @@ interface EventDate { caller: HTMLMdsInputDateRangePreselectionElement; start: s
 type ExtensionSuffixType = "ai" | "7z" | "ace" | "db" | "default" | "dmg" | "doc" | "docm" | "docx" | "eml" | "eps" | "exe" | "flac" | "gif" | "heic" | "htm" | "html" | "jpe" | "jpeg" | "jpg" | "js" | "json" | "jsx" | "m2v" | "mp2" | "mp3" | "mp4" | "mp4v" | "mpeg" | "mpg4" | "mpg" | "mpga" | "odf" | "odp" | "ods" | "odt" | "ole" | "p7m" | "pdf" | "php" | "png" | "ppt" | "rar" | "rtf" | "sass" | "shtml" | "svg" | "tar" | "tiff" | "ts" | "tsd" | "txt" | "wav" | "webp" | "xar" | "xls" | "xlsx" | "xml" | "zip"
 interface FileError { filename: string; errorMessage: string; }
 type FloatingUIPlacement = "left" | "right" | "bottom" | "bottom-end" | "bottom-start" | "left-end" | "left-start" | "right-end" | "right-start" | "top" | "top-end" | "top-start"
+type FloatingUIRelation = "label" | "description"
 type FloatingUIStrategy = "absolute" | "fixed"
 type HeaderBarMenuType = "none" | "all" | "desktop" | "mobile"
 type HeaderBarNavType = "none" | "all" | "desktop" | "mobile"
