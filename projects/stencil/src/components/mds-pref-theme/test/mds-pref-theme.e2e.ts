@@ -99,4 +99,52 @@ describe('mds-pref-theme', () => {
     expect(document.documentElement).not.toHaveClass(`pref-theme-${name}`);
     expect(localStorage.getItem(THEME_NAME_STORAGE_KEY)).toBeNull();
   });
+
+  describe('the trigger', () => {
+    // it showed the name of the active theme: "Default" before any pick, "Warm" after picking
+    // "Caldo", while the open list showed the labels of the items
+    const PICKER = `
+<mds-pref-theme>
+  <mds-pref-theme-item name="default" label="Neutro"></mds-pref-theme-item>
+  <mds-pref-theme-item name="cool" label="Freddo"></mds-pref-theme-item>
+  <mds-pref-theme-item name="warm" label="Caldo"></mds-pref-theme-item>
+</mds-pref-theme>`;
+
+    const triggerOf = (root: HTMLElement): HTMLMdsTabItemElement =>
+      root.shadowRoot!.querySelector<HTMLMdsTabItemElement>('#mds-pref-theme-nav')!;
+
+    it('shows the label of the item of the active theme', async () => {
+      const { root } = await render(PICKER);
+
+      expect(triggerOf(root).label).toBe('Neutro');
+    });
+
+    it('follows the item picked in the list', async () => {
+      const { root, waitForChanges } = await render(PICKER);
+
+      root.querySelector<HTMLElement>('mds-pref-theme-item[name="warm"]')!.click();
+      await waitForChanges();
+
+      expect(root).toEqualAttribute('name', 'warm');
+      expect(triggerOf(root).label).toBe('Caldo');
+    });
+
+    it('derives the label from the name when no item matches the active theme', async () => {
+      const { root } = await render(
+        '<mds-pref-theme name="dark-blue"><mds-pref-theme-item name="default"></mds-pref-theme-item></mds-pref-theme>',
+      );
+
+      expect(triggerOf(root).label).toBe('Dark blue');
+    });
+
+    it('follows a label changed after load', async () => {
+      const { root, waitForChanges } = await render(PICKER);
+
+      root.querySelector('mds-pref-theme-item[name="default"]')!.setAttribute('label', 'Neutral');
+      await new Promise((resolve) => setTimeout(resolve));
+      await waitForChanges();
+
+      expect(triggerOf(root).label).toBe('Neutral');
+    });
+  });
 });

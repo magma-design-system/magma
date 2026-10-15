@@ -33,4 +33,7 @@ const closest = (input: string, validCodes: string[]): string => {
 
 const firstLetterUppercase = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1);
 
-export { closest, firstLetterUppercase, levenshteinDistance };
+/** The label a kebab-case name stands for when nobody wrote one: `dark-blue` -> `Dark blue`. */
+const labelFromName = (name: string): string => firstLetterUppercase(name).replace(/-/g, ' ');
+
+export { closest, firstLetterUppercase, labelFromName, levenshteinDistance };
