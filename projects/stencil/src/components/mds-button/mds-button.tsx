@@ -38,6 +38,9 @@ export class MdsButton {
   private typography?: TypographyType;
   private km = new KeyboardManager();
   private anchor?: HTMLAnchorElement;
+  // the spinner is rendered from the first time the button awaits, and then kept: it slides out
+  // when the button stops awaiting
+  private hasAwaited = false;
 
   @Element() host: HTMLMdsButtonElement;
 
@@ -351,6 +354,8 @@ export class MdsButton {
   render() {
     this.typography = (buttonSizeTypographyVariant[this.size] ??
       buttonSizeTypographyVariant.md) as TypographyType;
+    this.hasAwaited ||= !!this.await;
+    const label = this.label || <slot onSlotchange={this.onSlotChangeHandler} />;
     return (
       <Host
         onClick={this.handleLinkClick}
@@ -377,22 +382,31 @@ export class MdsButton {
           ></a>
         )}
         <div class="await">
-          <mds-spinner class="spinner" running={this.await} />
+          {this.hasAwaited && <mds-spinner class="spinner" running={this.await} />}
         </div>
         {this.icon && this.iconPosition === 'left' && (
           <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon" />
         )}
-        <mds-text
-          class="text"
-          part="label"
-          tag="span"
-          typography={this.typography}
-          truncate={this.truncate}
-          animation={this.animation}
-          text={this.label}
-        >
-          {this.label || <slot onSlotchange={this.onSlotChangeHandler} />}
-        </mds-text>
+        {this.animation === 'yugop' ? (
+          <mds-text
+            class="text"
+            part="label"
+            tag="span"
+            typography={this.typography}
+            truncate={this.truncate}
+            animation={this.animation}
+            text={this.label}
+          >
+            {label}
+          </mds-text>
+        ) : (
+          // a span of its own, not an mds-text: a nested component is one more to hydrate and
+          // its whole stylesheet in every declarative shadow root (#831). Only the animated
+          // label needs mds-text, which scrambles it
+          <span class="text label" part="label">
+            {label}
+          </span>
+        )}
         <slot name="notification" />
         {this.icon && this.iconPosition === 'right' && (
           <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon" />
