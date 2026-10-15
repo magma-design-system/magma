@@ -182,6 +182,144 @@ describe('the knob', () => {
   });
 });
 
+// The knob slides on a change of checked, and is already in its place when the switch is
+// shown, on load or again after being hidden. Its place was the last frame of the slide, which
+// ran again every time the switch appeared (#924)
+describe('the knob motion', () => {
+  const frame = (): Promise<number> => new Promise((resolve) => requestAnimationFrame(resolve));
+
+  const knobOf = (host: HTMLElement): HTMLElement =>
+    host.shadowRoot!.querySelector<HTMLElement>('.switch-toggle')!;
+
+  /** The slides running on the knob: a finished one still holds its last frame, it does not count. */
+  const slides = (host: HTMLElement): string[] =>
+    knobOf(host)
+      .getAnimations()
+      .filter((animation) => animation.playState === 'running')
+      .map((animation) => (animation as CSSAnimation).animationName);
+
+  /** Fails as soon as the knob slides, in any of the next frames. */
+  const staysStill = async (host: HTMLElement, frames = 30): Promise<void> => {
+    for (let count = 0; count < frames; count += 1) {
+      expect(slides(host)).toEqual([]);
+      await frame();
+    }
+  };
+
+  /** How far the knob is from the start of the track, in widths of the knob: 0 off, 1 on. */
+  const place = (host: HTMLElement): number => {
+    const knob = knobOf(host);
+    return Math.round(new DOMMatrix(getComputedStyle(knob).transform).m41 / knob.offsetWidth);
+  };
+
+  const landed = async (host: HTMLElement): Promise<void> => {
+    await vi.waitFor(() => expect(slides(host)).toEqual([]));
+  };
+
+  it.each([
+    { state: 'off', markup: '<mds-input-switch></mds-input-switch>', expected: 0 },
+    { state: 'on', markup: '<mds-input-switch checked></mds-input-switch>', expected: 1 },
+  ])('is in its place on load when $state, without sliding there', async ({ markup, expected }) => {
+    const { root } = await render<HTMLMdsInputSwitchElement>(markup);
+
+    await staysStill(root);
+    expect(place(root)).toBe(expected);
+  });
+
+  it.each([
+    { state: 'on since load', clicks: 0, expected: 1 },
+    { state: 'switched off by the user', clicks: 2, expected: 0 },
+  ])(
+    'is still in its place when shown again after being hidden, $state',
+    async ({ clicks, expected }) => {
+      const { root, waitForChanges } = await render<HTMLElement>(
+        `<div><mds-input-switch${expected ? ' checked' : ''}></mds-input-switch></div>`,
+      );
+      const host = root.querySelector('mds-input-switch')!;
+      for (let count = 0; count < clicks; count += 1) {
+        await clickSwitch(host);
+        await waitForChanges();
+        await landed(host);
+      }
+
+      root.style.display = 'none';
+      await staysStill(host, 5);
+      root.style.display = '';
+
+      await staysStill(host);
+      expect(place(host)).toBe(expected);
+    },
+  );
+
+  it.each([
+    {
+      how: 'a click',
+      toggle: async (host: HTMLMdsInputSwitchElement) => clickSwitch(host),
+    },
+    {
+      how: 'the keyboard',
+      toggle: async (host: HTMLMdsInputSwitchElement) => {
+        host.shadowRoot!.querySelector('input')!.focus();
+        await userEvent.keyboard(' ');
+      },
+    },
+    {
+      how: 'code',
+      toggle: async (host: HTMLMdsInputSwitchElement) => {
+        host.checked = !host.checked;
+      },
+    },
+  ])('slides on and off by $how, and rests in the place of its state', async ({ toggle }) => {
+    const { root, waitForChanges } = await render<HTMLMdsInputSwitchElement>(
+      '<mds-input-switch></mds-input-switch>',
+    );
+
+    await toggle(root);
+    await waitForChanges();
+    await vi.waitFor(() => expect(slides(root)).toEqual(['check']));
+    await landed(root);
+    expect(place(root)).toBe(1);
+
+    await toggle(root);
+    await waitForChanges();
+    await vi.waitFor(() => expect(slides(root)).toEqual(['uncheck']));
+    await landed(root);
+    expect(place(root)).toBe(0);
+  });
+
+  it('does not take up again a slide cut short by hiding the switch', async () => {
+    const { root, waitForChanges } = await render<HTMLElement>(
+      '<div><mds-input-switch></mds-input-switch></div>',
+    );
+    const host = root.querySelector('mds-input-switch')!;
+    host.checked = true;
+    await waitForChanges();
+    await vi.waitFor(() => expect(slides(host)).toEqual(['check']));
+
+    root.style.display = 'none';
+    await staysStill(host, 5);
+    root.style.display = '';
+
+    await staysStill(host);
+    expect(place(host)).toBe(1);
+  });
+
+  it('finishes the second slide of a quick double toggle', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsInputSwitchElement>(
+      '<mds-input-switch></mds-input-switch>',
+    );
+
+    root.checked = true;
+    await waitForChanges();
+    root.checked = false;
+    await waitForChanges();
+
+    await vi.waitFor(() => expect(slides(root)).toEqual(['uncheck']));
+    await landed(root);
+    expect(place(root)).toBe(0);
+  });
+});
+
 const clickSwitch = async (element: HTMLElement): Promise<void> => {
   await userEvent.click(
     element.shadowRoot!.querySelector<HTMLElement>('.switch-container, .label-icon')!,
