@@ -110,7 +110,7 @@
     "watch": "npm run build.icons && stencil build --docs-readme --watch"
   },
   "dependencies": {
-    "@floating-ui/dom": "1.6.12",
+    "@floating-ui/dom": "1.8.0",
     "@maggioli-design-system/design-tokens": "^15.1.0",
     "@maggioli-design-system/styles": "^17.1.0",
     "@stencil/core": "4.44.2",
