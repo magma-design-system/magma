@@ -28,6 +28,89 @@ describe('mds-pref', () => {
     expect(html).not.toHaveAttribute('data-magma-pref');
   });
 
+  // #922: a move disconnects the host and connects it again, while componentDidLoad
+  // runs only once: what it set up has to follow the connection instead
+  describe('moved in the DOM', () => {
+    const settle = async (waitForChanges: () => Promise<void>): Promise<void> => {
+      await waitForChanges();
+      await new Promise((resolve) => setTimeout(resolve));
+    };
+
+    it('keeps data-magma-pref on <html> while it is connected', async () => {
+      const { root, waitForChanges } = await render(`
+        <div>
+          <div class="sidebar"><mds-pref></mds-pref></div>
+          <div class="menu"></div>
+        </div>
+      `);
+      const html = document.documentElement;
+
+      root.querySelector('.menu')!.append(root.querySelector('mds-pref')!);
+      expect(html).toHaveAttribute('data-magma-pref');
+      await settle(waitForChanges);
+      expect(html).toHaveAttribute('data-magma-pref');
+
+      root.querySelector('mds-pref')!.remove();
+      await settle(waitForChanges);
+      expect(html).not.toHaveAttribute('data-magma-pref');
+    });
+
+    it('keeps locking the mode item from the theme', async () => {
+      const { root, waitForChanges } = await render(`
+        <div>
+          <div class="sidebar">
+            <mds-pref>
+              <mds-pref-mode mode="dark"></mds-pref-mode>
+              <mds-pref-theme>
+                <mds-pref-theme-item name="default" scheme="all"></mds-pref-theme-item>
+                <mds-pref-theme-item name="cool" scheme="light"></mds-pref-theme-item>
+              </mds-pref-theme>
+            </mds-pref>
+          </div>
+          <div class="menu"></div>
+        </div>
+      `);
+
+      root.querySelector('.menu')!.append(root.querySelector('mds-pref')!);
+      await settle(waitForChanges);
+      root.querySelector<HTMLElement>('mds-pref-theme-item[name="cool"]')!.click();
+      await settle(waitForChanges);
+
+      expect(root.querySelector<HTMLMdsPrefModeElement>('mds-pref-mode')!.lockedScheme).toBe(
+        'light',
+      );
+    });
+
+    it('keeps asking for a reload in controller mode', async () => {
+      const { root, waitForChanges } = await render(`
+        <div>
+          <div class="sidebar">
+            <mds-pref controller>
+              <mds-pref-consumption></mds-pref-consumption>
+            </mds-pref>
+          </div>
+          <div class="menu"></div>
+        </div>
+      `);
+      const pref = root.querySelector('mds-pref')!;
+
+      root.querySelector('.menu')!.append(pref);
+      await settle(waitForChanges);
+      root
+        .querySelector('mds-pref-consumption')!
+        .dispatchEvent(
+          new CustomEvent('mdsPrefChange', {
+            bubbles: true,
+            composed: true,
+            detail: { preference: 'consumption' },
+          }),
+        );
+      await settle(waitForChanges);
+
+      expect(pref.shadowRoot!.querySelector('.reload-required')).not.toBeNull();
+    });
+  });
+
   describe('lock-dark coordination', () => {
     // `cool` stands in for a light-only theme here; only its `scheme` matters
     const markup = `
