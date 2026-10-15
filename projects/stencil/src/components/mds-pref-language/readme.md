@@ -9,11 +9,11 @@
 
 ### 1. Description
 
-The `<mds-pref-language>` web component is the language-preference control of the Magma Design System, designed to be slotted inside [`<mds-pref>`](../../mds-pref) alongside the other preference children. It renders a labelled tab trigger that opens a dropdown of `<mds-pref-language-item>` entries, letting users switch the active document language and persisting that choice.
+The `<mds-pref-language>` web component is the language-preference control of the Magma Design System, usually slotted inside the [`<mds-pref>`](../../mds-pref) panel alongside the other preference children. It renders a labelled tab trigger that opens a dropdown of `<mds-pref-language-item>` entries, letting users switch the active document language and persisting that choice.
 
 #### Semantic Behavior
 
-- **Compound child constraint**: Must be placed as a direct slot child of `<mds-pref>`. In turn it acts as the host for its own `<mds-pref-language-item>` children, supplied via its default slot.
+- **Usually inside `<mds-pref>`**: Placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it also works on its own, since it applies and stores the language by itself. What it gives up on its own is in the antipattern docs. In turn it hosts its own `<mds-pref-language-item>` children, supplied via its default slot.
 - **Default slot hosts the items**: The default slot accepts one or more `<mds-pref-language-item>` elements; when the control loads, the item whose `code` matches the resolved language is marked selected (a later change of `set` does not move the selection).
 - **Selection orchestration**: Selecting an item clears the others, closes the dropdown, and resolves the new language - the children report up to this component, which centralizes the single-selection state.
 - **Language resolution & persistence**: When `set` is `auto` the active language is resolved in priority order from the persisted value, then the `<html lang>` attribute, then `navigator.language`. The resolved value is persisted and written to `<html lang>` - the single page-wide source of truth for the language. Every localized Magma component (including ones nested in shadow DOM) reacts automatically through a shared reactive store; there is no per-element `lang` override and no imperative refresh method. Applications that manage the language themselves can simply set `<html lang>`: the store observes it.
