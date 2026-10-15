@@ -3,6 +3,7 @@ import miBaselineCheckCircle from '@icon/mi/baseline/check-circle.svg';
 import miOutlineCircle from '@icon/mi/outline/circle.svg';
 import { MdsPrefThemeEventDetail } from '@event/theme';
 import { PreferenceThemeSchemeType } from '@type/preference';
+import { labelFromName } from '@common/string';
 
 @Component({
   tag: 'mds-pref-theme-item',
@@ -38,7 +39,7 @@ export class MdsPrefThemeItem {
 
   componentWillRender(): void {
     if ((this.label ?? '') === '') {
-      this.label = this.name.charAt(0).toUpperCase() + this.name.slice(1).replace(/-/g, ' ');
+      this.label = labelFromName(this.name);
     }
   }
 
