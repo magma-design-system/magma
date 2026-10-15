@@ -17,7 +17,7 @@ The `<mds-file>` web component is the Magma Design System control for representi
 
 - **Clickable card**: The whole host is focusable and clicking it emits `mdsFileDownload`; the component itself does not fetch or download - the consumer wires the actual download to that event.
 - **Download event payload**: `mdsFileDownload` carries `description` (the `description` prop, or else the untranslated key of the detected type, such as `documentAdobe`), `extension`, `filename`, the host element as `target`, and the detected `type`/format.
-- **Downloaded persistence**: On click the component records the file as downloaded in `localStorage`. The "done" indicator meant to show that state on later renders does not appear in the current release: the state is read back under a different key.
+- **Downloaded persistence**: On click the component records the file as downloaded in `localStorage`, under a key derived from the filename with a small non-cryptographic hash. Every later render of the same filename on the same origin shows the "done" indicator.
 - **Automatic file-type recognition**: From `filename` it derives the format icon, badge variant, and default description; `suffix` overrides this detection.
 - **Localization**: Descriptions and the "already downloaded" tooltip are resolved against the active locale.
 
@@ -95,7 +95,7 @@ Provide `preview` with an image URL when a meaningful visual thumbnail is availa
 
 #### Hiding the "Already Downloaded" Indicator
 
-The component is meant to show a "done" indicator once the file has been downloaded (it does not appear in the current release, see the description). Add `hide-downloaded-icon` to suppress it when the affordance is not appropriate for the context (e.g. a list where every file is always shown as fresh).
+The component shows a "done" indicator once the file has been downloaded, on every later render of the same filename. Add `hide-downloaded-icon` to suppress it when the affordance is not appropriate for the context (e.g. a list where every file is always shown as fresh).
 
 ```html
 <mds-file filename="modulo-richiesta.xlsx" hide-downloaded-icon></mds-file>
