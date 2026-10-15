@@ -35,7 +35,16 @@
   --mds-button-border-width: --spacing(50);
   --mds-button-gap: --spacing(200);
   --mds-button-line-clamp: 1;
-  --mds-button-radius: var(--magma-radius-2xl);
+
+  /* past half the height the browser clamps the radius; where corner-shape cannot be
+     drawn, --magma-corner-cap gives the round look-alike of that clamp (#913) */
+  --mds-button-radius: min(
+    var(--magma-radius-2xl),
+    var(--magma-corner-cap) * var(--private-button-height)
+  );
+
+  /* the min-height of the size */
+  --private-button-height: --spacing(900);
 
   @apply focus-bounce;
 
@@ -54,8 +63,8 @@
   gap: var(--mds-button-gap);
   justify-content: center;
   justify-self: flex-start;
-  min-height: --spacing(900);
-  min-width: --spacing(900);
+  min-height: var(--private-button-height);
+  min-width: var(--private-button-height);
   padding: 0 --spacing(400);
   position: relative;
   transition-duration: var(--duration-200);

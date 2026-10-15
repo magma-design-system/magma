@@ -90,7 +90,9 @@ Dark mode is handled via palette-level CSS custom properties. Activation classes
 Global design decisions overridable via CSS custom properties on `:root`:
 - `data-corner-shape` — corner geometry: the shape AND the `--magma-radius-*` scale tuned for it,
   moved together (default: `squircle`, on a bare `:root`). Works on any element, so a subtree can
-  deviate. `--magma-corner-shape` alone changes the shape WITHOUT the scale
+  deviate. `--magma-corner-shape` alone changes the shape WITHOUT the scale. A browser without
+  `corner-shape` gets the round shape and scale from a `@supports not` block, and
+  `--magma-corner-cap` (0.5, 0.2915 there) caps the controls whose radius is past half their height
 - `--magma-disabled-opacity` — default: `0.5`
 - `--magma-outline-focus` — focus ring style
 - Z-index scale: header `1000` → notification `2000` → modal `3000` → backdrop `4000` → dropdown `5000` → tooltip `6000` → theme-overlay `7000` → context-menu `8000`
