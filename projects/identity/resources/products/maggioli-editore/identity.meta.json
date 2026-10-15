@@ -1,0 +1,123 @@
+{
+  "owner": {
+    "id": "maggioli-editore",
+    "name": "Maggioli Editore"
+  },
+  "families": [
+    {
+      "id": "appalti-contratti",
+      "name": "Appalti & Contratti",
+      "files": [
+        "logo-appalti-contratti"
+      ]
+    },
+    {
+      "id": "bilancio-contabilita",
+      "name": "Bilancio e Contabilit\u00e0",
+      "files": [
+        "logo-bilancio-contabilita"
+      ]
+    },
+    {
+      "id": "ediliziaurbanistica",
+      "name": "Edilizia Urbanistica",
+      "files": [
+        "logo-ediliziaurbanistica"
+      ]
+    },
+    {
+      "id": "forum-cantiere-innovazione",
+      "name": "Forum Cantiere Innovazione",
+      "files": [
+        "forum-cantiere-innovazione/logo-forum-cantiere-innovazione",
+        "forum-cantiere-innovazione/logo-forum-cantiere-innovazione-black",
+        "forum-cantiere-innovazione/logo-forum-cantiere-innovazione-white",
+        "forum-cantiere-innovazione/logo-forum-cantiere-innovazione-no-text",
+        "forum-cantiere-innovazione/logo-forum-cantiere-innovazione-black-no-text",
+        "forum-cantiere-innovazione/logo-forum-cantiere-innovazione-white-no-text"
+      ]
+    },
+    {
+      "id": "ilibro-intelligente",
+      "name": "iLibro intelligente",
+      "files": [
+        "ilibro/logo-ilibro-intelligente",
+        "ilibro/logo-intelligente-black",
+        "ilibro/logo-intelligente-white"
+      ]
+    },
+    {
+      "id": "ilpersonale",
+      "name": "ilpersonale.it",
+      "files": [
+        "logo-ilpersonale"
+      ]
+    },
+    {
+      "id": "la-gazzetta-degli-enti-locali",
+      "name": "La Gazzetta degli Enti Locali",
+      "files": [
+        "logo-la-gazzetta-degli-enti-locali"
+      ]
+    },
+    {
+      "id": "la-polizia-locale",
+      "name": "La Polizia Locale",
+      "files": [
+        "la-polizia-locale/logo-la-polizia-locale-black",
+        "la-polizia-locale/logo-la-polizia-locale-white"
+      ]
+    },
+    {
+      "id": "polizialocale",
+      "name": "PoliziaLocale.com",
+      "files": [
+        "logo-polizialocale"
+      ]
+    },
+    {
+      "id": "servizi-demografici",
+      "name": "Servizi Demografici",
+      "files": [
+        "logo-servizi-demografici"
+      ]
+    },
+    {
+      "id": "ufficio-commercio",
+      "name": "Ufficio Commercio",
+      "files": [
+        "logo-ufficio-commercio"
+      ]
+    },
+    {
+      "id": "ufficio-tecnico",
+      "name": "L'Ufficio Tecnico",
+      "files": [
+        "ufficio-tecnico/logo-ufficio-tecnico"
+      ]
+    },
+    {
+      "id": "ufficio-tributi",
+      "name": "Ufficio Tributi",
+      "files": [
+        "logo-ufficio-tributi"
+      ]
+    },
+    {
+      "id": "norme-pa",
+      "name": "Norme PA",
+      "kind": "illustration",
+      "files": [
+        "norme-pa"
+      ]
+    },
+    {
+      "id": "periodici-maggioli",
+      "name": "Periodici Maggioli",
+      "kind": "illustration",
+      "files": [
+        "periodici-maggioli"
+      ]
+    }
+  ]
+}
