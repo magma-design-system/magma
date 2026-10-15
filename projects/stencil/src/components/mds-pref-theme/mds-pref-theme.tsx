@@ -1,4 +1,15 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import {
+  Build,
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  forceUpdate,
+  Host,
+  h,
+  Prop,
+  State,
+} from '@stencil/core';
 import { MdsPrefThemeEventDetail } from '@event/theme';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 import {
@@ -8,6 +19,7 @@ import {
 } from '@type/preference';
 import { Locale } from '@common/locale';
 import { MODE_VALUES, preferenceStore } from '@common/preference';
+import { labelFromName } from '@common/string';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -32,6 +44,7 @@ export class MdsPrefTheme {
   private readonly localStorageAliasThemeScheme: string = 'mdsPrefThemeScheme';
   private readonly localStorageAliasCornerShape: string = 'mdsPrefCornerShape';
   private currentSelectedItem: HTMLMdsPrefThemeItemElement;
+  private itemsObserver?: MutationObserver;
   private themeItems: NodeListOf<HTMLMdsPrefThemeItemElement>;
   private userThemeName: string | null;
   private userThemeScheme: PreferenceThemeSchemeType | null;
@@ -97,21 +110,49 @@ export class MdsPrefTheme {
    */
   @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>;
 
+  connectedCallback(): void {
+    if (!Build.isBrowser) return;
+    // the trigger shows the label of an item: render again when one is renamed, relabelled
+    // (a page that switches language) or added, as the items reflect both attributes. Set up
+    // on every connection, since a move disconnects the host without loading it again
+    this.itemsObserver = new MutationObserver(() => forceUpdate(this.element));
+    this.itemsObserver.observe(this.element, {
+      attributeFilter: ['label', 'name'],
+      childList: true,
+      subtree: true,
+    });
+  }
+
   componentDidLoad(): void {
     this.checkThemeSelect();
+  }
+
+  disconnectedCallback(): void {
+    this.itemsObserver?.disconnect();
+    this.itemsObserver = undefined;
   }
 
   componentWillRender(): void {
     this.userThemeName = localStorage.getItem(this.localStorageAliasThemeName);
     this.userThemeScheme = localStorage.getItem(this.localStorageAliasThemeScheme) as
-      | PreferenceThemeSchemeType
-      | 'all';
+      PreferenceThemeSchemeType | 'all';
     this.setTheme(this.userThemeName ?? this.name, this.userThemeScheme ?? this.scheme);
     this.userCornerShape = localStorage.getItem(
       this.localStorageAliasCornerShape,
     ) as PreferenceCornerShapeChoiceType | null;
     this.setCornerShape(this.userCornerShape ?? this.cornerShape);
   }
+
+  /**
+   * The text of the trigger: the label of the item for the active theme, as the open list
+   * shows it, or, when no item matches, the label an item derives from the name.
+   */
+  private readonly triggerLabel = (): string => {
+    const item = Array.from(this.element.querySelectorAll('mds-pref-theme-item')).find(
+      (element) => (element.name ?? element.getAttribute('name') ?? 'default') === this.name,
+    );
+    return item?.label || item?.getAttribute('label') || labelFromName(this.name);
+  };
 
   private readonly toggleDropdown = (): void => {
     this.showDropdown = !this.showDropdown;
@@ -233,7 +274,7 @@ export class MdsPrefTheme {
               class="item item--theme"
               icon-position="right"
               icon={this.showDropdown ? miBaselineKeyboardArrowUp : miBaselineKeyboardArrowDown}
-              label={this.name}
+              label={this.triggerLabel()}
             ></mds-tab-item>
           </mds-tab>
         </div>
