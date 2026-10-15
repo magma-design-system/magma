@@ -78,6 +78,18 @@ A bare `var(--magma-*)` the injector cannot resolve FAILS the build (`failOnMiss
 `--magma-*` by `checkPrefixes`): it is a typo or a token that does not exist yet. Component-private
 names (`--mds-*`, `--private-*`) are not checked.
 
+The chain keeps only the links that can resolve: a role declared on the `:root` of
+`semantic.css` is defined wherever that sheet is loaded, so the indirection it points to in the
+same sheet (`--magma-tint-*`) is skipped for the design token behind it, which a consumer may
+load on its own (`var(--magma-accent-emphasis, var(--variant-primary-04, 36 103 231))`). Every
+link is repeated in each declarative shadow root of a pre-rendered page.
+
+### Vendor prefixes come from the build
+
+Write unprefixed CSS (`docs/CODING_STANDARDS.md`): `scripts/postcss-autoprefix.ts` runs
+autoprefixer after Tailwind for the browsers of the root `.browserslistrc`. Stencil's own pass
+(`autoprefixCss`) is off: it prefixes for iOS 9 and IE 11 and takes no browser list.
+
 ### Reading `<html>` preference state from inside a component
 
 Some components ship `*-pref-*.css` files (e.g. `mds-modal-pref-mode.css`) that refine their look for dark / high-contrast / reduced-motion on top of the global palette flip (see `projects/styles/SPEC.md`). Because these files are scoped to the component shadow tree, a normal selector cannot reach the `<html>` element where the `pref-*` classes live, so they use `:host-context(:root.pref-...)` - the only selector that lets a shadow stylesheet test an ancestor's state.

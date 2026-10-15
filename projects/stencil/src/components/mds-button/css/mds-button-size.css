@@ -10,10 +10,6 @@
     width: --spacing(400);
   }
 
-  .text {
-    @apply font-medium;
-  }
-
   /* scale() takes a number, so 75 is 7500%: the spinner of a small button was painted
      1800px wide, off the button and over the page, which is why nobody ever saw it. */
 

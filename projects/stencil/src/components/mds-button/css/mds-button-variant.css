@@ -1,140 +1,95 @@
-:host([variant='primary']) {
-  --mds-button-background: rgb(var(--magma-accent-emphasis));
-  --mds-button-border-color-rgb: var(--magma-accent-emphasis);
-  --mds-button-color: rgb(var(--magma-text-on-emphasis));
+/* Variant x tone. A variant only names its tokens, in the private roles below; the tone rules,
+ * written once at the end of this file, paint the public properties from the roles. Repeating
+ * every tone in every variant was 27KB of the stylesheet, which a declarative shadow root
+ * carries in each button (#831). Defaults are primary's, which secondary shares; a role that
+ * defaults to another one follows the variant's value of that one.
+ *
+ *   fill            strong: background and ring, at rest (tone box too)
+ *   fill-hover      strong: background and ring, on hover
+ *   on-fill         strong: ink
+ *   wash            weak: background and ring, at rest
+ *   wash-hover      weak: background on hover
+ *   wash-hover-ring weak: ring on hover
+ *   ink             weak: ink and icon fill (the fill stays at rest on hover)
+ *   ink-hover       weak: ink on hover
+ *   outline         outline: ring
+ *   outline-ink     outline: ink at rest
+ *   text-ink        text: ink at rest; outline: ink on hover
+ *   text-ink-hover  text: ink on hover
+ *   text-wash       text: background on hover
+ *   text-ink-active text: ink while active
+ *
+ * The tone rules stay at or below the specificity of the service variants, which come after
+ * and set the public properties themselves, and of the tone sheet, which comes last. */
 
-  &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-accent-emphasis-hover));
-    --mds-button-border-color-rgb: var(--magma-accent-emphasis-hover);
-  }
-
-  &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--magma-accent-surface));
-    --mds-button-border-color-rgb: var(--magma-accent-surface);
-    --mds-button-color: rgb(var(--magma-accent-emphasis-hover));
-
-    fill: rgb(var(--magma-accent-emphasis-hover));
-  }
-
-  &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--magma-accent-surface-hover));
-    --mds-button-border-color-rgb: var(--magma-accent-surface-hover);
-  }
-
-  &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--magma-accent-emphasis);
-    --mds-button-color: rgb(var(--magma-accent-emphasis-hover));
-  }
-
-  &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--magma-accent-emphasis);
-    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
-  }
-
-  &:host([tone='text']) {
-    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
-  }
-
-  &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--magma-accent-emphasis));
-    --mds-button-background: rgb(var(--magma-accent-surface-subtle));
-  }
-
-  &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
-  }
-}
-
-:host([variant='secondary']) {
-  --mds-button-background: rgb(var(--magma-accent-emphasis));
-  --mds-button-border-color-rgb: var(--magma-accent-emphasis);
-  --mds-button-color: rgb(var(--magma-text-on-emphasis));
-
-  &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-accent-emphasis-hover));
-    --mds-button-border-color-rgb: var(--magma-accent-emphasis-hover);
-  }
-
-  &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--magma-accent-surface));
-    --mds-button-border-color-rgb: var(--magma-accent-surface);
-    --mds-button-color: rgb(var(--magma-accent-emphasis-hover));
-
-    fill: rgb(var(--magma-accent-emphasis-hover));
-  }
-
-  &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--magma-accent-surface-hover));
-    --mds-button-border-color-rgb: var(--magma-accent-surface-hover);
-  }
-
-  &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--magma-accent-emphasis);
-    --mds-button-color: rgb(var(--magma-accent-emphasis-hover));
-  }
-
-  &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--magma-accent-emphasis);
-    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
-  }
-
-  &:host([tone='text']) {
-    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
-  }
-
-  &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--magma-accent-emphasis));
-    --mds-button-background: rgb(var(--magma-accent-surface-subtle));
-  }
-
-  &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--magma-accent-emphasis-active));
-  }
+:host {
+  --private-button-fill: var(--magma-accent-emphasis);
+  --private-button-fill-hover: var(--magma-accent-emphasis-hover);
+  --private-button-on-fill: var(--magma-text-on-emphasis);
+  --private-button-wash: var(--magma-accent-surface);
+  --private-button-wash-hover: var(--magma-accent-surface-hover);
+  --private-button-wash-hover-ring: var(--private-button-wash-hover);
+  --private-button-ink: var(--private-button-fill-hover);
+  --private-button-ink-hover: var(--private-button-ink);
+  --private-button-outline: var(--private-button-fill);
+  --private-button-outline-ink: var(--private-button-ink);
+  --private-button-text-ink: var(--magma-accent-emphasis-active);
+  --private-button-text-ink-hover: var(--private-button-fill);
+  --private-button-text-wash: var(--magma-accent-surface-subtle);
+  --private-button-text-ink-active: var(--private-button-text-ink);
+  --mds-button-background: rgb(var(--private-button-fill));
+  --mds-button-border-color-rgb: var(--private-button-fill);
+  --mds-button-color: rgb(var(--private-button-on-fill));
 }
 
 :host([variant='ai']) {
-  --mds-button-background: rgb(var(--magma-accent-ai-emphasis));
-  --mds-button-border-color-rgb: var(--magma-accent-ai-emphasis);
-  --mds-button-color: rgb(var(--magma-text-on-emphasis));
+  --private-button-fill: var(--magma-accent-ai-emphasis);
+  --private-button-fill-hover: var(--magma-accent-ai-emphasis-hover);
+  --private-button-wash: var(--magma-accent-ai-surface);
+  --private-button-wash-hover: var(--magma-accent-ai-surface-hover);
+  --private-button-text-ink: var(--magma-accent-ai-emphasis-active);
+  --private-button-text-wash: var(--magma-accent-ai-surface-subtle);
+}
 
-  &:host([tone='strong']:hover) {
-    --mds-button-background: rgb(var(--magma-accent-ai-emphasis-hover));
-    --mds-button-border-color-rgb: var(--magma-accent-ai-emphasis-hover);
-  }
+/* the tones, strong (and box) at rest in the :host rule above */
 
-  &:host([tone='weak']) {
-    --mds-button-background: rgb(var(--magma-accent-ai-surface));
-    --mds-button-border-color-rgb: var(--magma-accent-ai-surface);
-    --mds-button-color: rgb(var(--magma-accent-ai-emphasis-hover));
+:host([tone='strong']:hover) {
+  --mds-button-background: rgb(var(--private-button-fill-hover));
+  --mds-button-border-color-rgb: var(--private-button-fill-hover);
+}
 
-    fill: rgb(var(--magma-accent-ai-emphasis-hover));
-  }
+:host([tone='weak']) {
+  --mds-button-background: rgb(var(--private-button-wash));
+  --mds-button-border-color-rgb: var(--private-button-wash);
+  --mds-button-color: rgb(var(--private-button-ink));
 
-  &:host([tone='weak']:hover) {
-    --mds-button-background: rgb(var(--magma-accent-ai-surface-hover));
-    --mds-button-border-color-rgb: var(--magma-accent-ai-surface-hover);
-  }
+  fill: rgb(var(--private-button-ink));
+}
 
-  &:host([tone='outline']) {
-    --mds-button-border-color-rgb: var(--magma-accent-ai-emphasis);
-    --mds-button-color: rgb(var(--magma-accent-ai-emphasis-hover));
-  }
+:host([tone='weak']:hover) {
+  --mds-button-background: rgb(var(--private-button-wash-hover));
+  --mds-button-border-color-rgb: var(--private-button-wash-hover-ring);
+  --mds-button-color: rgb(var(--private-button-ink-hover));
+}
 
-  &:host([tone='outline']:hover) {
-    --mds-button-border-color-rgb: var(--magma-accent-ai-emphasis);
-    --mds-button-color: rgb(var(--magma-accent-ai-emphasis-active));
-  }
+:host([tone='outline']) {
+  --mds-button-border-color-rgb: var(--private-button-outline);
+  --mds-button-color: rgb(var(--private-button-outline-ink));
+}
 
-  &:host([tone='text']) {
-    --mds-button-color: rgb(var(--magma-accent-ai-emphasis-active));
-  }
+:host([tone='outline']:hover) {
+  --mds-button-color: rgb(var(--private-button-text-ink));
+}
 
-  &:host([tone='text']:hover) {
-    --mds-button-color: rgb(var(--magma-accent-ai-emphasis));
-    --mds-button-background: rgb(var(--magma-accent-ai-surface-subtle));
-  }
+:host([tone='text']) {
+  --mds-button-color: rgb(var(--private-button-text-ink));
+}
 
-  &:host([tone='text'][active]) {
-    --mds-button-color: rgb(var(--magma-accent-ai-emphasis-active));
-  }
+:host([tone='text']:hover) {
+  --mds-button-background: rgb(var(--private-button-text-wash));
+  --mds-button-color: rgb(var(--private-button-text-ink-hover));
+}
+
+:host([tone='text'][active]) {
+  --mds-button-color: rgb(var(--private-button-text-ink-active));
 }
