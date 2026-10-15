@@ -1,0 +1,17 @@
+{
+  "owner": {
+    "id": "maggioli-editore",
+    "name": "Maggioli Editore"
+  },
+  "families": [
+    {
+      "id": "contenuti-aggiuntivi",
+      "name": "Contenuti aggiuntivi",
+      "files": [
+        "contenuti-aggiuntivi/logo-contenuti-aggiuntivi",
+        "contenuti-aggiuntivi/logo-contenuti-aggiuntivi-black",
+        "contenuti-aggiuntivi/logo-contenuti-aggiuntivi-white"
+      ]
+    }
+  ]
+}

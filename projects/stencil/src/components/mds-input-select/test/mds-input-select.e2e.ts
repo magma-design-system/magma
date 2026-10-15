@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 
 /**
@@ -355,5 +355,50 @@ describe('in a disabled fieldset', () => {
 
     expect(native().disabled).toBe(false);
     expect(new FormData(root).get('s')).toBe('b');
+  });
+});
+
+describe('size', () => {
+  // the field had one height, 48px; `size` was the row count of the native select, which now
+  // goes through `rows`, while a number in `size` keeps working for now, with a warning
+  it.each([
+    { size: undefined, height: 48 },
+    { size: 'lg', height: 48 },
+    { size: 'md', height: 36 },
+    { size: 'sm', height: 28 },
+  ])('is $height px tall with the size $size', async ({ size, height }) => {
+    const { root } = await render(
+      `<mds-input-select${size ? ` size="${size}"` : ''}></mds-input-select>`,
+    );
+
+    expect(root.getBoundingClientRect().height).toBe(height);
+  });
+
+  it('shows as many rows as rows asks for', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root } = await render(
+      '<mds-input-select multiple rows="4"><option value="a">A</option><option value="b">B</option></mds-input-select>',
+    );
+
+    expect(root.shadowRoot!.querySelector('select')!.size).toBe(4);
+    expect(warn).not.toHaveBeenCalled();
+  });
+
+  it('still reads a number in size as the row count, and warns that it is deprecated', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root } = await render(
+      '<mds-input-select multiple size="4"><option value="a">A</option><option value="b">B</option></mds-input-select>',
+    );
+
+    expect(root.shadowRoot!.querySelector('select')!.size).toBe(4);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('a number in `size` is deprecated'));
+  });
+
+  it('gives a sized field no row count', async () => {
+    const { root } = await render(
+      '<mds-input-select size="sm"><option value="a">A</option></mds-input-select>',
+    );
+
+    expect(root.shadowRoot!.querySelector('select')!.size).toBe(0);
   });
 });

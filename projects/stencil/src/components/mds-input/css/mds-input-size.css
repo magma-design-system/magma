@@ -1,0 +1,38 @@
+/* The size of the field, with the heights of mds-button: md 36px and sm 28px here, lg 48px in
+ * the base sheet. The icons, the controls of a number, and the buttons inside the field (the
+ * password and microphone toggles, mds-button sm in both sizes) scale with it. A textarea keeps
+ * its own height, --mds-input-textarea-min-height. */
+
+:host([size='md']) {
+  --private-input-height: --spacing(900);
+  --private-input-padding-block: --spacing(150);
+  --private-input-padding-inline: --spacing(300);
+  --private-input-icon-offset-block: --spacing(150);
+  --private-input-icon-offset-inline: --spacing(200);
+  --private-input-control-size: --spacing(900);
+  --private-input-counter-width: --spacing(600);
+  --private-input-counter-height: --spacing(450);
+  --private-input-toggle-offset: --spacing(100);
+  --private-input-toggle-padding: --spacing(900);
+  --private-input-toggle-area: --spacing(900);
+}
+
+:host([size='sm']) {
+  --private-input-height: --spacing(700);
+  --private-input-padding-block: --spacing(50);
+  --private-input-padding-inline: --spacing(200);
+  --private-input-icon-size: --spacing(400);
+  --private-input-icon-offset-block: --spacing(150);
+  --private-input-icon-offset-inline: --spacing(200);
+  --private-input-control-size: --spacing(700);
+  --private-input-counter-width: --spacing(500);
+  --private-input-counter-height: --spacing(350);
+  --private-input-toggle-offset: 0;
+  --private-input-toggle-padding: --spacing(800);
+  --private-input-toggle-area: --spacing(800);
+
+  .icon {
+    height: var(--private-input-icon-size);
+    width: var(--private-input-icon-size);
+  }
+}

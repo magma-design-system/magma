@@ -319,7 +319,10 @@ Assets live under `@maggioli-design-system/identity/dist/`:
 - `dist/illustrations/`, `dist/products/` - additional brand imagery
 
 These are static read-only files - serve them like any other asset, do not modify
-them in the consumer project.
+them in the consumer project. `dist/identity.json` describes them: one entry per family of
+artworks, with its name as the artwork writes it, its owner and kind, and every variant with
+its path, form, colour, the background it is drawn for and its size. Read names and alt texts
+from it instead of from the file names, which lose accents and punctuation.
 
 ## 5. Editor autocomplete
 
