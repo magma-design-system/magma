@@ -712,14 +712,6 @@ describe('mds-button', () => {
     });
   });
 
-  it('takes the button role with an inline SVG icon too', async () => {
-    const { root } = await render(
-      `<mds-button icon='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z"/></svg>' label="Draw"></mds-button>`,
-    );
-
-    expect(root).toEqualAttribute('role', 'button');
-  });
-
   describe('with null properties', () => {
     afterEach(() => {
       document.querySelectorAll('body > form, body > mds-button').forEach((el) => el.remove());

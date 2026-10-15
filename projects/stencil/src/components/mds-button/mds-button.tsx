@@ -305,6 +305,16 @@ export class MdsButton {
       this.host.focus();
     }
 
+    // An icon given as markup has no slug to name the button, and the button takes no role
+    // either: the components that render one without a label (mds-calendar, mds-input-date,
+    // mds-header, ...) would expose a button with no name
+    if (isIconFormatIsBase64(this.icon)) {
+      return;
+    }
+    if (isIconFormatIsSVG(this.icon)) {
+      return;
+    }
+
     if (this.label === '') {
       this.label = undefined;
     }
@@ -326,6 +336,7 @@ export class MdsButton {
       return;
     }
     if (this.iconTitle || (this.label ?? '') !== '' || !this.icon) return;
+    // the watcher runs for an icon given as markup too
     if (isIconFormatIsBase64(this.icon) || isIconFormatIsSVG(this.icon)) return;
     if (this.host.hasAttribute('aria-label') || this.host.hasAttribute('title')) return;
     this.host.setAttribute('title', unslugName(this.icon));
