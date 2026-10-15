@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { useLanguage } from '@test/language';
 import { createSlottedChild, describeConditionalSlot } from '@test/slot';
 import { userEvent } from 'vitest/browser';
 
@@ -197,6 +198,20 @@ describe('mds-modal', () => {
       );
 
       expect(root.querySelector('[slot="window"]')).not.toHaveAttribute('role');
+    });
+  });
+});
+
+// #937: the close button is an icon-only button
+describe('mds-modal close button', () => {
+  useLanguage('it');
+
+  it('is a button named in the current language', async () => {
+    const { root } = await render('<mds-modal><p>Contenuto</p></mds-modal>');
+
+    expect(root.shadowRoot!.querySelector('.action-close')).toEqualAttributes({
+      role: 'button',
+      'aria-label': 'Chiudi',
     });
   });
 });

@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { useLanguage } from '@test/language';
 import { userEvent } from 'vitest/browser';
 
 type DateRangeDetail = {
@@ -561,5 +562,19 @@ describe('size', () => {
 
     expect(button).toEqualAttribute('size', 'sm');
     expect(isInside(button, root)).toBe(true);
+  });
+});
+
+// #937: the calendar toggle is an icon-only button
+describe('mds-input-date-range calendar toggle', () => {
+  useLanguage('it');
+
+  it('is a button named in the current language', async () => {
+    const { root } = await render('<mds-input-date-range></mds-input-date-range>');
+
+    expect(root.shadowRoot!.querySelector('.action-open-calendar')).toEqualAttributes({
+      role: 'button',
+      'aria-label': 'Apri il calendario',
+    });
   });
 });

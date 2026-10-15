@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { useLanguage } from '@test/language';
 import { userEvent } from 'vitest/browser';
 
 describe('mds-calendar', () => {
@@ -450,5 +451,49 @@ describe('mds-calendar standalone range selection', () => {
       { hoverDate: '2026-06-10' },
       { hoverDate: null },
     ]);
+  });
+});
+
+// #937: the arrows are icon-only buttons, named by what they move to in each view
+describe('mds-calendar arrows', () => {
+  useLanguage('it');
+
+  const arrows = (root: HTMLElement): Element[] => [
+    root.shadowRoot!.querySelector('.action-back')!,
+    root.shadowRoot!.querySelector('.action-forward')!,
+  ];
+  const click = (root: HTMLElement, selector: string): void => {
+    root.shadowRoot!.querySelector<HTMLElement>(selector)!.click();
+  };
+
+  it('are buttons named after the month they move to', async () => {
+    const { root } = await render('<mds-calendar></mds-calendar>');
+    const [back, forward] = arrows(root);
+
+    expect(back).toEqualAttributes({ role: 'button', 'aria-label': 'Mese precedente' });
+    expect(forward).toEqualAttributes({ role: 'button', 'aria-label': 'Mese successivo' });
+  });
+
+  it('are named after the years in the years view', async () => {
+    const { root, waitForChanges } = await render('<mds-calendar></mds-calendar>');
+
+    click(root, '.action-year');
+    await waitForChanges();
+    const [back, forward] = arrows(root);
+
+    expect(back).toEqualAttribute('aria-label', 'Anni precedenti');
+    expect(forward).toEqualAttribute('aria-label', 'Anni successivi');
+  });
+
+  it('are disabled in the months view, where they have nothing to move', async () => {
+    const { root, waitForChanges } = await render('<mds-calendar></mds-calendar>');
+
+    click(root, '.action-month');
+    await waitForChanges();
+    arrows(root).forEach((arrow) => expect(arrow).toHaveAttribute('disabled'));
+
+    click(root, '.action-month');
+    await waitForChanges();
+    arrows(root).forEach((arrow) => expect(arrow).not.toHaveAttribute('disabled'));
   });
 });

@@ -774,6 +774,7 @@ export class MdsInputDateRange {
         </div>
         <div class="action-open-calendar-wrapper">
           <mds-button
+            aria-label={this.t.get('openCalendar')}
             class="action-open-calendar"
             // the default md button fills the 36px square of an md field; sm fits the 28px one
             size={this.size === 'sm' ? 'sm' : undefined}

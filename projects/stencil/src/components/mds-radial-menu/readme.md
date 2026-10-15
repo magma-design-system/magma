@@ -13,7 +13,7 @@ The `<mds-radial-menu>` web component is a floating action menu of the Magma Des
 
 #### Semantic Behavior
 
-- **Trigger button**: Renders a trigger button whose `tone`, `variant` and `size` are forwarded from the host; clicking it toggles the menu open and closed.
+- **Trigger button**: Renders a trigger button whose `tone`, `variant` and `size` are forwarded from the host; clicking it toggles the menu open and closed. It is icon-only and named in the page language (the `lang` of `<html>`) after what a click does: "Open menu", then "Close menu". There is no prop to give it a name of your own yet.
 - **Open state**: `opened` is the source of truth for visibility; when set the items animate out along the arc and the trigger icon swaps to a close glyph.
 - **Interaction mode**: With `interaction="rightclick"` the trigger is hidden and the menu instead opens on right-click, centred on the cursor.
 - **Backdrop**: When `backdrop` is enabled a dimming overlay is shown while the menu is open. It is purely visual: it lets clicks through and does not close the menu.
