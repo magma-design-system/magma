@@ -2912,7 +2912,11 @@ export namespace Components {
          */
         "alias"?: string;
         /**
-          * Specifies the delay when the tooltip will trigger
+          * Specifies the icon displayed in the header; when not set or empty, the icon follows the `variant`
+         */
+        "icon"?: string;
+        /**
+          * Specifies the guidance category of the content, which drives colors, header label and icon
           * @default 'info'
          */
         "variant": UsageType;
@@ -7548,7 +7552,11 @@ declare namespace LocalJSX {
          */
         "alias"?: string;
         /**
-          * Specifies the delay when the tooltip will trigger
+          * Specifies the icon displayed in the header; when not set or empty, the icon follows the `variant`
+         */
+        "icon"?: string;
+        /**
+          * Specifies the guidance category of the content, which drives colors, header label and icon
           * @default 'info'
          */
         "variant"?: UsageType;
@@ -8293,6 +8301,7 @@ declare namespace LocalJSX {
     interface MdsUsageAttributes {
         "variant": UsageType;
         "alias": string;
+        "icon": string;
     }
     interface MdsVideoWallAttributes {
         "autoplay": true;
