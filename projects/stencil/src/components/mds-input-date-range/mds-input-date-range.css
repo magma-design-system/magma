@@ -49,7 +49,11 @@
 
   @apply text-info-detail;
 
-  border-radius: var(--magma-radius-2xl);
+  /* capped at a part of the height of the field like mds-button's (#913) */
+  border-radius: min(
+    var(--magma-radius-2xl),
+    var(--magma-corner-cap) * var(--private-input-date-range-height)
+  );
   color: rgb(var(--magma-text-default));
   container-type: inline-size;
   corner-shape: var(--magma-corner-shape);

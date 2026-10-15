@@ -8,10 +8,15 @@ export default {
       description: 'Specifies the alias of the usage phrase on the top of the component.',
       type: { name: 'string' },
     },
+    icon: {
+      description:
+        'Specifies the icon displayed in the header; when not set or empty, the icon follows the `variant`.',
+      type: { name: 'string' },
+    },
     variant: {
       control: { type: 'select' },
       description:
-        'Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met.',
+        'Specifies the guidance category of the content, which drives colors, header label and icon.',
       options: usageDictionary,
       type: { name: 'string' },
     },
@@ -49,5 +54,27 @@ export const Variant = {
 
   args: {
     variant: 'dont',
+  },
+};
+
+export const Variants = {
+  render: () => (
+    <div style={{ display: 'grid', gap: '1rem' }}>
+      {usageDictionary.map((variant) => (
+        <mds-usage key={variant} variant={variant}>
+          <mds-text>Ogni variante ha un'icona che ne richiama il significato.</mds-text>
+        </mds-usage>
+      ))}
+    </div>
+  ),
+};
+
+export const Icon = {
+  render: Template,
+
+  args: {
+    alias: 'Struttura consigliata',
+    icon: 'mi/baseline/account-tree',
+    variant: 'do',
   },
 };
