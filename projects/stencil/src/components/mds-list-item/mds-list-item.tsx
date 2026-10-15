@@ -1,5 +1,4 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { preferenceStore } from '@common/preference';
 import {
   TypographyInfoType,
   TypographyReadType,
@@ -34,7 +33,7 @@ export class MdsListItem {
 
   render() {
     return (
-      <Host role="listitem" pref-contrast={preferenceStore.state.contrast}>
+      <Host role="listitem">
         <mds-icon aria-hidden="true" class="icon" name={this.icon ?? mggListDot} part="icon" />
         <mds-text tag="span" typography={this.typography} variant={this.variant} part="text">
           <slot />
