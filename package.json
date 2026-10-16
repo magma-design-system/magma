@@ -28,7 +28,6 @@
     "@typescript-eslint/parser": "8.71.2",
     "@vitest/browser-playwright": "4.1.12",
     "chalk": "4.1.2",
-    "conventional-changelog-cli": "5.0.0",
     "eslint": "9.39.5",
     "fs-extra": "11.4.1",
     "globals": "16.5.0",
@@ -53,12 +52,6 @@
     "node": ">=22.15.0"
   },
   "scripts": {
-    "changelog.design-tokens": "conventional-changelog -p conventionalcommits -i projects/design-tokens/CHANGELOG.md -s --commit-path projects/design-tokens",
-    "changelog.icons": "conventional-changelog -p conventionalcommits -i projects/icons/CHANGELOG.md -s --commit-path projects/icons",
-    "changelog.identity": "conventional-changelog -p conventionalcommits -i projects/identity/CHANGELOG.md -s --commit-path projects/identity",
-    "changelog.stencil": "conventional-changelog -p conventionalcommits -i projects/stencil/CHANGELOG.md -s --commit-path projects/stencil",
-    "changelog.styles": "conventional-changelog -p conventionalcommits -i projects/styles/CHANGELOG.md -s --commit-path projects/styles",
-    "changelog.svg-icons": "conventional-changelog -p conventionalcommits -i projects/svg-icons/CHANGELOG.md -s --commit-path projects/svg-icons",
     "clean-modules": "find . -type d -name node_modules -prune -exec rm -rf {} + && find . -type f -name package-lock.json -delete",
     "lint": "nx run-many -t lint",
     "lint:fix": "nx run-many -t lint:fix",
