@@ -4,6 +4,11 @@
 # via workflow dispatch. A package is published only when its version
 # differs from the latest one on the npm registry.
 #
+# On main, once the publish job has succeeded, merge-back pushes the released
+# commit into dev (scripts/release/merge-back.sh), so that dev carries the
+# released versions and pins: a direct push with RELEASE_PUSH_TOKEN, not a
+# pull request (docs/WORKFLOW.md rule 1).
+#
 # On beta the release commits no version bump: the version of magma and its
 # companions is the one of the `magma@*` tag on the commit, written into the
 # manifests right before publishing (scripts/set-release-version.sh). There
@@ -307,3 +312,29 @@ jobs:
         if: ${{ steps.ver.outputs.proceed == 'true' }}
         working-directory: ${{ matrix.directory }}
         run: npm publish --access public --tag "${{ steps.ver.outputs.tag }}"
+
+  merge-back:
+    name: Merge main back into dev
+    needs: [gate, publish]
+    # only the stable releases of main go back into dev: icons and svg-icons
+    # release from dev itself and beta commits no version. A failed publish
+    # skips it (needs); the rerun or the manual publish runs it, and a second
+    # run for the same commit finds it already in dev and does nothing
+    if: ${{ needs.gate.outputs.ready == 'true' && (github.event.workflow_run.head_branch || github.ref_name) == 'main' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    concurrency:
+      group: merge-back-dev
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: dev
+          fetch-depth: 0
+          # the PAT of an organisation admin, a bypass actor of the ruleset of
+          # dev: it may push there without a pull request and its push triggers
+          # CI on dev, as it does for the release commit on main
+          token: ${{ secrets.RELEASE_PUSH_TOKEN || github.token }}
+      - name: Merge the released commit into dev and push
+        run: ./scripts/release/merge-back.sh "${{ needs.gate.outputs.sha }}"
