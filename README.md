@@ -32,7 +32,7 @@ Magma is the [Maggioli Design System][docs]: a library of 114 web components (St
 ├── scripts/               # Repo-level utility scripts (release helpers, logging)
 ├── Dockerfile             # Serves the built Storybook through nginx
 ├── nx.json                # NX workspace configuration
-└── package.json           # Root workspace: shared devDependencies, lint-staged, changelog scripts
+└── package.json           # Root workspace: shared devDependencies, lint-staged, format and lint scripts
 ```
 
 ### Sub-projects
