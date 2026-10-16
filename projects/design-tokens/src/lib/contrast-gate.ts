@@ -28,12 +28,7 @@ export type Mode = 'light' | 'dark';
 export type Severity = 'error' | 'warn' | 'info';
 export type Metric = 'apca' | 'wcag2';
 export type Category =
-  | 'text-on-surface'
-  | 'text-on-wash'
-  | 'text-on-hue'
-  | 'on-emphasis'
-  | 'hue-fg'
-  | 'border';
+  'text-on-surface' | 'text-on-wash' | 'text-on-hue' | 'on-emphasis' | 'hue-fg' | 'border';
 
 /**
  * What a `--magma-*` role resolves to: one primitive in both modes, or one per
@@ -183,7 +178,7 @@ export interface SemanticMapping {
   washSteps?: Record<string, string>;
   /** Which published role each legacy quintet alias shortcuts to; optional. */
   hueRoles?: { surface: string; text: string; border: string };
-  /** Ramp step the shadow ink names (spec 6.1c); optional. */
+  /** Ramp step the shadow ink names in light; in dark it is the seed (spec 6.1c); optional. */
   shadowStep?: string;
   /**
    * Ramp family behind `--magma-tint-scale-*`, when it is not the tint's own tone
@@ -201,7 +196,13 @@ export interface SemanticMapping {
  * quintet steps). Mirrors what `scripts/semantic.ts` emits.
  */
 export function aliasesFromConfig(m: SemanticMapping): AliasMap {
-  return withDarkInk(baseAliases(m), m);
+  const map = withDarkInk(baseAliases(m), m);
+  // the shadow ink (spec 6.1c, #790): the ink extreme in light, the seed (pure
+  // black) in dark, as the dark block of the layer repoints it
+  const shadow = map['--magma-shadow-ink'];
+  if (typeof shadow === 'string')
+    map['--magma-shadow-ink'] = { light: shadow, dark: `--${m.seed}` };
+  return map;
 }
 
 /**
