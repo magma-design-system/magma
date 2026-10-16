@@ -575,6 +575,8 @@ export function App() {
   // back to disk. When the playground runs standalone these stay inert.
   const [serverMode, setServerMode] = useState(false);
   const [savePath, setSavePath] = useState<string | null>(null);
+  // why the server refuses saves (a JavaScript config or package.json), or null
+  const [saveRefusal, setSaveRefusal] = useState<string | null>(null);
   // JSON of the last-persisted config; null means nothing has been saved yet
   const [savedConfig, setSavedConfig] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -752,10 +754,15 @@ export function App() {
       try {
         const res = await fetch('/api/config');
         if (!res.ok) return;
-        const data = (await res.json()) as { path: string; config: CloneableConfig | null };
+        const data = (await res.json()) as {
+          path: string;
+          config: CloneableConfig | null;
+          readOnly?: string | null;
+        };
         if (cancelled) return;
         setServerMode(true);
         setSavePath(data.path);
+        setSaveRefusal(data.readOnly ?? null);
         if (data.config && Array.isArray(data.config.colors) && data.config.colors.length > 0) {
           const loaded = data.config;
           // the on-disk file is always the save baseline; only adopt it as the
@@ -786,7 +793,7 @@ export function App() {
   const canReset = JSON.stringify(config) !== defaultConfigString;
 
   const saveConfig = async () => {
-    if (!serverMode || saving) return;
+    if (!serverMode || saving || saveRefusal) return;
     setSaving(true);
     setStatusMsg(null);
     try {
@@ -1179,14 +1186,20 @@ export function App() {
           </label>
           {statusMsg && <span class="save-status">{statusMsg}</span>}
           {serverMode ? (
-            <button
-              class="primary"
-              onClick={saveConfig}
-              disabled={saving || !dirty}
-              title={savePath ?? undefined}
-            >
-              {saving ? 'saving...' : dirty ? 'save *' : 'saved'}
-            </button>
+            saveRefusal ? (
+              <button class="primary" disabled title={saveRefusal}>
+                {dirty ? 'read-only *' : 'read-only'}
+              </button>
+            ) : (
+              <button
+                class="primary"
+                onClick={saveConfig}
+                disabled={saving || !dirty}
+                title={savePath ?? undefined}
+              >
+                {saving ? 'saving...' : dirty ? 'save *' : 'saved'}
+              </button>
+            )
           ) : (
             <button onClick={copyJson}>{copied ? 'copied!' : 'copy JSON'}</button>
           )}
@@ -1223,7 +1236,11 @@ export function App() {
         </div>
       </header>
 
-      {loadError && <div class="load-error">{loadError}</div>}
+      {loadError ? (
+        <div class="load-error">{loadError}</div>
+      ) : (
+        saveRefusal && <div class="load-error save-notice">saving is off: {saveRefusal}</div>
+      )}
 
       {showSidebar && (
         <aside class="sidebar">
