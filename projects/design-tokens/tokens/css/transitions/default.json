@@ -2,7 +2,7 @@
   "css": {
     "transitionProperty": {
       "cosmetic": {
-        "value": "background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, transform, width"
+        "value": "background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, rotate, scale, transform, translate, width"
       },
       "size": {
         "value": "height, margin, padding, width"
