@@ -214,4 +214,28 @@ describe('mds-modal close button', () => {
       'aria-label': 'Chiudi',
     });
   });
+
+  // #824: the documented name was misspelled (-funciton) and the close button read the right one
+  describe('transition timing function', () => {
+    const timingOf = (root: HTMLElement, selector: string): string =>
+      getComputedStyle(root.shadowRoot!.querySelector(selector)!).transitionTimingFunction;
+
+    it('drives the window and the close button', async () => {
+      const { root } = await render(
+        '<mds-modal style="--mds-modal-transition-timing-function: steps(3)"></mds-modal>',
+      );
+
+      expect(timingOf(root, '.window')).toBe('steps(3)');
+      expect(timingOf(root, '.action-close')).toBe('steps(3)');
+    });
+
+    it('still reads the misspelled name', async () => {
+      const { root } = await render(
+        '<mds-modal style="--mds-modal-transition-timing-funciton: steps(4)"></mds-modal>',
+      );
+
+      expect(timingOf(root, '.window')).toBe('steps(4)');
+      expect(timingOf(root, '.action-close')).toBe('steps(4)');
+    });
+  });
 });

@@ -1002,6 +1002,7 @@ mds-modal css --mds-modal-overlay-color
 mds-modal css --mds-modal-overlay-opacity
 mds-modal css --mds-modal-transition-duration
 mds-modal css --mds-modal-transition-timing-funciton
+mds-modal css --mds-modal-transition-timing-function
 mds-modal css --mds-modal-window-background
 mds-modal css --mds-modal-window-distance
 mds-modal css --mds-modal-window-max-width
