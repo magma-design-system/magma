@@ -26,7 +26,7 @@ The `<mds-pref-theme>` web component is the theme-switcher segment of the Magma 
 
 - **`name`**: The active theme name (default `'default'`); it is overridden at runtime by any persisted value. Use it to declare the initial theme when no preference has been stored yet. The named themes are `cool` and `warm`; `default` is the base theme ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)).
 - **`scheme`**: Constrains the colour modes of the theme to `'light'`, `'dark'`, or `'all'` (default). Pick `'all'` for themes that ship both light and dark palettes; pick `'light'` or `'dark'` to force a single mode for a theme offered in one mode only.
-- **`size`**: Sets the size (`'sm'` / `'md'`) of the nested tab UI. `<mds-pref>` forwards its own `size` to every `mds-pref-*` segment only when that prop changes after load, not from the initial markup: in markup, set it here (with the same value on the sibling segments, so the panel stays visually consistent).
+- **`size`**: Sets the size (`'sm'` / `'md'`) of the nested tab UI. Inside `<mds-pref>`, set it on the parent: it reaches every `mds-pref-*` segment on load and when it changes, and overwrites the segment's own.
 - **`cornerShape`** (attribute `corner-shape`): The corner geometry of the whole page - `round`, `squircle`, `bevel`, `notch`, `scoop`, `square`, or `default`. It writes `data-corner-shape` on `<html>` and is persisted like the theme; `default` removes the attribute, and leaving the prop unset touches nothing ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)).
 
 
@@ -99,11 +99,11 @@ Use the `name` prop to declare which theme should be active before the user make
 
 #### Controlling Item Size
 
-Pass `size="sm"` when the preferences panel must fit a compact layout. `<mds-pref>` forwards its own `size` to every `mds-pref-*` child only when that prop changes after load, not from the initial markup: in markup, set the same `size` on every preference control.
+Pass `size="sm"` when the preferences panel must fit a compact layout: on `<mds-pref>`, which forwards it to every preference control.
 
 ```html
-<mds-pref>
-  <mds-pref-theme name="default" scheme="all" size="sm">
+<mds-pref size="sm">
+  <mds-pref-theme name="default" scheme="all">
     <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
     <mds-pref-theme-item label="Freddo" name="cool" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
@@ -202,7 +202,7 @@ The `name` prop must match the pattern `^[a-z]+(-[a-z]+)*$` (lowercase letters a
 
 #### Do Not Give the Parent and the Child Different Sizes
 
-`<mds-pref>` forwards its own `size` to all `mds-pref-*` children only when that prop changes after load, not from the initial markup, and then it overwrites theirs. A `size` on `<mds-pref-theme>` that differs from the parent's renders the child's value at load and flips to the parent's on its next change: give the children one `size`.
+`<mds-pref>` forwards its own `size` to all `mds-pref-*` children, on load and when it changes, and overwrites theirs: a `size` on `<mds-pref-theme>` that differs from the parent's is never shown. Set the size on the parent only.
 
 ```html
 <!-- INCORRECT -->
@@ -213,8 +213,8 @@ The `name` prop must match the pattern `^[a-z]+(-[a-z]+)*$` (lowercase letters a
 </mds-pref>
 
 <!-- CORRECT -->
-<mds-pref>
-  <mds-pref-theme size="sm" name="default" scheme="all">
+<mds-pref size="sm">
+  <mds-pref-theme name="default" scheme="all">
     <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>

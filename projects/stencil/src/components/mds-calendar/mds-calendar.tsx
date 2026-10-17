@@ -15,6 +15,7 @@ import miBaselineBackIosNew from '@icon/mi/baseline/arrow-back-ios-new.svg';
 import { DateTime } from 'luxon';
 import { preferenceStore } from '@common/preference';
 import { sanitizeISO8601Date } from '@common/date';
+import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
@@ -286,9 +287,17 @@ export class MdsCalendar {
     this.updateCalendar();
   }
 
-  componentDidLoad(): void {
+  // The area shows what the preselection slot holds, added after load too. It used to wait for a
+  // `date-preselection--has-preselection` marker class, looked up once on load (#826); the class
+  // still shows it, for the pages written that way.
+  private readonly updatePreselection = (): void => {
     this.hasPreselection =
-      this.host?.querySelector('.date-preselection--has-preselection') !== null;
+      hasChildWithSlot(this.host, 'preselection') ||
+      this.host.querySelector('.date-preselection--has-preselection') !== null;
+  };
+
+  componentDidLoad(): void {
+    this.updatePreselection();
 
     this.host?.shadowRoot?.addEventListener('mouseover', this.handleMouseOver);
     this.host?.addEventListener('mouseleave', this.handleMouseLeave);
@@ -829,7 +838,7 @@ export class MdsCalendar {
               'calendar-preselection--has-preselection',
           )}
         >
-          <slot name="preselection"></slot>
+          <slot name="preselection" onSlotchange={this.updatePreselection}></slot>
         </div>
         <div class="calendar-view">
           <nav>

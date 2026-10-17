@@ -74,4 +74,35 @@ describe('mds-pref-language', () => {
       expect(tab()).toEqualAttribute('aria-expanded', 'true');
     });
   });
+
+  // #826: the items got their listener once, on load: an item added later did nothing when picked
+  describe('an item added after load', () => {
+    afterEach(() => {
+      localStorage.removeItem('mdsPrefLanguage');
+    });
+
+    it('applies its language when picked, and is marked as the selected one', async () => {
+      const { root, waitForChanges } = await render(`
+        <mds-pref-language set="it">
+          <mds-pref-language-item code="it"></mds-pref-language-item>
+        </mds-pref-language>
+      `);
+      const languageChange = vi.fn();
+      root.addEventListener('mdsPrefLanguageChange', languageChange);
+
+      const english = document.createElement('mds-pref-language-item');
+      english.setAttribute('code', 'en');
+      root.appendChild(english);
+      await waitForChanges();
+      english.click();
+      await waitForChanges();
+
+      expect(languageChange).toHaveBeenCalledTimes(1);
+      expect(document.documentElement.getAttribute('lang')).toBe('en');
+      expect(english.selected).toBe(true);
+      expect(root.querySelector<HTMLMdsPrefLanguageItemElement>('[code="it"]')!.selected).toBe(
+        false,
+      );
+    });
+  });
 });

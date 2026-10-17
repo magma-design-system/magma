@@ -7,6 +7,7 @@ import {
   forceUpdate,
   Host,
   h,
+  Listen,
   Prop,
   State,
 } from '@stencil/core';
@@ -168,21 +169,23 @@ export class MdsPrefTheme {
     });
   };
 
+  // A pick reaches the component from any item, one added after load too: the listener sits on
+  // the host, where the event of the item bubbles, instead of on each item found on load (#826)
+  @Listen('mdsPrefThemeItemSelect')
+  handleItemSelect(e: CustomEvent): void {
+    this.changeThemeItem();
+    this.currentSelectedItem = e.target as HTMLMdsPrefThemeItemElement;
+    this.currentSelectedItem.selected = true;
+    const name: string = e.detail.name.toLowerCase();
+    const scheme: PreferenceThemeSchemeType = e.detail.scheme.toLowerCase();
+    this.themeChangeEvent.emit({ name, scheme });
+    this.showDropdown = false;
+    this.setTheme(name, scheme);
+  }
+
+  // the items, read again when they change, mark the theme in place
   private readonly checkThemeSelect = (): void => {
     this.themeItems = this.element.querySelectorAll('mds-pref-theme-item');
-    this.themeItems.forEach((element) => {
-      element.addEventListener('mdsPrefThemeItemSelect', (e: CustomEvent) => {
-        this.changeThemeItem();
-        this.currentSelectedItem = e.currentTarget as HTMLMdsPrefThemeItemElement;
-        this.currentSelectedItem.selected = true;
-        const name: string = e.detail.name.toLowerCase();
-        const scheme: PreferenceThemeSchemeType = e.detail.scheme.toLowerCase();
-        this.themeChangeEvent.emit({ name, scheme });
-        this.showDropdown = false;
-        this.setTheme(name, scheme);
-      });
-    });
-
     this.themeItems.forEach((element) => {
       element.selected = element.name === this.name;
     });
@@ -285,7 +288,7 @@ export class MdsPrefTheme {
           visible={this.showDropdown}
           onMdsDropdownHide={this.hideThemeDropdownSelect}
         >
-          <slot></slot>
+          <slot onSlotchange={this.checkThemeSelect}></slot>
         </mds-dropdown>
       </Host>
     );

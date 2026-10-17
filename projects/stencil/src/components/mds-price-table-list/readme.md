@@ -17,7 +17,7 @@ The `<mds-price-table-list>` web component is a single pricing-plan column insid
 
 - **Compound child**: Designed to sit inside [`<mds-price-table>`](../../mds-price-table), directly or in its `<mds-price-table-header>`; one instance represents one pricing plan, and several siblings line up to form the comparison table. It is not used standalone.
 - **Owns the feature-list child type**: Feature rows are provided as `<mds-price-table-list-item>` elements - they are the intended child type for the list body.
-- **Conditional list region**: The feature region and the separator above it render only when feature items are present when the card loads (items added later do not bring them back); a plan with no features collapses to header plus footer.
+- **Conditional list region**: The feature region and the separator above it render only while feature items are present, items rendered after load included; a plan with no features collapses to header plus footer.
 - **No interactive state**: It renders pure structure with no ARIA attributes (the feature region is a `<main>` element), no selected/active/disabled state and no emitted events; any interactivity (e.g. the CTA) comes from the components you slot in, such as `<mds-button>` in the `action` slot.
 - **Footer composition**: The `price` and `action` slots are grouped together at the bottom of the card.
 

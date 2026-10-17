@@ -266,7 +266,7 @@ Call the `selectAll()` method to select all rows at once; pass `false` to desele
 
 #### Batch Actions Bar
 
-Slot `mds-button` elements with `slot="batch-action"` as direct children of `mds-table` alongside the body. The bar renders only when `selectable` is set and at least one batch-action button is present; it shows a live count badge of the current selection and appears once a row is checked.
+Slot `mds-button` elements with `slot="batch-action"` as direct children of `mds-table` alongside the body. The bar renders only when `selectable` is set and at least one batch-action button is present, a button added after load included; it shows a live count badge of the current selection and appears once a row is checked.
 
 ```html
 <mds-table selectable>
@@ -383,7 +383,7 @@ Common incorrect uses of `<mds-table>`. Each entry pairs the wrong form with the
 
 #### Do Not Slot Batch-Action Buttons Inside the Body
 
-The `slot="batch-action"` must be a direct child of `<mds-table>`, not nested inside `mds-table-body` or any row. The component queries `:scope > [slot="batch-action"]` at load time and the bar will not appear if the slot is misplaced.
+The `slot="batch-action"` must be a direct child of `<mds-table>`, not nested inside `mds-table-body` or any row. The component looks for `:scope > [slot="batch-action"]` on load and whenever its children change, and the bar will not appear if the slot is misplaced.
 
 ```html
 <!-- INCORRECT -->
