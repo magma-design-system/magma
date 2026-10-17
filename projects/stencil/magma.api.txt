@@ -343,7 +343,7 @@ mds-card-media part content
 mds-chip encapsulation shadow
 mds-chip prop clickable (attr clickable) [reflect, mutable]: boolean | undefined
 mds-chip prop deletable (attr deletable): boolean | undefined
-mds-chip prop disabled (attr disabled): boolean | undefined = false
+mds-chip prop disabled (attr disabled) [reflect]: boolean | undefined = false
 mds-chip prop icon (attr icon): string | undefined
 mds-chip prop label (attr label) [reflect, required]: string
 mds-chip prop selectable (attr selectable) [reflect]: boolean | undefined = false

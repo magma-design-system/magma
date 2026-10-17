@@ -742,7 +742,7 @@ export namespace Components {
          */
         "deletable"?: boolean;
         /**
-          * Sets the component disabled status
+          * Sets the component disabled status: neither the label nor the delete button can be focused or activated
           * @default false
          */
         "disabled"?: boolean;
@@ -5263,7 +5263,7 @@ declare namespace LocalJSX {
          */
         "deletable"?: boolean;
         /**
-          * Sets the component disabled status
+          * Sets the component disabled status: neither the label nor the delete button can be focused or activated
           * @default false
          */
         "disabled"?: boolean;
