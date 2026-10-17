@@ -14,7 +14,7 @@ The `<mds-pref-language-item>` web component represents a single selectable lang
 #### Semantic Behavior
 
 - **Compound child only**: Must be placed as a direct default-slot child of `<mds-pref-language>`; it is not used standalone or mixed with other child types.
-- **Code validation**: `code` must match an entry in the bundled language dictionary; an unknown `code` throws `Language code not found: <code>`. When `code` is empty the item renders an error-toned fallback button instead of a language label.
+- **Code validation**: `code` must match an entry in the bundled language dictionary; an unknown `code` logs a console warning and the item shows the code itself in place of a language name. When `code` is empty the item renders an error-toned fallback button instead of a language label.
 - **Label is derived, not authored**: The visible language name is looked up from `code` (e.g. `it` to `Italiano`), so consumers supply only the code, not the display text.
 - **Selection is parent-driven**: The `selected` prop is owned and toggled by `<mds-pref-language>`, which clears every sibling and sets only the active item.
 - **Click emits, does not commit**: Clicking the item emits the bubbling `mdsPrefLanguageItemSelect` event carrying `{ language: code }`. The parent updates selection state, persists the preference, applies the document language, and emits its own `mdsPrefLanguageChange` - this child performs none of that.
@@ -138,7 +138,7 @@ The item derives its label from the `code` prop via the bundled dictionary. Atte
 
 #### Do Not Use an Undocumented or Misspelled Language Code
 
-`code` must exactly match a key in the bundled dictionary (e.g. `"it"`, `"en"`, `"fr"`). An unknown code throws `Language code not found: <code>` when the item loads or its `code` changes. Use the two-letter BCP 47 tag, not a locale variant like `"it-IT"`.
+`code` must exactly match a key in the bundled dictionary (e.g. `"it"`, `"en"`, `"fr"`). An unknown code logs a console warning when the item loads or its `code` changes, and the item shows the raw code instead of a language name. Use the two-letter BCP 47 tag, not a locale variant like `"it-IT"`.
 
 ```html
 <!-- INCORRECT -->

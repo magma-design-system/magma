@@ -253,8 +253,22 @@ export class MdsEmoji {
     return Promise.resolve();
   }
 
+  private readonly isEmojiName = (name?: string | null): name is EmojiNames =>
+    name != null && {}.hasOwnProperty.call(this.svgLibrary, name);
+
   @Watch('name')
-  checkNameChanged(emojiName: EmojiNames): void {
+  checkNameChanged(emojiName: EmojiNames, previousName?: EmojiNames): void {
+    // a name outside the dictionary is ignored, it used to throw (#825): the emoji goes back to
+    // the face it shows, and on load it shows none
+    if (!this.isEmojiName(emojiName)) {
+      if (emojiName != null) {
+        console.warn(
+          `mds-emoji: ignoring the unknown name "${emojiName}", use one of: ${Object.keys(this.svgLibrary).join(', ')}`,
+        );
+      }
+      if (this.isEmojiName(previousName)) this.host.setAttribute('name', previousName);
+      return;
+    }
     // Stencil reflects a prop onto its attribute during the next render, but this
     // watcher runs synchronously, before that render. Every per-emoji value lives in
     // a :host([name='...']) rule, so updateSvgDictionary -> updateCSSCustomProps would

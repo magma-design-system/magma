@@ -1,6 +1,5 @@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
-import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
-import { KeyboardManager } from '@common/keyboard-manager';
+import { Component, Event, EventEmitter, Host, h, Prop } from '@stencil/core';
 import { ThemeLabelVariantType, ThemeStatusVariantType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
@@ -10,7 +9,7 @@ import { Locale } from '@common/locale';
 import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
-import localeEs from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
 /**
@@ -25,8 +24,6 @@ export type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType
   shadow: true,
 })
 export class MdsLabel {
-  @Element() private host: HTMLMdsLabelElement;
-  private km = new KeyboardManager();
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -75,28 +72,6 @@ export class MdsLabel {
    */
   @Event({ eventName: 'mdsLabelDelete' }) deletedEvent: EventEmitter<void>;
 
-  private handleKeyboard = (): void => {
-    if (this.deletable) {
-      const close = this.host.shadowRoot?.querySelector('.close') as HTMLElement;
-      this.km.addElement(close);
-      this.km.attachClickBehavior();
-      return;
-    }
-    this.km.detachClickBehavior();
-  };
-
-  componentDidLoad(): void {
-    this.handleKeyboard();
-  }
-
-  componentDidUpdate(): void {
-    this.handleKeyboard();
-  }
-
-  disconnectedCallback(): void {
-    this.km.detachClickBehavior();
-  }
-
   render() {
     return (
       <Host
@@ -107,6 +82,7 @@ export class MdsLabel {
         <mds-text class="text" truncate={this.truncate} typography={this.typography}>
           {this.label}
         </mds-text>
+        {/* mds-button takes Enter on its own: the label adds no keyboard handling to it */}
         {this.deletable && (
           <mds-button
             class="button-close"

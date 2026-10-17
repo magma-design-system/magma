@@ -50,9 +50,21 @@ export class MdsIcon {
     this.updateIcon();
   }
 
+  /**
+   * The markup of a base64 icon, or nothing when the payload is not base64. The padding stays:
+   * removing one `=` of two made `atob` throw (#825). The bytes are decoded as UTF-8, the
+   * encoding of the SVG files, so a non-ASCII title or text keeps its letters.
+   */
   private convertBase64ToSvg = (): string => {
-    const svgBase64 = this.name.replace(BASE64_SVG_ICON, '').replace(/=/i, '');
-    return atob(svgBase64);
+    const svgBase64 = this.name.replace(BASE64_SVG_ICON, '');
+    try {
+      return new TextDecoder().decode(
+        Uint8Array.from(atob(svgBase64), (char) => char.charCodeAt(0)),
+      );
+    } catch {
+      console.warn('mds-icon: ignoring an icon that is not valid base64');
+      return '';
+    }
   };
 
   /**
