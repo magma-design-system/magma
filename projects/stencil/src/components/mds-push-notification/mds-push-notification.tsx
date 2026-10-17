@@ -10,8 +10,13 @@ import {
   Method,
 } from '@stencil/core';
 import { cssDurationToMilliseconds, cssSizeToNumber } from '@common/unit';
+import { Locale } from '@common/locale';
 import { preferenceStore } from '@common/preference';
 import { MdsPushNotificationEventDetail } from './meta/event-detail';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 /**
  * @part notifications - The container wrapper of the notifications.
  * @slot - Add `HTML elements` or `components`, it is **recommended** to use `mds-push-notification` element.
@@ -25,6 +30,12 @@ import { MdsPushNotificationEventDetail } from './meta/event-detail';
 export class MdsPushNotification {
   @Element() host: HTMLMdsPushNotificationElement;
   private slotNotifications!: HTMLSlotElement;
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
   private cssItemsIntroDuration: string;
   private cssItemsOutroDuration: string;
   private cssItemsGap: string;
@@ -99,7 +110,9 @@ export class MdsPushNotification {
    * @returns
    */
   private outroItem = (element: HTMLElement): Promise<void> => {
-    if (this.slotNotifications.assignedNodes().length <= 1) this.hide();
+    // the elements: the nodes counted the whitespace between indented items too, so the stack
+    // never hid once its last item was closed
+    if (this.slotNotifications.assignedElements().length <= 1) this.hide();
     // no reason why I must duplicate marginBottom negative to prevent flickering
     element.style.marginBottom = '0px';
     return new Promise<void>((resolve) => {
@@ -213,7 +226,11 @@ export class MdsPushNotification {
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {/* <slot name="top"></slot> */}
-        <mds-button variant="dark" onClick={this.clear} label="Cancella notifiche"></mds-button>
+        <mds-button
+          variant="dark"
+          onClick={this.clear}
+          label={this.t.get('clearNotifications')}
+        ></mds-button>
         <div class="notifications" part="notifications">
           <slot ref={(el) => (this.slotNotifications = el as HTMLSlotElement)} />
         </div>
