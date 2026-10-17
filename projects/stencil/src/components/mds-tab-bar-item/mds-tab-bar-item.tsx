@@ -1,15 +1,7 @@
-import {
-  Component,
-  Element,
-  Event,
-  EventEmitter,
-  Host,
-  h,
-  Prop,
-  State,
-  Watch,
-} from '@stencil/core';
+import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
 import { TypographySmallerType } from '@type/typography';
+import { KeyboardManager } from '@common/keyboard-manager';
+import { setAttributeIfEmpty } from '@common/aria';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 import { preferenceStore } from '@common/preference';
 
@@ -24,7 +16,7 @@ import { preferenceStore } from '@common/preference';
 })
 export class MdsTabBarItem {
   @Element() private element: HTMLMdsTabBarItemElement;
-  @State() isSelected: boolean;
+  private km = new KeyboardManager();
 
   /**
    * The icon displayed in the tab bar item.
@@ -46,26 +38,34 @@ export class MdsTabBarItem {
    */
   @Prop() readonly typography?: TypographySmallerType = 'tip';
 
-  componentWillLoad(): void {
-    this.isSelected = this.selected;
+  // the item is a button that shows its view: a tab stop that Enter and Space activate as a click
+  // does. A role set by the caller is theirs and stays
+  componentDidLoad(): void {
+    setAttributeIfEmpty(this.element, 'role', 'button');
+    this.km.addElement(this.element);
+    this.km.attachClickBehavior('element', { space: true });
   }
 
+  // an item moved in the page is disconnected and connected again, without loading again
+  connectedCallback(): void {
+    this.km.attachClickBehavior('element', { space: true });
+  }
+
+  disconnectedCallback(): void {
+    this.km.detachClickBehavior();
+  }
+
+  // the selected item stays selected: a click on it selects nothing new, so it emits nothing
   private select = () => {
-    this.isSelected = !this.isSelected;
-    if (this.isSelected) {
-      this.selectedEvent.emit(this.element.id);
-    }
+    if (this.selected) return;
+    this.selected = true;
+    this.selectedEvent.emit(this.element.id);
   };
 
   /**
    * Emits when the component is selected
    */
   @Event({ eventName: 'mdsTabBarItemSelect' }) selectedEvent: EventEmitter<string>;
-
-  @Watch('selected')
-  validateSelected(newValue: boolean): void {
-    this.isSelected = newValue;
-  }
 
   @Watch('label')
   labelChanged(newValue?: string): void {
@@ -81,7 +81,9 @@ export class MdsTabBarItem {
   render() {
     return (
       <Host
+        aria-current={this.selected ? 'true' : undefined}
         onClick={this.select}
+        tabindex="0"
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
         pref-mode={preferenceStore.state.mode}
