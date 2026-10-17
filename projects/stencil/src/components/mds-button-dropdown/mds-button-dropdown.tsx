@@ -27,6 +27,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ * @part dropdown - The `mds-dropdown` that the arrow opens, with the default slot inside
  */
 @Component({
   tag: 'mds-button-dropdown',

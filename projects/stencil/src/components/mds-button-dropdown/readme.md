@@ -385,9 +385,9 @@ mds-button-dropdown::part(dropdown) {
 
 ## Shadow Parts
 
-| Part         | Description |
-| ------------ | ----------- |
-| `"dropdown"` |             |
+| Part         | Description                                                           |
+| ------------ | --------------------------------------------------------------------- |
+| `"dropdown"` | The `mds-dropdown` that the arrow opens, with the default slot inside |
 
 
 ## CSS Custom Properties
