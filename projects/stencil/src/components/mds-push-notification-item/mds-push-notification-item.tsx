@@ -119,7 +119,8 @@ export class MdsPushNotificationItem {
 
   private onClickClose = (e: Event) => {
     e.stopPropagation();
-    this.closedEvent.emit();
+    // the detail the event declares: it was emitted empty
+    this.closedEvent.emit({ id: this.host.id });
   };
 
   componentDidLoad(): void {

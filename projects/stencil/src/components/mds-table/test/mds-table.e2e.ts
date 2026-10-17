@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 
 /** A selectable table with something in the batch-action slot: the counter only exists there. */
@@ -128,5 +128,72 @@ describe('mds-table', () => {
       await waitForChanges();
       expect(counter(root)).toBe('0');
     });
+  });
+
+  // only the checkbox told the table about a selection: a row selected from code was missing
+  // from mdsTableSelectionChange until the next click (#823)
+  describe('mdsTableSelectionChange', () => {
+    const selections = (root: HTMLElement) => {
+      const seen: string[][] = [];
+      root.addEventListener('mdsTableSelectionChange', (event) =>
+        seen.push(
+          (event as CustomEvent<{ rows: { value: string }[] }>).detail.rows.map((row) => row.value),
+        ),
+      );
+      return seen;
+    };
+
+    it('follows a row selected from code', async () => {
+      const { root, waitForChanges } = await render(TABLE);
+      const seen = selections(root);
+
+      (root.querySelectorAll('mds-table-row')[1] as HTMLMdsTableRowElement).selected = true;
+      await waitForChanges();
+
+      expect(seen).toEqual([['due']]);
+      expect(counter(root)).toBe('1');
+    });
+
+    it('announces a selection of every row once', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsTableElement>(TABLE);
+      const seen = selections(root);
+
+      await root.selectAll();
+      await waitForChanges();
+
+      expect(seen).toEqual([['uno', 'due', 'tre']]);
+    });
+
+    it('still announces a click on a checkbox, once', async () => {
+      const { root, waitForChanges } = await render(TABLE);
+      const seen = selections(root);
+
+      toggleRow(root, 0);
+      await waitForChanges();
+
+      expect(seen).toEqual([['uno']]);
+    });
+  });
+});
+
+// disconnectedCallback took the scroll listener off the host, which never had it (#823)
+describe('mds-table leaving the page', () => {
+  it('takes the scroll listener off the wrapper it was added to', async () => {
+    // the listener follows the actions of the rows: a table without them has none
+    const { root } = await render(`
+      <mds-table>
+        <mds-table-body>
+          <mds-table-row>
+            <mds-table-cell>Uno</mds-table-cell>
+            <mds-button slot="action" label="Apri"></mds-button>
+          </mds-table-row>
+        </mds-table-body>
+      </mds-table>`);
+    const wrapper = root.shadowRoot!.querySelector<HTMLElement>('.table-wrapper')!;
+    const remove = vi.spyOn(wrapper, 'removeEventListener');
+
+    root.remove();
+
+    expect(remove).toHaveBeenCalledWith('scroll', expect.any(Function));
   });
 });

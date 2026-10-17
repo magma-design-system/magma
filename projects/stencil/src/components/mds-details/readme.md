@@ -25,7 +25,7 @@ The `<mds-details>` web component is the disclosure widget of the Magma Design S
 
 This component intentionally exposes a single behavioral prop. Visual surface is driven through slots and the exposed CSS custom properties rather than through variant/tone props.
 
-- **`opened`** sets the expanded state. Set it to pre-expand the block on first render, or change it to open / close the block from code. User toggles do not write it back (track `mdsDetailsChange` for the current state), so after a toggle `opened` can be stale and assigning the value it already holds does nothing.
+- **`opened`** sets the expanded state. Set it to pre-expand the block on first render, or change it to open / close the block from code. A user toggle writes it back too (property and reflected attribute), so it always holds the current state.
 
 #### Other behavioral props
 
@@ -52,7 +52,7 @@ The minimal form: a `title` slot for the always-visible header and a default slo
 
 #### Pre-expanded State via `opened`
 
-Pass the `opened` boolean attribute to expand the block on first render. User toggles do not update it: read the state from `mdsDetailsChange`.
+Pass the `opened` boolean attribute to expand the block on first render. User toggles update it, and emit `mdsDetailsChange`.
 
 ```html
 <mds-details opened>
@@ -115,7 +115,7 @@ Subscribe to `mdsDetailsChange` to react to open/close transitions. The event de
 
 #### Programmatic Control
 
-Assign the `opened` property to drive the disclosure from code - for example to expand all items at once or to implement accordion logic manually. User toggles do not write `opened` back, so assigning the value it already holds does nothing: a block the user closed after an `opened = true` stays closed until `opened` goes through `false`.
+Assign the `opened` property to drive the disclosure from code - for example to expand all items at once or to implement accordion logic manually. User toggles write `opened` back, so it always holds the current state: `opened = true` opens a block the user had closed.
 
 ```html
 <mds-details id="step-1">

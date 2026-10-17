@@ -7119,7 +7119,7 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
-          * Emits when the accordion is selected
+          * Emits when the user activates a step that is done, to go back to it: the page moves the stepper bar there through `itemsDone`
          */
         "onMdsStepperBarItemDone"?: (event: MdsStepperBarItemCustomEvent<MdsStepperBarItemEventDetail>) => void;
         /**

@@ -75,3 +75,22 @@ describe('mds-pref-language', () => {
     });
   });
 });
+
+// a language set from code changed the page, not the selected item of the list (#823)
+describe('mds-pref-language set from code', () => {
+  it('selects the item of the language', async () => {
+    const { root, waitForChanges } = await render(`
+      <mds-pref-language set="it">
+        <mds-pref-language-item code="it"></mds-pref-language-item>
+        <mds-pref-language-item code="en"></mds-pref-language-item>
+      </mds-pref-language>`);
+    const item = (code: string) =>
+      root.querySelector<HTMLMdsPrefLanguageItemElement>(`mds-pref-language-item[code="${code}"]`)!;
+
+    (root as HTMLMdsPrefLanguageElement).set = 'en';
+    await waitForChanges();
+
+    expect(item('en').selected).toBe(true);
+    expect(item('it').selected).toBe(false);
+  });
+});
