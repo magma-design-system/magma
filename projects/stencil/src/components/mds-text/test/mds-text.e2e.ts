@@ -234,4 +234,23 @@ describe('mds-text', () => {
 
     expect(consoleError).not.toHaveBeenCalled();
   });
+
+  describe('with the animation preference set to reduce', () => {
+    // the class lives on the document, so it would outlive this file
+    afterEach(() => {
+      document.documentElement.classList.remove('pref-animation-reduce');
+    });
+
+    it('holds back the transition of a code text', async () => {
+      // the host reflected the preference, but the sheet that reads it was commented out in
+      // the Tailwind 4 migration and then deleted with the comment (#1004)
+      document.documentElement.classList.add('pref-animation-reduce');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      const { root } = await render('<mds-text tag="code">const a = 1;</mds-text>');
+
+      expect(root).toHaveAttribute('pref-animation', 'reduce');
+      expect(getComputedStyle(root).transitionDuration).toBe('1e-05s');
+    });
+  });
 });
