@@ -57,6 +57,16 @@ export class MdsTableHeader {
     this.checkboxEl.checked = totalItems > 0 && selectedItems === totalItems;
   }
 
+  /**
+   * `internal` Shows or hides the Actions column: mds-table calls it whenever its rows gain or
+   * lose `slot="action"` content, the header itself reads them only on load
+   * @param hasActions whether any row has actions
+   */
+  @Method()
+  async setActions(hasActions: boolean): Promise<void> {
+    this.hasActions = hasActions;
+  }
+
   componentWillLoad(): void {
     this.table = this.host.closest('mds-table') as HTMLMdsTableElement;
     // standalone header (or SSR of the subtree alone): no surrounding table
