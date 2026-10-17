@@ -1241,15 +1241,15 @@ mds-quote prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4
 mds-quote slot (default)
 mds-quote slot author
 mds-radial-menu encapsulation shadow
-mds-radial-menu prop angleEnd (attr angle-end) [reflect]: number = 360
-mds-radial-menu prop angleStart (attr angle-start) [reflect]: number = 0
+mds-radial-menu prop angleEnd (attr angle-end) [reflect]: number
+mds-radial-menu prop angleStart (attr angle-start) [reflect]: number
 mds-radial-menu prop backdrop (attr backdrop) [reflect]: boolean | undefined = false
 mds-radial-menu prop direction (attr direction) [reflect]: "clockwise" | "counterclockwise" = 'clockwise'
 mds-radial-menu prop disc (attr disc) [reflect, mutable]: boolean | undefined
 mds-radial-menu prop icon (attr icon) [reflect, mutable]: string | undefined
 mds-radial-menu prop interaction (attr interaction) [reflect]: "click" | "rightclick" = 'click'
 mds-radial-menu prop opened (attr opened) [reflect, mutable]: boolean | undefined
-mds-radial-menu prop radius (attr radius) [reflect]: number = 5
+mds-radial-menu prop radius (attr radius) [reflect]: number
 mds-radial-menu prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'lg'
 mds-radial-menu prop tone (attr tone) [reflect]: "outline" | "strong" | "text" | "weak" | undefined = 'strong'
 mds-radial-menu prop variant (attr variant) [reflect]: "ai" | "apple" | "dark" | "error" | "google" | "info" | "light" | "primary" | "secondary" | "success" | "warning" | undefined = 'dark'

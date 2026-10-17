@@ -34,19 +34,22 @@ export class MdsRadialMenu {
   private readonly backdropController: Backdrop = new Backdrop('mds-radial-menu-backdrop');
 
   /**
-   * Specifies the starting angle of the menu
+   * Specifies the starting angle of the menu, in degrees; when it is not set the menu takes
+   * `--mds-radial-menu-angle-start`, `0deg` by default
    */
-  @Prop({ reflect: true }) readonly angleStart: number = 0;
+  @Prop({ reflect: true }) readonly angleStart: number;
 
   /**
-   * Specifies the ending angle of the menu
+   * Specifies the ending angle of the menu, in degrees; when it is not set the menu takes
+   * `--mds-radial-menu-angle-end`, `360deg` by default
    */
-  @Prop({ reflect: true }) readonly angleEnd: number = 360;
+  @Prop({ reflect: true }) readonly angleEnd: number;
 
   /**
-   * Specifies the radius of the menu
+   * Specifies the radius of the menu, in `rem`; when it is not set the menu takes
+   * `--mds-radial-menu-radius`, `5rem` by default
    */
-  @Prop({ reflect: true }) readonly radius: number = 5;
+  @Prop({ reflect: true }) readonly radius: number;
 
   /**
    * Specifies the direction of the menu elements
@@ -115,18 +118,14 @@ export class MdsRadialMenu {
     });
   };
 
-  private setIsFullCircle = (): void => {
-    const isFullCircle = this.angleEnd - this.angleStart === 360 ? '1' : '0';
-    this.hostElement.style.setProperty('--mds-radial-menu-is-full-circle', isFullCircle);
-  };
-
-  private setIsStartGreaterThanEnd = (): void => {
-    if (this.angleStart > this.angleEnd) {
-      this.hostElement.style.setProperty('--mds-radial-menu-is-start-greater-than-end', '-1');
+  // a geometry prop writes its custom property inline only while it is set: without it the menu
+  // takes the value a stylesheet gives the property, or the default of the component
+  private writeGeometry = (name: string, value: number | undefined, unit: string): void => {
+    if (typeof value !== 'number' || !Number.isFinite(value)) {
+      this.hostElement.style.removeProperty(name);
       return;
     }
-
-    this.hostElement.style.setProperty('--mds-radial-menu-is-start-greater-than-end', '1');
+    this.hostElement.style.setProperty(name, `${value}${unit}`);
   };
 
   private updateItems = (): void => {
@@ -149,8 +148,6 @@ export class MdsRadialMenu {
 
   componentDidLoad(): void {
     this.updateItems();
-    this.setIsFullCircle();
-    this.setIsStartGreaterThanEnd();
     this.onOpenedChange(this.opened);
     this.onInteractionChange(this.interaction);
   }
@@ -206,21 +203,17 @@ export class MdsRadialMenu {
 
   @Watch('angleStart')
   onAngleStartChange(newValue?: number): void {
-    this.hostElement.style.setProperty('--mds-radial-menu-angle-start', `${newValue}deg`);
-    this.setIsFullCircle();
-    this.setIsStartGreaterThanEnd();
+    this.writeGeometry('--mds-radial-menu-angle-start', newValue, 'deg');
   }
 
   @Watch('angleEnd')
   onAngleEndChange(newValue?: number): void {
-    this.hostElement.style.setProperty('--mds-radial-menu-angle-end', `${newValue}deg`);
-    this.setIsFullCircle();
-    this.setIsStartGreaterThanEnd();
+    this.writeGeometry('--mds-radial-menu-angle-end', newValue, 'deg');
   }
 
   @Watch('radius')
   onRadiusChange(newValue?: number): void {
-    this.hostElement.style.setProperty('--mds-radial-menu-radius', `${newValue}rem`);
+    this.writeGeometry('--mds-radial-menu-radius', newValue, 'rem');
   }
 
   @Watch('size')
