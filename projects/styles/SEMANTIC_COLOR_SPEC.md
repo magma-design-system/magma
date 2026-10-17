@@ -207,7 +207,7 @@ and same-plane prominence (`muted`). 5 roles:
 | `--magma-surface-muted` | prominence | same-plane grouping (zebra rows, subtle sections) |
 | `--magma-surface-default` | - | canvas / page |
 | `--magma-surface-raised` | elevation | cards, panels, sticky headers |
-| `--magma-surface-overlay` | elevation | modal, dropdown, popover, tooltip, sheet |
+| `--magma-surface-overlay` | elevation | modal, dropdown, popover, tooltip, sheet; chip, banner |
 
 ### 6.1b Wash - neutral pills (how MARKED, not how elevated)
 
@@ -217,7 +217,7 @@ and same-plane prominence (`muted`). 5 roles:
 | Token | Step | Use |
 |---|---|---|
 | `--magma-wash-soft` | `10` | the faintest pill: zebra rows on a card, a resting track |
-| `--magma-wash-base` | `09` | the default pill: paginator page, disabled fill, chip ground |
+| `--magma-wash-base` | `09` | the default pill: paginator page, disabled fill |
 | `--magma-wash-strong` | `08` | the marked pill: hover on a pill, a selected track |
 
 **Why this cannot be a surface role.** Measured, not stylistic - the same argument as the
@@ -233,6 +233,13 @@ only what they name: the neutral levels resolve through the tint (a theme retint
 names its own family directly (a theme never retints a hue). The `--magma-surface-*` names stay
 reserved for elevation, and `--magma-wash-default` deliberately does not exist: `base` is the
 default level, and a second word for it would invite reading the band as a surface ladder.
+
+**A pill that casts a shadow is elevated, not marked.** The wash is a flat ground: it says
+how marked a pill is against the plane it sits on. An object that carries an elevation shadow
+(the chip, the banner) is lifted above that plane, so it takes
+`--magma-surface-overlay` like the other lifted objects. A wash under a shadow reads as a grey
+patch in light (#944), and `surface-raised` under a shadow takes the color of the card below
+it (#955).
 
 Censused for #624: 144 component declarations were naming steps `10/09/08` as a background
 because no role could hold their value. Adopting the band is a 1:1 rename at identical value.
