@@ -93,6 +93,12 @@
   syntax: '<length>';
 }
 
+@property --mds-button-label-transform {
+  inherits: true;
+  initial-value: uppercase;
+  syntax: 'none | capitalize | uppercase | lowercase | full-width | full-size-kana';
+}
+
 @property --mds-button-line-clamp {
   inherits: true;
   initial-value: 1;
