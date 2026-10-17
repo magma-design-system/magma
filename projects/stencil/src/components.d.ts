@@ -532,7 +532,7 @@ export namespace Components {
          */
         "active": boolean;
         /**
-          * Specifies if the component is focused when is loaded on the viewport
+          * Focuses the primary action once the component is loaded
          */
         "autoFocus": boolean;
         /**
@@ -544,7 +544,7 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the URL target of the button
+          * The URL the primary action navigates to, instead of submitting; the chevron only opens the menu
          */
         "href"?: string;
         /**
@@ -565,7 +565,7 @@ export namespace Components {
          */
         "size": ButtonSizeType;
         /**
-          * Specifies the target of the URL, if self or blank
+          * Where the primary action opens `href`, `'self'` or `'blank'`
           * @default 'self'
          */
         "target": ButtonTargetType;
@@ -5026,7 +5026,7 @@ declare namespace LocalJSX {
          */
         "active"?: boolean;
         /**
-          * Specifies if the component is focused when is loaded on the viewport
+          * Focuses the primary action once the component is loaded
          */
         "autoFocus"?: boolean;
         /**
@@ -5042,7 +5042,7 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
-          * Specifies the URL target of the button
+          * The URL the primary action navigates to, instead of submitting; the chevron only opens the menu
          */
         "href"?: string;
         /**
@@ -5067,7 +5067,7 @@ declare namespace LocalJSX {
          */
         "size"?: ButtonSizeType;
         /**
-          * Specifies the target of the URL, if self or blank
+          * Where the primary action opens `href`, `'self'` or `'blank'`
           * @default 'self'
          */
         "target"?: ButtonTargetType;
