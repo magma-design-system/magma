@@ -577,7 +577,7 @@ Type: `Promise<void>`
 | Name                                        | Description                                                  |
 | ------------------------------------------- | ------------------------------------------------------------ |
 | `--mds-input-background`                    | The background color of the input field.                     |
-| `--mds-input-icon-color`                    | The RGB channels used to color icons inside the input.       |
+| `--mds-input-icon-color`                    | The color of the icons inside the input.                     |
 | `--mds-input-placeholder-default-color`     | The placeholder color in the default state.                  |
 | `--mds-input-placeholder-focus-color`       | The placeholder color when the input is focused.             |
 | `--mds-input-placeholder-hover-color`       | The placeholder color when the input is hovered.             |
