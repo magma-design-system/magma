@@ -26,13 +26,8 @@ describe('mds-file-preview', () => {
       variant: 'title',
     });
 
-    const badge = shadow.querySelector('mds-badge.suffix')!;
-    expect(badge).toEqualAttributes({
-      title: 'Formato file sconosciuto',
-      tone: 'weak',
-      variant: 'dark',
-    });
-    expect(badge.textContent?.trim()).toBe('default');
+    // a filename without an extension has no badge: it used to say `default`
+    expect(shadow.querySelector('mds-badge.suffix')).toBeNull();
 
     const description = shadow.querySelector('mds-text.description')!;
     expect(description).toEqualAttribute('title', 'Formato file sconosciuto');

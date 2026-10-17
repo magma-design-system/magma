@@ -58,6 +58,14 @@ describe('mds-file', () => {
     expect(getText(root, '.extension')).toBe('.docx');
     expect(root).toEqualAttribute('format', 'text');
   });
+
+  it('shows no extension and no badge for a filename without one', async () => {
+    const { root } = await render('<mds-file filename="verbale"></mds-file>');
+
+    expect(getText(root, '.name')).toBe('verbale');
+    expect(getText(root, '.extension')).toBeNull();
+    expect(getText(root, '.suffix')).toBeNull();
+  });
 });
 
 describe('mds-file downloaded indicator', () => {
