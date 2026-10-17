@@ -36,15 +36,9 @@ export class MdsPushNotification {
   @Prop({ reflect: true, mutable: true }) visible?: boolean;
 
   /**
-   * Specifies if the component is visible or not.
-   * behavior = manual
-   * should hide when click outside
-   * should hide when all notifications are removed
-   * should show when change visible from component or call show method
-   *
-   * behavior = auto
-   * should hide when all notifications are removed
-   * should show when one or more notifications are added
+   * Specifies when the stack shows: with `auto` whenever notifications are added, with `manual`
+   * only through `visible` or `show()`. In both, removing the last notification hides it; a
+   * click outside does not.
    */
   @Prop() behavior?: 'auto' | 'manual' = 'auto';
 
