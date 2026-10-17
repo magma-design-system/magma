@@ -963,7 +963,7 @@ export namespace Components {
          */
         "description"?: string;
         /**
-          * Enables the download icon to perform the related action on element
+          * Turns the card into a button that asks for the download: a tab stop that the pointer, Enter and Space activate, emitting `mdsFileDownload`. Without it the card is not interactive
          */
         "downloadable"?: boolean;
         /**
@@ -5479,7 +5479,7 @@ declare namespace LocalJSX {
          */
         "description"?: string;
         /**
-          * Enables the download icon to perform the related action on element
+          * Turns the card into a button that asks for the download: a tab stop that the pointer, Enter and Space activate, emitting `mdsFileDownload`. Without it the card is not interactive
          */
         "downloadable"?: boolean;
         /**
