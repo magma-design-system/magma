@@ -144,9 +144,9 @@
   z-index: 2;
 }
 
-/* selection boundaries */
+/* selection boundaries: any `selection` but `none`, which reads as no selection */
 
-:host([selection][orientation='horizontal']) .area-background {
+:host([selection]:not([selection='none'])[orientation='horizontal']) .area-background {
   margin-left: calc(var(--mds-calendar-cell-gap) * -1);
   margin-right: calc(var(--mds-calendar-cell-gap) * -1);
 }
@@ -165,7 +165,7 @@
 
 /* vertical orientation */
 
-:host([selection][orientation='vertical']) .area-background {
+:host([selection]:not([selection='none'])[orientation='vertical']) .area-background {
   margin-bottom: calc(var(--mds-calendar-cell-gap) * -1);
   margin-top: calc(var(--mds-calendar-cell-gap) * -1);
 }
@@ -205,11 +205,11 @@
   border-top-right-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
 }
 
-:host([selection][orientation='horizontal']:nth-child(7n - 6)) .area-background {
+:host([selection]:not([selection='none'])[orientation='horizontal']:nth-child(7n - 6)) .area-background {
   margin-left: 0;
 }
 
-:host([selection][orientation='horizontal']:nth-child(7n)) .area-background {
+:host([selection]:not([selection='none'])[orientation='horizontal']:nth-child(7n)) .area-background {
   margin-right: 0;
 }
 
@@ -229,7 +229,7 @@
 
 /* month */
 
-:host([month='other']:not([selection])) {
+:host([month='other']:not([selection]:not([selection='none']))) {
   --mds-calendar-cell-color: var(--mds-calendar-cell-other-month-color);
   --mds-calendar-cell-background: var(--mds-calendar-cell-other-month-background);
 }

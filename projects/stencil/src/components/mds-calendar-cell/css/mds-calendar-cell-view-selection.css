@@ -1,15 +1,17 @@
-:host(:not([selection])[today]) {
+/* a cell is selected by any `selection` but `none`, which reads as no selection */
+
+:host(:not([selection]:not([selection='none']))[today]) {
   --mds-calendar-cell-inner-background: var(--mds-calendar-cell-preselection-today-background);
   --mds-calendar-cell-color: var(--mds-calendar-cell-preselection-today-color);
 }
 
-:host([selection][month='current']) {
+:host([selection]:not([selection='none'])[month='current']) {
   --mds-calendar-cell-background: var(--mds-calendar-cell-selection-current-month-background);
   --mds-calendar-cell-color: var(--mds-calendar-cell-selection-current-month-color);
 }
 
-:host([selection][month='current']:nth-child(7n - 1)),
-:host([selection][month='current']:nth-child(7n)) {
+:host([selection]:not([selection='none'])[month='current']:nth-child(7n - 1)),
+:host([selection]:not([selection='none'])[month='current']:nth-child(7n)) {
   --mds-calendar-cell-background: var(
     --mds-calendar-cell-selection-current-month-weekend-background
   );
@@ -28,7 +30,7 @@
   );
 }
 
-:host([selection][month='other']) {
+:host([selection]:not([selection='none'])[month='other']) {
   --mds-calendar-cell-background: var(--mds-calendar-cell-selection-other-month-background);
   --mds-calendar-cell-color: var(--mds-calendar-cell-selection-other-month-color);
 }
@@ -49,12 +51,12 @@
   --mds-calendar-cell-color: var(--mds-calendar-cell-selection-other-month-boundaries-color);
 }
 
-:host([selection][month='current'][preview]:not([preview='false'])) {
+:host([selection]:not([selection='none'])[month='current'][preview]:not([preview='false'])) {
   --mds-calendar-cell-background: var(--mds-calendar-cell-preselection-current-month-background);
   --mds-calendar-cell-color: var(--mds-calendar-cell-preselection-current-month-color);
 }
 
-:host([selection][month='other'][preview]:not([preview='false'])) {
+:host([selection]:not([selection='none'])[month='other'][preview]:not([preview='false'])) {
   --mds-calendar-cell-background: var(--mds-calendar-cell-preselection-other-month-background);
   --mds-calendar-cell-color: var(--mds-calendar-cell-preselection-other-month-color);
 }

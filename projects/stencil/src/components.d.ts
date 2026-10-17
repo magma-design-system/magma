@@ -691,7 +691,7 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Specifies if the current month or a weekend
+          * Specifies if the day belongs to the displayed month, `current`, or to an adjacent one, `other`. `weekend` is deprecated and does nothing: the weekend days are styled by their column of the week
           * @default 'current'
          */
         "month"?: CalendarCellType;
@@ -5212,7 +5212,7 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Specifies if the current month or a weekend
+          * Specifies if the day belongs to the displayed month, `current`, or to an adjacent one, `other`. `weekend` is deprecated and does nothing: the weekend days are styled by their column of the week
           * @default 'current'
          */
         "month"?: CalendarCellType;
