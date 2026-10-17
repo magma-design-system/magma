@@ -132,7 +132,9 @@ export class MdsTable {
   @Method()
   async updateActions(): Promise<void> {
     const hasActions = this.hasActions();
-    this.header?.setActions(hasActions);
+    // a header not upgraded yet (its definition loaded after the table's) has no method: it
+    // reads the rows itself when it loads
+    this.header?.setActions?.(hasActions);
     if (hasActions) {
       this.watchActions();
     }
