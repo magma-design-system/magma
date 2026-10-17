@@ -2,7 +2,6 @@ import { Component, Element, Event, EventEmitter, Listen, Host, h, Prop } from '
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg';
 import { MdsBreadcrumbEventDetail } from './meta/event-detail';
 import { MdsBreadcrumbItemEventDetail } from '@component/mds-breadcrumb-item/meta/event-detail';
-import { KeyboardManager } from '@common/keyboard-manager';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
@@ -20,7 +19,6 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsBreadcrumb {
   @Element() private element: HTMLMdsBreadcrumbElement;
-  private kb = new KeyboardManager();
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -46,11 +44,9 @@ export class MdsBreadcrumb {
     const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement;
     if (id === 0) {
       backElement.setAttribute('disabled', '');
-      this.kb.detachClickBehavior();
       return;
     }
     backElement.removeAttribute('disabled');
-    this.kb.attachClickBehavior();
   };
 
   componentDidLoad(): void {
@@ -63,26 +59,6 @@ export class MdsBreadcrumb {
     if (!item || item.id === 'item-0') {
       this.updateBackButton(0);
     }
-
-    if (!this.hideBack) {
-      const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement;
-      this.kb.addElement(backElement);
-      this.kb.attachClickBehavior();
-    }
-  }
-
-  componentDidUpdate(): void {
-    if (!this.hideBack) {
-      const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement;
-      this.kb.addElement(backElement);
-      this.kb.attachClickBehavior();
-      return;
-    }
-    this.kb.detachClickBehavior();
-  }
-
-  disconnectedCallback(): void {
-    this.kb.detachClickBehavior();
   }
 
   @Listen('mdsBreadcrumbItemSelect')
