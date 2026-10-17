@@ -2615,6 +2615,10 @@ export namespace Components {
          */
         "sorting"?: MdsTableSortingType;
         /**
+          * `internal` Reads again whether the rows have `slot="action"` content: shows or hides the Actions column of the header and wires the overlay of the actions. Runs when rows come and go, and mds-table-row calls it when the content of its `action` slot changes.
+         */
+        "updateActions": () => Promise<void>;
+        /**
           * `internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance, works only if `selectable` is true.
          */
         "updateSelection": () => Promise<void>;
@@ -2642,6 +2646,11 @@ export namespace Components {
           * Enables the select-all checkbox in the header.
          */
         "selectable"?: boolean;
+        /**
+          * `internal` Shows or hides the Actions column: mds-table calls it whenever its rows gain or lose `slot="action"` content, the header itself reads them only on load
+          * @param hasActions whether any row has actions
+         */
+        "setActions": (hasActions: boolean) => Promise<void>;
         /**
           * Updates the header's select-all state from the number of selected rows.
           * @param selectedItems the number of currently selected rows

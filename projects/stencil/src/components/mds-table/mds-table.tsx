@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import {
+  Build,
   Component,
   Host,
   h,
@@ -43,7 +44,7 @@ export class MdsTable {
   private rows?: NodeListOf<HTMLMdsTableRowElement>;
   private body?: HTMLMdsTableBodyElement | null;
   private header?: HTMLMdsTableHeaderElement | null;
-  private scrollWrapper: HTMLDivElement;
+  private scrollWrapper?: HTMLDivElement;
   private resizeObserver?: ResizeObserver;
   private tableBodyObserver?: MutationObserver;
   private hasBatchActions: boolean = false;
@@ -124,6 +125,20 @@ export class MdsTable {
   }
 
   /**
+   * `internal` Reads again whether the rows have `slot="action"` content: shows or hides the
+   * Actions column of the header and wires the overlay of the actions. Runs when rows come and
+   * go, and mds-table-row calls it when the content of its `action` slot changes.
+   */
+  @Method()
+  async updateActions(): Promise<void> {
+    const hasActions = this.hasActions();
+    this.header?.setActions(hasActions);
+    if (hasActions) {
+      this.watchActions();
+    }
+  }
+
+  /**
    * Selects all elements or none, works only if `selectable` is true.
    */
   @Method()
@@ -172,7 +187,24 @@ export class MdsTable {
     });
   };
 
+  // The overlay of the actions follows the scroll and the size of the table. It is wired the
+  // first time a row has actions, not only on load: a table filled after its first render (the
+  // usual fetch, #801) never got it.
+  private watchActions = (): void => {
+    if (!Build.isBrowser) return;
+    if (!this.scrollWrapper) {
+      const scrollWrapper = this.host.shadowRoot?.querySelector('.table-wrapper');
+      if (!scrollWrapper) return;
+      this.scrollWrapper = scrollWrapper as HTMLDivElement;
+      this.scrollWrapper.addEventListener('scroll', this.handleActions);
+      this.resizeObserver = new ResizeObserver(this.handleActions);
+      this.resizeObserver.observe(this.host);
+    }
+    this.handleActions();
+  };
+
   private handleActions = (): void => {
+    if (!this.scrollWrapper) return;
     this.updateCellsSize();
     const overlayActions =
       this.scrollWrapper.offsetWidth + this.scrollWrapper.scrollLeft < this.cellsWidth;
@@ -211,28 +243,29 @@ export class MdsTable {
     if (this.header) {
       this.header.selectable = this.selectable;
     }
-    if (this.hasActions()) {
-      const scrollWrapper = this.host.shadowRoot?.querySelector('.table-wrapper');
-      if (!scrollWrapper) {
-        throw new Error('Table element table-wrapper not found');
-      }
-      this.scrollWrapper = scrollWrapper as HTMLDivElement;
-      this.scrollWrapper.addEventListener('scroll', this.handleActions);
-      this.resizeObserver = new ResizeObserver(this.handleActions);
-      this.resizeObserver.observe(this.host);
-      this.handleActions();
-    }
+    this.updateActions();
   }
 
   private updateSlottedElements = (): void => {
     this.querySlottedElements();
     this.updateInteractive();
     this.handleSelection();
+    this.updateActions();
   };
 
+  connectedCallback(): void {
+    // a table moved in the DOM after its first load lost the wiring of its actions in
+    // disconnectedCallback; before the first load there is nothing to wire yet
+    this.updateActions();
+  }
+
   disconnectedCallback(): void {
-    this.host.removeEventListener('scroll', this.handleActions);
+    // the listener is on the scroll area, where watchActions put it: removing it from the host
+    // removed nothing
+    this.scrollWrapper?.removeEventListener('scroll', this.handleActions);
     this.resizeObserver?.disconnect();
+    this.scrollWrapper = undefined;
+    this.resizeObserver = undefined;
     this.tableBodyObserver?.disconnect();
   }
 
