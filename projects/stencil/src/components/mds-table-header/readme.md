@@ -365,16 +365,16 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot | Description                    |
-| ---- | ------------------------------ |
-|      | Add `mds-table-row` element/s. |
+| Slot | Description                                                                                                 |
+| ---- | ----------------------------------------------------------------------------------------------------------- |
+|      | Add `mds-table-header-cell` element/s, one per column: the header is itself the row of the column headings. |
 
 
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"actions"` |             |
+| Part        | Description                                                                      |
+| ----------- | -------------------------------------------------------------------------------- |
+| `"actions"` | The heading of the Actions column, shown while rows have `slot="action"` content |
 
 
 ## Dependencies
