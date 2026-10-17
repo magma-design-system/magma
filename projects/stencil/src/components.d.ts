@@ -793,7 +793,7 @@ export namespace Components {
          */
         "backdrop"?: boolean;
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the component to `placement`: without it, the component moves to another side of the caller when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement": boolean;
@@ -808,7 +808,7 @@ export namespace Components {
          */
         "disableSmooth": boolean;
         /**
-          * Specifies the placement of the component if no space is available where it is placed.
+          * With `disableAutoPlacement`, moves the component to the opposite side of the caller when `placement` has no room. Auto-placement, the default, already does it.
           * @default false
          */
         "flip": boolean;
@@ -828,7 +828,7 @@ export namespace Components {
          */
         "offset": number;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the component should be placed relative to the caller: the side it takes whenever it has room there.
           * @default 'bottom'
          */
         "placement": FloatingUIPlacement;
@@ -1112,7 +1112,7 @@ export namespace Components {
     }
     interface MdsHelp {
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the tooltip to `placement`: without it, the tooltip moves to another side of the icon when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement"?: boolean;
@@ -1121,7 +1121,7 @@ export namespace Components {
          */
         "icon"?: string;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the tooltip should be placed relative to the icon: the side it takes whenever it has room there.
           * @default 'top'
          */
         "placement"?: FloatingUIPlacement;
@@ -2755,7 +2755,7 @@ export namespace Components {
          */
         "arrowPadding": number;
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the component to `placement`: without it, the component moves to another side of the caller when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement": boolean;
@@ -2765,7 +2765,7 @@ export namespace Components {
          */
         "disableShift": boolean;
         /**
-          * Specifies the placement of the component if no space is available where it is placed.
+          * With `disableAutoPlacement`, moves the component to the opposite side of the caller when `placement` has no room. Auto-placement, the default, already does it.
           * @default false
          */
         "flip": boolean;
@@ -2779,7 +2779,7 @@ export namespace Components {
          */
         "offset": number;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the component should be placed relative to the caller: the side it takes whenever it has room there.
           * @default 'top'
          */
         "placement": FloatingUIPlacement;
@@ -5330,7 +5330,7 @@ declare namespace LocalJSX {
          */
         "backdrop"?: boolean;
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the component to `placement`: without it, the component moves to another side of the caller when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement"?: boolean;
@@ -5345,7 +5345,7 @@ declare namespace LocalJSX {
          */
         "disableSmooth"?: boolean;
         /**
-          * Specifies the placement of the component if no space is available where it is placed.
+          * With `disableAutoPlacement`, moves the component to the opposite side of the caller when `placement` has no room. Auto-placement, the default, already does it.
           * @default false
          */
         "flip"?: boolean;
@@ -5377,7 +5377,7 @@ declare namespace LocalJSX {
          */
         "onMdsDropdownVisible"?: (event: MdsDropdownCustomEvent<MdsDropdownEventDetail>) => void;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the component should be placed relative to the caller: the side it takes whenever it has room there.
           * @default 'bottom'
          */
         "placement"?: FloatingUIPlacement;
@@ -5646,7 +5646,7 @@ declare namespace LocalJSX {
     }
     interface MdsHelp {
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the tooltip to `placement`: without it, the tooltip moves to another side of the icon when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement"?: boolean;
@@ -5655,7 +5655,7 @@ declare namespace LocalJSX {
          */
         "icon"?: string;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the tooltip should be placed relative to the icon: the side it takes whenever it has room there.
           * @default 'top'
          */
         "placement"?: FloatingUIPlacement;
@@ -7424,7 +7424,7 @@ declare namespace LocalJSX {
          */
         "arrowPadding"?: number;
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the component to `placement`: without it, the component moves to another side of the caller when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement"?: boolean;
@@ -7434,7 +7434,7 @@ declare namespace LocalJSX {
          */
         "disableShift"?: boolean;
         /**
-          * Specifies the placement of the component if no space is available where it is placed.
+          * With `disableAutoPlacement`, moves the component to the opposite side of the caller when `placement` has no room. Auto-placement, the default, already does it.
           * @default false
          */
         "flip"?: boolean;
@@ -7448,7 +7448,7 @@ declare namespace LocalJSX {
          */
         "offset"?: number;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the component should be placed relative to the caller: the side it takes whenever it has room there.
           * @default 'top'
          */
         "placement"?: FloatingUIPlacement;

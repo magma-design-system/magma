@@ -31,12 +31,14 @@ export class MdsTooltip implements FloatingElement {
   @Prop() arrowPadding: number = 4;
 
   /**
-   * If set, the component will not be placed automatically near it's caller.
+   * Pins the component to `placement`: without it, the component moves to another side of the
+   * caller when `placement` has no room.
    */
   @Prop({ reflect: true }) readonly disableAutoPlacement: boolean = false;
 
   /**
-   * Specifies the placement of the component if no space is available where it is placed.
+   * With `disableAutoPlacement`, moves the component to the opposite side of the caller when
+   * `placement` has no room. Auto-placement, the default, already does it.
    */
   @Prop() readonly flip: boolean = false;
 
@@ -51,7 +53,8 @@ export class MdsTooltip implements FloatingElement {
   @Prop() readonly offset: number = 12;
 
   /**
-   * Specifies where the component should be placed relative to the caller.
+   * Specifies where the component should be placed relative to the caller: the side it takes
+   * whenever it has room there.
    */
   @Prop({ reflect: true }) readonly placement: FloatingUIPlacement = 'top';
 

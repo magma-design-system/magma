@@ -1,6 +1,5 @@
 import {
   arrow,
-  autoPlacement,
   autoUpdate,
   computePosition,
   flip,
@@ -331,15 +330,21 @@ export class FloatingController {
       config.padding = this._host.shiftPadding;
     }
 
-    if (!this._host.disableAutoPlacement) {
-      middleware.push(autoPlacement());
-    }
-
     if (this._host.offset) {
       middleware.push(offset(this._host.offset));
     }
 
-    if (this._host.disableAutoPlacement && this._host.flip) {
+    // With auto-placement, the default, `placement` is the preferred side: the panel moves to
+    // the opposite side, then to the sides across, only when it has no room there, which covers
+    // what `flip` adds. autoPlacement() took the side with the most room whatever `placement`
+    // said, so `placement` and `flip` did nothing unless auto-placement was turned off. The
+    // side is chosen on the main axis only: along the other one the panel is shifted, not moved
+    // to another side.
+    if (!this._host.disableAutoPlacement) {
+      middleware.push(
+        flip({ ...config, crossAxis: 'alignment', fallbackAxisSideDirection: 'end' }),
+      );
+    } else if (this._host.flip) {
       middleware.push(flip(config));
     }
 
