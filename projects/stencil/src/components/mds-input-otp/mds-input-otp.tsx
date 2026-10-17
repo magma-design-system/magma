@@ -146,25 +146,28 @@ export class MdsInputOtp {
   private handlePaste = (e: ClipboardEvent) => {
     e.preventDefault();
 
-    const pastedText = e.clipboardData?.getData('text');
+    // a code copied from a message often brings the spaces around it; a paste that is not digits
+    // only fills nothing (a sign, a decimal point or an exponent got through the number check)
+    const pastedText = (e.clipboardData?.getData('text') ?? '').trim();
 
-    if (isNaN(Number(pastedText))) {
+    if (!/^[0-9]+$/.test(pastedText)) {
       return;
     }
 
-    const digits = pastedText?.split('') ?? [];
     let currentInput = e.target as HTMLMdsInputElement;
-    for (const currentDigit of digits) {
+    for (const currentDigit of pastedText) {
       this.setOtpDigit(currentInput, currentDigit);
 
-      currentInput = currentInput.nextElementSibling as HTMLMdsInputElement;
+      const nextInput = currentInput.nextElementSibling as HTMLMdsInputElement | null;
 
-      if (currentInput != null) {
-        currentInput.setFocus();
-      } else {
+      // the last cell is filled: the code goes from there, not from the cell after it, which is
+      // null and threw (#825)
+      if (nextInput == null) {
         this.submit(currentInput);
         return;
       }
+      currentInput = nextInput;
+      currentInput.setFocus();
     }
   };
 

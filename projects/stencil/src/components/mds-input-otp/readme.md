@@ -18,8 +18,8 @@ The `<mds-input-otp>` web component is the Magma Design System control for enter
 - **Single-digit cells**: Renders `length` digit cells, each capped at one character; the host value is the concatenation of every cell.
 - **Numeric-only entry**: Non-digit keys produce no value change, and their default action is blocked too (Backspace, Tab, the arrows); a digit typed on a filled cell overwrites it.
 - **Auto-advance focus**: After a valid digit, focus moves to the next cell automatically; entering a digit in the last cell blurs it.
-- **Paste handling**: Pasting numeric text distributes the digits across consecutive cells starting from the focused one; non-numeric pastes are ignored.
-- **Completion + submit**: When a digit typed in the last cell completes all `length` digits and `autosubmit` is set, the owning form is submitted. A paste that reaches the last cell does not submit.
+- **Paste handling**: Pasting a code of digits (the spaces around it are dropped) distributes the digits across consecutive cells starting from the focused one; a paste with anything else in it, signs and decimal points included, is ignored.
+- **Completion + submit**: When a digit typed or pasted in the last cell completes all `length` digits and `autosubmit` is set, the owning form is submitted; digits pasted past the last cell are dropped.
 
 #### Properties & Visual Configurations
 
@@ -58,7 +58,7 @@ Set `length` to match the expected OTP length - 4 digits for a short PIN, 8 for 
 
 #### Auto-Submit on Completion
 
-Add the `autosubmit` boolean attribute when the OTP is the only field and no explicit confirm button is needed. The owning form is submitted when a digit typed in the last cell completes the code (a paste does not trigger it) - do not set `autosubmit="false"` to disable it; remove the attribute instead.
+Add the `autosubmit` boolean attribute when the OTP is the only field and no explicit confirm button is needed. The owning form is submitted when a digit typed or pasted in the last cell completes the code - do not set `autosubmit="false"` to disable it; remove the attribute instead.
 
 ```html
 <form action="/verify" method="post">
