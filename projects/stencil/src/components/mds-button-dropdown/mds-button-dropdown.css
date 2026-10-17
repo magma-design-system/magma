@@ -5,11 +5,21 @@
  */
 
 :host {
-  --mds-button-dropdown-radius: var(--radius-2xl);
-  --mds-button-dropdown-window-radius: var(--radius-2xl);
+  --mds-button-dropdown-window-radius: var(--magma-radius-2xl);
+
+  /* the corner of an mds-button of the same size: the radius of the shape-aware scale, capped at
+     the part of the height the shape allows (#913); a raw --radius-2xl followed no shape (#828) */
+  --mds-button-dropdown-radius: min(
+    var(--magma-radius-2xl),
+    var(--magma-corner-cap) * var(--private-button-dropdown-height)
+  );
+
+  /* the min-height of the size, as mds-button's */
+  --private-button-dropdown-height: --spacing(900);
 
   align-self: flex-start;
   border-radius: var(--mds-button-dropdown-radius);
+  corner-shape: var(--magma-corner-shape);
   display: inline-flex;
   justify-self: flex-start;
   transition-duration: var(--duration-200);
