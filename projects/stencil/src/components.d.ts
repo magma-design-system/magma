@@ -1105,8 +1105,8 @@ export namespace Components {
          */
         "nav": HeaderBarNavType;
         /**
-          * Opens or closes the header bar.
-          * @param isOpened whether the header bar should be opened
+          * Opens or closes the menu of the surrounding `mds-header`, as the hamburger does.
+          * @param isOpened whether the menu should be opened
          */
         "setOpened": (isOpened?: boolean) => Promise<void>;
     }
