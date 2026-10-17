@@ -1264,7 +1264,7 @@ export namespace Components {
          */
         "hasValidator": (validator?: MdsValidatorFn) => Promise<boolean>;
         /**
-          * An icon displayed at the right of the input
+          * An icon displayed at the left of the input, inside the field; the spinner of `await` takes its place
          */
         "icon"?: string;
         /**
@@ -5785,7 +5785,7 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
-          * An icon displayed at the right of the input
+          * An icon displayed at the left of the input, inside the field; the spinner of `await` takes its place
          */
         "icon"?: string;
         /**
