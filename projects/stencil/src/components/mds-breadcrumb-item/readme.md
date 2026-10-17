@@ -231,9 +231,9 @@ mds-breadcrumb-item {
 
 ## Shadow Parts
 
-| Part       | Description |
-| ---------- | ----------- |
-| `"button"` |             |
+| Part       | Description                                           |
+| ---------- | ----------------------------------------------------- |
+| `"button"` | The `mds-button` of the item, which shows its `label` |
 
 
 ## CSS Custom Properties
