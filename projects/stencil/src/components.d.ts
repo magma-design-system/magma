@@ -1158,8 +1158,7 @@ export namespace Components {
     }
     interface MdsImg {
         /**
-          * Specifies an alternate text for an image
-          * @default ''
+          * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
          */
         "alt": string;
         /**
@@ -5687,8 +5686,7 @@ declare namespace LocalJSX {
     }
     interface MdsImg {
         /**
-          * Specifies an alternate text for an image
-          * @default ''
+          * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
          */
         "alt"?: string;
         /**
