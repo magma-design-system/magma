@@ -5,6 +5,7 @@ import miBaselineHorizontalRule from '@icon/mi/baseline/horizontal-rule.svg';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ * @part icon - The check icon of a `supported` item, a dash when it is not
  */
 @Component({
   tag: 'mds-price-table-list-item',
