@@ -1,5 +1,5 @@
 /**
- * @prop --mds-price-table-features-border-color: Sets the border-color of the children components
+ * @prop --mds-price-table-features-border-color: Sets the border-color of the header and of the children cells, unless a cell sets its own `--mds-price-table-features-cell-border-color`
  * @prop --mds-price-table-features-padding: Sets the cell padding of the children components
  */
 

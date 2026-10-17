@@ -2295,13 +2295,11 @@ export namespace Components {
     }
     interface MdsRadialMenu {
         /**
-          * Specifies the ending angle of the menu
-          * @default 360
+          * Specifies the ending angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-end`, `360deg` by default
          */
         "angleEnd": number;
         /**
-          * Specifies the starting angle of the menu
-          * @default 0
+          * Specifies the starting angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-start`, `0deg` by default
          */
         "angleStart": number;
         /**
@@ -2332,8 +2330,7 @@ export namespace Components {
          */
         "opened"?: boolean;
         /**
-          * Specifies the radius of the menu
-          * @default 5
+          * Specifies the radius of the menu, in `rem`; when it is not set the menu takes `--mds-radial-menu-radius`, `5rem` by default
          */
         "radius": number;
         /**
@@ -6942,13 +6939,11 @@ declare namespace LocalJSX {
     }
     interface MdsRadialMenu {
         /**
-          * Specifies the ending angle of the menu
-          * @default 360
+          * Specifies the ending angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-end`, `360deg` by default
          */
         "angleEnd"?: number;
         /**
-          * Specifies the starting angle of the menu
-          * @default 0
+          * Specifies the starting angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-start`, `0deg` by default
          */
         "angleStart"?: number;
         /**
@@ -6979,8 +6974,7 @@ declare namespace LocalJSX {
          */
         "opened"?: boolean;
         /**
-          * Specifies the radius of the menu
-          * @default 5
+          * Specifies the radius of the menu, in `rem`; when it is not set the menu takes `--mds-radial-menu-radius`, `5rem` by default
          */
         "radius"?: number;
         /**

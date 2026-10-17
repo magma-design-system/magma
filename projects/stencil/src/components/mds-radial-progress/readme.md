@@ -142,9 +142,21 @@ Bind `progress` to a reactive state value. When the prop changes, the component 
 <mds-radial-progress progress="0.6" variant="light"></mds-radial-progress>
 ```
 
+#### CSS Custom Property Customization
+
+Color the component with `variant` first. When a context needs its own colors, set the documented `--mds-radial-progress-*` CSS custom properties on the element itself (its defaults and its variants are declared on its own host, so a value set on an ancestor does not reach it), naming semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. `--mds-radial-progress-text-suffix` is the text after the number, a CSS string (`'%'` by default).
+
+```css
+.storage-quota mds-radial-progress {
+  --mds-radial-progress-color: rgb(var(--magma-accent-emphasis));
+  --mds-radial-progress-background: rgb(var(--magma-wash-soft));
+  --mds-radial-progress-text-suffix: '';
+}
+```
+
 #### Shadow Part Customization
 
-The component documents no CSS custom properties: color it with `variant`, and use the two documented shadow parts - `value-container` and `icon` - for deeper styling.
+The two documented shadow parts - `value-container` and `icon` - allow deeper styling when the CSS custom properties are not sufficient.
 
 ```css
 /* Adjust the inner circle shadow */
@@ -221,6 +233,13 @@ Inline `style` bypasses `variant` and the Magma color roles, breaking dark-mode 
 <mds-radial-progress progress="0.6" variant="warning"></mds-radial-progress>
 ```
 
+```css
+/* CORRECT for deeper customization: a documented property naming a color role */
+.my-context mds-radial-progress {
+  --mds-radial-progress-color: rgb(var(--magma-warning-fg));
+}
+```
+
 #### Do Not Use `variant` Values Not Accepted by the Component
 
 `<mds-radial-progress>` accepts `ThemeVariantType` (`primary`, `ai`, `dark`, `light`, `error`, `warning`, `success`, `info`). Decorative label variants (`'red'`, `'blue'`, `'orchid'`, etc.) defined in `ThemeFullVariantType` are not wired in this component and silently fall back to the default styling.
@@ -235,7 +254,7 @@ Inline `style` bypasses `variant` and the Magma color roles, breaking dark-mode 
 
 #### Do Not Pierce the Shadow DOM
 
-Targeting internal class names via `>>>` or undocumented `::part()` selectors couples your code to the component's implementation and breaks on future releases. Use `variant` and the documented `value-container` / `icon` shadow parts only.
+Targeting internal class names via `>>>` or undocumented `::part()` selectors couples your code to the component's implementation and breaks on future releases. Use `variant`, the documented `--mds-radial-progress-*` custom properties and the documented `value-container` / `icon` shadow parts only.
 
 ```css
 /* INCORRECT */
@@ -270,6 +289,17 @@ mds-radial-progress::part(value-container) {
 | ------------------- | --------------------------------------------------- |
 | `"icon"`            | Selects the icon of the radial progress.            |
 | `"value-container"` | Selects the value container of the radial progress. |
+
+
+## CSS Custom Properties
+
+| Name                                           | Description                                                      |
+| ---------------------------------------------- | ---------------------------------------------------------------- |
+| `--mds-radial-progress-background`             | Color of the ring track, behind the progress arc                 |
+| `--mds-radial-progress-color`                  | Color of the progress arc and of the icon                        |
+| `--mds-radial-progress-text-background`        | Background color of the inner circle that holds the value        |
+| `--mds-radial-progress-text-background-shadow` | Box shadow of the inner circle that holds the value              |
+| `--mds-radial-progress-text-suffix`            | Text written after the value, as a CSS string (`'%'` by default) |
 
 
 ## Dependencies

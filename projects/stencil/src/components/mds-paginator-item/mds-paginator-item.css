@@ -4,7 +4,7 @@
  * @prop --mds-paginator-item-background-disabled: Sets the background-color of the item when is disabled
  * @prop --mds-paginator-item-background-hover: Sets the background-color of the item when the mouse is over it
  * @prop --mds-paginator-item-background-selected: Sets the background-color of the item when is selected
- * @prop --mds-paginator-item-background: Sets the background-color of the pages area and the item
+ * @prop --mds-paginator-item-background: Sets the background-color of the item
  * @prop --mds-paginator-item-color-disabled: Sets the color of the item when is disabled
  * @prop --mds-paginator-item-color-hover: Sets the text color of the item when the mouse is over it
  * @prop --mds-paginator-item-color-selected: Sets the text color of the item when is selected
@@ -16,6 +16,19 @@
  * @prop --mds-paginator-item-shadow: Sets the box-shadow of the component
  * @prop --mds-paginator-item-size: Sets the height and the min-width of the paginator item
  */
+
+/*
+  The items mds-paginator renders live in its shadow DOM, so these properties reach them only by
+  inheritance: set them on mds-paginator (or on any ancestor of it). The item therefore never
+  declares a public property on its own :host, which would beat the inherited value: it reads
+  each one through a var() fallback into a --private-paginator-item-* copy. The colours are
+  semantic roles, which already follow the mode, so no dark rule declares them again either.
+
+  No css/mds-paginator-item-property.css on purpose: a registered property always has a value,
+  its initial-value, so every one of those fallbacks would stop firing and an item would paint
+  the light value the registration was resolved to on a dark page. See
+  projects/styles/scripts/properties.ts for how the registrations are collected.
+*/
 
 /* ❌ Not supported
 @property --mds-paginator-item-shadow-disabled {
@@ -47,36 +60,57 @@
 :host {
   --mds-paginator-item-transition-duration: var(--duration-200);
   --private-paginator-item-transition-duration: var(--mds-paginator-item-transition-duration);
-  --mds-paginator-item-background-disabled: rgb(var(--magma-wash-base));
-  --mds-paginator-item-background-hover: rgb(var(--magma-wash-strong));
-  --mds-paginator-item-background-selected: rgb(var(--magma-accent-emphasis-hover));
-  --mds-paginator-item-background: transparent;
-  --mds-paginator-item-color-disabled: rgb(var(--magma-text-disabled));
-  --mds-paginator-item-color-hover: rgb(var(--magma-text-default));
-  --mds-paginator-item-color-selected: rgb(var(--magma-text-on-emphasis));
-  --mds-paginator-item-color: rgb(var(--magma-text-default));
-  --mds-paginator-item-radius: var(--radius-full);
-  --mds-paginator-item-shadow-disabled: none;
-  --mds-paginator-item-shadow-hover: none;
-  --mds-paginator-item-shadow-selected: var(--shadow-md-sharp);
-  --mds-paginator-item-shadow: none;
-  --mds-paginator-item-size: --spacing(900);
+  --private-paginator-item-background-disabled: var(
+    --mds-paginator-item-background-disabled,
+    rgb(var(--magma-wash-base))
+  );
+  --private-paginator-item-background-hover: var(
+    --mds-paginator-item-background-hover,
+    rgb(var(--magma-wash-strong))
+  );
+  --private-paginator-item-background-selected: var(
+    --mds-paginator-item-background-selected,
+    rgb(var(--magma-accent-emphasis-hover))
+  );
+  --private-paginator-item-background: var(--mds-paginator-item-background, transparent);
+  --private-paginator-item-color-disabled: var(
+    --mds-paginator-item-color-disabled,
+    rgb(var(--magma-text-disabled))
+  );
+  --private-paginator-item-color-hover: var(
+    --mds-paginator-item-color-hover,
+    rgb(var(--magma-text-default))
+  );
+  --private-paginator-item-color-selected: var(
+    --mds-paginator-item-color-selected,
+    rgb(var(--magma-text-on-emphasis))
+  );
+  --private-paginator-item-color: var(--mds-paginator-item-color, rgb(var(--magma-text-default)));
+  --private-paginator-item-radius: var(--mds-paginator-item-radius, var(--radius-full));
+  --private-paginator-item-shadow-disabled: var(--mds-paginator-item-shadow-disabled, none);
+  --private-paginator-item-shadow-hover: var(--mds-paginator-item-shadow-hover, none);
+  --private-paginator-item-shadow-selected: var(
+    --mds-paginator-item-shadow-selected,
+    var(--shadow-md-sharp)
+  );
+  --private-paginator-item-shadow: var(--mds-paginator-item-shadow, none);
+  --private-paginator-item-size: var(--mds-paginator-item-size, --spacing(900));
 
   @apply ease-out
     focus-bounce;
 
   align-items: center;
-  background-color: var(--mds-paginator-item-background);
-  border-radius: var(--mds-paginator-item-radius);
-  box-shadow: var(--mds-paginator-item-shadow);
+  background-color: var(--private-paginator-item-background);
+  border-radius: var(--private-paginator-item-radius);
+  box-shadow: var(--private-paginator-item-shadow);
   box-sizing: border-box;
-  color: var(--mds-paginator-item-color);
+  color: var(--private-paginator-item-color);
   cursor: pointer;
   display: inline-flex;
   flex-shrink: 0;
-  height: var(--mds-paginator-item-size);
+  height: var(--private-paginator-item-size);
   justify-content: center;
-  min-width: var(--mds-paginator-item-size);
+  min-width: var(--private-paginator-item-size);
   padding-inline: --spacing(300);
   transition-duration: var(--private-paginator-item-transition-duration);
   transition-property: background-color, box-shadow, color, outline, outline-offset;
@@ -88,10 +122,10 @@
 }
 
 :host(:hover) {
-  background-color: var(--mds-paginator-item-background-hover);
-  box-shadow: var(--mds-paginator-item-shadow-hover);
-  color: var(--mds-paginator-item-color-hover);
-  fill: var(--mds-paginator-item-color-hover);
+  background-color: var(--private-paginator-item-background-hover);
+  box-shadow: var(--private-paginator-item-shadow-hover);
+  color: var(--private-paginator-item-color-hover);
+  fill: var(--private-paginator-item-color-hover);
 }
 
 :host([icon]) {
@@ -99,18 +133,18 @@
 }
 
 :host([selected]) {
-  background-color: var(--mds-paginator-item-background-selected);
-  box-shadow: var(--mds-paginator-item-shadow-selected);
-  color: var(--mds-paginator-item-color-selected);
-  fill: var(--mds-paginator-item-color-selected);
+  background-color: var(--private-paginator-item-background-selected);
+  box-shadow: var(--private-paginator-item-shadow-selected);
+  color: var(--private-paginator-item-color-selected);
+  fill: var(--private-paginator-item-color-selected);
   pointer-events: none;
 }
 
 :host([disabled]) {
-  background-color: var(--mds-paginator-item-background-disabled);
-  box-shadow: var(--mds-paginator-item-shadow-disabled);
-  color: var(--mds-paginator-item-color-disabled);
-  fill: var(--mds-paginator-item-color-disabled);
+  background-color: var(--private-paginator-item-background-disabled);
+  box-shadow: var(--private-paginator-item-shadow-disabled);
+  color: var(--private-paginator-item-color-disabled);
+  fill: var(--private-paginator-item-color-disabled);
   pointer-events: none;
 }
 
@@ -120,4 +154,3 @@
 }
 
 @import './css/mds-paginator-item-pref-animation.css';
-@import './css/mds-paginator-item-pref-mode.css';

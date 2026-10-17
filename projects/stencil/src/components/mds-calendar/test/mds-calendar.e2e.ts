@@ -496,4 +496,60 @@ describe('mds-calendar arrows', () => {
     await waitForChanges();
     arrows(root).forEach((arrow) => expect(arrow).not.toHaveAttribute('disabled'));
   });
+
+  describe('custom properties', () => {
+    // the cells live in the shadow DOM of the calendar: only inheritance carries a value to them
+    const paint = (cell: Element): CSSStyleDeclaration =>
+      getComputedStyle(cell.shadowRoot!.querySelector('.area-background')!);
+
+    // September 2025: the 10th child sits in a weekday column and the 13th in a weekend one (the
+    // 6th of its row), both days of the month whichever day the grid starts the week on
+    const cellsOf = (root: HTMLElement): Element[] =>
+      Array.from(root.shadowRoot!.querySelectorAll('mds-calendar-cell'));
+
+    it('reach the day cells when set on the calendar', async () => {
+      const { root } = await render(
+        `<mds-calendar
+          view-date="2025-09-01"
+          min="2025-09-02"
+          style="--mds-calendar-day-number-color: rgb(1 2 3); --mds-calendar-cell-weekend-color: rgb(4 5 6); --mds-calendar-cell-disabled-background: rgb(7 8 9)"
+        ></mds-calendar>`,
+      );
+      const cells = cellsOf(root);
+      const disabled = root.shadowRoot!.querySelector(
+        'mds-calendar-cell[disabled][month="current"]',
+      )!;
+
+      expect(cells[9]).toHaveAttribute('month', 'current');
+      expect(paint(cells[9]).color).toBe('rgb(1, 2, 3)');
+      expect(paint(cells[12]).color).toBe('rgb(4, 5, 6)');
+      expect(paint(disabled).backgroundColor).toBe('rgb(7, 8, 9)');
+    });
+
+    it('let the cell colour win over the day number colour', async () => {
+      const { root } = await render(
+        `<mds-calendar
+          view-date="2025-09-01"
+          style="--mds-calendar-day-number-color: rgb(1 2 3); --mds-calendar-cell-color: rgb(10 11 12)"
+        ></mds-calendar>`,
+      );
+
+      expect(paint(cellsOf(root)[9]).color).toBe('rgb(10, 11, 12)');
+    });
+
+    it('paint the selection with the colours set on the calendar', async () => {
+      const { root } = await render(
+        `<mds-calendar
+          view-date="2025-09-01"
+          start-date="2025-09-10"
+          end-date="2025-09-12"
+          style="--mds-calendar-cell-selection-current-month-boundaries-color: rgb(13 14 15)"
+        ></mds-calendar>`,
+      );
+      const start = root.shadowRoot!.querySelector('mds-calendar-cell[date="2025-09-10"]')!;
+
+      expect(start).toHaveAttribute('selection', 'start');
+      expect(paint(start).color).toBe('rgb(13, 14, 15)');
+    });
+  });
 });

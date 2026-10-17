@@ -208,4 +208,34 @@ describe('mds-paginator', () => {
       expect(host.currentPage).toBe(3);
     });
   });
+
+  // #824: every item declared its --mds-paginator-item-* on its own host, which beat any value
+  // set on the paginator
+  describe('item custom properties', () => {
+    const settled = async (element: Element): Promise<void> => {
+      await Promise.all(
+        element
+          .getAnimations()
+          .filter((animation) => animation instanceof CSSTransition)
+          .map((animation) => animation.finished),
+      );
+    };
+
+    it('reach the items when set on the paginator', async () => {
+      const { root } = await render(`
+        <mds-paginator
+          pages="5"
+          current-page="3"
+          style="--mds-paginator-item-background-selected: rgb(1 2 3); --mds-paginator-item-radius: 3px; --mds-paginator-item-size: 50px"
+        ></mds-paginator>`);
+      const selected = root.shadowRoot!.querySelector('mds-paginator-item[selected]')!;
+      const first = root.shadowRoot!.querySelector(FIRST_PAGE)!;
+      await settled(selected);
+      await settled(first);
+
+      expect(getComputedStyle(selected).backgroundColor).toBe('rgb(1, 2, 3)');
+      expect(getComputedStyle(first).borderTopLeftRadius).toBe('3px');
+      expect(getComputedStyle(first).height).toBe('50px');
+    });
+  });
 });

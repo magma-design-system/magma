@@ -2,24 +2,31 @@
 
 /**
  * @prop --mds-breadcrumb-arrow-depth-color: Sets the color of the arrow icon that separates buttons
- * @prop --mds-breadcrumb-button-background-disabled: Sets the background color of the button when it's disabled, is used for arrow button
+ * @prop --mds-breadcrumb-button-background-disabled: Sets the background color of the back arrow button when it's disabled, on the first item
  * @prop --mds-breadcrumb-button-background-hover: Sets the background color of the button when the mouse is over it
+ * @prop --mds-breadcrumb-button-background-selected: Sets the background color of the button of the selected item
  * @prop --mds-breadcrumb-button-background: Sets the background color of the button
- * @prop --mds-breadcrumb-button-color-current: Sets the text color of the button when it's active
+ * @prop --mds-breadcrumb-button-color-current: Deprecated, use `--mds-breadcrumb-button-color-selected`; read only when that one is not set
  * @prop --mds-breadcrumb-button-color-hover: Sets the text color of the button when the mouse is over it
+ * @prop --mds-breadcrumb-button-color-selected: Sets the text color of the button of the selected item
  * @prop --mds-breadcrumb-button-color: Sets the text color of the button
- * @prop --mds-breadcrumb-current-button-color: Sets the text color of the current depth button
+ * @prop --mds-breadcrumb-current-button-color: Deprecated, use `--mds-breadcrumb-button-color-selected`; read only when neither that one nor `--mds-breadcrumb-button-color-current` is set
  */
 
 :host {
   --mds-breadcrumb-arrow-depth-color: rgb(var(--magma-text-subtle));
   --mds-breadcrumb-button-background-disabled: transparent;
   --mds-breadcrumb-button-background-hover: rgb(var(--magma-wash-soft));
+  --mds-breadcrumb-button-background-selected: rgb(var(--magma-wash-base));
   --mds-breadcrumb-button-background: transparent;
-  --mds-breadcrumb-button-color-current: rgb(var(--magma-text-default));
   --mds-breadcrumb-button-color-hover: rgb(var(--magma-text-default));
+
+  /* the two deprecated names of the selected colour are read only when an author sets them */
+  --mds-breadcrumb-button-color-selected: var(
+    --mds-breadcrumb-button-color-current,
+    var(--mds-breadcrumb-current-button-color, rgb(var(--magma-text-default)))
+  );
   --mds-breadcrumb-button-color: rgb(var(--magma-text-default));
-  --mds-breadcrumb-current-button-color: rgb(var(--magma-text-disabled));
 
   @apply hide-scrollbar;
 
@@ -31,6 +38,10 @@
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   width: 100%;
+}
+
+.back[disabled] {
+  --mds-button-background: var(--mds-breadcrumb-button-background-disabled);
 }
 
 :host::-webkit-scrollbar {
