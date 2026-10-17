@@ -62,7 +62,7 @@
  */
   transition-duration: var(--duration-300);
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: var(--ease-in-out);
+  transition-timing-function: var(--ease-out-sine);
   user-select: none;
 }
 

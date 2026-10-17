@@ -29,7 +29,7 @@
   padding: --spacing(200) --spacing(400);
   transition-duration: var(--private-filter-item-transition-duration);
   transition-property: background-color, box-shadow, color, outline, outline-offset;
-  transition-timing-function: var(--ease-out);
+  transition-timing-function: var(--ease-out-cubic);
   user-select: none;
   white-space: nowrap;
 }
@@ -54,7 +54,7 @@ mds-text {
   padding-right: --spacing(150);
   transition-duration: var(--duration-200);
   transition-property: background-color, color;
-  transition-timing-function: var(--ease-out);
+  transition-timing-function: var(--ease-out-cubic);
   user-select: none;
 }
 

@@ -170,7 +170,7 @@
   transition-property:
     background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
     transform, width;
-  transition-timing-function: var(--ease-in-out);
+  transition-timing-function: var(--ease-out-sine);
   width: var(--mds-input-switch-toggle-container-size);
 }
 
