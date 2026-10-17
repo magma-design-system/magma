@@ -2,8 +2,8 @@
 
 /**
  * @prop --mds-dropdown-arrow-background: Sets the fill color of the arrow.
- * @prop --mds-dropdown-backdrop-duration: Sets the transition duration of the backdrop, used by component's code too.
- * @prop --mds-dropdown-backdrop-z-index: Sets the backdrop z-index, used by component's code too.
+ * @prop --mds-dropdown-backdrop-duration: Sets the duration of the fade of the backdrop shown with the `backdrop` attribute, the one of the page backdrop by default.
+ * @prop --mds-dropdown-backdrop-z-index: Sets the z-index of the backdrop shown with the `backdrop` attribute, the one of the page backdrop by default.
  * @prop --mds-dropdown-background: Sets the background-color of the dropdown.
  * @prop --mds-dropdown-drop-shadow-color-rgb: Sets the color used for the dropdown shadow
  * @prop --mds-dropdown-drop-shadow: Sets the drop-shadow of the dropdown.
@@ -22,8 +22,8 @@
 
 :host {
   --mds-dropdown-arrow-background: var(--mds-dropdown-background);
-  --private-dropdown-backdrop-duration: 200ms;
-  --mds-dropdown-backdrop-duration: var(--private-dropdown-backdrop-duration);
+  --mds-dropdown-backdrop-duration: var(--magma-backdrop-animation-duration);
+  --private-dropdown-backdrop-duration: var(--mds-dropdown-backdrop-duration);
   --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index);
   --mds-dropdown-background: rgb(var(--magma-surface-overlay));
   --mds-dropdown-drop-shadow-color-rgb: var(--magma-shadow-ink);
