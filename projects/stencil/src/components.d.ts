@@ -1158,8 +1158,7 @@ export namespace Components {
     }
     interface MdsImg {
         /**
-          * Specifies an alternate text for an image
-          * @default ''
+          * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
          */
         "alt": string;
         /**
@@ -2833,7 +2832,7 @@ export namespace Components {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Names the tree for assistive technologies: the tree is a list of its items, and the label is what that list is called
          */
         "label": string;
         /**
@@ -5687,8 +5686,7 @@ declare namespace LocalJSX {
     }
     interface MdsImg {
         /**
-          * Specifies an alternate text for an image
-          * @default ''
+          * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
          */
         "alt"?: string;
         /**
@@ -7502,7 +7500,7 @@ declare namespace LocalJSX {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Names the tree for assistive technologies: the tree is a list of its items, and the label is what that list is called
          */
         "label"?: string;
         /**

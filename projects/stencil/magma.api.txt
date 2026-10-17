@@ -600,7 +600,7 @@ mds-icon prop name (attr name) [reflect, required]: string
 mds-icon method setSvgPath(svgPath: string) => Promise<void>
 mds-icon part svg
 mds-img encapsulation shadow
-mds-img prop alt (attr alt) [reflect, mutable]: string = ''
+mds-img prop alt (attr alt) [reflect, mutable]: string
 mds-img prop crossorigin (attr crossorigin): "anonymous" | "use-credentials" | undefined = 'use-credentials'
 mds-img prop height (attr height): string | undefined
 mds-img prop loading (attr loading): "eager" | "lazy" | undefined = 'lazy'

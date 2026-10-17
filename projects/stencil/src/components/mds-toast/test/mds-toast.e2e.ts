@@ -68,4 +68,32 @@ describe('mds-toast', () => {
     slot: 'action',
     region: '.actions',
   });
+
+  // no live region, so a screen reader never announced the toast; and the hidden toast was only
+  // moved out of the viewport, its message still read in the page (#821)
+  describe('for assistive technologies', () => {
+    const dialog = (root: HTMLElement): HTMLElement =>
+      root.shadowRoot!.querySelector<HTMLElement>('.dialog')!;
+
+    it('is a status region', async () => {
+      const { root } = await render('<mds-toast>Saved</mds-toast>');
+
+      expect(root).toEqualAttribute('role', 'status');
+    });
+
+    it('keeps the message hidden until it shows, and hides it again at the end of the exit', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsToastElement>(
+        '<mds-toast duration="0" style="--mds-toast-duration: 0s">Saved</mds-toast>',
+      );
+      expect(getComputedStyle(dialog(root)).visibility).toBe('hidden');
+
+      root.visible = true;
+      await waitForChanges();
+      expect(getComputedStyle(dialog(root)).visibility).toBe('visible');
+
+      root.visible = false;
+      await waitForChanges();
+      await vi.waitFor(() => expect(getComputedStyle(dialog(root)).visibility).toBe('hidden'));
+    });
+  });
 });
