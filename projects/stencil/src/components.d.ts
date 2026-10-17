@@ -1163,8 +1163,7 @@ export namespace Components {
          */
         "alt": string;
         /**
-          * Allow images from third-party sites that allow cross-origin access to be used with canvas
-          * @default 'use-credentials'
+          * Fetches the image with CORS, as the `crossorigin` attribute of `<img>`: a third-party image can then be used with canvas, if its site allows it. Unset, the image is fetched without CORS
          */
         "crossorigin"?: CrossoriginType;
         /**
@@ -1177,8 +1176,7 @@ export namespace Components {
          */
         "loading"?: LoadingType;
         /**
-          * Specifies which referrer information to use when fetching an image.
-          * @default 'no-referrer-when-downgrade'
+          * Specifies which referrer information to use when fetching an image, as the `referrerpolicy` attribute of `<img>`. Unset, the policy of the page applies
          */
         "referrerpolicy"?: ReferrerpolicyType;
         /**
@@ -5692,8 +5690,7 @@ declare namespace LocalJSX {
          */
         "alt"?: string;
         /**
-          * Allow images from third-party sites that allow cross-origin access to be used with canvas
-          * @default 'use-credentials'
+          * Fetches the image with CORS, as the `crossorigin` attribute of `<img>`: a third-party image can then be used with canvas, if its site allows it. Unset, the image is fetched without CORS
          */
         "crossorigin"?: CrossoriginType;
         /**
@@ -5714,8 +5711,7 @@ declare namespace LocalJSX {
          */
         "onMdsImgLoadSuccess"?: (event: MdsImgCustomEvent<MdsImgEventDetail>) => void;
         /**
-          * Specifies which referrer information to use when fetching an image.
-          * @default 'no-referrer-when-downgrade'
+          * Specifies which referrer information to use when fetching an image, as the `referrerpolicy` attribute of `<img>`. Unset, the policy of the page applies
          */
         "referrerpolicy"?: ReferrerpolicyType;
         /**
