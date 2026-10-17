@@ -172,9 +172,11 @@ mds-breadcrumb css --mds-breadcrumb-arrow-depth-color
 mds-breadcrumb css --mds-breadcrumb-button-background
 mds-breadcrumb css --mds-breadcrumb-button-background-disabled
 mds-breadcrumb css --mds-breadcrumb-button-background-hover
+mds-breadcrumb css --mds-breadcrumb-button-background-selected
 mds-breadcrumb css --mds-breadcrumb-button-color
 mds-breadcrumb css --mds-breadcrumb-button-color-current
 mds-breadcrumb css --mds-breadcrumb-button-color-hover
+mds-breadcrumb css --mds-breadcrumb-button-color-selected
 mds-breadcrumb css --mds-breadcrumb-current-button-color
 mds-breadcrumb-item encapsulation shadow
 mds-breadcrumb-item prop label (attr label) [reflect]: string | undefined
