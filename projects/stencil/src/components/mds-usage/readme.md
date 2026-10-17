@@ -16,7 +16,7 @@ The `<mds-usage>` web component is a documentation-oriented annotation block of 
 #### Semantic Behavior
 
 - **Status semantics via `variant`**: The chosen `variant` drives the border and header color from the shared status palette (success / info / error / warning) and the header icon (a tick for `do`, an X for `dont`, an info sign for `info`, a warning triangle for `warn`), so the container reads as the matching guidance category even without its color.
-- **Content role mapping**: The content region conveys an allowed-vs-disallowed nature to assistive technology - insertion for the `'do'` and `'info'` variants, deletion for `'dont'` and `'warn'`.
+- **Label first**: The header label (the `alias`, or the name of the `variant` in the page language) is what tells assistive technology the kind of guidance; the content region has no role of its own.
 - **Localized header label**: When `alias` is not provided, the header text is resolved from the bundled locale dictionary (el / en / es / it) keyed by `variant`, so the label follows the document language.
 - **Default slot is content**: The default (unnamed) slot accepts a text string, HTML elements, or other components - it is the body of the usage block, not the label.
 
@@ -24,15 +24,15 @@ The `<mds-usage>` web component is a documentation-oriented annotation block of 
 
 `variant` is the primary configuration prop. Unlike most Magma components, this is NOT the shared variant/tone ladder defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); it is a component-specific guidance category:
 
-- **`variant="do"`**: marks recommended / allowed usage (success styling, insertion role).
-- **`variant="dont"`**: marks discouraged / disallowed usage (error styling, deletion role).
-- **`variant="info"`**: neutral informational note (info styling, insertion role); this is the default.
-- **`variant="warn"`**: cautionary note (warning styling, deletion role).
+- **`variant="do"`**: marks recommended / allowed usage (success styling).
+- **`variant="dont"`**: marks discouraged / disallowed usage (error styling).
+- **`variant="info"`**: neutral informational note (info styling); this is the default.
+- **`variant="warn"`**: cautionary note (warning styling).
 
 #### Other behavioral props
 
 - **`alias`** overrides the auto-generated, localized header phrase with a custom string when the default category label is not specific enough for the example being shown.
-- **`icon`** replaces the header icon of the `variant` with any icon slug; colors, label and content role still follow the `variant`. When not set or empty, the icon follows the `variant`. The header icon is decorative: the label carries the meaning.
+- **`icon`** replaces the header icon of the `variant` with any icon slug; colors and label still follow the `variant`. When not set or empty, the icon follows the `variant`. The header icon is decorative: the label carries the meaning.
 
 
 ### 2. Pattern
@@ -53,7 +53,7 @@ The simplest form. Omit `variant` to get the `info` default - a neutral, blue-ti
 
 #### Recommended Pattern (`variant="do"`)
 
-Use `variant="do"` to mark a component usage or design pattern as explicitly recommended. The container adopts success styling and the content region carries `role="insertion"` for assistive technology.
+Use `variant="do"` to mark a component usage or design pattern as explicitly recommended. The container adopts success styling and the header reads the variant label.
 
 ```html
 <mds-usage variant="do">
@@ -63,7 +63,7 @@ Use `variant="do"` to mark a component usage or design pattern as explicitly rec
 
 #### Discouraged Pattern (`variant="dont"`)
 
-Use `variant="dont"` to mark a usage as explicitly forbidden or inadvisable. The container adopts error styling and the content region carries `role="deletion"`.
+Use `variant="dont"` to mark a usage as explicitly forbidden or inadvisable. The container adopts error styling.
 
 ```html
 <mds-usage variant="dont">
@@ -73,7 +73,7 @@ Use `variant="dont"` to mark a usage as explicitly forbidden or inadvisable. The
 
 #### Cautionary Note (`variant="warn"`)
 
-Use `variant="warn"` when a pattern is not forbidden but requires care - for example when a prop combination is valid but has side effects, or when a rare edge case exists. The container adopts warning styling and carries `role="deletion"`.
+Use `variant="warn"` when a pattern is not forbidden but requires care - for example when a prop combination is valid but has side effects, or when a rare edge case exists. The container adopts warning styling.
 
 ```html
 <mds-usage variant="warn">
@@ -100,7 +100,7 @@ When the auto-generated, localized header ("Consentito", "Non consentito", etc.)
 
 #### Custom Header Icon via `icon`
 
-Each `variant` has its own header icon. When a custom `alias` names a more specific category, pass `icon` with a slug that illustrates it; the `variant` still drives the colors, the label fallback and the content role. Keep the icon coherent with the `variant`.
+Each `variant` has its own header icon. When a custom `alias` names a more specific category, pass `icon` with a slug that illustrates it; the `variant` still drives the colors and the label fallback. Keep the icon coherent with the `variant`.
 
 ```html
 <mds-usage variant="do" alias="Struttura consigliata" icon="mi/baseline/account-tree">
@@ -179,7 +179,7 @@ Common incorrect uses of `<mds-usage>`. Each entry pairs the wrong form with the
 
 #### Do Not Use an `icon` That Contradicts the `variant`
 
-`icon` replaces only the glyph: colors, label and content role still follow the `variant`. An icon that means the opposite (a tick on a `dont` block, a cross on a `do` block) sends two conflicting signals. To change the meaning, change the `variant`; use `icon` only to make the same meaning more specific.
+`icon` replaces only the glyph: colors and label still follow the `variant`. An icon that means the opposite (a tick on a `dont` block, a cross on a `do` block) sends two conflicting signals. To change the meaning, change the `variant`; use `icon` only to make the same meaning more specific.
 
 ```html
 <!-- INCORRECT -->
