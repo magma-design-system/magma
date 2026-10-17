@@ -2436,7 +2436,7 @@ export namespace Components {
     }
     interface MdsStepperBar {
         /**
-          * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
+          * Sets the current item by its position, counted from 1: the items before it are done. 1 makes the first item current with none done, 0 makes no item current, the number of items + 1 marks them all done
           * @default 1
          */
         "itemsDone": number;
@@ -7081,7 +7081,7 @@ declare namespace LocalJSX {
     }
     interface MdsStepperBar {
         /**
-          * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
+          * Sets the current item by its position, counted from 1: the items before it are done. 1 makes the first item current with none done, 0 makes no item current, the number of items + 1 marks them all done
           * @default 1
          */
         "itemsDone"?: number;
