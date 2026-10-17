@@ -78,12 +78,11 @@ export class MdsStepperBar {
     this.setCurrentContent();
   };
 
+  // the `hidden` attribute hides a panel without any style of the page: the `hidden` class it
+  // used took effect only where the page defined it
   private setCurrentContent = (): void => {
     this.contentItems.forEach((item: HTMLElement, index: number) => {
-      item.classList.add('hidden');
-      if (index === this.currentItem) {
-        item.classList.remove('hidden');
-      }
+      item.hidden = index !== this.currentItem;
     });
   };
 

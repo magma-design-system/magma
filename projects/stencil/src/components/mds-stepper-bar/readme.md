@@ -17,7 +17,7 @@ The `<mds-stepper-bar>` web component is the Magma Design System container that 
 
 - **Compound parent**: It is the controlling parent of `<mds-stepper-bar-item>` children placed in the default slot, driving every child's `done`/`current` state - children do not manage their own progression.
 - **Active step derivation**: From `itemsDone` it marks all earlier items as `done`, the item at the current index as `current`, and clears the rest; the active step is `itemsDone - 1`.
-- **Content synchronization**: Each `slot="content"` element is paired by position to a stepper item; only the panel matching the current index is shown. The other panels get the `hidden` class, so the page needs a `.hidden { display: none }` rule (the Tailwind utility provides it).
+- **Content synchronization**: Each `slot="content"` element is paired by position to a stepper item; only the panel matching the current index is shown. The other panels get the `hidden` attribute, so no style of the page is needed (a `display` the page sets on a panel overrides it).
 - **No child-driven navigation**: It listens for `mdsStepperBarItemDone`, but `<mds-stepper-bar-item>` never emits it, so clicking a step does not change the current step: progress is driven by `itemsDone` only.
 - **Auto-scroll**: When a step becomes current the indicator track scrolls horizontally to center the active item.
 - **Change event**: It emits `mdsStepperBarChange` when it loads and whenever `itemsDone` changes, with a detail of the active `step` index and a comma-joined `value` string collected from the completed items.
@@ -108,7 +108,7 @@ React to step changes via `mdsStepperBarChange`. The event detail carries `step`
 
 #### Content Panels Synchronized with Steps
 
-Add elements with `slot="content"` - one per step in the same order as the items. The component hides all panels except the one matching the active step, by adding the `hidden` class: the page needs a `.hidden { display: none }` rule (the Tailwind utility provides it). Nest navigation buttons inside each panel to let users move forward and back.
+Add elements with `slot="content"` - one per step in the same order as the items. The component hides all panels except the one matching the active step, with the `hidden` attribute: no style of the page is needed. Nest navigation buttons inside each panel to let users move forward and back.
 
 ```html
 <mds-stepper-bar items-done="1">
