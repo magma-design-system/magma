@@ -1,7 +1,7 @@
 @import './css/mds-calendar-fouc.css';
 
 /**
- * @prop --mds-calendar-day-number-color: The color of the day numbers of the current month.
+ * @prop --mds-calendar-day-number-color: The color of the day numbers of the current month, weekend days aside (`--mds-calendar-cell-weekend-color`); `--mds-calendar-cell-color` wins over it.
  * @prop --mds-calendar-cell-gap: The spacing between calendar day cells.
  * @prop --mds-calendar-cell-other-month-visibility: Controls visibility of days from other months (e.g. "visible", "hidden").
  * @prop --mds-calendar-border-radius: The border-radius of the calendar container.
