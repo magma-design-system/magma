@@ -2832,7 +2832,7 @@ export namespace Components {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Names the tree for assistive technologies: the tree is a list of its items, and the label is what that list is called
          */
         "label": string;
         /**
@@ -7500,7 +7500,7 @@ declare namespace LocalJSX {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Names the tree for assistive technologies: the tree is a list of its items, and the label is what that list is called
          */
         "label"?: string;
         /**
