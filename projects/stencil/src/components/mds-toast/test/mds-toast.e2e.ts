@@ -21,6 +21,50 @@ describe('mds-toast', () => {
     expect(root.visible).toBe(true);
   });
 
+  // the countdown was an interval nobody stopped: a dismissed toast emitted mdsToastClose again
+  // every duration (#823)
+  describe('the countdown', () => {
+    const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    it('hides the toast once and emits mdsToastClose once', async () => {
+      const { root, spyOnEvent } = await render<HTMLMdsToastElement>(
+        '<mds-toast visible duration="100">Text</mds-toast>',
+      );
+      const close = spyOnEvent('mdsToastClose');
+
+      // the duration, then the wait for the exit animation (1s when it is not read)
+      await wait(1600);
+
+      expect(root.visible).toBe(false);
+      expect(close).toHaveReceivedEventTimes(1);
+    });
+
+    it('stops when the toast is hidden by code, which then emits nothing', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsToastElement>(
+        '<mds-toast visible duration="300">Text</mds-toast>',
+      );
+      const close = spyOnEvent('mdsToastClose');
+
+      root.visible = false;
+      await waitForChanges();
+      await wait(600);
+
+      expect(close).not.toHaveReceivedEvent();
+    });
+
+    it('stops when the toast leaves the page', async () => {
+      const { root, spyOnEvent } = await render<HTMLMdsToastElement>(
+        '<mds-toast visible duration="100">Text</mds-toast>',
+      );
+      const close = spyOnEvent('mdsToastClose');
+
+      root.remove();
+      await wait(500);
+
+      expect(close).not.toHaveReceivedEvent();
+    });
+  });
+
   describe('where it sits', () => {
     /** The animated box: the host is a full-width fixed strip, the dialog is the toast. */
     const dialog = (root: HTMLElement): HTMLElement =>
