@@ -123,10 +123,8 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Emoji agrees, useful for confirm actions.
    */
-
   @Method()
   async agree(): Promise<void> {
     const token = this.beginExpression();
@@ -135,10 +133,8 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Emoji smiles, useful for confirm actions.
    */
-
   @Method()
   async smile(): Promise<void> {
     const token = this.beginExpression();
@@ -147,10 +143,10 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Emoji disagrees, useful for errors or unwanted results.
+   * @param turnHappyDelay how long the mouth stays serious after the head shake, in
+   * milliseconds; 0 brings the smile back at once
    */
-
   @Method()
   async disagree(turnHappyDelay: number = 0): Promise<void> {
     const token = this.beginExpression();
@@ -159,10 +155,9 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
-   * Emoji start thinking, useful for pending requests.
+   * Emoji starts thinking, useful for pending requests.
+   * @param duration the duration of the entrance of the hand, in seconds
    */
-
   @Method()
   async startThinking(duration: number = 0.5): Promise<void> {
     // Thinking is a state, not a one shot expression: asking for it again while it
@@ -198,10 +193,8 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Eyes start blinking.
    */
-
   @Method()
   async startBlinking(): Promise<void> {
     this.isBlinking = true;
@@ -213,7 +206,6 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Eyes stop blinking.
    */
   @Method()
@@ -227,7 +219,6 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Stops following mouse with CSS 3D transform.
    */
   @Method()
@@ -241,7 +232,6 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Starts following mouse with CSS 3D transform.
    */
   @Method()

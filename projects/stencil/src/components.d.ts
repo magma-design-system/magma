@@ -858,11 +858,12 @@ export namespace Components {
     }
     interface MdsEmoji {
         /**
-          * @returns Promise<void> Emoji agrees, useful for confirm actions.
+          * Emoji agrees, useful for confirm actions.
          */
         "agree": () => Promise<void>;
         /**
-          * @returns Promise<void> Emoji disagrees, useful for errors or unwanted results.
+          * Emoji disagrees, useful for errors or unwanted results.
+          * @param turnHappyDelay how long the mouth stays serious after the head shake, in milliseconds; 0 brings the smile back at once
          */
         "disagree": (turnHappyDelay?: number) => Promise<void>;
         /**
@@ -871,27 +872,28 @@ export namespace Components {
          */
         "name": EmojiNames;
         /**
-          * @returns Promise<void> Emoji smiles, useful for confirm actions.
+          * Emoji smiles, useful for confirm actions.
          */
         "smile": () => Promise<void>;
         /**
-          * @returns Promise<void> Eyes start blinking.
+          * Eyes start blinking.
          */
         "startBlinking": () => Promise<void>;
         /**
-          * @returns Promise<void> Starts following mouse with CSS 3D transform.
+          * Starts following mouse with CSS 3D transform.
          */
         "startFollowMouse": () => Promise<void>;
         /**
-          * @returns Promise<void> Emoji start thinking, useful for pending requests.
+          * Emoji starts thinking, useful for pending requests.
+          * @param duration the duration of the entrance of the hand, in seconds
          */
         "startThinking": (duration?: number) => Promise<void>;
         /**
-          * @returns Promise<void> Eyes stop blinking.
+          * Eyes stop blinking.
          */
         "stopBlinking": () => Promise<void>;
         /**
-          * @returns Promise<void> Stops following mouse with CSS 3D transform.
+          * Stops following mouse with CSS 3D transform.
          */
         "stopFollowMouse": () => Promise<void>;
         /**
