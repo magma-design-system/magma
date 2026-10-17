@@ -7,6 +7,7 @@ mds-accordion prop multiple (attr multiple): boolean | undefined = false
 mds-accordion event mdsAccordionChange: MdsAccordionEventDetail [bubbles, cancelable, composed]
 mds-accordion slot (default)
 mds-accordion css --mds-accordion-border-color
+mds-accordion css --mds-accordion-border-width
 mds-accordion css --mds-accordion-color
 mds-accordion css --mds-accordion-description-color
 mds-accordion css --mds-accordion-duration
@@ -1019,6 +1020,7 @@ mds-note slot (default)
 mds-note slot title
 mds-note css --mds-note-background
 mds-note css --mds-note-color
+mds-note css --mds-note-fold-color
 mds-note css --mds-note-fold-size
 mds-note css --mds-note-selection-background
 mds-note css --mds-note-selection-color
@@ -1106,6 +1108,9 @@ mds-pref-mode prop mode (attr mode) [reflect, mutable]: "dark" | "light" | "syst
 mds-pref-mode prop size (attr size) [reflect]: "md" | "sm" | undefined
 mds-pref-mode prop transition (attr transition) [reflect, mutable]: "flash" | "none" | "smooth" = 'smooth'
 mds-pref-mode event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
+mds-pref-mode css --mds-pref-mode-overlay-fadeout-duration
+mds-pref-mode css --mds-pref-mode-overlay-show-duration
+mds-pref-mode css --mds-pref-mode-overlay-z-index
 mds-pref-theme encapsulation shadow
 mds-pref-theme prop cornerShape (attr corner-shape) [reflect, mutable]: "bevel" | "default" | "notch" | "round" | "scoop" | "square" | "squircle" | undefined
 mds-pref-theme prop name (attr name) [reflect, mutable]: string = 'default'
@@ -1276,6 +1281,11 @@ mds-radial-progress prop typography (attr typography) [reflect]: "label" | "opti
 mds-radial-progress prop variant (attr variant) [reflect]: "ai" | "dark" | "error" | "info" | "light" | "primary" | "success" | "warning" | undefined = 'primary'
 mds-radial-progress part icon
 mds-radial-progress part value-container
+mds-radial-progress css --mds-radial-progress-background
+mds-radial-progress css --mds-radial-progress-color
+mds-radial-progress css --mds-radial-progress-text-background
+mds-radial-progress css --mds-radial-progress-text-background-shadow
+mds-radial-progress css --mds-radial-progress-text-suffix
 mds-separator encapsulation shadow
 mds-separator css --mds-separator-background
 mds-spinner encapsulation shadow

@@ -235,6 +235,15 @@ mds-pref-mode {
 | `mdsPrefChange` | Emits when the component is triggered | `CustomEvent<MdsPrefChangeEventDetail>` |
 
 
+## CSS Custom Properties
+
+| Name                                       | Description                                                                         |
+| ------------------------------------------ | ----------------------------------------------------------------------------------- |
+| `--mds-pref-mode-overlay-fadeout-duration` | Sets the fadeout duration of the overlay which hides UI color flash on theme change |
+| `--mds-pref-mode-overlay-show-duration`    | Sets the show duration of the overlay which hides UI color flash on theme change    |
+| `--mds-pref-mode-overlay-z-index`          | Sets the z-index of the overlay which hides UI color flash on theme change          |
+
+
 ## Dependencies
 
 ### Depends on
