@@ -114,7 +114,15 @@ Set `--mds-paginator-scroll-behavior` to `auto` to remove the animated scroll wh
 
 #### Styling Individual Items
 
-The items cannot be restyled from outside. The child `mds-paginator-item` declares its `--mds-paginator-item-*` custom properties on its own host, so a value set on the `mds-paginator` host or a parent selector does not reach the shadow-rendered items, and the paginator exposes no shadow parts. Customize the paginator through `--mds-paginator-background` and `--mds-paginator-scroll-behavior` only (see the two patterns above).
+The items the paginator renders live in its shadow DOM and expose no shadow parts, but they inherit their `--mds-paginator-item-*` CSS custom properties, documented on [`mds-paginator-item`](../../mds-paginator-item): set them on the `mds-paginator` host (or a parent selector) to restyle every page item at once. Use the semantic color roles so dark mode keeps working.
+
+```css
+.archivio mds-paginator {
+  --mds-paginator-item-background-selected: rgb(var(--magma-accent-surface));
+  --mds-paginator-item-color-selected: rgb(var(--magma-accent-fg));
+  --mds-paginator-item-radius: var(--magma-radius-md);
+}
+```
 
 
 ### 3. Antipattern
@@ -192,7 +200,7 @@ A native `click` bubbles out of the shadow DOM for any click on the control, but
 
 #### Do Not Pierce Shadow DOM to Style Items
 
-Internal `mds-paginator-item` elements live in shadow DOM. Targeting them with `>>>`, `/deep/`, or unrecognised `::part()` names breaks on any release. Use the documented `--mds-paginator-*` CSS custom properties on the host instead; the items themselves take no customization from outside (their `--mds-paginator-item-*` values are declared on each item).
+Internal `mds-paginator-item` elements live in shadow DOM. Targeting them with `>>>`, `/deep/`, or unrecognised `::part()` names breaks on any release. Use the documented `--mds-paginator-*` CSS custom properties on the host instead, the `--mds-paginator-item-*` ones included: the items inherit them.
 
 ```css
 /* INCORRECT */
@@ -203,6 +211,7 @@ mds-paginator >>> mds-paginator-item {
 /* CORRECT */
 mds-paginator {
   --mds-paginator-background: rgb(var(--magma-wash-strong));
+  --mds-paginator-item-radius: var(--magma-radius-sm);
 }
 ```
 
@@ -225,10 +234,10 @@ mds-paginator {
 
 ## CSS Custom Properties
 
-| Name                              | Description                                              |
-| --------------------------------- | -------------------------------------------------------- |
-| `--mds-paginator-background`      | Sets the background-color of the pages area and the item |
-| `--mds-paginator-scroll-behavior` | Sets the scroll-behavior animation                       |
+| Name                              | Description                                                   |
+| --------------------------------- | ------------------------------------------------------------- |
+| `--mds-paginator-background`      | Sets the background-color of the pages area, behind the items |
+| `--mds-paginator-scroll-behavior` | Sets the scroll-behavior animation                            |
 
 
 ## Dependencies
