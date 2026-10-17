@@ -7274,7 +7274,7 @@ declare namespace LocalJSX {
          */
         "interactive"?: boolean;
         /**
-          * Dispatces when interactive property changes
+          * Emits when the selection of a `selectable` table changes, with the index and the value of each selected row
          */
         "onMdsTableSelectionChange"?: (event: MdsTableCustomEvent<MdsTableSelectionEventDetail>) => void;
         /**

@@ -524,9 +524,9 @@ Selection state is communicated via the `mdsTableSelectionChange` custom event. 
 
 ## Events
 
-| Event                     | Description                                 | Type                                        |
-| ------------------------- | ------------------------------------------- | ------------------------------------------- |
-| `mdsTableSelectionChange` | Dispatces when interactive property changes | `CustomEvent<MdsTableSelectionEventDetail>` |
+| Event                     | Description                                                                                                 | Type                                        |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `mdsTableSelectionChange` | Emits when the selection of a `selectable` table changes, with the index and the value of each selected row | `CustomEvent<MdsTableSelectionEventDetail>` |
 
 
 ## Methods
@@ -568,12 +568,12 @@ Type: `Promise<void>`
 
 ## Shadow Parts
 
-| Part                      | Description                                       |
-| ------------------------- | ------------------------------------------------- |
-| `"batch-actions"`         | Selects the element which wraps the batch actions |
-| `"batch-actions-wrapper"` |                                                   |
-| `"table"`                 | Selects the table element                         |
-| `"table-wrapper"`         | Selects the element which wraps the table         |
+| Part                      | Description                                                                                        |
+| ------------------------- | -------------------------------------------------------------------------------------------------- |
+| `"batch-actions"`         | Selects the element which wraps the batch actions                                                  |
+| `"batch-actions-wrapper"` | The bar of the batch actions, shown while the table is `selectable` and has `batch-action` content |
+| `"table"`                 | Selects the table element                                                                          |
+| `"table-wrapper"`         | Selects the element which wraps the table                                                          |
 
 
 ## CSS Custom Properties
