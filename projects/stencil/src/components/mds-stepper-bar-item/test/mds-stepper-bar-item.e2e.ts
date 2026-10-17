@@ -33,4 +33,12 @@ describe('mds-stepper-bar-item', () => {
 
     expect(stepsOf(root)).toEqual(['Step 1', 'Step 2']);
   });
+
+  it('squares the bar of its progress', async () => {
+    // #988: it set --mds-progress-radius to 0, and mds-progress no longer read the property
+    const { root } = await render('<mds-stepper-bar-item label="One"></mds-stepper-bar-item>');
+    const progress = root.shadowRoot!.querySelector('.progress')!;
+
+    expect(getComputedStyle(progress).borderTopLeftRadius).toBe('0px');
+  });
 });

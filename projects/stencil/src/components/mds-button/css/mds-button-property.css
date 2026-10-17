@@ -7,6 +7,10 @@
   load, and resolves each initial-value down to a literal - see that file for the full
   rationale. inherits is true throughout, because that is what the unregistered behaviour
   already does today.
+
+  Deliberately NOT registered:
+    - --mds-button-border-high-contrast-hover-width, --mds-button-border-high-contrast-width:
+      deprecated, read by nothing.
 */
 
 @property --mds-button-await-duration {
@@ -31,18 +35,6 @@
   inherits: true;
   initial-value: 0;
   syntax: '<number>';
-}
-
-@property --mds-button-border-high-contrast-hover-width {
-  inherits: true;
-  initial-value: 3px;
-  syntax: '<length>';
-}
-
-@property --mds-button-border-high-contrast-width {
-  inherits: true;
-  initial-value: --spacing(50);
-  syntax: '<length>';
 }
 
 @property --mds-button-border-hover-opacity {

@@ -49,9 +49,8 @@
     - --mds-tree-item-line-clamp: its default is var(--mds-tree-line-clamp), which resolves to
       nothing unless a parent sets --mds-tree-line-clamp, and a registration would substitute a
       static light value there instead.
-    - --mds-tree-item-toggle-gap: its default is var(--mds-tree-toggle-gap), which resolves to
-      nothing unless a parent sets --mds-tree-toggle-gap, and a registration would substitute a
-      static light value there instead.
+    - --mds-tree-item-toggle-gap: its default is var(--mds-tree-toggle-gap), the gap set on the
+      tree, and a registration would substitute a static value there instead.
     - --mds-tree-item-toggle-icon-async-background: its default is
       var(--mds-tree-toggle-icon-async-background), which resolves to nothing unless a parent
       sets --mds-tree-toggle-icon-async-background, and a registration would substitute a static
@@ -69,13 +68,11 @@
       sets --mds-tree-toggle-icon-chevron-default-color, and a registration would substitute a
       static light value there instead.
     - --mds-tree-item-toggle-icon-chevron-expanded-background: its default is var(
-      --mds-tree-item-toggle-icon-chevron-default-background ), which resolves to nothing unless
-      a parent sets the outer property, and a registration would substitute a static light value
-      there instead.
+      --mds-tree-toggle-icon-chevron-expanded-background ), then the default background of the
+      item, and a registration would substitute a static light value there instead.
     - --mds-tree-item-toggle-icon-chevron-expanded-color: its default is var(
-      --mds-tree-item-toggle-icon-chevron-default-color ), which resolves to nothing unless a
-      parent sets the outer property, and a registration would substitute a static light value
-      there instead.
+      --mds-tree-toggle-icon-chevron-expanded-color ), then the default colour of the item, and a
+      registration would substitute a static light value there instead.
     - --mds-tree-item-toggle-icon-folder-default-background: its default is var(
       --mds-tree-toggle-icon-folder-default-background ), which resolves to nothing unless a
       parent sets --mds-tree-toggle-icon-folder-default-background, and a registration would
@@ -89,9 +86,8 @@
       a parent sets the outer property, and a registration would substitute a static light value
       there instead.
     - --mds-tree-item-toggle-icon-folder-expanded-color: its default is var(
-      --mds-tree-item-toggle-icon-folder-default-color ), which resolves to nothing unless a
-      parent sets the outer property, and a registration would substitute a static light value
-      there instead.
+      --mds-tree-toggle-icon-folder-expanded-color ), then the default colour of the item, and a
+      registration would substitute a static light value there instead.
     - --mds-tree-item-toggle-icon-position-right-default-background: its default is var(
       --mds-tree-toggle-icon-position-right-default-background ), which resolves to nothing
       unless a parent sets --mds-tree-toggle-icon-position-right-default-background, and a
