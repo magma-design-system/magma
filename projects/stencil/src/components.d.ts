@@ -1876,7 +1876,7 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Sets the label of the component
+          * Sets the size of the component: the typography of the label (`sm` caption, `md` detail, `lg` h6) and the size of the icon
           * @default 'sm'
          */
         "size"?: MentionSize;
@@ -6460,7 +6460,7 @@ declare namespace LocalJSX {
          */
         "onMdsMentionDelete"?: (event: MdsMentionCustomEvent<MdsMentionEvent>) => void;
         /**
-          * Sets the label of the component
+          * Sets the size of the component: the typography of the label (`sm` caption, `md` detail, `lg` h6) and the size of the icon
           * @default 'sm'
          */
         "size"?: MentionSize;
