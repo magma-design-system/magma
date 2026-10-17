@@ -9,6 +9,7 @@ import {
   h,
   Prop,
   State,
+  Watch,
 } from '@stencil/core';
 import { MdsPrefThemeEventDetail } from '@event/theme';
 import { MdsPrefChangeEventDetail } from '@event/preference';
@@ -109,6 +110,35 @@ export class MdsPrefTheme {
    * Emits when the component is triggered
    */
   @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>;
+
+  /*
+   * A `name`, `scheme` or `cornerShape` set from a script is stored, as a pick is. Every render
+   * reads the storage back before the props, so that an instance follows a pick made in another
+   * one, and it undid the value as soon as it was set. The render applies it from the storage.
+   * The values the component sets itself are the ones it stores right after; a value it would
+   * refuse to apply is not stored.
+   */
+  @Watch('name')
+  handleNameChange(name?: string | null): void {
+    if (name == null || !/^[a-z]+(-[a-z]+)*$/.test(name)) return;
+    // the names the render refuses too: the mode values and the ones of the scheme classes
+    if (MODE_VALUES.includes(name) || name === 'scheme' || name.startsWith('scheme-')) return;
+    localStorage.setItem(this.localStorageAliasThemeName, name);
+  }
+
+  @Watch('scheme')
+  handleSchemeChange(scheme?: string | null): void {
+    if (scheme == null || !{}.hasOwnProperty.call(this.schemeSet, scheme)) return;
+    localStorage.setItem(this.localStorageAliasThemeScheme, scheme);
+  }
+
+  @Watch('cornerShape')
+  handleCornerShapeChange(shape?: string | null): void {
+    if (shape == null || !(preferenceCornerShapeChoiceType as readonly string[]).includes(shape)) {
+      return;
+    }
+    localStorage.setItem(this.localStorageAliasCornerShape, shape);
+  }
 
   connectedCallback(): void {
     if (!Build.isBrowser) return;
