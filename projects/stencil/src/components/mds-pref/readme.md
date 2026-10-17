@@ -15,7 +15,7 @@ The `<mds-pref>` web component is the accessibility-preferences panel of the Mag
 
 - **Compound parent**: Expects `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-mode`, `mds-pref-theme` and/or `mds-pref-language` children in its default slot; it owns no preference UI of its own beyond coordination (a scheme-constrained `mds-pref-theme` locks the matching `mds-pref-mode` item).
 - **Size propagation**: A change of `size` after load cascades the value down to every nested `mds-pref-*` child; the initial value is not forwarded (the watcher does not run on load), so for the first render set `size` on each child too.
-- **Reload notice**: The panel has an inline caption prompting the user to refresh the page when a preference that cannot apply live (`consumption` or `language`) changes, but it listens for the children's `mdsPrefChange` only in `controller` mode, where the host is hidden: in the visible panel the caption never appears.
+- **Reload notice**: The panel shows an inline caption prompting the user to refresh the page when a preference that cannot apply live (`consumption` or `language`) changes after load. A `controller` panel, which is hidden, shows none.
 - **Document flag**: While at least one `<mds-pref>` is on the page, `<html>` carries `data-magma-pref`, which turns off the styles' fallback to the OS preferences; it is removed only when the last instance leaves the page, so a settings page that unmounts its own panel leaves the app controller in charge. Moving a panel in the DOM (between a sidebar and a menu, or with a client router that keeps it across pages) keeps the flag, the reload notice and the theme lock on the mode control.
 - **Live language sync**: When a `language` change is emitted, the panel re-resolves its own locale so the reload notice is shown in the newly selected language.
 
@@ -113,7 +113,7 @@ Set the `controller` boolean attribute when you need the preference engine to ap
 
 #### Reload Notice Handling
 
-`<mds-pref>` has an inline caption telling the user to refresh the page after a `consumption` or `language` change, but today it never shows in a visible panel: the parent listens for the children's `mdsPrefChange` only in `controller` mode, where the host is hidden. If your application needs the hint, provide it yourself, and keep in mind that the children emit `mdsPrefChange` on page load too, not only on a user's choice.
+`<mds-pref>` shows an inline caption telling the user to refresh the page after a `consumption` or `language` change: nothing to wire. It shows for a change made after the panel loaded, so the stored choices the controls apply on load raise no notice; a `controller` panel is hidden and shows none.
 
 
 ### 3. Antipattern
