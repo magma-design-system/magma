@@ -228,4 +228,39 @@ describe('mds-filter', () => {
       expect(selectedValues(items())).toEqual(['closed']);
     });
   });
+
+  // #827: the filter overwrote the ids of its items with `item-N`, and their events reported that
+  // value instead of the one the author wrote
+  describe('the ids of the items', () => {
+    it('stay as the author wrote them, and the events report them', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render(`
+        <mds-filter>
+          <mds-filter-item id="filter-news" label="Notizie" value="news"></mds-filter-item>
+          <mds-filter-item id="filter-events" label="Eventi" value="events"></mds-filter-item>
+        </mds-filter>`);
+      const [news, events] = Array.from(root.querySelectorAll('mds-filter-item'));
+      const select = spyOnEvent('mdsFilterItemSelect');
+
+      events.click();
+      await waitForChanges();
+
+      expect(news.id).toBe('filter-news');
+      expect(events.id).toBe('filter-events');
+      expect(select.lastEvent?.detail.id).toBe('filter-events');
+      expect(events.selected).toBe(true);
+    });
+
+    it('are given to the items without one, by position, as before', async () => {
+      const { root } = await render(`
+        <mds-filter>
+          <mds-filter-item id="filter-news" label="Notizie" value="news"></mds-filter-item>
+          <mds-filter-item label="Eventi" value="events"></mds-filter-item>
+        </mds-filter>`);
+
+      expect(Array.from(root.querySelectorAll('mds-filter-item'), (item) => item.id)).toEqual([
+        'filter-news',
+        'item-1',
+      ]);
+    });
+  });
 });
