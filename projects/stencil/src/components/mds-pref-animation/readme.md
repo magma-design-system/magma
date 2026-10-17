@@ -23,7 +23,7 @@ The `<mds-pref-animation>` web component is a preference control that lets users
 #### Properties & Visual Configurations
 
 - **`mode`**: Sets which animation preference is active - `reduce` to suppress motion, `no-preference` to fully enable animations, or `system` to defer to the user's OS setting. Leave unset to fall back to the persisted or default (`system`) value.
-- **`size`**: Sizes the nested tab items (`sm` or `md`). The parent `<mds-pref>` forwards a later change of its own `size` to every `mds-pref-*` child, but not the initial value, so set it on this component as well.
+- **`size`**: Sizes the nested tab items (`sm` or `md`). Inside `<mds-pref>`, set it on the parent instead: the parent's `size` reaches every `mds-pref-*` child on load and when it changes, and overwrites the child's own.
 
 
 ### 2. Pattern
@@ -42,7 +42,7 @@ The standard form. Place `<mds-pref-animation>` as a direct slot child of [`<mds
 
 #### Combined Preferences Panel
 
-Place multiple `mds-pref-*` children inside the same `<mds-pref>`. The parent forwards later changes of its `size` to every child.
+Place multiple `mds-pref-*` children inside the same `<mds-pref>`. The parent forwards its `size` to every child, on load and when it changes.
 
 ```html
 <mds-pref>
@@ -82,13 +82,13 @@ Handle `mdsPrefChange` when the host application needs to react - for example, t
 
 #### Compact Size
 
-Set `size="sm"` on the parent `<mds-pref>` and on each `mds-pref-*` child to shrink the tab items consistently: the parent forwards later changes of its `size`, not the initial value.
+Set `size="sm"` on the parent `<mds-pref>` to shrink the tab items of every `mds-pref-*` child consistently: the parent forwards its `size` on load and on every change.
 
 ```html
-<!-- In the panel: on the parent and on each child -->
+<!-- In the panel: on the parent only -->
 <mds-pref size="sm">
-  <mds-pref-animation size="sm"></mds-pref-animation>
-  <mds-pref-contrast size="sm"></mds-pref-contrast>
+  <mds-pref-animation></mds-pref-animation>
+  <mds-pref-contrast></mds-pref-contrast>
 </mds-pref>
 
 <!-- Acceptable when used standalone -->

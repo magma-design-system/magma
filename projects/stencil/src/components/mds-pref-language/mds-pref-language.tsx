@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Host,
   h,
+  Listen,
   Prop,
   State,
   Watch,
@@ -99,19 +100,21 @@ export class MdsPrefLanguage {
     });
   };
 
+  // A pick reaches the component from any item, one added after load too: the listener sits on
+  // the host, where the event of the item bubbles, instead of on each item found on load (#826)
+  @Listen('mdsPrefLanguageItemSelect')
+  handleItemSelect(e: CustomEvent): void {
+    this.changeLanguageSelectItem();
+    this.currentSelectedItem = e.target as HTMLMdsPrefLanguageItemElement;
+    this.currentSelectedItem.selected = true;
+    this.languageChangeEvent.emit({ language: this.currentSelectedItem.code });
+    this.showDropdown = false;
+    this.setLanguage(e.detail.language);
+  }
+
+  // the items, read again when they change, mark the language in place
   private readonly checkLanguageSelect = (): void => {
     this.elPreferLanguageItems = this.element.querySelectorAll('mds-pref-language-item');
-    this.elPreferLanguageItems.forEach((element) => {
-      element.addEventListener('mdsPrefLanguageItemSelect', (e: CustomEvent) => {
-        this.changeLanguageSelectItem();
-        this.currentSelectedItem = e.currentTarget as HTMLMdsPrefLanguageItemElement;
-        this.currentSelectedItem.selected = true;
-        this.languageChangeEvent.emit({ language: this.currentSelectedItem.code });
-        this.showDropdown = false;
-        this.setLanguage(e.detail.language);
-      });
-    });
-
     this.elPreferLanguageItems.forEach((element) => {
       element.selected = element.code === this.set;
     });
@@ -186,7 +189,7 @@ export class MdsPrefLanguage {
           visible={this.showDropdown}
           onMdsDropdownHide={this.hideLanguageSelectDropdown}
         >
-          <slot></slot>
+          <slot onSlotchange={this.checkLanguageSelect}></slot>
         </mds-dropdown>
         {this.set !== this.defaultLanguage && (
           <mds-text typography="caption">{this.t.get('defaultLanguage')}</mds-text>

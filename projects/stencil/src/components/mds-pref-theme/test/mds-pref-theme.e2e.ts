@@ -147,4 +147,22 @@ describe('mds-pref-theme', () => {
       expect(triggerOf(root).label).toBe('Neutral');
     });
   });
+
+  // #826: the items got their listener once, on load: an item added later did nothing when picked
+  it('applies the theme of an item added after load when it is picked', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-pref-theme><mds-pref-theme-item name="default"></mds-pref-theme-item></mds-pref-theme>',
+    );
+
+    const warm = document.createElement('mds-pref-theme-item');
+    warm.setAttribute('name', 'warm');
+    root.appendChild(warm);
+    await waitForChanges();
+    warm.click();
+    await waitForChanges();
+
+    expect(root).toEqualAttribute('name', 'warm');
+    expect(document.documentElement).toHaveClass('pref-theme-warm');
+    expect(warm.selected).toBe(true);
+  });
 });
