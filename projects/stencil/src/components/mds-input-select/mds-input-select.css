@@ -101,10 +101,16 @@
   appearance: none;
   background-color: rgb(var(--magma-surface-overlay));
   border: 0;
-  border-radius: var(--radius-xs);
+
+  /* capped at a part of the height of the field, as mds-input's (#913) */
+  border-radius: min(
+    var(--magma-radius-xs),
+    var(--magma-corner-cap) * var(--private-input-select-height)
+  );
   box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
   box-sizing: border-box;
   color: rgb(var(--magma-text-default));
+  corner-shape: var(--magma-corner-shape);
   cursor: pointer;
   margin: 0;
   min-height: var(--private-input-select-height);
@@ -167,7 +173,7 @@
   @apply svg;
 
   background-color: var(--mds-input-select-arrow-icon-background-color);
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   fill: var(--mds-input-select-arrow-icon-color);
   transition-duration: var(--private-input-select-icon-transition-duration);
   transition-property: background-color, fill;
