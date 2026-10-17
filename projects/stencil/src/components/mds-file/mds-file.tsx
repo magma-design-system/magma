@@ -83,8 +83,9 @@ export class MdsFile {
 
   private handleOnClick = (): void => {
     const { format, description } = getExtensionInfos(this.filename, this.suffix);
+    // the description the card shows, translated: the dictionary key used to reach the event
     this.downloadedEvent.emit({
-      description: this.description ?? description,
+      description: this.description ?? this.t.get(description),
       extension: getSuffix(this.filename, this.suffix),
       filename: this.filename,
       target: this.host,
