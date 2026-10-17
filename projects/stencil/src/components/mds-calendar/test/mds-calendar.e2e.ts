@@ -497,3 +497,42 @@ describe('mds-calendar arrows', () => {
     arrows(root).forEach((arrow) => expect(arrow).not.toHaveAttribute('disabled'));
   });
 });
+
+// #826: the area of the preselections waited for a marker class, looked up once on load
+describe('mds-calendar preselection area', () => {
+  const area = (root: HTMLElement): Element =>
+    root.shadowRoot!.querySelector('.calendar-preselection')!;
+
+  it('shows what the preselection slot holds, without the marker class', async () => {
+    const { root } = await render(
+      '<mds-calendar><div slot="preselection"><mds-button label="Last week"></mds-button></div></mds-calendar>',
+    );
+
+    expect(area(root)).toHaveClass('calendar-preselection--has-preselection');
+  });
+
+  it('shows the shortcuts added after load, and hides once they are gone', async () => {
+    const { root } = await render('<mds-calendar></mds-calendar>');
+    expect(area(root)).not.toHaveClass('calendar-preselection--has-preselection');
+
+    const shortcuts = document.createElement('div');
+    shortcuts.slot = 'preselection';
+    root.appendChild(shortcuts);
+    await vi.waitFor(() =>
+      expect(area(root)).toHaveClass('calendar-preselection--has-preselection'),
+    );
+
+    shortcuts.remove();
+    await vi.waitFor(() =>
+      expect(area(root)).not.toHaveClass('calendar-preselection--has-preselection'),
+    );
+  });
+
+  it('stays hidden with hide-preselection', async () => {
+    const { root } = await render(
+      '<mds-calendar hide-preselection><div slot="preselection">Shortcuts</div></mds-calendar>',
+    );
+
+    expect(area(root)).not.toHaveClass('calendar-preselection--has-preselection');
+  });
+});
