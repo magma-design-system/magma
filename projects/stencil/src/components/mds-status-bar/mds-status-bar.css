@@ -16,7 +16,10 @@
 
 :host {
   --mds-status-bar-max-width: 500px;
-  --mds-status-bar-backdrop: rgb(var(--magma-shadow-ink) / 0.1);
+
+  /* a translucent tray of the text ink, darker than the page in light and lighter in dark
+   * like a wash: not a projected shadow, so not --magma-shadow-ink */
+  --mds-status-bar-backdrop: rgb(var(--magma-text-default) / 0.1);
   --mds-status-bar-backdrop-filter: blur(10px);
 
   display: block;
