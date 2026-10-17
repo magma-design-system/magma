@@ -196,15 +196,34 @@
   transition-property: color, background-color;
 }
 
+/* The label and option typographies trim the box to the cap height (text-box), so what
+   rises above the capitals or drops below the baseline - the accent of a capital, a
+   cedilla, the tail of a comma - is ink outside the box, and clipping the box cut it off.
+   So the clip follows what each value has to hide: none and word only clip the inline end,
+   for the ellipsis. flow-root keeps the formatting context that overflow: hidden used to
+   give and overflow: clip does not. */
+
 :host([truncate]) .text {
-  display: block;
+  display: flow-root;
   min-width: 0;
-  overflow: hidden;
+  overflow: clip visible;
   text-overflow: ellipsis;
 }
 
 :host([truncate='word']) .text {
   white-space: nowrap;
+}
+
+/* all has to hide the lines after the clamp, so the clip stays at the bottom of the box,
+   where it still cuts the cedilla of the last visible line: the accents of the next line
+   rise into the same band. Above the first line there is nothing to hide, so the clip opens
+   upward: overflow-clip-margin widens it on every side and clip-path closes it again on the
+   bottom and the sides. Without overflow-clip-margin (Safari) it stays at the box. */
+
+:host([truncate='all']) .text {
+  clip-path: inset(-0.5lh 0 0);
+  overflow: clip;
+  overflow-clip-margin: 0.5lh;
 }
 
 @supports (line-clamp: 1) {
