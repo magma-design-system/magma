@@ -2015,6 +2015,7 @@ export namespace Components {
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
      * <mds-pref-mode></mds-pref-mode>
+     * <mds-pref-theme></mds-pref-theme>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -3969,6 +3970,7 @@ declare global {
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
      * <mds-pref-mode></mds-pref-mode>
+     * <mds-pref-theme></mds-pref-theme>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -6619,6 +6621,7 @@ declare namespace LocalJSX {
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
      * <mds-pref-mode></mds-pref-mode>
+     * <mds-pref-theme></mds-pref-theme>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -8565,6 +8568,7 @@ declare module "@stencil/core" {
              * <mds-pref-consumption></mds-pref-consumption>
              * <mds-pref-contrast></mds-pref-contrast>
              * <mds-pref-mode></mds-pref-mode>
+             * <mds-pref-theme></mds-pref-theme>
              * <mds-pref-language>
              * <mds-pref-language-item code="it"></mds-pref-language-item>
              * <mds-pref-language-item code="en"></mds-pref-language-item>
