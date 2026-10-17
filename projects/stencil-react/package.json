@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@maggioli-design-system/magma": "2.3.0",
-    "@stencil/react-output-target": "1.6.2"
+    "@stencil/react-output-target": "1.6.5"
   },
   "repository": {
     "type": "git",
