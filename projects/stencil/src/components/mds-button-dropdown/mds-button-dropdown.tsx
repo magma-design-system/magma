@@ -169,6 +169,7 @@ export class MdsButtonDropdown {
           size={this.size}
           target={this.target}
           tone={this.tone}
+          truncate={this.truncate}
           variant={this.variant}
           label={this.label}
         ></mds-button>

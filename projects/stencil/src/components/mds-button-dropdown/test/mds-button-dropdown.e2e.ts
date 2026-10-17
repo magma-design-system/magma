@@ -231,3 +231,15 @@ describe('mds-button-dropdown chevron', () => {
     });
   });
 });
+
+describe('mds-button-dropdown truncate', () => {
+  it('reaches the label of the primary action', async () => {
+    const { root } = await render(
+      '<mds-button-dropdown label="Salva" truncate="none"><mds-button label="Salva come"></mds-button></mds-button-dropdown>',
+    );
+
+    expect(
+      root.shadowRoot!.querySelector<HTMLMdsButtonElement>('.dropdown-primary-action')!.truncate,
+    ).toBe('none');
+  });
+});
