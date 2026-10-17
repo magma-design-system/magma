@@ -2909,7 +2909,7 @@ export namespace Components {
     }
     interface MdsUrlView {
         /**
-          * Specifies if domain is visible on header
+          * Specifies the icon shown in the header, before the label or the domain; without it the header shows the explore icon
          */
         "icon"?: string;
         /**
@@ -7581,7 +7581,7 @@ declare namespace LocalJSX {
     }
     interface MdsUrlView {
         /**
-          * Specifies if domain is visible on header
+          * Specifies the icon shown in the header, before the label or the domain; without it the header shows the explore icon
          */
         "icon"?: string;
         /**
