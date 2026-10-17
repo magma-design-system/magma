@@ -62,7 +62,13 @@
 
   @apply text-info-detail;
 
+  /* the radius of mds-input, capped at a part of the height of the field like it (#913, #995) */
+  border-radius: min(
+    var(--magma-radius-xl),
+    var(--magma-corner-cap) * var(--private-input-select-height)
+  );
   color: rgb(var(--magma-text-default));
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   position: relative;
   user-select: none;
@@ -101,16 +107,11 @@
   appearance: none;
   background-color: rgb(var(--magma-surface-overlay));
   border: 0;
-
-  /* capped at a part of the height of the field, as mds-input's (#913) */
-  border-radius: min(
-    var(--magma-radius-xs),
-    var(--magma-corner-cap) * var(--private-input-select-height)
-  );
+  border-radius: inherit;
   box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);
   box-sizing: border-box;
   color: rgb(var(--magma-text-default));
-  corner-shape: var(--magma-corner-shape);
+  corner-shape: inherit;
   cursor: pointer;
   margin: 0;
   min-height: var(--private-input-select-height);
