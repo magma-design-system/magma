@@ -7400,7 +7400,7 @@ declare namespace LocalJSX {
          */
         "duration"?: number;
         /**
-          * Emits when the accordion is opened
+          * Emits when a toast with a `duration` has hidden itself, once its exit animation is over
          */
         "onMdsToastClose"?: (event: MdsToastCustomEvent<void>) => void;
         /**
