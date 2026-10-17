@@ -140,11 +140,8 @@ export class MdsButton {
 
   @Watch('disabled')
   disabledChanged(newValue: boolean | undefined): void {
-    if (newValue) {
-      this.km.attachClickBehavior();
-      return;
-    }
-    this.km.detachClickBehavior();
+    this.syncClickBehavior();
+    if (newValue) return;
 
     /**
      * When the component is disabled="false" it won't work with onClick events
@@ -162,12 +159,22 @@ export class MdsButton {
   @Watch('await')
   awaitChanged(newValue?: boolean): void {
     this.host.setAttribute('aria-busy', (!!newValue).toString());
-    if (newValue) {
-      this.km.attachClickBehavior();
+    if (newValue === false) this.await = undefined;
+    this.syncClickBehavior();
+  }
+
+  /**
+   * Enter, and Space unless the button is a link, click the button as the pointer does: never
+   * while it is disabled or awaiting. A busy button keeps the focus it had, but a second Enter
+   * does not submit again.
+   */
+  private syncClickBehavior = (): void => {
+    if (this.disabled || this.await) {
+      this.km.detachClickBehavior();
       return;
     }
-    this.km.detachClickBehavior();
-  }
+    this.km.attachClickBehavior('element', { space: !this.isLink() });
+  };
 
   @Watch('type')
   handleTypeChange(newValue: string): void {
@@ -195,6 +202,7 @@ export class MdsButton {
       this.host.setAttribute('role', this.isLink() ? 'link' : 'button');
     }
     this.handleTypeChange(this.isLink() ? 'link' : (this.type ?? ''));
+    this.syncClickBehavior();
   }
 
   @Watch('variant')
@@ -209,13 +217,17 @@ export class MdsButton {
     }
   }
 
+  // an awaiting button takes no pointer, but the click of a script or of an assistive
+  // technology still reaches it: it must not submit the form a second time
   private handleRequestSubmitForm = (e: MouseEvent) => {
     e.preventDefault();
+    if (this.await) return;
     if (this.internals.form) requestSubmitAs(this.internals.form, this.name, this.value);
   };
 
   private handleReset = (e: MouseEvent) => {
     e.preventDefault();
+    if (this.await) return;
     this.internals.form?.reset();
   };
 
@@ -296,9 +308,7 @@ export class MdsButton {
 
   componentDidLoad(): void {
     this.km.addElement(this.host);
-    if (!this.await) {
-      this.km.attachClickBehavior();
-    }
+    this.syncClickBehavior();
     this.host.setAttribute('aria-busy', this.await ? 'true' : 'false');
 
     if (this.autoFocus) {
@@ -341,18 +351,10 @@ export class MdsButton {
     this.syncIconName();
   }
 
-  @Watch('await')
-  handleAwaitChange(newValue: boolean): void {
-    if (newValue === false) {
-      this.await = undefined;
-      this.km.detachClickBehavior();
-      return;
-    }
-    this.km.attachClickBehavior();
-  }
-
+  // a button moved in the page is disconnected and connected again, without loading again
   connectedCallback(): void {
     if (!this.disabled) this.host.removeAttribute('disabled');
+    this.syncClickBehavior();
   }
 
   disconnectedCallback(): void {

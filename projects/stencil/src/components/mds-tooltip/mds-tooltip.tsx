@@ -15,7 +15,7 @@ import { preferenceStore } from '@common/preference';
   shadow: true,
 })
 export class MdsTooltip implements FloatingElement {
-  private caller: HTMLElement;
+  private caller?: HTMLElement;
   private floatingController: FloatingController;
 
   @Element() host!: HTMLMdsTooltipElement;
@@ -87,8 +87,60 @@ export class MdsTooltip implements FloatingElement {
    */
   @Prop({ mutable: true, reflect: true }) visible = false;
 
-  private readonly handleVisibility = (visibility: boolean): void => {
-    this.visible = visibility;
+  private hovered = false;
+  private focused = false;
+
+  /**
+   * The tooltip shows while the pointer is over the caller or the caller has the focus, so the
+   * keyboard reaches it as the pointer does; Escape hides it until the caller is entered or
+   * focused again (WCAG 1.4.13).
+   */
+  private readonly syncVisibility = (): void => {
+    this.visible = this.hovered || this.focused;
+  };
+
+  private readonly handleMouseEnter = (): void => {
+    this.hovered = true;
+    this.syncVisibility();
+  };
+
+  private readonly handleMouseLeave = (): void => {
+    this.hovered = false;
+    this.syncVisibility();
+  };
+
+  private readonly handleFocusIn = (): void => {
+    this.focused = true;
+    this.syncVisibility();
+  };
+
+  private readonly handleFocusOut = (): void => {
+    this.focused = false;
+    this.syncVisibility();
+  };
+
+  private readonly handleEscape = (event: KeyboardEvent): void => {
+    if (event.key !== 'Escape' || !this.visible) return;
+    this.hovered = false;
+    this.focused = false;
+    this.syncVisibility();
+  };
+
+  private listenTo = (caller?: HTMLElement): void => {
+    if (this.caller) {
+      this.caller.removeEventListener('mouseenter', this.handleMouseEnter);
+      this.caller.removeEventListener('mouseleave', this.handleMouseLeave);
+      this.caller.removeEventListener('focusin', this.handleFocusIn);
+      this.caller.removeEventListener('focusout', this.handleFocusOut);
+      this.caller.removeEventListener('keydown', this.handleEscape);
+    }
+    this.caller = caller;
+    if (!caller) return;
+    caller.addEventListener('mouseenter', this.handleMouseEnter);
+    caller.addEventListener('mouseleave', this.handleMouseLeave);
+    caller.addEventListener('focusin', this.handleFocusIn);
+    caller.addEventListener('focusout', this.handleFocusOut);
+    caller.addEventListener('keydown', this.handleEscape);
   };
 
   @Watch('hideArrow')
@@ -152,9 +204,7 @@ export class MdsTooltip implements FloatingElement {
 
     const caller = this.floatingController?.updateCaller(this.target);
     if (!caller) return;
-    this.caller = caller;
-    this.caller.addEventListener('mouseleave', this.handleVisibility.bind(this, false));
-    this.caller.addEventListener('mouseenter', this.handleVisibility.bind(this, true));
+    this.listenTo(caller);
   }
 
   componentDidLoad(): void {
@@ -169,8 +219,14 @@ export class MdsTooltip implements FloatingElement {
     }
   }
 
+  // a tooltip moved in the page is disconnected and connected again, without loading again
+  connectedCallback(): void {
+    if (this.floatingController) this.targetChanged();
+  }
+
   disconnectedCallback(): void {
-    this.floatingController.dismiss();
+    this.listenTo(undefined);
+    this.floatingController?.dismiss();
   }
 
   render() {
