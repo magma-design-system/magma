@@ -7,6 +7,9 @@
   load, and resolves each initial-value down to a literal - see that file for the full
   rationale. inherits is true throughout, because that is what the unregistered behaviour
   already does today.
+
+  Deliberately NOT registered:
+    - --mds-input-date-icon-color-rgb: deprecated, read by nothing.
 */
 
 @property --mds-input-date-background {
@@ -31,12 +34,6 @@
   inherits: true;
   initial-value: rgb(var(--magma-accent-emphasis));
   syntax: '<color>';
-}
-
-@property --mds-input-date-icon-color-rgb {
-  inherits: true;
-  initial-value: 0 0 0;
-  syntax: '<integer>+';
 }
 
 @property --mds-input-date-variant-color-rgb {
