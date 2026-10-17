@@ -65,6 +65,14 @@ describe('mds-details', () => {
       expect(getComputedStyle(root.querySelector('a')!).visibility).toBe('hidden');
     });
 
+    it('keeps an open details hidden inside a closed one', async () => {
+      const { root } = await render(
+        `<mds-details style="--mds-details-duration: 0s"><span slot="title">Outer</span><mds-details opened style="--mds-details-duration: 0s"><span slot="title">Inner</span><a href="#deep">Deep</a></mds-details></mds-details>`,
+      );
+
+      expect(getComputedStyle(root.querySelector('a')!).visibility).toBe('hidden');
+    });
+
     it('puts the open content in the tab order', async () => {
       const { root, header } = await details('opened style="--mds-details-duration: 0s"');
 

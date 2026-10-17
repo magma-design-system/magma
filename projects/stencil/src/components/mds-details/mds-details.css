@@ -53,7 +53,9 @@
   overflow: visible;
   padding-top: --spacing(300);
   pointer-events: auto;
-  visibility: visible;
+
+  /* inherit, not visible: the open content of a details inside a closed one stays hidden */
+  visibility: inherit;
 }
 
 .header {
