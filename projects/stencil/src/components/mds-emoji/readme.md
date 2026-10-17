@@ -18,7 +18,7 @@ The `<mds-emoji>` web component renders one of the Magma Design System's animate
 - **Mouse following**: When started, the emoji tracks the pointer with a 3D head rotation and parallax on each facial part; it is off by default and only reacts after `startFollowMouse()` is called. When the user prefers reduced motion, neither the pointer tracking nor the blinking moves the face.
 - **Single-animation lock**: Only one expression plays at a time - `agree`, `smile`, `disagree`, and `startThinking` take the face over: each stops whatever is playing (a thinking pose included) and starts from the neutral face, so a later call cuts an earlier one short. `startThinking` is a no-op only while the emoji is already thinking.
 - **Promise-based methods**: Every expressive action returns a `Promise<void>` that resolves when its animation finishes, letting callers await one expression before chaining the next.
-- **State restoration**: When an animation completes, mouse-following is restarted if `startFollowMouse()` was ever called, even after a later `stopFollowMouse()`.
+- **State restoration**: An expression pauses mouse-following and, when it completes, restarts it if it was on: `startFollowMouse()` called and not stopped by a later `stopFollowMouse()`.
 - **Idle blinking**: `startBlinking()` runs a random blink loop on the eyes; blinks are suppressed while the emoji is busy with another animation.
 
 #### Properties & Visual Configurations
