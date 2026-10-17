@@ -330,6 +330,7 @@ mds-card slot footer
 mds-card slot header
 mds-card slot media
 mds-card part layout
+mds-card css --mds-card-background
 mds-card css --mds-card-gap
 mds-card css --mds-card-padding
 mds-card-content encapsulation shadow
