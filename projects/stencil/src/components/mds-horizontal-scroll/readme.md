@@ -313,9 +313,9 @@ Slotted items without a declared width collapse to zero or stretch unpredictably
 
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"content"` |             |
+| Part        | Description                                          |
+| ----------- | ---------------------------------------------------- |
+| `"content"` | The track that scrolls, with the default slot inside |
 
 
 ## CSS Custom Properties
