@@ -31,13 +31,6 @@ export class MdsPrefContrast {
     it: localeIt,
   });
 
-  private readonly prefersDefaults = {
-    custom: 'no-preference',
-    less: 'no-preference',
-    more: 'more',
-    'no-preference': 'no-preference',
-  };
-
   /**
    * Sets the size of the component items nested inside it
    */
@@ -98,27 +91,8 @@ export class MdsPrefContrast {
     this.syncingFromStore = false;
   };
 
-  private readonly rollbackContrast = (): ContrastModeType => {
-    if (typeof window === 'undefined') {
-      return this.defaultMode;
-    }
-
-    for (const key in this.prefersDefaults) {
-      if ({}.hasOwnProperty.call(this.prefersDefaults, key)) {
-        if (window.matchMedia(`(prefers-contrast: ${key})`).matches) {
-          return this.prefersDefaults[key];
-        }
-      }
-    }
-
-    // no media query matched: the hydrate/SSR runtime's matchMedia always
-    // reports matches:false, and some browsers expose no prefers-contrast
-    return this.defaultMode;
-  };
-
   private readonly setContrast = (mode: ContrastModeType): void => {
     this.prefChangeEvent.emit({ preference: 'contrast' });
-    this.rollbackContrast();
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
     if (typeof document !== 'undefined') {
