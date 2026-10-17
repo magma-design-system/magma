@@ -1705,7 +1705,7 @@ export namespace Components {
     }
     interface MdsInputTip {
         /**
-          * Specifies if the component is active and shows expanded children or not
+          * Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
           * @default false
          */
         "active"?: boolean;
@@ -6285,7 +6285,7 @@ declare namespace LocalJSX {
     }
     interface MdsInputTip {
         /**
-          * Specifies if the component is active and shows expanded children or not
+          * Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
           * @default false
          */
         "active"?: boolean;
