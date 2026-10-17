@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { itAnnouncesEachPickOnce } from '@test/pref';
 
 describe('mds-pref-animation', () => {
   it('renders', async () => {
@@ -33,4 +34,8 @@ describe('mds-pref-animation', () => {
     expect(controller.mode).toBe('reduce');
     expect(controllerChange).not.toHaveBeenCalled();
   });
+});
+
+describe('mds-pref-animation mdsPrefChange', () => {
+  itAnnouncesEachPickOnce('mds-pref-animation', '.item--reduce', 'pref-animation-reduce');
 });

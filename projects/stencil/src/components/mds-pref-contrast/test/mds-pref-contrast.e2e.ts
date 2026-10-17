@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { itAnnouncesEachPickOnce } from '@test/pref';
 
 describe('mds-pref-contrast', () => {
   it('renders', async () => {
@@ -33,4 +34,8 @@ describe('mds-pref-contrast', () => {
     expect(controller.mode).toBe('more');
     expect(controllerChange).not.toHaveBeenCalled();
   });
+});
+
+describe('mds-pref-contrast mdsPrefChange', () => {
+  itAnnouncesEachPickOnce('mds-pref-contrast', '.item--more', 'pref-contrast-more');
 });

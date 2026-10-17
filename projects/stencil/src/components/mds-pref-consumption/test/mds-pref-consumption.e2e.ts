@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { itAnnouncesEachPickOnce } from '@test/pref';
 
 describe('mds-pref-consumption', () => {
   it('renders', async () => {
@@ -33,4 +34,8 @@ describe('mds-pref-consumption', () => {
     expect(controller.mode).toBe('low');
     expect(controllerChange).not.toHaveBeenCalled();
   });
+});
+
+describe('mds-pref-consumption mdsPrefChange', () => {
+  itAnnouncesEachPickOnce('mds-pref-consumption', '.item--low', 'pref-consumption-low');
 });

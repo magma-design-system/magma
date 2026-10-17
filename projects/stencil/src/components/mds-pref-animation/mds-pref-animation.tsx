@@ -22,6 +22,8 @@ export class MdsPrefAnimation {
   private readonly customPropertyAlias: string = '--magma-pref-animation';
   private readonly defaultMode: AnimationModeType = 'system';
   private syncingFromStore: boolean = false;
+  // the animation this instance applied last, or followed from another one
+  private appliedMode?: AnimationModeType;
   private unsubscribeStore?: () => void;
 
   private readonly t: Locale = new Locale({
@@ -88,11 +90,22 @@ export class MdsPrefAnimation {
     }
     this.syncingFromStore = true;
     this.mode = mode as AnimationModeType;
+    this.appliedMode = mode as AnimationModeType;
     this.syncingFromStore = false;
   };
 
+  /**
+   * Applies a animation once per change, and announces it once applied: the `mode` watcher
+   * calls this again for the value it has just been given, which used to emit a second
+   * mdsPrefChange, and the first application, the one of load, is no change to announce.
+   */
   private readonly setAnimation = (mode: AnimationModeType): void => {
-    this.prefChangeEvent.emit({ preference: 'animation' });
+    if (mode === this.appliedMode) {
+      this.mode = mode;
+      return;
+    }
+    const isFirstApplication = this.appliedMode === undefined;
+    this.appliedMode = mode;
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
     if (typeof document !== 'undefined') {
@@ -107,6 +120,9 @@ export class MdsPrefAnimation {
       element?.style.setProperty(this.customPropertyAlias, this.mode);
     }
     preferenceStore.state.animation = mode;
+    if (!isFirstApplication) {
+      this.prefChangeEvent.emit({ preference: 'animation' });
+    }
   };
 
   @Watch('mode')
