@@ -33,7 +33,12 @@
   padding-top: 0;
   pointer-events: none;
   transition-duration: var(--private-details-duration);
-  transition-property: grid-template-rows, opacity, padding;
+
+  /* visibility leaves the closed content out of the tab order and of the accessibility tree, and
+     the slotted content inherits it; as a transition it turns visible at the start of the opening
+     and hidden at the end of the closing, so the content is seen for the whole animation */
+  transition-property: grid-template-rows, opacity, padding, visibility;
+  visibility: hidden;
 }
 
 .content-expander {
@@ -48,6 +53,7 @@
   overflow: visible;
   padding-top: --spacing(300);
   pointer-events: auto;
+  visibility: visible;
 }
 
 .header {
