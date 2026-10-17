@@ -26,6 +26,7 @@ import { TextAnimationType } from '@component/mds-text/meta/types';
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  * @slot notification - Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element.
  * @part icon - The icon inside the component
+ * @part label - The text of the button: the `label`, or the default slot when `label` is not set
  */
 
 @Component({

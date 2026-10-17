@@ -411,10 +411,10 @@ mds-button::part(icon) {
 
 ## Shadow Parts
 
-| Part      | Description                   |
-| --------- | ----------------------------- |
-| `"icon"`  | The icon inside the component |
-| `"label"` |                               |
+| Part      | Description                                                                      |
+| --------- | -------------------------------------------------------------------------------- |
+| `"icon"`  | The icon inside the component                                                    |
+| `"label"` | The text of the button: the `label`, or the default slot when `label` is not set |
 
 
 ## CSS Custom Properties
