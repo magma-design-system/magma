@@ -2,6 +2,7 @@ import { Build, Component, Host, h, Method, Prop, Element, Watch } from '@stenci
 import { cssRotationToNumber, cssDurationToSeconds, cssSizeToNumber } from '@common/unit';
 import { prefersReducedMotion } from '@common/preference';
 import type { EmojiNames, SvgDictionary, SvgPart } from './meta/types';
+import { gazeReach, gazeToward } from './meta/gaze';
 import { gsap } from 'gsap';
 
 import miaSvg from './asset/mia.svg';
@@ -907,37 +908,24 @@ export class MdsEmoji {
     // Reduced motion keeps the face still; stopFollowMouse still recentres it, because
     // that is a state the caller asked for rather than an animation of its own.
     if (prefersReducedMotion()) return;
-    const { centerX, centerY } = this.getEmojiCenter();
-    let currentMouseX = centerX;
-    let currentMouseY = centerY;
-
     if (this.isFollowingMouse) {
-      currentMouseX = this.mouseX;
-      currentMouseY = this.mouseY;
+      this.moveHead(this.mouseX, this.mouseY);
+      return;
     }
-
-    const rect = this.host.getBoundingClientRect();
-
-    const deltaX = currentMouseX - centerX;
-    const deltaY = currentMouseY - centerY;
-
-    const percentX = deltaX / (rect.width / 2);
-    const percentY = deltaY / (rect.height / 2);
-
-    this.rotate(percentX, percentY);
+    const { centerX, centerY } = this.getEmojiCenter();
+    this.moveHead(centerX, centerY);
   };
 
+  // The one place the pointer becomes a pose: the direction of the point from the centre,
+  // with a reach that depends on the viewport, not on the size of the emoji (#800).
   private moveHead = (x: number, y: number, immediate: boolean = false): void => {
     const { centerX, centerY } = this.getEmojiCenter();
-    const rect = this.host.getBoundingClientRect();
-
-    const deltaX = x - centerX;
-    const deltaY = y - centerY;
-
-    const percentX = deltaX / (rect.width / 2);
-    const percentY = deltaY / (rect.height / 2);
-
-    this.rotate(percentX, percentY, immediate);
+    const gaze = gazeToward(
+      x - centerX,
+      y - centerY,
+      gazeReach(window.innerWidth, window.innerHeight),
+    );
+    this.rotate(gaze.x, gaze.y, immediate);
   };
 
   private rotate = (percentX: number, percentY: number, immediate: boolean = false): void => {
