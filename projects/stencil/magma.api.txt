@@ -1719,7 +1719,7 @@ interface MdsFilePreviewEventDetail { extension: string; filename: string; targe
 interface MdsFilterEventDetail { children: NodeListOf<HTMLMdsFilterItemElement>; value: string; }
 interface MdsFilterItemEventDetail { id: string; selected: boolean; }
 interface MdsHeaderEventDetail { bar: HTMLMdsHeaderBarElement; }
-interface MdsHeaderVisibilityEventDetail { visibility: boolean; }
+interface MdsHeaderVisibilityEventDetail { /** The visibility the header has now, the value of its `visibility` prop */ visibility: 'hidden' | 'visible'; }
 interface MdsImgEventDetail { image: HTMLImageElement; }
 interface MdsInputEventDetail { value?: File | string | FormData | null; }
 interface MdsInputSelectEventDetail extends MdsInputEventDetail { /** * The values of the selected options, the placeholder left out: one with a single select, every * selected one with `multiple`, where `value` holds only the first, as `select.value` does. */ values: string[]; }
