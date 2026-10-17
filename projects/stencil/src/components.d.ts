@@ -2484,7 +2484,7 @@ export namespace Components {
          */
         "typography"?: TypographyType;
         /**
-          * Specifies the value the component will return mdsStepperBarItemSelect event
+          * Specifies the value of the step: once the step is done, mds-stepper-bar adds it to the `value` of `mdsStepperBarChange`, which joins the values of the done steps with commas
          */
         "value"?: string;
     }
@@ -7137,7 +7137,7 @@ declare namespace LocalJSX {
          */
         "typography"?: TypographyType;
         /**
-          * Specifies the value the component will return mdsStepperBarItemSelect event
+          * Specifies the value of the step: once the step is done, mds-stepper-bar adds it to the `value` of `mdsStepperBarChange`, which joins the values of the done steps with commas
          */
         "value"?: string;
     }
