@@ -6494,7 +6494,7 @@ declare namespace LocalJSX {
          */
         "onMdsModalHide"?: (event: MdsModalCustomEvent<void>) => void;
         /**
-          * Emits when a modal is closed
+          * Emits when a modal is opened, as its intro animation starts: `mdsModalShow` follows once it is totally visible
          */
         "onMdsModalOpen"?: (event: MdsModalCustomEvent<void>) => void;
         /**
