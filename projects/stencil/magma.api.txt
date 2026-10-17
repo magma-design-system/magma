@@ -1217,7 +1217,6 @@ mds-push-notification-item slot badge
 mds-push-notification-item part actions
 mds-push-notification-item part avatar
 mds-push-notification-item part content
-mds-push-notification-item part icon
 mds-push-notification-item part picture
 mds-push-notification-item css --mds-push-notification-item-duration
 mds-push-notification-item css --mds-push-notification-item-icon-background-color
