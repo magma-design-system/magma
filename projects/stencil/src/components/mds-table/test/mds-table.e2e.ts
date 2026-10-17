@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 
 /** A selectable table with something in the batch-action slot: the counter only exists there. */
@@ -127,6 +127,29 @@ describe('mds-table', () => {
       await (root as HTMLMdsTableElement).selectAll(false);
       await waitForChanges();
       expect(counter(root)).toBe('0');
+    });
+  });
+
+  // #826: whether the table has batch actions was read once, on load: buttons added later, when
+  // the page fills the table, never got the bar
+  describe('the batch actions bar', () => {
+    const bar = (root: HTMLElement): Element | null =>
+      root.shadowRoot!.querySelector('.batch-actions-wrapper');
+
+    it('shows for a button added after load, and goes with the last one', async () => {
+      const { root } = await render(
+        TABLE.replace(/\s*<mds-button slot="batch-action"[^>]*><\/mds-button>/, ''),
+      );
+      expect(bar(root)).toBeNull();
+
+      const button = document.createElement('mds-button');
+      button.slot = 'batch-action';
+      button.label = 'Archive';
+      root.appendChild(button);
+      await vi.waitFor(() => expect(bar(root)).not.toBeNull());
+
+      button.remove();
+      await vi.waitFor(() => expect(bar(root)).toBeNull());
     });
   });
 });

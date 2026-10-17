@@ -47,8 +47,7 @@ const hasSlottedContent = (el: HTMLElement, name?: string): boolean => {
  */
 const queryChildBySlot = (host: HTMLElement, name: string): HTMLElement | null =>
   (Array.from(host.children).find((child) => child.getAttribute('slot') === name) as
-    | HTMLElement
-    | undefined) ?? null;
+    HTMLElement | undefined) ?? null;
 
 const queryChildrenBySlot = (host: HTMLElement, name: string): HTMLElement[] =>
   Array.from(host.children).filter(
@@ -103,6 +102,20 @@ const readSlottedLabel = (host: HTMLElement): string | undefined => {
   return sanitizeLabel(text);
 };
 
+/**
+ * Calls `onChange` when the content of the host changes after load: an element added or removed
+ * at any depth, or the `slot` attribute of one changed (a Magma child writes its own when it
+ * renders). A slot rendered only once it has content, or content nested below the slotted
+ * children, sends no `slotchange` to tell. Returns the function that stops observing; where
+ * there is no MutationObserver (the hydrate/SSR runtime) nothing is observed.
+ */
+const observeChildren = (host: HTMLElement, onChange: () => void): (() => void) => {
+  if (typeof MutationObserver === 'undefined') return () => undefined;
+  const observer = new MutationObserver(onChange);
+  observer.observe(host, { attributeFilter: ['slot'], childList: true, subtree: true });
+  return () => observer.disconnect();
+};
+
 export {
   hasSlottedElements,
   hasSlottedNodes,
@@ -112,6 +125,7 @@ export {
   queryChildBySlot,
   queryChildrenBySlot,
   queryChildrenByTag,
+  observeChildren,
   sanitizeLabel,
   readSlottedLabel,
 };
