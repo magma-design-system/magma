@@ -2,18 +2,22 @@
   @apply grid-cols-full;
 
   background-color: rgb(var(--magma-surface-raised));
-  border-radius: var(--radius-lg);
+  border-radius: var(--magma-radius-lg);
   box-shadow: var(--shadow-sm-sharp);
+  corner-shape: var(--magma-corner-shape);
   display: inline-flex;
   gap: --spacing(300);
   padding: --spacing(400);
 }
 
+/* a tab hanging from the top edge: 24px on its 32px width was half a circle at the bottom, the
+   pill, out of the corner axis; the square top corners lose nothing to the clamp */
+
 .mini-card-icon {
   background-color: rgb(var(--magma-accent-ai-fg));
-  border-radius: var(--radius-2xl);
-  border-top-left-radius: var(--radius-none);
-  border-top-right-radius: var(--radius-none);
+  border-radius: var(--magma-radius-full);
+  border-top-left-radius: var(--magma-radius-none);
+  border-top-right-radius: var(--magma-radius-none);
   fill: rgb(var(--magma-accent-ai-surface-subtle));
   height: --spacing(600);
   margin-top: --spacing(-400);
@@ -45,8 +49,8 @@
   }
 
   .mini-card-icon {
-    border-top-left-radius: var(--radius-none);
-    border-top-right-radius: var(--radius-none);
+    border-top-left-radius: var(--magma-radius-none);
+    border-top-right-radius: var(--magma-radius-none);
     margin-top: --spacing(-400);
     padding-top: --spacing(200);
   }
