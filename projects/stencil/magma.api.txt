@@ -1449,6 +1449,7 @@ mds-table-cell css --mds-table-cell-background-alt
 mds-table-cell css --mds-table-cell-color
 mds-table-cell css --mds-table-cell-color-alt
 mds-table-footer encapsulation shadow
+mds-table-footer prop selectable (attr selectable): boolean | undefined
 mds-table-footer slot (default)
 mds-table-header encapsulation shadow
 mds-table-header prop selectable (attr selectable): boolean | undefined

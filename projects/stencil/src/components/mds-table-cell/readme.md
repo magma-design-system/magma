@@ -315,12 +315,14 @@ Inserting a `<div>` or `<span>` wrapper around `<mds-table-cell>` inside `<mds-t
 
 ### Used by
 
+ - [mds-table-footer](../mds-table-footer)
  - [mds-table-header](../mds-table-header)
  - [mds-table-row](../mds-table-row)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-table-footer --> mds-table-cell
   mds-table-header --> mds-table-cell
   mds-table-row --> mds-table-cell
   style mds-table-cell fill:#f9f,stroke:#333,stroke-width:4px

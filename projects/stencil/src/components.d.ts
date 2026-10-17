@@ -2634,6 +2634,10 @@ export namespace Components {
         "value"?: string | number;
     }
     interface MdsTableFooter {
+        /**
+          * Adds an empty cell in the selection column, so that the cells of the footer line up with the ones of the rows: `mds-table` sets it from its own `selectable`
+         */
+        "selectable"?: boolean;
     }
     interface MdsTableHeader {
         /**
@@ -7299,6 +7303,10 @@ declare namespace LocalJSX {
         "value"?: string | number;
     }
     interface MdsTableFooter {
+        /**
+          * Adds an empty cell in the selection column, so that the cells of the footer line up with the ones of the rows: `mds-table` sets it from its own `selectable`
+         */
+        "selectable"?: boolean;
     }
     interface MdsTableHeader {
         /**
@@ -8271,6 +8279,9 @@ declare namespace LocalJSX {
     interface MdsTableCellAttributes {
         "value": string;
     }
+    interface MdsTableFooterAttributes {
+        "selectable": boolean;
+    }
     interface MdsTableHeaderAttributes {
         "selectable": boolean;
     }
@@ -8463,7 +8474,7 @@ declare namespace LocalJSX {
         "mds-table": Omit<MdsTable, keyof MdsTableAttributes> & { [K in keyof MdsTable & keyof MdsTableAttributes]?: MdsTable[K] } & { [K in keyof MdsTable & keyof MdsTableAttributes as `attr:${K}`]?: MdsTableAttributes[K] } & { [K in keyof MdsTable & keyof MdsTableAttributes as `prop:${K}`]?: MdsTable[K] };
         "mds-table-body": Omit<MdsTableBody, keyof MdsTableBodyAttributes> & { [K in keyof MdsTableBody & keyof MdsTableBodyAttributes]?: MdsTableBody[K] } & { [K in keyof MdsTableBody & keyof MdsTableBodyAttributes as `attr:${K}`]?: MdsTableBodyAttributes[K] } & { [K in keyof MdsTableBody & keyof MdsTableBodyAttributes as `prop:${K}`]?: MdsTableBody[K] };
         "mds-table-cell": Omit<MdsTableCell, keyof MdsTableCellAttributes> & { [K in keyof MdsTableCell & keyof MdsTableCellAttributes]?: MdsTableCell[K] } & { [K in keyof MdsTableCell & keyof MdsTableCellAttributes as `attr:${K}`]?: MdsTableCellAttributes[K] } & { [K in keyof MdsTableCell & keyof MdsTableCellAttributes as `prop:${K}`]?: MdsTableCell[K] };
-        "mds-table-footer": MdsTableFooter;
+        "mds-table-footer": Omit<MdsTableFooter, keyof MdsTableFooterAttributes> & { [K in keyof MdsTableFooter & keyof MdsTableFooterAttributes]?: MdsTableFooter[K] } & { [K in keyof MdsTableFooter & keyof MdsTableFooterAttributes as `attr:${K}`]?: MdsTableFooterAttributes[K] } & { [K in keyof MdsTableFooter & keyof MdsTableFooterAttributes as `prop:${K}`]?: MdsTableFooter[K] };
         "mds-table-header": Omit<MdsTableHeader, keyof MdsTableHeaderAttributes> & { [K in keyof MdsTableHeader & keyof MdsTableHeaderAttributes]?: MdsTableHeader[K] } & { [K in keyof MdsTableHeader & keyof MdsTableHeaderAttributes as `attr:${K}`]?: MdsTableHeaderAttributes[K] } & { [K in keyof MdsTableHeader & keyof MdsTableHeaderAttributes as `prop:${K}`]?: MdsTableHeader[K] };
         "mds-table-header-cell": Omit<MdsTableHeaderCell, keyof MdsTableHeaderCellAttributes> & { [K in keyof MdsTableHeaderCell & keyof MdsTableHeaderCellAttributes]?: MdsTableHeaderCell[K] } & { [K in keyof MdsTableHeaderCell & keyof MdsTableHeaderCellAttributes as `attr:${K}`]?: MdsTableHeaderCellAttributes[K] } & { [K in keyof MdsTableHeaderCell & keyof MdsTableHeaderCellAttributes as `prop:${K}`]?: MdsTableHeaderCell[K] };
         "mds-table-row": Omit<MdsTableRow, keyof MdsTableRowAttributes> & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes]?: MdsTableRow[K] } & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes as `attr:${K}`]?: MdsTableRowAttributes[K] } & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes as `prop:${K}`]?: MdsTableRow[K] };
