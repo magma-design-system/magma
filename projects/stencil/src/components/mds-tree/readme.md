@@ -15,7 +15,7 @@ The `<mds-tree>` web component is the root container of the Magma Design System 
 
 - **Compound parent**: The default slot accepts only `<mds-tree-item>` elements; the tree itself renders nothing but the slot and acts as the configuration and coordination root for the hierarchy.
 - **Depth seeding**: Its direct children are assigned `depth = 0`, which removes the branch connector lines from the first level; deeper levels are indented by their nesting.
-- **Cascading `expanded`**: Changing `expanded` on the tree at runtime propagates the new value to every descendant item present at load (the initial value is not propagated), opening or collapsing the whole hierarchy at once - except children marked `async`, which are left for on-demand resolution.
+- **Cascading `expanded`**: `expanded` on the tree, set in the markup or changed at runtime, propagates to every descendant item, opening or collapsing the whole hierarchy at once - except children marked `async`, which are left for on-demand resolution. Items added later, a branch loaded on demand, take the tree's `expanded`, `toggle`, `togglePosition`, `appearance` and `truncate` when they arrive; the items already there keep the state the user gave them.
 - **Cascading `toggle` and `truncate`**: Changing the toggle icon or the truncation mode on the tree pushes the value down to all descendant items so the whole tree stays visually consistent.
 - **Async branches**: When `async` is set on an item, its branch is expected to resolve its children after the click rather than expanding from pre-rendered content; such items are excluded from the bulk `expanded` cascade.
 
@@ -28,7 +28,7 @@ The `<mds-tree>` web component is the root container of the Magma Design System 
 #### Other behavioral props
 
 - **`truncate`** sets how item labels overflow: `'word'` truncates the line, `'all'` clamps to multiple lines (paired with the `--mds-tree-line-clamp` custom property), `'none'` lets text wrap freely.
-- **`expanded`** is the only mutable, reflected state prop; change it on the root to open or close the entire tree programmatically (an `expanded` attribute present at first render opens nothing: set it on the items instead).
+- **`expanded`** is the only mutable, reflected state prop; set it on the root to open the entire tree on first render, or change it to open or close the entire tree programmatically.
 
 
 ### 2. Pattern
@@ -65,7 +65,7 @@ Place `<mds-tree-item>` elements inside other `<mds-tree-item>` elements to buil
 
 #### Programmatic Expand / Collapse
 
-Change `expanded` on `<mds-tree>` at runtime to open or close the entire hierarchy at once. This cascades to all descendant items except those marked `async`. The cascade runs only when the value changes, so to start with a branch open set `expanded` on that item.
+Change `expanded` on `<mds-tree>` at runtime to open or close the entire hierarchy at once. This cascades to all descendant items except those marked `async`, also when `expanded` is set in the markup; to start with a single branch open set `expanded` on that item instead.
 
 ```html
 <!-- A branch expanded on mount -->
