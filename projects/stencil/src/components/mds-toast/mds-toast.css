@@ -56,12 +56,18 @@
   padding: --spacing(400);
   pointer-events: none;
   transition-duration: var(--private-toast-transition-duration);
-  transition-property: box-shadow, background-color, color, transform;
+
+  /* a hidden toast is only moved out of the viewport: visibility keeps its message out of the
+     accessibility tree until it shows, which is when the status region announces it. As a
+     transition it turns visible at the start of the entrance and hidden at the end of the exit */
+  transition-property: box-shadow, background-color, color, transform, visibility;
+  visibility: hidden;
   width: var(--mds-toast-width);
 }
 
 :host([visible]:not([visible='false'])) .dialog {
   pointer-events: auto;
+  visibility: visible;
 }
 
 :host([position^='top']) {
