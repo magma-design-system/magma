@@ -224,6 +224,7 @@ mds-button css --mds-button-border-tone-weak-hover-width
 mds-button css --mds-button-border-width
 mds-button css --mds-button-color
 mds-button css --mds-button-gap
+mds-button css --mds-button-label-transform
 mds-button css --mds-button-radius
 mds-button-dropdown encapsulation shadow
 mds-button-dropdown prop active (attr active) [reflect, mutable]: boolean
