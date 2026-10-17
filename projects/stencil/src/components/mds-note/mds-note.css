@@ -80,16 +80,6 @@
   background-color: rgb(var(--magma-surface-overlay) / 0.5);
 }
 
-.title {
-  align-items: flex-start;
-  display: flex;
-  gap: --spacing(400);
-}
-
-.title .button-close {
-  margin-left: auto;
-}
-
 @import './css/mds-note-variants.css';
 @import './css/mds-note-pref-animation.css';
 @import './css/mds-note-pref-mode.css';
