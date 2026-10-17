@@ -1,4 +1,4 @@
 :host([sorted]) {
-  --mds-table-cell-background: var(--mds-table-background);
-  --mds-table-cell-color: var(--mds-table-color);
+  --mds-table-cell-background: var(--mds-table-cell-background-alt);
+  --mds-table-cell-color: var(--mds-table-cell-color-alt);
 }
