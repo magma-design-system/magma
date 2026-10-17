@@ -1,5 +1,7 @@
 import { render } from '@stencil/vitest';
 import { describeConditionalSlot } from '@test/slot';
+import globals from '../../../../../styles/dist/css/globals.css?raw';
+import typography from '../../../../../styles/dist/css/typography.css?raw';
 
 describe('mds-tree-item', () => {
   it('renders', async () => {
@@ -71,6 +73,48 @@ describe('mds-tree-item', () => {
       expect(Math.round(item.box.top)).toBeLessThanOrEqual(
         Math.round(above.box.bottom - above.radius),
       );
+    });
+  });
+
+  // #998: the folder toggle read `var(--radius)`, which no layer defines, so its corners
+  // computed to 0px under every shape
+  describe('the folder toggle', () => {
+    let sheet: HTMLStyleElement | undefined;
+
+    /** The scale steps and the corner axis a consumer page loads. */
+    const onTheAxis = (shape?: string): void => {
+      sheet = document.createElement('style');
+      sheet.textContent = [typography, globals].join('\n');
+      document.head.append(sheet);
+      if (shape) document.documentElement.dataset.cornerShape = shape;
+    };
+
+    afterEach(() => {
+      sheet?.remove();
+      delete document.documentElement.dataset.cornerShape;
+    });
+
+    it.each([
+      ['round', 'round', '4px'],
+      ['squircle, the default', undefined, '6px'],
+    ])('takes the 3xs step of the axis under %s', async (_, shape, radius) => {
+      onTheAxis(shape);
+      const { root } = await render(`
+        <mds-tree toggle="folder">
+          <mds-tree-item label="Folder"><mds-tree-item label="File"></mds-tree-item></mds-tree-item>
+        </mds-tree>`);
+
+      const toggle = root
+        .querySelector('mds-tree-item')!
+        .shadowRoot!.querySelector('.toggle-icon mds-button')!;
+      const style = getComputedStyle(toggle);
+
+      expect([
+        style.borderTopLeftRadius,
+        style.borderTopRightRadius,
+        style.borderBottomRightRadius,
+        style.borderBottomLeftRadius,
+      ]).toEqual([radius, radius, radius, radius]);
     });
   });
 

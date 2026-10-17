@@ -60,7 +60,9 @@
 :host([toggle='folder']) .toggle-icon mds-button {
   --size: auto;
 
-  border-radius: var(--radius);
+  /* a tile the folder glyph almost fills, so its corner is the glyph's own plus the padding;
+     mds-button draws it in the shape of the axis on its own host (#998) */
+  border-radius: var(--magma-radius-3xs);
   padding: --spacing(25) --spacing(50);
 }
 
