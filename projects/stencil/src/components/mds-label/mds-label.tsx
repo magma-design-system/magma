@@ -10,7 +10,7 @@ import { Locale } from '@common/locale';
 import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
-import localeEs from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
 /**
