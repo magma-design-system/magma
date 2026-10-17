@@ -28,7 +28,7 @@ export class MdsUsage {
   /**
    * Specifies the guidance category of the content, which drives colors, header label and icon
    */
-  @Prop() readonly variant: UsageType = 'info';
+  @Prop({ reflect: true }) readonly variant: UsageType = 'info';
 
   /**
    * Specifies the alias of the usage phrase on the top of the component

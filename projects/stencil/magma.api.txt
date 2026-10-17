@@ -1632,7 +1632,7 @@ mds-url-view css --mds-url-view-shadow
 mds-usage encapsulation shadow
 mds-usage prop alias (attr alias): string | undefined
 mds-usage prop icon (attr icon): string | undefined
-mds-usage prop variant (attr variant): "do" | "dont" | "info" | "warn" = 'info'
+mds-usage prop variant (attr variant) [reflect]: "do" | "dont" | "info" | "warn" = 'info'
 mds-usage slot (default)
 mds-usage part header
 mds-usage part icon
