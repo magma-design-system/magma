@@ -23,6 +23,10 @@ const cycle: SortDirectionType[] = ['none', 'ascending', 'descending'];
 // last sorted column returns to none; rows that left the body in the meantime stay out
 const naturalOrder = new WeakMap<Element, HTMLMdsTableRowElement[]>();
 
+/**
+ * @part action - The `mds-button` that sorts the column, with the `label`: only when `sortable`
+ * @part label - The `label` of a column that is not `sortable`
+ */
 @Component({
   tag: 'mds-table-header-cell',
   styleUrl: 'mds-table-header-cell.css',

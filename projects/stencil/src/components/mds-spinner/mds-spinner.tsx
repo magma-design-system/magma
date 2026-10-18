@@ -22,7 +22,10 @@ export class MdsSpinner {
 
   render() {
     return (
-      <Host pref-contrast={preferenceStore.state.contrast}>
+      <Host
+        pref-animation={preferenceStore.state.animation}
+        pref-contrast={preferenceStore.state.contrast}
+      >
         <i class="await-icon" innerHTML={awaitIcon} />
       </Host>
     );

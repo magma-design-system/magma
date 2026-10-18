@@ -20,6 +20,29 @@ describe('mds-file', () => {
     expect(root).toEqualAttribute('format', 'document');
   });
 
+  // a tab stop with a click handler, but no role and no key: reachable, never activated (#820)
+  it('is a button that Enter and Space activate', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-file filename="report.pdf"></mds-file>',
+    );
+    const download = spyOnEvent('mdsFileDownload');
+
+    expect(root).toEqualAttributes({ role: 'button', tabindex: '0' });
+
+    root.focus();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard('{Space}');
+    await waitForChanges();
+
+    expect(download).toHaveReceivedEventTimes(2);
+  });
+
+  it('keeps a role set by the caller', async () => {
+    const { root } = await render('<mds-file filename="report.pdf" role="option"></mds-file>');
+
+    expect(root).toEqualAttribute('role', 'option');
+  });
+
   // #747: the name was cut at the first dot, dropping everything up to the extension
   it('splits the name and the extension at the last dot', async () => {
     const { root } = await render(

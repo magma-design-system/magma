@@ -84,6 +84,8 @@ The arrow pointer is shown by default to visually connect the panel to its calle
 
 Use `backdrop` to dim the rest of the page while the panel is open. This is appropriate for panels with a higher modal weight, such as user-account menus or multi-step pickers.
 
+The backdrop is appended to `<body>`, out of reach of the CSS inheritance of the dropdown: when it opens, the dropdown hands it the values it resolves for `--mds-dropdown-backdrop-z-index` and `--mds-dropdown-backdrop-duration`, by default the ones of the page backdrop (`--magma-backdrop-z-index`, `--magma-backdrop-animation-duration`). With the animation preference set to reduce, the backdrop appears and goes without a fade.
+
 ```html
 <mds-button id="selezione-filtri" label="Filtra risultati" icon="mi/baseline/filter-list" variant="primary"></mds-button>
 
@@ -405,20 +407,20 @@ mds-dropdown {
 
 ## CSS Custom Properties
 
-| Name                                   | Description                                                                                                         |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `--mds-dropdown-arrow-background`      | Sets the fill color of the arrow.                                                                                   |
-| `--mds-dropdown-backdrop-duration`     | Sets the transition duration of the backdrop, used by component's code too.                                         |
-| `--mds-dropdown-backdrop-z-index`      | Sets the backdrop z-index, used by component's code too.                                                            |
-| `--mds-dropdown-background`            | Sets the background-color of the dropdown.                                                                          |
-| `--mds-dropdown-drop-shadow`           | Sets the drop-shadow of the dropdown.                                                                               |
-| `--mds-dropdown-drop-shadow-color-rgb` | Sets the color used for the dropdown shadow                                                                         |
-| `--mds-dropdown-duration`              | Sets the duration of the dropdown animation.                                                                        |
-| `--mds-dropdown-ease`                  | Sets the easing of the dropdown animation.                                                                          |
-| `--mds-dropdown-mouseover-delay`       | Sets the delay duration of the component when the caller trigger mouseover event, it's used by the javascript code. |
-| `--mds-dropdown-transform-from`        | Sets the from animation transform of the dropdown.                                                                  |
-| `--mds-dropdown-transform-to`          | Sets the to animation transform of the dropdown.                                                                    |
-| `--mds-dropdown-z-index`               | Sets the z-index of the component.                                                                                  |
+| Name                                   | Description                                                                                                                 |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-dropdown-arrow-background`      | Sets the fill color of the arrow.                                                                                           |
+| `--mds-dropdown-backdrop-duration`     | Sets the duration of the fade of the backdrop shown with the `backdrop` attribute, the one of the page backdrop by default. |
+| `--mds-dropdown-backdrop-z-index`      | Sets the z-index of the backdrop shown with the `backdrop` attribute, the one of the page backdrop by default.              |
+| `--mds-dropdown-background`            | Sets the background-color of the dropdown.                                                                                  |
+| `--mds-dropdown-drop-shadow`           | Sets the drop-shadow of the dropdown.                                                                                       |
+| `--mds-dropdown-drop-shadow-color-rgb` | Sets the color used for the dropdown shadow                                                                                 |
+| `--mds-dropdown-duration`              | Sets the duration of the dropdown animation.                                                                                |
+| `--mds-dropdown-ease`                  | Sets the easing of the dropdown animation.                                                                                  |
+| `--mds-dropdown-mouseover-delay`       | Sets the delay duration of the component when the caller trigger mouseover event, it's used by the javascript code.         |
+| `--mds-dropdown-transform-from`        | Sets the from animation transform of the dropdown.                                                                          |
+| `--mds-dropdown-transform-to`          | Sets the to animation transform of the dropdown.                                                                            |
+| `--mds-dropdown-z-index`               | Sets the z-index of the component.                                                                                          |
 
 
 ## Dependencies

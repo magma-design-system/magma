@@ -73,4 +73,11 @@ describe('mds-usage', () => {
       expect(await renderedIcon('variant="warn" icon=""')).toBe(unset);
     });
   });
+
+  // the content was an insertion or a deletion, roles of a document edit (#821)
+  it.each(variants)('gives the %s content no role of its own', async (variant) => {
+    const { root } = await render(`<mds-usage variant="${variant}">Content</mds-usage>`);
+
+    expect(root.shadowRoot!.querySelector('.content')).not.toHaveAttribute('role');
+  });
 });

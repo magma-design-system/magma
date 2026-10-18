@@ -20,12 +20,13 @@ const mountedPrefs = new Set<HTMLElement>();
  *  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
  * @category Patterns
  * @tags pattern, user, tab
- * @slot - Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-mode` element/s.
+ * @slot - Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, `mds-pref-mode` or `mds-pref-theme` element/s.
  * @example <mds-pref>
  *    <mds-pref-animation></mds-pref-animation>
  *    <mds-pref-consumption></mds-pref-consumption>
  *    <mds-pref-contrast></mds-pref-contrast>
  *    <mds-pref-mode></mds-pref-mode>
+ *    <mds-pref-theme></mds-pref-theme>
  *    <mds-pref-language>
  *      <mds-pref-language-item code="it"></mds-pref-language-item>
  *      <mds-pref-language-item code="en"></mds-pref-language-item>

@@ -16,9 +16,10 @@
   @apply ease-out;
 
   border-color: var(--mds-usage-border-color);
-  border-radius: var(--radius-lg);
+  border-radius: var(--magma-radius-lg);
   border-style: solid;
   border-width: --spacing(50);
+  corner-shape: var(--magma-corner-shape);
 
   /* is seems it's not working on web components, due of a bug
   container-name: mds-usage;

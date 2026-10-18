@@ -207,9 +207,9 @@ The controls fire no native `change` event. Use the documented `mdsPrefChange` e
 
 ## Slots
 
-| Slot | Description                                                                                                               |
-| ---- | ------------------------------------------------------------------------------------------------------------------------- |
-|      | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-mode` element/s. |
+| Slot | Description                                                                                                                                |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+|      | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, `mds-pref-mode` or `mds-pref-theme` element/s. |
 
 
 ## Dependencies

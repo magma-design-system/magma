@@ -1,5 +1,6 @@
 /* eslint-disable stencil/ban-default-true */
 import { Component, Element, Host, h, Prop, State } from '@stencil/core';
+import { preferenceStore } from '@common/preference';
 import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
 import { NoiseType, PreloadType } from './meta/types';
@@ -63,7 +64,7 @@ export class MdsVideoWall {
 
   render() {
     return (
-      <Host>
+      <Host pref-animation={preferenceStore.state.animation}>
         {this.noise !== 'none' && (
           <div aria-hidden="true" class={clsx('noise', `noise--${this.noise}`)} />
         )}

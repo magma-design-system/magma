@@ -1,3 +1,5 @@
+@import './css/mds-pref-theme-item-fouc.css';
+
 /**
  * @prop --mds-pref-theme-item-color-background: Background color of a theme item.
  * @prop --mds-pref-theme-item-color-status-error: Color representing an error status for a theme item.
@@ -24,7 +26,9 @@
 
 .theme-preview {
   background-color: var(--mds-pref-theme-item-color-background);
-  border-radius: var(--radius-md);
+
+  /* 12px on a 24px box was a circle: the pill, out of the corner axis */
+  border-radius: var(--magma-radius-full);
   box-shadow: var(--shadow-ring-weak);
   box-sizing: border-box;
   display: inline-flex;
@@ -37,9 +41,12 @@
   width: --spacing(600);
 }
 
+/* the neutral step 09 of the active theme, which a named theme retints; 16px on a 6px dot was
+   a circle, the pill */
+
 .theme-color {
-  background-color: var(--color-tone-neutral-09);
-  border-radius: var(--radius-lg);
+  background-color: rgb(var(--magma-wash-base));
+  border-radius: var(--magma-radius-full);
   height: --spacing(150);
   position: relative;
   width: --spacing(150);

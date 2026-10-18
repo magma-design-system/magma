@@ -1,6 +1,7 @@
 import {
   AttachInternals,
   Component,
+  Element,
   Event,
   EventEmitter,
   Host,
@@ -27,6 +28,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ * @part dropdown - The `mds-dropdown` that the arrow opens, with the default slot inside
  */
 @Component({
   tag: 'mds-button-dropdown',
@@ -42,6 +44,8 @@ export class MdsButtonDropdown {
     it: localeIt,
   });
 
+  @Element() host: HTMLMdsButtonDropdownElement;
+
   // the primary action lives in the shadow root, where it has no form: the host takes part in it
   @AttachInternals() internals: ElementInternals;
 
@@ -55,7 +59,7 @@ export class MdsButtonDropdown {
   @Prop() readonly label: string;
 
   /**
-   * Specifies if the component is focused when is loaded on the viewport
+   * Focuses the primary action once the component is loaded
    */
   @Prop() readonly autoFocus: boolean;
 
@@ -112,12 +116,13 @@ export class MdsButtonDropdown {
   @Prop({ reflect: true, mutable: true }) await?: boolean;
 
   /**
-   * Specifies the URL target of the button
+   * The URL the primary action navigates to, instead of submitting; the chevron only opens the
+   * menu
    */
   @Prop({ reflect: true }) readonly href?: string;
 
   /**
-   * Specifies the target of the URL, if self or blank
+   * Where the primary action opens `href`, `'self'` or `'blank'`
    */
   @Prop() readonly target: ButtonTargetType = 'self';
 
@@ -139,6 +144,14 @@ export class MdsButtonDropdown {
 
   private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
+  componentDidLoad(): void {
+    // given by the host, not passed down: the inner buttons load before the host is shown, and
+    // their own focus() took no effect, so autoFocus never focused anything
+    if (this.autoFocus) {
+      this.host.shadowRoot?.querySelector<HTMLElement>('.dropdown-primary-action')?.focus();
+    }
+  }
+
   private primaryActionClick = (): void => {
     if (this.isDisabled() || this.await) return;
     this.clickEvent.emit();
@@ -159,7 +172,6 @@ export class MdsButtonDropdown {
       <Host>
         <mds-button
           active={this.active}
-          autoFocus={this.autoFocus}
           class="dropdown-primary-action"
           await={this.await}
           disabled={this.isDisabled()}
@@ -173,17 +185,15 @@ export class MdsButtonDropdown {
           variant={this.variant}
           label={this.label}
         ></mds-button>
+        {/* the chevron only opens the menu: the link is the primary action's (#798) */}
         <mds-button
           active={this.active}
           aria-label={this.t.get('moreActions')}
-          autoFocus={this.autoFocus}
           await={this.await}
           class="dropdown-action"
           disabled={this.isDisabled()}
-          href={this.href}
           icon={miBaselineKeyboardArrowDown}
           size={this.size}
-          target={this.target}
           tone={this.tone}
           variant={this.variant}
         ></mds-button>

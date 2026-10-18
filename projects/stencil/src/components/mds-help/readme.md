@@ -15,7 +15,7 @@ The `<mds-help>` web component is a contextual help affordance of the Magma Desi
 
 #### Semantic Behavior
 
-- **Tooltip-on-icon**: The host always renders a help icon and anchors a tooltip to it; the slotted text becomes the tooltip body and is shown while the pointer hovers the icon. The icon is not focusable, so keyboard users cannot open the tooltip: do not put essential information only here.
+- **Tooltip-on-icon**: The host always renders a help icon and anchors a tooltip to it; the slotted text becomes the tooltip body and is shown while the pointer hovers the icon or the icon has the focus. The icon is a tab stop named by the tooltip text (`role="img"` with `aria-labelledby`), so a screen reader reads the help on it.
 - **Auto-placement**: Unless `disableAutoPlacement` is set (auto-placement is on by default), the tooltip takes `placement` whenever it has room there, and moves to another side of the icon only when it does not fit.
 - **Default-slot is text**: The default slot is intended for a plain text string only; HTML elements or components in the slot are discouraged because the content is rendered inside the tooltip.
 
@@ -34,7 +34,7 @@ Correct and idiomatic ways to use the `<mds-help>` component, ordered from most 
 
 #### Basic Inline Help
 
-The canonical form. Drop `<mds-help>` inline next to a label or piece of text and slot in a plain string explaining the concept. The tooltip appears on hover of the help icon (the icon takes no keyboard focus).
+The canonical form. Drop `<mds-help>` inline next to a label or piece of text and slot in a plain string explaining the concept. The tooltip appears on hover and on keyboard focus of the help icon.
 
 ```html
 <p>
@@ -216,9 +216,9 @@ Setting `style="width: ..."` on the host bypasses the component's layout contrac
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"icon"` |             |
+| Part     | Description                                    |
+| -------- | ---------------------------------------------- |
+| `"icon"` | The icon that shows the help text in a tooltip |
 
 
 ## CSS Custom Properties

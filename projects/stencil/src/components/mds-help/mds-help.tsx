@@ -4,6 +4,7 @@ import { FloatingUIPlacement } from '@type/floating-ui';
 
 /**
  * @slot - Add `text string` to this slot, **avoid** `HTML elements` or `components`.
+ * @part icon - The icon that shows the help text in a tooltip
  */
 
 @Component({
@@ -32,10 +33,19 @@ export class MdsHelp {
   render() {
     return (
       <Host>
-        <mds-icon class="icon" name={this.icon ?? miOutlineHelp} part="icon"></mds-icon>
+        {/* the icon is a tab stop, so the keyboard opens the tooltip as the pointer does, and the
+         * tooltip names it: the help text is what a screen reader reads on the icon */}
+        <mds-icon
+          class="icon"
+          name={this.icon ?? miOutlineHelp}
+          part="icon"
+          role="img"
+          tabindex="0"
+        ></mds-icon>
         <mds-tooltip
           placement={this.placement}
           disableAutoPlacement={this.disableAutoPlacement}
+          relation="label"
           strategy="absolute"
           target=".icon"
         >

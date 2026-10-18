@@ -22,6 +22,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @part actions - Selects the element which wraps `nav` and `hamburger` parts
+ * @part content - The row that holds the default slot, on the left, and the `actions`
  * @part hamburger - Selects the `hamburger` menu action element
  * @part nav - Selects the `nav` element that contains the horizontal menu
  * @slot - Put contents, like logo and a small description shown on the left of the component. Add `text string`, `HTML elements` or `components` to this slot.

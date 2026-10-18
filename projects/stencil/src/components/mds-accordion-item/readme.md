@@ -184,7 +184,7 @@ Common incorrect uses of `<mds-accordion-item>`. Each entry pairs the wrong form
 
 #### Do Not Use `mds-accordion-item` Outside `mds-accordion`
 
-The item relies on the parent to assign its `id`, manage sibling state, and emit coordinated change events. Placed standalone it still toggles, but nothing coordinates it, no `mdsAccordionChange` is emitted, and its events carry an empty `id`.
+The item relies on the parent to give it an `id` when it has none, manage sibling state, and emit coordinated change events. Placed standalone it still toggles, but nothing coordinates it, no `mdsAccordionChange` is emitted, and its events carry an empty `id`.
 
 ```html
 <!-- INCORRECT -->
@@ -255,7 +255,7 @@ mds-accordion-item >>> .content {
 
 ```js
 /* CORRECT - toggle via the reflected property */
-const item = document.querySelector('mds-accordion-item#item-0');
+const item = document.querySelector('mds-accordion-item#shipping'); // the id you gave the item
 item.selected = true;
 ```
 

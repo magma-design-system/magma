@@ -434,6 +434,13 @@ export class FloatingController {
   }
 }
 
+/** The values a component resolves for its backdrop: the backdrop hangs from the body, where
+ * nothing set on the component reaches it. An empty one keeps the backdrop of the page. */
+export interface BackdropStyle {
+  duration?: string;
+  zIndex?: string;
+}
+
 export class Backdrop {
   private readonly defaultBackdropId = 'magma-backdrop';
   private readonly backdropBackgroundVisible =
@@ -446,6 +453,7 @@ export class Backdrop {
 
   private backdropEl: HTMLElement;
   private backdropTimer: NodeJS.Timeout;
+  private duration: string;
 
   constructor(backdropId?: string) {
     this.backdropId = backdropId ?? this.defaultBackdropId;
@@ -453,16 +461,18 @@ export class Backdrop {
     this.cssBackdropDuration = `var(--${this.backdropId}-animation-duration, 300ms)`;
   }
 
-  attachBackdrop(): void {
+  attachBackdrop(style: BackdropStyle = {}): void {
     if (!this.backdropEl) {
       this.backdropEl = document.createElement('div');
       this.backdropEl.className = this.backdropId;
       this.backdropEl.style.inset = '0';
       this.backdropEl.style.pointerEvents = 'none';
       this.backdropEl.style.position = 'fixed';
-      this.backdropEl.style.transition = `background-color ${this.cssBackdropDuration} ease-out`;
-      this.backdropEl.style.zIndex = this.cssBackdropZIndex;
     }
+    // the detach waits for this one too, so it is kept until then
+    this.duration = style.duration || this.cssBackdropDuration;
+    this.backdropEl.style.transition = `background-color ${this.duration} ease-out`;
+    this.backdropEl.style.zIndex = style.zIndex || this.cssBackdropZIndex;
     this.backdropEl.style.backgroundColor = this.backdropBackgroundHidden;
     document.body.appendChild(this.backdropEl);
 
@@ -478,8 +488,11 @@ export class Backdrop {
     }
     this.backdropEl.style.backgroundColor = 'transparent';
     clearTimeout(this.backdropTimer);
-    this.backdropTimer = setTimeout(() => {
-      this.backdropEl.remove();
-    }, cssDurationToMilliseconds(this.cssBackdropDuration));
+    this.backdropTimer = setTimeout(
+      () => {
+        this.backdropEl.remove();
+      },
+      cssDurationToMilliseconds(this.duration ?? this.cssBackdropDuration),
+    );
   }
 }

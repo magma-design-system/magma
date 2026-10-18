@@ -275,9 +275,9 @@ mds-input-date-range-preselection {
 
 ## Slots
 
-| Slot | Description                                                      |
-| ---- | ---------------------------------------------------------------- |
-|      | Add `text string`, `HTML elements` or `components` to this slot. |
+| Slot | Description                                                                                                                                                                                             |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|      | Add the `text string` of the preselection, as `Last 7 days`: it becomes the label of the button that applies the range. **Avoid** `HTML elements` or `components`, which end up inside an `mds-button`. |
 
 
 ## CSS Custom Properties

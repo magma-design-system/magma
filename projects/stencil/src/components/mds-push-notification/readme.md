@@ -381,10 +381,10 @@ Action buttons belong in the `action` slot of `mds-push-notification-item`, not 
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                                                                                                                                                                                                                                                           | Type                              | Default     |
-| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------- |
-| `behavior` | `behavior` | Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added | `"auto" \| "manual" \| undefined` | `'auto'`    |
-| `visible`  | `visible`  | Specifies if the component is visible or not.                                                                                                                                                                                                                                                                                         | `boolean \| undefined`            | `undefined` |
+| Property   | Attribute  | Description                                                                                                                                                                                                 | Type                              | Default     |
+| ---------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------- |
+| `behavior` | `behavior` | Specifies when the stack shows: with `auto` whenever notifications are added, with `manual` only through `visible` or `show()`. In both, removing the last notification hides it; a click outside does not. | `"auto" \| "manual" \| undefined` | `'auto'`    |
+| `visible`  | `visible`  | Specifies if the component is visible or not.                                                                                                                                                               | `boolean \| undefined`            | `undefined` |
 
 
 ## Events

@@ -3,7 +3,10 @@ import { MdsValidationErrors } from '@component/mds-input/meta/validators';
 import { ThemeInputVariantType } from '@type/variant';
 
 /**
- * @slot - Add the native input `HTML element` to this slot.
+ * @slot - Add one `mds-input` or `mds-input-date`: the field names it with `label` and shows its
+ * validation errors in `message`. Another control, a native `<input>` among them, gets the name
+ * but no validation messages.
+ * @part content - The wrapper of the default slot, above the message
  */
 @Component({
   tag: 'mds-input-field',

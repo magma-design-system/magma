@@ -15,7 +15,7 @@ The `<mds-button-dropdown>` web component is a split-button control of the Magma
 
 - **Default slot is the menu**: Whatever you place in the default slot becomes the dropdown panel content; it is not treated as the button label (the visible label comes from the `label` prop).
 - **Chevron trigger**: The second button is icon-only (chevron), named in the page language (the `lang` of `<html>`) ("More actions"), and toggles the dropdown; it carries `aria-haspopup` and `aria-expanded` for the menu it opens.
-- **Shared configuration**: `active`, `autoFocus`, `await`, `disabled`, `href`, `target`, `size`, `tone` and `variant` are forwarded identically to both internal buttons, so the two halves always stay visually and behaviorally in sync.
+- **Shared configuration**: `active`, `await`, `disabled`, `size`, `tone` and `variant` are forwarded identically to both internal buttons, so the two halves always stay visually and behaviorally in sync. `href`, `target` and `autoFocus` belong to the primary action alone: the chevron only opens the menu.
 - **Form association**: The host is form-associated. With `type="submit"` the primary action submits the enclosing `<form>` (or the one its `form` attribute names) and sends `name=value`, like a native submit button; with `type="reset"` it resets it. The chevron never submits. Unlike `<mds-button>`, `type` defaults to `'button'`: a dropdown in a form submits it only when asked. The menu items are slotted `<mds-button>`, so they follow their own `type` (default `'submit'`), `name` and `value`, and the receiver tells all the actions apart by `name`.
 - **Disabled / await states**: Because these flags pass through to both buttons, disabling or putting the control in an awaiting state affects the action and the trigger together. A disabled `<fieldset>` around the component disables both halves the same way, without setting `disabled`.
 - **Primary action event**: `mdsButtonDropdownClick` fires when the primary action is clicked or activated from the keyboard, and not while the component is `disabled` or awaiting. The chevron and the menu items do not fire it. A native `click` listener on the component also runs for the menu items, whose clicks bubble to it, so listen for `mdsButtonDropdownClick` to run the primary action in JavaScript.
@@ -27,10 +27,11 @@ The shared `variant` / `tone` / `size` ladders are defined in [`docs/agents/vari
 
 - **`label`** sets the text of the primary action button only; the chevron trigger is icon-only.
 - **`type`** (default `'button'`), **`name`** and **`value`** apply to the primary action only, as described under Form association. The menu items follow their own `type`: inside a `<form>`, give `type="button"` to the ones that must not submit it.
-- **`href`** makes a click navigate instead of submitting, with `target` choosing `'self'` vs `'blank'`; it is forwarded to the chevron too, which then navigates as well as opening the menu.
+- **`href`** makes the primary action a link that navigates instead of submitting, with `target` choosing `'self'` vs `'blank'`; the chevron still opens the menu.
 
 #### Other behavioral props
 
+- **`autoFocus`** focuses the primary action once the component is loaded.
 - **`icon`** is an SVG filename slug from the Magma icon library, applied to the primary action button (the chevron icon on the trigger is fixed and not configurable).
 - **`truncate`** sets how the label of the primary action truncates, as on `mds-button` (default `'word'`).
 
@@ -165,11 +166,12 @@ When your code handles the submit, build the form data with `event.submitter`, a
 
 #### Hyperlink Split Button via `href`
 
-`href` and `target` on the component are forwarded to both internal buttons, the chevron included: a click on the chevron navigates as well as opening the menu. Keep `href` off the component, handle the primary action with `mdsButtonDropdownClick`, and put the links on the menu items (`target="blank"` opens them in a new tab).
+`href` and `target` on the component make the primary action a link; the chevron keeps opening the menu. Put the other links on the menu items (`target="blank"` opens them in a new tab).
 
 ```html
 <mds-button-dropdown
   label="Apri documento"
+  href="https://example.com/doc"
   variant="primary"
   tone="weak"
 >
@@ -182,9 +184,15 @@ When your code handles the submit, build the form data with `event.submitter`, a
 
 Style the component through its documented `--mds-button-dropdown-*` CSS custom properties or the `dropdown` shadow part. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and named themes keep working.
 
+The `--mds-button-*` properties that inherit reach the two inner buttons too: `--mds-button-label-transform: none` on the component keeps a label such as a tenant name as written, without the uppercase first letter.
+
 ```css
 .custom-toolbar mds-button-dropdown {
   --mds-button-dropdown-radius: var(--magma-radius-md);
+}
+
+.tenant-switcher mds-button-dropdown {
+  --mds-button-label-transform: none;
 }
 
 /* Style the dropdown panel surface through the documented shadow part */
@@ -353,15 +361,15 @@ mds-button-dropdown::part(dropdown) {
 | Property    | Attribute    | Description                                                                                                                                                                           | Type                                                                                                                | Default     |
 | ----------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ----------- |
 | `active`    | `active`     | Specifies if the button is active or not                                                                                                                                              | `boolean`                                                                                                           | `undefined` |
-| `autoFocus` | `auto-focus` | Specifies if the component is focused when is loaded on the viewport                                                                                                                  | `boolean`                                                                                                           | `undefined` |
+| `autoFocus` | `auto-focus` | Focuses the primary action once the component is loaded                                                                                                                               | `boolean`                                                                                                           | `undefined` |
 | `await`     | `await`      | Specifies if the button is awaiting for a response                                                                                                                                    | `boolean \| undefined`                                                                                              | `undefined` |
 | `disabled`  | `disabled`   | Specifies if the component is disabled or not                                                                                                                                         | `boolean \| undefined`                                                                                              | `undefined` |
-| `href`      | `href`       | Specifies the URL target of the button                                                                                                                                                | `string \| undefined`                                                                                               | `undefined` |
+| `href`      | `href`       | The URL the primary action navigates to, instead of submitting; the chevron only opens the menu                                                                                       | `string \| undefined`                                                                                               | `undefined` |
 | `icon`      | `icon`       | The icon displayed in the button                                                                                                                                                      | `string \| undefined`                                                                                               | `undefined` |
 | `label`     | `label`      | Specifies le text label of the component                                                                                                                                              | `string`                                                                                                            | `undefined` |
 | `name`      | `name`       | The name sent with `value` to the form the primary action submits, as a native submit button does                                                                                     | `string \| undefined`                                                                                               | `undefined` |
 | `size`      | `size`       | Specifies the size for the button                                                                                                                                                     | `"lg" \| "md" \| "sm" \| "xl"`                                                                                      | `'md'`      |
-| `target`    | `target`     | Specifies the target of the URL, if self or blank                                                                                                                                     | `"blank" \| "self"`                                                                                                 | `'self'`    |
+| `target`    | `target`     | Where the primary action opens `href`, `'self'` or `'blank'`                                                                                                                          | `"blank" \| "self"`                                                                                                 | `'self'`    |
 | `tone`      | `tone`       | Specifies the tone variant for the button                                                                                                                                             | `"strong" \| "weak" \| undefined`                                                                                   | `'strong'`  |
 | `truncate`  | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text                                                                                                            | `"all" \| "none" \| "word" \| undefined`                                                                            | `'word'`    |
 | `type`      | `type`       | The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form the component is in, the chevron never does. Unlike `mds-button` it defaults to `'button'` | `"a" \| "button" \| "reset" \| "submit" \| undefined`                                                               | `'button'`  |
@@ -385,9 +393,9 @@ mds-button-dropdown::part(dropdown) {
 
 ## Shadow Parts
 
-| Part         | Description |
-| ------------ | ----------- |
-| `"dropdown"` |             |
+| Part         | Description                                                           |
+| ------------ | --------------------------------------------------------------------- |
+| `"dropdown"` | The `mds-dropdown` that the arrow opens, with the default slot inside |
 
 
 ## CSS Custom Properties

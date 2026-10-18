@@ -18,9 +18,9 @@ The `<mds-modal>` web component is the Magma Design System overlay container for
 - **Open state**: Visibility is driven by the `opened` prop. Setting it `true` runs the intro animation and emits `mdsModalOpen`; clearing it runs the outro animation and emits `mdsModalClose`.
 - **Programmatic close**: Exposes an async `close()` method that dismisses the modal regardless of `interaction`, mirroring the close-button action.
 - **Show/hide events**: `mdsModalShow` fires when the intro finishes (fully visible) and `mdsModalHide` when the outro finishes (fully hidden), the latter being the safe point to detach the modal to reclaim memory.
-- **Backdrop dismissal**: With `interaction="relaxed"` (default) a click on the backdrop or `Esc` closes the modal; with `interaction="strict"` both are ignored and only the close button, `close()` or a touch swipe (below) can dismiss it.
+- **Backdrop dismissal**: With `interaction="relaxed"` (default) a click on the backdrop or `Esc` closes the modal; with `interaction="strict"` both are ignored, and the touch swipe too (below): only the close button or `close()` can dismiss it.
 - **Body scroll lock**: When `overflow="auto"` the component locks body scroll while open and restores it on close.
-- **Touch dismissal**: On touch devices a horizontal swipe past a threshold closes the modal, respecting the swipe direction implied by edge `position` values.
+- **Touch dismissal**: On touch devices a horizontal swipe past a threshold closes a `relaxed` modal, respecting the swipe direction implied by edge `position` values.
 - **Slot-driven layout**: With no `window` slot, the default slot renders centered content framed by optional `top` (header) and `bottom` (footer) slots, and a close button is rendered automatically, icon-only and named in the page language (the `lang` of `<html>`) ("Close"). Slotting a `window` element suppresses the built-in chrome and close button so the consumer supplies the entire surface.
 
 #### Properties & Visual Configurations
@@ -109,7 +109,7 @@ Use the `top` slot for a sticky header and the `bottom` slot for a sticky footer
 
 #### Strict Interaction Mode
 
-Set `interaction="strict"` when the user must explicitly confirm or cancel before the dialog closes - for example, a form with unsaved changes. Backdrop clicks and `Esc` are ignored; only the close button or the `close()` method can dismiss the modal (a touch swipe still closes it).
+Set `interaction="strict"` when the user must explicitly confirm or cancel before the dialog closes - for example, a form with unsaved changes. Backdrop clicks, `Esc` and touch swipes are ignored; only the close button or the `close()` method can dismiss the modal.
 
 ```html
 <mds-modal id="conferma-elimina" interaction="strict">
@@ -370,7 +370,7 @@ Using a raw `<dialog>` element bypasses the system's managed animation, body-scr
 | --------------- | --------------------------------------------------------------------------------------------------------------- | ------------------- |
 | `mdsModalClose` | Emits when a modal is closed                                                                                    | `CustomEvent<void>` |
 | `mdsModalHide`  | Emits when a modal is totally invisible, can be useful to detach the component when it's hidden and gain memory | `CustomEvent<void>` |
-| `mdsModalOpen`  | Emits when a modal is closed                                                                                    | `CustomEvent<void>` |
+| `mdsModalOpen`  | Emits when a modal is opened, as its intro animation starts: `mdsModalShow` follows once it is totally visible  | `CustomEvent<void>` |
 | `mdsModalShow`  | Emits when a modal is totally visible, when the modal intro animation is finished                               | `CustomEvent<void>` |
 
 
@@ -399,11 +399,11 @@ Type: `Promise<void>`
 
 ## Shadow Parts
 
-| Part             | Description                                                |
-| ---------------- | ---------------------------------------------------------- |
-| `"action-close"` | Selects the close button of the modal.                     |
-| `"dialog"`       |                                                            |
-| `"window"`       | Selects the default window element of the modal when used. |
+| Part             | Description                                                                |
+| ---------------- | -------------------------------------------------------------------------- |
+| `"action-close"` | Selects the close button of the modal.                                     |
+| `"dialog"`       | The native `<dialog>` that covers the viewport and places the window in it |
+| `"window"`       | Selects the default window element of the modal when used.                 |
 
 
 ## CSS Custom Properties

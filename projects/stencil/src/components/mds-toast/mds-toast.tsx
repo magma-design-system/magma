@@ -63,7 +63,7 @@ export class MdsToast {
    */
   @Prop({ reflect: true, mutable: true }) readonly position: ToastPosition = 'bottom-center';
   /**
-   * Emits when the accordion is opened
+   * Emits when a toast with a `duration` has hidden itself, once its exit animation is over
    */
   @Event({ eventName: 'mdsToastClose' }) closedEvent: EventEmitter<void>;
 
@@ -140,8 +140,12 @@ export class MdsToast {
   }
 
   render() {
+    // a status region: the message is announced when the toast shows it, without moving the
+    // focus. The host is the region and stays in the page, so the content that appears inside
+    // it is what a screen reader reads out
     return (
       <Host
+        role="status"
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
         pref-mode={preferenceStore.state.mode}

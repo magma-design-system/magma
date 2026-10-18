@@ -302,14 +302,14 @@ mds-accordion-timer-item::part(label) {
 
 ## Properties
 
-| Property                   | Attribute     | Description                                                                                                   | Type                                                       | Default     |
-| -------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
-| `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or opened                                              | `string`                                                   | `undefined` |
-| `duration`                 | `duration`    | Specifies the duration of the single component when selected, it overrides the global duration of itself only | `number \| undefined`                                      | `undefined` |
-| `progress`                 | `progress`    | A value between 0 and 100 that rapresents the status progress                                                 | `number`                                                   | `0`         |
-| `selected`                 | `selected`    | Specifies if the accordion item is opened or not                                                              | `boolean`                                                  | `false`     |
-| `typography`               | `typography`  | Specifies the typography of the element                                                                       | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h5'`      |
-| `uuid`                     | `uuid`        | Used automatically by MdsAccordionTimer wrapper to handle it's siblings                                       | `number`                                                   | `0`         |
+| Property                   | Attribute     | Description                                                                                                                                                     | Type                                                       | Default     |
+| -------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
+| `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or opened                                                                                                | `string`                                                   | `undefined` |
+| `duration`                 | `duration`    | Specifies the duration of the single component when selected, it overrides the global duration of itself only                                                   | `number \| undefined`                                      | `undefined` |
+| `progress`                 | `progress`    | The progress of the item's countdown, from 0 to 1: mds-accordion-timer writes it while the item is selected and sets it back to 0 when the next item takes over | `number`                                                   | `0`         |
+| `selected`                 | `selected`    | Specifies if the accordion item is opened or not                                                                                                                | `boolean`                                                  | `false`     |
+| `typography`               | `typography`  | Specifies the typography of the element                                                                                                                         | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h5'`      |
+| `uuid`                     | `uuid`        | Used automatically by MdsAccordionTimer wrapper to handle it's siblings                                                                                         | `number`                                                   | `0`         |
 
 
 ## Events

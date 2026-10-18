@@ -11,13 +11,13 @@
 
 @property --mds-keyboard-background {
   inherits: true;
-  initial-value: rgb(var(--tone-porcelain-08));
+  initial-value: rgb(var(--magma-wash-strong));
   syntax: '<color>';
 }
 
 @property --mds-keyboard-background-default {
   inherits: true;
-  initial-value: rgb(var(--tone-porcelain-08));
+  initial-value: rgb(var(--magma-wash-strong));
   syntax: '<color>';
 }
 

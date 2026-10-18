@@ -402,3 +402,56 @@ describe('size', () => {
     expect(root.shadowRoot!.querySelector('select')!.size).toBe(0);
   });
 });
+
+// #995: the native select had a radius of its own, the xs step, so the select looked less
+// rounded than the mds-input next to it; the host now spells the radius of mds-input, capped
+// at a part of its height like it (#913), and the native select inherits it
+describe('the radius', () => {
+  const radiusOf = (element: Element): string => getComputedStyle(element).borderTopLeftRadius;
+  const sizes = ['sm', 'md', 'lg'];
+
+  it.each([
+    { label: 'of the theme', cap: undefined, radii: ['14px', '18px', '24px'] },
+    { label: '0.25', cap: '0.25', radii: ['7px', '9px', '12px'] },
+    { label: '1', cap: '1', radii: ['28px', '36px', '36px'] },
+  ])(
+    'is the radius of an mds-input of the same size, with the cap $label',
+    async ({ cap, radii }) => {
+      const { root } = await render(
+        `<div${cap ? ` style="--magma-corner-cap: ${cap}"` : ''}>
+           ${sizes
+             .map(
+               (size) =>
+                 `<mds-input-select size="${size}"></mds-input-select><mds-input size="${size}"></mds-input>`,
+             )
+             .join('')}
+         </div>`,
+      );
+
+      const selects = Array.from(root.querySelectorAll('mds-input-select')).map(radiusOf);
+      const inputs = Array.from(root.querySelectorAll('mds-input')).map(radiusOf);
+
+      expect(selects).toEqual(inputs);
+      expect(selects).toEqual(radii);
+    },
+  );
+
+  it('hands its radius and its corner shape down to the native select, as mds-input does', async () => {
+    const { root } = await render(
+      `<div style="--magma-corner-cap: 0.25">
+         <mds-input-select size="md"></mds-input-select>
+         <mds-input size="md"></mds-input>
+       </div>`,
+    );
+
+    const select = root.querySelector('mds-input-select')!;
+    const native = select.shadowRoot!.querySelector('select')!;
+    const field = root.querySelector('mds-input')!.shadowRoot!.querySelector('.input')!;
+    const shapeOf = (element: Element): string =>
+      getComputedStyle(element).getPropertyValue('corner-top-left-shape');
+
+    expect(radiusOf(native)).toBe(radiusOf(select));
+    expect(shapeOf(native)).toBe(shapeOf(field));
+    if (CSS.supports('corner-shape', 'squircle')) expect(shapeOf(native)).not.toBe('');
+  });
+});

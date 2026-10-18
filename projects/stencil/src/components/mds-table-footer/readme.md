@@ -254,9 +254,9 @@ mds-table {
 
 ## Slots
 
-| Slot | Description                    |
-| ---- | ------------------------------ |
-|      | Add `mds-table-row` element/s. |
+| Slot | Description                                                                        |
+| ---- | ---------------------------------------------------------------------------------- |
+|      | Add `mds-table-cell` element/s: the footer is itself a row, for totals and counts. |
 
 
 ## Dependencies

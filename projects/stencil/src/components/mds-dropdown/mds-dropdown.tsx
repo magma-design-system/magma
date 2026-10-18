@@ -144,7 +144,7 @@ export class MdsDropdown implements FloatingElement {
       return;
     }
     if (newValue) {
-      this.backdropController.attachBackdrop();
+      this.attachBackdrop();
       return;
     }
     this.backdropController.detachBackdrop();
@@ -202,7 +202,7 @@ export class MdsDropdown implements FloatingElement {
       document.addEventListener('click', this.handleCloseDropdown);
       this.floatingController.updatePosition();
       if (this.backdrop) {
-        this.backdropController.attachBackdrop();
+        this.attachBackdrop();
       }
       this.visibleEvent.emit({ caller: this.caller, visible: true });
       return;
@@ -220,9 +220,12 @@ export class MdsDropdown implements FloatingElement {
   private readonly onClickTarget = (ev: Event): void => {
     // stop propagation event for when target is a element cointainer
     ev.stopPropagation();
+    // read before the body click below: it reaches the outside-click handler of this dropdown
+    // too, which closes an open panel, and toggling that value opened it again (#797)
+    const wasVisible = this.visible;
     // trigger a body click to execute handleCloseDropdown on other dropdowns
     document.body.click();
-    this.visible = !this.visible;
+    this.visible = !wasVisible;
     // a click with no coordinates behind it came from Enter on the caller, and a menu opened
     // from the keyboard has to land on an entry - a mouse leaves the focus where it is
     if (this.visible && this.isMenu && (ev as MouseEvent).detail === 0) {
@@ -355,6 +358,16 @@ export class MdsDropdown implements FloatingElement {
     const holdsFocus = this.host.contains(document.activeElement);
     this.visible = false;
     if (holdsFocus) this.caller?.focus();
+  };
+
+  // the backdrop hangs from the body, where the properties set on the dropdown do not reach:
+  // it gets the values the dropdown resolves for it
+  private readonly attachBackdrop = (): void => {
+    const elementStyles = window.getComputedStyle(this.host);
+    this.backdropController.attachBackdrop({
+      duration: elementStyles.getPropertyValue('--private-dropdown-backdrop-duration')?.trim(),
+      zIndex: elementStyles.getPropertyValue('--mds-dropdown-backdrop-z-index')?.trim(),
+    });
   };
 
   private readonly updateCSSCustomProps = (): void => {

@@ -1,7 +1,9 @@
+/* 24px on a 34px button was a circle: the pill, out of the corner axis */
+
 .icon-help {
   background-color: rgb(var(--magma-accent-ai-fg));
   border: 1px solid rgb(var(--magma-surface-raised));
-  border-radius: var(--radius-2xl);
+  border-radius: var(--magma-radius-full);
   cursor: pointer;
   fill: rgb(var(--magma-accent-ai-surface-subtle));
   height: min-content;

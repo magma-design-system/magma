@@ -2,7 +2,7 @@ import { Component, Element, Host, h, Prop, State } from '@stencil/core';
 import { preferenceStore } from '@common/preference';
 
 /**
- * @slot - Add `mds-table-row` element/s.
+ * @slot - Add `mds-table-cell` element/s: the footer is itself a row, for totals and counts.
  */
 
 @Component({

@@ -329,10 +329,10 @@ The component pairs panels to items by index position; if a panel is missing for
 
 ## Properties
 
-| Property     | Attribute    | Description                                                                                                           | Type                    | Default  |
-| ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------- | ----------------------- | -------- |
-| `itemsDone`  | `items-done` | Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done | `number`                | `1`      |
-| `navigation` | `navigation` | Specifies the navigation type                                                                                         | `"none" \| "scrollbar"` | `'none'` |
+| Property     | Attribute    | Description                                                                                                                                                                                              | Type                    | Default  |
+| ------------ | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | -------- |
+| `itemsDone`  | `items-done` | Sets the current item by its position, counted from 1: the items before it are done. 1 makes the first item current with none done, 0 makes no item current, the number of items + 1 marks them all done | `number`                | `1`      |
+| `navigation` | `navigation` | Specifies the navigation type                                                                                                                                                                            | `"none" \| "scrollbar"` | `'none'` |
 
 
 ## Events
@@ -346,7 +346,7 @@ The component pairs panels to items by index position; if a panel is missing for
 
 | Slot        | Description                                                             |
 | ----------- | ----------------------------------------------------------------------- |
-|             | Add `mds-tepper-bar-item` element/s.                                    |
+|             | Add `mds-stepper-bar-item` element/s.                                   |
 | `"content"` | Add `HTML elements` or `components`, one per mds-stepper-bar-item added |
 
 

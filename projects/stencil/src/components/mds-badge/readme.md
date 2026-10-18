@@ -141,7 +141,6 @@ Style the badge only through its documented `--mds-badge-*` CSS custom propertie
 .custom-tag mds-badge {
   --mds-badge-background: rgb(var(--label-orchid-09));
   --mds-badge-color: rgb(var(--label-orchid-02));
-  --mds-badge-radius: var(--magma-radius-full);
 }
 ```
 
@@ -237,7 +236,6 @@ mds-badge >>> span {
 mds-badge {
   --mds-badge-background: rgb(var(--label-violet-09));
   --mds-badge-color: rgb(var(--label-violet-02));
-  --mds-badge-radius: var(--magma-radius-full);
 }
 ```
 

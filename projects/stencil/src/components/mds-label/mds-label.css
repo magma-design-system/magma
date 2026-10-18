@@ -33,7 +33,12 @@
   fill: var(--mds-label-icon-color);
   flex: 1;
   gap: --spacing(50);
-  max-width: min-content;
+
+  /* The label is as wide as its text and no wider than the space it is given. fit-content and
+   * not min-content: a text that wraps (truncate none or all) has the narrowest box it can wrap
+   * into as min-content, a single letter under the overflow-wrap: anywhere of the styles reset,
+   * and it capped the width the label was given down to a column of letters (#1008). */
+  max-width: fit-content;
   min-height: --spacing(700);
   padding: 0 --spacing(200);
   transition-duration: var(--duration-200);

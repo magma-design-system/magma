@@ -3,6 +3,11 @@ import { preferenceStore } from '@common/preference';
 import { MdsPaginatorEventDetail } from './meta/event-detail';
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg';
 import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 @Component({
   tag: 'mds-paginator',
@@ -11,6 +16,12 @@ import miBaselineArrowForward from '@icon/mi/baseline/arrow-forward.svg';
 })
 export class MdsPaginator {
   @Element() private element: HTMLMdsPaginatorElement;
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
 
   /**
    * Specifies the number of total pages to be handled
@@ -129,7 +140,9 @@ export class MdsPaginator {
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
+        {/* the arrows are icon-only buttons: named in the page language */}
         <mds-paginator-item
+          aria-label={this.t.get('previousPage')}
           class="item-icon"
           icon={miBaselineArrowBack}
           disabled={this.currentPage === 1}
@@ -169,6 +182,7 @@ export class MdsPaginator {
           </mds-paginator-item>
         )}
         <mds-paginator-item
+          aria-label={this.t.get('nextPage')}
           class="item-icon"
           icon={miBaselineArrowForward}
           disabled={this.currentPage === this.pages}

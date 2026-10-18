@@ -224,6 +224,7 @@ mds-button css --mds-button-border-tone-weak-hover-width
 mds-button css --mds-button-border-width
 mds-button css --mds-button-color
 mds-button css --mds-button-gap
+mds-button css --mds-button-label-transform
 mds-button css --mds-button-radius
 mds-button-dropdown encapsulation shadow
 mds-button-dropdown prop active (attr active) [reflect, mutable]: boolean
@@ -343,7 +344,7 @@ mds-card-media part content
 mds-chip encapsulation shadow
 mds-chip prop clickable (attr clickable) [reflect, mutable]: boolean | undefined
 mds-chip prop deletable (attr deletable): boolean | undefined
-mds-chip prop disabled (attr disabled): boolean | undefined = false
+mds-chip prop disabled (attr disabled) [reflect]: boolean | undefined = false
 mds-chip prop icon (attr icon): string | undefined
 mds-chip prop label (attr label) [reflect, required]: string
 mds-chip prop selectable (attr selectable) [reflect]: boolean | undefined = false
@@ -600,7 +601,7 @@ mds-icon prop name (attr name) [reflect, required]: string
 mds-icon method setSvgPath(svgPath: string) => Promise<void>
 mds-icon part svg
 mds-img encapsulation shadow
-mds-img prop alt (attr alt) [reflect, mutable]: string = ''
+mds-img prop alt (attr alt) [reflect, mutable]: string
 mds-img prop crossorigin (attr crossorigin): "anonymous" | "use-credentials" | undefined
 mds-img prop height (attr height): string | undefined
 mds-img prop loading (attr loading): "eager" | "lazy" | undefined = 'lazy'
@@ -1070,6 +1071,7 @@ mds-policy-ai prop variant (attr variant) [reflect]: "banner" | "card" | "chip" 
 mds-policy-ai part banner
 mds-policy-ai part card
 mds-policy-ai part chip
+mds-policy-ai part chip-wrapper
 mds-policy-ai part icon
 mds-pref encapsulation shadow
 mds-pref prop controller (attr controller) [reflect, mutable]: boolean | undefined
@@ -1217,7 +1219,6 @@ mds-push-notification-item slot badge
 mds-push-notification-item part actions
 mds-push-notification-item part avatar
 mds-push-notification-item part content
-mds-push-notification-item part icon
 mds-push-notification-item part picture
 mds-push-notification-item css --mds-push-notification-item-duration
 mds-push-notification-item css --mds-push-notification-item-icon-background-color
@@ -1417,6 +1418,7 @@ mds-table prop selection (attr selection) [reflect, mutable]: boolean | undefine
 mds-table prop sorting (attr sorting) [reflect]: "external" | "internal" | undefined = 'internal'
 mds-table event mdsTableSelectionChange: MdsTableSelectionEventDetail [bubbles, cancelable, composed]
 mds-table method selectAll(select?: boolean) => Promise<void>
+mds-table method updateActions() => Promise<void>
 mds-table method updateSelection() => Promise<void>
 mds-table slot (default)
 mds-table slot batch-action
@@ -1453,6 +1455,7 @@ mds-table-footer prop selectable (attr selectable): boolean | undefined
 mds-table-footer slot (default)
 mds-table-header encapsulation shadow
 mds-table-header prop selectable (attr selectable): boolean | undefined
+mds-table-header method setActions(hasActions: boolean) => Promise<void>
 mds-table-header method setSelection(selectedItems: number, totalItems: number) => Promise<void>
 mds-table-header slot (default)
 mds-table-header part actions
@@ -1534,7 +1537,7 @@ mds-tooltip css --mds-tooltip-z-index
 mds-tree encapsulation shadow
 mds-tree prop actions (attr actions) [reflect]: "auto" | "visible" | undefined = 'auto'
 mds-tree prop appearance (attr appearance) [reflect]: "depth" | "none" = 'depth'
-mds-tree prop async (attr async) [reflect]: boolean | undefined
+mds-tree prop async (attr async) [reflect]: boolean | undefined DEPRECATED
 mds-tree prop expanded (attr expanded) [reflect, mutable]: boolean | undefined
 mds-tree prop label (attr label): string
 mds-tree prop toggle (attr toggle) [reflect]: "chevron" | "folder" = 'chevron'
