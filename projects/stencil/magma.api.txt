@@ -1418,6 +1418,7 @@ mds-table prop selection (attr selection) [reflect, mutable]: boolean | undefine
 mds-table prop sorting (attr sorting) [reflect]: "external" | "internal" | undefined = 'internal'
 mds-table event mdsTableSelectionChange: MdsTableSelectionEventDetail [bubbles, cancelable, composed]
 mds-table method selectAll(select?: boolean) => Promise<void>
+mds-table method updateActions() => Promise<void>
 mds-table method updateSelection() => Promise<void>
 mds-table slot (default)
 mds-table slot batch-action
@@ -1453,6 +1454,7 @@ mds-table-footer encapsulation shadow
 mds-table-footer slot (default)
 mds-table-header encapsulation shadow
 mds-table-header prop selectable (attr selectable): boolean | undefined
+mds-table-header method setActions(hasActions: boolean) => Promise<void>
 mds-table-header method setSelection(selectedItems: number, totalItems: number) => Promise<void>
 mds-table-header slot (default)
 mds-table-header part actions
