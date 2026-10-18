@@ -6,7 +6,7 @@
  * @prop --mds-price-table-features-cell-icon-supported-color: Default color of the supported feature icon.
  * @prop --mds-price-table-features-cell-icon-unsupported-color-hover: Color of the unsupported feature icon on hover.
  * @prop --mds-price-table-features-cell-icon-unsupported-color: Default color of the unsupported feature icon.
- * @prop --mds-price-table-features-cell-border-color: Border color of individual feature cells.
+ * @prop --mds-price-table-features-cell-border-color: Border color of individual feature cells, defaults to the border color of the section.
  */
 
 :host {
@@ -15,7 +15,10 @@
   --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-06));
   --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--magma-text-disabled));
   --mds-price-table-features-cell-icon-unsupported-color: rgb(var(--magma-text-disabled));
-  --mds-price-table-features-cell-border-color: rgb(var(--magma-border-muted));
+  --mds-price-table-features-cell-border-color: var(
+    --mds-price-table-features-border-color,
+    rgb(var(--magma-border-muted))
+  );
   --mds-price-table-features-cell-transition-duration: var(--duration-200);
   --private-price-table-features-cell-transition-duration: var(--mds-price-table-features-cell-transition-duration);
 

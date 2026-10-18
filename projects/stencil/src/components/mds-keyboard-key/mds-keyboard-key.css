@@ -95,7 +95,7 @@
     var(--mds-keyboard-key-padding);
 }
 
-:host([code='space']) .physical-key {
+:host([name='space']) .physical-key {
   min-width: calc(var(--key-size-default) * 2);
 }
 
