@@ -69,4 +69,16 @@ describe('mds-avatar', () => {
     expect(hasFallbackIcon(root)).toBe(true);
     expect(consoleError).not.toHaveBeenCalled();
   });
+
+  // #825: the initials picked a slot out of 17 in a list of 15 colors, and the last two slots gave
+  // no variant at all
+  it.each([
+    ['AB', 'orchid'],
+    ['AI', 'amaranth'],
+    ['AJ', 'aqua'],
+  ])('colors the initials %s with %s', async (initials, variant) => {
+    const { root } = await render(`<mds-avatar initials="${initials}"></mds-avatar>`);
+
+    expect(root).toEqualAttribute('variant', variant);
+  });
 });

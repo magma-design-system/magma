@@ -235,4 +235,22 @@ describe('mds-table-header-cell', () => {
       expect(order()).toEqual(['2', '3']);
     });
   });
+
+  // #825: a sortable cell outside an mds-table-header read the children of a header that is not
+  // there and threw; the sorter written since asks for the header and the table at every step
+  it('sorts nothing and throws nothing outside a table header', async () => {
+    const consoleError = vi.spyOn(console, 'error');
+    const { root, waitForChanges } = await render(
+      '<mds-table-header-cell sortable label="Alone"></mds-table-header-cell>',
+    );
+    const sort = vi.fn();
+    root.addEventListener('mdsTableHeaderCellSort', sort);
+
+    root.shadowRoot!.querySelector<HTMLElement>('.action')!.click();
+    await waitForChanges();
+
+    expect(consoleError).not.toHaveBeenCalled();
+    expect(root).toEqualAttribute('direction', 'ascending');
+    expect(sort).toHaveBeenCalledTimes(1);
+  });
 });

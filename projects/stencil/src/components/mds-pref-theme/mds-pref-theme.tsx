@@ -133,15 +133,41 @@ export class MdsPrefTheme {
   }
 
   componentWillRender(): void {
-    this.userThemeName = localStorage.getItem(this.localStorageAliasThemeName);
-    this.userThemeScheme = localStorage.getItem(this.localStorageAliasThemeScheme) as
-      PreferenceThemeSchemeType | 'all';
+    this.userThemeName = this.storedChoice(this.localStorageAliasThemeName, this.isThemeName);
+    this.userThemeScheme = this.storedChoice(this.localStorageAliasThemeScheme, this.isScheme);
     this.setTheme(this.userThemeName ?? this.name, this.userThemeScheme ?? this.scheme);
-    this.userCornerShape = localStorage.getItem(
-      this.localStorageAliasCornerShape,
-    ) as PreferenceCornerShapeChoiceType | null;
+    this.userCornerShape = this.storedChoice(this.localStorageAliasCornerShape, this.isCornerShape);
     this.setCornerShape(this.userCornerShape ?? this.cornerShape);
   }
+
+  /**
+   * The stored choice, or null when there is none or it is one the component cannot apply: an
+   * earlier version stored an unchecked scheme, which then broke every following load (#825).
+   */
+  private readonly storedChoice = <T extends string>(
+    key: string,
+    isValid: (value: string) => value is T,
+  ): T | null => {
+    const value = localStorage.getItem(key);
+    if (value === null || isValid(value)) return value as T | null;
+    localStorage.removeItem(key);
+    return null;
+  };
+
+  // a mode value would be taken for a v1 mode by the storage migration, and a `scheme` name
+  // would write a `pref-theme-scheme-*` class of the scheme axis
+  private readonly isThemeName = (name?: string | null): name is string =>
+    name != null &&
+    /^[a-z]+(-[a-z]+)*$/.test(name) &&
+    !MODE_VALUES.includes(name) &&
+    name !== 'scheme' &&
+    !name.startsWith('scheme-');
+
+  private readonly isScheme = (scheme?: string | null): scheme is PreferenceThemeSchemeType =>
+    scheme != null && {}.hasOwnProperty.call(this.schemeSet, scheme);
+
+  private readonly isCornerShape = (shape: string): shape is PreferenceCornerShapeChoiceType =>
+    (preferenceCornerShapeChoiceType as readonly string[]).includes(shape);
 
   /**
    * The text of the trigger: the label of the item for the active theme, as the open list
@@ -189,13 +215,19 @@ export class MdsPrefTheme {
   };
 
   private readonly setTheme = (name: string, scheme: PreferenceThemeSchemeType): void => {
-    if (!/^[a-z]+(-[a-z]+)*$/gm.exec(name)) {
-      throw Error(`Theme name not valid: ${name}`);
+    // a theme the component cannot write is ignored, neither applied nor stored: it used to throw,
+    // and an unknown scheme was written as a class named `undefined` and stored (#825)
+    if (!this.isThemeName(name)) {
+      console.warn(
+        `mds-pref-theme: ignoring the invalid theme name "${name}", a kebab-case name that is no mode or scheme name`,
+      );
+      return;
     }
-    // A mode value would be taken for a v1 mode by the storage migration, and a
-    // `scheme` name would write a `pref-theme-scheme-*` class of the scheme axis.
-    if (MODE_VALUES.includes(name) || name === 'scheme' || name.startsWith('scheme-')) {
-      throw Error(`Theme name reserved: ${name}`);
+    if (!this.isScheme(scheme)) {
+      console.warn(
+        `mds-pref-theme: ignoring the invalid scheme "${scheme}", use one of: ${Object.keys(this.schemeSet).join(', ')}`,
+      );
+      return;
     }
     this.name = name;
     this.scheme = scheme;
@@ -240,8 +272,11 @@ export class MdsPrefTheme {
     if (shape === undefined || shape === null) {
       return;
     }
-    if (!(preferenceCornerShapeChoiceType as readonly string[]).includes(shape)) {
-      throw Error(`Corner shape not valid: ${shape}`);
+    if (!this.isCornerShape(shape)) {
+      console.warn(
+        `mds-pref-theme: ignoring the invalid corner shape "${shape}", use one of: ${preferenceCornerShapeChoiceType.join(', ')}`,
+      );
+      return;
     }
     this.cornerShape = shape;
     this.prefChangeEvent.emit({ preference: 'corner-shape' });
