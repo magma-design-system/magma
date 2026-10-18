@@ -524,4 +524,64 @@ describe('mds-dropdown', () => {
       expect(caller).not.toHaveAttribute('aria-haspopup');
     });
   });
+
+  // #988: the backdrop is a child of the body, where nothing set on the dropdown reaches it
+  describe('backdrop', () => {
+    // the newest one: a backdrop that a previous test closed may still be fading out
+    const backdrop = (): HTMLElement | undefined =>
+      Array.from(document.body.querySelectorAll<HTMLElement>(':scope > .magma-backdrop')).at(-1);
+
+    const open = async (style = '') => {
+      const { root } = await stage(
+        `<mds-dropdown id="panel" target="#caller" backdrop visible style="${style}">Panel</mds-dropdown>`,
+      );
+      await vi.waitFor(() => {
+        expect(backdrop()).toBeDefined();
+      });
+      return root.querySelector('#panel') as HTMLMdsDropdownElement;
+    };
+
+    afterEach(() => {
+      document.documentElement.classList.remove('pref-animation-reduce');
+    });
+
+    it('takes the z-index and the duration set on the dropdown', async () => {
+      await open('--mds-dropdown-backdrop-z-index: 1234; --mds-dropdown-backdrop-duration: 50ms');
+      const style = getComputedStyle(backdrop()!);
+
+      expect(style.zIndex).toBe('1234');
+      expect(style.transitionDuration).toBe('0.05s');
+    });
+
+    it('keeps the z-index and the duration of the page backdrop by default', async () => {
+      await open();
+      const style = getComputedStyle(backdrop()!);
+
+      expect(style.zIndex).toBe('4000');
+      expect(style.transitionDuration).toBe('0.3s');
+    });
+
+    it('stays on the page until its fade-out is over', async () => {
+      // the duration it waited for was an unresolved var(), so it went at once, with no fade
+      const panel = await open('--mds-dropdown-backdrop-duration: 300ms');
+      const element = backdrop()!;
+
+      panel.visible = false;
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      expect(element.isConnected).toBe(true);
+      await vi.waitFor(() => {
+        expect(element.isConnected).toBe(false);
+      });
+    });
+
+    it('fades in no time when the animation preference is reduce', async () => {
+      document.documentElement.classList.add('pref-animation-reduce');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      await open('--mds-dropdown-backdrop-duration: 300ms');
+
+      expect(getComputedStyle(backdrop()!).transitionDuration).toBe('0s');
+    });
+  });
 });

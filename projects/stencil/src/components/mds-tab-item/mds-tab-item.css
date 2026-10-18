@@ -46,6 +46,7 @@
   --mds-tab-item-selected-shadow: none;
   --mds-tab-item-default-background: transparent;
   --mds-tab-item-default-shadow: none;
+  --mds-tab-item-hover-shadow: none;
 }
 
 .button {
@@ -56,12 +57,17 @@
   --mds-button-corner-shape: var(--mds-tab-item-corner-shape, var(--magma-corner-shape));
 
   aspect-ratio: initial;
+  box-shadow: var(--mds-tab-item-default-shadow, none);
   flex-grow: 1;
 }
+
+/* without a hover shadow of its own, a hovered item keeps the default one */
 
 .button:hover {
   --mds-button-background: var(--mds-tab-item-hover-background);
   --mds-button-color: var(--mds-tab-item-hover-color);
+
+  box-shadow: var(--mds-tab-item-hover-shadow, var(--mds-tab-item-default-shadow, none));
 }
 
 .button.selected,

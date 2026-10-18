@@ -71,7 +71,7 @@
   --mds-tree-item-label-icon-default-color: var(--mds-tree-label-icon-default-color);
   --mds-tree-item-label-icon-hover-color: var(--mds-tree-label-icon-hover-color);
   --mds-tree-item-line-clamp: var(--mds-tree-line-clamp);
-  --mds-tree-item-toggle-gap: var(--mds-tree-toggle-gap);
+  --mds-tree-item-toggle-gap: var(--mds-tree-toggle-gap, --spacing(100));
   --mds-tree-item-toggle-icon-async-background: var(--mds-tree-toggle-icon-async-background);
   --mds-tree-item-toggle-icon-async-color: var(--mds-tree-toggle-icon-async-color);
   --mds-tree-item-toggle-icon-chevron-default-background: var(
@@ -81,10 +81,12 @@
     --mds-tree-toggle-icon-chevron-default-color
   );
   --mds-tree-item-toggle-icon-chevron-expanded-background: var(
-    --mds-tree-item-toggle-icon-chevron-default-background
+    --mds-tree-toggle-icon-chevron-expanded-background,
+    var(--mds-tree-item-toggle-icon-chevron-default-background)
   );
   --mds-tree-item-toggle-icon-chevron-expanded-color: var(
-    --mds-tree-item-toggle-icon-chevron-default-color
+    --mds-tree-toggle-icon-chevron-expanded-color,
+    var(--mds-tree-item-toggle-icon-chevron-default-color)
   );
   --mds-tree-item-toggle-icon-folder-default-background: var(
     --mds-tree-toggle-icon-folder-default-background
@@ -96,7 +98,8 @@
     --mds-tree-item-toggle-icon-folder-default-background
   );
   --mds-tree-item-toggle-icon-folder-expanded-color: var(
-    --mds-tree-item-toggle-icon-folder-default-color
+    --mds-tree-toggle-icon-folder-expanded-color,
+    var(--mds-tree-item-toggle-icon-folder-default-color)
   );
   --mds-tree-item-toggle-icon-position-right-default-background: var(
     --mds-tree-toggle-icon-position-right-default-background
@@ -119,7 +122,7 @@
     --mds-tree-item-toggle-icon-chevron-default-background
   );
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
-  --header-gap: --spacing(100);
+  --header-gap: var(--mds-tree-item-toggle-gap);
 
   /* the elbow of an item with children is half a toggle wide, so its corner can take at most
      that half: capped as mds-button's corner is (#913), the radius the branch travels by stays
