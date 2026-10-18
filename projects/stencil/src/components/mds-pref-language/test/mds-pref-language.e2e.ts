@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 
 describe('mds-pref-language', () => {
   it('renders', async () => {
@@ -72,6 +73,82 @@ describe('mds-pref-language', () => {
       await waitForChanges();
 
       expect(tab()).toEqualAttribute('aria-expanded', 'true');
+    });
+  });
+
+  // #825: the check took only `xx` and `xx-XX`, so picking Cebuano, Hawaiian or Hmong threw
+  // after the selection had changed, and an invalid code threw instead of being ignored
+  describe('the language code', () => {
+    const STORAGE_KEY = 'mdsPrefLanguage';
+    let pageLanguage: string | null;
+
+    beforeEach(() => {
+      pageLanguage = document.documentElement.getAttribute('lang');
+      localStorage.removeItem(STORAGE_KEY);
+      mockIconFetch();
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      localStorage.removeItem(STORAGE_KEY);
+      if (pageLanguage === null) document.documentElement.removeAttribute('lang');
+      else document.documentElement.setAttribute('lang', pageLanguage);
+    });
+
+    it('of three letters is picked like the others', async () => {
+      const consoleError = vi.spyOn(console, 'error');
+      const { root, waitForChanges } = await render(`
+        <mds-pref-language set="it">
+          <mds-pref-language-item code="it"></mds-pref-language-item>
+          <mds-pref-language-item code="haw"></mds-pref-language-item>
+        </mds-pref-language>
+      `);
+
+      root.querySelector<HTMLElement>('mds-pref-language-item[code="haw"]')!.click();
+      await waitForChanges();
+
+      expect(consoleError).not.toHaveBeenCalled();
+      expect(root.set).toBe('haw');
+      expect(document.documentElement.getAttribute('lang')).toBe('haw');
+      expect(localStorage.getItem(STORAGE_KEY)).toBe('haw');
+    });
+
+    it('that is no language tag is ignored on load', async () => {
+      const consoleError = vi.spyOn(console, 'error');
+
+      const { root } = await render('<mds-pref-language set="Italian"></mds-pref-language>');
+
+      expect(consoleError).not.toHaveBeenCalled();
+      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('"Italian"'));
+      expect(root.set).not.toBe('Italian');
+      expect(document.documentElement.getAttribute('lang')).not.toBe('Italian');
+      expect(localStorage.getItem(STORAGE_KEY)).not.toBe('Italian');
+    });
+
+    it('that is no language tag is ignored after load, the applied language stays', async () => {
+      const { root, waitForChanges } = await render(
+        '<mds-pref-language set="it"></mds-pref-language>',
+      );
+      const change = vi.fn();
+      root.addEventListener('mdsPrefChange', change);
+
+      root.set = 'Italian';
+      await waitForChanges();
+
+      expect(root.set).toBe('it');
+      expect(document.documentElement.getAttribute('lang')).toBe('it');
+      expect(localStorage.getItem(STORAGE_KEY)).toBe('it');
+      expect(change).not.toHaveBeenCalled();
+    });
+
+    it('left in the storage by an earlier version is dropped', async () => {
+      localStorage.setItem(STORAGE_KEY, 'not a language');
+      document.documentElement.setAttribute('lang', 'el');
+
+      const { root } = await render('<mds-pref-language></mds-pref-language>');
+
+      expect(root.set).toBe('el');
+      expect(localStorage.getItem(STORAGE_KEY)).toBe('el');
     });
   });
 });

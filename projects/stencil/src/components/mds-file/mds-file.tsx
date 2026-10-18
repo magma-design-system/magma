@@ -15,6 +15,8 @@ import { MdsFileEventDetail } from './meta/event-detail';
 import { ThemeFullVariantType } from '@type/variant';
 import { getFormatsVariant, getName, getSuffix, getExtensionInfos } from '@common/file';
 import { fnv1a } from '@common/hash';
+import { setAttributeIfEmpty } from '@common/aria';
+import { KeyboardManager } from '@common/keyboard-manager';
 import miBaselineFileDownloadDone from '@icon/mi/baseline/file-download-done.svg';
 import miOutlineFileDownload from '@icon/mi/outline/file-download.svg';
 import { Locale } from '@common/locale';
@@ -45,6 +47,7 @@ export class MdsFile {
   });
 
   @State() private wasDownloaded = false;
+  private km = new KeyboardManager();
 
   /**
    * Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen
@@ -114,6 +117,23 @@ export class MdsFile {
   componentWillLoad(): void {
     this.format = getExtensionInfos(this.filename, this.suffix).format;
     this.checkWasDownloaded();
+  }
+
+  // the file is a button that asks for the download: a tab stop that Enter and Space activate as
+  // a click does. A role set by the caller (a file inside a list of options) is theirs and stays
+  componentDidLoad(): void {
+    setAttributeIfEmpty(this.host, 'role', 'button');
+    this.km.addElement(this.host);
+    this.km.attachClickBehavior('element', { space: true });
+  }
+
+  // a file moved in the page is disconnected and connected again, without loading again
+  connectedCallback(): void {
+    this.km.attachClickBehavior('element', { space: true });
+  }
+
+  disconnectedCallback(): void {
+    this.km.detachClickBehavior();
   }
 
   @Watch('filename')

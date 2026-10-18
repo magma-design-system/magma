@@ -8,8 +8,3 @@
   --mds-push-notification-item-icon-background-color: rgb(var(--magma-accent-surface));
   --mds-push-notification-item-icon-color: rgb(var(--magma-accent-fg));
 }
-
-:host([variant='primary'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--magma-accent-fg));
-}

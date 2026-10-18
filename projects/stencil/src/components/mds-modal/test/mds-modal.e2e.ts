@@ -185,6 +185,36 @@ describe('mds-modal', () => {
     });
   });
 
+  // a horizontal swipe closed the modal whatever the interaction: strict vetoed Esc and the
+  // backdrop, not the swipe (#820)
+  describe('a horizontal swipe', () => {
+    const swipe = (target: HTMLElement, fromX: number, toX: number): void => {
+      const touch = (x: number) => new Touch({ identifier: 1, target, clientX: x, clientY: 100 });
+      target.dispatchEvent(new TouchEvent('touchstart', { touches: [touch(fromX)] }));
+      target.dispatchEvent(new TouchEvent('touchend', { changedTouches: [touch(toX)] }));
+    };
+
+    it('closes a relaxed modal', async () => {
+      const { root, waitForChanges } = await render('<mds-modal opened="true"></mds-modal>');
+
+      swipe(root.shadowRoot!.querySelector<HTMLElement>('.window')!, 300, 100);
+      await waitForChanges();
+
+      expect(root).not.toHaveAttribute('opened');
+    });
+
+    it('leaves a strict modal open', async () => {
+      const { root, waitForChanges } = await render(
+        '<mds-modal opened="true" interaction="strict"></mds-modal>',
+      );
+
+      swipe(root.shadowRoot!.querySelector<HTMLElement>('.window')!, 300, 100);
+      await waitForChanges();
+
+      expect(root).toHaveAttribute('opened');
+    });
+  });
+
   // #803: a position set in the same task as opened, the way a framework wrapper sets its props,
   // was still the old attribute when the dialog opened, and the window slid in from the place
   // of that old position (the centre: translateY(25%)), already inside the page
@@ -249,6 +279,30 @@ describe('mds-modal close button', () => {
     expect(root.shadowRoot!.querySelector('.action-close')).toEqualAttributes({
       role: 'button',
       'aria-label': 'Chiudi',
+    });
+  });
+
+  // #824: the documented name was misspelled (-funciton) and the close button read the right one
+  describe('transition timing function', () => {
+    const timingOf = (root: HTMLElement, selector: string): string =>
+      getComputedStyle(root.shadowRoot!.querySelector(selector)!).transitionTimingFunction;
+
+    it('drives the window and the close button', async () => {
+      const { root } = await render(
+        '<mds-modal style="--mds-modal-transition-timing-function: steps(3)"></mds-modal>',
+      );
+
+      expect(timingOf(root, '.window')).toBe('steps(3)');
+      expect(timingOf(root, '.action-close')).toBe('steps(3)');
+    });
+
+    it('still reads the misspelled name', async () => {
+      const { root } = await render(
+        '<mds-modal style="--mds-modal-transition-timing-funciton: steps(4)"></mds-modal>',
+      );
+
+      expect(timingOf(root, '.window')).toBe('steps(4)');
+      expect(timingOf(root, '.action-close')).toBe('steps(4)');
     });
   });
 });

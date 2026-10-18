@@ -26,7 +26,7 @@ This component has essentially one configurable prop:
 
 - **`label`**: Sets an optional title rendered in the header band above the matrix. Provide it to name the feature group (e.g. a section heading shared across all plan columns); omit it when the matrix should appear without a heading.
 
-All other variation comes from the slotted children rather than from props. Column widths are computed by each `mds-price-table-features-row`, and the visual treatment of each cell is driven by the `type` prop on `mds-price-table-features-cell`. Spacing can be tuned through `--mds-price-table-features-padding` (the header band and, by inheritance, every cell) and the header band's divider through `--mds-price-table-features-border-color` (the cells draw their own dividers with `--mds-price-table-features-cell-border-color`), both listed in [`readme.md`](../readme.md).
+All other variation comes from the slotted children rather than from props. Column widths are computed by each `mds-price-table-features-row`, and the visual treatment of each cell is driven by the `type` prop on `mds-price-table-features-cell`. Spacing can be tuned through `--mds-price-table-features-padding` (the header band and, by inheritance, every cell) and the dividers through `--mds-price-table-features-border-color` (the header band and, by inheritance, every cell; one cell can still set its own `--mds-price-table-features-cell-border-color`), both listed in [`readme.md`](../readme.md).
 
 
 ### 2. Pattern
@@ -352,10 +352,10 @@ mds-price-table-features::part(header) {
 
 ## CSS Custom Properties
 
-| Name                                      | Description                                      |
-| ----------------------------------------- | ------------------------------------------------ |
-| `--mds-price-table-features-border-color` | Sets the border-color of the children components |
-| `--mds-price-table-features-padding`      | Sets the cell padding of the children components |
+| Name                                      | Description                                                                                                                              |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-price-table-features-border-color` | Sets the border-color of the header and of the children cells, unless a cell sets its own `--mds-price-table-features-cell-border-color` |
+| `--mds-price-table-features-padding`      | Sets the cell padding of the children components                                                                                         |
 
 
 ## Dependencies

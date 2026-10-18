@@ -99,12 +99,12 @@ export class MdsInputOtp {
     setFormValue(this.internals, this.value);
   }
 
+  private cellIndex = (cell: HTMLMdsInputElement): number =>
+    Array.from(this.element.shadowRoot!.querySelectorAll('mds-input')).indexOf(cell);
+
   private setOtpDigit = (currentInput: HTMLMdsInputElement, digit: string): void => {
-    const index = Array.from(this.element.shadowRoot!.querySelectorAll('mds-input')).indexOf(
-      currentInput,
-    );
     const digits = [...this.digits];
-    digits[index] = digit;
+    digits[this.cellIndex(currentInput)] = digit;
     this.digits = digits;
     this.updateValue();
   };
@@ -118,23 +118,57 @@ export class MdsInputOtp {
     }
   };
 
+  /**
+   * A cell holds one digit and the keyboard moves between them: a digit fills the cell and goes
+   * to the next one, Backspace empties the cell (or the previous one, from an empty cell),
+   * Delete empties it, the arrows move. Every other key that writes a character is ignored;
+   * Tab, the shortcuts (paste among them, with Ctrl or Cmd) and the keys that write nothing
+   * keep what the browser does with them, so the field is never a keyboard trap.
+   */
   private handleKeyDown = (e: KeyboardEvent): void => {
-    if (e.ctrlKey) {
-      return;
-    }
-
-    // e.preventDefault() must be called *outside* the ctrlKey check,
-    // otherwise the onPaste event won't be triggered correctly
-    e.preventDefault();
-
-    if (isNaN(Number(e.key))) {
+    if (e.ctrlKey || e.metaKey || e.altKey) {
       return;
     }
 
     const currentInput = e.target as HTMLMdsInputElement;
-    this.setOtpDigit(currentInput, e.key);
+    const previousInput = currentInput.previousElementSibling as HTMLMdsInputElement | null;
+    const nextInput = currentInput.nextElementSibling as HTMLMdsInputElement | null;
 
-    const nextInput = currentInput.nextElementSibling as HTMLMdsInputElement;
+    switch (e.key) {
+      case 'Backspace':
+        e.preventDefault();
+        if ((this.digits[this.cellIndex(currentInput)] ?? '') === '' && previousInput) {
+          this.setOtpDigit(previousInput, '');
+          previousInput.setFocus();
+          return;
+        }
+        this.setOtpDigit(currentInput, '');
+        return;
+      case 'Delete':
+        e.preventDefault();
+        this.setOtpDigit(currentInput, '');
+        return;
+      case 'ArrowLeft':
+        e.preventDefault();
+        previousInput?.setFocus();
+        return;
+      case 'ArrowRight':
+        e.preventDefault();
+        nextInput?.setFocus();
+        return;
+    }
+
+    if (e.key.length !== 1) {
+      return;
+    }
+
+    e.preventDefault();
+
+    if (!/^[0-9]$/.test(e.key)) {
+      return;
+    }
+
+    this.setOtpDigit(currentInput, e.key);
 
     if (nextInput != null) {
       nextInput.setFocus();
@@ -146,25 +180,28 @@ export class MdsInputOtp {
   private handlePaste = (e: ClipboardEvent) => {
     e.preventDefault();
 
-    const pastedText = e.clipboardData?.getData('text');
+    // a code copied from a message often brings the spaces around it; a paste that is not digits
+    // only fills nothing (a sign, a decimal point or an exponent got through the number check)
+    const pastedText = (e.clipboardData?.getData('text') ?? '').trim();
 
-    if (isNaN(Number(pastedText))) {
+    if (!/^[0-9]+$/.test(pastedText)) {
       return;
     }
 
-    const digits = pastedText?.split('') ?? [];
     let currentInput = e.target as HTMLMdsInputElement;
-    for (const currentDigit of digits) {
+    for (const currentDigit of pastedText) {
       this.setOtpDigit(currentInput, currentDigit);
 
-      currentInput = currentInput.nextElementSibling as HTMLMdsInputElement;
+      const nextInput = currentInput.nextElementSibling as HTMLMdsInputElement | null;
 
-      if (currentInput != null) {
-        currentInput.setFocus();
-      } else {
+      // the last cell is filled: the code goes from there, not from the cell after it, which is
+      // null and threw (#825)
+      if (nextInput == null) {
         this.submit(currentInput);
         return;
       }
+      currentInput = nextInput;
+      currentInput.setFocus();
     }
   };
 

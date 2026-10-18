@@ -164,7 +164,8 @@ describe('mds-tab-item', () => {
 
     it('leaves the items without a shadow of their own when the tab slides', async () => {
       // the slider paints the selection, and the items stay transparent over it
-      const { root } = await render(`<mds-tab style="--mds-tab-item-default-shadow: 0 0 0 3px rgb(1 2 3)">
+      const { root } =
+        await render(`<mds-tab style="--mds-tab-item-default-shadow: 0 0 0 3px rgb(1 2 3)">
         <mds-tab-item label="A" selected></mds-tab-item>
         <mds-tab-item label="B"></mds-tab-item>
       </mds-tab>`);

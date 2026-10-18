@@ -483,8 +483,11 @@ export class Backdrop {
     }
     this.backdropEl.style.backgroundColor = 'transparent';
     clearTimeout(this.backdropTimer);
-    this.backdropTimer = setTimeout(() => {
-      this.backdropEl.remove();
-    }, cssDurationToMilliseconds(this.duration ?? this.cssBackdropDuration));
+    this.backdropTimer = setTimeout(
+      () => {
+        this.backdropEl.remove();
+      },
+      cssDurationToMilliseconds(this.duration ?? this.cssBackdropDuration),
+    );
   }
 }

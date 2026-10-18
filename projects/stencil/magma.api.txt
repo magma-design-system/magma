@@ -7,6 +7,7 @@ mds-accordion prop multiple (attr multiple): boolean | undefined = false
 mds-accordion event mdsAccordionChange: MdsAccordionEventDetail [bubbles, cancelable, composed]
 mds-accordion slot (default)
 mds-accordion css --mds-accordion-border-color
+mds-accordion css --mds-accordion-border-width
 mds-accordion css --mds-accordion-color
 mds-accordion css --mds-accordion-description-color
 mds-accordion css --mds-accordion-duration
@@ -172,9 +173,11 @@ mds-breadcrumb css --mds-breadcrumb-arrow-depth-color
 mds-breadcrumb css --mds-breadcrumb-button-background
 mds-breadcrumb css --mds-breadcrumb-button-background-disabled
 mds-breadcrumb css --mds-breadcrumb-button-background-hover
+mds-breadcrumb css --mds-breadcrumb-button-background-selected
 mds-breadcrumb css --mds-breadcrumb-button-color
 mds-breadcrumb css --mds-breadcrumb-button-color-current
 mds-breadcrumb css --mds-breadcrumb-button-color-hover
+mds-breadcrumb css --mds-breadcrumb-button-color-selected
 mds-breadcrumb css --mds-breadcrumb-current-button-color
 mds-breadcrumb-item encapsulation shadow
 mds-breadcrumb-item prop label (attr label) [reflect]: string | undefined
@@ -328,6 +331,7 @@ mds-card slot footer
 mds-card slot header
 mds-card slot media
 mds-card part layout
+mds-card css --mds-card-background
 mds-card css --mds-card-gap
 mds-card css --mds-card-padding
 mds-card-content encapsulation shadow
@@ -344,7 +348,7 @@ mds-card-media part content
 mds-chip encapsulation shadow
 mds-chip prop clickable (attr clickable) [reflect, mutable]: boolean | undefined
 mds-chip prop deletable (attr deletable): boolean | undefined
-mds-chip prop disabled (attr disabled): boolean | undefined = false
+mds-chip prop disabled (attr disabled) [reflect]: boolean | undefined = false
 mds-chip prop icon (attr icon): string | undefined
 mds-chip prop label (attr label) [reflect, required]: string
 mds-chip prop selectable (attr selectable) [reflect]: boolean | undefined = false
@@ -601,7 +605,7 @@ mds-icon prop name (attr name) [reflect, required]: string
 mds-icon method setSvgPath(svgPath: string) => Promise<void>
 mds-icon part svg
 mds-img encapsulation shadow
-mds-img prop alt (attr alt) [reflect, mutable]: string = ''
+mds-img prop alt (attr alt) [reflect, mutable]: string
 mds-img prop crossorigin (attr crossorigin): "anonymous" | "use-credentials" | undefined = 'use-credentials'
 mds-img prop height (attr height): string | undefined
 mds-img prop loading (attr loading): "eager" | "lazy" | undefined = 'lazy'
@@ -1001,6 +1005,7 @@ mds-modal css --mds-modal-overlay-color
 mds-modal css --mds-modal-overlay-opacity
 mds-modal css --mds-modal-transition-duration
 mds-modal css --mds-modal-transition-timing-funciton
+mds-modal css --mds-modal-transition-timing-function
 mds-modal css --mds-modal-window-background
 mds-modal css --mds-modal-window-distance
 mds-modal css --mds-modal-window-max-width
@@ -1017,6 +1022,7 @@ mds-note slot (default)
 mds-note slot title
 mds-note css --mds-note-background
 mds-note css --mds-note-color
+mds-note css --mds-note-fold-color
 mds-note css --mds-note-fold-size
 mds-note css --mds-note-selection-background
 mds-note css --mds-note-selection-color
@@ -1105,6 +1111,9 @@ mds-pref-mode prop mode (attr mode) [reflect, mutable]: "dark" | "light" | "syst
 mds-pref-mode prop size (attr size) [reflect]: "md" | "sm" | undefined
 mds-pref-mode prop transition (attr transition) [reflect, mutable]: "flash" | "none" | "smooth" = 'smooth'
 mds-pref-mode event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
+mds-pref-mode css --mds-pref-mode-overlay-fadeout-duration
+mds-pref-mode css --mds-pref-mode-overlay-show-duration
+mds-pref-mode css --mds-pref-mode-overlay-z-index
 mds-pref-theme encapsulation shadow
 mds-pref-theme prop cornerShape (attr corner-shape) [reflect, mutable]: "bevel" | "default" | "notch" | "round" | "scoop" | "square" | "squircle" | undefined
 mds-pref-theme prop name (attr name) [reflect, mutable]: string = 'default'
@@ -1233,15 +1242,15 @@ mds-quote prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4
 mds-quote slot (default)
 mds-quote slot author
 mds-radial-menu encapsulation shadow
-mds-radial-menu prop angleEnd (attr angle-end) [reflect]: number = 360
-mds-radial-menu prop angleStart (attr angle-start) [reflect]: number = 0
+mds-radial-menu prop angleEnd (attr angle-end) [reflect]: number
+mds-radial-menu prop angleStart (attr angle-start) [reflect]: number
 mds-radial-menu prop backdrop (attr backdrop) [reflect]: boolean | undefined = false
 mds-radial-menu prop direction (attr direction) [reflect]: "clockwise" | "counterclockwise" = 'clockwise'
 mds-radial-menu prop disc (attr disc) [reflect, mutable]: boolean | undefined
 mds-radial-menu prop icon (attr icon) [reflect, mutable]: string | undefined
 mds-radial-menu prop interaction (attr interaction) [reflect]: "click" | "rightclick" = 'click'
 mds-radial-menu prop opened (attr opened) [reflect, mutable]: boolean | undefined
-mds-radial-menu prop radius (attr radius) [reflect]: number = 5
+mds-radial-menu prop radius (attr radius) [reflect]: number
 mds-radial-menu prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'lg'
 mds-radial-menu prop tone (attr tone) [reflect]: "outline" | "strong" | "text" | "weak" | undefined = 'strong'
 mds-radial-menu prop variant (attr variant) [reflect]: "ai" | "apple" | "dark" | "error" | "google" | "info" | "light" | "primary" | "secondary" | "success" | "warning" | undefined = 'dark'
@@ -1274,6 +1283,11 @@ mds-radial-progress prop typography (attr typography) [reflect]: "label" | "opti
 mds-radial-progress prop variant (attr variant) [reflect]: "ai" | "dark" | "error" | "info" | "light" | "primary" | "success" | "warning" | undefined = 'primary'
 mds-radial-progress part icon
 mds-radial-progress part value-container
+mds-radial-progress css --mds-radial-progress-background
+mds-radial-progress css --mds-radial-progress-color
+mds-radial-progress css --mds-radial-progress-text-background
+mds-radial-progress css --mds-radial-progress-text-background-shadow
+mds-radial-progress css --mds-radial-progress-text-suffix
 mds-separator encapsulation shadow
 mds-separator css --mds-separator-background
 mds-spinner encapsulation shadow

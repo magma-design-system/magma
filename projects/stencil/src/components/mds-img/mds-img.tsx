@@ -12,7 +12,6 @@ import {
 import { CrossoriginType, ReferrerpolicyType, ImageConsumptionType } from './meta/types';
 import { LoadingType } from '@type/loading';
 import { MdsImgEventDetail } from './meta/event-detail';
-import { setAttributeIfEmpty } from '@common/aria';
 import { ConsumptionModeType } from '@type/preference';
 import miBaselinePanorama from '@icon/mi/baseline/panorama.svg';
 import miBaselineBrokenImage from '@icon/mi/baseline/broken-image.svg';
@@ -45,9 +44,10 @@ export class MdsImg {
   });
 
   /**
-   * Specifies an alternate text for an image
+   * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left
+   * out by assistive technologies; without `alt` the image is named after its file
    */
-  @Prop({ mutable: true, reflect: true }) alt: string = '';
+  @Prop({ mutable: true, reflect: true }) alt: string;
 
   /**
    * Allow images from third-party sites that allow
@@ -114,9 +114,11 @@ export class MdsImg {
    */
   @Event({ eventName: 'mdsImgLoadSuccess' }) loadSuccessEvent: EventEmitter<MdsImgEventDetail>;
 
+  // a value removed, or emptied, leaves the image without levels, as on load
   @Watch('srcsetConsumption')
-  srcsetConsumptionHandler(newValue: string): void {
-    this.srcsetConsumptionData = this.formatConsumptionData(newValue);
+  srcsetConsumptionHandler(newValue?: string | null): void {
+    this.srcsetConsumptionData =
+      newValue != null && newValue !== '' ? this.formatConsumptionData(newValue) : undefined;
   }
 
   @Watch('src')
@@ -139,21 +141,18 @@ export class MdsImg {
     const imageConsumptionData: ImageConsumptionType = {};
 
     consumptionData.split(',').forEach((element) => {
-      const item = element
-        .trim()
-        .replace(/[ ]{2,}/g, ' ')
-        .split(' ');
-      if (item[1].toLocaleLowerCase() === 'low') {
-        imageConsumptionData.low = item[0];
+      const item = element.trim().split(/\s+/);
+      // a trailing comma leaves an empty entry; an image without its level is skipped, it used to
+      // throw (#825)
+      if (item[0] === '') return;
+      const level = item[1]?.toLocaleLowerCase();
+      if (level !== 'low' && level !== 'medium' && level !== 'high') {
+        console.warn(
+          `mds-img: ignoring the srcset-consumption entry "${element.trim()}", an image followed by low, medium or high`,
+        );
+        return;
       }
-
-      if (item[1].toLocaleLowerCase() === 'medium') {
-        imageConsumptionData.medium = item[0];
-      }
-
-      if (item[1].toLocaleLowerCase() === 'high') {
-        imageConsumptionData.high = item[0];
-      }
+      imageConsumptionData[level] = item[0];
     });
 
     return imageConsumptionData;
@@ -165,10 +164,6 @@ export class MdsImg {
       return this.src.substring(index);
     }
     return '';
-  };
-
-  private setAriaAttributes = (): void => {
-    setAttributeIfEmpty(this.host, 'aria-label', this.alt);
   };
 
   private readonly handleConsumptionLoadClick = (): void => {
@@ -183,19 +178,21 @@ export class MdsImg {
     }
 
     this.image = this.host.querySelector<HTMLImageElement>('img') as HTMLImageElement;
-    if ((this.alt ?? '') === '') {
+    // a missing alt (null too, what a framework binds for a missing attribute) is named after
+    // the file; an empty one is the author saying the image is decorative, and stays empty
+    if (this.alt == null) {
       this.alt = this.autoAltName();
     }
   }
 
-  componentDidLoad(): void {
-    this.setAriaAttributes();
-  }
+  // an image is named by its alt, and a decorative one is left out of the accessibility tree
+  private hostRole = (): { role: string; 'aria-label'?: string } =>
+    (this.alt ?? '') === '' ? { role: 'presentation' } : { role: 'img', 'aria-label': this.alt };
 
   render() {
     if (this.imageError) {
       return (
-        <Host aria-label={this.alt} role="img">
+        <Host {...this.hostRole()}>
           <div class="contrast-area-50"></div>
           <div class="alt-text-container alt-text-container--error alt-text-container--default-aspect-ratio">
             <mds-icon class="icon" name={miBaselineBrokenImage}></mds-icon>
@@ -210,7 +207,7 @@ export class MdsImg {
     if (this.srcsetConsumptionData) {
       if (this.consumptionMode === 'low') {
         return (
-          <Host aria-label={this.alt} role="img" onClick={this.handleConsumptionLoadClick}>
+          <Host {...this.hostRole()} onClick={this.handleConsumptionLoadClick}>
             <div class="contrast-area-50"></div>
             {!this.imageConsumptionLoaded ? (
               <div
@@ -233,7 +230,7 @@ export class MdsImg {
               </div>
             ) : (
               <img
-                alt={this.alt}
+                alt={this.alt ?? ''}
                 aria-hidden="true"
                 height={this.height}
                 loading={this.loading}
@@ -251,10 +248,10 @@ export class MdsImg {
       }
 
       return (
-        <Host aria-label={this.alt} role="img">
+        <Host {...this.hostRole()}>
           <div class="contrast-area-50"></div>
           <img
-            alt={this.alt}
+            alt={this.alt ?? ''}
             aria-hidden="true"
             height={this.height}
             loading={this.loading}
@@ -271,10 +268,10 @@ export class MdsImg {
     }
 
     return (
-      <Host aria-label={this.alt} role="img">
+      <Host {...this.hostRole()}>
         <div class="contrast-area-50"></div>
         <img
-          alt={this.alt}
+          alt={this.alt ?? ''}
           aria-hidden="true"
           height={this.height}
           loading={this.loading}

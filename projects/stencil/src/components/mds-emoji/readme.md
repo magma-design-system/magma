@@ -15,7 +15,7 @@ The `<mds-emoji>` web component renders one of the Magma Design System's animate
 
 #### Semantic Behavior
 
-- **Mouse following**: When started, the emoji tracks the pointer with a 3D head rotation and parallax on each facial part; it is off by default and only reacts after `startFollowMouse()` is called. It turns toward the pointer: the direction is the direction of the pointer from the centre of the emoji, and the turn grows with the distance until the pointer is half the short side of the viewport away, the same at every size of the emoji. When the user prefers reduced motion, neither the pointer tracking nor the blinking moves the face.
+- **Mouse following**: When started, the emoji tracks the pointer with a 3D head rotation and parallax on each facial part; it is off by default and only reacts after `startFollowMouse()` is called. It turns toward the pointer: the direction is the direction of the pointer from the centre of the emoji, and the turn grows with the distance until the pointer is half the short side of the viewport away, the same at every size of the emoji. When the user prefers reduced motion, neither the pointer tracking nor the blinking moves the face, and the expressions (`agree`, `smile`, `disagree`, `startThinking`) show their face - a smile, a frown, the thinking hand - without moving the head or the features, for as long as they would have lasted.
 - **Single-animation lock**: Only one expression plays at a time - `agree`, `smile`, `disagree`, and `startThinking` take the face over: each stops whatever is playing (a thinking pose included) and starts from the neutral face, so a later call cuts an earlier one short. `startThinking` is a no-op only while the emoji is already thinking.
 - **Promise-based methods**: Every expressive action returns a `Promise<void>` that resolves when its animation finishes, letting callers await one expression before chaining the next.
 - **State restoration**: When an animation completes, mouse-following is restarted if `startFollowMouse()` was ever called, even after a later `stopFollowMouse()`.
@@ -250,7 +250,7 @@ Common incorrect uses of `<mds-emoji>`. Each entry pairs the wrong form with the
 
 #### Do Not Use an Unknown `name` Value
 
-Only `"mia"` and `"simi"` are valid values for the `name` prop. Any other string falls outside the `EmojiNames` type: no mascot is rendered and the component throws a `TypeError` in the console.
+Only `"mia"` and `"simi"` are valid values for the `name` prop. Any other string falls outside the `EmojiNames` type and is ignored with a console warning: on load no mascot is rendered, after load the mascot on screen stays.
 
 ```html
 <!-- INCORRECT -->

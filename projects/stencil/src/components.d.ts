@@ -388,7 +388,7 @@ export namespace Components {
     }
     interface MdsBibliography {
         /**
-          * Specifies a single or mupltiple authors, this field expect a string or an array of strings. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'", and for multiple authors "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'", you can use single or double quotation marks for composite names
+          * Specifies one or more authors, as a string. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'", and for multiple authors, separated by commas, "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'", you can use single or double quotation marks for composite names
          */
         "author"?: string;
         /**
@@ -742,7 +742,7 @@ export namespace Components {
          */
         "deletable"?: boolean;
         /**
-          * Sets the component disabled status
+          * Sets the component disabled status: neither the label nor the delete button can be focused or activated
           * @default false
          */
         "disabled"?: boolean;
@@ -965,7 +965,7 @@ export namespace Components {
          */
         "description"?: string;
         /**
-          * Enables the download icon to perform the related action on element
+          * Turns the card into a button that asks for the download: a tab stop that the pointer, Enter and Space activate, emitting `mdsFileDownload`. Without it the card is not interactive
          */
         "downloadable"?: boolean;
         /**
@@ -1160,8 +1160,7 @@ export namespace Components {
     }
     interface MdsImg {
         /**
-          * Specifies an alternate text for an image
-          * @default ''
+          * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
          */
         "alt": string;
         /**
@@ -2298,13 +2297,11 @@ export namespace Components {
     }
     interface MdsRadialMenu {
         /**
-          * Specifies the ending angle of the menu
-          * @default 360
+          * Specifies the ending angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-end`, `360deg` by default
          */
         "angleEnd": number;
         /**
-          * Specifies the starting angle of the menu
-          * @default 0
+          * Specifies the starting angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-start`, `0deg` by default
          */
         "angleStart": number;
         /**
@@ -2335,8 +2332,7 @@ export namespace Components {
          */
         "opened"?: boolean;
         /**
-          * Specifies the radius of the menu
-          * @default 5
+          * Specifies the radius of the menu, in `rem`; when it is not set the menu takes `--mds-radial-menu-radius`, `5rem` by default
          */
         "radius": number;
         /**
@@ -2846,7 +2842,7 @@ export namespace Components {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Names the tree for assistive technologies: the tree is a list of its items, and the label is what that list is called
          */
         "label": string;
         /**
@@ -4884,7 +4880,7 @@ declare namespace LocalJSX {
     }
     interface MdsBibliography {
         /**
-          * Specifies a single or mupltiple authors, this field expect a string or an array of strings. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'", and for multiple authors "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'", you can use single or double quotation marks for composite names
+          * Specifies one or more authors, as a string. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'", and for multiple authors, separated by commas, "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'", you can use single or double quotation marks for composite names
          */
         "author"?: string;
         /**
@@ -5277,7 +5273,7 @@ declare namespace LocalJSX {
          */
         "deletable"?: boolean;
         /**
-          * Sets the component disabled status
+          * Sets the component disabled status: neither the label nor the delete button can be focused or activated
           * @default false
          */
         "disabled"?: boolean;
@@ -5493,7 +5489,7 @@ declare namespace LocalJSX {
          */
         "description"?: string;
         /**
-          * Enables the download icon to perform the related action on element
+          * Turns the card into a button that asks for the download: a tab stop that the pointer, Enter and Space activate, emitting `mdsFileDownload`. Without it the card is not interactive
          */
         "downloadable"?: boolean;
         /**
@@ -5701,8 +5697,7 @@ declare namespace LocalJSX {
     }
     interface MdsImg {
         /**
-          * Specifies an alternate text for an image
-          * @default ''
+          * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
          */
         "alt"?: string;
         /**
@@ -6957,13 +6952,11 @@ declare namespace LocalJSX {
     }
     interface MdsRadialMenu {
         /**
-          * Specifies the ending angle of the menu
-          * @default 360
+          * Specifies the ending angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-end`, `360deg` by default
          */
         "angleEnd"?: number;
         /**
-          * Specifies the starting angle of the menu
-          * @default 0
+          * Specifies the starting angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-start`, `0deg` by default
          */
         "angleStart"?: number;
         /**
@@ -6994,8 +6987,7 @@ declare namespace LocalJSX {
          */
         "opened"?: boolean;
         /**
-          * Specifies the radius of the menu
-          * @default 5
+          * Specifies the radius of the menu, in `rem`; when it is not set the menu takes `--mds-radial-menu-radius`, `5rem` by default
          */
         "radius"?: number;
         /**
@@ -7518,7 +7510,7 @@ declare namespace LocalJSX {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Names the tree for assistive technologies: the tree is a list of its items, and the label is what that list is called
          */
         "label"?: string;
         /**

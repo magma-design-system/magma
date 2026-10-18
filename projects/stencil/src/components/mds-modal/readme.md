@@ -18,9 +18,9 @@ The `<mds-modal>` web component is the Magma Design System overlay container for
 - **Open state**: Visibility is driven by the `opened` prop. Setting it `true` runs the intro animation and emits `mdsModalOpen`; clearing it runs the outro animation and emits `mdsModalClose`.
 - **Programmatic close**: Exposes an async `close()` method that dismisses the modal regardless of `interaction`, mirroring the close-button action.
 - **Show/hide events**: `mdsModalShow` fires when the intro finishes (fully visible) and `mdsModalHide` when the outro finishes (fully hidden), the latter being the safe point to detach the modal to reclaim memory.
-- **Backdrop dismissal**: With `interaction="relaxed"` (default) a click on the backdrop or `Esc` closes the modal; with `interaction="strict"` both are ignored and only the close button, `close()` or a touch swipe (below) can dismiss it.
+- **Backdrop dismissal**: With `interaction="relaxed"` (default) a click on the backdrop or `Esc` closes the modal; with `interaction="strict"` both are ignored, and the touch swipe too (below): only the close button or `close()` can dismiss it.
 - **Body scroll lock**: When `overflow="auto"` the component locks body scroll while open and restores it on close.
-- **Touch dismissal**: On touch devices a horizontal swipe past a threshold closes the modal, respecting the swipe direction implied by edge `position` values.
+- **Touch dismissal**: On touch devices a horizontal swipe past a threshold closes a `relaxed` modal, respecting the swipe direction implied by edge `position` values.
 - **Slot-driven layout**: With no `window` slot, the default slot renders centered content framed by optional `top` (header) and `bottom` (footer) slots, and a close button is rendered automatically, icon-only and named in the page language (the `lang` of `<html>`) ("Close"). Slotting a `window` element suppresses the built-in chrome and close button so the consumer supplies the entire surface.
 
 #### Properties & Visual Configurations
@@ -109,7 +109,7 @@ Use the `top` slot for a sticky header and the `bottom` slot for a sticky footer
 
 #### Strict Interaction Mode
 
-Set `interaction="strict"` when the user must explicitly confirm or cancel before the dialog closes - for example, a form with unsaved changes. Backdrop clicks and `Esc` are ignored; only the close button or the `close()` method can dismiss the modal (a touch swipe still closes it).
+Set `interaction="strict"` when the user must explicitly confirm or cancel before the dialog closes - for example, a form with unsaved changes. Backdrop clicks, `Esc` and touch swipes are ignored; only the close button or the `close()` method can dismiss the modal.
 
 ```html
 <mds-modal id="conferma-elimina" interaction="strict">
@@ -415,7 +415,8 @@ Type: `Promise<void>`
 | `--mds-modal-overlay-color`              | Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.         |
 | `--mds-modal-overlay-opacity`            | Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`. |
 | `--mds-modal-transition-duration`        | Sets the `transition-duration` of the modal elements                                                                                               |
-| `--mds-modal-transition-timing-funciton` | Sets the `transition-timing-funciton` of the modal elements                                                                                        |
+| `--mds-modal-transition-timing-funciton` | Deprecated, misspelled name of `--mds-modal-transition-timing-function`; read only when that one is not set                                        |
+| `--mds-modal-transition-timing-function` | Sets the `transition-timing-function` of the modal elements                                                                                        |
 | `--mds-modal-window-background`          | Set the background color of the window                                                                                                             |
 | `--mds-modal-window-distance`            | Set the distance between the modal window and the screen bounds                                                                                    |
 | `--mds-modal-window-max-width`           | If the viewport is greather than mobile, max-width will be considered with this value;                                                             |

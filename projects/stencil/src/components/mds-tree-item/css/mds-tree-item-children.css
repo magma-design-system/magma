@@ -12,8 +12,14 @@
   position: relative;
   transform: translateY(calc(var(--mds-tree-item-toggle-size) / 2 * -1));
   transition-duration: var(--mds-tree-item-transition-duration);
-  transition-property: height, transform;
+
+  /* a closed branch is only 0px tall: visibility keeps its items out of the tab order and of
+     the accessibility tree, from the first render (the display: none below comes only after a
+     collapse). As a transition it turns visible at the start of the opening and hidden at the
+     end of the closing */
+  transition-property: height, transform, visibility;
   transition-timing-function: var(--mds-tree-item-transition-timing-function);
+  visibility: hidden;
   z-index: 0;
 }
 
@@ -23,6 +29,9 @@
   display: flex;
   height: auto;
   transform: translateY(0);
+
+  /* inherit, not visible: the open branch of an item inside a closed one stays hidden with it */
+  visibility: inherit;
 }
 
 .children--hidden,

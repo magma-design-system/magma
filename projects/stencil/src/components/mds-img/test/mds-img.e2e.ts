@@ -21,6 +21,36 @@ describe('mds-img', () => {
     expect(root).toEqualAttribute('alt', 'logo.svg');
   });
 
+  // an explicit empty alt was replaced by the file name, so an image could never be
+  // decorative (#821)
+  describe('the accessible name', () => {
+    it('names the image after its alt', async () => {
+      const { root } = await render(
+        '<mds-img src="/assets/images/logo.svg" alt="Logo Maggioli"></mds-img>',
+      );
+
+      expect(root).toEqualAttributes({ role: 'img', 'aria-label': 'Logo Maggioli' });
+    });
+
+    it('leaves a decorative image out with an empty alt', async () => {
+      const { root } = await render('<mds-img src="/assets/images/logo.svg" alt=""></mds-img>');
+
+      expect(root).toEqualAttributes({ role: 'presentation', alt: '' });
+      expect(root).not.toHaveAttribute('aria-label');
+    });
+
+    it('takes an empty alt set by a framework before the first render as decorative too', async () => {
+      const img = document.createElement('mds-img');
+      img.src = '/assets/images/logo.svg';
+      img.alt = '';
+      document.body.appendChild(img);
+      await vi.waitFor(() => expect(img).toHaveAttribute('hydrated'));
+
+      expect(img).toEqualAttribute('role', 'presentation');
+      img.remove();
+    });
+  });
+
   // Angular and Vue bind null for a missing value, before the first render
   describe('with null properties', () => {
     const mountImg = async (
@@ -51,6 +81,39 @@ describe('mds-img', () => {
       await mountImg((el) => {
         (el as { srcsetConsumption?: string | null }).srcsetConsumption = null;
       });
+
+      expect(consoleError).not.toHaveBeenCalled();
+    });
+  });
+
+  // #825: an entry without its level read the level of nothing and threw, so did a trailing comma
+  describe('srcset-consumption', () => {
+    it('skips an image without its level, with a warning, and an empty entry', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleError = vi.spyOn(console, 'error');
+
+      const { root, waitForChanges } = await render(
+        '<mds-img src="/assets/images/logo.svg" srcset-consumption="/low.svg low, /medium.svg, /high.svg  high,"></mds-img>',
+      );
+      root.srcsetConsumption = '/medium.svg medium';
+      await waitForChanges();
+
+      expect(consoleError).not.toHaveBeenCalled();
+      const warnings = warn.mock.calls.filter(([message]) =>
+        String(message).startsWith('mds-img:'),
+      );
+      expect(warnings).toHaveLength(1);
+      expect(warnings[0][0]).toContain('"/medium.svg"');
+    });
+
+    it('takes a value removed after load for no value', async () => {
+      const consoleError = vi.spyOn(console, 'error');
+      const { root, waitForChanges } = await render(
+        '<mds-img src="/assets/images/logo.svg" srcset-consumption="/low.svg low"></mds-img>',
+      );
+
+      (root as { srcsetConsumption?: string | null }).srcsetConsumption = null;
+      await waitForChanges();
 
       expect(consoleError).not.toHaveBeenCalled();
     });

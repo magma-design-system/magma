@@ -60,10 +60,10 @@ export class MdsUsage {
             {this.alias ?? this.t.get(this.variant)}
           </mds-text>
         </div>
-        <div
-          class="content"
-          role={this.variant === 'do' || this.variant === 'info' ? 'insertion' : 'deletion'}
-        >
+        {/* no role: insertion and deletion are the marks of a document edit, and a screen
+         * reader announced the guidance as text added or removed. The label above says what
+         * kind of guidance it is */}
+        <div class="content">
           <slot />
         </div>
       </Host>

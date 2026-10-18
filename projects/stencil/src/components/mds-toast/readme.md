@@ -13,6 +13,7 @@ The `<mds-toast>` web component is the transient notification surface of the Mag
 
 #### Semantic Behavior
 
+- **Announced**: The host is a status region (`role="status"`): the message is read out when the toast shows it, without moving the focus. While not visible, the message is hidden from assistive technologies too, not only moved out of the viewport.
 - **Auto-dismiss timer**: When `visible` is true and `duration` is a positive number, an internal timer counts down and then sets `visible` back to `false`; setting `duration` to `0` (or falsy) keeps the toast on screen until it is closed intentionally.
 - **Close event**: When the timer dismisses the toast, the component emits `mdsToastClose` after the outro animation - consumers should listen for this to remove the toast from the DOM or update queue state. Hiding it yourself (removing `visible`) emits nothing.
 - **Reactive timer**: Showing the toast again (`visible` back to true) or changing `duration` at runtime restarts the countdown; hiding it stops the countdown, so a toast hidden by your code emits nothing later.
@@ -346,14 +347,14 @@ mds-toast {
 
 ## CSS Custom Properties
 
-| Name                     | Description                              |
-| ------------------------ | ---------------------------------------- |
-| `--mds-toast-background` | Background color of the toast component. |
-| `--mds-toast-color`      | Text color inside the toast.             |
-| `--mds-toast-duration`   | Duration of the toast display.           |
-| `--mds-toast-icon-color` | Color of the icon inside the toast.      |
-| `--mds-toast-shadow`     | Shadow applied to the toast container.   |
-| `--mds-toast-width`      | Width of the toast component.            |
+| Name                     | Description                                                                                                                                                                 |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-toast-background` | Background color of the toast component.                                                                                                                                    |
+| `--mds-toast-color`      | Text color inside the toast.                                                                                                                                                |
+| `--mds-toast-duration`   | Duration of the transition that shows and hides the toast; `mdsToastClose` is emitted when the hiding one is over. How long the toast stays visible is the `duration` prop. |
+| `--mds-toast-icon-color` | Color of the icon inside the toast.                                                                                                                                         |
+| `--mds-toast-shadow`     | Shadow applied to the toast container.                                                                                                                                      |
+| `--mds-toast-width`      | Width of the toast component.                                                                                                                                               |
 
 
 ## Dependencies

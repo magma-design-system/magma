@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { describeConditionalSlot } from '@test/slot';
 
 describe('mds-tree-item', () => {
@@ -6,6 +6,26 @@ describe('mds-tree-item', () => {
     const { root } = await render('<mds-tree-item></mds-tree-item>');
 
     expect(root).toHaveAttribute('hydrated');
+  });
+
+  // #824: the event waited for --mds-dropdown-backdrop-duration, which nothing sets on a tree,
+  // so it always came 1000 ms after the collapse
+  it('emits mdsTreeItemCollapse once the branch has closed', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render(`
+      <mds-tree style="--mds-tree-transition-duration: 50ms">
+        <mds-tree-item label="Archivio" expanded>
+          <mds-tree-item label="Fatture"></mds-tree-item>
+        </mds-tree-item>
+      </mds-tree>`);
+    const item = root.querySelector<HTMLMdsTreeItemElement>('mds-tree-item')!;
+    const collapse = spyOnEvent('mdsTreeItemCollapse');
+
+    item.expanded = false;
+    await waitForChanges();
+    const collapsed = performance.now();
+    await vi.waitFor(() => expect(collapse).toHaveReceivedEvent(), { timeout: 1500 });
+
+    expect(performance.now() - collapsed).toBeLessThan(500);
   });
 
   describe('the branch that connects an item to the one above', () => {

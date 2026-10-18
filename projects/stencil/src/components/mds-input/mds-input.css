@@ -2,7 +2,7 @@
 
 /**
  * @prop --mds-input-background: The background color of the input field.
- * @prop --mds-input-icon-color: The RGB channels used to color icons inside the input.
+ * @prop --mds-input-icon-color: The color of the icons inside the input.
  * @prop --mds-input-placeholder-default-color: The placeholder color in the default state.
  * @prop --mds-input-placeholder-focus-color: The placeholder color when the input is focused.
  * @prop --mds-input-placeholder-hover-color: The placeholder color when the input is hovered.
