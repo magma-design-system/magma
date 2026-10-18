@@ -215,7 +215,10 @@ export class MdsModal {
     this.touchStartX = event.touches[0].clientX;
     this.touchStartY = event.touches[0].clientY;
   };
+  // a swipe is one more way to dismiss the modal: `strict` vetoes it, as it does Esc and the
+  // backdrop
   private setTouchEnd = (event: TouchEvent): void => {
+    if (this.interaction === 'strict') return;
     const endX = event.changedTouches[0].clientX;
     const endY = event.changedTouches[0].clientY;
     const diffX = this.touchStartX - endX;

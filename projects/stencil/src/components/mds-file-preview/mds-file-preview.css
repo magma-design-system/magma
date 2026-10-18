@@ -1,3 +1,4 @@
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
 @import './css/mds-file-preview-fouc.css';
 
 /**
@@ -32,13 +33,27 @@
 }
 
 .card {
-  @apply grid-cols-full;
+  @apply grid-cols-full focus-bounce;
 
+  /* the host clips its overflow to round its corners, so a downloadable card draws its focus
+     ring inside itself, bouncing inwards */
+  --magma-outline-blur-offset: -8px;
+  --magma-outline-focus-offset: -4px;
+
+  border-radius: inherit;
   corner-shape: inherit;
   display: grid;
   gap: --spacing(200);
   padding: var(--private-file-preview-padding);
   width: 100%;
+}
+
+.card[role='button'] {
+  cursor: pointer;
+}
+
+.card:focus-visible {
+  @apply focus-bounce--focused;
 }
 
 /* Concentric corners: the inside of a corner is the outside minus the gap that separates
