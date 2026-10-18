@@ -1,21 +1,25 @@
-/* a cell is selected by any `selection` but `none`, which reads as no selection */
+/*
+  A cell is selected by any `selection` but `none`, which reads as no selection. The test for
+  `none` sits in a :where(), so these rules weigh what a plain [selection] did: the start, end and
+  single rules below them still win.
+*/
 
-:host(:not([selection]:not([selection='none']))[today]) {
+:host(:not([selection]:not(:where([selection='none'])))[today]) {
   --private-calendar-cell-inner-background: var(
     --private-calendar-cell-preselection-today-background
   );
   --private-calendar-cell-color: var(--private-calendar-cell-preselection-today-color);
 }
 
-:host([selection]:not([selection='none'])[month='current']) {
+:host([selection]:not(:where([selection='none']))[month='current']) {
   --private-calendar-cell-background: var(
     --private-calendar-cell-selection-current-month-background
   );
   --private-calendar-cell-color: var(--private-calendar-cell-selection-current-month-color);
 }
 
-:host([selection]:not([selection='none'])[month='current']:nth-child(7n - 1)),
-:host([selection]:not([selection='none'])[month='current']:nth-child(7n)) {
+:host([selection]:not(:where([selection='none']))[month='current']:nth-child(7n - 1)),
+:host([selection]:not(:where([selection='none']))[month='current']:nth-child(7n)) {
   --private-calendar-cell-background: var(
     --private-calendar-cell-selection-current-month-weekend-background
   );
@@ -34,7 +38,7 @@
   );
 }
 
-:host([selection]:not([selection='none'])[month='other']) {
+:host([selection]:not(:where([selection='none']))[month='other']) {
   --private-calendar-cell-background: var(--private-calendar-cell-selection-other-month-background);
   --private-calendar-cell-color: var(--private-calendar-cell-selection-other-month-color);
 }
@@ -59,14 +63,16 @@
   );
 }
 
-:host([selection]:not([selection='none'])[month='current'][preview]:not([preview='false'])) {
+:host(
+  [selection]:not(:where([selection='none']))[month='current'][preview]:not([preview='false'])
+) {
   --private-calendar-cell-background: var(
     --private-calendar-cell-preselection-current-month-background
   );
   --private-calendar-cell-color: var(--private-calendar-cell-preselection-current-month-color);
 }
 
-:host([selection]:not([selection='none'])[month='other'][preview]:not([preview='false'])) {
+:host([selection]:not(:where([selection='none']))[month='other'][preview]:not([preview='false'])) {
   --private-calendar-cell-background: var(
     --private-calendar-cell-preselection-other-month-background
   );

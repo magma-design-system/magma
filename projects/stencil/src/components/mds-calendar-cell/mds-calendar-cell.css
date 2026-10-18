@@ -246,9 +246,10 @@
   z-index: 2;
 }
 
-/* selection boundaries: any `selection` but `none`, which reads as no selection */
+/* selection boundaries: any `selection` but `none`, which reads as no selection, tested in a
+   :where() so these rules still lose to the start, end and single ones below them */
 
-:host([selection]:not([selection='none'])[orientation='horizontal']) .area-background {
+:host([selection]:not(:where([selection='none']))[orientation='horizontal']) .area-background {
   margin-left: calc(var(--mds-calendar-cell-gap) * -1);
   margin-right: calc(var(--mds-calendar-cell-gap) * -1);
 }
@@ -267,7 +268,7 @@
 
 /* vertical orientation */
 
-:host([selection]:not([selection='none'])[orientation='vertical']) .area-background {
+:host([selection]:not(:where([selection='none']))[orientation='vertical']) .area-background {
   margin-bottom: calc(var(--mds-calendar-cell-gap) * -1);
   margin-top: calc(var(--mds-calendar-cell-gap) * -1);
 }
@@ -307,11 +308,13 @@
   border-top-right-radius: var(--private-calendar-cell-selection-boundaries-border-radius);
 }
 
-:host([selection]:not([selection='none'])[orientation='horizontal']:nth-child(7n - 6)) .area-background {
+:host([selection]:not(:where([selection='none']))[orientation='horizontal']:nth-child(7n - 6))
+  .area-background {
   margin-left: 0;
 }
 
-:host([selection]:not([selection='none'])[orientation='horizontal']:nth-child(7n)) .area-background {
+:host([selection]:not(:where([selection='none']))[orientation='horizontal']:nth-child(7n))
+  .area-background {
   margin-right: 0;
 }
 
@@ -331,7 +334,7 @@
 
 /* month */
 
-:host([month='other']:not([selection]:not([selection='none']))) {
+:host([month='other']:not([selection]:not(:where([selection='none'])))) {
   --private-calendar-cell-color: var(--private-calendar-cell-other-month-color);
   --private-calendar-cell-background: var(--private-calendar-cell-other-month-background);
 }
