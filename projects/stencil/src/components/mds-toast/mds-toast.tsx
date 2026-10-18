@@ -67,11 +67,15 @@ export class MdsToast {
    */
   @Event({ eventName: 'mdsToastClose' }) closedEvent: EventEmitter<void>;
 
+  // mdsToastClose waits for the exit transition, so it reads the duration the transition really
+  // has: --mds-toast-duration, or 0s when the motion preference removes it. An invalid value
+  // leaves the transition at 0s too
   private updateCSSCustomProps(): void {
     if (typeof window === 'undefined') return;
     const elementStyles = window.getComputedStyle(this.hostElement);
     this.cssDismissAnimationDuration = cssDurationToMilliseconds(
-      elementStyles.getPropertyValue('--mds-tab-duration'),
+      elementStyles.getPropertyValue('--private-toast-transition-duration'),
+      0,
     );
   }
 
@@ -131,6 +135,8 @@ export class MdsToast {
 
   @Watch('visible')
   visibleChanged(visible: boolean): void {
+    // read again when the toast hides: the preference or the property may have changed since load
+    this.updateCSSCustomProps();
     this.reloadTimeListeners(visible);
   }
 

@@ -144,7 +144,7 @@ Listen on the documented `mdsCalendarChange` event - not the native `change` eve
 
 #### Styling Customization via CSS Custom Properties
 
-Adjust the calendar appearance only through the documented `--mds-calendar-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles so dark mode, named themes and high contrast keep working.
+Adjust the calendar appearance only through the documented `--mds-calendar-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles so dark mode, named themes and high contrast keep working. The day cells inherit from the calendar both its `--mds-calendar-day-number-color` and their own `--mds-calendar-cell-*` properties, documented on [`mds-calendar-cell`](../../mds-calendar-cell).
 
 ```css
 .booking-widget mds-calendar {
@@ -153,6 +153,7 @@ Adjust the calendar appearance only through the documented `--mds-calendar-*` CS
   --mds-calendar-padding: calc(var(--spacing) * 500);
   --mds-calendar-cell-gap: calc(var(--spacing) * 100);
   --mds-calendar-cell-other-month-visibility: hidden;
+  --mds-calendar-day-number-color: rgb(var(--magma-text-muted));
 }
 ```
 
@@ -322,17 +323,17 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                         | Description                                                                       |
-| -------------------------------------------- | --------------------------------------------------------------------------------- |
-| `--mds-calendar-background`                  | The background color of the calendar container.                                   |
-| `--mds-calendar-border-radius`               | The border-radius of the calendar container.                                      |
-| `--mds-calendar-cell-gap`                    | The spacing between calendar day cells.                                           |
-| `--mds-calendar-cell-other-month-visibility` | Controls visibility of days from other months (e.g. "visible", "hidden").         |
-| `--mds-calendar-day-number-color`            | The color of the day numbers of the current month.                                |
-| `--mds-calendar-max-width`                   | The maximum inline size of the calendar; it fills its container up to this width. |
-| `--mds-calendar-padding`                     | The internal padding of the calendar container.                                   |
-| `--mds-calendar-select-month-or-year-height` | The height of the month/year selector in the calendar header.                     |
-| `--mds-calendar-select-month-or-year-width`  | The width of the month/year selector in the calendar header.                      |
+| Name                                         | Description                                                                                                                                            |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--mds-calendar-background`                  | The background color of the calendar container.                                                                                                        |
+| `--mds-calendar-border-radius`               | The border-radius of the calendar container.                                                                                                           |
+| `--mds-calendar-cell-gap`                    | The spacing between calendar day cells.                                                                                                                |
+| `--mds-calendar-cell-other-month-visibility` | Controls visibility of days from other months (e.g. "visible", "hidden").                                                                              |
+| `--mds-calendar-day-number-color`            | The color of the day numbers of the current month, weekend days aside (`--mds-calendar-cell-weekend-color`); `--mds-calendar-cell-color` wins over it. |
+| `--mds-calendar-max-width`                   | The maximum inline size of the calendar; it fills its container up to this width.                                                                      |
+| `--mds-calendar-padding`                     | The internal padding of the calendar container.                                                                                                        |
+| `--mds-calendar-select-month-or-year-height` | The height of the month/year selector in the calendar header.                                                                                          |
+| `--mds-calendar-select-month-or-year-width`  | The width of the month/year selector in the calendar header.                                                                                           |
 
 
 ## Dependencies

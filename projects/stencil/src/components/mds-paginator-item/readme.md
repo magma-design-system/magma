@@ -30,7 +30,7 @@ This child exposes only three props, none of which a consumer normally sets dire
 - **`selected`**: Marks the cell as the current page. Set by the parent only; it switches the item to its selected visual treatment and makes it inert.
 - **`disabled`**: Marks the cell as unavailable (e.g. the back arrow on page 1, the forward arrow on the last page). Set by the parent only; it blocks activation and applies the disabled styling.
 
-Visual appearance (size, radius, colors, shadows for the default, hover, selected, and disabled states) is set through the `--mds-paginator-item-*` CSS custom properties listed in [`readme.md`](../readme.md) rather than through props. They are declared on each item's own host, so a value set on `mds-paginator` or a parent selector does not reach the items the paginator renders.
+Visual appearance (size, radius, colors, shadows for the default, hover, selected, and disabled states) is set through the `--mds-paginator-item-*` CSS custom properties listed in [`readme.md`](../readme.md) rather than through props. The items live in the shadow DOM of `mds-paginator`, so set them on the paginator (or a parent selector): the items inherit them.
 
 
 ### 2. Pattern
@@ -94,11 +94,13 @@ When `icon` is set, the item renders an icon instead of the text slot and is use
 
 #### CSS Customization
 
-The documented `--mds-paginator-item-*` CSS custom properties are declared on each item's own host, so a value set on the parent `mds-paginator` host or on a containing selector does not inherit into the rendered items: the items cannot be restyled from outside. Customize the parent through its own `--mds-paginator-background` and `--mds-paginator-scroll-behavior`.
+The items live in the shadow DOM of the parent `mds-paginator`, so the documented `--mds-paginator-item-*` CSS custom properties reach them by inheritance: set them on the `mds-paginator` host or on a containing selector, next to the parent's own `--mds-paginator-background` and `--mds-paginator-scroll-behavior`. Use the semantic color roles so dark mode keeps working.
 
 ```css
 mds-paginator {
   --mds-paginator-background: rgb(var(--magma-wash-strong));
+  --mds-paginator-item-background-hover: rgb(var(--magma-wash-soft));
+  --mds-paginator-item-size: calc(var(--spacing) * 800);
 }
 ```
 
@@ -178,7 +180,7 @@ Individual item clicks are handled internally by `<mds-paginator>`. Listening fo
 
 #### Do Not Pierce Shadow DOM to Style Items
 
-From outside, the supported customization surface is the parent's `--mds-paginator-*` CSS custom properties: the items declare their `--mds-paginator-item-*` values on their own host, so a value set on `mds-paginator` does not reach them. Targeting internals via `::part()`, `>>>`, or undocumented selectors couples your code to the implementation and will break on minor releases.
+From outside, the supported customization surface is the documented `--mds-paginator-*` and `--mds-paginator-item-*` CSS custom properties, set on `mds-paginator`: the items inherit them. Targeting internals via `::part()`, `>>>`, or undocumented selectors couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -189,6 +191,7 @@ mds-paginator-item >>> .text {
 /* CORRECT */
 mds-paginator {
   --mds-paginator-background: rgb(var(--magma-wash-strong));
+  --mds-paginator-item-color: rgb(var(--magma-text-muted));
 }
 ```
 
@@ -214,7 +217,7 @@ mds-paginator {
 
 | Name                                       | Description                                                     |
 | ------------------------------------------ | --------------------------------------------------------------- |
-| `--mds-paginator-item-background`          | Sets the background-color of the pages area and the item        |
+| `--mds-paginator-item-background`          | Sets the background-color of the item                           |
 | `--mds-paginator-item-background-disabled` | Sets the background-color of the item when is disabled          |
 | `--mds-paginator-item-background-hover`    | Sets the background-color of the item when the mouse is over it |
 | `--mds-paginator-item-background-selected` | Sets the background-color of the item when is selected          |

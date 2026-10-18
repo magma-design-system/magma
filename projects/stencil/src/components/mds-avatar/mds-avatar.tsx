@@ -5,7 +5,6 @@ import { preferenceStore } from '@common/preference';
 import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
-import { avatarVariant } from './meta/variants';
 import miBaselinePerson from '@icon/mi/baseline/person.svg';
 
 type AvatarContent = 'count' | 'image' | 'initials' | 'icon' | 'fallback';
@@ -151,12 +150,14 @@ export class MdsAvatar {
       if (cleanedInitials.length === 1) {
         cleanedInitials = cleanedInitials + cleanedInitials;
       }
-      this.variant =
-        this.variants[
-          (cleanedInitials.substring(0, 1).charCodeAt(0) +
-            cleanedInitials.substring(1, 2).charCodeAt(0)) %
-            avatarVariant.length
-        ];
+      // the initials pick one of 17 slots, the length of the v1 list of colors: the 15 slots this
+      // list has keep the color they always gave, the 2 past its end, which left the avatar with
+      // no variant (#825), take the first two
+      const slot =
+        (cleanedInitials.substring(0, 1).charCodeAt(0) +
+          cleanedInitials.substring(1, 2).charCodeAt(0)) %
+        17;
+      this.variant = this.variants[slot % this.variants.length];
     }
   };
 

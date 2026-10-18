@@ -61,13 +61,23 @@ export class MdsPrefContrast {
     },
   };
 
-  // Applied once, on load, then mirrored from the shared store (see mds-pref-mode).
-  componentWillLoad(): void {
-    this.setContrast(
-      this.mode ??
-        (localStorage.getItem(this.localStorageAlias) as ContrastModeType) ??
-        this.defaultMode,
+  private readonly isMode = (mode?: string | null): mode is ContrastModeType =>
+    mode != null && {}.hasOwnProperty.call(this.contrast, mode);
+
+  private readonly warnInvalidMode = (mode: string): void => {
+    console.warn(
+      `mds-pref-contrast: ignoring the invalid mode "${mode}", use one of: ${Object.keys(this.contrast).join(', ')}`,
     );
+  };
+
+  // Applied once, on load, then mirrored from the shared store (see mds-pref-mode). A mode
+  // outside the union is ignored, and one an earlier page left in the storage is dropped: it was
+  // applied, threw, and broke every following load too (#825)
+  componentWillLoad(): void {
+    if (this.mode != null && !this.isMode(this.mode)) this.warnInvalidMode(this.mode);
+    const stored = localStorage.getItem(this.localStorageAlias);
+    if (stored !== null && !this.isMode(stored)) localStorage.removeItem(this.localStorageAlias);
+    this.setContrast([this.mode, stored].find(this.isMode) ?? this.defaultMode);
   }
 
   connectedCallback(): void {
@@ -110,9 +120,17 @@ export class MdsPrefContrast {
 
   @Watch('mode')
   modeChanged(newValue: ContrastModeType, oldValue: ContrastModeType): void {
-    if (newValue !== oldValue && !this.syncingFromStore) {
-      this.setContrast(newValue);
+    if (newValue === oldValue || this.syncingFromStore) {
+      return;
     }
+    // a mode outside the union, or the attribute removed, is not applied: the instance goes back
+    // to the contrast of the page
+    if (!this.isMode(newValue)) {
+      if (newValue != null) this.warnInvalidMode(newValue);
+      this.syncContrast(preferenceStore.state.contrast);
+      return;
+    }
+    this.setContrast(newValue);
   }
 
   private readonly handleModeClick = (mode: ContrastModeType) => (): void => {

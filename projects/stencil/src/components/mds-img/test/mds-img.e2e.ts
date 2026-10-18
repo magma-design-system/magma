@@ -109,4 +109,37 @@ describe('mds-img', () => {
       expect(consoleError).not.toHaveBeenCalled();
     });
   });
+
+  // #825: an entry without its level read the level of nothing and threw, so did a trailing comma
+  describe('srcset-consumption', () => {
+    it('skips an image without its level, with a warning, and an empty entry', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleError = vi.spyOn(console, 'error');
+
+      const { root, waitForChanges } = await render(
+        '<mds-img src="/assets/images/logo.svg" srcset-consumption="/low.svg low, /medium.svg, /high.svg  high,"></mds-img>',
+      );
+      root.srcsetConsumption = '/medium.svg medium';
+      await waitForChanges();
+
+      expect(consoleError).not.toHaveBeenCalled();
+      const warnings = warn.mock.calls.filter(([message]) =>
+        String(message).startsWith('mds-img:'),
+      );
+      expect(warnings).toHaveLength(1);
+      expect(warnings[0][0]).toContain('"/medium.svg"');
+    });
+
+    it('takes a value removed after load for no value', async () => {
+      const consoleError = vi.spyOn(console, 'error');
+      const { root, waitForChanges } = await render(
+        '<mds-img src="/assets/images/logo.svg" srcset-consumption="/low.svg low"></mds-img>',
+      );
+
+      (root as { srcsetConsumption?: string | null }).srcsetConsumption = null;
+      await waitForChanges();
+
+      expect(consoleError).not.toHaveBeenCalled();
+    });
+  });
 });

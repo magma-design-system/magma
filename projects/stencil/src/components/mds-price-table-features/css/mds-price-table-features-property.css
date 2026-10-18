@@ -12,10 +12,6 @@
     - --mds-price-table-features-padding: read by mds-price-table-features-cell as
       var(--mds-price-table-features-padding, <default>), so a registration would keep that
       fallback from ever firing.
+    - --mds-price-table-features-border-color: read by mds-price-table-features-cell as
+      var(--mds-price-table-features-border-color, <default>), for the same reason.
 */
-
-@property --mds-price-table-features-border-color {
-  inherits: true;
-  initial-value: rgb(var(--magma-border-muted));
-  syntax: '<color>';
-}

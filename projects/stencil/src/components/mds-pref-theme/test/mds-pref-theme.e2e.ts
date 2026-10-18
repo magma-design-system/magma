@@ -1,7 +1,9 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 
 const CORNER_STORAGE_KEY = 'mdsPrefCornerShape';
 const THEME_NAME_STORAGE_KEY = 'mdsPrefTheme';
+const THEME_SCHEME_STORAGE_KEY = 'mdsPrefThemeScheme';
 
 /** The stored choice outranks the prop, and both the theme name and the corner
  * shape are written on the document, so a leftover decides the next case. */
@@ -9,6 +11,7 @@ const reset = (): void => {
   localStorage.removeItem(CORNER_STORAGE_KEY);
   document.documentElement.removeAttribute('data-corner-shape');
   localStorage.removeItem(THEME_NAME_STORAGE_KEY);
+  localStorage.removeItem(THEME_SCHEME_STORAGE_KEY);
   document.documentElement.removeAttribute('data-theme-name');
   document.documentElement.style.removeProperty('--magma-pref-theme');
   // the list is live, so the names come out of a copy before they are removed
@@ -27,6 +30,7 @@ describe('mds-pref-theme', () => {
 
   beforeEach(() => {
     reset();
+    mockIconFetch();
   });
 
   it('renders', async () => {
@@ -118,12 +122,57 @@ describe('mds-pref-theme', () => {
   });
 
   it.each(['dark', 'system', 'scheme-dark'])('refuses the reserved name "%s"', async (name) => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const consoleError = vi.spyOn(console, 'error');
     // a mode value would be read back as a v1 mode by the storage migration, a
     // scheme name would write a class of the scheme axis
-    await render(`<mds-pref-theme name="${name}"></mds-pref-theme>`).catch(() => undefined);
+    await render(`<mds-pref-theme name="${name}"></mds-pref-theme>`);
 
+    // #825: refused with a warning, no longer with an error that stopped the component
+    expect(consoleError).not.toHaveBeenCalled();
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining(`"${name}"`));
     expect(document.documentElement).not.toHaveClass(`pref-theme-${name}`);
     expect(localStorage.getItem(THEME_NAME_STORAGE_KEY)).toBeNull();
+  });
+
+  // #825: an unknown scheme was written as a class named `undefined` on the page, and stored
+  describe('an invalid scheme', () => {
+    beforeEach(() => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+    });
+
+    it('is ignored, neither written nor stored', async () => {
+      const consoleError = vi.spyOn(console, 'error');
+
+      await render('<mds-pref-theme scheme="sepia"></mds-pref-theme>');
+
+      expect(consoleError).not.toHaveBeenCalled();
+      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('"sepia"'));
+      expect(document.documentElement).not.toHaveClass('undefined');
+      expect(localStorage.getItem(THEME_SCHEME_STORAGE_KEY)).toBeNull();
+    });
+
+    it('left in the storage by an earlier version is dropped for the prop', async () => {
+      localStorage.setItem(THEME_SCHEME_STORAGE_KEY, 'sepia');
+
+      await render('<mds-pref-theme scheme="dark"></mds-pref-theme>');
+
+      expect(document.documentElement).toHaveClass('pref-theme-scheme-dark');
+      expect(document.documentElement).not.toHaveClass('undefined');
+      expect(localStorage.getItem(THEME_SCHEME_STORAGE_KEY)).toBe('dark');
+    });
+  });
+
+  it('ignores an invalid corner shape with a warning', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const consoleError = vi.spyOn(console, 'error');
+
+    await render('<mds-pref-theme corner-shape="wavy"></mds-pref-theme>');
+
+    expect(consoleError).not.toHaveBeenCalled();
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('"wavy"'));
+    expect(document.documentElement).not.toHaveAttribute('data-corner-shape');
+    expect(localStorage.getItem(CORNER_STORAGE_KEY)).toBeNull();
   });
 
   describe('the trigger', () => {

@@ -130,10 +130,14 @@ export class MdsTreeItem {
       this.childrenElement.classList.remove('children--hidden');
       return;
     }
-    this.toggleChildrenTimer = setTimeout(() => {
-      clearTimeout(this.toggleChildrenTimer);
-      this.collapsedEvent.emit({ element: this.host });
-    }, cssDurationToMilliseconds(this.cssToggleChildrenDuration));
+    this.updateCssCustomProperty();
+    this.toggleChildrenTimer = setTimeout(
+      () => {
+        clearTimeout(this.toggleChildrenTimer);
+        this.collapsedEvent.emit({ element: this.host });
+      },
+      cssDurationToMilliseconds(this.cssToggleChildrenDuration, 0),
+    );
   }
 
   private checkChildrenTransitionEnd = (): void => {
@@ -169,10 +173,12 @@ export class MdsTreeItem {
     this.updateToggleIcon();
   };
 
+  // mdsTreeItemCollapse waits for the branch to close, so it reads the duration of that
+  // transition when the item collapses; an invalid value leaves the transition at 0s too
   private updateCssCustomProperty = (): void => {
     const elementStyles = window.getComputedStyle(this.host);
     this.cssToggleChildrenDuration = elementStyles.getPropertyValue(
-      '--mds-dropdown-backdrop-duration',
+      '--mds-tree-item-transition-duration',
     );
   };
 

@@ -135,7 +135,7 @@ To open or close the drawer from external code - for instance after route naviga
 
 #### Styling the Hamburger Icon Color
 
-Use `--mds-header-bar-hamburger-color` to theme the hamburger icon. Set it on the host element or a parent selector; use a semantic color role wrapped with `rgb(var(--magma-<role>))` so dark-mode works automatically.
+Use `--mds-header-bar-hamburger-color` to theme the hamburger icon. Set it on the bar itself: the bar declares its default on its own host, so a value set on a parent does not reach it. Inside an `mds-header`, the header's `--mds-header-icon-color` (or `--mds-header-color`) colors the hamburger too. Use a semantic color role wrapped with `rgb(var(--magma-<role>))` so dark-mode works automatically.
 
 ```css
 mds-header-bar {
@@ -330,9 +330,9 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                               | Description                                             |
-| ---------------------------------- | ------------------------------------------------------- |
-| `--mds-header-bar-hamburger-color` | The color of the hamburger icon used in the header bar. |
+| Name                               | Description                                                                                                                                                    |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-header-bar-hamburger-color` | The color of the hamburger icon used in the header bar; inside an `mds-header` it defaults to the `--mds-header-icon-color` or `--mds-header-color` set on it. |
 
 
 ## Dependencies

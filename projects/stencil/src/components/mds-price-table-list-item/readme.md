@@ -117,7 +117,7 @@ The full compound pattern: `<mds-price-table-list>` with header, items, a price,
 
 #### Styling Customization
 
-Override the icon colors only through the documented `--mds-price-table-list-item-*` CSS custom properties. Name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast keep working. `--mds-price-table-list-item-supported-icon-color-hover` is declared but no hover state reads it today, so setting it has no effect.
+Override the icon colors only through the documented `--mds-price-table-list-item-*` CSS custom properties. Name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast keep working. `--mds-price-table-list-item-supported-icon-color-hover` colors the supported icon while the pointer is over the item.
 
 ```css
 .promo-column mds-price-table-list-item {
@@ -237,11 +237,11 @@ The default slot is for the feature label - plain text plus inline helpers such 
 
 ## CSS Custom Properties
 
-| Name                                                     | Description                                           |
-| -------------------------------------------------------- | ----------------------------------------------------- |
-| `--mds-price-table-list-item-supported-icon-color`       | Default color of the supported icon in a list item.   |
-| `--mds-price-table-list-item-supported-icon-color-hover` | Color of the supported icon in a list item on hover.  |
-| `--mds-price-table-list-item-unsupported-icon-color`     | Default color of the unsupported icon in a list item. |
+| Name                                                     | Description                                                          |
+| -------------------------------------------------------- | -------------------------------------------------------------------- |
+| `--mds-price-table-list-item-supported-icon-color`       | Default color of the supported icon in a list item.                  |
+| `--mds-price-table-list-item-supported-icon-color-hover` | Color of the supported icon while the pointer is over the list item. |
+| `--mds-price-table-list-item-unsupported-icon-color`     | Default color of the unsupported icon in a list item.                |
 
 
 ## Dependencies
