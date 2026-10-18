@@ -38,6 +38,8 @@ body { background: var(--bg); min-width: 960px; }
 }
 
 .load-error.save-notice { background: var(--panel); border-bottom-color: var(--line); color: var(--ink-soft); }
+.draft-conflict { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
+.draft-conflict span { color: var(--ink); }
 
 .file-button {
   align-items: center;
