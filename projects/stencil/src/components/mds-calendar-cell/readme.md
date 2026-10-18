@@ -97,12 +97,14 @@ The parent sets the `disabled` boolean attribute on days that cannot be selected
 
 #### Styling Customization
 
-The `--mds-calendar-cell-*` CSS custom properties are declared, with their defaults, on each cell inside the calendar's shadow DOM: a value set on the `<mds-calendar>` host or on a parent selector does not reach them. From outside, adjust the cells through the custom properties `<mds-calendar>` documents for them; the colors follow the semantic roles of the theme.
+The cells live in the calendar's shadow DOM, so their `--mds-calendar-cell-*` CSS custom properties reach them by inheritance: set them on the `<mds-calendar>` host (or on a parent selector), next to the custom properties the calendar documents for them. Use the semantic color roles so dark mode, named themes and high contrast keep working.
 
 ```css
 .booking-calendar mds-calendar {
   --mds-calendar-cell-gap: calc(var(--spacing) * 100);
   --mds-calendar-cell-other-month-visibility: hidden;
+  --mds-calendar-cell-weekend-color: rgb(var(--magma-text-muted));
+  --mds-calendar-cell-selection-current-month-background: rgb(var(--magma-accent-emphasis-hover));
 }
 ```
 
@@ -141,7 +143,7 @@ The cell is purely presentational - it holds no internal state. Setting `selecti
 
 #### Do Not Pierce the Shadow DOM to Style Internals
 
-The cells live in the shadow DOM of `<mds-calendar>`, and their own `--mds-calendar-cell-*` properties are declared on each cell, so from outside they are adjusted only through the custom properties `<mds-calendar>` documents for them. Targeting the internal `.action`, `.inner-dot`, or `.area-background` elements via `>>>` or undocumented class selectors couples your code to the implementation and will break on minor releases.
+The cells live in the shadow DOM of `<mds-calendar>`: from outside they are adjusted only through their `--mds-calendar-cell-*` custom properties, set on the calendar, which the cells inherit. Targeting the internal `.action`, `.inner-dot`, or `.area-background` elements via `>>>` or undocumented class selectors couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -156,6 +158,7 @@ mds-calendar-cell >>> .inner-dot {
 mds-calendar {
   --mds-calendar-cell-gap: calc(var(--spacing) * 100);
   --mds-calendar-cell-other-month-visibility: hidden;
+  --mds-calendar-cell-background: rgb(var(--magma-wash-soft));
 }
 ```
 
@@ -177,44 +180,44 @@ mds-calendar {
 
 ## CSS Custom Properties
 
-| Name                                                                        | Description                                               |
-| --------------------------------------------------------------------------- | --------------------------------------------------------- |
-| `--mds-calendar-cell-background`                                            | Background of calendar cells.                             |
-| `--mds-calendar-cell-boundaries-background`                                 | Background for selection boundaries.                      |
-| `--mds-calendar-cell-boundaries-color`                                      | Color for selection boundary lines.                       |
-| `--mds-calendar-cell-boundaries-padding`                                    | Padding inside selection boundaries.                      |
-| `--mds-calendar-cell-color`                                                 | Text color of calendar cells.                             |
-| `--mds-calendar-cell-disabled-background`                                   | Background for disabled days.                             |
-| `--mds-calendar-cell-disabled-color`                                        | Text color for disabled days.                             |
-| `--mds-calendar-cell-other-month-background`                                | Background of days from adjacent months.                  |
-| `--mds-calendar-cell-other-month-color`                                     | Text color of days from adjacent months.                  |
-| `--mds-calendar-cell-preselection-current-month-background`                 | Background for preselected days (current month).          |
-| `--mds-calendar-cell-preselection-current-month-boundaries-background`      | Boundary background for preselected days (current month). |
-| `--mds-calendar-cell-preselection-current-month-boundaries-color`           | Boundary color for preselected days (current month).      |
-| `--mds-calendar-cell-preselection-current-month-color`                      | Text color for preselected days (current month).          |
-| `--mds-calendar-cell-preselection-other-month-background`                   | Background for preselected days (other months).           |
-| `--mds-calendar-cell-preselection-other-month-boundaries-background`        | Boundary background for preselected days (other months).  |
-| `--mds-calendar-cell-preselection-other-month-boundaries-color`             | Boundary color for preselected days (other months).       |
-| `--mds-calendar-cell-preselection-other-month-color`                        | Text color for preselected days (other months).           |
-| `--mds-calendar-cell-preselection-today-background`                         | Background for today's date in preselection state.        |
-| `--mds-calendar-cell-preselection-today-color`                              | Text color for today's date in preselection state.        |
-| `--mds-calendar-cell-selection-boundaries-border-radius`                    | Border radius for day selection boundaries.               |
-| `--mds-calendar-cell-selection-current-month-background`                    | Background for selected days (current month).             |
-| `--mds-calendar-cell-selection-current-month-boundaries-background`         | Boundary background for selected days (current month).    |
-| `--mds-calendar-cell-selection-current-month-boundaries-color`              | Boundary color for selected days (current month).         |
-| `--mds-calendar-cell-selection-current-month-color`                         | Text color for selected days (current month).             |
-| `--mds-calendar-cell-selection-current-month-weekend-background`            | Background for selected weekend days (current month).     |
-| `--mds-calendar-cell-selection-current-month-weekend-boundaries-background` | Boundary background for selected weekend days.            |
-| `--mds-calendar-cell-selection-current-month-weekend-boundaries-color`      | Boundary color for selected weekend days.                 |
-| `--mds-calendar-cell-selection-current-month-weekend-color`                 | Text color for selected weekend days (current month).     |
-| `--mds-calendar-cell-selection-other-month-background`                      | Background for selected days (other months).              |
-| `--mds-calendar-cell-selection-other-month-boundaries-background`           | Boundary background for selected days (other months).     |
-| `--mds-calendar-cell-selection-other-month-boundaries-color`                | Boundary color for selected days (other months).          |
-| `--mds-calendar-cell-selection-other-month-color`                           | Text color for selected days (other months).              |
-| `--mds-calendar-cell-selection-week-boundaries-border-radius`               | Border radius for week selection boundaries.              |
-| `--mds-calendar-cell-size`                                                  | Size (width/height) of each day cell.                     |
-| `--mds-calendar-cell-weekend-background`                                    | Background for weekend days.                              |
-| `--mds-calendar-cell-weekend-color`                                         | Text colorfor weekend days.                               |
+| Name                                                                        | Description                                                                                                                                                 |
+| --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-calendar-cell-background`                                            | Background of calendar cells.                                                                                                                               |
+| `--mds-calendar-cell-boundaries-background`                                 | Deprecated, read by nothing: the selection boundaries take the `-selection-*-boundaries-background` and `-preselection-*-boundaries-background` properties. |
+| `--mds-calendar-cell-boundaries-color`                                      | Deprecated, read by nothing: the selection boundaries take the `-selection-*-boundaries-color` and `-preselection-*-boundaries-color` properties.           |
+| `--mds-calendar-cell-boundaries-padding`                                    | Padding inside selection boundaries.                                                                                                                        |
+| `--mds-calendar-cell-color`                                                 | Text color of calendar cells.                                                                                                                               |
+| `--mds-calendar-cell-disabled-background`                                   | Background for disabled days.                                                                                                                               |
+| `--mds-calendar-cell-disabled-color`                                        | Text color for disabled days.                                                                                                                               |
+| `--mds-calendar-cell-other-month-background`                                | Background of days from adjacent months.                                                                                                                    |
+| `--mds-calendar-cell-other-month-color`                                     | Text color of days from adjacent months.                                                                                                                    |
+| `--mds-calendar-cell-preselection-current-month-background`                 | Background for preselected days (current month).                                                                                                            |
+| `--mds-calendar-cell-preselection-current-month-boundaries-background`      | Boundary background for preselected days (current month).                                                                                                   |
+| `--mds-calendar-cell-preselection-current-month-boundaries-color`           | Boundary color for preselected days (current month).                                                                                                        |
+| `--mds-calendar-cell-preselection-current-month-color`                      | Text color for preselected days (current month).                                                                                                            |
+| `--mds-calendar-cell-preselection-other-month-background`                   | Background for preselected days (other months).                                                                                                             |
+| `--mds-calendar-cell-preselection-other-month-boundaries-background`        | Boundary background for preselected days (other months).                                                                                                    |
+| `--mds-calendar-cell-preselection-other-month-boundaries-color`             | Boundary color for preselected days (other months).                                                                                                         |
+| `--mds-calendar-cell-preselection-other-month-color`                        | Text color for preselected days (other months).                                                                                                             |
+| `--mds-calendar-cell-preselection-today-background`                         | Background for today's date in preselection state.                                                                                                          |
+| `--mds-calendar-cell-preselection-today-color`                              | Text color for today's date in preselection state.                                                                                                          |
+| `--mds-calendar-cell-selection-boundaries-border-radius`                    | Border radius for day selection boundaries.                                                                                                                 |
+| `--mds-calendar-cell-selection-current-month-background`                    | Background for selected days (current month).                                                                                                               |
+| `--mds-calendar-cell-selection-current-month-boundaries-background`         | Boundary background for selected days (current month).                                                                                                      |
+| `--mds-calendar-cell-selection-current-month-boundaries-color`              | Boundary color for selected days (current month).                                                                                                           |
+| `--mds-calendar-cell-selection-current-month-color`                         | Text color for selected days (current month).                                                                                                               |
+| `--mds-calendar-cell-selection-current-month-weekend-background`            | Background for selected weekend days (current month).                                                                                                       |
+| `--mds-calendar-cell-selection-current-month-weekend-boundaries-background` | Boundary background for selected weekend days.                                                                                                              |
+| `--mds-calendar-cell-selection-current-month-weekend-boundaries-color`      | Boundary color for selected weekend days.                                                                                                                   |
+| `--mds-calendar-cell-selection-current-month-weekend-color`                 | Text color for selected weekend days (current month).                                                                                                       |
+| `--mds-calendar-cell-selection-other-month-background`                      | Background for selected days (other months).                                                                                                                |
+| `--mds-calendar-cell-selection-other-month-boundaries-background`           | Boundary background for selected days (other months).                                                                                                       |
+| `--mds-calendar-cell-selection-other-month-boundaries-color`                | Boundary color for selected days (other months).                                                                                                            |
+| `--mds-calendar-cell-selection-other-month-color`                           | Text color for selected days (other months).                                                                                                                |
+| `--mds-calendar-cell-selection-week-boundaries-border-radius`               | Border radius for week selection boundaries.                                                                                                                |
+| `--mds-calendar-cell-size`                                                  | Deprecated, read by nothing: a cell takes the width of its column in the calendar, and is square.                                                           |
+| `--mds-calendar-cell-weekend-background`                                    | Background for weekend days.                                                                                                                                |
+| `--mds-calendar-cell-weekend-color`                                         | Text color for weekend days.                                                                                                                                |
 
 
 ## Dependencies

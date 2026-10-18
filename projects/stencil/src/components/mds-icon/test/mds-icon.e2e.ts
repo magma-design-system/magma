@@ -202,4 +202,57 @@ describe('mds-icon', () => {
       );
     });
   });
+
+  // #825: one `=` of the base64 padding was dropped, so a payload ending in `==` made atob throw;
+  // markup that opens with the XML declaration was taken for an icon name and fetched
+  describe('an icon given as data', () => {
+    const toBase64 = (svg: string): string =>
+      `data:image/svg+xml;base64,${btoa(String.fromCharCode(...new TextEncoder().encode(svg)))}`;
+
+    const show = async (name: string) => {
+      const rendered = await render('<mds-icon></mds-icon>');
+      rendered.root.name = name;
+      await rendered.waitForChanges();
+      return rendered;
+    };
+
+    it('draws a base64 payload that ends in two padding characters', async () => {
+      let svg = svgWithId('padded');
+      while (new TextEncoder().encode(svg).length % 3 !== 1) svg += ' ';
+      const name = toBase64(svg);
+      expect(name.endsWith('==')).toBe(true);
+
+      const { root } = await show(name);
+
+      expect(root.shadowRoot!.querySelector('svg#padded')).not.toBeNull();
+      expect(window.fetch).not.toHaveBeenCalled();
+    });
+
+    it('keeps the letters of a base64 payload that is not ASCII', async () => {
+      // an e with a grave accent, two bytes in UTF-8
+      const svg = svgWithId('title').replace('<path', '<title>Caff\u00e8</title><path');
+
+      const { root } = await show(toBase64(svg));
+
+      expect(root.shadowRoot!.querySelector('title')!.textContent).toBe('Caff\u00e8');
+    });
+
+    it('draws nothing for a payload that is not base64, with a warning', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleError = vi.spyOn(console, 'error');
+
+      const { root } = await show('data:image/svg+xml;base64,%%%');
+
+      expect(consoleError).not.toHaveBeenCalled();
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('base64'));
+      expect(root.shadowRoot!.querySelector('svg')).toBeNull();
+    });
+
+    it('draws the markup of a saved file, XML declaration and doctype first, without a fetch', async () => {
+      const { root } = await show(mdiAlien);
+
+      expect(root.shadowRoot!.querySelector('svg#mdi-alien')).not.toBeNull();
+      expect(window.fetch).not.toHaveBeenCalled();
+    });
+  });
 });

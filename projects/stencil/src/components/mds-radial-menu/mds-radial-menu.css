@@ -1,8 +1,8 @@
 @import './css/mds-radial-menu-fouc.css';
 
 /**
- * @prop --mds-radial-menu-angle-start: Starting angle of the radial menu.
- * @prop --mds-radial-menu-angle-end: Ending angle of the radial menu.
+ * @prop --mds-radial-menu-angle-start: Starting angle of the radial menu; the `angle-start` prop, when set, wins over it.
+ * @prop --mds-radial-menu-angle-end: Ending angle of the radial menu; the `angle-end` prop, when set, wins over it.
  * @prop --mds-radial-menu-context-menu-z-index: Z-index of the radial menu context.
  * @prop --mds-radial-menu-delay: Delay before the radial menu opens.
  * @prop --mds-radial-menu-direction: Direction multiplier for menu expansion (-1 or 1).
@@ -10,7 +10,7 @@
  * @prop --mds-radial-menu-disc-filter: Filter applied to the radial menu disc.
  * @prop --mds-radial-menu-disc-shadow: Shadow applied to the radial menu disc.
  * @prop --mds-radial-menu-disc-size: Size of the radial menu disc.
- * @prop --mds-radial-menu-radius: Radius of the radial menu.
+ * @prop --mds-radial-menu-radius: Radius of the radial menu; the `radius` prop, when set, wins over it.
  * @prop --mds-radial-menu-transition-duration: Duration of the radial menu open/close transition.
  * @prop --mds-radial-menu-transition-timing-function: Timing function of the radial menu transition.
  */
@@ -61,11 +61,28 @@
   /* private */
   --mds-radial-menu-radius-current: 0;
 
-  /* private */
-  --mds-radial-menu-is-full-circle: 1;
+  /* private: what the layout needs to know about the angles, worked out here from whoever set
+     them, the props or a stylesheet. The sine of an angle clamped to [-90deg, 90deg] is its
+     sign, the cosine of one clamped to [0deg, 90deg] is 1 only at 0deg; the x1000 takes any
+     difference of a degree or more to the clamp */
+  --private-radial-menu-sweep: calc(
+    var(--mds-radial-menu-angle-end) - var(--mds-radial-menu-angle-start)
+  );
 
-  /* private */
-  --mds-radial-menu-is-start-greater-than-end: 1;
+  /* private: 1 when the sweep is a full turn, 0 otherwise */
+  --mds-radial-menu-is-full-circle: cos(
+    clamp(
+      0deg,
+      max(var(--private-radial-menu-sweep) - 360deg, 360deg - var(--private-radial-menu-sweep)) *
+        1000,
+      90deg
+    )
+  );
+
+  /* private: 1 when the angles grow from start to end, -1 when they shrink */
+  --mds-radial-menu-is-start-greater-than-end: sin(
+    clamp(-90deg, var(--private-radial-menu-sweep) * 1000, 90deg)
+  );
 
   display: inline-flex;
   position: relative;

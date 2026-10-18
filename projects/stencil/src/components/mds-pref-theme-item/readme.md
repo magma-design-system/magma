@@ -21,7 +21,7 @@ The `<mds-pref-theme-item>` web component is a single selectable theme entry ins
 
 #### Properties & Visual Configurations
 
-- **`name`**: The theme identifier reported to the parent and matched against the parent's active `name` to compute initial selection. Use a simple or kebab-case string; the named themes are `cool` and `warm`, and `default` is the base theme ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)). The parent validates the lowercase/kebab format and throws on invalid names.
+- **`name`**: The theme identifier reported to the parent and matched against the parent's active `name` to compute initial selection. Use a simple or kebab-case string; the named themes are `cool` and `warm`, and `default` is the base theme ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)). The parent validates the lowercase/kebab format and ignores an invalid name with a console warning.
 - **`scheme`**: Declares which color schemes the theme supports - `all` (default, both light and dark), or `light` / `dark` to force a single mode. This value travels with the selection event and is applied by the parent when the item is chosen.
 - **`selected`**: Reflects whether this item is the active theme. The parent sets it on every item when it loads and on each pick, so a value set by hand is overwritten.
 
@@ -199,7 +199,7 @@ mds-pref-theme-item[name="warm"] {
 
 #### Do Not Use an Invalid `scheme` Value
 
-`scheme` only accepts `"all"`, `"light"`, or `"dark"`. Other strings are not validated: when the item is picked the parent stores them and writes no `pref-theme-scheme-*` class on `<html>`, so the theme is not constrained to the mode you meant.
+`scheme` only accepts `"all"`, `"light"`, or `"dark"`. Other strings are ignored by the parent with a console warning: picking the item applies and stores nothing, so the theme does not change at all.
 
 ```html
 <!-- INCORRECT -->

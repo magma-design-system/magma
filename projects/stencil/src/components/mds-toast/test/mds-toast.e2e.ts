@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { describeConditionalSlot } from '@test/slot';
 
 describe('mds-toast', () => {
@@ -19,6 +19,21 @@ describe('mds-toast', () => {
     await new Promise((resolve) => setTimeout(resolve, 100));
 
     expect(root.visible).toBe(true);
+  });
+
+  // #824: the close waited 1000 ms whatever the transition: the duration was read from
+  // --mds-tab-duration, a property nothing sets on a toast
+  it('emits mdsToastClose once the exit transition is over', async () => {
+    const { root, spyOnEvent } = await render<HTMLMdsToastElement>(
+      '<mds-toast visible duration="100" style="--mds-toast-duration: 50ms">Text</mds-toast>',
+    );
+    const close = spyOnEvent('mdsToastClose');
+
+    await vi.waitFor(() => expect(root.visible).toBeFalsy(), { timeout: 1000 });
+    const hidden = performance.now();
+    await vi.waitFor(() => expect(close).toHaveReceivedEvent(), { timeout: 1500 });
+
+    expect(performance.now() - hidden).toBeLessThan(500);
   });
 
   describe('where it sits', () => {

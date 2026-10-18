@@ -250,7 +250,7 @@ Common incorrect uses of `<mds-emoji>`. Each entry pairs the wrong form with the
 
 #### Do Not Use an Unknown `name` Value
 
-Only `"mia"` and `"simi"` are valid values for the `name` prop. Any other string falls outside the `EmojiNames` type: no mascot is rendered and the component throws a `TypeError` in the console.
+Only `"mia"` and `"simi"` are valid values for the `name` prop. Any other string falls outside the `EmojiNames` type and is ignored with a console warning: on load no mascot is rendered, after load the mascot on screen stays.
 
 ```html
 <!-- INCORRECT -->

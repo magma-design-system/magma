@@ -26,7 +26,7 @@ The `<mds-card>` web component is the surface container of the Magma Design Syst
 
 - **`disableAutoGrid`** (default `false`) toggles the intrinsic responsive grid. Leave it off to let the card own the placement and reflow of its regions; set it to opt out of the managed grid and lay the slotted content out yourself.
 
-Spacing is tuned through the `--mds-card-gap` and `--mds-card-padding` CSS custom properties rather than props.
+Spacing is tuned through the `--mds-card-gap` and `--mds-card-padding` CSS custom properties rather than props, the background of the card and of its regions through `--mds-card-background`.
 
 
 ### 2. Pattern
@@ -164,12 +164,13 @@ Set `disable-auto-grid` to opt out of the managed responsive grid. The regions s
 
 #### Styling Customization via CSS Custom Properties
 
-Set `--mds-card-gap` and `--mds-card-padding` on the host or a parent selector. Use Magma spacing tokens so the values remain consistent across themes.
+Set `--mds-card-gap` and `--mds-card-padding` on the host or a parent selector. Use Magma spacing tokens so the values remain consistent across themes. `--mds-card-background` recolors the card and its regions together; name a surface role so dark mode keeps working.
 
 ```css
 .scheda-articolo mds-card {
   --mds-card-gap: calc(var(--spacing) * 200);
   --mds-card-padding: calc(var(--spacing) * 400);
+  --mds-card-background: rgb(var(--magma-surface-overlay));
 }
 ```
 
@@ -232,7 +233,7 @@ Compound children (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds
 
 #### Do Not Pierce the Shadow DOM with Undocumented Selectors
 
-The only supported customization surface is `--mds-card-gap`, `--mds-card-padding`, and `::part(layout)`. Targeting internal class names with `>>>`, `/deep/`, or any selector that reaches inside the shadow root couples your code to implementation details and will break on minor releases.
+The only supported customization surface is `--mds-card-background`, `--mds-card-gap`, `--mds-card-padding`, and `::part(layout)`. Targeting internal class names with `>>>`, `/deep/`, or any selector that reaches inside the shadow root couples your code to implementation details and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -339,10 +340,11 @@ The `header` slot is intended for title and action controls. Placing an `<mds-im
 
 ## CSS Custom Properties
 
-| Name                 | Description                            |
-| -------------------- | -------------------------------------- |
-| `--mds-card-gap`     | Sets the spacing between card elements |
-| `--mds-card-padding` | Sets the spacing around card elements  |
+| Name                    | Description                                                                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-card-background` | Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`) |
+| `--mds-card-gap`        | Sets the spacing between card elements                                                                                                |
+| `--mds-card-padding`    | Sets the spacing around card elements                                                                                                 |
 
 
 ----------------------------------------------

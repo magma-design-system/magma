@@ -9,11 +9,6 @@
   --mds-push-notification-item-icon-color: rgb(var(--label-orange-05));
 }
 
-:host([variant='orange'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--label-orange-05));
-}
-
 :host([variant='amaranth'][tone='strong']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-amaranth-05));
   --mds-push-notification-item-icon-color: rgb(var(--label-amaranth-10));
@@ -22,11 +17,6 @@
 :host([variant='amaranth']),
 :host([variant='amaranth'][tone='weak']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-amaranth-09));
-  --mds-push-notification-item-icon-color: rgb(var(--label-amaranth-05));
-}
-
-:host([variant='amaranth'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
   --mds-push-notification-item-icon-color: rgb(var(--label-amaranth-05));
 }
 
@@ -41,11 +31,6 @@
   --mds-push-notification-item-icon-color: rgb(var(--label-orchid-05));
 }
 
-:host([variant='orchid'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--label-orchid-05));
-}
-
 :host([variant='purple'][tone='strong']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-purple-05));
   --mds-push-notification-item-icon-color: rgb(var(--label-purple-10));
@@ -54,11 +39,6 @@
 :host([variant='purple']),
 :host([variant='purple'][tone='weak']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-purple-09));
-  --mds-push-notification-item-icon-color: rgb(var(--label-purple-05));
-}
-
-:host([variant='purple'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
   --mds-push-notification-item-icon-color: rgb(var(--label-purple-05));
 }
 
@@ -73,11 +53,6 @@
   --mds-push-notification-item-icon-color: rgb(var(--label-red-05));
 }
 
-:host([variant='red'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--label-red-05));
-}
-
 :host([variant='violet'][tone='strong']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-violet-05));
   --mds-push-notification-item-icon-color: rgb(var(--label-violet-10));
@@ -86,11 +61,6 @@
 :host([variant='violet']),
 :host([variant='violet'][tone='weak']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-violet-09));
-  --mds-push-notification-item-icon-color: rgb(var(--label-violet-05));
-}
-
-:host([variant='violet'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
   --mds-push-notification-item-icon-color: rgb(var(--label-violet-05));
 }
 
@@ -105,11 +75,6 @@
   --mds-push-notification-item-icon-color: rgb(var(--label-blue-05));
 }
 
-:host([variant='blue'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--label-blue-05));
-}
-
 :host([variant='sky'][tone='strong']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-sky-05));
   --mds-push-notification-item-icon-color: rgb(var(--label-sky-10));
@@ -118,11 +83,6 @@
 :host([variant='sky']),
 :host([variant='sky'][tone='weak']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-sky-09));
-  --mds-push-notification-item-icon-color: rgb(var(--label-sky-05));
-}
-
-:host([variant='sky'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
   --mds-push-notification-item-icon-color: rgb(var(--label-sky-05));
 }
 
@@ -137,11 +97,6 @@
   --mds-push-notification-item-icon-color: rgb(var(--label-aqua-05));
 }
 
-:host([variant='aqua'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--label-aqua-05));
-}
-
 :host([variant='green'][tone='strong']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-green-05));
   --mds-push-notification-item-icon-color: rgb(var(--label-green-10));
@@ -150,11 +105,6 @@
 :host([variant='green']),
 :host([variant='green'][tone='weak']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-green-09));
-  --mds-push-notification-item-icon-color: rgb(var(--label-green-05));
-}
-
-:host([variant='green'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
   --mds-push-notification-item-icon-color: rgb(var(--label-green-05));
 }
 
@@ -169,11 +119,6 @@
   --mds-push-notification-item-icon-color: rgb(var(--label-lime-05));
 }
 
-:host([variant='lime'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--label-lime-05));
-}
-
 :host([variant='yellow'][tone='strong']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-yellow-05));
   --mds-push-notification-item-icon-color: rgb(var(--label-yellow-10));
@@ -182,10 +127,5 @@
 :host([variant='yellow']),
 :host([variant='yellow'][tone='weak']) {
   --mds-push-notification-item-icon-background-color: rgb(var(--label-yellow-09));
-  --mds-push-notification-item-icon-color: rgb(var(--label-yellow-05));
-}
-
-:host([variant='yellow'][tone='text']) {
-  --mds-push-notification-item-icon-background-color: transparent;
   --mds-push-notification-item-icon-color: rgb(var(--label-yellow-05));
 }

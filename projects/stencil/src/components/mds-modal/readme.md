@@ -415,7 +415,8 @@ Type: `Promise<void>`
 | `--mds-modal-overlay-color`              | Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.         |
 | `--mds-modal-overlay-opacity`            | Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`. |
 | `--mds-modal-transition-duration`        | Sets the `transition-duration` of the modal elements                                                                                               |
-| `--mds-modal-transition-timing-funciton` | Sets the `transition-timing-funciton` of the modal elements                                                                                        |
+| `--mds-modal-transition-timing-funciton` | Deprecated, misspelled name of `--mds-modal-transition-timing-function`; read only when that one is not set                                        |
+| `--mds-modal-transition-timing-function` | Sets the `transition-timing-function` of the modal elements                                                                                        |
 | `--mds-modal-window-background`          | Set the background color of the window                                                                                                             |
 | `--mds-modal-window-distance`            | Set the distance between the modal window and the screen bounds                                                                                    |
 | `--mds-modal-window-max-width`           | If the viewport is greather than mobile, max-width will be considered with this value;                                                             |

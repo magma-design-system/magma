@@ -112,7 +112,7 @@ Common incorrect uses of `<mds-pref-consumption>`. Each entry pairs the wrong fo
 
 #### Do Not Pass an Invalid `mode` Value
 
-`mode` is typed as `"low" | "medium" | "high"`. Any other string has no entry in the component's mode table: applying it fails with an error, after the value has already been stored in `localStorage` (later loads fail too), and no consumption level is activated.
+`mode` is typed as `"low" | "medium" | "high"`. Any other string has no entry in the component's mode table: it is ignored with a console warning and never stored, and the component keeps the level it has (on load, the persisted choice or `high`).
 
 ```html
 <!-- INCORRECT -->

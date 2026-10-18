@@ -22,6 +22,13 @@ import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.s
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg';
 import { TabSizeType } from '@type/button';
 
+// a language tag as the component reads it (RFC 5646): a primary subtag of two or three letters,
+// the item dictionary has `ceb`, `haw` and `hmn`, then the region, script or variant subtags
+const LANGUAGE_CODE = /^[a-z]{2,3}(-[A-Za-z0-9]{1,8})*$/;
+
+const isLanguageCode = (value?: string | null): value is string =>
+  value != null && LANGUAGE_CODE.test(value);
+
 /**
  * @slot - Add `mds-pref-language-item` element/s.
  */
@@ -128,18 +135,31 @@ export class MdsPrefLanguage {
   };
 
   private readonly setLanguage = (set: string): void => {
-    if (!/(auto)|^[a-z]{2}(-[A-Z]{2})?$/gm.exec(set)) {
-      throw Error(`Language code set not reconized: ${set}`);
+    // a code that is no language tag, or the attribute removed, is ignored: the page keeps the
+    // language it has, and on load the one `auto` finds. It used to throw (#825)
+    if (set !== 'auto' && !isLanguageCode(set)) {
+      if (set != null) {
+        console.warn(`mds-pref-language: ignoring the invalid language code "${set}"`);
+      }
+      if (this.appliedLanguage !== undefined) {
+        this.set = this.appliedLanguage;
+        return;
+      }
     }
+    const code = isLanguageCode(set) ? set : 'auto';
 
     // navigator.language is missing in the hydrate/SSR runtime's MockNavigator
     const systemLanguage = this.sanitizeLanguage(navigator.language ?? 'en');
     const userLanguage = localStorage.getItem(this.localStorageAlias);
+    // a value an earlier version stored without checking it would come back on every load
+    if (userLanguage !== null && !isLanguageCode(userLanguage)) {
+      localStorage.removeItem(this.localStorageAlias);
+    }
     const pageLanguage = document.querySelector('html')?.getAttribute('lang') ?? null;
     const language =
-      set === 'auto'
-        ? (userLanguage ?? pageLanguage ?? systemLanguage)
-        : this.sanitizeLanguage(set);
+      code === 'auto'
+        ? ([userLanguage, pageLanguage].find(isLanguageCode) ?? systemLanguage)
+        : this.sanitizeLanguage(code);
 
     this.set = language;
     // Re-applying the same language must not emit or write again (the `set`

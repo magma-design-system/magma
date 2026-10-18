@@ -18,7 +18,7 @@ The `<mds-pref-language>` web component is the language-preference control of th
 - **Selection orchestration**: Selecting an item clears the others, closes the dropdown, and resolves the new language - the children report up to this component, which centralizes the single-selection state.
 - **Language resolution & persistence**: When `set` is `auto` the active language is resolved in priority order from the persisted value, then the `<html lang>` attribute, then `navigator.language`. The resolved value is persisted and written to `<html lang>` - the single page-wide source of truth for the language. Every localized Magma component (including ones nested in shadow DOM) reacts automatically through a shared reactive store; there is no per-element `lang` override and no imperative refresh method. Applications that manage the language themselves can simply set `<html lang>`: the store observes it.
 - **Events bubbled to the parent**: Emits `mdsPrefLanguageChange` on every item pick, also when the picked language is already active (detail carries the selected `language` code; it fires just before the language is applied), and `mdsPrefChange` (detail `{ preference: 'language' }`), fired only when the resolved language actually changes, from a pick or from a new `set` value (the initial application on load does not emit). The latter is the event `<mds-pref>` listens to for its "reload required" notice, since application-level content may still need a reload.
-- **Invalid codes throw**: A `set` value that is neither `auto` nor a valid `xx` / `xx-XX` BCP 47 short form raises an error rather than failing silently.
+- **Invalid codes are ignored**: A `set` value that is neither `auto` nor a language tag (a primary subtag of two or three letters, such as `it` or `haw`, optionally followed by others, such as `it-IT`) is ignored with a console warning: the language in place stays, and on load the one `auto` resolves. A stored value that is no language tag is dropped.
 - **Default-language hint**: When the resolved language differs from the built-in default (`en`), a caption noting the default language is rendered.
 
 #### Properties & Visual Configurations
@@ -174,7 +174,7 @@ The default slot accepts only `<mds-pref-language-item>` elements. Slotting raw 
 
 #### Do Not Pass an Unrecognized Language Code to `set`
 
-The `set` prop must be either `"auto"` or a valid two-letter BCP 47 tag (`xx` or `xx-XX`). Any other value - including full locale strings like `"italiano"`, ISO 639-2 three-letter codes, or malformed strings - throws an error at runtime.
+The `set` prop must be either `"auto"` or a BCP 47 language tag: a primary subtag of two or three letters, the one of the item dictionary (`it`, `en`, `haw`), optionally followed by others (`it-IT`). Any other value - including language names like `"italiano"` or malformed strings like `"en_US"` - is ignored with a console warning and the language in place stays. Use the shortest primary subtag: `it`, not the ISO 639-2 `ita`, which has no item and no translation.
 
 ```html
 <!-- INCORRECT -->

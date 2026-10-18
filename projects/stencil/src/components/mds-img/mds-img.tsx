@@ -128,9 +128,11 @@ export class MdsImg {
    */
   @Event({ eventName: 'mdsImgLoadSuccess' }) loadSuccessEvent: EventEmitter<MdsImgEventDetail>;
 
+  // a value removed, or emptied, leaves the image without levels, as on load
   @Watch('srcsetConsumption')
-  srcsetConsumptionHandler(newValue: string): void {
-    this.srcsetConsumptionData = this.formatConsumptionData(newValue);
+  srcsetConsumptionHandler(newValue?: string | null): void {
+    this.srcsetConsumptionData =
+      newValue != null && newValue !== '' ? this.formatConsumptionData(newValue) : undefined;
   }
 
   @Watch('src')
@@ -153,21 +155,18 @@ export class MdsImg {
     const imageConsumptionData: ImageConsumptionType = {};
 
     consumptionData.split(',').forEach((element) => {
-      const item = element
-        .trim()
-        .replace(/[ ]{2,}/g, ' ')
-        .split(' ');
-      if (item[1].toLocaleLowerCase() === 'low') {
-        imageConsumptionData.low = item[0];
+      const item = element.trim().split(/\s+/);
+      // a trailing comma leaves an empty entry; an image without its level is skipped, it used to
+      // throw (#825)
+      if (item[0] === '') return;
+      const level = item[1]?.toLocaleLowerCase();
+      if (level !== 'low' && level !== 'medium' && level !== 'high') {
+        console.warn(
+          `mds-img: ignoring the srcset-consumption entry "${element.trim()}", an image followed by low, medium or high`,
+        );
+        return;
       }
-
-      if (item[1].toLocaleLowerCase() === 'medium') {
-        imageConsumptionData.medium = item[0];
-      }
-
-      if (item[1].toLocaleLowerCase() === 'high') {
-        imageConsumptionData.high = item[0];
-      }
+      imageConsumptionData[level] = item[0];
     });
 
     return imageConsumptionData;

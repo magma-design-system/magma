@@ -231,3 +231,62 @@ describe('disabled', () => {
     expect(new FormData(form).get('otp')).toBe('12');
   });
 });
+
+// A paste that reached the last cell submitted from the cell after it, null, and threw (#825)
+describe('paste', () => {
+  const paste = (cell: Element, text: string): void => {
+    const clipboardData = new DataTransfer();
+    clipboardData.setData('text', text);
+    cell.dispatchEvent(
+      new ClipboardEvent('paste', { bubbles: true, cancelable: true, clipboardData }),
+    );
+  };
+
+  const setup = async (attributes = '') => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(
+      `<form><mds-input-otp name="otp" length="4" ${attributes}></mds-input-otp></form>`,
+    );
+    const otp = form.querySelector('mds-input-otp')!;
+    const cells = Array.from(otp.shadowRoot!.querySelectorAll('mds-input'));
+    return { form, otp, cells, waitForChanges };
+  };
+
+  it('fills the cells up to the last one and submits the complete code', async () => {
+    const consoleError = vi.spyOn(console, 'error');
+    const { form, otp, cells, waitForChanges } = await setup('autosubmit');
+    const submit = vi.fn((event: Event) => event.preventDefault());
+    form.addEventListener('submit', submit);
+
+    paste(cells[0], '123456');
+    await waitForChanges();
+
+    expect(consoleError).not.toHaveBeenCalled();
+    expect(readCells(otp)).toEqual(['1', '2', '3', '4']);
+    expect(submit).toHaveBeenCalledTimes(1);
+    expect(new FormData(form).get('otp')).toBe('1234');
+  });
+
+  it('fills from the cell it lands on, without submitting a code still missing digits', async () => {
+    const { form, otp, cells, waitForChanges } = await setup('autosubmit');
+    const submit = vi.fn((event: Event) => event.preventDefault());
+    form.addEventListener('submit', submit);
+
+    paste(cells[2], '78');
+    await waitForChanges();
+
+    expect(readCells(otp)).toEqual(['', '', '7', '8']);
+    expect(submit).not.toHaveBeenCalled();
+  });
+
+  it('takes a code with the spaces around it, and nothing that is not digits only', async () => {
+    const { otp, cells, waitForChanges } = await setup();
+
+    paste(cells[0], '1.5');
+    await waitForChanges();
+    expect(readCells(otp)).toEqual(['', '', '', '']);
+
+    paste(cells[0], ' 42 ');
+    await waitForChanges();
+    expect(readCells(otp)).toEqual(['4', '2', '', '']);
+  });
+});
