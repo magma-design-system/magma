@@ -2,6 +2,9 @@ import { Component, Element, Event, EventEmitter, Host, h, Prop } from '@stencil
 import miBaselineNavigateNext from '@icon/mi/baseline/navigate-next.svg';
 import { MdsBreadcrumbItemEventDetail } from './meta/event-detail';
 
+/**
+ * @part button - The `mds-button` of the item, which shows its `label`
+ */
 @Component({
   tag: 'mds-breadcrumb-item',
   styleUrl: 'mds-breadcrumb-item.css',

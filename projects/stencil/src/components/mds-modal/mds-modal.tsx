@@ -29,6 +29,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @part action-close - Selects the close button of the modal.
+ * @part dialog - The native `<dialog>` that covers the viewport and places the window in it
  * @part window - Selects the default window element of the modal when used.
  * @slot bottom - Contents that will be placed on bottom of the window. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot - Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot.
@@ -110,7 +111,8 @@ export class MdsModal {
   @Prop({ reflect: true }) readonly interaction: ModalInteractionType = 'relaxed';
 
   /**
-   * Emits when a modal is closed
+   * Emits when a modal is opened, as its intro animation starts: `mdsModalShow` follows once it
+   * is totally visible
    */
   @Event({ eventName: 'mdsModalOpen' }) openEvent: EventEmitter<void>;
 

@@ -1219,7 +1219,6 @@ mds-push-notification-item slot badge
 mds-push-notification-item part actions
 mds-push-notification-item part avatar
 mds-push-notification-item part content
-mds-push-notification-item part icon
 mds-push-notification-item part picture
 mds-push-notification-item css --mds-push-notification-item-duration
 mds-push-notification-item css --mds-push-notification-item-icon-background-color
@@ -1537,7 +1536,7 @@ mds-tooltip css --mds-tooltip-z-index
 mds-tree encapsulation shadow
 mds-tree prop actions (attr actions) [reflect]: "auto" | "visible" | undefined = 'auto'
 mds-tree prop appearance (attr appearance) [reflect]: "depth" | "none" = 'depth'
-mds-tree prop async (attr async) [reflect]: boolean | undefined
+mds-tree prop async (attr async) [reflect]: boolean | undefined DEPRECATED
 mds-tree prop expanded (attr expanded) [reflect, mutable]: boolean | undefined
 mds-tree prop label (attr label): string
 mds-tree prop toggle (attr toggle) [reflect]: "chevron" | "folder" = 'chevron'

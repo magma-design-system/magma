@@ -315,11 +315,11 @@ mds-details::part(header) {
 
 ## Shadow Parts
 
-| Part        | Description                                              |
-| ----------- | -------------------------------------------------------- |
-| `"content"` | The content wrapper of the `default` and `content` slots |
-| `"header"`  | The header of the component                              |
-| `"title"`   | The title of the component                               |
+| Part        | Description                                           |
+| ----------- | ----------------------------------------------------- |
+| `"content"` | The content wrapper of the default and `action` slots |
+| `"header"`  | The header of the component                           |
+| `"title"`   | The title of the component                            |
 
 
 ## CSS Custom Properties

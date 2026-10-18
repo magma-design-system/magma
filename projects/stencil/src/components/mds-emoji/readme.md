@@ -385,103 +385,95 @@ mds-emoji {
 
 ### `agree() => Promise<void>`
 
-
+Emoji agrees, useful for confirm actions.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Emoji agrees, useful for confirm actions.
+
 
 ### `disagree(turnHappyDelay?: number) => Promise<void>`
 
-
+Emoji disagrees, useful for errors or unwanted results.
 
 #### Parameters
 
-| Name             | Type     | Description |
-| ---------------- | -------- | ----------- |
-| `turnHappyDelay` | `number` |             |
+| Name             | Type     | Description                                                                                             |
+| ---------------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `turnHappyDelay` | `number` | how long the mouth stays serious after the head shake, in milliseconds; 0 brings the smile back at once |
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Emoji disagrees, useful for errors or unwanted results.
+
 
 ### `smile() => Promise<void>`
 
-
+Emoji smiles, useful for confirm actions.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Emoji smiles, useful for confirm actions.
+
 
 ### `startBlinking() => Promise<void>`
 
-
+Eyes start blinking.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Eyes start blinking.
+
 
 ### `startFollowMouse() => Promise<void>`
 
-
+Starts following mouse with CSS 3D transform.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Starts following mouse with CSS 3D transform.
+
 
 ### `startThinking(duration?: number) => Promise<void>`
 
-
+Emoji starts thinking, useful for pending requests.
 
 #### Parameters
 
-| Name       | Type     | Description |
-| ---------- | -------- | ----------- |
-| `duration` | `number` |             |
+| Name       | Type     | Description                                          |
+| ---------- | -------- | ---------------------------------------------------- |
+| `duration` | `number` | the duration of the entrance of the hand, in seconds |
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Emoji start thinking, useful for pending requests.
+
 
 ### `stopBlinking() => Promise<void>`
 
-
+Eyes stop blinking.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Eyes stop blinking.
+
 
 ### `stopFollowMouse() => Promise<void>`
 
-
+Stops following mouse with CSS 3D transform.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Stops following mouse with CSS 3D transform.
+
 
 ### `stopThinking(duration?: number) => Promise<void>`
 

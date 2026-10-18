@@ -1,9 +1,2 @@
-const inputTipItemVariantDictionary = [
-  'required',
-  'required-success',
-  'disabled',
-  'readonly',
-  'text',
-];
-
-export { inputTipItemVariantDictionary };
+// the variants come from the type, so the Storybook controls list all of them
+export { inputTipItemVariantDictionary } from '@type/input-tip';

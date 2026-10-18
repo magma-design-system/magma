@@ -224,7 +224,7 @@ export namespace Components {
          */
         "duration"?: number;
         /**
-          * A value between 0 and 100 that rapresents the status progress
+          * The progress of the item's countdown, from 0 to 1: mds-accordion-timer writes it while the item is selected and sets it back to 0 when the next item takes over
           * @default 0
          */
         "progress": number;
@@ -858,11 +858,12 @@ export namespace Components {
     }
     interface MdsEmoji {
         /**
-          * @returns Promise<void> Emoji agrees, useful for confirm actions.
+          * Emoji agrees, useful for confirm actions.
          */
         "agree": () => Promise<void>;
         /**
-          * @returns Promise<void> Emoji disagrees, useful for errors or unwanted results.
+          * Emoji disagrees, useful for errors or unwanted results.
+          * @param turnHappyDelay how long the mouth stays serious after the head shake, in milliseconds; 0 brings the smile back at once
          */
         "disagree": (turnHappyDelay?: number) => Promise<void>;
         /**
@@ -871,27 +872,28 @@ export namespace Components {
          */
         "name": EmojiNames;
         /**
-          * @returns Promise<void> Emoji smiles, useful for confirm actions.
+          * Emoji smiles, useful for confirm actions.
          */
         "smile": () => Promise<void>;
         /**
-          * @returns Promise<void> Eyes start blinking.
+          * Eyes start blinking.
          */
         "startBlinking": () => Promise<void>;
         /**
-          * @returns Promise<void> Starts following mouse with CSS 3D transform.
+          * Starts following mouse with CSS 3D transform.
          */
         "startFollowMouse": () => Promise<void>;
         /**
-          * @returns Promise<void> Emoji start thinking, useful for pending requests.
+          * Emoji starts thinking, useful for pending requests.
+          * @param duration the duration of the entrance of the hand, in seconds
          */
         "startThinking": (duration?: number) => Promise<void>;
         /**
-          * @returns Promise<void> Eyes stop blinking.
+          * Eyes stop blinking.
          */
         "stopBlinking": () => Promise<void>;
         /**
-          * @returns Promise<void> Stops following mouse with CSS 3D transform.
+          * Stops following mouse with CSS 3D transform.
          */
         "stopFollowMouse": () => Promise<void>;
         /**
@@ -1262,7 +1264,7 @@ export namespace Components {
          */
         "hasValidator": (validator?: MdsValidatorFn) => Promise<boolean>;
         /**
-          * An icon displayed at the right of the input
+          * An icon displayed at the left of the input, inside the field; the spinner of `await` takes its place
          */
         "icon"?: string;
         /**
@@ -1703,7 +1705,7 @@ export namespace Components {
     }
     interface MdsInputTip {
         /**
-          * Specifies if the component is active and shows expanded children or not
+          * Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
           * @default false
          */
         "active"?: boolean;
@@ -1874,7 +1876,7 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Sets the label of the component
+          * Sets the size of the component: the typography of the label (`sm` caption, `md` detail, `lg` h6) and the size of the icon
           * @default 'sm'
          */
         "size"?: MentionSize;
@@ -1951,7 +1953,7 @@ export namespace Components {
          */
         "target": string;
         /**
-          * Specifies number of notifications to display, if it set to 0, the element will be hidden
+          * Specifies the number of notifications to display. At 0 the badge shows no number, as an empty dot: it is not hidden, `dismissed` takes it off its target
           * @default 0
          */
         "value": number;
@@ -2013,6 +2015,7 @@ export namespace Components {
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
      * <mds-pref-mode></mds-pref-mode>
+     * <mds-pref-theme></mds-pref-theme>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -2208,7 +2211,7 @@ export namespace Components {
     }
     interface MdsPushNotification {
         /**
-          * Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added
+          * Specifies when the stack shows: with `auto` whenever notifications are added, with `manual` only through `visible` or `show()`. In both, removing the last notification hides it; a click outside does not.
           * @default 'auto'
          */
         "behavior"?: 'auto' | 'manual';
@@ -2433,7 +2436,7 @@ export namespace Components {
     }
     interface MdsStepperBar {
         /**
-          * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
+          * Sets the current item by its position, counted from 1: the items before it are done. 1 makes the first item current with none done, 0 makes no item current, the number of items + 1 marks them all done
           * @default 1
          */
         "itemsDone": number;
@@ -2481,7 +2484,7 @@ export namespace Components {
          */
         "typography"?: TypographyType;
         /**
-          * Specifies the value the component will return mdsStepperBarItemSelect event
+          * Specifies the value of the step: once the step is done, mds-stepper-bar adds it to the `value` of `mdsStepperBarChange`, which joins the values of the done steps with commas
          */
         "value"?: string;
     }
@@ -2834,7 +2837,8 @@ export namespace Components {
          */
         "appearance": TreeAppearance;
         /**
-          * Specifies the tree should be opened asynchronously when after the click, .
+          * Has no effect on the tree: `async` is read on each `mds-tree-item`.
+          * @deprecated Set `async` on the items that load their children on demand. Goes in the next major.
          */
         "async"?: boolean;
         /**
@@ -2871,7 +2875,7 @@ export namespace Components {
          */
         "appearance"?: TreeAppearance;
         /**
-          * Specifies the tree should be opened asynchronously when after the click.
+          * Loads the children on demand: a click on the closed item shows a spinner and emits `mdsTreeItemExpand` instead of opening it; call `expand()` once the children are in place
          */
         "async"?: boolean;
         /**
@@ -2914,7 +2918,7 @@ export namespace Components {
     }
     interface MdsUrlView {
         /**
-          * Specifies if domain is visible on header
+          * Specifies the icon shown in the header, before the label or the domain; without it the header shows the explore icon
          */
         "icon"?: string;
         /**
@@ -3976,6 +3980,7 @@ declare global {
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
      * <mds-pref-mode></mds-pref-mode>
+     * <mds-pref-theme></mds-pref-theme>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -4711,7 +4716,7 @@ declare namespace LocalJSX {
          */
         "onMdsAccordionTimerItemSelect"?: (event: MdsAccordionTimerItemCustomEvent<MdsAccordionTimerItemEventDetail>) => void;
         /**
-          * A value between 0 and 100 that rapresents the status progress
+          * The progress of the item's countdown, from 0 to 1: mds-accordion-timer writes it while the item is selected and sets it back to 0 when the next item takes over
           * @default 0
          */
         "progress"?: number;
@@ -5792,7 +5797,7 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
-          * An icon displayed at the right of the input
+          * An icon displayed at the left of the input, inside the field; the spinner of `await` takes its place
          */
         "icon"?: string;
         /**
@@ -6292,7 +6297,7 @@ declare namespace LocalJSX {
     }
     interface MdsInputTip {
         /**
-          * Specifies if the component is active and shows expanded children or not
+          * Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
           * @default false
          */
         "active"?: boolean;
@@ -6467,7 +6472,7 @@ declare namespace LocalJSX {
          */
         "onMdsMentionDelete"?: (event: MdsMentionCustomEvent<MdsMentionEvent>) => void;
         /**
-          * Sets the label of the component
+          * Sets the size of the component: the typography of the label (`sm` caption, `md` detail, `lg` h6) and the size of the icon
           * @default 'sm'
          */
         "size"?: MentionSize;
@@ -6501,7 +6506,7 @@ declare namespace LocalJSX {
          */
         "onMdsModalHide"?: (event: MdsModalCustomEvent<void>) => void;
         /**
-          * Emits when a modal is closed
+          * Emits when a modal is opened, as its intro animation starts: `mdsModalShow` follows once it is totally visible
          */
         "onMdsModalOpen"?: (event: MdsModalCustomEvent<void>) => void;
         /**
@@ -6560,7 +6565,7 @@ declare namespace LocalJSX {
          */
         "target"?: string;
         /**
-          * Specifies number of notifications to display, if it set to 0, the element will be hidden
+          * Specifies the number of notifications to display. At 0 the badge shows no number, as an empty dot: it is not hidden, `dismissed` takes it off its target
           * @default 0
          */
         "value"?: number;
@@ -6626,6 +6631,7 @@ declare namespace LocalJSX {
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
      * <mds-pref-mode></mds-pref-mode>
+     * <mds-pref-theme></mds-pref-theme>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -6861,7 +6867,7 @@ declare namespace LocalJSX {
     }
     interface MdsPushNotification {
         /**
-          * Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added
+          * Specifies when the stack shows: with `auto` whenever notifications are added, with `manual` only through `visible` or `show()`. In both, removing the last notification hides it; a click outside does not.
           * @default 'auto'
          */
         "behavior"?: 'auto' | 'manual';
@@ -7085,7 +7091,7 @@ declare namespace LocalJSX {
     }
     interface MdsStepperBar {
         /**
-          * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
+          * Sets the current item by its position, counted from 1: the items before it are done. 1 makes the first item current with none done, 0 makes no item current, the number of items + 1 marks them all done
           * @default 1
          */
         "itemsDone"?: number;
@@ -7141,7 +7147,7 @@ declare namespace LocalJSX {
          */
         "typography"?: TypographyType;
         /**
-          * Specifies the value the component will return mdsStepperBarItemSelect event
+          * Specifies the value of the step: once the step is done, mds-stepper-bar adds it to the `value` of `mdsStepperBarChange`, which joins the values of the done steps with commas
          */
         "value"?: string;
     }
@@ -7278,7 +7284,7 @@ declare namespace LocalJSX {
          */
         "interactive"?: boolean;
         /**
-          * Dispatces when interactive property changes
+          * Emits when the selection of a `selectable` table changes, with the index and the value of each selected row
          */
         "onMdsTableSelectionChange"?: (event: MdsTableCustomEvent<MdsTableSelectionEventDetail>) => void;
         /**
@@ -7404,7 +7410,7 @@ declare namespace LocalJSX {
          */
         "duration"?: number;
         /**
-          * Emits when the accordion is opened
+          * Emits when a toast with a `duration` has hidden itself, once its exit animation is over
          */
         "onMdsToastClose"?: (event: MdsToastCustomEvent<void>) => void;
         /**
@@ -7503,7 +7509,8 @@ declare namespace LocalJSX {
          */
         "appearance"?: TreeAppearance;
         /**
-          * Specifies the tree should be opened asynchronously when after the click, .
+          * Has no effect on the tree: `async` is read on each `mds-tree-item`.
+          * @deprecated Set `async` on the items that load their children on demand. Goes in the next major.
          */
         "async"?: boolean;
         /**
@@ -7540,7 +7547,7 @@ declare namespace LocalJSX {
          */
         "appearance"?: TreeAppearance;
         /**
-          * Specifies the tree should be opened asynchronously when after the click.
+          * Loads the children on demand: a click on the closed item shows a spinner and emits `mdsTreeItemExpand` instead of opening it; call `expand()` once the children are in place
          */
         "async"?: boolean;
         /**
@@ -7560,11 +7567,11 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Emits when the component attribute selected is changed
+          * Emits when the item closes, once its children have finished hiding
          */
         "onMdsTreeItemCollapse"?: (event: MdsTreeItemCustomEvent<MdsTreeItemEventDetail>) => void;
         /**
-          * Emits when the component expand it's children container
+          * Emits when the user opens an `async` item, to load its children: opening any other item emits nothing
          */
         "onMdsTreeItemExpand"?: (event: MdsTreeItemCustomEvent<MdsTreeItemEventDetail>) => void;
         /**
@@ -7583,7 +7590,7 @@ declare namespace LocalJSX {
     }
     interface MdsUrlView {
         /**
-          * Specifies if domain is visible on header
+          * Specifies the icon shown in the header, before the label or the domain; without it the header shows the explore icon
          */
         "icon"?: string;
         /**
@@ -8572,6 +8579,7 @@ declare module "@stencil/core" {
              * <mds-pref-consumption></mds-pref-consumption>
              * <mds-pref-contrast></mds-pref-contrast>
              * <mds-pref-mode></mds-pref-mode>
+             * <mds-pref-theme></mds-pref-theme>
              * <mds-pref-language>
              * <mds-pref-language-item code="it"></mds-pref-language-item>
              * <mds-pref-language-item code="en"></mds-pref-language-item>

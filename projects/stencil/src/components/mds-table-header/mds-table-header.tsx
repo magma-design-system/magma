@@ -8,7 +8,9 @@ import localeIt from './meta/locale.it.json';
 import { MdsInputSwitchEventDetail } from '@component/mds-input-switch/meta/event-detail';
 
 /**
- * @slot - Add `mds-table-row` element/s.
+ * @slot - Add `mds-table-header-cell` element/s, one per column: the header is itself the row of
+ * the column headings.
+ * @part actions - The heading of the Actions column, shown while rows have `slot="action"` content
  */
 
 @Component({

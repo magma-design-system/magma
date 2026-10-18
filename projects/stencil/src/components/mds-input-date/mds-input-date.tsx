@@ -27,6 +27,9 @@ import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
 // TODO add input validation manager for error message
+/**
+ * @part input-date - The native date input
+ */
 @Component({
   tag: 'mds-input-date',
   styleUrl: 'mds-input-date.css',

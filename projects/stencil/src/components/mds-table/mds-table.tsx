@@ -27,6 +27,7 @@ import localeIt from './meta/locale.it.json';
  * @part table-wrapper - Selects the element which wraps the table
  * @part table - Selects the table element
  * @part batch-actions - Selects the element which wraps the batch actions
+ * @part batch-actions-wrapper - The bar of the batch actions, shown while the table is `selectable` and has `batch-action` content
  */
 
 @Component({
@@ -81,7 +82,8 @@ export class MdsTable {
   @Prop({ reflect: true }) readonly sorting?: MdsTableSortingType = 'internal';
 
   /**
-   * Dispatces when interactive property changes
+   * Emits when the selection of a `selectable` table changes, with the index and the value of each
+   * selected row
    */
   @Event({ bubbles: true, composed: true, eventName: 'mdsTableSelectionChange' })
   selectionEvent: EventEmitter<MdsTableSelectionEventDetail>;

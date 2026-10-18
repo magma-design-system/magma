@@ -274,11 +274,11 @@ mds-usage {
 
 ## Shadow Parts
 
-| Part       | Description |
-| ---------- | ----------- |
-| `"header"` |             |
-| `"icon"`   |             |
-| `"label"`  |             |
+| Part       | Description                                                          |
+| ---------- | -------------------------------------------------------------------- |
+| `"header"` | The header that holds the `icon` and the `label`                     |
+| `"icon"`   | The icon of the header, the one of `variant` unless `icon` is set    |
+| `"label"`  | The label of the header, the name of `variant` unless `alias` is set |
 
 
 ## CSS Custom Properties
