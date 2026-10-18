@@ -7,6 +7,7 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @part text - The text of the tooltip, around the default slot
  */
 
 @Component({

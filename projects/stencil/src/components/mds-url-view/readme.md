@@ -239,7 +239,7 @@ The component calls `new URL(src)` to extract the hostname for the fallback titl
 
 | Property           | Attribute | Description                                                                                                                | Type                             | Default     |
 | ------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ----------- |
-| `icon`             | `icon`    | Specifies if domain is visible on header                                                                                   | `string \| undefined`            | `undefined` |
+| `icon`             | `icon`    | Specifies the icon shown in the header, before the label or the domain; without it the header shows the explore icon       | `string \| undefined`            | `undefined` |
 | `label`            | `label`   | Specifies if the window has a label                                                                                        | `string \| undefined`            | `undefined` |
 | `loading`          | `loading` | Specifies whether a browser should load an iframe immediately or to defer loading of images until some conditions are met. | `"eager" \| "lazy" \| undefined` | `'lazy'`    |
 | `src` _(required)_ | `src`     | Specifies the URL to the web page                                                                                          | `string`                         | `undefined` |

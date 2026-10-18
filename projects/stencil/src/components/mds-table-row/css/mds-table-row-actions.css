@@ -12,8 +12,9 @@
 
   align-items: center;
   background-color: var(--mds-table-row-actions-background);
-  border-bottom-left-radius: calc(var(--radius-lg) + var(--mds-table-border-width) * 2);
-  border-top-left-radius: calc(var(--radius-lg) + var(--mds-table-border-width) * 2);
+  border-bottom-left-radius: calc(var(--magma-radius-lg) + var(--mds-table-border-width) * 2);
+  border-top-left-radius: calc(var(--magma-radius-lg) + var(--mds-table-border-width) * 2);
+  corner-shape: var(--magma-corner-shape);
   display: inline-flex;
   gap: var(--mds-table-row-actions-gap);
   inset: 0;

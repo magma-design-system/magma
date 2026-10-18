@@ -52,6 +52,22 @@ function resolveWritePath (found: LoadedConfig | null, configPath?: string): str
   return path.resolve(process.cwd(), '.magma-design-tokensrc.json')
 }
 
+// a save writes plain JSON, so it may only replace a JSON rc file: lilconfig
+// also loads JavaScript modules and the `magma-design-tokens` key of
+// package.json, which a save would turn into bare JSON. Returns why the
+// target cannot be written, or null when it can
+export function saveRefusal (target: string): string | null {
+  const name = path.basename(target)
+  const ext = path.extname(target)
+  if (name === 'package.json') {
+    return `the config lives in the magma-design-tokens key of ${target}: the playground saves only JSON rc files. Edit it by hand, or download the config (json) and move it to .magma-design-tokensrc.json`
+  }
+  if (ext !== '' && ext !== '.json') {
+    return `${target} is a JavaScript module: the playground saves only JSON rc files. Edit it by hand, or download the config (json) and replace the module with .magma-design-tokensrc.json`
+  }
+  return null
+}
+
 // deterministic, ASCII-only, trailing-newline serialization for clean git diffs
 export function serializeConfig (config: unknown): string {
   const json = JSON.stringify(config, null, 2) + '\n'
@@ -110,16 +126,26 @@ async function handleApi (
 ): Promise<void> {
   if (pathname === '/api/config' && req.method === 'GET') {
     const found = await loadConfig(opts.config)
+    const target = resolveWritePath(found, opts.config)
     sendJson(res, 200, {
       // the resolved save target; null config means no file was found yet and
       // the playground should start from its bundled default
-      path: resolveWritePath(found, opts.config),
+      path: target,
       config: found?.config ?? null,
+      // why a save would be refused (a JS module or package.json), or null
+      readOnly: saveRefusal(target),
     })
     return
   }
 
   if (pathname === '/api/config' && req.method === 'PUT') {
+    const found = await loadConfig(opts.config)
+    const target = resolveWritePath(found, opts.config)
+    const refusal = saveRefusal(target)
+    if (refusal !== null) {
+      sendJson(res, 409, { error: refusal })
+      return
+    }
     let config: unknown
     try {
       config = JSON.parse(await readBody(req))
@@ -132,8 +158,6 @@ async function handleApi (
       sendJson(res, 400, { error: 'Config does not match the schema', details: errors })
       return
     }
-    const found = await loadConfig(opts.config)
-    const target = resolveWritePath(found, opts.config)
     await writeFile(target, serializeConfig(config), 'utf8')
     console.info(`${chalk.green('saved')} config to ${target}`)
     sendJson(res, 200, { path: target })

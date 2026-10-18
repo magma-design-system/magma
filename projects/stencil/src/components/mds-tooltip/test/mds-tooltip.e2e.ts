@@ -182,6 +182,7 @@ describe('mds-tooltip', () => {
       });
     });
   });
+
   // the tooltip opened on mouseenter only: keyboard users never saw it, and every new target
   // added two listeners that nothing removed (#820)
   describe('showing', () => {
@@ -263,6 +264,31 @@ describe('mds-tooltip', () => {
       second.focus();
       await waitForChanges();
       expect(tip.visible).toBe(true);
+    });
+  });
+
+  describe('with the contrast preference set to more', () => {
+    // the classes live on the document, so they would outlive this file
+    afterEach(() => {
+      document.documentElement.classList.remove('pref-contrast-more', 'pref-mode-dark');
+    });
+
+    /** The shadow of a tooltip rendered once the controllers have published these classes. */
+    const shadowUnder = async (...classes: string[]): Promise<string> => {
+      document.documentElement.classList.add(...classes);
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      const { root } = await render('<mds-tooltip>Hint</mds-tooltip>');
+      return getComputedStyle(root).filter;
+    };
+
+    it('casts a stronger shadow in the dark mode than in the light one', async () => {
+      // the dark half was split into its own sheet by 48ba568ad and never imported (#1004):
+      // the five components split the same way import theirs
+      const light = await shadowUnder('pref-contrast-more');
+      const dark = await shadowUnder('pref-contrast-more', 'pref-mode-dark');
+
+      expect(light).toContain('0.3)');
+      expect(dark).toContain('0.45)');
     });
   });
 });

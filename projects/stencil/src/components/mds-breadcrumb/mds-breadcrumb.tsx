@@ -50,13 +50,18 @@ export class MdsBreadcrumb {
   };
 
   componentDidLoad(): void {
+    // an item keeps the id its author gave it, one without gets `item-<index>`; the breadcrumb
+    // tells the items apart by element and by position, not by id. It used to overwrite every id
+    // (#827)
     const items = this.queryItems();
-    items.forEach((item, key) => (item.id = `item-${key}`));
+    items.forEach((item, key) => {
+      if (item.id === '') item.id = `item-${key}`;
+    });
 
     const item = this.element.querySelector<HTMLMdsBreadcrumbItemElement>(
       'mds-breadcrumb-item[selected]',
     );
-    if (!item || item.id === 'item-0') {
+    if (!item || item === items[0]) {
       this.updateBackButton(0);
     }
   }
@@ -67,7 +72,7 @@ export class MdsBreadcrumb {
     let selectedId = 0;
 
     items.forEach((item, key) => {
-      item.selected = `item-${key}` === event.detail.id && event.detail.selected;
+      item.selected = item === event.target && event.detail.selected;
       if (item.selected) {
         selectedId = key;
       }
@@ -81,7 +86,7 @@ export class MdsBreadcrumb {
       'mds-breadcrumb-item[selected]',
     );
     if (!item) return;
-    const id = Number(item.id.replace('item-', ''));
+    const id = Array.from(this.queryItems()).indexOf(item);
     const items = this.queryItems();
     let selectedId = 0;
 

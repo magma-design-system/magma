@@ -375,10 +375,10 @@ npx magma-design-tokens ui --port 4000 --config ./tokens/color.json
 It starts a small server (default port `5178`) that both serves the playground and exposes a local API:
 
 - `GET /api/config` reads the configuration via the same lookup as the CLI (respecting `--config`);
-- `PUT /api/config` writes it back with a stable key order, ASCII-only output and a trailing newline, so saves produce clean git diffs;
+- `PUT /api/config` writes it back with a stable key order, ASCII-only output and a trailing newline, so saves produce clean git diffs. It only writes JSON rc files: a configuration found in a JavaScript module (`.magma-design-tokensrc.js`, `magma-design-tokens.config.mjs`, ...) or in the `magma-design-tokens` key of `package.json` is refused with `409`, since a save would replace it with bare JSON;
 - `POST /api/build` runs the full token generation on disk, honouring the `--outDir` / `--generate` / `--export-tokens` flags passed to `ui`.
 
-In this mode the playground loads the on-disk configuration on start and swaps **copy JSON** for a **save** button that persists to the resolved file; a `*` marks unsaved changes. The **download** menu gains **Build tokens on disk** to trigger the build endpoint. Run standalone (`nx run design-tokens:playground` or `npm run playground -w projects/design-tokens`) the API is absent and the playground keeps its in-memory, copy/download-only behaviour.
+In this mode the playground loads the on-disk configuration on start and swaps **copy JSON** for a **save** button that persists to the resolved file; a `*` marks unsaved changes. With a JavaScript or `package.json` configuration the button reads **read-only** and a notice under the toolbar says why: edit that file by hand, or take the edits out with **download > Config (json)** and move to a `.magma-design-tokensrc.json`. The **download** menu gains **Build tokens on disk** to trigger the build endpoint. Run standalone (`nx run design-tokens:playground` or `npm run playground -w projects/design-tokens`) the API is absent and the playground keeps its in-memory, copy/download-only behaviour.
 
 ### Cli example
 

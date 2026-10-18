@@ -158,6 +158,45 @@ describe('mds-button', () => {
         short.getBoundingClientRect().height,
       );
     });
+
+    // #799: a name or an identifier is shown as written, `rdsysadmin` not `Rdsysadmin`
+    describe('the first letter', () => {
+      const label = (button: Element): HTMLElement =>
+        button.shadowRoot!.querySelector<HTMLElement>('.text')!;
+      const firstLetter = (button: Element): string =>
+        getComputedStyle(label(button), '::first-letter').textTransform;
+
+      it('is uppercased by default, and kept as written with --mds-button-label-transform: none', async () => {
+        const { root } = await render(
+          `<div>
+             <mds-button label="rdsysadmin"></mds-button>
+             <mds-button label="rdsysadmin" style="--mds-button-label-transform: none"></mds-button>
+           </div>`,
+        );
+        const [upper, asWritten] = [...root.querySelectorAll('mds-button')];
+        await vi.waitFor(() => expect(asWritten).toHaveAttribute('hydrated'));
+
+        expect(firstLetter(upper)).toBe('uppercase');
+        expect(firstLetter(asWritten)).toBe('none');
+        // rendered, not only computed: an r is narrower than an R
+        expect(label(asWritten).offsetWidth).toBeLessThan(label(upper).offsetWidth);
+      });
+
+      it('takes the value from an ancestor, through the shadow root of mds-button-dropdown', async () => {
+        const { root } = await render(
+          `<div style="--mds-button-label-transform: none">
+             <mds-button label="rdsysadmin"></mds-button>
+             <mds-button-dropdown label="rdsysadmin"></mds-button-dropdown>
+           </div>`,
+        );
+        const dropdown = root.querySelector('mds-button-dropdown')!;
+        await vi.waitFor(() => expect(dropdown).toHaveAttribute('hydrated'));
+        const primary = dropdown.shadowRoot!.querySelector('.dropdown-primary-action')!;
+
+        expect(firstLetter(root.querySelector('mds-button')!)).toBe('none');
+        expect(firstLetter(primary)).toBe('none');
+      });
+    });
   });
 
   describe('the awaiting state', () => {

@@ -44,7 +44,7 @@
   );
 
   align-items: center;
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   bottom: 100%;
   color: var(--mds-notification-color);
   display: inline-flex;
@@ -80,7 +80,7 @@
 
   align-items: center;
   background-color: var(--mds-notification-dot-background);
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   box-shadow: 0 0 0 var(--mds-notification-ring-size) var(--mds-notification-ring-color);
   box-sizing: border-box;
   display: inline-flex;

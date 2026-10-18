@@ -23,6 +23,6 @@
 
 @property --mds-url-view-radius {
   inherits: true;
-  initial-value: var(--radius-md);
+  initial-value: var(--magma-radius-md);
   syntax: '<length>';
 }

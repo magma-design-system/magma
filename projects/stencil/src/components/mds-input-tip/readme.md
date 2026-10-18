@@ -250,10 +250,10 @@ mds-input-tip {
 
 ## Properties
 
-| Property   | Attribute  | Description                                                             | Type                             | Default |
-| ---------- | ---------- | ----------------------------------------------------------------------- | -------------------------------- | ------- |
-| `active`   | `active`   | Specifies if the component is active and shows expanded children or not | `boolean \| undefined`           | `false` |
-| `position` | `position` | Specifies the position of the element relative to its container         | `"bottom" \| "top" \| undefined` | `'top'` |
+| Property   | Attribute  | Description                                                                                                                                                                    | Type                             | Default |
+| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | ------- |
+| `active`   | `active`   | Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded` | `boolean \| undefined`           | `false` |
+| `position` | `position` | Specifies the position of the element relative to its container                                                                                                                | `"bottom" \| "top" \| undefined` | `'top'` |
 
 
 ## Slots

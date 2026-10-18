@@ -62,7 +62,11 @@
   @apply focus-bounce;
 
   align-items: center;
-  border-radius: var(--radius-xs);
+
+  /* a control one line tall, 24px as its icon: capped at a part of that height, as mds-button's
+     radius is (#913) */
+  border-radius: min(var(--magma-radius-xs), var(--magma-corner-cap) * --spacing(600));
+  corner-shape: var(--magma-corner-shape);
   display: inline-flex;
   gap: --spacing(200);
 }

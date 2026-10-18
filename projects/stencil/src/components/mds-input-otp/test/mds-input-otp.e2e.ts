@@ -1,5 +1,6 @@
 import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
+import { childOpacityBeforeHydration, hostOpacityBeforeHydration } from '@test/fouc';
 
 const readCells = (otp: HTMLElement): string[] =>
   Array.from(otp.shadowRoot!.querySelectorAll('mds-input')).map((cell) => cell.value ?? '');
@@ -9,6 +10,15 @@ describe('mds-input-otp', () => {
     const { root } = await render('<mds-input-otp></mds-input-otp>');
 
     expect(root).toHaveAttribute('hydrated');
+  });
+
+  // its FOUC sheet was written and never imported (#1004): the host and the digits showed
+  // unstyled until they hydrated
+  it('stays hidden until it hydrates, and so does a digit', async () => {
+    const { root } = await render('<mds-input-otp length="1"></mds-input-otp>');
+
+    expect(await hostOpacityBeforeHydration(root)).toBe('0');
+    expect(childOpacityBeforeHydration(root, 'mds-input')).toBe('0');
   });
 
   describe('accessible name', () => {

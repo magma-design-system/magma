@@ -195,12 +195,12 @@ dismissed.
 
 ## Properties
 
-| Property    | Attribute   | Description                                                     | Type                                | Default     |
-| ----------- | ----------- | --------------------------------------------------------------- | ----------------------------------- | ----------- |
-| `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`              | `undefined` |
-| `icon`      | `icon`      | Sets the icon shown at the left of the label                    | `string \| undefined`               | `undefined` |
-| `label`     | `label`     | Sets the label of the component                                 | `string \| undefined`               | `undefined` |
-| `size`      | `size`      | Sets the label of the component                                 | `"lg" \| "md" \| "sm" \| undefined` | `'sm'`      |
+| Property    | Attribute   | Description                                                                                                               | Type                                | Default     |
+| ----------- | ----------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | ----------- |
+| `deletable` | `deletable` | Shows the cross icon to perform cancel/delete action on element                                                           | `boolean \| undefined`              | `undefined` |
+| `icon`      | `icon`      | Sets the icon shown at the left of the label                                                                              | `string \| undefined`               | `undefined` |
+| `label`     | `label`     | Sets the label of the component                                                                                           | `string \| undefined`               | `undefined` |
+| `size`      | `size`      | Sets the size of the component: the typography of the label (`sm` caption, `md` detail, `lg` h6) and the size of the icon | `"lg" \| "md" \| "sm" \| undefined` | `'sm'`      |
 
 
 ## Events

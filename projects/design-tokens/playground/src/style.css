@@ -37,6 +37,8 @@ body { background: var(--bg); min-width: 960px; }
   padding: 8px 20px;
 }
 
+.load-error.save-notice { background: var(--panel); border-bottom-color: var(--line); color: var(--ink-soft); }
+
 .file-button {
   align-items: center;
   background: var(--panel);

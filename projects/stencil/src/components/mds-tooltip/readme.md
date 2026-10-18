@@ -307,9 +307,9 @@ The native `title` tooltip is not styleable and not announced consistently by sc
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"text"` |             |
+| Part     | Description                                      |
+| -------- | ------------------------------------------------ |
+| `"text"` | The text of the tooltip, around the default slot |
 
 
 ## CSS Custom Properties

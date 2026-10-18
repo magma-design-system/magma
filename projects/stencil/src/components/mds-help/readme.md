@@ -216,9 +216,9 @@ Setting `style="width: ..."` on the host bypasses the component's layout contrac
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"icon"` |             |
+| Part     | Description                                    |
+| -------- | ---------------------------------------------- |
+| `"icon"` | The icon that shows the help text in a tooltip |
 
 
 ## CSS Custom Properties

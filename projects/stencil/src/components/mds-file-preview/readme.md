@@ -350,9 +350,9 @@ mds-file-preview::part(card) {
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"card"` |             |
+| Part     | Description                                                                     |
+| -------- | ------------------------------------------------------------------------------- |
+| `"card"` | The preview of the file: its thumbnail or format icon, its name and its details |
 
 
 ## CSS Custom Properties

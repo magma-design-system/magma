@@ -370,7 +370,7 @@ Using a raw `<dialog>` element bypasses the system's managed animation, body-scr
 | --------------- | --------------------------------------------------------------------------------------------------------------- | ------------------- |
 | `mdsModalClose` | Emits when a modal is closed                                                                                    | `CustomEvent<void>` |
 | `mdsModalHide`  | Emits when a modal is totally invisible, can be useful to detach the component when it's hidden and gain memory | `CustomEvent<void>` |
-| `mdsModalOpen`  | Emits when a modal is closed                                                                                    | `CustomEvent<void>` |
+| `mdsModalOpen`  | Emits when a modal is opened, as its intro animation starts: `mdsModalShow` follows once it is totally visible  | `CustomEvent<void>` |
 | `mdsModalShow`  | Emits when a modal is totally visible, when the modal intro animation is finished                               | `CustomEvent<void>` |
 
 
@@ -399,11 +399,11 @@ Type: `Promise<void>`
 
 ## Shadow Parts
 
-| Part             | Description                                                |
-| ---------------- | ---------------------------------------------------------- |
-| `"action-close"` | Selects the close button of the modal.                     |
-| `"dialog"`       |                                                            |
-| `"window"`       | Selects the default window element of the modal when used. |
+| Part             | Description                                                                |
+| ---------------- | -------------------------------------------------------------------------- |
+| `"action-close"` | Selects the close button of the modal.                                     |
+| `"dialog"`       | The native `<dialog>` that covers the viewport and places the window in it |
+| `"window"`       | Selects the default window element of the modal when used.                 |
 
 
 ## CSS Custom Properties
