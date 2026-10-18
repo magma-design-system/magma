@@ -9,13 +9,13 @@
 
 :host([pref-animation='reduce']) {
   --private-dropdown-duration: 0s;
-  --mds-dropdown-backdrop-duration: 0s;
+  --private-dropdown-backdrop-duration: 0s;
 }
 
 @media (prefers-reduced-motion: reduce) {
   :host([pref-animation='system']),
   :host(:not([pref-animation])) {
     --private-dropdown-duration: 0s;
-    --mds-dropdown-backdrop-duration: 0s;
+    --private-dropdown-backdrop-duration: 0s;
   }
 }

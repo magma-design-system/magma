@@ -31,7 +31,7 @@
   --mds-modal-custom-window-distance: 0px;
   --mds-url-view-background: rgb(var(--magma-wash-soft));
   --mds-url-view-color: rgb(var(--magma-text-default));
-  --mds-url-view-radius: var(--radius-md);
+  --mds-url-view-radius: var(--magma-radius-md);
   --mds-url-view-header-shadow: var(--shadow-sm-sharp);
   --mds-url-view-shadow: var(--shadow-lg);
 
@@ -49,6 +49,7 @@
   background-color: var(--mds-url-view-background);
   border-radius: var(--mds-url-view-radius);
   box-shadow: var(--mds-url-view-shadow);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   flex-direction: column;
   flex-grow: 1;

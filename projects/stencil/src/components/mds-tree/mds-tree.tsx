@@ -24,7 +24,9 @@ export class MdsTree {
   @Prop({ reflect: true }) readonly appearance: TreeAppearance = 'depth';
 
   /**
-   * Specifies the tree should be opened asynchronously when after the click, .
+   * Has no effect on the tree: `async` is read on each `mds-tree-item`.
+   * @deprecated Set `async` on the items that load their children on demand. Goes in the next
+   * major.
    */
   @Prop({ reflect: true }) readonly async?: boolean;
 

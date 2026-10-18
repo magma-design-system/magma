@@ -1,3 +1,15 @@
 :host([size='sm']) {
-  --mds-button-dropdown-radius: var(--radius-md);
+  --mds-button-dropdown-radius: min(
+    var(--magma-radius-md),
+    var(--magma-corner-cap) * var(--private-button-dropdown-height)
+  );
+  --private-button-dropdown-height: --spacing(700);
+}
+
+:host([size='lg']) {
+  --private-button-dropdown-height: --spacing(1200);
+}
+
+:host([size='xl']) {
+  --private-button-dropdown-height: --spacing(1300);
 }

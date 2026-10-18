@@ -15,7 +15,9 @@
  *
  * It also keeps the readme.md of every component free of hand-written text: above the
  * generated part only the title and the generic intro, since the usage files are the only
- * hand-authored docs (#842).
+ * hand-authored docs (#842); and it fails on a prop, event, method, slot, part or documented
+ * custom property that ships without a description, which the readme and the shipped
+ * AGENTS.md would list with an empty cell (#829).
  *
  * #815 area 4 fixed the 342 docs against these rules; this keeps them fixed. The rules
  * the docs follow: docs/agents/conventions.md, variants.md, color.md, theming.md.
@@ -31,7 +33,9 @@ import { PROJECT_DIR } from './meta';
 import {
   checkUsageDoc,
   handWrittenReadme,
+  undescribedMembers,
   type ApiComponent,
+  type DescribedComponent,
   type UsageModel,
 } from './usage-docs-lib';
 
@@ -64,7 +68,7 @@ const docs = JSON.parse(
     need(join(PROJECT_DIR, 'dist/documentation.json'), 'run the stencil build first'),
     'utf8',
   ),
-) as { components: ApiComponent[] };
+) as { components: (ApiComponent & DescribedComponent)[] };
 const icons = JSON.parse(
   readFileSync(
     need(join(PROJECT_DIR, 'src/fixtures/icons-dictionary.json'), 'run the stencil build first'),
@@ -135,6 +139,19 @@ if (handWritten.length) {
   total += handWritten.length;
 }
 
+// the JSDoc of every member: its description in the readme, in AGENTS.md and documentation.json
+const undescribed = docs.components.flatMap((c) =>
+  undescribedMembers(c).map((member) => `${c.tag} ${member}`),
+);
+if (undescribed.length) {
+  console.error(
+    `\n${undescribed.length} API member(s) without a description:\n` +
+      undescribed.map((member) => `  ${member}`).join('\n') +
+      '\nDescribe each one in its JSDoc; `@part` and `@slot` go in the JSDoc right above `@Component`.',
+  );
+  total += undescribed.length;
+}
+
 if (total) {
   console.error(
     `\n${total} problem(s) in the usage docs. The rules: docs/agents/conventions.md, variants.md, color.md, theming.md;` +
@@ -143,5 +160,5 @@ if (total) {
   process.exit(1);
 }
 console.log(
-  `OK - ${files} usage docs of ${model.components.size} components match the API and the token layer`,
+  `OK - ${files} usage docs of ${model.components.size} components match the API and the token layer, every member of the API has a description`,
 );

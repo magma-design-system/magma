@@ -208,6 +208,7 @@ Customize the item's appearance only through its documented `--mds-tree-item-*` 
   --mds-tree-item-branch-dot-expanded-color: rgb(var(--magma-accent-fg));
   --mds-tree-item-label-hover-background: rgb(var(--magma-wash-base));
   --mds-tree-item-toggle-icon-chevron-default-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-tree-item-toggle-gap: calc(var(--spacing) * 200);
   --mds-tree-item-transition-duration: 200ms;
 }
 ```
@@ -378,26 +379,26 @@ mds-tree-item::part(actions-list) {
 
 ## Properties
 
-| Property         | Attribute         | Description                                                                                                          | Type                                     | Default     |
-| ---------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ----------- |
-| `actions`        | `actions`         | Show actions on the tree item on hover or by default.                                                                | `"auto" \| "visible" \| undefined`       | `undefined` |
-| `appearance`     | `appearance`      | Reflects the parent tree appearance (set by mds-tree); drives the depth/none layout without :host-context            | `"depth" \| "none" \| undefined`         | `undefined` |
-| `async`          | `async`           | Specifies the tree should be opened asynchronously when after the click.                                             | `boolean \| undefined`                   | `undefined` |
-| `depth`          | `depth`           | Specifies the tree branch depth. Internal: used by CSS to remove branch lines on first-level elements.               | `number \| undefined`                    | `undefined` |
-| `expanded`       | `expanded`        | Specifies if the tree is expanded.                                                                                   | `boolean \| undefined`                   | `undefined` |
-| `icon`           | `icon`            | The icon displayed in the button                                                                                     | `string \| undefined`                    | `undefined` |
-| `label`          | `label`           | Specifies the label of the tree item                                                                                 | `string`                                 | `undefined` |
-| `toggle`         | `toggle`          | Specifies the icon of the element                                                                                    | `"chevron" \| "folder" \| undefined`     | `undefined` |
-| `togglePosition` | `toggle-position` | Reflects the parent tree toggle icon position (set by mds-tree); drives the toggle-icon layout without :host-context | `"left" \| "right" \| undefined`         | `undefined` |
-| `truncate`       | `truncate`        | Truncate the text of the element on one single line.                                                                 | `"all" \| "none" \| "word" \| undefined` | `'word'`    |
+| Property         | Attribute         | Description                                                                                                                                                                  | Type                                     | Default     |
+| ---------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ----------- |
+| `actions`        | `actions`         | Show actions on the tree item on hover or by default.                                                                                                                        | `"auto" \| "visible" \| undefined`       | `undefined` |
+| `appearance`     | `appearance`      | Reflects the parent tree appearance (set by mds-tree); drives the depth/none layout without :host-context                                                                    | `"depth" \| "none" \| undefined`         | `undefined` |
+| `async`          | `async`           | Loads the children on demand: a click on the closed item shows a spinner and emits `mdsTreeItemExpand` instead of opening it; call `expand()` once the children are in place | `boolean \| undefined`                   | `undefined` |
+| `depth`          | `depth`           | Specifies the tree branch depth. Internal: used by CSS to remove branch lines on first-level elements.                                                                       | `number \| undefined`                    | `undefined` |
+| `expanded`       | `expanded`        | Specifies if the tree is expanded.                                                                                                                                           | `boolean \| undefined`                   | `undefined` |
+| `icon`           | `icon`            | The icon displayed in the button                                                                                                                                             | `string \| undefined`                    | `undefined` |
+| `label`          | `label`           | Specifies the label of the tree item                                                                                                                                         | `string`                                 | `undefined` |
+| `toggle`         | `toggle`          | Specifies the icon of the element                                                                                                                                            | `"chevron" \| "folder" \| undefined`     | `undefined` |
+| `togglePosition` | `toggle-position` | Reflects the parent tree toggle icon position (set by mds-tree); drives the toggle-icon layout without :host-context                                                         | `"left" \| "right" \| undefined`         | `undefined` |
+| `truncate`       | `truncate`        | Truncate the text of the element on one single line.                                                                                                                         | `"all" \| "none" \| "word" \| undefined` | `'word'`    |
 
 
 ## Events
 
-| Event                 | Description                                             | Type                                  |
-| --------------------- | ------------------------------------------------------- | ------------------------------------- |
-| `mdsTreeItemCollapse` | Emits when the component attribute selected is changed  | `CustomEvent<MdsTreeItemEventDetail>` |
-| `mdsTreeItemExpand`   | Emits when the component expand it's children container | `CustomEvent<MdsTreeItemEventDetail>` |
+| Event                 | Description                                                                                           | Type                                  |
+| --------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `mdsTreeItemCollapse` | Emits when the item closes, once its children have finished hiding                                    | `CustomEvent<MdsTreeItemEventDetail>` |
+| `mdsTreeItemExpand`   | Emits when the user opens an `async` item, to load its children: opening any other item emits nothing | `CustomEvent<MdsTreeItemEventDetail>` |
 
 
 ## Methods

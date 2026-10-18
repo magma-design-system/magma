@@ -219,9 +219,13 @@ Style the tree only through the documented `--mds-tree-*` CSS custom properties.
   --mds-tree-branch-border-color: rgb(var(--magma-border-muted));
   --mds-tree-toggle-icon-chevron-default-background: rgb(var(--magma-accent-emphasis));
   --mds-tree-toggle-icon-chevron-default-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-tree-toggle-icon-chevron-expanded-background: rgb(var(--magma-accent-emphasis-hover));
+  --mds-tree-toggle-gap: calc(var(--spacing) * 200);
   --mds-tree-transition-duration: 200ms;
 }
 ```
+
+The `-expanded-` colours of the toggle paint the items that are open and default to the `-default-` ones. `--mds-tree-toggle-gap` is the distance between the toggle and the label of every item (4px by default); the connectors of the branches follow it.
 
 
 ### 3. Antipattern
@@ -375,16 +379,16 @@ Inserting wrapper elements breaks the compound slot protocol - `<mds-tree>` comm
 
 ## Properties
 
-| Property         | Attribute         | Description                                                                                       | Type                               | Default     |
-| ---------------- | ----------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------- | ----------- |
-| `actions`        | `actions`         | Show actions on the every tree item on hover or by default.                                       | `"auto" \| "visible" \| undefined` | `'auto'`    |
-| `appearance`     | `appearance`      | Specifies if the branches depth decorations are visible.                                          | `"depth" \| "none"`                | `'depth'`   |
-| `async`          | `async`           | Specifies the tree should be opened asynchronously when after the click, .                        | `boolean \| undefined`             | `undefined` |
-| `expanded`       | `expanded`        | Specifies if the tree is expanded.                                                                | `boolean \| undefined`             | `undefined` |
-| `label`          | `label`           | Specifies the selector of the target element, this attribute is used with `querySelector` method. | `string`                           | `undefined` |
-| `toggle`         | `toggle`          | Specifies the toggle icon of the element                                                          | `"chevron" \| "folder"`            | `'chevron'` |
-| `togglePosition` | `toggle-position` | Specifies the toggle icon position of the element                                                 | `"left" \| "right"`                | `'left'`    |
-| `truncate`       | `truncate`        | Truncate the text of the element on one single line.                                              | `"all" \| "none" \| "word"`        | `'word'`    |
+| Property         | Attribute         | Description                                                                                                                                                                                                       | Type                               | Default     |
+| ---------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | ----------- |
+| `actions`        | `actions`         | Show actions on the every tree item on hover or by default.                                                                                                                                                       | `"auto" \| "visible" \| undefined` | `'auto'`    |
+| `appearance`     | `appearance`      | Specifies if the branches depth decorations are visible.                                                                                                                                                          | `"depth" \| "none"`                | `'depth'`   |
+| `async`          | `async`           | <span style="color:red">**[DEPRECATED]**</span> Set `async` on the items that load their children on demand. Goes in the next major.<br/><br/>Has no effect on the tree: `async` is read on each `mds-tree-item`. | `boolean \| undefined`             | `undefined` |
+| `expanded`       | `expanded`        | Specifies if the tree is expanded.                                                                                                                                                                                | `boolean \| undefined`             | `undefined` |
+| `label`          | `label`           | Specifies the selector of the target element, this attribute is used with `querySelector` method.                                                                                                                 | `string`                           | `undefined` |
+| `toggle`         | `toggle`          | Specifies the toggle icon of the element                                                                                                                                                                          | `"chevron" \| "folder"`            | `'chevron'` |
+| `togglePosition` | `toggle-position` | Specifies the toggle icon position of the element                                                                                                                                                                 | `"left" \| "right"`                | `'left'`    |
+| `truncate`       | `truncate`        | Truncate the text of the element on one single line.                                                                                                                                                              | `"all" \| "none" \| "word"`        | `'word'`    |
 
 
 ## Slots

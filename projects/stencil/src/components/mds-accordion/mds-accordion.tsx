@@ -33,9 +33,14 @@ export class MdsAccordion {
   private queryItems = (): NodeListOf<HTMLMdsAccordionItemElement> =>
     this.element.querySelectorAll<HTMLMdsAccordionItemElement>('mds-accordion-item');
 
+  // An item keeps the id its author gave it, one without gets `item-<index>`, what the events of
+  // the items reported before; the accordion tells the items apart by element, not by id. It used
+  // to overwrite every id (#827)
   componentWillLoad(): void {
     const items = this.queryItems();
-    items.forEach((item, key) => (item.id = `item-${key}`));
+    items.forEach((item, key) => {
+      if (item.id === '') item.id = `item-${key}`;
+    });
   }
 
   private selectMultipleItems = (): void => {
@@ -57,10 +62,10 @@ export class MdsAccordion {
     if (this.multiple) {
       if (this.disableClose && !event.detail.selected) {
         const isLastOpenItem = !Array.from(items).some(
-          (item) => item.id !== event.detail.id && item.selected,
+          (item) => item !== event.target && item.selected,
         );
         if (isLastOpenItem) {
-          const target = Array.from(items).find((item) => item.id === event.detail.id);
+          const target = Array.from(items).find((item) => item === event.target);
           if (target) {
             target.selected = true;
           }
@@ -71,8 +76,7 @@ export class MdsAccordion {
     }
 
     items.forEach((item, key) => {
-      item.selected =
-        `item-${key}` === event.detail.id && (event.detail.selected || this.disableClose);
+      item.selected = item === event.target && (event.detail.selected || this.disableClose);
       if (item.selected) {
         this.changedEvent.emit({ children: items, selected: key.toString() });
       }

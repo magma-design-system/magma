@@ -282,9 +282,9 @@ mds-img::part(media) {
 
 ## Shadow Parts
 
-| Part      | Description |
-| --------- | ----------- |
-| `"media"` |             |
+| Part      | Description                               |
+| --------- | ----------------------------------------- |
+| `"media"` | The native `<img>` that shows the picture |
 
 
 ## CSS Custom Properties

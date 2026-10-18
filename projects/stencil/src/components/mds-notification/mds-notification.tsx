@@ -23,7 +23,8 @@ export class MdsNotification {
   @Prop() readonly target: string;
 
   /**
-   * Specifies number of notifications to display, if it set to 0, the element will be hidden
+   * Specifies the number of notifications to display. At 0 the badge shows no number, as an
+   * empty dot: it is not hidden, `dismissed` takes it off its target
    */
   @Prop({ mutable: true, reflect: true }) value = 0;
 

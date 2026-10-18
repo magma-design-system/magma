@@ -56,6 +56,7 @@ What a component must do so that the consumer conventions hold:
 - **Booleans** default to `false` or `undefined`, never `true`.
 - **Events** are named `mds<Component><Action>` (`mdsInputChange`, `mdsAccordionChange`) and documented with JSDoc.
 - **Styling API**: every CSS custom property the consumer may set is documented with `@prop` in the component CSS, every shadow part with `@part` in the JSDoc. Both land in the generated docs, and they are the only styling surface consumers are allowed to use ([`conventions.md`](../../docs/agents/conventions.md#styling-components-from-outside)): rename or remove one only as a breaking change.
+- **Stylesheets**: every `.css` in a component's folder is reached from its `styleUrl` through `@import` or `@reference`, except `css/<tag>-property.css`, which `projects/styles/scripts/properties.ts` collects into globals.css and no sheet may import. A sheet nothing reaches never gets into the build, yet `check.tokens` still scans it: delete a dead one rather than leave it. `scripts/unreachable-sheets.spec.ts` fails on any (#1004).
 - **Colours** come from the semantic roles (`rgb(var(--magma-surface-raised))`, `rgb(var(--magma-accent-emphasis))`), not from a raw palette step; the exceptions are the ones [`docs/agents/color.md`](../../docs/agents/color.md) lists (`label-*` for colours that encode data, the `--tone-neutral-seed` knockout). The contract: `projects/styles/SEMANTIC_COLOR_SPEC.md`.
 
 ### Reading a `--magma-*` token: never write its fallback
@@ -175,7 +176,7 @@ If a referenced slug isn't resolvable by any configured plugin, iconsauce report
 - **Review its diff.** It is what the change does to the contract consumers rely on; a PR that leaves it untouched changes no component API. A removed or changed line is a breaking change unless it only widens what is accepted, or makes the detail of an event a type that extends the old one: a listener still finds every field it read.
 - **CI checks it** (`npm run check.api-snapshot`, after a build) and fails when the committed file differs from the built API. The pure reduction is tested in `scripts/api-snapshot-lib.spec.ts`.
 - **It drives the review level and the release check** of every PR (`docs/WORKFLOW.md` rule 6): a removed or narrowed member must ship as a declared breaking change, unless an `API-Compatible:` footer declares that no consumer can tell it apart from the old API.
-- **It sees only what is documented**: a custom property without `@prop` or a part without `@part` is missing from it, as it is from the generated docs.
+- **It sees what the generated docs see**: a custom property without `@prop` is missing from it; a part is listed when `render()` sets it or an `@part` names it, so an `@part` with no element behind it is listed too, and removing it is a removed line.
 
 ## Tests
 
@@ -232,7 +233,7 @@ The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of section
 
 ### Checked in CI
 
-`scripts/check-usage-docs.ts` (`npm run check.usage-docs`, after a build) checks every usage doc against the built API and the token layer, outside the INCORRECT half of the antipattern examples, which is wrong on purpose: every `mds-*` tag, attribute, enumerated value, slot, documented part, event, `--mds-*` property, token and icon slug must exist; no palette step (`--tone-*`, `--variant-*`, `--status-*`) where a semantic role belongs ([`docs/agents/color.md`](../../docs/agents/color.md)), no raw `--radius-*`, no `="false"` boolean, no self-closed `<mds-* />` (HTML leaves it open), no `>>>`, `dark:` or preference media query, a language on every fence, no emoji. It runs in CI on every stencil build; the pure checks are tested in `scripts/usage-docs-lib.spec.ts`.
+`scripts/check-usage-docs.ts` (`npm run check.usage-docs`, after a build) checks every usage doc against the built API and the token layer, outside the INCORRECT half of the antipattern examples, which is wrong on purpose: every `mds-*` tag, attribute, enumerated value, slot, documented part, event, `--mds-*` property, token and icon slug must exist; no palette step (`--tone-*`, `--variant-*`, `--status-*`) where a semantic role belongs ([`docs/agents/color.md`](../../docs/agents/color.md)), no raw `--radius-*`, no `="false"` boolean, no self-closed `<mds-* />` (HTML leaves it open), no `>>>`, `dark:` or preference media query, a language on every fence, no emoji. It also fails on a component member that ships without a description: every prop, event, method, slot, part and `@prop` custom property needs one, since its JSDoc is its only line in the readme and in the shipped `AGENTS.md`. Stencil lists a part that `render()` sets even without an `@part`, with an empty description, and reads `@part` and `@slot` only from the JSDoc right above `@Component`: a plain `/*` comment, or a block above another declaration, never reaches the docs. It runs in CI on every stencil build; the pure checks are tested in `scripts/usage-docs-lib.spec.ts`.
 
 ### Storybook
 

@@ -1,5 +1,5 @@
 .action-remove {
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   corner-shape: round;
   flex-shrink: 0;
 

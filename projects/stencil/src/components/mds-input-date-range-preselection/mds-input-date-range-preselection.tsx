@@ -1,7 +1,9 @@
 import { Component, Host, Prop, h, Element } from '@stencil/core';
 
 /**
- * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add the `text string` of the preselection, as `Last 7 days`: it becomes the label of
+ * the button that applies the range. **Avoid** `HTML elements` or `components`, which end up
+ * inside an `mds-button`.
  */
 @Component({
   tag: 'mds-input-date-range-preselection',
