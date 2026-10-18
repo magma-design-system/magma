@@ -111,4 +111,66 @@ describe('mds-tab-item', () => {
       }
     });
   });
+
+  // #988: the tab documented a default and a hover shadow for its items, and only the selected
+  // item read one
+  describe('shadows', () => {
+    const fadeStrip = (style: string) =>
+      render(`<mds-tab animation="fade" style="${style}">
+        <mds-tab-item label="A" selected></mds-tab-item>
+        <mds-tab-item label="B"></mds-tab-item>
+      </mds-tab>`);
+
+    // the button fades its shadow: read it once the transition is over
+    const shadowOf = async (button: Element): Promise<string> => {
+      await Promise.all(
+        button
+          .getAnimations()
+          .filter((animation) => animation instanceof CSSTransition)
+          .map((animation) => animation.finished),
+      );
+      return getComputedStyle(button).boxShadow;
+    };
+
+    it('gives the items that are not selected the default shadow', async () => {
+      const { root } = await fadeStrip('--mds-tab-item-default-shadow: 0 0 0 3px rgb(1 2 3)');
+      const [selected, other] = buttonsOf(root);
+
+      expect(await shadowOf(other)).toContain('rgb(1, 2, 3)');
+      expect(await shadowOf(selected)).not.toContain('rgb(1, 2, 3)');
+    });
+
+    it('gives a hovered item the hover shadow', async () => {
+      const { root } = await fadeStrip(
+        '--mds-tab-item-default-shadow: 0 0 0 3px rgb(1 2 3); --mds-tab-item-hover-shadow: 0 0 0 3px rgb(4 5 6)',
+      );
+      const [, other] = buttonsOf(root);
+
+      await userEvent.hover(other);
+
+      expect(await shadowOf(other)).toContain('rgb(4, 5, 6)');
+      await userEvent.unhover(other);
+    });
+
+    it('keeps the default shadow on a hovered item when the hover shadow is not set', async () => {
+      const { root } = await fadeStrip('--mds-tab-item-default-shadow: 0 0 0 3px rgb(1 2 3)');
+      const [, other] = buttonsOf(root);
+
+      await userEvent.hover(other);
+
+      expect(await shadowOf(other)).toContain('rgb(1, 2, 3)');
+      await userEvent.unhover(other);
+    });
+
+    it('leaves the items without a shadow of their own when the tab slides', async () => {
+      // the slider paints the selection, and the items stay transparent over it
+      const { root } = await render(`<mds-tab style="--mds-tab-item-default-shadow: 0 0 0 3px rgb(1 2 3)">
+        <mds-tab-item label="A" selected></mds-tab-item>
+        <mds-tab-item label="B"></mds-tab-item>
+      </mds-tab>`);
+      const [, other] = buttonsOf(root);
+
+      expect(await shadowOf(other)).not.toContain('rgb(1, 2, 3)');
+    });
+  });
 });
