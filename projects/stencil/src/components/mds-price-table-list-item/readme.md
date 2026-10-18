@@ -230,9 +230,9 @@ The default slot is for the feature label - plain text plus inline helpers such 
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"icon"` |             |
+| Part     | Description                                                 |
+| -------- | ----------------------------------------------------------- |
+| `"icon"` | The check icon of a `supported` item, a dash when it is not |
 
 
 ## CSS Custom Properties

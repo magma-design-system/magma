@@ -318,6 +318,14 @@ describe('values match the stylesheets', () => {
     expect(colorChannels(ring.color).join(' ')).toBe(dark.get('--tone-neutral-01'))
   })
 
+  // a ring is a line around an element and flips; a projected shadow does not (#790)
+  test('the shadow ink is the ink extreme in light and pure black in dark, in every theme', () => {
+    const ink = (tree: Node) =>
+      colorChannels(resolveValue(tree, lookup(tree, 'magma.shadow.ink').$value) as DtcgColor).join(' ')
+    expect(ink(lightTree)).toBe(light.get('--tone-neutral-01'))
+    for (const { name } of semanticModel().themes) expect(ink(scenario('dark', name)), name).toBe('0 0 0')
+  })
+
   // The semantic layer, resolved the way the browser cascades semantic.css and
   // themes.css: base, then the dark ink, the base contrast block, the theme block
   // and the theme's own contrast block. Each role ends on a palette custom property,

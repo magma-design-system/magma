@@ -10,6 +10,9 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ * @part header - The header that holds the `icon` and the `label`
+ * @part icon - The icon of the header, the one of `variant` unless `icon` is set
+ * @part label - The label of the header, the name of `variant` unless `alias` is set
  */
 
 @Component({

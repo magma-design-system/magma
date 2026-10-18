@@ -29,6 +29,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @part action-close - Selects the close button of the modal.
+ * @part dialog - The native `<dialog>` that covers the viewport and places the window in it
  * @part window - Selects the default window element of the modal when used.
  * @slot bottom - Contents that will be placed on bottom of the window. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot - Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot.
@@ -57,6 +58,8 @@ export class MdsModal {
   private bodyOverflow: string = '';
   private cssTransitionDuration: string = '500';
   private windowElement: HTMLElement;
+  // set by the `opened` watcher, consumed by the render that follows it (#803)
+  private openAfterRender = false;
   private windowContentWrapper?: HTMLElement;
   private touchStartX: number;
   private touchStartY: number;
@@ -108,7 +111,8 @@ export class MdsModal {
   @Prop({ reflect: true }) readonly interaction: ModalInteractionType = 'relaxed';
 
   /**
-   * Emits when a modal is closed
+   * Emits when a modal is opened, as its intro animation starts: `mdsModalShow` follows once it
+   * is totally visible
    */
   @Event({ eventName: 'mdsModalOpen' }) openEvent: EventEmitter<void>;
 
@@ -284,6 +288,12 @@ export class MdsModal {
   }
 
   componentDidUpdate(): void {
+    if (this.openAfterRender) {
+      this.openAfterRender = false;
+      this.showDialog();
+      this.animateOpenWindow();
+      this.openEvent.emit();
+    }
     // the header and the footer are hidden while their slots are empty: refresh
     // the paddings of the content once a late `top` or `bottom` child shows them
     this.updateWindowPaddings();
@@ -352,11 +362,16 @@ export class MdsModal {
       if (this.overflow === 'auto') {
         this.disableOverflow();
       }
-      this.showDialog();
-      this.animateOpenWindow();
-      this.openEvent.emit();
+      // The dialog is shown by the render that follows, in componentDidUpdate, not here. The
+      // entry starts from the transform the CSS keys on `:host([position])` and
+      // `:host([animation])`, attributes that only that render reflects: a `position` set in the
+      // same task as `opened`, as a framework wrapper sets its props, was still the old one
+      // when showModal() resolved the starting style, and the window slid in from the old
+      // place, already inside the page (#803).
+      this.openAfterRender = true;
       return;
     }
+    this.openAfterRender = false;
     if (!oldValue) {
       return;
     }

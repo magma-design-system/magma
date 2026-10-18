@@ -207,7 +207,7 @@ and same-plane prominence (`muted`). 5 roles:
 | `--magma-surface-muted` | prominence | same-plane grouping (zebra rows, subtle sections) |
 | `--magma-surface-default` | - | canvas / page |
 | `--magma-surface-raised` | elevation | cards, panels, sticky headers |
-| `--magma-surface-overlay` | elevation | modal, dropdown, popover, tooltip, sheet |
+| `--magma-surface-overlay` | elevation | modal, dropdown, popover, tooltip, sheet; chip, banner |
 
 ### 6.1b Wash - neutral pills (how MARKED, not how elevated)
 
@@ -217,7 +217,7 @@ and same-plane prominence (`muted`). 5 roles:
 | Token | Step | Use |
 |---|---|---|
 | `--magma-wash-soft` | `10` | the faintest pill: zebra rows on a card, a resting track |
-| `--magma-wash-base` | `09` | the default pill: paginator page, disabled fill, chip ground |
+| `--magma-wash-base` | `09` | the default pill: paginator page, disabled fill |
 | `--magma-wash-strong` | `08` | the marked pill: hover on a pill, a selected track |
 
 **Why this cannot be a surface role.** Measured, not stylistic - the same argument as the
@@ -234,26 +234,47 @@ names its own family directly (a theme never retints a hue). The `--magma-surfac
 reserved for elevation, and `--magma-wash-default` deliberately does not exist: `base` is the
 default level, and a second word for it would invite reading the band as a surface ladder.
 
+**A pill that casts a shadow is elevated, not marked.** The wash is a flat ground: it says
+how marked a pill is against the plane it sits on. An object that carries an elevation shadow
+(the chip, the banner) is lifted above that plane, so it takes
+`--magma-surface-overlay` like the other lifted objects. A wash under a shadow reads as a grey
+patch in light (#944), and `surface-raised` under a shadow takes the color of the card below
+it (#955).
+
 Censused for #624: 144 component declarations were naming steps `10/09/08` as a background
 because no role could hold their value. Adopting the band is a 1:1 rename at identical value.
 
 ### 6.1c Shadow ink
 
-`--magma-shadow-ink`, the ink extreme of the active tint (step `01`). It publishes a COLOUR,
-not a shadow: a component composes it with its own geometry and alpha, e.g.
-`drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.45))`.
+`--magma-shadow-ink`, the colour of a projected shadow. It publishes a COLOUR, not a shadow: a
+component composes it with its own geometry and alpha, e.g.
+`drop-shadow(0 4px 3px rgb(var(--magma-shadow-ink) / 0.15))`.
 
-Naming it on the ramp buys the mode flip for free - black on a light page (`#050505`), white on
-a dark one (`#fcfcfc`) - which is what a projected shadow has to do: a pure black shadow is
-invisible on a dark surface. That is the defect the composite ring tokens carried for five
-months (#641), where `outline-weak` and friends hardcode `rgb(0 0 0 / a)`.
+| Mode | Value | Named on |
+|---|---|---|
+| light | `5 5 5` (`6 5 5` under `warm`) | step `01` of the active tint, the ink extreme |
+| dark | `0 0 0` | the seed, pure black, whatever the theme (repointed by the dark block, like the fill ink of 6.5) |
+
+**It stays dark in both modes (#790).** It used to name step `01` in dark too, which flips to
+`#fcfcfc`: the reasoning was that a black shadow is invisible on a black page. Once the dark
+canvas was lifted (`surface-default` 29, `raised` 48, `overlay` 74) that flip became the defect:
+in dark the elevation is the surface ladder, a panel is already lighter than what it floats on,
+and a light ink around it reads as a halo, not as depth. Measured on `mds-dropdown`: 2px off the
+panel the page went from 29 to 51 with the light ink, it now goes to 26. The composite shadows
+(`--shadow-sm` ... `--shadow-2xl`, `--shadow-box-*`, `--shadow-glow-*`) were already
+`rgb(0 0 0 / a)` in both modes: the role now agrees with them.
+
+**A line around an element is not a shadow.** A ring (`0 0 0 Npx`), a centred contrast glow
+(`0 0 4px` in the `pref-contrast` sheets of `mds-dropdown` and `mds-tooltip`), the hairline of the
+`google` button and the translucent tray of `mds-status-bar` all mark an element against the
+page, so they must flip: dark on a light page, light on a dark one. They name
+`--magma-text-default`, which has the ink-extreme value in both modes (`5 5 5` / `252 252 252` on
+the base tint), never `--magma-shadow-ink`.
 
 **It is a colour, `--shadow-*` are shadows.** The composite tokens (`--shadow-lg`,
 `--shadow-ring-2`, ...) live one layer down, in `design-tokens/tokens/cosmetic/box-shadow.json`,
-and name the PRIMITIVE (`--tone-neutral-01`) rather than this role: a cosmetic token cannot
-reference the semantic layer without inverting the layering. The cost of that is measured at
-1/255 - the ink extreme is all but identical in every tint (`5 5 5` on the base tint, `6 5 5`
-under `warm`) - so nothing is lost by not routing them through the tint.
+and cannot reference the semantic layer without inverting the layering: the projected ones write
+`rgb(0 0 0 / a)`, the rings name the primitive `--tone-neutral-01`.
 
 **The ring family.** `--shadow-ring`, `-ring-2`, `-ring-weak`, `-ring-weak-2`, `-ring-strong-2`,
 `-ring-strong-4`: a border drawn with `box-shadow` (`0 0 0 Npx`), where the suffix is the width
@@ -434,6 +455,7 @@ Which text roles a wash level may carry is bounded in section 9.1, not by taste.
 | `<hue>-fg / -border / -surface` | shortcuts onto the roles above at their default prominence |
 | `accent-<role>-fg` | step `03` of the accent family (`accentSteps`), not the hue `05`: the accent has no generated text scale, and `05` measured 53-66 Lc on the neutral surfaces (under the 60 floor in light); `03` gives 71-84 in both modes. Same step as `-emphasis-hover`, different role: ink on a surface vs a fill state |
 | `*-on-emphasis` | the fill ink `--magma-tint-text-on-emphasis`: `--tone-*-seed` in light, `--magma-tint-default` (the canvas) in dark; verified on the fill |
+| `shadow-ink` | step `01` of the ACTIVE TINT ramp in light, `--tone-neutral-seed` (pure black) in dark: a projected shadow stays dark in both modes (6.1c, #790) |
 
 **The fill ink (#739).** Every ink on a solid fill - `text-on-emphasis`, `<hue>-on-emphasis`,
 `accent-*-on-emphasis`, `on-inverse` - resolves through ONE pointer,

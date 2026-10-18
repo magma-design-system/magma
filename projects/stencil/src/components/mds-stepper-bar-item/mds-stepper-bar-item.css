@@ -1,3 +1,5 @@
+@import './css/mds-stepper-bar-item-fouc.css';
+
 /**
  * @prop --mds-stepper-bar-item-color: Sets the color of the text
  * @prop --mds-stepper-bar-item-duration: Sets the duration of the animation
@@ -35,7 +37,8 @@
   --mds-stepper-bar-item-progress-thickness: --spacing(200);
 
   align-items: flex-start;
-  border-radius: var(--radius-xl);
+  border-radius: var(--magma-radius-xl);
+  corner-shape: var(--magma-corner-shape);
   display: grid;
   flex-basis: 0;
   flex-direction: column;
@@ -95,7 +98,8 @@
   @apply ease-out;
 
   align-items: center;
-  border-radius: var(--radius-md);
+  border-radius: var(--magma-radius-md);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   gap: var(--mds-stepper-bar-item-header-gap);
   transition-duration: var(--private-stepper-bar-item-transition-duration);
@@ -107,7 +111,7 @@
   @apply ease-in-out;
 
   background-color: var(--mds-stepper-bar-item-icon-background);
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   display: flex;
   fill: var(--mds-stepper-bar-item-icon-color);
   flex-shrink: 0;
@@ -142,12 +146,12 @@
 }
 
 .badge {
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   pointer-events: none;
 }
 
 .step {
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   color: rgb(var(--magma-text-subtle));
   pointer-events: none;
 }

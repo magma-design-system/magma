@@ -331,9 +331,9 @@ mds-toast {
 
 ## Events
 
-| Event           | Description                        | Type                |
-| --------------- | ---------------------------------- | ------------------- |
-| `mdsToastClose` | Emits when the accordion is opened | `CustomEvent<void>` |
+| Event           | Description                                                                             | Type                |
+| --------------- | --------------------------------------------------------------------------------------- | ------------------- |
+| `mdsToastClose` | Emits when a toast with a `duration` has hidden itself, once its exit animation is over | `CustomEvent<void>` |
 
 
 ## Slots

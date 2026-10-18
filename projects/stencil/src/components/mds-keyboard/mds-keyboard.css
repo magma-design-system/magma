@@ -53,7 +53,7 @@
   --mds-keyboard-background-default: var(--mds-keyboard-background);
   --mds-keyboard-background-fail: rgb(var(--magma-danger-wash-base));
   --mds-keyboard-background-pass: rgb(var(--magma-success-wash-base));
-  --mds-keyboard-background: rgb(var(--tone-porcelain-08));
+  --mds-keyboard-background: var(--private-keyboard-tray);
   --mds-keyboard-color: rgb(var(--magma-text-subtle));
   --mds-keyboard-fill-fail: rgb(var(--magma-danger-text-default));
   --mds-keyboard-fill-pass: rgb(var(--magma-success-text-default));
@@ -66,12 +66,16 @@
   --mds-keyboard-illumination-light: 0 var(--mds-keyboard-illumination-light-size) 0 0
     rgb(255 255 255 / var(--mds-keyboard-illumination-light-opacity)) inset;
   --mds-keyboard-illumination-shadow: 0 0 1px 0 rgb(0 0 0 / 0);
-  --mds-keyboard-key-background: rgb(var(--tone-porcelain-10));
+  --mds-keyboard-key-background: rgb(var(--magma-wash-soft));
   --mds-keyboard-key-illumination-dark-opacity: 0.075;
   --mds-keyboard-key-illumination-light-opacity: 0.5;
   --mds-keyboard-key-illumination-shadow: var(--shadow-sharp);
   --mds-keyboard-padding: --spacing(200);
   --mds-keyboard-spinner-duration: 1s;
+
+  /* the tray and the keys are washes of the active theme, which a named theme retints: they were
+     porcelain steps, the family of the cool theme, under every theme (#828) */
+  --private-keyboard-tray: rgb(var(--magma-wash-strong));
 
   align-items: center;
   align-self: flex-start;
@@ -107,8 +111,14 @@
   outline: 0;
 }
 
+/* the tray one shade toward the ink, darker in light and lighter in dark */
+
 :host(:focus-within) {
-  --mds-keyboard-background: rgb(var(--tone-porcelain-07));
+  --mds-keyboard-background: color-mix(
+    in oklab,
+    var(--private-keyboard-tray) 88%,
+    rgb(var(--magma-text-default))
+  );
 }
 
 mds-tooltip {
@@ -118,7 +128,7 @@ mds-tooltip {
 .combination-checker {
   --mds-button-await-duration: var(--mds-keyboard-spinner-duration);
 
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
 }
 
 ::slotted(mds-keyboard-key) {

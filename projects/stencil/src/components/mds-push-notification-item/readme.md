@@ -386,13 +386,12 @@ mds-push-notification-item::part(content) {
 
 ## Shadow Parts
 
-| Part        | Description                                |
-| ----------- | ------------------------------------------ |
-| `"actions"` | The actions wrapper                        |
-| `"avatar"`  |                                            |
-| `"content"` | The content wrapper of the message         |
-| `"icon"`    | The icon set by `icon` attribute           |
-| `"picture"` | The picture image added by `src` attribute |
+| Part        | Description                                                                                                     |
+| ----------- | --------------------------------------------------------------------------------------------------------------- |
+| `"actions"` | The actions wrapper                                                                                             |
+| `"avatar"`  | The `mds-avatar` that shows the `icon`, the `initials` or, with `preview` set to `avatar`, the picture of `src` |
+| `"content"` | The content wrapper of the message                                                                              |
+| `"picture"` | The picture image added by `src` attribute                                                                      |
 
 
 ## CSS Custom Properties

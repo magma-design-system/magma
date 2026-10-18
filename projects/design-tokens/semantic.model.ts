@@ -154,13 +154,15 @@ const washSection = (): SemanticSection => ({
 });
 
 // 2c. shadow ink - the COLOUR a projected shadow is drawn with, not a shadow.
-//    Named on the tint ramp's ink extreme, so it flips with the mode: black on a
-//    light page, white on a dark one. That flip is the whole point - a pure black
-//    shadow is invisible on a dark surface, which is the defect #641 documents on
-//    the composite ring tokens.
+//    Named on the tint ramp's ink extreme in light (near-black); the dark block
+//    repoints it to the seed, pure black, so a shadow stays dark in both modes
+//    (#790). The step alone flipped to white in dark, which on the lifted canvas
+//    (surface-default 29, overlay 74) outlined a panel with a light halo instead
+//    of setting it off: in dark the elevation is the surface ladder, and a dark
+//    shadow adds depth under it. A line AROUND an element (a ring, a contrast
+//    outline) is not a shadow and keeps the flipping ink: it names a text role.
 //    The composite `--shadow-*` tokens live one layer down (design-tokens cosmetic
-//    tokens) and name the primitive directly: they cannot reference a role without
-//    inverting the layering, and at the ink extreme the difference is 1/255.
+//    tokens) and cannot reference a role without inverting the layering.
 const shadowSection = (): SemanticSection => ({
   title: 'Shadow ink - the colour of a projected shadow (spec 6.1c)',
   decls: [role('shadow-ink', `magma-tint-scale-${shadowStep}`, 'shadow-ink')],
@@ -320,8 +322,12 @@ const accentSection = (accentRole: string, family: string): SemanticSection => {
 // named theme (which repoints --magma-tint-default) and `pref-contrast-more`
 // (which sends the page back to the seed) carry the ink with them, no rule of
 // their own.
-const darkDecls = (): SemanticDecl[] =>
-  onEmphasisDark ? [pointer('text-on-emphasis', `magma-tint-${onEmphasisDark}`)] : [];
+// That same pure black is what a projected shadow needs in dark (2c, #790): the
+// shadow ink takes the seed, whatever the theme, since a shadow is not retinted.
+const darkDecls = (): SemanticDecl[] => [
+  ...(onEmphasisDark ? [pointer('text-on-emphasis', `magma-tint-${onEmphasisDark}`)] : []),
+  role('shadow-ink', seed, 'shadow-ink'),
+];
 
 // Contrast (spec 9.3): under `prefers-contrast: more` the text + border roles are
 // promoted to a STRONGER same-family step and the page surface to the family seed

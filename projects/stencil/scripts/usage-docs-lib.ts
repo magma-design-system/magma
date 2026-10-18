@@ -407,3 +407,34 @@ export function handWrittenReadme(tag: string, readme: string): string {
     .replace(README_INTRO, '')
     .trim();
 }
+
+/** The members of a docs-json component entry, each with the description it ships. */
+export interface DescribedComponent {
+  tag: string;
+  props: { name: string; docs: string }[];
+  events: { event: string; docs: string }[];
+  methods: { name: string; docs: string }[];
+  slots: { name: string; docs: string }[];
+  parts: { name: string; docs: string }[];
+  styles: { name: string; docs: string }[];
+}
+
+/**
+ * The members of a component that ship without a description, named as in magma.api.txt
+ * (`prop size`, `part label`, `slot (default)`). The JSDoc of a member is its only line in the
+ * readme, in the shipped AGENTS.md and in documentation.json, which consumers and their agents
+ * read as the API. Stencil lists every part that render() sets, with or without an `@part`; and
+ * an `@part` or `@slot` outside the JSDoc right above `@Component` (a plain `/*` comment, or a
+ * block above another declaration) never reaches the docs (#829). Empty when all are described.
+ */
+export function undescribedMembers(c: DescribedComponent): string[] {
+  const empty = (m: { docs: string }) => (m.docs ?? '').trim() === '';
+  return [
+    ...c.props.filter(empty).map((m) => `prop ${m.name}`),
+    ...c.events.filter(empty).map((m) => `event ${m.event}`),
+    ...c.methods.filter(empty).map((m) => `method ${m.name}`),
+    ...c.slots.filter(empty).map((m) => `slot ${m.name || '(default)'}`),
+    ...c.parts.filter(empty).map((m) => `part ${m.name}`),
+    ...c.styles.filter(empty).map((m) => `css ${m.name}`),
+  ];
+}

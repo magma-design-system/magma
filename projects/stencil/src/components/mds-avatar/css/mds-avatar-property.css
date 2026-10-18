@@ -35,6 +35,6 @@
 
 @property --mds-avatar-radius {
   inherits: true;
-  initial-value: var(--radius-full);
+  initial-value: var(--magma-radius-full);
   syntax: '<length>';
 }

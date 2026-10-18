@@ -210,13 +210,13 @@ mds-notification {
 
 ## Properties
 
-| Property    | Attribute   | Description                                                                                                                                        | Type                                  | Default     |
-| ----------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ----------- |
-| `dismissed` | `dismissed` | Specifies if the notification is dismissed                                                                                                         | `boolean`                             | `false`     |
-| `max`       | `max`       | Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9 | `number \| undefined`                 | `undefined` |
-| `strategy`  | `strategy`  | Specifies the position strategy of the notification                                                                                                | `"absolute" \| "disabled" \| "fixed"` | `'fixed'`   |
-| `target`    | `target`    | Specifies the selector of the target element, this attribute is used with `querySelector` method.                                                  | `string`                              | `undefined` |
-| `value`     | `value`     | Specifies number of notifications to display, if it set to 0, the element will be hidden                                                           | `number`                              | `0`         |
+| Property    | Attribute   | Description                                                                                                                                              | Type                                  | Default     |
+| ----------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ----------- |
+| `dismissed` | `dismissed` | Specifies if the notification is dismissed                                                                                                               | `boolean`                             | `false`     |
+| `max`       | `max`       | Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9       | `number \| undefined`                 | `undefined` |
+| `strategy`  | `strategy`  | Specifies the position strategy of the notification                                                                                                      | `"absolute" \| "disabled" \| "fixed"` | `'fixed'`   |
+| `target`    | `target`    | Specifies the selector of the target element, this attribute is used with `querySelector` method.                                                        | `string`                              | `undefined` |
+| `value`     | `value`     | Specifies the number of notifications to display. At 0 the badge shows no number, as an empty dot: it is not hidden, `dismissed` takes it off its target | `number`                              | `0`         |
 
 
 ## CSS Custom Properties

@@ -21,6 +21,9 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
+/**
+ * @part media - The native `<img>` that shows the picture
+ */
 @Component({
   tag: 'mds-img',
   styleUrl: 'mds-img.css',
