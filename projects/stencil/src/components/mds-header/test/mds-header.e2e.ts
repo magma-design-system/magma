@@ -71,9 +71,10 @@ describe('mds-header', () => {
     };
     const hamburgerOf = (root: HTMLElement): Element =>
       root.querySelector('mds-header-bar')!.shadowRoot!.querySelector('.menu')!;
+    // a header without a menu slot gives its bar no hamburger
     const header = (style: string) =>
       render(
-        `<mds-header menu="all" style="${style}"><mds-header-bar></mds-header-bar></mds-header>`,
+        `<mds-header menu="all" style="${style}"><mds-header-bar></mds-header-bar><div slot="menu">Menu</div></mds-header>`,
       );
 
     it('colours the hamburger of the bar with the icon colour of the header', async () => {
