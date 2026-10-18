@@ -1,6 +1,7 @@
 import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 import { mockIconFetch } from '@test/fetch';
+import { useLanguage } from '@test/language';
 
 type RecordedChange = { page: number; caller: string | null };
 
@@ -93,8 +94,8 @@ describe('mds-paginator', () => {
   it('keeps centering the strip on the item focused from the keyboard', async () => {
     const { root, waitForChanges } = await render<HTMLMdsPaginatorElement>(NARROW_PAGINATOR);
 
-    // prev arrow, page 1, then pages 2..7 inside the strip
-    await pressTab(8, waitForChanges);
+    // page 1, then pages 2..7 inside the strip: the prev arrow is disabled on the first page
+    await pressTab(7, waitForChanges);
 
     const { scrollLeft, focusedPage, focusedItemOffset } = stripGeometry(root);
     expect(focusedPage).toBe('7');
@@ -194,8 +195,8 @@ describe('mds-paginator', () => {
       const { host, waitForChanges } = await newRecordedPaginator(NARROW_PAGINATOR);
       await waitForRecordedChanges(1);
 
-      // prev arrow, page 1, page 2, page 3
-      await pressTab(4, waitForChanges);
+      // page 1, page 2, page 3: the prev arrow is disabled on the first page
+      await pressTab(3, waitForChanges);
       expect(changes).toEqual([{ page: 1, caller: null }]);
 
       await userEvent.keyboard('{Enter}');
@@ -207,5 +208,57 @@ describe('mds-paginator', () => {
       ]);
       expect(host.currentPage).toBe(3);
     });
+
+    // disabled and selected items stayed tab stops that Enter activated, the selected page
+    // emitting its own page again (#820)
+    it('leaves the disabled arrow out of the tab order, and the selected page inactive', async () => {
+      const { host, waitForChanges } = await newRecordedPaginator(
+        '<mds-paginator pages="10"></mds-paginator>',
+      );
+      await waitForRecordedChanges(1);
+      const prev = getItem(host, PREV_ARROW);
+      const first = getItem(host, FIRST_PAGE);
+
+      expect(prev).not.toHaveAttribute('tabindex');
+      expect(prev).toEqualAttributes({ role: 'button', 'aria-disabled': 'true' });
+      expect(first).toEqualAttributes({ role: 'button', tabindex: '0', 'aria-current': 'page' });
+
+      first.focus();
+      await userEvent.keyboard('{Enter}');
+      await userEvent.keyboard('{Space}');
+      await waitForChanges();
+
+      expect(changes).toEqual([{ page: 1, caller: null }]);
+    });
+
+    it('goes to a page on Space as on Enter', async () => {
+      const { host, waitForChanges } = await newRecordedPaginator(
+        '<mds-paginator pages="10"></mds-paginator>',
+      );
+      await waitForRecordedChanges(1);
+
+      getItem(host, NEXT_ARROW).focus();
+      await userEvent.keyboard('{Space}');
+      await waitForChanges();
+
+      expect(changes).toEqual([
+        { page: 1, caller: null },
+        { page: 2, caller: 'mds-paginator-item.item-icon' },
+      ]);
+      expect(getItem(host, PREV_ARROW)).toHaveAttribute('tabindex', '0');
+    });
+  });
+});
+
+// the arrows became buttons with #820: icon-only, they need a name of their own (#821)
+describe('mds-paginator arrows', () => {
+  beforeEach(mockIconFetch);
+  useLanguage('it');
+
+  it('are named in the page language', async () => {
+    const { root } = await render('<mds-paginator pages="5"></mds-paginator>');
+
+    expect(getItem(root, PREV_ARROW)).toEqualAttribute('aria-label', 'Pagina precedente');
+    expect(getItem(root, NEXT_ARROW)).toEqualAttribute('aria-label', 'Pagina successiva');
   });
 });

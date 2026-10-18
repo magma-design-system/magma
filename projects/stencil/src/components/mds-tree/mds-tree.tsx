@@ -26,12 +26,15 @@ export class MdsTree {
   @Prop({ reflect: true }) readonly appearance: TreeAppearance = 'depth';
 
   /**
-   * Specifies the tree should be opened asynchronously when after the click, .
+   * Has no effect on the tree: `async` is read on each `mds-tree-item`.
+   * @deprecated Set `async` on the items that load their children on demand. Goes in the next
+   * major.
    */
   @Prop({ reflect: true }) readonly async?: boolean;
 
   /**
-   * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+   * Names the tree for assistive technologies: the tree is a list of its items, and the label
+   * is what that list is called
    */
   @Prop() readonly label: string;
 
@@ -171,7 +174,10 @@ export class MdsTree {
 
   render() {
     return (
-      <Host>
+      // a list of lists: each item is an entry, and the items of an open branch are a list
+      // inside it, so a screen reader tells the level and the size of every branch. Not a
+      // role="tree", which promises the arrow keys and leaves no room for the actions of an item
+      <Host aria-label={(this.label ?? '') !== '' ? this.label : undefined} role="list">
         <slot onSlotchange={this.updateElements}></slot>
       </Host>
     );

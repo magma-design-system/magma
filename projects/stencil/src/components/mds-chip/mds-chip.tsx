@@ -1,6 +1,5 @@
 import { Component, Element, Event, EventEmitter, Host, Prop, Watch, h } from '@stencil/core';
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
-import { setAttributeIfEmpty } from '@common/aria';
 import { MdsChipEvent } from './meta/interface';
 import { KeyboardManager } from '@common/keyboard-manager';
 import { ChipVariantType } from '@type/variant';
@@ -21,6 +20,7 @@ import localeIt from './meta/locale.it.json';
 export class MdsChip {
   @Element() host: HTMLMdsChipElement;
   private km = new KeyboardManager();
+  private labelElement?: HTMLElement;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -39,9 +39,10 @@ export class MdsChip {
   @Prop() readonly deletable?: boolean;
 
   /**
-   * Sets the component disabled status
+   * Sets the component disabled status: neither the label nor the delete button can be focused
+   * or activated
    */
-  @Prop() readonly disabled?: boolean = false;
+  @Prop({ reflect: true }) readonly disabled?: boolean = false;
 
   /**
    * The icon displayed to the left of the component's label
@@ -95,12 +96,6 @@ export class MdsChip {
     }
   }
 
-  @Watch('clickable')
-  handleClickableProp(newValue: boolean): void {
-    this.handleClickableElement(newValue);
-    this.handleClickableKeyboard(newValue);
-  }
-
   @Watch('selected')
   handleSelectedProp(newValue: boolean): void {
     if (newValue === false) {
@@ -108,7 +103,8 @@ export class MdsChip {
     }
   }
 
-  private onClickLabelHandler(event: Event): void {
+  private onClickLabelHandler = (event: Event): void => {
+    if (!this.clickable || this.disabled) return;
     if (this.selectable) {
       this.selected = !this.selected;
       if (this.selected === false) {
@@ -118,51 +114,41 @@ export class MdsChip {
       return;
     }
     this.clickLabelEvent.emit({ event, element: this.host });
-  }
+  };
 
   private onDeleteHandler = (event: Event): void => {
+    if (this.disabled) return;
     this.deleteEvent.emit({ event, element: this.host });
   };
 
-  private handleClickableKeyboard = (isClickable: boolean): void => {
-    if (isClickable) {
-      const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement;
-      this.km.addElement(label, 'label');
-      this.km.attachClickBehavior('label');
-      return;
-    }
-    this.km.detachClickBehavior('label');
+  // the label is a button only while the chip is clickable: Enter and Space click it then, and
+  // the click handler ignores them otherwise
+  private labelRef = (label?: HTMLElement | null): void => {
+    if (label === this.labelElement) return;
+    this.km.removeElement('label');
+    this.labelElement = label ?? undefined;
+    this.attachLabelKeyboard();
   };
 
-  private handleClickableElement = (isClickable: boolean): void => {
-    const label = this.host.shadowRoot?.querySelector('.label') as HTMLElement;
-    if (label == null) {
-      return;
-    }
-    if (isClickable) {
-      setAttributeIfEmpty(label, 'role', 'button');
-      label.addEventListener('click', this.onClickLabelHandler.bind(this));
-      return;
-    }
-    label.removeAttribute('role');
-    label.removeEventListener('click', this.onClickLabelHandler.bind(this));
+  private attachLabelKeyboard = (): void => {
+    if (!this.labelElement) return;
+    this.km.addElement(this.labelElement, 'label');
+    this.km.attachClickBehavior('label', { space: true });
   };
 
-  componentDidLoad(): void {
+  componentWillLoad(): void {
     // A @Watch does not fire for the value a prop is born with, so `handleSelectableProp`
     // only ever ran for a `selectable` set from JS after load: a chip that arrives from
-    // markup as <mds-chip selectable> stayed non-clickable, with no role, no tabindex and
-    // a click that toggled nothing - while the readme promises that "selectable implies
-    // clickable". Turning it on here lets the clickable watcher do the wiring exactly once,
-    // which is why this returns instead of falling through to the block below.
-    if (this.selectable && !this.clickable) {
+    // markup as <mds-chip selectable> stayed non-clickable, while the readme promises that
+    // "selectable implies clickable".
+    if (this.selectable) {
       this.clickable = true;
-      return;
     }
-    if (this.clickable) {
-      this.handleClickableElement(true);
-      this.handleClickableKeyboard(true);
-    }
+  }
+
+  // a chip moved in the page is disconnected and connected again, without loading again
+  connectedCallback(): void {
+    this.attachLabelKeyboard();
   }
 
   disconnectedCallback(): void {
@@ -170,6 +156,7 @@ export class MdsChip {
   }
 
   render() {
+    const interactive = !!this.clickable;
     return (
       <Host
         aria-disabled={this.disabled ? 'true' : 'false'}
@@ -184,31 +171,32 @@ export class MdsChip {
           </div>
         )}
         <div class="label-wrapper">
-          {this.clickable ? (
-            /* The label carries role="button" (see handleClickableElement), and a toggle
-             * button states its state through aria-pressed: without it `selected` reaches
-             * the eye through the border and reaches a screen reader not at all (WCAG
-             * 4.1.2). Only when selectable, because aria-pressed on something that is not
-             * a button is invalid, and a merely clickable chip toggles nothing. */
-            <mds-text
-              aria-pressed={this.selectable ? (this.selected ? 'true' : 'false') : undefined}
-              class="label label--interactive"
-              tabindex="0"
-              typography="caption"
-              truncate="word"
-            >
-              {this.label}
-            </mds-text>
-          ) : (
-            <mds-text class="label" typography="caption" truncate="word">
-              {this.label}
-            </mds-text>
-          )}
+          {/* While clickable, the label is a button, and a toggle button states its state
+           * through aria-pressed: without it `selected` reaches the eye through the border and
+           * reaches a screen reader not at all (WCAG 4.1.2). Only when selectable, because
+           * aria-pressed on something that is not a button is invalid, and a merely clickable
+           * chip toggles nothing. */}
+          <mds-text
+            aria-disabled={interactive && this.disabled ? 'true' : undefined}
+            aria-pressed={
+              interactive && this.selectable ? (this.selected ? 'true' : 'false') : undefined
+            }
+            class={{ label: true, 'label--interactive': interactive }}
+            onClick={this.onClickLabelHandler}
+            ref={this.labelRef}
+            role={interactive ? 'button' : undefined}
+            tabindex={interactive && !this.disabled ? '0' : undefined}
+            typography="caption"
+            truncate="word"
+          >
+            {this.label}
+          </mds-text>
         </div>
         {this.deletable && (
           <mds-button
             class="button-delete"
             icon={miBaselineCancel}
+            disabled={this.disabled}
             onClick={this.onDeleteHandler}
             title={`${this.t.get('deleteLabel')} ${this.label}`}
             variant="dark"

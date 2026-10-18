@@ -319,10 +319,10 @@ mds-table-header-cell::part(action) {
 
 ## Shadow Parts
 
-| Part       | Description |
-| ---------- | ----------- |
-| `"action"` |             |
-| `"label"`  |             |
+| Part       | Description                                                                    |
+| ---------- | ------------------------------------------------------------------------------ |
+| `"action"` | The `mds-button` that sorts the column, with the `label`: only when `sortable` |
+| `"label"`  | The `label` of a column that is not `sortable`                                 |
 
 
 ## Dependencies

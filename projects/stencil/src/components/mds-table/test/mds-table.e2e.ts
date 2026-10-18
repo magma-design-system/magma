@@ -152,4 +152,72 @@ describe('mds-table', () => {
       await vi.waitFor(() => expect(bar(root)).toBeNull());
     });
   });
+
+  // #801: the header read the actions once, on load, so a table filled after its first render
+  // (an empty array, then a fetch) had rows one cell longer than the header
+  describe('actions that arrive after the first load', () => {
+    const EMPTY = `
+<mds-table>
+  <mds-table-header>
+    <mds-table-header-cell label="Document"></mds-table-header-cell>
+  </mds-table-header>
+  <mds-table-body></mds-table-body>
+</mds-table>`;
+
+    const headerActions = (root: HTMLElement): Element | null =>
+      root
+        .querySelector('mds-table-header')!
+        .shadowRoot!.querySelector('mds-table-header-cell.actions');
+
+    const row = (title: string, withAction = true): string =>
+      `<mds-table-row><mds-table-cell>${title}</mds-table-cell>${
+        withAction ? '<mds-button slot="action" label="Open"></mds-button>' : ''
+      }</mds-table-row>`;
+
+    it('shows the Actions column when rows with actions fill an empty body, and hides it when they go', async () => {
+      const { root } = await render(EMPTY);
+      const body = root.querySelector('mds-table-body')!;
+      expect(headerActions(root)).toBeNull();
+
+      body.insertAdjacentHTML('beforeend', row('One') + row('Two'));
+      await vi.waitFor(() => expect(headerActions(root)).not.toBeNull());
+
+      body.replaceChildren();
+      await vi.waitFor(() => expect(headerActions(root)).toBeNull());
+    });
+
+    it('shows it when a row already on the page gets its actions later, and hides it when they go', async () => {
+      const { root } = await render(
+        EMPTY.replace(
+          '<mds-table-body></mds-table-body>',
+          `<mds-table-body>${row('One', false)}</mds-table-body>`,
+        ),
+      );
+      const tableRow = root.querySelector('mds-table-row')!;
+      await vi.waitFor(() => expect(tableRow).toHaveAttribute('hydrated'));
+      expect(headerActions(root)).toBeNull();
+
+      tableRow.insertAdjacentHTML(
+        'beforeend',
+        '<mds-button slot="action" label="Open"></mds-button>',
+      );
+      await vi.waitFor(() => expect(headerActions(root)).not.toBeNull());
+
+      tableRow.querySelector('[slot="action"]')!.remove();
+      await vi.waitFor(() => expect(headerActions(root)).toBeNull());
+    });
+
+    it('lays the actions over rows that came later, when the table is narrower than its cells', async () => {
+      const { root } = await render(`<div style="width: 200px">${EMPTY}</div>`);
+      const body = root.querySelector('mds-table-body')!;
+      const wide = '<div style="width: 180px">wide</div>';
+
+      body.insertAdjacentHTML(
+        'beforeend',
+        `<mds-table-row><mds-table-cell>${wide}</mds-table-cell><mds-table-cell>${wide}</mds-table-cell><mds-button slot="action" label="Open"></mds-button></mds-table-row>`,
+      );
+      const tableRow = root.querySelector('mds-table-row')!;
+      await vi.waitFor(() => expect(tableRow.overlayActions).toBe(true));
+    });
+  });
 });

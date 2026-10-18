@@ -16,6 +16,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @slot item - Add `mds-radial-menu-item` elements or `components` to this slot.
+ * @part radial-menu - The ring that lays out the `item` slot around the trigger
  */
 @Component({
   tag: 'mds-radial-menu',
@@ -158,7 +159,33 @@ export class MdsRadialMenu {
   disconnectedCallback(): void {
     if (typeof document === 'undefined') return;
     document.removeEventListener('contextmenu', this.toggleRightClickMenu);
+    this.listenOutside(false);
   }
+
+  // a click outside the menu and Escape close the open menu: the backdrop takes no pointer, so
+  // nothing else did. Escape gives the focus back to the trigger when it was inside the menu
+  private handleOutsideClick = (event: MouseEvent): void => {
+    if (event.composedPath().includes(this.hostElement)) return;
+    this.opened = undefined;
+  };
+
+  private handleEscape = (event: KeyboardEvent): void => {
+    if (event.key !== 'Escape') return;
+    const hadFocus = this.hostElement.matches(':focus-within');
+    this.opened = undefined;
+    if (hadFocus && this.interaction === 'click') {
+      this.hostElement.shadowRoot?.querySelector<HTMLElement>('.menu-button')?.focus();
+    }
+  };
+
+  private listenOutside = (listen: boolean): void => {
+    if (typeof document === 'undefined') return;
+    document.removeEventListener('click', this.handleOutsideClick);
+    document.removeEventListener('keydown', this.handleEscape);
+    if (!listen) return;
+    document.addEventListener('click', this.handleOutsideClick);
+    document.addEventListener('keydown', this.handleEscape);
+  };
 
   private toggleRightClickMenu = (e: MouseEvent): void => {
     e.preventDefault();
@@ -234,6 +261,7 @@ export class MdsRadialMenu {
       this.opened = undefined;
     }
     this.handleBackdrop();
+    this.listenOutside(!!newValue);
   }
 
   render() {

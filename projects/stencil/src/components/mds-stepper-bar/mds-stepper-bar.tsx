@@ -13,7 +13,7 @@ import {
 import { MdsStepperBarEventDetail } from './meta/event-detail';
 import { StepperBarNavigationType } from './meta/meta';
 /**
- * @slot - Add `mds-tepper-bar-item` element/s.
+ * @slot - Add `mds-stepper-bar-item` element/s.
  * @slot content - Add `HTML elements` or `components`, one per mds-stepper-bar-item added
  * @part items - Selects the `items` container element wrapped in shadowDOM.
  * @part contents - Selects the `contents` container element wrapped in shadowDOM.
@@ -31,7 +31,9 @@ export class MdsStepperBar {
   @Element() private element: HTMLMdsStepperBarElement;
 
   /**
-   * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
+   * Sets the current item by its position, counted from 1: the items before it are done. 1 makes
+   * the first item current with none done, 0 makes no item current, the number of items + 1 marks
+   * them all done
    */
   @Prop() readonly itemsDone: number = 1;
 

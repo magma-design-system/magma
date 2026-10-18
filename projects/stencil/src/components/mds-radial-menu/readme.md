@@ -16,7 +16,8 @@ The `<mds-radial-menu>` web component is a floating action menu of the Magma Des
 - **Trigger button**: Renders a trigger button whose `tone`, `variant` and `size` are forwarded from the host; clicking it toggles the menu open and closed. It is icon-only and named in the page language (the `lang` of `<html>`) after what a click does: "Open menu", then "Close menu". There is no prop to give it a name of your own yet.
 - **Open state**: `opened` is the source of truth for visibility; when set the items animate out along the arc and the trigger icon swaps to a close glyph.
 - **Interaction mode**: With `interaction="rightclick"` the trigger is hidden and the menu instead opens on right-click, centred on the cursor.
-- **Backdrop**: When `backdrop` is enabled a dimming overlay is shown while the menu is open. It is purely visual: it lets clicks through and does not close the menu.
+- **Closing**: A click outside the menu or Escape closes the open menu; Escape gives the focus back to the trigger when it was inside the menu.
+- **Backdrop**: When `backdrop` is enabled a dimming overlay is shown while the menu is open. It is purely visual: it lets clicks through.
 - **Item registration**: Items are read from the `item` slot; the component assigns each item's position and propagates the host `size` down to every `<mds-radial-menu-item>`.
 
 #### Properties & Visual Configurations
@@ -304,9 +305,9 @@ The arc geometry is driven by `angle-start`, `angle-end`, `radius`, and `directi
 
 ## Shadow Parts
 
-| Part            | Description |
-| --------------- | ----------- |
-| `"radial-menu"` |             |
+| Part            | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `"radial-menu"` | The ring that lays out the `item` slot around the trigger |
 
 
 ## CSS Custom Properties

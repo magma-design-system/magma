@@ -4,7 +4,7 @@ import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 
-import { serializeConfig, startUiServer, type UiServerOptions } from '../src/lib/ui-server.mjs'
+import { saveRefusal, serializeConfig, startUiServer, type UiServerOptions } from '../src/lib/ui-server.mjs'
 import realConfig from '../.magma-design-tokensrc.json'
 
 let server: Server | undefined
@@ -47,10 +47,68 @@ test('GET /api/config returns the on-disk config and its save path', async () =>
 
   const res = await fetch(`${base}/api/config`)
   expect(res.status).toBe(200)
-  const data = (await res.json()) as { path: string, config: unknown }
+  const data = (await res.json()) as { path: string, config: unknown, readOnly: string | null }
   expect(data.path).toBe(configPath)
   expect(data.config).toEqual(realConfig)
+  expect(data.readOnly).toBeNull()
 })
+
+test('saveRefusal lets only JSON rc files through', () => {
+  expect(saveRefusal('/p/.magma-design-tokensrc.json')).toBeNull()
+  expect(saveRefusal('/p/.config/magma-design-tokensrc')).toBeNull()
+  expect(saveRefusal('/p/tokens/color.json')).toBeNull()
+  expect(saveRefusal('/p/.magma-design-tokensrc.cjs')).toContain('JavaScript module')
+  expect(saveRefusal('/p/magma-design-tokens.config.js')).toContain('JavaScript module')
+  expect(saveRefusal('/p/package.json')).toContain('magma-design-tokens key')
+})
+
+// the other config sources lilconfig finds: a save would turn them into bare
+// JSON (a module loses its logic, package.json everything but the config)
+const nonJsonSources = [
+  {
+    file: '.magma-design-tokensrc.js',
+    content: `module.exports = ${JSON.stringify(realConfig)}\n`,
+    reason: 'JavaScript module',
+  },
+  {
+    file: '.magma-design-tokensrc.mjs',
+    content: `export default ${JSON.stringify(realConfig)}\n`,
+    reason: 'JavaScript module',
+  },
+  {
+    file: 'package.json',
+    content: JSON.stringify({ name: 'consumer', 'magma-design-tokens': realConfig }, null, 2) + '\n',
+    reason: 'magma-design-tokens key',
+  },
+]
+
+for (const source of nonJsonSources) {
+  test(`a ${source.file} config is read-only: GET says why, PUT is refused and the file kept`, async () => {
+    dir = await mkdtemp(path.join(tmpdir(), 'mdt-ui-'))
+    const configPath = path.join(dir, source.file)
+    await writeFile(configPath, source.content)
+    const base = await startServer({ config: configPath })
+
+    const get = await fetch(`${base}/api/config`)
+    expect(get.status).toBe(200)
+    const data = (await get.json()) as { path: string, config: unknown, readOnly: string | null }
+    expect(data.path).toBe(configPath)
+    expect(data.config).toEqual(realConfig)
+    expect(data.readOnly).toContain(source.reason)
+
+    const put = await fetch(`${base}/api/config`, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(realConfig),
+    })
+    expect(put.status).toBe(409)
+    expect(((await put.json()) as { error: string }).error).toContain(source.reason)
+
+    expect(await readFile(configPath, 'utf8')).toBe(source.content)
+    // nothing written beside it either: a sibling JSON rc would silently win
+    expect(await readdir(dir)).toEqual([source.file])
+  })
+}
 
 test('PUT /api/config writes the config back deterministically', async () => {
   const { configPath } = await fixtureDir()

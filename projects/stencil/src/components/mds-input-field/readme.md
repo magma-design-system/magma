@@ -238,16 +238,16 @@ mds-input-field {
 
 ## Slots
 
-| Slot | Description                                       |
-| ---- | ------------------------------------------------- |
-|      | Add the native input `HTML element` to this slot. |
+| Slot | Description                                                                                                                                                                                                      |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|      | Add one `mds-input` or `mds-input-date`: the field names it with `label` and shows its validation errors in `message`. Another control, a native `<input>` among them, gets the name but no validation messages. |
 
 
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"content"` |             |
+| Part        | Description                                        |
+| ----------- | -------------------------------------------------- |
+| `"content"` | The wrapper of the default slot, above the message |
 
 
 ## CSS Custom Properties

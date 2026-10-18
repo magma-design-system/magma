@@ -113,12 +113,17 @@ The default `href` points to the Maggioli EU AI-regulation article. Override it 
 
 #### Styling via Shadow Parts
 
-Each variant exposes one named `::part()`: `icon` and `banner` are the inner [`mds-help`](../../mds-help) and [`mds-banner`](../../mds-banner) elements, so their documented CSS custom properties can be set there; `card` is the card container and `chip` the wrapper around the chip and its dropdown. Use these only for a deep customization.
+Each variant exposes a named `::part()`: `icon`, `chip` and `banner` are the inner [`mds-help`](../../mds-help), [`mds-chip`](../../mds-chip) and [`mds-banner`](../../mds-banner) elements, so their documented CSS custom properties can be set there; `card` is the card container, and the chip variant adds `chip-wrapper`, the wrapper around the chip and its dropdown. Use these only for a deep customization.
 
 ```css
 /* Increase the border radius of the card surface */
 mds-policy-ai::part(card) {
   border-radius: var(--magma-radius-xl);
+}
+
+/* A border on the chip itself: chip-wrapper would reach its dropdown too */
+mds-policy-ai::part(chip) {
+  border: 1px solid rgb(var(--magma-accent-ai-border));
 }
 
 /* Stronger tint for the banner cockade (the ring around the icon) */
@@ -233,12 +238,13 @@ The `card` variant does not render a headline - only `description` is shown. Pas
 
 ## Shadow Parts
 
-| Part       | Description                                                                                                        |
-| ---------- | ------------------------------------------------------------------------------------------------------------------ |
-| `"banner"` | Selects the `banner` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `banner`. |
-| `"card"`   | Selects the `card` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `card`.     |
-| `"chip"`   | Selects the `chip` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `chip`.     |
-| `"icon"`   | Selects the `icon` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `icon`.     |
+| Part             | Description                                                                                                        |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `"banner"`       | Selects the `banner` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `banner`. |
+| `"card"`         | Selects the `card` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `card`.     |
+| `"chip"`         | Selects the `mds-chip` wrapped in shadowDOM, will be found only if attirbute `variant` is set to `chip`.           |
+| `"chip-wrapper"` | Selects the wrapper of the chip and of its dropdown, will be found only if attirbute `variant` is set to `chip`.   |
+| `"icon"`         | Selects the `icon` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `icon`.     |
 
 
 ## Dependencies

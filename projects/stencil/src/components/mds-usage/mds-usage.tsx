@@ -10,6 +10,9 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ * @part header - The header that holds the `icon` and the `label`
+ * @part icon - The icon of the header, the one of `variant` unless `icon` is set
+ * @part label - The label of the header, the name of `variant` unless `alias` is set
  */
 
 @Component({
@@ -57,10 +60,10 @@ export class MdsUsage {
             {this.alias ?? this.t.get(this.variant)}
           </mds-text>
         </div>
-        <div
-          class="content"
-          role={this.variant === 'do' || this.variant === 'info' ? 'insertion' : 'deletion'}
-        >
+        {/* no role: insertion and deletion are the marks of a document edit, and a screen
+         * reader announced the guidance as text added or removed. The label above says what
+         * kind of guidance it is */}
+        <div class="content">
           <slot />
         </div>
       </Host>

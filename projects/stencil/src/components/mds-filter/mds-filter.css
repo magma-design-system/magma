@@ -26,7 +26,7 @@
   --mds-filter-items-background: rgb(var(--magma-wash-base));
   --mds-filter-items-gap: --spacing(200);
   --mds-filter-items-padding: --spacing(200);
-  --mds-filter-items-radius: var(--radius-full);
+  --mds-filter-items-radius: var(--magma-radius-full);
   --mds-filter-items-scroll-behavior: smooth;
   --mds-filter-items-transition-duration: var(--duration-300);
   --private-filter-items-transition-duration: var(--mds-filter-items-transition-duration);

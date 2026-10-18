@@ -19,7 +19,8 @@ The `<mds-button>` web component is the primary interactive action control of th
 - **Form association**: Inside a `<form>` the component submits (`type="submit"`, default) or resets (`type="reset"`) it like a native button, with no extra wiring; use `type="button"` to opt out. With `name` set, a submit sends `name=value`, so buttons that submit the same form tell the receiver which one was chosen. A custom element cannot be a submitter, so `event.submitter` is a hidden native button that stands in for the component: it carries the same `name` and `value`, but it is not the `mds-button` element.
 - **Active state**: Mirrors a visual pressed state through the `active` attribute, safe to drive from CSS attribute selectors.
 - **Disabled state**: Blocks pointer and keyboard activation and removes the host from the tab sequence. A disabled `<fieldset>` around the button disables it the same way, as it does a native button, without setting `disabled`.
-- **Await state**: Renders an inline spinner, blocks pointer activation, and sets `aria-busy="true"` for assistive tech. Remove the attribute when done - do not set `await="false"`.
+- **Await state**: Renders an inline spinner, blocks pointer and keyboard activation, and sets `aria-busy="true"` for assistive tech. The button keeps the focus it had, and a click from a script or an assistive technology neither submits nor resets its form again. Remove the attribute when done - do not set `await="false"`.
+- **Keyboard**: Enter activates the button as a click does, and so does Space, on release, as on a native button; a button with `href` is a link, which Enter follows and Space does not.
 - **Accessibility**: Sets `role="button"` on the host, `role="link"` when `href` is set, whatever the format of the icon; the `label` prop (or slotted text) is rendered as the button text, which names it. Without a label, an `aria-label` or a `title`, the component sets `title` from the last segment of the icon slug (`mi/baseline/delete` -> "delete"), which names the icon, not the action; an icon given as inline SVG or base64 has no slug, and leaves the button with no name at all: icon-only buttons need an explicit `aria-label` (or `title`), or an `mds-tooltip` with `relation="label"`. A host with `aria-labelledby` gets no name from the slug, and loses the one it had when the attribute comes later, as it does from the tooltip.
 - **Sizing**: The `size` prop drives padding, font size, and minimum hit area. Do not override dimensions with inline `width` / `height`.
 - **Linking constraint**: `target` is effective only when `href` is set.
@@ -36,6 +37,7 @@ The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`]
 - **`icon`** is an SVG filename slug from the Magma icon library; **`iconPosition`** places the glyph relative to the label (use `right` for forward-motion CTAs).
 - **`truncate`**: `word` (default) keeps the label on one line and cuts it with an ellipsis, `all` clamps it with `line-clamp` (one line in the button), `none` lets it wrap onto more lines.
 - **`animation`**: `yugop` progressively reveals characters; otherwise text renders immediately.
+- **The first letter** of the label is uppercased. For a name or an identifier that must stay as written (`rdsysadmin`), set `--mds-button-label-transform: none` on the button or on any ancestor: the property inherits, so it also reaches the buttons that other components, `mds-button-dropdown` among them, render in their shadow root.
 
 
 ### 2. Pattern
@@ -235,6 +237,12 @@ Style the button only through its documented `--mds-button-*` CSS custom propert
   --mds-button-radius: var(--magma-radius-lg);
   --mds-button-gap: calc(var(--spacing) * 300);
 }
+
+/* labels that are names or identifiers, shown as written: it inherits, so it reaches the
+   buttons inside other components too */
+.tenant-switcher {
+  --mds-button-label-transform: none;
+}
 ```
 
 
@@ -411,31 +419,32 @@ mds-button::part(icon) {
 
 ## Shadow Parts
 
-| Part      | Description                   |
-| --------- | ----------------------------- |
-| `"icon"`  | The icon inside the component |
-| `"label"` |                               |
+| Part      | Description                                                                      |
+| --------- | -------------------------------------------------------------------------------- |
+| `"icon"`  | The icon inside the component                                                    |
+| `"label"` | The text of the button: the `label`, or the default slot when `label` is not set |
 
 
 ## CSS Custom Properties
 
-| Name                                            | Description                                                                                                                   |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-button-await-duration`                   | Sets the duration of the rotation of the spinner await component                                                              |
-| `--mds-button-background`                       | Sets the background-color of the component                                                                                    |
-| `--mds-button-border-color-rgb`                 | Sets the color of the border of the component (based on box-shadow declaration)                                               |
-| `--mds-button-border-default-opacity`           | Sets the default opacity of the border color of the component (based on box-shadow declaration)                               |
-| `--mds-button-border-high-contrast-hover-width` | Sets the width of the border when the component is hovered and the contrast is high (based on box-shadow declaration)         |
-| `--mds-button-border-high-contrast-width`       | Sets the width of the border of the component and the contrast is high (based on box-shadow declaration)                      |
-| `--mds-button-border-hover-opacity`             | Sets the opacity of the border color when the component is hovered (based on box-shadow declaration)                          |
-| `--mds-button-border-opacity`                   | Sets the border opacity of the component (based on box-shadow declaration)                                                    |
-| `--mds-button-border-tone-outline-hover-width`  | Sets the width of the border when the component is hovered when the tone is set to `ghost` (based on box-shadow declaration)  |
-| `--mds-button-border-tone-strong-hover-width`   | Sets the width of the border when the component is hovered when the tone is set to `strong` (based on box-shadow declaration) |
-| `--mds-button-border-tone-weak-hover-width`     | Sets the width of the border when the component is hovered when the tone is set to `weak` (based on box-shadow declaration)   |
-| `--mds-button-border-width`                     | Sets the border width of the component (based on box-shadow declaration)                                                      |
-| `--mds-button-color`                            | Sets the text color of the component                                                                                          |
-| `--mds-button-gap`                              | Sets the distance betwen element inside the components, use it instead of setting gap property directly.                      |
-| `--mds-button-radius`                           | Sets the border-radius of the component                                                                                       |
+| Name                                            | Description                                                                                                                                                                                                                        |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-button-await-duration`                   | Sets the duration of the rotation of the spinner await component                                                                                                                                                                   |
+| `--mds-button-background`                       | Sets the background-color of the component                                                                                                                                                                                         |
+| `--mds-button-border-color-rgb`                 | Sets the color of the border of the component (based on box-shadow declaration)                                                                                                                                                    |
+| `--mds-button-border-default-opacity`           | Sets the default opacity of the border color of the component (based on box-shadow declaration)                                                                                                                                    |
+| `--mds-button-border-high-contrast-hover-width` | Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles.                                                                                                  |
+| `--mds-button-border-high-contrast-width`       | Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles.                                                                                                  |
+| `--mds-button-border-hover-opacity`             | Sets the opacity of the border color when the component is hovered (based on box-shadow declaration)                                                                                                                               |
+| `--mds-button-border-opacity`                   | Sets the border opacity of the component (based on box-shadow declaration)                                                                                                                                                         |
+| `--mds-button-border-tone-outline-hover-width`  | Sets the width of the border when the component is hovered when the tone is set to `ghost` (based on box-shadow declaration)                                                                                                       |
+| `--mds-button-border-tone-strong-hover-width`   | Sets the width of the border when the component is hovered when the tone is set to `strong` (based on box-shadow declaration)                                                                                                      |
+| `--mds-button-border-tone-weak-hover-width`     | Sets the width of the border when the component is hovered when the tone is set to `weak` (based on box-shadow declaration)                                                                                                        |
+| `--mds-button-border-width`                     | Sets the border width of the component (based on box-shadow declaration)                                                                                                                                                           |
+| `--mds-button-color`                            | Sets the text color of the component                                                                                                                                                                                               |
+| `--mds-button-gap`                              | Sets the distance betwen element inside the components, use it instead of setting gap property directly.                                                                                                                           |
+| `--mds-button-label-transform`                  | Sets the text-transform of the first letter of the label, `uppercase` by default; `none` shows the label as written. It inherits: set on `mds-button-dropdown` or any ancestor, it reaches the buttons inside other components too |
+| `--mds-button-radius`                           | Sets the border-radius of the component                                                                                                                                                                                            |
 
 
 ## Dependencies

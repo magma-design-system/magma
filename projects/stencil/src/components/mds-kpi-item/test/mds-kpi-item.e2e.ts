@@ -29,6 +29,48 @@ describe('mds-kpi-item', () => {
     expect(root.shadowRoot!.querySelector('.description')!.textContent?.trim()).toBe('Progetti');
   });
 
+  // the name read "451: undefined" for a missing description, and replaced the author's
+  // aria-label at the next render (#821)
+  describe('the accessible name', () => {
+    it.each([
+      ['label="451" description="Progetti"', '451: Progetti'],
+      ['label="451"', '451'],
+      ['description="Progetti"', 'Progetti'],
+    ])('joins what is there (%s)', async (attributes, name) => {
+      const { root } = await render(`<mds-kpi-item ${attributes}></mds-kpi-item>`);
+
+      expect(root).toEqualAttribute('aria-label', name);
+    });
+
+    it('has none without a value or a description', async () => {
+      const { root } = await render('<mds-kpi-item></mds-kpi-item>');
+
+      expect(root).not.toHaveAttribute('aria-label');
+    });
+
+    it('keeps the aria-label of the author through a change', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsKpiItemElement>(
+        '<mds-kpi-item label="451" description="Progetti" aria-label="451 progetti attivi"></mds-kpi-item>',
+      );
+
+      root.setAttribute('label', '452');
+      await waitForChanges();
+
+      expect(root).toEqualAttribute('aria-label', '451 progetti attivi');
+    });
+
+    it('follows a change of the value when the name is its own', async () => {
+      const { root, waitForChanges } = await render(
+        '<mds-kpi-item label="451" description="Progetti"></mds-kpi-item>',
+      );
+
+      root.setAttribute('label', '452');
+      await waitForChanges();
+
+      expect(root).toEqualAttribute('aria-label', '452: Progetti');
+    });
+  });
+
   describe('with a threshold, waiting to be scrolled into view', () => {
     /** Renders the item below the fold, where its observer has not fired yet. */
     const renderBelowTheFold = async () => {

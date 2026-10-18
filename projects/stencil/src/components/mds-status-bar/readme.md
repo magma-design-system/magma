@@ -137,7 +137,7 @@ Customize the bar only through its documented `--mds-status-bar-*` CSS custom pr
 ```css
 mds-status-bar {
   --mds-status-bar-max-width: 700px;
-  --mds-status-bar-backdrop: rgb(var(--magma-shadow-ink) / 0.2);
+  --mds-status-bar-backdrop: rgb(var(--magma-text-default) / 0.2);
   --mds-status-bar-backdrop-filter: blur(6px);
 }
 
@@ -220,7 +220,7 @@ mds-status-bar >>> .status-bar {
 
 /* CORRECT */
 mds-status-bar {
-  --mds-status-bar-backdrop: rgb(var(--magma-shadow-ink) / 0.15);
+  --mds-status-bar-backdrop: rgb(var(--magma-text-default) / 0.15);
   --mds-status-bar-max-width: 640px;
 }
 mds-status-bar::part(status-bar) {

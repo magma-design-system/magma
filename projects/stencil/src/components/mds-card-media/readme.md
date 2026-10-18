@@ -252,9 +252,9 @@ mds-card-media::part(content) {
 
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"content"` |             |
+| Part        | Description                                                   |
+| ----------- | ------------------------------------------------------------- |
+| `"content"` | The layer in front of the media that holds the `content` slot |
 
 
 ----------------------------------------------

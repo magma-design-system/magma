@@ -17,7 +17,6 @@ import { preferenceStore } from '@common/preference';
 })
 export class MdsStatusBar {
   @Element() host: HTMLMdsStatusBarElement;
-  private modal: HTMLMdsModalElement;
 
   /**
    * Specifies the description near the slotted actions
@@ -39,11 +38,6 @@ export class MdsStatusBar {
    */
   @Prop({ reflect: true, mutable: true }) visible?: boolean;
 
-  componentDidLoad(): void {
-    this.modal = this.host.shadowRoot?.querySelector('.modal') as HTMLMdsModalElement;
-    this.modal.hideBackdrop = true;
-  }
-
   @Watch('visible')
   handleVisbilityProp(newValue?: boolean): void {
     if (newValue === false) {
@@ -59,6 +53,11 @@ export class MdsStatusBar {
     this.visible = undefined;
   }
 
+  // the modal closes itself too (a swipe): the bar follows it
+  private handleModalClose = (): void => {
+    this.visible = undefined;
+  };
+
   render() {
     return (
       <Host
@@ -67,8 +66,12 @@ export class MdsStatusBar {
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
+        {/* the bar leaves the page usable: the modal must be born without a backdrop, or a
+         * bar visible at load opens a modal dialog that makes the page inert */}
         <mds-modal
           class="modal"
+          hideBackdrop={true}
+          onMdsModalClose={this.handleModalClose}
           opened={this.visible}
           position={this.position}
           animation="custom"
