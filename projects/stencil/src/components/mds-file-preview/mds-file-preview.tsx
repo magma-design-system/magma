@@ -1,5 +1,6 @@
 import miBaselineCancel from '@icon/mi/baseline/cancel.svg';
 import { Component, Element, Event, EventEmitter, Host, h, Prop, Watch } from '@stencil/core';
+import { KeyboardManager } from '@common/keyboard-manager';
 import { ExtensionSuffixType } from '@type/file-types';
 import { MdsFilePreviewEventDetail } from './meta/event-detail';
 import { TypographyTruncateType } from '@type/text';
@@ -35,7 +36,8 @@ export class MdsFilePreview {
     it: { ...localeIt, ...fileDescriptionLocaleIt },
   });
 
-  // ciaone
+  private km = new KeyboardManager();
+  private card?: HTMLElement;
 
   /**
    * Enables the cross icon to perform cancel/delete action on element
@@ -43,7 +45,8 @@ export class MdsFilePreview {
   @Prop({ reflect: true }) readonly deletable?: boolean;
 
   /**
-   * Enables the download icon to perform the related action on element
+   * Turns the card into a button that asks for the download: a tab stop that the pointer, Enter
+   * and Space activate, emitting `mdsFileDownload`. Without it the card is not interactive
    */
   @Prop({ reflect: true }) readonly downloadable?: boolean;
 
@@ -119,6 +122,7 @@ export class MdsFilePreview {
   };
 
   private onClickDownloadEvent = (): void => {
+    if (!this.downloadable) return;
     this.downloadedEvent.emit({
       target: this.host,
       filename: this.filename,
@@ -130,24 +134,31 @@ export class MdsFilePreview {
     this.format = getExtensionInfos(this.filename, this.suffix).format;
   }
 
-  componentDidLoad(): void {
-    this.handleDownloadable(this.downloadable);
+  private cardRef = (card?: HTMLElement | null): void => {
+    if (card === this.card) return;
+    this.km.removeElement();
+    this.card = card ?? undefined;
+    this.attachCardKeyboard();
+  };
+
+  private attachCardKeyboard = (): void => {
+    if (!this.card) return;
+    this.km.addElement(this.card);
+    this.km.attachClickBehavior('element', { space: true });
+  };
+
+  // a preview moved in the page is disconnected and connected again, without loading again
+  connectedCallback(): void {
+    this.attachCardKeyboard();
+  }
+
+  disconnectedCallback(): void {
+    this.km.detachClickBehavior();
   }
 
   @Watch('filename')
   handleFilename(newValue: string): void {
     this.format = getExtensionInfos(newValue, this.suffix).format;
-  }
-
-  @Watch('downloadable')
-  handleDownloadable(newValue?: boolean, oldValue?: boolean): void {
-    if (newValue === oldValue) return;
-    const card = this.host.shadowRoot?.querySelector('.card');
-    if (newValue) {
-      card?.addEventListener('click', this.onClickDownloadEvent);
-      return;
-    }
-    card?.removeEventListener('click', this.onClickDownloadEvent);
   }
 
   render() {
@@ -170,7 +181,14 @@ export class MdsFilePreview {
             onClick={this.onClickDeletedEvent}
           ></mds-button>
         )}
-        <div class="card" part="card" onClick={this.onClickDownloadEvent}>
+        <div
+          class="card"
+          onClick={this.onClickDownloadEvent}
+          part="card"
+          ref={this.cardRef}
+          role={this.downloadable ? 'button' : undefined}
+          tabindex={this.downloadable ? '0' : undefined}
+        >
           {(this.src ?? '') !== '' &&
           !hasMessage &&
           getExtensionInfos(this.filename, this.suffix).preview ? (

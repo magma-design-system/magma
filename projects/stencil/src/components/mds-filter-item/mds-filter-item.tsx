@@ -70,20 +70,6 @@ export class MdsFilterItem {
     this.selectedEvent.emit({ id: this.element.id, selected: this.selected });
   };
 
-  // Enter clicks through the keyboard manager; Space clicks on release, as on a native button,
-  // and must not scroll the page while it is held
-  private handleKeyDown = (event: KeyboardEvent): void => {
-    if (event.code === 'Space') {
-      event.preventDefault();
-    }
-  };
-
-  private handleKeyUp = (event: KeyboardEvent): void => {
-    if (event.code === 'Space') {
-      this.element.click();
-    }
-  };
-
   /**
    * The spoken name: the label, or the icon slug for an icon-only item, followed by the count as
    * a number of results. An icon given as markup has no slug: whoever renders it names the item.
@@ -126,7 +112,7 @@ export class MdsFilterItem {
 
   componentDidLoad(): void {
     this.km.addElement(this.element);
-    this.km.attachClickBehavior();
+    this.km.attachClickBehavior('element', { space: true });
   }
 
   disconnectedCallback(): void {
@@ -142,8 +128,6 @@ export class MdsFilterItem {
         aria-label={this.resolveName()}
         aria-pressed={this.isFilter() ? (this.selected ? 'true' : 'false') : undefined}
         onClick={this.toggle}
-        onKeyDown={this.handleKeyDown}
-        onKeyUp={this.handleKeyUp}
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
         pref-mode={preferenceStore.state.mode}

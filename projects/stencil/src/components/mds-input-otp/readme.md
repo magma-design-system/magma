@@ -16,7 +16,8 @@ The `<mds-input-otp>` web component is the Magma Design System control for enter
 - **Form association**: The joined digits are exposed as the form value, so it submits with the surrounding `<form>` with no extra wiring. A form reset brings back the code of load, in the cells and in the form, like a native input.
 - **Disabled fieldset**: A disabled `<fieldset>` around the component disables it as `disabled` does, like a native control: the code cannot be changed and is left out of the form, until the fieldset is enabled.
 - **Single-digit cells**: Renders `length` digit cells, each capped at one character; the host value is the concatenation of every cell.
-- **Numeric-only entry**: Non-digit keys produce no value change, and their default action is blocked too (Backspace, Tab, the arrows); a digit typed on a filled cell overwrites it.
+- **Numeric-only entry**: A key that writes anything but a digit (a letter, Space) changes nothing; a digit typed on a filled cell overwrites it.
+- **Keyboard**: Backspace empties the cell, or the previous one from an empty cell, and moves there; Delete empties the cell; the left and right arrows move between the cells. Tab and Shift+Tab leave the field, and the shortcuts (paste with Ctrl+V or Cmd+V among them) keep what the browser does with them.
 - **Auto-advance focus**: After a valid digit, focus moves to the next cell automatically; entering a digit in the last cell blurs it.
 - **Paste handling**: Pasting a code of digits (the spaces around it are dropped) distributes the digits across consecutive cells starting from the focused one; a paste with anything else in it, signs and decimal points included, is ignored.
 - **Completion + submit**: When a digit typed or pasted in the last cell completes all `length` digits and `autosubmit` is set, the owning form is submitted; digits pasted past the last cell are dropped.

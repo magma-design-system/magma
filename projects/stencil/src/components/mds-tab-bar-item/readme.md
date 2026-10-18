@@ -16,8 +16,8 @@ The `<mds-tab-bar-item>` web component is a single selectable tab within the [`<
 #### Semantic Behavior
 
 - **Compound child only**: Must be placed as a direct default-slot child of `<mds-tab-bar>`; it is not used standalone or mixed with other child types.
-- **Parent-coordinated selection**: Clicking the item, when becoming selected, emits `mdsTabBarItemSelect` carrying its own `id`. The parent re-drives every sibling's `selected` so exactly one item is active at a time - items do not deselect each other on their own.
-- **Whole-host click target**: The entire item (icon + label) is the click surface, not just the text. It has no `tabindex` and no ARIA role, so it is reachable by pointer only.
+- **Parent-coordinated selection**: Clicking an item that is not selected selects it and emits `mdsTabBarItemSelect` carrying its own `id`; a click on the selected item changes nothing and emits nothing. The parent re-drives every sibling's `selected` so exactly one item is active at a time - items do not deselect each other on their own.
+- **Whole-host click target**: The entire item (icon + label) is the click surface, not just the text. It is a button (`role="button"`, unless you set another role) in the tab order, activated by Enter and Space as by a click; the selected item carries `aria-current="true"`.
 - **Label is text**: Set the visible text with the `label` prop. The default slot is a **deprecated** fallback kept for backward compatibility - slotted text is read into `label`, while nested HTML is stripped with a console warning; avoid placing HTML elements or other components there.
 
 #### Properties & Visual Configurations
@@ -209,7 +209,7 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 #### Do Not Listen to Raw Click Events for Tab Changes
 
-`<mds-tab-bar-item>` emits `mdsTabBarItemSelect` when selected; `<mds-tab-bar>` re-emits `mdsTabBarChange` with the resolved index. Listening to the native `click` event gives you no index, and it also fires on clicks that select nothing (every other click on the item that is already active).
+`<mds-tab-bar-item>` emits `mdsTabBarItemSelect` when selected; `<mds-tab-bar>` re-emits `mdsTabBarChange` with the resolved index. Listening to the native `click` event gives you no index, and it also fires on clicks that select nothing (any click on the item that is already active).
 
 ```html
 <!-- INCORRECT -->

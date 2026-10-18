@@ -101,6 +101,96 @@ describe('value', () => {
   });
 });
 
+// Every key but Ctrl ones was cancelled: Tab could not leave the field, Backspace did not delete,
+// Cmd+V did not paste and Space wrote a blank digit (#820)
+describe('keyboard', () => {
+  const setup = async (attributes = '') => {
+    const { root, waitForChanges } = await render(
+      `<div><button id="before">before</button><mds-input-otp length="3" ${attributes}></mds-input-otp><button id="after">after</button></div>`,
+    );
+    const otp = root.querySelector('mds-input-otp')!;
+    const cells = Array.from(otp.shadowRoot!.querySelectorAll('mds-input'));
+    return { root, otp, cells, waitForChanges };
+  };
+
+  // the cell that holds the focus, through the shadow roots of the otp and of the cell
+  const focusedCell = (otp: HTMLElement) => otp.shadowRoot!.activeElement;
+
+  it('leaves the field with Tab and Shift+Tab', async () => {
+    const { root, otp, cells } = await setup();
+
+    await userEvent.click(cells[2]);
+    await userEvent.keyboard('{Tab}');
+    expect(document.activeElement).toBe(root.querySelector('#after'));
+
+    await userEvent.click(cells[0]);
+    await userEvent.keyboard('{Shift>}{Tab}{/Shift}');
+    expect(document.activeElement).toBe(root.querySelector('#before'));
+    expect(otp.value).toBe('');
+  });
+
+  it('empties a cell with Backspace, and the previous one from an empty cell', async () => {
+    const { otp, cells, waitForChanges } = await setup('value="12"');
+
+    await userEvent.click(cells[1]);
+    await userEvent.keyboard('{Backspace}');
+    await waitForChanges();
+    expect(readCells(otp)).toEqual(['1', '', '']);
+    expect(focusedCell(otp)).toBe(cells[1]);
+
+    await userEvent.keyboard('{Backspace}');
+    await waitForChanges();
+    expect(readCells(otp)).toEqual(['', '', '']);
+    expect(focusedCell(otp)).toBe(cells[0]);
+    expect(otp.value).toBe('');
+  });
+
+  it('empties the cell with Delete', async () => {
+    const { otp, cells, waitForChanges } = await setup('value="12"');
+
+    await userEvent.click(cells[0]);
+    await userEvent.keyboard('{Delete}');
+    await waitForChanges();
+
+    expect(readCells(otp)).toEqual(['', '2', '']);
+  });
+
+  it('writes nothing for Space or a letter', async () => {
+    const { otp, cells, waitForChanges } = await setup();
+
+    await userEvent.click(cells[0]);
+    await userEvent.keyboard('{Space}a-');
+    await waitForChanges();
+
+    expect(readCells(otp)).toEqual(['', '', '']);
+    expect(otp.value).toBe('');
+    expect(focusedCell(otp)).toBe(cells[0]);
+  });
+
+  it('moves between the cells with the arrows', async () => {
+    const { otp, cells } = await setup();
+
+    await userEvent.click(cells[0]);
+    await userEvent.keyboard('{ArrowRight}{ArrowRight}');
+    expect(focusedCell(otp)).toBe(cells[2]);
+
+    await userEvent.keyboard('{ArrowLeft}');
+    expect(focusedCell(otp)).toBe(cells[1]);
+  });
+
+  it.each([
+    ['Ctrl', { ctrlKey: true }],
+    ['Cmd', { metaKey: true }],
+  ])('leaves the paste shortcut with %s to the browser', async (_, modifier) => {
+    const { cells } = await setup();
+    const press = new KeyboardEvent('keydown', { key: 'v', cancelable: true, ...modifier });
+
+    cells[0].dispatchEvent(press);
+
+    expect(press.defaultPrevented).toBe(false);
+  });
+});
+
 // A native input is disabled by its own disabled or by a disabled fieldset. The component had
 // neither: in a disabled fieldset the cells stayed editable while the form left the code out (#852)
 describe('disabled', () => {
