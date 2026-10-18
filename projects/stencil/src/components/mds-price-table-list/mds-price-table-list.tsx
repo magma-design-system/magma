@@ -37,10 +37,11 @@ export class MdsPriceTableList {
           <slot name="header" />
         </div>
         {this.hasItems && <mds-separator class="separator"></mds-separator>}
+        {/* a plain box: a <main> made every card one more main landmark, inside the page's */}
         {this.hasItems && (
-          <main class="main" part="content">
+          <div class="main" part="content">
             <slot name="item" />
-          </main>
+          </div>
         )}
         <div class="footer" part="footer">
           <slot name="price" />
