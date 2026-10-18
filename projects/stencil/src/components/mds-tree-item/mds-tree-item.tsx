@@ -210,6 +210,11 @@ export class MdsTreeItem {
     this.resolveActions();
   }
 
+  // the buttons that open the branch say whether it is open; a leaf has no branch to open,
+  // an async item has one still to load
+  private expandedState = (): string | undefined =>
+    this.hasChildren || this.async ? String(!!this.expanded) : undefined;
+
   private onActionSlotChange = (): void => {
     this.hasActions = hasChildWithSlot(this.host, 'action');
   };
@@ -234,7 +239,7 @@ export class MdsTreeItem {
 
   render() {
     return (
-      <Host resolved-actions={this.resolvedActions}>
+      <Host resolved-actions={this.resolvedActions} role="listitem">
         <div class={clsx('header', this.hasChildren && 'header--has-children')}>
           <div class="tree-node">
             <div class="tree-branch"></div>
@@ -242,6 +247,7 @@ export class MdsTreeItem {
           </div>
           <div class="toggle-icon">
             <mds-button
+              aria-expanded={this.expandedState()}
               await={this.await}
               onClick={this.onClick}
               icon={!this.await ? this.currentToggleIcon : undefined}
@@ -253,6 +259,7 @@ export class MdsTreeItem {
           </div>
           <div class="title">
             <mds-button
+              aria-expanded={this.expandedState()}
               class={clsx('label-action', this.await && 'label-action--await')}
               disabled={this.await}
               icon={this.icon}
@@ -278,6 +285,7 @@ export class MdsTreeItem {
             this.hasChildren && 'children--has-children',
             this.expanded && 'children--expanded',
           )}
+          role={this.hasChildren ? 'list' : undefined}
         >
           <slot></slot>
         </div>

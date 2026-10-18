@@ -31,7 +31,8 @@ export class MdsTree {
   @Prop({ reflect: true }) readonly async?: boolean;
 
   /**
-   * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+   * Names the tree for assistive technologies: the tree is a list of its items, and the label
+   * is what that list is called
    */
   @Prop() readonly label: string;
 
@@ -160,7 +161,10 @@ export class MdsTree {
 
   render() {
     return (
-      <Host>
+      // a list of lists: each item is an entry, and the items of an open branch are a list
+      // inside it, so a screen reader tells the level and the size of every branch. Not a
+      // role="tree", which promises the arrow keys and leaves no room for the actions of an item
+      <Host aria-label={(this.label ?? '') !== '' ? this.label : undefined} role="list">
         <slot onSlotchange={this.updateElements}></slot>
       </Host>
     );

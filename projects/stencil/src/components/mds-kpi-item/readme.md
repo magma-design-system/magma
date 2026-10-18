@@ -16,7 +16,7 @@ The `<mds-kpi-item>` web component is a compound child that represents a single 
 #### Semantic Behavior
 
 - **Compound constraint**: Must be placed as a direct default-slot child of [`<mds-kpi>`](../../mds-kpi); it is not used standalone, and the parent's list semantics only make sense when its children are `mds-kpi-item` elements (do not mix in other child types).
-- **Accessible name**: Each item is announced as one list entry, with its spoken text consolidated as `"{label}: {description}"` (a missing prop reads `undefined`).
+- **Accessible name**: Each item is announced as one list entry, with its spoken text consolidated as `"{label}: {description}"`, leaving out the one that is missing; an `aria-label` on the host replaces it and stays.
 - **Scroll-triggered animation**: When `threshold` is greater than `0`, the `label`/`description` reveal with the `yugop` text animation once the item scrolls into the viewport. With `threshold === 0` (the default) the text is rendered immediately with no animation.
 - **Conditional rendering**: The icon, value, and description each render only when their respective prop is provided, so an item can show any subset of icon, value, and caption.
 
@@ -89,7 +89,7 @@ Set `threshold` to a value between `0` and `1` to defer the yugop text animation
 
 #### Label-Only KPI (No Description)
 
-Omit `description` only when the figure is self-explanatory. The accessible name is still built as `"{label}: {description}"`, so it reads `2026: undefined`; ensure the surrounding context provides enough meaning.
+Omit `description` only when the figure is self-explanatory. The accessible name is then the figure alone (`2026`); ensure the surrounding context provides enough meaning.
 
 ```html
 <mds-kpi>
@@ -99,7 +99,7 @@ Omit `description` only when the figure is self-explanatory. The accessible name
 
 #### Icon-Only Visual Accent (No Numeric Value)
 
-Omit `label` and `description` to display only the icon as a decorative tile. In this case the component names the item `undefined: undefined` - add an explicit `aria-label` on the host to describe the tile to screen-reader users. The component keeps it at first render but writes its own name back at its next re-render (for example when a user preference changes).
+Omit `label` and `description` to display only the icon as a decorative tile. In this case the item has no name - add an explicit `aria-label` on the host to describe the tile to screen-reader users. The component keeps it at first render but writes its own name back at its next re-render (for example when a user preference changes).
 
 ```html
 <mds-kpi>
@@ -235,7 +235,7 @@ mds-kpi-item::part(content) {
 
 #### Do Not Leave Icon-Only Items Without an Accessible Name
 
-When both `label` and `description` are omitted the component's `aria-label` resolves to `"undefined: undefined"`, which is meaningless to screen-reader users. Supply an explicit `aria-label` on the host when the item carries no text props (the component keeps it at first render, but writes its own name back at its next re-render).
+When both `label` and `description` are omitted the item has no accessible name at all. Supply an explicit `aria-label` on the host when the item carries no text props (the component keeps it at first render, but writes its own name back at its next re-render).
 
 ```html
 <!-- INCORRECT -->

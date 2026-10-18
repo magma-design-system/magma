@@ -17,7 +17,7 @@ The `<mds-spinner>` web component is the Magma Design System's loading/await ind
 
 - **Visibility is gated by `running`**: When `running` is absent/false the spinner is hidden and its animation is paused; setting `running` reveals it and starts the animation. The animation never runs while hidden, for performance.
 - **No interactivity or accessibility role**: It is decorative - not focusable, emits no events, has no ARIA role, and is not form-associated. Any loading semantics (e.g. `aria-busy`) must be set by the surrounding context.
-- **Reduced-motion and contrast aware**: The animation slows down (8s per turn, it never stops) under the OS `prefers-reduced-motion` setting, and the color is strengthened under the contrast preference, without consumer intervention.
+- **Reduced-motion and contrast aware**: The animation slows down (8s per turn, it never stops) when the Magma animation preference reduces motion (`pref-animation-reduce`, `mds-pref-animation`, or the OS `prefers-reduced-motion` under `system`), and the color is strengthened under the contrast preference, without consumer intervention.
 
 #### Properties & Visual Configurations
 
@@ -88,7 +88,7 @@ Centre the spinner over a region with a wrapper. Drive `running` programmaticall
 
 #### Controlling Animation Speed
 
-Use the `--mds-spinner-duration` CSS custom property to tune the rotation speed. Set it on the host element - shorter values spin faster, longer values spin slower. The component slows the spinner down under the OS reduced-motion setting by changing this same property, so an override on the host also replaces that slowdown: keep it for brand or context-specific adjustments only.
+Use the `--mds-spinner-duration` CSS custom property to tune the rotation speed. Set it on the host element - shorter values spin faster, longer values spin slower. Reduced motion still slows the spinner down to 8s per turn, whatever this property says.
 
 ```css
 .fast-indicator mds-spinner {
