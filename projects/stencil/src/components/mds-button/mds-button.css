@@ -6,8 +6,8 @@
  * @prop --mds-button-background: Sets the background-color of the component
  * @prop --mds-button-border-color-rgb: Sets the color of the border of the component (based on box-shadow declaration)
  * @prop --mds-button-border-default-opacity: Sets the default opacity of the border color of the component (based on box-shadow declaration)
- * @prop --mds-button-border-high-contrast-hover-width: Sets the width of the border when the component is hovered and the contrast is high (based on box-shadow declaration)
- * @prop --mds-button-border-high-contrast-width: Sets the width of the border of the component and the contrast is high (based on box-shadow declaration)
+ * @prop --mds-button-border-high-contrast-hover-width: Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles.
+ * @prop --mds-button-border-high-contrast-width: Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles.
  * @prop --mds-button-border-hover-opacity: Sets the opacity of the border color when the component is hovered (based on box-shadow declaration)
  * @prop --mds-button-border-opacity: Sets the border opacity of the component (based on box-shadow declaration)
  * @prop --mds-button-border-tone-outline-hover-width: Sets the width of the border when the component is hovered when the tone is set to `outline` (based on box-shadow declaration)
@@ -16,6 +16,7 @@
  * @prop --mds-button-border-width: Sets the border width of the component (based on box-shadow declaration)
  * @prop --mds-button-color: Sets the text color of the component
  * @prop --mds-button-gap: Sets the distance betwen element inside the components, use it instead of setting gap property directly.
+ * @prop --mds-button-label-transform: Sets the text-transform of the first letter of the label, `uppercase` by default; `none` shows the label as written. It inherits: set on `mds-button-dropdown` or any ancestor, it reaches the buttons inside other components too
  * @prop --mds-button-radius: Sets the border-radius of the component
  */
 
@@ -24,8 +25,6 @@
   --mds-button-transition-duration: var(--duration-300);
   --private-button-transition-duration: var(--mds-button-transition-duration);
   --mds-button-border-hover-opacity: 0.75;
-  --mds-button-border-high-contrast-hover-width: 3px;
-  --mds-button-border-high-contrast-width: --spacing(50);
   --mds-button-border-tone-outline-hover-width: 3px;
   --mds-button-border-tone-outline-opacity: 0.3;
   --mds-button-border-tone-strong-hover-width: --spacing(50);
@@ -97,8 +96,12 @@
   --mds-text-line-clamp: var(--mds-button-line-clamp);
 }
 
+/* --mds-button-label-transform is not set on :host, so a value set on an ancestor -
+   mds-button-dropdown, or any component that renders buttons in its shadow root - reaches the
+   label (#799) */
+
 .text::first-letter {
-  text-transform: uppercase;
+  text-transform: var(--mds-button-label-transform, uppercase);
 }
 
 .icon {

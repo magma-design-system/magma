@@ -39,7 +39,8 @@ export class MdsAccordionTimerItem {
   @Prop({ reflect: true }) readonly duration?: number;
 
   /**
-   * A value between 0 and 100 that rapresents the status progress
+   * The progress of the item's countdown, from 0 to 1: mds-accordion-timer writes it while the
+   * item is selected and sets it back to 0 when the next item takes over
    */
   @Prop() progress = 0;
 

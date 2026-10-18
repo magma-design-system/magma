@@ -188,6 +188,12 @@ Customize cell colors through the documented `--mds-table-cell-*` CSS custom pro
   --mds-table-cell-background: rgb(var(--magma-info-emphasis));
   --mds-table-cell-color: rgb(var(--magma-info-on-emphasis));
 }
+
+/* The cells of the column the table is sorted by */
+.tabella-fatture mds-table-cell {
+  --mds-table-cell-background-alt: rgb(var(--magma-accent-surface-subtle));
+  --mds-table-cell-color-alt: rgb(var(--magma-accent-fg));
+}
 ```
 
 

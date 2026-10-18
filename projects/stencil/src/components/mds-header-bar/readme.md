@@ -320,12 +320,12 @@ Type: `Promise<void>`
 
 ## Shadow Parts
 
-| Part          | Description                                                 |
-| ------------- | ----------------------------------------------------------- |
-| `"actions"`   | Selects the element which wraps `nav` and `hamburger` parts |
-| `"content"`   |                                                             |
-| `"hamburger"` | Selects the `hamburger` menu action element                 |
-| `"nav"`       | Selects the `nav` element that contains the horizontal menu |
+| Part          | Description                                                         |
+| ------------- | ------------------------------------------------------------------- |
+| `"actions"`   | Selects the element which wraps `nav` and `hamburger` parts         |
+| `"content"`   | The row that holds the default slot, on the left, and the `actions` |
+| `"hamburger"` | Selects the `hamburger` menu action element                         |
+| `"nav"`       | Selects the `nav` element that contains the horizontal menu         |
 
 
 ## CSS Custom Properties

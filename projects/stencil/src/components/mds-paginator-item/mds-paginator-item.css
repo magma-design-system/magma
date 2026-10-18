@@ -86,7 +86,7 @@
     rgb(var(--magma-text-on-emphasis))
   );
   --private-paginator-item-color: var(--mds-paginator-item-color, rgb(var(--magma-text-default)));
-  --private-paginator-item-radius: var(--mds-paginator-item-radius, var(--radius-full));
+  --private-paginator-item-radius: var(--mds-paginator-item-radius, var(--magma-radius-full));
   --private-paginator-item-shadow-disabled: var(--mds-paginator-item-shadow-disabled, none);
   --private-paginator-item-shadow-hover: var(--mds-paginator-item-shadow-hover, none);
   --private-paginator-item-shadow-selected: var(

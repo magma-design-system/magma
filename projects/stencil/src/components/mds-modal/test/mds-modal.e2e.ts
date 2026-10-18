@@ -185,6 +185,43 @@ describe('mds-modal', () => {
     });
   });
 
+  // #803: a position set in the same task as opened, the way a framework wrapper sets its props,
+  // was still the old attribute when the dialog opened, and the window slid in from the place
+  // of that old position (the centre: translateY(25%)), already inside the page
+  describe('the entry', () => {
+    /** The transform of the window on the first frame the dialog is open. */
+    const firstFrame = (root: HTMLMdsModalElement): Promise<DOMMatrix> =>
+      new Promise((resolve) => {
+        const tick = (): void => {
+          if (!root.shadowRoot!.querySelector('dialog')!.open) {
+            requestAnimationFrame(tick);
+            return;
+          }
+          const window = root.shadowRoot!.querySelector('.window')!;
+          resolve(new DOMMatrix(getComputedStyle(window).transform));
+        };
+        requestAnimationFrame(tick);
+      });
+
+    it.each([
+      ['right', 1],
+      ['left', -1],
+    ])(
+      'starts outside the page on the %s, with the position set together with opened',
+      async (position, side) => {
+        const { root } = await render<HTMLMdsModalElement>('<mds-modal><p>content</p></mds-modal>');
+
+        root.position = position as HTMLMdsModalElement['position'];
+        root.opened = true;
+        const start = await firstFrame(root);
+
+        // slid sideways out of the page, not up from below inside it
+        expect(Math.sign(start.m41)).toBe(side);
+        expect(start.m42).toBe(0);
+      },
+    );
+  });
+
   describe('accessible name', () => {
     it('names the native dialog after the aria-label of the host', async () => {
       const { root } = await render('<mds-modal aria-label="Conferma"></mds-modal>');

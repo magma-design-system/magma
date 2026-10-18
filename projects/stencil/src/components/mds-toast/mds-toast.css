@@ -47,8 +47,9 @@
 
   align-items: center;
   background-color: var(--mds-toast-background);
-  border-radius: var(--radius-xl);
+  border-radius: var(--magma-radius-xl);
   box-shadow: var(--mds-toast-shadow);
+  corner-shape: var(--magma-corner-shape);
   display: inline-flex;
   gap: --spacing(400);
   margin-inline: --spacing(400);

@@ -33,8 +33,8 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @part actions - The actions wrapper
+ * @part avatar - The `mds-avatar` that shows the `icon`, the `initials` or, with `preview` set to `avatar`, the picture of `src`
  * @part content - The content wrapper of the message
- * @part icon - The icon set by `icon` attribute
  * @part picture - The picture image added by `src` attribute
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @slot badge - Add `HTML elements` or `components`, it is **recommended** to use `mds-badge` element.

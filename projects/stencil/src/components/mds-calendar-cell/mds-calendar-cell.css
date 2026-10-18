@@ -90,11 +90,11 @@
   /* radius */
   --private-calendar-cell-selection-boundaries-border-radius: var(
     --mds-calendar-cell-selection-boundaries-border-radius,
-    var(--radius-full)
+    var(--magma-radius-full)
   );
   --private-calendar-cell-selection-week-boundaries-border-radius: var(
     --mds-calendar-cell-selection-week-boundaries-border-radius,
-    var(--radius-full)
+    var(--magma-radius-full)
   );
 
   /* today */

@@ -61,7 +61,8 @@ export class MdsTreeItem {
   @Prop({ reflect: true }) readonly actions?: TreeActions;
 
   /**
-   * Specifies the tree should be opened asynchronously when after the click.
+   * Loads the children on demand: a click on the closed item shows a spinner and emits
+   * `mdsTreeItemExpand` instead of opening it; call `expand()` once the children are in place
    */
   @Prop({ reflect: true }) readonly async?: boolean;
 
@@ -108,12 +109,13 @@ export class MdsTreeItem {
   @Prop() readonly icon?: string;
 
   /**
-   * Emits when the component expand it's children container
+   * Emits when the user opens an `async` item, to load its children: opening any other item emits
+   * nothing
    */
   @Event({ eventName: 'mdsTreeItemExpand' }) expandEvent: EventEmitter<MdsTreeItemEventDetail>;
 
   /**
-   * Emits when the component attribute selected is changed
+   * Emits when the item closes, once its children have finished hiding
    */
   @Event({ eventName: 'mdsTreeItemCollapse' }) collapsedEvent: EventEmitter<MdsTreeItemEventDetail>;
 

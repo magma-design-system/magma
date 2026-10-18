@@ -1,5 +1,9 @@
+/* The neutral ground is the top of the elevation ladder (spec 6.1): the banner casts a
+   shadow, so it is lifted above the card it sits on and never takes the card's own
+   surface-raised. The colored grounds of the status variants are in their own sheet. */
+
 :host {
-  --mds-banner-background: rgb(var(--magma-surface-raised));
+  --mds-banner-background: rgb(var(--magma-surface-overlay));
   --mds-banner-color: rgb(var(--magma-text-default));
   --mds-banner-icon-color: rgb(var(--magma-accent-fg));
   --mds-banner-shadow: var(--shadow-lg-sharp);
@@ -8,7 +12,7 @@
 }
 
 :host([variant='primary']) {
-  --mds-banner-background: rgb(var(--magma-surface-raised));
+  --mds-banner-background: rgb(var(--magma-surface-overlay));
   --mds-banner-color: rgb(var(--magma-text-default));
   --mds-banner-icon-color: rgb(var(--magma-accent-fg));
   --mds-banner-shadow: var(--shadow-lg-sharp);
@@ -16,7 +20,7 @@
   --mds-banner-cockade-background: rgb(var(--magma-accent-surface));
 
   &:host([tone='weak']) {
-    --mds-banner-background: rgb(var(--magma-surface-raised));
+    --mds-banner-background: rgb(var(--magma-surface-overlay));
     --mds-banner-color: rgb(var(--magma-text-default));
     --mds-banner-icon-color: rgb(var(--magma-accent-fg));
     --mds-banner-shadow: var(--shadow-sm-sharp);
@@ -25,7 +29,7 @@
 }
 
 :host([variant='ai']) {
-  --mds-banner-background: rgb(var(--magma-surface-raised));
+  --mds-banner-background: rgb(var(--magma-surface-overlay));
   --mds-banner-color: rgb(var(--magma-text-default));
   --mds-banner-icon-color: rgb(var(--magma-accent-ai-fg));
   --mds-banner-shadow: var(--shadow-lg-sharp);
@@ -33,7 +37,7 @@
   --mds-banner-cockade-background: rgb(var(--magma-accent-ai-surface));
 
   &:host([tone='weak']) {
-    --mds-banner-background: rgb(var(--magma-surface-raised));
+    --mds-banner-background: rgb(var(--magma-surface-overlay));
     --mds-banner-color: rgb(var(--magma-text-default));
     --mds-banner-icon-color: rgb(var(--magma-accent-ai-fg));
     --mds-banner-shadow: var(--shadow-sm-sharp);

@@ -151,7 +151,7 @@ The default slot accepts only `<mds-breadcrumb-item>` elements; slotting arbitra
 
 #### Do Not Use `<mds-breadcrumb-item>` Outside `<mds-breadcrumb>`
 
-Child items rely on the parent for ID assignment and selection-state management. Rendered standalone they get no back button, no sibling deselection and no `mdsBreadcrumbChange`.
+Child items rely on the parent for an ID when they have none and for selection-state management. Rendered standalone they get no back button, no sibling deselection and no `mdsBreadcrumbChange`.
 
 ```html
 <!-- INCORRECT -->

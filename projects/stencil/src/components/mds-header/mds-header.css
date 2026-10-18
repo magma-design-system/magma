@@ -74,7 +74,8 @@
 :host([appearance='inline']) ::slotted(mds-header-bar) {
   --mds-header-inline-margin-current: var(--mds-header-inline-margin);
 
-  border-radius: var(--radius-lg);
+  border-radius: var(--magma-radius-lg);
+  corner-shape: var(--magma-corner-shape);
   margin-bottom: var(--mds-header-inline-margin-current);
   margin-top: var(--mds-header-inline-margin-current);
   max-width: var(--breakpoint-wide);

@@ -317,9 +317,9 @@ The arc geometry is driven by the `angle-start`, `angle-end`, `radius`, and `dir
 
 ## Shadow Parts
 
-| Part            | Description |
-| --------------- | ----------- |
-| `"radial-menu"` |             |
+| Part            | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `"radial-menu"` | The ring that lays out the `item` slot around the trigger |
 
 
 ## CSS Custom Properties

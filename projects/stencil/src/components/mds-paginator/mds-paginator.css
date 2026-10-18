@@ -33,7 +33,7 @@
 
   align-items: center;
   background-color: var(--mds-paginator-background);
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   display: flex;
   flex-shrink: 1;
   gap: 2px;

@@ -122,7 +122,7 @@ Listen for `mdsTableSelectionChange` on `<mds-table>` to receive the array of se
 
 #### Actions Column - Automatic Header Cell
 
-When any `<mds-table-row>` exposes a `[slot="action"]`, `<mds-table-header>` automatically appends a right-aligned, localized header cell ("Action", "Azione" in Italian). No extra markup is required in the header - just place your action buttons in the row slots.
+When any `<mds-table-row>` exposes a `[slot="action"]`, `<mds-table-header>` automatically appends a right-aligned, localized header cell ("Action", "Azione" in Italian). No extra markup is required in the header - just place your action buttons in the row slots. The column follows the rows at any time, not only on load: a table mounted empty and filled after a fetch gets it when the first row with actions arrives, and loses it when the last one goes (`<mds-table>` tells the header).
 
 ```html
 <mds-table>
@@ -345,6 +345,23 @@ Mixing raw HTML table elements with the Magma compound disrupts the selection wi
 
 ## Methods
 
+### `setActions(hasActions: boolean) => Promise<void>`
+
+`internal` Shows or hides the Actions column: mds-table calls it whenever its rows gain or
+lose `slot="action"` content, the header itself reads them only on load
+
+#### Parameters
+
+| Name         | Type      | Description                 |
+| ------------ | --------- | --------------------------- |
+| `hasActions` | `boolean` | whether any row has actions |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `setSelection(selectedItems: number, totalItems: number) => Promise<void>`
 
 Updates the header's select-all state from the number of selected rows.
@@ -365,16 +382,16 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot | Description                    |
-| ---- | ------------------------------ |
-|      | Add `mds-table-row` element/s. |
+| Slot | Description                                                                                                 |
+| ---- | ----------------------------------------------------------------------------------------------------------- |
+|      | Add `mds-table-header-cell` element/s, one per column: the header is itself the row of the column headings. |
 
 
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"actions"` |             |
+| Part        | Description                                                                      |
+| ----------- | -------------------------------------------------------------------------------- |
+| `"actions"` | The heading of the Actions column, shown while rows have `slot="action"` content |
 
 
 ## Dependencies

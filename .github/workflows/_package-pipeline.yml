@@ -59,10 +59,16 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      changed: ${{ steps.filter.outputs.project }}
+      # A merge group runs every pipeline. Its ref is the temporary branch of the merge queue
+      # (gh-readonly-queue/dev/...), so the `base` below would diff it against itself and find
+      # nothing: every build and test job would be skipped, and a skipped job satisfies a
+      # required check, so the queue would merge untested code into dev.
+      changed: ${{ github.event_name == 'merge_group' && 'true' || steps.filter.outputs.project }}
     steps:
       - uses: actions/checkout@v7
+        if: ${{ github.event_name != 'merge_group' }}
       - uses: dorny/paths-filter@v3
+        if: ${{ github.event_name != 'merge_group' }}
         id: filter
         with:
           # diff push events against the commit before the push instead of the

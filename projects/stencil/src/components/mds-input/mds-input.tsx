@@ -59,18 +59,6 @@ import { validityProblem } from './meta/validity';
 import { hashRandomValue } from '@common/aria';
 import { preferenceStore } from '@common/preference';
 
-/*
- * @part counter-button-decrease - Selects the button used to decrese the input value
- * @part counter-button-increase - Selects the button used to increse the input value
- * @part field - Selects the native input field used by the component
- * @part password-toggle-button - Selects the button used to show or hide password
- * @part password-mask-items - Selects the items wrapper used to mask the password
- * @part password-mask-item - Selects the item used to mask the password
- * @part tip-count - Selects the mds-input-tip shown when maxlength attribute is set, can be used to hide it if needed
- * @part tip-top - Selects the verbose status of input on top of element
- * @part tip-bottom - Selects the verbose status of input on bottom of element
- */
-
 export interface MdsInputInterface {
   autocomplete?: AutocompleteType;
   autofocus?: boolean;
@@ -97,6 +85,18 @@ export interface MdsInputInterface {
   variant?: ThemeInputVariantType;
 }
 
+/**
+ * @part counter-button-decrease - Selects the button used to decrease the input value
+ * @part counter-button-increase - Selects the button used to increase the input value
+ * @part field - Selects the native input field used by the component
+ * @part mic-toggle-button - Selects the button that starts and stops the speech to text
+ * @part password-toggle-button - Selects the button used to show or hide password
+ * @part password-mask-items - Selects the items wrapper used to mask the password
+ * @part password-mask-item - Selects the item used to mask the password
+ * @part tip-count - Selects the mds-input-tip-item shown when maxlength attribute is set, can be used to hide it if needed
+ * @part tip-top - Selects the verbose status of input on top of element
+ * @part tip-bottom - Selects the verbose status of input on bottom of element
+ */
 @Component({
   tag: 'mds-input',
   styleUrl: 'mds-input.css',
@@ -188,7 +188,8 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly disabled?: boolean = false;
 
   /**
-   * An icon displayed at the right of the input
+   * An icon displayed at the left of the input, inside the field; the spinner of `await` takes
+   * its place
    */
   @Prop({ mutable: true, reflect: true }) icon?: string;
 

@@ -40,7 +40,8 @@
   align-items: center;
   background-color: var(--mds-input-upload-drag-area-background-color);
   border: var(--mds-input-upload-drag-area-border);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--magma-radius-2xl);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   flex-direction: column;
   gap: --spacing(400);
@@ -81,7 +82,7 @@
 }
 
 .action {
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   fill: rgb(var(--magma-text-subtle));
   height: auto;
   padding: --spacing(150);

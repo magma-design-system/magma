@@ -16,7 +16,7 @@
   --mds-calendar-day-number-color: rgb(var(--magma-text-default));
   --mds-calendar-cell-gap: --spacing(50);
   --mds-calendar-cell-other-month-visibility: visible;
-  --mds-calendar-border-radius: var(--radius-lg);
+  --mds-calendar-border-radius: var(--magma-radius-lg);
   --mds-calendar-background: rgb(var(--magma-surface-raised));
   --mds-calendar-padding: --spacing(400);
   --mds-calendar-select-month-or-year-height: --spacing(900);
@@ -25,6 +25,7 @@
 
   background-color: rgb(var(--magma-wash-base));
   border-radius: var(--mds-calendar-border-radius);
+  corner-shape: var(--magma-corner-shape);
   cursor: auto;
   display: inline-flex;
   inline-size: 100%;
@@ -37,6 +38,7 @@
   background-color: var(--mds-calendar-background);
   border-radius: inherit;
   box-sizing: border-box;
+  corner-shape: inherit;
   display: grid;
   flex: 1 1 auto;
   padding: var(--mds-calendar-padding);
@@ -77,8 +79,14 @@ nav {
   align-items: stretch;
   background-color: rgb(var(--magma-wash-base));
   block-size: var(--mds-calendar-select-month-or-year-height);
-  border-radius: var(--mds-calendar-border-radius);
+
+  /* a control of the height of a button: capped as mds-button's (#913) */
+  border-radius: min(
+    var(--mds-calendar-border-radius),
+    var(--magma-corner-cap) * var(--mds-calendar-select-month-or-year-height)
+  );
   box-sizing: border-box;
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   flex: 0 0 var(--mds-calendar-select-month-or-year-width);
   height: var(--mds-calendar-select-month-or-year-height);
