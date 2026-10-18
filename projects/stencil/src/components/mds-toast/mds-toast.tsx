@@ -146,8 +146,12 @@ export class MdsToast {
   }
 
   render() {
+    // a status region: the message is announced when the toast shows it, without moving the
+    // focus. The host is the region and stays in the page, so the content that appears inside
+    // it is what a screen reader reads out
     return (
       <Host
+        role="status"
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
         pref-mode={preferenceStore.state.mode}

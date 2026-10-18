@@ -875,6 +875,125 @@ describe('mds-button', () => {
     });
   });
 
+  // the keyboard clicks the button as the pointer does: a re-enabled button had lost Enter, an
+  // awaiting one took it and submitted again, and Space did nothing (#820)
+  describe('the keyboard', () => {
+    const recordClicks = (button: HTMLElement): Event[] => {
+      const clicks: Event[] = [];
+      button.addEventListener('click', (event) => clicks.push(event));
+      return clicks;
+    };
+
+    it('clicks on Enter, and on Space when it is released, as a native button does', async () => {
+      const { root } = await render('<mds-button label="Save"></mds-button>');
+      const clicks = recordClicks(root);
+      root.focus();
+
+      await userEvent.keyboard('{Enter}');
+      expect(clicks).toHaveLength(1);
+
+      await userEvent.keyboard('{Space>}');
+      expect(clicks).toHaveLength(1);
+      await userEvent.keyboard('{/Space}');
+      expect(clicks).toHaveLength(2);
+    });
+
+    it('keeps the page from scrolling while Space is held', async () => {
+      const { root } = await render('<mds-button label="Save"></mds-button>');
+      const press = new KeyboardEvent('keydown', { code: 'Space', key: ' ', cancelable: true });
+
+      root.dispatchEvent(press);
+
+      expect(press.defaultPrevented).toBe(true);
+    });
+
+    it('follows a link on Enter only: Space is not a key of links', async () => {
+      const { root } = await render(
+        '<mds-button href="#elsewhere" label="Elsewhere"></mds-button>',
+      );
+      const clicks = recordClicks(root);
+      root.addEventListener('click', (event) => event.preventDefault());
+      root.focus();
+
+      await userEvent.keyboard('{Space}');
+      expect(clicks).toHaveLength(0);
+
+      await userEvent.keyboard('{Enter}');
+      expect(clicks).toHaveLength(1);
+    });
+
+    it('clicks on Enter and Space again once it is enabled after being disabled', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsButtonElement>(
+        '<mds-button label="Save"></mds-button>',
+      );
+      const clicks = recordClicks(root);
+
+      root.disabled = true;
+      await waitForChanges();
+      root.disabled = false;
+      await waitForChanges();
+      root.focus();
+      await userEvent.keyboard('{Enter}');
+      await userEvent.keyboard('{Space}');
+
+      expect(clicks).toHaveLength(2);
+    });
+
+    it('does not submit its form again while it awaits, from the keyboard or a script', async () => {
+      const { root: form, waitForChanges } = await render<HTMLFormElement>(
+        '<form><mds-button type="submit" name="action" value="send" label="Send"></mds-button></form>',
+      );
+      const submits = recordSubmits(form);
+      const button = form.querySelector('mds-button')!;
+      button.focus();
+
+      await userEvent.keyboard('{Enter}');
+      button.await = true;
+      await waitForChanges();
+      await userEvent.keyboard('{Enter}');
+      await userEvent.keyboard('{Space}');
+      button.click();
+
+      expect(submits).toHaveLength(1);
+      expect(form.ownerDocument.activeElement).toBe(button);
+
+      button.await = false;
+      await waitForChanges();
+      await userEvent.keyboard('{Enter}');
+
+      expect(submits).toHaveLength(2);
+    });
+
+    it('starts awaiting at load without taking Enter, and takes it when it stops', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsButtonElement>(
+        '<mds-button label="Save" await></mds-button>',
+      );
+      const clicks = recordClicks(root);
+      root.focus();
+
+      await userEvent.keyboard('{Enter}');
+      expect(clicks).toHaveLength(0);
+
+      root.await = false;
+      await waitForChanges();
+      await userEvent.keyboard('{Enter}');
+      expect(clicks).toHaveLength(1);
+    });
+
+    // a move disconnects the button and connects it again, without a new load
+    it('still clicks on Enter after it is moved in the page', async () => {
+      const { root } = await render('<div><mds-button label="Save"></mds-button><p></p></div>');
+      const button = root.querySelector('mds-button')!;
+      const clicks = recordClicks(button);
+
+      root.querySelector('p')!.appendChild(button);
+      button.focus();
+      await userEvent.keyboard('{Enter}');
+
+      expect(clicks).toHaveLength(1);
+    });
+  });
+
   // every declarative shadow root carries the whole stylesheet of its component, and a block
   // larger than the 32KB window of gzip does not compress against its repeats: a page of 257
   // buttons pre-rendered to 14MB of HTML, 97% of it CSS (#831)

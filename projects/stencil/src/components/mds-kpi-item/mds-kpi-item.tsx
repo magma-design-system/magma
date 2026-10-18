@@ -66,10 +66,28 @@ export class MdsKpiItem {
     }
   }
 
+  private appliedName?: string;
+
+  /**
+   * The spoken name joins the value and its description, leaving out the one that is missing
+   * (it used to read "undefined"). An aria-label written on the host by the author is the more
+   * specific name and stays; the one this item wrote before is its own to update.
+   */
+  private resolveName = (): string | undefined => {
+    const name =
+      [this.label, this.description].filter((part) => (part ?? '') !== '').join(': ') || undefined;
+    const current = this.hostElement.getAttribute('aria-label');
+    if (current !== null && current !== this.appliedName && current !== name) {
+      return current;
+    }
+    this.appliedName = name;
+    return name;
+  };
+
   render() {
     return (
       <Host
-        aria-label={`${this.label}: ${this.description}`}
+        aria-label={this.resolveName()}
         role="listitem"
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}

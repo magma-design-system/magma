@@ -18,7 +18,7 @@ The `<mds-paginator-item>` web component is a compound child of [`<mds-paginator
 - **Compound child only**: It is rendered exclusively by `<mds-paginator>` (one per page number plus the back/forward arrows) and is not used standalone or mixed with other child types; the parent manages count, ordering, scrolling, and selection.
 - **State is parent-driven**: `selected` and `disabled` are not set by the consumer - the parent reflects them based on `currentPage` and the page boundaries, and the item only renders the resulting visual state.
 - **Click reported upward**: The item carries no internal page logic; clicking it is resolved by the parent, which emits `mdsPaginatorChange`.
-- **Keyboard activation**: The item is keyboard-activatable, but only while it is neither `disabled` nor `selected` - the active and unavailable cells ignore activation, although they stay in the tab order.
+- **Keyboard activation**: The item is a button (`role="button"`) that Enter and Space activate, but only while it is neither `disabled` nor `selected`. A `disabled` item leaves the tab order and carries `aria-disabled="true"`; the `selected` one stays in it, as the current page (`aria-current="page"`), and ignores activation.
 - **Icon vs. text rendering**: When `icon` is set the item renders an icon (used for the back/forward arrows); otherwise it renders the default slot as the page number.
 - **Text-only slot**: The default slot is meant for a plain text string (a page number); HTML elements or nested components should not be placed in it.
 

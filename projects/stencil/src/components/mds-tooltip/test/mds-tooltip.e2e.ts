@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 import { mockIconFetch } from '@test/fetch';
 
 describe('mds-tooltip', () => {
@@ -179,6 +180,96 @@ describe('mds-tooltip', () => {
       await vi.waitFor(() => {
         expect(caller).toEqualAttribute('aria-describedby', 'tip');
       });
+    });
+  });
+
+  // the tooltip opened on mouseenter only: keyboard users never saw it, and every new target
+  // added two listeners that nothing removed (#820)
+  describe('showing', () => {
+    // the pointer is put on an element of its own first: one left over a caller by an earlier
+    // test would keep the tooltip open through the hover, whatever the focus does
+    const stage = async () => {
+      const rendered = await render(
+        `<div style="position: relative; height: 200px">
+           <button id="first">First</button>
+           <button id="second">Second</button>
+           <mds-tooltip id="tip" target="#first">Hint</mds-tooltip>
+           <p id="away">Away</p>
+         </div>`,
+      );
+      await userEvent.hover(rendered.root.querySelector('#away')!);
+      return rendered;
+    };
+
+    it('shows while the caller has the focus', async () => {
+      const { root, waitForChanges } = await stage();
+      const tip = root.querySelector('#tip') as HTMLMdsTooltipElement;
+      await vi.waitFor(() =>
+        expect(root.querySelector('#first')).toHaveAttribute('aria-describedby'),
+      );
+
+      await userEvent.keyboard('{Tab}');
+      await waitForChanges();
+      expect(document.activeElement).toBe(root.querySelector('#first'));
+      expect(tip.visible).toBe(true);
+
+      await userEvent.keyboard('{Tab}');
+      await waitForChanges();
+      expect(tip.visible).toBe(false);
+    });
+
+    it('shows while the pointer is over the caller, and stays while it keeps the focus', async () => {
+      const { root, waitForChanges } = await stage();
+      const tip = root.querySelector('#tip') as HTMLMdsTooltipElement;
+      const first = root.querySelector('#first') as HTMLElement;
+      await vi.waitFor(() => expect(first).toHaveAttribute('aria-describedby'));
+
+      await userEvent.hover(first);
+      await waitForChanges();
+      expect(tip.visible).toBe(true);
+
+      first.focus();
+      await userEvent.unhover(first);
+      await waitForChanges();
+      expect(tip.visible).toBe(true);
+    });
+
+    it('hides on Escape until the caller is focused again', async () => {
+      const { root, waitForChanges } = await stage();
+      const tip = root.querySelector('#tip') as HTMLMdsTooltipElement;
+      const first = root.querySelector('#first') as HTMLElement;
+      await vi.waitFor(() => expect(first).toHaveAttribute('aria-describedby'));
+
+      first.focus();
+      await waitForChanges();
+      expect(tip.visible).toBe(true);
+
+      await userEvent.keyboard('{Escape}');
+      await waitForChanges();
+      expect(tip.visible).toBe(false);
+
+      first.blur();
+      first.focus();
+      await waitForChanges();
+      expect(tip.visible).toBe(true);
+    });
+
+    it('stops listening to the caller it leaves for a new target', async () => {
+      const { root, waitForChanges } = await stage();
+      const tip = root.querySelector('#tip') as HTMLMdsTooltipElement;
+      const first = root.querySelector('#first') as HTMLElement;
+      const second = root.querySelector('#second') as HTMLElement;
+      await vi.waitFor(() => expect(first).toHaveAttribute('aria-describedby'));
+
+      tip.target = '#second';
+      await vi.waitFor(() => expect(second).toHaveAttribute('aria-describedby'));
+      first.focus();
+      await waitForChanges();
+      expect(tip.visible).toBe(false);
+
+      second.focus();
+      await waitForChanges();
+      expect(tip.visible).toBe(true);
     });
   });
 

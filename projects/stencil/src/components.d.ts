@@ -742,7 +742,7 @@ export namespace Components {
          */
         "deletable"?: boolean;
         /**
-          * Sets the component disabled status
+          * Sets the component disabled status: neither the label nor the delete button can be focused or activated
           * @default false
          */
         "disabled"?: boolean;
@@ -965,7 +965,7 @@ export namespace Components {
          */
         "description"?: string;
         /**
-          * Enables the download icon to perform the related action on element
+          * Turns the card into a button that asks for the download: a tab stop that the pointer, Enter and Space activate, emitting `mdsFileDownload`. Without it the card is not interactive
          */
         "downloadable"?: boolean;
         /**
@@ -1160,8 +1160,7 @@ export namespace Components {
     }
     interface MdsImg {
         /**
-          * Specifies an alternate text for an image
-          * @default ''
+          * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
          */
         "alt": string;
         /**
@@ -2843,7 +2842,7 @@ export namespace Components {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Names the tree for assistive technologies: the tree is a list of its items, and the label is what that list is called
          */
         "label": string;
         /**
@@ -5274,7 +5273,7 @@ declare namespace LocalJSX {
          */
         "deletable"?: boolean;
         /**
-          * Sets the component disabled status
+          * Sets the component disabled status: neither the label nor the delete button can be focused or activated
           * @default false
          */
         "disabled"?: boolean;
@@ -5490,7 +5489,7 @@ declare namespace LocalJSX {
          */
         "description"?: string;
         /**
-          * Enables the download icon to perform the related action on element
+          * Turns the card into a button that asks for the download: a tab stop that the pointer, Enter and Space activate, emitting `mdsFileDownload`. Without it the card is not interactive
          */
         "downloadable"?: boolean;
         /**
@@ -5698,8 +5697,7 @@ declare namespace LocalJSX {
     }
     interface MdsImg {
         /**
-          * Specifies an alternate text for an image
-          * @default ''
+          * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
          */
         "alt"?: string;
         /**
@@ -7512,7 +7510,7 @@ declare namespace LocalJSX {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Names the tree for assistive technologies: the tree is a list of its items, and the label is what that list is called
          */
         "label"?: string;
         /**
