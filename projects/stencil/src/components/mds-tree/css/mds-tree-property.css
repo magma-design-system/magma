@@ -17,36 +17,22 @@
       --mds-tree-toggle-icon-async-background, --mds-tree-toggle-icon-async-color,
       --mds-tree-toggle-icon-chevron-default-background,
       --mds-tree-toggle-icon-chevron-default-color,
+      --mds-tree-toggle-icon-chevron-expanded-background,
+      --mds-tree-toggle-icon-chevron-expanded-color,
       --mds-tree-toggle-icon-folder-default-background,
-      --mds-tree-toggle-icon-folder-default-color,
+      --mds-tree-toggle-icon-folder-default-color, --mds-tree-toggle-icon-folder-expanded-color,
       --mds-tree-toggle-icon-position-right-default-background,
       --mds-tree-toggle-icon-position-right-default-color,
       --mds-tree-toggle-icon-position-right-expanded-background,
       --mds-tree-toggle-icon-position-right-expanded-color, --mds-tree-transition-duration: read
       directly by mds-tree-item, which sets no default of its own, so a registration would
-      substitute a static light value there whenever mds-tree is absent.
+      substitute a static light value there whenever mds-tree is absent. The three -expanded
+      ones are read with the default colours of the item as fallback, which a registration would
+      never let through.
 */
 
 @property --mds-tree-branch-use-rounded-border {
   inherits: true;
   initial-value: true;
   syntax: 'true | false';
-}
-
-@property --mds-tree-toggle-icon-chevron-expanded-background {
-  inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
-  syntax: '<color>';
-}
-
-@property --mds-tree-toggle-icon-chevron-expanded-color {
-  inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
-  syntax: '<color>';
-}
-
-@property --mds-tree-toggle-icon-folder-expanded-color {
-  inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
-  syntax: '<color>';
 }

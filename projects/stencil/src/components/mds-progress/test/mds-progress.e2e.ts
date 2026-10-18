@@ -72,4 +72,13 @@ describe('mds-progress', () => {
       expect(root).toEqualAttribute('aria-valuetext', '3 of 6');
     });
   });
+
+  // #988: the radius of the bar was documented and read by nothing
+  it('takes the radius set on --mds-progress-radius', async () => {
+    const { root } = await render(
+      '<mds-progress style="--mds-progress-radius: 3px"></mds-progress>',
+    );
+
+    expect(getComputedStyle(root).borderTopLeftRadius).toBe('3px');
+  });
 });

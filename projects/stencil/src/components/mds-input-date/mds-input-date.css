@@ -3,7 +3,7 @@
  * @prop --mds-input-date-background: The background of the date input
  * @prop --mds-input-date-field-background-empty: The background when the date field is empty
  * @prop --mds-input-date-field-color-empty: The text/icon color when the date field is empty
- * @prop --mds-input-date-icon-color-rgb: The RGB channels used for the icon color
+ * @prop --mds-input-date-icon-color-rgb: Deprecated, read by nothing: the icon takes `--mds-input-date-icon-color`.
  * @prop --mds-input-date-ring: The focus ring of the date input
  * @prop --mds-input-date-shadow: The shadow applied to the date input
  * @prop --mds-input-date-variant-color-rgb: The base RGB value for the date input variant
@@ -38,7 +38,6 @@
   --mds-input-date-background: rgb(var(--magma-surface-overlay));
   --mds-input-date-field-background-empty: rgb(var(--magma-danger-wash-soft));
   --mds-input-date-field-color-empty: rgb(var(--magma-danger-text-default));
-  --mds-input-date-icon-color-rgb: var(--mds-input-date-variant-color-rgb);
   --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color-rgb) / 0.1);
   --mds-input-date-shadow:
     0 1px 3px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
