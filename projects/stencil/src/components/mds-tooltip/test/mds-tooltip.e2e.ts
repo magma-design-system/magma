@@ -186,14 +186,20 @@ describe('mds-tooltip', () => {
   // the tooltip opened on mouseenter only: keyboard users never saw it, and every new target
   // added two listeners that nothing removed (#820)
   describe('showing', () => {
-    const stage = () =>
-      render(
+    // the pointer is put on an element of its own first: one left over a caller by an earlier
+    // test would keep the tooltip open through the hover, whatever the focus does
+    const stage = async () => {
+      const rendered = await render(
         `<div style="position: relative; height: 200px">
            <button id="first">First</button>
            <button id="second">Second</button>
            <mds-tooltip id="tip" target="#first">Hint</mds-tooltip>
+           <p id="away">Away</p>
          </div>`,
       );
+      await userEvent.hover(rendered.root.querySelector('#away')!);
+      return rendered;
+    };
 
     it('shows while the caller has the focus', async () => {
       const { root, waitForChanges } = await stage();
