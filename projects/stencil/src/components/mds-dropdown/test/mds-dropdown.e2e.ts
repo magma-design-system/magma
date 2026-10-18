@@ -307,6 +307,55 @@ describe('mds-dropdown', () => {
     });
   });
 
+  // #797: the caller click also clicks the body, to close the other dropdowns, and that click
+  // used to close this one too just before it was toggled, which opened it again
+  describe('clicks on the caller', () => {
+    it('opens the panel, and closes it on the second click', async () => {
+      const { root, waitForChanges } = await stage(
+        '<mds-dropdown id="panel" target="#caller">Menu</mds-dropdown>',
+      );
+      const panel = root.querySelector('#panel') as HTMLMdsDropdownElement;
+      const caller = root.querySelector('#caller') as HTMLElement;
+      await vi.waitFor(() => {
+        expect(caller).toHaveAttribute('aria-controls');
+      });
+
+      await userEvent.click(caller);
+      await waitForChanges();
+      expect(panel.visible).toBe(true);
+
+      await userEvent.click(caller);
+      await waitForChanges();
+      expect(panel.visible).toBe(false);
+      expect(caller).toEqualAttribute('aria-expanded', 'false');
+    });
+
+    it('closes another open panel when it opens its own', async () => {
+      const { root, waitForChanges } = await render(
+        `<div style="position: relative; height: 300px">
+           <mds-button id="first" label="First"></mds-button>
+           <mds-button id="second" label="Second"></mds-button>
+           <mds-dropdown id="one" target="#first">One</mds-dropdown>
+           <mds-dropdown id="two" target="#second">Two</mds-dropdown>
+         </div>`,
+      );
+      const one = root.querySelector('#one') as HTMLMdsDropdownElement;
+      const two = root.querySelector('#two') as HTMLMdsDropdownElement;
+      await vi.waitFor(() => {
+        expect(root.querySelector('#second')).toHaveAttribute('aria-controls');
+      });
+
+      await userEvent.click(root.querySelector('#first') as HTMLElement);
+      await waitForChanges();
+      expect(one.visible).toBe(true);
+
+      await userEvent.click(root.querySelector('#second') as HTMLElement);
+      await waitForChanges();
+      expect(one.visible).toBe(false);
+      expect(two.visible).toBe(true);
+    });
+  });
+
   describe('keyboard', () => {
     const menu = () =>
       render(

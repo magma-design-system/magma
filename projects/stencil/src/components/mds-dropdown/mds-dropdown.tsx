@@ -217,9 +217,12 @@ export class MdsDropdown implements FloatingElement {
   private readonly onClickTarget = (ev: Event): void => {
     // stop propagation event for when target is a element cointainer
     ev.stopPropagation();
+    // read before the body click below: it reaches the outside-click handler of this dropdown
+    // too, which closes an open panel, and toggling that value opened it again (#797)
+    const wasVisible = this.visible;
     // trigger a body click to execute handleCloseDropdown on other dropdowns
     document.body.click();
-    this.visible = !this.visible;
+    this.visible = !wasVisible;
     // a click with no coordinates behind it came from Enter on the caller, and a menu opened
     // from the keyboard has to land on an entry - a mouse leaves the focus where it is
     if (this.visible && this.isMenu && (ev as MouseEvent).detail === 0) {
