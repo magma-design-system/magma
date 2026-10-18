@@ -43,7 +43,7 @@
 
 @container style(--mds-tree-branch-use-rounded-border: true) {
   :host {
-    --mds-tree-branch-border-radius: var(--radius-lg);
+    --mds-tree-branch-border-radius: var(--private-tree-item-branch-border-radius);
   }
 }
 
@@ -59,7 +59,10 @@
   --mds-tree-item-actions-border-radius: var(--mds-tree-actions-border-radius);
   --mds-tree-item-actions-gap: var(--mds-tree-actions-gap);
   --mds-tree-item-branch-border-color: var(--mds-tree-branch-border-color);
-  --mds-tree-item-branch-border-radius: var(--mds-tree-branch-border-radius, var(--radius-lg));
+  --mds-tree-item-branch-border-radius: var(
+    --mds-tree-branch-border-radius,
+    var(--private-tree-item-branch-border-radius)
+  );
   --mds-tree-item-branch-border-size: var(--mds-tree-branch-border-size);
   --mds-tree-item-branch-dot-default-color: var(--mds-tree-branch-dot-default-color);
   --mds-tree-item-branch-dot-expanded-color: var(--mds-tree-branch-dot-expanded-color);
@@ -118,6 +121,14 @@
   --mds-tree-item-icon-color: var(--mds-tree-item-toggle-icon-chevron-default-color);
   --header-gap: --spacing(100);
 
+  /* the elbow of an item with children is half a toggle wide, so its corner can take at most
+     that half: capped as mds-button's corner is (#913), the radius the branch travels by stays
+     the radius it draws */
+  --private-tree-item-branch-border-radius: min(
+    var(--magma-radius-lg),
+    var(--magma-corner-cap) * var(--mds-tree-item-toggle-size)
+  );
+
   display: grid;
   transition-duration: var(--mds-tree-item-transition-duration);
   transition-timing-function: var(--mds-tree-item-transition-timing-function);
@@ -148,7 +159,10 @@
   --padding: --spacing(100);
 
   background-color: var(--mds-tree-item-label-default-background);
-  border-radius: var(--radius-lg);
+
+  /* an mds-button, which draws the shape of the axis on its own host: its radius is capped at
+     a part of its 36px height, as its own is (#913) */
+  border-radius: min(var(--magma-radius-lg), var(--magma-corner-cap) * --spacing(900));
   fill: var(--mds-tree-item-label-icon-default-color);
   flex-grow: 1;
   justify-content: flex-start;

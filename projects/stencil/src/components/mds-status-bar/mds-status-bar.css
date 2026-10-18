@@ -33,7 +33,8 @@ mds-modal {
 .status-bar-area {
   backdrop-filter: var(--mds-status-bar-backdrop-filter);
   background-color: var(--mds-status-bar-backdrop);
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  border-radius: var(--magma-radius-xl) var(--magma-radius-xl) 0 0;
+  corner-shape: var(--magma-corner-shape);
   margin-left: --spacing(600);
   margin-right: --spacing(600);
   padding: --spacing(200) --spacing(200) --spacing(600);
@@ -43,8 +44,9 @@ mds-modal {
 .status-bar {
   align-items: flex-start;
   background-color: rgb(var(--magma-surface-overlay));
-  border-radius: var(--radius-lg);
+  border-radius: var(--magma-radius-lg);
   box-shadow: var(--shadow-md);
+  corner-shape: var(--magma-corner-shape);
   display: inline-flex;
   flex-wrap: wrap;
   gap: --spacing(400);

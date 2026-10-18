@@ -187,9 +187,10 @@
   @apply ease-in-out;
 
   background-color: rgb(var(--magma-wash-base));
-  border-radius: var(--radius-3xs);
+  border-radius: var(--magma-radius-3xs);
   box-shadow: rgb(var(--magma-border-default)) 0 0 0 1px;
   color: rgb(var(--magma-text-muted));
+  corner-shape: var(--magma-corner-shape);
   padding-block: --spacing(25);
   padding-inline: --spacing(100);
   transition-duration: var(--private-text-transition-duration);

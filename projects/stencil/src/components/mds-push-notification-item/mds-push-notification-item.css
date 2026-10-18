@@ -36,9 +36,10 @@
 
   align-items: flex-start;
   background-color: rgb(var(--magma-surface-overlay));
-  border-radius: var(--radius-lg);
+  border-radius: var(--magma-radius-lg);
   box-shadow: var(--mds-push-notification-item-shadow);
   color: rgb(var(--magma-text-default));
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   gap: --spacing(400);
   max-width: --spacing(8000);
@@ -79,8 +80,9 @@
 }
 
 .picture {
-  border-radius: var(--radius-3xs);
+  border-radius: var(--magma-radius-3xs);
   box-shadow: var(--shadow-sm-sharp);
+  corner-shape: var(--magma-corner-shape);
   max-width: --spacing(1200);
   width: 100%;
 }
@@ -141,7 +143,7 @@
 
 .avatar {
   background-color: var(--mds-push-notification-item-icon-background-color);
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   fill: var(--mds-push-notification-item-icon-color);
   height: --spacing(900);
   width: --spacing(900);
