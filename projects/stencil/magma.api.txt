@@ -1071,6 +1071,7 @@ mds-policy-ai prop variant (attr variant) [reflect]: "banner" | "card" | "chip" 
 mds-policy-ai part banner
 mds-policy-ai part card
 mds-policy-ai part chip
+mds-policy-ai part chip-wrapper
 mds-policy-ai part icon
 mds-pref encapsulation shadow
 mds-pref prop controller (attr controller) [reflect, mutable]: boolean | undefined
