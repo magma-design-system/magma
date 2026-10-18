@@ -12,10 +12,6 @@
       drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45))
       drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45));
   }
-
-  :host(:not([pref-contrast])) {
-    --mds-toast-shadow: var(--shadow-ring) !important;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,10 +20,6 @@
       drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45))
       drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45));
   }
-
-  :host(:not([pref-contrast])) {
-    --mds-toast-shadow: var(--shadow-ring) !important;
-  }
 }
 
 @media (prefers-contrast: more) and (prefers-color-scheme: dark) {
@@ -35,9 +27,5 @@
     --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.075))
       drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45))
       drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45));
-  }
-
-  :host(:not([pref-contrast])) {
-    --mds-toast-shadow: var(--shadow-ring) !important;
   }
 }

@@ -1,3 +1,5 @@
+@import './css/mds-pref-theme-item-fouc.css';
+
 /**
  * @prop --mds-pref-theme-item-color-background: Background color of a theme item.
  * @prop --mds-pref-theme-item-color-status-error: Color representing an error status for a theme item.
