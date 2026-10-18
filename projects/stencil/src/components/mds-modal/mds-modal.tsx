@@ -57,6 +57,8 @@ export class MdsModal {
   private bodyOverflow: string = '';
   private cssTransitionDuration: string = '500';
   private windowElement: HTMLElement;
+  // set by the `opened` watcher, consumed by the render that follows it (#803)
+  private openAfterRender = false;
   private windowContentWrapper?: HTMLElement;
   private touchStartX: number;
   private touchStartY: number;
@@ -284,6 +286,12 @@ export class MdsModal {
   }
 
   componentDidUpdate(): void {
+    if (this.openAfterRender) {
+      this.openAfterRender = false;
+      this.showDialog();
+      this.animateOpenWindow();
+      this.openEvent.emit();
+    }
     // the header and the footer are hidden while their slots are empty: refresh
     // the paddings of the content once a late `top` or `bottom` child shows them
     this.updateWindowPaddings();
@@ -352,11 +360,16 @@ export class MdsModal {
       if (this.overflow === 'auto') {
         this.disableOverflow();
       }
-      this.showDialog();
-      this.animateOpenWindow();
-      this.openEvent.emit();
+      // The dialog is shown by the render that follows, in componentDidUpdate, not here. The
+      // entry starts from the transform the CSS keys on `:host([position])` and
+      // `:host([animation])`, attributes that only that render reflects: a `position` set in the
+      // same task as `opened`, as a framework wrapper sets its props, was still the old one
+      // when showModal() resolved the starting style, and the window slid in from the old
+      // place, already inside the page (#803).
+      this.openAfterRender = true;
       return;
     }
+    this.openAfterRender = false;
     if (!oldValue) {
       return;
     }

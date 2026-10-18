@@ -1,10 +1,13 @@
 /* Variant tokens. Every block declares the resting value and its -selected twin;
    the swap between the two pairs is done once, by the remap rule below, so a new
-   token only has to be added in one place. */
+   token only has to be added in one place.
+
+   The ground is surface-overlay, not a wash: a chip casts a shadow, so it is lifted like
+   the other elevated objects, not marked like a flat pill (spec 6.1b). */
 
 :host {
-  --mds-chip-background: rgb(var(--magma-wash-base));
-  --mds-chip-background-selected: rgb(var(--magma-wash-base));
+  --mds-chip-background: rgb(var(--magma-surface-overlay));
+  --mds-chip-background-selected: rgb(var(--magma-surface-overlay));
   --mds-chip-border: transparent;
   --mds-chip-border-selected: transparent;
   --mds-chip-color: rgb(var(--magma-text-subtle));

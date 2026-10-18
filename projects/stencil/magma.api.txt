@@ -224,6 +224,7 @@ mds-button css --mds-button-border-tone-weak-hover-width
 mds-button css --mds-button-border-width
 mds-button css --mds-button-color
 mds-button css --mds-button-gap
+mds-button css --mds-button-label-transform
 mds-button css --mds-button-radius
 mds-button-dropdown encapsulation shadow
 mds-button-dropdown prop active (attr active) [reflect, mutable]: boolean
@@ -1070,6 +1071,7 @@ mds-policy-ai prop variant (attr variant) [reflect]: "banner" | "card" | "chip" 
 mds-policy-ai part banner
 mds-policy-ai part card
 mds-policy-ai part chip
+mds-policy-ai part chip-wrapper
 mds-policy-ai part icon
 mds-pref encapsulation shadow
 mds-pref prop controller (attr controller) [reflect, mutable]: boolean | undefined
@@ -1417,6 +1419,7 @@ mds-table prop selection (attr selection) [reflect, mutable]: boolean | undefine
 mds-table prop sorting (attr sorting) [reflect]: "external" | "internal" | undefined = 'internal'
 mds-table event mdsTableSelectionChange: MdsTableSelectionEventDetail [bubbles, cancelable, composed]
 mds-table method selectAll(select?: boolean) => Promise<void>
+mds-table method updateActions() => Promise<void>
 mds-table method updateSelection() => Promise<void>
 mds-table slot (default)
 mds-table slot batch-action
@@ -1452,6 +1455,7 @@ mds-table-footer encapsulation shadow
 mds-table-footer slot (default)
 mds-table-header encapsulation shadow
 mds-table-header prop selectable (attr selectable): boolean | undefined
+mds-table-header method setActions(hasActions: boolean) => Promise<void>
 mds-table-header method setSelection(selectedItems: number, totalItems: number) => Promise<void>
 mds-table-header slot (default)
 mds-table-header part actions

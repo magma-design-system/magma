@@ -1,14 +1,16 @@
+/* The glow is an outline in the text ink, light on the dark page: see mds-tooltip-pref-contrast.css. */
+
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])[pref-contrast='more']) {
-  --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.075))
-    drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.45))
-    drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.45));
+  --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.075))
+    drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45))
+    drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45));
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system'][pref-mode='dark']:not([pref-theme-scheme='light'])) {
-    --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.075))
-      drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.45))
-      drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.45));
+    --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.075))
+      drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45))
+      drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45));
   }
 
   :host(:not([pref-contrast])) {
@@ -18,9 +20,9 @@
 
 @media (prefers-color-scheme: dark) {
   :host([pref-contrast='more'][pref-mode='system']:not([pref-theme-scheme='light'])) {
-    --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.075))
-      drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.45))
-      drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.45));
+    --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.075))
+      drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45))
+      drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45));
   }
 
   :host(:not([pref-contrast])) {
@@ -30,9 +32,9 @@
 
 @media (prefers-contrast: more) and (prefers-color-scheme: dark) {
   :host([pref-contrast='system'][pref-mode='system']:not([pref-theme-scheme='light'])) {
-    --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.075))
-      drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.45))
-      drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.45));
+    --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.075))
+      drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45))
+      drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.45));
   }
 
   :host(:not([pref-contrast])) {

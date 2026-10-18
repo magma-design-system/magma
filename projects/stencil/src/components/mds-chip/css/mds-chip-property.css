@@ -11,7 +11,7 @@
 
 @property --mds-chip-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-base));
+  initial-value: rgb(var(--magma-surface-overlay));
   syntax: '<color>';
 }
 

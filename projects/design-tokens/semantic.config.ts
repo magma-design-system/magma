@@ -147,16 +147,16 @@ export interface SemanticConfig {
    */
   washSteps: Record<string, string>;
   /**
-   * Ramp step the shadow ink names (spec 6.1c). A projected shadow is drawn with
-   * the ink extreme of the ACTIVE TINT, so it flips with the mode for free: black
-   * on a light page, white on a dark one - which is what a shadow has to do, since
-   * a pure black shadow is invisible on a dark surface.
+   * Ramp step the shadow ink names in LIGHT (spec 6.1c): the ink extreme of the
+   * active tint, near-black (`5 5 5` on the base tint, `6 5 5` under `warm`). In
+   * dark that step is the light end of the ramp, so the dark block repoints the ink
+   * to the `seed`, pure black: a projected shadow stays dark in both modes (#790).
+   * It used to flip with the step, which on the lifted dark canvas drew a light
+   * halo instead of a shadow.
    *
    * It publishes a COLOUR, not a shadow: the composite `--shadow-*` tokens stay in
    * tokens/cosmetic/box-shadow.json, one layer down, where they cannot reference
-   * this role without inverting the layering. They name the primitive instead, and
-   * the difference is measured at 1/255 - the ink extreme is all but identical in
-   * every tint (step 01 is `5 5 5` on the base tint, `6 5 5` under `warm`).
+   * this role without inverting the layering.
    */
   shadowStep: string;
   /**

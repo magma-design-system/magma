@@ -231,3 +231,55 @@ describe('mds-button-dropdown chevron', () => {
     });
   });
 });
+
+describe('mds-button-dropdown chevron and primary action', () => {
+  const menu = (dropdown: Element): HTMLMdsDropdownElement =>
+    dropdown.shadowRoot!.querySelector<HTMLMdsDropdownElement>('mds-dropdown')!;
+
+  // #797: the chevron toggles the menu, it no longer stays open until Escape or a click outside
+  it('opens the menu on a click of the chevron, and closes it on the next one', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-button-dropdown label="Tenant"><mds-button label="Other tenant"></mds-button></mds-button-dropdown>',
+    );
+    await vi.waitFor(() => {
+      expect(chevron(root)).toEqualAttribute('aria-expanded', 'false');
+    });
+
+    await userEvent.click(chevron(root));
+    await waitForChanges();
+    expect(menu(root).visible).toBe(true);
+
+    await userEvent.click(chevron(root));
+    await waitForChanges();
+    expect(menu(root).visible).toBe(false);
+  });
+
+  // #798: href and target belong to the primary action; on the chevron they made it navigate
+  it('gives the link to the primary action only, so the chevron opens the menu', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-button-dropdown label="Open" href="#elsewhere" target="blank"><mds-button label="Other"></mds-button></mds-button-dropdown>',
+    );
+    const primary = primaryAction(root) as HTMLMdsButtonElement;
+    const arrow = chevron(root) as HTMLMdsButtonElement;
+
+    expect(primary.href).toBe('#elsewhere');
+    expect(primary.target).toBe('blank');
+    expect(arrow.href).toBeUndefined();
+    expect(arrow).toEqualAttribute('role', 'button');
+
+    await userEvent.click(arrow);
+    await waitForChanges();
+    expect(menu(root).visible).toBe(true);
+    expect(window.location.hash).toBe('');
+  });
+
+  it('focuses the primary action with autoFocus, not the chevron', async () => {
+    const { root } = await render(
+      '<mds-button-dropdown label="Open" auto-focus></mds-button-dropdown>',
+    );
+
+    await vi.waitFor(() => {
+      expect(root.shadowRoot!.activeElement).toBe(primaryAction(root));
+    });
+  });
+});
