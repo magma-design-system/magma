@@ -17,7 +17,7 @@
 
 @property --mds-dropdown-backdrop-duration {
   inherits: true;
-  initial-value: 200ms;
+  initial-value: var(--magma-backdrop-animation-duration);
   syntax: '<time>';
 }
 
