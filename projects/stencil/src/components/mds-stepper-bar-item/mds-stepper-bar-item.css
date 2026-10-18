@@ -1,3 +1,5 @@
+@import './css/mds-stepper-bar-item-fouc.css';
+
 /**
  * @prop --mds-stepper-bar-item-color: Sets the color of the text
  * @prop --mds-stepper-bar-item-duration: Sets the duration of the animation
