@@ -4,6 +4,7 @@
 
   align-items: center;
   border-radius: var(--mds-tree-item-actions-border-radius);
+  corner-shape: var(--magma-corner-shape);
   display: none;
   interpolate-size: allow-keywords;
   justify-content: flex-start;
@@ -23,6 +24,7 @@
 .actions {
   align-items: center;
   border-radius: var(--mds-tree-item-actions-border-radius);
+  corner-shape: var(--magma-corner-shape);
   display: inline-flex;
   flex-shrink: 0;
   gap: var(--mds-tree-item-actions-gap);

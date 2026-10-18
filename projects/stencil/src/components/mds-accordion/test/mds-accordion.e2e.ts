@@ -110,4 +110,40 @@ describe('mds-accordion', () => {
       expect(changes).toEqual(['0', '0,1', '0']);
     });
   });
+
+  // #827: the accordion overwrote the ids of its items with `item-N`, and their events reported
+  // that value instead of the one the author wrote
+  describe('the ids of the items', () => {
+    it('stay as the author wrote them, and the events report them', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render(`
+        <mds-accordion>
+          <mds-accordion-item id="shipping" label="Spedizioni"></mds-accordion-item>
+          <mds-accordion-item id="returns" label="Resi"></mds-accordion-item>
+        </mds-accordion>`);
+      const [shipping, returns] = Array.from(root.querySelectorAll('mds-accordion-item'));
+      const select = spyOnEvent('mdsAccordionItemSelect');
+
+      await userEvent.click(returns.shadowRoot!.querySelector('button.action')!);
+      await waitForChanges();
+
+      expect(shipping.id).toBe('shipping');
+      expect(returns.id).toBe('returns');
+      expect(select.lastEvent?.detail.id).toBe('returns');
+      expect(returns).toHaveAttribute('selected');
+      expect(shipping).not.toHaveAttribute('selected');
+    });
+
+    it('are given to the items without one, by position, as before', async () => {
+      const { root } = await render(`
+        <mds-accordion>
+          <mds-accordion-item id="shipping" label="Spedizioni"></mds-accordion-item>
+          <mds-accordion-item label="Resi"></mds-accordion-item>
+        </mds-accordion>`);
+
+      expect(Array.from(root.querySelectorAll('mds-accordion-item'), (item) => item.id)).toEqual([
+        'shipping',
+        'item-1',
+      ]);
+    });
+  });
 });

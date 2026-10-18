@@ -79,7 +79,8 @@ export class MdsStepperBarItem {
   @Prop({ mutable: true, reflect: true }) current = false;
 
   /**
-   * Specifies the value the component will return mdsStepperBarItemSelect event
+   * Specifies the value of the step: once the step is done, mds-stepper-bar adds it to the
+   * `value` of `mdsStepperBarChange`, which joins the values of the done steps with commas
    */
   @Prop({ reflect: true }) value?: string;
 

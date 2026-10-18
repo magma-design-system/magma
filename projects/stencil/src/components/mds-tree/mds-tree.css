@@ -41,7 +41,7 @@
 */
 
 :host {
-  --mds-tree-actions-border-radius: var(--radius-lg);
+  --mds-tree-actions-border-radius: var(--magma-radius-lg);
   --mds-tree-actions-gap: --spacing(50);
   --mds-tree-label-default-background: transparent;
   --mds-tree-label-hover-background: rgb(var(--magma-wash-soft));
@@ -73,14 +73,15 @@
   --mds-tree-transition-timing-function: var(--ease-in-out-expo);
 
   /* private */
-  --mds-tree-toggle-border-radius: var(--radius-lg);
+  --mds-tree-toggle-border-radius: var(--magma-radius-lg);
 
   /* private */
   --mds-tree-toggle-size: --spacing(900);
 
   @apply ease-out;
 
-  border-radius: var(--radius-sm);
+  border-radius: var(--magma-radius-sm);
+  corner-shape: var(--magma-corner-shape);
   display: grid;
   padding: --spacing(50);
   transition-duration: var(--duration-200);

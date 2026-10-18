@@ -19,7 +19,7 @@ The `<mds-table>` web component is the root container of the Magma Design System
 - **Selection model**: When `selectable` is set, rows expose a checkbox; the component aggregates the selected rows, mirrors the count to the header's tristate control, and flags that a selection exists so it is visible to CSS and consumers.
 - **Selection event**: Emits `mdsTableSelectionChange` (bubbles, composed) carrying `{ rows }`, an array of `{ index, value }` for every selected row. It follows every change of a row's `selected`, from its checkbox or from code, and `selectAll(select?)`; changes made together are announced once. Both are no-ops unless `selectable` is true.
 - **Live children**: Rows added or removed at runtime are re-wired with the table's interactive and selectable state, so dynamically added rows behave consistently.
-- **Action overflow**: When rows carry a `[slot="action"]`, rows flip into an overlaid-action mode once content exceeds the visible width.
+- **Action overflow**: When rows carry a `[slot="action"]`, rows flip into an overlaid-action mode once content exceeds the visible width. Rows and actions added after the first load are followed too: the header gains its Actions column and the new rows the overlay.
 - **Localization**: Resolves its display language from the page (`<html lang>`: `el`/`en`/`es`/`it`, otherwise `en`) for the batch-actions label.
 
 #### Properties & Visual Configurations
@@ -524,9 +524,9 @@ Selection state is communicated via the `mdsTableSelectionChange` custom event. 
 
 ## Events
 
-| Event                     | Description                                 | Type                                        |
-| ------------------------- | ------------------------------------------- | ------------------------------------------- |
-| `mdsTableSelectionChange` | Dispatces when interactive property changes | `CustomEvent<MdsTableSelectionEventDetail>` |
+| Event                     | Description                                                                                                 | Type                                        |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `mdsTableSelectionChange` | Emits when the selection of a `selectable` table changes, with the index and the value of each selected row | `CustomEvent<MdsTableSelectionEventDetail>` |
 
 
 ## Methods
@@ -540,6 +540,18 @@ Selects all elements or none, works only if `selectable` is true.
 | Name     | Type      | Description |
 | -------- | --------- | ----------- |
 | `select` | `boolean` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `updateActions() => Promise<void>`
+
+`internal` Reads again whether the rows have `slot="action"` content: shows or hides the
+Actions column of the header and wires the overlay of the actions. Runs when rows come and
+go, and mds-table-row calls it when the content of its `action` slot changes.
 
 #### Returns
 
@@ -568,12 +580,12 @@ Type: `Promise<void>`
 
 ## Shadow Parts
 
-| Part                      | Description                                       |
-| ------------------------- | ------------------------------------------------- |
-| `"batch-actions"`         | Selects the element which wraps the batch actions |
-| `"batch-actions-wrapper"` |                                                   |
-| `"table"`                 | Selects the table element                         |
-| `"table-wrapper"`         | Selects the element which wraps the table         |
+| Part                      | Description                                                                                        |
+| ------------------------- | -------------------------------------------------------------------------------------------------- |
+| `"batch-actions"`         | Selects the element which wraps the batch actions                                                  |
+| `"batch-actions-wrapper"` | The bar of the batch actions, shown while the table is `selectable` and has `batch-action` content |
+| `"table"`                 | Selects the table element                                                                          |
+| `"table-wrapper"`         | Selects the element which wraps the table                                                          |
 
 
 ## CSS Custom Properties

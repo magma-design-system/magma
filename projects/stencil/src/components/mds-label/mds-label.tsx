@@ -13,10 +13,6 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.en.json';
 import localeIt from './meta/locale.it.json';
 
-/**
- * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
- */
-
 export type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType;
 
 @Component({

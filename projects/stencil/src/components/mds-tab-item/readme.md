@@ -386,9 +386,9 @@ A strip is either a `tablist` of tabs, each controlling a panel, or a navigation
 
 ## Shadow Parts
 
-| Part       | Description |
-| ---------- | ----------- |
-| `"button"` |             |
+| Part       | Description                 |
+| ---------- | --------------------------- |
+| `"button"` | The `mds-button` of the tab |
 
 
 ## CSS Custom Properties

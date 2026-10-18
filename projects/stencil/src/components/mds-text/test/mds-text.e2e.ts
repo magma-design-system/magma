@@ -226,6 +226,69 @@ describe('mds-text', () => {
     expect(element.shadowRoot!.querySelector('slot')).not.toBeNull();
   });
 
+  describe('truncate with a typography trimmed to the cap height', () => {
+    // label and option trim the box to the capitals (text-box), so accents and cedillas are
+    // ink outside it: clipping the box vertically cut them off
+    const LONG = 'PROPRIETA\u0300 SONO ATTRIBUTI SEMPLICI \u00c8 \u00c5 \u00c7, ANCHE MOLTO LUNGHI';
+
+    // the truncated text next to the same text without truncate, the box it has to keep
+    const renderPair = async (typography: TypographyType, truncate: string) => {
+      const attributes = `typography="${typography}" style="--mds-text-line-clamp: 2"`;
+      const plainStyle = truncate === 'word' ? ' style="white-space: nowrap"' : '';
+      const { root } = await render<HTMLDivElement>(
+        `<div style="width: 160px"><div${plainStyle}><mds-text ${attributes}>${LONG}</mds-text></div><mds-text ${attributes} truncate="${truncate}">${LONG}</mds-text></div>`,
+      );
+      const [plain, host] = Array.from(root.querySelectorAll('mds-text'));
+      return { plain, host, inner: host.shadowRoot!.querySelector('.text') as HTMLElement };
+    };
+
+    it.each(['label', 'option'] as TypographyType[])(
+      '%s: word clips only the inline end and keeps the trimmed box',
+      async (typography) => {
+        const { plain, host, inner } = await renderPair(typography, 'word');
+        const style = getComputedStyle(inner);
+
+        expect(style.overflowX).toBe('clip');
+        expect(style.overflowY).toBe('visible');
+        expect(style.textOverflow).toBe('ellipsis');
+        expect(inner.scrollWidth).toBeGreaterThan(inner.clientWidth);
+        expect(host.getBoundingClientRect().height).toBeCloseTo(
+          plain.getBoundingClientRect().height,
+          1,
+        );
+      },
+    );
+
+    it.each(['label', 'option'] as TypographyType[])(
+      '%s: none wraps without clipping the lines vertically',
+      async (typography) => {
+        const { plain, host, inner } = await renderPair(typography, 'none');
+
+        expect(getComputedStyle(inner).overflowY).toBe('visible');
+        expect(host.getBoundingClientRect().height).toBeCloseTo(
+          plain.getBoundingClientRect().height,
+          1,
+        );
+      },
+    );
+
+    it.each(['label', 'option'] as TypographyType[])(
+      '%s: all opens the clip above the first line, and only there',
+      async (typography) => {
+        const { inner } = await renderPair(typography, 'all');
+        const style = getComputedStyle(inner);
+        const halfLine = parseFloat(style.lineHeight) / 2;
+
+        // overflow-clip-margin widens the clip on every side, clip-path closes the bottom
+        // and the sides again: the lines after the clamp stay hidden
+        expect(style.overflowY).toBe('clip');
+        expect(parseFloat(style.overflowClipMargin)).toBeCloseTo(halfLine, 1);
+        expect(style.clipPath).toMatch(/^inset\(-/);
+        expect(style.clipPath).toMatch(/ 0px 0px\)$/);
+      },
+    );
+  });
+
   it('does not throw when the typography attribute is removed after hydration', async () => {
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -233,5 +296,24 @@ describe('mds-text', () => {
     await waitForChanges();
 
     expect(consoleError).not.toHaveBeenCalled();
+  });
+
+  describe('with the animation preference set to reduce', () => {
+    // the class lives on the document, so it would outlive this file
+    afterEach(() => {
+      document.documentElement.classList.remove('pref-animation-reduce');
+    });
+
+    it('holds back the transition of a code text', async () => {
+      // the host reflected the preference, but the sheet that reads it was commented out in
+      // the Tailwind 4 migration and then deleted with the comment (#1004)
+      document.documentElement.classList.add('pref-animation-reduce');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      const { root } = await render('<mds-text tag="code">const a = 1;</mds-text>');
+
+      expect(root).toHaveAttribute('pref-animation', 'reduce');
+      expect(getComputedStyle(root).transitionDuration).toBe('1e-05s');
+    });
   });
 });

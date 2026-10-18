@@ -63,7 +63,7 @@ export class MdsToast {
    */
   @Prop({ reflect: true, mutable: true }) readonly position: ToastPosition = 'bottom-center';
   /**
-   * Emits when the accordion is opened
+   * Emits when a toast with a `duration` has hidden itself, once its exit animation is over
    */
   @Event({ eventName: 'mdsToastClose' }) closedEvent: EventEmitter<void>;
 

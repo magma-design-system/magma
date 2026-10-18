@@ -360,9 +360,9 @@ Type: `Promise<void>`
 
 ## Shadow Parts
 
-| Part           | Description |
-| -------------- | ----------- |
-| `"input-date"` |             |
+| Part           | Description           |
+| -------------- | --------------------- |
+| `"input-date"` | The native date input |
 
 
 ## CSS Custom Properties

@@ -67,10 +67,10 @@ named theme retints all of it at once.
 | --- | --- | --- |
 | `surface-default` | `bg-surface-default` | the page canvas (the `body` already has it) |
 | `surface-raised` | `bg-surface-raised` | cards, panels, sticky headers |
-| `surface-overlay` | `bg-surface-overlay` | modal, dropdown, popover, sheet |
+| `surface-overlay` | `bg-surface-overlay` | modal, dropdown, popover, sheet, and anything lifted with a shadow |
 | `surface-sunken` | `bg-surface-sunken` | wells, insets, code blocks, tracks |
 | `surface-muted` | `bg-surface-muted` | same-plane grouping: zebra rows, a subtle section |
-| `wash-soft` / `wash-base` / `wash-strong` | `bg-wash-*` | a neutral pill or chip, by how marked it is |
+| `wash-soft` / `wash-base` / `wash-strong` | `bg-wash-*` | a flat neutral pill or chip (no shadow), by how marked it is |
 | `surface-inverse` / `surface-inverse-muted` | `bg-surface-inverse*` | the chip that flips with the mode (dark on a light UI) |
 | `on-inverse` | `text-on-inverse` | text and icons on either inverse level |
 | `text-default` | `text-fg-default` | body text, titles, primary data |

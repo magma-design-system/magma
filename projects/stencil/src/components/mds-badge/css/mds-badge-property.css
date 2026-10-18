@@ -35,6 +35,6 @@
 
 @property --mds-badge-radius {
   inherits: true;
-  initial-value: var(--radius-lg, 10px);
+  initial-value: var(--magma-radius-full);
   syntax: '<length>';
 }

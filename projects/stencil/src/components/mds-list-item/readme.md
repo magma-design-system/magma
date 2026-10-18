@@ -266,10 +266,10 @@ When a Magma list is needed, use the component pair - not raw HTML. Raw elements
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"icon"` |             |
-| `"text"` |             |
+| Part     | Description                                          |
+| -------- | ---------------------------------------------------- |
+| `"icon"` | The bullet icon before the text, the one `icon` sets |
+| `"text"` | The text of the item, around the default slot        |
 
 
 ## CSS Custom Properties

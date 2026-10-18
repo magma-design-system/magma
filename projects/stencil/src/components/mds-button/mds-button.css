@@ -16,6 +16,7 @@
  * @prop --mds-button-border-width: Sets the border width of the component (based on box-shadow declaration)
  * @prop --mds-button-color: Sets the text color of the component
  * @prop --mds-button-gap: Sets the distance betwen element inside the components, use it instead of setting gap property directly.
+ * @prop --mds-button-label-transform: Sets the text-transform of the first letter of the label, `uppercase` by default; `none` shows the label as written. It inherits: set on `mds-button-dropdown` or any ancestor, it reaches the buttons inside other components too
  * @prop --mds-button-radius: Sets the border-radius of the component
  */
 
@@ -97,8 +98,12 @@
   --mds-text-line-clamp: var(--mds-button-line-clamp);
 }
 
+/* --mds-button-label-transform is not set on :host, so a value set on an ancestor -
+   mds-button-dropdown, or any component that renders buttons in its shadow root - reaches the
+   label (#799) */
+
 .text::first-letter {
-  text-transform: uppercase;
+  text-transform: var(--mds-button-label-transform, uppercase);
 }
 
 .icon {

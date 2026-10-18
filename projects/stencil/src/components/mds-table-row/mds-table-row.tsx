@@ -67,7 +67,12 @@ export class MdsTableRow {
   @Prop({ reflect: true }) readonly value?: string | number;
 
   private onActionSlotChange = (): void => {
-    this.hasActions = hasChildWithSlot(this.host, 'action');
+    const hasActions = hasChildWithSlot(this.host, 'action');
+    // the slot fires on load too, with nothing new: the table hears only of a real change,
+    // actions rendered later or taken away, which its observer of the rows cannot see (#801)
+    if (hasActions === this.hasActions) return;
+    this.hasActions = hasActions;
+    this.host.closest('mds-table')?.updateActions();
   };
 
   componentWillLoad(): void {

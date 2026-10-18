@@ -4,6 +4,8 @@ on:
   push:
     branches: [dev, main, beta]
   pull_request:
+  # the merge queue of dev runs the required checks here (docs/WORKFLOW.md, rule 1)
+  merge_group:
 
 concurrency:
   # one run per ref: a newer push cancels the superseded run. On main, and for
@@ -188,8 +190,9 @@ jobs:
   # Guards the component usage docs against drift from the code: they ship as
   # pattern.md / antipattern.md beside each component's AGENTS.md and agents copy
   # their examples verbatim. Every tag, attribute, value, slot, part, event and
-  # custom property must exist in the built API and token layer, and no example
-  # may paint with a palette step or a raw radius (#815). Reads
+  # custom property must exist in the built API and token layer, no example may
+  # paint with a palette step or a raw radius (#815), and every member of the API
+  # needs a description in its JSDoc (#829). Reads
   # dist/documentation.json and the token layer, so it needs the build artifact.
   usage-docs:
     needs: [magma]

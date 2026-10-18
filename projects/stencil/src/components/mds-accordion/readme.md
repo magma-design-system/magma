@@ -203,7 +203,7 @@ The default slot of `<mds-accordion>` is designed exclusively for `<mds-accordio
 
 #### Do Not Use `mds-accordion-item` Outside `mds-accordion`
 
-`<mds-accordion-item>` is a compound child and relies on the parent to assign its `id` and manage selection state. Used standalone it has no coordinator and its `mdsAccordionItemSelect` / `mdsAccordionItemUnselect` events go unanswered.
+`<mds-accordion-item>` is a compound child and relies on the parent to give it an `id` when it has none and to manage selection state. Used standalone it has no coordinator and its `mdsAccordionItemSelect` / `mdsAccordionItemUnselect` events go unanswered.
 
 ```html
 <!-- INCORRECT -->
