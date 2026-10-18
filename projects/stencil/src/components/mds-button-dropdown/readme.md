@@ -184,9 +184,15 @@ When your code handles the submit, build the form data with `event.submitter`, a
 
 Style the component through its documented `--mds-button-dropdown-*` CSS custom properties or the `dropdown` shadow part. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and named themes keep working.
 
+The `--mds-button-*` properties that inherit reach the two inner buttons too: `--mds-button-label-transform: none` on the component keeps a label such as a tenant name as written, without the uppercase first letter.
+
 ```css
 .custom-toolbar mds-button-dropdown {
   --mds-button-dropdown-radius: var(--magma-radius-md);
+}
+
+.tenant-switcher mds-button-dropdown {
+  --mds-button-label-transform: none;
 }
 
 /* Style the dropdown panel surface through the documented shadow part */
