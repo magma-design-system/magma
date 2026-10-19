@@ -219,19 +219,26 @@ describe('mds-modal', () => {
   // was still the old attribute when the dialog opened, and the window slid in from the place
   // of that old position (the centre: translateY(25%)), already inside the page
   describe('the entry', () => {
-    /** The transform of the window on the first frame the dialog is open. */
-    const firstFrame = (root: HTMLMdsModalElement): Promise<DOMMatrix> =>
+    /** What `read` sees on the first frame the dialog is open. */
+    const onFirstFrame = <T>(
+      root: HTMLMdsModalElement,
+      read: (dialog: HTMLDialogElement, window: HTMLElement) => T,
+    ): Promise<T> =>
       new Promise((resolve) => {
         const tick = (): void => {
-          if (!root.shadowRoot!.querySelector('dialog')!.open) {
+          const dialog = root.shadowRoot!.querySelector('dialog')!;
+          if (!dialog.open) {
             requestAnimationFrame(tick);
             return;
           }
-          const window = root.shadowRoot!.querySelector('.window')!;
-          resolve(new DOMMatrix(getComputedStyle(window).transform));
+          resolve(read(dialog, root.shadowRoot!.querySelector<HTMLElement>('.window')!));
         };
         requestAnimationFrame(tick);
       });
+
+    /** The transform of the window on the first frame the dialog is open. */
+    const firstFrame = (root: HTMLMdsModalElement): Promise<DOMMatrix> =>
+      onFirstFrame(root, (_dialog, window) => new DOMMatrix(getComputedStyle(window).transform));
 
     it.each([
       ['right', 1],
@@ -250,6 +257,25 @@ describe('mds-modal', () => {
         expect(start.m42).toBe(0);
       },
     );
+
+    // #1019: showModal() moves the focus to the first focusable element of the window, and the
+    // browser scrolled the dialog to bring it into view. The window, still at translate(100%),
+    // widened the scrollable area of the dialog by its own width, so the dialog scrolled by that
+    // much and the window started already in its place: the transform was right, the scroll hid it
+    it('starts outside the page with a focusable element in the content', async () => {
+      const { root } = await render<HTMLMdsModalElement>(
+        '<mds-modal position="right"><button>Action</button></mds-modal>',
+      );
+
+      root.opened = true;
+      const start = await onFirstFrame(root, (dialog, window) => ({
+        left: window.getBoundingClientRect().left,
+        scrollLeft: dialog.scrollLeft,
+      }));
+
+      expect(start.scrollLeft).toBe(0);
+      expect(start.left).toBeGreaterThanOrEqual(innerWidth - 1);
+    });
   });
 
   describe('accessible name', () => {
