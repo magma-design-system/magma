@@ -22,6 +22,15 @@ describe('server wrappers', () => {
     expect(host).toMatch(/\shydrated[\s=>]/);
   });
 
+  // a form-associated element reads any boolean attribute as set, "false" included
+  it('leave a false boolean out of the markup', async () => {
+    const html = await renderServer(MdsButton, { label: 'Salva', disabled: false });
+    const host = html.match(/^<mds-button\b[^>]*>/)?.[0] ?? '';
+
+    expect(host).toContain('label="Salva"');
+    expect(host).not.toMatch(/\sdisabled[\s=>]/);
+  });
+
   it('emit the shadow DOM as a declarative shadow root', async () => {
     const html = await renderServer(MdsButton, { label: 'Salva' });
 
