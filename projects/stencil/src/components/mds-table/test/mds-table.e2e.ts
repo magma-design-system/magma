@@ -125,6 +125,34 @@ describe('mds-table', () => {
     });
   });
 
+  describe('the lines of the table', () => {
+    it('draws the frame with the border colour and the lines inside with the separator colour', async () => {
+      // frame and grid shared --mds-table-border-color: the grid is decorative (border-muted),
+      // the frame an outline (border-default), so each has its own property
+      const { root } = await render(`
+<mds-table style="--mds-table-border-color: rgb(10, 20, 30); --mds-table-separator-color: rgb(40, 50, 60)">
+  <mds-table-header>
+    <mds-table-header-cell label="Name"></mds-table-header-cell>
+  </mds-table-header>
+  <mds-table-body>
+    <mds-table-row><mds-table-cell value="Uno">Uno</mds-table-cell></mds-table-row>
+    <mds-table-row><mds-table-cell value="Due">Due</mds-table-cell></mds-table-row>
+  </mds-table-body>
+</mds-table>`);
+
+      expect(await settledStyle(root, 'borderTopColor')).toBe('rgb(10, 20, 30)');
+      expect(
+        await settledStyle(root.querySelector('mds-table-header-cell')!, 'borderBottomColor'),
+      ).toBe('rgb(40, 50, 60)');
+      expect(
+        await settledStyle(
+          root.querySelector('mds-table-row mds-table-cell')!,
+          'borderBottomColor',
+        ),
+      ).toBe('rgb(40, 50, 60)');
+    });
+  });
+
   describe('the batch actions counter', () => {
     it('counts every selected row', async () => {
       // it used to arrive through the badge's deprecated slot, which is read once and

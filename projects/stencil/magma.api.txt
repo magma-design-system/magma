@@ -1448,6 +1448,7 @@ mds-table css --mds-table-border-width
 mds-table css --mds-table-cell-padding
 mds-table css --mds-table-color
 mds-table css --mds-table-color-alt
+mds-table css --mds-table-separator-color
 mds-table-body encapsulation shadow
 mds-table-body prop interactive (attr interactive) [reflect]: boolean | undefined
 mds-table-body prop selection (attr selection) [reflect]: boolean | undefined

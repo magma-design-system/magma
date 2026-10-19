@@ -343,8 +343,11 @@ Customize the table appearance only through its documented `--mds-table-*` CSS c
   --mds-table-border-width: 1px;
   --mds-table-cell-padding: calc(var(--spacing) * 500);
   --mds-table-color: rgb(var(--magma-text-default));
+  --mds-table-separator-color: rgb(var(--magma-border-muted));
 }
 ```
+
+`--mds-table-border-color` colours the frame of the table only, an outline like the edge of a card (`--magma-border-default` by default). The lines inside it - between the rows, under the header, above the footer and at the edge of the batch actions panel - are the grid of the table and take `--mds-table-separator-color` (`--magma-border-muted` by default): set both to recolour every line. `--mds-table-border-width` sets the thickness of both.
 
 
 ### 3. Antipattern
@@ -590,16 +593,17 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                         | Description                                                                                                                                                                 |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-table-actions-gap`    | Gap between table action elements.                                                                                                                                          |
-| `--mds-table-background`     | Default background color of the table.                                                                                                                                      |
-| `--mds-table-background-alt` | Background color of the rows while a column sorts the table, and of the table behind them; in an interactive table also the scroll area, while the pointer is on the table. |
-| `--mds-table-border-color`   | Color of the table border.                                                                                                                                                  |
-| `--mds-table-border-width`   | Width of the table border.                                                                                                                                                  |
-| `--mds-table-cell-padding`   | Padding inside table cells.                                                                                                                                                 |
-| `--mds-table-color`          | Default text color of the table.                                                                                                                                            |
-| `--mds-table-color-alt`      | Text color of the rows while a column sorts the table.                                                                                                                      |
+| Name                          | Description                                                                                                                                                                 |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-table-actions-gap`     | Gap between table action elements.                                                                                                                                          |
+| `--mds-table-background`      | Default background color of the table.                                                                                                                                      |
+| `--mds-table-background-alt`  | Background color of the rows while a column sorts the table, and of the table behind them; in an interactive table also the scroll area, while the pointer is on the table. |
+| `--mds-table-border-color`    | Color of the frame of the table; the lines inside it take --mds-table-separator-color.                                                                                      |
+| `--mds-table-border-width`    | Width of the table border.                                                                                                                                                  |
+| `--mds-table-cell-padding`    | Padding inside table cells.                                                                                                                                                 |
+| `--mds-table-color`           | Default text color of the table.                                                                                                                                            |
+| `--mds-table-color-alt`       | Text color of the rows while a column sorts the table.                                                                                                                      |
+| `--mds-table-separator-color` | Color of the lines inside the table: between the rows, under the header, above the footer and at the edge of the batch actions panel.                                       |
 
 
 ## Dependencies
