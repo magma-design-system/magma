@@ -22,7 +22,7 @@ The `<mds-pref-consumption>` web component is a preference control of the Magma 
 #### Properties & Visual Configurations
 
 - **`mode`**: The selected consumption preference (`low` / `medium` / `high`). Leave it unset to let the component restore the persisted value or fall back to `high`; set it explicitly only to force an initial mode.
-- **`size`**: Sizes the nested tab items (`sm` / `md`). The parent `<mds-pref>` forwards a later change of its own `size` to every `mds-pref-*` child, but not the initial value, so set it on this component as well.
+- **`size`**: Sizes the nested tab items (`sm` / `md`). Inside `<mds-pref>`, set it on the parent instead: the parent's `size` reaches every `mds-pref-*` child on load and when it changes, and overwrites the child's own.
 
 
 ### 2. Pattern
@@ -31,7 +31,7 @@ Correct and idiomatic ways to use the `<mds-pref-consumption>` component, ordere
 
 #### Default Use Inside `mds-pref`
 
-The canonical form. Place `<mds-pref-consumption>` as a direct slot child of [`<mds-pref>`](../../mds-pref). Omit `mode` so the component restores the persisted user choice automatically; the parent forwards later changes of its own `size` to every `mds-pref-*` child.
+The canonical form. Place `<mds-pref-consumption>` as a direct slot child of [`<mds-pref>`](../../mds-pref). Omit `mode` so the component restores the persisted user choice automatically; the parent forwards its own `size` to every `mds-pref-*` child.
 
 ```html
 <mds-pref>
@@ -51,7 +51,7 @@ Set `mode` explicitly only when the application needs to override the persisted 
 
 #### Controlling Size
 
-Use the `size` prop on the control itself: outside `<mds-pref>`, and inside it too for the first render, since the parent forwards only later changes of its own `size`. Accepted values are `"sm"` and `"md"`.
+Use the `size` prop on the control itself when it stands outside `<mds-pref>`; inside it, set `size` on the parent, which forwards it to every child. Accepted values are `"sm"` and `"md"`.
 
 ```html
 <mds-pref-consumption size="sm"></mds-pref-consumption>
@@ -112,7 +112,7 @@ Common incorrect uses of `<mds-pref-consumption>`. Each entry pairs the wrong fo
 
 #### Do Not Pass an Invalid `mode` Value
 
-`mode` is typed as `"low" | "medium" | "high"`. Any other string has no entry in the component's mode table: applying it fails with an error, after the value has already been stored in `localStorage` (later loads fail too), and no consumption level is activated.
+`mode` is typed as `"low" | "medium" | "high"`. Any other string has no entry in the component's mode table: it is ignored with a console warning and never stored, and the component keeps the level it has (on load, the persisted choice or `high`).
 
 ```html
 <!-- INCORRECT -->

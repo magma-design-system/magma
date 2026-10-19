@@ -2,6 +2,7 @@ import { Build, Component, Host, h, Method, Prop, Element, Watch } from '@stenci
 import { cssRotationToNumber, cssDurationToSeconds, cssSizeToNumber } from '@common/unit';
 import { prefersReducedMotion } from '@common/preference';
 import type { EmojiNames, SvgDictionary, SvgPart } from './meta/types';
+import { gazeReach, gazeToward } from './meta/gaze';
 import { gsap } from 'gsap';
 
 import miaSvg from './asset/mia.svg';
@@ -123,10 +124,8 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Emoji agrees, useful for confirm actions.
    */
-
   @Method()
   async agree(): Promise<void> {
     const token = this.beginExpression();
@@ -135,10 +134,8 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Emoji smiles, useful for confirm actions.
    */
-
   @Method()
   async smile(): Promise<void> {
     const token = this.beginExpression();
@@ -147,10 +144,10 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Emoji disagrees, useful for errors or unwanted results.
+   * @param turnHappyDelay how long the mouth stays serious after the head shake, in
+   * milliseconds; 0 brings the smile back at once
    */
-
   @Method()
   async disagree(turnHappyDelay: number = 0): Promise<void> {
     const token = this.beginExpression();
@@ -159,10 +156,9 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
-   * Emoji start thinking, useful for pending requests.
+   * Emoji starts thinking, useful for pending requests.
+   * @param duration the duration of the entrance of the hand, in seconds
    */
-
   @Method()
   async startThinking(duration: number = 0.5): Promise<void> {
     // Thinking is a state, not a one shot expression: asking for it again while it
@@ -198,10 +194,8 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Eyes start blinking.
    */
-
   @Method()
   async startBlinking(): Promise<void> {
     this.isBlinking = true;
@@ -213,7 +207,6 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Eyes stop blinking.
    */
   @Method()
@@ -227,7 +220,6 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Stops following mouse with CSS 3D transform.
    */
   @Method()
@@ -241,7 +233,6 @@ export class MdsEmoji {
   }
 
   /**
-   * @returns Promise<void>
    * Starts following mouse with CSS 3D transform.
    */
   @Method()
@@ -253,8 +244,22 @@ export class MdsEmoji {
     return Promise.resolve();
   }
 
+  private readonly isEmojiName = (name?: string | null): name is EmojiNames =>
+    name != null && {}.hasOwnProperty.call(this.svgLibrary, name);
+
   @Watch('name')
-  checkNameChanged(emojiName: EmojiNames): void {
+  checkNameChanged(emojiName: EmojiNames, previousName?: EmojiNames): void {
+    // a name outside the dictionary is ignored, it used to throw (#825): the emoji goes back to
+    // the face it shows, and on load it shows none
+    if (!this.isEmojiName(emojiName)) {
+      if (emojiName != null) {
+        console.warn(
+          `mds-emoji: ignoring the unknown name "${emojiName}", use one of: ${Object.keys(this.svgLibrary).join(', ')}`,
+        );
+      }
+      if (this.isEmojiName(previousName)) this.host.setAttribute('name', previousName);
+      return;
+    }
     // Stencil reflects a prop onto its attribute during the next render, but this
     // watcher runs synchronously, before that render. Every per-emoji value lives in
     // a :host([name='...']) rule, so updateSvgDictionary -> updateCSSCustomProps would
@@ -530,8 +535,31 @@ export class MdsEmoji {
     this.hideThinkingHand(wasThinking ? 0.25 : 0);
   };
 
+  /**
+   * Under reduced motion an expression shows its face without moving it: the parts it swaps (a
+   * smiling mouth, closed eyes) stay for as long as the animation would have lasted, then the
+   * face is handed back. The head, the eyebrows and the bounces keep still, as the blinking and
+   * the following of the pointer do by not running at all.
+   */
+  private holdStillExpression = (
+    token: number,
+    parts: [keyof SvgDictionary, keyof SvgPart][],
+    durationMs: number,
+  ): Promise<void> => {
+    parts.forEach(([part, state]) => this.svgPartState(part, state));
+    this.trackExpression(
+      gsap.delayedCall(durationMs / 1000, () => {
+        parts.forEach(([part]) => this.svgPartState(part));
+        this.restoreReadyState(token);
+      }),
+    );
+    return new Promise((resolve) => setTimeout(resolve, durationMs));
+  };
+
   private setAgreeAnimation = (token: number): Promise<void> => {
     const duration = 1780;
+    if (prefersReducedMotion())
+      return this.holdStillExpression(token, [['mouth', 'smile']], duration);
     const ease = 'expo.out';
     const overwrite = 'auto';
     const state = { value: 0 };
@@ -613,6 +641,16 @@ export class MdsEmoji {
 
   private setSmileAnimation = (token: number): Promise<void> => {
     const duration = 750;
+    if (prefersReducedMotion()) {
+      return this.holdStillExpression(
+        token,
+        [
+          ['mouth', 'smile'],
+          ['eyes', 'closed'],
+        ],
+        duration,
+      );
+    }
     const ease = 'expo.out';
     const overwrite = 'auto';
 
@@ -689,6 +727,9 @@ export class MdsEmoji {
   };
 
   private setDisagreeAnimation = (turnHappyDelay: number = 0, token: number): Promise<void> => {
+    if (prefersReducedMotion()) {
+      return this.holdStillExpression(token, [['mouth', 'serious']], 780 + turnHappyDelay);
+    }
     const state = { value: 0 };
 
     const headTimeline = gsap
@@ -757,7 +798,12 @@ export class MdsEmoji {
     const ease = 'expo.inOut';
     const handEl = this.handEl instanceof NodeList ? null : this.handEl;
 
-    if (handEl) {
+    // under reduced motion the hand is simply there, and the eyes do not wander
+    const still = prefersReducedMotion();
+    if (handEl && still) {
+      gsap.set(handEl, { xPercent: 0, yPercent: 0, scale: 1, rotateZ: 0 });
+      handEl.style.visibility = 'visible';
+    } else if (handEl) {
       handEl.style.visibility = 'visible';
       // Only the percentage channel is animated, because rotate() owns the
       // translation one. The hand therefore lands exactly where the SVG draws it,
@@ -787,7 +833,7 @@ export class MdsEmoji {
       );
     }
 
-    this.moveEyesThinkAnimation();
+    if (!still) this.moveEyesThinkAnimation();
     this.svgPartState('mouth', 'serious');
     this.svgPartState('eyes', 'focused');
     // Settles even when there is no hand to show: an unresolved promise used to
@@ -824,7 +870,9 @@ export class MdsEmoji {
   };
 
   private setStopThinkingAnimation = (duration: number = 0.5): Promise<void> => {
-    this.hideThinkingHand(duration);
+    // under reduced motion the hand and the eyes are put back at once
+    const motion = prefersReducedMotion() ? 0 : duration;
+    this.hideThinkingHand(motion);
 
     if (this.eyesEl) {
       this.trackExpression(
@@ -832,7 +880,7 @@ export class MdsEmoji {
           xPercent: 0,
           yPercent: 0,
           ease: 'expo.out',
-          duration,
+          duration: motion,
           overwrite: 'auto',
         }),
       );
@@ -907,37 +955,24 @@ export class MdsEmoji {
     // Reduced motion keeps the face still; stopFollowMouse still recentres it, because
     // that is a state the caller asked for rather than an animation of its own.
     if (prefersReducedMotion()) return;
-    const { centerX, centerY } = this.getEmojiCenter();
-    let currentMouseX = centerX;
-    let currentMouseY = centerY;
-
     if (this.isFollowingMouse) {
-      currentMouseX = this.mouseX;
-      currentMouseY = this.mouseY;
+      this.moveHead(this.mouseX, this.mouseY);
+      return;
     }
-
-    const rect = this.host.getBoundingClientRect();
-
-    const deltaX = currentMouseX - centerX;
-    const deltaY = currentMouseY - centerY;
-
-    const percentX = deltaX / (rect.width / 2);
-    const percentY = deltaY / (rect.height / 2);
-
-    this.rotate(percentX, percentY);
+    const { centerX, centerY } = this.getEmojiCenter();
+    this.moveHead(centerX, centerY);
   };
 
+  // The one place the pointer becomes a pose: the direction of the point from the centre,
+  // with a reach that depends on the viewport, not on the size of the emoji (#800).
   private moveHead = (x: number, y: number, immediate: boolean = false): void => {
     const { centerX, centerY } = this.getEmojiCenter();
-    const rect = this.host.getBoundingClientRect();
-
-    const deltaX = x - centerX;
-    const deltaY = y - centerY;
-
-    const percentX = deltaX / (rect.width / 2);
-    const percentY = deltaY / (rect.height / 2);
-
-    this.rotate(percentX, percentY, immediate);
+    const gaze = gazeToward(
+      x - centerX,
+      y - centerY,
+      gazeReach(window.innerWidth, window.innerHeight),
+    );
+    this.rotate(gaze.x, gaze.y, immediate);
   };
 
   private rotate = (percentX: number, percentY: number, immediate: boolean = false): void => {

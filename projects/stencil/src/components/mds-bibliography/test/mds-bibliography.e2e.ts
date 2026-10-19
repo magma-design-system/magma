@@ -33,4 +33,28 @@ describe('mds-bibliography', () => {
 
     expect(root.shadowRoot!.querySelector('a.link')).toBeNull();
   });
+
+  // #825: the description promised an array, and an array set from a script threw
+  it('reads an array of authors set from a script as one author per entry', async () => {
+    const consoleError = vi.spyOn(console, 'error');
+    const { root, waitForChanges } = await render(`
+      <div>
+        <mds-bibliography class="array" format="mla" name="Republic"></mds-bibliography>
+        <mds-bibliography class="string" format="mla" name="Republic" author="Plato,Mario Rossi"></mds-bibliography>
+      </div>
+    `);
+    const authors = (selector: string): string =>
+      root.querySelector(selector)!.shadowRoot!.querySelector('mds-text > span:first-child')!
+        .textContent!;
+
+    (root.querySelector('.array') as { author?: string | string[] }).author = [
+      'Plato',
+      'Mario Rossi',
+    ];
+    await waitForChanges();
+
+    expect(consoleError).not.toHaveBeenCalled();
+    expect(authors('.array')).toBe(authors('.string'));
+    expect(authors('.array')).toContain('Mario');
+  });
 });

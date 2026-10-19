@@ -44,6 +44,40 @@ describe('mds-calendar', () => {
     expect(julyVisibleDay.getAttribute('selection')).toBe('middle');
   });
 
+  // a start after the end logged "swapping values" and swapped nothing, and at load the order
+  // was not checked at all (#823)
+  describe('a range given backwards', () => {
+    const selection = (root: HTMLElement, date: string) =>
+      root
+        .shadowRoot!.querySelector(`mds-calendar-cell[date="${date}"]`)!
+        .getAttribute('selection');
+
+    it('is put in order at load', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { root, waitForChanges } = await render(
+        '<mds-calendar view-date="2026-06-01" start-date="2026-06-20" end-date="2026-06-10"></mds-calendar>',
+      );
+      await waitForChanges();
+
+      await vi.waitFor(() => expect(selection(root, '2026-06-10')).toBe('start'));
+      expect(selection(root, '2026-06-15')).toBe('middle');
+      expect(selection(root, '2026-06-20')).toBe('end');
+    });
+
+    it('is put in order when the start moves past the end', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { root, waitForChanges } = await render(
+        '<mds-calendar view-date="2026-06-01" start-date="2026-06-02" end-date="2026-06-10"></mds-calendar>',
+      );
+
+      root.setAttribute('start-date', '2026-06-20');
+      await waitForChanges();
+
+      await vi.waitFor(() => expect(selection(root, '2026-06-10')).toBe('start'));
+      expect(selection(root, '2026-06-20')).toBe('end');
+    });
+  });
+
   it('previews the full visible range when hovering into the next month', async () => {
     const { root } = await render(
       '<mds-calendar view-date="2026-06-01" start-date="2026-06-02" hover-date="2026-07-24"></mds-calendar>',
@@ -495,5 +529,100 @@ describe('mds-calendar arrows', () => {
     click(root, '.action-month');
     await waitForChanges();
     arrows(root).forEach((arrow) => expect(arrow).not.toHaveAttribute('disabled'));
+  });
+
+  describe('custom properties', () => {
+    // the cells live in the shadow DOM of the calendar: only inheritance carries a value to them
+    const paint = (cell: Element): CSSStyleDeclaration =>
+      getComputedStyle(cell.shadowRoot!.querySelector('.area-background')!);
+
+    // September 2025: the 10th child sits in a weekday column and the 13th in a weekend one (the
+    // 6th of its row), both days of the month whichever day the grid starts the week on
+    const cellsOf = (root: HTMLElement): Element[] =>
+      Array.from(root.shadowRoot!.querySelectorAll('mds-calendar-cell'));
+
+    it('reach the day cells when set on the calendar', async () => {
+      const { root } = await render(
+        `<mds-calendar
+          view-date="2025-09-01"
+          min="2025-09-02"
+          style="--mds-calendar-day-number-color: rgb(1 2 3); --mds-calendar-cell-weekend-color: rgb(4 5 6); --mds-calendar-cell-disabled-background: rgb(7 8 9)"
+        ></mds-calendar>`,
+      );
+      const cells = cellsOf(root);
+      const disabled = root.shadowRoot!.querySelector(
+        'mds-calendar-cell[disabled][month="current"]',
+      )!;
+
+      expect(cells[9]).toHaveAttribute('month', 'current');
+      expect(paint(cells[9]).color).toBe('rgb(1, 2, 3)');
+      expect(paint(cells[12]).color).toBe('rgb(4, 5, 6)');
+      expect(paint(disabled).backgroundColor).toBe('rgb(7, 8, 9)');
+    });
+
+    it('let the cell colour win over the day number colour', async () => {
+      const { root } = await render(
+        `<mds-calendar
+          view-date="2025-09-01"
+          style="--mds-calendar-day-number-color: rgb(1 2 3); --mds-calendar-cell-color: rgb(10 11 12)"
+        ></mds-calendar>`,
+      );
+
+      expect(paint(cellsOf(root)[9]).color).toBe('rgb(10, 11, 12)');
+    });
+
+    it('paint the selection with the colours set on the calendar', async () => {
+      const { root } = await render(
+        `<mds-calendar
+          view-date="2025-09-01"
+          start-date="2025-09-10"
+          end-date="2025-09-12"
+          style="--mds-calendar-cell-selection-current-month-boundaries-color: rgb(13 14 15)"
+        ></mds-calendar>`,
+      );
+      const start = root.shadowRoot!.querySelector('mds-calendar-cell[date="2025-09-10"]')!;
+
+      expect(start).toHaveAttribute('selection', 'start');
+      expect(paint(start).color).toBe('rgb(13, 14, 15)');
+    });
+  });
+});
+
+// #826: the area of the preselections waited for a marker class, looked up once on load
+describe('mds-calendar preselection area', () => {
+  const area = (root: HTMLElement): Element =>
+    root.shadowRoot!.querySelector('.calendar-preselection')!;
+
+  it('shows what the preselection slot holds, without the marker class', async () => {
+    const { root } = await render(
+      '<mds-calendar><div slot="preselection"><mds-button label="Last week"></mds-button></div></mds-calendar>',
+    );
+
+    expect(area(root)).toHaveClass('calendar-preselection--has-preselection');
+  });
+
+  it('shows the shortcuts added after load, and hides once they are gone', async () => {
+    const { root } = await render('<mds-calendar></mds-calendar>');
+    expect(area(root)).not.toHaveClass('calendar-preselection--has-preselection');
+
+    const shortcuts = document.createElement('div');
+    shortcuts.slot = 'preselection';
+    root.appendChild(shortcuts);
+    await vi.waitFor(() =>
+      expect(area(root)).toHaveClass('calendar-preselection--has-preselection'),
+    );
+
+    shortcuts.remove();
+    await vi.waitFor(() =>
+      expect(area(root)).not.toHaveClass('calendar-preselection--has-preselection'),
+    );
+  });
+
+  it('stays hidden with hide-preselection', async () => {
+    const { root } = await render(
+      '<mds-calendar hide-preselection><div slot="preselection">Shortcuts</div></mds-calendar>',
+    );
+
+    expect(area(root)).not.toHaveClass('calendar-preselection--has-preselection');
   });
 });

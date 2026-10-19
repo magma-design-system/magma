@@ -208,8 +208,11 @@ export class MdsFilter {
 
   componentWillLoad(): void {
     const items = this.queryItems();
+    // an item keeps the id its author gave it, one without gets `item-<index>`, what its events
+    // reported before; the filter tells the items apart by element. It used to overwrite every id
+    // (#827)
     items.forEach((item, key) => {
-      item.id = `item-${key}`;
+      if (item.id === '') item.id = `item-${key}`;
     });
     if (!this.multiple) {
       this.keepOneSelected(Array.from(items));

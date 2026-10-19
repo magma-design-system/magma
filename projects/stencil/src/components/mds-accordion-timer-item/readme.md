@@ -17,8 +17,8 @@ The `<mds-accordion-timer-item>` web component is the single collapsible panel o
 
 - **Compound child only**: Must be placed as a direct default-slot child of `<mds-accordion-timer>`, alongside other `<mds-accordion-timer-item>` siblings. It is not used standalone or mixed with other child types, since the parent drives the rotating timer across the items.
 - **Selection is parent-orchestrated**: `selected` represents the open state, but only one sibling is open at a time - the parent advances selection on the timer or on a user click.
-- **Click toggles and reports up**: Clicking the header toggles `selected` and, when opening, emits `mdsAccordionTimerItemClickSelect` so the parent can pause and re-anchor its timer on this item.
-- **Programmatic selection**: Setting `selected` to `true` emits `mdsAccordionTimerItemSelect`, and the parent restarts the countdown from the beginning of that item. A click changes `selected` too, so it emits this event as well, just before `mdsAccordionTimerItemClickSelect`.
+- **Click reports up**: Clicking the header of a closed item emits `mdsAccordionTimerItemClickSelect`, and the parent opens it, pauses and re-anchors its timer on it. Clicking the open item does nothing: it stays open.
+- **Programmatic selection**: Setting `selected` to `true` emits `mdsAccordionTimerItemSelect`, and the parent restarts the countdown from the beginning of that item. A click reaches `selected` through the parent, so it emits this event as well, which the parent does not take as a second selection.
 - **Hover pauses the countdown**: While selected, pointer enter/leave emit `mdsAccordionTimerItemMouseEnterSelect` / `mdsAccordionTimerItemMouseLeaveSelect`, which the parent uses to pause and resume the timer. These fire only when the item is currently selected.
 
 #### Properties & Visual Configurations
@@ -302,14 +302,14 @@ mds-accordion-timer-item::part(label) {
 
 ## Properties
 
-| Property                   | Attribute     | Description                                                                                                   | Type                                                       | Default     |
-| -------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
-| `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or opened                                              | `string`                                                   | `undefined` |
-| `duration`                 | `duration`    | Specifies the duration of the single component when selected, it overrides the global duration of itself only | `number \| undefined`                                      | `undefined` |
-| `progress`                 | `progress`    | A value between 0 and 100 that rapresents the status progress                                                 | `number`                                                   | `0`         |
-| `selected`                 | `selected`    | Specifies if the accordion item is opened or not                                                              | `boolean`                                                  | `false`     |
-| `typography`               | `typography`  | Specifies the typography of the element                                                                       | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h5'`      |
-| `uuid`                     | `uuid`        | Used automatically by MdsAccordionTimer wrapper to handle it's siblings                                       | `number`                                                   | `0`         |
+| Property                   | Attribute     | Description                                                                                                                                                     | Type                                                       | Default     |
+| -------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
+| `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or opened                                                                                                | `string`                                                   | `undefined` |
+| `duration`                 | `duration`    | Specifies the duration of the single component when selected, it overrides the global duration of itself only                                                   | `number \| undefined`                                      | `undefined` |
+| `progress`                 | `progress`    | The progress of the item's countdown, from 0 to 1: mds-accordion-timer writes it while the item is selected and sets it back to 0 when the next item takes over | `number`                                                   | `0`         |
+| `selected`                 | `selected`    | Specifies if the accordion item is opened or not                                                                                                                | `boolean`                                                  | `false`     |
+| `typography`               | `typography`  | Specifies the typography of the element                                                                                                                         | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h5'`      |
+| `uuid`                     | `uuid`        | Used automatically by MdsAccordionTimer wrapper to handle it's siblings                                                                                         | `number`                                                   | `0`         |
 
 
 ## Events

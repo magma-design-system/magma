@@ -144,7 +144,7 @@
   @apply focus-bounce;
 
   align-self: stretch;
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   box-sizing: border-box;
   display: flex;
   flex-shrink: 0;
@@ -158,7 +158,7 @@
 
 .switch {
   background-color: var(--mds-input-switch-box-color-enabled-unchecked);
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   box-sizing: border-box;
   cursor: pointer;
   display: inline-flex;
@@ -185,7 +185,7 @@
   animation-iteration-count: 1;
   animation-timing-function: var(--mds-input-switch-animation-timing-function);
   background-color: var(--mds-input-switch-toggle-color-enabled-unchecked);
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   box-shadow: var(--shadow);
   display: flex;
   height: var(--mds-input-switch-toggle-size);

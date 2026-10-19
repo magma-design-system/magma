@@ -15,10 +15,10 @@ The `<mds-img>` web component is the responsive image primitive of the Magma Des
 
 #### Semantic Behavior
 
-- **Automatic alt fallback**: When `alt` is omitted or empty, it is derived from the trailing filename segment of `src` so the image is never left without an accessible name; `alt=""` therefore does not make the image decorative.
+- **Automatic alt fallback**: When `alt` is omitted, it is derived from the trailing filename segment of `src`. An empty `alt` (`alt=""`) marks the image as decorative: the host takes `role="presentation"` and no name, and assistive technologies skip it.
 - **Error state**: A failed load swaps the picture for a broken-image icon plus the `alt` text, emitting `mdsImgLoadError`; changing `src` clears the error and retries.
 - **Load events**: `mdsImgLoadSuccess` and `mdsImgLoadError` both carry the underlying `HTMLImageElement` in their detail, letting consumers read natural dimensions or react to failures.
-- **Consumption-aware loading**: When `srcsetConsumption` is set, the component reads the persisted consumption preference (the `mdsPrefConsumption` key that `mds-pref-consumption` writes, read once on load) and picks the matching source; under the `low` preference the image is deferred behind a "click to load" placeholder until the user opts in.
+- **Consumption-aware loading**: When `srcsetConsumption` is set, the component reads the consumption preference the page applies, the one `mds-pref-consumption` publishes, and follows a change; on a page without that controller it reads the stored choice (the `mdsPrefConsumption` key). It picks the matching source; under the `low` preference the image is deferred behind a "click to load" placeholder until the user opts in.
 - **Localized placeholder**: The deferred-load placeholder label is resolved through the shared locale system (el/en/es/it).
 
 #### Properties & Visual Configurations
@@ -204,7 +204,7 @@ The inner `<img>` lives in shadow DOM, and its native `load` and `error` events 
 
 #### Do Not Use `srcset-consumption` Without a Meaningful Bucket Tag
 
-Each entry in `srcset-consumption` must end with `low`, `medium`, or `high`. Entries with any other tag are silently ignored, leaving that consumption level without a source.
+Each entry in `srcset-consumption` must end with `low`, `medium`, or `high`. Entries with any other tag, or none, are ignored with a console warning, leaving that consumption level without a source.
 
 ```html
 <!-- INCORRECT -->
@@ -260,7 +260,7 @@ mds-img::part(media) {
 
 | Property            | Attribute            | Description                                                                                                                                                                                                                                                                                                                       | Type                                                                                                                   | Default                        |
 | ------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| `alt`               | `alt`                | Specifies an alternate text for an image                                                                                                                                                                                                                                                                                          | `string`                                                                                                               | `''`                           |
+| `alt`               | `alt`                | Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file                                                                                                                                                       | `string`                                                                                                               | `undefined`                    |
 | `crossorigin`       | `crossorigin`        | Allow images from third-party sites that allow cross-origin access to be used with canvas                                                                                                                                                                                                                                         | `"anonymous" \| "use-credentials" \| undefined`                                                                        | `'use-credentials'`            |
 | `height`            | `height`             | The height attribute specifies the height of an image, in pixels.                                                                                                                                                                                                                                                                 | `string \| undefined`                                                                                                  | `undefined`                    |
 | `loading`           | `loading`            | Specifies whether a browser should load an image immediately or to defer loading of images until some conditions are met.                                                                                                                                                                                                         | `"eager" \| "lazy" \| undefined`                                                                                       | `'lazy'`                       |
@@ -282,9 +282,9 @@ mds-img::part(media) {
 
 ## Shadow Parts
 
-| Part      | Description |
-| --------- | ----------- |
-| `"media"` |             |
+| Part      | Description                               |
+| --------- | ----------------------------------------- |
+| `"media"` | The native `<img>` that shows the picture |
 
 
 ## CSS Custom Properties

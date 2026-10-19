@@ -11,6 +11,9 @@
   Deliberately NOT registered:
     - --mds-header-z-index: read by mds-header-bar as var(--mds-header-z-index, <default>), so a
       registration would keep that fallback from ever firing.
+    - --mds-header-color, --mds-header-icon-color: read by mds-header-bar, for its hamburger, and
+      by mds-header itself through var() fallbacks, and declared by no default: a registration
+      would always give them a value, the light initial-value.
 */
 
 @property --mds-header-backdrop-blur-strength {
@@ -29,18 +32,6 @@
   inherits: true;
   initial-value: true;
   syntax: 'true | false';
-}
-
-@property --mds-header-color {
-  inherits: true;
-  initial-value: rgb(var(--magma-text-default));
-  syntax: '<color>';
-}
-
-@property --mds-header-icon-color {
-  inherits: true;
-  initial-value: rgb(var(--magma-text-default));
-  syntax: '<color>';
 }
 
 @property --mds-header-inline-margin {

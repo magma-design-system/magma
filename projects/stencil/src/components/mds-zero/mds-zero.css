@@ -11,7 +11,8 @@
 
   align-items: center;
   background-color: rgb(var(--magma-wash-soft));
-  border-radius: var(--radius-xl);
+  border-radius: var(--magma-radius-xl);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   flex-direction: column;
   gap: --spacing(600);

@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Host,
   h,
+  Listen,
   Prop,
   State,
   Watch,
@@ -20,6 +21,13 @@ import localeIt from './meta/locale.it.json';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
 import miBaselineKeyboardArrowUp from '@icon/mi/baseline/keyboard-arrow-up.svg';
 import { TabSizeType } from '@type/button';
+
+// a language tag as the component reads it (RFC 5646): a primary subtag of two or three letters,
+// the item dictionary has `ceb`, `haw` and `hmn`, then the region, script or variant subtags
+const LANGUAGE_CODE = /^[a-z]{2,3}(-[A-Za-z0-9]{1,8})*$/;
+
+const isLanguageCode = (value?: string | null): value is string =>
+  value != null && LANGUAGE_CODE.test(value);
 
 /**
  * @slot - Add `mds-pref-language-item` element/s.
@@ -80,9 +88,13 @@ export class MdsPrefLanguage {
     this.checkLanguageSelect();
   }
 
+  // a language set from code is the selected item of the list too, as a pick is
   @Watch('set')
   handleSetChange(newValue: string): void {
     this.setLanguage(newValue);
+    this.elPreferLanguageItems?.forEach((element) => {
+      element.selected = element.code === this.set;
+    });
   }
 
   private readonly toggleDropdown = (): void => {
@@ -99,19 +111,21 @@ export class MdsPrefLanguage {
     });
   };
 
+  // A pick reaches the component from any item, one added after load too: the listener sits on
+  // the host, where the event of the item bubbles, instead of on each item found on load (#826)
+  @Listen('mdsPrefLanguageItemSelect')
+  handleItemSelect(e: CustomEvent): void {
+    this.changeLanguageSelectItem();
+    this.currentSelectedItem = e.target as HTMLMdsPrefLanguageItemElement;
+    this.currentSelectedItem.selected = true;
+    this.languageChangeEvent.emit({ language: this.currentSelectedItem.code });
+    this.showDropdown = false;
+    this.setLanguage(e.detail.language);
+  }
+
+  // the items, read again when they change, mark the language in place
   private readonly checkLanguageSelect = (): void => {
     this.elPreferLanguageItems = this.element.querySelectorAll('mds-pref-language-item');
-    this.elPreferLanguageItems.forEach((element) => {
-      element.addEventListener('mdsPrefLanguageItemSelect', (e: CustomEvent) => {
-        this.changeLanguageSelectItem();
-        this.currentSelectedItem = e.currentTarget as HTMLMdsPrefLanguageItemElement;
-        this.currentSelectedItem.selected = true;
-        this.languageChangeEvent.emit({ language: this.currentSelectedItem.code });
-        this.showDropdown = false;
-        this.setLanguage(e.detail.language);
-      });
-    });
-
     this.elPreferLanguageItems.forEach((element) => {
       element.selected = element.code === this.set;
     });
@@ -125,18 +139,31 @@ export class MdsPrefLanguage {
   };
 
   private readonly setLanguage = (set: string): void => {
-    if (!/(auto)|^[a-z]{2}(-[A-Z]{2})?$/gm.exec(set)) {
-      throw Error(`Language code set not reconized: ${set}`);
+    // a code that is no language tag, or the attribute removed, is ignored: the page keeps the
+    // language it has, and on load the one `auto` finds. It used to throw (#825)
+    if (set !== 'auto' && !isLanguageCode(set)) {
+      if (set != null) {
+        console.warn(`mds-pref-language: ignoring the invalid language code "${set}"`);
+      }
+      if (this.appliedLanguage !== undefined) {
+        this.set = this.appliedLanguage;
+        return;
+      }
     }
+    const code = isLanguageCode(set) ? set : 'auto';
 
     // navigator.language is missing in the hydrate/SSR runtime's MockNavigator
     const systemLanguage = this.sanitizeLanguage(navigator.language ?? 'en');
     const userLanguage = localStorage.getItem(this.localStorageAlias);
+    // a value an earlier version stored without checking it would come back on every load
+    if (userLanguage !== null && !isLanguageCode(userLanguage)) {
+      localStorage.removeItem(this.localStorageAlias);
+    }
     const pageLanguage = document.querySelector('html')?.getAttribute('lang') ?? null;
     const language =
-      set === 'auto'
-        ? (userLanguage ?? pageLanguage ?? systemLanguage)
-        : this.sanitizeLanguage(set);
+      code === 'auto'
+        ? ([userLanguage, pageLanguage].find(isLanguageCode) ?? systemLanguage)
+        : this.sanitizeLanguage(code);
 
     this.set = language;
     // Re-applying the same language must not emit or write again (the `set`
@@ -186,7 +213,7 @@ export class MdsPrefLanguage {
           visible={this.showDropdown}
           onMdsDropdownHide={this.hideLanguageSelectDropdown}
         >
-          <slot></slot>
+          <slot onSlotchange={this.checkLanguageSelect}></slot>
         </mds-dropdown>
         {this.set !== this.defaultLanguage && (
           <mds-text typography="caption">{this.t.get('defaultLanguage')}</mds-text>

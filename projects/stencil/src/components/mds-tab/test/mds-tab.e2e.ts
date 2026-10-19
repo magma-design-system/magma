@@ -234,4 +234,29 @@ describe('mds-tab', () => {
       await vi.waitFor(() => expect(tabs(root)).not.toHaveAttribute('role'));
     });
   });
+
+  // #825: a panel past the last item read the id of an item that is not there and threw, and no
+  // panel was hidden
+  describe('with more content panels than items', () => {
+    it('shows the panel of the selected item and hides the others, the extra one too', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleError = vi.spyOn(console, 'error');
+      const { root } = await render(`<mds-tab>
+  <mds-tab-item label="First" selected></mds-tab-item>
+  <mds-tab-item label="Second"></mds-tab-item>
+  <div slot="content">One</div>
+  <div slot="content">Two</div>
+  <div slot="content">Three</div>
+</mds-tab>`);
+      const [one, two, three] = Array.from(root.querySelectorAll<HTMLElement>('[slot="content"]'));
+
+      expect(consoleError).not.toHaveBeenCalled();
+      expect(one).not.toHaveAttribute('mds-tab-content-hidden');
+      expect(two).toHaveAttribute('mds-tab-content-hidden');
+      expect(three).toHaveAttribute('mds-tab-content-hidden');
+      expect(three).toEqualAttribute('role', 'tabpanel');
+      expect(three).not.toHaveAttribute('aria-labelledby');
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('3 content panels for 2'));
+    });
+  });
 });

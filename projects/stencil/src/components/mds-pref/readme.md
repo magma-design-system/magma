@@ -14,14 +14,14 @@ The `<mds-pref>` web component is the accessibility-preferences panel of the Mag
 #### Semantic Behavior
 
 - **Compound parent**: Expects `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-mode`, `mds-pref-theme` and/or `mds-pref-language` children in its default slot; it owns no preference UI of its own beyond coordination (a scheme-constrained `mds-pref-theme` locks the matching `mds-pref-mode` item).
-- **Size propagation**: A change of `size` after load cascades the value down to every nested `mds-pref-*` child; the initial value is not forwarded (the watcher does not run on load), so for the first render set `size` on each child too.
+- **Size propagation**: `size` cascades down to every nested `mds-pref-*` child, on load, on every change and to the children added later; without a `size` on the panel each child keeps its own.
 - **Reload notice**: The panel has an inline caption prompting the user to refresh the page when a preference that cannot apply live (`consumption` or `language`) changes, but it listens for the children's `mdsPrefChange` only in `controller` mode, where the host is hidden: in the visible panel the caption never appears.
 - **Document flag**: While at least one `<mds-pref>` is on the page, `<html>` carries `data-magma-pref`, which turns off the styles' fallback to the OS preferences; it is removed only when the last instance leaves the page, so a settings page that unmounts its own panel leaves the app controller in charge. Moving a panel in the DOM (between a sidebar and a menu, or with a client router that keeps it across pages) keeps the flag, the reload notice and the theme lock on the mode control.
 - **Live language sync**: When a `language` change is emitted, the panel re-resolves its own locale so the reload notice is shown in the newly selected language.
 
 #### Properties & Visual Configurations
 
-`size` is one of the shared tab sizes and is forwarded to children rather than styling the host directly - a change on the parent reaches every child, but the initial value does not, so set it on the children as well.
+`size` is one of the shared tab sizes and is forwarded to children rather than styling the host directly - set it on the parent and it reaches every child.
 
 #### Other behavioral props
 
@@ -67,14 +67,14 @@ Slot only the controls your application needs. `<mds-pref>` renders whatever chi
 
 #### Controlling Size
 
-A later change of the parent's `size` drives all child controls at once, but the initial value is not forwarded (the watcher does not run on load): for the first render set `size` on each child as well.
+The parent's `size` drives all child controls at once, on load and when it changes.
 
 ```html
 <!-- Compact panel for a sidebar or popover -->
 <mds-pref size="sm">
-  <mds-pref-mode size="sm"></mds-pref-mode>
-  <mds-pref-contrast size="sm"></mds-pref-contrast>
-  <mds-pref-animation size="sm"></mds-pref-animation>
+  <mds-pref-mode></mds-pref-mode>
+  <mds-pref-contrast></mds-pref-contrast>
+  <mds-pref-animation></mds-pref-animation>
 </mds-pref>
 ```
 
@@ -207,9 +207,9 @@ The controls fire no native `change` event. Use the documented `mdsPrefChange` e
 
 ## Slots
 
-| Slot | Description                                                                                                               |
-| ---- | ------------------------------------------------------------------------------------------------------------------------- |
-|      | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-mode` element/s. |
+| Slot | Description                                                                                                                                |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+|      | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, `mds-pref-mode` or `mds-pref-theme` element/s. |
 
 
 ## Dependencies

@@ -97,6 +97,94 @@ describe('mds-chip', () => {
     expect(getLabel(root)).not.toHaveAttribute('aria-pressed');
   });
 
+  it('toggles with Space as with Enter, on the release of Space', async () => {
+    const { root, waitForChanges } = await render('<mds-chip label="a" selectable></mds-chip>');
+
+    getLabel(root).focus();
+    await userEvent.keyboard('{Space>}');
+    await waitForChanges();
+    expect(root).not.toHaveAttribute('selected');
+
+    await userEvent.keyboard('{/Space}');
+    await waitForChanges();
+    expect(root).toHaveAttribute('selected');
+  });
+
+  // disabled only dimmed the chip and only when written in the markup: the label stayed a tab
+  // stop and Enter still emitted every event (#820)
+  describe('disabled', () => {
+    it('takes the label and the delete button out of the tab order', async () => {
+      const { root } = await render(
+        '<mds-chip label="a" selectable deletable disabled></mds-chip>',
+      );
+
+      expect(getLabel(root)).not.toHaveAttribute('tabindex');
+      expect(getLabel(root)).toHaveAttribute('aria-disabled', 'true');
+      expect(root.shadowRoot!.querySelector('.button-delete')).toHaveAttribute('disabled');
+    });
+
+    it('emits nothing from the keyboard or a script click', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render(
+        '<mds-chip label="a" selectable deletable disabled></mds-chip>',
+      );
+      const select = spyOnEvent('mdsChipSelect');
+      const remove = spyOnEvent('mdsChipDelete');
+
+      getLabel(root).focus();
+      await userEvent.keyboard('{Enter}{Space}');
+      getLabel(root).click();
+      root.shadowRoot!.querySelector<HTMLElement>('.button-delete')!.click();
+      await waitForChanges();
+
+      expect(select).not.toHaveReceivedEvent();
+      expect(remove).not.toHaveReceivedEvent();
+      expect(root).not.toHaveAttribute('selected');
+    });
+
+    it('is styled when set by code, and works again once enabled', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsChipElement>(
+        '<mds-chip label="a" clickable></mds-chip>',
+      );
+      const click = spyOnEvent('mdsChipClickLabel');
+
+      (root as unknown as { disabled: boolean }).disabled = true;
+      await waitForChanges();
+      expect(root).toHaveAttribute('disabled');
+      expect(getComputedStyle(root).pointerEvents).toBe('none');
+
+      (root as unknown as { disabled: boolean }).disabled = false;
+      await waitForChanges();
+      getLabel(root).focus();
+      await userEvent.keyboard('{Enter}');
+      await waitForChanges();
+
+      expect(click).toHaveReceivedEventTimes(1);
+    });
+  });
+
+  it('turns the label into a button when it becomes clickable, and back', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsChipElement>(
+      '<mds-chip label="a"></mds-chip>',
+    );
+    const click = spyOnEvent('mdsChipClickLabel');
+
+    root.clickable = true;
+    await waitForChanges();
+    expect(getLabel(root)).toEqualAttributes({ role: 'button', tabindex: '0' });
+    getLabel(root).focus();
+    await userEvent.keyboard('{Enter}');
+    await waitForChanges();
+    expect(click).toHaveReceivedEventTimes(1);
+
+    root.clickable = false;
+    await waitForChanges();
+    getLabel(root).click();
+    await waitForChanges();
+    expect(getLabel(root)).not.toHaveAttribute('role');
+    expect(getLabel(root)).not.toHaveAttribute('tabindex');
+    expect(click).toHaveReceivedEventTimes(1);
+  });
+
   it('leaves a static chip without a role', async () => {
     const { root } = await render('<mds-chip label="a"></mds-chip>');
 

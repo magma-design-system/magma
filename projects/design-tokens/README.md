@@ -352,6 +352,8 @@ The playground works with any configuration, not just the repo one: **load confi
 
 CSS and GIMP respect export diversification: they emit the whole palette and one file per export group. When that yields more than one file the download is a zip (`magma-css.zip`, `magma-gimp.zip`); a single file downloads directly. The outputs are produced in the browser from the same Handlebars templates the build uses, so they match the CLI output. Editing is in-memory only: nothing touches the repo files.
 
+A reload keeps the work: the playground mirrors it to the browser's localStorage as a draft, stamped with the configuration it was made on (the bundled one, or the file the [UI command](#ui-command) serves). When that configuration changed after the draft was saved (edited, removed, or another file), a draft with no edits of its own gives way to it, and a draft with edits shows why and asks: **use the file on disk** (or **use the bundled config**) or **keep the draft**. Saving stays off until you pick, so the draft cannot overwrite the newer file by mistake.
+
 New colors are created from a dialog: pick the value and the name auto-completes underneath from the "Name That Color" vocabulary (via [color-namer](https://github.com/colorjs/color-namer), ~1500 names, kebab-cased: e.g. `persian-green`); choose the token group, confirm, and the playground lands on the new color already selected. Names are made unique with a numeric suffix when needed. Auto-naming keeps following the picker in the editor too, but only for names assigned by the playground itself: a name typed by the user, or any name coming from a loaded configuration, is never touched. Picking a value already used by another color raises a warning.
 
 The **groups** view manages `ratios`, `formula` and `export` per token group (writing the `groups` section of the configuration), with a compact preview of every member color; colors overriding the group individually are flagged. The per-color fields in the editor default to inheriting from the group.
@@ -375,10 +377,10 @@ npx magma-design-tokens ui --port 4000 --config ./tokens/color.json
 It starts a small server (default port `5178`) that both serves the playground and exposes a local API:
 
 - `GET /api/config` reads the configuration via the same lookup as the CLI (respecting `--config`);
-- `PUT /api/config` writes it back with a stable key order, ASCII-only output and a trailing newline, so saves produce clean git diffs;
+- `PUT /api/config` writes it back with a stable key order, ASCII-only output and a trailing newline, so saves produce clean git diffs. It only writes JSON rc files: a configuration found in a JavaScript module (`.magma-design-tokensrc.js`, `magma-design-tokens.config.mjs`, ...) or in the `magma-design-tokens` key of `package.json` is refused with `409`, since a save would replace it with bare JSON;
 - `POST /api/build` runs the full token generation on disk, honouring the `--outDir` / `--generate` / `--export-tokens` flags passed to `ui`.
 
-In this mode the playground loads the on-disk configuration on start and swaps **copy JSON** for a **save** button that persists to the resolved file; a `*` marks unsaved changes. The **download** menu gains **Build tokens on disk** to trigger the build endpoint. Run standalone (`nx run design-tokens:playground` or `npm run playground -w projects/design-tokens`) the API is absent and the playground keeps its in-memory, copy/download-only behaviour.
+In this mode the playground loads the on-disk configuration on start and swaps **copy JSON** for a **save** button that persists to the resolved file; a `*` marks unsaved changes. With a JavaScript or `package.json` configuration the button reads **read-only** and a notice under the toolbar says why: edit that file by hand, or take the edits out with **download > Config (json)** and move to a `.magma-design-tokensrc.json`. The **download** menu gains **Build tokens on disk** to trigger the build endpoint. Run standalone (`nx run design-tokens:playground` or `npm run playground -w projects/design-tokens`) the API is absent and the playground keeps its in-memory, copy/download-only behaviour.
 
 ### Cli example
 

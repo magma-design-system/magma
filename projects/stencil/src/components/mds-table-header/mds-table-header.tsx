@@ -8,7 +8,9 @@ import localeIt from './meta/locale.it.json';
 import { MdsInputSwitchEventDetail } from '@component/mds-input-switch/meta/event-detail';
 
 /**
- * @slot - Add `mds-table-row` element/s.
+ * @slot - Add `mds-table-header-cell` element/s, one per column: the header is itself the row of
+ * the column headings.
+ * @part actions - The heading of the Actions column, shown while rows have `slot="action"` content
  */
 
 @Component({
@@ -55,6 +57,16 @@ export class MdsTableHeader {
     }
     // totalItems 0 would otherwise read as "all of them are selected"
     this.checkboxEl.checked = totalItems > 0 && selectedItems === totalItems;
+  }
+
+  /**
+   * `internal` Shows or hides the Actions column: mds-table calls it whenever its rows gain or
+   * lose `slot="action"` content, the header itself reads them only on load
+   * @param hasActions whether any row has actions
+   */
+  @Method()
+  async setActions(hasActions: boolean): Promise<void> {
+    this.hasActions = hasActions;
   }
 
   componentWillLoad(): void {

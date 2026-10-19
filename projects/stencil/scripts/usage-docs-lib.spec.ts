@@ -5,7 +5,9 @@ import {
   incorrectLines,
   README_INTRO,
   splitMarkdown,
+  undescribedMembers,
   type ApiComponent,
+  type DescribedComponent,
   type UsageModel,
 } from './usage-docs-lib';
 
@@ -258,5 +260,50 @@ describe('handWrittenReadme', () => {
 
   it('ignores the generated part', () => {
     expect(handWrittenReadme('mds-chip', `# mds-chip\n\n${generated}## Usage\n\ntext`)).toBe('');
+  });
+});
+
+describe('undescribedMembers', () => {
+  const described: DescribedComponent = {
+    tag: 'mds-button',
+    props: [{ name: 'label', docs: 'The text of the button' }],
+    events: [{ event: 'mdsButtonClick', docs: 'Emits on click' }],
+    methods: [{ name: 'focusButton', docs: 'Moves the focus to the button' }],
+    slots: [{ name: '', docs: 'The text of the button' }],
+    parts: [{ name: 'icon', docs: 'The icon inside the component' }],
+    styles: [{ name: '--mds-button-radius', docs: 'The radius of the button' }],
+  };
+
+  it('finds nothing when every member has a description', () => {
+    expect(undescribedMembers(described)).toEqual([]);
+  });
+
+  it('names each member without one as magma.api.txt does', () => {
+    expect(
+      undescribedMembers({
+        tag: 'mds-button',
+        props: [{ name: 'label', docs: '' }],
+        events: [{ event: 'mdsButtonClick', docs: ' ' }],
+        methods: [{ name: 'agree', docs: '' }],
+        slots: [
+          { name: '', docs: '' },
+          { name: 'notification', docs: '' },
+        ],
+        // a part render() sets without an @part comes with empty docs
+        parts: [
+          { name: 'icon', docs: 'The icon inside the component' },
+          { name: 'label', docs: '' },
+        ],
+        styles: [{ name: '--mds-button-radius', docs: '' }],
+      }),
+    ).toEqual([
+      'prop label',
+      'event mdsButtonClick',
+      'method agree',
+      'slot (default)',
+      'slot notification',
+      'part label',
+      'css --mds-button-radius',
+    ]);
   });
 });

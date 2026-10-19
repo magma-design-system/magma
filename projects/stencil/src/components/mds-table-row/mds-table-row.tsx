@@ -1,4 +1,4 @@
-import { Build, Component, Host, h, Prop, Element, State } from '@stencil/core';
+import { Build, Component, Host, h, Prop, Element, State, Watch } from '@stencil/core';
 import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
 import { Locale } from '@common/locale';
@@ -67,7 +67,12 @@ export class MdsTableRow {
   @Prop({ reflect: true }) readonly value?: string | number;
 
   private onActionSlotChange = (): void => {
-    this.hasActions = hasChildWithSlot(this.host, 'action');
+    const hasActions = hasChildWithSlot(this.host, 'action');
+    // the slot fires on load too, with nothing new: the table hears only of a real change,
+    // actions rendered later or taken away, which its observer of the rows cannot see (#801)
+    if (hasActions === this.hasActions) return;
+    this.hasActions = hasActions;
+    this.host.closest('mds-table')?.updateActions();
   };
 
   componentWillLoad(): void {
@@ -103,8 +108,15 @@ export class MdsTableRow {
 
   private handleSelectionChange = (e: CustomEvent): void => {
     this.selected = e.detail.checked;
-    this.host.closest('mds-table')?.updateSelection();
   };
+
+  // the table learns of every change of `selected`, from the checkbox or from code: only the
+  // checkbox used to tell it, so a row selected from code was missing from mdsTableSelectionChange
+  @Watch('selected')
+  selectedChanged(newValue?: boolean, oldValue?: boolean): void {
+    if (!!newValue === !!oldValue) return;
+    void this.host.closest('mds-table')?.updateSelection();
+  }
 
   render() {
     return (

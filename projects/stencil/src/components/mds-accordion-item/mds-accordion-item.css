@@ -54,8 +54,12 @@
 
   background-color: transparent;
   border: 0;
-  border-radius: var(--radius-md);
+
+  /* a control one line tall, 24px as its icon: capped at a part of that height, as mds-button's
+     radius is (#913) */
+  border-radius: min(var(--magma-radius-md), var(--magma-corner-cap) * --spacing(600));
   color: var(--mds-accordion-item-description-color);
+  corner-shape: var(--magma-corner-shape);
   cursor: pointer;
   display: grid;
   gap: --spacing(400);

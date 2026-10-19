@@ -41,8 +41,9 @@
   --mds-tooltip-z-index: var(--magma-tooltip-z-index);
 
   background-color: var(--mds-tooltip-background);
-  border-radius: var(--radius-3xs);
+  border-radius: var(--magma-radius-3xs);
   box-sizing: border-box;
+  corner-shape: var(--magma-corner-shape);
   display: grid;
   filter: var(--mds-tooltip-drop-shadow);
   gap: --spacing(400);
@@ -106,3 +107,4 @@
 @import './css/mds-tooltip-pref-animation.css';
 @import './css/mds-tooltip-pref-mode.css';
 @import './css/mds-tooltip-pref-contrast.css';
+@import './css/mds-tooltip-pref-contrast-dark.css';

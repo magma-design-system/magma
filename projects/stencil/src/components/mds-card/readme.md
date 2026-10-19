@@ -15,8 +15,8 @@ The `<mds-card>` web component is the surface container of the Magma Design Syst
 
 #### Semantic Behavior
 
-- **Layout is inferred, not declared**: The card detects which of the `media` / `header` / `content` / `footer` regions are present (once, when it loads) and reshapes itself to whatever content you provide.
-- **Compound parent/child relationship**: `<mds-card-media>`, `<mds-card-header>`, `<mds-card-content>` and `<mds-card-footer>` are recognized by tag name and mapped onto the corresponding region, so they slot in without an explicit `slot` attribute. Plain elements given the matching `slot` value land in that region, but the card infers its grid from the tag names of its children, so with plain elements the managed grid does not apply and the regions overlap: use them with `disableAutoGrid`.
+- **Layout is inferred, not declared**: The card detects which of the `media` / `header` / `content` / `footer` regions are present, again whenever its content changes, and reshapes itself to whatever content you provide.
+- **Compound parent/child relationship**: `<mds-card-media>`, `<mds-card-header>`, `<mds-card-content>` and `<mds-card-footer>` are recognized by tag name and mapped onto the corresponding region, so they slot in without an explicit `slot` attribute. Plain elements given the matching `slot` value land in that region and take part in the managed grid the same way.
 - **Responsive by width**: The card's internal layout switches between stacked and media-beside-content arrangements based on the card's own width, independent of viewport or theme.
 - **Slot regions are fixed**: Only the four named regions are rendered; there is no default (unnamed) slot, so loose text or elements without a recognized slot/tag are not laid out.
 
@@ -26,7 +26,7 @@ The `<mds-card>` web component is the surface container of the Magma Design Syst
 
 - **`disableAutoGrid`** (default `false`) toggles the intrinsic responsive grid. Leave it off to let the card own the placement and reflow of its regions; set it to opt out of the managed grid and lay the slotted content out yourself.
 
-Spacing is tuned through the `--mds-card-gap` and `--mds-card-padding` CSS custom properties rather than props.
+Spacing is tuned through the `--mds-card-gap` and `--mds-card-padding` CSS custom properties rather than props, the background of the card and of its regions through `--mds-card-background`.
 
 
 ### 2. Pattern
@@ -132,10 +132,10 @@ Omitting the header region shifts media to the top and content immediately below
 
 #### Using Raw Slot Attributes Instead of Compound Children
 
-When the compound children (`mds-card-*`) do not fit the use case, assign the `slot` attribute directly on any element, with the same four values: `media`, `header`, `content`, and `footer`. The card infers its managed grid from the tag names of its children, so plain elements need `disable-auto-grid`: without it the regions overlap. The regions then stack in slot order (media, header, content, footer).
+When the compound children (`mds-card-*`) do not fit the use case, assign the `slot` attribute directly on any element, with the same four values: `media`, `header`, `content`, and `footer`. The card reads the regions from the `slot` values, so plain elements get the same managed grid as the compound children.
 
 ```html
-<mds-card disable-auto-grid>
+<mds-card>
   <div slot="header" class="flex items-center gap-400 px-400 py-400">
     <mds-avatar initials="LB"></mds-avatar>
     <mds-text typography="h6">Luca Bianchi</mds-text>
@@ -164,12 +164,13 @@ Set `disable-auto-grid` to opt out of the managed responsive grid. The regions s
 
 #### Styling Customization via CSS Custom Properties
 
-Set `--mds-card-gap` and `--mds-card-padding` on the host or a parent selector. Use Magma spacing tokens so the values remain consistent across themes.
+Set `--mds-card-gap` and `--mds-card-padding` on the host or a parent selector. Use Magma spacing tokens so the values remain consistent across themes. `--mds-card-background` recolors the card and its regions together; name a surface role so dark mode keeps working.
 
 ```css
 .scheda-articolo mds-card {
   --mds-card-gap: calc(var(--spacing) * 200);
   --mds-card-padding: calc(var(--spacing) * 400);
+  --mds-card-background: rgb(var(--magma-surface-overlay));
 }
 ```
 
@@ -232,7 +233,7 @@ Compound children (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds
 
 #### Do Not Pierce the Shadow DOM with Undocumented Selectors
 
-The only supported customization surface is `--mds-card-gap`, `--mds-card-padding`, and `::part(layout)`. Targeting internal class names with `>>>`, `/deep/`, or any selector that reaches inside the shadow root couples your code to implementation details and will break on minor releases.
+The only supported customization surface is `--mds-card-background`, `--mds-card-gap`, `--mds-card-padding`, and `::part(layout)`. Targeting internal class names with `>>>`, `/deep/`, or any selector that reaches inside the shadow root couples your code to implementation details and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -339,10 +340,11 @@ The `header` slot is intended for title and action controls. Placing an `<mds-im
 
 ## CSS Custom Properties
 
-| Name                 | Description                            |
-| -------------------- | -------------------------------------- |
-| `--mds-card-gap`     | Sets the spacing between card elements |
-| `--mds-card-padding` | Sets the spacing around card elements  |
+| Name                    | Description                                                                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-card-background` | Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`) |
+| `--mds-card-gap`        | Sets the spacing between card elements                                                                                                |
+| `--mds-card-padding`    | Sets the spacing around card elements                                                                                                 |
 
 
 ----------------------------------------------

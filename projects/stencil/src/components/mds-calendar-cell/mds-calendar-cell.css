@@ -2,8 +2,8 @@
 
 /**
  * @prop --mds-calendar-cell-background: Background of calendar cells.
- * @prop --mds-calendar-cell-boundaries-background: Background for selection boundaries.
- * @prop --mds-calendar-cell-boundaries-color: Color for selection boundary lines.
+ * @prop --mds-calendar-cell-boundaries-background: Deprecated, read by nothing: the selection boundaries take the `-selection-*-boundaries-background` and `-preselection-*-boundaries-background` properties.
+ * @prop --mds-calendar-cell-boundaries-color: Deprecated, read by nothing: the selection boundaries take the `-selection-*-boundaries-color` and `-preselection-*-boundaries-color` properties.
  * @prop --mds-calendar-cell-boundaries-padding: Padding inside selection boundaries.
  * @prop --mds-calendar-cell-color: Text color of calendar cells.
  * @prop --mds-calendar-cell-other-month-background: Background of days from adjacent months.
@@ -11,8 +11,8 @@
  * @prop --mds-calendar-cell-disabled-background: Background for disabled days.
  * @prop --mds-calendar-cell-disabled-color: Text color for disabled days.
  * @prop --mds-calendar-cell-weekend-background: Background for weekend days.
- * @prop --mds-calendar-cell-weekend-color: Text colorfor weekend days.
- * @prop --mds-calendar-cell-size: Size (width/height) of each day cell.
+ * @prop --mds-calendar-cell-weekend-color: Text color for weekend days.
+ * @prop --mds-calendar-cell-size: Deprecated, read by nothing: a cell takes the width of its column in the calendar, and is square.
  * @prop --mds-calendar-cell-selection-boundaries-border-radius: Border radius for day selection boundaries.
  * @prop --mds-calendar-cell-selection-week-boundaries-border-radius: Border radius for week selection boundaries.
  * @prop --mds-calendar-cell-preselection-today-background: Background for today's date in preselection state.
@@ -39,63 +39,165 @@
  * @prop --mds-calendar-cell-selection-other-month-boundaries-color: Boundary color for selected days (other months).
  */
 
+/*
+  The cells live in the shadow DOM of mds-calendar, so these properties reach them only by
+  inheritance: set them on mds-calendar (or on any ancestor of it). The cell therefore never
+  declares a public property on its own :host, which would beat the inherited value: it reads
+  each one through a var() fallback into a --private-calendar-cell-* copy, and the state rules
+  (weekend, other month, selection, preview) switch between those copies.
+
+  No css/mds-calendar-cell-property.css on purpose: a registered property always has a value,
+  its initial-value, so every one of those fallbacks would stop firing and a cell would paint
+  the light value the registration was resolved to on a dark page. See
+  projects/styles/scripts/properties.ts for how the registrations are collected.
+*/
+
 :host {
-  --mds-calendar-cell-background: transparent;
-  --mds-calendar-cell-boundaries-background: transparent;
-  --mds-calendar-cell-boundaries-color: rgb(var(--magma-text-default));
-  --mds-calendar-cell-boundaries-padding: --spacing(100);
-  --mds-calendar-cell-color: rgb(var(--magma-text-default));
-  --mds-calendar-cell-other-month-background: transparent;
-  --mds-calendar-cell-other-month-color: rgb(var(--magma-text-disabled));
-  --mds-calendar-cell-disabled-background: transparent;
-  --mds-calendar-cell-disabled-color: rgb(var(--magma-text-disabled));
-  --mds-calendar-cell-weekend-background: transparent;
-  --mds-calendar-cell-weekend-color: rgb(var(--magma-text-subtle));
+  --private-calendar-cell-background: var(--mds-calendar-cell-background, transparent);
+  --private-calendar-cell-boundaries-padding: var(
+    --mds-calendar-cell-boundaries-padding,
+    --spacing(100)
+  );
+  --private-calendar-cell-color: var(
+    --mds-calendar-cell-color,
+    var(--mds-calendar-day-number-color, rgb(var(--magma-text-default)))
+  );
+  --private-calendar-cell-other-month-background: var(
+    --mds-calendar-cell-other-month-background,
+    transparent
+  );
+  --private-calendar-cell-other-month-color: var(
+    --mds-calendar-cell-other-month-color,
+    rgb(var(--magma-text-disabled))
+  );
+  --private-calendar-cell-disabled-background: var(
+    --mds-calendar-cell-disabled-background,
+    transparent
+  );
+  --private-calendar-cell-disabled-color: var(
+    --mds-calendar-cell-disabled-color,
+    rgb(var(--magma-text-disabled))
+  );
+  --private-calendar-cell-weekend-background: var(
+    --mds-calendar-cell-weekend-background,
+    transparent
+  );
+  --private-calendar-cell-weekend-color: var(
+    --mds-calendar-cell-weekend-color,
+    rgb(var(--magma-text-subtle))
+  );
 
   /* radius */
-  --mds-calendar-cell-size: --spacing(1200);
-  --mds-calendar-cell-selection-boundaries-border-radius: var(--radius-full);
-  --mds-calendar-cell-selection-week-boundaries-border-radius: var(--radius-full);
+  --private-calendar-cell-selection-boundaries-border-radius: var(
+    --mds-calendar-cell-selection-boundaries-border-radius,
+    var(--magma-radius-full)
+  );
+  --private-calendar-cell-selection-week-boundaries-border-radius: var(
+    --mds-calendar-cell-selection-week-boundaries-border-radius,
+    var(--magma-radius-full)
+  );
 
   /* today */
-  --mds-calendar-cell-preselection-today-background: rgb(var(--magma-accent-surface));
-  --mds-calendar-cell-preselection-today-color: rgb(var(--magma-accent-fg));
+  --private-calendar-cell-preselection-today-background: var(
+    --mds-calendar-cell-preselection-today-background,
+    rgb(var(--magma-accent-surface))
+  );
+  --private-calendar-cell-preselection-today-color: var(
+    --mds-calendar-cell-preselection-today-color,
+    rgb(var(--magma-accent-fg))
+  );
 
   /* preselection */
 
-  --mds-calendar-cell-preselection-current-month-background: rgb(var(--magma-accent-surface-hover));
-  --mds-calendar-cell-preselection-current-month-color: rgb(var(--magma-text-disabled));
-  --mds-calendar-cell-preselection-current-month-boundaries-color: rgb(var(--magma-text-disabled));
-  --mds-calendar-cell-preselection-current-month-boundaries-background: rgb(
-    var(--magma-accent-surface-subtle)
+  --private-calendar-cell-preselection-current-month-background: var(
+    --mds-calendar-cell-preselection-current-month-background,
+    rgb(var(--magma-accent-surface-hover))
   );
-  --mds-calendar-cell-preselection-other-month-background: rgb(var(--magma-accent-surface));
-  --mds-calendar-cell-preselection-other-month-color: rgb(var(--magma-text-disabled));
-  --mds-calendar-cell-preselection-other-month-boundaries-color: rgb(var(--magma-text-disabled));
-  --mds-calendar-cell-preselection-other-month-boundaries-background: rgb(var(--magma-surface-raised));
+  --private-calendar-cell-preselection-current-month-color: var(
+    --mds-calendar-cell-preselection-current-month-color,
+    rgb(var(--magma-text-disabled))
+  );
+  --private-calendar-cell-preselection-current-month-boundaries-color: var(
+    --mds-calendar-cell-preselection-current-month-boundaries-color,
+    rgb(var(--magma-text-disabled))
+  );
+  --private-calendar-cell-preselection-current-month-boundaries-background: var(
+    --mds-calendar-cell-preselection-current-month-boundaries-background,
+    rgb(var(--magma-accent-surface-subtle))
+  );
+  --private-calendar-cell-preselection-other-month-background: var(
+    --mds-calendar-cell-preselection-other-month-background,
+    rgb(var(--magma-accent-surface))
+  );
+  --private-calendar-cell-preselection-other-month-color: var(
+    --mds-calendar-cell-preselection-other-month-color,
+    rgb(var(--magma-text-disabled))
+  );
+  --private-calendar-cell-preselection-other-month-boundaries-color: var(
+    --mds-calendar-cell-preselection-other-month-boundaries-color,
+    rgb(var(--magma-text-disabled))
+  );
+  --private-calendar-cell-preselection-other-month-boundaries-background: var(
+    --mds-calendar-cell-preselection-other-month-boundaries-background,
+    rgb(var(--magma-surface-raised))
+  );
 
   /* selection */
 
-  --mds-calendar-cell-selection-current-month-background: rgb(var(--magma-accent-emphasis));
-  --mds-calendar-cell-selection-current-month-color: rgb(var(--magma-text-on-emphasis));
-  --mds-calendar-cell-selection-current-month-boundaries-background: rgb(var(--magma-surface-raised));
-  --mds-calendar-cell-selection-current-month-boundaries-color: rgb(var(--magma-text-muted));
-  --mds-calendar-cell-selection-current-month-weekend-background: rgb(var(--magma-accent-emphasis-hover));
-  --mds-calendar-cell-selection-current-month-weekend-color: rgb(var(--magma-accent-border));
-  --mds-calendar-cell-selection-current-month-weekend-boundaries-background: rgb(
-    var(--magma-accent-emphasis-hover)
+  --private-calendar-cell-selection-current-month-background: var(
+    --mds-calendar-cell-selection-current-month-background,
+    rgb(var(--magma-accent-emphasis))
   );
-  --mds-calendar-cell-selection-current-month-weekend-boundaries-color: rgb(var(--magma-text-muted));
-  --mds-calendar-cell-selection-other-month-background: rgb(var(--magma-accent-surface-hover));
-  --mds-calendar-cell-selection-other-month-color: rgb(var(--magma-text-subtle));
-  --mds-calendar-cell-selection-other-month-boundaries-background: rgb(var(--magma-accent-surface-subtle));
-  --mds-calendar-cell-selection-other-month-boundaries-color: rgb(var(--magma-text-disabled));
+  --private-calendar-cell-selection-current-month-color: var(
+    --mds-calendar-cell-selection-current-month-color,
+    rgb(var(--magma-text-on-emphasis))
+  );
+  --private-calendar-cell-selection-current-month-boundaries-background: var(
+    --mds-calendar-cell-selection-current-month-boundaries-background,
+    rgb(var(--magma-surface-raised))
+  );
+  --private-calendar-cell-selection-current-month-boundaries-color: var(
+    --mds-calendar-cell-selection-current-month-boundaries-color,
+    rgb(var(--magma-text-muted))
+  );
+  --private-calendar-cell-selection-current-month-weekend-background: var(
+    --mds-calendar-cell-selection-current-month-weekend-background,
+    rgb(var(--magma-accent-emphasis-hover))
+  );
+  --private-calendar-cell-selection-current-month-weekend-color: var(
+    --mds-calendar-cell-selection-current-month-weekend-color,
+    rgb(var(--magma-accent-border))
+  );
+  --private-calendar-cell-selection-current-month-weekend-boundaries-background: var(
+    --mds-calendar-cell-selection-current-month-weekend-boundaries-background,
+    rgb(var(--magma-accent-emphasis-hover))
+  );
+  --private-calendar-cell-selection-current-month-weekend-boundaries-color: var(
+    --mds-calendar-cell-selection-current-month-weekend-boundaries-color,
+    rgb(var(--magma-text-muted))
+  );
+  --private-calendar-cell-selection-other-month-background: var(
+    --mds-calendar-cell-selection-other-month-background,
+    rgb(var(--magma-accent-surface-hover))
+  );
+  --private-calendar-cell-selection-other-month-color: var(
+    --mds-calendar-cell-selection-other-month-color,
+    rgb(var(--magma-text-subtle))
+  );
+  --private-calendar-cell-selection-other-month-boundaries-background: var(
+    --mds-calendar-cell-selection-other-month-boundaries-background,
+    rgb(var(--magma-accent-surface-subtle))
+  );
+  --private-calendar-cell-selection-other-month-boundaries-color: var(
+    --mds-calendar-cell-selection-other-month-boundaries-color,
+    rgb(var(--magma-text-disabled))
+  );
 
   align-items: center;
   aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
-  padding: var(--mds-calendar-cell-boundaries-padding);
+  padding: var(--private-calendar-cell-boundaries-padding);
   position: relative;
 }
 
@@ -105,8 +207,8 @@
 
 .inner-dot {
   aspect-ratio: 1 / 1;
-  background-color: var(--mds-calendar-cell-inner-background);
-  border-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
+  background-color: var(--private-calendar-cell-inner-background);
+  border-radius: var(--private-calendar-cell-selection-boundaries-border-radius);
   display: flex;
   min-height: 0;
   min-width: 0;
@@ -115,8 +217,8 @@
 }
 
 .area-background {
-  background-color: var(--mds-calendar-cell-background);
-  color: var(--mds-calendar-cell-color);
+  background-color: var(--private-calendar-cell-background);
+  color: var(--private-calendar-cell-color);
   inset: 0;
   position: absolute;
   z-index: 0;
@@ -126,7 +228,7 @@
   align-items: center;
   background-color: transparent;
   border-radius: 0;
-  color: var(--mds-calendar-cell-color);
+  color: var(--private-calendar-cell-color);
   display: flex;
   inset: calc(var(--mds-calendar-cell-gap) * -1);
   justify-content: center;
@@ -152,14 +254,14 @@
 }
 
 :host([selection='start'][orientation='horizontal']) .area-background {
-  border-bottom-left-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
-  border-top-left-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
+  border-bottom-left-radius: var(--private-calendar-cell-selection-boundaries-border-radius);
+  border-top-left-radius: var(--private-calendar-cell-selection-boundaries-border-radius);
   margin-left: 0;
 }
 
 :host([selection='end'][orientation='horizontal']) .area-background {
-  border-bottom-right-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
-  border-top-right-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
+  border-bottom-right-radius: var(--private-calendar-cell-selection-boundaries-border-radius);
+  border-top-right-radius: var(--private-calendar-cell-selection-boundaries-border-radius);
   margin-right: 0;
 }
 
@@ -171,14 +273,14 @@
 }
 
 :host([selection='start'][orientation='vertical']) .area-background {
-  border-radius: var(--mds-calendar-cell-selection-boundaries-border-radius)
-    var(--mds-calendar-cell-selection-boundaries-border-radius) 0 0;
+  border-radius: var(--private-calendar-cell-selection-boundaries-border-radius)
+    var(--private-calendar-cell-selection-boundaries-border-radius) 0 0;
   margin-top: 0;
 }
 
 :host([selection='end'][orientation='vertical']) .area-background {
-  border-radius: 0 0 var(--mds-calendar-cell-selection-boundaries-border-radius)
-    var(--mds-calendar-cell-selection-boundaries-border-radius);
+  border-radius: 0 0 var(--private-calendar-cell-selection-boundaries-border-radius)
+    var(--private-calendar-cell-selection-boundaries-border-radius);
   margin-bottom: 0;
 }
 
@@ -190,19 +292,19 @@
 
 :host(:nth-child(7n - 6)) .area-background,
 :host([selection='end'][orientation='horizontal']:nth-child(7n - 6)) .area-background {
-  border-bottom-left-radius: var(--mds-calendar-cell-selection-week-boundaries-border-radius);
-  border-top-left-radius: var(--mds-calendar-cell-selection-week-boundaries-border-radius);
+  border-bottom-left-radius: var(--private-calendar-cell-selection-week-boundaries-border-radius);
+  border-top-left-radius: var(--private-calendar-cell-selection-week-boundaries-border-radius);
 }
 
 :host(:nth-child(7n)) .area-background,
 :host([selection='end'][orientation='horizontal']:nth-child(7n)) .area-background {
-  border-bottom-right-radius: var(--mds-calendar-cell-selection-week-boundaries-border-radius);
-  border-top-right-radius: var(--mds-calendar-cell-selection-week-boundaries-border-radius);
+  border-bottom-right-radius: var(--private-calendar-cell-selection-week-boundaries-border-radius);
+  border-top-right-radius: var(--private-calendar-cell-selection-week-boundaries-border-radius);
 }
 
 :host([selection='end'][orientation='horizontal']:nth-child(7n)) .area-background {
-  border-bottom-right-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
-  border-top-right-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
+  border-bottom-right-radius: var(--private-calendar-cell-selection-boundaries-border-radius);
+  border-top-right-radius: var(--private-calendar-cell-selection-boundaries-border-radius);
 }
 
 :host([selection][orientation='horizontal']:nth-child(7n - 6)) .area-background {
@@ -214,7 +316,7 @@
 }
 
 :host([selection='single'][orientation='horizontal']) .area-background {
-  border-radius: var(--mds-calendar-cell-selection-boundaries-border-radius);
+  border-radius: var(--private-calendar-cell-selection-boundaries-border-radius);
   margin-left: 0;
   margin-right: 0;
 }
@@ -223,20 +325,20 @@
 
 :host(:nth-child(7n - 1)),
 :host(:nth-child(7n)) {
-  --mds-calendar-cell-color: var(--mds-calendar-cell-weekend-color);
-  --mds-calendar-cell-background: var(--mds-calendar-cell-weekend-background);
+  --private-calendar-cell-color: var(--private-calendar-cell-weekend-color);
+  --private-calendar-cell-background: var(--private-calendar-cell-weekend-background);
 }
 
 /* month */
 
 :host([month='other']:not([selection])) {
-  --mds-calendar-cell-color: var(--mds-calendar-cell-other-month-color);
-  --mds-calendar-cell-background: var(--mds-calendar-cell-other-month-background);
+  --private-calendar-cell-color: var(--private-calendar-cell-other-month-color);
+  --private-calendar-cell-background: var(--private-calendar-cell-other-month-background);
 }
 
 :host([disabled]) {
-  --mds-calendar-cell-color: var(--mds-calendar-cell-disabled-color);
-  --mds-calendar-cell-background: var(--mds-calendar-cell-disabled-background);
+  --private-calendar-cell-color: var(--private-calendar-cell-disabled-color);
+  --private-calendar-cell-background: var(--private-calendar-cell-disabled-background);
 
   cursor: auto;
   pointer-events: none;

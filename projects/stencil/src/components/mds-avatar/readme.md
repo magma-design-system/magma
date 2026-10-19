@@ -115,6 +115,8 @@ Style the avatar only through its documented `--mds-avatar-*` CSS custom propert
   --mds-avatar-color: rgb(var(--magma-accent-on-emphasis));
   --mds-avatar-radius: var(--magma-radius-md);
   --mds-avatar-initials-padding: 15%;
+
+  corner-shape: var(--magma-corner-shape);
 }
 ```
 
@@ -122,9 +124,13 @@ Style the avatar only through its documented `--mds-avatar-*` CSS custom propert
 
 The default shape is fully circular. Override the CSS custom property to get a square or rounded-square avatar - for example when representing a product or brand logo rather than a person.
 
+The circle stays out of the corner axis, so the host declares no corner shape. A step of the `--magma-radius-*` scale is tuned for the shape of the axis: give the host `corner-shape: var(--magma-corner-shape)` with it, and the inner image and initials follow.
+
 ```css
 .logo-azienda mds-avatar {
   --mds-avatar-radius: var(--magma-radius-md);
+
+  corner-shape: var(--magma-corner-shape);
 }
 ```
 

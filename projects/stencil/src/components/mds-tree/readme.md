@@ -14,8 +14,9 @@ The `<mds-tree>` web component is the root container of the Magma Design System 
 #### Semantic Behavior
 
 - **Compound parent**: The default slot accepts only `<mds-tree-item>` elements; the tree itself renders nothing but the slot and acts as the configuration and coordination root for the hierarchy.
+- **Accessibility**: The tree is a list of its items (`role="list"`, named by `label`), and the items of a branch are a list inside their item, so a screen reader announces the level and the size of every branch. It is not a `role="tree"`, which promises arrow-key navigation and leaves no room for the actions of an item: every button stays a Tab stop. The items of a closed branch are out of the tab order.
 - **Depth seeding**: Its direct children are assigned `depth = 0`, which removes the branch connector lines from the first level; deeper levels are indented by their nesting.
-- **Cascading `expanded`**: Changing `expanded` on the tree at runtime propagates the new value to every descendant item present at load (the initial value is not propagated), opening or collapsing the whole hierarchy at once - except children marked `async`, which are left for on-demand resolution.
+- **Cascading `expanded`**: `expanded` on the tree, set in the markup or changed at runtime, propagates to every descendant item, opening or collapsing the whole hierarchy at once - except children marked `async`, which are left for on-demand resolution. Items added later, a branch loaded on demand, take the tree's `expanded`, `toggle`, `togglePosition`, `appearance` and `truncate` when they arrive; the items already there keep the state the user gave them.
 - **Cascading `toggle` and `truncate`**: Changing the toggle icon or the truncation mode on the tree pushes the value down to all descendant items so the whole tree stays visually consistent.
 - **Async branches**: When `async` is set on an item, its branch is expected to resolve its children after the click rather than expanding from pre-rendered content; such items are excluded from the bulk `expanded` cascade.
 
@@ -28,7 +29,7 @@ The `<mds-tree>` web component is the root container of the Magma Design System 
 #### Other behavioral props
 
 - **`truncate`** sets how item labels overflow: `'word'` truncates the line, `'all'` clamps to multiple lines (paired with the `--mds-tree-line-clamp` custom property), `'none'` lets text wrap freely.
-- **`expanded`** is the only mutable, reflected state prop; change it on the root to open or close the entire tree programmatically (an `expanded` attribute present at first render opens nothing: set it on the items instead).
+- **`expanded`** is the only mutable, reflected state prop; set it on the root to open the entire tree on first render, or change it to open or close the entire tree programmatically.
 
 
 ### 2. Pattern
@@ -65,7 +66,7 @@ Place `<mds-tree-item>` elements inside other `<mds-tree-item>` elements to buil
 
 #### Programmatic Expand / Collapse
 
-Change `expanded` on `<mds-tree>` at runtime to open or close the entire hierarchy at once. This cascades to all descendant items except those marked `async`. The cascade runs only when the value changes, so to start with a branch open set `expanded` on that item.
+Change `expanded` on `<mds-tree>` at runtime to open or close the entire hierarchy at once. This cascades to all descendant items except those marked `async`, also when `expanded` is set in the markup; to start with a single branch open set `expanded` on that item instead.
 
 ```html
 <!-- A branch expanded on mount -->
@@ -219,9 +220,13 @@ Style the tree only through the documented `--mds-tree-*` CSS custom properties.
   --mds-tree-branch-border-color: rgb(var(--magma-border-muted));
   --mds-tree-toggle-icon-chevron-default-background: rgb(var(--magma-accent-emphasis));
   --mds-tree-toggle-icon-chevron-default-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-tree-toggle-icon-chevron-expanded-background: rgb(var(--magma-accent-emphasis-hover));
+  --mds-tree-toggle-gap: calc(var(--spacing) * 200);
   --mds-tree-transition-duration: 200ms;
 }
 ```
+
+The `-expanded-` colours of the toggle paint the items that are open and default to the `-default-` ones. `--mds-tree-toggle-gap` is the distance between the toggle and the label of every item (4px by default); the connectors of the branches follow it.
 
 
 ### 3. Antipattern
@@ -375,16 +380,16 @@ Inserting wrapper elements breaks the compound slot protocol - `<mds-tree>` comm
 
 ## Properties
 
-| Property         | Attribute         | Description                                                                                       | Type                               | Default     |
-| ---------------- | ----------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------- | ----------- |
-| `actions`        | `actions`         | Show actions on the every tree item on hover or by default.                                       | `"auto" \| "visible" \| undefined` | `'auto'`    |
-| `appearance`     | `appearance`      | Specifies if the branches depth decorations are visible.                                          | `"depth" \| "none"`                | `'depth'`   |
-| `async`          | `async`           | Specifies the tree should be opened asynchronously when after the click, .                        | `boolean \| undefined`             | `undefined` |
-| `expanded`       | `expanded`        | Specifies if the tree is expanded.                                                                | `boolean \| undefined`             | `undefined` |
-| `label`          | `label`           | Specifies the selector of the target element, this attribute is used with `querySelector` method. | `string`                           | `undefined` |
-| `toggle`         | `toggle`          | Specifies the toggle icon of the element                                                          | `"chevron" \| "folder"`            | `'chevron'` |
-| `togglePosition` | `toggle-position` | Specifies the toggle icon position of the element                                                 | `"left" \| "right"`                | `'left'`    |
-| `truncate`       | `truncate`        | Truncate the text of the element on one single line.                                              | `"all" \| "none" \| "word"`        | `'word'`    |
+| Property         | Attribute         | Description                                                                                                                                                                                                       | Type                               | Default     |
+| ---------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | ----------- |
+| `actions`        | `actions`         | Show actions on the every tree item on hover or by default.                                                                                                                                                       | `"auto" \| "visible" \| undefined` | `'auto'`    |
+| `appearance`     | `appearance`      | Specifies if the branches depth decorations are visible.                                                                                                                                                          | `"depth" \| "none"`                | `'depth'`   |
+| `async`          | `async`           | <span style="color:red">**[DEPRECATED]**</span> Set `async` on the items that load their children on demand. Goes in the next major.<br/><br/>Has no effect on the tree: `async` is read on each `mds-tree-item`. | `boolean \| undefined`             | `undefined` |
+| `expanded`       | `expanded`        | Specifies if the tree is expanded.                                                                                                                                                                                | `boolean \| undefined`             | `undefined` |
+| `label`          | `label`           | Names the tree for assistive technologies: the tree is a list of its items, and the label is what that list is called                                                                                             | `string`                           | `undefined` |
+| `toggle`         | `toggle`          | Specifies the toggle icon of the element                                                                                                                                                                          | `"chevron" \| "folder"`            | `'chevron'` |
+| `togglePosition` | `toggle-position` | Specifies the toggle icon position of the element                                                                                                                                                                 | `"left" \| "right"`                | `'left'`    |
+| `truncate`       | `truncate`        | Truncate the text of the element on one single line.                                                                                                                                                              | `"all" \| "none" \| "word"`        | `'word'`    |
 
 
 ## Slots
