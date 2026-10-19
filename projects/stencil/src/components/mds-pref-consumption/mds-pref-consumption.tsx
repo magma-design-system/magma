@@ -22,6 +22,8 @@ export class MdsPrefContrast {
   private readonly customPropertyAlias: string = '--magma-pref-consumption';
   private readonly defaultMode: ConsumptionModeType = 'high';
   private syncingFromStore: boolean = false;
+  // the consumption this instance applied last, or followed from another one
+  private appliedMode?: ConsumptionModeType;
   private unsubscribeStore?: () => void;
   private readonly t: Locale = new Locale({
     el: localeEl,
@@ -97,11 +99,22 @@ export class MdsPrefContrast {
     }
     this.syncingFromStore = true;
     this.mode = mode as ConsumptionModeType;
+    this.appliedMode = mode as ConsumptionModeType;
     this.syncingFromStore = false;
   };
 
+  /**
+   * Applies a consumption once per change, and announces it once applied: the `mode` watcher
+   * calls this again for the value it has just been given, which used to emit a second
+   * mdsPrefChange, and the first application, the one of load, is no change to announce.
+   */
   private readonly setConsumption = (mode: ConsumptionModeType): void => {
-    this.prefChangeEvent.emit({ preference: 'consumption' });
+    if (mode === this.appliedMode) {
+      this.mode = mode;
+      return;
+    }
+    const isFirstApplication = this.appliedMode === undefined;
+    this.appliedMode = mode;
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
     if (typeof document !== 'undefined') {
@@ -115,6 +128,9 @@ export class MdsPrefContrast {
       element?.style.setProperty(this.customPropertyAlias, this.mode);
     }
     preferenceStore.state.consumption = mode;
+    if (!isFirstApplication) {
+      this.prefChangeEvent.emit({ preference: 'consumption' });
+    }
   };
 
   @Watch('mode')

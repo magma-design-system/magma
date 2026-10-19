@@ -20,7 +20,7 @@ The `<mds-stepper-bar-item>` web component represents a single step inside a [`<
 - **Index resolution**: The item computes its own ordinal from its position among the parent's children; this index feeds the localized "step N" caption rendered when `step` is enabled.
 - **Three-way status badge**: When `badge` is true the item renders a status badge whose variant and localized text reflect the resolved state - `success`/done, `info`/current, or `dark`/queued.
 - **Icon swap on completion**: The displayed icon switches from `icon` to `iconChecked` once the item is done and no longer current.
-- **No selection event**: It declares `mdsStepperBarItemDone` (detail `{ value }`) but never emits it, so clicking an item does not change the current step. The item is not focusable (it has no `tabindex`).
+- **Going back**: A step that is done (and not current) is a button in the tab order: a click or Enter emits `mdsStepperBarItemDone` with its `{ value }`. It asks, it does not move: the page goes back by setting `itemsDone` on the bar. The current and the following steps are not interactive.
 - **Localization**: Step, badge and status strings are localized (el/en/es/it).
 
 #### Properties & Visual Configurations
@@ -360,9 +360,9 @@ Both are required props. An item without `label` has no accessible or visual des
 
 ## Events
 
-| Event                   | Description                          | Type                                        |
-| ----------------------- | ------------------------------------ | ------------------------------------------- |
-| `mdsStepperBarItemDone` | Emits when the accordion is selected | `CustomEvent<MdsStepperBarItemEventDetail>` |
+| Event                   | Description                                                                                                                   | Type                                        |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `mdsStepperBarItemDone` | Emits when the user activates a step that is done, to go back to it: the page moves the stepper bar there through `itemsDone` | `CustomEvent<MdsStepperBarItemEventDetail>` |
 
 
 ## Shadow Parts

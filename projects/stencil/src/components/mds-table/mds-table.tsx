@@ -109,6 +109,12 @@ export class MdsTable {
     if (!this.selectable || !this.rows) {
       return;
     }
+    // the rows ask for it at every change of their `selected`: selecting them all at once asks
+    // as many times, and the table announces the outcome once, in the next microtask
+    if (this.selectionQueued) return;
+    this.selectionQueued = true;
+    await Promise.resolve();
+    this.selectionQueued = false;
     this.selectedRows = [];
     this.rows.forEach((row: HTMLMdsTableRowElement, index: number) => {
       if (row.selected) {
@@ -125,6 +131,8 @@ export class MdsTable {
       row.selection = this.selection;
     });
   }
+
+  private selectionQueued = false;
 
   /**
    * `internal` Reads again whether the rows have `slot="action"` content: shows or hides the

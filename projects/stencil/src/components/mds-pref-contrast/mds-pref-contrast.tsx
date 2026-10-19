@@ -23,6 +23,8 @@ export class MdsPrefContrast {
   private readonly customPropertyAlias: string = '--magma-pref-contrast';
   private readonly defaultMode: ContrastModeType = 'system';
   private syncingFromStore: boolean = false;
+  // the contrast this instance applied last, or followed from another one
+  private appliedMode?: ContrastModeType;
   private unsubscribeStore?: () => void;
   private readonly t: Locale = new Locale({
     el: localeEl,
@@ -105,6 +107,7 @@ export class MdsPrefContrast {
     }
     this.syncingFromStore = true;
     this.mode = mode as ContrastModeType;
+    this.appliedMode = mode as ContrastModeType;
     this.syncingFromStore = false;
   };
 
@@ -126,8 +129,18 @@ export class MdsPrefContrast {
     return this.defaultMode;
   };
 
+  /**
+   * Applies a contrast once per change, and announces it once applied: the `mode` watcher
+   * calls this again for the value it has just been given, which used to emit a second
+   * mdsPrefChange, and the first application, the one of load, is no change to announce.
+   */
   private readonly setContrast = (mode: ContrastModeType): void => {
-    this.prefChangeEvent.emit({ preference: 'contrast' });
+    if (mode === this.appliedMode) {
+      this.mode = mode;
+      return;
+    }
+    const isFirstApplication = this.appliedMode === undefined;
+    this.appliedMode = mode;
     this.rollbackContrast();
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
@@ -142,6 +155,9 @@ export class MdsPrefContrast {
       element?.style.setProperty(this.customPropertyAlias, this.mode);
     }
     preferenceStore.state.contrast = mode;
+    if (!isFirstApplication) {
+      this.prefChangeEvent.emit({ preference: 'contrast' });
+    }
   };
 
   @Watch('mode')

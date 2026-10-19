@@ -44,6 +44,40 @@ describe('mds-calendar', () => {
     expect(julyVisibleDay.getAttribute('selection')).toBe('middle');
   });
 
+  // a start after the end logged "swapping values" and swapped nothing, and at load the order
+  // was not checked at all (#823)
+  describe('a range given backwards', () => {
+    const selection = (root: HTMLElement, date: string) =>
+      root
+        .shadowRoot!.querySelector(`mds-calendar-cell[date="${date}"]`)!
+        .getAttribute('selection');
+
+    it('is put in order at load', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { root, waitForChanges } = await render(
+        '<mds-calendar view-date="2026-06-01" start-date="2026-06-20" end-date="2026-06-10"></mds-calendar>',
+      );
+      await waitForChanges();
+
+      await vi.waitFor(() => expect(selection(root, '2026-06-10')).toBe('start'));
+      expect(selection(root, '2026-06-15')).toBe('middle');
+      expect(selection(root, '2026-06-20')).toBe('end');
+    });
+
+    it('is put in order when the start moves past the end', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { root, waitForChanges } = await render(
+        '<mds-calendar view-date="2026-06-01" start-date="2026-06-02" end-date="2026-06-10"></mds-calendar>',
+      );
+
+      root.setAttribute('start-date', '2026-06-20');
+      await waitForChanges();
+
+      await vi.waitFor(() => expect(selection(root, '2026-06-10')).toBe('start'));
+      expect(selection(root, '2026-06-20')).toBe('end');
+    });
+  });
+
   it('previews the full visible range when hovering into the next month', async () => {
     const { root } = await render(
       '<mds-calendar view-date="2026-06-01" start-date="2026-06-02" hover-date="2026-07-24"></mds-calendar>',

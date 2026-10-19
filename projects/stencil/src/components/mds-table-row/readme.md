@@ -132,7 +132,7 @@ When the parent `<mds-table>` sets `selectable`, each row renders a leading chec
 
 #### Programmatic Selection
 
-`selected` is mutable and reflected. Set it from JavaScript to restore a previously saved selection state. Setting it updates that row only: call the parent table's `updateSelection()` afterwards so it emits `mdsTableSelectionChange` and updates the header checkbox and the batch-action bar. For bulk "select all" use the table's `selectAll()`.
+`selected` is mutable and reflected. Set it from JavaScript to restore a previously saved selection state. The parent table follows it: it emits `mdsTableSelectionChange` and updates the header checkbox and the batch-action bar, once for the rows changed together. For bulk "select all" use the table's `selectAll()`.
 
 ```html
 <mds-table selectable id="tabella-record">
@@ -146,7 +146,6 @@ When the parent `<mds-table>` sets `selectable`, each row renders a leading chec
 <script>
   // Select the row programmatically (e.g. after restoring from storage)
   document.getElementById('riga-principale').selected = true;
-  document.getElementById('tabella-record').updateSelection();
 </script>
 ```
 

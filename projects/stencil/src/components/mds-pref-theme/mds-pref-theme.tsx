@@ -45,6 +45,9 @@ export class MdsPrefTheme {
   private readonly localStorageAliasCornerShape: string = 'mdsPrefCornerShape';
   private currentSelectedItem: HTMLMdsPrefThemeItemElement;
   private itemsObserver?: MutationObserver;
+  // the theme (`name/scheme`) and the corner shape this instance applied last
+  private appliedTheme?: string;
+  private appliedCornerShape?: PreferenceCornerShapeChoiceType;
   private themeItems: NodeListOf<HTMLMdsPrefThemeItemElement>;
   private userThemeName: string | null;
   private userThemeScheme: PreferenceThemeSchemeType | null;
@@ -231,7 +234,13 @@ export class MdsPrefTheme {
     }
     this.name = name;
     this.scheme = scheme;
-    this.prefChangeEvent.emit({ preference: 'theme' });
+    // every render comes here (the storage is read again, so a pick made in another instance is
+    // followed): only a change is applied and announced, and the first application, the one of
+    // load, is no change. It used to emit mdsPrefChange on every render
+    const theme = `${name}/${scheme}`;
+    if (theme === this.appliedTheme) return;
+    const isFirstApplication = this.appliedTheme === undefined;
+    this.appliedTheme = theme;
     localStorage.setItem(this.localStorageAliasThemeName, this.name);
     localStorage.setItem(this.localStorageAliasThemeScheme, this.scheme);
 
@@ -255,6 +264,9 @@ export class MdsPrefTheme {
       this.previousName = this.name;
     }
     preferenceStore.state['theme-scheme'] = this.scheme;
+    if (!isFirstApplication) {
+      this.prefChangeEvent.emit({ preference: 'theme' });
+    }
   };
 
   /**
@@ -279,7 +291,10 @@ export class MdsPrefTheme {
       return;
     }
     this.cornerShape = shape;
-    this.prefChangeEvent.emit({ preference: 'corner-shape' });
+    // as for the theme: applied and announced on a change only
+    if (shape === this.appliedCornerShape) return;
+    const isFirstApplication = this.appliedCornerShape === undefined;
+    this.appliedCornerShape = shape;
     localStorage.setItem(this.localStorageAliasCornerShape, shape);
 
     if (typeof document !== 'undefined') {
@@ -291,6 +306,9 @@ export class MdsPrefTheme {
       }
     }
     preferenceStore.state['corner-shape'] = shape === 'default' ? undefined : shape;
+    if (!isFirstApplication) {
+      this.prefChangeEvent.emit({ preference: 'corner-shape' });
+    }
   };
 
   render() {

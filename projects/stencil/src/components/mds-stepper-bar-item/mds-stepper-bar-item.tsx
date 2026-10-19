@@ -107,6 +107,18 @@ export class MdsStepperBarItem {
     this.km.attachClickBehavior();
   }
 
+  // a step already done can be gone back to: the item is a button then
+  private isReachable = (): boolean => !!this.isDone && !this.isCurrent;
+
+  /**
+   * Asks to go back to this step, with its value: the event was declared and never emitted. The
+   * stepper bar is driven by its `itemsDone`, so the page answers by setting it.
+   */
+  private handleClick = (): void => {
+    if (!this.isReachable()) return;
+    this.doneEvent.emit({ value: this.value ?? '' });
+  };
+
   disconnectedCallback(): void {
     this.km.detachClickBehavior();
   }
@@ -144,14 +156,20 @@ export class MdsStepperBarItem {
   };
 
   /**
-   * Emits when the accordion is selected
+   * Emits when the user activates a step that is done, to go back to it: the page moves the
+   * stepper bar there through `itemsDone`
    */
   @Event({ eventName: 'mdsStepperBarItemDone' })
   doneEvent: EventEmitter<MdsStepperBarItemEventDetail>;
 
   render() {
     return (
-      <Host pref-animation={preferenceStore.state.animation}>
+      <Host
+        onClick={this.handleClick}
+        pref-animation={preferenceStore.state.animation}
+        role={this.isReachable() ? 'button' : undefined}
+        tabindex={this.isReachable() ? '0' : undefined}
+      >
         <div class="header">
           <mds-icon
             class="icon"

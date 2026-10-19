@@ -197,3 +197,34 @@ describe('mds-pref-theme', () => {
     });
   });
 });
+
+// mdsPrefChange was emitted on every render, page load included (#823)
+describe('mds-pref-theme mdsPrefChange', () => {
+  it('announces a picked theme once, and nothing at load or on a later render', async () => {
+    const preferences: string[] = [];
+    const record = (event: Event): void => {
+      preferences.push((event as CustomEvent<{ preference: string }>).detail.preference);
+    };
+    document.addEventListener('mdsPrefChange', record);
+    try {
+      const { root, waitForChanges } = await render(`
+        <mds-pref-theme>
+          <mds-pref-theme-item name="default" label="Neutro"></mds-pref-theme-item>
+          <mds-pref-theme-item name="warm" label="Caldo"></mds-pref-theme-item>
+        </mds-pref-theme>`);
+      await waitForChanges();
+      expect(preferences).toEqual([]);
+
+      root.querySelector<HTMLElement>('mds-pref-theme-item[name="warm"]')!.click();
+      await waitForChanges();
+      // a render of its own: a label changed after load
+      root.querySelector('mds-pref-theme-item[name="warm"]')!.setAttribute('label', 'Calda');
+      await waitForChanges();
+
+      expect(preferences).toEqual(['theme']);
+      expect(document.documentElement).toHaveClass('pref-theme-warm');
+    } finally {
+      document.removeEventListener('mdsPrefChange', record);
+    }
+  });
+});

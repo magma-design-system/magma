@@ -14,7 +14,7 @@ The `<mds-calendar>` web component is the date-selection surface of the Magma De
 #### Semantic Behavior
 
 - **Range vs. single mode**: range selection is the default; set `singlePicker` to pick one day. In range mode the first click sets the start, the second sets the end, and a third click starts a new range from the clicked day; in single mode each click replaces the prior choice.
-- **Range auto-ordering**: If the second click lands before the current start, the two endpoints are swapped so `startDate` always precedes `endDate`; an `endDate` set earlier than `startDate` is not reordered: changed after load, it only logs a console warning.
+- **Range auto-ordering**: If the second click lands before the current start, the two endpoints are swapped so `startDate` always precedes `endDate`; a `startDate` / `endDate` pair given backwards, in the markup or from code, is put in order the same way (with a console warning).
 - **Hover preview**: While a range start is set, hovering over cells previews the candidate range live (range mode only).
 - **Min/max bounds**: `min` and `max` mark out-of-range day cells as disabled, blocking their selection.
 - **Multi-view navigation**: The header toggles between the day grid, a month picker, and a year picker; the year view pages in decades while the calendar view pages month by month. The two arrows are icon-only buttons named in the page language (the `lang` of `<html>`): previous / next month on the day grid, previous / next years in the year view; the month picker has nothing to page through, so there they are disabled.

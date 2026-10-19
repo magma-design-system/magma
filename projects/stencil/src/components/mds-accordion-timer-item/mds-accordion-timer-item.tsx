@@ -53,12 +53,11 @@ export class MdsAccordionTimerItem {
    * Event throws only once the element is active,
    * to fire it again it need to be a different item
    */
+  // the open item stays open: closing it told the timer nothing, and with the pointer on it the
+  // rotation never started again. Another item asks the timer, which selects it
   private toggle = () => {
-    this.selected = !this.selected;
-    this.progress = 0;
-    if (this.selected) {
-      this.clickSelectEvent.emit({ selected: this.selected, uuid: this.uuid });
-    }
+    if (this.selected) return;
+    this.clickSelectEvent.emit({ selected: true, uuid: this.uuid });
   };
 
   private mouseEnter = () => {

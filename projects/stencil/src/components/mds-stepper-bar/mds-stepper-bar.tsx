@@ -4,7 +4,6 @@ import {
   Event,
   EventEmitter,
   Host,
-  Listen,
   Prop,
   State,
   Watch,
@@ -149,18 +148,6 @@ export class MdsStepperBar {
   @Watch('itemsDone')
   itemDone(newValue: number): void {
     this.setCurrent(newValue);
-  }
-
-  @Listen('mdsStepperBarItemDone')
-  changeEventHandler(event: CustomEvent<string>): void {
-    this.items = this.queryItems();
-    this.items.forEach((item, key) => {
-      item.done = false;
-      if (`mds-stepper-bar-item-${key}` === event.detail) {
-        item.current = true;
-        this.currentItem = key;
-      }
-    });
   }
 
   render() {

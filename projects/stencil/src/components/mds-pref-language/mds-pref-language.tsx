@@ -87,9 +87,13 @@ export class MdsPrefLanguage {
     this.checkLanguageSelect();
   }
 
+  // a language set from code is the selected item of the list too, as a pick is
   @Watch('set')
   handleSetChange(newValue: string): void {
     this.setLanguage(newValue);
+    this.elPreferLanguageItems?.forEach((element) => {
+      element.selected = element.code === this.set;
+    });
   }
 
   private readonly toggleDropdown = (): void => {

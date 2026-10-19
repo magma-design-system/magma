@@ -41,19 +41,31 @@ export class MdsAccordion {
     items.forEach((item, key) => {
       if (item.id === '') item.id = `item-${key}`;
     });
+    // what is open from the markup is the starting point, not a change
+    this.announcedSelection = Array.from(items)
+      .map((item, key) => (item.selected ? key : -1))
+      .filter((key) => key !== -1)
+      .toString();
   }
 
-  private selectMultipleItems = (): void => {
+  // the open items as the last mdsAccordionChange announced them
+  private announcedSelection?: string;
+
+  /**
+   * Announces the open items, once per change: closing the open item of a single accordion
+   * announced nothing, and a click that disable-close turned down announced a change that did
+   * not happen. `selected` is the index of the open item, or of the open items joined by
+   * commas, and empty when none is open.
+   */
+  private announceSelection = (): void => {
     const items = this.queryItems();
-    const list: (HTMLMdsAccordionItemElement | null)[] = [];
-    const selectedItem: number[] = [];
-    items.forEach((item, key) => {
-      list.push(item.selected ? item : null);
-      if (item.selected) {
-        selectedItem.push(key);
-      }
-    });
-    this.changedEvent.emit({ children: items, selected: selectedItem.toString() });
+    const selected = Array.from(items)
+      .map((item, key) => (item.selected ? key : -1))
+      .filter((key) => key !== -1)
+      .toString();
+    if (selected === this.announcedSelection) return;
+    this.announcedSelection = selected;
+    this.changedEvent.emit({ children: items, selected });
   };
 
   private changedChildrenHandler = (event: CustomEvent<MdsAccordionItemEventDetail>): void => {
@@ -71,16 +83,14 @@ export class MdsAccordion {
           }
         }
       }
-      this.selectMultipleItems();
+      this.announceSelection();
       return;
     }
 
-    items.forEach((item, key) => {
+    items.forEach((item) => {
       item.selected = item === event.target && (event.detail.selected || this.disableClose);
-      if (item.selected) {
-        this.changedEvent.emit({ children: items, selected: key.toString() });
-      }
     });
+    this.announceSelection();
   };
 
   @Listen('mdsAccordionItemSelect')

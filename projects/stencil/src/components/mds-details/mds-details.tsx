@@ -50,6 +50,13 @@ export class MdsDetails {
     this.isOpened = newValue;
   }
 
+  // the user's toggle writes `opened` too, so property and attribute say what the eye sees and a
+  // later assignment of the other value opens or closes it
+  private setOpened = (opened: boolean): void => {
+    this.opened = opened;
+    this.isOpened = opened;
+  };
+
   componentWillLoad(): void {
     this.isOpened = this.opened;
     this.checkIcon();
@@ -71,7 +78,7 @@ export class MdsDetails {
   }
 
   private toggle = () => {
-    this.isOpened = !this.isOpened;
+    this.setOpened(!this.isOpened);
     this.changedEvent.emit(this.isOpened);
   };
 
