@@ -56,4 +56,33 @@ describe('mds-status-bar', () => {
       expect(bar).not.toHaveAttribute('visible');
     });
   });
+
+  // #1019: show() moves the focus to the first focusable element of the bar too, and the browser
+  // scrolled the dialog of the inner modal to bring it into view: the bar, still at
+  // translate(0, 100%) below the page, scrolled up by its own height and never slid in
+  it('slides in from below the page with a focusable element in it', async () => {
+    const { root } = await render<HTMLMdsStatusBarElement>(
+      '<mds-status-bar description="Cookie"><button>OK</button></mds-status-bar>',
+    );
+    const dialog = root
+      .shadowRoot!.querySelector('mds-modal')!
+      .shadowRoot!.querySelector('dialog')!;
+    const area = root.shadowRoot!.querySelector<HTMLElement>('.status-bar-area')!;
+
+    root.visible = true;
+    // sampled on the first frame the dialog is open
+    const start = await new Promise<{ top: number; scrollTop: number }>((resolve) => {
+      const tick = (): void => {
+        if (!dialog.open) {
+          requestAnimationFrame(tick);
+          return;
+        }
+        resolve({ top: area.getBoundingClientRect().top, scrollTop: dialog.scrollTop });
+      };
+      requestAnimationFrame(tick);
+    });
+
+    expect(start.scrollTop).toBe(0);
+    expect(start.top).toBeGreaterThanOrEqual(innerHeight - 1);
+  });
 });
