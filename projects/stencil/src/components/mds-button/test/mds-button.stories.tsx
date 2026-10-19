@@ -368,11 +368,14 @@ export const Disabled = {
   args: {
     disabled: false,
   },
-  play: async ({ canvas, userEvent }) => {
+  play: async ({ canvas, canvasElement, userEvent }) => {
     const button = await canvas.findByRole('button');
     expect(button).not.toBeDisabled();
     await userEvent.click(button);
     expect(button).toBeDisabled();
+    // back to false, as a control switched off: the attribute goes, the button is enabled again
+    await userEvent.click(canvasElement.querySelector('mds-button[label="Reset"]')!);
+    await waitFor(() => expect(button).not.toBeDisabled());
   },
 };
 
