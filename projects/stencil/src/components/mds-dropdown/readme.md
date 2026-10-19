@@ -32,7 +32,7 @@ The `<mds-dropdown>` web component is a floating overlay surface of the Magma De
 
 #### Other behavioral props
 
-- **`placement`** sets the side relative to the caller, honored only with **`disableAutoPlacement`**: by default the side with the most space is chosen automatically. **`flip`** allows falling back to the opposite side when space runs out, and works only together with `disableAutoPlacement`. The panel is shifted to stay inside the viewport with a safe margin by default - **`disableShift`** opts out of this and **`shiftPadding`** tunes the margin.
+- **`placement`** sets the side relative to the caller, taken whenever it has room: by default (auto-placement) the panel moves to the opposite side, then to the sides across, only when it does not fit there. **`disableAutoPlacement`** pins it to `placement`, and **`flip`** then allows the fallback to the opposite side only. The panel is shifted to stay inside the viewport with a safe margin by default - **`disableShift`** opts out of this and **`shiftPadding`** tunes the margin.
 - **`offset`** controls the gap between the panel and the caller; the pointer toward the caller is shown by default (**`hideArrow`** removes it) and **`arrowPadding`** insets it from the panel edges.
 - the panel tracks the caller smoothly as the page scrolls by default (**`disableSmooth`** opts out); **`strategy`** chooses the CSS positioning mode (`'absolute'` vs `'fixed'`) and **`zIndex`** sets the stacking order.
 
@@ -84,6 +84,8 @@ The arrow pointer is shown by default to visually connect the panel to its calle
 
 Use `backdrop` to dim the rest of the page while the panel is open. This is appropriate for panels with a higher modal weight, such as user-account menus or multi-step pickers.
 
+The backdrop is appended to `<body>`, out of reach of the CSS inheritance of the dropdown: when it opens, the dropdown hands it the values it resolves for `--mds-dropdown-backdrop-z-index` and `--mds-dropdown-backdrop-duration`, by default the ones of the page backdrop (`--magma-backdrop-z-index`, `--magma-backdrop-animation-duration`). With the animation preference set to reduce, the backdrop appears and goes without a fade.
+
 ```html
 <mds-button id="selezione-filtri" label="Filtra risultati" icon="mi/baseline/filter-list" variant="primary"></mds-button>
 
@@ -132,7 +134,7 @@ Set `interaction="none"` to disable automatic wiring and drive visibility yourse
 
 #### Placement and Auto-Placement
 
-Use `placement` to anchor the panel to a specific side of the caller. Auto-placement is on by default, letting the component choose the best available side based on viewport space; add `disable-auto-placement` to pin the panel strictly to `placement`.
+Use `placement` to choose the side of the caller the panel opens on. Auto-placement is on by default: the panel takes `placement` whenever it has room there, and moves to the opposite side, then to the sides across, only when it does not fit; add `disable-auto-placement` to pin the panel strictly to `placement`.
 
 ```html
 <!-- Pinned right-start placement (auto-placement disabled) -->
@@ -152,7 +154,7 @@ Use `placement` to anchor the panel to a specific side of the caller. Auto-place
 
 #### Flip and Shift for Viewport Safety
 
-Enable `flip` to let the panel jump to the opposite side when there is not enough space in the preferred direction; it acts only with `disable-auto-placement`, since auto-placement already picks the side and ignores both `placement` and `flip`. Shifting the panel to keep it inside the viewport is on by default; tune the safe margin with `shift-padding` (or set `disable-shift` to opt out).
+Enable `flip` together with `disable-auto-placement` to let the pinned panel jump to the opposite side, and to no other, when there is not enough space in the preferred direction; auto-placement already includes that fallback. Shifting the panel to keep it inside the viewport is on by default; tune the safe margin with `shift-padding` (or set `disable-shift` to opt out).
 
 ```html
 <mds-button id="btn-edge" label="Vicino al bordo" variant="primary"></mds-button>
@@ -368,23 +370,23 @@ mds-dropdown {
 
 ## Properties
 
-| Property               | Attribute                | Description                                                                                       | Type                                                                                                                                                                 | Default      |
-| ---------------------- | ------------------------ | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
-| `arrowPadding`         | `arrow-padding`          | Sets the distance between arrow and dropdown margins.                                             | `number`                                                                                                                                                             | `24`         |
-| `backdrop`             | `backdrop`               | Specifies if the component has a backdrop background                                              | `boolean \| undefined`                                                                                                                                               | `false`      |
-| `disableAutoPlacement` | `disable-auto-placement` | If set, the component will not be placed automatically near it's caller.                          | `boolean`                                                                                                                                                            | `false`      |
-| `disableShift`         | `disable-shift`          | If set, the component will not be kept inside the viewport.                                       | `boolean`                                                                                                                                                            | `false`      |
-| `disableSmooth`        | `disable-smooth`         | If set, the component will not follow the caller smoothly when the page scrolls.                  | `boolean`                                                                                                                                                            | `false`      |
-| `flip`                 | `flip`                   | Specifies the placement of the component if no space is available where it is placed.             | `boolean`                                                                                                                                                            | `false`      |
-| `hideArrow`            | `hide-arrow`             | If set, the component will not have an arrow pointing to the caller.                              | `boolean`                                                                                                                                                            | `false`      |
-| `interaction`          | `interaction`            | Specifies if the component is triggered from the caller on mouseover or click event               | `"click" \| "mouseover" \| "none"`                                                                                                                                   | `'click'`    |
-| `offset`               | `offset`                 | Sets distance between the dropdown and the caller.                                                | `number`                                                                                                                                                             | `24`         |
-| `placement`            | `placement`              | Specifies where the component should be placed relative to the caller.                            | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start"` | `'bottom'`   |
-| `shiftPadding`         | `shift-padding`          | Sets a safe area distance between the dropdown and the viewport.                                  | `number`                                                                                                                                                             | `24`         |
-| `strategy`             | `strategy`               | Sets the CSS position strategy of the component.                                                  | `"absolute" \| "fixed"`                                                                                                                                              | `'absolute'` |
-| `target` _(required)_  | `target`                 | Specifies the selector of the target element, this attribute is used with `querySelector` method. | `string`                                                                                                                                                             | `undefined`  |
-| `visible`              | `visible`                | Specifies the visibility of the component.                                                        | `boolean`                                                                                                                                                            | `false`      |
-| `zIndex`               | `z-index`                | Specifies the visibility of the component.                                                        | `number`                                                                                                                                                             | `undefined`  |
+| Property               | Attribute                | Description                                                                                                                                                     | Type                                                                                                                                                                 | Default      |
+| ---------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| `arrowPadding`         | `arrow-padding`          | Sets the distance between arrow and dropdown margins.                                                                                                           | `number`                                                                                                                                                             | `24`         |
+| `backdrop`             | `backdrop`               | Specifies if the component has a backdrop background                                                                                                            | `boolean \| undefined`                                                                                                                                               | `false`      |
+| `disableAutoPlacement` | `disable-auto-placement` | Pins the component to `placement`: without it, the component moves to another side of the caller when `placement` has no room.                                  | `boolean`                                                                                                                                                            | `false`      |
+| `disableShift`         | `disable-shift`          | If set, the component will not be kept inside the viewport.                                                                                                     | `boolean`                                                                                                                                                            | `false`      |
+| `disableSmooth`        | `disable-smooth`         | If set, the component will not follow the caller smoothly when the page scrolls.                                                                                | `boolean`                                                                                                                                                            | `false`      |
+| `flip`                 | `flip`                   | With `disableAutoPlacement`, moves the component to the opposite side of the caller when `placement` has no room. Auto-placement, the default, already does it. | `boolean`                                                                                                                                                            | `false`      |
+| `hideArrow`            | `hide-arrow`             | If set, the component will not have an arrow pointing to the caller.                                                                                            | `boolean`                                                                                                                                                            | `false`      |
+| `interaction`          | `interaction`            | Specifies if the component is triggered from the caller on mouseover or click event                                                                             | `"click" \| "mouseover" \| "none"`                                                                                                                                   | `'click'`    |
+| `offset`               | `offset`                 | Sets distance between the dropdown and the caller.                                                                                                              | `number`                                                                                                                                                             | `24`         |
+| `placement`            | `placement`              | Specifies where the component should be placed relative to the caller: the side it takes whenever it has room there.                                            | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start"` | `'bottom'`   |
+| `shiftPadding`         | `shift-padding`          | Sets a safe area distance between the dropdown and the viewport.                                                                                                | `number`                                                                                                                                                             | `24`         |
+| `strategy`             | `strategy`               | Sets the CSS position strategy of the component.                                                                                                                | `"absolute" \| "fixed"`                                                                                                                                              | `'absolute'` |
+| `target` _(required)_  | `target`                 | Specifies the selector of the target element, this attribute is used with `querySelector` method.                                                               | `string`                                                                                                                                                             | `undefined`  |
+| `visible`              | `visible`                | Specifies the visibility of the component.                                                                                                                      | `boolean`                                                                                                                                                            | `false`      |
+| `zIndex`               | `z-index`                | Specifies the visibility of the component.                                                                                                                      | `number`                                                                                                                                                             | `undefined`  |
 
 
 ## Events
@@ -405,20 +407,20 @@ mds-dropdown {
 
 ## CSS Custom Properties
 
-| Name                                   | Description                                                                                                         |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `--mds-dropdown-arrow-background`      | Sets the fill color of the arrow.                                                                                   |
-| `--mds-dropdown-backdrop-duration`     | Sets the transition duration of the backdrop, used by component's code too.                                         |
-| `--mds-dropdown-backdrop-z-index`      | Sets the backdrop z-index, used by component's code too.                                                            |
-| `--mds-dropdown-background`            | Sets the background-color of the dropdown.                                                                          |
-| `--mds-dropdown-drop-shadow`           | Sets the drop-shadow of the dropdown.                                                                               |
-| `--mds-dropdown-drop-shadow-color-rgb` | Sets the color used for the dropdown shadow                                                                         |
-| `--mds-dropdown-duration`              | Sets the duration of the dropdown animation.                                                                        |
-| `--mds-dropdown-ease`                  | Sets the easing of the dropdown animation.                                                                          |
-| `--mds-dropdown-mouseover-delay`       | Sets the delay duration of the component when the caller trigger mouseover event, it's used by the javascript code. |
-| `--mds-dropdown-transform-from`        | Sets the from animation transform of the dropdown.                                                                  |
-| `--mds-dropdown-transform-to`          | Sets the to animation transform of the dropdown.                                                                    |
-| `--mds-dropdown-z-index`               | Sets the z-index of the component.                                                                                  |
+| Name                                   | Description                                                                                                                 |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-dropdown-arrow-background`      | Sets the fill color of the arrow.                                                                                           |
+| `--mds-dropdown-backdrop-duration`     | Sets the duration of the fade of the backdrop shown with the `backdrop` attribute, the one of the page backdrop by default. |
+| `--mds-dropdown-backdrop-z-index`      | Sets the z-index of the backdrop shown with the `backdrop` attribute, the one of the page backdrop by default.              |
+| `--mds-dropdown-background`            | Sets the background-color of the dropdown.                                                                                  |
+| `--mds-dropdown-drop-shadow`           | Sets the drop-shadow of the dropdown.                                                                                       |
+| `--mds-dropdown-drop-shadow-color-rgb` | Sets the color used for the dropdown shadow                                                                                 |
+| `--mds-dropdown-duration`              | Sets the duration of the dropdown animation.                                                                                |
+| `--mds-dropdown-ease`                  | Sets the easing of the dropdown animation.                                                                                  |
+| `--mds-dropdown-mouseover-delay`       | Sets the delay duration of the component when the caller trigger mouseover event, it's used by the javascript code.         |
+| `--mds-dropdown-transform-from`        | Sets the from animation transform of the dropdown.                                                                          |
+| `--mds-dropdown-transform-to`          | Sets the to animation transform of the dropdown.                                                                            |
+| `--mds-dropdown-z-index`               | Sets the z-index of the component.                                                                                          |
 
 
 ## Dependencies

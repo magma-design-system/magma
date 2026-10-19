@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 import { mockIconFetch } from '@test/fetch';
 import { themeLabelVariantDictionary } from '@type/variant';
 
@@ -26,18 +27,77 @@ describe('mds-file-preview', () => {
       variant: 'title',
     });
 
-    const badge = shadow.querySelector('mds-badge.suffix')!;
-    expect(badge).toEqualAttributes({
-      title: 'Formato file sconosciuto',
-      tone: 'weak',
-      variant: 'dark',
-    });
-    expect(badge.textContent?.trim()).toBe('default');
+    // a filename without an extension has no badge: it used to say `default`
+    expect(shadow.querySelector('mds-badge.suffix')).toBeNull();
 
     const description = shadow.querySelector('mds-text.description')!;
     expect(description).toEqualAttribute('title', 'Formato file sconosciuto');
     expect(description.textContent?.trim()).toBe('Formato file sconosciuto');
   });
+
+  // the card could not be reached from the keyboard; a click emitted the download whether or not
+  // the card was downloadable, twice when it was, and turning downloadable off also removed the
+  // click handler of the render (#820, #823)
+  describe('downloadable', () => {
+    const card = (host: HTMLElement) => host.shadowRoot!.querySelector<HTMLElement>('.card')!;
+
+    it('makes the card a button that the pointer, Enter and Space activate once each', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render(
+        '<mds-file-preview filename="report.pdf" downloadable></mds-file-preview>',
+      );
+      const download = spyOnEvent('mdsFileDownload');
+
+      expect(card(root)).toEqualAttributes({ role: 'button', tabindex: '0' });
+
+      await userEvent.click(card(root));
+      card(root).focus();
+      await userEvent.keyboard('{Enter}');
+      await userEvent.keyboard('{Space}');
+      await waitForChanges();
+
+      expect(download).toHaveReceivedEventTimes(3);
+      expect(download.lastEvent?.detail).toMatchObject({
+        filename: 'report.pdf',
+        extension: 'pdf',
+      });
+      expect(download.lastEvent?.detail.target).toBe(root);
+    });
+
+    it('leaves the card inert without it', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render(
+        '<mds-file-preview filename="report.pdf"></mds-file-preview>',
+      );
+      const download = spyOnEvent('mdsFileDownload');
+
+      expect(card(root)).not.toHaveAttribute('role');
+      expect(card(root)).not.toHaveAttribute('tabindex');
+
+      await userEvent.click(card(root));
+      await waitForChanges();
+
+      expect(download).not.toHaveReceivedEvent();
+    });
+
+    it('follows downloadable when it changes', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsFilePreviewElement>(
+        '<mds-file-preview filename="report.pdf" downloadable></mds-file-preview>',
+      );
+      const download = spyOnEvent('mdsFileDownload');
+
+      root.setAttribute('downloadable', 'false');
+      await waitForChanges();
+      card(root).click();
+      expect(card(root)).not.toHaveAttribute('tabindex');
+
+      root.setAttribute('downloadable', '');
+      await waitForChanges();
+      card(root).click();
+      await waitForChanges();
+
+      expect(download).toHaveReceivedEventTimes(1);
+    });
+  });
+
   // a removed attribute leaves null, the value Angular and Vue bind for a missing one
   describe('once an attribute is removed', () => {
     beforeEach(() => {

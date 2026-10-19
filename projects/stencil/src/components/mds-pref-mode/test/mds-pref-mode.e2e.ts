@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { itAnnouncesEachPickOnce } from '@test/pref';
 
 describe('mds-pref-mode', () => {
   it('renders', async () => {
@@ -118,4 +119,9 @@ describe('mds-pref-mode', () => {
       html.style.removeProperty('--magma-pref-mode');
     });
   });
+});
+
+describe('mds-pref-mode mdsPrefChange', () => {
+  // without the overlay transition, which applies the mode once its animation is over
+  itAnnouncesEachPickOnce('mds-pref-mode', '.item--dark', 'pref-mode-dark', 'transition="none"');
 });

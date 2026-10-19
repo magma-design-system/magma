@@ -220,12 +220,11 @@ export class MdsHeader {
 
   componentWillLoad(): void {
     this.hasMenu = this.mobileMenu() !== null;
-    if (this.hasMenu) {
-      this.onMenuChangedHandler(this.menu);
-      return;
-    }
-    this.onMenuChangedHandler('none');
   }
+
+  // without a `menu` slot the hamburger of the bar would open nothing, so the bar gets `none`:
+  // it was set before the bar was found, and then overwritten by `menu` on load
+  private barMenu = (menu: HeaderBarMenuType): HeaderBarMenuType => (this.hasMenu ? menu : 'none');
 
   private defineHeaderBar = (): void => {
     this.headerBar = this.host.querySelector('mds-header-bar') as HTMLMdsHeaderBarElement;
@@ -244,7 +243,7 @@ export class MdsHeader {
       return;
     }
     if (this.headerBar != null) {
-      this.headerBar.menu = newValue;
+      this.headerBar.menu = this.barMenu(newValue);
     }
   }
 
@@ -264,7 +263,7 @@ export class MdsHeader {
   }
 
   @Watch('visibility')
-  handleVisibilityChange(newValue: boolean, oldValue: boolean): void {
+  handleVisibilityChange(newValue: 'hidden' | 'visible', oldValue: 'hidden' | 'visible'): void {
     if (newValue !== oldValue) {
       this.visibleEvent.emit({ visibility: newValue });
     }

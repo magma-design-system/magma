@@ -30,8 +30,8 @@ import { ToastPosition } from './meta/types';
   shadow: true,
 })
 export class MdsToast {
-  private timer: number;
-  private timerToastDismiss: number;
+  private dismissTimer?: number;
+  private closeTimer?: number;
   private cssDismissAnimationDuration = 300; // hardcoded from CSS :-(
   private hasText?: boolean;
 
@@ -63,15 +63,19 @@ export class MdsToast {
    */
   @Prop({ reflect: true, mutable: true }) readonly position: ToastPosition = 'bottom-center';
   /**
-   * Emits when the accordion is opened
+   * Emits when a toast with a `duration` has hidden itself, once its exit animation is over
    */
   @Event({ eventName: 'mdsToastClose' }) closedEvent: EventEmitter<void>;
 
+  // mdsToastClose waits for the exit transition, so it reads the duration the transition really
+  // has: --mds-toast-duration, or 0s when the motion preference removes it. An invalid value
+  // leaves the transition at 0s too
   private updateCSSCustomProps(): void {
     if (typeof window === 'undefined') return;
     const elementStyles = window.getComputedStyle(this.hostElement);
     this.cssDismissAnimationDuration = cssDurationToMilliseconds(
-      elementStyles.getPropertyValue('--mds-tab-duration'),
+      elementStyles.getPropertyValue('--private-toast-transition-duration'),
+      0,
     );
   }
 
@@ -81,34 +85,38 @@ export class MdsToast {
     return duration !== 0 && !Number.isNaN(duration);
   };
 
+  /**
+   * While the toast is visible with a duration, one countdown hides it when the time is up, and
+   * mdsToastClose follows once the exit animation is over. Both are one-shot: the countdown was
+   * an interval that nobody stopped, so a dismissed toast emitted mdsToastClose again every
+   * `duration`. Hiding the toast, or showing it again, starts from scratch.
+   */
   private reloadTimeListeners = (visible: boolean): void => {
     if (typeof window === 'undefined') return;
-    if (!this.hasDuration()) {
+    window.clearTimeout(this.dismissTimer);
+    this.dismissTimer = undefined;
+    if (!visible || !this.hasDuration()) {
       return;
     }
-    if (!visible) {
-      return;
-    }
-    this.removeTimeListener();
-    this.addTimeListener();
-  };
-
-  private removeTimeListener = (): void => {
-    window.clearInterval(this.timer);
-    this.timer = 0;
-  };
-
-  private addTimeListener = (): void => {
-    this.timer = window.setInterval(() => {
+    // shown again before the close of the last showing: that close is no longer true
+    window.clearTimeout(this.closeTimer);
+    this.closeTimer = undefined;
+    this.dismissTimer = window.setTimeout(() => {
+      this.dismissTimer = undefined;
       this.visible = false;
-      this.timerToastDismiss = window.setInterval(() => {
-        // this is used to wait the toast to finish the outro animation
+      this.closeTimer = window.setTimeout(() => {
+        this.closeTimer = undefined;
         this.closedEvent.emit();
-        window.clearInterval(this.timerToastDismiss);
-        this.timerToastDismiss = 0;
       }, this.cssDismissAnimationDuration);
     }, this.duration);
   };
+
+  disconnectedCallback(): void {
+    window.clearTimeout(this.dismissTimer);
+    window.clearTimeout(this.closeTimer);
+    this.dismissTimer = undefined;
+    this.closeTimer = undefined;
+  }
 
   private onActionSlotChange = (): void => {
     this.hasActions = hasChildWithSlot(this.hostElement, 'action');
@@ -117,12 +125,7 @@ export class MdsToast {
   componentWillLoad(): void {
     this.hasText = this.hostElement.innerHTML !== '';
     this.hasActions = hasChildWithSlot(this.hostElement, 'action');
-    if (!this.hasDuration()) {
-      return;
-    }
-    if (this.visible) {
-      this.addTimeListener();
-    }
+    this.reloadTimeListeners(!!this.visible);
   }
 
   componentDidLoad(): void {
@@ -131,6 +134,8 @@ export class MdsToast {
 
   @Watch('visible')
   visibleChanged(visible: boolean): void {
+    // read again when the toast hides: the preference or the property may have changed since load
+    this.updateCSSCustomProps();
     this.reloadTimeListeners(visible);
   }
 
@@ -140,8 +145,12 @@ export class MdsToast {
   }
 
   render() {
+    // a status region: the message is announced when the toast shows it, without moving the
+    // focus. The host is the region and stays in the page, so the content that appears inside
+    // it is what a screen reader reads out
     return (
       <Host
+        role="status"
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
         pref-mode={preferenceStore.state.mode}

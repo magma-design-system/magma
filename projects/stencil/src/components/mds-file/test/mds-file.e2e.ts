@@ -20,6 +20,29 @@ describe('mds-file', () => {
     expect(root).toEqualAttribute('format', 'document');
   });
 
+  // a tab stop with a click handler, but no role and no key: reachable, never activated (#820)
+  it('is a button that Enter and Space activate', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-file filename="report.pdf"></mds-file>',
+    );
+    const download = spyOnEvent('mdsFileDownload');
+
+    expect(root).toEqualAttributes({ role: 'button', tabindex: '0' });
+
+    root.focus();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard('{Space}');
+    await waitForChanges();
+
+    expect(download).toHaveReceivedEventTimes(2);
+  });
+
+  it('keeps a role set by the caller', async () => {
+    const { root } = await render('<mds-file filename="report.pdf" role="option"></mds-file>');
+
+    expect(root).toEqualAttribute('role', 'option');
+  });
+
   // #747: the name was cut at the first dot, dropping everything up to the extension
   it('splits the name and the extension at the last dot', async () => {
     const { root } = await render(
@@ -57,6 +80,14 @@ describe('mds-file', () => {
     expect(getText(root, '.name')).toBe('report.v2.final');
     expect(getText(root, '.extension')).toBe('.docx');
     expect(root).toEqualAttribute('format', 'text');
+  });
+
+  it('shows no extension and no badge for a filename without one', async () => {
+    const { root } = await render('<mds-file filename="verbale"></mds-file>');
+
+    expect(getText(root, '.name')).toBe('verbale');
+    expect(getText(root, '.extension')).toBeNull();
+    expect(getText(root, '.suffix')).toBeNull();
   });
 });
 
@@ -119,5 +150,20 @@ describe('mds-file downloaded indicator', () => {
     root.setAttribute('filename', 'other.pdf');
     await waitForChanges();
     expect(indicator(root)).toBeNull();
+  });
+});
+
+// the event carried the dictionary key of the description, the card showed its translation (#823)
+describe('mds-file download event', () => {
+  it('carries the description the card shows', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-file filename="report.pdf"></mds-file>',
+    );
+    const download = spyOnEvent('mdsFileDownload');
+
+    root.click();
+    await waitForChanges();
+
+    expect(download.lastEvent?.detail.description).toBe(getText(root, '.description'));
   });
 });

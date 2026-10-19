@@ -14,9 +14,9 @@ The `<mds-push-notification>` web component is the Magma Design System container
 #### Semantic Behavior
 
 - **Slot-driven lifecycle**: Items placed in the default slot are animated in automatically; each item animates out and is removed when closed (an item shows its close button only with `deletable`).
-- **Built-in clear button**: The container always renders its own `Cancella notifiche` button, which animates out every item and hides the container.
+- **Built-in clear button**: The container always renders its own clear button, labelled in the page language ("Clear notifications", "Cancella notifiche"), which animates out every item and hides the container.
 - **Auto vs. manual behavior**: With `behavior="auto"` the container shows itself as soon as one or more items are added; with `behavior="manual"` visibility is driven only by the `visible` prop or the imperative methods.
-- **Empty-stack auto-hide**: When the last remaining item animates out, the container hides itself regardless of behavior. The check counts every node in the slot, whitespace text included, so it fires only when the items are the slot's only nodes (as when they are appended from script); the clear button and `hide()` always hide it.
+- **Empty-stack auto-hide**: When the last remaining item animates out, the container hides itself regardless of behavior; the clear button and `hide()` hide it too.
 - **Emitted events**: `mdsPushNotificationShow` fires when it becomes visible, `mdsPushNotificationHide` when hidden, and `mdsPushNotificationChange` on every transition carrying a `{ visible: boolean }` detail.
 - **Imperative API**: Exposes `show()` and `hide()` methods to control visibility programmatically, plus `removeNotification()` to dismiss one or an array of `mds-push-notification-item` elements with the standard outro animation.
 - **Animation timing**: Intro/outro durations and inter-item gap are read from CSS custom properties (`--mds-push-notification-items-intro-delay`, `--mds-push-notification-items-outro-delay`, `--mds-push-notification-items-gap`), so motion is themeable without code changes.
@@ -381,10 +381,10 @@ Action buttons belong in the `action` slot of `mds-push-notification-item`, not 
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                                                                                                                                                                                                                                                           | Type                              | Default     |
-| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------- |
-| `behavior` | `behavior` | Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added | `"auto" \| "manual" \| undefined` | `'auto'`    |
-| `visible`  | `visible`  | Specifies if the component is visible or not.                                                                                                                                                                                                                                                                                         | `boolean \| undefined`            | `undefined` |
+| Property   | Attribute  | Description                                                                                                                                                                                                 | Type                              | Default     |
+| ---------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------- |
+| `behavior` | `behavior` | Specifies when the stack shows: with `auto` whenever notifications are added, with `manual` only through `visible` or `show()`. In both, removing the last notification hides it; a click outside does not. | `"auto" \| "manual" \| undefined` | `'auto'`    |
+| `visible`  | `visible`  | Specifies if the component is visible or not.                                                                                                                                                               | `boolean \| undefined`            | `undefined` |
 
 
 ## Events

@@ -16,6 +16,9 @@ import { DirectionType } from '@component/mds-tab/meta/type';
 import { MdsTabItemEventDetail } from './meta/event-detail';
 import clsx from 'clsx';
 
+/**
+ * @part button - The `mds-button` of the tab
+ */
 @Component({
   tag: 'mds-tab-item',
   styleUrl: 'mds-tab-item.css',

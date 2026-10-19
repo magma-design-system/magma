@@ -3,6 +3,7 @@
 /**
  * @prop --mds-note-background: Sets the background-color of the component
  * @prop --mds-note-color: Sets the text color of the component
+ * @prop --mds-note-fold-color: Sets the color of the fold decoration at the bottom right of the component
  * @prop --mds-note-fold-size: Sets the size of the fold decoration at the bottom right of the component
  * @prop --mds-note-selection-background: Sets the selection text background-color of the component
  * @prop --mds-note-selection-color: Sets the selection text color of the component
@@ -21,8 +22,9 @@
   @apply ease-in-out;
 
   background-color: var(--mds-note-background);
-  border-radius: var(--radius-3xs);
+  border-radius: var(--magma-radius-3xs);
   color: var(--mds-note-color);
+  corner-shape: var(--magma-corner-shape);
   display: grid;
   gap: --spacing(200);
   overflow: hidden;
@@ -68,7 +70,7 @@
   @apply ease-out;
 
   background-color: transparent;
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   cursor: pointer;
   fill: var(--mds-note-color);
   padding: --spacing(100);
@@ -78,16 +80,6 @@
 
 .button-close:hover {
   background-color: rgb(var(--magma-surface-overlay) / 0.5);
-}
-
-.title {
-  align-items: flex-start;
-  display: flex;
-  gap: --spacing(400);
-}
-
-.title .button-close {
-  margin-left: auto;
 }
 
 @import './css/mds-note-variants.css';

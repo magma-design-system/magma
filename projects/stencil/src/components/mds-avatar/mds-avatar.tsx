@@ -1,12 +1,13 @@
 import clsx from 'clsx';
 import fitty from 'fitty/dist/fitty.min.js';
-import { Component, Element, Host, h, State, Prop, Watch } from '@stencil/core';
+import { Build, Component, Element, Host, h, State, Prop, Watch } from '@stencil/core';
 import { preferenceStore } from '@common/preference';
 import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
-import { avatarVariant } from './meta/variants';
 import miBaselinePerson from '@icon/mi/baseline/person.svg';
+
+type AvatarContent = 'count' | 'image' | 'initials' | 'icon' | 'fallback';
 
 /**
  * @part icon - The selected icon of the avatar
@@ -20,16 +21,16 @@ import miBaselinePerson from '@icon/mi/baseline/person.svg';
   shadow: true,
 })
 export class MdsAvatar {
-  // BUG: when user switch from initials to other and turn back to initials fitty breaks
-
   @Element() private element: HTMLMdsAvatarElement;
-  @State() fallback = false;
+  // the image of `src` failed to load: the avatar shows the next source in the order
+  @State() imageFailed = false;
   @State() loaded = true;
 
-  private observer: ResizeObserver;
+  private observer?: ResizeObserver;
   private fittyElements;
-  private fittyInitialized = false;
-  private textChanged = false;
+  // the element fitty sizes: initials and count render their own, and a change of source
+  // replaces it, so the text is fitted again whenever it is another element
+  private fitElement?: HTMLElement;
 
   /**
    * Specifies the path to the icon
@@ -80,41 +81,37 @@ export class MdsAvatar {
     'yellow',
   ];
 
-  private addFontResize = (): void => {
-    if (this.fittyInitialized) {
-      return;
-    }
-    const initialsElement = this.element.shadowRoot?.querySelector('.fit');
-    this.fittyElements = fitty(initialsElement as HTMLElement, { minSize: 10 });
+  private addFontResize = (fitElement: HTMLElement): void => {
+    this.fitElement = fitElement;
+    this.fittyElements = fitty(fitElement, { minSize: 10 });
     this.observer = new ResizeObserver((entries) => {
       entries.forEach(() => {
         this.fittyElements.fit();
       });
     });
     this.observer.observe(this.element);
-    this.fittyInitialized = true;
   };
 
   private removeFontResize = (): void => {
-    if (!this.fittyInitialized) {
+    if (!this.fitElement) {
       return;
     }
-    this.fittyInitialized = false;
-    this.observer.unobserve(this.element);
+    this.fitElement = undefined;
+    this.fittyElements?.unsubscribe();
+    this.observer?.disconnect();
   };
 
-  private checkText = (value: string): void => {
-    if (value !== '' && value !== undefined) {
-      if (this.fittyInitialized) return;
-      if (!this.fittyInitialized) this.addFontResize();
-      return;
-    }
-    if (this.fittyInitialized) this.removeFontResize();
+  private syncFontResize = (): void => {
+    if (!Build.isBrowser) return;
+    const fitElement = this.element.shadowRoot?.querySelector<HTMLElement>('.fit') ?? undefined;
+    if (fitElement === this.fitElement) return;
+    this.removeFontResize();
+    if (fitElement) this.addFontResize(fitElement);
   };
 
   private readonly handleImgLoadError = (): void => {
     this.loaded = true;
-    this.fallback = true;
+    this.imageFailed = true;
   };
 
   private readonly handleImgLoadSuccess = (): void => {
@@ -127,10 +124,20 @@ export class MdsAvatar {
     return count !== 0 && !Number.isNaN(count);
   };
 
-  private checkTexts = (): void => {
-    const initials = this.initials ?? '';
-    if (initials !== '') this.checkText(initials);
-    if (this.hasCount()) this.checkText(String(this.count));
+  private hasSrc = (): boolean => (this.src ?? '') !== '';
+
+  /**
+   * The one source the avatar shows, in a single order: `count`, then the image of `src` (until
+   * it fails to load), then `initials`, then `icon`, then the person glyph. Each pair of sources
+   * used to be resolved on its own, in a circle (`icon` hid `src`, `src` hid `initials`,
+   * `initials` hid `icon`), and some combinations rendered an empty avatar.
+   */
+  private content = (): AvatarContent => {
+    if (this.hasCount()) return 'count';
+    if (this.hasSrc() && !this.imageFailed) return 'image';
+    if ((this.initials ?? '') !== '') return 'initials';
+    if ((this.icon ?? '') !== '') return 'icon';
+    return 'fallback';
   };
 
   private checkInitialsVariant = (): void => {
@@ -143,67 +150,46 @@ export class MdsAvatar {
       if (cleanedInitials.length === 1) {
         cleanedInitials = cleanedInitials + cleanedInitials;
       }
-      this.variant =
-        this.variants[
-          (cleanedInitials.substring(0, 1).charCodeAt(0) +
-            cleanedInitials.substring(1, 2).charCodeAt(0)) %
-            avatarVariant.length
-        ];
+      // the initials pick one of 17 slots, the length of the v1 list of colors: the 15 slots this
+      // list has keep the color they always gave, the 2 past its end, which left the avatar with
+      // no variant (#825), take the first two
+      const slot =
+        (cleanedInitials.substring(0, 1).charCodeAt(0) +
+          cleanedInitials.substring(1, 2).charCodeAt(0)) %
+        17;
+      this.variant = this.variants[slot % this.variants.length];
     }
   };
 
   componentWillLoad(): void {
     this.checkInitialsVariant();
-  }
-
-  componentDidLoad(): void {
-    if (this.src !== undefined) {
-      this.loaded = false;
-    }
-    this.checkTexts();
+    this.loaded = !this.hasSrc();
   }
 
   componentDidRender(): void {
-    if (this.textChanged) {
-      // placed here becase @Watch('initials') is fired
-      // BEFORE the element .fit is attached on shDOM
-      this.checkTexts();
-      this.textChanged = false;
-    }
+    // after the render: the element that shows the text is in the shadow root only now
+    this.syncFontResize();
   }
 
   @Watch('initials')
   initialsHandler(): void {
-    this.textChanged = true;
     this.checkInitialsVariant();
   }
 
   @Watch('count')
   countHandler(): void {
-    this.textChanged = true;
     this.checkInitialsVariant();
   }
 
   @Watch('src')
-  srcHandler(newValue: string): void {
-    if (newValue === undefined) {
-      this.loaded = true;
-    }
-  }
-
-  @Watch('icon')
-  iconHandler(newValue: string): void {
-    if (newValue !== undefined) {
-      this.loaded = true;
-    }
+  srcHandler(): void {
+    // a new image is pending until it loads, and the failure of the previous one is forgotten
+    this.imageFailed = false;
+    this.loaded = !this.hasSrc();
   }
 
   render() {
-    const hasCount = this.hasCount();
-    const icon = this.icon ?? '';
-    const hasIcon = icon !== '';
-    const hasInitials = (this.initials ?? '') !== '';
-    const hasSrc = (this.src ?? '') !== '';
+    const content = this.content();
 
     return (
       <Host
@@ -213,24 +199,17 @@ export class MdsAvatar {
         <div
           class={clsx(
             'avatar',
-            hasInitials && !this.fallback && !hasSrc && 'avatar--initials',
-            (this.fallback || (!hasIcon && !hasInitials && !hasSrc)) && 'avatar--fallback',
-            hasIcon && 'avatar--icon',
-            this.loaded ? 'avatar--loaded' : 'avatar--pending',
+            `avatar--${content}`,
+            content === 'image' && !this.loaded ? 'avatar--pending' : 'avatar--loaded',
           )}
           part="wrapper"
         >
-          {hasInitials && !hasCount && !this.fallback && !hasSrc && (
-            <div class="initials-text">
-              <span class="fit">{this.initials?.substring(0, 2)}</span>
-            </div>
-          )}
-          {hasCount && !this.fallback && !hasSrc && (
+          {content === 'count' && (
             <div class="initials-text">
               <span class="fit">+{this.count}</span>
             </div>
           )}
-          {hasSrc && !hasCount && !this.fallback && !hasIcon && (
+          {content === 'image' && (
             <mds-img
               class="image"
               loading="lazy"
@@ -240,12 +219,15 @@ export class MdsAvatar {
               src={this.src}
             />
           )}
-          {hasIcon && !hasInitials && !hasCount && (
-            <mds-icon class="icon" part="icon" name={icon}></mds-icon>
+          {content === 'initials' && (
+            <div class="initials-text">
+              <span class="fit">{this.initials?.substring(0, 2)}</span>
+            </div>
           )}
-          {(this.fallback || (!hasIcon && !hasInitials && !hasCount && !hasSrc)) && (
-            <i class="fallback-icon" innerHTML={miBaselinePerson} />
+          {content === 'icon' && (
+            <mds-icon class="icon" part="icon" name={this.icon ?? ''}></mds-icon>
           )}
+          {content === 'fallback' && <i class="fallback-icon" innerHTML={miBaselinePerson} />}
         </div>
       </Host>
     );

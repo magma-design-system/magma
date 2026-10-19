@@ -1,7 +1,7 @@
 @import './css/mds-paginator-fouc.css';
 
 /**
- * @prop --mds-paginator-background: Sets the background-color of the pages area and the item
+ * @prop --mds-paginator-background: Sets the background-color of the pages area, behind the items
  * @prop --mds-paginator-scroll-behavior: Sets the scroll-behavior animation
  */
 
@@ -33,7 +33,7 @@
 
   align-items: center;
   background-color: var(--mds-paginator-background);
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   display: flex;
   flex-shrink: 1;
   gap: 2px;

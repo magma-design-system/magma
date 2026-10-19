@@ -16,7 +16,8 @@ The `<mds-radial-menu>` web component is a floating action menu of the Magma Des
 - **Trigger button**: Renders a trigger button whose `tone`, `variant` and `size` are forwarded from the host; clicking it toggles the menu open and closed. It is icon-only and named in the page language (the `lang` of `<html>`) after what a click does: "Open menu", then "Close menu". There is no prop to give it a name of your own yet.
 - **Open state**: `opened` is the source of truth for visibility; when set the items animate out along the arc and the trigger icon swaps to a close glyph.
 - **Interaction mode**: With `interaction="rightclick"` the trigger is hidden and the menu instead opens on right-click, centred on the cursor.
-- **Backdrop**: When `backdrop` is enabled a dimming overlay is shown while the menu is open. It is purely visual: it lets clicks through and does not close the menu.
+- **Closing**: A click outside the menu or Escape closes the open menu; Escape gives the focus back to the trigger when it was inside the menu.
+- **Backdrop**: When `backdrop` is enabled a dimming overlay is shown while the menu is open. It is purely visual: it lets clicks through.
 - **Item registration**: Items are read from the `item` slot; the component assigns each item's position and propagates the host `size` down to every `<mds-radial-menu-item>`.
 
 #### Properties & Visual Configurations
@@ -25,8 +26,8 @@ The internal trigger consumes the shared `variant` / `tone` / `size` ladders def
 
 #### Other behavioral props
 
-- **`angleStart`** and **`angleEnd`** define the angular sweep (in degrees) over which items are distributed; a 360-degree span produces a full ring, while a narrower range produces a fan. Setting `angleStart` greater than `angleEnd` reverses the distribution.
-- **`radius`** sets the distance (in `rem`) of the items from the centre, controlling how far they travel when the menu opens.
+- **`angleStart`** and **`angleEnd`** define the angular sweep (in degrees) over which items are distributed; a 360-degree span produces a full ring, while a narrower range produces a fan. Setting `angleStart` greater than `angleEnd` reverses the distribution. Unset, they leave the sweep to `--mds-radial-menu-angle-start` / `-angle-end` (a full ring from `0deg` by default).
+- **`radius`** sets the distance (in `rem`) of the items from the centre, controlling how far they travel when the menu opens. Unset, it leaves it to `--mds-radial-menu-radius` (`5rem` by default).
 - **`direction`** chooses whether items lay out `'clockwise'` or `'counterclockwise'` around the arc.
 - **`interaction`** selects how the menu is summoned: `'click'` shows the trigger button, `'rightclick'` hides it and opens at the cursor.
 - **`disc`** renders a decorative disc beneath the menu; **`icon`** overrides the default trigger glyph and defaults to the "more-vert" Material icon when unset.
@@ -166,13 +167,26 @@ Use the `size` prop to resize the trigger button and all items simultaneously. D
 
 #### Styling Customization
 
-Style the component through its documented `--mds-radial-menu-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Set the radius and the angles with the `radius`, `angle-start` and `angle-end` props: the component writes `--mds-radial-menu-radius`, `--mds-radial-menu-angle-start` and `--mds-radial-menu-angle-end` inline on the host, so a stylesheet cannot override them.
+Style the component through its documented `--mds-radial-menu-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. The radius and the angles can come from a stylesheet too, through `--mds-radial-menu-radius`, `--mds-radial-menu-angle-start` and `--mds-radial-menu-angle-end` set on the element: the `radius`, `angle-start` and `angle-end` props, when set, write the same properties inline and win over the stylesheet.
 
 ```css
 .my-context mds-radial-menu {
   --mds-radial-menu-transition-duration: 300ms;
   --mds-radial-menu-disc-background: rgb(var(--magma-surface-overlay) / 0.8);
   --mds-radial-menu-disc-size: 12rem;
+}
+
+/* a fan in the top right corner, on wide screens a larger one */
+.corner-actions mds-radial-menu {
+  --mds-radial-menu-angle-start: 0deg;
+  --mds-radial-menu-angle-end: 90deg;
+  --mds-radial-menu-radius: 5rem;
+}
+
+@media (min-width: 1024px) {
+  .corner-actions mds-radial-menu {
+    --mds-radial-menu-radius: 7rem;
+  }
 }
 ```
 
@@ -245,7 +259,7 @@ menu.interaction = 'rightclick';
 
 #### Do Not Override Geometry via Inline Styles
 
-The arc geometry is driven by `angle-start`, `angle-end`, `radius`, and `direction` props - not by inline CSS. Applying `transform`, `top`, or `left` directly on the host or items conflicts with the component's own animation values.
+The arc geometry is driven by the `angle-start`, `angle-end`, `radius`, and `direction` props, or by the documented `--mds-radial-menu-angle-*` and `--mds-radial-menu-radius` custom properties - not by transforms or offsets. Applying `transform`, `top`, or `left` directly on the host or items conflicts with the component's own animation values.
 
 ```html
 <!-- INCORRECT -->
@@ -279,20 +293,20 @@ The arc geometry is driven by `angle-start`, `angle-end`, `radius`, and `directi
 
 ## Properties
 
-| Property      | Attribute     | Description                                          | Type                                                                                                                                       | Default       |
-| ------------- | ------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
-| `angleEnd`    | `angle-end`   | Specifies the ending angle of the menu               | `number`                                                                                                                                   | `360`         |
-| `angleStart`  | `angle-start` | Specifies the starting angle of the menu             | `number`                                                                                                                                   | `0`           |
-| `backdrop`    | `backdrop`    | Specifies if the component has a backdrop background | `boolean \| undefined`                                                                                                                     | `false`       |
-| `direction`   | `direction`   | Specifies the direction of the menu elements         | `"clockwise" \| "counterclockwise"`                                                                                                        | `'clockwise'` |
-| `disc`        | `disc`        | Specifies if the menu has a disc beneath or not      | `boolean \| undefined`                                                                                                                     | `undefined`   |
-| `icon`        | `icon`        | The icon displayed in the button                     | `string \| undefined`                                                                                                                      | `undefined`   |
-| `interaction` | `interaction` | Specifies how to open the menu                       | `"click" \| "rightclick"`                                                                                                                  | `'click'`     |
-| `opened`      | `opened`      | Specifies if the menu is opened or not               | `boolean \| undefined`                                                                                                                     | `undefined`   |
-| `radius`      | `radius`      | Specifies the radius of the menu                     | `number`                                                                                                                                   | `5`           |
-| `size`        | `size`        | Specifies the size for the button                    | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                             | `'lg'`        |
-| `tone`        | `tone`        | Specifies the tone variant for the button            | `"outline" \| "strong" \| "text" \| "weak" \| undefined`                                                                                   | `'strong'`    |
-| `variant`     | `variant`     | Specifies the color variant for the button           | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'dark'`      |
+| Property      | Attribute     | Description                                                                                                                                | Type                                                                                                                                       | Default       |
+| ------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| `angleEnd`    | `angle-end`   | Specifies the ending angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-end`, `360deg` by default   | `number`                                                                                                                                   | `undefined`   |
+| `angleStart`  | `angle-start` | Specifies the starting angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-start`, `0deg` by default | `number`                                                                                                                                   | `undefined`   |
+| `backdrop`    | `backdrop`    | Specifies if the component has a backdrop background                                                                                       | `boolean \| undefined`                                                                                                                     | `false`       |
+| `direction`   | `direction`   | Specifies the direction of the menu elements                                                                                               | `"clockwise" \| "counterclockwise"`                                                                                                        | `'clockwise'` |
+| `disc`        | `disc`        | Specifies if the menu has a disc beneath or not                                                                                            | `boolean \| undefined`                                                                                                                     | `undefined`   |
+| `icon`        | `icon`        | The icon displayed in the button                                                                                                           | `string \| undefined`                                                                                                                      | `undefined`   |
+| `interaction` | `interaction` | Specifies how to open the menu                                                                                                             | `"click" \| "rightclick"`                                                                                                                  | `'click'`     |
+| `opened`      | `opened`      | Specifies if the menu is opened or not                                                                                                     | `boolean \| undefined`                                                                                                                     | `undefined`   |
+| `radius`      | `radius`      | Specifies the radius of the menu, in `rem`; when it is not set the menu takes `--mds-radial-menu-radius`, `5rem` by default                | `number`                                                                                                                                   | `undefined`   |
+| `size`        | `size`        | Specifies the size for the button                                                                                                          | `"lg" \| "md" \| "sm" \| "xl"`                                                                                                             | `'lg'`        |
+| `tone`        | `tone`        | Specifies the tone variant for the button                                                                                                  | `"outline" \| "strong" \| "text" \| "weak" \| undefined`                                                                                   | `'strong'`    |
+| `variant`     | `variant`     | Specifies the color variant for the button                                                                                                 | `"ai" \| "apple" \| "dark" \| "error" \| "google" \| "info" \| "light" \| "primary" \| "secondary" \| "success" \| "warning" \| undefined` | `'dark'`      |
 
 
 ## Slots
@@ -304,27 +318,27 @@ The arc geometry is driven by `angle-start`, `angle-end`, `radius`, and `directi
 
 ## Shadow Parts
 
-| Part            | Description |
-| --------------- | ----------- |
-| `"radial-menu"` |             |
+| Part            | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `"radial-menu"` | The ring that lays out the `item` slot around the trigger |
 
 
 ## CSS Custom Properties
 
-| Name                                           | Description                                        |
-| ---------------------------------------------- | -------------------------------------------------- |
-| `--mds-radial-menu-angle-end`                  | Ending angle of the radial menu.                   |
-| `--mds-radial-menu-angle-start`                | Starting angle of the radial menu.                 |
-| `--mds-radial-menu-context-menu-z-index`       | Z-index of the radial menu context.                |
-| `--mds-radial-menu-delay`                      | Delay before the radial menu opens.                |
-| `--mds-radial-menu-direction`                  | Direction multiplier for menu expansion (-1 or 1). |
-| `--mds-radial-menu-disc-background`            | Background color of the radial menu disc.          |
-| `--mds-radial-menu-disc-filter`                | Filter applied to the radial menu disc.            |
-| `--mds-radial-menu-disc-shadow`                | Shadow applied to the radial menu disc.            |
-| `--mds-radial-menu-disc-size`                  | Size of the radial menu disc.                      |
-| `--mds-radial-menu-radius`                     | Radius of the radial menu.                         |
-| `--mds-radial-menu-transition-duration`        | Duration of the radial menu open/close transition. |
-| `--mds-radial-menu-transition-timing-function` | Timing function of the radial menu transition.     |
+| Name                                           | Description                                                                        |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `--mds-radial-menu-angle-end`                  | Ending angle of the radial menu; the `angle-end` prop, when set, wins over it.     |
+| `--mds-radial-menu-angle-start`                | Starting angle of the radial menu; the `angle-start` prop, when set, wins over it. |
+| `--mds-radial-menu-context-menu-z-index`       | Z-index of the radial menu context.                                                |
+| `--mds-radial-menu-delay`                      | Delay before the radial menu opens.                                                |
+| `--mds-radial-menu-direction`                  | Direction multiplier for menu expansion (-1 or 1).                                 |
+| `--mds-radial-menu-disc-background`            | Background color of the radial menu disc.                                          |
+| `--mds-radial-menu-disc-filter`                | Filter applied to the radial menu disc.                                            |
+| `--mds-radial-menu-disc-shadow`                | Shadow applied to the radial menu disc.                                            |
+| `--mds-radial-menu-disc-size`                  | Size of the radial menu disc.                                                      |
+| `--mds-radial-menu-radius`                     | Radius of the radial menu; the `radius` prop, when set, wins over it.              |
+| `--mds-radial-menu-transition-duration`        | Duration of the radial menu open/close transition.                                 |
+| `--mds-radial-menu-transition-timing-function` | Timing function of the radial menu transition.                                     |
 
 
 ## Dependencies

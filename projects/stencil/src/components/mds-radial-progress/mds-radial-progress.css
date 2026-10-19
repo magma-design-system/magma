@@ -1,5 +1,13 @@
 @import './css/mds-radial-progress-fouc.css';
 
+/**
+ * @prop --mds-radial-progress-background: Color of the ring track, behind the progress arc
+ * @prop --mds-radial-progress-color: Color of the progress arc and of the icon
+ * @prop --mds-radial-progress-text-background: Background color of the inner circle that holds the value
+ * @prop --mds-radial-progress-text-background-shadow: Box shadow of the inner circle that holds the value
+ * @prop --mds-radial-progress-text-suffix: Text written after the value, as a CSS string (`'%'` by default)
+ */
+
 :host {
   --mds-radial-progress-background: rgb(var(--magma-wash-base));
   --mds-radial-progress-color: rgb(var(--magma-accent-fg));
@@ -15,7 +23,7 @@
     var(--mds-radial-progress-color) var(--mds-radial-progress),
     transparent 0%
   );
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   box-sizing: border-box;
   container-name: mds-radial-progress;
   container-type: inline-size;

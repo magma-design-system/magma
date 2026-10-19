@@ -30,18 +30,31 @@ export class MdsPaginatorItem {
    */
   @Prop({ reflect: true }) readonly disabled?: boolean;
 
+  /**
+   * The item is a button: Enter and Space click it as the pointer does, never while it is
+   * disabled or is the selected page, which the pointer cannot click either. A disabled item
+   * leaves the tab order; the selected page stays in it, so the keyboard finds where it is.
+   */
+  private syncClickBehavior = (): void => {
+    if (this.disabled || this.selected) {
+      this.km.detachClickBehavior();
+      return;
+    }
+    this.km.attachClickBehavior('element', { space: true });
+  };
+
   componentDidLoad(): void {
     this.km.addElement(this.host);
-    this.km.attachClickBehavior();
+    this.syncClickBehavior();
   }
 
   componentDidUpdate(): void {
-    if (!this.disabled && !this.selected) {
-      this.km.attachClickBehavior();
-      return;
-    }
+    this.syncClickBehavior();
+  }
 
-    this.km.detachClickBehavior();
+  // an item moved in the page is disconnected and connected again, without loading again
+  connectedCallback(): void {
+    this.syncClickBehavior();
   }
 
   disconnectedCallback(): void {
@@ -51,7 +64,10 @@ export class MdsPaginatorItem {
   render() {
     return (
       <Host
-        tabindex="0"
+        aria-current={this.selected ? 'page' : undefined}
+        aria-disabled={this.disabled ? 'true' : undefined}
+        role="button"
+        tabindex={this.disabled ? undefined : '0'}
         pref-animation={preferenceStore.state.animation}
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}

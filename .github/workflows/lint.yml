@@ -12,6 +12,8 @@ on:
   push:
     branches: [dev, main, beta]
   pull_request:
+  # the merge queue of dev runs the required checks here (docs/WORKFLOW.md, rule 1)
+  merge_group:
 
 concurrency:
   # one run per ref: a newer push cancels the superseded run. Nothing

@@ -151,9 +151,16 @@ export class MdsKeyboard {
       return false;
     }
 
-    isValid = array1.every((value, index) => {
+    // in any order: each key of the shortcut takes one pressed code among its own, so Shift then
+    // A passes for A then Shift, as for the user they are the same shortcut. They were compared
+    // by position, and the press order mattered
+    const pressed = [...array2];
+    isValid = array1.every((value) => {
       const options = value.split(',');
-      return options.includes(array2[index]);
+      const match = pressed.findIndex((code) => options.includes(code));
+      if (match === -1) return false;
+      pressed.splice(match, 1);
+      return true;
     });
 
     if (!isValid) {

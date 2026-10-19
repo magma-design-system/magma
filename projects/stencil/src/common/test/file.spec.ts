@@ -37,9 +37,9 @@ describe('getSuffix', () => {
     expect(getSuffix('https://example.com/files.v2/report.v2.final.docx')).toBe('docx');
   });
 
-  it('returns "default" when there is no extension', () => {
-    expect(getSuffix('this_is_an_extensionless_file')).toBe('default');
-    expect(getSuffix('.env')).toBe('default');
+  it('returns nothing when there is no extension', () => {
+    expect(getSuffix('this_is_an_extensionless_file')).toBe('');
+    expect(getSuffix('.env')).toBe('');
   });
 
   it('prefers the override, lowercased', () => {

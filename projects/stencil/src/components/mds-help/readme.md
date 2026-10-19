@@ -15,14 +15,14 @@ The `<mds-help>` web component is a contextual help affordance of the Magma Desi
 
 #### Semantic Behavior
 
-- **Tooltip-on-icon**: The host always renders a help icon and anchors a tooltip to it; the slotted text becomes the tooltip body and is shown while the pointer hovers the icon. The icon is not focusable, so keyboard users cannot open the tooltip: do not put essential information only here.
-- **Auto-placement**: Unless `disableAutoPlacement` is set (auto-placement is on by default), the tooltip repositions itself to stay near its caller and within the viewport, overriding the static `placement` when space is constrained.
+- **Tooltip-on-icon**: The host always renders a help icon and anchors a tooltip to it; the slotted text becomes the tooltip body and is shown while the pointer hovers the icon or the icon has the focus. The icon is a tab stop named by the tooltip text (`role="img"` with `aria-labelledby`), so a screen reader reads the help on it.
+- **Auto-placement**: Unless `disableAutoPlacement` is set (auto-placement is on by default), the tooltip takes `placement` whenever it has room there, and moves to another side of the icon only when it does not fit.
 - **Default-slot is text**: The default slot is intended for a plain text string only; HTML elements or components in the slot are discouraged because the content is rendered inside the tooltip.
 
 #### Properties & Visual Configurations
 
 - **`icon`** is an SVG filename slug from the Magma icon library; when omitted, the component falls back to the standard outline help glyph, so set it only to convey a help affordance other than the default question mark.
-- **`placement`** sets the preferred side of the icon on which the tooltip appears (e.g. `'top'`, `'bottom-start'`). It is the starting position; auto-placement may move the tooltip away from this preference at runtime.
+- **`placement`** sets the preferred side of the icon on which the tooltip appears (e.g. `'top'`, `'bottom-start'`). It is kept whenever it has room; auto-placement moves the tooltip away from it only when it does not fit.
 - **`disableAutoPlacement`** turns off dynamic repositioning. Leave it off in scrollable or edge-of-viewport contexts; set it only when you need the tooltip pinned strictly to the `placement` side.
 
 The tooltip's dimensions and reveal timing are tuned via the CSS custom properties documented in [`readme.md`](../readme.md) (`--mds-help-tooltip-width`, `--mds-help-tooltip-min-width`, `--mds-help-tooltip-max-width`, `--mds-help-tooltip-delay`).
@@ -34,7 +34,7 @@ Correct and idiomatic ways to use the `<mds-help>` component, ordered from most 
 
 #### Basic Inline Help
 
-The canonical form. Drop `<mds-help>` inline next to a label or piece of text and slot in a plain string explaining the concept. The tooltip appears on hover of the help icon (the icon takes no keyboard focus).
+The canonical form. Drop `<mds-help>` inline next to a label or piece of text and slot in a plain string explaining the concept. The tooltip appears on hover and on keyboard focus of the help icon.
 
 ```html
 <p>
@@ -60,7 +60,7 @@ Use the `placement` prop to suggest a preferred side for the tooltip. The defaul
 
 #### Disabling Auto-Placement
 
-Auto-placement is enabled by default and overrides `placement` when space is constrained. Add `disable-auto-placement` only when you need the tooltip pinned strictly to one side - for example in a fixed overlay where you control the available space.
+Auto-placement is enabled by default and moves the tooltip away from `placement` only when it has no room there. Add `disable-auto-placement` only when you need the tooltip pinned strictly to one side - for example in a fixed overlay where you control the available space.
 
 ```html
 <!-- Add disable-auto-placement to pin the tooltip to placement="bottom" -->
@@ -200,11 +200,11 @@ Setting `style="width: ..."` on the host bypasses the component's layout contrac
 
 ## Properties
 
-| Property               | Attribute                | Description                                                              | Type                                                                                                                                                                              | Default     |
-| ---------------------- | ------------------------ | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `disableAutoPlacement` | `disable-auto-placement` | If set, the component will not be placed automatically near it's caller. | `boolean \| undefined`                                                                                                                                                            | `false`     |
-| `icon`                 | `icon`                   | Set the name of the icon.                                                | `string \| undefined`                                                                                                                                                             | `undefined` |
-| `placement`            | `placement`              | Specifies where the component should be placed relative to the caller.   | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start" \| undefined` | `'top'`     |
+| Property               | Attribute                | Description                                                                                                              | Type                                                                                                                                                                              | Default     |
+| ---------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `disableAutoPlacement` | `disable-auto-placement` | Pins the tooltip to `placement`: without it, the tooltip moves to another side of the icon when `placement` has no room. | `boolean \| undefined`                                                                                                                                                            | `false`     |
+| `icon`                 | `icon`                   | Set the name of the icon.                                                                                                | `string \| undefined`                                                                                                                                                             | `undefined` |
+| `placement`            | `placement`              | Specifies where the tooltip should be placed relative to the icon: the side it takes whenever it has room there.         | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start" \| undefined` | `'top'`     |
 
 
 ## Slots
@@ -216,9 +216,9 @@ Setting `style="width: ..."` on the host bypasses the component's layout contrac
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"icon"` |             |
+| Part     | Description                                    |
+| -------- | ---------------------------------------------- |
+| `"icon"` | The icon that shows the help text in a tooltip |
 
 
 ## CSS Custom Properties

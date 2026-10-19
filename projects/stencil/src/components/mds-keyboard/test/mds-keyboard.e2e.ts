@@ -151,6 +151,13 @@ describe('mds-keyboard', () => {
       expect(host).toEqualAttribute('test', 'pass');
     });
 
+    it('passes whatever the order the keys are pressed in', async () => {
+      await clickButton();
+      await typeCombination(host, ['KeyC', 'ControlLeft'], waitForChanges);
+
+      expect(host).toEqualAttribute('test', 'pass');
+    });
+
     it('fails when the typed combination does not match', async () => {
       await clickButton();
       await typeCombination(host, ['ControlLeft', 'KeyD'], waitForChanges);

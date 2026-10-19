@@ -146,7 +146,7 @@ The default slot is deprecated and accepts plain text only; HTML elements are un
 
 #### Do Not Set `value` Outside the 0-100 Range
 
-The component passes `value / 100` directly to the inner `<mds-progress>` fill. Values above 100 just fill the whole bar while the caption shows the raw number; negative values produce no fill and no error. Clamp the value in your data layer before binding.
+The inner `<mds-progress>` reads a value above 100 as 100 and a negative one as 0, but the caption still shows the raw number, which then contradicts the bar. Clamp the value in your data layer before binding.
 
 ```html
 <!-- INCORRECT -->

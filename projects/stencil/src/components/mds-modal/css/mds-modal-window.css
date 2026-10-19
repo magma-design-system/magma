@@ -68,7 +68,7 @@
   transform: var(--private-modal-transition-window-transform);
   transition-duration: var(--private-modal-transition-duration);
   transition-property: transform, opacity;
-  transition-timing-function: var(--mds-modal-transition-timing-funciton);
+  transition-timing-function: var(--mds-modal-transition-timing-function);
 }
 
 /* Open / resting state. Resting transform comes from a variable (`none` by

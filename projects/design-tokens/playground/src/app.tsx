@@ -22,6 +22,15 @@ import { SurfaceManager, DEFAULT_THEME } from './surfaces.js';
 import { ThemesManager } from './themes.js';
 import type { ThemeConfig } from '../../src/lib/surface.mjs';
 import { nearestColorName } from './color-names.js';
+import {
+  clearDraft,
+  hashText,
+  readDraft,
+  reconcileDraft,
+  writeDraft,
+  type DraftSource,
+  type PlaygroundDraft,
+} from './draft.js';
 const COLORSPACES = [
   'HSL',
   'OKLCH',
@@ -68,46 +77,6 @@ function resolveBaseColor(config: MagmaConfig, color: ColorConfig): string | und
   if (color.color) return color.color;
   if (!color.alias) return undefined;
   return config.colors.find((c) => c.name === color.alias)?.color;
-}
-
-// the working state is mirrored to localStorage so a reload keeps the edited
-// or loaded configuration instead of falling back to the defaults
-const DRAFT_STORAGE_KEY = 'magma-design-tokens:playground:draft';
-
-interface PlaygroundDraft {
-  config: CloneableConfig;
-  selectedName: string;
-  view: View;
-}
-
-function readDraft(): PlaygroundDraft | null {
-  try {
-    const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
-    if (!raw) return null;
-    const draft = JSON.parse(raw) as PlaygroundDraft;
-    if (!draft.config || !Array.isArray(draft.config.colors) || draft.config.colors.length === 0) {
-      return null;
-    }
-    return draft;
-  } catch {
-    return null;
-  }
-}
-
-function writeDraft(draft: PlaygroundDraft): void {
-  try {
-    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
-  } catch {
-    // storage disabled or full: persistence is best-effort
-  }
-}
-
-function clearDraft(): void {
-  try {
-    localStorage.removeItem(DRAFT_STORAGE_KEY);
-  } catch {
-    // ignore
-  }
 }
 
 // neutral is the reference color of the system: select it when present
@@ -558,7 +527,7 @@ function ColorEditor({
 export function App() {
   // a persisted working state, restored once at mount, takes precedence over
   // the bundled defaults
-  const bootDraft = useMemo(() => readDraft(), []);
+  const bootDraft = useMemo(() => readDraft() as PlaygroundDraft<View> | null, []);
   const [config, setConfig] = useState<CloneableConfig>(() =>
     bootDraft ? bootDraft.config : clone(initialConfigJson as unknown as CloneableConfig),
   );
@@ -575,6 +544,17 @@ export function App() {
   // back to disk. When the playground runs standalone these stay inert.
   const [serverMode, setServerMode] = useState(false);
   const [savePath, setSavePath] = useState<string | null>(null);
+  // why the server refuses saves (a JavaScript config or package.json), or null
+  const [saveRefusal, setSaveRefusal] = useState<string | null>(null);
+  // the config the draft is made on (the file on disk, or the bundled default)
+  // and its JSON; null until the start-up check below has run
+  const [origin, setOrigin] = useState<(DraftSource & { json: string }) | null>(null);
+  // the source changed under a draft with edits of its own: the user picks one
+  const [draftConflict, setDraftConflict] = useState<{
+    reason: string;
+    config: CloneableConfig;
+    label: string;
+  } | null>(null);
   // JSON of the last-persisted config; null means nothing has been saved yet
   const [savedConfig, setSavedConfig] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -740,43 +720,94 @@ export function App() {
     return map;
   }, [view, scalesFormula, JSON.stringify(config), selectedName]);
 
-  // mirror the working state to localStorage on every change
+  // mirror the working state to localStorage on every change, stamped with
+  // the config it is made on. Until the start-up check has run, and while a
+  // conflict waits for an answer, the restored draft keeps its old stamp, so
+  // a reload asks again instead of keeping the draft silently
   useEffect(() => {
-    writeDraft({ config, selectedName, view });
-  }, [JSON.stringify(config), selectedName, view]);
+    if (!origin) return;
+    if (draftConflict) {
+      writeDraft({ config, selectedName, view, source: bootDraft?.source, edited: true });
+      return;
+    }
+    const edited = JSON.stringify(config) !== origin.json;
+    writeDraft({
+      config,
+      selectedName,
+      view,
+      source: { path: origin.path, hash: origin.hash },
+      edited,
+    });
+  }, [JSON.stringify(config), selectedName, view, origin, draftConflict]);
 
-  // when served by the `ui` command, adopt the on-disk config and enable saving
+  // when served by the `ui` command, adopt the on-disk config and enable
+  // saving; in both modes, check a restored draft against the config it was
+  // made on before letting it win
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      let served: {
+        path: string;
+        config: CloneableConfig | null;
+        readOnly?: string | null;
+      } | null = null;
       try {
         const res = await fetch('/api/config');
-        if (!res.ok) return;
-        const data = (await res.json()) as { path: string; config: CloneableConfig | null };
-        if (cancelled) return;
-        setServerMode(true);
-        setSavePath(data.path);
-        if (data.config && Array.isArray(data.config.colors) && data.config.colors.length > 0) {
-          const loaded = data.config;
-          // the on-disk file is always the save baseline; only adopt it as the
-          // working config when there is no restored draft to keep
-          setSavedConfig(JSON.stringify(loaded));
-          if (!bootDraft) {
-            setConfig(loaded);
-            setSelectedName(defaultSelected(loaded.colors));
-          }
-        } else {
-          // no config file on disk yet: the bundled default is unsaved
-          setSavedConfig(null);
-        }
+        if (res.ok) served = await res.json();
       } catch {
-        // not served by the ui command; the standalone playground keeps defaults
+        // not served by the ui command: the source is the bundled default
       }
+      if (cancelled) return;
+      const fileConfig =
+        served?.config && Array.isArray(served.config.colors) && served.config.colors.length > 0
+          ? served.config
+          : null;
+      if (served) {
+        setServerMode(true);
+        setSavePath(served.path);
+        setSaveRefusal(served.readOnly ?? null);
+        // the on-disk file is always the save baseline; with no file yet, the
+        // bundled default is unsaved
+        setSavedConfig(fileConfig ? JSON.stringify(fileConfig) : null);
+      }
+      const sourceConfig = fileConfig ?? clone(initialConfigJson as unknown as CloneableConfig);
+      const json = JSON.stringify(sourceConfig);
+      const source: DraftSource = served
+        ? { path: served.path, hash: fileConfig ? hashText(json) : null }
+        : { path: null, hash: hashText(json) };
+      const decision = reconcileDraft(bootDraft, source, json);
+      if (decision.use === 'source' && (bootDraft || fileConfig)) {
+        setConfig(sourceConfig);
+        setSelectedName((name) =>
+          sourceConfig.colors.some((c) => c.name === name)
+            ? name
+            : defaultSelected(sourceConfig.colors),
+        );
+      } else if (decision.use === 'ask') {
+        setDraftConflict({
+          reason: decision.reason,
+          config: sourceConfig,
+          label: fileConfig ? 'use the file on disk' : 'use the bundled config',
+        });
+      }
+      setOrigin({ ...source, json });
     })();
     return () => {
       cancelled = true;
     };
   }, []);
+
+  const resolveDraftConflict = (useSource: boolean) => {
+    if (!draftConflict) return;
+    if (useSource) {
+      const next = draftConflict.config;
+      setConfig(next);
+      setSelectedName((name) =>
+        next.colors.some((c) => c.name === name) ? name : defaultSelected(next.colors),
+      );
+    }
+    setDraftConflict(null);
+  };
 
   const dirty = serverMode && JSON.stringify(config) !== savedConfig;
 
@@ -786,7 +817,7 @@ export function App() {
   const canReset = JSON.stringify(config) !== defaultConfigString;
 
   const saveConfig = async () => {
-    if (!serverMode || saving) return;
+    if (!serverMode || saving || saveRefusal || draftConflict) return;
     setSaving(true);
     setStatusMsg(null);
     try {
@@ -799,7 +830,10 @@ export function App() {
         const err = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(err.error ?? `save failed (${res.status})`);
       }
-      setSavedConfig(JSON.stringify(config));
+      const written = (await res.json().catch(() => ({}))) as { path?: string };
+      const json = JSON.stringify(config);
+      setSavedConfig(json);
+      setOrigin({ path: written.path ?? savePath, hash: hashText(json), json });
       setStatusMsg('saved');
       setTimeout(() => setStatusMsg((msg) => (msg === 'saved' ? null : msg)), 1500);
     } catch (error) {
@@ -1179,14 +1213,20 @@ export function App() {
           </label>
           {statusMsg && <span class="save-status">{statusMsg}</span>}
           {serverMode ? (
-            <button
-              class="primary"
-              onClick={saveConfig}
-              disabled={saving || !dirty}
-              title={savePath ?? undefined}
-            >
-              {saving ? 'saving...' : dirty ? 'save *' : 'saved'}
-            </button>
+            saveRefusal ? (
+              <button class="primary" disabled title={saveRefusal}>
+                {dirty ? 'read-only *' : 'read-only'}
+              </button>
+            ) : (
+              <button
+                class="primary"
+                onClick={saveConfig}
+                disabled={saving || !dirty || !!draftConflict}
+                title={savePath ?? undefined}
+              >
+                {saving ? 'saving...' : dirty ? 'save *' : 'saved'}
+              </button>
+            )
           ) : (
             <button onClick={copyJson}>{copied ? 'copied!' : 'copy JSON'}</button>
           )}
@@ -1223,7 +1263,19 @@ export function App() {
         </div>
       </header>
 
-      {loadError && <div class="load-error">{loadError}</div>}
+      {loadError ? (
+        <div class="load-error">{loadError}</div>
+      ) : draftConflict ? (
+        <div class="load-error save-notice draft-conflict">
+          <span>
+            {draftConflict.reason}, and the draft restored from this browser has edits of its own.
+          </span>
+          <button onClick={() => resolveDraftConflict(true)}>{draftConflict.label}</button>
+          <button onClick={() => resolveDraftConflict(false)}>keep the draft</button>
+        </div>
+      ) : (
+        saveRefusal && <div class="load-error save-notice">saving is off: {saveRefusal}</div>
+      )}
 
       {showSidebar && (
         <aside class="sidebar">

@@ -1,7 +1,9 @@
 import { Component, Host, Prop, h, Element } from '@stencil/core';
 
 /**
- * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ * @slot - Add the `text string` of the preselection, as `Last 7 days`: it becomes the label of
+ * the button that applies the range. **Avoid** `HTML elements` or `components`, which end up
+ * inside an `mds-button`.
  */
 @Component({
   tag: 'mds-input-date-range-preselection',
@@ -26,18 +28,26 @@ export class MdsInputDateRangePreselection {
    */
   @Prop({ reflect: true }) readonly end?: string;
 
-  private onClick = (event: MouseEvent) => {
-    event.stopPropagation();
-    const mdsInputDateRange = this.host?.closest('mds-input-date-range');
-    if (mdsInputDateRange) {
-      mdsInputDateRange.preselect({ caller: this.host, start: this.start, end: this.end });
-      this.selected = true;
+  componentWillLoad(): void {
+    // the slot of mds-input-date-range unless the author gave another one, as the `preselection`
+    // slot of mds-calendar: set on the host at every render, it overwrote the author's
+    if (!this.host.hasAttribute('slot')) {
+      this.host.setAttribute('slot', 'calendar-preselection');
     }
+  }
+
+  private onClick = (event: MouseEvent) => {
+    const mdsInputDateRange = this.host?.closest('mds-input-date-range');
+    // outside a date range the click is the page's to handle, so it goes on
+    if (!mdsInputDateRange) return;
+    event.stopPropagation();
+    mdsInputDateRange.preselect({ caller: this.host, start: this.start, end: this.end });
+    this.selected = true;
   };
 
   render() {
     return (
-      <Host slot="calendar-preselection">
+      <Host>
         <mds-button onClick={this.onClick} class="action" variant="primary" tone="strong">
           <slot></slot>
         </mds-button>

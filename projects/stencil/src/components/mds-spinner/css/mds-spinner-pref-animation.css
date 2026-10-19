@@ -1,0 +1,19 @@
+@import '../../../tailwind/pref-animation.css';
+
+/* Animation preference. The component mirrors the resolved mode from <html> onto its host as
+ * pref-animation (see subscribePreference in @common/preference). The spinner must keep turning
+ * to signal progress, so reduced motion slows it (8s) rather than freezing it (a 0 duration
+ * would). `reduce` always slows it; `system` and no controller follow the OS via @media;
+ * `no-preference` keeps the base value. The slowdown sets the private duration, so a
+ * --mds-spinner-duration set from outside (mds-button sets one) no longer cancels it. */
+
+:host([pref-animation='reduce']) {
+  --private-spinner-duration: 8s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host([pref-animation='system']),
+  :host(:not([pref-animation])) {
+    --private-spinner-duration: 8s;
+  }
+}

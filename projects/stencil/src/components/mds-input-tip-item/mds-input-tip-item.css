@@ -17,7 +17,9 @@
 
   align-items: center;
   background-color: var(--mds-input-tip-item-background);
-  border-radius: var(--radius-2xs);
+
+  /* 6px on a 12px tip was a circle, or a pill once it widens: the pill, out of the corner axis */
+  border-radius: var(--magma-radius-full);
   color: var(--mds-input-tip-item-color);
   display: flex;
   height: --spacing(300);

@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import {
+  Build,
   Component,
   Host,
   h,
@@ -15,6 +16,7 @@ import { MdsTableSelectionEventDetail } from './meta/event-detail';
 import { MdsTableRowSelection, MdsTableSortingType } from './meta/type';
 import { Locale } from '@common/locale';
 import { preferenceStore } from '@common/preference';
+import { hasChildWithSlot, observeChildren } from '@common/slot';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -26,6 +28,7 @@ import localeIt from './meta/locale.it.json';
  * @part table-wrapper - Selects the element which wraps the table
  * @part table - Selects the table element
  * @part batch-actions - Selects the element which wraps the batch actions
+ * @part batch-actions-wrapper - The bar of the batch actions, shown while the table is `selectable` and has `batch-action` content
  */
 
 @Component({
@@ -40,13 +43,14 @@ export class MdsTable {
    * watchers can fire before it and, with streamed HTML, the children can still be unparsed
    * when it runs: every dereference below has to tolerate `undefined`/`null`.
    */
+  private footer?: HTMLMdsTableFooterElement | null;
   private rows?: NodeListOf<HTMLMdsTableRowElement>;
   private body?: HTMLMdsTableBodyElement | null;
   private header?: HTMLMdsTableHeaderElement | null;
-  private scrollWrapper: HTMLDivElement;
+  private scrollWrapper?: HTMLDivElement;
   private resizeObserver?: ResizeObserver;
   private tableBodyObserver?: MutationObserver;
-  private hasBatchActions: boolean = false;
+  @State() private hasBatchActions: boolean = false;
   private cellsWidth: number = 0;
   @State() selectedRows: MdsTableRowSelection[] = [];
   private t: Locale = new Locale({
@@ -80,7 +84,8 @@ export class MdsTable {
   @Prop({ reflect: true }) readonly sorting?: MdsTableSortingType = 'internal';
 
   /**
-   * Dispatces when interactive property changes
+   * Emits when the selection of a `selectable` table changes, with the index and the value of each
+   * selected row
    */
   @Event({ bubbles: true, composed: true, eventName: 'mdsTableSelectionChange' })
   selectionEvent: EventEmitter<MdsTableSelectionEventDetail>;
@@ -96,6 +101,9 @@ export class MdsTable {
     if (this.header) {
       this.header.selectable = newValue;
     }
+    if (this.footer) {
+      this.footer.selectable = newValue;
+    }
   }
 
   /**
@@ -106,6 +114,12 @@ export class MdsTable {
     if (!this.selectable || !this.rows) {
       return;
     }
+    // the rows ask for it at every change of their `selected`: selecting them all at once asks
+    // as many times, and the table announces the outcome once, in the next microtask
+    if (this.selectionQueued) return;
+    this.selectionQueued = true;
+    await Promise.resolve();
+    this.selectionQueued = false;
     this.selectedRows = [];
     this.rows.forEach((row: HTMLMdsTableRowElement, index: number) => {
       if (row.selected) {
@@ -121,6 +135,24 @@ export class MdsTable {
     this.rows.forEach((row: HTMLMdsTableRowElement) => {
       row.selection = this.selection;
     });
+  }
+
+  private selectionQueued = false;
+
+  /**
+   * `internal` Reads again whether the rows have `slot="action"` content: shows or hides the
+   * Actions column of the header and wires the overlay of the actions. Runs when rows come and
+   * go, and mds-table-row calls it when the content of its `action` slot changes.
+   */
+  @Method()
+  async updateActions(): Promise<void> {
+    const hasActions = this.hasActions();
+    // a header not upgraded yet (its definition loaded after the table's) has no method: it
+    // reads the rows itself when it loads
+    this.header?.setActions?.(hasActions);
+    if (hasActions) {
+      this.watchActions();
+    }
   }
 
   /**
@@ -172,7 +204,24 @@ export class MdsTable {
     });
   };
 
+  // The overlay of the actions follows the scroll and the size of the table. It is wired the
+  // first time a row has actions, not only on load: a table filled after its first render (the
+  // usual fetch, #801) never got it.
+  private watchActions = (): void => {
+    if (!Build.isBrowser) return;
+    if (!this.scrollWrapper) {
+      const scrollWrapper = this.host.shadowRoot?.querySelector('.table-wrapper');
+      if (!scrollWrapper) return;
+      this.scrollWrapper = scrollWrapper as HTMLDivElement;
+      this.scrollWrapper.addEventListener('scroll', this.handleActions);
+      this.resizeObserver = new ResizeObserver(this.handleActions);
+      this.resizeObserver.observe(this.host);
+    }
+    this.handleActions();
+  };
+
   private handleActions = (): void => {
+    if (!this.scrollWrapper) return;
     this.updateCellsSize();
     const overlayActions =
       this.scrollWrapper.offsetWidth + this.scrollWrapper.scrollLeft < this.cellsWidth;
@@ -183,6 +232,7 @@ export class MdsTable {
 
   private querySlottedElements = (): void => {
     this.body = this.host.querySelector('mds-table-body');
+    this.footer = this.host.querySelector('mds-table-footer');
     this.header = this.host.querySelector('mds-table-header');
     this.rows = this.host.querySelectorAll('mds-table-row');
     if (this.body) {
@@ -192,11 +242,16 @@ export class MdsTable {
     }
   };
 
+  // The bar shows once a button sits in batch-action, a button added after load too: the slot is
+  // rendered only with the bar, so no slotchange tells the table (#826). The observer stays on
+  // the host when it moves, and goes with it.
+  private updateBatchActions = (): void => {
+    this.hasBatchActions = hasChildWithSlot(this.host, 'batch-action');
+  };
+
   componentWillLoad(): void {
-    // equivalent to `:scope > [slot="batch-action"]`, which mock-doc cannot parse in spec tests
-    this.hasBatchActions = Array.from(this.host.children).some(
-      (child: Element) => child.getAttribute('slot') === 'batch-action',
-    );
+    this.updateBatchActions();
+    observeChildren(this.host, this.updateBatchActions);
     // MutationObserver is missing in the hydrate/SSR runtime; every use of
     // tableBodyObserver is already optional-chained
     if (typeof MutationObserver !== 'undefined') {
@@ -208,31 +263,36 @@ export class MdsTable {
   }
 
   componentDidLoad(): void {
+    // the footer lines up with the rows, which have a selection cell when the table is selectable
+    if (this.footer) {
+      this.footer.selectable = this.selectable;
+    }
     if (this.header) {
       this.header.selectable = this.selectable;
     }
-    if (this.hasActions()) {
-      const scrollWrapper = this.host.shadowRoot?.querySelector('.table-wrapper');
-      if (!scrollWrapper) {
-        throw new Error('Table element table-wrapper not found');
-      }
-      this.scrollWrapper = scrollWrapper as HTMLDivElement;
-      this.scrollWrapper.addEventListener('scroll', this.handleActions);
-      this.resizeObserver = new ResizeObserver(this.handleActions);
-      this.resizeObserver.observe(this.host);
-      this.handleActions();
-    }
+    this.updateActions();
   }
 
   private updateSlottedElements = (): void => {
     this.querySlottedElements();
     this.updateInteractive();
     this.handleSelection();
+    this.updateActions();
   };
 
+  connectedCallback(): void {
+    // a table moved in the DOM after its first load lost the wiring of its actions in
+    // disconnectedCallback; before the first load there is nothing to wire yet
+    this.updateActions();
+  }
+
   disconnectedCallback(): void {
-    this.host.removeEventListener('scroll', this.handleActions);
+    // the listener is on the scroll area, where watchActions put it: removing it from the host
+    // removed nothing
+    this.scrollWrapper?.removeEventListener('scroll', this.handleActions);
     this.resizeObserver?.disconnect();
+    this.scrollWrapper = undefined;
+    this.resizeObserver = undefined;
     this.tableBodyObserver?.disconnect();
   }
 

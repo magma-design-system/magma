@@ -16,13 +16,13 @@ The `<mds-pref-consumption>` web component is a preference control of the Magma 
 - **Usually inside `<mds-pref>`**: Placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it also works on its own, since it applies and stores the preference by itself.
 - **Mode resolution on load**: The active mode is resolved once, on load, in priority order - the `mode` prop, then the persisted value, then the `high` default - so the control restores the last user choice across reloads.
 - **Applies the preference globally**: Selecting a mode applies it across the whole document and persists the choice.
-- **Change event**: Each change emits `mdsPrefChange` with `{ preference: 'consumption' }`, and so does the page load; the event fires before the new mode is stored. `consumption` requires a reload to fully apply, but the "reload required" notice of the parent `<mds-pref>` does not show in a visible panel (it listens only in `controller` mode).
+- **Change event**: Each change emits `mdsPrefChange` with `{ preference: 'consumption' }`, once the new mode is applied and stored; a pick of the level already active and the first application on load do not emit it. `consumption` requires a reload to fully apply, so the parent `<mds-pref>` shows its "reload required" notice for it in a visible panel.
 - **Instances stay in sync**: Instances mounted together (a hidden `<mds-pref controller>` and a visible settings panel) share the applied consumption: a pick in one is mirrored by the others, which neither apply it again nor emit `mdsPrefChange`. A `pref-consumption-*` class written on `<html>` by other code is mirrored the same way.
 
 #### Properties & Visual Configurations
 
 - **`mode`**: The selected consumption preference (`low` / `medium` / `high`). Leave it unset to let the component restore the persisted value or fall back to `high`; set it explicitly only to force an initial mode.
-- **`size`**: Sizes the nested tab items (`sm` / `md`). The parent `<mds-pref>` forwards a later change of its own `size` to every `mds-pref-*` child, but not the initial value, so set it on this component as well.
+- **`size`**: Sizes the nested tab items (`sm` / `md`). Inside `<mds-pref>`, set it on the parent instead: the parent's `size` reaches every `mds-pref-*` child on load and when it changes, and overwrites the child's own.
 
 
 ### 2. Pattern
@@ -31,7 +31,7 @@ Correct and idiomatic ways to use the `<mds-pref-consumption>` component, ordere
 
 #### Default Use Inside `mds-pref`
 
-The canonical form. Place `<mds-pref-consumption>` as a direct slot child of [`<mds-pref>`](../../mds-pref). Omit `mode` so the component restores the persisted user choice automatically; the parent forwards later changes of its own `size` to every `mds-pref-*` child.
+The canonical form. Place `<mds-pref-consumption>` as a direct slot child of [`<mds-pref>`](../../mds-pref). Omit `mode` so the component restores the persisted user choice automatically; the parent forwards its own `size` to every `mds-pref-*` child.
 
 ```html
 <mds-pref>
@@ -51,7 +51,7 @@ Set `mode` explicitly only when the application needs to override the persisted 
 
 #### Controlling Size
 
-Use the `size` prop on the control itself: outside `<mds-pref>`, and inside it too for the first render, since the parent forwards only later changes of its own `size`. Accepted values are `"sm"` and `"md"`.
+Use the `size` prop on the control itself when it stands outside `<mds-pref>`; inside it, set `size` on the parent, which forwards it to every child. Accepted values are `"sm"` and `"md"`.
 
 ```html
 <mds-pref-consumption size="sm"></mds-pref-consumption>
@@ -59,7 +59,7 @@ Use the `size` prop on the control itself: outside `<mds-pref>`, and inside it t
 
 #### Reacting to Mode Changes
 
-Listen for the `mdsPrefChange` event to detect when the user picks a new consumption level. The event detail always carries `{ preference: "consumption" }`; the event also fires on page load, so do not read each one as a user's choice.
+Listen for the `mdsPrefChange` event to detect when the user picks a new consumption level. The event detail always carries `{ preference: "consumption" }`; the event fires once per change, from a pick or from a new `mode` set by a script, and not on page load.
 
 ```html
 <mds-pref-consumption id="consumption-pref"></mds-pref-consumption>
@@ -75,7 +75,7 @@ Listen for the `mdsPrefChange` event to detect when the user picks a new consump
 
 #### Reading the Active Mode After a Change
 
-The `mode` prop is mutable and reflected as an attribute. The event is emitted before the new mode is stored, so inside the handler the element still holds the previous value: read it once the handler has returned.
+The `mode` prop is mutable and reflected as an attribute. The event is emitted once the new mode is applied and stored, so inside the handler the element already holds the new value.
 
 ```html
 <mds-pref-consumption id="consumption-pref"></mds-pref-consumption>
@@ -83,8 +83,7 @@ The `mode` prop is mutable and reflected as an attribute. The event is emitted b
 <script>
   const pref = document.querySelector('#consumption-pref');
   pref.addEventListener('mdsPrefChange', () => {
-    // the new mode is stored right after the event: read it on the next task
-    setTimeout(() => console.log('Modalita attiva:', pref.mode));
+    console.log('Modalita attiva:', pref.mode);
   });
 </script>
 ```
@@ -112,7 +111,7 @@ Common incorrect uses of `<mds-pref-consumption>`. Each entry pairs the wrong fo
 
 #### Do Not Pass an Invalid `mode` Value
 
-`mode` is typed as `"low" | "medium" | "high"`. Any other string has no entry in the component's mode table: applying it fails with an error, after the value has already been stored in `localStorage` (later loads fail too), and no consumption level is activated.
+`mode` is typed as `"low" | "medium" | "high"`. Any other string has no entry in the component's mode table: it is ignored with a console warning and never stored, and the component keeps the level it has (on load, the persisted choice or `high`).
 
 ```html
 <!-- INCORRECT -->

@@ -11,8 +11,9 @@ mds-icon {
 .header {
   align-items: center;
   background-color: var(--mds-usage-header-background);
-  border-bottom-left-radius: var(--radius-xs);
-  border-bottom-right-radius: var(--radius-xs);
+  border-bottom-left-radius: var(--magma-radius-xs);
+  border-bottom-right-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
   display: inline-flex;
   gap: --spacing(200);
   height: --spacing(600);

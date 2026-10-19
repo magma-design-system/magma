@@ -1,5 +1,6 @@
-import { Component, Element, Host, h, Prop, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Prop, State, Watch } from '@stencil/core';
 import { preferenceStore } from '@common/preference';
+import { addIdRef, hashRandomValue, removeIdRef, setAttributeIfEmpty } from '@common/aria';
 import { autoUpdate, computePosition, Middleware, offset, shift } from '@floating-ui/dom';
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
 import { StrategyType } from './meta/types';
@@ -11,8 +12,11 @@ import { StrategyType } from './meta/types';
 })
 export class MdsNotification {
   private caller: HTMLElement;
+  private describedCaller?: HTMLElement;
+  @State() private describing = false;
   @Element() private host: HTMLMdsNotificationElement;
-  private cleanupAutoUpdate: () => void;
+  private cleanupAutoUpdate?: () => void;
+  private autoUpdateTimer?: ReturnType<typeof setTimeout>;
 
   // We should change in the future this approach when it will be fully supported by main browsers
   // https://www.youtube.com/watch?v=DNXEORSk4GU&list=PLMTbm2xm6FfPWPUr__bFUGVPfYMZwu5U7&index=67
@@ -23,7 +27,8 @@ export class MdsNotification {
   @Prop() readonly target: string;
 
   /**
-   * Specifies number of notifications to display, if it set to 0, the element will be hidden
+   * Specifies the number of notifications to display. At 0 the badge shows no number, as an
+   * empty dot: it is not hidden, `dismissed` takes it off its target
    */
   @Prop({ mutable: true, reflect: true }) value = 0;
 
@@ -89,39 +94,94 @@ export class MdsNotification {
       return;
     }
     this.caller = c;
+    this.describeCaller(c);
   }
+
+  /**
+   * The count reaches a screen reader through the element it sits on, as a description of it
+   * ("Messages, button, 3"): the badge itself is then hidden, or it would be read again wherever
+   * it sits in the page. A dismissed badge, a plain dot and a caller in another tree (an IDREF
+   * does not cross a shadow boundary) describe nothing. Ids already in the caller's
+   * `aria-describedby`, a tooltip's among them, stay. Without a target the count is plain text,
+   * read with whatever contains it: the name of the mds-button it sits in.
+   */
+  private describeCaller = (caller?: HTMLElement): void => {
+    const id = this.host.id;
+    if (this.describedCaller && this.describedCaller !== caller && id) {
+      removeIdRef(this.describedCaller, 'aria-describedby', id);
+    }
+    const describes =
+      caller !== undefined &&
+      !this.dismissed &&
+      this.clean(this.value) !== '' &&
+      caller.getRootNode() === this.host.getRootNode();
+    // the state is set once, to its final value: a render runs after every change of it, and
+    // this runs after every render
+    this.describing = describes;
+    if (!describes) {
+      if (caller && id) removeIdRef(caller, 'aria-describedby', id);
+      this.describedCaller = undefined;
+      return;
+    }
+    const badgeId = setAttributeIfEmpty(this.host, 'id', hashRandomValue('mds-notification'));
+    addIdRef(caller, 'aria-describedby', badgeId);
+    this.describedCaller = caller;
+  };
 
   componentDidLoad(): void {
     if (this.strategy === 'disabled') {
       return;
     }
 
-    if ((this.target ?? '') !== '' && this.cleanupAutoUpdate == null) {
-      setTimeout(() => {
-        this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition);
-      }, 100);
-    }
+    this.startAutoUpdate();
+  }
+
+  /**
+   * floating-ui keeps the badge on its target through listeners on the scroll parents and an
+   * observer of their size: they are started once, after a short wait for the target's layout,
+   * and stopped with the function autoUpdate returns. That function used to be replaced by an
+   * empty one instead of being called, so every badge ever removed kept its listeners.
+   */
+  private startAutoUpdate = (): void => {
+    if (this.strategy === 'disabled' || (this.target ?? '') === '' || !this.caller) return;
+    if (this.cleanupAutoUpdate || this.autoUpdateTimer !== undefined) return;
+    this.autoUpdateTimer = setTimeout(() => {
+      this.autoUpdateTimer = undefined;
+      this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition);
+    }, 100);
+  };
+
+  private stopAutoUpdate = (): void => {
+    clearTimeout(this.autoUpdateTimer);
+    this.autoUpdateTimer = undefined;
+    this.cleanupAutoUpdate?.();
+    this.cleanupAutoUpdate = undefined;
+  };
+
+  // a badge moved in the page is disconnected and connected again, without loading again
+  connectedCallback(): void {
+    this.startAutoUpdate();
   }
 
   disconnectedCallback(): void {
-    this.cleanupAutoUpdate = (): void => {};
+    this.stopAutoUpdate();
+    this.describeCaller(undefined);
   }
 
   @Watch('strategy')
   strategyHandler(newValue: StrategyType): void {
     if (newValue === 'disabled') {
-      this.cleanupAutoUpdate = (): void => {};
+      this.stopAutoUpdate();
     }
   }
 
   render() {
     return (
       <Host
-        aria-labelledby={this.target}
-        aria-label={this.value ?? '0'}
+        aria-hidden={this.describing ? 'true' : undefined}
         pref-animation={preferenceStore.state.animation}
       >
-        <mds-text typography="caption" class="dot" aria-hidden="true">
+        <mds-text typography="caption" class="dot">
           {this.clean(this.value)}
         </mds-text>
       </Host>

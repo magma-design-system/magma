@@ -2,7 +2,6 @@ import { Component, Element, Event, EventEmitter, Listen, Host, h, Prop } from '
 import miBaselineArrowBack from '@icon/mi/baseline/arrow-back.svg';
 import { MdsBreadcrumbEventDetail } from './meta/event-detail';
 import { MdsBreadcrumbItemEventDetail } from '@component/mds-breadcrumb-item/meta/event-detail';
-import { KeyboardManager } from '@common/keyboard-manager';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
@@ -20,7 +19,6 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsBreadcrumb {
   @Element() private element: HTMLMdsBreadcrumbElement;
-  private kb = new KeyboardManager();
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -46,43 +44,26 @@ export class MdsBreadcrumb {
     const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement;
     if (id === 0) {
       backElement.setAttribute('disabled', '');
-      this.kb.detachClickBehavior();
       return;
     }
     backElement.removeAttribute('disabled');
-    this.kb.attachClickBehavior();
   };
 
   componentDidLoad(): void {
+    // an item keeps the id its author gave it, one without gets `item-<index>`; the breadcrumb
+    // tells the items apart by element and by position, not by id. It used to overwrite every id
+    // (#827)
     const items = this.queryItems();
-    items.forEach((item, key) => (item.id = `item-${key}`));
+    items.forEach((item, key) => {
+      if (item.id === '') item.id = `item-${key}`;
+    });
 
     const item = this.element.querySelector<HTMLMdsBreadcrumbItemElement>(
       'mds-breadcrumb-item[selected]',
     );
-    if (!item || item.id === 'item-0') {
+    if (!item || item === items[0]) {
       this.updateBackButton(0);
     }
-
-    if (!this.hideBack) {
-      const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement;
-      this.kb.addElement(backElement);
-      this.kb.attachClickBehavior();
-    }
-  }
-
-  componentDidUpdate(): void {
-    if (!this.hideBack) {
-      const backElement = this.element.shadowRoot?.querySelector('.back') as HTMLElement;
-      this.kb.addElement(backElement);
-      this.kb.attachClickBehavior();
-      return;
-    }
-    this.kb.detachClickBehavior();
-  }
-
-  disconnectedCallback(): void {
-    this.kb.detachClickBehavior();
   }
 
   @Listen('mdsBreadcrumbItemSelect')
@@ -91,7 +72,7 @@ export class MdsBreadcrumb {
     let selectedId = 0;
 
     items.forEach((item, key) => {
-      item.selected = `item-${key}` === event.detail.id && event.detail.selected;
+      item.selected = item === event.target && event.detail.selected;
       if (item.selected) {
         selectedId = key;
       }
@@ -105,7 +86,7 @@ export class MdsBreadcrumb {
       'mds-breadcrumb-item[selected]',
     );
     if (!item) return;
-    const id = Number(item.id.replace('item-', ''));
+    const id = Array.from(this.queryItems()).indexOf(item);
     const items = this.queryItems();
     let selectedId = 0;
 
@@ -117,7 +98,8 @@ export class MdsBreadcrumb {
     });
 
     this.updateBackButton(selectedId);
-    this.onChanged(selectedId, item);
+    // the caller is the item the step selects, as on a click: it used to be the one it left
+    this.onChanged(selectedId, items[selectedId]);
   };
 
   private onChanged = (id: number, caller: HTMLMdsBreadcrumbItemElement): void => {
