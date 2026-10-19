@@ -299,7 +299,7 @@ jobs:
           # the published manifest itself (the ng-packagr output for magma-angular)
           # shellcheck disable=SC2086 # the list is split on purpose
           ./scripts/set-release-version.sh "$V" $MAGMA_LOCKSTEP_MANIFESTS "$MANIFEST"
-      - name: Check that the agent docs are in the tarball
+      - name: Check that the agent docs and the changelog are in the tarball
         if: ${{ steps.ver.outputs.proceed == 'true' && matrix.release-tag == 'magma' }}
         working-directory: ${{ matrix.directory }}
         run: |
@@ -308,6 +308,10 @@ jobs:
           FILES=$(npm pack --dry-run --json | jq -r '.[0].files[].path')
           echo "$FILES" | grep -qx 'AGENTS.md' || { echo "::error::AGENTS.md is missing from the ${{ matrix.component }} tarball"; exit 1; }
           echo "$FILES" | grep -q '^agents/.*[.]md$' || { echo "::error::agents/*.md is missing from the ${{ matrix.component }} tarball"; exit 1; }
+          echo "$FILES" | grep -qx 'CHANGELOG.md' || { echo "::error::CHANGELOG.md is missing from the ${{ matrix.component }} tarball"; exit 1; }
+          # with an exports map, a file in the tarball resolves only when it is exported (#981);
+          # for magma-angular this is the manifest ng-packagr wrote, merged with its own exports
+          jq -e '.exports["./CHANGELOG.md"]' package.json > /dev/null || { echo "::error::${{ matrix.component }} does not export ./CHANGELOG.md"; exit 1; }
       - name: Publish to npm
         if: ${{ steps.ver.outputs.proceed == 'true' }}
         working-directory: ${{ matrix.directory }}

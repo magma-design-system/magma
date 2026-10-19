@@ -105,6 +105,48 @@ describe('mds-avatar', () => {
     expect(hasFallbackIcon(root)).toBe(false);
   });
 
+  // #956: the failure of an image stuck for good, and the person glyph showed next to a later icon
+  describe('after an image that fails to load', () => {
+    const renderFailed = async () => {
+      const rendered = await render('<mds-avatar src="data:,"></mds-avatar>');
+      await expect.poll(() => hasFallbackIcon(rendered.root)).toBe(true);
+      return rendered;
+    };
+
+    it('shows an icon set later alone, without the person glyph', async () => {
+      const { root, waitForChanges } = await renderFailed();
+
+      root.setAttribute('icon', 'mdi/alien');
+      await waitForChanges();
+
+      expect(root.shadowRoot!.querySelector('mds-icon')).not.toBeNull();
+      expect(hasFallbackIcon(root)).toBe(false);
+    });
+
+    it('tries a new src again', async () => {
+      const { root, waitForChanges } = await renderFailed();
+
+      root.setAttribute('src', 'https://example.com/foto.jpg');
+      await waitForChanges();
+
+      expect(root.shadowRoot!.querySelector('mds-img')?.src).toBe('https://example.com/foto.jpg');
+      expect(hasFallbackIcon(root)).toBe(false);
+    });
+
+    it('shows the initials once the src attribute is removed, and is no longer pending', async () => {
+      const { root, waitForChanges } = await renderFailed();
+
+      root.removeAttribute('src');
+      root.setAttribute('initials', 'MR');
+      await waitForChanges();
+
+      expect(initialsText(root)).toBe('MR');
+      expect(hasFallbackIcon(root)).toBe(false);
+      const wrapper = root.shadowRoot!.querySelector('[part="wrapper"]')!;
+      expect(wrapper.classList.contains('avatar--pending')).toBe(false);
+    });
+  });
+
   // #825: the initials picked a slot out of 17 in a list of 15 colors, and the last two slots gave
   // no variant at all
   it.each([

@@ -19,7 +19,6 @@ The `<mds-pref-mode>` web component is the mode preference control of the Magma 
 - **Persistence on load**: The applied mode resolves from `mode` -> the stored value -> the `system` default, so a previously chosen mode is restored without an explicit prop.
 - **`mdsPrefChange` event**: Emits `mdsPrefChange` with `{ preference: 'mode' }` once per change, after the new mode is applied; a pick of the mode already active and the first application on load do not emit it. It bubbles up to `<mds-pref>`; a mode change needs no reload, so it raises no reload notice.
 - **Instances stay in sync**: Instances mounted together (a hidden `<mds-pref controller>` and a visible settings panel) share the applied mode: a pick in one is mirrored by the others, which neither apply it again nor emit `mdsPrefChange`. A `pref-mode-*` class written on `<html>` by other code is mirrored the same way.
-- **Safari fallback**: On Safari the control disables itself and forces `mode` to `light`, since the transition overlay technique is unsupported there.
 - **System mode**: The `system` choice follows the OS `prefers-color-scheme` media query to resolve the effective light/dark scheme.
 
 #### Properties & Visual Configurations
