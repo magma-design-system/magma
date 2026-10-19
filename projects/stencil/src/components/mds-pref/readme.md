@@ -177,7 +177,7 @@ Each control applies and stores its own preference, but the coordination between
 
 #### Do Not Listen for the Native `change` Event to Detect Preference Changes
 
-The controls fire no native `change` event. Use the documented `mdsPrefChange` event emitted by each `mds-pref-*` child; note that a child emits it on page load too, with only the `preference` name in `detail`.
+The controls fire no native `change` event. Use the documented `mdsPrefChange` event emitted by each `mds-pref-*` child: it fires once per change, not on page load, and carries only the `preference` name in `detail`, so read the new value from the child.
 
 ```html
 <!-- INCORRECT -->
