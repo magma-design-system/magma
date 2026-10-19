@@ -17,7 +17,7 @@ The `<mds-accordion>` web component is the compound container of the Magma Desig
 - **Compound parent/child**: The default slot accepts only `<mds-accordion-item>` elements.
 - **Single vs. multiple selection**: By default opening one item collapses the others. With `multiple` set, any number of children may stay open at once and selection state is reported as a comma-separated list of indices.
 - **Mandatory selection**: When `disable-close` is set, the user cannot collapse the currently open item by clicking it again - one panel always remains open.
-- **Emitted event**: `mdsAccordionChange` when the user opens an item (with `multiple`, on every toggle), carrying the live `children` NodeList and the `selected` index/indices as a string. In single-selection mode, collapsing the open item emits nothing.
+- **Emitted event**: `mdsAccordionChange` once for every change of the open items, opening and closing alike, carrying the live `children` NodeList and the `selected` index/indices as a string (empty when none is open). A click that `disable-close` turns down changes nothing and emits nothing.
 
 #### Properties & Visual Configurations
 
@@ -203,7 +203,7 @@ The default slot of `<mds-accordion>` is designed exclusively for `<mds-accordio
 
 #### Do Not Use `mds-accordion-item` Outside `mds-accordion`
 
-`<mds-accordion-item>` is a compound child and relies on the parent to assign its `id` and manage selection state. Used standalone it has no coordinator and its `mdsAccordionItemSelect` / `mdsAccordionItemUnselect` events go unanswered.
+`<mds-accordion-item>` is a compound child and relies on the parent to give it an `id` when it has none and to manage selection state. Used standalone it has no coordinator and its `mdsAccordionItemSelect` / `mdsAccordionItemUnselect` events go unanswered.
 
 ```html
 <!-- INCORRECT -->
@@ -322,6 +322,7 @@ mds-accordion-item::part(label) {
 | Name                                 | Description                                                                                           |
 | ------------------------------------ | ----------------------------------------------------------------------------------------------------- |
 | `--mds-accordion-border-color`       | Sets the border-color of the component children mds-accordion-item                                    |
+| `--mds-accordion-border-width`       | Sets the border-width of the separators of the component children mds-accordion-item                  |
 | `--mds-accordion-color`              | Sets the text-color of the component children mds-accordion-item                                      |
 | `--mds-accordion-description-color`  | Sets the color of the always visible title description                                                |
 | `--mds-accordion-duration`           | Sets the transition duration of the close/open animation of the component children mds-accordion-item |

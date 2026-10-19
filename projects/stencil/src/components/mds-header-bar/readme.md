@@ -20,7 +20,7 @@ The `<mds-header-bar>` web component is the top bar of a Magma application layou
 - **Conditional nav rendering**: The `<nav>` is shown only when `nav` is not `'none'` and a `slot="nav"` child is present, also when it is added after the first render, so an empty header collapses cleanly.
 - **Hamburger trigger**: When `menu` is not `'none'` the component renders a menu button that opens the menu on click, icon-only and named in the page language (the `lang` of `<html>`) ("Open menu").
 - **Open event**: Clicking the hamburger emits the bubbling `mdsHeaderBarOpen` event and opens the drawer on the surrounding `mds-header`.
-- **Imperative open control**: The public `setOpened(isOpened = true)` method only records the opened state: it renders nothing and does not open or close the drawer, which is driven by `setOpened()` on the surrounding `mds-header`.
+- **Imperative open control**: The public `setOpened(isOpened = true)` method opens or closes the drawer of the surrounding `mds-header`, as the hamburger does; outside an `mds-header` it does nothing.
 
 #### Properties & Visual Configurations
 
@@ -114,7 +114,7 @@ Listen to `mdsHeaderBarOpen` (bubbles) to react when the user taps the hamburger
 
 #### Programmatic Open via `setOpened`
 
-The bar's own `setOpened(isOpened)` only records the state and renders nothing. To open or close the drawer from external code - for instance after route navigation in a single-page app - call `setOpened` on the surrounding `mds-header`.
+To open or close the drawer from external code - for instance after route navigation in a single-page app - call `setOpened` on the surrounding `mds-header`, or on the bar, which hands it to its `mds-header`.
 
 ```html
 <mds-header id="main-header">
@@ -135,7 +135,7 @@ The bar's own `setOpened(isOpened)` only records the state and renders nothing. 
 
 #### Styling the Hamburger Icon Color
 
-Use `--mds-header-bar-hamburger-color` to theme the hamburger icon. Set it on the host element or a parent selector; use a semantic color role wrapped with `rgb(var(--magma-<role>))` so dark-mode works automatically.
+Use `--mds-header-bar-hamburger-color` to theme the hamburger icon. Set it on the bar itself: the bar declares its default on its own host, so a value set on a parent does not reach it. Inside an `mds-header`, the header's `--mds-header-icon-color` (or `--mds-header-color`) colors the hamburger too. Use a semantic color role wrapped with `rgb(var(--magma-<role>))` so dark-mode works automatically.
 
 ```css
 mds-header-bar {
@@ -295,13 +295,13 @@ The accepted values for both props are `'all' | 'desktop' | 'mobile' | 'none'`. 
 
 ### `setOpened(isOpened?: boolean) => Promise<void>`
 
-Opens or closes the header bar.
+Opens or closes the menu of the surrounding `mds-header`, as the hamburger does.
 
 #### Parameters
 
-| Name       | Type      | Description                             |
-| ---------- | --------- | --------------------------------------- |
-| `isOpened` | `boolean` | whether the header bar should be opened |
+| Name       | Type      | Description                       |
+| ---------- | --------- | --------------------------------- |
+| `isOpened` | `boolean` | whether the menu should be opened |
 
 #### Returns
 
@@ -320,19 +320,19 @@ Type: `Promise<void>`
 
 ## Shadow Parts
 
-| Part          | Description                                                 |
-| ------------- | ----------------------------------------------------------- |
-| `"actions"`   | Selects the element which wraps `nav` and `hamburger` parts |
-| `"content"`   |                                                             |
-| `"hamburger"` | Selects the `hamburger` menu action element                 |
-| `"nav"`       | Selects the `nav` element that contains the horizontal menu |
+| Part          | Description                                                         |
+| ------------- | ------------------------------------------------------------------- |
+| `"actions"`   | Selects the element which wraps `nav` and `hamburger` parts         |
+| `"content"`   | The row that holds the default slot, on the left, and the `actions` |
+| `"hamburger"` | Selects the `hamburger` menu action element                         |
+| `"nav"`       | Selects the `nav` element that contains the horizontal menu         |
 
 
 ## CSS Custom Properties
 
-| Name                               | Description                                             |
-| ---------------------------------- | ------------------------------------------------------- |
-| `--mds-header-bar-hamburger-color` | The color of the hamburger icon used in the header bar. |
+| Name                               | Description                                                                                                                                                    |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-header-bar-hamburger-color` | The color of the hamburger icon used in the header bar; inside an `mds-header` it defaults to the `--mds-header-icon-color` or `--mds-header-color` set on it. |
 
 
 ## Dependencies

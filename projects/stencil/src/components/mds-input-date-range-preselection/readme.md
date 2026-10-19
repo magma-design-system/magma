@@ -13,7 +13,7 @@ The `<mds-input-date-range-preselection>` web component is a compound child of [
 
 #### Semantic Behavior
 
-- **Compound child only**: Must be placed as a direct child of `<mds-input-date-range>`; it auto-assigns itself to the parent's `calendar-preselection` slot and is not used standalone or mixed with other child types.
+- **Compound child**: Placed as a direct child of `<mds-input-date-range>`, it assigns itself to the parent's `calendar-preselection` slot. A `slot` set by the author is kept, so it can also sit in the `preselection` slot of [`<mds-calendar>`](../../mds-calendar): there it applies nothing itself, and its click reaches the page, which sets the range.
 - **Click drives the parent**: On click it applies its `start`/`end` range to the parent, which populates and validates the range, syncs the form value, emits the parent's `mdsInputDateRangeValueChange` if the range changed, and closes the dropdown after the parent's `delay` (unless it is `0`).
 - **Selection is parent-managed**: Choosing one preselection clears the active state on its siblings and marks the active one; the parent also re-marks a preselection as selected when the range changes to match its dates (including single-day matches where `end` is undefined); a range set at first load is not matched until it changes or the user leaves the component.
 
@@ -127,7 +127,7 @@ Common incorrect uses of `<mds-input-date-range-preselection>`. Each entry pairs
 
 #### Do Not Use Outside `<mds-input-date-range>`
 
-The component only works as a direct child of [`<mds-input-date-range>`](../../mds-input-date-range). Used standalone it renders an inert button because `closest('mds-input-date-range')` returns null and the click handler does nothing.
+The component applies its range only as a direct child of [`<mds-input-date-range>`](../../mds-input-date-range). Used standalone it renders a button that applies nothing: `closest('mds-input-date-range')` returns null, and the click only reaches the listeners of the page.
 
 ```html
 <!-- INCORRECT -->
@@ -275,9 +275,9 @@ mds-input-date-range-preselection {
 
 ## Slots
 
-| Slot | Description                                                      |
-| ---- | ---------------------------------------------------------------- |
-|      | Add `text string`, `HTML elements` or `components` to this slot. |
+| Slot | Description                                                                                                                                                                                             |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|      | Add the `text string` of the preselection, as `Last 7 days`: it becomes the label of the button that applies the range. **Avoid** `HTML elements` or `components`, which end up inside an `mds-button`. |
 
 
 ## CSS Custom Properties

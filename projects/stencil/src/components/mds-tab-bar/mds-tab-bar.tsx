@@ -22,16 +22,21 @@ export class MdsTabBar {
   private queryItems = (): NodeListOf<HTMLMdsTabBarItemElement> =>
     this.element.querySelectorAll<HTMLMdsTabBarItemElement>('mds-tab-bar-item');
 
+  // An item keeps the id its author gave it, one without gets `mds-tab-bar-item-<index>`, what its
+  // event reported before; the bar tells the items apart by element, not by id. It used to
+  // overwrite every id (#827)
   componentWillLoad(): void {
     const items = this.queryItems();
-    items.forEach((item, key) => (item.id = `mds-tab-bar-item-${key}`));
+    items.forEach((item, key) => {
+      if (item.id === '') item.id = `mds-tab-bar-item-${key}`;
+    });
   }
 
   @Listen('mdsTabBarItemSelect')
   changeEventHandler(event: CustomEvent<string>): void {
     const items = this.queryItems();
     items.forEach((item, key) => {
-      item.selected = `mds-tab-bar-item-${key}` === event.detail;
+      item.selected = item === event.target;
       if (item.selected) {
         this.changedEvent.emit({ index: key });
       }

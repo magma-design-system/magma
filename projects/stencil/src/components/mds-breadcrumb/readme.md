@@ -18,7 +18,7 @@ The `<mds-breadcrumb>` web component is the navigation-trail container of the Ma
 - **Compound parent/child**: The default slot accepts only `<mds-breadcrumb-item>` children.
 - **Selection tracking**: When the user selects a child it becomes the single current depth and the others are cleared. Setting `selected` from code emits nothing, so the parent does not react to it.
 - **Back button**: Unless `hide-back` is set the host renders a leading arrow that steps selection to the previous item; it auto-disables whenever the first item is current (or, on load, when no item is).
-- **Change event**: `mdsBreadcrumbChange` fires after any selection change - via a child click or the back arrow - carrying the new index `id` and a `caller` item: the clicked item, or for the back arrow the item that was current before the step.
+- **Change event**: `mdsBreadcrumbChange` fires after any selection change - via a child click or the back arrow - carrying the new index `id` and a `caller` item: the item now selected, the clicked one or the one the back arrow steps to.
 - **Localized back button**: The back button's `title` is resolved per document language (el/en/es/it).
 
 #### Properties & Visual Configurations
@@ -27,7 +27,7 @@ This component exposes a single behavioral prop:
 
 - **`hideBack`** removes the leading arrow control. Leave it off (the default) for multi-level trails where users benefit from a one-tap step backwards; set it for shallow or display-only breadcrumbs where reverse navigation adds no value.
 
-Visual styling (item button colors, separator arrow color) is driven by the CSS custom properties documented in [`readme.md`](../readme.md), not by props; the current item's colors are set on [`mds-breadcrumb-item`](../../mds-breadcrumb-item) with its `--mds-breadcrumb-item-button-*-selected` properties. The shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) do not apply here; per-item labels and selection state live on the `<mds-breadcrumb-item>` children.
+Visual styling (item button colors, separator arrow color) is driven by the CSS custom properties documented in [`readme.md`](../readme.md), not by props; the selected item's colors come from `--mds-breadcrumb-button-background-selected` and `--mds-breadcrumb-button-color-selected`, which every child [`mds-breadcrumb-item`](../../mds-breadcrumb-item) reads (one item can still override them with its own `--mds-breadcrumb-item-button-*-selected`). The shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) do not apply here; per-item labels and selection state live on the `<mds-breadcrumb-item>` children.
 
 
 ### 2. Pattern
@@ -102,17 +102,14 @@ Always set the text with the `label` prop on `<mds-breadcrumb-item>`: the item h
 
 #### Styling Customization via CSS Custom Properties
 
-Apply `--mds-breadcrumb-*` vars on the host to retheme the whole trail at once. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Changes on the parent propagate into the child items because the item vars inherit from the parent vars. The current item's color is set on the items: the parent's `--mds-breadcrumb-button-color-current` is not read by them.
+Apply `--mds-breadcrumb-*` vars on the host to retheme the whole trail at once. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Changes on the parent propagate into the child items because the item vars inherit from the parent vars, the selected item's colors included. `--mds-breadcrumb-button-color-current` and `--mds-breadcrumb-current-button-color` are deprecated names of `--mds-breadcrumb-button-color-selected`: use the new name.
 
 ```css
 .sidebar-nav mds-breadcrumb {
   --mds-breadcrumb-button-color: rgb(var(--magma-accent-fg));
   --mds-breadcrumb-button-color-hover: rgb(var(--magma-text-default));
   --mds-breadcrumb-arrow-depth-color: rgb(var(--magma-accent-fg));
-}
-
-.sidebar-nav mds-breadcrumb-item {
-  --mds-breadcrumb-item-button-color-selected: rgb(var(--magma-text-default));
+  --mds-breadcrumb-button-color-selected: rgb(var(--magma-text-default));
 }
 ```
 
@@ -154,7 +151,7 @@ The default slot accepts only `<mds-breadcrumb-item>` elements; slotting arbitra
 
 #### Do Not Use `<mds-breadcrumb-item>` Outside `<mds-breadcrumb>`
 
-Child items rely on the parent for ID assignment and selection-state management. Rendered standalone they get no back button, no sibling deselection and no `mdsBreadcrumbChange`.
+Child items rely on the parent for an ID when they have none and for selection-state management. Rendered standalone they get no back button, no sibling deselection and no `mdsBreadcrumbChange`.
 
 ```html
 <!-- INCORRECT -->
@@ -212,7 +209,7 @@ The parent tracks which item is selected internally; toggling CSS classes or `ar
 
 #### Do Not Pierce the Shadow DOM to Style the Internal Back Button
 
-The back button rendered inside `<mds-breadcrumb>` is a private implementation detail: it exposes no part, and no documented `--mds-breadcrumb-*` CSS custom property reaches it. To remove it, set `hide-back`.
+The back button rendered inside `<mds-breadcrumb>` is a private implementation detail: it exposes no part, and the only documented custom property that reaches it is `--mds-breadcrumb-button-background-disabled`, its background while the first item is selected. To remove it, set `hide-back`.
 
 ```css
 /* INCORRECT */
@@ -223,7 +220,7 @@ mds-breadcrumb::part(back) {
   display: none;
 }
 
-/* CORRECT - no part or custom property reaches the back button: remove it with hide-back */
+/* CORRECT - no part reaches the back button: remove it with hide-back */
 ```
 
 ```html
@@ -259,16 +256,18 @@ mds-breadcrumb::part(back) {
 
 ## CSS Custom Properties
 
-| Name                                          | Description                                                                          |
-| --------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `--mds-breadcrumb-arrow-depth-color`          | Sets the color of the arrow icon that separates buttons                              |
-| `--mds-breadcrumb-button-background`          | Sets the background color of the button                                              |
-| `--mds-breadcrumb-button-background-disabled` | Sets the background color of the button when it's disabled, is used for arrow button |
-| `--mds-breadcrumb-button-background-hover`    | Sets the background color of the button when the mouse is over it                    |
-| `--mds-breadcrumb-button-color`               | Sets the text color of the button                                                    |
-| `--mds-breadcrumb-button-color-current`       | Sets the text color of the button when it's active                                   |
-| `--mds-breadcrumb-button-color-hover`         | Sets the text color of the button when the mouse is over it                          |
-| `--mds-breadcrumb-current-button-color`       | Sets the text color of the current depth button                                      |
+| Name                                          | Description                                                                                                                                  |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-breadcrumb-arrow-depth-color`          | Sets the color of the arrow icon that separates buttons                                                                                      |
+| `--mds-breadcrumb-button-background`          | Sets the background color of the button                                                                                                      |
+| `--mds-breadcrumb-button-background-disabled` | Sets the background color of the back arrow button when it's disabled, on the first item                                                     |
+| `--mds-breadcrumb-button-background-hover`    | Sets the background color of the button when the mouse is over it                                                                            |
+| `--mds-breadcrumb-button-background-selected` | Sets the background color of the button of the selected item                                                                                 |
+| `--mds-breadcrumb-button-color`               | Sets the text color of the button                                                                                                            |
+| `--mds-breadcrumb-button-color-current`       | Deprecated, use `--mds-breadcrumb-button-color-selected`; read only when that one is not set                                                 |
+| `--mds-breadcrumb-button-color-hover`         | Sets the text color of the button when the mouse is over it                                                                                  |
+| `--mds-breadcrumb-button-color-selected`      | Sets the text color of the button of the selected item                                                                                       |
+| `--mds-breadcrumb-current-button-color`       | Deprecated, use `--mds-breadcrumb-button-color-selected`; read only when neither that one nor `--mds-breadcrumb-button-color-current` is set |
 
 
 ## Dependencies

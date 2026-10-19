@@ -16,8 +16,8 @@ The `<mds-tab-bar-item>` web component is a single selectable tab within the [`<
 #### Semantic Behavior
 
 - **Compound child only**: Must be placed as a direct default-slot child of `<mds-tab-bar>`; it is not used standalone or mixed with other child types.
-- **Parent-coordinated selection**: Clicking the item, when becoming selected, emits `mdsTabBarItemSelect` carrying its own `id`. The parent re-drives every sibling's `selected` so exactly one item is active at a time - items do not deselect each other on their own.
-- **Whole-host click target**: The entire item (icon + label) is the click surface, not just the text. It has no `tabindex` and no ARIA role, so it is reachable by pointer only.
+- **Parent-coordinated selection**: Clicking an item that is not selected selects it and emits `mdsTabBarItemSelect` carrying its own `id`; a click on the selected item changes nothing and emits nothing. The parent re-drives every sibling's `selected` so exactly one item is active at a time - items do not deselect each other on their own.
+- **Whole-host click target**: The entire item (icon + label) is the click surface, not just the text. It is a button (`role="button"`, unless you set another role) in the tab order, activated by Enter and Space as by a click; the selected item carries `aria-current="true"`.
 - **Label is text**: Set the visible text with the `label` prop. The default slot is a **deprecated** fallback kept for backward compatibility - slotted text is read into `label`, while nested HTML is stripped with a console warning; avoid placing HTML elements or other components there.
 
 #### Properties & Visual Configurations
@@ -36,7 +36,7 @@ Correct and idiomatic ways to use the `<mds-tab-bar-item>` component, ordered fr
 
 #### Basic Tab Bar
 
-The canonical form. Place all items directly inside `<mds-tab-bar>`. Give each item an `icon` and set its text with the `label` prop. The parent assigns `id`s automatically and coordinates selection.
+The canonical form. Place all items directly inside `<mds-tab-bar>`. Give each item an `icon` and set its text with the `label` prop. The parent keeps the `id` you give an item, gives one to the items without, and coordinates selection.
 
 ```html
 <mds-tab-bar>
@@ -141,7 +141,7 @@ Common incorrect uses of `<mds-tab-bar-item>`. Each entry pairs the wrong form w
 
 #### Do Not Use Outside `<mds-tab-bar>`
 
-`<mds-tab-bar-item>` relies on the parent to assign its `id`, listen for `mdsTabBarItemSelect`, and drive mutual exclusivity. Without the parent, the item has no stable id, selection does not propagate, and no other item is deselected when this one is clicked.
+`<mds-tab-bar-item>` relies on the parent to give it an `id` when it has none, listen for `mdsTabBarItemSelect`, and drive mutual exclusivity. Without the parent, an item without an `id` reports an empty one, selection does not propagate, and no other item is deselected when this one is clicked.
 
 ```html
 <!-- INCORRECT -->
@@ -209,7 +209,7 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 #### Do Not Listen to Raw Click Events for Tab Changes
 
-`<mds-tab-bar-item>` emits `mdsTabBarItemSelect` when selected; `<mds-tab-bar>` re-emits `mdsTabBarChange` with the resolved index. Listening to the native `click` event gives you no index, and it also fires on clicks that select nothing (every other click on the item that is already active).
+`<mds-tab-bar-item>` emits `mdsTabBarItemSelect` when selected; `<mds-tab-bar>` re-emits `mdsTabBarChange` with the resolved index. Listening to the native `click` event gives you no index, and it also fires on clicks that select nothing (any click on the item that is already active).
 
 ```html
 <!-- INCORRECT -->

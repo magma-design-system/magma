@@ -22,7 +22,7 @@ import { preferenceStore } from '@common/preference';
  * @slot title - Add a `text string`, `HTML elements` or `components`, it is **recommended** to use `mds-text` element.
  * @part header - The header of the component
  * @part title - The title of the component
- * @part content - The content wrapper of the `default` and `content` slots
+ * @part content - The content wrapper of the default and `action` slots
  */
 
 @Component({
@@ -50,6 +50,13 @@ export class MdsDetails {
     this.isOpened = newValue;
   }
 
+  // the user's toggle writes `opened` too, so property and attribute say what the eye sees and a
+  // later assignment of the other value opens or closes it
+  private setOpened = (opened: boolean): void => {
+    this.opened = opened;
+    this.isOpened = opened;
+  };
+
   componentWillLoad(): void {
     this.isOpened = this.opened;
     this.checkIcon();
@@ -58,7 +65,12 @@ export class MdsDetails {
   componentDidLoad(): void {
     const header = this.host.shadowRoot?.querySelector('.header') as HTMLElement;
     this.km.addElement(header);
-    this.km.attachClickBehavior();
+    this.km.attachClickBehavior('element', { space: true });
+  }
+
+  // a details moved in the page is disconnected and connected again, without loading again
+  connectedCallback(): void {
+    this.km.attachClickBehavior('element', { space: true });
   }
 
   disconnectedCallback(): void {
@@ -66,7 +78,7 @@ export class MdsDetails {
   }
 
   private toggle = () => {
-    this.isOpened = !this.isOpened;
+    this.setOpened(!this.isOpened);
     this.changedEvent.emit(this.isOpened);
   };
 

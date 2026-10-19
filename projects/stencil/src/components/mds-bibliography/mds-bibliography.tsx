@@ -21,10 +21,10 @@ export class MdsBibliography {
   @Prop() readonly format: BibliographyFormatType = 'apa';
 
   /**
-   * Specifies a single or mupltiple authors, this field expect a string or an array of strings.
+   * Specifies one or more authors, as a string.
    * First name and Last name: "Jhon Doe",
    * you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'",
-   * and for multiple authors "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'",
+   * and for multiple authors, separated by commas, "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'",
    * you can use single or double quotation marks for composite names
    */
   @Prop() readonly author?: string;
@@ -132,7 +132,9 @@ export class MdsBibliography {
   };
 
   private formatAuthors = (author: string): FormattedAuthor => {
-    const authorName = author.replace(/"/g, "'");
+    // the space after the comma that separates two authors is no part of the name: kept, it
+    // made the first name of every author after the first one empty
+    const authorName = author.trim().replace(/"/g, "'");
     const splitNames = new RegExp(/([A-Za-z ]{2,})/g);
     const fullName = authorName.match(splitNames) ?? authorName;
     if (fullName.length > 1) {
@@ -158,20 +160,12 @@ export class MdsBibliography {
     };
   };
 
-  private normalizeAuthors = (authors: string): FormattedAuthor[] => {
-    const authorsList: FormattedAuthor[] = [];
-    if (authors.includes(',')) {
-      const authorsRawList = authors.split(',');
-      authorsRawList.forEach((author: string) => {
-        authorsList.push(this.formatAuthors(author));
-      });
-      return authorsList;
-    }
-
-    authorsList.push(this.formatAuthors(authors));
-
-    return authorsList;
-  };
+  // an array, which the description of `author` used to promise, is one author per entry: set
+  // from a script it threw on the first string method (#825)
+  private normalizeAuthors = (authors: string | string[]): FormattedAuthor[] =>
+    (Array.isArray(authors) ? authors : String(authors).split(',')).map((author) =>
+      this.formatAuthors(String(author)),
+    );
 
   private showAuthors = (authors: FormattedAuthor[]): string => {
     let authorsList = '';
@@ -184,6 +178,29 @@ export class MdsBibliography {
     return authorsList;
   };
 
+  /**
+   * The title, in bold italics with its period: a link only with a `url`, and nothing at all
+   * without a `name`. A missing `url` was taken for one (`undefined !== null`), so the title was
+   * always a link without `href`, and a missing `name` left a lone period.
+   */
+  private renderName = (spaced: boolean) => {
+    if ((this.name ?? '') === '') return null;
+    const title = (
+      <b>
+        <i>
+          {spaced && ' '}
+          {this.name}.
+        </i>
+      </b>
+    );
+    if ((this.url ?? '') === '') return title;
+    return (
+      <a class="link" href={this.url} target="_blank" rel={this.rel}>
+        {title}
+      </a>
+    );
+  };
+
   render() {
     return (
       <Host>
@@ -192,17 +209,7 @@ export class MdsBibliography {
           {this.format === 'mla' && (
             <span>
               {this.name && ' '}
-              {(this.name ?? '') !== '' && this.url !== null ? (
-                <a class="link" href={this.url} target="_blank" rel={this.rel}>
-                  <b>
-                    <i>{this.name}.</i>
-                  </b>
-                </a>
-              ) : (
-                <b>
-                  <i>{this.name}.</i>
-                </b>
-              )}
+              {this.renderName(false)}
               {this.location && (
                 <span>
                   {' '}
@@ -224,17 +231,7 @@ export class MdsBibliography {
             <span>
               {this.date && <time dateTime={this.date}> ({this.dateFormatAPA(this.date)}).</time>}
               {this.name && ' '}
-              {(this.name ?? '') !== '' && this.url !== null ? (
-                <a class="link" href={this.url} target="_blank" rel={this.rel}>
-                  <b>
-                    <i> {this.name}.</i>
-                  </b>
-                </a>
-              ) : (
-                <b>
-                  <i> {this.name}.</i>
-                </b>
-              )}
+              {this.renderName(true)}
               {this.location && (
                 <span>
                   {' '}
@@ -248,17 +245,7 @@ export class MdsBibliography {
           {this.format === 'turabian' && (
             <span>
               {this.name && ' '}
-              {(this.name ?? '') !== '' && this.url !== null ? (
-                <a class="link" href={this.url} target="_blank" rel={this.rel}>
-                  <b>
-                    <i> {this.name}.</i>
-                  </b>
-                </a>
-              ) : (
-                <b>
-                  <i> {this.name}.</i>
-                </b>
-              )}
+              {this.renderName(true)}
               {this.location && (
                 <span>
                   {' '}

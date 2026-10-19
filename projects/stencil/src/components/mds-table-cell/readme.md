@@ -25,7 +25,7 @@ This component is essentially a layout/semantic child and exposes a single non-o
 
 - **`value`**: Provide this when the cell's visible content is not directly comparable for sorting, when the displayed text differs from the value you want to sort by (e.g. a formatted date or currency string), or to get a numeric sort (two values that both read as numbers, such as `value="1250.50"`, are compared numerically). When omitted, the column sort uses the rendered text content instead.
 
-There are no `variant` or `tone` props; visual presentation is controlled through the documented CSS custom properties (background, alternate background, and text colors) listed in [`readme.md`](../readme.md).
+There are no `variant` or `tone` props; visual presentation is controlled through the documented CSS custom properties listed in [`readme.md`](../readme.md): the background and text colors, and the `-alt` pair that paints the cells of the sorted column (the column whose `mds-table-header-cell` has a `direction`).
 
 
 ### 2. Pattern
@@ -188,6 +188,12 @@ Customize cell colors through the documented `--mds-table-cell-*` CSS custom pro
   --mds-table-cell-background: rgb(var(--magma-info-emphasis));
   --mds-table-cell-color: rgb(var(--magma-info-on-emphasis));
 }
+
+/* The cells of the column the table is sorted by */
+.tabella-fatture mds-table-cell {
+  --mds-table-cell-background-alt: rgb(var(--magma-accent-surface-subtle));
+  --mds-table-cell-color-alt: rgb(var(--magma-accent-fg));
+}
 ```
 
 
@@ -219,7 +225,7 @@ Common incorrect uses of `<mds-table-cell>`. Each entry pairs the wrong form wit
 
 #### Do Not Use `<td>` in Place of `<mds-table-cell>`
 
-Using raw `<td>` inside `<mds-table-row>` bypasses Magma theming, the `selected`/`sorted` state styles, and the sort-value integration. Always use `<mds-table-cell>`.
+Using raw `<td>` inside `<mds-table-row>` bypasses Magma theming, the `sorted` state styles, and the sort-value integration. Always use `<mds-table-cell>`.
 
 ```html
 <!-- INCORRECT -->
@@ -303,24 +309,26 @@ Inserting a `<div>` or `<span>` wrapper around `<mds-table-cell>` inside `<mds-t
 
 ## CSS Custom Properties
 
-| Name                              | Description                                 |
-| --------------------------------- | ------------------------------------------- |
-| `--mds-table-cell-background`     | Default background color of table cells.    |
-| `--mds-table-cell-background-alt` | Alternate background color for table cells. |
-| `--mds-table-cell-color`          | Default text color of table cells.          |
-| `--mds-table-cell-color-alt`      | Text color for alternate table cells.       |
+| Name                              | Description                                         |
+| --------------------------------- | --------------------------------------------------- |
+| `--mds-table-cell-background`     | Default background color of table cells.            |
+| `--mds-table-cell-background-alt` | Background color of the cells of the sorted column. |
+| `--mds-table-cell-color`          | Default text color of table cells.                  |
+| `--mds-table-cell-color-alt`      | Text color of the cells of the sorted column.       |
 
 
 ## Dependencies
 
 ### Used by
 
+ - [mds-table-footer](../mds-table-footer)
  - [mds-table-header](../mds-table-header)
  - [mds-table-row](../mds-table-row)
 
 ### Graph
 ```mermaid
 graph TD;
+  mds-table-footer --> mds-table-cell
   mds-table-header --> mds-table-cell
   mds-table-row --> mds-table-cell
   style mds-table-cell fill:#f9f,stroke:#333,stroke-width:4px

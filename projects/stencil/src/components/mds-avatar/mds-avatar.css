@@ -12,7 +12,7 @@
   --mds-avatar-background-color-pending: rgb(var(--magma-wash-strong));
   --mds-avatar-background-color: rgb(var(--magma-accent-emphasis));
   --mds-avatar-color: rgb(var(--magma-accent-surface-subtle));
-  --mds-avatar-radius: var(--radius-full);
+  --mds-avatar-radius: var(--magma-radius-full);
   --mds-avatar-initials-padding: 20%;
   --mds-avatar-transition-duration: var(--duration-200);
   --private-avatar-transition-duration: var(--mds-avatar-transition-duration);
@@ -26,10 +26,15 @@
   width: --spacing(1200);
 }
 
+/* the inner boxes repeat the radius of the host, so they take its corner shape too: round for
+   the default pill, the shape of the axis where a parent gives the host a step and that shape
+   (mds-entity) */
+
 .avatar {
   aspect-ratio: 1/1;
   border-radius: var(--mds-avatar-radius);
   color: transparent;
+  corner-shape: inherit;
   display: inline-flex;
   overflow: hidden;
   transition-duration: var(--private-avatar-transition-duration);
@@ -45,6 +50,7 @@
   animation: none;
 }
 
+.avatar--count,
 .avatar--icon,
 .avatar--fallback,
 .avatar--initials {
@@ -52,6 +58,7 @@
   box-shadow: none;
 }
 
+.avatar--count,
 .avatar--fallback,
 .avatar--initials {
   align-items: stretch;
@@ -59,6 +66,7 @@
   justify-items: stretch;
 }
 
+.avatar--count,
 .avatar--icon,
 .avatar--fallback {
   padding: 20%;
@@ -71,6 +79,7 @@
 .image {
   aspect-ratio: 1/1;
   border-radius: var(--mds-avatar-radius);
+  corner-shape: inherit;
 }
 
 .fallback-icon {

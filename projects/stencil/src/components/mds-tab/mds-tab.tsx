@@ -124,9 +124,17 @@ export class MdsTab {
   private updateContentItems = (): void => {
     this.contentItems = this.queryContentItems();
     this.hasContent = this.contentItems.length > 0;
+    // a panel past the last item has no tab to open it: it stays hidden, named by nothing
+    if (this.contentItems.length > this.tabItems.length) {
+      console.warn(
+        `mds-tab: ${this.contentItems.length} content panels for ${this.tabItems.length} mds-tab-item, the panels past the last item are never shown`,
+      );
+    }
     this.contentItems.forEach((item: HTMLElement, key: number): void => {
       setAttributeIfEmpty(item, 'role', 'tabpanel');
-      setAttributeIfEmpty(item, 'aria-labelledby', this.tabItems[key].id);
+      if (key < this.tabItems.length) {
+        setAttributeIfEmpty(item, 'aria-labelledby', this.tabItems[key].id);
+      }
     });
     this.selectContentItem();
   };

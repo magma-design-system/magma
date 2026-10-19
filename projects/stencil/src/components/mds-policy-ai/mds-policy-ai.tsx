@@ -11,7 +11,8 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @part icon - Selects the `icon` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `icon`.
- * @part chip - Selects the `chip` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `chip`.
+ * @part chip - Selects the `mds-chip` wrapped in shadowDOM, will be found only if attirbute `variant` is set to `chip`.
+ * @part chip-wrapper - Selects the wrapper of the chip and of its dropdown, will be found only if attirbute `variant` is set to `chip`.
  * @part card - Selects the `card` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `card`.
  * @part banner - Selects the `banner` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `banner`.
  */
@@ -73,11 +74,14 @@ export class MdsPolicyAi {
           </mds-help>
         )}
         {this.variant === 'chip' && (
-          <div class="chip-wrapper" part="chip">
+          <div class="chip-wrapper" part="chip-wrapper">
+            {/* the part is on the chip, as documented: on the wrapper it reached the dropdown
+                too, and nothing of the chip itself (#802) */}
             <mds-chip
               id="chip"
               icon={mggAiChatbot}
               class="chip"
+              part="chip"
               variant="ai"
               label={this.headline ?? this.t.get('chipLabel')}
             ></mds-chip>

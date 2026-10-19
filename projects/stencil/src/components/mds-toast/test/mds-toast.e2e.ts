@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { describeConditionalSlot } from '@test/slot';
 
 describe('mds-toast', () => {
@@ -19,6 +19,65 @@ describe('mds-toast', () => {
     await new Promise((resolve) => setTimeout(resolve, 100));
 
     expect(root.visible).toBe(true);
+  });
+
+  // the countdown was an interval nobody stopped: a dismissed toast emitted mdsToastClose again
+  // every duration (#823)
+  describe('the countdown', () => {
+    const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    it('hides the toast once and emits mdsToastClose once', async () => {
+      const { root, spyOnEvent } = await render<HTMLMdsToastElement>(
+        '<mds-toast visible duration="100">Text</mds-toast>',
+      );
+      const close = spyOnEvent('mdsToastClose');
+
+      // the duration, then the wait for the exit animation (1s when it is not read)
+      await wait(1600);
+
+      expect(root.visible).toBe(false);
+      expect(close).toHaveReceivedEventTimes(1);
+    });
+
+    it('stops when the toast is hidden by code, which then emits nothing', async () => {
+      const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsToastElement>(
+        '<mds-toast visible duration="300">Text</mds-toast>',
+      );
+      const close = spyOnEvent('mdsToastClose');
+
+      root.visible = false;
+      await waitForChanges();
+      await wait(600);
+
+      expect(close).not.toHaveReceivedEvent();
+    });
+
+    it('stops when the toast leaves the page', async () => {
+      const { root, spyOnEvent } = await render<HTMLMdsToastElement>(
+        '<mds-toast visible duration="100">Text</mds-toast>',
+      );
+      const close = spyOnEvent('mdsToastClose');
+
+      root.remove();
+      await wait(500);
+
+      expect(close).not.toHaveReceivedEvent();
+    });
+  });
+
+  // #824: the close waited 1000 ms whatever the transition: the duration was read from
+  // --mds-tab-duration, a property nothing sets on a toast
+  it('emits mdsToastClose once the exit transition is over', async () => {
+    const { root, spyOnEvent } = await render<HTMLMdsToastElement>(
+      '<mds-toast visible duration="100" style="--mds-toast-duration: 50ms">Text</mds-toast>',
+    );
+    const close = spyOnEvent('mdsToastClose');
+
+    await vi.waitFor(() => expect(root.visible).toBeFalsy(), { timeout: 1000 });
+    const hidden = performance.now();
+    await vi.waitFor(() => expect(close).toHaveReceivedEvent(), { timeout: 1500 });
+
+    expect(performance.now() - hidden).toBeLessThan(500);
   });
 
   describe('where it sits', () => {
@@ -67,5 +126,33 @@ describe('mds-toast', () => {
     html: '<mds-toast>Text</mds-toast>',
     slot: 'action',
     region: '.actions',
+  });
+
+  // no live region, so a screen reader never announced the toast; and the hidden toast was only
+  // moved out of the viewport, its message still read in the page (#821)
+  describe('for assistive technologies', () => {
+    const dialog = (root: HTMLElement): HTMLElement =>
+      root.shadowRoot!.querySelector<HTMLElement>('.dialog')!;
+
+    it('is a status region', async () => {
+      const { root } = await render('<mds-toast>Saved</mds-toast>');
+
+      expect(root).toEqualAttribute('role', 'status');
+    });
+
+    it('keeps the message hidden until it shows, and hides it again at the end of the exit', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsToastElement>(
+        '<mds-toast duration="0" style="--mds-toast-duration: 0s">Saved</mds-toast>',
+      );
+      expect(getComputedStyle(dialog(root)).visibility).toBe('hidden');
+
+      root.visible = true;
+      await waitForChanges();
+      expect(getComputedStyle(dialog(root)).visibility).toBe('visible');
+
+      root.visible = false;
+      await waitForChanges();
+      await vi.waitFor(() => expect(getComputedStyle(dialog(root)).visibility).toBe('hidden'));
+    });
   });
 });

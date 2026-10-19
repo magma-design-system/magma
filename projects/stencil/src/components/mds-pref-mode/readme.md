@@ -17,16 +17,15 @@ The `<mds-pref-mode>` web component is the mode preference control of the Magma 
 - **Selection follows `mode`**: The active tab reflects whichever mode is currently applied, driven by the `mode` prop.
 - **Global mode application**: Selecting a mode applies it document-wide and persists the choice.
 - **Persistence on load**: The applied mode resolves from `mode` -> the stored value -> the `system` default, so a previously chosen mode is restored without an explicit prop.
-- **`mdsPrefChange` event**: Emits `mdsPrefChange` with `{ preference: 'mode' }` every time the mode is applied: on load and on each pick, so one pick can emit it more than once. It bubbles up to `<mds-pref>`; a mode change needs no reload, so it raises no reload notice.
+- **`mdsPrefChange` event**: Emits `mdsPrefChange` with `{ preference: 'mode' }` once per change, after the new mode is applied; a pick of the mode already active and the first application on load do not emit it. It bubbles up to `<mds-pref>`; a mode change needs no reload, so it raises no reload notice.
 - **Instances stay in sync**: Instances mounted together (a hidden `<mds-pref controller>` and a visible settings panel) share the applied mode: a pick in one is mirrored by the others, which neither apply it again nor emit `mdsPrefChange`. A `pref-mode-*` class written on `<html>` by other code is mirrored the same way.
-- **Safari fallback**: On Safari the control disables itself and forces `mode` to `light`, since the transition overlay technique is unsupported there.
 - **System mode**: The `system` choice follows the OS `prefers-color-scheme` media query to resolve the effective light/dark scheme.
 
 #### Properties & Visual Configurations
 
 - **`mode`**: Sets and reflects the active mode (`light`, `dark`, `system`). Leave it unset to inherit the persisted/default mode; set it explicitly to force a starting mode.
 - **`transition`**: Controls the visual switch between schemes. Use `smooth` (default) for a fading neutral overlay that flips the mode mid-fade, `flash` for an instant switch with a brief overlay pulse, or `none` to apply the new mode with no overlay animation. The overlay timing and z-index are tunable through `--mds-pref-mode-overlay-*` CSS custom properties.
-- **`size`**: Sizes the nested tab items (`sm` / `md`). The parent `<mds-pref>` forwards its own `size` to every `mds-pref-*` child only when that prop changes after load, not from the initial markup: in markup, set it here (with the same value on the sibling preferences, so the group stays visually consistent).
+- **`size`**: Sizes the nested tab items (`sm` / `md`). Inside `<mds-pref>`, set it on the parent instead: the parent's `size` reaches every `mds-pref-*` child on load and when it changes, and overwrites the child's own.
 
 
 ### 2. Pattern
@@ -80,7 +79,7 @@ Pass `mode` to force the selector to start on a specific mode rather than readin
 
 #### Listening for Mode Changes
 
-The component emits `mdsPrefChange` with `{ preference: 'mode' }` each time the mode is applied, on load and on each pick, so expect repeats with the same mode; another instance that mirrors the pick does not emit it. Listen for this event to react in application code - for example to sync a preference state store - and read the current value from the `mode` prop.
+The component emits `mdsPrefChange` with `{ preference: 'mode' }` once per change, after the new mode is applied, and not on page load; another instance that mirrors the pick does not emit it. Listen for this event to react in application code - for example to sync a preference state store - and read the current value from the `mode` prop.
 
 ```html
 <mds-pref>
@@ -96,12 +95,12 @@ The component emits `mdsPrefChange` with `{ preference: 'mode' }` each time the 
 
 #### Controlling Size via the Parent
 
-`size` is forwarded to the internal tab items. [`<mds-pref>`](../../mds-pref) forwards its own `size` to every `mds-pref-*` child only when that prop changes after load, not from the initial markup: in markup, set the same `size` on every preference control to keep the panel at one tab size.
+`size` is forwarded to the internal tab items. [`<mds-pref>`](../../mds-pref) forwards its own `size` to every `mds-pref-*` child, on load and when it changes: set it on the parent to keep the panel at one tab size.
 
 ```html
-<mds-pref>
-  <mds-pref-mode size="sm"></mds-pref-mode>
-  <mds-pref-contrast size="sm"></mds-pref-contrast>
+<mds-pref size="sm">
+  <mds-pref-mode></mds-pref-mode>
+  <mds-pref-contrast></mds-pref-contrast>
 </mds-pref>
 ```
 
@@ -182,7 +181,7 @@ The component manages `pref-mode-light`, `pref-mode-dark`, and `pref-mode-system
 
 #### Do Not Size Only One Child of the Panel
 
-`<mds-pref>` forwards its own `size` to its preference children only when that prop changes after load, not from the initial markup, so in markup each child carries its own `size`. Setting it on `<mds-pref-mode>` alone when siblings exist produces inconsistent tab sizes across the panel.
+Setting `size` on `<mds-pref-mode>` alone when siblings exist produces inconsistent tab sizes across the panel. Set it on `<mds-pref>`, which forwards it to every preference child, on load and when it changes.
 
 ```html
 <!-- INCORRECT -->
@@ -192,9 +191,9 @@ The component manages `pref-mode-light`, `pref-mode-dark`, and `pref-mode-system
 </mds-pref>
 
 <!-- CORRECT -->
-<mds-pref>
-  <mds-pref-mode size="sm"></mds-pref-mode>
-  <mds-pref-contrast size="sm"></mds-pref-contrast>
+<mds-pref size="sm">
+  <mds-pref-mode></mds-pref-mode>
+  <mds-pref-contrast></mds-pref-contrast>
 </mds-pref>
 ```
 
@@ -233,6 +232,15 @@ mds-pref-mode {
 | Event           | Description                           | Type                                    |
 | --------------- | ------------------------------------- | --------------------------------------- |
 | `mdsPrefChange` | Emits when the component is triggered | `CustomEvent<MdsPrefChangeEventDetail>` |
+
+
+## CSS Custom Properties
+
+| Name                                       | Description                                                                         |
+| ------------------------------------------ | ----------------------------------------------------------------------------------- |
+| `--mds-pref-mode-overlay-fadeout-duration` | Sets the fadeout duration of the overlay which hides UI color flash on theme change |
+| `--mds-pref-mode-overlay-show-duration`    | Sets the show duration of the overlay which hides UI color flash on theme change    |
+| `--mds-pref-mode-overlay-z-index`          | Sets the z-index of the overlay which hides UI color flash on theme change          |
 
 
 ## Dependencies

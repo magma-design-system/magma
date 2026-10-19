@@ -49,7 +49,7 @@ layer.push('}', '');
 if (model.dark.length) {
   const rules = model.dark.map(cssDecl);
   layer.push(
-    '/* Dark ink: the canvas, not pure black (spec 6.5) */',
+    '/* Dark: the fill ink takes the canvas (spec 6.5), the shadow ink pure black (spec 6.1c) */',
     ':root:not(.pref-theme-scheme-light).pref-mode-dark,',
     ':root.pref-theme-scheme-dark {',
     ...rules,

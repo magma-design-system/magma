@@ -10,6 +10,9 @@
     "tslib": "2.8.1"
   },
   "sideEffects": false,
+  "exports": {
+    "./CHANGELOG.md": "./CHANGELOG.md"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/magma-design-system/magma.git",

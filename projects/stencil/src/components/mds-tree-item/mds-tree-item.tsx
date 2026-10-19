@@ -61,7 +61,8 @@ export class MdsTreeItem {
   @Prop({ reflect: true }) readonly actions?: TreeActions;
 
   /**
-   * Specifies the tree should be opened asynchronously when after the click.
+   * Loads the children on demand: a click on the closed item shows a spinner and emits
+   * `mdsTreeItemExpand` instead of opening it; call `expand()` once the children are in place
    */
   @Prop({ reflect: true }) readonly async?: boolean;
 
@@ -108,12 +109,13 @@ export class MdsTreeItem {
   @Prop() readonly icon?: string;
 
   /**
-   * Emits when the component expand it's children container
+   * Emits when the user opens an `async` item, to load its children: opening any other item emits
+   * nothing
    */
   @Event({ eventName: 'mdsTreeItemExpand' }) expandEvent: EventEmitter<MdsTreeItemEventDetail>;
 
   /**
-   * Emits when the component attribute selected is changed
+   * Emits when the item closes, once its children have finished hiding
    */
   @Event({ eventName: 'mdsTreeItemCollapse' }) collapsedEvent: EventEmitter<MdsTreeItemEventDetail>;
 
@@ -124,14 +126,20 @@ export class MdsTreeItem {
 
   @Watch('expanded')
   handleExpandedChange(newValue: boolean): void {
+    // the folder icon follows the branch opened or closed by the tree too, not only by a click
+    this.updateToggleIcon();
     if (newValue) {
-      this.childrenElement.classList.remove('children--hidden');
+      this.childrenElement?.classList.remove('children--hidden');
       return;
     }
-    this.toggleChildrenTimer = setTimeout(() => {
-      clearTimeout(this.toggleChildrenTimer);
-      this.collapsedEvent.emit({ element: this.host });
-    }, cssDurationToMilliseconds(this.cssToggleChildrenDuration));
+    this.updateCssCustomProperty();
+    this.toggleChildrenTimer = setTimeout(
+      () => {
+        clearTimeout(this.toggleChildrenTimer);
+        this.collapsedEvent.emit({ element: this.host });
+      },
+      cssDurationToMilliseconds(this.cssToggleChildrenDuration, 0),
+    );
   }
 
   private checkChildrenTransitionEnd = (): void => {
@@ -167,10 +175,12 @@ export class MdsTreeItem {
     this.updateToggleIcon();
   };
 
+  // mdsTreeItemCollapse waits for the branch to close, so it reads the duration of that
+  // transition when the item collapses; an invalid value leaves the transition at 0s too
   private updateCssCustomProperty = (): void => {
     const elementStyles = window.getComputedStyle(this.host);
     this.cssToggleChildrenDuration = elementStyles.getPropertyValue(
-      '--mds-dropdown-backdrop-duration',
+      '--mds-tree-item-transition-duration',
     );
   };
 
@@ -208,6 +218,11 @@ export class MdsTreeItem {
     this.resolveActions();
   }
 
+  // the buttons that open the branch say whether it is open; a leaf has no branch to open,
+  // an async item has one still to load
+  private expandedState = (): string | undefined =>
+    this.hasChildren || this.async ? String(!!this.expanded) : undefined;
+
   private onActionSlotChange = (): void => {
     this.hasActions = hasChildWithSlot(this.host, 'action');
   };
@@ -217,8 +232,14 @@ export class MdsTreeItem {
     this.resolveActions();
 
     this.hasActions = hasChildWithSlot(this.host, 'action');
-    this.hasChildren = !!this.host.querySelector('mds-tree-item');
+    this.updateHasChildren();
   }
+
+  // an item whose children are rendered after load, a branch loaded on demand, gets the toggle
+  // and the lines of a branch too: they were read once, on load (#826)
+  private updateHasChildren = (): void => {
+    this.hasChildren = !!this.host.querySelector('mds-tree-item');
+  };
 
   componentDidLoad(): void {
     this.updateCssCustomProperty();
@@ -232,7 +253,7 @@ export class MdsTreeItem {
 
   render() {
     return (
-      <Host resolved-actions={this.resolvedActions}>
+      <Host resolved-actions={this.resolvedActions} role="listitem">
         <div class={clsx('header', this.hasChildren && 'header--has-children')}>
           <div class="tree-node">
             <div class="tree-branch"></div>
@@ -240,6 +261,7 @@ export class MdsTreeItem {
           </div>
           <div class="toggle-icon">
             <mds-button
+              aria-expanded={this.expandedState()}
               await={this.await}
               onClick={this.onClick}
               icon={!this.await ? this.currentToggleIcon : undefined}
@@ -251,6 +273,7 @@ export class MdsTreeItem {
           </div>
           <div class="title">
             <mds-button
+              aria-expanded={this.expandedState()}
               class={clsx('label-action', this.await && 'label-action--await')}
               disabled={this.await}
               icon={this.icon}
@@ -276,8 +299,9 @@ export class MdsTreeItem {
             this.hasChildren && 'children--has-children',
             this.expanded && 'children--expanded',
           )}
+          role={this.hasChildren ? 'list' : undefined}
         >
-          <slot></slot>
+          <slot onSlotchange={this.updateHasChildren}></slot>
         </div>
       </Host>
     );

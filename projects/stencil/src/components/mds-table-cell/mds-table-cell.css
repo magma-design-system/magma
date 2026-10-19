@@ -1,13 +1,14 @@
 /**
  * @prop --mds-table-cell-background: Default background color of table cells.
- * @prop --mds-table-cell-background-alt: Alternate background color for table cells.
- * @prop --mds-table-cell-color-alt: Text color for alternate table cells.
+ * @prop --mds-table-cell-background-alt: Background color of the cells of the sorted column.
+ * @prop --mds-table-cell-color-alt: Text color of the cells of the sorted column.
  * @prop --mds-table-cell-color: Default text color of table cells.
  */
 
 /*
   No css/mds-table-cell-property.css on purpose. Every default below is a bare
-  var(--mds-table-row-*), which resolves to nothing unless an mds-table-row supplies it:
+  var(--mds-table-row-*) or var(--mds-table-*), which resolves to nothing unless an
+  mds-table-row or an mds-table supplies it:
   a document-level registration would substitute its own static light initial-value
   there instead, so a cell used outside a row would pick up light colours on a dark page.
   --mds-table-cell-padding is out for the mirror-image reason: mds-table-header-cell and
@@ -17,8 +18,8 @@
 
 :host {
   --mds-table-cell-background: var(--mds-table-row-background);
-  --mds-table-cell-background-alt: var(--mds-table-row-background-alt);
-  --mds-table-cell-color-alt: var(--mds-table-row-color-alt);
+  --mds-table-cell-background-alt: var(--mds-table-background);
+  --mds-table-cell-color-alt: var(--mds-table-color);
   --mds-table-cell-color: var(--mds-table-row-color);
   --mds-table-cell-transition-duration: var(--duration-200);
   --private-table-cell-transition-duration: var(--mds-table-cell-transition-duration);
@@ -36,6 +37,5 @@
 }
 
 @import './css/mds-table-cell-pref-animation.css';
-@import './css/mds-table-cell-selected.css';
 @import './css/mds-table-cell-sorted.css';
 @import '../../tailwind/fouc.css';

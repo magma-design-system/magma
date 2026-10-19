@@ -20,12 +20,13 @@ const mountedPrefs = new Set<HTMLElement>();
  *  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
  * @category Patterns
  * @tags pattern, user, tab
- * @slot - Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-mode` element/s.
+ * @slot - Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, `mds-pref-mode` or `mds-pref-theme` element/s.
  * @example <mds-pref>
  *    <mds-pref-animation></mds-pref-animation>
  *    <mds-pref-consumption></mds-pref-consumption>
  *    <mds-pref-contrast></mds-pref-contrast>
  *    <mds-pref-mode></mds-pref-mode>
+ *    <mds-pref-theme></mds-pref-theme>
  *    <mds-pref-language>
  *      <mds-pref-language-item code="it"></mds-pref-language-item>
  *      <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -47,6 +48,7 @@ export class MdsPref {
   @Element() host: HTMLMdsPrefElement;
   @State() showReload: boolean = false;
   private prefNeedsReload: string[] = ['consumption', 'language'];
+  private loaded = false;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -66,13 +68,28 @@ export class MdsPref {
     }
   }
 
-  @Watch('size')
-  handleSizeChange(newValue?: TabSizeType): void {
+  private sizeChildren = (size?: TabSizeType): void => {
     const allElements = Array.from(this.host.querySelectorAll('*'));
     const elements = allElements.filter((el) => el.tagName.toLowerCase().startsWith('mds-pref-'));
     elements.forEach((element: HTMLMdsTabElement) => {
-      element.size = newValue;
+      element.size = size;
     });
+  };
+
+  @Watch('size')
+  handleSizeChange(newValue?: TabSizeType): void {
+    this.sizeChildren(newValue);
+  }
+
+  // The watcher does not run for the value of load, which reached no child (#826): a size set on
+  // the panel reaches its controls on load, and the ones added later; without one, each control
+  // keeps its own
+  private applySize = (): void => {
+    if (this.size !== undefined) this.sizeChildren(this.size);
+  };
+
+  componentWillLoad(): void {
+    this.applySize();
   }
 
   // A move disconnects the host and connects it again, while componentDidLoad runs
@@ -86,6 +103,7 @@ export class MdsPref {
   }
 
   componentDidLoad(): void {
+    this.loaded = true;
     this.applyInitialSchemeLock();
   }
 
@@ -99,10 +117,12 @@ export class MdsPref {
     }
   }
 
-  // Host listeners: Stencil removes them on disconnect and adds them back on connect
+  // Host listeners: Stencil removes them on disconnect and adds them back on connect.
+  // The notice is for the visible panel: it was shown only by the controller, which is hidden.
+  // A change heard before the panel loaded is a control applying the stored choice, no pick.
   @Listen('mdsPrefChange')
   handlePrefChange(e: CustomEvent<MdsPrefChangeEventDetail>): void {
-    if (this.controller && this.prefNeedsReload.includes(e.detail?.preference)) {
+    if (this.loaded && !this.controller && this.prefNeedsReload.includes(e.detail?.preference)) {
       this.showReload = true;
     }
   }
@@ -133,7 +153,7 @@ export class MdsPref {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <slot onSlotchange={this.applySize}></slot>
         {this.showReload && (
           <div class="reload-required">
             <mds-text typography="caption">{this.t.get('reloadPageToSeeChanges')}</mds-text>

@@ -14,7 +14,7 @@ The `<mds-push-notification-item>` web component is a single notification card r
 #### Semantic Behavior
 
 - **Compound child only**: It must be placed as a direct default-slot child of `<mds-push-notification>`; it is not used standalone or mixed with other child types, since the parent animates intro/outro and manages stacking.
-- **Dismiss reports up, removal happens in the parent**: Clicking the built-in close button emits the bubbling `mdsPushNotificationItemClose` event; the parent runs the outro animation and removes the item. The item never removes itself.
+- **Dismiss reports up, removal happens in the parent**: Clicking the built-in close button emits the bubbling `mdsPushNotificationItemClose` event, with the `id` of the item as `detail.id`; the parent runs the outro animation and removes the item. The item never removes itself.
 - **Parent-driven visibility lifecycle**: When the last item closes, the parent auto-hides the whole notification area.
 - **Timestamp rendering**: With `dateFormat="timeago"` `datetime` shows a localized relative time ("2 minutes ago"); otherwise the value is treated as a date-format string for a static date.
 - **Localization**: The relative-time strings and the dismiss button title are localized (el/en/es/it).
@@ -201,14 +201,13 @@ Use any `dayjs`-compatible format string as `date-format` to show a static date 
 
 #### Listening to the Dismiss Event
 
-Listen to `mdsPushNotificationItemClose` to handle cleanup when the user dismisses the item. The parent `<mds-push-notification>` does this automatically, but you can also add your own logic (e.g. marking the notification read in the server). The event carries no `detail`: identify the notification from the element itself, here its `id`.
+Listen to `mdsPushNotificationItemClose` to handle cleanup when the user dismisses the item. The parent `<mds-push-notification>` does this automatically, but you can also add your own logic (e.g. marking the notification read in the server). The event carries the `id` of the item in `detail.id`.
 
 ```javascript
 document
   .querySelector('mds-push-notification-item')
   .addEventListener('mdsPushNotificationItemClose', (event) => {
-    const { id } = event.target;
-    markNotificationRead(id);
+    markNotificationRead(event.detail.id);
   });
 ```
 
@@ -386,13 +385,12 @@ mds-push-notification-item::part(content) {
 
 ## Shadow Parts
 
-| Part        | Description                                |
-| ----------- | ------------------------------------------ |
-| `"actions"` | The actions wrapper                        |
-| `"avatar"`  |                                            |
-| `"content"` | The content wrapper of the message         |
-| `"icon"`    | The icon set by `icon` attribute           |
-| `"picture"` | The picture image added by `src` attribute |
+| Part        | Description                                                                                                     |
+| ----------- | --------------------------------------------------------------------------------------------------------------- |
+| `"actions"` | The actions wrapper                                                                                             |
+| `"avatar"`  | The `mds-avatar` that shows the `icon`, the `initials` or, with `preview` set to `avatar`, the picture of `src` |
+| `"content"` | The content wrapper of the message                                                                              |
+| `"picture"` | The picture image added by `src` attribute                                                                      |
 
 
 ## CSS Custom Properties

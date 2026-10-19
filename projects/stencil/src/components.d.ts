@@ -224,7 +224,7 @@ export namespace Components {
          */
         "duration"?: number;
         /**
-          * A value between 0 and 100 that rapresents the status progress
+          * The progress of the item's countdown, from 0 to 1: mds-accordion-timer writes it while the item is selected and sets it back to 0 when the next item takes over
           * @default 0
          */
         "progress": number;
@@ -388,7 +388,7 @@ export namespace Components {
     }
     interface MdsBibliography {
         /**
-          * Specifies a single or mupltiple authors, this field expect a string or an array of strings. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'", and for multiple authors "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'", you can use single or double quotation marks for composite names
+          * Specifies one or more authors, as a string. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'", and for multiple authors, separated by commas, "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'", you can use single or double quotation marks for composite names
          */
         "author"?: string;
         /**
@@ -532,7 +532,7 @@ export namespace Components {
          */
         "active": boolean;
         /**
-          * Specifies if the component is focused when is loaded on the viewport
+          * Focuses the primary action once the component is loaded
          */
         "autoFocus": boolean;
         /**
@@ -544,7 +544,7 @@ export namespace Components {
          */
         "disabled"?: boolean;
         /**
-          * Specifies the URL target of the button
+          * The URL the primary action navigates to, instead of submitting; the chevron only opens the menu
          */
         "href"?: string;
         /**
@@ -565,7 +565,7 @@ export namespace Components {
          */
         "size": ButtonSizeType;
         /**
-          * Specifies the target of the URL, if self or blank
+          * Where the primary action opens `href`, `'self'` or `'blank'`
           * @default 'self'
          */
         "target": ButtonTargetType;
@@ -691,7 +691,7 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Specifies if the current month or a weekend
+          * Specifies if the day belongs to the displayed month, `current`, or to an adjacent one, `other`. `weekend` is deprecated and does nothing: the weekend days are styled by their column of the week
           * @default 'current'
          */
         "month"?: CalendarCellType;
@@ -742,7 +742,7 @@ export namespace Components {
          */
         "deletable"?: boolean;
         /**
-          * Sets the component disabled status
+          * Sets the component disabled status: neither the label nor the delete button can be focused or activated
           * @default false
          */
         "disabled"?: boolean;
@@ -793,7 +793,7 @@ export namespace Components {
          */
         "backdrop"?: boolean;
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the component to `placement`: without it, the component moves to another side of the caller when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement": boolean;
@@ -808,7 +808,7 @@ export namespace Components {
          */
         "disableSmooth": boolean;
         /**
-          * Specifies the placement of the component if no space is available where it is placed.
+          * With `disableAutoPlacement`, moves the component to the opposite side of the caller when `placement` has no room. Auto-placement, the default, already does it.
           * @default false
          */
         "flip": boolean;
@@ -828,7 +828,7 @@ export namespace Components {
          */
         "offset": number;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the component should be placed relative to the caller: the side it takes whenever it has room there.
           * @default 'bottom'
          */
         "placement": FloatingUIPlacement;
@@ -858,11 +858,12 @@ export namespace Components {
     }
     interface MdsEmoji {
         /**
-          * @returns Promise<void> Emoji agrees, useful for confirm actions.
+          * Emoji agrees, useful for confirm actions.
          */
         "agree": () => Promise<void>;
         /**
-          * @returns Promise<void> Emoji disagrees, useful for errors or unwanted results.
+          * Emoji disagrees, useful for errors or unwanted results.
+          * @param turnHappyDelay how long the mouth stays serious after the head shake, in milliseconds; 0 brings the smile back at once
          */
         "disagree": (turnHappyDelay?: number) => Promise<void>;
         /**
@@ -871,27 +872,28 @@ export namespace Components {
          */
         "name": EmojiNames;
         /**
-          * @returns Promise<void> Emoji smiles, useful for confirm actions.
+          * Emoji smiles, useful for confirm actions.
          */
         "smile": () => Promise<void>;
         /**
-          * @returns Promise<void> Eyes start blinking.
+          * Eyes start blinking.
          */
         "startBlinking": () => Promise<void>;
         /**
-          * @returns Promise<void> Starts following mouse with CSS 3D transform.
+          * Starts following mouse with CSS 3D transform.
          */
         "startFollowMouse": () => Promise<void>;
         /**
-          * @returns Promise<void> Emoji start thinking, useful for pending requests.
+          * Emoji starts thinking, useful for pending requests.
+          * @param duration the duration of the entrance of the hand, in seconds
          */
         "startThinking": (duration?: number) => Promise<void>;
         /**
-          * @returns Promise<void> Eyes stop blinking.
+          * Eyes stop blinking.
          */
         "stopBlinking": () => Promise<void>;
         /**
-          * @returns Promise<void> Stops following mouse with CSS 3D transform.
+          * Stops following mouse with CSS 3D transform.
          */
         "stopFollowMouse": () => Promise<void>;
         /**
@@ -963,7 +965,7 @@ export namespace Components {
          */
         "description"?: string;
         /**
-          * Enables the download icon to perform the related action on element
+          * Turns the card into a button that asks for the download: a tab stop that the pointer, Enter and Space activate, emitting `mdsFileDownload`. Without it the card is not interactive
          */
         "downloadable"?: boolean;
         /**
@@ -1105,14 +1107,14 @@ export namespace Components {
          */
         "nav": HeaderBarNavType;
         /**
-          * Opens or closes the header bar.
-          * @param isOpened whether the header bar should be opened
+          * Opens or closes the menu of the surrounding `mds-header`, as the hamburger does.
+          * @param isOpened whether the menu should be opened
          */
         "setOpened": (isOpened?: boolean) => Promise<void>;
     }
     interface MdsHelp {
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the tooltip to `placement`: without it, the tooltip moves to another side of the icon when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement"?: boolean;
@@ -1121,7 +1123,7 @@ export namespace Components {
          */
         "icon"?: string;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the tooltip should be placed relative to the icon: the side it takes whenever it has room there.
           * @default 'top'
          */
         "placement"?: FloatingUIPlacement;
@@ -1158,13 +1160,11 @@ export namespace Components {
     }
     interface MdsImg {
         /**
-          * Specifies an alternate text for an image
-          * @default ''
+          * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
          */
         "alt": string;
         /**
-          * Allow images from third-party sites that allow cross-origin access to be used with canvas
-          * @default 'use-credentials'
+          * Fetches the image with CORS, as the `crossorigin` attribute of `<img>`: a third-party image can then be used with canvas, if its site allows it. Unset, the image is fetched without CORS
          */
         "crossorigin"?: CrossoriginType;
         /**
@@ -1177,8 +1177,7 @@ export namespace Components {
          */
         "loading"?: LoadingType;
         /**
-          * Specifies which referrer information to use when fetching an image.
-          * @default 'no-referrer-when-downgrade'
+          * Specifies which referrer information to use when fetching an image, as the `referrerpolicy` attribute of `<img>`. Unset, the policy of the page applies
          */
         "referrerpolicy"?: ReferrerpolicyType;
         /**
@@ -1262,7 +1261,7 @@ export namespace Components {
          */
         "hasValidator": (validator?: MdsValidatorFn) => Promise<boolean>;
         /**
-          * An icon displayed at the right of the input
+          * An icon displayed at the left of the input, inside the field; the spinner of `await` takes its place
          */
         "icon"?: string;
         /**
@@ -1703,7 +1702,7 @@ export namespace Components {
     }
     interface MdsInputTip {
         /**
-          * Specifies if the component is active and shows expanded children or not
+          * Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
           * @default false
          */
         "active"?: boolean;
@@ -1874,7 +1873,7 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Sets the label of the component
+          * Sets the size of the component: the typography of the label (`sm` caption, `md` detail, `lg` h6) and the size of the icon
           * @default 'sm'
          */
         "size"?: MentionSize;
@@ -1951,7 +1950,7 @@ export namespace Components {
          */
         "target": string;
         /**
-          * Specifies number of notifications to display, if it set to 0, the element will be hidden
+          * Specifies the number of notifications to display. At 0 the badge shows no number, as an empty dot: it is not hidden, `dismissed` takes it off its target
           * @default 0
          */
         "value": number;
@@ -2013,6 +2012,7 @@ export namespace Components {
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
      * <mds-pref-mode></mds-pref-mode>
+     * <mds-pref-theme></mds-pref-theme>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -2208,7 +2208,7 @@ export namespace Components {
     }
     interface MdsPushNotification {
         /**
-          * Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added
+          * Specifies when the stack shows: with `auto` whenever notifications are added, with `manual` only through `visible` or `show()`. In both, removing the last notification hides it; a click outside does not.
           * @default 'auto'
          */
         "behavior"?: 'auto' | 'manual';
@@ -2295,13 +2295,11 @@ export namespace Components {
     }
     interface MdsRadialMenu {
         /**
-          * Specifies the ending angle of the menu
-          * @default 360
+          * Specifies the ending angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-end`, `360deg` by default
          */
         "angleEnd": number;
         /**
-          * Specifies the starting angle of the menu
-          * @default 0
+          * Specifies the starting angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-start`, `0deg` by default
          */
         "angleStart": number;
         /**
@@ -2332,8 +2330,7 @@ export namespace Components {
          */
         "opened"?: boolean;
         /**
-          * Specifies the radius of the menu
-          * @default 5
+          * Specifies the radius of the menu, in `rem`; when it is not set the menu takes `--mds-radial-menu-radius`, `5rem` by default
          */
         "radius": number;
         /**
@@ -2433,7 +2430,7 @@ export namespace Components {
     }
     interface MdsStepperBar {
         /**
-          * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
+          * Sets the current item by its position, counted from 1: the items before it are done. 1 makes the first item current with none done, 0 makes no item current, the number of items + 1 marks them all done
           * @default 1
          */
         "itemsDone": number;
@@ -2481,7 +2478,7 @@ export namespace Components {
          */
         "typography"?: TypographyType;
         /**
-          * Specifies the value the component will return mdsStepperBarItemSelect event
+          * Specifies the value of the step: once the step is done, mds-stepper-bar adds it to the `value` of `mdsStepperBarChange`, which joins the values of the done steps with commas
          */
         "value"?: string;
     }
@@ -2615,6 +2612,10 @@ export namespace Components {
          */
         "sorting"?: MdsTableSortingType;
         /**
+          * `internal` Reads again whether the rows have `slot="action"` content: shows or hides the Actions column of the header and wires the overlay of the actions. Runs when rows come and go, and mds-table-row calls it when the content of its `action` slot changes.
+         */
+        "updateActions": () => Promise<void>;
+        /**
           * `internal` Updates the selection data event and emits it, it's used to avoid add event listener to the dom and lower performance, works only if `selectable` is true.
          */
         "updateSelection": () => Promise<void>;
@@ -2636,12 +2637,21 @@ export namespace Components {
         "value"?: string | number;
     }
     interface MdsTableFooter {
+        /**
+          * Adds an empty cell in the selection column, so that the cells of the footer line up with the ones of the rows: `mds-table` sets it from its own `selectable`
+         */
+        "selectable"?: boolean;
     }
     interface MdsTableHeader {
         /**
           * Enables the select-all checkbox in the header.
          */
         "selectable"?: boolean;
+        /**
+          * `internal` Shows or hides the Actions column: mds-table calls it whenever its rows gain or lose `slot="action"` content, the header itself reads them only on load
+          * @param hasActions whether any row has actions
+         */
+        "setActions": (hasActions: boolean) => Promise<void>;
         /**
           * Updates the header's select-all state from the number of selected rows.
           * @param selectedItems the number of currently selected rows
@@ -2755,7 +2765,7 @@ export namespace Components {
          */
         "arrowPadding": number;
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the component to `placement`: without it, the component moves to another side of the caller when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement": boolean;
@@ -2765,7 +2775,7 @@ export namespace Components {
          */
         "disableShift": boolean;
         /**
-          * Specifies the placement of the component if no space is available where it is placed.
+          * With `disableAutoPlacement`, moves the component to the opposite side of the caller when `placement` has no room. Auto-placement, the default, already does it.
           * @default false
          */
         "flip": boolean;
@@ -2779,7 +2789,7 @@ export namespace Components {
          */
         "offset": number;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the component should be placed relative to the caller: the side it takes whenever it has room there.
           * @default 'top'
          */
         "placement": FloatingUIPlacement;
@@ -2825,7 +2835,8 @@ export namespace Components {
          */
         "appearance": TreeAppearance;
         /**
-          * Specifies the tree should be opened asynchronously when after the click, .
+          * Has no effect on the tree: `async` is read on each `mds-tree-item`.
+          * @deprecated Set `async` on the items that load their children on demand. Goes in the next major.
          */
         "async"?: boolean;
         /**
@@ -2833,7 +2844,7 @@ export namespace Components {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Names the tree for assistive technologies: the tree is a list of its items, and the label is what that list is called
          */
         "label": string;
         /**
@@ -2862,7 +2873,7 @@ export namespace Components {
          */
         "appearance"?: TreeAppearance;
         /**
-          * Specifies the tree should be opened asynchronously when after the click.
+          * Loads the children on demand: a click on the closed item shows a spinner and emits `mdsTreeItemExpand` instead of opening it; call `expand()` once the children are in place
          */
         "async"?: boolean;
         /**
@@ -2905,7 +2916,7 @@ export namespace Components {
     }
     interface MdsUrlView {
         /**
-          * Specifies if domain is visible on header
+          * Specifies the icon shown in the header, before the label or the domain; without it the header shows the explore icon
          */
         "icon"?: string;
         /**
@@ -3967,6 +3978,7 @@ declare global {
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
      * <mds-pref-mode></mds-pref-mode>
+     * <mds-pref-theme></mds-pref-theme>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -4702,7 +4714,7 @@ declare namespace LocalJSX {
          */
         "onMdsAccordionTimerItemSelect"?: (event: MdsAccordionTimerItemCustomEvent<MdsAccordionTimerItemEventDetail>) => void;
         /**
-          * A value between 0 and 100 that rapresents the status progress
+          * The progress of the item's countdown, from 0 to 1: mds-accordion-timer writes it while the item is selected and sets it back to 0 when the next item takes over
           * @default 0
          */
         "progress"?: number;
@@ -4870,7 +4882,7 @@ declare namespace LocalJSX {
     }
     interface MdsBibliography {
         /**
-          * Specifies a single or mupltiple authors, this field expect a string or an array of strings. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'", and for multiple authors "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'", you can use single or double quotation marks for composite names
+          * Specifies one or more authors, as a string. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'", and for multiple authors, separated by commas, "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'", you can use single or double quotation marks for composite names
          */
         "author"?: string;
         /**
@@ -5026,7 +5038,7 @@ declare namespace LocalJSX {
          */
         "active"?: boolean;
         /**
-          * Specifies if the component is focused when is loaded on the viewport
+          * Focuses the primary action once the component is loaded
          */
         "autoFocus"?: boolean;
         /**
@@ -5042,7 +5054,7 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
-          * Specifies the URL target of the button
+          * The URL the primary action navigates to, instead of submitting; the chevron only opens the menu
          */
         "href"?: string;
         /**
@@ -5067,7 +5079,7 @@ declare namespace LocalJSX {
          */
         "size"?: ButtonSizeType;
         /**
-          * Specifies the target of the URL, if self or blank
+          * Where the primary action opens `href`, `'self'` or `'blank'`
           * @default 'self'
          */
         "target"?: ButtonTargetType;
@@ -5212,7 +5224,7 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Specifies if the current month or a weekend
+          * Specifies if the day belongs to the displayed month, `current`, or to an adjacent one, `other`. `weekend` is deprecated and does nothing: the weekend days are styled by their column of the week
           * @default 'current'
          */
         "month"?: CalendarCellType;
@@ -5263,7 +5275,7 @@ declare namespace LocalJSX {
          */
         "deletable"?: boolean;
         /**
-          * Sets the component disabled status
+          * Sets the component disabled status: neither the label nor the delete button can be focused or activated
           * @default false
          */
         "disabled"?: boolean;
@@ -5330,7 +5342,7 @@ declare namespace LocalJSX {
          */
         "backdrop"?: boolean;
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the component to `placement`: without it, the component moves to another side of the caller when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement"?: boolean;
@@ -5345,7 +5357,7 @@ declare namespace LocalJSX {
          */
         "disableSmooth"?: boolean;
         /**
-          * Specifies the placement of the component if no space is available where it is placed.
+          * With `disableAutoPlacement`, moves the component to the opposite side of the caller when `placement` has no room. Auto-placement, the default, already does it.
           * @default false
          */
         "flip"?: boolean;
@@ -5377,7 +5389,7 @@ declare namespace LocalJSX {
          */
         "onMdsDropdownVisible"?: (event: MdsDropdownCustomEvent<MdsDropdownEventDetail>) => void;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the component should be placed relative to the caller: the side it takes whenever it has room there.
           * @default 'bottom'
          */
         "placement"?: FloatingUIPlacement;
@@ -5479,7 +5491,7 @@ declare namespace LocalJSX {
          */
         "description"?: string;
         /**
-          * Enables the download icon to perform the related action on element
+          * Turns the card into a button that asks for the download: a tab stop that the pointer, Enter and Space activate, emitting `mdsFileDownload`. Without it the card is not interactive
          */
         "downloadable"?: boolean;
         /**
@@ -5646,7 +5658,7 @@ declare namespace LocalJSX {
     }
     interface MdsHelp {
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the tooltip to `placement`: without it, the tooltip moves to another side of the icon when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement"?: boolean;
@@ -5655,7 +5667,7 @@ declare namespace LocalJSX {
          */
         "icon"?: string;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the tooltip should be placed relative to the icon: the side it takes whenever it has room there.
           * @default 'top'
          */
         "placement"?: FloatingUIPlacement;
@@ -5687,13 +5699,11 @@ declare namespace LocalJSX {
     }
     interface MdsImg {
         /**
-          * Specifies an alternate text for an image
-          * @default ''
+          * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
          */
         "alt"?: string;
         /**
-          * Allow images from third-party sites that allow cross-origin access to be used with canvas
-          * @default 'use-credentials'
+          * Fetches the image with CORS, as the `crossorigin` attribute of `<img>`: a third-party image can then be used with canvas, if its site allows it. Unset, the image is fetched without CORS
          */
         "crossorigin"?: CrossoriginType;
         /**
@@ -5714,8 +5724,7 @@ declare namespace LocalJSX {
          */
         "onMdsImgLoadSuccess"?: (event: MdsImgCustomEvent<MdsImgEventDetail>) => void;
         /**
-          * Specifies which referrer information to use when fetching an image.
-          * @default 'no-referrer-when-downgrade'
+          * Specifies which referrer information to use when fetching an image, as the `referrerpolicy` attribute of `<img>`. Unset, the policy of the page applies
          */
         "referrerpolicy"?: ReferrerpolicyType;
         /**
@@ -5783,7 +5792,7 @@ declare namespace LocalJSX {
          */
         "form"?: string;
         /**
-          * An icon displayed at the right of the input
+          * An icon displayed at the left of the input, inside the field; the spinner of `await` takes its place
          */
         "icon"?: string;
         /**
@@ -6283,7 +6292,7 @@ declare namespace LocalJSX {
     }
     interface MdsInputTip {
         /**
-          * Specifies if the component is active and shows expanded children or not
+          * Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
           * @default false
          */
         "active"?: boolean;
@@ -6458,7 +6467,7 @@ declare namespace LocalJSX {
          */
         "onMdsMentionDelete"?: (event: MdsMentionCustomEvent<MdsMentionEvent>) => void;
         /**
-          * Sets the label of the component
+          * Sets the size of the component: the typography of the label (`sm` caption, `md` detail, `lg` h6) and the size of the icon
           * @default 'sm'
          */
         "size"?: MentionSize;
@@ -6492,7 +6501,7 @@ declare namespace LocalJSX {
          */
         "onMdsModalHide"?: (event: MdsModalCustomEvent<void>) => void;
         /**
-          * Emits when a modal is closed
+          * Emits when a modal is opened, as its intro animation starts: `mdsModalShow` follows once it is totally visible
          */
         "onMdsModalOpen"?: (event: MdsModalCustomEvent<void>) => void;
         /**
@@ -6551,7 +6560,7 @@ declare namespace LocalJSX {
          */
         "target"?: string;
         /**
-          * Specifies number of notifications to display, if it set to 0, the element will be hidden
+          * Specifies the number of notifications to display. At 0 the badge shows no number, as an empty dot: it is not hidden, `dismissed` takes it off its target
           * @default 0
          */
         "value"?: number;
@@ -6617,6 +6626,7 @@ declare namespace LocalJSX {
      * <mds-pref-consumption></mds-pref-consumption>
      * <mds-pref-contrast></mds-pref-contrast>
      * <mds-pref-mode></mds-pref-mode>
+     * <mds-pref-theme></mds-pref-theme>
      * <mds-pref-language>
      * <mds-pref-language-item code="it"></mds-pref-language-item>
      * <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -6852,7 +6862,7 @@ declare namespace LocalJSX {
     }
     interface MdsPushNotification {
         /**
-          * Specifies if the component is visible or not. behavior = manual should hide when click outside should hide when all notifications are removed should show when change visible from component or call show method  behavior = auto should hide when all notifications are removed should show when one or more notifications are added
+          * Specifies when the stack shows: with `auto` whenever notifications are added, with `manual` only through `visible` or `show()`. In both, removing the last notification hides it; a click outside does not.
           * @default 'auto'
          */
         "behavior"?: 'auto' | 'manual';
@@ -6942,13 +6952,11 @@ declare namespace LocalJSX {
     }
     interface MdsRadialMenu {
         /**
-          * Specifies the ending angle of the menu
-          * @default 360
+          * Specifies the ending angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-end`, `360deg` by default
          */
         "angleEnd"?: number;
         /**
-          * Specifies the starting angle of the menu
-          * @default 0
+          * Specifies the starting angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-start`, `0deg` by default
          */
         "angleStart"?: number;
         /**
@@ -6979,8 +6987,7 @@ declare namespace LocalJSX {
          */
         "opened"?: boolean;
         /**
-          * Specifies the radius of the menu
-          * @default 5
+          * Specifies the radius of the menu, in `rem`; when it is not set the menu takes `--mds-radial-menu-radius`, `5rem` by default
          */
         "radius"?: number;
         /**
@@ -7076,7 +7083,7 @@ declare namespace LocalJSX {
     }
     interface MdsStepperBar {
         /**
-          * Sets the current item to the given index: 0 is none done, 1 is the first item done, last number + 1 is all items done
+          * Sets the current item by its position, counted from 1: the items before it are done. 1 makes the first item current with none done, 0 makes no item current, the number of items + 1 marks them all done
           * @default 1
          */
         "itemsDone"?: number;
@@ -7119,7 +7126,7 @@ declare namespace LocalJSX {
          */
         "label": string;
         /**
-          * Emits when the accordion is selected
+          * Emits when the user activates a step that is done, to go back to it: the page moves the stepper bar there through `itemsDone`
          */
         "onMdsStepperBarItemDone"?: (event: MdsStepperBarItemCustomEvent<MdsStepperBarItemEventDetail>) => void;
         /**
@@ -7132,7 +7139,7 @@ declare namespace LocalJSX {
          */
         "typography"?: TypographyType;
         /**
-          * Specifies the value the component will return mdsStepperBarItemSelect event
+          * Specifies the value of the step: once the step is done, mds-stepper-bar adds it to the `value` of `mdsStepperBarChange`, which joins the values of the done steps with commas
          */
         "value"?: string;
     }
@@ -7269,7 +7276,7 @@ declare namespace LocalJSX {
          */
         "interactive"?: boolean;
         /**
-          * Dispatces when interactive property changes
+          * Emits when the selection of a `selectable` table changes, with the index and the value of each selected row
          */
         "onMdsTableSelectionChange"?: (event: MdsTableCustomEvent<MdsTableSelectionEventDetail>) => void;
         /**
@@ -7303,6 +7310,10 @@ declare namespace LocalJSX {
         "value"?: string | number;
     }
     interface MdsTableFooter {
+        /**
+          * Adds an empty cell in the selection column, so that the cells of the footer line up with the ones of the rows: `mds-table` sets it from its own `selectable`
+         */
+        "selectable"?: boolean;
     }
     interface MdsTableHeader {
         /**
@@ -7395,7 +7406,7 @@ declare namespace LocalJSX {
          */
         "duration"?: number;
         /**
-          * Emits when the accordion is opened
+          * Emits when a toast with a `duration` has hidden itself, once its exit animation is over
          */
         "onMdsToastClose"?: (event: MdsToastCustomEvent<void>) => void;
         /**
@@ -7424,7 +7435,7 @@ declare namespace LocalJSX {
          */
         "arrowPadding"?: number;
         /**
-          * If set, the component will not be placed automatically near it's caller.
+          * Pins the component to `placement`: without it, the component moves to another side of the caller when `placement` has no room.
           * @default false
          */
         "disableAutoPlacement"?: boolean;
@@ -7434,7 +7445,7 @@ declare namespace LocalJSX {
          */
         "disableShift"?: boolean;
         /**
-          * Specifies the placement of the component if no space is available where it is placed.
+          * With `disableAutoPlacement`, moves the component to the opposite side of the caller when `placement` has no room. Auto-placement, the default, already does it.
           * @default false
          */
         "flip"?: boolean;
@@ -7448,7 +7459,7 @@ declare namespace LocalJSX {
          */
         "offset"?: number;
         /**
-          * Specifies where the component should be placed relative to the caller.
+          * Specifies where the component should be placed relative to the caller: the side it takes whenever it has room there.
           * @default 'top'
          */
         "placement"?: FloatingUIPlacement;
@@ -7494,7 +7505,8 @@ declare namespace LocalJSX {
          */
         "appearance"?: TreeAppearance;
         /**
-          * Specifies the tree should be opened asynchronously when after the click, .
+          * Has no effect on the tree: `async` is read on each `mds-tree-item`.
+          * @deprecated Set `async` on the items that load their children on demand. Goes in the next major.
          */
         "async"?: boolean;
         /**
@@ -7502,7 +7514,7 @@ declare namespace LocalJSX {
          */
         "expanded"?: boolean;
         /**
-          * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * Names the tree for assistive technologies: the tree is a list of its items, and the label is what that list is called
          */
         "label"?: string;
         /**
@@ -7531,7 +7543,7 @@ declare namespace LocalJSX {
          */
         "appearance"?: TreeAppearance;
         /**
-          * Specifies the tree should be opened asynchronously when after the click.
+          * Loads the children on demand: a click on the closed item shows a spinner and emits `mdsTreeItemExpand` instead of opening it; call `expand()` once the children are in place
          */
         "async"?: boolean;
         /**
@@ -7551,11 +7563,11 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Emits when the component attribute selected is changed
+          * Emits when the item closes, once its children have finished hiding
          */
         "onMdsTreeItemCollapse"?: (event: MdsTreeItemCustomEvent<MdsTreeItemEventDetail>) => void;
         /**
-          * Emits when the component expand it's children container
+          * Emits when the user opens an `async` item, to load its children: opening any other item emits nothing
          */
         "onMdsTreeItemExpand"?: (event: MdsTreeItemCustomEvent<MdsTreeItemEventDetail>) => void;
         /**
@@ -7574,7 +7586,7 @@ declare namespace LocalJSX {
     }
     interface MdsUrlView {
         /**
-          * Specifies if domain is visible on header
+          * Specifies the icon shown in the header, before the label or the domain; without it the header shows the explore icon
          */
         "icon"?: string;
         /**
@@ -8275,6 +8287,9 @@ declare namespace LocalJSX {
     interface MdsTableCellAttributes {
         "value": string;
     }
+    interface MdsTableFooterAttributes {
+        "selectable": boolean;
+    }
     interface MdsTableHeaderAttributes {
         "selectable": boolean;
     }
@@ -8467,7 +8482,7 @@ declare namespace LocalJSX {
         "mds-table": Omit<MdsTable, keyof MdsTableAttributes> & { [K in keyof MdsTable & keyof MdsTableAttributes]?: MdsTable[K] } & { [K in keyof MdsTable & keyof MdsTableAttributes as `attr:${K}`]?: MdsTableAttributes[K] } & { [K in keyof MdsTable & keyof MdsTableAttributes as `prop:${K}`]?: MdsTable[K] };
         "mds-table-body": Omit<MdsTableBody, keyof MdsTableBodyAttributes> & { [K in keyof MdsTableBody & keyof MdsTableBodyAttributes]?: MdsTableBody[K] } & { [K in keyof MdsTableBody & keyof MdsTableBodyAttributes as `attr:${K}`]?: MdsTableBodyAttributes[K] } & { [K in keyof MdsTableBody & keyof MdsTableBodyAttributes as `prop:${K}`]?: MdsTableBody[K] };
         "mds-table-cell": Omit<MdsTableCell, keyof MdsTableCellAttributes> & { [K in keyof MdsTableCell & keyof MdsTableCellAttributes]?: MdsTableCell[K] } & { [K in keyof MdsTableCell & keyof MdsTableCellAttributes as `attr:${K}`]?: MdsTableCellAttributes[K] } & { [K in keyof MdsTableCell & keyof MdsTableCellAttributes as `prop:${K}`]?: MdsTableCell[K] };
-        "mds-table-footer": MdsTableFooter;
+        "mds-table-footer": Omit<MdsTableFooter, keyof MdsTableFooterAttributes> & { [K in keyof MdsTableFooter & keyof MdsTableFooterAttributes]?: MdsTableFooter[K] } & { [K in keyof MdsTableFooter & keyof MdsTableFooterAttributes as `attr:${K}`]?: MdsTableFooterAttributes[K] } & { [K in keyof MdsTableFooter & keyof MdsTableFooterAttributes as `prop:${K}`]?: MdsTableFooter[K] };
         "mds-table-header": Omit<MdsTableHeader, keyof MdsTableHeaderAttributes> & { [K in keyof MdsTableHeader & keyof MdsTableHeaderAttributes]?: MdsTableHeader[K] } & { [K in keyof MdsTableHeader & keyof MdsTableHeaderAttributes as `attr:${K}`]?: MdsTableHeaderAttributes[K] } & { [K in keyof MdsTableHeader & keyof MdsTableHeaderAttributes as `prop:${K}`]?: MdsTableHeader[K] };
         "mds-table-header-cell": Omit<MdsTableHeaderCell, keyof MdsTableHeaderCellAttributes> & { [K in keyof MdsTableHeaderCell & keyof MdsTableHeaderCellAttributes]?: MdsTableHeaderCell[K] } & { [K in keyof MdsTableHeaderCell & keyof MdsTableHeaderCellAttributes as `attr:${K}`]?: MdsTableHeaderCellAttributes[K] } & { [K in keyof MdsTableHeaderCell & keyof MdsTableHeaderCellAttributes as `prop:${K}`]?: MdsTableHeaderCell[K] };
         "mds-table-row": Omit<MdsTableRow, keyof MdsTableRowAttributes> & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes]?: MdsTableRow[K] } & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes as `attr:${K}`]?: MdsTableRowAttributes[K] } & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes as `prop:${K}`]?: MdsTableRow[K] };
@@ -8563,6 +8578,7 @@ declare module "@stencil/core" {
              * <mds-pref-consumption></mds-pref-consumption>
              * <mds-pref-contrast></mds-pref-contrast>
              * <mds-pref-mode></mds-pref-mode>
+             * <mds-pref-theme></mds-pref-theme>
              * <mds-pref-language>
              * <mds-pref-language-item code="it"></mds-pref-language-item>
              * <mds-pref-language-item code="en"></mds-pref-language-item>

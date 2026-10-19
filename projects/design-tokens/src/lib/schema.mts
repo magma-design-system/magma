@@ -14,7 +14,9 @@ const formula = { enum: ['wcag2', 'wcag3'] }
 
 // A per-mode table of role -> lightness. Levels accept a percentage ("96%"),
 // a bare 0..100 string, or a 0..1 number (see surface.mts parseLightness).
-const lightness = { type: ['string', 'number'] }
+// anyOf, not a `type` array: Ajv's strict mode warns on union types at every
+// use, and the schema is also published for consumers' validators
+const lightness = { anyOf: [{ type: 'string' }, { type: 'number' }] }
 const surfaceModeLevels = {
   type: 'object',
   additionalProperties: false,

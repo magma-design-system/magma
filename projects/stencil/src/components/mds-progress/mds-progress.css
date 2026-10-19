@@ -16,11 +16,12 @@
   --mds-progress-transition-duration: var(--duration-300);
   --private-progress-transition-duration: var(--mds-progress-transition-duration);
   --mds-progress-thickness: --spacing(200);
+  --mds-progress-radius: var(--magma-radius-2xl);
 
   @apply ease-in-out;
 
   background-color: var(--mds-progress-background);
-  border-radius: var(--magma-radius-2xl);
+  border-radius: var(--mds-progress-radius);
   corner-shape: var(--magma-corner-shape);
   display: flex;
   height: var(--mds-progress-thickness);

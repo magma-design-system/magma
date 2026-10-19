@@ -1,10 +1,36 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 
 describe('mds-pref', () => {
   it('renders', async () => {
     const { root } = await render('<mds-pref></mds-pref>');
 
     expect(root).toHaveAttribute('hydrated');
+  });
+
+  it('asks to reload the page after a language or consumption change', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-pref><mds-pref-consumption></mds-pref-consumption></mds-pref>',
+    );
+    const notice = () => root.shadowRoot!.querySelector('.reload-required');
+    // the control applies the stored choice on load: no notice for that
+    expect(notice()).toBeNull();
+
+    root.querySelector('mds-pref-consumption')!.mode = 'low';
+    await waitForChanges();
+
+    expect(notice()).not.toBeNull();
+  });
+
+  it('shows no reload notice in controller mode, where it is hidden', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-pref controller><mds-pref-consumption></mds-pref-consumption></mds-pref>',
+    );
+
+    root.querySelector('mds-pref-consumption')!.mode = 'low';
+    await waitForChanges();
+
+    expect(root.shadowRoot!.querySelector('.reload-required')).toBeNull();
   });
 
   // #789: a settings page unmounting its own mds-pref used to drop the attribute
@@ -81,11 +107,11 @@ describe('mds-pref', () => {
       );
     });
 
-    it('keeps asking for a reload in controller mode', async () => {
+    it('keeps asking for a reload', async () => {
       const { root, waitForChanges } = await render(`
         <div>
           <div class="sidebar">
-            <mds-pref controller>
+            <mds-pref>
               <mds-pref-consumption></mds-pref-consumption>
             </mds-pref>
           </div>
@@ -96,15 +122,13 @@ describe('mds-pref', () => {
 
       root.querySelector('.menu')!.append(pref);
       await settle(waitForChanges);
-      root
-        .querySelector('mds-pref-consumption')!
-        .dispatchEvent(
-          new CustomEvent('mdsPrefChange', {
-            bubbles: true,
-            composed: true,
-            detail: { preference: 'consumption' },
-          }),
-        );
+      root.querySelector('mds-pref-consumption')!.dispatchEvent(
+        new CustomEvent('mdsPrefChange', {
+          bubbles: true,
+          composed: true,
+          detail: { preference: 'consumption' },
+        }),
+      );
       await settle(waitForChanges);
 
       expect(pref.shadowRoot!.querySelector('.reload-required')).not.toBeNull();
@@ -157,6 +181,39 @@ describe('mds-pref', () => {
 
       expect(theme).not.toHaveAttribute('locked-scheme');
       expect(theme.shadowRoot!.querySelector('.item--dark')).not.toHaveAttribute('disabled');
+    });
+  });
+
+  // #826: the size reached the controls only through its watcher, which does not run for the value
+  // of load: a panel sized in the markup never sized them
+  describe('size', () => {
+    beforeEach(mockIconFetch);
+
+    it('reaches the controls on load, and the ones added later', async () => {
+      const { root } = await render(`
+        <mds-pref size="sm">
+          <mds-pref-animation></mds-pref-animation>
+          <mds-pref-contrast></mds-pref-contrast>
+        </mds-pref>
+      `);
+
+      expect(root.querySelector('mds-pref-animation')).toEqualAttribute('size', 'sm');
+      expect(root.querySelector('mds-pref-contrast')).toEqualAttribute('size', 'sm');
+
+      root.appendChild(document.createElement('mds-pref-consumption'));
+      await vi.waitFor(() =>
+        expect(root.querySelector('mds-pref-consumption')).toEqualAttribute('size', 'sm'),
+      );
+    });
+
+    it('leaves the size of each control alone when the panel has none', async () => {
+      const { root } = await render(`
+        <mds-pref>
+          <mds-pref-animation size="sm"></mds-pref-animation>
+        </mds-pref>
+      `);
+
+      expect(root.querySelector('mds-pref-animation')).toEqualAttribute('size', 'sm');
     });
   });
 });

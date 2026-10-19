@@ -16,7 +16,8 @@ The `<mds-details>` web component is the disclosure widget of the Magma Design S
 #### Semantic Behavior
 
 - **Open/closed state**: The `opened` prop expands or collapses the content region with a transition.
-- **Header activation**: Clicking the header or the leading icon toggles the open state, and the header is keyboard-activatable with Enter (Space does not toggle it).
+- **Header activation**: Clicking the header or the leading icon toggles the open state, and the header is keyboard-activatable with Enter and Space.
+- **Closed content**: While closed, the content is hidden from the tab order and from assistive technologies, not only from the eye; it shows for the whole opening and closing animation.
 - **Change event**: Each user toggle emits `mdsDetailsChange` carrying the new boolean open state; changing `opened` from code emits nothing.
 - **Icon slot presence**: The leading icon area auto-hides when no `icon` slot is provided.
 - **Default slot vs. named slots**: The default (unnamed) slot is the collapsible body. The `title` slot is the always-visible header label, `icon` is the optional leading glyph, and `action` is a footer region inside the expandable content meant for action controls.
@@ -25,7 +26,7 @@ The `<mds-details>` web component is the disclosure widget of the Magma Design S
 
 This component intentionally exposes a single behavioral prop. Visual surface is driven through slots and the exposed CSS custom properties rather than through variant/tone props.
 
-- **`opened`** sets the expanded state. Set it to pre-expand the block on first render, or change it to open / close the block from code. User toggles do not write it back (track `mdsDetailsChange` for the current state), so after a toggle `opened` can be stale and assigning the value it already holds does nothing.
+- **`opened`** sets the expanded state. Set it to pre-expand the block on first render, or change it to open / close the block from code. A user toggle writes it back too (property and reflected attribute), so it always holds the current state.
 
 #### Other behavioral props
 
@@ -52,7 +53,7 @@ The minimal form: a `title` slot for the always-visible header and a default slo
 
 #### Pre-expanded State via `opened`
 
-Pass the `opened` boolean attribute to expand the block on first render. User toggles do not update it: read the state from `mdsDetailsChange`.
+Pass the `opened` boolean attribute to expand the block on first render. User toggles update it, and emit `mdsDetailsChange`.
 
 ```html
 <mds-details opened>
@@ -115,7 +116,7 @@ Subscribe to `mdsDetailsChange` to react to open/close transitions. The event de
 
 #### Programmatic Control
 
-Assign the `opened` property to drive the disclosure from code - for example to expand all items at once or to implement accordion logic manually. User toggles do not write `opened` back, so assigning the value it already holds does nothing: a block the user closed after an `opened = true` stays closed until `opened` goes through `false`.
+Assign the `opened` property to drive the disclosure from code - for example to expand all items at once or to implement accordion logic manually. User toggles write `opened` back, so it always holds the current state: `opened = true` opens a block the user had closed.
 
 ```html
 <mds-details id="step-1">
@@ -315,11 +316,11 @@ mds-details::part(header) {
 
 ## Shadow Parts
 
-| Part        | Description                                              |
-| ----------- | -------------------------------------------------------- |
-| `"content"` | The content wrapper of the `default` and `content` slots |
-| `"header"`  | The header of the component                              |
-| `"title"`   | The title of the component                               |
+| Part        | Description                                           |
+| ----------- | ----------------------------------------------------- |
+| `"content"` | The content wrapper of the default and `action` slots |
+| `"header"`  | The header of the component                           |
+| `"title"`   | The title of the component                            |
 
 
 ## CSS Custom Properties

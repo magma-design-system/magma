@@ -17,13 +17,13 @@ The `<mds-pref-animation>` web component is a preference control that lets users
 - **Tab-group selection**: Renders three options (reduce / system / no-preference); the active one is driven by the `mode` value, and clicking an option sets that mode.
 - **Applies the preference globally**: Choosing a mode applies it across the whole document and persists the choice, so it is restored on later visits.
 - **Initial mode resolution**: The effective mode is resolved in order from the `mode` prop, then the persisted value, then the `system` default.
-- **Change event**: `mdsPrefChange` (detail `{ preference: 'animation' }`) fires on every selection and also on page load; the parent `<mds-pref>` listens for it only in `controller` mode.
+- **Change event**: `mdsPrefChange` (detail `{ preference: 'animation' }`) fires once per change, after the new mode is applied; a pick of the mode already active and the first application on load do not emit it. It bubbles up to `<mds-pref>`; an animation change needs no reload, so it raises no reload notice.
 - **Instances stay in sync**: Instances mounted together (a hidden `<mds-pref controller>` and a visible settings panel) share the applied animation: a pick in one is mirrored by the others, which neither apply it again nor emit `mdsPrefChange`. A `pref-animation-*` class written on `<html>` by other code is mirrored the same way.
 
 #### Properties & Visual Configurations
 
 - **`mode`**: Sets which animation preference is active - `reduce` to suppress motion, `no-preference` to fully enable animations, or `system` to defer to the user's OS setting. Leave unset to fall back to the persisted or default (`system`) value.
-- **`size`**: Sizes the nested tab items (`sm` or `md`). The parent `<mds-pref>` forwards a later change of its own `size` to every `mds-pref-*` child, but not the initial value, so set it on this component as well.
+- **`size`**: Sizes the nested tab items (`sm` or `md`). Inside `<mds-pref>`, set it on the parent instead: the parent's `size` reaches every `mds-pref-*` child on load and when it changes, and overwrites the child's own.
 
 
 ### 2. Pattern
@@ -42,7 +42,7 @@ The standard form. Place `<mds-pref-animation>` as a direct slot child of [`<mds
 
 #### Combined Preferences Panel
 
-Place multiple `mds-pref-*` children inside the same `<mds-pref>`. The parent forwards later changes of its `size` to every child.
+Place multiple `mds-pref-*` children inside the same `<mds-pref>`. The parent forwards its `size` to every child, on load and when it changes.
 
 ```html
 <mds-pref>
@@ -65,7 +65,7 @@ Pass `mode` to override the persisted value and start from a known state - for e
 
 #### Listening for Changes
 
-Handle `mdsPrefChange` when the host application needs to react - for example, to announce the new setting or trigger a soft refresh. The event also fires on page load, so do not read each one as a user's choice.
+Handle `mdsPrefChange` when the host application needs to react - for example, to announce the new setting or trigger a soft refresh. The event fires once per change, after the new mode is applied, and not on page load: to know the mode a page starts with, read the `mode` property.
 
 ```html
 <mds-pref id="prefs">
@@ -82,13 +82,13 @@ Handle `mdsPrefChange` when the host application needs to react - for example, t
 
 #### Compact Size
 
-Set `size="sm"` on the parent `<mds-pref>` and on each `mds-pref-*` child to shrink the tab items consistently: the parent forwards later changes of its `size`, not the initial value.
+Set `size="sm"` on the parent `<mds-pref>` to shrink the tab items of every `mds-pref-*` child consistently: the parent forwards its `size` on load and on every change.
 
 ```html
-<!-- In the panel: on the parent and on each child -->
+<!-- In the panel: on the parent only -->
 <mds-pref size="sm">
-  <mds-pref-animation size="sm"></mds-pref-animation>
-  <mds-pref-contrast size="sm"></mds-pref-contrast>
+  <mds-pref-animation></mds-pref-animation>
+  <mds-pref-contrast></mds-pref-contrast>
 </mds-pref>
 
 <!-- Acceptable when used standalone -->
@@ -113,7 +113,7 @@ Common incorrect uses of `<mds-pref-animation>`. Each entry pairs the wrong form
 
 #### Do Not Turn Off with `mode="false"` or Remove the Attribute to Reset
 
-`mode` is a string union (`reduce | system | no-preference`), not a boolean. A value outside the union, such as `"false"` or `"none"`, does not disable the component: it has no entry in the component's mode table, so applying it fails with an error, after the value has already been stored in `localStorage` (later loads fail too). Without `mode`, the component restores the persisted choice or falls back to `system`.
+`mode` is a string union (`reduce | system | no-preference`), not a boolean. A value outside the union, such as `"false"` or `"none"`, does not disable the component: it has no entry in the component's mode table, so it is ignored with a console warning and never stored, and the component keeps the mode it has. Removing the attribute at runtime keeps the current mode too: it does not reset it. Without `mode`, the component restores the persisted choice or falls back to `system`.
 
 ```html
 <!-- INCORRECT - not a valid mode value -->

@@ -1,11 +1,20 @@
 import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
+import { childOpacityBeforeHydration, hostOpacityBeforeHydration } from '@test/fouc';
 
 describe('mds-pref-theme-item', () => {
   it('renders', async () => {
     const { root } = await render('<mds-pref-theme-item></mds-pref-theme-item>');
 
     expect(root).toHaveAttribute('hydrated');
+  });
+
+  // its FOUC sheet was written and never imported (#1004)
+  it('stays hidden until it hydrates, and so does its button', async () => {
+    const { root } = await render('<mds-pref-theme-item></mds-pref-theme-item>');
+
+    expect(await hostOpacityBeforeHydration(root)).toBe('0');
+    expect(childOpacityBeforeHydration(root, 'mds-button')).toBe('0');
   });
 
   it('builds the label from the name once the label attribute is removed', async () => {

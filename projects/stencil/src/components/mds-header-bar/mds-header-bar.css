@@ -1,11 +1,14 @@
 @import './css/mds-header-bar-fouc.css';
 
 /**
- * @prop --mds-header-bar-hamburger-color: The color of the hamburger icon used in the header bar.
+ * @prop --mds-header-bar-hamburger-color: The color of the hamburger icon used in the header bar; inside an `mds-header` it defaults to the `--mds-header-icon-color` or `--mds-header-color` set on it.
  */
 
 :host {
-  --mds-header-bar-hamburger-color: rgb(var(--magma-text-muted));
+  --mds-header-bar-hamburger-color: var(
+    --mds-header-icon-color,
+    var(--mds-header-color, rgb(var(--magma-text-muted)))
+  );
   --mds-header-bar-transition-duration: 500ms;
   --private-header-bar-transition-duration: var(--mds-header-bar-transition-duration);
 

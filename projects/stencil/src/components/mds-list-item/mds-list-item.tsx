@@ -8,6 +8,8 @@ import mggListDot from '@icon/mgg/list-dot.svg';
 
 /**
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @part icon - The bullet icon before the text, the one `icon` sets
+ * @part text - The text of the item, around the default slot
  */
 
 @Component({

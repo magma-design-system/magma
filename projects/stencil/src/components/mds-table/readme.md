@@ -17,9 +17,9 @@ The `<mds-table>` web component is the root container of the Magma Design System
 
 - **Compound parent**: The default slot must hold `mds-table-header` / `mds-table-body` / `mds-table-footer`; `<mds-table>` pushes its own `interactive` and `selectable` state onto every `mds-table-row` and the header/body. It is not used standalone.
 - **Selection model**: When `selectable` is set, rows expose a checkbox; the component aggregates the selected rows, mirrors the count to the header's tristate control, and flags that a selection exists so it is visible to CSS and consumers.
-- **Selection event**: Emits `mdsTableSelectionChange` (bubbles, composed) carrying `{ rows }`, an array of `{ index, value }` for every selected row. Selection is driven via the `updateSelection()` and `selectAll(select?)` methods rather than DOM listeners; both are no-ops unless `selectable` is true.
+- **Selection event**: Emits `mdsTableSelectionChange` (bubbles, composed) carrying `{ rows }`, an array of `{ index, value }` for every selected row. It follows every change of a row's `selected`, from its checkbox or from code, and `selectAll(select?)`; changes made together are announced once. Both are no-ops unless `selectable` is true.
 - **Live children**: Rows added or removed at runtime are re-wired with the table's interactive and selectable state, so dynamically added rows behave consistently.
-- **Action overflow**: When rows carry a `[slot="action"]`, rows flip into an overlaid-action mode once content exceeds the visible width.
+- **Action overflow**: When rows carry a `[slot="action"]`, rows flip into an overlaid-action mode once content exceeds the visible width. Rows and actions added after the first load are followed too: the header gains its Actions column and the new rows the overlay.
 - **Localization**: Resolves its display language from the page (`<html lang>`: `el`/`en`/`es`/`it`, otherwise `en`) for the batch-actions label.
 
 #### Properties & Visual Configurations
@@ -266,7 +266,7 @@ Call the `selectAll()` method to select all rows at once; pass `false` to desele
 
 #### Batch Actions Bar
 
-Slot `mds-button` elements with `slot="batch-action"` as direct children of `mds-table` alongside the body. The bar renders only when `selectable` is set and at least one batch-action button is present; it shows a live count badge of the current selection and appears once a row is checked.
+Slot `mds-button` elements with `slot="batch-action"` as direct children of `mds-table` alongside the body. The bar renders only when `selectable` is set and at least one batch-action button is present, a button added after load included; it shows a live count badge of the current selection and appears once a row is checked.
 
 ```html
 <mds-table selectable>
@@ -383,7 +383,7 @@ Common incorrect uses of `<mds-table>`. Each entry pairs the wrong form with the
 
 #### Do Not Slot Batch-Action Buttons Inside the Body
 
-The `slot="batch-action"` must be a direct child of `<mds-table>`, not nested inside `mds-table-body` or any row. The component queries `:scope > [slot="batch-action"]` at load time and the bar will not appear if the slot is misplaced.
+The `slot="batch-action"` must be a direct child of `<mds-table>`, not nested inside `mds-table-body` or any row. The component looks for `:scope > [slot="batch-action"]` on load and whenever its children change, and the bar will not appear if the slot is misplaced.
 
 ```html
 <!-- INCORRECT -->
@@ -524,9 +524,9 @@ Selection state is communicated via the `mdsTableSelectionChange` custom event. 
 
 ## Events
 
-| Event                     | Description                                 | Type                                        |
-| ------------------------- | ------------------------------------------- | ------------------------------------------- |
-| `mdsTableSelectionChange` | Dispatces when interactive property changes | `CustomEvent<MdsTableSelectionEventDetail>` |
+| Event                     | Description                                                                                                 | Type                                        |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `mdsTableSelectionChange` | Emits when the selection of a `selectable` table changes, with the index and the value of each selected row | `CustomEvent<MdsTableSelectionEventDetail>` |
 
 
 ## Methods
@@ -540,6 +540,18 @@ Selects all elements or none, works only if `selectable` is true.
 | Name     | Type      | Description |
 | -------- | --------- | ----------- |
 | `select` | `boolean` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `updateActions() => Promise<void>`
+
+`internal` Reads again whether the rows have `slot="action"` content: shows or hides the
+Actions column of the header and wires the overlay of the actions. Runs when rows come and
+go, and mds-table-row calls it when the content of its `action` slot changes.
 
 #### Returns
 
@@ -568,26 +580,26 @@ Type: `Promise<void>`
 
 ## Shadow Parts
 
-| Part                      | Description                                       |
-| ------------------------- | ------------------------------------------------- |
-| `"batch-actions"`         | Selects the element which wraps the batch actions |
-| `"batch-actions-wrapper"` |                                                   |
-| `"table"`                 | Selects the table element                         |
-| `"table-wrapper"`         | Selects the element which wraps the table         |
+| Part                      | Description                                                                                        |
+| ------------------------- | -------------------------------------------------------------------------------------------------- |
+| `"batch-actions"`         | Selects the element which wraps the batch actions                                                  |
+| `"batch-actions-wrapper"` | The bar of the batch actions, shown while the table is `selectable` and has `batch-action` content |
+| `"table"`                 | Selects the table element                                                                          |
+| `"table-wrapper"`         | Selects the element which wraps the table                                                          |
 
 
 ## CSS Custom Properties
 
-| Name                         | Description                                                                                                                 |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-table-actions-gap`    | Gap between table action elements.                                                                                          |
-| `--mds-table-background`     | Default background color of the table.                                                                                      |
-| `--mds-table-background-alt` | Alternate background color for table rows; in an interactive table also the scroll area, while the pointer is on the table. |
-| `--mds-table-border-color`   | Color of the table border.                                                                                                  |
-| `--mds-table-border-width`   | Width of the table border.                                                                                                  |
-| `--mds-table-cell-padding`   | Padding inside table cells.                                                                                                 |
-| `--mds-table-color`          | Default text color of the table.                                                                                            |
-| `--mds-table-color-alt`      | Text color for alternate table rows.                                                                                        |
+| Name                         | Description                                                                                                                                                                 |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-table-actions-gap`    | Gap between table action elements.                                                                                                                                          |
+| `--mds-table-background`     | Default background color of the table.                                                                                                                                      |
+| `--mds-table-background-alt` | Background color of the rows while a column sorts the table, and of the table behind them; in an interactive table also the scroll area, while the pointer is on the table. |
+| `--mds-table-border-color`   | Color of the table border.                                                                                                                                                  |
+| `--mds-table-border-width`   | Width of the table border.                                                                                                                                                  |
+| `--mds-table-cell-padding`   | Padding inside table cells.                                                                                                                                                 |
+| `--mds-table-color`          | Default text color of the table.                                                                                                                                            |
+| `--mds-table-color-alt`      | Text color of the rows while a column sorts the table.                                                                                                                      |
 
 
 ## Dependencies

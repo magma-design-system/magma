@@ -238,24 +238,24 @@ mds-input-field {
 
 ## Slots
 
-| Slot | Description                                       |
-| ---- | ------------------------------------------------- |
-|      | Add the native input `HTML element` to this slot. |
+| Slot | Description                                                                                                                                                                                                      |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|      | Add one `mds-input` or `mds-input-date`: the field names it with `label` and shows its validation errors in `message`. Another control, a native `<input>` among them, gets the name but no validation messages. |
 
 
 ## Shadow Parts
 
-| Part        | Description |
-| ----------- | ----------- |
-| `"content"` |             |
+| Part        | Description                                        |
+| ----------- | -------------------------------------------------- |
+| `"content"` | The wrapper of the default slot, above the message |
 
 
 ## CSS Custom Properties
 
-| Name                                   | Description                                                                                                                      |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-input-field-message-background` | Sets the message background color of the component, will be visible only if there is a text defined by `tip` component attribute |
-| `--mds-input-field-message-color`      | Sets the message text color of the component                                                                                     |
+| Name                                   | Description                                                                                                                          |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `--mds-input-field-message-background` | Sets the message background color of the component, will be visible only if there is a text defined by `message` component attribute |
+| `--mds-input-field-message-color`      | Sets the message text color of the component                                                                                         |
 
 
 ## Dependencies

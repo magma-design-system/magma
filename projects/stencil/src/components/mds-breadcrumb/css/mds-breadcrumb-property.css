@@ -15,12 +15,21 @@
     - --mds-breadcrumb-button-background-hover: read by mds-breadcrumb-item as
       var(--mds-breadcrumb-button-background-hover, <default>), so a registration would keep
       that fallback from ever firing.
+    - --mds-breadcrumb-button-background-selected: read by mds-breadcrumb-item as
+      var(--mds-breadcrumb-button-background-selected, <default>), so a registration would keep
+      that fallback from ever firing.
     - --mds-breadcrumb-button-background: read by mds-breadcrumb-item as
       var(--mds-breadcrumb-button-background, <default>), so a registration would keep that
       fallback from ever firing.
     - --mds-breadcrumb-button-color-hover: read by mds-breadcrumb-item as
       var(--mds-breadcrumb-button-color-hover, <default>), so a registration would keep that
       fallback from ever firing.
+    - --mds-breadcrumb-button-color-selected: read by mds-breadcrumb-item as
+      var(--mds-breadcrumb-button-color-selected, <default>), so a registration would keep that
+      fallback from ever firing.
+    - --mds-breadcrumb-button-color-current, --mds-breadcrumb-current-button-color: deprecated
+      names of --mds-breadcrumb-button-color-selected, read through var() fallbacks and set only
+      by an author: a registration would always give them a value, the light initial-value.
     - --mds-breadcrumb-button-color: read by mds-breadcrumb-item as
       var(--mds-breadcrumb-button-color, <default>), so a registration would keep that fallback
       from ever firing.
@@ -29,17 +38,5 @@
 @property --mds-breadcrumb-button-background-disabled {
   inherits: true;
   initial-value: transparent;
-  syntax: '<color>';
-}
-
-@property --mds-breadcrumb-button-color-current {
-  inherits: true;
-  initial-value: rgb(var(--magma-text-default));
-  syntax: '<color>';
-}
-
-@property --mds-breadcrumb-current-button-color {
-  inherits: true;
-  initial-value: rgb(var(--magma-text-disabled));
   syntax: '<color>';
 }

@@ -7,6 +7,7 @@ mds-accordion prop multiple (attr multiple): boolean | undefined = false
 mds-accordion event mdsAccordionChange: MdsAccordionEventDetail [bubbles, cancelable, composed]
 mds-accordion slot (default)
 mds-accordion css --mds-accordion-border-color
+mds-accordion css --mds-accordion-border-width
 mds-accordion css --mds-accordion-color
 mds-accordion css --mds-accordion-description-color
 mds-accordion css --mds-accordion-duration
@@ -172,9 +173,11 @@ mds-breadcrumb css --mds-breadcrumb-arrow-depth-color
 mds-breadcrumb css --mds-breadcrumb-button-background
 mds-breadcrumb css --mds-breadcrumb-button-background-disabled
 mds-breadcrumb css --mds-breadcrumb-button-background-hover
+mds-breadcrumb css --mds-breadcrumb-button-background-selected
 mds-breadcrumb css --mds-breadcrumb-button-color
 mds-breadcrumb css --mds-breadcrumb-button-color-current
 mds-breadcrumb css --mds-breadcrumb-button-color-hover
+mds-breadcrumb css --mds-breadcrumb-button-color-selected
 mds-breadcrumb css --mds-breadcrumb-current-button-color
 mds-breadcrumb-item encapsulation shadow
 mds-breadcrumb-item prop label (attr label) [reflect]: string | undefined
@@ -224,6 +227,7 @@ mds-button css --mds-button-border-tone-weak-hover-width
 mds-button css --mds-button-border-width
 mds-button css --mds-button-color
 mds-button css --mds-button-gap
+mds-button css --mds-button-label-transform
 mds-button css --mds-button-radius
 mds-button-dropdown encapsulation shadow
 mds-button-dropdown prop active (attr active) [reflect, mutable]: boolean
@@ -327,6 +331,7 @@ mds-card slot footer
 mds-card slot header
 mds-card slot media
 mds-card part layout
+mds-card css --mds-card-background
 mds-card css --mds-card-gap
 mds-card css --mds-card-padding
 mds-card-content encapsulation shadow
@@ -343,7 +348,7 @@ mds-card-media part content
 mds-chip encapsulation shadow
 mds-chip prop clickable (attr clickable) [reflect, mutable]: boolean | undefined
 mds-chip prop deletable (attr deletable): boolean | undefined
-mds-chip prop disabled (attr disabled): boolean | undefined = false
+mds-chip prop disabled (attr disabled) [reflect]: boolean | undefined = false
 mds-chip prop icon (attr icon): string | undefined
 mds-chip prop label (attr label) [reflect, required]: string
 mds-chip prop selectable (attr selectable) [reflect]: boolean | undefined = false
@@ -600,11 +605,11 @@ mds-icon prop name (attr name) [reflect, required]: string
 mds-icon method setSvgPath(svgPath: string) => Promise<void>
 mds-icon part svg
 mds-img encapsulation shadow
-mds-img prop alt (attr alt) [reflect, mutable]: string = ''
-mds-img prop crossorigin (attr crossorigin): "anonymous" | "use-credentials" | undefined = 'use-credentials'
+mds-img prop alt (attr alt) [reflect, mutable]: string
+mds-img prop crossorigin (attr crossorigin): "anonymous" | "use-credentials" | undefined
 mds-img prop height (attr height): string | undefined
 mds-img prop loading (attr loading): "eager" | "lazy" | undefined = 'lazy'
-mds-img prop referrerpolicy (attr referrerpolicy): "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "unsafe-url" | undefined = 'no-referrer-when-downgrade'
+mds-img prop referrerpolicy (attr referrerpolicy): "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "unsafe-url" | undefined
 mds-img prop sizes (attr sizes): string | undefined
 mds-img prop src (attr src): string | undefined
 mds-img prop srcset (attr srcset): string | undefined
@@ -1000,6 +1005,7 @@ mds-modal css --mds-modal-overlay-color
 mds-modal css --mds-modal-overlay-opacity
 mds-modal css --mds-modal-transition-duration
 mds-modal css --mds-modal-transition-timing-funciton
+mds-modal css --mds-modal-transition-timing-function
 mds-modal css --mds-modal-window-background
 mds-modal css --mds-modal-window-distance
 mds-modal css --mds-modal-window-max-width
@@ -1016,6 +1022,7 @@ mds-note slot (default)
 mds-note slot title
 mds-note css --mds-note-background
 mds-note css --mds-note-color
+mds-note css --mds-note-fold-color
 mds-note css --mds-note-fold-size
 mds-note css --mds-note-selection-background
 mds-note css --mds-note-selection-color
@@ -1070,6 +1077,7 @@ mds-policy-ai prop variant (attr variant) [reflect]: "banner" | "card" | "chip" 
 mds-policy-ai part banner
 mds-policy-ai part card
 mds-policy-ai part chip
+mds-policy-ai part chip-wrapper
 mds-policy-ai part icon
 mds-pref encapsulation shadow
 mds-pref prop controller (attr controller) [reflect, mutable]: boolean | undefined
@@ -1103,6 +1111,9 @@ mds-pref-mode prop mode (attr mode) [reflect, mutable]: "dark" | "light" | "syst
 mds-pref-mode prop size (attr size) [reflect]: "md" | "sm" | undefined
 mds-pref-mode prop transition (attr transition) [reflect, mutable]: "flash" | "none" | "smooth" = 'smooth'
 mds-pref-mode event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
+mds-pref-mode css --mds-pref-mode-overlay-fadeout-duration
+mds-pref-mode css --mds-pref-mode-overlay-show-duration
+mds-pref-mode css --mds-pref-mode-overlay-z-index
 mds-pref-theme encapsulation shadow
 mds-pref-theme prop cornerShape (attr corner-shape) [reflect, mutable]: "bevel" | "default" | "notch" | "round" | "scoop" | "square" | "squircle" | undefined
 mds-pref-theme prop name (attr name) [reflect, mutable]: string = 'default'
@@ -1217,7 +1228,6 @@ mds-push-notification-item slot badge
 mds-push-notification-item part actions
 mds-push-notification-item part avatar
 mds-push-notification-item part content
-mds-push-notification-item part icon
 mds-push-notification-item part picture
 mds-push-notification-item css --mds-push-notification-item-duration
 mds-push-notification-item css --mds-push-notification-item-icon-background-color
@@ -1232,15 +1242,15 @@ mds-quote prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4
 mds-quote slot (default)
 mds-quote slot author
 mds-radial-menu encapsulation shadow
-mds-radial-menu prop angleEnd (attr angle-end) [reflect]: number = 360
-mds-radial-menu prop angleStart (attr angle-start) [reflect]: number = 0
+mds-radial-menu prop angleEnd (attr angle-end) [reflect]: number
+mds-radial-menu prop angleStart (attr angle-start) [reflect]: number
 mds-radial-menu prop backdrop (attr backdrop) [reflect]: boolean | undefined = false
 mds-radial-menu prop direction (attr direction) [reflect]: "clockwise" | "counterclockwise" = 'clockwise'
 mds-radial-menu prop disc (attr disc) [reflect, mutable]: boolean | undefined
 mds-radial-menu prop icon (attr icon) [reflect, mutable]: string | undefined
 mds-radial-menu prop interaction (attr interaction) [reflect]: "click" | "rightclick" = 'click'
 mds-radial-menu prop opened (attr opened) [reflect, mutable]: boolean | undefined
-mds-radial-menu prop radius (attr radius) [reflect]: number = 5
+mds-radial-menu prop radius (attr radius) [reflect]: number
 mds-radial-menu prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'lg'
 mds-radial-menu prop tone (attr tone) [reflect]: "outline" | "strong" | "text" | "weak" | undefined = 'strong'
 mds-radial-menu prop variant (attr variant) [reflect]: "ai" | "apple" | "dark" | "error" | "google" | "info" | "light" | "primary" | "secondary" | "success" | "warning" | undefined = 'dark'
@@ -1273,6 +1283,11 @@ mds-radial-progress prop typography (attr typography) [reflect]: "label" | "opti
 mds-radial-progress prop variant (attr variant) [reflect]: "ai" | "dark" | "error" | "info" | "light" | "primary" | "success" | "warning" | undefined = 'primary'
 mds-radial-progress part icon
 mds-radial-progress part value-container
+mds-radial-progress css --mds-radial-progress-background
+mds-radial-progress css --mds-radial-progress-color
+mds-radial-progress css --mds-radial-progress-text-background
+mds-radial-progress css --mds-radial-progress-text-background-shadow
+mds-radial-progress css --mds-radial-progress-text-suffix
 mds-separator encapsulation shadow
 mds-separator css --mds-separator-background
 mds-spinner encapsulation shadow
@@ -1417,6 +1432,7 @@ mds-table prop selection (attr selection) [reflect, mutable]: boolean | undefine
 mds-table prop sorting (attr sorting) [reflect]: "external" | "internal" | undefined = 'internal'
 mds-table event mdsTableSelectionChange: MdsTableSelectionEventDetail [bubbles, cancelable, composed]
 mds-table method selectAll(select?: boolean) => Promise<void>
+mds-table method updateActions() => Promise<void>
 mds-table method updateSelection() => Promise<void>
 mds-table slot (default)
 mds-table slot batch-action
@@ -1449,9 +1465,11 @@ mds-table-cell css --mds-table-cell-background-alt
 mds-table-cell css --mds-table-cell-color
 mds-table-cell css --mds-table-cell-color-alt
 mds-table-footer encapsulation shadow
+mds-table-footer prop selectable (attr selectable): boolean | undefined
 mds-table-footer slot (default)
 mds-table-header encapsulation shadow
 mds-table-header prop selectable (attr selectable): boolean | undefined
+mds-table-header method setActions(hasActions: boolean) => Promise<void>
 mds-table-header method setSelection(selectedItems: number, totalItems: number) => Promise<void>
 mds-table-header slot (default)
 mds-table-header part actions
@@ -1533,7 +1551,7 @@ mds-tooltip css --mds-tooltip-z-index
 mds-tree encapsulation shadow
 mds-tree prop actions (attr actions) [reflect]: "auto" | "visible" | undefined = 'auto'
 mds-tree prop appearance (attr appearance) [reflect]: "depth" | "none" = 'depth'
-mds-tree prop async (attr async) [reflect]: boolean | undefined
+mds-tree prop async (attr async) [reflect]: boolean | undefined DEPRECATED
 mds-tree prop expanded (attr expanded) [reflect, mutable]: boolean | undefined
 mds-tree prop label (attr label): string
 mds-tree prop toggle (attr toggle) [reflect]: "chevron" | "folder" = 'chevron'
@@ -1631,7 +1649,7 @@ mds-url-view css --mds-url-view-shadow
 mds-usage encapsulation shadow
 mds-usage prop alias (attr alias): string | undefined
 mds-usage prop icon (attr icon): string | undefined
-mds-usage prop variant (attr variant): "do" | "dont" | "info" | "warn" = 'info'
+mds-usage prop variant (attr variant) [reflect]: "do" | "dont" | "info" | "warn" = 'info'
 mds-usage slot (default)
 mds-usage part header
 mds-usage part icon
@@ -1719,7 +1737,7 @@ interface MdsFilePreviewEventDetail { extension: string; filename: string; targe
 interface MdsFilterEventDetail { children: NodeListOf<HTMLMdsFilterItemElement>; value: string; }
 interface MdsFilterItemEventDetail { id: string; selected: boolean; }
 interface MdsHeaderEventDetail { bar: HTMLMdsHeaderBarElement; }
-interface MdsHeaderVisibilityEventDetail { visibility: boolean; }
+interface MdsHeaderVisibilityEventDetail { /** The visibility the header has now, the value of its `visibility` prop */ visibility: 'hidden' | 'visible'; }
 interface MdsImgEventDetail { image: HTMLImageElement; }
 interface MdsInputEventDetail { value?: File | string | FormData | null; }
 interface MdsInputSelectEventDetail extends MdsInputEventDetail { /** * The values of the selected options, the placeholder left out: one with a single select, every * selected one with `multiple`, where `value` holds only the first, as `select.value` does. */ values: string[]; }

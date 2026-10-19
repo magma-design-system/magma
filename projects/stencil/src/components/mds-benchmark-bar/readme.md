@@ -22,7 +22,7 @@ The `<mds-benchmark-bar>` web component is a read-only data-visualization elemen
 
 #### Properties & Visual Configurations
 
-- **`value`** drives both the rendered value text and the fill of the progress bar; supply it on a 0-100 scale.
+- **`value`** drives the rendered value text, the value screen readers announce (the same text) and the fill of the progress bar; supply it on a 0-100 scale.
 - **`alias`** overrides how the value is displayed: when present it replaces the numeric `value` in the caption (and in the announced value), letting you show formatted or qualitative text (e.g. a graded label) instead of the raw number.
 - **`typography`** selects the text scale applied to both the label and value captions, choosing between `'label'` (the default, larger caption) and `'option'` (smaller, for compact contexts).
 
@@ -53,7 +53,7 @@ Render several bars together to compare metrics. Each bar stands on its own; no 
 
 #### Alias to Replace the Numeric Value
 
-Use `alias` when you need to display a formatted or qualitative string instead of the raw number. The alias also becomes the accessible `aria-valuetext` announced to screen readers.
+Use `alias` when you need to display a formatted or qualitative string instead of the raw number. The alias also becomes the accessible `aria-valuetext` announced to screen readers; without it they announce the number, as shown.
 
 ```html
 <!-- Show a grade label instead of the raw score -->
@@ -146,7 +146,7 @@ The default slot is deprecated and accepts plain text only; HTML elements are un
 
 #### Do Not Set `value` Outside the 0-100 Range
 
-The component passes `value / 100` directly to the inner `<mds-progress>` fill. Values above 100 just fill the whole bar while the caption shows the raw number; negative values produce no fill and no error. Clamp the value in your data layer before binding.
+The inner `<mds-progress>` reads a value above 100 as 100 and a negative one as 0, but the caption still shows the raw number, which then contradicts the bar. Clamp the value in your data layer before binding.
 
 ```html
 <!-- INCORRECT -->
