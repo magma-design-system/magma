@@ -7,6 +7,25 @@ describe('mds-note', () => {
 
     expect(root).toHaveAttribute('hydrated');
   });
+
+  it('turns Enter into a click only while it is deletable', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsNoteElement>(
+      '<mds-note tabindex="0">nota</mds-note>',
+    );
+    const onClick = vi.fn();
+    root.addEventListener('click', onClick);
+    const pressEnter = () =>
+      root.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', code: 'Enter' }));
+
+    pressEnter();
+    expect(onClick).not.toHaveBeenCalled();
+
+    (root as { deletable: boolean }).deletable = true;
+    await waitForChanges();
+    pressEnter();
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
   describe('the label color variants', () => {
     /** The value that drives the paint; a variant with no block of its own never reaches it. */
     const painted = async (variant: string): Promise<string> => {

@@ -19,12 +19,14 @@ export class MdsHelp {
   @Prop() readonly icon?: string;
 
   /**
-   * If set, the component will not be placed automatically near it's caller.
+   * Pins the tooltip to `placement`: without it, the tooltip moves to another side of the icon
+   * when `placement` has no room.
    */
   @Prop({ reflect: true }) readonly disableAutoPlacement?: boolean = false;
 
   /**
-   * Specifies where the component should be placed relative to the caller.
+   * Specifies where the tooltip should be placed relative to the icon: the side it takes
+   * whenever it has room there.
    */
   @Prop({ reflect: true }) readonly placement?: FloatingUIPlacement = 'top';
 

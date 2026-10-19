@@ -224,13 +224,24 @@ export class MdsEmoji {
    */
   @Method()
   async stopFollowMouse(): Promise<void> {
+    // the caller's choice: an expression that ends later must not turn the tracking back on,
+    // which it did when only the pause below ran
+    this.wasFollowingMouse = false;
+    return this.pauseFollowMouse();
+  }
+
+  /**
+   * Stops the tracking and recentres the face, keeping whether it was on: an expression pauses
+   * it this way and restoreFollowMouse resumes it when the expression ends.
+   */
+  private pauseFollowMouse = (): Promise<void> => {
     if (!this.isFollowingMouse) return Promise.resolve();
     this.isFollowingMouse = false;
     this.rotate(0, 0);
     return new Promise((resolve) =>
       setTimeout(resolve, this.expressionFollowMouseTraitsDuration * 1000),
     );
-  }
+  };
 
   /**
    * Starts following mouse with CSS 3D transform.
@@ -508,13 +519,13 @@ export class MdsEmoji {
     // An expression owns the whole face: smile, agree, disagree and think must not
     // play while the traits are still offset toward the last pointer position, so
     // stop tracking and bring the emoji back to centre, where it looks straight at
-    // whoever is watching. stopFollowMouse self-guards on isFollowingMouse and
+    // whoever is watching. pauseFollowMouse self-guards on isFollowingMouse and
     // already re-centres through rotate(0, 0), but it is a no-op when the pointer
     // was never followed, hence the explicit moveHead.
     // The centring used to be scattered: disagree and startThinking did it in the
     // public method, smile inside setSmileAnimation, and agree not at all. Doing it
     // here is the single place every expression goes through.
-    this.stopFollowMouse();
+    this.pauseFollowMouse();
     // Thinking is torn down here rather than through stopThinking(): that method
     // hands the face back and schedules the blinking again, both of which would
     // land in the middle of the expression that is starting right now.

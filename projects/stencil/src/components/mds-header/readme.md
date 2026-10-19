@@ -16,7 +16,7 @@ The `<mds-header>` web component is the top-level page header container of the M
 #### Semantic Behavior
 
 - **Compound parent**: Hosts `<mds-header-bar>` children in the default slot and relays its `menu` and `nav` settings down to the bar.
-- **Mobile menu**: A `[slot="menu"]` child is rendered inside a right-positioned modal. When it is absent there is no modal, but the bar still receives `menu` and shows its hamburger, which then opens nothing: set `menu="none"` in that case.
+- **Mobile menu**: A `[slot="menu"]` child is rendered inside a right-positioned modal. When it is absent there is no modal, and the bar receives `menu="none"` whatever `menu` says, so no hamburger shows that would open nothing.
 - **Open/close control**: The menu modal is opened by the bar's hamburger or programmatically via the `setOpened()` method; when the user closes it, `mdsHeaderClose` is emitted (with the bound bar).
 - **Scroll-driven appearance**: When `appearanceSet` names two appearances, `appearance` swaps between them as the page scrolls past its pixel threshold (300 when the third token is omitted).
 - **Auto-hide on scroll**: When `autoHide` is set, scrolling down past that pixel offset hides the bar and scrolling up reveals it again, governed by `threshold` as the directional margin.
@@ -255,10 +255,10 @@ Manually toggling `appearance` on a scroll listener duplicates what `appearance-
 
 #### Do Not Omit the `menu` Slot When Providing a Hamburger-Only Nav
 
-If no `[slot="menu"]` child is present there is no modal to open, but the bar still shows the hamburger icon on the viewports set by `menu`, and pressing it does nothing. Always provide menu content when you want the mobile toggle to be visible, or set `menu="none"`.
+If no `[slot="menu"]` child is present there is no modal to open, so the bar shows no hamburger icon whatever `menu` says: on the viewports where `nav` hides the navigation, nothing is left to navigate with. Always provide menu content when you want the mobile toggle to be visible.
 
 ```html
-<!-- INCORRECT: the hamburger icon shows but opens nothing -->
+<!-- INCORRECT: no hamburger and, on mobile, no navigation -->
 <mds-header menu="mobile">
   <mds-header-bar>
     <mds-img src="/logo.svg" alt="Logo"></mds-img>

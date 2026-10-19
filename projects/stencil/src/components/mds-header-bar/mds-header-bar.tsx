@@ -70,18 +70,19 @@ export class MdsHeaderBar {
   @Event({ bubbles: true, eventName: 'mdsHeaderBarOpen' }) openedEvent: EventEmitter<void>;
 
   private open = () => {
-    this.isOpened = true;
     this.openedEvent.emit();
-    this.host.closest('mds-header')?.setOpened(true);
+    this.setOpened(true);
   };
 
   /**
-   * Opens or closes the header bar.
-   * @param isOpened whether the header bar should be opened
+   * Opens or closes the menu of the surrounding `mds-header`, as the hamburger does.
+   * @param isOpened whether the menu should be opened
    */
   @Method()
   async setOpened(isOpened: boolean = true): Promise<void> {
+    // it only recorded the state, which nothing rendered, so it opened nothing
     this.isOpened = isOpened;
+    await this.host.closest('mds-header')?.setOpened(isOpened);
   }
 
   render() {
