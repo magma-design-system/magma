@@ -222,4 +222,53 @@ describe('mds-pref-theme', () => {
       expect(triggerOf(root).label).toBe('Neutral');
     });
   });
+
+  // #826: the items got their listener once, on load: an item added later did nothing when picked
+  it('applies the theme of an item added after load when it is picked', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-pref-theme><mds-pref-theme-item name="default"></mds-pref-theme-item></mds-pref-theme>',
+    );
+
+    const warm = document.createElement('mds-pref-theme-item');
+    warm.setAttribute('name', 'warm');
+    root.appendChild(warm);
+    await waitForChanges();
+    warm.click();
+    await waitForChanges();
+
+    expect(root).toEqualAttribute('name', 'warm');
+    expect(document.documentElement).toHaveClass('pref-theme-warm');
+    expect(warm.selected).toBe(true);
+  });
+});
+
+// mdsPrefChange was emitted on every render, page load included (#823)
+describe('mds-pref-theme mdsPrefChange', () => {
+  it('announces a picked theme once, and nothing at load or on a later render', async () => {
+    const preferences: string[] = [];
+    const record = (event: Event): void => {
+      preferences.push((event as CustomEvent<{ preference: string }>).detail.preference);
+    };
+    document.addEventListener('mdsPrefChange', record);
+    try {
+      const { root, waitForChanges } = await render(`
+        <mds-pref-theme>
+          <mds-pref-theme-item name="default" label="Neutro"></mds-pref-theme-item>
+          <mds-pref-theme-item name="warm" label="Caldo"></mds-pref-theme-item>
+        </mds-pref-theme>`);
+      await waitForChanges();
+      expect(preferences).toEqual([]);
+
+      root.querySelector<HTMLElement>('mds-pref-theme-item[name="warm"]')!.click();
+      await waitForChanges();
+      // a render of its own: a label changed after load
+      root.querySelector('mds-pref-theme-item[name="warm"]')!.setAttribute('label', 'Calda');
+      await waitForChanges();
+
+      expect(preferences).toEqual(['theme']);
+      expect(document.documentElement).toHaveClass('pref-theme-warm');
+    } finally {
+      document.removeEventListener('mdsPrefChange', record);
+    }
+  });
 });

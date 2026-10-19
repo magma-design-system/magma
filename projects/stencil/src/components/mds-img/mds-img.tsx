@@ -16,6 +16,7 @@ import { ConsumptionModeType } from '@type/preference';
 import miBaselinePanorama from '@icon/mi/baseline/panorama.svg';
 import miBaselineBrokenImage from '@icon/mi/baseline/broken-image.svg';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -33,7 +34,20 @@ export class MdsImg {
   @Element() private host: HTMLMdsImgElement;
   @State() imageConsumptionLoaded: boolean = false;
   @State() imageError: boolean = false;
-  private consumptionMode: ConsumptionModeType = 'high';
+  private storedConsumption: ConsumptionModeType | null = null;
+
+  /**
+   * The consumption the page applies, the one mds-pref-consumption publishes, read in render so
+   * the image follows a change; the stored choice stands in on a page without the controller. It
+   * used to be read once, on load, from the storage only (#826).
+   */
+  private get consumptionMode(): ConsumptionModeType {
+    return (
+      (preferenceStore.state.consumption as ConsumptionModeType | undefined) ??
+      this.storedConsumption ??
+      'high'
+    );
+  }
   private image: HTMLImageElement;
   private srcsetConsumptionData?: ImageConsumptionType;
   private t: Locale = new Locale({
@@ -172,8 +186,7 @@ export class MdsImg {
   };
 
   componentWillLoad(): void {
-    this.consumptionMode =
-      (localStorage.getItem('mdsPrefConsumption') as ConsumptionModeType) ?? 'high';
+    this.storedConsumption = localStorage.getItem('mdsPrefConsumption') as ConsumptionModeType;
     if (this.srcsetConsumption != null && this.srcsetConsumption !== '') {
       this.srcsetConsumptionData = this.formatConsumptionData(this.srcsetConsumption);
     }

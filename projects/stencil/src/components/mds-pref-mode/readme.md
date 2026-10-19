@@ -26,7 +26,7 @@ The `<mds-pref-mode>` web component is the mode preference control of the Magma 
 
 - **`mode`**: Sets and reflects the active mode (`light`, `dark`, `system`). Leave it unset to inherit the persisted/default mode; set it explicitly to force a starting mode.
 - **`transition`**: Controls the visual switch between schemes. Use `smooth` (default) for a fading neutral overlay that flips the mode mid-fade, `flash` for an instant switch with a brief overlay pulse, or `none` to apply the new mode with no overlay animation. The overlay timing and z-index are tunable through `--mds-pref-mode-overlay-*` CSS custom properties.
-- **`size`**: Sizes the nested tab items (`sm` / `md`). The parent `<mds-pref>` forwards its own `size` to every `mds-pref-*` child only when that prop changes after load, not from the initial markup: in markup, set it here (with the same value on the sibling preferences, so the group stays visually consistent).
+- **`size`**: Sizes the nested tab items (`sm` / `md`). Inside `<mds-pref>`, set it on the parent instead: the parent's `size` reaches every `mds-pref-*` child on load and when it changes, and overwrites the child's own.
 
 
 ### 2. Pattern
@@ -96,12 +96,12 @@ The component emits `mdsPrefChange` with `{ preference: 'mode' }` each time the 
 
 #### Controlling Size via the Parent
 
-`size` is forwarded to the internal tab items. [`<mds-pref>`](../../mds-pref) forwards its own `size` to every `mds-pref-*` child only when that prop changes after load, not from the initial markup: in markup, set the same `size` on every preference control to keep the panel at one tab size.
+`size` is forwarded to the internal tab items. [`<mds-pref>`](../../mds-pref) forwards its own `size` to every `mds-pref-*` child, on load and when it changes: set it on the parent to keep the panel at one tab size.
 
 ```html
-<mds-pref>
-  <mds-pref-mode size="sm"></mds-pref-mode>
-  <mds-pref-contrast size="sm"></mds-pref-contrast>
+<mds-pref size="sm">
+  <mds-pref-mode></mds-pref-mode>
+  <mds-pref-contrast></mds-pref-contrast>
 </mds-pref>
 ```
 
@@ -182,7 +182,7 @@ The component manages `pref-mode-light`, `pref-mode-dark`, and `pref-mode-system
 
 #### Do Not Size Only One Child of the Panel
 
-`<mds-pref>` forwards its own `size` to its preference children only when that prop changes after load, not from the initial markup, so in markup each child carries its own `size`. Setting it on `<mds-pref-mode>` alone when siblings exist produces inconsistent tab sizes across the panel.
+Setting `size` on `<mds-pref-mode>` alone when siblings exist produces inconsistent tab sizes across the panel. Set it on `<mds-pref>`, which forwards it to every preference child, on load and when it changes.
 
 ```html
 <!-- INCORRECT -->
@@ -192,9 +192,9 @@ The component manages `pref-mode-light`, `pref-mode-dark`, and `pref-mode-system
 </mds-pref>
 
 <!-- CORRECT -->
-<mds-pref>
-  <mds-pref-mode size="sm"></mds-pref-mode>
-  <mds-pref-contrast size="sm"></mds-pref-contrast>
+<mds-pref size="sm">
+  <mds-pref-mode></mds-pref-mode>
+  <mds-pref-contrast></mds-pref-contrast>
 </mds-pref>
 ```
 

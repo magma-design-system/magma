@@ -44,6 +44,40 @@ describe('mds-calendar', () => {
     expect(julyVisibleDay.getAttribute('selection')).toBe('middle');
   });
 
+  // a start after the end logged "swapping values" and swapped nothing, and at load the order
+  // was not checked at all (#823)
+  describe('a range given backwards', () => {
+    const selection = (root: HTMLElement, date: string) =>
+      root
+        .shadowRoot!.querySelector(`mds-calendar-cell[date="${date}"]`)!
+        .getAttribute('selection');
+
+    it('is put in order at load', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { root, waitForChanges } = await render(
+        '<mds-calendar view-date="2026-06-01" start-date="2026-06-20" end-date="2026-06-10"></mds-calendar>',
+      );
+      await waitForChanges();
+
+      await vi.waitFor(() => expect(selection(root, '2026-06-10')).toBe('start'));
+      expect(selection(root, '2026-06-15')).toBe('middle');
+      expect(selection(root, '2026-06-20')).toBe('end');
+    });
+
+    it('is put in order when the start moves past the end', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { root, waitForChanges } = await render(
+        '<mds-calendar view-date="2026-06-01" start-date="2026-06-02" end-date="2026-06-10"></mds-calendar>',
+      );
+
+      root.setAttribute('start-date', '2026-06-20');
+      await waitForChanges();
+
+      await vi.waitFor(() => expect(selection(root, '2026-06-10')).toBe('start'));
+      expect(selection(root, '2026-06-20')).toBe('end');
+    });
+  });
+
   it('previews the full visible range when hovering into the next month', async () => {
     const { root } = await render(
       '<mds-calendar view-date="2026-06-01" start-date="2026-06-02" hover-date="2026-07-24"></mds-calendar>',
@@ -551,5 +585,44 @@ describe('mds-calendar arrows', () => {
       expect(start).toHaveAttribute('selection', 'start');
       expect(paint(start).color).toBe('rgb(13, 14, 15)');
     });
+  });
+});
+
+// #826: the area of the preselections waited for a marker class, looked up once on load
+describe('mds-calendar preselection area', () => {
+  const area = (root: HTMLElement): Element =>
+    root.shadowRoot!.querySelector('.calendar-preselection')!;
+
+  it('shows what the preselection slot holds, without the marker class', async () => {
+    const { root } = await render(
+      '<mds-calendar><div slot="preselection"><mds-button label="Last week"></mds-button></div></mds-calendar>',
+    );
+
+    expect(area(root)).toHaveClass('calendar-preselection--has-preselection');
+  });
+
+  it('shows the shortcuts added after load, and hides once they are gone', async () => {
+    const { root } = await render('<mds-calendar></mds-calendar>');
+    expect(area(root)).not.toHaveClass('calendar-preselection--has-preselection');
+
+    const shortcuts = document.createElement('div');
+    shortcuts.slot = 'preselection';
+    root.appendChild(shortcuts);
+    await vi.waitFor(() =>
+      expect(area(root)).toHaveClass('calendar-preselection--has-preselection'),
+    );
+
+    shortcuts.remove();
+    await vi.waitFor(() =>
+      expect(area(root)).not.toHaveClass('calendar-preselection--has-preselection'),
+    );
+  });
+
+  it('stays hidden with hide-preselection', async () => {
+    const { root } = await render(
+      '<mds-calendar hide-preselection><div slot="preselection">Shortcuts</div></mds-calendar>',
+    );
+
+    expect(area(root)).not.toHaveClass('calendar-preselection--has-preselection');
   });
 });

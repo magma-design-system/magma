@@ -3,5 +3,6 @@ export interface MdsHeaderEventDetail {
 }
 
 export interface MdsHeaderVisibilityEventDetail {
-  visibility: boolean;
+  /** The visibility the header has now, the value of its `visibility` prop */
+  visibility: 'hidden' | 'visible';
 }

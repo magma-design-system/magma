@@ -14,7 +14,7 @@ The `<mds-pref-language>` web component is the language-preference control of th
 #### Semantic Behavior
 
 - **Usually inside `<mds-pref>`**: Placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it also works on its own, since it applies and stores the language by itself. What it gives up on its own is in the antipattern docs. In turn it hosts its own `<mds-pref-language-item>` children, supplied via its default slot.
-- **Default slot hosts the items**: The default slot accepts one or more `<mds-pref-language-item>` elements; when the control loads, the item whose `code` matches the resolved language is marked selected (a later change of `set` does not move the selection).
+- **Default slot hosts the items**: The default slot accepts one or more `<mds-pref-language-item>` elements; when the control loads, and whenever its items change, the item whose `code` matches the resolved language is marked selected; an item added after load is picked like the others (a later change of `set` does not move the selection).
 - **Selection orchestration**: Selecting an item clears the others, closes the dropdown, and resolves the new language - the children report up to this component, which centralizes the single-selection state.
 - **Language resolution & persistence**: When `set` is `auto` the active language is resolved in priority order from the persisted value, then the `<html lang>` attribute, then `navigator.language`. The resolved value is persisted and written to `<html lang>` - the single page-wide source of truth for the language. Every localized Magma component (including ones nested in shadow DOM) reacts automatically through a shared reactive store; there is no per-element `lang` override and no imperative refresh method. Applications that manage the language themselves can simply set `<html lang>`: the store observes it.
 - **Events bubbled to the parent**: Emits `mdsPrefLanguageChange` on every item pick, also when the picked language is already active (detail carries the selected `language` code; it fires just before the language is applied), and `mdsPrefChange` (detail `{ preference: 'language' }`), fired only when the resolved language actually changes, from a pick or from a new `set` value (the initial application on load does not emit). The latter is the event `<mds-pref>` listens to for its "reload required" notice, since application-level content may still need a reload.
@@ -24,7 +24,7 @@ The `<mds-pref-language>` web component is the language-preference control of th
 #### Properties & Visual Configurations
 
 - **`set`**: The desired language as a BCP 47 short tag (e.g. `it`, `en`, `es-ES`); the special value `auto` (default) defers to the persisted/page/system resolution chain described above. Region subtags are sanitized down to the two-letter language. Set an explicit value only to force a starting language regardless of the user's environment. Supported display languages are Italiano, English, Español and ελληνικά.
-- **`size`**: Sizes the nested tab trigger (`sm` / `md`). The parent `<mds-pref>` forwards its own `size` to every `mds-pref-*` child only when that prop changes after load, not from the initial markup: to size the control from markup, set `size` here.
+- **`size`**: Sizes the nested tab trigger (`sm` / `md`). Inside `<mds-pref>`, the parent's `size` reaches this control on load and when it changes, and overwrites its own: set it on the parent.
 
 
 ### 2. Pattern
@@ -74,11 +74,11 @@ Omit `set` (or pass `set="auto"`) to let the component resolve the active langua
 
 #### Sizing via `size`
 
-Use the `size` prop to size the tab trigger. The parent [`<mds-pref>`](../../mds-pref) forwards its own `size` to every `mds-pref-*` child only when that prop changes after load, not from the initial markup: in markup, set `size` on each preference control, with the same value to keep the group consistent.
+Use the `size` prop to size the tab trigger of a standalone control. Inside [`<mds-pref>`](../../mds-pref), set `size` on the parent: it forwards it to every `mds-pref-*` child, so the group stays consistent.
 
 ```html
-<mds-pref>
-  <mds-pref-language size="sm">
+<mds-pref size="sm">
+  <mds-pref-language>
     <mds-pref-language-item code="it"></mds-pref-language-item>
     <mds-pref-language-item code="en"></mds-pref-language-item>
   </mds-pref-language>
@@ -189,7 +189,7 @@ The `set` prop must be either `"auto"` or a BCP 47 language tag: a primary subta
 
 #### Do Not Set `selected` Manually on `mds-pref-language-item`
 
-The parent `<mds-pref-language>` manages the `selected` state of each item automatically based on the active language: when it loads it marks only the item whose `code` matches, and on each pick it clears the siblings. A `selected` written in the markup is overwritten on load; one set later from script leaves the visual selection out of step with the active language.
+The parent `<mds-pref-language>` manages the `selected` state of each item automatically based on the active language: when it loads, and whenever its items change, it marks only the item whose `code` matches, and on each pick it clears the siblings. A `selected` written in the markup is overwritten on load; one set later from script leaves the visual selection out of step with the active language.
 
 ```html
 <!-- INCORRECT -->

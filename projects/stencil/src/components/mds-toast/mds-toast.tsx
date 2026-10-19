@@ -30,8 +30,8 @@ import { ToastPosition } from './meta/types';
   shadow: true,
 })
 export class MdsToast {
-  private timer: number;
-  private timerToastDismiss: number;
+  private dismissTimer?: number;
+  private closeTimer?: number;
   private cssDismissAnimationDuration = 300; // hardcoded from CSS :-(
   private hasText?: boolean;
 
@@ -85,34 +85,38 @@ export class MdsToast {
     return duration !== 0 && !Number.isNaN(duration);
   };
 
+  /**
+   * While the toast is visible with a duration, one countdown hides it when the time is up, and
+   * mdsToastClose follows once the exit animation is over. Both are one-shot: the countdown was
+   * an interval that nobody stopped, so a dismissed toast emitted mdsToastClose again every
+   * `duration`. Hiding the toast, or showing it again, starts from scratch.
+   */
   private reloadTimeListeners = (visible: boolean): void => {
     if (typeof window === 'undefined') return;
-    if (!this.hasDuration()) {
+    window.clearTimeout(this.dismissTimer);
+    this.dismissTimer = undefined;
+    if (!visible || !this.hasDuration()) {
       return;
     }
-    if (!visible) {
-      return;
-    }
-    this.removeTimeListener();
-    this.addTimeListener();
-  };
-
-  private removeTimeListener = (): void => {
-    window.clearInterval(this.timer);
-    this.timer = 0;
-  };
-
-  private addTimeListener = (): void => {
-    this.timer = window.setInterval(() => {
+    // shown again before the close of the last showing: that close is no longer true
+    window.clearTimeout(this.closeTimer);
+    this.closeTimer = undefined;
+    this.dismissTimer = window.setTimeout(() => {
+      this.dismissTimer = undefined;
       this.visible = false;
-      this.timerToastDismiss = window.setInterval(() => {
-        // this is used to wait the toast to finish the outro animation
+      this.closeTimer = window.setTimeout(() => {
+        this.closeTimer = undefined;
         this.closedEvent.emit();
-        window.clearInterval(this.timerToastDismiss);
-        this.timerToastDismiss = 0;
       }, this.cssDismissAnimationDuration);
     }, this.duration);
   };
+
+  disconnectedCallback(): void {
+    window.clearTimeout(this.dismissTimer);
+    window.clearTimeout(this.closeTimer);
+    this.dismissTimer = undefined;
+    this.closeTimer = undefined;
+  }
 
   private onActionSlotChange = (): void => {
     this.hasActions = hasChildWithSlot(this.hostElement, 'action');
@@ -121,12 +125,7 @@ export class MdsToast {
   componentWillLoad(): void {
     this.hasText = this.hostElement.innerHTML !== '';
     this.hasActions = hasChildWithSlot(this.hostElement, 'action');
-    if (!this.hasDuration()) {
-      return;
-    }
-    if (this.visible) {
-      this.addTimeListener();
-    }
+    this.reloadTimeListeners(!!this.visible);
   }
 
   componentDidLoad(): void {

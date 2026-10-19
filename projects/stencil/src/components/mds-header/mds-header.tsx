@@ -263,7 +263,7 @@ export class MdsHeader {
   }
 
   @Watch('visibility')
-  handleVisibilityChange(newValue: boolean, oldValue: boolean): void {
+  handleVisibilityChange(newValue: 'hidden' | 'visible', oldValue: 'hidden' | 'visible'): void {
     if (newValue !== oldValue) {
       this.visibleEvent.emit({ visibility: newValue });
     }

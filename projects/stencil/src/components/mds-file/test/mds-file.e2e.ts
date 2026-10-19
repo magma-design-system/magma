@@ -152,3 +152,18 @@ describe('mds-file downloaded indicator', () => {
     expect(indicator(root)).toBeNull();
   });
 });
+
+// the event carried the dictionary key of the description, the card showed its translation (#823)
+describe('mds-file download event', () => {
+  it('carries the description the card shows', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-file filename="report.pdf"></mds-file>',
+    );
+    const download = spyOnEvent('mdsFileDownload');
+
+    root.click();
+    await waitForChanges();
+
+    expect(download.lastEvent?.detail.description).toBe(getText(root, '.description'));
+  });
+});

@@ -16,6 +16,7 @@ import { MdsTableSelectionEventDetail } from './meta/event-detail';
 import { MdsTableRowSelection, MdsTableSortingType } from './meta/type';
 import { Locale } from '@common/locale';
 import { preferenceStore } from '@common/preference';
+import { hasChildWithSlot, observeChildren } from '@common/slot';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -49,7 +50,7 @@ export class MdsTable {
   private scrollWrapper?: HTMLDivElement;
   private resizeObserver?: ResizeObserver;
   private tableBodyObserver?: MutationObserver;
-  private hasBatchActions: boolean = false;
+  @State() private hasBatchActions: boolean = false;
   private cellsWidth: number = 0;
   @State() selectedRows: MdsTableRowSelection[] = [];
   private t: Locale = new Locale({
@@ -113,6 +114,12 @@ export class MdsTable {
     if (!this.selectable || !this.rows) {
       return;
     }
+    // the rows ask for it at every change of their `selected`: selecting them all at once asks
+    // as many times, and the table announces the outcome once, in the next microtask
+    if (this.selectionQueued) return;
+    this.selectionQueued = true;
+    await Promise.resolve();
+    this.selectionQueued = false;
     this.selectedRows = [];
     this.rows.forEach((row: HTMLMdsTableRowElement, index: number) => {
       if (row.selected) {
@@ -129,6 +136,8 @@ export class MdsTable {
       row.selection = this.selection;
     });
   }
+
+  private selectionQueued = false;
 
   /**
    * `internal` Reads again whether the rows have `slot="action"` content: shows or hides the
@@ -233,11 +242,16 @@ export class MdsTable {
     }
   };
 
+  // The bar shows once a button sits in batch-action, a button added after load too: the slot is
+  // rendered only with the bar, so no slotchange tells the table (#826). The observer stays on
+  // the host when it moves, and goes with it.
+  private updateBatchActions = (): void => {
+    this.hasBatchActions = hasChildWithSlot(this.host, 'batch-action');
+  };
+
   componentWillLoad(): void {
-    // equivalent to `:scope > [slot="batch-action"]`, which mock-doc cannot parse in spec tests
-    this.hasBatchActions = Array.from(this.host.children).some(
-      (child: Element) => child.getAttribute('slot') === 'batch-action',
-    );
+    this.updateBatchActions();
+    observeChildren(this.host, this.updateBatchActions);
     // MutationObserver is missing in the hydrate/SSR runtime; every use of
     // tableBodyObserver is already optional-chained
     if (typeof MutationObserver !== 'undefined') {

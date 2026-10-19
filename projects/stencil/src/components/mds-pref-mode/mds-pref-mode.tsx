@@ -57,6 +57,8 @@ export class MdsPrefMode {
   private overlaySmoothTimer: NodeJS.Timeout;
   private overlayShow: boolean = false;
   private syncingFromStore: boolean = false;
+  // the mode this instance applied last, or followed from another one
+  private appliedMode?: PreferenceModeType;
   private unsubscribeStore?: () => void;
 
   @State() disabled: boolean = false;
@@ -162,11 +164,22 @@ export class MdsPrefMode {
     }
     this.syncingFromStore = true;
     this.mode = mode as PreferenceModeType;
+    this.appliedMode = mode as PreferenceModeType;
     this.syncingFromStore = false;
   };
 
+  /**
+   * Applies a mode once per change, and announces it once applied: the `mode` watcher
+   * calls this again for the value it has just been given, which used to emit a second
+   * mdsPrefChange, and the first application, the one of load, is no change to announce.
+   */
   private readonly setMode = (mode: PreferenceModeType): void => {
-    this.prefChangeEvent.emit({ preference: 'mode' });
+    if (mode === this.appliedMode) {
+      this.mode = mode;
+      return;
+    }
+    const isFirstApplication = this.appliedMode === undefined;
+    this.appliedMode = mode;
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
     if (typeof document !== 'undefined') {
@@ -180,6 +193,9 @@ export class MdsPrefMode {
       element?.style.setProperty(this.customPropertyAlias, this.mode);
     }
     preferenceStore.state.mode = mode;
+    if (!isFirstApplication) {
+      this.prefChangeEvent.emit({ preference: 'mode' });
+    }
   };
 
   private readonly isDarkMode = (): boolean => {

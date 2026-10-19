@@ -14,11 +14,11 @@ The `<mds-tree-item>` web component is the node primitive of the Magma Design Sy
 #### Semantic Behavior
 
 - **Compound child only**: It must be a direct slot child of `<mds-tree>` (first-level nodes) or of another `<mds-tree-item>` (nested nodes). It is not used standalone, and the default slot is reserved for further `<mds-tree-item>` children - not arbitrary content.
-- **Parent-driven defaults**: The parent `<mds-tree>` writes `toggle`, `togglePosition`, `appearance` and `truncate` onto its descendant items when it loads (overwriting their own values), and `expanded` when its own value changes; `actions` is inherited from the nearest ancestor that sets it. These props are therefore orchestrated by the tree rather than set per-item. First-level items receive `depth = 0`.
+- **Parent-driven defaults**: The parent `<mds-tree>` writes `toggle`, `togglePosition`, `appearance` and `truncate` onto its descendant items when it loads and onto the items that arrive later (overwriting their own values), and `expanded` when it is set; `actions` is inherited from the nearest ancestor that sets it. These props are therefore orchestrated by the tree rather than set per-item. First-level items receive `depth = 0`.
 - **Self-managed expansion**: Clicking the toggle or label flips `expanded`, swaps the toggle icon, and animates the children container; on collapse it emits `mdsTreeItemCollapse`. Both buttons carry `aria-expanded` on an item with children (or `async`); a leaf has none. The item is a `listitem`, its children a nested `list`, and the children of a closed branch are out of the tab order.
 - **Asynchronous expansion**: While `async` is set, an expand click does not open the node - it shows a spinner and emits `mdsTreeItemExpand` so the application can lazy-load children; the application then calls the public `expand()` method to finalize opening. Without `async`, opening emits no event.
 - **Bubbled events**: `mdsTreeItemExpand` and `mdsTreeItemCollapse` both carry `{ element }` (the host item) so the tree or application can react to node lifecycle.
-- **Leaf vs. branch**: It detects whether it contains nested items (once, at first render) and whether it has slotted actions, adjusting the connector/branch rendering and actions visibility accordingly.
+- **Leaf vs. branch**: It detects whether it contains nested items (again whenever they change, so a branch loaded on demand gets its toggle) and whether it has slotted actions, adjusting the connector/branch rendering and actions visibility accordingly.
 - **Public method**: `expand()` opens the node and clears the awaiting state (used to resolve async loads).
 
 #### Properties & Visual Configurations
@@ -95,7 +95,7 @@ Use the `icon` prop to add an icon before the label text. Reference icons by the
 
 #### Folder Toggle Style
 
-When the tree uses `toggle="folder"`, each item swaps between a closed-folder and open-folder icon as it expands. Set `toggle` on the parent `<mds-tree>` and all items inherit it automatically: the tree writes its own value (default `chevron`) onto every item when it loads, so a `toggle` set on a single item is overwritten.
+When the tree uses `toggle="folder"`, each item swaps between a closed-folder and open-folder icon as it expands. Set `toggle` on the parent `<mds-tree>` and all items inherit it automatically: the tree writes its own value (default `chevron`) onto every item when it loads and onto the items added later, so a `toggle` set on a single item is overwritten. The icon follows the branch however it opens: a click, `expand()` or the tree's `expanded`.
 
 ```html
 <mds-tree toggle="folder">

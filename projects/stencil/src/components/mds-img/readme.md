@@ -18,7 +18,7 @@ The `<mds-img>` web component is the responsive image primitive of the Magma Des
 - **Automatic alt fallback**: When `alt` is omitted, it is derived from the trailing filename segment of `src`. An empty `alt` (`alt=""`) marks the image as decorative: the host takes `role="presentation"` and no name, and assistive technologies skip it.
 - **Error state**: A failed load swaps the picture for a broken-image icon plus the `alt` text, emitting `mdsImgLoadError`; changing `src` clears the error and retries.
 - **Load events**: `mdsImgLoadSuccess` and `mdsImgLoadError` both carry the underlying `HTMLImageElement` in their detail, letting consumers read natural dimensions or react to failures.
-- **Consumption-aware loading**: When `srcsetConsumption` is set, the component reads the persisted consumption preference (the `mdsPrefConsumption` key that `mds-pref-consumption` writes, read once on load) and picks the matching source; under the `low` preference the image is deferred behind a "click to load" placeholder until the user opts in.
+- **Consumption-aware loading**: When `srcsetConsumption` is set, the component reads the consumption preference the page applies, the one `mds-pref-consumption` publishes, and follows a change; on a page without that controller it reads the stored choice (the `mdsPrefConsumption` key). It picks the matching source; under the `low` preference the image is deferred behind a "click to load" placeholder until the user opts in.
 - **Localized placeholder**: The deferred-load placeholder label is resolved through the shared locale system (el/en/es/it).
 
 #### Properties & Visual Configurations

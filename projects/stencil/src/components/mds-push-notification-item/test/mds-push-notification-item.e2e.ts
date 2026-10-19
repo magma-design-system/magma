@@ -61,3 +61,18 @@ describe('mds-push-notification-item', () => {
     });
   });
 });
+
+// the close event declares { id } and was emitted with no detail at all (#823)
+describe('mds-push-notification-item close', () => {
+  it('names the item it closes', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render(
+      '<mds-push-notification-item id="message-7" deletable message="Ciao"></mds-push-notification-item>',
+    );
+    const close = spyOnEvent('mdsPushNotificationItemClose');
+
+    root.shadowRoot!.querySelector<HTMLElement>('.close-button')!.click();
+    await waitForChanges();
+
+    expect(close.lastEvent?.detail).toEqual({ id: 'message-7' });
+  });
+});

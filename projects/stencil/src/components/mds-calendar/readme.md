@@ -14,13 +14,13 @@ The `<mds-calendar>` web component is the date-selection surface of the Magma De
 #### Semantic Behavior
 
 - **Range vs. single mode**: range selection is the default; set `singlePicker` to pick one day. In range mode the first click sets the start, the second sets the end, and a third click starts a new range from the clicked day; in single mode each click replaces the prior choice.
-- **Range auto-ordering**: If the second click lands before the current start, the two endpoints are swapped so `startDate` always precedes `endDate`; an `endDate` set earlier than `startDate` is not reordered: changed after load, it only logs a console warning.
+- **Range auto-ordering**: If the second click lands before the current start, the two endpoints are swapped so `startDate` always precedes `endDate`; a `startDate` / `endDate` pair given backwards, in the markup or from code, is put in order the same way (with a console warning).
 - **Hover preview**: While a range start is set, hovering over cells previews the candidate range live (range mode only).
 - **Min/max bounds**: `min` and `max` mark out-of-range day cells as disabled, blocking their selection.
 - **Multi-view navigation**: The header toggles between the day grid, a month picker, and a year picker; the year view pages in decades while the calendar view pages month by month. The two arrows are icon-only buttons named in the page language (the `lang` of `<html>`): previous / next month on the day grid, previous / next years in the year view; the month picker has nothing to page through, so there they are disabled.
 - **Localization**: Weekday names, month names, and cell titles are formatted in the page language (the `lang` attribute of `<html>`, `en` when absent).
 - **Emitted events**: `mdsCalendarChange` fires on every pick with `{ startDate, endDate? }`: in range mode the first click emits `{ startDate }` alone, the second the full range; `mdsCalendarPreselect` fires only with a completed range, to let preselection shortcuts re-evaluate their state.
-- **Preselection slot**: A `preselection` named slot hosts quick-pick shortcuts. The area appears only if, when the calendar loads, the host contains an element with the class `date-preselection--has-preselection`; `hidePreselection` collapses it.
+- **Preselection slot**: A `preselection` named slot hosts quick-pick shortcuts. The area appears while the slot holds an element, one added after load included; `hidePreselection` collapses it. The `date-preselection--has-preselection` class earlier versions required is no longer needed (it still shows the area).
 
 #### Properties & Visual Configurations
 
@@ -93,11 +93,11 @@ Use the `updateCurrentDate` method to jump the visible month without changing th
 
 #### Quick-Pick Preselection Shortcuts
 
-The `preselection` named slot hosts your own shortcuts, for example `mds-button` elements whose `click` sets `start-date` / `end-date` ([`mds-input-date-range-preselection`](../../mds-input-date-range-preselection) works only inside `mds-input-date-range`). The slot panel becomes visible only if, when the calendar loads, the host contains an element with the class `date-preselection--has-preselection`; set `hide-preselection` to keep it collapsed. `mdsCalendarPreselect` fires after each completed range selection so the shortcuts can re-evaluate their active state.
+The `preselection` named slot hosts your own shortcuts, for example `mds-button` elements whose `click` sets `start-date` / `end-date` ([`mds-input-date-range-preselection`](../../mds-input-date-range-preselection) works only inside `mds-input-date-range`). The slot panel becomes visible as soon as the slot holds an element, also one added after load; set `hide-preselection` to keep it collapsed. `mdsCalendarPreselect` fires after each completed range selection so the shortcuts can re-evaluate their active state.
 
 ```html
 <mds-calendar start-date="2025-09-01" end-date="2025-09-07">
-  <div slot="preselection" class="date-preselection--has-preselection">
+  <div slot="preselection">
     <mds-button variant="dark" tone="text" label="Ultimi 7 giorni"></mds-button>
     <mds-button variant="dark" tone="text" label="Ultimi 30 giorni"></mds-button>
   </div>

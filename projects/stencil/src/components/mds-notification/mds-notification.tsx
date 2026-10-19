@@ -15,7 +15,8 @@ export class MdsNotification {
   private describedCaller?: HTMLElement;
   @State() private describing = false;
   @Element() private host: HTMLMdsNotificationElement;
-  private cleanupAutoUpdate: () => void;
+  private cleanupAutoUpdate?: () => void;
+  private autoUpdateTimer?: ReturnType<typeof setTimeout>;
 
   // We should change in the future this approach when it will be fully supported by main browsers
   // https://www.youtube.com/watch?v=DNXEORSk4GU&list=PLMTbm2xm6FfPWPUr__bFUGVPfYMZwu5U7&index=67
@@ -132,22 +133,45 @@ export class MdsNotification {
       return;
     }
 
-    if ((this.target ?? '') !== '' && this.cleanupAutoUpdate == null) {
-      setTimeout(() => {
-        this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition);
-      }, 100);
-    }
+    this.startAutoUpdate();
+  }
+
+  /**
+   * floating-ui keeps the badge on its target through listeners on the scroll parents and an
+   * observer of their size: they are started once, after a short wait for the target's layout,
+   * and stopped with the function autoUpdate returns. That function used to be replaced by an
+   * empty one instead of being called, so every badge ever removed kept its listeners.
+   */
+  private startAutoUpdate = (): void => {
+    if (this.strategy === 'disabled' || (this.target ?? '') === '' || !this.caller) return;
+    if (this.cleanupAutoUpdate || this.autoUpdateTimer !== undefined) return;
+    this.autoUpdateTimer = setTimeout(() => {
+      this.autoUpdateTimer = undefined;
+      this.cleanupAutoUpdate = autoUpdate(this.caller, this.host, this.updatePosition);
+    }, 100);
+  };
+
+  private stopAutoUpdate = (): void => {
+    clearTimeout(this.autoUpdateTimer);
+    this.autoUpdateTimer = undefined;
+    this.cleanupAutoUpdate?.();
+    this.cleanupAutoUpdate = undefined;
+  };
+
+  // a badge moved in the page is disconnected and connected again, without loading again
+  connectedCallback(): void {
+    this.startAutoUpdate();
   }
 
   disconnectedCallback(): void {
-    this.cleanupAutoUpdate = (): void => {};
+    this.stopAutoUpdate();
     this.describeCaller(undefined);
   }
 
   @Watch('strategy')
   strategyHandler(newValue: StrategyType): void {
     if (newValue === 'disabled') {
-      this.cleanupAutoUpdate = (): void => {};
+      this.stopAutoUpdate();
     }
   }
 

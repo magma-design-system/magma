@@ -112,7 +112,12 @@ export class MdsAccordionTimer {
     return this.timeStarted;
   };
 
+  // set while this timer selects an item itself: the item announces it with
+  // mdsAccordionTimerItemSelect, which is not news to the timer
+  private selecting = false;
+
   private readonly setSelectedItem = (uuid: number): void => {
+    this.selecting = true;
     this.children.forEach((item, key) => {
       if (key === uuid) {
         item.selected = true;
@@ -123,6 +128,7 @@ export class MdsAccordionTimer {
         item.selected = false;
       }
     });
+    this.selecting = false;
   };
 
   private readonly startNext = (): void => {
@@ -155,6 +161,8 @@ export class MdsAccordionTimer {
 
   @Listen('mdsAccordionTimerItemClickSelect')
   onClickSelect(event: CustomEvent<MdsAccordionTimerItemEventDetail>): void {
+    // a click clears `paused`, as a selection from code does
+    this.paused = false;
     this.clearIntervals();
     if (this.selectedItem != null) {
       this.selectedItem.progress = 0;
@@ -164,8 +172,14 @@ export class MdsAccordionTimer {
     this.pauseTimer();
   }
 
+  /**
+   * An item selected from code. The selections this timer makes itself (a click, the next item
+   * of the rotation) come through here too, and used to select the item a second time: two
+   * mdsAccordionTimerChange for each, and a click lost its pause.
+   */
   @Listen('mdsAccordionTimerItemSelect')
   onSelect(event: CustomEvent<MdsAccordionTimerItemEventDetail>): void {
+    if (this.selecting) return;
     this.clearIntervals();
     this.paused = false;
     if (this.selectedItem != null) {

@@ -76,6 +76,37 @@ describe('mds-pref-language', () => {
     });
   });
 
+  // #826: the items got their listener once, on load: an item added later did nothing when picked
+  describe('an item added after load', () => {
+    afterEach(() => {
+      localStorage.removeItem('mdsPrefLanguage');
+    });
+
+    it('applies its language when picked, and is marked as the selected one', async () => {
+      const { root, waitForChanges } = await render(`
+        <mds-pref-language set="it">
+          <mds-pref-language-item code="it"></mds-pref-language-item>
+        </mds-pref-language>
+      `);
+      const languageChange = vi.fn();
+      root.addEventListener('mdsPrefLanguageChange', languageChange);
+
+      const english = document.createElement('mds-pref-language-item');
+      english.setAttribute('code', 'en');
+      root.appendChild(english);
+      await waitForChanges();
+      english.click();
+      await waitForChanges();
+
+      expect(languageChange).toHaveBeenCalledTimes(1);
+      expect(document.documentElement.getAttribute('lang')).toBe('en');
+      expect(english.selected).toBe(true);
+      expect(root.querySelector<HTMLMdsPrefLanguageItemElement>('[code="it"]')!.selected).toBe(
+        false,
+      );
+    });
+  });
+
   // #825: the check took only `xx` and `xx-XX`, so picking Cebuano, Hawaiian or Hmong threw
   // after the selection had changed, and an invalid code threw instead of being ignored
   describe('the language code', () => {
@@ -150,5 +181,24 @@ describe('mds-pref-language', () => {
       expect(root.set).toBe('el');
       expect(localStorage.getItem(STORAGE_KEY)).toBe('el');
     });
+  });
+});
+
+// a language set from code changed the page, not the selected item of the list (#823)
+describe('mds-pref-language set from code', () => {
+  it('selects the item of the language', async () => {
+    const { root, waitForChanges } = await render(`
+      <mds-pref-language set="it">
+        <mds-pref-language-item code="it"></mds-pref-language-item>
+        <mds-pref-language-item code="en"></mds-pref-language-item>
+      </mds-pref-language>`);
+    const item = (code: string) =>
+      root.querySelector<HTMLMdsPrefLanguageItemElement>(`mds-pref-language-item[code="${code}"]`)!;
+
+    (root as HTMLMdsPrefLanguageElement).set = 'en';
+    await waitForChanges();
+
+    expect(item('en').selected).toBe(true);
+    expect(item('it').selected).toBe(false);
   });
 });

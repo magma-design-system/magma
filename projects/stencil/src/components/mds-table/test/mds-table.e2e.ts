@@ -130,6 +130,29 @@ describe('mds-table', () => {
     });
   });
 
+  // #826: whether the table has batch actions was read once, on load: buttons added later, when
+  // the page fills the table, never got the bar
+  describe('the batch actions bar', () => {
+    const bar = (root: HTMLElement): Element | null =>
+      root.shadowRoot!.querySelector('.batch-actions-wrapper');
+
+    it('shows for a button added after load, and goes with the last one', async () => {
+      const { root } = await render(
+        TABLE.replace(/\s*<mds-button slot="batch-action"[^>]*><\/mds-button>/, ''),
+      );
+      expect(bar(root)).toBeNull();
+
+      const button = document.createElement('mds-button');
+      button.slot = 'batch-action';
+      button.label = 'Archive';
+      root.appendChild(button);
+      await vi.waitFor(() => expect(bar(root)).not.toBeNull());
+
+      button.remove();
+      await vi.waitFor(() => expect(bar(root)).toBeNull());
+    });
+  });
+
   // #801: the header read the actions once, on load, so a table filled after its first render
   // (an empty array, then a fetch) had rows one cell longer than the header
   describe('actions that arrive after the first load', () => {
@@ -196,5 +219,72 @@ describe('mds-table', () => {
       const tableRow = root.querySelector('mds-table-row')!;
       await vi.waitFor(() => expect(tableRow.overlayActions).toBe(true));
     });
+  });
+
+  // only the checkbox told the table about a selection: a row selected from code was missing
+  // from mdsTableSelectionChange until the next click (#823)
+  describe('mdsTableSelectionChange', () => {
+    const selections = (root: HTMLElement) => {
+      const seen: string[][] = [];
+      root.addEventListener('mdsTableSelectionChange', (event) =>
+        seen.push(
+          (event as CustomEvent<{ rows: { value: string }[] }>).detail.rows.map((row) => row.value),
+        ),
+      );
+      return seen;
+    };
+
+    it('follows a row selected from code', async () => {
+      const { root, waitForChanges } = await render(TABLE);
+      const seen = selections(root);
+
+      (root.querySelectorAll('mds-table-row')[1] as HTMLMdsTableRowElement).selected = true;
+      await waitForChanges();
+
+      expect(seen).toEqual([['due']]);
+      expect(counter(root)).toBe('1');
+    });
+
+    it('announces a selection of every row once', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsTableElement>(TABLE);
+      const seen = selections(root);
+
+      await root.selectAll();
+      await waitForChanges();
+
+      expect(seen).toEqual([['uno', 'due', 'tre']]);
+    });
+
+    it('still announces a click on a checkbox, once', async () => {
+      const { root, waitForChanges } = await render(TABLE);
+      const seen = selections(root);
+
+      toggleRow(root, 0);
+      await waitForChanges();
+
+      expect(seen).toEqual([['uno']]);
+    });
+  });
+});
+
+// disconnectedCallback took the scroll listener off the host, which never had it (#823)
+describe('mds-table leaving the page', () => {
+  it('takes the scroll listener off the wrapper it was added to', async () => {
+    // the listener follows the actions of the rows: a table without them has none
+    const { root } = await render(`
+      <mds-table>
+        <mds-table-body>
+          <mds-table-row>
+            <mds-table-cell>Uno</mds-table-cell>
+            <mds-button slot="action" label="Apri"></mds-button>
+          </mds-table-row>
+        </mds-table-body>
+      </mds-table>`);
+    const wrapper = root.shadowRoot!.querySelector<HTMLElement>('.table-wrapper')!;
+    const remove = vi.spyOn(wrapper, 'removeEventListener');
+
+    root.remove();
+
+    expect(remove).toHaveBeenCalledWith('scroll', expect.any(Function));
   });
 });

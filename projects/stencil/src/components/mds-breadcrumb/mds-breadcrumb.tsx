@@ -98,7 +98,8 @@ export class MdsBreadcrumb {
     });
 
     this.updateBackButton(selectedId);
-    this.onChanged(selectedId, item);
+    // the caller is the item the step selects, as on a click: it used to be the one it left
+    this.onChanged(selectedId, items[selectedId]);
   };
 
   private onChanged = (id: number, caller: HTMLMdsBreadcrumbItemElement): void => {

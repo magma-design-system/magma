@@ -1,4 +1,5 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 
 describe('mds-pref', () => {
   it('renders', async () => {
@@ -180,6 +181,39 @@ describe('mds-pref', () => {
 
       expect(theme).not.toHaveAttribute('locked-scheme');
       expect(theme.shadowRoot!.querySelector('.item--dark')).not.toHaveAttribute('disabled');
+    });
+  });
+
+  // #826: the size reached the controls only through its watcher, which does not run for the value
+  // of load: a panel sized in the markup never sized them
+  describe('size', () => {
+    beforeEach(mockIconFetch);
+
+    it('reaches the controls on load, and the ones added later', async () => {
+      const { root } = await render(`
+        <mds-pref size="sm">
+          <mds-pref-animation></mds-pref-animation>
+          <mds-pref-contrast></mds-pref-contrast>
+        </mds-pref>
+      `);
+
+      expect(root.querySelector('mds-pref-animation')).toEqualAttribute('size', 'sm');
+      expect(root.querySelector('mds-pref-contrast')).toEqualAttribute('size', 'sm');
+
+      root.appendChild(document.createElement('mds-pref-consumption'));
+      await vi.waitFor(() =>
+        expect(root.querySelector('mds-pref-consumption')).toEqualAttribute('size', 'sm'),
+      );
+    });
+
+    it('leaves the size of each control alone when the panel has none', async () => {
+      const { root } = await render(`
+        <mds-pref>
+          <mds-pref-animation size="sm"></mds-pref-animation>
+        </mds-pref>
+      `);
+
+      expect(root.querySelector('mds-pref-animation')).toEqualAttribute('size', 'sm');
     });
   });
 });

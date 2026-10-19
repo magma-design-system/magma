@@ -132,3 +132,21 @@ describe('mds-notification', () => {
     });
   });
 });
+
+// floating-ui's cleanup was replaced by an empty function instead of being called: every
+// badge ever removed kept its scroll listeners on the page (#823)
+describe('mds-notification leaving the page', () => {
+  it('stops following its target', async () => {
+    const { root } = await render(
+      '<div><button id="bell">Bell</button><mds-notification target="#bell" value="2"></mds-notification></div>',
+    );
+    const badge = root.querySelector('mds-notification')!;
+    // floating-ui starts after a short wait for the layout of the target
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    const remove = vi.spyOn(window, 'removeEventListener');
+
+    badge.remove();
+
+    expect(remove).toHaveBeenCalledWith('scroll', expect.any(Function));
+  });
+});

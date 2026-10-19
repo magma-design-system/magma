@@ -1,5 +1,6 @@
 import { render, vi } from '@stencil/vitest';
 import { mockIconFetch } from '@test/fetch';
+import { itAnnouncesEachPickOnce } from '@test/pref';
 
 describe('mds-pref-consumption', () => {
   it('renders', async () => {
@@ -104,4 +105,8 @@ describe('mds-pref-consumption', () => {
       expect(change).not.toHaveBeenCalled();
     });
   });
+});
+
+describe('mds-pref-consumption mdsPrefChange', () => {
+  itAnnouncesEachPickOnce('mds-pref-consumption', '.item--low', 'pref-consumption-low');
 });
