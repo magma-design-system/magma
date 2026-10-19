@@ -23,11 +23,27 @@
 
 - Boolean props default to `false`/`undefined`. Prefer removing the attribute over
   setting it to `false`.
+- A boolean attribute turns its prop on by being present. On the form-associated
+  components (`mds-button`, `mds-button-dropdown`, `mds-input`, `mds-input-date`,
+  `mds-input-date-range`, `mds-input-field`, `mds-input-otp`, `mds-input-range`,
+  `mds-input-select`, `mds-input-switch`, `mds-input-upload`) any value turns it on,
+  `"false"` included, as on a native control.
 - Disabled: `<mds-button disabled>`. Never `disabled="false"` - remove it instead. Set
   `disabled` on the component, not on a wrapper: disabled components are removed from
   the tab order automatically.
 - Async: `<mds-button await>` shows a spinner and blocks interaction; remove `await`
   (set `undefined`) when done.
+- From a framework, pass a real boolean to the property, not a string to the attribute:
+  - React with `magma-react`: `<MdsButton disabled={isDisabled} />` sets the property,
+    so `false` turns the prop off; the `.server` variants leave a `false` out of the
+    markup. A bare `mds-*` tag in React 18 JSX is different: React 18 writes
+    `disabled={false}` as the attribute `"false"`, which turns a form-associated component
+    on, so pass `undefined` there. React 19 sets the property and turns it off.
+  - Angular with `magma-angular`: bind the input, `[disabled]="isDisabled"`. The proxy
+    sets the property, so `false` turns the prop off. A static `disabled="false"` or an
+    attribute binding (`[attr.disabled]="false"`) writes the attribute instead, and turns
+    a form-associated component on; `[attr.disabled]="null"` removes it. Reactive Forms
+    `disable()` / `enable()` set the property through the value accessor.
 
 ## Sizing
 

@@ -14,10 +14,13 @@
   properties and, for a deep customisation, the parts listed in the component's
   `AGENTS.md` (see [`conventions.md`](conventions.md)).
 - Setting boolean attributes to the string `"false"` (e.g. `disabled="false"`,
-  `await="false"`). Stencil reads `"false"` as `false`, but the attribute stays in the
-  DOM on a prop that is not reflected (and until the first render on one that is), so
-  `[disabled]` selectors and scripts reading the attribute still see it set. **Remove
-  the attribute** to turn it off.
+  `await="false"`). On a form-associated component (`mds-button`, `mds-button-dropdown`
+  and the form inputs, listed in [`conventions.md`](conventions.md)) it turns the prop
+  **on**, as on a native control. On the others Stencil reads `"false"` as `false`, but
+  the attribute stays in the DOM on a prop that is not reflected (and until the first
+  render on one that is), so `[disabled]` selectors and scripts reading the attribute
+  still see it set. **Remove the attribute** to turn it off; from React or Angular, pass
+  `false` to the property, as [`conventions.md`](conventions.md) shows.
 - Embedding nested HTML in a default slot when the component documents a `label` prop.
 - Using raw Tailwind colour utilities (`bg-white`, `text-gray-700`) on or inside Magma
   components - use the semantic role classes (`bg-surface-default`, `text-fg-muted`),

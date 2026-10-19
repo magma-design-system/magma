@@ -323,7 +323,7 @@ Reaching for a plain `<input>` bypasses theming, validation, tips, accessible st
 
 #### Do Not Set Boolean Attributes to the String `"false"`
 
-`disabled`, `required`, `readonly`, `mic` and `await` are boolean attributes: remove the attribute entirely to turn it off. The runtime happens to read the string `"false"` as `false`, but the attribute stays in the markup until the component renders, and HTML, the browser's own handling of `disabled` on a form-associated element, attribute selectors and `hasAttribute()` all read a present attribute as set.
+`disabled`, `required`, `readonly`, `mic` and `await` are boolean attributes: remove the attribute entirely to turn it off. `mds-input` is form-associated, so as on a native control any value turns them on, `"false"` included: this markup renders a disabled, required field.
 
 ```html
 <!-- INCORRECT -->
