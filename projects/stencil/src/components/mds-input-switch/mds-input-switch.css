@@ -97,7 +97,8 @@
   @apply focus-bounce;
 
   align-items: baseline;
-  border-radius: var(--radius);
+  border-radius: var(--magma-radius-3xs);
+  corner-shape: var(--magma-corner-shape);
   cursor: pointer;
   display: flex;
   position: relative;
