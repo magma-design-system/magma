@@ -22,6 +22,19 @@ describe('mds-notification', () => {
     expect(consoleWarn).not.toHaveBeenCalled();
   });
 
+  it('hides a dismissed badge placed by its container', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-button>Inbox<mds-notification slot="notification" value="5" dismissed></mds-notification></mds-button>',
+    );
+    const notification = root.querySelector('mds-notification')!;
+    await waitForChanges();
+    expect(getComputedStyle(notification).display).toBe('none');
+
+    notification.dismissed = false;
+    await waitForChanges();
+    expect(getComputedStyle(notification).display).not.toBe('none');
+  });
+
   it('shows the value again once the max attribute is removed', async () => {
     const { root, waitForChanges } = await render(
       '<mds-notification value="15" max="9" strategy="disabled"></mds-notification>',

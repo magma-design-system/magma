@@ -16,9 +16,9 @@ The `<mds-bibliography>` web component renders a single citation entry formatted
 #### Semantic Behavior
 
 - **Citation formatting**: The `format` prop drives the entire output - field ordering, punctuation, separators, author-name abbreviation, and date layout. Switching formats re-composes the same metadata rather than just restyling it.
-- **Author parsing**: `author` is parsed, not displayed verbatim. Names are split on commas into multiple authors, first/last names are detected by position (first name first: `Mario Rossi`; the parser does not trim, so put no space after a comma that precedes an unquoted name), and composite first or last names can be grouped with single or double quotation marks (e.g. `'Jhon Arthur' Doe`). Each author is then abbreviated per the active format (APA initials, MLA full first name).
+- **Author parsing**: `author` is parsed, not displayed verbatim. Names are split on commas into multiple authors, first/last names are detected by position (first name first: `Mario Rossi`; the spaces around each name are ignored), and composite first or last names can be grouped with single or double quotation marks (e.g. `'Jhon Arthur' Doe`). Each author is then abbreviated per the active format (APA initials, MLA full first name).
 - **Date handling**: `date` accepts an ISO string or a numeric timestamp and renders inside a semantic `<time>` element; an invalid date renders as an empty date (APA keeps empty parentheses), and month names are localized in Italian.
-- **Link vs. plain title**: When both `name` and `url` are set, the title renders as a link (`target="_blank"`) carrying the `rel` value; otherwise it renders as plain emphasized text.
+- **Link vs. plain title**: When both `name` and `url` are set, the title renders as a link (`target="_blank"`) carrying the `rel` value; with `name` alone it renders as plain emphasized text, and without `name` there is no title at all.
 - **No slots**: Content is built entirely from props; the component does not project slotted children.
 
 #### Properties & Visual Configurations
@@ -96,12 +96,12 @@ Set `format="mla"` for Modern Language Association style. The date moves to the 
 
 #### Multiple Authors
 
-Separate multiple authors with a comma, writing each name first name first. The parser does not trim: put no space after a comma that precedes an unquoted name, or the following name breaks. Composite first or last names that contain spaces must be wrapped in single or double quotation marks so the parser groups them correctly. The component joins authors with the format-appropriate separator (APA and Turabian: `&`, MLA: `e`).
+Separate multiple authors with a comma, writing each name first name first; a space after the comma is fine. Composite first or last names that contain spaces must be wrapped in single or double quotation marks so the parser groups them correctly. The component joins authors with the format-appropriate separator (APA and Turabian: `&`, MLA: `e`).
 
 ```html
 <!-- Two authors, both single-word first and last names -->
 <mds-bibliography
-  author="Mario Rossi,Luigi Verdi"
+  author="Mario Rossi, Luigi Verdi"
   date="2019-06-01"
   name="Gestione del territorio"
   publisher="Giuffre Editore"

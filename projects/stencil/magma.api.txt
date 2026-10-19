@@ -606,10 +606,10 @@ mds-icon method setSvgPath(svgPath: string) => Promise<void>
 mds-icon part svg
 mds-img encapsulation shadow
 mds-img prop alt (attr alt) [reflect, mutable]: string
-mds-img prop crossorigin (attr crossorigin): "anonymous" | "use-credentials" | undefined = 'use-credentials'
+mds-img prop crossorigin (attr crossorigin): "anonymous" | "use-credentials" | undefined
 mds-img prop height (attr height): string | undefined
 mds-img prop loading (attr loading): "eager" | "lazy" | undefined = 'lazy'
-mds-img prop referrerpolicy (attr referrerpolicy): "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "unsafe-url" | undefined = 'no-referrer-when-downgrade'
+mds-img prop referrerpolicy (attr referrerpolicy): "no-referrer" | "no-referrer-when-downgrade" | "origin" | "origin-when-cross-origin" | "unsafe-url" | undefined
 mds-img prop sizes (attr sizes): string | undefined
 mds-img prop src (attr src): string | undefined
 mds-img prop srcset (attr srcset): string | undefined
@@ -1465,6 +1465,7 @@ mds-table-cell css --mds-table-cell-background-alt
 mds-table-cell css --mds-table-cell-color
 mds-table-cell css --mds-table-cell-color-alt
 mds-table-footer encapsulation shadow
+mds-table-footer prop selectable (attr selectable): boolean | undefined
 mds-table-footer slot (default)
 mds-table-header encapsulation shadow
 mds-table-header prop selectable (attr selectable): boolean | undefined
@@ -1648,7 +1649,7 @@ mds-url-view css --mds-url-view-shadow
 mds-usage encapsulation shadow
 mds-usage prop alias (attr alias): string | undefined
 mds-usage prop icon (attr icon): string | undefined
-mds-usage prop variant (attr variant): "do" | "dont" | "info" | "warn" = 'info'
+mds-usage prop variant (attr variant) [reflect]: "do" | "dont" | "info" | "warn" = 'info'
 mds-usage slot (default)
 mds-usage part header
 mds-usage part icon

@@ -142,4 +142,11 @@
   position: static;
 }
 
+/* a badge placed by its container has no transition to play: dismissed, it is just not there */
+
+:host([dismissed]:not([dismissed='false'])[strategy='disabled']),
+:host([dismissed]:not([dismissed='false']):not([target])) {
+  display: none;
+}
+
 @import './css/mds-notification-pref-animation.css';

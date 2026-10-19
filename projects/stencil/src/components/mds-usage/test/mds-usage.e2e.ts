@@ -18,6 +18,22 @@ describe('mds-usage', () => {
     mockIconFetch();
   });
 
+  // the styles key on the attribute: a variant set as a property, as the framework wrappers set
+  // it, used to color nothing
+  it('reflects a variant set as a property', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsUsageElement>(
+      '<mds-usage>Content</mds-usage>',
+    );
+    expect(root).toEqualAttribute('variant', 'info');
+    const infoBorder = getComputedStyle(root).borderTopColor;
+
+    (root as { variant: string }).variant = 'dont';
+    await waitForChanges();
+
+    expect(root).toEqualAttribute('variant', 'dont');
+    expect(getComputedStyle(root).borderTopColor).not.toBe(infoBorder);
+  });
+
   describe('the header icon', () => {
     it('is a different icon for each variant', async () => {
       const icons: string[] = [];

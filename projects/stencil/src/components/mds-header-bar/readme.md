@@ -20,7 +20,7 @@ The `<mds-header-bar>` web component is the top bar of a Magma application layou
 - **Conditional nav rendering**: The `<nav>` is shown only when `nav` is not `'none'` and a `slot="nav"` child is present, also when it is added after the first render, so an empty header collapses cleanly.
 - **Hamburger trigger**: When `menu` is not `'none'` the component renders a menu button that opens the menu on click, icon-only and named in the page language (the `lang` of `<html>`) ("Open menu").
 - **Open event**: Clicking the hamburger emits the bubbling `mdsHeaderBarOpen` event and opens the drawer on the surrounding `mds-header`.
-- **Imperative open control**: The public `setOpened(isOpened = true)` method only records the opened state: it renders nothing and does not open or close the drawer, which is driven by `setOpened()` on the surrounding `mds-header`.
+- **Imperative open control**: The public `setOpened(isOpened = true)` method opens or closes the drawer of the surrounding `mds-header`, as the hamburger does; outside an `mds-header` it does nothing.
 
 #### Properties & Visual Configurations
 
@@ -114,7 +114,7 @@ Listen to `mdsHeaderBarOpen` (bubbles) to react when the user taps the hamburger
 
 #### Programmatic Open via `setOpened`
 
-The bar's own `setOpened(isOpened)` only records the state and renders nothing. To open or close the drawer from external code - for instance after route navigation in a single-page app - call `setOpened` on the surrounding `mds-header`.
+To open or close the drawer from external code - for instance after route navigation in a single-page app - call `setOpened` on the surrounding `mds-header`, or on the bar, which hands it to its `mds-header`.
 
 ```html
 <mds-header id="main-header">
@@ -295,13 +295,13 @@ The accepted values for both props are `'all' | 'desktop' | 'mobile' | 'none'`. 
 
 ### `setOpened(isOpened?: boolean) => Promise<void>`
 
-Opens or closes the header bar.
+Opens or closes the menu of the surrounding `mds-header`, as the hamburger does.
 
 #### Parameters
 
-| Name       | Type      | Description                             |
-| ---------- | --------- | --------------------------------------- |
-| `isOpened` | `boolean` | whether the header bar should be opened |
+| Name       | Type      | Description                       |
+| ---------- | --------- | --------------------------------- |
+| `isOpened` | `boolean` | whether the menu should be opened |
 
 #### Returns
 
