@@ -12,7 +12,9 @@ import {
 })
 export class MdsCalendarCell {
   /**
-   * Specifies if the current month or a weekend
+   * Specifies if the day belongs to the displayed month, `current`, or to an adjacent one,
+   * `other`. `weekend` is deprecated and does nothing: the weekend days are styled by their
+   * column of the week
    */
   @Prop({ reflect: true }) readonly month?: CalendarCellType = 'current';
 

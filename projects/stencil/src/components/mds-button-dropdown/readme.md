@@ -33,7 +33,7 @@ The shared `variant` / `tone` / `size` ladders are defined in [`docs/agents/vari
 
 - **`autoFocus`** focuses the primary action once the component is loaded.
 - **`icon`** is an SVG filename slug from the Magma icon library, applied to the primary action button (the chevron icon on the trigger is fixed and not configurable).
-- **`truncate`** is declared (default `'word'`) but not forwarded to the internal buttons: the primary label always truncates as `'word'`.
+- **`truncate`** sets how the label of the primary action truncates, as on `mds-button` (default `'word'`).
 
 
 ### 2. Pattern

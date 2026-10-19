@@ -25,14 +25,15 @@ import { PROJECT_DIR } from './meta';
 const REPO = join(PROJECT_DIR, '../..');
 const COMPONENTS = join(PROJECT_DIR, 'src');
 /* where the token layer is emitted, in the order a consumer loads it. Tailwind's
- * own default theme counts: `--ease-in-out`, `--radius` and `--drop-shadow-*` are
- * published by it, not by us, and a sheet that uses them resolves fine. */
+ * own default theme (`tailwindcss/theme.css`) does NOT count: a consumer's Tailwind
+ * build emits a theme variable only when one of its own utilities uses it, and the
+ * deprecated `inline reference` block (`--radius`, `--shadow`, ...) never at all, so
+ * a component sheet reading one of them resolves to nothing on most pages (#998). */
 const TOKEN_SOURCES = [
   'projects/design-tokens/dist/css',
   'projects/styles/dist/css',
   'projects/styles/dist/tailwind',
   'projects/styles/css',
-  'node_modules/tailwindcss/theme.css',
 ];
 /* names a component owns, or that come from the runtime rather than a token */
 const OWN = /^--(mds|private|magma-pref|tw|swiper|storybook)-/;

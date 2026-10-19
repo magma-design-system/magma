@@ -43,6 +43,7 @@ export class MdsTable {
    * watchers can fire before it and, with streamed HTML, the children can still be unparsed
    * when it runs: every dereference below has to tolerate `undefined`/`null`.
    */
+  private footer?: HTMLMdsTableFooterElement | null;
   private rows?: NodeListOf<HTMLMdsTableRowElement>;
   private body?: HTMLMdsTableBodyElement | null;
   private header?: HTMLMdsTableHeaderElement | null;
@@ -99,6 +100,9 @@ export class MdsTable {
     this.handleSelection();
     if (this.header) {
       this.header.selectable = newValue;
+    }
+    if (this.footer) {
+      this.footer.selectable = newValue;
     }
   }
 
@@ -228,6 +232,7 @@ export class MdsTable {
 
   private querySlottedElements = (): void => {
     this.body = this.host.querySelector('mds-table-body');
+    this.footer = this.host.querySelector('mds-table-footer');
     this.header = this.host.querySelector('mds-table-header');
     this.rows = this.host.querySelectorAll('mds-table-row');
     if (this.body) {
@@ -258,6 +263,10 @@ export class MdsTable {
   }
 
   componentDidLoad(): void {
+    // the footer lines up with the rows, which have a selection cell when the table is selectable
+    if (this.footer) {
+      this.footer.selectable = this.selectable;
+    }
     if (this.header) {
       this.header.selectable = this.selectable;
     }

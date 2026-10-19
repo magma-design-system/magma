@@ -95,9 +95,11 @@ uses it, where same-document completion already covers it), the `colors-hex-*` s
 same palette in a second format), the `tailwind-theme-*` bridges (the same names inside
 `@theme`) and Tailwind's own `theme.css` (51 names in common with our `typography.css`).
 
-Coverage, measured against what the component sheets actually use inside `var()`: 1009 of
-1120 distinct tokens. The remaining 111 are the 73 `--private-*`, 6 tokens Tailwind's
-theme publishes (`--ease-in-out`, `--drop-shadow-sm`, ...) and 32 one-off local names.
+Coverage, measured on 2026-10-17 against what the component sheets actually use inside
+`var()`: 1020 of 1167 distinct tokens. The remaining 147 are the 113 `--private-*` and 34
+one-off local names. None of them is a name only Tailwind's theme publishes any more: the
+ones the components read (`--radius`, `--ease-in-out`, `--drop-shadow-sm`, ...) moved onto
+Magma tokens in #998 and #1000.
 
 ## Extensions
 

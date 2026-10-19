@@ -42,6 +42,11 @@ const getName = (rawFilename: string): string => {
   return dot === -1 ? filename : filename.slice(0, dot);
 };
 
+/**
+ * The extension of the filename, or the override, lowercased. Empty when the filename has none:
+ * it used to be `default`, the key of the generic entry of the dictionary, which the components
+ * then showed as an extension (`.default` and a "default" badge).
+ */
 const getSuffix = (rawFilename: string, suffixOverride?: string): string => {
   const suffix = sanitizeSuffix(rawFilename);
   const filename = sanitizeFilename(rawFilename);
@@ -51,7 +56,7 @@ const getSuffix = (rawFilename: string, suffixOverride?: string): string => {
   if (suffix !== filename) {
     return suffix;
   }
-  return 'default';
+  return '';
 };
 
 const getExtensionInfos = (rawFilename: string, suffixOverride?: string): ExtensionInfo => {

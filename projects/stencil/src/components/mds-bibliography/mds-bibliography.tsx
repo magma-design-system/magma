@@ -132,7 +132,9 @@ export class MdsBibliography {
   };
 
   private formatAuthors = (author: string): FormattedAuthor => {
-    const authorName = author.replace(/"/g, "'");
+    // the space after the comma that separates two authors is no part of the name: kept, it
+    // made the first name of every author after the first one empty
+    const authorName = author.trim().replace(/"/g, "'");
     const splitNames = new RegExp(/([A-Za-z ]{2,})/g);
     const fullName = authorName.match(splitNames) ?? authorName;
     if (fullName.length > 1) {
@@ -176,6 +178,29 @@ export class MdsBibliography {
     return authorsList;
   };
 
+  /**
+   * The title, in bold italics with its period: a link only with a `url`, and nothing at all
+   * without a `name`. A missing `url` was taken for one (`undefined !== null`), so the title was
+   * always a link without `href`, and a missing `name` left a lone period.
+   */
+  private renderName = (spaced: boolean) => {
+    if ((this.name ?? '') === '') return null;
+    const title = (
+      <b>
+        <i>
+          {spaced && ' '}
+          {this.name}.
+        </i>
+      </b>
+    );
+    if ((this.url ?? '') === '') return title;
+    return (
+      <a class="link" href={this.url} target="_blank" rel={this.rel}>
+        {title}
+      </a>
+    );
+  };
+
   render() {
     return (
       <Host>
@@ -184,17 +209,7 @@ export class MdsBibliography {
           {this.format === 'mla' && (
             <span>
               {this.name && ' '}
-              {(this.name ?? '') !== '' && this.url !== null ? (
-                <a class="link" href={this.url} target="_blank" rel={this.rel}>
-                  <b>
-                    <i>{this.name}.</i>
-                  </b>
-                </a>
-              ) : (
-                <b>
-                  <i>{this.name}.</i>
-                </b>
-              )}
+              {this.renderName(false)}
               {this.location && (
                 <span>
                   {' '}
@@ -216,17 +231,7 @@ export class MdsBibliography {
             <span>
               {this.date && <time dateTime={this.date}> ({this.dateFormatAPA(this.date)}).</time>}
               {this.name && ' '}
-              {(this.name ?? '') !== '' && this.url !== null ? (
-                <a class="link" href={this.url} target="_blank" rel={this.rel}>
-                  <b>
-                    <i> {this.name}.</i>
-                  </b>
-                </a>
-              ) : (
-                <b>
-                  <i> {this.name}.</i>
-                </b>
-              )}
+              {this.renderName(true)}
               {this.location && (
                 <span>
                   {' '}
@@ -240,17 +245,7 @@ export class MdsBibliography {
           {this.format === 'turabian' && (
             <span>
               {this.name && ' '}
-              {(this.name ?? '') !== '' && this.url !== null ? (
-                <a class="link" href={this.url} target="_blank" rel={this.rel}>
-                  <b>
-                    <i> {this.name}.</i>
-                  </b>
-                </a>
-              ) : (
-                <b>
-                  <i> {this.name}.</i>
-                </b>
-              )}
+              {this.renderName(true)}
               {this.location && (
                 <span>
                   {' '}

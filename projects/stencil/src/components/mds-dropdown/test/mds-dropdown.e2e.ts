@@ -525,6 +525,39 @@ describe('mds-dropdown', () => {
     });
   });
 
+  // the caller sits near the right edge, halfway down a 1280x800 viewport: more room above and
+  // below than on its right, where a narrow panel still fits
+  describe('auto-placement', () => {
+    const edgeStage = (placement: string, left: number) =>
+      render(
+        `<div>
+           <button id="caller" style="position: fixed; top: 390px; left: ${left}px; width: 20px; height: 20px"></button>
+           <mds-dropdown id="panel" target="#caller" placement="${placement}" style="width: 100px; min-width: 0" visible>Panel</mds-dropdown>
+         </div>`,
+      );
+
+    const side = async (root: HTMLElement): Promise<string> => {
+      const panel = root.querySelector('#panel') as HTMLElement;
+      await vi.waitFor(() => {
+        expect(panel.style.transformOrigin).not.toBe('');
+      });
+      // the panel unfurls from the edge that faces the caller
+      return panel.style.transformOrigin;
+    };
+
+    it('keeps the placement while it has room', async () => {
+      const { root } = await edgeStage('right', 1100);
+
+      expect(await side(root)).toMatch(/^left /);
+    });
+
+    it('moves to another side when the placement has no room', async () => {
+      const { root } = await edgeStage('right', 1250);
+
+      expect(await side(root)).not.toMatch(/^left /);
+    });
+  });
+
   // #988: the backdrop is a child of the body, where nothing set on the dropdown reaches it
   describe('backdrop', () => {
     // the newest one: a backdrop that a previous test closed may still be fading out

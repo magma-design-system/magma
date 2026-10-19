@@ -23,8 +23,8 @@ The `<mds-calendar-cell>` web component represents a single selectable day insid
 
 Most props are state mirrors written by the parent rather than knobs a consumer tunes directly.
 
-- **`month`**: Distinguishes how the day relates to the displayed month - `current` for in-month days, `other` for leading/trailing days spilling in from adjacent months. The type also allows `weekend`, which the calendar never sets and which has no styling of its own: the weekend color comes from the cell's position (the last two columns of the week).
-- **`selection`**: Marks the cell's position within an active range - `start`, `end`, `middle`, or `single` (a one-day or collapsed range); absence means unselected (`none` is styled like a selected cell, so the calendar removes the attribute instead). This is what produces the connected range visuals across adjacent cells.
+- **`month`**: Distinguishes how the day relates to the displayed month - `current` for in-month days, `other` for leading/trailing days spilling in from adjacent months. The type also allows `weekend`, which is deprecated: the calendar never sets it and it has no styling of its own, since the weekend color comes from the cell's position (the last two columns of the week).
+- **`selection`**: Marks the cell's position within an active range - `start`, `end`, `middle`, or `single` (a one-day or collapsed range); absence or `none` means unselected. This is what produces the connected range visuals across adjacent cells.
 - **`preview`**: When `true`, the current selection is a transient hover/preview rather than a committed selection, allowing distinct styling while the user is still choosing the second boundary.
 - **`orientation`**: Selection-connector direction. The type allows `horizontal`, `vertical`, and `both`, but only `horizontal` is currently supported.
 - **`date`**: The cell's ISO `YYYY-MM-DD` date; the parent matches against it to compute selection state, so it is required for the cell to participate in range logic.
@@ -166,16 +166,16 @@ mds-calendar {
 
 ## Properties
 
-| Property      | Attribute     | Description                                                    | Type                                                              | Default        |
-| ------------- | ------------- | -------------------------------------------------------------- | ----------------------------------------------------------------- | -------------- |
-| `date`        | `date`        | Specifies the date of the cell                                 | `string \| undefined`                                             | `undefined`    |
-| `disabled`    | `disabled`    | Specifies if the cell is disabled                              | `boolean \| undefined`                                            | `undefined`    |
-| `label`       | `label`       | Specifies the label of the cell                                | `string \| undefined`                                             | `undefined`    |
-| `month`       | `month`       | Specifies if the current month or a weekend                    | `"current" \| "other" \| "weekend" \| undefined`                  | `'current'`    |
-| `orientation` | `orientation` | Specifies the selection orientation of the cell                | `"both" \| "horizontal" \| "vertical" \| undefined`               | `'horizontal'` |
-| `preview`     | `preview`     | Specifies if the selection is a preview or the final selection | `boolean \| undefined`                                            | `false`        |
-| `selection`   | `selection`   | Specifies the point of selection of the cell                   | `"end" \| "middle" \| "none" \| "single" \| "start" \| undefined` | `undefined`    |
-| `today`       | `today`       | Specifies if the cell is today                                 | `boolean \| undefined`                                            | `undefined`    |
+| Property      | Attribute     | Description                                                                                                                                                                                       | Type                                                              | Default        |
+| ------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | -------------- |
+| `date`        | `date`        | Specifies the date of the cell                                                                                                                                                                    | `string \| undefined`                                             | `undefined`    |
+| `disabled`    | `disabled`    | Specifies if the cell is disabled                                                                                                                                                                 | `boolean \| undefined`                                            | `undefined`    |
+| `label`       | `label`       | Specifies the label of the cell                                                                                                                                                                   | `string \| undefined`                                             | `undefined`    |
+| `month`       | `month`       | Specifies if the day belongs to the displayed month, `current`, or to an adjacent one, `other`. `weekend` is deprecated and does nothing: the weekend days are styled by their column of the week | `"current" \| "other" \| "weekend" \| undefined`                  | `'current'`    |
+| `orientation` | `orientation` | Specifies the selection orientation of the cell                                                                                                                                                   | `"both" \| "horizontal" \| "vertical" \| undefined`               | `'horizontal'` |
+| `preview`     | `preview`     | Specifies if the selection is a preview or the final selection                                                                                                                                    | `boolean \| undefined`                                            | `false`        |
+| `selection`   | `selection`   | Specifies the point of selection of the cell                                                                                                                                                      | `"end" \| "middle" \| "none" \| "single" \| "start" \| undefined` | `undefined`    |
+| `today`       | `today`       | Specifies if the cell is today                                                                                                                                                                    | `boolean \| undefined`                                            | `undefined`    |
 
 
 ## CSS Custom Properties

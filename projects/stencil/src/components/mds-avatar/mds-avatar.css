@@ -50,6 +50,7 @@
   animation: none;
 }
 
+.avatar--count,
 .avatar--icon,
 .avatar--fallback,
 .avatar--initials {
@@ -57,6 +58,7 @@
   box-shadow: none;
 }
 
+.avatar--count,
 .avatar--fallback,
 .avatar--initials {
   align-items: stretch;
@@ -64,6 +66,7 @@
   justify-items: stretch;
 }
 
+.avatar--count,
 .avatar--icon,
 .avatar--fallback {
   padding: 20%;

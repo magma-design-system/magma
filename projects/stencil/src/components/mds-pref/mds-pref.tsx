@@ -48,6 +48,7 @@ export class MdsPref {
   @Element() host: HTMLMdsPrefElement;
   @State() showReload: boolean = false;
   private prefNeedsReload: string[] = ['consumption', 'language'];
+  private loaded = false;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -102,6 +103,7 @@ export class MdsPref {
   }
 
   componentDidLoad(): void {
+    this.loaded = true;
     this.applyInitialSchemeLock();
   }
 
@@ -115,10 +117,12 @@ export class MdsPref {
     }
   }
 
-  // Host listeners: Stencil removes them on disconnect and adds them back on connect
+  // Host listeners: Stencil removes them on disconnect and adds them back on connect.
+  // The notice is for the visible panel: it was shown only by the controller, which is hidden.
+  // A change heard before the panel loaded is a control applying the stored choice, no pick.
   @Listen('mdsPrefChange')
   handlePrefChange(e: CustomEvent<MdsPrefChangeEventDetail>): void {
-    if (this.controller && this.prefNeedsReload.includes(e.detail?.preference)) {
+    if (this.loaded && !this.controller && this.prefNeedsReload.includes(e.detail?.preference)) {
       this.showReload = true;
     }
   }

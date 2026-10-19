@@ -64,10 +64,10 @@ export class MdsImg {
   @Prop({ mutable: true, reflect: true }) alt: string;
 
   /**
-   * Allow images from third-party sites that allow
-   * cross-origin access to be used with canvas
+   * Fetches the image with CORS, as the `crossorigin` attribute of `<img>`: a third-party image
+   * can then be used with canvas, if its site allows it. Unset, the image is fetched without CORS
    */
-  @Prop() readonly crossorigin?: CrossoriginType = 'use-credentials';
+  @Prop() readonly crossorigin?: CrossoriginType;
 
   /**
    * The height attribute specifies the height of an image, in pixels.
@@ -81,9 +81,10 @@ export class MdsImg {
   @Prop() readonly loading?: LoadingType = 'lazy';
 
   /**
-   * Specifies which referrer information to use when fetching an image.
+   * Specifies which referrer information to use when fetching an image, as the `referrerpolicy`
+   * attribute of `<img>`. Unset, the policy of the page applies
    */
-  @Prop() readonly referrerpolicy?: ReferrerpolicyType = 'no-referrer-when-downgrade';
+  @Prop() readonly referrerpolicy?: ReferrerpolicyType;
 
   /**
    * One or more strings separated by commas, indicating a set of source sizes.
@@ -245,11 +246,13 @@ export class MdsImg {
               <img
                 alt={this.alt ?? ''}
                 aria-hidden="true"
+                crossorigin={this.crossorigin}
                 height={this.height}
                 loading={this.loading}
                 onError={this.onError}
                 onLoad={this.onSuccess}
                 part="media"
+                referrerPolicy={this.referrerpolicy}
                 sizes={this.sizes}
                 src={this.srcsetConsumptionData[this.consumptionMode] ?? this.src}
                 srcset={this.srcset}
@@ -266,11 +269,13 @@ export class MdsImg {
           <img
             alt={this.alt ?? ''}
             aria-hidden="true"
+            crossorigin={this.crossorigin}
             height={this.height}
             loading={this.loading}
             onError={this.onError}
             onLoad={this.onSuccess}
             part="media"
+            referrerPolicy={this.referrerpolicy}
             sizes={this.sizes}
             src={this.srcsetConsumptionData[this.consumptionMode] ?? this.src}
             srcset={this.srcset}
@@ -286,11 +291,13 @@ export class MdsImg {
         <img
           alt={this.alt ?? ''}
           aria-hidden="true"
+          crossorigin={this.crossorigin}
           height={this.height}
           loading={this.loading}
           onError={this.onError}
           onLoad={this.onSuccess}
           part="media"
+          referrerPolicy={this.referrerpolicy}
           sizes={this.sizes}
           src={this.src}
           srcset={this.srcset}

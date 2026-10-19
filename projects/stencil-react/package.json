@@ -14,6 +14,7 @@
       "types": "./dist/types/*.d.ts",
       "import": "./dist/*.js"
     },
+    "./CHANGELOG.md": "./CHANGELOG.md",
     "./package.json": "./package.json"
   },
   "sideEffects": false,

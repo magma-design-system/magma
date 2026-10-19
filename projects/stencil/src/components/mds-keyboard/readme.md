@@ -15,7 +15,7 @@ The `<mds-keyboard>` web component renders a keyboard shortcut as a row of physi
 
 - **Default slot is the key sequence**: The component projects slotted `<mds-keyboard-key>` elements and automatically inserts a `+` separator between consecutive keys.
 - **Compound parent**: It reads each child key's `name` to build the expected combination; during a test the children are toggled to their `pressed` state.
-- **Test mode (`try`)**: When enabled the component appends a trigger button and a tooltip; clicking the button captures keystrokes and, at the first key release, compares the typed combination against the slotted keys, in slot order.
+- **Test mode (`try`)**: When enabled the component appends a trigger button and a tooltip; clicking the button captures keystrokes and, at the first key release, compares the typed combination against the slotted keys, in any order.
 - **Result feedback**: A pass shows a "done" icon, a fail shows a "close" icon, and the tooltip surfaces the localized success or error message; the outcome is also reflected on the host via the `test` attribute.
 - **Localization**: Trigger label, tooltip copy, and error messages resolve through the locale system (el/en/es/it).
 
@@ -68,7 +68,7 @@ Use the side-specific `name` values (`controlleft`, `controlright`, `shiftleft`,
 
 #### Interactive Verification Mode (`try`)
 
-Add the `try` attribute to let the user confirm the shortcut by typing it. A trigger button appears; clicking it puts the component into capture mode. The keys must be pressed in the order they are slotted: at the first key release the component reflects the outcome (`pass` / `fail`) on the `test` attribute and shows a localized tooltip.
+Add the `try` attribute to let the user confirm the shortcut by typing it. A trigger button appears; clicking it puts the component into capture mode. The keys can be pressed in any order, all held down together: at the first key release the component reflects the outcome (`pass` / `fail`) on the `test` attribute and shows a localized tooltip.
 
 ```html
 <mds-keyboard try>

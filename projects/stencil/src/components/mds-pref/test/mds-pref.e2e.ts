@@ -8,6 +8,31 @@ describe('mds-pref', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
+  it('asks to reload the page after a language or consumption change', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-pref><mds-pref-consumption></mds-pref-consumption></mds-pref>',
+    );
+    const notice = () => root.shadowRoot!.querySelector('.reload-required');
+    // the control applies the stored choice on load: no notice for that
+    expect(notice()).toBeNull();
+
+    root.querySelector('mds-pref-consumption')!.mode = 'low';
+    await waitForChanges();
+
+    expect(notice()).not.toBeNull();
+  });
+
+  it('shows no reload notice in controller mode, where it is hidden', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-pref controller><mds-pref-consumption></mds-pref-consumption></mds-pref>',
+    );
+
+    root.querySelector('mds-pref-consumption')!.mode = 'low';
+    await waitForChanges();
+
+    expect(root.shadowRoot!.querySelector('.reload-required')).toBeNull();
+  });
+
   // #789: a settings page unmounting its own mds-pref used to drop the attribute
   // while the app controller was still mounted, handing the palette back to the OS
   it('keeps data-magma-pref on <html> until the last instance unmounts', async () => {
@@ -82,11 +107,11 @@ describe('mds-pref', () => {
       );
     });
 
-    it('keeps asking for a reload in controller mode', async () => {
+    it('keeps asking for a reload', async () => {
       const { root, waitForChanges } = await render(`
         <div>
           <div class="sidebar">
-            <mds-pref controller>
+            <mds-pref>
               <mds-pref-consumption></mds-pref-consumption>
             </mds-pref>
           </div>

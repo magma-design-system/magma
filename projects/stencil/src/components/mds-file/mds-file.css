@@ -28,7 +28,7 @@
   overflow: hidden;
   transition-duration: var(--private-file-transition-duration);
   transition-property: box-shadow, outline, outline-offset;
-  transition-timing-function: var(--ease-out);
+  transition-timing-function: var(--ease-out-cubic);
   width: 100%;
 }
 
@@ -75,7 +75,7 @@
   position: relative;
   transition-duration: inherit;
   transition-property: color, background-color, fill;
-  transition-timing-function: var(--ease-in-out);
+  transition-timing-function: var(--ease-out-sine);
   width: --spacing(1400);
 }
 

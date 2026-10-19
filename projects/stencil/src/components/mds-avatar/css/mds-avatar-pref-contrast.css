@@ -4,6 +4,7 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
+  .avatar--count,
   .avatar--icon,
   .avatar--fallback,
   .avatar--initials {
@@ -14,6 +15,7 @@
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
+    .avatar--count,
     .avatar--icon,
     .avatar--fallback,
     .avatar--initials {

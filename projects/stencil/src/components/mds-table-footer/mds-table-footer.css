@@ -13,7 +13,9 @@
   transition-property: border-color;
 }
 
-::slotted(mds-table-cell) {
+::slotted(mds-table-cell),
+.selection,
+.actions {
   --private-cell-border-color: transparent;
 }
 

@@ -84,6 +84,32 @@ describe('mds-pref-theme', () => {
     expect(document.documentElement.getAttribute('data-corner-shape')).toBe('bevel');
   });
 
+  it('keeps a theme name set from a script after load', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsPrefThemeElement>(
+      '<mds-pref-theme></mds-pref-theme>',
+    );
+
+    root.name = 'ocean';
+    await waitForChanges();
+
+    expect(root.name).toBe('ocean');
+    expect(document.documentElement.getAttribute('data-theme-name')).toBe('ocean');
+    expect(localStorage.getItem(THEME_NAME_STORAGE_KEY)).toBe('ocean');
+  });
+
+  it('changes a stored corner shape through the prop after load', async () => {
+    localStorage.setItem(CORNER_STORAGE_KEY, 'bevel');
+    const { root, waitForChanges } = await render<HTMLMdsPrefThemeElement>(
+      '<mds-pref-theme></mds-pref-theme>',
+    );
+
+    root.cornerShape = 'round';
+    await waitForChanges();
+
+    expect(root.cornerShape).toBe('round');
+    expect(document.documentElement.getAttribute('data-corner-shape')).toBe('round');
+  });
+
   it('writes the theme under the theme names, never the mode ones', async () => {
     await render('<mds-pref-theme name="ocean"></mds-pref-theme>');
 
