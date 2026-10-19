@@ -1,10 +1,7 @@
 {
   "known": [
-    "--ease-in-out",
     "--ease-linear",
-    "--ease-out",
     "--opacity-disabled",
-    "--shadow",
     "--size-lg",
     "--size-md",
     "--variant-ai-seed"

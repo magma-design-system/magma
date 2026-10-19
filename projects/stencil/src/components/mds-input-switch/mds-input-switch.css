@@ -170,7 +170,7 @@
   transition-property:
     background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
     transform, width;
-  transition-timing-function: var(--ease-in-out);
+  transition-timing-function: var(--ease-out-sine);
   width: var(--mds-input-switch-toggle-container-size);
 }
 
@@ -187,7 +187,7 @@
   animation-timing-function: var(--mds-input-switch-animation-timing-function);
   background-color: var(--mds-input-switch-toggle-color-enabled-unchecked);
   border-radius: var(--magma-radius-full);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   display: flex;
   height: var(--mds-input-switch-toggle-size);
   justify-content: center;

@@ -3,6 +3,7 @@ import { userEvent } from 'vitest/browser';
 import colors from '../../../../../styles/dist/css/colors-rgb.css?raw';
 import globals from '../../../../../styles/dist/css/globals.css?raw';
 import semantic from '../../../../../styles/dist/css/semantic.css?raw';
+import typography from '../../../../../styles/dist/css/typography.css?raw';
 
 describe('mds-input-switch', () => {
   const setup = async (html: string) => {
@@ -162,6 +163,21 @@ describe('the knob', () => {
       expect((lighter + 0.05) / (darker + 0.05)).toBeGreaterThanOrEqual(3);
     },
   );
+
+  it('casts its shadow on a consumer page', async () => {
+    // #1000: it read `var(--shadow)`, which only Tailwind's theme declares and never emits, so
+    // the knob computed to no shadow at all
+    sheet = document.createElement('style');
+    sheet.textContent = [typography, globals].join('\n');
+    document.head.append(sheet);
+    const { root } = await render<HTMLMdsInputSwitchElement>(
+      '<mds-input-switch></mds-input-switch>',
+    );
+
+    expect(getComputedStyle(root.shadowRoot!.querySelector('.switch-toggle')!).boxShadow).not.toBe(
+      'none',
+    );
+  });
 
   it('has the same colour before the first toggle and after toggling back', async () => {
     // only the rule of a toggled switch painted the knob unchecked: until the first change it
