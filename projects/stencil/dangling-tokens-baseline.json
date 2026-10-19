@@ -1,7 +1,5 @@
 {
   "known": [
-    "--drop-shadow-md",
-    "--drop-shadow-sm",
     "--ease-in-out",
     "--ease-linear",
     "--ease-out",
