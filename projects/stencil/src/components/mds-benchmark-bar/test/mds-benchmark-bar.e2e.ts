@@ -31,5 +31,30 @@ describe('mds-benchmark-bar', () => {
 
       expect(progress(root)).toEqualAttribute('aria-valuetext', '6 GB of 10');
     });
+
+    // #983: without an alias the progress announced one of its steps, in Italian
+    it('speaks the value as shown when there is no alias', async () => {
+      const { root } = await render(
+        '<mds-benchmark-bar label="Tasks completed" value="33"></mds-benchmark-bar>',
+      );
+
+      expect(progress(root)).toEqualAttribute('aria-valuetext', '33');
+    });
+
+    it('follows a new value, and the value once the alias is removed', async () => {
+      const { root, waitForChanges } = await render(
+        '<mds-benchmark-bar label="Tasks completed" value="33" alias="1 of 3"></mds-benchmark-bar>',
+      );
+
+      root.setAttribute('alias', '2 of 3');
+      root.setAttribute('value', '66');
+      await waitForChanges();
+      expect(progress(root)).toEqualAttribute('aria-valuetext', '2 of 3');
+
+      root.removeAttribute('alias');
+      await waitForChanges();
+      expect(progress(root)).toEqualAttribute('aria-valuetext', '66');
+      expect(root.shadowRoot!.querySelector('.value')?.textContent).toBe('66');
+    });
   });
 });

@@ -59,6 +59,9 @@ export class MdsBenchmarkBar {
   };
 
   render() {
+    // the value is spoken as it is shown, the alias or the number: without an alias the progress
+    // announced one of its steps, in Italian whatever the page language (#983)
+    const valueText = this.alias ?? String(this.value);
     return (
       <Host>
         <div class="infos">
@@ -66,12 +69,13 @@ export class MdsBenchmarkBar {
             {this.label || <slot onSlotchange={this.onSlotChangeHandler} />}
           </mds-text>
           <mds-text typography={this.typography} class="value" truncate="word">
-            {this.alias ?? this.value}
+            {valueText}
           </mds-text>
         </div>
         <mds-progress
           aria-labelledby="label"
-          aria-valuetext={this.alias}
+          aria-valuetext={valueText}
+          steps=""
           class="progress"
           variant={this.variant}
           progress={this.value / 100}
