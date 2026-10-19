@@ -48,6 +48,31 @@ CONFIG="$CONFIG_DIR/cliff.toml"
 {
   echo '[changelog]'
   echo 'trim = true'
+  # git-cliff's default body, plus the BREAKING CHANGE footer of a breaking commit as a
+  # nested item under its entry: the footer is where the commit says what a consumer has
+  # to change. `trim` strips every line, so the note goes out with a marker that the
+  # postprocessor turns into the indentation of the nested item.
+  cat <<'BODY'
+body = """
+{% if version %}\
+    ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+    ## [unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group | striptags | trim | upper_first }}
+    {% for commit in commits %}
+        - {% if commit.scope %}*({{ commit.scope }})* {% endif %}\
+            {% if commit.breaking %}[**breaking**] {% endif %}\
+            {{ commit.message | upper_first }}\
+            {% if commit.breaking and commit.breaking_description and commit.breaking_description != commit.message %}
+            BREAKING_NOTE {{ commit.breaking_description | replace(from="\n", to=" ") | upper_first }}\
+            {% endif %}\
+    {% endfor %}
+{% endfor %}
+"""
+postprocessors = [{ pattern = '(?m)^BREAKING_NOTE ', replace = '  - ' }]
+BODY
   echo '[git]'
   echo 'conventional_commits = true'
   echo 'filter_unconventional = true'

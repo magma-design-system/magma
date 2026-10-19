@@ -53,6 +53,7 @@
     },
     "./AGENTS.md": "./AGENTS.md",
     "./agents/*": "./agents/*",
+    "./CHANGELOG.md": "./CHANGELOG.md",
     "./dist/documentation.json": "./dist/documentation.json",
     "./dist/collection/components/*.md": "./dist/collection/components/*.md",
     "./dist/collection/components/*/documentation.json": "./dist/collection/components/*/documentation.json",
