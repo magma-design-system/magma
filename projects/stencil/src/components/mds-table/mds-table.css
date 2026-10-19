@@ -2,13 +2,14 @@
 
 /**
  * @prop --mds-table-actions-gap: Gap between table action elements.
- * @prop --mds-table-background-alt: Background color of the rows while a column sorts the table, and of the table behind them; in an interactive table also the scroll area, while the pointer is on the table.
+ * @prop --mds-table-background-alt: Background color of the rows while a column sorts the table, and of the table behind them.
  * @prop --mds-table-background: Default background color of the table.
- * @prop --mds-table-border-color: Color of the table border.
+ * @prop --mds-table-border-color: Color of the frame of the table; the lines inside it take --mds-table-separator-color.
  * @prop --mds-table-border-width: Width of the table border.
  * @prop --mds-table-cell-padding: Padding inside table cells.
  * @prop --mds-table-color-alt: Text color of the rows while a column sorts the table.
  * @prop --mds-table-color: Default text color of the table.
+ * @prop --mds-table-separator-color: Color of the lines inside the table: between the rows, under the header, above the footer and at the edge of the batch actions panel.
  */
 
 :host {
@@ -17,15 +18,17 @@
   --mds-table-actions-gap: --spacing(200);
   --mds-table-background-alt: rgb(var(--magma-surface-raised));
   --mds-table-background: rgb(var(--magma-surface-overlay));
-  --mds-table-border-color: rgb(var(--magma-border-default));
+  --mds-table-border-color: rgb(var(--magma-border-muted));
   --mds-table-border-width: 2px;
   --mds-table-cell-padding: --spacing(400);
   --mds-table-color-alt: rgb(var(--magma-text-muted));
   --mds-table-color: rgb(var(--magma-text-default));
+  --mds-table-separator-color: rgb(var(--magma-border-muted));
   --mds-table-batch-actions-width: --spacing(4800);
 
-  /* internal */
-  --private-cell-border-color: var(--mds-table-border-color);
+  /* internal: the cells draw with the separator colour, which a consumer can set apart from
+     the frame; by default both are border-muted, so frame and grid read as one */
+  --private-cell-border-color: var(--mds-table-separator-color);
   --private-cell-border-width: var(--mds-table-border-width);
 
   @apply ease-out;
@@ -41,23 +44,19 @@
   transition-property: background-color, border-color, color;
 }
 
+/* The wrapper is the scroll container: its background shows only where the table does not
+   cover it, as in the strip a trackpad uncovers when it bounces the table past its first or
+   last column. That strip is behind the rows, so it takes the sunken surface. Every cell
+   paints a full colour of its own (the body and the footer give one to their rows, the header
+   cells paint theirs), so nothing in the table lets this colour through, not even halfway
+   through a transition. */
+
 .table-wrapper {
-  background-color: var(--mds-table-background);
+  background-color: rgb(var(--magma-surface-sunken));
   corner-shape: inherit;
   display: flex;
   overflow: auto;
   width: 100%;
-}
-
-/* The wrapper is the scroll container: its background shows only where the table does not
-   cover it, as in the strip a trackpad uncovers when it bounces the table past its first or
-   last column. In an interactive table the pointer on the body paints every row but the
-   hovered one with --mds-table-background-alt, so while the pointer is on the table the
-   wrapper takes that colour too, and the bounce no longer shows a band of another colour
-   next to the rows. Away from the pointer the rows and the wrapper keep the base colour. */
-
-:host(:hover) .table-wrapper--interactive {
-  background-color: var(--mds-table-background-alt);
 }
 
 .table {
