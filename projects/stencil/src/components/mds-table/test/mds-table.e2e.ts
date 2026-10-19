@@ -27,6 +27,26 @@ const toggleRow = (root: HTMLElement, index: number): void => {
   input!.click();
 };
 
+/** A computed style of an element once the transitions of the table have landed. */
+const settledStyle = async (
+  element: Element,
+  property: 'backgroundColor' | 'borderBottomColor' | 'borderTopColor',
+): Promise<string> => {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  let previous = '';
+  for (let attempt = 0; attempt < 60; attempt += 1) {
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    const current = getComputedStyle(element)[property];
+    if (current === previous) return current;
+    previous = current;
+  }
+  return previous;
+};
+
+/** The background of an element once the transitions of the rows have landed. */
+const settledBackground = (element: Element): Promise<string> =>
+  settledStyle(element, 'backgroundColor');
+
 describe('mds-table', () => {
   it('renders', async () => {
     const { root } = await render('<mds-table></mds-table>');
@@ -45,19 +65,6 @@ describe('mds-table', () => {
     <mds-table-row><mds-table-cell value="Due">Due</mds-table-cell></mds-table-row>
   </mds-table-body>
 </mds-table>`;
-
-    /** The background of an element once the transitions of the rows have landed. */
-    const settledBackground = async (element: Element): Promise<string> => {
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      let previous = '';
-      for (let attempt = 0; attempt < 60; attempt += 1) {
-        await new Promise((resolve) => requestAnimationFrame(resolve));
-        const current = getComputedStyle(element).backgroundColor;
-        if (current === previous) return current;
-        previous = current;
-      }
-      return previous;
-    };
 
     it('takes the colour of the rows that are not hovered while the pointer is on the body', async () => {
       // the wrapper shows where a trackpad bounces the table past its first or last column:
@@ -83,6 +90,37 @@ describe('mds-table', () => {
       const wrapper = root.shadowRoot!.querySelector('.table-wrapper')!;
       expect(await settledBackground(wrapper)).toBe(
         await settledBackground(root.querySelector('mds-table-body')!),
+      );
+    });
+  });
+
+  describe('the select-all cell of the header', () => {
+    it('keeps the colour of the header while the pointer is on the body', async () => {
+      // the cell is an mds-table-cell, which paints the background of its row: no row sets it
+      // in the header, so it was transparent and showed the grey the scroll area turns to
+      const { root, waitForChanges } = await render(`
+<mds-table interactive selectable>
+  <mds-table-header>
+    <mds-table-header-cell label="Name"></mds-table-header-cell>
+  </mds-table-header>
+  <mds-table-body>
+    <mds-table-row value="uno"><mds-table-cell value="Uno">Uno</mds-table-cell></mds-table-row>
+    <mds-table-row value="due"><mds-table-cell value="Due">Due</mds-table-cell></mds-table-row>
+  </mds-table-body>
+</mds-table>`);
+
+      await userEvent.hover(root.querySelector('mds-table-body mds-table-cell')!);
+      await waitForChanges();
+
+      const selection = root
+        .querySelector('mds-table-header')!
+        .shadowRoot!.querySelector('.selection')!;
+      const wrapper = root.shadowRoot!.querySelector('.table-wrapper')!;
+      expect(await settledBackground(wrapper)).not.toBe(
+        await settledBackground(root.querySelector('mds-table-header-cell')!),
+      );
+      expect(await settledBackground(selection)).toBe(
+        await settledBackground(root.querySelector('mds-table-header-cell')!),
       );
     });
   });
