@@ -23,7 +23,7 @@ The `<mds-pref-contrast>` web component is a preference control that lets users 
 #### Properties & Visual Configurations
 
 - **`mode`** - the active contrast preference. Leave it unset to let the component restore the last persisted choice or fall back to `system`; set it explicitly (`more`, `system`, `no-preference`) only when the host wants to force a contrast level. Pick `more` for high-contrast output, `no-preference` for the default theme, and `system` to defer to the OS `prefers-contrast` setting.
-- **`size`** - sizes the nested tab items (`sm` / `md`). The parent `<mds-pref>` forwards a later change of its own `size` to every `mds-pref-*` child, but not the initial value, so set it on this component as well.
+- **`size`** - sizes the nested tab items (`sm` / `md`). Inside `<mds-pref>`, set it on the parent instead: the parent's `size` reaches every `mds-pref-*` child on load and when it changes, and overwrites the child's own.
 
 The component does not use the shared `variant` / `tone` ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); its visual states are driven entirely by the resolved `mode`.
 
@@ -34,7 +34,7 @@ Correct and idiomatic ways to use the `<mds-pref-contrast>` component, ordered f
 
 #### Inside the Full Preferences Panel
 
-The canonical form. Slot `<mds-pref-contrast>` directly inside [`<mds-pref>`](../../mds-pref) alongside the other preference controls. The parent panel forwards later changes of its `size` to every child.
+The canonical form. Slot `<mds-pref-contrast>` directly inside [`<mds-pref>`](../../mds-pref) alongside the other preference controls. The parent panel forwards its `size` to every child.
 
 ```html
 <mds-pref>
@@ -85,7 +85,7 @@ Listen for `mdsPrefChange` to act whenever the user switches the contrast mode. 
 
 #### Controlling Size
 
-Use the `size` prop when rendering `<mds-pref-contrast>` outside `<mds-pref>` and a specific tab-item size is required. Inside `<mds-pref>`, the parent forwards later changes of its own `size`, not the initial value, so set it on this child as well.
+Use the `size` prop when rendering `<mds-pref-contrast>` outside `<mds-pref>` and a specific tab-item size is required. Inside `<mds-pref>`, set `size` on the parent: it forwards it to this child, on load and when it changes.
 
 ```html
 <!-- Compact size for a toolbar or narrow panel -->

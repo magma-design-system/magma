@@ -126,8 +126,10 @@ export class MdsTreeItem {
 
   @Watch('expanded')
   handleExpandedChange(newValue: boolean): void {
+    // the folder icon follows the branch opened or closed by the tree too, not only by a click
+    this.updateToggleIcon();
     if (newValue) {
-      this.childrenElement.classList.remove('children--hidden');
+      this.childrenElement?.classList.remove('children--hidden');
       return;
     }
     this.updateCssCustomProperty();
@@ -230,8 +232,14 @@ export class MdsTreeItem {
     this.resolveActions();
 
     this.hasActions = hasChildWithSlot(this.host, 'action');
-    this.hasChildren = !!this.host.querySelector('mds-tree-item');
+    this.updateHasChildren();
   }
+
+  // an item whose children are rendered after load, a branch loaded on demand, gets the toggle
+  // and the lines of a branch too: they were read once, on load (#826)
+  private updateHasChildren = (): void => {
+    this.hasChildren = !!this.host.querySelector('mds-tree-item');
+  };
 
   componentDidLoad(): void {
     this.updateCssCustomProperty();
@@ -293,7 +301,7 @@ export class MdsTreeItem {
           )}
           role={this.hasChildren ? 'list' : undefined}
         >
-          <slot></slot>
+          <slot onSlotchange={this.updateHasChildren}></slot>
         </div>
       </Host>
     );

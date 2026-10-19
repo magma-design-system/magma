@@ -130,6 +130,29 @@ describe('mds-table', () => {
     });
   });
 
+  // #826: whether the table has batch actions was read once, on load: buttons added later, when
+  // the page fills the table, never got the bar
+  describe('the batch actions bar', () => {
+    const bar = (root: HTMLElement): Element | null =>
+      root.shadowRoot!.querySelector('.batch-actions-wrapper');
+
+    it('shows for a button added after load, and goes with the last one', async () => {
+      const { root } = await render(
+        TABLE.replace(/\s*<mds-button slot="batch-action"[^>]*><\/mds-button>/, ''),
+      );
+      expect(bar(root)).toBeNull();
+
+      const button = document.createElement('mds-button');
+      button.slot = 'batch-action';
+      button.label = 'Archive';
+      root.appendChild(button);
+      await vi.waitFor(() => expect(bar(root)).not.toBeNull());
+
+      button.remove();
+      await vi.waitFor(() => expect(bar(root)).toBeNull());
+    });
+  });
+
   // #801: the header read the actions once, on load, so a table filled after its first render
   // (an empty array, then a fetch) had rows one cell longer than the header
   describe('actions that arrive after the first load', () => {

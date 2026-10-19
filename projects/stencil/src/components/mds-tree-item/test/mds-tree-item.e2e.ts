@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 import { describeConditionalSlot } from '@test/slot';
 
 describe('mds-tree-item', () => {
@@ -98,5 +99,41 @@ describe('mds-tree-item', () => {
     html: '<mds-tree-item label="Item"></mds-tree-item>',
     slot: 'action',
     region: '.actions-container',
+  });
+
+  // #826: whether an item has children was read once, on load, and the folder icon followed only
+  // a click, not the branch the tree opened
+  describe('a branch', () => {
+    beforeEach(mockIconFetch);
+
+    it('loaded after the item gets the toggle and the lines of a branch', async () => {
+      const { root } = await render('<mds-tree-item label="Parent"></mds-tree-item>');
+      const header = root.shadowRoot!.querySelector('.header')!;
+      expect(header).not.toHaveClass('header--has-children');
+
+      root.appendChild(document.createElement('mds-tree-item'));
+
+      await vi.waitFor(() => expect(header).toHaveClass('header--has-children'));
+    });
+
+    it('opened and closed by the tree shows the folder it is in', async () => {
+      const { root, waitForChanges } = await render(`
+        <mds-tree toggle="folder">
+          <mds-tree-item label="Parent"><mds-tree-item label="Child"></mds-tree-item></mds-tree-item>
+        </mds-tree>`);
+      const parent = root.querySelector('mds-tree-item')!;
+      const toggleIcon = (): string | undefined =>
+        parent.shadowRoot!.querySelector<HTMLMdsButtonElement>('.toggle-icon mds-button')!.icon;
+      const closed = toggleIcon();
+
+      (root as HTMLMdsTreeElement).expanded = true;
+      await waitForChanges();
+      const open = toggleIcon();
+      expect(open).not.toBe(closed);
+
+      (root as HTMLMdsTreeElement).expanded = false;
+      await waitForChanges();
+      expect(toggleIcon()).toBe(closed);
+    });
   });
 });
