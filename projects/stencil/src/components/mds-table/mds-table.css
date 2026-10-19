@@ -2,7 +2,7 @@
 
 /**
  * @prop --mds-table-actions-gap: Gap between table action elements.
- * @prop --mds-table-background-alt: Background color of the rows while a column sorts the table, and of the table behind them; in an interactive table also the scroll area, while the pointer is on the table.
+ * @prop --mds-table-background-alt: Background color of the rows while a column sorts the table, and of the table behind them.
  * @prop --mds-table-background: Default background color of the table.
  * @prop --mds-table-border-color: Color of the frame of the table; the lines inside it take --mds-table-separator-color.
  * @prop --mds-table-border-width: Width of the table border.
@@ -44,23 +44,19 @@
   transition-property: background-color, border-color, color;
 }
 
+/* The wrapper is the scroll container: its background shows only where the table does not
+   cover it, as in the strip a trackpad uncovers when it bounces the table past its first or
+   last column. That strip is behind the rows, so it takes the sunken surface. Every cell
+   paints a full colour of its own (the body and the footer give one to their rows, the header
+   cells paint theirs), so nothing in the table lets this colour through, not even halfway
+   through a transition. */
+
 .table-wrapper {
-  background-color: var(--mds-table-background);
+  background-color: rgb(var(--magma-surface-sunken));
   corner-shape: inherit;
   display: flex;
   overflow: auto;
   width: 100%;
-}
-
-/* The wrapper is the scroll container: its background shows only where the table does not
-   cover it, as in the strip a trackpad uncovers when it bounces the table past its first or
-   last column. In an interactive table the pointer on the body paints every row but the
-   hovered one with --mds-table-background-alt, so while the pointer is on the table the
-   wrapper takes that colour too, and the bounce no longer shows a band of another colour
-   next to the rows. Away from the pointer the rows and the wrapper keep the base colour. */
-
-:host(:hover) .table-wrapper--interactive {
-  background-color: var(--mds-table-background-alt);
 }
 
 .table {

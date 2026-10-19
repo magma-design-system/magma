@@ -15,7 +15,10 @@
   --mds-table-body-color-alt: var(--mds-table-color-alt, rgb(var(--magma-text-muted)));
   --mds-table-body-color: var(--mds-table-color, rgb(var(--magma-text-default)));
 
-  /* internal */
+  /* internal: a row at rest paints the body colour instead of nothing, so a row that turns
+     selected or hovered goes from one full colour to another, and its transition never shows
+     what lies under the table halfway through */
+  --mds-table-row-background: var(--mds-table-body-background);
   --mds-table-row-color: var(--mds-table-body-color);
   --mds-table-body-transition-duration: var(--duration-200);
   --private-table-body-transition-duration: var(--mds-table-body-transition-duration);

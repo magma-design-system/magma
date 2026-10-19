@@ -54,42 +54,57 @@ describe('mds-table', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
-  describe('the scroll area', () => {
-    const INTERACTIVE = `
-<mds-table interactive>
+  describe('the rows', () => {
+    const SELECTABLE = `
+<mds-table interactive selectable>
   <mds-table-header>
     <mds-table-header-cell label="Name"></mds-table-header-cell>
   </mds-table-header>
   <mds-table-body>
-    <mds-table-row><mds-table-cell value="Uno">Uno</mds-table-cell></mds-table-row>
-    <mds-table-row><mds-table-cell value="Due">Due</mds-table-cell></mds-table-row>
+    <mds-table-row value="uno"><mds-table-cell value="Uno">Uno</mds-table-cell></mds-table-row>
+    <mds-table-row value="due"><mds-table-cell value="Due">Due</mds-table-cell></mds-table-row>
   </mds-table-body>
+  <mds-table-footer>
+    <mds-table-cell>Totale</mds-table-cell>
+  </mds-table-footer>
 </mds-table>`;
 
-    it('takes the colour of the rows that are not hovered while the pointer is on the body', async () => {
-      // the wrapper shows where a trackpad bounces the table past its first or last column:
-      // it kept the base colour, a white band next to the rows the hover had turned grey
-      const { root, waitForChanges } = await render(INTERACTIVE);
-      const [hovered, other] = Array.from(root.querySelectorAll('mds-table-cell'));
-
-      await userEvent.hover(hovered);
-      await waitForChanges();
-
-      const wrapper = root.shadowRoot!.querySelector('.table-wrapper')!;
-      expect(await settledBackground(other)).not.toBe(await settledBackground(hovered));
-      expect(await settledBackground(wrapper)).toBe(await settledBackground(other));
-    });
-
-    it('keeps the colour of the rows while the pointer is away', async () => {
-      const { root, waitForChanges } = await render(INTERACTIVE);
+    it('paint a full colour at rest, the colour of the body', async () => {
+      // a row at rest painted nothing and let through whatever lay under the table
+      const { root, waitForChanges } = await render(SELECTABLE);
       // the tests share the page, and the pointer stays where the last one left it
       await userEvent.unhover(root);
       await waitForChanges();
 
-      // at rest the rows paint nothing: what shows through them is the body
-      const wrapper = root.shadowRoot!.querySelector('.table-wrapper')!;
-      expect(await settledBackground(wrapper)).toBe(
+      expect(await settledBackground(root.querySelector('mds-table-body mds-table-cell')!)).toBe(
         await settledBackground(root.querySelector('mds-table-body')!),
+      );
+    });
+
+    it('never go through a transparent colour when the whole table is selected', async () => {
+      // a selected row went from transparent to its colour, so halfway through the transition
+      // its cells let the scroll area behind the table through, and the rows flickered
+      const { root } = await render(SELECTABLE);
+      const cell = root.querySelector('mds-table-body mds-table-cell')!;
+      const seen: string[] = [];
+
+      await (root as HTMLMdsTableElement).selectAll();
+      for (let sample = 0; sample < 12; sample += 1) {
+        seen.push(getComputedStyle(cell).backgroundColor);
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
+
+      expect(seen.filter((colour) => colour.startsWith('rgba'))).toEqual([]);
+    });
+
+    it('paint the footer with the colour of the table, not the scroll area behind it', async () => {
+      const { root } = await render(SELECTABLE);
+      const wrapper = root.shadowRoot!.querySelector('.table-wrapper')!;
+      const footerCell = root.querySelector('mds-table-footer mds-table-cell')!;
+
+      expect(await settledBackground(footerCell)).not.toBe(await settledBackground(wrapper));
+      expect(await settledBackground(footerCell)).toBe(
+        await settledBackground(root.querySelector('mds-table-header-cell')!),
       );
     });
   });
@@ -97,7 +112,7 @@ describe('mds-table', () => {
   describe('the select-all cell of the header', () => {
     it('keeps the colour of the header while the pointer is on the body', async () => {
       // the cell is an mds-table-cell, which paints the background of its row: no row sets it
-      // in the header, so it was transparent and showed the grey the scroll area turns to
+      // in the header, so it was transparent and showed the scroll area behind the table
       const { root, waitForChanges } = await render(`
 <mds-table interactive selectable>
   <mds-table-header>
