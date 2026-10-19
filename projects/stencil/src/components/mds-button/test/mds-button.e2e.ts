@@ -402,6 +402,26 @@ describe('mds-button', () => {
 
       expect(submits.map(({ data }) => data.get('action'))).toEqual(['send']);
     });
+
+    // a form-associated element reads a present boolean attribute as set, "false" included, as
+    // a native button does (Stencil 4.45.2): the docs tell to remove the attribute instead
+    it('is disabled by disabled="false", as a native button, until the attribute is removed', async () => {
+      const { root } = await render<HTMLFormElement>(
+        '<form><mds-button name="action" value="send" label="Send" disabled="false"></mds-button></form>',
+      );
+      const submits = recordSubmits(root);
+      const button = root.querySelector('mds-button')!;
+
+      expect(button.disabled).toBe(true);
+      button.click();
+      expect(submits).toHaveLength(0);
+
+      button.removeAttribute('disabled');
+      await vi.waitFor(() => expect(button.disabled).toBeFalsy());
+      button.click();
+
+      expect(submits.map(({ data }) => data.get('action'))).toEqual(['send']);
+    });
   });
 
   // the href used to be followed by a listener on the host, whatever the page decided (#806): a

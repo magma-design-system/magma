@@ -41,6 +41,24 @@ describe('client wrappers', () => {
       expect(button.iconPosition).toBe('left');
       expect(button.disabled).toBeUndefined();
     });
+
+    // a form-associated element reads the attribute "false" as set, which a bare tag in React 18
+    // writes: the wrapper sets the property instead, as the docs promise
+    it('turns a boolean prop off with false, on a form-associated element too', async () => {
+      const { container, rerender } = render(<MdsButton label="Salva" disabled={false} />);
+      const button = await hydrated<HTMLMdsButtonElement>(container, 'mds-button');
+
+      expect(button.disabled).toBeFalsy();
+      expect(button.hasAttribute('disabled')).toBe(false);
+
+      rerender(<MdsButton label="Salva" disabled />);
+      expect(button.disabled).toBe(true);
+
+      // turned off after load, the button clears it to undefined (disabledChanged)
+      rerender(<MdsButton label="Salva" disabled={false} />);
+      expect(button.disabled).toBeFalsy();
+      await vi.waitFor(() => expect(button.hasAttribute('disabled')).toBe(false));
+    });
   });
 
   describe('events', () => {

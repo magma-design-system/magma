@@ -18,6 +18,8 @@ describe('mds-price-table-list', () => {
     const item = document.createElement('mds-price-table-list-item');
     item.textContent = 'Ten users';
     root.appendChild(item);
+    // the item names its own slot when it renders: until then the list counts it by its tag
+    await item.componentOnReady();
     await vi.waitFor(() => expect(separator()).not.toBeNull());
     expect(
       root.shadowRoot!.querySelector<HTMLSlotElement>('slot[name="item"]')!.assignedElements(),

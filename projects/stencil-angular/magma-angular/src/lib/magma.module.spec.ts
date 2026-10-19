@@ -8,6 +8,7 @@ import { DIRECTIVES, MagmaModule } from '../public-api';
   template: `
     <mds-button [label]="label" [disabled]="disabled">Salva</mds-button>
     <mds-input-switch (mdsInputSwitchChange)="events.push($event)"></mds-input-switch>
+    <mds-button id="attribute" [attr.disabled]="'false'">Invia</mds-button>
   `,
 })
 class HostComponent {
@@ -45,6 +46,17 @@ describe('MagmaModule', () => {
     fixture.detectChanges();
 
     expect(button.label).toBe('Invia');
+    expect(button.disabled).toBe(true);
+  });
+
+  // an attribute binding writes the attribute, which a form-associated element reads as set
+  // whatever its value: the docs tell to bind the input, as above, to turn it off
+  it('turns a form-associated prop on with an attribute binding, "false" included', () => {
+    const fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+    const button: HTMLMdsButtonElement = fixture.nativeElement.querySelector('#attribute');
+
+    expect(button.getAttribute('disabled')).toBe('false');
     expect(button.disabled).toBe(true);
   });
 

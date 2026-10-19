@@ -150,6 +150,12 @@ router, a `(click)` binding on the component can still cancel the event with
   the supported path, and skipping them also skips the custom element registration.
 - Keep `magma` and `magma-angular` on the exact same version; the wrapper is
   generated against a specific `magma` build.
+- Bind boolean inputs as properties: `[disabled]="isDisabled"` sets the property
+  through the proxy, so `false` turns the prop off. A static `disabled="false"` or
+  `[attr.disabled]="false"` writes the attribute, and on a form-associated component
+  (`mds-button`, `mds-input`, ..., see [`conventions.md`](conventions.md)) any value of
+  it, `"false"` included, turns the prop on. Reactive Forms `disable()` / `enable()` set
+  the property.
 - Custom events (`mdsInputChange`, ...) bind via the wrapper's Angular outputs:
   `(mdsInputChange)="onChange($event)"`. The event names of a component are in the Events
   table of its `AGENTS.md` (see [`components.md`](components.md)); a component without

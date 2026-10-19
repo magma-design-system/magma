@@ -204,6 +204,11 @@ With React Router the handler is `(href) => navigate(href)` from `useNavigate()`
   on the client - use the `.server` variants (section 5) to get real SSR markup.
 - Keep `magma` and `magma-react` on the exact same version; the wrapper is generated
   against a specific `magma` build.
+- Pass booleans as booleans: `<MdsButton disabled={false} />` sets the property and turns
+  the prop off, and the `.server` variants leave a `false` out of the markup. Render the
+  wrapper, not the bare `mds-*` tag: in React 18 JSX `<mds-button disabled={false}>`
+  writes the attribute `"false"`, which turns a form-associated component on (see
+  [`conventions.md`](conventions.md)).
 
 ## See also
 

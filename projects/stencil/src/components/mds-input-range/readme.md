@@ -168,7 +168,7 @@ Without slotted text the slider has no accessible name - screen readers cannot a
 
 #### Do Not Use `disabled="false"` to Enable the Slider
 
-Stencil reads `"false"` as `false` and, since `disabled` is reflected, removes the attribute at the first render, so this happens to work; but the markup says the opposite of what it does, and on a prop that is not reflected the attribute stays in the DOM, where `[attr]` selectors still match it. Remove the attribute entirely to enable it.
+`disabled` is a boolean attribute and `mds-input-range` is form-associated: as on a native control, any value turns it on, `"false"` included, so this markup disables the slider. Remove the attribute entirely to enable it.
 
 ```html
 <!-- INCORRECT -->
