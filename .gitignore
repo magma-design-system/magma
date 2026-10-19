@@ -10,6 +10,7 @@ $RECYCLE.BIN/
 *~
 .DS_Store
 .cache/
+.claude/
 .directory/
 .env/
 .idea/
