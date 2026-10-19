@@ -93,12 +93,12 @@ autoprefixer after Tailwind for the browsers of the root `.browserslistrc`. Sten
 
 ### Reading `<html>` preference state from inside a component
 
-Some components ship `*-pref-*.css` files (e.g. `mds-modal-pref-mode.css`) that refine their look for dark / high-contrast / reduced-motion on top of the global palette flip (see `projects/styles/SPEC.md`). Because these files are scoped to the component shadow tree, a normal selector cannot reach the `<html>` element where the `pref-*` classes live, so they use `:host-context(:root.pref-...)` - the only selector that lets a shadow stylesheet test an ancestor's state.
+Some components ship `*-pref-*.css` files (e.g. `mds-modal-pref-mode.css`) that refine their look for dark / high-contrast / reduced-motion on top of the global palette flip (see `projects/styles/SPEC.md`). A shadow stylesheet cannot select the `<html>` element where the `pref-*` classes live, so the component reflects the resolved preference onto its own host: it reads `preferenceStore.state.<dim>` (`@common/preference`) in `render()`, sets it as a `pref-<dim>` attribute on `<Host>`, and the stylesheet selects it with plain `:host([pref-mode='dark'])` rules. These apply in every browser.
 
 Two facts agents must keep in mind before touching these files:
 
-- `:host-context()` is **Chromium-only** (not Firefox, not Safari). These per-component refinements therefore apply only in Chromium; elsewhere the component simply uses the globally-flipped tokens. This is tolerated, not a bug to "fix" with `@container style()` (which crashes WebKit in the shadow + slotted + inherited-custom-property case).
-- The only thing that crosses the shadow boundary inward is the **value of an inherited custom property** (e.g. `var(--magma-surface-default)`, `var(--magma-pref-animation)`), never a selector reaching upward. To make a refinement work cross-browser, resolve it to a token at `:root` and consume the value inside the component, instead of branching on a selector. Removing `:host-context` without that value channel deletes the refinement (the rule then matches nothing inside the shadow tree).
+- Do not reach for `:host-context()`: it is **Chromium-only** (not Firefox, not Safari). The refinements once written with it applied in Chromium alone, which is why `mds-pref-mode` used to force Safari to light. `@container style()` is no way out either: it crashes WebKit in the shadow + slotted + inherited-custom-property case.
+- `system`, and a page with no controller, follow the OS: pair the rule for the explicit choice with an `@media (prefers-color-scheme: dark)` block for `:host([pref-mode='system'])` and `:host(:not([pref-mode]))`, as `mds-tab-pref-mode.css` does. A refinement that can be a token resolved at `:root` needs no host attribute at all: the value of an inherited custom property (e.g. `var(--magma-surface-default)`) crosses the shadow boundary inward and flips with the global palette.
 
 ## Tone and variant system
 
