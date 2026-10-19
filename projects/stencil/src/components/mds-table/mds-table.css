@@ -18,7 +18,7 @@
   --mds-table-actions-gap: --spacing(200);
   --mds-table-background-alt: rgb(var(--magma-surface-raised));
   --mds-table-background: rgb(var(--magma-surface-overlay));
-  --mds-table-border-color: rgb(var(--magma-border-default));
+  --mds-table-border-color: rgb(var(--magma-border-muted));
   --mds-table-border-width: 2px;
   --mds-table-cell-padding: --spacing(400);
   --mds-table-color-alt: rgb(var(--magma-text-muted));
@@ -26,8 +26,8 @@
   --mds-table-separator-color: rgb(var(--magma-border-muted));
   --mds-table-batch-actions-width: --spacing(4800);
 
-  /* internal: the frame is an outline (border-default), the lines inside it are the grid of the
-     table (border-muted), so the cells draw with the separator colour */
+  /* internal: the cells draw with the separator colour, which a consumer can set apart from
+     the frame; by default both are border-muted, so frame and grid read as one */
   --private-cell-border-color: var(--mds-table-separator-color);
   --private-cell-border-width: var(--mds-table-border-width);
 

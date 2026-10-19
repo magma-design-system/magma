@@ -29,7 +29,7 @@
 
 @property --mds-table-border-color {
   inherits: true;
-  initial-value: rgb(var(--magma-border-default));
+  initial-value: rgb(var(--magma-border-muted));
   syntax: '<color>';
 }
 
