@@ -27,8 +27,6 @@ concurrency:
 
 jobs:
   risk:
-    # release PRs (dev -> main) carry commits already checked on their own PRs
-    if: ${{ github.head_ref != 'dev' }}
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
