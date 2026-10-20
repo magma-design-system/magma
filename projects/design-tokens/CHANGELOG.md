@@ -4,6 +4,16 @@ Every release of `@maggioli-design-system/design-tokens`, newest first. Each sec
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [design-tokens@15.2.1] - 2026-10-20
+
+### Bug Fixes
+
+- *(design-tokens)* Ui no longer overwrites a JavaScript or package.json config with JSON
+- *(design-tokens)* The CLI no longer prints Ajv strict-mode warnings on every start
+- *(design-tokens,styles,magma)* The shadow ink stays dark in dark mode, no more light halo
+- *(design-tokens,styles)* Transition-cosmetic animates translate, scale and rotate
+- *(design-tokens)* The playground draft no longer wins silently over a changed config
+
 ## [design-tokens@15.2.0] - 2026-10-15
 
 ### Build

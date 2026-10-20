@@ -7,6 +7,243 @@ package.
 It is released together with `magma`, at the same version: the sections are the
 releases of `magma`.
 
+## [magma@2.4.0] - 2026-10-20
+
+### Bug Fixes
+
+- *(mds-accordion-timer,mds-accordion-timer-item)* Announce each selection once, keep the open one
+- *(mds-accordion)* Announce every change of the open items, and only those
+- *(mds-pref-mode,mds-pref-animation,mds-pref-consumption,mds-pref-contrast)* Announce a pick once
+- *(mds-pref-theme)* Announce a theme or a corner shape once, not on every render
+- *(mds-pref-language)* Select the item of a language set from code
+- *(mds-toast)* Emit mdsToastClose once per dismissal and stop the countdown on hide
+- *(mds-push-notification-item)* Send the id the close event declares
+- *(mds-header)* Type the visibility detail as the string it carries
+- *(mds-file)* Send the description the card shows
+- *(mds-breadcrumb)* Name the item the back arrow selects as the caller
+- *(mds-details)* Write the user's toggle into opened
+- *(mds-calendar)* Put a backwards range in order
+- *(mds-table,mds-table-row)* Follow a selection made from code, remove the scroll listener
+- *(mds-notification)* Stop following the target when the badge leaves the page
+- *(mds-label)* Wrap at the width the label is given with truncate none or all
+- *(design-tokens,styles,magma)* The shadow ink stays dark in dark mode, no more light halo
+- *(mds-dropdown)* A second click on the caller closes the panel
+- *(mds-button-dropdown)* The link and the initial focus belong to the primary action
+- *(mds-emoji)* The gaze follows the direction of the pointer, at any size
+- *(mds-table)* Call setActions only on a header that has it
+- *(mds-modal)* Open the dialog after the render that reflects position and animation
+- *(mds-text)* Keep the accents of a truncated label or option text visible
+- *(mds-chip)* Paint the ground with surface-overlay, not the grey wash
+- *(mds-banner)* Paint the neutral ground with surface-overlay, not the card's surface-raised
+- *(mds-input-otp,mds-pref-theme-item,mds-stepper-bar-item,stencil)* Import the FOUC sheets
+- *(mds-text)* Import the animation preference sheet
+- *(mds-tooltip)* Import the dark high-contrast shadow sheet
+- *(mds-avatar,mds-avatar-stack)* Spell the pill on the corner axis
+- *(mds-entity)* Take the radii and the shape of the corner axis
+- *(mds-chip,mds-mention)* Spell the pills on the corner axis
+- *(mds-hr,mds-separator)* Spell the rounded rule on the corner axis
+- *(mds-input-switch,mds-input)* Spell the switch and the password dots as pills
+- *(mds-notification,mds-radial-progress)* Spell the circles on the corner axis
+- *(mds-paginator,mds-paginator-item)* Spell the pills on the corner axis
+- *(mds-horizontal-scroll)* Spell the dots and the arrows as pills
+- *(mds-breadcrumb-item)* Spell the pill of the button on the corner axis
+- *(mds-filter,mds-filter-item)* Spell the pills on the corner axis
+- *(mds-badge)* Spell the pill on the corner axis
+- *(mds-stepper-bar-item)* Take the radii of the corner axis
+- *(mds-push-notification-item)* Take the radii of the corner axis
+- *(mds-tooltip,mds-text,mds-note)* Take the smallest step of the corner axis
+- *(mds-accordion-item,mds-accordion-timer-item,mds-details)* Cap the corner of the header
+- *(mds-bibliography)* Spell the pill of the link on the corner axis
+- *(mds-price-table-list,mds-zero,mds-usage)* Take the radii of the corner axis
+- *(mds-toast,mds-status-bar)* Take the radii of the corner axis
+- *(mds-header)* Round the inline bar on the corner axis
+- *(mds-policy-ai)* Take the radii of the corner axis
+- *(mds-table-row)* Round the actions panel on the corner axis
+- *(mds-url-view)* Round the window on the corner axis
+- *(mds-tree,mds-tree-item)* Take the radii of the corner axis
+- *(mds-button-dropdown)* Round the corners as mds-button does, on the corner axis
+- *(mds-calendar,mds-calendar-cell)* Take the radii of the corner axis
+- *(mds-input-select,mds-input-tip-item,mds-input-range,mds-input-upload)* Take the corner axis
+- *(mds-keyboard,mds-keyboard-key)* Paint the keyboard with the washes of the active theme
+- *(mds-pref-theme-item)* Take the wash of the active theme and the pill radius
+- *(mds-input-select)* Take the radius of mds-input, on the host
+- *(mds-accordion)* Keep the ids of the items
+- *(mds-breadcrumb)* Keep the ids of the items
+- *(mds-filter)* Keep the ids of the items
+- *(mds-tab-bar)* Keep the ids of the items
+- *(mds-tree,mds-tree-item)* The toggle takes its expanded colours and its gap
+- *(mds-tab,mds-tab-item)* The items take the default and the hover shadow
+- *(mds-progress,mds-stepper-bar-item)* --mds-progress-radius rounds the bar again
+- *(mds-dropdown)* The backdrop takes the z-index and the duration set on the dropdown
+- *(mds-label)* Name the delete button in Spanish
+- *(mds-label)* Load a deletable label without an error
+- *(mds-tab)* Leave a content panel past the last item hidden
+- *(mds-pref-animation,mds-pref-consumption,mds-pref-contrast)* Ignore a mode outside the union
+- *(mds-pref-language,mds-pref-language-item)* Take three-letter codes, ignore invalid ones
+- *(mds-pref-theme,mds-pref-theme-item)* Ignore an invalid theme name, scheme or corner shape
+- *(mds-emoji)* Ignore a name outside the dictionary
+- *(mds-input-otp)* Submit a paste that fills the last cell instead of throwing
+- *(mds-icon)* Decode a base64 icon with its padding, draw a saved SVG file inline
+- *(mds-img)* Skip a srcset-consumption entry without its level
+- *(mds-bibliography)* Describe author as a string, read an array per entry
+- *(mds-avatar)* Give every pair of initials a variant
+- *(mds-horizontal-scroll)* Measure the slotted elements, not the text between them
+- *(mds-notification)* Describe the element the badge sits on with its count
+- *(mds-kpi-item)* Build the accessible name from the parts that are there
+- *(mds-price-table-list,mds-usage)* Drop the main landmark and the document-edit roles
+- *(mds-progress,mds-benchmark-bar)* Keep the progressbar values valid and follow aria-hidden
+- *(mds-toast)* Announce the toast as a status message
+- *(mds-spinner,mds-video-wall,mds-emoji)* Follow the Magma animation preference
+- *(mds-tree,mds-tree-item)* Give the tree a structure and the branches their state
+- *(mds-button,mds-filter-item)* Click on Enter and Space as the pointer does, never while busy
+- *(mds-input-otp)* Leave Tab, Backspace and the shortcuts to the keyboard
+- *(mds-details)* Toggle on Space, and keep the closed content out of the tab order
+- *(mds-file,mds-file-preview)* Make the download cards buttons the keyboard activates
+- *(mds-tooltip,mds-help)* Show the tooltip on focus as on hover
+- *(mds-tab-bar-item)* Reach and activate the items from the keyboard
+- *(mds-paginator,mds-paginator-item)* Take the disabled arrows out of the tab order
+- *(mds-breadcrumb,mds-breadcrumb-item)* Keep the current page selected under the keyboard
+- *(mds-modal,mds-status-bar)* Let strict veto the swipe, and keep the status bar non-modal
+- *(mds-radial-menu)* Close the open menu on an outside click and on Escape
+- *(mds-details)* Keep an open details hidden inside a closed one
+- *(mds-calendar,mds-calendar-cell)* The cell properties reach the cells, the day colour paints
+- *(mds-price-table-list-item)* The supported icon takes its hover colour
+- *(mds-table-cell,mds-table-row,mds-table)* The -alt colours paint the sorted column
+- *(mds-header,mds-header-bar)* The icon colours of the header reach the hamburger
+- *(mds-price-table-features,mds-price-table-features-cell)* The border colour reaches the cells
+- *(mds-toast)* MdsToastClose waits for the exit transition, not for 1000 ms
+- *(mds-tree-item)* MdsTreeItemCollapse waits for the branch transition, not for 1000 ms
+- *(mds-keyboard-key)* The space key is wide again
+- *(mds-paginator,mds-paginator-item)* The item properties reach the items from the paginator
+- *(mds-push-notification-item)* Style only the tones its type accepts
+- *(mds-card)* Read the layout from the slots, again when the content changes
+- *(mds-table)* Show the batch bar for buttons added after load
+- *(mds-price-table-list)* Show the items rendered after load
+- *(mds-tree,mds-tree-item)* Open on load, hand the props to the items that arrive later
+- *(mds-calendar)* Show the preselection area for the content of its slot
+- *(mds-pref,mds-pref-language,mds-pref-theme)* Size on load, follow the items added later
+- *(mds-avatar-stack)* Count the avatars added after load
+- *(mds-img)* Follow the consumption preference the page applies
+- *(storybook)* Turn off the boolean controls of the form-associated components
+- *(mds-tree-item)* Round the corners of the folder toggle again
+- *(mds-input-switch)* Round the focus ring of the checkbox and radio again
+- *(mds-avatar)* Show the sources in one order, never an empty avatar
+- *(mds-bibliography)* Keep every first name, link the title only with a url
+- *(mds-button-dropdown)* Pass truncate to the label of the primary action
+- *(mds-calendar-cell)* Paint selection none as no selection, deprecate weekend
+- *(mds-input-date-range-preselection)* Keep the author's slot, let the click through
+- *(mds-dropdown,mds-tooltip,mds-help)* Keep the placement while it has room
+- *(mds-emoji)* Keep the mouse tracking off once stopFollowMouse is called
+- *(mds-file,mds-file-preview)* Show no extension for a filename without one
+- *(mds-header)* Hide the hamburger of the bar without a menu slot
+- *(mds-header-bar)* Open and close the menu of the header with setOpened
+- *(mds-notification)* Hide a dismissed badge with the disabled strategy too
+- *(mds-pref)* Show the reload notice in the visible panel
+- *(mds-pref-theme)* Keep a name, scheme or corner shape set after load
+- *(mds-pref-contrast)* Stop querying the contrast of the system on each pick
+- *(mds-push-notification)* Hide once the last item goes, label the clear button
+- *(mds-stepper-bar)* Hide the other panels with the hidden attribute
+- *(mds-keyboard)* Accept the keys of a shortcut in any order
+- *(mds-note)* Turn Enter into a click only while the note is deletable
+- *(mds-calendar-cell)* Let the start and end of a selection keep their colours
+- *(mds-pref-mode)* Stop forcing Safari to light mode
+- *(magma)* Export CHANGELOG.md from magma, magma-react and magma-angular
+- *(mds-benchmark-bar)* Announce the value as shown when there is no alias
+- *(mds-input-switch)* Cast the shadow of the knob again
+- *(mds-file,mds-filter-item,mds-input-range,mds-input-switch,mds-input-upload)* Use magma eases
+- *(magma)* Fix: .claude to .gitignore
+- *(mds-table-header)* Paint the select-all cell with the header colour
+- *(mds-table)* Paint every row with a full colour, and the scroll area with the sunken surface
+- *(mds-table)* Draw the frame with border-muted, like the grid
+- *(mds-modal)* Slide the window in when its content has a focusable element
+
+### Build
+
+- *(magma)* Drop the unused changelog scripts and the deprecated conventional-changelog-cli
+- *(magma)* Print the BREAKING CHANGE footer under breaking entries
+
+### Documentation
+
+- *(magma)* Merge every pull request into dev through the merge queue
+- *(styles,magma)* A pill that casts a shadow takes surface-overlay, not a wash
+- *(mds-accordion-timer-item)* Describe progress as the 0 to 1 the timer writes
+- *(mds-breadcrumb-item)* Describe the button part
+- *(mds-button)* Describe the label part
+- *(mds-button-dropdown)* Describe the dropdown part
+- *(mds-card-media)* Describe the content part
+- *(mds-details)* Name the slots the content part wraps
+- *(mds-emoji)* Put the description of the methods before their tags
+- *(mds-file-preview)* Describe the card part
+- *(mds-header-bar)* Describe the content part
+- *(mds-help)* Describe the icon part
+- *(mds-horizontal-scroll)* Describe the content part
+- *(mds-img)* Describe the media part
+- *(mds-input)* Attach the part docs to the class, put the icon on the left
+- *(mds-input-date)* Describe the input-date part
+- *(mds-input-date-range-preselection)* Say the slot takes the label text
+- *(mds-input-field)* Name the controls the field validates, describe the content part
+- *(mds-input-tip)* Say active moves the tip, not the items
+- *(mds-input-tip-item)* List all ten variants in the Storybook controls
+- *(mds-label)* Drop the doc of a slot the label does not render
+- *(mds-list-item)* Describe the icon and text parts
+- *(mds-mention)* Give size its own description
+- *(mds-modal)* Say mdsModalOpen emits on open, describe the dialog part
+- *(mds-notification)* Say a value of 0 shows an empty dot
+- *(mds-pref)* List mds-pref-theme among the children
+- *(mds-price-table-list-item)* Describe the icon part
+- *(mds-push-notification)* Describe behavior as shipped
+- *(mds-radial-menu)* Describe the radial-menu part
+- *(mds-stepper-bar)* Describe itemsDone by what it sets, fix the slot tag name
+- *(mds-stepper-bar-item)* Describe value without an event that does not exist
+- *(mds-tab-item)* Describe the button part
+- *(mds-table)* Say what mdsTableSelectionChange emits, describe the batch bar part
+- *(mds-table-footer)* Say the footer takes cells
+- *(mds-table-header)* Say the header takes header cells, describe the actions part
+- *(mds-table-header-cell)* Describe the action and label parts
+- *(mds-toast)* Say when mdsToastClose emits
+- *(mds-tooltip)* Describe the text part
+- *(mds-tree-item)* Describe async and the two events by what they do
+- *(mds-url-view)* Give icon its own description
+- *(mds-usage)* Describe the header, icon and label parts
+- *(mds-button,mds-button-dropdown,mds-input-date)* Deprecate three properties nothing reads
+- *(mds-button,mds-input,mds-input-field)* Three custom property descriptions match the code
+- *(magma)* Explain that "false" turns on the booleans of form-associated components
+- *(magma)* Describe when the preferences announce a change, and the hidden step panels
+- *(magma)* Ask breaking commits to say what to change in their footer
+- *(stencil)* Give an @example to the props whose value has a format
+- *(magma)* List mds-toast-region and count 115 components
+- *(magma)* Document the icons package and fix the scope lists
+
+### Features
+
+- *(mds-stepper-bar,mds-stepper-bar-item)* Let the user ask to go back to a done step
+- *(mds-button)* --mds-button-label-transform keeps a label as written
+- *(mds-table,mds-table-header,mds-table-row)* The Actions column follows rows added after load
+- *(mds-policy-ai)* Part chip selects the chip, the wrapper gets part chip-wrapper
+- *(mds-push-notification-item)* Document the avatar part, drop the icon part
+- *(mds-tree)* Deprecate async, which the tree never reads
+- *(mds-img)* Let an empty alt mark the image as decorative
+- *(mds-chip)* Reflect disabled, which now blocks the keyboard as well as the pointer
+- *(mds-breadcrumb)* The selected colours and the disabled back button take their properties
+- *(mds-modal)* --mds-modal-transition-timing-function, the misspelled name kept as an alias
+- *(mds-radial-progress,mds-pref-mode,mds-accordion,mds-note)* Document the properties they read
+- *(mds-card)* --mds-card-background paints the card too
+- *(mds-radial-menu)* A stylesheet can set the radius and the angles
+- *(mds-img)* Set crossorigin and referrerpolicy on the image, with no default
+- *(mds-table-footer,mds-table)* Line the footer cells up with the rows
+- *(mds-usage)* Reflect variant, which the styles read from the host attribute
+- *(mds-table)* Draw the lines inside the table with their own separator colour
+- *(mds-toast)* Add a hide arrow and hold the countdown while the toast is in use
+- *(mds-toast,mds-toast-region)* Line up the toasts shown at once in a region
+
+### Refactor
+
+- *(mds-mention)* Drop the .badge rules, which match no element
+
+### Styling
+
+- *(mds-dropdown)* A deeper drop shadow in dark, three times the light alphas
+
 ## [magma@2.3.0] - 2026-10-15
 
 ### Bug Fixes

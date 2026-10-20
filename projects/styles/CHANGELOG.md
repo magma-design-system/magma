@@ -4,6 +4,17 @@ Every release of `@maggioli-design-system/styles`, newest first. Each section is
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [styles@17.2.1] - 2026-10-20
+
+### Bug Fixes
+
+- *(design-tokens,styles,magma)* The shadow ink stays dark in dark mode, no more light halo
+- *(design-tokens,styles)* Transition-cosmetic animates translate, scale and rotate
+
+### Documentation
+
+- *(styles,magma)* A pill that casts a shadow takes surface-overlay, not a wash
+
 ## [styles@17.2.0] - 2026-10-15
 
 ### Bug Fixes
