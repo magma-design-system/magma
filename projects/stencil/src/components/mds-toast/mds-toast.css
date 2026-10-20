@@ -112,6 +112,10 @@
   display: none;
 }
 
+.hide {
+  flex-shrink: 0;
+}
+
 ::slotted([slot='icon']) {
   @apply ease-out;
 

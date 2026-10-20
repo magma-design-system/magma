@@ -86,6 +86,7 @@ import { SortDirectionType } from "./components/mds-table-header-cell/meta/types
 import { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header-cell/meta/event-detail";
 import { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
+import { MdsToastCloseEventDetail } from "./components/mds-toast/meta/event-detail";
 import { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
 import { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
 import { UsageType } from "./components/mds-usage/meta/types";
@@ -171,6 +172,7 @@ export { SortDirectionType } from "./components/mds-table-header-cell/meta/types
 export { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header-cell/meta/event-detail";
 export { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
+export { MdsToastCloseEventDetail } from "./components/mds-toast/meta/event-detail";
 export { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
 export { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
 export { UsageType } from "./components/mds-usage/meta/types";
@@ -2735,7 +2737,11 @@ export namespace Components {
     }
     interface MdsToast {
         /**
-          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user.
+          * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
+         */
+        "deletable"?: boolean;
+        /**
+          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `deletable` so the person can hide it too.
           * @default 5000
          */
         "duration"?: number;
@@ -4429,7 +4435,7 @@ declare global {
         new (): HTMLMdsTextElement;
     };
     interface HTMLMdsToastElementEventMap {
-        "mdsToastClose": void;
+        "mdsToastClose": MdsToastCloseEventDetail;
     }
     interface HTMLMdsToastElement extends Components.MdsToast, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsToastElementEventMap>(type: K, listener: (this: HTMLMdsToastElement, ev: MdsToastCustomEvent<HTMLMdsToastElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -7401,14 +7407,18 @@ declare namespace LocalJSX {
     }
     interface MdsToast {
         /**
-          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user.
+          * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
+         */
+        "deletable"?: boolean;
+        /**
+          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `deletable` so the person can hide it too.
           * @default 5000
          */
         "duration"?: number;
         /**
-          * Emits when a toast with a `duration` has hidden itself, once its exit animation is over
+          * Emits once the toast is hidden and its exit animation is over, whoever hid it: the `reason` of the detail says who, `timeout`, `close` (the person, with the hide button) or `hide` (the application)
          */
-        "onMdsToastClose"?: (event: MdsToastCustomEvent<void>) => void;
+        "onMdsToastClose"?: (event: MdsToastCustomEvent<MdsToastCloseEventDetail>) => void;
         /**
           * Sets position of toast
           * @default 'bottom-center'
@@ -8321,6 +8331,7 @@ declare namespace LocalJSX {
         "variant": ThemeVariantType;
         "tone": ToneMinimalVariantType;
         "position": ToastPosition;
+        "deletable": boolean;
     }
     interface MdsTooltipAttributes {
         "hideArrow": boolean;
