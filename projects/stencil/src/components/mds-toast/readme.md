@@ -15,8 +15,10 @@ The `<mds-toast>` web component is the transient notification surface of the Mag
 
 - **Announced**: The host is a status region (`role="status"`): the message is read out when the toast shows it, without moving the focus. While not visible, the message is hidden from assistive technologies too, not only moved out of the viewport.
 - **Auto-dismiss timer**: When `visible` is true and `duration` is a positive number, an internal timer counts down and then sets `visible` back to `false`; setting `duration` to `0` (or falsy) keeps the toast on screen until it is closed intentionally.
-- **Close event**: When the timer dismisses the toast, the component emits `mdsToastClose` after the outro animation - consumers should listen for this to remove the toast from the DOM or update queue state. Hiding it yourself (removing `visible`) emits nothing.
-- **Reactive timer**: Showing the toast again (`visible` back to true) or changing `duration` at runtime restarts the countdown; hiding it stops the countdown, so a toast hidden by your code emits nothing later.
+- **The timer waits for the person**: The countdown stops while the pointer is over the toast or the focus is inside it (on its action, on its hide button), and goes on with the time that was left once both have left: the toast does not take its action away while the person is reading it or reaching the action.
+- **Hide button**: With `deletable`, the toast shows at its end a button with an arrow towards the edge it leaves by (down at the bottom, up at the top), named in the current language and reachable with the keyboard; it hides the toast. It is an arrow and not a cross because the action next to it may itself be a cancel ("Annulla"): the arrow only sends the message away.
+- **Close event**: Whenever the toast hides, the component emits `mdsToastClose` once, after the outro animation - consumers should listen for this to remove the toast from the DOM or update queue state. The `reason` of its detail says who hid it: `timeout` (the `duration` ran out), `close` (the person, with the hide button) or `hide` (your code removed `visible`). A toast shown again before the outro is over emits nothing for that hiding.
+- **Reactive timer**: Showing the toast again (`visible` back to true) or changing `duration` at runtime restarts the countdown; hiding it stops the countdown, so a toast hidden by your code closes once, as `hide`, and never again as `timeout`.
 - **Conditional regions**: The text region renders only when the host has inner content, and the action region is shown only while a `[slot="action"]` child is present, following the children added or removed later - empty slots produce no layout.
 - **Default-slot is text**: The default slot is intended for a plain text string only; icons go in the `icon` slot and interactive controls in the `action` slot.
 
@@ -29,6 +31,7 @@ The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`]
 - **`position`** anchors the toast to one of the six viewport corners/edges (top or bottom, left/center/right), driving both placement and the direction of the entry/exit animation; pick the edge that matches where users expect ephemeral feedback to surface.
 - **`visible`** is the controlled on/off switch for the toast; toggling it drives the show/hide animation and the auto-dismiss timer rather than mounting or unmounting the element.
 - **`duration`** is the visibility window in milliseconds before auto-dismiss; use a longer value for messages that carry an action the user must reach, and `0` for toasts that must stay until explicitly closed.
+- **`deletable`** shows the hide button; give it to a toast that stays (`duration="0"`) when its action is not what every person wants ("Riprova"), so the person can send the message away without using it.
 
 #### Slots
 
@@ -118,10 +121,10 @@ Use the `action` slot with an `<mds-button>` to offer a follow-up. The action re
 
 #### Persistent Toast (No Auto-Dismiss)
 
-Set `duration="0"` to keep the toast visible until the user explicitly acts. Use this when the message carries an action the user must not miss. The toast has no close control of its own: hide it from your action handler by removing `visible`.
+Set `duration="0"` to keep the toast visible until the user explicitly acts. Use this when the message carries an action the user must not miss. Hide it from your action handler by removing `visible`, and add `deletable` so the person can send the message away without using the action.
 
 ```html
-<mds-toast visible variant="warning" duration="0">
+<mds-toast visible variant="warning" duration="0" deletable>
   <mds-icon slot="icon" name="mi/baseline/warning"></mds-icon>
   Sessione in scadenza
   <mds-button slot="action" size="sm" variant="warning" tone="weak">
@@ -167,12 +170,15 @@ Use `position` to anchor the toast to one of the six viewport edges. Pick the ed
 
 #### Listening for the Close Event
 
-Listen for `mdsToastClose` to remove the toast from the DOM or update queue state after the outro animation completes. It is emitted only when the `duration` timer dismisses the toast. Do not react to `visible` becoming `false` directly - the animation is still running at that point.
+Listen for `mdsToastClose` to remove the toast from the DOM or update queue state after the outro animation completes. It is emitted once for every hiding, whoever hid the toast, and `event.detail.reason` says who: `timeout`, `close` (the hide button) or `hide` (your code). Do not react to `visible` becoming `false` directly - the animation is still running at that point.
 
 ```javascript
-document.querySelector('mds-toast').addEventListener('mdsToastClose', () => {
+document.querySelector('mds-toast').addEventListener('mdsToastClose', (event) => {
   // rimuovi il toast dalla coda o aggiorna lo stato dell'applicazione
   toastQueue.shift();
+  if (event.detail.reason === 'close') {
+    // la persona ha mandato via il messaggio senza usare l'azione
+  }
 });
 ```
 
@@ -210,6 +216,24 @@ The default slot accepts plain text only; nested elements are rendered inside th
 <mds-toast visible variant="error">
   <mds-icon slot="icon" name="mi/baseline/error-outline"></mds-icon>
   Salvataggio fallito
+  <mds-button slot="action" size="sm" variant="error" tone="weak">Riprova</mds-button>
+</mds-toast>
+```
+
+#### Do Not Leave a Persistent Toast Without a Way to Send It Away
+
+A toast with `duration="0"` stays until something hides it. When its action is not what the person wants, nothing makes it go away: it covers the page until your code removes it. Add `deletable`.
+
+```html
+<!-- INCORRECT - only "Riprova" makes it go away -->
+<mds-toast visible variant="error" duration="0">
+  Invio non riuscito
+  <mds-button slot="action" size="sm" variant="error" tone="weak">Riprova</mds-button>
+</mds-toast>
+
+<!-- CORRECT - the arrow sends the message away -->
+<mds-toast visible variant="error" duration="0" deletable>
+  Invio non riuscito
   <mds-button slot="action" size="sm" variant="error" tone="weak">Riprova</mds-button>
 </mds-toast>
 ```
@@ -320,20 +344,21 @@ mds-toast {
 
 ## Properties
 
-| Property   | Attribute  | Description                                                                                                                                                                                                                                                   | Type                                                                                                 | Default           |
-| ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------- |
-| `duration` | `duration` | If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user. | `number \| undefined`                                                                                | `5000`            |
-| `position` | `position` | Sets position of toast                                                                                                                                                                                                                                        | `"bottom-center" \| "bottom-left" \| "bottom-right" \| "top-center" \| "top-left" \| "top-right"`    | `'bottom-center'` |
-| `tone`     | `tone`     | Sets the tone of the color variant                                                                                                                                                                                                                            | `"strong" \| "weak" \| undefined`                                                                    | `'strong'`        |
-| `variant`  | `variant`  | Sets the theme variant colours                                                                                                                                                                                                                                | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'light'`         |
-| `visible`  | `visible`  | Specifies if toast is visible at the bottom or not                                                                                                                                                                                                            | `boolean \| undefined`                                                                               | `undefined`       |
+| Property    | Attribute   | Description                                                                                                                                                                                                                                                                                                                                                        | Type                                                                                                 | Default           |
+| ----------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- | ----------------- |
+| `deletable` | `deletable` | Shows a button that hides the toast, an arrow towards the edge the toast leaves by                                                                                                                                                                                                                                                                                 | `boolean \| undefined`                                                                               | `undefined`       |
+| `duration`  | `duration`  | If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `deletable` so the person can hide it too. | `number \| undefined`                                                                                | `5000`            |
+| `position`  | `position`  | Sets position of toast                                                                                                                                                                                                                                                                                                                                             | `"bottom-center" \| "bottom-left" \| "bottom-right" \| "top-center" \| "top-left" \| "top-right"`    | `'bottom-center'` |
+| `tone`      | `tone`      | Sets the tone of the color variant                                                                                                                                                                                                                                                                                                                                 | `"strong" \| "weak" \| undefined`                                                                    | `'strong'`        |
+| `variant`   | `variant`   | Sets the theme variant colours                                                                                                                                                                                                                                                                                                                                     | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'light'`         |
+| `visible`   | `visible`   | Specifies if toast is visible at the bottom or not                                                                                                                                                                                                                                                                                                                 | `boolean \| undefined`                                                                               | `undefined`       |
 
 
 ## Events
 
-| Event           | Description                                                                             | Type                |
-| --------------- | --------------------------------------------------------------------------------------- | ------------------- |
-| `mdsToastClose` | Emits when a toast with a `duration` has hidden itself, once its exit animation is over | `CustomEvent<void>` |
+| Event           | Description                                                                                                                                                                                           | Type                                    |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| `mdsToastClose` | Emits once the toast is hidden and its exit animation is over, whoever hid it: the `reason` of the detail says who, `timeout`, `close` (the person, with the hide button) or `hide` (the application) | `CustomEvent<MdsToastCloseEventDetail>` |
 
 
 ## Slots
@@ -362,11 +387,16 @@ mds-toast {
 ### Depends on
 
 - [mds-text](../mds-text)
+- [mds-button](../mds-button)
 
 ### Graph
 ```mermaid
 graph TD;
   mds-toast --> mds-text
+  mds-toast --> mds-button
+  mds-button --> mds-spinner
+  mds-button --> mds-icon
+  mds-button --> mds-text
   style mds-toast fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

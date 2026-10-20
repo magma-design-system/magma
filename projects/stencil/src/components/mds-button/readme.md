@@ -481,6 +481,7 @@ mds-button::part(icon) {
  - [mds-radial-menu-item](../mds-radial-menu-item)
  - [mds-tab-item](../mds-tab-item)
  - [mds-table-header-cell](../mds-table-header-cell)
+ - [mds-toast](../mds-toast)
  - [mds-tree-item](../mds-tree-item)
  - [mds-url-view](../mds-url-view)
 
@@ -526,6 +527,7 @@ graph TD;
   mds-radial-menu-item --> mds-button
   mds-tab-item --> mds-button
   mds-table-header-cell --> mds-button
+  mds-toast --> mds-button
   mds-tree-item --> mds-button
   mds-url-view --> mds-button
   style mds-button fill:#f9f,stroke:#333,stroke-width:4px
