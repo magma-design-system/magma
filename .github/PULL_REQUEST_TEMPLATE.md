@@ -1,7 +1,7 @@
 <!--
   Keep this PR easy to scan. The commit table below is the important part:
   it lets a reviewer understand the size and impact of each change at a glance.
-  Governance rules: see docs/WORKFLOW.md - do NOT merge into dev or main yourself.
+  Governance rules: see docs/WORKFLOW.md - do NOT merge into main yourself.
 -->
 
 ## Summary
@@ -59,12 +59,12 @@ None
 
 ## Checklist
 
-- [ ] Work is on a dedicated branch, not directly on `dev` or `main`
-- [ ] Branch is up to date with `dev` (merged latest `dev` in)
+- [ ] Work is on a dedicated branch, not directly on `main`
+- [ ] Lint and tests ran after the last merge of `main` into the branch (the merge queue tests it on top of `main`, no need to merge `main` only to make it mergeable)
 - [ ] Lint passes locally (`npm run lint`)
 - [ ] Tests pass locally (`nx run stencil:test`, plus `npm run test-storybook` when stories changed) and affected builds succeed
 - [ ] Every behaviour change (props, events, methods, DOM, keyboard/focus, validation) is covered by a new or updated `*.spec.ts` / `*.e2e.ts` test - pure style changes are exempt
 - [ ] Storybook story added or updated when the change affects look, interaction, accessibility or composition with other components (visual / interaction / a11y tests)
 - [ ] Commit messages follow `docs/COMMITS.md`
 - [ ] Updated the relevant `SPEC.md` (and `docs/ARCHITECTURE.md` if system-wide)
-- [ ] I am **not** merging this into `dev` or `main` myself - that is a manual governance step
+- [ ] I am **not** merging this into `main` myself, nor adding it to the merge queue - that is a maintainer's step

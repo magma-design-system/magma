@@ -24,8 +24,8 @@ export const USAGE_SECTIONS: readonly UsageSection[] = [
 
 export const COMPONENTS_PATH = 'projects/stencil/src/components';
 export const REPOSITORY_URL = 'https://github.com/magma-design-system/magma';
-/** the published Storybook is built from `dev` (.github/workflows/deploy-storybook.yml) */
-export const REPOSITORY_BRANCH = 'dev';
+/** the published Storybook is built from `main` (.github/workflows/deploy-storybook.yml) */
+export const REPOSITORY_BRANCH = 'main';
 
 const STORIES_FILE = /\/src\/components\/([^/]+)\/test\/([^/]+)\.stories\.[jt]sx?$/;
 

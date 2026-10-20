@@ -4,7 +4,7 @@ name: codemods-ci
 # shared package pipeline. Runs only when the package changes.
 on:
   push:
-    branches: [dev]
+    branches: [main]
     paths:
       - 'projects/codemod/**'
       - '.github/workflows/codemods-ci.yml'
@@ -15,8 +15,6 @@ on:
 
 jobs:
   build-test:
-    # PRs from dev (release PRs) duplicate the CI already run on every push to dev
-    if: ${{ github.event_name != 'pull_request' || github.head_ref != 'dev' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

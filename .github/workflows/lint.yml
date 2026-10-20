@@ -1,5 +1,5 @@
 # Lints every workspace project (ESLint everywhere, plus Stylelint for the
-# stencil CSS) on each pull request and on pushes to the integration branches.
+# stencil CSS) on each pull request, in the merge queue and on pushes to main.
 #
 # A single job runs the root `lint` script (nx run-many -t lint) instead of a
 # per-package job in _package-pipeline.yml: linting the whole monorepo takes
@@ -10,9 +10,9 @@ name: lint
 
 on:
   push:
-    branches: [dev, main, beta]
+    branches: [main]
   pull_request:
-  # the merge queue of dev runs the required checks here (docs/WORKFLOW.md, rule 1)
+  # the merge queue of main runs the required checks here (docs/WORKFLOW.md, rule 1)
   merge_group:
 
 concurrency:
@@ -24,8 +24,6 @@ concurrency:
 
 jobs:
   lint:
-    # PRs from dev (release PRs) duplicate the CI already run on every push to dev
-    if: ${{ github.event_name != 'pull_request' || github.head_ref != 'dev' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

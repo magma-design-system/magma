@@ -39,6 +39,6 @@
       "analyzeSourceFiles": true
     }
   },
-  "defaultBase": "dev",
+  "defaultBase": "main",
   "analytics": false
 }

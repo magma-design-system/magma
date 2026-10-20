@@ -89,11 +89,12 @@ Full rules and examples: [`docs/COMMITS.md`](../docs/COMMITS.md).
 
 ## Git governance
 
-The `dev` and `main` branches are protected governance targets integrated **manually** by a maintainer. When generating or automating git actions:
+`main` is the only long-lived branch: a protected governance target, integrated **manually** by a maintainer through its merge queue and released by hand. When generating or automating git actions:
 
-- **Never** merge into `dev` or `main`, push to them directly, or auto-merge a pull request into them.
-- Do every unit of work (feature, fix, etc.) on its own dedicated branch, branched off `dev` - never work directly on `dev` or `main`.
-- Before pushing, check whether `dev` has new commits; if so, merge `dev` into your branch, run the tests, and only then push to the branch's own remote.
+- **Never** merge into `main`, push to it directly, add a pull request to its merge queue or auto-merge one into it, and never start a release.
+- Do every unit of work (feature, fix, etc.) on its own dedicated branch, branched off `main` - never work directly on `main`.
+- Before pushing, check whether `main` has new commits; if so, merge `main` into your branch, run the tests, and only then push to the branch's own remote.
+- Never open a pull request whose head is `main`: the repository deletes the head branch of every merged pull request.
 
 Full rules: [`docs/WORKFLOW.md`](../docs/WORKFLOW.md).
 

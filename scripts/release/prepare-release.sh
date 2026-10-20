@@ -17,7 +17,7 @@
 #               version-sync-paths  optional array of companion package.json
 #                                   files released at the same version
 #   --apply   write the versions and pins into the manifests and the lock
-#             (the release on beta commits nothing and skips it)
+#             (the beta channel commits nothing and skips it)
 #   --notes   write the release notes of each package (needs git-cliff); with
 #             --apply too, prepend them to the CHANGELOG.md of the package and
 #             of its version-sync-paths (scripts/release/changelog.sh)
@@ -142,7 +142,7 @@ if $NOTES; then
 fi
 
 # the CHANGELOG.md of every released package, and of the companions released at its version,
-# gets the notes as its newest section, in the same chore(release) commit; beta commits nothing
+# gets the notes as its newest section, in the same chore(release) commit; the beta channel commits nothing
 if $APPLY && $NOTES; then
   while IFS= read -r entry; do
     notes="$OUT/notes/$(jq -r '.name' <<< "$entry").md"

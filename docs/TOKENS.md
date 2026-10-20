@@ -115,7 +115,7 @@ Because the same token name resolves to different values in each mode, code auth
 
 ## Token gallery
 
-Visual reference is in Storybook - the colour scales are rendered live in [`projects/stencil/src/storybook/color-scale.stories.tsx`](../projects/stencil/src/storybook/color-scale.stories.tsx). Run `nx run stencil:storybook.start` to browse them, or open them in the [published Storybook](https://magma-design-system.github.io/magma/storybook/?path=/story/common-tests--color-scale) of `dev`. The design-tokens playground (`nx run design-tokens:playground`) shows the ramps, the surfaces and the themes for a config.
+Visual reference is in Storybook - the colour scales are rendered live in [`projects/stencil/src/storybook/color-scale.stories.tsx`](../projects/stencil/src/storybook/color-scale.stories.tsx). Run `nx run stencil:storybook.start` to browse them, or open them in the [published Storybook](https://magma-design-system.github.io/magma/storybook/?path=/story/common-tests--color-scale) of `main`. The design-tokens playground (`nx run design-tokens:playground`) shows the ramps, the surfaces and the themes for a config.
 
 ## Anti-patterns
 

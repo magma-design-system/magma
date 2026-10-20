@@ -2,32 +2,40 @@
 
 This document is the canonical reference for how work flows through this repository. It exists to keep automated agents from performing actions that break the branching model. **These rules apply to AI agents and humans alike, but agents must treat them as hard constraints: do not automate any step that this document says is manual.**
 
-## 1. Never auto-merge `dev` or `main`
+## 1. Never merge into `main` around the queue, never release by hand
 
-The `dev` and `main` branches are protected governance targets. **Agents must never merge into `dev` or `main`, enable auto-merge on a pull request into them, or push to them directly.** These integration steps are, for now, handled manually by a maintainer.
+`main` is the only long-lived branch: the trunk every branch starts from, the branch the merge queue feeds, the branch Storybook deploys from and the branch every package releases from. It is a protected governance target. **Agents must never merge into `main`, add a pull request to its merge queue, enable auto-merge on one, push to it directly or start a release.** These steps are a maintainer's.
 
-An agent may prepare work up to (and including) a feature branch pushed to its own remote and a pull request opened from it into `dev`, but merging that pull request - the promotion of the work into `dev` or `main` - is a human decision.
+An agent may prepare work up to (and including) a feature branch pushed to its own remote and a pull request opened from it into `main`, but merging that pull request - the promotion of the work into `main` - is a human decision.
 
-**No branch is merged into `dev` while its pipeline is red.** Every check of the pull request must pass on its head commit at the time of the merge; a red check is never bypassed, whatever the size of the change (a one-line dependency bump included). When the failure comes from outside the PR (a flaky job, an outage), rerun or fix it first. `dev` must install, build and lint at every commit: every other branch syncs from it (rule 4), so a red merge breaks all of them at once.
+**No branch is merged into `main` while its pipeline is red.** Every check of the pull request must pass on its head commit at the time of the merge; a red check is never bypassed, whatever the size of the change (a one-line dependency bump included). When the failure comes from outside the PR (a flaky job, an outage), rerun or fix it first. `main` must install, build and lint at every commit: every other branch syncs from it (rule 4), so a red merge breaks all of them at once.
 
-**Every pull request into `dev` is merged through the merge queue.** A maintainer reviews it (rule 6) and adds it to the queue of `dev` ("Merge when ready"). GitHub tests it on top of `dev` and of the pull requests ahead of it, in a temporary `gh-readonly-queue/dev/...` branch, with the same required checks, and merges it when they pass; several queued pull requests can be tested in one group. So:
+**Every pull request into `main` is merged through the merge queue.** A maintainer reviews it (rule 6) and adds it to the queue of `main` ("Merge when ready"). GitHub tests it on top of `main` and of the pull requests ahead of it, in a temporary `gh-readonly-queue/main/...` branch, with the same required checks, and merges it with a merge commit when they pass; several queued pull requests can be tested in one group. So:
 
-- Nobody merges a pull request into `dev` around the queue, and nobody merges `dev` into a branch only to make it mergeable: the queue tests each pull request against the `dev` it will land on, which is what updating every branch by hand after each merge used to do.
+- Nobody merges a pull request into `main` around the queue, and nobody merges `main` into a branch only to make it mergeable: the queue tests each pull request against the `main` it will land on, which is what updating every branch by hand after each merge used to do.
 - Adding a pull request to the queue is a merge: a maintainer's decision, never an agent's, like auto-merge.
-- When the queue removes a pull request (a red check in its group, or a conflict with `dev`), it goes back to its author: merge `dev` into the branch, resolve the conflicts, regenerate the generated files (readmes, `magma.api.txt`, `components.d.ts`) with a build instead of merging them by hand, run lint and tests (rule 4), push, and the maintainer queues it again.
-- In a merge group every package pipeline builds and tests, whatever the pull requests change (the `changes` gate of `_package-pipeline.yml` lets everything through on `merge_group`): the group is the last gate before `dev`.
+- When the queue removes a pull request (a red check in its group, or a conflict with `main`), it goes back to its author: merge `main` into the branch, resolve the conflicts, regenerate the generated files (readmes, `magma.api.txt`, `components.d.ts`) with a build instead of merging them by hand, run lint and tests (rule 4), push, and the maintainer queues it again.
+- In a merge group every package pipeline builds and tests, whatever the pull requests change (the `changes` gate of `_package-pipeline.yml` lets everything through on `merge_group`): the group is the last gate before `main`.
+- **Not while a release runs.** Before adding a pull request to the queue or enabling auto-merge, check that no `release` run is in progress (`gh run list --workflow release.yml --status in_progress`): a merge that lands on `main` between the dispatch of a stable release and its push makes the release fail (nothing is tagged, the maintainer re-runs it). An agent asked to prepare such a merge warns and waits for the run to end.
 
-When a maintainer promotes `dev` into `main`, the promotion must use a **merge commit** (never squash or rebase): release tags created on `dev` (e.g. `icons@*`, `svg-icons@*`) must stay reachable from `main`, otherwise the release workflow on `main` would keep recomputing already-released versions.
+`main` cannot be deleted (the `no-deletion` ruleset, with no bypass) and takes merge commits only. Both rules come from history: the repository deletes the head branch of every merged pull request, which is how `main` disappeared on 2026-10-16 when a pull request opened from it (#954) was merged; and that same pull request was merged with a rebase, which left the tagged release commit out of the history. **Never open a pull request whose head is `main`.**
 
-The release on `main` (`release.yml`) handles every package in one run: it detects the next version of each package from its own commits, writes the new versions, updates the pins of the packages that depend on them (e.g. a new `design-tokens` is pinned in `styles` and `magma` before they are published) together with `package-lock.json`, and pushes all of it in **one** `chore(release)` commit, with one tag and one GitHub release per package. CI and the npm publish then run once, on that commit. Internal dependencies are pinned as caret ranges (`^<version>`), so a patch or minor of a dependency is accepted by the dependents already on npm and consumers keep a single copy of it; only `magma` is pinned to the exact version in `magma-react` and `magma-angular`, which are released in lockstep with it under the `magma@*` tag. A dependent without commits of its own gets the new pin but no new version: it ships the pin with its next release. A major of a dependency reaches the published dependents only with a release of their own. After the publish, `publish.yml` merges the released commit of `main` back into `dev` (`scripts/release/merge-back.sh`), so that `dev` has the released versions, pins and `CHANGELOG.md` sections: a direct push with the release token, not a pull request. A pull request from `main` into `dev` cannot do it: as soon as `dev` moves it no longer meets the up-to-date requirement of the ruleset, and "Update branch" would push `dev` into `main` outside a release (never press it on such a pull request). When that merge conflicts, the job fails and a maintainer merges `main` into `dev` locally, resolves the conflicts and pushes `dev`.
+### Releases
 
-`beta` is the magma prerelease channel, fed by promoting `dev` into it with a merge commit as well. A release on `beta` commits nothing: it only creates the `magma@<version>` tag on the promoted commit, the semantic-release channel note and the GitHub prerelease, and the publish workflow writes that version into the magma, magma-react and magma-angular manifests right before publishing. `beta` therefore never diverges from `dev`, and promoting `dev` into it cannot conflict on version bumps. The consequence: the `version` fields in the manifests on `beta` are not the published version, the `magma@*` tag on the commit is.
+Every package releases from `main`, by hand, with the `release` workflow: "Run workflow" in Actions, on the `main` branch (the header of `.github/workflows/release.yml` is the reference). It works on the commit `main` points to when it is dispatched, whatever lands on `main` while it runs, and waits for the approval of the `release` environment (its required reviewers): approve right away, the time spent waiting is time for `main` to move. `dry-run: true` writes the plan (package, next version, tag, previous tag) to the job summary without approval, build, commit, tag or push: run it first.
+
+- **`channel: stable`** detects the next version of each package from the conventional commits of its own scopes (`docs/COMMITS.md`), writes the new versions, updates the pins of the packages that depend on them (e.g. a new `design-tokens` is pinned in `styles` and `magma` before they are published) together with `package-lock.json` and the `CHANGELOG.md` sections, and pushes all of it in **one** `chore(release)` commit straight to `main` with the release token, with one tag and one GitHub release per package. The push is not rebased: when `main` moved since the dispatch it is rejected, the run fails before any tag exists, and the maintainer re-runs it on the new tip. CI and the npm publish then run once, on that commit (`publish.yml`: on `main` it publishes `chore(release)` commits only, so a version bumped by hand in a pull request never ships). Internal dependencies are pinned as caret ranges (`^<version>`), so a patch or minor of a dependency is accepted by the dependents already on npm and consumers keep a single copy of it; only `magma` is pinned to the exact version in `magma-react` and `magma-angular`, which are released in lockstep with it under the `magma@*` tag. A dependent without commits of its own gets the new pin but no new version: it ships the pin with its next release. A major of a dependency reaches the published dependents only with a release of their own.
+- **`channel: beta`** is the magma prerelease channel. Nothing is committed: the `magma@<next stable>-beta.N` tag goes on the dispatched commit, with the semantic-release channel note that continues the counter (a second beta without a stable in between is `beta.N+1`; the next stable resets it: after `2.2.0-beta.2` comes `2.2.0`, then `2.3.0-beta.1`), the workflow builds `magma`, `magma-react` and `magma-angular`, and `publish.yml` writes the tag version into their manifests right before publishing with the `beta` dist-tag. The consequence: the `version` fields in the manifests are not the published prerelease, the tag is.
+- **`icons` and `svg-icons` also release on their own**, on every push to `main` that touches them (`icons.release.yml`, `svg-icons.release.yml`): their `chore(release)` commit lands on `main` with a rebase-retry and publishes the same way, so icon additions ship as soon as their pull request lands, and the manual release finds nothing left to do for them.
+- A failed publish is re-run from Actions (`publish.yml`, "Run workflow", `sha` = the release commit, or the beta-tagged one): the tags stay, the published versions are skipped.
+
+`support/v1.x` is the maintenance line of the previous major, with its own CI and manual publish (its `publish v1.x` workflow); nothing here applies to it.
 
 ## 2. One branch per unit of work
 
-Every unit of work (feature, fix, refactor, chore, etc.) must be carried out on its own dedicated branch, never directly on `dev` or `main`.
+Every unit of work (feature, fix, refactor, chore, etc.) must be carried out on its own dedicated branch, never directly on `main`.
 
-- Branch off the current `dev`.
+- Branch off the current `main`.
 - Use a descriptive branch name that reflects the work (for example `537-feat-governance-rules`).
 - Keep unrelated changes on separate branches.
 
@@ -35,22 +43,22 @@ Every unit of work (feature, fix, refactor, chore, etc.) must be carried out on 
 
 Every unit of work must be tracked by a GitHub issue, and its branch must be linked to that issue so the work is discoverable from the issue's Development section.
 
-- Create the branch **from the issue itself**: the "Create a branch" button in the issue's Development section, or `gh issue develop <issue-number> --base dev`. Both produce a branch named `<issue-number>-<slug>` that GitHub links automatically.
+- Create the branch **from the issue itself**: the "Create a branch" button in the issue's Development section, or `gh issue develop <issue-number> --base main`. Both produce a branch named `<issue-number>-<slug>` that GitHub links automatically.
 - A matching branch name alone does **not** create the link: `123-my-feature` created by hand is not connected to issue #123.
 - If a branch was created manually anyway, establish the link at PR time at the latest: the PR body must contain a closing keyword referencing the issue (`Closes #123`).
 - PR bodies always reference their issue with a closing keyword, even when the branch is already linked. If the PR resolves more than one issue (e.g. a branch that stacks several units of work), list **every** resolved issue and **repeat the keyword for each one** (`Closes #12, closes #34`, not `Closes #12, #34`): GitHub only closes an issue that carries its own keyword, so a bare `#34` silently stays open after the merge. Use a non-closing reference (`Refs #56`) for issues that are related but NOT resolved by the PR (e.g. the tracking epic).
 - One issue, one branch: if a linked branch already exists for the issue, work on that branch instead of creating a second one; delete empty leftover branches.
 
-## 4. Sync with `dev` before pushing
+## 4. Sync with `main` before pushing
 
 When you commit with the intention of pushing, follow this order before the push:
 
-1. Check whether `dev` has new commits that your branch does not yet contain.
-2. If it does, merge `dev` into your branch.
+1. Check whether `main` has new commits that your branch does not yet contain.
+2. If it does, merge `main` into your branch.
 3. Run the linter (`npm run lint`) and the test suite (`nx run stencil:test`, plus any build affected by the change; `nx run stencil-react:test` and `nx run stencil-angular:test` when the change touches the React or Angular output target).
-4. Only if the tests pass, push your branch **to its own remote branch** (never to `dev` or `main`).
+4. Only if the tests pass, push your branch **to its own remote branch** (never to `main`).
 
-If lint or the tests fail after merging `dev`, stop and resolve the failures before pushing; do not push a branch that is broken against the latest `dev`.
+If lint or the tests fail after merging `main`, stop and resolve the failures before pushing; do not push a branch that is broken against the latest `main`.
 
 ## 5. Cover every behaviour change with a test
 
@@ -99,18 +107,20 @@ An issue opened for a problem found in another project (the docs site, a consume
 
 | Action                                          | Allowed for an agent?                                    |
 | ----------------------------------------------- | -------------------------------------------------------- |
-| Create a dedicated branch off `dev`             | Yes, linked to its issue (see rule 3)                    |
-| Commit and push to that branch's own remote     | Yes, after syncing with `dev` and passing lint and tests |
-| Merge `dev` into your feature branch            | Yes (to stay current before a push)                      |
-| Open a pull request from it into `dev`          | Yes, with `Closes #<issue>` in the body (see rule 3)     |
+| Create a dedicated branch off `main`            | Yes, linked to its issue (see rule 3)                    |
+| Commit and push to that branch's own remote     | Yes, after syncing with `main` and passing lint and tests |
+| Merge `main` into your feature branch           | Yes (to stay current before a push)                      |
+| Open a pull request from it into `main`         | Yes, with `Closes #<issue>` in the body (see rule 3)     |
+| Open a pull request whose head is `main`        | No - never: its merge deletes `main` (rule 1)            |
 | Change a component's behaviour without a test   | No - add or update a `spec` / `e2e` test (see rule 5)    |
 | Ship an API removal without declaring the break | No - `!` or a `BREAKING CHANGE:` footer (see rule 6)     |
 | Open an issue for a problem found elsewhere     | Yes, with its `prd-<project>` origin label (see rule 7)  |
-| Merge a branch into `dev` or `main`             | No - manual governance step                              |
-| Merge a branch with a red pipeline into `dev`   | No - nobody does, a red check is never bypassed (rule 1) |
-| Push directly to `dev` or `main`                | No - manual governance step                              |
-| Auto-merge a pull request into `dev` or `main`  | No - manual governance step                              |
-| Add a pull request to the merge queue of `dev`  | No - a maintainer's merge decision (rule 1)              |
-| Merge `dev` into a branch only to make it mergeable | No need - the merge queue tests it on top of `dev` (rule 1) |
-| Fix a pull request the merge queue removed      | Yes - merge `dev`, resolve, rebuild, lint and test, push (rule 1) |
-| Merge `main` back into `dev` after a release    | Nobody by hand - `publish.yml` does it; a maintainer only on conflict (rule 1) |
+| Merge a branch into `main`                      | No - manual governance step                              |
+| Merge a branch with a red pipeline into `main`  | No - nobody does, a red check is never bypassed (rule 1) |
+| Push directly to `main`                         | No - manual governance step                              |
+| Auto-merge a pull request into `main`           | No - manual governance step                              |
+| Add a pull request to the merge queue of `main` | No - a maintainer's merge decision (rule 1)              |
+| Queue or auto-merge a pull request while a `release` run is in progress | No - warn and wait for the run to end (rule 1) |
+| Merge `main` into a branch only to make it mergeable | No need - the merge queue tests it on top of `main` (rule 1) |
+| Fix a pull request the merge queue removed      | Yes - merge `main`, resolve, rebuild, lint and test, push (rule 1) |
+| Start a release (`release` workflow), approve it | No - a maintainer's decision; a dry-run is fine (rule 1) |

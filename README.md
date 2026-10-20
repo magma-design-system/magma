@@ -118,7 +118,7 @@ NX caches build results. If you need to bypass the cache (e.g. to verify a clean
 
 The main development environment: it builds the components in watch mode and serves the Storybook documentation on <http://localhost:6006>.
 
-The Storybook of the `dev` branch is published at <https://magma-design-system.github.io/magma/storybook/> on every push that changes it.
+The Storybook of the `main` branch is published at <https://magma-design-system.github.io/magma/storybook/> on every push that changes it.
 
 ```bash
 nx run stencil:storybook.start

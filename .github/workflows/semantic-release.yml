@@ -1,31 +1,52 @@
 # Reusable semantic-release pipeline for the Magma npm monorepo.
 #
-# Releases one package, or a group of packages together (see release.yml).
-# For each package it detects the next version from conventional commits
-# (semantic-release dry-run, scoped by `commit-scope`, see
-# scripts/release/semantic-release.config.cjs), writes the new versions into
-# the manifests (plus any `version-sync-paths`) and pins every internal
-# @maggioli-design-system/* dependency of the workspace to them, lock included
-# (scripts/set-release-version.sh: e.g. a design-tokens release updates the pin
-# in styles and magma), generates the release notes with git-cliff, then pushes
-# ONE chore(release) commit to the triggering branch, with one tag and one
-# GitHub release per package. One commit means one CI run and one publish, with
-# every manifest already consistent. Publishing to npm is handled separately by
-# publish.yml. The whole preparation lives in scripts/release/prepare-release.sh,
-# which scripts/test-release.sh runs locally the same way.
+# Releases one package, or a group of packages together (see release.yml),
+# from the commit the caller runs on. For each package it detects the next
+# version from conventional commits (semantic-release dry-run, scoped by
+# `commit-scope`, see scripts/release/semantic-release.config.cjs), writes the
+# new versions into the manifests (plus any `version-sync-paths`) and pins
+# every internal @maggioli-design-system/* dependency of the workspace to them,
+# lock included (scripts/set-release-version.sh: e.g. a design-tokens release
+# updates the pin in styles and magma), generates the release notes with
+# git-cliff, then pushes ONE chore(release) commit to the triggering branch,
+# with one tag and one GitHub release per package. One commit means one CI run
+# and one publish, with every manifest already consistent. Publishing to npm is
+# handled separately by publish.yml. The whole preparation lives in
+# scripts/release/prepare-release.sh, which scripts/test-release.sh runs
+# locally the same way.
 #
-# On beta nothing is committed: the tag goes on the pushed commit itself and
-# publish.yml writes its version into the manifests right before publishing
-# (scripts/set-release-version.sh), so beta never diverges from dev and merging
-# dev into it cannot conflict on the version bumps.
+# Two channels (`channel` input):
+#   - stable: the flow above. With `rebase-on-reject: false` (the manual
+#     release of release.yml) the push is tried once: when the branch moved
+#     since the commit the run started on, it fails before any tag is created
+#     and the release is simply re-run. With the default `true` (the automatic
+#     icons and svg-icons releases) a rejected push is rebased onto the new tip
+#     and retried, as their bump touches only their own manifests.
+#   - beta: a prerelease, `<next stable>-beta.N`, from the same commit, with
+#     nothing committed: the tag goes on the commit itself, a channel note lets
+#     semantic-release continue the counter (beta.2, beta.3 ...) and publish.yml
+#     writes the tag version into the manifests right before publishing
+#     (scripts/set-release-version.sh). semantic-release computes prereleases
+#     on a branch named `beta`: the run creates it locally on the commit, as
+#     scripts/test-release.sh does.
 #
-# Uses the automatic GITHUB_TOKEN via `github.token`, so callers do NOT need
-# `secrets: inherit`.
+# semantic-release refuses to release a branch that is behind its remote and
+# wants its release branches on that remote. A manual release works on the
+# commit it was dispatched on, even after the branch moved on, so the dry-run
+# is pointed at the checkout itself (SR_REPOSITORY_URL), where `main` and
+# `beta` are the commit being released; the real remote is still asked
+# whether the tags exist, and takes the push, the tags and the releases.
+#
+# The chore(release) commit, the tags and the notes are pushed with
+# RELEASE_PUSH_TOKEN when the caller passes `secrets: inherit`: the default
+# GITHUB_TOKEN would not trigger the CI (and so the publish) of that commit.
 #
 # Inputs:
 #   - packages: JSON array of the packages released together, one object per
 #     package: name, working-directory, tag-format, commit-scope and optional
 #     version-sync-paths (array). Empty = the single package of the inputs below.
+#   - packages-filter: space-separated names that narrow `packages` (e.g. the
+#     magma lockstep alone on the beta channel). Empty = every package.
 #   - working-directory: dir holding the package's package.json.
 #   - tag-format: semantic-release tagFormat AND the git tag created
 #     (e.g. 'design-tokens@${version}'); must contain ${version} exactly once.
@@ -37,9 +58,11 @@
 #     (e.g. companion packages kept in lockstep).
 #   - stable-branches: space-separated branches allowed to release stable
 #     versions. The current branch is used when listed (first entry otherwise,
-#     which makes runs on unlisted branches a graceful no-op). Default 'main';
-#     icons/svg-icons pass 'dev' to release directly from dev.
-# The beta branch is always available as the prerelease channel.
+#     which makes runs on unlisted branches a graceful no-op). Default 'main'.
+#   - channel: 'stable' (default) or 'beta', see above.
+#   - rebase-on-reject: retry a rejected push after a rebase (default true).
+#   - dry-run: detect the versions and write the plan to the job summary, then
+#     stop: nothing is built, committed, tagged or pushed.
 name: Reusable Semantic Release Pipeline
 
 on:
@@ -70,6 +93,11 @@ on:
         type: string
         required: false
         default: ''
+      packages-filter:
+        description: Space-separated package names that narrow `packages`; empty = every package
+        type: string
+        required: false
+        default: ''
       working-directory:
         description: Directory holding the package manifest (version is read/written here)
         type: string
@@ -95,6 +123,25 @@ on:
         type: string
         required: false
         default: 'main'
+      channel:
+        description: "'stable' (versions committed and tagged) or 'beta' (a <next stable>-beta.N tag on the commit, nothing committed)"
+        type: string
+        required: false
+        default: 'stable'
+      rebase-on-reject:
+        description: Rebase the release commit onto the new tip and retry when the push is rejected; false fails the run instead, before any tag is created
+        type: boolean
+        required: false
+        default: true
+      dry-run:
+        description: Detect the versions and write the plan to the job summary, then stop
+        type: boolean
+        required: false
+        default: false
+    outputs:
+      release-tags:
+        description: The tags of the release plan, space-separated (empty = nothing to release)
+        value: ${{ jobs.release-check.outputs.release_tags }}
 
 permissions:
   contents: write
@@ -140,10 +187,12 @@ jobs:
         id: prepare
         env:
           PACKAGES: ${{ inputs.packages }}
+          FILTER: ${{ inputs.packages-filter }}
           WD: ${{ inputs.working-directory }}
           TAG_FORMAT: ${{ inputs.tag-format }}
           COMMIT_SCOPE: ${{ inputs.commit-scope }}
           SYNC_PATHS: ${{ inputs.version-sync-paths }}
+          CHANNEL: ${{ inputs.channel }}
           # read by scripts/release/semantic-release.config.cjs, with GITHUB_REF_NAME
           SR_STABLE_BRANCHES: ${{ inputs.stable-branches }}
         run: |
@@ -153,9 +202,26 @@ jobs:
               '[{name: ($tf | split("@")[0]), "working-directory": $wd, "tag-format": $tf, "commit-scope": $cs,
                  "version-sync-paths": ($sync | split("\n") | map(select(length > 0)))}]')
           fi
-          # beta commits no bump: publish.yml applies the tag version at publish time
-          APPLY=--apply
-          [ "$GITHUB_REF_NAME" = beta ] && APPLY=
+          if [ -n "$FILTER" ]; then
+            PACKAGES=$(jq -c --arg f "$FILTER" '[.[] | select(.name as $n | $f | split(" ") | index($n))]' <<< "$PACKAGES")
+          fi
+          # the checkout is the remote semantic-release checks the branch
+          # against (see the header): the branch being released sits on this
+          # very commit there, whatever the real remote did in the meantime
+          CURRENT=$(git rev-parse --abbrev-ref HEAD)
+          [ "$CURRENT" = "$GITHUB_REF_NAME" ] || git checkout -q -B "$GITHUB_REF_NAME" HEAD
+          export SR_REPOSITORY_URL="file://$GITHUB_WORKSPACE"
+          if [ "$CHANNEL" = beta ]; then
+            # a prerelease is computed on the `beta` branch: this commit, locally.
+            # semantic-release reads the branch of a GitHub Actions run from
+            # GITHUB_REF, so the dry-run sees beta there too
+            git checkout -q -B beta HEAD
+            export GITHUB_REF=refs/heads/beta GITHUB_REF_NAME=beta
+            # beta commits no bump: publish.yml applies the tag version at publish time
+            APPLY=
+          else
+            APPLY=--apply
+          fi
           ./scripts/release/prepare-release.sh $APPLY --notes "$PACKAGES"
           # the files of the release commit travel to the finalize job in the artifact
           if [ -f .release/files.txt ]; then
@@ -165,6 +231,27 @@ jobs:
             done < .release/files.txt
           fi
           echo "release_tags=$(jq -r 'map(.tag) | join(" ")' .release/plan.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Write the plan to the job summary
+        env:
+          CHANNEL: ${{ inputs.channel }}
+          DRY_RUN: ${{ inputs.dry-run }}
+        run: |
+          {
+            echo "## Release plan (${CHANNEL} channel, commit ${GITHUB_SHA::9})"
+            echo
+            if [ "$(jq length .release/plan.json)" = 0 ]; then
+              echo "Nothing to release: no package has releasable commits since its last tag."
+            else
+              echo "| Package | Version | Tag | Since |"
+              echo "| --- | --- | --- | --- |"
+              jq -r '.[] | "| \(.name) | \(.version) | `\(.tag)` | \(."previous-tag" | if . == "" then "first release" else "`" + . + "`" end) |"' .release/plan.json
+              if [ "$DRY_RUN" = true ]; then
+                echo
+                echo "Dry run: nothing was built, committed, tagged or pushed."
+              fi
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload artifacts (plan, release files & notes)
         if: steps.prepare.outputs.release_tags != ''
@@ -178,7 +265,7 @@ jobs:
     name: Release Finalize (commit, tag, push, create releases)
     needs: release-check
     runs-on: ubuntu-latest
-    if: needs.release-check.outputs.release_tags != ''
+    if: needs.release-check.outputs.release_tags != '' && !inputs.dry-run
     outputs:
       tags_created: ${{ steps.tag.outputs.created }}
     steps:
@@ -188,7 +275,7 @@ jobs:
           fetch-depth: 0
           # Push with a PAT/App token when provided, so the chore(release) commit triggers
           # CI -> publish (the default GITHUB_TOKEN does not trigger downstream workflows).
-          # On beta only the tags and the notes are pushed: publish waits for this run instead.
+          # On the beta channel only the tags and the notes are pushed: publish waits for this run instead.
           token: ${{ secrets.RELEASE_PUSH_TOKEN || github.token }}
 
       - name: Download artifacts from check
@@ -212,9 +299,9 @@ jobs:
             fi
           done
 
-      # beta: no version bump commit, the tags below go on the pushed commit itself
+      # beta: no version bump commit, the tags below go on the commit itself
       - name: Commit the release (versions, internal pins and lock of every package)
-        if: github.ref_name != 'beta'
+        if: inputs.channel != 'beta'
         env:
           TAGS: ${{ needs.release-check.outputs.release_tags }}
         run: |
@@ -229,21 +316,33 @@ jobs:
             git commit -m "chore(release): ${TAGS}"
           fi
 
-      - name: Push release commit (rebase-retry for concurrent pushes)
-        if: github.ref_name != 'beta'
+      - name: Push release commit
+        if: inputs.channel != 'beta'
         env:
           BRANCH: ${{ github.ref_name }}
+          REBASE: ${{ inputs.rebase-on-reject }}
         run: |
-          # A release run of another group (e.g. icons and svg-icons on dev) only
+          if git push origin "HEAD:${BRANCH}"; then
+            echo "Pushed"; exit 0
+          fi
+          if [ "$REBASE" != true ]; then
+            # the release is bound to the commit it was dispatched on: a branch
+            # that moved on gets no release commit on top of someone else's
+            # merge, the run stops here and is re-run on the new tip
+            TIP=$(git ls-remote origin "refs/heads/${BRANCH}" | cut -f1)
+            echo "::error::${BRANCH} moved since the dispatch (${GITHUB_SHA} -> ${TIP}): nothing was tagged, re-run the release"
+            exit 1
+          fi
+          # A release run of another group (e.g. icons and svg-icons) only
           # touches its own manifests and lock entries, so rebasing onto the
           # latest branch tip does not conflict.
-          for i in 1 2 3 4 5; do
-            if git push origin "HEAD:${BRANCH}"; then
-              echo "Pushed on attempt $i"; exit 0
-            fi
+          for i in 2 3 4 5; do
             echo "::warning::push rejected, fetching & rebasing onto origin/${BRANCH} (attempt $i)"
             git fetch origin "$BRANCH"
             git rebase "origin/${BRANCH}"
+            if git push origin "HEAD:${BRANCH}"; then
+              echo "Pushed on attempt $i"; exit 0
+            fi
           done
           echo "::error::could not push release commit after 5 attempts"; exit 1
 
