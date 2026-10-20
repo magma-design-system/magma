@@ -77,8 +77,8 @@ export class MdsPrefTheme {
 
   /**
    * Specifies the theme name attribute
-   * A string representing the theme name, should be a simple string name or kebab kase name.
-   * `Examples of valid language codes include "magma", "maggioli-editore", etc.`
+   * A string representing the theme name, in lowercase kebab-case.
+   * @example 'maggioli-editore'
    */
   @Prop({ mutable: true, reflect: true }) name: string = 'default';
 

@@ -70,7 +70,9 @@ export class MdsInputUpload {
   @State() private formDisabled = false;
 
   /**
-   * Defines the file types the file input should accept
+   * Defines the file types the file input should accept, as the accept attribute of a native
+   * file input: MIME types (`image/*` included) and extensions, separated by commas
+   * @example '.pdf,image/*'
    */
   @Prop({ reflect: true }) readonly accept: string = '';
 

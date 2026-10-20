@@ -18,6 +18,7 @@ export class MdsPrefThemeItem {
 
   /**
    * Specifies the theme name
+   * @example 'maggioli-editore'
    */
   @Prop({ reflect: true }) readonly name: string = 'default';
 

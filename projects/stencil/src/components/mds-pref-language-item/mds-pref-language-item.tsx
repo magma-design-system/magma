@@ -20,6 +20,7 @@ export class MdsPrefLanguageItem {
 
   /**
    * Specifies the language code based on HTML `lang` attribute
+   * @example 'it'
    */
   @Prop({ reflect: true }) readonly code: string;
 

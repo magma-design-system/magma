@@ -75,7 +75,9 @@ export class MdsFile {
   @Prop() readonly hideDownloadedIcon?: boolean = false;
 
   /**
-   * Sets if the download icon must be shown or not
+   * The kind of file, recognised from the extension of `filename` or from `suffix`: it selects
+   * the colours of the icon. The component writes it on load and whenever `filename` changes,
+   * set `suffix` to choose it
    */
   @Prop({ reflect: true, mutable: true }) format?: string;
 

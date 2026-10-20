@@ -89,6 +89,7 @@ export class MdsImg {
   /**
    * One or more strings separated by commas, indicating a set of source sizes.
    * https://medium.com/@MRWwebDesign/responsive-images-the-sizes-attribute-and-unexpected-image-sizes-882a2eadb6db
+   * @example '(max-width: 600px) 480px, 960px'
    */
   @Prop() readonly sizes?: string;
 
@@ -101,16 +102,15 @@ export class MdsImg {
    * Specifies a list of image files to use in different situations.
    * Defines multiple sizes of the same image, allowing the browser
    * to select the appropriate image source.
+   * @example 'photo-480.jpg 480w, photo-960.jpg 960w'
    */
   @Prop() readonly srcset?: string;
 
   /**
-   * Specifies a list of image files to use in different situations.
-   * Defines multiple sizes of the same image, allowing the browser
-   * to select the appropriate image source based on consumption configuration.
-   * ```
-   * <mds-img srcset-consumption="image-black-n-white-1x.jpg low, image-1x.jpg medium, image-2x.jpg high"></mds-img>
-   * ```
+   * Specifies a list of image files to use in different situations: comma-separated, each file
+   * followed by the consumption level it is for (`low`, `medium`, `high`), so the component picks
+   * the image source that matches the consumption configuration.
+   * @example 'photo-bw-1x.jpg low, photo-1x.jpg medium, photo-2x.jpg high'
    */
   @Prop() readonly srcsetConsumption?: string;
 

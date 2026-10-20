@@ -46,10 +46,11 @@ export class MdsHeader {
   @Prop({ reflect: true, mutable: true }) appearance: string = 'stripe';
 
   /**
-   * Sets the appearance of the header bar element depending on the scroll position
-   * you should set three different values: initial appearance, changed appearance and `window.scrollY` threshold
-   * Es: appearance-set="stripe, inline 200" means the component will start with stripe appearance
-   * that will change to inline if the page is scrolled more of 199 pixels
+   * Sets the appearance of the header bar element depending on the scroll position: three values,
+   * the initial appearance, the appearance once scrolled and the `window.scrollY` threshold.
+   * `stripe, inline 200` starts with the stripe appearance and changes to inline once the page is
+   * scrolled more than 199 pixels
+   * @example 'stripe, inline 200'
    */
   @Prop({ reflect: true }) readonly appearanceSet?: string;
 
