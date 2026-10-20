@@ -11,7 +11,7 @@ name: publish
 
 on:
   workflow_run:
-    workflows: [design-tokens, icons, identity, styles, svg-icons, stencil]
+    workflows: [design-tokens, icons, icons-sync, identity, styles, svg-icons, stencil]
     types: [completed]
     # main = stable releases; beta = magma prerelease channel (2.0.0-beta.N -> npm dist-tag 'beta')
     branches: [main, beta]

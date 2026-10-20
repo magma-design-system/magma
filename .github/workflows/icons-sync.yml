@@ -1,0 +1,58 @@
+# Guards the invariant between the two icon packages: every SVG source in
+# svg-icons must be mapped in projects/icons/dictionary.json, and every
+# dictionary entry must point at an icon that actually exists.
+#
+# This needs its own workflow because icons.yml and svg-icons.yml each filter on
+# their own project path: a PR that only adds an SVG never triggers the icons
+# build, so a missing dictionary entry ships unnoticed. The icon still resolves
+# through mds-icon (iconsauce reads svg-icons/dist directly), which is exactly
+# what makes the drift invisible.
+#
+# Path filtering happens in the `changes` job rather than the trigger, for the
+# same reason documented in _package-pipeline.yml: GitHub evaluates trigger
+# `paths` only on the first 300 files of the diff.
+#
+# This workflow is listed in publish.yml's `workflow_run` triggers: the publish
+# gate waits for every CI workflow of the commit, so if this one finished last
+# and could not re-trigger publish, nothing would ever be released.
+name: icons-sync
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.filter.outputs.icons }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          base: ${{ github.ref_name }}
+          filters: |
+            icons:
+              - 'projects/icons/dictionary.json'
+              - 'projects/icons/unmapped-icons.json'
+              - 'projects/icons/scripts/**'
+              - 'projects/svg-icons/svg/**'
+
+  check:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+      - run: yarn install --frozen-lockfile --prefer-offline
+      # run directly instead of through Nx: the target's inputs would be scoped
+      # to projects/icons, so a change limited to svg-icons could hit the cache
+      - run: yarn tsx projects/icons/scripts/check-dictionary.ts

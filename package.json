@@ -67,6 +67,9 @@
     ],
     "projects/{design-tokens,styles,icons,svg-icons,identity}/src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix"
+    ],
+    "projects/{icons/dictionary.json,svg-icons/svg/*.svg}": [
+      "tsx projects/icons/scripts/check-dictionary.ts --no-resolve"
     ]
   },
   "repository": {

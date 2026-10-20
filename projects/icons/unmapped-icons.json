@@ -1,0 +1,29 @@
+{
+  "$comment": [
+    "Maggioli SVG sources that intentionally (or not yet) have no entry in dictionary.json.",
+    "They are still usable through <mds-icon>, which reads svg-icons/dist directly,",
+    "but they are NOT part of the @maggioli-design-system/icons font.",
+    "scripts/check-dictionary.ts fails on any unmapped source that is not listed here,",
+    "so this file is the explicit record of the backlog: shrink it, do not grow it.",
+    "'judge-hammer' is a name collision: the dictionary key 'judge-hammer' already",
+    "points to mdi/gavel, so the Maggioli source needs a different key to be mapped."
+  ],
+  "icons": [
+    "ai-outline",
+    "bill",
+    "calendar-schedule",
+    "check-small",
+    "consumption-high",
+    "consumption-low",
+    "consumption-medium",
+    "judge-hammer",
+    "rurale",
+    "search-maggioli",
+    "status-progress-a-quarter",
+    "status-progress-complete",
+    "status-progress-half",
+    "status-progress-three-quarter",
+    "user-family",
+    "view-chart-gantt"
+  ]
+}
