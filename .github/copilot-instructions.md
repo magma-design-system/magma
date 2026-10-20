@@ -70,9 +70,8 @@ These are the **canonical source of truth**. The component's `readme.md` is auto
 
 Format: `type(scope): subject`. Enforced by `commitlint.config.js` via `.husky/commit-msg`.
 
-- Custom type spellings: use **`refact`** (not `refactor`) and **`doc`** (not `docs`).
-- Allowed types: `build`, `change`, `chore`, `ci`, `doc`, `feat`, `fix`, `hotfix`, `merge`, `perf`, `refact`, `revert`, `style`, `test`.
-- Scope is **required**. Use a project name (`design-tokens`, `icons`, `identity`, `lit`, `magma`, `react`, `stencil`, `storybook`, `styles`, `svg-icons`) or a component directory name (`mds-button`, `mds-input`, …).
+- Allowed types: `build`, `change`, `chore`, `ci`, `docs`, `feat`, `fix`, `hotfix`, `merge`, `perf`, `refactor`, `revert`, `style`, `test`.
+- Scope is **required**. Use a project name (`design-tokens`, `icons`, `identity`, `lit`, `magma`, `magma-angular`, `magma-react`, `stencil`, `storybook`, `styles`, `svg-icons`) or a component directory name (`mds-button`, `mds-input`, …).
 - `revert` must have an empty scope.
 - `style` type cannot be used with `magma`, `icons`, `identity`, `svg-icons` (no CSS in those projects), or `styles` (use `fix(styles)` / `change(styles)` instead).
 - Subject is short, imperative, lowercase first word, no trailing period, ≤ 72 characters.
@@ -88,6 +87,7 @@ Full rules and examples: [`docs/COMMITS.md`](../docs/COMMITS.md).
 | Full lint rule reference (TypeScript + CSS)                              | [`docs/CODING_STANDARDS.md`](../docs/CODING_STANDARDS.md)             |
 | Full commit message rules                                                | [`docs/COMMITS.md`](../docs/COMMITS.md)                               |
 | Design tokens (structure, levels, semantics, naming)                     | [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md) |
+| Adding an icon (dictionary format, source groups, validation)            | [`projects/icons/SPEC.md`](../projects/icons/SPEC.md)                 |
 | CSS and Tailwind 4 conventions, semantic classes, dark mode, layer order | [`projects/styles/SPEC.md`](../projects/styles/SPEC.md)               |
 | Stencil component conventions, composition, accessibility                | [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md)             |
 | A single component's intent, patterns, and anti-patterns                 | `projects/stencil/src/components/<name>/usage/`                       |
@@ -105,7 +105,7 @@ Full rules and examples: [`docs/COMMITS.md`](../docs/COMMITS.md).
 - Suggesting `disabled="false"` or `await="false"` - remove the attribute instead.
 - Hand-writing `@media (prefers-color-scheme: dark)` - use `pref-theme-*` classes.
 - Editing the generated `readme.md` directly - edit `usage/*.md`.
-- Suggesting `refact` or `doc` in commit messages - use `refactor` and `docs`.
+- Suggesting `refact` or `doc` in commit messages - `commitlint` only accepts `refactor` and `docs`.
 - Suggesting `em`, `cm`, `pt`, or other disallowed units in CSS.
 - Using the `background` shorthand or any vendor-prefixed property.
 - Composing typography with raw `font-*` + `text-*` primitives - use semantic `text-*` utilities.

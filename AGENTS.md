@@ -25,7 +25,9 @@ yarn install                                         # install project dependenc
 nx run-many --target=build --all                     # build everything
 nx run design-tokens:build                           # build tokens only
 nx run styles:build                                  # build styles only
-nx run icons:build                                   # build icons only
+nx run icons:build                                   # build the icon font (builds svg-icons first)
+nx run icons:check.dictionary                        # verify dictionary.json matches the SVG sources
+nx run icons:add.icons --auto                        # map new SVG sources into the dictionary
 nx run stencil:build                                 # build web components
 nx run stencil:storybook.start                       # start Storybook
 
@@ -39,11 +41,15 @@ nx run stencil:test                                  # run spec and e2e tests
 design-tokens  →  no internal dependencies
 identity       →  no internal dependencies
 svg-icons      →  no internal dependencies
+icons          →  svg-icons
 styles         →  design-tokens
 stencil        →  design-tokens, styles, svg-icons, identity
 ```
 
-**Required build order**: `design-tokens` → `styles` → `icons` → `stencil`
+**Required build order**: `design-tokens` → `styles` → `svg-icons` → `icons` → `stencil`
+
+`svg-icons` ships the SVG artwork, `icons` builds the icon font from a curated subset of it. They
+are separate packages with separate releases — see `projects/icons/SPEC.md` before adding an icon.
 
 ## Documentation index
 
@@ -55,6 +61,7 @@ stencil        →  design-tokens, styles, svg-icons, identity
 | Navigable catalogue of all 115 components                                              | `docs/COMPONENTS.md`                             |
 | Design token system: structure, naming convention, semantic levels                     | `docs/TOKENS.md`                                 |
 | Design tokens: structure, levels, semantics, naming convention                         | `projects/design-tokens/SPEC.md`                 |
+| Adding an icon: dictionary format, source groups, validation, release scopes           | `projects/icons/SPEC.md`                         |
 | CSS and Tailwind 4 styles: semantic classes, anti-patterns, dark mode                  | `projects/styles/SPEC.md`                        |
 | Web components: general Stencil conventions, composition patterns, accessibility rules | `projects/stencil/SPEC.md`                       |
 | Single component spec: props, slots, usage examples, anti-patterns                     | `projects/stencil/src/components/<name>/SPEC.md` |

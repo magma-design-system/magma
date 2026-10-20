@@ -16,7 +16,7 @@ A blank line followed by a longer body is supported but not required.
 
 ## Types
 
-The full list is enforced by the `type-enum` rule in [`commitlint.config.js`](../commitlint.config.js). Several of these are **custom** and differ from the Conventional Commits defaults - pay attention to `refact` (not `refactor`) and `doc` (not `docs`).
+The full list is enforced by the `type-enum` rule in [`commitlint.config.js`](../commitlint.config.js). Most follow the Conventional Commits defaults; `change`, `hotfix` and `merge` are additions specific to this repository.
 
 | Type       | Use for                                                                                    |
 | ---------- | ------------------------------------------------------------------------------------------ |
@@ -24,13 +24,13 @@ The full list is enforced by the `type-enum` rule in [`commitlint.config.js`](..
 | `change`   | Behaviour changes that are neither a feature nor a bug fix (e.g. deprecations, API tweaks) |
 | `chore`    | Tooling, config, formatting, lint setup, maintenance that does not affect runtime          |
 | `ci`       | CI/CD configuration only (e.g. `.gitlab-ci.yml`)                                           |
-| `docs`     | Documentation only (markdown, JSDoc, READMEs). **Not** `doc`                               |
+| `docs`     | Documentation only (markdown, JSDoc, READMEs). `doc` is **not** accepted                   |
 | `feat`     | New user-facing functionality                                                              |
 | `fix`      | Bug fix                                                                                    |
 | `hotfix`   | Urgent production fix on a release branch                                                  |
 | `merge`    | Merge commits (typically auto-generated)                                                   |
 | `perf`     | Performance improvement with no behavioural change                                         |
-| `refactor` | Refacting with no behavioural or API change. **Not** `refact`                              |
+| `refactor` | Refactoring with no behavioural or API change. `refact` is **not** accepted                |
 | `revert`   | Revert of a previous commit. **Scope must be empty** (see special rules)                   |
 | `style`    | Cosmetic CSS/visual changes only. Has scope restrictions (see special rules)               |
 | `test`     | Test additions or changes only                                                             |
@@ -42,7 +42,8 @@ The scope is **required** for every commit (except `revert`). The allowed scopes
 ### 1. Project scopes (static list)
 
 ```
-design-tokens, icons, identity, lit, magma, react, stencil, storybook, styles, svg-icons
+design-tokens, icons, identity, lit, magma, magma-angular, magma-react, stencil, storybook,
+styles, svg-icons
 ```
 
 Use the project scope when the change touches the project as a whole or several components inside it.
@@ -97,8 +98,8 @@ chore(mds-button): update readme
 
 ```
 🚫 feat: add new button             ← missing scope
-🚫 refactor(stencil): tidy imports  ← "refact" is not allowed; use "refactor"
-🚫 doc(stencil): fix typo          ← "doc" is not allowed; use "docs"
+🚫 refact(stencil): tidy imports    ← "refact" is not allowed; use "refactor"
+🚫 doc(stencil): fix typo           ← "doc" is not allowed; use "docs"
 🚫 style(magma): format code        ← style type forbidden on magma scope; use "chore"
 🚫 revert(stencil): undo X          ← revert must have empty scope
 ```
