@@ -61,6 +61,8 @@ export class MdsToast {
 
   @Element() hostElement: HTMLMdsToastElement;
   @State() hasActions: boolean;
+  // inside an mds-toast-region, which places the toast and announces it
+  @State() stacked = false;
 
   /**
    * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `deletable` so the person can hide it too.
@@ -207,6 +209,10 @@ export class MdsToast {
     }
   };
 
+  connectedCallback(): void {
+    this.stacked = this.hostElement.closest('mds-toast-region') !== null;
+  }
+
   disconnectedCallback(): void {
     window.clearTimeout(this.dismissTimer);
     window.clearTimeout(this.closeTimer);
@@ -266,10 +272,12 @@ export class MdsToast {
   render() {
     // a status region: the message is announced when the toast shows it, without moving the
     // focus. The host is the region and stays in the page, so the content that appears inside
-    // it is what a screen reader reads out
+    // it is what a screen reader reads out. Inside an mds-toast-region the region is the live
+    // region, already in the page before any toast: a toast of its own would nest a second one
     return (
       <Host
-        role="status"
+        role={this.stacked ? undefined : 'status'}
+        stacked={this.stacked}
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
         pref-mode={preferenceStore.state.mode}

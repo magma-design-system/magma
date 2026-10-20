@@ -87,6 +87,7 @@ import { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header
 import { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
 import { MdsToastCloseEventDetail } from "./components/mds-toast/meta/event-detail";
+import { ToastPosition as ToastPosition1 } from "./components/mds-toast/meta/types";
 import { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
 import { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
 import { UsageType } from "./components/mds-usage/meta/types";
@@ -173,6 +174,7 @@ export { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header
 export { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
 export { MdsToastCloseEventDetail } from "./components/mds-toast/meta/event-detail";
+export { ToastPosition as ToastPosition1 } from "./components/mds-toast/meta/types";
 export { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
 export { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
 export { UsageType } from "./components/mds-usage/meta/types";
@@ -2765,6 +2767,18 @@ export namespace Components {
          */
         "visible"?: boolean;
     }
+    interface MdsToastRegion {
+        /**
+          * The most toasts visible at once: when one more shows, the oldest one with a `duration` is hidden. A toast that stays (`duration="0"`) is never hidden by the region
+          * @default 3
+         */
+        "max": number;
+        /**
+          * Sets the edge of the viewport where the toasts line up, and the `position` of every toast inside the region
+          * @default 'bottom-center'
+         */
+        "position": ToastPosition;
+    }
     interface MdsTooltip {
         /**
           * @default 4
@@ -4451,6 +4465,12 @@ declare global {
         prototype: HTMLMdsToastElement;
         new (): HTMLMdsToastElement;
     };
+    interface HTMLMdsToastRegionElement extends Components.MdsToastRegion, HTMLStencilElement {
+    }
+    var HTMLMdsToastRegionElement: {
+        prototype: HTMLMdsToastRegionElement;
+        new (): HTMLMdsToastRegionElement;
+    };
     interface HTMLMdsTooltipElement extends Components.MdsTooltip, HTMLStencilElement {
     }
     var HTMLMdsTooltipElement: {
@@ -4624,6 +4644,7 @@ declare global {
         "mds-table-row": HTMLMdsTableRowElement;
         "mds-text": HTMLMdsTextElement;
         "mds-toast": HTMLMdsToastElement;
+        "mds-toast-region": HTMLMdsToastRegionElement;
         "mds-tooltip": HTMLMdsTooltipElement;
         "mds-tree": HTMLMdsTreeElement;
         "mds-tree-item": HTMLMdsTreeItemElement;
@@ -7439,6 +7460,18 @@ declare namespace LocalJSX {
          */
         "visible"?: boolean;
     }
+    interface MdsToastRegion {
+        /**
+          * The most toasts visible at once: when one more shows, the oldest one with a `duration` is hidden. A toast that stays (`duration="0"`) is never hidden by the region
+          * @default 3
+         */
+        "max"?: number;
+        /**
+          * Sets the edge of the viewport where the toasts line up, and the `position` of every toast inside the region
+          * @default 'bottom-center'
+         */
+        "position"?: ToastPosition;
+    }
     interface MdsTooltip {
         /**
           * @default 4
@@ -8333,6 +8366,10 @@ declare namespace LocalJSX {
         "position": ToastPosition;
         "deletable": boolean;
     }
+    interface MdsToastRegionAttributes {
+        "position": ToastPosition;
+        "max": number;
+    }
     interface MdsTooltipAttributes {
         "hideArrow": boolean;
         "arrowPadding": number;
@@ -8499,6 +8536,7 @@ declare namespace LocalJSX {
         "mds-table-row": Omit<MdsTableRow, keyof MdsTableRowAttributes> & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes]?: MdsTableRow[K] } & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes as `attr:${K}`]?: MdsTableRowAttributes[K] } & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes as `prop:${K}`]?: MdsTableRow[K] };
         "mds-text": Omit<MdsText, keyof MdsTextAttributes> & { [K in keyof MdsText & keyof MdsTextAttributes]?: MdsText[K] } & { [K in keyof MdsText & keyof MdsTextAttributes as `attr:${K}`]?: MdsTextAttributes[K] } & { [K in keyof MdsText & keyof MdsTextAttributes as `prop:${K}`]?: MdsText[K] };
         "mds-toast": Omit<MdsToast, keyof MdsToastAttributes> & { [K in keyof MdsToast & keyof MdsToastAttributes]?: MdsToast[K] } & { [K in keyof MdsToast & keyof MdsToastAttributes as `attr:${K}`]?: MdsToastAttributes[K] } & { [K in keyof MdsToast & keyof MdsToastAttributes as `prop:${K}`]?: MdsToast[K] };
+        "mds-toast-region": Omit<MdsToastRegion, keyof MdsToastRegionAttributes> & { [K in keyof MdsToastRegion & keyof MdsToastRegionAttributes]?: MdsToastRegion[K] } & { [K in keyof MdsToastRegion & keyof MdsToastRegionAttributes as `attr:${K}`]?: MdsToastRegionAttributes[K] } & { [K in keyof MdsToastRegion & keyof MdsToastRegionAttributes as `prop:${K}`]?: MdsToastRegion[K] };
         "mds-tooltip": Omit<MdsTooltip, keyof MdsTooltipAttributes> & { [K in keyof MdsTooltip & keyof MdsTooltipAttributes]?: MdsTooltip[K] } & { [K in keyof MdsTooltip & keyof MdsTooltipAttributes as `attr:${K}`]?: MdsTooltipAttributes[K] } & { [K in keyof MdsTooltip & keyof MdsTooltipAttributes as `prop:${K}`]?: MdsTooltip[K] } & OneOf<"target", MdsTooltip["target"], MdsTooltipAttributes["target"]>;
         "mds-tree": Omit<MdsTree, keyof MdsTreeAttributes> & { [K in keyof MdsTree & keyof MdsTreeAttributes]?: MdsTree[K] } & { [K in keyof MdsTree & keyof MdsTreeAttributes as `attr:${K}`]?: MdsTreeAttributes[K] } & { [K in keyof MdsTree & keyof MdsTreeAttributes as `prop:${K}`]?: MdsTree[K] };
         "mds-tree-item": Omit<MdsTreeItem, keyof MdsTreeItemAttributes> & { [K in keyof MdsTreeItem & keyof MdsTreeItemAttributes]?: MdsTreeItem[K] } & { [K in keyof MdsTreeItem & keyof MdsTreeItemAttributes as `attr:${K}`]?: MdsTreeItemAttributes[K] } & { [K in keyof MdsTreeItem & keyof MdsTreeItemAttributes as `prop:${K}`]?: MdsTreeItem[K] };
@@ -8637,6 +8675,7 @@ declare module "@stencil/core" {
             "mds-table-row": LocalJSX.IntrinsicElements["mds-table-row"] & JSXBase.HTMLAttributes<HTMLMdsTableRowElement>;
             "mds-text": LocalJSX.IntrinsicElements["mds-text"] & JSXBase.HTMLAttributes<HTMLMdsTextElement>;
             "mds-toast": LocalJSX.IntrinsicElements["mds-toast"] & JSXBase.HTMLAttributes<HTMLMdsToastElement>;
+            "mds-toast-region": LocalJSX.IntrinsicElements["mds-toast-region"] & JSXBase.HTMLAttributes<HTMLMdsToastRegionElement>;
             "mds-tooltip": LocalJSX.IntrinsicElements["mds-tooltip"] & JSXBase.HTMLAttributes<HTMLMdsTooltipElement>;
             "mds-tree": LocalJSX.IntrinsicElements["mds-tree"] & JSXBase.HTMLAttributes<HTMLMdsTreeElement>;
             "mds-tree-item": LocalJSX.IntrinsicElements["mds-tree-item"] & JSXBase.HTMLAttributes<HTMLMdsTreeItemElement>;
