@@ -126,7 +126,7 @@ export const config: Config = {
       outDir: '../stencil-react/src/',
       customElementsDir: 'dist/components',
       // Un modulo ES per wrapper (projects/stencil-react/src/<tag>.ts) invece di un unico
-      // components.ts con tutti e 114: il barrel resta ma diventa di sole
+      // components.ts con tutti e 115: il barrel resta ma diventa di sole
       // ri-esportazioni, così i bundler scartano i componenti non importati.
       esModules: true,
       // SSR: oltre ai wrapper client (invariati) genera un <tag>.server.ts

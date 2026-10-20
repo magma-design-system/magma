@@ -194,9 +194,9 @@ export class MdsInput {
   @Prop({ mutable: true, reflect: true }) icon?: string;
 
   /**
-   * Specifies the maximum value
-   * use it with input type="number" or type="date"
-   * Example: max="180", max="2046-12-04"
+   * Specifies the maximum value, with `type="number"` or `type="date"`: a number, or a date in ISO
+   * format (YYYY-MM-DD) such as `2046-12-04`
+   * @example '180'
    */
   @Prop({ reflect: true }) readonly max?: string | number;
 
@@ -213,9 +213,9 @@ export class MdsInput {
   @Prop({ reflect: true }) readonly mic?: boolean;
 
   /**
-   * Specifies the minimum value
-   * use it with input type="number" or type="date"
-   * Example: min="-3", min="1988-04-15"
+   * Specifies the minimum value, with `type="number"` or `type="date"`: a number, or a date in ISO
+   * format (YYYY-MM-DD) such as `1988-04-15`
+   * @example '-3'
    */
   @Prop({ reflect: true }) readonly min?: string | number;
 
@@ -233,6 +233,7 @@ export class MdsInput {
   /**
    * Specifies a regular expression the whole value has to match, as the pattern attribute of a
    * native input: a value that does not match stops the submit of the form
+   * @example '[0-9]{5}'
    */
   @Prop({ reflect: true }) readonly pattern?: string;
 
@@ -269,6 +270,7 @@ export class MdsInput {
 
   /**
    * Specifies the interval between legal numbers in an input field
+   * @example '0.01'
    */
   @Prop({ reflect: true }) readonly step?: string;
 

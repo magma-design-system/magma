@@ -18,7 +18,7 @@ Every component under [`projects/stencil/src/components/<name>/`](../projects/st
 | `dist/collection/components/<name>/pattern.md`, `antipattern.md` | build (auto) | no | The shipped copies of `2. Pattern.md` / `3. Antipattern.md`, links rewritten |
 | `dist/collection/components/<name>/documentation.json` | build (auto) | no | Its entry of the docs JSON, with full type metadata                                |
 
-**Build flow.** Only the three `usage/*.md` files are hand-authored. On build, Stencil bundles them into `dist/documentation.json` (all components, gitignored) and injects the content into `readme.md`; then `scripts/component-docs.ts` writes the per-component files of `dist/collection/components/<name>/`. As a consequence: never hand-edit `readme.md` or a generated file - they are regenerated and your edits will be lost. The one exception is worse: Stencil keeps whatever sits above `<!-- Auto Generated Below -->` in a readme and ships it in the `readme` field of `dist/documentation.json`, where nobody keeps it current. Only the title and the generic intro belong there, and `check.usage-docs` fails on anything else. To change what a component's docs say, edit the matching `usage/*.md` (and the JSDoc of the props, events, methods, slots, parts and CSS vars: `check.usage-docs` also fails on a member without a description). Everything under `dist/` exists only after `nx run stencil:build`.
+**Build flow.** Only the three `usage/*.md` files are hand-authored. On build, Stencil bundles them into `dist/documentation.json` (all components, gitignored) and injects the content into `readme.md`; then `scripts/component-docs.ts` writes the per-component files of `dist/collection/components/<name>/`. As a consequence: never hand-edit `readme.md` or a generated file - they are regenerated and your edits will be lost. The one exception is worse: Stencil keeps whatever sits above `<!-- Auto Generated Below -->` in a readme and ships it in the `readme` field of `dist/documentation.json`, where nobody keeps it current. Only the title and the generic intro belong there, and `check.usage-docs` fails on anything else. To change what a component's docs say, edit the matching `usage/*.md` (and the JSDoc of the props, events, methods, slots, parts and CSS vars: `check.usage-docs` also fails on a member without a description). A prop whose value has a format or a syntax the name does not reveal (a date, a CSS selector, a `srcset`, a language code, a pattern) also carries an `@example`: one value, on one line, quoted, as `@example '2025-06-15'`; it reaches `documentation.json`, where the docs site shows it as the placeholder of the field. A prop whose value is plain text (`label`, `name`, `headline`) needs none. Everything under `dist/` exists only after `nx run stencil:build`.
 
 **Storybook.** The same three files make up each component's Docs page in Storybook (sections Description, Pattern and Antipattern around the primary story), read at runtime from `usage/*.md`: see the Storybook paragraph of [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md#per-component-usage-docs).
 
@@ -34,7 +34,7 @@ Pick by task, not by preference:
 | Typed prop value sets (what `tone` / `variant` / `size` accept) | [`components.d.ts`](../projects/stencil/src/components.d.ts) + [`type/*.ts`](../projects/stencil/src/type/) - the versioned source of truth |
 | Full type metadata, cross-references (for codemods / tooling)   | the per-component `documentation.json` after a build; otherwise build first or fall back to `components.d.ts`                              |
 
-Avoid loading `dist/documentation.json` as a default - it holds all 114 components (over 2 MB). Reach for the per-component one only when you specifically need the structured type metadata it carries.
+Avoid loading `dist/documentation.json` as a default - it holds all 115 components (over 2 MB). Reach for the per-component one only when you specifically need the structured type metadata it carries.
 
 ## The `usage/` contract
 
@@ -178,6 +178,7 @@ Subparts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their 
 | ---------------------------- | --------------- | ---------------------------------------------------------------------------------------- |
 | `mds-banner`                 | -               | Inline state message (info / success / warning / error) with optional action.            |
 | `mds-toast`                  | -               | Transient toast that appears and dismisses automatically.                                |
+| `mds-toast-region`           | -               | Live region at a viewport edge that lines up the toasts shown at once.                   |
 | `mds-notification`           | -               | Small notification badge / indicator.                                                    |
 | `mds-push-notification`      | -               | Stack container for multiple push notifications.                                         |
 | `mds-push-notification-item` | -               | Single push notification inside `mds-push-notification`.                                 |

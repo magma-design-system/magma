@@ -26,6 +26,7 @@ export class MdsCalendarCell {
   /**
    * Specifies the date of the cell
    * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2025-06-15'
    */
   @Prop({ reflect: true }) readonly date?: string;
 

@@ -51,6 +51,7 @@ export class MdsTableHeaderCell {
   /**
    * Names the column in the `mdsTableHeaderCellSort` event, for example the field the back end
    * sorts by
+   * @example 'createdAt'
    */
   @Prop({ reflect: true }) readonly sortKey?: string;
 

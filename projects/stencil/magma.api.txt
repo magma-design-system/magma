@@ -1510,12 +1510,13 @@ mds-text css --mds-text-line-clamp
 mds-text css --mds-text-selection-background
 mds-text css --mds-text-selection-color
 mds-toast encapsulation shadow
+mds-toast prop deletable (attr deletable): boolean | undefined
 mds-toast prop duration (attr duration) [reflect, mutable]: number | undefined = 5000
 mds-toast prop position (attr position) [reflect, mutable]: "bottom-center" | "bottom-left" | "bottom-right" | "top-center" | "top-left" | "top-right" = 'bottom-center'
 mds-toast prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'strong'
 mds-toast prop variant (attr variant) [reflect]: "ai" | "dark" | "error" | "info" | "light" | "primary" | "success" | "warning" | undefined = 'light'
 mds-toast prop visible (attr visible) [reflect, mutable]: boolean | undefined
-mds-toast event mdsToastClose: void [bubbles, cancelable, composed]
+mds-toast event mdsToastClose: MdsToastCloseEventDetail [bubbles, cancelable, composed]
 mds-toast slot (default)
 mds-toast slot action
 mds-toast slot icon
@@ -1525,6 +1526,11 @@ mds-toast css --mds-toast-duration
 mds-toast css --mds-toast-icon-color
 mds-toast css --mds-toast-shadow
 mds-toast css --mds-toast-width
+mds-toast-region encapsulation shadow
+mds-toast-region prop max (attr max) [reflect]: number = 3
+mds-toast-region prop position (attr position) [reflect]: "bottom-center" | "bottom-left" | "bottom-right" | "top-center" | "top-left" | "top-right" = 'bottom-center'
+mds-toast-region slot (default)
+mds-toast-region css --mds-toast-region-gap
 mds-tooltip encapsulation shadow
 mds-tooltip prop disableAutoPlacement (attr disable-auto-placement) [reflect]: boolean = false
 mds-tooltip prop disableShift (attr disable-shift): boolean = false
@@ -1760,6 +1766,7 @@ interface MdsTableHeaderCellSortEventDetail { direction: SortDirectionType; inde
 type MdsTableRowSelection = { index: number; value?: string | number; }
 interface MdsTableSelectionEventDetail { rows: MdsTableRowSelection[]; }
 type MdsTableSortingType = 'internal' | 'external';
+interface MdsToastCloseEventDetail { reason: 'close' | 'hide' | 'timeout'; }
 interface MdsTreeItemEventDetail { element: HTMLMdsTreeItemElement; }
 interface MdsValidationErrors { [key: string]: string; }
 type MdsValidationErrors = any

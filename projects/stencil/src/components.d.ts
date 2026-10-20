@@ -86,6 +86,8 @@ import { SortDirectionType } from "./components/mds-table-header-cell/meta/types
 import { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header-cell/meta/event-detail";
 import { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
+import { MdsToastCloseEventDetail } from "./components/mds-toast/meta/event-detail";
+import { ToastPosition as ToastPosition1 } from "./components/mds-toast/meta/types";
 import { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
 import { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
 import { UsageType } from "./components/mds-usage/meta/types";
@@ -171,6 +173,8 @@ export { SortDirectionType } from "./components/mds-table-header-cell/meta/types
 export { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header-cell/meta/event-detail";
 export { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
+export { MdsToastCloseEventDetail } from "./components/mds-toast/meta/event-detail";
+export { ToastPosition as ToastPosition1 } from "./components/mds-toast/meta/types";
 export { TreeActions, TreeAppearance, TreeIcon } from "./type/tree";
 export { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-detail";
 export { UsageType } from "./components/mds-usage/meta/types";
@@ -393,6 +397,8 @@ export namespace Components {
         "author"?: string;
         /**
           * Specifies the date of the bibliography
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-15'
          */
         "date"?: string;
         /**
@@ -679,6 +685,7 @@ export namespace Components {
         /**
           * Specifies the date of the cell
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-15'
          */
         "date"?: string;
         /**
@@ -844,6 +851,7 @@ export namespace Components {
         "strategy": FloatingUIStrategy;
         /**
           * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * @example '#profile-button'
          */
         "target": string;
         /**
@@ -938,7 +946,7 @@ export namespace Components {
          */
         "filename": string;
         /**
-          * Sets if the download icon must be shown or not
+          * The kind of file, recognised from the extension of `filename` or from `suffix`: it selects the colours of the icon. The component writes it on load and whenever `filename` changes, set `suffix` to choose it
          */
         "format"?: string;
         /**
@@ -974,10 +982,11 @@ export namespace Components {
         "filename": string;
         /**
           * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
+          * @example '2.4 MB'
          */
         "filesize"?: string;
         /**
-          * Sets if the download icon must be shown or not
+          * The kind of file, recognised from the extension of `filename` or from `suffix`: it selects the colours of the icon. The component writes it on load and whenever `filename` changes, set `suffix` to choose it
          */
         "format"?: string;
         /**
@@ -1057,7 +1066,8 @@ export namespace Components {
          */
         "appearance": string;
         /**
-          * Sets the appearance of the header bar element depending on the scroll position you should set three different values: initial appearance, changed appearance and `window.scrollY` threshold Es: appearance-set="stripe, inline 200" means the component will start with stripe appearance that will change to inline if the page is scrolled more of 199 pixels
+          * Sets the appearance of the header bar element depending on the scroll position: three values, the initial appearance, the appearance once scrolled and the `window.scrollY` threshold. `stripe, inline 200` starts with the stripe appearance and changes to inline once the page is scrolled more than 199 pixels
+          * @example 'stripe, inline 200'
          */
         "appearanceSet"?: string;
         /**
@@ -1182,6 +1192,7 @@ export namespace Components {
         "referrerpolicy"?: ReferrerpolicyType;
         /**
           * One or more strings separated by commas, indicating a set of source sizes. https://medium.com/@MRWwebDesign/responsive-images-the-sizes-attribute-and-unexpected-image-sizes-882a2eadb6db
+          * @example '(max-width: 600px) 480px, 960px'
          */
         "sizes"?: string;
         /**
@@ -1190,10 +1201,12 @@ export namespace Components {
         "src"?: string;
         /**
           * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source.
+          * @example 'photo-480.jpg 480w, photo-960.jpg 960w'
          */
         "srcset"?: string;
         /**
-          * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source based on consumption configuration. ``` <mds-img srcset-consumption="image-black-n-white-1x.jpg low, image-1x.jpg medium, image-2x.jpg high"></mds-img> ```
+          * Specifies a list of image files to use in different situations: comma-separated, each file followed by the consumption level it is for (`low`, `medium`, `high`), so the component picks the image source that matches the consumption configuration.
+          * @example 'photo-bw-1x.jpg low, photo-1x.jpg medium, photo-2x.jpg high'
          */
         "srcsetConsumption"?: string;
         /**
@@ -1265,7 +1278,8 @@ export namespace Components {
          */
         "icon"?: string;
         /**
-          * Specifies the maximum value use it with input type="number" or type="date" Example: max="180", max="2046-12-04"
+          * Specifies the maximum value, with `type="number"` or `type="date"`: a number, or a date in ISO format (YYYY-MM-DD) such as `2046-12-04`
+          * @example '180'
          */
         "max"?: string | number;
         /**
@@ -1277,7 +1291,8 @@ export namespace Components {
          */
         "mic"?: boolean;
         /**
-          * Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"
+          * Specifies the minimum value, with `type="number"` or `type="date"`: a number, or a date in ISO format (YYYY-MM-DD) such as `1988-04-15`
+          * @example '-3'
          */
         "min"?: string | number;
         /**
@@ -1290,6 +1305,7 @@ export namespace Components {
         "name"?: string;
         /**
           * Specifies a regular expression the whole value has to match, as the pattern attribute of a native input: a value that does not match stops the submit of the form
+          * @example '[0-9]{5}'
          */
         "pattern"?: string;
         /**
@@ -1322,6 +1338,7 @@ export namespace Components {
         "size"?: InputSizeType;
         /**
           * Specifies the interval between legal numbers in an input field
+          * @example '0.01'
          */
         "step"?: string;
         /**
@@ -1382,12 +1399,14 @@ export namespace Components {
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-12-31'
           * @default null
          */
         "max": string | null;
         /**
           * Specifies the min date of the range, user cannot set dates before this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-01-01'
           * @default null
          */
         "min": string | null;
@@ -1418,6 +1437,7 @@ export namespace Components {
         /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-15'
           * @default ''
          */
         "value": string;
@@ -1451,6 +1471,7 @@ export namespace Components {
         /**
           * Specifies the end date of the range
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-30'
           * @default ''
          */
         "endDate": string;
@@ -1462,12 +1483,14 @@ export namespace Components {
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-12-31'
           * @default null
          */
         "max": string | null;
         /**
           * Specifies the min date of the range, user cannot set dates before this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-01-01'
           * @default null
          */
         "min": string | null;
@@ -1488,6 +1511,7 @@ export namespace Components {
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-01'
           * @default ''
          */
         "startDate": string;
@@ -1495,6 +1519,8 @@ export namespace Components {
     interface MdsInputDateRangePreselection {
         /**
           * Sets the end date of the preselection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-30'
          */
         "end"?: string;
         /**
@@ -1503,6 +1529,8 @@ export namespace Components {
         "selected"?: boolean;
         /**
           * Sets the start date of the preselection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-01'
          */
         "start": string;
     }
@@ -1725,7 +1753,8 @@ export namespace Components {
     }
     interface MdsInputUpload {
         /**
-          * Defines the file types the file input should accept
+          * Defines the file types the file input should accept, as the accept attribute of a native file input: MIME types (`image/*` included) and extensions, separated by commas
+          * @example '.pdf,image/*'
           * @default ''
          */
         "accept": string;
@@ -1947,6 +1976,7 @@ export namespace Components {
         "strategy": StrategyType;
         /**
           * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * @example '#profile-button'
          */
         "target": string;
         /**
@@ -2061,7 +2091,8 @@ export namespace Components {
     }
     interface MdsPrefLanguage {
         /**
-          * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
+          * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  Supported languages are Italiano, English, Español, ελληνικά
+          * @example 'en-US'
           * @default 'auto'
          */
         "set": string;
@@ -2073,6 +2104,7 @@ export namespace Components {
     interface MdsPrefLanguageItem {
         /**
           * Specifies the language code based on HTML `lang` attribute
+          * @example 'it'
          */
         "code": string;
         /**
@@ -2106,7 +2138,8 @@ export namespace Components {
          */
         "cornerShape"?: PreferenceCornerShapeChoiceType;
         /**
-          * Specifies the theme name attribute A string representing the theme name, should be a simple string name or kebab kase name. `Examples of valid language codes include "magma", "maggioli-editore", etc.`
+          * Specifies the theme name attribute A string representing the theme name, in lowercase kebab-case.
+          * @example 'maggioli-editore'
           * @default 'default'
          */
         "name": string;
@@ -2127,6 +2160,7 @@ export namespace Components {
         "label"?: string;
         /**
           * Specifies the theme name
+          * @example 'maggioli-editore'
           * @default 'default'
          */
         "name": string;
@@ -2232,12 +2266,14 @@ export namespace Components {
     }
     interface MdsPushNotificationItem {
         /**
-          * Specifies if the notification date format shows time passed or displays date as a static string
+          * Specifies how the notification date is written: `timeago` shows the time passed, any other value is the Day.js format of a static date
+          * @example 'DD/MM/YYYY HH:mm'
           * @default 'timeago'
          */
         "dateFormat": NotificationItemDateFormatType;
         /**
           * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
+          * @example '2025-06-15T09:30:00+02:00'
          */
         "datetime"?: string;
         /**
@@ -2671,6 +2707,7 @@ export namespace Components {
         "label"?: string;
         /**
           * Names the column in the `mdsTableHeaderCellSort` event, for example the field the back end sorts by
+          * @example 'createdAt'
          */
         "sortKey"?: string;
         /**
@@ -2735,7 +2772,11 @@ export namespace Components {
     }
     interface MdsToast {
         /**
-          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user.
+          * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
+         */
+        "deletable"?: boolean;
+        /**
+          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `deletable` so the person can hide it too.
           * @default 5000
          */
         "duration"?: number;
@@ -2758,6 +2799,18 @@ export namespace Components {
           * Specifies if toast is visible at the bottom or not
          */
         "visible"?: boolean;
+    }
+    interface MdsToastRegion {
+        /**
+          * The most toasts visible at once: when one more shows, the oldest one with a `duration` is hidden. A toast that stays (`duration="0"`) is never hidden by the region
+          * @default 3
+         */
+        "max": number;
+        /**
+          * Sets the edge of the viewport where the toasts line up, and the `position` of every toast inside the region
+          * @default 'bottom-center'
+         */
+        "position": ToastPosition;
     }
     interface MdsTooltip {
         /**
@@ -2810,6 +2863,7 @@ export namespace Components {
         "strategy": FloatingUIStrategy;
         /**
           * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * @example '#profile-button'
          */
         "target": string;
         /**
@@ -4429,7 +4483,7 @@ declare global {
         new (): HTMLMdsTextElement;
     };
     interface HTMLMdsToastElementEventMap {
-        "mdsToastClose": void;
+        "mdsToastClose": MdsToastCloseEventDetail;
     }
     interface HTMLMdsToastElement extends Components.MdsToast, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsToastElementEventMap>(type: K, listener: (this: HTMLMdsToastElement, ev: MdsToastCustomEvent<HTMLMdsToastElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4444,6 +4498,12 @@ declare global {
     var HTMLMdsToastElement: {
         prototype: HTMLMdsToastElement;
         new (): HTMLMdsToastElement;
+    };
+    interface HTMLMdsToastRegionElement extends Components.MdsToastRegion, HTMLStencilElement {
+    }
+    var HTMLMdsToastRegionElement: {
+        prototype: HTMLMdsToastRegionElement;
+        new (): HTMLMdsToastRegionElement;
     };
     interface HTMLMdsTooltipElement extends Components.MdsTooltip, HTMLStencilElement {
     }
@@ -4618,6 +4678,7 @@ declare global {
         "mds-table-row": HTMLMdsTableRowElement;
         "mds-text": HTMLMdsTextElement;
         "mds-toast": HTMLMdsToastElement;
+        "mds-toast-region": HTMLMdsToastRegionElement;
         "mds-tooltip": HTMLMdsTooltipElement;
         "mds-tree": HTMLMdsTreeElement;
         "mds-tree-item": HTMLMdsTreeItemElement;
@@ -4887,6 +4948,8 @@ declare namespace LocalJSX {
         "author"?: string;
         /**
           * Specifies the date of the bibliography
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-15'
          */
         "date"?: string;
         /**
@@ -5212,6 +5275,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the date of the cell
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-15'
          */
         "date"?: string;
         /**
@@ -5405,6 +5469,7 @@ declare namespace LocalJSX {
         "strategy"?: FloatingUIStrategy;
         /**
           * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * @example '#profile-button'
          */
         "target": string;
         /**
@@ -5460,7 +5525,7 @@ declare namespace LocalJSX {
          */
         "filename"?: string;
         /**
-          * Sets if the download icon must be shown or not
+          * The kind of file, recognised from the extension of `filename` or from `suffix`: it selects the colours of the icon. The component writes it on load and whenever `filename` changes, set `suffix` to choose it
          */
         "format"?: string;
         /**
@@ -5500,10 +5565,11 @@ declare namespace LocalJSX {
         "filename": string;
         /**
           * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
+          * @example '2.4 MB'
          */
         "filesize"?: string;
         /**
-          * Sets if the download icon must be shown or not
+          * The kind of file, recognised from the extension of `filename` or from `suffix`: it selects the colours of the icon. The component writes it on load and whenever `filename` changes, set `suffix` to choose it
          */
         "format"?: string;
         /**
@@ -5599,7 +5665,8 @@ declare namespace LocalJSX {
          */
         "appearance"?: string;
         /**
-          * Sets the appearance of the header bar element depending on the scroll position you should set three different values: initial appearance, changed appearance and `window.scrollY` threshold Es: appearance-set="stripe, inline 200" means the component will start with stripe appearance that will change to inline if the page is scrolled more of 199 pixels
+          * Sets the appearance of the header bar element depending on the scroll position: three values, the initial appearance, the appearance once scrolled and the `window.scrollY` threshold. `stripe, inline 200` starts with the stripe appearance and changes to inline once the page is scrolled more than 199 pixels
+          * @example 'stripe, inline 200'
          */
         "appearanceSet"?: string;
         /**
@@ -5729,6 +5796,7 @@ declare namespace LocalJSX {
         "referrerpolicy"?: ReferrerpolicyType;
         /**
           * One or more strings separated by commas, indicating a set of source sizes. https://medium.com/@MRWwebDesign/responsive-images-the-sizes-attribute-and-unexpected-image-sizes-882a2eadb6db
+          * @example '(max-width: 600px) 480px, 960px'
          */
         "sizes"?: string;
         /**
@@ -5737,10 +5805,12 @@ declare namespace LocalJSX {
         "src"?: string;
         /**
           * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source.
+          * @example 'photo-480.jpg 480w, photo-960.jpg 960w'
          */
         "srcset"?: string;
         /**
-          * Specifies a list of image files to use in different situations. Defines multiple sizes of the same image, allowing the browser to select the appropriate image source based on consumption configuration. ``` <mds-img srcset-consumption="image-black-n-white-1x.jpg low, image-1x.jpg medium, image-2x.jpg high"></mds-img> ```
+          * Specifies a list of image files to use in different situations: comma-separated, each file followed by the consumption level it is for (`low`, `medium`, `high`), so the component picks the image source that matches the consumption configuration.
+          * @example 'photo-bw-1x.jpg low, photo-1x.jpg medium, photo-2x.jpg high'
          */
         "srcsetConsumption"?: string;
         /**
@@ -5796,7 +5866,8 @@ declare namespace LocalJSX {
          */
         "icon"?: string;
         /**
-          * Specifies the maximum value use it with input type="number" or type="date" Example: max="180", max="2046-12-04"
+          * Specifies the maximum value, with `type="number"` or `type="date"`: a number, or a date in ISO format (YYYY-MM-DD) such as `2046-12-04`
+          * @example '180'
          */
         "max"?: string | number;
         /**
@@ -5808,7 +5879,8 @@ declare namespace LocalJSX {
          */
         "mic"?: boolean;
         /**
-          * Specifies the minimum value use it with input type="number" or type="date" Example: min="-3", min="1988-04-15"
+          * Specifies the minimum value, with `type="number"` or `type="date"`: a number, or a date in ISO format (YYYY-MM-DD) such as `1988-04-15`
+          * @example '-3'
          */
         "min"?: string | number;
         /**
@@ -5845,6 +5917,7 @@ declare namespace LocalJSX {
         "onMdsInputValidation"?: (event: MdsInputCustomEvent<boolean>) => void;
         /**
           * Specifies a regular expression the whole value has to match, as the pattern attribute of a native input: a value that does not match stops the submit of the form
+          * @example '[0-9]{5}'
          */
         "pattern"?: string;
         /**
@@ -5868,6 +5941,7 @@ declare namespace LocalJSX {
         "size"?: InputSizeType;
         /**
           * Specifies the interval between legal numbers in an input field
+          * @example '0.01'
          */
         "step"?: string;
         /**
@@ -5923,12 +5997,14 @@ declare namespace LocalJSX {
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-12-31'
           * @default null
          */
         "max"?: string | null;
         /**
           * Specifies the min date of the range, user cannot set dates before this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-01-01'
           * @default null
          */
         "min"?: string | null;
@@ -5962,6 +6038,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the value of the input
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-15'
           * @default ''
          */
         "value"?: string;
@@ -5995,6 +6072,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the end date of the range
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-30'
           * @default ''
          */
         "endDate"?: string;
@@ -6010,12 +6088,14 @@ declare namespace LocalJSX {
         /**
           * Specifies the max date of the range, user cannot set dates after this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-12-31'
           * @default null
          */
         "max"?: string | null;
         /**
           * Specifies the min date of the range, user cannot set dates before this date
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-01-01'
           * @default null
          */
         "min"?: string | null;
@@ -6038,6 +6118,7 @@ declare namespace LocalJSX {
         /**
           * Specifies the start date of the range
           * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-01'
           * @default ''
          */
         "startDate"?: string;
@@ -6045,6 +6126,8 @@ declare namespace LocalJSX {
     interface MdsInputDateRangePreselection {
         /**
           * Sets the end date of the preselection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-30'
          */
         "end"?: string;
         /**
@@ -6053,6 +6136,8 @@ declare namespace LocalJSX {
         "selected"?: boolean;
         /**
           * Sets the start date of the preselection
+          * @description It's in ISO format (YYYY-MM-DD).
+          * @example '2025-06-01'
          */
         "start": string;
     }
@@ -6315,7 +6400,8 @@ declare namespace LocalJSX {
     }
     interface MdsInputUpload {
         /**
-          * Defines the file types the file input should accept
+          * Defines the file types the file input should accept, as the accept attribute of a native file input: MIME types (`image/*` included) and extensions, separated by commas
+          * @example '.pdf,image/*'
           * @default ''
          */
         "accept"?: string;
@@ -6557,6 +6643,7 @@ declare namespace LocalJSX {
         "strategy"?: StrategyType;
         /**
           * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * @example '#profile-button'
          */
         "target"?: string;
         /**
@@ -6695,7 +6782,8 @@ declare namespace LocalJSX {
          */
         "onMdsPrefLanguageChange"?: (event: MdsPrefLanguageCustomEvent<MdsPrefLanguageEventDetail>) => void;
         /**
-          * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  `Examples of valid language codes include "en", "en-US", "fr", "fr-FR", "es-ES", etc.`  Supported languages are Italiano, English, Español, ελληνικά
+          * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  Supported languages are Italiano, English, Español, ελληνικά
+          * @example 'en-US'
           * @default 'auto'
          */
         "set"?: string;
@@ -6707,6 +6795,7 @@ declare namespace LocalJSX {
     interface MdsPrefLanguageItem {
         /**
           * Specifies the language code based on HTML `lang` attribute
+          * @example 'it'
          */
         "code"?: string;
         /**
@@ -6748,7 +6837,8 @@ declare namespace LocalJSX {
          */
         "cornerShape"?: PreferenceCornerShapeChoiceType;
         /**
-          * Specifies the theme name attribute A string representing the theme name, should be a simple string name or kebab kase name. `Examples of valid language codes include "magma", "maggioli-editore", etc.`
+          * Specifies the theme name attribute A string representing the theme name, in lowercase kebab-case.
+          * @example 'maggioli-editore'
           * @default 'default'
          */
         "name"?: string;
@@ -6777,6 +6867,7 @@ declare namespace LocalJSX {
         "label"?: string;
         /**
           * Specifies the theme name
+          * @example 'maggioli-editore'
           * @default 'default'
          */
         "name"?: string;
@@ -6885,12 +6976,14 @@ declare namespace LocalJSX {
     }
     interface MdsPushNotificationItem {
         /**
-          * Specifies if the notification date format shows time passed or displays date as a static string
+          * Specifies how the notification date is written: `timeago` shows the time passed, any other value is the Day.js format of a static date
+          * @example 'DD/MM/YYYY HH:mm'
           * @default 'timeago'
          */
         "dateFormat"?: NotificationItemDateFormatType;
         /**
           * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
+          * @example '2025-06-15T09:30:00+02:00'
          */
         "datetime"?: string;
         /**
@@ -7337,6 +7430,7 @@ declare namespace LocalJSX {
         "onMdsTableHeaderCellSort"?: (event: MdsTableHeaderCellCustomEvent<MdsTableHeaderCellSortEventDetail>) => void;
         /**
           * Names the column in the `mdsTableHeaderCellSort` event, for example the field the back end sorts by
+          * @example 'createdAt'
          */
         "sortKey"?: string;
         /**
@@ -7401,14 +7495,18 @@ declare namespace LocalJSX {
     }
     interface MdsToast {
         /**
-          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. If the duration is set to 0 the component will still visible until intentionally closed by user.
+          * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
+         */
+        "deletable"?: boolean;
+        /**
+          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `deletable` so the person can hide it too.
           * @default 5000
          */
         "duration"?: number;
         /**
-          * Emits when a toast with a `duration` has hidden itself, once its exit animation is over
+          * Emits once the toast is hidden and its exit animation is over, whoever hid it: the `reason` of the detail says who, `timeout`, `close` (the person, with the hide button) or `hide` (the application)
          */
-        "onMdsToastClose"?: (event: MdsToastCustomEvent<void>) => void;
+        "onMdsToastClose"?: (event: MdsToastCustomEvent<MdsToastCloseEventDetail>) => void;
         /**
           * Sets position of toast
           * @default 'bottom-center'
@@ -7428,6 +7526,18 @@ declare namespace LocalJSX {
           * Specifies if toast is visible at the bottom or not
          */
         "visible"?: boolean;
+    }
+    interface MdsToastRegion {
+        /**
+          * The most toasts visible at once: when one more shows, the oldest one with a `duration` is hidden. A toast that stays (`duration="0"`) is never hidden by the region
+          * @default 3
+         */
+        "max"?: number;
+        /**
+          * Sets the edge of the viewport where the toasts line up, and the `position` of every toast inside the region
+          * @default 'bottom-center'
+         */
+        "position"?: ToastPosition;
     }
     interface MdsTooltip {
         /**
@@ -7480,6 +7590,7 @@ declare namespace LocalJSX {
         "strategy"?: FloatingUIStrategy;
         /**
           * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+          * @example '#profile-button'
          */
         "target": string;
         /**
@@ -8321,6 +8432,11 @@ declare namespace LocalJSX {
         "variant": ThemeVariantType;
         "tone": ToneMinimalVariantType;
         "position": ToastPosition;
+        "deletable": boolean;
+    }
+    interface MdsToastRegionAttributes {
+        "position": ToastPosition;
+        "max": number;
     }
     interface MdsTooltipAttributes {
         "hideArrow": boolean;
@@ -8488,6 +8604,7 @@ declare namespace LocalJSX {
         "mds-table-row": Omit<MdsTableRow, keyof MdsTableRowAttributes> & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes]?: MdsTableRow[K] } & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes as `attr:${K}`]?: MdsTableRowAttributes[K] } & { [K in keyof MdsTableRow & keyof MdsTableRowAttributes as `prop:${K}`]?: MdsTableRow[K] };
         "mds-text": Omit<MdsText, keyof MdsTextAttributes> & { [K in keyof MdsText & keyof MdsTextAttributes]?: MdsText[K] } & { [K in keyof MdsText & keyof MdsTextAttributes as `attr:${K}`]?: MdsTextAttributes[K] } & { [K in keyof MdsText & keyof MdsTextAttributes as `prop:${K}`]?: MdsText[K] };
         "mds-toast": Omit<MdsToast, keyof MdsToastAttributes> & { [K in keyof MdsToast & keyof MdsToastAttributes]?: MdsToast[K] } & { [K in keyof MdsToast & keyof MdsToastAttributes as `attr:${K}`]?: MdsToastAttributes[K] } & { [K in keyof MdsToast & keyof MdsToastAttributes as `prop:${K}`]?: MdsToast[K] };
+        "mds-toast-region": Omit<MdsToastRegion, keyof MdsToastRegionAttributes> & { [K in keyof MdsToastRegion & keyof MdsToastRegionAttributes]?: MdsToastRegion[K] } & { [K in keyof MdsToastRegion & keyof MdsToastRegionAttributes as `attr:${K}`]?: MdsToastRegionAttributes[K] } & { [K in keyof MdsToastRegion & keyof MdsToastRegionAttributes as `prop:${K}`]?: MdsToastRegion[K] };
         "mds-tooltip": Omit<MdsTooltip, keyof MdsTooltipAttributes> & { [K in keyof MdsTooltip & keyof MdsTooltipAttributes]?: MdsTooltip[K] } & { [K in keyof MdsTooltip & keyof MdsTooltipAttributes as `attr:${K}`]?: MdsTooltipAttributes[K] } & { [K in keyof MdsTooltip & keyof MdsTooltipAttributes as `prop:${K}`]?: MdsTooltip[K] } & OneOf<"target", MdsTooltip["target"], MdsTooltipAttributes["target"]>;
         "mds-tree": Omit<MdsTree, keyof MdsTreeAttributes> & { [K in keyof MdsTree & keyof MdsTreeAttributes]?: MdsTree[K] } & { [K in keyof MdsTree & keyof MdsTreeAttributes as `attr:${K}`]?: MdsTreeAttributes[K] } & { [K in keyof MdsTree & keyof MdsTreeAttributes as `prop:${K}`]?: MdsTree[K] };
         "mds-tree-item": Omit<MdsTreeItem, keyof MdsTreeItemAttributes> & { [K in keyof MdsTreeItem & keyof MdsTreeItemAttributes]?: MdsTreeItem[K] } & { [K in keyof MdsTreeItem & keyof MdsTreeItemAttributes as `attr:${K}`]?: MdsTreeItemAttributes[K] } & { [K in keyof MdsTreeItem & keyof MdsTreeItemAttributes as `prop:${K}`]?: MdsTreeItem[K] };
@@ -8626,6 +8743,7 @@ declare module "@stencil/core" {
             "mds-table-row": LocalJSX.IntrinsicElements["mds-table-row"] & JSXBase.HTMLAttributes<HTMLMdsTableRowElement>;
             "mds-text": LocalJSX.IntrinsicElements["mds-text"] & JSXBase.HTMLAttributes<HTMLMdsTextElement>;
             "mds-toast": LocalJSX.IntrinsicElements["mds-toast"] & JSXBase.HTMLAttributes<HTMLMdsToastElement>;
+            "mds-toast-region": LocalJSX.IntrinsicElements["mds-toast-region"] & JSXBase.HTMLAttributes<HTMLMdsToastRegionElement>;
             "mds-tooltip": LocalJSX.IntrinsicElements["mds-tooltip"] & JSXBase.HTMLAttributes<HTMLMdsTooltipElement>;
             "mds-tree": LocalJSX.IntrinsicElements["mds-tree"] & JSXBase.HTMLAttributes<HTMLMdsTreeElement>;
             "mds-tree-item": LocalJSX.IntrinsicElements["mds-tree-item"] & JSXBase.HTMLAttributes<HTMLMdsTreeItemElement>;

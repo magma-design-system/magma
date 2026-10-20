@@ -76,7 +76,7 @@ export class AppModule {}
 `defineCustomElements()` from the lazy loader, which is redundant (the standalone
 proxies self-register) and expensive: on a probe app it took the build from
 229 kB in 2 files to 1.9 MB in 142, because the loader pulls the runtime chunks
-of all 114 components.
+of all 115 components.
 
 ## 3. Set the icon path
 

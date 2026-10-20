@@ -1,0 +1,37 @@
+/* Inside an mds-toast-region. The region holds the place at the edge of the viewport and lines
+   its toasts up in a column, so the toast is in its flow instead of fixed on its own, and the
+   region gives it its `position`. A hidden toast leaves no room in the column once its exit is
+   over: display is held for the exit, then drops. It fades a short way towards its edge
+   instead of travelling over the toasts between it and the edge */
+
+:host([stacked]) {
+  bottom: auto;
+  left: auto;
+  position: relative;
+  right: auto;
+  top: auto;
+  transition-behavior: allow-discrete;
+  transition-duration: var(--private-toast-transition-duration);
+  transition-property: display;
+  z-index: auto;
+}
+
+:host([stacked]:not([visible])),
+:host([stacked][visible='false']) {
+  display: none;
+}
+
+:host([stacked]) .dialog:not(.dialog--visible) {
+  opacity: 0;
+  transform: none;
+}
+
+/* a toast that turns visible comes from display: none, which leaves no style for a transition
+   to start from: the entrance starts from the hidden state above */
+
+@starting-style {
+  :host([stacked]) .dialog--visible {
+    opacity: 0;
+    transform: none;
+  }
+}

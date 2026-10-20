@@ -7,6 +7,10 @@ import { toastPositionDictionary } from '../meta/dictionary';
 export default {
   title: 'UI / Toast',
   argTypes: {
+    deletable: {
+      description: 'Shows a button that closes the toast',
+      type: { name: 'boolean', required: false },
+    },
     duration: {
       description:
         'If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false',
@@ -75,4 +79,23 @@ export const Default = {
 
 export const Spinner = {
   render: TemplateSpinner,
+};
+
+// a toast with an action stays until it is closed, and the person can close it
+export const Persistent = {
+  args: {
+    deletable: true,
+    duration: 0,
+    variant: 'error',
+    visible: true,
+  },
+  render: (args) => (
+    <mds-toast {...args}>
+      <mds-icon slot="icon" name="mi/baseline/warning" />
+      Invio non riuscito
+      <mds-button slot="action" size="sm" variant="error" tone="weak">
+        Riprova
+      </mds-button>
+    </mds-toast>
+  ),
 };
