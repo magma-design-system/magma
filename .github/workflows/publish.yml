@@ -1,19 +1,20 @@
-# Publishes the packages to npm. Runs on main (all packages) and on dev
-# (opted-in packages only, see the dev-publish matrix flag) once every CI
-# workflow of the commit has succeeded (fan-in via workflow_run), or manually
-# via workflow dispatch. A package is published only when its version
-# differs from the latest one on the npm registry.
+# Publishes the packages to npm, from main, once every CI workflow of the
+# commit has succeeded (fan-in via workflow_run), or manually via workflow
+# dispatch. A package is published only when its version is not on the npm
+# registry yet.
 #
-# On main, once the publish job has succeeded, merge-back pushes the released
-# commit into dev (scripts/release/merge-back.sh), so that dev carries the
-# released versions and pins: a direct push with RELEASE_PUSH_TOKEN, not a
-# pull request (docs/WORKFLOW.md rule 1).
-#
-# On beta the release commits no version bump: the version of magma and its
-# companions is the one of the `magma@*` tag on the commit, written into the
-# manifests right before publishing (scripts/set-release-version.sh). There
-# the gate also waits for the `stencil release` run of the commit, which
-# creates that tag, and the packages without a release tag are not published.
+# What a commit of main publishes:
+#   - a chore(release) commit (the stable channel of release.yml, or the
+#     automatic icons/svg-icons releases): the versions of its manifests, from
+#     the build artifacts of its own CI run. Any other commit publishes nothing,
+#     a manual version bump merged through a pull request included.
+#   - a commit with a prerelease tag (the beta channel of release.yml: the
+#     magma@x.y.z-beta.N tag, no version bump committed): the version of the
+#     tag, written into the magma, magma-react and magma-angular manifests
+#     right before publishing (scripts/set-release-version.sh), from the
+#     lockstep artifacts the release run built. The completion of that run is
+#     what triggers this workflow; the packages without a release tag are not
+#     published.
 #
 # Authentication uses npm trusted publishing (OIDC): no NPM_TOKEN secret,
 # the npm CLI exchanges the GitHub Actions OIDC token for short-lived
@@ -23,14 +24,13 @@ name: publish
 
 on:
   workflow_run:
-    # `stencil release` only matters on beta, where it creates the tag the
-    # version is read from (the gate ignores it on the other branches)
-    workflows: [design-tokens, icons, identity, styles, svg-icons, stencil, stencil release]
+    # `release` only matters for the beta channel, where it creates the tag the
+    # version is read from and builds the artifacts (the gate ignores its runs
+    # for the stable channel: the chore(release) commit it pushed has a CI of
+    # its own)
+    workflows: [design-tokens, icons, identity, styles, svg-icons, stencil, release]
     types: [completed]
-    # main = stable releases; beta = magma prerelease channel (2.0.0-beta.N ->
-    # npm dist-tag 'beta'); dev = stable releases of the packages that opt in
-    # via the dev-publish matrix flag (icons, svg-icons)
-    branches: [main, beta, dev]
+    branches: [main]
   workflow_dispatch:
     inputs:
       package:
@@ -47,9 +47,13 @@ on:
           - magma
           - magma-react
           - magma-angular
+      sha:
+        description: Commit to publish again (a chore(release) or beta-tagged commit of main); empty = the tip of the branch
+        type: string
+        default: ''
 
 concurrency:
-  group: publish-${{ github.event.workflow_run.head_sha || github.sha }}
+  group: publish-${{ github.event.workflow_run.head_sha || inputs.sha || github.sha }}
   cancel-in-progress: false
 
 jobs:
@@ -59,56 +63,75 @@ jobs:
       ready: ${{ steps.check.outputs.ready }}
       sha: ${{ steps.check.outputs.sha }}
       run-ids: ${{ steps.check.outputs.run-ids }}
+      prerelease: ${{ steps.check.outputs.prerelease }}
     steps:
       - name: Check that all CI workflows of the commit are green
         id: check
         env:
           GH_TOKEN: ${{ github.token }}
+          REPO_URL: https://github.com/${{ github.repository }}.git
+          HEAD_MESSAGE: ${{ github.event.workflow_run.head_commit.message }}
         run: |
           echo "ready=false" >> "$GITHUB_OUTPUT"
+          echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          TRIGGER="${{ github.event.workflow_run.name }}"
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            SHA="${{ github.sha }}"
+            SHA="${{ inputs.sha || github.sha }}"
             if [ "${{ github.ref }}" != "refs/heads/main" ] && [ "${{ inputs.package }}" = "all" ]; then
               echo "::error::manual publish from a branch other than main requires a specific package"
               exit 1
             fi
           else
             SHA="${{ github.event.workflow_run.head_sha }}"
-            if [ "${{ github.event.workflow_run.name }}" = "stencil release" ] && \
-               [ "${{ github.event.workflow_run.head_branch }}" != "beta" ]; then
-              echo "::notice::the stencil release run only gates publishing on beta, nothing to do"
+            if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
+              echo "::warning::workflow '$TRIGGER' did not succeed, skipping publish"
+              echo "sha=$SHA" >> "$GITHUB_OUTPUT"
               exit 0
             fi
-            if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
-              echo "::warning::workflow '${{ github.event.workflow_run.name }}' did not succeed, skipping publish"
+            # a CI completion publishes the release commits only: every other
+            # commit of main (a merged pull request, a manual version bump)
+            # has nothing to ship
+            if [ "$TRIGGER" != "release" ] && \
+               ! printf '%s\n' "$HEAD_MESSAGE" | head -n 1 | grep -q '^chore(release):'; then
+              echo "::notice::$SHA is not a chore(release) commit, nothing to publish"
               echo "sha=$SHA" >> "$GITHUB_OUTPUT"
               exit 0
             fi
           fi
           echo "sha=$SHA" >> "$GITHUB_OUTPUT"
-          # latest push-event run of each watched CI workflow for this commit
-          # (allowlist in lockstep with on.workflow_run.workflows above). The
-          # other release workflows and any other workflow are excluded: their
-          # completion does not re-trigger publish, so waiting on one still in
-          # progress would lose the publish. On beta `stencil release` is watched
-          # too, because it creates the tag the version is read from: whichever of
-          # it and the CI finishes last runs the publish. pull_request runs are
-          # excluded because they share the head SHA when a PR from dev is open,
-          # produce no artifacts, and could win the max_by(.id) pick over the
-          # artifact-bearing push run.
-          WATCHED='["design-tokens", "icons", "identity", "styles", "svg-icons", "stencil"]'
-          if [ "${{ github.event.workflow_run.head_branch || github.ref_name }}" = "beta" ]; then
-            WATCHED=$(echo "$WATCHED" | jq -c '. + ["stencil release"]')
+          # a magma prerelease tag on the commit: the beta channel, whose version
+          # is the tag and whose lockstep artifacts come from the release run. An
+          # annotated tag is listed twice: as the tag object and, peeled with
+          # ^{}, as the commit it points to
+          PRERELEASE=$(git ls-remote --tags "$REPO_URL" 'refs/tags/magma@*-*' \
+            | awk -v sha="$SHA" '$1 == sha { sub(/^refs\/tags\//, "", $2); sub(/\^\{\}$/, "", $2); print $2 }' | sort -u)
+          if [ -n "$PRERELEASE" ]; then
+            echo "prerelease tags on $SHA: $(echo "$PRERELEASE" | tr '\n' ' ')"
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          elif [ "$TRIGGER" = "release" ]; then
+            echo "::notice::stable release: the CI of its chore(release) commit publishes it, nothing to do here"
+            exit 0
           fi
+          # latest push or merge-queue run of each watched CI workflow for this
+          # commit (allowlist in lockstep with on.workflow_run.workflows above,
+          # `release` apart). Both events build the artifacts; a commit landed by
+          # the merge queue keeps the SHA of its merge-group run. pull_request
+          # runs are excluded: they produce no artifacts. The other workflows
+          # are excluded: their completion does not re-trigger publish, so
+          # waiting on one still in progress would lose the publish.
+          WATCHED='["design-tokens", "icons", "identity", "styles", "svg-icons", "stencil"]'
           RUNS=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=$SHA&per_page=100" \
-            | jq --argjson watched "$WATCHED" '[.workflow_runs[] | select(.event == "push" and (.name as $n | $watched | index($n)))] | group_by(.name) | map(max_by(.id))')
+            | jq --argjson watched "$WATCHED" '[.workflow_runs[] | select((.event == "push" or .event == "merge_group") and (.name as $n | $watched | index($n)))] | group_by(.name) | map(max_by(.id))')
           echo "$RUNS" | jq -r '.[] | "\(.name): \(.status) (\(.conclusion))"'
           if [ "${{ github.event_name }}" = "workflow_run" ]; then
             PENDING=$(echo "$RUNS" | jq '[.[] | select(.status != "completed")] | length')
-            # a skipped release run (e.g. a chore(release) push) created no tag, it is not a failure
-            FAILED=$(echo "$RUNS" | jq '[.[] | select(.status == "completed" and .conclusion != "success" and (.name != "stencil release" or .conclusion != "skipped"))] | length')
+            FAILED=$(echo "$RUNS" | jq '[.[] | select(.status == "completed" and .conclusion != "success")] | length')
             if [ "$PENDING" -gt 0 ]; then
-              echo "::notice::$PENDING CI workflow(s) still running, the last one to finish will re-run this check"
+              if [ "$TRIGGER" = "release" ]; then
+                echo "::warning::$PENDING CI workflow(s) of $SHA still running: run publish by hand with sha=$SHA once they are green"
+              else
+                echo "::notice::$PENDING CI workflow(s) still running, the last one to finish will re-run this check"
+              fi
               exit 0
             fi
             if [ "$FAILED" -gt 0 ]; then
@@ -116,7 +139,24 @@ jobs:
               exit 0
             fi
           fi
-          echo "run-ids=$(echo "$RUNS" | jq -c 'map({(.name): .id}) | add // {}')" >> "$GITHUB_OUTPUT"
+          RUN_IDS=$(echo "$RUNS" | jq -c 'map({(.name): .id}) | add // {}')
+          if [ -n "$PRERELEASE" ]; then
+            # the lockstep artifacts of a beta come from the release run that
+            # tagged the commit: the triggering one, or the latest green one of
+            # the commit on a manual publish
+            if [ "$TRIGGER" = "release" ]; then
+              RELEASE_RUN="${{ github.event.workflow_run.id }}"
+            else
+              RELEASE_RUN=$(gh api "repos/${{ github.repository }}/actions/workflows/release.yml/runs?head_sha=$SHA&status=success&per_page=100" \
+                --jq '[.workflow_runs[].id] | max // empty')
+            fi
+            if [ -z "$RELEASE_RUN" ]; then
+              echo "::error::no successful release run of $SHA to take the lockstep artifacts from"
+              exit 1
+            fi
+            RUN_IDS=$(echo "$RUN_IDS" | jq -c --argjson id "$RELEASE_RUN" '. + {stencil: $id}')
+          fi
+          echo "run-ids=$RUN_IDS" >> "$GITHUB_OUTPUT"
           echo "ready=true" >> "$GITHUB_OUTPUT"
 
   publish:
@@ -126,11 +166,10 @@ jobs:
     permissions:
       id-token: write # OIDC token for npm trusted publishing
       contents: read # checkout
-      actions: read # download build artifacts from the CI runs
+      actions: read # download build artifacts from the CI and release runs
     env:
       # released in lockstep under the magma@* tag: the same set as the
-      # working-directory + version-sync-paths of stencil.release.yml (beta)
-      # and of the magma entry of release.yml (main)
+      # working-directory + version-sync-paths of the magma entry of release.yml
       MAGMA_LOCKSTEP_MANIFESTS: >-
         projects/stencil/package.json
         projects/stencil-react/package.json
@@ -149,8 +188,6 @@ jobs:
             workflow: icons
             artifact: icons-build
             artifact-path: projects
-            # stable releases also ship from dev (see icons.release.yml)
-            dev-publish: true
           - component: identity
             directory: projects/identity
             workflow: identity
@@ -166,14 +203,12 @@ jobs:
             workflow: svg-icons
             artifact: svg-icons-build
             artifact-path: projects/svg-icons/dist
-            # stable releases also ship from dev (see svg-icons.release.yml)
-            dev-publish: true
           - component: magma
             directory: projects/stencil
             workflow: stencil
             artifact: stencil-build
             artifact-path: projects
-            # on beta the version comes from the magma@* tag on the commit
+            # on the beta channel the version comes from the magma@* tag on the commit
             release-tag: magma
           - component: magma-react
             directory: projects/stencil-react
@@ -202,37 +237,27 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           echo "proceed=false" >> "$GITHUB_OUTPUT"
-          # only opted-in packages publish from dev. This guard must run before
-          # the npm view check: a dev version missing from npm (e.g. a magma
-          # alpha bumped on dev but released elsewhere) must never publish here
-          BRANCH="${{ github.event.workflow_run.head_branch || github.ref_name }}"
-          if [ "$BRANCH" = "dev" ] && [ "${{ matrix.dev-publish || false }}" != "true" ]; then
-            echo "::notice::${{ matrix.component }} does not publish from dev, skipping"
-            exit 0
-          fi
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && \
              [ "${{ inputs.package }}" != "all" ] && [ "${{ inputs.package }}" != "${{ matrix.component }}" ]; then
             echo "::notice::${{ matrix.component }} not selected, skipping"
             exit 0
           fi
-          if [ "$BRANCH" = "beta" ]; then
-            # beta commits no version bump: the version is the one of the
-            # release tag on the commit, and a commit without it publishes nothing
-            if [ -z "${{ matrix.release-tag }}" ]; then
-              echo "::notice::${{ matrix.component }} does not publish from beta, skipping"
-              exit 0
-            fi
-            # an annotated tag is listed twice: as the tag object and, peeled
-            # with ^{}, as the commit it points to
-            RELEASE_TAG=$(git ls-remote --tags origin "refs/tags/${{ matrix.release-tag }}@*" \
+          # a prerelease tag of the package on the commit (the beta channel
+          # commits no version bump) is the version; otherwise the manifest is.
+          # An annotated tag is listed twice: as the tag object and, peeled
+          # with ^{}, as the commit it points to
+          RELEASE_TAG=
+          if [ -n "${{ matrix.release-tag }}" ]; then
+            RELEASE_TAG=$(git ls-remote --tags origin "refs/tags/${{ matrix.release-tag }}@*-*" \
               | awk -v sha="${{ needs.gate.outputs.sha }}" '$1 == sha { sub(/^refs\/tags\//, "", $2); sub(/\^\{\}$/, "", $2); print $2 }' \
               | sort -u | tail -n 1)
-            if [ -z "$RELEASE_TAG" ]; then
-              echo "::notice::no ${{ matrix.release-tag }}@* release tag on ${{ needs.gate.outputs.sha }}, skipping"
-              exit 0
-            fi
+          fi
+          if [ -n "$RELEASE_TAG" ]; then
             TO_BE_PUBLISHED_V="${RELEASE_TAG##*@}"
             echo "release-version=$TO_BE_PUBLISHED_V" >> "$GITHUB_OUTPUT"
+          elif [ "${{ needs.gate.outputs.prerelease }}" = "true" ]; then
+            echo "::notice::no ${{ matrix.release-tag || matrix.component }}@* prerelease tag on ${{ needs.gate.outputs.sha }}, skipping"
+            exit 0
           else
             TO_BE_PUBLISHED_V="$(jq -r '.version' "${{ matrix.version-file || format('{0}/package.json', matrix.directory) }}")"
           fi
@@ -244,8 +269,7 @@ jobs:
             exit 0
           fi
           # A version can be missing from npm without a fresh build to publish
-          # (manual bump merged to a branch where this package's CI does not run,
-          # or a chore(release) push where its build was path-filtered out):
+          # (a chore(release) push where its build was path-filtered out):
           # skip with a warning instead of failing the artifact download.
           RUN_ID='${{ fromJSON(needs.gate.outputs.run-ids)[matrix.workflow] }}'
           if [ -z "$RUN_ID" ] || [ "$RUN_ID" = "null" ]; then
@@ -276,7 +300,7 @@ jobs:
           cache: npm
       - if: ${{ steps.ver.outputs.proceed == 'true' }}
         run: npm ci --prefer-offline
-      - name: Download the build artifact from the CI run
+      - name: Download the build artifact from the CI or release run
         if: ${{ steps.ver.outputs.proceed == 'true' }}
         uses: actions/download-artifact@v8
         with:
@@ -284,13 +308,12 @@ jobs:
           path: ${{ matrix.artifact-path }}
           run-id: ${{ fromJSON(needs.gate.outputs.run-ids)[matrix.workflow] }}
           github-token: ${{ github.token }}
-      - name: Write the release tag version into the manifests (beta)
+      - name: Write the release tag version into the manifests (beta channel)
         if: ${{ steps.ver.outputs.proceed == 'true' && steps.ver.outputs.release-version != '' }}
         env:
           V: ${{ steps.ver.outputs.release-version }}
           MANIFEST: ${{ matrix.directory }}/package.json
         run: |
-          # a chore(release) commit (release flow before the tag-only beta) already carries it
           if [ "$(jq -r '.version' "$MANIFEST")" = "$V" ]; then
             echo "$MANIFEST already at $V"
             exit 0
@@ -316,29 +339,3 @@ jobs:
         if: ${{ steps.ver.outputs.proceed == 'true' }}
         working-directory: ${{ matrix.directory }}
         run: npm publish --access public --tag "${{ steps.ver.outputs.tag }}"
-
-  merge-back:
-    name: Merge main back into dev
-    needs: [gate, publish]
-    # only the stable releases of main go back into dev: icons and svg-icons
-    # release from dev itself and beta commits no version. A failed publish
-    # skips it (needs); the rerun or the manual publish runs it, and a second
-    # run for the same commit finds it already in dev and does nothing
-    if: ${{ needs.gate.outputs.ready == 'true' && (github.event.workflow_run.head_branch || github.ref_name) == 'main' }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    concurrency:
-      group: merge-back-dev
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: dev
-          fetch-depth: 0
-          # the PAT of an organisation admin, a bypass actor of the ruleset of
-          # dev: it may push there without a pull request and its push triggers
-          # CI on dev, as it does for the release commit on main
-          token: ${{ secrets.RELEASE_PUSH_TOKEN || github.token }}
-      - name: Merge the released commit into dev and push
-        run: ./scripts/release/merge-back.sh "${{ needs.gate.outputs.sha }}"
