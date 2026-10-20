@@ -22,6 +22,11 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/icons/**
+      # the font is a curated subset of svg-icons: a source added there reaches the
+      # font only if dictionary.json maps it, and nothing else would notice that it
+      # does not (mds-icon reads svg-icons/dist directly). The prebuild check of this
+      # pipeline makes that choice explicit, so new sources have to trigger it.
+      extra-path: projects/svg-icons/svg/**
       nx-project: icons
       # icons build also produces svg-icons dist (nx implicit dependency)
       artifact-paths: |
