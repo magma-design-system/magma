@@ -2,7 +2,7 @@
  * Guard against tree-shaking regressions in the three published packages
  * (magma, magma-react, magma-angular).
  *
- * With 114 components, an app that imports three of them must not ship all 114.
+ * With 115 components, an app that imports three of them must not ship all 115.
  * The properties that make that work are easy to break by accident - a stray
  * module-level side effect, a dropped `sideEffects` field, an output target
  * losing `esModules` - and the damage is invisible until someone measures a
@@ -170,7 +170,7 @@ const checkStructure = (): void => {
     }
   }
 
-  // The wrappers must never reach for the lazy loader: it registers all 114
+  // The wrappers must never reach for the lazy loader: it registers all 115
   // components and defeats every other measure here.
   if (requireBuilt(ANGULAR_DIST_DIR, 'nx run stencil-angular:build')) {
     const fesmDir = path.join(ANGULAR_DIST_DIR, 'fesm2022');

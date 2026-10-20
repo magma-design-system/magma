@@ -160,7 +160,7 @@ SSR notes:
 - Icons render empty server-side (the box is reserved, no layout shift) and the
   default theme is rendered - see the SSR section in
   [`web-components.md`](web-components.md).
-- The hydrate module (`magma/hydrate`) bundles all 114 components (~3 MB,
+- The hydrate module (`magma/hydrate`) bundles all 115 components (~3 MB,
   server-only). It is imported lazily behind a `typeof window` check and must
   never end up in a client bundle.
 

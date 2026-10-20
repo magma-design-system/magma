@@ -8,7 +8,7 @@ The rules for **using** the components (naming, boolean props, events, slots, co
 
 ## Public entry points
 
-Every published entry point is tree-shakeable except the lazy loader, which registers all 114 components by design.
+Every published entry point is tree-shakeable except the lazy loader, which registers all 115 components by design.
 
 | package         | entry                                                             | what it gives                                                                                      | tree-shakeable                    |
 | :-------------- | :---------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- | :-------------------------------- |

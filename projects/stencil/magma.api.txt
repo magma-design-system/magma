@@ -1526,6 +1526,11 @@ mds-toast css --mds-toast-duration
 mds-toast css --mds-toast-icon-color
 mds-toast css --mds-toast-shadow
 mds-toast css --mds-toast-width
+mds-toast-region encapsulation shadow
+mds-toast-region prop max (attr max) [reflect]: number = 3
+mds-toast-region prop position (attr position) [reflect]: "bottom-center" | "bottom-left" | "bottom-right" | "top-center" | "top-left" | "top-right" = 'bottom-center'
+mds-toast-region slot (default)
+mds-toast-region css --mds-toast-region-gap
 mds-tooltip encapsulation shadow
 mds-tooltip prop disableAutoPlacement (attr disable-auto-placement) [reflect]: boolean = false
 mds-tooltip prop disableShift (attr disable-shift): boolean = false

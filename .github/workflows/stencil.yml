@@ -248,7 +248,7 @@ jobs:
       - run: npx nx run stencil:check.api-snapshot
 
   # Guards the tree-shaking of the three published packages: a consumer that
-  # imports one component must not end up shipping all 114. Needs all three
+  # imports one component must not end up shipping all 115. Needs all three
   # builds, so it runs last.
   treeshaking:
     needs: [magma, magma-react, magma-angular]

@@ -51,7 +51,7 @@ export class MagmaModule {
    * sé, tramite `@ProxyCmp({ defineCustomElementFn })` sull'output
    * `dist-custom-elements` — ed era l'unico vero killer del tree-shaking:
    * misurato su un'app di prova, portava il build da 229 kB in 2 file a 1.9 MB
-   * in 142 file, perché il loader carica a runtime i chunk di tutti i 114
+   * in 142 file, perché il loader carica a runtime i chunk di tutti i 115
    * componenti.
    */
   static forRoot(): ModuleWithProviders<MagmaModule> {

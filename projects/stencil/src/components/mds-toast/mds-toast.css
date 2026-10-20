@@ -133,6 +133,7 @@
 @import './css/variant/mds-toast-variant-warning.css';
 @import './css/animate/mds-toast-animate-top.css';
 @import './css/animate/mds-toast-animate-bottom.css';
+@import './css/mds-toast-stacked.css';
 @import './css/mds-toast-pref-animation.css';
 @import './css/mds-toast-pref-mode.css';
 @import './css/mds-toast-pref-contrast.css';
