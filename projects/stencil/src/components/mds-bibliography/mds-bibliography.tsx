@@ -41,6 +41,8 @@ export class MdsBibliography {
 
   /**
    * Specifies the date of the bibliography
+   * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2025-06-15'
    */
   @Prop() readonly date?: string;
 

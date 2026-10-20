@@ -62,6 +62,7 @@ export class MdsFilePreview {
 
   /**
    * The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.
+   * @example '2.4 MB'
    */
   @Prop({ reflect: true }) readonly filesize?: string;
 
@@ -96,7 +97,9 @@ export class MdsFilePreview {
   @Prop({ reflect: true }) variant?: ThemeFullVariantAvatarType;
 
   /**
-   * Sets if the download icon must be shown or not
+   * The kind of file, recognised from the extension of `filename` or from `suffix`: it selects
+   * the colours of the icon. The component writes it on load and whenever `filename` changes,
+   * set `suffix` to choose it
    */
   @Prop({ reflect: true, mutable: true }) format?: string;
 

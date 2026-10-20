@@ -58,11 +58,14 @@ export class MdsPushNotificationItem {
 
   /**
    * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
+   * @example '2025-06-15T09:30:00+02:00'
    */
   @Prop({ reflect: true, mutable: true }) datetime?: string;
 
   /**
-   * Specifies if the notification date format shows time passed or displays date as a static string
+   * Specifies how the notification date is written: `timeago` shows the time passed, any other
+   * value is the Day.js format of a static date
+   * @example 'DD/MM/YYYY HH:mm'
    */
   @Prop({ reflect: true }) readonly dateFormat: NotificationItemDateFormatType = 'timeago';
 

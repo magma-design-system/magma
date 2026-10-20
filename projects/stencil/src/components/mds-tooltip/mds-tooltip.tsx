@@ -45,6 +45,7 @@ export class MdsTooltip implements FloatingElement {
 
   /**
    * Specifies the selector of the target element, this attribute is used with `querySelector` method.
+   * @example '#profile-button'
    */
   @Prop({ reflect: true }) readonly target!: string;
 

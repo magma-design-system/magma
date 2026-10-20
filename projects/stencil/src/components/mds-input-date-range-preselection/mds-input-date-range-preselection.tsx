@@ -20,11 +20,15 @@ export class MdsInputDateRangePreselection {
 
   /**
    * Sets the start date of the preselection
+   * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2025-06-01'
    */
   @Prop({ reflect: true }) readonly start!: string;
 
   /**
    * Sets the end date of the preselection
+   * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2025-06-30'
    */
   @Prop({ reflect: true }) readonly end?: string;
 

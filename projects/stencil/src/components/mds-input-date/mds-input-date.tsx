@@ -72,6 +72,7 @@ export class MdsInputDate {
   /**
    * Specifies the value of the input
    * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2025-06-15'
    */
   @Prop({ reflect: true }) value: string = '';
 
@@ -88,12 +89,14 @@ export class MdsInputDate {
   /**
    * Specifies the min date of the range, user cannot set dates before this date
    * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2025-01-01'
    */
   @Prop({ reflect: true, mutable: true }) min: string | null = null;
 
   /**
    * Specifies the max date of the range, user cannot set dates after this date
    * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2025-12-31'
    */
   @Prop({ reflect: true, mutable: true }) max: string | null = null;
 
