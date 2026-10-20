@@ -6,9 +6,9 @@
 #
 # Shared by the release and publish workflows:
 #   - scripts/release/prepare-release.sh (semantic-release.yml) calls it once per
-#     released package before the single chore(release) commit on main/dev;
-#   - publish.yml applies the version of the release tag on beta, where no
-#     version bump is committed, right before `npm publish`.
+#     released package before the single chore(release) commit on main;
+#   - publish.yml applies the version of the release tag of a beta prerelease,
+#     which commits no version bump, right before `npm publish`.
 #
 # Usage (from the repository root):
 #   ./scripts/set-release-version.sh <version> <package.json>...
@@ -30,7 +30,7 @@
 #     of a dependency still needs a release of its dependents to reach them;
 #   - the packages in EXACT are pinned to the exact version: they are released
 #     in lockstep with their dependents under one tag (magma with magma-react
-#     and magma-angular: the magma entry of release.yml, stencil.release.yml and
+#     and magma-angular: the magma entry of release.yml and
 #     MAGMA_LOCKSTEP_MANIFESTS in publish.yml), so a wrapper always requires the
 #     magma it was built from;
 #   - the `projects/<x>` entries of package-lock.json of the changed manifests

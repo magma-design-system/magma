@@ -1,22 +1,20 @@
-# Release pipeline for @maggioli-design-system/icons on dev.
-# Detects the next version from conventional commits scoped `icons`,
-# bumps projects/icons/package.json (and the pins of the packages that depend
-# on it, lock included), tags it and creates the GitHub release. The version
-# bump commit then triggers CI -> publish.yml (npm).
+# Release pipeline for @maggioli-design-system/icons: automatic, on every
+# push to main. Detects the next version from conventional commits scoped
+# `icons`, bumps projects/icons/package.json (and the pins of the packages that
+# depend on it, lock included), tags it and creates the GitHub release. The
+# version bump commit then triggers CI -> publish.yml (npm).
 #
-# Stable versions release directly from dev (dist-tag latest), so icon
-# additions reach npm without waiting for a dev -> main promotion. On main
-# icons releases with the other packages (release.yml): the promotion is an
-# idempotent no-op there, tags and versions arrive with the merge commit and
-# the tag-exists guard skips the re-release. Ship icons fixes through dev, not
-# straight to main: a main-only release creates a tag unreachable from dev
-# that can silently block later dev releases (if that ever happens,
-# back-merge main into dev before the next icons commit).
+# Stable versions ship on their own (dist-tag latest), so icon additions
+# reach npm as soon as their pull request lands on main, without waiting for
+# a manual release (release.yml): there icons is an idempotent no-op, the
+# tag-exists guard skips what this workflow already released. A rejected push
+# (another release landed on main in the meantime) is rebased and retried:
+# the bump touches only this package's manifest and lock entries.
 name: icons release
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
 
 concurrency:
   group: release-icons
@@ -36,4 +34,3 @@ jobs:
       working-directory: projects/icons
       tag-format: 'icons@${version}'
       commit-scope: icons
-      stable-branches: dev

@@ -13,8 +13,8 @@
 #   previous-tag  the tag semantic-release built the version on: the notes cover
 #                 <previous-tag>..HEAD, the commits that drove the bump. Without
 #                 it git-cliff picks the newest tag matching the tag format, even
-#                 one outside the branch history (e.g. a magma@*-beta.N on beta
-#                 when releasing main), and misses the commits. Empty = the
+#                 one of another channel (e.g. a magma@*-beta.N prerelease when
+#                 releasing a stable), and misses the commits. Empty = the
 #                 whole history (first release).
 #
 # A commit is kept when one of its scopes is a scope token, with the scopes split
