@@ -1,6 +1,6 @@
 # GitHub Copilot instructions - Magma
 
-Magma is the Maggioli Group Design System: 114 web components built with StencilJS, plus design tokens, SVG icons, brand assets, and CSS / Tailwind 4 styles. Each artifact is published as a separate npm package.
+Magma is the Maggioli Group Design System: 115 web components built with StencilJS, plus design tokens, SVG icons, brand assets, and CSS / Tailwind 4 styles. Each artifact is published as a separate npm package.
 
 When generating, completing, or reviewing code in this repository, follow the rules below. They mirror what is enforced by ESLint, Stylelint, and commitlint, so suggestions that ignore them will be rejected by the pre-commit hook.
 

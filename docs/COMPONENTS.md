@@ -34,7 +34,7 @@ Pick by task, not by preference:
 | Typed prop value sets (what `tone` / `variant` / `size` accept) | [`components.d.ts`](../projects/stencil/src/components.d.ts) + [`type/*.ts`](../projects/stencil/src/type/) - the versioned source of truth |
 | Full type metadata, cross-references (for codemods / tooling)   | the per-component `documentation.json` after a build; otherwise build first or fall back to `components.d.ts`                              |
 
-Avoid loading `dist/documentation.json` as a default - it holds all 114 components (over 2 MB). Reach for the per-component one only when you specifically need the structured type metadata it carries.
+Avoid loading `dist/documentation.json` as a default - it holds all 115 components (over 2 MB). Reach for the per-component one only when you specifically need the structured type metadata it carries.
 
 ## The `usage/` contract
 
@@ -178,6 +178,7 @@ Subparts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their 
 | ---------------------------- | --------------- | ---------------------------------------------------------------------------------------- |
 | `mds-banner`                 | -               | Inline state message (info / success / warning / error) with optional action.            |
 | `mds-toast`                  | -               | Transient toast that appears and dismisses automatically.                                |
+| `mds-toast-region`           | -               | Live region at a viewport edge that lines up the toasts shown at once.                   |
 | `mds-notification`           | -               | Small notification badge / indicator.                                                    |
 | `mds-push-notification`      | -               | Stack container for multiple push notifications.                                         |
 | `mds-push-notification-item` | -               | Single push notification inside `mds-push-notification`.                                 |
