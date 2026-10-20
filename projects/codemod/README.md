@@ -289,7 +289,7 @@ move, and review the diff.
 ### Regenerating the manifest from the docs
 
 ```bash
-# v2 docs come from a `dev` build; v1 docs from a one-off build of `support/v1.x` in a worktree.
+# v2 docs come from a `main` build; v1 docs from a one-off build of `support/v1.x` in a worktree.
 FROM_VERSION=1.12.0 TO_VERSION=2.0.0 \
   npm run generate.candidate -- <v1 documentation.json> <v2 documentation.json> src/manifest/manifest.candidate.json
 ```
@@ -308,7 +308,7 @@ Caveats when producing the two `documentation.json`:
 
 Two dedicated, independent GitHub Actions workflows (not part of the shared semantic-release flow):
 
-- **`codemods-ci.yml`** — build + test, on push to `dev` and on pull requests touching `projects/codemod/**`.
+- **`codemods-ci.yml`** — build + test, on push to `main` and on pull requests touching `projects/codemod/**`.
 - **`codemods-publish.yml`** — manual (`workflow_dispatch`): build + test → bump (`patch|minor|major|pre*`,
   with a selectable prerelease id) → `npm publish` via OIDC trusted publishing → push the tag
   `magma-codemods@<version>`. No commit is pushed to `main` (tag-only). Run it with `dry-run: true` first.

@@ -66,7 +66,7 @@ feat(design-tokens,styles): give the neutral pills a wash band
 
 A `revert` counts for the packages of the header it reverts (`revert: feat(styles): …`).
 
-The release notes become the body of the package's GitHub release and, in the same `chore(release)` commit, the newest section of its `CHANGELOG.md`, which ships in the package (the notes of `magma` also in `magma-react` and `magma-angular`, released at its version). The subject of a commit is what a consumer reads there, so write it for them.
+The release notes become the body of the package's GitHub release and, in the same `chore(release)` commit, the newest section of its `CHANGELOG.md`, which ships in the package (the notes of `magma` also in `magma-react` and `magma-angular`, released at its version); a beta prerelease, which commits nothing, has the GitHub release only. The subject of a commit is what a consumer reads there, so write it for them.
 
 A breaking commit says what a consumer has to change in a `BREAKING CHANGE:` footer. The release notes print the footer under the entry marked `[**breaking**]`, while the body of the commit stays out of them: a `!` with the instructions in the body, or nowhere, leaves the reader with the subject alone.
 

@@ -238,3 +238,64 @@ into `dist/collection/components/<tag>/` (`scripts/component-docs.ts`), and the 
 
 Do not duplicate import lists here - `docs/agents/assets.md` is the single source of
 truth for the required CSS imports and cascade-layer order.
+
+---
+
+## 6. Branches, CI and release
+
+One long-lived branch, `main`, carries everything: it is the trunk, the integration branch, the
+source of the published Storybook and the branch every package releases from. The rules that
+govern it are in [`docs/WORKFLOW.md`](./WORKFLOW.md) rule 1; this section is the map of the
+machinery.
+
+```
+feature branch ──PR──▶ merge queue of main ──merge commit──▶ main
+                                                               │
+          ┌────────────────────────────────────────────────────┼─────────────────────────┐
+          ▼                                                    ▼                         ▼
+   CI of the commit                              icons release / svg-icons release    deploy storybook
+   (design-tokens, icons, identity, styles,      (automatic: chore(release) commit    (GitHub Pages)
+    svg-icons, stencil, lint)                     pushed to main, tag, GitHub release)
+          │
+          ▼
+   publish.yml ── only a chore(release) commit, or a commit with a beta tag ──▶ npm
+
+maintainer: "Run workflow" release.yml on main ──▶ approval (environment `release`)
+   channel stable: chore(release) commit pushed to main (no rebase: a moved main fails the run
+                   before any tag) ──▶ tags, GitHub releases ──▶ CI of that commit ──▶ publish.yml
+   channel beta:   magma@x.y.z-beta.N tag on the dispatched commit, nothing committed, the magma
+                   lockstep built in the run ──▶ publish.yml takes those artifacts, dist-tag beta
+   dry-run:        the plan in the job summary, no approval needed
+```
+
+| Piece | Where | What it does |
+|---|---|---|
+| Package CI | `.github/workflows/{design-tokens,icons,identity,styles,svg-icons,stencil}.yml` over `_package-pipeline.yml` | change detection (path filter, everything on `merge_group`) → build (artifact kept one day) → test, on pull requests, in the merge queue and on every push to `main` |
+| Lint | `lint.yml` | `npm run lint` on the whole monorepo, same triggers |
+| Review level | `pr-risk.yml` + `projects/stencil/scripts/pr-risk.ts` | `risk-*` label, the semver check of `magma.api.txt` against the commits' declared release |
+| Manual release | `release.yml` over `semantic-release.yml` + `scripts/release/*` + `scripts/set-release-version.sh` | `workflow_dispatch` on `main`: `channel` (`stable`/`beta`), `dry-run`; versions from the conventional commits of each package's scopes (semantic-release dry-run), pins, lock, `CHANGELOG.md` (git-cliff), tags, GitHub releases |
+| Automatic icon releases | `icons.release.yml`, `svg-icons.release.yml` over `semantic-release.yml` | on every push to `main` touching them; a rejected push is rebased and retried |
+| Publish | `publish.yml` | fan-in of the CI runs of a commit (or the `release` run of a beta), one `npm publish` per package with OIDC trusted publishing; a package is skipped when its version is already on npm; `sha` input to publish a release commit again |
+| Storybook | `deploy-storybook.yml` | the static Storybook of `main` to GitHub Pages, after the `magma / test` job of the same commit |
+| Local rehearsal | `scripts/test-release.sh` | the release plan of a commit on either channel, in a throwaway clone, nothing pushed |
+
+Protections, set on GitHub and documented here because they shape the flow:
+
+- ruleset `main`: pull request required, the 23 CI checks required, merge queue (merge commits
+  only), no force push; the organisation admins bypass it, which is what lets the release token
+  push the `chore(release)` commits;
+- ruleset `no-deletion`: `main` cannot be deleted, by anybody (no bypass). The repository deletes
+  the head branch of every merged pull request, so a pull request opened from `main` would
+  otherwise delete it on merge (it happened, #954);
+- environment `release`: required reviewers for a real release (the dry-run needs none);
+  deployments from `main` only;
+- environment `github-pages`: deployments from `main` only.
+
+Two consequences of the tags: semantic-release computes the next version of a package from the
+tags reachable from `main`, so a release tag must stay in its history (merge commits only, no
+rebase of the release commits); and a beta counts from the last stable tag of the package
+(`2.1.0` → `2.2.0-beta.1`, `2.2.0-beta.2` … → `2.2.0` → `2.3.0-beta.1`), with the channel note
+in `refs/notes/semantic-release` that lets it continue the counter.
+
+`support/v1.x` is the maintenance line of the previous major, with its own CI and a manual
+publish of its own (`publish v1.x`): nothing above runs there.
