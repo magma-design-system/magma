@@ -6,12 +6,12 @@
  * Prints a Markdown report (the CI posts it as a PR comment and sets the risk-* label from
  * the level) and exits 1 when the commits declare less than the API change needs, so a
  * breaking change cannot ship as a patch or a minor. The commits count when their scope is
- * one of magma's release scopes, read from .github/workflows/stencil.release.yml.
+ * one of magma's release scopes, read from the magma entry of .github/workflows/release.yml.
  *
  * Trusts the committed magma.api.txt: check.api-snapshot verifies it against the build.
  *
  * Run from the stencil package dir:  npm run check.pr-risk [-- options]
- *   --base <ref>            branch the PR targets (default origin/dev)
+ *   --base <ref>            branch the PR targets (default origin/main)
  *   --head <ref>            the PR (default HEAD)
  *   --base-snapshot <file>  compare with this snapshot instead of the base's, e.g. a release's
  *   --report <file>         also write the report there
@@ -36,7 +36,7 @@ import { inScope } from '../../../scripts/release/commit-scopes.mjs';
 
 const REPO = join(PROJECT_DIR, '../..');
 const SNAPSHOT = 'projects/stencil/magma.api.txt';
-const RELEASE_WORKFLOW = '.github/workflows/stencil.release.yml';
+const RELEASE_WORKFLOW = '.github/workflows/release.yml';
 
 const option = (name: string, fallback?: string): string | undefined => {
   const i = process.argv.indexOf(`--${name}`);
@@ -58,7 +58,7 @@ const show = (ref: string, path: string): string | null => {
 };
 
 const head = option('head', 'HEAD') as string;
-const base = git('merge-base', option('base', 'origin/dev') as string, head).trim();
+const base = git('merge-base', option('base', 'origin/main') as string, head).trim();
 
 const files = git('diff', '--name-only', base, head)
   .split('\n')
@@ -86,9 +86,12 @@ const changes =
     ? waiveCompatible(apiChanges(before, after), compatibleMembers(commits))
     : null;
 
-const scope = /commit-scope:\s*(\S+)/.exec(readFileSync(join(REPO, RELEASE_WORKFLOW), 'utf8'))?.[1];
+/* the "commit-scope" of the {"name": "magma", ...} object of the PACKAGES list */
+const scope = /"name":\s*"magma"[\s\S]*?"commit-scope":\s*"([^"]+)"/.exec(
+  readFileSync(join(REPO, RELEASE_WORKFLOW), 'utf8'),
+)?.[1];
 if (!scope) {
-  console.error(`no commit-scope in ${RELEASE_WORKFLOW}`);
+  console.error(`no commit-scope of magma in ${RELEASE_WORKFLOW}`);
   process.exit(2);
 }
 const messages = commits.filter((m) => inScope(m, scope));
