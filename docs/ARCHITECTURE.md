@@ -2,23 +2,29 @@
 
 ## 1. System Overview
 
-Magma is a monorepo managed with NX and npm workspaces. It is composed of five independent sub-projects, each published as a separate npm package under the `@maggioli-design-system` scope. Sub-projects have a strict one-directional dependency graph: no circular dependencies are allowed.
+Magma is a monorepo managed with NX and npm workspaces. It is composed of six independent sub-projects, each published as a separate npm package under the `@maggioli-design-system` scope. Sub-projects have a strict one-directional dependency graph: no circular dependencies are allowed.
 
 ```mermaid
 graph TD
   DT["@maggioli-design-system/design-tokens"]
   ID["@maggioli-design-system/identity"]
-  IC["@maggioli-design-system/icons-svg"]
+  SI["@maggioli-design-system/svg-icons"]
+  IC["@maggioli-design-system/icons"]
   ST["@maggioli-design-system/styles"]
   WC["@maggioli-design-system/magma (stencil)"]
 
   DT --> ST
   ST --> WC
-  IC --> WC
+  SI --> IC
+  SI --> WC
   ID --> WC
 ```
 
-**Required build order**: `design-tokens` → `styles` → `icons` → `stencil`
+**Required build order**: `design-tokens` → `styles`, and `svg-icons` → `icons`, before `stencil`
+
+> `svg-icons` ships the SVG artwork; `icons` turns a curated selection of it — plus third-party
+> icons — into a font. `icons` is the only sub-project the web components do not depend on: they
+> read the SVGs directly.
 
 ---
 
@@ -62,7 +68,29 @@ window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
 
 Icons follow a semantic slug naming convention (e.g. `action-email-send`, `status-warning`). See `projects/svg-icons/svg/` for the full list.
 
-### 2.4 `styles`
+### 2.4 `icons`
+
+The icon **font** (`mgg-icons`) and its CSS/SCSS/LESS companions, for consumers that want
+`<i class="mgg-icons-action-send">` instead of an SVG element. It owns no artwork: every glyph is
+declared in [`projects/icons/dictionary.json`](../projects/icons/dictionary.json), which maps a font
+class name to a source icon in one of four groups.
+
+| Group | Source package |
+| --- | --- |
+| `maggioli` | `@maggioli-design-system/svg-icons` |
+| `material` | `material-design-icons-updated` |
+| `material-icons-svg` | `@material-icons/svg` |
+| `mdi` | `@mdi/svg` |
+
+Only the icons listed in the dictionary reach the font, so this package is a **curated subset** of
+`svg-icons` plus third-party icons: plenty of sources exist for `mds-icon` alone and are
+deliberately kept out. Because nothing signals the difference, every source must be either mapped
+here or declared in `projects/icons/unmapped-icons.json`; `nx run icons:check.dictionary` enforces
+that in CI.
+
+Adding or changing an icon is documented in [`projects/icons/SPEC.md`](../projects/icons/SPEC.md).
+
+### 2.5 `styles`
 
 CSS and Tailwind 4 styles consumed by the web component library and consumer applications.
 
@@ -97,7 +125,7 @@ Global design decisions overridable via CSS custom properties on `:root`:
 - `--magma-outline-focus` — focus ring style
 - Z-index scale: header `1000` → notification `2000` → modal `3000` → backdrop `4000` → dropdown `5000` → tooltip `6000` → theme-overlay `7000` → context-menu `8000`
 
-### 2.5 `stencil`
+### 2.6 `stencil`
 
 The web component library. 115 components built with StencilJS, compiled to standard Custom Elements. Also outputs framework-specific wrappers:
 

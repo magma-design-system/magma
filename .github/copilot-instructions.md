@@ -80,7 +80,7 @@ Tests live in `projects/stencil/src/components/<name>/test/`: `*.e2e.ts` (compon
 Format: `type(scope): subject`. Enforced by `commitlint.config.js` via `.husky/commit-msg`.
 
 - Allowed types: `build`, `change`, `chore`, `ci`, `docs`, `feat`, `fix`, `hotfix`, `merge`, `perf`, `refactor`, `revert`, `style`, `test`. Use the standard spellings **`docs`** and **`refactor`** (not `doc` / `refact`).
-- Scope is **required**. Use a project name (`design-tokens`, `icons`, `identity`, `lit`, `magma`, `react`, `stencil`, `storybook`, `styles`, `svg-icons`) or a component directory name (`mds-button`, `mds-input`, …).
+- Scope is **required**. Use a project name (`codemod`, `design-tokens`, `icons`, `identity`, `lit`, `magma`, `magma-angular`, `magma-react`, `stencil`, `storybook`, `styles`, `svg-icons`) or a component directory name (`mds-button`, `mds-input`, …).
 - `revert` must have an empty scope.
 - `style` type cannot be used with `magma`, `icons`, `identity`, `svg-icons` (no CSS in those projects), or `styles` (use `fix(styles)` / `change(styles)` instead).
 - Subject is short, imperative, lowercase first word, no trailing period, ≤ 72 characters.

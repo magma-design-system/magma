@@ -13,7 +13,9 @@
     "build": "tsx ./scripts/font-icons.ts dictionary.json -- --website",
     "postbuild": "tsx ./scripts/setup-package-font.ts",
     "clean": "tsx scripts/clean.ts",
-    "prebuild": "tsx ./scripts/clean.ts",
+    "prebuild": "npm run check.dictionary && tsx ./scripts/clean.ts",
+    "check.dictionary": "tsx ./scripts/check-dictionary.ts",
+    "add.icons": "tsx ./scripts/add-icons.ts",
     "start": "tsx ./scripts/font-icons.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"

@@ -1,0 +1,31 @@
+{
+  "$comment": [
+    "Maggioli SVG sources that belong to svg-icons only and are deliberately absent from the",
+    "icon font. They were authored for iconsauce, which reads svg-icons/dist directly, so they",
+    "are reachable through <mds-icon> and were never requested in this package.",
+    "This is a declaration of intent, not a backlog: an entry here says the choice was made.",
+    "If one of these is ever needed in the font, it gets its own pull request.",
+    "scripts/check-dictionary.ts fails on an unmapped source that is listed neither here nor in",
+    "dictionary.json, so a new source cannot slip through without someone deciding either way.",
+    "Note on 'judge-hammer': the dictionary key of that name already points to mdi/gavel, so",
+    "mapping the Maggioli source would need a different key."
+  ],
+  "icons": [
+    "ai-outline",
+    "bill",
+    "calendar-schedule",
+    "check-small",
+    "consumption-high",
+    "consumption-low",
+    "consumption-medium",
+    "judge-hammer",
+    "rurale",
+    "search-maggioli",
+    "status-progress-a-quarter",
+    "status-progress-complete",
+    "status-progress-half",
+    "status-progress-three-quarter",
+    "user-family",
+    "view-chart-gantt"
+  ]
+}

@@ -30,7 +30,7 @@ The full list is enforced by the `type-enum` rule in [`commitlint.config.js`](..
 | `hotfix`   | Urgent production fix on a release branch                                                  |
 | `merge`    | Merge commits (typically auto-generated)                                                   |
 | `perf`     | Performance improvement with no behavioural change                                         |
-| `refactor` | Refacting with no behavioural or API change. **Not** `refact`                              |
+| `refactor` | Refactoring with no behavioural or API change. **Not** `refact`                            |
 | `revert`   | Revert of a previous commit. **Scope must be empty** (see special rules)                   |
 | `style`    | Cosmetic CSS/visual changes only. Has scope restrictions (see special rules)               |
 | `test`     | Test additions or changes only                                                             |
@@ -42,7 +42,8 @@ The scope is **required** for every commit (except `revert`). The allowed scopes
 ### 1. Project scopes (static list)
 
 ```
-design-tokens, icons, identity, lit, magma, react, stencil, storybook, styles, svg-icons
+codemod, design-tokens, icons, identity, lit, magma, magma-angular, magma-react, stencil,
+storybook, styles, svg-icons
 ```
 
 Use the project scope when the change touches the project as a whole or several components inside it.
