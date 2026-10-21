@@ -38,7 +38,10 @@
 #             the npm registry yet, with the dist-tag of its version (latest,
 #             beta). On the beta channel the tag version is written into the
 #             lockstep manifests right before publishing
-#             (scripts/set-release-version.sh).
+#             (scripts/set-release-version.sh). The packages go in dependency
+#             order, and one whose dependency (from its manifest) failed to
+#             publish in the same run is not published: design-tokens and
+#             styles for magma, magma for magma-react and magma-angular.
 #
 # The CI of the chore(release) commit runs on its push too (the release token
 # triggers it, with the Storybook deploy) but is not awaited: the dispatched
@@ -416,17 +419,66 @@ jobs:
             fi
             (cd "$dir" && npm publish --access public --tag "$tag")
           }
-          FAILED=()
+          # the internal dependencies of each package among the packages of
+          # this run (dependencies, peerDependencies and optionalDependencies
+          # on @maggioli-design-system/*, read from the manifest published):
+          # a package is published after them, and not at all when one of
+          # them failed, so nothing on npm ever requires a version that is
+          # not there (design-tokens and styles for magma; magma for
+          # magma-react and magma-angular, which pin it at the exact version).
+          # A dependency already on npm is not in the list and blocks nothing
+          declare -A PKG_DIR PKG_RELEASE PKG_VERSION PKG_TAG PKG_DEPS
+          NAMES=()
           while IFS=$'\t' read -r name release dir v tag; do
+            NAMES+=("$name"); PKG_DIR[$name]=$dir; PKG_RELEASE[$name]=$release; PKG_VERSION[$name]=$v; PKG_TAG[$name]=$tag
+          done < <(jq -r '.[] | [.name, .release, .directory, .version, ."dist-tag"] | @tsv' <<< "$TO_PUBLISH")
+          for name in "${NAMES[@]}"; do
+            PKG_DEPS[$name]=$(jq -r --argjson names "$(jq -c '[.[].name]' <<< "$TO_PUBLISH")" \
+              '[.dependencies, .peerDependencies, .optionalDependencies] | map(. // {}) | add | keys[]
+               | select(startswith("@maggioli-design-system/")) | ltrimstr("@maggioli-design-system/")
+               | select(. as $d | $names | index($d) != null)' "${PKG_DIR[$name]}/package.json" | tr '\n' ' ')
+          done
+          # the publish order: every package after its dependencies
+          ORDER=()
+          declare -A PLACED=()
+          while [ ${#ORDER[@]} -lt ${#NAMES[@]} ]; do
+            progressed=
+            for name in "${NAMES[@]}"; do
+              if [ -n "${PLACED[$name]:-}" ]; then continue; fi
+              ready=1
+              for dep in ${PKG_DEPS[$name]}; do
+                if [ -z "${PLACED[$dep]:-}" ]; then ready=; fi
+              done
+              if [ -n "$ready" ]; then ORDER+=("$name"); PLACED[$name]=1; progressed=1; fi
+            done
+            if [ -z "$progressed" ]; then
+              echo "::error::circular dependency among the packages to publish (${NAMES[*]})"
+              exit 1
+            fi
+          done
+          FAILED=()
+          declare -A FAILED_SET=()
+          for name in "${ORDER[@]}"; do
+            v=${PKG_VERSION[$name]}
             echo "::group::$name@$v"
-            if publish_one "$name" "$release" "$dir" "$v" "$tag"; then
+            blocked=
+            for dep in ${PKG_DEPS[$name]}; do
+              if [ -n "${FAILED_SET[$dep]:-}" ]; then blocked=$dep; fi
+            done
+            if [ -n "$blocked" ]; then
+              echo "::endgroup::"
+              echo "::error::$name@$v not published: the publish of $blocked@${PKG_VERSION[$blocked]} failed, and $name depends on it"
+              FAILED+=("$name"); FAILED_SET[$name]=1
+              continue
+            fi
+            if publish_one "$name" "${PKG_RELEASE[$name]}" "${PKG_DIR[$name]}" "$v" "${PKG_TAG[$name]}"; then
               echo "::endgroup::"
             else
               echo "::endgroup::"
               echo "::error::the publish of $name@$v failed"
-              FAILED+=("$name")
+              FAILED+=("$name"); FAILED_SET[$name]=1
             fi
-          done < <(jq -r '.[] | [.name, .release, .directory, .version, ."dist-tag"] | @tsv' <<< "$TO_PUBLISH")
+          done
           if [ ${#FAILED[@]} -gt 0 ]; then
             echo "::error::not published: ${FAILED[*]} (re-run the failed jobs: the published versions are skipped)"
             exit 1
