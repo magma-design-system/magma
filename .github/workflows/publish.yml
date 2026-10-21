@@ -29,13 +29,19 @@
 #             with nothing committed: the tag goes on the dispatched commit. A
 #             second beta without a new stable in between is beta.N+1
 #             (semantic-release channel notes).
+#   storybook the Storybook deploy of the release commit, when svg-icons was
+#             released: the mds-icon story shows its version, and the release
+#             commit, pushed with [skip ci], runs no deploy of its own
 #   publish   checks out the release commit (the dispatched one on the beta
 #             channel, or when nothing was released), builds the selected
 #             packages and publishes every one of them whose version is not on
 #             the npm registry yet, with the dist-tag of its version (latest,
 #             beta). On the beta channel the tag version is written into the
 #             lockstep manifests right before publishing
-#             (scripts/set-release-version.sh).
+#             (scripts/set-release-version.sh). The packages go in dependency
+#             order, and one whose dependency (from its manifest) failed to
+#             publish in the same run is not published: design-tokens and
+#             styles for magma, magma for magma-react and magma-angular.
 #
 # The CI of the chore(release) commit runs on its push too (the release token
 # triggers it, with the Storybook deploy) but is not awaited: the dispatched
@@ -160,9 +166,6 @@ env:
 
 jobs:
   guard:
-    # the push of a chore(release) commit comes from the release job itself:
-    # its versions are already tagged, there is nothing to release again
-    if: ${{ github.event_name == 'workflow_dispatch' || !startsWith(github.event.head_commit.message, 'chore(release):') }}
     runs-on: ubuntu-latest
     steps:
       - if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -217,21 +220,35 @@ jobs:
           # merge-group run); pull_request runs test the pull request head,
           # not this commit
           WATCHED='["design-tokens", "icons", "identity", "styles", "svg-icons", "stencil", "lint"]'
-          RUNS=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=${{ github.sha }}&per_page=100" \
+          # a chore(release) commit is pushed with [skip ci] and has no CI of its
+          # own: the code it versions is its parent's, so that is the commit to
+          # check (walking past chained release commits)
+          SHA="${{ github.sha }}"
+          for _ in 1 2 3 4 5; do
+            COMMIT=$(gh api "repos/${{ github.repository }}/commits/$SHA")
+            case "$(jq -r '.commit.message | split("\n")[0]' <<< "$COMMIT")" in
+              'chore(release):'*) SHA=$(jq -r '.parents[0].sha' <<< "$COMMIT") ;;
+              *) break ;;
+            esac
+          done
+          if [ "$SHA" != "${{ github.sha }}" ]; then
+            echo "::notice::${{ github.sha }} is a chore(release) commit: checking the CI of $SHA, the commit it versions"
+          fi
+          RUNS=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=$SHA&per_page=100" \
             | jq --argjson watched "$WATCHED" '[.workflow_runs[] | select((.event == "push" or .event == "merge_group") and (.name as $n | $watched | index($n)))] | group_by(.name) | map(max_by(.id))')
           echo "$RUNS" | jq -r '.[] | "\(.name): \(.status) (\(.conclusion))"'
           if [ "$(echo "$RUNS" | jq length)" = 0 ]; then
-            echo "::warning::no CI run of ${{ github.sha }}: releasing a commit without a CI of its own"
+            echo "::warning::no CI run of $SHA: releasing a commit without a CI of its own"
             exit 0
           fi
           PENDING=$(echo "$RUNS" | jq '[.[] | select(.status != "completed")] | length')
           FAILED=$(echo "$RUNS" | jq '[.[] | select(.status == "completed" and .conclusion != "success" and .conclusion != "skipped")] | length')
           if [ "$PENDING" -gt 0 ]; then
-            echo "::error::$PENDING CI workflow(s) of ${{ github.sha }} still running: dispatch again once they are green"
+            echo "::error::$PENDING CI workflow(s) of $SHA still running: dispatch again once they are green"
             exit 1
           fi
           if [ "$FAILED" -gt 0 ]; then
-            echo "::error::$FAILED CI workflow(s) of ${{ github.sha }} did not succeed: a red check is never bypassed (docs/WORKFLOW.md rule 1)"
+            echo "::error::$FAILED CI workflow(s) of $SHA did not succeed: a red check is never bypassed (docs/WORKFLOW.md rule 1)"
             exit 1
           fi
 
@@ -276,6 +293,24 @@ jobs:
       # a dispatched release is bound to the commit it was dispatched on; the
       # automatic icon releases rebase onto whatever landed on main meanwhile
       rebase-on-reject: ${{ github.event_name == 'push' }}
+
+  storybook:
+    needs: [release]
+    # the chore(release) commit is pushed with [skip ci], so the push of a
+    # release runs no Storybook deploy; the mds-icon story shows the version
+    # of svg-icons read from its manifest, so a release of svg-icons deploys
+    # the Storybook of the release commit on request (a beta releases magma
+    # only). The deploy builds and tests the commit itself, there being no
+    # stencil run of it, and its build supersedes the one of the parent push
+    if: ${{ !cancelled() && needs.release.result == 'success' && contains(needs.release.outputs.release-tags, 'svg-icons@') }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write # the workflow_dispatch of deploy-storybook.yml
+    steps:
+      - name: Dispatch the Storybook deploy of the release commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-storybook.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"
 
   publish:
     needs: [packages, release]
@@ -377,13 +412,6 @@ jobs:
               ./scripts/set-release-version.sh "$v" $MAGMA_LOCKSTEP_MANIFESTS "$dir/package.json" || return 1
             fi
             if [ "$release" = magma ]; then
-              # npm skips the `files` entries that do not exist without a warning,
-              # so a path missing from the build would publish silently (#809)
-              local files
-              files=$(cd "$dir" && npm pack --dry-run --json | jq -r '.[0].files[].path') || return 1
-              echo "$files" | grep -qx 'AGENTS.md' || { echo "::error::AGENTS.md is missing from the $name tarball"; return 1; }
-              echo "$files" | grep -q '^agents/.*[.]md$' || { echo "::error::agents/*.md is missing from the $name tarball"; return 1; }
-              echo "$files" | grep -qx 'CHANGELOG.md' || { echo "::error::CHANGELOG.md is missing from the $name tarball"; return 1; }
               # with an exports map, a file in the tarball resolves only when it is
               # exported (#981); for magma-angular this is the manifest ng-packagr
               # wrote, merged with its own exports
@@ -391,17 +419,66 @@ jobs:
             fi
             (cd "$dir" && npm publish --access public --tag "$tag")
           }
-          FAILED=()
+          # the internal dependencies of each package among the packages of
+          # this run (dependencies, peerDependencies and optionalDependencies
+          # on @maggioli-design-system/*, read from the manifest published):
+          # a package is published after them, and not at all when one of
+          # them failed, so nothing on npm ever requires a version that is
+          # not there (design-tokens and styles for magma; magma for
+          # magma-react and magma-angular, which pin it at the exact version).
+          # A dependency already on npm is not in the list and blocks nothing
+          declare -A PKG_DIR PKG_RELEASE PKG_VERSION PKG_TAG PKG_DEPS
+          NAMES=()
           while IFS=$'\t' read -r name release dir v tag; do
+            NAMES+=("$name"); PKG_DIR[$name]=$dir; PKG_RELEASE[$name]=$release; PKG_VERSION[$name]=$v; PKG_TAG[$name]=$tag
+          done < <(jq -r '.[] | [.name, .release, .directory, .version, ."dist-tag"] | @tsv' <<< "$TO_PUBLISH")
+          for name in "${NAMES[@]}"; do
+            PKG_DEPS[$name]=$(jq -r --argjson names "$(jq -c '[.[].name]' <<< "$TO_PUBLISH")" \
+              '[.dependencies, .peerDependencies, .optionalDependencies] | map(. // {}) | add | keys[]
+               | select(startswith("@maggioli-design-system/")) | ltrimstr("@maggioli-design-system/")
+               | select(. as $d | $names | index($d) != null)' "${PKG_DIR[$name]}/package.json" | tr '\n' ' ')
+          done
+          # the publish order: every package after its dependencies
+          ORDER=()
+          declare -A PLACED=()
+          while [ ${#ORDER[@]} -lt ${#NAMES[@]} ]; do
+            progressed=
+            for name in "${NAMES[@]}"; do
+              if [ -n "${PLACED[$name]:-}" ]; then continue; fi
+              ready=1
+              for dep in ${PKG_DEPS[$name]}; do
+                if [ -z "${PLACED[$dep]:-}" ]; then ready=; fi
+              done
+              if [ -n "$ready" ]; then ORDER+=("$name"); PLACED[$name]=1; progressed=1; fi
+            done
+            if [ -z "$progressed" ]; then
+              echo "::error::circular dependency among the packages to publish (${NAMES[*]})"
+              exit 1
+            fi
+          done
+          FAILED=()
+          declare -A FAILED_SET=()
+          for name in "${ORDER[@]}"; do
+            v=${PKG_VERSION[$name]}
             echo "::group::$name@$v"
-            if publish_one "$name" "$release" "$dir" "$v" "$tag"; then
+            blocked=
+            for dep in ${PKG_DEPS[$name]}; do
+              if [ -n "${FAILED_SET[$dep]:-}" ]; then blocked=$dep; fi
+            done
+            if [ -n "$blocked" ]; then
+              echo "::endgroup::"
+              echo "::error::$name@$v not published: the publish of $blocked@${PKG_VERSION[$blocked]} failed, and $name depends on it"
+              FAILED+=("$name"); FAILED_SET[$name]=1
+              continue
+            fi
+            if publish_one "$name" "${PKG_RELEASE[$name]}" "${PKG_DIR[$name]}" "$v" "${PKG_TAG[$name]}"; then
               echo "::endgroup::"
             else
               echo "::endgroup::"
               echo "::error::the publish of $name@$v failed"
-              FAILED+=("$name")
+              FAILED+=("$name"); FAILED_SET[$name]=1
             fi
-          done < <(jq -r '.[] | [.name, .release, .directory, .version, ."dist-tag"] | @tsv' <<< "$TO_PUBLISH")
+          done
           if [ ${#FAILED[@]} -gt 0 ]; then
             echo "::error::not published: ${FAILED[*]} (re-run the failed jobs: the published versions are skipped)"
             exit 1

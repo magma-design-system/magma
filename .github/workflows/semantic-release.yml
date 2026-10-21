@@ -39,9 +39,11 @@
 # whether the tags exist, and takes the push, the tags and the releases.
 #
 # The chore(release) commit, the tags and the notes are pushed with
-# RELEASE_PUSH_TOKEN when the caller passes `secrets: inherit`: the default
-# GITHUB_TOKEN would not trigger the CI (and the Storybook deploy) of that
-# commit.
+# RELEASE_PUSH_TOKEN when the caller passes `secrets: inherit`: the ruleset
+# of main (pull request, status checks, merge queue) takes a direct push only
+# from a bypass actor, which the default GITHUB_TOKEN is not. The commit
+# carries [skip ci]: its push runs no workflow, the code it versions is its
+# parent's, already checked.
 #
 # Inputs:
 #   - packages: JSON array of the packages released together, one object per
@@ -283,9 +285,9 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          # Push with a PAT/App token when provided, so the chore(release) commit triggers
-          # its CI and the Storybook deploy (the default GITHUB_TOKEN does not trigger
-          # downstream workflows). On the beta channel only the tags and the notes are pushed.
+          # Push with the PAT/App token of a bypass actor of the main ruleset when
+          # provided: the default GITHUB_TOKEN cannot push straight to main. On
+          # the beta channel only the tags and the notes are pushed.
           token: ${{ secrets.RELEASE_PUSH_TOKEN || github.token }}
 
       - name: Download artifacts from check
@@ -323,7 +325,9 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore(release): ${TAGS}"
+            # [skip ci]: the push of this commit runs no workflow; the code it
+            # versions is its parent's, already checked
+            git commit -m "chore(release): ${TAGS} [skip ci]"
           fi
 
       - name: Push release commit
