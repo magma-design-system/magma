@@ -4,6 +4,29 @@ Every release of `@maggioli-design-system/magma`, newest first. Each section is 
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [magma@2.5.0] - 2026-10-21
+
+### Bug Fixes
+
+- *(mds-card)* Keep the footer at the bottom of the card without a content
+
+### Documentation
+
+- *(magma,mds-button,mds-text)* Point links inside a sentence to mds-link
+- *(stencil)* Require Magma tokens for the values of component sheets
+- *(mds-input-switch)* Write the input tag and the type values as code
+- *(mds-button,mds-link,mds-text)* Regenerate the readmes from the usage docs
+- *(magma)* Write spacing with the numeric steps, a t-shirt size is a container size
+
+### Features
+
+- *(mds-link)* Add the inline link for running text
+- *(mds-entity)* Expose the infos part, 2px between the name and the detail
+
+### Refactor
+
+- *(stencil)* Take the lengths and durations of the component sheets from the tokens
+
 ## [magma@2.4.1] - 2026-10-21
 
 ### Bug Fixes

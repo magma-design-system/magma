@@ -4,6 +4,12 @@ Every release of `@maggioli-design-system/design-tokens`, newest first. Each sec
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [design-tokens@15.2.2] - 2026-10-21
+
+### Bug Fixes
+
+- *(design-tokens,styles)* Size utilities with a t-shirt name read the container, not spacing
+
 ## [design-tokens@15.2.1] - 2026-10-20
 
 ### Bug Fixes

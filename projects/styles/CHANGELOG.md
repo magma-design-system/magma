@@ -4,6 +4,16 @@ Every release of `@maggioli-design-system/styles`, newest first. Each section is
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [styles@17.3.0] - 2026-10-21
+
+### Bug Fixes
+
+- *(design-tokens,styles)* Size utilities with a t-shirt name read the container, not spacing
+
+### Features
+
+- *(styles)* List the aliases and the keyword variables of the theme in consumption.json
+
 ## [styles@17.2.1] - 2026-10-20
 
 ### Bug Fixes
