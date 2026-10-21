@@ -19,12 +19,14 @@ const TAILWIND = resolve(DIST, 'tailwind')
 const require = createRequire(join(PROJECT, 'package.json'))
 const TAILWIND_PACKAGE = dirname(require.resolve('tailwindcss/package.json'))
 
-type Entry = { theme: string, description?: string, namespace: string | null, key?: string | null, property?: string, shadowed?: Record<string, string | null> }
+type Entry = { theme: string, description?: string, namespace: string | null, key?: string | null, property?: string, aliases?: string[], shadowed?: Record<string, string | null> }
+type Keyword = { value: string, namespace: string | null, key?: string | null }
 type Utility = { source: string | string[], apply?: string[], tokens: string[], theme: string[], css: string }
 type ConsumptionMap = {
   tailwind: string
   entry: string[]
   tokens: Record<string, Entry>
+  keywords: Record<string, Keyword>
   namespaces: Record<string, { utilities: string[], variants: string[] }>
   spacing: { multiplier: string, value: string, utilities: string[], keys: string[], steps: string[] }
   utilities: Record<string, Utility>
@@ -78,12 +80,20 @@ describe('coverage', () => {
   test('every @theme variable reachable from tailwind/theme.css is in the map, linked to a dtcg token', () => {
     expect(themeVariables.size).toBeGreaterThan(500)
     const byTheme = new Map(Object.entries(map.tokens).map(([token, { theme }]) => [theme, token]))
-    expect([...themeVariables.keys()].filter((name) => !byTheme.has(name))).toEqual([])
-    expect(byTheme.size).toBe(themeVariables.size)
+    const byAlias = new Map(Object.entries(map.tokens).flatMap(([token, { aliases = [] }]) =>
+      aliases.map((alias) => [alias, token] as const)))
+    const listed = (name: string) => byTheme.has(name) || byAlias.has(name) || name in map.keywords
+    expect([...themeVariables.keys()].filter((name) => !listed(name))).toEqual([])
+    expect(byTheme.size + byAlias.size + Object.keys(map.keywords).length).toBe(themeVariables.size)
     expect(Object.keys(map.tokens).filter((token) => !dtcgNames.has(token))).toEqual([])
     // the token is the variable itself, or the custom property its value wraps
     for (const [theme, token] of byTheme)
       if (theme !== token) expect(themeVariables.get(theme), theme).toContain(`var(${token}`)
+    // an alias is the @theme variable of its token, whole; a keyword is its own value (#1057)
+    for (const [alias, token] of byAlias)
+      expect(themeVariables.get(alias), alias).toBe(`var(${map.tokens[token].theme})`)
+    for (const [name, { value }] of Object.entries(map.keywords))
+      expect(themeVariables.get(name), name).toBe(value)
   })
 
   test('every @utility of dist/tailwind/*.css, and of what they import, is listed with its CSS', () => {
@@ -126,21 +136,23 @@ describe('what Tailwind compiles', () => {
 
   test('the namespace of a token gives its utilities, except where the map says another variable wins', () => {
     expect(keyed.length).toBeGreaterThan(600)
-    for (const { theme, namespace, key, shadowed = {} } of keyed) {
+    for (const { theme, namespace, key, aliases = [], shadowed = {} } of keyed) {
       const roots = map.namespaces[namespace!].utilities
       const css = compile(roots.map((root) => `${root}-${key}`))
+      // the class reads the token through its own @theme variable or one of its aliases
+      const published = [theme, ...aliases].map((variable) => `var(${variable})`)
       roots.forEach((root, index) => {
         const label = `${root}-${key} (${theme})`
         const out = css[index]
         if (root in shadowed) {
-          if (out) expect(out, label).not.toContain(`var(${theme})`)
+          if (out) for (const form of published) expect(out, label).not.toContain(form)
           // the variable that wins, read through var() or inlined (`max-w-prose` is 65ch)
           const winner = shadowed[root]
           if (winner) expect([`var(${winner})`, ds.resolveThemeValue(winner, true)].some((form) => out?.includes(form!)), label).toBe(true)
           return
         }
         expect(out, label).not.toBeNull()
-        if (!INLINED.has(namespace!)) expect(out, label).toContain(`var(${theme})`)
+        if (!INLINED.has(namespace!)) expect(published.some((form) => out!.includes(form)), label).toBe(true)
       })
     }
   })
