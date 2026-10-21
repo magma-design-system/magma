@@ -47,6 +47,18 @@ Generated at {{ date }}
   --container-{{@key}}: {{container.value}};
 {{/each}}
 
+{{!-- size utilities: w-*, min-w-*, max-w-* and basis-* read their own namespace, then
+  spacing, then container. A key spacing and container share (2xl) is a container size:
+  point the own namespace at it, or the spacing step wins (max-w-2xl would be 48px).
+  max-w-none is none, not spacing's 0px (#1057) --}}
+{{#each (sharedKeys properties.spacing properties.container) as | key |}}
+  --width-{{key}}: var(--container-{{key}});
+  --min-width-{{key}}: var(--container-{{key}});
+  --max-width-{{key}}: var(--container-{{key}});
+  --flex-basis-{{key}}: var(--container-{{key}});
+{{/each}}
+  --max-width-none: none;
+
 {{!-- screens breakpoint --}}
 {{#each properties.screen as | screen |}}
   --breakpoint-{{@key}}: {{screen.min.value}};

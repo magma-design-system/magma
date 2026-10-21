@@ -23,6 +23,10 @@ const ifTailwind4Border = (property: string, options: HelperOptions) => {
   return isNaN(Number(property)) ? options.fn(this) : options.inverse(this);
 };
 
+/* the keys two token groups have in common: spacing and container share xs ... 4xl */
+const sharedKeys = (groupA: object, groupB: object): string[] =>
+  Object.keys(groupA).filter((key) => key in groupB);
+
 Handlebars.registerHelper('ifEquals', ifEquals);
 Handlebars.registerHelper('leadZero', leadZero);
 Handlebars.registerHelper('rgbChannel', rgbChannel);
@@ -30,6 +34,7 @@ Handlebars.registerHelper('kebabCase', kebabCase);
 Handlebars.registerHelper('ifTailwindFontSizeProp', ifTailwindFontSizeProp);
 Handlebars.registerHelper('tailwindFontSize', tailwindFontSize);
 Handlebars.registerHelper('ifTailwind4Border', ifTailwind4Border);
+Handlebars.registerHelper('sharedKeys', sharedKeys);
 
 export const tailwindCss4Filter = {
   name: 'tailwind/cssTailwind4Filter',

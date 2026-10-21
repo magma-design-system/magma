@@ -332,9 +332,18 @@ token of `tokens.editor.css`. The resolver points at the files of design-tokens 
   root of `namespaces[namespace].utilities` (`text-fg-muted`, `bg-fg-muted`,
   `border-fg-muted`, ...), its variants the patterns of `namespaces[namespace].variants`
   with the key for `*` (`max-tablet:`, `@md:`).
+- **`aliases`**: the `@theme` variables that republish the token whole for the utilities
+  of another namespace. `w-*`, `min-w-*`, `max-w-*` and `basis-*` read their own
+  namespace, then spacing, then container, so for the keys both scales have (`xs` ...
+  `4xl`) `--container-xs` comes with `--width-xs`, `--max-width-xs`, ...: `max-w-xs` is
+  the 320px container, not the 4px spacing step.
 - **`shadowed`**: the roots (or variant patterns) where that class reads another
   variable, and which one (`null`: none of the theme). `--container-xs` has
-  `"max-w": "--spacing-xs"`: `max-w-xs` is 4px, the container is `max-w-(--container-xs)`.
+  `"inline": "--spacing-xs"`: the logical utilities have no namespace of their own, so
+  `inline-xs` is 4px; the container is `inline-(--container-xs)`.
+- **`keywords`**: the `@theme` variables that hold a CSS keyword and publish no token.
+  `--max-width-none: none` makes `max-w-none` set no limit, where the spacing step would
+  set `0px`.
 - **`namespace: null`**: no utility reads the variable. Tailwind 4 has no `--border-*`
   or `--duration-*` namespace, so `border-xs` does not exist and `duration-200` is
   Tailwind's own 200ms, not the token: write `border-(length:--border-xs)`.

@@ -109,7 +109,7 @@ Because the same token name resolves to different values in each mode, code auth
 ## Non-colour tokens
 
 - **Typography** - consume via the semantic utilities (`text-title-h1`, `text-info-paragraph`, `text-code-snippet`) or their plain-CSS `typography-*` classes: [`agents/typography.md`](./agents/typography.md). **Never** compose `font-*` and `text-*` primitives by hand.
-- **Sizing** - use Tailwind spacing utilities (`p-4`, `gap-2`, ...), which map to `--spacing`. For radii use the `--magma-radius-*` scale, which follows the corner geometry ([`agents/theming.md`](./agents/theming.md)).
+- **Sizing** - write spacing with the numeric steps (`p-600`, `gap-400`), the step times `--spacing` (0.0025rem, so `p-4` is a hundredth of a rem); a t-shirt name on `w-*` / `max-w-*` / `min-w-*` / `basis-*` is a container size (`max-w-2xl` is 640px), see [`agents/assets.md`](./agents/assets.md). For radii use the `--magma-radius-*` scale, which follows the corner geometry ([`agents/theming.md`](./agents/theming.md)).
 - **Screen** - use the Magma breakpoint prefixes (`mobile:` 480px, `tablet:` 768px, `desktop:` 1024px, `wide:` 1280px, `large:` 1440px, `xlarge:` 1600px, `tv:` 1920px; `max-*` for the upper bound), which map to the screen tokens.
 - **Cosmetic** - shadows (`--shadow-md-sharp`, `--shadow-2xl`, ...), borders, radii. The CSS variables come from `styles/dist/css/typography.css` ([`agents/assets.md`](./agents/assets.md)). Opacities such as `--magma-disabled-opacity` are not tokens: they are global design decisions of `styles` ([`agents/theming.md`](./agents/theming.md)).
 
