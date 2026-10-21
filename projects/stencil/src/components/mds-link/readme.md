@@ -16,7 +16,7 @@ The `<mds-link>` web component is the inline link of Magma: a word or a phrase i
 - **An inline button without `href`**: the link becomes an element with `role="button"` in the tab order; a click, Enter and Space each fire one native `click` on the host. It never submits the form it sits in. It is not a native `<button>`, which cannot wrap across lines.
 - **New tab**: `target="blank"` opens the URL in a new tab without giving it access to the page (`rel="noopener noreferrer"`) and adds a hidden "(opens in a new tab)", in the language of the page, to the name the assistive technology reads. No icon is added: pick one with `icon` if the design wants it.
 - **Icon**: `icon` draws an icon, hidden from the assistive technology, sized by `--mds-link-icon-size` (a step of the spacing scale, the same in every typography). It stays on the line of the word next to it: it never wraps to a line of its own.
-- **Underline always visible**: the underline is what tells the link from the text without its color (WCAG 1.4.1), so every style keeps one, and its weight never changes. Under the pointer a `strong` link fills with a faint background that rises from the bottom, and a `weak` one gives its line the whole color, at once; under high contrast the tints take the full color.
+- **Underline always visible**: the underline is what tells the link from the text without its color (WCAG 1.4.1), so every style keeps one, and its weight never changes. Under the pointer every link fills with a faint background that rises from the bottom, and a `weak` one also gives its line the whole color; under high contrast the tints take the full color.
 
 #### Properties & Visual Configurations
 
@@ -27,7 +27,7 @@ The `<mds-link>` web component is the inline link of Magma: a word or a phrase i
   - `solid` (the default): a thin line;
   - `dotted`: a dotted line;
   - `marker`: a tinted band under the text, lighter with `weak`, which rises under the pointer to fill the line like a highlighter, with the same faint background in both tones.
-- **`tone`** sets how much of the color the line takes: `strong` (the default) the whole color, with a faint background rising under the pointer; `weak` a light tint of it, which steps back in a text dense with links and takes the whole color under the pointer, with no background. The text of the link keeps the whole color in both tones.
+- **`tone`** sets how much of the color the line takes: `strong` (the default) the whole color; `weak` a light tint of it, which steps back in a text dense with links and takes the whole color under the pointer. The text of the link keeps the whole color in both tones.
 - **`icon-position`** puts the icon after the text (`right`, the default: an external link, a download, a forward arrow) or before it (`left`: a back arrow).
 
 
@@ -251,12 +251,12 @@ mds-link::part(link) {
 
 | Name                             | Description                                                                                                     |
 | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `--mds-link-background-hover`    | The background that fills a strong link, or a marker in both tones, from the bottom under the pointer.          |
+| `--mds-link-background-hover`    | The background that fills the link from the bottom under the pointer.                                           |
 | `--mds-link-color`               | The color of the text, the underline and the icon of the link.                                                  |
 | `--mds-link-icon-gap`            | The distance between the icon and the text.                                                                     |
 | `--mds-link-icon-size`           | The size of the icon.                                                                                           |
 | `--mds-link-transition-duration` | The duration of the background filling the link under the pointer, and of the focus ring closing in on it.      |
-| `--mds-link-underline-color`     | The color of the underline, a tint of the link with tone `weak`, the tint of the band with the `marker` style.  |
+| `--mds-link-underline-color`     | The color of the underline, of which tone `weak` takes a tint; the tint of the band with the `marker` style.    |
 | `--mds-link-underline-offset`    | The distance between the text and the underline.                                                                |
 | `--mds-link-underline-thickness` | The thickness of the underline, thicker for the `dotted` style, the height of the band with the `marker` style. |
 
