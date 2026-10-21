@@ -1,0 +1,123 @@
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
+@import '../../tailwind/fouc.css';
+@import './css/mds-link-underline.css';
+@import './css/mds-link-pref-animation.css';
+@import './css/mds-link-pref-contrast.css';
+
+/**
+ * @prop --mds-link-background-hover: The background that fills the link from the bottom under the pointer.
+ * @prop --mds-link-color: The color of the text, the underline and the icon of the link.
+ * @prop --mds-link-icon-gap: The distance between the icon and the text.
+ * @prop --mds-link-icon-size: The size of the icon.
+ * @prop --mds-link-transition-duration: The duration of the background filling the link under the pointer, and of the focus ring closing in on it.
+ * @prop --mds-link-underline-color: The color of the underline, of which tone `weak` takes a tint; the tint of the band with the `marker` style.
+ * @prop --mds-link-underline-offset: The distance between the text and the underline.
+ * @prop --mds-link-underline-thickness: The thickness of the underline, thicker for the `dotted` style, the height of the band with the `marker` style.
+ */
+
+/* The link is a word of the sentence it sits in: inline, and with the font of its parent
+   (family, size, weight, line height, letter spacing), which an inline box inherits. */
+
+:host {
+  --mds-link-background-hover: color-mix(in srgb, currentcolor 12%, transparent);
+  --mds-link-color: rgb(var(--magma-accent-fg));
+  --mds-link-icon-gap: --spacing(100);
+  --mds-link-icon-size: --spacing(400);
+  --mds-link-transition-duration: var(--duration-500);
+  --mds-link-underline-color: currentcolor;
+  --mds-link-underline-offset: --spacing(100);
+  --mds-link-underline-thickness: --spacing(25);
+  --private-link-transition-duration: var(--mds-link-transition-duration);
+
+  display: inline;
+}
+
+/* on a colored surface the accent would lose contrast: the color of the text */
+
+:host([variant='inherit']) {
+  --mds-link-color: currentcolor;
+}
+
+/* The background is two inset shadows from the bottom, which an inline box draws under every
+   line it wraps onto: the band of the marker on top, the fill under the pointer below. A
+   background cloned on every line (box-decoration-break) would turn off the text-wrap: pretty of
+   mds-text in Chrome, for the whole paragraph. Their heights are lengths registered for the
+   document (the property sheet of this folder), and the heights are what transitions, never the
+   box-shadow: its color, a tint of currentcolor, interpolates to transparent in Chrome. At rest
+   both are 0. */
+
+.link {
+  --private-link-band: 0px;
+  --private-link-fill: 0px;
+  --private-link-ink: 100%;
+
+  @apply focus-bounce;
+
+  box-shadow:
+    inset 0 calc(var(--private-link-band) * -1) var(--mds-link-underline-color),
+    inset 0 calc(var(--private-link-fill) * -1) var(--mds-link-background-hover);
+  color: var(--mds-link-color);
+  cursor: pointer;
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--mds-link-underline-color) var(--private-link-ink),
+    transparent
+  );
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: var(--mds-link-underline-thickness);
+  text-underline-offset: var(--mds-link-underline-offset);
+  transition-duration: var(--private-link-transition-duration);
+  transition-property:
+    --private-link-band, --private-link-fill, --private-link-ink, color, outline, outline-offset;
+
+  /* the band, the fill and the ink of the line ease out: they answer the pointer at once and
+     settle slowly, so the rise is quick and the fall lingers */
+  transition-timing-function:
+    var(--ease-out-quint), var(--ease-out-quint), var(--ease-out-quint), var(--ease-out-sine),
+    var(--ease-out-sine), var(--ease-out-sine);
+}
+
+/* the focus ring bounces, as on mds-button */
+
+.link:focus-visible {
+  @apply focus-bounce--focused;
+}
+
+/* The icon is drawn in the padding of an inline box that holds a word joiner: a box the line
+   breaks with the word next to it, where an inline-block (the icon itself) would be a place to
+   break. Centered on the box, which is as tall as the font. */
+
+.glue {
+  position: relative;
+}
+
+.glue-right {
+  padding-inline-start: calc(var(--mds-link-icon-size) + var(--mds-link-icon-gap));
+}
+
+.glue-left {
+  padding-inline-end: calc(var(--mds-link-icon-size) + var(--mds-link-icon-gap));
+}
+
+.icon {
+  fill: currentcolor;
+  height: var(--mds-link-icon-size);
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  width: var(--mds-link-icon-size);
+}
+
+.glue-right .icon {
+  inset-inline-end: 0;
+}
+
+.glue-left .icon {
+  inset-inline-start: 0;
+}
+
+/* read by the assistive technology, never painted */
+
+.hint {
+  @apply sr-only;
+}

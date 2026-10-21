@@ -1,0 +1,72 @@
+/* The underline, always visible: what tells the link from the text around it without its color
+   (WCAG 1.4.1). Its weight never changes under the pointer: a line that grows, or dots that join
+   into a line, read as a jump in the text. Under the pointer every link fills with the same
+   faint background from the bottom, whatever its style and tone; a weak line also takes the whole
+   color, at once. It follows the text when it wraps. */
+
+/* How far the fill rises: just past the box of the text, which is 1.66 to 1.88 times the cap
+   height in every typography and font of Magma (the line height varies too much: 0.73 to 0.99 of
+   it). Any further and the fill would spend part of the transition out of sight. */
+
+.link:is(:hover, :active) {
+  --private-link-fill: 2cap;
+}
+
+/* solid: a thin line in the color of the link */
+
+:host([underline='solid']) .link {
+  text-decoration-line: underline;
+}
+
+/* dotted: a dotted line, thicker, so that the dots read as dots */
+
+:host([underline='dotted']) {
+  --mds-link-underline-thickness: --spacing(50);
+}
+
+:host([underline='dotted']) .link {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+}
+
+/* Every tint is a share of the color of the link (currentcolor), whatever sets it: the accent,
+   the text around it with variant inherit, or --mds-link-color. The text keeps the whole color and
+   the tints sit between it and the surface, in light and dark mode alike, so it keeps its
+   contrast on every surface; an accent tint under a colored text would muddy both.
+
+   The tone sets how much of the color the line takes (a registered percentage, so that it
+   transitions while the color is recomputed): strong the whole color, weak 35%, which rises to
+   the whole color under the pointer, with the fill. */
+
+:host([tone='weak']) .link {
+  --private-link-ink: 35%;
+}
+
+:host([tone='weak']) .link:is(:hover, :active) {
+  --private-link-ink: 100%;
+}
+
+/* marker: a tinted band under the text, the upper of the two inset shadows of the link. Under
+   the pointer it sinks while the fill (above) rises, so the line ends in the lighter tint of the
+   background and the text reads on it, in both tones. At rest the band takes the color and the
+   thickness of the underline: a tinted surface rather than a line, so after the tone, which here
+   picks the lighter tint for weak. */
+
+:host([underline='marker']) {
+  --mds-link-underline-color: color-mix(in srgb, currentcolor 30%, transparent);
+  --mds-link-underline-thickness: --spacing(100);
+}
+
+:host([underline='marker'][tone='weak']) {
+  --mds-link-underline-color: color-mix(in srgb, currentcolor 20%, transparent);
+}
+
+:host([underline='marker']) .link {
+  --private-link-band: var(--mds-link-underline-thickness);
+
+  text-decoration-line: none;
+}
+
+:host([underline='marker']) .link:is(:hover, :active) {
+  --private-link-band: 0px;
+}

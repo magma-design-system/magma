@@ -323,6 +323,7 @@ Type: `Promise<void>`
  - [mds-input-upload](../mds-input-upload)
  - [mds-keyboard-key](../mds-keyboard-key)
  - [mds-kpi-item](../mds-kpi-item)
+ - [mds-link](../mds-link)
  - [mds-list-item](../mds-list-item)
  - [mds-mention](../mds-mention)
  - [mds-paginator-item](../mds-paginator-item)
@@ -351,6 +352,7 @@ graph TD;
   mds-input-upload --> mds-icon
   mds-keyboard-key --> mds-icon
   mds-kpi-item --> mds-icon
+  mds-link --> mds-icon
   mds-list-item --> mds-icon
   mds-mention --> mds-icon
   mds-paginator-item --> mds-icon

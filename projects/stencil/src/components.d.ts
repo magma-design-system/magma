@@ -52,6 +52,7 @@ import { AttachmentSort, FileError } from "./components/mds-input-upload/meta/ty
 import { KeyboardTest } from "./components/mds-keyboard/meta/type";
 import { KeyboardKeyName } from "./type/keyboard";
 import { MdsLabelVariantType } from "./components/mds-label/mds-label";
+import { LinkUnderlineType, LinkVariantType } from "./components/mds-link/meta/types";
 import { MentionSize } from "./components/mds-mention/meta/type";
 import { MdsMentionEvent } from "./components/mds-mention/meta/interface";
 import { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
@@ -139,6 +140,7 @@ export { AttachmentSort, FileError } from "./components/mds-input-upload/meta/ty
 export { KeyboardTest } from "./components/mds-keyboard/meta/type";
 export { KeyboardKeyName } from "./type/keyboard";
 export { MdsLabelVariantType } from "./components/mds-label/mds-label";
+export { LinkUnderlineType, LinkVariantType } from "./components/mds-link/meta/types";
 export { MentionSize } from "./components/mds-mention/meta/type";
 export { MdsMentionEvent } from "./components/mds-mention/meta/interface";
 export { ModalAnimationStyleType, ModalInteractionType, ModalOverflowType, ModalPositionType } from "./components/mds-modal/meta/types";
@@ -1869,6 +1871,45 @@ export namespace Components {
           * @default 'sky'
          */
         "variant": MdsLabelVariantType;
+    }
+    interface MdsLink {
+        /**
+          * The URL of the link: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`. Without `href` the link is an inline button: it answers to click, Enter and Space with a `click` event and never submits a form.
+         */
+        "href"?: string;
+        /**
+          * The icon displayed in the link
+         */
+        "icon"?: string;
+        /**
+          * Specifies the horizontal position of the icon, which never wraps to a line of its own
+          * @default 'right'
+         */
+        "iconPosition"?: ButtonIconPositionType;
+        /**
+          * The text of the link; without it, the text of the default slot
+         */
+        "label"?: string;
+        /**
+          * Specifies the target of the URL, if self or blank: blank opens a new tab, without giving it access to the page (`rel="noopener noreferrer"`), and tells the assistive technology so
+          * @default 'self'
+         */
+        "target": ButtonTargetType;
+        /**
+          * Specifies the tone of the underline: `strong` draws it in the color of the link, `weak` in a tint of it, which takes the full color under the pointer
+          * @default 'strong'
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the style of the underline, which is always visible
+          * @default 'solid'
+         */
+        "underline"?: LinkUnderlineType;
+        /**
+          * Specifies the color of the link: `primary` paints it with the accent, `inherit` takes the color of the text around it, for a link on a colored surface
+          * @default 'primary'
+         */
+        "variant"?: LinkVariantType;
     }
     interface MdsList {
     }
@@ -3920,6 +3961,12 @@ declare global {
         prototype: HTMLMdsLabelElement;
         new (): HTMLMdsLabelElement;
     };
+    interface HTMLMdsLinkElement extends Components.MdsLink, HTMLStencilElement {
+    }
+    var HTMLMdsLinkElement: {
+        prototype: HTMLMdsLinkElement;
+        new (): HTMLMdsLinkElement;
+    };
     interface HTMLMdsListElement extends Components.MdsList, HTMLStencilElement {
     }
     var HTMLMdsListElement: {
@@ -4628,6 +4675,7 @@ declare global {
         "mds-kpi": HTMLMdsKpiElement;
         "mds-kpi-item": HTMLMdsKpiItemElement;
         "mds-label": HTMLMdsLabelElement;
+        "mds-link": HTMLMdsLinkElement;
         "mds-list": HTMLMdsListElement;
         "mds-list-item": HTMLMdsListItemElement;
         "mds-mention": HTMLMdsMentionElement;
@@ -6517,6 +6565,45 @@ declare namespace LocalJSX {
          */
         "variant"?: MdsLabelVariantType;
     }
+    interface MdsLink {
+        /**
+          * The URL of the link: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`. Without `href` the link is an inline button: it answers to click, Enter and Space with a `click` event and never submits a form.
+         */
+        "href"?: string;
+        /**
+          * The icon displayed in the link
+         */
+        "icon"?: string;
+        /**
+          * Specifies the horizontal position of the icon, which never wraps to a line of its own
+          * @default 'right'
+         */
+        "iconPosition"?: ButtonIconPositionType;
+        /**
+          * The text of the link; without it, the text of the default slot
+         */
+        "label"?: string;
+        /**
+          * Specifies the target of the URL, if self or blank: blank opens a new tab, without giving it access to the page (`rel="noopener noreferrer"`), and tells the assistive technology so
+          * @default 'self'
+         */
+        "target"?: ButtonTargetType;
+        /**
+          * Specifies the tone of the underline: `strong` draws it in the color of the link, `weak` in a tint of it, which takes the full color under the pointer
+          * @default 'strong'
+         */
+        "tone"?: ToneMinimalVariantType;
+        /**
+          * Specifies the style of the underline, which is always visible
+          * @default 'solid'
+         */
+        "underline"?: LinkUnderlineType;
+        /**
+          * Specifies the color of the link: `primary` paints it with the accent, `inherit` takes the color of the text around it, for a link on a colored surface
+          * @default 'primary'
+         */
+        "variant"?: LinkVariantType;
+    }
     interface MdsList {
     }
     interface MdsListItem {
@@ -8178,6 +8265,16 @@ declare namespace LocalJSX {
         "typography": TypographyTooltipType;
         "deletable": boolean;
     }
+    interface MdsLinkAttributes {
+        "label": string;
+        "href": string;
+        "target": ButtonTargetType;
+        "icon": string;
+        "iconPosition": ButtonIconPositionType;
+        "variant": LinkVariantType;
+        "tone": ToneMinimalVariantType;
+        "underline": LinkUnderlineType;
+    }
     interface MdsListItemAttributes {
         "typography": TypographyInfoType | TypographyReadType;
         "variant": TypographyReadingVariants;
@@ -8554,6 +8651,7 @@ declare namespace LocalJSX {
         "mds-kpi": MdsKpi;
         "mds-kpi-item": Omit<MdsKpiItem, keyof MdsKpiItemAttributes> & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes]?: MdsKpiItem[K] } & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes as `attr:${K}`]?: MdsKpiItemAttributes[K] } & { [K in keyof MdsKpiItem & keyof MdsKpiItemAttributes as `prop:${K}`]?: MdsKpiItem[K] };
         "mds-label": Omit<MdsLabel, keyof MdsLabelAttributes> & { [K in keyof MdsLabel & keyof MdsLabelAttributes]?: MdsLabel[K] } & { [K in keyof MdsLabel & keyof MdsLabelAttributes as `attr:${K}`]?: MdsLabelAttributes[K] } & { [K in keyof MdsLabel & keyof MdsLabelAttributes as `prop:${K}`]?: MdsLabel[K] };
+        "mds-link": Omit<MdsLink, keyof MdsLinkAttributes> & { [K in keyof MdsLink & keyof MdsLinkAttributes]?: MdsLink[K] } & { [K in keyof MdsLink & keyof MdsLinkAttributes as `attr:${K}`]?: MdsLinkAttributes[K] } & { [K in keyof MdsLink & keyof MdsLinkAttributes as `prop:${K}`]?: MdsLink[K] };
         "mds-list": MdsList;
         "mds-list-item": Omit<MdsListItem, keyof MdsListItemAttributes> & { [K in keyof MdsListItem & keyof MdsListItemAttributes]?: MdsListItem[K] } & { [K in keyof MdsListItem & keyof MdsListItemAttributes as `attr:${K}`]?: MdsListItemAttributes[K] } & { [K in keyof MdsListItem & keyof MdsListItemAttributes as `prop:${K}`]?: MdsListItem[K] };
         "mds-mention": Omit<MdsMention, keyof MdsMentionAttributes> & { [K in keyof MdsMention & keyof MdsMentionAttributes]?: MdsMention[K] } & { [K in keyof MdsMention & keyof MdsMentionAttributes as `attr:${K}`]?: MdsMentionAttributes[K] } & { [K in keyof MdsMention & keyof MdsMentionAttributes as `prop:${K}`]?: MdsMention[K] };
@@ -8675,6 +8773,7 @@ declare module "@stencil/core" {
             "mds-kpi": LocalJSX.IntrinsicElements["mds-kpi"] & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
             "mds-kpi-item": LocalJSX.IntrinsicElements["mds-kpi-item"] & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;
             "mds-label": LocalJSX.IntrinsicElements["mds-label"] & JSXBase.HTMLAttributes<HTMLMdsLabelElement>;
+            "mds-link": LocalJSX.IntrinsicElements["mds-link"] & JSXBase.HTMLAttributes<HTMLMdsLinkElement>;
             "mds-list": LocalJSX.IntrinsicElements["mds-list"] & JSXBase.HTMLAttributes<HTMLMdsListElement>;
             "mds-list-item": LocalJSX.IntrinsicElements["mds-list-item"] & JSXBase.HTMLAttributes<HTMLMdsListItemElement>;
             "mds-mention": LocalJSX.IntrinsicElements["mds-mention"] & JSXBase.HTMLAttributes<HTMLMdsMentionElement>;
