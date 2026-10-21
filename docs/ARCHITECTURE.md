@@ -277,7 +277,7 @@ maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dr
 | Review level | `pr-risk.yml` + `projects/stencil/scripts/pr-risk.ts` | `risk-*` label, the semver check of `magma.api.txt` against the commits' declared release |
 | Release and publish | `publish.yml` over `semantic-release.yml` + `scripts/release/*` + `scripts/set-release-version.sh` | `workflow_dispatch` on `main`: `package` (`all` or one), `channel` (`stable`/`beta`), `dry-run`; the CI of the commit checked, the plan before the approval, versions from the conventional commits of each package's scopes (semantic-release dry-run), pins, lock, `CHANGELOG.md` (git-cliff), tags, GitHub releases, then the build of the selected packages and one `npm publish` per package with OIDC trusted publishing (a package is skipped when its version is already on npm) |
 | Automatic icon releases | the `push` trigger of `publish.yml` | on every push to `main`: the same chain for `icons` and `svg-icons`, without approval; a rejected push is rebased and retried |
-| Storybook | `deploy-storybook.yml` | the static Storybook of `main` to GitHub Pages, after the `magma / test` job of the same commit |
+| Storybook | `deploy-storybook.yml` | the static Storybook of `main` to GitHub Pages, after the `magma / test` job of the same commit; also dispatched by `publish.yml` after a release of `svg-icons` (the `mds-icon` story shows its version; the `chore(release)` commit runs no workflow of its own) |
 | Local rehearsal | `scripts/test-release.sh` | the release plan of a commit on either channel, in a throwaway clone, nothing pushed |
 
 Protections, set on GitHub and documented here because they shape the flow:

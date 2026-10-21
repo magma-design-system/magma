@@ -8,12 +8,9 @@ on:
   merge_group:
 
 concurrency:
-  # one run per ref: a newer push cancels the superseded run. A chore(release)
-  # push gets its own group (no cancel, no queued-run replacement): chained
-  # chore(release) pushes must each complete their CI to provide the build
-  # artifact for their own publish run
-  group: ${{ github.workflow }}-${{ startsWith(github.event.head_commit.message, 'chore(release):') && github.sha || github.ref }}
-  cancel-in-progress: ${{ !startsWith(github.event.head_commit.message, 'chore(release):') }}
+  # one run per ref: a newer push cancels the superseded run
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   identity:
