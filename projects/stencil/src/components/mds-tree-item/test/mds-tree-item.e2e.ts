@@ -95,6 +95,47 @@ describe('mds-tree-item', () => {
         Math.round(above.box.bottom - above.radius),
       );
     });
+
+    // the actions are light DOM children of the item as well, so the first and the last
+    // ITEM were not the :first-child and the :last-child of anything
+    describe.each(['folder', 'chevron'])(
+      'of a %s item with actions around its children',
+      (toggle) => {
+        const ACTIONS = `
+        <mds-tree toggle="${toggle}" toggle-position="left">
+          <mds-tree-item id="root" label="Root">
+            <button slot="action" type="button">Before</button>
+            <mds-tree-item id="first" label="First"></mds-tree-item>
+            <mds-tree-item id="last" label="Last">
+              <mds-tree-item label="Leaf"></mds-tree-item>
+            </mds-tree-item>
+            <button slot="action" type="button">After</button>
+          </mds-tree-item>
+        </mds-tree>`;
+
+        it('starts the first child on the icon above, not out of the top of it', async () => {
+          const { root, waitForChanges } = await render(ACTIONS);
+          await expandAll(root, waitForChanges);
+
+          const { box } = branch(root.querySelector('#first')!);
+          const above = icon(root.querySelector('#root')!);
+
+          expect(Math.round(box.top)).toBe(Math.round(above.top + above.height / 2));
+        });
+
+        it('carries no line down past the last child', async () => {
+          const { root, waitForChanges } = await render(ACTIONS);
+          await expandAll(root, waitForChanges);
+
+          const last = root.querySelector('#last')!.shadowRoot!;
+          const node = last.querySelector('.tree-node')!;
+          const children = last.querySelector('.children')!;
+
+          expect(getComputedStyle(node, '::after').content).toBe('none');
+          expect(getComputedStyle(children, '::before').content).toBe('none');
+        });
+      },
+    );
   });
 
   // #998: the folder toggle read `var(--radius)`, which no layer defines, so its corners
