@@ -167,4 +167,57 @@ describe('mds-emoji', () => {
 
     expect(await pose('small')).toBe(await pose('large'));
   });
+
+  // A slotted emoji loads before its host renders the slot. Outside the flat tree its computed
+  // style is empty: every duration fell back to 1000 seconds and the head took minutes to turn.
+  // And GSAP, to read the transform of a host that is not drawn, appends it to <html> for a
+  // moment: the emoji took it for a disconnect and dropped its pointer listener for good.
+  it('follows the pointer at its own speed when it loads before the slot that shows it', async () => {
+    const { root } = await render('<div></div>');
+    const shadow = root.attachShadow({ mode: 'open' });
+    const emoji = document.createElement('mds-emoji');
+    emoji.style.cssText = 'width: 100px; height: 100px';
+    root.appendChild(emoji);
+    await vi.waitFor(() => expect(emoji).toHaveAttribute('hydrated'));
+
+    shadow.innerHTML = '<slot></slot>';
+    await emoji.startFollowMouse();
+    const rect = emoji.getBoundingClientRect();
+    window.dispatchEvent(
+      new MouseEvent('mousemove', {
+        clientX: rect.left + rect.width / 2 + 2000,
+        clientY: rect.top + rect.height / 2,
+      }),
+    );
+    // the head turns in 0.3s by default: long before a second it is all the way to the side
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    const rotateY = Number(/rotateY\((-?[\d.]+)deg\)/.exec(emoji.style.transform)?.[1] ?? 0);
+    expect(rotateY).toBeGreaterThan(8);
+  });
+
+  // the pointer listener was added once, on load, and a disconnect removed it for good
+  it('follows the pointer again once it is taken out of the page and put back', async () => {
+    const { root } = await render(
+      '<div><mds-emoji style="width: 100px; height: 100px"></mds-emoji></div>',
+    );
+    const emoji = root.querySelector('mds-emoji')!;
+    await vi.waitFor(() => expect(emoji).toHaveAttribute('hydrated'));
+
+    emoji.remove();
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    root.appendChild(emoji);
+    await emoji.startFollowMouse();
+    const rect = emoji.getBoundingClientRect();
+    window.dispatchEvent(
+      new MouseEvent('mousemove', {
+        clientX: rect.left + rect.width / 2 + 2000,
+        clientY: rect.top + rect.height / 2,
+      }),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    const rotateY = Number(/rotateY\((-?[\d.]+)deg\)/.exec(emoji.style.transform)?.[1] ?? 0);
+    expect(rotateY).toBeGreaterThan(8);
+  });
 });

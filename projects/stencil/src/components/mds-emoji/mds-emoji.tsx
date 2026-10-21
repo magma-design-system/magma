@@ -73,6 +73,9 @@ export class MdsEmoji {
 
   private currentRotateX: number = 0;
   private currentRotateY: number = 0;
+  // Whether the values below come from the computed style. They are read lazily
+  // by rotate until it is available: see updateCSSCustomProps.
+  private cssCustomPropsRead: boolean = false;
   private expressionAngleMax: number = 16; // massimo angolo di rotazione della emoji
   private expressionFollowMouseHeadDuration: number = 0.3; // durata dell'animazione di rotazione della testa quando segue il mouse
   private expressionFollowMouseTraitsDuration: number = 0.2; // durata dell'animazione di rotazione degli occhi e della bocca quando segue il mouse
@@ -95,15 +98,26 @@ export class MdsEmoji {
 
   private svgRootEl: SVGElement;
 
+  // A move disconnects the host and connects it again, while componentDidLoad runs
+  // once: the pointer listener follows the connection, so a moved emoji still hears it.
+  connectedCallback(): void {
+    if (typeof window === 'undefined') return;
+    window.addEventListener('mousemove', this.handleFollowMouse);
+  }
+
   componentDidLoad(): void {
     if (typeof window === 'undefined') return;
     this.updateCSSCustomProps();
-    window.addEventListener('mousemove', this.handleFollowMouse);
     this.checkNameChanged(this.name);
   }
 
   disconnectedCallback(): void {
     if (typeof window === 'undefined') return;
+    // In the lazy build the instance can hear of a disconnect after the host is back on
+    // the page. GSAP causes one: to read the transform of a host that is not drawn (a
+    // slotted emoji before its slot is rendered) it appends it to <html> for a moment
+    // and puts it back. The emoji is still mounted then, nothing to tear down.
+    if (this.host.isConnected) return;
     window.removeEventListener('mousemove', this.handleFollowMouse);
     this.isThinking = false;
     this.isBlinking = false;
@@ -286,15 +300,27 @@ export class MdsEmoji {
   private readonly updateCSSCustomProps = (): void => {
     if (typeof window === 'undefined') return;
     const elementStyles = window.getComputedStyle(this.host);
+    // Stencil loads children before their parents, so a slotted emoji reaches
+    // componentDidLoad while its host's shadow DOM has not rendered the slot yet.
+    // Outside the flat tree the computed style is empty, every value fell back and
+    // the durations became 1000 seconds: the head took minutes to follow the
+    // pointer. Keep the current values and let rotate read them again later.
+    if (elementStyles.display === '') {
+      this.cssCustomPropsRead = false;
+      return;
+    }
+    this.cssCustomPropsRead = true;
     this.expressionAngleMax = cssRotationToNumber(
       elementStyles.getPropertyValue('--mds-emoji-expression-max-rotation'),
       16,
     );
     this.expressionFollowMouseHeadDuration = cssDurationToSeconds(
       elementStyles.getPropertyValue('--mds-emoji-expression-follow-mouse-head-duration'),
+      0.3,
     );
     this.expressionFollowMouseTraitsDuration = cssDurationToSeconds(
       elementStyles.getPropertyValue('--mds-emoji-expression-follow-mouse-traits-duration'),
+      0.2,
     );
     this.headOffset = cssSizeToNumber(elementStyles.getPropertyValue('--mds-emoji-offset-head'), 1);
     this.eyesOffset = cssSizeToNumber(elementStyles.getPropertyValue('--mds-emoji-offset-eyes'), 1);
@@ -987,6 +1013,7 @@ export class MdsEmoji {
   };
 
   private rotate = (percentX: number, percentY: number, immediate: boolean = false): void => {
+    if (!this.cssCustomPropsRead) this.updateCSSCustomProps();
     const ease = 'power1.out';
     // The traits can be put in place at once instead of eased there: an expression
     // about to take the face over owns them from this very frame, and a tween still
@@ -1040,6 +1067,9 @@ export class MdsEmoji {
       transformOrigin: '50% 50%',
       duration: this.expressionFollowMouseHeadDuration,
       ease,
+      // A newer pose replaces the previous one: without it a slower tween still
+      // running kept writing its own angles once the newer one had finished.
+      overwrite: 'auto',
     });
 
     if (this.eyesEl) {
