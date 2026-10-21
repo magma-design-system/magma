@@ -79,10 +79,13 @@
   align-items: flex-start;
   display: inline-flex;
   gap: --spacing(200);
+  position: relative;
 }
 
 /* visually hidden but focusable: the native input is the control keyboard and screen
-   reader users reach, the labels only draw it and toggle it on click */
+   reader users reach, the labels only draw it and toggle it on click. The host is its
+   containing block: positioned by a farther ancestor it sat at the unscrolled place of a switch
+   in a scrolled box, and the click, which focuses it, scrolled the page there (#1050) */
 
 .field {
   height: 0;
@@ -193,8 +196,7 @@
   justify-content: center;
   transition-duration: var(--duration-200);
   transition-property:
-    background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
-    width;
+    background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding, width;
   transition-timing-function: var(--ease-linear);
   width: var(--mds-input-switch-toggle-size);
 }

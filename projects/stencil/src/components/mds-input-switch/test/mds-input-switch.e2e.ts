@@ -480,3 +480,56 @@ describe('in a disabled fieldset', () => {
     expect(new FormData(root).get('news')).toBe('yes');
   });
 });
+
+// The hidden native input is positioned with no inset, and the host is not: the input sits where
+// the nearest positioned ancestor puts it, which may be outside the scroll box of the switch, at
+// the unscrolled place of the control. A click on the label focuses it, and the browser scrolled
+// the page to reveal that phantom spot: the switch left the viewport (#1050)
+describe('in a scrolled box', () => {
+  afterEach(() => window.scrollTo(0, 0));
+
+  const inView = (element: Element): boolean => {
+    const { top, bottom } = element.getBoundingClientRect();
+    return top >= 0 && bottom <= window.innerHeight;
+  };
+
+  /** A switch at the end of a box scrolled to its end, in a page taller than the viewport. */
+  const setupScrolled = async () => {
+    const { root, waitForChanges } = await render<HTMLElement>(
+      '<div>' +
+        '<div style="position: relative">' +
+        '<div class="box" style="height: 200px; overflow-y: auto">' +
+        '<div style="height: 1500px"></div>' +
+        '<mds-input-switch type="checkbox">Click me</mds-input-switch>' +
+        '</div>' +
+        '</div>' +
+        '<div style="height: 3000px"></div>' +
+        '</div>',
+    );
+    const box = root.querySelector<HTMLElement>('.box')!;
+    const host = root.querySelector('mds-input-switch')!;
+    box.scrollTop = box.scrollHeight;
+    expect(inView(host)).toBe(true);
+    return { host, waitForChanges, pageScroll: window.scrollY };
+  };
+
+  it('toggles on a click without scrolling the page', async () => {
+    const { host, waitForChanges, pageScroll } = await setupScrolled();
+
+    await clickSwitch(host);
+    await waitForChanges();
+
+    expect(host).toHaveAttribute('checked');
+    expect(window.scrollY).toBe(pageScroll);
+    expect(inView(host)).toBe(true);
+  });
+
+  it('takes the focus without scrolling the page', async () => {
+    const { host, pageScroll } = await setupScrolled();
+
+    host.shadowRoot!.querySelector('input')!.focus();
+
+    expect(window.scrollY).toBe(pageScroll);
+    expect(inView(host)).toBe(true);
+  });
+});
