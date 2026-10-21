@@ -7,8 +7,8 @@
  */
 
 :host {
-  --mds-pref-mode-overlay-fadeout-duration: 200ms;
-  --mds-pref-mode-overlay-show-duration: 300ms;
+  --mds-pref-mode-overlay-fadeout-duration: var(--duration-200);
+  --mds-pref-mode-overlay-show-duration: var(--duration-300);
   --mds-pref-mode-overlay-z-index: var(--magma-theme-overlay-z-index);
 
   display: grid;

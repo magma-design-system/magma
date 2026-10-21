@@ -186,7 +186,7 @@
       'media header'
       'media content'
       'media footer';
-    grid-template-columns: minmax(240px, 1fr) 2fr;
+    grid-template-columns: minmax(--spacing(6000), 1fr) 2fr;
     grid-template-rows:
       min-content
       1fr
@@ -198,7 +198,7 @@
       'media header'
       'media content'
       'media content';
-    grid-template-columns: minmax(240px, 1fr) 2fr;
+    grid-template-columns: minmax(--spacing(6000), 1fr) 2fr;
     grid-template-rows:
       min-content
       1fr
@@ -209,7 +209,7 @@
     grid-template-areas:
       'media header'
       'media footer';
-    grid-template-columns: minmax(240px, 1fr) 2fr;
+    grid-template-columns: minmax(--spacing(6000), 1fr) 2fr;
     grid-template-rows:
       min-content
       1fr;
@@ -219,7 +219,7 @@
     grid-template-areas:
       'media content'
       'media footer';
-    grid-template-columns: minmax(240px, 1fr) 2fr;
+    grid-template-columns: minmax(--spacing(6000), 1fr) 2fr;
     grid-template-rows:
       1fr
       min-content;
@@ -227,7 +227,7 @@
 
   .layout--cm:not(.layout--disabled) {
     grid-template-areas: 'media content';
-    grid-template-columns: minmax(240px, 1fr) 2fr;
+    grid-template-columns: minmax(--spacing(6000), 1fr) 2fr;
     grid-template-rows:
       1fr
       min-content;

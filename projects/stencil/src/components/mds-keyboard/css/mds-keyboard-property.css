@@ -83,6 +83,6 @@
 
 @property --mds-keyboard-spinner-duration {
   inherits: true;
-  initial-value: 1s;
+  initial-value: var(--duration-1000);
   syntax: '<time>';
 }

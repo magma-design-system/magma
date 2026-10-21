@@ -23,13 +23,13 @@
 
 @property --mds-notification-dot-padding {
   inherits: true;
-  initial-value: 6px;
+  initial-value: --spacing(150);
   syntax: '<length>';
 }
 
 @property --mds-notification-min-width {
   inherits: true;
-  initial-value: 20px;
+  initial-value: --spacing(500);
   syntax: '<length>';
 }
 
@@ -41,25 +41,25 @@
 
 @property --mds-notification-ring-size {
   inherits: true;
-  initial-value: 2px;
+  initial-value: --spacing(50);
   syntax: '<length>';
 }
 
 @property --mds-notification-size {
   inherits: true;
-  initial-value: 20px;
+  initial-value: --spacing(500);
   syntax: '<length>';
 }
 
 @property --mds-notification-transition-duration {
   inherits: true;
-  initial-value: 200ms;
+  initial-value: var(--duration-200);
   syntax: '<time>';
 }
 
 @property --mds-notification-translate {
   inherits: true;
-  initial-value: translate( calc(20px / -1.75), calc(20px / -2) );
+  initial-value: translate( calc(--spacing(500) / -1.75), calc(--spacing(500) / -2) );
   syntax: '<transform-function>';
 }
 

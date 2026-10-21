@@ -29,7 +29,7 @@
 
 @property --mds-note-fold-size {
   inherits: true;
-  initial-value: 40px;
+  initial-value: --spacing(1000);
   syntax: '<length>';
 }
 

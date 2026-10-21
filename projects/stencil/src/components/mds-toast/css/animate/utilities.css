@@ -10,7 +10,7 @@
 @utility animate-outro {
   @apply ease-in-cubic;
 
-  transition-duration: var(--private-toast-transition-duration, var(--mds-toast-duration, 300ms));
+  transition-duration: var(--private-toast-transition-duration, var(--mds-toast-duration, var(--duration-300)));
   transition-property:
     background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
     transform, visibility, width;

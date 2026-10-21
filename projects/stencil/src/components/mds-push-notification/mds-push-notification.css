@@ -27,9 +27,9 @@
 :host {
   --mds-push-notification-fadeout-delay: 0s;
   --mds-push-notification-gap: --spacing(200);
-  --mds-push-notification-items-intro-delay: 300ms;
+  --mds-push-notification-items-intro-delay: var(--duration-300);
   --mds-push-notification-items-outro-delay: 0ms;
-  --mds-push-notification-items-duration: 300ms;
+  --mds-push-notification-items-duration: var(--duration-300);
   --mds-push-notification-items-gap: var(--mds-push-notification-gap);
   --mds-push-notification-items-timing-function: var(--ease-in-out-quint);
   --mds-push-notification-background: linear-gradient(
@@ -48,7 +48,7 @@
   display: flex;
   flex-direction: column;
   gap: --spacing(200);
-  max-width: 360px;
+  max-width: --spacing(9000);
   min-width: --spacing(7200);
   overflow-x: hidden;
   padding: --spacing(400);

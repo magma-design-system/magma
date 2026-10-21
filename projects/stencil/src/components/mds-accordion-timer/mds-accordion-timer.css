@@ -12,7 +12,7 @@
   --mds-accordion-timer-progress-bar-color: rgb(var(--magma-text-muted));
   --mds-accordion-timer-progress-bar-background: rgb(var(--magma-wash-strong));
   --mds-accordion-timer-progress-bar-thickness: --spacing(100);
-  --mds-accordion-timer-duration: 500ms;
+  --mds-accordion-timer-duration: var(--duration-500);
 
   display: block;
 }

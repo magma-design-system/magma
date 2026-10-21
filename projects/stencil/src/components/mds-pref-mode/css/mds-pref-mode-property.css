@@ -11,13 +11,13 @@
 
 @property --mds-pref-mode-overlay-fadeout-duration {
   inherits: true;
-  initial-value: 200ms;
+  initial-value: var(--duration-200);
   syntax: '<time>';
 }
 
 @property --mds-pref-mode-overlay-show-duration {
   inherits: true;
-  initial-value: 300ms;
+  initial-value: var(--duration-300);
   syntax: '<time>';
 }
 

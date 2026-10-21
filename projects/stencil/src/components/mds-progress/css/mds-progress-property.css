@@ -23,6 +23,8 @@
 
 @property --mds-progress-duration {
   inherits: true;
+
+  /* stylelint-disable-next-line magma/token-values -- 750ms no --duration-* step says it */
   initial-value: 750ms;
   syntax: '<time>';
 }

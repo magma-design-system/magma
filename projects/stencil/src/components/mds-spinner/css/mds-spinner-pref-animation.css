@@ -8,12 +8,16 @@
  * --mds-spinner-duration set from outside (mds-button sets one) no longer cancels it. */
 
 :host([pref-animation='reduce']) {
+
+  /* stylelint-disable-next-line magma/token-values -- 8s, the slowed turn above: no --duration-* step says it */
   --private-spinner-duration: 8s;
 }
 
 @media (prefers-reduced-motion: reduce) {
   :host([pref-animation='system']),
   :host(:not([pref-animation])) {
+
+    /* stylelint-disable-next-line magma/token-values -- 8s, the slowed turn above: no --duration-* step says it */
     --private-spinner-duration: 8s;
   }
 }

@@ -11,7 +11,7 @@
   height: auto;
   pointer-events: none;
   position: absolute;
-  transition-duration: 500ms;
+  transition-duration: var(--duration-500);
   transition-property: transform;
   transition-timing-function: var(--ease-out-expo);
   width: var(--size);

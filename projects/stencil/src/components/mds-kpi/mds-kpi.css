@@ -18,5 +18,5 @@
 
   display: grid;
   gap: --spacing(400);
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(--spacing(4500), 1fr));
 }

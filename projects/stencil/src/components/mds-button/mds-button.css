@@ -21,11 +21,13 @@
  */
 
 :host {
+
+  /* stylelint-disable-next-line magma/token-values -- 725ms, one turn of the await spinner as in mds-spinner, no --duration-* step says it */
   --mds-button-await-duration: 0.725s;
   --mds-button-transition-duration: var(--duration-300);
   --private-button-transition-duration: var(--mds-button-transition-duration);
   --mds-button-border-hover-opacity: 0.75;
-  --mds-button-border-tone-outline-hover-width: 3px;
+  --mds-button-border-tone-outline-hover-width: --spacing(75);
   --mds-button-border-tone-outline-opacity: 0.3;
   --mds-button-border-tone-strong-hover-width: --spacing(50);
   --mds-button-border-tone-weak-hover-width: --spacing(50);

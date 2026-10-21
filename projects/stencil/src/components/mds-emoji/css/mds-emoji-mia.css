@@ -16,6 +16,8 @@
   --mds-emoji-mia-mouth-color: rgb(var(--magma-accent-ai-emphasis));
   --mds-emoji-offset-eyes: 1px;
   --mds-emoji-offset-gadget: 1px;
+
+  /* stylelint-disable-next-line magma/token-values -- read by mds-emoji.tsx through cssSizeToNumber, which parses a px literal, not the calc() of --spacing() */
   --mds-emoji-offset-hands: 2px;
   --mds-emoji-offset-head: 0;
   --mds-emoji-offset-mouth: 1px;

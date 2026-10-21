@@ -71,7 +71,7 @@
   --mds-keyboard-key-illumination-light-opacity: 0.5;
   --mds-keyboard-key-illumination-shadow: var(--shadow-sharp);
   --mds-keyboard-padding: --spacing(200);
-  --mds-keyboard-spinner-duration: 1s;
+  --mds-keyboard-spinner-duration: var(--duration-1000);
 
   /* the tray and the keys are washes of the active theme, which a named theme retints: they were
      porcelain steps, the family of the cool theme, under every theme (#828) */
@@ -93,7 +93,7 @@
     var(--mds-keyboard-padding)
     calc(var(--mds-keyboard-illumination-dark-size) + var(--mds-keyboard-padding))
     var(--mds-keyboard-padding);
-  transition-duration: 200ms;
+  transition-duration: var(--duration-200);
   transition-property: background-color;
   transition-timing-function: var(--ease-out-quad);
   user-select: none;

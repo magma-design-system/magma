@@ -25,7 +25,7 @@
 */
 
 :host {
-  --mds-push-notification-item-duration: 300ms;
+  --mds-push-notification-item-duration: var(--duration-300);
   --private-push-notification-item-duration: var(--mds-push-notification-item-duration);
   --mds-push-notification-item-icon-background-color: transparent;
   --mds-push-notification-item-icon-color: rgb(var(--magma-text-subtle));

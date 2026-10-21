@@ -18,6 +18,8 @@
 :host {
   --mds-stepper-bar-item-header-gap: var(--mds-stepper-bar-gap, --spacing(50));
   --mds-stepper-bar-item-color: rgb(var(--magma-text-muted));
+
+  /* stylelint-disable-next-line magma/token-values -- 250ms no --duration-* step says it */
   --mds-stepper-bar-item-duration: 250ms;
   --private-stepper-bar-item-duaration: var(--mds-stepper-bar-item-duration);
   --mds-stepper-bar-item-transition-duration: var(--duration-200);
@@ -31,7 +33,7 @@
   --mds-stepper-bar-item-icon-color-done: rgb(var(--magma-success-on-emphasis));
   --mds-stepper-bar-item-icon-color-current: rgb(var(--magma-text-on-emphasis));
   --mds-stepper-bar-item-icon-color: rgb(var(--magma-text-subtle));
-  --mds-stepper-bar-item-min-width: 180px;
+  --mds-stepper-bar-item-min-width: --spacing(4500);
   --mds-stepper-bar-item-progress-background: rgb(var(--magma-wash-strong));
   --mds-stepper-bar-item-progress-color: rgb(var(--magma-success-emphasis));
   --mds-stepper-bar-item-progress-thickness: --spacing(200);

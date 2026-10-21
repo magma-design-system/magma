@@ -22,7 +22,7 @@
     --mds-accordion-timer-progress-bar-thickness,
     --spacing(100)
   );
-  --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, 500ms);
+  --mds-accordion-timer-item-duration: var(--mds-accordion-timer-duration, var(--duration-500));
   --private-accordion-timer-item-duration: var(--mds-accordion-timer-item-duration);
 
   color: var(--mds-accordion-timer-item-color);

@@ -37,7 +37,7 @@
   --mds-modal-custom-window-distance: --spacing(600);
   --mds-modal-overlay-color: var(--magma-overlay-color);
   --mds-modal-overlay-opacity: var(--magma-overlay-opacity);
-  --mds-modal-transition-duration: 500ms;
+  --mds-modal-transition-duration: var(--duration-500);
   --mds-modal-transition-timing-function: var(
     --mds-modal-transition-timing-funciton,
     var(--ease-in-out-quint)
@@ -50,7 +50,7 @@
   --mds-modal-window-radius: 0;
   --mds-modal-window-shadow: var(--shadow-2xl);
   --mds-modal-window-max-width: 33%;
-  --mds-modal-window-min-width: 400px;
+  --mds-modal-window-min-width: --spacing(10000);
   --mds-modal-z-index: var(--magma-modal-z-index);
 
   /* private */
@@ -103,7 +103,7 @@
    * nothing can scroll the dialog. */
   overflow: clip;
   padding: 0;
-  perspective: 600px;
+  perspective: --spacing(15000);
   position: fixed;
   transition-behavior: allow-discrete;
   transition-duration: var(--private-modal-transition-duration);

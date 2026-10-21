@@ -39,14 +39,16 @@
   --mds-radial-menu-angle-start: 0deg;
   --mds-radial-menu-angle-end: 360deg;
   --mds-radial-menu-context-menu-z-index: var(--magma-context-menu-z-index);
+
+  /* stylelint-disable-next-line magma/token-values -- 10ms, the stagger between the items, no --duration-* step says it */
   --mds-radial-menu-delay: 0.01s;
   --mds-radial-menu-direction: -1;
   --mds-radial-menu-disc-background: rgb(var(--magma-surface-overlay) / 0.5);
-  --mds-radial-menu-disc-filter: blur(8px);
+  --mds-radial-menu-disc-filter: blur(--spacing(200));
   --mds-radial-menu-disc-shadow: var(--shadow-lg-sharp);
   --mds-radial-menu-disc-size: calc(var(--mds-radial-menu-radius) * 2);
-  --mds-radial-menu-radius: 5rem;
-  --mds-radial-menu-transition-duration: 500ms;
+  --mds-radial-menu-radius: --spacing(2000);
+  --mds-radial-menu-transition-duration: var(--duration-500);
   --mds-radial-menu-transition-timing-function: var(--ease-out-expo);
 
   /* private */

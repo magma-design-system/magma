@@ -36,7 +36,7 @@
   border-radius: var(--magma-radius-full);
   display: flex;
   flex-shrink: 1;
-  gap: 2px;
+  gap: --spacing(50);
   margin-inline: --spacing(200);
   overflow: auto;
   padding: --spacing(200);

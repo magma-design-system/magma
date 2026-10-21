@@ -10,7 +10,7 @@
   --mds-keyboard-color: rgb(var(--magma-text-default));
   --mds-keyboard-illumination-dark-opacity: 0.5;
   --mds-keyboard-illumination-light-opacity: 0.15;
-  --mds-keyboard-illumination-shadow: 0 0 3px 0 rgb(255 255 255 / 0.5);
+  --mds-keyboard-illumination-shadow: 0 0 --spacing(75) 0 rgb(255 255 255 / 0.5);
   --mds-keyboard-key-background: rgb(var(--magma-wash-strong));
   --mds-keyboard-key-illumination-dark-opacity: 0.5;
   --mds-keyboard-key-illumination-light-opacity: 0.15;
@@ -24,7 +24,7 @@
     --mds-keyboard-color: rgb(var(--magma-text-default));
     --mds-keyboard-illumination-dark-opacity: 0.5;
     --mds-keyboard-illumination-light-opacity: 0.15;
-    --mds-keyboard-illumination-shadow: 0 0 3px 0 rgb(255 255 255 / 0.5);
+    --mds-keyboard-illumination-shadow: 0 0 --spacing(75) 0 rgb(255 255 255 / 0.5);
     --mds-keyboard-key-background: rgb(var(--magma-wash-strong));
     --mds-keyboard-key-illumination-dark-opacity: 0.5;
     --mds-keyboard-key-illumination-light-opacity: 0.15;

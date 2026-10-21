@@ -30,8 +30,8 @@
   --mds-input-select-variant-color-rgb: var(--magma-text-default);
   --mds-input-select-ring: 0 0 0 1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1);
   --mds-input-select-shadow:
-    0 1px 3px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
-    0 1px 2px 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
+    0 1px --spacing(75) 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
+    0 1px --spacing(50) 0 rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
   --mds-input-select-arrow-icon-background-color: var(
     --mds-input-select-arrow-icon-blur-background-color
   );
@@ -82,8 +82,8 @@
 :host(:focus-within) {
   --mds-input-select-variant-color-rgb: var(--magma-accent-fg);
   --mds-input-select-shadow:
-    0 4px 6px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
-    0 2px 4px -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
+    0 --spacing(100) --spacing(150) -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.1),
+    0 --spacing(50) --spacing(100) -1px rgb(var(--mds-input-select-variant-color-rgb) / 0.06);
   --mds-input-select-arrow-icon-background-color: var(
     --mds-input-select-arrow-icon-hover-background-color
   );
@@ -98,7 +98,7 @@
 
 :host(:hover) .input,
 :host(:focus-within) .input {
-  --mds-input-select-ring: 0 0 0 3px rgb(var(--mds-input-select-variant-color-rgb) / 1);
+  --mds-input-select-ring: 0 0 0 --spacing(75) rgb(var(--mds-input-select-variant-color-rgb) / 1);
 }
 
 .input {
