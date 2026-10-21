@@ -468,6 +468,7 @@ mds-entity slot (default)
 mds-entity slot action
 mds-entity slot detail
 mds-entity part avatar
+mds-entity part infos
 mds-entity part spinner
 mds-entity css --mds-entity-background
 mds-entity css --mds-entity-color

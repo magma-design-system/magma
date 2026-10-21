@@ -27,6 +27,7 @@ import {
   fileTier,
   manifestReachesConsumers,
   prTier,
+  releaseCommitScope,
   renderReport,
   requiredBump,
   semverOk,
@@ -86,10 +87,7 @@ const changes =
     ? waiveCompatible(apiChanges(before, after), compatibleMembers(commits))
     : null;
 
-/* the "commit-scope" of the {"name": "magma", ...} object of the PACKAGES list */
-const scope = /"name":\s*"magma"[\s\S]*?"commit-scope":\s*"([^"]+)"/.exec(
-  readFileSync(join(REPO, RELEASE_WORKFLOW), 'utf8'),
-)?.[1];
+const scope = releaseCommitScope(readFileSync(join(REPO, RELEASE_WORKFLOW), 'utf8'), 'magma');
 if (!scope) {
   console.error(`no commit-scope of magma in ${RELEASE_WORKFLOW}`);
   process.exit(2);
