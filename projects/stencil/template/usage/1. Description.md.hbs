@@ -6,20 +6,21 @@ Purpose: explain WHAT this component is and what each prop MEANS.
          The reader is an AI agent or a developer deciding whether to use it.
 
 Companion docs to read first (do not re-derive their content here):
-  - docs/COMPONENTS.md       - the usage/ contract and the cross-cutting
-                               variant/tone/size ladders shared across components.
-  - projects/stencil/SPEC.md - registration, naming, events, slots, dictionaries.
+  - docs/agents/conventions.md, variants.md, color.md, anti-patterns.md - the
+                               rules shared by every component, shipped to consumers.
+  - projects/stencil/SPEC.md - "Per-component usage docs": the usage/ contract and
+                               what `npm run check.usage-docs` verifies in CI.
 
 MUST contain (in this exact order):
   1. ONE opening paragraph (1-2 sentences, no heading). Reference the tag
      literally - e.g. `<{{componentName}}>` - and place the component in the
      system: what role it plays, what HTML primitive it replaces or extends.
-  2. A "## Semantic Behavior" section: intrinsic, runtime behavior the
+  2. A "#### Semantic Behavior" section: intrinsic, runtime behavior the
      component encapsulates - behaviors that survive across themes, sizes,
      and variants. Bulleted, one behavior per bullet, **bold lead** + one
      sentence. Cover state (`active`, `disabled`, `await`), form association,
      role/ARIA defaults, focus, async handling, etc.
-  3. A "## Properties & Visual Configurations" section: the INTENT of each
+  3. A "#### Properties & Visual Configurations" section: the INTENT of each
      prop whose meaning isn't obvious from its name - when to pick
      `tone="strong"` vs `tone="weak"`, what `variant` families exist, what
      `size` controls. Group sub-options with nested bullets ONLY when each
@@ -32,8 +33,8 @@ MUST NOT contain:
     and `src/type/*.ts` - those are the source of truth).
   - Code examples - those belong in `pattern.md`.
   - Anti-patterns or "don't do X" - those belong in `antipattern.md`.
-  - Generic stencil rules that apply to every component - those live in
-    `projects/stencil/SPEC.md` and `docs/COMPONENTS.md`.
+  - Rules that apply to every component - those live in `docs/agents/`
+    (`conventions.md`, `variants.md`): link them instead.
   - Trivial props (`label`, `name`, `id`, `autoFocus`) whose meaning is
     obvious from the name.
 
@@ -74,8 +75,8 @@ Document the INTENT of each prop - when to pick which value, not the value list.
 
 Group conventions to follow:
   - For `variant`, group values into semantic families (Brand / Status /
-    Luminance / Identity / Label) - see docs/COMPONENTS.md §variant.
-  - For `tone`, name each value's emphasis level - see docs/COMPONENTS.md §tone.
+    Neutral / Identity / Label) - see docs/agents/variants.md.
+  - For `tone`, name each value's emphasis level - see docs/agents/variants.md.
   - For free-form props (strings, numbers), one line is enough.
 
 Skip any prop whose meaning is obvious from its name (`label`, `name`, `id`,

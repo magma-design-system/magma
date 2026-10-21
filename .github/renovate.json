@@ -23,8 +23,13 @@
     },
     {
       "description": "Angular packages",
-      "matchPackageNames": ["/^@angular/", "zone.js", "/^karma", "ng-packagr"],
+      "matchPackageNames": ["/^@angular/", "zone.js", "ng-packagr"],
       "groupName": "Angular",
+      "enabled": false
+    },
+    {
+      "description": "Node is updated by hand (.nvmrc, engines), never by Renovate",
+      "matchDepNames": ["node"],
       "enabled": false
     },
     {
@@ -62,6 +67,11 @@
       "description": "Babel",
       "groupName": "babel",
       "matchPackageNames": ["/^@babel/"]
+    },
+    {
+      "description": "TypeScript and typescript-eslint always update together: typescript-eslint peers on a TypeScript range",
+      "groupName": "typescript",
+      "matchPackageNames": ["typescript", "typescript-eslint", "/^@typescript-eslint/"]
     }
   ]
 }

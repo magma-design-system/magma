@@ -2,6 +2,7 @@ import { h } from '@stencil/core';
 
 import { MdsInputOtpInterface } from '../mds-input-otp';
 import { useState } from 'react';
+import { expect } from 'storybook/test';
 
 export default {
   title: 'Form / OTP',
@@ -13,6 +14,10 @@ export default {
     autosubmit: {
       type: { name: 'boolean' },
       description: 'Automatically submits the form when the OTP code is complete',
+    },
+    disabled: {
+      type: { name: 'boolean' },
+      description: 'Disables every cell: the code cannot be changed and is left out of the form',
     },
   },
 };
@@ -119,6 +124,11 @@ export const FormIntegration = {
   args: {
     name: 'mds-input-otp',
     autosubmit: false,
+  },
+  // the args set to false reach the elements through the spread, as the controls do
+  play: async ({ canvasElement }) => {
+    expect(canvasElement.querySelector('mds-input-otp')).not.toHaveAttribute('autosubmit');
+    expect(canvasElement.querySelector('mds-button')).not.toBeDisabled();
   },
 };
 

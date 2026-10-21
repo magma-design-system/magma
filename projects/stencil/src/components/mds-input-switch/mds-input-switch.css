@@ -97,7 +97,8 @@
   @apply focus-bounce;
 
   align-items: baseline;
-  border-radius: var(--radius);
+  border-radius: var(--magma-radius-3xs);
+  corner-shape: var(--magma-corner-shape);
   cursor: pointer;
   display: flex;
   position: relative;
@@ -144,7 +145,7 @@
   @apply focus-bounce;
 
   align-self: stretch;
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   box-sizing: border-box;
   display: flex;
   flex-shrink: 0;
@@ -158,7 +159,7 @@
 
 .switch {
   background-color: var(--mds-input-switch-box-color-enabled-unchecked);
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   box-sizing: border-box;
   cursor: pointer;
   display: inline-flex;
@@ -169,28 +170,31 @@
   transition-property:
     background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
     transform, width;
-  transition-timing-function: var(--ease-in-out);
+  transition-timing-function: var(--ease-out-sine);
   width: var(--mds-input-switch-toggle-container-size);
 }
+
+/* The knob starts in the unchecked colour: it used to take the checked one until the first
+   change, because only the rule of a toggled switch (there to keep the uncheck animation from
+   running on load) painted it unchecked. In light the two are near (white and wash-soft); in
+   dark a switch that was never touched showed the knob of a checked one. */
 
 .switch-toggle {
   align-items: center;
   animation-duration: calc(var(--mds-input-switch-duration) * 1.5);
   animation-fill-mode: forwards;
   animation-iteration-count: 1;
-  animation-name: none;
-  animation-play-state: paused;
   animation-timing-function: var(--mds-input-switch-animation-timing-function);
-  background-color: var(--mds-input-switch-toggle-color-enabled-checked);
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow);
+  background-color: var(--mds-input-switch-toggle-color-enabled-unchecked);
+  border-radius: var(--magma-radius-full);
+  box-shadow: var(--shadow-sm);
   display: flex;
   height: var(--mds-input-switch-toggle-size);
   justify-content: center;
   transition-duration: var(--duration-200);
   transition-property:
     background-color, border-color, box-shadow, color, fill, height, margin, opacity, padding,
-    transform, width;
+    width;
   transition-timing-function: var(--ease-linear);
   width: var(--mds-input-switch-toggle-size);
 }
@@ -200,15 +204,21 @@
 }
 
 .field:checked + .switch-container .switch-toggle {
-  animation-name: check;
-  animation-play-state: initial;
   background-color: var(--mds-input-switch-toggle-color-enabled-checked);
+  transform: translateX(100%);
 }
 
-.field:not(:checked) + .dirty .switch-toggle {
+/* The knob rests in the place of its state, and slides there only on a change of checked. Its
+   place used to be the last frame of the slide, which ran again every time the switch appeared,
+   on load and when shown again after being hidden (#924). The transitions above leave out
+   transform: a transition outranks an animation, and would cut the slide short. */
+
+.field:checked + .switch-container--sliding .switch-toggle {
+  animation-name: check;
+}
+
+.field:not(:checked) + .switch-container--sliding .switch-toggle {
   animation-name: uncheck;
-  animation-play-state: initial;
-  background-color: var(--mds-input-switch-toggle-color-enabled-unchecked);
 }
 
 .field:disabled + .switch-container .switch {

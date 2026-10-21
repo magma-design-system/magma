@@ -22,12 +22,12 @@ The `<mds-radial-menu-item>` web component is a single actionable spoke of the [
 
 #### Properties & Visual Configurations
 
-The shared `variant` / `tone` / `size` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); they are forwarded to the inner `<mds-button>`. Defaults are deliberately distinct from a standalone button: `variant` defaults to `dark` and `tone` to `weak` so items read as secondary spokes against the parent's trigger button (which defaults to the `strong` tone). Set `icon` to the glyph that represents the action - it is the primary content of each item since the label lives only in the `tooltip`. Use `tooltip` both to describe the action on hover and to supply the accessible name; omit it only when the icon is unambiguous and labelled elsewhere. Prefer leaving `size` unset and letting the parent menu drive it for visual consistency across all spokes.
+The shared `variant` / `tone` / `size` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); they are forwarded to the inner `<mds-button>`. Defaults are deliberately distinct from a standalone button: `variant` defaults to `dark` and `tone` to `weak` so items read as secondary spokes against the parent's trigger button (which defaults to the `strong` tone). Set `icon` to the glyph that represents the action - it is the primary content of each item since the label lives only in the `tooltip`. Use `tooltip` both to describe the action on hover and to supply the accessible name; omit it only when the icon is unambiguous and labelled elsewhere. Prefer leaving `size` unset and letting the parent menu drive it for visual consistency across all spokes.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-radial-menu-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-radial-menu-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Item with Icon and Tooltip
 
@@ -97,7 +97,7 @@ Use `variant` to convey the semantic meaning of the action and `tone` to control
 
 #### Item Without a Tooltip (Unambiguous Icon)
 
-Omit `tooltip` only when the icon is self-evident in context and the action is labelled elsewhere (for example, via a screen-reader landmark). Without `tooltip`, the inner button has no accessible name - reserve this for cases where the icon is genuinely unambiguous.
+Omit `tooltip` only when the icon is self-evident in context and the action is labelled elsewhere (for example, via a screen-reader landmark). Without `tooltip`, the inner button's accessible name falls back to the icon name (`add`), which names the icon, not the action - reserve this for cases where the icon is genuinely unambiguous.
 
 ```html
 <mds-radial-menu opened>
@@ -120,17 +120,17 @@ mds-radial-menu-item {
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-radial-menu-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-radial-menu-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `<mds-radial-menu>`
 
 `<mds-radial-menu-item>` is a compound child; it relies on its parent to set angular position, size, and open/close animation. Rendering it standalone leaves it permanently hidden and incorrectly positioned.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-radial-menu-item icon="mi/baseline/edit" tooltip="Modifica"></mds-radial-menu-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-radial-menu>
   <mds-radial-menu-item icon="mi/baseline/edit" tooltip="Modifica"></mds-radial-menu-item>
 </mds-radial-menu>
@@ -141,14 +141,14 @@ Common incorrect uses of `<mds-radial-menu-item>`. Each entry pairs the wrong fo
 The parent queries direct slot children (`[slot="item"]`) to assign positions and sizes. An intermediate wrapper breaks parent-child communication and the item never receives its angular placement.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-radial-menu>
   <div>
     <mds-radial-menu-item icon="mi/baseline/share" tooltip="Condividi"></mds-radial-menu-item>
   </div>
 </mds-radial-menu>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-radial-menu>
   <mds-radial-menu-item icon="mi/baseline/share" tooltip="Condividi"></mds-radial-menu-item>
 </mds-radial-menu>
@@ -159,12 +159,12 @@ The parent queries direct slot children (`[slot="item"]`) to assign positions an
 `<mds-radial-menu-item>` has no default slot - any slotted content is ignored. The visible label lives exclusively in the `tooltip` prop.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-radial-menu>
   <mds-radial-menu-item icon="mi/baseline/edit">Modifica</mds-radial-menu-item>
 </mds-radial-menu>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-radial-menu>
   <mds-radial-menu-item icon="mi/baseline/edit" tooltip="Modifica"></mds-radial-menu-item>
 </mds-radial-menu>
@@ -172,15 +172,15 @@ The parent queries direct slot children (`[slot="item"]`) to assign positions an
 
 #### Do Not Omit `tooltip` for an Icon-Only Item Without Another Label
 
-Omitting `tooltip` leaves the inner `<mds-button>` with no accessible name and no hover description. Provide `tooltip` unless the icon's purpose is unambiguous and the action is described by a surrounding landmark or heading.
+Omitting `tooltip` leaves the inner `<mds-button>` with no hover description and an accessible name that falls back to the icon name (`send`), which names the icon, not the action. Provide `tooltip` unless the icon's purpose is unambiguous and the action is described by a surrounding landmark or heading.
 
 ```html
-<!-- 🚫 INCORRECT: no accessible name, no hover hint -->
+<!-- INCORRECT: accessible name is just the icon name, no hover hint -->
 <mds-radial-menu>
   <mds-radial-menu-item icon="mi/baseline/send"></mds-radial-menu-item>
 </mds-radial-menu>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-radial-menu>
   <mds-radial-menu-item icon="mi/baseline/send" tooltip="Invia messaggio"></mds-radial-menu-item>
 </mds-radial-menu>
@@ -188,15 +188,15 @@ Omitting `tooltip` leaves the inner `<mds-button>` with no accessible name and n
 
 #### Do Not Force `size` When the Parent Controls It
 
-`<mds-radial-menu>` overrides each item's `size` to match its own `size` prop. Setting `size` on the item is redundant and can leave a stale value if the parent's `size` later changes.
+`<mds-radial-menu>` overrides each item's `size` to match its own `size` prop. Setting `size` on the item is redundant: the parent overwrites it when it loads and whenever its own `size` changes.
 
 ```html
-<!-- 🚫 INCORRECT: size will be overridden by the parent anyway -->
+<!-- INCORRECT: size will be overridden by the parent anyway -->
 <mds-radial-menu size="md">
   <mds-radial-menu-item icon="mi/baseline/edit" tooltip="Modifica" size="xl"></mds-radial-menu-item>
 </mds-radial-menu>
 
-<!-- ✅ CORRECT: let the parent drive size for all spokes -->
+<!-- CORRECT: let the parent drive size for all spokes -->
 <mds-radial-menu size="md">
   <mds-radial-menu-item icon="mi/baseline/edit" tooltip="Modifica"></mds-radial-menu-item>
 </mds-radial-menu>
@@ -207,12 +207,12 @@ Omitting `tooltip` leaves the inner `<mds-button>` with no accessible name and n
 The only supported customization surface is `--mds-radial-menu-item-transition-duration` and `--mds-radial-menu-item-transition-timing-function`. Targeting shadow-internal classes or undocumented `::part()` names couples code to the implementation and breaks on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-radial-menu-item >>> .button {
   border-radius: 0;
 }
 
-/* ✅ CORRECT: use the documented CSS custom properties */
+/* CORRECT: use the documented CSS custom properties */
 mds-radial-menu-item {
   --mds-radial-menu-item-transition-duration: 300ms;
 }

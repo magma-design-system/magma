@@ -5,9 +5,10 @@
  * lives in the design-tokens package (the lower of the two) so both consumers
  * import it DOWNWARD, with no dependency cycle between the packages:
  *  - the styles generator (`../styles/scripts/semantic.ts`) turns it into
- *    `css/semantic.css` (the layer) and `tailwind/semantic.css` (the Tailwind
- *    bridge), both GENERATED and NOT tracked - the layer is defined once here,
- *    in relation, instead of being hand-maintained as CSS;
+ *    `build/css/semantic.css` (the layer), `build/css/themes.css` (the named
+ *    themes) and `build/tailwind/semantic.css` (the Tailwind bridge), all
+ *    GENERATED and NOT tracked (shipped from styles `dist/`) - the layer is
+ *    defined once here, in relation, instead of being hand-maintained as CSS;
  *  - the design-tokens contrast gate (`scripts/check-contrast.ts`) verifies the
  *    resulting semantic pairs against their APCA targets.
  * The values themselves are design-tokens primitives (`--surface-*`, `--text-*`,
@@ -29,8 +30,7 @@
  * accents, so a theme retints its accents the same way it retints surfaces.
  */
 export type ThemeDef =
-  | string
-  | { surface?: string; accents?: Record<string, string>; scale?: string };
+  string | { surface?: string; accents?: Record<string, string>; scale?: string };
 
 /**
  * A contrast preference level that carries role promotions (spec 9.3). Only `more`
@@ -147,16 +147,16 @@ export interface SemanticConfig {
    */
   washSteps: Record<string, string>;
   /**
-   * Ramp step the shadow ink names (spec 6.1c). A projected shadow is drawn with
-   * the ink extreme of the ACTIVE TINT, so it flips with the mode for free: black
-   * on a light page, white on a dark one - which is what a shadow has to do, since
-   * a pure black shadow is invisible on a dark surface.
+   * Ramp step the shadow ink names in LIGHT (spec 6.1c): the ink extreme of the
+   * active tint, near-black (`5 5 5` on the base tint, `6 5 5` under `warm`). In
+   * dark that step is the light end of the ramp, so the dark block repoints the ink
+   * to the `seed`, pure black: a projected shadow stays dark in both modes (#790).
+   * It used to flip with the step, which on the lifted dark canvas drew a light
+   * halo instead of a shadow.
    *
    * It publishes a COLOUR, not a shadow: the composite `--shadow-*` tokens stay in
    * tokens/cosmetic/box-shadow.json, one layer down, where they cannot reference
-   * this role without inverting the layering. They name the primitive instead, and
-   * the difference is measured at 1/255 - the ink extreme is all but identical in
-   * every tint (step 01 is `5 5 5` on the base tint, `6 5 5` under `warm`).
+   * this role without inverting the layering.
    */
   shadowStep: string;
   /**
@@ -336,23 +336,169 @@ export const scaleStepList = (): string[] =>
 export const scaleFamily = (surface: string, scale?: string): string => scale ?? `tone-${surface}`;
 
 /**
+ * One declaration of the semantic layer, `--<name>: var(--<ref>);`, as data. Every
+ * generated output reads these instead of printing its own: the stylesheets of the
+ * styles package (`scripts/semantic.ts`), the playground theme export and the DTCG
+ * export of this package, so a role cannot point at one primitive in the CSS and at
+ * another in the JSON. Names are written without the leading `--`.
+ */
+export interface SemanticDecl {
+  /** The custom property it declares, e.g. `magma-surface-default`. */
+  name: string;
+  /** The custom property it resolves to, e.g. `magma-tint-default` or `tone-neutral-08`. */
+  ref: string;
+  /** The Tailwind colour name the bridge publishes it as. Set on public roles only. */
+  tw?: string;
+  /** A comment the stylesheet prints on its own line before the declaration. */
+  note?: string;
+  /** Set when the name is kept only for back-compat: says what replaces it. */
+  deprecated?: string;
+  /** What the role is for, one line: required on every public role (see roleDescription). */
+  description?: string;
+}
+
+/*
+  What each public role is for, in one line (#876): the text the DTCG export, the consumption
+  map of the styles package and the editor sheet carry next to the role. Taken from the role
+  tables of docs/agents/color.md, which stays the long form. A role is described by what it
+  is for, never by how it is built. Every public role needs one: semanticModel() fails on a
+  role it cannot describe, so a new role cannot ship bare.
+*/
+
+/** The neutral roles, the inverse pair and the shadow ink, by name without `magma-`. */
+export const roleDescriptions: Record<string, string> = {
+  'surface-sunken': 'Below the page: wells, insets, code blocks, tracks.',
+  'surface-muted': 'Same-plane grouping on the page: zebra rows, a subtle section.',
+  'surface-default': 'The page canvas, the background of the body.',
+  'surface-raised': 'Above the page: cards, panels, sticky headers.',
+  'surface-overlay': 'Floating above everything: modal, dropdown, popover, sheet.',
+  'wash-soft': 'A neutral pill or chip, the least marked.',
+  'wash-base': 'A neutral pill or chip, at its default prominence.',
+  'wash-strong': 'A neutral pill or chip, the most marked.',
+  'shadow-ink': 'The colour of a projected shadow, to compose with your own geometry and alpha.',
+  'text-default': 'Body text, titles and primary data.',
+  'text-muted': 'Secondary text that is still essential, such as an address or a phone number.',
+  'text-subtle': 'Non-essential text only: captions, units, hints.',
+  'text-disabled': 'The labels of disabled controls.',
+  'text-on-emphasis': 'Text and icons on a solid fill.',
+  'border-muted': 'Decorative borders: dividers, the grid of a table.',
+  'border-default': 'Functional outlines: inputs, cards.',
+  'border-strong': 'A border that conveys a state, such as selected.',
+  'border-focus': 'Focus indication; follows the accent.',
+  'neutral-fg': 'Neutral text and icons on a coloured context.',
+  'neutral-border': 'A neutral border on a coloured context.',
+  'surface-inverse': 'A chip that flips with the mode: dark on a light page, light on a dark one.',
+  'surface-inverse-muted': 'The inverse chip, one step quieter.',
+  'on-inverse': 'Text and icons on either inverse surface.',
+  'neutral-emphasis': 'Deprecated: the inverse surface under its old name.',
+  'neutral-on-emphasis': 'Deprecated: the ink on the inverse surface under its old name.',
+};
+
+/**
+ * The roles every status hue publishes, by kind; `<hue>` is the hue (info, danger...). The
+ * hue comes after `the`, never after `a`, so "an info" never reads "a info".
+ */
+export const hueRoleDescriptions: Record<string, string> = {
+  'wash-soft': 'The <hue> background, the least marked.',
+  'wash-base': 'The <hue> background, at its default prominence.',
+  'wash-strong': 'The <hue> background, the most marked: icons only, no essential text.',
+  'text-default': '<Hue> text on the <hue> background.',
+  'text-muted': 'Secondary <hue> text on the <hue> background.',
+  'text-subtle': 'Non-essential <hue> text on the <hue> background.',
+  'text-disabled': 'Disabled <hue> text on the <hue> background.',
+  'border-muted': 'The decorative <hue> border.',
+  'border-default': 'The functional <hue> border.',
+  'border-strong': 'The <hue> border that conveys a state.',
+  emphasis: 'The solid <hue> fill: a solid badge, a button.',
+  'emphasis-hover': 'The solid <hue> fill, hovered.',
+  'emphasis-active': 'The solid <hue> fill, pressed.',
+  'on-emphasis': 'Text and icons on the solid <hue> fill.',
+  surface: 'Shortcut for the <hue> background at its default prominence (wash-base).',
+  fg: 'Shortcut for the default <hue> text (text-default).',
+  border: 'Shortcut for the functional <hue> border (border-default).',
+};
+
+/** The roles every accent publishes, by kind; `<accent>` names the accent. */
+export const accentRoleDescriptions: Record<string, string> = {
+  emphasis: 'The solid fill of <accent>: the primary action.',
+  'emphasis-hover': 'The solid fill of <accent>, hovered.',
+  'emphasis-active': 'The solid fill of <accent>, pressed.',
+  'on-emphasis': 'Text and icons on the solid fill of <accent>.',
+  surface: 'A background tinted with <accent>: a selected row or chip.',
+  'surface-subtle': 'A background tinted with <accent>, lighter.',
+  'surface-hover': 'A background tinted with <accent>, hovered.',
+  fg: 'Text or an icon in <accent> on a neutral surface, such as a link.',
+  border: 'A border tinted with <accent>.',
+};
+
+/** How the accent descriptions name each accent of `semantic.accents`. */
+export const accentNames: Record<string, string> = {
+  accent: 'the brand accent',
+  ai: 'the AI accent',
+};
+
+/** The groups of the layer as the DTCG export names them: `magma.<group>.<role>`. */
+export const semanticGroupDescriptions: Record<string, string> = {
+  surface: 'The backgrounds of the page by elevation, and the inverse chip.',
+  wash: 'Neutral pills and chips, by how marked they are.',
+  shadow: 'The colour of projected shadows.',
+  text: 'Text and icons, by prominence.',
+  border: 'Borders, by prominence, and the focus ring.',
+  neutral: 'Neutral ink and borders on coloured contexts.',
+  on: 'Text and icons on the inverse surfaces.',
+  info: 'The info status: backgrounds, text, borders and fills.',
+  success: 'The success status: backgrounds, text, borders and fills.',
+  warning: 'The warning status: backgrounds, text, borders and fills.',
+  danger: 'The danger status (errors, destructive actions): backgrounds, text, borders and fills.',
+  accent: 'The brand accent: actions and selection.',
+  'accent-ai': 'The AI accent: actions and selection of AI-driven features.',
+  tint: 'Internal pointers of the active theme: not an API, never read outside this layer.',
+};
+
+/**
+ * The description of a public role, by its name without `magma-`: its own entry, else the
+ * entry of its kind for an accent (`accent-<kind>`, `accent-<infix>-<kind>`) or a status hue
+ * (`<hue>-<kind>`). Undefined when nothing describes it.
+ */
+export const roleDescription = (
+  role: string,
+  hues: string[],
+  accents: string[],
+): string | undefined => {
+  if (roleDescriptions[role]) return roleDescriptions[role];
+  for (const accent of accents) {
+    const prefix = accent === 'accent' ? 'accent-' : `accent-${accent}-`;
+    if (!role.startsWith(prefix)) continue;
+    const kind = role.slice(prefix.length);
+    // `accent-ai-surface` also starts with `accent-`: only a kind of the table counts
+    if (accentRoleDescriptions[kind] && accentNames[accent])
+      return accentRoleDescriptions[kind].replace(/<accent>/g, accentNames[accent]);
+  }
+  const hue = hues.find((name) => role.startsWith(`${name}-`));
+  if (hue) {
+    const template = hueRoleDescriptions[role.slice(hue.length + 1)];
+    if (template)
+      return template
+        .replace(/<Hue>/g, hue.charAt(0).toUpperCase() + hue.slice(1))
+        .replace(/<hue>/g, hue);
+  }
+  return undefined;
+};
+
+/** A declaration the way every generated stylesheet prints it. */
+export const cssDecl = ({ name, ref }: SemanticDecl): string => `  --${name}: var(--${ref});`;
+
+/** The `--magma-tint-scale-*` pointers that aim the ramp at one family. */
+export const scaleTintDecls = (family: string): SemanticDecl[] =>
+  scaleStepList().map((step) => ({ name: `magma-tint-scale-${step}`, ref: `${family}-${step}` }));
+
+/**
  * The `--magma-tint-scale-*` lines pointing the ramp at one family. SHARED for the
  * same reason as `accentTintOverride`: the styles generator and the playground theme
  * export must emit byte-identical CSS.
  */
-export const scaleTintOverride = (family: string): string[] =>
-  scaleStepList().map((step) => `  --magma-tint-scale-${step}: var(--${family}-${step});`);
+export const scaleTintOverride = (family: string): string[] => scaleTintDecls(family).map(cssDecl);
 
-/**
- * The `--magma-tint-accent-*` lines that point an accent role at `family` (a
- * variant family): the quintet steps (surface/fg/border/emphasis) plus the
- * interaction states, prefixed per `accentInfix` (general accent = no infix,
- * `ai` = `ai-`). `on-emphasis` is family-independent (the seed) so it is not
- * repointed. SHARED so the styles generator (`scripts/semantic.ts`, both the base
- * layer and each named-theme override) and the playground theme export
- * (`playground/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
- * accent exactly the way the base layer declares it.
- */
 /**
  * The EMPHASIS-band states of `accentStateSteps`, i.e. the ones that describe a
  * solid fill and therefore apply to the colored hues as well as to the accents.
@@ -365,20 +511,36 @@ export const emphasisStateSteps = (): Record<string, string> =>
     Object.entries(semantic.accentStateSteps).filter(([state]) => state.startsWith('emphasis-')),
   );
 
-export const accentTintOverride = (role: string, family: string): string[] => {
+/** The `--magma-tint-accent-*` pointers of `accentTintOverride`, as data. */
+export const accentTintDecls = (role: string, family: string): SemanticDecl[] => {
   const { accentStateSteps } = semantic;
   const hueSteps = { ...semantic.hueSteps, ...semantic.accentSteps };
   const infix = accentInfix(role);
+  const pointer = (key: string, step: string): SemanticDecl => ({
+    name: `magma-tint-accent-${infix}${key}`,
+    ref: `${family}-${step}`,
+  });
   return [
-    `  --magma-tint-accent-${infix}surface: var(--${family}-${hueSteps.surface});`,
-    `  --magma-tint-accent-${infix}fg: var(--${family}-${hueSteps.fg});`,
-    `  --magma-tint-accent-${infix}border: var(--${family}-${hueSteps.border});`,
-    `  --magma-tint-accent-${infix}emphasis: var(--${family}-${hueSteps.emphasis});`,
-    ...Object.entries(accentStateSteps).map(
-      ([state, step]) => `  --magma-tint-accent-${infix}${state}: var(--${family}-${step});`,
-    ),
+    pointer('surface', hueSteps.surface),
+    pointer('fg', hueSteps.fg),
+    pointer('border', hueSteps.border),
+    pointer('emphasis', hueSteps.emphasis),
+    ...Object.entries(accentStateSteps).map(([state, step]) => pointer(state, step)),
   ];
 };
+
+/**
+ * The `--magma-tint-accent-*` lines that point an accent role at `family` (a
+ * variant family): the quintet steps (surface/fg/border/emphasis) plus the
+ * interaction states, prefixed per `accentInfix` (general accent = no infix,
+ * `ai` = `ai-`). `on-emphasis` is family-independent (the seed) so it is not
+ * repointed. SHARED so the styles generator (`scripts/semantic.ts`, both the base
+ * layer and each named-theme override) and the playground theme export
+ * (`playground/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
+ * accent exactly the way the base layer declares it.
+ */
+export const accentTintOverride = (role: string, family: string): string[] =>
+  accentTintDecls(role, family).map(cssDecl);
 
 /**
  * The `--magma-tint-*` lines that promote text + border to a STRONGER same-family
@@ -391,14 +553,21 @@ export const accentTintOverride = (role: string, family: string): string[] => {
  * styles generator emits byte-identical lines for the base layer and for every
  * named theme. Returns [] when the level declares no promotion.
  */
-export const contrastTintOverride = (family: string, level: ContrastLevel = 'more'): string[] => [
-  ...contrastLines(family, level, (axis, role) => `--magma-tint-${axis}-${role}`),
+export const contrastTintDecls = (
+  family: string,
+  level: ContrastLevel = 'more',
+): SemanticDecl[] => [
+  ...contrastDecls(family, level, (axis, role) => `magma-tint-${axis}-${role}`),
   // surfaces are tint pointers too (`--magma-tint-<role>`, no axis infix), and
   // only the tint block carries them: a hue has washes, not a surface ladder
-  ...Object.entries(semantic.contrast?.[level]?.surface ?? {}).map(
-    ([role, target]) => `  --magma-tint-${role}: var(--tone-${family}-${target});`,
-  ),
+  ...Object.entries(semantic.contrast?.[level]?.surface ?? {}).map(([role, target]) => ({
+    name: `magma-tint-${role}`,
+    ref: `tone-${family}-${target}`,
+  })),
 ];
+
+export const contrastTintOverride = (family: string, level: ContrastLevel = 'more'): string[] =>
+  contrastTintDecls(family, level).map(cssDecl);
 
 /**
  * The same promotions for a colored HUE's published roles (spec 9.3 + 6.4).
@@ -412,31 +581,40 @@ export const contrastTintOverride = (family: string, level: ContrastLevel = 'mor
  * NOT theme-scoped, unlike `contrastTintOverride`: a named theme leaves hues
  * alone, so the base block is the only place these can be stated.
  */
+export const hueContrastDecls = (
+  hue: string,
+  roleFamily: string,
+  level: ContrastLevel = 'more',
+): SemanticDecl[] =>
+  contrastDecls(roleFamily, level, (axis, role) => `magma-${hue}-${axis}-${role}`);
+
 export const hueContrastOverride = (
   hue: string,
   roleFamily: string,
   level: ContrastLevel = 'more',
-): string[] => contrastLines(roleFamily, level, (axis, role) => `--magma-${hue}-${axis}-${role}`);
+): string[] => hueContrastDecls(hue, roleFamily, level).map(cssDecl);
 
 /**
  * Shared body of the two overrides above: walk the level's promotion table and
- * emit one line per promoted role, naming the target through `name` so the tint
- * pointers and the hue roles cannot drift apart in what they promote or in the
+ * emit one declaration per promoted role, naming the target through `name` so the
+ * tint pointers and the hue roles cannot drift apart in what they promote or in the
  * order they promote it. Returns [] when the level declares no promotion.
  */
-function contrastLines(
+function contrastDecls(
   family: string,
   level: ContrastLevel,
   name: (axis: 'text' | 'border', role: string) => string,
-): string[] {
+): SemanticDecl[] {
   const promo = semantic.contrast?.[level];
   if (!promo) return [];
   return [
-    ...Object.entries(promo.text ?? {}).map(
-      ([role, stronger]) => `  ${name('text', role)}: var(--text-${family}-${stronger});`,
-    ),
-    ...Object.entries(promo.border ?? {}).map(
-      ([role, stronger]) => `  ${name('border', role)}: var(--border-${family}-${stronger});`,
-    ),
+    ...Object.entries(promo.text ?? {}).map(([role, stronger]) => ({
+      name: name('text', role),
+      ref: `text-${family}-${stronger}`,
+    })),
+    ...Object.entries(promo.border ?? {}).map(([role, stronger]) => ({
+      name: name('border', role),
+      ref: `border-${family}-${stronger}`,
+    })),
   ];
 }

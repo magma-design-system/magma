@@ -1,0 +1,44 @@
+{
+  "families": [
+    {
+      "id": "avatar-gruppo-maggioli",
+      "name": "Gruppo Maggioli",
+      "owner": "gruppo-maggioli",
+      "files": [
+        "avatar-gruppo-maggioli"
+      ]
+    },
+    {
+      "id": "avatar-maggioli-academy",
+      "name": "Maggioli Academy",
+      "owner": "maggioli-academy",
+      "files": [
+        "avatar-maggioli-academy"
+      ]
+    },
+    {
+      "id": "avatar-maggioli-editore",
+      "name": "Maggioli Editore",
+      "owner": "maggioli-editore",
+      "files": [
+        "avatar-maggioli-editore"
+      ]
+    },
+    {
+      "id": "avatar-magma",
+      "name": "Magma",
+      "owner": "magma-design-system",
+      "files": [
+        "avatar-magma"
+      ]
+    },
+    {
+      "id": "avatar-rnd-days",
+      "name": "R&D Days",
+      "owner": "rnd",
+      "files": [
+        "avatar-rnd-days"
+      ]
+    }
+  ]
+}

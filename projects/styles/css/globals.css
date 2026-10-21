@@ -180,6 +180,17 @@
   syntax: '*';
 }
 
+/* The part of its height a corner may take, for the components whose radius is
+ * always past half their height: 0.5 where the browser clamps, less where
+ * corner-shape cannot be drawn (corner.ts). `inherits: true` for the same reason
+ * as the shape: the fallback block declares it on :root. */
+
+@property --magma-corner-cap {
+  inherits: true;
+  initial-value: 0.5;
+  syntax: '<number>';
+}
+
 /* z-index */
 
 @property --magma-header-z-index {

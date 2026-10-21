@@ -1,7 +1,7 @@
 @import './css/mds-price-table-list-item-fouc.css';
 
 /**
- * @prop --mds-price-table-list-item-supported-icon-color-hover: Color of the supported icon in a list item on hover.
+ * @prop --mds-price-table-list-item-supported-icon-color-hover: Color of the supported icon while the pointer is over the list item.
  * @prop --mds-price-table-list-item-supported-icon-color: Default color of the supported icon in a list item.
  * @prop --mds-price-table-list-item-unsupported-icon-color: Default color of the unsupported icon in a list item.
  */
@@ -37,4 +37,8 @@
 
 :host([supported]:not([supported='false'])) .icon {
   fill: var(--mds-price-table-list-item-supported-icon-color);
+}
+
+:host([supported]:not([supported='false']):hover) .icon {
+  fill: var(--mds-price-table-list-item-supported-icon-color-hover);
 }

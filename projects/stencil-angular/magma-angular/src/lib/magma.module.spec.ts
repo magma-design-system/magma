@@ -8,6 +8,7 @@ import { DIRECTIVES, MagmaModule } from '../public-api';
   template: `
     <mds-button [label]="label" [disabled]="disabled">Salva</mds-button>
     <mds-input-switch (mdsInputSwitchChange)="events.push($event)"></mds-input-switch>
+    <mds-button id="attribute" [attr.disabled]="'false'">Invia</mds-button>
   `,
 })
 class HostComponent {
@@ -27,8 +28,8 @@ describe('MagmaModule', () => {
     for (const proxy of DIRECTIVES) {
       const selector = reflectComponentType(proxy as Type<unknown>)?.selector ?? '';
 
-      expect(selector).withContext(proxy.name).toMatch(/^mds-/);
-      expect(customElements.get(selector)).withContext(selector).toBeDefined();
+      expect(selector, proxy.name).toMatch(/^mds-/);
+      expect(customElements.get(selector), selector).toBeDefined();
     }
   });
 
@@ -38,14 +39,25 @@ describe('MagmaModule', () => {
     const button: HTMLMdsButtonElement = fixture.nativeElement.querySelector('mds-button');
 
     expect(button.label).toBe('Salva');
-    expect(button.disabled).toBeFalse();
+    expect(button.disabled).toBe(false);
 
     fixture.componentInstance.label = 'Invia';
     fixture.componentInstance.disabled = true;
     fixture.detectChanges();
 
     expect(button.label).toBe('Invia');
-    expect(button.disabled).toBeTrue();
+    expect(button.disabled).toBe(true);
+  });
+
+  // an attribute binding writes the attribute, which a form-associated element reads as set
+  // whatever its value: the docs tell to bind the input, as above, to turn it off
+  it('turns a form-associated prop on with an attribute binding, "false" included', () => {
+    const fixture = TestBed.createComponent(HostComponent);
+    fixture.detectChanges();
+    const button: HTMLMdsButtonElement = fixture.nativeElement.querySelector('#attribute');
+
+    expect(button.getAttribute('disabled')).toBe('false');
+    expect(button.disabled).toBe(true);
   });
 
   it('delivers the custom element events to the template listeners', () => {

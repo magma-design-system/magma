@@ -3,11 +3,15 @@
  * entry-point packages (magma, magma-react, magma-angular).
  *
  * Single source of truth: docs/agents/ in the monorepo. This script copies the
- * relevant install track plus the shared assets core and usage guide into each
- * package, rewrites the repo-internal links so they resolve (or degrade to plain
- * text) inside node_modules, generates a component catalogue from
- * dist/documentation.json, and emits a version-stamped AGENTS.md entry point carrying
- * the detect-then-ask install procedure.
+ * relevant install track plus the shared fragments (one topic per file, see
+ * SHARED_FRAGMENTS) into each package, rewrites the repo-internal links so they
+ * resolve inside node_modules (rewriteGuideLinks), generates the component
+ * catalogue linking each component's own docs, and emits a version-stamped AGENTS.md
+ * entry point: the detect-then-ask install procedure plus a routing table, so an agent
+ * reads only the fragment it needs.
+ *
+ * The per-component docs the catalogue links (dist/collection/components/<tag>/) are
+ * written after the stencil build by scripts/component-docs.ts.
  *
  * Do not hand-edit the generated files; edit docs/agents/ and re-run this.
  *
@@ -15,6 +19,7 @@
  */
 import fs from 'fs';
 import path from 'path';
+import { COMPONENT_DOCS_DIR, SHARED_FRAGMENTS, rewriteGuideLinks, toAscii } from './agent-docs-lib';
 
 // cwd is the stencil package dir when run via npm script.
 const STENCIL_DIR = process.cwd();
@@ -54,7 +59,7 @@ const TARGETS: Target[] = [
   {
     pkgDir: '../stencil-angular/magma-angular',
     track: 'angular.md',
-    framework: 'Angular (>= 18.2)',
+    framework: 'Angular (>= 20)',
     wrapperPkg: '@maggioli-design-system/magma-angular',
     register:
       "import the standalone Mds* components from '@maggioli-design-system/magma-angular' (they self-register; MagmaModule.forRoot() is deprecated and a no-op)",
@@ -69,34 +74,6 @@ const BANNER = [
   '-->',
   '',
 ].join('\n');
-
-/**
- * Rewrites links that only make sense inside the monorepo so the published copy
- * resolves within the package (or degrades to plain text).
- */
-function rewriteLinks(md: string): string {
-  return (
-    md
-      // cross-project deep links -> friendly plain text (these files are not in node_modules)
-      .replace(/\[`?[^\]]*styles\/SPEC\.md`?\]\([^)]*\)/g, 'the Magma styles guide')
-      .replace(/\[`?[^\]]*stencil\/SPEC\.md`?\]\([^)]*\)/g, 'the Magma component conventions guide')
-      .replace(/\[`?[^\]]*mds-icon\/readme\.md`?\]\([^)]*\)/g, 'the mds-icon readme')
-      // any other repo-internal deep link -> keep the text only
-      .replace(/\[(`?[^\]]+`?)\]\(\.\.\/\.\.\/[^)]*\)/g, '$1')
-      // install entry point SPEC.md -> the package AGENTS.md (one level up from agents/)
-      .replace(/\[`?SPEC\.md`?\]\(SPEC\.md\)/g, '[`AGENTS.md`](../AGENTS.md)')
-      // collapse the "(web-components.md, react.md, angular.md)" group to the single shipped track
-      .replace(
-        /\(\[`?web-components\.md`?\]\([^)]*\),\s*\[`?react\.md`?\]\([^)]*\),\s*\[`?angular\.md`?\]\([^)]*\)\)/g,
-        '([`install.md`](install.md))',
-      )
-      // per-target track filenames -> the single track shipped here
-      .replace(
-        /\[`?(?:web-components|react|angular)\.md`?\]\((?:web-components|react|angular)\.md\)/g,
-        '[`install.md`](install.md)',
-      )
-  );
-}
 
 function buildAgentsMd(target: Target, version: string): string {
   return `${BANNER}# ${target.wrapperPkg} - agent install guide
@@ -116,56 +93,72 @@ Inspect the consumer project before asking anything:
 | Framework | \`package.json\` deps: \`@angular/core\` -> Angular, \`react\`/\`next\` -> React, else vanilla |
 | Magma wrapper installed | presence of \`magma-angular\` / \`magma-react\` / \`magma\` in deps |
 | Bundler / static dir | \`angular.json\` (Angular CLI assets), \`vite.config.*\`, \`next.config.*\` (\`public/\`), webpack |
-| Tailwind + version | \`tailwindcss\` in deps (v3 vs v4 -> different preset) |
+| Tailwind + version | \`tailwindcss\` in deps: v4 -> the CSS imports, v3 -> the JS preset (see agents/assets.md) |
 | SSR | \`@angular/ssr\` / Angular Universal, or Next App Router |
 | Compatible versions | derive from the installed \`@maggioli-design-system/magma\` major (see matrix in install.md) |
+| Editor | a \`.vscode/\` folder -> VS Code; nothing -> ask (step 2) |
 
 ## Step 2 - ask only the gaps
 
 Ask the user only what detection left undecided. Typical questions:
 
-1. **Icons**: use the prebuilt set (\`@maggioli-design-system/svg-icons\`) or do you need
-   **iconsauce** for tree-shaking / custom icons? Most consumers do NOT need iconsauce -
-   Magma already ships resolved SVGs; iconsauce is an internal build dependency. Only
-   add \`@iconsauce/*\` if the user wants their own icon pipeline.
+1. **Icons**: which sets does the app use, and how should they be served? Every slug must
+   be served at \`<mdsIconSvgPath><slug>.svg\`, and each set comes from its own package:
+   Magma ships only \`mgg/\` (\`@maggioli-design-system/svg-icons\`), while \`mi/\` and
+   \`mdi/\` come from \`@material-icons/svg\` and \`@mdi/svg\`, and none of them is a
+   dependency of this package. The routes are in agents/assets.md section 3: **iconsauce**,
+   what Magma uses (it reads the sources and writes only the icons they name), or a copy
+   script that serves the files in the slug layout. Copying the \`svg-icons\` folder as it
+   is renders nothing: its files are not under \`mgg/\`.
 2. **Static assets path**: where are static files served from? This sets \`mdsIconSvgPath\`
    and the SVG copy destination.
 3. **Dark mode / preferences**: needed? If yes, wire the preference classes and components.
 4. Confirm the version row if the installed major is ambiguous.
+5. **Editor**: VS Code? It gets token and class autocomplete through two files in
+   \`.vscode/\` (agents/assets.md section 5); for another editor only the token file applies.
 
 ## Step 3 - execute
 
 1. Install packages and the shared assets - see [\`agents/install.md\`](agents/install.md).
 2. Wire styles in the exact cascade-layer order - see [\`agents/assets.md\`](agents/assets.md).
-3. Copy the icon SVGs to the static path and set \`mdsIconSvgPath\`.
+3. Serve every icon slug the app uses at the static path, with the route from step 2, and
+   set \`mdsIconSvgPath\`.
 4. Register components: ${target.register}.
+5. Set up editor autocomplete - see [\`agents/assets.md\`](agents/assets.md) section 5: MERGE the
+   keys into \`.vscode/settings.json\` and \`.vscode/extensions.json\`, never overwrite them.
 
 ## Step 4 - verify
 
-Build the app and confirm an \`mds-*\` component renders and at least one icon loads from
-the configured path. Report what was installed, the cascade order used, and the icon path.
+Build the app and confirm an \`mds-*\` component renders and every icon it names loads
+from the configured path (no 404 on \`<path><slug>.svg\`). In VS Code, check both halves of
+the autocomplete: \`var(--magma-\` completes Magma tokens in a CSS file and, with Tailwind,
+\`bg-surface-default\` shows a swatch. Report what was installed, the cascade order used, the
+icon route and the icon path.
 
 ## Using the components
 
-Once installed, do not guess component APIs - read what ships with the package:
+Once installed, do not guess component APIs or rules - read only the file you need:
 
-- [\`agents/usage.md\`](agents/usage.md) - conventions (tone/variant, events, slots,
-  compound, icons, a11y) and app-level styling (token classes, typography, dark mode).
-- [\`agents/components.md\`](agents/components.md) - the catalogue: which component to reach for.
-- \`@maggioli-design-system/magma/dist/documentation.json\` - full per-component props,
-  events, slots, CSS vars and usage. \`dist/types/components.d.ts\` drives editor IntelliSense.
+| You need | Read |
+| -------- | ---- |
+| Which component to reach for | [\`agents/components.md\`](agents/components.md) - the catalogue, one line each |
+| One component's API (props with allowed values, events, methods, slots, parts, CSS vars) | its \`AGENTS.md\`, linked from the catalogue |
+| Correct usage and mistakes for one component | \`pattern.md\` / \`antipattern.md\` beside its \`AGENTS.md\` |
+| Rules shared by every component: naming, events, slots, compound, icons, a11y, styling from outside | [\`agents/conventions.md\`](agents/conventions.md) |
+| \`variant\` and \`tone\` values | [\`agents/variants.md\`](agents/variants.md) |
+| Mistakes to avoid with any component | [\`agents/anti-patterns.md\`](agents/anti-patterns.md) |
+| Coloring your own UI | [\`agents/color.md\`](agents/color.md) |
+| Typography utilities | [\`agents/typography.md\`](agents/typography.md) |
+| Dark mode, preferences, named themes, surface levels and elevation, global design decisions, corner geometry | [\`agents/theming.md\`](agents/theming.md) |
+| Reporting a problem that is Magma's, not this project's (bug, wrong guide, missing token), with this project's origin label | [\`agents/reporting.md\`](agents/reporting.md) |
+| What changed between the installed version and a newer one, before upgrading | \`CHANGELOG.md\` of each Magma package, newest release first (\`magma-react\` and \`magma-angular\` carry the releases of \`magma\`) |
+
+Tooling that needs structured data reads \`documentation.json\`: one per component beside
+its \`AGENTS.md\`, or \`@maggioli-design-system/magma/dist/documentation.json\` for all of them
+(over 2 MB - do not load it into context). In both, the relative links of the \`usage\`
+texts resolve from the component's folder, \`dist/collection/components/<tag>/\`.
+\`dist/types/components.d.ts\` drives editor IntelliSense.
 `;
-}
-
-/** Collapses common non-ASCII punctuation to ASCII, then drops anything left. */
-function toAscii(text: string): string {
-  return text
-    .replace(/[\u2013\u2014]/g, '-')
-    .replace(/[\u2018\u2019]/g, "'")
-    .replace(/[\u201C\u201D]/g, '"')
-    .replace(/\u2026/g, '...')
-    .replace(/\u00A0/g, ' ')
-    .replace(/[\u0080-\uFFFF]/g, '');
 }
 
 /** First sentence of a component's "1. Description" usage markdown, for the catalogue. */
@@ -192,7 +185,7 @@ function summarise(description: string): string {
  * dist/documentation.json - keeps generation independent of the stencil build, so it
  * can run before it (Stencil validates the package.json "files" array during build).
  */
-function buildComponentsMd(): string {
+function buildComponentsMd(docsPrefix: string): string {
   const entries: { tag: string; summary: string }[] = [];
   for (const dirent of fs.readdirSync(COMPONENTS_DIR, { withFileTypes: true })) {
     if (!dirent.isDirectory() || !dirent.name.startsWith('mds-')) continue;
@@ -202,14 +195,17 @@ function buildComponentsMd(): string {
     if (summary) entries.push({ tag: dirent.name, summary });
   }
   entries.sort((a, b) => a.tag.localeCompare(b.tag));
-  const rows = entries.map((e) => `| \`${e.tag}\` | ${e.summary} |`).join('\n');
+  const rows = entries
+    .map((e) => `| [\`${e.tag}\`](${docsPrefix}/${e.tag}/AGENTS.md) | ${e.summary} |`)
+    .join('\n');
 
   return `${BANNER}# Magma components catalogue (${entries.length} components)
 
-> Generated from each component's usage description. For a component's full props /
-> events / slots / CSS vars read \`@maggioli-design-system/magma/dist/documentation.json\`
-> or the types in \`dist/types/components.d.ts\`; for conventions and styling read
-> [\`usage.md\`](usage.md).
+> Generated from each component's usage description. Each tag links the component's
+> own \`AGENTS.md\` (its API, with \`pattern.md\` and \`antipattern.md\` beside it) in
+> \`@maggioli-design-system/magma/${COMPONENT_DOCS_DIR}/<tag>/\`. The rules shared by
+> every component: [\`conventions.md\`](conventions.md), [\`variants.md\`](variants.md),
+> [\`anti-patterns.md\`](anti-patterns.md).
 
 | Component | What it is |
 | --------- | ---------- |
@@ -227,25 +223,30 @@ function readVersion(pkgRoot: string): string {
 }
 
 function main(): void {
-  const assetsSrc = fs.readFileSync(path.join(SOURCE_DIR, 'assets.md'), 'utf8');
-  const usageSrc = fs.readFileSync(path.join(SOURCE_DIR, 'usage.md'), 'utf8');
-  const componentsMd = buildComponentsMd();
-
   for (const target of TARGETS) {
     const pkgRoot = path.resolve(STENCIL_DIR, target.pkgDir);
     const agentsDir = path.join(pkgRoot, 'agents');
+    // generated output only: start clean so a fragment dropped from the source does not linger
+    fs.rmSync(agentsDir, { recursive: true, force: true });
     ensureDir(agentsDir);
 
     const version = readVersion(pkgRoot);
     const trackSrc = fs.readFileSync(path.join(SOURCE_DIR, target.track), 'utf8');
+    // the wrappers link into the magma package they depend on, installed beside them
+    const docsPrefix =
+      target.pkgDir === '.' ? `../${COMPONENT_DOCS_DIR}` : `../../magma/${COMPONENT_DOCS_DIR}`;
 
     fs.writeFileSync(path.join(pkgRoot, 'AGENTS.md'), buildAgentsMd(target, version));
-    fs.writeFileSync(path.join(agentsDir, 'install.md'), BANNER + rewriteLinks(trackSrc));
-    fs.writeFileSync(path.join(agentsDir, 'assets.md'), BANNER + rewriteLinks(assetsSrc));
-    fs.writeFileSync(path.join(agentsDir, 'usage.md'), BANNER + rewriteLinks(usageSrc));
-    fs.writeFileSync(path.join(agentsDir, 'components.md'), componentsMd);
+    fs.writeFileSync(
+      path.join(agentsDir, 'install.md'),
+      BANNER + rewriteGuideLinks(trackSrc, docsPrefix),
+    );
+    for (const fragment of SHARED_FRAGMENTS) {
+      const src = fs.readFileSync(path.join(SOURCE_DIR, fragment), 'utf8');
+      fs.writeFileSync(path.join(agentsDir, fragment), BANNER + rewriteGuideLinks(src, docsPrefix));
+    }
+    fs.writeFileSync(path.join(agentsDir, 'components.md'), buildComponentsMd(docsPrefix));
 
-    // eslint-disable-next-line no-console
     console.log(
       `agent docs synced -> ${target.wrapperPkg} (${path.relative(STENCIL_DIR, pkgRoot) || '.'})`,
     );

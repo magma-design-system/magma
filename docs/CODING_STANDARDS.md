@@ -11,7 +11,7 @@ Enforcement runs in three places:
 
 - **On save** - if your editor has ESLint and Stylelint extensions installed
 - **On commit** - via the `.husky/pre-commit` hook (lint + format on staged files)
-- **In CI** - the `lint` workflow ([`.github/workflows/lint.yml`](../.github/workflows/lint.yml)) runs `npm run lint` on every pull request and on every push to `dev`, `main` and `beta`; a lint error fails the check
+- **In CI** - the `lint` workflow ([`.github/workflows/lint.yml`](../.github/workflows/lint.yml)) runs `npm run lint` on every pull request, in the merge queue and on every push to `main`; a lint error fails the check
 
 ## TypeScript / JavaScript
 

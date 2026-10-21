@@ -55,7 +55,7 @@
 
 .physical-key {
   align-items: baseline;
-  background-color: var(--mds-keyboard-key-background, rgb(var(--tone-bisque-08)));
+  background-color: var(--mds-keyboard-key-background, rgb(var(--magma-wash-strong)));
   border-radius: var(--magma-radius-lg);
   box-shadow:
     var(--mds-keyboard-key-illumination-light), var(--mds-keyboard-key-illumination-dark),
@@ -95,7 +95,7 @@
     var(--mds-keyboard-key-padding);
 }
 
-:host([code='space']) .physical-key {
+:host([name='space']) .physical-key {
   min-width: calc(var(--key-size-default) * 2);
 }
 

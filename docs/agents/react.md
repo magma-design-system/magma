@@ -19,7 +19,7 @@ npm i @maggioli-design-system/magma-react @maggioli-design-system/magma
 matrix). Then install the assets from [`assets.md`](assets.md):
 
 ```bash
-npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens @maggioli-design-system/svg-icons
+npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens
 npm i @fontsource/karla @fontsource/merriweather @fontsource/roboto @fontsource/roboto-mono
 ```
 
@@ -111,9 +111,10 @@ export default function RootLayout({
 
 ## 4. Serve the icon SVGs and styles
 
-- Copy `@maggioli-design-system/svg-icons/dist/svg/` into the static folder served at
-  `/svg/` (Vite/CRA: `public/svg/`; Next.js: `public/svg/`). Match the path you pass
-  to `mdsIconSvgPath`.
+- Write the icons into the static folder served at `/svg/` (Vite and Next.js:
+  `public/svg/`) with one of the routes of [`assets.md`](assets.md) section 3
+  (iconsauce or the copy script, run from `predev` and `prebuild`). Match the path you
+  pass to `mdsIconSvgPath`.
 - Import the global CSS block from [`assets.md`](assets.md) in your global stylesheet
   (`app/globals.css`, `src/index.css`, ...) so the cascade-layer order is preserved.
 
@@ -121,14 +122,14 @@ export default function RootLayout({
 
 Every component ships in two variants:
 
-- `@maggioli-design-system/magma-react` (or `…/mds-button.js`) — the client
+- `@maggioli-design-system/magma-react` (or `.../mds-button.js`) - the client
   wrapper. During SSR it emits a bare `<mds-button>` tag with **no** attributes,
   shadow DOM or geometry: the page shifts when the component hydrates.
-- `@maggioli-design-system/magma-react/mds-button.server.js` — the SSR wrapper.
+- `@maggioli-design-system/magma-react/mds-button.server.js` - the SSR wrapper.
   On the server it runs `renderToString` from `@maggioli-design-system/magma/hydrate`
-  and emits the full markup — attributes, `<template shadowrootmode="open">` with
-  the component styles, and the `hydrated` flag — so the HTML paints with its
-  final geometry (CLS ≈ 0). On the client it delegates to the client wrapper.
+  and emits the full markup - attributes, `<template shadowrootmode="open">` with
+  the component styles, and the `hydrated` flag - so the HTML paints with its
+  final geometry (CLS close to 0). On the client it delegates to the client wrapper.
 
 In an SSR app, import the `.server` variant:
 
@@ -148,8 +149,8 @@ export default function Page() {
 
 SSR notes:
 
-- There is no server barrel: import each component from its own
-  `…/mds-<name>.server.js` module.
+- Import each component from its own `.../mds-<name>.server.js` module, or all of them
+  from the server barrel `@maggioli-design-system/magma-react/components.server.js`.
 - The generated server wrappers carry a `'use client'` directive (an
   output-target quirk): in Next.js they behave as client components that are
   still server-rendered, which is exactly what produces the declarative shadow
@@ -157,11 +158,43 @@ SSR notes:
 - Events are not wired on the server wrapper; they attach after hydration via
   the client wrapper it delegates to.
 - Icons render empty server-side (the box is reserved, no layout shift) and the
-  default theme is rendered — see the SSR section in
+  default theme is rendered - see the SSR section in
   [`web-components.md`](web-components.md).
-- The hydrate module (`magma/hydrate`) bundles all 114 components (~3 MB,
+- The hydrate module (`magma/hydrate`) bundles all 115 components (~3 MB,
   server-only). It is imported lazily behind a `typeof window` check and must
   never end up in a client bundle.
+
+## 6. Client-side routing
+
+The links of the components (`href` of `MdsButton`, `MdsTabItem`, ...) are real anchors
+the browser follows, loading the page. Register the router once, in the client wrapper of
+section 3, and every plain click on a component link is routed on the client instead; a
+modifier or middle click, `target="blank"` and a link to another origin stay with the browser.
+
+```tsx
+'use client';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { NavigationService } from '@maggioli-design-system/magma/services';
+
+export default function ClientGlobalsWrapper({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  const router = useRouter();
+
+  useEffect(() => {
+    sessionStorage.setItem('mdsIconSvgPath', '/svg/');
+  }, []);
+  // setHandler returns the function that removes the handler: the cleanup of the effect
+  useEffect(() => NavigationService.setHandler((href) => router.push(href)), [router]);
+
+  return <>{children}</>;
+}
+```
+
+With React Router the handler is `(href) => navigate(href)` from `useNavigate()`. Return
+`false` from the handler for a link the browser is to load. Without a registered router, an
+`onClick` on the component can still cancel the click with `preventDefault()` and route by hand.
 
 ## Gotchas
 
@@ -171,8 +204,13 @@ SSR notes:
   on the client - use the `.server` variants (section 5) to get real SSR markup.
 - Keep `magma` and `magma-react` on the exact same version; the wrapper is generated
   against a specific `magma` build.
+- Pass booleans as booleans: `<MdsButton disabled={false} />` sets the property and turns
+  the prop off, and the `.server` variants leave a `false` out of the markup. Render the
+  wrapper, not the bare `mds-*` tag: in React 18 JSX `<mds-button disabled={false}>`
+  writes the attribute `"false"`, which turns a form-associated component on (see
+  [`conventions.md`](conventions.md)).
 
 ## See also
 
 - [`assets.md`](assets.md) - styles / fonts / icons / identity (canonical)
-- [`../../projects/stencil/SPEC.md`](../../projects/stencil/SPEC.md) - component conventions, events, slots
+- [`conventions.md`](conventions.md) - component conventions, events, slots

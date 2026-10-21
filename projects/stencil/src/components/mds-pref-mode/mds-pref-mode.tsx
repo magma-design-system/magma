@@ -1,21 +1,10 @@
-import {
-  Component,
-  Host,
-  Element,
-  Event,
-  EventEmitter,
-  h,
-  Prop,
-  Watch,
-  State,
-} from '@stencil/core';
+import { Component, Host, Element, Event, EventEmitter, h, Prop, Watch } from '@stencil/core';
 import { cssDurationToMilliseconds } from '@common/unit';
 import miBaselineLightMode from '@icon/mi/baseline/light-mode.svg';
 import miOutlineDarkMode from '@icon/mi/outline/dark-mode.svg';
 import miBaselineDarkMode from '@icon/mi/baseline/dark-mode.svg';
 import miBaselineSettings from '@icon/mi/baseline/settings.svg';
 import { Locale } from '@common/locale';
-import { isSafari } from '@common/browser';
 import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
@@ -56,8 +45,10 @@ export class MdsPrefMode {
   private overlayTimer: NodeJS.Timeout;
   private overlaySmoothTimer: NodeJS.Timeout;
   private overlayShow: boolean = false;
-
-  @State() disabled: boolean = false;
+  private syncingFromStore: boolean = false;
+  // the mode this instance applied last, or followed from another one
+  private appliedMode?: PreferenceModeType;
+  private unsubscribeStore?: () => void;
 
   private updateCSSCustomProps = (): void => {
     if (typeof window === 'undefined') return;
@@ -114,17 +105,25 @@ export class MdsPrefMode {
     },
   };
 
-  componentWillRender(): void {
-    if (!isSafari()) {
-      this.setMode(
-        this.mode ??
-          (localStorage.getItem(this.localStorageAlias) as PreferenceModeType) ??
-          this.defaultMode,
-      );
-      return;
-    }
-    this.disabled = true;
-    this.mode = 'light';
+  // The stored mode is applied once, on load. After that each instance only mirrors
+  // the shared store: re-applying its own `mode` on every render made a second
+  // instance (a controller next to a settings page) revert what the other one chose.
+  // Safari is no exception any more: it used to be forced to light, written to the storage,
+  // while the dark refinements were Chromium-only `:host-context` rules (#960).
+  componentWillLoad(): void {
+    this.setMode(
+      this.mode ??
+        (localStorage.getItem(this.localStorageAlias) as PreferenceModeType) ??
+        this.defaultMode,
+    );
+  }
+
+  connectedCallback(): void {
+    this.unsubscribeStore = preferenceStore.onChange('mode', this.syncMode);
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribeStore?.();
   }
 
   componentDidLoad(): void {
@@ -133,14 +132,38 @@ export class MdsPrefMode {
 
   @Watch('mode')
   modeChanged(newValue: PreferenceModeType, oldValue: PreferenceModeType): void {
-    if (newValue === oldValue) {
+    if (newValue === oldValue || this.syncingFromStore) {
       return;
     }
     this.setMode(newValue);
   }
 
+  /**
+   * Follows a mode applied elsewhere (another instance, or a writer of the
+   * `<html>` classes) without applying it again: no event, no storage write.
+   */
+  private readonly syncMode = (mode?: string): void => {
+    if (mode === undefined || mode === this.mode) {
+      return;
+    }
+    this.syncingFromStore = true;
+    this.mode = mode as PreferenceModeType;
+    this.appliedMode = mode as PreferenceModeType;
+    this.syncingFromStore = false;
+  };
+
+  /**
+   * Applies a mode once per change, and announces it once applied: the `mode` watcher
+   * calls this again for the value it has just been given, which used to emit a second
+   * mdsPrefChange, and the first application, the one of load, is no change to announce.
+   */
   private readonly setMode = (mode: PreferenceModeType): void => {
-    this.prefChangeEvent.emit({ preference: 'mode' });
+    if (mode === this.appliedMode) {
+      this.mode = mode;
+      return;
+    }
+    const isFirstApplication = this.appliedMode === undefined;
+    this.appliedMode = mode;
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
     if (typeof document !== 'undefined') {
@@ -154,6 +177,9 @@ export class MdsPrefMode {
       element?.style.setProperty(this.customPropertyAlias, this.mode);
     }
     preferenceStore.state.mode = mode;
+    if (!isFirstApplication) {
+      this.prefChangeEvent.emit({ preference: 'mode' });
+    }
   };
 
   private readonly isDarkMode = (): boolean => {
@@ -235,9 +261,6 @@ export class MdsPrefMode {
   };
 
   private readonly isModeDisabled = (mode: PreferenceModeType): boolean => {
-    if (this.disabled) {
-      return true;
-    }
     if (this.lockedScheme === 'light') {
       return mode === 'dark';
     }
@@ -292,10 +315,7 @@ export class MdsPrefMode {
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <mds-text class="info" typography="caption">
-          <b>{this.t.get('label')}</b>{' '}
-          {this.disabled
-            ? this.t.get(this.modes[this.mode ?? this.defaultMode].label, { forced: true })
-            : this.t.get(this.modes[this.mode ?? this.defaultMode].label, { forced: false })}
+          <b>{this.t.get('label')}</b> {this.t.get(this.modes[this.mode ?? this.defaultMode].label)}
         </mds-text>
         <mds-tab fill size={this.size}>
           <mds-tab-item
@@ -304,7 +324,7 @@ export class MdsPrefMode {
             onClick={this.handleModeClick('light')}
             class="item item--light"
             icon={miBaselineLightMode}
-            title={this.t.get(this.modes.light.label, { forced: false })}
+            title={this.t.get(this.modes.light.label)}
           ></mds-tab-item>
           <mds-tab-item
             disabled={this.isModeDisabled('system')}

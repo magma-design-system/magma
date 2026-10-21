@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma-react",
-  "version": "2.0.1",
+  "version": "2.4.0",
   "main": "dist/components.js",
   "module": "dist/components.js",
   "types": "dist/types/components.d.ts",
@@ -14,6 +14,7 @@
       "types": "./dist/types/*.d.ts",
       "import": "./dist/*.js"
     },
+    "./CHANGELOG.md": "./CHANGELOG.md",
     "./package.json": "./package.json"
   },
   "sideEffects": false,
@@ -26,14 +27,15 @@
   "files": [
     "dist",
     "AGENTS.md",
-    "agents/"
+    "agents/",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@maggioli-design-system/magma": "2.0.1",
-    "@stencil/react-output-target": "1.6.2"
+    "@maggioli-design-system/magma": "2.4.0",
+    "@stencil/react-output-target": "1.6.5"
   },
   "repository": {
     "type": "git",

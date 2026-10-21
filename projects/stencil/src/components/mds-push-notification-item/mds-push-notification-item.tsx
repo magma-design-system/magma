@@ -33,8 +33,8 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @part actions - The actions wrapper
+ * @part avatar - The `mds-avatar` that shows the `icon`, the `initials` or, with `preview` set to `avatar`, the picture of `src`
  * @part content - The content wrapper of the message
- * @part icon - The icon set by `icon` attribute
  * @part picture - The picture image added by `src` attribute
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @slot badge - Add `HTML elements` or `components`, it is **recommended** to use `mds-badge` element.
@@ -58,11 +58,14 @@ export class MdsPushNotificationItem {
 
   /**
    * Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).
+   * @example '2025-06-15T09:30:00+02:00'
    */
   @Prop({ reflect: true, mutable: true }) datetime?: string;
 
   /**
-   * Specifies if the notification date format shows time passed or displays date as a static string
+   * Specifies how the notification date is written: `timeago` shows the time passed, any other
+   * value is the Day.js format of a static date
+   * @example 'DD/MM/YYYY HH:mm'
    */
   @Prop({ reflect: true }) readonly dateFormat: NotificationItemDateFormatType = 'timeago';
 
@@ -119,7 +122,8 @@ export class MdsPushNotificationItem {
 
   private onClickClose = (e: Event) => {
     e.stopPropagation();
-    this.closedEvent.emit();
+    // the detail the event declares: it was emitted empty
+    this.closedEvent.emit({ id: this.host.id });
   };
 
   componentDidLoad(): void {

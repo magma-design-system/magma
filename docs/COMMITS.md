@@ -30,7 +30,7 @@ The full list is enforced by the `type-enum` rule in [`commitlint.config.js`](..
 | `hotfix`   | Urgent production fix on a release branch                                                  |
 | `merge`    | Merge commits (typically auto-generated)                                                   |
 | `perf`     | Performance improvement with no behavioural change                                         |
-| `refactor` | Refacting with no behavioural or API change. **Not** `refact`                              |
+| `refactor` | Refactoring with no behavioural or API change. **Not** `refact`                            |
 | `revert`   | Revert of a previous commit. **Scope must be empty** (see special rules)                   |
 | `style`    | Cosmetic CSS/visual changes only. Has scope restrictions (see special rules)               |
 | `test`     | Test additions or changes only                                                             |
@@ -42,7 +42,8 @@ The scope is **required** for every commit (except `revert`). The allowed scopes
 ### 1. Project scopes (static list)
 
 ```
-design-tokens, icons, identity, lit, magma, react, stencil, storybook, styles, svg-icons
+codemod, design-tokens, icons, identity, lit, magma, magma-angular, magma-react, stencil,
+storybook, styles, svg-icons
 ```
 
 Use the project scope when the change touches the project as a whole or several components inside it.
@@ -64,6 +65,20 @@ feat(design-tokens,styles): give the neutral pills a wash band
 ```
 
 A `revert` counts for the packages of the header it reverts (`revert: feat(styles): …`).
+
+The release notes become the body of the package's GitHub release and, in the same `chore(release)` commit, the newest section of its `CHANGELOG.md`, which ships in the package (the notes of `magma` also in `magma-react` and `magma-angular`, released at its version); a beta prerelease, which commits nothing, has the GitHub release only. The subject of a commit is what a consumer reads there, so write it for them.
+
+A breaking commit says what a consumer has to change in a `BREAKING CHANGE:` footer. The release notes print the footer under the entry marked `[**breaking**]`, while the body of the commit stays out of them: a `!` with the instructions in the body, or nowhere, leaves the reader with the subject alone.
+
+```
+refactor(stencil)!: rename the bare tone custom properties
+
+BREAKING CHANGE: replace rgb(var(--tone-<family>)) with rgb(var(--tone-<family>-seed)).
+```
+
+The footer may wrap over several lines, which the notes join into one. A wrapped line must not start with a word followed by a colon (`component: updates are automatic`): the parser reads it as a new footer, and the note stops at the line before.
+
+For `magma` the bump is checked against the public API on every pull request: when `projects/stencil/magma.api.txt` loses or narrows a member, the commits must declare a breaking change (`feat(mds-button)!: ...` or a `BREAKING CHANGE:` footer), and when it gains one, at least a `feat`. A break no consumer can tell apart from the old API is declared with an `API-Compatible: <member>: <reason>` footer instead. See `docs/WORKFLOW.md` rule 6.
 
 ## Special rules
 

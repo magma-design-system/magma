@@ -23,6 +23,8 @@ const alias = {
   '@icon': path.resolve(projectDir, 'assets/svg'),
   '@meta': path.resolve(projectDir, 'src/meta'),
   '@placeholder': 'https://via.placeholder.com',
+  // the JSX runtime of the stories, see viteFinal
+  '@stories-jsx': path.resolve(configDir, 'jsx'),
   '@tailwind': path.resolve(projectDir, 'src/tailwind'),
   '@test': path.resolve(projectDir, 'src/test'),
   '@type': path.resolve(projectDir, 'src/type'),
@@ -58,8 +60,9 @@ const viteFinal = async (config) =>
       postcss: { plugins: [iconsauceBeforeTailwind(), tailwindcss, autoprefixer] },
     },
     // the stories are React JSX (automatic runtime): tsconfig.json declares the Stencil `h`
-    // factory for the components, and @storybook/react-vite ships no React plugin of its own
-    oxc: { jsx: { runtime: 'automatic' } },
+    // factory for the components, and @storybook/react-vite ships no React plugin of its own.
+    // React's runtime, without the `false` booleans of the form-associated components (jsx/)
+    oxc: { jsx: { runtime: 'automatic', importSource: '@stories-jsx' } },
   });
 
 const framework = {

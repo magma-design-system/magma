@@ -1,6 +1,5 @@
 import {
   arrow,
-  autoPlacement,
   autoUpdate,
   computePosition,
   flip,
@@ -10,7 +9,7 @@ import {
   Placement,
   shift,
 } from '@floating-ui/dom';
-import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
+import { FloatingUIPlacement, FloatingUIRelation, FloatingUIStrategy } from '@type/floating-ui';
 import { cssDurationToMilliseconds } from './unit';
 import { hashRandomValue, setAttributeIfEmpty } from './aria';
 import { HTMLStencilElement } from '@stencil/core/internal';
@@ -22,6 +21,8 @@ export interface FloatingElement extends PositionOptions {
 
 export interface HTMLFloatingElement extends HTMLStencilElement, PositionOptions {
   visible: boolean;
+  /** what a tooltip is to its caller: its description (the default) or its name */
+  relation?: FloatingUIRelation;
 }
 
 export interface PositionOptions {
@@ -101,6 +102,17 @@ export class FloatingController {
   }
 
   /**
+   * Takes back what the wiring wrote on the caller and writes it again, for a change of the host
+   * that changes what is written: the relation of a tooltip.
+   */
+  rewire(): void {
+    if (!this._caller) return;
+    this.unwireCaller();
+    this._wired = false;
+    void this.wireCaller();
+  }
+
+  /**
    * Lets go of the caller the target no longer names. Left alone it keeps pointing at a panel
    * that is not its own, with a state frozen on the last time it was open, and the panel keeps
    * being labelled by it - `setAttributeIfEmpty` writes the label once and the second caller
@@ -151,12 +163,15 @@ export class FloatingController {
     // a target change while we waited has already wired another caller
     if (caller !== this._caller) return;
 
-    // a tooltip is not a popup its caller controls: it only describes it, and a description
-    // reaches a screen reader whatever role the caller has, generic included
+    // a tooltip is not a popup its caller controls: it describes it, a description reaching a
+    // screen reader whatever role the caller has, generic included, or it names it, when its text
+    // is the only visible name of an icon-only control. A caller that already has a name of its
+    // own keeps it, `writeOnCaller` leaving an `aria-labelledby` that is there alone.
     if (this._role === 'tooltip') {
       if (this.sameRoot()) {
         const tipId = setAttributeIfEmpty(this._host, 'id', hashRandomValue('mds-tooltip'));
-        this.writeOnCaller('aria-describedby', tipId);
+        const relation = this._host.relation === 'label' ? 'aria-labelledby' : 'aria-describedby';
+        this.writeOnCaller(relation, tipId);
       }
       return;
     }
@@ -315,15 +330,21 @@ export class FloatingController {
       config.padding = this._host.shiftPadding;
     }
 
-    if (!this._host.disableAutoPlacement) {
-      middleware.push(autoPlacement());
-    }
-
     if (this._host.offset) {
       middleware.push(offset(this._host.offset));
     }
 
-    if (this._host.disableAutoPlacement && this._host.flip) {
+    // With auto-placement, the default, `placement` is the preferred side: the panel moves to
+    // the opposite side, then to the sides across, only when it has no room there, which covers
+    // what `flip` adds. autoPlacement() took the side with the most room whatever `placement`
+    // said, so `placement` and `flip` did nothing unless auto-placement was turned off. The
+    // side is chosen on the main axis only: along the other one the panel is shifted, not moved
+    // to another side.
+    if (!this._host.disableAutoPlacement) {
+      middleware.push(
+        flip({ ...config, crossAxis: 'alignment', fallbackAxisSideDirection: 'end' }),
+      );
+    } else if (this._host.flip) {
       middleware.push(flip(config));
     }
 
@@ -413,6 +434,13 @@ export class FloatingController {
   }
 }
 
+/** The values a component resolves for its backdrop: the backdrop hangs from the body, where
+ * nothing set on the component reaches it. An empty one keeps the backdrop of the page. */
+export interface BackdropStyle {
+  duration?: string;
+  zIndex?: string;
+}
+
 export class Backdrop {
   private readonly defaultBackdropId = 'magma-backdrop';
   private readonly backdropBackgroundVisible =
@@ -425,6 +453,7 @@ export class Backdrop {
 
   private backdropEl: HTMLElement;
   private backdropTimer: NodeJS.Timeout;
+  private duration: string;
 
   constructor(backdropId?: string) {
     this.backdropId = backdropId ?? this.defaultBackdropId;
@@ -432,16 +461,18 @@ export class Backdrop {
     this.cssBackdropDuration = `var(--${this.backdropId}-animation-duration, 300ms)`;
   }
 
-  attachBackdrop(): void {
+  attachBackdrop(style: BackdropStyle = {}): void {
     if (!this.backdropEl) {
       this.backdropEl = document.createElement('div');
       this.backdropEl.className = this.backdropId;
       this.backdropEl.style.inset = '0';
       this.backdropEl.style.pointerEvents = 'none';
       this.backdropEl.style.position = 'fixed';
-      this.backdropEl.style.transition = `background-color ${this.cssBackdropDuration} ease-out`;
-      this.backdropEl.style.zIndex = this.cssBackdropZIndex;
     }
+    // the detach waits for this one too, so it is kept until then
+    this.duration = style.duration || this.cssBackdropDuration;
+    this.backdropEl.style.transition = `background-color ${this.duration} ease-out`;
+    this.backdropEl.style.zIndex = style.zIndex || this.cssBackdropZIndex;
     this.backdropEl.style.backgroundColor = this.backdropBackgroundHidden;
     document.body.appendChild(this.backdropEl);
 
@@ -457,8 +488,11 @@ export class Backdrop {
     }
     this.backdropEl.style.backgroundColor = 'transparent';
     clearTimeout(this.backdropTimer);
-    this.backdropTimer = setTimeout(() => {
-      this.backdropEl.remove();
-    }, cssDurationToMilliseconds(this.cssBackdropDuration));
+    this.backdropTimer = setTimeout(
+      () => {
+        this.backdropEl.remove();
+      },
+      cssDurationToMilliseconds(this.duration ?? this.cssBackdropDuration),
+    );
   }
 }

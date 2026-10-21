@@ -1,5 +1,7 @@
 /* The google button is painted in the paper of the mode, --tone-neutral-seed
- * (#fff light / #000 dark), as the brand button is: the seed is intended here. */
+ * (#fff light / #000 dark), as the brand button is: the seed is intended here.
+ * The service buttons set the public properties themselves, over the tone rules of
+ * mds-button-variant.css; the ink role is the icon fill of the weak tone. */
 
 :host([variant='google']),
 :host([variant='google'][tone]) {
@@ -9,7 +11,11 @@
   --mds-button-border-opacity: 0.2;
   --mds-button-border-width: --spacing(25);
   --mds-button-color: rgb(var(--magma-text-muted));
-  --mds-button-border-color-rgb: var(--magma-shadow-ink);
+
+  /* a ring (0 0 0 1px), not a shadow: it outlines the button in the text ink, so it
+   * stays light around the black button in dark */
+  --mds-button-border-color-rgb: var(--magma-text-default);
+  --private-button-ink: var(--magma-text-muted);
 
   box-shadow: 0 0 0 var(--mds-button-border-width)
     rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
@@ -32,6 +38,7 @@
   --mds-button-color: rgb(var(--magma-on-inverse));
   --mds-button-border-width: 0;
   --mds-button-border-color-rgb: var(--magma-surface-inverse);
+  --private-button-ink: var(--magma-on-inverse);
 }
 
 :host([variant='apple']:hover),

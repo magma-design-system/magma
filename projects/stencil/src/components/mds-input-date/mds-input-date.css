@@ -3,7 +3,7 @@
  * @prop --mds-input-date-background: The background of the date input
  * @prop --mds-input-date-field-background-empty: The background when the date field is empty
  * @prop --mds-input-date-field-color-empty: The text/icon color when the date field is empty
- * @prop --mds-input-date-icon-color-rgb: The RGB channels used for the icon color
+ * @prop --mds-input-date-icon-color-rgb: Deprecated, read by nothing: the icon takes `--mds-input-date-icon-color`.
  * @prop --mds-input-date-ring: The focus ring of the date input
  * @prop --mds-input-date-shadow: The shadow applied to the date input
  * @prop --mds-input-date-variant-color-rgb: The base RGB value for the date input variant
@@ -28,11 +28,16 @@
 */
 
 :host {
+
+  /* the size of the field, lg by default: its height and its padding; the calendar button sits
+     in a square as tall as the field */
+  --private-input-date-height: 3rem;
+  --private-input-date-padding-inline: --spacing(400);
+  --private-input-date-calendar-area: --spacing(1200);
   --mds-input-date-icon-color: rgb(var(--magma-accent-fg));
   --mds-input-date-background: rgb(var(--magma-surface-overlay));
   --mds-input-date-field-background-empty: rgb(var(--magma-danger-wash-soft));
   --mds-input-date-field-color-empty: rgb(var(--magma-danger-text-default));
-  --mds-input-date-icon-color-rgb: var(--mds-input-date-variant-color-rgb);
   --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color-rgb) / 0.1);
   --mds-input-date-shadow:
     0 1px 3px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
@@ -49,7 +54,11 @@
 
   @apply text-info-detail;
 
-  border-radius: var(--magma-radius-2xl);
+  /* capped at a part of the height of the field like mds-button's (#913) */
+  border-radius: min(
+    var(--magma-radius-2xl),
+    var(--magma-corner-cap) * var(--private-input-date-height)
+  );
   color: rgb(var(--magma-text-default));
   container-type: inline-size;
   corner-shape: var(--magma-corner-shape);
@@ -106,9 +115,9 @@
 
   /* border-radius: var(--magma-radius-xs); */
   box-shadow: var(--mds-input-date-ring), var(--mds-input-date-shadow);
-  min-height: 3rem;
-  padding-left: --spacing(400);
-  padding-right: --spacing(1200);
+  min-height: var(--private-input-date-height);
+  padding-left: var(--private-input-date-padding-inline);
+  padding-right: var(--private-input-date-calendar-area);
   width: 100%;
 }
 
@@ -180,6 +189,7 @@ mds-input-tip {
 }
 
 @import './css/mds-input-date-fouc.css';
+@import './css/mds-input-date-size.css';
 @import './css/mds-input-date-pref-animation.css';
 @import './css/mds-input-date-pref-mode.css';
 @import './css/mds-input-date-pref-contrast.css';

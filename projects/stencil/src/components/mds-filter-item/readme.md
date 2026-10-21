@@ -11,28 +11,29 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-filter-item>` web component is a single selectable option inside the [`<mds-filter>`](../../mds-filter) container of the Magma Design System. It renders as an interactive menu item (icon, label, and an optional count badge) and acts as the toggleable unit that drives the parent's filter selection - it has no standalone HTML primitive equivalent.
+The `<mds-filter-item>` web component is a single selectable option inside the [`<mds-filter>`](../../mds-filter) container of the Magma Design System. It renders as a toggle button (icon, label, and an optional count badge) and acts as the toggleable unit that drives the parent's filter selection - it has no standalone HTML primitive equivalent.
 
 #### Semantic Behavior
 
 - **Compound child only**: `<mds-filter-item>` must be a direct slot child of `<mds-filter>`; it is not used standalone and should not be mixed with other child types.
-- **Self-toggling + event**: Clicking (or activating via the keyboard) flips `selected` and emits `mdsFilterItemSelect` with `{ id, selected }`. The parent enforces single vs. multiple selection and re-emits `mdsFilterChange` with the aggregated value list.
-- **State owned with the parent**: `selected` doubles as a styling hook and as the flag the parent reads/writes - in single-select mode the parent clears the other items' selection, and on reset it clears the whole group.
-- **Keyboard activation**: The item responds to keyboard activation like a pointer click.
+- **Self-toggling + event**: Clicking (or activating via the keyboard) flips `selected` and emits `mdsFilterItemSelect` with `{ id, selected }`. The `id` is the one set in the markup; an item without one gets `item-<index>` from the parent on load. The parent enforces single vs. multiple selection and re-emits `mdsFilterChange` with the aggregated value list.
+- **State owned with the parent**: `selected` doubles as a styling hook and as the flag the parent reads/writes - in single-select mode the parent clears the other items' selection, and on reset it clears the whole group. The parent also follows a `selected` set by the application, without emitting `mdsFilterChange`.
+- **Toggle button**: The host is a `button` whose `aria-pressed` follows `selected`. Its name is the `label` followed by the `count` as a number of results in the page language (the `lang` of `<html>`): "Nuove, 11 results" in English, "Nuove, 11 risultati" in Italian. An `aria-label` written on the host by the author stays.
+- **Keyboard activation**: Enter (and numpad Enter) and Space activate the item like a pointer click.
 - **Focus management**: The item is focusable unless `disabled`, in which case it drops out of the tab order.
 
 #### Properties & Visual Configurations
 
-- **`selected`**: The selection state of the item. Set it on initial markup to pre-select a filter; at runtime it is normally driven by the parent rather than set directly.
+- **`selected`**: The selection state of the item. Set it on initial markup to pre-select a filter, or at runtime from the application (a filter restored from the address, a clear button outside the bar): the parent follows, in single mode clearing the others.
 - **`value`**: The form/data value contributed to the parent's aggregated `mdsFilterChange` payload when the item is selected. Provide a meaningful value distinct from the human-readable `label`.
 - **`count`**: An optional badge showing how many results the filter would yield. Use it only when the count is meaningful to the user; omit it for purely categorical filters.
-- **`icon`**: Optional leading icon (an icon name string). It also serves as the accessible-label fallback, so an icon-only item without a `label` should use a recognizable icon.
-- **`disabled`**: Renders the item non-interactive and removes it from the tab order; the parent uses this for the reset affordance when no filter is active.
+- **`icon`**: Optional leading icon (an icon name string). Without a `label` the item is named after the last segment of the slug (`map` for `mi/baseline/map`); give it an `aria-label` of your own when the slug does not say what the filter does.
+- **`disabled`**: Blocks the item: it leaves the tab order, ignores clicks and keys, is announced as unavailable (`aria-disabled`) and is painted in the disabled text colour.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-filter-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-filter-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Filter Group
 
@@ -72,13 +73,13 @@ Pass a `count` string to show how many results each filter would yield. Use it w
 
 #### Icon-Only Item
 
-Omit `label` and provide only `icon`. The component automatically uses the icon slug as the `aria-label` fallback. Use a recognizable icon so the purpose is clear without text.
+Omit `label` and provide only `icon`. Without a label the item is named after the last segment of the icon slug (`grid view` for `mi/baseline/grid-view`); an `aria-label` of your own takes its place and stays. Use a recognizable icon so the purpose is clear without text, and give each item an `aria-label` when the slug does not say what it filters.
 
 ```html
 <mds-filter label="Vista">
-  <mds-filter-item icon="mi/baseline/grid-view" value="grid"></mds-filter-item>
-  <mds-filter-item icon="mi/baseline/view-list" value="list"></mds-filter-item>
-  <mds-filter-item icon="mi/baseline/map" value="map"></mds-filter-item>
+  <mds-filter-item aria-label="Griglia" icon="mi/baseline/grid-view" value="grid"></mds-filter-item>
+  <mds-filter-item aria-label="Elenco" icon="mi/baseline/view-list" value="list"></mds-filter-item>
+  <mds-filter-item aria-label="Mappa" icon="mi/baseline/map" value="map"></mds-filter-item>
 </mds-filter>
 ```
 
@@ -126,7 +127,7 @@ Listen to `mdsFilterItemSelect` on a single item for per-item reactions, or to `
 
 #### Reset Affordance
 
-Add `reset` to `<mds-filter>` to show an automatic reset button when at least one item is active. The button is rendered by the parent internally - no extra `<mds-filter-item>` is needed.
+Add `reset` to `<mds-filter>` to show an automatic reset button when at least one item is active. The button is rendered by the parent internally - no extra `<mds-filter-item>` is needed - and named in the page language ("Clear filters").
 
 ```html
 <mds-filter label="Regione" reset>
@@ -138,34 +139,34 @@ Add `reset` to `<mds-filter>` to show an automatic reset button when at least on
 
 #### CSS Custom Properties for the Count Badge
 
-Customize the count badge colors through the four documented `--mds-filter-item-count-*` CSS custom properties. Set them on the host element or on a parent selector; use Magma color tokens via `rgb(var(--<token>))`.
+Customize the count badge colors through the four documented `--mds-filter-item-count-*` CSS custom properties. Set them on the host element or on a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))`.
 
 ```css
 .priority-filter mds-filter-item {
-  --mds-filter-item-count-background-default: rgb(var(--tone-neutral-07));
-  --mds-filter-item-count-color-default: rgb(var(--tone-neutral-02));
-  --mds-filter-item-count-background-selected: rgb(var(--variant-primary-03));
-  --mds-filter-item-count-color-selected: rgb(var(--tone-neutral));
+  --mds-filter-item-count-background-default: rgb(var(--magma-wash-strong));
+  --mds-filter-item-count-color-default: rgb(var(--magma-text-default));
+  --mds-filter-item-count-background-selected: rgb(var(--magma-accent-emphasis));
+  --mds-filter-item-count-color-selected: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-filter-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-filter-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-filter-item>` Outside `<mds-filter>`
 
-`<mds-filter-item>` is a compound child component. Without its parent it has no selection management, no keyboard group navigation, and no `mdsFilterChange` aggregation. Always wrap it in `<mds-filter>`.
+`<mds-filter-item>` is a compound child component. Without its parent it has no selection management, no auto-scroll, and no `mdsFilterChange` aggregation. Always wrap it in `<mds-filter>`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="my-filters">
   <mds-filter-item label="Attivo" value="active"></mds-filter-item>
   <mds-filter-item label="Archiviato" value="archived"></mds-filter-item>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-filter label="Stato">
   <mds-filter-item label="Attivo" value="active"></mds-filter-item>
   <mds-filter-item label="Archiviato" value="archived"></mds-filter-item>
@@ -174,14 +175,18 @@ Common incorrect uses of `<mds-filter-item>`. Each entry pairs the wrong form wi
 
 #### Do Not Set `selected="false"` to Deselect
 
-`selected` is a boolean prop. Any non-empty string attribute value is truthy in HTML - `selected="false"` keeps the item selected. Remove the attribute entirely to deselect.
+`selected` is a boolean prop: remove the attribute entirely to deselect, as for every boolean. The runtime happens to read the string `"false"` as `false`, but the attribute stays in the markup until the component renders, and HTML, `[selected]` selectors and `hasAttribute()` read a present attribute as set.
 
 ```html
-<!-- 🚫 INCORRECT -->
-<mds-filter-item label="Attivo" value="active" selected="false"></mds-filter-item>
+<!-- INCORRECT -->
+<mds-filter label="Stato">
+  <mds-filter-item label="Attivo" value="active" selected="false"></mds-filter-item>
+</mds-filter>
 
-<!-- ✅ CORRECT -->
-<mds-filter-item label="Attivo" value="active"></mds-filter-item>
+<!-- CORRECT -->
+<mds-filter label="Stato">
+  <mds-filter-item label="Attivo" value="active"></mds-filter-item>
+</mds-filter>
 ```
 
 #### Do Not Omit `value`
@@ -189,13 +194,13 @@ Common incorrect uses of `<mds-filter-item>`. Each entry pairs the wrong form wi
 `value` is the machine-readable token the parent aggregates into `mdsFilterChange`. Without it the parent's event payload is empty or meaningless for consumers - always provide a distinct, meaningful value.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-filter label="Priorita">
   <mds-filter-item label="Alta"></mds-filter-item>
   <mds-filter-item label="Bassa"></mds-filter-item>
 </mds-filter>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-filter label="Priorita">
   <mds-filter-item label="Alta" value="high"></mds-filter-item>
   <mds-filter-item label="Bassa" value="low"></mds-filter-item>
@@ -207,33 +212,41 @@ Common incorrect uses of `<mds-filter-item>`. Each entry pairs the wrong form wi
 `<mds-filter-item>` has no publicly documented default or named slots. Icon, label, and count are all props. Slotting arbitrary HTML has no effect - use the dedicated props instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
-<mds-filter-item value="pdf">
-  <mds-icon name="mi/baseline/picture-as-pdf"></mds-icon>
-  PDF
-</mds-filter-item>
+<!-- INCORRECT -->
+<mds-filter label="Formato">
+  <mds-filter-item value="pdf">
+    <mds-icon name="mi/baseline/picture-as-pdf"></mds-icon>
+    PDF
+  </mds-filter-item>
+</mds-filter>
 
-<!-- ✅ CORRECT -->
-<mds-filter-item icon="mi/baseline/picture-as-pdf" label="PDF" value="pdf"></mds-filter-item>
+<!-- CORRECT -->
+<mds-filter label="Formato">
+  <mds-filter-item icon="mi/baseline/picture-as-pdf" label="PDF" value="pdf"></mds-filter-item>
+</mds-filter>
 ```
 
 #### Do Not Listen for Native `click` Instead of `mdsFilterItemSelect`
 
-The component handles its own toggle internally and emits `mdsFilterItemSelect` when selection changes. Listening for native `click` events bypasses the toggle guard, fires before state is updated, and may not bubble consistently out of the shadow root.
+The component handles its own toggle internally and emits `mdsFilterItemSelect` when selection changes. A native `click` listener added before the component has loaded runs before the internal toggle (listeners run in the order they were added), so it reads the old `selected` state.
 
 ```html
-<!-- 🚫 INCORRECT -->
-<mds-filter-item id="item" label="Attivo" value="active"></mds-filter-item>
+<!-- INCORRECT -->
+<mds-filter label="Stato">
+  <mds-filter-item label="Attivo" value="active"></mds-filter-item>
+</mds-filter>
 <script>
-  document.getElementById('item').addEventListener('click', (e) => {
+  document.querySelector('mds-filter-item[value="active"]').addEventListener('click', (e) => {
     console.log('selected?', e.target.selected); // state not yet updated
   });
 </script>
 
-<!-- ✅ CORRECT -->
-<mds-filter-item id="item" label="Attivo" value="active"></mds-filter-item>
+<!-- CORRECT -->
+<mds-filter label="Stato">
+  <mds-filter-item label="Attivo" value="active"></mds-filter-item>
+</mds-filter>
 <script>
-  document.getElementById('item').addEventListener('mdsFilterItemSelect', (e) => {
+  document.querySelector('mds-filter-item[value="active"]').addEventListener('mdsFilterItemSelect', (e) => {
     console.log('selected:', e.detail.selected);
   });
 </script>
@@ -244,7 +257,7 @@ The component handles its own toggle internally and emits `mdsFilterItemSelect` 
 The supported customization surface is the four `--mds-filter-item-count-*` CSS custom properties. Targeting shadow internals via `::part()`, `>>>`, or other selectors couples code to the implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-filter-item >>> .count {
   border-radius: 4px;
 }
@@ -252,10 +265,10 @@ mds-filter-item::part(count) {
   background: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-filter-item {
-  --mds-filter-item-count-background-default: rgb(var(--variant-primary-08));
-  --mds-filter-item-count-color-default: rgb(var(--variant-primary-02));
+  --mds-filter-item-count-background-default: rgb(var(--magma-accent-surface-hover));
+  --mds-filter-item-count-color-default: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -263,14 +276,14 @@ mds-filter-item {
 
 ## Properties
 
-| Property   | Attribute  | Description                                                 | Type                   | Default     |
-| ---------- | ---------- | ----------------------------------------------------------- | ---------------------- | ----------- |
-| `count`    | `count`    | Shows the number of items will be filtered by the component | `string \| undefined`  | `undefined` |
-| `disabled` | `disabled` | Sets if the component is disabled or not                    | `boolean \| undefined` | `undefined` |
-| `icon`     | `icon`     | Sets the icon of the filter item                            | `string \| undefined`  | `undefined` |
-| `label`    | `label`    | Sets the label of the filter item                           | `string`               | `undefined` |
-| `selected` | `selected` | Sets the component to selected state                        | `boolean \| undefined` | `undefined` |
-| `value`    | `value`    | Sets the value of the component to be used with forms       | `string`               | `undefined` |
+| Property   | Attribute  | Description                                                                                                       | Type                   | Default     |
+| ---------- | ---------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------- | ----------- |
+| `count`    | `count`    | Shows the number of items will be filtered by the component, also read out after the label as a number of results | `string \| undefined`  | `undefined` |
+| `disabled` | `disabled` | Sets if the component is disabled or not                                                                          | `boolean \| undefined` | `undefined` |
+| `icon`     | `icon`     | Sets the icon of the filter item                                                                                  | `string \| undefined`  | `undefined` |
+| `label`    | `label`    | Sets the label of the filter item                                                                                 | `string`               | `undefined` |
+| `selected` | `selected` | Sets the component to selected state                                                                              | `boolean \| undefined` | `undefined` |
+| `value`    | `value`    | Sets the value of the component to be used with forms                                                             | `string`               | `undefined` |
 
 
 ## Events

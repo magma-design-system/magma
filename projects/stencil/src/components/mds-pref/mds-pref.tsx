@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State, Prop, Watch } from '@stencil/core';
+import { Component, Host, h, Element, Listen, State, Prop, Watch } from '@stencil/core';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
@@ -7,6 +7,11 @@ import localeIt from './meta/locale.it.json';
 import { TabSizeType } from '@type/button';
 import { PreferenceThemeSchemeType } from '@type/preference';
 import { MdsPrefThemeEventDetail } from '@event/theme';
+import { MdsPrefChangeEventDetail } from '@event/preference';
+
+// The mounted instances: `data-magma-pref` stays on <html> while any of them is, so
+// a settings page unmounting its own mds-pref leaves the app controller in charge.
+const mountedPrefs = new Set<HTMLElement>();
 
 /**
  * @name Pref
@@ -15,12 +20,13 @@ import { MdsPrefThemeEventDetail } from '@event/theme';
  *  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
  * @category Patterns
  * @tags pattern, user, tab
- * @slot - Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-mode` element/s.
+ * @slot - Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, `mds-pref-mode` or `mds-pref-theme` element/s.
  * @example <mds-pref>
  *    <mds-pref-animation></mds-pref-animation>
  *    <mds-pref-consumption></mds-pref-consumption>
  *    <mds-pref-contrast></mds-pref-contrast>
  *    <mds-pref-mode></mds-pref-mode>
+ *    <mds-pref-theme></mds-pref-theme>
  *    <mds-pref-language>
  *      <mds-pref-language-item code="it"></mds-pref-language-item>
  *      <mds-pref-language-item code="en"></mds-pref-language-item>
@@ -42,6 +48,7 @@ export class MdsPref {
   @Element() host: HTMLMdsPrefElement;
   @State() showReload: boolean = false;
   private prefNeedsReload: string[] = ['consumption', 'language'];
+  private loaded = false;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -61,82 +68,71 @@ export class MdsPref {
     }
   }
 
-  @Watch('size')
-  handleSizeChange(newValue?: TabSizeType): void {
+  private sizeChildren = (size?: TabSizeType): void => {
     const allElements = Array.from(this.host.querySelectorAll('*'));
     const elements = allElements.filter((el) => el.tagName.toLowerCase().startsWith('mds-pref-'));
     elements.forEach((element: HTMLMdsTabElement) => {
-      element.size = newValue;
+      element.size = size;
     });
+  };
+
+  @Watch('size')
+  handleSizeChange(newValue?: TabSizeType): void {
+    this.sizeChildren(newValue);
   }
 
-  componentDidLoad(): void {
+  // The watcher does not run for the value of load, which reached no child (#826): a size set on
+  // the panel reaches its controls on load, and the ones added later; without one, each control
+  // keeps its own
+  private applySize = (): void => {
+    if (this.size !== undefined) this.sizeChildren(this.size);
+  };
+
+  componentWillLoad(): void {
+    this.applySize();
+  }
+
+  // A move disconnects the host and connects it again, while componentDidLoad runs
+  // once: the flag follows the connection, so a panel moved between a sidebar and a
+  // menu keeps the OS fallback off (#922).
+  connectedCallback(): void {
+    mountedPrefs.add(this.host);
     if (typeof window !== 'undefined') {
       document.documentElement?.setAttribute('data-magma-pref', '');
     }
-    if (this.controller) {
-      this.addPerfEvents();
-    }
-    // The lock coordination drives the visible-mode UI (the controller mode is
-    // hidden via CSS), so it is wired regardless of the controller prop.
-    this.addThemeEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
+  }
+
+  componentDidLoad(): void {
+    this.loaded = true;
     this.applyInitialSchemeLock();
   }
 
   disconnectedCallback(): void {
-    if (typeof window !== 'undefined') {
+    // In the lazy build the instance can hear of a disconnect after the host is back
+    // on the page: it is still mounted then
+    if (this.host.isConnected) return;
+    mountedPrefs.delete(this.host);
+    if (typeof window !== 'undefined' && mountedPrefs.size === 0) {
       document.documentElement?.removeAttribute('data-magma-pref');
     }
-    this.removePerfEvents();
-    this.removeThemeEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
   }
 
-  private addPerfEvents = (): void => {
-    this.addEvent(this.host.querySelector('mds-pref-consumption') as HTMLElement);
-    this.addEvent(this.host.querySelector('mds-pref-contrast') as HTMLElement);
-    this.addEvent(this.host.querySelector('mds-pref-language') as HTMLElement);
-    this.addEvent(this.host.querySelector('mds-pref-mode') as HTMLElement);
-    this.addEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
-  };
-
-  private removePerfEvents = (): void => {
-    this.removeEvent(this.host.querySelector('mds-pref-consumption') as HTMLElement);
-    this.removeEvent(this.host.querySelector('mds-pref-contrast') as HTMLElement);
-    this.removeEvent(this.host.querySelector('mds-pref-language') as HTMLElement);
-    this.removeEvent(this.host.querySelector('mds-pref-mode') as HTMLElement);
-    this.removeEvent(this.host.querySelector('mds-pref-theme') as HTMLElement);
-  };
-
-  private handlePrefChangeEvent = (e: CustomEvent): void => {
-    if (this.prefNeedsReload.includes(e.detail.preference)) {
+  // Host listeners: Stencil removes them on disconnect and adds them back on connect.
+  // The notice is for the visible panel: it was shown only by the controller, which is hidden.
+  // A change heard before the panel loaded is a control applying the stored choice, no pick.
+  @Listen('mdsPrefChange')
+  handlePrefChange(e: CustomEvent<MdsPrefChangeEventDetail>): void {
+    if (this.loaded && !this.controller && this.prefNeedsReload.includes(e.detail?.preference)) {
       this.showReload = true;
     }
-  };
+  }
 
-  private addEvent = (element?: HTMLElement): void => {
-    if (!element) return;
-    element.addEventListener('mdsPrefChange', this.handlePrefChangeEvent.bind(this));
-  };
-
-  private removeEvent = (element?: HTMLElement): void => {
-    if (!element) return;
-    element.removeEventListener('mdsPrefChange', this.handlePrefChangeEvent.bind(this));
-  };
-
-  private handleThemeChangeEvent = (e: Event): void => {
-    const detail = (e as CustomEvent<MdsPrefThemeEventDetail>).detail;
-    this.applySchemeLock(detail?.scheme);
-  };
-
-  private addThemeEvent = (element?: HTMLElement): void => {
-    if (!element) return;
-    element.addEventListener('mdsPrefThemeChange', this.handleThemeChangeEvent);
-  };
-
-  private removeThemeEvent = (element?: HTMLElement): void => {
-    if (!element) return;
-    element.removeEventListener('mdsPrefThemeChange', this.handleThemeChangeEvent);
-  };
+  // The lock coordination drives the visible-mode UI (the controller mode is hidden
+  // via CSS), so it does not depend on the controller prop.
+  @Listen('mdsPrefThemeChange')
+  handleThemeChange(e: CustomEvent<MdsPrefThemeEventDetail>): void {
+    this.applySchemeLock(e.detail?.scheme);
+  }
 
   /**
    * Cross-lane coordination: a scheme-constrained theme locks the matching mode
@@ -157,7 +153,7 @@ export class MdsPref {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <slot onSlotchange={this.applySize}></slot>
         {this.showReload && (
           <div class="reload-required">
             <mds-text typography="caption">{this.t.get('reloadPageToSeeChanges')}</mds-text>

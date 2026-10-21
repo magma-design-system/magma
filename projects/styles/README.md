@@ -28,7 +28,7 @@ npm i @maggioli-design-system/styles
 
 ### Integration
 
-The layer order is thinked to be used with tailwindcss, so the first layer is the reset, then the vendor, then the theme, then the base, then the components, and finally the utilities.
+The cascade layers are ordered for Tailwind: reset, vendor, theme, base, components, utilities, and your overrides last. Import the files in this order in your global CSS entry point:
 
 ```css
 @layer reset, vendor, theme, base, components, utilities, overrides;
@@ -43,55 +43,80 @@ The layer order is thinked to be used with tailwindcss, so the first layer is th
 @import '@fontsource/roboto/500.css' layer(vendor);
 @import '@fontsource/roboto/700.css' layer(vendor);
 @import '@fontsource/roboto/900.css' layer(vendor);
-@import './iconsauce.css' layer(vendor);
 @import '@maggioli-design-system/styles/dist/css/reset.css' layer(reset);
 @import '@maggioli-design-system/styles/dist/css/globals.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/colors-rgb.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/typography.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/semantic.css' layer(theme);
+@import '@maggioli-design-system/styles/dist/css/themes.css' layer(theme);
 @import '@maggioli-design-system/styles/dist/css/hydrated.css' layer(base);
+@import '@maggioli-design-system/styles/dist/css/transitions.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/animations.css' layer(base);
 @import '@maggioli-design-system/styles/dist/css/base.css' layer(base);
+
+/* your Tailwind entry point, if any (see Tailwind below) */
 @import './tailwind.css';
 
 @layer overrides {
-  body {
-    @apply
-    bg-tone-neutral-seed
-    text-tone-neutral-03
-      transition-colors
-      duration-300
-      ease-in-out;
-  }
-
-  mds-button {
-    border-radius: var(--radius-2xl);
-  }
+  /* your own overrides of the --magma-* globals and --mds-* component tokens */
 }
 ```
 
-### Imports
+`base.css` already paints the `body` with the semantic roles (`--magma-surface-default`
+and `--magma-text-default`), which is why `semantic.css` is required.
 
-```ts
+### Semantic colors
 
+Color your UI with the semantic roles, not with raw palette steps: a role follows the
+mode, the named theme (`data-theme-name`) and the high-contrast preference, a palette
+step only follows the mode.
+
+```html
+<section class="bg-surface-raised text-fg-default border border-border-muted">
+  <p class="text-fg-muted">Secondary text</p>
+</section>
 ```
+
+```css
+.panel {
+  background: rgb(var(--magma-surface-raised));
+  color: rgb(var(--magma-text-default));
+}
+```
+
+The values come from `dist/css/semantic.css`, the Tailwind utilities from
+`dist/tailwind/theme.css`. Every role of the Tailwind bridge carries its light default as
+the fallback of its `var()` (`rgb(var(--magma-surface-default, 242 242 242))`): Tailwind
+IntelliSense reads a utility's colour only from that literal, so the semantic utilities get
+a swatch in the editor. Without `semantic.css` they paint that light default, in every mode:
+the file is still required. The roles, their pairing rules and the Magma 1 -> 2 map are
+in the color guide shipped with the components package
+(`@maggioli-design-system/magma/agents/color.md`).
+
+### Palette
 
 #### Colors with tailwind or web components
 
-If you use tailwind or web components, you need to import **rgb format** of colors:
+If you use tailwind or web components, you need the **rgb format** of the palette, the one
+imported above:
 
 ```ts
-import '@maggioli-design-system/styles/dist/css/colors-rgb-tones.css';
-import '@maggioli-design-system/styles/dist/css/colors-rgb-status.css';
-import '@maggioli-design-system/styles/dist/css/colors-rgb-label.css';
-import '@maggioli-design-system/styles/dist/css/colors-rgb-brand.css';
+import '@maggioli-design-system/styles/dist/css/colors-rgb.css';
 ```
 
-You need to import colors because web components and our tailwind config works with our palette, which are custom properties in rgb format (rr, gg, bb).
+The web components, the Tailwind utilities and the semantic layer read the palette as
+custom properties in rgb channel format (`rr gg bb`). `colors-rgb.css` holds every group;
+the per-group files (`colors-rgb-{tones,status,label,brand,default,theme}.css`) exist for
+a custom setup, and the semantic roles need at least `default` (the `--variant-*` accents)
+and `theme` (the `--surface-*`, `--border-*` and `--text-*` families) besides `tones` and
+`status`.
 
-If for some reason you need to use colors outside tailwind:
+A raw palette step is right only for a colour that encodes data rather than an
+interface role (a `label-*` category, a `brand-*` identity). Outside tailwind:
 
 ```css
 .selector {
-  color: rgb(var(--tone-neutral-01));
+  color: rgb(var(--label-sky-04));
 }
 ```
 
@@ -114,48 +139,52 @@ Then you can use them like this:
 }
 ```
 
----
-
-### Dark mode format
-
-our color palette already supports dark mode, either according to your computer settings, or with manual support:
-
-#### Manual mode
-
-Just add the `dark-mode` class to the `html` tag:
-
-```html
-<html class="dark-mode">
-```
-
-#### OS settings mode
-
-Just add the `system-mode` class to the `html` tag:
-
-```html
-<html class="system-mode">
-```
-
-There are other practices to handle dark mode, check [how tailwind handle dark mode][tailwindcss-dark], or [how is handled by next-themes][next-themes].
+The hex files are for plain CSS only: they cannot take an alpha, and neither the
+components nor the semantic roles can read them.
 
 ---
 
-### Tailwindcss config
+### Dark mode
 
-You can use styles with [tailwindcss config][tailwindcss-config], palette colors and the rest of it's Design Tokens.
-There are various ways to use it, check out [tailwindcss documentation][tailwindcss-doc].
+The palette and the semantic roles already flip between light and dark. Pick the mode with a
+class on the `html` tag:
 
-To extend the default tailwind config:
+```html
+<html class="pref-mode-system"><!-- follows the OS --></html>
+<html class="pref-mode-light"><!-- always light --></html>
+<html class="pref-mode-dark"><!-- always dark --></html>
+```
+
+To let the user choose, use the `mds-pref-mode` component of
+`@maggioli-design-system/magma`: it writes the class and remembers the choice. Tailwind's
+`dark:` variant follows only the OS (`prefers-color-scheme`), not these classes; the
+semantic roles need no `dark:`.
+
+---
+
+### Tailwind
+
+With Tailwind 4, import Magma's theme (palette, typography tokens, semantic colors), its
+typography utilities and its helpers in your Tailwind entry point, after Tailwind's own
+theme and utilities (Magma ships its own reset, so Tailwind's preflight is left out):
+
+```css
+/* tailwind.css */
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import '@maggioli-design-system/styles/dist/tailwind/theme.css';
+@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import '@maggioli-design-system/styles/dist/tailwind/utilities.css';
+```
+
+With Tailwind 3, extend the [JS preset][tailwindcss-config] (the package `main`) and use
+the layers in `dist/tailwind3/`. The preset does not work with Tailwind 4: its colors are
+Tailwind 3 color functions.
 
 ```js
 module.exports = {
-  content: [
-    './src/**/*.{ts,tsx}',
-  ],
-  important: false,
-  presets: [
-    require('@maggioli-design-system/styles'),
-  ],
+  content: ['./src/**/*.{ts,tsx}'],
+  presets: [require('@maggioli-design-system/styles')],
 }
 ```
 
@@ -163,17 +192,17 @@ module.exports = {
 
 ### Fonts
 
-Use `@fontsource` fonts, which are up to date with Google fonts, styles used in [Magma Design System][mds] are:
+Magma does not bundle webfonts: the type scale uses **Roboto** (titles and actions: 500,
+700, 900), **Karla** (UI text: 400, 700), **Merriweather** (reading text: 300, 400, plus 700
+for bold) and **Roboto Mono** (code: 400). Load them with `@fontsource`; the weights are
+the ones of the scale.
 
 #### TypeScript
-
-Importing fonts in TypeScript:
-
-```ts
 
 ```ts
 import '@fontsource/karla/400.css'
 import '@fontsource/karla/700.css'
+import '@fontsource/merriweather/300.css'
 import '@fontsource/merriweather/400.css'
 import '@fontsource/merriweather/700.css'
 import '@fontsource/roboto-mono/400.css'
@@ -184,18 +213,7 @@ import '@fontsource/roboto/900.css'
 
 #### CSS
 
-Importing fonts in CSS:
-
-```css
-@import '@fontsource/karla/400.css';
-@import '@fontsource/karla/700.css';
-@import '@fontsource/merriweather/400.css';
-@import '@fontsource/merriweather/700.css';
-@import '@fontsource/roboto-mono/400.css';
-@import '@fontsource/roboto/500.css';
-@import '@fontsource/roboto/700.css';
-@import '@fontsource/roboto/900.css';
-```
+In CSS use the `layer(vendor)` imports of the Integration block above.
 
 Fontsource supports [variable fonts][fontsource-var-fonts].
 
@@ -248,29 +266,111 @@ Never import this file. It only holds light-theme defaults, so loading it would 
 token at the highest-priority origin and freeze theming; it is wrapped in a query that can
 never match, which makes an accidental import a no-op.
 
+Do not install `vunguyentuan.vscode-css-variables` next to it: it sorts alphabetically,
+never opens the list by itself and duplicates every entry. To share the setup with the
+team, recommend the extensions in `.vscode/extensions.json`:
+
+```json
+{
+  "recommendations": ["phoenisx.cssvar", "bradlc.vscode-tailwindcss"],
+  "unwantedRecommendations": ["vunguyentuan.vscode-css-variables"]
+}
+```
+
+#### Tailwind classes
+
+The classes complete through [Tailwind CSS IntelliSense][tailwind-intellisense], which
+reads the CSS entry importing Tailwind and Magma's theme (see Tailwind above). It finds
+that file on its own, split imports included; only if hovering a class shows nothing, add
+`"tailwindCSS.experimental.configFile": "<path of that CSS file>"` to the settings. Classes
+built through functions (`clsx`, `cva`, `cn`) complete once those functions are listed in
+`"tailwindCSS.classFunctions"`.
+
+To check it works: hovering `p-600` shows `1.5rem = 24px`, and `bg-surface-default` gets a
+swatch in the completion list (the semantic utilities carry their light default as a
+fallback for that; see Semantic colors).
+
+Two limits, with nothing to configure:
+
+- the utilities are listed alphabetically, whatever the order of the theme:
+  `bg-surface-bisque-*` comes before `bg-surface-default`;
+- the class list offers Tailwind's stock spacing steps (`p-1` ... `p-96`), not Magma's,
+  and with Magma's theme `p-1` is 0.04px. Write the Magma steps in full (`p-600`,
+  `gap-400`): they work and hover with their value, they are just not suggested.
+
+---
+
+### Token data
+
+Two kinds of generated JSON describe this package for tools that read tokens rather than
+paint with them (a documentation site, a design tool). They complete the DTCG export of
+`@maggioli-design-system/design-tokens` (its README, "Token data (DTCG)"), and use the
+same names: a token is keyed by the custom property it is published as, the
+`$extensions["it.maggioli.magma"].css` of its DTCG entry. To style a page, use the
+stylesheets.
+
+| File | Content |
+| :--- | :--- |
+| `dist/dtcg/globals.tokens.json` | The globals this package declares: the `--magma-*` of `globals.css`, the corner axis, the depth axis of `theme.css`. Same DTCG 2025.10 shape as design-tokens, aliasing its tokens where the CSS names one (`--magma-radius-md` is `{radius.squircle-md}`) |
+| `dist/dtcg/corner-shape-round.tokens.json`, `theme-depth-flat.tokens.json` | What `[data-corner-shape='round']` and `:root[data-theme-depth='flat']` change |
+| `dist/dtcg/magma.resolver.json` | The resolver of design-tokens plus these sets: `base`, `globals`, then the `mode`, `theme`, `corner-shape` and `theme-depth` modifiers |
+| `dist/tailwind/consumption.json` | How each token is consumed through Tailwind 4 |
+
+design-tokens' `base.tokens.json` and `globals.tokens.json` together hold every global
+token of `tokens.editor.css`. The resolver points at the files of design-tokens as
+`../../../design-tokens/dist/dtcg/`: the two packages sit side by side in
+`node_modules/@maggioli-design-system/`, as they do in this repository.
+
+#### consumption.json
+
+```json
+"--magma-text-muted": { "theme": "--color-fg-muted", "namespace": "--color", "key": "fg-muted" }
+```
+
+- **`tokens`**: `theme` is the `@theme` variable that publishes the token; `namespace` and
+  `key` split it the way Tailwind reads it. Its utilities are `<root>-<key>` for every
+  root of `namespaces[namespace].utilities` (`text-fg-muted`, `bg-fg-muted`,
+  `border-fg-muted`, ...), its variants the patterns of `namespaces[namespace].variants`
+  with the key for `*` (`max-tablet:`, `@md:`).
+- **`shadowed`**: the roots (or variant patterns) where that class reads another
+  variable, and which one (`null`: none of the theme). `--container-xs` has
+  `"max-w": "--spacing-xs"`: `max-w-xs` is 4px, the container is `max-w-(--container-xs)`.
+- **`namespace: null`**: no utility reads the variable. Tailwind 4 has no `--border-*`
+  or `--duration-*` namespace, so `border-xs` does not exist and `duration-200` is
+  Tailwind's own 200ms, not the token: write `border-(length:--border-xs)`.
+- **`property`**: a value that comes with another token, Tailwind's
+  `--<variable>--<property>` (`--text-size-title-h1--line-height`).
+- **`spacing`**: `--spacing: 0.0025rem` multiplies every numeric step, so `gap-400` is
+  `400 x 0.0025rem = 1rem`. `utilities` lists the roots that take a step, `keys` the named
+  ones (`xs` ... `4xl`, `phrase`, `prose`, ...), `steps` the numeric keys the theme
+  publishes explicitly.
+- **`utilities`**: every `@utility` of `dist/tailwind/*.css` and of the design-tokens
+  sheets they import, with where it is defined, what it `@apply`s, the tokens and the
+  Tailwind theme variables it reads (`text-title-h1` reads Tailwind's `--font-weight-black`)
+  and its compiled CSS.
+
+The map is generated from Tailwind's own design system (the version is in `tailwind`),
+loaded on the entry point of the [Tailwind](#tailwind) section (`entry`): every class and
+variant Tailwind can generate is compiled, and nothing is listed by hand. It covers
+Tailwind 4 only; the Tailwind 3 preset is legacy.
+
 ---
 
 ### Dist folder
 
-The `dist` folder contains the following files:
-
-| Folder | For | File name |
-| --------- | ----------- | ----------- |
-| `css` | both | `globals.css` |
-| `css` | both | `reset.css` |
+| Folder | For | Files |
+| --- | --- | --- |
+| `css` | everyone | `layer.css` (the cascade layer order), `reset.css`, `globals.css` (the `--magma-*` globals and the corner axis), `colors-rgb.css` (+ one `colors-rgb-<group>.css` per group), `typography.css` (the non-color tokens: fonts, type sizes, spacing, radius, shadows), `semantic.css` (the semantic color roles), `themes.css` (the named themes), `hydrated.css`, `transitions.css`, `animations.css`, `base.css` |
+| `css` | plain css | `colors-hex.css` (+ per group), `utility-typography.css` (the `typography-*` classes), `theme.css` (the `--depth` axis) |
 | `css` | editors only, never import | `tokens.editor.css` |
-| `css` | plain css | `base.css` |
-| `css` | plain css | `colors-hex-*.css` |
-| `css` | plain css | `utility-typography.css` |
-| `css` | plain css | `typography.css` |
-| `css` | tailwind or web components | `colors-rgb-*.css` |
-| `tailwind` | tailwind | `base.css` |
-| `tailwind` | tailwind components | `components.css` |
+| `css` | tailwind (copied from design-tokens) | `tailwind-theme-color.css`, `tailwind-theme-typography.css` |
+| `tailwind` | Tailwind 4 | `theme.css` (palette, typography tokens, semantic colors; imports `semantic.css`), `typography.css` (the `text-title-*`, `text-info-*`, ... utilities), `utilities.css` (`focus-bounce`, `focus-zoom`, ...), `base.css`, `reset.css`, `semantic.css` |
+| `tailwind` | tools that read tokens | `consumption.json` (the Tailwind map, see [Token data](#token-data)) |
+| `dtcg` | tools that read tokens | `globals.tokens.json`, `corner-shape-round.tokens.json`, `theme-depth-flat.tokens.json`, `magma.resolver.json` |
+| `tailwind3` | Tailwind 3 | `base.css`, `components.css`, `reset.css`, `typography.css` |
 
 [mds]: https://magma.maggiolicloud.it/
-[css-variable-autocomplete]: https://marketplace.visualstudio.com/items?itemName=vunguyentuan.vscode-css-variables
+[css-variable-autocomplete]: https://marketplace.visualstudio.com/items?itemName=phoenisx.cssvar
+[tailwind-intellisense]: https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss
 [fontsource-var-fonts]: https://fontsource.org/docs/variable-fonts
-[tailwindcss-config]: https://gitlab.com/maggiolispa/ricerca-sviluppo-new-media/magma/design-system/-/blob/dev/projects/styles/tailwind.config.js
-[tailwindcss-doc]: https://tailwindcss.com/docs/installation
-[tailwindcss-dark]: https://tailwindcss.com/docs/dark-mode#supporting-system-preference-and-manual-selection
-[next-themes]: https://github.com/pacocoursey/next-themes#use
+[tailwindcss-config]: https://github.com/magma-design-system/magma/blob/main/projects/styles/tailwind.config.js

@@ -2,29 +2,32 @@ name: styles
 
 on:
   push:
-    branches: [dev, main]
+    branches: [main]
   pull_request:
+  # the merge queue of main runs the required checks here (docs/WORKFLOW.md, rule 1)
+  merge_group:
 
 concurrency:
-  # one run per ref: a newer push cancels the superseded run. On main, and for
-  # chore(release) pushes on any branch, each push gets its own group (no
-  # cancel, no queued-run replacement): chained chore(release) pushes must each
-  # complete their CI to provide the build artifact for their own publish run
-  group: ${{ github.workflow }}-${{ (github.ref == 'refs/heads/main' || startsWith(github.event.head_commit.message, 'chore(release):')) && github.sha || github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && !startsWith(github.event.head_commit.message, 'chore(release):') }}
+  # one run per ref: a newer push cancels the superseded run. A chore(release)
+  # push gets its own group (no cancel, no queued-run replacement): chained
+  # chore(release) pushes must each complete their CI to provide the build
+  # artifact for their own publish run
+  group: ${{ github.workflow }}-${{ startsWith(github.event.head_commit.message, 'chore(release):') && github.sha || github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.event.head_commit.message, 'chore(release):') }}
 
 jobs:
   styles:
-    # PRs from dev (release PRs) duplicate the CI already run on every push to dev
-    if: ${{ github.event_name != 'pull_request' || github.head_ref != 'dev' }}
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/styles/**
-      # the semantic layer is generated from the A9 contract, now owned by design-tokens
-      extra-path: projects/design-tokens/semantic.config.ts
+      # styles builds on design-tokens: the semantic layer comes from its A9 contract, and
+      # dist/dtcg + tailwind/consumption.json are keyed by the tokens of its dist/dtcg
+      extra-path: projects/design-tokens/**
       nx-project: styles
       # styles build also produces design-tokens dist (nx implicit dependency)
       artifact-paths: |
         projects/design-tokens/dist
         projects/styles/dist
       artifact-download-path: projects
+      run-tests: true
+      test-working-directory: projects/styles

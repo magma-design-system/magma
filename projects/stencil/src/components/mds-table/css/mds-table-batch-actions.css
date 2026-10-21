@@ -24,7 +24,7 @@
   @apply grid-cols-full auto-rows-min;
 
   background-color: var(--mds-table-background);
-  border-left: var(--mds-table-border-width) solid var(--mds-table-border-color);
+  border-left: var(--mds-table-border-width) solid var(--mds-table-separator-color);
   box-sizing: border-box;
   display: grid;
   flex-grow: 1;

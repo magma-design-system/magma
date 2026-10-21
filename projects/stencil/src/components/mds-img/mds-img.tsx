@@ -12,16 +12,19 @@ import {
 import { CrossoriginType, ReferrerpolicyType, ImageConsumptionType } from './meta/types';
 import { LoadingType } from '@type/loading';
 import { MdsImgEventDetail } from './meta/event-detail';
-import { setAttributeIfEmpty } from '@common/aria';
 import { ConsumptionModeType } from '@type/preference';
 import miBaselinePanorama from '@icon/mi/baseline/panorama.svg';
 import miBaselineBrokenImage from '@icon/mi/baseline/broken-image.svg';
 import { Locale } from '@common/locale';
+import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
+/**
+ * @part media - The native `<img>` that shows the picture
+ */
 @Component({
   tag: 'mds-img',
   styleUrl: 'mds-img.css',
@@ -31,7 +34,20 @@ export class MdsImg {
   @Element() private host: HTMLMdsImgElement;
   @State() imageConsumptionLoaded: boolean = false;
   @State() imageError: boolean = false;
-  private consumptionMode: ConsumptionModeType = 'high';
+  private storedConsumption: ConsumptionModeType | null = null;
+
+  /**
+   * The consumption the page applies, the one mds-pref-consumption publishes, read in render so
+   * the image follows a change; the stored choice stands in on a page without the controller. It
+   * used to be read once, on load, from the storage only (#826).
+   */
+  private get consumptionMode(): ConsumptionModeType {
+    return (
+      (preferenceStore.state.consumption as ConsumptionModeType | undefined) ??
+      this.storedConsumption ??
+      'high'
+    );
+  }
   private image: HTMLImageElement;
   private srcsetConsumptionData?: ImageConsumptionType;
   private t: Locale = new Locale({
@@ -42,15 +58,16 @@ export class MdsImg {
   });
 
   /**
-   * Specifies an alternate text for an image
+   * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left
+   * out by assistive technologies; without `alt` the image is named after its file
    */
-  @Prop({ mutable: true, reflect: true }) alt: string = '';
+  @Prop({ mutable: true, reflect: true }) alt: string;
 
   /**
-   * Allow images from third-party sites that allow
-   * cross-origin access to be used with canvas
+   * Fetches the image with CORS, as the `crossorigin` attribute of `<img>`: a third-party image
+   * can then be used with canvas, if its site allows it. Unset, the image is fetched without CORS
    */
-  @Prop() readonly crossorigin?: CrossoriginType = 'use-credentials';
+  @Prop() readonly crossorigin?: CrossoriginType;
 
   /**
    * The height attribute specifies the height of an image, in pixels.
@@ -64,13 +81,15 @@ export class MdsImg {
   @Prop() readonly loading?: LoadingType = 'lazy';
 
   /**
-   * Specifies which referrer information to use when fetching an image.
+   * Specifies which referrer information to use when fetching an image, as the `referrerpolicy`
+   * attribute of `<img>`. Unset, the policy of the page applies
    */
-  @Prop() readonly referrerpolicy?: ReferrerpolicyType = 'no-referrer-when-downgrade';
+  @Prop() readonly referrerpolicy?: ReferrerpolicyType;
 
   /**
    * One or more strings separated by commas, indicating a set of source sizes.
    * https://medium.com/@MRWwebDesign/responsive-images-the-sizes-attribute-and-unexpected-image-sizes-882a2eadb6db
+   * @example '(max-width: 600px) 480px, 960px'
    */
   @Prop() readonly sizes?: string;
 
@@ -83,16 +102,15 @@ export class MdsImg {
    * Specifies a list of image files to use in different situations.
    * Defines multiple sizes of the same image, allowing the browser
    * to select the appropriate image source.
+   * @example 'photo-480.jpg 480w, photo-960.jpg 960w'
    */
   @Prop() readonly srcset?: string;
 
   /**
-   * Specifies a list of image files to use in different situations.
-   * Defines multiple sizes of the same image, allowing the browser
-   * to select the appropriate image source based on consumption configuration.
-   * ```
-   * <mds-img srcset-consumption="image-black-n-white-1x.jpg low, image-1x.jpg medium, image-2x.jpg high"></mds-img>
-   * ```
+   * Specifies a list of image files to use in different situations: comma-separated, each file
+   * followed by the consumption level it is for (`low`, `medium`, `high`), so the component picks
+   * the image source that matches the consumption configuration.
+   * @example 'photo-bw-1x.jpg low, photo-1x.jpg medium, photo-2x.jpg high'
    */
   @Prop() readonly srcsetConsumption?: string;
 
@@ -111,9 +129,11 @@ export class MdsImg {
    */
   @Event({ eventName: 'mdsImgLoadSuccess' }) loadSuccessEvent: EventEmitter<MdsImgEventDetail>;
 
+  // a value removed, or emptied, leaves the image without levels, as on load
   @Watch('srcsetConsumption')
-  srcsetConsumptionHandler(newValue: string): void {
-    this.srcsetConsumptionData = this.formatConsumptionData(newValue);
+  srcsetConsumptionHandler(newValue?: string | null): void {
+    this.srcsetConsumptionData =
+      newValue != null && newValue !== '' ? this.formatConsumptionData(newValue) : undefined;
   }
 
   @Watch('src')
@@ -136,21 +156,18 @@ export class MdsImg {
     const imageConsumptionData: ImageConsumptionType = {};
 
     consumptionData.split(',').forEach((element) => {
-      const item = element
-        .trim()
-        .replace(/[ ]{2,}/g, ' ')
-        .split(' ');
-      if (item[1].toLocaleLowerCase() === 'low') {
-        imageConsumptionData.low = item[0];
+      const item = element.trim().split(/\s+/);
+      // a trailing comma leaves an empty entry; an image without its level is skipped, it used to
+      // throw (#825)
+      if (item[0] === '') return;
+      const level = item[1]?.toLocaleLowerCase();
+      if (level !== 'low' && level !== 'medium' && level !== 'high') {
+        console.warn(
+          `mds-img: ignoring the srcset-consumption entry "${element.trim()}", an image followed by low, medium or high`,
+        );
+        return;
       }
-
-      if (item[1].toLocaleLowerCase() === 'medium') {
-        imageConsumptionData.medium = item[0];
-      }
-
-      if (item[1].toLocaleLowerCase() === 'high') {
-        imageConsumptionData.high = item[0];
-      }
+      imageConsumptionData[level] = item[0];
     });
 
     return imageConsumptionData;
@@ -164,35 +181,32 @@ export class MdsImg {
     return '';
   };
 
-  private setAriaAttributes = (): void => {
-    setAttributeIfEmpty(this.host, 'aria-label', this.alt);
-  };
-
   private readonly handleConsumptionLoadClick = (): void => {
     this.imageConsumptionLoaded = true;
   };
 
   componentWillLoad(): void {
-    this.consumptionMode =
-      (localStorage.getItem('mdsPrefConsumption') as ConsumptionModeType) ?? 'high';
+    this.storedConsumption = localStorage.getItem('mdsPrefConsumption') as ConsumptionModeType;
     if (this.srcsetConsumption != null && this.srcsetConsumption !== '') {
       this.srcsetConsumptionData = this.formatConsumptionData(this.srcsetConsumption);
     }
 
     this.image = this.host.querySelector<HTMLImageElement>('img') as HTMLImageElement;
-    if ((this.alt ?? '') === '') {
+    // a missing alt (null too, what a framework binds for a missing attribute) is named after
+    // the file; an empty one is the author saying the image is decorative, and stays empty
+    if (this.alt == null) {
       this.alt = this.autoAltName();
     }
   }
 
-  componentDidLoad(): void {
-    this.setAriaAttributes();
-  }
+  // an image is named by its alt, and a decorative one is left out of the accessibility tree
+  private hostRole = (): { role: string; 'aria-label'?: string } =>
+    (this.alt ?? '') === '' ? { role: 'presentation' } : { role: 'img', 'aria-label': this.alt };
 
   render() {
     if (this.imageError) {
       return (
-        <Host aria-label={this.alt} role="img">
+        <Host {...this.hostRole()}>
           <div class="contrast-area-50"></div>
           <div class="alt-text-container alt-text-container--error alt-text-container--default-aspect-ratio">
             <mds-icon class="icon" name={miBaselineBrokenImage}></mds-icon>
@@ -207,7 +221,7 @@ export class MdsImg {
     if (this.srcsetConsumptionData) {
       if (this.consumptionMode === 'low') {
         return (
-          <Host aria-label={this.alt} role="img" onClick={this.handleConsumptionLoadClick}>
+          <Host {...this.hostRole()} onClick={this.handleConsumptionLoadClick}>
             <div class="contrast-area-50"></div>
             {!this.imageConsumptionLoaded ? (
               <div
@@ -230,13 +244,15 @@ export class MdsImg {
               </div>
             ) : (
               <img
-                alt={this.alt}
+                alt={this.alt ?? ''}
                 aria-hidden="true"
+                crossorigin={this.crossorigin}
                 height={this.height}
                 loading={this.loading}
                 onError={this.onError}
                 onLoad={this.onSuccess}
                 part="media"
+                referrerPolicy={this.referrerpolicy}
                 sizes={this.sizes}
                 src={this.srcsetConsumptionData[this.consumptionMode] ?? this.src}
                 srcset={this.srcset}
@@ -248,16 +264,18 @@ export class MdsImg {
       }
 
       return (
-        <Host aria-label={this.alt} role="img">
+        <Host {...this.hostRole()}>
           <div class="contrast-area-50"></div>
           <img
-            alt={this.alt}
+            alt={this.alt ?? ''}
             aria-hidden="true"
+            crossorigin={this.crossorigin}
             height={this.height}
             loading={this.loading}
             onError={this.onError}
             onLoad={this.onSuccess}
             part="media"
+            referrerPolicy={this.referrerpolicy}
             sizes={this.sizes}
             src={this.srcsetConsumptionData[this.consumptionMode] ?? this.src}
             srcset={this.srcset}
@@ -268,16 +286,18 @@ export class MdsImg {
     }
 
     return (
-      <Host aria-label={this.alt} role="img">
+      <Host {...this.hostRole()}>
         <div class="contrast-area-50"></div>
         <img
-          alt={this.alt}
+          alt={this.alt ?? ''}
           aria-hidden="true"
+          crossorigin={this.crossorigin}
           height={this.height}
           loading={this.loading}
           onError={this.onError}
           onLoad={this.onSuccess}
           part="media"
+          referrerPolicy={this.referrerpolicy}
           sizes={this.sizes}
           src={this.src}
           srcset={this.srcset}

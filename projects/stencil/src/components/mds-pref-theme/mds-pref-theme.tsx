@@ -1,4 +1,17 @@
-import { Component, Element, Event, EventEmitter, Host, h, Prop, State } from '@stencil/core';
+import {
+  Build,
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  forceUpdate,
+  Host,
+  h,
+  Listen,
+  Prop,
+  State,
+  Watch,
+} from '@stencil/core';
 import { MdsPrefThemeEventDetail } from '@event/theme';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 import {
@@ -8,6 +21,7 @@ import {
 } from '@type/preference';
 import { Locale } from '@common/locale';
 import { MODE_VALUES, preferenceStore } from '@common/preference';
+import { labelFromName } from '@common/string';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
@@ -32,6 +46,10 @@ export class MdsPrefTheme {
   private readonly localStorageAliasThemeScheme: string = 'mdsPrefThemeScheme';
   private readonly localStorageAliasCornerShape: string = 'mdsPrefCornerShape';
   private currentSelectedItem: HTMLMdsPrefThemeItemElement;
+  private itemsObserver?: MutationObserver;
+  // the theme (`name/scheme`) and the corner shape this instance applied last
+  private appliedTheme?: string;
+  private appliedCornerShape?: PreferenceCornerShapeChoiceType;
   private themeItems: NodeListOf<HTMLMdsPrefThemeItemElement>;
   private userThemeName: string | null;
   private userThemeScheme: PreferenceThemeSchemeType | null;
@@ -59,8 +77,8 @@ export class MdsPrefTheme {
 
   /**
    * Specifies the theme name attribute
-   * A string representing the theme name, should be a simple string name or kebab kase name.
-   * `Examples of valid language codes include "magma", "maggioli-editore", etc.`
+   * A string representing the theme name, in lowercase kebab-case.
+   * @example 'maggioli-editore'
    */
   @Prop({ mutable: true, reflect: true }) name: string = 'default';
 
@@ -97,21 +115,104 @@ export class MdsPrefTheme {
    */
   @Event({ eventName: 'mdsPrefChange' }) prefChangeEvent: EventEmitter<MdsPrefChangeEventDetail>;
 
+  /*
+   * A `name`, `scheme` or `cornerShape` set from a script is stored, as a pick is. Every render
+   * reads the storage back before the props, so that an instance follows a pick made in another
+   * one, and it undid the value as soon as it was set. The render applies it from the storage.
+   * The values the component sets itself are the ones it stores right after; a value it would
+   * refuse to apply is not stored.
+   */
+  @Watch('name')
+  handleNameChange(name?: string | null): void {
+    if (name == null || !/^[a-z]+(-[a-z]+)*$/.test(name)) return;
+    // the names the render refuses too: the mode values and the ones of the scheme classes
+    if (MODE_VALUES.includes(name) || name === 'scheme' || name.startsWith('scheme-')) return;
+    localStorage.setItem(this.localStorageAliasThemeName, name);
+  }
+
+  @Watch('scheme')
+  handleSchemeChange(scheme?: string | null): void {
+    if (scheme == null || !{}.hasOwnProperty.call(this.schemeSet, scheme)) return;
+    localStorage.setItem(this.localStorageAliasThemeScheme, scheme);
+  }
+
+  @Watch('cornerShape')
+  handleCornerShapeChange(shape?: string | null): void {
+    if (shape == null || !(preferenceCornerShapeChoiceType as readonly string[]).includes(shape)) {
+      return;
+    }
+    localStorage.setItem(this.localStorageAliasCornerShape, shape);
+  }
+
+  connectedCallback(): void {
+    if (!Build.isBrowser) return;
+    // the trigger shows the label of an item: render again when one is renamed, relabelled
+    // (a page that switches language) or added, as the items reflect both attributes. Set up
+    // on every connection, since a move disconnects the host without loading it again
+    this.itemsObserver = new MutationObserver(() => forceUpdate(this.element));
+    this.itemsObserver.observe(this.element, {
+      attributeFilter: ['label', 'name'],
+      childList: true,
+      subtree: true,
+    });
+  }
+
   componentDidLoad(): void {
     this.checkThemeSelect();
   }
 
+  disconnectedCallback(): void {
+    this.itemsObserver?.disconnect();
+    this.itemsObserver = undefined;
+  }
+
   componentWillRender(): void {
-    this.userThemeName = localStorage.getItem(this.localStorageAliasThemeName);
-    this.userThemeScheme = localStorage.getItem(this.localStorageAliasThemeScheme) as
-      | PreferenceThemeSchemeType
-      | 'all';
+    this.userThemeName = this.storedChoice(this.localStorageAliasThemeName, this.isThemeName);
+    this.userThemeScheme = this.storedChoice(this.localStorageAliasThemeScheme, this.isScheme);
     this.setTheme(this.userThemeName ?? this.name, this.userThemeScheme ?? this.scheme);
-    this.userCornerShape = localStorage.getItem(
-      this.localStorageAliasCornerShape,
-    ) as PreferenceCornerShapeChoiceType | null;
+    this.userCornerShape = this.storedChoice(this.localStorageAliasCornerShape, this.isCornerShape);
     this.setCornerShape(this.userCornerShape ?? this.cornerShape);
   }
+
+  /**
+   * The stored choice, or null when there is none or it is one the component cannot apply: an
+   * earlier version stored an unchecked scheme, which then broke every following load (#825).
+   */
+  private readonly storedChoice = <T extends string>(
+    key: string,
+    isValid: (value: string) => value is T,
+  ): T | null => {
+    const value = localStorage.getItem(key);
+    if (value === null || isValid(value)) return value as T | null;
+    localStorage.removeItem(key);
+    return null;
+  };
+
+  // a mode value would be taken for a v1 mode by the storage migration, and a `scheme` name
+  // would write a `pref-theme-scheme-*` class of the scheme axis
+  private readonly isThemeName = (name?: string | null): name is string =>
+    name != null &&
+    /^[a-z]+(-[a-z]+)*$/.test(name) &&
+    !MODE_VALUES.includes(name) &&
+    name !== 'scheme' &&
+    !name.startsWith('scheme-');
+
+  private readonly isScheme = (scheme?: string | null): scheme is PreferenceThemeSchemeType =>
+    scheme != null && {}.hasOwnProperty.call(this.schemeSet, scheme);
+
+  private readonly isCornerShape = (shape: string): shape is PreferenceCornerShapeChoiceType =>
+    (preferenceCornerShapeChoiceType as readonly string[]).includes(shape);
+
+  /**
+   * The text of the trigger: the label of the item for the active theme, as the open list
+   * shows it, or, when no item matches, the label an item derives from the name.
+   */
+  private readonly triggerLabel = (): string => {
+    const item = Array.from(this.element.querySelectorAll('mds-pref-theme-item')).find(
+      (element) => (element.name ?? element.getAttribute('name') ?? 'default') === this.name,
+    );
+    return item?.label || item?.getAttribute('label') || labelFromName(this.name);
+  };
 
   private readonly toggleDropdown = (): void => {
     this.showDropdown = !this.showDropdown;
@@ -127,38 +228,52 @@ export class MdsPrefTheme {
     });
   };
 
+  // A pick reaches the component from any item, one added after load too: the listener sits on
+  // the host, where the event of the item bubbles, instead of on each item found on load (#826)
+  @Listen('mdsPrefThemeItemSelect')
+  handleItemSelect(e: CustomEvent): void {
+    this.changeThemeItem();
+    this.currentSelectedItem = e.target as HTMLMdsPrefThemeItemElement;
+    this.currentSelectedItem.selected = true;
+    const name: string = e.detail.name.toLowerCase();
+    const scheme: PreferenceThemeSchemeType = e.detail.scheme.toLowerCase();
+    this.themeChangeEvent.emit({ name, scheme });
+    this.showDropdown = false;
+    this.setTheme(name, scheme);
+  }
+
+  // the items, read again when they change, mark the theme in place
   private readonly checkThemeSelect = (): void => {
     this.themeItems = this.element.querySelectorAll('mds-pref-theme-item');
-    this.themeItems.forEach((element) => {
-      element.addEventListener('mdsPrefThemeItemSelect', (e: CustomEvent) => {
-        this.changeThemeItem();
-        this.currentSelectedItem = e.currentTarget as HTMLMdsPrefThemeItemElement;
-        this.currentSelectedItem.selected = true;
-        const name: string = e.detail.name.toLowerCase();
-        const scheme: PreferenceThemeSchemeType = e.detail.scheme.toLowerCase();
-        this.themeChangeEvent.emit({ name, scheme });
-        this.showDropdown = false;
-        this.setTheme(name, scheme);
-      });
-    });
-
     this.themeItems.forEach((element) => {
       element.selected = element.name === this.name;
     });
   };
 
   private readonly setTheme = (name: string, scheme: PreferenceThemeSchemeType): void => {
-    if (!/^[a-z]+(-[a-z]+)*$/gm.exec(name)) {
-      throw Error(`Theme name not valid: ${name}`);
+    // a theme the component cannot write is ignored, neither applied nor stored: it used to throw,
+    // and an unknown scheme was written as a class named `undefined` and stored (#825)
+    if (!this.isThemeName(name)) {
+      console.warn(
+        `mds-pref-theme: ignoring the invalid theme name "${name}", a kebab-case name that is no mode or scheme name`,
+      );
+      return;
     }
-    // A mode value would be taken for a v1 mode by the storage migration, and a
-    // `scheme` name would write a `pref-theme-scheme-*` class of the scheme axis.
-    if (MODE_VALUES.includes(name) || name === 'scheme' || name.startsWith('scheme-')) {
-      throw Error(`Theme name reserved: ${name}`);
+    if (!this.isScheme(scheme)) {
+      console.warn(
+        `mds-pref-theme: ignoring the invalid scheme "${scheme}", use one of: ${Object.keys(this.schemeSet).join(', ')}`,
+      );
+      return;
     }
     this.name = name;
     this.scheme = scheme;
-    this.prefChangeEvent.emit({ preference: 'theme' });
+    // every render comes here (the storage is read again, so a pick made in another instance is
+    // followed): only a change is applied and announced, and the first application, the one of
+    // load, is no change. It used to emit mdsPrefChange on every render
+    const theme = `${name}/${scheme}`;
+    if (theme === this.appliedTheme) return;
+    const isFirstApplication = this.appliedTheme === undefined;
+    this.appliedTheme = theme;
     localStorage.setItem(this.localStorageAliasThemeName, this.name);
     localStorage.setItem(this.localStorageAliasThemeScheme, this.scheme);
 
@@ -182,6 +297,9 @@ export class MdsPrefTheme {
       this.previousName = this.name;
     }
     preferenceStore.state['theme-scheme'] = this.scheme;
+    if (!isFirstApplication) {
+      this.prefChangeEvent.emit({ preference: 'theme' });
+    }
   };
 
   /**
@@ -199,11 +317,17 @@ export class MdsPrefTheme {
     if (shape === undefined || shape === null) {
       return;
     }
-    if (!(preferenceCornerShapeChoiceType as readonly string[]).includes(shape)) {
-      throw Error(`Corner shape not valid: ${shape}`);
+    if (!this.isCornerShape(shape)) {
+      console.warn(
+        `mds-pref-theme: ignoring the invalid corner shape "${shape}", use one of: ${preferenceCornerShapeChoiceType.join(', ')}`,
+      );
+      return;
     }
     this.cornerShape = shape;
-    this.prefChangeEvent.emit({ preference: 'corner-shape' });
+    // as for the theme: applied and announced on a change only
+    if (shape === this.appliedCornerShape) return;
+    const isFirstApplication = this.appliedCornerShape === undefined;
+    this.appliedCornerShape = shape;
     localStorage.setItem(this.localStorageAliasCornerShape, shape);
 
     if (typeof document !== 'undefined') {
@@ -215,6 +339,9 @@ export class MdsPrefTheme {
       }
     }
     preferenceStore.state['corner-shape'] = shape === 'default' ? undefined : shape;
+    if (!isFirstApplication) {
+      this.prefChangeEvent.emit({ preference: 'corner-shape' });
+    }
   };
 
   render() {
@@ -233,7 +360,7 @@ export class MdsPrefTheme {
               class="item item--theme"
               icon-position="right"
               icon={this.showDropdown ? miBaselineKeyboardArrowUp : miBaselineKeyboardArrowDown}
-              label={this.name}
+              label={this.triggerLabel()}
             ></mds-tab-item>
           </mds-tab>
         </div>
@@ -244,7 +371,7 @@ export class MdsPrefTheme {
           visible={this.showDropdown}
           onMdsDropdownHide={this.hideThemeDropdownSelect}
         >
-          <slot></slot>
+          <slot onSlotchange={this.checkThemeSelect}></slot>
         </mds-dropdown>
       </Host>
     );

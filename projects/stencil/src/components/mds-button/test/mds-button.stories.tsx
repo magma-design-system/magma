@@ -100,8 +100,12 @@ const TemplateNotifications = (args) => (
   </mds-button>
 );
 
-const TemplateAwait = () => {
+// takes args even if it drives most props itself: Storybook infers the controls only for
+// render functions with at least one parameter
+const TemplateAwait = (args) => {
   const [buttonState, setButtonState] = useState(0);
+  // the await control forces the loading state, a click plays the whole cycle
+  const state = args.await ? 1 : buttonState;
 
   const iconMap = {
     0: 'mi/baseline/eco',
@@ -139,14 +143,15 @@ const TemplateAwait = () => {
 
   return (
     <mds-button
-      icon={iconMap[buttonState]}
-      variant={variantsMap[buttonState]}
-      tone={tonesMap[buttonState]}
-      await={buttonState === 1}
+      {...args}
+      icon={iconMap[state]}
+      variant={variantsMap[state]}
+      tone={tonesMap[state]}
+      await={state === 1}
       onClick={() => {
-        if (buttonState === 0) setLoadingState();
+        if (state === 0) setLoadingState();
       }}
-      label={getLabel(buttonState)}
+      label={getLabel(state)}
     ></mds-button>
   );
 };
@@ -353,8 +358,7 @@ export const Await = {
   render: TemplateAwait,
 
   args: {
-    tone: 'weak',
-    await: true,
+    await: false,
   },
 };
 
@@ -364,11 +368,14 @@ export const Disabled = {
   args: {
     disabled: false,
   },
-  play: async ({ canvas, userEvent }) => {
+  play: async ({ canvas, canvasElement, userEvent }) => {
     const button = await canvas.findByRole('button');
     expect(button).not.toBeDisabled();
     await userEvent.click(button);
     expect(button).toBeDisabled();
+    // back to false, as a control switched off: the attribute goes, the button is enabled again
+    await userEvent.click(canvasElement.querySelector('mds-button[label="Reset"]')!);
+    await waitFor(() => expect(button).not.toBeDisabled());
   },
 };
 

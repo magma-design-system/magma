@@ -3,7 +3,9 @@ import { horizontalActionsAnimationDictionary } from '@type/animation';
 import { directionDictionary } from '../meta/dictionary';
 import { tabSizeDictionary } from '@type/button';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
+import { expect, waitFor } from 'storybook/test';
+import { NavigationService } from '@common/navigation';
 
 export default {
   title: 'UI / Tab',
@@ -446,6 +448,87 @@ const TemplateStretchHeight = (args) => {
   );
 };
 
+// the tab items are the links of a client-side router, which renders the route itself: the
+// strip has no content panels. The hrefs are fragments so that the preview stays on the page
+// should a click get through (#806)
+const TemplateClientSideRouter = () => {
+  const [route, setRoute] = useState('#home');
+
+  // what a router does with a link: the modifier clicks are left to the browser (new tab), the
+  // plain ones are cancelled and the route is rendered on the client
+  const navigate = (event: MouseEvent, href: string) => {
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+      return;
+    }
+    event.preventDefault();
+    setRoute(href);
+  };
+
+  return (
+    <div class="grid gap-600">
+      <mds-tab>
+        <mds-tab-item
+          href="#home"
+          label="Home"
+          selected
+          onClick={(event) => navigate(event, '#home')}
+        ></mds-tab-item>
+        <mds-tab-item
+          href="#other"
+          label="Other"
+          onClick={(event) => navigate(event, '#other')}
+        ></mds-tab-item>
+      </mds-tab>
+      <mds-text>Route: {route}</mds-text>
+    </div>
+  );
+};
+
+// A stand-in for the router of an app: one route the pages read, changed by navigate(). It is
+// a module-level store, as a real router is, because Storybook renders a story in more than one
+// React root and the handler registered last has to update the one on screen (#806)
+const router = (() => {
+  let route = '#home';
+  const listeners = new Set<() => void>();
+  const notify = () => listeners.forEach((listener) => listener());
+  return {
+    navigate: (href: string) => {
+      route = href;
+      notify();
+    },
+    reset: () => {
+      route = '#home';
+      notify();
+    },
+    getRoute: () => route,
+    subscribe: (listener: () => void) => {
+      listeners.add(listener);
+      return () => {
+        listeners.delete(listener);
+      };
+    },
+  };
+})();
+
+// The router registers once through NavigationService and the items keep only their href: no
+// click listener, the strip routes on the client (#806)
+const TemplateNavigationService = () => {
+  const route = useSyncExternalStore(router.subscribe, router.getRoute);
+
+  // setHandler returns the function that removes the handler: the cleanup of the effect
+  useEffect(() => NavigationService.setHandler(router.navigate), []);
+
+  return (
+    <div class="grid gap-600">
+      <mds-tab>
+        <mds-tab-item href="#home" label="Home" selected></mds-tab-item>
+        <mds-tab-item href="#other" label="Other"></mds-tab-item>
+      </mds-tab>
+      <mds-text>Route: {route}</mds-text>
+    </div>
+  );
+};
+
 export const Default = {
   render: Template,
 };
@@ -520,4 +603,75 @@ export const AddTab = {
 
 export const StretchHeight = {
   render: TemplateStretchHeight,
+};
+
+export const UseCaseNavigationService = {
+  render: TemplateNavigationService,
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const items = Array.from<HTMLMdsTabItemElement>(canvasElement.querySelectorAll('mds-tab-item'));
+    await Promise.all(items.map((item) => item.componentOnReady()));
+    const [home, other] = items.map((item) =>
+      item.shadowRoot!.querySelector('mds-button')!.shadowRoot!.querySelector('a')!,
+    );
+    const hash = window.location.hash;
+    try {
+      await userEvent.click(other);
+      // the registered router rendered the route, the document stayed where it was
+      await canvas.findByText('Route: #other');
+      expect(window.location.hash).toBe(hash);
+      await waitFor(() => expect(items[1]).toHaveAttribute('selected'));
+
+      // a modifier click never reaches the router: the browser opens the link elsewhere (the
+      // document stands in for it here), the strip keeps its selection
+      document.addEventListener('click', (event) => event.preventDefault(), { once: true });
+      await userEvent.keyboard('{Control>}');
+      await userEvent.click(home);
+      await userEvent.keyboard('{/Control}');
+      expect(canvas.getByText('Route: #other')).toBeInTheDocument();
+      expect(window.location.hash).toBe(hash);
+      expect(items[1]).toHaveAttribute('selected');
+    } finally {
+      router.reset();
+      const { pathname, search } = window.location;
+      window.history.replaceState(null, '', `${pathname}${search}${hash}`);
+    }
+  },
+};
+
+export const UseCaseClientSideRouter = {
+  render: TemplateClientSideRouter,
+  // #806: the item used to load the page on click whatever the router decided, and a modifier
+  // click landed in the same tab instead of a new one
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const items = Array.from<HTMLMdsTabItemElement>(canvasElement.querySelectorAll('mds-tab-item'));
+    await Promise.all(items.map((item) => item.componentOnReady()));
+    // the pointer lands on the anchor the inner button renders for its href
+    const [home, other] = items.map((item) =>
+      item.shadowRoot!.querySelector('mds-button')!.shadowRoot!.querySelector('a')!,
+    );
+    const hash = window.location.hash;
+    try {
+      await userEvent.click(other);
+      // the router rendered the route and cancelled the click: the document stays where it was
+      await canvas.findByText('Route: #other');
+      expect(window.location.hash).toBe(hash);
+      // the strip moved its selection too (reflected at the next render)
+      await waitFor(() => expect(items[1]).toHaveAttribute('selected'));
+
+      // a modifier click belongs to the browser, which opens the link in a new tab: the document
+      // stands in for it here, a new tab being nothing the test runner can have. The router
+      // leaves the click alone, the strip keeps its selection
+      document.addEventListener('click', (event) => event.preventDefault(), { once: true });
+      await userEvent.keyboard('{Control>}');
+      await userEvent.click(home);
+      await userEvent.keyboard('{/Control}');
+      expect(canvas.getByText('Route: #other')).toBeInTheDocument();
+      expect(window.location.hash).toBe(hash);
+      expect(items[1]).toHaveAttribute('selected');
+    } finally {
+      // leave the preview URL as it was found
+      const { pathname, search } = window.location;
+      window.history.replaceState(null, '', `${pathname}${search}${hash}`);
+    }
+  },
 };

@@ -25,7 +25,9 @@ import { DirectionType } from './meta/type';
  * @part contents - Selects the container of the tabbed contents elements.
  * @part slider - Selects the slider element which is visible when attribute `animation` is set to `slide`.
  * @part tabs - Selects the container of `mds-tab-item` list elements.
- * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added.
+ * @slot content - Add `HTML elements` or `components`, one per mds-tab-item added; or none, when the
+ * items are links (`href`) to other pages or places and the page, not the component, shows the
+ * content.
  * @slot - Add `mds-tab-item` element/s.
  */
 
@@ -48,8 +50,13 @@ export class MdsTab {
   @State() sliderHeight: number = -1;
   @State() sliderOffsetX: number = -1;
   @State() sliderOffsetY: number = -1;
+  /** the slider slides only to follow a selection, any other move draws it in place */
+  @State() sliderSlides: boolean = false;
   @State() overflowLeft: boolean = false;
   @State() overflowRight: boolean = false;
+  /** every item is a link: the strip is a navigation, not a tablist */
+  @State() navigation: boolean = false;
+  @State() hasContent: boolean = false;
 
   /**
    * Sets if the component distributes item vertically or horzontally
@@ -91,6 +98,7 @@ export class MdsTab {
 
   componentWillLoad(): void {
     this.setTabsItems();
+    this.hasContent = this.queryContentItems().length > 0;
   }
 
   disconnectedCallback(): void {
@@ -115,9 +123,18 @@ export class MdsTab {
 
   private updateContentItems = (): void => {
     this.contentItems = this.queryContentItems();
+    this.hasContent = this.contentItems.length > 0;
+    // a panel past the last item has no tab to open it: it stays hidden, named by nothing
+    if (this.contentItems.length > this.tabItems.length) {
+      console.warn(
+        `mds-tab: ${this.contentItems.length} content panels for ${this.tabItems.length} mds-tab-item, the panels past the last item are never shown`,
+      );
+    }
     this.contentItems.forEach((item: HTMLElement, key: number): void => {
       setAttributeIfEmpty(item, 'role', 'tabpanel');
-      setAttributeIfEmpty(item, 'aria-labelledby', this.tabItems[key].id);
+      if (key < this.tabItems.length) {
+        setAttributeIfEmpty(item, 'aria-labelledby', this.tabItems[key].id);
+      }
     });
     this.selectContentItem();
   };
@@ -127,6 +144,8 @@ export class MdsTab {
       this.element.querySelectorAll<HTMLMdsTabItemElement>('mds-tab-item'),
     );
     this.currentItemIndex = -1;
+    this.navigation =
+      this.tabItems.length > 0 && this.tabItems.every((item) => (item.href ?? '') !== '');
     this.tabItems.forEach((item) => {
       item.size = this.size;
       item.direction = this.direction;
@@ -177,9 +196,19 @@ export class MdsTab {
     this.overflowRight = Math.ceil(scrollLeft + containerWidth) < tabsWidth - 1;
   };
 
-  private updateSliderPosition = (): void => {
+  /**
+   * Moves the slider under the selected item. It slides there only to follow a selection
+   * (`slide`): on load, after a change of the layout, or when the strip is shown again after
+   * being hidden, it is drawn in place, so the strip appears with the selected tab already
+   * marked (#924).
+   */
+  private updateSliderPosition = (slide = false): void => {
     if (this.animation === 'slide' && this.currentItemIndex >= 0) {
       self.requestAnimationFrame(() => {
+        // a hidden strip has no box, and every measure reads 0: the slider keeps its place
+        // instead of collapsing in the corner, and the observer moves it once the strip is shown
+        if (!this.currentItemEl.offsetWidth) return;
+        this.sliderSlides = slide;
         this.sliderWidth = this.currentItemEl.offsetWidth;
         this.sliderHeight = this.currentItemEl.offsetHeight;
         this.sliderOffsetX = this.currentItemEl.offsetLeft - this.tabsContainer.offsetLeft;
@@ -198,6 +227,8 @@ export class MdsTab {
   };
 
   private scrollTabs = (key: number): void => {
+    // no item selected: nothing to bring into view
+    if (key < 0 || key >= this.tabItems.length) return;
     const tabItem = this.tabItems[key];
     setTimeout(() => {
       this.tabs.scrollLeft =
@@ -248,7 +279,7 @@ export class MdsTab {
       item.selected = undefined;
     });
     this.selectContentItem();
-    this.updateSliderPosition();
+    this.updateSliderPosition(true);
   }
 
   @Listen('mdsTabItemFocus')
@@ -313,7 +344,13 @@ export class MdsTab {
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
-        <div class={clsx('tabs-wrapper', this.fill && 'tabs-wrapper--fill')}>
+        <div
+          class={clsx(
+            'tabs-wrapper',
+            this.fill && 'tabs-wrapper--fill',
+            !this.hasContent && 'tabs-wrapper--no-content',
+          )}
+        >
           {this.overflow && (
             <div
               class={clsx(
@@ -330,11 +367,11 @@ export class MdsTab {
               )}
             ></div>
           )}
-          <div class="tabs" part="tabs" role="tablist">
+          <div class="tabs" part="tabs" role={this.navigation ? undefined : 'tablist'}>
             <slot />
             {this.animation === 'slide' && (
               <div
-                class="slider"
+                class={clsx('slider', !this.sliderSlides && 'slider--still')}
                 part="slider"
                 style={{
                   '--mds-tab-slider-width': `${this.sliderWidth}px`,
@@ -346,7 +383,7 @@ export class MdsTab {
             )}
           </div>
         </div>
-        <div class="contents" part="contents">
+        <div class={clsx('contents', !this.hasContent && 'contents--empty')} part="contents">
           <slot name="content" onSlotchange={this.updateContentItems} />
         </div>
       </Host>

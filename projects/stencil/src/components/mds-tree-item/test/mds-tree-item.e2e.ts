@@ -1,11 +1,34 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 import { describeConditionalSlot } from '@test/slot';
+import globals from '../../../../../styles/dist/css/globals.css?raw';
+import typography from '../../../../../styles/dist/css/typography.css?raw';
 
 describe('mds-tree-item', () => {
   it('renders', async () => {
     const { root } = await render('<mds-tree-item></mds-tree-item>');
 
     expect(root).toHaveAttribute('hydrated');
+  });
+
+  // #824: the event waited for --mds-dropdown-backdrop-duration, which nothing sets on a tree,
+  // so it always came 1000 ms after the collapse
+  it('emits mdsTreeItemCollapse once the branch has closed', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render(`
+      <mds-tree style="--mds-tree-transition-duration: 50ms">
+        <mds-tree-item label="Archivio" expanded>
+          <mds-tree-item label="Fatture"></mds-tree-item>
+        </mds-tree-item>
+      </mds-tree>`);
+    const item = root.querySelector<HTMLMdsTreeItemElement>('mds-tree-item')!;
+    const collapse = spyOnEvent('mdsTreeItemCollapse');
+
+    item.expanded = false;
+    await waitForChanges();
+    const collapsed = performance.now();
+    await vi.waitFor(() => expect(collapse).toHaveReceivedEvent(), { timeout: 1500 });
+
+    expect(performance.now() - collapsed).toBeLessThan(500);
   });
 
   describe('the branch that connects an item to the one above', () => {
@@ -74,9 +97,87 @@ describe('mds-tree-item', () => {
     });
   });
 
+  // #998: the folder toggle read `var(--radius)`, which no layer defines, so its corners
+  // computed to 0px under every shape
+  describe('the folder toggle', () => {
+    let sheet: HTMLStyleElement | undefined;
+
+    /** The scale steps and the corner axis a consumer page loads. */
+    const onTheAxis = (shape?: string): void => {
+      sheet = document.createElement('style');
+      sheet.textContent = [typography, globals].join('\n');
+      document.head.append(sheet);
+      if (shape) document.documentElement.dataset.cornerShape = shape;
+    };
+
+    afterEach(() => {
+      sheet?.remove();
+      delete document.documentElement.dataset.cornerShape;
+    });
+
+    it.each([
+      ['round', 'round', '4px'],
+      ['squircle, the default', undefined, '6px'],
+    ])('takes the 3xs step of the axis under %s', async (_, shape, radius) => {
+      onTheAxis(shape);
+      const { root } = await render(`
+        <mds-tree toggle="folder">
+          <mds-tree-item label="Folder"><mds-tree-item label="File"></mds-tree-item></mds-tree-item>
+        </mds-tree>`);
+
+      const toggle = root
+        .querySelector('mds-tree-item')!
+        .shadowRoot!.querySelector('.toggle-icon mds-button')!;
+      const style = getComputedStyle(toggle);
+
+      expect([
+        style.borderTopLeftRadius,
+        style.borderTopRightRadius,
+        style.borderBottomRightRadius,
+        style.borderBottomLeftRadius,
+      ]).toEqual([radius, radius, radius, radius]);
+    });
+  });
+
   describeConditionalSlot({
     html: '<mds-tree-item label="Item"></mds-tree-item>',
     slot: 'action',
     region: '.actions-container',
+  });
+
+  // #826: whether an item has children was read once, on load, and the folder icon followed only
+  // a click, not the branch the tree opened
+  describe('a branch', () => {
+    beforeEach(mockIconFetch);
+
+    it('loaded after the item gets the toggle and the lines of a branch', async () => {
+      const { root } = await render('<mds-tree-item label="Parent"></mds-tree-item>');
+      const header = root.shadowRoot!.querySelector('.header')!;
+      expect(header).not.toHaveClass('header--has-children');
+
+      root.appendChild(document.createElement('mds-tree-item'));
+
+      await vi.waitFor(() => expect(header).toHaveClass('header--has-children'));
+    });
+
+    it('opened and closed by the tree shows the folder it is in', async () => {
+      const { root, waitForChanges } = await render(`
+        <mds-tree toggle="folder">
+          <mds-tree-item label="Parent"><mds-tree-item label="Child"></mds-tree-item></mds-tree-item>
+        </mds-tree>`);
+      const parent = root.querySelector('mds-tree-item')!;
+      const toggleIcon = (): string | undefined =>
+        parent.shadowRoot!.querySelector<HTMLMdsButtonElement>('.toggle-icon mds-button')!.icon;
+      const closed = toggleIcon();
+
+      (root as HTMLMdsTreeElement).expanded = true;
+      await waitForChanges();
+      const open = toggleIcon();
+      expect(open).not.toBe(closed);
+
+      (root as HTMLMdsTreeElement).expanded = false;
+      await waitForChanges();
+      expect(toggleIcon()).toBe(closed);
+    });
   });
 });

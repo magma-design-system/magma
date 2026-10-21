@@ -1,6 +1,8 @@
 # mds-emoji
 
-Illustrations come from [Magma Emoji Figma](https://www.figma.com/design/09SuDQMZYyOKGyomr87G9c/Emoji?node-id=0-1&t=U3txjHfdwaMIRRAC-1) illustrations.
+
+
+This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.
 
 <!-- Auto Generated Below -->
 
@@ -9,14 +11,14 @@ Illustrations come from [Magma Emoji Figma](https://www.figma.com/design/09SuDQM
 
 ### 1. Description
 
-The `<mds-emoji>` web component renders one of the Magma Design System's animated mascot illustrations (`mia` or `simi`) as an interactive SVG. It is a decorative, expressive element with no native HTML equivalent: its personality is driven entirely through imperative animation methods rather than markup or props.
+The `<mds-emoji>` web component renders one of the Magma Design System's animated mascot illustrations (`mia` or `simi`) as an interactive SVG. It is a decorative, expressive element with no native HTML equivalent: its personality is driven entirely through imperative animation methods rather than markup or props. The illustrations are drawn in the [Magma Emoji](https://www.figma.com/design/09SuDQMZYyOKGyomr87G9c/Emoji?node-id=0-1&t=U3txjHfdwaMIRRAC-1) Figma file.
 
 #### Semantic Behavior
 
-- **Mouse following**: When started, the emoji tracks the pointer with a 3D head rotation and parallax on each facial part; it is off by default and only reacts after `startFollowMouse()` is called.
-- **Single-animation lock**: Expressive actions are serialized - `agree`, `smile`, `disagree`, and `startThinking` no-op while another animation is running, so triggers cannot overlap or interrupt each other.
+- **Mouse following**: When started, the emoji tracks the pointer with a 3D head rotation and parallax on each facial part; it is off by default and only reacts after `startFollowMouse()` is called. It turns toward the pointer: the direction is the direction of the pointer from the centre of the emoji, and the turn grows with the distance until the pointer is half the short side of the viewport away, the same at every size of the emoji. When the user prefers reduced motion, neither the pointer tracking nor the blinking moves the face, and the expressions (`agree`, `smile`, `disagree`, `startThinking`) show their face - a smile, a frown, the thinking hand - without moving the head or the features, for as long as they would have lasted.
+- **Single-animation lock**: Only one expression plays at a time - `agree`, `smile`, `disagree`, and `startThinking` take the face over: each stops whatever is playing (a thinking pose included) and starts from the neutral face, so a later call cuts an earlier one short. `startThinking` is a no-op only while the emoji is already thinking.
 - **Promise-based methods**: Every expressive action returns a `Promise<void>` that resolves when its animation finishes, letting callers await one expression before chaining the next.
-- **State restoration**: When an animation completes, any mouse-following that was active beforehand is automatically restored.
+- **State restoration**: An expression pauses mouse-following and, when it completes, restarts it if it was on: `startFollowMouse()` called and not stopped by a later `stopFollowMouse()`.
 - **Idle blinking**: `startBlinking()` runs a random blink loop on the eyes; blinks are suppressed while the emoji is busy with another animation.
 
 #### Properties & Visual Configurations
@@ -30,7 +32,7 @@ There are no variant, tone, or size props. The expression is configured imperati
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-emoji>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the component catalogue in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-emoji>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Mascot Display
 
@@ -169,7 +171,7 @@ Call `startThinking()` while a request is in flight - the emoji raises a thinkin
 
 #### Chaining Expressions
 
-Because every method returns a `Promise<void>`, you can `await` one before triggering the next. The single-animation lock ensures they never overlap even if called without awaiting.
+Because every method returns a `Promise<void>`, you can `await` one before triggering the next. Without awaiting they still never overlap, but each call takes the face over and cuts the previous expression short.
 
 ```html
 <mds-emoji id="mascot" name="simi"></mds-emoji>
@@ -200,15 +202,15 @@ Tune the mouse-follow responsiveness by overriding the documented `--mds-emoji-e
 
 #### CSS Customization - Mascot Colors
 
-Override per-mascot color tokens to adapt the character to a custom brand palette. Use Magma token wrappers (`rgb(var(--...))`) so dark-mode and high-contrast adaptations keep working.
+Override per-mascot color tokens to adapt the character to a custom brand palette. Use the semantic color roles (`rgb(var(--magma-<role>))`) so dark mode and named themes keep working; Simi's skin tones are data, so hex values are fine there.
 
 ```css
 /* Theming Mia for a custom brand */
 mds-emoji[name='mia'] {
-  --mds-emoji-mia-head-color: rgb(var(--variant-primary-08));
-  --mds-emoji-mia-eyes-color: rgb(var(--variant-primary-03));
-  --mds-emoji-mia-mouth-color: rgb(var(--variant-primary-06));
-  --mds-emoji-mia-hands-color: rgb(var(--variant-primary-06));
+  --mds-emoji-mia-head-color: rgb(var(--magma-accent-surface-hover));
+  --mds-emoji-mia-eyes-color: rgb(var(--magma-accent-emphasis-hover));
+  --mds-emoji-mia-mouth-color: rgb(var(--magma-accent-emphasis));
+  --mds-emoji-mia-hands-color: rgb(var(--magma-accent-emphasis));
 }
 
 /* Theming Simi */
@@ -244,18 +246,18 @@ Increase or decrease the per-layer offset values to control how pronounced the p
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-emoji>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-emoji>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use an Unknown `name` Value
 
-Only `"mia"` and `"simi"` are valid values for the `name` prop. Any other string falls outside the `EmojiNames` type, produces no mascot, and silently renders nothing.
+Only `"mia"` and `"simi"` are valid values for the `name` prop. Any other string falls outside the `EmojiNames` type and is ignored with a console warning: on load no mascot is rendered, after load the mascot on screen stays.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-emoji name="luigi"></mds-emoji>
 <mds-emoji name="robot"></mds-emoji>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-emoji name="mia"></mds-emoji>
 <mds-emoji name="simi"></mds-emoji>
 ```
@@ -265,12 +267,12 @@ Only `"mia"` and `"simi"` are valid values for the `name` prop. Any other string
 `<mds-emoji>` renders a self-contained SVG through its shadow root and exposes no slots. Any child nodes placed between the tags are ignored entirely.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-emoji name="mia">
   <span>Ciao!</span>
 </mds-emoji>
 
-<!-- ✅ CORRECT - place sibling elements outside the component -->
+<!-- CORRECT - place sibling elements outside the component -->
 <div class="mascot-wrapper">
   <mds-emoji name="mia"></mds-emoji>
   <p>Ciao!</p>
@@ -279,17 +281,18 @@ Only `"mia"` and `"simi"` are valid values for the `name` prop. Any other string
 
 #### Do Not Trigger Expressions Without Awaiting a Running Animation
 
-The single-animation lock causes `agree()`, `smile()`, `disagree()`, and `startThinking()` to no-op when the emoji is already busy. Firing them without awaiting the previous call means subsequent expressions are silently dropped.
+`agree()`, `smile()`, `disagree()`, and `startThinking()` each take the face over: they stop whatever is playing (a thinking pose included) and start from the neutral face. Firing them without awaiting the previous call cuts the earlier expression short.
 
 ```html
-<!-- 🚫 INCORRECT - second call is dropped because the first is still running -->
+<!-- INCORRECT - the second call cuts the first one short -->
 <script>
   emoji.startThinking(); // starts thinking
-  emoji.agree();         // no-op: emoji is busy
+  emoji.agree();         // takes over: the thinking pose is dropped at once
 </script>
 
-<!-- ✅ CORRECT - await each expression before chaining the next -->
-<script>
+<!-- CORRECT - await each expression before chaining the next -->
+<script type="module">
+  const emoji = document.querySelector('mds-emoji');
   await emoji.startThinking(0.5);
   await fetch('/api/salva');
   await emoji.stopThinking(0.5);
@@ -299,17 +302,18 @@ The single-animation lock causes `agree()`, `smile()`, `disagree()`, and `startT
 
 #### Do Not Use `stopThinking()` to Cancel Mid-Expression
 
-`stopThinking()` is the paired counterpart to `startThinking()`. Calling it to interrupt `agree()`, `smile()`, or `disagree()` has no effect because those animations set their own completion callbacks and do not check the thinking state.
+`stopThinking()` is the paired counterpart to `startThinking()`. Calling it to interrupt `agree()`, `smile()`, or `disagree()` has no effect: `stopThinking()` returns at once unless the emoji is thinking. An expression runs to completion unless another expression takes the face over.
 
 ```html
-<!-- 🚫 INCORRECT - stopThinking() won't cut short an agree() animation -->
+<!-- INCORRECT - stopThinking() won't cut short an agree() animation -->
 <script>
   emoji.agree();
   emoji.stopThinking(); // no-op
 </script>
 
-<!-- ✅ CORRECT - let the animation complete (await it), or accept that expressions run to completion -->
-<script>
+<!-- CORRECT - let the animation complete (await it), or accept that expressions run to completion -->
+<script type="module">
+  const emoji = document.querySelector('mds-emoji');
   await emoji.agree();
   // now the emoji is idle and ready for the next call
 </script>
@@ -320,15 +324,16 @@ The single-animation lock causes `agree()`, `smile()`, `disagree()`, and `startT
 The internal SVG elements (eyes, mouth, head, etc.) are part of the shadow DOM and are managed by GSAP inside the component. Querying them from outside and applying CSS transforms or animations creates conflicting tweens and breaks the component's state machine.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-emoji >>> #eyes-default {
   transform: scaleY(0.5);
 }
 ```
 
 ```html
-<!-- ✅ CORRECT - use the documented imperative methods instead -->
+<!-- CORRECT - use the documented imperative methods instead -->
 <script>
+  const emoji = document.querySelector('mds-emoji');
   emoji.startBlinking(); // let the component own eye animations
 </script>
 ```
@@ -338,13 +343,13 @@ mds-emoji >>> #eyes-default {
 The `--mds-emoji-offset-*` custom properties are declared as `<length>` values. Unitless numbers are not valid lengths and will be ignored, leaving the parallax effect at the CSS `@property` initial value.
 
 ```css
-/* 🚫 INCORRECT - unitless values are invalid <length> */
+/* INCORRECT - unitless values are invalid <length> */
 mds-emoji {
   --mds-emoji-offset-eyes: 3;
   --mds-emoji-offset-mouth: 2;
 }
 
-/* ✅ CORRECT - always supply a length unit */
+/* CORRECT - always supply a length unit */
 mds-emoji {
   --mds-emoji-offset-eyes: 3px;
   --mds-emoji-offset-mouth: 2px;
@@ -356,12 +361,12 @@ mds-emoji {
 `--mds-emoji-expression-max-rotation` is declared as `<angle>`. A bare number is invalid and the property falls back to the initial value of `16deg`, so the constraint you intended is silently ignored.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-emoji {
   --mds-emoji-expression-max-rotation: 8;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-emoji {
   --mds-emoji-expression-max-rotation: 8deg;
 }
@@ -380,103 +385,95 @@ mds-emoji {
 
 ### `agree() => Promise<void>`
 
-
+Emoji agrees, useful for confirm actions.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Emoji agrees, useful for confirm actions.
+
 
 ### `disagree(turnHappyDelay?: number) => Promise<void>`
 
-
+Emoji disagrees, useful for errors or unwanted results.
 
 #### Parameters
 
-| Name             | Type     | Description |
-| ---------------- | -------- | ----------- |
-| `turnHappyDelay` | `number` |             |
+| Name             | Type     | Description                                                                                             |
+| ---------------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `turnHappyDelay` | `number` | how long the mouth stays serious after the head shake, in milliseconds; 0 brings the smile back at once |
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Emoji disagrees, useful for errors or unwanted results.
+
 
 ### `smile() => Promise<void>`
 
-
+Emoji smiles, useful for confirm actions.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Emoji smiles, useful for confirm actions.
+
 
 ### `startBlinking() => Promise<void>`
 
-
+Eyes start blinking.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Eyes start blinking.
+
 
 ### `startFollowMouse() => Promise<void>`
 
-
+Starts following mouse with CSS 3D transform.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Starts following mouse with CSS 3D transform.
+
 
 ### `startThinking(duration?: number) => Promise<void>`
 
-
+Emoji starts thinking, useful for pending requests.
 
 #### Parameters
 
-| Name       | Type     | Description |
-| ---------- | -------- | ----------- |
-| `duration` | `number` |             |
+| Name       | Type     | Description                                          |
+| ---------- | -------- | ---------------------------------------------------- |
+| `duration` | `number` | the duration of the entrance of the hand, in seconds |
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Emoji start thinking, useful for pending requests.
+
 
 ### `stopBlinking() => Promise<void>`
 
-
+Eyes stop blinking.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Eyes stop blinking.
+
 
 ### `stopFollowMouse() => Promise<void>`
 
-
+Stops following mouse with CSS 3D transform.
 
 #### Returns
 
 Type: `Promise<void>`
 
-Promise<void>
-Stops following mouse with CSS 3D transform.
+
 
 ### `stopThinking(duration?: number) => Promise<void>`
 

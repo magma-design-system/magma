@@ -15,7 +15,13 @@ import miBaselineBackIosNew from '@icon/mi/baseline/arrow-back-ios-new.svg';
 import { DateTime } from 'luxon';
 import { preferenceStore } from '@common/preference';
 import { sanitizeISO8601Date } from '@common/date';
+import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 /**
  * @slot preselection - Add `HTML elements` or `components` shown in the calendar preselection area.
@@ -26,6 +32,13 @@ import clsx from 'clsx';
   shadow: true,
 })
 export class MdsCalendar {
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
+
   @Element() private host: HTMLMdsCalendarElement;
 
   @State() hasPreselection: boolean = false;
@@ -148,12 +161,7 @@ export class MdsCalendar {
       this.startDateIdentifier = this.startDateTime.toISODate();
 
       if (this.internalEndDate !== null && this.internalEndDate !== '') {
-        const endDateTime = DateTime.fromISO(this.internalEndDate);
-
-        if (this.startDateTime > endDateTime) {
-          console.warn('startDate is after endDate, swapping values');
-          return;
-        }
+        this.orderRange();
       } else if (!this.singlePicker) {
         this.isFirstClick = false;
       }
@@ -184,12 +192,7 @@ export class MdsCalendar {
       this.endDateIdentifier = this.endDateTime.toISODate();
 
       if (this.internalStartDate !== null && this.internalStartDate !== '') {
-        const startDateTime = DateTime.fromISO(this.internalStartDate);
-
-        if (startDateTime > this.endDateTime) {
-          console.warn('startDate is after endDate, swapping values');
-          return;
-        }
+        this.orderRange();
       }
 
       this.updateDates();
@@ -218,6 +221,24 @@ export class MdsCalendar {
   @Watch('hoverDate')
   handleHoverDate(): void {
     requestAnimationFrame(() => this.setDates());
+  }
+
+  /**
+   * A range given backwards, a start after its end, is put in order. The warning always said
+   * the values were swapped, but the calendar kept the dates it was given and drew nothing new,
+   * and at load the order was not checked at all.
+   */
+  private orderRange(): void {
+    if (this.internalStartDate === null || this.internalEndDate === null) return;
+    const start = DateTime.fromISO(this.internalStartDate);
+    const end = DateTime.fromISO(this.internalEndDate);
+    if (start <= end) return;
+    console.warn('mds-calendar: startDate is after endDate, swapping values');
+    [this.internalStartDate, this.internalEndDate] = [this.internalEndDate, this.internalStartDate];
+    this.startDateTime = end;
+    this.endDateTime = start;
+    this.startDateIdentifier = end.toISODate();
+    this.endDateIdentifier = start.toISODate();
   }
 
   /**
@@ -255,6 +276,7 @@ export class MdsCalendar {
       console.warn('singlePicker is enabled, endDate cannot be set');
       this.internalEndDate = null;
     }
+    this.orderRange();
 
     if (this.viewDate !== null && this.viewDate !== '') {
       const viewDate = DateTime.fromISO(this.viewDate.toString());
@@ -274,9 +296,17 @@ export class MdsCalendar {
     this.updateCalendar();
   }
 
-  componentDidLoad(): void {
+  // The area shows what the preselection slot holds, added after load too. It used to wait for a
+  // `date-preselection--has-preselection` marker class, looked up once on load (#826); the class
+  // still shows it, for the pages written that way.
+  private readonly updatePreselection = (): void => {
     this.hasPreselection =
-      this.host?.querySelector('.date-preselection--has-preselection') !== null;
+      hasChildWithSlot(this.host, 'preselection') ||
+      this.host.querySelector('.date-preselection--has-preselection') !== null;
+  };
+
+  componentDidLoad(): void {
+    this.updatePreselection();
 
     this.host?.shadowRoot?.addEventListener('mouseover', this.handleMouseOver);
     this.host?.addEventListener('mouseleave', this.handleMouseLeave);
@@ -817,13 +847,18 @@ export class MdsCalendar {
               'calendar-preselection--has-preselection',
           )}
         >
-          <slot name="preselection"></slot>
+          <slot name="preselection" onSlotchange={this.updatePreselection}></slot>
         </div>
         <div class="calendar-view">
           <nav>
             {!this.hidePreviousButton && (
               <mds-button
+                aria-label={this.t.get(
+                  this.currentView === 'years' ? 'previousYears' : 'previousMonth',
+                )}
                 class="action-back"
+                // the months view has nothing to move back or forward to
+                disabled={this.currentView === 'months'}
                 icon={miBaselineBackIosNew}
                 variant="dark"
                 tone="text"
@@ -854,7 +889,9 @@ export class MdsCalendar {
             </div>
             {!this.hideNextButton && (
               <mds-button
+                aria-label={this.t.get(this.currentView === 'years' ? 'nextYears' : 'nextMonth')}
                 class="action-forward"
+                disabled={this.currentView === 'months'}
                 icon={miBaselineForwardIos}
                 variant="dark"
                 tone="text"

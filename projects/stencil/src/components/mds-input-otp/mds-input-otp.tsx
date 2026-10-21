@@ -1,4 +1,4 @@
-import { Component, Element, AttachInternals, Host, h, Prop } from '@stencil/core';
+import { Component, Element, AttachInternals, Host, h, Prop, State, Watch } from '@stencil/core';
 import { setFormValue } from '@common/form';
 import { Locale } from '@common/locale';
 import localeEl from './meta/locale.el.json';
@@ -10,6 +10,7 @@ export interface MdsInputOtpInterface {
   length?: number;
   autosubmit?: boolean;
   value?: string;
+  disabled?: boolean;
 }
 
 @Component({
@@ -21,6 +22,13 @@ export interface MdsInputOtpInterface {
 export class MdsInputOtp {
   @Element() private element: HTMLMdsInputOtpElement;
   @AttachInternals() internals: ElementInternals;
+  // the value of load, which a form reset brings back as the value attribute of a native input
+  private loadValue = '';
+  // the digit of each cell, by position: value joins them and drops the empty ones
+  @State() digits: string[] = [];
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the cells in its shadow root
+  @State() private formDisabled = false;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -45,27 +53,64 @@ export class MdsInputOtp {
   @Prop({ reflect: true }) readonly autosubmit: boolean = false;
 
   /**
-   * The current value of the OTP code
+   * Disables every cell of the code, like a disabled native input: the code cannot be changed and
+   * is left out of the form. A disabled `<fieldset>` around the component does the same.
+   */
+  @Prop({ reflect: true }) readonly disabled?: boolean = false;
+
+  /**
+   * The current value of the OTP code: a value set in the markup or by code fills the cells from
+   * the first one
    */
   @Prop({ mutable: true, reflect: true }) value?: string = '';
 
-  private getOtpCode = (): string => {
-    const inputs = Array.from(this.element.shadowRoot!.querySelectorAll('mds-input'));
-    const otpCode = inputs.map((input) => input.value).join('');
+  @Watch('value')
+  protected valueChanged(newValue?: string): void {
+    // the value a typed digit writes already matches the cells
+    if ((newValue ?? '') === this.digits.join('')) return;
+    this.fillCells(newValue ?? '');
+  }
 
-    return otpCode;
-  };
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
+
+  /** Like a native input, a form reset brings back the code of load. */
+  formResetCallback(): void {
+    this.fillCells(this.loadValue);
+  }
+
+  componentWillLoad(): void {
+    this.loadValue = this.value ?? '';
+    this.fillCells(this.loadValue);
+  }
+
+  /** Puts a code in the cells, from the first one, as many digits as there are cells. */
+  private fillCells(code: string): void {
+    this.digits = Array.from(code).slice(0, this.length);
+    this.updateValue();
+  }
+
+  /** Joins the cells into value, the code the form submits. */
+  private updateValue(): void {
+    this.value = this.digits.join('');
+    setFormValue(this.internals, this.value);
+  }
+
+  private cellIndex = (cell: HTMLMdsInputElement): number =>
+    Array.from(this.element.shadowRoot!.querySelectorAll('mds-input')).indexOf(cell);
 
   private setOtpDigit = (currentInput: HTMLMdsInputElement, digit: string): void => {
-    currentInput.value = digit;
-
-    const otpCode = this.getOtpCode();
-    this.value = otpCode;
-    setFormValue(this.internals, otpCode);
+    const digits = [...this.digits];
+    digits[this.cellIndex(currentInput)] = digit;
+    this.digits = digits;
+    this.updateValue();
   };
 
   private submit = (currentInput: HTMLMdsInputElement): void => {
-    const isOtpCompleted = this.getOtpCode().length === this.length;
+    const isOtpCompleted = (this.value ?? '').length === this.length;
     currentInput.blur();
 
     if (this.autosubmit && isOtpCompleted) {
@@ -73,23 +118,57 @@ export class MdsInputOtp {
     }
   };
 
+  /**
+   * A cell holds one digit and the keyboard moves between them: a digit fills the cell and goes
+   * to the next one, Backspace empties the cell (or the previous one, from an empty cell),
+   * Delete empties it, the arrows move. Every other key that writes a character is ignored;
+   * Tab, the shortcuts (paste among them, with Ctrl or Cmd) and the keys that write nothing
+   * keep what the browser does with them, so the field is never a keyboard trap.
+   */
   private handleKeyDown = (e: KeyboardEvent): void => {
-    if (e.ctrlKey) {
-      return;
-    }
-
-    // e.preventDefault() must be called *outside* the ctrlKey check,
-    // otherwise the onPaste event won't be triggered correctly
-    e.preventDefault();
-
-    if (isNaN(Number(e.key))) {
+    if (e.ctrlKey || e.metaKey || e.altKey) {
       return;
     }
 
     const currentInput = e.target as HTMLMdsInputElement;
-    this.setOtpDigit(currentInput, e.key);
+    const previousInput = currentInput.previousElementSibling as HTMLMdsInputElement | null;
+    const nextInput = currentInput.nextElementSibling as HTMLMdsInputElement | null;
 
-    const nextInput = currentInput.nextElementSibling as HTMLMdsInputElement;
+    switch (e.key) {
+      case 'Backspace':
+        e.preventDefault();
+        if ((this.digits[this.cellIndex(currentInput)] ?? '') === '' && previousInput) {
+          this.setOtpDigit(previousInput, '');
+          previousInput.setFocus();
+          return;
+        }
+        this.setOtpDigit(currentInput, '');
+        return;
+      case 'Delete':
+        e.preventDefault();
+        this.setOtpDigit(currentInput, '');
+        return;
+      case 'ArrowLeft':
+        e.preventDefault();
+        previousInput?.setFocus();
+        return;
+      case 'ArrowRight':
+        e.preventDefault();
+        nextInput?.setFocus();
+        return;
+    }
+
+    if (e.key.length !== 1) {
+      return;
+    }
+
+    e.preventDefault();
+
+    if (!/^[0-9]$/.test(e.key)) {
+      return;
+    }
+
+    this.setOtpDigit(currentInput, e.key);
 
     if (nextInput != null) {
       nextInput.setFocus();
@@ -101,25 +180,28 @@ export class MdsInputOtp {
   private handlePaste = (e: ClipboardEvent) => {
     e.preventDefault();
 
-    const pastedText = e.clipboardData?.getData('text');
+    // a code copied from a message often brings the spaces around it; a paste that is not digits
+    // only fills nothing (a sign, a decimal point or an exponent got through the number check)
+    const pastedText = (e.clipboardData?.getData('text') ?? '').trim();
 
-    if (isNaN(Number(pastedText))) {
+    if (!/^[0-9]+$/.test(pastedText)) {
       return;
     }
 
-    const digits = pastedText?.split('') ?? [];
     let currentInput = e.target as HTMLMdsInputElement;
-    for (const currentDigit of digits) {
+    for (const currentDigit of pastedText) {
       this.setOtpDigit(currentInput, currentDigit);
 
-      currentInput = currentInput.nextElementSibling as HTMLMdsInputElement;
+      const nextInput = currentInput.nextElementSibling as HTMLMdsInputElement | null;
 
-      if (currentInput != null) {
-        currentInput.setFocus();
-      } else {
+      // the last cell is filled: the code goes from there, not from the cell after it, which is
+      // null and threw (#825)
+      if (nextInput == null) {
         this.submit(currentInput);
         return;
       }
+      currentInput = nextInput;
+      currentInput.setFocus();
     }
   };
 
@@ -135,9 +217,11 @@ export class MdsInputOtp {
           <mds-input
             aria-label={this.digitName(index)}
             class="input"
+            disabled={this.isDisabled()}
             maxlength={1}
             onKeyDown={this.handleKeyDown}
             onPaste={this.handlePaste}
+            value={this.digits[index] ?? ''}
           ></mds-input>
         ))}
       </Host>

@@ -48,12 +48,9 @@ export class MdsNote {
    */
   @Event({ eventName: 'mdsNoteDelete' }) deleteEvent: EventEmitter<void>;
 
-  componentDidLoad(): void {
-    this.km.addElement(this.host);
-    this.km.attachClickBehavior();
-  }
-
-  componentDidUpdate(): void {
+  // Enter clicks the note only while it can be deleted: it was attached on load whatever
+  // `deletable` said, and taken off only by the next update
+  private syncClickBehavior = (): void => {
     if (this.deletable) {
       this.km.addElement(this.host);
       this.km.attachClickBehavior();
@@ -61,6 +58,14 @@ export class MdsNote {
     }
 
     this.km.detachClickBehavior();
+  };
+
+  componentDidLoad(): void {
+    this.syncClickBehavior();
+  }
+
+  componentDidUpdate(): void {
+    this.syncClickBehavior();
   }
 
   disconnectedCallback(): void {

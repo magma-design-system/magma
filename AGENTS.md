@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Magma is the Maggioli Group Design System: a library of ~115 web components (StencilJS), design tokens, SVG icons, brand assets and CSS/Tailwind 4 styles, each published as a separate npm package.
+Magma is the Maggioli Group Design System: a library of 115 web components (StencilJS), design tokens, SVG icons, brand assets and CSS/Tailwind 4 styles, each published as a separate npm package.
 
 ## Stack
 
@@ -15,14 +15,15 @@ Magma is the Maggioli Group Design System: a library of ~115 web components (Ste
 
 Always use **npm**, never Yarn.
 
-## Git governance (read before committing or pushing)
+## Git governance (read before committing, pushing or opening an issue)
 
 Full rules: `docs/WORKFLOW.md`. Critical constraints for agents:
 
-1. **Never auto-merge `dev` or `main`** - merging or pushing into these branches is a manual governance step. Opening a pull request into `dev` from your own branch is fine; never merge it or enable auto-merge on it.
-2. **One branch per unit of work** - every feature, fix, refactor, etc. lives on its own dedicated branch, branched off `dev`. Never work directly on `dev` or `main`.
-3. **Link every branch to its issue** - create work branches from their GitHub issue (Development section button or `gh issue develop <n> --base dev`) so they appear in the issue's Development section; a matching name alone does not link. At the latest, the PR body must declare `Closes #<issue>`.
-4. **Sync with `dev` before pushing** - when committing with intent to push, first check for new commits on `dev`; if present, merge `dev` into your branch, run the tests, and only then push (always to your branch's own remote, never to `dev` or `main`).
+1. **Never merge into `main` around the queue, never release** - `main` is the only long-lived branch; merging or pushing into it is a manual governance step. Opening a pull request into `main` from your own branch is fine; never merge it, enable auto-merge on it or add it to the merge queue: a maintainer does, with a green pipeline only (a red check is never bypassed, whatever the size of the change), and nobody merges `main` into a branch just to make it mergeable. When the queue removes your pull request (a red check or a conflict), merge `main` into the branch, resolve, rebuild the generated files, run lint and tests, and push. Never open a pull request whose head is `main` (the repository deletes the head branch of a merged pull request). Releases are manual too: a maintainer dispatches the `release` workflow on `main` (`channel` stable or beta, approved through the `release` environment); you may run it with `dry-run: true` to show the plan, nothing more. Before a maintainer queues or auto-merges a pull request, check that no release is running (`gh run list --workflow release.yml --status in_progress`): a merge that lands on `main` during a stable release makes it fail; warn and wait for the run to end.
+2. **One branch per unit of work** - every feature, fix, refactor, etc. lives on its own dedicated branch, branched off `main`. Never work directly on `main`.
+3. **Link every branch to its issue** - create work branches from their GitHub issue (Development section button or `gh issue develop <n> --base main`) so they appear in the issue's Development section; a matching name alone does not link. At the latest, the PR body must declare `Closes #<issue>`.
+4. **Sync with `main` before pushing** - when committing with intent to push, first check for new commits on `main`; if present, merge `main` into your branch, run the tests, and only then push (always to your branch's own remote, never to `main`).
+5. **Label issues by origin** - an issue opened for a problem found in another project carries its `prd-<project>` label (`prd-docs` for the docs site, `prd-mindy` for Mindy) next to the `prg-*` package labels; a new project's label goes into `.github/ISSUE_TEMPLATE/labels.yml` first, or the next `label-sync` run deletes it.
 
 ## Tests (read before changing a component)
 
@@ -43,7 +44,10 @@ npm install                                          # install project dependenc
 nx run-many --target=build --all                     # build everything
 nx run design-tokens:build                           # build tokens only
 nx run styles:build                                  # build styles only
-nx run icons:build                                   # build icons only
+nx run svg-icons:build                               # build the SVG icon set (needed by stencil)
+nx run icons:build                                   # build the icon webfont (from svg-icons)
+nx run icons:check.dictionary                        # verify dictionary.json matches the SVG sources
+nx run icons:add.icons --auto                        # map new SVG sources into the dictionary
 nx run stencil:build                                 # build web components
 nx run stencil:storybook.start                       # start Storybook
 nx run design-tokens:playground                      # start the tokens config playground (port 5177)
@@ -51,8 +55,10 @@ nx run design-tokens:playground                      # start the tokens config p
 nx run stencil:generate mds-component-name           # scaffold a new component
 nx run stencil:test                                  # run the unit and browser tests (Vitest)
 nx run stencil:test-storybook                        # run the stories' play functions and a11y checks headless (Vitest project `storybook`)
+nx run stencil:check.api-snapshot                    # after a build: fail if the committed magma.api.txt differs from the built component API
+nx run stencil:check.pr-risk                         # the review level of your branch and its semver check against main (what the pr-risk workflow posts)
 nx run stencil-react:test                            # run the React wrapper tests (Vitest browser + node projects)
-nx run stencil-angular:test                          # run the Angular wrapper tests (Karma, headless Chrome)
+nx run stencil-angular:test                          # run the Angular wrapper tests (Vitest in jsdom, Angular unit-test builder)
 npm run lint                                         # ESLint + Stylelint on every project (also run in CI)
 ```
 
@@ -62,13 +68,14 @@ npm run lint                                         # ESLint + Stylelint on eve
 design-tokens    →  no internal dependencies
 identity         →  no internal dependencies
 svg-icons        →  no internal dependencies
+icons            →  svg-icons (the webfont, not used by the components)
 styles           →  design-tokens
-stencil          →  design-tokens, styles, svg-icons, identity
+stencil          →  design-tokens, styles, svg-icons
 stencil-react    →  stencil (wrapper sources generated by the stencil build)
 stencil-angular  →  stencil (wrapper sources generated by the stencil build)
 ```
 
-**Required build order**: `design-tokens` → `styles` → `icons` → `stencil` → `stencil-react`, `stencil-angular`
+**Required build order**: `design-tokens` → `styles`, and `svg-icons`, before `stencil` → `stencil-react`, `stencil-angular` (`nx run-many --target=build --all` follows it)
 
 ## Documentation index
 
@@ -77,18 +84,21 @@ stencil-angular  →  stencil (wrapper sources generated by the stencil build)
 | Installing Magma into a consumer app: pick a target, version matrix                    | `docs/agents/SPEC.md`                            |
 | Consumer asset setup (styles, fonts, icons, identity) shared by all targets            | `docs/agents/assets.md`                          |
 | Install track: plain web components / React / Angular                                  | `docs/agents/{web-components,react,angular}.md`  |
-| Using components after install: conventions + app styling (shipped as agents/usage.md) | `docs/agents/usage.md`                           |
-| Monorepo architecture, sub-project relationships, component composition patterns       | `docs/ARCHITECTURE.md`                           |
+| Rules for using the components and styles, one topic per file (shipped as agents/*.md): conventions, variants, anti-patterns, color, typography, theming | `docs/agents/{conventions,variants,anti-patterns,color,typography,theming}.md` |
+| A consumer project's agent reporting a Magma problem: the issue, its labels, the origin label | `docs/agents/reporting.md`               |
+| Monorepo architecture, sub-project relationships, component composition patterns, branches, CI and release flow | `docs/ARCHITECTURE.md`           |
 | Lint rules for TypeScript/JS and CSS authoring (ESLint + Stylelint)                    | `docs/CODING_STANDARDS.md`                       |
 | Commit message convention: allowed types, scopes, special rules                        | `docs/COMMITS.md`                                |
-| Contribution workflow and git governance: branching, merge, push and testing rules      | `docs/WORKFLOW.md`                               |
+| Contribution workflow and git governance: branching, merge queue, releases, tests, issue labels | `docs/WORKFLOW.md`                      |
 | Writing and running tests: Vitest spec, e2e, storybook (play + a11y) and wrapper tests | `projects/stencil/HOWTO.md`                      |
-| Navigable catalogue of all 115 components                                              | `docs/COMPONENTS.md`                             |
-| Design token system: structure, naming convention, semantic levels                     | `docs/TOKENS.md`                                 |
+| Navigable catalogue of all 115 components, which per-component file to read, authoring usage docs | `docs/COMPONENTS.md`                  |
+| Token families: which ones UI code paints with, how to consume them                    | `docs/TOKENS.md`                                 |
 | Editor autocomplete for tokens: setup, generated sheet, extension traps                | `docs/EDITOR_TOKENS.md`                          |
 | Design tokens: structure, levels, semantics, naming convention                         | `projects/design-tokens/SPEC.md`                 |
+| Adding an icon: dictionary format, source groups, validation, release scopes           | `projects/icons/SPEC.md`                         |
 | CSS and Tailwind 4 styles: semantic classes, anti-patterns, dark mode                  | `projects/styles/SPEC.md`                        |
-| Web components: general Stencil conventions, composition patterns, accessibility rules | `projects/stencil/SPEC.md`                       |
-| Single component spec: props, slots, usage examples, anti-patterns                     | `projects/stencil/src/components/<name>/SPEC.md` |
+| Web components, contributor rules: entry points, tree-shaking, token fallbacks, icons, tests, usage docs, scaffolding | `projects/stencil/SPEC.md` |
+| Single component: intent, patterns, anti-patterns (authored)                           | `projects/stencil/src/components/<name>/usage/*.md` |
+| Single component: API + usage as shipped (generated by the build)                      | `projects/stencil/dist/collection/components/<name>/AGENTS.md` |
 
-> ⚠️ **Rule**: when you modify a component, update its `SPEC.md` too. When you change tokens or styles with system-wide impact, update `docs/ARCHITECTURE.md`.
+> ⚠️ **Rule**: when you modify a component, update its `usage/*.md` (and the JSDoc of what you changed) too: they generate its shipped docs. When you change tokens or styles with system-wide impact, update `docs/ARCHITECTURE.md`.

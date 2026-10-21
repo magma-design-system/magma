@@ -14,9 +14,15 @@ import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
 import { preferenceStore } from '@common/preference';
 import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 /**
  * @part actions - Selects the element which wraps `nav` and `hamburger` parts
+ * @part content - The row that holds the default slot, on the left, and the `actions`
  * @part hamburger - Selects the `hamburger` menu action element
  * @part nav - Selects the `nav` element that contains the horizontal menu
  * @slot - Put contents, like logo and a small description shown on the left of the component. Add `text string`, `HTML elements` or `components` to this slot.
@@ -29,6 +35,13 @@ import { HeaderBarMenuType, HeaderBarNavType } from '@type/header-bar';
   shadow: true,
 })
 export class MdsHeaderBar {
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
+
   @State() hasNav: boolean;
   @Element() host: HTMLMdsHeaderBarElement;
   @State() isOpened: boolean;
@@ -57,18 +70,19 @@ export class MdsHeaderBar {
   @Event({ bubbles: true, eventName: 'mdsHeaderBarOpen' }) openedEvent: EventEmitter<void>;
 
   private open = () => {
-    this.isOpened = true;
     this.openedEvent.emit();
-    this.host.closest('mds-header')?.setOpened(true);
+    this.setOpened(true);
   };
 
   /**
-   * Opens or closes the header bar.
-   * @param isOpened whether the header bar should be opened
+   * Opens or closes the menu of the surrounding `mds-header`, as the hamburger does.
+   * @param isOpened whether the menu should be opened
    */
   @Method()
   async setOpened(isOpened: boolean = true): Promise<void> {
+    // it only recorded the state, which nothing rendered, so it opened nothing
     this.isOpened = isOpened;
+    await this.host.closest('mds-header')?.setOpened(isOpened);
   }
 
   render() {
@@ -89,6 +103,7 @@ export class MdsHeaderBar {
             </nav>
             {this.menu !== 'none' && (
               <mds-button
+                aria-label={this.t.get('openMenu')}
                 class="menu"
                 variant="dark"
                 tone="text"

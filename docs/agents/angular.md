@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Install Magma in an Angular app (>= 18.2) via the Angular wrapper
+Install Magma in an Angular app (>= 20) via the Angular wrapper
 `@maggioli-design-system/magma-angular`, which exposes the `mds-*` components as
 Angular standalone components.
 
@@ -15,12 +15,13 @@ This file only covers package install and Angular-specific registration.
 npm i @maggioli-design-system/magma-angular @maggioli-design-system/magma
 ```
 
-Peer dependencies: `@angular/common` and `@angular/core` `^18.2.0`. `magma-angular`
+Peer dependencies: `@angular/common` and `@angular/core` `>=20.0.0`, and the exact
+`@maggioli-design-system/magma` version the wrapper was generated against. `magma-angular`
 follows the same major version as `magma` (see [`SPEC.md`](SPEC.md) matrix). Then
 install the assets from [`assets.md`](assets.md):
 
 ```bash
-npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens @maggioli-design-system/svg-icons
+npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens
 npm i @fontsource/karla @fontsource/merriweather @fontsource/roboto @fontsource/roboto-mono
 ```
 
@@ -44,7 +45,7 @@ Then use them in templates like native elements:
 
 ```html
 <mds-button variant="primary" tone="strong">Save</mds-button>
-<mds-icon name="action-email-send"></mds-icon>
+<mds-icon name="mi/baseline/email"></mds-icon>
 ```
 
 For Reactive Forms, import the matching `ControlValueAccessor` alongside the
@@ -75,7 +76,7 @@ export class AppModule {}
 `defineCustomElements()` from the lazy loader, which is redundant (the standalone
 proxies self-register) and expensive: on a probe app it took the build from
 229 kB in 2 files to 1.9 MB in 142, because the loader pulls the runtime chunks
-of all 114 components.
+of all 115 components.
 
 ## 3. Set the icon path
 
@@ -92,21 +93,54 @@ client-only initializer.
 
 ## 4. Serve the icon SVGs and styles
 
-- Copy `@maggioli-design-system/svg-icons/dist/svg/` to the served `/svg/` path. With
-  the Angular CLI, add an `assets` glob in `angular.json`:
+- Serve the icons at `/svg/` with one of the routes of [`assets.md`](assets.md)
+  section 3 (iconsauce or the copy script). New Angular CLI projects serve `public/` at
+  `/`, so both write to `public/svg/`. Run them from `prestart` and `prebuild`: `npm start`
+  runs `ng serve`, so a `predev` script never fires.
+- An app that uses only the `mgg/` set can let the CLI copy `svg-icons` instead
+  (`npm i -D @maggioli-design-system/svg-icons`), with an `assets` glob in `angular.json`
+  whose output is the `mgg/` folder `mds-icon` fetches from:
 
   ```json
   "assets": [
     {
       "glob": "**/*.svg",
       "input": "node_modules/@maggioli-design-system/svg-icons/dist/svg",
-      "output": "/svg"
+      "output": "/svg/mgg"
     }
   ]
   ```
 
 - Import the global CSS block from [`assets.md`](assets.md) in `styles.css` /
   `styles.scss` so the cascade-layer order is preserved.
+
+## 5. Client-side routing
+
+The links of the components (`href` of `mds-button`, `mds-tab-item`, ...) are real anchors
+the browser follows, loading the page. Register the Angular router once, at app startup, and
+every plain click on a component link is routed on the client instead; a modifier or middle
+click, `target="blank"` and a link to another origin stay with the browser.
+
+```typescript
+import { inject, provideAppInitializer } from '@angular/core';
+import { Router } from '@angular/router';
+import { NavigationService } from '@maggioli-design-system/magma/services';
+
+export const appConfig = {
+  providers: [
+    provideAppInitializer(() => {
+      const router = inject(Router);
+      NavigationService.setHandler((href) => {
+        router.navigateByUrl(href);
+      });
+    }),
+  ],
+};
+```
+
+Return `false` from the handler for a link the browser is to load. Without a registered
+router, a `(click)` binding on the component can still cancel the event with
+`preventDefault()` and route by hand.
 
 ## Gotchas
 
@@ -116,10 +150,18 @@ client-only initializer.
   the supported path, and skipping them also skips the custom element registration.
 - Keep `magma` and `magma-angular` on the exact same version; the wrapper is
   generated against a specific `magma` build.
-- Custom events (`mdsButtonClick`, ...) bind via the wrapper's Angular outputs - see
-  [`../../projects/stencil/SPEC.md`](../../projects/stencil/SPEC.md) for event names.
+- Bind boolean inputs as properties: `[disabled]="isDisabled"` sets the property
+  through the proxy, so `false` turns the prop off. A static `disabled="false"` or
+  `[attr.disabled]="false"` writes the attribute, and on a form-associated component
+  (`mds-button`, `mds-input`, ..., see [`conventions.md`](conventions.md)) any value of
+  it, `"false"` included, turns the prop on. Reactive Forms `disable()` / `enable()` set
+  the property.
+- Custom events (`mdsInputChange`, ...) bind via the wrapper's Angular outputs:
+  `(mdsInputChange)="onChange($event)"`. The event names of a component are in the Events
+  table of its `AGENTS.md` (see [`components.md`](components.md)); a component without
+  custom events, like `mds-button`, is bound with the native `(click)`.
 
 ## See also
 
 - [`assets.md`](assets.md) - styles / fonts / icons / identity (canonical)
-- [`../../projects/stencil/SPEC.md`](../../projects/stencil/SPEC.md) - component conventions, events, slots
+- [`conventions.md`](conventions.md) - component conventions, events, slots

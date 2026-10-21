@@ -14,8 +14,10 @@ import {
   Watch,
 } from '@stencil/core';
 import { setFormValue } from '@common/form';
-import { MdsInputEventDetail } from '@type/input';
+import { updateValidity } from '@common/validity';
 import { ThemeStatusVariantType } from '@type/variant';
+import { InputSizeType } from '@type/input';
+import { MdsInputSelectEventDetail } from './meta/event-detail';
 
 /**
  * @part select - The select HTML element
@@ -31,10 +33,21 @@ import { ThemeStatusVariantType } from '@type/variant';
 })
 export class MdsInputSelect {
   private selectEl: HTMLSelectElement;
+  // true while value takes the selection of the native select, which must not be applied back:
+  // with multiple, selecting the first option alone would drop the others
+  private adoptingSelection = false;
+  // the value and values of the last change event, not to emit the same selection twice
+  private emittedSelection?: string;
+  // the value of load, which a form reset brings back as the default selection of a native select
+  private loadValue?: string | number | null;
   @Element() host: HTMLMdsInputSelectElement;
   // @State() selected: boolean
   @State() hasFocus = false;
   @AttachInternals() internals: ElementInternals;
+
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the native control in its shadow root
+  @State() private formDisabled = false;
 
   /**
    * The accessible name of the native control: the label a screen reader announces. An
@@ -80,9 +93,17 @@ export class MdsInputSelect {
   @Prop({ reflect: true }) readonly multiple?: boolean = false;
 
   /**
-   * When `multiple` is set to `true`, represents the number or rows in the list that should be visible
+   * The number of option rows the list shows at once, as the `size` of a native `<select>`:
+   * with `multiple`, or above `1`, the select shows a list box
    */
-  @Prop({ reflect: true }) readonly size?: number = 0;
+  @Prop({ reflect: true }) readonly rows?: number = 0;
+
+  /**
+   * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px.
+   * A number is still read as `rows`, the row count this prop used to set: that use is deprecated
+   * and goes in the next major
+   */
+  @Prop({ reflect: true }) readonly size?: InputSizeType | number = 'lg';
 
   /**
    * Specifies the value of the component
@@ -100,9 +121,11 @@ export class MdsInputSelect {
   @Prop({ reflect: true }) readonly variant?: ThemeStatusVariantType;
 
   /**
-   * Emits an InputChangeEventDetail when the value of the input element changes
+   * Emits when the selection changes: `value` is the first selected option, `values` every
+   * selected one
    */
-  @Event({ eventName: 'mdsInputSelectChange' }) changeEvent: EventEmitter<MdsInputEventDetail>;
+  @Event({ eventName: 'mdsInputSelectChange' })
+  changeEvent: EventEmitter<MdsInputSelectEventDetail>;
 
   /**
    * Sets the value of the component
@@ -118,9 +141,69 @@ export class MdsInputSelect {
    */
   @Watch('value')
   protected valueChanged(): void {
-    this.changeEvent.emit({ value: this.value?.toString() });
-    this.setCurrentValue();
-    setFormValue(this.internals, this.value?.toString() ?? null);
+    if (this.adoptingSelection) return;
+    this.applySelection(false);
+    this.syncSelection();
+  }
+
+  @Watch('required')
+  protected requiredChanged(): void {
+    this.updateFormValidity();
+  }
+
+  @Watch('name')
+  protected nameChanged(): void {
+    this.updateFormValue(this.selectedValues());
+  }
+
+  /** The values of the selected options, the placeholder left out. */
+  private selectedValues(): string[] {
+    if (this.selectEl == null) {
+      return (this.value ?? '') === '' ? [] : [this.value!.toString()];
+    }
+    return Array.from(this.selectEl.selectedOptions)
+      .filter((option) => !option.classList.contains('placeholder-option'))
+      .map((option) => option.value);
+  }
+
+  /**
+   * Reports the selection to the form and emits the change, once per selection: a single select
+   * submits its value, a multiple one an entry per selected option under `name`, as a native
+   * select.
+   */
+  private syncSelection(): void {
+    const values = this.selectedValues();
+    this.updateFormValue(values);
+    this.updateFormValidity();
+    const value = this.value?.toString();
+    const selection = JSON.stringify([value, values]);
+    if (selection === this.emittedSelection) return;
+    this.emittedSelection = selection;
+    this.changeEvent.emit({ value, values });
+  }
+
+  private updateFormValue(values: string[]): void {
+    if (!this.multiple) {
+      setFormValue(this.internals, this.value?.toString() ?? null);
+      return;
+    }
+    const name = this.name ?? '';
+    if (name === '' || values.length === 0) {
+      setFormValue(this.internals, null);
+      return;
+    }
+    const data = new FormData();
+    values.forEach((value) => data.append(name, value));
+    setFormValue(this.internals, data);
+  }
+
+  /**
+   * Reports to the form a required select left empty: like a native `required`, it stops the
+   * submit of its form.
+   */
+  private updateFormValidity(): void {
+    const missing = this.required && (this.value ?? '') === '';
+    updateValidity(this.internals, missing ? { rule: 'requiredSelect' } : undefined, this.selectEl);
   }
 
   @Watch('disabled')
@@ -144,10 +227,13 @@ export class MdsInputSelect {
    */
   @Watch('placeholder')
   protected placeholderChanged(newValue: string | undefined, oldValue: string | undefined) {
+    if (this.selectEl == null) return;
     if (newValue != null && newValue !== '' && (oldValue ?? '') === '') {
-      let defaultOption: HTMLOptionElement | null = document.querySelector('.placeholder-option');
+      // the placeholder of this select, in its shadow root, not one of the page
+      let defaultOption = this.placeholderOption();
       if (defaultOption) defaultOption.remove();
       defaultOption = document.createElement('option');
+      defaultOption.className = 'placeholder-option';
       this.selectEl.insertBefore(defaultOption, this.selectEl.firstChild);
       defaultOption.value = '';
       defaultOption.text = newValue;
@@ -164,11 +250,54 @@ export class MdsInputSelect {
     }
   }
 
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
+
+  /**
+   * Like a native select, a form reset brings the options back to the selection of the markup,
+   * the placeholder when the markup selects none, and the value of load on top.
+   */
   formResetCallback(): void {
-    setFormValue(this.internals, '');
+    if (this.selectEl == null) return;
+    const options = Array.from(this.selectEl.querySelectorAll('option'));
+    options.forEach((option) => {
+      option.selected = option.defaultSelected;
+    });
+    const placeholder = this.placeholderOption();
+    if (placeholder && this.hasPlaceholder() && !options.some((option) => option.defaultSelected)) {
+      placeholder.selected = true;
+    }
+    this.adoptingSelection = true;
+    this.value = this.loadValue;
+    this.adoptingSelection = false;
+    this.applySelection(true);
+    this.syncSelection();
+  }
+
+  /**
+   * The row count of the deprecated numeric `size`: a number, or the digits an attribute gives.
+   */
+  private legacyRows(): number | undefined {
+    const size: unknown = this.size;
+    if (typeof size === 'number') return size;
+    if (typeof size === 'string' && /^\d+$/.test(size)) return Number(size);
+    return undefined;
+  }
+
+  @Watch('size')
+  protected sizeChanged(): void {
+    if (this.legacyRows() !== undefined) {
+      console.warn(
+        '<mds-input-select>: a number in `size` is deprecated: use `rows` for the visible option rows. `size` sets the height of the field (sm, md, lg).',
+      );
+    }
   }
 
   componentWillLoad(): void {
+    this.sizeChanged();
     // needed for react component, this prop should be used as default-value html attributo instead of defaultValue prop
     if (
       this.defaultValue != null &&
@@ -178,19 +307,29 @@ export class MdsInputSelect {
     ) {
       this.value = this.defaultValue;
     }
+    this.loadValue = this.value;
+  }
+
+  componentDidRender(): void {
+    // the select the message points at exists from the first render on
+    this.updateFormValidity();
   }
 
   componentDidLoad(): void {
-    if (this.value != null && this.value !== '' && this.value !== 0 && !Number.isNaN(this.value)) {
+    if (
+      !this.multiple &&
+      this.value != null &&
+      this.value !== '' &&
+      this.value !== 0 &&
+      !Number.isNaN(this.value)
+    ) {
       setFormValue(this.internals, this.value.toString());
     }
   }
 
-  private onInput = (ev: Event) => {
-    const input = ev.target as HTMLSelectElement | false;
-    if (input) {
-      this.value = input.value;
-    }
+  private onInput = () => {
+    this.adoptSelection();
+    this.syncSelection();
   };
 
   private onBlur = () => {
@@ -203,6 +342,9 @@ export class MdsInputSelect {
 
   // a removed attribute or a null bound by a framework counts as no placeholder, like ''
   private hasPlaceholder = (): boolean => (this.placeholder ?? '') !== '';
+
+  private placeholderOption = (): HTMLOptionElement | null =>
+    this.selectEl?.querySelector<HTMLOptionElement>('.placeholder-option') ?? null;
 
   private emptyOptions = (): void => {
     const select = this.host.shadowRoot?.querySelector('select');
@@ -243,19 +385,43 @@ export class MdsInputSelect {
       this.selectEl?.appendChild(element.cloneNode(true));
     });
 
-    this.setCurrentValue();
+    this.applySelection(true);
+    this.syncSelection();
   };
 
-  private setCurrentValue = (): void => {
+  /** Sets value to the selection of the native select, without applying it back. */
+  private adoptSelection(): void {
+    if (this.selectEl == null) return;
+    this.adoptingSelection = true;
+    this.value = this.selectEl.value;
+    this.adoptingSelection = false;
+  }
+
+  /**
+   * Applies value to the options. A value selects its option alone, as `select.value` does, with
+   * `multiple` too. Without a value, the select keeps the options the markup selects, or its own
+   * default, when `fromMarkup`; a value cleared by code clears the selection instead, down to the
+   * placeholder or, without one, the first option a single select falls back to.
+   */
+  private applySelection(fromMarkup: boolean): void {
     if (this.selectEl == null) return;
     if (this.value != null && this.value !== '' && this.value !== 0 && !Number.isNaN(this.value)) {
       this.selectEl.querySelectorAll('option').forEach((element: HTMLOptionElement) => {
         element.selected = element.value === this.value;
       });
-    } else if (!this.hasPlaceholder()) {
-      this.value = this.selectEl?.querySelectorAll('option')[0].value;
+      return;
     }
-  };
+    if (fromMarkup) {
+      this.adoptSelection();
+      return;
+    }
+    this.selectEl.querySelectorAll('option').forEach((element: HTMLOptionElement) => {
+      element.selected = false;
+    });
+    const placeholder = this.placeholderOption();
+    if (placeholder && this.hasPlaceholder()) placeholder.selected = true;
+    this.adoptSelection();
+  }
 
   render() {
     return (
@@ -273,9 +439,9 @@ export class MdsInputSelect {
           onFocus={this.onFocus}
           name={this.name}
           required={this.required}
-          disabled={this.disabled}
+          disabled={this.isDisabled()}
           multiple={this.multiple}
-          size={this.size}
+          size={this.rows || this.legacyRows() || 0}
           part="select"
           ref={(el) => (this.selectEl = el as HTMLSelectElement)}
         >
@@ -302,11 +468,13 @@ export class MdsInputSelect {
           <slot onSlotchange={this.onSlotChangeHandler}></slot>
         </div>
         <mds-input-tip position="top" active={this.hasFocus} part="tip-top">
-          {this.disabled && <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>}
+          {this.isDisabled() && (
+            <mds-input-tip-item expanded variant="disabled"></mds-input-tip-item>
+          )}
           {this.required && (
             <mds-input-tip-item
               expanded={this.hasFocus}
-              variant={this.value === '' ? 'required' : 'required-success'}
+              variant={(this.value ?? '') === '' ? 'required' : 'required-success'}
             ></mds-input-tip-item>
           )}
         </mds-input-tip>

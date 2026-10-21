@@ -39,10 +39,19 @@ import localeIt from './meta/locale.it.json';
 })
 export class MdsInputSwitch {
   @AttachInternals() internals: ElementInternals;
+
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the native control in its shadow root
+  @State() private formDisabled = false;
   @Element() host: HTMLMdsInputSwitchElement;
   private km = new KeyboardManager();
   private label: string;
-  @State() dirty = false;
+  // the checked state of load, which a form reset brings back as the checked attribute of a
+  // native input
+  private loadChecked = false;
+  // the knob slides only on a change of checked: on load, or shown again after being hidden, it
+  // is drawn in the place of its state (#924)
+  @State() private knobSliding = false;
   @State() hasText: boolean = false;
 
   private t: Locale = new Locale({
@@ -120,15 +129,31 @@ export class MdsInputSwitch {
   @Event({ eventName: 'mdsInputSwitchChange' })
   changeEvent: EventEmitter<MdsInputSwitchEventDetail>;
 
+  /**
+   * Unchecks the other radios of the group, as a native radio does: the same name in the same
+   * form and the same tree. A radio without a name is a group of its own.
+   */
   private uncheckSiblings = (): void => {
-    const elements = document.querySelectorAll(`mds-input-switch[name="${this.name}"]`);
-
-    elements.forEach((element: HTMLMdsInputSwitchElement) => {
-      if (element !== this.host) {
-        element.checked = false;
-      }
-    });
+    if ((this.name ?? '') === '') return;
+    const root = this.host.getRootNode() as Document | ShadowRoot;
+    const form = this.host.closest('form');
+    root
+      .querySelectorAll<HTMLMdsInputSwitchElement>('mds-input-switch[type="radio"]')
+      .forEach((element) => {
+        if (
+          element !== this.host &&
+          element.name === this.name &&
+          element.closest('form') === form
+        ) {
+          element.checked = false;
+        }
+      });
   };
+
+  /** Submits the value while checked and enabled, nothing otherwise, as a native input. */
+  private updateFormValue(): void {
+    setFormValue(this.internals, this.checked && !this.disabled ? (this.value ?? null) : null);
+  }
 
   private handleInputOnChange = (e: Event): void => {
     const { value } = e.target as HTMLInputElement;
@@ -138,16 +163,18 @@ export class MdsInputSwitch {
     this.checked = input.checked;
     this.indeterminate = false;
 
-    if (this.type === 'radio') {
-      this.uncheckSiblings();
-    }
-
     this.changeEvent.emit({ name: this.name, checked: this.checked, value });
-    setFormValue(this.internals, this.checked ? (this.value ?? null) : null);
   };
 
-  private handleDirty = (): void => {
-    this.dirty = true;
+  /**
+   * The knob has landed, or its slide was cut short by hiding the switch: either way it rests in
+   * the place of its state. A quick second toggle cancels the first slide for the opposite one,
+   * which still has to run.
+   */
+  private handleKnobSlideEnd = (event: AnimationEvent): void => {
+    if (event.target !== event.currentTarget) return;
+    if (event.animationName !== (this.checked ? 'check' : 'uncheck')) return;
+    this.knobSliding = false;
   };
 
   private checkFocusElement = (): void => {
@@ -163,21 +190,33 @@ export class MdsInputSwitch {
      * if solved, please check mds-button, mds-input, mds-input-*
      * https://github.com/ionic-team/stencil/issues/5461
      */
-    if (newValue) {
-      setFormValue(this.internals, null);
+    if (newValue === false) {
+      // the watcher runs again with undefined
+      this.disabled = undefined;
       return;
     }
-
-    if (newValue === false) {
-      this.disabled = undefined;
-    }
+    this.updateFormValue();
   }
 
+  /**
+   * The form value follows every change of checked, by the user or by code; a radio checked
+   * unchecks the others of its group, which clear their own form value.
+   */
   @Watch('checked')
-  protected checkedChanged(newValue?: boolean): void {
+  protected checkedChanged(newValue?: boolean, oldValue?: boolean): void {
+    if (this.type === 'switch' && !!newValue !== !!oldValue) this.knobSliding = true;
     if (newValue === false) {
+      // the watcher runs again with undefined
       this.checked = undefined;
+      return;
     }
+    if (newValue && this.type === 'radio') this.uncheckSiblings();
+    this.updateFormValue();
+  }
+
+  @Watch('value')
+  protected valueChanged(): void {
+    this.updateFormValue();
   }
 
   @Watch('explicit')
@@ -187,13 +226,25 @@ export class MdsInputSwitch {
     }
   }
 
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
+
+  /** Like a native checkbox or radio, a form reset brings back the checked state of load. */
   formResetCallback(): void {
-    setFormValue(this.internals, '');
+    this.checked = this.loadChecked ? true : undefined;
+    this.updateFormValue();
+  }
+
+  componentWillLoad(): void {
+    this.loadChecked = this.checked === true;
   }
 
   componentDidLoad(): void {
     this.label = this.host.textContent ?? '';
-    setFormValue(this.internals, this.checked ? (this.value ?? null) : null);
+    this.updateFormValue();
     this.checkFocusElement();
     this.hasText = hasSlotted(this.host);
   }
@@ -204,7 +255,6 @@ export class MdsInputSwitch {
 
     return (
       <Host
-        onClick={this.handleDirty}
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
@@ -213,7 +263,7 @@ export class MdsInputSwitch {
           autoFocus={this.autofocus}
           checked={this.checked}
           class="field"
-          disabled={this.disabled}
+          disabled={this.isDisabled()}
           id="field"
           indeterminate={this.indeterminate}
           name={this.name}
@@ -223,9 +273,16 @@ export class MdsInputSwitch {
           value={this.value ?? undefined}
         />
         {this.type === 'switch' ? (
-          <label htmlFor="field" class={clsx('switch-container', this.dirty !== false && 'dirty')}>
+          <label
+            htmlFor="field"
+            class={clsx('switch-container', this.knobSliding && 'switch-container--sliding')}
+          >
             <div class="switch">
-              <div class="switch-toggle">
+              <div
+                class="switch-toggle"
+                onAnimationEnd={this.handleKnobSlideEnd}
+                on-animationcancel={this.handleKnobSlideEnd}
+              >
                 {this.explicit && (
                   <mds-icon
                     class="icon-explicit"

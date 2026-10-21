@@ -19,7 +19,7 @@
   @apply focus-bounce;
 
   align-items: center;
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   color: rgb(var(--magma-text-muted));
   cursor: pointer;
   display: flex;
@@ -29,7 +29,7 @@
   padding: --spacing(200) --spacing(400);
   transition-duration: var(--private-filter-item-transition-duration);
   transition-property: background-color, box-shadow, color, outline, outline-offset;
-  transition-timing-function: var(--ease-out);
+  transition-timing-function: var(--ease-out-cubic);
   user-select: none;
   white-space: nowrap;
 }
@@ -38,10 +38,13 @@ mds-text {
   white-space: nowrap;
 }
 
+/* 16px on a 16px tall count was a circle, a pill once the number widens it: the pill, out of the
+   corner axis */
+
 .count {
   align-items: center;
   background-color: var(--mds-filter-item-count-background-default);
-  border-radius: var(--radius-lg);
+  border-radius: var(--magma-radius-full);
   box-sizing: border-box;
   color: currentcolor;
   color: var(--mds-filter-item-count-color-default);
@@ -54,12 +57,20 @@ mds-text {
   padding-right: --spacing(150);
   transition-duration: var(--duration-200);
   transition-property: background-color, color;
-  transition-timing-function: var(--ease-out);
+  transition-timing-function: var(--ease-out-cubic);
   user-select: none;
 }
 
 :host(:focus-visible) {
   @apply focus-bounce--focused;
+}
+
+/* a disabled item does nothing on click and leaves the tab order: it shows as disabled and drops
+ * the hover feedback of a control that answers */
+
+:host([disabled]:not([disabled='false'])) {
+  color: rgb(var(--magma-text-disabled));
+  pointer-events: none;
 }
 
 :host([icon]:not([label])) {

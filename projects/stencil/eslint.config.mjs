@@ -51,6 +51,10 @@ export default defineConfig([
 
   // #region stencil
   {
+    // lint-staged runs ESLint from the root of the repository with this file as --config, and
+    // patterns are relative to the working directory: without a base path the block never
+    // matched there, and a commit skipped the stencil rules the lint target applies
+    basePath: import.meta.dirname,
     extends: [stencil.configs.flat.recommended],
     files: ['src/components/**/*.tsx'],
     ignores: ['.storybook/**', '**/*.stories.*'],
@@ -58,8 +62,7 @@ export default defineConfig([
       parser: tseslint.parser,
       parserOptions: {
         projectService: true,
-        project: './tsconfig.json', // important for rules requiring type info
-        tsconfigRootDir: import.meta.dirname, // ensure paths resolve correctly
+        tsconfigRootDir: import.meta.dirname,
         ecmaVersion: 'latest',
         sourceType: 'module',
       },

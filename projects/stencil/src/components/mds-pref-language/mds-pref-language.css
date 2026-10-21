@@ -5,6 +5,14 @@
   gap: --spacing(400);
 }
 
+/* label and tab, laid out as on the host of the other mds-pref-* (#927): the host gap only
+   separates this menu from what follows it */
+
+.menu {
+  display: grid;
+  gap: --spacing(200);
+}
+
 .mds-pref-language-dropdown {
   gap: --spacing(100);
   padding: --spacing(400);

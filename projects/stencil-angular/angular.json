@@ -24,11 +24,20 @@
           },
           "defaultConfiguration": "production"
         },
-        "test": {
-          "builder": "@angular/build:karma",
+        "test-build": {
+          "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/test-out",
             "tsConfig": "magma-angular/tsconfig.spec.json",
-            "polyfills": ["zone.js", "zone.js/testing"]
+            "polyfills": ["zone.js"]
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": ":test-build",
+            "tsConfig": "magma-angular/tsconfig.spec.json",
+            "runner": "vitest"
           }
         }
       }

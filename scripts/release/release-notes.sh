@@ -13,8 +13,8 @@
 #   previous-tag  the tag semantic-release built the version on: the notes cover
 #                 <previous-tag>..HEAD, the commits that drove the bump. Without
 #                 it git-cliff picks the newest tag matching the tag format, even
-#                 one outside the branch history (e.g. a magma@*-beta.N on beta
-#                 when releasing main), and misses the commits. Empty = the
+#                 one of another channel (e.g. a magma@*-beta.N prerelease when
+#                 releasing a stable), and misses the commits. Empty = the
 #                 whole history (first release).
 #
 # A commit is kept when one of its scopes is a scope token, with the scopes split
@@ -48,6 +48,31 @@ CONFIG="$CONFIG_DIR/cliff.toml"
 {
   echo '[changelog]'
   echo 'trim = true'
+  # git-cliff's default body, plus the BREAKING CHANGE footer of a breaking commit as a
+  # nested item under its entry: the footer is where the commit says what a consumer has
+  # to change. `trim` strips every line, so the note goes out with a marker that the
+  # postprocessor turns into the indentation of the nested item.
+  cat <<'BODY'
+body = """
+{% if version %}\
+    ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+    ## [unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group | striptags | trim | upper_first }}
+    {% for commit in commits %}
+        - {% if commit.scope %}*({{ commit.scope }})* {% endif %}\
+            {% if commit.breaking %}[**breaking**] {% endif %}\
+            {{ commit.message | upper_first }}\
+            {% if commit.breaking and commit.breaking_description and commit.breaking_description != commit.message %}
+            BREAKING_NOTE {{ commit.breaking_description | replace(from="\n", to=" ") | upper_first }}\
+            {% endif %}\
+    {% endfor %}
+{% endfor %}
+"""
+postprocessors = [{ pattern = '(?m)^BREAKING_NOTE ', replace = '  - ' }]
+BODY
   echo '[git]'
   echo 'conventional_commits = true'
   echo 'filter_unconventional = true'

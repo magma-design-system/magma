@@ -46,10 +46,11 @@ export class MdsHeader {
   @Prop({ reflect: true, mutable: true }) appearance: string = 'stripe';
 
   /**
-   * Sets the appearance of the header bar element depending on the scroll position
-   * you should set three different values: initial appearance, changed appearance and `window.scrollY` threshold
-   * Es: appearance-set="stripe, inline 200" means the component will start with stripe appearance
-   * that will change to inline if the page is scrolled more of 199 pixels
+   * Sets the appearance of the header bar element depending on the scroll position: three values,
+   * the initial appearance, the appearance once scrolled and the `window.scrollY` threshold.
+   * `stripe, inline 200` starts with the stripe appearance and changes to inline once the page is
+   * scrolled more than 199 pixels
+   * @example 'stripe, inline 200'
    */
   @Prop({ reflect: true }) readonly appearanceSet?: string;
 
@@ -220,12 +221,11 @@ export class MdsHeader {
 
   componentWillLoad(): void {
     this.hasMenu = this.mobileMenu() !== null;
-    if (this.hasMenu) {
-      this.onMenuChangedHandler(this.menu);
-      return;
-    }
-    this.onMenuChangedHandler('none');
   }
+
+  // without a `menu` slot the hamburger of the bar would open nothing, so the bar gets `none`:
+  // it was set before the bar was found, and then overwritten by `menu` on load
+  private barMenu = (menu: HeaderBarMenuType): HeaderBarMenuType => (this.hasMenu ? menu : 'none');
 
   private defineHeaderBar = (): void => {
     this.headerBar = this.host.querySelector('mds-header-bar') as HTMLMdsHeaderBarElement;
@@ -244,7 +244,7 @@ export class MdsHeader {
       return;
     }
     if (this.headerBar != null) {
-      this.headerBar.menu = newValue;
+      this.headerBar.menu = this.barMenu(newValue);
     }
   }
 
@@ -264,7 +264,7 @@ export class MdsHeader {
   }
 
   @Watch('visibility')
-  handleVisibilityChange(newValue: boolean, oldValue: boolean): void {
+  handleVisibilityChange(newValue: 'hidden' | 'visible', oldValue: 'hidden' | 'visible'): void {
     if (newValue !== oldValue) {
       this.visibleEvent.emit({ visibility: newValue });
     }

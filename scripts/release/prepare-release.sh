@@ -2,8 +2,9 @@
 #
 # Detects the next version of a group of packages with semantic-release and
 # prepares their release: version bumps, internal dependency pins and lock
-# (scripts/set-release-version.sh) and release notes, so that the release
-# workflow commits them all in one chore(release) commit.
+# (scripts/set-release-version.sh), release notes and the CHANGELOG.md of each
+# package, so that the release workflow commits them all in one chore(release)
+# commit.
 #
 # Usage (from the repository root, with the semantic-release toolchain installed):
 #   ./scripts/release/prepare-release.sh [--apply] [--notes] [--out <dir>] <packages>
@@ -16,8 +17,10 @@
 #               version-sync-paths  optional array of companion package.json
 #                                   files released at the same version
 #   --apply   write the versions and pins into the manifests and the lock
-#             (the release on beta commits nothing and skips it)
-#   --notes   write the release notes of each package (needs git-cliff)
+#             (the beta channel commits nothing and skips it)
+#   --notes   write the release notes of each package (needs git-cliff); with
+#             --apply too, prepend them to the CHANGELOG.md of the package and
+#             of its version-sync-paths (scripts/release/changelog.sh)
 #   --out     output directory (default .release)
 #
 # Environment: SR_STABLE_BRANCHES and GITHUB_REF_NAME, read by
@@ -29,7 +32,8 @@
 #   plan.json        the packages to release: [{name, version, tag, previous-tag,
 #                    tag-format, commit-scope, manifests}]
 #   notes/<name>.md  release notes (--notes)
-#   files.txt        tracked files changed by --apply
+#   files.txt        files of the release commit: changed by --apply, plus the
+#                    CHANGELOG.md files written with --apply --notes
 # Each package is detected on its own, from its own tags and commits. A package
 # whose next tag already exists on the remote is left out: that version was
 # already released.
@@ -136,3 +140,22 @@ if $NOTES; then
       "$(jq -r '."previous-tag"' <<< "$entry")" < /dev/null
   done < <(jq -c '.[]' <<< "$PLAN")
 fi
+
+# the CHANGELOG.md of every released package, and of the companions released at its version,
+# gets the notes as its newest section, in the same chore(release) commit; the beta channel commits nothing
+if $APPLY && $NOTES; then
+  while IFS= read -r entry; do
+    notes="$OUT/notes/$(jq -r '.name' <<< "$entry").md"
+    while IFS= read -r manifest; do
+      dir=$(dirname "$manifest")
+      "$HERE/changelog.sh" "$dir" "$notes" < /dev/null
+      if [ -f "$dir/CHANGELOG.md" ]; then
+        echo "$dir/CHANGELOG.md" >> "$OUT/files.txt"
+      fi
+    done < <(jq -r '.manifests[]' <<< "$entry")
+  done < <(jq -c '.[]' <<< "$PLAN")
+  sort -u -o "$OUT/files.txt" "$OUT/files.txt"
+  echo "release commit files:"
+  cat "$OUT/files.txt"
+fi
+

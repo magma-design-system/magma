@@ -71,6 +71,35 @@ Keep in mind that:
 - `nx run stencil:generate` still scaffolds the Jest flavoured spec and e2e files: answer no and
   start from the snippet above.
 
+#### Server-side rendering and hydration
+
+The SSR consumers (the `magma-react` server wrappers, `renderToString` of `magma/hydrate`) render
+the components on the server and hydrate that markup in the browser: a path that `render()` never
+takes. `@test/ssr` runs it in the browser tests:
+
+- `renderToString(html)` renders the markup in Node with the hydrate build (`dist/hydrate`,
+  through the `renderToString` command of `vitest.config.mts`) and throws on its error
+  diagnostics;
+- `hydrate(markup, { hidden })` parses it into a new stage as a browser parses an SSR page
+  (declarative shadow roots, hydration ids) and resolves once the components have hydrated it;
+- `reveal(stage)` moves a hidden stage into a visible one, as React streaming reveals a Suspense
+  boundary: every component in it is disconnected and connected again.
+
+```ts
+import { hydrate, renderToString } from '@test/ssr';
+
+it('measures the actions once the server markup is hydrated', async () => {
+  const stage = await hydrate(await renderToString('<mds-table>...</mds-table>'));
+  const row = stage.querySelector('mds-table-row')!;
+  // assert on the hydrated row
+});
+```
+
+The command reads `dist/hydrate`, so these tests need a full build (`nx run stencil:test` runs
+one). The server markup already carries the `hydrated` flag, which therefore says nothing about
+the client: `hydrate` waits for `componentOnReady()` instead, and what the components do after
+loading (observers, re-renders) still needs `expect.poll`.
+
 ### Storybook tests
 
 The stories (`test/*.stories.tsx`) carry the visual, interaction and accessibility tests: `play`
@@ -112,7 +141,7 @@ and the wrapper first.
 
 ```
 nx run stencil-react:test      # Vitest: browser (Playwright Chromium) + node projects
-nx run stencil-angular:test    # Karma + Jasmine, once, in a headless Chrome
+nx run stencil-angular:test    # Vitest in jsdom through the Angular unit-test builder, once
 ```
 
 - **React** (`projects/stencil-react/test/`, `vitest.config.mts`): the tests import the built
@@ -127,8 +156,12 @@ nx run stencil-angular:test    # Karma + Jasmine, once, in a headless Chrome
   `npm run test.watch` (from `projects/stencil-react`) keeps Vitest in watch mode.
 - **Angular** (`projects/stencil-angular/magma-angular/src/lib/*.spec.ts`): module wiring, generated
   proxies (inputs, outputs, one custom element per proxy), `ControlValueAccessor` directives with
-  Reactive Forms. The specs stay out of `stencil-generated/`, which the stencil build regenerates.
-  See `projects/stencil-angular/README.md` for the watch mode.
+  Reactive Forms. The specs run with Vitest in jsdom through the Angular `unit-test` builder
+  (`globals: true`, so `describe`, `it`, `expect` and `vi` need no import) against the real custom
+  elements, which load and render in jsdom: wait for the `hydrated` attribute before asserting on
+  the state of an element, since its watchers run only once it has loaded. The specs stay out of
+  `stencil-generated/`, which the stencil build regenerates. See
+  `projects/stencil-angular/README.md` for the watch mode.
 
 CI runs both in the `magma-react` and `magma-angular` jobs of the stencil workflow
 (`.github/workflows/stencil.yml`), on the build artifact of the `magma` job. Run them when a change

@@ -10,7 +10,7 @@
     "projects/*"
   ],
   "overrides": {
-    "caniuse-lite": "1.0.30001814",
+    "caniuse-lite": "1.0.30001817",
     "minimatch@^9.0.0": "9.0.9",
     "picomatch@^4.0.0": "4.0.7",
     "xml2js": "0.6.2"
@@ -21,44 +21,37 @@
     "@commitlint/rules": "19.8.1",
     "@eslint/compat": "1.4.1",
     "@eslint/eslintrc": "3.3.7",
-    "@eslint/js": "9.30.0",
+    "@eslint/js": "9.39.5",
     "@types/fs-extra": "11.0.4",
     "@types/node": "25.9.9",
-    "@typescript-eslint/eslint-plugin": "8.35.1",
-    "@typescript-eslint/parser": "8.35.1",
-    "@vitest/browser-playwright": "4.1.11",
+    "@typescript-eslint/eslint-plugin": "8.72.0",
+    "@typescript-eslint/parser": "8.72.0",
+    "@vitest/browser-playwright": "4.1.12",
     "chalk": "4.1.2",
-    "conventional-changelog-cli": "5.0.0",
-    "eslint": "9.30.0",
-    "fs-extra": "11.1.1",
+    "eslint": "9.39.5",
+    "fs-extra": "11.4.1",
     "globals": "16.5.0",
     "husky": "9.1.7",
     "lint-staged": "15.5.2",
-    "nx": "23.2.1",
-    "playwright": "1.62.1",
-    "prettier": "3.8.3",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "stylelint": "16.20.0",
-    "stylelint-config-recess-order": "7.0.0",
+    "nx": "23.3.0",
+    "playwright": "1.64.1",
+    "prettier": "3.9.10",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "stylelint": "16.26.1",
+    "stylelint-config-recess-order": "7.8.2",
     "stylelint-config-standard": "38.0.0",
     "stylelint-no-unsupported-browser-features": "8.1.2",
     "stylelint-order": "7.0.1",
-    "tsx": "4.19.3",
-    "typescript": "5.8.3",
-    "typescript-eslint": "8.35.1",
-    "vitest": "4.1.11"
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.72.0",
+    "vitest": "4.1.12"
   },
   "engines": {
     "node": ">=22.15.0"
   },
   "scripts": {
-    "changelog.design-tokens": "conventional-changelog -p conventionalcommits -i projects/design-tokens/CHANGELOG.md -s --commit-path projects/design-tokens",
-    "changelog.icons": "conventional-changelog -p conventionalcommits -i projects/icons/CHANGELOG.md -s --commit-path projects/icons",
-    "changelog.identity": "conventional-changelog -p conventionalcommits -i projects/identity/CHANGELOG.md -s --commit-path projects/identity",
-    "changelog.stencil": "conventional-changelog -p conventionalcommits -i projects/stencil/CHANGELOG.md -s --commit-path projects/stencil",
-    "changelog.styles": "conventional-changelog -p conventionalcommits -i projects/styles/CHANGELOG.md -s --commit-path projects/styles",
-    "changelog.svg-icons": "conventional-changelog -p conventionalcommits -i projects/svg-icons/CHANGELOG.md -s --commit-path projects/svg-icons",
     "clean-modules": "find . -type d -name node_modules -prune -exec rm -rf {} + && find . -type f -name package-lock.json -delete",
     "lint": "nx run-many -t lint",
     "lint:fix": "nx run-many -t lint:fix",
@@ -76,6 +69,9 @@
     ],
     "projects/{design-tokens,styles,icons,svg-icons,identity}/src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix"
+    ],
+    "projects/{icons/dictionary.json,svg-icons/svg/*.svg}": [
+      "tsx projects/icons/scripts/check-dictionary.ts --no-resolve"
     ]
   },
   "repository": {

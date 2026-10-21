@@ -1,6 +1,7 @@
 @import './css/mds-card-fouc.css';
 
 /**
+ * @prop --mds-card-background: Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`)
  * @prop --mds-card-gap: Sets the spacing between card elements
  * @prop --mds-card-padding: Sets the spacing around card elements
  */
@@ -10,7 +11,7 @@
   --mds-card-padding: 0;
   --mds-card-background: rgb(var(--magma-surface-raised));
 
-  background-color: rgb(var(--magma-surface-raised));
+  background-color: var(--mds-card-background);
   border-radius: var(--magma-radius-2xl);
   box-shadow: var(--shadow-md-sharp);
   container-name: mds-card;

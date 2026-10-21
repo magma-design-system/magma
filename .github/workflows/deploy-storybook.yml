@@ -1,6 +1,6 @@
-# Publishes the Storybook of `dev` to GitHub Pages, at
+# Publishes the Storybook of `main` to GitHub Pages, at
 # https://magma-design-system.github.io/magma/storybook/, on every push to
-# `dev` (a merged pull request included) that changes what the Storybook
+# `main` (a merged pull request included) that changes what the Storybook
 # shows. The previous host (magma.maggiolicloud.it, .deploy/) needs a runner
 # inside the Maggioli network and stopped updating with the move away from
 # GitLab CI.
@@ -20,7 +20,7 @@ name: deploy storybook
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -36,7 +36,7 @@ jobs:
     outputs:
       changed: ${{ steps.filter.outputs.storybook }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -69,8 +69,8 @@ jobs:
       # read the runs of the stencil workflow and download their artifact
       actions: read
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -140,7 +140,7 @@ jobs:
           github-token: ${{ github.token }}
       - name: Restore Nx cache
         if: ${{ steps.stencil.outputs.run-id == '' }}
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .nx
           key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -155,7 +155,7 @@ jobs:
       # test job (play functions and a11y checks, Playwright Chromium)
       - name: Restore Playwright browsers cache
         if: ${{ steps.stencil.outputs.run-id == '' }}
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           # the browser revision is pinned by the playwright version in the lockfile
@@ -190,8 +190,8 @@ jobs:
 
   deploy:
     needs: [build]
-    # the github-pages environment accepts deployments from dev only
-    if: ${{ github.ref == 'refs/heads/dev' }}
+    # the github-pages environment accepts deployments from main only
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     # its own group, not the build one: an older run entering it could
     # otherwise cancel the build of a newer run. A deploy lasts seconds and

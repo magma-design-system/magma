@@ -1,20 +1,52 @@
-# Release pipeline of every package on main, in ONE chore(release) commit.
-# For each package it detects the next version from the conventional commits
-# of its scope, bumps its package.json, updates the pins of the packages that
-# depend on it (e.g. design-tokens -> styles and magma, magma -> magma-react
-# and magma-angular) and the lock, then commits, tags and creates the GitHub
-# releases (see semantic-release.yml). That single commit then triggers CI ->
-# publish.yml (npm) once, with every manifest already consistent.
+# The manual release of every package, from main: a maintainer starts it with
+# "Run workflow" on the main branch (docs/WORKFLOW.md rule 1). It works on the
+# commit main pointed to when it was dispatched, whatever lands on main while
+# it runs.
 #
-# icons and svg-icons also release directly from dev (icons.release.yml,
-# svg-icons.release.yml): promoting dev into main brings their tags along and
-# the tag-exists guard skips the re-release. magma prereleases come from beta
-# (stencil.release.yml).
+# channel: stable  one chore(release) commit with the next version of each
+#                  package (from the conventional commits of its scope), the
+#                  pins of the packages that depend on it (e.g. design-tokens
+#                  -> styles and magma, magma -> magma-react and magma-angular),
+#                  the lock and the CHANGELOG.md sections, pushed straight to
+#                  main with RELEASE_PUSH_TOKEN, then one tag and one GitHub
+#                  release per package (semantic-release.yml). The push is not
+#                  rebased: when main moved since the dispatch it is rejected,
+#                  the run fails before any tag exists and is re-run. The CI of
+#                  that commit then runs publish.yml (npm) once, with every
+#                  manifest already consistent.
+# channel: beta    a magma prerelease, magma@<next stable>-beta.N, with nothing
+#                  committed: the tag goes on the dispatched commit, the
+#                  lockstep (magma, magma-react, magma-angular) is built here
+#                  and publish.yml, run by the completion of this workflow,
+#                  takes the artifacts of this run and writes the tag version
+#                  into the manifests before publishing with the `beta`
+#                  dist-tag. A second beta without a new stable in between is
+#                  beta.N+1 (semantic-release channel notes).
+# dry-run          the plan alone, in the job summary, with no approval needed.
+#
+# A real release waits for the approval of the `release` environment (its
+# required reviewers). Approve it right away: on the stable channel the time
+# spent waiting is time for main to move and the push to be rejected.
+#
+# icons and svg-icons also release on their own on every push to main that
+# touches them (icons.release.yml, svg-icons.release.yml): here they only
+# release what those runs left, usually nothing.
 name: release
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: stable = versions committed on main and tagged; beta = magma@x.y.z-beta.N tag on the commit, nothing committed
+        type: choice
+        default: stable
+        options:
+          - stable
+          - beta
+      dry-run:
+        description: Only compute the plan (job summary), without approval, build, commit, tag or push
+        type: boolean
+        default: false
 
 concurrency:
   group: release-main
@@ -23,30 +55,147 @@ concurrency:
 permissions:
   contents: write
 
+# magma's manifests: keep the magma entry in sync with MAGMA_LOCKSTEP_MANIFESTS
+# in publish.yml and with the build job below. The list is parsed by
+# scripts/test-release.sh and projects/stencil/scripts/pr-risk.ts: keep its
+# layout (one package per `{`, the `packages: >-` block scalar).
+env:
+  PACKAGES: >-
+    [
+      {"name": "design-tokens", "working-directory": "projects/design-tokens",
+       "tag-format": "design-tokens@${version}", "commit-scope": "design-tokens"},
+      {"name": "identity", "working-directory": "projects/identity",
+       "tag-format": "identity@${version}", "commit-scope": "identity"},
+      {"name": "styles", "working-directory": "projects/styles",
+       "tag-format": "styles@${version}", "commit-scope": "styles"},
+      {"name": "svg-icons", "working-directory": "projects/svg-icons",
+       "tag-format": "svg-icons@${version}", "commit-scope": "svg-icons"},
+      {"name": "icons", "working-directory": "projects/icons",
+       "tag-format": "icons@${version}", "commit-scope": "icons"},
+      {"name": "magma", "working-directory": "projects/stencil",
+       "tag-format": "magma@${version}", "commit-scope": "magma|stencil|react|lit|storybook|mds-*",
+       "version-sync-paths": ["projects/stencil-react/package.json",
+                              "projects/stencil-angular/magma-angular/package.json"]}
+    ]
+
 jobs:
-  release:
-    # chore(release) pushes come from release-finalize itself: their versions are
-    # already tagged, so re-running would only be a wasted no-op dry-run
-    if: ${{ !startsWith(github.event.head_commit.message, 'chore(release):') }}
+  # the workflow file exists on every branch, the release runs on main only
+  guard:
+    if: ${{ github.ref_name != 'main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "::error::the release runs on main only (dispatched on ${{ github.ref_name }})"
+          exit 1
+
+  # a reusable workflow cannot read `env`: the packages list goes through an
+  # output of this job
+  packages:
+    if: ${{ github.ref_name == 'main' }}
+    runs-on: ubuntu-latest
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - id: list
+        run: |
+          {
+            echo 'list<<EOF'
+            echo "$PACKAGES"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+  plan:
+    needs: [packages]
+    if: ${{ inputs.dry-run }}
     uses: ./.github/workflows/semantic-release.yml
     secrets: inherit
     with:
-      # magma's manifests: keep in sync with stencil.release.yml and
-      # MAGMA_LOCKSTEP_MANIFESTS in publish.yml
-      packages: >-
-        [
-          {"name": "design-tokens", "working-directory": "projects/design-tokens",
-           "tag-format": "design-tokens@${version}", "commit-scope": "design-tokens"},
-          {"name": "identity", "working-directory": "projects/identity",
-           "tag-format": "identity@${version}", "commit-scope": "identity"},
-          {"name": "styles", "working-directory": "projects/styles",
-           "tag-format": "styles@${version}", "commit-scope": "styles"},
-          {"name": "svg-icons", "working-directory": "projects/svg-icons",
-           "tag-format": "svg-icons@${version}", "commit-scope": "svg-icons"},
-          {"name": "icons", "working-directory": "projects/icons",
-           "tag-format": "icons@${version}", "commit-scope": "icons"},
-          {"name": "magma", "working-directory": "projects/stencil",
-           "tag-format": "magma@${version}", "commit-scope": "magma|stencil|react|lit|storybook|mds-*",
-           "version-sync-paths": ["projects/stencil-react/package.json",
-                                  "projects/stencil-angular/magma-angular/package.json"]}
-        ]
+      packages: ${{ needs.packages.outputs.list }}
+      packages-filter: ${{ inputs.channel == 'beta' && 'magma' || '' }}
+      channel: ${{ inputs.channel }}
+      dry-run: true
+
+  approve:
+    name: Approve the ${{ inputs.channel }} release
+    needs: [packages]
+    if: ${{ !inputs.dry-run }}
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - run: echo "${{ inputs.channel }} release of ${{ github.sha }} approved"
+
+  # the beta publishes the dispatched commit, which has no fresh CI run of its
+  # own (the stable one publishes the chore(release) commit from the CI that
+  # commit triggers): the lockstep is built here and publish.yml downloads these
+  # artifacts from this run. Same names and paths as the stencil workflow
+  # (stencil.yml: the artifact-paths of the magma job, the uploads of
+  # magma-react and magma-angular)
+  build:
+    name: Build the magma lockstep (beta)
+    needs: [approve]
+    if: ${{ inputs.channel == 'beta' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Restore Nx cache
+        uses: actions/cache@v6
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      # Nx builds design-tokens, styles and svg-icons first
+      - run: npx nx run-many -t build -p stencil stencil-react stencil-angular
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stencil-build
+          path: |
+            projects/design-tokens/dist
+            projects/styles/dist
+            projects/svg-icons/dist
+            projects/stencil/dist
+            projects/stencil/src/components.d.ts
+            projects/stencil/src/fixtures
+            projects/stencil/www
+            projects/stencil/assets
+            projects/stencil-react/src
+            projects/stencil/loader
+            projects/stencil/AGENTS.md
+            projects/stencil/agents
+            projects/stencil-angular/magma-angular/src/stencil-generated
+          retention-days: 1
+          include-hidden-files: true
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stencil-react-build
+          path: |
+            projects/stencil-react/dist
+            projects/stencil-react/AGENTS.md
+            projects/stencil-react/agents
+          retention-days: 1
+          include-hidden-files: true
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stencil-angular-build
+          path: |
+            projects/stencil-angular/dist
+            !projects/stencil-angular/dist/test-out
+          retention-days: 1
+          include-hidden-files: true
+
+  release:
+    needs: [packages, approve, build]
+    # the build is skipped on the stable channel, a failed one stops the beta
+    if: ${{ !cancelled() && needs.approve.result == 'success' && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
+    uses: ./.github/workflows/semantic-release.yml
+    secrets: inherit
+    with:
+      packages: ${{ needs.packages.outputs.list }}
+      packages-filter: ${{ inputs.channel == 'beta' && 'magma' || '' }}
+      channel: ${{ inputs.channel }}
+      rebase-on-reject: false

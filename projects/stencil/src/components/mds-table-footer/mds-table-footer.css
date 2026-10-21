@@ -4,6 +4,9 @@
   --mds-table-footer-transition-duration: var(--duration-200);
   --private-table-footer-transition-duration: var(--mds-table-footer-transition-duration);
 
+  /* internal: the footer cells paint the table colour, not the scroll area behind them */
+  --mds-table-row-background: var(--mds-table-background);
+
   @apply ease-out;
 
   border-top: var(--private-cell-border-width) solid var(--private-cell-border-color);
@@ -13,7 +16,9 @@
   transition-property: border-color;
 }
 
-::slotted(mds-table-cell) {
+::slotted(mds-table-cell),
+.selection,
+.actions {
   --private-cell-border-color: transparent;
 }
 

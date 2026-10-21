@@ -20,6 +20,7 @@ export class MdsPrefLanguageItem {
 
   /**
    * Specifies the language code based on HTML `lang` attribute
+   * @example 'it'
    */
   @Prop({ reflect: true }) readonly code: string;
 
@@ -46,11 +47,11 @@ export class MdsPrefLanguageItem {
   // `code` is assigned asynchronously by framework wrappers (e.g. @lit/react sets it
   // as a property after the element connects), so it is briefly undefined on the first
   // render pass and the watcher re-validates once it lands. Only a non-empty,
-  // unrecognized code is a real error; empty codes fall back to the `noCode` branch
-  // already handled in render().
+  // unrecognized code is a mistake, and the item shows the code itself in place of the name
+  // it has not got; empty codes fall back to the `noCode` branch already handled in render().
   private readonly validateCode = (code: string | undefined): void => {
     if (code != null && code !== '' && localeDefault[code] === undefined) {
-      throw Error(`Language code not found: ${code}`);
+      console.warn(`mds-pref-language-item: no language name for the code "${code}"`);
     }
   };
 
@@ -68,7 +69,7 @@ export class MdsPrefLanguageItem {
             icon={this.selected ? miBaselineCheckCircle : miOutlineCircle}
             variant="dark"
             tone="text"
-            label={localeDefault[this.code]}
+            label={localeDefault[this.code] ?? this.code}
           ></mds-button>
         ) : (
           <mds-button

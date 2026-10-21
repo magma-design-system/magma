@@ -15,28 +15,31 @@ The `<mds-usage>` web component is a documentation-oriented annotation block of 
 
 #### Semantic Behavior
 
-- **Status semantics via `variant`**: The chosen `variant` drives the border and header color from the shared status palette (success / info / error / warning), so the container reads as the matching guidance category.
-- **Content role mapping**: The content region conveys an allowed-vs-disallowed nature to assistive technology - insertion for the `'do'` and `'info'` variants, deletion for `'dont'` and `'warn'`.
+- **Status semantics via `variant`**: The chosen `variant` drives the border and header color from the shared status palette (success / info / error / warning) and the header icon (a tick for `do`, an X for `dont`, an info sign for `info`, a warning triangle for `warn`), so the container reads as the matching guidance category even without its color.
+- **Label first**: The header label (the `alias`, or the name of the `variant` in the page language) is what tells assistive technology the kind of guidance; the content region has no role of its own.
 - **Localized header label**: When `alias` is not provided, the header text is resolved from the bundled locale dictionary (el / en / es / it) keyed by `variant`, so the label follows the document language.
 - **Default slot is content**: The default (unnamed) slot accepts a text string, HTML elements, or other components - it is the body of the usage block, not the label.
 
 #### Properties & Visual Configurations
 
-`variant` is the primary configuration prop. Unlike most Magma components, this is NOT the shared variant/tone ladder defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); it is a component-specific guidance category:
+`variant` is the primary configuration prop. Unlike most Magma components, this is NOT the shared variant/tone ladder defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); it is a component-specific guidance category:
 
-- **`variant="do"`**: marks recommended / allowed usage (success styling, insertion role).
-- **`variant="dont"`**: marks discouraged / disallowed usage (error styling, deletion role).
-- **`variant="info"`**: neutral informational note (info styling, insertion role); this is the default.
-- **`variant="warn"`**: cautionary note (warning styling, deletion role).
+- **`variant="do"`**: marks recommended / allowed usage (success styling).
+- **`variant="dont"`**: marks discouraged / disallowed usage (error styling).
+- **`variant="info"`**: neutral informational note (info styling); this is the default.
+- **`variant="warn"`**: cautionary note (warning styling).
+
+The `variant` is reflected on the host, where the styles read it, so it colors the block when it is set as a property too (as the React and Angular wrappers set it); without one the host gets `info`.
 
 #### Other behavioral props
 
 - **`alias`** overrides the auto-generated, localized header phrase with a custom string when the default category label is not specific enough for the example being shown.
+- **`icon`** replaces the header icon of the `variant` with any icon slug; colors and label still follow the `variant`. When not set or empty, the icon follows the `variant`. The header icon is decorative: the label carries the meaning.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-usage>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-usage>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Default Informational Note
 
@@ -52,7 +55,7 @@ The simplest form. Omit `variant` to get the `info` default - a neutral, blue-ti
 
 #### Recommended Pattern (`variant="do"`)
 
-Use `variant="do"` to mark a component usage or design pattern as explicitly recommended. The container adopts success styling and the content region carries `role="insertion"` for assistive technology.
+Use `variant="do"` to mark a component usage or design pattern as explicitly recommended. The container adopts success styling and the header reads the variant label.
 
 ```html
 <mds-usage variant="do">
@@ -62,7 +65,7 @@ Use `variant="do"` to mark a component usage or design pattern as explicitly rec
 
 #### Discouraged Pattern (`variant="dont"`)
 
-Use `variant="dont"` to mark a usage as explicitly forbidden or inadvisable. The container adopts error styling and the content region carries `role="deletion"`.
+Use `variant="dont"` to mark a usage as explicitly forbidden or inadvisable. The container adopts error styling.
 
 ```html
 <mds-usage variant="dont">
@@ -72,12 +75,12 @@ Use `variant="dont"` to mark a usage as explicitly forbidden or inadvisable. The
 
 #### Cautionary Note (`variant="warn"`)
 
-Use `variant="warn"` when a pattern is not forbidden but requires care - for example when a prop combination is valid but has side effects, or when a rare edge case exists. The container adopts warning styling and carries `role="deletion"`.
+Use `variant="warn"` when a pattern is not forbidden but requires care - for example when a prop combination is valid but has side effects, or when a rare edge case exists. The container adopts warning styling.
 
 ```html
 <mds-usage variant="warn">
   <mds-text>
-    Impostare <code>type="button"</code> su ogni pulsante all'interno di un form
+    Impostare type="button" su ogni pulsante all'interno di un form
     per evitare invii accidentali.
   </mds-text>
 </mds-usage>
@@ -94,6 +97,16 @@ When the auto-generated, localized header ("Consentito", "Non consentito", etc.)
 
 <mds-usage variant="dont" alias="Struttura da evitare">
   <mds-text>Non annidare mds-card all'interno di un'altra mds-card.</mds-text>
+</mds-usage>
+```
+
+#### Custom Header Icon via `icon`
+
+Each `variant` has its own header icon. When a custom `alias` names a more specific category, pass `icon` with a slug that illustrates it; the `variant` still drives the colors and the label fallback. Keep the icon coherent with the `variant`.
+
+```html
+<mds-usage variant="do" alias="Struttura consigliata" icon="mi/baseline/account-tree">
+  <mds-text>Usare mds-card con header, content e footer separati.</mds-text>
 </mds-usage>
 ```
 
@@ -120,7 +133,9 @@ The default slot accepts any HTML or Magma components. Use this to annotate a fu
 ```html
 <mds-usage variant="do" alias="Composizione corretta di mds-card">
   <mds-card>
-    <mds-card-header slot="header" label="Titolo scheda"></mds-card-header>
+    <mds-card-header slot="header">
+      <mds-text typography="h5">Titolo scheda</mds-text>
+    </mds-card-header>
     <mds-card-content slot="content">
       <mds-text>Contenuto principale della scheda.</mds-text>
     </mds-card-content>
@@ -133,34 +148,50 @@ The default slot accepts any HTML or Magma components. Use this to annotate a fu
 
 #### CSS Custom Property Overrides
 
-Customize the container appearance through the three documented `--mds-usage-*` CSS custom properties. Set them on the host or a parent selector and use Magma color tokens via `rgb(var(--<token>))` to keep dark mode working.
+Customize the container appearance through the three documented `--mds-usage-*` CSS custom properties. Set them on the host or a parent selector and use the semantic color roles via `rgb(var(--magma-<role>))` to keep dark mode working.
 
 ```css
 .docs-callout mds-usage {
-  --mds-usage-border-color: rgb(var(--variant-ai-05));
-  --mds-usage-header-background: rgb(var(--variant-ai-03));
-  --mds-usage-header-color: rgb(var(--tone-neutral));
+  --mds-usage-border-color: rgb(var(--magma-accent-ai-border));
+  --mds-usage-header-background: rgb(var(--magma-accent-ai-emphasis));
+  --mds-usage-header-color: rgb(var(--magma-accent-ai-on-emphasis));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-usage>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-usage>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `variant` as the Shared Tone/Variant Ladder
 
-`<mds-usage>` does not use the system-wide `variant` ladder (`primary`, `secondary`, `error`, etc.). Its `variant` prop is component-specific (`do`, `dont`, `info`, `warn`). Passing a system variant silently falls back to `info` styling.
+`<mds-usage>` does not use the system-wide `variant` ladder (`primary`, `secondary`, `error`, etc.). Its `variant` prop is component-specific (`do`, `dont`, `info`, `warn`). Passing a system variant silently falls back to the base info-like styling and the info icon, with an empty header label (the locale has no entry for it).
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-usage variant="error">
   <mds-text>Non consentito.</mds-text>
 </mds-usage>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-usage variant="dont">
   <mds-text>Non consentito.</mds-text>
+</mds-usage>
+```
+
+#### Do Not Use an `icon` That Contradicts the `variant`
+
+`icon` replaces only the glyph: colors and label still follow the `variant`. An icon that means the opposite (a tick on a `dont` block, a cross on a `do` block) sends two conflicting signals. To change the meaning, change the `variant`; use `icon` only to make the same meaning more specific.
+
+```html
+<!-- INCORRECT -->
+<mds-usage variant="dont" icon="mi/baseline/check-circle">
+  <mds-text>Non annidare mds-card all'interno di un'altra mds-card.</mds-text>
+</mds-usage>
+
+<!-- CORRECT -->
+<mds-usage variant="dont">
+  <mds-text>Non annidare mds-card all'interno di un'altra mds-card.</mds-text>
 </mds-usage>
 ```
 
@@ -169,10 +200,10 @@ Common incorrect uses of `<mds-usage>`. Each entry pairs the wrong form with the
 `<mds-usage>` renders a labeled container; without slotted content the block displays only the colored header strip with no body - producing a visually broken annotation. Always provide meaningful content in the default slot.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-usage variant="do"></mds-usage>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-usage variant="do">
   <mds-text>Usare sempre il colore del tema per i pulsanti primari.</mds-text>
 </mds-usage>
@@ -183,34 +214,31 @@ Common incorrect uses of `<mds-usage>`. Each entry pairs the wrong form with the
 The default slot is the body of the block. Placing a heading or label string there makes it look like body text, not a header. Use the `alias` prop to supply a custom header label.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-usage variant="do">
   Struttura consigliata
 </mds-usage>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-usage variant="do" alias="Struttura consigliata">
   <mds-text>Comporre mds-card con i suoi sotto-componenti dedicati.</mds-text>
 </mds-usage>
 ```
 
-#### Do Not Pierce Shadow Parts to Restyle the Header
+#### Do Not Pierce the Shadow DOM to Restyle the Header
 
 `::part(header)`, `::part(icon)`, and `::part(label)` are the only documented extension points for shadow internals. Targeting undocumented class names or using `>>>` couples code to implementation details that may change. For color overrides, use the documented `--mds-usage-*` CSS custom properties instead.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-usage >>> .header {
-  background: purple;
-}
-mds-usage::part(icon) {
-  display: none;
+  background: rgb(var(--magma-accent-ai-emphasis));
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-usage {
-  --mds-usage-header-background: rgb(var(--variant-ai-03));
-  --mds-usage-header-color: rgb(var(--tone-neutral));
+  --mds-usage-header-background: rgb(var(--magma-accent-ai-emphasis));
+  --mds-usage-header-color: rgb(var(--magma-accent-ai-on-emphasis));
 }
 ```
 
@@ -219,23 +247,24 @@ mds-usage {
 `<mds-usage>` is a documentation/Storybook annotation primitive - it is not a card, callout, or alert for production UIs. For in-app status messages use [`mds-banner`](../../mds-banner), [`mds-note`](../../mds-note), or [`mds-toast`](../../mds-toast).
 
 ```html
-<!-- 🚫 INCORRECT - using mds-usage as a production alert -->
+<!-- INCORRECT - using mds-usage as a production alert -->
 <mds-usage variant="warn">
   <mds-text>La sessione sta per scadere.</mds-text>
 </mds-usage>
 
-<!-- ✅ CORRECT - use the appropriate production component -->
-<mds-banner variant="warning" tone="weak" label="La sessione sta per scadere."></mds-banner>
+<!-- CORRECT - use the appropriate production component -->
+<mds-banner variant="warning" tone="weak">La sessione sta per scadere.</mds-banner>
 ```
 
 
 
 ## Properties
 
-| Property  | Attribute | Description                                                         | Type                                 | Default     |
-| --------- | --------- | ------------------------------------------------------------------- | ------------------------------------ | ----------- |
-| `alias`   | `alias`   | Specifies the alias of the usage phrase on the top of the component | `string \| undefined`                | `undefined` |
-| `variant` | `variant` | Specifies the delay when the tooltip will trigger                   | `"do" \| "dont" \| "info" \| "warn"` | `'info'`    |
+| Property  | Attribute | Description                                                                                       | Type                                 | Default     |
+| --------- | --------- | ------------------------------------------------------------------------------------------------- | ------------------------------------ | ----------- |
+| `alias`   | `alias`   | Specifies the alias of the usage phrase on the top of the component                               | `string \| undefined`                | `undefined` |
+| `icon`    | `icon`    | Specifies the icon displayed in the header; when not set or empty, the icon follows the `variant` | `string \| undefined`                | `undefined` |
+| `variant` | `variant` | Specifies the guidance category of the content, which drives colors, header label and icon        | `"do" \| "dont" \| "info" \| "warn"` | `'info'`    |
 
 
 ## Slots
@@ -247,11 +276,11 @@ mds-usage {
 
 ## Shadow Parts
 
-| Part       | Description |
-| ---------- | ----------- |
-| `"header"` |             |
-| `"icon"`   |             |
-| `"label"`  |             |
+| Part       | Description                                                          |
+| ---------- | -------------------------------------------------------------------- |
+| `"header"` | The header that holds the `icon` and the `label`                     |
+| `"icon"`   | The icon of the header, the one of `variant` unless `icon` is set    |
+| `"label"`  | The label of the header, the name of `variant` unless `alias` is set |
 
 
 ## CSS Custom Properties

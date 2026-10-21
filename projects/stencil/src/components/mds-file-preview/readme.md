@@ -13,8 +13,8 @@ The `<mds-file-preview>` web component is the Magma Design System card that prev
 
 #### Semantic Behavior
 
-- **Format auto-detection**: The `filename` extension determines the icon, badge tone, and human-readable description; `suffix` forces a specific known format and `format` is the resolved category.
-- **Download interaction**: When `downloadable` is set, clicking the card emits `mdsFileDownload` with `{ target, filename, extension }`.
+- **Format auto-detection**: The `filename` extension determines the icon, badge colour, and human-readable description; `suffix` forces a specific known format and `format` is the resolved category.
+- **Download interaction**: With `downloadable` the card is a button in the tab order: a click, Enter or Space emits `mdsFileDownload` with `{ target, filename, extension }`, once. Without it the card is not interactive and emits nothing. `downloadable` renders no download icon.
 - **Delete affordance**: When `deletable` is set, a light icon button renders in the corner and emits `mdsFileDelete` with the same detail payload, leaving the actual removal to the consumer.
 - **Filesize formatting**: A numeric `filesize` string is treated as bytes and formatted automatically; any non-numeric string is shown verbatim.
 - **Preview vs. icon vs. status**: A thumbnail renders only when `src` is set, the format supports preview, and no `message` is present; otherwise a format icon is shown, and when `message` is present the card switches to a status layout displaying that feedback text.
@@ -24,23 +24,23 @@ The `<mds-file-preview>` web component is the Magma Design System card that prev
 
 - **`filename`** is the source of truth: beyond being the title, it drives icon, badge, and description inference, so prefer a real name with extension over a cosmetic label.
 - **`suffix`** overrides extension detection when the filename is unreliable or missing an extension; pick from the known format set rather than passing the description directly.
-- **`description`** overrides only the textual filetype caption, leaving icon and badge inference intact.
+- **`description`** overrides only the textual filetype caption, leaving icon and badge inference intact. The caption is shown only without `filesize`; with a size it stays as the badge tooltip.
 - **`src`** supplies a thumbnail (e.g. a logo or downscaled image) shown in place of the generic icon when the format is previewable and no message is active.
 - **`message`** turns the card into a feedback/status state (validation, error, progress text) and suppresses the thumbnail.
 
 #### Component-specific variants and tones
 
-The shared `variant` / `tone` ladders are defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system). `variant` here is an avatar-flavored value and is rendered **only when `message` is set**, coloring the status layout; the format badge derives its own tone from the detected filetype independently.
+The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). `variant` here is an avatar-flavored value and is rendered **only when `message` is set**, coloring the status layout; the format badge derives its own colour from the detected filetype independently (its tone is always `weak`).
 
 #### Other behavioral props
 
-- **`icon`** overrides the auto-detected glyph with a named Magma icon or a base64 SVG string.
+- **`icon`** overrides the auto-detected glyph with a Magma icon slug, an inline `<svg ...>` string or a `data:image/svg+xml;base64,` URI.
 - **`truncate`** controls how the filename is shortened when it overflows, defaulting to `'word'`.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-file-preview>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-file-preview>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Minimal File Card
 
@@ -64,7 +64,7 @@ Pass `filesize` as a numeric byte count and the component formats it automatical
 
 #### Download Interaction
 
-Add `downloadable` to make the whole card clickable. The component emits `mdsFileDownload` with `{ target, filename, extension }` on click. Listen to the event; do not add a click handler on a wrapper element.
+Add `downloadable` to make the whole card a button: the component emits `mdsFileDownload` with `{ target, filename, extension }` on a click, Enter or Space. Without `downloadable` the card emits nothing. Listen to the event; do not add a click handler on a wrapper element.
 
 ```html
 <mds-file-preview
@@ -149,7 +149,7 @@ Use `suffix` to force a known extension category when the filename has no extens
 
 #### Custom Icon
 
-Set `icon` to override the auto-detected glyph with any icon slug from the Magma library, or a base64 SVG string for a dynamic icon from an API.
+Set `icon` to override the auto-detected glyph with any icon slug from the Magma library, or a `data:image/svg+xml;base64,` URI for a dynamic icon from an API.
 
 ```html
 <!-- Named icon slug -->
@@ -162,7 +162,7 @@ Set `icon` to override the auto-detected glyph with any icon slug from the Magma
 
 #### Filename Truncation
 
-`truncate` defaults to `word`. Use `all` to break on any character for long filenames without word boundaries. Use `none` to allow the filename to wrap freely.
+`truncate` defaults to `word`, which keeps the filename on one line with an ellipsis. Use `all` to clamp it to two lines with an ellipsis. Use `none` to allow the filename to wrap freely.
 
 ```html
 <mds-file-preview
@@ -178,39 +178,38 @@ Set `icon` to override the auto-detected glyph with any icon slug from the Magma
 
 ```html
 <mds-input-upload
-  label="Carica documenti"
-  multiple
+  max-files="5"
   accept=".pdf,.docx"
 ></mds-input-upload>
 ```
 
 #### Styling Customization
 
-Style the card only through its documented `--mds-file-preview-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Style the card only through its documented `--mds-file-preview-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` and the `--magma-radius-*` scale so dark mode and the corner geometry keep working.
 
 ```css
 .carta-allegato mds-file-preview {
-  --mds-file-preview-background-color: rgb(var(--tone-neutral-01));
-  --mds-file-preview-border-radius: var(--radius-md);
-  --mds-file-preview-icon-background: rgb(var(--variant-primary-01));
-  --mds-file-preview-icon-color: rgb(var(--variant-primary-05));
+  --mds-file-preview-background-color: rgb(var(--magma-accent-surface-subtle));
+  --mds-file-preview-border-radius: var(--magma-radius-md);
+  --mds-file-preview-icon-background: rgb(var(--magma-accent-emphasis));
+  --mds-file-preview-icon-color: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-file-preview>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-file-preview>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Pass a Label Instead of a Real Filename
 
-`filename` drives automatic icon, badge, and description inference. Passing a cosmetic label without an extension produces a generic fallback icon and no type badge, losing all format-aware information.
+`filename` drives automatic icon, badge, and description inference. Passing a cosmetic label without an extension produces the generic fallback icon and no badge, losing all format-aware information.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-file-preview filename="Contratto"></mds-file-preview>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-file-preview filename="contratto-2024.pdf"></mds-file-preview>
 ```
 
@@ -219,10 +218,10 @@ Common incorrect uses of `<mds-file-preview>`. Each entry pairs the wrong form w
 `variant` colours the status layout that is only rendered when `message` is set. Setting `variant` alone has no visual effect and misleads readers of the code into thinking the card is themed.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-file-preview filename="report.pdf" variant="error"></mds-file-preview>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-file-preview
   filename="report.pdf"
   message="File danneggiato"
@@ -232,15 +231,15 @@ Common incorrect uses of `<mds-file-preview>`. Each entry pairs the wrong form w
 
 #### Do Not Listen for Native `click` to Handle Downloads
 
-When `downloadable` is set the component wires a click listener internally and emits `mdsFileDownload` with the file detail. Attaching an outer `click` handler bypasses the detail payload and fires even when `downloadable` is not set.
+The component emits `mdsFileDownload` with the file detail when the card is clicked. Attaching an outer `click` handler bypasses the detail payload and also fires for clicks on the delete button.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div onclick="handleClick()">
   <mds-file-preview filename="documento.docx" downloadable></mds-file-preview>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-file-preview filename="documento.docx" downloadable></mds-file-preview>
 ```
 
@@ -256,13 +255,13 @@ document.querySelector('mds-file-preview').addEventListener('mdsFileDownload', (
 
 #### Do Not Remove the Element Yourself Without Listening to `mdsFileDelete`
 
-`deletable` makes the delete button visible but leaves removal to the consumer. Removing the element from a `click` listener on a wrapper - rather than `mdsFileDelete` - bypasses the detail payload and creates a race if the event is also handled elsewhere.
+`deletable` makes the delete button visible but leaves removal to the consumer. Removing the element from a `click` listener on the host - rather than `mdsFileDelete` - fires on any click inside the card, not only on the delete button, and bypasses the detail payload.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-file-preview filename="allegato.zip" deletable onclick="this.remove()"></mds-file-preview>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-file-preview filename="allegato.zip" deletable></mds-file-preview>
 ```
 
@@ -274,15 +273,15 @@ document.querySelector('mds-file-preview').addEventListener('mdsFileDelete', (e)
 
 #### Do Not Wrap `mds-file-preview` in an Anchor to Add Download
 
-Wrapping a card in `<a href="...">` creates a focusable interactive element around an already-interactive card, breaks keyboard navigation, and fails accessibility audits. Use `downloadable` and handle `mdsFileDownload` instead.
+Wrapping a card in `<a href="...">` nests an already-interactive card (and its delete button, when `deletable`) inside a link, which fails accessibility audits. Use `downloadable` and handle `mdsFileDownload` instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <a href="/files/documento.pdf" download>
   <mds-file-preview filename="documento.pdf"></mds-file-preview>
 </a>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-file-preview filename="documento.pdf" downloadable></mds-file-preview>
 ```
 
@@ -291,10 +290,10 @@ Wrapping a card in `<a href="...">` creates a focusable interactive element arou
 `suffix` accepts only values from the documented `ExtensionSuffixType` union (e.g. `"pdf"`, `"docx"`, `"jpg"`). Passing an unsupported string silently falls back to the default icon and loses format inference.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-file-preview filename="report" suffix="documento-word"></mds-file-preview>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-file-preview filename="report" suffix="docx"></mds-file-preview>
 ```
 
@@ -303,7 +302,7 @@ Wrapping a card in `<a href="...">` creates a focusable interactive element arou
 The only documented shadow part is `card`. Targeting inner selectors via `::part()`, `>>>`, or attribute hacks couples code to internal Shadow DOM structure and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-file-preview::part(icon) {
   width: 48px;
 }
@@ -311,13 +310,13 @@ mds-file-preview >>> .file-name {
   font-size: 1rem;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-file-preview {
-  --mds-file-preview-icon-color: rgb(var(--variant-primary-05));
-  --mds-file-preview-background-color: rgb(var(--tone-neutral-01));
+  --mds-file-preview-icon-color: rgb(var(--magma-accent-fg));
+  --mds-file-preview-background-color: rgb(var(--magma-accent-surface-subtle));
 }
 mds-file-preview::part(card) {
-  padding: var(--spacing-600);
+  padding: calc(var(--spacing) * 600);
 }
 ```
 
@@ -325,20 +324,20 @@ mds-file-preview::part(card) {
 
 ## Properties
 
-| Property                | Attribute      | Description                                                                                                                                                              | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Default     |
-| ----------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| `deletable`             | `deletable`    | Enables the cross icon to perform cancel/delete action on element                                                                                                        | `boolean \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `undefined` |
-| `description`           | `description`  | Overrides the default filetype description                                                                                                                               | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
-| `downloadable`          | `downloadable` | Enables the download icon to perform the related action on element                                                                                                       | `boolean \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `undefined` |
-| `filename` _(required)_ | `filename`     | The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary                                                       | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `undefined` |
-| `filesize`              | `filesize`     | The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically. | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
-| `format`                | `format`       | Sets if the download icon must be shown or not                                                                                                                           | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
-| `icon`                  | `icon`         | The name of the icon or a base64 string to render it as an svg                                                                                                           | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `undefined` |
-| `message`               | `message`      | Sets a feedback message related to the component                                                                                                                         | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
-| `src`                   | `src`          | The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image                                               | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
-| `suffix`                | `suffix`       | Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen                                                               | `"7z" \| "ace" \| "ai" \| "db" \| "default" \| "dmg" \| "doc" \| "docm" \| "docx" \| "eml" \| "eps" \| "exe" \| "flac" \| "gif" \| "heic" \| "htm" \| "html" \| "jpe" \| "jpeg" \| "jpg" \| "js" \| "json" \| "jsx" \| "m2v" \| "mp2" \| "mp3" \| "mp4" \| "mp4v" \| "mpeg" \| "mpg" \| "mpg4" \| "mpga" \| "odf" \| "odp" \| "ods" \| "odt" \| "ole" \| "p7m" \| "pdf" \| "php" \| "png" \| "ppt" \| "rar" \| "rtf" \| "sass" \| "shtml" \| "svg" \| "tar" \| "tiff" \| "ts" \| "tsd" \| "txt" \| "wav" \| "webp" \| "xar" \| "xls" \| "xlsx" \| "xml" \| "zip" \| undefined` | `undefined` |
-| `truncate`              | `truncate`     | Truncates the filename shown                                                                                                                                             | `"all" \| "none" \| "word" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `'word'`    |
-| `variant`               | `variant`      | The variant of the component, is shown only if the message attribute is defined                                                                                          | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined`                                                                                                                                                                                                                                                                                                                                                                   | `undefined` |
+| Property                | Attribute      | Description                                                                                                                                                                                                    | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Default     |
+| ----------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `deletable`             | `deletable`    | Enables the cross icon to perform cancel/delete action on element                                                                                                                                              | `boolean \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `undefined` |
+| `description`           | `description`  | Overrides the default filetype description                                                                                                                                                                     | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
+| `downloadable`          | `downloadable` | Turns the card into a button that asks for the download: a tab stop that the pointer, Enter and Space activate, emitting `mdsFileDownload`. Without it the card is not interactive                             | `boolean \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `undefined` |
+| `filename` _(required)_ | `filename`     | The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary                                                                                             | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `undefined` |
+| `filesize`              | `filesize`     | The filesize shown, if you pass a string you can write whathever you want, if you pass a number it expect filesize in bytes, the component will format it automatically.                                       | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
+| `format`                | `format`       | The kind of file, recognised from the extension of `filename` or from `suffix`: it selects the colours of the icon. The component writes it on load and whenever `filename` changes, set `suffix` to choose it | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
+| `icon`                  | `icon`         | The name of the icon or a base64 string to render it as an svg                                                                                                                                                 | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `undefined` |
+| `message`               | `message`      | Sets a feedback message related to the component                                                                                                                                                               | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
+| `src`                   | `src`          | The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image                                                                                     | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
+| `suffix`                | `suffix`       | Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen                                                                                                     | `"7z" \| "ace" \| "ai" \| "db" \| "default" \| "dmg" \| "doc" \| "docm" \| "docx" \| "eml" \| "eps" \| "exe" \| "flac" \| "gif" \| "heic" \| "htm" \| "html" \| "jpe" \| "jpeg" \| "jpg" \| "js" \| "json" \| "jsx" \| "m2v" \| "mp2" \| "mp3" \| "mp4" \| "mp4v" \| "mpeg" \| "mpg" \| "mpg4" \| "mpga" \| "odf" \| "odp" \| "ods" \| "odt" \| "ole" \| "p7m" \| "pdf" \| "php" \| "png" \| "ppt" \| "rar" \| "rtf" \| "sass" \| "shtml" \| "svg" \| "tar" \| "tiff" \| "ts" \| "tsd" \| "txt" \| "wav" \| "webp" \| "xar" \| "xls" \| "xlsx" \| "xml" \| "zip" \| undefined` | `undefined` |
+| `truncate`              | `truncate`     | Truncates the filename shown                                                                                                                                                                                   | `"all" \| "none" \| "word" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `'word'`    |
+| `variant`               | `variant`      | The variant of the component, is shown only if the message attribute is defined                                                                                                                                | `"amaranth" \| "aqua" \| "blue" \| "error" \| "green" \| "info" \| "lime" \| "orange" \| "orchid" \| "primary" \| "purple" \| "red" \| "sky" \| "success" \| "violet" \| "warning" \| "yellow" \| undefined`                                                                                                                                                                                                                                                                                                                                                                   | `undefined` |
 
 
 ## Events
@@ -351,9 +350,9 @@ mds-file-preview::part(card) {
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"card"` |             |
+| Part     | Description                                                                     |
+| -------- | ------------------------------------------------------------------------------- |
+| `"card"` | The preview of the file: its thumbnail or format icon, its name and its details |
 
 
 ## CSS Custom Properties

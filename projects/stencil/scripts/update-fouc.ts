@@ -22,7 +22,17 @@ function safeReadJSON<T>(path: string): T | null {
 
 function updateComponentFouc(componentDirName: string) {
   const componentDir = join(COMPONENTS_DIR, componentDirName);
-  const documentationPath = join(componentDir, 'documentation.json');
+  // written by the build beside the component's output (scripts/component-docs.ts)
+  const documentationPath = join(
+    COMPONENTS_DIR,
+    '..',
+    '..',
+    'dist',
+    'collection',
+    'components',
+    componentDirName,
+    'documentation.json',
+  );
 
   if (!existsSync(documentationPath)) return;
 
@@ -42,12 +52,16 @@ function updateComponentFouc(componentDirName: string) {
   if (tagNames.length === 0) return;
 
   const mainCssPath = join(componentDir, `${componentDirName}.css`);
+  const foucImport = `@import './css/${componentDirName}-fouc.css';`;
   if (existsSync(mainCssPath)) {
     let css = readFileSync(mainCssPath, 'utf8');
 
     if (FOUC_IMPORT_REGEX.test(css)) {
-      css = css.replace(FOUC_IMPORT_REGEX, `@import './css/${componentDirName}-fouc.css';`);
+      css = css.replace(FOUC_IMPORT_REGEX, foucImport);
       writeFileSync(mainCssPath, css, 'utf8');
+    } else if (!css.includes(foucImport)) {
+      // a sheet without the shared import got a FOUC file nothing read (#1004)
+      writeFileSync(mainCssPath, `${foucImport}\n\n${css}`, 'utf8');
     }
   }
 

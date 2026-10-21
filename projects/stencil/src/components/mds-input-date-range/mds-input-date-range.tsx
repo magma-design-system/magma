@@ -22,6 +22,7 @@ import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
+import { InputSizeType } from '@type/input';
 
 export interface EventDate {
   caller: HTMLMdsInputDateRangePreselectionElement;
@@ -50,6 +51,9 @@ export class MdsInputDateRange {
   @State() visibleCalendarDate: string = '';
   @State() dropdownRef?: HTMLMdsDropdownElement;
   @State() hasPreselection: boolean = false;
+  // the disabled state of the host as a form control: its own disabled, or a disabled fieldset
+  // around it, which disables the host but not the calendar button in its shadow root
+  @State() private formDisabled = false;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -67,24 +71,28 @@ export class MdsInputDateRange {
   /**
    * Specifies the start date of the range
    * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2025-06-01'
    */
   @Prop({ reflect: true }) startDate: string = '';
 
   /**
    * Specifies the end date of the range
    * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2025-06-30'
    */
   @Prop({ reflect: true }) endDate: string = '';
 
   /**
    * Specifies the min date of the range, user cannot set dates before this date
    * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2025-01-01'
    */
   @Prop({ reflect: true }) min: string | null = null;
 
   /**
    * Specifies the max date of the range, user cannot set dates after this date
    * @description It's in ISO format (YYYY-MM-DD).
+   * @example '2025-12-31'
    */
   @Prop({ reflect: true }) max: string | null = null;
 
@@ -93,6 +101,11 @@ export class MdsInputDateRange {
    * @description Default is 500
    */
   @Prop({ reflect: true }) readonly delay: number = 500;
+
+  /**
+   * Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px
+   */
+  @Prop({ reflect: true }) readonly size?: InputSizeType = 'lg';
 
   /**
    * Hides the highlight on today's date in the calendar.
@@ -108,6 +121,13 @@ export class MdsInputDateRange {
    * Is needed to reference the form data after the form is submitted
    */
   @Prop({ reflect: true }) readonly name?: string;
+
+  /**
+   * Disables the range, like a disabled native input: the dates cannot be changed, from the fields
+   * or from the calendar, and are left out of the form. It disables the two slotted fields too. A
+   * disabled `<fieldset>` around the component does the same.
+   */
+  @Prop({ reflect: true }) readonly disabled?: boolean = false;
 
   private togglePreselection: HTMLMdsInputDateRangePreselectionElement[];
   private lastEmittedStartDate: string | null = null;
@@ -206,11 +226,23 @@ export class MdsInputDateRange {
     endDate: string;
   }>;
 
+  /** A date inside `min` and `max`, the bounds that are set. */
+  private isWithinRange(date: DateTime): boolean {
+    const min = DateTime.fromISO(this.min ?? '');
+    const max = DateTime.fromISO(this.max ?? '');
+    return !(min.isValid && date < min) && !(max.isValid && date > max);
+  }
+
   private getEmittableDateRangeDetail(): { startDate: string; endDate: string } | null {
     const startDate = DateTime.fromISO(this.internalStartDate);
     const endDate = DateTime.fromISO(this.internalEndDate);
 
     if (!startDate.isValid || !endDate.isValid) {
+      return null;
+    }
+
+    // a date typed outside the window is flagged by its field, not emitted as a range
+    if (!this.isWithinRange(startDate) || !this.isWithinRange(endDate)) {
       return null;
     }
 
@@ -246,6 +278,48 @@ export class MdsInputDateRange {
   @Watch('endDate')
   handleEndDateChange(newValue: string): void {
     this.syncExternalDate('end', newValue);
+  }
+
+  @Watch('min')
+  @Watch('max')
+  handleRangeChange(): void {
+    this.forwardRange(true);
+  }
+
+  @Watch('disabled')
+  handleDisabledChange(): void {
+    this.forwardDisabled(true);
+  }
+
+  /**
+   * Bounds both fields, as the range promises: min and max reach the slotted dates, which flag a
+   * date typed outside them and report it to the form. At load a bound the range does not set
+   * leaves the one written on the field alone; a bound changed later always reaches the fields.
+   */
+  private forwardRange(changed: boolean): void {
+    (['start', 'end'] as const).forEach((slotName) => {
+      const field = this.slottedField(slotName);
+      if (field == null) return;
+      if (changed || (this.min ?? '') !== '') field.min = this.min;
+      if (changed || (this.max ?? '') !== '') field.max = this.max;
+    });
+  }
+
+  /**
+   * Disables both fields with the range. At load a range that is not disabled leaves a field
+   * disabled on its own alone; a disabled changed later always reaches the fields. A disabled
+   * fieldset needs no forwarding: the fields are inside it and follow it themselves.
+   */
+  private forwardDisabled(changed: boolean): void {
+    (['start', 'end'] as const).forEach((slotName) => {
+      const field = this.slottedField(slotName);
+      if (field != null && (changed || this.disabled)) field.disabled = !!this.disabled;
+    });
+  }
+
+  private slottedField(slotName: 'start' | 'end'): HTMLMdsInputDateElement | undefined {
+    const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement;
+    return slot?.assignedElements()[0] as HTMLMdsInputDateElement | undefined;
   }
 
   componentWillLoad(): void {
@@ -312,6 +386,8 @@ export class MdsInputDateRange {
     } else {
       this.internalEndDate = event.start;
     }
+    // a preset ending before it starts snaps its end to the start, as a typed range does
+    this.validateDateRange();
     this.updateInputValue('end', this.internalEndDate);
     this.syncFormValue();
 
@@ -392,9 +468,13 @@ export class MdsInputDateRange {
 
   componentDidLoad(): void {
     this.nameSlottedFields();
+    this.forwardRange(false);
+    this.forwardDisabled(false);
     this.updateInputListeners();
     this.updateInputValue('start', this.internalStartDate);
     this.updateInputValue('end', this.internalEndDate);
+    // a preset matching the dates of load shows selected from the start
+    this.checkPreselections();
     this.syncFormValue();
     this.host.addEventListener('focusout', this.handleFocusOut);
     this.host.shadowRoot?.addEventListener(
@@ -402,6 +482,14 @@ export class MdsInputDateRange {
       this.handleCalendarHover as EventListener,
     );
   }
+
+  formDisabledCallback(disabled: boolean): void {
+    this.formDisabled = disabled;
+    // a calendar left open would still change the dates
+    if (disabled && this.dropdownRef) this.dropdownRef.visible = false;
+  }
+
+  private isDisabled = (): boolean => !!this.disabled || this.formDisabled;
 
   formResetCallback(): void {
     this.clearHoverPreview();
@@ -438,8 +526,7 @@ export class MdsInputDateRange {
   }
 
   private updateInputValue(slotName: 'start' | 'end', newValue: string): void {
-    const slot = this.host.shadowRoot?.querySelector(`slot[name="${slotName}"]`) as HTMLSlotElement;
-    const input = slot?.assignedElements()[0] as HTMLMdsInputDateElement;
+    const input = this.slottedField(slotName);
     if (input != null) {
       this.syncingInputSlots.add(slotName);
       input.setValue(newValue).finally(() => {
@@ -691,7 +778,11 @@ export class MdsInputDateRange {
         </div>
         <div class="action-open-calendar-wrapper">
           <mds-button
+            aria-label={this.t.get('openCalendar')}
             class="action-open-calendar"
+            // the default md button fills the 36px square of an md field; sm fits the 28px one
+            size={this.size === 'sm' ? 'sm' : undefined}
+            disabled={this.isDisabled()}
             variant="dark"
             tone="text"
             icon={miBaselineCalendarToday}

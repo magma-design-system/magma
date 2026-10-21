@@ -21,6 +21,10 @@ export class MdsPrefAnimation {
   private readonly localStorageAlias: string = 'mdsPrefAnimation';
   private readonly customPropertyAlias: string = '--magma-pref-animation';
   private readonly defaultMode: AnimationModeType = 'system';
+  private syncingFromStore: boolean = false;
+  // the animation this instance applied last, or followed from another one
+  private appliedMode?: AnimationModeType;
+  private unsubscribeStore?: () => void;
 
   private readonly t: Locale = new Locale({
     el: localeEl,
@@ -59,16 +63,59 @@ export class MdsPrefAnimation {
     },
   };
 
-  componentWillRender(): void {
-    this.setAnimation(
-      this.mode ??
-        (localStorage.getItem(this.localStorageAlias) as AnimationModeType) ??
-        this.defaultMode,
+  private readonly isMode = (mode?: string | null): mode is AnimationModeType =>
+    mode != null && {}.hasOwnProperty.call(this.animation, mode);
+
+  private readonly warnInvalidMode = (mode: string): void => {
+    console.warn(
+      `mds-pref-animation: ignoring the invalid mode "${mode}", use one of: ${Object.keys(this.animation).join(', ')}`,
     );
+  };
+
+  // Applied once, on load, then mirrored from the shared store (see mds-pref-mode). A mode
+  // outside the union is ignored, and one an earlier page left in the storage is dropped: it was
+  // applied, threw, and broke every following load too (#825)
+  componentWillLoad(): void {
+    if (this.mode != null && !this.isMode(this.mode)) this.warnInvalidMode(this.mode);
+    const stored = localStorage.getItem(this.localStorageAlias);
+    if (stored !== null && !this.isMode(stored)) localStorage.removeItem(this.localStorageAlias);
+    this.setAnimation([this.mode, stored].find(this.isMode) ?? this.defaultMode);
   }
 
+  connectedCallback(): void {
+    this.unsubscribeStore = preferenceStore.onChange('animation', this.syncAnimation);
+  }
+
+  disconnectedCallback(): void {
+    this.unsubscribeStore?.();
+  }
+
+  /**
+   * Follows an animation applied elsewhere (another instance, or a writer of the
+   * `<html>` classes) without applying it again: no event, no storage write.
+   */
+  private readonly syncAnimation = (mode?: string): void => {
+    if (mode === undefined || mode === this.mode) {
+      return;
+    }
+    this.syncingFromStore = true;
+    this.mode = mode as AnimationModeType;
+    this.appliedMode = mode as AnimationModeType;
+    this.syncingFromStore = false;
+  };
+
+  /**
+   * Applies a animation once per change, and announces it once applied: the `mode` watcher
+   * calls this again for the value it has just been given, which used to emit a second
+   * mdsPrefChange, and the first application, the one of load, is no change to announce.
+   */
   private readonly setAnimation = (mode: AnimationModeType): void => {
-    this.prefChangeEvent.emit({ preference: 'animation' });
+    if (mode === this.appliedMode) {
+      this.mode = mode;
+      return;
+    }
+    const isFirstApplication = this.appliedMode === undefined;
+    this.appliedMode = mode;
     this.mode = mode;
     localStorage.setItem(this.localStorageAlias, this.mode);
     if (typeof document !== 'undefined') {
@@ -83,10 +130,23 @@ export class MdsPrefAnimation {
       element?.style.setProperty(this.customPropertyAlias, this.mode);
     }
     preferenceStore.state.animation = mode;
+    if (!isFirstApplication) {
+      this.prefChangeEvent.emit({ preference: 'animation' });
+    }
   };
 
   @Watch('mode')
   modeChanged(newValue: AnimationModeType): void {
+    if (this.syncingFromStore) {
+      return;
+    }
+    // a mode outside the union, or the attribute removed, is not applied: the instance goes back
+    // to the animation of the page
+    if (!this.isMode(newValue)) {
+      if (newValue != null) this.warnInvalidMode(newValue);
+      this.syncAnimation(preferenceStore.state.animation);
+      return;
+    }
     this.setAnimation(newValue);
   }
 

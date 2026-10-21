@@ -71,6 +71,88 @@ describe('mds-text', () => {
       return samples;
     };
 
+    /** Records what the animated element holds, frame by frame, until it holds `text`. */
+    const recordUntil = async (
+      host: HTMLMdsTextElement,
+      text: string,
+      limit = 200,
+    ): Promise<string[]> => {
+      const painted = host.shadowRoot!.querySelector('.text')!;
+      const samples: string[] = [];
+      while (samples.length < limit && samples[samples.length - 1] !== text) {
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+        samples.push(painted.textContent ?? '');
+      }
+      return samples;
+    };
+
+    it('resolves a text that loaded before its host rendered the slot', async () => {
+      // outside the flat tree every custom property reads "", the :host ones included: read at
+      // load, the speed came out as 0 and the reveal froze on its first frame, forever
+      const { root: host } = await render<HTMLDivElement>('<div></div>', {
+        waitForReady: false,
+      });
+      host.attachShadow({ mode: 'open' });
+      const text = document.createElement('mds-text');
+      text.setAttribute('animation', 'yugop');
+      text.setAttribute('text', 'Click to copy');
+      host.append(text);
+      await text.componentOnReady();
+
+      host.shadowRoot!.innerHTML = '<slot></slot>';
+      text.setAttribute('text', 'Copied');
+      const samples = await recordUntil(text, 'Copied');
+
+      expect(samples[samples.length - 1]).toBe('Copied');
+      expect(samples.every((sample) => sample.length === 'Copied'.length)).toBe(true);
+    });
+
+    it('reads the speed when animation="yugop" is set after load', async () => {
+      // the custom properties were read at load, and only if the animation was already on:
+      // set later, it ran at a built-in speed and ignored --mds-text-animation-speed
+      const { root, waitForChanges } = await render<HTMLMdsTextElement>(
+        '<mds-text style="--mds-text-animation-speed: 1000"></mds-text>',
+      );
+      root.setAttribute('animation', 'yugop');
+      await waitForChanges();
+
+      const long = '0123456789'.repeat(12);
+      root.text = long;
+      const samples = await recordUntil(root, long);
+
+      // every character starts on the first frame, so the text resolves in as many frames as
+      // the farthest character is from its target (30 at most); at the built-in speed of 2 the
+      // last character would not even start before frame 60
+      expect(samples[samples.length - 1]).toBe(long);
+      expect(samples.length).toBeLessThan(45);
+    });
+
+    it('pads with the placeholder character of its custom property, one per character', async () => {
+      // a <string> custom property comes back quoted: '_' padded every character with three
+      const { root } = await render<HTMLMdsTextElement>(
+        `<mds-text animation="yugop" style="--mds-text-animation-placeholder-char: '_'"></mds-text>`,
+      );
+
+      const target = 'Copied to the clipboard';
+      root.text = target;
+      const samples = await recordUntil(root, target);
+
+      expect(samples[samples.length - 1]).toBe(target);
+      expect(samples.some((sample) => sample.includes('_'))).toBe(true);
+      expect(samples.every((sample) => sample.length === target.length)).toBe(true);
+    });
+
+    it('paints a text holding markup as text, as the render does', async () => {
+      // every frame went through innerHTML, so the last one turned the tag into an element
+      const { root } = await render<HTMLMdsTextElement>('<mds-text animation="yugop"></mds-text>');
+
+      root.text = '<b>bold</b>';
+      const samples = await recordUntil(root, '<b>bold</b>');
+
+      expect(samples[samples.length - 1]).toBe('<b>bold</b>');
+      expect(root.shadowRoot!.querySelector('.text b')).toBeNull();
+    });
+
     it('never paints fewer characters than the string it is resolving', async () => {
       // every frame used to start from a slice of the character array, so the first ones
       // came out empty: no line box, and everything around the text jumped by a line
@@ -144,6 +226,69 @@ describe('mds-text', () => {
     expect(element.shadowRoot!.querySelector('slot')).not.toBeNull();
   });
 
+  describe('truncate with a typography trimmed to the cap height', () => {
+    // label and option trim the box to the capitals (text-box), so accents and cedillas are
+    // ink outside it: clipping the box vertically cut them off
+    const LONG = 'PROPRIETA\u0300 SONO ATTRIBUTI SEMPLICI \u00c8 \u00c5 \u00c7, ANCHE MOLTO LUNGHI';
+
+    // the truncated text next to the same text without truncate, the box it has to keep
+    const renderPair = async (typography: TypographyType, truncate: string) => {
+      const attributes = `typography="${typography}" style="--mds-text-line-clamp: 2"`;
+      const plainStyle = truncate === 'word' ? ' style="white-space: nowrap"' : '';
+      const { root } = await render<HTMLDivElement>(
+        `<div style="width: 160px"><div${plainStyle}><mds-text ${attributes}>${LONG}</mds-text></div><mds-text ${attributes} truncate="${truncate}">${LONG}</mds-text></div>`,
+      );
+      const [plain, host] = Array.from(root.querySelectorAll('mds-text'));
+      return { plain, host, inner: host.shadowRoot!.querySelector('.text') as HTMLElement };
+    };
+
+    it.each(['label', 'option'] as TypographyType[])(
+      '%s: word clips only the inline end and keeps the trimmed box',
+      async (typography) => {
+        const { plain, host, inner } = await renderPair(typography, 'word');
+        const style = getComputedStyle(inner);
+
+        expect(style.overflowX).toBe('clip');
+        expect(style.overflowY).toBe('visible');
+        expect(style.textOverflow).toBe('ellipsis');
+        expect(inner.scrollWidth).toBeGreaterThan(inner.clientWidth);
+        expect(host.getBoundingClientRect().height).toBeCloseTo(
+          plain.getBoundingClientRect().height,
+          1,
+        );
+      },
+    );
+
+    it.each(['label', 'option'] as TypographyType[])(
+      '%s: none wraps without clipping the lines vertically',
+      async (typography) => {
+        const { plain, host, inner } = await renderPair(typography, 'none');
+
+        expect(getComputedStyle(inner).overflowY).toBe('visible');
+        expect(host.getBoundingClientRect().height).toBeCloseTo(
+          plain.getBoundingClientRect().height,
+          1,
+        );
+      },
+    );
+
+    it.each(['label', 'option'] as TypographyType[])(
+      '%s: all opens the clip above the first line, and only there',
+      async (typography) => {
+        const { inner } = await renderPair(typography, 'all');
+        const style = getComputedStyle(inner);
+        const halfLine = parseFloat(style.lineHeight) / 2;
+
+        // overflow-clip-margin widens the clip on every side, clip-path closes the bottom
+        // and the sides again: the lines after the clamp stay hidden
+        expect(style.overflowY).toBe('clip');
+        expect(parseFloat(style.overflowClipMargin)).toBeCloseTo(halfLine, 1);
+        expect(style.clipPath).toMatch(/^inset\(-/);
+        expect(style.clipPath).toMatch(/ 0px 0px\)$/);
+      },
+    );
+  });
+
   it('does not throw when the typography attribute is removed after hydration', async () => {
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -151,5 +296,24 @@ describe('mds-text', () => {
     await waitForChanges();
 
     expect(consoleError).not.toHaveBeenCalled();
+  });
+
+  describe('with the animation preference set to reduce', () => {
+    // the class lives on the document, so it would outlive this file
+    afterEach(() => {
+      document.documentElement.classList.remove('pref-animation-reduce');
+    });
+
+    it('holds back the transition of a code text', async () => {
+      // the host reflected the preference, but the sheet that reads it was commented out in
+      // the Tailwind 4 migration and then deleted with the comment (#1004)
+      document.documentElement.classList.add('pref-animation-reduce');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      const { root } = await render('<mds-text tag="code">const a = 1;</mds-text>');
+
+      expect(root).toHaveAttribute('pref-animation', 'reduce');
+      expect(getComputedStyle(root).transitionDuration).toBe('1e-05s');
+    });
   });
 });

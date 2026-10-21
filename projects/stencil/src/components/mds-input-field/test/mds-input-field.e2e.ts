@@ -75,8 +75,10 @@ describe('mds-input-field', () => {
     );
     const start = root.querySelector<HTMLMdsInputDateElement>('mds-input-date[slot="start"]')!;
 
-    // the range emits no validation of its own: the event bubbles from the date that validated
-    await start.setValue('2026-09-14');
+    // the range emits no validation of its own: the event bubbles from the date the user edited
+    const input = start.shadowRoot!.querySelector('input')!;
+    input.value = '2026-09-14';
+    input.dispatchEvent(new Event('input'));
     await waitForChanges();
 
     expect(root).toEqualAttribute('variant', 'success');

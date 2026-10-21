@@ -11,7 +11,8 @@ Use the version of this package matching the major version of [`@maggioli-design
 | magma | design-tokens | styles |
 | :--- | :--- | :--- |
 | `1.x` (before Magma 2) | `13.x` (latest `13.7.2`) | `15.x` (latest `15.11.1`) |
-| `2.x` and later | `>= 14` | `>= 16` |
+| `2.0.0-alpha.0` to `2.0.0-beta.3` (prereleases) | `14.x` | `16.x` |
+| `2.x` and later | `>= 15` | `>= 17` |
 
 # Installation
 
@@ -26,6 +27,59 @@ This package works also with yarn:
 ```bash
 yarn add @maggioli-design-system/design-tokens
 ```
+
+# Token data (DTCG)
+
+`dist/dtcg/` describes every global token of Magma in the [Design Tokens Community Group format, version 2025.10](https://www.designtokens.org/TR/2025.10/): the primitives of this package, the semantic layer (`--magma-*`) that `@maggioli-design-system/styles` publishes, and what changes in dark mode, under a named theme and under `prefers-contrast: more`. Read it to show, document or transform the tokens (a documentation site, a design tool, another platform). To style a page, use the stylesheets: the JSON describes them, it does not replace them.
+
+| File | Content |
+| :--- | :--- |
+| `magma.resolver.json` | Which sets to merge, and in which order, for one mode and one theme ([resolver module](https://www.designtokens.org/TR/2025.10/resolver/)) |
+| `base.tokens.json` | Every token, in light mode and in the default theme |
+| `mode-dark.tokens.json` | What dark mode changes: the palette, the ring shadows, the ink on solid fills |
+| `contrast-more.tokens.json` | The `pref-contrast-more` promotions of the default theme |
+| `theme-<name>.tokens.json` | What a named theme (`data-theme-name`) repoints |
+| `theme-<name>-contrast-more.tokens.json` | The contrast promotions of that theme, in its own family |
+
+Each set lists only what it changes. To get the tokens of one condition, merge the files that `resolutionOrder` names (the `base` set, then the `mode` context, then the `theme` context), let a later file replace a token of an earlier one, and resolve the aliases last. The result has the values the stylesheets give in the same condition, and a test checks it at every build.
+
+| Modifier | Contexts |
+| :--- | :--- |
+| `mode` | `light` (default), `dark` |
+| `theme` | `default` (default), `cool`, `warm`, and each of them with `-contrast-more` |
+
+The theme and the contrast preference are one modifier because they are not independent: under a named theme, the stylesheets restate the contrast promotions in the theme's own family. Dark mode with the `cool` theme and more contrast, for example, merges `base`, `mode-dark`, `contrast-more`, `theme-cool` and `theme-cool-contrast-more`.
+
+## Token tree
+
+| Path | Custom property | Content |
+| :--- | :--- | :--- |
+| `palette.<group>.<family>.<step>` | `--tone-neutral-08` | The color primitives. The family's own color is `$root` (`--status-info`), the paper of the mode is `seed`. Aliased families (`variant`) are aliases of the family they name. |
+| `magma.<group>.<key>` | `--magma-surface-default` | The semantic roles, as aliases of the primitive they point at. `magma.tint` holds the internal `--magma-tint-*` pointers that themes and contrast repoint; an accent with an infix is a group of its own (`magma.accent-ai`). |
+| `font.<family>` | `--font-title` | Font families. |
+| `text-size.<family>.<style>` | `--text-size-title-h1` | The size of a style (`$root`) and its `font-weight`, `letter-spacing`, `line-height`. |
+| `typography.<family>.<style>` | none | The same style as one `typography` token. |
+| `leading`, `spacing`, `container`, `breakpoint`, `aspect`, `border`, `radius`, `shadow`, `duration`, `ease` | `--leading-md`, `--spacing-xs`, ... | One group per CSS prefix. `spacing.$root` is `--spacing`, the multiplier of the numeric utilities. |
+| `size.<step>` | none | The primitive sizing scale that spacing, container, border and radius name. |
+
+Every token carries `$extensions["it.maggioli.magma"]`:
+
+- `css`: the custom property it is published as;
+- `tier`: `primitive` (a raw value or scale), `semantic` (a `--magma-*` role, what UI code paints with) or `internal` (a `--magma-tint-*` pointer, not an API);
+- `cssValue`: the CSS value, only where the CSS writes the same quantity differently.
+
+Where the JSON and the CSS write a value differently:
+
+- **Colors**: the CSS publishes channels (`--tone-neutral-08: 208 208 208`, read as `rgb(var(--tone-neutral-08))`); the JSON gives sRGB components and the hex.
+- **Letter spacing**: the CSS writes it in `em`, which DTCG does not allow; the JSON gives it in `rem` at the style's own font size, and keeps the `em` in `cssValue`.
+- **Line height** of a `typography` token: a multiplier of the font size, as DTCG defines it. The `line-height` token of the style keeps the length.
+- **Aspect ratios**: a `number` (`5/3` becomes `1.6666666666666667`); `cssValue` keeps the ratio.
+- **Ring shadows** (`--shadow-ring*`): the CSS draws them with `--tone-neutral-01`; the JSON resolves that color, so `mode-dark` restates them.
+- **No DTCG type**: the text measures `--spacing-phrase`, `-prose`, `-text`, `-title` (in `ch`) and the `--transition-property-*` lists are listed in the `cssOnly` extension of their group.
+
+Component tokens (`--mds-*`) are not in this data: they belong to each component.
+
+The globals `@maggioli-design-system/styles` declares on top of these (the `--magma-*` of its `globals.css`, the corner and depth axes) are in its own `dist/dtcg/`, with a resolver that adds them to these sets, and how each token is consumed through Tailwind is its `dist/tailwind/consumption.json`, keyed by the same `css` names (its README, "Token data").
 
 # Generate Custom Palette
 
@@ -46,7 +100,11 @@ npx magma-design-tokens
 | `--generate [platform]`      | `-g`  | Output format for palette, choose one or more between `css`, `tailwind`, `dart` |
 | `--export-tokens`            | `-t`  | export palette as JSON design tokens format                                     |
 | `--outTokensDir [tokensDir]` |       | Directory path for JSON tokens, required if `--export-tokens` is presents       |
+| `--dry-run`                  |       | With `--export-tokens`: print the JSON tokens to stdout instead of writing them  |
 | `--port [port]`              | `-p`  | Port for the `ui` command playground server (default `5178`)                    |
+
+`npx magma-design-tokens ui` starts the playground on your configuration instead (see
+[UI command](#ui-command)).
 
 ## Configuration file
 
@@ -119,17 +177,26 @@ You can choose the ratio with which to generate the color scale with `ratios` fi
 }
 ```
 
-NOTE: there are four different ratios as follow value contrast
+The built-in ratio scales, per contrast `formula` (the default formula is `wcag3`, so a
+`ratios` name resolves against the `wcag3` scales unless the color sets `"formula":
+"wcag2"`):
 
 ```json
 {
-  "v1": [
+  "wcag3": {
+    "default": [8, 16, 23, 34, 45, 66, 74, 84, 92, 100],
+    "tint": [8, 16, 23, 34, 45, 66, 74, 84, 92, 100],
+    "tone": [8, 15, 25, 36, 48, 71, 80, 91, 101, 106]
+  },
+  "wcag2": {
+    "v1": [
       1.05, 1.1, 1.17, 1.24, 1.32, 1.41, 1.51, 1.65, 1.9, 2.25, 2.7, 3.3,
       4, 4.8, 5.75, 7, 8.5, 10.3, 12.45, 15
     ],
-  "v2": [1.09, 1.22, 1.42, 1.82, 2.57, 3.71, 5.13, 6.71, 8.75, 10.29],
-  "default": [1.09, 1.22, 1.42, 1.82, 3.29, 5.13, 6.71, 8.45, 10.29, 17.22],
-  "tone": [1.05, 1.1, 1.24, 1.47, 2.54, 4.83, 7.56, 10.31, 14.68, 16]
+    "v2": [1.09, 1.22, 1.42, 1.82, 2.57, 3.71, 5.13, 6.71, 8.75, 10.29],
+    "default": [1.09, 1.22, 1.42, 1.82, 3.29, 5.13, 6.71, 8.45, 10.29, 17.22],
+    "tone": [1.05, 1.1, 1.24, 1.47, 2.54, 4.83, 7.56, 10.31, 14.68, 16]
+  }
 }
 ```
 
@@ -142,9 +209,22 @@ Each color produces this token structure (here with the 10-step `default` scale)
 ```
 color.<group>.<name>.light.1 .. 10   contrast-picked values against white
 color.<group>.<name>.dark.1  .. 10   contrast-picked values against black
-color.<group>.<name>.light.color     the base color itself (or seed.light)
-color.<group>.<name>.dark.color      the base color itself (or seed.dark)
+color.<group>.<name>.light.seed      seed.light, when the color declares a `seed`
+color.<group>.<name>.dark.seed       seed.dark, when the color declares a `seed`
+color.<group>.<name>.light.color     otherwise: the base color itself
+color.<group>.<name>.dark.color      otherwise: the base color itself
 ```
+
+In CSS these become `--<group>-<name>-01` ... `-10`, plus `--<group>-<name>-seed` (e.g.
+`--tone-neutral-seed`) or the bare `--<group>-<name>` (e.g. `--brand-maggioli`).
+
+A color can also opt into the **surface engine** (`surface`, below). Surfaces are not
+contrast-solved: they are placed by a direct OKLCH lightness per mode and role, from the
+root `theme` block, and each opted-in family additionally emits
+`--surface-<name>-{sunken,muted,default,raised,overlay}`,
+`--border-<name>-{muted,default,strong}` and `--text-<name>-{default,muted,subtle,disabled}`
+(text roles solved by APCA target against that family's own surfaces). These families are
+what the semantic color layer of `@maggioli-design-system/styles` points at.
 
 ### Configuration reference
 
@@ -159,6 +239,7 @@ Root fields:
 | `ratios`     | `object`                 | built-in | Named ratio scales per formula; merged over the built-in ones shown above                                 |
 | `groups`     | `object`                 | none     | Per-group defaults for `ratios` and `formula`, keyed by token group (see below)                            |
 | `hueShift`   | `object`                 | none     | Default hue shifting applied to all colors (see the Hue shifting section)                                 |
+| `theme`      | `object`                 | none     | The surface engine: `surfaces` and `borders` (OKLCH lightness per mode and role, e.g. `"96%"`), `text` (APCA target per text role, or `{ "step": N }`), `colorspace`. Without it a `surface` opt-in is skipped with a warning |
 
 Fields of each entry in `colors` (per-color values override the root defaults):
 
@@ -171,13 +252,14 @@ Fields of each entry in `colors` (per-color values override the root defaults):
 | `formula`    | `string`          | root `formula` | Contrast formula for this color only                                                                             |
 | `colorspace` | `string`          | root value     | Interpolation colorspace for this color only                                                                     |
 | `smooth`     | `boolean`         | root value     | Bezier smoothing for this color only                                                                             |
-| `seed`       | `object`          | none           | `{ "light": "#RRGGBB", "dark": "#RRGGBB" }`: overrides the value of the extra `color` token per theme mode. Used by tones to expose the pure surface color (white in light mode, black in dark mode) |
+| `seed`       | `object`          | none           | `{ "light": "#RRGGBB", "dark": "#RRGGBB" }`: emits the off-scale `seed` token instead of `color`. Used by tones for the pure extreme of the mode (white in light, black in dark): `--tone-neutral-seed`. It is not a surface |
+| `surface`    | `boolean` \| `object` | `false`   | Opts the family into the surface engine (see How generation works): `true` uses the root `theme` levels, `{ "surfaces": {...}, "borders": {...} }` overrides them for this family. Also settable per group |
 | `hueShift`   | `object`          | root value     | Hue shifting for this color only; set angles to `0` to opt a color out of a root-level default                   |
 | `disabled`   | `boolean`         | `false`        | Skips the color entirely: no tokens are generated for it                                                          |
 | `title`      | `string`          | none           | Reserved for exporters; not used by the generator                                                                 |
-| `alias`      | `string`          | none           | Reserved for exporters; not used by the generator                                                                 |
+| `alias`      | `string`          | none           | `<group>.<name>` of another color: this entry carries no `color` and re-exports the source family's generated scale under its own name (`variant.primary` -> `brand.maggioli`) |
 
-Ratios, formula and export targets can also be set once per token group instead of repeating them on every color:
+Ratios, formula, export targets and `surface` can also be set once per token group instead of repeating them on every color:
 
 ```json
 {
@@ -244,6 +326,8 @@ In Figma, create a variable collection and import each file into its own mode (L
 
 The non-color sizing/number tokens are still exported in the legacy Figma "Import/Export Variables" plugin format (`dist/json/figma-magma-tokens.json`); moving them to DTCG is tracked separately.
 
+These files follow an earlier DTCG draft (colors as hex strings) and cover the palette only. Every global token, the semantic layer included, is in [`dist/dtcg/`](#token-data-dtcg).
+
 ### Playground
 
 A local UI to explore and tune the configuration with live palette previews:
@@ -254,7 +338,7 @@ nx run design-tokens:playground
 npm run playground -w projects/design-tokens
 ```
 
-It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` and runs the real token generator in the browser, so every preview matches the build output exactly. The UI has four views: **colors** (the two-column editor: color list on the left, editing and live light/dark scale previews with achieved contrast on the right; `neutral` is selected by default when present), **contrast scales**, **groups** and **diff**. Selecting a color from the sidebar while in contrast scales keeps you there, since the scale samples follow the selected color.
+It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` and runs the real token generator in the browser, so every preview matches the build output exactly. The UI has five views: **colors** (the two-column editor: color list on the left, editing and live light/dark scale previews with achieved contrast on the right; `neutral` is selected by default when present), **contrast scales**, **themes** (opt families into the surface engine, tune the surface/border/text levels, and preview each opted family as a named theme with its accent assignment and contrast checks), **groups** and **diff**. Selecting a color from the sidebar while in contrast scales keeps you there, since the scale samples follow the selected color.
 
 The **diff** view compares the current palette against the one generated from the committed configuration (the bundled `.magma-design-tokensrc.json`): it lists the colors whose steps changed - outlining each changed step and badging the color with the largest perceptual distance (deltaE) - plus any colors added or removed. The generated token files under `tokens/color/generated/` are build artifacts and not committed, so the committed config is the baseline.
 
@@ -267,6 +351,8 @@ The playground works with any configuration, not just the repo one: **load confi
 - **GIMP palette** — `colors.gpl` for the whole palette plus one `.gpl` per export group.
 
 CSS and GIMP respect export diversification: they emit the whole palette and one file per export group. When that yields more than one file the download is a zip (`magma-css.zip`, `magma-gimp.zip`); a single file downloads directly. The outputs are produced in the browser from the same Handlebars templates the build uses, so they match the CLI output. Editing is in-memory only: nothing touches the repo files.
+
+A reload keeps the work: the playground mirrors it to the browser's localStorage as a draft, stamped with the configuration it was made on (the bundled one, or the file the [UI command](#ui-command) serves). When that configuration changed after the draft was saved (edited, removed, or another file), a draft with no edits of its own gives way to it, and a draft with edits shows why and asks: **use the file on disk** (or **use the bundled config**) or **keep the draft**. Saving stays off until you pick, so the draft cannot overwrite the newer file by mistake.
 
 New colors are created from a dialog: pick the value and the name auto-completes underneath from the "Name That Color" vocabulary (via [color-namer](https://github.com/colorjs/color-namer), ~1500 names, kebab-cased: e.g. `persian-green`); choose the token group, confirm, and the playground lands on the new color already selected. Names are made unique with a numeric suffix when needed. Auto-naming keeps following the picker in the editor too, but only for names assigned by the playground itself: a name typed by the user, or any name coming from a loaded configuration, is never touched. Picking a value already used by another color raises a warning.
 
@@ -291,26 +377,26 @@ npx magma-design-tokens ui --port 4000 --config ./tokens/color.json
 It starts a small server (default port `5178`) that both serves the playground and exposes a local API:
 
 - `GET /api/config` reads the configuration via the same lookup as the CLI (respecting `--config`);
-- `PUT /api/config` writes it back with a stable key order, ASCII-only output and a trailing newline, so saves produce clean git diffs;
+- `PUT /api/config` writes it back with a stable key order, ASCII-only output and a trailing newline, so saves produce clean git diffs. It only writes JSON rc files: a configuration found in a JavaScript module (`.magma-design-tokensrc.js`, `magma-design-tokens.config.mjs`, ...) or in the `magma-design-tokens` key of `package.json` is refused with `409`, since a save would replace it with bare JSON;
 - `POST /api/build` runs the full token generation on disk, honouring the `--outDir` / `--generate` / `--export-tokens` flags passed to `ui`.
 
-In this mode the playground loads the on-disk configuration on start and swaps **copy JSON** for a **save** button that persists to the resolved file; a `*` marks unsaved changes. The **download** menu gains **Build tokens on disk** to trigger the build endpoint. Run standalone (`nx run design-tokens:playground` or `npm run playground -w projects/design-tokens`) the API is absent and the playground keeps its in-memory, copy/download-only behaviour.
+In this mode the playground loads the on-disk configuration on start and swaps **copy JSON** for a **save** button that persists to the resolved file; a `*` marks unsaved changes. With a JavaScript or `package.json` configuration the button reads **read-only** and a notice under the toolbar says why: edit that file by hand, or take the edits out with **download > Config (json)** and move to a `.magma-design-tokensrc.json`. The **download** menu gains **Build tokens on disk** to trigger the build endpoint. Run standalone (`nx run design-tokens:playground` or `npm run playground -w projects/design-tokens`) the API is absent and the playground keeps its in-memory, copy/download-only behaviour.
 
 ### Cli example
 
 - takes `./color.js` as configuration file
 ```bash
-npx design-tokens --config ./color.js
+npx magma-design-tokens --config ./color.js
 ```
 
 - export palette only on css format
 ```bash
-npx design-tokens --generate css
+npx magma-design-tokens --generate css
 ```
 
 - export palette on css and tailwind format
 ```bash
-npx design-tokens --generate 'css, tailwind'
+npx magma-design-tokens --generate 'css, tailwind'
 ```
 
 

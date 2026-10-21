@@ -17,7 +17,14 @@
   text-align: right;
 }
 
+/* The select-all cell is an mds-table-cell, which paints the background of its row: no row
+   sets it here, so the cell was transparent and showed the scroll wrapper, which an
+   interactive table turns to the alternate colour while the pointer is on it. It paints the
+   header colour instead, like the mds-table-header-cell elements beside it. */
+
 .selection {
+  --mds-table-cell-background: var(--mds-table-background);
+
   vertical-align: middle;
 }
 

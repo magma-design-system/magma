@@ -35,7 +35,7 @@
   gap: --spacing(200);
   transition-duration: var(--private-input-range-transition-duration);
   transition-property: color;
-  transition-timing-function: var(--ease-in-out);
+  transition-timing-function: var(--ease-out-sine);
 }
 
 .header {
@@ -71,7 +71,7 @@
 
   appearance: none;
   background-color: transparent;
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   flex-grow: 1;
   height: --spacing(400);
   margin: 0;
@@ -130,7 +130,7 @@
   overflow: hidden;
   transition-duration: var(--private-input-range-transition-duration);
   transition-property: background-color;
-  transition-timing-function: var(--ease-in-out);
+  transition-timing-function: var(--ease-out-sine);
   width: 100%;
 }
 

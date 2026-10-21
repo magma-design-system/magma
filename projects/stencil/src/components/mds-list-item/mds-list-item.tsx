@@ -1,5 +1,4 @@
 import { Component, Host, h, Prop } from '@stencil/core';
-import { preferenceStore } from '@common/preference';
 import {
   TypographyInfoType,
   TypographyReadType,
@@ -9,6 +8,8 @@ import mggListDot from '@icon/mgg/list-dot.svg';
 
 /**
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @part icon - The bullet icon before the text, the one `icon` sets
+ * @part text - The text of the item, around the default slot
  */
 
 @Component({
@@ -34,7 +35,7 @@ export class MdsListItem {
 
   render() {
     return (
-      <Host role="listitem" pref-contrast={preferenceStore.state.contrast}>
+      <Host role="listitem">
         <mds-icon aria-hidden="true" class="icon" name={this.icon ?? mggListDot} part="icon" />
         <mds-text tag="span" typography={this.typography} variant={this.variant} part="text">
           <slot />

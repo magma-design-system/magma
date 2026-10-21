@@ -128,14 +128,14 @@ Per-color opt-in flag + a shared global ramp:
 "theme": {
   "colorspace": "OKLCH",
   "surfaces": {
-    "light": { "sunken": "92%", "muted": "94%", "default": "96%", "raised": "99%", "overlay": "99%" },
-    "dark":  { "sunken": "15%", "muted": "22%", "default": "20%", "raised": "24%", "overlay": "28%" }
+    "light": { "sunken": "93%", "muted": "94%", "default": "96%", "raised": "98%", "overlay": "100%" },
+    "dark":  { "sunken": "9%", "muted": "16%", "default": "23%", "raised": "31%", "overlay": "41%" }
   },
-  // borders use the SAME engine; levels sit just OUTSIDE the surface band so one value
-  // per mode stays visible on every surface
+  // borders use the SAME engine; levels sit OUTSIDE the band of the surfaces they are drawn
+  // on, so one value per mode stays visible (dark `muted` is the exception, see 6.3)
   "borders": {
-    "light": { "muted": "87%", "default": "82%", "strong": "72%" },
-    "dark":  { "muted": "30%", "default": "36%", "strong": "44%" }
+    "light": { "muted": "89%", "default": "82%", "strong": "64%" },
+    "dark":  { "muted": "37%", "default": "54%", "strong": "74%" }
   }
 }
 ```
@@ -182,13 +182,19 @@ any ramp or surface retune, because moving the bands can re-collapse the ladder.
 ## 6. Layer 2 - semantic tokens (the contract)
 
 Namespace `--magma-*`. Each is resolved per mode via the global flip. Bridged to Tailwind as
-`--color-*` so utilities like `bg-surface-raised`, `text-muted`, `bg-success-surface` exist.
+`--color-*` so utilities like `bg-surface-raised`, `text-fg-muted`, `bg-success-wash-base`
+exist. The bridge names the text roles `fg-*` (`--magma-text-muted` -> `--color-fg-muted`), so
+a utility never reads `text-text-muted`; every other role keeps its name.
 
 The layer is GENERATED from `../design-tokens/semantic.config.ts` by `scripts/semantic.ts` (A9): that config
-is the tracked contract (which primitive each role points at), and `css/semantic.css` +
-`tailwind/semantic.css` are generated (gitignored), not hand-edited. Text roles resolve from
-the by-target `--text-*` primitives (A7); surfaces/borders through the `--magma-tint-*`
-indirection (section 8).
+is the tracked contract (which primitive each role points at), `../design-tokens/semantic.model.ts`
+expands it into declarations (the same ones the DTCG export of design-tokens writes as aliases), and the
+generator writes
+`build/css/semantic.css` (the layer), `build/css/themes.css` (the named themes, section 8) and
+`build/tailwind/semantic.css` (the bridge), gitignored and never hand-edited; `scripts/copy.ts`
+ships them as `dist/css/semantic.css`, `dist/css/themes.css` and `dist/tailwind/semantic.css`
+(imported by `dist/tailwind/theme.css`). Text roles resolve from the by-target `--text-*`
+primitives (A7); surfaces/borders through the `--magma-tint-*` indirection (section 8).
 
 ### 6.1 Surfaces - neutral backgrounds (elevation + same-plane prominence)
 
@@ -201,7 +207,7 @@ and same-plane prominence (`muted`). 5 roles:
 | `--magma-surface-muted` | prominence | same-plane grouping (zebra rows, subtle sections) |
 | `--magma-surface-default` | - | canvas / page |
 | `--magma-surface-raised` | elevation | cards, panels, sticky headers |
-| `--magma-surface-overlay` | elevation | modal, dropdown, popover, tooltip, sheet |
+| `--magma-surface-overlay` | elevation | modal, dropdown, popover, tooltip, sheet; chip, banner |
 
 ### 6.1b Wash - neutral pills (how MARKED, not how elevated)
 
@@ -211,7 +217,7 @@ and same-plane prominence (`muted`). 5 roles:
 | Token | Step | Use |
 |---|---|---|
 | `--magma-wash-soft` | `10` | the faintest pill: zebra rows on a card, a resting track |
-| `--magma-wash-base` | `09` | the default pill: paginator page, disabled fill, chip ground |
+| `--magma-wash-base` | `09` | the default pill: paginator page, disabled fill |
 | `--magma-wash-strong` | `08` | the marked pill: hover on a pill, a selected track |
 
 **Why this cannot be a surface role.** Measured, not stylistic - the same argument as the
@@ -228,26 +234,47 @@ names its own family directly (a theme never retints a hue). The `--magma-surfac
 reserved for elevation, and `--magma-wash-default` deliberately does not exist: `base` is the
 default level, and a second word for it would invite reading the band as a surface ladder.
 
+**A pill that casts a shadow is elevated, not marked.** The wash is a flat ground: it says
+how marked a pill is against the plane it sits on. An object that carries an elevation shadow
+(the chip, the banner) is lifted above that plane, so it takes
+`--magma-surface-overlay` like the other lifted objects. A wash under a shadow reads as a grey
+patch in light (#944), and `surface-raised` under a shadow takes the color of the card below
+it (#955).
+
 Censused for #624: 144 component declarations were naming steps `10/09/08` as a background
 because no role could hold their value. Adopting the band is a 1:1 rename at identical value.
 
 ### 6.1c Shadow ink
 
-`--magma-shadow-ink`, the ink extreme of the active tint (step `01`). It publishes a COLOUR,
-not a shadow: a component composes it with its own geometry and alpha, e.g.
-`drop-shadow(0 0 4px rgb(var(--magma-shadow-ink) / 0.45))`.
+`--magma-shadow-ink`, the colour of a projected shadow. It publishes a COLOUR, not a shadow: a
+component composes it with its own geometry and alpha, e.g.
+`drop-shadow(0 4px 3px rgb(var(--magma-shadow-ink) / 0.15))`.
 
-Naming it on the ramp buys the mode flip for free - black on a light page (`#050505`), white on
-a dark one (`#fcfcfc`) - which is what a projected shadow has to do: a pure black shadow is
-invisible on a dark surface. That is the defect the composite ring tokens carried for five
-months (#641), where `outline-weak` and friends hardcode `rgb(0 0 0 / a)`.
+| Mode | Value | Named on |
+|---|---|---|
+| light | `5 5 5` (`6 5 5` under `warm`) | step `01` of the active tint, the ink extreme |
+| dark | `0 0 0` | the seed, pure black, whatever the theme (repointed by the dark block, like the fill ink of 6.5) |
+
+**It stays dark in both modes (#790).** It used to name step `01` in dark too, which flips to
+`#fcfcfc`: the reasoning was that a black shadow is invisible on a black page. Once the dark
+canvas was lifted (`surface-default` 29, `raised` 48, `overlay` 74) that flip became the defect:
+in dark the elevation is the surface ladder, a panel is already lighter than what it floats on,
+and a light ink around it reads as a halo, not as depth. Measured on `mds-dropdown`: 2px off the
+panel the page went from 29 to 51 with the light ink, it now goes to 26. The composite shadows
+(`--shadow-sm` ... `--shadow-2xl`, `--shadow-box-*`, `--shadow-glow-*`) were already
+`rgb(0 0 0 / a)` in both modes: the role now agrees with them.
+
+**A line around an element is not a shadow.** A ring (`0 0 0 Npx`), a centred contrast glow
+(`0 0 4px` in the `pref-contrast` sheets of `mds-dropdown` and `mds-tooltip`), the hairline of the
+`google` button and the translucent tray of `mds-status-bar` all mark an element against the
+page, so they must flip: dark on a light page, light on a dark one. They name
+`--magma-text-default`, which has the ink-extreme value in both modes (`5 5 5` / `252 252 252` on
+the base tint), never `--magma-shadow-ink`.
 
 **It is a colour, `--shadow-*` are shadows.** The composite tokens (`--shadow-lg`,
 `--shadow-ring-2`, ...) live one layer down, in `design-tokens/tokens/cosmetic/box-shadow.json`,
-and name the PRIMITIVE (`--tone-neutral-01`) rather than this role: a cosmetic token cannot
-reference the semantic layer without inverting the layering. The cost of that is measured at
-1/255 - the ink extreme is all but identical in every tint (`5 5 5` on the base tint, `6 5 5`
-under `warm`) - so nothing is lost by not routing them through the tint.
+and cannot reference the semantic layer without inverting the layering: the projected ones write
+`rgb(0 0 0 / a)`, the rings name the primitive `--tone-neutral-01`.
 
 **The ring family.** `--shadow-ring`, `-ring-2`, `-ring-weak`, `-ring-weak-2`, `-ring-strong-2`,
 `-ring-strong-4`: a border drawn with `box-shadow` (`0 0 0 Npx`), where the suffix is the width
@@ -299,7 +326,15 @@ fill and ring cannot drift apart. The pure-inversion `light` variants stay on
 
 ### 6.2 Text (prominence)
 
-`--magma-text-{default,muted,subtle,disabled,on-emphasis}`
+| Token | Tailwind | Use |
+|---|---|---|
+| `--magma-text-default` | `text-fg-default` | body, titles, primary data |
+| `--magma-text-muted` | `text-fg-muted` | secondary ESSENTIAL text (address, phone) |
+| `--magma-text-subtle` | `text-fg-subtle` | non-essential text only (caption, unit, hint) |
+| `--magma-text-disabled` | `text-fg-disabled` | disabled labels (WCAG-exempt) |
+| `--magma-text-on-emphasis` | `text-fg-on-emphasis` | text on a solid fill: the fill ink of 6.5 |
+
+The floors that separate them are in section 9.1.
 
 ### 6.3 Border (prominence)
 
@@ -311,9 +346,11 @@ surface level.
 - Generated by the SAME OKLCH lightness-levels engine as surfaces (`theme.borders` levels,
   section 5.2), so borders and surfaces share one mechanism, are tuned in relation, and stay
   out of the APCA domain.
-- The border levels sit just OUTSIDE the surface band (lighter than every surface in dark,
-  darker than every surface in light), so a SINGLE value per mode contrasts against ALL
-  surface levels - no contextual rework, and contrast is never lost in dark.
+- The border levels sit OUTSIDE the surface band (darker than every surface in light,
+  lighter than every surface in dark), so a SINGLE value per mode contrasts against the
+  surface levels - no contextual rework, and contrast is never lost in dark. One exception
+  today: dark `muted` (L37) sits between `raised` (L31) and `overlay` (L41), so on an
+  overlay it reads as a faint DARKER line (section 10).
 - CAVEAT (the real risk): an absolute border level placed INSIDE the surface band would
   vanish on the surface at the same L (e.g. an overlay). Placing it beyond the band avoids
   this; in practice borders live on canvas/cells while overlays use shadow, not borders.
@@ -327,7 +364,7 @@ surface level.
 
 ### 6.4 Hues (cross-cutting)
 
-For each of `neutral, accent, info, success, warning, danger`, the same quintet:
+For each of `neutral, accent, accent-ai, info, success, warning, danger`, the same quintet:
 
 | Token | Use |
 |---|---|
@@ -338,17 +375,30 @@ For each of `neutral, accent, info, success, warning, danger`, the same quintet:
 | `--magma-<hue>-on-emphasis` | text on the solid fill |
 
 The `neutral` hue is special: its background needs are already covered by the `surface`
-family (its "surface" role IS `surface-muted` / `surface-default`), so in the hue matrix
-`neutral` contributes only `fg` / `border` / `emphasis` / `on-emphasis` (text, borders, the
-dark neutral chip). The colored hues (accent/info/success/warning/danger) carry the full
-quintet. This keeps neutral backgrounds in ONE place (the `surface` family) with no
-duplicate `neutral-surface` token.
+family and the wash band (6.1b), so in the hue matrix `neutral` contributes only `fg` /
+`border`, and its emphasis pair (the dark neutral chip) is published as the inverse surface
+of 6.1d, `--magma-surface-inverse` / `--magma-on-inverse`; `--magma-neutral-emphasis` /
+`--magma-neutral-on-emphasis` remain as deprecated aliases. The colored hues carry the full
+quintet. This keeps neutral backgrounds in ONE place with no duplicate `neutral-surface`
+token.
+
+**The accents.** Two roles, declared in the `accents` map of `semantic.config.ts`: `accent`,
+the general accent (family `variant-primary`), and `ai` (family `variant-ai`). The general
+accent owns the bare namespace and every other role infixes its name (`accentInfix()`):
+`--magma-accent-emphasis`, `--magma-accent-ai-emphasis`, never `--magma-accent-accent-*`. A
+secondary accent is not a role: a different brand colour is a named theme repointing the
+accent (section 8). Each accent carries the quintet plus the states of 6.6 (`emphasis-hover`,
+`emphasis-active`, `surface-hover`, `surface-subtle`), all resolved through
+`--magma-tint-accent-*` so a theme can repoint them, and its `fg` is step `03` (6.5). The
+accents publish no wash / text / border ladders: those below belong to the status hues.
+`--magma-border-focus` follows the accent named in `borderFocus`.
 
 **A colored hue publishes the whole vocabulary, on its own family.** The quintet alone
 cannot dress a colored component: a banner uses two tinted backgrounds and two text
 prominences, so with only `-surface` and `-fg` available it hand-picked ramp steps instead
-(30 components did, which is why nothing upstream could raise their contrast). Each colored
-hue therefore publishes the same ladders the neutral scaffolding has:
+(30 components did, which is why nothing upstream could raise their contrast). Each status
+hue (`info`, `success`, `warning`, `danger`) therefore publishes the same ladders the neutral
+scaffolding has:
 
 | Token | Source | Use |
 |---|---|---|
@@ -399,12 +449,13 @@ Which text roles a wash level may carry is bounded in section 9.1, not by taste.
 | `border-{muted,default,strong}` | `--border-<active-tint>-*` (OKLCH levels, opaque, per mode, beyond the surface band); `focus` = accent |
 | `<hue>-text-* / -border-*` | `--text-<family>-*` / `--border-<family>-*` (generated role scales of the hue's own family, A7) |
 | `<hue>-wash-{soft,base,strong}` | steps `10 / 09 / 08` of the colored family, named (see 6.4) |
-| `<hue>-emphasis` | `status/label/variant-*` (APCA), solid fill |
+| `<hue>-emphasis` | `status-*` for the status hues, `variant-*` for the accents (APCA), solid fill; no role draws from `label-*` |
 | `<hue>-emphasis-{hover,active}` | steps `03 / 02` of the same family, named (see 6.6) |
 | `surface-inverse` / `-muted` | steps `02 / 03` of the ACTIVE TINT ramp (`--magma-tint-scale-*`), so they retint with a named theme (see 6.1d); `on-inverse` = the fill ink (below) |
 | `<hue>-fg / -border / -surface` | shortcuts onto the roles above at their default prominence |
 | `accent-<role>-fg` | step `03` of the accent family (`accentSteps`), not the hue `05`: the accent has no generated text scale, and `05` measured 53-66 Lc on the neutral surfaces (under the 60 floor in light); `03` gives 71-84 in both modes. Same step as `-emphasis-hover`, different role: ink on a surface vs a fill state |
 | `*-on-emphasis` | the fill ink `--magma-tint-text-on-emphasis`: `--tone-*-seed` in light, `--magma-tint-default` (the canvas) in dark; verified on the fill |
+| `shadow-ink` | step `01` of the ACTIVE TINT ramp in light, `--tone-neutral-seed` (pure black) in dark: a projected shadow stays dark in both modes (6.1c, #790) |
 
 **The fill ink (#739).** Every ink on a solid fill - `text-on-emphasis`, `<hue>-on-emphasis`,
 `accent-*-on-emphasis`, `on-inverse` - resolves through ONE pointer,
@@ -435,8 +486,8 @@ generates and mode-flips:
 | `--magma-<hue>-emphasis` | `04` | the solid fill at rest |
 | `--magma-<hue>-emphasis-hover` | `03` | one step stronger |
 | `--magma-<hue>-emphasis-active` | `02` | two steps stronger |
-| `--magma-accent-<role>-surface-hover` | `08` | accent surface band, one step stronger |
-| `--magma-accent-<role>-surface-subtle` | `10` | accent surface band, one step lighter |
+| `--magma-accent-surface-hover` (`--magma-accent-ai-*` alike) | `08` | accent surface band, one step stronger |
+| `--magma-accent-surface-subtle` (`--magma-accent-ai-*` alike) | `10` | accent surface band, one step lighter |
 
 The emphasis band belongs to every hue that HAS a solid fill - the accents and the colored
 hues alike - and comes from ONE definition (`emphasisStateSteps()` in `semantic.config.ts`),
@@ -459,19 +510,22 @@ DEFAULT to point at a semantic role. Example:
 
 ```css
 /* before */ .card { background: rgb(var(--tone-neutral)); }
-/* after  */ .card { background: var(--magma-surface-raised); }
+/* after  */ .card { background: rgb(var(--magma-surface-raised)); }
 ```
 
 Role mapping: page/body -> `surface-default`; card/panel -> `surface-raised`;
 modal/dropdown/popover/tooltip -> `surface-overlay`; well/inset -> `surface-sunken`.
-Colored/status components keep their tonal background (from `status`/`label`) and are only
-verified against the new surfaces. Consumer overrides of the component token keep working.
+Status components take the hue roles of 6.4 (`<hue>-wash-*`, `<hue>-text-*`,
+`<hue>-border-*`, `<hue>-emphasis*`); only a colour that encodes data (a `label-*` category, a
+`brand-*` identity) stays on its primitive. Consumer overrides of the component token keep
+working.
 
 ## 8. Theming axes
 
-Three independent axes, all driven by classes/attributes on `<html>` (cross-browser; no
-`@container style()`, which is below the browserslist floor and crashes WebKit with shadow
-DOM). Same mechanism as the existing preference system.
+Three independent color-related axes, all driven by classes/attributes on `<html>`
+(cross-browser; no `@container style()`, which is below the browserslist floor and crashes
+WebKit with shadow DOM). Same mechanism as the existing preference system. The fourth axis,
+corner geometry (`data-corner-shape`), carries no colour and is documented in `SPEC.md`.
 
 - `data-theme-name` (attribute): a named theme OVERRIDES the semantic layer. The active
   tint is ONE indirection block, `--magma-tint-*`, defaulting to the `neutral` family and
@@ -498,10 +552,13 @@ DOM). Same mechanism as the existing preference system.
   colour theme is monochromatic: its hue as surface, border and text). The groups
   (`tone`/`status`/`label`/...) organise names; they do not gate what can back a theme.
   `text-on-emphasis` is the fill ink (6.5): the pure seed in light, the theme's own canvas
-  in dark, so it follows the theme with no override of its own. The accent hue follows the same repoint pattern. (Note: the config
-  `alias` field is declared but NOT consumed by the generator - `variant-primary` and
-  `brand-maggioli` merely share a seed, they are not live-aliased.) A theme is thus an
-  override map of the `--magma-tint-*` block (daisyUI-style ergonomics).
+  in dark, so it follows the theme with no override of its own. The accents follow the same
+  repoint pattern through `--magma-tint-accent-*` (the object form of a theme,
+  `{ surface, accents }`). The accent FAMILIES are aliases at the primitive level:
+  `variant.primary` -> `brand.maggioli`, `variant.ai` -> `label.violet` in the token config,
+  resolved by the generator (`design-tokens/src/lib/color.mts`) into literal values, so the
+  brand choice lives once in the config and a theme repoints the role, not the primitive. A
+  theme is thus an override map of the `--magma-tint-*` block (daisyUI-style ergonomics).
 
   A theme family MUST also ship a full RAMP, not just a surface. The roles drawn from a
   ramp step rather than from a surface - the wash band (6.1b), the shadow ink (6.1c), the
@@ -551,9 +608,9 @@ DOM). Same mechanism as the existing preference system.
   (NOT a `true|false` style query). Does not change the surface colors; only the shadow
   treatment on top.
 
-The draft `projects/styles/draft/theme.css` (`--tint-base-lv*`) is superseded by this
-spec: `lv1/lv2/lv3` -> the role names in 6.1, sourced from `--surface-*` (not the clamped
-tone steps).
+The former draft `draft/theme.css` (`--tint-base-lv*`, since removed) was superseded by
+this spec: `lv1/lv2/lv3` -> the role names in 6.1, sourced from `--surface-*` (not the
+clamped tone steps).
 
 ## 9. Accessibility - verification and de-emphasis
 
@@ -702,45 +759,48 @@ specificity, so without it the winner would depend on the order the two styleshe
 to be loaded in. A theme that only overrides accents leaves the tint text/border pointers
 alone and is already covered by the base block.
 
-Note on the current default ramp: `text-muted` and `text-subtle` resolve to the same step,
-so the `subtle -> muted` promotion is a no-op today. The effect is still correct - under
-high contrast `muted` rises to `default` and the muted/subtle hierarchy the base ramp
-collapses is RESTORED. Lowering `subtle` in the ramp makes the promotion bite with no
-change to this layer.
+Since the text targets were set a band apart (#632, section 5.3) `text-muted` and
+`text-subtle` resolve to different steps (`73` / `99` light, `228` / `211` dark on the
+neutral family), so both promotions bite: under high contrast `muted` rises to `default`
+and `subtle` to `muted`, and the hierarchy between them is kept one step up.
 
-## 10. Baseline surface L-table (proposed)
+## 10. Surface L-table (current config)
 
-Neutral family (C = 0), computed with the repo's chroma-js + apca-w3. Starting point;
-tuned in the playground. Default text = `#e9e9e9` (dark) / `#404040` (light).
+Neutral family (C = 0), as `theme.surfaces` / `theme.borders` of
+`design-tokens/.magma-design-tokensrc.json` set it (measured 2026-10-08). Lc is
+`text-default` on the surface (`#fcfcfc` dark / `#050505` light), apca-w3. Tuned in the
+playground: re-measure after a retune.
 
 | Role | DARK  L / hex / Lc | LIGHT  L / hex / Lc |
 |---|---|---|
-| `sunken` | 15% / `#0b0b0b` / 93 | 92% / `#e6e6e6` / ~79 |
-| `default` | 20% / `#161616` / 93 | 96% / `#f2f2f2` / 86 |
-| `muted` | 22% / `#1b1b1b` / 92 | 94% / `#ebebeb` / 82 |
-| `raised` | 24% / `#1f1f1f` / 92 | 99% / `#fcfcfc` / 92 |
-| `overlay` | 28% / `#292929` / 90 | 99% / `#fcfcfc` + shadow / 92 |
+| `sunken` | 9% / `#020202` / 105.9 | 93% / `#e8e8e8` / 92.4 |
+| `muted` | 16% / `#0d0d0d` / 105.6 | 94% / `#ebebeb` / 94.2 |
+| `default` | 23% / `#1d1d1d` / 104.2 | 96% / `#f2f2f2` / 98.3 |
+| `raised` | 31% / `#303030` / 100.8 | 98% / `#f8f8f8` / 101.8 |
+| `overlay` | 41% / `#4a4a4a` / 92.8 | 100% / `#ffffff` / 106.0 |
 
-Borders (opaque OKLCH levels, per mode, placed just outside the surface band; proposed):
+Borders (opaque OKLCH levels, per mode):
 
 | Role | DARK L / hex | LIGHT L / hex |
 |---|---|---|
-| `border-muted` | 30% / `#2e2e2e` | 87% / `#dbdbdb` |
-| `border-default` | 36% / `#3a3a3a` | 82% / `#cfcfcf` |
-| `border-strong` | 44% / `#525252` | 72% / `#b0b0b0` |
+| `border-muted` | 37% / `#404040` | 89% / `#dbdbdb` |
+| `border-default` | 54% / `#6f6f6f` | 82% / `#c4c4c4` |
+| `border-strong` | 74% / `#ababab` | 64% / `#8c8c8c` |
 
-Dark borders are lighter than every surface (top = overlay L28); light borders are darker
-than every surface (bottom = sunken L92) - so one value per mode is visible everywhere.
+Light borders are darker than every surface (bottom = sunken L93). Dark `default` and
+`strong` are lighter than every surface (top = overlay L41); dark `muted` (L37) is the
+exception of 6.3.
 
 Notes:
 
-- NO pure `#fff` / `#000` anywhere in the surface or border ladders - those live ONLY in
-  `--tone-*-seed`.
+- No pure `#000` in the dark ladder (`sunken` is `#020202`). Light `overlay` reaches `#fff`
+  (L100), the value of the seed; the seed stays a separate, off-scale token (4.4).
 - Dark elevation is fill-led (lighter = higher). Light combines a slightly grey canvas
-  (card `#fcfcfc` pops on canvas `#f2f2f2`) with the `--depth` shadow; near-white fill
-  steps alone would be imperceptible.
-- `muted` is a same-plane grouping step: darker than canvas in light, lighter in dark.
-- Text stays Lc >= ~79 across the ladder (body target ~75), with headroom to retune.
+  (card `#f8f8f8` on canvas `#f2f2f2`) with the `--depth` shadow; near-white fill steps alone
+  would be imperceptible.
+- `muted` is a same-plane grouping step, darker than the canvas in both modes (L94 vs L96
+  light, L16 vs L23 dark).
+- `text-default` stays at Lc >= 92 on every surface (floor 75, section 9.1).
 
 ## 11. Naming rationale
 
@@ -766,7 +826,7 @@ The semantic layer is `--magma-*`, NOT `--mds-*`: it is authored and owned by
 `--magma-text-muted` never collides with a component prop like
 `--mds-text-selection-color` (from the `mds-text` component). A component adopts
 the system by pointing its `--mds-<comp>-*` default at a `--magma-*` role, e.g.
-`--mds-card-background: var(--magma-surface-raised)`.
+`--mds-card-background: rgb(var(--magma-surface-raised))`.
 
 ## 12. Migration
 
@@ -798,18 +858,19 @@ Two kinds of documentation, kept apart:
 - CONSUMER reference (agent-readable usage, shipped to dist so a vendor's agent can read
   it from `node_modules`): the tokens that exist and how to use them - NOT the rationale.
 
-Consumer references are authored in the single source `docs/agents/` and shipped by the
-existing `sync-agent-docs.ts` mechanism (today it stamps `AGENTS.md` + `agents/` into the
-3 entry-point packages only). TWO tracks, each shipped only into its owning package so a
-consumer never carries docs it does not need:
+Consumer references are authored in the single source `docs/agents/` and shipped by
+`projects/stencil/scripts/sync-agent-docs.ts` as `agents/*.md` into the 3 entry-point
+packages only (magma, magma-react, magma-angular), next to their `AGENTS.md`:
 
-| Track | Ships into | Covers |
-|---|---|---|
-| `docs/agents/tokens.md` | `@maggioli-design-system/design-tokens` | primitives (`--tone-*`, `--surface-*`, `--*-seed`, colored families), the contrast bounds, how to consume the CSS vars |
-| `docs/agents/theming.md` | `@maggioli-design-system/styles` | the semantic layer (`--magma-*` roles + when to use each), the Tailwind utilities, and the theming attributes (`data-theme-name`, `--depth`, mode) |
+| Fragment | Covers |
+|---|---|
+| `docs/agents/color.md` | the semantic roles and when to use each, the Tailwind utilities, the pairing rules, when a palette primitive is legitimate, the Magma 1 -> 2 class map |
+| `docs/agents/theming.md` | mode, the preferences, the global decisions, the corner axis |
+| `docs/agents/assets.md` | the CSS imports the roles need (`semantic.css`, `themes.css`, `tailwind/theme.css`) |
 
-Extending shipping to `design-tokens` and `styles` reverses (for this material) the earlier
-"3 entry-points only" decision. Tracked in issue A6 (#581).
+The plan to ship separate tracks into `design-tokens` and `styles` (A6, #581) was closed as
+not planned: the two packages ship no agent docs; the styles README points to the color guide
+of the magma package.
 
 ## 14. Issue map
 
@@ -824,14 +885,14 @@ Epic: #328.
 - #576 C1 - codemod manifest rules
 - #577 C2 - component adoption + story + a11y gate
 - #578 A5 - explicit contrast bounds (constants + validation + playground band)
-- #581 A6 - ship token + theming agent-docs into design-tokens and styles dist
+- #581 A6 - ship token + theming agent-docs into design-tokens and styles dist (closed, not planned; see 13)
 
 ## 15. Resolved decisions
 
 - Surface levels: 5 - `sunken`, `muted`, `default`, `raised`, `overlay`. `muted` is the
   same-plane grouping fill (a dedicated surface role, not folded into a hue).
-- Light canvas: NOT pure white. Grey canvas (`~L96`) with near-white raised (`~L99`, not
-  `#fff`). Pure `#fff` / `#000` live only in `--tone-*-seed`.
+- Light canvas: NOT pure white. Grey canvas (L96) with near-white raised (L98, `#f8f8f8`);
+  only the overlay reaches `#fff` (L100). Pure `#000` lives only in `--tone-*-seed`.
 - Fill ink in dark: the canvas (`--magma-tint-default`), not the seed; floor 70 in dark,
   75 in light (6.5, 9.1, #739).
 - Default tint: `neutral`, swappable via the `--magma-tint-*` indirection (section 8).

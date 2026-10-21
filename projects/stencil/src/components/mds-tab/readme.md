@@ -11,11 +11,12 @@ This is a web-component from Maggioli Design System [Magma](https://magma.maggio
 
 ### 1. Description
 
-The `<mds-tab>` web component is the compound container that orchestrates a tabbed navigation in the Magma Design System. It is the parent wrapper around a set of `<mds-tab-item>` triggers and their associated content panels, providing the ARIA `tablist` structure, selection state, scrolling and the animated selection indicator.
+The `<mds-tab>` web component is the compound container that orchestrates a tabbed navigation in the Magma Design System. It is the parent wrapper around a set of `<mds-tab-item>` triggers and, when the component shows the content itself, their content panels, providing the ARIA `tablist` structure, selection state, scrolling and the animated selection indicator.
 
 #### Semantic Behavior
 
-- **Compound parent**: Expects `<mds-tab-item>` elements in the default slot; each panel in the named `content` slot is wired up automatically and paired by document order.
+- **Compound parent**: Expects `<mds-tab-item>` elements in the default slot; each panel in the named `content` slot is wired up automatically and paired by document order; a panel past the last item has no tab to open it, so it stays hidden and the component logs a console warning. The panels are optional: without them the component shows the strip alone, and the page shows the content, driven by `mdsTabChange` or by navigation.
+- **Navigation strip**: When every item has `href`, the items are links (announced as such, the selected one as current) and the strip is no longer a `tablist`: the browser follows the links, in a new tab on a modifier or middle click, and the strip keeps the selected item highlighted. A client-side router cancels the click on the item with `preventDefault()` and routes; a modifier click leaves the selection alone.
 - **Selection ownership**: The active tab is whichever `<mds-tab-item>` carries `selected`; the parent flips `selected` across siblings, shows the corresponding content panel and hides the rest.
 - **Change event**: Emits `mdsTabChange` with the selected item's index (`id`) and `value` whenever the active child changes.
 - **Focus restoration**: After a keyboard activation it re-focuses the selected item's button, so the user does not have to re-locate the tab.
@@ -26,7 +27,7 @@ The `<mds-tab>` web component is the compound container that orchestrates a tabb
 #### Properties & Visual Configurations
 
 - **`direction`** chooses whether the tab strip is laid out `'horizontal'` (default) or `'vertical'`.
-- **`animation`** governs the transition between active items: `'slide'` (default) renders the moving slider indicator, while `'fade'` cross-fades without the slider.
+- **`animation`** governs the transition between active items: `'slide'` (default) renders the moving slider indicator, while `'fade'` cross-fades without the slider. The slider slides only when the selection changes: on load, and when the strip is shown again after being hidden, it is already under the selected tab.
 - **`fill`** makes the tab strip stretch to occupy the full available width rather than hugging its content.
 - **`overflow`** enables the inset-shadow affordance that signals more tabs exist beyond the visible edges; **`scrollbar`** instead exposes the native horizontal scrollbar for accessibility.
 
@@ -37,7 +38,7 @@ The `<mds-tab>` web component is the compound container that orchestrates a tabb
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-tab>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound-component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-tab>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Tab Group with Managed Panels
 
@@ -129,7 +130,7 @@ Use `direction="vertical"` to stack the tab strip on the side. Pair it with `--m
 
 #### Fade Animation
 
-Switch to `animation="fade"` to cross-fade between panels without the moving slider indicator.
+Switch to `animation="fade"` to highlight the selected tab in place instead of moving the slider indicator. The panels switch without animation in both modes.
 
 ```html
 <mds-tab animation="fade">
@@ -190,7 +191,7 @@ Set `size` on the parent to scale all tabs uniformly. Do not set `size` on indiv
 
 #### Navigation Links (href on Tab Items)
 
-When each tab should navigate to an anchor or a separate URL, set `href` on `<mds-tab-item>`. The tab item then renders as a link. Omit the `content` slot - the page content is driven by navigation, not by the managed-panels mechanism.
+When each tab leads to an anchor, another page or a route, set `href` on every `<mds-tab-item>` and omit the `content` slot: the items render as links, the browser follows them (in a new tab on a modifier or middle click) and the strip keeps the selected item highlighted. The page content is driven by navigation, not by the managed-panels mechanism.
 
 ```html
 <mds-tab>
@@ -198,6 +199,38 @@ When each tab should navigate to an anchor or a separate URL, set `href` on `<md
   <mds-tab-item href="#sezione-2" label="Requisiti"></mds-tab-item>
   <mds-tab-item href="#sezione-3" label="Conclusioni"></mds-tab-item>
 </mds-tab>
+```
+
+#### Client-Side Routing (href on Tab Items)
+
+In a single-page app keep `href` on the items and register the router once with `NavigationService`, from `@maggioli-design-system/magma/services`: a plain click on an item is routed on the client and the selection still moves, with no listener per item. A modifier or middle click stays with the browser, which opens the link in a new tab while the strip stays as it is.
+
+```html
+<mds-tab id="sezioni">
+  <mds-tab-item href="/pratiche" label="Pratiche" selected></mds-tab-item>
+  <mds-tab-item href="/documenti" label="Documenti"></mds-tab-item>
+  <mds-tab-item href="/pagamenti" label="Pagamenti"></mds-tab-item>
+</mds-tab>
+
+<script type="module">
+  import { NavigationService } from '@maggioli-design-system/magma/services';
+
+  NavigationService.setHandler((href) => router.navigate(href));
+</script>
+```
+
+Without a registered router, cancel the click on the items and route by hand: the component honours `preventDefault()` and still moves the selection. Leave a modifier click alone.
+
+```html
+<script>
+  document.querySelectorAll('#sezioni mds-tab-item').forEach((item) => {
+    item.addEventListener('click', (event) => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      router.navigate(item.href);
+    });
+  });
+</script>
 ```
 
 #### Disabled Tab Item
@@ -218,35 +251,44 @@ Mark an individual tab as unavailable with `disabled`. The parent's selection me
 
 #### Styling Customization
 
-Style the component only through its documented `--mds-tab-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the component only through its documented `--mds-tab-*` CSS custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .scheda-primaria mds-tab {
-  --mds-tab-tabs-background: rgb(var(--variant-primary-09));
-  --mds-tab-tabs-radius: var(--radius-xl);
-  --mds-tab-item-selected-background: rgb(var(--variant-primary-05));
-  --mds-tab-item-selected-color: rgb(var(--tone-kaolin-10));
+  --mds-tab-tabs-background: rgb(var(--magma-accent-surface));
+  --mds-tab-tabs-radius: var(--magma-radius-xl);
+  --mds-tab-item-selected-background: rgb(var(--magma-accent-emphasis));
+  --mds-tab-item-selected-color: rgb(var(--magma-accent-on-emphasis));
   --mds-tab-transition-duration: 0.3s;
+}
+```
+
+With `animation="fade"` every item paints its own states: `--mds-tab-item-default-shadow` gives a shadow to the items that are not selected, and `--mds-tab-item-hover-shadow` to the hovered one (the default shadow when it is not set). With the slider (`animation="slide"`) the items stay transparent over it, so the backgrounds and shadows set on the tab for the items do not apply.
+
+```css
+.schede-a-schedario mds-tab {
+  --mds-tab-item-default-shadow: var(--shadow-xs);
+  --mds-tab-item-hover-shadow: var(--shadow-sm);
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-tab>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-tab>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Size Individual Tab Items
 
 Setting `size` on a `<mds-tab-item>` directly is overridden by the parent at render time. Use the `size` prop on `<mds-tab>` to size all tabs uniformly.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab>
   <mds-tab-item label="Elenco" size="sm" selected></mds-tab-item>
   <mds-tab-item label="Griglia" size="sm"></mds-tab-item>
 </mds-tab>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab size="sm">
   <mds-tab-item label="Elenco" selected></mds-tab-item>
   <mds-tab-item label="Griglia"></mds-tab-item>
@@ -255,10 +297,10 @@ Setting `size` on a `<mds-tab-item>` directly is overridden by the parent at ren
 
 #### Do Not Mix Tab Items and Content Panels Out of Order
 
-Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document order. A mismatched count or wrong ordering shows the wrong panel when a tab is selected.
+Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document order. A missing panel leaves its tab with no content, a wrong ordering shows the wrong panel when a tab is selected.
 
 ```html
-<!-- 🚫 INCORRECT: only two content panels for three tab items -->
+<!-- INCORRECT: only two content panels for three tab items -->
 <mds-tab>
   <mds-tab-item label="A" selected></mds-tab-item>
   <mds-tab-item label="B"></mds-tab-item>
@@ -268,7 +310,7 @@ Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document or
   <div slot="content"><mds-text>Pannello B.</mds-text></div>
 </mds-tab>
 
-<!-- ✅ CORRECT: one content panel per tab item, same order -->
+<!-- CORRECT: one content panel per tab item, same order -->
 <mds-tab>
   <mds-tab-item label="A" selected></mds-tab-item>
   <mds-tab-item label="B"></mds-tab-item>
@@ -280,19 +322,46 @@ Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document or
 </mds-tab>
 ```
 
+#### Do Not Mix Link Items and Panel Tabs in One Strip
+
+A strip is either a `tablist` of tabs, each controlling a panel, or a navigation of links (`href` on every item): a link inside a tablist is not a child the role allows, and assistive technology announces the strip wrong. Keep the link out of the strip, as an `<mds-button>` next to it.
+
+```html
+<!-- INCORRECT -->
+<mds-tab>
+  <mds-tab-item label="Dettagli" selected></mds-tab-item>
+  <mds-tab-item label="Allegati"></mds-tab-item>
+  <mds-tab-item label="Portale" href="https://portale.example.com"></mds-tab-item>
+
+  <div slot="content"><mds-text>Dettagli.</mds-text></div>
+  <div slot="content"><mds-text>Allegati.</mds-text></div>
+  <div slot="content"></div>
+</mds-tab>
+
+<!-- CORRECT -->
+<mds-tab>
+  <mds-tab-item label="Dettagli" selected></mds-tab-item>
+  <mds-tab-item label="Allegati"></mds-tab-item>
+
+  <div slot="content"><mds-text>Dettagli.</mds-text></div>
+  <div slot="content"><mds-text>Allegati.</mds-text></div>
+</mds-tab>
+<mds-button label="Portale" href="https://portale.example.com" target="blank" tone="text"></mds-button>
+```
+
 #### Do Not Put Tab Items Outside `<mds-tab>`
 
 `<mds-tab-item>` communicates with its parent through internal Stencil events. Used outside `<mds-tab>` it renders as an inert button with no selection, panel, or keyboard management.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="my-tab-wrapper">
   <mds-tab-item label="Scheda uno" selected></mds-tab-item>
   <mds-tab-item label="Scheda due"></mds-tab-item>
 </div>
 <div>...</div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab>
   <mds-tab-item label="Scheda uno" selected></mds-tab-item>
   <mds-tab-item label="Scheda due"></mds-tab-item>
@@ -301,12 +370,12 @@ Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document or
 </mds-tab>
 ```
 
-#### Do Not Listen to the Native `mdsTabItemSelect` Event from Outside
+#### Do Not Listen to the `mdsTabItemSelect` Event from Outside
 
-`mdsTabItemSelect` is the internal event that `<mds-tab-item>` fires to its parent `<mds-tab>`. It is not part of the public API. Listen to `mdsTabChange` on `<mds-tab>` instead.
+`mdsTabItemSelect` is the item-level event that `<mds-tab-item>` fires to its parent `<mds-tab>`: its `detail` carries the item element (`target`) and `value`, not the position of the tab. To react to the active tab of the group listen to `mdsTabChange` on `<mds-tab>`, whose `detail` has the tab index (`id`) and `value`.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab id="schede">
   <mds-tab-item label="Prima" selected></mds-tab-item>
   <mds-tab-item label="Seconda"></mds-tab-item>
@@ -316,7 +385,7 @@ Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document or
   document.querySelector('#schede').addEventListener('mdsTabItemSelect', handler);
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab id="schede">
   <mds-tab-item label="Prima" selected></mds-tab-item>
   <mds-tab-item label="Seconda"></mds-tab-item>
@@ -329,15 +398,15 @@ Panels in `slot="content"` are wired to `<mds-tab-item>` elements by document or
 
 #### Do Not Use `scrollbar="false"` or `overflow="false"` to Turn Off Boolean Props
 
-In HTML any non-empty attribute string is truthy. Setting `scrollbar="false"` keeps the scrollbar visible. Remove the attribute entirely to disable it.
+Stencil reads `"false"` as `false` and, since both props are reflected, removes the attribute at the first render, so this happens to work; but the markup says the opposite of what it does, and on a prop that is not reflected the attribute stays in the DOM, where `[attr]` selectors still match it. Remove the attribute entirely to turn a prop off.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab scrollbar="false" overflow="false">
   <mds-tab-item label="Prima" selected></mds-tab-item>
 </mds-tab>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab>
   <mds-tab-item label="Prima" selected></mds-tab-item>
 </mds-tab>
@@ -348,7 +417,7 @@ In HTML any non-empty attribute string is truthy. Setting `scrollbar="false"` ke
 The default slot expects `<mds-tab-item>` elements only. Placing a raw `<button>` or `<a>` there bypasses the ARIA `tablist` structure, selection management, and keyboard handling that `<mds-tab>` provides.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab>
   <button class="tab">Documenti</button>
   <button class="tab">Messaggi</button>
@@ -356,7 +425,7 @@ The default slot expects `<mds-tab-item>` elements only. Placing a raw `<button>
   <div slot="content">...</div>
 </mds-tab>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab>
   <mds-tab-item label="Documenti" selected></mds-tab-item>
   <mds-tab-item label="Messaggi"></mds-tab-item>
@@ -370,7 +439,7 @@ The default slot expects `<mds-tab-item>` elements only. Placing a raw `<button>
 The supported customization surface is the `--mds-tab-*` CSS custom properties and the documented shadow parts (`tabs`, `contents`, `slider`). Targeting other internals via `>>>`, `/deep/`, or undocumented class names couples your code to the shadow DOM implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-tab >>> .tabs-wrapper {
   background: red;
 }
@@ -378,14 +447,14 @@ mds-tab::part(tabs-wrapper) {
   padding: 0;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-tab {
-  --mds-tab-tabs-background: rgb(var(--variant-primary-09));
-  --mds-tab-tabs-padding: var(--spacing-400);
-  --mds-tab-tabs-radius: var(--radius-xl);
+  --mds-tab-tabs-background: rgb(var(--magma-accent-surface));
+  --mds-tab-tabs-padding: calc(var(--spacing) * 400);
+  --mds-tab-tabs-radius: var(--magma-radius-xl);
 }
 mds-tab::part(tabs) {
-  outline: 2px solid rgb(var(--variant-primary-05));
+  outline: 2px solid rgb(var(--magma-accent-border));
 }
 ```
 
@@ -412,10 +481,10 @@ mds-tab::part(tabs) {
 
 ## Slots
 
-| Slot        | Description                                                      |
-| ----------- | ---------------------------------------------------------------- |
-|             | Add `mds-tab-item` element/s.                                    |
-| `"content"` | Add `HTML elements` or `components`, one per mds-tab-item added. |
+| Slot        | Description                                                                                                                                                                              |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|             | Add `mds-tab-item` element/s.                                                                                                                                                            |
+| `"content"` | Add `HTML elements` or `components`, one per mds-tab-item added; or none, when the items are links (`href`) to other pages or places and the page, not the component, shows the content. |
 
 
 ## Shadow Parts
@@ -429,38 +498,38 @@ mds-tab::part(tabs) {
 
 ## CSS Custom Properties
 
-| Name                                          | Description                                   |
-| --------------------------------------------- | --------------------------------------------- |
-| `--mds-tab-direction-vertical-columns`        | Defines the column layout for vertical tabs.  |
-| `--mds-tab-item-default-background`           | Background color for default tab items.       |
-| `--mds-tab-item-default-color`                | Text color for default tab items.             |
-| `--mds-tab-item-default-shadow`               | Shadow for default tab items.                 |
-| `--mds-tab-item-hover-background`             | Background color for hovered tab items.       |
-| `--mds-tab-item-hover-color`                  | Text color for hovered tab items.             |
-| `--mds-tab-item-hover-shadow`                 | Shadow for hovered tab items.                 |
-| `--mds-tab-item-radius`                       | Border radius for tab items.                  |
-| `--mds-tab-item-selected-background`          | Background color for selected tab items.      |
-| `--mds-tab-item-selected-color`               | Text color for selected tab items.            |
-| `--mds-tab-item-selected-shadow`              | Shadow for selected tab items.                |
-| `--mds-tab-scroll-behavior`                   | Scroll behavior for tab container.            |
-| `--mds-tab-scroll-scrollbar-margin`           | Margin for scrollbar.                         |
-| `--mds-tab-scroll-scrollbar-radius`           | Radius of scrollbar.                          |
-| `--mds-tab-scroll-scrollbar-size`             | Size of scrollbar.                            |
-| `--mds-tab-scroll-scrollbar-thumb-background` | Background color of scrollbar thumb.          |
-| `--mds-tab-scroll-scrollbar-track-background` | Background color of scrollbar track.          |
-| `--mds-tab-slide-delay`                       | Delay before tab slide animation.             |
-| `--mds-tab-tabs-background`                   | Background color of the tabs container.       |
-| `--mds-tab-tabs-gap`                          | Gap between tabs.                             |
-| `--mds-tab-tabs-overflow-shadow`              | Shadow applied to overflowed tabs.            |
-| `--mds-tab-tabs-overflow-shadow-size`         | Size of the overflow shadow.                  |
-| `--mds-tab-tabs-padding`                      | Padding inside the tabs container.            |
-| `--mds-tab-tabs-radius`                       | Border radius of the tabs container.          |
-| `--mds-tab-tabs-wrapper-margin`               | Margin for the tabs wrapper.                  |
-| `--mds-tab-tabs-wrapper-outline-opacity`      | Opacity of the wrapper outline.               |
-| `--mds-tab-tabs-wrapper-shadow`               | Shadow for the tabs wrapper.                  |
-| `--mds-tab-tabs-wrapper-shadow-color`         | Color of the wrapper shadow.                  |
-| `--mds-tab-transition-duration`               | Duration of tab transition animation.         |
-| `--mds-tab-transition-timing-function`        | Timing function for tab transition animation. |
+| Name                                          | Description                                                    |
+| --------------------------------------------- | -------------------------------------------------------------- |
+| `--mds-tab-direction-vertical-columns`        | Defines the column layout for vertical tabs.                   |
+| `--mds-tab-item-default-background`           | Background color for default tab items.                        |
+| `--mds-tab-item-default-color`                | Text color for default tab items.                              |
+| `--mds-tab-item-default-shadow`               | Shadow for default tab items.                                  |
+| `--mds-tab-item-hover-background`             | Background color for hovered tab items.                        |
+| `--mds-tab-item-hover-color`                  | Text color for hovered tab items.                              |
+| `--mds-tab-item-hover-shadow`                 | Shadow for hovered tab items, the default shadow when not set. |
+| `--mds-tab-item-radius`                       | Border radius for tab items.                                   |
+| `--mds-tab-item-selected-background`          | Background color for selected tab items.                       |
+| `--mds-tab-item-selected-color`               | Text color for selected tab items.                             |
+| `--mds-tab-item-selected-shadow`              | Shadow for selected tab items.                                 |
+| `--mds-tab-scroll-behavior`                   | Scroll behavior for tab container.                             |
+| `--mds-tab-scroll-scrollbar-margin`           | Margin for scrollbar.                                          |
+| `--mds-tab-scroll-scrollbar-radius`           | Radius of scrollbar.                                           |
+| `--mds-tab-scroll-scrollbar-size`             | Size of scrollbar.                                             |
+| `--mds-tab-scroll-scrollbar-thumb-background` | Background color of scrollbar thumb.                           |
+| `--mds-tab-scroll-scrollbar-track-background` | Background color of scrollbar track.                           |
+| `--mds-tab-slide-delay`                       | Delay before tab slide animation.                              |
+| `--mds-tab-tabs-background`                   | Background color of the tabs container.                        |
+| `--mds-tab-tabs-gap`                          | Gap between tabs.                                              |
+| `--mds-tab-tabs-overflow-shadow`              | Shadow applied to overflowed tabs.                             |
+| `--mds-tab-tabs-overflow-shadow-size`         | Size of the overflow shadow.                                   |
+| `--mds-tab-tabs-padding`                      | Padding inside the tabs container.                             |
+| `--mds-tab-tabs-radius`                       | Border radius of the tabs container.                           |
+| `--mds-tab-tabs-wrapper-margin`               | Margin for the tabs wrapper.                                   |
+| `--mds-tab-tabs-wrapper-outline-opacity`      | Opacity of the wrapper outline.                                |
+| `--mds-tab-tabs-wrapper-shadow`               | Shadow for the tabs wrapper.                                   |
+| `--mds-tab-tabs-wrapper-shadow-color`         | Color of the wrapper shadow.                                   |
+| `--mds-tab-transition-duration`               | Duration of tab transition animation.                          |
+| `--mds-tab-transition-timing-function`        | Timing function for tab transition animation.                  |
 
 
 ## Dependencies

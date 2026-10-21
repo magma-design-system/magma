@@ -1,3 +1,4 @@
+@import '~@maggioli-design-system/styles/dist/css/animations.css';
 @import './css/mds-help-fouc.css';
 
 /**
@@ -55,4 +56,14 @@ i {
   fill: inherit;
   height: inherit;
   width: inherit;
+}
+
+.icon {
+  @apply focus-bounce;
+
+  border-radius: var(--radius-full);
+}
+
+.icon:focus-visible {
+  @apply focus-bounce--focused;
 }

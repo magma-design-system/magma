@@ -2,7 +2,7 @@
  * Guard against tree-shaking regressions in the three published packages
  * (magma, magma-react, magma-angular).
  *
- * With 114 components, an app that imports three of them must not ship all 114.
+ * With 115 components, an app that imports three of them must not ship all 115.
  * The properties that make that work are easy to break by accident - a stray
  * module-level side effect, a dropped `sideEffects` field, an output target
  * losing `esModules` - and the damage is invisible until someone measures a
@@ -15,6 +15,9 @@
  * 2. Consumer bundle sizes - for magma and magma-react, esbuild bundles a
  *    fixture importing ONE component and one importing the whole barrel, then
  *    checks both an absolute budget and the single/full ratio.
+ *
+ * The same `sideEffects` field can also drop too much: the lazy loader is
+ * bundled as well, to check that its HTMLElement shim survives (#817).
  *
  * Angular is measured differently, through a real `ng build` of
  * `projects/stencil-angular/treeshaking-probe`. esbuild alone reports ~100% of
@@ -167,7 +170,7 @@ const checkStructure = (): void => {
     }
   }
 
-  // The wrappers must never reach for the lazy loader: it registers all 114
+  // The wrappers must never reach for the lazy loader: it registers all 115
   // components and defeats every other measure here.
   if (requireBuilt(ANGULAR_DIST_DIR, 'nx run stencil-angular:build')) {
     const fesmDir = path.join(ANGULAR_DIST_DIR, 'fesm2022');
@@ -278,7 +281,74 @@ const checkSizes = async (): Promise<void> => {
 };
 
 // ---------------------------------------------------------------------------
-// 3. Angular consumer build
+// 3. Lazy loader
+// ---------------------------------------------------------------------------
+
+/**
+ * The ES5 loader works only once the IIFE at the top of `loader/index.js` has made
+ * `HTMLElement` callable as a function. Everything else in that module is a re-export, so a
+ * bundler told it is free of side effects keeps the re-exports and drops the IIFE: the tags
+ * still get defined, and every component throws on upgrade (#817). Bundle the documented
+ * import as a consumer does, and look for the shim whenever the entry it resolves to has one.
+ * The marker is the assignment: `Reflect.construct(` is in the ES5 class helpers as well.
+ */
+const LOADER_SHIM = 'window.HTMLElement=';
+
+const checkLoader = async (): Promise<void> => {
+  const magmaPkg = readJson(path.resolve(PROJECT_DIR, 'package.json')) as {
+    exports: Record<string, Record<string, string>>;
+  };
+  const entry = path.resolve(PROJECT_DIR, magmaPkg.exports['./loader'].import);
+  if (!requireBuilt(entry, 'nx run stencil:build')) {
+    return;
+  }
+  if (!fs.readFileSync(entry, 'utf8').includes(LOADER_SHIM)) {
+    notes.push(
+      `magma/loader   ${path.relative(PROJECT_DIR, entry)} has no HTMLElement shim to keep`,
+    );
+    return;
+  }
+
+  fs.mkdirSync(TMP_DIR, { recursive: true });
+  const fixture = path.join(TMP_DIR, 'magma.loader.js');
+  fs.writeFileSync(
+    fixture,
+    `import { defineCustomElements } from '@maggioli-design-system/magma/loader';
+defineCustomElements();`,
+  );
+
+  let bundle: string;
+  try {
+    const result = await build({
+      absWorkingDir: WORKSPACE_ROOT,
+      bundle: true,
+      entryPoints: [fixture],
+      format: 'esm',
+      logLevel: 'silent',
+      minify: true,
+      platform: 'browser',
+      target: 'es2020',
+      treeShaking: true,
+      write: false,
+      outdir: path.join(TMP_DIR, 'out'),
+    });
+    bundle = result.outputFiles.map((file) => file.text).join('\n');
+  } catch (error) {
+    fail(`magma/loader: bundling failed - ${(error as Error).message}`);
+    return;
+  }
+
+  notes.push(`magma/loader   ${path.relative(PROJECT_DIR, entry)} carries the HTMLElement shim`);
+  if (!bundle.includes(LOADER_SHIM)) {
+    fail(
+      `magma/loader: the bundle lost the HTMLElement shim of ${path.relative(PROJECT_DIR, entry)} ` +
+        `- list it in the "sideEffects" of magma/package.json, or every component throws on upgrade`,
+    );
+  }
+};
+
+// ---------------------------------------------------------------------------
+// 4. Angular consumer build
 // ---------------------------------------------------------------------------
 
 const checkAngularProbe = (): void => {
@@ -340,6 +410,7 @@ const main = async (): Promise<void> => {
 
   checkStructure();
   await checkSizes();
+  await checkLoader();
   checkAngularProbe();
 
   for (const note of notes) {

@@ -40,7 +40,8 @@
   align-items: center;
   background-color: var(--mds-input-upload-drag-area-background-color);
   border: var(--mds-input-upload-drag-area-border);
-  border-radius: var(--radius-2xl);
+  border-radius: var(--magma-radius-2xl);
+  corner-shape: var(--magma-corner-shape);
   display: flex;
   flex-direction: column;
   gap: --spacing(400);
@@ -62,7 +63,7 @@
  */
   transition-duration: var(--duration-300);
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: var(--ease-in-out);
+  transition-timing-function: var(--ease-out-sine);
   user-select: none;
 }
 
@@ -81,7 +82,7 @@
 }
 
 .action {
-  border-radius: var(--radius-full);
+  border-radius: var(--magma-radius-full);
   fill: rgb(var(--magma-text-subtle));
   height: auto;
   padding: --spacing(150);
@@ -198,3 +199,5 @@
     flex-direction: column;
   }
 }
+
+@import './css/mds-input-upload-disabled.css';

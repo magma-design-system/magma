@@ -1,0 +1,44 @@
+/* The label is a span of the button (#831), painted as mds-text paints it: the typography of
+   the size (meta/variants.ts, md for a size it does not know) and the truncation. The animated
+   label is still an mds-text, which does both itself. The larger sizes only add what h6 and h5
+   change over action: the weight and the size.
+
+   A span in a flex container is a block already, so only line-clamp sets a display: the
+   no-text sheet, imported after this one, hides a button's empty label at the same
+   specificity. */
+
+.label {
+  @apply text-title-action;
+
+  min-width: 0;
+}
+
+:host([size='lg']) .label {
+  @apply font-bold text-size-title-h6;
+
+  text-wrap: balance;
+}
+
+:host([size='xl']) .label {
+  @apply font-black text-size-title-h5;
+
+  text-wrap: balance;
+}
+
+:host([truncate]) .label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:host([truncate='word']) .label {
+  white-space: nowrap;
+}
+
+:host([truncate='all']) .label {
+  -webkit-box-orient: vertical;
+
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  display: -webkit-box;
+  -webkit-line-clamp: var(--mds-button-line-clamp);
+  line-clamp: var(--mds-button-line-clamp);
+}

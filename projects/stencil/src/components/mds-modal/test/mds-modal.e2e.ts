@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { useLanguage } from '@test/language';
 import { createSlottedChild, describeConditionalSlot } from '@test/slot';
 import { userEvent } from 'vitest/browser';
 
@@ -184,6 +185,99 @@ describe('mds-modal', () => {
     });
   });
 
+  // a horizontal swipe closed the modal whatever the interaction: strict vetoed Esc and the
+  // backdrop, not the swipe (#820)
+  describe('a horizontal swipe', () => {
+    const swipe = (target: HTMLElement, fromX: number, toX: number): void => {
+      const touch = (x: number) => new Touch({ identifier: 1, target, clientX: x, clientY: 100 });
+      target.dispatchEvent(new TouchEvent('touchstart', { touches: [touch(fromX)] }));
+      target.dispatchEvent(new TouchEvent('touchend', { changedTouches: [touch(toX)] }));
+    };
+
+    it('closes a relaxed modal', async () => {
+      const { root, waitForChanges } = await render('<mds-modal opened="true"></mds-modal>');
+
+      swipe(root.shadowRoot!.querySelector<HTMLElement>('.window')!, 300, 100);
+      await waitForChanges();
+
+      expect(root).not.toHaveAttribute('opened');
+    });
+
+    it('leaves a strict modal open', async () => {
+      const { root, waitForChanges } = await render(
+        '<mds-modal opened="true" interaction="strict"></mds-modal>',
+      );
+
+      swipe(root.shadowRoot!.querySelector<HTMLElement>('.window')!, 300, 100);
+      await waitForChanges();
+
+      expect(root).toHaveAttribute('opened');
+    });
+  });
+
+  // #803: a position set in the same task as opened, the way a framework wrapper sets its props,
+  // was still the old attribute when the dialog opened, and the window slid in from the place
+  // of that old position (the centre: translateY(25%)), already inside the page
+  describe('the entry', () => {
+    /** What `read` sees on the first frame the dialog is open. */
+    const onFirstFrame = <T>(
+      root: HTMLMdsModalElement,
+      read: (dialog: HTMLDialogElement, window: HTMLElement) => T,
+    ): Promise<T> =>
+      new Promise((resolve) => {
+        const tick = (): void => {
+          const dialog = root.shadowRoot!.querySelector('dialog')!;
+          if (!dialog.open) {
+            requestAnimationFrame(tick);
+            return;
+          }
+          resolve(read(dialog, root.shadowRoot!.querySelector<HTMLElement>('.window')!));
+        };
+        requestAnimationFrame(tick);
+      });
+
+    /** The transform of the window on the first frame the dialog is open. */
+    const firstFrame = (root: HTMLMdsModalElement): Promise<DOMMatrix> =>
+      onFirstFrame(root, (_dialog, window) => new DOMMatrix(getComputedStyle(window).transform));
+
+    it.each([
+      ['right', 1],
+      ['left', -1],
+    ])(
+      'starts outside the page on the %s, with the position set together with opened',
+      async (position, side) => {
+        const { root } = await render<HTMLMdsModalElement>('<mds-modal><p>content</p></mds-modal>');
+
+        root.position = position as HTMLMdsModalElement['position'];
+        root.opened = true;
+        const start = await firstFrame(root);
+
+        // slid sideways out of the page, not up from below inside it
+        expect(Math.sign(start.m41)).toBe(side);
+        expect(start.m42).toBe(0);
+      },
+    );
+
+    // #1019: showModal() moves the focus to the first focusable element of the window, and the
+    // browser scrolled the dialog to bring it into view. The window, still at translate(100%),
+    // widened the scrollable area of the dialog by its own width, so the dialog scrolled by that
+    // much and the window started already in its place: the transform was right, the scroll hid it
+    it('starts outside the page with a focusable element in the content', async () => {
+      const { root } = await render<HTMLMdsModalElement>(
+        '<mds-modal position="right"><button>Action</button></mds-modal>',
+      );
+
+      root.opened = true;
+      const start = await onFirstFrame(root, (dialog, window) => ({
+        left: window.getBoundingClientRect().left,
+        scrollLeft: dialog.scrollLeft,
+      }));
+
+      expect(start.scrollLeft).toBe(0);
+      expect(start.left).toBeGreaterThanOrEqual(innerWidth - 1);
+    });
+  });
+
   describe('accessible name', () => {
     it('names the native dialog after the aria-label of the host', async () => {
       const { root } = await render('<mds-modal aria-label="Conferma"></mds-modal>');
@@ -197,6 +291,44 @@ describe('mds-modal', () => {
       );
 
       expect(root.querySelector('[slot="window"]')).not.toHaveAttribute('role');
+    });
+  });
+});
+
+// #937: the close button is an icon-only button
+describe('mds-modal close button', () => {
+  useLanguage('it');
+
+  it('is a button named in the current language', async () => {
+    const { root } = await render('<mds-modal><p>Contenuto</p></mds-modal>');
+
+    expect(root.shadowRoot!.querySelector('.action-close')).toEqualAttributes({
+      role: 'button',
+      'aria-label': 'Chiudi',
+    });
+  });
+
+  // #824: the documented name was misspelled (-funciton) and the close button read the right one
+  describe('transition timing function', () => {
+    const timingOf = (root: HTMLElement, selector: string): string =>
+      getComputedStyle(root.shadowRoot!.querySelector(selector)!).transitionTimingFunction;
+
+    it('drives the window and the close button', async () => {
+      const { root } = await render(
+        '<mds-modal style="--mds-modal-transition-timing-function: steps(3)"></mds-modal>',
+      );
+
+      expect(timingOf(root, '.window')).toBe('steps(3)');
+      expect(timingOf(root, '.action-close')).toBe('steps(3)');
+    });
+
+    it('still reads the misspelled name', async () => {
+      const { root } = await render(
+        '<mds-modal style="--mds-modal-transition-timing-funciton: steps(4)"></mds-modal>',
+      );
+
+      expect(timingOf(root, '.window')).toBe('steps(4)');
+      expect(timingOf(root, '.action-close')).toBe('steps(4)');
     });
   });
 });

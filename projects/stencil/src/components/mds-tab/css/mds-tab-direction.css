@@ -1,4 +1,9 @@
+/* a column of items is tall: the browser does not clamp the radius of the strip, nor does
+   the cap */
+
 :host([direction='vertical']) {
+  --mds-tab-tabs-radius: var(--magma-radius-2xl);
+
   grid-template-columns: var(--mds-tab-direction-vertical-columns);
   grid-template-rows: 1fr;
 }
@@ -16,6 +21,13 @@
 :host([direction='vertical'][fill]) .tabs-wrapper,
 :host([direction='vertical'][fill]) .tabs {
   align-self: auto;
+}
+
+/* without panels the column of the contents is empty, but it still takes its share of the
+   width: the strip spans it too */
+
+:host([direction='vertical']) .tabs-wrapper--no-content {
+  grid-column: 1 / -1;
 }
 
 :host([direction='vertical'])::slotted(mds-tab-item) {

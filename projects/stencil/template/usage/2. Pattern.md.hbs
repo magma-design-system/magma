@@ -7,13 +7,14 @@ Purpose: show CORRECT, idiomatic ways to use this component.
          a snippet, not someone reading documentation linearly.
 
 Companion docs to read first (do not re-derive their content here):
-  - docs/COMPONENTS.md       - the usage/ contract and the cross-cutting
-                               variant / tone / size ladders shared across components.
-  - projects/stencil/SPEC.md - registration, naming, events, slots, dictionaries.
+  - docs/agents/conventions.md, variants.md, color.md, anti-patterns.md - the
+                               rules shared by every component, shipped to consumers.
+  - projects/stencil/SPEC.md - "Per-component usage docs": the usage/ contract and
+                               what `npm run check.usage-docs` verifies in CI.
 
 MUST contain:
-  - A numbered list of patterns ('## 1. Title', '## 2. Title', ...), ordered
-    from most common to most specialized.
+  - One '#### Title' section per pattern, ordered from most common to most
+    specialized.
   - Each pattern: short title, 1-2 sentence "use this when..." intro, then
     a SINGLE fenced code block (`html`, `tsx`, or `css`).
   - The canonical / preferred form as #1 (typically: text via the `label`
@@ -29,10 +30,12 @@ MUST NOT contain:
     pick whichever appears first. Always label which is preferred.
   - Pseudo-code or invented prop / icon names. Every snippet must be
     runnable; verify prop names against the component's `.tsx` source and
-    icon slugs against `projects/svg-icons/svg/` or the configured icon set.
+    icon slugs (`mi/...`, `mdi/...`, `mgg/...`) against
+    `src/fixtures/icons-dictionary.json`. Colours are semantic roles
+    (`rgb(var(--magma-<role>))`, docs/agents/color.md), radii the
+    `--magma-radius-*` scale; custom elements are never self-closed in HTML.
 
 STYLE & LENGTH:
-  - Numbered sections, sequential. Re-number when adding / removing.
   - One code block per section. Keep examples minimal - only the attributes
     needed to demonstrate the pattern.
   - 5-12 patterns is the sweet spot. <5 means you're under-documenting;
@@ -45,7 +48,7 @@ STYLE & LENGTH:
 ================================================================================
 -->
 
-Correct and idiomatic ways to use the `<{{componentName}}>` component, ordered from most common to most specialized.
+Correct and idiomatic ways to use the `<{{componentName}}>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### <!-- preferred / canonical use case, usually the `label` prop form -->
 
@@ -76,7 +79,7 @@ Continue with patterns 3, 4, 5... Cover at minimum:
 
 #### Styling Customization
 
-Style the component only through its documented `--mds-{{componentNameWithNoPrefix}}-*` CSS custom properties. Use the Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working - see [`docs/TOKENS.md`](../../../../../../docs/TOKENS.md).
+Style the component only through its documented `--mds-{{componentNameWithNoPrefix}}-*` CSS custom properties. Paint with the semantic color roles via `rgb(var(--magma-<role>))` so dark mode, named themes and high contrast keep working - see [`docs/agents/color.md`](../../../../../../docs/agents/color.md).
 
 ```css
 .my-{{componentNameWithNoPrefix}} {

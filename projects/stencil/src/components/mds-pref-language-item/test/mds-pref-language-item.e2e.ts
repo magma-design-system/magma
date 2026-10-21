@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 
 describe('mds-pref-language-item', () => {
   it('renders', async () => {
@@ -38,5 +39,18 @@ describe('mds-pref-language-item', () => {
 
     expect(root.shadowRoot!.querySelector('mds-button')).toEqualAttribute('variant', 'error');
     expect(consoleError).not.toHaveBeenCalled();
+  });
+
+  // #825: a code missing from the dictionary threw on load, so a list with one such item broke
+  it('shows a code it has no name for as it is, with a warning', async () => {
+    mockIconFetch();
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const consoleError = vi.spyOn(console, 'error');
+
+    const { root } = await render('<mds-pref-language-item code="pt-BR"></mds-pref-language-item>');
+
+    expect(consoleError).not.toHaveBeenCalled();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('"pt-BR"'));
+    expect(root.shadowRoot!.querySelector('mds-button')).toEqualAttribute('label', 'pt-BR');
   });
 });

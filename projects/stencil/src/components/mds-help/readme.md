@@ -1,6 +1,6 @@
 # mds-help
 
-This component does not have shadow DOM enabled.
+
 
 This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.
 
@@ -15,14 +15,14 @@ The `<mds-help>` web component is a contextual help affordance of the Magma Desi
 
 #### Semantic Behavior
 
-- **Tooltip-on-icon**: The host always renders a help icon and anchors a tooltip to it; the slotted text becomes the tooltip body and is shown on hover/focus of the icon.
-- **Auto-placement**: Unless `disableAutoPlacement` is set (auto-placement is on by default), the tooltip repositions itself to stay near its caller and within the viewport, overriding the static `placement` when space is constrained.
+- **Tooltip-on-icon**: The host always renders a help icon and anchors a tooltip to it; the slotted text becomes the tooltip body and is shown while the pointer hovers the icon or the icon has the focus. The icon is a tab stop named by the tooltip text (`role="img"` with `aria-labelledby`), so a screen reader reads the help on it.
+- **Auto-placement**: Unless `disableAutoPlacement` is set (auto-placement is on by default), the tooltip takes `placement` whenever it has room there, and moves to another side of the icon only when it does not fit.
 - **Default-slot is text**: The default slot is intended for a plain text string only; HTML elements or components in the slot are discouraged because the content is rendered inside the tooltip.
 
 #### Properties & Visual Configurations
 
 - **`icon`** is an SVG filename slug from the Magma icon library; when omitted, the component falls back to the standard outline help glyph, so set it only to convey a help affordance other than the default question mark.
-- **`placement`** sets the preferred side of the icon on which the tooltip appears (e.g. `'top'`, `'bottom-start'`). It is the starting position; auto-placement may move the tooltip away from this preference at runtime.
+- **`placement`** sets the preferred side of the icon on which the tooltip appears (e.g. `'top'`, `'bottom-start'`). It is kept whenever it has room; auto-placement moves the tooltip away from it only when it does not fit.
 - **`disableAutoPlacement`** turns off dynamic repositioning. Leave it off in scrollable or edge-of-viewport contexts; set it only when you need the tooltip pinned strictly to the `placement` side.
 
 The tooltip's dimensions and reveal timing are tuned via the CSS custom properties documented in [`readme.md`](../readme.md) (`--mds-help-tooltip-width`, `--mds-help-tooltip-min-width`, `--mds-help-tooltip-max-width`, `--mds-help-tooltip-delay`).
@@ -30,17 +30,17 @@ The tooltip's dimensions and reveal timing are tuned via the CSS custom properti
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-help>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-help>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Inline Help
 
-The canonical form. Drop `<mds-help>` inline next to a label or piece of text and slot in a plain string explaining the concept. The tooltip appears on hover or focus of the help icon.
+The canonical form. Drop `<mds-help>` inline next to a label or piece of text and slot in a plain string explaining the concept. The tooltip appears on hover and on keyboard focus of the help icon.
 
 ```html
-<mds-text>
+<p>
   Periodo di fatturazione
   <mds-help>Il ciclo di fatturazione inizia il primo giorno del mese e termina l'ultimo.</mds-help>
-</mds-text>
+</p>
 ```
 
 #### Placement Preference
@@ -60,7 +60,7 @@ Use the `placement` prop to suggest a preferred side for the tooltip. The defaul
 
 #### Disabling Auto-Placement
 
-Auto-placement is enabled by default and overrides `placement` when space is constrained. Add `disable-auto-placement` only when you need the tooltip pinned strictly to one side - for example in a fixed overlay where you control the available space.
+Auto-placement is enabled by default and moves the tooltip away from `placement` only when it has no room there. Add `disable-auto-placement` only when you need the tooltip pinned strictly to one side - for example in a fixed overlay where you control the available space.
 
 ```html
 <!-- Add disable-auto-placement to pin the tooltip to placement="bottom" -->
@@ -119,31 +119,31 @@ Increase `--mds-help-tooltip-delay` to prevent accidental tooltip flicker when u
 
 #### Icon Part Customization
 
-Tint the help icon to match a surrounding context using the documented `::part(icon)` surface. Keep using Magma color tokens so dark mode and high-contrast modes continue to work.
+Tint the help icon to match a surrounding context using the documented `::part(icon)` surface. Keep using the semantic color roles so dark mode and high-contrast modes continue to work.
 
 ```css
 /* Match the icon color to a warning banner context */
 .banner-warning mds-help::part(icon) {
-  fill: rgb(var(--status-warning-05));
+  fill: rgb(var(--magma-warning-text-default));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-help>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-help>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put HTML Elements in the Default Slot
 
 The default slot is text-only; the content is rendered inside [`mds-tooltip`](../../mds-tooltip), which expects a plain string. Nested elements or components may be stripped or break the tooltip layout.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-help>
   <strong>Attenzione:</strong> il limite massimo e' <em>100 caratteri</em>.
 </mds-help>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-help>Attenzione: il limite massimo e' 100 caratteri.</mds-help>
 ```
 
@@ -152,14 +152,14 @@ The default slot is text-only; the content is rendered inside [`mds-tooltip`](..
 The only supported customization surface is `--mds-help-*` CSS custom properties and the documented `::part(icon)` shadow part. Targeting internal elements via `>>>` or undocumented selectors couples your code to the shadow DOM implementation.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-help >>> mds-icon {
   fill: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-help::part(icon) {
-  fill: rgb(var(--status-warning-05));
+  fill: rgb(var(--magma-warning-text-default));
 }
 ```
 
@@ -168,13 +168,13 @@ mds-help::part(icon) {
 `<mds-help>` always renders its own help icon and wraps [`mds-tooltip`](../../mds-tooltip) internally. It is not a generic popover wrapper. If you need a tooltip on an arbitrary element, use [`mds-tooltip`](../../mds-tooltip) directly with a `target` selector.
 
 ```html
-<!-- 🚫 INCORRECT: slotting a custom trigger to replace the icon -->
+<!-- INCORRECT: slotting a custom trigger to replace the icon -->
 <mds-help>
   <mds-button slot="default" label="Dettagli"></mds-button>
   Testo di spiegazione.
 </mds-help>
 
-<!-- ✅ CORRECT: use mds-tooltip with a target for a custom trigger -->
+<!-- CORRECT: use mds-tooltip with a target for a custom trigger -->
 <mds-button id="info-btn" label="Dettagli"></mds-button>
 <mds-tooltip target="#info-btn">Testo di spiegazione.</mds-tooltip>
 ```
@@ -184,12 +184,12 @@ mds-help::part(icon) {
 Setting `style="width: ..."` on the host bypasses the component's layout contract. Use the documented `--mds-help-tooltip-*` CSS custom properties to size the tooltip, and leave the host dimensions alone.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-help style="width: 400px;">Descrizione del campo.</mds-help>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <style>
-  .sezione-avanzata mds-help {
+  mds-help.sezione-avanzata {
     --mds-help-tooltip-max-width: 400px;
   }
 </style>
@@ -200,11 +200,11 @@ Setting `style="width: ..."` on the host bypasses the component's layout contrac
 
 ## Properties
 
-| Property               | Attribute                | Description                                                              | Type                                                                                                                                                                              | Default     |
-| ---------------------- | ------------------------ | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `disableAutoPlacement` | `disable-auto-placement` | If set, the component will not be placed automatically near it's caller. | `boolean \| undefined`                                                                                                                                                            | `false`     |
-| `icon`                 | `icon`                   | Set the name of the icon.                                                | `string \| undefined`                                                                                                                                                             | `undefined` |
-| `placement`            | `placement`              | Specifies where the component should be placed relative to the caller.   | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start" \| undefined` | `'top'`     |
+| Property               | Attribute                | Description                                                                                                              | Type                                                                                                                                                                              | Default     |
+| ---------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `disableAutoPlacement` | `disable-auto-placement` | Pins the tooltip to `placement`: without it, the tooltip moves to another side of the icon when `placement` has no room. | `boolean \| undefined`                                                                                                                                                            | `false`     |
+| `icon`                 | `icon`                   | Set the name of the icon.                                                                                                | `string \| undefined`                                                                                                                                                             | `undefined` |
+| `placement`            | `placement`              | Specifies where the tooltip should be placed relative to the icon: the side it takes whenever it has room there.         | `"bottom" \| "bottom-end" \| "bottom-start" \| "left" \| "left-end" \| "left-start" \| "right" \| "right-end" \| "right-start" \| "top" \| "top-end" \| "top-start" \| undefined` | `'top'`     |
 
 
 ## Slots
@@ -216,9 +216,9 @@ Setting `style="width: ..."` on the host bypasses the component's layout contrac
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"icon"` |             |
+| Part     | Description                                    |
+| -------- | ---------------------------------------------- |
+| `"icon"` | The icon that shows the help text in a tooltip |
 
 
 ## CSS Custom Properties

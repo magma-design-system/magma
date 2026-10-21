@@ -14,10 +14,12 @@
   display: inline;
 }
 
+/* 16px on a link one line tall was a pill: the pill of its focus ring, out of the corner axis */
+
 .link {
   @apply focus-bounce;
 
-  border-radius: var(--radius-lg);
+  border-radius: var(--magma-radius-full);
   color: var(--mds-bibliography-color);
   text-decoration-color: var(--mds-bibliography-text-decoration);
   transition-duration: var(--duration-200);

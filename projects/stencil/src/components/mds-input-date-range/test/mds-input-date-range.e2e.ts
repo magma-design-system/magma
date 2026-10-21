@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { useLanguage } from '@test/language';
 import { userEvent } from 'vitest/browser';
 
 type DateRangeDetail = {
@@ -364,6 +365,216 @@ describe('mds-input-date-range', () => {
       );
 
       expect(host.querySelector('[slot="start"]')).toEqualAttribute('aria-label', 'Arrivo');
+    });
+  });
+});
+
+const typeDate = async (field: HTMLMdsInputDateElement, date: string): Promise<void> => {
+  const input = field.shadowRoot!.querySelector('input')!;
+  input.value = date;
+  input.dispatchEvent(new Event('input'));
+  input.dispatchEvent(new Event('blur'));
+};
+
+// The range bounds both fields, as its JSDoc promises (#822)
+describe('min and max', () => {
+  const fields = (host: HTMLElement) => ({
+    start: host.querySelector<HTMLMdsInputDateElement>('mds-input-date[slot="start"]')!,
+    end: host.querySelector<HTMLMdsInputDateElement>('mds-input-date[slot="end"]')!,
+  });
+
+  it('reach the slotted fields, also when they change after load', async () => {
+    const { host, waitForChanges } = await setupRange('min="2026-01-01" max="2026-01-31"');
+    const { start, end } = fields(host);
+
+    expect([start.min, start.max, end.min, end.max]).toEqual([
+      '2026-01-01',
+      '2026-01-31',
+      '2026-01-01',
+      '2026-01-31',
+    ]);
+
+    host.max = '2026-02-28';
+    await waitForChanges();
+
+    expect([start.max, end.max]).toEqual(['2026-02-28', '2026-02-28']);
+  });
+
+  it('leave alone a bound written on a field when the range sets none', async () => {
+    const { host } = await setupRange(
+      '',
+      '<mds-input-date slot="start" min="2026-03-01"></mds-input-date><mds-input-date slot="end"></mds-input-date>',
+    );
+
+    expect(fields(host).start.min).toBe('2026-03-01');
+  });
+
+  it('stop the submit and the event for a date typed outside them', async () => {
+    const {
+      root: form,
+      waitForChanges,
+      spyOnEvent,
+    } = await render<HTMLFormElement>(
+      `<form><mds-input-date-range name="period" min="2026-01-01" max="2026-01-31">${SLOTTED_INPUTS}</mds-input-date-range></form>`,
+    );
+    const host = form.querySelector('mds-input-date-range')!;
+    const valueChange = spyOnEvent('mdsInputDateRangeValueChange');
+    const { start, end } = fields(host);
+
+    await typeDate(start, '2025-12-15');
+    await typeDate(end, '2026-01-10');
+    focusOut(host);
+    await waitForChanges();
+
+    expect(valueChanges(valueChange)).toEqual([]);
+    expect(start.matches(':invalid')).toBe(true);
+    expect(form.checkValidity()).toBe(false);
+  });
+});
+
+// A native input is disabled by its own disabled or by a disabled fieldset. The range had neither:
+// in a disabled fieldset its fields followed the fieldset, its calendar button did not (#852)
+describe('disabled', () => {
+  const readControls = (host: HTMLElement) => ({
+    calendar:
+      !!host.shadowRoot!.querySelector<HTMLMdsButtonElement>('.action-open-calendar')!.disabled,
+    fields: Array.from(host.querySelectorAll('mds-input-date')).map(
+      (field) => field.shadowRoot!.querySelector('input')!.disabled,
+    ),
+  });
+
+  const setupForm = async (markup: string) => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(`<form>${markup}</form>`);
+    return { form, host: form.querySelector('mds-input-date-range')!, waitForChanges };
+  };
+
+  const RANGE = 'name="period" start-date="2026-01-01" end-date="2026-01-10"';
+
+  it('disables the calendar and the fields and leaves the dates out of the form, until it is enabled', async () => {
+    const { form, host, waitForChanges } = await setupForm(
+      `<mds-input-date-range ${RANGE} disabled>${SLOTTED_INPUTS}</mds-input-date-range>`,
+    );
+
+    await vi.waitFor(() =>
+      expect(readControls(host)).toEqual({ calendar: true, fields: [true, true] }),
+    );
+    expect(new FormData(form).has('period')).toBe(false);
+
+    host.disabled = false;
+    await waitForChanges();
+
+    expect(readControls(host)).toEqual({ calendar: false, fields: [false, false] });
+    expect(new FormData(form).has('period')).toBe(true);
+  });
+
+  it('leaves alone a field disabled on its own when the range is not disabled', async () => {
+    const { host } = await setupRange(
+      '',
+      '<mds-input-date slot="start" disabled></mds-input-date><mds-input-date slot="end"></mds-input-date>',
+    );
+
+    await vi.waitFor(() => expect(readControls(host).fields).toEqual([true, false]));
+  });
+
+  it('is disabled by a disabled fieldset, until the fieldset is enabled', async () => {
+    const { form, host, waitForChanges } = await setupForm(
+      `<fieldset disabled><mds-input-date-range ${RANGE}>${SLOTTED_INPUTS}</mds-input-date-range></fieldset>`,
+    );
+
+    await vi.waitFor(() =>
+      expect(readControls(host)).toEqual({ calendar: true, fields: [true, true] }),
+    );
+    expect(new FormData(form).has('period')).toBe(false);
+
+    form.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(readControls(host)).toEqual({ calendar: false, fields: [false, false] });
+    expect(new FormData(form).has('period')).toBe(true);
+  });
+
+  it('closes a calendar left open', async () => {
+    const range = await setupRange();
+    await openCalendar(range);
+
+    range.host.disabled = true;
+    await range.waitForChanges();
+
+    expect(range.host.shadowRoot!.querySelector('mds-dropdown')).not.toHaveAttribute('visible');
+  });
+});
+
+describe('preselections', () => {
+  it('snaps the end of a preset that ends before it starts', async () => {
+    const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsInputDateRangeElement>(`
+      <mds-input-date-range>
+        ${SLOTTED_INPUTS}
+        <mds-input-date-range-preselection start="2026-06-08" end="2026-06-02">
+          Intervallo rovesciato
+        </mds-input-date-range-preselection>
+      </mds-input-date-range>
+    `);
+    const range = { host: root, waitForChanges };
+    const valueChange = spyOnEvent('mdsInputDateRangeValueChange');
+
+    await openCalendar(range);
+    await clickPreselection(range);
+
+    expect(valueChanges(valueChange)).toEqual([{ startDate: '2026-06-08', endDate: '2026-06-08' }]);
+    expect(root.querySelector<HTMLMdsInputDateElement>('[slot="end"]')!.value).toBe('2026-06-08');
+  });
+
+  it('shows selected at load the preset that matches the dates of load', async () => {
+    const { host } = await setupRange(
+      'start-date="2026-06-02" end-date="2026-06-08"',
+      `${SLOTTED_INPUTS}${PRESELECTION}`,
+    );
+
+    expect(host.querySelector('mds-input-date-range-preselection')).toHaveAttribute('selected');
+  });
+});
+
+/** Whether the box of `inner` lies within the box of `outer`. */
+const isInside = (inner: Element, outer: Element): boolean => {
+  const a = inner.getBoundingClientRect();
+  const b = outer.getBoundingClientRect();
+  return a.top >= b.top && a.bottom <= b.bottom && a.left >= b.left && a.right <= b.right;
+};
+
+describe('size', () => {
+  // one height for every field, 48px, where mds-button has sm 28px, md 36px and lg 48px
+  it.each([
+    { size: undefined, height: 48 },
+    { size: 'lg', height: 48 },
+    { size: 'md', height: 36 },
+    { size: 'sm', height: 28 },
+  ])('is $height px tall with the size $size', async ({ size, height }) => {
+    const { root } = await render(
+      `<mds-input-date-range${size ? ` size="${size}"` : ''}></mds-input-date-range>`,
+    );
+
+    expect(root.getBoundingClientRect().height).toBe(height);
+  });
+
+  it('fits an sm calendar button in an sm field', async () => {
+    const { root } = await render('<mds-input-date-range size="sm"></mds-input-date-range>');
+    const button = root.shadowRoot!.querySelector('.action-open-calendar')!;
+
+    expect(button).toEqualAttribute('size', 'sm');
+    expect(isInside(button, root)).toBe(true);
+  });
+});
+
+// #937: the calendar toggle is an icon-only button
+describe('mds-input-date-range calendar toggle', () => {
+  useLanguage('it');
+
+  it('is a button named in the current language', async () => {
+    const { root } = await render('<mds-input-date-range></mds-input-date-range>');
+
+    expect(root.shadowRoot!.querySelector('.action-open-calendar')).toEqualAttributes({
+      role: 'button',
+      'aria-label': 'Apri il calendario',
     });
   });
 });

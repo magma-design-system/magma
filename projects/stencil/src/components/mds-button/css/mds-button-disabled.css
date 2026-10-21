@@ -1,4 +1,7 @@
-:host([disabled]:not([disabled='false'])) {
+/* :disabled also covers a disabled fieldset around the button, which sets no attribute */
+
+:host([disabled]:not([disabled='false'])),
+:host(:disabled:not([disabled='false'])) {
   opacity: 0.5;
   pointer-events: none;
 }

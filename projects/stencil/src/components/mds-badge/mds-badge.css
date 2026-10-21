@@ -13,7 +13,9 @@
   --mds-badge-border-color: rgb(var(--label-sky-06));
   --mds-badge-border-width: 1px;
   --mds-badge-color: rgb(var(--label-sky-03));
-  --mds-badge-radius: var(--radius-lg, 10px);
+
+  /* 16px on a badge 15-17px tall was a pill already: the pill, out of the corner axis */
+  --mds-badge-radius: var(--magma-radius-full);
   --mds-badge-transition-duration: var(--duration-200);
   --private-badge-transition-duration: var(--mds-badge-transition-duration);
 

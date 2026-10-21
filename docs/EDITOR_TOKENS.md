@@ -44,19 +44,29 @@ Optional: `"colorInfo.languages": []` if you have Color Info installed - see
 generates `dist/css/tokens.editor.css` as build step `editor.tokens`, between `properties`
 and `copy`. It collects, deduplicating (first occurrence wins) and grouping:
 
-| group       | source                             | tokens emitted |
-| ----------- | ---------------------------------- | -------------- |
-| `scale`     | design-tokens `typography.css`     | 207            |
-| `motion`    | design-tokens `transitions.css`    | 2              |
-| `palette`   | design-tokens `colors-rgb.css`     | 381            |
-| `semantic`  | `build/css/semantic.css`           | 159            |
-| `globals`   | `css/globals.css`, `css/theme.css` | 38             |
-| `component` | per component, see below           | 804            |
-| **total**   |                                    | **1591**       |
+| group       | source                                                    | tokens emitted |
+| ----------- | --------------------------------------------------------- | -------------- |
+| `scale`     | design-tokens `typography.css`                            | 218            |
+| `motion`    | design-tokens `transitions.css`                           | 2              |
+| `palette`   | design-tokens `colors-rgb.css`                            | 381            |
+| `semantic`  | `build/css/semantic.css`, `build/css/themes.css`          | 150            |
+| `globals`   | `css/globals.css`, `build/css/corner.css`, `css/theme.css` | 52             |
+| `component` | per component, see below                                  | 784            |
+| **total**   |                                                           | **1587**       |
 
 The counts are what each group *emits*, after dedup against the groups before it: most of
 the motion scale (`--duration-*`, `--ease-*`) is already published by `typography.css`, so
 `transitions.css` only adds the two names it owns alone.
+
+A semantic role carries what it is for as a comment at the end of its line, from
+`semantic.config.ts` (#876):
+
+```css
+--magma-surface-default: var(--magma-tint-default); /* The page canvas, the background of the body. */
+```
+
+A comment on a line of its own is a group heading; the trailing one stays out of the value,
+since the extensions parse the sheet as CSS.
 
 The component group merges both places a component token is published: the `@property`
 registrations aggregated by `properties.ts` (whose default is already resolved to a
@@ -85,9 +95,11 @@ uses it, where same-document completion already covers it), the `colors-hex-*` s
 same palette in a second format), the `tailwind-theme-*` bridges (the same names inside
 `@theme`) and Tailwind's own `theme.css` (51 names in common with our `typography.css`).
 
-Coverage, measured against what the component sheets actually use inside `var()`: 1009 of
-1120 distinct tokens. The remaining 111 are the 73 `--private-*`, 6 tokens Tailwind's
-theme publishes (`--ease-in-out`, `--drop-shadow-sm`, ...) and 32 one-off local names.
+Coverage, measured on 2026-10-17 against what the component sheets actually use inside
+`var()`: 1020 of 1167 distinct tokens. The remaining 147 are the 113 `--private-*` and 34
+one-off local names. None of them is a name only Tailwind's theme publishes any more: the
+ones the components read (`--radius`, `--ease-in-out`, `--drop-shadow-sm`, ...) moved onto
+Magma tokens in #998 and #1000.
 
 ## Extensions
 

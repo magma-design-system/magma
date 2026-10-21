@@ -7,6 +7,7 @@ import tailwind, { PluginConfigurationOptions } from './scripts/tailwind-plugin/
 import { reactOutputTarget } from '@stencil/react-output-target';
 import { angularOutputTarget } from '@stencil/angular-output-target';
 import tokenFallbackPlugin from './scripts/postcss-token-fallbacks';
+import autoprefixPlugin from './scripts/postcss-autoprefix';
 
 const twConfigurationFn = () => {
   // remove tailwind preflight and add custom theme
@@ -42,6 +43,9 @@ export const config: Config = {
   // Storybook) ma non vengono più compilate né copiate in dist/collection.
   tsconfig: 'tsconfig.stencil.json',
   sourceMap: false,
+  // Stencil's pass prefixes for iOS 9 and IE 11: autoprefixPlugin prefixes for the browsers of
+  // .browserslistrc instead
+  autoprefixCss: false,
   minifyCss: false,
   minifyJs: true,
   buildEs5: true,
@@ -122,7 +126,7 @@ export const config: Config = {
       outDir: '../stencil-react/src/',
       customElementsDir: 'dist/components',
       // Un modulo ES per wrapper (projects/stencil-react/src/<tag>.ts) invece di un unico
-      // components.ts con tutti e 114: il barrel resta ma diventa di sole
+      // components.ts con tutti e 115: il barrel resta ma diventa di sole
       // ri-esportazioni, così i bundler scartano i componenti non importati.
       esModules: true,
       // SSR: oltre ai wrapper client (invariati) genera un <tag>.server.ts
@@ -218,6 +222,8 @@ export const config: Config = {
       minify: true, // with minify false ' will be replaced with %27 and broke style
       stripComments: true,
     }),
+    // after Tailwind, which writes the declarations to prefix
+    autoprefixPlugin(),
     // tailwindHMR({ ...opts }), // hot module reload for watch but not generate docs
     inlineSvg(),
   ],

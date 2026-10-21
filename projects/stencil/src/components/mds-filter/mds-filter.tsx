@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import {
+  Build,
   Component,
   Element,
   Event,
@@ -14,6 +15,11 @@ import { preferenceStore } from '@common/preference';
 import { MdsFilterEventDetail } from './meta/event-detail';
 import { MdsFilterItemEventDetail } from '@component/mds-filter-item/meta/event-detail';
 import miBaselineClose from '@icon/mi/baseline/close.svg';
+import { Locale } from '@common/locale';
+import localeEl from './meta/locale.el.json';
+import localeEn from './meta/locale.en.json';
+import localeEs from './meta/locale.es.json';
+import localeIt from './meta/locale.it.json';
 
 /**
  * @slot - Add `mds-filter-item` element/s.
@@ -26,10 +32,17 @@ import miBaselineClose from '@icon/mi/baseline/close.svg';
 })
 export class MdsFilter {
   @Element() private element: HTMLMdsFilterElement;
+  private t: Locale = new Locale({
+    el: localeEl,
+    en: localeEn,
+    es: localeEs,
+    it: localeIt,
+  });
 
   @State() active?: boolean;
   @State() itemsSelected = 0;
   private lastSelectedItem: number;
+  private selectionObserver?: MutationObserver;
 
   /**
    * Sets an automatic reset of active filters if all filters are triggered
@@ -86,6 +99,58 @@ export class MdsFilter {
     this.active = active;
   };
 
+  // in multiple mode an item that follows a selected one is marked `sibling`
+  private markSiblings = (items: HTMLMdsFilterItemElement[]): void => {
+    if (!this.multiple) {
+      return;
+    }
+    items.forEach((item, key) => {
+      item.classList.toggle('sibling', key > 0 && items[key - 1].selected === true);
+    });
+  };
+
+  /**
+   * The selection lives on the items: one the application selects or clears, or renders already
+   * selected, is taken in as after a click - one item at a time in single mode, the last one set
+   * winning, the reset button shown or hidden, the strip scrolled to it - but no `mdsFilterChange`
+   * is emitted, the application already knows. A click goes through here too, once its listener
+   * has done the same, and finds nothing left to change.
+   */
+  private syncSelection = (records: MutationRecord[]): void => {
+    const items = Array.from(this.queryItems());
+    let latest: HTMLMdsFilterItemElement | undefined;
+    records.forEach((record) => {
+      const nodes = record.type === 'childList' ? Array.from(record.addedNodes) : [record.target];
+      nodes.forEach((node) => {
+        const item = node as HTMLMdsFilterItemElement;
+        if (items.includes(item) && item.selected === true) {
+          latest = item;
+        }
+      });
+    });
+    if (!this.multiple) {
+      this.keepOneSelected(items, latest);
+    }
+    if (latest) {
+      this.lastSelectedItem = items.indexOf(latest);
+      this.scrollTabs();
+    }
+    this.markSiblings(items);
+    this.checkSelectedItem();
+  };
+
+  // single mode: of the selected items only `keep` stays, by default the last one, as in a select
+  private keepOneSelected = (
+    items: HTMLMdsFilterItemElement[],
+    keep = items.filter((item) => item.selected === true).pop(),
+  ): void => {
+    items.forEach((item) => {
+      if (item.selected === true && item !== keep) {
+        item.selected = false;
+      }
+    });
+  };
+
   private checkAutoReset = (): void => {
     if (!this.autoReset) {
       return;
@@ -102,6 +167,16 @@ export class MdsFilter {
     this.active = false;
   };
 
+  // the reset button is an action of the filter: it clears the selection and tells the
+  // application, as a click on the items does
+  private handleResetClick = (): void => {
+    if (!this.active) {
+      return;
+    }
+    this.resetItems();
+    this.changedEvent.emit({ children: this.queryItems(), value: this.itemsValues() });
+  };
+
   private itemsValues = (): string => {
     const items = this.queryItems();
     const list: string[] = [];
@@ -113,37 +188,49 @@ export class MdsFilter {
     return list.toString();
   };
 
+  connectedCallback(): void {
+    this.selectionObserver?.disconnect();
+    if (!Build.isBrowser) {
+      return;
+    }
+    this.selectionObserver = new MutationObserver(this.syncSelection);
+    this.selectionObserver.observe(this.element, {
+      attributeFilter: ['selected'],
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  disconnectedCallback(): void {
+    this.selectionObserver?.disconnect();
+    this.selectionObserver = undefined;
+  }
+
   componentWillLoad(): void {
     const items = this.queryItems();
+    // an item keeps the id its author gave it, one without gets `item-<index>`, what its events
+    // reported before; the filter tells the items apart by element. It used to overwrite every id
+    // (#827)
     items.forEach((item, key) => {
-      item.id = `item-${key}`;
+      if (item.id === '') item.id = `item-${key}`;
     });
+    if (!this.multiple) {
+      this.keepOneSelected(Array.from(items));
+    }
     this.checkSelectedItem();
   }
 
   @Listen('mdsFilterItemSelect')
   activeEventHandler(event: CustomEvent<MdsFilterItemEventDetail>): void {
-    this.lastSelectedItem = Number(
-      event.detail.id !== '' ? event.detail.id.replace('item-', '') : 0,
-    );
+    const items = this.queryItems();
+    // the item itself, not its id: an item rendered after the load has none
+    const target = event.target as HTMLMdsFilterItemElement;
+    this.lastSelectedItem = Array.from(items).indexOf(target);
     this.scrollTabs();
 
-    const items = this.queryItems();
-
     if (this.multiple) {
-      let itemsSelected = 0;
-      const list: (HTMLMdsFilterItemElement | null)[] = [];
-      items.forEach((item, key) => {
-        list.push(item.selected ? item : null);
-        if (item.selected) {
-          itemsSelected += 1;
-        }
-        item.classList.remove('sibling');
-        if (list.length > 1 && list[key - 1] !== null) {
-          item.classList.add('sibling');
-        }
-      });
-      this.itemsSelected = itemsSelected;
+      this.markSiblings(Array.from(items));
+      this.itemsSelected = Array.from(items).filter((item) => item.selected === true).length;
       this.checkSelectedItem();
       if (this.itemsSelected === items.length) {
         this.checkAutoReset();
@@ -152,8 +239,8 @@ export class MdsFilter {
       return;
     }
 
-    items.forEach((item, key) => {
-      item.selected = `item-${key}` === event.detail.id && event.detail.selected;
+    items.forEach((item) => {
+      item.selected = item === target && event.detail.selected;
     });
     this.checkSelectedItem();
     this.changedEvent.emit({ children: items, value: this.itemsValues() });
@@ -168,29 +255,35 @@ export class MdsFilter {
     return (
       <Host
         aria-label={this.label}
-        role="menubar"
+        role="group"
         pref-animation={preferenceStore.state.animation}
         pref-contrast={preferenceStore.state.contrast}
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         {this.label && (
-          <mds-text class="label" typography="label">
+          <mds-text aria-hidden="true" class="label" typography="label">
             {this.label}
           </mds-text>
         )}
         <div class="items-wrapper">
           <div class={clsx('items', this.active && 'active')}>
             <slot />
-            <div class={clsx('reset', this.active && 'reset--opened')}>
-              <mds-filter-item
-                selected={this.active}
-                disabled={!this.active && this.reset}
-                class={clsx('reset-button', this.active && 'reset-button-opened')}
-                icon={miBaselineClose}
-                onClick={this.resetItems}
-              />
-            </div>
+            {this.reset && (
+              <div class={clsx('reset', this.active && 'reset--opened')}>
+                {/* with no filter active the button is scaled away: out of the tab order and of
+                    the accessibility tree too */}
+                <mds-filter-item
+                  aria-hidden={this.active ? undefined : 'true'}
+                  aria-label={this.t.get('clearFilters')}
+                  selected={this.active}
+                  disabled={!this.active}
+                  class={clsx('reset-button', this.active && 'reset-button-opened')}
+                  icon={miBaselineClose}
+                  onClick={this.handleResetClick}
+                />
+              </div>
+            )}
           </div>
         </div>
       </Host>

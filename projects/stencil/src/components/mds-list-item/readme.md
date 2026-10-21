@@ -18,6 +18,7 @@ The `<mds-list-item>` web component is the single entry of a Magma list, designe
 - **Compound child only**: Must be placed as a direct default-slot child of `<mds-list>`; it is not used standalone or mixed with other element types.
 - **Leading icon is always present**: The component renders an icon before its text; when no `icon` is supplied it falls back to a built-in list-dot glyph, which is decorative.
 - **Text-only default slot**: The default slot is intended for a plain text string; adding HTML elements or other components here is discouraged.
+- **Inherited text colour**: The item sets no colour of its own: its text and its leading icon take the colour of the container, as `<mds-text>` does, so a list reads like the paragraphs around it and follows a container that sets its own colour (a tinted card, a banner). For a secondary list, set the muted role on `<mds-list>` or on its container (`text-fg-muted`).
 
 #### Properties & Visual Configurations
 
@@ -28,7 +29,7 @@ The `<mds-list-item>` web component is the single entry of a Magma list, designe
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-list-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the typography scale documented in [`projects/stencil/SPEC.md`](../../../../SPEC.md) and the generic stencil rules in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md).
+Correct and idiomatic ways to use the `<mds-list-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the typography scale documented in [`docs/agents/typography.md`](../../../../../../docs/agents/typography.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic List with Default Bullet
 
@@ -101,13 +102,24 @@ When every item shares the same icon - for example a checklist or a feature list
 </mds-list>
 ```
 
+#### Muted List
+
+The items take the colour of their container. When a list is secondary information (an address, a list of contacts under a title), give the muted role to `<mds-list>` or to its container rather than to each item.
+
+```html
+<mds-list class="text-fg-muted">
+  <mds-list-item>Via Carlo Farini 1, Santarcangelo di Romagna</mds-list-item>
+  <mds-list-item>0541 628111</mds-list-item>
+</mds-list>
+```
+
 #### Styling Customization via CSS Custom Property
 
 Adjust the icon margin through the documented `--mds-list-item-icon-margin` CSS custom property. Set it on the host or a parent selector; use Magma spacing tokens for consistency.
 
 ```css
 .compact-list mds-list-item {
-  --mds-list-item-icon-margin: 0 var(--spacing-100) 0 0;
+  --mds-list-item-icon-margin: 0 calc(var(--spacing) * 100) 0 0;
 }
 ```
 
@@ -117,27 +129,27 @@ Use the documented `::part(icon)` surface to tint or resize the leading icon. Pr
 
 ```css
 .status-list mds-list-item::part(icon) {
-  fill: rgb(var(--status-success-05));
+  fill: rgb(var(--magma-success-fg));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-list-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-list-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-list-item>` Outside `<mds-list>`
 
 `<mds-list-item>` is a compound child; it must be a direct default-slot child of [`<mds-list>`](../../mds-list). Using it standalone removes the list context that assistive technology relies on.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div>
   <mds-list-item>Primo elemento</mds-list-item>
   <mds-list-item>Secondo elemento</mds-list-item>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-list>
   <mds-list-item>Primo elemento</mds-list-item>
   <mds-list-item>Secondo elemento</mds-list-item>
@@ -146,10 +158,10 @@ Common incorrect uses of `<mds-list-item>`. Each entry pairs the wrong form with
 
 #### Do Not Put HTML Elements in the Default Slot
 
-The default slot accepts plain text only; nested elements are stripped or break layout. Use the `typography` and `variant` props to control text style instead.
+The default slot is meant for plain text only; nested elements are not stripped, they render inline and can break layout. Use the `typography` and `variant` props to control text style instead.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-list>
   <mds-list-item>
     <strong>Titolo voce</strong>
@@ -157,7 +169,7 @@ The default slot accepts plain text only; nested elements are stripped or break 
   </mds-list-item>
 </mds-list>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-list>
   <mds-list-item typography="detail">Titolo voce - descrizione aggiuntiva</mds-list-item>
 </mds-list>
@@ -165,10 +177,10 @@ The default slot accepts plain text only; nested elements are stripped or break 
 
 #### Do Not Slot `<mds-icon>` to Add a Leading Icon
 
-The `icon` prop renders the glyph through the shared icon service and positions it correctly. Slotting `<mds-icon>` puts it in the text-only default slot, where it is stripped or misaligned.
+The `icon` prop renders the glyph through the shared icon service and positions it correctly. Slotting `<mds-icon>` puts it in the text-only default slot, where it is misaligned and the default bullet still renders.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-list>
   <mds-list-item>
     <mds-icon name="mi/baseline/check"></mds-icon>
@@ -176,7 +188,7 @@ The `icon` prop renders the glyph through the shared icon service and positions 
   </mds-list-item>
 </mds-list>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-list>
   <mds-list-item icon="mi/baseline/check">Servizio attivo</mds-list-item>
 </mds-list>
@@ -184,16 +196,20 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 #### Do Not Use a `typography` Value Outside the Accepted Set
 
-`<mds-list-item>` accepts only `TypographyInfoType | TypographyReadType`: `caption`, `detail`, `label`, `option`, `paragraph`, `tip`. Heading values like `h1`-`h6` or `action` are not accepted and will silently fall back to the default.
+`<mds-list-item>` accepts only `TypographyInfoType | TypographyReadType`: `caption`, `detail`, `label`, `option`, `paragraph`, `tip`. Heading values like `h1`-`h6` or `action` are outside the type and are not checked at runtime: the inner text renders the heading style next to a bullet aligned for body text.
 
 ```html
-<!-- 🚫 INCORRECT -->
-<mds-list-item typography="h3">Titolo sezione</mds-list-item>
-<mds-list-item typography="action">Azione</mds-list-item>
+<!-- INCORRECT -->
+<mds-list>
+  <mds-list-item typography="h3">Titolo sezione</mds-list-item>
+  <mds-list-item typography="action">Azione</mds-list-item>
+</mds-list>
 
-<!-- ✅ CORRECT -->
-<mds-list-item typography="detail">Voce elenco</mds-list-item>
-<mds-list-item typography="paragraph">Descrizione estesa della voce</mds-list-item>
+<!-- CORRECT -->
+<mds-list>
+  <mds-list-item typography="detail">Voce elenco</mds-list-item>
+  <mds-list-item typography="paragraph">Descrizione estesa della voce</mds-list-item>
+</mds-list>
 ```
 
 #### Do Not Pierce Shadow DOM to Style the Icon or Text
@@ -201,14 +217,14 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 The supported customization surface is `--mds-list-item-icon-margin` for layout and `::part(icon)` / `::part(text)` for the two documented shadow parts. Targeting internals via `>>>` or undocumented class names couples code to the implementation.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-list-item >>> .icon {
   fill: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-list-item::part(icon) {
-  fill: rgb(var(--status-error-05));
+  fill: rgb(var(--magma-danger-fg));
 }
 ```
 
@@ -217,13 +233,13 @@ mds-list-item::part(icon) {
 When a Magma list is needed, use the component pair - not raw HTML. Raw elements bypass the design-system theming, token integration, and high-contrast support.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <ul>
   <li>Documento ricevuto</li>
   <li>In attesa di approvazione</li>
 </ul>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-list>
   <mds-list-item>Documento ricevuto</mds-list-item>
   <mds-list-item>In attesa di approvazione</mds-list-item>
@@ -250,10 +266,10 @@ When a Magma list is needed, use the component pair - not raw HTML. Raw elements
 
 ## Shadow Parts
 
-| Part     | Description |
-| -------- | ----------- |
-| `"icon"` |             |
-| `"text"` |             |
+| Part     | Description                                          |
+| -------- | ---------------------------------------------------- |
+| `"icon"` | The bullet icon before the text, the one `icon` sets |
+| `"text"` | The text of the item, around the default slot        |
 
 
 ## CSS Custom Properties

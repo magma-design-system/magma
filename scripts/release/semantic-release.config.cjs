@@ -11,7 +11,9 @@
 //   GITHUB_REF_NAME     the branch being released
 // The branch being released is used as the stable branch when listed in
 // SR_STABLE_BRANCHES, the first entry otherwise, which makes runs on unlisted
-// branches a graceful no-op. `beta` is always the prerelease channel.
+// branches a graceful no-op. `beta` is always the prerelease channel: the
+// release workflow and scripts/test-release.sh create that branch locally, on
+// the commit being released, when they run the beta channel.
 //
 // When there is a release, release-version.txt gets the next version (line 1)
 // and the tag of the last release it builds on (line 2, empty on a first

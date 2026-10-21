@@ -7,7 +7,7 @@ import { createStore } from '@stencil/store';
  * The `mds-pref-*` controllers remain the sole internal writers/authority: they
  * publish the resolved state as `pref-<dim>-<value>` classes on `<html>` (the
  * global theming contract consumed by the styles package tokens and the
- * Storybook accessibility panel) plus the standard `lang` attribute for the
+ * Storybook accessibility menu) plus the standard `lang` attribute for the
  * language, and mirror the same values into the store. The MutationObservers
  * below keep the store in sync when external writers touch `<html>` directly.
  *

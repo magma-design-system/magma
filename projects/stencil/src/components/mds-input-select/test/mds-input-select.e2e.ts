@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 
 /**
@@ -83,6 +83,80 @@ describe('mds-input-select', () => {
     select.remove();
   });
 
+  // the React wrapper clears the value when the placeholder arrives after load (#786)
+  it('shows the required state, not the success one, when the value is null', async () => {
+    const select = document.createElement('mds-input-select');
+    select.required = true;
+    select.placeholder = 'Choose';
+    (select as { value?: string | null }).value = null;
+    select.innerHTML = '<option value="a">A</option>';
+    document.body.appendChild(select);
+    await vi.waitFor(() => expect(select).toHaveAttribute('hydrated'));
+
+    const tip = select.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
+    expect(tip).toEqualAttribute('variant', 'required');
+    select.remove();
+  });
+
+  describe('the ring', () => {
+    /** Publishes the preferences on <html>, as the controllers do; the store follows them
+     * through a MutationObserver, so give it a tick. The reduced animation drops the
+     * transition, so the ring is read where it lands instead of on its way there. */
+    const choose = async (...classes: string[]): Promise<void> => {
+      document.documentElement.classList.add('pref-animation-reduce', ...classes);
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    };
+
+    /** The first of the shadows of the select: the ring, before the drop shadow. */
+    const ringOf = (host: HTMLElement): string =>
+      getComputedStyle(host.shadowRoot!.querySelector('.input')!)
+        .boxShadow.split(/,(?![^(]*\))/)[0]
+        .trim();
+
+    const markup = '<mds-input-select><option value="a">A</option></mds-input-select>';
+
+    it.each([
+      { preferences: 'none', classes: [] },
+      { preferences: 'dark', classes: ['pref-mode-dark'] },
+      { preferences: 'contrast more', classes: ['pref-contrast-more'] },
+      { preferences: 'dark and contrast more', classes: ['pref-mode-dark', 'pref-contrast-more'] },
+    ])('draws the 3px focus ring with the preferences: $preferences', async ({ classes }) => {
+      // the dark and contrast blocks set the ring on the host with selectors more specific
+      // than the focus one: in dark or with more contrast a focused select looked at rest
+      await choose(...classes);
+      const { root, waitForChanges } = await render(markup);
+
+      root.shadowRoot!.querySelector<HTMLSelectElement>('.input')!.focus();
+      await waitForChanges();
+
+      expect(ringOf(root)).toMatch(/ 0px 0px 0px 3px$/);
+    });
+
+    it('draws the 3px ring on hover in dark', async () => {
+      await choose('pref-mode-dark');
+      const { root, waitForChanges } = await render(markup);
+
+      await userEvent.hover(root);
+      await waitForChanges();
+
+      expect(ringOf(root)).toMatch(/ 0px 0px 0px 3px$/);
+    });
+
+    it('keeps the strong ring of more contrast at rest when dark is chosen too', async () => {
+      // the dark block beat the contrast one, so with both the select fell back to the dark
+      // ring. The tests load no palette, so the strong ring reads the same in both modes.
+      await choose('pref-contrast-more');
+      const { root, waitForChanges } = await render(markup);
+      const strongRing = ringOf(root);
+
+      await choose('pref-mode-dark');
+      await waitForChanges();
+
+      expect(root).toEqualAttribute('pref-mode', 'dark');
+      expect(ringOf(root)).toBe(strongRing);
+    });
+  });
+
   describe('accessible name', () => {
     it('names the select after the aria-label of the host', async () => {
       const { root } = await render<HTMLMdsInputSelectElement>(
@@ -91,5 +165,293 @@ describe('mds-input-select', () => {
 
       expect(root.shadowRoot!.querySelector('select')).toEqualAttribute('aria-label', 'Film');
     });
+  });
+});
+
+// Like a native select, a required one left empty stops the submit of its form (#786)
+describe('form validity', () => {
+  it('stops the submit while a required select is empty', async () => {
+    const { root: form, waitForChanges } = await render<HTMLFormElement>(`
+      <form>
+        <mds-input-select name="s" placeholder="Choose" required>
+          <option value="a">A</option>
+        </mds-input-select>
+      </form>
+    `);
+    const select = form.querySelector('mds-input-select')!;
+
+    expect(form.checkValidity()).toBe(false);
+    expect(select.matches(':invalid')).toBe(true);
+
+    await select.setValue('a');
+    await waitForChanges();
+
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('does not stop the submit when the select is optional', async () => {
+    const { root: form } = await render<HTMLFormElement>(`
+      <form>
+        <mds-input-select name="s" placeholder="Choose">
+          <option value="a">A</option>
+        </mds-input-select>
+      </form>
+    `);
+
+    expect(form.checkValidity()).toBe(true);
+  });
+});
+
+const setupSelectForm = async (attributes: string, options: string) => {
+  const { root: form, waitForChanges } = await render<HTMLFormElement>(
+    `<form><mds-input-select ${attributes}>${options}</mds-input-select></form>`,
+  );
+  const select = form.querySelector('mds-input-select')!;
+  // the options reach the native select on slotchange, after the first render
+  await vi.waitFor(() =>
+    expect(select.shadowRoot!.querySelectorAll('option:not(.placeholder-option)').length).toBe(
+      (options.match(/<option/g) ?? []).length,
+    ),
+  );
+  return { form, select, native: select.shadowRoot!.querySelector('select')!, waitForChanges };
+};
+
+const abc = '<option value="a">A</option><option value="b">B</option><option value="c">C</option>';
+
+// Like a native multiple select, every selected option is submitted (#822)
+describe('multiple', () => {
+  it('keeps every option the user selects and submits them all', async () => {
+    const { form, select, native, waitForChanges } = await setupSelectForm(
+      'name="s" multiple',
+      abc,
+    );
+    const details: { value?: unknown; values: string[] }[] = [];
+    select.addEventListener('mdsInputSelectChange', (event) => details.push(event.detail));
+
+    await userEvent.selectOptions(native, ['a', 'c']);
+    await waitForChanges();
+
+    expect(Array.from(native.selectedOptions).map((option) => option.value)).toEqual(['a', 'c']);
+    expect(new FormData(form).getAll('s')).toEqual(['a', 'c']);
+    expect(select.value).toBe('a');
+    expect(details.at(-1)).toEqual({ value: 'a', values: ['a', 'c'] });
+  });
+
+  it('keeps the options the markup selects', async () => {
+    const { form } = await setupSelectForm(
+      'name="s" multiple',
+      '<option value="a">A</option><option value="b" selected>B</option><option value="c" selected>C</option>',
+    );
+
+    expect(new FormData(form).getAll('s')).toEqual(['b', 'c']);
+  });
+
+  it('selects one option alone for a value set by code, as select.value', async () => {
+    const { form, select, native, waitForChanges } = await setupSelectForm(
+      'name="s" multiple',
+      abc,
+    );
+    await userEvent.selectOptions(native, ['a', 'c']);
+
+    select.value = 'b';
+    await waitForChanges();
+
+    expect(new FormData(form).getAll('s')).toEqual(['b']);
+  });
+});
+
+// Like a native select, a form reset brings back the selection of load (#822)
+describe('form reset', () => {
+  it('brings back the value of load', async () => {
+    const { form, select, native, waitForChanges } = await setupSelectForm(
+      'name="s" value="b"',
+      abc,
+    );
+    await userEvent.selectOptions(native, 'c');
+    expect(select.value).toBe('c');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(select.value).toBe('b');
+    expect(native.value).toBe('b');
+    expect(new FormData(form).get('s')).toBe('b');
+  });
+
+  it.each(['', 'required'])('brings back the placeholder (%s)', async (required) => {
+    const { form, select, native, waitForChanges } = await setupSelectForm(
+      `name="s" placeholder="Choose" ${required}`,
+      abc,
+    );
+    await userEvent.selectOptions(native, 'a');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(select.value).toBe('');
+    expect(native.selectedOptions[0]).toHaveClass('placeholder-option');
+  });
+
+  it('brings back the options the markup selects', async () => {
+    const { form, native, waitForChanges } = await setupSelectForm(
+      'name="s" multiple',
+      '<option value="a">A</option><option value="b" selected>B</option><option value="c" selected>C</option>',
+    );
+    await userEvent.selectOptions(native, ['a']);
+
+    form.reset();
+    await waitForChanges();
+
+    expect(new FormData(form).getAll('s')).toEqual(['b', 'c']);
+  });
+});
+
+describe('placeholder set after load', () => {
+  it('adds one placeholder option, at the top', async () => {
+    const select = document.createElement('mds-input-select');
+    document.body.appendChild(select);
+    await vi.waitFor(() => expect(select).toHaveAttribute('hydrated'));
+
+    select.placeholder = 'Choose';
+    await vi.waitFor(() =>
+      expect(select.shadowRoot!.querySelector('option')!.textContent).toBe('Choose'),
+    );
+
+    const native = select.shadowRoot!.querySelector('select')!;
+    expect(Array.from(native.options).filter((option) => option.value === '')).toHaveLength(1);
+    select.remove();
+  });
+
+  it('leaves alone an element of the page with the same class', async () => {
+    const { root } = await render(
+      '<div><span class="placeholder-option">page</span><mds-input-select></mds-input-select></div>',
+    );
+    const select = root.querySelector('mds-input-select')!;
+
+    select.placeholder = 'Choose';
+    await vi.waitFor(() =>
+      expect(select.shadowRoot!.querySelector('option')!.textContent).toBe('Choose'),
+    );
+
+    expect(root.querySelector('span.placeholder-option')).not.toBeNull();
+  });
+});
+
+// A disabled fieldset disables the form controls in it. It disabled the host, so the value was
+// left out of the form, but not the select in its shadow root, which stayed editable (#822)
+describe('in a disabled fieldset', () => {
+  it('is disabled like a native select, until the fieldset is enabled', async () => {
+    const { root, waitForChanges } = await render<HTMLFormElement>(
+      '<form><fieldset disabled><mds-input-select name="s"><option value="a">A</option><option value="b" selected>B</option></mds-input-select></fieldset></form>',
+    );
+    const field = root.querySelector('mds-input-select')!;
+    const native = () => field.shadowRoot!.querySelector('select')!;
+
+    await vi.waitFor(() => expect(native().disabled).toBe(true));
+    expect(new FormData(root).has('s')).toBe(false);
+
+    root.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(native().disabled).toBe(false);
+    expect(new FormData(root).get('s')).toBe('b');
+  });
+});
+
+describe('size', () => {
+  // the field had one height, 48px; `size` was the row count of the native select, which now
+  // goes through `rows`, while a number in `size` keeps working for now, with a warning
+  it.each([
+    { size: undefined, height: 48 },
+    { size: 'lg', height: 48 },
+    { size: 'md', height: 36 },
+    { size: 'sm', height: 28 },
+  ])('is $height px tall with the size $size', async ({ size, height }) => {
+    const { root } = await render(
+      `<mds-input-select${size ? ` size="${size}"` : ''}></mds-input-select>`,
+    );
+
+    expect(root.getBoundingClientRect().height).toBe(height);
+  });
+
+  it('shows as many rows as rows asks for', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root } = await render(
+      '<mds-input-select multiple rows="4"><option value="a">A</option><option value="b">B</option></mds-input-select>',
+    );
+
+    expect(root.shadowRoot!.querySelector('select')!.size).toBe(4);
+    expect(warn).not.toHaveBeenCalled();
+  });
+
+  it('still reads a number in size as the row count, and warns that it is deprecated', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { root } = await render(
+      '<mds-input-select multiple size="4"><option value="a">A</option><option value="b">B</option></mds-input-select>',
+    );
+
+    expect(root.shadowRoot!.querySelector('select')!.size).toBe(4);
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('a number in `size` is deprecated'));
+  });
+
+  it('gives a sized field no row count', async () => {
+    const { root } = await render(
+      '<mds-input-select size="sm"><option value="a">A</option></mds-input-select>',
+    );
+
+    expect(root.shadowRoot!.querySelector('select')!.size).toBe(0);
+  });
+});
+
+// #995: the native select had a radius of its own, the xs step, so the select looked less
+// rounded than the mds-input next to it; the host now spells the radius of mds-input, capped
+// at a part of its height like it (#913), and the native select inherits it
+describe('the radius', () => {
+  const radiusOf = (element: Element): string => getComputedStyle(element).borderTopLeftRadius;
+  const sizes = ['sm', 'md', 'lg'];
+
+  it.each([
+    { label: 'of the theme', cap: undefined, radii: ['14px', '18px', '24px'] },
+    { label: '0.25', cap: '0.25', radii: ['7px', '9px', '12px'] },
+    { label: '1', cap: '1', radii: ['28px', '36px', '36px'] },
+  ])(
+    'is the radius of an mds-input of the same size, with the cap $label',
+    async ({ cap, radii }) => {
+      const { root } = await render(
+        `<div${cap ? ` style="--magma-corner-cap: ${cap}"` : ''}>
+           ${sizes
+             .map(
+               (size) =>
+                 `<mds-input-select size="${size}"></mds-input-select><mds-input size="${size}"></mds-input>`,
+             )
+             .join('')}
+         </div>`,
+      );
+
+      const selects = Array.from(root.querySelectorAll('mds-input-select')).map(radiusOf);
+      const inputs = Array.from(root.querySelectorAll('mds-input')).map(radiusOf);
+
+      expect(selects).toEqual(inputs);
+      expect(selects).toEqual(radii);
+    },
+  );
+
+  it('hands its radius and its corner shape down to the native select, as mds-input does', async () => {
+    const { root } = await render(
+      `<div style="--magma-corner-cap: 0.25">
+         <mds-input-select size="md"></mds-input-select>
+         <mds-input size="md"></mds-input>
+       </div>`,
+    );
+
+    const select = root.querySelector('mds-input-select')!;
+    const native = select.shadowRoot!.querySelector('select')!;
+    const field = root.querySelector('mds-input')!.shadowRoot!.querySelector('.input')!;
+    const shapeOf = (element: Element): string =>
+      getComputedStyle(element).getPropertyValue('corner-top-left-shape');
+
+    expect(radiusOf(native)).toBe(radiusOf(select));
+    expect(shapeOf(native)).toBe(shapeOf(field));
+    if (CSS.supports('corner-shape', 'squircle')) expect(shapeOf(native)).not.toBe('');
   });
 });

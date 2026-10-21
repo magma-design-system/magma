@@ -42,7 +42,7 @@
     --mds-breadcrumb-button-color,
     rgb(var(--magma-text-default))
   );
-  --mds-breadcrumb-item-button-border-radius: var(--radius-full);
+  --mds-breadcrumb-item-button-border-radius: var(--magma-radius-full);
 
   align-items: center;
   display: flex;

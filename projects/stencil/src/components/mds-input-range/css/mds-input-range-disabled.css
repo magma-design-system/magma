@@ -1,4 +1,7 @@
-:host([disabled]:not([disabled='false'])) {
+/* :disabled also covers a disabled fieldset around the range, which sets no attribute */
+
+:host([disabled]:not([disabled='false'])),
+:host(:disabled:not([disabled='false'])) {
   --mds-input-range-thumb-background: var(--mds-input-range-thumb-background-disabled);
   --mds-input-range-track-background: var(--mds-input-range-track-background-disabled);
   --mds-input-range-track-progress-background: var(
@@ -6,6 +9,7 @@
   );
 }
 
-:host([disabled]:not([disabled='false'])) .field::-webkit-slider-thumb {
+:host([disabled]:not([disabled='false'])) .field::-webkit-slider-thumb,
+:host(:disabled:not([disabled='false'])) .field::-webkit-slider-thumb {
   cursor: not-allowed;
 }

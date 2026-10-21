@@ -26,7 +26,8 @@ export class MdsUrlView {
   });
 
   /**
-   * Specifies if domain is visible on header
+   * Specifies the icon shown in the header, before the label or the domain; without it the
+   * header shows the explore icon
    */
   @Prop({ reflect: true }) readonly icon?: string;
 

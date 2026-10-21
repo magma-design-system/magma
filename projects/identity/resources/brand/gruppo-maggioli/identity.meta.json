@@ -1,0 +1,20 @@
+{
+  "owner": {
+    "id": "gruppo-maggioli",
+    "name": "Gruppo Maggioli"
+  },
+  "families": [
+    {
+      "id": "gruppo-maggioli",
+      "name": "Gruppo Maggioli",
+      "files": [
+        "logo-gruppo-maggioli",
+        "logo-gruppo-maggioli-black",
+        "logo-gruppo-maggioli-white",
+        "logo-gruppo-maggioli-bordered",
+        "logo-gruppo-maggioli-bordered-black",
+        "logo-gruppo-maggioli-bordered-white"
+      ]
+    }
+  ]
+}

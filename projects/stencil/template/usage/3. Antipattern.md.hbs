@@ -7,23 +7,25 @@ Purpose: show INCORRECT uses agents and developers commonly attempt, paired
          write something that looks reasonable but breaks at runtime.
 
 Companion docs to read first (do not re-derive their content here):
-  - docs/COMPONENTS.md       - the system-level anti-patterns list. Do NOT
+  - docs/agents/anti-patterns.md - the system-level anti-patterns list. Do NOT
                                duplicate those entries here; reference them.
-  - projects/stencil/SPEC.md - generic stencil rules (boolean attrs,
-                               disabled state, shadow DOM, event naming).
+  - docs/agents/conventions.md - the shared rules (boolean attrs, disabled
+                               state, styling from outside, event naming).
+  - projects/stencil/SPEC.md - "Per-component usage docs": what
+                               `npm run check.usage-docs` verifies in CI.
 
 MUST contain:
-  - A numbered list of anti-patterns ('## 1. Title', '## 2. Title', ...).
+  - One '#### Title' section per anti-pattern.
   - Each entry: short imperative title ("Do Not ...", "Avoid ..."), one
     sentence explaining WHY it is wrong (what breaks, accessibility issue,
     framework semantics), then a SINGLE fenced code block containing both
     the INCORRECT and CORRECT forms, clearly labelled.
   - A short opening paragraph that points readers at the system-level list
-    in `docs/COMPONENTS.md` so they know cross-cutting rules apply here too.
+    in `docs/agents/anti-patterns.md` so they know cross-cutting rules apply here too.
 
 MUST NOT contain:
-  - Cross-cutting anti-patterns already in `docs/COMPONENTS.md`
-    (boolean-as-string, shadow piercing via `::part()` / `>>>`, raw
+  - Cross-cutting anti-patterns already in `docs/agents/anti-patterns.md`
+    (boolean-as-string, shadow piercing past the documented parts, raw
     Tailwind colors, `prefers-color-scheme` overrides, native event
     listening). Only repeat one if THIS component has a non-obvious
     specialisation worth showing.
@@ -36,9 +38,11 @@ MUST NOT contain:
 
 STYLE & LENGTH:
   - One code block per entry, containing both INCORRECT and CORRECT forms.
-    Use the conventional comment markers: `<!-- 🚫 INCORRECT -->` and
-    `<!-- ✅ CORRECT -->` for HTML, `/* 🚫 INCORRECT */` and `/* ✅ CORRECT */`
-    for CSS / JS.
+    Use the conventional comment markers: `<!-- INCORRECT -->` and
+    `<!-- CORRECT -->` for HTML, `/* INCORRECT */` and `/* CORRECT */` for CSS,
+    `// INCORRECT` and `// CORRECT` for JS. The CI check skips the INCORRECT
+    half (wrong on purpose) and verifies the CORRECT one. Never forbid a
+    documented `::part()`: parts in the component's readme are API.
   - Each entry has a "why" line - agents need the reasoning to generalize
     to adjacent cases.
   - 3-8 anti-patterns is the sweet spot. Prioritize mistakes a new
@@ -48,17 +52,17 @@ STYLE & LENGTH:
 ================================================================================
 -->
 
-Common incorrect uses of `<{{componentName}}>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<{{componentName}}>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### <!-- imperative title, e.g. "Do Not Slot HTML Elements" -->
 
 <!-- One sentence: WHY this is wrong (what breaks, a11y, framework semantics). -->
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <{{componentName}}><!-- the wrong usage --></{{componentName}}>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <{{componentName}}><!-- the right usage --></{{componentName}}>
 ```
 
@@ -67,10 +71,10 @@ Common incorrect uses of `<{{componentName}}>`. Each entry pairs the wrong form 
 <!-- One sentence: WHY this is wrong. -->
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <{{componentName}}></{{componentName}}>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <{{componentName}}></{{componentName}}>
 ```
 
@@ -82,7 +86,7 @@ apply to THIS component (skip when they don't, do not pad the list):
   - Manual ARIA when the component already sets it - or missing ARIA on
     icon-only / label-less configurations
   - Legacy / renamed prop values that silently fall back to defaults
-    (e.g. Magma 1.x -> 2.x renames documented in `projects/stencil/SPEC.md`)
+    (e.g. the Magma 1.x -> 2.x renames applied by the codemod, projects/codemod)
   - Hard-coded colors / inline styles instead of variants and CSS vars
   - Wrong native event vs. documented `mds*` event listener
   - Documented shadow parts vs. undocumented internal selectors

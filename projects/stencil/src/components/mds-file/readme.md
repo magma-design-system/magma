@@ -15,15 +15,15 @@ The `<mds-file>` web component is the Magma Design System control for representi
 
 #### Semantic Behavior
 
-- **Clickable card**: The whole host is focusable and clicking it emits `mdsFileDownload`; the component itself does not fetch or download - the consumer wires the actual download to that event.
-- **Download event payload**: `mdsFileDownload` carries the resolved `description`, `extension`, `filename`, the host element as `target`, and the detected `type`/format.
-- **Downloaded persistence**: On click the component remembers the file as downloaded and shows a "done" indicator on subsequent renders; the state survives reloads.
+- **Clickable card**: The whole host is a button (`role="button"`, unless you set another role) in the tab order: a click, Enter or Space emits `mdsFileDownload`; the component itself does not fetch or download - the consumer wires the actual download to that event.
+- **Download event payload**: `mdsFileDownload` carries `description` (the `description` prop, or else the description of the detected type in the page language, the text the card shows), `extension` (empty for a filename without one), `filename`, the host element as `target`, and the detected `type`/format.
+- **Downloaded persistence**: On click the component records the file as downloaded in `localStorage`, under a key derived from the filename with a small non-cryptographic hash. Every later render of the same filename on the same origin shows the "done" indicator.
 - **Automatic file-type recognition**: From `filename` it derives the format icon, badge variant, and default description; `suffix` overrides this detection.
 - **Localization**: Descriptions and the "already downloaded" tooltip are resolved against the active locale.
 
 #### Properties & Visual Configurations
 
-- **`filename`** is the primary input: it provides the displayed title and drives icon, badge, suffix, and description detection. The name and extension are rendered separately, split at the last dot so the dots inside the name are kept (`report.v2.final.docx` shows `report.v2.final` and `.docx`; a leading dot belongs to the name, as in `.env`); the extension is shown only when not explicitly overridden by `suffix`.
+- **`filename`** is the primary input: it provides the displayed title and drives icon, badge, suffix, and description detection. The name and extension are rendered separately, split at the last dot so the dots inside the name are kept (`report.v2.final.docx` shows `report.v2.final` and `.docx`; a leading dot belongs to the name, as in `.env`); the extension is shown only when not explicitly overridden by `suffix`, and a filename without one shows no extension and no badge.
 - **`suffix`** forces a specific file type from the supported format set when the filename's extension is missing or wrong; it bypasses automatic recognition.
 - **`description`** overrides the derived, localized file-type description when a custom label is needed.
 - **`preview`** supplies an image URL (logo or thumbnail) rendered as the preview surface instead of the generic format icon - use it when a meaningful visual of the file exists.
@@ -33,7 +33,7 @@ The `<mds-file>` web component is the Magma Design System control for representi
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-file>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the conventions documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-file>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic File Card
 
@@ -73,7 +73,7 @@ When the filename lacks an extension or carries a misleading one, use `suffix` t
 
 #### Custom Description
 
-Override the localized auto-generated description with a specific label relevant to the document context. Use `description` when the default type label (e.g. "Documento PDF") is not informative enough.
+Override the localized auto-generated description with a specific label relevant to the document context. Use `description` when the default type label (e.g. "Documento Adobe" for a PDF) is not informative enough.
 
 ```html
 <mds-file
@@ -95,13 +95,13 @@ Provide `preview` with an image URL when a meaningful visual thumbnail is availa
 
 #### Hiding the "Already Downloaded" Indicator
 
-By default the component persists a "done" indicator once the file has been downloaded. Add `hide-downloaded-icon` to suppress it when the affordance is not appropriate for the context (e.g. a list where every file is always shown as fresh).
+The component shows a "done" indicator once the file has been downloaded, on every later render of the same filename. Add `hide-downloaded-icon` to suppress it when the affordance is not appropriate for the context (e.g. a list where every file is always shown as fresh).
 
 ```html
 <mds-file filename="modulo-richiesta.xlsx" hide-downloaded-icon></mds-file>
 ```
 
-Note: this is the only valid way to turn the indicator off - do not set it to the string `"false"` (see the Antipattern file).
+Note: this is the only valid way to turn the indicator off. Magma 1 used `show-downloaded-icon="false"`; that prop no longer exists (the codemod turns it into `hide-downloaded-icon`).
 
 #### Rendering a List of Files
 
@@ -124,30 +124,30 @@ Place multiple `<mds-file>` cards inside a container and attach a single delegat
 
 #### Styling Customization
 
-Style the preview panel only through the three documented `--mds-file-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the preview panel only through the three documented `--mds-file-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .archivio-documenti mds-file {
-  --mds-file-preview-icon-color: rgb(var(--variant-primary-04));
-  --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
-  --mds-file-preview-color: rgb(var(--variant-primary-04));
+  --mds-file-preview-icon-color: rgb(var(--magma-accent-fg));
+  --mds-file-preview-icon-background: rgb(var(--magma-accent-surface-subtle));
+  --mds-file-preview-color: rgb(var(--magma-accent-fg));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-file>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-file>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Expect the Component to Perform the Download
 
-`<mds-file>` is a display card, not a download trigger. It emits `mdsFileDownload` and the consumer must wire the actual download logic to that event.
+`<mds-file>` is a display card, not a download trigger: it has no `href`. It emits `mdsFileDownload` and the consumer must wire the actual download logic to that event.
 
 ```html
-<!-- 🚫 INCORRECT - expecting the component to handle the download itself -->
+<!-- INCORRECT - expecting the component to handle the download itself -->
 <mds-file filename="report.pdf" href="/files/report.pdf"></mds-file>
 
-<!-- ✅ CORRECT - consumer listens to the event and handles the download -->
+<!-- CORRECT - consumer listens to the event and handles the download -->
 <mds-file filename="report.pdf" id="card-report"></mds-file>
 
 <script>
@@ -162,10 +162,10 @@ Common incorrect uses of `<mds-file>`. Each entry pairs the wrong form with the 
 `format` is an internal reflected attribute automatically derived from the filename and suffix. Setting it directly has no guaranteed effect because the component overwrites it during `componentWillLoad` and on every `filename` change. Use `suffix` to control type detection.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-file filename="archivio" format="document"></mds-file>
 
-<!-- ✅ CORRECT - use suffix to override file-type detection -->
+<!-- CORRECT - use suffix to override file-type detection -->
 <mds-file filename="archivio" suffix="pdf"></mds-file>
 ```
 
@@ -174,29 +174,29 @@ Common incorrect uses of `<mds-file>`. Each entry pairs the wrong form with the 
 The supported customization surface is `--mds-file-preview-*` CSS custom properties. Targeting internal elements with `>>>`, `/deep/`, or undocumented selectors couples your code to the Shadow DOM structure and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-file >>> .preview {
   background-color: blue;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-file {
-  --mds-file-preview-icon-background: rgb(var(--variant-primary-10));
-  --mds-file-preview-icon-color: rgb(var(--variant-primary-04));
+  --mds-file-preview-icon-background: rgb(var(--magma-accent-surface-subtle));
+  --mds-file-preview-icon-color: rgb(var(--magma-accent-fg));
 }
 ```
 
 #### Do Not Wrap `<mds-file>` in a Native Anchor or Button
 
-The host is already focusable, keyboard-accessible, and emits its own interaction event. Wrapping it in `<a>` or `<button>` creates nested interactive controls and breaks keyboard semantics.
+The host is already focusable (`tabindex="0"`) and emits its own interaction event. Wrapping it in `<a>` or `<button>` creates nested interactive controls and breaks keyboard semantics.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <a href="/download/report.pdf">
   <mds-file filename="report.pdf"></mds-file>
 </a>
 
-<!-- ✅ CORRECT - use the mdsFileDownload event to trigger navigation or download -->
+<!-- CORRECT - use the mdsFileDownload event to trigger navigation or download -->
 <mds-file filename="report.pdf" id="file-report"></mds-file>
 
 <script>
@@ -211,13 +211,13 @@ The host is already focusable, keyboard-accessible, and emits its own interactio
 `<mds-file>` handles format detection, theming, accessibility focus, download persistence, and localization. Rolling a custom file row loses all of these affordances.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <div class="file-row" onclick="download('report.pdf')">
   <img src="pdf-icon.svg" alt="PDF" />
   <span>report.pdf</span>
 </div>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-file filename="report.pdf"></mds-file>
 ```
 
@@ -225,14 +225,14 @@ The host is already focusable, keyboard-accessible, and emits its own interactio
 
 ## Properties
 
-| Property             | Attribute              | Description                                                                                                                | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Default     |
-| -------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| `description`        | `description`          | Overrides the default filetype description                                                                                 | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
-| `filename`           | `filename`             | The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary         | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `undefined` |
-| `format`             | `format`               | Sets if the download icon must be shown or not                                                                             | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
-| `hideDownloadedIcon` | `hide-downloaded-icon` | Hides the download icon                                                                                                    | `boolean \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `false`     |
-| `preview`            | `preview`              | The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
-| `suffix`             | `suffix`               | Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen                 | `"7z" \| "ace" \| "ai" \| "db" \| "default" \| "dmg" \| "doc" \| "docm" \| "docx" \| "eml" \| "eps" \| "exe" \| "flac" \| "gif" \| "heic" \| "htm" \| "html" \| "jpe" \| "jpeg" \| "jpg" \| "js" \| "json" \| "jsx" \| "m2v" \| "mp2" \| "mp3" \| "mp4" \| "mp4v" \| "mpeg" \| "mpg" \| "mpg4" \| "mpga" \| "odf" \| "odp" \| "ods" \| "odt" \| "ole" \| "p7m" \| "pdf" \| "php" \| "png" \| "ppt" \| "rar" \| "rtf" \| "sass" \| "shtml" \| "svg" \| "tar" \| "tiff" \| "ts" \| "tsd" \| "txt" \| "wav" \| "webp" \| "xar" \| "xls" \| "xlsx" \| "xml" \| "zip" \| undefined` | `undefined` |
+| Property             | Attribute              | Description                                                                                                                                                                                                    | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Default     |
+| -------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `description`        | `description`          | Overrides the default filetype description                                                                                                                                                                     | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
+| `filename`           | `filename`             | The filename shown as component title, is used to auto assign one of the filetype known in the filetype dictionary                                                                                             | `string`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `undefined` |
+| `format`             | `format`               | The kind of file, recognised from the extension of `filename` or from `suffix`: it selects the colours of the icon. The component writes it on load and whenever `filename` changes, set `suffix` to choose it | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
+| `hideDownloadedIcon` | `hide-downloaded-icon` | Hides the download icon                                                                                                                                                                                        | `boolean \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `false`     |
+| `preview`            | `preview`              | The image preview src if available of a file, useful if you have a logo to display, or a smaller version of a bigger image                                                                                     | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `undefined` |
+| `suffix`             | `suffix`               | Overrides the automatic filetype recongition by forcing the suffix to one of the available formats choosen                                                                                                     | `"7z" \| "ace" \| "ai" \| "db" \| "default" \| "dmg" \| "doc" \| "docm" \| "docx" \| "eml" \| "eps" \| "exe" \| "flac" \| "gif" \| "heic" \| "htm" \| "html" \| "jpe" \| "jpeg" \| "jpg" \| "js" \| "json" \| "jsx" \| "m2v" \| "mp2" \| "mp3" \| "mp4" \| "mp4v" \| "mpeg" \| "mpg" \| "mpg4" \| "mpga" \| "odf" \| "odp" \| "ods" \| "odt" \| "ole" \| "p7m" \| "pdf" \| "php" \| "png" \| "ppt" \| "rar" \| "rtf" \| "sass" \| "shtml" \| "svg" \| "tar" \| "tiff" \| "ts" \| "tsd" \| "txt" \| "wav" \| "webp" \| "xar" \| "xls" \| "xlsx" \| "xml" \| "zip" \| undefined` | `undefined` |
 
 
 ## Events

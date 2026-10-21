@@ -18,7 +18,7 @@ npm i @maggioli-design-system/magma
 Then install the assets from [`assets.md`](assets.md):
 
 ```bash
-npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens @maggioli-design-system/svg-icons
+npm i @maggioli-design-system/styles @maggioli-design-system/design-tokens
 npm i @fontsource/karla @fontsource/merriweather @fontsource/roboto @fontsource/roboto-mono
 ```
 
@@ -68,7 +68,7 @@ Either way, the tags are then plain HTML:
 
 ```html
 <mds-button variant="primary" tone="strong">Save</mds-button>
-<mds-icon name="action-email-send"></mds-icon>
+<mds-icon name="mi/baseline/email"></mds-icon>
 ```
 
 ### Without a bundler (CDN / static page)
@@ -86,25 +86,29 @@ Before components hydrate (see [`assets.md`](assets.md) section 3):
 window.sessionStorage.setItem('mdsIconSvgPath', '/svg/');
 ```
 
-Make sure the SVG files from `@maggioli-design-system/svg-icons/dist/svg/` are served
-at that path.
+Serve the icons at that path with one of the routes of [`assets.md`](assets.md) section 3
+(iconsauce or the copy script, which also install the icon packages): with Vite the
+static folder is `public/`, so `public/svg/` is served at `/svg/`.
 
 ## 4. Anti-FOUC
 
 `hydrated.css` (imported in the [`assets.md`](assets.md) block) hides components
 until Stencil sets the hydrated attribute. Keep it in the `base` layer and load it
-before the first render to avoid a flash of unstyled custom elements.
+before the first render to avoid a flash of unstyled custom elements. Once a component
+is hydrated, the same file hands back the margin, padding and border it gives itself,
+which a page reset such as Tailwind's preflight would zero: that works only from the
+`base` layer itself, next to the reset.
 
 ## 5. Server-side rendering (SSR)
 
 `@maggioli-design-system/magma/hydrate` exposes `renderToString()`: it serializes
 components to HTML with their shadow DOM inlined as
 `<template shadowrootmode="open">` (declarative shadow DOM), reflected props as
-attributes and the `hydrated` flag already set — so the markup paints with its
+attributes and the `hydrated` flag already set - so the markup paints with its
 final geometry (no layout shift) and `hydrated.css` does not hide it.
 
 ```javascript
-// server only — the module bundles all components and must not reach the client
+// server only - the module bundles all components and must not reach the client
 import { renderToString } from '@maggioli-design-system/magma/hydrate';
 
 const { html, diagnostics } = await renderToString(
@@ -119,15 +123,32 @@ returned anyway.
 
 SSR caveats (by design):
 
-- **Icons render empty on the server** — `mds-icon` fetches SVGs at runtime and
+- **Icons render empty on the server** - `mds-icon` fetches SVGs at runtime and
   skips the fetch during SSR. The box is still reserved (`aspect-ratio` +
   `width` on `:host`), so nothing shifts; the icon appears after hydration.
-- **The default theme is rendered** — user preferences live in `localStorage`,
+- **The default theme is rendered** - user preferences live in `localStorage`,
   which does not exist server-side. Publish the `pref-*` classes on `<html>`
   from an inline script if you need the right theme at first paint.
 
-React consumers get this automatically through the generated server wrappers —
+React consumers get this automatically through the generated server wrappers -
 see [`react.md`](react.md).
+
+## 6. Client-side routing
+
+The links of the components (`href` of `mds-button`, `mds-tab-item`, ...) are real anchors
+the browser follows, loading the page. In a single-page app register the router once and every
+plain click on a component link is routed on the client instead; a modifier or middle click,
+`target="blank"` and a link to another origin stay with the browser.
+
+```javascript
+import { NavigationService } from '@maggioli-design-system/magma/services';
+
+NavigationService.setHandler((href) => router.navigate(href));
+```
+
+`setHandler` returns the function that removes the handler. Return `false` from the handler
+for a link the browser is to load. Without a registered router, a click listener on the
+component can still cancel the event with `preventDefault()` and route by hand.
 
 ## Gotchas
 
@@ -138,10 +159,10 @@ see [`react.md`](react.md).
 - `mdsIconSvgPath` must be set before the first `mds-icon` renders, or icons will
   fetch from the wrong path. If you set it late, dispatch
   `window.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'))` to refresh.
-- The default slot accepts plain text only unless a component's own `SPEC.md` says
-  otherwise - see [`../../projects/stencil/SPEC.md`](../../projects/stencil/SPEC.md).
+- The default slot accepts plain text only unless a component's own `AGENTS.md` says
+  otherwise - see [`conventions.md`](conventions.md).
 
 ## See also
 
 - [`assets.md`](assets.md) - styles / fonts / icons / identity (canonical)
-- [`../../projects/stencil/SPEC.md`](../../projects/stencil/SPEC.md) - component conventions
+- [`conventions.md`](conventions.md) - component conventions

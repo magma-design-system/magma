@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, Element, State } from '@stencil/core';
+import { Build, Component, Host, h, Prop, Element, State, Watch } from '@stencil/core';
 import { hasChildWithSlot } from '@common/slot';
 import clsx from 'clsx';
 import { Locale } from '@common/locale';
@@ -26,7 +26,8 @@ export class MdsTableRow {
   private actions?: HTMLDivElement;
   @State() hasActions: boolean;
   private observer?: ResizeObserver;
-  @State() sizerWidth: string;
+  // border box width of the actions, unknown until the observer reports it (and on the server)
+  @State() sizerWidth?: string;
   private t: Locale = new Locale({
     el: localeEl,
     en: localeEn,
@@ -66,34 +67,56 @@ export class MdsTableRow {
   @Prop({ reflect: true }) readonly value?: string | number;
 
   private onActionSlotChange = (): void => {
-    this.hasActions = hasChildWithSlot(this.host, 'action');
+    const hasActions = hasChildWithSlot(this.host, 'action');
+    // the slot fires on load too, with nothing new: the table hears only of a real change,
+    // actions rendered later or taken away, which its observer of the rows cannot see (#801)
+    if (hasActions === this.hasActions) return;
+    this.hasActions = hasActions;
+    this.host.closest('mds-table')?.updateActions();
   };
 
   componentWillLoad(): void {
     this.hasActions = hasChildWithSlot(this.host, 'action');
   }
 
-  componentDidLoad(): void {
-    // needed to capture sizer width when become visible
-    if (this.actions) this.initObserver(this.actions);
+  connectedCallback(): void {
+    // a row moved or re-attached after its first load lost the observer in disconnectedCallback:
+    // React reveals a streamed SSR boundary that way, moving the rows hydrated in a hidden
+    // container, so the width measured there (0, or nothing yet) would never be updated
+    this.observeActions();
   }
 
-  private initObserver(actions: HTMLDivElement) {
-    this.observer = new ResizeObserver((entry) => {
+  componentDidLoad(): void {
+    // needed to capture sizer width when become visible
+    this.observeActions();
+  }
+
+  private observeActions(): void {
+    // nothing to measure on the server; the actions are not rendered before the first load
+    if (!Build.isBrowser || !this.actions) return;
+    this.observer ??= new ResizeObserver((entry) => {
       // the cell is hidden while the slot is empty: no border box to read
       this.sizerWidth = `${entry[0].borderBoxSize?.[0]?.inlineSize ?? 0}px`;
     });
-    this.observer.observe(actions);
+    // a new observation always reports the current size first
+    this.observer.observe(this.actions);
   }
 
   disconnectedCallback() {
-    if (this.observer) this.observer.disconnect();
+    this.observer?.disconnect();
   }
 
   private handleSelectionChange = (e: CustomEvent): void => {
     this.selected = e.detail.checked;
-    this.host.closest('mds-table')?.updateSelection();
   };
+
+  // the table learns of every change of `selected`, from the checkbox or from code: only the
+  // checkbox used to tell it, so a row selected from code was missing from mdsTableSelectionChange
+  @Watch('selected')
+  selectedChanged(newValue?: boolean, oldValue?: boolean): void {
+    if (!!newValue === !!oldValue) return;
+    void this.host.closest('mds-table')?.updateSelection();
+  }
 
   render() {
     return (
@@ -130,17 +153,20 @@ export class MdsTableRow {
               class="actions-sizer"
               style={{
                 minHeight: '1px',
-                maxWidth: this.sizerWidth,
-                minWidth: this.sizerWidth,
+                // until the width is measured (the server render included) the styles that depend
+                // on it are left out: `calc(undefined + ...)` is invalid and drops the margin
+                ...(this.sizerWidth && { maxWidth: this.sizerWidth, minWidth: this.sizerWidth }),
               }}
             ></div>
             <div class="actions-view">
               <div
                 class="actions"
                 ref={(el) => (this.actions = el as HTMLDivElement)}
-                style={{
-                  marginRight: `calc(${this.sizerWidth} + var(--mds-table-cell-padding))`,
-                }}
+                style={
+                  this.sizerWidth !== undefined
+                    ? { marginRight: `calc(${this.sizerWidth} + var(--mds-table-cell-padding))` }
+                    : undefined
+                }
               >
                 <slot name="action" onSlotchange={this.onActionSlotChange}></slot>
               </div>

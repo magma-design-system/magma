@@ -16,8 +16,9 @@ The `<mds-details>` web component is the disclosure widget of the Magma Design S
 #### Semantic Behavior
 
 - **Open/closed state**: The `opened` prop expands or collapses the content region with a transition.
-- **Header activation**: Clicking the header or the leading icon toggles the open state, and the header is keyboard-activatable (Enter/Space).
-- **Change event**: Each toggle emits `mdsDetailsChange` carrying the new boolean open state.
+- **Header activation**: Clicking the header or the leading icon toggles the open state, and the header is keyboard-activatable with Enter and Space.
+- **Closed content**: While closed, the content is hidden from the tab order and from assistive technologies, not only from the eye; it shows for the whole opening and closing animation.
+- **Change event**: Each user toggle emits `mdsDetailsChange` carrying the new boolean open state; changing `opened` from code emits nothing.
 - **Icon slot presence**: The leading icon area auto-hides when no `icon` slot is provided.
 - **Default slot vs. named slots**: The default (unnamed) slot is the collapsible body. The `title` slot is the always-visible header label, `icon` is the optional leading glyph, and `action` is a footer region inside the expandable content meant for action controls.
 
@@ -25,7 +26,7 @@ The `<mds-details>` web component is the disclosure widget of the Magma Design S
 
 This component intentionally exposes a single behavioral prop. Visual surface is driven through slots and the exposed CSS custom properties rather than through variant/tone props.
 
-- **`opened`** controls and reflects the expanded state. Set it to pre-expand the block on first render, or read/bind it to drive the disclosure programmatically; it stays in sync with user-driven toggles.
+- **`opened`** sets the expanded state. Set it to pre-expand the block on first render, or change it to open / close the block from code. A user toggle writes it back too (property and reflected attribute), so it always holds the current state.
 
 #### Other behavioral props
 
@@ -34,7 +35,7 @@ This component intentionally exposes a single behavioral prop. Visual surface is
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-details>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-details>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Disclosure Block
 
@@ -52,12 +53,12 @@ The minimal form: a `title` slot for the always-visible header and a default slo
 
 #### Pre-expanded State via `opened`
 
-Pass the `opened` boolean attribute to expand the block on first render. The prop is mutable and reflected, so it stays in sync with subsequent user-driven toggles.
+Pass the `opened` boolean attribute to expand the block on first render. User toggles update it, and emit `mdsDetailsChange`.
 
 ```html
 <mds-details opened>
   <mds-text typography="h6" slot="title">Note operative</mds-text>
-  <mds-text typography="body">
+  <mds-text typography="paragraph">
     Le note operative sono visibili fin dal caricamento della pagina per garantire una lettura
     immediata.
   </mds-text>
@@ -89,9 +90,7 @@ The `action` slot sits at the bottom of the expandable content region. Use `mds-
   <mds-text typography="detail">
     Scarica e compila il modulo A3 prima di procedere con la richiesta.
   </mds-text>
-  <mds-button slot="action" size="sm" variant="primary" tone="outline">
-    Scarica il modulo
-  </mds-button>
+  <mds-button slot="action" size="sm" variant="primary" tone="outline" label="Scarica il modulo"></mds-button>
 </mds-details>
 ```
 
@@ -117,7 +116,7 @@ Subscribe to `mdsDetailsChange` to react to open/close transitions. The event de
 
 #### Programmatic Control
 
-Because `opened` is a reflected, mutable prop you can drive the disclosure from code - for example to expand all items at once or to implement accordion logic manually.
+Assign the `opened` property to drive the disclosure from code - for example to expand all items at once or to implement accordion logic manually. User toggles write `opened` back, so it always holds the current state: `opened = true` opens a block the user had closed.
 
 ```html
 <mds-details id="step-1">
@@ -127,10 +126,10 @@ Because `opened` is a reflected, mutable prop you can drive the disclosure from 
   </mds-text>
 </mds-details>
 
-<mds-button id="expand-btn" label="Espandi tutti" variant="secondary" tone="text"></mds-button>
+<mds-button id="expand-btn" label="Espandi tutti" variant="primary" tone="text"></mds-button>
 
 <script>
-  document.getElementById('expand-btn').addEventListener('mdsButtonClick', () => {
+  document.getElementById('expand-btn').addEventListener('click', () => {
     document.querySelectorAll('mds-details').forEach((el) => {
       el.opened = true;
     });
@@ -140,13 +139,13 @@ Because `opened` is a reflected, mutable prop you can drive the disclosure from 
 
 #### CSS Customization
 
-Style the component only through its documented `--mds-details-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the component only through its documented `--mds-details-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode, named themes and high contrast keep working.
 
 ```css
 .custom-faq mds-details {
   --mds-details-duration: 500ms;
-  --mds-details-icon-color: rgb(var(--variant-secondary-04));
-  --mds-details-helper-icon-color: rgb(var(--tone-neutral-04));
+  --mds-details-icon-color: rgb(var(--magma-accent-emphasis));
+  --mds-details-helper-icon-color: rgb(var(--magma-text-subtle));
 }
 ```
 
@@ -157,31 +156,31 @@ When CSS custom properties are not sufficient, use the documented shadow `::part
 ```css
 /* Increase header padding for a spacious FAQ layout */
 .faq-section mds-details::part(header) {
-  padding: var(--spacing-300) 0;
+  padding: calc(var(--spacing) * 300) 0;
 }
 
 /* Give the title extra weight */
 .faq-section mds-details::part(title) {
-  font-weight: var(--font-weight-600);
+  font-weight: 600;
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-details>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-details>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Put the Title Text in the Default Slot
 
 The default slot is the collapsible body. Text placed there is hidden until the user expands the block, so it cannot serve as the visible header. Use the `title` slot for the header label.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-details>
   Requisiti di accesso
 </mds-details>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-details>
   <mds-text typography="h6" slot="title">Requisiti di accesso</mds-text>
 </mds-details>
@@ -192,13 +191,13 @@ The default slot is the collapsible body. Text placed there is hidden until the 
 The native `<details>` lacks Magma theming, the leading icon slot, the `action` slot, smooth CSS grid transitions, preference support (reduced-motion, high-contrast), and the `mdsDetailsChange` event contract. Always use `<mds-details>` inside a Magma application.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <details>
   <summary>Modulistica richiesta</summary>
   <p>Scarica il modulo A3 prima di procedere.</p>
 </details>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-details>
   <mds-text typography="h6" slot="title">Modulistica richiesta</mds-text>
   <mds-text typography="detail">Scarica il modulo A3 prima di procedere.</mds-text>
@@ -207,15 +206,15 @@ The native `<details>` lacks Magma theming, the leading icon slot, the `action` 
 
 #### Do Not Set `opened="false"` to Collapse the Component
 
-`opened` is a boolean attribute. Any non-empty string value - including `"false"` - is truthy in HTML and keeps the block expanded. Remove the attribute entirely to collapse it, or set the property to `undefined` / `false` in JavaScript.
+`opened` is a boolean attribute. The component reads the string `"false"` as `false` and drops the attribute when it renders, but until then the attribute is in the DOM and attribute selectors (`mds-details[opened]`) see the block as open. Remove the attribute entirely to collapse it, or set the property to `undefined` / `false` in JavaScript.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-details opened="false">
   <mds-text typography="h6" slot="title">Note operative</mds-text>
 </mds-details>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-details>
   <mds-text typography="h6" slot="title">Note operative</mds-text>
 </mds-details>
@@ -223,10 +222,10 @@ The native `<details>` lacks Magma theming, the leading icon slot, the `action` 
 
 #### Do Not Inline an `<mds-icon>` in the `title` Slot to Fake a Leading Glyph
 
-The `icon` slot is the dedicated region for the leading glyph; it also participates in the toggle click area. Putting `mds-icon` inside the `title` slot bypasses this layout and leaves the icon area empty.
+The `icon` slot is the dedicated region for the leading glyph; it also participates in the toggle click area. Putting `mds-icon` inside the `title` slot bypasses this layout: the icon area stays hidden and the glyph sits in the title text.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-details>
   <span slot="title">
     <mds-icon name="mi/baseline/info"></mds-icon>
@@ -234,7 +233,7 @@ The `icon` slot is the dedicated region for the leading glyph; it also participa
   </span>
 </mds-details>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-details>
   <mds-icon slot="icon" name="mi/baseline/info"></mds-icon>
   <mds-text typography="h6" slot="title">Informazioni sul servizio</mds-text>
@@ -246,7 +245,7 @@ The `icon` slot is the dedicated region for the leading glyph; it also participa
 Clicking the header triggers `mdsDetailsChange` with the new state. Listening for raw `click` on the host or its shadow parts is fragile - it fires on every sub-element click, may not bubble out of shadow DOM as expected, and gives you no reliable open/closed state.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-details id="det">
   <mds-text typography="h6" slot="title">Dettaglio</mds-text>
 </mds-details>
@@ -258,7 +257,7 @@ Clicking the header triggers `mdsDetailsChange` with the new state. Listening fo
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <script>
   document.getElementById('det').addEventListener('mdsDetailsChange', (e) => {
     console.log('Aperto:', e.detail); // true | false
@@ -271,7 +270,7 @@ Clicking the header triggers `mdsDetailsChange` with the new state. Listening fo
 The only supported customization surface is the three documented `--mds-details-*` CSS custom properties and the three documented shadow parts (`header`, `title`, `content`). Targeting undocumented class names or using `>>>` couples your code to the internal implementation and will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-details >>> .helper-icon {
   fill: red;
 }
@@ -279,13 +278,13 @@ mds-details >>> .header {
   background: yellow;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-details {
-  --mds-details-helper-icon-color: rgb(var(--variant-error-04));
+  --mds-details-helper-icon-color: rgb(var(--magma-danger-fg));
   --mds-details-duration: 200ms;
 }
 mds-details::part(header) {
-  background: rgb(var(--tone-neutral-01));
+  background: rgb(var(--magma-surface-muted));
 }
 ```
 
@@ -317,11 +316,11 @@ mds-details::part(header) {
 
 ## Shadow Parts
 
-| Part        | Description                                              |
-| ----------- | -------------------------------------------------------- |
-| `"content"` | The content wrapper of the `default` and `content` slots |
-| `"header"`  | The header of the component                              |
-| `"title"`   | The title of the component                               |
+| Part        | Description                                           |
+| ----------- | ----------------------------------------------------- |
+| `"content"` | The content wrapper of the default and `action` slots |
+| `"header"`  | The header of the component                           |
+| `"title"`   | The title of the component                            |
 
 
 ## CSS Custom Properties

@@ -15,7 +15,8 @@ The `<mds-tab-item>` web component is the individual, clickable tab control of t
 
 #### Semantic Behavior
 
-- **Compound child only**: Must be a direct child of `<mds-tab>` placed in its default slot; it is not used standalone, and the matching panel content is added separately into the parent's `content` slot (one per `<mds-tab-item>`). Mixing it with other child types breaks the parent's pairing.
+- **Compound child only**: Must be a direct child of `<mds-tab>` placed in its default slot; it is not used standalone, and the matching panel content is added separately into the parent's `content` slot (one per `<mds-tab-item>`, or none when the page shows the content itself). Mixing it with other child types breaks the parent's pairing.
+- **Link item**: With `href` the item renders a real link instead of a tab: it is announced as a link, with `aria-current` when selected, and the browser follows it, in a new tab on a modifier or middle click. A `click` listener on the item cancels the navigation with `preventDefault()` to route on the client; the selection still moves, except on a modifier click, which the browser opens elsewhere.
 - **Selection driven by the parent**: Clicking the item emits `mdsTabItemSelect`; `<mds-tab>` sets `selected` on the chosen item, clears it on the others, and reveals the corresponding panel.
 - **Initial selection**: Marking one item `selected` in markup tells the parent which tab is active on load.
 - **Focus reporting**: A key press emits `mdsTabItemFocus`, which the parent uses to scroll the focused tab into view; both events carry `{ target, value }` so the parent can resolve the item even with a custom `id`.
@@ -27,7 +28,7 @@ The `<mds-tab-item>` web component is the individual, clickable tab control of t
 This child does not use the shared `variant`/`tone` ladders; its props mirror the underlying `<mds-button>`.
 
 - **`value`**: Set this to identify the tab in the `mdsTabItemSelect` payload (and the parent's `mdsTabChange`) when you need to react to selection without relying on DOM index or `id`.
-- **`type`**: Defaults to `submit`; pick `button` for a plain tab that does not interact with a surrounding form, or `a` together with `href` when the tab should navigate.
+- **`type`**: Defaults to `submit`; pick `button` for a plain tab that does not interact with a surrounding form. With `href` the item is a link and `type` has no effect.
 - **`icon`** / **`iconPosition`**: Add a leading (`left`, default) or trailing (`right`) glyph; use the trailing position for affordances like an external-link or dismiss hint.
 - **`await`**: Reflects the button's awaiting/loading state for tabs whose activation triggers an async operation.
 - **`size`**: Defaults to `md`, but is normally controlled by the parent's `size` prop, so set it on `<mds-tab>` for consistent sizing across all items.
@@ -35,7 +36,7 @@ This child does not use the shared `variant`/`tone` ladders; its props mirror th
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-tab-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the compound component rules documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-tab-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Tab Group
 
@@ -126,18 +127,36 @@ Set `size` on `<mds-tab>` once; the parent propagates it to every child item aut
 </mds-tab>
 ```
 
-#### Link Tab via `href`
+#### Link Items via `href`
 
-Set `href` (and `type="a"`) to make a tab navigate to a URL instead of switching a panel. Pair with a target attribute on the `<mds-tab-item>` if needed.
+Set `href` on every item to make the strip a navigation: each item is a link the browser follows instead of a tab switching a panel, so omit the `content` slot. `<mds-tab-item>` has no `target` prop, so a plain click opens the link in the same window; a modifier or middle click opens it in a new tab. In a single-page app, register the router once with `NavigationService` (from `@maggioli-design-system/magma/services`): a plain click on an item is then routed on the client, and the selection still moves.
 
 ```html
 <mds-tab>
-  <mds-tab-item label="Locale" selected></mds-tab-item>
-  <mds-tab-item label="Portale" href="https://portale.example.com" type="a"></mds-tab-item>
-
-  <div slot="content"><p>Vista locale.</p></div>
-  <div slot="content"></div>
+  <mds-tab-item label="Pratiche" href="/pratiche" selected></mds-tab-item>
+  <mds-tab-item label="Documenti" href="/documenti"></mds-tab-item>
+  <mds-tab-item label="Pagamenti" href="/pagamenti"></mds-tab-item>
 </mds-tab>
+
+<script type="module">
+  import { NavigationService } from '@maggioli-design-system/magma/services';
+
+  NavigationService.setHandler((href) => router.navigate(href));
+</script>
+```
+
+Without a registered router, cancel the click on the item and route by hand: the component honours `preventDefault()`. Leave a modifier click alone, so that the browser opens the link in a new tab.
+
+```html
+<script>
+  document.querySelectorAll('mds-tab-item[href]').forEach((item) => {
+    item.addEventListener('click', (event) => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      router.navigate(item.href);
+    });
+  });
+</script>
 ```
 
 #### Async Loading Tab via `await`
@@ -172,30 +191,30 @@ Set `direction="vertical"` on the parent to stack the tabs alongside the panels.
 
 #### CSS Customization
 
-Style items only through the documented `--mds-tab-item-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode keeps working.
+Style items only through the documented `--mds-tab-item-*` CSS custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
 .schede-contratto mds-tab-item {
-  --mds-tab-item-default-background: rgb(var(--tone-neutral-02));
-  --mds-tab-item-hover-background: rgb(var(--tone-neutral-03));
-  --mds-tab-item-selected-background: rgb(var(--variant-primary-01));
+  --mds-tab-item-default-background: rgb(var(--magma-wash-soft));
+  --mds-tab-item-hover-background: rgb(var(--magma-wash-base));
+  --mds-tab-item-selected-background: rgb(var(--magma-accent-surface));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-tab-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-tab-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-tab-item>` Outside `<mds-tab>`
 
 The item communicates with its parent through Stencil's internal listener (`mdsTabItemSelect`); used standalone it has no tab-switching behavior and no aria context.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-item label="Dettagli" selected></mds-tab-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab>
   <mds-tab-item label="Dettagli" selected></mds-tab-item>
   <div slot="content"><p>Contenuto dei dettagli.</p></div>
@@ -204,10 +223,10 @@ The item communicates with its parent through Stencil's internal listener (`mdsT
 
 #### Do Not Wrap `<mds-tab-item>` in a Div or Other Element
 
-The parent queries direct children with `querySelectorAll('mds-tab-item')`; a wrapper breaks the slot pairing between items and content panels.
+The parent finds the items anywhere inside it, but it lays out and styles only its direct slot children (`::slotted(mds-tab-item)`): a wrapper takes their place in the tab strip, so the items lose the strip layout and their stacking above the slider indicator.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab>
   <div class="tab-group">
     <mds-tab-item label="Uno" selected></mds-tab-item>
@@ -217,7 +236,7 @@ The parent queries direct children with `querySelectorAll('mds-tab-item')`; a wr
   <div slot="content">...</div>
 </mds-tab>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab>
   <mds-tab-item label="Uno" selected></mds-tab-item>
   <mds-tab-item label="Due"></mds-tab-item>
@@ -228,13 +247,13 @@ The parent queries direct children with `querySelectorAll('mds-tab-item')`; a wr
 
 #### Do Not Set `selected="false"` to Deselect
 
-`selected` is a boolean attribute; the string `"false"` is truthy in HTML and will keep the item selected. Remove the attribute entirely to deselect.
+`selected` is a boolean attribute; `selected="false"` leaves a `selected` attribute on the element that contradicts the state, so attribute selectors and checks still read the item as selected. Remove the attribute entirely to deselect.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-item label="Archivio" selected="false"></mds-tab-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-item label="Archivio"></mds-tab-item>
 ```
 
@@ -243,13 +262,13 @@ The parent queries direct children with `querySelectorAll('mds-tab-item')`; a wr
 `<mds-tab-item>` has no documented default slot for content; it is a button-like leaf element. Use the `icon` prop to add a glyph.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab-item>
   <mds-icon name="mi/baseline/settings"></mds-icon>
   Impostazioni
 </mds-tab-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab-item label="Impostazioni" icon="mi/baseline/settings"></mds-tab-item>
 ```
 
@@ -258,7 +277,7 @@ The parent queries direct children with `querySelectorAll('mds-tab-item')`; a wr
 The parent pushes its `size` down to every child item on load and whenever `size` changes. Setting `size` on individual items is overwritten and creates confusion about the source of truth.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-tab size="sm">
   <mds-tab-item label="Uno" size="lg" selected></mds-tab-item>
   <mds-tab-item label="Due" size="sm"></mds-tab-item>
@@ -266,7 +285,7 @@ The parent pushes its `size` down to every child item on load and whenever `size
   <div slot="content">...</div>
 </mds-tab>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-tab size="sm">
   <mds-tab-item label="Uno" selected></mds-tab-item>
   <mds-tab-item label="Due"></mds-tab-item>
@@ -280,33 +299,33 @@ The parent pushes its `size` down to every child item on load and whenever `size
 The only supported customization surface is the `--mds-tab-item-*` CSS custom properties and the documented `button` shadow part. Targeting internals via `::part(button) >>> .button` or undocumented selectors couples your code to the implementation.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-tab-item::part(button) >>> .text {
   font-weight: 900;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-tab-item {
-  --mds-tab-item-selected-background: rgb(var(--variant-primary-02));
+  --mds-tab-item-selected-background: rgb(var(--magma-accent-surface));
 }
 mds-tab-item::part(button) {
-  border-radius: var(--radius-lg);
+  border-radius: var(--magma-radius-lg);
 }
 ```
 
 #### Do Not Mix Content Panels and Tab Items Without a 1-to-1 Pairing
 
-The parent resolves each content panel by index, matching it to the `mds-tab-item` at the same position. A mismatch (more or fewer `slot="content"` elements than tab items) silently shows the wrong panel.
+The parent resolves each content panel by index, matching it to the `mds-tab-item` at the same position. A mismatch breaks it: with fewer `slot="content"` elements than tab items a tab shows no panel, with more the component throws while wiring them and no panel gets hidden. No panel at all is fine: the strip then only reports the selection, or navigates when the items have `href`.
 
 ```html
-<!-- 🚫 INCORRECT - two items, one content panel -->
+<!-- INCORRECT - two items, one content panel -->
 <mds-tab>
   <mds-tab-item label="Uno" selected></mds-tab-item>
   <mds-tab-item label="Due"></mds-tab-item>
   <div slot="content"><p>Contenuto unico.</p></div>
 </mds-tab>
 
-<!-- ✅ CORRECT - one content panel per tab item -->
+<!-- CORRECT - one content panel per tab item -->
 <mds-tab>
   <mds-tab-item label="Uno" selected></mds-tab-item>
   <mds-tab-item label="Due"></mds-tab-item>
@@ -315,25 +334,46 @@ The parent resolves each content panel by index, matching it to the `mds-tab-ite
 </mds-tab>
 ```
 
+#### Do Not Mix a Link Item with Panel Tabs
+
+A strip is either a `tablist` of tabs, each controlling a panel, or a navigation of links (`href` on every item): a link inside a tablist is not a child the role allows. Keep the link out of the strip, as an `<mds-button>` next to it (see [`mds-tab`](../../mds-tab)).
+
+```html
+<!-- INCORRECT -->
+<mds-tab>
+  <mds-tab-item label="Locale" selected></mds-tab-item>
+  <mds-tab-item label="Portale" href="https://portale.example.com"></mds-tab-item>
+  <div slot="content"><p>Vista locale.</p></div>
+  <div slot="content"></div>
+</mds-tab>
+
+<!-- CORRECT -->
+<mds-tab>
+  <mds-tab-item label="Locale" selected></mds-tab-item>
+  <div slot="content"><p>Vista locale.</p></div>
+</mds-tab>
+<mds-button label="Portale" href="https://portale.example.com" target="blank" tone="text"></mds-button>
+```
+
 
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                                                                                               | Type                                                  | Default     |
-| -------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------- |
-| `animation`    | `animation`     | Reflects the parent tab selection animation (set by mds-tab); drives the slide-variant styling without :host-context                                      | `"fade" \| "slide" \| undefined`                      | `undefined` |
-| `await`        | `await`         | Specifies if the button is awaiting for a response                                                                                                        | `boolean`                                             | `undefined` |
-| `direction`    | `direction`     | Reflects the parent tab layout direction (set by mds-tab); drives the vertical layout without :host-context                                               | `"horizontal" \| "vertical" \| undefined`             | `undefined` |
-| `disabled`     | `disabled`      | Specifies if the tab item is disabled or not                                                                                                              | `boolean \| undefined`                                | `undefined` |
-| `expanded`     | `expanded`      | Specifies whether the popup the tab item opens is showing. Left unset the tab says nothing about a popup, which is what a tab that opens none has to say. | `boolean \| undefined`                                | `undefined` |
-| `href`         | `href`          | Specifies the URL target of the button                                                                                                                    | `string \| undefined`                                 | `undefined` |
-| `icon`         | `icon`          | The icon displayed in the tab item                                                                                                                        | `string \| undefined`                                 | `undefined` |
-| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item                                                                                   | `"left" \| "right" \| undefined`                      | `'left'`    |
-| `label`        | `label`         | The label of the tab item                                                                                                                                 | `string \| undefined`                                 | `undefined` |
-| `selected`     | `selected`      | Specifies if the tab item is selected or not                                                                                                              | `boolean \| undefined`                                | `undefined` |
-| `size`         | `size`          | Specifies the size for the tab item                                                                                                                       | `"lg" \| "md" \| "sm" \| "xl" \| undefined`           | `'md'`      |
-| `type`         | `type`          | The type of the tab item element                                                                                                                          | `"a" \| "button" \| "reset" \| "submit" \| undefined` | `'submit'`  |
-| `value`        | `value`         | Specifies an optional value to get from mdsTabItemSelect event                                                                                            | `string \| undefined`                                 | `undefined` |
+| Property       | Attribute       | Description                                                                                                                                                                                                                                                                                                                                                                                              | Type                                                  | Default     |
+| -------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------- |
+| `animation`    | `animation`     | Reflects the parent tab selection animation (set by mds-tab); drives the slide-variant styling without :host-context                                                                                                                                                                                                                                                                                     | `"fade" \| "slide" \| undefined`                      | `undefined` |
+| `await`        | `await`         | Specifies if the button is awaiting for a response                                                                                                                                                                                                                                                                                                                                                       | `boolean`                                             | `undefined` |
+| `direction`    | `direction`     | Reflects the parent tab layout direction (set by mds-tab); drives the vertical layout without :host-context                                                                                                                                                                                                                                                                                              | `"horizontal" \| "vertical" \| undefined`             | `undefined` |
+| `disabled`     | `disabled`      | Specifies if the tab item is disabled or not                                                                                                                                                                                                                                                                                                                                                             | `boolean \| undefined`                                | `undefined` |
+| `expanded`     | `expanded`      | Specifies whether the popup the tab item opens is showing. Left unset the tab says nothing about a popup, which is what a tab that opens none has to say.                                                                                                                                                                                                                                                | `boolean \| undefined`                                | `undefined` |
+| `href`         | `href`          | Turns the tab into a link to this URL: the item renders a real anchor and is announced as a link, not as a tab, with `aria-current` when selected. A client-side router registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`) takes the plain clicks over; without one, a click listener on the host can still cancel the navigation with `preventDefault()`. | `string \| undefined`                                 | `undefined` |
+| `icon`         | `icon`          | The icon displayed in the tab item                                                                                                                                                                                                                                                                                                                                                                       | `string \| undefined`                                 | `undefined` |
+| `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the tab item                                                                                                                                                                                                                                                                                                                                  | `"left" \| "right" \| undefined`                      | `'left'`    |
+| `label`        | `label`         | The label of the tab item                                                                                                                                                                                                                                                                                                                                                                                | `string \| undefined`                                 | `undefined` |
+| `selected`     | `selected`      | Specifies if the tab item is selected or not                                                                                                                                                                                                                                                                                                                                                             | `boolean \| undefined`                                | `undefined` |
+| `size`         | `size`          | Specifies the size for the tab item                                                                                                                                                                                                                                                                                                                                                                      | `"lg" \| "md" \| "sm" \| "xl" \| undefined`           | `'md'`      |
+| `type`         | `type`          | The type of the tab item element                                                                                                                                                                                                                                                                                                                                                                         | `"a" \| "button" \| "reset" \| "submit" \| undefined` | `'submit'`  |
+| `value`        | `value`         | Specifies an optional value to get from mdsTabItemSelect event                                                                                                                                                                                                                                                                                                                                           | `string \| undefined`                                 | `undefined` |
 
 
 ## Events
@@ -346,9 +386,9 @@ The parent resolves each content panel by index, matching it to the `mds-tab-ite
 
 ## Shadow Parts
 
-| Part       | Description |
-| ---------- | ----------- |
-| `"button"` |             |
+| Part       | Description                 |
+| ---------- | --------------------------- |
+| `"button"` | The `mds-button` of the tab |
 
 
 ## CSS Custom Properties

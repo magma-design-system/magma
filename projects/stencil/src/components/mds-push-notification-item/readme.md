@@ -14,12 +14,12 @@ The `<mds-push-notification-item>` web component is a single notification card r
 #### Semantic Behavior
 
 - **Compound child only**: It must be placed as a direct default-slot child of `<mds-push-notification>`; it is not used standalone or mixed with other child types, since the parent animates intro/outro and manages stacking.
-- **Dismiss reports up, removal happens in the parent**: Clicking the built-in close button emits the bubbling `mdsPushNotificationItemClose` event; the parent runs the outro animation and removes the item. The item never removes itself.
+- **Dismiss reports up, removal happens in the parent**: Clicking the built-in close button emits the bubbling `mdsPushNotificationItemClose` event, with the `id` of the item as `detail.id`; the parent runs the outro animation and removes the item. The item never removes itself.
 - **Parent-driven visibility lifecycle**: When the last item closes, the parent auto-hides the whole notification area.
 - **Timestamp rendering**: With `dateFormat="timeago"` `datetime` shows a localized relative time ("2 minutes ago"); otherwise the value is treated as a date-format string for a static date.
 - **Localization**: The relative-time strings and the dismiss button title are localized (el/en/es/it).
-- **Conditional avatar vs. picture**: An `<mds-avatar>` is rendered when `icon` is set or `preview="avatar"`; when `src` is set and `preview` is not `avatar`, a full-width `<mds-img>` preview is rendered instead.
-- **Slot detection**: The `badge` and `action` named slots are only wired into the layout when matching slotted children exist, so empty slots add no markup.
+- **Conditional avatar vs. picture**: An `<mds-avatar>` is rendered when `icon` is set or `preview="avatar"`; when `src` is set and `preview` is not `avatar`, an `<mds-img>` picture is rendered (next to the avatar when `icon` is also set).
+- **Slot detection**: The `badge` and `action` named slot wrappers stay hidden (`display: none`) until matching slotted children exist, so empty slots take no space.
 
 #### Properties & Visual Configurations
 
@@ -28,12 +28,12 @@ The `<mds-push-notification-item>` web component is a single notification card r
 - **`initials`**: Provided as the avatar fallback when no image is available; it overrides `tone`/`variant` styling so the user stays visually recognizable.
 - **`dateFormat`**: Use `timeago` for a live relative timestamp, or any date-format token string for a fixed display date.
 
-For `tone` and `variant`, this component consumes the shared color ladders defined in [`projects/stencil/SPEC.md`](../../../../SPEC.md#tone-and-variant-system); the values are forwarded to the underlying `<mds-avatar>` and follow the avatar tone/variant set rather than adding component-specific values.
+For `tone` and `variant`, this component consumes the shared color ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); the values are forwarded to the underlying `<mds-avatar>` and follow the avatar tone/variant set rather than adding component-specific values.
 
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-push-notification-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-push-notification-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Message Notification
 
@@ -126,7 +126,7 @@ Slot an `<mds-badge>` into `slot="badge"` to show a category or type label above
     datetime="2024-06-01T10:20:00"
     variant="primary"
   >
-    <mds-badge slot="badge" variant="amaranth" tone="weak">pdf</mds-badge>
+    <mds-badge slot="badge" variant="amaranth" tone="weak" label="pdf"></mds-badge>
     <mds-button slot="action" tone="outline" size="sm" label="Scarica"></mds-button>
   </mds-push-notification-item>
 </mds-push-notification>
@@ -201,14 +201,13 @@ Use any `dayjs`-compatible format string as `date-format` to show a static date 
 
 #### Listening to the Dismiss Event
 
-Listen to `mdsPushNotificationItemClose` to handle cleanup when the user dismisses the item. The parent `<mds-push-notification>` does this automatically, but you can also add your own logic (e.g. marking the notification read in the server).
+Listen to `mdsPushNotificationItemClose` to handle cleanup when the user dismisses the item. The parent `<mds-push-notification>` does this automatically, but you can also add your own logic (e.g. marking the notification read in the server). The event carries the `id` of the item in `detail.id`.
 
 ```javascript
 document
   .querySelector('mds-push-notification-item')
   .addEventListener('mdsPushNotificationItemClose', (event) => {
-    const { id } = event.detail;
-    markNotificationRead(id);
+    markNotificationRead(event.detail.id);
   });
 ```
 
@@ -221,29 +220,29 @@ Customize the item only through its documented `--mds-push-notification-item-*` 
   --mds-push-notification-item-shadow: var(--shadow-md-sharp);
   --mds-push-notification-item-message-line-clamp: 3;
   --mds-push-notification-item-subject-line-clamp: 2;
-  --mds-push-notification-item-icon-background-color: rgb(var(--variant-primary-03));
-  --mds-push-notification-item-icon-color: rgb(var(--tone-neutral));
+  --mds-push-notification-item-icon-background-color: rgb(var(--magma-accent-emphasis));
+  --mds-push-notification-item-icon-color: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-push-notification-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-push-notification-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Use the Item Outside Its Parent
 
 `<mds-push-notification-item>` is a compound child that must live inside [`<mds-push-notification>`](../../mds-push-notification). The parent drives entry / exit animation, stacking, and auto-hide when the last item closes.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-push-notification-item
   icon="mi/baseline/email"
   subject="Nuovo messaggio"
   message="Hai ricevuto un nuovo messaggio"
 ></mds-push-notification-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-push-notification>
   <mds-push-notification-item
     icon="mi/baseline/email"
@@ -258,12 +257,12 @@ Common incorrect uses of `<mds-push-notification-item>`. Each entry pairs the wr
 `<mds-push-notification-item>` has no default slot. All text content goes through the `message` and `subject` props; interactive content goes into the named `action` or `badge` slots.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-push-notification-item>
   Hai un nuovo messaggio
 </mds-push-notification-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-push-notification-item
   message="Hai un nuovo messaggio"
   subject="Posta in arrivo"
@@ -275,12 +274,12 @@ Common incorrect uses of `<mds-push-notification-item>`. Each entry pairs the wr
 The `action` slot is designed for `<mds-button>` elements at `size="sm"`. Slotting raw `<button>` or large components breaks layout alignment and loses Magma theming and keyboard semantics.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-push-notification-item subject="Richiesta" message="Approva la richiesta di accesso">
   <button slot="action" class="btn">Approva</button>
 </mds-push-notification-item>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-push-notification-item subject="Richiesta" message="Approva la richiesta di accesso">
   <mds-button slot="action" variant="success" tone="weak" size="sm" label="Approva"></mds-button>
 </mds-push-notification-item>
@@ -288,10 +287,10 @@ The `action` slot is designed for `<mds-button>` elements at `size="sm"`. Slotti
 
 #### Do Not Mix `icon` and `src` With `preview="image"`
 
-When `icon` is set, the component always renders an `<mds-avatar>` for the icon. If `src` is also set and `preview` is not `"avatar"`, a full-width `<mds-img>` is rendered as well - producing two media areas side by side, which is almost never the intended layout. Pick one visual mode per notification.
+When `icon` is set, the component always renders an `<mds-avatar>` for the icon. If `src` is also set and `preview` is not `"avatar"`, an `<mds-img>` picture is rendered as well - producing two media areas side by side, which is almost never the intended layout. Pick one visual mode per notification.
 
 ```html
-<!-- 🚫 INCORRECT - both an icon avatar and a full-width image preview render simultaneously -->
+<!-- INCORRECT - both an icon avatar and an image preview render simultaneously -->
 <mds-push-notification-item
   icon="mi/baseline/photo"
   src="./cover.jpg"
@@ -300,14 +299,14 @@ When `icon` is set, the component always renders an `<mds-avatar>` for the icon.
   message="La copertina e' stata aggiornata"
 ></mds-push-notification-item>
 
-<!-- ✅ CORRECT - icon only, no image -->
+<!-- CORRECT - icon only, no image -->
 <mds-push-notification-item
   icon="mi/baseline/photo"
   subject="Nuova foto"
   message="La copertina e' stata aggiornata"
 ></mds-push-notification-item>
 
-<!-- ✅ CORRECT - image preview only, no icon -->
+<!-- CORRECT - image preview only, no icon -->
 <mds-push-notification-item
   src="./cover.jpg"
   subject="Nuova foto"
@@ -317,22 +316,22 @@ When `icon` is set, the component always renders an `<mds-avatar>` for the icon.
 
 #### Do Not Listen for the Native `close` DOM Event
 
-The component emits `mdsPushNotificationItemClose`, not a native `close`. Listening for `close` or `click` on the dismiss button will not fire reliably because the button is inside shadow DOM.
+The component emits `mdsPushNotificationItemClose`, not a native `close`. Listening for `close` never fires, and the `click` of the dismiss button does not leave the component (its handler calls `stopPropagation()`).
 
 ```javascript
-// 🚫 INCORRECT
+// INCORRECT
 element.addEventListener('close', handler);
 
-// ✅ CORRECT
+// CORRECT
 element.addEventListener('mdsPushNotificationItemClose', handler);
 ```
 
 #### Customize via Documented Vars, Not Internal Selectors
 
-The supported customization surface is `--mds-push-notification-item-*` CSS custom properties and documented shadow parts (`actions`, `content`, `picture`). Targeting shadow-DOM internals via `::part()` on undocumented parts or via `>>>` will break on minor releases.
+The supported customization surface is `--mds-push-notification-item-*` CSS custom properties and documented shadow parts (`actions`, `avatar`, `content`, `picture`). Targeting shadow-DOM internals via `::part()` on undocumented parts or via `>>>` will break on minor releases.
 
 ```css
-/* 🚫 INCORRECT */
+/* INCORRECT */
 mds-push-notification-item::part(header) {
   font-weight: bold;
 }
@@ -340,13 +339,13 @@ mds-push-notification-item >>> .message {
   color: red;
 }
 
-/* ✅ CORRECT */
+/* CORRECT */
 mds-push-notification-item {
   --mds-push-notification-item-message-line-clamp: 3;
   --mds-push-notification-item-shadow: var(--shadow-md-sharp);
 }
 mds-push-notification-item::part(content) {
-  gap: var(--spacing-200);
+  gap: calc(var(--spacing) * 200);
 }
 ```
 
@@ -356,7 +355,7 @@ mds-push-notification-item::part(content) {
 
 | Property     | Attribute     | Description                                                                                                                                          | Type                                                                                                                                                                                                         | Default                          |
 | ------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- |
-| `dateFormat` | `date-format` | Specifies if the notification date format shows time passed or displays date as a static string                                                      | `string`                                                                                                                                                                                                     | `'timeago'`                      |
+| `dateFormat` | `date-format` | Specifies how the notification date is written: `timeago` shows the time passed, any other value is the Day.js format of a static date               | `string`                                                                                                                                                                                                     | `'timeago'`                      |
 | `datetime`   | `datetime`    | Specifies the notification date based on [standard ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html).                                | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
 | `deletable`  | `deletable`   | Specifies if the component is dismissable; when set, a dismiss button is shown.                                                                      | `boolean \| undefined`                                                                                                                                                                                       | `false`                          |
 | `icon`       | `icon`        | Specifies the icon to be displayed                                                                                                                   | `string \| undefined`                                                                                                                                                                                        | `undefined`                      |
@@ -386,13 +385,12 @@ mds-push-notification-item::part(content) {
 
 ## Shadow Parts
 
-| Part        | Description                                |
-| ----------- | ------------------------------------------ |
-| `"actions"` | The actions wrapper                        |
-| `"avatar"`  |                                            |
-| `"content"` | The content wrapper of the message         |
-| `"icon"`    | The icon set by `icon` attribute           |
-| `"picture"` | The picture image added by `src` attribute |
+| Part        | Description                                                                                                     |
+| ----------- | --------------------------------------------------------------------------------------------------------------- |
+| `"actions"` | The actions wrapper                                                                                             |
+| `"avatar"`  | The `mds-avatar` that shows the `icon`, the `initials` or, with `preview` set to `avatar`, the picture of `src` |
+| `"content"` | The content wrapper of the message                                                                              |
+| `"picture"` | The picture image added by `src` attribute                                                                      |
 
 
 ## CSS Custom Properties

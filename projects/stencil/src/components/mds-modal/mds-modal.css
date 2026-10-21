@@ -6,7 +6,8 @@
  * @prop --mds-modal-overlay-color: Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
  * @prop --mds-modal-overlay-opacity: Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.
  * @prop --mds-modal-transition-duration: Sets the `transition-duration` of the modal elements
- * @prop --mds-modal-transition-timing-funciton: Sets the `transition-timing-funciton` of the modal elements
+ * @prop --mds-modal-transition-timing-function: Sets the `transition-timing-function` of the modal elements
+ * @prop --mds-modal-transition-timing-funciton: Deprecated, misspelled name of `--mds-modal-transition-timing-function`; read only when that one is not set
  * @prop --mds-modal-window-background: Set the background color of the window
  * @prop --mds-modal-window-distance: Set the distance between the modal window and the screen bounds
  * @prop --mds-modal-window-overflow: Set the overflow of the window
@@ -24,7 +25,7 @@
   syntax: "<box-shadow>";
 }
 
-@property --mds-modal-transition-timing-funciton {
+@property --mds-modal-transition-timing-function {
   inherits: false;
   initial-value: var(--ease-in-out-quint);
   syntax: "<box-shadow>";
@@ -37,7 +38,10 @@
   --mds-modal-overlay-color: var(--magma-overlay-color);
   --mds-modal-overlay-opacity: var(--magma-overlay-opacity);
   --mds-modal-transition-duration: 500ms;
-  --mds-modal-transition-timing-funciton: var(--ease-in-out-quint);
+  --mds-modal-transition-timing-function: var(
+    --mds-modal-transition-timing-funciton,
+    var(--ease-in-out-quint)
+  );
   --mds-modal-window-background: rgb(var(--magma-surface-overlay));
   --mds-modal-window-distance: 0;
   --mds-modal-window-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
@@ -90,16 +94,21 @@
   max-width: none;
 
   /* Clip the window while it sits off-screen at translate(100%): without this
-   * the dialog (a scroll container) shows a transient scrollbar during the
-   * slide, shifting the layout - the "jump" seen with tall content. */
-  overflow: hidden;
+   * the dialog shows a transient scrollbar during the slide, shifting the
+   * layout - the "jump" seen with tall content. `clip`, not `hidden`: hidden
+   * still makes the dialog a scroll container, and the focus that showModal()
+   * and show() move to the first focusable element of the window scrolled it
+   * into view, by exactly the starting transform, so the window began already
+   * in its place and never slid in (#1019). clip makes no scroll container:
+   * nothing can scroll the dialog. */
+  overflow: clip;
   padding: 0;
   perspective: 600px;
   position: fixed;
   transition-behavior: allow-discrete;
   transition-duration: var(--private-modal-transition-duration);
   transition-property: overlay, display;
-  transition-timing-function: var(--mds-modal-transition-timing-funciton);
+  transition-timing-function: var(--mds-modal-transition-timing-function);
   width: auto;
   z-index: var(--mds-modal-z-index, 1000);
 }
@@ -119,7 +128,7 @@
   transition-behavior: allow-discrete;
   transition-duration: var(--private-modal-transition-duration);
   transition-property: background-color, overlay, display;
-  transition-timing-function: var(--mds-modal-transition-timing-funciton);
+  transition-timing-function: var(--mds-modal-transition-timing-function);
 }
 
 /* hide-backdrop: keep the page behind interactive (legacy click-through). */

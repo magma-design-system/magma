@@ -27,6 +27,11 @@ export default {
       type: { name: 'boolean' },
       description: 'Enables the linked dual-calendar range picker behavior',
     },
+    disabled: {
+      type: { name: 'boolean' },
+      description:
+        'Disables the range, its calendar and the two fields: the dates are left out of the form',
+    },
   },
 };
 

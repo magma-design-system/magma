@@ -1,4 +1,4 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
 
 let mdsInput: HTMLMdsInputElement;
@@ -210,6 +210,34 @@ describe('password mask', () => {
     expect(maskStyle.borderBottomRightRadius).toBe('0px');
   });
 
+  // #913: the radius of a field is capped at a part of its height like mds-button's; a
+  // textarea is taller, nobody clamps it
+  describe('the radius', () => {
+    const radiusOf = (input: Element): string => getComputedStyle(input).borderTopLeftRadius;
+
+    it('stops at half the height of the field, what the browser clamps to', async () => {
+      const { root } = await render('<mds-input size="md"></mds-input>');
+
+      expect(radiusOf(root)).toBe('18px');
+    });
+
+    it('takes the part of the height that --magma-corner-cap gives, except on a textarea', async () => {
+      const { root } = await render(
+        `<div style="--magma-corner-cap: 0.25">
+           <mds-input size="sm"></mds-input>
+           <mds-input></mds-input>
+           <mds-input type="textarea"></mds-input>
+         </div>`,
+      );
+
+      expect(Array.from(root.querySelectorAll('mds-input')).map(radiusOf)).toEqual([
+        '7px',
+        '12px',
+        '36px',
+      ]);
+    });
+  });
+
   describe('accessible name', () => {
     it('names its native control after the aria-label of the host', async () => {
       await setup('<mds-input aria-label="Email"></mds-input><button></button>');
@@ -241,4 +269,570 @@ describe('required', () => {
     const tip = input.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
     expect(tip).toEqualAttribute('variant', 'required');
   });
+});
+
+// The React wrappers under SSR set the props on an element that has already loaded (#786)
+describe('rules set after load', () => {
+  let button: HTMLElement;
+
+  const requiredTip = (): Element | null =>
+    mdsInput.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
+
+  beforeEach(async () => {
+    button = await setup(`
+      <mds-input></mds-input>
+      <button></button>
+    `);
+  });
+
+  it('applies required: red tip, validator, error variant on blur', async () => {
+    mdsInput.required = true;
+    await waitForChanges();
+
+    expect(requiredTip()).toEqualAttribute('variant', 'required');
+    expect(await mdsInput.hasValidator()).toBe(true);
+
+    await userEvent.click(mdsInput);
+    await blur(button);
+
+    expect(mdsInput).toEqualAttribute('variant', 'error');
+    expect(await mdsInput.getErrors()).toEqual({ required: '' });
+
+    await type(mdsInput, 'abc');
+    await blur(button);
+
+    expect(mdsInput).toEqualAttribute('variant', 'success');
+    expect(requiredTip()).toEqualAttribute('variant', 'required-success');
+  });
+
+  it('goes back to the pristine look when required is removed from a field in error', async () => {
+    mdsInput.required = true;
+    await waitForChanges();
+    await userEvent.click(mdsInput);
+    await blur(button);
+    expect(mdsInput).toEqualAttribute('variant', 'error');
+
+    mdsInput.required = false;
+    await waitForChanges();
+
+    expect(mdsInput).toEqualAttribute('variant', 'primary');
+    expect(requiredTip()).toBeNull();
+    expect(await mdsInput.hasValidator()).toBe(false);
+  });
+
+  it('keeps the custom validators when a rule changes', async () => {
+    const upperCase = (value: string) =>
+      value.toUpperCase() === value ? null : { err: 'lower case' };
+    await mdsInput.addValidator(upperCase);
+
+    mdsInput.required = true;
+    await waitForChanges();
+
+    expect(await mdsInput.hasValidator(upperCase)).toBe(true);
+
+    await type(mdsInput, 'abc');
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toEqual({ err: 'lower case' });
+  });
+
+  it('replaces a rule instead of stacking it', async () => {
+    mdsInput.type = 'number';
+    mdsInput.max = '10';
+    await waitForChanges();
+    mdsInput.max = '100';
+    await waitForChanges();
+
+    await type(mdsInput, '50');
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toBeNull();
+    expect(mdsInput).toEqualAttribute('variant', 'success');
+  });
+
+  it('applies the validators of a type set after load', async () => {
+    mdsInput.type = 'isbn';
+    await waitForChanges();
+
+    await type(mdsInput, 'abcdefghi');
+    await blur(button);
+
+    expect(mdsInput).toEqualAttribute('variant', 'error');
+    expect(await mdsInput.getErrors()).not.toBeNull();
+  });
+});
+
+describe('min and max', () => {
+  it('checks min against its own value, not the one of max', async () => {
+    const button = await setup(`
+      <mds-input type="number" min="5" max="10"></mds-input>
+      <button></button>
+    `);
+
+    await type(mdsInput, '7');
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toBeNull();
+    expect(mdsInput).toEqualAttribute('variant', 'success');
+  });
+
+  it('rejects a value under min', async () => {
+    const button = await setup(`
+      <mds-input type="number" min="5" max="10"></mds-input>
+      <button></button>
+    `);
+
+    await type(mdsInput, '3');
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toEqual({ min: 'valore minimo 5' });
+    expect(mdsInput).toEqualAttribute('variant', 'error');
+  });
+
+  it('takes 0 as a bound', async () => {
+    const button = await setup(`
+      <mds-input type="number" min="0"></mds-input>
+      <button></button>
+    `);
+
+    await type(mdsInput, '-2');
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toEqual({ min: 'valore minimo 0' });
+  });
+});
+
+// Like a native control, an invalid field stops the submit of its form (#786)
+describe('form validity', () => {
+  let form: HTMLFormElement;
+  let submitted: boolean;
+
+  const setupForm = async (html: string): Promise<void> => {
+    const result = await render<HTMLFormElement>(`<form>${html}<button>Send</button></form>`);
+    form = result.root;
+    waitForChanges = result.waitForChanges;
+    mdsInput = form.querySelector('mds-input')!;
+    submitted = false;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      submitted = true;
+    });
+  };
+
+  it('stops the submit while a required field is empty', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+
+    expect(form.checkValidity()).toBe(false);
+    expect(mdsInput.matches(':invalid')).toBe(true);
+
+    form.requestSubmit();
+
+    expect(submitted).toBe(false);
+  });
+
+  it('submits once the required field is filled', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+
+    await type(mdsInput, 'abc');
+
+    expect(form.checkValidity()).toBe(true);
+    form.requestSubmit();
+    expect(submitted).toBe(true);
+  });
+
+  it('shows the error on the field a stopped submit points at', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+
+    form.requestSubmit();
+    await waitForChanges();
+
+    expect(mdsInput).toEqualAttribute('variant', 'error');
+  });
+
+  it('focuses the native input when a stopped submit points at the field', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+
+    form.requestSubmit();
+
+    expect(document.activeElement).toBe(mdsInput);
+    expect(mdsInput.shadowRoot!.activeElement).toBe(mdsInput.shadowRoot!.querySelector('input'));
+  });
+
+  it('follows a required set after load', async () => {
+    await setupForm('<mds-input name="email"></mds-input>');
+    expect(form.checkValidity()).toBe(true);
+
+    mdsInput.required = true;
+
+    expect(form.checkValidity()).toBe(false);
+  });
+
+  it('follows a value set by code, without waiting for a render', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+
+    mdsInput.value = 'abc';
+
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('stops the submit for the other rules too', async () => {
+    await setupForm('<mds-input name="n" type="number" max="10" value="50"></mds-input>');
+
+    expect(form.checkValidity()).toBe(false);
+
+    mdsInput.value = '5';
+
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('stops the submit for a custom validator, and no more once it is removed', async () => {
+    await setupForm('<mds-input name="code" value="abc"></mds-input>');
+    const upperCase = (value: string) =>
+      value.toUpperCase() === value ? null : { err: 'lower case' };
+
+    await mdsInput.addValidator(upperCase);
+    expect(form.checkValidity()).toBe(false);
+
+    await mdsInput.removeValidator(upperCase);
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('does not stop the submit when disabled', async () => {
+    await setupForm('<mds-input name="email" required disabled></mds-input>');
+
+    expect(form.checkValidity()).toBe(true);
+  });
+
+  it('does not stop the submit when read-only, like a native input', async () => {
+    await setupForm('<mds-input name="email" required readonly></mds-input>');
+
+    expect(form.checkValidity()).toBe(true);
+  });
+});
+
+// Like a native input, a form reset brings back the value of load (#822)
+describe('form reset', () => {
+  let form: HTMLFormElement;
+  let button: HTMLElement;
+
+  const setupForm = async (html: string): Promise<void> => {
+    const result = await render<HTMLFormElement>(
+      `<form>${html}<button type="button">Blur</button></form>`,
+    );
+    form = result.root;
+    waitForChanges = result.waitForChanges;
+    mdsInput = form.querySelector('mds-input')!;
+    button = form.querySelector('button')!;
+  };
+
+  it('brings back the value of load, in the field and in the form data', async () => {
+    await setupForm('<mds-input name="city" value="Rimini"></mds-input>');
+    await userEvent.tripleClick(mdsInput);
+    await userEvent.keyboard('Bologna');
+    expect(mdsInput.value).toBe('Bologna');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(mdsInput.value).toBe('Rimini');
+    expect(mdsInput.shadowRoot!.querySelector('input')!.value).toBe('Rimini');
+    expect(new FormData(form).get('city')).toBe('Rimini');
+  });
+
+  it('empties a field that had no value at load', async () => {
+    await setupForm('<mds-input name="city"></mds-input>');
+    await type(mdsInput, 'Bologna');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(mdsInput.value).toBe('');
+    expect(mdsInput.shadowRoot!.querySelector('input')!.value).toBe('');
+    expect(new FormData(form).get('city')).toBe('');
+  });
+
+  it('forgets the validation shown on blur', async () => {
+    await setupForm('<mds-input name="email" required></mds-input>');
+    await type(mdsInput, 'abc');
+    await blur(button);
+    expect(mdsInput).toEqualAttribute('variant', 'success');
+
+    form.reset();
+    await waitForChanges();
+
+    expect(mdsInput).toEqualAttribute('variant', 'primary');
+    // still invalid for the form: the field is required and empty again
+    expect(mdsInput.matches(':invalid')).toBe(true);
+  });
+});
+
+// Like the pattern attribute of a native input, pattern stops the submit (#822)
+describe('pattern', () => {
+  let form: HTMLFormElement;
+
+  const setupForm = async (html: string): Promise<void> => {
+    const result = await render<HTMLFormElement>(`<form>${html}</form>`);
+    form = result.root;
+    waitForChanges = result.waitForChanges;
+    mdsInput = form.querySelector('mds-input')!;
+  };
+
+  it('stops the submit while the value does not match', async () => {
+    await setupForm('<mds-input name="code" pattern="[A-Z]{3}"></mds-input>');
+
+    await type(mdsInput, 'AB');
+    expect(mdsInput.matches(':invalid')).toBe(true);
+
+    await userEvent.keyboard('C');
+    expect(mdsInput.matches(':invalid')).toBe(false);
+  });
+
+  it('leaves the pattern of the consumer on the native input', async () => {
+    await setupForm('<mds-input name="code" pattern="[A-Z]{3}"></mds-input>');
+
+    expect(mdsInput.shadowRoot!.querySelector('input')).toEqualAttribute('pattern', '[A-Z]{3}');
+  });
+
+  it('follows a pattern set after load', async () => {
+    await setupForm('<mds-input name="code" value="abc"></mds-input>');
+    expect(mdsInput.matches(':invalid')).toBe(false);
+
+    mdsInput.pattern = '[A-Z]{3}';
+    await waitForChanges();
+
+    expect(mdsInput.matches(':invalid')).toBe(true);
+  });
+
+  it('does not constrain a number, as on a native input', async () => {
+    await setupForm('<mds-input name="age" type="number" pattern="[0-9]" value="42"></mds-input>');
+
+    expect(mdsInput.matches(':invalid')).toBe(false);
+  });
+});
+
+// The event is named after keydown and typed KeyboardEvent: it carries the key (#822)
+describe('mdsInputKeydown', () => {
+  it.each(['<mds-input></mds-input>', '<mds-input type="textarea"></mds-input>'])(
+    'carries the KeyboardEvent of the key pressed in %s',
+    async (html) => {
+      await setup(html);
+      const keys: string[] = [];
+      mdsInput.addEventListener('mdsInputKeydown', (event) => keys.push(event.detail.key));
+
+      await type(mdsInput, 'a{Enter}');
+
+      expect(keys).toEqual(['a', 'Enter']);
+    },
+  );
+});
+
+describe('speech-to-text', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('keeps the value when the browser has no Speech API', async () => {
+    vi.stubGlobal('SpeechRecognition', undefined);
+    vi.stubGlobal('webkitSpeechRecognition', undefined);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await setup('<mds-input mic value="abc"></mds-input>');
+
+    mdsInput.shadowRoot!.querySelector<HTMLElement>('.mic-toggle-button')!.click();
+    await waitForChanges();
+
+    expect(mdsInput.value).toBe('abc');
+    expect(mdsInput.shadowRoot!.querySelector('.mic-toggle-button')).toHaveClass(
+      'toggle-button--error',
+    );
+  });
+
+  // the dictation wrote into a field the user cannot change
+  describe('on a field the user cannot change', () => {
+    /** A recognizer that records start / stop; the test plays the results through onresult. */
+    class FakeRecognition {
+      static last?: FakeRecognition;
+      started = false;
+      results: unknown[] = [];
+      onresult?: (event: { results: unknown[] }) => void;
+      constructor() {
+        FakeRecognition.last = this;
+      }
+      start(): void {
+        this.started = true;
+      }
+      stop(): void {
+        this.started = false;
+      }
+    }
+
+    // an event carries every result of the session so far, as a real recognizer gives them
+    const dictate = (recognition: FakeRecognition, transcript: string): void => {
+      recognition.results.push(Object.assign([{ transcript }], { isFinal: true }));
+      recognition.onresult!({ results: recognition.results });
+    };
+
+    beforeEach(() => {
+      FakeRecognition.last = undefined;
+      vi.stubGlobal('SpeechRecognition', FakeRecognition);
+    });
+
+    it.each(['disabled', 'readonly'])('does not start on a %s field', async (state) => {
+      await setup(`<mds-input mic value="abc" ${state}></mds-input>`);
+      const mic = mdsInput.shadowRoot!.querySelector<HTMLElement>('.mic-toggle-button')!;
+
+      expect(mic).toHaveAttribute('disabled');
+      mic.click();
+      await waitForChanges();
+
+      expect(FakeRecognition.last).toBeUndefined();
+      expect(mdsInput.value).toBe('abc');
+    });
+
+    it('stops when the field gets disabled while dictating', async () => {
+      await setup('<mds-input mic></mds-input>');
+      mdsInput.shadowRoot!.querySelector<HTMLElement>('.mic-toggle-button')!.click();
+      await waitForChanges();
+      const recognition = FakeRecognition.last!;
+      dictate(recognition, 'hello');
+      expect(mdsInput.value).toBe('hello');
+
+      mdsInput.disabled = true;
+      await waitForChanges();
+      dictate(recognition, ' world');
+      await waitForChanges();
+
+      expect(mdsInput.value).toBe('hello');
+      expect(recognition.started).toBe(false);
+    });
+  });
+});
+
+// the buttons inside the field looked and stayed active on a disabled field
+describe('the buttons of a disabled field', () => {
+  it.each([
+    ['number', '.counter-button'],
+    ['password', '.password-toggle-button'],
+  ])('are disabled with the field, type="%s"', async (type, selector) => {
+    await setup(`<mds-input type="${type}" value="1" disabled></mds-input>`);
+    const buttons = Array.from(mdsInput.shadowRoot!.querySelectorAll(selector));
+
+    expect(buttons.length).toBeGreaterThan(0);
+    buttons.forEach((button) => expect(button).toHaveAttribute('disabled'));
+
+    mdsInput.disabled = false;
+    await waitForChanges();
+    buttons.forEach((button) => expect(button).not.toHaveAttribute('disabled'));
+  });
+});
+
+// The formats a native type="email" and type="url" check stop the submit too (#822)
+describe('email and url format', () => {
+  it.each([
+    [
+      'email',
+      ['mario.rossi@maggioli.it', 'a@b', 'mario', 'mario@', 'a b@c.it', 'a@-b.it', 'a@b..it'],
+    ],
+    ['url', ['https://www.maggioli.it', 'mailto:a@b.it', 'www.maggioli.it', '/path', 'http://']],
+  ])('agrees with a native type="%s" on every value', async (inputType, values) => {
+    const { root: form, waitForChanges: wait } = await render<HTMLFormElement>(
+      `<form><mds-input type="${inputType}"></mds-input><input type="${inputType}"></form>`,
+    );
+    await wait();
+    const field = form.querySelector('mds-input')!;
+    const native = form.querySelector<HTMLInputElement>('input:not([part])')!;
+
+    const disagreements = values.filter((value) => {
+      field.value = value;
+      native.value = value;
+      return field.matches(':invalid') !== !native.checkValidity();
+    });
+
+    expect(disagreements).toEqual([]);
+  });
+});
+
+// The formats of the Magma types stop the submit like the native ones (#822)
+describe('piva and cc format', () => {
+  it.each([
+    ['piva', '12345678901', '12345678903'],
+    ['cc', '4111 1111 1111 1112', '4111 1111 1111 1111'],
+  ])('stops the submit of a %s that is not valid', async (inputType, invalid, valid) => {
+    const { root: form } = await render<HTMLFormElement>(
+      `<form><mds-input name="code" type="${inputType}" value="${invalid}"></mds-input></form>`,
+    );
+    const field = form.querySelector('mds-input')!;
+    expect(field.matches(':invalid')).toBe(true);
+
+    field.value = valid;
+
+    expect(field.matches(':invalid')).toBe(false);
+  });
+});
+
+// A disabled fieldset disables the form controls in it. It disabled the host, so the value was
+// left out of the form, but not the input in its shadow root, which stayed editable (#822)
+describe('in a disabled fieldset', () => {
+  it('is disabled like a native input, until the fieldset is enabled', async () => {
+    const { root, waitForChanges } = await render<HTMLFormElement>(
+      '<form><fieldset disabled><mds-input name="subject" value="Hello"></mds-input></fieldset></form>',
+    );
+    const field = root.querySelector('mds-input')!;
+    const native = () => field.shadowRoot!.querySelector('input')!;
+
+    await vi.waitFor(() => expect(native().disabled).toBe(true));
+    expect(new FormData(root).has('subject')).toBe(false);
+
+    root.querySelector('fieldset')!.disabled = false;
+    await waitForChanges();
+
+    expect(native().disabled).toBe(false);
+    expect(new FormData(root).get('subject')).toBe('Hello');
+  });
+});
+
+/** Whether the box of `inner` lies within the box of `outer`. */
+const isInside = (inner: Element, outer: Element): boolean => {
+  const a = inner.getBoundingClientRect();
+  const b = outer.getBoundingClientRect();
+  return a.top >= b.top && a.bottom <= b.bottom && a.left >= b.left && a.right <= b.right;
+};
+
+describe('size', () => {
+  // one height for every field, 48px, where mds-button has sm 28px, md 36px and lg 48px: a
+  // field next to a default button was 12px taller, and dense layouts had no smaller field
+  it.each([
+    { size: undefined, height: 48 },
+    { size: 'lg', height: 48 },
+    { size: 'md', height: 36 },
+    { size: 'sm', height: 28 },
+  ])('is $height px tall with the size $size', async ({ size, height }) => {
+    const { root } = await render(`<mds-input${size ? ` size="${size}"` : ''}></mds-input>`);
+
+    expect(root.getBoundingClientRect().height).toBe(height);
+  });
+
+  it.each(['md', 'sm'])('keeps the password toggle inside a %s field', async (size) => {
+    const { root } = await render(
+      `<mds-input size="${size}" type="password" value="x"></mds-input>`,
+    );
+    const toggle = root.shadowRoot!.querySelector('.password-toggle-button')!;
+
+    expect(toggle).toEqualAttribute('size', 'sm');
+    expect(isInside(toggle, root)).toBe(true);
+  });
+
+  it.each(['md', 'sm'])(
+    'makes the side controls of a %s number as tall as the field',
+    async (size) => {
+      const { root } = await render(
+        `<mds-input size="${size}" type="number" controls-layout="horizontal" value="3"></mds-input>`,
+      );
+      const controls = root.shadowRoot!.querySelectorAll('.counter-button--horizontal');
+
+      expect(controls).toHaveLength(2);
+      controls.forEach((control) =>
+        expect(control.getBoundingClientRect().height).toBe(root.getBoundingClientRect().height),
+      );
+    },
+  );
 });

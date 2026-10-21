@@ -13,14 +13,15 @@ The `<mds-pref>` web component is the accessibility-preferences panel of the Mag
 
 #### Semantic Behavior
 
-- **Compound parent**: Expects `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-mode`, and/or `mds-pref-language` children in its default slot; it owns no preference UI of its own beyond coordination.
-- **Size propagation**: Changing `size` cascades the value down to every nested `mds-pref-*` child, keeping the whole panel on one tab size.
-- **Reload notice**: Listens for the `mdsPrefChange` event from children and, when the changed preference cannot apply live (`consumption` or `language`), reveals an inline caption prompting the user to refresh the page.
+- **Compound parent**: Expects `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-mode`, `mds-pref-theme` and/or `mds-pref-language` children in its default slot; it owns no preference UI of its own beyond coordination (a scheme-constrained `mds-pref-theme` locks the matching `mds-pref-mode` item).
+- **Size propagation**: `size` cascades down to every nested `mds-pref-*` child, on load, on every change and to the children added later; without a `size` on the panel each child keeps its own.
+- **Reload notice**: The panel shows an inline caption prompting the user to refresh the page when a preference that cannot apply live (`consumption` or `language`) changes after load. A `controller` panel, which is hidden, shows none.
+- **Document flag**: While at least one `<mds-pref>` is on the page, `<html>` carries `data-magma-pref`, which turns off the styles' fallback to the OS preferences; it is removed only when the last instance leaves the page, so a settings page that unmounts its own panel leaves the app controller in charge. Moving a panel in the DOM (between a sidebar and a menu, or with a client router that keeps it across pages) keeps the flag, the reload notice and the theme lock on the mode control.
 - **Live language sync**: When a `language` change is emitted, the panel re-resolves its own locale so the reload notice is shown in the newly selected language.
 
 #### Properties & Visual Configurations
 
-`size` is one of the shared tab sizes and is forwarded to children rather than styling the host directly - set it once on the parent instead of on each child.
+`size` is one of the shared tab sizes and is forwarded to children rather than styling the host directly - set it on the parent and it reaches every child.
 
 #### Other behavioral props
 
@@ -29,18 +30,18 @@ The `<mds-pref>` web component is the accessibility-preferences panel of the Mag
 
 ### 2. Pattern
 
-Correct and idiomatic ways to use the `<mds-pref>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md) and the generic stencil rules in [`projects/stencil/SPEC.md`](../../../../SPEC.md).
+Correct and idiomatic ways to use the `<mds-pref>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Full Preferences Panel
 
-The canonical form: slot every `mds-pref-*` control directly inside `<mds-pref>`. The parent coordinates size propagation and the reload notice automatically - no extra wiring is needed.
+The canonical form: slot every `mds-pref-*` control directly inside `<mds-pref>`. The parent coordinates the theme and mode controls automatically (a scheme-constrained theme locks the matching mode item) - no extra wiring is needed.
 
 ```html
 <mds-pref>
   <mds-pref-mode></mds-pref-mode>
   <mds-pref-theme>
     <mds-pref-theme-item name="default"></mds-pref-theme-item>
-    <mds-pref-theme-item name="magma"></mds-pref-theme-item>
+    <mds-pref-theme-item name="cool"></mds-pref-theme-item>
   </mds-pref-theme>
   <mds-pref-contrast></mds-pref-contrast>
   <mds-pref-animation></mds-pref-animation>
@@ -66,7 +67,7 @@ Slot only the controls your application needs. `<mds-pref>` renders whatever chi
 
 #### Controlling Size
 
-Use the `size` prop on the parent to drive all child controls at once. Setting it on each child individually is unnecessary - the parent propagates the value automatically.
+The parent's `size` drives all child controls at once, on load and when it changes.
 
 ```html
 <!-- Compact panel for a sidebar or popover -->
@@ -112,37 +113,25 @@ Set the `controller` boolean attribute when you need the preference engine to ap
 
 #### Reload Notice Handling
 
-When a user changes `consumption` or `language`, `<mds-pref>` automatically shows an inline caption telling the user to refresh the page - no extra code needed. Verify that your page does not suppress this notice with CSS overrides.
-
-```html
-<!-- The reload notice appears automatically inside the shadow root;
-     do not try to inject your own reload banner outside the component -->
-<mds-pref>
-  <mds-pref-consumption></mds-pref-consumption>
-  <mds-pref-language>
-    <mds-pref-language-item code="it"></mds-pref-language-item>
-    <mds-pref-language-item code="en"></mds-pref-language-item>
-  </mds-pref-language>
-</mds-pref>
-```
+`<mds-pref>` shows an inline caption telling the user to refresh the page after a `consumption` or `language` change: nothing to wire. It shows for a change made after the panel loaded, so the stored choices the controls apply on load raise no notice; a `controller` panel is hidden and shows none.
 
 
 ### 3. Antipattern
 
-Common incorrect uses of `<mds-pref>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/COMPONENTS.md`](../../../../../../docs/COMPONENTS.md#system-level-anti-patterns) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-pref>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
 
 #### Do Not Place Non-Pref Children in the Default Slot
 
-The default slot accepts only `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, and `mds-pref-mode` children. Slotting other elements breaks the coordination logic and may not render.
+The default slot accepts only `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, `mds-pref-mode` and `mds-pref-theme` children. Other elements are outside the documented content: they render as extra rows of the panel and take part in no coordination.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref>
   <div class="custom-section">Tema</div>
   <mds-pref-mode></mds-pref-mode>
 </mds-pref>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref>
   <mds-pref-mode></mds-pref-mode>
 </mds-pref>
@@ -150,96 +139,60 @@ The default slot accepts only `mds-pref-animation`, `mds-pref-consumption`, `mds
 
 #### Do Not Use `mds-pref-*` Children Outside `<mds-pref>`
 
-Preference children depend on parent coordination for size propagation and the reload notice. Using them standalone removes that orchestration.
+Each control applies and stores its own preference, but the coordination between the controls of a panel lives in the parent: a scheme-constrained `mds-pref-theme` item locks the matching `mds-pref-mode` item only inside `<mds-pref>`, and only the parent forwards `size` changes. Group the controls of a panel in `<mds-pref>`.
 
 ```html
-<!-- 🚫 INCORRECT -->
-<mds-pref-contrast></mds-pref-contrast>
-<mds-pref-animation></mds-pref-animation>
+<!-- INCORRECT -->
+<mds-pref-mode></mds-pref-mode>
+<mds-pref-theme>
+  <mds-pref-theme-item name="default"></mds-pref-theme-item>
+  <mds-pref-theme-item name="cool"></mds-pref-theme-item>
+</mds-pref-theme>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref>
-  <mds-pref-contrast></mds-pref-contrast>
-  <mds-pref-animation></mds-pref-animation>
+  <mds-pref-mode></mds-pref-mode>
+  <mds-pref-theme>
+    <mds-pref-theme-item name="default"></mds-pref-theme-item>
+    <mds-pref-theme-item name="cool"></mds-pref-theme-item>
+  </mds-pref-theme>
 </mds-pref>
 ```
 
 #### Do Not Set `controller="false"` to Turn Off Controller Mode
 
-`controller` is a boolean attribute. Setting it to the string `"false"` still evaluates as truthy in HTML and keeps the panel hidden. Remove the attribute entirely to switch back to visible mode.
+`controller` is a boolean attribute, and a false boolean is an absent attribute ([`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md)). The runtime parses the string `"false"` as `false`, so the panel shows, but the attribute is still on the element until the first render, so `[controller]` attribute selectors (the one that hides the panel included) and any code that reads the attribute see it set. Remove the attribute entirely to switch back to visible mode.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <mds-pref controller="false">
   <mds-pref-mode></mds-pref-mode>
 </mds-pref>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <mds-pref>
   <mds-pref-mode></mds-pref-mode>
-</mds-pref>
-```
-
-#### Do Not Set `size` on Each Child Individually
-
-`<mds-pref>` propagates the `size` prop to all its `mds-pref-*` children automatically via `handleSizeChange`. Setting `size` on every child is redundant and will be overwritten by any later change to the parent prop.
-
-```html
-<!-- 🚫 INCORRECT -->
-<mds-pref>
-  <mds-pref-mode size="sm"></mds-pref-mode>
-  <mds-pref-contrast size="sm"></mds-pref-contrast>
-  <mds-pref-animation size="sm"></mds-pref-animation>
-</mds-pref>
-
-<!-- ✅ CORRECT -->
-<mds-pref size="sm">
-  <mds-pref-mode></mds-pref-mode>
-  <mds-pref-contrast></mds-pref-contrast>
-  <mds-pref-animation></mds-pref-animation>
 </mds-pref>
 ```
 
 #### Do Not Listen for the Native `change` Event to Detect Preference Changes
 
-Native events may not bubble out of shadow DOM as expected. Use the documented `mdsPrefChange` event emitted by each `mds-pref-*` child.
+The controls fire no native `change` event. Use the documented `mdsPrefChange` event emitted by each `mds-pref-*` child: it fires once per change, not on page load, and carries only the `preference` name in `detail`, so read the new value from the child.
 
 ```html
-<!-- 🚫 INCORRECT -->
+<!-- INCORRECT -->
 <script>
   document.querySelector('mds-pref').addEventListener('change', (e) => {
     console.log(e);
   });
 </script>
 
-<!-- ✅ CORRECT -->
+<!-- CORRECT -->
 <script>
   document.querySelector('mds-pref-mode').addEventListener('mdsPrefChange', (e) => {
     console.log(e.detail.preference);
   });
 </script>
-```
-
-#### Do Not Add a Custom Reload Banner Alongside the Panel
-
-`<mds-pref>` already renders an inline reload caption in its shadow root when `consumption` or `language` changes. Duplicating this with an external banner leads to double messaging.
-
-```html
-<!-- 🚫 INCORRECT -->
-<div id="reload-hint" hidden>Ricarica la pagina per applicare le modifiche.</div>
-<mds-pref>
-  <mds-pref-consumption></mds-pref-consumption>
-</mds-pref>
-<script>
-  document.querySelector('mds-pref-consumption').addEventListener('mdsPrefChange', () => {
-    document.getElementById('reload-hint').hidden = false;
-  });
-</script>
-
-<!-- ✅ CORRECT -->
-<mds-pref>
-  <mds-pref-consumption></mds-pref-consumption>
-</mds-pref>
 ```
 
 
@@ -254,9 +207,9 @@ Native events may not bubble out of shadow DOM as expected. Use the documented `
 
 ## Slots
 
-| Slot | Description                                                                                                               |
-| ---- | ------------------------------------------------------------------------------------------------------------------------- |
-|      | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, or `mds-pref-mode` element/s. |
+| Slot | Description                                                                                                                                |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+|      | Add `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-language`, `mds-pref-mode` or `mds-pref-theme` element/s. |
 
 
 ## Dependencies
