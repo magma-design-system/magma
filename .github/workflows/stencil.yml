@@ -245,6 +245,34 @@ jobs:
           path: projects
       - run: npx nx run stencil:check.api-snapshot
 
+  # Guards the types of the tests and the stories: Vitest strips them and the build
+  # compiles tsconfig.stencil.json, which leaves them out, so their errors showed only
+  # in the editor (#946). Runs tsc on tsconfig.json, the editor's program; it imports
+  # src/fixtures/icons.json and the svg-icons dist, so it needs the build artifact.
+  types:
+    needs: [magma]
+    if: ${{ needs.magma.outputs.changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Restore Nx cache
+        uses: actions/cache@v6
+        with:
+          path: .nx
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci --prefer-offline
+      - uses: actions/download-artifact@v8
+        with:
+          name: stencil-build
+          path: projects
+      - run: npx nx run stencil:check.types
+
   # Guards the tree-shaking of the three published packages: a consumer that
   # imports one component must not end up shipping all 115. Needs all three
   # builds, so it runs last.

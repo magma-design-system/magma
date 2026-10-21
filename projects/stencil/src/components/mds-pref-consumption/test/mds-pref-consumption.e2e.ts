@@ -81,7 +81,7 @@ describe('mds-pref-consumption', () => {
     });
 
     it('set after load, or the attribute removed, leaves the applied mode in place', async () => {
-      const { root, waitForChanges } = await render(
+      const { root, waitForChanges } = await render<HTMLMdsPrefConsumptionElement>(
         '<mds-pref-consumption mode="low"></mds-pref-consumption>',
       );
       const consoleError = vi.spyOn(console, 'error');

@@ -108,7 +108,9 @@ describe('mds-pref-mode', () => {
     });
 
     it('follows a mode written straight on <html>, without writing it back', async () => {
-      const { root, waitForChanges } = await render('<mds-pref-mode mode="light"></mds-pref-mode>');
+      const { root, waitForChanges } = await render<HTMLMdsPrefModeElement>(
+        '<mds-pref-mode mode="light"></mds-pref-mode>',
+      );
       const html = document.documentElement;
 
       html.classList.replace('pref-mode-light', 'pref-mode-dark');
@@ -162,7 +164,9 @@ describe.each([
   });
 
   it('applies the mode prop', async () => {
-    const { root } = await render('<mds-pref-mode mode="dark"></mds-pref-mode>');
+    const { root } = await render<HTMLMdsPrefModeElement>(
+      '<mds-pref-mode mode="dark"></mds-pref-mode>',
+    );
 
     expect(root.mode).toBe('dark');
     expect(html).toHaveClass('pref-mode-dark');

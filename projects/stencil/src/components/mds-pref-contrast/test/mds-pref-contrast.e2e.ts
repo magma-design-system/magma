@@ -95,7 +95,7 @@ describe('mds-pref-contrast', () => {
     });
 
     it('set after load, or the attribute removed, leaves the applied mode in place', async () => {
-      const { root, waitForChanges } = await render(
+      const { root, waitForChanges } = await render<HTMLMdsPrefContrastElement>(
         '<mds-pref-contrast mode="more"></mds-pref-contrast>',
       );
       const consoleError = vi.spyOn(console, 'error');
