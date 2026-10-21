@@ -1,341 +1,408 @@
-# Publishes the packages to npm, from main, once every CI workflow of the
-# commit has succeeded (fan-in via workflow_run), or manually via workflow
-# dispatch. A package is published only when its version is not on the npm
-# registry yet.
+# The release and the npm publish of every package, from main, in one run.
 #
-# What a commit of main publishes:
-#   - a chore(release) commit (the stable channel of release.yml, or the
-#     automatic icons/svg-icons releases): the versions of its manifests, from
-#     the build artifacts of its own CI run. Any other commit publishes nothing,
-#     a manual version bump merged through a pull request included.
-#   - a commit with a prerelease tag (the beta channel of release.yml: the
-#     magma@x.y.z-beta.N tag, no version bump committed): the version of the
-#     tag, written into the magma, magma-react and magma-angular manifests
-#     right before publishing (scripts/set-release-version.sh), from the
-#     lockstep artifacts the release run built. The completion of that run is
-#     what triggers this workflow; the packages without a release tag are not
-#     published.
+# A maintainer starts it with "Run workflow" on the main branch (docs/WORKFLOW.md
+# rule 1). It works on the commit main pointed to when it was dispatched,
+# whatever lands on main while it runs, through these jobs:
 #
-# Authentication uses npm trusted publishing (OIDC): no NPM_TOKEN secret,
-# the npm CLI exchanges the GitHub Actions OIDC token for short-lived
-# credentials and attaches provenance automatically. Each package must
-# have this repo + workflow registered as trusted publisher on npmjs.com.
+#   guard     the dispatch is on main (a dry-run runs anywhere) and the beta
+#             channel is asked for magma only
+#   packages  the packages of `package` (all, or one of them; magma is the
+#             lockstep magma, magma-react and magma-angular) and a check that
+#             the CI of the dispatched commit is green
+#   plan      the next version of each package (a semantic-release dry-run),
+#             written to the job summary BEFORE the approval, so whoever
+#             approves sees what is about to ship
+#   approve   the `release` environment (its required reviewers). Approve it
+#             right away: on the stable channel the time spent waiting is time
+#             for main to move and the push to be rejected
+#   release   semantic-release.yml.
+#             channel stable: one chore(release) commit with the next version
+#             of each package (from the conventional commits of its scope), the
+#             pins of the packages that depend on it (e.g. design-tokens ->
+#             styles and magma, magma -> magma-react and magma-angular), the
+#             lock and the CHANGELOG.md sections, pushed straight to main with
+#             RELEASE_PUSH_TOKEN, then one tag and one GitHub release per
+#             package. The push is not rebased: when main moved since the
+#             dispatch it is rejected, the run fails before any tag exists and
+#             is re-run.
+#             channel beta: a magma prerelease, magma@<next stable>-beta.N,
+#             with nothing committed: the tag goes on the dispatched commit. A
+#             second beta without a new stable in between is beta.N+1
+#             (semantic-release channel notes).
+#   publish   checks out the release commit (the dispatched one on the beta
+#             channel, or when nothing was released), builds the selected
+#             packages and publishes every one of them whose version is not on
+#             the npm registry yet, with the dist-tag of its version (latest,
+#             beta). On the beta channel the tag version is written into the
+#             lockstep manifests right before publishing
+#             (scripts/set-release-version.sh).
+#
+# The CI of the chore(release) commit runs on its push too (the release token
+# triggers it, with the Storybook deploy) but is not awaited: the dispatched
+# commit was tested by its own CI, which the packages job checks, and the
+# release commit only adds versions, pins, lock and changelogs on top of it.
+#
+# dry-run: the plan alone, in the job summary, with no approval needed. It may
+# be dispatched on any branch: the plan is then what that branch would release
+# (semantic-release treats it as the stable branch, since main is not a local
+# branch of the checkout it is pointed at).
+#
+# Publishing again: a dispatch on the tip of main that finds nothing to release
+# publishes the manifest versions missing from npm (a failed stable publish; a
+# version bumped by hand through a pull request ships this way too, and only
+# this way). A failed beta publish is re-run from its own run ("Re-run failed
+# jobs"): the version is the tag that run created.
+#
+# icons and svg-icons also release on their own, on every push to main (the
+# `push` trigger): the same chain limited to the two of them, without approval,
+# so icon additions reach npm as soon as their pull request lands. A push
+# rejected by another release commit is rebased and retried, as their bump
+# touches only their own manifests. A dispatched release then usually finds
+# nothing left to do for them.
+#
+# Authentication uses npm trusted publishing (OIDC): no NPM_TOKEN secret, the
+# npm CLI exchanges the GitHub Actions OIDC token for short-lived credentials
+# and attaches provenance automatically. Each package must have this repo +
+# this workflow file registered as trusted publisher on npmjs.com.
 name: publish
 
 on:
-  workflow_run:
-    # `release` only matters for the beta channel, where it creates the tag the
-    # version is read from and builds the artifacts (the gate ignores its runs
-    # for the stable channel: the chore(release) commit it pushed has a CI of
-    # its own)
-    workflows: [design-tokens, icons, identity, styles, svg-icons, stencil, release]
-    types: [completed]
-    branches: [main]
   workflow_dispatch:
     inputs:
       package:
-        description: Package to publish
+        description: Package to release and publish (magma = magma, magma-react and magma-angular)
         type: choice
         default: all
         options:
           - all
           - design-tokens
-          - icons
           - identity
           - styles
           - svg-icons
+          - icons
           - magma
-          - magma-react
-          - magma-angular
-      sha:
-        description: Commit to publish again (a chore(release) or beta-tagged commit of main); empty = the tip of the branch
-        type: string
-        default: ''
+      channel:
+        description: stable = versions committed on main and tagged; beta = magma@x.y.z-beta.N tag on the commit, nothing committed
+        type: choice
+        default: stable
+        options:
+          - stable
+          - beta
+      dry-run:
+        description: Only compute the plan (job summary), without approval, commit, tag, push, build or publish
+        type: boolean
+        default: false
+  push:
+    branches: [main]
 
+# a dispatched release and the automatic icon releases do not wait for each
+# other: when both push a release commit, the push run rebases and retries, the
+# dispatched run fails before any tag and is re-run
 concurrency:
-  group: publish-${{ github.event.workflow_run.head_sha || inputs.sha || github.sha }}
+  group: publish-${{ github.event_name }}
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
+# magma's manifests: keep the magma entry in sync with MAGMA_LOCKSTEP_MANIFESTS
+# and NPM_PACKAGES below. The list is parsed by scripts/test-release.sh and
+# projects/stencil/scripts/pr-risk.ts: keep its layout (one package per `{`,
+# the `packages: >-` block scalar) and keep it the first list of this file
+# (pr-risk.ts reads the commit-scope after the first "name": "magma").
+env:
+  PACKAGES: >-
+    [
+      {"name": "design-tokens", "working-directory": "projects/design-tokens",
+       "tag-format": "design-tokens@${version}", "commit-scope": "design-tokens"},
+      {"name": "identity", "working-directory": "projects/identity",
+       "tag-format": "identity@${version}", "commit-scope": "identity"},
+      {"name": "styles", "working-directory": "projects/styles",
+       "tag-format": "styles@${version}", "commit-scope": "styles"},
+      {"name": "svg-icons", "working-directory": "projects/svg-icons",
+       "tag-format": "svg-icons@${version}", "commit-scope": "svg-icons"},
+      {"name": "icons", "working-directory": "projects/icons",
+       "tag-format": "icons@${version}", "commit-scope": "icons"},
+      {"name": "magma", "working-directory": "projects/stencil",
+       "tag-format": "magma@${version}", "commit-scope": "magma|stencil|react|lit|storybook|mds-*",
+       "version-sync-paths": ["projects/stencil-react/package.json",
+                              "projects/stencil-angular/magma-angular/package.json"]}
+    ]
+  # the npm packages: the entry of PACKAGES they are released under (`release`:
+  # the magma lockstep shares one tag), the directory `npm publish` runs in,
+  # the manifest the version is read from when it is not the one of that
+  # directory, and the Nx project that builds them. Dependencies first.
+  NPM_PACKAGES: >-
+    [
+      {"name": "design-tokens", "release": "design-tokens", "directory": "projects/design-tokens",
+       "nx-project": "design-tokens"},
+      {"name": "identity", "release": "identity", "directory": "projects/identity",
+       "nx-project": "identity"},
+      {"name": "styles", "release": "styles", "directory": "projects/styles",
+       "nx-project": "styles"},
+      {"name": "svg-icons", "release": "svg-icons", "directory": "projects/svg-icons",
+       "nx-project": "svg-icons"},
+      {"name": "icons", "release": "icons", "directory": "projects/icons",
+       "nx-project": "icons"},
+      {"name": "magma", "release": "magma", "directory": "projects/stencil",
+       "nx-project": "stencil"},
+      {"name": "magma-react", "release": "magma", "directory": "projects/stencil-react",
+       "nx-project": "stencil-react"},
+      {"name": "magma-angular", "release": "magma", "directory": "projects/stencil-angular/dist/magma-angular",
+       "version-file": "projects/stencil-angular/magma-angular/package.json", "nx-project": "stencil-angular"}
+    ]
+  # released in lockstep under the magma@* tag: the same set as the
+  # working-directory + version-sync-paths of the magma entry of PACKAGES
+  MAGMA_LOCKSTEP_MANIFESTS: >-
+    projects/stencil/package.json
+    projects/stencil-react/package.json
+    projects/stencil-angular/magma-angular/package.json
+
 jobs:
-  gate:
+  guard:
+    # the push of a chore(release) commit comes from the release job itself:
+    # its versions are already tagged, there is nothing to release again
+    if: ${{ github.event_name == 'workflow_dispatch' || !startsWith(github.event.head_commit.message, 'chore(release):') }}
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          if [ "${{ github.ref_name }}" != main ] && [ "${{ inputs.dry-run }}" != true ]; then
+            echo "::error::a release runs on main only (dispatched on ${{ github.ref_name }}); a dry-run runs on any branch"
+            exit 1
+          fi
+          if [ "${{ inputs.channel }}" = beta ] && [ "${{ inputs.package }}" != all ] && [ "${{ inputs.package }}" != magma ]; then
+            echo "::error::the beta channel releases magma only (package: ${{ inputs.package }})"
+            exit 1
+          fi
+      - if: ${{ github.event_name == 'push' }}
+        run: echo "push to main, the automatic release of icons and svg-icons"
+
+  # a reusable workflow cannot read `env`: the packages list goes through an
+  # output of this job, with the filter and the channel of this run
+  packages:
+    needs: [guard]
     runs-on: ubuntu-latest
     outputs:
-      ready: ${{ steps.check.outputs.ready }}
-      sha: ${{ steps.check.outputs.sha }}
-      run-ids: ${{ steps.check.outputs.run-ids }}
-      prerelease: ${{ steps.check.outputs.prerelease }}
+      list: ${{ steps.list.outputs.list }}
+      filter: ${{ steps.list.outputs.filter }}
+      channel: ${{ steps.list.outputs.channel }}
     steps:
-      - name: Check that all CI workflows of the commit are green
-        id: check
+      - id: list
+        run: |
+          {
+            echo 'list<<EOF'
+            echo "$PACKAGES"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = push ]; then
+            FILTER='icons svg-icons'; CHANNEL=stable
+          elif [ "${{ inputs.channel }}" = beta ]; then
+            FILTER=magma; CHANNEL=beta
+          elif [ "${{ inputs.package }}" = all ]; then
+            FILTER=; CHANNEL=stable
+          else
+            FILTER="${{ inputs.package }}"; CHANNEL=stable
+          fi
+          echo "packages: ${FILTER:-all} ($CHANNEL channel)"
+          echo "filter=$FILTER" >> "$GITHUB_OUTPUT"
+          echo "channel=$CHANNEL" >> "$GITHUB_OUTPUT"
+      - name: Check that the CI of the dispatched commit is green
+        if: ${{ github.event_name == 'workflow_dispatch' && !inputs.dry-run }}
         env:
           GH_TOKEN: ${{ github.token }}
-          REPO_URL: https://github.com/${{ github.repository }}.git
-          HEAD_MESSAGE: ${{ github.event.workflow_run.head_commit.message }}
         run: |
-          echo "ready=false" >> "$GITHUB_OUTPUT"
-          echo "prerelease=false" >> "$GITHUB_OUTPUT"
-          TRIGGER="${{ github.event.workflow_run.name }}"
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            SHA="${{ inputs.sha || github.sha }}"
-            if [ "${{ github.ref }}" != "refs/heads/main" ] && [ "${{ inputs.package }}" = "all" ]; then
-              echo "::error::manual publish from a branch other than main requires a specific package"
-              exit 1
-            fi
-          else
-            SHA="${{ github.event.workflow_run.head_sha }}"
-            if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
-              echo "::warning::workflow '$TRIGGER' did not succeed, skipping publish"
-              echo "sha=$SHA" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-            # a CI completion publishes the release commits only: every other
-            # commit of main (a merged pull request, a manual version bump)
-            # has nothing to ship
-            if [ "$TRIGGER" != "release" ] && \
-               ! printf '%s\n' "$HEAD_MESSAGE" | head -n 1 | grep -q '^chore(release):'; then
-              echo "::notice::$SHA is not a chore(release) commit, nothing to publish"
-              echo "sha=$SHA" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-          fi
-          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
-          # a magma prerelease tag on the commit: the beta channel, whose version
-          # is the tag and whose lockstep artifacts come from the release run. An
-          # annotated tag is listed twice: as the tag object and, peeled with
-          # ^{}, as the commit it points to
-          PRERELEASE=$(git ls-remote --tags "$REPO_URL" 'refs/tags/magma@*-*' \
-            | awk -v sha="$SHA" '$1 == sha { sub(/^refs\/tags\//, "", $2); sub(/\^\{\}$/, "", $2); print $2 }' | sort -u)
-          if [ -n "$PRERELEASE" ]; then
-            echo "prerelease tags on $SHA: $(echo "$PRERELEASE" | tr '\n' ' ')"
-            echo "prerelease=true" >> "$GITHUB_OUTPUT"
-          elif [ "$TRIGGER" = "release" ]; then
-            echo "::notice::stable release: the CI of its chore(release) commit publishes it, nothing to do here"
-            exit 0
-          fi
-          # latest push or merge-queue run of each watched CI workflow for this
-          # commit (allowlist in lockstep with on.workflow_run.workflows above,
-          # `release` apart). Both events build the artifacts; a commit landed by
-          # the merge queue keeps the SHA of its merge-group run. pull_request
-          # runs are excluded: they produce no artifacts. The other workflows
-          # are excluded: their completion does not re-trigger publish, so
-          # waiting on one still in progress would lose the publish.
-          WATCHED='["design-tokens", "icons", "identity", "styles", "svg-icons", "stencil"]'
-          RUNS=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=$SHA&per_page=100" \
+          # the latest push or merge-queue run of each CI workflow of this
+          # commit (a commit landed by the merge queue keeps the SHA of its
+          # merge-group run); pull_request runs test the pull request head,
+          # not this commit
+          WATCHED='["design-tokens", "icons", "identity", "styles", "svg-icons", "stencil", "lint"]'
+          RUNS=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=${{ github.sha }}&per_page=100" \
             | jq --argjson watched "$WATCHED" '[.workflow_runs[] | select((.event == "push" or .event == "merge_group") and (.name as $n | $watched | index($n)))] | group_by(.name) | map(max_by(.id))')
           echo "$RUNS" | jq -r '.[] | "\(.name): \(.status) (\(.conclusion))"'
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            PENDING=$(echo "$RUNS" | jq '[.[] | select(.status != "completed")] | length')
-            FAILED=$(echo "$RUNS" | jq '[.[] | select(.status == "completed" and .conclusion != "success")] | length')
-            if [ "$PENDING" -gt 0 ]; then
-              if [ "$TRIGGER" = "release" ]; then
-                echo "::warning::$PENDING CI workflow(s) of $SHA still running: run publish by hand with sha=$SHA once they are green"
-              else
-                echo "::notice::$PENDING CI workflow(s) still running, the last one to finish will re-run this check"
-              fi
-              exit 0
-            fi
-            if [ "$FAILED" -gt 0 ]; then
-              echo "::warning::$FAILED CI workflow(s) did not succeed, skipping publish"
-              exit 0
-            fi
+          if [ "$(echo "$RUNS" | jq length)" = 0 ]; then
+            echo "::warning::no CI run of ${{ github.sha }}: releasing a commit without a CI of its own"
+            exit 0
           fi
-          RUN_IDS=$(echo "$RUNS" | jq -c 'map({(.name): .id}) | add // {}')
-          if [ -n "$PRERELEASE" ]; then
-            # the lockstep artifacts of a beta come from the release run that
-            # tagged the commit: the triggering one, or the latest green one of
-            # the commit on a manual publish
-            if [ "$TRIGGER" = "release" ]; then
-              RELEASE_RUN="${{ github.event.workflow_run.id }}"
-            else
-              RELEASE_RUN=$(gh api "repos/${{ github.repository }}/actions/workflows/release.yml/runs?head_sha=$SHA&status=success&per_page=100" \
-                --jq '[.workflow_runs[].id] | max // empty')
-            fi
-            if [ -z "$RELEASE_RUN" ]; then
-              echo "::error::no successful release run of $SHA to take the lockstep artifacts from"
-              exit 1
-            fi
-            RUN_IDS=$(echo "$RUN_IDS" | jq -c --argjson id "$RELEASE_RUN" '. + {stencil: $id}')
+          PENDING=$(echo "$RUNS" | jq '[.[] | select(.status != "completed")] | length')
+          FAILED=$(echo "$RUNS" | jq '[.[] | select(.status == "completed" and .conclusion != "success" and .conclusion != "skipped")] | length')
+          if [ "$PENDING" -gt 0 ]; then
+            echo "::error::$PENDING CI workflow(s) of ${{ github.sha }} still running: dispatch again once they are green"
+            exit 1
           fi
-          echo "run-ids=$RUN_IDS" >> "$GITHUB_OUTPUT"
-          echo "ready=true" >> "$GITHUB_OUTPUT"
+          if [ "$FAILED" -gt 0 ]; then
+            echo "::error::$FAILED CI workflow(s) of ${{ github.sha }} did not succeed: a red check is never bypassed (docs/WORKFLOW.md rule 1)"
+            exit 1
+          fi
+
+  # the plan of every dispatch, before the approval; a dry-run stops here
+  plan:
+    needs: [packages]
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    uses: ./.github/workflows/semantic-release.yml
+    secrets: inherit
+    with:
+      packages: ${{ needs.packages.outputs.list }}
+      packages-filter: ${{ needs.packages.outputs.filter }}
+      channel: ${{ needs.packages.outputs.channel }}
+      # main on main; on a dry-run from another branch, that branch (see the header)
+      stable-branches: ${{ github.ref_name }}
+      dry-run: true
+
+  approve:
+    name: Approve the release
+    needs: [plan]
+    if: ${{ github.event_name == 'workflow_dispatch' && !inputs.dry-run }}
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - env:
+          TAGS: ${{ needs.plan.outputs.release-tags }}
+        run: |
+          echo "${{ inputs.channel }} release of ${{ github.sha }} approved: ${TAGS:-nothing to release, the versions missing from npm are published}"
+
+  release:
+    needs: [packages, approve]
+    # the approval is skipped by the push trigger (the automatic icon releases)
+    if: >-
+      ${{ !cancelled() && needs.packages.result == 'success' &&
+          (needs.approve.result == 'success' || (github.event_name == 'push' && needs.approve.result == 'skipped')) }}
+    uses: ./.github/workflows/semantic-release.yml
+    secrets: inherit
+    with:
+      packages: ${{ needs.packages.outputs.list }}
+      packages-filter: ${{ needs.packages.outputs.filter }}
+      channel: ${{ needs.packages.outputs.channel }}
+      # a dispatched release is bound to the commit it was dispatched on; the
+      # automatic icon releases rebase onto whatever landed on main meanwhile
+      rebase-on-reject: ${{ github.event_name == 'push' }}
 
   publish:
-    needs: [gate]
-    if: ${{ needs.gate.outputs.ready == 'true' }}
+    needs: [packages, release]
+    # a dispatch publishes what is missing from npm even when nothing was
+    # released; a push builds only when it released something
+    if: >-
+      ${{ !cancelled() && needs.release.result == 'success' &&
+          (github.event_name == 'workflow_dispatch' || needs.release.outputs.release-sha != '') }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write # OIDC token for npm trusted publishing
       contents: read # checkout
-      actions: read # download build artifacts from the CI and release runs
-    env:
-      # released in lockstep under the magma@* tag: the same set as the
-      # working-directory + version-sync-paths of the magma entry of release.yml
-      MAGMA_LOCKSTEP_MANIFESTS: >-
-        projects/stencil/package.json
-        projects/stencil-react/package.json
-        projects/stencil-angular/magma-angular/package.json
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - component: design-tokens
-            directory: projects/design-tokens
-            workflow: design-tokens
-            artifact: design-tokens-build
-            artifact-path: projects/design-tokens/dist
-          - component: icons
-            directory: projects/icons
-            workflow: icons
-            artifact: icons-build
-            artifact-path: projects
-          - component: identity
-            directory: projects/identity
-            workflow: identity
-            artifact: identity-build
-            artifact-path: projects/identity/dist
-          - component: styles
-            directory: projects/styles
-            workflow: styles
-            artifact: styles-build
-            artifact-path: projects
-          - component: svg-icons
-            directory: projects/svg-icons
-            workflow: svg-icons
-            artifact: svg-icons-build
-            artifact-path: projects/svg-icons/dist
-          - component: magma
-            directory: projects/stencil
-            workflow: stencil
-            artifact: stencil-build
-            artifact-path: projects
-            # on the beta channel the version comes from the magma@* tag on the commit
-            release-tag: magma
-          - component: magma-react
-            directory: projects/stencil-react
-            workflow: stencil
-            artifact: stencil-react-build
-            # dist plus the agent docs, rooted at the package directory
-            artifact-path: projects/stencil-react
-            release-tag: magma
-          - component: magma-angular
-            # publishes from the build output (ng-packagr layout), so the
-            # version is read from the source package.json
-            directory: projects/stencil-angular/dist/magma-angular
-            version-file: projects/stencil-angular/magma-angular/package.json
-            workflow: stencil
-            artifact: stencil-angular-build
-            artifact-path: projects/stencil-angular/dist
-            release-tag: magma
-    concurrency: publish-${{ matrix.component }}
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ needs.gate.outputs.sha }}
-      - name: Check whether a new version needs publishing
-        id: ver
+          # the release commit; the dispatched one on the beta channel and when
+          # nothing was released
+          ref: ${{ needs.release.outputs.release-sha || github.sha }}
+      - name: Select the packages whose version is not on npm
+        id: select
         env:
-          GH_TOKEN: ${{ github.token }}
+          FILTER: ${{ needs.packages.outputs.filter }}
+          TAGS: ${{ needs.release.outputs.release-tags }}
+          CHANNEL: ${{ needs.packages.outputs.channel }}
         run: |
-          echo "proceed=false" >> "$GITHUB_OUTPUT"
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && \
-             [ "${{ inputs.package }}" != "all" ] && [ "${{ inputs.package }}" != "${{ matrix.component }}" ]; then
-            echo "::notice::${{ matrix.component }} not selected, skipping"
-            exit 0
-          fi
-          # a prerelease tag of the package on the commit (the beta channel
-          # commits no version bump) is the version; otherwise the manifest is.
-          # An annotated tag is listed twice: as the tag object and, peeled
-          # with ^{}, as the commit it points to
-          RELEASE_TAG=
-          if [ -n "${{ matrix.release-tag }}" ]; then
-            RELEASE_TAG=$(git ls-remote --tags origin "refs/tags/${{ matrix.release-tag }}@*-*" \
-              | awk -v sha="${{ needs.gate.outputs.sha }}" '$1 == sha { sub(/^refs\/tags\//, "", $2); sub(/\^\{\}$/, "", $2); print $2 }' \
-              | sort -u | tail -n 1)
-          fi
-          if [ -n "$RELEASE_TAG" ]; then
-            TO_BE_PUBLISHED_V="${RELEASE_TAG##*@}"
-            echo "release-version=$TO_BE_PUBLISHED_V" >> "$GITHUB_OUTPUT"
-          elif [ "${{ needs.gate.outputs.prerelease }}" = "true" ]; then
-            echo "::notice::no ${{ matrix.release-tag || matrix.component }}@* prerelease tag on ${{ needs.gate.outputs.sha }}, skipping"
-            exit 0
-          else
-            TO_BE_PUBLISHED_V="$(jq -r '.version' "${{ matrix.version-file || format('{0}/package.json', matrix.directory) }}")"
-          fi
-          echo "VERSION TO BE PUBLISHED ${TO_BE_PUBLISHED_V}"
-          # npm view of a missing version exits 0 with empty output, so test the output
-          PUBLISHED="$(npm view "@maggioli-design-system/${{ matrix.component }}@${TO_BE_PUBLISHED_V}" version 2>/dev/null || true)"
-          if [ -n "$PUBLISHED" ]; then
-            echo "::notice::@maggioli-design-system/${{ matrix.component }}@${TO_BE_PUBLISHED_V} already published, skipping"
-            exit 0
-          fi
-          # A version can be missing from npm without a fresh build to publish
-          # (a chore(release) push where its build was path-filtered out):
-          # skip with a warning instead of failing the artifact download.
-          RUN_ID='${{ fromJSON(needs.gate.outputs.run-ids)[matrix.workflow] }}'
-          if [ -z "$RUN_ID" ] || [ "$RUN_ID" = "null" ]; then
-            echo "::warning::${{ matrix.component }}@${TO_BE_PUBLISHED_V} is not on npm but the '${{ matrix.workflow }}' workflow has no run for this commit, skipping"
-            exit 0
-          fi
-          ARTIFACTS=$(gh api "repos/${{ github.repository }}/actions/runs/${RUN_ID}/artifacts?name=${{ matrix.artifact }}" --jq '.total_count')
-          if [ "$ARTIFACTS" = "0" ]; then
-            echo "::warning::${{ matrix.component }}@${TO_BE_PUBLISHED_V} is not on npm but run ${RUN_ID} produced no '${{ matrix.artifact }}' artifact, skipping"
-            exit 0
-          fi
-          # dist-tag from the semver prerelease identifier: 2.0.0-alpha.0 -> alpha,
-          # non-alphabetic identifier -> next, stable -> latest
-          case "$TO_BE_PUBLISHED_V" in
-            *-*)
-              TAG="${TO_BE_PUBLISHED_V#*-}"
-              TAG="${TAG%%.*}"
-              case "$TAG" in ''|*[!a-zA-Z]*) TAG=next ;; esac
-              ;;
-            *) TAG=latest ;;
-          esac
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          echo "proceed=true" >> "$GITHUB_OUTPUT"
-      - if: ${{ steps.ver.outputs.proceed == 'true' }}
+          set -euo pipefail
+          SELECTED=$(jq -c --arg f "$FILTER" '[.[] | select($f == "" or (.release as $r | $f | split(" ") | index($r)))]' <<< "$NPM_PACKAGES")
+          TO_PUBLISH='[]'
+          while IFS=$'\t' read -r name release version_file; do
+            # the version is the tag this run created for the package (the beta
+            # channel bumps no manifest), the manifest otherwise
+            v=
+            for t in $TAGS; do
+              [ "${t%@*}" = "$release" ] && v="${t##*@}"
+            done
+            if [ -z "$v" ]; then
+              if [ "$CHANNEL" = beta ]; then
+                echo "::notice::no $release@* prerelease tag in this run, skipping $name"
+                continue
+              fi
+              v=$(jq -r '.version' "$version_file")
+            fi
+            # npm view of a missing version exits 0 with empty output, so test the output
+            if [ -n "$(npm view "@maggioli-design-system/$name@$v" version 2>/dev/null || true)" ]; then
+              echo "::notice::@maggioli-design-system/$name@$v already published, skipping"
+              continue
+            fi
+            # dist-tag from the semver prerelease identifier: 2.0.0-beta.1 -> beta,
+            # non-alphabetic identifier -> next, stable -> latest
+            case "$v" in
+              *-*)
+                tag="${v#*-}"
+                tag="${tag%%.*}"
+                case "$tag" in ''|*[!a-zA-Z]*) tag=next ;; esac
+                ;;
+              *) tag=latest ;;
+            esac
+            echo "$name@$v to be published with the dist-tag $tag"
+            TO_PUBLISH=$(jq -c --arg n "$name" --arg v "$v" --arg t "$tag" '. + [$pkg[] | select(.name == $n) | . + {version: $v, "dist-tag": $t}]' --argjson pkg "$SELECTED" <<< "$TO_PUBLISH")
+          done < <(jq -r '.[] | [.name, .release, (."version-file" // (.directory + "/package.json"))] | @tsv' <<< "$SELECTED")
+          [ "$TO_PUBLISH" = '[]' ] && echo "::notice::every selected package is on npm already, nothing to publish"
+          echo "to-publish=$TO_PUBLISH" >> "$GITHUB_OUTPUT"
+          echo "projects=$(jq -r 'map(."nx-project") | unique | join(" ")' <<< "$TO_PUBLISH")" >> "$GITHUB_OUTPUT"
+      - if: ${{ steps.select.outputs.to-publish != '[]' }}
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
-      - if: ${{ steps.ver.outputs.proceed == 'true' }}
-        run: npm ci --prefer-offline
-      - name: Download the build artifact from the CI or release run
-        if: ${{ steps.ver.outputs.proceed == 'true' }}
-        uses: actions/download-artifact@v8
+      - name: Restore Nx cache
+        if: ${{ steps.select.outputs.to-publish != '[]' }}
+        uses: actions/cache@v6
         with:
-          name: ${{ matrix.artifact }}
-          path: ${{ matrix.artifact-path }}
-          run-id: ${{ fromJSON(needs.gate.outputs.run-ids)[matrix.workflow] }}
-          github-token: ${{ github.token }}
-      - name: Write the release tag version into the manifests (beta channel)
-        if: ${{ steps.ver.outputs.proceed == 'true' && steps.ver.outputs.release-version != '' }}
-        env:
-          V: ${{ steps.ver.outputs.release-version }}
-          MANIFEST: ${{ matrix.directory }}/package.json
-        run: |
-          if [ "$(jq -r '.version' "$MANIFEST")" = "$V" ]; then
-            echo "$MANIFEST already at $V"
-            exit 0
-          fi
-          # the lockstep sources first, so every companion pins magma to $V, then
-          # the published manifest itself (the ng-packagr output for magma-angular)
-          # shellcheck disable=SC2086 # the list is split on purpose
-          ./scripts/set-release-version.sh "$V" $MAGMA_LOCKSTEP_MANIFESTS "$MANIFEST"
-      - name: Check that the agent docs and the changelog are in the tarball
-        if: ${{ steps.ver.outputs.proceed == 'true' && matrix.release-tag == 'magma' }}
-        working-directory: ${{ matrix.directory }}
-        run: |
-          # npm skips the `files` entries that do not exist without a warning,
-          # so a path missing from the artifact would publish silently (#809)
-          FILES=$(npm pack --dry-run --json | jq -r '.[0].files[].path')
-          echo "$FILES" | grep -qx 'AGENTS.md' || { echo "::error::AGENTS.md is missing from the ${{ matrix.component }} tarball"; exit 1; }
-          echo "$FILES" | grep -q '^agents/.*[.]md$' || { echo "::error::agents/*.md is missing from the ${{ matrix.component }} tarball"; exit 1; }
-          echo "$FILES" | grep -qx 'CHANGELOG.md' || { echo "::error::CHANGELOG.md is missing from the ${{ matrix.component }} tarball"; exit 1; }
-          # with an exports map, a file in the tarball resolves only when it is exported (#981);
-          # for magma-angular this is the manifest ng-packagr wrote, merged with its own exports
-          jq -e '.exports["./CHANGELOG.md"]' package.json > /dev/null || { echo "::error::${{ matrix.component }} does not export ./CHANGELOG.md"; exit 1; }
+          path: .nx
+          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ hashFiles('package-lock.json') }}-
+      - if: ${{ steps.select.outputs.to-publish != '[]' }}
+        run: npm ci --prefer-offline
+      # Nx builds design-tokens, styles and svg-icons first when a package needs them
+      - name: Build the packages
+        if: ${{ steps.select.outputs.to-publish != '[]' }}
+        run: npx nx run-many -t build -p ${{ steps.select.outputs.projects }}
       - name: Publish to npm
-        if: ${{ steps.ver.outputs.proceed == 'true' }}
-        working-directory: ${{ matrix.directory }}
-        run: npm publish --access public --tag "${{ steps.ver.outputs.tag }}"
+        if: ${{ steps.select.outputs.to-publish != '[]' }}
+        env:
+          TO_PUBLISH: ${{ steps.select.outputs.to-publish }}
+          CHANNEL: ${{ needs.packages.outputs.channel }}
+        run: |
+          set -uo pipefail
+          # <name> <release> <directory> <version> <dist-tag>: publishes one
+          # package; exit 1 when a check or the publish fails
+          publish_one() {
+            local name="$1" release="$2" dir="$3" v="$4" tag="$5"
+            if [ "$CHANNEL" = beta ] && [ "$(jq -r '.version' "$dir/package.json")" != "$v" ]; then
+              # the lockstep sources first, so every companion pins magma to $v,
+              # then the published manifest itself (the ng-packagr output for
+              # magma-angular)
+              # shellcheck disable=SC2086 # the list is split on purpose
+              ./scripts/set-release-version.sh "$v" $MAGMA_LOCKSTEP_MANIFESTS "$dir/package.json" || return 1
+            fi
+            if [ "$release" = magma ]; then
+              # npm skips the `files` entries that do not exist without a warning,
+              # so a path missing from the build would publish silently (#809)
+              local files
+              files=$(cd "$dir" && npm pack --dry-run --json | jq -r '.[0].files[].path') || return 1
+              echo "$files" | grep -qx 'AGENTS.md' || { echo "::error::AGENTS.md is missing from the $name tarball"; return 1; }
+              echo "$files" | grep -q '^agents/.*[.]md$' || { echo "::error::agents/*.md is missing from the $name tarball"; return 1; }
+              echo "$files" | grep -qx 'CHANGELOG.md' || { echo "::error::CHANGELOG.md is missing from the $name tarball"; return 1; }
+              # with an exports map, a file in the tarball resolves only when it is
+              # exported (#981); for magma-angular this is the manifest ng-packagr
+              # wrote, merged with its own exports
+              jq -e '.exports["./CHANGELOG.md"]' "$dir/package.json" > /dev/null || { echo "::error::$name does not export ./CHANGELOG.md"; return 1; }
+            fi
+            (cd "$dir" && npm publish --access public --tag "$tag")
+          }
+          FAILED=()
+          while IFS=$'\t' read -r name release dir v tag; do
+            echo "::group::$name@$v"
+            if publish_one "$name" "$release" "$dir" "$v" "$tag"; then
+              echo "::endgroup::"
+            else
+              echo "::endgroup::"
+              echo "::error::the publish of $name@$v failed"
+              FAILED+=("$name")
+            fi
+          done < <(jq -r '.[] | [.name, .release, .directory, .version, ."dist-tag"] | @tsv' <<< "$TO_PUBLISH")
+          if [ ${#FAILED[@]} -gt 0 ]; then
+            echo "::error::not published: ${FAILED[*]} (re-run the failed jobs: the published versions are skipped)"
+            exit 1
+          fi

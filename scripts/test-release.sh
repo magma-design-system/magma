@@ -6,7 +6,7 @@
 # Everything runs inside a throwaway clone of your repo (deleted on exit), so
 # your working tree, branches, tags and remote are never touched. It runs the
 # release preparation of the workflows (scripts/release/prepare-release.sh,
-# taken from your working tree) the way a dispatch of release.yml on main
+# taken from your working tree) the way a dispatch of publish.yml on main
 # would, on the requested channel: the next version of each package, then, on
 # the stable channel, the version bumps, internal dependency pins and lock of
 # the single chore(release) commit, and whether `npm ci` accepts the result.
@@ -34,7 +34,7 @@
 #                     refs/notes/semantic-release:refs/notes/semantic-release).
 #   --keep            keep the temp clone (prints its path) instead of deleting.
 #
-# The package list comes from release.yml. Release notes are generated too
+# The package list comes from publish.yml. Release notes are generated too
 # when git-cliff is on PATH (kept under .release/notes with --keep).
 #
 # Examples:
@@ -68,7 +68,7 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-# channel -> branch semantic-release runs on and default packages (mirrors release.yml)
+# channel -> branch semantic-release runs on and default packages (mirrors publish.yml)
 case "$CHANNEL" in
   stable) BRANCH=main; DEFAULT_PKGS=(design-tokens identity styles svg-icons icons magma); APPLY=--apply ;;
   beta)   BRANCH=beta; DEFAULT_PKGS=(magma); APPLY= ;;
@@ -82,9 +82,9 @@ HEAD_SHA=$(git -C "$SRC" rev-parse --verify "${HEAD_REF}^{commit}") || {
 }
 [ -n "$BASELINE" ] && BASE_SHA=$(git -C "$SRC" rev-parse --verify "${BASELINE}^{commit}")
 
-# the package list of release.yml (its PACKAGES JSON block), narrowed to PKGS
+# the package list of publish.yml (its PACKAGES JSON block), narrowed to PKGS
 PACKAGES=$(awk '/^  PACKAGES: >-$/ { f = 1; next } f && /^    / { print; next } f { exit }' \
-  "$SRC/.github/workflows/release.yml" \
+  "$SRC/.github/workflows/publish.yml" \
   | jq -c --args '[.[] | select(.name | IN($ARGS.positional[]))]' "${PKGS[@]}")
 [ "$(jq length <<< "$PACKAGES")" -eq ${#PKGS[@]} ] || { echo "unknown package in: ${PKGS[*]}" >&2; exit 1; }
 

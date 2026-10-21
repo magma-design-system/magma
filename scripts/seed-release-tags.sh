@@ -36,7 +36,7 @@ PUSH=false
 # migration baseline). Override with the TARGET_COMMIT env var if needed.
 TARGET_COMMIT="${TARGET_COMMIT:-54b7540d047b44b91446de6b35ca6acd3d3e339f}"
 
-# Release-driving packages (the ones with a *.release.yml workflow).
+# Release-driving packages (the entries of PACKAGES in publish.yml).
 PACKAGES=(
   projects/design-tokens
   projects/icons

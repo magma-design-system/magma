@@ -8,7 +8,7 @@
 # Usage (from the repository root, gh authenticated):
 #   ./scripts/release/backfill-changelogs.sh <packages-json>
 #
-#   packages-json  the PACKAGES of .github/workflows/release.yml: name, working-directory,
+#   packages-json  the PACKAGES of .github/workflows/publish.yml: name, working-directory,
 #                  tag-format and optional version-sync-paths per package
 #
 # Only the releases the git-cliff pipeline wrote go in, the ones whose body starts with their
