@@ -6,7 +6,7 @@
  * Prints a Markdown report (the CI posts it as a PR comment and sets the risk-* label from
  * the level) and exits 1 when the commits declare less than the API change needs, so a
  * breaking change cannot ship as a patch or a minor. The commits count when their scope is
- * one of magma's release scopes, read from the magma entry of .github/workflows/release.yml.
+ * one of magma's release scopes, read from the magma entry of .github/workflows/publish.yml.
  *
  * Trusts the committed magma.api.txt: check.api-snapshot verifies it against the build.
  *
@@ -36,7 +36,7 @@ import { inScope } from '../../../scripts/release/commit-scopes.mjs';
 
 const REPO = join(PROJECT_DIR, '../..');
 const SNAPSHOT = 'projects/stencil/magma.api.txt';
-const RELEASE_WORKFLOW = '.github/workflows/release.yml';
+const RELEASE_WORKFLOW = '.github/workflows/publish.yml';
 
 const option = (name: string, fallback?: string): string | undefined => {
   const i = process.argv.indexOf(`--${name}`);

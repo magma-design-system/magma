@@ -119,12 +119,13 @@ those icons is later needed in the font, it gets its own pull request.
 
 ### 3.3 Do not bump versions by hand
 
-`release.yml` detects each package's next version from its own commits, writes it, and updates the
-pins of the packages that depend on it. Editing `version` or the `@maggioli-design-system/svg-icons`
+The `publish` workflow (`.github/workflows/publish.yml`) detects each package's next version from
+its own commits, writes it, and updates the pins of the packages that depend on it. Editing `version` or the `@maggioli-design-system/svg-icons`
 pin in `package.json` only creates conflicts with the release automation.
 
-Both `icons` and `svg-icons` opt into publishing from `dev` (the `dev-publish` flag of the
-`publish.yml` matrix), so an icon reaches npm without waiting for a `main` release.
+Both `icons` and `svg-icons` release on their own, on every push to `main` (the `push` trigger of
+`publish.yml`), so an icon reaches npm as soon as its pull request lands, without waiting for a
+dispatched release.
 
 ### 3.4 Commits
 

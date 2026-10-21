@@ -1,6 +1,6 @@
 # Reusable semantic-release pipeline for the Magma npm monorepo.
 #
-# Releases one package, or a group of packages together (see release.yml),
+# Releases one package, or a group of packages together (see publish.yml),
 # from the commit the caller runs on. For each package it detects the next
 # version from conventional commits (semantic-release dry-run, scoped by
 # `commit-scope`, see scripts/release/semantic-release.config.cjs), writes the
@@ -9,19 +9,20 @@
 # lock included (scripts/set-release-version.sh: e.g. a design-tokens release
 # updates the pin in styles and magma), generates the release notes with
 # git-cliff, then pushes ONE chore(release) commit to the triggering branch,
-# with one tag and one GitHub release per package. One commit means one CI run
-# and one publish, with every manifest already consistent. Publishing to npm is
-# handled separately by publish.yml. The whole preparation lives in
-# scripts/release/prepare-release.sh, which scripts/test-release.sh runs
-# locally the same way.
+# with one tag and one GitHub release per package. One commit means every
+# manifest consistent at once; the publish job of publish.yml then builds and
+# publishes from that commit (the `release-sha` output), in the same run. The
+# whole preparation lives in scripts/release/prepare-release.sh, which
+# scripts/test-release.sh runs locally the same way.
 #
 # Two channels (`channel` input):
-#   - stable: the flow above. With `rebase-on-reject: false` (the manual
-#     release of release.yml) the push is tried once: when the branch moved
-#     since the commit the run started on, it fails before any tag is created
-#     and the release is simply re-run. With the default `true` (the automatic
-#     icons and svg-icons releases) a rejected push is rebased onto the new tip
-#     and retried, as their bump touches only their own manifests.
+#   - stable: the flow above. With `rebase-on-reject: false` (a dispatched
+#     publish.yml) the push is tried once: when the branch moved since the
+#     commit the run started on, it fails before any tag is created and the
+#     release is simply re-run. With the default `true` (the automatic icons
+#     and svg-icons releases of the push trigger of publish.yml) a rejected
+#     push is rebased onto the new tip and retried, as their bump touches only
+#     their own manifests.
 #   - beta: a prerelease, `<next stable>-beta.N`, from the same commit, with
 #     nothing committed: the tag goes on the commit itself, a channel note lets
 #     semantic-release continue the counter (beta.2, beta.3 ...) and publish.yml
@@ -39,7 +40,8 @@
 #
 # The chore(release) commit, the tags and the notes are pushed with
 # RELEASE_PUSH_TOKEN when the caller passes `secrets: inherit`: the default
-# GITHUB_TOKEN would not trigger the CI (and so the publish) of that commit.
+# GITHUB_TOKEN would not trigger the CI (and the Storybook deploy) of that
+# commit.
 #
 # Inputs:
 #   - packages: JSON array of the packages released together, one object per
@@ -63,6 +65,10 @@
 #   - rebase-on-reject: retry a rejected push after a rebase (default true).
 #   - dry-run: detect the versions and write the plan to the job summary, then
 #     stop: nothing is built, committed, tagged or pushed.
+#
+# Outputs: release-tags, the tags of the plan (empty = nothing to release), and
+# release-sha, the commit they point to once pushed (empty on a dry-run or when
+# there is nothing to release).
 name: Reusable Semantic Release Pipeline
 
 on:
@@ -142,6 +148,9 @@ on:
       release-tags:
         description: The tags of the release plan, space-separated (empty = nothing to release)
         value: ${{ jobs.release-check.outputs.release_tags }}
+      release-sha:
+        description: The commit the tags point to (the release commit; on the beta channel the released commit itself); empty on a dry-run or when there is nothing to release
+        value: ${{ jobs.release-finalize.outputs.sha }}
 
 permissions:
   contents: write
@@ -268,14 +277,15 @@ jobs:
     if: needs.release-check.outputs.release_tags != '' && !inputs.dry-run
     outputs:
       tags_created: ${{ steps.tag.outputs.created }}
+      sha: ${{ steps.sha.outputs.sha }}
     steps:
       - name: Checkout (full)
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
           # Push with a PAT/App token when provided, so the chore(release) commit triggers
-          # CI -> publish (the default GITHUB_TOKEN does not trigger downstream workflows).
-          # On the beta channel only the tags and the notes are pushed: publish waits for this run instead.
+          # its CI and the Storybook deploy (the default GITHUB_TOKEN does not trigger
+          # downstream workflows). On the beta channel only the tags and the notes are pushed.
           token: ${{ secrets.RELEASE_PUSH_TOKEN || github.token }}
 
       - name: Download artifacts from check
@@ -361,6 +371,12 @@ jobs:
           git push --atomic origin "${REFS[@]}"
           # mark that THIS run created the tags, so cleanup only rolls back its own tags
           echo "created=true" >> "$GITHUB_OUTPUT"
+
+      # the commit the caller publishes from: the release commit, or the
+      # released commit itself on the beta channel
+      - name: Record the released commit
+        id: sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Record release channels (git notes for prerelease continuation)
         run: |
