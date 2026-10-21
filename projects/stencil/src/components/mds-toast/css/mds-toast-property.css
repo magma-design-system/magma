@@ -23,7 +23,7 @@
 
 @property --mds-toast-duration {
   inherits: true;
-  initial-value: 300ms;
+  initial-value: var(--duration-300);
   syntax: '<time>';
 }
 

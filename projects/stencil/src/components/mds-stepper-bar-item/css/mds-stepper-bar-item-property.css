@@ -17,6 +17,8 @@
 
 @property --mds-stepper-bar-item-duration {
   inherits: true;
+
+  /* stylelint-disable-next-line magma/token-values -- 250ms no --duration-* step says it */
   initial-value: 250ms;
   syntax: '<time>';
 }
@@ -59,7 +61,7 @@
 
 @property --mds-stepper-bar-item-min-width {
   inherits: true;
-  initial-value: 180px;
+  initial-value: --spacing(4500);
   syntax: '<length>';
 }
 

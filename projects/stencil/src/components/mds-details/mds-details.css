@@ -8,7 +8,7 @@
  */
 
 :host {
-  --mds-details-duration: 300ms;
+  --mds-details-duration: var(--duration-300);
   --private-details-duration: var(--mds-details-duration);
   --mds-details-icon-color: rgb(var(--magma-accent-emphasis));
   --mds-details-helper-icon-color: rgb(var(--magma-text-muted));

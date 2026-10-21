@@ -38,7 +38,7 @@
   --mds-banner-icon-color: rgb(var(--magma-text-subtle));
   --mds-banner-radius: var(--magma-radius-2xl);
   --mds-banner-shadow: none;
-  --mds-banner-transition-duration: 300ms;
+  --mds-banner-transition-duration: var(--duration-300);
   --private-banner-transition-duration: var(--mds-banner-transition-duration);
   --mds-banner-transition-timing-function: var(--ease-in-out-expo, cubic-bezier(1, 0, 0, 1));
 

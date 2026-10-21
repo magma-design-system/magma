@@ -11,6 +11,8 @@
 
 @property --mds-spinner-duration {
   inherits: true;
+
+  /* stylelint-disable-next-line magma/token-values -- 725ms, one turn of the spinner, no --duration-* step says it */
   initial-value: 0.725s;
   syntax: '<time>';
 }

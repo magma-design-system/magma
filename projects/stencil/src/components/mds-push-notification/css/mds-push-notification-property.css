@@ -23,13 +23,13 @@
 
 @property --mds-push-notification-items-duration {
   inherits: true;
-  initial-value: 300ms;
+  initial-value: var(--duration-300);
   syntax: '<time>';
 }
 
 @property --mds-push-notification-items-intro-delay {
   inherits: true;
-  initial-value: 300ms;
+  initial-value: var(--duration-300);
   syntax: '<time>';
 }
 

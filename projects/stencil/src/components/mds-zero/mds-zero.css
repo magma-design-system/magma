@@ -3,7 +3,7 @@
  */
 
 :host {
-  --mds-zero-contents-max-width: 400px;
+  --mds-zero-contents-max-width: --spacing(10000);
   --mds-zero-transition-duration: var(--duration-200);
   --private-zero-transition-duration: var(--mds-zero-transition-duration);
 

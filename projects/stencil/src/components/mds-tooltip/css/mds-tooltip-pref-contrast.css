@@ -6,16 +6,16 @@
  * --magma-text-default, which flips with the mode, not --magma-shadow-ink, which does not. */
 
 :host([pref-contrast='more']) {
-  --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.05))
-    drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.3))
-    drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.3));
+  --mds-tooltip-drop-shadow: drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.05))
+    drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.3))
+    drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.3));
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-tooltip-drop-shadow: drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.05))
-      drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.3))
-      drop-shadow(0 0 4px rgb(var(--magma-text-default) / 0.3));
+    --mds-tooltip-drop-shadow: drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.05))
+      drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.3))
+      drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.3));
   }
 }

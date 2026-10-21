@@ -35,7 +35,7 @@
 
 @property --mds-breadcrumb-item-button-border-radius {
   inherits: true;
-  initial-value: 1000px;
+  initial-value: var(--magma-radius-full);
   syntax: '<length>';
 }
 

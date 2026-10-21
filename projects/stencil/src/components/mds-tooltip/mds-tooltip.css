@@ -29,10 +29,10 @@
 :host {
   --mds-tooltip-arrow-background: var(--mds-tooltip-background);
   --mds-tooltip-background: rgb(var(--magma-surface-overlay));
-  --mds-tooltip-delay: 1s;
-  --mds-tooltip-drop-shadow: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
-    drop-shadow(0 4px 3px rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
-  --mds-tooltip-duration: 0.5s;
+  --mds-tooltip-delay: var(--duration-1000);
+  --mds-tooltip-drop-shadow: drop-shadow(0 --spacing(250) --spacing(200) rgb(0 0 0 / 0.04))
+    drop-shadow(0 --spacing(100) --spacing(75) rgb(0 0 0 / 0.1)) drop-shadow(0 0 1px rgb(0 0 0 / 0.1));
+  --mds-tooltip-duration: var(--duration-500);
   --private-tooltip-duration: var(--mds-tooltip-duration);
   --mds-tooltip-ease: var(--ease-out-expo);
   --mds-tooltip-dot-padding: --spacing(100);
@@ -93,7 +93,7 @@
   fill: var(--mds-tooltip-arrow-background);
   pointer-events: none;
   position: fixed;
-  top: -9px;
+  top: --spacing(-225);
   transition-duration: var(--duration-300);
   transition-property: fill;
   z-index: -1;

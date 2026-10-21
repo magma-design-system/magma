@@ -32,7 +32,7 @@
   --mds-keyboard-key-illumination-light: 0 var(--mds-keyboard-key-illumination-light-size) 0 0
     rgb(255 255 255 / var(--mds-keyboard-key-illumination-light-opacity, 0.5)) inset;
   --mds-keyboard-key-padding: --spacing(100);
-  --mds-keyboard-key-transition-duration: 300ms;
+  --mds-keyboard-key-transition-duration: var(--duration-300);
 
   /* internal */
   --icon-size: --spacing(600);

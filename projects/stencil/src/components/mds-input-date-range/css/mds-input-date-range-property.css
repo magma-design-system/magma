@@ -17,7 +17,7 @@
 
 @property --mds-input-date-range-calendar-width {
   inherits: true;
-  initial-value: 22rem;
+  initial-value: --spacing(8800);
   syntax: '<length>';
 }
 

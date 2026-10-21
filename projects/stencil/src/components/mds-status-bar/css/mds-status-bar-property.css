@@ -17,6 +17,6 @@
 
 @property --mds-status-bar-max-width {
   inherits: true;
-  initial-value: 500px;
+  initial-value: --spacing(12500);
   syntax: '<length>';
 }

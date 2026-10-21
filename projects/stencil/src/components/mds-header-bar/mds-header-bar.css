@@ -9,7 +9,7 @@
     --mds-header-icon-color,
     var(--mds-header-color, rgb(var(--magma-text-muted)))
   );
-  --mds-header-bar-transition-duration: 500ms;
+  --mds-header-bar-transition-duration: var(--duration-500);
   --private-header-bar-transition-duration: var(--mds-header-bar-transition-duration);
 
   background-color: rgb(var(--magma-surface-raised));

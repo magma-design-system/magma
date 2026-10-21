@@ -11,6 +11,8 @@
 :host {
   --mds-progress-background: rgb(var(--magma-wash-strong));
   --mds-progress-color: rgb(var(--magma-accent-fg));
+
+  /* stylelint-disable-next-line magma/token-values -- 750ms no --duration-* step says it */
   --mds-progress-duration: 750ms;
   --private-progress-duration: var(--mds-progress-duration);
   --mds-progress-transition-duration: var(--duration-300);

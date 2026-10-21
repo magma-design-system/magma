@@ -15,6 +15,8 @@
 
 @property --mds-button-await-duration {
   inherits: true;
+
+  /* stylelint-disable-next-line magma/token-values -- 725ms, one turn of the await spinner as in mds-spinner, no --duration-* step says it */
   initial-value: 0.725s;
   syntax: '<time>';
 }
@@ -51,7 +53,7 @@
 
 @property --mds-button-border-tone-outline-hover-width {
   inherits: true;
-  initial-value: 3px;
+  initial-value: --spacing(75);
   syntax: '<length>';
 }
 

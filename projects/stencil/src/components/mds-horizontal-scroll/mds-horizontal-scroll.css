@@ -72,7 +72,7 @@
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  transition-duration: 200ms;
+  transition-duration: var(--duration-200);
   transition-property: opacity, scale, transform;
 }
 

@@ -1,5 +1,4 @@
 .actions-container {
-  --duration-300: 300ms;
   --ease: var(--ease-in-out-expo);
 
   align-items: center;

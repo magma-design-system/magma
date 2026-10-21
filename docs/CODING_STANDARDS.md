@@ -147,6 +147,8 @@ The rules below are the ones that constrain authoring decisions. Many additional
 | `time-min-milliseconds: 100`                                 | Animation/transition durations must be ≥ 100 ms                     |
 | `length-zero-no-unit: null`                                  | `0px` is allowed (rule is disabled)                                 |
 
+In the component sheets `magma/token-values` also rejects `px`, `rem`, `s` and `ms` literals: see [Component sheets: values from the tokens](#component-sheets-values-from-the-tokens).
+
 ```css
 /* ✅ correct */
 .foo {
@@ -162,6 +164,29 @@ The rules below are the ones that constrain authoring decisions. Many additional
   transition: opacity 50ms; /* below 100ms minimum */
 }
 ```
+
+### Component sheets: values from the tokens
+
+`projects/stencil/stylelint.config.mjs` turns on `magma/token-values`, a local plugin ([`projects/stencil/scripts/stylelint-token-values.mjs`](../projects/stencil/scripts/stylelint-token-values.mjs)), for `src/components/**/*.css`: a `px`, `rem`, `s` or `ms` literal in a declaration value is an error, and the message names the token that says it. The rule it enforces is "Values come from the tokens" in [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md) (Authoring rules).
+
+| Literal                                  | Write instead                                                                                                 |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| a length: `16px`, `1rem`, `3px`, `-8px`  | `--spacing(N)`, N = px x 25 or rem x 400: `--spacing(400)`, `--spacing(400)`, `--spacing(75)`, `--spacing(-200)` |
+| a radius                                 | a `var(--magma-radius-*)` step                                                                                |
+| a duration on the scale: `300ms`, `0.5s` | `var(--duration-300)`, `var(--duration-500)` (the steps are 75, 100, 150, 200, 300, 500, 700 and 1000 ms)    |
+
+Not reported: `0` (`0s` keeps its unit, a `<time>` needs it), the `1px` hairline and the `1px` floor of `minmax(1px, 1fr)`, `url()`, and the conditions of `@media` and `@container`, where `var()` is not allowed. The units the plugin does not own (`%`, `fr`, `vw`, `lh`, `deg`) pass. The `initial-value` of a `-property.css` registration is checked too: `projects/styles/scripts/properties.ts` folds `var()` and `--spacing()` down to the literal the registration needs.
+
+A value no token can say keeps its literal under a disable comment that gives the reason, so that review sees it:
+
+```css
+:host {
+  /* stylelint-disable-next-line magma/token-values -- 725ms, one turn of the spinner, no --duration-* step says it */
+  --mds-spinner-duration: 0.725s;
+}
+```
+
+Two kinds so far: a duration off the scale, and a length that the component's TypeScript reads with `cssSizeToNumber` (`@common/unit`), which parses `7px` but not the `calc(var(--spacing) * 175)` that `--spacing(175)` compiles to.
 
 ### Selectors
 
@@ -262,7 +287,7 @@ mds-button[type="primary"] { … }
 
 ### Project-specific notes
 
-`projects/stencil/stylelint.config.mjs` extends the root and ignores compiled output (`**/dist/*.css`) and non-CSS files (`*.js`, `*.jsx`, `*.svg`). The only rule override is `import-notation: 'string'`.
+`projects/stencil/stylelint.config.mjs` extends the root and ignores compiled output (`**/dist/*.css`) and non-CSS files (`*.js`, `*.jsx`, `*.svg`). It overrides `import-notation: 'string'` and loads the local `magma/token-values` plugin, on for `src/components/**/*.css` only ([Component sheets: values from the tokens](#component-sheets-values-from-the-tokens)).
 
 ### Running Stylelint
 
@@ -282,6 +307,7 @@ When writing or editing code in this monorepo:
 - **CSS authoring**:
   - Use `rgb(r g b / a)` modern syntax with numeric alpha; never named colors, never `hsl`/`lch`, never short hex
   - Use `px`, `rem`, `%`, `vh`/`vw` for sizing; never `em`/`cm`/`in`/`mm`/`pc`/`pt`
+  - In component sheets, lengths and durations come from the tokens (`--spacing(N)`, `var(--magma-radius-*)`, `var(--duration-*)`); a literal only for `0` and the `1px` hairline (`magma/token-values`)
   - Sort declarations alphabetically; custom props first; one declaration per line
   - Use specific `background-*` properties, never the `background` shorthand
   - No vendor prefixes (except `-webkit-overflow-scrolling`)

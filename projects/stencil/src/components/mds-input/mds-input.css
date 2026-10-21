@@ -43,8 +43,8 @@
   --mds-input-placeholder-hover-color: var(--mds-input-placeholder-default-color);
   --mds-input-ring: 0 0 0 1px rgb(var(--mds-input-variant-color-rgb) / 0.1);
   --mds-input-shadow:
-    0 1px 3px 0 rgb(var(--mds-input-variant-color-rgb) / 0.1),
-    0 1px 2px 0 rgb(var(--mds-input-variant-color-rgb) / 0.06);
+    0 1px --spacing(75) 0 rgb(var(--mds-input-variant-color-rgb) / 0.1),
+    0 1px --spacing(50) 0 rgb(var(--mds-input-variant-color-rgb) / 0.06);
   --mds-input-textarea-field-sizing: content;
   --mds-input-textarea-resize: none;
   --mds-input-textarea-max-height: --spacing(6400);
@@ -63,15 +63,15 @@
   --mds-input-transition-duration: var(--duration-300);
 
   /* private */
-  --mds-input-controls-border: 2px solid rgb(var(--magma-border-muted));
+  --mds-input-controls-border: --spacing(50) solid rgb(var(--magma-border-muted));
   --mds-input-controls-color: rgb(var(--magma-text-muted));
   --private-input-transition-duration: var(--mds-input-transition-duration);
 
   /* the size of the field, lg by default: what makes up its height and its density */
-  --private-input-height: 3rem;
+  --private-input-height: --spacing(1200);
   --private-input-padding-block: --spacing(300);
   --private-input-padding-inline: --spacing(400);
-  --private-input-icon-size: 24px;
+  --private-input-icon-size: --spacing(600);
   --private-input-icon-offset-block: --spacing(300);
   --private-input-icon-offset-inline: --spacing(300);
   --private-input-control-size: --spacing(1200);
@@ -170,10 +170,10 @@
 .input:focus {
   @apply outline-hidden;
 
-  --mds-input-ring: 0 0 0 3px rgb(var(--mds-input-variant-color-rgb) / 1);
+  --mds-input-ring: 0 0 0 --spacing(75) rgb(var(--mds-input-variant-color-rgb) / 1);
   --mds-input-shadow:
-    0 4px 6px 3px rgb(var(--mds-input-variant-color-rgb) / 0.1),
-    0 2px 4px -1px rgb(var(--mds-input-variant-color-rgb) / 0.06);
+    0 --spacing(100) --spacing(150) --spacing(75) rgb(var(--mds-input-variant-color-rgb) / 0.1),
+    0 --spacing(50) --spacing(100) -1px rgb(var(--mds-input-variant-color-rgb) / 0.06);
 }
 
 .input:disabled {

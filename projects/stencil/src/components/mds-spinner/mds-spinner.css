@@ -3,6 +3,8 @@
  */
 
 :host {
+
+  /* stylelint-disable-next-line magma/token-values -- 725ms, one turn of the spinner, no --duration-* step says it */
   --mds-spinner-duration: 0.725s;
   --private-spinner-duration: var(--mds-spinner-duration);
 

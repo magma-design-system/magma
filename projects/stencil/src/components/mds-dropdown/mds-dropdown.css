@@ -31,21 +31,21 @@
   /* multiplies the alpha of the default shadow: 3 in dark (css/mds-dropdown-pref-mode.css) */
   --private-dropdown-shadow-strength: 1;
   --mds-dropdown-drop-shadow: drop-shadow(
-      0 10px 8px
+      0 --spacing(250) --spacing(200)
         rgb(var(--mds-dropdown-drop-shadow-color-rgb) / calc(0.05 * var(--private-dropdown-shadow-strength)))
     )
     drop-shadow(
-      0 4px 3px
+      0 --spacing(100) --spacing(75)
         rgb(var(--mds-dropdown-drop-shadow-color-rgb) / calc(0.15 * var(--private-dropdown-shadow-strength)))
     )
     drop-shadow(
       0 0 1px
         rgb(var(--mds-dropdown-drop-shadow-color-rgb) / calc(0.15 * var(--private-dropdown-shadow-strength)))
     );
-  --mds-dropdown-duration: 0.5s;
+  --mds-dropdown-duration: var(--duration-500);
   --private-dropdown-duration: var(--mds-dropdown-duration);
   --mds-dropdown-ease: var(--ease-out-expo);
-  --mds-dropdown-mouseover-delay: 0.5s;
+  --mds-dropdown-mouseover-delay: var(--duration-500);
   --mds-dropdown-transform-from: scale(0.9) translateY(-3%);
   --mds-dropdown-transform-to: scale(1) translate(0, 0);
   --mds-dropdown-z-index: var(--magma-dropdown-z-index);

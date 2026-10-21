@@ -55,7 +55,7 @@
   --mds-input-switch-box-padding-md: --spacing(100);
   --mds-input-switch-box-padding-sm: --spacing(100);
   --mds-input-switch-box-padding: var(--mds-input-switch-box-padding-md);
-  --mds-input-switch-duration: 300ms;
+  --mds-input-switch-duration: var(--duration-300);
   --mds-input-switch-icon-color-checked-disabled: rgb(var(--magma-text-disabled));
   --mds-input-switch-icon-color-checked: rgb(var(--magma-accent-emphasis));
   --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--magma-text-disabled));

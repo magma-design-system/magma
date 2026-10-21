@@ -26,12 +26,12 @@
 :host {
   --mds-notification-color: rgb(var(--magma-text-on-emphasis));
   --mds-notification-dot-background: rgb(var(--magma-danger-emphasis));
-  --mds-notification-dot-padding: 6px;
+  --mds-notification-dot-padding: --spacing(150);
   --mds-notification-min-width: var(--mds-notification-size);
   --mds-notification-ring-color: rgb(var(--magma-text-on-emphasis));
-  --mds-notification-ring-size: 2px;
-  --mds-notification-size: 20px;
-  --mds-notification-transition-duration: 200ms;
+  --mds-notification-ring-size: --spacing(50);
+  --mds-notification-size: --spacing(500);
+  --mds-notification-transition-duration: var(--duration-200);
   --private-notification-transition-duration: var(--mds-notification-transition-duration);
   --mds-notification-dot-transition-duration: var(--duration-300);
   --private-notification-dot-transition-duration: var(--mds-notification-dot-transition-duration);

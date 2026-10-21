@@ -11,6 +11,6 @@
 
 @property --mds-radial-menu-item-transition-duration {
   inherits: true;
-  initial-value: 500ms;
+  initial-value: var(--duration-500);
   syntax: '<time>';
 }

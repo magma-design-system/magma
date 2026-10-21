@@ -18,7 +18,7 @@
 
 @property --mds-header-backdrop-blur-strength {
   inherits: true;
-  initial-value: 2px;
+  initial-value: --spacing(50);
   syntax: '<length>';
 }
 
