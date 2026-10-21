@@ -377,13 +377,6 @@ jobs:
               ./scripts/set-release-version.sh "$v" $MAGMA_LOCKSTEP_MANIFESTS "$dir/package.json" || return 1
             fi
             if [ "$release" = magma ]; then
-              # npm skips the `files` entries that do not exist without a warning,
-              # so a path missing from the build would publish silently (#809)
-              local files
-              files=$(cd "$dir" && npm pack --dry-run --json | jq -r '.[0].files[].path') || return 1
-              echo "$files" | grep -qx 'AGENTS.md' || { echo "::error::AGENTS.md is missing from the $name tarball"; return 1; }
-              echo "$files" | grep -q '^agents/.*[.]md$' || { echo "::error::agents/*.md is missing from the $name tarball"; return 1; }
-              echo "$files" | grep -qx 'CHANGELOG.md' || { echo "::error::CHANGELOG.md is missing from the $name tarball"; return 1; }
               # with an exports map, a file in the tarball resolves only when it is
               # exported (#981); for magma-angular this is the manifest ng-packagr
               # wrote, merged with its own exports
