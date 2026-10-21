@@ -6,7 +6,8 @@
     "experimentalDecorators": true,
     "lib": [
       "dom",
-      "es2017"
+      "dom.iterable",
+      "es2022"
     ],
     "esModuleInterop": true,
     "jsx": "react",

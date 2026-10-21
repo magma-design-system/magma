@@ -128,7 +128,7 @@ describe('mds-pref-language', () => {
 
     it('of three letters is picked like the others', async () => {
       const consoleError = vi.spyOn(console, 'error');
-      const { root, waitForChanges } = await render(`
+      const { root, waitForChanges } = await render<HTMLMdsPrefLanguageElement>(`
         <mds-pref-language set="it">
           <mds-pref-language-item code="it"></mds-pref-language-item>
           <mds-pref-language-item code="haw"></mds-pref-language-item>
@@ -147,7 +147,9 @@ describe('mds-pref-language', () => {
     it('that is no language tag is ignored on load', async () => {
       const consoleError = vi.spyOn(console, 'error');
 
-      const { root } = await render('<mds-pref-language set="Italian"></mds-pref-language>');
+      const { root } = await render<HTMLMdsPrefLanguageElement>(
+        '<mds-pref-language set="Italian"></mds-pref-language>',
+      );
 
       expect(consoleError).not.toHaveBeenCalled();
       expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('"Italian"'));
@@ -157,7 +159,7 @@ describe('mds-pref-language', () => {
     });
 
     it('that is no language tag is ignored after load, the applied language stays', async () => {
-      const { root, waitForChanges } = await render(
+      const { root, waitForChanges } = await render<HTMLMdsPrefLanguageElement>(
         '<mds-pref-language set="it"></mds-pref-language>',
       );
       const change = vi.fn();
@@ -176,7 +178,9 @@ describe('mds-pref-language', () => {
       localStorage.setItem(STORAGE_KEY, 'not a language');
       document.documentElement.setAttribute('lang', 'el');
 
-      const { root } = await render('<mds-pref-language></mds-pref-language>');
+      const { root } = await render<HTMLMdsPrefLanguageElement>(
+        '<mds-pref-language></mds-pref-language>',
+      );
 
       expect(root.set).toBe('el');
       expect(localStorage.getItem(STORAGE_KEY)).toBe('el');

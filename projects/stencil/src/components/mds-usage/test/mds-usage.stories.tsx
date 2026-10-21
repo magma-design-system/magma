@@ -1,4 +1,5 @@
 import { usageDictionary } from '../meta/dictionary';
+import { UsageType } from '../meta/types';
 import { h } from '@stencil/core';
 
 export default {
@@ -61,7 +62,7 @@ export const Variants = {
   render: () => (
     <div style={{ display: 'grid', gap: '1rem' }}>
       {usageDictionary.map((variant) => (
-        <mds-usage key={variant} variant={variant}>
+        <mds-usage key={variant} variant={variant as UsageType}>
           <mds-text>Ogni variante ha un'icona che ne richiama il significato.</mds-text>
         </mds-usage>
       ))}

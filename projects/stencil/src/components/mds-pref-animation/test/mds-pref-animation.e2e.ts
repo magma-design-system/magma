@@ -81,7 +81,7 @@ describe('mds-pref-animation', () => {
     });
 
     it('set after load, or the attribute removed, leaves the applied mode in place', async () => {
-      const { root, waitForChanges } = await render(
+      const { root, waitForChanges } = await render<HTMLMdsPrefAnimationElement>(
         '<mds-pref-animation mode="reduce"></mds-pref-animation>',
       );
       const consoleError = vi.spyOn(console, 'error');

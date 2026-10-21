@@ -1046,7 +1046,7 @@ export const SortingExternal = {
     sorting: 'external',
   },
   play: async ({ canvasElement, userEvent }) => {
-    const header = canvasElement.querySelector<HTMLElement>('mds-table-header-cell')!;
+    const header = canvasElement.querySelector('mds-table-header-cell') as HTMLElement;
     const firstNumber = () =>
       canvasElement.querySelector('mds-table-row mds-table-cell')!.textContent!.trim();
     await waitFor(() => expect(header).toHaveAttribute('hydrated'));

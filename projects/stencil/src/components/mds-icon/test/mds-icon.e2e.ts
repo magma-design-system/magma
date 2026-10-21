@@ -210,7 +210,7 @@ describe('mds-icon', () => {
       `data:image/svg+xml;base64,${btoa(String.fromCharCode(...new TextEncoder().encode(svg)))}`;
 
     const show = async (name: string) => {
-      const rendered = await render('<mds-icon></mds-icon>');
+      const rendered = await render<HTMLMdsIconElement>('<mds-icon></mds-icon>');
       rendered.root.name = name;
       await rendered.waitForChanges();
       return rendered;

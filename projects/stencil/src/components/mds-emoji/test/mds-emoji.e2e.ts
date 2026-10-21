@@ -60,7 +60,9 @@ describe('mds-emoji', () => {
 
     it('set after load leaves the face it shows', async () => {
       const consoleError = vi.spyOn(console, 'error');
-      const { root, waitForChanges } = await render('<mds-emoji name="simi"></mds-emoji>');
+      const { root, waitForChanges } = await render<HTMLMdsEmojiElement>(
+        '<mds-emoji name="simi"></mds-emoji>',
+      );
 
       root.setAttribute('name', 'nobody');
       await waitForChanges();
