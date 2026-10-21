@@ -47,9 +47,12 @@
 
 /* Above the first child there is no sibling elbow but the icon of the item it hangs from,
    and the line has to end on the CENTRE of that icon, which covers it. A radius more - the
-   travel every other child needs - and the line came out of the top of the icon. */
+   travel every other child needs - and the line came out of the top of the icon.
+   First and last are counted among the ITEMS (-of-type): the actions of the parent are
+   light DOM children of it too, written before or after the items, so the first item is
+   seldom its :first-child and the last one not always its :last-child. */
 
-:host(:first-child) .tree-branch {
+:host(:first-of-type) .tree-branch {
   --pos-y: calc(var(--mds-tree-item-toggle-size) / 2 * -1);
   --tree-height: calc(
     var(--mds-tree-item-toggle-size) + var(--mds-tree-item-branch-border-size) / 2
@@ -79,7 +82,7 @@
 
 /* border used when component has children */
 
-:host(:not(:last-child)) .header--has-children .tree-node::after {
+:host(:not(:last-of-type)) .header--has-children .tree-node::after {
   --size: calc(
     calc(var(--mds-tree-item-toggle-size) / 2) + var(--mds-tree-item-branch-border-radius)
   );
@@ -102,7 +105,7 @@
   z-index: 1;
 }
 
-:host(:not(:last-child)) .children--has-children::before {
+:host(:not(:last-of-type)) .children--has-children::before {
 
   /* border-left-color: green; */
   border-left-color: var(--mds-tree-item-branch-border-color);
