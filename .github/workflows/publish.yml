@@ -42,8 +42,10 @@
 # commit was tested by its own CI, which the packages job checks, and the
 # release commit only adds versions, pins, lock and changelogs on top of it.
 #
-# dry-run: the plan alone, in the job summary, with no approval needed; it may
-# be dispatched on any branch.
+# dry-run: the plan alone, in the job summary, with no approval needed. It may
+# be dispatched on any branch: the plan is then what that branch would release
+# (semantic-release treats it as the stable branch, since main is not a local
+# branch of the checkout it is pointed at).
 #
 # Publishing again: a dispatch on the tip of main that finds nothing to release
 # publishes the manifest versions missing from npm (a failed stable publish; a
@@ -243,10 +245,12 @@ jobs:
       packages: ${{ needs.packages.outputs.list }}
       packages-filter: ${{ needs.packages.outputs.filter }}
       channel: ${{ needs.packages.outputs.channel }}
+      # main on main; on a dry-run from another branch, that branch (see the header)
+      stable-branches: ${{ github.ref_name }}
       dry-run: true
 
   approve:
-    name: Approve the ${{ inputs.channel }} release
+    name: Approve the release
     needs: [plan]
     if: ${{ github.event_name == 'workflow_dispatch' && !inputs.dry-run }}
     runs-on: ubuntu-latest
