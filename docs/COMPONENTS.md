@@ -34,7 +34,7 @@ Pick by task, not by preference:
 | Typed prop value sets (what `tone` / `variant` / `size` accept) | [`components.d.ts`](../projects/stencil/src/components.d.ts) + [`type/*.ts`](../projects/stencil/src/type/) - the versioned source of truth |
 | Full type metadata, cross-references (for codemods / tooling)   | the per-component `documentation.json` after a build; otherwise build first or fall back to `components.d.ts`                              |
 
-Avoid loading `dist/documentation.json` as a default - it holds all 115 components (over 2 MB). Reach for the per-component one only when you specifically need the structured type metadata it carries.
+Avoid loading `dist/documentation.json` as a default - it holds all 116 components (over 2 MB). Reach for the per-component one only when you specifically need the structured type metadata it carries.
 
 ## The `usage/` contract
 
@@ -104,6 +104,7 @@ Subparts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their 
 | `mds-button`           | `<button>` / `<a>` | Interactive action; becomes a hyperlink when `href` is set.       |
 | `mds-button-dropdown`  | -                  | Button that reveals a dropdown menu on activation.                |
 | `mds-button-group`     | -                  | Groups related buttons visually as a single control.              |
+| `mds-link`             | `<a>`              | Link inside running text, or an inline action without `href`.    |
 | `mds-chip`             | -                  | Compact, selectable tag with optional icon and delete action.     |
 | `mds-radial-menu`      | -                  | Circular menu with items arranged radially around a centre point. |
 | `mds-radial-menu-item` | -                  | Single item inside `mds-radial-menu`.                             |

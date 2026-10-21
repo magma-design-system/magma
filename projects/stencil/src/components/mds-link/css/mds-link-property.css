@@ -1,0 +1,41 @@
+/*
+  Document-level registrations for the private lengths mds-link animates.
+
+  This file is NOT imported by mds-link.css, and must never be: an @property rule inside
+  a shadow root registers nothing (the registration map is document-wide and browsers
+  ignore the shadow-tree ones), and this component is shadow: true. The styles build
+  collects every <component>/css/<component>-property.css into globals.css, which the
+  document loads - see projects/styles/scripts/properties.ts.
+
+  Why they are registered: under the pointer the link fills with a tint of its own color
+  (currentcolor), drawn as an inset box-shadow. Transitioning the box-shadow itself makes
+  Chrome interpolate that color, and a color-mix() of currentcolor interpolates to
+  transparent until the last frame: the fill popped in at the end. Registered as lengths,
+  the two heights transition on their own and the box-shadow is only recomputed from
+  them, so its color is never interpolated. Unregistered (an older globals.css), they
+  switch at once: the fill still shows, without the rise.
+
+  inherits is false: they are set and read on the same element, the link in the shadow
+  root.
+*/
+
+@property --private-link-band {
+  inherits: false;
+  initial-value: 0px;
+  syntax: '<length>';
+}
+
+@property --private-link-fill {
+  inherits: false;
+  initial-value: 0px;
+  syntax: '<length>';
+}
+
+/* how much of its color the underline takes: the tint of the weak tone rises to the whole color
+   under the pointer, with the fill, and the color itself is never interpolated either */
+
+@property --private-link-ink {
+  inherits: false;
+  initial-value: 100%;
+  syntax: '<percentage>';
+}

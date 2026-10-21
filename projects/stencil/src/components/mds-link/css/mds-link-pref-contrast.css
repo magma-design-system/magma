@@ -1,0 +1,31 @@
+/* Contrast preference. The component reflects the resolved mode from <html> onto
+ * its host as pref-contrast (see subscribePreference in @common/preference). The
+ * color of the link is a role, which already gains contrast; the tint of the weak
+ * line does not, so under `more` the line takes the full color. The marker keeps
+ * its band, which the text sits on, and gains a thin underline in the color of the
+ * link. `system` and no controller follow the OS via @media. Cross-browser, no
+ * :host-context. */
+
+:host([pref-contrast='more'][tone='weak']:not([underline='marker'])) .link {
+  --private-link-ink: 100%;
+}
+
+:host([pref-contrast='more'][underline='marker']) .link {
+  text-decoration-color: currentcolor;
+  text-decoration-line: underline;
+  text-decoration-thickness: --spacing(25);
+}
+
+@media (prefers-contrast: more) {
+  :host([pref-contrast='system'][tone='weak']:not([underline='marker'])) .link,
+  :host(:not([pref-contrast])[tone='weak']:not([underline='marker'])) .link {
+    --private-link-ink: 100%;
+  }
+
+  :host([pref-contrast='system'][underline='marker']) .link,
+  :host(:not([pref-contrast])[underline='marker']) .link {
+    text-decoration-color: currentcolor;
+    text-decoration-line: underline;
+    text-decoration-thickness: --spacing(25);
+  }
+}

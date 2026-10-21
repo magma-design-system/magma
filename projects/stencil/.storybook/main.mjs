@@ -1,4 +1,5 @@
 // https://www.mokkapps.de/blog/run-build-and-deploy-stencil-and-storybook-from-one-repository
+import { existsSync, watch } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -51,9 +52,35 @@ const iconsauceBeforeTailwind = () => {
   };
 };
 
+// The stories load the components from dist/esm (preview.jsx), which `stencil build --watch`
+// rewrites on every save. Vite keeps the transformed copy of each of those files in memory and
+// its own watcher misses the rewrite, so the page kept the old component until a restart (a
+// request with `?t=` got the new one). Watch dist/esm here, drop the cached copies and reload the
+// page, once per rebuild: a rebuild writes many files in a row.
+const reloadOnDistRewrite = () => ({
+  name: 'magma-reload-on-dist-rewrite',
+  apply: 'serve',
+  configureServer(server) {
+    const esmDir = path.resolve(projectDir, 'dist/esm');
+    if (!existsSync(esmDir)) return;
+    let pending;
+    const watcher = watch(esmDir, () => {
+      clearTimeout(pending);
+      pending = setTimeout(() => {
+        server.environments.client.moduleGraph.invalidateAll();
+        server.hot.send({ type: 'full-reload' });
+      }, 300);
+    });
+    // the vitest `storybook` project shares this config: never keep its process alive
+    watcher.unref();
+    server.httpServer?.once('close', () => watcher.close());
+  },
+});
+
 // Shared by `storybook dev|build` and by the `storybook` project of vitest.config.mts
 const viteFinal = async (config) =>
   mergeConfig(config, {
+    plugins: [reloadOnDistRewrite()],
     resolve: { alias },
     css: {
       // the same pipeline the webpack builder ran through postcss-loader

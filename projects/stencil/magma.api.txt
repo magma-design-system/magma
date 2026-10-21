@@ -963,6 +963,26 @@ mds-label css --mds-label-color
 mds-label css --mds-label-icon-color
 mds-label css --mds-label-selection-background
 mds-label css --mds-label-selection-color
+mds-link encapsulation shadow
+mds-link prop href (attr href) [reflect]: string | undefined
+mds-link prop icon (attr icon) [reflect]: string | undefined
+mds-link prop iconPosition (attr icon-position) [reflect]: "left" | "right" | undefined = 'right'
+mds-link prop label (attr label) [reflect]: string | undefined
+mds-link prop target (attr target): "blank" | "self" = 'self'
+mds-link prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'strong'
+mds-link prop underline (attr underline) [reflect]: "dotted" | "marker" | "solid" | undefined = 'solid'
+mds-link prop variant (attr variant) [reflect]: "inherit" | "primary" | undefined = 'primary'
+mds-link slot (default)
+mds-link part icon
+mds-link part link
+mds-link css --mds-link-background-hover
+mds-link css --mds-link-color
+mds-link css --mds-link-icon-gap
+mds-link css --mds-link-icon-size
+mds-link css --mds-link-transition-duration
+mds-link css --mds-link-underline-color
+mds-link css --mds-link-underline-offset
+mds-link css --mds-link-underline-thickness
 mds-list encapsulation shadow
 mds-list slot (default)
 mds-list-item encapsulation shadow
@@ -1731,6 +1751,8 @@ type InputTipPositionType = 'top' | 'bottom';
 type Interaction = 'click' | 'rightclick';
 type KeyboardKeyName = "option" | "a" | "1" | "2" | "b" | "i" | "p" | "q" | "s" | "u" | "end" | "0" | "3" | "4" | "5" | "6" | "7" | "v" | "shift" | "g" | "8" | "9" | "alt" | "altleft" | "altright" | "arrowdown" | "arrowleft" | "arrowright" | "arrowup" | "backspace" | "c" | "capslock" | "command" | "commandleft" | "commandright" | "control" | "controlleft" | "controlright" | "d" | "delete" | "e" | "enter" | "escape" | "f" | "f1" | "f10" | "f11" | "f12" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" | "f8" | "f9" | "h" | "home" | "j" | "k" | "l" | "m" | "n" | "o" | "optionleft" | "optionright" | "pagedown" | "pageup" | "r" | "shiftleft" | "shiftright" | "space" | "t" | "tab" | "w" | "windows" | "windowsleft" | "windowsright" | "x" | "y" | "z"
 type KeyboardTest = 'pass' | 'fail';
+type LinkUnderlineType = "marker" | "solid" | "dotted"
+type LinkVariantType = "primary" | "inherit"
 type LoadingType = "eager" | "lazy"
 interface MdsAccordionEventDetail { children: NodeListOf<HTMLMdsAccordionItemElement>; selected: string; }
 interface MdsAccordionItemEventDetail { id: string; selected: boolean; }
