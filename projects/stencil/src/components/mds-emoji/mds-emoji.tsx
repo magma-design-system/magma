@@ -98,15 +98,26 @@ export class MdsEmoji {
 
   private svgRootEl: SVGElement;
 
+  // A move disconnects the host and connects it again, while componentDidLoad runs
+  // once: the pointer listener follows the connection, so a moved emoji still hears it.
+  connectedCallback(): void {
+    if (typeof window === 'undefined') return;
+    window.addEventListener('mousemove', this.handleFollowMouse);
+  }
+
   componentDidLoad(): void {
     if (typeof window === 'undefined') return;
     this.updateCSSCustomProps();
-    window.addEventListener('mousemove', this.handleFollowMouse);
     this.checkNameChanged(this.name);
   }
 
   disconnectedCallback(): void {
     if (typeof window === 'undefined') return;
+    // In the lazy build the instance can hear of a disconnect after the host is back on
+    // the page. GSAP causes one: to read the transform of a host that is not drawn (a
+    // slotted emoji before its slot is rendered) it appends it to <html> for a moment
+    // and puts it back. The emoji is still mounted then, nothing to tear down.
+    if (this.host.isConnected) return;
     window.removeEventListener('mousemove', this.handleFollowMouse);
     this.isThinking = false;
     this.isBlinking = false;
