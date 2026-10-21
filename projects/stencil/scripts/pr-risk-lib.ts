@@ -353,6 +353,17 @@ export const commitRelease = (message: string): Bump | null => {
 export const declaredRelease = (messages: string[]): Bump | null =>
   maxBump(messages.map(commitRelease));
 
+/**
+ * The `commit-scope` of a package in the PACKAGES list of the publish workflow, read inside its
+ * own `{"name": ...}` object: the comment above the list names the package too, and the first
+ * `"name": "magma"` of the file once led to the scope of the next object, design-tokens.
+ */
+export const releaseCommitScope = (workflow: string, name: string): string | undefined =>
+  // up to the next object at most: a value such as `${version}` has braces of its own
+  new RegExp(`\\{"name":\\s*"${name}"(?:(?!\\{"name")[\\s\\S])*?"commit-scope":\\s*"([^"]+)"`).exec(
+    workflow,
+  )?.[1];
+
 /** True when the commits declare at least the release the API change needs. */
 export const semverOk = (required: Bump | null, declared: Bump | null): boolean =>
   bumpRank(declared) >= bumpRank(required);
