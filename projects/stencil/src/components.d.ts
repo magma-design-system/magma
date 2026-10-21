@@ -1680,7 +1680,7 @@ export namespace Components {
          */
         "autofocus": boolean;
         /**
-          * Specifies that an <input> element should be pre-selected when the page loads (for type="checkbox" or type="radio")
+          * Specifies that an `<input>` element should be pre-selected when the page loads (for `type="checkbox"` or `type="radio"`)
          */
         "checked"?: boolean;
         /**
@@ -1701,7 +1701,7 @@ export namespace Components {
          */
         "indeterminate"?: boolean;
         /**
-          * Specifies the name of an <input> element
+          * Specifies the name of an `<input>` element
           * @default ''
          */
         "name": string;
@@ -6365,7 +6365,7 @@ declare namespace LocalJSX {
          */
         "autofocus"?: boolean;
         /**
-          * Specifies that an <input> element should be pre-selected when the page loads (for type="checkbox" or type="radio")
+          * Specifies that an `<input>` element should be pre-selected when the page loads (for `type="checkbox"` or `type="radio"`)
          */
         "checked"?: boolean;
         /**
@@ -6390,7 +6390,7 @@ declare namespace LocalJSX {
          */
         "indeterminate"?: boolean;
         /**
-          * Specifies the name of an <input> element
+          * Specifies the name of an `<input>` element
           * @default ''
          */
         "name"?: string;

@@ -154,7 +154,7 @@ describe('mds-img', () => {
       const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
       const consoleError = vi.spyOn(console, 'error');
 
-      const { root, waitForChanges } = await render(
+      const { root, waitForChanges } = await render<HTMLMdsImgElement>(
         '<mds-img src="/assets/images/logo.svg" srcset-consumption="/low.svg low, /medium.svg, /high.svg  high,"></mds-img>',
       );
       root.srcsetConsumption = '/medium.svg medium';

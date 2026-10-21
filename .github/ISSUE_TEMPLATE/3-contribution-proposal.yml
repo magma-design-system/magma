@@ -2,7 +2,6 @@ name: 🛠️ Contribution Proposal
 description: You want to build a contribution yourself (code and/or design). The core team will pair you with a mentor.
 title: '[Contribution]: '
 labels: ['feature']
-projects: ['magma-design-system/magma']
 body:
   - type: markdown
     attributes:

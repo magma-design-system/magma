@@ -5,6 +5,10 @@
 # inside the Maggioli network and stopped updating with the move away from
 # GitLab CI.
 #
+# publish.yml dispatches it after a release of svg-icons: the chore(release)
+# commit is pushed with [skip ci] and the mds-icon story shows the svg-icons
+# version read from its manifest.
+#
 # The stencil workflow builds and tests the same commit on the same push, the
 # stories included (test-storybook and `storybook build`, in `magma / test`):
 # this one waits for those tests, publishes nothing when they fail, and

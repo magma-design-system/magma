@@ -68,8 +68,8 @@ export class MdsInputSwitch {
   @Prop({ reflect: true }) readonly autofocus: boolean;
 
   /**
-   * Specifies that an <input> element should be pre-selected
-   * when the page loads (for type="checkbox" or type="radio")
+   * Specifies that an `<input>` element should be pre-selected
+   * when the page loads (for `type="checkbox"` or `type="radio"`)
    */
   @Prop({ mutable: true, reflect: true }) checked?: boolean;
 
@@ -94,7 +94,7 @@ export class MdsInputSwitch {
   @Prop({ reflect: true, mutable: true }) indeterminate?: boolean;
 
   /**
-   * Specifies the name of an <input> element
+   * Specifies the name of an `<input>` element
    */
   @Prop({ reflect: true }) readonly name: string = '';
 

@@ -11,6 +11,7 @@ import { preferenceStore } from '@common/preference';
  * @slot detail - Add `HTML elements` or `components` to this slot.
  * @part spinner - The spinner element
  * @part avatar - The avatar element
+ * @part infos - The column that stacks the name (default slot) and the `detail` row
  */
 
 @Component({
@@ -100,7 +101,7 @@ export class MdsEntity {
             part="avatar"
           />
         )}
-        <div class="infos">
+        <div class="infos" part="infos">
           <slot />
           <div class={clsx('details', !this.hasDetails && 'details--hidden')}>
             <slot name="detail" onSlotchange={this.onSlotChange} />

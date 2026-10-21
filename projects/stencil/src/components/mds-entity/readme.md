@@ -18,7 +18,7 @@ The `<mds-entity>` web component represents a person, organization, or resource 
 - **Avatar resolution**: The leading avatar renders only when one of `src`, `icon`, or `initials` is provided. The inner `mds-avatar` resolves a combination pairwise: `icon` hides the `src` image, `initials` hide the `icon`, `src` hides the `initials`, and with all three set it shows none of them.
 - **Await state**: While `await` is set the avatar is suppressed and a spinner is shown in its place, signalling that the entity is still loading.
 - **Conditional regions**: The `detail` and `action` regions are shown only while content is projected into those slots, also when it is added after the first render.
-- **Default slot is the name**: The default slot carries the entity's primary label (text, HTML, or components) and is always rendered inside the info column.
+- **Default slot is the name**: The default slot carries the entity's primary label (text, HTML, or components) and is always rendered inside the info column (the `infos` part), above the `detail` row.
 
 #### Properties & Visual Configurations
 
@@ -149,6 +149,16 @@ Style the entity only through its documented `--mds-entity-*` CSS custom propert
   --mds-entity-detail-color: rgb(var(--magma-text-muted));
   --mds-entity-icon-background: rgb(var(--magma-accent-surface-hover));
   --mds-entity-icon-color: rgb(var(--magma-accent-fg));
+}
+```
+
+#### Spacing Between the Name and the Details
+
+The name and the `detail` row stack in the `infos` part, 2px apart, so a badge or a caption in `detail` never touches the name. When a layout needs more room between them, set the gap of the part; the nodes inside it are not API.
+
+```css
+.entity-roomy mds-entity::part(infos) {
+  gap: calc(var(--spacing) * 100);
 }
 ```
 
@@ -284,10 +294,11 @@ mds-entity {
 
 ## Shadow Parts
 
-| Part        | Description         |
-| ----------- | ------------------- |
-| `"avatar"`  | The avatar element  |
-| `"spinner"` | The spinner element |
+| Part        | Description                                                         |
+| ----------- | ------------------------------------------------------------------- |
+| `"avatar"`  | The avatar element                                                  |
+| `"infos"`   | The column that stacks the name (default slot) and the `detail` row |
+| `"spinner"` | The spinner element                                                 |
 
 
 ## CSS Custom Properties

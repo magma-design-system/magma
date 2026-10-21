@@ -2,7 +2,6 @@ name: 📖 Documentation
 description: Report something wrong, outdated, or missing in the documentation.
 title: '[Docs]: '
 labels: ['docs']
-projects: ['magma-design-system/magma']
 body:
   - type: markdown
     attributes:

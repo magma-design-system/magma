@@ -113,7 +113,8 @@ const TemplateFormActions = (args) => {
       onSubmit={(event) => {
         event.preventDefault();
         const form = event.currentTarget as HTMLFormElement;
-        const { submitter } = event.nativeEvent as SubmitEvent;
+        // React's synthetic event, which Stencil's JSX types as the DOM one
+        const { submitter } = (event as unknown as { nativeEvent: SubmitEvent }).nativeEvent;
         setAction(String(new FormData(form, submitter).get('action')));
       }}
     >

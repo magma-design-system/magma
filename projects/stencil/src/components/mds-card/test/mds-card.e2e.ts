@@ -56,6 +56,59 @@ describe('mds-card', () => {
     });
   });
 
+  // #1040: without a content the footer took the row that stretches, and the actions of a
+  // taller card rose under the header instead of staying at its bottom
+  describe('the footer', () => {
+    // the bottom of the action, measured from the bottom of the card
+    const actionGap = (card: HTMLElement): number =>
+      card.getBoundingClientRect().bottom -
+      card.querySelector('mds-button')!.getBoundingClientRect().bottom;
+    const footer = '<mds-card-footer><mds-button label="Download"></mds-button></mds-card-footer>';
+
+    it('stays at the bottom beside a taller media', async () => {
+      const { root } = await render(`
+        <mds-card style="width: 40rem">
+          <mds-card-media><div style="height: 12rem"></div></mds-card-media>
+          <mds-card-header><mds-text typography="h6">Logo</mds-text></mds-card-header>
+          ${footer}
+        </mds-card>`);
+
+      expect(layoutOf(root)).toBe('layout--fhm');
+      // the padding of mds-card-footer
+      expect(actionGap(root)).toBeCloseTo(16, 0);
+    });
+
+    it('stays at the bottom of a card stretched by its row', async () => {
+      const { root } = await render(`
+        <mds-card style="height: 20rem">
+          <mds-card-header><mds-text typography="h6">Logo</mds-text></mds-card-header>
+          ${footer}
+        </mds-card>`);
+
+      expect(layoutOf(root)).toBe('layout--fh');
+      expect(actionGap(root)).toBeCloseTo(16, 0);
+    });
+
+    it('stays at the bottom when it is alone', async () => {
+      const { root } = await render(`<mds-card style="height: 20rem">${footer}</mds-card>`);
+
+      expect(layoutOf(root)).toBe('layout--f');
+      expect(actionGap(root)).toBeCloseTo(16, 0);
+    });
+
+    it('keeps its place under a content', async () => {
+      const { root } = await render(`
+        <mds-card style="height: 20rem">
+          <mds-card-header><mds-text typography="h6">Logo</mds-text></mds-card-header>
+          <mds-card-content><mds-text>Testo</mds-text></mds-card-content>
+          ${footer}
+        </mds-card>`);
+
+      expect(layoutOf(root)).toBe('layout--cfh');
+      expect(actionGap(root)).toBeCloseTo(16, 0);
+    });
+  });
+
   // #824: the property coloured only the regions, the card kept its own surface around them
   it('paints the card and its regions with its background', async () => {
     const { root } = await render(`

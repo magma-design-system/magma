@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   apiChanges,
@@ -8,6 +9,7 @@ import {
   manifestReachesConsumers,
   memberKey,
   prTier,
+  releaseCommitScope,
   renderReport,
   REPORT_MARKER,
   requiredBump,
@@ -376,6 +378,36 @@ describe('release scope (scripts/release/commit-scopes.mjs)', () => {
     ['revert: feat(mds-button): a', true],
   ])('%s counts for magma: %s', (message, counts) => {
     expect(inScope(message, MAGMA)).toBe(counts);
+  });
+});
+
+describe('releaseCommitScope', () => {
+  it("reads magma's scope from the publish workflow", () => {
+    const workflow = readFileSync(
+      new URL('../../../.github/workflows/publish.yml', import.meta.url),
+      'utf8',
+    );
+
+    expect(releaseCommitScope(workflow, 'magma')).toBe(MAGMA);
+  });
+
+  it('skips a comment that names the package above the list', () => {
+    const workflow = [
+      '# pr-risk.ts reads the commit-scope of "name": "magma"',
+      '[',
+      '  {"name": "design-tokens", "commit-scope": "design-tokens"},',
+      '  {"name": "magma", "working-directory": "projects/stencil",',
+      '   "commit-scope": "magma|stencil"}',
+      ']',
+    ].join('\n');
+
+    expect(releaseCommitScope(workflow, 'magma')).toBe('magma|stencil');
+  });
+
+  it('never takes the scope of another package', () => {
+    const workflow = '[{"name": "magma"}, {"name": "styles", "commit-scope": "styles"}]';
+
+    expect(releaseCommitScope(workflow, 'magma')).toBeUndefined();
   });
 });
 

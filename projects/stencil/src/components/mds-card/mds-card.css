@@ -34,7 +34,11 @@
   grid-area: content;
 }
 
+/* at the end of its area: without a content some layouts give the footer the row that
+   stretches, and its actions rose under the header (#1040) */
+
 .layout:not(.layout--disabled) ::slotted([slot='footer']) {
+  align-self: end;
   grid-area: footer;
 }
 

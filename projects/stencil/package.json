@@ -84,6 +84,7 @@
     "check.ssr": "tsx --tsconfig script.tsconfig.json ./scripts/check-ssr.ts",
     "check.tokens": "tsx --tsconfig script.tsconfig.json ./scripts/check-dangling-tokens.ts",
     "check.treeshaking": "tsx --tsconfig script.tsconfig.json ./scripts/check-treeshaking.ts",
+    "check.types": "tsc --noEmit -p tsconfig.json",
     "check.usage-docs": "tsx --tsconfig script.tsconfig.json ./scripts/check-usage-docs.ts",
     "clean": "tsx --tsconfig script.tsconfig.json ./scripts/clean.ts",
     "dev": "npm run clean && npm run build.icons && stencil build -c stencil.dev.config.ts --docs-readme --watch",

@@ -1,5 +1,10 @@
 {
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // the components stay typed against es2017; the wider lib of tsconfig.json (iterable DOM
+    // collections, Array.prototype.at) only serves the tests and the stories
+    "lib": ["dom", "es2017"]
+  },
   "exclude": [
     "dist",
     "loader",
@@ -8,6 +13,8 @@
     "www",
     "scripts",
     "src/**/*.stories.tsx",
+    // React's `key` on the stories' function components
+    "src/storybook/jsx.d.ts",
     "src/**/*.spec.*",
     "src/**/*.e2e.*",
     "src/test",

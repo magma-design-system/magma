@@ -16,9 +16,7 @@ on:
   merge_group:
 
 concurrency:
-  # one run per ref: a newer push cancels the superseded run. Nothing
-  # downstream (publish) consumes this workflow, so chore(release) pushes
-  # need no per-SHA carve-out here
+  # one run per ref: a newer push cancels the superseded run
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
