@@ -121,6 +121,11 @@ Maggioli):
   (`mi/baseline/send` -> "send"), which names the icon, not the action. Other components
   that accept `icon` without a label require `aria-label` (or `title`) on the host
   element: they do not synthesize one.
+- Links: a word or a phrase inside running text is an `mds-link` inside the `mds-text`,
+  never an `mds-button` (a block-level control with its own typography) nor a raw `<a>`
+  styled by hand. `mds-button` with `href` is for a standalone action that navigates, such
+  as a call to action. `mds-link` with `target="blank"` already tells the assistive
+  technology that it opens a new tab: do not write it in the text.
 - Form components (`mds-input`, `mds-input-date`, `mds-input-date-range`, `mds-input-otp`,
   `mds-input-range`, `mds-input-select`, `mds-input-switch`, `mds-input-upload`) are
   form-associated (`formAssociated`) and behave like the native controls they replace:
