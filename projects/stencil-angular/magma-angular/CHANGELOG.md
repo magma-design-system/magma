@@ -7,6 +7,19 @@ package.
 It is released together with `magma`, at the same version: the sections are the
 releases of `magma`.
 
+## [magma@2.4.1] - 2026-10-21
+
+### Bug Fixes
+
+- *(mds-emoji)* Read CSS custom properties once the emoji has a computed style
+- *(mds-emoji)* Keep hearing the pointer when the host is moved
+- *(mds-tree-item)* Count the first and the last child among the items
+- *(mds-input-switch)* Keep the page still when clicked in a scrolled box
+
+### Documentation
+
+- *(magma)* Describe the single trunk main and the manual release
+
 ## [magma@2.4.0] - 2026-10-20
 
 ### Bug Fixes
