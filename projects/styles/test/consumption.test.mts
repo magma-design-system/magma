@@ -65,6 +65,14 @@ const dtcgNames = new Set(dtcgTokens.keys())
 let ds: Awaited<ReturnType<typeof __unstable__loadDesignSystem>>
 const compile = (classes: string[]) => ds.candidatesToCss(classes)
 
+/** The value the last declaration of a class sets, with the var() of the theme resolved. */
+const WHOLE_VAR = /^var\((--[a-z0-9-]+)\)$/
+const lastValue = (css: string | null) => {
+  let value = [...(css ?? '').matchAll(/:\s*([^;]+);/g)].at(-1)?.[1].trim()
+  while (value && WHOLE_VAR.test(value)) value = themeVariables.get(WHOLE_VAR.exec(value)![1])
+  return value
+}
+
 beforeAll(async () => {
   // the entry point the map says it was generated from
   ds = await __unstable__loadDesignSystem(map.entry.join('\n'), {
@@ -184,11 +192,41 @@ describe('what Tailwind compiles', () => {
     expect([...map.spacing.keys, ...map.spacing.steps].sort()).toEqual(keys.sort())
   })
 
+  // what a consumer gets: a t-shirt name is a container size on w-, min-w-, max-w- and
+  // basis-, a spacing step on the spacing utilities, and max-w-none sets no limit (#1057)
+  test('a size utility with a t-shirt name is a container size, max-w-none is none', () => {
+    const reads: Record<string, string> = {
+      'max-w-2xl': '--container-2xl',
+      'max-w-md': '--container-md',
+      'max-w-xs': '--container-xs',
+      'w-xs': '--container-xs',
+      'min-w-lg': '--container-lg',
+      'basis-md': '--container-md',
+      'max-w-5xl': '--container-5xl',
+      'p-md': '--spacing-md',
+      'gap-lg': '--spacing-lg',
+      'h-lg': '--spacing-lg',
+    }
+    const classes = [...Object.keys(reads), 'max-w-none']
+    const css = compile(classes)
+    const set = Object.fromEntries(classes.map((name, index) => [name, lastValue(css[index])]))
+    expect(set).toEqual({
+      ...Object.fromEntries(Object.entries(reads).map(([name, token]) => [name, themeVariables.get(token)])),
+      'max-w-none': 'none',
+    })
+    expect(set['max-w-2xl']).toBe('640px')
+    expect(themeVariables.get('--spacing-2xl')).toBe('48px')
+  })
+
   // the facts the README states
-  test('text roles are fg-, containers lose to spacing, breakpoints are variants', () => {
+  test('text roles are fg-, containers reach the size utilities through aliases, breakpoints are variants', () => {
     expect(map.tokens['--magma-text-muted']).toMatchObject({ theme: '--color-fg-muted', namespace: '--color', key: 'fg-muted' })
     expect(map.namespaces['--color'].utilities).toEqual(expect.arrayContaining(['bg', 'border', 'text']))
-    expect(map.tokens['--container-xs'].shadowed).toMatchObject({ 'max-w': '--spacing-xs', w: '--spacing-xs' })
+    // max-w-xs reads --max-width-xs, the container; the logical inline-xs still reads spacing
+    expect(map.tokens['--container-xs'].aliases).toEqual(['--flex-basis-xs', '--max-width-xs', '--min-width-xs', '--width-xs'])
+    expect(map.tokens['--container-xs'].shadowed).toEqual({ inline: '--spacing-xs', 'max-inline': '--spacing-xs', 'min-inline': '--spacing-xs' })
+    expect(map.tokens['--spacing-xs'].shadowed).toMatchObject({ 'max-w': '--max-width-xs', w: '--width-xs' })
+    expect(map.keywords['--max-width-none']).toEqual({ value: 'none', namespace: '--max-width', key: 'none' })
     expect(map.tokens['--container-5xl'].shadowed).toBeUndefined()
     expect(map.namespaces['--breakpoint']).toMatchObject({ utilities: [], variants: expect.arrayContaining(['*', 'max-*']) })
     expect(map.tokens['--border-xs'].namespace).toBeNull()
