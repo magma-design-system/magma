@@ -259,7 +259,7 @@ feature branch ──PR──▶ merge queue of main ──merge commit──▶
                                                   with a rebase-retry, tags, GitHub
                                                   releases, build ──▶ npm)
 
-maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dry-run)
+maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dry-run, tag)
    ──▶ the CI of the dispatched commit is green ──▶ the plan in the job summary
    ──▶ approval (environment `release`)
    channel stable: chore(release) commit pushed to main (no rebase: a moved main fails the run
@@ -268,6 +268,9 @@ maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dr
    channel beta:   magma@x.y.z-beta.N tag on the dispatched commit, nothing committed ──▶ build of
                    the magma lockstep, the tag version written into its manifests ──▶ npm, dist-tag beta
    dry-run:        the plan in the job summary, no approval needed, on any branch
+   tag:            an existing release published again (e.g. magma@2.4.1, once main moved past it):
+                   nothing released, approval, checkout of the commit of the tag, build ──▶ npm (the
+                   versions of the tag not on the registry yet)
 ```
 
 | Piece | Where | What it does |
@@ -275,7 +278,7 @@ maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dr
 | Package CI | `.github/workflows/{design-tokens,icons,identity,styles,svg-icons,stencil}.yml` over `_package-pipeline.yml` | change detection (path filter, everything on `merge_group`) → build (artifact kept one day) → test, on pull requests, in the merge queue and on every push to `main` |
 | Lint | `lint.yml` | `npm run lint` on the whole monorepo, same triggers |
 | Review level | `pr-risk.yml` + `projects/stencil/scripts/pr-risk.ts` | `risk-*` label, the semver check of `magma.api.txt` against the commits' declared release |
-| Release and publish | `publish.yml` over `semantic-release.yml` + `scripts/release/*` + `scripts/set-release-version.sh` | `workflow_dispatch` on `main`: `package` (`all` or one), `channel` (`stable`/`beta`), `dry-run`; the CI of the commit checked, the plan before the approval, versions from the conventional commits of each package's scopes (semantic-release dry-run), pins, lock, `CHANGELOG.md` (git-cliff), tags, GitHub releases, then the build of the selected packages and one `npm publish` per package with OIDC trusted publishing (a package is skipped when its version is already on npm) |
+| Release and publish | `publish.yml` over `semantic-release.yml` + `scripts/release/*` + `scripts/set-release-version.sh` | `workflow_dispatch` on `main`: `package` (`all` or one), `channel` (`stable`/`beta`), `dry-run`, `tag` (an existing release published again); the CI of the commit checked, the plan before the approval, versions from the conventional commits of each package's scopes (semantic-release dry-run), pins, lock, `CHANGELOG.md` (git-cliff), tags, GitHub releases, then the build of the selected packages and one `npm publish` per package with OIDC trusted publishing (a package is skipped when its version is already on npm) |
 | Automatic icon releases | the `push` trigger of `publish.yml` | on every push to `main`: the same chain for `icons` and `svg-icons`, without approval; a rejected push is rebased and retried |
 | Storybook | `deploy-storybook.yml` | the static Storybook of `main` to GitHub Pages, after the `magma / test` job of the same commit; also dispatched by `publish.yml` after a release of `svg-icons` (the `mds-icon` story shows its version; the `chore(release)` commit runs no workflow of its own) |
 | Local rehearsal | `scripts/test-release.sh` | the release plan of a commit on either channel, in a throwaway clone, nothing pushed |
