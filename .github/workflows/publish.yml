@@ -4,11 +4,12 @@
 # rule 1). It works on the commit main pointed to when it was dispatched,
 # whatever lands on main while it runs, through these jobs:
 #
-#   guard     the dispatch is on main (a dry-run runs anywhere) and the beta
-#             channel is asked for magma only
+#   guard     the dispatch is on main (a dry-run runs anywhere), the beta
+#             channel is asked for magma only and `tag` is not a dry-run
 #   packages  the packages of `package` (all, or one of them; magma is the
-#             lockstep magma, magma-react and magma-angular) and a check that
-#             the CI of the dispatched commit is green
+#             lockstep magma, magma-react and magma-angular), or of `tag` (the
+#             package of the tag, with the commit it points to), and a check
+#             that the CI of the commit is green
 #   plan      the next version of each package (a semantic-release dry-run),
 #             written to the job summary BEFORE the approval, so whoever
 #             approves sees what is about to ship
@@ -33,11 +34,11 @@
 #             released: the mds-icon story shows its version, and the release
 #             commit, pushed with [skip ci], runs no deploy of its own
 #   publish   checks out the release commit (the dispatched one on the beta
-#             channel, or when nothing was released), builds the selected
-#             packages and publishes every one of them whose version is not on
-#             the npm registry yet, with the dist-tag of its version (latest,
-#             beta). On the beta channel the tag version is written into the
-#             lockstep manifests right before publishing
+#             channel, or when nothing was released; the one of `tag`), builds
+#             the selected packages and publishes every one of them whose
+#             version is not on the npm registry yet, with the dist-tag of its
+#             version (latest, beta). On the beta channel the tag version is
+#             written into the lockstep manifests right before publishing
 #             (scripts/set-release-version.sh). The packages go in dependency
 #             order, and one whose dependency (from its manifest) failed to
 #             publish in the same run is not published: design-tokens and
@@ -56,8 +57,17 @@
 # Publishing again: a dispatch on the tip of main that finds nothing to release
 # publishes the manifest versions missing from npm (a failed stable publish; a
 # version bumped by hand through a pull request ships this way too, and only
-# this way). A failed beta publish is re-run from its own run ("Re-run failed
-# jobs"): the version is the tag that run created.
+# this way). Once main has moved past a release with commits that would
+# release again, the `tag` input publishes that release instead: the run,
+# dispatched on main as usual, releases nothing, checks out the commit the tag
+# points to after the approval and publishes the packages of the tag missing
+# from npm at its version (magma@2.4.1: magma, magma-react and magma-angular
+# 2.4.1; a magma@x.y.z-beta.N tag: its beta). `package` and `channel` come
+# from the tag. The dispatch stays on main because a run uses the workflow
+# file of the ref it is dispatched on: dispatched on the tag itself, it would
+# run the workflow of that commit, not this one. A failed beta publish is also
+# re-run from its own run ("Re-run failed jobs"): the version is the tag that
+# run created.
 #
 # icons and svg-icons also release on their own, on every push to main (the
 # `push` trigger): the same chain limited to the two of them, without approval,
@@ -98,6 +108,10 @@ on:
         description: Only compute the plan (job summary), without approval, commit, tag, push, build or publish
         type: boolean
         default: false
+      tag:
+        description: Publish an existing release again, e.g. magma@2.4.1 (nothing is released; package and channel come from the tag, no dry-run)
+        type: string
+        default: ''
   push:
     branches: [main]
 
@@ -169,12 +183,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          TAG: ${{ inputs.tag }}
         run: |
           if [ "${{ github.ref_name }}" != main ] && [ "${{ inputs.dry-run }}" != true ]; then
             echo "::error::a release runs on main only (dispatched on ${{ github.ref_name }}); a dry-run runs on any branch"
             exit 1
           fi
-          if [ "${{ inputs.channel }}" = beta ] && [ "${{ inputs.package }}" != all ] && [ "${{ inputs.package }}" != magma ]; then
+          if [ -n "$TAG" ]; then
+            # an existing release: no plan to show, package and channel are the tag's
+            if [ "${{ inputs.dry-run }}" = true ]; then
+              echo "::error::a tag publishes an existing release again, there is no plan to dry-run ($TAG)"
+              exit 1
+            fi
+          elif [ "${{ inputs.channel }}" = beta ] && [ "${{ inputs.package }}" != all ] && [ "${{ inputs.package }}" != magma ]; then
             echo "::error::the beta channel releases magma only (package: ${{ inputs.package }})"
             exit 1
           fi
@@ -190,16 +212,42 @@ jobs:
       list: ${{ steps.list.outputs.list }}
       filter: ${{ steps.list.outputs.filter }}
       channel: ${{ steps.list.outputs.channel }}
+      # the commit the run works on: the one of `tag`, the dispatched or pushed one otherwise
+      sha: ${{ steps.list.outputs.sha }}
     steps:
       - id: list
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
         run: |
           {
             echo 'list<<EOF'
             echo "$PACKAGES"
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
+          SHA="${{ github.sha }}"
           if [ "${{ github.event_name }}" = push ]; then
             FILTER='icons svg-icons'; CHANNEL=stable
+          elif [ -n "$TAG" ]; then
+            # an existing release: the package of the tag (<package>@<version>,
+            # the magma lockstep for magma@*), the channel of its version (a
+            # prerelease is a beta) and the commit it points to
+            FILTER="${TAG%@*}"
+            case "${TAG##*@}" in *-*) CHANNEL=beta ;; *) CHANNEL=stable ;; esac
+            if [ "$FILTER" = "$TAG" ] || ! jq -e --arg n "$FILTER" 'any(.[]; .name == $n)' <<< "$PACKAGES" > /dev/null; then
+              echo "::error::$TAG is not a release tag of this file (<package>@<version>, the package one of $(jq -r 'map(.name) | join(", ")' <<< "$PACKAGES"))"
+              exit 1
+            fi
+            REF=$(gh api "repos/${{ github.repository }}/git/ref/tags/$TAG" 2> /dev/null) || {
+              echo "::error::no tag $TAG in ${{ github.repository }}"
+              exit 1
+            }
+            SHA=$(jq -r '.object.sha' <<< "$REF")
+            # an annotated tag points to a tag object: take its commit
+            if [ "$(jq -r '.object.type' <<< "$REF")" = tag ]; then
+              SHA=$(gh api "repos/${{ github.repository }}/git/tags/$SHA" --jq '.object.sha')
+            fi
+            echo "::notice::$TAG is $SHA: its release is published again, nothing is released"
           elif [ "${{ inputs.channel }}" = beta ]; then
             FILTER=magma; CHANNEL=beta
           elif [ "${{ inputs.package }}" = all ]; then
@@ -208,12 +256,17 @@ jobs:
             FILTER="${{ inputs.package }}"; CHANNEL=stable
           fi
           echo "packages: ${FILTER:-all} ($CHANNEL channel)"
-          echo "filter=$FILTER" >> "$GITHUB_OUTPUT"
-          echo "channel=$CHANNEL" >> "$GITHUB_OUTPUT"
-      - name: Check that the CI of the dispatched commit is green
+          {
+            echo "filter=$FILTER"
+            echo "channel=$CHANNEL"
+            echo "sha=$SHA"
+          } >> "$GITHUB_OUTPUT"
+      - name: Check that the CI of the commit is green
         if: ${{ github.event_name == 'workflow_dispatch' && !inputs.dry-run }}
         env:
           GH_TOKEN: ${{ github.token }}
+          # the dispatched commit, or the one of `tag`
+          START: ${{ steps.list.outputs.sha }}
         run: |
           # the latest push or merge-queue run of each CI workflow of this
           # commit (a commit landed by the merge queue keeps the SHA of its
@@ -223,7 +276,7 @@ jobs:
           # a chore(release) commit is pushed with [skip ci] and has no CI of its
           # own: the code it versions is its parent's, so that is the commit to
           # check (walking past chained release commits)
-          SHA="${{ github.sha }}"
+          SHA="$START"
           for _ in 1 2 3 4 5; do
             COMMIT=$(gh api "repos/${{ github.repository }}/commits/$SHA")
             case "$(jq -r '.commit.message | split("\n")[0]' <<< "$COMMIT")" in
@@ -231,8 +284,8 @@ jobs:
               *) break ;;
             esac
           done
-          if [ "$SHA" != "${{ github.sha }}" ]; then
-            echo "::notice::${{ github.sha }} is a chore(release) commit: checking the CI of $SHA, the commit it versions"
+          if [ "$SHA" != "$START" ]; then
+            echo "::notice::$START is a chore(release) commit: checking the CI of $SHA, the commit it versions"
           fi
           RUNS=$(gh api "repos/${{ github.repository }}/actions/runs?head_sha=$SHA&per_page=100" \
             | jq --argjson watched "$WATCHED" '[.workflow_runs[] | select((.event == "push" or .event == "merge_group") and (.name as $n | $watched | index($n)))] | group_by(.name) | map(max_by(.id))')
@@ -252,10 +305,11 @@ jobs:
             exit 1
           fi
 
-  # the plan of every dispatch, before the approval; a dry-run stops here
+  # the plan of every dispatch, before the approval; a dry-run stops here. A
+  # tag releases nothing: no plan
   plan:
     needs: [packages]
-    if: ${{ github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && !inputs.tag }}
     uses: ./.github/workflows/semantic-release.yml
     secrets: inherit
     with:
@@ -268,21 +322,31 @@ jobs:
 
   approve:
     name: Approve the release
-    needs: [plan]
-    if: ${{ github.event_name == 'workflow_dispatch' && !inputs.dry-run }}
+    needs: [packages, plan]
+    # the plan is skipped by a tag
+    if: >-
+      ${{ !cancelled() && github.event_name == 'workflow_dispatch' && !inputs.dry-run &&
+          needs.packages.result == 'success' &&
+          (needs.plan.result == 'success' || (inputs.tag && needs.plan.result == 'skipped')) }}
     runs-on: ubuntu-latest
     environment: release
     steps:
       - env:
           TAGS: ${{ needs.plan.outputs.release-tags }}
+          TAG: ${{ inputs.tag }}
         run: |
-          echo "${{ inputs.channel }} release of ${{ github.sha }} approved: ${TAGS:-nothing to release, the versions missing from npm are published}"
+          if [ -n "$TAG" ]; then
+            echo "publish of the $TAG release (${{ needs.packages.outputs.sha }}) approved: its versions missing from npm are published"
+          else
+            echo "${{ inputs.channel }} release of ${{ github.sha }} approved: ${TAGS:-nothing to release, the versions missing from npm are published}"
+          fi
 
   release:
     needs: [packages, approve]
-    # the approval is skipped by the push trigger (the automatic icon releases)
+    # the approval is skipped by the push trigger (the automatic icon
+    # releases); a tag releases nothing
     if: >-
-      ${{ !cancelled() && needs.packages.result == 'success' &&
+      ${{ !cancelled() && needs.packages.result == 'success' && !inputs.tag &&
           (needs.approve.result == 'success' || (github.event_name == 'push' && needs.approve.result == 'skipped')) }}
     uses: ./.github/workflows/semantic-release.yml
     secrets: inherit
@@ -313,12 +377,15 @@ jobs:
         run: gh workflow run deploy-storybook.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"
 
   publish:
-    needs: [packages, release]
+    needs: [packages, approve, release]
     # a dispatch publishes what is missing from npm even when nothing was
-    # released; a push builds only when it released something
+    # released; a push builds only when it released something; a tag skips
+    # the release and publishes once approved
     if: >-
-      ${{ !cancelled() && needs.release.result == 'success' &&
-          (github.event_name == 'workflow_dispatch' || needs.release.outputs.release-sha != '') }}
+      ${{ !cancelled() && needs.packages.result == 'success' &&
+          ((needs.release.result == 'success' &&
+            (github.event_name == 'workflow_dispatch' || needs.release.outputs.release-sha != '')) ||
+           (inputs.tag && needs.release.result == 'skipped' && needs.approve.result == 'success')) }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write # OIDC token for npm trusted publishing
@@ -327,21 +394,23 @@ jobs:
       - uses: actions/checkout@v7
         with:
           # the release commit; the dispatched one on the beta channel and when
-          # nothing was released
-          ref: ${{ needs.release.outputs.release-sha || github.sha }}
+          # nothing was released; the one of `tag`
+          ref: ${{ needs.release.outputs.release-sha || needs.packages.outputs.sha }}
       - name: Select the packages whose version is not on npm
         id: select
         env:
           FILTER: ${{ needs.packages.outputs.filter }}
-          TAGS: ${{ needs.release.outputs.release-tags }}
+          # the tags of this run's release, or the one published again
+          TAGS: ${{ needs.release.outputs.release-tags || inputs.tag }}
           CHANNEL: ${{ needs.packages.outputs.channel }}
         run: |
           set -euo pipefail
           SELECTED=$(jq -c --arg f "$FILTER" '[.[] | select($f == "" or (.release as $r | $f | split(" ") | index($r)))]' <<< "$NPM_PACKAGES")
           TO_PUBLISH='[]'
           while IFS=$'\t' read -r name release version_file; do
-            # the version is the tag this run created for the package (the beta
-            # channel bumps no manifest), the manifest otherwise
+            # the version is the tag this run created for the package, or the
+            # one published again (the beta channel bumps no manifest), the
+            # manifest otherwise
             v=
             for t in $TAGS; do
               [ "${t%@*}" = "$release" ] && v="${t##*@}"
