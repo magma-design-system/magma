@@ -19,12 +19,14 @@ const TAILWIND = resolve(DIST, 'tailwind')
 const require = createRequire(join(PROJECT, 'package.json'))
 const TAILWIND_PACKAGE = dirname(require.resolve('tailwindcss/package.json'))
 
-type Entry = { theme: string, description?: string, namespace: string | null, key?: string | null, property?: string, shadowed?: Record<string, string | null> }
+type Entry = { theme: string, description?: string, namespace: string | null, key?: string | null, property?: string, aliases?: string[], shadowed?: Record<string, string | null> }
+type Keyword = { value: string, namespace: string | null, key?: string | null }
 type Utility = { source: string | string[], apply?: string[], tokens: string[], theme: string[], css: string }
 type ConsumptionMap = {
   tailwind: string
   entry: string[]
   tokens: Record<string, Entry>
+  keywords: Record<string, Keyword>
   namespaces: Record<string, { utilities: string[], variants: string[] }>
   spacing: { multiplier: string, value: string, utilities: string[], keys: string[], steps: string[] }
   utilities: Record<string, Utility>
@@ -63,6 +65,14 @@ const dtcgNames = new Set(dtcgTokens.keys())
 let ds: Awaited<ReturnType<typeof __unstable__loadDesignSystem>>
 const compile = (classes: string[]) => ds.candidatesToCss(classes)
 
+/** The value the last declaration of a class sets, with the var() of the theme resolved. */
+const WHOLE_VAR = /^var\((--[a-z0-9-]+)\)$/
+const lastValue = (css: string | null) => {
+  let value = [...(css ?? '').matchAll(/:\s*([^;]+);/g)].at(-1)?.[1].trim()
+  while (value && WHOLE_VAR.test(value)) value = themeVariables.get(WHOLE_VAR.exec(value)![1])
+  return value
+}
+
 beforeAll(async () => {
   // the entry point the map says it was generated from
   ds = await __unstable__loadDesignSystem(map.entry.join('\n'), {
@@ -78,12 +88,20 @@ describe('coverage', () => {
   test('every @theme variable reachable from tailwind/theme.css is in the map, linked to a dtcg token', () => {
     expect(themeVariables.size).toBeGreaterThan(500)
     const byTheme = new Map(Object.entries(map.tokens).map(([token, { theme }]) => [theme, token]))
-    expect([...themeVariables.keys()].filter((name) => !byTheme.has(name))).toEqual([])
-    expect(byTheme.size).toBe(themeVariables.size)
+    const byAlias = new Map(Object.entries(map.tokens).flatMap(([token, { aliases = [] }]) =>
+      aliases.map((alias) => [alias, token] as const)))
+    const listed = (name: string) => byTheme.has(name) || byAlias.has(name) || name in map.keywords
+    expect([...themeVariables.keys()].filter((name) => !listed(name))).toEqual([])
+    expect(byTheme.size + byAlias.size + Object.keys(map.keywords).length).toBe(themeVariables.size)
     expect(Object.keys(map.tokens).filter((token) => !dtcgNames.has(token))).toEqual([])
     // the token is the variable itself, or the custom property its value wraps
     for (const [theme, token] of byTheme)
       if (theme !== token) expect(themeVariables.get(theme), theme).toContain(`var(${token}`)
+    // an alias is the @theme variable of its token, whole; a keyword is its own value (#1057)
+    for (const [alias, token] of byAlias)
+      expect(themeVariables.get(alias), alias).toBe(`var(${map.tokens[token].theme})`)
+    for (const [name, { value }] of Object.entries(map.keywords))
+      expect(themeVariables.get(name), name).toBe(value)
   })
 
   test('every @utility of dist/tailwind/*.css, and of what they import, is listed with its CSS', () => {
@@ -126,21 +144,23 @@ describe('what Tailwind compiles', () => {
 
   test('the namespace of a token gives its utilities, except where the map says another variable wins', () => {
     expect(keyed.length).toBeGreaterThan(600)
-    for (const { theme, namespace, key, shadowed = {} } of keyed) {
+    for (const { theme, namespace, key, aliases = [], shadowed = {} } of keyed) {
       const roots = map.namespaces[namespace!].utilities
       const css = compile(roots.map((root) => `${root}-${key}`))
+      // the class reads the token through its own @theme variable or one of its aliases
+      const published = [theme, ...aliases].map((variable) => `var(${variable})`)
       roots.forEach((root, index) => {
         const label = `${root}-${key} (${theme})`
         const out = css[index]
         if (root in shadowed) {
-          if (out) expect(out, label).not.toContain(`var(${theme})`)
+          if (out) for (const form of published) expect(out, label).not.toContain(form)
           // the variable that wins, read through var() or inlined (`max-w-prose` is 65ch)
           const winner = shadowed[root]
           if (winner) expect([`var(${winner})`, ds.resolveThemeValue(winner, true)].some((form) => out?.includes(form!)), label).toBe(true)
           return
         }
         expect(out, label).not.toBeNull()
-        if (!INLINED.has(namespace!)) expect(out, label).toContain(`var(${theme})`)
+        if (!INLINED.has(namespace!)) expect(published.some((form) => out!.includes(form)), label).toBe(true)
       })
     }
   })
@@ -172,11 +192,41 @@ describe('what Tailwind compiles', () => {
     expect([...map.spacing.keys, ...map.spacing.steps].sort()).toEqual(keys.sort())
   })
 
+  // what a consumer gets: a t-shirt name is a container size on w-, min-w-, max-w- and
+  // basis-, a spacing step on the spacing utilities, and max-w-none sets no limit (#1057)
+  test('a size utility with a t-shirt name is a container size, max-w-none is none', () => {
+    const reads: Record<string, string> = {
+      'max-w-2xl': '--container-2xl',
+      'max-w-md': '--container-md',
+      'max-w-xs': '--container-xs',
+      'w-xs': '--container-xs',
+      'min-w-lg': '--container-lg',
+      'basis-md': '--container-md',
+      'max-w-5xl': '--container-5xl',
+      'p-md': '--spacing-md',
+      'gap-lg': '--spacing-lg',
+      'h-lg': '--spacing-lg',
+    }
+    const classes = [...Object.keys(reads), 'max-w-none']
+    const css = compile(classes)
+    const set = Object.fromEntries(classes.map((name, index) => [name, lastValue(css[index])]))
+    expect(set).toEqual({
+      ...Object.fromEntries(Object.entries(reads).map(([name, token]) => [name, themeVariables.get(token)])),
+      'max-w-none': 'none',
+    })
+    expect(set['max-w-2xl']).toBe('640px')
+    expect(themeVariables.get('--spacing-2xl')).toBe('48px')
+  })
+
   // the facts the README states
-  test('text roles are fg-, containers lose to spacing, breakpoints are variants', () => {
+  test('text roles are fg-, containers reach the size utilities through aliases, breakpoints are variants', () => {
     expect(map.tokens['--magma-text-muted']).toMatchObject({ theme: '--color-fg-muted', namespace: '--color', key: 'fg-muted' })
     expect(map.namespaces['--color'].utilities).toEqual(expect.arrayContaining(['bg', 'border', 'text']))
-    expect(map.tokens['--container-xs'].shadowed).toMatchObject({ 'max-w': '--spacing-xs', w: '--spacing-xs' })
+    // max-w-xs reads --max-width-xs, the container; the logical inline-xs still reads spacing
+    expect(map.tokens['--container-xs'].aliases).toEqual(['--flex-basis-xs', '--max-width-xs', '--min-width-xs', '--width-xs'])
+    expect(map.tokens['--container-xs'].shadowed).toEqual({ inline: '--spacing-xs', 'max-inline': '--spacing-xs', 'min-inline': '--spacing-xs' })
+    expect(map.tokens['--spacing-xs'].shadowed).toMatchObject({ 'max-w': '--max-width-xs', w: '--width-xs' })
+    expect(map.keywords['--max-width-none']).toEqual({ value: 'none', namespace: '--max-width', key: 'none' })
     expect(map.tokens['--container-5xl'].shadowed).toBeUndefined()
     expect(map.namespaces['--breakpoint']).toMatchObject({ utilities: [], variants: expect.arrayContaining(['*', 'max-*']) })
     expect(map.tokens['--border-xs'].namespace).toBeNull()

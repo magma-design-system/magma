@@ -37,8 +37,8 @@
 
   /* the host clips its overflow to round its corners, so a downloadable card draws its focus
      ring inside itself, bouncing inwards */
-  --magma-outline-blur-offset: -8px;
-  --magma-outline-focus-offset: -4px;
+  --magma-outline-blur-offset: --spacing(-200);
+  --magma-outline-focus-offset: --spacing(-100);
 
   border-radius: inherit;
   corner-shape: inherit;

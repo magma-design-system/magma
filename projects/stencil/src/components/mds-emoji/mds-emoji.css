@@ -15,10 +15,10 @@
  */
 
 :host {
-  --mds-emoji-expression-follow-mouse-traits-duration: 200ms;
-  --mds-emoji-expression-follow-mouse-head-duration: 300ms;
+  --mds-emoji-expression-follow-mouse-traits-duration: var(--duration-200);
+  --mds-emoji-expression-follow-mouse-head-duration: var(--duration-300);
   --mds-emoji-expression-max-rotation: 16deg;
-  --mds-emoji-perspective: 400px;
+  --mds-emoji-perspective: --spacing(10000);
 
   align-items: stretch;
   aspect-ratio: 1/1;
@@ -34,7 +34,7 @@ svg {
   height: 100%;
   overflow: visible;
   transform-style: preserve-3d;
-  transition: transform 0.2s ease-out;
+  transition: transform var(--duration-200) ease-out;
   width: 100%;
 }
 

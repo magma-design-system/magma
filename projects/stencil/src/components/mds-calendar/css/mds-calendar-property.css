@@ -28,7 +28,7 @@
 
 @property --mds-calendar-max-width {
   inherits: true;
-  initial-value: 480px;
+  initial-value: --spacing(12000);
   syntax: '<length>';
 }
 
@@ -46,6 +46,6 @@
 
 @property --mds-calendar-select-month-or-year-width {
   inherits: true;
-  initial-value: 14rem;
+  initial-value: --spacing(5600);
   syntax: '<length>';
 }

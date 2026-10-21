@@ -1,6 +1,6 @@
 .backdrop {
   align-items: center;
-  backdrop-filter: blur(var(--mds-header-backdrop-blur-strength, 10px));
+  backdrop-filter: blur(var(--mds-header-backdrop-blur-strength, --spacing(250)));
   background-image: var(--mds-header-backdrop-background-image);
   content: '';
   display: flex;
@@ -9,7 +9,7 @@
   opacity: 1;
   position: fixed;
   transform: translate(0, 0);
-  transition-duration: 200ms;
+  transition-duration: var(--duration-200);
   transition-property: opacity, transform;
   width: 100%;
 }

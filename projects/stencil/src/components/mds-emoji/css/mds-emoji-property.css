@@ -11,13 +11,13 @@
 
 @property --mds-emoji-expression-follow-mouse-head-duration {
   inherits: true;
-  initial-value: 300ms;
+  initial-value: var(--duration-300);
   syntax: '<time>';
 }
 
 @property --mds-emoji-expression-follow-mouse-traits-duration {
   inherits: true;
-  initial-value: 200ms;
+  initial-value: var(--duration-200);
   syntax: '<time>';
 }
 
@@ -35,7 +35,7 @@
 
 @property --mds-emoji-offset-eyebrows {
   inherits: true;
-  initial-value: 10px;
+  initial-value: --spacing(250);
   syntax: '<length>';
 }
 
@@ -53,7 +53,7 @@
 
 @property --mds-emoji-offset-hands {
   inherits: true;
-  initial-value: 2px;
+  initial-value: --spacing(50);
   syntax: '<length>';
 }
 
@@ -71,7 +71,7 @@
 
 @property --mds-emoji-perspective {
   inherits: true;
-  initial-value: 400px;
+  initial-value: --spacing(10000);
   syntax: '<length>';
 }
 

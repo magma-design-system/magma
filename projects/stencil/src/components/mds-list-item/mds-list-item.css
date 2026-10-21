@@ -21,18 +21,18 @@
 }
 
 :host([typography='paragraph']) {
-  --mds-list-item-icon-margin: 0.25rem --spacing(200) 0 0;
+  --mds-list-item-icon-margin: --spacing(100) --spacing(200) 0 0;
 }
 
 :host([typography='caption']) {
-  --mds-list-item-icon-margin: -0.125rem --spacing(200) 0 0;
+  --mds-list-item-icon-margin: --spacing(-50) --spacing(200) 0 0;
 }
 
 :host([typography='label']),
 :host([typography='tip']) {
-  --mds-list-item-icon-margin: -0.25rem --spacing(200) 0 0;
+  --mds-list-item-icon-margin: --spacing(-100) --spacing(200) 0 0;
 }
 
 :host([typography='option']) {
-  --mds-list-item-icon-margin: -0.5rem --spacing(200) 0 0;
+  --mds-list-item-icon-margin: --spacing(-200) --spacing(200) 0 0;
 }

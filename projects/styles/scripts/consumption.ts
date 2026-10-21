@@ -228,6 +228,24 @@ const main = async (): Promise<void> => {
       });
     }
 
+  /**
+   * The theme variable another one republishes whole, under the namespace of other
+   * utilities: `--max-width-2xl: var(--container-2xl)` makes `max-w-2xl` read the
+   * container instead of the spacing step (#1057). It is an alias of that token.
+   */
+  const aliasOf = ({ name, value }: ThemeVariable): string | undefined => {
+    const target = /^var\((--[a-z0-9-]+)\)$/.exec(value)?.[1];
+    return target && target !== name && magma.has(target) ? target : undefined;
+  };
+  const aliases = new Map<string, string[]>();
+  for (const variable of themeVariables) {
+    const target = aliasOf(variable);
+    if (target) aliases.set(target, [...(aliases.get(target) ?? []), variable.name]);
+  }
+  /** A theme variable that holds a CSS keyword, no token: `--max-width-none: none`. */
+  const isKeyword = ({ name, value }: ThemeVariable): boolean =>
+    !tokenNames.has(name) && /^[a-z]+(-[a-z]+)*$/.test(value);
+
   /** The token a theme variable publishes: itself, or the one its value wraps. */
   const tokenOf = ({ name, value }: ThemeVariable): string => {
     if (tokenNames.has(name)) return name;
@@ -354,10 +372,27 @@ const main = async (): Promise<void> => {
     namespace: string | null;
     key?: string | null;
     property?: string;
+    aliases?: string[];
     shadowed?: Record<string, string | null>;
   }
+  interface KeywordEntry {
+    value: string;
+    namespace: string | null;
+    key?: string | null;
+  }
   const tokens: Record<string, TokenEntry> = {};
+  const keywords: Record<string, KeywordEntry> = {};
   for (const variable of themeVariables) {
+    if (aliasOf(variable)) continue;
+    if (isKeyword(variable)) {
+      const at = looked.get(variable.name);
+      keywords[variable.name] = {
+        value: variable.value,
+        namespace: at?.namespace ?? null,
+        ...(at ? { key: at.key } : {}),
+      };
+      continue;
+    }
     const token = tokenOf(variable);
     if (tokens[token])
       throw new Error(`${token} is published as ${tokens[token].theme} and ${variable.name}`);
@@ -376,14 +411,17 @@ const main = async (): Promise<void> => {
     };
     if (at) entry.key = at.key;
     if (base && sub) entry.property = sub[2];
+    if (aliases.has(variable.name)) entry.aliases = [...aliases.get(variable.name)!].sort(byName);
 
     // where the class or variant this token would give reads another variable instead
+    // (an alias of the token is the token)
     if (at?.key && !base) {
       const { namespace, key } = at;
       const shadowed: Record<string, string | null> = {};
+      const published = new Set([variable.name, ...(entry.aliases ?? [])]);
       const check = (slot: string, candidate: string) => {
         const { hits } = compile(candidate);
-        if (hits.some((hit) => hit.variable === variable.name)) return;
+        if (hits.some((hit) => published.has(hit.variable))) return;
         shadowed[slot] =
           hits.find((hit) => hit.key === key && hit.namespace !== namespace)?.variable ?? null;
       };
@@ -399,7 +437,7 @@ const main = async (): Promise<void> => {
   }
 
   const namespaces: Record<string, { utilities: string[]; variants: string[] }> = {};
-  for (const { namespace } of Object.values(tokens))
+  for (const { namespace } of [...Object.values(tokens), ...Object.values(keywords)])
     if (namespace && !namespaces[namespace])
       namespaces[namespace] = {
         utilities: [...(roots.get(namespace) ?? [])].sort(byName),
@@ -459,10 +497,11 @@ const main = async (): Promise<void> => {
 
   const map = {
     description:
-      'How the global tokens of Magma are consumed through Tailwind 4. tokens: by the custom property dist/dtcg names them with, the @theme variable that publishes each one, its namespace and key, and where a class or variant of that namespace reads another variable instead. namespaces: the utility roots (<root>-<key>) and variant patterns (* is the key) that read the namespace. Generated from the Tailwind design system of the entry point below; do not edit.',
+      'How the global tokens of Magma are consumed through Tailwind 4. tokens: by the custom property dist/dtcg names them with, the @theme variable that publishes each one, its namespace and key, the @theme variables that republish it for the utilities of another namespace (aliases), and where a class or variant of that namespace reads another variable instead. keywords: the @theme variables that hold a CSS keyword, no token. namespaces: the utility roots (<root>-<key>) and variant patterns (* is the key) that read the namespace. Generated from the Tailwind design system of the entry point below; do not edit.',
     tailwind: TAILWIND_VERSION,
     entry: ENTRY,
     tokens,
+    keywords,
     namespaces,
     spacing: {
       multiplier: spacing.name,

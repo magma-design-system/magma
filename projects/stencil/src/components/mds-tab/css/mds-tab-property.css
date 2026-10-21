@@ -47,6 +47,8 @@
 
 @property --mds-tab-slide-delay {
   inherits: true;
+
+  /* stylelint-disable-next-line magma/token-values -- 125ms no --duration-* step says it */
   initial-value: 0.125s;
   syntax: '<time>';
 }
@@ -101,6 +103,6 @@
 
 @property --mds-tab-transition-duration {
   inherits: true;
-  initial-value: 0.5s;
+  initial-value: var(--duration-500);
   syntax: '<time>';
 }

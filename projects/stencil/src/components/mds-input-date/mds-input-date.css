@@ -31,7 +31,7 @@
 
   /* the size of the field, lg by default: its height and its padding; the calendar button sits
      in a square as tall as the field */
-  --private-input-date-height: 3rem;
+  --private-input-date-height: --spacing(1200);
   --private-input-date-padding-inline: --spacing(400);
   --private-input-date-calendar-area: --spacing(1200);
   --mds-input-date-icon-color: rgb(var(--magma-accent-fg));
@@ -40,8 +40,8 @@
   --mds-input-date-field-color-empty: rgb(var(--magma-danger-text-default));
   --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color-rgb) / 0.1);
   --mds-input-date-shadow:
-    0 1px 3px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
-    0 1px 2px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
+    0 1px --spacing(75) 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
+    0 1px --spacing(50) 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
   --mds-input-date-variant-color-rgb: 0 0 0;
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
@@ -124,10 +124,10 @@
 :host(:focus-within) .input {
   @apply outline-hidden transition-cosmetic;
 
-  --mds-input-date-ring: 0 0 0 3px rgb(var(--mds-input-date-variant-color-rgb) / 1);
+  --mds-input-date-ring: 0 0 0 --spacing(75) rgb(var(--mds-input-date-variant-color-rgb) / 1);
   --mds-input-date-shadow:
-    0 4px 6px 3px rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
-    0 2px 4px -1px rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
+    0 --spacing(100) --spacing(150) --spacing(75) rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
+    0 --spacing(50) --spacing(100) -1px rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
 
   transition-duration: var(--duration-300);
   transition-timing-function: var(--ease-out-expo);

@@ -25,7 +25,7 @@
   position: sticky;
   right: 0;
   transform: translateX(100%);
-  transition-duration: 500ms;
+  transition-duration: var(--duration-500);
   transition-property: transform, background-color, padding-right;
   transition-timing-function: var(--ease-out-expo);
 }

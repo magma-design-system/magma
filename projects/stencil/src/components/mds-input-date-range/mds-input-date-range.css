@@ -29,18 +29,18 @@
 
   /* the size of the field, lg by default: its height and its padding; the calendar button sits
      in a square as tall as the field */
-  --private-input-date-range-height: 3rem;
+  --private-input-date-range-height: --spacing(1200);
   --private-input-date-range-padding-inline: --spacing(400);
   --private-input-date-range-calendar-area: --spacing(1200);
   --mds-input-date-range-background: rgb(var(--magma-surface-overlay));
-  --mds-input-date-range-calendar-width: 22rem;
+  --mds-input-date-range-calendar-width: --spacing(8800);
   --mds-input-date-range-fields-firefox-justify-content: start;
   --mds-input-date-range-fields-gap: 0 --spacing(200);
   --mds-input-date-range-icon-color: rgb(var(--magma-accent-fg));
   --mds-input-date-range-ring: 0 0 0 1px rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1);
   --mds-input-date-range-shadow:
-    0 1px 3px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1),
-    0 1px 2px 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.06);
+    0 1px --spacing(75) 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1),
+    0 1px --spacing(50) 0 rgb(var(--mds-input-date-range-variant-color-rgb) / 0.06);
   --mds-input-date-range-variant-color-rgb: 0 0 0;
   --mds-input-date-range-transition-duration: var(--duration-300);
 
@@ -104,10 +104,10 @@
 :host(:focus-within) .inputs {
   @apply outline-hidden transition-cosmetic;
 
-  --mds-input-date-range-ring: 0 0 0 3px rgb(var(--mds-input-date-range-variant-color-rgb) / 1);
+  --mds-input-date-range-ring: 0 0 0 --spacing(75) rgb(var(--mds-input-date-range-variant-color-rgb) / 1);
   --mds-input-date-range-shadow:
-    0 4px 6px 3px rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1),
-    0 2px 4px -1px rgb(var(--mds-input-date-range-variant-color-rgb) / 0.06);
+    0 --spacing(100) --spacing(150) --spacing(75) rgb(var(--mds-input-date-range-variant-color-rgb) / 0.1),
+    0 --spacing(50) --spacing(100) -1px rgb(var(--mds-input-date-range-variant-color-rgb) / 0.06);
 
   transition-duration: var(--duration-300);
   transition-timing-function: var(--ease-out-expo);

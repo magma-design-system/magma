@@ -37,7 +37,7 @@
 
 @property --mds-modal-transition-duration {
   inherits: true;
-  initial-value: 500ms;
+  initial-value: var(--duration-500);
   syntax: '<time>';
 }
 
@@ -61,7 +61,7 @@
 
 @property --mds-modal-window-min-width {
   inherits: true;
-  initial-value: 400px;
+  initial-value: --spacing(10000);
   syntax: '<length>';
 }
 

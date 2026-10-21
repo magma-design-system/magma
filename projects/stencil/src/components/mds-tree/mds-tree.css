@@ -69,7 +69,7 @@
   --mds-tree-toggle-icon-position-right-default-color: rgb(var(--magma-text-subtle));
   --mds-tree-toggle-icon-position-right-expanded-background: transparent;
   --mds-tree-toggle-icon-position-right-expanded-color: rgb(var(--magma-text-subtle));
-  --mds-tree-transition-duration: 300ms;
+  --mds-tree-transition-duration: var(--duration-300);
   --mds-tree-transition-timing-function: var(--ease-in-out-expo);
 
   /* private */

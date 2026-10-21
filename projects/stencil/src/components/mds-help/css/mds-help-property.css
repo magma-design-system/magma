@@ -11,18 +11,20 @@
 
 @property --mds-help-tooltip-delay {
   inherits: true;
+
+  /* stylelint-disable-next-line magma/token-values -- 250ms no --duration-* step says it */
   initial-value: 0.25s;
   syntax: '<time>';
 }
 
 @property --mds-help-tooltip-max-width {
   inherits: true;
-  initial-value: 300px;
+  initial-value: --spacing(7500);
   syntax: '<length>';
 }
 
 @property --mds-help-tooltip-min-width {
   inherits: true;
-  initial-value: 200px;
+  initial-value: --spacing(5000);
   syntax: '<length>';
 }

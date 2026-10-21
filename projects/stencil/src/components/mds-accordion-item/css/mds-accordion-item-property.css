@@ -29,7 +29,7 @@
 
 @property --mds-accordion-item-border-width {
   inherits: true;
-  initial-value: 2px;
+  initial-value: --spacing(50);
   syntax: '<length>';
 }
 
@@ -47,7 +47,7 @@
 
 @property --mds-accordion-item-duration {
   inherits: true;
-  initial-value: 300ms;
+  initial-value: var(--duration-300);
   syntax: '<time>';
 }
 

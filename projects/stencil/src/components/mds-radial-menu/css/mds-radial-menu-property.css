@@ -34,6 +34,8 @@
 
 @property --mds-radial-menu-delay {
   inherits: true;
+
+  /* stylelint-disable-next-line magma/token-values -- 10ms, the stagger between the items, no --duration-* step says it */
   initial-value: 0.01s;
   syntax: '<time>';
 }
@@ -52,12 +54,12 @@
 
 @property --mds-radial-menu-disc-size {
   inherits: true;
-  initial-value: calc(5rem * 2);
+  initial-value: calc(--spacing(2000) * 2);
   syntax: '<length>';
 }
 
 @property --mds-radial-menu-radius {
   inherits: true;
-  initial-value: 5rem;
+  initial-value: --spacing(2000);
   syntax: '<length>';
 }

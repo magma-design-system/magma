@@ -34,6 +34,6 @@
 
 @property --mds-keyboard-key-transition-duration {
   inherits: true;
-  initial-value: 300ms;
+  initial-value: var(--duration-300);
   syntax: '<time>';
 }
