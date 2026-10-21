@@ -428,13 +428,32 @@ export interface DescribedComponent {
  * block above another declaration) never reaches the docs (#829). Empty when all are described.
  */
 export function undescribedMembers(c: DescribedComponent): string[] {
-  const empty = (m: { docs: string }) => (m.docs ?? '').trim() === '';
+  return membersWhose(c, (docs) => docs.trim() === '');
+}
+
+// an HTML tag: `<input>`, `</a>`, `<mds-text variant="info">`
+const HTML_TAG = /<\/?[a-z][a-z0-9-]*(\s[^<>]*)?\/?>/;
+const INLINE_CODE = /`[^`]*`/g;
+
+/**
+ * The members whose description writes an HTML tag outside inline code, named as in
+ * magma.api.txt. Whatever reads the description as Markdown takes the tag for markup: GitHub
+ * drops it from the AGENTS.md table ("the name of an  element"), the docs site rendered a real
+ * text field inside its API table (#1036). Written as code, `` `<input>` ``, it reads as text.
+ */
+export function rawHtmlMembers(c: DescribedComponent): string[] {
+  return membersWhose(c, (docs) => HTML_TAG.test(docs.replace(INLINE_CODE, '')));
+}
+
+// the members whose description `test` picks, named as in magma.api.txt
+function membersWhose(c: DescribedComponent, test: (docs: string) => boolean): string[] {
+  const picked = (m: { docs: string }) => test(m.docs ?? '');
   return [
-    ...c.props.filter(empty).map((m) => `prop ${m.name}`),
-    ...c.events.filter(empty).map((m) => `event ${m.event}`),
-    ...c.methods.filter(empty).map((m) => `method ${m.name}`),
-    ...c.slots.filter(empty).map((m) => `slot ${m.name || '(default)'}`),
-    ...c.parts.filter(empty).map((m) => `part ${m.name}`),
-    ...c.styles.filter(empty).map((m) => `css ${m.name}`),
+    ...c.props.filter(picked).map((m) => `prop ${m.name}`),
+    ...c.events.filter(picked).map((m) => `event ${m.event}`),
+    ...c.methods.filter(picked).map((m) => `method ${m.name}`),
+    ...c.slots.filter(picked).map((m) => `slot ${m.name || '(default)'}`),
+    ...c.parts.filter(picked).map((m) => `part ${m.name}`),
+    ...c.styles.filter(picked).map((m) => `css ${m.name}`),
   ];
 }

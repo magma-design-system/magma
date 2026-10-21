@@ -3,6 +3,7 @@ import {
   checkUsageDoc,
   handWrittenReadme,
   incorrectLines,
+  rawHtmlMembers,
   README_INTRO,
   splitMarkdown,
   undescribedMembers,
@@ -305,5 +306,49 @@ describe('undescribedMembers', () => {
       'part label',
       'css --mds-button-radius',
     ]);
+  });
+});
+
+describe('rawHtmlMembers', () => {
+  const component = (docs: string): DescribedComponent => ({
+    tag: 'mds-input-switch',
+    props: [{ name: 'name', docs }],
+    events: [],
+    methods: [],
+    slots: [],
+    parts: [],
+    styles: [],
+  });
+
+  it('finds a tag written outside inline code', () => {
+    expect(rawHtmlMembers(component('Specifies the name of an <input> element'))).toEqual([
+      'prop name',
+    ]);
+    expect(rawHtmlMembers(component('Wraps it in a <mds-text variant="info">'))).toEqual([
+      'prop name',
+    ]);
+    expect(rawHtmlMembers(component('Ends with </a>'))).toEqual(['prop name']);
+  });
+
+  it('accepts the tag written as code, and a bare angle bracket', () => {
+    expect(rawHtmlMembers(component('Specifies the name of an `<input>` element'))).toEqual([]);
+    expect(rawHtmlMembers(component('For `type="checkbox"` or `<input type="radio">`'))).toEqual(
+      [],
+    );
+    expect(rawHtmlMembers(component('Shown when 0 < value < 10'))).toEqual([]);
+  });
+
+  it('names each member as magma.api.txt does', () => {
+    expect(
+      rawHtmlMembers({
+        tag: 'mds-button',
+        props: [{ name: 'label', docs: 'The <b>text</b>' }],
+        events: [{ event: 'mdsButtonClick', docs: 'Emits on <button> click' }],
+        methods: [],
+        slots: [{ name: '', docs: 'A <span>' }],
+        parts: [{ name: 'icon', docs: 'The `<svg>` of the icon' }],
+        styles: [{ name: '--mds-button-radius', docs: 'The radius of the <button>' }],
+      }),
+    ).toEqual(['prop label', 'event mdsButtonClick', 'slot (default)', 'css --mds-button-radius']);
   });
 });

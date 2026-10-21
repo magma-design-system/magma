@@ -17,7 +17,8 @@
  * generated part only the title and the generic intro, since the usage files are the only
  * hand-authored docs (#842); and it fails on a prop, event, method, slot, part or documented
  * custom property that ships without a description, which the readme and the shipped
- * AGENTS.md would list with an empty cell (#829).
+ * AGENTS.md would list with an empty cell (#829), or whose description writes an HTML tag
+ * outside inline code, which a Markdown reader drops or renders as an element (#1036).
  *
  * #815 area 4 fixed the 342 docs against these rules; this keeps them fixed. The rules
  * the docs follow: docs/agents/conventions.md, variants.md, color.md, theming.md.
@@ -33,6 +34,7 @@ import { PROJECT_DIR } from './meta';
 import {
   checkUsageDoc,
   handWrittenReadme,
+  rawHtmlMembers,
   undescribedMembers,
   type ApiComponent,
   type DescribedComponent,
@@ -152,6 +154,19 @@ if (undescribed.length) {
   total += undescribed.length;
 }
 
+// a tag in a description is read as markup by every Markdown reader of the readme and AGENTS.md
+const rawHtml = docs.components.flatMap((c) =>
+  rawHtmlMembers(c).map((member) => `${c.tag} ${member}`),
+);
+if (rawHtml.length) {
+  console.error(
+    `\n${rawHtml.length} API member(s) with an HTML tag outside inline code in the description:\n` +
+      rawHtml.map((member) => `  ${member}`).join('\n') +
+      '\nWrite the tag as code in the JSDoc: `<input>`, not <input>.',
+  );
+  total += rawHtml.length;
+}
+
 if (total) {
   console.error(
     `\n${total} problem(s) in the usage docs. The rules: docs/agents/conventions.md, variants.md, color.md, theming.md;` +
@@ -160,5 +175,5 @@ if (total) {
   process.exit(1);
 }
 console.log(
-  `OK - ${files} usage docs of ${model.components.size} components match the API and the token layer, every member of the API has a description`,
+  `OK - ${files} usage docs of ${model.components.size} components match the API and the token layer, every member of the API has a description, with its tags as code`,
 );
