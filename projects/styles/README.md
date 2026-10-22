@@ -317,7 +317,9 @@ stylesheets.
 | `dist/tailwind/consumption.json` | How each token is consumed through Tailwind 4 |
 
 design-tokens' `base.tokens.json` and `globals.tokens.json` together hold every global
-token of `tokens.editor.css`. The resolver points at the files of design-tokens as
+token of `tokens.editor.css`. Every group and token of `globals.tokens.json` has a
+`$description`, and every entry of a `cssOnly` list a `description`;
+`tokens.editor.css` shows the same line at the end of the declaration. The resolver points at the files of design-tokens as
 `../../../design-tokens/dist/dtcg/`: the two packages sit side by side in
 `node_modules/@maggioli-design-system/`, as they do in this repository.
 

@@ -4,6 +4,8 @@ import { BUILD_DIR, PROJECT_DIR } from './meta';
 import { mkdir, readFile, readdir, writeFile } from 'fs/promises';
 import { logFileSavedTo } from '../../../scripts/log';
 import { semanticModel } from '../../design-tokens/semantic.model';
+import { cssOnlyDescription, globalDescription } from './dtcg/descriptions';
+import { cssPath } from './dtcg/globals';
 
 /*
   Generate the single stylesheet an editor reads to autocomplete Magma tokens.
@@ -343,7 +345,11 @@ const main = async (): Promise<void> => {
         chunks.push(`${chunks.length === 0 ? '' : '\n'}    /* ${label} */`);
         heading = label;
       }
-      const description = descriptions.get(token.name);
+      // the globals of this package say it too (#1095), by their path in the DTCG globals
+      const description =
+        descriptions.get(token.name) ??
+        globalDescription(cssPath(token.name)) ??
+        cssOnlyDescription(token.name);
       chunks.push(
         `    ${token.name}: ${previewable(token.value)};${description ? ` /* ${description} */` : ''}`,
       );

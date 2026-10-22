@@ -159,6 +159,22 @@ describe('coverage', () => {
     root.walkDecls('--magma-surface-default', (decl) => { expect(decl.value).toBe('var(--magma-tint-default)') })
   })
 
+  test('every group, token and cssOnly global of globals.tokens.json says what it is for (#1095)', () => {
+    const groups = (tree: Node, path: string[] = []): Array<[string, Node]> =>
+      Object.entries(tree)
+        .filter(([key, node]) => !key.startsWith('$') && !isToken(node) && typeof node === 'object' && node !== null)
+        .flatMap(([key, node]) => [[[...path, key].join('.'), node as Node] as [string, Node], ...groups(node as Node, [...path, key])])
+    expect(groups(globals).filter(([, node]) => !node.$description).map(([path]) => path)).toEqual([])
+    expect(walk(globals).filter(([, token]) => !(token as Node).$description).map(([path]) => path.join('.'))).toEqual([])
+    const listed = cssOnly(globals) as Array<{ css: string, description?: string }>
+    expect(listed.length).toBeGreaterThan(5)
+    expect(listed.filter(({ description }) => !description).map(({ css }) => css)).toEqual([])
+
+    const editor = readFileSync(resolve(DIST, 'css', 'tokens.editor.css'), 'utf8')
+    expect(editor).toMatch(/--magma-backdrop-color: [^;]+; \/\* The colour of the scrim, .+ \*\/\n/)
+    expect(editor).toMatch(/--magma-pref-mode: light; \/\* The active mode preference, .+ \*\/\n/)
+  })
+
   test('every global of the stylesheets is in the JSON, and only once', () => {
     const inJson = [...walk(globals).map(([, token]) => ext(token).css!), ...cssOnly(globals).map(({ css }) => css)]
     expect(new Set(inJson).size).toBe(inJson.length)
