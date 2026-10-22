@@ -136,14 +136,43 @@ function propOf(c: ApiComponent, attr: string): ApiComponent['props'][number] | 
   return c.props.find((p) => p.attr === attr || p.name === attr || p.attr === attr.toLowerCase());
 }
 
-/** The allowed string values of a prop, or null when it accepts any string. */
-function enumValues(p: ApiComponent['props'][number]): string[] | null {
+/**
+ * A template literal type as a pattern, `${number}x${number}` matching `17x24`: Stencil lists it
+ * as the type of a value that has no value of its own
+ */
+function templatePattern(type: string): RegExp | null {
+  const literal = /^`(.*)`$/.exec(type);
+  if (literal === null) return null;
+  const source = literal[1]
+    .split(/(\$\{(?:number|string)\})/)
+    .map((piece) => {
+      if (piece === '${number}') return '-?\\d+(?:\\.\\d+)?';
+      if (piece === '${string}') return '.*';
+      return piece.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    })
+    .join('');
+  return new RegExp(`^${source}$`);
+}
+
+/**
+ * The allowed string values of a prop, the literals and the template literal types, or null
+ * when it accepts any string.
+ */
+function enumValues(
+  p: ApiComponent['props'][number],
+): { listed: string[]; patterns: { type: string; pattern: RegExp }[] } | null {
   const values = p.values ?? [];
   if (values.some((v) => v.type === 'string' && v.value === undefined)) return null;
   const listed = values
     .filter((v) => v.type === 'string' && v.value !== undefined)
     .map((v) => v.value!);
-  return listed.length ? listed : null;
+  const patterns = values
+    .filter((v) => v.value === undefined)
+    .flatMap((v) => {
+      const pattern = templatePattern(v.type);
+      return pattern === null ? [] : [{ type: v.type, pattern }];
+    });
+  return listed.length || patterns.length ? { listed, patterns } : null;
 }
 
 function isBoolean(p: ApiComponent['props'][number]): boolean {
@@ -323,11 +352,18 @@ class UsageChecker {
       if (isBoolean(prop) && value === 'false')
         this.add(line, 'false-boolean', `<${tag} ${name}="false">`);
       const allowed = enumValues(prop);
-      if (allowed && value !== '' && !/[{}]/.test(value) && !allowed.includes(value)) {
+      if (
+        allowed &&
+        value !== '' &&
+        !/[{}]/.test(value) &&
+        !allowed.listed.includes(value) &&
+        !allowed.patterns.some(({ pattern }) => pattern.test(value))
+      ) {
+        const names = [...allowed.listed, ...allowed.patterns.map(({ type }) => type)];
         this.add(
           line,
           'invalid-value',
-          `<${tag} ${name}="${value}"> (allowed: ${allowed.join(', ')})`,
+          `<${tag} ${name}="${value}"> (allowed: ${names.join(', ')})`,
         );
       }
     }
