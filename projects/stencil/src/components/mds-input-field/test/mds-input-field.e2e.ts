@@ -35,8 +35,8 @@ describe('mds-input-field', () => {
     );
 
     const errorMessage = [
-      'Codice fiscale inserito non corretto',
-      'Codice fiscale deve essere lungo 16 caratteri',
+      'The tax code entered is not correct',
+      'The tax code must be 16 characters long',
     ];
     await typeAndBlur('abc');
 
@@ -46,6 +46,31 @@ describe('mds-input-field', () => {
     expect(errorsElement.length).toEqual(2);
     errorsElement.forEach((errorElement, index) => {
       expect(errorElement.textContent).toBe(errorMessage[index]);
+    });
+  });
+
+  // #1072: the messages of mds-input were Italian literals, whatever the language of the page
+  describe('in the language of the page', () => {
+    afterEach(() => {
+      document.documentElement.removeAttribute('lang');
+    });
+
+    it.each([
+      ['en', 'Invalid email address'],
+      ['it', 'indirizzo email non valido'],
+      ['es', 'Dirección de correo electrónico no válida'],
+      ['el', 'Μη έγκυρη διεύθυνση email'],
+    ])('shows the validation message in %s', async (language, text) => {
+      document.documentElement.lang = language;
+      const { message, typeAndBlur } = await setup(
+        '<mds-input-field label="Email"><mds-input type="email" required></mds-input></mds-input-field><button></button>',
+      );
+
+      await typeAndBlur('a');
+
+      expect(Array.from(message.querySelectorAll('mds-text')).map((m) => m.textContent)).toEqual([
+        text,
+      ]);
     });
   });
 

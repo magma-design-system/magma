@@ -5,5 +5,18 @@
   "showPassword": "Show password",
   "speechToTextError": "Voice dictation is not supported by this browser",
   "speechToTextOff": "Stop voice dictation",
-  "speechToTextOn": "Start voice dictation"
+  "speechToTextOn": "Start voice dictation",
+  "validationCc": "Invalid card number",
+  "validationCfLength": "The tax code must be 16 characters long",
+  "validationCfRegex": "The tax code entered is not correct",
+  "validationEmail": "Invalid email address",
+  "validationIsbn": "Invalid ISBN code",
+  "validationIsbnFormat": "Invalid ISBN format",
+  "validationMax": "The maximum value is {{max}}",
+  "validationMaxlength": "The maximum length accepted is {{maxlength}}",
+  "validationMin": "The minimum value is {{min}}",
+  "validationMinlength": "The minimum length accepted is {{minlength}}",
+  "validationPattern": "Invalid format",
+  "validationPiva": "Invalid VAT number",
+  "validationUrl": "Invalid URL"
 }

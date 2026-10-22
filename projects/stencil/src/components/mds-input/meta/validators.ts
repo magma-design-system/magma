@@ -1,3 +1,18 @@
+import { Locale } from '@common/locale';
+import localeEl from './locale.el.json';
+import localeEn from './locale.en.json';
+import localeEs from './locale.es.json';
+import localeIt from './locale.it.json';
+
+const messages = new Locale({ el: localeEl, en: localeEn, es: localeEs, it: localeIt });
+
+/**
+ * The message of a failed validation, in the language of the page when the value is validated: a
+ * validator is built once, and the language can change after that.
+ */
+export const validationMessage = (tag: string, context?: Record<string, number>): string =>
+  messages.get(tag, context);
+
 export interface MdsValidationErrors {
   [key: string]: string;
 }
@@ -18,7 +33,9 @@ export const maxValidator = (max: number): MdsValidatorFn => {
     const value = parseFloat(input);
     // Controls with NaN values after parsing should be treated as not having a
     // maximum, per the HTML forms spec: https://www.w3.org/TR/html5/forms.html#attr-input-max
-    return !isNaN(value) && value > max ? { max: `valore massimo ${max}` } : null;
+    return !isNaN(value) && value > max
+      ? { max: validationMessage('validationMax', { max }) }
+      : null;
   };
 };
 
@@ -30,7 +47,9 @@ export const minValidator = (min: number): MdsValidatorFn => {
     const value = parseFloat(input);
     // Controls with NaN values after parsing should be treated as not having a
     // minimum, per the HTML forms spec: https://www.w3.org/TR/html5/forms.html#attr-input-min
-    return !isNaN(value) && value < min ? { min: `valore minimo ${min}` } : null;
+    return !isNaN(value) && value < min
+      ? { min: validationMessage('validationMin', { min }) }
+      : null;
   };
 };
 
@@ -40,7 +59,7 @@ export const maxLenghtValidator = (length: number): MdsValidatorFn => {
       return null; // don't validate empty values to allow optional controls
     }
     return input.length > length
-      ? { minLenght: `La lunghezza massima accettata è ${length}` }
+      ? { minLenght: validationMessage('validationMaxlength', { maxlength: length }) }
       : null;
   };
 };
@@ -51,7 +70,7 @@ export const minLenghtValidator = (length: number): MdsValidatorFn => {
       return null; // don't validate empty values to allow optional controls
     }
     return input.length < length
-      ? { minLenght: `La lunghezza minima accettata è ${length}` }
+      ? { minLenght: validationMessage('validationMinlength', { minlength: length }) }
       : null;
   };
 };
@@ -78,7 +97,7 @@ export const patternValidator = (pattern: string): MdsValidatorFn | null => {
   }
   return (input: string): MdsValidationErrors | null => {
     if (input === '') return null; // don't validate empty values to allow optional controls
-    return expression.test(input) ? null : { pattern: 'formato non valido' };
+    return expression.test(input) ? null : { pattern: validationMessage('validationPattern') };
   };
 };
 
@@ -88,7 +107,7 @@ const emailExpression =
 
 export const emailValidatorFn: MdsValidatorFn = (input: string) => {
   if (input === '') return null; // don't validate empty values to allow optional controls
-  return emailExpression.test(input) ? null : { email: 'indirizzo email non valido' };
+  return emailExpression.test(input) ? null : { email: validationMessage('validationEmail') };
 };
 
 // a native type="url" accepts an absolute URL, the one the URL parser reads without a base
@@ -98,7 +117,7 @@ export const urlValidatorFn: MdsValidatorFn = (input: string) => {
     new URL(input);
     return null;
   } catch {
-    return { url: 'url non valido' };
+    return { url: validationMessage('validationUrl') };
   }
 };
 
@@ -108,7 +127,7 @@ export const urlValidatorFn: MdsValidatorFn = (input: string) => {
  */
 export const pivaValidatorFn: MdsValidatorFn = (input: string) => {
   if (input === '') return null; // don't validate empty values to allow optional controls
-  const error = { piva: 'partita iva non valida' };
+  const error = { piva: validationMessage('validationPiva') };
   if (!/^\d{11}$/.test(input)) return error;
   const digits = input.split('').map(Number);
   const sum = digits.slice(0, 10).reduce((total, digit, index) => {
@@ -125,7 +144,7 @@ export const pivaValidatorFn: MdsValidatorFn = (input: string) => {
  */
 export const ccValidatorFn: MdsValidatorFn = (input: string) => {
   if (input === '') return null; // don't validate empty values to allow optional controls
-  const error = { cc: 'numero di carta non valido' };
+  const error = { cc: validationMessage('validationCc') };
   if (!/^\d+(?:[ -]\d+)*$/.test(input)) return error;
   const digits = input.replace(/[ -]/g, '');
   if (digits.length < 13 || digits.length > 19) return error;
@@ -146,7 +165,7 @@ export const isbnValidatorFn: MdsValidatorFn = (input: string) => {
   if (input === '') return null; // don't validate empty values to allow optional controls
 
   if (Number.isNaN(input.slice(0, -1)) || (input.length !== 10 && input.length !== 13))
-    return { 'isbn-error': 'formato isbn non correto' };
+    return { 'isbn-error': validationMessage('validationIsbnFormat') };
 
   const v: number[] = input.split('').map((v) => (v === 'X' ? 10 : Number(v)));
 
@@ -166,7 +185,7 @@ export const isbnValidatorFn: MdsValidatorFn = (input: string) => {
     }, 0);
     check = numVerify % 10;
   }
-  return check === 0 ? null : { 'isbn-error': 'codice isbn non valido' };
+  return check === 0 ? null : { 'isbn-error': validationMessage('validationIsbn') };
 };
 
 export class Validator {
