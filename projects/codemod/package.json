@@ -2,7 +2,7 @@
   "name": "@maggioli-design-system/magma-codemods",
   "version": "1.0.0",
   "description": "Codemods to migrate consumer code (HTML, React/JSX, Angular templates, CSS/SCSS) of @maggioli-design-system/magma from v1 to v2.",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=22"
