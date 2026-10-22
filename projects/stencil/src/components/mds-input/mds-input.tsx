@@ -46,11 +46,11 @@ import {
   InputValidationManager,
 } from './meta/input-type/InputValidationManager';
 import {
-  maxLenghtValidator,
+  maxLengthValidator,
   maxValidator,
   MdsValidationErrors,
   MdsValidatorFn,
-  minLenghtValidator,
+  minLengthValidator,
   minValidator,
   patternValidator,
   requiredValidor,
@@ -387,9 +387,9 @@ export class MdsInput {
     if (max !== undefined) validator.addValidator(maxValidator(max));
     if (min !== undefined) validator.addValidator(minValidator(min));
     if (this.maxlength !== undefined && this.maxlength !== 0 && !Number.isNaN(this.maxlength))
-      validator.addValidator(maxLenghtValidator(this.maxlength));
+      validator.addValidator(maxLengthValidator(this.maxlength));
     if (this.minlength !== undefined && this.minlength !== 0 && !Number.isNaN(this.minlength))
-      validator.addValidator(minLenghtValidator(this.minlength));
+      validator.addValidator(minLengthValidator(this.minlength));
     const pattern = this.patternApplies() ? patternValidator(this.pattern ?? '') : null;
     if (pattern) validator.addValidator(pattern);
     validator.addValidator(this.customValidators);
@@ -420,7 +420,7 @@ export class MdsInput {
     const value = this.value ?? '';
     const errors = this.inputValidation.validator.check(value);
     const problem = errors
-      ? validityProblem(errors, value, {
+      ? validityProblem(errors, {
           max: this.numericBound(this.max),
           maxlength: this.maxlength,
           min: this.numericBound(this.min),

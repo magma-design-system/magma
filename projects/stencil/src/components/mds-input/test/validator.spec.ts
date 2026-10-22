@@ -5,7 +5,9 @@ import {
   ccValidatorFn,
   emailValidatorFn,
   isbnValidatorFn,
+  maxLengthValidator,
   maxValidator,
+  minLengthValidator,
   patternValidator,
   pivaValidatorFn,
   urlValidatorFn,
@@ -248,6 +250,26 @@ describe('check', () => {
     expect(checked.check('abc')).toBeNull();
     expect(checked.errors).toBeNull();
     expect(checked.isValid).toBe(true);
+  });
+});
+
+// #1087: both reported under minLenght, a value too long and one too short could not be told apart
+describe('maxLengthValidator and minLengthValidator', () => {
+  it('report a value too long under maxlength', () => {
+    expect(maxLengthValidator(3)('abcd')).toEqual({
+      maxlength: 'The maximum length accepted is 3',
+    });
+    expect(maxLengthValidator(3)('abc')).toBeNull();
+  });
+
+  it('report a value too short under minlength', () => {
+    expect(minLengthValidator(3)('ab')).toEqual({ minlength: 'The minimum length accepted is 3' });
+    expect(minLengthValidator(3)('abc')).toBeNull();
+  });
+
+  it('leave an empty value to required', () => {
+    expect(maxLengthValidator(3)('')).toBeNull();
+    expect(minLengthValidator(3)('')).toBeNull();
   });
 });
 

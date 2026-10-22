@@ -53,24 +53,24 @@ export const minValidator = (min: number): MdsValidatorFn => {
   };
 };
 
-export const maxLenghtValidator = (length: number): MdsValidatorFn => {
+export const maxLengthValidator = (length: number): MdsValidatorFn => {
   return (input: string): MdsValidationErrors | null => {
     if (input === '' || length === null) {
       return null; // don't validate empty values to allow optional controls
     }
     return input.length > length
-      ? { minLenght: validationMessage('validationMaxlength', { maxlength: length }) }
+      ? { maxlength: validationMessage('validationMaxlength', { maxlength: length }) }
       : null;
   };
 };
 
-export const minLenghtValidator = (length: number): MdsValidatorFn => {
+export const minLengthValidator = (length: number): MdsValidatorFn => {
   return (input: string): MdsValidationErrors | null => {
     if (input === '' || length === null) {
       return null; // don't validate empty values to allow optional controls
     }
     return input.length < length
-      ? { minLenght: validationMessage('validationMinlength', { minlength: length }) }
+      ? { minlength: validationMessage('validationMinlength', { minlength: length }) }
       : null;
   };
 };
