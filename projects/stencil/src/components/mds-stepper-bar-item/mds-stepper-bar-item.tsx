@@ -133,25 +133,39 @@ export class MdsStepperBarItem {
     this.isCurrent = newValue;
   }
 
+  // the status goes through label, a watched prop: the badge reads its deprecated slot once, and
+  // the render reuses the same badge from one status to the next
   private showBadge = (): MdsBadge => {
     if (this.isDone) {
       return (
-        <mds-badge class="badge" variant="success" tone="weak" typography="option">
-          {this.t.get('badgeDone')}
-        </mds-badge>
+        <mds-badge
+          class="badge"
+          variant="success"
+          tone="weak"
+          typography="option"
+          label={this.t.get('badgeDone')}
+        />
       );
     }
     if (this.isCurrent) {
       return (
-        <mds-badge class="badge" variant="info" tone="weak" typography="option">
-          {this.t.get('badgeCurrent')}
-        </mds-badge>
+        <mds-badge
+          class="badge"
+          variant="info"
+          tone="weak"
+          typography="option"
+          label={this.t.get('badgeCurrent')}
+        />
       );
     }
     return (
-      <mds-badge class="badge" variant="dark" tone="weak" typography="option">
-        {this.t.get('badgeQueued')}
-      </mds-badge>
+      <mds-badge
+        class="badge"
+        variant="dark"
+        tone="weak"
+        typography="option"
+        label={this.t.get('badgeQueued')}
+      />
     );
   };
 
