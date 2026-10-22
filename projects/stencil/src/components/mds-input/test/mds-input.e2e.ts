@@ -902,3 +902,23 @@ describe('size', () => {
     },
   );
 });
+
+// #1089: a page language with a region got the English messages
+describe('page language with a region', () => {
+  afterEach(() => {
+    document.documentElement.removeAttribute('lang');
+  });
+
+  it('shows the messages of its base language', async () => {
+    document.documentElement.lang = 'it-IT';
+    const button = await setup(`
+      <mds-input type="email"></mds-input>
+      <button></button>
+    `);
+
+    await type(mdsInput, 'a');
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toEqual({ email: 'indirizzo email non valido' });
+  });
+});
