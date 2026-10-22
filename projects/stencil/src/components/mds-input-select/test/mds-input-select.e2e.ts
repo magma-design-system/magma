@@ -218,6 +218,58 @@ const setupSelectForm = async (attributes: string, options: string) => {
 
 const abc = '<option value="a">A</option><option value="b">B</option><option value="c">C</option>';
 
+// #1071: like a native select, nothing is chosen on load, so no change is emitted then
+describe('mdsInputSelectChange', () => {
+  let details: { value?: unknown; values: string[] }[];
+  const record = (event: Event): void => {
+    details.push((event as CustomEvent).detail);
+  };
+
+  beforeEach(() => {
+    details = [];
+    // on the document, to hear an event emitted while the component loads
+    document.addEventListener('mdsInputSelectChange', record);
+  });
+
+  afterEach(() => {
+    document.removeEventListener('mdsInputSelectChange', record);
+  });
+
+  it.each([
+    ['a placeholder', 'placeholder="Not specified"'],
+    ['no placeholder', ''],
+    ['a value', 'value="b"'],
+    ['multiple', 'multiple'],
+  ])('is not emitted on load, with %s', async (_case, attributes) => {
+    const { form } = await setupSelectForm(`name="s" ${attributes}`, abc);
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    expect(details).toEqual([]);
+    // the form gets the selection of load all the same
+    if (attributes === 'value="b"') expect(new FormData(form).get('s')).toBe('b');
+  });
+
+  it('is emitted when the user picks an option, and when code sets the value', async () => {
+    const { select, native, waitForChanges } = await setupSelectForm(
+      'name="s" placeholder="Not specified"',
+      abc,
+    );
+
+    await userEvent.selectOptions(native, 'b');
+    await waitForChanges();
+    expect(details).toEqual([{ value: 'b', values: ['b'] }]);
+
+    select.value = 'c';
+    await waitForChanges();
+    expect(details.at(-1)).toEqual({ value: 'c', values: ['c'] });
+
+    await select.setValue('a');
+    await waitForChanges();
+    expect(details.at(-1)).toEqual({ value: 'a', values: ['a'] });
+    expect(details).toHaveLength(3);
+  });
+});
+
 // Like a native multiple select, every selected option is submitted (#822)
 describe('multiple', () => {
   it('keeps every option the user selects and submits them all', async () => {

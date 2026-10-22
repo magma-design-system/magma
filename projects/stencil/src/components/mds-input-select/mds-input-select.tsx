@@ -36,7 +36,8 @@ export class MdsInputSelect {
   // true while value takes the selection of the native select, which must not be applied back:
   // with multiple, selecting the first option alone would drop the others
   private adoptingSelection = false;
-  // the value and values of the last change event, not to emit the same selection twice
+  // the value and values of the last change event, not to emit the same selection twice, and
+  // undefined until the selection of load is recorded
   private emittedSelection?: string;
   // the value of load, which a form reset brings back as the default selection of a native select
   private loadValue?: string | number | null;
@@ -169,7 +170,8 @@ export class MdsInputSelect {
   /**
    * Reports the selection to the form and emits the change, once per selection: a single select
    * submits its value, a multiple one an entry per selected option under `name`, as a native
-   * select.
+   * select. The first selection, the one of load, is recorded without a change: as on a native
+   * select, nothing has been chosen yet.
    */
   private syncSelection(): void {
     const values = this.selectedValues();
@@ -178,7 +180,9 @@ export class MdsInputSelect {
     const value = this.value?.toString();
     const selection = JSON.stringify([value, values]);
     if (selection === this.emittedSelection) return;
+    const loading = this.emittedSelection === undefined;
     this.emittedSelection = selection;
+    if (loading) return;
     this.changeEvent.emit({ value, values });
   }
 
