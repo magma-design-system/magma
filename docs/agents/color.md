@@ -11,15 +11,15 @@ Paint your UI with the semantic roles (`--magma-*`), not with a raw palette step
 with Tailwind's own palette:
 
 ```html
-<!-- correct: roles follow the mode, the named theme and high contrast -->
+<!-- CORRECT: roles follow the mode, the named theme and high contrast -->
 <section class="bg-surface-raised text-fg-default border border-border-muted">
   <p class="text-fg-muted">Secondary text</p>
 </section>
 
-<!-- incorrect: raw Magma steps only flip with the mode -->
+<!-- INCORRECT: raw Magma steps only flip with the mode -->
 <section class="bg-tone-neutral-seed text-tone-neutral-01 border-tone-neutral-09">...</section>
 
-<!-- incorrect: Tailwind's palette ignores Magma entirely -->
+<!-- INCORRECT: Tailwind's palette ignores Magma entirely -->
 <section class="bg-white text-gray-700">...</section>
 ```
 

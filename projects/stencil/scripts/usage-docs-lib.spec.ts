@@ -235,6 +235,35 @@ describe('checkUsageDoc', () => {
     expect(kinds('```\n<mds-button></mds-button>\n```')).toEqual(['fence-without-language']);
     expect(kinds('<!-- \u{1F6AB} INCORRECT -->')).toEqual(['emoji']);
   });
+
+  describe('a shared guide of docs/agents', () => {
+    const guideKinds = (md: string): string[] => checkUsageDoc(md, model, true).map((f) => f.kind);
+
+    it('accepts the commands, configuration and prompts that only a guide fences', () => {
+      const md = [
+        fence('bash', 'npm i @maggioli-design-system/magma'),
+        fence('json', '{ "files": [] }'),
+        fence('markdown', 'Read AGENTS.md'),
+        fence('text', 'Add a page with a table'),
+      ].join('\n\n');
+      expect(guideKinds(md)).toEqual([]);
+      expect(kinds(md)).toEqual(Array(4).fill('fence-without-language'));
+    });
+
+    it('checks its TypeScript like the other scripts', () => {
+      expect(guideKinds(fence('typescript', "el.addEventListener('mdsButtonClick', f);"))).toEqual([
+        'unknown-event',
+      ]);
+    });
+
+    it('still checks its markup, its names in prose and its fences', () => {
+      expect(guideKinds(fence('html', '<mds-button variant="ghost"></mds-button>'))).toEqual([
+        'invalid-value',
+      ]);
+      expect(guideKinds('See `--magma-nope`.')).toEqual(['unknown-token']);
+      expect(guideKinds('```\n<mds-button></mds-button>\n```')).toEqual(['fence-without-language']);
+    });
+  });
 });
 
 describe('handWrittenReadme', () => {

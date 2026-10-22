@@ -34,6 +34,19 @@ Full rules: `docs/WORKFLOW.md` rule 5 and the Tests section of `projects/stencil
 - `*.spec.ts` for logic that does not need a rendered component, `*.e2e.ts` for anything that needs the live DOM. How to write and run them: `projects/stencil/HOWTO.md`.
 - **Storybook (`*.stories.tsx`)** adds the visual, interaction (`play` + `storybook/test`) and accessibility (addon-a11y) tests, and the integration scenarios with several components on one page. Add or update a story when necessary; it complements the Vitest tests, it does not replace them. Run them with `nx run stencil:test-storybook` (the `storybook` project of `vitest.config.mts`, via `@storybook/addon-vitest`).
 
+## Mistakes agents make here
+
+The lint and the checks catch most of these; do not write them in the first place:
+
+- Raw Tailwind palette classes (`bg-white`, `text-gray-700`) or palette steps (`--tone-*`) for interface colours: paint with the semantic roles (`bg-surface-raised`, `text-fg-muted`, `rgb(var(--magma-text-muted))`), see `docs/agents/color.md`.
+- A literal length, duration or colour in a component sheet: take it from the tokens (`--spacing()`, `var(--duration-*)`, `var(--magma-*)`); `magma/token-values` rejects it.
+- `disabled="false"` or `await="false"` to turn a boolean off: remove the attribute.
+- Dark mode written by hand (`dark:`, a bare `@media (prefers-color-scheme: dark)`): the palette flips globally, and a component refines it only in its `*-pref-mode.css` sheet, on `:host([pref-mode])` (`projects/stencil/SPEC.md`).
+- Typography composed from `font-*` and `text-*` primitives: use the semantic `text-*` utilities (`text-title-h3`, `text-info-detail`).
+- Piercing a component's shadow DOM (`>>>`, `/deep/`, an undocumented `::part()` or internal class): style it through its documented custom properties and parts.
+- Editing a generated file: a component's `readme.md` (edit its `usage/*.md` and the JSDoc), `magma.api.txt` (rebuild), the packages' `AGENTS.md` and `agents/` (edit `docs/agents/`).
+- The commit types `doc` and `refact`: write `docs` and `refactor`, with a scope (`docs/COMMITS.md`).
+
 ## Commands
 
 ```bash

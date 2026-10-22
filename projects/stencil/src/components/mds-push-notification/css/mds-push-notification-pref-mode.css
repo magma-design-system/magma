@@ -7,9 +7,9 @@
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
   --mds-push-notification-background: linear-gradient(
     to right,
-    rgb(0 0 0 / 0) 0%,
-    rgb(0 0 0 / 0.5) 20%,
-    rgb(0 0 0 / 0.85) 100%
+    rgb(var(--magma-backdrop-color) / 0) 0%,
+    rgb(var(--magma-backdrop-color) / 0.5) 20%,
+    rgb(var(--magma-backdrop-color) / 0.85) 100%
   );
 }
 
@@ -18,9 +18,9 @@
   :host(:not([pref-mode])) {
     --mds-push-notification-background: linear-gradient(
       to right,
-      rgb(0 0 0 / 0) 0%,
-      rgb(0 0 0 / 0.5) 20%,
-      rgb(0 0 0 / 0.85) 100%
+      rgb(var(--magma-backdrop-color) / 0) 0%,
+      rgb(var(--magma-backdrop-color) / 0.5) 20%,
+      rgb(var(--magma-backdrop-color) / 0.85) 100%
     );
   }
 }

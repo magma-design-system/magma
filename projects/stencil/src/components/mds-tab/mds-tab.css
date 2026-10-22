@@ -116,7 +116,7 @@
   --mds-tab-tabs-gap: --spacing(200);
   --mds-tab-tabs-overflow-shadow-size: --spacing(600);
   --mds-tab-tabs-overflow-shadow: 0 0 var(--mds-tab-tabs-overflow-shadow-size) --spacing(-50)
-    rgb(0 0 0 / 0.375);
+    rgb(var(--magma-shadow-ink) / 0.375);
   --mds-tab-tabs-padding: --spacing(200);
   --mds-tab-tabs-radius: min(
     var(--magma-radius-2xl),

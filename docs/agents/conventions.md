@@ -190,7 +190,7 @@ Never reach past that: undocumented parts, internal class names, `>>>` or `/deep
 break on any release.
 
 ```css
-/* correct */
+/* CORRECT */
 mds-button { --mds-button-radius: var(--magma-radius-full); }
 
 .featured-card mds-button {
@@ -198,10 +198,10 @@ mds-button { --mds-button-radius: var(--magma-radius-full); }
   --mds-button-radius: var(--magma-radius-lg);
 }
 
-/* correct, deep customisation: `icon` is a documented part of mds-button */
+/* CORRECT, deep customisation: `icon` is a documented part of mds-button */
 mds-button::part(icon) { fill: rgb(var(--magma-accent-fg)); }
 
-/* incorrect - internal nodes are not API */
+/* INCORRECT - internal nodes are not API */
 mds-button >>> .internal { color: red; }
 ```
 
