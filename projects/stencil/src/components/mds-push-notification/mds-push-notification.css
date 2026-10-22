@@ -32,15 +32,11 @@
   --mds-push-notification-items-duration: var(--duration-300);
   --mds-push-notification-items-gap: var(--mds-push-notification-gap);
   --mds-push-notification-items-timing-function: var(--ease-in-out-quint);
-
-  /* stylelint-disable magma/token-values -- the light fade behind the stack: no role says this gray, in dark it is the backdrop (#1092) */
   --mds-push-notification-background: linear-gradient(
     to right,
-    rgb(220 220 220 / 0) 0%,
-    rgb(220 220 220 / 0.85) 100%
+    rgb(var(--magma-surface-sunken) / 0) 0%,
+    rgb(var(--magma-surface-sunken) / 0.85) 100%
   );
-
-  /* stylelint-enable magma/token-values */
 
   @apply ease-in-out-expo
     hide-scrollbar;
