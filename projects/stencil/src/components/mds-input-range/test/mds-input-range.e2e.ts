@@ -145,4 +145,22 @@ describe('the thumb in dark', () => {
     expect(thumb).toBeGreaterThan(progress);
     expect(contrast(thumb, track)).toBeGreaterThanOrEqual(3);
   });
+
+  // the dark sheet came after the disabled one, with selectors of the same weight: a disabled
+  // range took the colours of an enabled one in dark
+  it('keeps the colours of the disabled state', async () => {
+    await inDark();
+    const { root } = await render<HTMLMdsInputRangeElement>(
+      '<mds-input-range value="18" min="14" max="24" step="2" disabled></mds-input-range>',
+    );
+    const style = getComputedStyle(root);
+    const read = (name: string): string => style.getPropertyValue(name);
+
+    expect(read('--mds-input-range-thumb-background')).toBe(
+      read('--mds-input-range-thumb-background-disabled'),
+    );
+    expect(read('--mds-input-range-track-progress-background')).toBe(
+      read('--mds-input-range-track-progress-background-disabled'),
+    );
+  });
 });
