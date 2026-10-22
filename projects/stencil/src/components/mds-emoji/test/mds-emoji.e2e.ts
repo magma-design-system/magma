@@ -7,6 +7,17 @@ describe('mds-emoji', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
+  it('keeps its svg flat, since Firefox paints nothing inside an svg that preserves 3D', async () => {
+    const { root } = await render('<mds-emoji name="mia"></mds-emoji>');
+    const svg = await vi.waitFor(() => {
+      const el = root.shadowRoot?.querySelector('svg');
+      expect(el).toBeTruthy();
+      return el as SVGSVGElement;
+    });
+
+    expect(getComputedStyle(svg).transformStyle).toBe('flat');
+  });
+
   it('keeps the tracking off once stopped, after an expression ends', async () => {
     const { root } = await render<HTMLMdsEmojiElement>(
       '<mds-emoji style="width: 100px; height: 100px"></mds-emoji>',
