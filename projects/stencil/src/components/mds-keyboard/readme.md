@@ -15,7 +15,7 @@ The `<mds-keyboard>` web component renders a keyboard shortcut as a row of physi
 
 - **Default slot is the key sequence**: The component projects slotted `<mds-keyboard-key>` elements and automatically inserts a `+` separator between consecutive keys.
 - **Compound parent**: It reads each child key's `name` to build the expected combination; during a test the children are toggled to their `pressed` state.
-- **Test mode (`try`)**: When enabled the component appends a trigger button and a tooltip; clicking the button captures keystrokes and, at the first key release, compares the typed combination against the slotted keys, in any order.
+- **Test mode (`try`)**: When enabled the component appends a trigger button and a tooltip; clicking the button (or pressing Enter or Space on it) captures keystrokes and, at the first release of a key pressed during the test, compares the typed combination against the slotted keys, in any order. The release of the key that started the test is not part of it.
 - **Result feedback**: A pass shows a "done" icon, a fail shows a "close" icon, and the tooltip surfaces the localized success or error message; the outcome is also reflected on the host via the `test` attribute.
 - **Localization**: Trigger label, tooltip copy, and error messages resolve through the locale system (el/en/es/it).
 

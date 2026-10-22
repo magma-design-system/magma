@@ -165,6 +165,24 @@ describe('mds-keyboard', () => {
       expect(host).toEqualAttribute('test', 'fail');
     });
 
+    // #1069: mds-button clicks on the keydown of Enter, so the keyup of that same Enter reached
+    // the shortcuts area once the test listened there, and failed the test with no key pressed
+    it.each([
+      ['Enter', '{Enter}'],
+      ['Space', ' '],
+    ])('waits for the shortcut when started with %s', async (_key, keys) => {
+      button.focus();
+      await userEvent.keyboard(keys);
+      await waitForChanges();
+
+      expect(button).toHaveAttribute('await');
+      expect(host).not.toHaveAttribute('test');
+
+      await typeCombination(host, ['ControlLeft', 'KeyC'], waitForChanges);
+
+      expect(host).toEqualAttribute('test', 'pass');
+    });
+
     it('can be run again after a first check', async () => {
       await clickButton();
       await typeCombination(host, ['ControlLeft', 'KeyD'], waitForChanges);
