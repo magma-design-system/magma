@@ -1,4 +1,5 @@
 import { render } from '@stencil/vitest';
+import { userEvent } from 'vitest/browser';
 
 // covers that load in the test page, whose own server has no /assets: an svg keeps its
 // width and height as its natural size
@@ -491,6 +492,17 @@ describe('mds-book', () => {
       const { root } = await render(`<div style="width: 200px">${markup}</div>`);
       return root.querySelector('mds-book')!;
     };
+
+    // The real mouse of the test page stays where an earlier test left it, and a book drawn
+    // under it is hovered, out of its resting pose: these books are 200 px wide at the top left
+    // of the page, so the mouse waits in the bottom right corner.
+    beforeEach(async () => {
+      const corner = document.createElement('div');
+      corner.style.cssText = 'position: fixed; right: 0; bottom: 0; width: 4px; height: 4px';
+      document.body.append(corner);
+      await userEvent.hover(corner);
+      corner.remove();
+    });
 
     afterEach(() => {
       document.documentElement.classList.remove(
