@@ -410,6 +410,24 @@ describe('rules set after load', () => {
   });
 });
 
+// #1087: both rules reported under the key minLenght
+describe('maxlength and minlength', () => {
+  it.each([
+    ['maxlength="3" value="abcdef"', { maxlength: 'The maximum length accepted is 3' }],
+    ['minlength="3" value="ab"', { minlength: 'The minimum length accepted is 3' }],
+  ])('reports %s under the name of its rule', async (attributes, errors) => {
+    const button = await setup(`
+      <mds-input ${attributes}></mds-input>
+      <button></button>
+    `);
+
+    await userEvent.click(mdsInput);
+    await blur(button);
+
+    expect(await mdsInput.getErrors()).toEqual(errors);
+  });
+});
+
 describe('min and max', () => {
   it('checks min against its own value, not the one of max', async () => {
     const button = await setup(`

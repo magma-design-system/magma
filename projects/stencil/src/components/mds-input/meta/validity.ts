@@ -16,7 +16,6 @@ export interface ValidityConstraints {
  */
 export const validityProblem = (
   errors: MdsValidationErrors,
-  value: string,
   constraints: ValidityConstraints,
 ): ValidityProblem => {
   const [key] = Object.keys(errors);
@@ -27,11 +26,10 @@ export const validityProblem = (
       return { rule: 'max', context: { max: constraints.max! } };
     case 'min':
       return { rule: 'min', context: { min: constraints.min! } };
-    // the maxlength and minlength validators share this key
-    case 'minLenght':
-      return constraints.maxlength !== undefined && value.length > constraints.maxlength
-        ? { rule: 'maxlength', context: { maxlength: constraints.maxlength } }
-        : { rule: 'minlength', context: { minlength: constraints.minlength! } };
+    case 'maxlength':
+      return { rule: 'maxlength', context: { maxlength: constraints.maxlength! } };
+    case 'minlength':
+      return { rule: 'minlength', context: { minlength: constraints.minlength! } };
     case 'pattern':
       return { rule: 'pattern' };
     case 'email':
