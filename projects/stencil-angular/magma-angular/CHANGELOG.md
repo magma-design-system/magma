@@ -7,6 +7,22 @@ package.
 It is released together with `magma`, at the same version: the sections are the
 releases of `magma`.
 
+## [magma@2.5.1] - 2026-10-22
+
+### Bug Fixes
+
+- *(mds-stepper-bar-item)* Show the status of the step in its badge
+- *(mds-input-range)* Draw a light thumb in dark, apart from the progress
+- *(mds-input-range)* Keep the disabled colours in dark
+- *(mds-input)* Show the validation messages in the language of the page
+- *(mds-input-select)* Emit no change on load, before any selection
+- *(mds-status-bar)* Keep the bar inside its area at 480px and less
+- *(mds-keyboard)* Start the test with Enter without failing it at once
+- *(mds-input)* Wait for the first blur to validate a required field
+- *(mds-emoji)* Draw the emoji in Firefox, keep the inner svg flat
+- *(mds-input)* Report maxlength and minlength under their own error keys
+- *(stencil)* Give a page language with a region the texts of its base language
+
 ## [magma@2.5.0] - 2026-10-21
 
 ### Bug Fixes
