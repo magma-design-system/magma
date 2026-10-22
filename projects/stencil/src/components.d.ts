@@ -16,6 +16,8 @@ import { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 import { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 import { ProgressBarSizeType } from "./type/progress";
 import { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
+import { BookBindingType, BookFormatType, BookPoseType } from "./components/mds-book/meta/types";
+import { LoadingType } from "./type/loading";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 import { TextAnimationType } from "./components/mds-text/meta/types";
@@ -36,7 +38,6 @@ import { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
 import { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
 import { NavigationType, SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 import { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
-import { LoadingType } from "./type/loading";
 import { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 import { AutocompleteType } from "./type/autocomplete";
 import { InputControlsIconType, InputControlsLayoutType, InputSizeType, InputTextType, MdsInputEventDetail } from "./type/input";
@@ -104,6 +105,8 @@ export { AvatarSizeType } from "./components/mds-avatar-stack/meta/types";
 export { BenchmarkBarTypographyType } from "./components/mds-benchmark-bar/meta/types";
 export { ProgressBarSizeType } from "./type/progress";
 export { BibliographyFormatType, BibliographyRelationshipType } from "./components/mds-bibliography/meta/types";
+export { BookBindingType, BookFormatType, BookPoseType } from "./components/mds-book/meta/types";
+export { LoadingType } from "./type/loading";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 export { TextAnimationType } from "./components/mds-text/meta/types";
@@ -124,7 +127,6 @@ export { HeaderBarMenuType, HeaderBarNavType } from "./type/header-bar";
 export { MdsHeaderEventDetail, MdsHeaderVisibilityEventDetail } from "./components/mds-header/meta/event-detail";
 export { NavigationType, SnapType, ViewportType } from "./components/mds-horizontal-scroll/meta/types";
 export { CrossoriginType, ReferrerpolicyType } from "./components/mds-img/meta/types";
-export { LoadingType } from "./type/loading";
 export { MdsImgEventDetail } from "./components/mds-img/meta/event-detail";
 export { AutocompleteType } from "./type/autocomplete";
 export { InputControlsIconType, InputControlsLayoutType, InputSizeType, InputTextType, MdsInputEventDetail } from "./type/input";
@@ -438,6 +440,54 @@ export namespace Components {
           * Specifies the variant for `typography`
          */
         "variant"?: TypographyVariants;
+    }
+    interface MdsBook {
+        /**
+          * The accessible name of the book. Without it the name is built from `name` and `author`; an empty `alt` marks the book as decorative, left out by assistive technologies
+         */
+        "alt"?: string;
+        /**
+          * The author, printed on the spine and on the cover drawn when there is no image
+         */
+        "author"?: string;
+        /**
+          * How the book is bound: a thin flexible cover flush with the pages, or rigid boards a little larger than the page block, with a rounded spine
+          * @default 'paperback'
+         */
+        "binding": BookBindingType;
+        /**
+          * The proportions of the book. `auto` takes them from the image; a named format (`a4`, `a5`, `b5`) is portrait; any other one is `WxH` in centimetres, the order of the two numbers being the orientation (`17x24` portrait, `24x17` landscape, `21x21` square)
+          * @example '17x24'
+          * @default 'auto'
+         */
+        "format": BookFormatType;
+        /**
+          * Specifies whether a browser should load the cover immediately or defer it until it is near the viewport
+          * @default 'lazy'
+         */
+        "loading"?: LoadingType;
+        /**
+          * The title of the book, printed on the spine and on the cover drawn when there is no image
+         */
+        "name"?: string;
+        /**
+          * The number of pages, which sets how deep the book is, against the width of its format (17 cm for `auto`). A page is as thick as `--mds-book-page-weight-min` at 1 page, going to `--mds-book-page-weight-max` at 1000 pages and more, in proportion: by default from 0.1 mm, the bulky paper of a short book, to 0.05 mm, the thin paper of a volume, so 64 pages make 6 mm, 300 pages 2.5 cm and 1000 pages 5 cm. A spine under 5 mm deep carries no text
+          * @default 300
+         */
+        "pages": number;
+        /**
+          * How the book is shown: standing, turned to show its spine (`spine`) or its pages (`fore-edge`), or facing the reader (`front`); lying on its back, seen from above, its tail toward the reader (`lying`) or spun on the surface (`lying-turned`). A drag turns it from there, and it goes back when released
+          * @default 'spine'
+         */
+        "pose": BookPoseType;
+        /**
+          * The publisher, printed at the foot of the spine and of the cover drawn when there is no image
+         */
+        "publisher"?: string;
+        /**
+          * Specifies the path to the image of the front cover
+         */
+        "src"?: string;
     }
     interface MdsBreadcrumb {
         /**
@@ -3422,6 +3472,12 @@ declare global {
         prototype: HTMLMdsBibliographyElement;
         new (): HTMLMdsBibliographyElement;
     };
+    interface HTMLMdsBookElement extends Components.MdsBook, HTMLStencilElement {
+    }
+    var HTMLMdsBookElement: {
+        prototype: HTMLMdsBookElement;
+        new (): HTMLMdsBookElement;
+    };
     interface HTMLMdsBreadcrumbElementEventMap {
         "mdsBreadcrumbChange": MdsBreadcrumbEventDetail;
     }
@@ -4630,6 +4686,7 @@ declare global {
         "mds-banner": HTMLMdsBannerElement;
         "mds-benchmark-bar": HTMLMdsBenchmarkBarElement;
         "mds-bibliography": HTMLMdsBibliographyElement;
+        "mds-book": HTMLMdsBookElement;
         "mds-breadcrumb": HTMLMdsBreadcrumbElement;
         "mds-breadcrumb-item": HTMLMdsBreadcrumbItemElement;
         "mds-button": HTMLMdsButtonElement;
@@ -5035,6 +5092,54 @@ declare namespace LocalJSX {
           * Specifies the variant for `typography`
          */
         "variant"?: TypographyVariants;
+    }
+    interface MdsBook {
+        /**
+          * The accessible name of the book. Without it the name is built from `name` and `author`; an empty `alt` marks the book as decorative, left out by assistive technologies
+         */
+        "alt"?: string;
+        /**
+          * The author, printed on the spine and on the cover drawn when there is no image
+         */
+        "author"?: string;
+        /**
+          * How the book is bound: a thin flexible cover flush with the pages, or rigid boards a little larger than the page block, with a rounded spine
+          * @default 'paperback'
+         */
+        "binding"?: BookBindingType;
+        /**
+          * The proportions of the book. `auto` takes them from the image; a named format (`a4`, `a5`, `b5`) is portrait; any other one is `WxH` in centimetres, the order of the two numbers being the orientation (`17x24` portrait, `24x17` landscape, `21x21` square)
+          * @example '17x24'
+          * @default 'auto'
+         */
+        "format"?: BookFormatType;
+        /**
+          * Specifies whether a browser should load the cover immediately or defer it until it is near the viewport
+          * @default 'lazy'
+         */
+        "loading"?: LoadingType;
+        /**
+          * The title of the book, printed on the spine and on the cover drawn when there is no image
+         */
+        "name"?: string;
+        /**
+          * The number of pages, which sets how deep the book is, against the width of its format (17 cm for `auto`). A page is as thick as `--mds-book-page-weight-min` at 1 page, going to `--mds-book-page-weight-max` at 1000 pages and more, in proportion: by default from 0.1 mm, the bulky paper of a short book, to 0.05 mm, the thin paper of a volume, so 64 pages make 6 mm, 300 pages 2.5 cm and 1000 pages 5 cm. A spine under 5 mm deep carries no text
+          * @default 300
+         */
+        "pages"?: number;
+        /**
+          * How the book is shown: standing, turned to show its spine (`spine`) or its pages (`fore-edge`), or facing the reader (`front`); lying on its back, seen from above, its tail toward the reader (`lying`) or spun on the surface (`lying-turned`). A drag turns it from there, and it goes back when released
+          * @default 'spine'
+         */
+        "pose"?: BookPoseType;
+        /**
+          * The publisher, printed at the foot of the spine and of the cover drawn when there is no image
+         */
+        "publisher"?: string;
+        /**
+          * Specifies the path to the image of the front cover
+         */
+        "src"?: string;
     }
     interface MdsBreadcrumb {
         /**
@@ -7932,6 +8037,18 @@ declare namespace LocalJSX {
         "variant": TypographyVariants;
         "url": string;
     }
+    interface MdsBookAttributes {
+        "alt": string;
+        "author": string;
+        "binding": BookBindingType;
+        "format": BookFormatType;
+        "loading": LoadingType;
+        "name": string;
+        "pages": number;
+        "pose": BookPoseType;
+        "publisher": string;
+        "src": string;
+    }
     interface MdsBreadcrumbAttributes {
         "hideBack": boolean;
     }
@@ -8606,6 +8723,7 @@ declare namespace LocalJSX {
         "mds-banner": Omit<MdsBanner, keyof MdsBannerAttributes> & { [K in keyof MdsBanner & keyof MdsBannerAttributes]?: MdsBanner[K] } & { [K in keyof MdsBanner & keyof MdsBannerAttributes as `attr:${K}`]?: MdsBannerAttributes[K] } & { [K in keyof MdsBanner & keyof MdsBannerAttributes as `prop:${K}`]?: MdsBanner[K] };
         "mds-benchmark-bar": Omit<MdsBenchmarkBar, keyof MdsBenchmarkBarAttributes> & { [K in keyof MdsBenchmarkBar & keyof MdsBenchmarkBarAttributes]?: MdsBenchmarkBar[K] } & { [K in keyof MdsBenchmarkBar & keyof MdsBenchmarkBarAttributes as `attr:${K}`]?: MdsBenchmarkBarAttributes[K] } & { [K in keyof MdsBenchmarkBar & keyof MdsBenchmarkBarAttributes as `prop:${K}`]?: MdsBenchmarkBar[K] };
         "mds-bibliography": Omit<MdsBibliography, keyof MdsBibliographyAttributes> & { [K in keyof MdsBibliography & keyof MdsBibliographyAttributes]?: MdsBibliography[K] } & { [K in keyof MdsBibliography & keyof MdsBibliographyAttributes as `attr:${K}`]?: MdsBibliographyAttributes[K] } & { [K in keyof MdsBibliography & keyof MdsBibliographyAttributes as `prop:${K}`]?: MdsBibliography[K] };
+        "mds-book": Omit<MdsBook, keyof MdsBookAttributes> & { [K in keyof MdsBook & keyof MdsBookAttributes]?: MdsBook[K] } & { [K in keyof MdsBook & keyof MdsBookAttributes as `attr:${K}`]?: MdsBookAttributes[K] } & { [K in keyof MdsBook & keyof MdsBookAttributes as `prop:${K}`]?: MdsBook[K] };
         "mds-breadcrumb": Omit<MdsBreadcrumb, keyof MdsBreadcrumbAttributes> & { [K in keyof MdsBreadcrumb & keyof MdsBreadcrumbAttributes]?: MdsBreadcrumb[K] } & { [K in keyof MdsBreadcrumb & keyof MdsBreadcrumbAttributes as `attr:${K}`]?: MdsBreadcrumbAttributes[K] } & { [K in keyof MdsBreadcrumb & keyof MdsBreadcrumbAttributes as `prop:${K}`]?: MdsBreadcrumb[K] };
         "mds-breadcrumb-item": Omit<MdsBreadcrumbItem, keyof MdsBreadcrumbItemAttributes> & { [K in keyof MdsBreadcrumbItem & keyof MdsBreadcrumbItemAttributes]?: MdsBreadcrumbItem[K] } & { [K in keyof MdsBreadcrumbItem & keyof MdsBreadcrumbItemAttributes as `attr:${K}`]?: MdsBreadcrumbItemAttributes[K] } & { [K in keyof MdsBreadcrumbItem & keyof MdsBreadcrumbItemAttributes as `prop:${K}`]?: MdsBreadcrumbItem[K] };
         "mds-button": Omit<MdsButton, keyof MdsButtonAttributes> & { [K in keyof MdsButton & keyof MdsButtonAttributes]?: MdsButton[K] } & { [K in keyof MdsButton & keyof MdsButtonAttributes as `attr:${K}`]?: MdsButtonAttributes[K] } & { [K in keyof MdsButton & keyof MdsButtonAttributes as `prop:${K}`]?: MdsButton[K] };
@@ -8728,6 +8846,7 @@ declare module "@stencil/core" {
             "mds-banner": LocalJSX.IntrinsicElements["mds-banner"] & JSXBase.HTMLAttributes<HTMLMdsBannerElement>;
             "mds-benchmark-bar": LocalJSX.IntrinsicElements["mds-benchmark-bar"] & JSXBase.HTMLAttributes<HTMLMdsBenchmarkBarElement>;
             "mds-bibliography": LocalJSX.IntrinsicElements["mds-bibliography"] & JSXBase.HTMLAttributes<HTMLMdsBibliographyElement>;
+            "mds-book": LocalJSX.IntrinsicElements["mds-book"] & JSXBase.HTMLAttributes<HTMLMdsBookElement>;
             "mds-breadcrumb": LocalJSX.IntrinsicElements["mds-breadcrumb"] & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbElement>;
             "mds-breadcrumb-item": LocalJSX.IntrinsicElements["mds-breadcrumb-item"] & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbItemElement>;
             "mds-button": LocalJSX.IntrinsicElements["mds-button"] & JSXBase.HTMLAttributes<HTMLMdsButtonElement>;

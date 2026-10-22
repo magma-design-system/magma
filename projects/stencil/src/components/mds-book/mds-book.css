@@ -1,0 +1,806 @@
+@import '../../tailwind/fouc.css';
+@import './css/mds-book-pref-animation.css';
+@import './css/mds-book-pref-consumption.css';
+
+/**
+ * @prop --mds-book-color: The colour of the binding where the cover image cannot continue: the spine and the board edges without an image, and the cover drawn when there is no image.
+ * @prop --mds-book-page-weight-max: The thickness of a page, in millimetres (a number), on a book of 1000 pages and more: the thin paper of a volume.
+ * @prop --mds-book-page-weight-min: The thickness of a page, in millimetres (a number), on a book of 1 page; between 1 and 1000 pages it goes to --mds-book-page-weight-max in proportion.
+ * @prop --mds-book-paper-color: The colour of the page block.
+ * @prop --mds-book-spine-color: A solid colour for the spine and the board edges. Unset, they continue the edges of the cover image.
+ * @prop --mds-book-text-color: The colour of the text on the spine and on the cover drawn when there is no image.
+ */
+
+:host {
+  --mds-book-color: rgb(var(--magma-accent-emphasis));
+
+  /* paper, the one colour of the physical object that no role says: it stays paper in dark
+     mode, as the cover image stays the same picture */
+  --mds-book-paper-color: rgb(250 248 242);
+  --mds-book-text-color: rgb(var(--magma-accent-on-emphasis));
+
+  /* the thickness of a page, in millimetres: the bulky paper of a short book, the thin paper
+     of a volume of 1000 pages and more */
+  --mds-book-page-weight-max: 0.05;
+  --mds-book-page-weight-min: 0.1;
+
+
+
+  /* the fine grain of paper, on the page block */
+  --private-book-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+  /* The pose, at rest: the angles of meta/pose.ts, so the book is posed before the component
+     runs. The component animates it and writes it on the scene, with how lit each face is
+     (from -1 to 1, the front at rest being 0) and the gloss of the cover (how much of it, and
+     where it crosses the cover, from 0 to 100). */
+  --private-book-glare: 0;
+  --private-book-glare-x: 50;
+  --private-book-lay: 0deg;
+  --private-book-lie: 0;
+  --private-book-lift: 0;
+  --private-book-stand: 1;
+  --private-book-tilt: -6deg;
+  --private-book-turn: 28deg;
+
+  /* Sized as an image is: a width alone, or a height alone, sets the other one from the
+     proportions of the book. With neither it fills its container, as a block does. */
+  aspect-ratio: var(--private-book-ratio, 17 / 24);
+  cursor: grab;
+  display: block;
+
+  /* the width a height gives it wins over the natural width below, which would otherwise be
+     its least width */
+  min-width: 0;
+
+  /* a vertical swipe still scrolls the page, a horizontal one turns the book; Safari ignores
+     it, and may take a horizontal drag of a finger for the page */
+
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- see above */
+  touch-action: pan-y;
+}
+
+:host([pose='fore-edge']) {
+  --private-book-turn: -28deg;
+}
+
+:host([pose='front']) {
+  --private-book-tilt: 0deg;
+  --private-book-turn: 0deg;
+}
+
+:host([pose='lying']) {
+  --private-book-lay: 90deg;
+  --private-book-lie: 1;
+  --private-book-stand: 0;
+  --private-book-tilt: -30deg;
+  --private-book-turn: 0deg;
+}
+
+:host([pose='lying-turned']) {
+  --private-book-lay: 90deg;
+  --private-book-lie: 1;
+  --private-book-stand: 0;
+  --private-book-tilt: -34deg;
+  --private-book-turn: 32deg;
+}
+
+/* The container the book measures itself on: every length below is a share of its width.
+   Around the outline of the posed book, a halo of shadow so faint that it only parts a light
+   cover from a light page; the shadow that shows is the one on the surface it rests on.
+   Out here, since a filter inside the 3D scene flattens it, and Chrome then paints the faces
+   wrong. */
+
+.scene {
+
+  /* where nothing gives it a width (a row of a flex layout), the book is as wide as an image
+     of 200 px would be, rather than as wide as nothing, which is what its containment says */
+  contain-intrinsic-inline-size: --spacing(5000);
+  container-type: inline-size;
+  filter: drop-shadow(0 1.2cqi 2cqi rgb(var(--magma-shadow-ink) / 0.08));
+  position: relative;
+}
+
+.scene--dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* the eye above the book and far from it, as in a product shot: the head of the book shows at
+   a small tilt, and the cover keeps its shape */
+
+.stage {
+  perspective: 600cqi;
+  perspective-origin: 50% -80%;
+}
+
+/* The volume of the book, from the top left corner of its front: x across (the spine side
+   at 0), y down, z toward the reader (the front at 0, the back at minus the depth). It is laid
+   back first (lay), then turned and tilted.
+   --private-book-wrap is what the spine and the board edges are made of: the cover image,
+   whose edges they stretch, or the solid colour the consumer sets instead.
+   The component writes its measures on it, in shares of its width: the page block
+   (--private-book-pages, from the number of pages), and the thickness and the overhang of
+   rigid boards (--private-book-board, --private-book-square); a paperback is cut flush, its
+   cover a hairline drawn on the page block. */
+
+.book {
+  --private-book-binding: var(--mds-book-color);
+  --private-book-bulge: 0cqi;
+  --private-book-height: calc(100cqi / var(--private-book-ratio));
+
+  /* The page block, from the number of pages the component writes on the book: a page as thick
+     as the minimum weight at 1 page, the maximum one at 1000 pages and beyond, in proportion in
+     between; measured against the width of the format, in millimetres too. */
+  --private-book-page-weight: calc(
+    var(--mds-book-page-weight-min) +
+      (var(--mds-book-page-weight-max) - var(--mds-book-page-weight-min)) *
+      (min(var(--private-book-page-count), 1000) - 1) / 999
+  );
+  --private-book-pages-mm: calc(var(--private-book-page-count) * var(--private-book-page-weight));
+  --private-book-pages: calc(var(--private-book-pages-mm) / var(--private-book-width-mm) * 100cqi);
+  --private-book-depth: calc(var(--private-book-pages) + var(--private-book-board) * 2);
+  --private-book-solid: linear-gradient(var(--mds-book-spine-color), var(--mds-book-spine-color));
+  --private-book-wrap: var(--private-book-solid, var(--private-book-cover, none));
+
+  aspect-ratio: var(--private-book-ratio);
+  position: relative;
+  transform: rotateX(var(--private-book-tilt)) rotateY(var(--private-book-turn))
+    rotateX(var(--private-book-lay));
+
+  /* the middle of the volume, not of the cover, so the book turns on itself */
+  transform-origin: 50% 50% calc(var(--private-book-depth) / -2);
+  transform-style: preserve-3d;
+  width: 100%;
+}
+
+/* how far the rounded spine of rigid boards bows out: spineBulge in meta/spine.ts */
+
+:host([binding='hardcover']) .book {
+  --private-book-bulge: calc(var(--private-book-depth) * 0.14);
+}
+
+/* On hover and on a drag the book rises off the surface it rests on: up when it stands, toward
+   the reader when it lies. Its shadow stays on the surface, and fades. */
+
+.body {
+  inset: 0;
+  position: absolute;
+  transform: translate3d(
+    0,
+    calc(var(--private-book-lift) * var(--private-book-stand) * -3cqi),
+    calc(var(--private-book-lift) * var(--private-book-lie) * 3cqi)
+  );
+  transform-style: preserve-3d;
+}
+
+/* The shadow where the book touches the surface, on the surface under the tail of a standing
+   book, or under the back cover of a lying one: around its footprint, darkest on the edge
+   where it rests, then a wider and fainter one. Only the blur of the box shadows softens it,
+   since a filter in the 3D scene makes Chrome paint the faces wrong; the footprint itself is
+   filled with what the two shadows add up to on its edge, so no step shows where a corner of
+   it is in sight. Painted once: only its opacity follows the pose. */
+
+.floor {
+  background-color: rgb(var(--magma-shadow-ink) / 0.27);
+  border-radius: 1cqi;
+  box-shadow:
+    0 0 3cqi 0.6cqi rgb(var(--magma-shadow-ink) / 0.34),
+    0 0 9cqi 2cqi rgb(var(--magma-shadow-ink) / 0.1);
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transform-origin: 0 0;
+}
+
+.floor--stand {
+  height: var(--private-book-depth);
+  opacity: calc(var(--private-book-stand) * (1 - var(--private-book-lift) * 0.6));
+  transform: translate3d(0, var(--private-book-height), calc(var(--private-book-depth) * -1))
+    rotateX(90deg);
+  width: 100%;
+}
+
+/* Only the surface of the pose is there at all: the other one, upright behind or beside the
+   book, would still be sorted with its faces, and Chrome then paints them washed out even
+   under an opacity of 0. Moving to another pose, the new shadow fades in. */
+
+.floor--lie,
+:host([pose='lying']) .floor--stand,
+:host([pose='lying-turned']) .floor--stand {
+  display: none;
+}
+
+:host([pose='lying']) .floor--lie,
+:host([pose='lying-turned']) .floor--lie {
+  display: block;
+}
+
+.floor--lie {
+  height: 100%;
+  opacity: calc(var(--private-book-lie) * (1 - var(--private-book-lift) * 0.6));
+  transform: translateZ(calc(var(--private-book-depth) * -1 - 0.2cqi));
+  width: 100%;
+}
+
+/* waiting for its image, the book is a neutral shape, not a coloured one that turns into
+   another when the cover arrives */
+
+.book--pending {
+  --private-book-binding: rgb(var(--magma-surface-sunken));
+}
+
+/* Every face starts flat at the top left corner of the front and is moved into place by its
+   transform, facing out. */
+
+.face {
+  --private-book-light: 0;
+
+  backface-visibility: hidden;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform-origin: 0 0;
+}
+
+.lit-front {
+  --private-book-light: var(--private-book-front-light, 0);
+}
+
+.lit-top {
+  --private-book-light: var(--private-book-top-light, 0);
+}
+
+.lit-bottom {
+  --private-book-light: var(--private-book-bottom-light, 0);
+}
+
+.lit-fore {
+  --private-book-light: var(--private-book-fore-light, 0);
+}
+
+.lit-spine {
+  --private-book-light: var(--private-book-spine-light, 0);
+}
+
+/* A face turned away from the light darkens: a dark layer on top of it whose opacity alone
+   changes with the pose, which the compositor applies without painting the face again. */
+
+.shade {
+  background-color: rgb(var(--magma-shadow-ink));
+  inset: 0;
+  opacity: calc(max(0, var(--private-book-light) * -1) * 0.24);
+  pointer-events: none;
+  position: absolute;
+}
+
+/* front: the cover, or the front board */
+
+.front {
+  background-color: var(--private-book-binding);
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* The gloss of a laminated cover: a soft sheen that slides across it as the book turns, just
+   enough to tell the cover is a surface, moved and faded, never painted again. */
+
+.gloss {
+  background-image: linear-gradient(
+    105deg,
+    transparent 34%,
+    color-mix(in srgb, var(--mds-book-paper-color) 6%, transparent) 44%,
+    color-mix(in srgb, var(--mds-book-paper-color) 14%, transparent) 50%,
+    color-mix(in srgb, var(--mds-book-paper-color) 6%, transparent) 56%,
+    transparent 66%
+  );
+  height: 100%;
+  left: 0;
+  mix-blend-mode: screen;
+  opacity: var(--private-book-glare);
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  translate: calc(var(--private-book-glare-x) * -0.6%) 0;
+  width: 250%;
+}
+
+/* the soft light from the left, and the score line where a paperback cover folds onto its
+   spine */
+
+.front::after {
+  background-image:
+    linear-gradient(
+      to right,
+      rgb(var(--magma-shadow-ink) / 0.12),
+      transparent 1.2cqi,
+      color-mix(in srgb, var(--mds-book-paper-color) 18%, transparent) 1.6cqi,
+      transparent 2.4cqi
+    ),
+    linear-gradient(
+      105deg,
+      color-mix(in srgb, var(--mds-book-paper-color) 16%, transparent),
+      transparent 45%
+    );
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+/* the hinge groove of rigid boards, a little in from the spine */
+
+:host([binding='hardcover']) .front::after {
+  background-image:
+    linear-gradient(
+      to right,
+      rgb(var(--magma-shadow-ink) / 0.2),
+      rgb(var(--magma-shadow-ink) / 0.04) 2.6cqi,
+      rgb(var(--magma-shadow-ink) / 0.32) 3.4cqi,
+      color-mix(in srgb, var(--mds-book-paper-color) 28%, transparent) 4cqi,
+      transparent 5cqi
+    ),
+    linear-gradient(
+      105deg,
+      color-mix(in srgb, var(--mds-book-paper-color) 16%, transparent),
+      transparent 45%
+    );
+}
+
+.cover {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  width: 100%;
+}
+
+.drawn-cover {
+  color: var(--mds-book-text-color);
+  display: flex;
+  flex-direction: column;
+  gap: 3cqi;
+  height: 100%;
+  padding: 12cqi 9cqi 9cqi 12cqi;
+}
+
+.drawn-author {
+  font-size: 5cqi;
+  line-height: 1.2;
+}
+
+.drawn-name {
+  @apply font-bold;
+
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  font-size: 10cqi;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  line-height: 1.1;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.drawn-publisher {
+  font-size: 4.5cqi;
+  margin-top: auto;
+}
+
+/* The faces made of the cover material: the board edges, the slats of a rounded spine and
+   its caps. Each one stretches the edge of the cover image it continues
+   (--private-book-wrap-position and -size), or takes the colour of the binding. */
+
+.board-top,
+.board-bottom,
+.board-fore,
+.cap,
+.slat {
+  background-color: var(--private-book-binding);
+  background-image: var(--private-book-wrap);
+  background-position: var(--private-book-wrap-position);
+  background-repeat: no-repeat;
+  background-size: var(--private-book-wrap-size);
+}
+
+/* the edges of the boards, on the head (the top edge of the cover image) and on the tail
+   (its bottom edge) */
+
+.board-top,
+.board-bottom {
+  --private-book-wrap-size: 100% 4000%;
+
+  height: var(--private-book-board);
+  width: 100%;
+}
+
+.board-top {
+  --private-book-wrap-position: center top;
+}
+
+.board-bottom {
+  --private-book-wrap-position: center bottom;
+}
+
+.board-top--front {
+  transform: translateZ(calc(var(--private-book-board) * -1)) rotateX(90deg);
+}
+
+.board-top--back {
+  transform: translateZ(calc(var(--private-book-depth) * -1)) rotateX(90deg);
+}
+
+.board-bottom--front {
+  transform: translateY(var(--private-book-height)) rotateX(-90deg);
+}
+
+.board-bottom--back {
+  transform: translate3d(
+      0,
+      var(--private-book-height),
+      calc(var(--private-book-board) - var(--private-book-depth))
+    )
+    rotateX(-90deg);
+}
+
+/* and on the fore edge (the right edge of the cover image) */
+
+.board-fore {
+  --private-book-wrap-position: right center;
+  --private-book-wrap-size: 4000% 100%;
+
+  height: 100%;
+  width: var(--private-book-board);
+}
+
+.board-fore--front {
+  transform: translateX(100cqi) rotateY(90deg);
+}
+
+.board-fore--back {
+  transform: translate3d(100cqi, 0, calc(var(--private-book-board) - var(--private-book-depth)))
+    rotateY(90deg);
+}
+
+/* the endpaper on the inside of the back board, seen in the gaps the boards leave around the
+   pages, darker toward them */
+
+.endpaper {
+  background-color: color-mix(in srgb, var(--mds-book-paper-color), rgb(var(--magma-shadow-ink)) 5%);
+  background-image: linear-gradient(
+    var(--private-book-endpaper-fall),
+    transparent,
+    rgb(var(--magma-shadow-ink) / 0.22)
+  );
+}
+
+.endpaper--top {
+  --private-book-endpaper-fall: to bottom;
+
+  height: var(--private-book-square);
+  transform: translateZ(calc(var(--private-book-board) - var(--private-book-depth)));
+  width: 100%;
+}
+
+.endpaper--bottom {
+  --private-book-endpaper-fall: to top;
+
+  height: var(--private-book-square);
+  transform: translate3d(
+    0,
+    calc(var(--private-book-height) - var(--private-book-square)),
+    calc(var(--private-book-board) - var(--private-book-depth))
+  );
+  width: 100%;
+}
+
+.endpaper--fore {
+  --private-book-endpaper-fall: to left;
+
+  height: 100%;
+  transform: translate3d(
+    calc(100cqi - var(--private-book-square)),
+    0,
+    calc(var(--private-book-board) - var(--private-book-depth))
+  );
+  width: var(--private-book-square);
+}
+
+/* The page block: page edges in fine lines over the grain of the paper, shaded where the
+   boards close in on them. */
+
+.pages-top,
+.pages-bottom,
+.pages-fore {
+  background-color: var(--mds-book-paper-color);
+  background-repeat: no-repeat, repeat, no-repeat;
+  background-size:
+    100% 100%,
+    auto,
+    100% 100%;
+}
+
+.pages-top,
+.pages-bottom {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgb(var(--magma-shadow-ink) / 0.16),
+      transparent 22%,
+      transparent 78%,
+      rgb(var(--magma-shadow-ink) / 0.16)
+    ),
+    var(--private-book-grain),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 0.45cqi,
+      color-mix(in srgb, var(--mds-book-paper-color), rgb(var(--magma-shadow-ink)) 9%) 0.45cqi
+        0.55cqi
+    );
+  height: var(--private-book-pages);
+  width: calc(100cqi - var(--private-book-square));
+}
+
+.pages-top {
+  transform: translate3d(
+      0,
+      var(--private-book-square),
+      calc(var(--private-book-board) - var(--private-book-depth))
+    )
+    rotateX(90deg);
+}
+
+.pages-bottom {
+  transform: translate3d(
+      0,
+      calc(var(--private-book-height) - var(--private-book-square)),
+      calc(var(--private-book-board) * -1)
+    )
+    rotateX(-90deg);
+}
+
+/* the headband and the tailband at the spine end of the pages, a striped bead of thread */
+
+.pages-top::before,
+.pages-bottom::before {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgb(var(--magma-shadow-ink) / 0.55) 0 0.35cqi,
+    var(--mds-book-paper-color) 0.35cqi 0.7cqi
+  );
+  bottom: 0;
+  content: '';
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 1cqi;
+}
+
+.pages-fore {
+  background-image:
+    linear-gradient(
+      to right,
+      rgb(var(--magma-shadow-ink) / 0.16),
+      transparent 22%,
+      transparent 78%,
+      rgb(var(--magma-shadow-ink) / 0.16)
+    ),
+    var(--private-book-grain),
+    repeating-linear-gradient(
+      to right,
+      transparent 0 0.45cqi,
+      color-mix(in srgb, var(--mds-book-paper-color), rgb(var(--magma-shadow-ink)) 9%) 0.45cqi
+        0.55cqi
+    );
+  height: calc(100% - var(--private-book-square) * 2);
+  transform: translate3d(
+      calc(100cqi - var(--private-book-square)),
+      var(--private-book-square),
+      calc(var(--private-book-board) * -1)
+    )
+    rotateY(90deg);
+  width: var(--private-book-pages);
+}
+
+/* Flush, on a paperback: the page block takes the whole depth, the covers only a hairline at
+   its two ends, cut with the pages; no band of thread. */
+
+.pages-flush::before,
+.pages-flush::after {
+  background-color: var(--private-book-binding);
+  background-image: var(--private-book-wrap);
+  background-position: var(--private-book-wrap-position);
+  background-repeat: no-repeat;
+  background-size: var(--private-book-wrap-size);
+  content: '';
+  position: absolute;
+}
+
+.pages-flush--across {
+  --private-book-wrap-size: 100% 4000%;
+
+  height: var(--private-book-depth);
+  width: 100%;
+}
+
+.pages-flush--across::before,
+.pages-flush--across::after {
+  bottom: auto;
+  height: 1px;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+.pages-flush--across::after {
+  bottom: 0;
+  top: auto;
+}
+
+.pages-top.pages-flush {
+  --private-book-wrap-position: center top;
+
+  transform: translateZ(calc(var(--private-book-depth) * -1)) rotateX(90deg);
+}
+
+.pages-bottom.pages-flush {
+  --private-book-wrap-position: center bottom;
+
+  transform: translateY(var(--private-book-height)) rotateX(-90deg);
+}
+
+.pages-flush--along {
+  --private-book-wrap-position: right center;
+  --private-book-wrap-size: 4000% 100%;
+
+  height: 100%;
+  transform: translateX(100cqi) rotateY(90deg);
+  width: var(--private-book-depth);
+}
+
+.pages-flush--along::before,
+.pages-flush--along::after {
+  bottom: 0;
+  left: 0;
+  top: 0;
+  width: 1px;
+}
+
+.pages-flush--along::after {
+  left: auto;
+  right: 0;
+}
+
+/* The spine. Flat on a paperback, the cover folded at its two edges; on rigid boards an arc
+   of slats (meta/spine.ts) under a flat label for its text, with a cap at each end. */
+
+.spine,
+.spine-label {
+  box-sizing: border-box;
+  display: flex;
+
+  /* the lengths of the text are set here: in the vertical text, cqi would measure the
+     container on its vertical axis, which nothing contains */
+  font-size: min(calc(var(--private-book-depth) * 0.42), 4.5cqi);
+  height: 100%;
+  justify-content: center;
+  padding-block: 7cqi;
+  width: var(--private-book-depth);
+}
+
+/* a paperback spine is flat: only the two folds of the cover, a narrow line each, mark where
+   it turns onto the boards */
+
+.spine {
+  background-color: var(--private-book-binding);
+  background-image:
+    linear-gradient(
+      to right,
+      rgb(var(--magma-shadow-ink) / 0.1),
+      transparent 0.6cqi,
+      transparent calc(100% - 0.6cqi),
+      rgb(var(--magma-shadow-ink) / 0.1)
+    ),
+    var(--private-book-wrap);
+  background-position:
+    0 0,
+    left center;
+  background-repeat: no-repeat;
+  background-size:
+    100% 100%,
+    4000% 100%;
+  transform: translateZ(calc(var(--private-book-depth) * -1)) rotateY(-90deg);
+}
+
+.slat {
+  --private-book-wrap-position: left center;
+  --private-book-wrap-size: 4000% 100%;
+
+  height: 100%;
+  transform: translate3d(
+      calc(var(--private-book-slat-x) * var(--private-book-depth)),
+      0,
+      calc(var(--private-book-slat-z) * var(--private-book-depth))
+    )
+    rotateY(var(--private-book-slat-yaw)) translateX(-50%);
+  width: calc(var(--private-book-slat-width) * var(--private-book-depth));
+}
+
+/* just outside the top of the arc, so the text sits on the spine and the arc shows round */
+
+.spine-label {
+  transform: translate3d(
+      calc(var(--private-book-bulge) * -1 - 0.2cqi),
+      0,
+      calc(var(--private-book-depth) * -1)
+    )
+    rotateY(-90deg);
+}
+
+/* the cover material turned in over each end of the spine, in the shape of the arc */
+
+.cap {
+  --private-book-wrap-position: left top;
+  --private-book-wrap-size: 4000% 4000%;
+
+  clip-path: ellipse(100% 50% at 100% 50%);
+  height: var(--private-book-depth);
+  width: var(--private-book-bulge);
+}
+
+.cap--top {
+  transform: translate3d(
+      calc(var(--private-book-bulge) * -1),
+      0,
+      calc(var(--private-book-depth) * -1)
+    )
+    rotateX(90deg);
+}
+
+.cap--bottom {
+  transform: translate3d(calc(var(--private-book-bulge) * -1), var(--private-book-height), 0)
+    rotateX(-90deg);
+}
+
+/* the text fades out on a spine under 5 mm, too narrow to print on, as on a thin booklet */
+
+.spine-text {
+  align-items: center;
+  color: var(--mds-book-text-color);
+  display: flex;
+  gap: 0.8lh;
+  line-height: 1.2;
+  min-block-size: 0;
+  opacity: clamp(0, (var(--private-book-pages-mm) - 5) * 2, 1);
+
+  /* the text sits on a picture whose colour nobody chose for it */
+  text-shadow: 0 0 0.3lh rgb(var(--magma-shadow-ink) / 0.4);
+
+  /* top to bottom, as ISO 6357 recommends for the title on a spine */
+  writing-mode: vertical-rl;
+}
+
+.spine-text > span {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* short of room, the author gives way first, the publisher last */
+
+.spine-author {
+  flex-shrink: 4;
+}
+
+.spine-name {
+  @apply font-bold;
+}
+
+.spine-publisher {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+}
+

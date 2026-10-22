@@ -1,0 +1,41 @@
+/*
+  Document-level registrations for the mds-book public custom properties.
+
+  Never import this file from a component stylesheet: an @property rule inside a shadow root
+  registers nothing, and every Magma component is shadow: true.
+  projects/styles/scripts/properties.ts collects these into globals.css, which the document does
+  load, and resolves each initial-value down to a literal - see that file for the full
+  rationale. inherits is true throughout, because that is what the unregistered behaviour
+  already does today. --mds-book-spine-color is left unregistered: unset, the spine falls
+  back on the cover image, which an initial value would hide.
+*/
+
+@property --mds-book-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-book-paper-color {
+  inherits: true;
+  initial-value: rgb(250 248 242);
+  syntax: '<color>';
+}
+
+@property --mds-book-text-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-accent-on-emphasis));
+  syntax: '<color>';
+}
+
+@property --mds-book-page-weight-max {
+  inherits: true;
+  initial-value: 0.05;
+  syntax: '<number>';
+}
+
+@property --mds-book-page-weight-min {
+  inherits: true;
+  initial-value: 0.1;
+  syntax: '<number>';
+}

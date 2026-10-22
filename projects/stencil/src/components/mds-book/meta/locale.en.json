@@ -1,0 +1,4 @@
+{
+  "book": "Book",
+  "byAuthor": "{{{name}}} by {{{author}}}"
+}
