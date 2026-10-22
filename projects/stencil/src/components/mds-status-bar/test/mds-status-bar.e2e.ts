@@ -1,5 +1,5 @@
 import { render } from '@stencil/vitest';
-import { userEvent } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 
 describe('mds-status-bar', () => {
   it('renders', async () => {
@@ -84,5 +84,32 @@ describe('mds-status-bar', () => {
 
     expect(start.scrollTop).toBe(0);
     expect(start.top).toBeGreaterThanOrEqual(innerHeight - 1);
+  });
+
+  // #1070: the mobile rule gives the bar the full width, and its padding came on top of it
+  describe('at 480px and less', () => {
+    afterEach(async () => {
+      await page.viewport(1280, 800);
+    });
+
+    it('fills the width of its area and stays inside it', async () => {
+      await page.viewport(375, 812);
+      const { root } = await render<HTMLMdsStatusBarElement>(
+        '<mds-status-bar visible description="Can we improve it?"><button>Submit</button></mds-status-bar>',
+      );
+      const area = root.shadowRoot!.querySelector<HTMLElement>('.status-bar-area')!;
+      const bar = root.shadowRoot!.querySelector<HTMLElement>('.status-bar')!;
+      const areaStyle = getComputedStyle(area);
+      const areaBox = area.getBoundingClientRect();
+      const barBox = bar.getBoundingClientRect();
+      const contentWidth =
+        areaBox.width - parseFloat(areaStyle.paddingLeft) - parseFloat(areaStyle.paddingRight);
+
+      expect(parseFloat(areaStyle.paddingLeft)).toBeGreaterThan(0);
+      expect(barBox.width).toBeCloseTo(contentWidth, 0);
+      expect(barBox.right).toBeLessThanOrEqual(
+        areaBox.right - parseFloat(areaStyle.paddingRight) + 0.5,
+      );
+    });
   });
 });

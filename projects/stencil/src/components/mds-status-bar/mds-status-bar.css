@@ -46,6 +46,7 @@ mds-modal {
   background-color: rgb(var(--magma-surface-overlay));
   border-radius: var(--magma-radius-lg);
   box-shadow: var(--shadow-md);
+  box-sizing: border-box;
   corner-shape: var(--magma-corner-shape);
   display: inline-flex;
   flex-wrap: wrap;
