@@ -28,9 +28,13 @@
   --mds-keyboard-key-illumination-dark-size: --spacing(150);
   --mds-keyboard-key-illumination-light-size: --spacing(50);
   --mds-keyboard-key-illumination-dark: 0 calc(var(--mds-keyboard-key-illumination-dark-size) * -1)
-    0 0 rgb(0 0 0 / var(--mds-keyboard-key-illumination-dark-opacity, 0.05)) inset;
+    0 0 rgb(var(--magma-shadow-ink) / var(--mds-keyboard-key-illumination-dark-opacity, 0.05)) inset;
+
+  /* stylelint-disable magma/token-values -- white light on the edge of the key, in every theme and mode: a highlight, not a role */
   --mds-keyboard-key-illumination-light: 0 var(--mds-keyboard-key-illumination-light-size) 0 0
     rgb(255 255 255 / var(--mds-keyboard-key-illumination-light-opacity, 0.5)) inset;
+
+  /* stylelint-enable magma/token-values */
   --mds-keyboard-key-padding: --spacing(100);
   --mds-keyboard-key-transition-duration: var(--duration-300);
 
@@ -83,7 +87,7 @@
 :host(:active) .physical-key,
 :host([pressed]:not([pressed='false'])) .physical-key {
   --mds-keyboard-key-illumination-dark: 0 calc(var(--mds-keyboard-key-illumination-light-size) * -1)
-    0 0 rgb(0 0 0 / var(--mds-keyboard-key-illumination-dark-opacity)) inset;
+    0 0 rgb(var(--magma-shadow-ink) / var(--mds-keyboard-key-illumination-dark-opacity)) inset;
 
   box-shadow:
     var(--mds-keyboard-key-illumination-light), var(--mds-keyboard-key-illumination-dark),

@@ -147,7 +147,7 @@ The rules below are the ones that constrain authoring decisions. Many additional
 | `time-min-milliseconds: 100`                                 | Animation/transition durations must be ≥ 100 ms                     |
 | `length-zero-no-unit: null`                                  | `0px` is allowed (rule is disabled)                                 |
 
-In the component sheets `magma/token-values` also rejects `px`, `rem`, `s` and `ms` literals: see [Component sheets: values from the tokens](#component-sheets-values-from-the-tokens).
+In the component sheets `magma/token-values` also rejects `px`, `rem`, `s` and `ms` literals, and literal colours: see [Component sheets: values from the tokens](#component-sheets-values-from-the-tokens).
 
 ```css
 /* ✅ correct */
@@ -167,15 +167,17 @@ In the component sheets `magma/token-values` also rejects `px`, `rem`, `s` and `
 
 ### Component sheets: values from the tokens
 
-`projects/stencil/stylelint.config.mjs` turns on `magma/token-values`, a local plugin ([`projects/stencil/scripts/stylelint-token-values.mjs`](../projects/stencil/scripts/stylelint-token-values.mjs)), for `src/components/**/*.css`: a `px`, `rem`, `s` or `ms` literal in a declaration value is an error, and the message names the token that says it. The rule it enforces is "Values come from the tokens" in [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md) (Authoring rules).
+`projects/stencil/stylelint.config.mjs` turns on `magma/token-values`, a local plugin ([`projects/stencil/scripts/stylelint-token-values.mjs`](../projects/stencil/scripts/stylelint-token-values.mjs)), for `src/components/**/*.css`: a `px`, `rem`, `s` or `ms` literal in a declaration value is an error, and so is a colour written as a literal (a hex, or an `rgb()` / `hsl()` whose channels are numbers); the message names the token that says it. The rule it enforces is "Values come from the tokens" in [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md) (Authoring rules).
 
 | Literal                                  | Write instead                                                                                                 |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | a length: `16px`, `1rem`, `3px`, `-8px`  | `--spacing(N)`, N = px x 25 or rem x 400: `--spacing(400)`, `--spacing(400)`, `--spacing(75)`, `--spacing(-200)` |
 | a radius                                 | a `var(--magma-radius-*)` step                                                                                |
 | a duration on the scale: `300ms`, `0.5s` | `var(--duration-300)`, `var(--duration-500)` (the steps are 75, 100, 150, 200, 300, 500, 700 and 1000 ms)    |
+| a colour: `#c4c4c4`, `rgb(73 73 73)`     | a role in the RGB wrapper, whose alpha may stay a literal: `rgb(var(--magma-border-default))`, `rgb(var(--magma-text-muted) / 0.5)` |
+| a black shadow: `rgb(0 0 0 / 0.1)`       | `rgb(var(--magma-shadow-ink) / 0.1)`; a black backdrop or scrim is `rgb(var(--magma-backdrop-color) / <alpha>)` |
 
-Not reported: `0` (`0s` keeps its unit, a `<time>` needs it), the `1px` hairline and the `1px` floor of `minmax(1px, 1fr)`, `url()`, and the conditions of `@media` and `@container`, where `var()` is not allowed. The units the plugin does not own (`%`, `fr`, `vw`, `lh`, `deg`) pass. The `initial-value` of a `-property.css` registration is checked too: `projects/styles/scripts/properties.ts` folds `var()` and `--spacing()` down to the literal the registration needs.
+Not reported: `0` (`0s` keeps its unit, a `<time>` needs it), the `1px` hairline and the `1px` floor of `minmax(1px, 1fr)`, the colours of `mask` and `mask-image` (a mask reads only their alpha), `url()`, and the conditions of `@media` and `@container`, where `var()` is not allowed. The units the plugin does not own (`%`, `fr`, `vw`, `lh`, `deg`) pass. The `initial-value` of a `-property.css` registration is checked too: `projects/styles/scripts/properties.ts` folds `var()` and `--spacing()` down to the literal the registration needs.
 
 A value no token can say keeps its literal under a disable comment that gives the reason, so that review sees it:
 
@@ -186,7 +188,7 @@ A value no token can say keeps its literal under a disable comment that gives th
 }
 ```
 
-Two kinds so far: a duration off the scale, and a length that the component's TypeScript reads with `cssSizeToNumber` (`@common/unit`), which parses `7px` but not the `calc(var(--spacing) * 175)` that `--spacing(175)` compiles to.
+The kinds so far: a duration off the scale; a length that the component's TypeScript reads with `cssSizeToNumber` (`@common/unit`), which parses `7px` but not the `calc(var(--spacing) * 175)` that `--spacing(175)` compiles to; the white light of a highlight or a glow (`mds-keyboard`), the same in every theme and mode; the palette of an illustration (`mds-emoji`); and the light fade behind the `mds-push-notification` stack, which no role says yet.
 
 ### Selectors
 
@@ -307,7 +309,7 @@ When writing or editing code in this monorepo:
 - **CSS authoring**:
   - Use `rgb(r g b / a)` modern syntax with numeric alpha; never named colors, never `hsl`/`lch`, never short hex
   - Use `px`, `rem`, `%`, `vh`/`vw` for sizing; never `em`/`cm`/`in`/`mm`/`pc`/`pt`
-  - In component sheets, lengths and durations come from the tokens (`--spacing(N)`, `var(--magma-radius-*)`, `var(--duration-*)`); a literal only for `0` and the `1px` hairline (`magma/token-values`)
+  - In component sheets, lengths, durations and colours come from the tokens (`--spacing(N)`, `var(--magma-radius-*)`, `var(--duration-*)`, `rgb(var(--magma-*) / a)`); a literal only for `0` and the `1px` hairline (`magma/token-values`)
   - Sort declarations alphabetically; custom props first; one declaration per line
   - Use specific `background-*` properties, never the `background` shorthand
   - No vendor prefixes (except `-webkit-overflow-scrolling`)

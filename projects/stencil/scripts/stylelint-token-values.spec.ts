@@ -47,7 +47,37 @@ describe('magma/token-values', () => {
 
     const literals = (await lint(css)).map((message) => message.match(/"(.+?)"/)?.[1]);
 
-    expect(literals).toEqual(['20px', '4px', '3px', '2rem']);
+    expect(literals).toEqual(['20px', '4px', '3px', 'rgb(0 0 0 / 0.1)', '2rem']);
+  });
+
+  it('rejects a literal colour, and points a black shadow at the shadow ink', async () => {
+    const css = `:host {
+  --mds-a-light: 0 1px 0 0 rgb(255 255 255 / var(--o, 0.5)) inset;
+  background-color: rgb(73 73 73);
+  border-color: hsl(0 0% 50% / 0.5);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.1);
+  color: #100;
+}`;
+
+    expect(await lint(css)).toEqual([
+      'Unexpected literal "rgb(255 255 255 / var(--o, 0.5))": paint with a role, rgb(var(--magma-*) / <alpha>) (magma/token-values)',
+      'Unexpected literal "rgb(73 73 73)": paint with a role, rgb(var(--magma-*) / <alpha>) (magma/token-values)',
+      'Unexpected literal "hsl(0 0% 50% / 0.5)": paint with a role, rgb(var(--magma-*) / <alpha>) (magma/token-values)',
+      'Unexpected literal "rgb(0 0 0 / 0.1)": a shadow is rgb(var(--magma-shadow-ink) / <alpha>) (magma/token-values)',
+      'Unexpected literal "#100": paint with a role, rgb(var(--magma-*) / <alpha>) (magma/token-values)',
+    ]);
+  });
+
+  it('lets through a role in the RGB wrapper, colour keywords and the colours of a mask', async () => {
+    const css = `:host {
+  background-color: transparent;
+  color: rgb(var(--magma-text-muted) / 0.5);
+  fill: currentColor;
+  mask-image: linear-gradient(rgb(0 0 0 / 1), transparent);
+  -webkit-mask-image: linear-gradient(#000000, transparent);
+}`;
+
+    expect(await lint(css)).toEqual([]);
   });
 
   it('lets through zero, the 1px hairline, tokens and the units it does not own', async () => {
@@ -67,11 +97,10 @@ describe('magma/token-values', () => {
     expect(await lint(css)).toEqual([]);
   });
 
-  it('skips identifiers, hex colours, strings, url() and at-rule conditions', async () => {
+  it('skips identifiers, strings, url() and at-rule conditions', async () => {
     const css = `@media (width <= 480px) {
   :host {
     --mds-a-radius: var(--magma-radius-2xs);
-    color: #100;
     content: '12px';
     background-image: url('icon-16px.svg');
   }

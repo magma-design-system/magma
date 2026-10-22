@@ -9,6 +9,8 @@
   already does today.
 */
 
+/* stylelint-disable magma/token-values -- the colours of Simi, drawn in its own palette: an illustration, not roles of the interface */
+
 @property --mds-emoji-expression-follow-mouse-head-duration {
   inherits: true;
   initial-value: var(--duration-300);

@@ -33,6 +33,8 @@
   --mds-emoji-offset-mouth: 16px;
 
   /* stylelint-enable magma/token-values */
+
+  /* stylelint-disable magma/token-values -- the colours of Simi, drawn in its own palette: an illustration, not roles of the interface */
   --mds-emoji-simi-eye-light: #ffffff;
   --mds-emoji-simi-eye: #40281b;
   --mds-emoji-simi-eyebrow: #feefd8;
@@ -46,4 +48,6 @@
   --mds-emoji-simi-skin-dark: #c3481b;
   --mds-emoji-simi-skin-light: #feefd8;
   --mds-emoji-simi-skin: #f36320;
+
+  /* stylelint-enable magma/token-values */
 }
