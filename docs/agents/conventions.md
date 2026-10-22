@@ -168,6 +168,13 @@ Maggioli):
 - Use the preference components / classes for high contrast and reduced motion - do not
   hard-code those styles (see [`theming.md`](theming.md)).
 
+## Language
+
+- The texts of the components (labels, tooltips, validation messages) follow the language of
+  the page, `<html lang>`: Magma has them in `el`, `en`, `es` and `it`. A language with a
+  region gets the texts of its base language (`it-IT` and `it-CH` get `it`), and any other
+  language gets English. To let the user choose, add `mds-pref-language`.
+
 ## Styling components from outside
 
 A component's styling API is what its `AGENTS.md` documents:

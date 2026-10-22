@@ -22,14 +22,22 @@ export class Locale {
     this.config = configData;
   };
 
+  /**
+   * The texts of a language: its own, those of its base language, or the ones of
+   * `rollbackLanguage`. The page can name a region (`it-IT`), the config only has languages (`it`).
+   */
+  private texts = (language: string): Record<string, string | string[]> => {
+    const configs = this.config as Record<string, Record<string, string | string[]> | undefined>;
+    const code = language.toLowerCase();
+    return configs[code] ?? configs[code.split(/[-_]/)[0]] ?? configs[this.rollbackLanguage]!;
+  };
+
   private pluralize = (
     tag: string | string[],
     context: Record<string, string | number | boolean>,
     language: string,
   ): string => {
-    const languagePhrase: string | string[] = this.config[language]
-      ? this.config[language][tag]
-      : this.config[this.rollbackLanguage][tag];
+    const languagePhrase: string | string[] = this.texts(language)[tag as string];
     const phrases: string[] = [];
 
     if (Array.isArray(languagePhrase)) {
@@ -62,8 +70,6 @@ export class Locale {
     if (context) {
       return this.pluralize(tag, context, language);
     }
-    return this.config[language]
-      ? this.config[language][tag]
-      : this.config[this.rollbackLanguage][tag];
+    return this.texts(language)[tag as string] as string;
   };
 }
