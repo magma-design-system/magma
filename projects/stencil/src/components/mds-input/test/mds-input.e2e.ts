@@ -385,7 +385,7 @@ describe('min and max', () => {
     await type(mdsInput, '3');
     await blur(button);
 
-    expect(await mdsInput.getErrors()).toEqual({ min: 'valore minimo 5' });
+    expect(await mdsInput.getErrors()).toEqual({ min: 'The minimum value is 5' });
     expect(mdsInput).toEqualAttribute('variant', 'error');
   });
 
@@ -398,7 +398,7 @@ describe('min and max', () => {
     await type(mdsInput, '-2');
     await blur(button);
 
-    expect(await mdsInput.getErrors()).toEqual({ min: 'valore minimo 0' });
+    expect(await mdsInput.getErrors()).toEqual({ min: 'The minimum value is 0' });
   });
 });
 

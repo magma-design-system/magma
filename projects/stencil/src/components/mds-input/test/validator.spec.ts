@@ -1,9 +1,11 @@
+import { preferenceStore } from '@common/preference';
 import {
   MdsValidatorFn,
   Validator,
   ccValidatorFn,
   emailValidatorFn,
   isbnValidatorFn,
+  maxValidator,
   patternValidator,
   pivaValidatorFn,
   urlValidatorFn,
@@ -111,7 +113,7 @@ describe('validator', () => {
       validator.validate('test');
       expect(validator.isValid).toBeFalsy();
       expect(validator.errors).toEqual({
-        'isbn-error': 'formato isbn non correto',
+        'isbn-error': 'Invalid ISBN format',
       });
     });
 
@@ -119,13 +121,13 @@ describe('validator', () => {
       validator.validate('8851521599');
       expect(validator.isValid).toBeFalsy();
       expect(validator.errors).toEqual({
-        'isbn-error': 'codice isbn non valido',
+        'isbn-error': 'Invalid ISBN code',
       });
     });
     it('isbn-13 not valid', () => {
       validator.validate('8851521599123');
       expect(validator.errors).toEqual({
-        'isbn-error': 'codice isbn non valido',
+        'isbn-error': 'Invalid ISBN code',
       });
       expect(validator.isValid).toBeFalsy();
     });
@@ -138,8 +140,8 @@ describe('patternValidator', () => {
     const pattern = patternValidator('[A-Z]{3}')!;
 
     expect(pattern('ABC')).toBeNull();
-    expect(pattern('ABCD')).toEqual({ pattern: 'formato non valido' });
-    expect(pattern('xABC')).toEqual({ pattern: 'formato non valido' });
+    expect(pattern('ABCD')).toEqual({ pattern: 'Invalid format' });
+    expect(pattern('xABC')).toEqual({ pattern: 'Invalid format' });
   });
 
   it('leaves an empty value to required', () => {
@@ -150,7 +152,7 @@ describe('patternValidator', () => {
     const pattern = patternValidator('cat|dog')!;
 
     expect(pattern('dog')).toBeNull();
-    expect(pattern('catdog')).toEqual({ pattern: 'formato non valido' });
+    expect(pattern('catdog')).toEqual({ pattern: 'Invalid format' });
   });
 
   it('sets no rule for an expression that does not compile, as the browser', () => {
@@ -170,7 +172,7 @@ describe('emailValidatorFn', () => {
   it.each(['mario', 'mario@', '@maggioli.it', 'mario rossi@maggioli.it', 'a@-b.it', 'a@b..it'])(
     'rejects %s',
     (email) => {
-      expect(emailValidatorFn(email)).toEqual({ email: 'indirizzo email non valido' });
+      expect(emailValidatorFn(email)).toEqual({ email: 'Invalid email address' });
     },
   );
 
@@ -185,7 +187,7 @@ describe('urlValidatorFn', () => {
   });
 
   it.each(['www.maggioli.it', '/path', 'http://'])('rejects %s', (url) => {
-    expect(urlValidatorFn(url)).toEqual({ url: 'url non valido' });
+    expect(urlValidatorFn(url)).toEqual({ url: 'Invalid URL' });
   });
 
   it('leaves an empty value to required', () => {
@@ -205,7 +207,7 @@ describe('pivaValidatorFn', () => {
     ['the country prefix', 'IT02066400405'],
     ['spaces', '020 6640 0405'],
   ])('rejects %s', (_, piva) => {
-    expect(pivaValidatorFn(piva)).toEqual({ piva: 'partita iva non valida' });
+    expect(pivaValidatorFn(piva)).toEqual({ piva: 'Invalid VAT number' });
   });
 
   it('leaves an empty value to required', () => {
@@ -229,7 +231,7 @@ describe('ccValidatorFn', () => {
     ['two separators in a row', '4111  1111 1111 1111'],
     ['a leading separator', '-4111111111111111'],
   ])('rejects %s', (_, cc) => {
-    expect(ccValidatorFn(cc)).toEqual({ cc: 'numero di carta non valido' });
+    expect(ccValidatorFn(cc)).toEqual({ cc: 'Invalid card number' });
   });
 
   it('leaves an empty value to required', () => {
@@ -246,5 +248,38 @@ describe('check', () => {
     expect(checked.check('abc')).toBeNull();
     expect(checked.errors).toBeNull();
     expect(checked.isValid).toBe(true);
+  });
+});
+
+// #1072: the messages were Italian literals, whatever the language of the page
+describe('messages', () => {
+  afterEach(() => {
+    preferenceStore.state.language = 'en';
+  });
+
+  it.each([
+    ['en', 'Invalid email address', 'The maximum value is 10'],
+    ['it', 'indirizzo email non valido', 'valore massimo 10'],
+    ['es', 'Dirección de correo electrónico no válida', 'El valor máximo es 10'],
+    ['el', 'Μη έγκυρη διεύθυνση email', 'Η μέγιστη τιμή είναι 10'],
+  ])('are in the language of the page (%s)', (language, email, max) => {
+    preferenceStore.state.language = language;
+
+    expect(emailValidatorFn('mario')).toEqual({ email });
+    expect(maxValidator(10)('50')).toEqual({ max });
+  });
+
+  it('follow a language set after the validator is built', () => {
+    const max = maxValidator(10);
+
+    preferenceStore.state.language = 'it';
+
+    expect(max('50')).toEqual({ max: 'valore massimo 10' });
+  });
+
+  it('spell the ISBN format error right in Italian', () => {
+    preferenceStore.state.language = 'it';
+
+    expect(isbnValidatorFn('test')).toEqual({ 'isbn-error': 'formato isbn non corretto' });
   });
 });

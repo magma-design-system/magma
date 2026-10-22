@@ -1,9 +1,6 @@
 import { ValidityProblem } from '@common/validity';
 import { MdsValidationErrors } from './validators';
 
-// the validators of the type carry an Italian message: the form gets the localized one instead
-const typeErrors = ['cf-length', 'cf-regex', 'isbn-error'];
-
 export interface ValidityConstraints {
   max?: number;
   maxlength?: number;
@@ -14,7 +11,8 @@ export interface ValidityConstraints {
 /**
  * The problem reported to the form for the errors of a value. The first validator that fails
  * decides it: the ones of the type come first, then required, max, min, maxlength, minlength,
- * pattern and the custom ones last, which keep their own message.
+ * pattern and the custom ones last. The codice fiscale and ISBN validators, like the custom ones,
+ * give the form their own message, already in the language of the page.
  */
 export const validityProblem = (
   errors: MdsValidationErrors,
@@ -45,6 +43,6 @@ export const validityProblem = (
     case 'cc':
       return { rule: 'cardNumber' };
     default:
-      return { rule: 'invalid', message: typeErrors.includes(key) ? undefined : errors[key] };
+      return { rule: 'invalid', message: errors[key] };
   }
 };

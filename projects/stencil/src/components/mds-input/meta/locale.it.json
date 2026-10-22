@@ -5,5 +5,18 @@
   "showPassword": "Visualizza password",
   "speechToTextError": "Dettatura vocale non supportata da questo browser",
   "speechToTextOff": "Ferma dettatura vocale",
-  "speechToTextOn": "Inizia dettatura vocale"
+  "speechToTextOn": "Inizia dettatura vocale",
+  "validationCc": "numero di carta non valido",
+  "validationCfLength": "Codice fiscale deve essere lungo 16 caratteri",
+  "validationCfRegex": "Codice fiscale inserito non corretto",
+  "validationEmail": "indirizzo email non valido",
+  "validationIsbn": "codice isbn non valido",
+  "validationIsbnFormat": "formato isbn non corretto",
+  "validationMax": "valore massimo {{max}}",
+  "validationMaxlength": "La lunghezza massima accettata è {{maxlength}}",
+  "validationMin": "valore minimo {{min}}",
+  "validationMinlength": "La lunghezza minima accettata è {{minlength}}",
+  "validationPattern": "formato non valido",
+  "validationPiva": "partita iva non valida",
+  "validationUrl": "url non valido"
 }

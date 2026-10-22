@@ -5,5 +5,18 @@
   "showPassword": "Εμφάνιση κωδικού",
   "speechToTextError": "Η φωνητική υπαγόρευση δεν υποστηρίζεται από αυτό το πρόγραμμα περιήγησης",
   "speechToTextOff": "Διακοπή φωνητικής υπαγόρευσης",
-  "speechToTextOn": "Έναρξη φωνητικής υπαγόρευσης"
+  "speechToTextOn": "Έναρξη φωνητικής υπαγόρευσης",
+  "validationCc": "Μη έγκυρος αριθμός κάρτας",
+  "validationCfLength": "Ο φορολογικός κωδικός πρέπει να έχει 16 χαρακτήρες",
+  "validationCfRegex": "Ο φορολογικός κωδικός που εισαγάγατε δεν είναι σωστός",
+  "validationEmail": "Μη έγκυρη διεύθυνση email",
+  "validationIsbn": "Μη έγκυρος κωδικός ISBN",
+  "validationIsbnFormat": "Μη έγκυρη μορφή ISBN",
+  "validationMax": "Η μέγιστη τιμή είναι {{max}}",
+  "validationMaxlength": "Το μέγιστο αποδεκτό μήκος είναι {{maxlength}}",
+  "validationMin": "Η ελάχιστη τιμή είναι {{min}}",
+  "validationMinlength": "Το ελάχιστο αποδεκτό μήκος είναι {{minlength}}",
+  "validationPattern": "Μη έγκυρη μορφή",
+  "validationPiva": "Μη έγκυρος αριθμός ΦΠΑ",
+  "validationUrl": "Μη έγκυρη διεύθυνση URL"
 }

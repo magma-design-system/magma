@@ -45,10 +45,11 @@ describe('validityProblem', () => {
     expect(validityProblem({ cc: '' }, '123', {})).toEqual({ rule: 'cardNumber' });
   });
 
-  it('gives the type validators the localized message instead of their Italian one', () => {
-    expect(validityProblem({ 'isbn-error': 'codice isbn non valido' }, '123', {})).toEqual({
+  // #1072: their message follows the language of the page, the form can take it
+  it('gives the form the message of a type validator', () => {
+    expect(validityProblem({ 'isbn-error': 'Invalid ISBN code' }, '123', {})).toEqual({
       rule: 'invalid',
-      message: undefined,
+      message: 'Invalid ISBN code',
     });
   });
 
@@ -62,7 +63,7 @@ describe('validityProblem', () => {
   it('reports the first validator that fails', () => {
     expect(validityProblem({ 'cf-regex': 'x', 'cf-length': 'y', err: 'z' }, 'abc', {})).toEqual({
       rule: 'invalid',
-      message: undefined,
+      message: 'x',
     });
   });
 });
