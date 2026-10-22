@@ -33,6 +33,13 @@ described by what it is for, never by how it is built; `docs/agents/color.md` st
 form. `semanticModel()` fails on a public role nothing describes, so a new role cannot ship
 without its line.
 
+The rest of the DTCG export says it too (#1095): `descriptions.config.ts` gives one line to
+every other group of `base.tokens.json` (each palette group and family, the scale, the
+typography, the motion) and to each typography style. A ramp is described once, by its
+family, not step by step, and the families of a ladder or of the label hues by a rule.
+`buildDtcg()` fails on a group or a style nothing describes, and on an entry that names
+nothing in the set, so a new or renamed group cannot ship without its line.
+
 ```
 primitive   ->  raw generated value      (this package, e.g. --tone-neutral-05: 119 119 119)
 semantic    ->  role-based alias         (styles, --magma-*, e.g. --magma-text-default)

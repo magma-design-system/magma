@@ -62,6 +62,8 @@ The theme and the contrast preference are one modifier because they are not inde
 | `leading`, `spacing`, `container`, `breakpoint`, `aspect`, `border`, `radius`, `shadow`, `duration`, `ease` | `--leading-md`, `--spacing-xs`, ... | One group per CSS prefix. `spacing.$root` is `--spacing`, the multiplier of the numeric utilities. |
 | `size.<step>` | none | The primitive sizing scale that spacing, container, border and radius name. |
 
+Every group of `base.tokens.json` has a `$description` that says what it is for, and so do the semantic roles and the typography styles; a primitive is described by its group (a ramp by its family). The other sets restate values, without descriptions.
+
 Every token carries `$extensions["it.maggioli.magma"]`:
 
 - `css`: the custom property it is published as;

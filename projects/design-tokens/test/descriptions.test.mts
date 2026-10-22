@@ -1,10 +1,13 @@
 // What each semantic role is for (#876): every public role has one line in the sources, the
 // model refuses a role without it, and the DTCG export carries it on the role and on its group.
-// The DTCG case reads dist/dtcg, so it needs a build first (nx: test dependsOn build).
+// The other groups of the export and the typography styles have theirs too (#1095).
+// The DTCG cases read dist/dtcg, so they need a build first (nx: test dependsOn build).
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import { describe, expect, test } from 'vitest'
 
+import { tokenDescription, tokenDescriptions } from '../descriptions.config'
+import { describeGroups, staleDescriptions } from '../scripts/dtcg/sets'
 import { roleDescription, roleDescriptions, semantic } from '../semantic.config'
 import { semanticModel } from '../semantic.model'
 
@@ -79,5 +82,74 @@ describe('the descriptions in the DTCG export', () => {
       ({ name, description }) => byCss.get(`--${name}`)?.$description !== description,
     )
     expect(missing.map(({ name }) => name)).toEqual([])
+  })
+})
+
+describe('the descriptions of the other groups', () => {
+  type Group = Record<string, unknown>
+  const base = JSON.parse(
+    readFileSync(resolve(__dirname, '../dist/dtcg/base.tokens.json'), 'utf8'),
+  ) as Group
+  const isToken = (node: unknown) => typeof node === 'object' && node !== null && '$value' in node
+  const groupsOf = (node: Group, path: string[] = []): Array<[string, Group]> =>
+    Object.entries(node)
+      .filter(([key, child]) => !key.startsWith('$') && !isToken(child))
+      .flatMap(([key, child]) => [
+        [[...path, key].join('.'), child as Group] as [string, Group],
+        ...groupsOf(child as Group, [...path, key]),
+      ])
+  const token = { $type: 'dimension', $value: { value: 4, unit: 'px' }, $extensions: {} }
+
+  test('every line says in one sentence what the group is for', () => {
+    const wrong = Object.entries(tokenDescriptions).filter(
+      ([, line]) =>
+        line.includes('\n') ||
+        /<\w+>/.test(line) ||
+        !line.endsWith('.') ||
+        /\ba [aeiou]/i.test(line) ||
+        /[^\x20-\x7E]/.test(line),
+    )
+    expect(wrong.map(([path]) => path)).toEqual([])
+  })
+
+  test('every group of the base set and every typography style has its $description', () => {
+    const groups = groupsOf(base)
+    expect(groups.length).toBeGreaterThan(100)
+    expect(groups.filter(([, group]) => !group.$description).map(([path]) => path)).toEqual([])
+
+    const styles = groupsOf(base.typography as Group).flatMap(([family, group]) =>
+      Object.entries(group)
+        .filter(([key]) => !key.startsWith('$'))
+        .map(([style, node]) => [`${family}.${style}`, node as Group] as const),
+    )
+    expect(styles).toHaveLength(18)
+    expect(styles.filter(([, node]) => !node.$description).map(([name]) => name)).toEqual([])
+    expect(staleDescriptions(base)).toEqual([])
+  })
+
+  test('describes the families of a ladder, the label hues and the parts of a style by a rule', () => {
+    expect(tokenDescription(['palette', 'surface', 'info'])).toBe(
+      'The surface ladder of the info family.',
+    )
+    expect(tokenDescription(['palette', 'label', 'aqua'])).toBe(
+      'The aqua hue of the categorical palette.',
+    )
+    expect(tokenDescription(['text-size', 'read'])).toBe('The parts of the read styles.')
+    expect(tokenDescription(['palette', 'tone', 'unknown'])).toBeUndefined()
+  })
+
+  test('puts the line first in a group, after the value in a style, and stops on what nothing describes', () => {
+    const tree: Group = { size: { xs: token }, typography: { title: { h1: token } } }
+    describeGroups(tree)
+    expect(Object.keys(tree.size as Group)).toEqual(['$description', 'xs'])
+    const h1 = ((tree.typography as Group).title as Group).h1 as Group
+    expect(Object.keys(h1)).toEqual(['$type', '$value', '$description', '$extensions'])
+    expect(h1.$description).toBe('The largest heading: the title of a page.')
+
+    expect(() => describeGroups({ nothing: { xs: token } })).toThrow(/nothing/)
+    expect(() => describeGroups({ typography: { title: { h9: token } } })).toThrow(
+      /typography\.title\.h9/,
+    )
+    expect(staleDescriptions({ size: {} })).toContain('palette')
   })
 })
