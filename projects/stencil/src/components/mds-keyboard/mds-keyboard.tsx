@@ -122,7 +122,10 @@ export class MdsKeyboard {
     return undefined;
   };
 
-  private checkKeyboardShortcut = (): void => {
+  private checkKeyboardShortcut = (event: KeyboardEvent): void => {
+    // a key released with no press of its own in this run belongs to whatever started the run:
+    // the trigger clicks on the keydown of Enter, so the keyup of that Enter lands here
+    if (!this.pressedKeys.has(event.code)) return;
     this.stopKeyboardShortcutTest();
     // console.log('json keys x', this.keyCombination)
     // console.log('os output x', this.pressedKeys)
