@@ -479,6 +479,11 @@ export class MdsInput {
     if (this.maxlength !== undefined) {
       this.countMaxLength();
     }
+    if (!this.validated) {
+      // pristine field: only the required tip follows, the variant waits for the first blur
+      this.isValid = !(this.required && (this.value ?? '') === '');
+      return;
+    }
     // if is necessary for skip validation when reset input to retype correct value, validation is always onBlur
     if (this.value === '') return;
     if (!this.isValid) this.validateInput();

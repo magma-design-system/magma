@@ -269,6 +269,54 @@ describe('required', () => {
     const tip = input.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
     expect(tip).toEqualAttribute('variant', 'required');
   });
+
+  // #1068: like a field without required, the variant waits for the first blur
+  describe('before the first blur', () => {
+    let button: HTMLElement;
+
+    const requiredTip = (): Element | null =>
+      mdsInput.shadowRoot!.querySelector('mds-input-tip-item[variant^="required"]');
+
+    beforeEach(async () => {
+      button = await setup(`
+        <mds-input type="cf" required></mds-input>
+        <button></button>
+      `);
+    });
+
+    it('stays pristine while the user types, then validates on blur and on each change', async () => {
+      const validations: boolean[] = [];
+      mdsInput.addEventListener('mdsInputValidation', (event) => validations.push(event.detail));
+
+      await type(mdsInput, 'R');
+      await waitForChanges();
+
+      expect(mdsInput).toEqualAttribute('variant', 'primary');
+      expect(validations).toEqual([]);
+      expect(requiredTip()).toEqualAttribute('variant', 'required-success');
+
+      await blur(button);
+
+      expect(mdsInput).toEqualAttribute('variant', 'error');
+      expect(validations).toEqual([false]);
+
+      await userEvent.tripleClick(mdsInput);
+      await userEvent.keyboard('MRCRSS83B21D704L');
+      await waitForChanges();
+
+      expect(mdsInput).toEqualAttribute('variant', 'success');
+    });
+
+    it('turns the required tip red again when the user empties the field', async () => {
+      await type(mdsInput, 'R');
+      await userEvent.keyboard('{Backspace}');
+      await waitForChanges();
+
+      expect(mdsInput.value).toBe('');
+      expect(mdsInput).toEqualAttribute('variant', 'primary');
+      expect(requiredTip()).toEqualAttribute('variant', 'required');
+    });
+  });
 });
 
 // The React wrappers under SSR set the props on an element that has already loaded (#786)
