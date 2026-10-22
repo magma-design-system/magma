@@ -363,8 +363,18 @@ class UsageChecker {
   }
 }
 
-/** Checks one usage doc; the findings carry the 1-based line in the file. */
-export function checkUsageDoc(md: string, model: UsageModel): UsageFinding[] {
+/**
+ * Fence languages that only the shared guides use, for commands, configuration and prompts:
+ * no component markup in them to check.
+ */
+const GUIDE_ONLY_LANGS = new Set(['bash', 'json', 'markdown', 'text']);
+
+/**
+ * Checks one usage doc; the findings carry the 1-based line in the file. A shared guide of
+ * docs/agents/ (`guide`) also installs, configures and prompts, so its commands, JSON and
+ * prompts are fenced too, and its TypeScript can be spelled out.
+ */
+export function checkUsageDoc(md: string, model: UsageModel, guide = false): UsageFinding[] {
   const checker = new UsageChecker(model);
   md.split('\n').forEach((text, i) => {
     const emoji = [...text.matchAll(/\p{Extended_Pictographic}/gu)].map((m) => m[0]);
@@ -381,9 +391,16 @@ export function checkUsageDoc(md: string, model: UsageModel): UsageFinding[] {
     const wrong = incorrectLines(b.text);
     if (b.lang === 'html') checker.checkHtml(b.text, first, wrong);
     else if (b.lang === 'css') checker.checkCss(b.text, first, wrong);
-    else if (b.lang === 'js' || b.lang === 'javascript' || b.lang === 'ts' || b.lang === 'tsx')
+    else if (
+      b.lang === 'js' ||
+      b.lang === 'javascript' ||
+      b.lang === 'ts' ||
+      b.lang === 'tsx' ||
+      (guide && b.lang === 'typescript')
+    )
       checker.checkJs(b.text, first, wrong);
-    else checker.add(b.line, 'fence-without-language', b.text.split('\n')[0].slice(0, 60));
+    else if (!guide || !GUIDE_ONLY_LANGS.has(b.lang ?? ''))
+      checker.add(b.line, 'fence-without-language', b.text.split('\n')[0].slice(0, 60));
   }
   return checker.findings.sort((a, b) => a.line - b.line);
 }

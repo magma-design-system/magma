@@ -19,8 +19,9 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/stencil/**
-      # the react/angular wrappers are built and tree-shake-checked by this workflow
-      extra-path: projects/stencil-*/**
+      # the react/angular wrappers are built and tree-shake-checked by this workflow, and the
+      # shared agent guides of docs/agents ship inside the packages and are checked by usage-docs
+      extra-path: '{projects/stencil-*/**,docs/agents/**}'
       nx-project: stencil
       artifact-paths: |
         projects/design-tokens/dist
@@ -187,7 +188,8 @@ jobs:
   # their examples verbatim. Every tag, attribute, value, slot, part, event and
   # custom property must exist in the built API and token layer, no example may
   # paint with a palette step or a raw radius (#815), and every member of the API
-  # needs a description in its JSDoc (#829). Reads
+  # needs a description in its JSDoc (#829). The shared agent guides of docs/agents
+  # follow the same rules (#1092). Reads
   # dist/documentation.json and the token layer, so it needs the build artifact.
   usage-docs:
     needs: [magma]

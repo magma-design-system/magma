@@ -385,7 +385,7 @@ names through functions (`clsx`, `cva`, `cn`), list the ones it uses in
 
 Verify, after reloading the window:
 
-- in a CSS file, `var(--magma-surface` lists the surface roles, in order, with swatches;
+- in a CSS file, `var(--magma-surface-` lists the surface roles, in order, with swatches;
 - with Tailwind, in markup: hovering `p-600` shows `1.5rem = 24px`, and `bg-surface-default`
   shows a swatch in the completion list. No swatch on the semantic classes means an older
   `@maggioli-design-system/styles`: update it.

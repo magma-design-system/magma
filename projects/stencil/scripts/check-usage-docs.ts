@@ -13,6 +13,10 @@
  * self-closed `<mds-* />` (HTML has no self-closing custom elements), no shadow piercing,
  * no `dark:` variants or preference media queries, every fence has a language, no emoji.
  *
+ * The same rules hold for the shared agent guides of docs/agents/, which ship next to them
+ * in the three entry-point packages as agents/*.md: a prop or value renamed in a component
+ * must not survive in a guide either. A guide also fences commands, JSON and prompts.
+ *
  * It also keeps the readme.md of every component free of hand-written text: above the
  * generated part only the title and the generic intro, since the usage files are the only
  * hand-authored docs (#842); and it fails on a prop, event, method, slot, part or documented
@@ -106,8 +110,17 @@ const model: UsageModel = {
   icons: new Set(icons),
 };
 
-let files = 0;
 let total = 0;
+const check = (path: string, guide = false): void => {
+  const findings = checkUsageDoc(readFileSync(path, 'utf8'), model, guide);
+  if (!findings.length) return;
+  total += findings.length;
+  console.error(`\n${relative(REPO, path)}`);
+  for (const f of findings)
+    console.error(`  ${String(f.line).padStart(4)}  ${f.kind.padEnd(22)} ${f.what}`);
+};
+
+let files = 0;
 for (const tag of readdirSync(COMPONENTS).sort()) {
   const dir = join(COMPONENTS, tag, 'usage');
   if (!existsSync(dir)) continue;
@@ -115,15 +128,17 @@ for (const tag of readdirSync(COMPONENTS).sort()) {
     .filter((f) => f.endsWith('.md'))
     .sort()) {
     files++;
-    const path = join(dir, name);
-    const findings = checkUsageDoc(readFileSync(path, 'utf8'), model);
-    if (!findings.length) continue;
-    total += findings.length;
-    console.error(`\n${relative(REPO, path)}`);
-    for (const f of findings)
-      console.error(`  ${String(f.line).padStart(4)}  ${f.kind.padEnd(22)} ${f.what}`);
+    check(join(dir, name));
   }
 }
+
+// the shared guides ship in the three entry-point packages as agents/*.md (sync-agent-docs.ts);
+// SPEC.md is the maintainers' spec of those packages and stays in the repository
+const GUIDES = join(REPO, 'docs/agents');
+const guides = readdirSync(GUIDES)
+  .filter((f) => f.endsWith('.md') && f !== 'SPEC.md')
+  .sort();
+for (const name of guides) check(join(GUIDES, name), true);
 
 // the readmes: Stencil keeps what is written above its marker and ships it in documentation.json
 const handWritten: string[] = [];
@@ -175,5 +190,5 @@ if (total) {
   process.exit(1);
 }
 console.log(
-  `OK - ${files} usage docs of ${model.components.size} components match the API and the token layer, every member of the API has a description, with its tags as code`,
+  `OK - ${files} usage docs of ${model.components.size} components and ${guides.length} shared agent guides match the API and the token layer, every member of the API has a description, with its tags as code`,
 );
