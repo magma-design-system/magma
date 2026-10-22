@@ -1,6 +1,7 @@
 {
   "name": "@maggioli-design-system/magma-angular",
   "version": "2.5.0",
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": ">=20.0.0",
     "@angular/core": ">=20.0.0",

@@ -20,7 +20,7 @@
       "role": "Software Engineer"
     }
   ],
-  "license": "ISC",
+  "license": "MIT",
   "scripts": {
     "build": "npm run clean && npm run build-style-dictionary && npm run build-figma-tokens && npm run build-cli && npm run build-playground",
     "build-figma-tokens": "tsx scripts/generate-figma-tokens.ts",

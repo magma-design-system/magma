@@ -35,7 +35,7 @@
     "url": "git+https://github.com/magma-design-system/magma.git",
     "directory": "projects/identity"
   },
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/pdfkit": "0.13.5",
     "@types/svg-to-pdfkit": "0.1.3",
