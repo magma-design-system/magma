@@ -140,7 +140,10 @@
   margin-right: --spacing(100);
 }
 
-@import './css/mds-input-range-disabled.css';
 @import './css/mds-input-range-pref-animation.css';
 @import './css/mds-input-range-pref-mode.css';
 @import './css/mds-input-range-pref-contrast.css';
+
+/* after the pref-* sheets, whose selectors weigh the same: a disabled range keeps its colours in
+ * dark too */
+@import './css/mds-input-range-disabled.css';

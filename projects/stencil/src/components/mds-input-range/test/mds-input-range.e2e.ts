@@ -1,5 +1,8 @@
 import { render } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
+import colors from '../../../../../styles/dist/css/colors-rgb.css?raw';
+import globals from '../../../../../styles/dist/css/globals.css?raw';
+import semantic from '../../../../../styles/dist/css/semantic.css?raw';
 
 const readField = (range: HTMLElement): HTMLInputElement =>
   range.shadowRoot!.querySelector<HTMLInputElement>('input.field')!;
@@ -87,5 +90,77 @@ describe('in a disabled fieldset', () => {
 
     expect(native().disabled).toBe(false);
     expect(new FormData(root).get('r')).toBe('5');
+  });
+});
+
+// #1073: in dark the thumb took accent-emphasis, the colour of its ring and of the progress:
+// thumb, ring and progress were one shape and the thumb could not be seen
+describe('the thumb in dark', () => {
+  let sheet: HTMLStyleElement | undefined;
+
+  /** The palette of the page, in dark: the roles resolve to their dark values, not to the
+   * fallbacks the components carry. The store follows <html> through a MutationObserver, so
+   * give it a tick before rendering. */
+  const inDark = async (): Promise<void> => {
+    sheet = document.createElement('style');
+    sheet.textContent = [colors, globals, semantic].join('\n');
+    document.head.append(sheet);
+    document.documentElement.setAttribute('data-magma-pref', '');
+    document.documentElement.classList.add('pref-mode-dark');
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  };
+
+  afterEach(() => {
+    sheet?.remove();
+    document.documentElement.removeAttribute('data-magma-pref');
+    document.documentElement.classList.remove('pref-mode-dark');
+  });
+
+  /** Relative luminance of an rgb() colour, as WCAG computes it. */
+  const luminance = (color: string): number =>
+    color
+      .match(/\d+(\.\d+)?/g)!
+      .slice(0, 3)
+      .map((channel) => {
+        const value = Number(channel) / 255;
+        return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+      })
+      .reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
+
+  const contrast = (a: number, b: number): number =>
+    (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+
+  it('is lighter than the progress and its ring, and stands out on the empty track', async () => {
+    await inDark();
+    const { root } = await render<HTMLMdsInputRangeElement>(
+      '<mds-input-range value="18" min="14" max="24" step="2"></mds-input-range>',
+    );
+    const style = getComputedStyle(root);
+    const read = (name: string): number => luminance(style.getPropertyValue(name));
+
+    const thumb = read('--mds-input-range-thumb-background');
+    const progress = read('--mds-input-range-track-progress-background');
+    const track = read('--mds-input-range-track-background');
+
+    expect(thumb).toBeGreaterThan(progress);
+    expect(contrast(thumb, track)).toBeGreaterThanOrEqual(3);
+  });
+
+  // the dark sheet came after the disabled one, with selectors of the same weight: a disabled
+  // range took the colours of an enabled one in dark
+  it('keeps the colours of the disabled state', async () => {
+    await inDark();
+    const { root } = await render<HTMLMdsInputRangeElement>(
+      '<mds-input-range value="18" min="14" max="24" step="2" disabled></mds-input-range>',
+    );
+    const style = getComputedStyle(root);
+    const read = (name: string): string => style.getPropertyValue(name);
+
+    expect(read('--mds-input-range-thumb-background')).toBe(
+      read('--mds-input-range-thumb-background-disabled'),
+    );
+    expect(read('--mds-input-range-track-progress-background')).toBe(
+      read('--mds-input-range-track-progress-background-disabled'),
+    );
   });
 });
