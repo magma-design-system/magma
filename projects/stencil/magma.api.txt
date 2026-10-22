@@ -165,6 +165,24 @@ mds-bibliography prop variant (attr variant): "code" | "info" | "read" | "title"
 mds-bibliography css --mds-bibliography-color
 mds-bibliography css --mds-bibliography-text-decoration
 mds-bibliography css --mds-bibliography-text-decoration-hover
+mds-book encapsulation shadow
+mds-book prop alt (attr alt): string | undefined
+mds-book prop author (attr author): string | undefined
+mds-book prop binding (attr binding) [reflect]: "hardcover" | "paperback" = 'paperback'
+mds-book prop format (attr format) [reflect]: "a4" | "a5" | "auto" | "b5" | `${number}x${number}` = 'auto'
+mds-book prop loading (attr loading): "eager" | "lazy" | undefined = 'lazy'
+mds-book prop name (attr name): string | undefined
+mds-book prop pages (attr pages): number = 300
+mds-book prop pose (attr pose) [reflect]: "fore-edge" | "front" | "lying" | "lying-turned" | "spine" = 'spine'
+mds-book prop publisher (attr publisher): string | undefined
+mds-book prop src (attr src): string | undefined
+mds-book part cover
+mds-book css --mds-book-color
+mds-book css --mds-book-page-weight-max
+mds-book css --mds-book-page-weight-min
+mds-book css --mds-book-paper-color
+mds-book css --mds-book-spine-color
+mds-book css --mds-book-text-color
 mds-breadcrumb encapsulation shadow
 mds-breadcrumb prop hideBack (attr hide-back): boolean | undefined = false
 mds-breadcrumb event mdsBreadcrumbChange: MdsBreadcrumbEventDetail [bubbles, cancelable, composed]
@@ -1713,6 +1731,9 @@ type AvatarSizeType = 'sm' | 'md' | 'lg';
 type BenchmarkBarTypographyType = 'option' | 'label';
 type BibliographyFormatType = | 'apa' // American Psychological Association - Simmons, B. (2015, January 9). The tale of two Flaccos. Grantland. http://grantland.com/the-triangle/the-tale-of-two-flaccos/ | 'mla' // Modern Language Association - Author's Last name, First name. "Title of Source." Title of Container, Other contributors, Version, Numbers, Publisher, Publication Date, Location. | 'turabian';
 type BibliographyRelationshipType = 'author' | 'external';
+type BookBindingType = 'paperback' | 'hardcover';
+type BookFormatType = 'auto' | 'a4' | 'a5' | 'b5' | `${number}x${number}`;
+type BookPoseType = 'spine' | 'fore-edge' | 'front' | 'lying' | 'lying-turned';
 type ButtonDropdownVariantType = | ThemeLuminanceVariantType | ThemeBrandVariantType | ThemeStatusVariantType;
 type ButtonIconPositionType = "left" | "right"
 type ButtonSizeType = "sm" | "md" | "lg" | "xl"
@@ -1831,7 +1852,7 @@ type ToneMinimalBoxVariantType = "strong" | "weak" | "box"
 type ToneMinimalVariantType = "strong" | "weak"
 type ToneSmartVariantType = "strong" | "weak" | "outline"
 type ToneVariantType = "strong" | "weak" | "outline" | "text"
-type TreeActions = "visible" | "auto"
+type TreeActions = "auto" | "visible"
 type TreeAppearance = "none" | "depth"
 type TreeIcon = "folder" | "chevron"
 type TypographyHeadingTagType = "h1" | "h2" | "h3" | "h4" | "h5" | "h6"

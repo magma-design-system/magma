@@ -1,0 +1,26 @@
+/* Consumption preference. The component mirrors the resolved level from <html>
+ * onto its host as pref-consumption (preferenceStore.state.consumption), and
+ * keeps the book still at `low` (see still() in mds-book.tsx). Here, what that
+ * leaves to the stylesheet: at `low` no drag is offered; below `high` neither
+ * the gloss nor the halo around the book is drawn. No controller on the page,
+ * no attribute: everything, as at `high`. */
+
+:host([pref-consumption='low']) {
+  cursor: auto;
+
+  /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- as on the host */
+  touch-action: auto;
+}
+
+:host([pref-consumption='low']) .gloss,
+:host([pref-consumption='medium']) .gloss {
+  display: none;
+}
+
+/* the halo is a filter over the whole scene, computed again on every frame it moves: below
+   `high` the shadow on the surface is enough */
+
+:host([pref-consumption='low']) .scene,
+:host([pref-consumption='medium']) .scene {
+  filter: none;
+}

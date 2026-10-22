@@ -133,6 +133,44 @@ describe('checkUsageDoc', () => {
     ]);
   });
 
+  // mds-book takes `${number}x${number}`, which Stencil lists as a type with no value
+  it('accepts the values of a template literal type, and names it among the allowed ones', () => {
+    const book: ApiComponent = {
+      tag: 'mds-book',
+      props: [
+        {
+          name: 'format',
+          attr: 'format',
+          values: [{ type: 'string', value: 'auto' }, { type: '`${number}x${number}`' }],
+        },
+      ],
+      events: [],
+      slots: [],
+      parts: [],
+      styles: [],
+    };
+    const withBook: UsageModel = {
+      ...model,
+      components: new Map([...model.components, ['mds-book', book]]),
+    };
+    const md = fence(
+      'html',
+      [
+        '<mds-book format="auto"></mds-book>',
+        '<mds-book format="29.7x21"></mds-book>',
+        '<mds-book format="pocket"></mds-book>',
+      ].join('\n'),
+    );
+
+    expect(checkUsageDoc(md, withBook)).toEqual([
+      {
+        line: 4,
+        kind: 'invalid-value',
+        what: '<mds-book format="pocket"> (allowed: auto, `${number}x${number}`)',
+      },
+    ]);
+  });
+
   it('allows `name` only on form-associated components', () => {
     expect(kinds(fence('html', '<mds-input name="a"></mds-input>'))).toEqual([]);
     expect(kinds(fence('html', '<mds-button name="a"></mds-button>'))).toEqual([

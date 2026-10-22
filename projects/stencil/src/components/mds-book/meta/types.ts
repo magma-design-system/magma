@@ -1,0 +1,5 @@
+export type BookBindingType = 'paperback' | 'hardcover';
+
+export type BookFormatType = 'auto' | 'a4' | 'a5' | 'b5' | `${number}x${number}`;
+
+export type BookPoseType = 'spine' | 'fore-edge' | 'front' | 'lying' | 'lying-turned';
