@@ -254,6 +254,8 @@ nx run stencil:generate mds-component-name
 
 This runs the Stencil CLI generator, which creates `mds-component-name.tsx`, `mds-component-name.css` and, in `test/`, a `.spec.tsx` and an `.e2e.ts`. The two tests are the Stencil boilerplate (`newSpecPage` / `newE2EPage` from `@stencil/core/testing`): rewrite them for Vitest as described in [`HOWTO.md`](HOWTO.md#tests).
 
+Then give the component its place in the catalogue, in the JSDoc right above `@Component`: `@category <id>` when it stands alone, `@parent <tag>` when it is a part of a compound. The build fails on a component with neither: the categories and the rules are in [`docs/COMPONENTS.md`](../../docs/COMPONENTS.md#categories).
+
 Then write the usage docs from the templates: `npm run generate.usage` (from `projects/stencil`, with npm and not Nx: the script prompts, and Nx hides the prompts) compiles [`template/usage/`](../../projects/stencil/template/usage) into the component's `usage/`.
 
 A finished component follows this structure:

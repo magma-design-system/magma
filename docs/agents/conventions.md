@@ -94,6 +94,10 @@ Parent/child pairs communicate internally. Rules:
 2. Never use a child outside its parent (no `mds-accordion-item` without `mds-accordion`).
 3. Never mix child types across parents.
 
+Which parent a child belongs in: [`components.md`](components.md) lists every part right
+after its compound and names the components it sits in (the `@parent` docs tag of the
+component in `documentation.json`).
+
 ```html
 <mds-accordion>
   <mds-accordion-item>...</mds-accordion-item>
