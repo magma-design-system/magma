@@ -42,8 +42,8 @@ The scope is **required** for every commit (except `revert`). The allowed scopes
 ### 1. Project scopes (static list)
 
 ```
-codemod, design-tokens, icons, identity, lit, magma, magma-angular, magma-react, stencil,
-storybook, styles, svg-icons
+codemod, design-tokens, icons, identity, lint, lit, magma, magma-angular, magma-react,
+stencil, storybook, styles, svg-icons
 ```
 
 Use the project scope when the change touches the project as a whole or several components inside it.

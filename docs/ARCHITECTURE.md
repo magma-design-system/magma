@@ -135,6 +135,16 @@ The web component library. 115 components built with StencilJS, compiled to stan
 
 The wrappers are separate npm workspaces, `projects/stencil-react` and `projects/stencil-angular` (nx projects of the same name), siblings of `projects/stencil`. The Stencil build generates their sources (`projects/stencil-react/src`, `projects/stencil-angular/magma-angular/src/stencil-generated`) and their agent install docs; they only compile what `stencil` emitted. They live outside `projects/stencil` because npm never materializes the `node_modules` of a workspace nested inside another workspace (#666, #672). Each wrapper has its own tests against the stencil build (`nx run stencil-react:test`: Vitest, browser and node projects; `nx run stencil-angular:test`: Vitest in jsdom, through the Angular unit-test builder), run in CI by the `magma-react` and `magma-angular` jobs of the stencil workflow.
 
+### 2.7 `lint`
+
+`@maggioli-design-system/lint` (`projects/lint`, #1102): the ESLint and Stylelint rules that hold a consumer's code to the installed version of Magma, the executable form of the prose rules of `docs/agents/` (conventions, color, theming). One core reads the data of the installed packages, never a list written by hand: the props and their values from `documentation.json` (`stencil`), the raw palette steps from the DTCG base set (`design-tokens`) and the colour utilities from `consumption.json` (`styles`). On top of it:
+
+- `./eslint`: the template rules (`valid-attribute-values`, `no-false-boolean`, `accessible-name`, `no-raw-palette-classes`), with one adapter per parser: HTML (`@html-eslint/parser`), JSX (`<mds-*>` and the React wrappers), Angular templates (`@angular-eslint/template-parser`);
+- `./stylelint`: the CSS rules (`no-raw-color`, `no-color-scheme-override`), the consumer side of the `magma/token-values` rule of the component sheets;
+- `recommended` and `strict` presets for both (DIRECTION of the docs site, "Lint rules": broken or not accessible is an error, token discipline a warning in an existing product).
+
+It depends on no other project at build time: its tests run on fixtures cut from the real data (`projects/lint/test/fixtures`), and its CI is `magma-lint-ci.yml`. How to set it up and what each rule catches: [`projects/lint/README.md`](../projects/lint/README.md).
+
 ---
 
 ## 3. Component Architecture

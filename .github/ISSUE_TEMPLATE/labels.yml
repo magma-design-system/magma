@@ -60,6 +60,9 @@
 - name: prg-identity
   color: 0e8a16
   description: '@maggioli-design-system/identity'
+- name: prg-lint
+  color: 0e8a16
+  description: '@maggioli-design-system/lint'
 
 # --- Origin: the project the issue was reported from (docs/WORKFLOW.md rule 7) ---
 - name: prd-docs
