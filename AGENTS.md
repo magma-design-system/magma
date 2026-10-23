@@ -41,7 +41,7 @@ The lint and the checks catch most of these; do not write them in the first plac
 - Raw Tailwind palette classes (`bg-white`, `text-gray-700`) or palette steps (`--tone-*`) for interface colours: paint with the semantic roles (`bg-surface-raised`, `text-fg-muted`, `rgb(var(--magma-text-muted))`), see `docs/agents/color.md`.
 - A literal length, duration or colour in a component sheet: take it from the tokens (`--spacing()`, `var(--duration-*)`, `var(--magma-*)`); `magma/token-values` rejects it.
 - `disabled="false"` or `await="false"` to turn a boolean off: remove the attribute.
-- Dark mode written by hand (`dark:`, a bare `@media (prefers-color-scheme: dark)`): the palette flips globally, and a component refines it only in its `*-pref-mode.css` sheet, on `:host([pref-mode])` (`projects/stencil/SPEC.md`).
+- Dark mode written by hand (a `dark:` that corrects a role, a bare `@media (prefers-color-scheme: dark)`): the palette flips globally, `dark:` is only for a deliberate per-mode choice in the light DOM (it follows the Magma mode), and a component refines the mode only in its `*-pref-mode.css` sheet, on `:host([pref-mode])` (`projects/stencil/SPEC.md`).
 - Typography composed from `font-*` and `text-*` primitives: use the semantic `text-*` utilities (`text-title-h3`, `text-info-detail`).
 - Piercing a component's shadow DOM (`>>>`, `/deep/`, an undocumented `::part()` or internal class): style it through its documented custom properties and parts.
 - Editing a generated file: a component's `readme.md` (edit its `usage/*.md` and the JSDoc), `magma.api.txt` (rebuild), the packages' `AGENTS.md` and `agents/` (edit `docs/agents/`).

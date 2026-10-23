@@ -157,8 +157,9 @@ class on the `html` tag:
 
 To let the user choose, use the `mds-pref-mode` component of
 `@maggioli-design-system/magma`: it writes the class and remembers the choice. Tailwind's
-`dark:` variant follows only the OS (`prefers-color-scheme`), not these classes; the
-semantic roles need no `dark:`.
+`dark:` variant follows these classes too (and the OS under `pref-mode-system`), once the
+Magma Tailwind theme is imported. The semantic roles flip without it: keep `dark:` for a
+deliberate per-mode choice, never to correct a colour.
 
 ---
 

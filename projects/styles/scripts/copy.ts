@@ -44,6 +44,10 @@ const main = async () => {
     path.join('tailwind', 'semantic.css'),
     path.join(DIST_DIR, 'tailwind', 'semantic.css'),
   );
+  await copyStaged(
+    path.join('tailwind', 'dark-mode.css'),
+    path.join(DIST_DIR, 'tailwind', 'dark-mode.css'),
+  );
 
   // The component custom-property registrations are appended to globals.css rather
   // than shipped as a separate file: consumers already import globals.css, and a
@@ -81,12 +85,12 @@ const main = async () => {
     path.join(DIST_DIR, 'css', 'tokens.editor.css'),
   );
 
-  // tailwind/theme.css imports the bridge from the staging dir in source; in the
-  // published package the bridge sits next to it, so realign the import to the
-  // sibling in the emitted copy. Keeps dist/tailwind/theme.css self-contained.
+  // tailwind/theme.css imports the bridge and the dark: variant from the staging dir
+  // in source; in the published package they sit next to it, so realign the imports
+  // to the siblings in the emitted copy. Keeps dist/tailwind/theme.css self-contained.
   const distTheme = path.join(DIST_DIR, 'tailwind', 'theme.css');
   const themeCss = await readFile(distTheme, 'utf8');
-  await writeFile(distTheme, themeCss.replace('../build/tailwind/semantic.css', './semantic.css'));
+  await writeFile(distTheme, themeCss.replaceAll('../build/tailwind/', './'));
 };
 
 main();

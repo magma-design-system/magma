@@ -25,8 +25,7 @@ Generated at {{ date }}
   {{/each}}
 }
 
-:root:not(.pref-theme-scheme-light).pref-mode-dark,
-:root.pref-theme-scheme-dark {
+{{{dark.forced}}} {
   {{#each properties as | groups |}}
     {{#each groups as | names |}}
       {{#each names as | lightModes |}}
@@ -46,9 +45,8 @@ Generated at {{ date }}
   {{/each}}
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not(.pref-theme-scheme-light).pref-mode-system,
-  :root:not([data-magma-pref]) {
+@media {{{dark.media}}} {
+  {{{dark.system}}} {
     {{#each properties as | groups |}}
       {{#each groups as | names |}}
         {{#each names as | lightModes |}}
