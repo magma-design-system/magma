@@ -17,6 +17,30 @@ which `magma-react` and `magma-angular` require too. The agent's client starts i
 from the project's root; MERGE the entry into the client's configuration, never replace
 the file.
 
+### Claude Code: the Magma plugin
+
+In Claude Code, the Magma plugin starts the server for you and adds the skills that run a
+whole job: `/magma:setup`, `/magma:review`, `/magma:migrate`, and `ui`, which Claude loads by
+itself for UI work. Register it for the whole team in the project's committed
+`.claude/settings.json`; Claude Code loads it once the folder is trusted, in the terminal and
+in the desktop app, which reads the same settings:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "magma": { "source": { "source": "github", "repo": "magma-design-system/magma" }, "autoUpdate": true }
+  },
+  "enabledPlugins": { "magma@magma": true }
+}
+```
+
+On one machine only, in a Claude Code session in the terminal:
+`/plugin marketplace add magma-design-system/magma`, then `/plugin install magma@magma`.
+
+With the plugin, do not also add the `.mcp.json` entry below: the server would run twice.
+
+### Claude Code without the plugin, and the other clients
+
 Claude Code, `.mcp.json` at the project root (committed, so the whole team gets it; Claude
 Code asks once before it starts a project server):
 

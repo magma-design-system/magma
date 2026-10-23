@@ -157,6 +157,12 @@ identity, which `stencil` therefore also builds after.
 Its tests run on fixtures cut from the real data, in the `magma-lint-ci` workflow, the server's
 through the official MCP client. The consumer guides are [`docs/agents/lint.md`](agents/lint.md) and [`docs/agents/mcp.md`](agents/mcp.md), shipped as `agents/lint.md` and `agents/mcp.md`, which the packages' `AGENTS.md` sets up at bootstrap; the contributor notes are [`projects/lint/README.md`](../projects/lint/README.md).
 
+### 2.8 `claude-plugin`
+
+The Claude Code plugin of Magma (`projects/claude-plugin`, #1114): the skills that run a whole job (`/magma:setup`, `/magma:review`, `/magma:migrate`, and `ui`, which Claude loads by itself for UI work) and the entry that starts the MCP server of section 2.7. It is not an npm package: `.claude-plugin/marketplace.json` at the repository root is the marketplace `magma`, whose plugin is this folder, so Claude Code reads it from `main`. A consumer project registers it for its team in its `.claude/settings.json`, which the bootstrap of the packages' `AGENTS.md` writes.
+
+The skills are procedures that defer to the installed version (the MCP server, the shipped guides), so the plugin follows `main` with no version of its own. They are generated from `templates/` with what they list taken from the code and the guides (the packages per target, the tools of the server, the rules of the lint, the codemod), and the `claude-plugin-ci` workflow fails when one is out of date or breaks the Agent Skills format. How to change one: [`projects/claude-plugin/README.md`](../projects/claude-plugin/README.md).
+
 ---
 
 ## 3. Component Architecture
