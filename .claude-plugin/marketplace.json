@@ -1,0 +1,17 @@
+{
+  "name": "magma",
+  "owner": {
+    "name": "Maggioli Design System",
+    "url": "https://github.com/magma-design-system"
+  },
+  "description": "The Claude Code plugin of the Magma design system.",
+  "plugins": [
+    {
+      "name": "magma",
+      "source": "./projects/claude-plugin",
+      "description": "Skills to set up Magma, write UI with it, review and migrate, and the MCP server of the installed version.",
+      "category": "development",
+      "tags": ["design-system", "web-components", "maggioli"]
+    }
+  ]
+}

@@ -131,10 +131,12 @@ Ask the user only what detection left undecided. Typical questions:
    configurations, never overwrite them.
 7. Set up the MCP server - see [\`agents/mcp.md\`](agents/mcp.md): it ships in this package as
    the \`magma-mcp\` command, started with \`npx --no magma-mcp\` (never without \`--no\`, which
-   would let npx install a package of that name from the registry); MERGE its entry into the
-   client's configuration (\`.mcp.json\`, \`.vscode/mcp.json\`, \`.cursor/mcp.json\`), never
-   overwrite it. Then call its
-   \`check_setup\` tool: it lists what the integration still misses.
+   would let npx install a package of that name from the registry). For Claude Code, register
+   the Magma plugin in the project's \`.claude/settings.json\` instead: it starts the server and
+   adds the Magma skills (\`/magma:setup\`, \`/magma:review\`, \`/magma:migrate\`). For the other
+   clients MERGE the entry into \`.vscode/mcp.json\` or \`.cursor/mcp.json\`; never both the
+   plugin and an \`.mcp.json\` entry, or the server runs twice. Then call its \`check_setup\`
+   tool: it lists what the integration still misses.
 
 ## Step 4 - verify
 

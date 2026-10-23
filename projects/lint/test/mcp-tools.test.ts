@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-import { mcpEntries, satisfies } from '../src/mcp/checks.js';
+import { mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
 import { toolsOf } from '../src/mcp/server.js';
 import { context } from './mcp-context.js';
@@ -254,6 +254,16 @@ describe('the check tools', () => {
       { safe: true },
     ]);
     expect(entries({ mcpServers: { other: { command: 'npx', args: ['other-mcp'] } } })).toEqual([]);
+  });
+
+  test('the Magma plugin counts as enabled only from enabledPlugins', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-plugin-'));
+    const file = path.join(dir, 'settings.json');
+    writeFileSync(file, JSON.stringify({ enabledPlugins: { 'magma@magma': true } }));
+    expect(pluginEnabled(file)).toBe(true);
+    writeFileSync(file, JSON.stringify({ enabledPlugins: { 'magma@magma': false } }));
+    expect(pluginEnabled(file)).toBe(false);
+    expect(pluginEnabled(path.join(dir, 'missing.json'))).toBe(false);
   });
 
   test('satisfies reads the ranges magma declares', () => {

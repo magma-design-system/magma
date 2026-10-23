@@ -267,6 +267,12 @@ const sourceFiles = (root: string, limit = 3000): string[] => {
 const firstExisting = (root: string, names: string[]) =>
   names.map((name) => path.join(root, name)).find((file) => existsSync(file));
 
+/** The Magma plugin is enabled in these Claude Code settings (`enabledPlugins`, `magma@magma`). */
+export const pluginEnabled = (file: string): boolean =>
+  readJsonFile<{ enabledPlugins?: Record<string, boolean> }>(file)?.enabledPlugins?.[
+    'magma@magma'
+  ] === true;
+
 /**
  * The entries of a client configuration that start magma-mcp (`mcpServers` of Claude Code
  * and Cursor, `servers` of VS Code), each safe unless it runs npx without `--no`.
@@ -468,14 +474,22 @@ export const checkSetup = (context: ToolContext): Tool => ({
     );
     // npx without --no installs and runs whatever the registry has under the name (#1112)
     const unsafe = entries.filter((entry) => !entry.safe);
+    // in Claude Code the Magma plugin starts the server: with an .mcp.json entry too it runs twice
+    const plugin = pluginEnabled(path.join(root, '.claude/settings.json'));
+    const twice = plugin && entries.some((entry) => entry.name === '.mcp.json');
     checks.push({
       id: 'mcp',
-      ok: entries.length > 0 && !unsafe.length,
+      ok: (plugin || entries.length > 0) && !unsafe.length && !twice,
       detail: unsafe.length
         ? `${unsafe.map((entry) => entry.name).join(', ')} starts magma-mcp with npx without --no: when magma is not installed, npx downloads and runs a package of that name from the registry. Write "args": ["--no", "magma-mcp"].`
-        : entries.length
-          ? `${entries.map((entry) => entry.name).join(', ')} starts magma-mcp.`
-          : 'No client configuration starts magma-mcp (.mcp.json, .vscode/mcp.json, .cursor/mcp.json).',
+        : twice
+          ? 'Both the Magma plugin (.claude/settings.json) and .mcp.json start magma-mcp: Claude Code runs the server twice. Keep the plugin and drop the .mcp.json entry.'
+          : plugin || entries.length
+            ? [
+                ...(plugin ? ['the Magma plugin of .claude/settings.json'] : []),
+                ...entries.map((entry) => entry.name),
+              ].join(', ') + ' starts magma-mcp.'
+            : 'No client configuration starts magma-mcp: the Magma plugin in .claude/settings.json for Claude Code, .vscode/mcp.json or .cursor/mcp.json for the others.',
       guide: 'agents/mcp.md',
     });
 
