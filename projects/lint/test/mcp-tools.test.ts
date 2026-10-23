@@ -8,11 +8,11 @@ import { toolsOf } from '../src/mcp/server.js';
 import { context } from './mcp-context.js';
 
 const tools = Object.fromEntries(toolsOf(context).map((tool) => [tool.name, tool]));
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- the tests read the structured content of each tool freely
-const run = async (
-  name: string,
-  args: Record<string, unknown> = {},
-): Promise<Record<string, any>> => tools[name]!.run(args);
+// the tests read the structured content of each tool freely
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Result = Record<string, any>;
+const run = async (name: string, args: Record<string, unknown> = {}): Promise<Result> =>
+  tools[name]!.run(args);
 
 test('the server has its ten tools', () => {
   expect(Object.keys(tools).sort()).toEqual([
