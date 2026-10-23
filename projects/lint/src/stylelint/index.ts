@@ -5,7 +5,7 @@
     follows the OS and not the mode the user picked in Magma.
 
     // stylelint.config.mjs
-    export default { extends: ['@maggioli-design-system/lint/stylelint/recommended'] };
+    export default { extends: ['@maggioli-design-system/magma/stylelint/recommended'] };
 
   The colour rule is the consumer side of magma/token-values, which holds the component
   sheets of this repository to the same roles (projects/stencil/scripts).
@@ -18,7 +18,7 @@ const {
   utils: { report, ruleMessages, validateOptions },
 } = stylelint;
 
-const DOCS = 'https://github.com/magma-design-system/magma/blob/main/projects/lint/README.md';
+const DOCS = 'https://github.com/magma-design-system/magma/blob/main/docs/agents/lint.md';
 
 /** A mask paints with the alpha of its image: black and white there are not colours. */
 const MASK = /^(?:-webkit-)?mask(?:-image)?$/i;

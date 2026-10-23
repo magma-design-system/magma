@@ -3,7 +3,7 @@
   templates (@angular-eslint/template-parser). A rule listens to the element node of each
   parser; the one the file is parsed with is the only one that fires.
 
-    import magma from '@maggioli-design-system/lint/eslint';
+    import magma from '@maggioli-design-system/magma/eslint';
     export default [magma.configs.recommended];
 
   The data comes from the installed packages (../core/data.ts); `settings.magma` points
@@ -27,7 +27,7 @@ import {
 import type { Finding, LintElement } from '../core/element.js';
 import { fromAngular, fromHtml, fromJsx } from './adapters.js';
 
-const DOCS = 'https://github.com/magma-design-system/magma/blob/main/projects/lint/README.md';
+const DOCS = 'https://github.com/magma-design-system/magma/blob/main/docs/agents/lint.md';
 
 interface Data {
   component: (tag: string) => ComponentInfo | undefined;
@@ -96,7 +96,7 @@ const rules: Record<string, Rule.RuleModule> = {
 };
 
 const plugin: ESLint.Plugin & { configs: Record<'recommended' | 'strict', Linter.Config> } = {
-  meta: { name: '@maggioli-design-system/lint' },
+  meta: { name: '@maggioli-design-system/magma/eslint' },
   rules,
   configs: {} as Record<'recommended' | 'strict', Linter.Config>,
 };
@@ -106,7 +106,7 @@ const plugin: ESLint.Plugin & { configs: Record<'recommended' | 'strict', Linter
  * product that already exists; `strict`: everything an error, for a new one.
  */
 plugin.configs.recommended = {
-  name: '@maggioli-design-system/lint/recommended',
+  name: '@maggioli-design-system/magma/eslint/recommended',
   plugins: { magma: plugin },
   rules: {
     'magma/valid-attribute-values': 'error',
@@ -116,7 +116,7 @@ plugin.configs.recommended = {
   },
 };
 plugin.configs.strict = {
-  name: '@maggioli-design-system/lint/strict',
+  name: '@maggioli-design-system/magma/eslint/strict',
   plugins: { magma: plugin },
   rules: Object.fromEntries(Object.keys(rules).map((rule) => [`magma/${rule}`, 'error'])),
 };

@@ -8,16 +8,20 @@
     @maggioli-design-system/design-tokens (which families are primitives) and the
     consumption map of @maggioli-design-system/styles (the Tailwind key of each token and
     the utilities that take a colour).
-  Every file is resolved from the linted project, the way Node resolves an import, and can
-  be pointed at in the settings instead. Each one is read once per process.
+  The rules ship inside @maggioli-design-system/magma (dist/lint, built by the stencil
+  build), so they read the documentation.json beside them and resolve design-tokens and
+  styles, dependencies of magma, from where magma is installed: the data is always the one
+  of the same release. A path in the settings replaces a lookup. Each file is read once per
+  process.
 */
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 /** Where the data is read from; each path replaces its lookup. */
 export interface MagmaSettings {
-  /** The directory the packages are resolved from: the linted project by default. */
+  /** The directory the paths below are relative to, and the last place the packages are resolved from: the linted project by default. */
   root?: string;
   /** The documentation.json of @maggioli-design-system/magma. */
   documentation?: string;
@@ -58,32 +62,40 @@ const PACKAGE = {
   consumption: '@maggioli-design-system/styles/dist/tailwind/consumption.json',
 };
 
-const resolveFrom = (dir: string, id: string): string | undefined => {
+const resolveFrom = (from: string, id: string): string | undefined => {
   try {
-    return createRequire(path.join(dir, 'package.json')).resolve(id);
+    return createRequire(from).resolve(id);
   } catch {
     return undefined;
   }
 };
 
+const HERE = fileURLToPath(import.meta.url);
+/** Inside magma this module is dist/lint/core/data.js: the documentation.json of dist is two folders up. */
+const BESIDE = path.resolve(path.dirname(HERE), '../../documentation.json');
+
 /**
- * The file of `kind`: the path of the settings, else the package resolved from the root, else
- * from the directory of the installed magma (design-tokens and styles are its dependencies,
- * so a package manager may nest them there).
+ * The file of `kind`: the path of the settings; else, for the documentation, the one beside
+ * these rules in the magma package; else the package resolved from these rules (magma's
+ * dependencies, when they ship inside it); else resolved from the root, the linted project.
  */
 export const locate = (kind: keyof typeof PACKAGE, settings: MagmaSettings = {}): string => {
   const root = settings.root ?? process.cwd();
   const own = settings[kind];
-  if (own) return path.resolve(root, own);
-  const found = resolveFrom(root, PACKAGE[kind]);
-  if (found) return found;
-  if (kind !== 'documentation') {
-    const magma = resolveFrom(root, PACKAGE.documentation);
-    const nested = magma && resolveFrom(path.dirname(path.dirname(magma)), PACKAGE[kind]);
-    if (nested) return nested;
+  if (own) {
+    const file = path.resolve(root, own);
+    if (!existsSync(file))
+      throw new Error(
+        `The "${kind}" setting of the Magma lint names ${file}, which does not exist.`,
+      );
+    return file;
   }
+  if (kind === 'documentation' && existsSync(BESIDE)) return BESIDE;
+  const found =
+    resolveFrom(HERE, PACKAGE[kind]) ?? resolveFrom(path.join(root, 'package.json'), PACKAGE[kind]);
+  if (found) return found;
   throw new Error(
-    `@maggioli-design-system/lint reads ${PACKAGE[kind]} from the installed packages and could not find it from ${root}: install @maggioli-design-system/magma, or set its path in the "${kind}" setting.`,
+    `The Magma lint reads ${PACKAGE[kind]} from the installed packages and could not find it from ${root}: install @maggioli-design-system/magma, or set its path in the "${kind}" setting.`,
   );
 };
 

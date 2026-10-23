@@ -61,8 +61,8 @@ test('the raw palette keys leave out label, brand, the seed and the roles', () =
   expect(colorUtilities.indexOf('border-t')).toBeLessThan(colorUtilities.indexOf('border'));
 });
 
-test('a missing package says what to install or set', () => {
-  expect(() => locate('documentation', { root: '/' })).toThrow(
-    /install @maggioli-design-system\/magma, or set its path in the "documentation" setting/,
+test('a setting that names a missing file says so', () => {
+  expect(() => locate('documentation', { root: fixtures, documentation: 'missing.json' })).toThrow(
+    /The "documentation" setting of the Magma lint names .*missing\.json, which does not exist/,
   );
 });

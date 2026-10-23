@@ -1,7 +1,8 @@
 {
   "name": "@maggioli-design-system/lint",
   "version": "0.0.0",
-  "description": "ESLint and Stylelint rules that check consumer code against the installed version of Magma: component props and values, booleans, accessible names, palette classes, raw colours and dark mode.",
+  "private": true,
+  "description": "The ESLint and Stylelint rules that check consumer code against the installed version of Magma. Not published on its own: the stencil build compiles it into @maggioli-design-system/magma (dist/lint), which exports it as ./eslint and ./stylelint.",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -31,30 +32,10 @@
       "import": "./dist/stylelint/strict.js"
     }
   },
-  "files": [
-    "dist/",
-    "CHANGELOG.md"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
     "lint": "eslint ."
-  },
-  "peerDependencies": {
-    "@maggioli-design-system/magma": ">=2.5.0",
-    "eslint": "^9.0.0",
-    "stylelint": "^16.0.0"
-  },
-  "peerDependenciesMeta": {
-    "eslint": {
-      "optional": true
-    },
-    "stylelint": {
-      "optional": true
-    }
   },
   "dependencies": {
     "postcss-value-parser": "4.2.0"
@@ -67,13 +48,5 @@
     "type": "git",
     "url": "git+https://github.com/magma-design-system/magma.git",
     "directory": "projects/lint"
-  },
-  "keywords": [
-    "eslint",
-    "eslint-plugin",
-    "stylelint",
-    "stylelint-plugin",
-    "magma",
-    "design-system"
-  ]
+  }
 }
