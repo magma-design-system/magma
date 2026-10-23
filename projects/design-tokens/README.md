@@ -1,6 +1,6 @@
 # @maggioli-design-system/design-tokens
 
-Generates design tokens for colors and other type of agnostic tokens targeted on specific plaforms, like web, Dart, Android or iOS formats.
+Generates design tokens for colors and other type of agnostic tokens targeted on specific platforms, like web, Dart, Android or iOS formats (see [Native platforms](#native-platforms)).
 
 This library is based on [Adobe Leonardo][adobe-leonardo] and [Amazon Style Dictionary][style-dictionary].
 
@@ -82,6 +82,31 @@ Where the JSON and the CSS write a value differently:
 Component tokens (`--mds-*`) are not in this data: they belong to each component.
 
 The globals `@maggioli-design-system/styles` declares on top of these (the `--magma-*` of its `globals.css`, the corner and depth axes) are in its own `dist/dtcg/`, with a resolver that adds them to these sets, and how each token is consumed through Tailwind is its `dist/tailwind/consumption.json`, keyed by the same `css` names (its README, "Token data").
+
+# Native platforms
+
+Besides the web, the package publishes the colors of Magma for Android, iOS and Flutter, generated at every build from the same sources as the CSS. They are plain files to copy into the app, which needs neither npm nor this package at runtime.
+
+| Platform | File | Content |
+| :--- | :--- | :--- |
+| Android | `dist/android/colors.xml` | `<color>` resources: `@color/color_surface_neutral_light_default` |
+| iOS | `dist/ios-swift/StyleDictionaryColor.swift` | `UIColor` constants of an enum: `StyleDictionaryColor.surfaceNeutralLightDefault` |
+| iOS | `dist/ios-swift/StyleDictionary.swift` | The same colors in a class, the group kept in the name: `StyleDictionary.colorSurfaceNeutralLightDefault` (add one of the two files, not both) |
+| Flutter | `dist/flutter/colors.dart` | `Color` constants, one class per mode: `MagmaColorPaletteLight.surfaceNeutralDefault`, `MagmaColorPaletteDark.surfaceNeutralDefault` |
+
+What the files hold:
+
+- **Colors only**: no type, spacing, radius, shadow or motion tokens.
+- **Both modes side by side**, nothing switches by itself. Android and Swift name the mode in each color (`_light_` / `_dark_`, `Light` / `Dark`), Flutter has one class per mode. The app picks the mode: on Android, give the colors it uses names of its own in `res/values/` (pointing at `_light_`) and `res/values-night/` (pointing at `_dark_`); in UIKit, a dynamic color, `UIColor { traits in traits.userInterfaceStyle == .dark ? ... : ... }`; in Flutter, the class by `Theme.of(context).brightness`.
+- **The palettes**: `tone`, `label`, `status`, `brand` (`maggioli`, `maggioli_editore`, `rnd`) and `variant`, with the steps `1` to `10`, plus `seed` for a tone (the paper of the mode) and `color` for the other families (their own color, `--status-error` on the web). Flutter writes the steps with two digits (`toneNeutral08`) and the family's own color under its bare name (`statusError`).
+- **The roles of each family**: `surface` (`sunken`, `muted`, `default`, `raised`, `overlay`), `border` (`muted`, `default`, `strong`) and `text` (`default`, `muted`, `subtle`, `disabled`), for `neutral`, `porcelain`, `bisque`, `info`, `success`, `warning` and `error`.
+- **Not the semantic layer** (`--magma-*`), nor the named themes or the contrast preference. On the web the surface, border and text roles read one family, which the theme picks: `neutral` by default, `porcelain` for `cool`, `bisque` for `warm`. Paint a native app with the family of its theme, `neutral` unless it has one. For the other roles (accents, washes, inverse, ...), resolve the role in the [DTCG data](#token-data-dtcg) down to `palette.<group>.<family>.<step>`, in light and in dark mode: the native color has the same group, family and step.
+
+Do not use:
+
+- `dist/ios/` (Objective-C): it does not compile, its enumeration has no name (`typedef NS_ENUM(NSInteger, )`).
+- `dist/flutter/fonts.dart`: it does not compile (`fontSize: 48px`, a `height` in pixels where Flutter takes a multiplier, the fallback fonts unquoted and HTML-escaped). The type styles are in the DTCG data (`typography.*`).
+- The `dist/flutter/colors-*.dart` files together: they split `colors.dart` by group under the same two class names, so only one of them, or `colors.dart`, can be imported.
 
 # Generate Custom Palette
 

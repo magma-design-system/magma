@@ -267,8 +267,12 @@ Colors can also declare an optional `hueShift` field (`{ "dark": -18, "light": 1
 | `dist/json/figma-magma-colors-{light,dark}.tokens.json` | W3C DTCG (earlier draft, palette only) | Figma Variables |
 | `dist/json/figma-magma-tokens.json`, `coolors.json` | Figma plugin / Coolors | design tools |
 | `dist/scss/variables.scss` | SCSS | SCSS consumers |
-| `dist/flutter/*.dart` | Flutter/Dart | Mobile apps |
-| `dist/android/colors.xml`, `dist/ios/`, `dist/ios-swift/` | native | Mobile apps |
+| `dist/android/colors.xml` | Android color resources, both modes as separate names | Android apps (README, "Native platforms") |
+| `dist/ios-swift/StyleDictionary.swift`, `StyleDictionaryColor.swift` | `UIColor` constants, a class and an enum with the same colors | iOS apps |
+| `dist/ios/` | Objective-C; does not compile (`typedef NS_ENUM(NSInteger, )`, no class name) | none |
+| `dist/flutter/colors.dart` | Flutter `Color` constants, `MagmaColorPaletteLight` / `MagmaColorPaletteDark` | Flutter apps |
+| `dist/flutter/colors-*.dart` | the same colors split by group, under the same two class names | one of them instead of `colors.dart` |
+| `dist/flutter/fonts.dart` | Flutter `TextStyle`s; does not compile (`fontSize: 48px`, the fallback fonts unquoted) | none |
 | `dist/gimp/colors.gpl` | GIMP palette | GIMP, Inkscape (light) |
 | `dist/config/magma-design-tokensrc.schema.json` | JSON Schema | editors, the CLI `ui` command |
 

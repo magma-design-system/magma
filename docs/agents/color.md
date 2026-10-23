@@ -169,6 +169,20 @@ with `data-theme-name` ([`theming.md`](theming.md)), do not paint them by hand.
 Deprecated: `--magma-neutral-emphasis` / `--magma-neutral-on-emphasis` are aliases of
 `--magma-surface-inverse` / `--magma-on-inverse`.
 
+## Outside the web
+
+The roles (`--magma-*`), the utilities and the components are web only. An Android, iOS or
+Flutter app takes its colours from `@maggioli-design-system/design-tokens`, as files to copy
+into the app: `dist/android/colors.xml`, one of `dist/ios-swift/*.swift`,
+`dist/flutter/colors.dart`. They hold the palettes and the surface, border and text colours
+of each family, both modes side by side (`color_surface_neutral_light_default`,
+`..._dark_...`), and nothing else: no type, spacing or motion tokens, no theme or contrast
+switch. Paint with the family of the default theme, `neutral` (`surface_neutral_*`,
+`border_neutral_*`, `text_neutral_*`), switch the mode in the app, and take any other role
+from the step it points at. The names per platform, the mode switch and the outputs that do
+not compile (`dist/ios/`, `dist/flutter/fonts.dart`) are in
+`node_modules/@maggioli-design-system/design-tokens/README.md`, "Native platforms".
+
 ## Migrating Magma 1 colour classes
 
 Magma 1 code paints raw steps, often with a hand-tuned `dark:` override. These steps have
