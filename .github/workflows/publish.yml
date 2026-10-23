@@ -144,7 +144,7 @@ env:
       {"name": "icons", "working-directory": "projects/icons",
        "tag-format": "icons@${version}", "commit-scope": "icons"},
       {"name": "magma", "working-directory": "projects/stencil",
-       "tag-format": "magma@${version}", "commit-scope": "magma|stencil|react|lit|storybook|mds-*",
+       "tag-format": "magma@${version}", "commit-scope": "magma|stencil|react|lit|storybook|lint|mds-*",
        "version-sync-paths": ["projects/stencil-react/package.json",
                               "projects/stencil-angular/magma-angular/package.json"]}
     ]

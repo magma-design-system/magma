@@ -58,7 +58,7 @@ Use the component scope when the change is isolated to a single component.
 
 ### Scopes and releases
 
-Each package is released from the commits of its own scopes: `design-tokens`, `icons`, `identity`, `styles`, `svg-icons`, and for `magma` the scopes `magma`, `stencil`, `react`, `lit`, `storybook` and every `mds-*` component. A commit that changes several packages can list several scopes separated by a comma, and then counts for every package listed, both for the version bump and in the release notes:
+Each package is released from the commits of its own scopes: `design-tokens`, `icons`, `identity`, `styles`, `svg-icons`, and for `magma` the scopes `magma`, `stencil`, `react`, `lit`, `storybook`, `lint` (the consumer lint ships inside it) and every `mds-*` component. A commit that changes several packages can list several scopes separated by a comma, and then counts for every package listed, both for the version bump and in the release notes:
 
 ```
 feat(design-tokens,styles): give the neutral pills a wash band

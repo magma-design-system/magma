@@ -19,9 +19,10 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/stencil/**
-      # the react/angular wrappers are built and tree-shake-checked by this workflow, and the
-      # shared agent guides of docs/agents ship inside the packages and are checked by usage-docs
-      extra-path: '{projects/stencil-*/**,docs/agents/**}'
+      # the react/angular wrappers are built and tree-shake-checked by this workflow, the
+      # shared agent guides of docs/agents ship inside the packages and are checked by
+      # usage-docs, and the consumer lint of projects/lint is compiled into magma's dist/lint
+      extra-path: '{projects/stencil-*/**,docs/agents/**,projects/lint/**}'
       nx-project: stencil
       artifact-paths: |
         projects/design-tokens/dist
