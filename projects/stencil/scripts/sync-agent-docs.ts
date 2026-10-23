@@ -130,8 +130,10 @@ Ask the user only what detection left undecided. Typical questions:
    in this package; MERGE the Magma presets into the project's ESLint and Stylelint
    configurations, never overwrite them.
 7. Set up the MCP server - see [\`agents/mcp.md\`](agents/mcp.md): it ships in this package as
-   the \`magma-mcp\` command; MERGE its entry into the client's configuration (\`.mcp.json\`,
-   \`.vscode/mcp.json\`, \`.cursor/mcp.json\`), never overwrite it. Then call its
+   the \`magma-mcp\` command, started with \`npx --no magma-mcp\` (never without \`--no\`, which
+   would let npx install a package of that name from the registry); MERGE its entry into the
+   client's configuration (\`.mcp.json\`, \`.vscode/mcp.json\`, \`.cursor/mcp.json\`), never
+   overwrite it. Then call its
    \`check_setup\` tool: it lists what the integration still misses.
 
 ## Step 4 - verify

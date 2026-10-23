@@ -105,9 +105,7 @@ export const checkMarkup = (context: ToolContext): Tool => ({
     if (lang === 'css' || lang === 'scss') {
       const stylelint = (await importFromProject(context, 'stylelint'))?.default as
         | {
-            lint: (
-              options: Record<string, unknown>,
-            ) => Promise<{
+            lint: (options: Record<string, unknown>) => Promise<{
               results: Array<{
                 warnings: Array<{
                   rule: string;
@@ -268,6 +266,25 @@ const sourceFiles = (root: string, limit = 3000): string[] => {
 
 const firstExisting = (root: string, names: string[]) =>
   names.map((name) => path.join(root, name)).find((file) => existsSync(file));
+
+/**
+ * The entries of a client configuration that start magma-mcp (`mcpServers` of Claude Code
+ * and Cursor, `servers` of VS Code), each safe unless it runs npx without `--no`.
+ */
+export const mcpEntries = (file: string): Array<{ safe: boolean }> => {
+  const config = readJsonFile<{
+    mcpServers?: Record<string, { command?: string; args?: string[] }>;
+    servers?: Record<string, { command?: string; args?: string[] }>;
+  }>(file);
+  if (!config) return [];
+  return Object.values({ ...config.mcpServers, ...config.servers })
+    .filter((entry) =>
+      [entry.command, ...(entry.args ?? [])].some((part) => part?.includes('magma-mcp')),
+    )
+    .map((entry) => ({
+      safe: !/(^|\/)npx$/.test(entry.command ?? '') || (entry.args ?? []).includes('--no'),
+    }));
+};
 
 export const checkSetup = (context: ToolContext): Tool => ({
   name: 'check_setup',
@@ -446,15 +463,19 @@ export const checkSetup = (context: ToolContext): Tool => ({
         : 'The Stylelint configuration does not extend @maggioli-design-system/magma/stylelint.',
       guide: 'agents/lint.md',
     });
-    const mcpOk = ['.mcp.json', '.vscode/mcp.json', '.cursor/mcp.json'].some((name) =>
-      mentions([name], 'magma-mcp'),
+    const entries = ['.mcp.json', '.vscode/mcp.json', '.cursor/mcp.json'].flatMap((name) =>
+      mcpEntries(path.join(root, name)).map((entry) => ({ name, ...entry })),
     );
+    // npx without --no installs and runs whatever the registry has under the name (#1112)
+    const unsafe = entries.filter((entry) => !entry.safe);
     checks.push({
       id: 'mcp',
-      ok: mcpOk,
-      detail: mcpOk
-        ? 'A client configuration starts magma-mcp.'
-        : 'No client configuration starts magma-mcp (.mcp.json, .vscode/mcp.json, .cursor/mcp.json).',
+      ok: entries.length > 0 && !unsafe.length,
+      detail: unsafe.length
+        ? `${unsafe.map((entry) => entry.name).join(', ')} starts magma-mcp with npx without --no: when magma is not installed, npx downloads and runs a package of that name from the registry. Write "args": ["--no", "magma-mcp"].`
+        : entries.length
+          ? `${entries.map((entry) => entry.name).join(', ')} starts magma-mcp.`
+          : 'No client configuration starts magma-mcp (.mcp.json, .vscode/mcp.json, .cursor/mcp.json).',
       guide: 'agents/mcp.md',
     });
 

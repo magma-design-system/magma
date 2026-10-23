@@ -23,7 +23,7 @@ Code asks once before it starts a project server):
 ```json
 {
   "mcpServers": {
-    "magma": { "command": "npx", "args": ["magma-mcp"] }
+    "magma": { "command": "npx", "args": ["--no", "magma-mcp"] }
   }
 }
 ```
@@ -33,16 +33,19 @@ VS Code (GitHub Copilot), `.vscode/mcp.json`:
 ```json
 {
   "servers": {
-    "magma": { "type": "stdio", "command": "npx", "args": ["magma-mcp"] }
+    "magma": { "type": "stdio", "command": "npx", "args": ["--no", "magma-mcp"] }
   }
 }
 ```
 
 Cursor, `.cursor/mcp.json`: the same entry as Claude Code, under `mcpServers`.
 
-`npx magma-mcp` runs the installed version, so the answers always match the components the
-project uses. When the client starts servers elsewhere than the project's root, pass it:
-`"args": ["magma-mcp", "--root", "<the project's folder>"]`.
+`npx --no magma-mcp` runs the installed version, so the answers always match the components
+the project uses. Keep `--no`: without it, a client that starts the server before
+`npm install` (a fresh clone with the configuration committed) lets `npx` download and run
+whatever package the npm registry has under that name; with it, `npx` stops instead. When the
+client starts servers elsewhere than the project's root, pass it:
+`"args": ["--no", "magma-mcp", "--root", "<the project's folder>"]`.
 
 ## The tools
 
