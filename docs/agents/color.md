@@ -145,7 +145,11 @@ measured.
   what the element is, not by the shade you want, and give `raised` / `overlay` a shadow
   ([`theming.md`](theming.md#surfaces-and-elevation)). A grey that has to look marked in
   both modes (a pill, a chip, a hover) is a wash, not a surface.
-- **No `dark:` variants and no dark-mode media queries.** The roles already flip.
+- **The roles already flip: `dark:` never corrects them.** Keep `dark:` for a deliberate
+  choice that differs per mode (a well that sits on the page in light and rises to
+  `surface-raised` in dark). It follows the Magma mode, `system` included
+  ([`theming.md`](theming.md#dark-mode-and-preferences)), in the light DOM only. Never
+  write a dark-mode media query by hand.
 
 ## When a raw palette colour is right
 

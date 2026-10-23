@@ -310,10 +310,20 @@ Dark mode is handled at the palette level. No class changes are needed on indivi
 </html>
 ```
 
-Tailwind's `dark:` variant is NOT tied to these classes: Magma publishes no
-`@custom-variant dark`, so `dark:` follows `prefers-color-scheme` only and ignores
-`pref-mode-dark` / `pref-mode-light`. Color with the semantic roles, which flip on their
-own and need no `dark:`.
+Tailwind's `dark:` variant follows these classes. `tailwind/theme.css` imports
+`dark-mode.css`, a `@custom-variant dark` that `scripts/dark-variant.ts` generates from the
+selectors the palette turns dark on: `darkScheme` in
+`design-tokens/src/formats/dark-scheme.ts`, the one list the css-vars templates and the dark
+block of `semantic.css` print too, so the three cannot drift. `dark:` applies under
+`pref-mode-dark`, under `pref-mode-system` or with no controller on a dark OS, and under a
+theme locked to dark (`pref-theme-scheme-dark`); never under `pref-mode-light` nor under a
+theme locked to light (`pref-theme-scheme-light`). Each selector sits in `:where()`, so a
+`dark:` utility weighs what a plain one does.
+
+The semantic roles flip on their own: `dark:` is never needed to correct them, only for a
+deliberate choice that differs per mode. The variant matches the light DOM only (pages,
+layouts, stories): in a shadow root `:root ... *` matches nothing, so a component refines
+the mode in its `*-pref-mode.css` sheet (`projects/stencil/SPEC.md`).
 
 ### How preferences are applied
 

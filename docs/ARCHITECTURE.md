@@ -102,6 +102,7 @@ CSS and Tailwind 4 styles consumed by the web component library and consumer app
 | `dist/css/hydrated.css` | FOUC prevention for StencilJS, and the box of the hydrated components kept against page resets (Tailwind's preflight) |
 | `dist/css/animations.css` | Shared animations |
 | `dist/tailwind/` | Tailwind 4 layers: base, typography, utilities |
+| `dist/tailwind/dark-mode.css` | The `dark:` variant on the Magma mode, imported by `dist/tailwind/theme.css`; generated from the selectors the palette turns dark on |
 | `dist/tailwind/consumption.json` | How each global token is consumed through Tailwind 4, keyed by its DTCG `css` name, with the token's DTCG `$description` when it has one; generated from Tailwind's design system |
 | `dist/dtcg/` | The styles globals as DTCG 2025.10 (corner and depth sets), with a resolver that adds them to the design-tokens sets |
 
@@ -111,9 +112,14 @@ reset → vendor → theme → base → components → utilities → overrides
 ```
 
 Dark mode is handled via palette-level CSS custom properties. Activation classes on `<html>`:
-- `dark-mode` — manual dark mode
-- `system-mode` — follows OS preference
-- `pref-theme-scheme-dark / light / all` — fine-grained control
+- `pref-mode-light / dark` - manual mode
+- `pref-mode-system` - follows OS preference (as a page with no `mds-pref` controller does)
+- `pref-theme-scheme-dark / light / all` - a named theme locked to one scheme wins over the mode
+
+The selectors the palette turns dark on are one list (`darkScheme`,
+`projects/design-tokens/src/formats/dark-scheme.ts`), printed by the palette templates, the
+dark block of the semantic layer and the Tailwind `dark:` variant, so a `dark:` utility
+flips exactly when the roles do (light DOM only).
 
 Global design decisions overridable via CSS custom properties on `:root`:
 - `data-corner-shape` — corner geometry: the shape AND the `--magma-radius-*` scale tuned for it,
