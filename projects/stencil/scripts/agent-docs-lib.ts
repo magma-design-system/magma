@@ -28,6 +28,7 @@ export const SHARED_FRAGMENTS = [
   'assets.md',
   'reporting.md',
   'lint.md',
+  'mcp.md',
 ] as const;
 
 /** Collapses common non-ASCII punctuation to ASCII, then drops anything left. */

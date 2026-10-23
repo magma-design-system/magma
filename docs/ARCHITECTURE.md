@@ -147,7 +147,15 @@ The consumer lint (`projects/lint`, #1102): the ESLint and Stylelint rules that 
 
 One core reads the data of the installed packages, never a list written by hand: the props and their values from the `documentation.json` beside it, the raw palette steps from the DTCG base set (`design-tokens`) and the colour utilities from `consumption.json` (`styles`), both resolved from where magma is installed. On top of it, the template rules (`valid-attribute-values`, `no-false-boolean`, `accessible-name`, `no-raw-palette-classes`) with one adapter per parser (HTML, JSX, Angular templates), the CSS rules (`no-raw-color`, `no-color-scheme-override`, the consumer side of the `magma/token-values` rule of the component sheets), and `recommended` / `strict` presets.
 
-Its tests run on fixtures cut from the real data, in the `magma-lint-ci` workflow. The consumer guide is [`docs/agents/lint.md`](agents/lint.md), shipped as `agents/lint.md`, which the install guides and the packages' `AGENTS.md` point to at bootstrap; the contributor notes are [`projects/lint/README.md`](../projects/lint/README.md).
+The same project holds the MCP server (#1107): the `magma-mcp` command of magma
+(`dist/lint/mcp/cli.js`), which answers an agent's questions from the same data (ten
+read-only tools: components, usage per framework, tokens and roles, classes, icon slugs, guide
+sections, the lint on a snippet, the integration of the project). Its protocol, JSON-RPC over
+stdio, is written in the project, so magma carries no MCP SDK; its icon is the Magma mark of
+identity, which `stencil` therefore also builds after.
+
+Its tests run on fixtures cut from the real data, in the `magma-lint-ci` workflow, the server's
+through the official MCP client. The consumer guides are [`docs/agents/lint.md`](agents/lint.md) and [`docs/agents/mcp.md`](agents/mcp.md), shipped as `agents/lint.md` and `agents/mcp.md`, which the packages' `AGENTS.md` sets up at bootstrap; the contributor notes are [`projects/lint/README.md`](../projects/lint/README.md).
 
 ---
 

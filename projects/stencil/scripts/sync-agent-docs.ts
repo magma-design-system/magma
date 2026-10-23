@@ -129,6 +129,10 @@ Ask the user only what detection left undecided. Typical questions:
 6. Set up the lint - see [\`agents/lint.md\`](agents/lint.md): the ESLint and Stylelint rules ship
    in this package; MERGE the Magma presets into the project's ESLint and Stylelint
    configurations, never overwrite them.
+7. Set up the MCP server - see [\`agents/mcp.md\`](agents/mcp.md): it ships in this package as
+   the \`magma-mcp\` command; MERGE its entry into the client's configuration (\`.mcp.json\`,
+   \`.vscode/mcp.json\`, \`.cursor/mcp.json\`), never overwrite it. Then call its
+   \`check_setup\` tool: it lists what the integration still misses.
 
 ## Step 4 - verify
 
@@ -155,6 +159,7 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 | Colors in an Android, iOS or Flutter app, where the components do not run | [\`agents/color.md\`](agents/color.md), "Outside the web" |
 | Typography utilities | [\`agents/typography.md\`](agents/typography.md) |
 | Dark mode, preferences, named themes, surface levels and elevation, global design decisions, corner geometry | [\`agents/theming.md\`](agents/theming.md) |
+| Asking instead of reading: the API of a component, the role for a need, a class, an icon slug, a guide section, a snippet checked before writing | the tools of the \`magma\` MCP server, [\`agents/mcp.md\`](agents/mcp.md) |
 | Checking what you wrote: run ESLint and Stylelint with the Magma presets after every change, and fix what they report | [\`agents/lint.md\`](agents/lint.md) |
 | Reporting a problem that is Magma's, not this project's (bug, wrong guide, missing token), with this project's origin label | [\`agents/reporting.md\`](agents/reporting.md) |
 | What changed between the installed version and a newer one, before upgrading | \`CHANGELOG.md\` of each Magma package, newest release first (\`magma-react\` and \`magma-angular\` carry the releases of \`magma\`) |

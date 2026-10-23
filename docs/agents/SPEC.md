@@ -68,6 +68,7 @@ the body of each track file. Step 5 is [`lint.md`](lint.md), with a block per ta
 - [`conventions.md`](conventions.md) - the rules every component follows: naming, events, slots, icons, accessibility, styling
 - [`color.md`](color.md), [`typography.md`](typography.md), [`theming.md`](theming.md) - styling your own UI
 - [`lint.md`](lint.md) - the ESLint and Stylelint rules shipped in `magma`: setup per target, what each rule catches
+- [`mcp.md`](mcp.md) - the MCP server shipped in `magma` (`magma-mcp`): client setup, the tools an agent asks instead of reading files
 - [`reporting.md`](reporting.md) - reporting a problem that is Magma's to the Magma repository, with the project's origin label
 - [`../../projects/styles/SPEC.md`](../../projects/styles/SPEC.md) - full styles reference (contributors)
 - [`../ARCHITECTURE.md`](../ARCHITECTURE.md) - monorepo and sub-project overview
