@@ -250,22 +250,98 @@ export const CustomColors = {
   ),
 };
 
+// The twelve covers as a bookshop lists them. The bindings, the pages, the list prices and
+// the promotions are made up for the story.
+const catalogue = titles.map((name, i) => ({
+  binding: i % 3 === 0 ? 'hardcover' : 'paperback',
+  name,
+  pages: [320, 640, 96, 1000][i % 4],
+  price: [38, 26, 42, 31, 59, 24, 36, 29, 45, 33, 28, 64][i],
+  src: cover(i + 1),
+  tag: [1, 6, 9].includes(i) ? 'Best seller' : [4, 11].includes(i) ? 'Novità' : undefined,
+}));
+
+const discount = 0.05;
+
+const euro = new Intl.NumberFormat('it-IT', { currency: 'EUR', style: 'currency' });
+
+const Product = ({ book }: { book: (typeof catalogue)[number] }) => (
+  <mds-card class="w-full max-w-[360px] justify-self-center @2xl:max-w-none">
+    <mds-card-header>
+      <mds-label
+        label={book.binding === 'hardcover' ? 'Copertina rigida' : 'Brossura'}
+        typography="caption"
+      />
+      <mds-badge class="shrink-0" label={`-${discount * 100}%`} variant="orange" tone="strong" />
+    </mds-card-header>
+    <mds-card-media class="bg-surface-muted px-[18%] py-1000">
+      <mds-book
+        class="w-full max-w-[200px] justify-self-center"
+        binding={book.binding as 'paperback'}
+        name={book.name}
+        pages={book.pages}
+        publisher="Maggioli Editore"
+        src={book.src}
+      />
+    </mds-card-media>
+    <mds-card-content class="flex flex-col gap-300">
+      {book.tag && (
+        <mds-badge
+          class="self-start"
+          label={book.tag}
+          tone="weak"
+          variant={book.tag === 'Novità' ? 'sky' : 'amaranth'}
+        />
+      )}
+      <mds-text tag="h3" typography="h6" truncate="all" style={{ '--mds-text-line-clamp': '2' }}>
+        {book.name}
+      </mds-text>
+      <div class="mt-auto flex flex-wrap items-baseline gap-x-300 gap-y-100">
+        <mds-text tag="strong" typography="h4">
+          {euro.format(book.price * (1 - discount))}
+        </mds-text>
+        <span class="sr-only">invece di</span>
+        <mds-text tag="s" typography="caption" class="text-fg-muted">
+          {euro.format(book.price)}
+        </mds-text>
+      </div>
+    </mds-card-content>
+    <mds-card-footer>
+      <mds-button class="grow" icon="mi/outline/add-shopping-cart" label="Aggiungi al carrello" />
+      <mds-button
+        aria-label="Aggiungi alla lista dei desideri"
+        icon="mi/outline/favorite-border"
+        tone="outline"
+      />
+    </mds-card-footer>
+  </mds-card>
+);
+
+// a page of the shop: the frame of the canvas is its margin, so no Stage padding on top of it
 export const Catalogue = {
   render: () => (
-    <Stage>
-      <div class="grid gap-1200 grid-cols-1 @sm:grid-cols-2 @3xl:grid-cols-3 @5xl:grid-cols-4 @7xl:grid-cols-6">
-        {Array.from({ length: 12 }, (_, i) => (
-          <mds-book
-            key={i}
-            class="w-full max-w-[320px] justify-self-center"
-            src={cover(i + 1)}
-            binding={i % 3 === 0 ? 'hardcover' : 'paperback'}
-            pages={[320, 640, 96, 1000][i % 4]}
-            name={titles[i]}
-            publisher="Maggioli Editore"
-          />
-        ))}
+    <div class="@container">
+      <div class="mx-auto grid max-w-[1280px] gap-800">
+        <mds-breadcrumb>
+          <mds-breadcrumb-item label="Home" />
+          <mds-breadcrumb-item label="Libri" />
+          <mds-breadcrumb-item label="Pubblica Amministrazione" selected />
+        </mds-breadcrumb>
+        <div class="grid gap-200">
+          <mds-text tag="h2" typography="h3">
+            Pubblica Amministrazione
+          </mds-text>
+          <mds-text class="text-fg-muted">
+            {catalogue.length} titoli, sconto del {discount * 100}% su tutto il catalogo
+          </mds-text>
+        </div>
+        {/* a card keeps about 290 px, where "Aggiungi al carrello" fits next to the wishlist */}
+        <div class="grid grid-cols-1 gap-800 @2xl:grid-cols-2 @4xl:grid-cols-3 @7xl:grid-cols-4">
+          {catalogue.map((book) => (
+            <Product key={book.src} book={book} />
+          ))}
+        </div>
       </div>
-    </Stage>
+    </div>
   ),
 };
