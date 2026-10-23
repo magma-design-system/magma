@@ -1,0 +1,79 @@
+{
+  "name": "@maggioli-design-system/lint",
+  "version": "0.0.0",
+  "description": "ESLint and Stylelint rules that check consumer code against the installed version of Magma: component props and values, booleans, accessible names, palette classes, raw colours and dark mode.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./eslint": {
+      "types": "./dist/eslint/index.d.ts",
+      "import": "./dist/eslint/index.js"
+    },
+    "./stylelint": {
+      "types": "./dist/stylelint/index.d.ts",
+      "import": "./dist/stylelint/index.js"
+    },
+    "./stylelint/recommended": {
+      "types": "./dist/stylelint/recommended.d.ts",
+      "import": "./dist/stylelint/recommended.js"
+    },
+    "./stylelint/strict": {
+      "types": "./dist/stylelint/strict.d.ts",
+      "import": "./dist/stylelint/strict.js"
+    }
+  },
+  "files": [
+    "dist/",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "lint": "eslint ."
+  },
+  "peerDependencies": {
+    "@maggioli-design-system/magma": ">=2.5.0",
+    "eslint": "^9.0.0",
+    "stylelint": "^16.0.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    },
+    "stylelint": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "postcss-value-parser": "4.2.0"
+  },
+  "devDependencies": {
+    "@angular-eslint/template-parser": "22.5.0",
+    "@html-eslint/parser": "0.66.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magma-design-system/magma.git",
+    "directory": "projects/lint"
+  },
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "stylelint",
+    "stylelint-plugin",
+    "magma",
+    "design-system"
+  ]
+}

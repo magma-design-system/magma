@@ -1,0 +1,97 @@
+{
+ "tokens": {
+  "--tone-neutral-01": {
+   "namespace": "--color",
+   "key": "tone-neutral-01"
+  },
+  "--tone-neutral-03": {
+   "namespace": "--color",
+   "key": "tone-neutral-03"
+  },
+  "--tone-neutral-seed": {
+   "namespace": "--color",
+   "key": "tone-neutral-seed"
+  },
+  "--status-error-04": {
+   "namespace": "--color",
+   "key": "status-error-04"
+  },
+  "--label-sky-09": {
+   "namespace": "--color",
+   "key": "label-sky-09"
+  },
+  "--brand-maggioli-04": {
+   "namespace": "--color",
+   "key": "brand-maggioli-04"
+  },
+  "--surface-neutral-default": {
+   "namespace": "--color",
+   "key": "surface-neutral-default"
+  },
+  "--magma-surface-raised": {
+   "namespace": "--color",
+   "key": "surface-raised"
+  },
+  "--magma-text-muted": {
+   "namespace": "--color",
+   "key": "fg-muted"
+  }
+ },
+ "namespaces": {
+  "--color": {
+   "utilities": [
+    "accent",
+    "bg",
+    "border",
+    "border-b",
+    "border-be",
+    "border-bs",
+    "border-e",
+    "border-l",
+    "border-r",
+    "border-s",
+    "border-t",
+    "border-x",
+    "border-y",
+    "caret",
+    "decoration",
+    "divide",
+    "drop-shadow",
+    "fill",
+    "from",
+    "inset-ring",
+    "inset-shadow",
+    "mask-b-from",
+    "mask-b-to",
+    "mask-conic-from",
+    "mask-conic-to",
+    "mask-l-from",
+    "mask-l-to",
+    "mask-linear-from",
+    "mask-linear-to",
+    "mask-r-from",
+    "mask-r-to",
+    "mask-radial-from",
+    "mask-radial-to",
+    "mask-t-from",
+    "mask-t-to",
+    "mask-x-from",
+    "mask-x-to",
+    "mask-y-from",
+    "mask-y-to",
+    "outline",
+    "placeholder",
+    "ring",
+    "ring-offset",
+    "scrollbar-thumb",
+    "scrollbar-track",
+    "shadow",
+    "stroke",
+    "text",
+    "text-shadow",
+    "to",
+    "via"
+   ]
+  }
+ }
+}
