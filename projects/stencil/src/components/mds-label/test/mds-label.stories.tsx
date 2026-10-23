@@ -6,7 +6,8 @@ import { h } from '@stencil/core';
 import { truncateDictionary } from '@type/text';
 
 export default {
-  title: 'UI / Label',
+  title: 'UI / Tags / Label',
+  id: 'ui-label',
   argTypes: {
     deletable: {
       type: { name: 'boolean' },

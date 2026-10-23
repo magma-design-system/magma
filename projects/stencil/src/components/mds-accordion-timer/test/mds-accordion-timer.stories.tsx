@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Accordion Timer',
+  title: 'UI / Structure / Accordion Timer',
+  id: 'ui-accordion-timer',
   argTypes: {
     duration: {
       type: { name: 'number' },

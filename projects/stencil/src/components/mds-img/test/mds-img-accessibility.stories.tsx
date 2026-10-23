@@ -3,7 +3,8 @@ import { h } from '@stencil/core';
 import { argTypes, URLs } from '../meta/storybook';
 
 export default {
-  title: 'UI / Image / ARIA',
+  title: 'UI / Content / Image / ARIA',
+  id: 'ui-image-aria',
   argTypes,
 };
 

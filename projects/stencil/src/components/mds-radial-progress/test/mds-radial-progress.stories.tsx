@@ -4,7 +4,8 @@ import { themeVariantDictionary } from '@type/variant';
 import { iconsDictionary } from '@type/icon';
 
 export default {
-  title: 'UI / Radial Progress',
+  title: 'UI / Feedback / Radial Progress',
+  id: 'ui-radial-progress',
   argTypes: {
     typography: {
       type: { name: 'string' },

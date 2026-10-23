@@ -5,7 +5,8 @@ import { tagsDictionary, textAnimateDictionary } from '../meta/dictionary';
 import { truncateDictionary } from '@type/text';
 
 export default {
-  title: 'Design / Typography',
+  title: 'UI / Content / Typography',
+  id: 'design-typography',
   argTypes: {
     animation: {
       control: { type: 'select' },

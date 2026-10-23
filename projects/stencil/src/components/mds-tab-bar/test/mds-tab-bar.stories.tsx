@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Tab Bar',
+  title: 'UI / Navigation / Tab Bar',
+  id: 'ui-tab-bar',
 };
 
 const Template = (args) => (

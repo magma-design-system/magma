@@ -7,7 +7,8 @@ import { expect, fn, waitFor } from 'storybook/test';
 import { linkUnderlineDictionary, linkVariantDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'UI / Link',
+  title: 'UI / Actions / Link',
+  id: 'ui-link',
   argTypes: {
     href: {
       type: { name: 'string' },

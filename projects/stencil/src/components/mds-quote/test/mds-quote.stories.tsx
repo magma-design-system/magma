@@ -3,7 +3,8 @@ import { typographyHeadingTagDictionary } from '@type/text';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Quote',
+  title: 'UI / Content / Quote',
+  id: 'ui-quote',
   argTypes: {
     tag: {
       description: 'Specifies the font typography of the element',

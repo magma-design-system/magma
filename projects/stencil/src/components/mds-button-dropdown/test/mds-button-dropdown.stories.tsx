@@ -11,7 +11,8 @@ import {
 } from '@type/button';
 
 export default {
-  title: 'UI / Button dropdown',
+  title: 'UI / Actions / Button dropdown',
+  id: 'ui-button-dropdown',
   argTypes: {
     label: {
       type: { name: 'string' },

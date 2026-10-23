@@ -4,7 +4,8 @@ import { themeFullVariantAvatarDictionary } from '@type/variant';
 import { toneMinimalVariantDictionary } from '@type/tone';
 
 export default {
-  title: 'UI / Avatar',
+  title: 'UI / Data / Avatar',
+  id: 'ui-avatar',
   argTypes: {
     icon: {
       type: { name: 'string' },

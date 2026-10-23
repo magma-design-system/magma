@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Separator',
+  title: 'UI / Structure / Separator',
+  id: 'ui-separator',
 };
 
 const Template = (args) => (

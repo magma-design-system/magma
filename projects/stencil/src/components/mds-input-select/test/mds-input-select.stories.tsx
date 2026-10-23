@@ -9,7 +9,8 @@ citiesDictionary.map((element, index) => {
 });
 
 export default {
-  title: 'Form / Select',
+  title: 'UI / Forms / Select',
+  id: 'form-select',
   argTypes: {
     value: {
       type: { name: 'string' },

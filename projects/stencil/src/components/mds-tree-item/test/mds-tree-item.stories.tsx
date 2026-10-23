@@ -5,7 +5,8 @@ import { MdsTreeItemEventDetail } from 'src/components';
 import { useEffect } from 'react';
 
 export default {
-  title: 'UI / Tree / Tree Item',
+  title: 'UI / Navigation / Tree / Tree Item',
+  id: 'ui-tree-tree-item',
   argTypes: {
     expanded: {
       type: { name: 'boolean' },

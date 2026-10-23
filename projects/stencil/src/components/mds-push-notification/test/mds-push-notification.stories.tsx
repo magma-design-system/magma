@@ -3,7 +3,8 @@ import { Fragment, useState, useEffect } from 'react';
 import { NotificationItemPreviewType } from 'src/components';
 
 export default {
-  title: 'UI / Push Notification',
+  title: 'UI / Feedback / Push Notification',
+  id: 'ui-push-notification',
   argTypes: {
     visible: {
       type: { name: 'boolean' },

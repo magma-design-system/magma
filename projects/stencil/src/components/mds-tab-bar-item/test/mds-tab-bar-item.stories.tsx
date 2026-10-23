@@ -2,7 +2,8 @@ import { typographySmallerDictionary } from '@type/typography';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Tab Bar / Tab Bar Item',
+  title: 'UI / Navigation / Tab Bar / Tab Bar Item',
+  id: 'ui-tab-bar-tab-bar-item',
   argTypes: {
     selected: {
       type: { name: 'boolean' },

@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Filter',
+  title: 'UI / Forms / Filter',
+  id: 'ui-filter',
   argTypes: {
     'auto-reset': {
       type: { name: 'boolean' },

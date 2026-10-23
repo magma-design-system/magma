@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { useEffect } from 'react';
 
 export default {
-  title: 'Form / Range',
+  title: 'UI / Forms / Range',
+  id: 'form-range',
   argTypes: {
     disabled: {
       type: { name: 'boolean' },

@@ -7,7 +7,8 @@ import { h } from '@stencil/core';
 import { typographyTooltipDictionary } from '@type/typography';
 
 export default {
-  title: 'UI / Tooltip',
+  title: 'UI / Overlays / Tooltip',
+  id: 'ui-tooltip',
   argTypes: {
     'hide-arrow': {
       type: { name: 'boolean' },

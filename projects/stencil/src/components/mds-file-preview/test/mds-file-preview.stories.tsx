@@ -8,7 +8,8 @@ import { themeFullVariantAvatarDictionary } from '@type/variant';
 const extensionsList = Object.keys(fileExtensionsDictionary).sort();
 
 export default {
-  title: 'UI / File Preview',
+  title: 'UI / Content / File Preview',
+  id: 'ui-file-preview',
   argTypes: {
     deletable: {
       type: 'boolean',

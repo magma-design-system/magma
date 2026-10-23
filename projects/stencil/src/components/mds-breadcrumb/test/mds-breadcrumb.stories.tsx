@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Breadcrumb',
+  title: 'UI / Navigation / Breadcrumb',
+  id: 'ui-breadcrumb',
   argTypes: {
     'hide-back': {
       type: { name: 'boolean', required: false },

@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { toastPositionDictionary } from '@component/mds-toast/meta/dictionary';
 
 export default {
-  title: 'UI / Toast / Toast Region',
+  title: 'UI / Feedback / Toast Region',
+  id: 'ui-toast-toast-region',
   argTypes: {
     max: {
       description:

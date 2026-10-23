@@ -3,7 +3,8 @@ import { bindingDictionary, formatDictionary, poseDictionary } from '../meta/dic
 import { loadingDictionary } from '@type/loading';
 
 export default {
-  title: 'UI / Book',
+  title: 'UI / Content / Book',
+  id: 'ui-book',
   argTypes: {
     alt: {
       description:

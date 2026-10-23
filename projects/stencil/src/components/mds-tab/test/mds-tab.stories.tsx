@@ -8,7 +8,8 @@ import { expect, waitFor } from 'storybook/test';
 import { NavigationService } from '@common/navigation';
 
 export default {
-  title: 'UI / Tab',
+  title: 'UI / Navigation / Tab',
+  id: 'ui-tab',
   argTypes: {
     animation: {
       type: { name: 'string' },

@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Price table / Price table header',
+  title: 'UI / Data / Price table / Price table header',
+  id: 'ui-price-table-price-table-header',
 };
 
 const Template = (args) => (

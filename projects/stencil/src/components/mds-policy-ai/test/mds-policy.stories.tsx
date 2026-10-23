@@ -3,7 +3,8 @@ import { h } from '@stencil/core';
 import { policyAiDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'UI / Policy AI',
+  title: 'UI / Tags / Policy AI',
+  id: 'ui-policy-ai',
   argTypes: {
     headline: {
       type: { name: 'string' },

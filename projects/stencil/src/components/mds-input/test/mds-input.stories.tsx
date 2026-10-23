@@ -16,7 +16,8 @@ import { useEffect } from 'react';
 // https://developers.google.com/web/updates/2015/06/checkout-faster-with-autofill
 
 export default {
-  title: 'Form / Input',
+  title: 'UI / Forms / Input',
+  id: 'form-input',
   argTypes: {
     autocomplete: {
       description: 'Specifies whether the element should have autocomplete enabled',

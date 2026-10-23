@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Zero',
+  title: 'UI / Feedback / Zero',
+  id: 'ui-zero',
 };
 
 const Template = (args) => (

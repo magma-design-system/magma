@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Author',
+  title: 'UI / Data / Author',
+  id: 'ui-author',
 };
 
 const Template = (args) => (

@@ -5,7 +5,8 @@ import { themeFullVariantAvatarDictionary } from '@type/variant';
 import { toneMinimalVariantDictionary } from '@type/tone';
 
 export default {
-  title: 'UI / Entity',
+  title: 'UI / Data / Entity',
+  id: 'ui-entity',
   argTypes: {
     await: {
       type: { name: 'boolean' },

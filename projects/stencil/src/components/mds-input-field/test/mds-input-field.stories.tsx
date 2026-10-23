@@ -8,7 +8,8 @@ interface MdsInputFieldInterface {
 }
 
 export default {
-  title: 'Form / Input Field',
+  title: 'UI / Forms / Input Field',
+  id: 'form-input-field',
   argTypes: {
     label: {
       type: { name: 'string' },

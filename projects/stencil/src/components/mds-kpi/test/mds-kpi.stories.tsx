@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / KPI',
+  title: 'UI / Data / KPI',
+  id: 'ui-kpi',
   argTypes: {
     description: {
       type: { name: 'string', required: true },

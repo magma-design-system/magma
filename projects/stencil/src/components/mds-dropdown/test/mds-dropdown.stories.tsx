@@ -4,7 +4,8 @@ import { h } from '@stencil/core';
 import { useState, useEffect } from 'react';
 
 export default {
-  title: 'UI / Dropdown',
+  title: 'UI / Overlays / Dropdown',
+  id: 'ui-dropdown',
   argTypes: {
     'hide-arrow': {
       type: { name: 'boolean' },

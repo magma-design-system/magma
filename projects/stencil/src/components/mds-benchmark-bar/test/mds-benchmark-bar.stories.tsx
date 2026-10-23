@@ -4,7 +4,8 @@ import { benchmarkBarTypographyDictionary } from '../meta/dictionary';
 import { progressBarSizeDictionary } from '@type/progress';
 
 export default {
-  title: 'UI / Benchmark Bar',
+  title: 'UI / Data / Benchmark Bar',
+  id: 'ui-benchmark-bar',
   argTypes: {
     label: {
       type: { name: 'string' },

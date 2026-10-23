@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / List',
+  title: 'UI / Data / List',
+  id: 'ui-list',
 };
 
 const Template = () => (

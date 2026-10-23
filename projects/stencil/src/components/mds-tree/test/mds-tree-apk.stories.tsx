@@ -3,7 +3,8 @@ import { MdsTreeItemEventDetail } from 'src/components';
 import { useEffect, useState } from 'react';
 
 export default {
-  title: 'UI / Tree / Usecase hyperSIC',
+  title: 'UI / Navigation / Tree / Usecase hyperSIC',
+  id: 'ui-tree-usecase-hypersic',
 };
 
 const durations = [500, 750, 1000, 1250, 1500, 1750, 2000];

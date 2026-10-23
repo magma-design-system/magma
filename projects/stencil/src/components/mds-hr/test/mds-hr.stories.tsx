@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Hr',
+  title: 'UI / Structure / Hr',
+  id: 'ui-hr',
 };
 
 const Template = (args) => <mds-hr {...args} />;

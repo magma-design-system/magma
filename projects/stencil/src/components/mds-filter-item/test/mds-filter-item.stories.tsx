@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Filter / Filter item',
+  title: 'UI / Forms / Filter / Filter item',
+  id: 'ui-filter-filter-item',
   argTypes: {
     count: {
       type: { name: 'string' },
