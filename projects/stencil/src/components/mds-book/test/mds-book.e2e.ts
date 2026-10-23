@@ -1,5 +1,6 @@
 import { render } from '@stencil/vitest';
 import { userEvent } from 'vitest/browser';
+import { hardcoverCap } from '../meta/spine';
 
 // covers that load in the test page, whose own server has no /assets: an svg keeps its
 // width and height as its natural size
@@ -435,6 +436,19 @@ describe('mds-book', () => {
       expect(slats).toHaveLength(6);
       expect(new Set(lights.map((value) => value.toFixed(2))).size).toBeGreaterThan(1);
       expect(part(root, '.spine-label .spine-name')).toEqualText('Manuale');
+    });
+
+    it('cuts the caps of a rounded spine on the arc of its slats, not past it', async () => {
+      const root = await book('binding="hardcover"');
+      const numbers = (shape: string) => Array.from(shape.matchAll(/-?[\d.]+/g), Number);
+      const arc = numbers(hardcoverCap);
+
+      for (const edge of ['top', 'bottom']) {
+        const shape = getComputedStyle(part(root, `.cap--${edge}`)!).clipPath;
+
+        expect(shape).toMatch(/^polygon\(/);
+        numbers(shape).forEach((value, index) => expect(value).toBeCloseTo(arc[index], 2));
+      }
     });
 
     it('rebuilds itself when the binding changes', async () => {

@@ -18,7 +18,7 @@ import {
   samePose,
   slatLight,
 } from './meta/pose';
-import { hardcoverSlats } from './meta/spine';
+import { hardcoverCap, hardcoverSlats } from './meta/spine';
 import { preferenceStore } from '@common/preference';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
@@ -501,7 +501,11 @@ export class MdsBook {
       <div key={`pages-${edge}`} class={`face pages-${edge} lit-${edge}`}>
         {this.shade()}
       </div>,
-      <div key={`cap-${edge}`} class={`face cap cap--${edge} lit-${edge}`}>
+      <div
+        key={`cap-${edge}`}
+        class={`face cap cap--${edge} lit-${edge}`}
+        style={{ clipPath: hardcoverCap }}
+      >
         {this.shade()}
       </div>,
     ]),

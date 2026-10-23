@@ -738,13 +738,13 @@
     rotateY(-90deg);
 }
 
-/* the cover material turned in over each end of the spine, in the shape of the arc */
+/* the cover material turned in over each end of the spine, clipped by the component to the
+   arc of its slats (meta/spine.ts), so it never reaches past the spine */
 
 .cap {
   --private-book-wrap-position: left top;
   --private-book-wrap-size: 4000% 4000%;
 
-  clip-path: ellipse(100% 50% at 100% 50%);
   height: var(--private-book-depth);
   width: var(--private-book-bulge);
 }
