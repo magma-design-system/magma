@@ -29,6 +29,8 @@ export interface MagmaSettings {
   tokens?: string;
   /** The dist/tailwind/consumption.json of @maggioli-design-system/styles. */
   consumption?: string;
+  /** The dist/dtcg/globals.tokens.json of @maggioli-design-system/styles. */
+  globals?: string;
 }
 
 export interface PropInfo {
@@ -60,6 +62,7 @@ const PACKAGE = {
   documentation: '@maggioli-design-system/magma/dist/documentation.json',
   tokens: '@maggioli-design-system/design-tokens/dist/dtcg/base.tokens.json',
   consumption: '@maggioli-design-system/styles/dist/tailwind/consumption.json',
+  globals: '@maggioli-design-system/styles/dist/dtcg/globals.tokens.json',
 };
 
 const resolveFrom = (from: string, id: string): string | undefined => {
@@ -105,6 +108,14 @@ const readJson = <T>(file: string, build: (json: never) => T, key = file): T => 
   if (!cache.has(key)) cache.set(key, build(JSON.parse(readFileSync(file, 'utf8')) as never));
   return cache.get(key) as T;
 };
+
+/** A data file as it is, parsed once per process: for the tools that need more than the rules. */
+export const readData = <T = unknown>(kind: keyof typeof PACKAGE, settings?: MagmaSettings): T =>
+  readJson(locate(kind, settings), (json: T) => json, `raw:${locate(kind, settings)}`);
+
+/** The root of the installed magma package: two folders above its dist/documentation.json. */
+export const magmaRoot = (settings?: MagmaSettings): string =>
+  path.dirname(path.dirname(locate('documentation', settings)));
 
 interface DocsValue {
   value?: string;

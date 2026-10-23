@@ -1,0 +1,8 @@
+{
+  "name": "@maggioli-design-system/magma",
+  "version": "2.5.1",
+  "dependencies": {
+    "@maggioli-design-system/design-tokens": "^15.2.2",
+    "@maggioli-design-system/styles": "^17.3.0"
+  }
+}

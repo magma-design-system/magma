@@ -1,0 +1,3652 @@
+{
+ "components": [
+  {
+   "tag": "mds-banner",
+   "docs": "This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
+   "usage": {
+    "1. Description": "The `<mds-banner>` web component is the Magma Design System surface for contextual, in-page messages - informational notices, status callouts, and alerts - pairing an optional icon, headline, body text, and inline actions inside a single themed box.\n\n#### Semantic Behavior\n\n- **Variant-driven ARIA**: The announcement role is derived from `variant`, not set manually. `error` and `warning` announce assertively (`role=\"alert\"`); `ai`, `info`, `primary`, and `success` announce politely (`role=\"status\"`); `light` and `dark` are decorative and silent.\n- **Headline as label**: When `headline` is set it also becomes the banner's accessible label.\n- **Dismissal**: When `deletable` is true a close button is rendered; activating it emits `mdsBannerClose` and, if the banner sits inside an `mds-modal`, closes that modal.\n- **Localized close button**: The close button title is localized (el/en/es/it) from the host language.\n- **Action slot**: The `action` region is rendered only when a direct `[slot=\"action\"]` child is present, so banners without actions produce no empty container.\n\n#### Properties & Visual Configurations\n\nThis component uses the shared `variant` / `tone` ladders defined in [`agents/variants.md`](../../../../agents/variants.md); pick the `variant` according to the message's semantic weight, since it also governs the ARIA behavior described above. `tone` is limited to the minimal-box set (`'weak'`, `'strong'`, `'box'`), defaulting to `'weak'`.\n\n#### Other behavioral props\n\n- **`hideCockade`** (default `false`) removes the colored decorative badge wrapping the leading `icon`; set it for a flatter icon presentation.\n- **`icon`** is a Magma icon library slug shown at the top-left, surfaced as decorative.\n- **`deletable`** opts the banner into being dismissible - choose it for transient or user-acknowledged messages rather than persistent context.\n- The **default slot** carries the body text/markup; the **`action` slot** holds inline controls, with `mds-button` the recommended element.\n"
+   },
+   "props": [
+    {
+     "name": "deletable",
+     "attr": "deletable",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Shows the cross icon to perform cancel/delete action on element"
+    },
+    {
+     "name": "headline",
+     "attr": "headline",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The title on the top of the banner"
+    },
+    {
+     "name": "hideCockade",
+     "attr": "hide-cockade",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "false",
+     "required": false,
+     "docs": "Hides the decoration around the banner icon"
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "An icon displayed at the top left of the banner"
+    },
+    {
+     "name": "tone",
+     "attr": "tone",
+     "type": "\"box\" | \"strong\" | \"weak\" | undefined",
+     "values": [
+      {
+       "value": "box",
+       "type": "string"
+      },
+      {
+       "value": "strong",
+       "type": "string"
+      },
+      {
+       "value": "weak",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'weak'",
+     "required": false,
+     "docs": "Sets the tone of the color variant"
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "type": "\"ai\" | \"dark\" | \"error\" | \"info\" | \"light\" | \"primary\" | \"success\" | \"warning\" | undefined",
+     "values": [
+      {
+       "value": "ai",
+       "type": "string"
+      },
+      {
+       "value": "dark",
+       "type": "string"
+      },
+      {
+       "value": "error",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "light",
+       "type": "string"
+      },
+      {
+       "value": "primary",
+       "type": "string"
+      },
+      {
+       "value": "success",
+       "type": "string"
+      },
+      {
+       "value": "warning",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'primary'",
+     "required": false,
+     "docs": "Sets the theme variant colors"
+    }
+   ],
+   "events": [
+    {
+     "event": "mdsBannerClose",
+     "detail": "void",
+     "docs": "Emits when the url view is closed"
+    }
+   ],
+   "methods": [],
+   "slots": [
+    {
+     "name": "",
+     "docs": "Add `text string`, `HTML elements` or `components` to this slot."
+    },
+    {
+     "name": "action",
+     "docs": "Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element."
+    }
+   ],
+   "parts": [
+    {
+     "name": "text",
+     "docs": "The text wrapper of the `default` and `content` slots"
+    }
+   ],
+   "styles": [
+    {
+     "name": "--mds-banner-background",
+     "annotation": "prop",
+     "docs": "Sets the background-color of the component"
+    },
+    {
+     "name": "--mds-banner-cockade-background",
+     "annotation": "prop",
+     "docs": "When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background"
+    },
+    {
+     "name": "--mds-banner-cockade-distance",
+     "annotation": "prop",
+     "docs": "When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color"
+    },
+    {
+     "name": "--mds-banner-color",
+     "annotation": "prop",
+     "docs": "Sets the text color of the component"
+    },
+    {
+     "name": "--mds-banner-content-gap",
+     "annotation": "prop",
+     "docs": "Sets gap between banner elements"
+    },
+    {
+     "name": "--mds-banner-headline-color",
+     "annotation": "prop",
+     "docs": "The text color of the headline"
+    },
+    {
+     "name": "--mds-banner-icon-color",
+     "annotation": "prop",
+     "docs": "Sets the close icon fill color of the component"
+    },
+    {
+     "name": "--mds-banner-radius",
+     "annotation": "prop",
+     "docs": "Sets the border-radius of the component"
+    },
+    {
+     "name": "--mds-banner-shadow",
+     "annotation": "prop",
+     "docs": "Sets the box-shadow of the component"
+    },
+    {
+     "name": "--mds-banner-transition-duration",
+     "annotation": "prop",
+     "docs": "Sets the transition duration"
+    },
+    {
+     "name": "--mds-banner-transition-timing-function",
+     "annotation": "prop",
+     "docs": "Sets the transition timing function"
+    }
+   ]
+  },
+  {
+   "tag": "mds-book",
+   "docs": "",
+   "usage": {
+    "1. Description": "The `<mds-book>` web component shows a book as a physical object, from the image of its front cover alone: front cover, spine and page block drawn in CSS 3D, turned a little so the spine shows. It is the catalogue and product-page counterpart of `<mds-img>`, for publications rather than pictures.\n\n#### Semantic Behavior\n\n- **One image of the book**: The host is a single `role=\"img\"` named by `alt`, or by `name` and `author` (\"Title by Author\", localised in el/en/es/it), or by a generic \"Book\" when there is neither. An empty `alt` marks the book as decorative (`role=\"presentation\"`). The text printed on the spine and on a drawn cover is hidden from assistive technologies, since it repeats that name.\n- **The sides come from the cover**: The spine continues the left edge of the cover image and the board edges its top and right edges, as a wraparound cover prints its design on, so no spine or back cover image is needed. Without an image they take `--mds-book-color`.\n- **A drawn cover instead of a broken image**: Without `src`, or when the image fails to load, the front shows the title, the author and the publisher on `--mds-book-color`. A new `src` tries again.\n- **A neutral shape while loading**: Until its image arrives, a book with `src` is drawn in a neutral surface colour, so a lazy catalogue does not flash in the colour of drawn covers.\n- **Light and shadow**: The book is seen a little from above. Each face takes the light by how it turns toward it, in a light touch that shows the volume without drawing the eye. Its shadow falls on the surface it rests on, under its tail when it stands and under its back cover when it lies, darkest where it touches and soon gone; around its outline only a halo faint enough to part a light cover from a light page.\n- **Movement**: The book rests in its `pose`. On hover it rises off the surface, its shadow fading there, and leans a little toward the pointer, with a faint sheen on the cover. A drag (mouse, pen or finger) turns it further, within limits, to show the spine or the pages, never the back, or spins a lying book on its surface; it settles back when released, or when the pointer leaves the window or the frame of the page, where its release could not reach the book. A vertical swipe still scrolls the page.\n- **Not a control**: The book has no action of its own. To make it a link, wrap it: the click that ends a drag does not follow the link, a plain click does.\n- **Reduced motion**: With the animation preference set to reduce (or the system asking for it, when there is no controller), the book keeps its resting pose: no lean, no lift, no drag.\n- **Consumption**: The consumption preference sets how much the book costs to draw. At `high` (the default, and on a page without the controller) it does everything; at `medium` it moves without the sheen and without the halo, a filter computed again on every frame; at `low` it is drawn once, in its pose, and never animated. While it moves, only opacities and transforms change, which the compositor applies without painting the faces again.\n\n#### Properties & Visual Configurations\n\n- **`pose`**: how the book is shown, after the usual shots of product photography. A drag turns it from there, and it goes back to it when released.\n  - `'spine'`: standing, turned to show its spine; the default, and the one for a catalogue.\n  - `'fore-edge'`: standing, turned the other way to show its pages.\n  - `'front'`: facing the reader, flat, the cover as it is; the light still shows the binding when it moves.\n  - `'lying'`: lying on its back, seen from above, its tail toward the reader: a book on a desk.\n  - `'lying-turned'`: lying, spun on the surface to show its spine and its tail.\n\n- **`format`**: the proportions of the book, in one field that also carries the orientation.\n  - `'auto'`: the proportions of the image, read once it has loaded (a square cover gives a square book); before that, and without an image, 17x24. Pick it when the image already has the true proportions.\n  - `'a4'`, `'a5'`, `'b5'`: the ISO formats, portrait. Any other format is `WxH` in centimetres, the order of the two numbers being the orientation: `'17x24'` portrait, `'24x17'` landscape, `'21x21'` square. A fixed format keeps its shape before the image loads and crops small differences of the image.\n- **`pages`**: the number of pages, from the catalogue record, which sets how deep the book is against the width of its format (17 cm for `'auto'`). A short book is printed on bulky paper and a long volume on thin paper, so a page goes from `--mds-book-page-weight-min` (0.1 mm) at 1 page to `--mds-book-page-weight-max` (0.05 mm) at 1000 pages and beyond, in proportion: 64 pages make 6 mm, 300 pages 2.5 cm, 1000 pages 5 cm, and an A4 of the same pages looks thinner than a 17x24. Set the two weights for a paper of your own. A spine under 5 mm carries no text.\n- **`binding`**: how the book is built, which shows on its head, its fore edge and its spine.\n  - `'paperback'`: cut flush, the cover a hairline on the same edge as the pages, a flat spine.\n  - `'hardcover'`: rigid boards about 2.5 mm thick, overhanging a page block set in from them by about 3 mm, the endpapers showing in the gap, a headband, a rounded spine and a hinge groove on the front.\n- **`name`**, **`author`**, **`publisher`**: the same names as on `<mds-bibliography>`, so one catalogue record feeds both.\n- **Size**: the book is sized as an image is, in the proportions of its format: give it a width, and its height follows; give it a height, and its width follows. With neither, it fills the width of its container, as a block does; where nothing gives it a width (a row of a flex layout) it is 200 px wide. Its box is the front cover at rest: the turned book reaches a little beyond it, by a few percent of its width on each side standing, by up to a third lying spun round, so leave it some room inside a container that clips.\n"
+   },
+   "props": [
+    {
+     "name": "alt",
+     "attr": "alt",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The accessible name of the book. Without it the name is built from `name` and `author`;\nan empty `alt` marks the book as decorative, left out by assistive technologies"
+    },
+    {
+     "name": "author",
+     "attr": "author",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The author, printed on the spine and on the cover drawn when there is no image"
+    },
+    {
+     "name": "binding",
+     "attr": "binding",
+     "type": "\"hardcover\" | \"paperback\"",
+     "values": [
+      {
+       "value": "hardcover",
+       "type": "string"
+      },
+      {
+       "value": "paperback",
+       "type": "string"
+      }
+     ],
+     "default": "'paperback'",
+     "required": false,
+     "docs": "How the book is bound: a thin flexible cover flush with the pages, or rigid boards a little\nlarger than the page block, with a rounded spine"
+    },
+    {
+     "name": "format",
+     "attr": "format",
+     "type": "\"a4\" | \"a5\" | \"auto\" | \"b5\" | `${number}x${number}`",
+     "values": [
+      {
+       "value": "a4",
+       "type": "string"
+      },
+      {
+       "value": "a5",
+       "type": "string"
+      },
+      {
+       "value": "auto",
+       "type": "string"
+      },
+      {
+       "value": "b5",
+       "type": "string"
+      },
+      {
+       "type": "`${number}x${number}`"
+      }
+     ],
+     "default": "'auto'",
+     "required": false,
+     "docs": "The proportions of the book. `auto` takes them from the image; a named format (`a4`, `a5`,\n`b5`) is portrait; any other one is `WxH` in centimetres, the order of the two numbers being\nthe orientation (`17x24` portrait, `24x17` landscape, `21x21` square)"
+    },
+    {
+     "name": "loading",
+     "attr": "loading",
+     "type": "\"eager\" | \"lazy\" | undefined",
+     "values": [
+      {
+       "value": "eager",
+       "type": "string"
+      },
+      {
+       "value": "lazy",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'lazy'",
+     "required": false,
+     "docs": "Specifies whether a browser should load the cover immediately or defer it until it is near\nthe viewport"
+    },
+    {
+     "name": "name",
+     "attr": "name",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The title of the book, printed on the spine and on the cover drawn when there is no image"
+    },
+    {
+     "name": "pages",
+     "attr": "pages",
+     "type": "number",
+     "values": [
+      {
+       "type": "number"
+      }
+     ],
+     "default": "300",
+     "required": false,
+     "docs": "The number of pages, which sets how deep the book is, against the width of its format (17 cm\nfor `auto`). A page is as thick as `--mds-book-page-weight-min` at 1 page, going to\n`--mds-book-page-weight-max` at 1000 pages and more, in proportion: by default from 0.1 mm,\nthe bulky paper of a short book, to 0.05 mm, the thin paper of a volume, so 64 pages make\n6 mm, 300 pages 2.5 cm and 1000 pages 5 cm. A spine under 5 mm deep carries no text"
+    },
+    {
+     "name": "pose",
+     "attr": "pose",
+     "type": "\"fore-edge\" | \"front\" | \"lying\" | \"lying-turned\" | \"spine\"",
+     "values": [
+      {
+       "value": "fore-edge",
+       "type": "string"
+      },
+      {
+       "value": "front",
+       "type": "string"
+      },
+      {
+       "value": "lying",
+       "type": "string"
+      },
+      {
+       "value": "lying-turned",
+       "type": "string"
+      },
+      {
+       "value": "spine",
+       "type": "string"
+      }
+     ],
+     "default": "'spine'",
+     "required": false,
+     "docs": "How the book is shown: standing, turned to show its spine (`spine`) or its pages\n(`fore-edge`), or facing the reader (`front`); lying on its back, seen from above, its tail\ntoward the reader (`lying`) or spun on the surface (`lying-turned`). A drag turns it from\nthere, and it goes back when released"
+    },
+    {
+     "name": "publisher",
+     "attr": "publisher",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The publisher, printed at the foot of the spine and of the cover drawn when there is no image"
+    },
+    {
+     "name": "src",
+     "attr": "src",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies the path to the image of the front cover"
+    }
+   ],
+   "events": [],
+   "methods": [],
+   "slots": [],
+   "parts": [
+    {
+     "name": "cover",
+     "docs": "The native `<img>` that shows the front cover"
+    }
+   ],
+   "styles": [
+    {
+     "name": "--mds-book-color",
+     "annotation": "prop",
+     "docs": "The colour of the binding where the cover image cannot continue: the spine and the board edges without an image, and the cover drawn when there is no image."
+    },
+    {
+     "name": "--mds-book-page-weight-max",
+     "annotation": "prop",
+     "docs": "The thickness of a page, in millimetres (a number), on a book of 1000 pages and more: the thin paper of a volume."
+    },
+    {
+     "name": "--mds-book-page-weight-min",
+     "annotation": "prop",
+     "docs": "The thickness of a page, in millimetres (a number), on a book of 1 page; between 1 and 1000 pages it goes to --mds-book-page-weight-max in proportion."
+    },
+    {
+     "name": "--mds-book-paper-color",
+     "annotation": "prop",
+     "docs": "The colour of the page block."
+    },
+    {
+     "name": "--mds-book-spine-color",
+     "annotation": "prop",
+     "docs": "A solid colour for the spine and the board edges. Unset, they continue the edges of the cover image."
+    },
+    {
+     "name": "--mds-book-text-color",
+     "annotation": "prop",
+     "docs": "The colour of the text on the spine and on the cover drawn when there is no image."
+    }
+   ]
+  },
+  {
+   "tag": "mds-button",
+   "docs": "This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
+   "usage": {
+    "1. Description": "The `<mds-button>` web component is the primary interactive action control of the Magma Design System. It renders as a button, or as a link when `href` is set, handling form association, accessibility, loading state, and iconography natively.\n\n#### Semantic Behavior\n\n- **Button vs. link**: Providing `href` renders a real anchor inside the component and gives the host `role=\"link\"`. The browser follows the link, so a modifier or middle click opens it in a new tab and the context menu offers the link actions; `target=\"blank\"` opens a new tab on a plain click too. A `click` listener on the host cancels the navigation with `preventDefault()`, which is how a client-side router takes over. A click from the keyboard, a script or an assistive technology lands on the host and is followed the same way, unless cancelled.\n- **Form association**: Inside a `<form>` the component submits (`type=\"submit\"`, default) or resets (`type=\"reset\"`) it like a native button, with no extra wiring; use `type=\"button\"` to opt out. With `name` set, a submit sends `name=value`, so buttons that submit the same form tell the receiver which one was chosen. A custom element cannot be a submitter, so `event.submitter` is a hidden native button that stands in for the component: it carries the same `name` and `value`, but it is not the `mds-button` element.\n- **Active state**: Mirrors a visual pressed state through the `active` attribute, safe to drive from CSS attribute selectors.\n- **Disabled state**: Blocks pointer and keyboard activation and removes the host from the tab sequence. A disabled `<fieldset>` around the button disables it the same way, as it does a native button, without setting `disabled`.\n- **Await state**: Renders an inline spinner, blocks pointer and keyboard activation, and sets `aria-busy=\"true\"` for assistive tech. The button keeps the focus it had, and a click from a script or an assistive technology neither submits nor resets its form again. Remove the attribute when done - do not set `await=\"false\"`.\n- **Keyboard**: Enter activates the button as a click does, and so does Space, on release, as on a native button; a button with `href` is a link, which Enter follows and Space does not.\n- **Accessibility**: Sets `role=\"button\"` on the host, `role=\"link\"` when `href` is set, whatever the format of the icon; the `label` prop (or slotted text) is rendered as the button text, which names it. Without a label, an `aria-label` or a `title`, the component sets `title` from the last segment of the icon slug (`mi/baseline/delete` -> \"delete\"), which names the icon, not the action; an icon given as inline SVG or base64 has no slug, and leaves the button with no name at all: icon-only buttons need an explicit `aria-label` (or `title`), or an `mds-tooltip` with `relation=\"label\"`. A host with `aria-labelledby` gets no name from the slug, and loses the one it had when the attribute comes later, as it does from the tooltip.\n- **Sizing**: The `size` prop drives padding, font size, and minimum hit area. Do not override dimensions with inline `width` / `height`.\n- **Linking constraint**: `target` is effective only when `href` is set.\n\n#### Component-specific variants and tones\n\nThe shared `variant` / `tone` ladders are defined in [`agents/variants.md`](../../../../agents/variants.md). `<mds-button>` adds:\n\n- **`variant=\"google\"` / `variant=\"apple\"`**: brand-correct chrome for SSO entry points. Do not reuse them for non-SSO buttons.\n- **`tone=\"box\"`**: the `strong` fill with an embossed, raised shadow (`--shadow-box-solid-strong`) and a brighter hover: more marked than `strong`, not less.\n\n#### Other behavioral props\n\n- **`icon`** is an SVG filename slug from the Magma icon library; **`iconPosition`** places the glyph relative to the label (use `right` for forward-motion CTAs).\n- **`truncate`**: `word` (default) keeps the label on one line and cuts it with an ellipsis, `all` clamps it with `line-clamp` (one line in the button), `none` lets it wrap onto more lines.\n- **`animation`**: `yugop` progressively reveals characters; otherwise text renders immediately.\n- **The first letter** of the label is uppercased. For a name or an identifier that must stay as written (`rdsysadmin`), set `--mds-button-label-transform: none` on the button or on any ancestor: the property inherits, so it also reaches the buttons that other components, `mds-button-dropdown` among them, render in their shadow root.\n"
+   },
+   "props": [
+    {
+     "name": "active",
+     "attr": "active",
+     "type": "boolean",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies if the button is active or not"
+    },
+    {
+     "name": "animation",
+     "attr": "animation",
+     "type": "\"none\" | \"yugop\" | undefined",
+     "values": [
+      {
+       "value": "none",
+       "type": "string"
+      },
+      {
+       "value": "yugop",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'none'",
+     "required": false,
+     "docs": "Specifies if the text is animated when it is rendered"
+    },
+    {
+     "name": "autoFocus",
+     "attr": "auto-focus",
+     "type": "boolean",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies if the component is focused when is loaded on the viewport"
+    },
+    {
+     "name": "await",
+     "attr": "await",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies if the button is awaiting for a response"
+    },
+    {
+     "name": "disabled",
+     "attr": "disabled",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies if the component is disabled or not"
+    },
+    {
+     "name": "href",
+     "attr": "href",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Turns the button into a link to this URL: a real anchor in its shadow root, so the browser\ngives it what it gives every link (new tab on a modifier or middle click, the context menu,\ndrag). A client-side router takes the plain clicks over once registered with\n`NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without\none, a click listener on the host can still cancel the navigation with `preventDefault()`."
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The icon displayed in the button"
+    },
+    {
+     "name": "iconPosition",
+     "attr": "icon-position",
+     "type": "\"left\" | \"right\" | undefined",
+     "values": [
+      {
+       "value": "left",
+       "type": "string"
+      },
+      {
+       "value": "right",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'left'",
+     "required": false,
+     "docs": "Specifies the horizontal position of the icon displayed in the button"
+    },
+    {
+     "name": "label",
+     "attr": "label",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The label of the button"
+    },
+    {
+     "name": "name",
+     "attr": "name",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The name sent with `value` to the form the button submits, as a native submit button\ndoes: buttons that submit the same form tell the receiver which one was chosen"
+    },
+    {
+     "name": "size",
+     "attr": "size",
+     "type": "\"lg\" | \"md\" | \"sm\" | \"xl\"",
+     "values": [
+      {
+       "value": "lg",
+       "type": "string"
+      },
+      {
+       "value": "md",
+       "type": "string"
+      },
+      {
+       "value": "sm",
+       "type": "string"
+      },
+      {
+       "value": "xl",
+       "type": "string"
+      }
+     ],
+     "default": "'md'",
+     "required": false,
+     "docs": "Specifies the size for the button"
+    },
+    {
+     "name": "target",
+     "attr": "target",
+     "type": "\"blank\" | \"self\"",
+     "values": [
+      {
+       "value": "blank",
+       "type": "string"
+      },
+      {
+       "value": "self",
+       "type": "string"
+      }
+     ],
+     "default": "'self'",
+     "required": false,
+     "docs": "Specifies the target of the URL, if self or blank"
+    },
+    {
+     "name": "tone",
+     "attr": "tone",
+     "type": "\"box\" | \"outline\" | \"strong\" | \"text\" | \"weak\" | undefined",
+     "values": [
+      {
+       "value": "box",
+       "type": "string"
+      },
+      {
+       "value": "outline",
+       "type": "string"
+      },
+      {
+       "value": "strong",
+       "type": "string"
+      },
+      {
+       "value": "text",
+       "type": "string"
+      },
+      {
+       "value": "weak",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'strong'",
+     "required": false,
+     "docs": "Specifies the tone variant for the button"
+    },
+    {
+     "name": "truncate",
+     "attr": "truncate",
+     "type": "\"all\" | \"none\" | \"word\" | undefined",
+     "values": [
+      {
+       "value": "all",
+       "type": "string"
+      },
+      {
+       "value": "none",
+       "type": "string"
+      },
+      {
+       "value": "word",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'word'",
+     "required": false,
+     "docs": "Specifies if the text shoud be truncated or should behave as a normal text"
+    },
+    {
+     "name": "type",
+     "attr": "type",
+     "type": "\"a\" | \"button\" | \"reset\" | \"submit\" | undefined",
+     "values": [
+      {
+       "value": "a",
+       "type": "string"
+      },
+      {
+       "value": "button",
+       "type": "string"
+      },
+      {
+       "value": "reset",
+       "type": "string"
+      },
+      {
+       "value": "submit",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'submit'",
+     "required": false,
+     "docs": "The type of the button element"
+    },
+    {
+     "name": "value",
+     "attr": "value",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The value sent under `name` to the form the button submits"
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "type": "\"ai\" | \"apple\" | \"dark\" | \"error\" | \"google\" | \"info\" | \"light\" | \"primary\" | \"secondary\" | \"success\" | \"warning\" | undefined",
+     "values": [
+      {
+       "value": "ai",
+       "type": "string"
+      },
+      {
+       "value": "apple",
+       "type": "string"
+      },
+      {
+       "value": "dark",
+       "type": "string"
+      },
+      {
+       "value": "error",
+       "type": "string"
+      },
+      {
+       "value": "google",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "light",
+       "type": "string"
+      },
+      {
+       "value": "primary",
+       "type": "string"
+      },
+      {
+       "value": "secondary",
+       "type": "string"
+      },
+      {
+       "value": "success",
+       "type": "string"
+      },
+      {
+       "value": "warning",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'primary'",
+     "required": false,
+     "docs": "Specifies the color variant for the button"
+    }
+   ],
+   "events": [],
+   "methods": [],
+   "slots": [
+    {
+     "name": "",
+     "docs": "Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here."
+    },
+    {
+     "name": "notification",
+     "docs": "Add `HTML elements` or `components`, it is **recommended** to use `mds-notification` element."
+    }
+   ],
+   "parts": [
+    {
+     "name": "icon",
+     "docs": "The icon inside the component"
+    },
+    {
+     "name": "label",
+     "docs": "The text of the button: the `label`, or the default slot when `label` is not set"
+    }
+   ],
+   "styles": [
+    {
+     "name": "--mds-button-await-duration",
+     "annotation": "prop",
+     "docs": "Sets the duration of the rotation of the spinner await component"
+    },
+    {
+     "name": "--mds-button-background",
+     "annotation": "prop",
+     "docs": "Sets the background-color of the component"
+    },
+    {
+     "name": "--mds-button-border-color-rgb",
+     "annotation": "prop",
+     "docs": "Sets the color of the border of the component (based on box-shadow declaration)"
+    },
+    {
+     "name": "--mds-button-border-default-opacity",
+     "annotation": "prop",
+     "docs": "Sets the default opacity of the border color of the component (based on box-shadow declaration)"
+    },
+    {
+     "name": "--mds-button-border-high-contrast-hover-width",
+     "annotation": "prop",
+     "docs": "Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles."
+    },
+    {
+     "name": "--mds-button-border-high-contrast-width",
+     "annotation": "prop",
+     "docs": "Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles."
+    },
+    {
+     "name": "--mds-button-border-hover-opacity",
+     "annotation": "prop",
+     "docs": "Sets the opacity of the border color when the component is hovered (based on box-shadow declaration)"
+    },
+    {
+     "name": "--mds-button-border-opacity",
+     "annotation": "prop",
+     "docs": "Sets the border opacity of the component (based on box-shadow declaration)"
+    },
+    {
+     "name": "--mds-button-border-tone-outline-hover-width",
+     "annotation": "prop",
+     "docs": "Sets the width of the border when the component is hovered when the tone is set to `outline` (based on box-shadow declaration)"
+    },
+    {
+     "name": "--mds-button-border-tone-strong-hover-width",
+     "annotation": "prop",
+     "docs": "Sets the width of the border when the component is hovered when the tone is set to `strong` (based on box-shadow declaration)"
+    },
+    {
+     "name": "--mds-button-border-tone-weak-hover-width",
+     "annotation": "prop",
+     "docs": "Sets the width of the border when the component is hovered when the tone is set to `weak` (based on box-shadow declaration)"
+    },
+    {
+     "name": "--mds-button-border-width",
+     "annotation": "prop",
+     "docs": "Sets the border width of the component (based on box-shadow declaration)"
+    },
+    {
+     "name": "--mds-button-color",
+     "annotation": "prop",
+     "docs": "Sets the text color of the component"
+    },
+    {
+     "name": "--mds-button-gap",
+     "annotation": "prop",
+     "docs": "Sets the distance betwen element inside the components, use it instead of setting gap property directly."
+    },
+    {
+     "name": "--mds-button-label-transform",
+     "annotation": "prop",
+     "docs": "Sets the text-transform of the first letter of the label, `uppercase` by default; `none` shows the label as written. It inherits: set on `mds-button-dropdown` or any ancestor, it reaches the buttons inside other components too"
+    },
+    {
+     "name": "--mds-button-radius",
+     "annotation": "prop",
+     "docs": "Sets the border-radius of the component"
+    }
+   ]
+  },
+  {
+   "tag": "mds-chip",
+   "docs": "This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
+   "usage": {
+    "1. Description": "The `<mds-chip>` web component is the Magma Design System's compact element for representing a discrete piece of information, a filter, a selection, or a removable token. It renders a label with optional leading icon and an optional delete affordance, and can be made interactive (clickable or selectable) to act as a lightweight button-like control rather than a static tag.\n\n#### Semantic Behavior\n\n- **Static by default**: With no interaction props the chip is a passive, non-focusable label; it becomes a focusable, button-like control only when `clickable` is set.\n- **Selectable implies clickable**: Setting `selectable` automatically turns on `clickable`, so a selectable chip is always keyboard- and pointer-interactive.\n- **Selection toggle**: When `selectable`, activating the chip flips `selected`; an unselected chip carries no `selected` attribute (rather than `selected=\"false\"`).\n- **Keyboard activation**: When interactive, Enter and Space activate the chip just like a pointer click.\n- **Delete affordance**: When `deletable`, a trailing delete button is rendered with a localized title (el/en/es/it) and emits the delete event on activation.\n- **Emitted events**: `mdsChipClickLabel` fires on activation for non-selectable chips, `mdsChipSelect` fires (carrying the new `selected` value) for selectable chips, and `mdsChipDelete` fires from the delete button - all carrying the originating event and host element.\n- **Label is text, on one line**: Long labels do not wrap (`truncate=\"word\"` on the inner text).\n\n#### Properties & Visual Configurations\n\nThe shared `variant` / `tone` ladders are defined in [`agents/variants.md`](../../../../agents/variants.md); the chip defaults to `variant=\"primary\"` and `tone=\"strong\"`, and accepts only the minimal `'strong'` / `'weak'` tone set. `variant` and `tone` paint the leading icon badge and the border of a selected chip; the body of the chip stays neutral for every variant.\n\n#### Other behavioral props\n\n- **`clickable`** opts the chip into interactivity (focus, keyboard and click handling) without changing its state on activation - use it for chips that act as actions rather than toggles.\n- **`selectable`** makes the chip a toggle whose `selected` state flips on each activation; pick it for filter/choice chips where the visual selected state matters.\n- **`selected`** drives the selected visual treatment and can be set externally to pre-select a chip; an unselected chip carries no attribute.\n- **`deletable`** adds the trailing cancel button for removable tokens; reserve it for chips the user is meant to dismiss.\n- **`icon`** is an SVG filename slug from the Magma icon library, shown decoratively to the left of the label.\n"
+   },
+   "props": [
+    {
+     "name": "clickable",
+     "attr": "clickable",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Adds ARIA support to the element if has interaction"
+    },
+    {
+     "name": "deletable",
+     "attr": "deletable",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Shows the cross icon to perform cancel/delete action on element"
+    },
+    {
+     "name": "disabled",
+     "attr": "disabled",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "false",
+     "required": false,
+     "docs": "Sets the component disabled status: neither the label nor the delete button can be focused\nor activated"
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The icon displayed to the left of the component's label"
+    },
+    {
+     "name": "label",
+     "attr": "label",
+     "type": "string",
+     "values": [
+      {
+       "type": "string"
+      }
+     ],
+     "required": true,
+     "docs": "The label displayed to the right of the component's icon"
+    },
+    {
+     "name": "selectable",
+     "attr": "selectable",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "false",
+     "required": false,
+     "docs": "Sets if the component change is status to selected when is clicked"
+    },
+    {
+     "name": "selected",
+     "attr": "selected",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Sets the component selected"
+    },
+    {
+     "name": "tone",
+     "attr": "tone",
+     "type": "\"strong\" | \"weak\" | undefined",
+     "values": [
+      {
+       "value": "strong",
+       "type": "string"
+      },
+      {
+       "value": "weak",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'strong'",
+     "required": false,
+     "docs": "Sets the color variant tone of the component"
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "type": "\"ai\" | \"amaranth\" | \"aqua\" | \"blue\" | \"dark\" | \"error\" | \"green\" | \"info\" | \"lime\" | \"orange\" | \"orchid\" | \"primary\" | \"purple\" | \"red\" | \"secondary\" | \"sky\" | \"success\" | \"violet\" | \"warning\" | \"yellow\" | undefined",
+     "values": [
+      {
+       "value": "ai",
+       "type": "string"
+      },
+      {
+       "value": "amaranth",
+       "type": "string"
+      },
+      {
+       "value": "aqua",
+       "type": "string"
+      },
+      {
+       "value": "blue",
+       "type": "string"
+      },
+      {
+       "value": "dark",
+       "type": "string"
+      },
+      {
+       "value": "error",
+       "type": "string"
+      },
+      {
+       "value": "green",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "lime",
+       "type": "string"
+      },
+      {
+       "value": "orange",
+       "type": "string"
+      },
+      {
+       "value": "orchid",
+       "type": "string"
+      },
+      {
+       "value": "primary",
+       "type": "string"
+      },
+      {
+       "value": "purple",
+       "type": "string"
+      },
+      {
+       "value": "red",
+       "type": "string"
+      },
+      {
+       "value": "secondary",
+       "type": "string"
+      },
+      {
+       "value": "sky",
+       "type": "string"
+      },
+      {
+       "value": "success",
+       "type": "string"
+      },
+      {
+       "value": "violet",
+       "type": "string"
+      },
+      {
+       "value": "warning",
+       "type": "string"
+      },
+      {
+       "value": "yellow",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'primary'",
+     "required": false,
+     "docs": "Sets the color variant of the component"
+    }
+   ],
+   "events": [
+    {
+     "event": "mdsChipClickLabel",
+     "detail": "MdsChipEvent",
+     "docs": "Emits when the component's label is clicked"
+    },
+    {
+     "event": "mdsChipDelete",
+     "detail": "MdsChipEvent",
+     "docs": "Emits when the component's delete button is clicked"
+    },
+    {
+     "event": "mdsChipSelect",
+     "detail": "MdsChipEvent",
+     "docs": "Emits when the component's label is clicked and when `selectable` attribute is set to `true`"
+    }
+   ],
+   "methods": [],
+   "slots": [],
+   "parts": [],
+   "styles": [
+    {
+     "name": "--mds-chip-background",
+     "annotation": "prop",
+     "docs": "Sets the `background-color` of the component"
+    },
+    {
+     "name": "--mds-chip-background-selected",
+     "annotation": "prop",
+     "docs": "Sets the `background-color` of the component when it's selected"
+    },
+    {
+     "name": "--mds-chip-border",
+     "annotation": "prop",
+     "docs": "Sets the `border-color` of the component"
+    },
+    {
+     "name": "--mds-chip-border-selected",
+     "annotation": "prop",
+     "docs": "Sets the `border-color` of the component when it's selected"
+    },
+    {
+     "name": "--mds-chip-color",
+     "annotation": "prop",
+     "docs": "Sets the `color` of the component"
+    },
+    {
+     "name": "--mds-chip-color-selected",
+     "annotation": "prop",
+     "docs": "Sets the `color` of the component when it's selected"
+    },
+    {
+     "name": "--mds-chip-icon-background",
+     "annotation": "prop",
+     "docs": "Sets the `background-color` of the icon"
+    },
+    {
+     "name": "--mds-chip-icon-background-selected",
+     "annotation": "prop",
+     "docs": "Sets the `background-color` of the icon when the component is selected"
+    },
+    {
+     "name": "--mds-chip-icon-color",
+     "annotation": "prop",
+     "docs": "Sets the `fill` color of the icon of the component"
+    },
+    {
+     "name": "--mds-chip-icon-color-selected",
+     "annotation": "prop",
+     "docs": "Sets the `fill` color of the icon of the component when it's selected"
+    },
+    {
+     "name": "--mds-chip-opacity-disabled",
+     "annotation": "prop",
+     "docs": "Sets the `opacity` of the component when it's disabled"
+    },
+    {
+     "name": "--mds-chip-shadow",
+     "annotation": "prop",
+     "docs": "Sets the `box-shadow` of the component"
+    },
+    {
+     "name": "--mds-chip-shadow-selected",
+     "annotation": "prop",
+     "docs": "Sets the `box-shadow` of the component when it's selected"
+    }
+   ]
+  },
+  {
+   "tag": "mds-img",
+   "docs": "This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
+   "usage": {
+    "1. Description": "The `<mds-img>` web component is the responsive image primitive of the Magma Design System. It wraps the native `<img>` element, adding accessible defaults, a built-in error/fallback state, and data-consumption-aware source selection driven by the user's bandwidth preference.\n\n#### Semantic Behavior\n\n- **Automatic alt fallback**: When `alt` is omitted, it is derived from the trailing filename segment of `src`. An empty `alt` (`alt=\"\"`) marks the image as decorative: the host takes `role=\"presentation\"` and no name, and assistive technologies skip it.\n- **Error state**: A failed load swaps the picture for a broken-image icon plus the `alt` text, emitting `mdsImgLoadError`; changing `src` clears the error and retries.\n- **Load events**: `mdsImgLoadSuccess` and `mdsImgLoadError` both carry the underlying `HTMLImageElement` in their detail, letting consumers read natural dimensions or react to failures.\n- **Consumption-aware loading**: When `srcsetConsumption` is set, the component reads the consumption preference the page applies, the one `mds-pref-consumption` publishes, and follows a change; on a page without that controller it reads the stored choice (the `mdsPrefConsumption` key). It picks the matching source; under the `low` preference the image is deferred behind a \"click to load\" placeholder until the user opts in.\n- **Localized placeholder**: The deferred-load placeholder label is resolved through the shared locale system (el/en/es/it).\n\n#### Properties & Visual Configurations\n\nMost props are pass-throughs to the native image attributes of the same name (`src`, `srcset`, `sizes`, `width`, `height`, `loading`, `crossorigin`, `referrerpolicy`) and behave as in HTML; pick values as you would for a plain `<img>`. `crossorigin` and `referrerpolicy` have no default: unset, the image is fetched without CORS and with the referrer policy of the page. `loading` defaults to `'lazy'`, so opt into `'eager'` only for above-the-fold imagery.\n\n#### Other behavioral props\n\n- **`srcsetConsumption`** is a comma-separated map of sources tagged `low` / `medium` / `high` (e.g. `\"img-bw.jpg low, img.jpg medium, img@2x.jpg high\"`). Unlike native `srcset`, the bucket is chosen by the stored consumption preference rather than viewport, letting low-bandwidth users save data by deferring or downgrading the image.\n- **`alt`** supply meaningful text for content images, since it doubles as both the accessible name and the visible label in the error and deferred-load states.\n"
+   },
+   "props": [
+    {
+     "name": "alt",
+     "attr": "alt",
+     "type": "string",
+     "values": [
+      {
+       "type": "string"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left\nout by assistive technologies; without `alt` the image is named after its file"
+    },
+    {
+     "name": "crossorigin",
+     "attr": "crossorigin",
+     "type": "\"anonymous\" | \"use-credentials\" | undefined",
+     "values": [
+      {
+       "value": "anonymous",
+       "type": "string"
+      },
+      {
+       "value": "use-credentials",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Fetches the image with CORS, as the `crossorigin` attribute of `<img>`: a third-party image\ncan then be used with canvas, if its site allows it. Unset, the image is fetched without CORS"
+    },
+    {
+     "name": "height",
+     "attr": "height",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The height attribute specifies the height of an image, in pixels."
+    },
+    {
+     "name": "loading",
+     "attr": "loading",
+     "type": "\"eager\" | \"lazy\" | undefined",
+     "values": [
+      {
+       "value": "eager",
+       "type": "string"
+      },
+      {
+       "value": "lazy",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'lazy'",
+     "required": false,
+     "docs": "Specifies whether a browser should load an image immediately\nor to defer loading of images until some conditions are met."
+    },
+    {
+     "name": "referrerpolicy",
+     "attr": "referrerpolicy",
+     "type": "\"no-referrer\" | \"no-referrer-when-downgrade\" | \"origin\" | \"origin-when-cross-origin\" | \"unsafe-url\" | undefined",
+     "values": [
+      {
+       "value": "no-referrer",
+       "type": "string"
+      },
+      {
+       "value": "no-referrer-when-downgrade",
+       "type": "string"
+      },
+      {
+       "value": "origin",
+       "type": "string"
+      },
+      {
+       "value": "origin-when-cross-origin",
+       "type": "string"
+      },
+      {
+       "value": "unsafe-url",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies which referrer information to use when fetching an image, as the `referrerpolicy`\nattribute of `<img>`. Unset, the policy of the page applies"
+    },
+    {
+     "name": "sizes",
+     "attr": "sizes",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "One or more strings separated by commas, indicating a set of source sizes.\nhttps://medium.com/@MRWwebDesign/responsive-images-the-sizes-attribute-and-unexpected-image-sizes-882a2eadb6db"
+    },
+    {
+     "name": "src",
+     "attr": "src",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies the path to the image"
+    },
+    {
+     "name": "srcset",
+     "attr": "srcset",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies a list of image files to use in different situations.\nDefines multiple sizes of the same image, allowing the browser\nto select the appropriate image source."
+    },
+    {
+     "name": "srcsetConsumption",
+     "attr": "srcset-consumption",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies a list of image files to use in different situations: comma-separated, each file\nfollowed by the consumption level it is for (`low`, `medium`, `high`), so the component picks\nthe image source that matches the consumption configuration."
+    },
+    {
+     "name": "width",
+     "attr": "width",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The width attribute specifies the width of an image, in pixels."
+    }
+   ],
+   "events": [
+    {
+     "event": "mdsImgLoadError",
+     "detail": "MdsImgEventDetail",
+     "docs": "Emits when the image is not loaded"
+    },
+    {
+     "event": "mdsImgLoadSuccess",
+     "detail": "MdsImgEventDetail",
+     "docs": "Emits when the image is successfully loaded"
+    }
+   ],
+   "methods": [],
+   "slots": [],
+   "parts": [
+    {
+     "name": "media",
+     "docs": "The native `<img>` that shows the picture"
+    }
+   ],
+   "styles": [
+    {
+     "name": "--mds-img-background",
+     "annotation": "prop",
+     "docs": "The background color of the image container."
+    },
+    {
+     "name": "--mds-img-color",
+     "annotation": "prop",
+     "docs": "The foreground/text color used inside the image component."
+    },
+    {
+     "name": "--mds-img-error-background",
+     "annotation": "prop",
+     "docs": "The background color shown when the image fails to load."
+    },
+    {
+     "name": "--mds-img-error-color",
+     "annotation": "prop",
+     "docs": "The text or foreground color shown in the error state."
+    },
+    {
+     "name": "--mds-img-error-icon-color",
+     "annotation": "prop",
+     "docs": "The icon color used in the error state."
+    },
+    {
+     "name": "--mds-img-icon-color",
+     "annotation": "prop",
+     "docs": "The color applied to icons displayed within the image element."
+    }
+   ]
+  },
+  {
+   "tag": "mds-input",
+   "docs": "This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
+   "usage": {
+    "1. Description": "The `<mds-input>` web component is the primary single- and multi-line text entry control of the Magma Design System. It wraps a native `<input>` (or `<textarea>` when `type=\"textarea\"`) and layers on form association, validation, inline tips, iconography, password masking, numeric steppers, datalist suggestions and speech-to-text dictation.\n\n#### Semantic Behavior\n\n- **Form association**: The component reports its value to the surrounding `<form>`, so it submits natively. On `disabled` the reported value is cleared. A form reset brings back the value the field had at load, both shown and submitted, and drops the `'success'` or `'error'` look of a past blur, like a native input.\n- **Disabled fieldset**: A disabled `<fieldset>` around the component disables it as `disabled` does, like a native control: it cannot be changed and its value is left out of the form, until the fieldset is enabled.\n- **Form validity**: The validators below also decide the validity reported to the form, on every change of the value or of the rules: like a native control, an invalid field matches `:invalid` and stops the submit, the browser shows a message in the page language next to the field and focuses it, and the field switches to `'error'` as on blur. Disabled and read-only fields are left out, and `novalidate` on the `<form>` turns the check off. `type=\"email\"` and `type=\"url\"` check the format of the value as a native input does.\n- **Validation on blur**: Validation runs when the field loses focus (and re-runs on input once invalid). A `required` field waits for that first blur too: until then, typing only updates its required tip. It drives the `variant` automatically to `'success'` or `'error'`, emits `mdsInputValidation` with the boolean result, and reverts to `'primary'` when an optional field is emptied.\n- **Type-aware validators**: The active validator set is derived from `type` - `email` and `url` install the format validators of the native types, `cf` the codice fiscale format and length validators, `isbn` a checksum validator, `piva` the partita IVA one (11 digits, the last one the check digit) and `cc` the card number one (13 to 19 digits, in groups split by spaces or dashes, that pass the Luhn check); no type applies an input mask, while `required`, `min`/`max` (any number, `0` included), `minlength`/`maxlength` and `pattern` add the corresponding constraint validators. As on a native input, `pattern` has to match the whole value, an expression that does not compile sets no rule, and `number`, `date`, `time` and `textarea` ignore it. The set is rebuilt whenever one of these props changes, also after load, as with the React wrappers under SSR: a pristine field only updates its required tip, a field already validated on blur is validated again. Custom validators can be attached at runtime through the `addValidator`/`removeValidator`/`hasValidator`/`getErrors` methods.\n- **Localized messages**: The messages of the built-in validators, the ones `getErrors()` returns and `mds-input-field` shows, are in the language of the page when the value is validated (`el`, `en`, `es`, `it`, English for any other).\n- **Error keys**: `getErrors()` reports each failed rule under its own key: `required`, `max`, `min`, `maxlength`, `minlength`, `pattern`, `email`, `url`, `piva`, `cc`, `isbn-error`, `cf-regex` and `cf-length`, plus the keys the custom validators return. Up to 2.5.0, `maxlength` and `minlength` were both reported as `minLenght`.\n- **Disabled / read-only tips**: `disabled` and `readonly` surface a persistent top tip describing the state; read-only fields also auto-select their text on focus.\n- **Character counter**: When `maxlength` is set a bottom counter tip shows `current / max` and shifts through fullness variants as the value approaches the limit. A `maxlength` of `0` or less is treated as unset.\n- **Password masking**: With `type=\"password\"` a toggle button reveals/hides the value; it is disabled with the field.\n- **Number steppers**: With `type=\"number\"` increment/decrement buttons are rendered; their placement follows `controlsLayout` and their glyphs follow `controlsIcon`. They are disabled on a disabled or read-only field, like the spin buttons of a native one.\n- **Speech-to-text**: When `mic` is set a dictation button transcribes speech into the value, replacing what was there, and emits `mdsInputSpeechEnd` when the user stops the dictation; when the Web Speech API is unavailable the button switches to an error state and the value is left as it is. The dictation button is disabled on a disabled or read-only field, which the user cannot change, and a dictation in progress stops, emitting `mdsInputSpeechEnd`, when the field becomes so.\n- **Emitted events**: `mdsInputChange` carries the new value, `mdsInputKeydown` fires on every key pressed in the field with the native `KeyboardEvent` as detail (before the value changes: read the value from `mdsInputChange`), and `mdsInputFocus`/`mdsInputBlur` fire on focus transitions.\n\n#### Properties & Visual Configurations\n\nThe shared `variant` ladder (color role) is defined in [`agents/variants.md`](../../../../agents/variants.md); `<mds-input>` consumes it for both intent styling and validation feedback, but does not expose a `tone` prop. It accepts `primary` (default), `ai`, `info`, `success`, `warning` and `error`.\n\n- **`type`** selects both the rendered control and the validation profile: it covers the native HTML types plus format types (`'cf'`, `'piva'`, `'isbn'`, `'cc'`) and switches the host to a multi-line `<textarea>` for `'textarea'`.\n- **`variant=\"ai\"`** auto-assigns the AI chatbot icon when no `icon` is otherwise provided, signposting AI-assisted fields.\n- **`size`** sets the height of the field, the same as [`<mds-button>`](../mds-button/AGENTS.md): `sm` 28px, `md` 36px, `lg` 48px (default). Match it to the buttons next to the field, or go smaller in dense layouts (filter bars, table toolbars); the text style stays the same, the padding and the inner icon, stepper buttons and password and microphone toggles scale with it. A `textarea` keeps its own height (`--mds-input-textarea-min-height`).\n\n#### Other behavioral props\n\n- **`icon`** is an SVG filename slug from the Magma icon library shown at the leading (left) edge of the field; it is suppressed while `await` is active, since the spinner takes its place.\n- **`controlsLayout`** chooses between stacked (`'vertical'`) and split (`'horizontal'`) stepper buttons, and **`controlsIcon`** picks arrow vs. plus/minus glyphs - both apply only to `type=\"number\"`.\n- **`datalist`** supplies suggestion options for `type=\"search\"` style autocompletion.\n- **`tip`** renders inline helper text below the field, and **`typography`** selects the field's text scale.\n"
+   },
+   "props": [
+    {
+     "name": "accessibleName",
+     "attr": "aria-label",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The accessible name of the native control: the label a screen reader announces. An\n`mds-input-field` around the component passes its own label down here, so the attribute\nis only written by hand when the input stands on its own. The placeholder is deliberately\nnot a fallback: it disappears as soon as the field is filled."
+    },
+    {
+     "name": "autocomplete",
+     "attr": "autocomplete",
+     "type": "\"additional-name\" | \"address\" | \"address-level1\" | \"address-level2\" | \"address-level3\" | \"address-level4\" | \"address-line1\" | \"address-line2\" | \"address-line3\" | \"bday\" | \"bday-day\" | \"bday-month\" | \"bday-year\" | \"cc-additional-name\" | \"cc-csc\" | \"cc-exp\" | \"cc-exp-month\" | \"cc-exp-year\" | \"cc-family-name\" | \"cc-given-name\" | \"cc-name\" | \"cc-number\" | \"cc-type\" | \"country\" | \"country-name\" | \"current-password\" | \"email\" | \"family-name\" | \"given-name\" | \"honorific-prefix\" | \"honorific-suffix\" | \"impp\" | \"language\" | \"name\" | \"new-password\" | \"nickname\" | \"off\" | \"on\" | \"one-time-code\" | \"organization\" | \"organization-title\" | \"photo\" | \"postal-code\" | \"sex\" | \"street-address\" | \"tel\" | \"tel-area-code\" | \"tel-country-code\" | \"tel-extension\" | \"tel-local\" | \"tel-national\" | \"transaction-amount\" | \"transaction-currency\" | \"url\" | \"username\" | undefined",
+     "values": [
+      {
+       "value": "additional-name",
+       "type": "string"
+      },
+      {
+       "value": "address",
+       "type": "string"
+      },
+      {
+       "value": "address-level1",
+       "type": "string"
+      },
+      {
+       "value": "address-level2",
+       "type": "string"
+      },
+      {
+       "value": "address-level3",
+       "type": "string"
+      },
+      {
+       "value": "address-level4",
+       "type": "string"
+      },
+      {
+       "value": "address-line1",
+       "type": "string"
+      },
+      {
+       "value": "address-line2",
+       "type": "string"
+      },
+      {
+       "value": "address-line3",
+       "type": "string"
+      },
+      {
+       "value": "bday",
+       "type": "string"
+      },
+      {
+       "value": "bday-day",
+       "type": "string"
+      },
+      {
+       "value": "bday-month",
+       "type": "string"
+      },
+      {
+       "value": "bday-year",
+       "type": "string"
+      },
+      {
+       "value": "cc-additional-name",
+       "type": "string"
+      },
+      {
+       "value": "cc-csc",
+       "type": "string"
+      },
+      {
+       "value": "cc-exp",
+       "type": "string"
+      },
+      {
+       "value": "cc-exp-month",
+       "type": "string"
+      },
+      {
+       "value": "cc-exp-year",
+       "type": "string"
+      },
+      {
+       "value": "cc-family-name",
+       "type": "string"
+      },
+      {
+       "value": "cc-given-name",
+       "type": "string"
+      },
+      {
+       "value": "cc-name",
+       "type": "string"
+      },
+      {
+       "value": "cc-number",
+       "type": "string"
+      },
+      {
+       "value": "cc-type",
+       "type": "string"
+      },
+      {
+       "value": "country",
+       "type": "string"
+      },
+      {
+       "value": "country-name",
+       "type": "string"
+      },
+      {
+       "value": "current-password",
+       "type": "string"
+      },
+      {
+       "value": "email",
+       "type": "string"
+      },
+      {
+       "value": "family-name",
+       "type": "string"
+      },
+      {
+       "value": "given-name",
+       "type": "string"
+      },
+      {
+       "value": "honorific-prefix",
+       "type": "string"
+      },
+      {
+       "value": "honorific-suffix",
+       "type": "string"
+      },
+      {
+       "value": "impp",
+       "type": "string"
+      },
+      {
+       "value": "language",
+       "type": "string"
+      },
+      {
+       "value": "name",
+       "type": "string"
+      },
+      {
+       "value": "new-password",
+       "type": "string"
+      },
+      {
+       "value": "nickname",
+       "type": "string"
+      },
+      {
+       "value": "off",
+       "type": "string"
+      },
+      {
+       "value": "on",
+       "type": "string"
+      },
+      {
+       "value": "one-time-code",
+       "type": "string"
+      },
+      {
+       "value": "organization",
+       "type": "string"
+      },
+      {
+       "value": "organization-title",
+       "type": "string"
+      },
+      {
+       "value": "photo",
+       "type": "string"
+      },
+      {
+       "value": "postal-code",
+       "type": "string"
+      },
+      {
+       "value": "sex",
+       "type": "string"
+      },
+      {
+       "value": "street-address",
+       "type": "string"
+      },
+      {
+       "value": "tel",
+       "type": "string"
+      },
+      {
+       "value": "tel-area-code",
+       "type": "string"
+      },
+      {
+       "value": "tel-country-code",
+       "type": "string"
+      },
+      {
+       "value": "tel-extension",
+       "type": "string"
+      },
+      {
+       "value": "tel-local",
+       "type": "string"
+      },
+      {
+       "value": "tel-national",
+       "type": "string"
+      },
+      {
+       "value": "transaction-amount",
+       "type": "string"
+      },
+      {
+       "value": "transaction-currency",
+       "type": "string"
+      },
+      {
+       "value": "url",
+       "type": "string"
+      },
+      {
+       "value": "username",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'off'",
+     "required": false,
+     "docs": "Specifies whether the element should have autocomplete enabled"
+    },
+    {
+     "name": "autofocus",
+     "attr": "autofocus",
+     "type": "boolean",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ],
+     "default": "false",
+     "required": false,
+     "docs": "Specifies that the element should automatically get focus when the page loads"
+    },
+    {
+     "name": "await",
+     "attr": "await",
+     "type": "boolean",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ],
+     "default": "false",
+     "required": false,
+     "docs": "Specifies if the spinner icon is shown, replacing the icon if present"
+    },
+    {
+     "name": "controlsIcon",
+     "attr": "controls-icon",
+     "type": "\"arithmetic\" | \"arrow\" | undefined",
+     "values": [
+      {
+       "value": "arithmetic",
+       "type": "string"
+      },
+      {
+       "value": "arrow",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'arrow'",
+     "required": false,
+     "docs": "Specifies the icon type of the counter button when the input type is set to `number`"
+    },
+    {
+     "name": "controlsLayout",
+     "attr": "controls-layout",
+     "type": "\"horizontal\" | \"vertical\" | undefined",
+     "values": [
+      {
+       "value": "horizontal",
+       "type": "string"
+      },
+      {
+       "value": "vertical",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'vertical'",
+     "required": false,
+     "docs": "Specifies the layout of the counter button when the input type is set to `number`"
+    },
+    {
+     "name": "datalist",
+     "type": "string[] | undefined",
+     "values": [
+      {
+       "type": "string[]"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "A list of search terms to be searched from the input field,\nit should be used with type=\"search\" input."
+    },
+    {
+     "name": "disabled",
+     "attr": "disabled",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "false",
+     "required": false,
+     "docs": "If true, the element is displayed as disabled"
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "An icon displayed at the left of the input, inside the field; the spinner of `await` takes\nits place"
+    },
+    {
+     "name": "max",
+     "attr": "max",
+     "type": "number | string | undefined",
+     "values": [
+      {
+       "type": "number"
+      },
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies the maximum value, with `type=\"number\"` or `type=\"date\"`: a number, or a date in ISO\nformat (YYYY-MM-DD) such as `2046-12-04`"
+    },
+    {
+     "name": "maxlength",
+     "attr": "maxlength",
+     "type": "number | undefined",
+     "values": [
+      {
+       "type": "number"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies the maximum number of characters allowed in an element.\nUse it with input type=\"text\".\nIf maxlength is set to 0 or a negative number it will be considered as undefined."
+    },
+    {
+     "name": "mic",
+     "attr": "mic",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Toggles text recognition"
+    },
+    {
+     "name": "min",
+     "attr": "min",
+     "type": "number | string | undefined",
+     "values": [
+      {
+       "type": "number"
+      },
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies the minimum value, with `type=\"number\"` or `type=\"date\"`: a number, or a date in ISO\nformat (YYYY-MM-DD) such as `1988-04-15`"
+    },
+    {
+     "name": "minlength",
+     "attr": "minlength",
+     "type": "number | undefined",
+     "values": [
+      {
+       "type": "number"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies the minimum number of characters allowed in an element\nuse it with input type=\"number\""
+    },
+    {
+     "name": "name",
+     "attr": "name",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Is needed to reference the form data after the form is submitted"
+    },
+    {
+     "name": "pattern",
+     "attr": "pattern",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies a regular expression the whole value has to match, as the pattern attribute of a\nnative input: a value that does not match stops the submit of the form"
+    },
+    {
+     "name": "placeholder",
+     "attr": "placeholder",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies a short hint that describes the expected value of the element"
+    },
+    {
+     "name": "readonly",
+     "attr": "readonly",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "false",
+     "required": false,
+     "docs": "Specifies that the element is read-only"
+    },
+    {
+     "name": "required",
+     "attr": "required",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "false",
+     "required": false,
+     "docs": "Specifies that the element must be filled out before submitting the form"
+    },
+    {
+     "name": "size",
+     "attr": "size",
+     "type": "\"lg\" | \"md\" | \"sm\" | undefined",
+     "values": [
+      {
+       "value": "lg",
+       "type": "string"
+      },
+      {
+       "value": "md",
+       "type": "string"
+      },
+      {
+       "value": "sm",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'lg'",
+     "required": false,
+     "docs": "Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px.\nA textarea keeps its own height (`--mds-input-textarea-min-height`)"
+    },
+    {
+     "name": "step",
+     "attr": "step",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies the interval between legal numbers in an input field"
+    },
+    {
+     "name": "tip",
+     "attr": "tip",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Sets the word(s) of the tip of the input field"
+    },
+    {
+     "name": "type",
+     "attr": "type",
+     "type": "\"cc\" | \"cf\" | \"date\" | \"email\" | \"isbn\" | \"number\" | \"password\" | \"piva\" | \"search\" | \"tel\" | \"text\" | \"textarea\" | \"time\" | \"url\" | undefined",
+     "values": [
+      {
+       "value": "cc",
+       "type": "string"
+      },
+      {
+       "value": "cf",
+       "type": "string"
+      },
+      {
+       "value": "date",
+       "type": "string"
+      },
+      {
+       "value": "email",
+       "type": "string"
+      },
+      {
+       "value": "isbn",
+       "type": "string"
+      },
+      {
+       "value": "number",
+       "type": "string"
+      },
+      {
+       "value": "password",
+       "type": "string"
+      },
+      {
+       "value": "piva",
+       "type": "string"
+      },
+      {
+       "value": "search",
+       "type": "string"
+      },
+      {
+       "value": "tel",
+       "type": "string"
+      },
+      {
+       "value": "text",
+       "type": "string"
+      },
+      {
+       "value": "textarea",
+       "type": "string"
+      },
+      {
+       "value": "time",
+       "type": "string"
+      },
+      {
+       "value": "url",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'text'",
+     "required": false,
+     "docs": "Specifies the type of input element"
+    },
+    {
+     "name": "typography",
+     "attr": "typography",
+     "type": "\"detail\" | \"snippet\"",
+     "values": [
+      {
+       "value": "detail",
+       "type": "string"
+      },
+      {
+       "value": "snippet",
+       "type": "string"
+      }
+     ],
+     "default": "'detail'",
+     "required": false,
+     "docs": "Specifies the typography of input element"
+    },
+    {
+     "name": "value",
+     "attr": "value",
+     "type": "string",
+     "values": [
+      {
+       "type": "string"
+      }
+     ],
+     "default": "''",
+     "required": false,
+     "docs": "Specifies the value of the input element"
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "type": "\"ai\" | \"error\" | \"info\" | \"primary\" | \"success\" | \"warning\" | undefined",
+     "values": [
+      {
+       "value": "ai",
+       "type": "string"
+      },
+      {
+       "value": "error",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "primary",
+       "type": "string"
+      },
+      {
+       "value": "success",
+       "type": "string"
+      },
+      {
+       "value": "warning",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'primary'",
+     "required": false,
+     "docs": "Sets the variant of the input field"
+    }
+   ],
+   "events": [
+    {
+     "event": "mdsInputBlur",
+     "detail": "void",
+     "docs": "Emits a void event when input element is blurred"
+    },
+    {
+     "event": "mdsInputChange",
+     "detail": "MdsInputEventDetail",
+     "docs": "Emits an InputChangeEventDetail when the value of the input element changes"
+    },
+    {
+     "event": "mdsInputFocus",
+     "detail": "void",
+     "docs": "Emits a void event when input element is focused"
+    },
+    {
+     "event": "mdsInputKeydown",
+     "detail": "KeyboardEvent",
+     "docs": "Emits a KeyboardEvent when a keyboard key is pressed on the focused input element"
+    },
+    {
+     "event": "mdsInputSpeechEnd",
+     "detail": "void",
+     "docs": "Emits a void event when input speech recognition ends"
+    },
+    {
+     "event": "mdsInputValidation",
+     "detail": "boolean",
+     "docs": "Emits a boolean event when a input execute validation"
+    }
+   ],
+   "methods": [
+    {
+     "name": "addValidator",
+     "signature": "addValidator(validator: MdsValidatorFn) => Promise<void>",
+     "docs": "Adds a validator to the input."
+    },
+    {
+     "name": "getErrors",
+     "signature": "getErrors() => Promise<MdsValidationErrors | null>",
+     "docs": "Returns the current validation errors, or `null` if the value is valid."
+    },
+    {
+     "name": "getInputElement",
+     "signature": "getInputElement() => Promise<HTMLInputElement | HTMLTextAreaElement>",
+     "docs": "Returns the native `<input>` element used under the hood."
+    },
+    {
+     "name": "hasValidator",
+     "signature": "hasValidator(validator?: MdsValidatorFn) => Promise<boolean>",
+     "docs": "Returns if validator is presen"
+    },
+    {
+     "name": "removeValidator",
+     "signature": "removeValidator(validator: MdsValidatorFn) => Promise<void>",
+     "docs": "Removes a previously added validator from the input."
+    },
+    {
+     "name": "setFocus",
+     "signature": "setFocus() => Promise<void>",
+     "docs": "Sets focus on the specified `my-input`.\nUse this method instead\nof the global `input.focus()`."
+    }
+   ],
+   "slots": [],
+   "parts": [
+    {
+     "name": "counter-button-decrease",
+     "docs": "Selects the button used to decrease the input value"
+    },
+    {
+     "name": "counter-button-increase",
+     "docs": "Selects the button used to increase the input value"
+    },
+    {
+     "name": "field",
+     "docs": "Selects the native input field used by the component"
+    },
+    {
+     "name": "mic-toggle-button",
+     "docs": "Selects the button that starts and stops the speech to text"
+    },
+    {
+     "name": "password-mask-item",
+     "docs": "Selects the item used to mask the password"
+    },
+    {
+     "name": "password-mask-items",
+     "docs": "Selects the items wrapper used to mask the password"
+    },
+    {
+     "name": "password-toggle-button",
+     "docs": "Selects the button used to show or hide password"
+    },
+    {
+     "name": "tip-bottom",
+     "docs": "Selects the verbose status of input on bottom of element"
+    },
+    {
+     "name": "tip-count",
+     "docs": "Selects the mds-input-tip-item shown when maxlength attribute is set, can be used to hide it if needed"
+    },
+    {
+     "name": "tip-top",
+     "docs": "Selects the verbose status of input on top of element"
+    }
+   ],
+   "styles": [
+    {
+     "name": "--mds-input-background",
+     "annotation": "prop",
+     "docs": "The background color of the input field."
+    },
+    {
+     "name": "--mds-input-icon-color",
+     "annotation": "prop",
+     "docs": "The color of the icons inside the input."
+    },
+    {
+     "name": "--mds-input-placeholder-default-color",
+     "annotation": "prop",
+     "docs": "The placeholder color in the default state."
+    },
+    {
+     "name": "--mds-input-placeholder-focus-color",
+     "annotation": "prop",
+     "docs": "The placeholder color when the input is focused."
+    },
+    {
+     "name": "--mds-input-placeholder-hover-color",
+     "annotation": "prop",
+     "docs": "The placeholder color when the input is hovered."
+    },
+    {
+     "name": "--mds-input-ring",
+     "annotation": "prop",
+     "docs": "The outline ring applied to the input on interactive states."
+    },
+    {
+     "name": "--mds-input-shadow",
+     "annotation": "prop",
+     "docs": "The box-shadow applied to the input component."
+    },
+    {
+     "name": "--mds-input-textarea-field-sizing",
+     "annotation": "prop",
+     "docs": "The field-sizing behavior of the textarea."
+    },
+    {
+     "name": "--mds-input-textarea-max-height",
+     "annotation": "prop",
+     "docs": "The max-height applied to the textarea."
+    },
+    {
+     "name": "--mds-input-textarea-min-height",
+     "annotation": "prop",
+     "docs": "The min-height applied to the textarea."
+    },
+    {
+     "name": "--mds-input-textarea-resize",
+     "annotation": "prop",
+     "docs": "Controls whether the textarea is resizable."
+    },
+    {
+     "name": "--mds-input-tip-background",
+     "annotation": "prop",
+     "docs": "The background color of the input tip/inline help."
+    },
+    {
+     "name": "--mds-input-tip-horizontal-offset",
+     "annotation": "prop",
+     "docs": "The default horizontal offset applied to the input tip"
+    },
+    {
+     "name": "--mds-input-tip-horizontal-offset-focused",
+     "annotation": "prop",
+     "docs": "The horizontal offset applied when the input tip is focused"
+    },
+    {
+     "name": "--mds-input-tip-vertical-offset",
+     "annotation": "prop",
+     "docs": "The vertical offset applied to the input tip"
+    },
+    {
+     "name": "--mds-input-variant-color-rgb",
+     "annotation": "prop",
+     "docs": "The raw RGB channels used for variant-driven styling."
+    }
+   ]
+  },
+  {
+   "tag": "mds-input-date-range",
+   "docs": "",
+   "usage": {
+    "1. Description": "The `<mds-input-date-range>` web component is the Magma Design System control for capturing a start/end date pair, composing two slotted `<mds-input-date>` fields with a shared pop-up `mds-calendar` (in range mode) and optional quick-pick presets. It is a form-associated compound parent that orchestrates its children rather than rendering its own native inputs.\n\n#### Semantic Behavior\n\n- **Compound parent**: Expects exactly two `<mds-input-date>` children assigned to the `start` and `end` named slots; the host keeps both in sync as a single range - it is not meant to be used with a default (text) slot.\n- **Form association**: The submitted value is a JSON string `{ startDate, endDate }`; an empty range submits no value. On form reset it restores the start/end dates present at first load.\n- **Disabled fieldset**: A disabled `<fieldset>` around the component disables its calendar button as `disabled` does, while the slotted fields, being inside the fieldset too, follow it themselves: the range cannot be changed and is left out of the form, until the fieldset is enabled.\n- **Range coercion**: When both dates are valid and the end falls before the start, the end is snapped to equal the start, also for a preselection that ends before it starts, so the committed range is never inverted.\n- **Min/max guard**: If `max` is earlier than `min` at load, `max` is clamped up to `min`; both bounds are forwarded to the calendar to block out-of-range selection, and to the slotted fields, which flag a date typed outside them and stop the submit; such a range is not emitted.\n- **Commit on blur**: Leaving the component validates the range, syncs the form value, and - when both dates are valid - emits selection.\n- **Calendar selection**: Picking a complete range in the pop-up calendar emits selection and, unless `delay` is `0`, auto-closes the dropdown after the delay.\n- **Preselection sync**: Slotted `mds-input-date-range-preselection` children act as quick-picks; activating one applies its range, and any external/calendar change re-evaluates which preset (if any) is marked selected; a preset matching the dates of load is marked selected from the start.\n- **Emitted events**: `mdsInputDateRangeValueChange` fires when a full, valid range is committed (calendar pick, preset, or focus-out with two valid dates) and either bound actually changed since the last emit.\n- **Focus management**: Clicking the host or either field label focuses the corresponding date input; a built-in calendar icon button, named in the page language (the `lang` of `<html>`) (\"Open calendar\"), toggles the calendar dropdown.\n- **Localization**: The \"from\"/\"to\" field labels and the calendar honor the resolved language (el/en/es/it).\n\n#### Properties & Visual Configurations\n\n- **`startDate` / `endDate`** are the controlled range bounds in ISO `YYYY-MM-DD` form; changing them externally re-syncs the slotted inputs and the calendar.\n- **`min` / `max`** define the selectable window: the calendar blocks the dates outside it, and the host passes both bounds to the slotted fields, which check a typed date against them. A bound the range does not set leaves the one written on a field alone; one changed after load reaches both fields.\n- **`disabled`** disables the range, like a disabled native input: the calendar button is disabled, a calendar left open closes, and the dates are left out of the form. It disables the two slotted fields too: at load only when it is set, so a field disabled on its own stays disabled; a change after load reaches both fields.\n- **`size`** sets the height of the field, the same as [`<mds-button>`](../mds-button/AGENTS.md): `sm` 28px, `md` 36px, `lg` 48px (default). Match it to the buttons next to the field, or go smaller in dense layouts (filter bars, table toolbars); the text style stays the same, the padding and the inner calendar button scale with it.\n- **`delay`** is the auto-close grace period (ms) after a complete selection; set it to `0` to keep the calendar open until the user dismisses it manually.\n"
+   },
+   "props": [
+    {
+     "name": "accessibleName",
+     "attr": "aria-label",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The accessible name of the range: each of the two fields is named after it and after the\nend of the range it covers, the visible \"from\" and \"to\" labels living in this shadow root,\nwhere no IDREF of the slotted fields could reach them."
+    },
+    {
+     "name": "delay",
+     "attr": "delay",
+     "type": "number",
+     "values": [
+      {
+       "type": "number"
+      }
+     ],
+     "default": "500",
+     "required": false,
+     "docs": "Specifies the delay in milliseconds before closing the calendar dropdown, if the value is 0 the dropdown will not close"
+    },
+    {
+     "name": "disabled",
+     "attr": "disabled",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "false",
+     "required": false,
+     "docs": "Disables the range, like a disabled native input: the dates cannot be changed, from the fields\nor from the calendar, and are left out of the form. It disables the two slotted fields too. A\ndisabled `<fieldset>` around the component does the same."
+    },
+    {
+     "name": "dualCalendar",
+     "attr": "dual-calendar",
+     "type": "boolean",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ],
+     "default": "false",
+     "required": false,
+     "docs": "Enables the linked dual-calendar range picker behavior."
+    },
+    {
+     "name": "endDate",
+     "attr": "end-date",
+     "type": "string",
+     "values": [
+      {
+       "type": "string"
+      }
+     ],
+     "default": "''",
+     "required": false,
+     "docs": "Specifies the end date of the range"
+    },
+    {
+     "name": "hideToday",
+     "attr": "hide-today",
+     "type": "boolean",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ],
+     "default": "false",
+     "required": false,
+     "docs": "Hides the highlight on today's date in the calendar."
+    },
+    {
+     "name": "max",
+     "attr": "max",
+     "type": "null | string",
+     "values": [
+      {
+       "type": "null"
+      },
+      {
+       "type": "string"
+      }
+     ],
+     "default": "null",
+     "required": false,
+     "docs": "Specifies the max date of the range, user cannot set dates after this date"
+    },
+    {
+     "name": "min",
+     "attr": "min",
+     "type": "null | string",
+     "values": [
+      {
+       "type": "null"
+      },
+      {
+       "type": "string"
+      }
+     ],
+     "default": "null",
+     "required": false,
+     "docs": "Specifies the min date of the range, user cannot set dates before this date"
+    },
+    {
+     "name": "name",
+     "attr": "name",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Is needed to reference the form data after the form is submitted"
+    },
+    {
+     "name": "size",
+     "attr": "size",
+     "type": "\"lg\" | \"md\" | \"sm\" | undefined",
+     "values": [
+      {
+       "value": "lg",
+       "type": "string"
+      },
+      {
+       "value": "md",
+       "type": "string"
+      },
+      {
+       "value": "sm",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'lg'",
+     "required": false,
+     "docs": "Specifies the height of the field, the same as `mds-button`: `sm` 28px, `md` 36px, `lg` 48px"
+    },
+    {
+     "name": "startDate",
+     "attr": "start-date",
+     "type": "string",
+     "values": [
+      {
+       "type": "string"
+      }
+     ],
+     "default": "''",
+     "required": false,
+     "docs": "Specifies the start date of the range"
+    }
+   ],
+   "events": [
+    {
+     "event": "mdsInputDateRangeValueChange",
+     "detail": "{ startDate: string; endDate: string; }",
+     "docs": "Emitted when the selected start or end date changes."
+    }
+   ],
+   "methods": [
+    {
+     "name": "preselect",
+     "signature": "preselect(event: EventDate) => Promise<void>",
+     "docs": "Applies the given preselection range to the input."
+    }
+   ],
+   "slots": [
+    {
+     "name": "calendar-preselection",
+     "docs": "Add `HTML elements` or `components` to this slot."
+    },
+    {
+     "name": "end",
+     "docs": "Add `HTML elements` or `components` to this slot."
+    },
+    {
+     "name": "start",
+     "docs": "Add `HTML elements` or `components` to this slot."
+    }
+   ],
+   "parts": [],
+   "styles": [
+    {
+     "name": "--mds-input-date-range-background",
+     "annotation": "prop",
+     "docs": "Sets the background-color of the component"
+    },
+    {
+     "name": "--mds-input-date-range-calendar-width",
+     "annotation": "prop",
+     "docs": "Sets the width of each calendar shown in the dropdown"
+    },
+    {
+     "name": "--mds-input-date-range-fields-firefox-justify-content",
+     "annotation": "prop",
+     "docs": "Sets the justify-content of the component in Firefox"
+    },
+    {
+     "name": "--mds-input-date-range-fields-gap",
+     "annotation": "prop",
+     "docs": "Sets the gap between the fields of the component"
+    },
+    {
+     "name": "--mds-input-date-range-icon-color",
+     "annotation": "prop",
+     "docs": "Sets the icon color of the component"
+    },
+    {
+     "name": "--mds-input-date-range-ring",
+     "annotation": "prop",
+     "docs": "Sets the box-shadow of the component's input to perform the ring effect"
+    },
+    {
+     "name": "--mds-input-date-range-shadow",
+     "annotation": "prop",
+     "docs": "Sets the box-shadow of the component's input"
+    },
+    {
+     "name": "--mds-input-date-range-variant-color-rgb",
+     "annotation": "prop",
+     "docs": "Sets the variant colors of the component"
+    }
+   ]
+  },
+  {
+   "tag": "mds-input-switch",
+   "docs": "This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
+   "usage": {
+    "1. Description": "The `<mds-input-switch>` web component is the binary/selectable input control of the Magma Design System. A single tag covers three native primitives - it renders as a toggle switch by default and re-renders as a native `checkbox` or `radio` depending on `type`, wrapping `<input type=\"checkbox|radio\">` with form association, accessibility, and iconography handled natively.\n\n#### Semantic Behavior\n\n- **Type-driven rendering**: `type` selects the visual primitive. `'switch'` (default) renders the sliding toggle, whose knob slides only when `checked` changes (by the user or by code) and is already in place on load or when shown again after being hidden; `'checkbox'` and `'radio'` render the corresponding native control.\n- **Form association**: The host participates in a `<form>` natively - the form value is `value` while `checked` and enabled, nothing otherwise, and it follows every change of `checked`, `value` or `disabled`, by the user or by code. A form reset brings back the `checked` state of load, like a native input.\n- **Radio grouping**: When `type=\"radio\"`, checking one instance, by the user or by code, unchecks the other radios with the same `name` in the same form (or, outside a form, in the same document or shadow root), as native radios do, so the group submits one value. A radio without a `name` is a group of its own.\n- **Checked / indeterminate**: `checked` reflects selection; toggling it always clears `indeterminate`. The indeterminate glyph is only meaningful for `checkbox`.\n- **Disabled state**: Blocks interaction and clears the submitted form value while disabled. A disabled `<fieldset>` around the component does the same, as it does a native input.\n- **Keyboard operable**: The control responds to keyboard activation in addition to pointer clicks.\n- **Accessibility**: The control exposes a localized accessible label (\"select\"/\"unselect\") derived from slotted text (it/en/es/el).\n- **Change event**: `mdsInputSwitchChange` fires with `{ name, checked, value }` whenever the user changes the selection; setting `checked` from code does not emit it.\n- **Default slot**: The default slot is the visible text label rendered beside the control; when empty, the label region collapses.\n\n#### Properties & Visual Configurations\n\n- **`type`** is the primary configuration: pick `'switch'` for on/off settings, `'checkbox'` for multi-select selections, `'radio'` for mutually exclusive choices within a `name` group.\n- **`explicit`** applies only to `type=\"switch\"`: it surfaces a check/remove glyph inside the toggle knob so the on/off state is readable without relying on color alone.\n- **`size`** (`'sm'` / `'md'` / `'lg'`) scales the toggle and is honored only when `type=\"switch\"`.\n- **`icon`** overrides the default checked glyph (checkbox/radio variants); leave empty to use the type's built-in icon set.\n\n#### Other behavioral props\n\n- **`typography`** and **`variant`** style the slotted text label; they map to the shared typography ladders rather than the system tone/variant ladder defined in [`agents/variants.md`](../../../../agents/variants.md).\n"
+   },
+   "props": [
+    {
+     "name": "autofocus",
+     "attr": "autofocus",
+     "type": "boolean",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ],
+     "required": false,
+     "docs": "Sets or returns whether a checkbox should automatically\nget focus when the page loads"
+    },
+    {
+     "name": "checked",
+     "attr": "checked",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies that an `<input>` element should be pre-selected\nwhen the page loads (for `type=\"checkbox\"` or `type=\"radio\"`)"
+    },
+    {
+     "name": "disabled",
+     "attr": "disabled",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Sets or returns whether a checkbox is disabled, or not"
+    },
+    {
+     "name": "explicit",
+     "attr": "explicit",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Sets if the type switch mode shows explicit icons"
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "type": "string",
+     "values": [
+      {
+       "type": "string"
+      }
+     ],
+     "default": "''",
+     "required": false,
+     "docs": "The checked icon displayed"
+    },
+    {
+     "name": "indeterminate",
+     "attr": "indeterminate",
+     "type": "boolean | undefined",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Sets or returns the indeterminate state of the checkbox"
+    },
+    {
+     "name": "name",
+     "attr": "name",
+     "type": "string",
+     "values": [
+      {
+       "type": "string"
+      }
+     ],
+     "default": "''",
+     "required": false,
+     "docs": "Specifies the name of an `<input>` element"
+    },
+    {
+     "name": "size",
+     "attr": "size",
+     "type": "\"lg\" | \"md\" | \"sm\"",
+     "values": [
+      {
+       "value": "lg",
+       "type": "string"
+      },
+      {
+       "value": "md",
+       "type": "string"
+      },
+      {
+       "value": "sm",
+       "type": "string"
+      }
+     ],
+     "default": "'md'",
+     "required": false,
+     "docs": "Specifies the size for the switch toggle, it works only if attribute 'type' is set to 'switch'"
+    },
+    {
+     "name": "type",
+     "attr": "type",
+     "type": "\"checkbox\" | \"radio\" | \"switch\"",
+     "values": [
+      {
+       "value": "checkbox",
+       "type": "string"
+      },
+      {
+       "value": "radio",
+       "type": "string"
+      },
+      {
+       "value": "switch",
+       "type": "string"
+      }
+     ],
+     "default": "'switch'",
+     "required": false,
+     "docs": "Specifies switch type: switch (default), checkbox and radio"
+    },
+    {
+     "name": "typography",
+     "attr": "typography",
+     "type": "\"caption\" | \"detail\" | \"label\" | \"option\" | \"paragraph\" | \"tip\" | undefined",
+     "values": [
+      {
+       "value": "caption",
+       "type": "string"
+      },
+      {
+       "value": "detail",
+       "type": "string"
+      },
+      {
+       "value": "label",
+       "type": "string"
+      },
+      {
+       "value": "option",
+       "type": "string"
+      },
+      {
+       "value": "paragraph",
+       "type": "string"
+      },
+      {
+       "value": "tip",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'detail'",
+     "required": false,
+     "docs": "Specifies the font typography of the element"
+    },
+    {
+     "name": "value",
+     "attr": "value",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "''",
+     "required": false,
+     "docs": "Specifies the value of the input element"
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "type": "\"code\" | \"info\" | \"read\" | \"title\" | undefined",
+     "values": [
+      {
+       "value": "code",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "read",
+       "type": "string"
+      },
+      {
+       "value": "title",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies the variant for `typography`"
+    }
+   ],
+   "events": [
+    {
+     "event": "mdsInputSwitchChange",
+     "detail": "MdsInputSwitchEventDetail",
+     "docs": "Emits when the value changes"
+    }
+   ],
+   "methods": [],
+   "slots": [
+    {
+     "name": "",
+     "docs": "Put text string or elements here"
+    }
+   ],
+   "parts": [],
+   "styles": [
+    {
+     "name": "--mds-input-switch-animation-timing-adjust",
+     "annotation": "prop",
+     "docs": "Multiplier used to fine-tune animation timing"
+    },
+    {
+     "name": "--mds-input-switch-animation-timing-function",
+     "annotation": "prop",
+     "docs": "Easing function applied to switch animations"
+    },
+    {
+     "name": "--mds-input-switch-box-color-disabled-checked",
+     "annotation": "prop",
+     "docs": "Background color of the switch box when disabled and checked"
+    },
+    {
+     "name": "--mds-input-switch-box-color-disabled-unchecked",
+     "annotation": "prop",
+     "docs": "Background color of the switch box when disabled and unchecked"
+    },
+    {
+     "name": "--mds-input-switch-box-color-enabled-checked",
+     "annotation": "prop",
+     "docs": "Background color of the switch box when enabled and checked"
+    },
+    {
+     "name": "--mds-input-switch-box-color-enabled-unchecked",
+     "annotation": "prop",
+     "docs": "Background color of the switch box when enabled and unchecked"
+    },
+    {
+     "name": "--mds-input-switch-box-padding",
+     "annotation": "prop",
+     "docs": "Effective padding used for the switch box"
+    },
+    {
+     "name": "--mds-input-switch-box-padding-lg",
+     "annotation": "prop",
+     "docs": "Padding of the switch container (large size)"
+    },
+    {
+     "name": "--mds-input-switch-box-padding-md",
+     "annotation": "prop",
+     "docs": "Padding of the switch container (medium size)"
+    },
+    {
+     "name": "--mds-input-switch-box-padding-sm",
+     "annotation": "prop",
+     "docs": "Padding of the switch container (small size)"
+    },
+    {
+     "name": "--mds-input-switch-duration",
+     "annotation": "prop",
+     "docs": "Duration of switch state transitions"
+    },
+    {
+     "name": "--mds-input-switch-icon-color-checked",
+     "annotation": "prop",
+     "docs": "Icon color when checked"
+    },
+    {
+     "name": "--mds-input-switch-icon-color-checked-disabled",
+     "annotation": "prop",
+     "docs": "Icon color when checked and disabled"
+    },
+    {
+     "name": "--mds-input-switch-icon-color-indeterminate",
+     "annotation": "prop",
+     "docs": "Icon color for indeterminate state"
+    },
+    {
+     "name": "--mds-input-switch-icon-color-indeterminate-disabled",
+     "annotation": "prop",
+     "docs": "Icon color for indeterminate state when disabled"
+    },
+    {
+     "name": "--mds-input-switch-icon-color-unchecked",
+     "annotation": "prop",
+     "docs": "Icon color when unchecked"
+    },
+    {
+     "name": "--mds-input-switch-icon-color-unchecked-disabled",
+     "annotation": "prop",
+     "docs": "Icon color when unchecked and disabled"
+    },
+    {
+     "name": "--mds-input-switch-icon-explicit-color",
+     "annotation": "prop",
+     "docs": "Explicitly forced icon color"
+    },
+    {
+     "name": "--mds-input-switch-toggle-color-disabled-checked",
+     "annotation": "prop",
+     "docs": "Toggle color when disabled and checked"
+    },
+    {
+     "name": "--mds-input-switch-toggle-color-disabled-unchecked",
+     "annotation": "prop",
+     "docs": "Toggle color when disabled and unchecked"
+    },
+    {
+     "name": "--mds-input-switch-toggle-color-enabled-checked",
+     "annotation": "prop",
+     "docs": "Toggle color when enabled and checked"
+    },
+    {
+     "name": "--mds-input-switch-toggle-color-enabled-unchecked",
+     "annotation": "prop",
+     "docs": "Toggle color when enabled and unchecked"
+    },
+    {
+     "name": "--mds-input-switch-toggle-container-size",
+     "annotation": "prop",
+     "docs": "Computed size of the toggle container"
+    },
+    {
+     "name": "--mds-input-switch-toggle-size",
+     "annotation": "prop",
+     "docs": "Effective toggle size currently in use"
+    },
+    {
+     "name": "--mds-input-switch-toggle-size-lg",
+     "annotation": "prop",
+     "docs": "Toggle size for large variant"
+    },
+    {
+     "name": "--mds-input-switch-toggle-size-md",
+     "annotation": "prop",
+     "docs": "Toggle size for medium variant"
+    },
+    {
+     "name": "--mds-input-switch-toggle-size-sm",
+     "annotation": "prop",
+     "docs": "Toggle size for small variant"
+    }
+   ]
+  },
+  {
+   "tag": "mds-link",
+   "docs": "",
+   "usage": {
+    "1. Description": "The `<mds-link>` web component is the inline link of Magma: a word or a phrase inside running text, usually inside an `<mds-text>`, that opens a URL or runs an inline action. It replaces a raw `<a>` styled by hand, so links look and behave the same in every app, focus ring included.\n\n#### Semantic Behavior\n\n- **A word of the sentence**: the host is inline and has no typography of its own. It takes the font of the text around it (family, size, weight, line height, letter spacing), whatever the `typography` of the `<mds-text>` it sits in, and wraps across lines with the rest of the text.\n- **A real anchor with `href`**: the link is an `<a href>` in the shadow root, and it is the element that takes the focus. The browser gives it what it gives every link: a new tab on a modifier or middle click, the context menu, drag. A click listener on the host can cancel the navigation with `preventDefault()`, and a client-side router registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`) takes the plain clicks over. A `click()` from a script follows the link too, unless a listener cancels it.\n- **An inline button without `href`**: the link becomes an element with `role=\"button\"` in the tab order; a click, Enter and Space each fire one native `click` on the host. It never submits the form it sits in. It is not a native `<button>`, which cannot wrap across lines.\n- **New tab**: `target=\"blank\"` opens the URL in a new tab without giving it access to the page (`rel=\"noopener noreferrer\"`) and adds a hidden \"(opens in a new tab)\", in the language of the page, to the name the assistive technology reads. No icon is added: pick one with `icon` if the design wants it.\n- **Icon**: `icon` draws an icon, hidden from the assistive technology, sized by `--mds-link-icon-size` (a step of the spacing scale, the same in every typography). It stays on the line of the word next to it: it never wraps to a line of its own.\n- **Underline always visible**: the underline is what tells the link from the text without its color (WCAG 1.4.1), so every style keeps one, and its weight never changes. Under the pointer every link fills with a faint background that rises from the bottom, and a `weak` one also gives its line the whole color; under high contrast the tints take the full color.\n\n#### Properties & Visual Configurations\n\n- **`href`** decides what the link is: with it, a link to a page; without it, an inline action that the host's `click` listener runs. Navigation always goes through `href`, never through a click handler that changes the location.\n- **`label`** sets the text of the link; without it the link shows its default slot, which is the usual form in running text.\n- **`variant`** sets the color: `primary` (the default) paints the link with the accent, the color of links and actions on a neutral surface; `inherit` takes the color of the text around it, for a link on a colored surface (a status message, a filled banner), where the accent would lose contrast.\n- **`underline`** sets the style of the underline:\n  - `solid` (the default): a thin line;\n  - `dotted`: a dotted line;\n  - `marker`: a tinted band under the text, lighter with `weak`, which rises under the pointer to fill the line like a highlighter, with the same faint background in both tones.\n- **`tone`** sets how much of the color the line takes: `strong` (the default) the whole color; `weak` a light tint of it, which steps back in a text dense with links and takes the whole color under the pointer. The text of the link keeps the whole color in both tones.\n- **`icon-position`** puts the icon after the text (`right`, the default: an external link, a download, a forward arrow) or before it (`left`: a back arrow).\n"
+   },
+   "props": [
+    {
+     "name": "href",
+     "attr": "href",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The URL of the link: a real anchor in its shadow root, so the browser gives it what it gives\nevery link (new tab on a modifier or middle click, the context menu, drag). A client-side\nrouter takes the plain clicks over once registered with `NavigationService.setHandler()`\n(from `@maggioli-design-system/magma/services`); without one, a click listener on the host can\nstill cancel the navigation with `preventDefault()`. Without `href` the link is an inline\nbutton: it answers to click, Enter and Space with a `click` event and never submits a form."
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The icon displayed in the link"
+    },
+    {
+     "name": "iconPosition",
+     "attr": "icon-position",
+     "type": "\"left\" | \"right\" | undefined",
+     "values": [
+      {
+       "value": "left",
+       "type": "string"
+      },
+      {
+       "value": "right",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'right'",
+     "required": false,
+     "docs": "Specifies the horizontal position of the icon, which never wraps to a line of its own"
+    },
+    {
+     "name": "label",
+     "attr": "label",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "The text of the link; without it, the text of the default slot"
+    },
+    {
+     "name": "target",
+     "attr": "target",
+     "type": "\"blank\" | \"self\"",
+     "values": [
+      {
+       "value": "blank",
+       "type": "string"
+      },
+      {
+       "value": "self",
+       "type": "string"
+      }
+     ],
+     "default": "'self'",
+     "required": false,
+     "docs": "Specifies the target of the URL, if self or blank: blank opens a new tab, without giving it\naccess to the page (`rel=\"noopener noreferrer\"`), and tells the assistive technology so"
+    },
+    {
+     "name": "tone",
+     "attr": "tone",
+     "type": "\"strong\" | \"weak\" | undefined",
+     "values": [
+      {
+       "value": "strong",
+       "type": "string"
+      },
+      {
+       "value": "weak",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'strong'",
+     "required": false,
+     "docs": "Specifies the tone of the underline: `strong` draws it in the color of the link, `weak` in\na tint of it, which takes the full color under the pointer"
+    },
+    {
+     "name": "underline",
+     "attr": "underline",
+     "type": "\"dotted\" | \"marker\" | \"solid\" | undefined",
+     "values": [
+      {
+       "value": "dotted",
+       "type": "string"
+      },
+      {
+       "value": "marker",
+       "type": "string"
+      },
+      {
+       "value": "solid",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'solid'",
+     "required": false,
+     "docs": "Specifies the style of the underline, which is always visible"
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "type": "\"inherit\" | \"primary\" | undefined",
+     "values": [
+      {
+       "value": "inherit",
+       "type": "string"
+      },
+      {
+       "value": "primary",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'primary'",
+     "required": false,
+     "docs": "Specifies the color of the link: `primary` paints it with the accent, `inherit` takes the\ncolor of the text around it, for a link on a colored surface"
+    }
+   ],
+   "events": [],
+   "methods": [],
+   "slots": [
+    {
+     "name": "",
+     "docs": "Add `text string` to this slot, the text of the link when `label` is not set; **avoid** to add `HTML elements` or `components` here."
+    }
+   ],
+   "parts": [
+    {
+     "name": "icon",
+     "docs": "The icon of the link"
+    },
+    {
+     "name": "link",
+     "docs": "The element that carries the link and the focus: an anchor with `href`, an inline button without it"
+    }
+   ],
+   "styles": [
+    {
+     "name": "--mds-link-background-hover",
+     "annotation": "prop",
+     "docs": "The background that fills the link from the bottom under the pointer."
+    },
+    {
+     "name": "--mds-link-color",
+     "annotation": "prop",
+     "docs": "The color of the text, the underline and the icon of the link."
+    },
+    {
+     "name": "--mds-link-icon-gap",
+     "annotation": "prop",
+     "docs": "The distance between the icon and the text."
+    },
+    {
+     "name": "--mds-link-icon-size",
+     "annotation": "prop",
+     "docs": "The size of the icon."
+    },
+    {
+     "name": "--mds-link-transition-duration",
+     "annotation": "prop",
+     "docs": "The duration of the background filling the link under the pointer, and of the focus ring closing in on it."
+    },
+    {
+     "name": "--mds-link-underline-color",
+     "annotation": "prop",
+     "docs": "The color of the underline, of which tone `weak` takes a tint; the tint of the band with the `marker` style."
+    },
+    {
+     "name": "--mds-link-underline-offset",
+     "annotation": "prop",
+     "docs": "The distance between the text and the underline."
+    },
+    {
+     "name": "--mds-link-underline-thickness",
+     "annotation": "prop",
+     "docs": "The thickness of the underline, thicker for the `dotted` style, the height of the band with the `marker` style."
+    }
+   ]
+  },
+  {
+   "tag": "mds-text",
+   "docs": "This is a web-component from Maggioli Design System [Magma](https://magma.maggiolicloud.it), built with StencilJS, TypeScript, Storybook. It's based on the web-component standard and it's designed to be agnostic from the JavaScript framework you are using.",
+   "usage": {
+    "1. Description": "The `<mds-text>` web component is the foundational typography primitive of the Magma Design System. It decouples the _semantic typography role_ of a piece of text from the _HTML element_ that renders it, replacing raw heading, paragraph, label and inline tags (`<h1>`-`<h6>`, `<p>`, `<span>`, `<label>`, `<code>`, ...) with a single design-tokenized text node that is consumed internally by nearly every other Magma component.\n\n#### Semantic Behavior\n\n- **Typography drives the rendered tag**: when `tag` is left unset, a sensible default element is resolved from the chosen `typography` (e.g. `typography=\"h2\"` -> `<h2>`, `paragraph`/`detail` -> `<p>`, `label`/`option` -> `<label>`, `snippet`/`hack` -> `<code>`, `tip` -> `<div>`). Setting `tag` explicitly overrides this.\n- **Semantics vs. visual style are independent**: `typography` controls the visual ramp and the default element, but you may pin any allowed `tag` to keep the correct document outline (accessibility) while choosing a different visual scale.\n- **Text source is slot or prop**: text is normally provided through the default slot. Passing the `text` prop renders that string instead of the slotted content - required for the animation path, since the animation watches the `text` value.\n- **Default-slot is text only**: the default slot is intended for a plain text string; HTML elements or other components should not be slotted in. The one exception is `<mds-link>`, made to sit inside the text: it takes the font of the typography role and wraps with the words around it.\n- **Animated reveal**: with `animation=\"yugop\"` the component runs a randomized character \"decode\" reveal whenever the `text` prop changes after load (the initial value is rendered as is); `animation=\"none\"` (the default) skips all animation. The revealed string is always painted as text, never parsed as HTML.\n- **Animation tuning via CSS**: the yugop reveal reads `--mds-text-animation-speed` and `--mds-text-animation-placeholder-char`, so speed and placeholder glyph are themeable through CSS custom properties rather than props. They are read each time a reveal starts, so a value changed after load applies to the next reveal. The placeholder is one character (a longer string keeps its first one); a speed that is not a positive number, or an empty placeholder, falls back to the defaults (`0.5` and a space).\n\n#### Properties & Visual Configurations\n\n- **`typography`** selects the semantic text role from the shared typography ramp (titles `h1`-`h6` and `action`; informational `detail`, `paragraph`, `caption`, `label`, `option`, `tip`; monospaced `snippet`, `hack`). It is the primary prop and also determines the default rendered tag. Defaults to `'detail'`.\n- **`variant`** refines the _tone of a typography role_ and is specific to this component - it is the typography variation (`'title'`, `'info'`, `'read'`, `'code'`), not the shared component tone/variant ladder. Only `'read'` has a visual effect, and only on `paragraph`, `detail` and `caption` (it switches them to the reading family); the other values change nothing, and leaving it unset uses the role's default styling.\n- **`tag`** is an escape hatch to force a specific HTML element independently of `typography`, e.g. rendering a visually large heading as a `<span>` or marking text as `<strong>`/`<em>`/`<mark>` without changing the visual scale.\n- **`truncate`** governs overflow clipping: `'word'` forces single-line truncation (no wrapping), `'all'` clamps to a multi-line block whose line count is controlled by `--mds-text-line-clamp`, and `'none'` lets text flow normally. `'word'` and `'none'` clip only the end of the line, for the ellipsis, so the accents and the descenders of the `label` and `option` typographies (whose box is trimmed to the capitals) stay visible. `'all'` has to hide the lines after the clamp: the accents of its first line stay visible, while the descenders of its last visible line (a cedilla, the tail of a comma) are cut where the box ends.\n"
+   },
+   "props": [
+    {
+     "name": "animation",
+     "attr": "animation",
+     "type": "\"none\" | \"yugop\" | undefined",
+     "values": [
+      {
+       "value": "none",
+       "type": "string"
+      },
+      {
+       "value": "yugop",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "default": "'none'",
+     "required": false,
+     "docs": "Specifies if the text is animated when it is rendered"
+    },
+    {
+     "name": "tag",
+     "attr": "tag",
+     "type": "\"abbr\" | \"address\" | \"article\" | \"b\" | \"bdo\" | \"blockquote\" | \"cite\" | \"code\" | \"dd\" | \"del\" | \"details\" | \"dfn\" | \"div\" | \"dl\" | \"dt\" | \"em\" | \"figcaption\" | \"h1\" | \"h2\" | \"h3\" | \"h4\" | \"h5\" | \"h6\" | \"i\" | \"ins\" | \"kbd\" | \"label\" | \"legend\" | \"li\" | \"mark\" | \"ol\" | \"p\" | \"pre\" | \"q\" | \"rb\" | \"rt\" | \"ruby\" | \"s\" | \"samp\" | \"small\" | \"span\" | \"strong\" | \"sub\" | \"summary\" | \"sup\" | \"time\" | \"u\" | \"ul\" | \"var\"",
+     "values": [
+      {
+       "value": "abbr",
+       "type": "string"
+      },
+      {
+       "value": "address",
+       "type": "string"
+      },
+      {
+       "value": "article",
+       "type": "string"
+      },
+      {
+       "value": "b",
+       "type": "string"
+      },
+      {
+       "value": "bdo",
+       "type": "string"
+      },
+      {
+       "value": "blockquote",
+       "type": "string"
+      },
+      {
+       "value": "cite",
+       "type": "string"
+      },
+      {
+       "value": "code",
+       "type": "string"
+      },
+      {
+       "value": "dd",
+       "type": "string"
+      },
+      {
+       "value": "del",
+       "type": "string"
+      },
+      {
+       "value": "details",
+       "type": "string"
+      },
+      {
+       "value": "dfn",
+       "type": "string"
+      },
+      {
+       "value": "div",
+       "type": "string"
+      },
+      {
+       "value": "dl",
+       "type": "string"
+      },
+      {
+       "value": "dt",
+       "type": "string"
+      },
+      {
+       "value": "em",
+       "type": "string"
+      },
+      {
+       "value": "figcaption",
+       "type": "string"
+      },
+      {
+       "value": "h1",
+       "type": "string"
+      },
+      {
+       "value": "h2",
+       "type": "string"
+      },
+      {
+       "value": "h3",
+       "type": "string"
+      },
+      {
+       "value": "h4",
+       "type": "string"
+      },
+      {
+       "value": "h5",
+       "type": "string"
+      },
+      {
+       "value": "h6",
+       "type": "string"
+      },
+      {
+       "value": "i",
+       "type": "string"
+      },
+      {
+       "value": "ins",
+       "type": "string"
+      },
+      {
+       "value": "kbd",
+       "type": "string"
+      },
+      {
+       "value": "label",
+       "type": "string"
+      },
+      {
+       "value": "legend",
+       "type": "string"
+      },
+      {
+       "value": "li",
+       "type": "string"
+      },
+      {
+       "value": "mark",
+       "type": "string"
+      },
+      {
+       "value": "ol",
+       "type": "string"
+      },
+      {
+       "value": "p",
+       "type": "string"
+      },
+      {
+       "value": "pre",
+       "type": "string"
+      },
+      {
+       "value": "q",
+       "type": "string"
+      },
+      {
+       "value": "rb",
+       "type": "string"
+      },
+      {
+       "value": "rt",
+       "type": "string"
+      },
+      {
+       "value": "ruby",
+       "type": "string"
+      },
+      {
+       "value": "s",
+       "type": "string"
+      },
+      {
+       "value": "samp",
+       "type": "string"
+      },
+      {
+       "value": "small",
+       "type": "string"
+      },
+      {
+       "value": "span",
+       "type": "string"
+      },
+      {
+       "value": "strong",
+       "type": "string"
+      },
+      {
+       "value": "sub",
+       "type": "string"
+      },
+      {
+       "value": "summary",
+       "type": "string"
+      },
+      {
+       "value": "sup",
+       "type": "string"
+      },
+      {
+       "value": "time",
+       "type": "string"
+      },
+      {
+       "value": "u",
+       "type": "string"
+      },
+      {
+       "value": "ul",
+       "type": "string"
+      },
+      {
+       "value": "var",
+       "type": "string"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies the HTML tag of the element"
+    },
+    {
+     "name": "text",
+     "attr": "text",
+     "type": "string | undefined",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies the text string to the component instead of passing an HTML node"
+    },
+    {
+     "name": "truncate",
+     "attr": "truncate",
+     "type": "\"all\" | \"none\" | \"word\" | undefined",
+     "values": [
+      {
+       "value": "all",
+       "type": "string"
+      },
+      {
+       "value": "none",
+       "type": "string"
+      },
+      {
+       "value": "word",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies if the text shoud be truncated or should behave as a normal text"
+    },
+    {
+     "name": "typography",
+     "attr": "typography",
+     "type": "\"action\" | \"caption\" | \"detail\" | \"h1\" | \"h2\" | \"h3\" | \"h4\" | \"h5\" | \"h6\" | \"hack\" | \"label\" | \"option\" | \"paragraph\" | \"snippet\" | \"tip\"",
+     "values": [
+      {
+       "value": "action",
+       "type": "string"
+      },
+      {
+       "value": "caption",
+       "type": "string"
+      },
+      {
+       "value": "detail",
+       "type": "string"
+      },
+      {
+       "value": "h1",
+       "type": "string"
+      },
+      {
+       "value": "h2",
+       "type": "string"
+      },
+      {
+       "value": "h3",
+       "type": "string"
+      },
+      {
+       "value": "h4",
+       "type": "string"
+      },
+      {
+       "value": "h5",
+       "type": "string"
+      },
+      {
+       "value": "h6",
+       "type": "string"
+      },
+      {
+       "value": "hack",
+       "type": "string"
+      },
+      {
+       "value": "label",
+       "type": "string"
+      },
+      {
+       "value": "option",
+       "type": "string"
+      },
+      {
+       "value": "paragraph",
+       "type": "string"
+      },
+      {
+       "value": "snippet",
+       "type": "string"
+      },
+      {
+       "value": "tip",
+       "type": "string"
+      }
+     ],
+     "default": "'detail'",
+     "required": false,
+     "docs": "Specifies the font typography of the element"
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "type": "\"code\" | \"info\" | \"read\" | \"title\" | undefined",
+     "values": [
+      {
+       "value": "code",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "read",
+       "type": "string"
+      },
+      {
+       "value": "title",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "required": false,
+     "docs": "Specifies the variant for `typography`"
+    }
+   ],
+   "events": [],
+   "methods": [],
+   "slots": [
+    {
+     "name": "",
+     "docs": "Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here."
+    }
+   ],
+   "parts": [],
+   "styles": [
+    {
+     "name": "--mds-text-animation-placeholder-char",
+     "annotation": "prop",
+     "docs": "Placeholder character used during text animation."
+    },
+    {
+     "name": "--mds-text-animation-speed",
+     "annotation": "prop",
+     "docs": "Speed of text animation."
+    },
+    {
+     "name": "--mds-text-line-clamp",
+     "annotation": "prop",
+     "docs": "Number of lines to clamp text to (line-clamp)."
+    },
+    {
+     "name": "--mds-text-selection-background",
+     "annotation": "prop",
+     "docs": "Background color used when text is selected."
+    },
+    {
+     "name": "--mds-text-selection-color",
+     "annotation": "prop",
+     "docs": "Text color used when text is selected."
+    }
+   ]
+  }
+ ]
+}
