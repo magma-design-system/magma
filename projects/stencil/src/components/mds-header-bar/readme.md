@@ -43,7 +43,7 @@ The canonical form. Place branding content in the default slot (left side) and `
 ```html
 <mds-header-bar>
   <div class="flex gap-200 items-center">
-    <mds-img src="./logo.svg"></mds-img>
+    <mds-img src="./logo.svg" alt="Maggioli"></mds-img>
     <mds-text typography="h6">Portale Enti</mds-text>
   </div>
   <mds-button slot="nav" variant="dark" tone="outline">Accedi</mds-button>
@@ -78,7 +78,7 @@ Use the `menu` prop to decide when the hamburger button is shown (inside `mds-he
 
 <!-- No hamburger at all (branding-only bar) -->
 <mds-header-bar menu="none">
-  <mds-img src="./logo.svg"></mds-img>
+  <mds-img src="./logo.svg" alt="Maggioli"></mds-img>
 </mds-header-bar>
 ```
 
@@ -89,7 +89,7 @@ Use the `nav` prop symmetrically with `menu`. The default `desktop` shows the na
 ```html
 <!-- Always show inline nav (no responsive collapsing) -->
 <mds-header-bar menu="none" nav="all">
-  <mds-img src="./logo.svg"></mds-img>
+  <mds-img src="./logo.svg" alt="Maggioli"></mds-img>
   <mds-button slot="nav" variant="dark" tone="text">Chi siamo</mds-button>
   <mds-button slot="nav" variant="dark" tone="text">Servizi</mds-button>
   <mds-button slot="nav" variant="primary" tone="strong">Contatti</mds-button>
@@ -190,14 +190,14 @@ The default slot is the branding region (left side). Navigation actions must go 
 ```html
 <!-- INCORRECT -->
 <mds-header-bar>
-  <mds-img src="./logo.svg"></mds-img>
+  <mds-img src="./logo.svg" alt="Maggioli"></mds-img>
   <mds-button variant="dark" tone="text">Servizi</mds-button>
   <mds-button variant="primary" tone="strong">Accedi</mds-button>
 </mds-header-bar>
 
 <!-- CORRECT -->
 <mds-header-bar>
-  <mds-img src="./logo.svg"></mds-img>
+  <mds-img src="./logo.svg" alt="Maggioli"></mds-img>
   <mds-button slot="nav" variant="dark" tone="text">Servizi</mds-button>
   <mds-button slot="nav" variant="primary" tone="strong">Accedi</mds-button>
 </mds-header-bar>
@@ -210,13 +210,13 @@ Setting both to `none` hides all interactive regions and leaves a branding-only 
 ```html
 <!-- INCORRECT (navigation is invisible and unreachable) -->
 <mds-header-bar menu="none" nav="none">
-  <mds-img src="./logo.svg"></mds-img>
+  <mds-img src="./logo.svg" alt="Maggioli"></mds-img>
   <mds-button slot="nav" variant="dark" tone="text">Servizi</mds-button>
 </mds-header-bar>
 
 <!-- CORRECT (at least one region stays visible) -->
 <mds-header-bar menu="none" nav="all">
-  <mds-img src="./logo.svg"></mds-img>
+  <mds-img src="./logo.svg" alt="Maggioli"></mds-img>
   <mds-button slot="nav" variant="dark" tone="text">Servizi</mds-button>
 </mds-header-bar>
 ```

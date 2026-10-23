@@ -213,11 +213,13 @@ mds-emoji[name='mia'] {
   --mds-emoji-mia-hands-color: rgb(var(--magma-accent-emphasis));
 }
 
-/* Theming Simi */
+/* Theming Simi: a skin tone is the palette of an illustration, not a role */
 mds-emoji[name='simi'] {
+  /* stylelint-disable magma/no-raw-color -- the palette of an illustration */
   --mds-emoji-simi-skin: #f5c8a0;
   --mds-emoji-simi-skin-dark: #c8895e;
   --mds-emoji-simi-skin-light: #fdebd8;
+  /* stylelint-enable magma/no-raw-color */
 }
 ```
 
