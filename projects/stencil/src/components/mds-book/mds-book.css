@@ -14,8 +14,7 @@
 :host {
   --mds-book-color: rgb(var(--magma-accent-emphasis));
 
-  /* paper, the one colour of the physical object that no role says: it stays paper in dark
-     mode, as the cover image stays the same picture */
+  /* stylelint-disable-next-line magma/token-values -- paper stays paper in dark mode, as the cover image stays the same picture: the colour of the object, not a role */
   --mds-book-paper-color: rgb(250 248 242);
   --mds-book-text-color: rgb(var(--magma-accent-on-emphasis));
 
@@ -23,8 +22,6 @@
      of a volume of 1000 pages and more */
   --mds-book-page-weight-max: 0.05;
   --mds-book-page-weight-min: 0.1;
-
-
 
   /* the fine grain of paper, on the page block */
   --private-book-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");

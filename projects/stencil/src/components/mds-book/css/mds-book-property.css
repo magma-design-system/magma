@@ -18,6 +18,8 @@
 
 @property --mds-book-paper-color {
   inherits: true;
+
+  /* stylelint-disable-next-line magma/token-values -- paper stays paper in dark mode, as the cover image stays the same picture: the colour of the object, not a role */
   initial-value: rgb(250 248 242);
   syntax: '<color>';
 }
