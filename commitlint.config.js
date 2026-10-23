@@ -35,6 +35,7 @@ module.exports = {
       2,
       'always',
       [
+        'claude-plugin',
         'codemod',
         'design-tokens',
         'icons',
