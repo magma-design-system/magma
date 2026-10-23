@@ -11,6 +11,7 @@
 
   Pure: the caller loads the inputs and writes the files (./write.ts).
 */
+import { tokenDescription, tokenDescriptions } from '../../descriptions.config';
 import { semantic, semanticGroupDescriptions } from '../../semantic.config';
 import type { SemanticDecl } from '../../semantic.config';
 import type { SemanticModel } from '../../semantic.model';
@@ -104,6 +105,67 @@ const stepName = (step: string): string => (Number(step) < 10 ? `0${step}` : ste
 
 /** A curly-brace DTCG alias. */
 export const alias = (path: string[]): string => `{${path.join('.')}}`;
+
+/**
+ * Give every group of `tree`, and every token `tokens` selects, what it is for, as its
+ * `$description`: first among the keys of a group, so the line reads before the tokens it
+ * describes, and after the value of a token. A node that already has one keeps it. Throws on
+ * a group or a selected token that `describe` does not describe. The defaults are the base
+ * set of design-tokens, whose tokens other than the typography styles are described by
+ * their group.
+ */
+export const describeGroups = (
+  tree: DtcgGroup,
+  {
+    describe = tokenDescription,
+    source = 'descriptions.config.ts',
+    tokens = (path: string[]) => path[0] === 'typography',
+  }: {
+    describe?: (path: string[]) => string | undefined;
+    source?: string;
+    tokens?: (path: string[]) => boolean;
+  } = {},
+): void => {
+  const bare: string[] = [];
+  const walk = (node: DtcgGroup, path: string[]) => {
+    for (const [key, child] of Object.entries(node)) {
+      if (key.startsWith('$') && key !== '$root') continue;
+      const at = [...path, key];
+      if (isToken(child)) {
+        if (!tokens(at) || child.$description) continue;
+        const description = describe(at);
+        if (!description) bare.push(at.join('.'));
+        else {
+          const { $type, $value, ...rest } = child;
+          node[key] = { $type, $value, $description: description, ...rest };
+        }
+        continue;
+      }
+      const group = child as DtcgGroup;
+      const description = group.$description ?? describe(at);
+      if (description) node[key] = { $description: description, ...group };
+      else bare.push(at.join('.'));
+      walk(node[key] as DtcgGroup, at);
+    }
+  };
+  walk(tree, []);
+  if (bare.length)
+    throw new Error(
+      `${bare.length} group(s) or token(s) have no description: add them to ${source}:\n` +
+        bare.map((path) => `  ${path}`).join('\n'),
+    );
+};
+
+/** The entries of a description table that name nothing in `tree`: renamed or removed. */
+export const staleDescriptions = (
+  tree: DtcgGroup,
+  table: Record<string, string> = tokenDescriptions,
+): string[] =>
+  Object.keys(table).filter(
+    (path) =>
+      path.split('.').reduce<unknown>((node, key) => (node as DtcgGroup)?.[key], tree) ===
+      undefined,
+  );
 
 export function buildDtcg({
   colors,
@@ -463,6 +525,13 @@ export function buildDtcg({
     base[group] ??= {};
     (base[group] as DtcgGroup).$extensions = { [NAMESPACE]: { cssOnly: list } };
   }
+
+  // what every other group is for, and each typography style; the groups of the layer were
+  // described above, next to their roles
+  describeGroups(base);
+  const stale = staleDescriptions(base);
+  if (stale.length)
+    throw new Error(`descriptions.config.ts describes what is not in the set: ${stale.join(', ')}`);
 
   // --- the other sets ----------------------------------------------------------------
   const sets: Record<string, DtcgGroup> = { base, 'mode-dark': dark };

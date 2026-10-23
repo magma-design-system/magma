@@ -188,7 +188,7 @@ A value no token can say keeps its literal under a disable comment that gives th
 }
 ```
 
-The kinds so far: a duration off the scale; a length that the component's TypeScript reads with `cssSizeToNumber` (`@common/unit`), which parses `7px` but not the `calc(var(--spacing) * 175)` that `--spacing(175)` compiles to; the white light of a highlight or a glow (`mds-keyboard`), the same in every theme and mode; and the palette of an illustration (`mds-emoji`).
+The kinds so far: a duration off the scale; a length that the component's TypeScript reads with `cssSizeToNumber` (`@common/unit`), which parses `7px` but not the `calc(var(--spacing) * 175)` that `--spacing(175)` compiles to; the white light of a highlight or a glow (`mds-keyboard`), the same in every theme and mode; the paper of a physical object (`mds-book`), which stays paper in dark mode; and the palette of an illustration (`mds-emoji`).
 
 ### Selectors
 

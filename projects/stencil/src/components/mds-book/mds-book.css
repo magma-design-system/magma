@@ -14,8 +14,7 @@
 :host {
   --mds-book-color: rgb(var(--magma-accent-emphasis));
 
-  /* paper, the one colour of the physical object that no role says: it stays paper in dark
-     mode, as the cover image stays the same picture */
+  /* stylelint-disable-next-line magma/token-values -- paper, the one colour of the physical object that no role says: it stays paper in dark mode, as the cover image stays the same picture */
   --mds-book-paper-color: rgb(250 248 242);
   --mds-book-text-color: rgb(var(--magma-accent-on-emphasis));
 

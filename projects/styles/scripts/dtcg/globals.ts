@@ -22,8 +22,10 @@ import postcss from 'postcss';
 import {
   NAMESPACE,
   alias,
+  describeGroups,
   isToken,
   put,
+  staleDescriptions,
   token,
   type DtcgGroup,
 } from '../../../design-tokens/scripts/dtcg/sets';
@@ -35,6 +37,19 @@ import {
   shadow,
   type DtcgColor,
 } from '../../../design-tokens/scripts/dtcg/values';
+import {
+  cssOnlyDescription,
+  cssOnlyDescriptions,
+  globalDescription,
+  globalDescriptions,
+} from './descriptions';
+
+/** A global DTCG has no type for, as its group lists it. */
+interface CssOnlyEntry {
+  css: string;
+  value: string;
+  description?: string;
+}
 
 interface Registration {
   syntax: string;
@@ -486,6 +501,41 @@ export function buildGlobals({ sheets, base }: GlobalsInputs): GlobalsOutput {
       default: defaultContext,
     };
   }
+
+  // what every global and its group is for, on the globals set only: the other sets
+  // restate values, as design-tokens' do
+  describeGroups(sets.globals, {
+    describe: globalDescription,
+    source: 'scripts/dtcg/descriptions.ts',
+    tokens: () => true,
+  });
+  const cssOnlyNames: string[] = [];
+  const bareCssOnly: string[] = [];
+  const describeCssOnly = (node: DtcgGroup) => {
+    const list = (node.$extensions as Record<string, { cssOnly?: CssOnlyEntry[] }>)?.[NAMESPACE]
+      ?.cssOnly;
+    for (const entry of list ?? []) {
+      cssOnlyNames.push(entry.css);
+      const description = cssOnlyDescription(entry.css);
+      if (description) entry.description = description;
+      else bareCssOnly.push(entry.css);
+    }
+    for (const [key, child] of Object.entries(node))
+      if (!key.startsWith('$') && !isToken(child)) describeCssOnly(child as DtcgGroup);
+  };
+  describeCssOnly(sets.globals);
+  if (bareCssOnly.length)
+    throw new Error(
+      `${bareCssOnly.join(', ')} listed in cssOnly, with no description in scripts/dtcg/descriptions.ts`,
+    );
+  const stale = [
+    ...staleDescriptions(sets.globals, globalDescriptions),
+    ...Object.keys(cssOnlyDescriptions).filter((name) => !cssOnlyNames.includes(name)),
+  ];
+  if (stale.length)
+    throw new Error(
+      `scripts/dtcg/descriptions.ts describes what is not in the set: ${stale.join(', ')}`,
+    );
 
   return { sets, modifiers };
 }

@@ -18,6 +18,8 @@
 
 @property --mds-book-paper-color {
   inherits: true;
+
+  /* stylelint-disable-next-line magma/token-values -- paper, the same in every theme and mode: a material, not a role */
   initial-value: rgb(250 248 242);
   syntax: '<color>';
 }

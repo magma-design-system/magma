@@ -376,6 +376,8 @@ controller.
 
 These CSS custom properties on `:root` control system-wide visual behaviour. Override them in your `overrides` layer only.
 
+Each of them, and its group, says in one line what it is for in `scripts/dtcg/descriptions.ts` (#1095): the line is its `$description` in `dist/dtcg/globals.tokens.json` and a comment at the end of its declaration in `tokens.editor.css`. The DTCG build fails on a global nothing describes, so a new one cannot ship without its line.
+
 | Property                   | Default                                      | Description                     |
 | -------------------------- | -------------------------------------------- | ------------------------------- |
 | `--magma-corner-shape`     | `squircle`                                   | Corner shape for all components (set it through `data-corner-shape`, see Corner geometry: alone it changes the shape without the scale) |
