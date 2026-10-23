@@ -196,6 +196,13 @@ With React Router the handler is `(href) => navigate(href)` from `useNavigate()`
 `false` from the handler for a link the browser is to load. Without a registered router, an
 `onClick` on the component can still cancel the click with `preventDefault()` and route by hand.
 
+## 7. Lint
+
+The ESLint and Stylelint rules ship in `@maggioli-design-system/magma`: nothing more to
+install from Magma. Add the block for this target to the project's ESLint configuration and
+the Stylelint preset for its stylesheets, as [`lint.md`](lint.md) shows ([React](lint.md#react)),
+merging into what the project already has, and run both after every change.
+
 ## Gotchas
 
 - The icon path effect must run on the client. In Next.js App Router the wrapper that

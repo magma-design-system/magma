@@ -1,0 +1,150 @@
+{
+ "palette": {
+  "tone": {
+   "neutral": {
+    "01": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.0196,
+       0.0196,
+       0.0196
+      ],
+      "hex": "#050505"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-01",
+       "tier": "primitive"
+      }
+     }
+    },
+    "03": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.2863,
+       0.2863,
+       0.2863
+      ],
+      "hex": "#494949"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-03",
+       "tier": "primitive"
+      }
+     }
+    },
+    "seed": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       1,
+       1,
+       1
+      ],
+      "hex": "#ffffff"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-seed",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  },
+  "status": {
+   "error": {
+    "04": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.7686,
+       0.251,
+       0.2549
+      ],
+      "hex": "#c44041"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error-04",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  },
+  "label": {
+   "sky": {
+    "09": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.7255,
+       0.9059,
+       0.9843
+      ],
+      "hex": "#b9e7fb"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky-09",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  },
+  "brand": {
+   "maggioli": {
+    "04": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.1412,
+       0.4039,
+       0.9059
+      ],
+      "hex": "#2467e7"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli-04",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  },
+  "surface": {
+   "neutral": {
+    "default": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.949,
+       0.949,
+       0.949
+      ],
+      "hex": "#f2f2f2"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--surface-neutral-default",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  }
+ }
+}

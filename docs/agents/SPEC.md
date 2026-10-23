@@ -50,21 +50,24 @@ styles.
 
 ## What every consumer needs
 
-Regardless of target, a working integration is the sum of four things:
+Regardless of target, a working integration is the sum of five things:
 
 1. **Styles** - color tokens, reset, globals, base, anti-FOUC, in cascade-layer order
 2. **Fonts** - Karla, Merriweather, Roboto, Roboto Mono (via `@fontsource`)
 3. **Icons** - the SVG library copied to a static path + `mdsIconSvgPath` set at runtime
 4. **Component registration** - the only step that differs per target
+5. **Lint** - the ESLint and Stylelint rules that ship in `magma`, added to the project's
+   configurations and run after every change
 
 Steps 1-3 are identical everywhere and live in [`assets.md`](assets.md). Step 4 is
-the body of each track file.
+the body of each track file. Step 5 is [`lint.md`](lint.md), with a block per target.
 
 ## See also
 
 - [`assets.md`](assets.md) - shared styles / fonts / icons / identity setup (canonical)
 - [`conventions.md`](conventions.md) - the rules every component follows: naming, events, slots, icons, accessibility, styling
 - [`color.md`](color.md), [`typography.md`](typography.md), [`theming.md`](theming.md) - styling your own UI
+- [`lint.md`](lint.md) - the ESLint and Stylelint rules shipped in `magma`: setup per target, what each rule catches
 - [`reporting.md`](reporting.md) - reporting a problem that is Magma's to the Magma repository, with the project's origin label
 - [`../../projects/styles/SPEC.md`](../../projects/styles/SPEC.md) - full styles reference (contributors)
 - [`../ARCHITECTURE.md`](../ARCHITECTURE.md) - monorepo and sub-project overview

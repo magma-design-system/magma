@@ -44,7 +44,7 @@ The most common form. Use `<mds-card-header>`, `<mds-card-media>`, `<mds-card-co
     <mds-text typography="h6">Titolo della scheda</mds-text>
   </mds-card-header>
   <mds-card-media>
-    <mds-img src="/immagini/copertina.jpg" class="object-cover"></mds-img>
+    <mds-img src="/immagini/copertina.jpg" alt="Copertina del contenuto della scheda" class="object-cover"></mds-img>
   </mds-card-media>
   <mds-card-content>
     <mds-text>
@@ -82,7 +82,7 @@ Omitting the header region shifts media to the top and content immediately below
 ```html
 <mds-card>
   <mds-card-media>
-    <mds-img src="/immagini/prodotto.jpg" class="object-cover"></mds-img>
+    <mds-img src="/immagini/prodotto.jpg" alt="Il prodotto della gamma autunnale" class="object-cover"></mds-img>
   </mds-card-media>
   <mds-card-content>
     <mds-text>Descrizione prodotto disponibile nella gamma autunnale.</mds-text>
@@ -122,7 +122,7 @@ Omitting the header region shifts media to the top and content immediately below
 ```html
 <mds-card>
   <mds-card-media>
-    <mds-img src="/immagini/evento.jpg" class="object-cover"></mds-img>
+    <mds-img src="/immagini/evento.jpg" alt="Il palco della conferenza annuale" class="object-cover"></mds-img>
     <mds-badge slot="content" variant="info" tone="strong">In corso</mds-badge>
   </mds-card-media>
   <mds-card-content>
@@ -141,7 +141,7 @@ When the compound children (`mds-card-*`) do not fit the use case, assign the `s
     <mds-avatar initials="LB"></mds-avatar>
     <mds-text typography="h6">Luca Bianchi</mds-text>
   </div>
-  <mds-img slot="media" src="/immagini/lavoro.jpg" class="object-cover"></mds-img>
+  <mds-img slot="media" src="/immagini/lavoro.jpg" alt="Luca Bianchi in cantiere" class="object-cover"></mds-img>
   <mds-text slot="content" class="px-400">
     Responsabile del progetto infrastrutture.
   </mds-text>
@@ -280,14 +280,14 @@ The `header` slot is intended for title and action controls. Placing an `<mds-im
 <!-- INCORRECT -->
 <mds-card>
   <mds-card-header>
-    <mds-img src="/immagini/banner.jpg"></mds-img>
+    <mds-img src="/immagini/banner.jpg" alt="Banner della campagna"></mds-img>
   </mds-card-header>
 </mds-card>
 
 <!-- CORRECT -->
 <mds-card>
   <mds-card-media>
-    <mds-img src="/immagini/banner.jpg" class="object-cover"></mds-img>
+    <mds-img src="/immagini/banner.jpg" alt="Banner della campagna" class="object-cover"></mds-img>
   </mds-card-media>
   <mds-card-header>
     <mds-text typography="h6">Titolo della scheda</mds-text>

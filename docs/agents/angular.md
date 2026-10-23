@@ -142,6 +142,13 @@ Return `false` from the handler for a link the browser is to load. Without a reg
 router, a `(click)` binding on the component can still cancel the event with
 `preventDefault()` and route by hand.
 
+## 6. Lint
+
+The ESLint and Stylelint rules ship in `@maggioli-design-system/magma`: nothing more to
+install from Magma. Add the block for this target to the project's ESLint configuration and
+the Stylelint preset for its stylesheets, as [`lint.md`](lint.md) shows ([Angular](lint.md#angular)),
+merging into what the project already has, and run both after every change.
+
 ## Gotchas
 
 - Use the generated proxies rather than raw custom elements. If you ever use `mds-*`

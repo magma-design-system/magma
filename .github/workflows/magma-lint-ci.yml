@@ -1,0 +1,31 @@
+name: magma-lint-ci
+
+# Dedicated CI for @maggioli-design-system/lint (projects/lint, #1102), independent of the
+# shared package pipeline: it builds no other project, its rule tests run on fixtures cut
+# from the real data. Runs only when the package changes.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'projects/lint/**'
+      - '.github/workflows/magma-lint-ci.yml'
+  pull_request:
+    paths:
+      - 'projects/lint/**'
+      - '.github/workflows/magma-lint-ci.yml'
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+      - name: Build
+        run: npx nx run lint:build
+      - name: Test
+        run: npx nx run lint:test

@@ -73,7 +73,7 @@ Use `variant="icon"` when available space is too narrow for a chip - for example
 ```html
 <div class="relative">
   <mds-policy-ai variant="icon" class="absolute bottom-200 right-200 z-10"></mds-policy-ai>
-  <mds-img src="./copertina-documento.webp" class="rounded-(--magma-radius-md) shadow-sm"></mds-img>
+  <mds-img src="./copertina-documento.webp" alt="Copertina del documento" class="rounded-(--magma-radius-md) shadow-sm"></mds-img>
 </div>
 ```
 

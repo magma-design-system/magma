@@ -39,6 +39,7 @@ module.exports = {
         'design-tokens',
         'icons',
         'identity',
+        'lint',
         'lit',
         'magma',
         'magma-react',

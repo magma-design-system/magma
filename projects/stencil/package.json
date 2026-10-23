@@ -51,6 +51,26 @@
       "types": "./dist/components/index.d.ts",
       "import": "./dist/components/index.js"
     },
+    "./eslint": {
+      "types": "./dist/lint/eslint/index.d.ts",
+      "import": "./dist/lint/eslint/index.js"
+    },
+    "./stylelint": {
+      "types": "./dist/lint/stylelint/index.d.ts",
+      "import": "./dist/lint/stylelint/index.js"
+    },
+    "./stylelint/recommended": {
+      "types": "./dist/lint/stylelint/recommended.d.ts",
+      "import": "./dist/lint/stylelint/recommended.js"
+    },
+    "./stylelint/strict": {
+      "types": "./dist/lint/stylelint/strict.d.ts",
+      "import": "./dist/lint/stylelint/strict.js"
+    },
+    "./lint": {
+      "types": "./dist/lint/index.d.ts",
+      "import": "./dist/lint/index.js"
+    },
     "./AGENTS.md": "./AGENTS.md",
     "./agents/*": "./agents/*",
     "./CHANGELOG.md": "./CHANGELOG.md",
@@ -71,11 +91,12 @@
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "npm run clean && npm run build.icons && npm run sync.agent-docs && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run patch.custom-elements && npm run build.component-docs && npm run build.api-snapshot",
+    "build": "npm run clean && npm run build.icons && npm run sync.agent-docs && stencil build --prerender --docs-readme --docs-json dist/documentation.json && npm run patch.custom-elements && npm run build.component-docs && npm run build.api-snapshot && npm run build.lint",
     "build.api-snapshot": "tsx --tsconfig script.tsconfig.json ./scripts/api-snapshot.ts",
     "build.component-docs": "tsx --tsconfig script.tsconfig.json ./scripts/component-docs.ts",
     "build.docs": "stencil docs",
     "build.icons": "iconsauce --verbose --config ./.storybook/iconsauce.config.mjs --output-dictionary ./src/fixtures/icons.json --output-svg ./assets/svg --output-dump-dictionary ./src/fixtures/icons-dictionary.json && npm run sort.icons-dictionary",
+    "build.lint": "tsx --tsconfig script.tsconfig.json ./scripts/build-lint.ts",
     "build.no-cache": "stencil build --no-cache",
     "build.watch": "npm run build.icons && stencil build -c stencil.dev.config.ts --dev --watch",
     "build.watch-no-cache": "stencil build --no-cache --watch",
@@ -124,7 +145,20 @@
     "idb-keyval": "6.3.0",
     "luxon": "3.7.2",
     "mime": "4.1.1",
-    "mustache": "4.2.0"
+    "mustache": "4.2.0",
+    "postcss-value-parser": "4.2.0"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0",
+    "stylelint": ">=16.0.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    },
+    "stylelint": {
+      "optional": true
+    }
   },
   "license": "MIT",
   "devDependencies": {

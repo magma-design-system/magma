@@ -41,7 +41,7 @@ The canonical form. Pair an illustration in the default slot with a heading and 
 
 ```html
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty-list.svg"></mds-img>
+  <mds-img src="./assets/illustrations/empty-list.svg" alt=""></mds-img>
   <mds-text typography="h5" slot="content">Nessun elemento trovato</mds-text>
   <mds-text typography="detail" slot="content">
     Non ci sono elementi che corrispondono alla tua ricerca.
@@ -63,7 +63,7 @@ When there is no meaningful recovery action, omit `slot="action"` entirely. The 
 
 ```html
 <mds-zero>
-  <mds-img src="./assets/illustrations/no-results.svg"></mds-img>
+  <mds-img src="./assets/illustrations/no-results.svg" alt=""></mds-img>
   <mds-text typography="h5" slot="content">Nessun risultato</mds-text>
   <mds-text typography="detail" slot="content">
     Prova a modificare i criteri di ricerca per trovare cio che cerchi.
@@ -97,7 +97,7 @@ When two peer actions are offered - for example a primary and a secondary CTA - 
 
 ```html
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty-inbox.svg"></mds-img>
+  <mds-img src="./assets/illustrations/empty-inbox.svg" alt=""></mds-img>
   <mds-text typography="h5" slot="content">Nessun messaggio</mds-text>
   <mds-text typography="detail" slot="content">
     La tua casella e vuota. Inizia una nuova conversazione o invita i tuoi colleghi.
@@ -173,13 +173,13 @@ Placing an image or `<mds-img>` inside `slot="content"` wraps it in the max-widt
 ```html
 <!-- INCORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg" slot="content"></mds-img>
+  <mds-img src="./assets/illustrations/empty.svg" alt="" slot="content"></mds-img>
   <mds-text typography="h5" slot="content">Nessun documento</mds-text>
 </mds-zero>
 
 <!-- CORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg"></mds-img>
+  <mds-img src="./assets/illustrations/empty.svg" alt=""></mds-img>
   <mds-text typography="h5" slot="content">Nessun documento</mds-text>
 </mds-zero>
 ```
@@ -191,14 +191,14 @@ A button placed in `slot="content"` ends up inside the centered-text block rathe
 ```html
 <!-- INCORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg"></mds-img>
+  <mds-img src="./assets/illustrations/empty.svg" alt=""></mds-img>
   <mds-text typography="h5" slot="content">Nessun progetto</mds-text>
   <mds-button label="Nuovo progetto" variant="primary" slot="content"></mds-button>
 </mds-zero>
 
 <!-- CORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg"></mds-img>
+  <mds-img src="./assets/illustrations/empty.svg" alt=""></mds-img>
   <mds-text typography="h5" slot="content">Nessun progetto</mds-text>
   <mds-button label="Nuovo progetto" variant="primary" slot="action"></mds-button>
 </mds-zero>
@@ -211,14 +211,14 @@ The action slot is designed for `<mds-button>`. A raw `<button>` or `<a>` will n
 ```html
 <!-- INCORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg"></mds-img>
+  <mds-img src="./assets/illustrations/empty.svg" alt=""></mds-img>
   <mds-text typography="h5" slot="content">Nessun report</mds-text>
   <button slot="action" class="btn-primary">Crea report</button>
 </mds-zero>
 
 <!-- CORRECT -->
 <mds-zero>
-  <mds-img src="./assets/illustrations/empty.svg"></mds-img>
+  <mds-img src="./assets/illustrations/empty.svg" alt=""></mds-img>
   <mds-text typography="h5" slot="content">Nessun report</mds-text>
   <mds-button slot="action" label="Crea report" variant="primary" tone="strong"></mds-button>
 </mds-zero>

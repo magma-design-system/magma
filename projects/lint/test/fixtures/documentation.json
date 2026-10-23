@@ -1,0 +1,2085 @@
+{
+ "components": [
+  {
+   "tag": "mds-banner",
+   "props": [
+    {
+     "name": "deletable",
+     "attr": "deletable",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "headline",
+     "attr": "headline",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "hideCockade",
+     "attr": "hide-cockade",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "tone",
+     "attr": "tone",
+     "values": [
+      {
+       "value": "box",
+       "type": "string"
+      },
+      {
+       "value": "strong",
+       "type": "string"
+      },
+      {
+       "value": "weak",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "values": [
+      {
+       "value": "ai",
+       "type": "string"
+      },
+      {
+       "value": "dark",
+       "type": "string"
+      },
+      {
+       "value": "error",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "light",
+       "type": "string"
+      },
+      {
+       "value": "primary",
+       "type": "string"
+      },
+      {
+       "value": "success",
+       "type": "string"
+      },
+      {
+       "value": "warning",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    }
+   ],
+   "slots": [
+    {
+     "name": ""
+    },
+    {
+     "name": "action"
+    }
+   ]
+  },
+  {
+   "tag": "mds-button",
+   "props": [
+    {
+     "name": "active",
+     "attr": "active",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ]
+    },
+    {
+     "name": "animation",
+     "attr": "animation",
+     "values": [
+      {
+       "value": "none",
+       "type": "string"
+      },
+      {
+       "value": "yugop",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "autoFocus",
+     "attr": "auto-focus",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ]
+    },
+    {
+     "name": "await",
+     "attr": "await",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "disabled",
+     "attr": "disabled",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "href",
+     "attr": "href",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "iconPosition",
+     "attr": "icon-position",
+     "values": [
+      {
+       "value": "left",
+       "type": "string"
+      },
+      {
+       "value": "right",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "label",
+     "attr": "label",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "name",
+     "attr": "name",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "size",
+     "attr": "size",
+     "values": [
+      {
+       "value": "lg",
+       "type": "string"
+      },
+      {
+       "value": "md",
+       "type": "string"
+      },
+      {
+       "value": "sm",
+       "type": "string"
+      },
+      {
+       "value": "xl",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "target",
+     "attr": "target",
+     "values": [
+      {
+       "value": "blank",
+       "type": "string"
+      },
+      {
+       "value": "self",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "tone",
+     "attr": "tone",
+     "values": [
+      {
+       "value": "box",
+       "type": "string"
+      },
+      {
+       "value": "outline",
+       "type": "string"
+      },
+      {
+       "value": "strong",
+       "type": "string"
+      },
+      {
+       "value": "text",
+       "type": "string"
+      },
+      {
+       "value": "weak",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "truncate",
+     "attr": "truncate",
+     "values": [
+      {
+       "value": "all",
+       "type": "string"
+      },
+      {
+       "value": "none",
+       "type": "string"
+      },
+      {
+       "value": "word",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "type",
+     "attr": "type",
+     "values": [
+      {
+       "value": "a",
+       "type": "string"
+      },
+      {
+       "value": "button",
+       "type": "string"
+      },
+      {
+       "value": "reset",
+       "type": "string"
+      },
+      {
+       "value": "submit",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "value",
+     "attr": "value",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "values": [
+      {
+       "value": "ai",
+       "type": "string"
+      },
+      {
+       "value": "apple",
+       "type": "string"
+      },
+      {
+       "value": "dark",
+       "type": "string"
+      },
+      {
+       "value": "error",
+       "type": "string"
+      },
+      {
+       "value": "google",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "light",
+       "type": "string"
+      },
+      {
+       "value": "primary",
+       "type": "string"
+      },
+      {
+       "value": "secondary",
+       "type": "string"
+      },
+      {
+       "value": "success",
+       "type": "string"
+      },
+      {
+       "value": "warning",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    }
+   ],
+   "slots": [
+    {
+     "name": ""
+    },
+    {
+     "name": "notification"
+    }
+   ]
+  },
+  {
+   "tag": "mds-chip",
+   "props": [
+    {
+     "name": "clickable",
+     "attr": "clickable",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "deletable",
+     "attr": "deletable",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "disabled",
+     "attr": "disabled",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "label",
+     "attr": "label",
+     "values": [
+      {
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "selectable",
+     "attr": "selectable",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "selected",
+     "attr": "selected",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "tone",
+     "attr": "tone",
+     "values": [
+      {
+       "value": "strong",
+       "type": "string"
+      },
+      {
+       "value": "weak",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "values": [
+      {
+       "value": "ai",
+       "type": "string"
+      },
+      {
+       "value": "amaranth",
+       "type": "string"
+      },
+      {
+       "value": "aqua",
+       "type": "string"
+      },
+      {
+       "value": "blue",
+       "type": "string"
+      },
+      {
+       "value": "dark",
+       "type": "string"
+      },
+      {
+       "value": "error",
+       "type": "string"
+      },
+      {
+       "value": "green",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "lime",
+       "type": "string"
+      },
+      {
+       "value": "orange",
+       "type": "string"
+      },
+      {
+       "value": "orchid",
+       "type": "string"
+      },
+      {
+       "value": "primary",
+       "type": "string"
+      },
+      {
+       "value": "purple",
+       "type": "string"
+      },
+      {
+       "value": "red",
+       "type": "string"
+      },
+      {
+       "value": "secondary",
+       "type": "string"
+      },
+      {
+       "value": "sky",
+       "type": "string"
+      },
+      {
+       "value": "success",
+       "type": "string"
+      },
+      {
+       "value": "violet",
+       "type": "string"
+      },
+      {
+       "value": "warning",
+       "type": "string"
+      },
+      {
+       "value": "yellow",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    }
+   ],
+   "slots": []
+  },
+  {
+   "tag": "mds-img",
+   "props": [
+    {
+     "name": "alt",
+     "attr": "alt",
+     "values": [
+      {
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "crossorigin",
+     "attr": "crossorigin",
+     "values": [
+      {
+       "value": "anonymous",
+       "type": "string"
+      },
+      {
+       "value": "use-credentials",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "height",
+     "attr": "height",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "loading",
+     "attr": "loading",
+     "values": [
+      {
+       "value": "eager",
+       "type": "string"
+      },
+      {
+       "value": "lazy",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "referrerpolicy",
+     "attr": "referrerpolicy",
+     "values": [
+      {
+       "value": "no-referrer",
+       "type": "string"
+      },
+      {
+       "value": "no-referrer-when-downgrade",
+       "type": "string"
+      },
+      {
+       "value": "origin",
+       "type": "string"
+      },
+      {
+       "value": "origin-when-cross-origin",
+       "type": "string"
+      },
+      {
+       "value": "unsafe-url",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "sizes",
+     "attr": "sizes",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "src",
+     "attr": "src",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "srcset",
+     "attr": "srcset",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "srcsetConsumption",
+     "attr": "srcset-consumption",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "width",
+     "attr": "width",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    }
+   ],
+   "slots": []
+  },
+  {
+   "tag": "mds-input",
+   "props": [
+    {
+     "name": "accessibleName",
+     "attr": "aria-label",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "autocomplete",
+     "attr": "autocomplete",
+     "values": [
+      {
+       "value": "additional-name",
+       "type": "string"
+      },
+      {
+       "value": "address",
+       "type": "string"
+      },
+      {
+       "value": "address-level1",
+       "type": "string"
+      },
+      {
+       "value": "address-level2",
+       "type": "string"
+      },
+      {
+       "value": "address-level3",
+       "type": "string"
+      },
+      {
+       "value": "address-level4",
+       "type": "string"
+      },
+      {
+       "value": "address-line1",
+       "type": "string"
+      },
+      {
+       "value": "address-line2",
+       "type": "string"
+      },
+      {
+       "value": "address-line3",
+       "type": "string"
+      },
+      {
+       "value": "bday",
+       "type": "string"
+      },
+      {
+       "value": "bday-day",
+       "type": "string"
+      },
+      {
+       "value": "bday-month",
+       "type": "string"
+      },
+      {
+       "value": "bday-year",
+       "type": "string"
+      },
+      {
+       "value": "cc-additional-name",
+       "type": "string"
+      },
+      {
+       "value": "cc-csc",
+       "type": "string"
+      },
+      {
+       "value": "cc-exp",
+       "type": "string"
+      },
+      {
+       "value": "cc-exp-month",
+       "type": "string"
+      },
+      {
+       "value": "cc-exp-year",
+       "type": "string"
+      },
+      {
+       "value": "cc-family-name",
+       "type": "string"
+      },
+      {
+       "value": "cc-given-name",
+       "type": "string"
+      },
+      {
+       "value": "cc-name",
+       "type": "string"
+      },
+      {
+       "value": "cc-number",
+       "type": "string"
+      },
+      {
+       "value": "cc-type",
+       "type": "string"
+      },
+      {
+       "value": "country",
+       "type": "string"
+      },
+      {
+       "value": "country-name",
+       "type": "string"
+      },
+      {
+       "value": "current-password",
+       "type": "string"
+      },
+      {
+       "value": "email",
+       "type": "string"
+      },
+      {
+       "value": "family-name",
+       "type": "string"
+      },
+      {
+       "value": "given-name",
+       "type": "string"
+      },
+      {
+       "value": "honorific-prefix",
+       "type": "string"
+      },
+      {
+       "value": "honorific-suffix",
+       "type": "string"
+      },
+      {
+       "value": "impp",
+       "type": "string"
+      },
+      {
+       "value": "language",
+       "type": "string"
+      },
+      {
+       "value": "name",
+       "type": "string"
+      },
+      {
+       "value": "new-password",
+       "type": "string"
+      },
+      {
+       "value": "nickname",
+       "type": "string"
+      },
+      {
+       "value": "off",
+       "type": "string"
+      },
+      {
+       "value": "on",
+       "type": "string"
+      },
+      {
+       "value": "one-time-code",
+       "type": "string"
+      },
+      {
+       "value": "organization",
+       "type": "string"
+      },
+      {
+       "value": "organization-title",
+       "type": "string"
+      },
+      {
+       "value": "photo",
+       "type": "string"
+      },
+      {
+       "value": "postal-code",
+       "type": "string"
+      },
+      {
+       "value": "sex",
+       "type": "string"
+      },
+      {
+       "value": "street-address",
+       "type": "string"
+      },
+      {
+       "value": "tel",
+       "type": "string"
+      },
+      {
+       "value": "tel-area-code",
+       "type": "string"
+      },
+      {
+       "value": "tel-country-code",
+       "type": "string"
+      },
+      {
+       "value": "tel-extension",
+       "type": "string"
+      },
+      {
+       "value": "tel-local",
+       "type": "string"
+      },
+      {
+       "value": "tel-national",
+       "type": "string"
+      },
+      {
+       "value": "transaction-amount",
+       "type": "string"
+      },
+      {
+       "value": "transaction-currency",
+       "type": "string"
+      },
+      {
+       "value": "url",
+       "type": "string"
+      },
+      {
+       "value": "username",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "autofocus",
+     "attr": "autofocus",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ]
+    },
+    {
+     "name": "await",
+     "attr": "await",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ]
+    },
+    {
+     "name": "controlsIcon",
+     "attr": "controls-icon",
+     "values": [
+      {
+       "value": "arithmetic",
+       "type": "string"
+      },
+      {
+       "value": "arrow",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "controlsLayout",
+     "attr": "controls-layout",
+     "values": [
+      {
+       "value": "horizontal",
+       "type": "string"
+      },
+      {
+       "value": "vertical",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "datalist",
+     "values": [
+      {
+       "type": "string[]"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "disabled",
+     "attr": "disabled",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "max",
+     "attr": "max",
+     "values": [
+      {
+       "type": "number"
+      },
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "maxlength",
+     "attr": "maxlength",
+     "values": [
+      {
+       "type": "number"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "mic",
+     "attr": "mic",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "min",
+     "attr": "min",
+     "values": [
+      {
+       "type": "number"
+      },
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "minlength",
+     "attr": "minlength",
+     "values": [
+      {
+       "type": "number"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "name",
+     "attr": "name",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "pattern",
+     "attr": "pattern",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "placeholder",
+     "attr": "placeholder",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "readonly",
+     "attr": "readonly",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "required",
+     "attr": "required",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "size",
+     "attr": "size",
+     "values": [
+      {
+       "value": "lg",
+       "type": "string"
+      },
+      {
+       "value": "md",
+       "type": "string"
+      },
+      {
+       "value": "sm",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "step",
+     "attr": "step",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "tip",
+     "attr": "tip",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "type",
+     "attr": "type",
+     "values": [
+      {
+       "value": "cc",
+       "type": "string"
+      },
+      {
+       "value": "cf",
+       "type": "string"
+      },
+      {
+       "value": "date",
+       "type": "string"
+      },
+      {
+       "value": "email",
+       "type": "string"
+      },
+      {
+       "value": "isbn",
+       "type": "string"
+      },
+      {
+       "value": "number",
+       "type": "string"
+      },
+      {
+       "value": "password",
+       "type": "string"
+      },
+      {
+       "value": "piva",
+       "type": "string"
+      },
+      {
+       "value": "search",
+       "type": "string"
+      },
+      {
+       "value": "tel",
+       "type": "string"
+      },
+      {
+       "value": "text",
+       "type": "string"
+      },
+      {
+       "value": "textarea",
+       "type": "string"
+      },
+      {
+       "value": "time",
+       "type": "string"
+      },
+      {
+       "value": "url",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "typography",
+     "attr": "typography",
+     "values": [
+      {
+       "value": "detail",
+       "type": "string"
+      },
+      {
+       "value": "snippet",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "value",
+     "attr": "value",
+     "values": [
+      {
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "values": [
+      {
+       "value": "ai",
+       "type": "string"
+      },
+      {
+       "value": "error",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "primary",
+       "type": "string"
+      },
+      {
+       "value": "success",
+       "type": "string"
+      },
+      {
+       "value": "warning",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    }
+   ],
+   "slots": []
+  },
+  {
+   "tag": "mds-input-switch",
+   "props": [
+    {
+     "name": "autofocus",
+     "attr": "autofocus",
+     "values": [
+      {
+       "type": "boolean"
+      }
+     ]
+    },
+    {
+     "name": "checked",
+     "attr": "checked",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "disabled",
+     "attr": "disabled",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "explicit",
+     "attr": "explicit",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "values": [
+      {
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "indeterminate",
+     "attr": "indeterminate",
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "name",
+     "attr": "name",
+     "values": [
+      {
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "size",
+     "attr": "size",
+     "values": [
+      {
+       "value": "lg",
+       "type": "string"
+      },
+      {
+       "value": "md",
+       "type": "string"
+      },
+      {
+       "value": "sm",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "type",
+     "attr": "type",
+     "values": [
+      {
+       "value": "checkbox",
+       "type": "string"
+      },
+      {
+       "value": "radio",
+       "type": "string"
+      },
+      {
+       "value": "switch",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "typography",
+     "attr": "typography",
+     "values": [
+      {
+       "value": "caption",
+       "type": "string"
+      },
+      {
+       "value": "detail",
+       "type": "string"
+      },
+      {
+       "value": "label",
+       "type": "string"
+      },
+      {
+       "value": "option",
+       "type": "string"
+      },
+      {
+       "value": "paragraph",
+       "type": "string"
+      },
+      {
+       "value": "tip",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "value",
+     "attr": "value",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "values": [
+      {
+       "value": "code",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "read",
+       "type": "string"
+      },
+      {
+       "value": "title",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    }
+   ],
+   "slots": [
+    {
+     "name": ""
+    }
+   ]
+  },
+  {
+   "tag": "mds-link",
+   "props": [
+    {
+     "name": "href",
+     "attr": "href",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "icon",
+     "attr": "icon",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "iconPosition",
+     "attr": "icon-position",
+     "values": [
+      {
+       "value": "left",
+       "type": "string"
+      },
+      {
+       "value": "right",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "label",
+     "attr": "label",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "target",
+     "attr": "target",
+     "values": [
+      {
+       "value": "blank",
+       "type": "string"
+      },
+      {
+       "value": "self",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "tone",
+     "attr": "tone",
+     "values": [
+      {
+       "value": "strong",
+       "type": "string"
+      },
+      {
+       "value": "weak",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "underline",
+     "attr": "underline",
+     "values": [
+      {
+       "value": "dotted",
+       "type": "string"
+      },
+      {
+       "value": "marker",
+       "type": "string"
+      },
+      {
+       "value": "solid",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "values": [
+      {
+       "value": "inherit",
+       "type": "string"
+      },
+      {
+       "value": "primary",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    }
+   ],
+   "slots": [
+    {
+     "name": ""
+    }
+   ]
+  },
+  {
+   "tag": "mds-text",
+   "props": [
+    {
+     "name": "animation",
+     "attr": "animation",
+     "values": [
+      {
+       "value": "none",
+       "type": "string"
+      },
+      {
+       "value": "yugop",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "tag",
+     "attr": "tag",
+     "values": [
+      {
+       "value": "abbr",
+       "type": "string"
+      },
+      {
+       "value": "address",
+       "type": "string"
+      },
+      {
+       "value": "article",
+       "type": "string"
+      },
+      {
+       "value": "b",
+       "type": "string"
+      },
+      {
+       "value": "bdo",
+       "type": "string"
+      },
+      {
+       "value": "blockquote",
+       "type": "string"
+      },
+      {
+       "value": "cite",
+       "type": "string"
+      },
+      {
+       "value": "code",
+       "type": "string"
+      },
+      {
+       "value": "dd",
+       "type": "string"
+      },
+      {
+       "value": "del",
+       "type": "string"
+      },
+      {
+       "value": "details",
+       "type": "string"
+      },
+      {
+       "value": "dfn",
+       "type": "string"
+      },
+      {
+       "value": "div",
+       "type": "string"
+      },
+      {
+       "value": "dl",
+       "type": "string"
+      },
+      {
+       "value": "dt",
+       "type": "string"
+      },
+      {
+       "value": "em",
+       "type": "string"
+      },
+      {
+       "value": "figcaption",
+       "type": "string"
+      },
+      {
+       "value": "h1",
+       "type": "string"
+      },
+      {
+       "value": "h2",
+       "type": "string"
+      },
+      {
+       "value": "h3",
+       "type": "string"
+      },
+      {
+       "value": "h4",
+       "type": "string"
+      },
+      {
+       "value": "h5",
+       "type": "string"
+      },
+      {
+       "value": "h6",
+       "type": "string"
+      },
+      {
+       "value": "i",
+       "type": "string"
+      },
+      {
+       "value": "ins",
+       "type": "string"
+      },
+      {
+       "value": "kbd",
+       "type": "string"
+      },
+      {
+       "value": "label",
+       "type": "string"
+      },
+      {
+       "value": "legend",
+       "type": "string"
+      },
+      {
+       "value": "li",
+       "type": "string"
+      },
+      {
+       "value": "mark",
+       "type": "string"
+      },
+      {
+       "value": "ol",
+       "type": "string"
+      },
+      {
+       "value": "p",
+       "type": "string"
+      },
+      {
+       "value": "pre",
+       "type": "string"
+      },
+      {
+       "value": "q",
+       "type": "string"
+      },
+      {
+       "value": "rb",
+       "type": "string"
+      },
+      {
+       "value": "rt",
+       "type": "string"
+      },
+      {
+       "value": "ruby",
+       "type": "string"
+      },
+      {
+       "value": "s",
+       "type": "string"
+      },
+      {
+       "value": "samp",
+       "type": "string"
+      },
+      {
+       "value": "small",
+       "type": "string"
+      },
+      {
+       "value": "span",
+       "type": "string"
+      },
+      {
+       "value": "strong",
+       "type": "string"
+      },
+      {
+       "value": "sub",
+       "type": "string"
+      },
+      {
+       "value": "summary",
+       "type": "string"
+      },
+      {
+       "value": "sup",
+       "type": "string"
+      },
+      {
+       "value": "time",
+       "type": "string"
+      },
+      {
+       "value": "u",
+       "type": "string"
+      },
+      {
+       "value": "ul",
+       "type": "string"
+      },
+      {
+       "value": "var",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "text",
+     "attr": "text",
+     "values": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "truncate",
+     "attr": "truncate",
+     "values": [
+      {
+       "value": "all",
+       "type": "string"
+      },
+      {
+       "value": "none",
+       "type": "string"
+      },
+      {
+       "value": "word",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    },
+    {
+     "name": "typography",
+     "attr": "typography",
+     "values": [
+      {
+       "value": "action",
+       "type": "string"
+      },
+      {
+       "value": "caption",
+       "type": "string"
+      },
+      {
+       "value": "detail",
+       "type": "string"
+      },
+      {
+       "value": "h1",
+       "type": "string"
+      },
+      {
+       "value": "h2",
+       "type": "string"
+      },
+      {
+       "value": "h3",
+       "type": "string"
+      },
+      {
+       "value": "h4",
+       "type": "string"
+      },
+      {
+       "value": "h5",
+       "type": "string"
+      },
+      {
+       "value": "h6",
+       "type": "string"
+      },
+      {
+       "value": "hack",
+       "type": "string"
+      },
+      {
+       "value": "label",
+       "type": "string"
+      },
+      {
+       "value": "option",
+       "type": "string"
+      },
+      {
+       "value": "paragraph",
+       "type": "string"
+      },
+      {
+       "value": "snippet",
+       "type": "string"
+      },
+      {
+       "value": "tip",
+       "type": "string"
+      }
+     ]
+    },
+    {
+     "name": "variant",
+     "attr": "variant",
+     "values": [
+      {
+       "value": "code",
+       "type": "string"
+      },
+      {
+       "value": "info",
+       "type": "string"
+      },
+      {
+       "value": "read",
+       "type": "string"
+      },
+      {
+       "value": "title",
+       "type": "string"
+      },
+      {
+       "type": "undefined"
+      }
+     ]
+    }
+   ],
+   "slots": [
+    {
+     "name": ""
+    }
+   ]
+  }
+ ]
+}

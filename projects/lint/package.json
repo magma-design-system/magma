@@ -1,0 +1,52 @@
+{
+  "name": "@maggioli-design-system/lint",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The ESLint and Stylelint rules that check consumer code against the installed version of Magma. Not published on its own: the stencil build compiles it into @maggioli-design-system/magma (dist/lint), which exports it as ./eslint and ./stylelint.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./eslint": {
+      "types": "./dist/eslint/index.d.ts",
+      "import": "./dist/eslint/index.js"
+    },
+    "./stylelint": {
+      "types": "./dist/stylelint/index.d.ts",
+      "import": "./dist/stylelint/index.js"
+    },
+    "./stylelint/recommended": {
+      "types": "./dist/stylelint/recommended.d.ts",
+      "import": "./dist/stylelint/recommended.js"
+    },
+    "./stylelint/strict": {
+      "types": "./dist/stylelint/strict.d.ts",
+      "import": "./dist/stylelint/strict.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "postcss-value-parser": "4.2.0"
+  },
+  "devDependencies": {
+    "@angular-eslint/template-parser": "22.5.0",
+    "@html-eslint/parser": "0.66.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magma-design-system/magma.git",
+    "directory": "projects/lint"
+  }
+}
