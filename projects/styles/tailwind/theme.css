@@ -1,6 +1,8 @@
 /* @import "tailwindcss"; */
 
-/* @import "./dark-mode.css"; */
+/* the dark: variant on the Magma mode, not the OS only (#1100) */
+@import '../build/tailwind/dark-mode.css';
+
 @import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-color.css' layer(theme);
 @import '@maggioli-design-system/design-tokens/dist/css/tailwind-theme-typography.css';
 
