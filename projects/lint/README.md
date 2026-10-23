@@ -1,9 +1,11 @@
 # lint
 
-The source of the consumer lint: the ESLint and Stylelint rules that check a project's code
-against the installed version of Magma. It is not published on its own: the stencil build
-compiles it into `@maggioli-design-system/magma` (`dist/lint`, by
-`projects/stencil/scripts/build-lint.ts`), which exports it:
+The source of the agent tooling that ships inside Magma: the consumer lint (the ESLint and
+Stylelint rules that check a project's code against the installed version of Magma) and the
+MCP server that answers an agent from the same data (`src/mcp`). Neither is published on its
+own: the stencil build compiles them into `@maggioli-design-system/magma` (`dist/lint`, by
+`projects/stencil/scripts/build-lint.ts`), which exports the lint and runs the server as its
+`magma-mcp` command:
 
 | Export of `@maggioli-design-system/magma` | What |
 | --- | --- |
@@ -11,12 +13,13 @@ compiles it into `@maggioli-design-system/magma` (`dist/lint`, by
 | `./stylelint` | the Stylelint plugins |
 | `./stylelint/recommended`, `./stylelint/strict` | the Stylelint presets |
 | `./lint` | the core, for tools that run the same checks |
+| `magma-mcp` (bin) | the MCP server on stdio: `dist/lint/mcp/cli.js` |
 
-So the rules arrive with the components, at the same version, with nothing for a project to
-install or keep aligned. How a project sets them up and what each rule catches is the
-consumer guide, [`docs/agents/lint.md`](../../docs/agents/lint.md), shipped in the packages as
-`agents/lint.md`; the install guides and the packages' `AGENTS.md` point an agent to it at
-bootstrap.
+So both arrive with the components, at the same version, with nothing for a project to
+install or keep aligned. How a project sets them up is in the consumer guides,
+[`docs/agents/lint.md`](../../docs/agents/lint.md) and [`docs/agents/mcp.md`](../../docs/agents/mcp.md),
+shipped in the packages as `agents/lint.md` and `agents/mcp.md`; the packages' `AGENTS.md`
+sets both up at bootstrap.
 
 ## Layout
 
@@ -29,6 +32,8 @@ bootstrap.
 | `src/eslint/adapters.ts` | one adapter per parser: HTML (`@html-eslint/parser`), JSX, Angular templates (`@angular-eslint/template-parser`) |
 | `src/eslint/index.ts` | the ESLint rules and presets |
 | `src/stylelint/` | the Stylelint rules and presets |
+| `src/mcp/protocol.ts` | the part of the Model Context Protocol the server speaks, written here so magma carries no SDK: JSON-RPC over stdio, `initialize`, `tools/list`, `tools/call` |
+| `src/mcp/*.ts` | the ten read-only tools (components, tokens, icons, guides, checks), the server and its command |
 
 The data is never a list written by hand. Inside magma, the core reads the
 `documentation.json` beside it (`dist/documentation.json`) and resolves design-tokens and
@@ -60,3 +65,19 @@ stencil pipeline builds the package with the lint inside.
    CORRECT example, and check that the guides' own examples pass it: the strict preset run
    on every `html` and `css` block of the usage docs reports nothing outside the INCORRECT
    halves.
+
+## The MCP server
+
+`src/mcp/server.ts` puts the ten tools behind the protocol of `src/mcp/protocol.ts`; the
+command, `src/mcp/cli.ts`, serves them on stdio from the project it starts in (`--root`
+points elsewhere; `--documentation`, `--tokens`, `--consumption`, `--globals` and
+`--icons-<set>` point the data elsewhere). The server writes only protocol messages to
+stdout. The icon it shows its clients is the Magma mark of identity, copied into
+`dist/lint/mcp/icon.svg` by the stencil build.
+
+A tool is read-only and answers from data the packages ship: add one in the file of its area,
+give it an `outputSchema` its result matches (the official client checks it), register it in
+`toolsOf` of `src/mcp/server.ts`, test it on the fixtures (`test/mcp-tools.test.ts`) and in
+the call through the official client (`test/mcp-stdio.test.ts`), and list it in
+[`docs/agents/mcp.md`](../../docs/agents/mcp.md). Keep the tools few: an agent picks one by its
+name and description.

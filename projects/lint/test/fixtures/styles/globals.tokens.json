@@ -1,0 +1,151 @@
+{
+ "magma": {
+  "$description": "The semantic layer: the roles UI code paints with, which follow the mode, the named theme and the contrast preference.",
+  "radius": {
+   "$description": "The radius scale of the active corner shape: what components and UI code round corners with.",
+   "none": {
+    "$type": "dimension",
+    "$value": "{radius.none}",
+    "$description": "No rounding.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-none",
+      "tier": "semantic"
+     }
+    }
+   },
+   "3xs": {
+    "$type": "dimension",
+    "$value": "{radius.squircle-3xs}",
+    "$description": "The 3xs corner radius, on the scale of the active corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-3xs",
+      "tier": "semantic"
+     }
+    }
+   },
+   "2xs": {
+    "$type": "dimension",
+    "$value": "{radius.squircle-2xs}",
+    "$description": "The 2xs corner radius, on the scale of the active corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-2xs",
+      "tier": "semantic"
+     }
+    }
+   },
+   "xs": {
+    "$type": "dimension",
+    "$value": "{radius.squircle-xs}",
+    "$description": "The xs corner radius, on the scale of the active corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-xs",
+      "tier": "semantic"
+     }
+    }
+   },
+   "sm": {
+    "$type": "dimension",
+    "$value": "{radius.squircle-sm}",
+    "$description": "The sm corner radius, on the scale of the active corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-sm",
+      "tier": "semantic"
+     }
+    }
+   },
+   "md": {
+    "$type": "dimension",
+    "$value": "{radius.squircle-md}",
+    "$description": "The md corner radius, on the scale of the active corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-md",
+      "tier": "semantic"
+     }
+    }
+   },
+   "lg": {
+    "$type": "dimension",
+    "$value": "{radius.squircle-lg}",
+    "$description": "The lg corner radius, on the scale of the active corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-lg",
+      "tier": "semantic"
+     }
+    }
+   },
+   "xl": {
+    "$type": "dimension",
+    "$value": "{radius.squircle-xl}",
+    "$description": "The xl corner radius, on the scale of the active corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-xl",
+      "tier": "semantic"
+     }
+    }
+   },
+   "2xl": {
+    "$type": "dimension",
+    "$value": "{radius.squircle-2xl}",
+    "$description": "The 2xl corner radius, on the scale of the active corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-2xl",
+      "tier": "semantic"
+     }
+    }
+   },
+   "3xl": {
+    "$type": "dimension",
+    "$value": "{radius.squircle-3xl}",
+    "$description": "The 3xl corner radius, on the scale of the active corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-3xl",
+      "tier": "semantic"
+     }
+    }
+   },
+   "4xl": {
+    "$type": "dimension",
+    "$value": "{radius.squircle-4xl}",
+    "$description": "The 4xl corner radius, on the scale of the active corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-4xl",
+      "tier": "semantic"
+     }
+    }
+   },
+   "5xl": {
+    "$type": "dimension",
+    "$value": "{radius.squircle-5xl}",
+    "$description": "The 5xl corner radius, on the scale of the active corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-5xl",
+      "tier": "semantic"
+     }
+    }
+   },
+   "full": {
+    "$type": "dimension",
+    "$value": "{radius.full}",
+    "$description": "The pill, the same under every corner shape.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-radius-full",
+      "tier": "semantic"
+     }
+    }
+   }
+  }
+ }
+}

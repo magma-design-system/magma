@@ -1,0 +1,1389 @@
+{
+ "tokens": {
+  "--tone-neutral-01": {
+   "theme": "--color-tone-neutral-01",
+   "namespace": "--color",
+   "key": "tone-neutral-01"
+  },
+  "--tone-neutral-02": {
+   "theme": "--color-tone-neutral-02",
+   "namespace": "--color",
+   "key": "tone-neutral-02"
+  },
+  "--tone-neutral-03": {
+   "theme": "--color-tone-neutral-03",
+   "namespace": "--color",
+   "key": "tone-neutral-03"
+  },
+  "--tone-neutral-04": {
+   "theme": "--color-tone-neutral-04",
+   "namespace": "--color",
+   "key": "tone-neutral-04"
+  },
+  "--tone-neutral-05": {
+   "theme": "--color-tone-neutral-05",
+   "namespace": "--color",
+   "key": "tone-neutral-05"
+  },
+  "--tone-neutral-06": {
+   "theme": "--color-tone-neutral-06",
+   "namespace": "--color",
+   "key": "tone-neutral-06"
+  },
+  "--tone-neutral-07": {
+   "theme": "--color-tone-neutral-07",
+   "namespace": "--color",
+   "key": "tone-neutral-07"
+  },
+  "--tone-neutral-08": {
+   "theme": "--color-tone-neutral-08",
+   "namespace": "--color",
+   "key": "tone-neutral-08"
+  },
+  "--tone-neutral-09": {
+   "theme": "--color-tone-neutral-09",
+   "namespace": "--color",
+   "key": "tone-neutral-09"
+  },
+  "--tone-neutral-10": {
+   "theme": "--color-tone-neutral-10",
+   "namespace": "--color",
+   "key": "tone-neutral-10"
+  },
+  "--tone-neutral-seed": {
+   "theme": "--color-tone-neutral-seed",
+   "namespace": "--color",
+   "key": "tone-neutral-seed"
+  },
+  "--status-error-01": {
+   "theme": "--color-status-error-01",
+   "namespace": "--color",
+   "key": "status-error-01"
+  },
+  "--status-error-02": {
+   "theme": "--color-status-error-02",
+   "namespace": "--color",
+   "key": "status-error-02"
+  },
+  "--status-error-03": {
+   "theme": "--color-status-error-03",
+   "namespace": "--color",
+   "key": "status-error-03"
+  },
+  "--status-error-04": {
+   "theme": "--color-status-error-04",
+   "namespace": "--color",
+   "key": "status-error-04"
+  },
+  "--status-error-05": {
+   "theme": "--color-status-error-05",
+   "namespace": "--color",
+   "key": "status-error-05"
+  },
+  "--status-error-06": {
+   "theme": "--color-status-error-06",
+   "namespace": "--color",
+   "key": "status-error-06"
+  },
+  "--status-error-07": {
+   "theme": "--color-status-error-07",
+   "namespace": "--color",
+   "key": "status-error-07"
+  },
+  "--status-error-08": {
+   "theme": "--color-status-error-08",
+   "namespace": "--color",
+   "key": "status-error-08"
+  },
+  "--status-error-09": {
+   "theme": "--color-status-error-09",
+   "namespace": "--color",
+   "key": "status-error-09"
+  },
+  "--status-error-10": {
+   "theme": "--color-status-error-10",
+   "namespace": "--color",
+   "key": "status-error-10"
+  },
+  "--status-error": {
+   "theme": "--color-status-error",
+   "namespace": "--color",
+   "key": "status-error"
+  },
+  "--label-sky-01": {
+   "theme": "--color-label-sky-01",
+   "namespace": "--color",
+   "key": "label-sky-01"
+  },
+  "--label-sky-02": {
+   "theme": "--color-label-sky-02",
+   "namespace": "--color",
+   "key": "label-sky-02"
+  },
+  "--label-sky-03": {
+   "theme": "--color-label-sky-03",
+   "namespace": "--color",
+   "key": "label-sky-03"
+  },
+  "--label-sky-04": {
+   "theme": "--color-label-sky-04",
+   "namespace": "--color",
+   "key": "label-sky-04"
+  },
+  "--label-sky-05": {
+   "theme": "--color-label-sky-05",
+   "namespace": "--color",
+   "key": "label-sky-05"
+  },
+  "--label-sky-06": {
+   "theme": "--color-label-sky-06",
+   "namespace": "--color",
+   "key": "label-sky-06"
+  },
+  "--label-sky-07": {
+   "theme": "--color-label-sky-07",
+   "namespace": "--color",
+   "key": "label-sky-07"
+  },
+  "--label-sky-08": {
+   "theme": "--color-label-sky-08",
+   "namespace": "--color",
+   "key": "label-sky-08"
+  },
+  "--label-sky-09": {
+   "theme": "--color-label-sky-09",
+   "namespace": "--color",
+   "key": "label-sky-09"
+  },
+  "--label-sky-10": {
+   "theme": "--color-label-sky-10",
+   "namespace": "--color",
+   "key": "label-sky-10"
+  },
+  "--label-sky": {
+   "theme": "--color-label-sky",
+   "namespace": "--color",
+   "key": "label-sky"
+  },
+  "--variant-primary-01": {
+   "theme": "--color-variant-primary-01",
+   "namespace": "--color",
+   "key": "variant-primary-01"
+  },
+  "--variant-primary-02": {
+   "theme": "--color-variant-primary-02",
+   "namespace": "--color",
+   "key": "variant-primary-02"
+  },
+  "--variant-primary-03": {
+   "theme": "--color-variant-primary-03",
+   "namespace": "--color",
+   "key": "variant-primary-03"
+  },
+  "--variant-primary-04": {
+   "theme": "--color-variant-primary-04",
+   "namespace": "--color",
+   "key": "variant-primary-04"
+  },
+  "--variant-primary-05": {
+   "theme": "--color-variant-primary-05",
+   "namespace": "--color",
+   "key": "variant-primary-05"
+  },
+  "--variant-primary-06": {
+   "theme": "--color-variant-primary-06",
+   "namespace": "--color",
+   "key": "variant-primary-06"
+  },
+  "--variant-primary-07": {
+   "theme": "--color-variant-primary-07",
+   "namespace": "--color",
+   "key": "variant-primary-07"
+  },
+  "--variant-primary-08": {
+   "theme": "--color-variant-primary-08",
+   "namespace": "--color",
+   "key": "variant-primary-08"
+  },
+  "--variant-primary-09": {
+   "theme": "--color-variant-primary-09",
+   "namespace": "--color",
+   "key": "variant-primary-09"
+  },
+  "--variant-primary-10": {
+   "theme": "--color-variant-primary-10",
+   "namespace": "--color",
+   "key": "variant-primary-10"
+  },
+  "--variant-primary": {
+   "theme": "--color-variant-primary",
+   "namespace": "--color",
+   "key": "variant-primary"
+  },
+  "--brand-maggioli-01": {
+   "theme": "--color-brand-maggioli-01",
+   "namespace": "--color",
+   "key": "brand-maggioli-01"
+  },
+  "--brand-maggioli-02": {
+   "theme": "--color-brand-maggioli-02",
+   "namespace": "--color",
+   "key": "brand-maggioli-02"
+  },
+  "--brand-maggioli-03": {
+   "theme": "--color-brand-maggioli-03",
+   "namespace": "--color",
+   "key": "brand-maggioli-03"
+  },
+  "--brand-maggioli-04": {
+   "theme": "--color-brand-maggioli-04",
+   "namespace": "--color",
+   "key": "brand-maggioli-04"
+  },
+  "--brand-maggioli-05": {
+   "theme": "--color-brand-maggioli-05",
+   "namespace": "--color",
+   "key": "brand-maggioli-05"
+  },
+  "--brand-maggioli-06": {
+   "theme": "--color-brand-maggioli-06",
+   "namespace": "--color",
+   "key": "brand-maggioli-06"
+  },
+  "--brand-maggioli-07": {
+   "theme": "--color-brand-maggioli-07",
+   "namespace": "--color",
+   "key": "brand-maggioli-07"
+  },
+  "--brand-maggioli-08": {
+   "theme": "--color-brand-maggioli-08",
+   "namespace": "--color",
+   "key": "brand-maggioli-08"
+  },
+  "--brand-maggioli-09": {
+   "theme": "--color-brand-maggioli-09",
+   "namespace": "--color",
+   "key": "brand-maggioli-09"
+  },
+  "--brand-maggioli-10": {
+   "theme": "--color-brand-maggioli-10",
+   "namespace": "--color",
+   "key": "brand-maggioli-10"
+  },
+  "--brand-maggioli": {
+   "theme": "--color-brand-maggioli",
+   "namespace": "--color",
+   "key": "brand-maggioli"
+  },
+  "--surface-neutral-sunken": {
+   "theme": "--color-surface-neutral-sunken",
+   "namespace": "--color",
+   "key": "surface-neutral-sunken"
+  },
+  "--surface-neutral-muted": {
+   "theme": "--color-surface-neutral-muted",
+   "namespace": "--color",
+   "key": "surface-neutral-muted"
+  },
+  "--surface-neutral-default": {
+   "theme": "--color-surface-neutral-default",
+   "namespace": "--color",
+   "key": "surface-neutral-default"
+  },
+  "--surface-neutral-raised": {
+   "theme": "--color-surface-neutral-raised",
+   "namespace": "--color",
+   "key": "surface-neutral-raised"
+  },
+  "--surface-neutral-overlay": {
+   "theme": "--color-surface-neutral-overlay",
+   "namespace": "--color",
+   "key": "surface-neutral-overlay"
+  },
+  "--border-neutral-muted": {
+   "theme": "--color-border-neutral-muted",
+   "namespace": "--color",
+   "key": "border-neutral-muted"
+  },
+  "--border-neutral-default": {
+   "theme": "--color-border-neutral-default",
+   "namespace": "--color",
+   "key": "border-neutral-default"
+  },
+  "--border-neutral-strong": {
+   "theme": "--color-border-neutral-strong",
+   "namespace": "--color",
+   "key": "border-neutral-strong"
+  },
+  "--border-error-muted": {
+   "theme": "--color-border-error-muted",
+   "namespace": "--color",
+   "key": "border-error-muted"
+  },
+  "--border-error-default": {
+   "theme": "--color-border-error-default",
+   "namespace": "--color",
+   "key": "border-error-default"
+  },
+  "--border-error-strong": {
+   "theme": "--color-border-error-strong",
+   "namespace": "--color",
+   "key": "border-error-strong"
+  },
+  "--text-neutral-default": {
+   "theme": "--color-text-neutral-default",
+   "namespace": "--color",
+   "key": "text-neutral-default"
+  },
+  "--text-neutral-muted": {
+   "theme": "--color-text-neutral-muted",
+   "namespace": "--color",
+   "key": "text-neutral-muted"
+  },
+  "--text-neutral-subtle": {
+   "theme": "--color-text-neutral-subtle",
+   "namespace": "--color",
+   "key": "text-neutral-subtle"
+  },
+  "--text-neutral-disabled": {
+   "theme": "--color-text-neutral-disabled",
+   "namespace": "--color",
+   "key": "text-neutral-disabled"
+  },
+  "--text-error-default": {
+   "theme": "--color-text-error-default",
+   "namespace": "--color",
+   "key": "text-error-default"
+  },
+  "--text-error-muted": {
+   "theme": "--color-text-error-muted",
+   "namespace": "--color",
+   "key": "text-error-muted"
+  },
+  "--text-error-subtle": {
+   "theme": "--color-text-error-subtle",
+   "namespace": "--color",
+   "key": "text-error-subtle"
+  },
+  "--text-error-disabled": {
+   "theme": "--color-text-error-disabled",
+   "namespace": "--color",
+   "key": "text-error-disabled"
+  },
+  "--font-title": {
+   "theme": "--font-title",
+   "namespace": "--font",
+   "key": "title"
+  },
+  "--font-info": {
+   "theme": "--font-info",
+   "namespace": "--font",
+   "key": "info"
+  },
+  "--font-read": {
+   "theme": "--font-read",
+   "namespace": "--font",
+   "key": "read"
+  },
+  "--font-code": {
+   "theme": "--font-code",
+   "namespace": "--font",
+   "key": "code"
+  },
+  "--spacing": {
+   "theme": "--spacing",
+   "namespace": "--spacing",
+   "key": null
+  },
+  "--spacing-none": {
+   "theme": "--spacing-none",
+   "namespace": "--spacing",
+   "key": "none",
+   "shadowed": {
+    "max-w": "--max-width-none"
+   }
+  },
+  "--spacing-xs": {
+   "theme": "--spacing-xs",
+   "namespace": "--spacing",
+   "key": "xs",
+   "shadowed": {
+    "basis": "--flex-basis-xs",
+    "leading": "--leading-xs",
+    "max-w": "--max-width-xs",
+    "min-w": "--min-width-xs",
+    "w": "--width-xs"
+   }
+  },
+  "--spacing-sm": {
+   "theme": "--spacing-sm",
+   "namespace": "--spacing",
+   "key": "sm",
+   "shadowed": {
+    "basis": "--flex-basis-sm",
+    "leading": "--leading-sm",
+    "max-w": "--max-width-sm",
+    "min-w": "--min-width-sm",
+    "w": "--width-sm"
+   }
+  },
+  "--spacing-md": {
+   "theme": "--spacing-md",
+   "namespace": "--spacing",
+   "key": "md",
+   "shadowed": {
+    "basis": "--flex-basis-md",
+    "leading": "--leading-md",
+    "max-w": "--max-width-md",
+    "min-w": "--min-width-md",
+    "w": "--width-md"
+   }
+  },
+  "--spacing-lg": {
+   "theme": "--spacing-lg",
+   "namespace": "--spacing",
+   "key": "lg",
+   "shadowed": {
+    "basis": "--flex-basis-lg",
+    "leading": "--leading-lg",
+    "max-w": "--max-width-lg",
+    "min-w": "--min-width-lg",
+    "w": "--width-lg"
+   }
+  },
+  "--spacing-xl": {
+   "theme": "--spacing-xl",
+   "namespace": "--spacing",
+   "key": "xl",
+   "shadowed": {
+    "basis": "--flex-basis-xl",
+    "leading": "--leading-xl",
+    "max-w": "--max-width-xl",
+    "min-w": "--min-width-xl",
+    "w": "--width-xl"
+   }
+  },
+  "--spacing-2xl": {
+   "theme": "--spacing-2xl",
+   "namespace": "--spacing",
+   "key": "2xl",
+   "shadowed": {
+    "basis": "--flex-basis-2xl",
+    "leading": "--leading-2xl",
+    "max-w": "--max-width-2xl",
+    "min-w": "--min-width-2xl",
+    "w": "--width-2xl"
+   }
+  },
+  "--spacing-3xl": {
+   "theme": "--spacing-3xl",
+   "namespace": "--spacing",
+   "key": "3xl",
+   "shadowed": {
+    "basis": "--flex-basis-3xl",
+    "leading": "--leading-3xl",
+    "max-w": "--max-width-3xl",
+    "min-w": "--min-width-3xl",
+    "w": "--width-3xl"
+   }
+  },
+  "--spacing-4xl": {
+   "theme": "--spacing-4xl",
+   "namespace": "--spacing",
+   "key": "4xl",
+   "shadowed": {
+    "basis": "--flex-basis-4xl",
+    "leading": "--leading-4xl",
+    "max-w": "--max-width-4xl",
+    "min-w": "--min-width-4xl",
+    "w": "--width-4xl"
+   }
+  },
+  "--spacing-phrase": {
+   "theme": "--spacing-phrase",
+   "namespace": "--spacing",
+   "key": "phrase"
+  },
+  "--spacing-prose": {
+   "theme": "--spacing-prose",
+   "namespace": "--spacing",
+   "key": "prose",
+   "shadowed": {
+    "max-w": "--max-width-prose"
+   }
+  },
+  "--spacing-text": {
+   "theme": "--spacing-text",
+   "namespace": "--spacing",
+   "key": "text"
+  },
+  "--spacing-title": {
+   "theme": "--spacing-title",
+   "namespace": "--spacing",
+   "key": "title"
+  },
+  "--radius-none": {
+   "theme": "--radius-none",
+   "namespace": "--radius",
+   "key": "none"
+  },
+  "--radius-3xs": {
+   "theme": "--radius-3xs",
+   "namespace": "--radius",
+   "key": "3xs"
+  },
+  "--radius-2xs": {
+   "theme": "--radius-2xs",
+   "namespace": "--radius",
+   "key": "2xs"
+  },
+  "--radius-xs": {
+   "theme": "--radius-xs",
+   "namespace": "--radius",
+   "key": "xs"
+  },
+  "--radius-sm": {
+   "theme": "--radius-sm",
+   "namespace": "--radius",
+   "key": "sm"
+  },
+  "--radius-md": {
+   "theme": "--radius-md",
+   "namespace": "--radius",
+   "key": "md"
+  },
+  "--radius-lg": {
+   "theme": "--radius-lg",
+   "namespace": "--radius",
+   "key": "lg"
+  },
+  "--radius-xl": {
+   "theme": "--radius-xl",
+   "namespace": "--radius",
+   "key": "xl"
+  },
+  "--radius-2xl": {
+   "theme": "--radius-2xl",
+   "namespace": "--radius",
+   "key": "2xl"
+  },
+  "--radius-3xl": {
+   "theme": "--radius-3xl",
+   "namespace": "--radius",
+   "key": "3xl"
+  },
+  "--radius-4xl": {
+   "theme": "--radius-4xl",
+   "namespace": "--radius",
+   "key": "4xl"
+  },
+  "--radius-5xl": {
+   "theme": "--radius-5xl",
+   "namespace": "--radius",
+   "key": "5xl"
+  },
+  "--radius-full": {
+   "theme": "--radius-full",
+   "namespace": "--radius",
+   "key": "full"
+  },
+  "--radius-squircle-3xs": {
+   "theme": "--radius-squircle-3xs",
+   "namespace": "--radius",
+   "key": "squircle-3xs"
+  },
+  "--radius-squircle-2xs": {
+   "theme": "--radius-squircle-2xs",
+   "namespace": "--radius",
+   "key": "squircle-2xs"
+  },
+  "--radius-squircle-xs": {
+   "theme": "--radius-squircle-xs",
+   "namespace": "--radius",
+   "key": "squircle-xs"
+  },
+  "--radius-squircle-sm": {
+   "theme": "--radius-squircle-sm",
+   "namespace": "--radius",
+   "key": "squircle-sm"
+  },
+  "--radius-squircle-md": {
+   "theme": "--radius-squircle-md",
+   "namespace": "--radius",
+   "key": "squircle-md"
+  },
+  "--radius-squircle-lg": {
+   "theme": "--radius-squircle-lg",
+   "namespace": "--radius",
+   "key": "squircle-lg"
+  },
+  "--radius-squircle-xl": {
+   "theme": "--radius-squircle-xl",
+   "namespace": "--radius",
+   "key": "squircle-xl"
+  },
+  "--radius-squircle-2xl": {
+   "theme": "--radius-squircle-2xl",
+   "namespace": "--radius",
+   "key": "squircle-2xl"
+  },
+  "--radius-squircle-3xl": {
+   "theme": "--radius-squircle-3xl",
+   "namespace": "--radius",
+   "key": "squircle-3xl"
+  },
+  "--radius-squircle-4xl": {
+   "theme": "--radius-squircle-4xl",
+   "namespace": "--radius",
+   "key": "squircle-4xl"
+  },
+  "--radius-squircle-5xl": {
+   "theme": "--radius-squircle-5xl",
+   "namespace": "--radius",
+   "key": "squircle-5xl"
+  },
+  "--magma-surface-sunken": {
+   "theme": "--color-surface-sunken",
+   "description": "Below the page: wells, insets, code blocks, tracks.",
+   "namespace": "--color",
+   "key": "surface-sunken"
+  },
+  "--magma-surface-muted": {
+   "theme": "--color-surface-muted",
+   "description": "Same-plane grouping on the page: zebra rows, a subtle section.",
+   "namespace": "--color",
+   "key": "surface-muted"
+  },
+  "--magma-surface-default": {
+   "theme": "--color-surface-default",
+   "description": "The page canvas, the background of the body.",
+   "namespace": "--color",
+   "key": "surface-default"
+  },
+  "--magma-surface-raised": {
+   "theme": "--color-surface-raised",
+   "description": "Above the page: cards, panels, sticky headers.",
+   "namespace": "--color",
+   "key": "surface-raised"
+  },
+  "--magma-surface-overlay": {
+   "theme": "--color-surface-overlay",
+   "description": "Floating above everything: modal, dropdown, popover, sheet.",
+   "namespace": "--color",
+   "key": "surface-overlay"
+  },
+  "--magma-wash-soft": {
+   "theme": "--color-wash-soft",
+   "description": "A neutral pill or chip, the least marked.",
+   "namespace": "--color",
+   "key": "wash-soft"
+  },
+  "--magma-wash-base": {
+   "theme": "--color-wash-base",
+   "description": "A neutral pill or chip, at its default prominence.",
+   "namespace": "--color",
+   "key": "wash-base"
+  },
+  "--magma-wash-strong": {
+   "theme": "--color-wash-strong",
+   "description": "A neutral pill or chip, the most marked.",
+   "namespace": "--color",
+   "key": "wash-strong"
+  },
+  "--magma-shadow-ink": {
+   "theme": "--color-shadow-ink",
+   "description": "The colour of a projected shadow, to compose with your own geometry and alpha.",
+   "namespace": "--color",
+   "key": "shadow-ink"
+  },
+  "--magma-text-default": {
+   "theme": "--color-fg-default",
+   "description": "Body text, titles and primary data.",
+   "namespace": "--color",
+   "key": "fg-default"
+  },
+  "--magma-text-muted": {
+   "theme": "--color-fg-muted",
+   "description": "Secondary text that is still essential, such as an address or a phone number.",
+   "namespace": "--color",
+   "key": "fg-muted"
+  },
+  "--magma-text-subtle": {
+   "theme": "--color-fg-subtle",
+   "description": "Non-essential text only: captions, units, hints.",
+   "namespace": "--color",
+   "key": "fg-subtle"
+  },
+  "--magma-text-disabled": {
+   "theme": "--color-fg-disabled",
+   "description": "The labels of disabled controls.",
+   "namespace": "--color",
+   "key": "fg-disabled"
+  },
+  "--magma-text-on-emphasis": {
+   "theme": "--color-fg-on-emphasis",
+   "description": "Text and icons on a solid fill.",
+   "namespace": "--color",
+   "key": "fg-on-emphasis"
+  },
+  "--magma-border-muted": {
+   "theme": "--color-border-muted",
+   "description": "Decorative borders: dividers, the grid of a table.",
+   "namespace": "--color",
+   "key": "border-muted"
+  },
+  "--magma-border-default": {
+   "theme": "--color-border-default",
+   "description": "Functional outlines: inputs, cards.",
+   "namespace": "--color",
+   "key": "border-default"
+  },
+  "--magma-border-strong": {
+   "theme": "--color-border-strong",
+   "description": "A border that conveys a state, such as selected.",
+   "namespace": "--color",
+   "key": "border-strong"
+  },
+  "--magma-border-focus": {
+   "theme": "--color-border-focus",
+   "description": "Focus indication; follows the accent.",
+   "namespace": "--color",
+   "key": "border-focus"
+  },
+  "--magma-danger-wash-soft": {
+   "theme": "--color-danger-wash-soft",
+   "description": "The danger background, the least marked.",
+   "namespace": "--color",
+   "key": "danger-wash-soft"
+  },
+  "--magma-danger-wash-base": {
+   "theme": "--color-danger-wash-base",
+   "description": "The danger background, at its default prominence.",
+   "namespace": "--color",
+   "key": "danger-wash-base"
+  },
+  "--magma-danger-wash-strong": {
+   "theme": "--color-danger-wash-strong",
+   "description": "The danger background, the most marked: icons only, no essential text.",
+   "namespace": "--color",
+   "key": "danger-wash-strong"
+  },
+  "--magma-danger-text-default": {
+   "theme": "--color-danger-fg-default",
+   "description": "Danger text on the danger background.",
+   "namespace": "--color",
+   "key": "danger-fg-default"
+  },
+  "--magma-danger-text-muted": {
+   "theme": "--color-danger-fg-muted",
+   "description": "Secondary danger text on the danger background.",
+   "namespace": "--color",
+   "key": "danger-fg-muted"
+  },
+  "--magma-danger-text-subtle": {
+   "theme": "--color-danger-fg-subtle",
+   "description": "Non-essential danger text on the danger background.",
+   "namespace": "--color",
+   "key": "danger-fg-subtle"
+  },
+  "--magma-danger-text-disabled": {
+   "theme": "--color-danger-fg-disabled",
+   "description": "Disabled danger text on the danger background.",
+   "namespace": "--color",
+   "key": "danger-fg-disabled"
+  },
+  "--magma-danger-border-muted": {
+   "theme": "--color-danger-border-muted",
+   "description": "The decorative danger border.",
+   "namespace": "--color",
+   "key": "danger-border-muted"
+  },
+  "--magma-danger-border-default": {
+   "theme": "--color-danger-border-default",
+   "description": "The functional danger border.",
+   "namespace": "--color",
+   "key": "danger-border-default"
+  },
+  "--magma-danger-border-strong": {
+   "theme": "--color-danger-border-strong",
+   "description": "The danger border that conveys a state.",
+   "namespace": "--color",
+   "key": "danger-border-strong"
+  },
+  "--magma-danger-emphasis": {
+   "theme": "--color-danger-emphasis",
+   "description": "The solid danger fill: a solid badge, a button.",
+   "namespace": "--color",
+   "key": "danger-emphasis"
+  },
+  "--magma-danger-emphasis-hover": {
+   "theme": "--color-danger-emphasis-hover",
+   "description": "The solid danger fill, hovered.",
+   "namespace": "--color",
+   "key": "danger-emphasis-hover"
+  },
+  "--magma-danger-emphasis-active": {
+   "theme": "--color-danger-emphasis-active",
+   "description": "The solid danger fill, pressed.",
+   "namespace": "--color",
+   "key": "danger-emphasis-active"
+  },
+  "--magma-danger-on-emphasis": {
+   "theme": "--color-danger-on-emphasis",
+   "description": "Text and icons on the solid danger fill.",
+   "namespace": "--color",
+   "key": "danger-on-emphasis"
+  },
+  "--magma-danger-surface": {
+   "theme": "--color-danger-surface",
+   "description": "Shortcut for the danger background at its default prominence (wash-base).",
+   "namespace": "--color",
+   "key": "danger-surface"
+  },
+  "--magma-danger-fg": {
+   "theme": "--color-danger-fg",
+   "description": "Shortcut for the default danger text (text-default).",
+   "namespace": "--color",
+   "key": "danger-fg"
+  },
+  "--magma-danger-border": {
+   "theme": "--color-danger-border",
+   "description": "Shortcut for the functional danger border (border-default).",
+   "namespace": "--color",
+   "key": "danger-border"
+  },
+  "--magma-surface-inverse": {
+   "theme": "--color-surface-inverse",
+   "description": "A chip that flips with the mode: dark on a light page, light on a dark one.",
+   "namespace": "--color",
+   "key": "surface-inverse"
+  },
+  "--magma-surface-inverse-muted": {
+   "theme": "--color-surface-inverse-muted",
+   "description": "The inverse chip, one step quieter.",
+   "namespace": "--color",
+   "key": "surface-inverse-muted"
+  },
+  "--magma-accent-surface": {
+   "theme": "--color-accent-surface",
+   "description": "A background tinted with the brand accent: a selected row or chip.",
+   "namespace": "--color",
+   "key": "accent-surface"
+  },
+  "--magma-accent-fg": {
+   "theme": "--color-accent-fg",
+   "description": "Text or an icon in the brand accent on a neutral surface, such as a link.",
+   "namespace": "--color",
+   "key": "accent-fg"
+  },
+  "--magma-accent-border": {
+   "theme": "--color-accent-border",
+   "description": "A border tinted with the brand accent.",
+   "namespace": "--color",
+   "key": "accent-border"
+  },
+  "--magma-accent-emphasis": {
+   "theme": "--color-accent-emphasis",
+   "description": "The solid fill of the brand accent: the primary action.",
+   "namespace": "--color",
+   "key": "accent-emphasis"
+  },
+  "--magma-accent-emphasis-hover": {
+   "theme": "--color-accent-emphasis-hover",
+   "description": "The solid fill of the brand accent, hovered.",
+   "namespace": "--color",
+   "key": "accent-emphasis-hover"
+  },
+  "--magma-accent-emphasis-active": {
+   "theme": "--color-accent-emphasis-active",
+   "description": "The solid fill of the brand accent, pressed.",
+   "namespace": "--color",
+   "key": "accent-emphasis-active"
+  },
+  "--magma-accent-surface-hover": {
+   "theme": "--color-accent-surface-hover",
+   "description": "A background tinted with the brand accent, hovered.",
+   "namespace": "--color",
+   "key": "accent-surface-hover"
+  },
+  "--magma-accent-surface-subtle": {
+   "theme": "--color-accent-surface-subtle",
+   "description": "A background tinted with the brand accent, lighter.",
+   "namespace": "--color",
+   "key": "accent-surface-subtle"
+  },
+  "--magma-accent-on-emphasis": {
+   "theme": "--color-accent-on-emphasis",
+   "description": "Text and icons on the solid fill of the brand accent.",
+   "namespace": "--color",
+   "key": "accent-on-emphasis"
+  }
+ },
+ "keywords": {
+  "--max-width-none": {
+   "value": "none",
+   "namespace": "--max-width",
+   "key": "none"
+  }
+ },
+ "namespaces": {
+  "--color": {
+   "utilities": [
+    "accent",
+    "bg",
+    "border",
+    "border-b",
+    "border-be",
+    "border-bs",
+    "border-e",
+    "border-l",
+    "border-r",
+    "border-s",
+    "border-t",
+    "border-x",
+    "border-y",
+    "caret",
+    "decoration",
+    "divide",
+    "drop-shadow",
+    "fill",
+    "from",
+    "inset-ring",
+    "inset-shadow",
+    "mask-b-from",
+    "mask-b-to",
+    "mask-conic-from",
+    "mask-conic-to",
+    "mask-l-from",
+    "mask-l-to",
+    "mask-linear-from",
+    "mask-linear-to",
+    "mask-r-from",
+    "mask-r-to",
+    "mask-radial-from",
+    "mask-radial-to",
+    "mask-t-from",
+    "mask-t-to",
+    "mask-x-from",
+    "mask-x-to",
+    "mask-y-from",
+    "mask-y-to",
+    "outline",
+    "placeholder",
+    "ring",
+    "ring-offset",
+    "scrollbar-thumb",
+    "scrollbar-track",
+    "shadow",
+    "stroke",
+    "text",
+    "text-shadow",
+    "to",
+    "via"
+   ],
+   "variants": []
+  },
+  "--font": {
+   "utilities": [
+    "font"
+   ],
+   "variants": []
+  },
+  "--text": {
+   "utilities": [
+    "text"
+   ],
+   "variants": []
+  },
+  "--leading": {
+   "utilities": [
+    "leading"
+   ],
+   "variants": []
+  },
+  "--spacing": {
+   "utilities": [
+    "-bottom",
+    "-indent",
+    "-inset",
+    "-inset-be",
+    "-inset-bs",
+    "-inset-e",
+    "-inset-s",
+    "-inset-x",
+    "-inset-y",
+    "-left",
+    "-m",
+    "-mb",
+    "-mbe",
+    "-mbs",
+    "-me",
+    "-ml",
+    "-mr",
+    "-ms",
+    "-mt",
+    "-mx",
+    "-my",
+    "-right",
+    "-scroll-m",
+    "-scroll-mb",
+    "-scroll-mbe",
+    "-scroll-mbs",
+    "-scroll-me",
+    "-scroll-ml",
+    "-scroll-mr",
+    "-scroll-ms",
+    "-scroll-mt",
+    "-scroll-mx",
+    "-scroll-my",
+    "-space-x",
+    "-space-y",
+    "-top",
+    "-translate",
+    "-translate-x",
+    "-translate-y",
+    "-translate-z",
+    "basis",
+    "block",
+    "border-spacing",
+    "border-spacing-x",
+    "border-spacing-y",
+    "bottom",
+    "gap",
+    "gap-x",
+    "gap-y",
+    "h",
+    "indent",
+    "inline",
+    "inset",
+    "inset-be",
+    "inset-bs",
+    "inset-e",
+    "inset-s",
+    "inset-x",
+    "inset-y",
+    "leading",
+    "left",
+    "m",
+    "max-block",
+    "max-h",
+    "max-inline",
+    "max-w",
+    "mb",
+    "mbe",
+    "mbs",
+    "me",
+    "min-block",
+    "min-h",
+    "min-inline",
+    "min-w",
+    "ml",
+    "mr",
+    "ms",
+    "mt",
+    "mx",
+    "my",
+    "p",
+    "pb",
+    "pbe",
+    "pbs",
+    "pe",
+    "pl",
+    "pr",
+    "ps",
+    "pt",
+    "px",
+    "py",
+    "right",
+    "scroll-m",
+    "scroll-mb",
+    "scroll-mbe",
+    "scroll-mbs",
+    "scroll-me",
+    "scroll-ml",
+    "scroll-mr",
+    "scroll-ms",
+    "scroll-mt",
+    "scroll-mx",
+    "scroll-my",
+    "scroll-p",
+    "scroll-pb",
+    "scroll-pbe",
+    "scroll-pbs",
+    "scroll-pe",
+    "scroll-pl",
+    "scroll-pr",
+    "scroll-ps",
+    "scroll-pt",
+    "scroll-px",
+    "scroll-py",
+    "size",
+    "space-x",
+    "space-y",
+    "top",
+    "translate",
+    "translate-x",
+    "translate-y",
+    "translate-z",
+    "w"
+   ],
+   "variants": []
+  },
+  "--container": {
+   "utilities": [
+    "basis",
+    "columns",
+    "inline",
+    "max-inline",
+    "max-w",
+    "min-inline",
+    "min-w",
+    "w"
+   ],
+   "variants": [
+    "@*",
+    "@max-*",
+    "@min-*"
+   ]
+  },
+  "--breakpoint": {
+   "utilities": [],
+   "variants": [
+    "*",
+    "max-*",
+    "min-*",
+    "not-*"
+   ]
+  },
+  "--aspect": {
+   "utilities": [
+    "aspect"
+   ],
+   "variants": []
+  },
+  "--ease": {
+   "utilities": [
+    "ease"
+   ],
+   "variants": []
+  },
+  "--radius": {
+   "utilities": [
+    "rounded",
+    "rounded-b",
+    "rounded-bl",
+    "rounded-br",
+    "rounded-e",
+    "rounded-ee",
+    "rounded-es",
+    "rounded-l",
+    "rounded-r",
+    "rounded-s",
+    "rounded-se",
+    "rounded-ss",
+    "rounded-t",
+    "rounded-tl",
+    "rounded-tr"
+   ],
+   "variants": []
+  },
+  "--shadow": {
+   "utilities": [
+    "shadow"
+   ],
+   "variants": []
+  },
+  "--max-width": {
+   "utilities": [
+    "max-w"
+   ],
+   "variants": []
+  }
+ },
+ "spacing": {
+  "multiplier": "--spacing",
+  "value": "0.0025rem",
+  "utilities": [
+   "-bottom",
+   "-indent",
+   "-inset",
+   "-inset-be",
+   "-inset-bs",
+   "-inset-e",
+   "-inset-s",
+   "-inset-x",
+   "-inset-y",
+   "-left",
+   "-m",
+   "-mb",
+   "-mbe",
+   "-mbs",
+   "-me",
+   "-ml",
+   "-mr",
+   "-ms",
+   "-mt",
+   "-mx",
+   "-my",
+   "-right",
+   "-scroll-m",
+   "-scroll-mb",
+   "-scroll-mbe",
+   "-scroll-mbs",
+   "-scroll-me",
+   "-scroll-ml",
+   "-scroll-mr",
+   "-scroll-ms",
+   "-scroll-mt",
+   "-scroll-mx",
+   "-scroll-my",
+   "-space-x",
+   "-space-y",
+   "-top",
+   "-translate",
+   "-translate-x",
+   "-translate-y",
+   "-translate-z",
+   "basis",
+   "block",
+   "border-spacing",
+   "border-spacing-x",
+   "border-spacing-y",
+   "bottom",
+   "gap",
+   "gap-x",
+   "gap-y",
+   "h",
+   "indent",
+   "inline",
+   "inset",
+   "inset-be",
+   "inset-bs",
+   "inset-e",
+   "inset-s",
+   "inset-x",
+   "inset-y",
+   "leading",
+   "left",
+   "m",
+   "mask-b-from",
+   "mask-b-to",
+   "mask-conic-from",
+   "mask-conic-to",
+   "mask-l-from",
+   "mask-l-to",
+   "mask-linear-from",
+   "mask-linear-to",
+   "mask-r-from",
+   "mask-r-to",
+   "mask-radial-from",
+   "mask-radial-to",
+   "mask-t-from",
+   "mask-t-to",
+   "mask-x-from",
+   "mask-x-to",
+   "mask-y-from",
+   "mask-y-to",
+   "max-block",
+   "max-h",
+   "max-inline",
+   "max-w",
+   "mb",
+   "mbe",
+   "mbs",
+   "me",
+   "min-block",
+   "min-h",
+   "min-inline",
+   "min-w",
+   "ml",
+   "mr",
+   "ms",
+   "mt",
+   "mx",
+   "my",
+   "p",
+   "pb",
+   "pbe",
+   "pbs",
+   "pe",
+   "pl",
+   "pr",
+   "ps",
+   "pt",
+   "px",
+   "py",
+   "right",
+   "scroll-m",
+   "scroll-mb",
+   "scroll-mbe",
+   "scroll-mbs",
+   "scroll-me",
+   "scroll-ml",
+   "scroll-mr",
+   "scroll-ms",
+   "scroll-mt",
+   "scroll-mx",
+   "scroll-my",
+   "scroll-p",
+   "scroll-pb",
+   "scroll-pbe",
+   "scroll-pbs",
+   "scroll-pe",
+   "scroll-pl",
+   "scroll-pr",
+   "scroll-ps",
+   "scroll-pt",
+   "scroll-px",
+   "scroll-py",
+   "size",
+   "space-x",
+   "space-y",
+   "top",
+   "translate",
+   "translate-x",
+   "translate-y",
+   "translate-z",
+   "w"
+  ],
+  "keys": [
+   "none",
+   "xs",
+   "sm",
+   "md",
+   "lg",
+   "xl",
+   "2xl",
+   "3xl",
+   "4xl",
+   "phrase",
+   "prose",
+   "text",
+   "title"
+  ],
+  "steps": []
+ },
+ "utilities": {
+  "text-title-h3": {
+   "source": "@maggioli-design-system/styles/dist/tailwind/typography.css",
+   "apply": [
+    "antialiased",
+    "font-black",
+    "font-title",
+    "text-box-vertical-margin",
+    "text-size-title-h3"
+   ],
+   "tokens": [
+    "--font-title",
+    "--text-size-title-h3",
+    "--text-size-title-h3--line-height",
+    "--text-size-title-h3--letter-spacing",
+    "--text-size-title-h3--font-weight"
+   ],
+   "theme": [
+    "--font-weight-black"
+   ],
+   "css": ".text-title-h3 {\n  min-height: auto;\n  text-box: trim-both text;\n  font-family: var(--font-title);\n  font-size: var(--text-size-title-h3);\n  line-height: var(--tw-leading, var(--text-size-title-h3--line-height));\n  letter-spacing: var(--tw-tracking, var(--text-size-title-h3--letter-spacing));\n  font-weight: var(--tw-font-weight, var(--text-size-title-h3--font-weight));\n  --tw-font-weight: var(--font-weight-black);\n  font-weight: var(--font-weight-black);\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}"
+  }
+ }
+}

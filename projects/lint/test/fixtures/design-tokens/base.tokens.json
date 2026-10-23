@@ -1,0 +1,3215 @@
+{
+ "spacing": {
+  "$description": "Spacing: --spacing is the step of the numeric utilities (p-400 is 400 times it, 16px); none to 4xl are named steps of the size scale; phrase, prose, text and title are line lengths in ch.",
+  "$root": {
+   "$type": "dimension",
+   "$value": {
+    "value": 0.0025,
+    "unit": "rem"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--spacing",
+     "tier": "primitive"
+    }
+   }
+  },
+  "none": {
+   "$type": "dimension",
+   "$value": {
+    "value": 0,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--spacing-none",
+     "tier": "primitive"
+    }
+   }
+  },
+  "xs": {
+   "$type": "dimension",
+   "$value": "{size.100}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--spacing-xs",
+     "tier": "primitive"
+    }
+   }
+  },
+  "sm": {
+   "$type": "dimension",
+   "$value": "{size.200}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--spacing-sm",
+     "tier": "primitive"
+    }
+   }
+  },
+  "md": {
+   "$type": "dimension",
+   "$value": "{size.400}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--spacing-md",
+     "tier": "primitive"
+    }
+   }
+  },
+  "lg": {
+   "$type": "dimension",
+   "$value": "{size.600}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--spacing-lg",
+     "tier": "primitive"
+    }
+   }
+  },
+  "xl": {
+   "$type": "dimension",
+   "$value": "{size.800}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--spacing-xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "2xl": {
+   "$type": "dimension",
+   "$value": "{size.1200}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--spacing-2xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "3xl": {
+   "$type": "dimension",
+   "$value": "{size.1600}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--spacing-3xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "4xl": {
+   "$type": "dimension",
+   "$value": "{size.2400}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--spacing-4xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "$extensions": {
+   "it.maggioli.magma": {
+    "cssOnly": [
+     {
+      "css": "--spacing-phrase",
+      "value": "50ch"
+     },
+     {
+      "css": "--spacing-prose",
+      "value": "65ch"
+     },
+     {
+      "css": "--spacing-text",
+      "value": "75ch"
+     },
+     {
+      "css": "--spacing-title",
+      "value": "30ch"
+     }
+    ]
+   }
+  }
+ },
+ "size": {
+  "0": {
+   "$type": "dimension",
+   "$value": {
+    "value": 0,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "25": {
+   "$type": "dimension",
+   "$value": {
+    "value": 1,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "50": {
+   "$type": "dimension",
+   "$value": {
+    "value": 2,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "100": {
+   "$type": "dimension",
+   "$value": {
+    "value": 4,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "150": {
+   "$type": "dimension",
+   "$value": {
+    "value": 6,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "200": {
+   "$type": "dimension",
+   "$value": {
+    "value": 8,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "250": {
+   "$type": "dimension",
+   "$value": {
+    "value": 10,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "300": {
+   "$type": "dimension",
+   "$value": {
+    "value": 12,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "350": {
+   "$type": "dimension",
+   "$value": {
+    "value": 14,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "400": {
+   "$type": "dimension",
+   "$value": {
+    "value": 16,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "500": {
+   "$type": "dimension",
+   "$value": {
+    "value": 20,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "600": {
+   "$type": "dimension",
+   "$value": {
+    "value": 24,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "700": {
+   "$type": "dimension",
+   "$value": {
+    "value": 28,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "800": {
+   "$type": "dimension",
+   "$value": {
+    "value": 32,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "900": {
+   "$type": "dimension",
+   "$value": {
+    "value": 36,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "1000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 40,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "1100": {
+   "$type": "dimension",
+   "$value": {
+    "value": 44,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "1200": {
+   "$type": "dimension",
+   "$value": {
+    "value": 48,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "1300": {
+   "$type": "dimension",
+   "$value": {
+    "value": 52,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "1400": {
+   "$type": "dimension",
+   "$value": {
+    "value": 56,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "1500": {
+   "$type": "dimension",
+   "$value": {
+    "value": 60,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "1600": {
+   "$type": "dimension",
+   "$value": {
+    "value": 64,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "2000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 80,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "2400": {
+   "$type": "dimension",
+   "$value": {
+    "value": 96,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "2800": {
+   "$type": "dimension",
+   "$value": {
+    "value": 112,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "3200": {
+   "$type": "dimension",
+   "$value": {
+    "value": 128,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "3600": {
+   "$type": "dimension",
+   "$value": {
+    "value": 144,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "4000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 160,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "4400": {
+   "$type": "dimension",
+   "$value": {
+    "value": 176,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "4800": {
+   "$type": "dimension",
+   "$value": {
+    "value": 192,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "5200": {
+   "$type": "dimension",
+   "$value": {
+    "value": 208,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "5600": {
+   "$type": "dimension",
+   "$value": {
+    "value": 224,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "6000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 240,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "6400": {
+   "$type": "dimension",
+   "$value": {
+    "value": 256,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "7200": {
+   "$type": "dimension",
+   "$value": {
+    "value": 288,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "8000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 320,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "9600": {
+   "$type": "dimension",
+   "$value": {
+    "value": 384,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "10000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 400,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "11200": {
+   "$type": "dimension",
+   "$value": {
+    "value": 448,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "12000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 480,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "12800": {
+   "$type": "dimension",
+   "$value": {
+    "value": 512,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "14200": {
+   "$type": "dimension",
+   "$value": {
+    "value": 568,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "16000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 640,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "18000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 720,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "19200": {
+   "$type": "dimension",
+   "$value": {
+    "value": 768,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "20000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 800,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "24000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 960,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "25600": {
+   "$type": "dimension",
+   "$value": {
+    "value": 1024,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "28800": {
+   "$type": "dimension",
+   "$value": {
+    "value": 1152,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "32000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 1280,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "34150": {
+   "$type": "dimension",
+   "$value": {
+    "value": 1366,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "36000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 1440,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "38400": {
+   "$type": "dimension",
+   "$value": {
+    "value": 1536,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "48000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 1920,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "64000": {
+   "$type": "dimension",
+   "$value": {
+    "value": 2560,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "tier": "primitive"
+    }
+   }
+  },
+  "$description": "The primitive length scale that spacing, container, border and radius name: size.100 is 4px, size.400 is 16px. The CSS publishes the resolved values, not these."
+ },
+ "radius": {
+  "$description": "Corner radii in two scales, round and squircle-* (about 1.7 times larger for the same visual corner): UI code uses --magma-radius-*, which picks the scale of the active corner shape.",
+  "none": {
+   "$type": "dimension",
+   "$value": {
+    "value": 0,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-none",
+     "tier": "primitive"
+    }
+   }
+  },
+  "3xs": {
+   "$type": "dimension",
+   "$value": "{size.100}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-3xs",
+     "tier": "primitive"
+    }
+   }
+  },
+  "2xs": {
+   "$type": "dimension",
+   "$value": "{size.150}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-2xs",
+     "tier": "primitive"
+    }
+   }
+  },
+  "xs": {
+   "$type": "dimension",
+   "$value": "{size.200}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-xs",
+     "tier": "primitive"
+    }
+   }
+  },
+  "sm": {
+   "$type": "dimension",
+   "$value": "{size.250}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-sm",
+     "tier": "primitive"
+    }
+   }
+  },
+  "md": {
+   "$type": "dimension",
+   "$value": "{size.300}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-md",
+     "tier": "primitive"
+    }
+   }
+  },
+  "lg": {
+   "$type": "dimension",
+   "$value": "{size.400}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-lg",
+     "tier": "primitive"
+    }
+   }
+  },
+  "xl": {
+   "$type": "dimension",
+   "$value": "{size.500}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "2xl": {
+   "$type": "dimension",
+   "$value": "{size.600}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-2xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "3xl": {
+   "$type": "dimension",
+   "$value": "{size.800}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-3xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "4xl": {
+   "$type": "dimension",
+   "$value": "{size.1200}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-4xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "5xl": {
+   "$type": "dimension",
+   "$value": "{size.1600}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-5xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "full": {
+   "$type": "dimension",
+   "$value": {
+    "value": 1000,
+    "unit": "px"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-full",
+     "tier": "primitive"
+    }
+   }
+  },
+  "squircle-3xs": {
+   "$type": "dimension",
+   "$value": "{size.150}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-squircle-3xs",
+     "tier": "primitive"
+    }
+   }
+  },
+  "squircle-2xs": {
+   "$type": "dimension",
+   "$value": "{size.250}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-squircle-2xs",
+     "tier": "primitive"
+    }
+   }
+  },
+  "squircle-xs": {
+   "$type": "dimension",
+   "$value": "{size.350}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-squircle-xs",
+     "tier": "primitive"
+    }
+   }
+  },
+  "squircle-sm": {
+   "$type": "dimension",
+   "$value": "{size.400}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-squircle-sm",
+     "tier": "primitive"
+    }
+   }
+  },
+  "squircle-md": {
+   "$type": "dimension",
+   "$value": "{size.500}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-squircle-md",
+     "tier": "primitive"
+    }
+   }
+  },
+  "squircle-lg": {
+   "$type": "dimension",
+   "$value": "{size.700}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-squircle-lg",
+     "tier": "primitive"
+    }
+   }
+  },
+  "squircle-xl": {
+   "$type": "dimension",
+   "$value": "{size.900}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-squircle-xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "squircle-2xl": {
+   "$type": "dimension",
+   "$value": "{size.1000}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-squircle-2xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "squircle-3xl": {
+   "$type": "dimension",
+   "$value": "{size.1400}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-squircle-3xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "squircle-4xl": {
+   "$type": "dimension",
+   "$value": "{size.2000}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-squircle-4xl",
+     "tier": "primitive"
+    }
+   }
+  },
+  "squircle-5xl": {
+   "$type": "dimension",
+   "$value": "{size.2800}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--radius-squircle-5xl",
+     "tier": "primitive"
+    }
+   }
+  }
+ },
+ "font": {
+  "$description": "The four font families, used through the typography styles: title (Roboto), info (Karla), read (Merriweather), code (Roboto Mono).",
+  "title": {
+   "$type": "fontFamily",
+   "$value": [
+    "Roboto",
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "sans-serif"
+   ],
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--font-title",
+     "tier": "primitive"
+    }
+   }
+  },
+  "info": {
+   "$type": "fontFamily",
+   "$value": [
+    "Karla",
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "sans-serif"
+   ],
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--font-info",
+     "tier": "primitive"
+    }
+   }
+  },
+  "read": {
+   "$type": "fontFamily",
+   "$value": [
+    "Merriweather",
+    "Times",
+    "Times New Roman",
+    "serif"
+   ],
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--font-read",
+     "tier": "primitive"
+    }
+   }
+  },
+  "code": {
+   "$type": "fontFamily",
+   "$value": [
+    "Roboto Mono",
+    "Courier New",
+    "monospace"
+   ],
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--font-code",
+     "tier": "primitive"
+    }
+   }
+  }
+ },
+ "palette": {
+  "$description": "The colour primitives the semantic roles are built from: they follow the light and dark mode, not the named themes or the contrast preference. Each ramp runs from 01, the most contrast against the page, to 10, the closest to it.",
+  "surface": {
+   "$description": "Background ladders by elevation (sunken, muted, default, raised, overlay), one per family: the neutral ones are behind the surface roles of each theme, no role uses the status ones today.",
+   "neutral": {
+    "$description": "The surface ladder of the neutral family.",
+    "sunken": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.9098,
+       0.9098,
+       0.9098
+      ],
+      "hex": "#e8e8e8"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--surface-neutral-sunken",
+       "tier": "primitive"
+      }
+     }
+    },
+    "muted": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.9216,
+       0.9216,
+       0.9216
+      ],
+      "hex": "#ebebeb"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--surface-neutral-muted",
+       "tier": "primitive"
+      }
+     }
+    },
+    "default": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.949,
+       0.949,
+       0.949
+      ],
+      "hex": "#f2f2f2"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--surface-neutral-default",
+       "tier": "primitive"
+      }
+     }
+    },
+    "raised": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.9725,
+       0.9725,
+       0.9725
+      ],
+      "hex": "#f8f8f8"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--surface-neutral-raised",
+       "tier": "primitive"
+      }
+     }
+    },
+    "overlay": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       1,
+       1,
+       1
+      ],
+      "hex": "#ffffff"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--surface-neutral-overlay",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  },
+  "variant": {
+   "$description": "The ramps behind the accents, each an alias of a brand or label ramp, step by step.",
+   "primary": {
+    "10": {
+     "$type": "color",
+     "$value": "{palette.brand.maggioli.10}",
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--variant-primary-10",
+       "tier": "primitive"
+      }
+     }
+    },
+    "$description": "The brand accent ramp behind magma.accent: an alias of brand.maggioli.",
+    "01": {
+     "$type": "color",
+     "$value": "{palette.brand.maggioli.01}",
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--variant-primary-01",
+       "tier": "primitive"
+      }
+     }
+    },
+    "02": {
+     "$type": "color",
+     "$value": "{palette.brand.maggioli.02}",
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--variant-primary-02",
+       "tier": "primitive"
+      }
+     }
+    },
+    "03": {
+     "$type": "color",
+     "$value": "{palette.brand.maggioli.03}",
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--variant-primary-03",
+       "tier": "primitive"
+      }
+     }
+    },
+    "04": {
+     "$type": "color",
+     "$value": "{palette.brand.maggioli.04}",
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--variant-primary-04",
+       "tier": "primitive"
+      }
+     }
+    },
+    "05": {
+     "$type": "color",
+     "$value": "{palette.brand.maggioli.05}",
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--variant-primary-05",
+       "tier": "primitive"
+      }
+     }
+    },
+    "06": {
+     "$type": "color",
+     "$value": "{palette.brand.maggioli.06}",
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--variant-primary-06",
+       "tier": "primitive"
+      }
+     }
+    },
+    "07": {
+     "$type": "color",
+     "$value": "{palette.brand.maggioli.07}",
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--variant-primary-07",
+       "tier": "primitive"
+      }
+     }
+    },
+    "08": {
+     "$type": "color",
+     "$value": "{palette.brand.maggioli.08}",
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--variant-primary-08",
+       "tier": "primitive"
+      }
+     }
+    },
+    "09": {
+     "$type": "color",
+     "$value": "{palette.brand.maggioli.09}",
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--variant-primary-09",
+       "tier": "primitive"
+      }
+     }
+    },
+    "$root": {
+     "$type": "color",
+     "$value": "{palette.brand.maggioli.$root}",
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--variant-primary",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  },
+  "brand": {
+   "$description": "The Maggioli brand palettes, for brand identity such as logo containers and brand panels: UI code may paint with them directly.",
+   "maggioli": {
+    "10": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.9255,
+       0.9294,
+       0.9412
+      ],
+      "hex": "#ecedf0"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli-10",
+       "tier": "primitive"
+      }
+     }
+    },
+    "$description": "The Maggioli brand colour, also the brand accent of the interface.",
+    "01": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.0196,
+       0.1569,
+       0.4039
+      ],
+      "hex": "#052867"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli-01",
+       "tier": "primitive"
+      }
+     }
+    },
+    "02": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0,
+       0.2235,
+       0.6392
+      ],
+      "hex": "#0039a3"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli-02",
+       "tier": "primitive"
+      }
+     }
+    },
+    "03": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.0275,
+       0.298,
+       0.8
+      ],
+      "hex": "#074ccc"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli-03",
+       "tier": "primitive"
+      }
+     }
+    },
+    "04": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.1412,
+       0.4039,
+       0.9059
+      ],
+      "hex": "#2467e7"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli-04",
+       "tier": "primitive"
+      }
+     }
+    },
+    "05": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.2902,
+       0.4941,
+       0.8784
+      ],
+      "hex": "#4a7ee0"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli-05",
+       "tier": "primitive"
+      }
+     }
+    },
+    "06": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.5804,
+       0.6745,
+       0.8549
+      ],
+      "hex": "#94acda"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli-06",
+       "tier": "primitive"
+      }
+     }
+    },
+    "07": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.698,
+       0.7529,
+       0.8627
+      ],
+      "hex": "#b2c0dc"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli-07",
+       "tier": "primitive"
+      }
+     }
+    },
+    "08": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.8,
+       0.8314,
+       0.8863
+      ],
+      "hex": "#ccd4e2"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli-08",
+       "tier": "primitive"
+      }
+     }
+    },
+    "09": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.8627,
+       0.8784,
+       0.9059
+      ],
+      "hex": "#dce0e7"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli-09",
+       "tier": "primitive"
+      }
+     }
+    },
+    "$root": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0,
+       0.2157,
+       0.6196
+      ],
+      "hex": "#00379e"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--brand-maggioli",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  },
+  "label": {
+   "$description": "Twelve categorical hues for colour that encodes data, such as a category, a tag or a colour picked by the person: UI code may paint with them directly.",
+   "sky": {
+    "10": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.851,
+       0.9451,
+       0.9922
+      ],
+      "hex": "#d9f1fd"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky-10",
+       "tier": "primitive"
+      }
+     }
+    },
+    "$description": "The sky hue of the categorical palette.",
+    "01": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.0157,
+       0.1882,
+       0.2667
+      ],
+      "hex": "#043044"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky-01",
+       "tier": "primitive"
+      }
+     }
+    },
+    "02": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.0235,
+       0.2863,
+       0.4078
+      ],
+      "hex": "#064968"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky-02",
+       "tier": "primitive"
+      }
+     }
+    },
+    "03": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.0314,
+       0.3686,
+       0.5216
+      ],
+      "hex": "#085e85"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky-03",
+       "tier": "primitive"
+      }
+     }
+    },
+    "04": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.0392,
+       0.4627,
+       0.6549
+      ],
+      "hex": "#0a76a7"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky-04",
+       "tier": "primitive"
+      }
+     }
+    },
+    "05": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.0471,
+       0.5333,
+       0.7569
+      ],
+      "hex": "#0c88c1"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky-05",
+       "tier": "primitive"
+      }
+     }
+    },
+    "06": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.1843,
+       0.7137,
+       0.9529
+      ],
+      "hex": "#2fb6f3"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky-06",
+       "tier": "primitive"
+      }
+     }
+    },
+    "07": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.4157,
+       0.7961,
+       0.9647
+      ],
+      "hex": "#6acbf6"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky-07",
+       "tier": "primitive"
+      }
+     }
+    },
+    "08": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.6157,
+       0.8627,
+       0.9765
+      ],
+      "hex": "#9ddcf9"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky-08",
+       "tier": "primitive"
+      }
+     }
+    },
+    "09": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.7255,
+       0.9059,
+       0.9843
+      ],
+      "hex": "#b9e7fb"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky-09",
+       "tier": "primitive"
+      }
+     }
+    },
+    "$root": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.0549,
+       0.6471,
+       0.9137
+      ],
+      "hex": "#0ea5e9"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--label-sky",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  },
+  "status": {
+   "$description": "The status ramps behind the status roles (magma.info, magma.success, magma.warning, magma.danger); the bare family name is its key colour.",
+   "error": {
+    "10": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       1,
+       0.9098,
+       0.902
+      ],
+      "hex": "#ffe8e6"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error-10",
+       "tier": "primitive"
+      }
+     }
+    },
+    "$description": "The error ramp, behind the danger roles: errors and destructive actions.",
+    "01": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.349,
+       0,
+       0
+      ],
+      "hex": "#590000"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error-01",
+       "tier": "primitive"
+      }
+     }
+    },
+    "02": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.5176,
+       0,
+       0.0431
+      ],
+      "hex": "#84000b"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error-02",
+       "tier": "primitive"
+      }
+     }
+    },
+    "03": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.6471,
+       0.1294,
+       0.1569
+      ],
+      "hex": "#a52128"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error-03",
+       "tier": "primitive"
+      }
+     }
+    },
+    "04": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.7686,
+       0.251,
+       0.2549
+      ],
+      "hex": "#c44041"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error-04",
+       "tier": "primitive"
+      }
+     }
+    },
+    "05": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.851,
+       0.3255,
+       0.3216
+      ],
+      "hex": "#d95352"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error-05",
+       "tier": "primitive"
+      }
+     }
+    },
+    "06": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.9647,
+       0.5569,
+       0.5333
+      ],
+      "hex": "#f68e88"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error-06",
+       "tier": "primitive"
+      }
+     }
+    },
+    "07": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.9843,
+       0.6706,
+       0.651
+      ],
+      "hex": "#fbaba6"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error-07",
+       "tier": "primitive"
+      }
+     }
+    },
+    "08": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.9961,
+       0.7765,
+       0.7608
+      ],
+      "hex": "#fec6c2"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error-08",
+       "tier": "primitive"
+      }
+     }
+    },
+    "09": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       1,
+       0.8392,
+       0.8275
+      ],
+      "hex": "#ffd6d3"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error-09",
+       "tier": "primitive"
+      }
+     }
+    },
+    "$root": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.9294,
+       0.4,
+       0.3882
+      ],
+      "hex": "#ed6663"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--status-error",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  },
+  "tone": {
+   "$description": "Neutral ramps behind the neutral roles and the named themes: paint with the roles, not with these. seed is the pure extreme of the mode, white in light and black in dark, for a knockout.",
+   "neutral": {
+    "10": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.9294,
+       0.9294,
+       0.9294
+      ],
+      "hex": "#ededed"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-10",
+       "tier": "primitive"
+      }
+     }
+    },
+    "$description": "The grey ramp behind the neutral roles of the default theme.",
+    "01": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.0196,
+       0.0196,
+       0.0196
+      ],
+      "hex": "#050505"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-01",
+       "tier": "primitive"
+      }
+     }
+    },
+    "02": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.1647,
+       0.1647,
+       0.1647
+      ],
+      "hex": "#2a2a2a"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-02",
+       "tier": "primitive"
+      }
+     }
+    },
+    "03": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.2863,
+       0.2863,
+       0.2863
+      ],
+      "hex": "#494949"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-03",
+       "tier": "primitive"
+      }
+     }
+    },
+    "04": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.3882,
+       0.3882,
+       0.3882
+      ],
+      "hex": "#636363"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-04",
+       "tier": "primitive"
+      }
+     }
+    },
+    "05": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.4667,
+       0.4667,
+       0.4667
+      ],
+      "hex": "#777777"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-05",
+       "tier": "primitive"
+      }
+     }
+    },
+    "06": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.6471,
+       0.6471,
+       0.6471
+      ],
+      "hex": "#a5a5a5"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-06",
+       "tier": "primitive"
+      }
+     }
+    },
+    "07": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.7373,
+       0.7373,
+       0.7373
+      ],
+      "hex": "#bcbcbc"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-07",
+       "tier": "primitive"
+      }
+     }
+    },
+    "08": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.8157,
+       0.8157,
+       0.8157
+      ],
+      "hex": "#d0d0d0"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-08",
+       "tier": "primitive"
+      }
+     }
+    },
+    "09": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.8824,
+       0.8824,
+       0.8824
+      ],
+      "hex": "#e1e1e1"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-09",
+       "tier": "primitive"
+      }
+     }
+    },
+    "seed": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       1,
+       1,
+       1
+      ],
+      "hex": "#ffffff"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--tone-neutral-seed",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  },
+  "border": {
+   "$description": "Border ladders (muted, default, strong), one per neutral and status family: the primitives behind the border roles.",
+   "error": {
+    "$description": "The border ladder of the error family.",
+    "default": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.9961,
+       0.6706,
+       0.6471
+      ],
+      "hex": "#feaba5"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--border-error-default",
+       "tier": "primitive"
+      }
+     }
+    },
+    "strong": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.8549,
+       0.3765,
+       0.3647
+      ],
+      "hex": "#da605d"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--border-error-strong",
+       "tier": "primitive"
+      }
+     }
+    },
+    "muted": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       1,
+       0.7961,
+       0.7765
+      ],
+      "hex": "#ffcbc6"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--border-error-muted",
+       "tier": "primitive"
+      }
+     }
+    }
+   },
+   "neutral": {
+    "$description": "The border ladder of the neutral family.",
+    "strong": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.549,
+       0.549,
+       0.549
+      ],
+      "hex": "#8c8c8c"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--border-neutral-strong",
+       "tier": "primitive"
+      }
+     }
+    },
+    "default": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.7686,
+       0.7686,
+       0.7686
+      ],
+      "hex": "#c4c4c4"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--border-neutral-default",
+       "tier": "primitive"
+      }
+     }
+    },
+    "muted": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.8588,
+       0.8588,
+       0.8588
+      ],
+      "hex": "#dbdbdb"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--border-neutral-muted",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  },
+  "text": {
+   "$description": "Text ladders (default, muted, subtle, disabled), one per neutral and status family, solved for contrast: the primitives behind the text roles.",
+   "error": {
+    "$description": "The text ladder of the error family.",
+    "default": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.349,
+       0,
+       0
+      ],
+      "hex": "#590000"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--text-error-default",
+       "tier": "primitive"
+      }
+     }
+    },
+    "disabled": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.851,
+       0.3255,
+       0.3216
+      ],
+      "hex": "#d95352"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--text-error-disabled",
+       "tier": "primitive"
+      }
+     }
+    },
+    "subtle": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.6471,
+       0.1294,
+       0.1569
+      ],
+      "hex": "#a52128"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--text-error-subtle",
+       "tier": "primitive"
+      }
+     }
+    },
+    "muted": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.5176,
+       0,
+       0.0431
+      ],
+      "hex": "#84000b"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--text-error-muted",
+       "tier": "primitive"
+      }
+     }
+    }
+   },
+   "neutral": {
+    "$description": "The text ladder of the neutral family.",
+    "disabled": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.4667,
+       0.4667,
+       0.4667
+      ],
+      "hex": "#777777"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--text-neutral-disabled",
+       "tier": "primitive"
+      }
+     }
+    },
+    "subtle": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.3882,
+       0.3882,
+       0.3882
+      ],
+      "hex": "#636363"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--text-neutral-subtle",
+       "tier": "primitive"
+      }
+     }
+    },
+    "muted": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.2863,
+       0.2863,
+       0.2863
+      ],
+      "hex": "#494949"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--text-neutral-muted",
+       "tier": "primitive"
+      }
+     }
+    },
+    "default": {
+     "$type": "color",
+     "$value": {
+      "colorSpace": "srgb",
+      "components": [
+       0.0196,
+       0.0196,
+       0.0196
+      ],
+      "hex": "#050505"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--text-neutral-default",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  }
+ },
+ "magma": {
+  "$description": "The semantic layer: the roles UI code paints with, which follow the mode, the named theme and the contrast preference.",
+  "shadow": {
+   "$description": "The colour of projected shadows.",
+   "ink": {
+    "$type": "color",
+    "$value": "{magma.tint.scale-01}",
+    "$description": "The colour of a projected shadow, to compose with your own geometry and alpha.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-shadow-ink",
+      "tier": "semantic"
+     }
+    }
+   }
+  },
+  "tint": {
+   "$description": "Internal pointers of the active theme: not an API, never read outside this layer.",
+   "scale-01": {
+    "$type": "color",
+    "$value": "{palette.tone.neutral.01}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-scale-01",
+      "tier": "internal"
+     }
+    }
+   },
+   "text-on-emphasis": {
+    "$type": "color",
+    "$value": "{palette.tone.neutral.seed}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-text-on-emphasis",
+      "tier": "internal"
+     }
+    }
+   },
+   "accent-surface-subtle": {
+    "$type": "color",
+    "$value": "{palette.variant.primary.10}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-accent-surface-subtle",
+      "tier": "internal"
+     }
+    }
+   },
+   "accent-surface-hover": {
+    "$type": "color",
+    "$value": "{palette.variant.primary.08}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-accent-surface-hover",
+      "tier": "internal"
+     }
+    }
+   },
+   "accent-emphasis-active": {
+    "$type": "color",
+    "$value": "{palette.variant.primary.02}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-accent-emphasis-active",
+      "tier": "internal"
+     }
+    }
+   },
+   "accent-emphasis-hover": {
+    "$type": "color",
+    "$value": "{palette.variant.primary.03}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-accent-emphasis-hover",
+      "tier": "internal"
+     }
+    }
+   },
+   "accent-emphasis": {
+    "$type": "color",
+    "$value": "{palette.variant.primary.04}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-accent-emphasis",
+      "tier": "internal"
+     }
+    }
+   },
+   "accent-border": {
+    "$type": "color",
+    "$value": "{palette.variant.primary.06}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-accent-border",
+      "tier": "internal"
+     }
+    }
+   },
+   "accent-fg": {
+    "$type": "color",
+    "$value": "{palette.variant.primary.03}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-accent-fg",
+      "tier": "internal"
+     }
+    }
+   },
+   "accent-surface": {
+    "$type": "color",
+    "$value": "{palette.variant.primary.09}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-accent-surface",
+      "tier": "internal"
+     }
+    }
+   },
+   "scale-08": {
+    "$type": "color",
+    "$value": "{palette.tone.neutral.08}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-scale-08",
+      "tier": "internal"
+     }
+    }
+   },
+   "scale-09": {
+    "$type": "color",
+    "$value": "{palette.tone.neutral.09}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-scale-09",
+      "tier": "internal"
+     }
+    }
+   },
+   "scale-10": {
+    "$type": "color",
+    "$value": "{palette.tone.neutral.10}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-scale-10",
+      "tier": "internal"
+     }
+    }
+   },
+   "border-strong": {
+    "$type": "color",
+    "$value": "{palette.border.neutral.strong}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-border-strong",
+      "tier": "internal"
+     }
+    }
+   },
+   "border-default": {
+    "$type": "color",
+    "$value": "{palette.border.neutral.default}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-border-default",
+      "tier": "internal"
+     }
+    }
+   },
+   "border-muted": {
+    "$type": "color",
+    "$value": "{palette.border.neutral.muted}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-border-muted",
+      "tier": "internal"
+     }
+    }
+   },
+   "text-disabled": {
+    "$type": "color",
+    "$value": "{palette.text.neutral.disabled}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-text-disabled",
+      "tier": "internal"
+     }
+    }
+   },
+   "text-subtle": {
+    "$type": "color",
+    "$value": "{palette.text.neutral.subtle}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-text-subtle",
+      "tier": "internal"
+     }
+    }
+   },
+   "text-muted": {
+    "$type": "color",
+    "$value": "{palette.text.neutral.muted}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-text-muted",
+      "tier": "internal"
+     }
+    }
+   },
+   "text-default": {
+    "$type": "color",
+    "$value": "{palette.text.neutral.default}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-text-default",
+      "tier": "internal"
+     }
+    }
+   },
+   "scale-03": {
+    "$type": "color",
+    "$value": "{palette.tone.neutral.03}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-scale-03",
+      "tier": "internal"
+     }
+    }
+   },
+   "scale-02": {
+    "$type": "color",
+    "$value": "{palette.tone.neutral.02}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-scale-02",
+      "tier": "internal"
+     }
+    }
+   },
+   "overlay": {
+    "$type": "color",
+    "$value": "{palette.surface.neutral.overlay}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-overlay",
+      "tier": "internal"
+     }
+    }
+   },
+   "raised": {
+    "$type": "color",
+    "$value": "{palette.surface.neutral.raised}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-raised",
+      "tier": "internal"
+     }
+    }
+   },
+   "default": {
+    "$type": "color",
+    "$value": "{palette.surface.neutral.default}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-default",
+      "tier": "internal"
+     }
+    }
+   },
+   "muted": {
+    "$type": "color",
+    "$value": "{palette.surface.neutral.muted}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-muted",
+      "tier": "internal"
+     }
+    }
+   },
+   "sunken": {
+    "$type": "color",
+    "$value": "{palette.surface.neutral.sunken}",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-tint-sunken",
+      "tier": "internal"
+     }
+    }
+   }
+  },
+  "accent": {
+   "$description": "The brand accent: actions and selection.",
+   "surface": {
+    "$type": "color",
+    "$value": "{magma.tint.accent-surface}",
+    "$description": "A background tinted with the brand accent: a selected row or chip.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-accent-surface",
+      "tier": "semantic"
+     }
+    }
+   },
+   "fg": {
+    "$type": "color",
+    "$value": "{magma.tint.accent-fg}",
+    "$description": "Text or an icon in the brand accent on a neutral surface, such as a link.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-accent-fg",
+      "tier": "semantic"
+     }
+    }
+   },
+   "border": {
+    "$type": "color",
+    "$value": "{magma.tint.accent-border}",
+    "$description": "A border tinted with the brand accent.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-accent-border",
+      "tier": "semantic"
+     }
+    }
+   },
+   "emphasis": {
+    "$type": "color",
+    "$value": "{magma.tint.accent-emphasis}",
+    "$description": "The solid fill of the brand accent: the primary action.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-accent-emphasis",
+      "tier": "semantic"
+     }
+    }
+   },
+   "emphasis-hover": {
+    "$type": "color",
+    "$value": "{magma.tint.accent-emphasis-hover}",
+    "$description": "The solid fill of the brand accent, hovered.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-accent-emphasis-hover",
+      "tier": "semantic"
+     }
+    }
+   },
+   "emphasis-active": {
+    "$type": "color",
+    "$value": "{magma.tint.accent-emphasis-active}",
+    "$description": "The solid fill of the brand accent, pressed.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-accent-emphasis-active",
+      "tier": "semantic"
+     }
+    }
+   },
+   "surface-hover": {
+    "$type": "color",
+    "$value": "{magma.tint.accent-surface-hover}",
+    "$description": "A background tinted with the brand accent, hovered.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-accent-surface-hover",
+      "tier": "semantic"
+     }
+    }
+   },
+   "surface-subtle": {
+    "$type": "color",
+    "$value": "{magma.tint.accent-surface-subtle}",
+    "$description": "A background tinted with the brand accent, lighter.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-accent-surface-subtle",
+      "tier": "semantic"
+     }
+    }
+   },
+   "on-emphasis": {
+    "$type": "color",
+    "$value": "{magma.tint.text-on-emphasis}",
+    "$description": "Text and icons on the solid fill of the brand accent.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-accent-on-emphasis",
+      "tier": "semantic"
+     }
+    }
+   }
+  },
+  "danger": {
+   "$description": "The danger status (errors, destructive actions): backgrounds, text, borders and fills.",
+   "wash-soft": {
+    "$type": "color",
+    "$value": "{palette.status.error.10}",
+    "$description": "The danger background, the least marked.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-wash-soft",
+      "tier": "semantic"
+     }
+    }
+   },
+   "wash-base": {
+    "$type": "color",
+    "$value": "{palette.status.error.09}",
+    "$description": "The danger background, at its default prominence.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-wash-base",
+      "tier": "semantic"
+     }
+    }
+   },
+   "wash-strong": {
+    "$type": "color",
+    "$value": "{palette.status.error.08}",
+    "$description": "The danger background, the most marked: icons only, no essential text.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-wash-strong",
+      "tier": "semantic"
+     }
+    }
+   },
+   "text-default": {
+    "$type": "color",
+    "$value": "{palette.text.error.default}",
+    "$description": "Danger text on the danger background.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-text-default",
+      "tier": "semantic"
+     }
+    }
+   },
+   "text-muted": {
+    "$type": "color",
+    "$value": "{palette.text.error.muted}",
+    "$description": "Secondary danger text on the danger background.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-text-muted",
+      "tier": "semantic"
+     }
+    }
+   },
+   "text-subtle": {
+    "$type": "color",
+    "$value": "{palette.text.error.subtle}",
+    "$description": "Non-essential danger text on the danger background.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-text-subtle",
+      "tier": "semantic"
+     }
+    }
+   },
+   "text-disabled": {
+    "$type": "color",
+    "$value": "{palette.text.error.disabled}",
+    "$description": "Disabled danger text on the danger background.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-text-disabled",
+      "tier": "semantic"
+     }
+    }
+   },
+   "border-muted": {
+    "$type": "color",
+    "$value": "{palette.border.error.muted}",
+    "$description": "The decorative danger border.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-border-muted",
+      "tier": "semantic"
+     }
+    }
+   },
+   "border-default": {
+    "$type": "color",
+    "$value": "{palette.border.error.default}",
+    "$description": "The functional danger border.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-border-default",
+      "tier": "semantic"
+     }
+    }
+   },
+   "border-strong": {
+    "$type": "color",
+    "$value": "{palette.border.error.strong}",
+    "$description": "The danger border that conveys a state.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-border-strong",
+      "tier": "semantic"
+     }
+    }
+   },
+   "emphasis": {
+    "$type": "color",
+    "$value": "{palette.status.error.04}",
+    "$description": "The solid danger fill: a solid badge, a button.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-emphasis",
+      "tier": "semantic"
+     }
+    }
+   },
+   "emphasis-hover": {
+    "$type": "color",
+    "$value": "{palette.status.error.03}",
+    "$description": "The solid danger fill, hovered.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-emphasis-hover",
+      "tier": "semantic"
+     }
+    }
+   },
+   "emphasis-active": {
+    "$type": "color",
+    "$value": "{palette.status.error.02}",
+    "$description": "The solid danger fill, pressed.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-emphasis-active",
+      "tier": "semantic"
+     }
+    }
+   },
+   "on-emphasis": {
+    "$type": "color",
+    "$value": "{magma.tint.text-on-emphasis}",
+    "$description": "Text and icons on the solid danger fill.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-on-emphasis",
+      "tier": "semantic"
+     }
+    }
+   },
+   "surface": {
+    "$type": "color",
+    "$value": "{magma.danger.wash-base}",
+    "$description": "Shortcut for the danger background at its default prominence (wash-base).",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-surface",
+      "tier": "semantic"
+     }
+    }
+   },
+   "fg": {
+    "$type": "color",
+    "$value": "{magma.danger.text-default}",
+    "$description": "Shortcut for the default danger text (text-default).",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-fg",
+      "tier": "semantic"
+     }
+    }
+   },
+   "border": {
+    "$type": "color",
+    "$value": "{magma.danger.border-default}",
+    "$description": "Shortcut for the functional danger border (border-default).",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-danger-border",
+      "tier": "semantic"
+     }
+    }
+   }
+  },
+  "wash": {
+   "$description": "Neutral pills and chips, by how marked they are.",
+   "soft": {
+    "$type": "color",
+    "$value": "{magma.tint.scale-10}",
+    "$description": "A neutral pill or chip, the least marked.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-wash-soft",
+      "tier": "semantic"
+     }
+    }
+   },
+   "base": {
+    "$type": "color",
+    "$value": "{magma.tint.scale-09}",
+    "$description": "A neutral pill or chip, at its default prominence.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-wash-base",
+      "tier": "semantic"
+     }
+    }
+   },
+   "strong": {
+    "$type": "color",
+    "$value": "{magma.tint.scale-08}",
+    "$description": "A neutral pill or chip, the most marked.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-wash-strong",
+      "tier": "semantic"
+     }
+    }
+   }
+  },
+  "border": {
+   "$description": "Borders, by prominence, and the focus ring.",
+   "muted": {
+    "$type": "color",
+    "$value": "{magma.tint.border-muted}",
+    "$description": "Decorative borders: dividers, the grid of a table.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-border-muted",
+      "tier": "semantic"
+     }
+    }
+   },
+   "default": {
+    "$type": "color",
+    "$value": "{magma.tint.border-default}",
+    "$description": "Functional outlines: inputs, cards.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-border-default",
+      "tier": "semantic"
+     }
+    }
+   },
+   "strong": {
+    "$type": "color",
+    "$value": "{magma.tint.border-strong}",
+    "$description": "A border that conveys a state, such as selected.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-border-strong",
+      "tier": "semantic"
+     }
+    }
+   },
+   "focus": {
+    "$type": "color",
+    "$value": "{magma.accent.emphasis}",
+    "$description": "Focus indication; follows the accent.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-border-focus",
+      "tier": "semantic"
+     }
+    }
+   }
+  },
+  "text": {
+   "$description": "Text and icons, by prominence.",
+   "default": {
+    "$type": "color",
+    "$value": "{magma.tint.text-default}",
+    "$description": "Body text, titles and primary data.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-text-default",
+      "tier": "semantic"
+     }
+    }
+   },
+   "muted": {
+    "$type": "color",
+    "$value": "{magma.tint.text-muted}",
+    "$description": "Secondary text that is still essential, such as an address or a phone number.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-text-muted",
+      "tier": "semantic"
+     }
+    }
+   },
+   "subtle": {
+    "$type": "color",
+    "$value": "{magma.tint.text-subtle}",
+    "$description": "Non-essential text only: captions, units, hints.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-text-subtle",
+      "tier": "semantic"
+     }
+    }
+   },
+   "disabled": {
+    "$type": "color",
+    "$value": "{magma.tint.text-disabled}",
+    "$description": "The labels of disabled controls.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-text-disabled",
+      "tier": "semantic"
+     }
+    }
+   },
+   "on-emphasis": {
+    "$type": "color",
+    "$value": "{magma.tint.text-on-emphasis}",
+    "$description": "Text and icons on a solid fill.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-text-on-emphasis",
+      "tier": "semantic"
+     }
+    }
+   }
+  },
+  "surface": {
+   "$description": "The backgrounds of the page by elevation, and the inverse chip.",
+   "sunken": {
+    "$type": "color",
+    "$value": "{magma.tint.sunken}",
+    "$description": "Below the page: wells, insets, code blocks, tracks.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-surface-sunken",
+      "tier": "semantic"
+     }
+    }
+   },
+   "muted": {
+    "$type": "color",
+    "$value": "{magma.tint.muted}",
+    "$description": "Same-plane grouping on the page: zebra rows, a subtle section.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-surface-muted",
+      "tier": "semantic"
+     }
+    }
+   },
+   "default": {
+    "$type": "color",
+    "$value": "{magma.tint.default}",
+    "$description": "The page canvas, the background of the body.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-surface-default",
+      "tier": "semantic"
+     }
+    }
+   },
+   "raised": {
+    "$type": "color",
+    "$value": "{magma.tint.raised}",
+    "$description": "Above the page: cards, panels, sticky headers.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-surface-raised",
+      "tier": "semantic"
+     }
+    }
+   },
+   "overlay": {
+    "$type": "color",
+    "$value": "{magma.tint.overlay}",
+    "$description": "Floating above everything: modal, dropdown, popover, sheet.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-surface-overlay",
+      "tier": "semantic"
+     }
+    }
+   },
+   "inverse": {
+    "$type": "color",
+    "$value": "{magma.tint.scale-02}",
+    "$description": "A chip that flips with the mode: dark on a light page, light on a dark one.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-surface-inverse",
+      "tier": "semantic"
+     }
+    }
+   },
+   "inverse-muted": {
+    "$type": "color",
+    "$value": "{magma.tint.scale-03}",
+    "$description": "The inverse chip, one step quieter.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-surface-inverse-muted",
+      "tier": "semantic"
+     }
+    }
+   }
+  }
+ }
+}

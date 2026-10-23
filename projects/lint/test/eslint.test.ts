@@ -16,9 +16,9 @@ RuleTester.itOnly = it.only;
 const fixtures = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures');
 const settings = {
   magma: {
-    documentation: path.join(fixtures, 'documentation.json'),
-    tokens: path.join(fixtures, 'base.tokens.json'),
-    consumption: path.join(fixtures, 'consumption.json'),
+    documentation: path.join(fixtures, 'magma/data/documentation.json'),
+    tokens: path.join(fixtures, 'design-tokens/base.tokens.json'),
+    consumption: path.join(fixtures, 'styles/consumption.json'),
   },
 };
 

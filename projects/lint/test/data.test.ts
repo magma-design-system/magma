@@ -8,9 +8,9 @@ import { loadComponents, loadPalette, locate, propInfo } from '../src/core/data.
 const fixtures = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures');
 const settings = {
   root: fixtures,
-  documentation: 'documentation.json',
-  tokens: 'base.tokens.json',
-  consumption: 'consumption.json',
+  documentation: 'magma/data/documentation.json',
+  tokens: 'design-tokens/base.tokens.json',
+  consumption: 'styles/consumption.json',
 };
 
 describe('propInfo', () => {
@@ -50,12 +50,16 @@ test('the components answer by prop name and by attribute', () => {
 
 test('the raw palette keys leave out label, brand, the seed and the roles', () => {
   const { rawKeys, colorUtilities } = loadPalette(settings);
-  expect([...rawKeys].sort()).toEqual([
-    'status-error-04',
-    'surface-neutral-default',
-    'tone-neutral-01',
-    'tone-neutral-03',
-  ]);
+  for (const key of ['tone-neutral-03', 'status-error-04', 'surface-neutral-default'])
+    expect(rawKeys.has(key)).toBe(true);
+  for (const key of [
+    'label-sky-09',
+    'brand-maggioli-04',
+    'tone-neutral-seed',
+    'surface-raised',
+    'fg-muted',
+  ])
+    expect(rawKeys.has(key)).toBe(false);
   expect(colorUtilities).toContain('bg');
   // longest first, so `border-t` wins over `border`
   expect(colorUtilities.indexOf('border-t')).toBeLessThan(colorUtilities.indexOf('border'));
