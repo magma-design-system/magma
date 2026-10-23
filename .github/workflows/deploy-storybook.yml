@@ -194,8 +194,11 @@ jobs:
 
   deploy:
     needs: [build]
-    # the github-pages environment accepts deployments from main only
-    if: ${{ github.ref == 'refs/heads/main' }}
+    # The github-pages environment accepts deployments from main only. A job
+    # without a status function in its `if` is skipped when any job before it
+    # is, `changes` included, which a manual run skips: the build result is
+    # checked here instead, as the build job does with `changes`
+    if: ${{ !cancelled() && needs.build.result == 'success' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     # its own group, not the build one: an older run entering it could
     # otherwise cancel the build of a newer run. A deploy lasts seconds and
