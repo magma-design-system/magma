@@ -148,6 +148,7 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 | \`variant\` and \`tone\` values | [\`agents/variants.md\`](agents/variants.md) |
 | Mistakes to avoid with any component | [\`agents/anti-patterns.md\`](agents/anti-patterns.md) |
 | Coloring your own UI | [\`agents/color.md\`](agents/color.md) |
+| Colors in an Android, iOS or Flutter app, where the components do not run | [\`agents/color.md\`](agents/color.md), "Outside the web" |
 | Typography utilities | [\`agents/typography.md\`](agents/typography.md) |
 | Dark mode, preferences, named themes, surface levels and elevation, global design decisions, corner geometry | [\`agents/theming.md\`](agents/theming.md) |
 | Reporting a problem that is Magma's, not this project's (bug, wrong guide, missing token), with this project's origin label | [\`agents/reporting.md\`](agents/reporting.md) |

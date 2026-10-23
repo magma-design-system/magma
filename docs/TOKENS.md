@@ -72,6 +72,7 @@ Every ramp has a numeric ladder (`-01` ... `-10`) plus `-seed`. This is a **cont
 | **DTCG JSON**               | `@maggioli-design-system/design-tokens/dist/dtcg/`, `@maggioli-design-system/styles/dist/dtcg/` | To read the tokens, not to paint with them: documentation, design tools, other platforms (every global token, modes, themes, contrast; the styles globals and its corner and depth axes; each role and group of the semantic layer with its `$description`) |
 | **Tailwind map**            | `@maggioli-design-system/styles/dist/tailwind/consumption.json`          | To document or check the Tailwind side: per token, its `@theme` variable, description, utilities and variants, the spacing multiplier, every Magma `@utility` |
 | **JSON**                    | `@maggioli-design-system/design-tokens/dist/json/`                       | Design tools (Figma tokens)                                                                                        |
+| **Android, iOS, Flutter**   | `design-tokens/dist/android/colors.xml`, `dist/ios-swift/*.swift`, `dist/flutter/colors.dart` | Native apps: colours only, both modes as separate names, the roles per family (`surface_neutral_*`), no theme or contrast switch (design-tokens README, "Native platforms") |
 | **Hex CSS files**           | `colors-hex-*.css` imports                                               | Only when the consumer cannot evaluate the `rgb(var(--...))` wrapper - never in Tailwind or web component contexts |
 
 ### Why RGB and not hex by default
