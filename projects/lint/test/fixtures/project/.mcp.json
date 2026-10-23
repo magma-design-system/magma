@@ -1,5 +1,5 @@
 {
   "mcpServers": {
-    "magma": { "command": "npx", "args": ["magma-mcp"] }
+    "magma": { "command": "npx", "args": ["--no", "magma-mcp"] }
   }
 }

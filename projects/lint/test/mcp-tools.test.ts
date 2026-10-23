@@ -1,8 +1,11 @@
 // The ten tools of the MCP server on fixtures cut from the real data, and the mi and mdi icon
 // sets installed in this repository.
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-import { satisfies } from '../src/mcp/checks.js';
+import { mcpEntries, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
 import { toolsOf } from '../src/mcp/server.js';
 import { context } from './mcp-context.js';
@@ -232,6 +235,25 @@ describe('the check tools', () => {
     expect(byId['lint-eslint'].ok).toBe(true);
     expect(byId['lint-stylelint'].ok).toBe(false);
     expect(byId.mcp.ok).toBe(true);
+  });
+
+  test('an entry that starts magma-mcp with npx without --no is unsafe', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-mcp-'));
+    const file = path.join(dir, 'mcp.json');
+    const entries = (config: unknown) => {
+      writeFileSync(file, JSON.stringify(config));
+      return mcpEntries(file);
+    };
+    expect(entries({ mcpServers: { magma: { command: 'npx', args: ['magma-mcp'] } } })).toEqual([
+      { safe: false },
+    ]);
+    expect(
+      entries({ servers: { magma: { command: 'npx', args: ['--no', 'magma-mcp'] } } }),
+    ).toEqual([{ safe: true }]);
+    expect(entries({ mcpServers: { magma: { command: 'node_modules/.bin/magma-mcp' } } })).toEqual([
+      { safe: true },
+    ]);
+    expect(entries({ mcpServers: { other: { command: 'npx', args: ['other-mcp'] } } })).toEqual([]);
   });
 
   test('satisfies reads the ranges magma declares', () => {
