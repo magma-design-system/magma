@@ -126,14 +126,18 @@ Ask the user only what detection left undecided. Typical questions:
 4. Register components: ${target.register}.
 5. Set up editor autocomplete - see [\`agents/assets.md\`](agents/assets.md) section 5: MERGE the
    keys into \`.vscode/settings.json\` and \`.vscode/extensions.json\`, never overwrite them.
+6. Set up the lint - see [\`agents/lint.md\`](agents/lint.md): the ESLint and Stylelint rules ship
+   in this package; MERGE the Magma presets into the project's ESLint and Stylelint
+   configurations, never overwrite them.
 
 ## Step 4 - verify
 
 Build the app and confirm an \`mds-*\` component renders and every icon it names loads
 from the configured path (no 404 on \`<path><slug>.svg\`). In VS Code, check both halves of
 the autocomplete: \`var(--magma-\` completes Magma tokens in a CSS file and, with Tailwind,
-\`bg-surface-default\` shows a swatch. Report what was installed, the cascade order used, the
-icon route and the icon path.
+\`bg-surface-default\` shows a swatch. Run the lint ([\`agents/lint.md\`](agents/lint.md)): no
+error. Report what was installed, the cascade order used, the icon route, the icon path and
+the lint configuration.
 
 ## Using the components
 
@@ -150,6 +154,7 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 | Coloring your own UI | [\`agents/color.md\`](agents/color.md) |
 | Typography utilities | [\`agents/typography.md\`](agents/typography.md) |
 | Dark mode, preferences, named themes, surface levels and elevation, global design decisions, corner geometry | [\`agents/theming.md\`](agents/theming.md) |
+| Checking what you wrote: run ESLint and Stylelint with the Magma presets after every change, and fix what they report | [\`agents/lint.md\`](agents/lint.md) |
 | Reporting a problem that is Magma's, not this project's (bug, wrong guide, missing token), with this project's origin label | [\`agents/reporting.md\`](agents/reporting.md) |
 | What changed between the installed version and a newer one, before upgrading | \`CHANGELOG.md\` of each Magma package, newest release first (\`magma-react\` and \`magma-angular\` carry the releases of \`magma\`) |
 

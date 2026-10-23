@@ -150,6 +150,13 @@ NavigationService.setHandler((href) => router.navigate(href));
 for a link the browser is to load. Without a registered router, a click listener on the
 component can still cancel the event with `preventDefault()` and route by hand.
 
+## 7. Lint
+
+The ESLint and Stylelint rules ship in `@maggioli-design-system/magma`: nothing more to
+install from Magma. Add the block for this target to the project's ESLint configuration and
+the Stylelint preset for its stylesheets, as [`lint.md`](lint.md) shows ([HTML and web components](lint.md#html-and-web-components)),
+merging into what the project already has, and run both after every change.
+
 ## Gotchas
 
 - Call `defineCustomElements()` exactly once. Calling it twice is harmless but

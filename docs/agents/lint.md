@@ -1,0 +1,234 @@
+# Magma lint
+
+> Scope: checking the code you write against the installed Magma, with the ESLint and
+> Stylelint rules that ship inside `@maggioli-design-system/magma`. Set them up once, when
+> you install Magma, and run them after every change.
+
+The rules make the prose of these guides executable: a prop value the component does not
+take, a boolean turned "off" with `"false"`, an icon-only control without a name, a colour
+painted with Tailwind's palette or a raw palette step, a hand-written dark mode. They read
+the API and the tokens of the installed version, the same release as the components, so
+they follow every update with nothing to keep in sync.
+
+## Set it up
+
+Nothing to install from Magma: the rules are in `@maggioli-design-system/magma`, which
+`magma-react` and `magma-angular` require too. The project needs ESLint 9 and Stylelint 16
+(`npm i -D eslint stylelint` when it has none) and the parser of its templates:
+
+| Templates | Parser |
+| --- | --- |
+| HTML | `@html-eslint/parser` |
+| Angular (external `.html` templates) | `@angular-eslint/template-parser` (with angular-eslint) |
+| React (JSX, TSX) | the one the project already uses |
+
+MERGE the blocks below into the project's `eslint.config.js` and `stylelint.config.mjs`:
+never replace an existing configuration. Each ESLint preset sets rules only, so it goes in
+the block that parses the templates.
+
+### HTML and web components
+
+```js
+// eslint.config.js
+import html from '@html-eslint/parser';
+import magma from '@maggioli-design-system/magma/eslint';
+
+export default [
+  { files: ['**/*.html'], languageOptions: { parser: html }, ...magma.configs.recommended },
+];
+```
+
+### React
+
+```js
+// eslint.config.js
+import magma from '@maggioli-design-system/magma/eslint';
+
+export default [
+  // ...the block that parses .jsx and .tsx
+  { files: ['**/*.{jsx,tsx}'], ...magma.configs.recommended },
+];
+```
+
+The rules read both `<mds-button>` and the wrappers of `magma-react` (`<MdsButton>`), and a
+`className` written as a string or a template literal.
+
+### Angular
+
+```js
+// eslint.config.js, next to the blocks of angular-eslint
+import angularTemplate from '@angular-eslint/template-parser';
+import magma from '@maggioli-design-system/magma/eslint';
+
+export default [
+  { files: ['**/*.html'], languageOptions: { parser: angularTemplate }, ...magma.configs.recommended },
+];
+```
+
+With the inline-template processor of angular-eslint, the inline `template` of a component
+is linted as an `.html` file too.
+
+### CSS and SCSS
+
+```js
+// stylelint.config.mjs
+export default {
+  extends: ['@maggioli-design-system/magma/stylelint/recommended'],
+};
+```
+
+### Presets
+
+- `recommended`, for a product that already exists: what is broken or not accessible is an
+  error, the palette a warning;
+- `strict` (`magma.configs.strict`, `@maggioli-design-system/magma/stylelint/strict`), for a
+  new product: every rule is an error.
+
+## Run it after writing
+
+After every change, run ESLint on the templates you touched and Stylelint on the
+stylesheets, and fix what they report before you hand the work over:
+
+```bash
+npx eslint src
+npx stylelint "src/**/*.{css,scss}"
+```
+
+An error is something broken or not accessible; a warning of `recommended` is a colour that
+does not follow the mode, the named theme and the contrast preference. When a rule is wrong
+about Magma itself, report it ([`reporting.md`](reporting.md)) instead of disabling it.
+
+## Rules
+
+| Rule | Tool | `recommended` | `strict` |
+| --- | --- | --- | --- |
+| [`valid-attribute-values`](#valid-attribute-values) | ESLint | error | error |
+| [`no-false-boolean`](#no-false-boolean) | ESLint | error | error |
+| [`accessible-name`](#accessible-name) | ESLint | error | error |
+| [`no-raw-palette-classes`](#no-raw-palette-classes) | ESLint | warn | error |
+| [`no-color-scheme-override`](#no-color-scheme-override) | Stylelint | error | error |
+| [`no-raw-color`](#no-raw-color) | Stylelint | warning | error |
+
+The ESLint rules are named `magma/<rule>` once the preset is loaded, the Stylelint rules
+`magma/<rule>` once the plugin (`@maggioli-design-system/magma/stylelint`) is.
+
+### valid-attribute-values
+
+A prop whose type is a union of literals takes one of them (the values each prop takes are
+in the component's `AGENTS.md`).
+
+```html
+<!-- INCORRECT: tone takes "box", "strong" or "weak" -->
+<mds-banner tone="outline">Saved</mds-banner>
+
+<!-- CORRECT -->
+<mds-banner tone="weak">Saved</mds-banner>
+```
+
+A value bound to an expression (`[tone]="tone"`, `tone={tone}`) is known only at run time and
+is not checked; a literal binding (`[tone]="'box'"`) is.
+
+### no-false-boolean
+
+A boolean prop is turned off by removing its attribute
+([`conventions.md`](conventions.md#boolean-disabled-and-await-props)): a form-associated
+component reads any value as on, `"false"` included.
+
+```html
+<!-- INCORRECT -->
+<mds-button disabled="false">Save</mds-button>
+
+<!-- CORRECT -->
+<mds-button>Save</mds-button>
+```
+
+Reported: the string `"false"` in any form, and an Angular attribute binding
+(`[attr.disabled]="false"`), which writes the attribute `"false"`. Bind a real boolean to the
+property instead: `<MdsButton disabled={isDisabled}>`, `[disabled]="isDisabled"`.
+
+### accessible-name
+
+A component that takes an `icon` next to a `label` or a default slot, shown with its icon
+alone, needs a name: without `label` or `aria-label`, `mds-button` is announced by the slug of
+its icon, which names the icon and not the action. An `mds-img` with a `src` and no `alt` is
+named after its file: describe the image, or set `alt=""` when it is decorative.
+
+```html
+<!-- INCORRECT -->
+<mds-button icon="mi/baseline/send"></mds-button>
+<mds-img src="/img/report-2024.jpg"></mds-img>
+
+<!-- CORRECT -->
+<mds-button icon="mi/baseline/send" label="Send"></mds-button>
+<mds-img src="/img/report-2024.jpg" alt="Annual report 2024"></mds-img>
+```
+
+Left alone, because one element does not show its name: an element with an `id` (an
+`mds-tooltip` with `relation="label"`, or an `aria-labelledby` elsewhere, may name it) and
+one that spreads its props (`{...props}`).
+
+### no-raw-palette-classes
+
+A colour class names a role ([`color.md`](color.md)), never Tailwind's palette (`bg-white`,
+`text-gray-700`), which ignores Magma, nor a raw Magma step (`bg-tone-neutral-03`,
+`border-surface-neutral-default`), which follows the mode only. Variants, `!` and opacity are
+read through: `dark:hover:bg-white/50` is `bg-white`.
+
+```html
+<!-- INCORRECT -->
+<section class="bg-white text-gray-700">...</section>
+
+<!-- CORRECT -->
+<section class="bg-surface-raised text-fg-default">...</section>
+```
+
+Not reported: `label-*` and `brand-*`, for colour that encodes data, and the seed of a tone,
+the pure extreme of the mode. Only the classes written in the template are read: a class
+built at run time (`clsx(...)`, an Angular `[ngClass]`) is not.
+
+### no-color-scheme-override
+
+A `prefers-color-scheme` media query follows the OS, not the mode the user picked
+(`mds-pref-mode`). The roles follow both: paint with them, and dark mode comes with no
+query. For a deliberate choice that differs per mode, use the `dark` variant of the Magma
+Tailwind theme, which follows the Magma mode ([`theming.md`](theming.md)).
+
+```css
+/* INCORRECT */
+@media (prefers-color-scheme: dark) {
+  .panel {
+    background: rgb(var(--magma-surface-overlay));
+  }
+}
+
+/* CORRECT */
+.panel {
+  background: rgb(var(--magma-surface-raised));
+}
+```
+
+### no-raw-color
+
+A hex, `rgb()`, `hsl()`, `oklch()` or other colour literal where a role belongs. A colour that
+names a token is fine (`rgb(var(--magma-text-muted) / 0.5)`), and so are the keywords
+(`currentColor`, `transparent`). In a shadow the hint is the shadow ink,
+`rgb(var(--magma-shadow-ink) / <alpha>)`. Not read: `mask` and `mask-image`, and the
+`initial-value` of an `@property`.
+
+A colour that is not a role, such as the palette of an illustration, keeps its literal under
+a disable comment that says why:
+
+```css
+mds-emoji[name='simi'] {
+  /* stylelint-disable magma/no-raw-color -- the palette of an illustration */
+  --mds-emoji-simi-skin: #f5c8a0;
+  /* stylelint-enable magma/no-raw-color */
+}
+```
+
+## Settings
+
+The rules need no settings: they read the `documentation.json` beside them in the installed
+`magma`, and the tokens of the `design-tokens` and `styles` it depends on. To check against
+other files, set their paths under `settings.magma` in the ESLint configuration (relative to
+`root`, the project by default): `documentation`, `tokens`, `consumption`.

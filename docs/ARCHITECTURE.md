@@ -143,13 +143,11 @@ The wrappers are separate npm workspaces, `projects/stencil-react` and `projects
 
 ### 2.7 `lint`
 
-`@maggioli-design-system/lint` (`projects/lint`, #1102): the ESLint and Stylelint rules that hold a consumer's code to the installed version of Magma, the executable form of the prose rules of `docs/agents/` (conventions, color, theming). One core reads the data of the installed packages, never a list written by hand: the props and their values from `documentation.json` (`stencil`), the raw palette steps from the DTCG base set (`design-tokens`) and the colour utilities from `consumption.json` (`styles`). On top of it:
+The consumer lint (`projects/lint`, #1102): the ESLint and Stylelint rules that hold a consumer's code to the installed version of Magma, the executable form of the prose rules of `docs/agents/` (conventions, color, theming). It is not a package of its own: the stencil build compiles it into `@maggioli-design-system/magma` (`dist/lint`, `scripts/build-lint.ts`), which exports `./eslint`, `./stylelint` (with `./stylelint/recommended` and `./stylelint/strict`) and `./lint` (the core). So the rules arrive with the components and always match their release; `stencil` lists `lint` as an implicit dependency, so its build follows a change of the rules.
 
-- `./eslint`: the template rules (`valid-attribute-values`, `no-false-boolean`, `accessible-name`, `no-raw-palette-classes`), with one adapter per parser: HTML (`@html-eslint/parser`), JSX (`<mds-*>` and the React wrappers), Angular templates (`@angular-eslint/template-parser`);
-- `./stylelint`: the CSS rules (`no-raw-color`, `no-color-scheme-override`), the consumer side of the `magma/token-values` rule of the component sheets;
-- `recommended` and `strict` presets for both (DIRECTION of the docs site, "Lint rules": broken or not accessible is an error, token discipline a warning in an existing product).
+One core reads the data of the installed packages, never a list written by hand: the props and their values from the `documentation.json` beside it, the raw palette steps from the DTCG base set (`design-tokens`) and the colour utilities from `consumption.json` (`styles`), both resolved from where magma is installed. On top of it, the template rules (`valid-attribute-values`, `no-false-boolean`, `accessible-name`, `no-raw-palette-classes`) with one adapter per parser (HTML, JSX, Angular templates), the CSS rules (`no-raw-color`, `no-color-scheme-override`, the consumer side of the `magma/token-values` rule of the component sheets), and `recommended` / `strict` presets.
 
-It depends on no other project at build time: its tests run on fixtures cut from the real data (`projects/lint/test/fixtures`), and its CI is `magma-lint-ci.yml`. How to set it up and what each rule catches: [`projects/lint/README.md`](../projects/lint/README.md).
+Its tests run on fixtures cut from the real data, in the `magma-lint-ci` workflow. The consumer guide is [`docs/agents/lint.md`](agents/lint.md), shipped as `agents/lint.md`, which the install guides and the packages' `AGENTS.md` point to at bootstrap; the contributor notes are [`projects/lint/README.md`](../projects/lint/README.md).
 
 ---
 
