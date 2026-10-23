@@ -6,6 +6,7 @@ import { ButtonIconPositionType } from '@type/button';
 
 /**
  * @slot - Add `mds-tree-item` element/s.
+ * @category navigation
  */
 
 @Component({

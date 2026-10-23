@@ -11,6 +11,7 @@ const REGIONS = ['content', 'footer', 'header', 'media'];
  * @slot header - Add `HTML elements` or `components`, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
  * @slot content - Add `HTML elements` or `components`, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
  * @slot footer - Add `HTML elements` or `components`, it's responsive behaviour based on container queries is handled with `auto-grid` enabled
+ * @category structure
  */
 
 @Component({

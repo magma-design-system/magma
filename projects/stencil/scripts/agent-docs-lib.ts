@@ -346,3 +346,172 @@ export function brokenLinks(
     return !inside || !exists(resolved);
   });
 }
+
+/**
+ * The categories of the components, in the order of the catalogue (#1106). Every
+ * component that stands alone names one with `@category <id>` in the JSDoc of its
+ * class; every part of a compound names its direct parent with `@parent <tag>` instead
+ * (several tags where it sits in several parents, the first one leading to its
+ * component), and is listed after that component. docs/COMPONENTS.md ("Categories")
+ * describes the same list: change both together.
+ */
+export const COMPONENT_CATEGORIES = [
+  {
+    id: 'actions',
+    title: 'Actions',
+    summary: 'Controls that make something happen: buttons, links, action bars and menus',
+  },
+  {
+    id: 'forms',
+    title: 'Forms',
+    summary: 'Fields that take a value, and the calendar and the filters that help pick one',
+  },
+  {
+    id: 'navigation',
+    title: 'Navigation',
+    summary: 'Where the user is and where they can go: breadcrumbs, tabs, steps, pages, trees',
+  },
+  {
+    id: 'feedback',
+    title: 'Feedback',
+    summary: 'Messages, progress and empty states that tell the user what is happening',
+  },
+  {
+    id: 'overlays',
+    title: 'Overlays',
+    summary: 'Surfaces that float over the page: dialogs, dropdowns, tooltips, help',
+  },
+  {
+    id: 'data',
+    title: 'Data',
+    summary: 'Sets of values and the people they belong to: tables, lists, figures, avatars',
+  },
+  {
+    id: 'tags',
+    title: 'Tags',
+    summary: 'Short markers attached to other content: badges, chips, labels, mentions, keys',
+  },
+  {
+    id: 'structure',
+    title: 'Structure',
+    summary: 'Containers and dividers that lay the page out: cards, accordions, headers, rules',
+  },
+  {
+    id: 'content',
+    title: 'Content',
+    summary: 'Text, media and files: typography, images, icons, quotes, notes, previews',
+  },
+  {
+    id: 'preferences',
+    title: 'Preferences',
+    summary:
+      'The controls a user tunes the interface with: mode, theme, contrast, motion, language',
+  },
+] as const;
+
+/** The place of a component in the catalogue: its category, or the parents of a part. */
+export interface ComponentTaxonomy {
+  tag: string;
+  category?: string;
+  parents: string[];
+}
+
+/**
+ * Reads `@category` and `@parent` from the JSDoc of a component's class: the comment
+ * right before its `@Component(` decorator, where Stencil takes the docs tags of
+ * dist/documentation.json from.
+ */
+export function readTaxonomy(tag: string, source: string): ComponentTaxonomy {
+  const at = source.indexOf('@Component(');
+  const before = at < 0 ? '' : source.slice(0, at).trimEnd();
+  const jsdoc = before.endsWith('*/') ? before.slice(before.lastIndexOf('/**')) : '';
+  const texts = (name: string): string[] =>
+    [...jsdoc.matchAll(new RegExp(`^\\s*\\*\\s*@${name}\\s+(.+)$`, 'gm'))].map((m) => m[1].trim());
+  return {
+    tag,
+    category: texts('category')[0],
+    parents: texts('parent').flatMap((text) => text.split(/\s+/)),
+  };
+}
+
+/**
+ * The component a part belongs to, through the first parent of each; the tag itself
+ * for a component with a category, undefined for a missing parent or a loop.
+ */
+export function rootOf(
+  tag: string,
+  byTag: Map<string, ComponentTaxonomy>,
+  seen: Set<string> = new Set(),
+): string | undefined {
+  const entry = byTag.get(tag);
+  if (!entry || seen.has(tag)) return undefined;
+  if (entry.parents.length === 0) return entry.category === undefined ? undefined : tag;
+  seen.add(tag);
+  return rootOf(entry.parents[0], byTag, seen);
+}
+
+/**
+ * What is wrong with the categories and the parents of the components, one line each:
+ * neither tag or both, a category outside COMPONENT_CATEGORIES, a parent that is not a
+ * component, a part whose first parents never reach a component with a category.
+ */
+export function taxonomyErrors(components: ComponentTaxonomy[]): string[] {
+  const byTag = new Map(components.map((c) => [c.tag, c]));
+  const ids: readonly string[] = COMPONENT_CATEGORIES.map((c) => c.id);
+  const errors: string[] = [];
+  for (const { tag, category, parents } of components) {
+    if (category === undefined && parents.length === 0) {
+      errors.push(`${tag}: no @category and no @parent`);
+    } else if (category !== undefined && parents.length > 0) {
+      errors.push(`${tag}: both @category and @parent`);
+    }
+    if (category !== undefined && !ids.includes(category)) {
+      errors.push(`${tag}: @category ${category} is not one of ${ids.join(', ')}`);
+    }
+    for (const parent of parents) {
+      if (!byTag.has(parent)) errors.push(`${tag}: @parent ${parent} is not a component`);
+    }
+    if (category === undefined && parents.length > 0 && rootOf(tag, byTag) === undefined) {
+      errors.push(`${tag}: its first @parent never reaches a component with a @category`);
+    }
+  }
+  return errors;
+}
+
+/**
+ * The body of agents/components.md: a section per category, in the order of
+ * COMPONENT_CATEGORIES, each component followed by its parts, each part naming the
+ * components it sits in. `summaries` holds the one-line description of each component
+ * listed: a component without one is left out, as before the categories.
+ */
+export function renderCatalogue(
+  components: ComponentTaxonomy[],
+  summaries: Map<string, string>,
+  docsPrefix: string,
+): string {
+  const byTag = new Map(components.map((c) => [c.tag, c]));
+  const tags = components
+    .map((c) => c.tag)
+    .filter((tag) => summaries.has(tag))
+    .sort((a, b) => a.localeCompare(b));
+  const row = (tag: string): string => {
+    const parents = byTag.get(tag)?.parents ?? [];
+    const part =
+      parents.length > 0 ? `, part of ${parents.map((p) => `\`${p}\``).join(' or ')}` : '';
+    return `| [\`${tag}\`](${docsPrefix}/${tag}/AGENTS.md)${part} | ${summaries.get(tag)} |`;
+  };
+  return COMPONENT_CATEGORIES.map(({ id, title, summary }) => {
+    const rows = tags
+      .filter((tag) => byTag.get(tag)?.category === id)
+      .flatMap((tag) => [tag, ...tags.filter((t) => t !== tag && rootOf(t, byTag) === tag)])
+      .map(row);
+    return `## ${title}
+
+${summary}.
+
+| Component | What it is |
+| --------- | ---------- |
+${rows.join('\n')}
+`;
+  }).join('\n');
+}

@@ -10,6 +10,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ * @parent mds-input-tip
  */
 @Component({
   tag: 'mds-input-tip-item',

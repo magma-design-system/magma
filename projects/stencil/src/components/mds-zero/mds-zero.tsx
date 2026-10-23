@@ -7,6 +7,7 @@ import { preferenceStore } from '@common/preference';
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @part contents - Selects the wrapper of the elements with attribute `slot="content"`.
  * @part actions - Selects the wrapper of the elements with attribute `slot="action"`.
+ * @category feedback
  */
 
 @Component({

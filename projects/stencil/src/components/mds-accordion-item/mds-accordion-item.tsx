@@ -9,6 +9,7 @@ import { preferenceStore } from '@common/preference';
  * @part content - the content wrapper of the `default` slot
  * @part icon - The arrow icon of the component
  * @part label - The text label of the component
+ * @parent mds-accordion
  */
 
 @Component({

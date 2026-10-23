@@ -4,6 +4,7 @@ import { InputTipPositionType } from './meta/types';
 
 /**
  * @slot - Add `mds-input-tip-item` elements or `components` to this slot.
+ * @parent mds-input mds-input-date mds-input-select
  */
 @Component({
   tag: 'mds-input-tip',

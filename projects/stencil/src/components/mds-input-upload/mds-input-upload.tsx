@@ -36,6 +36,9 @@ import localeIt from './meta/locale.it.json';
 
 const isSort = (value: unknown): value is AttachmentSort => value === 'date' || value === 'status';
 
+/**
+ * @category forms
+ */
 @Component({
   tag: 'mds-input-upload',
   styleUrl: 'mds-input-upload.css',

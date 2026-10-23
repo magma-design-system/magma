@@ -9,6 +9,9 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
+/**
+ * @category navigation
+ */
 @Component({
   tag: 'mds-paginator',
   styleUrl: 'mds-paginator.css',

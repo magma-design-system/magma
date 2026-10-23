@@ -184,6 +184,9 @@ export { MdsTreeItemEventDetail } from "./components/mds-tree-item/meta/event-de
 export { UsageType } from "./components/mds-usage/meta/types";
 export { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export namespace Components {
+    /**
+     * @category structure
+     */
     interface MdsAccordion {
         /**
           * Prevents the user from closing the currently open item, forcing at least one panel to stay expanded
@@ -196,6 +199,9 @@ export namespace Components {
          */
         "multiple"?: boolean;
     }
+    /**
+     * @parent mds-accordion
+     */
     interface MdsAccordionItem {
         /**
           * Specifies the title shown when the component is closed or selected
@@ -211,6 +217,9 @@ export namespace Components {
          */
         "typography"?: TypographyTitleType;
     }
+    /**
+     * @category structure
+     */
     interface MdsAccordionTimer {
         /**
           * Sets the duration of the single accordion item
@@ -222,6 +231,9 @@ export namespace Components {
          */
         "paused"?: boolean;
     }
+    /**
+     * @parent mds-accordion-timer
+     */
     interface MdsAccordionTimerItem {
         /**
           * Specifies the title shown when the accordion is closed or opened
@@ -252,8 +264,14 @@ export namespace Components {
          */
         "uuid": number;
     }
+    /**
+     * @category data
+     */
     interface MdsAuthor {
     }
+    /**
+     * @category data
+     */
     interface MdsAvatar {
         /**
           * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
@@ -281,6 +299,9 @@ export namespace Components {
          */
         "variant"?: ThemeFullVariantAvatarType;
     }
+    /**
+     * @category data
+     */
     interface MdsAvatarStack {
         /**
           * Specifies the size of the slotted avatars elements
@@ -291,6 +312,9 @@ export namespace Components {
          */
         "total"?: number;
     }
+    /**
+     * @parent mds-avatar-stack
+     */
     interface MdsAvatarStackItem {
         /**
           * Specifies number of total avatars, the total number will be subtracted by the slotted ones
@@ -314,6 +338,9 @@ export namespace Components {
          */
         "variant"?: ThemeFullVariantAvatarType;
     }
+    /**
+     * @category tags
+     */
     interface MdsBadge {
         /**
           * The label of the badge
@@ -335,6 +362,9 @@ export namespace Components {
          */
         "variant"?: ThemeFullVariantType;
     }
+    /**
+     * @category feedback
+     */
     interface MdsBanner {
         /**
           * Shows the cross icon to perform cancel/delete action on element
@@ -364,6 +394,9 @@ export namespace Components {
          */
         "variant"?: ThemeVariantType;
     }
+    /**
+     * @category data
+     */
     interface MdsBenchmarkBar {
         /**
           * An alias to custom how value is represented
@@ -394,6 +427,9 @@ export namespace Components {
          */
         "variant"?: ThemeVariantType;
     }
+    /**
+     * @category content
+     */
     interface MdsBibliography {
         /**
           * Specifies one or more authors, as a string. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'", and for multiple authors, separated by commas, "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'", you can use single or double quotation marks for composite names
@@ -441,6 +477,9 @@ export namespace Components {
          */
         "variant"?: TypographyVariants;
     }
+    /**
+     * @category content
+     */
     interface MdsBook {
         /**
           * The accessible name of the book. Without it the name is built from `name` and `author`; an empty `alt` marks the book as decorative, left out by assistive technologies
@@ -489,6 +528,9 @@ export namespace Components {
          */
         "src"?: string;
     }
+    /**
+     * @category navigation
+     */
     interface MdsBreadcrumb {
         /**
           * Hides the back arrow button
@@ -496,6 +538,9 @@ export namespace Components {
          */
         "hideBack"?: boolean;
     }
+    /**
+     * @parent mds-breadcrumb
+     */
     interface MdsBreadcrumbItem {
         /**
           * Sets the label of the breadcrumb item
@@ -506,6 +551,9 @@ export namespace Components {
          */
         "selected"?: boolean;
     }
+    /**
+     * @category actions
+     */
     interface MdsButton {
         /**
           * Specifies if the button is active or not
@@ -584,6 +632,9 @@ export namespace Components {
          */
         "variant"?: ButtonVariantType;
     }
+    /**
+     * @category actions
+     */
     interface MdsButtonDropdown {
         /**
           * Specifies if the button is active or not
@@ -652,8 +703,14 @@ export namespace Components {
          */
         "variant"?: ButtonDropdownVariantType;
     }
+    /**
+     * @category actions
+     */
     interface MdsButtonGroup {
     }
+    /**
+     * @category forms
+     */
     interface MdsCalendar {
         /**
           * Disables switching to month or year selection views from the calendar header.
@@ -733,6 +790,9 @@ export namespace Components {
          */
         "viewDate": string | null;
     }
+    /**
+     * @parent mds-calendar
+     */
     interface MdsCalendarCell {
         /**
           * Specifies the date of the cell
@@ -776,6 +836,9 @@ export namespace Components {
          */
         "today"?: boolean | undefined;
     }
+    /**
+     * @category structure
+     */
     interface MdsCard {
         /**
           * Disables the automatic responsive behavior based on container queries
@@ -783,14 +846,29 @@ export namespace Components {
          */
         "disableAutoGrid": boolean;
     }
+    /**
+     * @parent mds-card
+     */
     interface MdsCardContent {
     }
+    /**
+     * @parent mds-card
+     */
     interface MdsCardFooter {
     }
+    /**
+     * @parent mds-card
+     */
     interface MdsCardHeader {
     }
+    /**
+     * @parent mds-card
+     */
     interface MdsCardMedia {
     }
+    /**
+     * @category tags
+     */
     interface MdsChip {
         /**
           * Adds ARIA support to the element if has interaction
@@ -833,6 +911,9 @@ export namespace Components {
          */
         "variant"?: ChipVariantType;
     }
+    /**
+     * @category structure
+     */
     interface MdsDetails {
         /**
           * Specifies if the component is opened
@@ -840,6 +921,9 @@ export namespace Components {
          */
         "opened": boolean;
     }
+    /**
+     * @category overlays
+     */
     interface MdsDropdown {
         /**
           * Sets the distance between arrow and dropdown margins.
@@ -916,6 +1000,9 @@ export namespace Components {
          */
         "zIndex": number;
     }
+    /**
+     * @category content
+     */
     interface MdsEmoji {
         /**
           * Emoji agrees, useful for confirm actions.
@@ -962,6 +1049,9 @@ export namespace Components {
          */
         "stopThinking": (duration?: number) => Promise<void>;
     }
+    /**
+     * @category data
+     */
     interface MdsEntity {
         /**
           * Specifies if the component is awaiting a response from an external resource
@@ -988,6 +1078,9 @@ export namespace Components {
          */
         "variant"?: ThemeFullVariantAvatarType;
     }
+    /**
+     * @category content
+     */
     interface MdsFile {
         /**
           * Overrides the default filetype description
@@ -1015,6 +1108,9 @@ export namespace Components {
          */
         "suffix"?: ExtensionSuffixType;
     }
+    /**
+     * @category content
+     */
     interface MdsFilePreview {
         /**
           * Enables the cross icon to perform cancel/delete action on element
@@ -1067,6 +1163,9 @@ export namespace Components {
          */
         "variant"?: ThemeFullVariantAvatarType;
     }
+    /**
+     * @category forms
+     */
     interface MdsFilter {
         /**
           * Sets an automatic reset of active filters if all filters are triggered
@@ -1085,6 +1184,9 @@ export namespace Components {
          */
         "reset"?: boolean;
     }
+    /**
+     * @parent mds-filter
+     */
     interface MdsFilterItem {
         /**
           * Shows the number of items will be filtered by the component, also read out after the label as a number of results
@@ -1111,6 +1213,9 @@ export namespace Components {
          */
         "value": string;
     }
+    /**
+     * @category structure
+     */
     interface MdsHeader {
         /**
           * Sets the appearance of the header bar element when loaded, it can be changed depending on how `appearance-set` attribute is set
@@ -1157,6 +1262,9 @@ export namespace Components {
          */
         "visibility"?: 'hidden' | 'visible';
     }
+    /**
+     * @parent mds-header
+     */
     interface MdsHeaderBar {
         /**
           * Sets the visibility type of the hamburger menu
@@ -1174,6 +1282,9 @@ export namespace Components {
          */
         "setOpened": (isOpened?: boolean) => Promise<void>;
     }
+    /**
+     * @category overlays
+     */
     interface MdsHelp {
         /**
           * Pins the tooltip to `placement`: without it, the tooltip moves to another side of the icon when `placement` has no room.
@@ -1190,6 +1301,9 @@ export namespace Components {
          */
         "placement"?: FloatingUIPlacement;
     }
+    /**
+     * @category structure
+     */
     interface MdsHorizontalScroll {
         /**
           * Specifies the viewport which will display navigation controls
@@ -1207,8 +1321,14 @@ export namespace Components {
          */
         "snap"?: SnapType;
     }
+    /**
+     * @category structure
+     */
     interface MdsHr {
     }
+    /**
+     * @category content
+     */
     interface MdsIcon {
         /**
           * The name of the icon or a base64 string to render it as an svg
@@ -1220,6 +1340,9 @@ export namespace Components {
          */
         "setSvgPath": (svgPath: string) => Promise<void>;
     }
+    /**
+     * @category content
+     */
     interface MdsImg {
         /**
           * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
@@ -1266,6 +1389,9 @@ export namespace Components {
          */
         "width"?: string;
     }
+    /**
+     * @category forms
+     */
     interface MdsInput {
         /**
           * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the input stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
@@ -1418,6 +1544,9 @@ export namespace Components {
          */
         "variant"?: ThemeInputVariantType;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputDate {
         /**
           * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the control stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
@@ -1499,6 +1628,9 @@ export namespace Components {
          */
         "variant"?: ThemeInputVariantType;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputDateRange {
         /**
           * The accessible name of the range: each of the two fields is named after it and after the end of the range it covers, the visible "from" and "to" labels living in this shadow root, where no IDREF of the slotted fields could reach them.
@@ -1568,6 +1700,9 @@ export namespace Components {
          */
         "startDate": string;
     }
+    /**
+     * @parent mds-input-date-range
+     */
     interface MdsInputDateRangePreselection {
         /**
           * Sets the end date of the preselection
@@ -1586,6 +1721,9 @@ export namespace Components {
          */
         "start": string;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputField {
         /**
           * Display a text on the top of the input text field
@@ -1601,6 +1739,9 @@ export namespace Components {
          */
         "variant"?: ThemeInputVariantType;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputOtp {
         /**
           * The accessible name of the code: each digit is announced as a position inside it, the fields being separate controls a screen reader reaches one at a time.
@@ -1627,6 +1768,9 @@ export namespace Components {
          */
         "value"?: string;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputRange {
         /**
           * Sets if the component is disabled
@@ -1660,6 +1804,9 @@ export namespace Components {
          */
         "value": number;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputSelect {
         /**
           * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the control stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
@@ -1724,6 +1871,9 @@ export namespace Components {
          */
         "variant"?: ThemeStatusVariantType;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputSwitch {
         /**
           * Sets or returns whether a checkbox should automatically get focus when the page loads
@@ -1780,6 +1930,9 @@ export namespace Components {
          */
         "variant"?: TypographyVariants;
     }
+    /**
+     * @parent mds-input mds-input-date mds-input-select
+     */
     interface MdsInputTip {
         /**
           * Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
@@ -1792,6 +1945,9 @@ export namespace Components {
          */
         "position"?: InputTipPositionType;
     }
+    /**
+     * @parent mds-input-tip
+     */
     interface MdsInputTipItem {
         /**
           * Specifies if the element is expanded
@@ -1803,6 +1959,9 @@ export namespace Components {
          */
         "variant"?: InputTipItemVariantType;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputUpload {
         /**
           * Defines the file types the file input should accept, as the accept attribute of a native file input: MIME types (`image/*` included) and extensions, separated by commas
@@ -1850,6 +2009,9 @@ export namespace Components {
          */
         "sort"?: AttachmentSort;
     }
+    /**
+     * @category tags
+     */
     interface MdsKeyboard {
         /**
           * Shows the keyboard key combination test result
@@ -1860,6 +2022,9 @@ export namespace Components {
          */
         "try"?: boolean;
     }
+    /**
+     * @parent mds-keyboard
+     */
     interface MdsKeyboardKey {
         /**
           * Sets the code of the keyboard key for combination tests if `try` attribute is set from `mds-keyboard` parent component
@@ -1870,8 +2035,14 @@ export namespace Components {
          */
         "pressed"?: boolean;
     }
+    /**
+     * @category data
+     */
     interface MdsKpi {
     }
+    /**
+     * @parent mds-kpi
+     */
     interface MdsKpiItem {
         /**
           * Specifies the description under the value in the KPI element
@@ -1891,6 +2062,9 @@ export namespace Components {
          */
         "threshold"?: number;
     }
+    /**
+     * @category tags
+     */
     interface MdsLabel {
         /**
           * Enables the cross icon to perform cancel/delete action on element
@@ -1922,6 +2096,9 @@ export namespace Components {
          */
         "variant": MdsLabelVariantType;
     }
+    /**
+     * @category actions
+     */
     interface MdsLink {
         /**
           * The URL of the link: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`. Without `href` the link is an inline button: it answers to click, Enter and Space with a `click` event and never submits a form.
@@ -1961,8 +2138,14 @@ export namespace Components {
          */
         "variant"?: LinkVariantType;
     }
+    /**
+     * @category data
+     */
     interface MdsList {
     }
+    /**
+     * @parent mds-list
+     */
     interface MdsListItem {
         /**
           * Specifies the icon displayed in the element
@@ -1979,6 +2162,9 @@ export namespace Components {
          */
         "variant"?: TypographyReadingVariants;
     }
+    /**
+     * @category tags
+     */
     interface MdsMention {
         /**
           * Shows the cross icon to perform cancel/delete action on element
@@ -1998,6 +2184,9 @@ export namespace Components {
          */
         "size"?: MentionSize;
     }
+    /**
+     * @category overlays
+     */
     interface MdsModal {
         /**
           * The accessible name of the modal: the name a screen reader announces when the window opens. The `<dialog>` this component renders is the dialog, so the name goes there.
@@ -2038,6 +2227,9 @@ export namespace Components {
          */
         "position"?: ModalPositionType;
     }
+    /**
+     * @category content
+     */
     interface MdsNote {
         /**
           * Enables the cross icon to perform cancel/delete action on element
@@ -2050,6 +2242,9 @@ export namespace Components {
          */
         "variant"?: ThemeLabelVariantType;
     }
+    /**
+     * @category feedback
+     */
     interface MdsNotification {
         /**
           * Specifies if the notification is dismissed
@@ -2076,6 +2271,9 @@ export namespace Components {
          */
         "value": number;
     }
+    /**
+     * @category navigation
+     */
     interface MdsPaginator {
         /**
           * Specifies the current page selected in the paginator
@@ -2088,6 +2286,9 @@ export namespace Components {
          */
         "pages": number;
     }
+    /**
+     * @parent mds-paginator
+     */
     interface MdsPaginatorItem {
         /**
           * Specifies if the item is disabled or not, is handled from the parent paginator
@@ -2102,6 +2303,9 @@ export namespace Components {
          */
         "selected"?: boolean;
     }
+    /**
+     * @category tags
+     */
     interface MdsPolicyAi {
         /**
           * Sets the description to custom component long text
@@ -2126,7 +2330,6 @@ export namespace Components {
      * @name Pref
      * @description This component is based on MdsTab component pattern
      * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
-     * @category Patterns
      * @tags pattern, user, tab
      * @example <mds-pref>
      * <mds-pref-animation></mds-pref-animation>
@@ -2139,6 +2342,7 @@ export namespace Components {
      * <mds-pref-language-item code="en"></mds-pref-language-item>
      * </mds-pref-language>
      * </mds-pref>
+     * @category preferences
      */
     interface MdsPref {
         /**
@@ -2150,6 +2354,9 @@ export namespace Components {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefAnimation {
         /**
           * Specifies the preference mode
@@ -2160,6 +2367,9 @@ export namespace Components {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefConsumption {
         /**
           * Specifies the preference mode
@@ -2170,6 +2380,9 @@ export namespace Components {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefContrast {
         /**
           * Specifies the preference mode
@@ -2180,6 +2393,9 @@ export namespace Components {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefLanguage {
         /**
           * Specifies the language code based on HTML `lang` attribute  A string representing the language version as defined in {@link https://datatracker.ietf.org/doc/html/rfc5646 RFC 5646: Tags for Identifying Languages (also known as BCP 47)}.  Supported languages are Italiano, English, Español, ελληνικά
@@ -2192,6 +2408,9 @@ export namespace Components {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @parent mds-pref-language
+     */
     interface MdsPrefLanguageItem {
         /**
           * Specifies the language code based on HTML `lang` attribute
@@ -2204,6 +2423,9 @@ export namespace Components {
          */
         "selected"?: boolean;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefMode {
         /**
           * Locks the mode items forbidden by a scheme-constrained theme, without touching the stored preference: `light` disables the explicit `dark` item, `dark` disables the explicit `light` item, `all` (or unset) locks nothing; the `system` item is never locked. Set by the `mds-pref` controller from the active theme's `scheme`; not meant to be set directly.
@@ -2223,6 +2445,9 @@ export namespace Components {
          */
         "transition": PreferenceThemeTransitionType;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefTheme {
         /**
           * Specifies the corner geometry of the whole page: one of the `corner-shape` keywords, or `default`.  Corner geometry is theme appearance rather than an accessibility preference, which is why it lives here next to the theme name and scheme instead of in `mds-pref-mode`. Setting it writes `data-corner-shape` on `<html>`, where the generated axis picks both the shape and the radius scale tuned for it.  Leaving it unset touches nothing. Setting it to `default` REMOVES the attribute rather than writing today's default into the page, so a project that never chose keeps following the design system when the default changes.
@@ -2244,6 +2469,9 @@ export namespace Components {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @parent mds-pref-theme
+     */
     interface MdsPrefThemeItem {
         /**
           * Specifies the theme name
@@ -2266,14 +2494,23 @@ export namespace Components {
          */
         "selected"?: boolean;
     }
+    /**
+     * @category data
+     */
     interface MdsPriceTable {
     }
+    /**
+     * @parent mds-price-table
+     */
     interface MdsPriceTableFeatures {
         /**
           * Sets a header title for the entire table
          */
         "label"?: string;
     }
+    /**
+     * @parent mds-price-table-features-row
+     */
     interface MdsPriceTableFeaturesCell {
         /**
           * Specifies the support type which is represented
@@ -2281,12 +2518,24 @@ export namespace Components {
          */
         "type"?: PriceTableFeaturesCellType;
     }
+    /**
+     * @parent mds-price-table-features
+     */
     interface MdsPriceTableFeaturesRow {
     }
+    /**
+     * @parent mds-price-table
+     */
     interface MdsPriceTableHeader {
     }
+    /**
+     * @parent mds-price-table mds-price-table-header
+     */
     interface MdsPriceTableList {
     }
+    /**
+     * @parent mds-price-table-list
+     */
     interface MdsPriceTableListItem {
         /**
           * Specifies if the feature is supported or not
@@ -2299,6 +2548,9 @@ export namespace Components {
          */
         "typography": TypographyReadType;
     }
+    /**
+     * @category feedback
+     */
     interface MdsProgress {
         /**
           * Specifies the direction of the progress bar, if horizonatl or vertical
@@ -2331,6 +2583,9 @@ export namespace Components {
          */
         "variant"?: ThemeVariantType;
     }
+    /**
+     * @category feedback
+     */
     interface MdsPushNotification {
         /**
           * Specifies when the stack shows: with `auto` whenever notifications are added, with `manual` only through `visible` or `show()`. In both, removing the last notification hides it; a click outside does not.
@@ -2355,6 +2610,9 @@ export namespace Components {
          */
         "visible"?: boolean;
     }
+    /**
+     * @parent mds-push-notification
+     */
     interface MdsPushNotificationItem {
         /**
           * Specifies how the notification date is written: `timeago` shows the time passed, any other value is the Day.js format of a static date
@@ -2408,6 +2666,9 @@ export namespace Components {
          */
         "variant"?: ThemeFullVariantAvatarType;
     }
+    /**
+     * @category content
+     */
     interface MdsQuote {
         /**
           * Specifies the tag the element
@@ -2420,6 +2681,9 @@ export namespace Components {
          */
         "typography": TypographyTitleType;
     }
+    /**
+     * @category actions
+     */
     interface MdsRadialMenu {
         /**
           * Specifies the ending angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-end`, `360deg` by default
@@ -2476,6 +2740,9 @@ export namespace Components {
          */
         "variant"?: ButtonVariantType;
     }
+    /**
+     * @parent mds-radial-menu
+     */
     interface MdsRadialMenuItem {
         /**
           * The icon displayed in the button
@@ -2501,6 +2768,9 @@ export namespace Components {
          */
         "variant"?: ButtonVariantType;
     }
+    /**
+     * @category feedback
+     */
     interface MdsRadialProgress {
         /**
           * Specifies if the component should display an icon
@@ -2522,8 +2792,14 @@ export namespace Components {
          */
         "variant"?: ThemeVariantType;
     }
+    /**
+     * @category structure
+     */
     interface MdsSeparator {
     }
+    /**
+     * @category feedback
+     */
     interface MdsSpinner {
         /**
           * Specifies if the animation is running or not, it's required for performance reasons
@@ -2531,6 +2807,9 @@ export namespace Components {
          */
         "running"?: boolean;
     }
+    /**
+     * @category actions
+     */
     interface MdsStatusBar {
         /**
           * Specifies the description near the slotted actions
@@ -2555,6 +2834,9 @@ export namespace Components {
          */
         "visible"?: boolean;
     }
+    /**
+     * @category navigation
+     */
     interface MdsStepperBar {
         /**
           * Sets the current item by its position, counted from 1: the items before it are done. 1 makes the first item current with none done, 0 makes no item current, the number of items + 1 marks them all done
@@ -2567,6 +2849,9 @@ export namespace Components {
          */
         "navigation": StepperBarNavigationType;
     }
+    /**
+     * @parent mds-stepper-bar
+     */
     interface MdsStepperBarItem {
         /**
           * Specifies if the badge status is displayed
@@ -2609,6 +2894,9 @@ export namespace Components {
          */
         "value"?: string;
     }
+    /**
+     * @category navigation
+     */
     interface MdsTab {
         /**
           * Sets the animation type of the selection transition between `mds-tab-item` elements
@@ -2637,8 +2925,14 @@ export namespace Components {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @category navigation
+     */
     interface MdsTabBar {
     }
+    /**
+     * @parent mds-tab-bar
+     */
     interface MdsTabBarItem {
         /**
           * The icon displayed in the tab bar item.
@@ -2659,6 +2953,9 @@ export namespace Components {
          */
         "typography"?: TypographySmallerType;
     }
+    /**
+     * @parent mds-tab
+     */
     interface MdsTabItem {
         /**
           * Reflects the parent tab selection animation (set by mds-tab); drives the slide-variant styling without :host-context
@@ -2716,6 +3013,9 @@ export namespace Components {
          */
         "value"?: string;
     }
+    /**
+     * @category data
+     */
     interface MdsTable {
         /**
           * Specifies if the table rows are higlighted on mouseover event
@@ -2747,6 +3047,9 @@ export namespace Components {
          */
         "updateSelection": () => Promise<void>;
     }
+    /**
+     * @parent mds-table
+     */
     interface MdsTableBody {
         /**
           * Specifies whether the rows react to user interaction (hover/focus).
@@ -2757,18 +3060,27 @@ export namespace Components {
          */
         "selection"?: boolean;
     }
+    /**
+     * @parent mds-table-row mds-table-footer
+     */
     interface MdsTableCell {
         /**
           * Sets a value to help the sorting function from `mds-table-header-cell`, if not set it will be used the content of the cell.
          */
         "value"?: string | number;
     }
+    /**
+     * @parent mds-table
+     */
     interface MdsTableFooter {
         /**
           * Adds an empty cell in the selection column, so that the cells of the footer line up with the ones of the rows: `mds-table` sets it from its own `selectable`
          */
         "selectable"?: boolean;
     }
+    /**
+     * @parent mds-table
+     */
     interface MdsTableHeader {
         /**
           * Enables the select-all checkbox in the header.
@@ -2786,6 +3098,9 @@ export namespace Components {
          */
         "setSelection": (selectedItems: number, totalItems: number) => Promise<void>;
     }
+    /**
+     * @parent mds-table-header
+     */
     interface MdsTableHeaderCell {
         /**
           * Specifies the current sort direction of the column. Set from outside, it sorts the rows like a click, or only shows the order when the table has `sorting="external"`.
@@ -2806,6 +3121,9 @@ export namespace Components {
          */
         "sortable"?: boolean;
     }
+    /**
+     * @parent mds-table-body
+     */
     interface MdsTableRow {
         /**
           * Specifies whether the row reacts to user interaction (hover/focus).
@@ -2833,6 +3151,9 @@ export namespace Components {
          */
         "value"?: string | number;
     }
+    /**
+     * @category content
+     */
     interface MdsText {
         /**
           * Specifies if the text is animated when it is rendered
@@ -2861,6 +3182,9 @@ export namespace Components {
          */
         "variant"?: TypographyVariants;
     }
+    /**
+     * @category feedback
+     */
     interface MdsToast {
         /**
           * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
@@ -2891,6 +3215,9 @@ export namespace Components {
          */
         "visible"?: boolean;
     }
+    /**
+     * @category feedback
+     */
     interface MdsToastRegion {
         /**
           * The most toasts visible at once: when one more shows, the oldest one with a `duration` is hidden. A toast that stays (`duration="0"`) is never hidden by the region
@@ -2903,6 +3230,9 @@ export namespace Components {
          */
         "position": ToastPosition;
     }
+    /**
+     * @category overlays
+     */
     interface MdsTooltip {
         /**
           * @default 4
@@ -2968,6 +3298,9 @@ export namespace Components {
          */
         "visible": boolean;
     }
+    /**
+     * @category navigation
+     */
     interface MdsTree {
         /**
           * Show actions on the every tree item on hover or by default.
@@ -3008,6 +3341,9 @@ export namespace Components {
          */
         "truncate": TypographyTruncateType;
     }
+    /**
+     * @parent mds-tree mds-tree-item
+     */
     interface MdsTreeItem {
         /**
           * Show actions on the tree item on hover or by default.
@@ -3059,6 +3395,9 @@ export namespace Components {
          */
         "truncate"?: TypographyTruncateType;
     }
+    /**
+     * @category content
+     */
     interface MdsUrlView {
         /**
           * Specifies the icon shown in the header, before the label or the domain; without it the header shows the explore icon
@@ -3078,6 +3417,9 @@ export namespace Components {
          */
         "src": string;
     }
+    /**
+     * @category content
+     */
     interface MdsUsage {
         /**
           * Specifies the alias of the usage phrase on the top of the component
@@ -3093,6 +3435,9 @@ export namespace Components {
          */
         "variant": UsageType;
     }
+    /**
+     * @category content
+     */
     interface MdsVideoWall {
         /**
           * Specifies that the video will start playing as soon as it is ready
@@ -3128,6 +3473,9 @@ export namespace Components {
          */
         "src"?: string;
     }
+    /**
+     * @category feedback
+     */
     interface MdsZero {
     }
 }
@@ -3343,6 +3691,9 @@ declare global {
     interface HTMLMdsAccordionElementEventMap {
         "mdsAccordionChange": MdsAccordionEventDetail;
     }
+    /**
+     * @category structure
+     */
     interface HTMLMdsAccordionElement extends Components.MdsAccordion, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsAccordionElementEventMap>(type: K, listener: (this: HTMLMdsAccordionElement, ev: MdsAccordionCustomEvent<HTMLMdsAccordionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3362,6 +3713,9 @@ declare global {
         "mdsAccordionItemUnselect": MdsAccordionItemEventDetail;
         "mdsAccordionItemChange": MdsAccordionItemEventDetail;
     }
+    /**
+     * @parent mds-accordion
+     */
     interface HTMLMdsAccordionItemElement extends Components.MdsAccordionItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsAccordionItemElementEventMap>(type: K, listener: (this: HTMLMdsAccordionItemElement, ev: MdsAccordionItemCustomEvent<HTMLMdsAccordionItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3379,6 +3733,9 @@ declare global {
     interface HTMLMdsAccordionTimerElementEventMap {
         "mdsAccordionTimerChange": MdsAccordionTimerEventDetail;
     }
+    /**
+     * @category structure
+     */
     interface HTMLMdsAccordionTimerElement extends Components.MdsAccordionTimer, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsAccordionTimerElementEventMap>(type: K, listener: (this: HTMLMdsAccordionTimerElement, ev: MdsAccordionTimerCustomEvent<HTMLMdsAccordionTimerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3399,6 +3756,9 @@ declare global {
         "mdsAccordionTimerItemMouseEnterSelect": MdsAccordionTimerItemEventDetail;
         "mdsAccordionTimerItemMouseLeaveSelect": MdsAccordionTimerItemEventDetail;
     }
+    /**
+     * @parent mds-accordion-timer
+     */
     interface HTMLMdsAccordionTimerItemElement extends Components.MdsAccordionTimerItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsAccordionTimerItemElementEventMap>(type: K, listener: (this: HTMLMdsAccordionTimerItemElement, ev: MdsAccordionTimerItemCustomEvent<HTMLMdsAccordionTimerItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3413,30 +3773,45 @@ declare global {
         prototype: HTMLMdsAccordionTimerItemElement;
         new (): HTMLMdsAccordionTimerItemElement;
     };
+    /**
+     * @category data
+     */
     interface HTMLMdsAuthorElement extends Components.MdsAuthor, HTMLStencilElement {
     }
     var HTMLMdsAuthorElement: {
         prototype: HTMLMdsAuthorElement;
         new (): HTMLMdsAuthorElement;
     };
+    /**
+     * @category data
+     */
     interface HTMLMdsAvatarElement extends Components.MdsAvatar, HTMLStencilElement {
     }
     var HTMLMdsAvatarElement: {
         prototype: HTMLMdsAvatarElement;
         new (): HTMLMdsAvatarElement;
     };
+    /**
+     * @category data
+     */
     interface HTMLMdsAvatarStackElement extends Components.MdsAvatarStack, HTMLStencilElement {
     }
     var HTMLMdsAvatarStackElement: {
         prototype: HTMLMdsAvatarStackElement;
         new (): HTMLMdsAvatarStackElement;
     };
+    /**
+     * @parent mds-avatar-stack
+     */
     interface HTMLMdsAvatarStackItemElement extends Components.MdsAvatarStackItem, HTMLStencilElement {
     }
     var HTMLMdsAvatarStackItemElement: {
         prototype: HTMLMdsAvatarStackItemElement;
         new (): HTMLMdsAvatarStackItemElement;
     };
+    /**
+     * @category tags
+     */
     interface HTMLMdsBadgeElement extends Components.MdsBadge, HTMLStencilElement {
     }
     var HTMLMdsBadgeElement: {
@@ -3446,6 +3821,9 @@ declare global {
     interface HTMLMdsBannerElementEventMap {
         "mdsBannerClose": void;
     }
+    /**
+     * @category feedback
+     */
     interface HTMLMdsBannerElement extends Components.MdsBanner, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsBannerElementEventMap>(type: K, listener: (this: HTMLMdsBannerElement, ev: MdsBannerCustomEvent<HTMLMdsBannerElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3460,18 +3838,27 @@ declare global {
         prototype: HTMLMdsBannerElement;
         new (): HTMLMdsBannerElement;
     };
+    /**
+     * @category data
+     */
     interface HTMLMdsBenchmarkBarElement extends Components.MdsBenchmarkBar, HTMLStencilElement {
     }
     var HTMLMdsBenchmarkBarElement: {
         prototype: HTMLMdsBenchmarkBarElement;
         new (): HTMLMdsBenchmarkBarElement;
     };
+    /**
+     * @category content
+     */
     interface HTMLMdsBibliographyElement extends Components.MdsBibliography, HTMLStencilElement {
     }
     var HTMLMdsBibliographyElement: {
         prototype: HTMLMdsBibliographyElement;
         new (): HTMLMdsBibliographyElement;
     };
+    /**
+     * @category content
+     */
     interface HTMLMdsBookElement extends Components.MdsBook, HTMLStencilElement {
     }
     var HTMLMdsBookElement: {
@@ -3481,6 +3868,9 @@ declare global {
     interface HTMLMdsBreadcrumbElementEventMap {
         "mdsBreadcrumbChange": MdsBreadcrumbEventDetail;
     }
+    /**
+     * @category navigation
+     */
     interface HTMLMdsBreadcrumbElement extends Components.MdsBreadcrumb, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsBreadcrumbElementEventMap>(type: K, listener: (this: HTMLMdsBreadcrumbElement, ev: MdsBreadcrumbCustomEvent<HTMLMdsBreadcrumbElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3498,6 +3888,9 @@ declare global {
     interface HTMLMdsBreadcrumbItemElementEventMap {
         "mdsBreadcrumbItemSelect": MdsBreadcrumbItemEventDetail;
     }
+    /**
+     * @parent mds-breadcrumb
+     */
     interface HTMLMdsBreadcrumbItemElement extends Components.MdsBreadcrumbItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsBreadcrumbItemElementEventMap>(type: K, listener: (this: HTMLMdsBreadcrumbItemElement, ev: MdsBreadcrumbItemCustomEvent<HTMLMdsBreadcrumbItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3512,6 +3905,9 @@ declare global {
         prototype: HTMLMdsBreadcrumbItemElement;
         new (): HTMLMdsBreadcrumbItemElement;
     };
+    /**
+     * @category actions
+     */
     interface HTMLMdsButtonElement extends Components.MdsButton, HTMLStencilElement {
     }
     var HTMLMdsButtonElement: {
@@ -3521,6 +3917,9 @@ declare global {
     interface HTMLMdsButtonDropdownElementEventMap {
         "mdsButtonDropdownClick": void;
     }
+    /**
+     * @category actions
+     */
     interface HTMLMdsButtonDropdownElement extends Components.MdsButtonDropdown, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsButtonDropdownElementEventMap>(type: K, listener: (this: HTMLMdsButtonDropdownElement, ev: MdsButtonDropdownCustomEvent<HTMLMdsButtonDropdownElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3535,6 +3934,9 @@ declare global {
         prototype: HTMLMdsButtonDropdownElement;
         new (): HTMLMdsButtonDropdownElement;
     };
+    /**
+     * @category actions
+     */
     interface HTMLMdsButtonGroupElement extends Components.MdsButtonGroup, HTMLStencilElement {
     }
     var HTMLMdsButtonGroupElement: {
@@ -3555,6 +3957,9 @@ declare global {
   };
         "mdsCalendarPreselect": void;
     }
+    /**
+     * @category forms
+     */
     interface HTMLMdsCalendarElement extends Components.MdsCalendar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsCalendarElementEventMap>(type: K, listener: (this: HTMLMdsCalendarElement, ev: MdsCalendarCustomEvent<HTMLMdsCalendarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3569,36 +3974,54 @@ declare global {
         prototype: HTMLMdsCalendarElement;
         new (): HTMLMdsCalendarElement;
     };
+    /**
+     * @parent mds-calendar
+     */
     interface HTMLMdsCalendarCellElement extends Components.MdsCalendarCell, HTMLStencilElement {
     }
     var HTMLMdsCalendarCellElement: {
         prototype: HTMLMdsCalendarCellElement;
         new (): HTMLMdsCalendarCellElement;
     };
+    /**
+     * @category structure
+     */
     interface HTMLMdsCardElement extends Components.MdsCard, HTMLStencilElement {
     }
     var HTMLMdsCardElement: {
         prototype: HTMLMdsCardElement;
         new (): HTMLMdsCardElement;
     };
+    /**
+     * @parent mds-card
+     */
     interface HTMLMdsCardContentElement extends Components.MdsCardContent, HTMLStencilElement {
     }
     var HTMLMdsCardContentElement: {
         prototype: HTMLMdsCardContentElement;
         new (): HTMLMdsCardContentElement;
     };
+    /**
+     * @parent mds-card
+     */
     interface HTMLMdsCardFooterElement extends Components.MdsCardFooter, HTMLStencilElement {
     }
     var HTMLMdsCardFooterElement: {
         prototype: HTMLMdsCardFooterElement;
         new (): HTMLMdsCardFooterElement;
     };
+    /**
+     * @parent mds-card
+     */
     interface HTMLMdsCardHeaderElement extends Components.MdsCardHeader, HTMLStencilElement {
     }
     var HTMLMdsCardHeaderElement: {
         prototype: HTMLMdsCardHeaderElement;
         new (): HTMLMdsCardHeaderElement;
     };
+    /**
+     * @parent mds-card
+     */
     interface HTMLMdsCardMediaElement extends Components.MdsCardMedia, HTMLStencilElement {
     }
     var HTMLMdsCardMediaElement: {
@@ -3610,6 +4033,9 @@ declare global {
         "mdsChipDelete": MdsChipEvent;
         "mdsChipSelect": MdsChipEvent;
     }
+    /**
+     * @category tags
+     */
     interface HTMLMdsChipElement extends Components.MdsChip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsChipElementEventMap>(type: K, listener: (this: HTMLMdsChipElement, ev: MdsChipCustomEvent<HTMLMdsChipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3627,6 +4053,9 @@ declare global {
     interface HTMLMdsDetailsElementEventMap {
         "mdsDetailsChange": boolean;
     }
+    /**
+     * @category structure
+     */
     interface HTMLMdsDetailsElement extends Components.MdsDetails, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsDetailsElementEventMap>(type: K, listener: (this: HTMLMdsDetailsElement, ev: MdsDetailsCustomEvent<HTMLMdsDetailsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3646,6 +4075,9 @@ declare global {
         "mdsDropdownHide": MdsDropdownEventDetail;
         "mdsDropdownChange": MdsDropdownEventDetail;
     }
+    /**
+     * @category overlays
+     */
     interface HTMLMdsDropdownElement extends Components.MdsDropdown, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsDropdownElementEventMap>(type: K, listener: (this: HTMLMdsDropdownElement, ev: MdsDropdownCustomEvent<HTMLMdsDropdownElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3660,12 +4092,18 @@ declare global {
         prototype: HTMLMdsDropdownElement;
         new (): HTMLMdsDropdownElement;
     };
+    /**
+     * @category content
+     */
     interface HTMLMdsEmojiElement extends Components.MdsEmoji, HTMLStencilElement {
     }
     var HTMLMdsEmojiElement: {
         prototype: HTMLMdsEmojiElement;
         new (): HTMLMdsEmojiElement;
     };
+    /**
+     * @category data
+     */
     interface HTMLMdsEntityElement extends Components.MdsEntity, HTMLStencilElement {
     }
     var HTMLMdsEntityElement: {
@@ -3675,6 +4113,9 @@ declare global {
     interface HTMLMdsFileElementEventMap {
         "mdsFileDownload": MdsFileEventDetail;
     }
+    /**
+     * @category content
+     */
     interface HTMLMdsFileElement extends Components.MdsFile, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsFileElementEventMap>(type: K, listener: (this: HTMLMdsFileElement, ev: MdsFileCustomEvent<HTMLMdsFileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3693,6 +4134,9 @@ declare global {
         "mdsFileDownload": MdsFilePreviewEventDetail;
         "mdsFileDelete": MdsFilePreviewEventDetail;
     }
+    /**
+     * @category content
+     */
     interface HTMLMdsFilePreviewElement extends Components.MdsFilePreview, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsFilePreviewElementEventMap>(type: K, listener: (this: HTMLMdsFilePreviewElement, ev: MdsFilePreviewCustomEvent<HTMLMdsFilePreviewElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3710,6 +4154,9 @@ declare global {
     interface HTMLMdsFilterElementEventMap {
         "mdsFilterChange": MdsFilterEventDetail;
     }
+    /**
+     * @category forms
+     */
     interface HTMLMdsFilterElement extends Components.MdsFilter, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsFilterElementEventMap>(type: K, listener: (this: HTMLMdsFilterElement, ev: MdsFilterCustomEvent<HTMLMdsFilterElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3727,6 +4174,9 @@ declare global {
     interface HTMLMdsFilterItemElementEventMap {
         "mdsFilterItemSelect": MdsFilterItemEventDetail;
     }
+    /**
+     * @parent mds-filter
+     */
     interface HTMLMdsFilterItemElement extends Components.MdsFilterItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsFilterItemElementEventMap>(type: K, listener: (this: HTMLMdsFilterItemElement, ev: MdsFilterItemCustomEvent<HTMLMdsFilterItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3745,6 +4195,9 @@ declare global {
         "mdsHeaderClose": MdsHeaderEventDetail;
         "mdsHeaderVisibilityChange": MdsHeaderVisibilityEventDetail;
     }
+    /**
+     * @category structure
+     */
     interface HTMLMdsHeaderElement extends Components.MdsHeader, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsHeaderElementEventMap>(type: K, listener: (this: HTMLMdsHeaderElement, ev: MdsHeaderCustomEvent<HTMLMdsHeaderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3762,6 +4215,9 @@ declare global {
     interface HTMLMdsHeaderBarElementEventMap {
         "mdsHeaderBarOpen": void;
     }
+    /**
+     * @parent mds-header
+     */
     interface HTMLMdsHeaderBarElement extends Components.MdsHeaderBar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsHeaderBarElementEventMap>(type: K, listener: (this: HTMLMdsHeaderBarElement, ev: MdsHeaderBarCustomEvent<HTMLMdsHeaderBarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3776,24 +4232,36 @@ declare global {
         prototype: HTMLMdsHeaderBarElement;
         new (): HTMLMdsHeaderBarElement;
     };
+    /**
+     * @category overlays
+     */
     interface HTMLMdsHelpElement extends Components.MdsHelp, HTMLStencilElement {
     }
     var HTMLMdsHelpElement: {
         prototype: HTMLMdsHelpElement;
         new (): HTMLMdsHelpElement;
     };
+    /**
+     * @category structure
+     */
     interface HTMLMdsHorizontalScrollElement extends Components.MdsHorizontalScroll, HTMLStencilElement {
     }
     var HTMLMdsHorizontalScrollElement: {
         prototype: HTMLMdsHorizontalScrollElement;
         new (): HTMLMdsHorizontalScrollElement;
     };
+    /**
+     * @category structure
+     */
     interface HTMLMdsHrElement extends Components.MdsHr, HTMLStencilElement {
     }
     var HTMLMdsHrElement: {
         prototype: HTMLMdsHrElement;
         new (): HTMLMdsHrElement;
     };
+    /**
+     * @category content
+     */
     interface HTMLMdsIconElement extends Components.MdsIcon, HTMLStencilElement {
     }
     var HTMLMdsIconElement: {
@@ -3804,6 +4272,9 @@ declare global {
         "mdsImgLoadError": MdsImgEventDetail;
         "mdsImgLoadSuccess": MdsImgEventDetail;
     }
+    /**
+     * @category content
+     */
     interface HTMLMdsImgElement extends Components.MdsImg, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsImgElementEventMap>(type: K, listener: (this: HTMLMdsImgElement, ev: MdsImgCustomEvent<HTMLMdsImgElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3826,6 +4297,9 @@ declare global {
         "mdsInputSpeechEnd": void;
         "mdsInputValidation": boolean;
     }
+    /**
+     * @category forms
+     */
     interface HTMLMdsInputElement extends Components.MdsInput, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputElementEventMap>(type: K, listener: (this: HTMLMdsInputElement, ev: MdsInputCustomEvent<HTMLMdsInputElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3844,6 +4318,9 @@ declare global {
         "mdsInputValidation": boolean;
         "mdsInputDateSelect": string;
     }
+    /**
+     * @category forms
+     */
     interface HTMLMdsInputDateElement extends Components.MdsInputDate, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputDateElementEventMap>(type: K, listener: (this: HTMLMdsInputDateElement, ev: MdsInputDateCustomEvent<HTMLMdsInputDateElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3864,6 +4341,9 @@ declare global {
     endDate: string;
   };
     }
+    /**
+     * @category forms
+     */
     interface HTMLMdsInputDateRangeElement extends Components.MdsInputDateRange, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputDateRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputDateRangeElement, ev: MdsInputDateRangeCustomEvent<HTMLMdsInputDateRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3878,18 +4358,27 @@ declare global {
         prototype: HTMLMdsInputDateRangeElement;
         new (): HTMLMdsInputDateRangeElement;
     };
+    /**
+     * @parent mds-input-date-range
+     */
     interface HTMLMdsInputDateRangePreselectionElement extends Components.MdsInputDateRangePreselection, HTMLStencilElement {
     }
     var HTMLMdsInputDateRangePreselectionElement: {
         prototype: HTMLMdsInputDateRangePreselectionElement;
         new (): HTMLMdsInputDateRangePreselectionElement;
     };
+    /**
+     * @category forms
+     */
     interface HTMLMdsInputFieldElement extends Components.MdsInputField, HTMLStencilElement {
     }
     var HTMLMdsInputFieldElement: {
         prototype: HTMLMdsInputFieldElement;
         new (): HTMLMdsInputFieldElement;
     };
+    /**
+     * @category forms
+     */
     interface HTMLMdsInputOtpElement extends Components.MdsInputOtp, HTMLStencilElement {
     }
     var HTMLMdsInputOtpElement: {
@@ -3899,6 +4388,9 @@ declare global {
     interface HTMLMdsInputRangeElementEventMap {
         "mdsInputRangeChange": number;
     }
+    /**
+     * @category forms
+     */
     interface HTMLMdsInputRangeElement extends Components.MdsInputRange, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputRangeElementEventMap>(type: K, listener: (this: HTMLMdsInputRangeElement, ev: MdsInputRangeCustomEvent<HTMLMdsInputRangeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3916,6 +4408,9 @@ declare global {
     interface HTMLMdsInputSelectElementEventMap {
         "mdsInputSelectChange": MdsInputSelectEventDetail;
     }
+    /**
+     * @category forms
+     */
     interface HTMLMdsInputSelectElement extends Components.MdsInputSelect, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputSelectElementEventMap>(type: K, listener: (this: HTMLMdsInputSelectElement, ev: MdsInputSelectCustomEvent<HTMLMdsInputSelectElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3933,6 +4428,9 @@ declare global {
     interface HTMLMdsInputSwitchElementEventMap {
         "mdsInputSwitchChange": MdsInputSwitchEventDetail;
     }
+    /**
+     * @category forms
+     */
     interface HTMLMdsInputSwitchElement extends Components.MdsInputSwitch, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputSwitchElementEventMap>(type: K, listener: (this: HTMLMdsInputSwitchElement, ev: MdsInputSwitchCustomEvent<HTMLMdsInputSwitchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3947,12 +4445,18 @@ declare global {
         prototype: HTMLMdsInputSwitchElement;
         new (): HTMLMdsInputSwitchElement;
     };
+    /**
+     * @parent mds-input mds-input-date mds-input-select
+     */
     interface HTMLMdsInputTipElement extends Components.MdsInputTip, HTMLStencilElement {
     }
     var HTMLMdsInputTipElement: {
         prototype: HTMLMdsInputTipElement;
         new (): HTMLMdsInputTipElement;
     };
+    /**
+     * @parent mds-input-tip
+     */
     interface HTMLMdsInputTipItemElement extends Components.MdsInputTipItem, HTMLStencilElement {
     }
     var HTMLMdsInputTipItemElement: {
@@ -3962,6 +4466,9 @@ declare global {
     interface HTMLMdsInputUploadElementEventMap {
         "mdsInputUploadChange": FileList | null;
     }
+    /**
+     * @category forms
+     */
     interface HTMLMdsInputUploadElement extends Components.MdsInputUpload, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsInputUploadElementEventMap>(type: K, listener: (this: HTMLMdsInputUploadElement, ev: MdsInputUploadCustomEvent<HTMLMdsInputUploadElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -3976,24 +4483,36 @@ declare global {
         prototype: HTMLMdsInputUploadElement;
         new (): HTMLMdsInputUploadElement;
     };
+    /**
+     * @category tags
+     */
     interface HTMLMdsKeyboardElement extends Components.MdsKeyboard, HTMLStencilElement {
     }
     var HTMLMdsKeyboardElement: {
         prototype: HTMLMdsKeyboardElement;
         new (): HTMLMdsKeyboardElement;
     };
+    /**
+     * @parent mds-keyboard
+     */
     interface HTMLMdsKeyboardKeyElement extends Components.MdsKeyboardKey, HTMLStencilElement {
     }
     var HTMLMdsKeyboardKeyElement: {
         prototype: HTMLMdsKeyboardKeyElement;
         new (): HTMLMdsKeyboardKeyElement;
     };
+    /**
+     * @category data
+     */
     interface HTMLMdsKpiElement extends Components.MdsKpi, HTMLStencilElement {
     }
     var HTMLMdsKpiElement: {
         prototype: HTMLMdsKpiElement;
         new (): HTMLMdsKpiElement;
     };
+    /**
+     * @parent mds-kpi
+     */
     interface HTMLMdsKpiItemElement extends Components.MdsKpiItem, HTMLStencilElement {
     }
     var HTMLMdsKpiItemElement: {
@@ -4003,6 +4522,9 @@ declare global {
     interface HTMLMdsLabelElementEventMap {
         "mdsLabelDelete": void;
     }
+    /**
+     * @category tags
+     */
     interface HTMLMdsLabelElement extends Components.MdsLabel, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsLabelElementEventMap>(type: K, listener: (this: HTMLMdsLabelElement, ev: MdsLabelCustomEvent<HTMLMdsLabelElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4017,18 +4539,27 @@ declare global {
         prototype: HTMLMdsLabelElement;
         new (): HTMLMdsLabelElement;
     };
+    /**
+     * @category actions
+     */
     interface HTMLMdsLinkElement extends Components.MdsLink, HTMLStencilElement {
     }
     var HTMLMdsLinkElement: {
         prototype: HTMLMdsLinkElement;
         new (): HTMLMdsLinkElement;
     };
+    /**
+     * @category data
+     */
     interface HTMLMdsListElement extends Components.MdsList, HTMLStencilElement {
     }
     var HTMLMdsListElement: {
         prototype: HTMLMdsListElement;
         new (): HTMLMdsListElement;
     };
+    /**
+     * @parent mds-list
+     */
     interface HTMLMdsListItemElement extends Components.MdsListItem, HTMLStencilElement {
     }
     var HTMLMdsListItemElement: {
@@ -4038,6 +4569,9 @@ declare global {
     interface HTMLMdsMentionElementEventMap {
         "mdsMentionDelete": MdsMentionEvent;
     }
+    /**
+     * @category tags
+     */
     interface HTMLMdsMentionElement extends Components.MdsMention, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsMentionElementEventMap>(type: K, listener: (this: HTMLMdsMentionElement, ev: MdsMentionCustomEvent<HTMLMdsMentionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4058,6 +4592,9 @@ declare global {
         "mdsModalClose": void;
         "mdsModalHide": void;
     }
+    /**
+     * @category overlays
+     */
     interface HTMLMdsModalElement extends Components.MdsModal, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsModalElementEventMap>(type: K, listener: (this: HTMLMdsModalElement, ev: MdsModalCustomEvent<HTMLMdsModalElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4075,6 +4612,9 @@ declare global {
     interface HTMLMdsNoteElementEventMap {
         "mdsNoteDelete": void;
     }
+    /**
+     * @category content
+     */
     interface HTMLMdsNoteElement extends Components.MdsNote, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsNoteElementEventMap>(type: K, listener: (this: HTMLMdsNoteElement, ev: MdsNoteCustomEvent<HTMLMdsNoteElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4089,6 +4629,9 @@ declare global {
         prototype: HTMLMdsNoteElement;
         new (): HTMLMdsNoteElement;
     };
+    /**
+     * @category feedback
+     */
     interface HTMLMdsNotificationElement extends Components.MdsNotification, HTMLStencilElement {
     }
     var HTMLMdsNotificationElement: {
@@ -4098,6 +4641,9 @@ declare global {
     interface HTMLMdsPaginatorElementEventMap {
         "mdsPaginatorChange": MdsPaginatorEventDetail;
     }
+    /**
+     * @category navigation
+     */
     interface HTMLMdsPaginatorElement extends Components.MdsPaginator, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPaginatorElementEventMap>(type: K, listener: (this: HTMLMdsPaginatorElement, ev: MdsPaginatorCustomEvent<HTMLMdsPaginatorElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4112,12 +4658,18 @@ declare global {
         prototype: HTMLMdsPaginatorElement;
         new (): HTMLMdsPaginatorElement;
     };
+    /**
+     * @parent mds-paginator
+     */
     interface HTMLMdsPaginatorItemElement extends Components.MdsPaginatorItem, HTMLStencilElement {
     }
     var HTMLMdsPaginatorItemElement: {
         prototype: HTMLMdsPaginatorItemElement;
         new (): HTMLMdsPaginatorItemElement;
     };
+    /**
+     * @category tags
+     */
     interface HTMLMdsPolicyAiElement extends Components.MdsPolicyAi, HTMLStencilElement {
     }
     var HTMLMdsPolicyAiElement: {
@@ -4128,7 +4680,6 @@ declare global {
      * @name Pref
      * @description This component is based on MdsTab component pattern
      * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
-     * @category Patterns
      * @tags pattern, user, tab
      * @example <mds-pref>
      * <mds-pref-animation></mds-pref-animation>
@@ -4141,6 +4692,7 @@ declare global {
      * <mds-pref-language-item code="en"></mds-pref-language-item>
      * </mds-pref-language>
      * </mds-pref>
+     * @category preferences
      */
     interface HTMLMdsPrefElement extends Components.MdsPref, HTMLStencilElement {
     }
@@ -4151,6 +4703,9 @@ declare global {
     interface HTMLMdsPrefAnimationElementEventMap {
         "mdsPrefChange": MdsPrefChangeEventDetail;
     }
+    /**
+     * @category preferences
+     */
     interface HTMLMdsPrefAnimationElement extends Components.MdsPrefAnimation, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPrefAnimationElementEventMap>(type: K, listener: (this: HTMLMdsPrefAnimationElement, ev: MdsPrefAnimationCustomEvent<HTMLMdsPrefAnimationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4168,6 +4723,9 @@ declare global {
     interface HTMLMdsPrefConsumptionElementEventMap {
         "mdsPrefChange": MdsPrefChangeEventDetail;
     }
+    /**
+     * @category preferences
+     */
     interface HTMLMdsPrefConsumptionElement extends Components.MdsPrefConsumption, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPrefConsumptionElementEventMap>(type: K, listener: (this: HTMLMdsPrefConsumptionElement, ev: MdsPrefConsumptionCustomEvent<HTMLMdsPrefConsumptionElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4185,6 +4743,9 @@ declare global {
     interface HTMLMdsPrefContrastElementEventMap {
         "mdsPrefChange": MdsPrefChangeEventDetail;
     }
+    /**
+     * @category preferences
+     */
     interface HTMLMdsPrefContrastElement extends Components.MdsPrefContrast, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPrefContrastElementEventMap>(type: K, listener: (this: HTMLMdsPrefContrastElement, ev: MdsPrefContrastCustomEvent<HTMLMdsPrefContrastElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4203,6 +4764,9 @@ declare global {
         "mdsPrefLanguageChange": MdsPrefLanguageEventDetail;
         "mdsPrefChange": MdsPrefChangeEventDetail;
     }
+    /**
+     * @category preferences
+     */
     interface HTMLMdsPrefLanguageElement extends Components.MdsPrefLanguage, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPrefLanguageElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageElement, ev: MdsPrefLanguageCustomEvent<HTMLMdsPrefLanguageElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4220,6 +4784,9 @@ declare global {
     interface HTMLMdsPrefLanguageItemElementEventMap {
         "mdsPrefLanguageItemSelect": MdsPrefLanguageEventDetail;
     }
+    /**
+     * @parent mds-pref-language
+     */
     interface HTMLMdsPrefLanguageItemElement extends Components.MdsPrefLanguageItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPrefLanguageItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefLanguageItemElement, ev: MdsPrefLanguageItemCustomEvent<HTMLMdsPrefLanguageItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4237,6 +4804,9 @@ declare global {
     interface HTMLMdsPrefModeElementEventMap {
         "mdsPrefChange": MdsPrefChangeEventDetail;
     }
+    /**
+     * @category preferences
+     */
     interface HTMLMdsPrefModeElement extends Components.MdsPrefMode, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPrefModeElementEventMap>(type: K, listener: (this: HTMLMdsPrefModeElement, ev: MdsPrefModeCustomEvent<HTMLMdsPrefModeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4255,6 +4825,9 @@ declare global {
         "mdsPrefThemeChange": MdsPrefThemeEventDetail;
         "mdsPrefChange": MdsPrefChangeEventDetail;
     }
+    /**
+     * @category preferences
+     */
     interface HTMLMdsPrefThemeElement extends Components.MdsPrefTheme, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPrefThemeElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeElement, ev: MdsPrefThemeCustomEvent<HTMLMdsPrefThemeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4272,6 +4845,9 @@ declare global {
     interface HTMLMdsPrefThemeItemElementEventMap {
         "mdsPrefThemeItemSelect": MdsPrefThemeEventDetail;
     }
+    /**
+     * @parent mds-pref-theme
+     */
     interface HTMLMdsPrefThemeItemElement extends Components.MdsPrefThemeItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPrefThemeItemElementEventMap>(type: K, listener: (this: HTMLMdsPrefThemeItemElement, ev: MdsPrefThemeItemCustomEvent<HTMLMdsPrefThemeItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4286,48 +4862,72 @@ declare global {
         prototype: HTMLMdsPrefThemeItemElement;
         new (): HTMLMdsPrefThemeItemElement;
     };
+    /**
+     * @category data
+     */
     interface HTMLMdsPriceTableElement extends Components.MdsPriceTable, HTMLStencilElement {
     }
     var HTMLMdsPriceTableElement: {
         prototype: HTMLMdsPriceTableElement;
         new (): HTMLMdsPriceTableElement;
     };
+    /**
+     * @parent mds-price-table
+     */
     interface HTMLMdsPriceTableFeaturesElement extends Components.MdsPriceTableFeatures, HTMLStencilElement {
     }
     var HTMLMdsPriceTableFeaturesElement: {
         prototype: HTMLMdsPriceTableFeaturesElement;
         new (): HTMLMdsPriceTableFeaturesElement;
     };
+    /**
+     * @parent mds-price-table-features-row
+     */
     interface HTMLMdsPriceTableFeaturesCellElement extends Components.MdsPriceTableFeaturesCell, HTMLStencilElement {
     }
     var HTMLMdsPriceTableFeaturesCellElement: {
         prototype: HTMLMdsPriceTableFeaturesCellElement;
         new (): HTMLMdsPriceTableFeaturesCellElement;
     };
+    /**
+     * @parent mds-price-table-features
+     */
     interface HTMLMdsPriceTableFeaturesRowElement extends Components.MdsPriceTableFeaturesRow, HTMLStencilElement {
     }
     var HTMLMdsPriceTableFeaturesRowElement: {
         prototype: HTMLMdsPriceTableFeaturesRowElement;
         new (): HTMLMdsPriceTableFeaturesRowElement;
     };
+    /**
+     * @parent mds-price-table
+     */
     interface HTMLMdsPriceTableHeaderElement extends Components.MdsPriceTableHeader, HTMLStencilElement {
     }
     var HTMLMdsPriceTableHeaderElement: {
         prototype: HTMLMdsPriceTableHeaderElement;
         new (): HTMLMdsPriceTableHeaderElement;
     };
+    /**
+     * @parent mds-price-table mds-price-table-header
+     */
     interface HTMLMdsPriceTableListElement extends Components.MdsPriceTableList, HTMLStencilElement {
     }
     var HTMLMdsPriceTableListElement: {
         prototype: HTMLMdsPriceTableListElement;
         new (): HTMLMdsPriceTableListElement;
     };
+    /**
+     * @parent mds-price-table-list
+     */
     interface HTMLMdsPriceTableListItemElement extends Components.MdsPriceTableListItem, HTMLStencilElement {
     }
     var HTMLMdsPriceTableListItemElement: {
         prototype: HTMLMdsPriceTableListItemElement;
         new (): HTMLMdsPriceTableListItemElement;
     };
+    /**
+     * @category feedback
+     */
     interface HTMLMdsProgressElement extends Components.MdsProgress, HTMLStencilElement {
     }
     var HTMLMdsProgressElement: {
@@ -4339,6 +4939,9 @@ declare global {
         "mdsPushNotificationShow": void;
         "mdsPushNotificationHide": void;
     }
+    /**
+     * @category feedback
+     */
     interface HTMLMdsPushNotificationElement extends Components.MdsPushNotification, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPushNotificationElementEventMap>(type: K, listener: (this: HTMLMdsPushNotificationElement, ev: MdsPushNotificationCustomEvent<HTMLMdsPushNotificationElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4356,6 +4959,9 @@ declare global {
     interface HTMLMdsPushNotificationItemElementEventMap {
         "mdsPushNotificationItemClose": MdsPushNotificationItemEventDetail;
     }
+    /**
+     * @parent mds-push-notification
+     */
     interface HTMLMdsPushNotificationItemElement extends Components.MdsPushNotificationItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsPushNotificationItemElementEventMap>(type: K, listener: (this: HTMLMdsPushNotificationItemElement, ev: MdsPushNotificationItemCustomEvent<HTMLMdsPushNotificationItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4370,42 +4976,63 @@ declare global {
         prototype: HTMLMdsPushNotificationItemElement;
         new (): HTMLMdsPushNotificationItemElement;
     };
+    /**
+     * @category content
+     */
     interface HTMLMdsQuoteElement extends Components.MdsQuote, HTMLStencilElement {
     }
     var HTMLMdsQuoteElement: {
         prototype: HTMLMdsQuoteElement;
         new (): HTMLMdsQuoteElement;
     };
+    /**
+     * @category actions
+     */
     interface HTMLMdsRadialMenuElement extends Components.MdsRadialMenu, HTMLStencilElement {
     }
     var HTMLMdsRadialMenuElement: {
         prototype: HTMLMdsRadialMenuElement;
         new (): HTMLMdsRadialMenuElement;
     };
+    /**
+     * @parent mds-radial-menu
+     */
     interface HTMLMdsRadialMenuItemElement extends Components.MdsRadialMenuItem, HTMLStencilElement {
     }
     var HTMLMdsRadialMenuItemElement: {
         prototype: HTMLMdsRadialMenuItemElement;
         new (): HTMLMdsRadialMenuItemElement;
     };
+    /**
+     * @category feedback
+     */
     interface HTMLMdsRadialProgressElement extends Components.MdsRadialProgress, HTMLStencilElement {
     }
     var HTMLMdsRadialProgressElement: {
         prototype: HTMLMdsRadialProgressElement;
         new (): HTMLMdsRadialProgressElement;
     };
+    /**
+     * @category structure
+     */
     interface HTMLMdsSeparatorElement extends Components.MdsSeparator, HTMLStencilElement {
     }
     var HTMLMdsSeparatorElement: {
         prototype: HTMLMdsSeparatorElement;
         new (): HTMLMdsSeparatorElement;
     };
+    /**
+     * @category feedback
+     */
     interface HTMLMdsSpinnerElement extends Components.MdsSpinner, HTMLStencilElement {
     }
     var HTMLMdsSpinnerElement: {
         prototype: HTMLMdsSpinnerElement;
         new (): HTMLMdsSpinnerElement;
     };
+    /**
+     * @category actions
+     */
     interface HTMLMdsStatusBarElement extends Components.MdsStatusBar, HTMLStencilElement {
     }
     var HTMLMdsStatusBarElement: {
@@ -4415,6 +5042,9 @@ declare global {
     interface HTMLMdsStepperBarElementEventMap {
         "mdsStepperBarChange": MdsStepperBarEventDetail;
     }
+    /**
+     * @category navigation
+     */
     interface HTMLMdsStepperBarElement extends Components.MdsStepperBar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsStepperBarElementEventMap>(type: K, listener: (this: HTMLMdsStepperBarElement, ev: MdsStepperBarCustomEvent<HTMLMdsStepperBarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4432,6 +5062,9 @@ declare global {
     interface HTMLMdsStepperBarItemElementEventMap {
         "mdsStepperBarItemDone": MdsStepperBarItemEventDetail;
     }
+    /**
+     * @parent mds-stepper-bar
+     */
     interface HTMLMdsStepperBarItemElement extends Components.MdsStepperBarItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsStepperBarItemElementEventMap>(type: K, listener: (this: HTMLMdsStepperBarItemElement, ev: MdsStepperBarItemCustomEvent<HTMLMdsStepperBarItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4449,6 +5082,9 @@ declare global {
     interface HTMLMdsTabElementEventMap {
         "mdsTabChange": MdsTabEventDetail;
     }
+    /**
+     * @category navigation
+     */
     interface HTMLMdsTabElement extends Components.MdsTab, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTabElementEventMap>(type: K, listener: (this: HTMLMdsTabElement, ev: MdsTabCustomEvent<HTMLMdsTabElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4466,6 +5102,9 @@ declare global {
     interface HTMLMdsTabBarElementEventMap {
         "mdsTabBarChange": MdsTabBarEventDetail;
     }
+    /**
+     * @category navigation
+     */
     interface HTMLMdsTabBarElement extends Components.MdsTabBar, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTabBarElementEventMap>(type: K, listener: (this: HTMLMdsTabBarElement, ev: MdsTabBarCustomEvent<HTMLMdsTabBarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4483,6 +5122,9 @@ declare global {
     interface HTMLMdsTabBarItemElementEventMap {
         "mdsTabBarItemSelect": string;
     }
+    /**
+     * @parent mds-tab-bar
+     */
     interface HTMLMdsTabBarItemElement extends Components.MdsTabBarItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTabBarItemElementEventMap>(type: K, listener: (this: HTMLMdsTabBarItemElement, ev: MdsTabBarItemCustomEvent<HTMLMdsTabBarItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4501,6 +5143,9 @@ declare global {
         "mdsTabItemSelect": MdsTabItemEventDetail;
         "mdsTabItemFocus": MdsTabItemEventDetail;
     }
+    /**
+     * @parent mds-tab
+     */
     interface HTMLMdsTabItemElement extends Components.MdsTabItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTabItemElementEventMap>(type: K, listener: (this: HTMLMdsTabItemElement, ev: MdsTabItemCustomEvent<HTMLMdsTabItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4518,6 +5163,9 @@ declare global {
     interface HTMLMdsTableElementEventMap {
         "mdsTableSelectionChange": MdsTableSelectionEventDetail;
     }
+    /**
+     * @category data
+     */
     interface HTMLMdsTableElement extends Components.MdsTable, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTableElementEventMap>(type: K, listener: (this: HTMLMdsTableElement, ev: MdsTableCustomEvent<HTMLMdsTableElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4532,24 +5180,36 @@ declare global {
         prototype: HTMLMdsTableElement;
         new (): HTMLMdsTableElement;
     };
+    /**
+     * @parent mds-table
+     */
     interface HTMLMdsTableBodyElement extends Components.MdsTableBody, HTMLStencilElement {
     }
     var HTMLMdsTableBodyElement: {
         prototype: HTMLMdsTableBodyElement;
         new (): HTMLMdsTableBodyElement;
     };
+    /**
+     * @parent mds-table-row mds-table-footer
+     */
     interface HTMLMdsTableCellElement extends Components.MdsTableCell, HTMLStencilElement {
     }
     var HTMLMdsTableCellElement: {
         prototype: HTMLMdsTableCellElement;
         new (): HTMLMdsTableCellElement;
     };
+    /**
+     * @parent mds-table
+     */
     interface HTMLMdsTableFooterElement extends Components.MdsTableFooter, HTMLStencilElement {
     }
     var HTMLMdsTableFooterElement: {
         prototype: HTMLMdsTableFooterElement;
         new (): HTMLMdsTableFooterElement;
     };
+    /**
+     * @parent mds-table
+     */
     interface HTMLMdsTableHeaderElement extends Components.MdsTableHeader, HTMLStencilElement {
     }
     var HTMLMdsTableHeaderElement: {
@@ -4559,6 +5219,9 @@ declare global {
     interface HTMLMdsTableHeaderCellElementEventMap {
         "mdsTableHeaderCellSort": MdsTableHeaderCellSortEventDetail;
     }
+    /**
+     * @parent mds-table-header
+     */
     interface HTMLMdsTableHeaderCellElement extends Components.MdsTableHeaderCell, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTableHeaderCellElementEventMap>(type: K, listener: (this: HTMLMdsTableHeaderCellElement, ev: MdsTableHeaderCellCustomEvent<HTMLMdsTableHeaderCellElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4573,12 +5236,18 @@ declare global {
         prototype: HTMLMdsTableHeaderCellElement;
         new (): HTMLMdsTableHeaderCellElement;
     };
+    /**
+     * @parent mds-table-body
+     */
     interface HTMLMdsTableRowElement extends Components.MdsTableRow, HTMLStencilElement {
     }
     var HTMLMdsTableRowElement: {
         prototype: HTMLMdsTableRowElement;
         new (): HTMLMdsTableRowElement;
     };
+    /**
+     * @category content
+     */
     interface HTMLMdsTextElement extends Components.MdsText, HTMLStencilElement {
     }
     var HTMLMdsTextElement: {
@@ -4588,6 +5257,9 @@ declare global {
     interface HTMLMdsToastElementEventMap {
         "mdsToastClose": MdsToastCloseEventDetail;
     }
+    /**
+     * @category feedback
+     */
     interface HTMLMdsToastElement extends Components.MdsToast, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsToastElementEventMap>(type: K, listener: (this: HTMLMdsToastElement, ev: MdsToastCustomEvent<HTMLMdsToastElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4602,18 +5274,27 @@ declare global {
         prototype: HTMLMdsToastElement;
         new (): HTMLMdsToastElement;
     };
+    /**
+     * @category feedback
+     */
     interface HTMLMdsToastRegionElement extends Components.MdsToastRegion, HTMLStencilElement {
     }
     var HTMLMdsToastRegionElement: {
         prototype: HTMLMdsToastRegionElement;
         new (): HTMLMdsToastRegionElement;
     };
+    /**
+     * @category overlays
+     */
     interface HTMLMdsTooltipElement extends Components.MdsTooltip, HTMLStencilElement {
     }
     var HTMLMdsTooltipElement: {
         prototype: HTMLMdsTooltipElement;
         new (): HTMLMdsTooltipElement;
     };
+    /**
+     * @category navigation
+     */
     interface HTMLMdsTreeElement extends Components.MdsTree, HTMLStencilElement {
     }
     var HTMLMdsTreeElement: {
@@ -4624,6 +5305,9 @@ declare global {
         "mdsTreeItemExpand": MdsTreeItemEventDetail;
         "mdsTreeItemCollapse": MdsTreeItemEventDetail;
     }
+    /**
+     * @parent mds-tree mds-tree-item
+     */
     interface HTMLMdsTreeItemElement extends Components.MdsTreeItem, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsTreeItemElementEventMap>(type: K, listener: (this: HTMLMdsTreeItemElement, ev: MdsTreeItemCustomEvent<HTMLMdsTreeItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4641,6 +5325,9 @@ declare global {
     interface HTMLMdsUrlViewElementEventMap {
         "mdsUrlViewClose": void;
     }
+    /**
+     * @category content
+     */
     interface HTMLMdsUrlViewElement extends Components.MdsUrlView, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMdsUrlViewElementEventMap>(type: K, listener: (this: HTMLMdsUrlViewElement, ev: MdsUrlViewCustomEvent<HTMLMdsUrlViewElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -4655,18 +5342,27 @@ declare global {
         prototype: HTMLMdsUrlViewElement;
         new (): HTMLMdsUrlViewElement;
     };
+    /**
+     * @category content
+     */
     interface HTMLMdsUsageElement extends Components.MdsUsage, HTMLStencilElement {
     }
     var HTMLMdsUsageElement: {
         prototype: HTMLMdsUsageElement;
         new (): HTMLMdsUsageElement;
     };
+    /**
+     * @category content
+     */
     interface HTMLMdsVideoWallElement extends Components.MdsVideoWall, HTMLStencilElement {
     }
     var HTMLMdsVideoWallElement: {
         prototype: HTMLMdsVideoWallElement;
         new (): HTMLMdsVideoWallElement;
     };
+    /**
+     * @category feedback
+     */
     interface HTMLMdsZeroElement extends Components.MdsZero, HTMLStencilElement {
     }
     var HTMLMdsZeroElement: {
@@ -4796,6 +5492,9 @@ declare global {
 declare namespace LocalJSX {
     type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K]?: never };
 
+    /**
+     * @category structure
+     */
     interface MdsAccordion {
         /**
           * Prevents the user from closing the currently open item, forcing at least one panel to stay expanded
@@ -4812,6 +5511,9 @@ declare namespace LocalJSX {
          */
         "onMdsAccordionChange"?: (event: MdsAccordionCustomEvent<MdsAccordionEventDetail>) => void;
     }
+    /**
+     * @parent mds-accordion
+     */
     interface MdsAccordionItem {
         /**
           * Specifies the title shown when the component is closed or selected
@@ -4839,6 +5541,9 @@ declare namespace LocalJSX {
          */
         "typography"?: TypographyTitleType;
     }
+    /**
+     * @category structure
+     */
     interface MdsAccordionTimer {
         /**
           * Sets the duration of the single accordion item
@@ -4854,6 +5559,9 @@ declare namespace LocalJSX {
          */
         "paused"?: boolean;
     }
+    /**
+     * @parent mds-accordion-timer
+     */
     interface MdsAccordionTimerItem {
         /**
           * Specifies the title shown when the accordion is closed or opened
@@ -4900,8 +5608,14 @@ declare namespace LocalJSX {
          */
         "uuid"?: number;
     }
+    /**
+     * @category data
+     */
     interface MdsAuthor {
     }
+    /**
+     * @category data
+     */
     interface MdsAvatar {
         /**
           * The user's inizials displayed if there's no image available, initials will override tone and variant senttings to keep user recognizable from others
@@ -4929,6 +5643,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeFullVariantAvatarType;
     }
+    /**
+     * @category data
+     */
     interface MdsAvatarStack {
         /**
           * Specifies the size of the slotted avatars elements
@@ -4939,6 +5656,9 @@ declare namespace LocalJSX {
          */
         "total"?: number;
     }
+    /**
+     * @parent mds-avatar-stack
+     */
     interface MdsAvatarStackItem {
         /**
           * Specifies number of total avatars, the total number will be subtracted by the slotted ones
@@ -4962,6 +5682,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeFullVariantAvatarType;
     }
+    /**
+     * @category tags
+     */
     interface MdsBadge {
         /**
           * The label of the badge
@@ -4983,6 +5706,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeFullVariantType;
     }
+    /**
+     * @category feedback
+     */
     interface MdsBanner {
         /**
           * Shows the cross icon to perform cancel/delete action on element
@@ -5016,6 +5742,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeVariantType;
     }
+    /**
+     * @category data
+     */
     interface MdsBenchmarkBar {
         /**
           * An alias to custom how value is represented
@@ -5046,6 +5775,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeVariantType;
     }
+    /**
+     * @category content
+     */
     interface MdsBibliography {
         /**
           * Specifies one or more authors, as a string. First name and Last name: "Jhon Doe", you can wrap first name or last name to crop them correctly: "'Jhon Arthur' Doe", "'Jhon Arthur' 'Doe Jhonson'", and for multiple authors, separated by commas, "'Jhon Arthur' 'Doe Jhonson', 'Mike Collins', Erik 'Ross Anderson'", you can use single or double quotation marks for composite names
@@ -5093,6 +5825,9 @@ declare namespace LocalJSX {
          */
         "variant"?: TypographyVariants;
     }
+    /**
+     * @category content
+     */
     interface MdsBook {
         /**
           * The accessible name of the book. Without it the name is built from `name` and `author`; an empty `alt` marks the book as decorative, left out by assistive technologies
@@ -5141,6 +5876,9 @@ declare namespace LocalJSX {
          */
         "src"?: string;
     }
+    /**
+     * @category navigation
+     */
     interface MdsBreadcrumb {
         /**
           * Hides the back arrow button
@@ -5152,6 +5890,9 @@ declare namespace LocalJSX {
          */
         "onMdsBreadcrumbChange"?: (event: MdsBreadcrumbCustomEvent<MdsBreadcrumbEventDetail>) => void;
     }
+    /**
+     * @parent mds-breadcrumb
+     */
     interface MdsBreadcrumbItem {
         /**
           * Sets the label of the breadcrumb item
@@ -5166,6 +5907,9 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
     }
+    /**
+     * @category actions
+     */
     interface MdsButton {
         /**
           * Specifies if the button is active or not
@@ -5248,6 +5992,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ButtonVariantType;
     }
+    /**
+     * @category actions
+     */
     interface MdsButtonDropdown {
         /**
           * Specifies if the button is active or not
@@ -5324,8 +6071,14 @@ declare namespace LocalJSX {
          */
         "variant"?: ButtonDropdownVariantType;
     }
+    /**
+     * @category actions
+     */
     interface MdsButtonGroup {
     }
+    /**
+     * @category forms
+     */
     interface MdsCalendar {
         /**
           * Disables switching to month or year selection views from the calendar header.
@@ -5424,6 +6177,9 @@ declare namespace LocalJSX {
          */
         "viewDate"?: string | null;
     }
+    /**
+     * @parent mds-calendar
+     */
     interface MdsCalendarCell {
         /**
           * Specifies the date of the cell
@@ -5467,6 +6223,9 @@ declare namespace LocalJSX {
          */
         "today"?: boolean | undefined;
     }
+    /**
+     * @category structure
+     */
     interface MdsCard {
         /**
           * Disables the automatic responsive behavior based on container queries
@@ -5474,14 +6233,29 @@ declare namespace LocalJSX {
          */
         "disableAutoGrid"?: boolean;
     }
+    /**
+     * @parent mds-card
+     */
     interface MdsCardContent {
     }
+    /**
+     * @parent mds-card
+     */
     interface MdsCardFooter {
     }
+    /**
+     * @parent mds-card
+     */
     interface MdsCardHeader {
     }
+    /**
+     * @parent mds-card
+     */
     interface MdsCardMedia {
     }
+    /**
+     * @category tags
+     */
     interface MdsChip {
         /**
           * Adds ARIA support to the element if has interaction
@@ -5536,6 +6310,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ChipVariantType;
     }
+    /**
+     * @category structure
+     */
     interface MdsDetails {
         /**
           * Emits when the component is opened
@@ -5547,6 +6324,9 @@ declare namespace LocalJSX {
          */
         "opened"?: boolean;
     }
+    /**
+     * @category overlays
+     */
     interface MdsDropdown {
         /**
           * Sets the distance between arrow and dropdown margins.
@@ -5635,6 +6415,9 @@ declare namespace LocalJSX {
          */
         "zIndex"?: number;
     }
+    /**
+     * @category content
+     */
     interface MdsEmoji {
         /**
           * Specifies which emoji to display.
@@ -5642,6 +6425,9 @@ declare namespace LocalJSX {
          */
         "name"?: EmojiNames;
     }
+    /**
+     * @category data
+     */
     interface MdsEntity {
         /**
           * Specifies if the component is awaiting a response from an external resource
@@ -5668,6 +6454,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeFullVariantAvatarType;
     }
+    /**
+     * @category content
+     */
     interface MdsFile {
         /**
           * Overrides the default filetype description
@@ -5699,6 +6488,9 @@ declare namespace LocalJSX {
          */
         "suffix"?: ExtensionSuffixType;
     }
+    /**
+     * @category content
+     */
     interface MdsFilePreview {
         /**
           * Enables the cross icon to perform cancel/delete action on element
@@ -5759,6 +6551,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeFullVariantAvatarType;
     }
+    /**
+     * @category forms
+     */
     interface MdsFilter {
         /**
           * Sets an automatic reset of active filters if all filters are triggered
@@ -5781,6 +6576,9 @@ declare namespace LocalJSX {
          */
         "reset"?: boolean;
     }
+    /**
+     * @parent mds-filter
+     */
     interface MdsFilterItem {
         /**
           * Shows the number of items will be filtered by the component, also read out after the label as a number of results
@@ -5811,6 +6609,9 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    /**
+     * @category structure
+     */
     interface MdsHeader {
         /**
           * Sets the appearance of the header bar element when loaded, it can be changed depending on how `appearance-set` attribute is set
@@ -5860,6 +6661,9 @@ declare namespace LocalJSX {
          */
         "visibility"?: 'hidden' | 'visible';
     }
+    /**
+     * @parent mds-header
+     */
     interface MdsHeaderBar {
         /**
           * Sets the visibility type of the hamburger menu
@@ -5876,6 +6680,9 @@ declare namespace LocalJSX {
          */
         "onMdsHeaderBarOpen"?: (event: MdsHeaderBarCustomEvent<void>) => void;
     }
+    /**
+     * @category overlays
+     */
     interface MdsHelp {
         /**
           * Pins the tooltip to `placement`: without it, the tooltip moves to another side of the icon when `placement` has no room.
@@ -5892,6 +6699,9 @@ declare namespace LocalJSX {
          */
         "placement"?: FloatingUIPlacement;
     }
+    /**
+     * @category structure
+     */
     interface MdsHorizontalScroll {
         /**
           * Specifies the viewport which will display navigation controls
@@ -5909,14 +6719,23 @@ declare namespace LocalJSX {
          */
         "snap"?: SnapType;
     }
+    /**
+     * @category structure
+     */
     interface MdsHr {
     }
+    /**
+     * @category content
+     */
     interface MdsIcon {
         /**
           * The name of the icon or a base64 string to render it as an svg
          */
         "name": string;
     }
+    /**
+     * @category content
+     */
     interface MdsImg {
         /**
           * Specifies an alternate text for an image. An empty `alt` marks the image as decorative, left out by assistive technologies; without `alt` the image is named after its file
@@ -5971,6 +6790,9 @@ declare namespace LocalJSX {
          */
         "width"?: string;
     }
+    /**
+     * @category forms
+     */
     interface MdsInput {
         /**
           * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the input stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
@@ -6122,6 +6944,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeInputVariantType;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputDate {
         /**
           * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the control stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
@@ -6201,6 +7026,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeInputVariantType;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputDateRange {
         /**
           * The accessible name of the range: each of the two fields is named after it and after the end of the range it covers, the visible "from" and "to" labels living in this shadow root, where no IDREF of the slotted fields could reach them.
@@ -6276,6 +7104,9 @@ declare namespace LocalJSX {
          */
         "startDate"?: string;
     }
+    /**
+     * @parent mds-input-date-range
+     */
     interface MdsInputDateRangePreselection {
         /**
           * Sets the end date of the preselection
@@ -6294,6 +7125,9 @@ declare namespace LocalJSX {
          */
         "start": string;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputField {
         /**
           * If `true`, the user cannot interact with the element.
@@ -6321,6 +7155,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeInputVariantType;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputOtp {
         /**
           * The accessible name of the code: each digit is announced as a position inside it, the fields being separate controls a screen reader reaches one at a time.
@@ -6355,6 +7192,9 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputRange {
         /**
           * Sets if the component is disabled
@@ -6396,6 +7236,9 @@ declare namespace LocalJSX {
          */
         "value"?: number;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputSelect {
         /**
           * The accessible name of the native control: the label a screen reader announces. An `mds-input-field` around the component passes its own label down here, so the attribute is only written by hand when the control stands on its own. The placeholder is deliberately not a fallback: it disappears as soon as the field is filled.
@@ -6464,6 +7307,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeStatusVariantType;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputSwitch {
         /**
           * Sets or returns whether a checkbox should automatically get focus when the page loads
@@ -6528,6 +7374,9 @@ declare namespace LocalJSX {
          */
         "variant"?: TypographyVariants;
     }
+    /**
+     * @parent mds-input mds-input-date mds-input-select
+     */
     interface MdsInputTip {
         /**
           * Moves the tip onto the edge of the input, as the parent input does while it has the focus. It does not expand the items: each `mds-input-tip-item` opens on its own `expanded`
@@ -6540,6 +7389,9 @@ declare namespace LocalJSX {
          */
         "position"?: InputTipPositionType;
     }
+    /**
+     * @parent mds-input-tip
+     */
     interface MdsInputTipItem {
         /**
           * Specifies if the element is expanded
@@ -6551,6 +7403,9 @@ declare namespace LocalJSX {
          */
         "variant"?: InputTipItemVariantType;
     }
+    /**
+     * @category forms
+     */
     interface MdsInputUpload {
         /**
           * Defines the file types the file input should accept, as the accept attribute of a native file input: MIME types (`image/*` included) and extensions, separated by commas
@@ -6594,6 +7449,9 @@ declare namespace LocalJSX {
          */
         "sort"?: AttachmentSort;
     }
+    /**
+     * @category tags
+     */
     interface MdsKeyboard {
         /**
           * Shows the keyboard key combination test result
@@ -6604,6 +7462,9 @@ declare namespace LocalJSX {
          */
         "try"?: boolean;
     }
+    /**
+     * @parent mds-keyboard
+     */
     interface MdsKeyboardKey {
         /**
           * Sets the code of the keyboard key for combination tests if `try` attribute is set from `mds-keyboard` parent component
@@ -6614,8 +7475,14 @@ declare namespace LocalJSX {
          */
         "pressed"?: boolean;
     }
+    /**
+     * @category data
+     */
     interface MdsKpi {
     }
+    /**
+     * @parent mds-kpi
+     */
     interface MdsKpiItem {
         /**
           * Specifies the description under the value in the KPI element
@@ -6635,6 +7502,9 @@ declare namespace LocalJSX {
          */
         "threshold"?: number;
     }
+    /**
+     * @category tags
+     */
     interface MdsLabel {
         /**
           * Enables the cross icon to perform cancel/delete action on element
@@ -6670,6 +7540,9 @@ declare namespace LocalJSX {
          */
         "variant"?: MdsLabelVariantType;
     }
+    /**
+     * @category actions
+     */
     interface MdsLink {
         /**
           * The URL of the link: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`. Without `href` the link is an inline button: it answers to click, Enter and Space with a `click` event and never submits a form.
@@ -6709,8 +7582,14 @@ declare namespace LocalJSX {
          */
         "variant"?: LinkVariantType;
     }
+    /**
+     * @category data
+     */
     interface MdsList {
     }
+    /**
+     * @parent mds-list
+     */
     interface MdsListItem {
         /**
           * Specifies the icon displayed in the element
@@ -6727,6 +7606,9 @@ declare namespace LocalJSX {
          */
         "variant"?: TypographyReadingVariants;
     }
+    /**
+     * @category tags
+     */
     interface MdsMention {
         /**
           * Shows the cross icon to perform cancel/delete action on element
@@ -6750,6 +7632,9 @@ declare namespace LocalJSX {
          */
         "size"?: MentionSize;
     }
+    /**
+     * @category overlays
+     */
     interface MdsModal {
         /**
           * The accessible name of the modal: the name a screen reader announces when the window opens. The `<dialog>` this component renders is the dialog, so the name goes there.
@@ -6802,6 +7687,9 @@ declare namespace LocalJSX {
          */
         "position"?: ModalPositionType;
     }
+    /**
+     * @category content
+     */
     interface MdsNote {
         /**
           * Enables the cross icon to perform cancel/delete action on element
@@ -6818,6 +7706,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeLabelVariantType;
     }
+    /**
+     * @category feedback
+     */
     interface MdsNotification {
         /**
           * Specifies if the notification is dismissed
@@ -6844,6 +7735,9 @@ declare namespace LocalJSX {
          */
         "value"?: number;
     }
+    /**
+     * @category navigation
+     */
     interface MdsPaginator {
         /**
           * Specifies the current page selected in the paginator
@@ -6860,6 +7754,9 @@ declare namespace LocalJSX {
          */
         "pages"?: number;
     }
+    /**
+     * @parent mds-paginator
+     */
     interface MdsPaginatorItem {
         /**
           * Specifies if the item is disabled or not, is handled from the parent paginator
@@ -6874,6 +7771,9 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
     }
+    /**
+     * @category tags
+     */
     interface MdsPolicyAi {
         /**
           * Sets the description to custom component long text
@@ -6898,7 +7798,6 @@ declare namespace LocalJSX {
      * @name Pref
      * @description This component is based on MdsTab component pattern
      * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
-     * @category Patterns
      * @tags pattern, user, tab
      * @example <mds-pref>
      * <mds-pref-animation></mds-pref-animation>
@@ -6911,6 +7810,7 @@ declare namespace LocalJSX {
      * <mds-pref-language-item code="en"></mds-pref-language-item>
      * </mds-pref-language>
      * </mds-pref>
+     * @category preferences
      */
     interface MdsPref {
         /**
@@ -6922,6 +7822,9 @@ declare namespace LocalJSX {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefAnimation {
         /**
           * Specifies the preference mode
@@ -6936,6 +7839,9 @@ declare namespace LocalJSX {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefConsumption {
         /**
           * Specifies the preference mode
@@ -6950,6 +7856,9 @@ declare namespace LocalJSX {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefContrast {
         /**
           * Specifies the preference mode
@@ -6964,6 +7873,9 @@ declare namespace LocalJSX {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefLanguage {
         /**
           * Emits when the component is triggered
@@ -6984,6 +7896,9 @@ declare namespace LocalJSX {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @parent mds-pref-language
+     */
     interface MdsPrefLanguageItem {
         /**
           * Specifies the language code based on HTML `lang` attribute
@@ -7000,6 +7915,9 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefMode {
         /**
           * Locks the mode items forbidden by a scheme-constrained theme, without touching the stored preference: `light` disables the explicit `dark` item, `dark` disables the explicit `light` item, `all` (or unset) locks nothing; the `system` item is never locked. Set by the `mds-pref` controller from the active theme's `scheme`; not meant to be set directly.
@@ -7023,6 +7941,9 @@ declare namespace LocalJSX {
          */
         "transition"?: PreferenceThemeTransitionType;
     }
+    /**
+     * @category preferences
+     */
     interface MdsPrefTheme {
         /**
           * Specifies the corner geometry of the whole page: one of the `corner-shape` keywords, or `default`.  Corner geometry is theme appearance rather than an accessibility preference, which is why it lives here next to the theme name and scheme instead of in `mds-pref-mode`. Setting it writes `data-corner-shape` on `<html>`, where the generated axis picks both the shape and the radius scale tuned for it.  Leaving it unset touches nothing. Setting it to `default` REMOVES the attribute rather than writing today's default into the page, so a project that never chose keeps following the design system when the default changes.
@@ -7052,6 +7973,9 @@ declare namespace LocalJSX {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @parent mds-pref-theme
+     */
     interface MdsPrefThemeItem {
         /**
           * Specifies the theme name
@@ -7078,14 +8002,23 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
     }
+    /**
+     * @category data
+     */
     interface MdsPriceTable {
     }
+    /**
+     * @parent mds-price-table
+     */
     interface MdsPriceTableFeatures {
         /**
           * Sets a header title for the entire table
          */
         "label"?: string;
     }
+    /**
+     * @parent mds-price-table-features-row
+     */
     interface MdsPriceTableFeaturesCell {
         /**
           * Specifies the support type which is represented
@@ -7093,12 +8026,24 @@ declare namespace LocalJSX {
          */
         "type"?: PriceTableFeaturesCellType;
     }
+    /**
+     * @parent mds-price-table-features
+     */
     interface MdsPriceTableFeaturesRow {
     }
+    /**
+     * @parent mds-price-table
+     */
     interface MdsPriceTableHeader {
     }
+    /**
+     * @parent mds-price-table mds-price-table-header
+     */
     interface MdsPriceTableList {
     }
+    /**
+     * @parent mds-price-table-list
+     */
     interface MdsPriceTableListItem {
         /**
           * Specifies if the feature is supported or not
@@ -7111,6 +8056,9 @@ declare namespace LocalJSX {
          */
         "typography"?: TypographyReadType;
     }
+    /**
+     * @category feedback
+     */
     interface MdsProgress {
         /**
           * Specifies the direction of the progress bar, if horizonatl or vertical
@@ -7143,6 +8091,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeVariantType;
     }
+    /**
+     * @category feedback
+     */
     interface MdsPushNotification {
         /**
           * Specifies when the stack shows: with `auto` whenever notifications are added, with `manual` only through `visible` or `show()`. In both, removing the last notification hides it; a click outside does not.
@@ -7166,6 +8117,9 @@ declare namespace LocalJSX {
          */
         "visible"?: boolean;
     }
+    /**
+     * @parent mds-push-notification
+     */
     interface MdsPushNotificationItem {
         /**
           * Specifies how the notification date is written: `timeago` shows the time passed, any other value is the Day.js format of a static date
@@ -7223,6 +8177,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeFullVariantAvatarType;
     }
+    /**
+     * @category content
+     */
     interface MdsQuote {
         /**
           * Specifies the tag the element
@@ -7235,6 +8192,9 @@ declare namespace LocalJSX {
          */
         "typography"?: TypographyTitleType;
     }
+    /**
+     * @category actions
+     */
     interface MdsRadialMenu {
         /**
           * Specifies the ending angle of the menu, in degrees; when it is not set the menu takes `--mds-radial-menu-angle-end`, `360deg` by default
@@ -7291,6 +8251,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ButtonVariantType;
     }
+    /**
+     * @parent mds-radial-menu
+     */
     interface MdsRadialMenuItem {
         /**
           * The icon displayed in the button
@@ -7316,6 +8279,9 @@ declare namespace LocalJSX {
          */
         "variant"?: ButtonVariantType;
     }
+    /**
+     * @category feedback
+     */
     interface MdsRadialProgress {
         /**
           * Specifies if the component should display an icon
@@ -7337,8 +8303,14 @@ declare namespace LocalJSX {
          */
         "variant"?: ThemeVariantType;
     }
+    /**
+     * @category structure
+     */
     interface MdsSeparator {
     }
+    /**
+     * @category feedback
+     */
     interface MdsSpinner {
         /**
           * Specifies if the animation is running or not, it's required for performance reasons
@@ -7346,6 +8318,9 @@ declare namespace LocalJSX {
          */
         "running"?: boolean;
     }
+    /**
+     * @category actions
+     */
     interface MdsStatusBar {
         /**
           * Specifies the description near the slotted actions
@@ -7366,6 +8341,9 @@ declare namespace LocalJSX {
          */
         "visible"?: boolean;
     }
+    /**
+     * @category navigation
+     */
     interface MdsStepperBar {
         /**
           * Sets the current item by its position, counted from 1: the items before it are done. 1 makes the first item current with none done, 0 makes no item current, the number of items + 1 marks them all done
@@ -7382,6 +8360,9 @@ declare namespace LocalJSX {
          */
         "onMdsStepperBarChange"?: (event: MdsStepperBarCustomEvent<MdsStepperBarEventDetail>) => void;
     }
+    /**
+     * @parent mds-stepper-bar
+     */
     interface MdsStepperBarItem {
         /**
           * Specifies if the badge status is displayed
@@ -7428,6 +8409,9 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    /**
+     * @category navigation
+     */
     interface MdsTab {
         /**
           * Sets the animation type of the selection transition between `mds-tab-item` elements
@@ -7460,12 +8444,18 @@ declare namespace LocalJSX {
          */
         "size"?: TabSizeType;
     }
+    /**
+     * @category navigation
+     */
     interface MdsTabBar {
         /**
           * Emits when a step is changed
          */
         "onMdsTabBarChange"?: (event: MdsTabBarCustomEvent<MdsTabBarEventDetail>) => void;
     }
+    /**
+     * @parent mds-tab-bar
+     */
     interface MdsTabBarItem {
         /**
           * The icon displayed in the tab bar item.
@@ -7490,6 +8480,9 @@ declare namespace LocalJSX {
          */
         "typography"?: TypographySmallerType;
     }
+    /**
+     * @parent mds-tab
+     */
     interface MdsTabItem {
         /**
           * Reflects the parent tab selection animation (set by mds-tab); drives the slide-variant styling without :host-context
@@ -7555,6 +8548,9 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    /**
+     * @category data
+     */
     interface MdsTable {
         /**
           * Specifies if the table rows are higlighted on mouseover event
@@ -7578,6 +8574,9 @@ declare namespace LocalJSX {
          */
         "sorting"?: MdsTableSortingType;
     }
+    /**
+     * @parent mds-table
+     */
     interface MdsTableBody {
         /**
           * Specifies whether the rows react to user interaction (hover/focus).
@@ -7588,24 +8587,36 @@ declare namespace LocalJSX {
          */
         "selection"?: boolean;
     }
+    /**
+     * @parent mds-table-row mds-table-footer
+     */
     interface MdsTableCell {
         /**
           * Sets a value to help the sorting function from `mds-table-header-cell`, if not set it will be used the content of the cell.
          */
         "value"?: string | number;
     }
+    /**
+     * @parent mds-table
+     */
     interface MdsTableFooter {
         /**
           * Adds an empty cell in the selection column, so that the cells of the footer line up with the ones of the rows: `mds-table` sets it from its own `selectable`
          */
         "selectable"?: boolean;
     }
+    /**
+     * @parent mds-table
+     */
     interface MdsTableHeader {
         /**
           * Enables the select-all checkbox in the header.
          */
         "selectable"?: boolean;
     }
+    /**
+     * @parent mds-table-header
+     */
     interface MdsTableHeaderCell {
         /**
           * Specifies the current sort direction of the column. Set from outside, it sorts the rows like a click, or only shows the order when the table has `sorting="external"`.
@@ -7630,6 +8641,9 @@ declare namespace LocalJSX {
          */
         "sortable"?: boolean;
     }
+    /**
+     * @parent mds-table-body
+     */
     interface MdsTableRow {
         /**
           * Specifies whether the row reacts to user interaction (hover/focus).
@@ -7657,6 +8671,9 @@ declare namespace LocalJSX {
          */
         "value"?: string | number;
     }
+    /**
+     * @category content
+     */
     interface MdsText {
         /**
           * Specifies if the text is animated when it is rendered
@@ -7685,6 +8702,9 @@ declare namespace LocalJSX {
          */
         "variant"?: TypographyVariants;
     }
+    /**
+     * @category feedback
+     */
     interface MdsToast {
         /**
           * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
@@ -7719,6 +8739,9 @@ declare namespace LocalJSX {
          */
         "visible"?: boolean;
     }
+    /**
+     * @category feedback
+     */
     interface MdsToastRegion {
         /**
           * The most toasts visible at once: when one more shows, the oldest one with a `duration` is hidden. A toast that stays (`duration="0"`) is never hidden by the region
@@ -7731,6 +8754,9 @@ declare namespace LocalJSX {
          */
         "position"?: ToastPosition;
     }
+    /**
+     * @category overlays
+     */
     interface MdsTooltip {
         /**
           * @default 4
@@ -7796,6 +8822,9 @@ declare namespace LocalJSX {
          */
         "visible"?: boolean;
     }
+    /**
+     * @category navigation
+     */
     interface MdsTree {
         /**
           * Show actions on the every tree item on hover or by default.
@@ -7836,6 +8865,9 @@ declare namespace LocalJSX {
          */
         "truncate"?: TypographyTruncateType;
     }
+    /**
+     * @parent mds-tree mds-tree-item
+     */
     interface MdsTreeItem {
         /**
           * Show actions on the tree item on hover or by default.
@@ -7887,6 +8919,9 @@ declare namespace LocalJSX {
          */
         "truncate"?: TypographyTruncateType;
     }
+    /**
+     * @category content
+     */
     interface MdsUrlView {
         /**
           * Specifies the icon shown in the header, before the label or the domain; without it the header shows the explore icon
@@ -7910,6 +8945,9 @@ declare namespace LocalJSX {
          */
         "src": string;
     }
+    /**
+     * @category content
+     */
     interface MdsUsage {
         /**
           * Specifies the alias of the usage phrase on the top of the component
@@ -7925,6 +8963,9 @@ declare namespace LocalJSX {
          */
         "variant"?: UsageType;
     }
+    /**
+     * @category content
+     */
     interface MdsVideoWall {
         /**
           * Specifies that the video will start playing as soon as it is ready
@@ -7960,6 +9001,9 @@ declare namespace LocalJSX {
          */
         "src"?: string;
     }
+    /**
+     * @category feedback
+     */
     interface MdsZero {
     }
 
@@ -8834,79 +9878,282 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * @category structure
+             */
             "mds-accordion": LocalJSX.IntrinsicElements["mds-accordion"] & JSXBase.HTMLAttributes<HTMLMdsAccordionElement>;
+            /**
+             * @parent mds-accordion
+             */
             "mds-accordion-item": LocalJSX.IntrinsicElements["mds-accordion-item"] & JSXBase.HTMLAttributes<HTMLMdsAccordionItemElement>;
+            /**
+             * @category structure
+             */
             "mds-accordion-timer": LocalJSX.IntrinsicElements["mds-accordion-timer"] & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerElement>;
+            /**
+             * @parent mds-accordion-timer
+             */
             "mds-accordion-timer-item": LocalJSX.IntrinsicElements["mds-accordion-timer-item"] & JSXBase.HTMLAttributes<HTMLMdsAccordionTimerItemElement>;
+            /**
+             * @category data
+             */
             "mds-author": LocalJSX.IntrinsicElements["mds-author"] & JSXBase.HTMLAttributes<HTMLMdsAuthorElement>;
+            /**
+             * @category data
+             */
             "mds-avatar": LocalJSX.IntrinsicElements["mds-avatar"] & JSXBase.HTMLAttributes<HTMLMdsAvatarElement>;
+            /**
+             * @category data
+             */
             "mds-avatar-stack": LocalJSX.IntrinsicElements["mds-avatar-stack"] & JSXBase.HTMLAttributes<HTMLMdsAvatarStackElement>;
+            /**
+             * @parent mds-avatar-stack
+             */
             "mds-avatar-stack-item": LocalJSX.IntrinsicElements["mds-avatar-stack-item"] & JSXBase.HTMLAttributes<HTMLMdsAvatarStackItemElement>;
+            /**
+             * @category tags
+             */
             "mds-badge": LocalJSX.IntrinsicElements["mds-badge"] & JSXBase.HTMLAttributes<HTMLMdsBadgeElement>;
+            /**
+             * @category feedback
+             */
             "mds-banner": LocalJSX.IntrinsicElements["mds-banner"] & JSXBase.HTMLAttributes<HTMLMdsBannerElement>;
+            /**
+             * @category data
+             */
             "mds-benchmark-bar": LocalJSX.IntrinsicElements["mds-benchmark-bar"] & JSXBase.HTMLAttributes<HTMLMdsBenchmarkBarElement>;
+            /**
+             * @category content
+             */
             "mds-bibliography": LocalJSX.IntrinsicElements["mds-bibliography"] & JSXBase.HTMLAttributes<HTMLMdsBibliographyElement>;
+            /**
+             * @category content
+             */
             "mds-book": LocalJSX.IntrinsicElements["mds-book"] & JSXBase.HTMLAttributes<HTMLMdsBookElement>;
+            /**
+             * @category navigation
+             */
             "mds-breadcrumb": LocalJSX.IntrinsicElements["mds-breadcrumb"] & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbElement>;
+            /**
+             * @parent mds-breadcrumb
+             */
             "mds-breadcrumb-item": LocalJSX.IntrinsicElements["mds-breadcrumb-item"] & JSXBase.HTMLAttributes<HTMLMdsBreadcrumbItemElement>;
+            /**
+             * @category actions
+             */
             "mds-button": LocalJSX.IntrinsicElements["mds-button"] & JSXBase.HTMLAttributes<HTMLMdsButtonElement>;
+            /**
+             * @category actions
+             */
             "mds-button-dropdown": LocalJSX.IntrinsicElements["mds-button-dropdown"] & JSXBase.HTMLAttributes<HTMLMdsButtonDropdownElement>;
+            /**
+             * @category actions
+             */
             "mds-button-group": LocalJSX.IntrinsicElements["mds-button-group"] & JSXBase.HTMLAttributes<HTMLMdsButtonGroupElement>;
+            /**
+             * @category forms
+             */
             "mds-calendar": LocalJSX.IntrinsicElements["mds-calendar"] & JSXBase.HTMLAttributes<HTMLMdsCalendarElement>;
+            /**
+             * @parent mds-calendar
+             */
             "mds-calendar-cell": LocalJSX.IntrinsicElements["mds-calendar-cell"] & JSXBase.HTMLAttributes<HTMLMdsCalendarCellElement>;
+            /**
+             * @category structure
+             */
             "mds-card": LocalJSX.IntrinsicElements["mds-card"] & JSXBase.HTMLAttributes<HTMLMdsCardElement>;
+            /**
+             * @parent mds-card
+             */
             "mds-card-content": LocalJSX.IntrinsicElements["mds-card-content"] & JSXBase.HTMLAttributes<HTMLMdsCardContentElement>;
+            /**
+             * @parent mds-card
+             */
             "mds-card-footer": LocalJSX.IntrinsicElements["mds-card-footer"] & JSXBase.HTMLAttributes<HTMLMdsCardFooterElement>;
+            /**
+             * @parent mds-card
+             */
             "mds-card-header": LocalJSX.IntrinsicElements["mds-card-header"] & JSXBase.HTMLAttributes<HTMLMdsCardHeaderElement>;
+            /**
+             * @parent mds-card
+             */
             "mds-card-media": LocalJSX.IntrinsicElements["mds-card-media"] & JSXBase.HTMLAttributes<HTMLMdsCardMediaElement>;
+            /**
+             * @category tags
+             */
             "mds-chip": LocalJSX.IntrinsicElements["mds-chip"] & JSXBase.HTMLAttributes<HTMLMdsChipElement>;
+            /**
+             * @category structure
+             */
             "mds-details": LocalJSX.IntrinsicElements["mds-details"] & JSXBase.HTMLAttributes<HTMLMdsDetailsElement>;
+            /**
+             * @category overlays
+             */
             "mds-dropdown": LocalJSX.IntrinsicElements["mds-dropdown"] & JSXBase.HTMLAttributes<HTMLMdsDropdownElement>;
+            /**
+             * @category content
+             */
             "mds-emoji": LocalJSX.IntrinsicElements["mds-emoji"] & JSXBase.HTMLAttributes<HTMLMdsEmojiElement>;
+            /**
+             * @category data
+             */
             "mds-entity": LocalJSX.IntrinsicElements["mds-entity"] & JSXBase.HTMLAttributes<HTMLMdsEntityElement>;
+            /**
+             * @category content
+             */
             "mds-file": LocalJSX.IntrinsicElements["mds-file"] & JSXBase.HTMLAttributes<HTMLMdsFileElement>;
+            /**
+             * @category content
+             */
             "mds-file-preview": LocalJSX.IntrinsicElements["mds-file-preview"] & JSXBase.HTMLAttributes<HTMLMdsFilePreviewElement>;
+            /**
+             * @category forms
+             */
             "mds-filter": LocalJSX.IntrinsicElements["mds-filter"] & JSXBase.HTMLAttributes<HTMLMdsFilterElement>;
+            /**
+             * @parent mds-filter
+             */
             "mds-filter-item": LocalJSX.IntrinsicElements["mds-filter-item"] & JSXBase.HTMLAttributes<HTMLMdsFilterItemElement>;
+            /**
+             * @category structure
+             */
             "mds-header": LocalJSX.IntrinsicElements["mds-header"] & JSXBase.HTMLAttributes<HTMLMdsHeaderElement>;
+            /**
+             * @parent mds-header
+             */
             "mds-header-bar": LocalJSX.IntrinsicElements["mds-header-bar"] & JSXBase.HTMLAttributes<HTMLMdsHeaderBarElement>;
+            /**
+             * @category overlays
+             */
             "mds-help": LocalJSX.IntrinsicElements["mds-help"] & JSXBase.HTMLAttributes<HTMLMdsHelpElement>;
+            /**
+             * @category structure
+             */
             "mds-horizontal-scroll": LocalJSX.IntrinsicElements["mds-horizontal-scroll"] & JSXBase.HTMLAttributes<HTMLMdsHorizontalScrollElement>;
+            /**
+             * @category structure
+             */
             "mds-hr": LocalJSX.IntrinsicElements["mds-hr"] & JSXBase.HTMLAttributes<HTMLMdsHrElement>;
+            /**
+             * @category content
+             */
             "mds-icon": LocalJSX.IntrinsicElements["mds-icon"] & JSXBase.HTMLAttributes<HTMLMdsIconElement>;
+            /**
+             * @category content
+             */
             "mds-img": LocalJSX.IntrinsicElements["mds-img"] & JSXBase.HTMLAttributes<HTMLMdsImgElement>;
+            /**
+             * @category forms
+             */
             "mds-input": LocalJSX.IntrinsicElements["mds-input"] & JSXBase.HTMLAttributes<HTMLMdsInputElement>;
+            /**
+             * @category forms
+             */
             "mds-input-date": LocalJSX.IntrinsicElements["mds-input-date"] & JSXBase.HTMLAttributes<HTMLMdsInputDateElement>;
+            /**
+             * @category forms
+             */
             "mds-input-date-range": LocalJSX.IntrinsicElements["mds-input-date-range"] & JSXBase.HTMLAttributes<HTMLMdsInputDateRangeElement>;
+            /**
+             * @parent mds-input-date-range
+             */
             "mds-input-date-range-preselection": LocalJSX.IntrinsicElements["mds-input-date-range-preselection"] & JSXBase.HTMLAttributes<HTMLMdsInputDateRangePreselectionElement>;
+            /**
+             * @category forms
+             */
             "mds-input-field": LocalJSX.IntrinsicElements["mds-input-field"] & JSXBase.HTMLAttributes<HTMLMdsInputFieldElement>;
+            /**
+             * @category forms
+             */
             "mds-input-otp": LocalJSX.IntrinsicElements["mds-input-otp"] & JSXBase.HTMLAttributes<HTMLMdsInputOtpElement>;
+            /**
+             * @category forms
+             */
             "mds-input-range": LocalJSX.IntrinsicElements["mds-input-range"] & JSXBase.HTMLAttributes<HTMLMdsInputRangeElement>;
+            /**
+             * @category forms
+             */
             "mds-input-select": LocalJSX.IntrinsicElements["mds-input-select"] & JSXBase.HTMLAttributes<HTMLMdsInputSelectElement>;
+            /**
+             * @category forms
+             */
             "mds-input-switch": LocalJSX.IntrinsicElements["mds-input-switch"] & JSXBase.HTMLAttributes<HTMLMdsInputSwitchElement>;
+            /**
+             * @parent mds-input mds-input-date mds-input-select
+             */
             "mds-input-tip": LocalJSX.IntrinsicElements["mds-input-tip"] & JSXBase.HTMLAttributes<HTMLMdsInputTipElement>;
+            /**
+             * @parent mds-input-tip
+             */
             "mds-input-tip-item": LocalJSX.IntrinsicElements["mds-input-tip-item"] & JSXBase.HTMLAttributes<HTMLMdsInputTipItemElement>;
+            /**
+             * @category forms
+             */
             "mds-input-upload": LocalJSX.IntrinsicElements["mds-input-upload"] & JSXBase.HTMLAttributes<HTMLMdsInputUploadElement>;
+            /**
+             * @category tags
+             */
             "mds-keyboard": LocalJSX.IntrinsicElements["mds-keyboard"] & JSXBase.HTMLAttributes<HTMLMdsKeyboardElement>;
+            /**
+             * @parent mds-keyboard
+             */
             "mds-keyboard-key": LocalJSX.IntrinsicElements["mds-keyboard-key"] & JSXBase.HTMLAttributes<HTMLMdsKeyboardKeyElement>;
+            /**
+             * @category data
+             */
             "mds-kpi": LocalJSX.IntrinsicElements["mds-kpi"] & JSXBase.HTMLAttributes<HTMLMdsKpiElement>;
+            /**
+             * @parent mds-kpi
+             */
             "mds-kpi-item": LocalJSX.IntrinsicElements["mds-kpi-item"] & JSXBase.HTMLAttributes<HTMLMdsKpiItemElement>;
+            /**
+             * @category tags
+             */
             "mds-label": LocalJSX.IntrinsicElements["mds-label"] & JSXBase.HTMLAttributes<HTMLMdsLabelElement>;
+            /**
+             * @category actions
+             */
             "mds-link": LocalJSX.IntrinsicElements["mds-link"] & JSXBase.HTMLAttributes<HTMLMdsLinkElement>;
+            /**
+             * @category data
+             */
             "mds-list": LocalJSX.IntrinsicElements["mds-list"] & JSXBase.HTMLAttributes<HTMLMdsListElement>;
+            /**
+             * @parent mds-list
+             */
             "mds-list-item": LocalJSX.IntrinsicElements["mds-list-item"] & JSXBase.HTMLAttributes<HTMLMdsListItemElement>;
+            /**
+             * @category tags
+             */
             "mds-mention": LocalJSX.IntrinsicElements["mds-mention"] & JSXBase.HTMLAttributes<HTMLMdsMentionElement>;
+            /**
+             * @category overlays
+             */
             "mds-modal": LocalJSX.IntrinsicElements["mds-modal"] & JSXBase.HTMLAttributes<HTMLMdsModalElement>;
+            /**
+             * @category content
+             */
             "mds-note": LocalJSX.IntrinsicElements["mds-note"] & JSXBase.HTMLAttributes<HTMLMdsNoteElement>;
+            /**
+             * @category feedback
+             */
             "mds-notification": LocalJSX.IntrinsicElements["mds-notification"] & JSXBase.HTMLAttributes<HTMLMdsNotificationElement>;
+            /**
+             * @category navigation
+             */
             "mds-paginator": LocalJSX.IntrinsicElements["mds-paginator"] & JSXBase.HTMLAttributes<HTMLMdsPaginatorElement>;
+            /**
+             * @parent mds-paginator
+             */
             "mds-paginator-item": LocalJSX.IntrinsicElements["mds-paginator-item"] & JSXBase.HTMLAttributes<HTMLMdsPaginatorItemElement>;
+            /**
+             * @category tags
+             */
             "mds-policy-ai": LocalJSX.IntrinsicElements["mds-policy-ai"] & JSXBase.HTMLAttributes<HTMLMdsPolicyAiElement>;
             /**
              * @name Pref
              * @description This component is based on MdsTab component pattern
              * @overview  <mds-text>Accessibility preferences in web browsers allow users to customize their navigation to improve readability, interaction, and usability. Common options include dark mode, text resizing, screen reader support, keyboard navigation, and blocking animated content. These settings help people with visual, hearing, motor, or cognitive disabilities experience the web more effectively and inclusively.</mds-text>
-             * @category Patterns
              * @tags pattern, user, tab
              * @example <mds-pref>
              * <mds-pref-animation></mds-pref-animation>
@@ -8919,55 +10166,200 @@ declare module "@stencil/core" {
              * <mds-pref-language-item code="en"></mds-pref-language-item>
              * </mds-pref-language>
              * </mds-pref>
+             * @category preferences
              */
             "mds-pref": LocalJSX.IntrinsicElements["mds-pref"] & JSXBase.HTMLAttributes<HTMLMdsPrefElement>;
+            /**
+             * @category preferences
+             */
             "mds-pref-animation": LocalJSX.IntrinsicElements["mds-pref-animation"] & JSXBase.HTMLAttributes<HTMLMdsPrefAnimationElement>;
+            /**
+             * @category preferences
+             */
             "mds-pref-consumption": LocalJSX.IntrinsicElements["mds-pref-consumption"] & JSXBase.HTMLAttributes<HTMLMdsPrefConsumptionElement>;
+            /**
+             * @category preferences
+             */
             "mds-pref-contrast": LocalJSX.IntrinsicElements["mds-pref-contrast"] & JSXBase.HTMLAttributes<HTMLMdsPrefContrastElement>;
+            /**
+             * @category preferences
+             */
             "mds-pref-language": LocalJSX.IntrinsicElements["mds-pref-language"] & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageElement>;
+            /**
+             * @parent mds-pref-language
+             */
             "mds-pref-language-item": LocalJSX.IntrinsicElements["mds-pref-language-item"] & JSXBase.HTMLAttributes<HTMLMdsPrefLanguageItemElement>;
+            /**
+             * @category preferences
+             */
             "mds-pref-mode": LocalJSX.IntrinsicElements["mds-pref-mode"] & JSXBase.HTMLAttributes<HTMLMdsPrefModeElement>;
+            /**
+             * @category preferences
+             */
             "mds-pref-theme": LocalJSX.IntrinsicElements["mds-pref-theme"] & JSXBase.HTMLAttributes<HTMLMdsPrefThemeElement>;
+            /**
+             * @parent mds-pref-theme
+             */
             "mds-pref-theme-item": LocalJSX.IntrinsicElements["mds-pref-theme-item"] & JSXBase.HTMLAttributes<HTMLMdsPrefThemeItemElement>;
+            /**
+             * @category data
+             */
             "mds-price-table": LocalJSX.IntrinsicElements["mds-price-table"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableElement>;
+            /**
+             * @parent mds-price-table
+             */
             "mds-price-table-features": LocalJSX.IntrinsicElements["mds-price-table-features"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesElement>;
+            /**
+             * @parent mds-price-table-features-row
+             */
             "mds-price-table-features-cell": LocalJSX.IntrinsicElements["mds-price-table-features-cell"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesCellElement>;
+            /**
+             * @parent mds-price-table-features
+             */
             "mds-price-table-features-row": LocalJSX.IntrinsicElements["mds-price-table-features-row"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableFeaturesRowElement>;
+            /**
+             * @parent mds-price-table
+             */
             "mds-price-table-header": LocalJSX.IntrinsicElements["mds-price-table-header"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableHeaderElement>;
+            /**
+             * @parent mds-price-table mds-price-table-header
+             */
             "mds-price-table-list": LocalJSX.IntrinsicElements["mds-price-table-list"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableListElement>;
+            /**
+             * @parent mds-price-table-list
+             */
             "mds-price-table-list-item": LocalJSX.IntrinsicElements["mds-price-table-list-item"] & JSXBase.HTMLAttributes<HTMLMdsPriceTableListItemElement>;
+            /**
+             * @category feedback
+             */
             "mds-progress": LocalJSX.IntrinsicElements["mds-progress"] & JSXBase.HTMLAttributes<HTMLMdsProgressElement>;
+            /**
+             * @category feedback
+             */
             "mds-push-notification": LocalJSX.IntrinsicElements["mds-push-notification"] & JSXBase.HTMLAttributes<HTMLMdsPushNotificationElement>;
+            /**
+             * @parent mds-push-notification
+             */
             "mds-push-notification-item": LocalJSX.IntrinsicElements["mds-push-notification-item"] & JSXBase.HTMLAttributes<HTMLMdsPushNotificationItemElement>;
+            /**
+             * @category content
+             */
             "mds-quote": LocalJSX.IntrinsicElements["mds-quote"] & JSXBase.HTMLAttributes<HTMLMdsQuoteElement>;
+            /**
+             * @category actions
+             */
             "mds-radial-menu": LocalJSX.IntrinsicElements["mds-radial-menu"] & JSXBase.HTMLAttributes<HTMLMdsRadialMenuElement>;
+            /**
+             * @parent mds-radial-menu
+             */
             "mds-radial-menu-item": LocalJSX.IntrinsicElements["mds-radial-menu-item"] & JSXBase.HTMLAttributes<HTMLMdsRadialMenuItemElement>;
+            /**
+             * @category feedback
+             */
             "mds-radial-progress": LocalJSX.IntrinsicElements["mds-radial-progress"] & JSXBase.HTMLAttributes<HTMLMdsRadialProgressElement>;
+            /**
+             * @category structure
+             */
             "mds-separator": LocalJSX.IntrinsicElements["mds-separator"] & JSXBase.HTMLAttributes<HTMLMdsSeparatorElement>;
+            /**
+             * @category feedback
+             */
             "mds-spinner": LocalJSX.IntrinsicElements["mds-spinner"] & JSXBase.HTMLAttributes<HTMLMdsSpinnerElement>;
+            /**
+             * @category actions
+             */
             "mds-status-bar": LocalJSX.IntrinsicElements["mds-status-bar"] & JSXBase.HTMLAttributes<HTMLMdsStatusBarElement>;
+            /**
+             * @category navigation
+             */
             "mds-stepper-bar": LocalJSX.IntrinsicElements["mds-stepper-bar"] & JSXBase.HTMLAttributes<HTMLMdsStepperBarElement>;
+            /**
+             * @parent mds-stepper-bar
+             */
             "mds-stepper-bar-item": LocalJSX.IntrinsicElements["mds-stepper-bar-item"] & JSXBase.HTMLAttributes<HTMLMdsStepperBarItemElement>;
+            /**
+             * @category navigation
+             */
             "mds-tab": LocalJSX.IntrinsicElements["mds-tab"] & JSXBase.HTMLAttributes<HTMLMdsTabElement>;
+            /**
+             * @category navigation
+             */
             "mds-tab-bar": LocalJSX.IntrinsicElements["mds-tab-bar"] & JSXBase.HTMLAttributes<HTMLMdsTabBarElement>;
+            /**
+             * @parent mds-tab-bar
+             */
             "mds-tab-bar-item": LocalJSX.IntrinsicElements["mds-tab-bar-item"] & JSXBase.HTMLAttributes<HTMLMdsTabBarItemElement>;
+            /**
+             * @parent mds-tab
+             */
             "mds-tab-item": LocalJSX.IntrinsicElements["mds-tab-item"] & JSXBase.HTMLAttributes<HTMLMdsTabItemElement>;
+            /**
+             * @category data
+             */
             "mds-table": LocalJSX.IntrinsicElements["mds-table"] & JSXBase.HTMLAttributes<HTMLMdsTableElement>;
+            /**
+             * @parent mds-table
+             */
             "mds-table-body": LocalJSX.IntrinsicElements["mds-table-body"] & JSXBase.HTMLAttributes<HTMLMdsTableBodyElement>;
+            /**
+             * @parent mds-table-row mds-table-footer
+             */
             "mds-table-cell": LocalJSX.IntrinsicElements["mds-table-cell"] & JSXBase.HTMLAttributes<HTMLMdsTableCellElement>;
+            /**
+             * @parent mds-table
+             */
             "mds-table-footer": LocalJSX.IntrinsicElements["mds-table-footer"] & JSXBase.HTMLAttributes<HTMLMdsTableFooterElement>;
+            /**
+             * @parent mds-table
+             */
             "mds-table-header": LocalJSX.IntrinsicElements["mds-table-header"] & JSXBase.HTMLAttributes<HTMLMdsTableHeaderElement>;
+            /**
+             * @parent mds-table-header
+             */
             "mds-table-header-cell": LocalJSX.IntrinsicElements["mds-table-header-cell"] & JSXBase.HTMLAttributes<HTMLMdsTableHeaderCellElement>;
+            /**
+             * @parent mds-table-body
+             */
             "mds-table-row": LocalJSX.IntrinsicElements["mds-table-row"] & JSXBase.HTMLAttributes<HTMLMdsTableRowElement>;
+            /**
+             * @category content
+             */
             "mds-text": LocalJSX.IntrinsicElements["mds-text"] & JSXBase.HTMLAttributes<HTMLMdsTextElement>;
+            /**
+             * @category feedback
+             */
             "mds-toast": LocalJSX.IntrinsicElements["mds-toast"] & JSXBase.HTMLAttributes<HTMLMdsToastElement>;
+            /**
+             * @category feedback
+             */
             "mds-toast-region": LocalJSX.IntrinsicElements["mds-toast-region"] & JSXBase.HTMLAttributes<HTMLMdsToastRegionElement>;
+            /**
+             * @category overlays
+             */
             "mds-tooltip": LocalJSX.IntrinsicElements["mds-tooltip"] & JSXBase.HTMLAttributes<HTMLMdsTooltipElement>;
+            /**
+             * @category navigation
+             */
             "mds-tree": LocalJSX.IntrinsicElements["mds-tree"] & JSXBase.HTMLAttributes<HTMLMdsTreeElement>;
+            /**
+             * @parent mds-tree mds-tree-item
+             */
             "mds-tree-item": LocalJSX.IntrinsicElements["mds-tree-item"] & JSXBase.HTMLAttributes<HTMLMdsTreeItemElement>;
+            /**
+             * @category content
+             */
             "mds-url-view": LocalJSX.IntrinsicElements["mds-url-view"] & JSXBase.HTMLAttributes<HTMLMdsUrlViewElement>;
+            /**
+             * @category content
+             */
             "mds-usage": LocalJSX.IntrinsicElements["mds-usage"] & JSXBase.HTMLAttributes<HTMLMdsUsageElement>;
+            /**
+             * @category content
+             */
             "mds-video-wall": LocalJSX.IntrinsicElements["mds-video-wall"] & JSXBase.HTMLAttributes<HTMLMdsVideoWallElement>;
+            /**
+             * @category feedback
+             */
             "mds-zero": LocalJSX.IntrinsicElements["mds-zero"] & JSXBase.HTMLAttributes<HTMLMdsZeroElement>;
         }
     }

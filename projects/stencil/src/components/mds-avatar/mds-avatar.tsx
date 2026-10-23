@@ -13,6 +13,7 @@ type AvatarContent = 'count' | 'image' | 'initials' | 'icon' | 'fallback';
  * @part icon - The selected icon of the avatar
  * @part wrapper - The wrapper which contains media displayed
  * @part media - The media displayed
+ * @category data
  */
 
 @Component({

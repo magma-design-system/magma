@@ -31,6 +31,7 @@ const isLanguageCode = (value?: string | null): value is string =>
 
 /**
  * @slot - Add `mds-pref-language-item` element/s.
+ * @category preferences
  */
 
 @Component({

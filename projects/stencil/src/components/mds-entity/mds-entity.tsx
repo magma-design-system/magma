@@ -12,6 +12,7 @@ import { preferenceStore } from '@common/preference';
  * @part spinner - The spinner element
  * @part avatar - The avatar element
  * @part infos - The column that stacks the name (default slot) and the `detail` row
+ * @category data
  */
 
 @Component({

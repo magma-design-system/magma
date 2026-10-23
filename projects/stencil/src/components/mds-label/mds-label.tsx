@@ -14,6 +14,9 @@ import localeIt from './meta/locale.it.json';
 
 export type MdsLabelVariantType = ThemeLabelVariantType | ThemeStatusVariantType;
 
+/**
+ * @category tags
+ */
 @Component({
   tag: 'mds-label',
   styleUrl: 'mds-label.css',

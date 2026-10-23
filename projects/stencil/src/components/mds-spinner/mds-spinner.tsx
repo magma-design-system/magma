@@ -2,6 +2,9 @@ import { Component, Host, h, Prop, Watch } from '@stencil/core';
 import { preferenceStore } from '@common/preference';
 import awaitIcon from './assets/await-rounded.svg';
 
+/**
+ * @category feedback
+ */
 @Component({
   tag: 'mds-spinner',
   styleUrl: 'mds-spinner.css',

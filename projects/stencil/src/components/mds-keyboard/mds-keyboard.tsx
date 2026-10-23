@@ -14,6 +14,7 @@ import { KeyboardTest } from './meta/type';
 
 /**
  * @slot - Add `mds-keyboard-key` elements or `components` to this slot.
+ * @category tags
  */
 @Component({
   tag: 'mds-keyboard',

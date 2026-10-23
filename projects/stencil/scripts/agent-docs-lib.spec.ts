@@ -2,12 +2,18 @@ import path from 'path';
 import { describe, expect, it } from 'vitest';
 import {
   brokenLinks,
+  COMPONENT_CATEGORIES,
   componentDocsJson,
   relativeLinks,
   renderComponentAgentsMd,
   renderUsageFile,
+  readTaxonomy,
+  renderCatalogue,
   rewriteGuideLinks,
   rewriteUsageLinks,
+  rootOf,
+  taxonomyErrors,
+  type ComponentTaxonomy,
   type DocsComponent,
 } from './agent-docs-lib';
 
@@ -242,6 +248,107 @@ describe('brokenLinks', () => {
   it('reports a link that leaves the package even when the file exists', () => {
     expect(brokenLinks('[x](../../other/x.md)', fromAgents, [root], exists)).toEqual([
       '../../other/x.md',
+    ]);
+  });
+});
+
+describe('component categories', () => {
+  const source = (jsdoc: string) => `import { Component } from '@stencil/core';
+${jsdoc}
+@Component({ tag: 'mds-x', shadow: true })
+export class MdsX {}
+`;
+
+  it('reads the category and the parents from the JSDoc of the class', () => {
+    expect(readTaxonomy('mds-x', source('/**\n * @slot - Text\n * @category forms\n */'))).toEqual({
+      tag: 'mds-x',
+      category: 'forms',
+      parents: [],
+    });
+    expect(
+      readTaxonomy('mds-x', source('/**\n * @parent mds-table-row mds-table-footer\n */\n')),
+    ).toEqual({
+      tag: 'mds-x',
+      category: undefined,
+      parents: ['mds-table-row', 'mds-table-footer'],
+    });
+  });
+
+  it('reads nothing from a comment that is not the one of the class', () => {
+    const elsewhere = `/** @category forms */\nconst a = 1;\n${source('')}`;
+    expect(readTaxonomy('mds-x', elsewhere)).toEqual({
+      tag: 'mds-x',
+      category: undefined,
+      parents: [],
+    });
+  });
+
+  const table: ComponentTaxonomy[] = [
+    { tag: 'mds-table', category: 'data', parents: [] },
+    { tag: 'mds-table-body', parents: ['mds-table'] },
+    { tag: 'mds-table-row', parents: ['mds-table-body'] },
+    { tag: 'mds-table-cell', parents: ['mds-table-row', 'mds-table-footer'] },
+    { tag: 'mds-table-footer', parents: ['mds-table'] },
+  ];
+
+  it('follows the first parent of each part to its component', () => {
+    const byTag = new Map(table.map((c) => [c.tag, c]));
+    expect(rootOf('mds-table-cell', byTag)).toBe('mds-table');
+    expect(rootOf('mds-table', byTag)).toBe('mds-table');
+    const loop = new Map([
+      ['mds-a', { tag: 'mds-a', parents: ['mds-b'] }],
+      ['mds-b', { tag: 'mds-b', parents: ['mds-a'] }],
+    ]);
+    expect(rootOf('mds-a', loop)).toBeUndefined();
+  });
+
+  it('accepts a component with a category or a part that reaches one', () => {
+    expect(taxonomyErrors(table)).toEqual([]);
+  });
+
+  it('names every component without a valid category or parent', () => {
+    expect(
+      taxonomyErrors([
+        { tag: 'mds-a', parents: [] },
+        { tag: 'mds-b', category: 'data', parents: ['mds-c'] },
+        { tag: 'mds-c', category: 'Patterns', parents: [] },
+        { tag: 'mds-d', parents: ['mds-e'] },
+        { tag: 'mds-f', parents: ['mds-g'] },
+        { tag: 'mds-g', parents: ['mds-f'] },
+      ]),
+    ).toEqual([
+      'mds-a: no @category and no @parent',
+      'mds-b: both @category and @parent',
+      `mds-c: @category Patterns is not one of ${COMPONENT_CATEGORIES.map((c) => c.id).join(', ')}`,
+      'mds-d: @parent mds-e is not a component',
+      'mds-d: its first @parent never reaches a component with a @category',
+      'mds-f: its first @parent never reaches a component with a @category',
+      'mds-g: its first @parent never reaches a component with a @category',
+    ]);
+  });
+
+  it('lists the components by category, each part after its component', () => {
+    const md = renderCatalogue(
+      [...table, { tag: 'mds-button', category: 'actions', parents: [] }],
+      new Map([
+        ['mds-button', 'An action'],
+        ['mds-table', 'A table'],
+        ['mds-table-body', 'Its rows'],
+        ['mds-table-cell', 'A cell'],
+        ['mds-table-footer', 'Its totals'],
+        ['mds-table-row', 'A row'],
+      ]),
+      '../docs',
+    );
+    expect(md.indexOf('## Actions')).toBeLessThan(md.indexOf('## Data'));
+    expect(md).toContain('## Forms\n\nFields');
+    const data = md.slice(md.indexOf('## Data'), md.indexOf('## Tags'));
+    expect(data.split('\n').filter((line) => line.startsWith('| ['))).toEqual([
+      '| [`mds-table`](../docs/mds-table/AGENTS.md) | A table |',
+      '| [`mds-table-body`](../docs/mds-table-body/AGENTS.md), part of `mds-table` | Its rows |',
+      '| [`mds-table-cell`](../docs/mds-table-cell/AGENTS.md), part of `mds-table-row` or `mds-table-footer` | A cell |',
+      '| [`mds-table-footer`](../docs/mds-table-footer/AGENTS.md), part of `mds-table` | Its totals |',
+      '| [`mds-table-row`](../docs/mds-table-row/AGENTS.md), part of `mds-table-body` | A row |',
     ]);
   });
 });

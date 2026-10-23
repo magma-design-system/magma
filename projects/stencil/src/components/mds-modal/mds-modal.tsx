@@ -35,6 +35,7 @@ import localeIt from './meta/locale.it.json';
  * @slot - Contents that will be placed in the center of the window. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot top - Contents that will be placed on top of the window. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot window - Use directly a window component if you need it. Add `text string`, `HTML elements` or `components` to this slot.
+ * @category overlays
  */
 
 @Component({

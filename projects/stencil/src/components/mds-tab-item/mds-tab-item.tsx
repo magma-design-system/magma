@@ -18,6 +18,7 @@ import clsx from 'clsx';
 
 /**
  * @part button - The `mds-button` of the tab
+ * @parent mds-tab
  */
 @Component({
   tag: 'mds-tab-item',

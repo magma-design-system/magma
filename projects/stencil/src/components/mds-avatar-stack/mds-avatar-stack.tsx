@@ -4,6 +4,7 @@ import { AvatarSizeType } from './meta/types';
 
 /**
  * @slot - Add `mds-avatar-stack-item` elements to display in the stack.
+ * @category data
  */
 @Component({
   tag: 'mds-avatar-stack',

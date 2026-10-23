@@ -8,6 +8,7 @@ import miBaselineHorizontalRule from '@icon/mi/baseline/horizontal-rule.svg';
  * @part icon - Selects the HTML element of the icon when `type` attribute when is `supported` or `unsupported`.
  * @part text - Selects the HTML element wrapper of text when `type` attribute when is `text`.
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ * @parent mds-price-table-features-row
  */
 
 @Component({

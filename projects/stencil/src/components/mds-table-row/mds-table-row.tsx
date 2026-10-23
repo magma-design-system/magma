@@ -9,13 +9,13 @@ import localeIt from './meta/locale.it.json';
 import { isSafari } from '@common/browser';
 import { preferenceStore } from '@common/preference';
 
+// TODO [bug, style]: on Safari actions menu is visually broken
+
 /**
  * @slot - Put `mds-table-cell` element/s.
  * @slot action - Put `mds-button` element/s or other kind of actions as aside menu for the single row.
+ * @parent mds-table-body
  */
-
-// TODO [bug, style]: on Safari actions menu is visually broken
-
 @Component({
   tag: 'mds-table-row',
   styleUrl: 'mds-table-row.css',

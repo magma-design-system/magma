@@ -32,6 +32,7 @@ import { TabSizeType } from '@type/button';
 
 /**
  * @slot - Add `mds-pref-theme-item` element/s.
+ * @category preferences
  */
 
 @Component({

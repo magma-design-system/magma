@@ -13,6 +13,9 @@ export interface MdsInputOtpInterface {
   disabled?: boolean;
 }
 
+/**
+ * @category forms
+ */
 @Component({
   tag: 'mds-input-otp',
   styleUrl: 'mds-input-otp.css',

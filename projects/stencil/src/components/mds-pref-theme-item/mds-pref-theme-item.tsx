@@ -5,6 +5,9 @@ import { MdsPrefThemeEventDetail } from '@event/theme';
 import { PreferenceThemeSchemeType } from '@type/preference';
 import { labelFromName } from '@common/string';
 
+/**
+ * @parent mds-pref-theme
+ */
 @Component({
   tag: 'mds-pref-theme-item',
   styleUrl: 'mds-pref-theme-item.css',

@@ -31,6 +31,7 @@ import localeIt from './meta/locale.it.json';
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  * @slot icon - Insert an icon image, it can be `HTML elements` or `components`, it is **recommended** to add `mds-icon` element.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @category feedback
  */
 
 @Component({

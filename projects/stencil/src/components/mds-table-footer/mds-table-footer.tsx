@@ -3,6 +3,7 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `mds-table-cell` element/s: the footer is itself a row, for totals and counts.
+ * @parent mds-table
  */
 
 @Component({

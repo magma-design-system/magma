@@ -3,6 +3,7 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Put `mds-table-row` element/s.
+ * @parent mds-table
  */
 
 @Component({

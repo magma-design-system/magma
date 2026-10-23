@@ -10,6 +10,9 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
+/**
+ * @category content
+ */
 @Component({
   tag: 'mds-url-view',
   styleUrl: 'mds-url-view.css',

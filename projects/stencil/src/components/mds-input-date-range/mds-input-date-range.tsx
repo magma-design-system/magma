@@ -34,6 +34,7 @@ export interface EventDate {
  * @slot calendar-preselection - Add `HTML elements` or `components` to this slot.
  * @slot start - Add `HTML elements` or `components` to this slot.
  * @slot end - Add `HTML elements` or `components` to this slot.
+ * @category forms
  */
 @Component({
   tag: 'mds-input-date-range',

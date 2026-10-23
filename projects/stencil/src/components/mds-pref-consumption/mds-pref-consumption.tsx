@@ -12,6 +12,9 @@ import localeIt from './meta/locale.it.json';
 import { ConsumptionModeType } from '@type/preference';
 import { TabSizeType } from '@type/button';
 
+/**
+ * @category preferences
+ */
 @Component({
   tag: 'mds-pref-consumption',
   styleUrl: 'mds-pref-consumption.css',

@@ -15,6 +15,7 @@ import localeIt from './meta/locale.it.json';
  * @part chip-wrapper - Selects the wrapper of the chip and of its dropdown, will be found only if attirbute `variant` is set to `chip`.
  * @part card - Selects the `card` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `card`.
  * @part banner - Selects the `banner` component wrapped in shadowDOM, will be found only if attirbute `variant` is set to `banner`.
+ * @category tags
  */
 
 @Component({

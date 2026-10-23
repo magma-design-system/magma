@@ -15,6 +15,7 @@ import localeIt from './meta/locale.it.json';
  * @slot - Add `text string` to this slot, the text of the link when `label` is not set; **avoid** to add `HTML elements` or `components` here.
  * @part link - The element that carries the link and the focus: an anchor with `href`, an inline button without it
  * @part icon - The icon of the link
+ * @category actions
  */
 
 @Component({

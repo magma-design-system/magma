@@ -2,6 +2,9 @@ import { Component, Host, h, Prop } from '@stencil/core';
 import { ThemeFullVariantAvatarType } from '@type/variant';
 import { ToneMinimalVariantType } from '@type/tone';
 
+/**
+ * @parent mds-avatar-stack
+ */
 @Component({
   tag: 'mds-avatar-stack-item',
   styleUrl: 'mds-avatar-stack-item.css',

@@ -23,6 +23,7 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @part badge - The badge wrapper
+ * @parent mds-stepper-bar
  */
 
 @Component({

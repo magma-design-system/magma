@@ -27,6 +27,7 @@ import localeIt from './meta/locale.it.json';
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @part text - The text wrapper of the `default` and `content` slots
+ * @category feedback
  */
 
 @Component({

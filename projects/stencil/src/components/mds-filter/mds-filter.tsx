@@ -23,6 +23,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @slot - Add `mds-filter-item` element/s.
+ * @category forms
  */
 
 @Component({

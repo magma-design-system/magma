@@ -19,7 +19,15 @@
  */
 import fs from 'fs';
 import path from 'path';
-import { COMPONENT_DOCS_DIR, SHARED_FRAGMENTS, rewriteGuideLinks, toAscii } from './agent-docs-lib';
+import {
+  COMPONENT_DOCS_DIR,
+  SHARED_FRAGMENTS,
+  readTaxonomy,
+  renderCatalogue,
+  rewriteGuideLinks,
+  taxonomyErrors,
+  toAscii,
+} from './agent-docs-lib';
 
 // cwd is the stencil package dir when run via npm script.
 const STENCIL_DIR = process.cwd();
@@ -145,7 +153,7 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 
 | You need | Read |
 | -------- | ---- |
-| Which component to reach for | [\`agents/components.md\`](agents/components.md) - the catalogue, one line each |
+| Which component to reach for | [\`agents/components.md\`](agents/components.md) - the catalogue by category, one line each |
 | One component's API (props with allowed values, events, methods, slots, parts, CSS vars) | its \`AGENTS.md\`, linked from the catalogue |
 | Correct usage and mistakes for one component | \`pattern.md\` / \`antipattern.md\` beside its \`AGENTS.md\` |
 | Rules shared by every component: naming, events, slots, compound, icons, a11y, styling from outside | [\`agents/conventions.md\`](agents/conventions.md) |
@@ -186,37 +194,57 @@ function summarise(description: string): string {
 }
 
 /**
+ * The category or the parents of every component, from the JSDoc of its class
+ * (src/components/<tag>/<tag>.tsx). Throws, and so fails the build, when a component
+ * has neither or both, a category outside COMPONENT_CATEGORIES, or a parent that leads
+ * nowhere (docs/COMPONENTS.md, "Categories").
+ */
+function readComponentTaxonomy() {
+  const components = fs
+    .readdirSync(COMPONENTS_DIR, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory() && dirent.name.startsWith('mds-'))
+    .map(({ name }) =>
+      readTaxonomy(name, fs.readFileSync(path.join(COMPONENTS_DIR, name, `${name}.tsx`), 'utf8')),
+    );
+  const errors = taxonomyErrors(components);
+  if (errors.length > 0) {
+    throw new Error(
+      `Every component needs a @category or a @parent (docs/COMPONENTS.md, "Categories"):\n${errors.join('\n')}`,
+    );
+  }
+  return components;
+}
+
+/**
  * Builds agents/components.md from each component's committed usage description
- * (src/components/<tag>/usage/1. Description.md). Reading source - not the build's
- * dist/documentation.json - keeps generation independent of the stencil build, so it
- * can run before it (Stencil validates the package.json "files" array during build).
+ * (src/components/<tag>/usage/1. Description.md), by category, each part after its
+ * component. Reading source - not the build's dist/documentation.json - keeps generation
+ * independent of the stencil build, so it can run before it (Stencil validates the
+ * package.json "files" array during build).
  */
 function buildComponentsMd(docsPrefix: string): string {
-  const entries: { tag: string; summary: string }[] = [];
+  const summaries = new Map<string, string>();
   for (const dirent of fs.readdirSync(COMPONENTS_DIR, { withFileTypes: true })) {
     if (!dirent.isDirectory() || !dirent.name.startsWith('mds-')) continue;
     const descPath = path.join(COMPONENTS_DIR, dirent.name, 'usage', '1. Description.md');
     if (!fs.existsSync(descPath)) continue;
     const summary = summarise(fs.readFileSync(descPath, 'utf8'));
-    if (summary) entries.push({ tag: dirent.name, summary });
+    if (summary) summaries.set(dirent.name, summary);
   }
-  entries.sort((a, b) => a.tag.localeCompare(b.tag));
-  const rows = entries
-    .map((e) => `| [\`${e.tag}\`](${docsPrefix}/${e.tag}/AGENTS.md) | ${e.summary} |`)
-    .join('\n');
 
-  return `${BANNER}# Magma components catalogue (${entries.length} components)
+  return `${BANNER}# Magma components catalogue (${summaries.size} components)
 
 > Generated from each component's usage description. Each tag links the component's
 > own \`AGENTS.md\` (its API, with \`pattern.md\` and \`antipattern.md\` beside it) in
 > \`@maggioli-design-system/magma/${COMPONENT_DOCS_DIR}/<tag>/\`. The rules shared by
 > every component: [\`conventions.md\`](conventions.md), [\`variants.md\`](variants.md),
 > [\`anti-patterns.md\`](anti-patterns.md).
+>
+> Grouped by category (the \`@category\` docs tag of each component in
+> \`dist/documentation.json\`). A part of a compound component (\`@parent\`) follows its
+> component and names the components it sits in: it always composes inside them.
 
-| Component | What it is |
-| --------- | ---------- |
-${rows}
-`;
+${renderCatalogue(readComponentTaxonomy(), summaries, docsPrefix)}`;
 }
 
 function ensureDir(dir: string): void {

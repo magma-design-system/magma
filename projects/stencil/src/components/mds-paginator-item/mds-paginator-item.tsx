@@ -4,6 +4,7 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @parent mds-paginator
  */
 
 @Component({

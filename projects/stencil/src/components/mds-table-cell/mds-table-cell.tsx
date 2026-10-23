@@ -3,6 +3,7 @@ import { setAttributeIfEmpty } from '@common/aria';
 import { preferenceStore } from '@common/preference';
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
+ * @parent mds-table-row mds-table-footer
  */
 
 @Component({

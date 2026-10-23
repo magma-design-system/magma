@@ -4,6 +4,7 @@ import { isIconFormatIsBase64, isIconFormatIsSVG, BASE64_SVG_ICON } from '@commo
 
 /**
  * @part svg - The svg container of the icon
+ * @category content
  */
 
 @Component({

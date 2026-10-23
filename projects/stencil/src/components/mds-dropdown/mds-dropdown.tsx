@@ -10,6 +10,7 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot, elements will be shown when the component is triggered.
+ * @category overlays
  */
 
 @Component({

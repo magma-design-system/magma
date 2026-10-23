@@ -16,6 +16,7 @@ import localeIt from './meta/locale.it.json';
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @part content - The track that scrolls, with the default slot inside
+ * @category structure
  */
 
 @Component({

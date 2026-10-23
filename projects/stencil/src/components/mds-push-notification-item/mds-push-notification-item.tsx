@@ -38,6 +38,7 @@ import { preferenceStore } from '@common/preference';
  * @part picture - The picture image added by `src` attribute
  * @slot action - Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
  * @slot badge - Add `HTML elements` or `components`, it is **recommended** to use `mds-badge` element.
+ * @parent mds-push-notification
  */
 
 @Component({

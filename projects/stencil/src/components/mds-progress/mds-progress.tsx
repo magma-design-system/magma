@@ -8,6 +8,7 @@ import { ProgressBarSizeType } from '@type/progress';
 /**
  * @part progress - Selects the `div` element that contains the progress bar
  * @part radial-progress - Selects the `mds-radial-progress` element that contains the radial progress bar
+ * @category feedback
  */
 
 @Component({

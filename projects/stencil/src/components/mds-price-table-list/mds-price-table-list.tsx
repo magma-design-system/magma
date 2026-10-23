@@ -10,6 +10,7 @@ import { observeChildren } from '@common/slot';
  * @slot item - Add `mds-price-table-list-item` component, `HTML elements` or other `components` to this slot.
  * @slot header - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot price - Add `text string`, `HTML elements` or `components` to this slot.
+ * @parent mds-price-table mds-price-table-header
  */
 
 @Component({

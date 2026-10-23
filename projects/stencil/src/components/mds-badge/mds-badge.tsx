@@ -7,6 +7,7 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @category tags
  */
 
 @Component({

@@ -10,6 +10,7 @@ import { preferenceStore } from '@common/preference';
  * @part icon - The arrow icon of the component
  * @part label - The text label of the component
  * @part progress - The progress bar of the component
+ * @parent mds-accordion-timer
  */
 
 @Component({

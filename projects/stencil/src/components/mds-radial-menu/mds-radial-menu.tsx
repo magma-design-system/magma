@@ -17,6 +17,7 @@ import localeIt from './meta/locale.it.json';
 /**
  * @slot item - Add `mds-radial-menu-item` elements or `components` to this slot.
  * @part radial-menu - The ring that lays out the `item` slot around the trigger
+ * @category actions
  */
 @Component({
   tag: 'mds-radial-menu',

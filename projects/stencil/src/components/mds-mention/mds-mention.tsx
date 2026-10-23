@@ -10,6 +10,9 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
+/**
+ * @category tags
+ */
 @Component({
   tag: 'mds-mention',
   styleUrl: 'mds-mention.css',

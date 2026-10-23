@@ -4,6 +4,7 @@ import { MdsBreadcrumbItemEventDetail } from './meta/event-detail';
 
 /**
  * @part button - The `mds-button` of the item, which shows its `label`
+ * @parent mds-breadcrumb
  */
 @Component({
   tag: 'mds-breadcrumb-item',

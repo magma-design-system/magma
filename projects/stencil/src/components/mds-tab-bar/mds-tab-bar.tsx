@@ -4,6 +4,7 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `mds-tab-bar-item` element/s.
+ * @category navigation
  */
 
 @Component({

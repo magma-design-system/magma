@@ -29,6 +29,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @slot - Put text string or elements here
+ * @category forms
  */
 
 @Component({

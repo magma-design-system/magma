@@ -7,6 +7,7 @@ import { ThemeInputVariantType } from '@type/variant';
  * validation errors in `message`. Another control, a native `<input>` among them, gets the name
  * but no validation messages.
  * @part content - The wrapper of the default slot, above the message
+ * @category forms
  */
 @Component({
   tag: 'mds-input-field',

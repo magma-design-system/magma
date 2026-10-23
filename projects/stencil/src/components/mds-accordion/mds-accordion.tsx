@@ -5,6 +5,7 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Add `mds-accordion-item` element/s.
+ * @category structure
  */
 
 @Component({

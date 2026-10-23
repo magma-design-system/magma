@@ -3,6 +3,9 @@ import { BibliographyFormatType, BibliographyRelationshipType } from './meta/typ
 import { TypographyInfoType, TypographyReadType, TypographyVariants } from '@type/typography';
 import { FormattedAuthor } from './meta/interface';
 
+/**
+ * @category content
+ */
 @Component({
   tag: 'mds-bibliography',
   styleUrl: 'mds-bibliography.css',

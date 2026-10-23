@@ -26,6 +26,7 @@ const naturalOrder = new WeakMap<Element, HTMLMdsTableRowElement[]>();
 /**
  * @part action - The `mds-button` that sorts the column, with the `label`: only when `sortable`
  * @part label - The `label` of a column that is not `sortable`
+ * @parent mds-table-header
  */
 @Component({
   tag: 'mds-table-header-cell',

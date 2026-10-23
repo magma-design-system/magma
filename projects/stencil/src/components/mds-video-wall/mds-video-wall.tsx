@@ -8,6 +8,7 @@ import { NoiseType, PreloadType } from './meta/types';
 /**
  * @slot - Write browser support missing message here.
  * @slot content - Add video content overlay here, add `text string`, `HTML elements` or `components` to this slot.
+ * @category content
  */
 
 @Component({

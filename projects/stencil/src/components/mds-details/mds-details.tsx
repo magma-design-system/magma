@@ -23,6 +23,7 @@ import { preferenceStore } from '@common/preference';
  * @part header - The header of the component
  * @part title - The title of the component
  * @part content - The content wrapper of the default and `action` slots
+ * @category structure
  */
 
 @Component({

@@ -10,6 +10,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @slot - Add `mds-breadcrumb-item` element/s.
+ * @category navigation
  */
 
 @Component({
