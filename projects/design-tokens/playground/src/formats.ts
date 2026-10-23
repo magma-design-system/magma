@@ -3,6 +3,7 @@ import hexTemplate from '../../src/formats/css-vars-hex/template.hbs?raw';
 import rgbTemplate from '../../src/formats/css-vars-rgb/template.hbs?raw';
 import gimpTemplate from '../../src/formats/gimp-palette/template.hbs?raw';
 import { ifEquals, leadZero, rgbChannel, gimpRgbChannel } from '../../src/formats/helpers.js';
+import { darkSchemeTemplateData as dark } from '../../src/formats/dark-scheme.js';
 import { version } from '../../package.json';
 
 // The CSS and GIMP outputs are Handlebars templates rendered over the token
@@ -30,12 +31,12 @@ const lowerHex = (css: string): string =>
 
 /** CSS custom properties with hex values (light + dark theme selectors). */
 export function cssHex(properties: TokenTree, date: string): string {
-  return lowerHex(renderHex({ properties, version, date }));
+  return lowerHex(renderHex({ properties, dark, version, date }));
 }
 
 /** CSS custom properties with space-separated RGB channels. */
 export function cssRgb(properties: TokenTree, date: string): string {
-  return renderRgb({ properties, version, date });
+  return renderRgb({ properties, dark, version, date });
 }
 
 /** GIMP/Inkscape .gpl palette (light theme, contrast steps only). */
