@@ -23,6 +23,14 @@ let the user choose, each preference has its component - `mds-pref-mode`,
 `mds-pref-language` - and `mds-pref` groups them in one panel; they write the classes and
 remember the choice. Never write `color-scheme` or dark-mode media queries by hand.
 
+Tailwind's `dark:` follows the same mode: the Magma Tailwind theme brings a `dark`
+variant that turns on where the palette turns dark - `pref-mode-dark`, `pref-mode-system`
+or no controller on a dark OS, a theme locked to dark (`pref-theme-scheme-dark`) - and
+never under `pref-mode-light` or a theme locked to light (`pref-theme-scheme-light`). The
+roles flip without it, so `dark:` is never needed to correct a colour: use it only for a
+deliberate per-mode choice. It matches the light DOM only (pages, layouts, stories);
+inside a component's shadow root it matches nothing.
+
 ## Named themes
 
 A named theme retints the whole neutral scaffolding of the page at once - surfaces,

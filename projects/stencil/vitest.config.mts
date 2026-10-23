@@ -3,6 +3,8 @@ import { defineVitestConfig } from '@stencil/vitest/config';
 import { stencilVitestPlugin } from '@stencil/vitest/plugin';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
+import tailwindcss from '@tailwindcss/postcss';
+import postcss from 'postcss';
 import type { BrowserCommand } from 'vitest/node';
 
 const src = (dir: string): string => path.resolve(import.meta.dirname, dir, '$1');
@@ -16,6 +18,23 @@ const renderToString: BrowserCommand<[html: string]> = async (_context, html) =>
     serializeShadowRoot: 'declarative-shadow-dom',
   });
   return { html: markup, diagnostics };
+};
+
+// the Node half of the dark: variant test (src/test/dark-variant.e2e.ts): compiles a sheet with
+// the Tailwind PostCSS plugin Storybook builds with, its imports resolved from src/test
+const compileTailwind: BrowserCommand<[css: string]> = async (_context, css) => {
+  const { css: compiled } = await postcss([tailwindcss()]).process(css, {
+    from: path.resolve(import.meta.dirname, 'src/test/tailwind.css'),
+  });
+  return compiled;
+};
+
+// the OS colour scheme the page sees (prefers-color-scheme), null back to the browser's own
+const emulateColorScheme: BrowserCommand<[scheme: 'light' | 'dark' | null]> = async (
+  context,
+  scheme,
+) => {
+  await context.page.emulateMedia({ colorScheme: scheme });
 };
 
 // @stencil/vitest does not read the tsconfig `paths`: mirror the aliases of stencil.config.ts
@@ -74,7 +93,7 @@ export default defineVitestConfig({
             viewport: { width: 1280, height: 800 },
             screenshotFailures: false,
             instances: [{ browser: 'chromium' }],
-            commands: { renderToString },
+            commands: { renderToString, compileTailwind, emulateColorScheme },
           },
         },
       },

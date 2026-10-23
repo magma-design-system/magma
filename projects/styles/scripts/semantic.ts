@@ -10,6 +10,7 @@ import {
   type SemanticDecl,
 } from '../../design-tokens/semantic.config';
 import { semanticModel } from '../../design-tokens/semantic.model';
+import { darkScheme } from '../../design-tokens/src/formats/dark-scheme';
 
 /**
  * Generate the semantic color layer (A9) from design-tokens/semantic.config.ts:
@@ -44,20 +45,18 @@ model.base.forEach(({ title, decls }, index) => {
 });
 layer.push('}', '');
 
-// Same selectors as the global dark layer (the design-tokens css-vars-rgb
-// template), so the ink flips exactly when the primitives do.
+// The selectors the global dark layer flips on (design-tokens darkScheme), so the
+// ink flips exactly when the primitives do.
 if (model.dark.length) {
   const rules = model.dark.map(cssDecl);
   layer.push(
     '/* Dark: the fill ink takes the canvas (spec 6.5), the shadow ink pure black (spec 6.1c) */',
-    ':root:not(.pref-theme-scheme-light).pref-mode-dark,',
-    ':root.pref-theme-scheme-dark {',
+    `${darkScheme.forced.join(',\n')} {`,
     ...rules,
     '}',
     '',
-    '@media (prefers-color-scheme: dark) {',
-    '  :root:not(.pref-theme-scheme-light).pref-mode-system,',
-    '  :root:not([data-magma-pref]) {',
+    `@media ${darkScheme.media} {`,
+    `  ${darkScheme.system.join(',\n  ')} {`,
     ...rules.map((rule) => `  ${rule}`),
     '  }',
     '}',
