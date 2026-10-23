@@ -43,7 +43,7 @@
   "devDependencies": {
     "@angular-eslint/template-parser": "22.5.0",
     "@html-eslint/parser": "0.66.1",
-    "@modelcontextprotocol/sdk": "1.32.1"
+    "@modelcontextprotocol/sdk": "1.32.2"
   },
   "repository": {
     "type": "git",
