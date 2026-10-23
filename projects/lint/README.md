@@ -210,7 +210,9 @@ a class built at run time (`clsx(...)`, an Angular `[ngClass]`) is not.
 ### no-color-scheme-override
 
 A `prefers-color-scheme` media query follows the OS, not the mode the user picked in Magma (`mds-pref-mode`). The
-roles already follow both: paint with them, and the dark mode comes with no query.
+roles already follow both: paint with them, and the dark mode comes with no query. For a deliberate choice that
+differs per mode (a well that rises to `surface-raised` in dark), use the `dark` variant of the Magma Tailwind theme,
+`dark:` or `@variant dark`, which follows the Magma mode: never to correct a role, which flips on its own.
 
 ```css
 /* INCORRECT */

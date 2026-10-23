@@ -59,7 +59,7 @@ noRawColor.meta = { url: `${DOCS}#no-raw-color` };
 const noColorSchemeName = 'magma/no-color-scheme-override';
 const noColorSchemeMessages = ruleMessages(noColorSchemeName, {
   rejected: () =>
-    'Unexpected prefers-color-scheme query: it follows the OS, not the mode the user picked in Magma (mds-pref-mode). The roles, rgb(var(--magma-*)), already follow both: paint with them instead (agents/theming.md)',
+    'Unexpected prefers-color-scheme query: it follows the OS, not the mode the user picked in Magma (mds-pref-mode). The roles, rgb(var(--magma-*)), already follow both: paint with them; for a deliberate choice that differs per mode, use the dark variant of the Magma Tailwind theme (dark:, @variant dark), which follows the Magma mode (agents/theming.md)',
 });
 
 const noColorSchemeOverride: Rule = (primary) => (root, result) => {
