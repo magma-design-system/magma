@@ -11,6 +11,9 @@ import localeIt from './meta/locale.it.json';
 import miBaselineBrokenImage from '@icon/mi/baseline/broken-image.svg';
 import { icons } from './meta/icons';
 
+/**
+ * @parent mds-keyboard
+ */
 @Component({
   tag: 'mds-keyboard-key',
   styleUrl: 'mds-keyboard-key.css',

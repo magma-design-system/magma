@@ -96,6 +96,7 @@ export interface MdsInputInterface {
  * @part tip-count - Selects the mds-input-tip-item shown when maxlength attribute is set, can be used to hide it if needed
  * @part tip-top - Selects the verbose status of input on top of element
  * @part tip-bottom - Selects the verbose status of input on bottom of element
+ * @category forms
  */
 @Component({
   tag: 'mds-input',

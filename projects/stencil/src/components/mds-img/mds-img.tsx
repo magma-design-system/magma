@@ -24,6 +24,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @part media - The native `<img>` that shows the picture
+ * @category content
  */
 @Component({
   tag: 'mds-img',

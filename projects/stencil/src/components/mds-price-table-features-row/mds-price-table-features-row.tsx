@@ -3,6 +3,7 @@ import { preferenceStore } from '@common/preference';
 
 /**
  * @slot - Expects to slot `mds-price-table-features-cell` component
+ * @parent mds-price-table-features
  */
 
 @Component({

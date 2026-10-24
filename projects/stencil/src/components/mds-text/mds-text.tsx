@@ -14,6 +14,7 @@ const defaultPlaceholderChar = ' ';
 
 /**
  * @slot - Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
+ * @category content
  */
 
 @Component({

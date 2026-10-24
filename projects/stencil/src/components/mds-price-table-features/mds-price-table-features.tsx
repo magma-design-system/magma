@@ -4,6 +4,7 @@ import { preferenceStore } from '@common/preference';
 /**
  * @part header - Selects the HTML element wrapper of label text
  * @slot - Expects to slot `mds-price-table-features-row` component
+ * @parent mds-price-table
  */
 
 @Component({

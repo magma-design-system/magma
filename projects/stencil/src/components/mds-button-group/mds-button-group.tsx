@@ -2,6 +2,7 @@ import { Component, Host, h } from '@stencil/core';
 
 /**
  * @slot - Add `mds-button` or `mds-button-dropdown` elements to this slot.
+ * @category actions
  */
 @Component({
   tag: 'mds-button-group',

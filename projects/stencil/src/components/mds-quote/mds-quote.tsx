@@ -6,6 +6,7 @@ import { TypographyHeadingTagType } from '@type/text';
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot author - Add `text string`, `HTML elements` or `components` to this slot.
+ * @category content
  */
 
 @Component({

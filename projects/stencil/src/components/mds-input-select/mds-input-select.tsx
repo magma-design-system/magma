@@ -23,6 +23,7 @@ import { MdsInputSelectEventDetail } from './meta/event-detail';
  * @part select - The select HTML element
  * @part tip-top - Selects the verbose status of input on top of element
  * @slot - Add `option` `HTML elements` or `components` to this slot.
+ * @category forms
  */
 
 @Component({

@@ -12,6 +12,9 @@ import localeIt from './meta/locale.it.json';
 import { AnimationModeType } from './meta/types';
 import { TabSizeType } from '@type/button';
 
+/**
+ * @category preferences
+ */
 @Component({
   tag: 'mds-pref-animation',
   styleUrl: 'mds-pref-animation.css',

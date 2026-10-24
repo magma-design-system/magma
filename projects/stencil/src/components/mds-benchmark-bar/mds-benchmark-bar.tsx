@@ -7,6 +7,7 @@ import { readSlottedLabel, sanitizeLabel } from '@common/slot';
 /**
  * @slot - **Deprecated**, use the `label` property instead. Add `text string` to this slot, **avoid** to add `HTML elements` or `components` here.
  * @part progress-bar - The progress bar element
+ * @category data
  */
 
 @Component({

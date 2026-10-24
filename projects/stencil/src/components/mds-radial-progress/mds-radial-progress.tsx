@@ -6,6 +6,7 @@ import { prefersReducedMotion } from '@common/preference';
 /**
  * @part value-container - Selects the value container of the radial progress.
  * @part icon - Selects the icon of the radial progress.
+ * @category feedback
  */
 
 @Component({

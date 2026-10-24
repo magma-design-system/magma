@@ -16,6 +16,7 @@ import { StepperBarNavigationType } from './meta/meta';
  * @slot content - Add `HTML elements` or `components`, one per mds-stepper-bar-item added
  * @part items - Selects the `items` container element wrapped in shadowDOM.
  * @part contents - Selects the `contents` container element wrapped in shadowDOM.
+ * @category navigation
  */
 
 @Component({

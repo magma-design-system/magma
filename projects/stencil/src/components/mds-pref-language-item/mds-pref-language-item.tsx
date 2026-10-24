@@ -7,6 +7,9 @@ import miBaselineCheckCircle from '@icon/mi/baseline/check-circle.svg';
 import miOutlineCircle from '@icon/mi/outline/circle.svg';
 import { MdsPrefLanguageEventDetail } from '@event/language';
 
+/**
+ * @parent mds-pref-language
+ */
 @Component({
   tag: 'mds-pref-language-item',
   styleUrl: 'mds-pref-language-item.css',

@@ -29,6 +29,7 @@ import { DirectionType } from './meta/type';
  * items are links (`href`) to other pages or places and the page, not the component, shows the
  * content.
  * @slot - Add `mds-tab-item` element/s.
+ * @category navigation
  */
 
 @Component({

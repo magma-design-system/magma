@@ -1,6 +1,9 @@
 import { Component, Host, h } from '@stencil/core';
 import { preferenceStore } from '@common/preference';
 
+/**
+ * @category structure
+ */
 @Component({
   tag: 'mds-separator',
   styleUrl: 'mds-separator.css',

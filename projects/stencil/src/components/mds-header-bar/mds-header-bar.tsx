@@ -27,6 +27,7 @@ import localeIt from './meta/locale.it.json';
  * @part nav - Selects the `nav` element that contains the horizontal menu
  * @slot - Put contents, like logo and a small description shown on the left of the component. Add `text string`, `HTML elements` or `components` to this slot.
  * @slot nav - Put the actions shown when the component is on desktop mode. Add `HTML elements` or `components`, it is **recommended** to use `mds-button` element.
+ * @parent mds-header
  */
 
 @Component({

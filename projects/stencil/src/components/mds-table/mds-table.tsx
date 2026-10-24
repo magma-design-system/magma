@@ -29,6 +29,7 @@ import localeIt from './meta/locale.it.json';
  * @part table - Selects the table element
  * @part batch-actions - Selects the element which wraps the batch actions
  * @part batch-actions-wrapper - The bar of the batch actions, shown while the table is `selectable` and has `batch-action` content
+ * @category data
  */
 
 @Component({

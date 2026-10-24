@@ -70,32 +70,37 @@ Numbered list (`## 1.`, `## 2.`, ...) of mistakes. Each entry:
 
 Prioritize anti-patterns that an AI agent or new contributor is statistically likely to commit (boolean attrs as strings, slot misuse, shadow-DOM piercing, raw HTML elements replacing components).
 
+## Categories
+
+Every component that stands alone sits in one category, the shelf a reader browses when they do not know its name; every part of a compound component sits under that compound instead, and never in a list of its own. Both are docs tags in the JSDoc right above `@Component` (the comment Stencil reads `@slot` and `@part` from):
+
+- `@category <id>` on a component that stands alone, one id from the table below;
+- `@parent <tag>` on a part, naming the component it is a direct child of; several tags, space-separated, where it sits in several (`@parent mds-table-row mds-table-footer`). The first one leads to its compound, whose category the part takes.
+
+| Category      | What it holds                                                                         |
+| ------------- | ------------------------------------------------------------------------------------- |
+| `actions`     | Controls that make something happen: buttons, links, action bars and menus            |
+| `forms`       | Fields that take a value, and the calendar and the filters that help pick one         |
+| `navigation`  | Where the user is and where they can go: breadcrumbs, tabs, steps, pages, trees       |
+| `feedback`    | Messages, progress and empty states that tell the user what is happening              |
+| `overlays`    | Surfaces that float over the page: dialogs, dropdowns, tooltips, help                 |
+| `data`        | Sets of values and the people they belong to: tables, lists, figures, avatars         |
+| `tags`        | Short markers attached to other content: badges, chips, labels, mentions, keys        |
+| `structure`   | Containers and dividers that lay the page out: cards, accordions, headers, rules      |
+| `content`     | Text, media and files: typography, images, icons, quotes, notes, previews             |
+| `preferences` | The controls a user tunes the interface with: mode, theme, contrast, motion, language |
+
+A component gets a category when it works on its own, even if it usually sits inside another: each `mds-pref-*` works without `mds-pref`. It is a part when it does nothing outside its parent: `mds-header-bar` only opens and closes inside `mds-header`. Pick the category by what the reader wants to do, not by how the component looks: `mds-link` is an action, written as a word of running text; `mds-file-preview` shows a file, wherever the file comes from, so it is content and not a form control.
+
+Stencil passes both tags to `docsTags` in `dist/documentation.json`, where the docs site reads them to group its Components navigation and to show each part beside its compound. `scripts/sync-agent-docs.ts` groups the shipped `agents/components.md` catalogue by them and **fails the build** when a component has neither tag or both, a category outside the table, or a parent that is not a component or never leads to one with a category. The list lives in `COMPONENT_CATEGORIES` ([`projects/stencil/scripts/agent-docs-lib.ts`](../projects/stencil/scripts/agent-docs-lib.ts)): add or rename a category there and in the table above together.
+
 ## Component reference
 
-One row per component. Group headings exist for scanability only - do **not** infer constraints from them. Find a component by intent (skim the right group, read the Intent column) or by HTML analogue (grep the Native analogue column when you'd otherwise reach for a native element).
+One row per component, grouped by [category](#categories), each part of a compound right after its compound. Find a component by intent (skim the right category, read the Intent column) or by HTML analogue (grep the Native analogue column when you'd otherwise reach for a native element).
 
 > **Native analogue.** The _Native analogue_ column names the native element the component replaces: reach for the component where you would write that element. It does **not** mean the API is the same. The form controls keep most native attributes (`<mds-input-select multiple required name="x">` works like the `<select>`), but many components name things their own way or leave attributes out: `mds-progress` takes `progress`, not `value` / `max`; `mds-details` and `mds-modal` open with `opened`, `mds-accordion-item` with `selected`; `mds-list` has no `start` / `reversed`; `mds-input-upload` has no `multiple` / `name`; table cells have no `colspan`. Check the props before carrying a native attribute over.
 
-Subparts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their parent - do not replace them with raw HTML.
-
-### Forms & inputs
-
-| Component                           | Native analogue                 | Intent                                                                                           |
-| ----------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `mds-input`                         | `<input>`, `<textarea>`         | Text input, single- or multi-line (`type="textarea"`), with validation, counter and typed formats. |
-| `mds-input-field`                   | -                               | Wrapper around an input that provides label, tip, and validation slots.                          |
-| `mds-input-select`                  | `<select>` (incl. `multiple`)   | Single or multi-select dropdown of fixed options.                                                |
-| `mds-input-switch`                  | `<input type="checkbox">`       | Boolean on/off toggle or used as radio button (type="radio").                                    |
-| `mds-input-range`                   | `<input type="range">`          | Slider for picking a numeric value between `min` and `max`.                                      |
-| `mds-input-otp`                     | -                               | One-time-password / numeric-code entry, one digit per cell.                                      |
-| `mds-input-date`                    | `<input type="date">`           | Date picker with calendar overlay and ISO format handling.                                       |
-| `mds-input-date-range`              | -                               | Date range picker for selecting a start and end date.                                            |
-| `mds-input-date-range-preselection` | -                               | Preset chooser for common date ranges (last week, last month, etc.).                             |
-| `mds-input-upload`                  | `<input type="file">`           | File upload with drag-drop, preview, and progress support.                                       |
-| `mds-input-tip`                     | -                               | Used internally, not meant for direct use. Hint / validation container shown alongside an input. |
-| `mds-input-tip-item`                | -                               | Used internally, not meant for direct use. Single tip message inside `mds-input-tip`.            |
-| `mds-calendar`                      | -                               | Visual calendar for date selection (without an input field).                                     |
-| `mds-calendar-cell`                 | -                               | Used internally, not meant for direct use. Single day cell inside `mds-calendar`.                |
+Parts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their parent - do not replace them with raw HTML.
 
 ### Actions
 
@@ -104,12 +109,115 @@ Subparts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their 
 | `mds-button`           | `<button>` / `<a>` | Interactive action; becomes a hyperlink when `href` is set.       |
 | `mds-button-dropdown`  | -                  | Button that reveals a dropdown menu on activation.                |
 | `mds-button-group`     | -                  | Groups related buttons visually as a single control.              |
-| `mds-link`             | `<a>`              | Link inside running text, or an inline action without `href`.    |
-| `mds-chip`             | -                  | Compact, selectable tag with optional icon and delete action.     |
+| `mds-link`             | `<a>`              | Link inside running text, or an inline action without `href`.     |
 | `mds-radial-menu`      | -                  | Circular menu with items arranged radially around a centre point. |
 | `mds-radial-menu-item` | -                  | Single item inside `mds-radial-menu`.                             |
+| `mds-status-bar`       | -                  | Status row showing badges, buttons, or condensed action controls. |
 
-### Layout & structure
+### Forms
+
+| Component                           | Native analogue               | Intent                                                                                             |
+| ----------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------- |
+| `mds-input`                         | `<input>`, `<textarea>`       | Text input, single- or multi-line (`type="textarea"`), with validation, counter and typed formats. |
+| `mds-input-tip`                     | -                             | Used internally, not meant for direct use. Hint / validation container shown alongside an input.   |
+| `mds-input-tip-item`                | -                             | Used internally, not meant for direct use. Single tip message inside `mds-input-tip`.              |
+| `mds-input-field`                   | -                             | Wrapper around an input that provides label, tip, and validation slots.                            |
+| `mds-input-select`                  | `<select>` (incl. `multiple`) | Single or multi-select dropdown of fixed options.                                                  |
+| `mds-input-switch`                  | `<input type="checkbox">`     | Boolean on/off toggle or used as radio button (type="radio").                                      |
+| `mds-input-range`                   | `<input type="range">`        | Slider for picking a numeric value between `min` and `max`.                                        |
+| `mds-input-otp`                     | -                             | One-time-password / numeric-code entry, one digit per cell.                                        |
+| `mds-input-date`                    | `<input type="date">`         | Date picker with calendar overlay and ISO format handling.                                         |
+| `mds-input-date-range`              | -                             | Date range picker for selecting a start and end date.                                              |
+| `mds-input-date-range-preselection` | -                             | Preset chooser for common date ranges (last week, last month, etc.).                               |
+| `mds-input-upload`                  | `<input type="file">`         | File upload with drag-drop, preview, and progress support.                                         |
+| `mds-calendar`                      | -                             | Visual calendar for date selection (without an input field).                                       |
+| `mds-calendar-cell`                 | -                             | Used internally, not meant for direct use. Single day cell inside `mds-calendar`.                  |
+| `mds-filter`                        | -                             | Filter-control panel grouping `mds-filter-item`s.                                                  |
+| `mds-filter-item`                   | -                             | Single filter option inside `mds-filter`.                                                          |
+
+### Navigation
+
+| Component              | Native analogue | Intent                                                                                         |
+| ---------------------- | --------------- | ---------------------------------------------------------------------------------------------- |
+| `mds-tree`             | -               | Hierarchical tree of nodes with expand/collapse.                                               |
+| `mds-tree-item`        | -               | Single node inside `mds-tree`, can contain nested items.                                       |
+| `mds-breadcrumb`       | -               | Trail showing the user's current location in a page hierarchy.                                 |
+| `mds-breadcrumb-item`  | -               | Single step in `mds-breadcrumb`.                                                               |
+| `mds-paginator`        | -               | Page-number navigation for paged collections.                                                  |
+| `mds-paginator-item`   | -               | Used internally, not meant for direct use. Single page number / action inside `mds-paginator`. |
+| `mds-stepper-bar`      | -               | Visual progress through a multi-step process.                                                  |
+| `mds-stepper-bar-item` | -               | Single step inside `mds-stepper-bar`.                                                          |
+| `mds-tab`              | -               | Tabbed panel group displaying the selected `mds-tab-item`, or a strip of links without panels. |
+| `mds-tab-item`         | -               | Single tab inside `mds-tab`; a link when `href` is set.                                        |
+| `mds-tab-bar`          | -               | Standalone tab bar used for mobile applications (without managed panels).                      |
+| `mds-tab-bar-item`     | -               | Single tab button inside `mds-tab-bar`.                                                        |
+
+### Feedback
+
+| Component                    | Native analogue | Intent                                                                                   |
+| ---------------------------- | --------------- | ---------------------------------------------------------------------------------------- |
+| `mds-progress`               | `<progress>`    | Determinate progress indicator, as a bar or a ring.                                      |
+| `mds-radial-progress`        | -               | Circular determinate progress indicator, with an optional icon.                          |
+| `mds-spinner`                | -               | Indeterminate loading spinner.                                                           |
+| `mds-banner`                 | -               | Inline state message (info / success / warning / error) with optional action.            |
+| `mds-toast`                  | -               | Transient toast that appears and dismisses automatically.                                |
+| `mds-toast-region`           | -               | Live region at a viewport edge that lines up the toasts shown at once.                   |
+| `mds-notification`           | -               | Small notification badge / indicator.                                                    |
+| `mds-push-notification`      | -               | Stack container for multiple push notifications.                                         |
+| `mds-push-notification-item` | -               | Single push notification inside `mds-push-notification`.                                 |
+| `mds-zero`                   | -               | Empty-state placeholder for empty collections; supports an optional add / create action. |
+
+### Overlays
+
+| Component      | Native analogue | Intent                                                             |
+| -------------- | --------------- | ------------------------------------------------------------------ |
+| `mds-help`     | -               | Contextual help icon with tooltip / popover explanation.           |
+| `mds-tooltip`  | -               | Floating tip shown on hover / focus.                               |
+| `mds-modal`    | `<dialog>`      | Modal dialog overlay that blocks page interaction until dismissed. |
+| `mds-dropdown` | -               | Floating overlay menu triggered from a target element.             |
+
+### Data
+
+| Component                       | Native analogue | Intent                                                                            |
+| ------------------------------- | --------------- | --------------------------------------------------------------------------------- |
+| `mds-list`                      | `<ul>` / `<ol>` | Vertical list container.                                                          |
+| `mds-list-item`                 | `<li>`          | Single row inside `mds-list`.                                                     |
+| `mds-table`                     | `<table>`       | Tabular data container.                                                           |
+| `mds-table-header`              | `<thead>`       | Header section of `mds-table`.                                                    |
+| `mds-table-header-cell`         | `<th>`          | Header cell inside `mds-table-header`.                                            |
+| `mds-table-body`                | `<tbody>`       | Body section of `mds-table`.                                                      |
+| `mds-table-footer`              | `<tfoot>`       | Footer section of `mds-table` for totals / summaries.                             |
+| `mds-table-row`                 | `<tr>`          | Row inside `mds-table-body`.                                                      |
+| `mds-table-cell`                | `<td>`          | Data cell inside `mds-table-row`, or right inside `mds-table-footer`.             |
+| `mds-price-table`               | -               | Pricing-plan comparison layout.                                                   |
+| `mds-price-table-header`        | -               | Top row of `mds-price-table` (plan names, prices).                                |
+| `mds-price-table-list`          | -               | One pricing-plan column inside `mds-price-table` or its `mds-price-table-header`. |
+| `mds-price-table-list-item`     | -               | Single list row inside `mds-price-table-list`.                                    |
+| `mds-price-table-features`      | -               | Feature-matrix section inside `mds-price-table`.                                  |
+| `mds-price-table-features-row`  | -               | Single feature row inside `mds-price-table-features`.                             |
+| `mds-price-table-features-cell` | -               | Cell inside `mds-price-table-features-row` (icon / text / label).                 |
+| `mds-kpi`                       | -               | KPI panel container with one or more metric items.                                |
+| `mds-kpi-item`                  | -               | Single KPI metric inside `mds-kpi`.                                               |
+| `mds-benchmark-bar`             | -               | Horizontal bar visualising a benchmark value 0-100.                               |
+| `mds-avatar`                    | -               | Profile image with initials fallback and colour variants.                         |
+| `mds-avatar-stack`              | -               | Container displaying multiple avatars in an overlapping stack.                    |
+| `mds-avatar-stack-item`         | -               | Single avatar inside `mds-avatar-stack`.                                          |
+| `mds-author`                    | -               | Author byline card with avatar and biographical info.                             |
+| `mds-entity`                    | -               | Generic entity card with image, initials, icon, and status.                       |
+
+### Tags
+
+| Component          | Native analogue | Intent                                                                                                                          |
+| ------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `mds-chip`         | -               | Compact, selectable tag with optional icon and delete action.                                                                   |
+| `mds-badge`        | -               | Small inline badge for counts, status dots, or tags.                                                                            |
+| `mds-label`        | -               | Standalone text label for grouping or tagging - **not** the `<label>` for inputs (use `mds-input-field`'s label slot for that). |
+| `mds-mention`      | -               | Inline @-mention tag with avatar and name.                                                                                      |
+| `mds-policy-ai`    | -               | AI-policy disclosure badge for AI-assisted content.                                                                             |
+| `mds-keyboard`     | -               | Keyboard-shortcut combo display showing pressed-key state.                                                                      |
+| `mds-keyboard-key` | -               | Single key inside `mds-keyboard`.                                                                                               |
+
+### Structure
 
 | Component                  | Native analogue           | Intent                                                                      |
 | -------------------------- | ------------------------- | --------------------------------------------------------------------------- |
@@ -123,142 +231,43 @@ Subparts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their 
 | `mds-card-footer`          | -                         | Footer / actions region of `mds-card`.                                      |
 | `mds-card-media`           | -                         | Image / video region at the top of `mds-card`.                              |
 | `mds-details`              | `<details>`               | Standalone disclosure widget for collapsing arbitrary content.              |
-| `mds-list`                 | `<ul>` / `<ol>`           | Vertical list container.                                                    |
-| `mds-list-item`            | `<li>`                    | Single row inside `mds-list`.                                               |
-| `mds-tree`                 | -                         | Hierarchical tree of nodes with expand/collapse.                            |
-| `mds-tree-item`            | -                         | Single node inside `mds-tree`, can contain nested items.                    |
 | `mds-horizontal-scroll`    | -                         | Horizontal scrolling container with overflow arrows.                        |
 | `mds-separator`            | -                         | Thin, rounded horizontal divider between groups of content.                 |
 | `mds-hr`                   | `<hr>`                    | Horizontal divider between blocks.                                          |
+| `mds-header`               | `<header>`                | Top-of-page header with navigation, hamburger, and responsive collapse.     |
+| `mds-header-bar`           | -                         | Sticky bar inside `mds-header` with title and action controls.              |
 
-### Navigation
+### Content
 
-| Component              | Native analogue | Intent                                                                                         |
-| ---------------------- | --------------- | ---------------------------------------------------------------------------------------------- |
-| `mds-breadcrumb`       | -               | Trail showing the user's current location in a page hierarchy.                                 |
-| `mds-breadcrumb-item`  | -               | Single step in `mds-breadcrumb`.                                                               |
-| `mds-paginator`        | -               | Page-number navigation for paged collections.                                                  |
-| `mds-paginator-item`   | -               | Used internally, not meant for direct use. Single page number / action inside `mds-paginator`. |
-| `mds-stepper-bar`      | -               | Visual progress through a multi-step process.                                                  |
-| `mds-stepper-bar-item` | -               | Single step inside `mds-stepper-bar`.                                                          |
-| `mds-tab`              | -               | Tabbed panel group displaying the selected `mds-tab-item`, or a strip of links without panels. |
-| `mds-tab-item`         | -               | Single tab inside `mds-tab`; a link when `href` is set.                                        |
-| `mds-tab-bar`          | -               | Standalone tab bar used for mobile applications (without managed panels).                      |
-| `mds-tab-bar-item`     | -               | Single tab button inside `mds-tab-bar`.                                                        |
-| `mds-header`           | `<header>`      | Top-of-page header with navigation, hamburger, and responsive collapse.                        |
-| `mds-header-bar`       | -               | Sticky bar inside `mds-header` with title and action controls.                                 |
+| Component          | Native analogue | Intent                                                                                                      |
+| ------------------ | --------------- | ----------------------------------------------------------------------------------------------------------- |
+| `mds-note`         | -               | Callout block highlighting important information.                                                           |
+| `mds-text`         | -               | Typography wrapper applying semantic styles (titles, body, captions, code).                                 |
+| `mds-img`          | `<img>`         | Responsive image with lazy loading and consumption-mode awareness.                                          |
+| `mds-book`         | -               | A book as a physical object in 3D, from its front cover alone: spine, pages, thickness, binding and format. |
+| `mds-icon`         | -               | SVG icon rendered by name from the icon library.                                                            |
+| `mds-emoji`        | -               | Animated mascot illustration (`mia`, `simi`) rendered as an interactive SVG.                                |
+| `mds-quote`        | `<blockquote>`  | Quote / testimonial block with attribution styling.                                                         |
+| `mds-bibliography` | -               | A single citation, formatted in a recognized academic style.                                                |
+| `mds-url-view`     | `<iframe>`      | Embedded preview of an external page in a framed, browser-like window.                                      |
+| `mds-video-wall`   | -               | Full-bleed, autoplaying, looping background video behind foreground content.                                |
+| `mds-file`         | -               | File listing row with icon, name, type, and download action.                                                |
+| `mds-file-preview` | -               | Card previewing a file: name, size, type, icon or thumbnail.                                                |
+| `mds-usage`        | -               | Internal Storybook helper that renders a component-usage example.                                           |
 
-### Data display
+### Preferences
 
-| Component                       | Native analogue | Intent                                                          |
-| ------------------------------- | --------------- | --------------------------------------------------------------- |
-| `mds-table`                     | `<table>`       | Tabular data container.                                         |
-| `mds-table-header`              | `<thead>`       | Header section of `mds-table`.                                  |
-| `mds-table-header-cell`         | `<th>`          | Header cell inside `mds-table-header`.                          |
-| `mds-table-body`                | `<tbody>`       | Body section of `mds-table`.                                    |
-| `mds-table-footer`              | `<tfoot>`       | Footer section of `mds-table` for totals / summaries.           |
-| `mds-table-row`                 | `<tr>`          | Row inside `mds-table-body`.                                    |
-| `mds-table-cell`                | `<td>`          | Data cell inside `mds-table-row`.                               |
-| `mds-price-table`               | -               | Pricing-plan comparison layout.                                 |
-| `mds-price-table-header`        | -               | Top row of `mds-price-table` (plan names, prices).              |
-| `mds-price-table-list`          | -               | One pricing-plan column inside `mds-price-table`.               |
-| `mds-price-table-list-item`     | -               | Single list row inside `mds-price-table-list`.                  |
-| `mds-price-table-features`      | -               | Feature-matrix section inside `mds-price-table`.                |
-| `mds-price-table-features-row`  | -               | Single feature row inside `mds-price-table-features`.           |
-| `mds-price-table-features-cell` | -               | Cell inside `mds-price-table-features-row` (icon / text / label). |
-| `mds-kpi`                       | -               | KPI panel container with one or more metric items.              |
-| `mds-kpi-item`                  | -               | Single KPI metric inside `mds-kpi`.                             |
-| `mds-benchmark-bar`             | -               | Horizontal bar visualising a benchmark value 0-100.             |
-| `mds-progress`                  | `<progress>`    | Determinate progress indicator, as a bar or a ring.             |
-| `mds-radial-progress`           | -               | Circular determinate progress indicator, with an optional icon. |
-| `mds-spinner`                   | -               | Indeterminate loading spinner.                                  |
-
-### Feedback & status
-
-| Component                    | Native analogue | Intent                                                                                   |
-| ---------------------------- | --------------- | ---------------------------------------------------------------------------------------- |
-| `mds-banner`                 | -               | Inline state message (info / success / warning / error) with optional action.            |
-| `mds-toast`                  | -               | Transient toast that appears and dismisses automatically.                                |
-| `mds-toast-region`           | -               | Live region at a viewport edge that lines up the toasts shown at once.                   |
-| `mds-notification`           | -               | Small notification badge / indicator.                                                    |
-| `mds-push-notification`      | -               | Stack container for multiple push notifications.                                         |
-| `mds-push-notification-item` | -               | Single push notification inside `mds-push-notification`.                                 |
-| `mds-status-bar`             | -               | Status row showing badges, buttons, or condensed action controls.                        |
-| `mds-badge`                  | -               | Small inline badge for counts, status dots, or tags.                                     |
-| `mds-note`                   | -               | Callout block highlighting important information.                                        |
-| `mds-help`                   | -               | Contextual help icon with tooltip / popover explanation.                                 |
-| `mds-tooltip`                | -               | Floating tip shown on hover / focus.                                                     |
-| `mds-zero`                   | -               | Empty-state placeholder for empty collections; supports an optional add / create action. |
-
-### Overlays
-
-| Component      | Native analogue | Intent                                                             |
-| -------------- | --------------- | ------------------------------------------------------------------ |
-| `mds-modal`    | `<dialog>`      | Modal dialog overlay that blocks page interaction until dismissed. |
-| `mds-dropdown` | -               | Floating overlay menu triggered from a target element.             |
-
-### Media & content
-
-| Component          | Native analogue | Intent                                                                                                                          |
-| ------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `mds-text`         | -               | Typography wrapper applying semantic styles (titles, body, captions, code).                                                     |
-| `mds-img`          | `<img>`         | Responsive image with lazy loading and consumption-mode awareness.                                                              |
-| `mds-book`         | -               | A book as a physical object in 3D, from its front cover alone: spine, pages, thickness, binding and format.                      |
-| `mds-icon`         | -               | SVG icon rendered by name from the icon library.                                                                                |
-| `mds-emoji`        | -               | Animated mascot illustration (`mia`, `simi`) rendered as an interactive SVG.                                                    |
-| `mds-quote`        | `<blockquote>`  | Quote / testimonial block with attribution styling.                                                                             |
-| `mds-bibliography` | -               | A single citation, formatted in a recognized academic style.                                                                    |
-| `mds-url-view`     | `<iframe>`      | Embedded preview of an external page in a framed, browser-like window.                                                          |
-| `mds-video-wall`   | -               | Full-bleed, autoplaying, looping background video behind foreground content.                                                    |
-| `mds-label`        | -               | Standalone text label for grouping or tagging - **not** the `<label>` for inputs (use `mds-input-field`'s label slot for that). |
-
-### People & entities
-
-| Component               | Native analogue | Intent                                                         |
-| ----------------------- | --------------- | -------------------------------------------------------------- |
-| `mds-avatar`            | -               | Profile image with initials fallback and colour variants.      |
-| `mds-avatar-stack`      | -               | Container displaying multiple avatars in an overlapping stack. |
-| `mds-avatar-stack-item` | -               | Single avatar inside `mds-avatar-stack`.                       |
-| `mds-author`            | -               | Author byline card with avatar and biographical info.          |
-| `mds-entity`            | -               | Generic entity card with image, initials, icon, and status.    |
-| `mds-mention`           | -               | Inline @-mention tag with avatar and name.                     |
-| `mds-policy-ai`         | -               | AI-policy disclosure badge for AI-assisted content.            |
-
-### Files & filtering
-
-| Component          | Native analogue | Intent                                                       |
-| ------------------ | --------------- | ------------------------------------------------------------ |
-| `mds-file`         | -               | File listing row with icon, name, type, and download action. |
-| `mds-file-preview` | -               | Card previewing a file: name, size, type, icon or thumbnail. |
-| `mds-filter`       | -               | Filter-control panel grouping `mds-filter-item`s.            |
-| `mds-filter-item`  | -               | Single filter option inside `mds-filter`.                    |
-
-### Keyboard
-
-| Component          | Native analogue | Intent                                                     |
-| ------------------ | --------------- | ---------------------------------------------------------- |
-| `mds-keyboard`     | -               | Keyboard-shortcut combo display showing pressed-key state. |
-| `mds-keyboard-key` | -               | Single key inside `mds-keyboard`.                          |
-
-### User preferences
-
-| Component                     | Native analogue | Intent                                                     |
-| ----------------------------- | --------------- | ---------------------------------------------------------- |
-| `mds-pref`                    | -               | Root preferences panel grouping all `mds-pref-*` controls. |
-| `mds-pref-mode`               | -               | Light / dark / system mode selector.                       |
-| `mds-pref-theme`              | -               | Named theme chooser (default, `cool`, `warm`).             |
-| `mds-pref-theme-item`         | -               | Single named theme inside `mds-pref-theme`.                |
-| `mds-pref-contrast`           | -               | High-contrast preference toggle.                           |
-| `mds-pref-animation`          | -               | Reduced-motion / animation preference toggle.              |
-| `mds-pref-consumption`        | -               | Image / data consumption preference (low / medium / high). |
-| `mds-pref-language`           | -               | Language selector inside `mds-pref`.                       |
-| `mds-pref-language-item`      | -               | Single language option inside `mds-pref-language`.         |
-
-### Dev tooling
-
-| Component   | Native analogue | Intent                                                            |
-| ----------- | --------------- | ----------------------------------------------------------------- |
-| `mds-usage` | -               | Internal Storybook helper that renders a component-usage example. |
+| Component                | Native analogue | Intent                                                     |
+| ------------------------ | --------------- | ---------------------------------------------------------- |
+| `mds-pref`               | -               | Root preferences panel grouping all `mds-pref-*` controls. |
+| `mds-pref-mode`          | -               | Light / dark / system mode selector.                       |
+| `mds-pref-theme`         | -               | Named theme chooser (default, `cool`, `warm`).             |
+| `mds-pref-theme-item`    | -               | Single named theme inside `mds-pref-theme`.                |
+| `mds-pref-contrast`      | -               | High-contrast preference toggle.                           |
+| `mds-pref-animation`     | -               | Reduced-motion / animation preference toggle.              |
+| `mds-pref-consumption`   | -               | Image / data consumption preference (low / medium / high). |
+| `mds-pref-language`      | -               | Language selector inside `mds-pref`.                       |
+| `mds-pref-language-item` | -               | Single language option inside `mds-pref-language`.         |
 
 ## Rules for using the components
 

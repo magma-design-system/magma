@@ -5,6 +5,7 @@ import { FloatingUIPlacement } from '@type/floating-ui';
 /**
  * @slot - Add `text string` to this slot, **avoid** `HTML elements` or `components`.
  * @part icon - The icon that shows the help text in a tooltip
+ * @category overlays
  */
 
 @Component({

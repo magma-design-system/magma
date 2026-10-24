@@ -31,6 +31,7 @@ import { cssDurationToMilliseconds } from '@common/unit';
  * @slot action - Add `mds-button`, `mds-icon` or other types component and HTML element/s.
  * @part actions-container - Selects the wrapper of the container of the actions.
  * @part actions-list - Selects the container of the actions.
+ * @parent mds-tree mds-tree-item
  */
 
 @Component({

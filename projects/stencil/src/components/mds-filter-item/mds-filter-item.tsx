@@ -10,6 +10,9 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 
+/**
+ * @parent mds-filter
+ */
 @Component({
   tag: 'mds-filter-item',
   styleUrl: 'mds-filter-item.css',

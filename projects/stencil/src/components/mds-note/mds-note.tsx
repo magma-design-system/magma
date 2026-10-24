@@ -12,6 +12,7 @@ import localeIt from './meta/locale.it.json';
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot.
  * @slot title - Add `text string`, `HTML elements` or `components` to this slot.
+ * @category content
  */
 
 @Component({

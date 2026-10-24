@@ -8,6 +8,9 @@ import { gsap } from 'gsap';
 import miaSvg from './asset/mia.svg';
 import simiSvg from './asset/simi.svg';
 
+/**
+ * @category content
+ */
 @Component({
   tag: 'mds-emoji',
   styleUrl: 'mds-emoji.css',

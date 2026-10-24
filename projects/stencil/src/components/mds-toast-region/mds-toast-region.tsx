@@ -11,6 +11,7 @@ const hasDuration = (toast: HTMLMdsToastElement): boolean => {
 
 /**
  * @slot - Add `mds-toast` elements, one per message: the region lines up the visible ones at its edge.
+ * @category feedback
  */
 @Component({
   tag: 'mds-toast-region',

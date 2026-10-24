@@ -5,6 +5,9 @@ import {
   CalendarCellType,
 } from './meta/types';
 
+/**
+ * @parent mds-calendar
+ */
 @Component({
   tag: 'mds-calendar-cell',
   styleUrl: 'mds-calendar-cell.css',

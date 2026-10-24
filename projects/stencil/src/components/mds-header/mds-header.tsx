@@ -21,6 +21,7 @@ import { preferenceStore } from '@common/preference';
  * @part menu - The container element of the modal
  * @slot - Add `mds-header-bar` element/s.
  * @slot menu - Put actions and other contents that will be shown as mobile menu. Add `text string`, `HTML elements` or `components` to this slot.
+ * @category structure
  */
 
 @Component({

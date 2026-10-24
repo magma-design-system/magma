@@ -32,6 +32,9 @@ import fileDescriptionLocaleIt from '@meta/file-format/locale.it.json';
 
 // https://stackoverflow.com/questions/1106377/detect-when-a-browser-receives-a-file-download
 
+/**
+ * @category content
+ */
 @Component({
   tag: 'mds-file',
   styleUrl: 'mds-file.css',

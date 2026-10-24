@@ -27,6 +27,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @part cover - The native `<img>` that shows the front cover
+ * @category content
  */
 @Component({
   tag: 'mds-book',

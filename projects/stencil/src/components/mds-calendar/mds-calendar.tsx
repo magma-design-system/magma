@@ -25,6 +25,7 @@ import localeIt from './meta/locale.it.json';
 
 /**
  * @slot preselection - Add `HTML elements` or `components` shown in the calendar preselection area.
+ * @category forms
  */
 @Component({
   tag: 'mds-calendar',

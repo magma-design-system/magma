@@ -2,6 +2,7 @@ import { Component, Host, h } from '@stencil/core';
 
 /**
  * @slot - Add `mds-list-item` element/s.
+ * @category data
  */
 
 @Component({

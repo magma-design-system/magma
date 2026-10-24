@@ -20,6 +20,7 @@ import localeIt from './meta/locale.it.json';
 /**
  * @part notifications - The container wrapper of the notifications.
  * @slot - Add `HTML elements` or `components`, it is **recommended** to use `mds-push-notification` element.
+ * @category feedback
  */
 
 @Component({

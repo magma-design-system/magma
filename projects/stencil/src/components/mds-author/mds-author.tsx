@@ -5,6 +5,7 @@ import clsx from 'clsx';
 /**
  * @slot - Add `text string`, `HTML elements` or `components` to this slot. Insert author information, name, role or other useful author infos.
  * @slot avatar - Insert an avatar image, it is **recommended** to add `mds-avatar` element.
+ * @category data
  */
 @Component({
   tag: 'mds-author',

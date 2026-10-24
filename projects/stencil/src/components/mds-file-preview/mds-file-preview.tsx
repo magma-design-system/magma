@@ -21,6 +21,7 @@ import fileDescriptionLocaleIt from '@meta/file-format/locale.it.json';
 
 /**
  * @part card - The preview of the file: its thumbnail or format icon, its name and its details
+ * @category content
  */
 @Component({
   tag: 'mds-file-preview',

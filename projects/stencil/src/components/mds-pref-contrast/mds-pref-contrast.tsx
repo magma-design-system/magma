@@ -13,6 +13,9 @@ import { ContrastModeType } from './meta/types';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 import { TabSizeType } from '@type/button';
 
+/**
+ * @category preferences
+ */
 @Component({
   tag: 'mds-pref-contrast',
   styleUrl: 'mds-pref-contrast.css',

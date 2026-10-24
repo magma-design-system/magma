@@ -2,6 +2,7 @@ import { Component, Host, h } from '@stencil/core';
 
 /**
  * @slot - Add `mds-price-table-list` elements or `components` to this slot.
+ * @category data
  */
 @Component({
   tag: 'mds-price-table',

@@ -8,6 +8,7 @@ import { preferenceStore } from '@common/preference';
  * @part actions - Selects the `actions` container element wrapped in shadowDOM.
  * @part status-bar - Selects the `status-bar` window component wrapped in shadowDOM.
  * @part status-bar-area - Selects the `status-bar-area` which wraps `status-bar` element with darker area in shadowDOM.
+ * @category actions
  */
 
 @Component({

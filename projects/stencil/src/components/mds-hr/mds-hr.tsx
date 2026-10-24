@@ -1,6 +1,9 @@
 import { Component, Host, h } from '@stencil/core';
 import { preferenceStore } from '@common/preference';
 
+/**
+ * @category structure
+ */
 @Component({
   tag: 'mds-hr',
   styleUrl: 'mds-hr.css',

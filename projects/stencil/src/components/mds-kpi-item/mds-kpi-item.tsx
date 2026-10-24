@@ -5,6 +5,7 @@ import { preferenceStore } from '@common/preference';
  * @part content - Selects the label and description wrapper element
  * @part icon - Selects the icon element
  * @part icon-container - Selects the icon wrapper element
+ * @parent mds-kpi
  */
 
 @Component({

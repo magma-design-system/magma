@@ -29,6 +29,7 @@ import localeIt from './meta/locale.it.json';
 // TODO add input validation manager for error message
 /**
  * @part input-date - The native date input
+ * @category forms
  */
 @Component({
   tag: 'mds-input-date',

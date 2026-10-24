@@ -5,6 +5,9 @@ import { autoUpdate, computePosition, Middleware, offset, shift } from '@floatin
 import { FloatingUIPlacement, FloatingUIStrategy } from '@type/floating-ui';
 import { StrategyType } from './meta/types';
 
+/**
+ * @category feedback
+ */
 @Component({
   tag: 'mds-notification',
   styleUrl: 'mds-notification.css',
