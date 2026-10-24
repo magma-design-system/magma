@@ -1,6 +1,13 @@
 // The ten tools of the MCP server on fixtures cut from the real data, and the mi and mdi icon
 // sets installed in this repository.
-import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
@@ -8,7 +15,8 @@ import { describe, expect, test } from 'vitest';
 import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
 import { toolsOf } from '../src/mcp/server.js';
-import { context } from './mcp-context.js';
+import { tokensOf, USE_OF_UTILITY } from '../src/mcp/tokens.js';
+import { context, data } from './mcp-context.js';
 
 /** Every slug the iconsauce plugins serve, dumped by the stencil build (projects/stencil/SPEC.md, Icons). */
 const ICONS_DICTIONARY = path.join(
@@ -142,6 +150,102 @@ describe('the token tools', () => {
     });
     expect(await run('explain_class', { class: 'w-[13px]' })).toMatchObject({ kind: 'arbitrary' });
     expect(await run('explain_class', { class: 'flex' })).toMatchObject({ kind: 'other' });
+  });
+
+  test('every value reads as CSS, by its DTCG type', async () => {
+    const byCss = Object.fromEntries(
+      tokensOf(context)
+        .filter((entry) => entry.css)
+        .map((entry) => [entry.css, entry.value]),
+    );
+    // shadows: one layer per item, inset first, a colour with its alpha
+    expect(byCss['--shadow-xs']).toBe('0px 1px 2px 0px rgb(0 0 0 / 0.05)');
+    expect(byCss['--shadow-highlight-strong']).toBe(
+      '0px 0px 0px 2px rgb(0 0 0 / 0.4), 0px 4px 6px -1px rgb(0 0 0 / 0.65)',
+    );
+    expect(byCss['--shadow-inset-sm']).toMatch(
+      /^inset 0px 2px 4px 0px rgb\(0 0 0 \/ 0\.05\), inset /,
+    );
+    // an alias of a shadow, a border whose colour is an alias
+    expect(byCss['--shadow-sharp']).toBe(byCss['--shadow-sm-sharp']);
+    expect(byCss['--magma-outline-blur']).toBe('2px solid rgb(0 0 0 / 0)');
+    // where the CSS writes it differently, the cssValue the package records
+    expect(byCss['--mds-elevation-raised']).toMatch(/^0 calc\(1px \* var\(--depth\)\)/);
+    expect(byCss['--aspect-book']).toBe('1/1.4');
+    expect(byCss['--text-size-title-h1--letter-spacing']).toBe('-0.025em');
+    expect(byCss['--ease-in-back']).toMatch(/^cubic-bezier\(/);
+    expect(byCss['--font-code']).toBe("'Roboto Mono', 'Courier New', monospace");
+
+    const { tokens } = await run('list_tokens', { query: 'shadow', tier: 'all' });
+    expect(tokens.some((token: { value?: string }) => token.value?.includes('[object'))).toBe(
+      false,
+    );
+    expect(await run('explain_class', { class: 'shadow-highlight-strong' })).toMatchObject({
+      tokens: [{ css: '--shadow-highlight-strong', value: byCss['--shadow-highlight-strong'] }],
+    });
+  });
+
+  /** No value is garbage, and only the types CSS has no single value for have none. */
+  const expectCssValues = (entries: ReturnType<typeof tokensOf>) => {
+    const bad = entries.filter(
+      (entry) =>
+        (entry.value === undefined && !['typography', 'gradient'].includes(entry.type)) ||
+        /\[object|undefined|NaN/.test(entry.value ?? ''),
+    );
+    expect(bad.map((entry) => `${entry.path} (${entry.type}): ${entry.value}`)).toEqual([]);
+  };
+
+  test('the fixtures hold a token of every shape the published data has', () => {
+    expectCssValues(tokensOf(context));
+  });
+
+  // the build of design-tokens and styles, when there is one: a shape the fixtures miss fails here
+  const built = {
+    tokens: path.join(import.meta.dirname, '../../design-tokens/dist/dtcg/base.tokens.json'),
+    globals: path.join(import.meta.dirname, '../../styles/dist/dtcg/globals.tokens.json'),
+    consumption: path.join(import.meta.dirname, '../../styles/dist/tailwind/consumption.json'),
+  };
+  test.skipIf(!Object.values(built).every((file) => existsSync(file)))(
+    'every token of the built data reads as CSS',
+    () => {
+      expectCssValues(tokensOf({ ...context, settings: { ...context.settings, ...built } }));
+      const roots = JSON.parse(readFileSync(built.consumption, 'utf8')).namespaces['--color']
+        .utilities as string[];
+      expect(roots.filter((root) => !USE_OF_UTILITY[root] && !root.startsWith('mask-'))).toEqual(
+        [],
+      );
+    },
+  );
+
+  test('suggest_role keeps the utility and the opacity of a class, a shadow too', async () => {
+    // a coloured glow takes a fill role, as a shadow class
+    const glow = await run('suggest_role', { color: 'shadow-variant-primary-03/80' });
+    expect(glow.use).toBe('shadow');
+    expect(glow.roles[0]).toMatchObject({
+      css: '--magma-accent-emphasis-hover',
+      class: 'shadow-accent-emphasis-hover/80',
+      distance: 0,
+    });
+    expect(
+      (await run('suggest_role', { color: 'hover:border-tone-neutral-03/50' })).roles[0].class,
+    ).toMatch(/^border-.+\/50$/);
+    // the role made for a projected shadow is a candidate of the shadow use only
+    const ink = await run('suggest_role', { color: '--magma-shadow-ink', use: 'shadow' });
+    expect(ink.roles[0]).toMatchObject({ css: '--magma-shadow-ink', class: 'shadow-shadow-ink' });
+    expect(
+      (await run('suggest_role', { color: '--magma-shadow-ink' })).roles.map(
+        (role: { css: string }) => role.css,
+      ),
+    ).not.toContain('--magma-shadow-ink');
+    await expect(run('suggest_role', { color: 'mask-t-from-gray-100' })).rejects.toThrow(
+      /only the alpha/,
+    );
+  });
+
+  test('every colour utility says what it paints', () => {
+    const roots = JSON.parse(readFileSync(data.consumption, 'utf8')).namespaces['--color']
+      .utilities as string[];
+    expect(roots.filter((root) => !USE_OF_UTILITY[root] && !root.startsWith('mask-'))).toEqual([]);
   });
 
   test('the colour arithmetic reads CSS colours', () => {

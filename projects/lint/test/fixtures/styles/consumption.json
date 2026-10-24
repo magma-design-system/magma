@@ -917,6 +917,22 @@
    "description": "Text and icons on the solid fill of the brand accent.",
    "namespace": "--color",
    "key": "accent-on-emphasis"
+  },
+  "--shadow-xs": {
+   "theme": "--shadow-xs",
+   "namespace": "--shadow",
+   "key": "xs"
+  },
+  "--shadow-sharp": {
+   "theme": "--shadow-sharp",
+   "description": "For tailwind 3 compatibility",
+   "namespace": "--shadow",
+   "key": "sharp"
+  },
+  "--shadow-highlight-strong": {
+   "theme": "--shadow-highlight-strong",
+   "namespace": "--shadow",
+   "key": "highlight-strong"
   }
  },
  "keywords": {

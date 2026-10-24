@@ -146,6 +146,122 @@
      }
     }
    }
+  },
+  "outline": {
+   "$description": "The focus ring, and the transparent ring of an element without focus: the focus effects move between the two.",
+   "blur-color": {
+    "$type": "color",
+    "$value": {
+     "colorSpace": "srgb",
+     "components": [
+      0,
+      0,
+      0
+     ],
+     "hex": "#000000",
+     "alpha": 0
+    },
+    "$description": "The colour of the ring without focus: transparent.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-outline-blur-color",
+      "tier": "semantic"
+     }
+    }
+   },
+   "blur": {
+    "$type": "border",
+    "$value": {
+     "color": "{magma.outline.blur-color}",
+     "width": {
+      "value": 2,
+      "unit": "px"
+     },
+     "style": "solid"
+    },
+    "$description": "The ring of an element without focus: transparent.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-outline-blur",
+      "tier": "semantic"
+     }
+    }
+   }
+  }
+ },
+ "mds": {
+  "$description": "Globals the components share.",
+  "elevation": {
+   "$description": "The shadows of the raised and overlay surfaces, scaled by the depth axis.",
+   "raised": {
+    "$type": "shadow",
+    "$value": [
+     {
+      "color": {
+       "colorSpace": "srgb",
+       "components": [
+        0,
+        0,
+        0
+       ],
+       "hex": "#000000",
+       "alpha": 0.06
+      },
+      "offsetX": {
+       "value": 0,
+       "unit": "px"
+      },
+      "offsetY": {
+       "value": 1,
+       "unit": "px"
+      },
+      "blur": {
+       "value": 2,
+       "unit": "px"
+      },
+      "spread": {
+       "value": 0,
+       "unit": "px"
+      }
+     },
+     {
+      "color": {
+       "colorSpace": "srgb",
+       "components": [
+        0,
+        0,
+        0
+       ],
+       "hex": "#000000",
+       "alpha": 0.08
+      },
+      "offsetX": {
+       "value": 0,
+       "unit": "px"
+      },
+      "offsetY": {
+       "value": 2,
+       "unit": "px"
+      },
+      "blur": {
+       "value": 8,
+       "unit": "px"
+      },
+      "spread": {
+       "value": 0,
+       "unit": "px"
+      }
+     }
+    ],
+    "$description": "The shadow of a raised surface, such as a card.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--mds-elevation-raised",
+      "tier": "semantic",
+      "cssValue": "0 calc(1px * var(--depth)) calc(2px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.06 * var(--depth))), 0 calc(2px * var(--depth)) calc(8px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.08 * var(--depth)))"
+     }
+    }
+   }
   }
  }
 }

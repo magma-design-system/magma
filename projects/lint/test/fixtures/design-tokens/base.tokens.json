@@ -3211,5 +3211,373 @@
     }
    }
   }
+ },
+ "shadow": {
+  "$description": "Box shadows: xs to 2xl by elevation (the -sharp ones add a 1px contact edge), inset-* for recessed wells, the glow, box, outline and highlight composites, and ring-*, borders drawn with box-shadow in the neutral ink, which follow the mode.",
+  "xs": {
+   "$type": "shadow",
+   "$value": {
+    "color": {
+     "colorSpace": "srgb",
+     "components": [
+      0,
+      0,
+      0
+     ],
+     "hex": "#000000",
+     "alpha": 0.05
+    },
+    "offsetX": {
+     "value": 0,
+     "unit": "px"
+    },
+    "offsetY": {
+     "value": 1,
+     "unit": "px"
+    },
+    "blur": {
+     "value": 2,
+     "unit": "px"
+    },
+    "spread": {
+     "value": 0,
+     "unit": "px"
+    }
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--shadow-xs",
+     "tier": "primitive"
+    }
+   }
+  },
+  "sm-sharp": {
+   "$type": "shadow",
+   "$value": [
+    {
+     "color": {
+      "colorSpace": "srgb",
+      "components": [
+       0,
+       0,
+       0
+      ],
+      "hex": "#000000",
+      "alpha": 0.06
+     },
+     "offsetX": {
+      "value": 0,
+      "unit": "px"
+     },
+     "offsetY": {
+      "value": 0,
+      "unit": "px"
+     },
+     "blur": {
+      "value": 1,
+      "unit": "px"
+     },
+     "spread": {
+      "value": 1,
+      "unit": "px"
+     }
+    },
+    {
+     "color": {
+      "colorSpace": "srgb",
+      "components": [
+       0,
+       0,
+       0
+      ],
+      "hex": "#000000",
+      "alpha": 0.1
+     },
+     "offsetX": {
+      "value": 0,
+      "unit": "px"
+     },
+     "offsetY": {
+      "value": 1,
+      "unit": "px"
+     },
+     "blur": {
+      "value": 3,
+      "unit": "px"
+     },
+     "spread": {
+      "value": 0,
+      "unit": "px"
+     }
+    }
+   ],
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--shadow-sm-sharp",
+     "tier": "primitive"
+    }
+   }
+  },
+  "sharp": {
+   "$type": "shadow",
+   "$value": "{shadow.sm-sharp}",
+   "$description": "For tailwind 3 compatibility",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--shadow-sharp",
+     "tier": "primitive"
+    }
+   }
+  },
+  "highlight-strong": {
+   "$type": "shadow",
+   "$value": [
+    {
+     "color": {
+      "colorSpace": "srgb",
+      "components": [
+       0,
+       0,
+       0
+      ],
+      "hex": "#000000",
+      "alpha": 0.4
+     },
+     "offsetX": {
+      "value": 0,
+      "unit": "px"
+     },
+     "offsetY": {
+      "value": 0,
+      "unit": "px"
+     },
+     "blur": {
+      "value": 0,
+      "unit": "px"
+     },
+     "spread": {
+      "value": 2,
+      "unit": "px"
+     }
+    },
+    {
+     "color": {
+      "colorSpace": "srgb",
+      "components": [
+       0,
+       0,
+       0
+      ],
+      "hex": "#000000",
+      "alpha": 0.65
+     },
+     "offsetX": {
+      "value": 0,
+      "unit": "px"
+     },
+     "offsetY": {
+      "value": 4,
+      "unit": "px"
+     },
+     "blur": {
+      "value": 6,
+      "unit": "px"
+     },
+     "spread": {
+      "value": -1,
+      "unit": "px"
+     }
+    }
+   ],
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--shadow-highlight-strong",
+     "tier": "primitive"
+    }
+   }
+  },
+  "inset-sm": {
+   "$type": "shadow",
+   "$value": [
+    {
+     "color": {
+      "colorSpace": "srgb",
+      "components": [
+       0,
+       0,
+       0
+      ],
+      "hex": "#000000",
+      "alpha": 0.05
+     },
+     "offsetX": {
+      "value": 0,
+      "unit": "px"
+     },
+     "offsetY": {
+      "value": 2,
+      "unit": "px"
+     },
+     "blur": {
+      "value": 4,
+      "unit": "px"
+     },
+     "spread": {
+      "value": 0,
+      "unit": "px"
+     },
+     "inset": true
+    },
+    {
+     "color": {
+      "colorSpace": "srgb",
+      "components": [
+       0,
+       0,
+       0
+      ],
+      "hex": "#000000",
+      "alpha": 0.01
+     },
+     "offsetX": {
+      "value": 0,
+      "unit": "px"
+     },
+     "offsetY": {
+      "value": 0,
+      "unit": "px"
+     },
+     "blur": {
+      "value": 0,
+      "unit": "px"
+     },
+     "spread": {
+      "value": 1,
+      "unit": "px"
+     },
+     "inset": true
+    }
+   ],
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--shadow-inset-sm",
+     "tier": "primitive"
+    }
+   }
+  }
+ },
+ "ease": {
+  "$description": "Easing curves by family, sine to expo plus back, which overshoots: in- accelerates (exits), out- decelerates (entrances), in-out- moves within the view.",
+  "in-back": {
+   "$type": "cubicBezier",
+   "$value": [
+    0.6,
+    -0.28,
+    0.735,
+    0.045
+   ],
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--ease-in-back",
+     "tier": "primitive"
+    }
+   }
+  }
+ },
+ "duration": {
+  "75": {
+   "$type": "duration",
+   "$value": {
+    "value": 75,
+    "unit": "ms"
+   },
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--duration-75",
+     "tier": "primitive"
+    }
+   }
+  },
+  "$description": "Durations for transitions and animations, named by their length in milliseconds."
+ },
+ "aspect": {
+  "$description": "Aspect ratios for media and frames, width over height: book is an alias of a4.",
+  "a4": {
+   "$type": "number",
+   "$value": 0.7142857142857143,
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--aspect-a4",
+     "tier": "primitive",
+     "cssValue": "1/1.4"
+    }
+   }
+  },
+  "book": {
+   "$type": "number",
+   "$value": "{aspect.a4}",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "css": "--aspect-book",
+     "tier": "primitive",
+     "cssValue": "1/1.4"
+    }
+   }
+  }
+ },
+ "text-size": {
+  "$description": "The parts of each typography style as custom properties: set text with the whole style (typography), not by composing its parts.",
+  "title": {
+   "$description": "The parts of the title styles.",
+   "h1": {
+    "$description": "The size of the title h1 style, with its weight, letter spacing and line height.",
+    "letter-spacing": {
+     "$type": "dimension",
+     "$value": {
+      "value": -0.075,
+      "unit": "rem"
+     },
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--text-size-title-h1--letter-spacing",
+       "tier": "primitive",
+       "cssValue": "-0.025em"
+      }
+     }
+    },
+    "font-weight": {
+     "$type": "fontWeight",
+     "$value": 900,
+     "$extensions": {
+      "it.maggioli.magma": {
+       "css": "--text-size-title-h1--font-weight",
+       "tier": "primitive"
+      }
+     }
+    }
+   }
+  }
+ },
+ "typography": {
+  "$description": "Text styles as one unit (family, size, weight, letter spacing, line height): set UI text with them, through the text-* utilities or the typography-* classes.",
+  "title": {
+   "$description": "Roboto styles for headings and actions.",
+   "h1": {
+    "$type": "typography",
+    "$value": {
+     "fontFamily": "{font.title}",
+     "fontSize": "{text-size.title.h1.$root}",
+     "fontWeight": "{text-size.title.h1.font-weight}",
+     "letterSpacing": "{text-size.title.h1.letter-spacing}",
+     "lineHeight": 1
+    },
+    "$description": "The largest heading: the title of a page.",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "tier": "primitive"
+     }
+    }
+   }
+  }
  }
 }

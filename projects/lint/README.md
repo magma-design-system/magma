@@ -67,6 +67,21 @@ or on the guide it enforces, not only on fixtures picked by hand.
   else; the test collects those lines from the code blocks of the guides. The lint
   configuration is the first file the tool loads: ESLint 9 `FLAT_CONFIG_FILENAMES`, then for
   Stylelint 16 the `stylelint` key of `package.json` and the search places of cosmiconfig 9.
+- **Token values** (`list_tokens`, `explain_class`): the value is what the CSS writes. Where the
+  package records a `cssValue` (the CSS writes the quantity differently from the JSON:
+  `em` letter spacing, ratios, elevations on `--depth`, design-tokens README, "Token data")
+  that is the value; otherwise the DTCG value is serialised by its `$type`, as DTCG 2025.10
+  defines each type and composite type (a shadow is one `[inset] x y blur spread color` layer
+  per item), aliases resolved inside composites too. A type with no single CSS value
+  (`typography`, `gradient`) has none, and so does a part with no serialiser: never
+  `[object Object]`. The fixtures hold one token of every `$type` and shape the published
+  data has, and a test runs every value of the built data when there is one.
+- **What a colour paints** (`suggest_role`): each root of the `--color` namespace of the
+  consumption map is classified by the CSS property Tailwind writes for it (text, border,
+  background, shadow; the masks read only the alpha, no role), in a table a test holds to the
+  map, so a new root fails a test instead of reading as a background. A role is matched in
+  its family, `--magma-shadow-ink` for a shadow (or a fill, for a glow), and the class keeps
+  the utility and the opacity of the class given.
 
 ## Tests
 
