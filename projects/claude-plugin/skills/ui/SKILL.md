@@ -23,6 +23,8 @@ Magma answers from the version installed in this project: ask it instead of gues
 
 When a rule is not clear, read the section you need with `get_guide` (conventions, color, typography, theming).
 
+When the tools do not give you what the task needs (you would read Magma's files by hand or guess, or an answer carries `gap`), tell the user, and at the end of the task propose an issue on Magma, one per missing capability: `get_guide` reporting, section "A tool or an answer the MCP server is missing". Open it only once the user agrees.
+
 ## The tools of the magma server
 
 | Tool | What it answers |

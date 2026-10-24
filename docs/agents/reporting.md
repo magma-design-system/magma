@@ -2,8 +2,9 @@
 
 > Scope: you are working in a project that uses Magma and you hit a problem that is
 > Magma's, not the project's: a component that misbehaves, a guide that is wrong, a
-> missing token or utility, a packaging or install issue. This is how to report it to
-> the Magma repository, `magma-design-system/magma`, labelled with the project it comes
+> missing token or utility, a packaging or install issue, or something you needed that
+> the Magma MCP server does not answer (section 7). This is how to report it to the
+> Magma repository, `magma-design-system/magma`, labelled with the project it comes
 > from, so the maintainers can tell which project reported what.
 
 ## 1. Make sure it is Magma's
@@ -120,3 +121,53 @@ the title, the labels and the body to open it by hand at
 
 Then give the user the issue URL, and leave a comment in the project next to the
 workaround that links it, so the workaround can go once the fix ships.
+
+## 7. A tool or an answer the MCP server is missing
+
+The tools of the Magma MCP server ([`mcp.md`](mcp.md)) are there so you never read the
+installed files by hand or guess. When one of them could not give you what the task
+needed, Magma wants to know: the next tool or field comes from these reports. It is a gap
+when:
+
+- no tool covers the question, and you answered it by reading Magma's files
+  (`documentation.json`, the token data, the guides) or by guessing;
+- a tool said Magma has nothing for a well-formed question: its answer carries `gap`, or
+  its error says it does not know;
+- a tool answered, but not with what the task needed: a field it does not return, a
+  filter or an argument it does not take.
+
+It is not a gap when the answer is right but not the one you hoped for, when your own
+input was wrong (an unknown tag, a missing argument), or when the question is about the
+project rather than Magma.
+
+Tell the user when it happens, carry on with the task, and at the end propose one issue
+per missing capability, gathered from the whole task. Follow steps 2, 3, 4 and 6 (look
+for an existing issue, ask before opening it, the labels, create it), with `feature`,
+`prg-stencil` (the server ships inside `magma`) and the project's `prd-*` label, and this
+title and body instead of the ones of step 5. Title: `magma-mcp: <what is missing>`, e.g.
+`magma-mcp: find_component cannot filter by category`. Body:
+
+```markdown
+## Need
+
+What the task needed to know or to do, in one sentence.
+
+## What the server answered
+
+The tool you called and its arguments, and what it returned; or that no tool covers it.
+
+## What I did instead
+
+Read a file by hand, guessed, asked the user, and what it cost.
+
+## Proposal
+
+The tool, argument or field that would have answered it, if you have one in mind.
+
+## Versions
+
+- @maggioli-design-system/magma: <installed version>
+- Client: <e.g. Claude Code, VS Code, Cursor>
+
+Found in <project> (<repository>).
+```

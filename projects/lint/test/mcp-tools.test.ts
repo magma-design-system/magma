@@ -14,7 +14,8 @@ import { describe, expect, test } from 'vitest';
 
 import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
-import { createServer, toolsList, toolsOf } from '../src/mcp/server.js';
+import { GAP } from '../src/mcp/context.js';
+import { createServer, INSTRUCTIONS, toolsList, toolsOf } from '../src/mcp/server.js';
 import { tokensOf, USE_OF_UTILITY } from '../src/mcp/tokens.js';
 import { context, data } from './mcp-context.js';
 
@@ -55,6 +56,30 @@ test('the tools as data are the answer of tools/list, whatever the project', asy
   });
   // what the stencil build writes into dist/lint/mcp/tools.json, from no project at all
   expect(toolsList({ root: tmpdir(), settings: {} })).toEqual(toolsList(context));
+});
+
+describe('a question Magma has nothing for', () => {
+  test('a search that matches nothing says it is a gap to report', async () => {
+    const nothing = 'zzqxv';
+    expect(await run('find_component', { query: nothing })).toEqual({ components: [], gap: GAP });
+    expect(await run('list_tokens', { query: nothing })).toMatchObject({ tokens: [], gap: GAP });
+    expect(await run('find_icon', { query: nothing })).toMatchObject({ icons: [], gap: GAP });
+    // an answer is no gap
+    expect(await run('find_component', { query: 'a date range picker' })).not.toHaveProperty('gap');
+    expect(await run('find_icon', { query: 'delete' })).not.toHaveProperty('gap');
+  });
+
+  test('the instructions and the answers point at a section the reporting guide has', () => {
+    const section = 'A tool or an answer the MCP server is missing';
+    expect(INSTRUCTIONS).toContain(`get_guide reporting`);
+    expect(INSTRUCTIONS).toContain(section);
+    expect(GAP).toContain(section);
+    const guide = readFileSync(
+      path.join(import.meta.dirname, '../../../docs/agents/reporting.md'),
+      'utf8',
+    );
+    expect(guide).toMatch(new RegExp(`^## \\d+\\. ${section}$`, 'm'));
+  });
 });
 
 describe('the component tools', () => {

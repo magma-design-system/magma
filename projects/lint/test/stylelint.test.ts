@@ -184,9 +184,14 @@ const guideAnchors = () =>
 
 test('every rule describes itself and links its section of the guide, as the ESLint ones', () => {
   const anchors = guideAnchors();
-  for (const { ruleName, rule } of plugins) {
+  // what createPlugin returns, which the Plugin type of Stylelint does not spell out
+  const created = plugins as unknown as Array<{
+    ruleName: string;
+    rule: { meta: { url: string; description?: string } };
+  }>;
+  for (const { ruleName, rule } of created) {
     const name = ruleName.replace(/^magma\//, '');
-    const meta = rule.meta as { url: string; description?: string };
+    const { meta } = rule;
     expect(meta.description, name).toMatch(/^[A-Z].+\.$/);
     expect(meta.url, name).toBe(lintGuideUrl(name));
     expect(anchors, name).toContain(name);

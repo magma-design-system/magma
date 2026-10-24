@@ -97,3 +97,6 @@ the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents
 - Before an icon: `find_icon`.
 - After writing: `check_markup`, then the project's lint ([`lint.md`](lint.md)).
 - After the bootstrap, or when something does not render: `check_setup`.
+- When no tool gives you what the task needs, or an answer carries `gap`: tell the user,
+  and at the end of the task propose an issue on Magma
+  ([`reporting.md`](reporting.md), "A tool or an answer the MCP server is missing").
