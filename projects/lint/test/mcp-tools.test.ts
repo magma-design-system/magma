@@ -1,6 +1,6 @@
 // The ten tools of the MCP server on fixtures cut from the real data, and the mi and mdi icon
 // sets installed in this repository.
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
@@ -9,6 +9,12 @@ import { mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
 import { toolsOf } from '../src/mcp/server.js';
 import { context } from './mcp-context.js';
+
+/** Every slug the iconsauce plugins serve, dumped by the stencil build (projects/stencil/SPEC.md, Icons). */
+const ICONS_DICTIONARY = path.join(
+  import.meta.dirname,
+  '../../stencil/src/fixtures/icons-dictionary.json',
+);
 
 const tools = Object.fromEntries(toolsOf(context).map((tool) => [tool.name, tool]));
 // the tests read the structured content of each tool freely
@@ -163,6 +169,53 @@ describe('the icon tool', () => {
     const missing = await run('find_icon', { slug: 'mi/baseline/sendd' });
     expect(missing.exists).toBe(false);
     expect(missing.icons.map((icon: { name: string }) => icon.name)).toContain('send');
+  });
+
+  test('spells a multi-word Material slug with hyphens, as iconsauce serves it', async () => {
+    // the file is auto_awesome/outline.svg, the slug mi/outline/auto-awesome
+    expect(await run('find_icon', { slug: 'mi/outline/auto-awesome' })).toMatchObject({
+      exists: true,
+    });
+    const folderSpelling = await run('find_icon', { slug: 'mi/outline/auto_awesome' });
+    expect(folderSpelling.exists).toBe(false);
+    expect(folderSpelling.icons[0]).toEqual({
+      slug: 'mi/outline/auto-awesome',
+      set: 'mi',
+      name: 'auto-awesome',
+    });
+    const { icons } = await run('find_icon', {
+      query: 'rocket launch',
+      set: 'mi',
+      variant: 'outline',
+    });
+    expect(icons.map((icon: { slug: string }) => icon.slug)).toContain('mi/outline/rocket-launch');
+    expect(icons.every((icon: { slug: string }) => !icon.slug.includes('_'))).toBe(true);
+  });
+
+  test('agrees with the slugs iconsauce serves, both ways', async () => {
+    const dictionary = new Set(JSON.parse(readFileSync(ICONS_DICTIONARY, 'utf8')) as string[]);
+    const missing: string[] = [];
+    for (const slug of dictionary)
+      if (/^(mi|mdi)\//.test(slug) && !(await run('find_icon', { slug })).exists)
+        missing.push(slug);
+    expect(missing).toEqual([]);
+    for (const variant of ['baseline', 'outline', 'round', 'sharp']) {
+      const { icons } = await run('find_icon', { query: 'circle', variant, limit: 10_000 });
+      expect(icons.length).toBeGreaterThan(50);
+      expect(
+        icons
+          .map((icon: { slug: string }) => icon.slug)
+          .filter((slug: string) => !dictionary.has(slug)),
+      ).toEqual([]);
+    }
+  });
+
+  test('names only the Material variants iconsauce serves', async () => {
+    // @material-icons/svg has twotone.svg, iconsauce never writes it
+    expect(await run('find_icon', { slug: 'mi/twotone/send' })).toMatchObject({ exists: false });
+    await expect(run('find_icon', { query: 'send', variant: 'twotone' })).rejects.toThrow(
+      /baseline, outline, round, sharp/,
+    );
   });
 });
 

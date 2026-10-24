@@ -20,11 +20,16 @@ const FIXTURES_DIR = path.join(PROJECT_DIR, '.build/agent-docs-icons');
 const require = createRequire(import.meta.url);
 const packageDir = (pkg: string): string => path.dirname(require.resolve(`${pkg}/package.json`));
 
-/** The file of a slug in its package, per the table of the guide. */
+/** The file of a slug in its package, per the table of the guide: check-circle is check_circle/. */
 const packageFile = (slug: string): string => {
   const [set, ...rest] = slug.split('/');
   if (set === 'mi')
-    return path.join(packageDir('@material-icons/svg'), 'svg', rest[1], `${rest[0]}.svg`);
+    return path.join(
+      packageDir('@material-icons/svg'),
+      'svg',
+      rest[1].replaceAll('-', '_'),
+      `${rest[0]}.svg`,
+    );
   if (set === 'mdi') return path.join(packageDir('@mdi/svg'), 'svg', `${rest[0]}.svg`);
   return path.join(packageDir('@maggioli-design-system/svg-icons'), 'dist/svg', `${rest[0]}.svg`);
 };
@@ -83,8 +88,10 @@ describe('the icon routes of agents/assets.md', () => {
     );
   });
 
-  it('names one icon of every set in its example', () => {
+  it('names one icon of every set in its example, and a multi-word Material one', () => {
     expect(new Set(slugs.map((slug) => slug.split('/')[0]))).toEqual(new Set(['mi', 'mdi', 'mgg']));
+    // the slug spells check_circle/ with a hyphen: a one-word example hides the conversion
+    expect(slugs.some((slug) => /^mi\/[a-z]+\/[a-z0-9]+-/.test(slug))).toBe(true);
   });
 
   it('serves every slug with the copy script', () => {
@@ -109,6 +116,27 @@ describe('the icon routes of agents/assets.md', () => {
 
     expectServed(dir, slugs);
   });
+
+  it('copies every icon under the slug iconsauce would write, without icons.json', () => {
+    const dir = fixture('copy-script-all');
+    fs.mkdirSync(path.join(dir, 'scripts'));
+    fs.writeFileSync(
+      path.join(dir, 'scripts/copy-icons.mjs'),
+      block(
+        'the copy script',
+        (lang, body) => lang === 'js' && body.startsWith('// scripts/copy-icons.mjs'),
+      ),
+    );
+    execSync('node scripts/copy-icons.mjs', { cwd: dir, stdio: 'pipe' });
+
+    const mi = path.join(dir, 'public/svg/mi');
+    expect(fs.readdirSync(mi).sort()).toEqual(['baseline', 'outline', 'round', 'sharp']);
+    const names = fs.readdirSync(path.join(mi, 'baseline'));
+    expect(names).toContain('check-circle.svg');
+    expect(names.filter((name) => name.includes('_'))).toEqual([]);
+    expectServed(dir, ['mi/sharp/check-circle', 'mdi/github', 'mgg/abitazione-principale']);
+    fs.rmSync(dir, { recursive: true, force: true });
+  }, 60_000);
 
   it('serves every slug a page names with iconsauce', () => {
     const dir = fixture('iconsauce');

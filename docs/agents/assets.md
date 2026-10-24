@@ -150,6 +150,12 @@ with its icon set, and each set comes from its own package, with its own layout:
 | `mdi/<name>` | Material Design Icons | `@mdi/svg` | `svg/<name>.svg` |
 | `mgg/<name>` | Maggioli | `@maggioli-design-system/svg-icons` | `dist/svg/<name>.svg` |
 
+The slugs are the ones iconsauce writes (Route 1), so a Material slug is not the name of
+its folder: a multi-word name takes hyphens in the slug and underscores in the package
+(`mi/baseline/check-circle` is `svg/check_circle/baseline.svg`), and the variants are
+`baseline`, `outline`, `round` and `sharp`. The package's `twotone.svg` has no slug: iconsauce
+never serves it, and a slug spelled with the folder's underscores renders nothing.
+
 Magma ships only the `mgg/` set, and none of these packages is a dependency of `magma`,
 `magma-react` or `magma-angular`: the route you pick installs what it needs. Copying the
 `svg-icons` folder as it is does NOT follow the contract: its files sit directly in
@@ -196,8 +202,9 @@ in full, or list the computed ones in a file that `content` reads.
 
 ### Route 2: serve the files yourself
 
-One renaming step: `@material-icons/svg` stores `<name>/<variant>.svg`, while the slug
-wants `mi/<variant>/<name>`. `mdi/` and `mgg/` are plain folder copies. This script covers
+One renaming step: `@material-icons/svg` stores `check_circle/baseline.svg`, while the slug
+wants `mi/baseline/check-circle` (the contract above). `mdi/` and `mgg/` are plain folder
+copies. This script covers
 the three sets with Node built-ins only, so it fits any bundler:
 
 ```bash
@@ -208,7 +215,7 @@ npm i -D @maggioli-design-system/svg-icons @material-icons/svg @mdi/svg
 // scripts/copy-icons.mjs
 // Copies Magma's icon sets where mds-icon fetches them: <OUT>/<slug>.svg.
 //   node scripts/copy-icons.mjs icons.json   only the slugs listed in icons.json
-//   node scripts/copy-icons.mjs              every icon of the three sets (18,720 files, 73 MB)
+//   node scripts/copy-icons.mjs              every icon of the three sets (16,530 files, 64 MB)
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
@@ -216,14 +223,18 @@ import { dirname, join } from 'node:path';
 const OUT = 'public/svg'; // served at /svg/ by Vite, Next.js and the Angular CLI
 const require = createRequire(import.meta.url);
 const root = (pkg) => dirname(require.resolve(`${pkg}/package.json`));
-const MI = join(root('@material-icons/svg'), 'svg'); // <name>/<variant>.svg
+const MI = join(root('@material-icons/svg'), 'svg'); // <name_with_underscores>/<variant>.svg
 const MDI = join(root('@mdi/svg'), 'svg'); // <name>.svg
 const MGG = join(root('@maggioli-design-system/svg-icons'), 'dist/svg'); // <name>.svg
+
+// The Material variants iconsauce serves; a slug spells the folder's underscores as hyphens.
+const MI_VARIANTS = ['baseline', 'outline', 'round', 'sharp'];
 
 // Source file of a slug: mi/<variant>/<name>, mdi/<name>, mgg/<name>.
 function source(slug) {
   const [set, ...rest] = slug.split('/');
-  if (set === 'mi' && rest.length === 2) return join(MI, rest[1], `${rest[0]}.svg`);
+  if (set === 'mi' && rest.length === 2 && MI_VARIANTS.includes(rest[0]) && !rest[1].includes('_'))
+    return join(MI, rest[1].replaceAll('-', '_'), `${rest[0]}.svg`);
   if (set === 'mdi' && rest.length === 1) return join(MDI, `${rest[0]}.svg`);
   if (set === 'mgg' && rest.length === 1) return join(MGG, `${rest[0]}.svg`);
   throw new Error(`Not a Magma icon slug: ${slug}`);
@@ -232,7 +243,9 @@ function source(slug) {
 function allSlugs() {
   const names = (dir) => readdirSync(dir).map((file) => file.replace(/\.svg$/, ''));
   return [
-    ...readdirSync(MI).flatMap((name) => names(join(MI, name)).map((variant) => `mi/${variant}/${name}`)),
+    ...readdirSync(MI).flatMap((folder) =>
+      MI_VARIANTS.map((variant) => `mi/${variant}/${folder.replaceAll('_', '-')}`),
+    ),
     ...names(MDI).map((name) => `mdi/${name}`),
     ...names(MGG).map((name) => `mgg/${name}`),
   ];
@@ -252,7 +265,7 @@ console.log(`${slugs.length} icons in ${OUT}/`);
 `icons.json` lists the slugs the app uses:
 
 ```json
-["mi/baseline/email", "mi/baseline/send", "mdi/github", "mgg/abitazione-principale"]
+["mi/baseline/email", "mi/outline/check-circle", "mdi/github", "mgg/abitazione-principale"]
 ```
 
 ```json
@@ -266,7 +279,7 @@ console.log(`${slugs.length} icons in ${OUT}/`);
 A slug that does not exist stops the script with an error. A slug used in the code but
 missing from `icons.json` gives a 404 at runtime: iconsauce avoids that by reading the
 sources. Without `icons.json` the script copies every icon of the three sets, all of
-them deployed: 18,720 files and 73 MB (`mi` 43 MB in five variants, `mdi` 29 MB, `mgg`
+them deployed: 16,530 files and 64 MB (`mi` 34 MB in four variants, `mdi` 29 MB, `mgg`
 1.3 MB).
 
 ### Only the `mgg/` set

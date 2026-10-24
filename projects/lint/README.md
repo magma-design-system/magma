@@ -40,6 +40,27 @@ The data is never a list written by hand. Inside magma, the core reads the
 styles from where magma is installed, so a rule always checks against the release it ships
 in; `settings.magma` points elsewhere.
 
+## Where each answer comes from
+
+The rules and the tools answer what an agent would otherwise guess, so they must not guess
+either. Wherever the code has to choose (a spelling, a default, the forms of input a check
+accepts), the choice is read from the source that decides it: the guide the check enforces,
+the installed data, the upstream package that does the work, the specification. Each choice
+and its source is written below and next to the code. An input the source does not cover
+answers that it is unknown (no match, no value, an error that says why), never a default
+that looks right. A new tool or rule adds its line here, and its test runs on the real data
+or on the guide it enforces, not only on fixtures picked by hand.
+
+- **Icon slugs** (`find_icon`, the copy script of `agents/assets.md`): the slug is what
+  iconsauce writes, as `mds-icon` documents, not the name of the file in the package.
+  `@iconsauce/material-icons` turns the underscores of a Material folder into hyphens
+  (`check_circle/baseline.svg` is `mi/baseline/check-circle`) and serves the variants
+  `baseline`, `outline`, `round` and `sharp` only. The stencil build dumps every slug the
+  plugins serve into `projects/stencil/src/fixtures/icons-dictionary.json`
+  ([`projects/stencil/SPEC.md`](../stencil/SPEC.md), "Discovering available slugs"): the tests
+  hold `find_icon` to it both ways, and run the routes of the guide
+  (`projects/stencil/scripts/agent-docs-icons.spec.ts`) on a multi-word slug.
+
 ## Tests
 
 ```bash

@@ -3,6 +3,12 @@
   set and each set lives in its own package (agents/assets.md, "Icons"): mi/<variant>/<name>
   from @material-icons/svg (searched with the tags of its data.json), mdi/<name> from @mdi/svg
   (with the aliases and tags of its meta.json), mgg/<name> from svg-icons (by name).
+
+  The slug is what the active iconsauce plugin writes (mds-icon, "2. Pattern.md"), not the name
+  of the file in the package: @iconsauce/material-icons spells a Material name with hyphens
+  (check_circle/baseline.svg is mi/baseline/check-circle) and serves the variants baseline,
+  outline, round and sharp only, so a twotone slug is a 404 there. No Material folder has a
+  hyphen, so the two spellings convert one into the other.
 */
 import { existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
@@ -17,8 +23,17 @@ const PACKAGES: Record<IconSet, { name: string; svg: string }> = {
   mgg: { name: '@maggioli-design-system/svg-icons', svg: 'dist/svg' },
 };
 
+/** The Material variants a slug can name: the ones @iconsauce/material-icons serves. */
+const MI_VARIANTS = ['baseline', 'outline', 'round', 'sharp'];
+
+/** `check_circle` (the folder of @material-icons/svg) -> `check-circle` (the slug). */
+const miSlugName = (folder: string): string => folder.replace(/_/g, '-');
+/** `check-circle` (the slug) -> `check_circle` (the folder). */
+const miFolder = (name: string): string => name.replace(/-/g, '_');
+
 interface Icon {
   set: IconSet;
+  /** As the slug spells it: `check-circle`, not the `check_circle` of its folder. */
   name: string;
   /** Searchable words besides the name: tags, aliases. */
   words: string[];
@@ -40,10 +55,10 @@ const iconsOf = (context: ToolContext, set: IconSet, folder: string): Icon[] => 
     if (data)
       return data.icons.map(({ name, tags = [] }) => ({
         set,
-        name,
+        name: miSlugName(name),
         words: tags.map((tag) => tag.toLowerCase()),
       }));
-    return readdirSync(folder).map((name) => ({ set, name, words: [] }));
+    return readdirSync(folder).map((name) => ({ set, name: miSlugName(name), words: [] }));
   }
   if (set === 'mdi') {
     const meta = readJsonFile<
@@ -66,7 +81,11 @@ const iconsOf = (context: ToolContext, set: IconSet, folder: string): Icon[] => 
 /** The file a slug is served from, in its package. */
 const fileOf = (folder: string, slug: string): string | undefined => {
   const [set, ...rest] = slug.split('/');
-  if (set === 'mi' && rest.length === 2) return path.join(folder, rest[1]!, `${rest[0]}.svg`);
+  // an underscore is the folder's spelling, which no slug served by iconsauce has
+  if (set === 'mi' && rest.length === 2)
+    return MI_VARIANTS.includes(rest[0]!) && !rest[1]!.includes('_')
+      ? path.join(folder, miFolder(rest[1]!), `${rest[0]}.svg`)
+      : undefined;
   if ((set === 'mdi' || set === 'mgg') && rest.length === 1)
     return path.join(folder, `${rest[0]}.svg`);
   return undefined;
@@ -85,8 +104,9 @@ export const findIcon = (context: ToolContext): Tool => ({
       set: { type: 'string', enum: ['mi', 'mdi', 'mgg'], description: 'Search one set only.' },
       variant: {
         type: 'string',
+        enum: MI_VARIANTS,
         description:
-          'The Material Icons variant of the slugs found: baseline (default), outline, round, sharp, twotone.',
+          'The Material Icons variant of the slugs found: baseline (default), outline, round, sharp.',
       },
       limit: { type: 'number', description: 'How many to return, 12 by default.' },
     },
@@ -131,6 +151,10 @@ export const findIcon = (context: ToolContext): Tool => ({
       installed: Boolean(folders.get(one)),
     }));
     const miVariant = typeof variant === 'string' && variant ? variant : 'baseline';
+    if (!MI_VARIANTS.includes(miVariant))
+      throw new ToolError(
+        `"${miVariant}" is not a Material Icons variant a slug can name: ${MI_VARIANTS.join(', ')}.`,
+      );
     const slugOf = (icon: Icon) =>
       icon.set === 'mi' ? `mi/${miVariant}/${icon.name}` : `${icon.set}/${icon.name}`;
 
@@ -139,24 +163,31 @@ export const findIcon = (context: ToolContext): Tool => ({
       const folder = PACKAGES[own] ? (folders.get(own) ?? folderOf(context, own)) : undefined;
       const file = folder && fileOf(folder, slug);
       const exists = Boolean(file && existsSync(file));
-      // when it does not exist, the icons of the same name in the installed sets
-      const name = slug.split('/').pop()!;
+      // when it does not exist, the icons of the same name in the installed sets, in the
+      // variant the slug asked for; an underscore (the folder's spelling) reads as a hyphen
+      const parts = slug.split('/');
+      const name = miSlugName(parts.pop()!);
+      const asked = own === 'mi' && MI_VARIANTS.includes(parts[1]!) ? parts[1]! : miVariant;
       const near = exists
         ? []
-        : sets.flatMap((one) => {
-            const dir = folders.get(one);
-            return dir
-              ? iconsOf(context, one, dir).filter(
-                  (icon) => icon.name.includes(name) || name.includes(icon.name),
-                )
-              : [];
-          });
+        : sets
+            .flatMap((one) => {
+              const dir = folders.get(one);
+              return dir
+                ? iconsOf(context, one, dir).filter(
+                    (icon) => icon.name.includes(name) || name.includes(icon.name),
+                  )
+                : [];
+            })
+            .sort((a, b) => Number(b.name === name) - Number(a.name === name));
       return {
         sets: status,
         exists,
-        icons: near
-          .slice(0, 12)
-          .map((icon) => ({ slug: slugOf(icon), set: icon.set, name: icon.name })),
+        icons: near.slice(0, 12).map((icon) => ({
+          slug: icon.set === 'mi' ? `mi/${asked}/${icon.name}` : slugOf(icon),
+          set: icon.set,
+          name: icon.name,
+        })),
       };
     }
 

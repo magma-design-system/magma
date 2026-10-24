@@ -47,6 +47,7 @@ The lint and the checks catch most of these; do not write them in the first plac
 - An `@prop` written without `Public.` at the start of its description: it is internal, and products may not set it. Mark it public only when a product needs it and no role, theme or prop gives it; `Public, static.` for one that takes a value of its own (`projects/stencil/SPEC.md`).
 - Editing a generated file: a component's `readme.md` (edit its `usage/*.md` and the JSDoc), `magma.api.txt` (rebuild), the packages' `AGENTS.md` and `agents/` (edit `docs/agents/`).
 - The commit types `doc` and `refact`: write `docs` and `refactor`, with a scope (`docs/COMMITS.md`).
+- A choice with no source: a spelling, a default branch or the forms of input a check accepts, guessed instead of read from where it is decided (the guide the check enforces, the installed data, the upstream package, the specification). Find the source, write the criterion next to the code and in the project's doc (for the lint and the MCP server, "Where each answer comes from" in `projects/lint/README.md`), test it on the real data, and let the case the source does not cover answer "unknown" instead of falling through to a default.
 
 ## Commands
 
