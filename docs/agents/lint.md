@@ -80,7 +80,7 @@ export default {
 ### Presets
 
 - `recommended`, for a product that already exists: what is broken or not accessible is an
-  error, the palette a warning;
+  error, the palette and an internal custom property a warning;
 - `strict` (`magma.configs.strict`, `@maggioli-design-system/magma/stylelint/strict`), for a
   new product: every rule is an error.
 
@@ -95,8 +95,9 @@ npx stylelint "src/**/*.{css,scss}"
 ```
 
 An error is something broken or not accessible; a warning of `recommended` is a colour that
-does not follow the mode, the named theme and the contrast preference. When a rule is wrong
-about Magma itself, report it ([`reporting.md`](reporting.md)) instead of disabling it.
+does not follow the mode, the named theme and the contrast preference, or a custom property a
+component may change in any release. When a rule is wrong about Magma itself, report it
+([`reporting.md`](reporting.md)) instead of disabling it.
 
 ## Rules
 
@@ -108,6 +109,7 @@ about Magma itself, report it ([`reporting.md`](reporting.md)) instead of disabl
 | [`no-raw-palette-classes`](#no-raw-palette-classes) | ESLint | warn | error |
 | [`no-color-scheme-override`](#no-color-scheme-override) | Stylelint | error | error |
 | [`no-raw-color`](#no-raw-color) | Stylelint | warning | error |
+| [`no-internal-tokens`](#no-internal-tokens) | ESLint, Stylelint | warn | error |
 
 The ESLint rules are named `magma/<rule>` once the preset is loaded, the Stylelint rules
 `magma/<rule>` once the plugin (`@maggioli-design-system/magma/stylelint`) is.
@@ -215,20 +217,49 @@ names a token is fine (`rgb(var(--magma-text-muted) / 0.5)`), and so are the key
 `rgb(var(--magma-shadow-ink) / <alpha>)`. Not read: `mask` and `mask-image`, and the
 `initial-value` of an `@property`.
 
-A colour that is not a role, such as the palette of an illustration, keeps its literal under
-a disable comment that says why:
+Not reported either: the public custom properties marked **Static** in a component's
+`AGENTS.md`, which take a colour of their own, not a role (the skin of an illustration, the
+cover of a book from its catalogue record):
 
 ```css
 mds-emoji[name='simi'] {
-  /* stylelint-disable magma/no-raw-color -- the palette of an illustration */
   --mds-emoji-simi-skin: #f5c8a0;
-  /* stylelint-enable magma/no-raw-color */
 }
 ```
+
+Any other colour that is not a role keeps its literal under a disable comment that says why:
+`/* stylelint-disable-next-line magma/no-raw-color -- <the reason> */`.
+
+### no-internal-tokens
+
+An `--mds-*` custom property, set or read, that no component promises. A component's
+`AGENTS.md` lists its public custom properties, the only ones a product sets; the others are
+internal, its implementation, and may change or go in any release without notice. A name no
+component documents is reported too. Stylelint reads the stylesheets; ESLint reads the
+inline styles of the templates: a `style` attribute, a React `style={{ '--mds-<name>': ... }}`
+object, an Angular `[style.--mds-<name>]` binding.
+
+```css
+/* INCORRECT: internal, it may change in any release */
+mds-chip {
+  --mds-chip-icon-color: rgb(var(--magma-accent-fg));
+}
+
+/* CORRECT: a public custom property of the chip */
+mds-chip {
+  --mds-chip-icon-background: rgb(var(--magma-accent-surface));
+}
+```
+
+When no public custom property does what you need, use a prop, a documented part, or a role
+on the markup around the component; if none does, ask for one ([`reporting.md`](reporting.md))
+rather than setting an internal one.
 
 ## Settings
 
 The rules need no settings: they read the `documentation.json` beside them in the installed
 `magma`, and the tokens of the `design-tokens` and `styles` it depends on. To check against
 other files, set their paths under `settings.magma` in the ESLint configuration (relative to
-`root`, the project by default): `documentation`, `tokens`, `consumption`.
+`root`, the project by default): `documentation`, `tokens`, `consumption`. The Stylelint rules
+take `root` and `documentation` as secondary options:
+`'magma/no-internal-tokens': [true, { documentation: './documentation.json' }]`.

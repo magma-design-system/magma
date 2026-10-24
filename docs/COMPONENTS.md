@@ -58,7 +58,7 @@ Numbered list (`## 1.`, `## 2.`, ...) of correct usage recipes. Each entry:
 - One or two sentences on when/why to use this pattern.
 - One ` ```html ` (or ` ```css ` for styling patterns) code block.
 
-Order patterns from most-common to most-specialized. Include at least one styling-customization pattern showing the `--mds-*` CSS custom properties. Always reach for `label` props before slots when both are available.
+Order patterns from most-common to most-specialized. Include at least one styling-customization pattern showing the public `--mds-*` CSS custom properties (or, for a component without any, its parts and props). Always reach for `label` props before slots when both are available.
 
 ### `3. Antipattern.md`
 

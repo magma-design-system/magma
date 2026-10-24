@@ -222,7 +222,7 @@ Components that carry visual weight expose both a `variant` (color role) and a `
 
 ### 3.5 CSS custom properties per component
 
-Every component exposes scoped CSS custom properties for controlled overrides (e.g. `--mds-button-radius`, `--mds-button-background`). These are the **only supported way** to style components from the outside. Never write CSS that targets internal shadow DOM nodes directly.
+Every component exposes scoped CSS custom properties for controlled overrides (e.g. `--mds-button-radius`, `--mds-button-background`). Its **public** ones (the `@prop` whose description starts with `Public.`) are the **only supported way** to style components from the outside, with the documented parts; the others are internal and may change in any release (#1095). The mark reaches `documentation.json` (`visibility`, `static`), `magma.api.txt` (`INTERNAL`, `[static]`), the shipped `AGENTS.md` (public ones only), `check.usage-docs` and the consumer lint (`magma/no-internal-tokens`): see `projects/stencil/SPEC.md`. Never write CSS that targets internal shadow DOM nodes directly.
 
 ---
 

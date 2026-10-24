@@ -183,15 +183,21 @@ Maggioli):
 
 A component's styling API is what its `AGENTS.md` documents:
 
-1. **CSS custom properties** ("CSS custom properties" table), named
+1. **Public CSS custom properties** ("CSS custom properties" table), named
    `--mds-<component>-<prop>`. The first choice: set them on the host element or on a
-   parent selector.
+   parent selector. The table lists only the public ones, the ones the component promises;
+   its other custom properties are internal (`"visibility": "internal"` in
+   `documentation.json`): they may change or go in any release, so never set or read
+   them, and the lint reports them (`magma/no-internal-tokens`, [`lint.md`](lint.md)). A
+   component with no public custom property is styled with its props, its parts and the
+   roles around it. A public one marked **Static** takes a value of its own, not a role
+   (the colours of an illustration, a cover colour from a catalogue record).
 2. **Shadow parts** ("Parts" table), for a deep customisation the custom properties do
    not cover. Only the documented part names: they are public API, the rest of the
    shadow tree is not.
 
-Never reach past that: undocumented parts, internal class names, `>>>` or `/deep/`
-break on any release.
+Never reach past that: internal custom properties, undocumented parts, internal class
+names, `>>>` or `/deep/` break on any release.
 
 ```css
 /* CORRECT */
