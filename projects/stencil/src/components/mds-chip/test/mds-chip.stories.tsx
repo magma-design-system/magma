@@ -6,7 +6,8 @@ import { toneMinimalVariantDictionary } from '@type/tone';
 import { useEffect } from 'react';
 
 export default {
-  title: 'UI / Chip',
+  title: 'UI / Tags / Chip',
+  id: 'ui-chip',
   argTypes: {
     clickable: {
       type: { name: 'boolean' },

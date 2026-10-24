@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { argTypes, URLs } from '../meta/storybook';
 
 export default {
-  title: 'UI / Image',
+  title: 'UI / Content / Image',
+  id: 'ui-image',
   argTypes,
 };
 

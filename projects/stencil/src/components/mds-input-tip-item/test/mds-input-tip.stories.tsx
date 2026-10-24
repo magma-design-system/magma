@@ -2,7 +2,8 @@ import { inputTipItemVariantDictionary } from '../meta/dictionary';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'Form / Input Tip / Item',
+  title: 'UI / Forms / Input / Input Tip / Item',
+  id: 'form-input-tip-item',
   argTypes: {
     expanded: {
       type: { name: 'boolean' },

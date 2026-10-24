@@ -3,7 +3,8 @@ import { buttonSizeDictionary, buttonIconPositionDictionary } from '@type/button
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Tab / Tab Item',
+  title: 'UI / Navigation / Tab / Tab Item',
+  id: 'ui-tab-tab-item',
   argTypes: {
     disabled: {
       type: { name: 'boolean' },

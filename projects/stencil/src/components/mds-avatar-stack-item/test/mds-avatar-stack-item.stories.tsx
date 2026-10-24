@@ -3,7 +3,8 @@ import { themeFullVariantAvatarDictionary } from '@type/variant';
 import { toneMinimalVariantDictionary } from '@type/tone';
 
 export default {
-  title: 'UI / Avatar stack / Item',
+  title: 'UI / Data / Avatar stack / Item',
+  id: 'ui-avatar-stack-item',
   argTypes: {
     count: {
       type: { name: 'number' },

@@ -6,7 +6,8 @@ import {
 import { typographyInfoDictionary, typographyVariationsDictionary } from '@type/typography';
 
 export default {
-  title: 'UI / Bibliography',
+  title: 'UI / Content / Bibliography',
+  id: 'ui-bibliography',
   argTypes: {
     author: {
       type: { name: 'string' },

@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { URLs } from '../../mds-img/meta/storybook';
 
 export default {
-  title: 'Layout / Card',
+  title: 'UI / Structure / Card',
+  id: 'layout-card',
   argTypes: {
     'disable-auto-grid': {
       type: { name: 'boolean' },

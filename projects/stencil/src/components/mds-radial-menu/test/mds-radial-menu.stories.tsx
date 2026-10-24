@@ -9,7 +9,8 @@ import { directionDictionary } from '../meta/dictionary';
 import { useState } from 'react';
 
 export default {
-  title: 'UI / Radial Menu',
+  title: 'UI / Actions / Radial Menu',
+  id: 'ui-radial-menu',
   argTypes: {
     'angle-start': {
       type: { name: 'number' },

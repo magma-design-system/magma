@@ -8,7 +8,8 @@ const URLs = ['https://www.typeform.com/', 'http://azumbrunnen.me/'];
 const urlPage = `${location.origin}/iframe.html?id=common-tests--example-page&viewMode=story`;
 
 export default {
-  title: 'UI / URL View',
+  title: 'UI / Content / URL View',
+  id: 'ui-url-view',
   argTypes: {
     icon: {
       type: { name: 'string' },

@@ -94,6 +94,8 @@ A component gets a category when it works on its own, even if it usually sits in
 
 Stencil passes both tags to `docsTags` in `dist/documentation.json`, where the docs site reads them to group its Components navigation and to show each part beside its compound. `scripts/sync-agent-docs.ts` groups the shipped `agents/components.md` catalogue by them and **fails the build** when a component has neither tag or both, a category outside the table, or a parent that is not a component or never leads to one with a category. The list lives in `COMPONENT_CATEGORIES` ([`projects/stencil/scripts/agent-docs-lib.ts`](../projects/stencil/scripts/agent-docs-lib.ts)): add or rename a category there and in the table above together.
 
+Storybook groups its sidebar the same way: a component that stands alone sits at `UI / <Category title> / <Name>` (`UI / Forms / Input`), its parts and its other pages under it (`UI / Data / Table / Cell`). Each stories file and MDX page writes that title, and `scripts/story-titles-lib.spec.ts` fails `nx run stencil:test` when one is out of step with the tags: a component that changes category moves its pages with it, keeping their ids (the rule is in the Tests section of [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md#tests)).
+
 ## Component reference
 
 One row per component, grouped by [category](#categories), each part of a compound right after its compound. Find a component by intent (skim the right category, read the Intent column) or by HTML analogue (grep the Native analogue column when you'd otherwise reach for a native element).

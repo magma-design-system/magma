@@ -4,7 +4,8 @@ import { KeyboardKeyName } from '@type/keyboard';
 import keyboardKeys from '@meta/keyboard/keys.json';
 
 export default {
-  title: 'UI / Keyboard',
+  title: 'UI / Tags / Keyboard',
+  id: 'ui-keyboard',
   argTypes: {
     try: {
       type: { name: 'boolean' },

@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { iconsDictionary, mggIconsDictionary, svgIconsDictionary } from '@type/icon';
 
 export default {
-  title: 'UI / KPI / KPI Item',
+  title: 'UI / Data / KPI / KPI Item',
+  id: 'ui-kpi-kpi-item',
   argTypes: {
     description: {
       type: { name: 'string' },

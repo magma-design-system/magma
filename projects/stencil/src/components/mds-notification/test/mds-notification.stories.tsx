@@ -2,7 +2,8 @@ import { strategyDictionary } from '../meta/dictionary';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Notification',
+  title: 'UI / Feedback / Notification',
+  id: 'ui-notification',
   argTypes: {
     strategy: {
       type: { name: 'string' },

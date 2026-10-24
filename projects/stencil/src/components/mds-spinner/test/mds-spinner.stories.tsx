@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Spinner',
+  title: 'UI / Feedback / Spinner',
+  id: 'ui-spinner',
   argTypes: {
     running: {
       type: { name: 'boolean' },

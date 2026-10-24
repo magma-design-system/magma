@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { sizesDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'UI / Avatar stack',
+  title: 'UI / Data / Avatar stack',
+  id: 'ui-avatar-stack',
   argTypes: {
     size: {
       type: { name: 'string' },

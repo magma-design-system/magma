@@ -5,7 +5,8 @@ import { filesList, namedFilesList } from '@fixture/filenames';
 const extensionsList = Object.keys(fileExtensionsDictionary).sort();
 
 export default {
-  title: 'UI / File',
+  title: 'UI / Content / File',
+  id: 'ui-file',
   argTypes: {
     description: {
       type: { name: 'string' },

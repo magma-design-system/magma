@@ -4,7 +4,8 @@ import { themeFullVariantDictionary } from '@type/variant';
 import { toneSmartVariantDictionary } from '@type/tone';
 
 export default {
-  title: 'UI / Badge',
+  title: 'UI / Tags / Badge',
+  id: 'ui-badge',
   argTypes: {
     label: {
       type: { name: 'string' },

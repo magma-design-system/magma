@@ -8,7 +8,8 @@ import {
 } from '../meta/dictionary';
 
 export default {
-  title: 'UI / Modal',
+  title: 'UI / Overlays / Modal',
+  id: 'ui-modal',
   argTypes: {
     animation: {
       control: { type: 'select' },

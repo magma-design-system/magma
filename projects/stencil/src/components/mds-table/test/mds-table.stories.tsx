@@ -5,7 +5,8 @@ import { MdsTableHeaderCellSortEventDetail } from '@component/mds-table-header-c
 import { MdsPaginatorEventDetail } from '@component/mds-paginator/meta/event-detail';
 
 export default {
-  title: 'Layout / Table',
+  title: 'UI / Data / Table',
+  id: 'layout-table',
   argTypes: {
     interactive: {
       type: { name: 'boolean' },

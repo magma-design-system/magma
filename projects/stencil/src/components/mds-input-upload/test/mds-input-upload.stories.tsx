@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { attachmentSortDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'Form / Input Upload',
+  title: 'UI / Forms / Input Upload',
+  id: 'form-input-upload',
   argTypes: {
     accept: {
       type: { name: 'string' },

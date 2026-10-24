@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'Form / Input Date Range',
+  title: 'UI / Forms / Input Date Range',
+  id: 'form-input-date-range',
   argTypes: {
     delay: {
       type: { name: 'number' },

@@ -3,7 +3,8 @@ import { iconsDictionary } from '@type/icon';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / List / List Item',
+  title: 'UI / Data / List / List Item',
+  id: 'ui-list-list-item',
   argTypes: {
     icon: {
       type: { name: 'string', required: true },

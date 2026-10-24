@@ -2,7 +2,8 @@ import { typographyReadDictionary } from '@type/typography';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Accordion Timer / Accordion Timer Item',
+  title: 'UI / Structure / Accordion Timer / Accordion Timer Item',
+  id: 'ui-accordion-timer-accordion-timer-item',
   argTypes: {
     description: {
       type: { name: 'string' },

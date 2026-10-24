@@ -4,7 +4,8 @@ import { iconsDictionary } from '@type/icon';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'Form / Switch',
+  title: 'UI / Forms / Switch',
+  id: 'form-switch',
   argTypes: {
     autofocus: {
       type: { name: 'boolean' },

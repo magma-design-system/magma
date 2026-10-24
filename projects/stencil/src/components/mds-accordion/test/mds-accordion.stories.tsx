@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Accordion',
+  title: 'UI / Structure / Accordion',
+  id: 'ui-accordion',
   argTypes: {
     'disable-close': {
       name: 'disableClose',

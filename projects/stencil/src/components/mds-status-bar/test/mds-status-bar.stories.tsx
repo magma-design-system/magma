@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { statusBarPositionDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'UI / Status bar',
+  title: 'UI / Actions / Status bar',
+  id: 'ui-status-bar',
   argTypes: {
     description: {
       type: { name: 'string' },

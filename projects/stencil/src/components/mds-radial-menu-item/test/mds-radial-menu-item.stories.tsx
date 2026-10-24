@@ -3,7 +3,8 @@ import { iconsDictionary } from '@type/icon';
 import { buttonVariantDictionary, buttonToneVariantDictionary } from '@type/button';
 
 export default {
-  title: 'UI / Radial Menu / Radial Menu Item',
+  title: 'UI / Actions / Radial Menu / Radial Menu Item',
+  id: 'ui-radial-menu-radial-menu-item',
   argTypes: {
     tooltip: {
       type: { name: 'string' },

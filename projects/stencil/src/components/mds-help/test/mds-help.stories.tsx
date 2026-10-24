@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { iconsDictionary, mggIconsDictionary } from '@type/icon';
 
 export default {
-  title: 'UI / Help',
+  title: 'UI / Overlays / Help',
+  id: 'ui-help',
   argTypes: {
     icon: {
       type: { name: 'string' },

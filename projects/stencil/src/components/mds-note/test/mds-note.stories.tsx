@@ -2,7 +2,8 @@ import { themeLabelVariantDictionary } from '@type/variant';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Note',
+  title: 'UI / Content / Note',
+  id: 'ui-note',
   argTypes: {
     deletable: {
       type: { name: 'boolean' },

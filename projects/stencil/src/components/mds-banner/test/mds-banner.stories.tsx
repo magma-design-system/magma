@@ -4,7 +4,8 @@ import { themeVariantDictionary } from '@type/variant';
 import { toneMinimalBoxVariantDictionary } from '@type/tone';
 
 export default {
-  title: 'UI / Banner',
+  title: 'UI / Feedback / Banner',
+  id: 'ui-banner',
   argTypes: {
     'hide-cockade': {
       type: { name: 'boolean' },

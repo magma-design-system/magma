@@ -3,7 +3,8 @@ import { UsageType } from '../meta/types';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Usage',
+  title: 'UI / Content / Usage',
+  id: 'ui-usage',
   argTypes: {
     alias: {
       description: 'Specifies the alias of the usage phrase on the top of the component.',

@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 
 export default {
-  title: 'Form / Input Date',
+  title: 'UI / Forms / Input Date',
+  id: 'form-input-date',
   argTypes: {
     disabled: {
       type: { name: 'boolean' },

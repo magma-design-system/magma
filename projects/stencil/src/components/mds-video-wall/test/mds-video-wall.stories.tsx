@@ -2,7 +2,8 @@ import { noiseDictionary, preloadDictionary } from '../meta/dictionary';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Video wall',
+  title: 'UI / Content / Video wall',
+  id: 'ui-video-wall',
   argTypes: {
     autoplay: {
       type: { name: 'boolean' },

@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Breadcrumb / Breadcrumb Item',
+  title: 'UI / Navigation / Breadcrumb / Breadcrumb Item',
+  id: 'ui-breadcrumb-breadcrumb-item',
   argTypes: {
     selected: {
       type: { name: 'boolean', required: false },

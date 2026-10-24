@@ -5,7 +5,8 @@ import { typographyTechnicalDictionary } from '@type/typography';
 import { progressBarSizeDictionary } from '@type/progress';
 
 export default {
-  title: 'UI / Progress',
+  title: 'UI / Feedback / Progress',
+  id: 'ui-progress',
   argTypes: {
     direction: {
       type: { name: 'string', required: false },

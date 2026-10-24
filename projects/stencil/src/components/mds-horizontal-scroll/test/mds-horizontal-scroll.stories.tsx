@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { snapDictionary, viewportDictionary, navigationDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'Layout / Horizontal Scroll',
+  title: 'UI / Structure / Horizontal Scroll',
+  id: 'layout-horizontal-scroll',
   argTypes: {
     controls: {
       type: { name: 'string' },

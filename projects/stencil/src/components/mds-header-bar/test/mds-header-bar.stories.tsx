@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { menuDictionary, navDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'UI / Header / Header bar',
+  title: 'UI / Structure / Header / Header bar',
+  id: 'ui-header-header-bar',
   argTypes: {
     menu: {
       description: 'Sets the visibility type of the hamburger menu',

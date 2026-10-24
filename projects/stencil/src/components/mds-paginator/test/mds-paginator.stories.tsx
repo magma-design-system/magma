@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Paginator',
+  title: 'UI / Navigation / Paginator',
+  id: 'ui-paginator',
   argTypes: {
     pages: {
       type: { name: 'number', required: false },

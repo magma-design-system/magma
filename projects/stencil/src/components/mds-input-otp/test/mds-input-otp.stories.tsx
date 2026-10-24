@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { expect } from 'storybook/test';
 
 export default {
-  title: 'Form / OTP',
+  title: 'UI / Forms / OTP',
+  id: 'form-otp',
   argTypes: {
     length: {
       type: { name: 'number' },

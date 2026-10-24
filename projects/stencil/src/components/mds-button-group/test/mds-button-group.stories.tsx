@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Button group',
+  title: 'UI / Actions / Button group',
+  id: 'ui-button-group',
 };
 
 const Template = (args) => (

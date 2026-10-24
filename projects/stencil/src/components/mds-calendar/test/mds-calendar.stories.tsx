@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Calendar',
+  title: 'UI / Forms / Calendar',
+  id: 'ui-calendar',
   argTypes: {
     'start-date': {
       control: 'select',

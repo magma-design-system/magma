@@ -2,7 +2,8 @@ import { inputTipPositionDictionary } from '../meta/dictionary';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'Form / Input Tip',
+  title: 'UI / Forms / Input / Input Tip',
+  id: 'form-input-tip',
   argTypes: {
     active: {
       type: { name: 'boolean' },

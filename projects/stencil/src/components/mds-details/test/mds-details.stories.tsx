@@ -1,7 +1,8 @@
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Details',
+  title: 'UI / Structure / Details',
+  id: 'ui-details',
   argTypes: {
     opened: {
       type: { name: 'boolean' },

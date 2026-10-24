@@ -16,7 +16,8 @@ import { expect, fn, waitFor } from 'storybook/test';
 import { textAnimateDictionary } from '@component/mds-text/meta/dictionary';
 
 export default {
-  title: 'UI / Button',
+  title: 'UI / Actions / Button',
+  id: 'ui-button',
   argTypes: {
     'auto-focus': {
       type: { name: 'boolean' },

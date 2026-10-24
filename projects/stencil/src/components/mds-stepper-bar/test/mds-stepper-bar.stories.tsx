@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { stepperBarNavigationDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'UI / Stepper Bar',
+  title: 'UI / Navigation / Stepper Bar',
+  id: 'ui-stepper-bar',
   argTypes: {
     'items-done': {
       type: { name: 'number' },

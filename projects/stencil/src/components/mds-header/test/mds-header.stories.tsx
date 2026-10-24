@@ -3,7 +3,8 @@ import { menuDictionary, navDictionary } from '../../mds-header-bar/meta/diction
 import { appearanceDictionary, appearanceSetDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'UI / Header',
+  title: 'UI / Structure / Header',
+  id: 'ui-header',
   argTypes: {
     appearance: {
       description: 'Sets the appearance of the header bar element',

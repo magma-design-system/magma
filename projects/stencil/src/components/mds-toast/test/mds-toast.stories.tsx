@@ -5,7 +5,8 @@ import { h } from '@stencil/core';
 import { toastPositionDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'UI / Toast',
+  title: 'UI / Feedback / Toast',
+  id: 'ui-toast',
   argTypes: {
     deletable: {
       description: 'Shows a button that closes the toast',

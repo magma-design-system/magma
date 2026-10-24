@@ -3,7 +3,8 @@ import { iconsDictionary } from '@type/icon';
 import { mentionSizeDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'UI / Mention',
+  title: 'UI / Tags / Mention',
+  id: 'ui-mention',
   argTypes: {
     deletable: {
       type: { name: 'boolean' },

@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { keyboardKeyNameDictionary } from '@type/keyboard';
 
 export default {
-  title: 'UI / Keyboard / Key',
+  title: 'UI / Tags / Keyboard / Key',
+  id: 'ui-keyboard-key',
   argTypes: {
     name: {
       type: { name: 'string' },

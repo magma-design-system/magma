@@ -4,7 +4,8 @@ import { treeIconDictionary, treeAppearanceDictionary, treeActionsDictionary } f
 import { truncateDictionary } from '@type/text';
 
 export default {
-  title: 'UI / Tree',
+  title: 'UI / Navigation / Tree',
+  id: 'ui-tree',
   argTypes: {
     actions: {
       type: { name: 'string' },

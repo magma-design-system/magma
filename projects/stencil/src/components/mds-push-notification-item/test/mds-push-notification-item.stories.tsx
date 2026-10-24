@@ -18,7 +18,8 @@ const getDatetime = (): string => {
 };
 
 export default {
-  title: 'UI / Push Notification / Push Notification Item',
+  title: 'UI / Feedback / Push Notification / Push Notification Item',
+  id: 'ui-push-notification-push-notification-item',
   argTypes: {
     datetime: {
       type: { name: 'string' },

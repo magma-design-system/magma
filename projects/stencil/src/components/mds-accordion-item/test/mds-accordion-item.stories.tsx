@@ -2,7 +2,8 @@ import { h } from '@stencil/core';
 import { typographyReadDictionary } from '@type/typography';
 
 export default {
-  title: 'UI / Accordion / Accordion Item',
+  title: 'UI / Structure / Accordion / Accordion Item',
+  id: 'ui-accordion-accordion-item',
   argTypes: {
     label: {
       type: { name: 'string' },

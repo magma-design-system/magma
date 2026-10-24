@@ -3,7 +3,8 @@ import { h } from '@stencil/core';
 import { tabSizeDictionary } from '@type/button';
 
 export default {
-  title: 'UI / Preferences',
+  title: 'UI / Preferences / Pref',
+  id: 'ui-preferences',
   argTypes: {
     controller: {
       type: { name: 'boolean' },

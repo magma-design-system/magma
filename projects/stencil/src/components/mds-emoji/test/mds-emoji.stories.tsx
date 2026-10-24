@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { nameDictionary } from '../meta/dictionary';
 
 export default {
-  title: 'UI / Emoji',
+  title: 'UI / Content / Emoji',
+  id: 'ui-emoji',
   argTypes: {
     name: {
       type: { name: 'string' },

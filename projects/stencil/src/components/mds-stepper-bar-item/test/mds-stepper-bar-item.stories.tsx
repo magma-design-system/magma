@@ -3,7 +3,8 @@ import { typographyInfoDictionary } from '@type/typography';
 import { h } from '@stencil/core';
 
 export default {
-  title: 'UI / Stepper Bar / Stepper Bar Item',
+  title: 'UI / Navigation / Stepper Bar / Stepper Bar Item',
+  id: 'ui-stepper-bar-stepper-bar-item',
   argTypes: {
     done: {
       type: { name: 'boolean' },
