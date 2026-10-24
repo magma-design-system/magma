@@ -117,12 +117,15 @@ The full compound pattern: `<mds-price-table-list>` with header, items, a price,
 
 #### Styling Customization
 
-Override the icon colors only through the documented `--mds-price-table-list-item-*` CSS custom properties. Name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast keep working. `--mds-price-table-list-item-supported-icon-color-hover` colors the supported icon while the pointer is over the item.
+`<mds-price-table-list-item>` has no public CSS custom property: the supported and unsupported icons take their colors from the component, the supported one also while the pointer is over the item. For a targeted override, style the documented `::part(icon)`, with the reflected `supported` attribute to tell the two apart. Name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast keep working.
 
 ```css
-.promo-column mds-price-table-list-item {
-  --mds-price-table-list-item-supported-icon-color: rgb(var(--magma-accent-fg));
-  --mds-price-table-list-item-unsupported-icon-color: rgb(var(--magma-text-subtle));
+.promo-column mds-price-table-list-item[supported]::part(icon) {
+  fill: rgb(var(--magma-accent-fg));
+}
+
+.promo-column mds-price-table-list-item:not([supported])::part(icon) {
+  fill: rgb(var(--magma-text-subtle));
 }
 ```
 
@@ -173,7 +176,7 @@ The component auto-assigns itself to the parent's `item` slot and is designed ex
 
 #### Do Not Pierce the Shadow DOM to Restyle the Icon
 
-The only supported customization surface for the icon is the three `--mds-price-table-list-item-*` CSS custom properties and the documented `::part(icon)` shadow part. Targeting internal selectors via `>>>`, `/deep/`, or undocumented class names couples your styles to the implementation and will break on minor releases.
+`<mds-price-table-list-item>` has no public CSS custom property: the only supported customization surface for the icon is the documented `::part(icon)` shadow part. Targeting internal selectors via `>>>`, `/deep/`, or undocumented class names couples your styles to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -182,10 +185,6 @@ mds-price-table-list-item >>> .icon {
 }
 
 /* CORRECT */
-mds-price-table-list-item {
-  --mds-price-table-list-item-supported-icon-color: rgb(var(--magma-success-fg));
-}
-/* or, for targeted SVG fill overrides: */
 mds-price-table-list-item::part(icon) {
   fill: rgb(var(--magma-success-fg));
 }

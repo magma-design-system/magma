@@ -189,13 +189,11 @@ Set `variant` to one of the status values (`error`, `success`, `warning`, `info`
 
 #### Styling Customization
 
-Customize the component only through its documented `--mds-input-select-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and high-contrast modes continue to work correctly. `--mds-input-select-variant-color-rgb` takes a bare RGB triplet (`var(--magma-<role>)`, no `rgb()`); the other properties take a color (`rgb(var(--magma-<role>))`). `--mds-input-select-ring` is the ring at rest: on hover and focus the select draws its own 3px ring in the variant color, so the focus stays visible whatever the ring at rest, in dark mode and with more contrast too; change its color through `--mds-input-select-variant-color-rgb`.
+Customize the component only through its public `--mds-input-select-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and high-contrast modes continue to work correctly. `--mds-input-select-variant-color-rgb` takes a bare RGB triplet (`var(--magma-<role>)`, no `rgb()`); `--mds-input-select-ring` and `--mds-input-select-shadow` take a box-shadow, its color written as `rgb(var(--magma-<role>))`. `--mds-input-select-ring` is the ring at rest: on hover and focus the select draws its own 3px ring in the variant color, so the focus stays visible whatever the ring at rest, in dark mode and with more contrast too; change its color through `--mds-input-select-variant-color-rgb`.
 
 ```css
 .sidebar-filter mds-input-select {
   --mds-input-select-variant-color-rgb: var(--magma-accent-emphasis);
-  --mds-input-select-arrow-icon-hover-color: rgb(var(--magma-accent-fg));
-  --mds-input-select-arrow-icon-hover-background-color: rgb(var(--magma-accent-surface-hover));
   --mds-input-select-ring: 0 0 0 2px rgb(var(--magma-accent-emphasis) / 0.8);
 }
 ```
@@ -265,7 +263,7 @@ The default slot is reserved for `<option>` and `<optgroup>` elements. The compo
 
 #### Do Not Pierce the Shadow DOM to Style the Inner `<select>`
 
-The supported customization surface is the documented `--mds-input-select-*` CSS custom properties and the two shadow parts (`select`, `tip-top`). Targeting internal elements with `>>>` or undocumented selectors couples your code to the implementation and breaks on minor releases.
+The supported customization surface is the public `--mds-input-select-*` CSS custom properties and the two shadow parts (`select`, `tip-top`). Targeting internal elements with `>>>` or undocumented selectors couples your code to the implementation and breaks on minor releases.
 
 ```css
 /* INCORRECT */
@@ -385,17 +383,17 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                                   | Description                                                                                  |
-| ------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
-| `--mds-input-select-arrow-icon-background-color`       | Background color behind the arrow icon                                                       |
-| `--mds-input-select-arrow-icon-blur-background-color`  | Transparent background used for blurred states of the arrow icon                             |
-| `--mds-input-select-arrow-icon-blur-color`             | Color applied to the arrow icon in blurred states                                            |
-| `--mds-input-select-arrow-icon-color`                  | Default arrow icon color                                                                     |
-| `--mds-input-select-arrow-icon-hover-background-color` | Background color of the arrow icon when hovered                                              |
-| `--mds-input-select-arrow-icon-hover-color`            | Color of the arrow icon when hovered                                                         |
-| `--mds-input-select-ring`                              | Ring applied around the select at rest; hover and focus draw a 3px ring in the variant color |
-| `--mds-input-select-shadow`                            | Shadow applied to the select component                                                       |
-| `--mds-input-select-variant-color-rgb`                 | Base color used to derive all select component visual states                                 |
+| Name                                                   | Description                                                                                          |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `--mds-input-select-arrow-icon-background-color`       | Background color behind the arrow icon                                                               |
+| `--mds-input-select-arrow-icon-blur-background-color`  | Transparent background used for blurred states of the arrow icon                                     |
+| `--mds-input-select-arrow-icon-blur-color`             | Color applied to the arrow icon in blurred states                                                    |
+| `--mds-input-select-arrow-icon-color`                  | Default arrow icon color                                                                             |
+| `--mds-input-select-arrow-icon-hover-background-color` | Background color of the arrow icon when hovered                                                      |
+| `--mds-input-select-arrow-icon-hover-color`            | Color of the arrow icon when hovered                                                                 |
+| `--mds-input-select-ring`                              | Public. Ring applied around the select at rest; hover and focus draw a 3px ring in the variant color |
+| `--mds-input-select-shadow`                            | Public. Shadow applied to the select component                                                       |
+| `--mds-input-select-variant-color-rgb`                 | Public. Base color used to derive all select component visual states                                 |
 
 
 ## Dependencies

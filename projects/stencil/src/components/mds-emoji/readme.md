@@ -15,7 +15,7 @@ The `<mds-emoji>` web component renders one of the Magma Design System's animate
 
 #### Semantic Behavior
 
-- **Mouse following**: When started, the emoji tracks the pointer with a 3D head rotation and parallax on each facial part; it is off by default and only reacts after `startFollowMouse()` is called. It turns toward the pointer: the direction is the direction of the pointer from the centre of the emoji, and the turn grows with the distance until the pointer is half the short side of the viewport away, the same at every size of the emoji. An emoji placed in a slot its host renders later, or moved in the page, follows the pointer at the speed of its `--mds-emoji-expression-follow-mouse-*-duration` all the same. When the user prefers reduced motion, neither the pointer tracking nor the blinking moves the face, and the expressions (`agree`, `smile`, `disagree`, `startThinking`) show their face - a smile, a frown, the thinking hand - without moving the head or the features, for as long as they would have lasted.
+- **Mouse following**: When started, the emoji tracks the pointer with a 3D head rotation and parallax on each facial part; it is off by default and only reacts after `startFollowMouse()` is called. It turns toward the pointer: the direction is the direction of the pointer from the centre of the emoji, and the turn grows with the distance until the pointer is half the short side of the viewport away, the same at every size of the emoji. An emoji placed in a slot its host renders later, or moved in the page, follows the pointer at its usual speed all the same. When the user prefers reduced motion, neither the pointer tracking nor the blinking moves the face, and the expressions (`agree`, `smile`, `disagree`, `startThinking`) show their face - a smile, a frown, the thinking hand - without moving the head or the features, for as long as they would have lasted.
 - **Single-animation lock**: Only one expression plays at a time - `agree`, `smile`, `disagree`, and `startThinking` take the face over: each stops whatever is playing (a thinking pose included) and starts from the neutral face, so a later call cuts an earlier one short. `startThinking` is a no-op only while the emoji is already thinking.
 - **Promise-based methods**: Every expressive action returns a `Promise<void>` that resolves when its animation finishes, letting callers await one expression before chaining the next.
 - **State restoration**: An expression pauses mouse-following and, when it completes, restarts it if it was on: `startFollowMouse()` called and not stopped by a later `stopFollowMouse()`.
@@ -27,7 +27,7 @@ The only public prop is `name`, which selects the mascot identity. It accepts `'
 
 #### Other behavioral props
 
-There are no variant, tone, or size props. The expression is configured imperatively through method calls (`agree`, `smile`, `disagree`, `startThinking` / `stopThinking`, `startBlinking` / `stopBlinking`, `startFollowMouse` / `stopFollowMouse`), and the timing and reach of those animations are tuned through CSS custom properties - `--mds-emoji-expression-max-rotation`, the `--mds-emoji-expression-follow-mouse-*-duration` pair, the per-part `--mds-emoji-offset-*` values, and the per-mascot color tokens - rather than through attributes.
+There are no variant, tone, or size props. The expression is configured imperatively through method calls (`agree`, `smile`, `disagree`, `startThinking` / `stopThinking`, `startBlinking` / `stopBlinking`, `startFollowMouse` / `stopFollowMouse`), and the reach of the mouse following is tuned through the public `--mds-emoji-expression-max-rotation` CSS custom property, and Simi's skin tones through `--mds-emoji-simi-skin`, `--mds-emoji-simi-skin-dark` and `--mds-emoji-simi-skin-light`, rather than through attributes.
 
 
 ### 2. Pattern
@@ -188,60 +188,42 @@ Because every method returns a `Promise<void>`, you can `await` one before trigg
 </script>
 ```
 
-#### CSS Customization - Animation Timing
+#### CSS Customization - Mouse-Follow Rotation
 
-Tune the mouse-follow responsiveness by overriding the documented `--mds-emoji-expression-*` custom properties on the host or a parent selector. The initial values are reasonable for most placements; reduce them for snappier feedback.
+Tune how far the head turns toward the pointer with the public `--mds-emoji-expression-max-rotation` custom property on the host or a parent selector, always with an angle unit. The initial value of `16deg` is reasonable for most placements; reduce it for a subtler movement. The follow-mouse durations are not public.
 
 ```css
 .mascot-container mds-emoji {
-  --mds-emoji-expression-follow-mouse-head-duration: 150ms;
-  --mds-emoji-expression-follow-mouse-traits-duration: 100ms;
   --mds-emoji-expression-max-rotation: 10deg;
 }
 ```
 
 #### CSS Customization - Mascot Colors
 
-Override per-mascot color tokens to adapt the character to a custom brand palette. Use the semantic color roles (`rgb(var(--magma-<role>))`) so dark mode and named themes keep working; Simi's skin tones are data, so hex values are fine there.
+Override Simi's public skin tones to adapt the character to a custom palette: Simi's skin tones are data, so hex values are fine there. Simi's other colors are not public, and neither are Mia's: they follow the AI accent roles of the theme, so dark mode and named themes keep working.
 
 ```css
-/* Theming Mia for a custom brand */
-mds-emoji[name='mia'] {
-  --mds-emoji-mia-head-color: rgb(var(--magma-accent-surface-hover));
-  --mds-emoji-mia-eyes-color: rgb(var(--magma-accent-emphasis-hover));
-  --mds-emoji-mia-mouth-color: rgb(var(--magma-accent-emphasis));
-  --mds-emoji-mia-hands-color: rgb(var(--magma-accent-emphasis));
-}
-
 /* Theming Simi: a skin tone is the palette of an illustration, not a role */
 mds-emoji[name='simi'] {
-  /* stylelint-disable magma/no-raw-color -- the palette of an illustration */
   --mds-emoji-simi-skin: #f5c8a0;
   --mds-emoji-simi-skin-dark: #c8895e;
   --mds-emoji-simi-skin-light: #fdebd8;
-  /* stylelint-enable magma/no-raw-color */
 }
 ```
 
 #### CSS Customization - Parallax Offsets
 
-Increase or decrease the per-layer offset values to control how pronounced the parallax depth effect is when the emoji follows the mouse. Set all offsets to `0` to flatten the effect entirely.
+The per-layer parallax offsets and the perspective are not public: the component tunes the depth effect of each mascot. To make the movement subtler or more pronounced, set `--mds-emoji-expression-max-rotation` (see above); to flatten the effect entirely, leave mouse following off (the default) or stop it with `stopFollowMouse()`.
 
 ```css
-/* Subtle parallax - small offsets for compact placements */
+/* Subtle movement for compact placements */
 .compact mds-emoji {
-  --mds-emoji-offset-eyes: 0.5px;
-  --mds-emoji-offset-mouth: 0.5px;
-  --mds-emoji-offset-eyebrows: 4px;
-  --mds-emoji-offset-head: 0;
+  --mds-emoji-expression-max-rotation: 6deg;
 }
 
-/* Dramatic parallax - large offsets for hero sections */
+/* Pronounced movement for hero sections */
 .hero mds-emoji {
-  --mds-emoji-offset-eyes: 3px;
-  --mds-emoji-offset-mouth: 3px;
-  --mds-emoji-offset-eyebrows: 20px;
-  --mds-emoji-perspective: 250px;
+  --mds-emoji-expression-max-rotation: 24deg;
 }
 ```
 
@@ -338,24 +320,6 @@ mds-emoji >>> #eyes-default {
   const emoji = document.querySelector('mds-emoji');
   emoji.startBlinking(); // let the component own eye animations
 </script>
-```
-
-#### Do Not Set Per-Layer Offsets with Unitless Numbers
-
-The `--mds-emoji-offset-*` custom properties are declared as `<length>` values. Unitless numbers are not valid lengths and will be ignored, leaving the parallax effect at the CSS `@property` initial value.
-
-```css
-/* INCORRECT - unitless values are invalid <length> */
-mds-emoji {
-  --mds-emoji-offset-eyes: 3;
-  --mds-emoji-offset-mouth: 2;
-}
-
-/* CORRECT - always supply a length unit */
-mds-emoji {
-  --mds-emoji-offset-eyes: 3px;
-  --mds-emoji-offset-mouth: 2px;
-}
 ```
 
 #### Do Not Set `--mds-emoji-expression-max-rotation` Without an Angle Unit
@@ -500,7 +464,7 @@ Type: `Promise<void>`
 | ----------------------------------------------------- | ----------------------------------------------------------------- |
 | `--mds-emoji-expression-follow-mouse-head-duration`   | Sets the duration for the head to follow the mouse                |
 | `--mds-emoji-expression-follow-mouse-traits-duration` | Sets the duration for facial traits to follow the mouse           |
-| `--mds-emoji-expression-max-rotation`                 | Sets the maximum rotation angle for the emoji expression          |
+| `--mds-emoji-expression-max-rotation`                 | Public. Sets the maximum rotation angle for the emoji expression  |
 | `--mds-emoji-mia-eyes-color`                          | Sets the color of Mia's eyes                                      |
 | `--mds-emoji-mia-hands-color`                         | Sets the color of Mia's hands                                     |
 | `--mds-emoji-mia-head-color`                          | Sets the color of Mia's head                                      |
@@ -525,9 +489,9 @@ Type: `Promise<void>`
 | `--mds-emoji-simi-nose`                               | Sets the color of Simi's nose                                     |
 | `--mds-emoji-simi-nose-light`                         | Sets the light color of Simi's nose                               |
 | `--mds-emoji-simi-outline`                            | Sets the color of Simi's outline                                  |
-| `--mds-emoji-simi-skin`                               | Sets the base color of Simi's skin                                |
-| `--mds-emoji-simi-skin-dark`                          | Sets the dark shade of Simi's skin                                |
-| `--mds-emoji-simi-skin-light`                         | Sets the light shade of Simi's skin                               |
+| `--mds-emoji-simi-skin`                               | Public, static. Sets the base color of Simi's skin                |
+| `--mds-emoji-simi-skin-dark`                          | Public, static. Sets the dark shade of Simi's skin                |
+| `--mds-emoji-simi-skin-light`                         | Public, static. Sets the light shade of Simi's skin               |
 
 
 ----------------------------------------------

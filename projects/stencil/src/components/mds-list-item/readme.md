@@ -113,13 +113,13 @@ The items take the colour of their container. When a list is secondary informati
 </mds-list>
 ```
 
-#### Styling Customization via CSS Custom Property
+#### Adjusting the Icon Spacing
 
-Adjust the icon margin through the documented `--mds-list-item-icon-margin` CSS custom property. Set it on the host or a parent selector; use Magma spacing tokens for consistency.
+`<mds-list-item>` has no public CSS custom property: it aligns its icon to the text of its `typography` by itself. When a layout needs a different gap between icon and text, set it on the documented `::part(icon)`; use Magma spacing tokens for consistency.
 
 ```css
-.compact-list mds-list-item {
-  --mds-list-item-icon-margin: 0 calc(var(--spacing) * 100) 0 0;
+.compact-list mds-list-item::part(icon) {
+  margin-inline-end: calc(var(--spacing) * 100);
 }
 ```
 
@@ -214,7 +214,7 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 #### Do Not Pierce Shadow DOM to Style the Icon or Text
 
-The supported customization surface is `--mds-list-item-icon-margin` for layout and `::part(icon)` / `::part(text)` for the two documented shadow parts. Targeting internals via `>>>` or undocumented class names couples code to the implementation.
+`<mds-list-item>` has no public CSS custom property: the supported customization surface is `::part(icon)` / `::part(text)`, the two documented shadow parts. Targeting internals via `>>>` or undocumented class names couples code to the implementation.
 
 ```css
 /* INCORRECT */

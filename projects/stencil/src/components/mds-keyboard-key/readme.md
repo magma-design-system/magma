@@ -100,23 +100,12 @@ Add `try` to `<mds-keyboard>` to let users verify they can type the shortcut. Th
 
 #### Styling Customization via CSS Custom Properties
 
-Adjust the keycap appearance through the documented `--mds-keyboard-key-*` CSS custom properties. Set them on the host element or a parent selector.
+Adjust the keycap only through its public `--mds-keyboard-key-padding` CSS custom property. Set it on the host element or a parent selector; the press animation and the keycap depth come from the component, its text colour from the parent's public `--mds-keyboard-color`.
 
 ```css
 /* Increase padding for a larger keycap feel */
 .keycap-large mds-keyboard-key {
   --mds-keyboard-key-padding: calc(var(--spacing) * 300);
-}
-
-/* Slow down the press animation */
-.keycap-slow mds-keyboard-key {
-  --mds-keyboard-key-transition-duration: 600ms;
-}
-
-/* Deepen the bottom shadow for more three-dimensional depth */
-.keycap-deep mds-keyboard-key {
-  --mds-keyboard-key-illumination-dark-size: calc(var(--spacing) * 400);
-  --mds-keyboard-key-illumination-light-size: calc(var(--spacing) * 100);
 }
 ```
 
@@ -217,7 +206,7 @@ When `<mds-keyboard try>` is enabled, the parent owns `pressed` and sets it as t
 
 #### Customize via CSS Custom Properties, Not Shadow-Piercing Selectors
 
-The supported customization surface is the documented `--mds-keyboard-key-*` CSS custom properties. Piercing shadow DOM via `::part()` on undocumented internals, `>>>`, or class hacks couples your code to the implementation and will break on minor releases.
+The supported customization surface is the public `--mds-keyboard-key-padding` CSS custom property. Piercing shadow DOM via `::part()` on undocumented internals, `>>>`, or class hacks couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -228,7 +217,6 @@ mds-keyboard-key >>> .physical-key {
 /* CORRECT */
 mds-keyboard-key {
   --mds-keyboard-key-padding: calc(var(--spacing) * 300);
-  --mds-keyboard-key-transition-duration: 400ms;
 }
 ```
 
@@ -250,7 +238,7 @@ mds-keyboard-key {
 | `--mds-keyboard-key-illumination-dark-size`  | Set the size of the dark illumination of the keyboard key.  |
 | `--mds-keyboard-key-illumination-light`      | Set the light illumination of the keyboard key.             |
 | `--mds-keyboard-key-illumination-light-size` | Set the size of the light illumination of the keyboard key. |
-| `--mds-keyboard-key-padding`                 | Set the padding of the keyboard key.                        |
+| `--mds-keyboard-key-padding`                 | Public. Set the padding of the keyboard key.                |
 | `--mds-keyboard-key-transition-duration`     | Set the transition duration of the keyboard key.            |
 
 

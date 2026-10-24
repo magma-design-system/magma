@@ -146,15 +146,19 @@ The default slot accepts any HTML or Magma components. Use this to annotate a fu
 </mds-usage>
 ```
 
-#### CSS Custom Property Overrides
+#### Styling Customization
 
-Customize the container appearance through the three documented `--mds-usage-*` CSS custom properties. Set them on the host or a parent selector and use the semantic color roles via `rgb(var(--magma-<role>))` to keep dark mode working.
+`mds-usage` has no public CSS custom property: its border and header colours follow the `variant` (`do`, `dont`, `info`, `warn`). When an annotation needs other colours, style the documented `header`, `icon` and `label` parts, and use the semantic color roles via `rgb(var(--magma-<role>))` to keep dark mode working.
 
 ```css
-.docs-callout mds-usage {
-  --mds-usage-border-color: rgb(var(--magma-accent-ai-border));
-  --mds-usage-header-background: rgb(var(--magma-accent-ai-emphasis));
-  --mds-usage-header-color: rgb(var(--magma-accent-ai-on-emphasis));
+.docs-callout mds-usage::part(header) {
+  background-color: rgb(var(--magma-accent-ai-emphasis));
+}
+.docs-callout mds-usage::part(icon) {
+  fill: rgb(var(--magma-accent-ai-on-emphasis));
+}
+.docs-callout mds-usage::part(label) {
+  color: rgb(var(--magma-accent-ai-on-emphasis));
 }
 ```
 
@@ -227,7 +231,7 @@ The default slot is the body of the block. Placing a heading or label string the
 
 #### Do Not Pierce the Shadow DOM to Restyle the Header
 
-`::part(header)`, `::part(icon)`, and `::part(label)` are the only documented extension points for shadow internals. Targeting undocumented class names or using `>>>` couples code to implementation details that may change. For color overrides, use the documented `--mds-usage-*` CSS custom properties instead.
+`::part(header)`, `::part(icon)`, and `::part(label)` are the only documented extension points for shadow internals. Targeting undocumented class names or using `>>>` couples code to implementation details that may change. `mds-usage` has no public CSS custom property: for color overrides, pick the `variant` or style these parts instead.
 
 ```css
 /* INCORRECT */
@@ -236,9 +240,11 @@ mds-usage >>> .header {
 }
 
 /* CORRECT */
-mds-usage {
-  --mds-usage-header-background: rgb(var(--magma-accent-ai-emphasis));
-  --mds-usage-header-color: rgb(var(--magma-accent-ai-on-emphasis));
+mds-usage::part(header) {
+  background-color: rgb(var(--magma-accent-ai-emphasis));
+}
+mds-usage::part(label) {
+  color: rgb(var(--magma-accent-ai-on-emphasis));
 }
 ```
 

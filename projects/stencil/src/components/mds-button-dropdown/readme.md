@@ -400,9 +400,9 @@ mds-button-dropdown::part(dropdown) {
 
 ## CSS Custom Properties
 
-| Name                           | Description                             |
-| ------------------------------ | --------------------------------------- |
-| `--mds-button-dropdown-radius` | Sets the border-radius of the component |
+| Name                           | Description                                     |
+| ------------------------------ | ----------------------------------------------- |
+| `--mds-button-dropdown-radius` | Public. Sets the border-radius of the component |
 
 
 ## Dependencies

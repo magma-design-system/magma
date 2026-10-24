@@ -89,7 +89,7 @@ The parent renders the leading and trailing days that fill the grid but belong t
 
 #### Disabled Day
 
-The parent sets the `disabled` boolean attribute on days that cannot be selected - the dates outside its `min`/`max` range. A disabled cell removes pointer events and applies the disabled color (`--mds-calendar-cell-disabled-color`) automatically.
+The parent sets the `disabled` boolean attribute on days that cannot be selected - the dates outside its `min`/`max` range. A disabled cell removes pointer events and applies the disabled color automatically.
 
 ```html
 <mds-calendar view-date="2024-06-01" min="2024-06-10"></mds-calendar>
@@ -97,14 +97,13 @@ The parent sets the `disabled` boolean attribute on days that cannot be selected
 
 #### Styling Customization
 
-The cells live in the calendar's shadow DOM, so their `--mds-calendar-cell-*` CSS custom properties reach them by inheritance: set them on the `<mds-calendar>` host (or on a parent selector), next to the custom properties the calendar documents for them. Use the semantic color roles so dark mode, named themes and high contrast keep working.
+The cells live in the calendar's shadow DOM, so their public `--mds-calendar-cell-*` CSS custom properties reach them by inheritance: set them on the `<mds-calendar>` host (or on a parent selector), next to the public custom properties the calendar documents for them. The colors of the weekend, selected, preselected, disabled and adjacent-month days are not public: they follow the theme. Use the semantic color roles so dark mode, named themes and high contrast keep working.
 
 ```css
 .booking-calendar mds-calendar {
-  --mds-calendar-cell-gap: calc(var(--spacing) * 100);
   --mds-calendar-cell-other-month-visibility: hidden;
-  --mds-calendar-cell-weekend-color: rgb(var(--magma-text-muted));
-  --mds-calendar-cell-selection-current-month-background: rgb(var(--magma-accent-emphasis-hover));
+  --mds-calendar-cell-background: rgb(var(--magma-wash-soft));
+  --mds-calendar-cell-color: rgb(var(--magma-text-muted));
 }
 ```
 
@@ -143,7 +142,7 @@ The cell is purely presentational - it holds no internal state. Setting `selecti
 
 #### Do Not Pierce the Shadow DOM to Style Internals
 
-The cells live in the shadow DOM of `<mds-calendar>`: from outside they are adjusted only through their `--mds-calendar-cell-*` custom properties, set on the calendar, which the cells inherit. Targeting the internal `.action`, `.inner-dot`, or `.area-background` elements via `>>>` or undocumented class selectors couples your code to the implementation and will break on minor releases.
+The cells live in the shadow DOM of `<mds-calendar>`: from outside they are adjusted only through their public `--mds-calendar-cell-*` custom properties, set on the calendar, which the cells inherit. Targeting the internal `.action`, `.inner-dot`, or `.area-background` elements via `>>>` or undocumented class selectors couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -156,7 +155,6 @@ mds-calendar-cell >>> .inner-dot {
 
 /* CORRECT */
 mds-calendar {
-  --mds-calendar-cell-gap: calc(var(--spacing) * 100);
   --mds-calendar-cell-other-month-visibility: hidden;
   --mds-calendar-cell-background: rgb(var(--magma-wash-soft));
 }
@@ -182,11 +180,11 @@ mds-calendar {
 
 | Name                                                                        | Description                                                                                                                                                 |
 | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-calendar-cell-background`                                            | Background of calendar cells.                                                                                                                               |
+| `--mds-calendar-cell-background`                                            | Public. Background of calendar cells.                                                                                                                       |
 | `--mds-calendar-cell-boundaries-background`                                 | Deprecated, read by nothing: the selection boundaries take the `-selection-*-boundaries-background` and `-preselection-*-boundaries-background` properties. |
 | `--mds-calendar-cell-boundaries-color`                                      | Deprecated, read by nothing: the selection boundaries take the `-selection-*-boundaries-color` and `-preselection-*-boundaries-color` properties.           |
 | `--mds-calendar-cell-boundaries-padding`                                    | Padding inside selection boundaries.                                                                                                                        |
-| `--mds-calendar-cell-color`                                                 | Text color of calendar cells.                                                                                                                               |
+| `--mds-calendar-cell-color`                                                 | Public. Text color of calendar cells.                                                                                                                       |
 | `--mds-calendar-cell-disabled-background`                                   | Background for disabled days.                                                                                                                               |
 | `--mds-calendar-cell-disabled-color`                                        | Text color for disabled days.                                                                                                                               |
 | `--mds-calendar-cell-other-month-background`                                | Background of days from adjacent months.                                                                                                                    |

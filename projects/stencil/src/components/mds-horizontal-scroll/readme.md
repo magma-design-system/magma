@@ -27,7 +27,7 @@ The `<mds-horizontal-scroll>` web component is a horizontally scrolling containe
 - **`navigation`** chooses the scroll-progress affordance: `'position'` renders the translating dot indicator, `'scrollbar'` defers to the styled native browser scrollbar, and `'none'` shows neither.
 - **`snap`** sets the scroll-snap alignment of each item against the viewport - `'start'` (default) aligns items to the leading edge, `'center'` keeps them centred, `'end'` to the trailing edge, and `'none'` disables snapping for free scrolling.
 
-This component does not use the shared `variant` / `tone` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); appearance is tuned entirely through its CSS custom properties (see [`readme.md`](../readme.md)).
+This component does not use the shared `variant` / `tone` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); its public CSS custom properties set the layout (the width of the items area and the margin of the controls) and its colours follow the theme (see [`readme.md`](../readme.md)).
 
 
 ### 2. Pattern
@@ -145,28 +145,17 @@ Pair `controls="all"` with `snap="center"` and `navigation="position"` to produc
 
 #### Styling Customization
 
-Style the component only through its documented `--mds-horizontal-scroll-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the component only through its public `--mds-horizontal-scroll-*` CSS custom properties, which set its layout: the width of the items area and how far the controls sit outside it. Set them on the host or a parent selector. The dot indicator and the controls take their colours from the semantic roles, so they follow dark mode without overrides.
 
 ```css
 .sezione-evidenza mds-horizontal-scroll {
-  --mds-horizontal-scroll-dot-background: rgb(var(--magma-accent-emphasis));
-  --mds-horizontal-scroll-dot-area-background: rgb(var(--magma-accent-surface-hover));
   --mds-horizontal-scroll-max-width: 1200px;
 }
 ```
 
 #### Styling the Scrollbar
 
-When `navigation="scrollbar"` is used, customize the native scrollbar appearance through the dedicated properties. All scrollbar props are browser-dependent and may have no effect on browsers that do not expose a styleable scrollbar.
-
-```css
-mds-horizontal-scroll {
-  --mds-horizontal-scroll-scrollbar-size: 6px;
-  --mds-horizontal-scroll-scrollbar-radius: var(--magma-radius-3xs);
-  --mds-horizontal-scroll-scrollbar-thumb-background: rgb(var(--magma-accent-emphasis));
-  --mds-horizontal-scroll-scrollbar-track-background: rgb(var(--magma-wash-strong));
-}
-```
+When `navigation="scrollbar"` is used, the component styles the native scrollbar itself, from the semantic color roles, so it follows dark mode; its size and colours have no public custom property. When the scrollbar does not suit the layout, pick another affordance with `navigation` instead of restyling it.
 
 #### Customizing the Content Part
 
@@ -255,7 +244,7 @@ Replacing `<mds-horizontal-scroll>` with a manually styled `<div style="overflow
 
 #### Do Not Pierce the Shadow DOM to Style Internal Elements
 
-The navigation buttons and dot indicator live inside the shadow DOM. Targeting them via `>>>`, `/deep/`, or undocumented class names (`.navigation`, `.dot`) will break on future releases. Use `--mds-horizontal-scroll-*` CSS custom properties instead.
+The navigation buttons and dot indicator live inside the shadow DOM. Targeting them via `>>>`, `/deep/`, or undocumented class names (`.navigation`, `.dot`) will break on future releases. Use the public `--mds-horizontal-scroll-*` CSS custom properties and the `content` part instead; the dot and the controls take their colours from the theme.
 
 ```css
 /* INCORRECT */
@@ -268,7 +257,7 @@ mds-horizontal-scroll >>> .navigation {
 
 /* CORRECT */
 mds-horizontal-scroll {
-  --mds-horizontal-scroll-dot-background: rgb(var(--magma-accent-emphasis));
+  --mds-horizontal-scroll-controls-margin: 0px;
 }
 mds-horizontal-scroll::part(content) {
   padding-block: calc(var(--spacing) * 800);
@@ -320,18 +309,19 @@ Slotted items without a declared width collapse to zero or stretch unpredictably
 
 ## CSS Custom Properties
 
-| Name                                                 | Description                                                                                              |
-| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `--mds-horizontal-scroll-behavior`                   | Sets the scroll-behavior animation                                                                       |
-| `--mds-horizontal-scroll-dot-area-background`        | Sets the dot container area color                                                                        |
-| `--mds-horizontal-scroll-dot-background`             | Sets the navigation dot color                                                                            |
-| `--mds-horizontal-scroll-dot-max-width`              | Sets the navigation dot max-width, if you want to avoid is scales in proportion of the container         |
-| `--mds-horizontal-scroll-max-width`                  | Sets the max-width of the slotted elements container, to keep layout limited as the rest of the sections |
-| `--mds-horizontal-scroll-scrollbar-margin`           | Sets the margin of the browser scroll bar (if supported)                                                 |
-| `--mds-horizontal-scroll-scrollbar-radius`           | Sets the border-radius of the browser scroll bar (if supported)                                          |
-| `--mds-horizontal-scroll-scrollbar-size`             | Sets the height and width of the browser scroll bar (if supported)                                       |
-| `--mds-horizontal-scroll-scrollbar-thumb-background` | Sets the background-color of the browser scroll bar thumb (if supported)                                 |
-| `--mds-horizontal-scroll-scrollbar-track-background` | Sets the background-color of the browser scroll bar track (if supported)                                 |
+| Name                                                 | Description                                                                                                                                     |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-horizontal-scroll-behavior`                   | Sets the scroll-behavior animation                                                                                                              |
+| `--mds-horizontal-scroll-controls-margin`            | Public. Sets how far the back and forward controls sit outside the area of the slotted elements, 48px by default; `0px` keeps them on its edges |
+| `--mds-horizontal-scroll-dot-area-background`        | Sets the dot container area color                                                                                                               |
+| `--mds-horizontal-scroll-dot-background`             | Sets the navigation dot color                                                                                                                   |
+| `--mds-horizontal-scroll-dot-max-width`              | Sets the navigation dot max-width, if you want to avoid is scales in proportion of the container                                                |
+| `--mds-horizontal-scroll-max-width`                  | Public. Sets the max-width of the slotted elements container, to keep layout limited as the rest of the sections                                |
+| `--mds-horizontal-scroll-scrollbar-margin`           | Sets the margin of the browser scroll bar (if supported)                                                                                        |
+| `--mds-horizontal-scroll-scrollbar-radius`           | Sets the border-radius of the browser scroll bar (if supported)                                                                                 |
+| `--mds-horizontal-scroll-scrollbar-size`             | Sets the height and width of the browser scroll bar (if supported)                                                                              |
+| `--mds-horizontal-scroll-scrollbar-thumb-background` | Sets the background-color of the browser scroll bar thumb (if supported)                                                                        |
+| `--mds-horizontal-scroll-scrollbar-track-background` | Sets the background-color of the browser scroll bar track (if supported)                                                                        |
 
 
 ## Dependencies

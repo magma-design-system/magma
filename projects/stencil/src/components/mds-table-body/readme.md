@@ -165,15 +165,12 @@ Use [`<mds-table-header>`](../../mds-table-header), `<mds-table-body>`, and [`<m
 
 #### Styling Customization via CSS Custom Properties
 
-Override the five documented `--mds-table-body-*` CSS custom properties on the host or a parent selector. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes stay consistent.
+Override the two public `--mds-table-body-*` CSS custom properties, the default background and text colour of the rows, on the host or a parent selector. The hover highlight and the alternate tone shown during a selection follow the `interactive` and `selection` states. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes stay consistent.
 
 ```css
 .tabella-evidenziata mds-table-body {
   --mds-table-body-background: rgb(var(--magma-surface-raised));
-  --mds-table-body-background-hover: rgb(var(--magma-accent-surface));
-  --mds-table-body-background-alt: rgb(var(--magma-accent-surface));
   --mds-table-body-color: rgb(var(--magma-text-default));
-  --mds-table-body-color-alt: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -275,7 +272,7 @@ Stencil reads the exact string `"false"` as `false`, but `interactive="false"` a
 
 #### Do Not Customize via Undocumented Internal Selectors
 
-The supported customization surface is the five `--mds-table-body-*` CSS custom properties. Piercing the shadow DOM or targeting undocumented internal classes couples your code to the implementation and breaks on minor releases.
+The supported customization surface is the two public `--mds-table-body-*` CSS custom properties, `--mds-table-body-background` and `--mds-table-body-color`. Piercing the shadow DOM or targeting undocumented internal classes couples your code to the implementation and breaks on minor releases.
 
 ```css
 /* INCORRECT */
@@ -286,7 +283,6 @@ mds-table-body >>> tr {
 /* CORRECT */
 mds-table-body {
   --mds-table-body-background: rgb(var(--magma-surface-muted));
-  --mds-table-body-background-hover: rgb(var(--magma-accent-surface));
 }
 ```
 
@@ -309,13 +305,13 @@ mds-table-body {
 
 ## CSS Custom Properties
 
-| Name                                | Description                                     |
-| ----------------------------------- | ----------------------------------------------- |
-| `--mds-table-body-background`       | Default background color of table body rows.    |
-| `--mds-table-body-background-alt`   | Alternate background color for table body rows. |
-| `--mds-table-body-background-hover` | Background color for table body rows on hover.  |
-| `--mds-table-body-color`            | Default text color for table body rows.         |
-| `--mds-table-body-color-alt`        | Text color for alternate table body rows.       |
+| Name                                | Description                                          |
+| ----------------------------------- | ---------------------------------------------------- |
+| `--mds-table-body-background`       | Public. Default background color of table body rows. |
+| `--mds-table-body-background-alt`   | Alternate background color for table body rows.      |
+| `--mds-table-body-background-hover` | Background color for table body rows on hover.       |
+| `--mds-table-body-color`            | Public. Default text color for table body rows.      |
+| `--mds-table-body-color-alt`        | Text color for alternate table body rows.            |
 
 
 ----------------------------------------------

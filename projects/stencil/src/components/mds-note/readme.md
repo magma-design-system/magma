@@ -102,14 +102,12 @@ document.querySelector('mds-note').addEventListener('mdsNoteDelete', () => {
 
 #### Styling Customization via CSS Custom Properties
 
-Customize the note only through the documented `--mds-note-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Customize the note only through the public `--mds-note-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .featured-note mds-note {
   --mds-note-background: rgb(var(--label-orchid-09));
   --mds-note-color: rgb(var(--label-orchid-02));
-  --mds-note-fold-color: rgb(var(--label-orchid-06));
-  --mds-note-fold-size: 28px;
 }
 ```
 
@@ -257,8 +255,8 @@ mds-note {
 
 | Name                              | Description                                                                |
 | --------------------------------- | -------------------------------------------------------------------------- |
-| `--mds-note-background`           | Sets the background-color of the component                                 |
-| `--mds-note-color`                | Sets the text color of the component                                       |
+| `--mds-note-background`           | Public. Sets the background-color of the component                         |
+| `--mds-note-color`                | Public. Sets the text color of the component                               |
 | `--mds-note-fold-color`           | Sets the color of the fold decoration at the bottom right of the component |
 | `--mds-note-fold-size`            | Sets the size of the fold decoration at the bottom right of the component  |
 | `--mds-note-selection-background` | Sets the selection text background-color of the component                  |

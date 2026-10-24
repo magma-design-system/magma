@@ -171,16 +171,13 @@ Set `disabled` on individual `<mds-filter-item>` children to block them: a disab
 
 #### Styling Customization
 
-Style the filter bar only through its documented `--mds-filter-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` and the `--magma-radius-*` scale so dark mode, high-contrast modes and the corner geometry keep working.
+Style the filter bar only through its public `--mds-filter-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` and the `--spacing` scale so dark mode and high-contrast modes keep working.
 
 ```css
 .filtri-personalizzati mds-filter {
   --mds-filter-items-background: rgb(var(--magma-wash-strong));
   --mds-filter-items-background-active: rgb(var(--magma-accent-surface));
-  --mds-filter-items-radius: var(--magma-radius-md);
-  --mds-filter-items-gap: calc(var(--spacing) * 300);
-  --mds-filter-wrapper-shadow-color: rgb(var(--magma-accent-border));
-  --mds-filter-wrapper-shadow-opacity: 0.2;
+  --mds-filter-wrapper-shadow: 0 0 0 calc(var(--spacing) * 50) rgb(var(--magma-accent-border)) inset;
 }
 ```
 
@@ -301,7 +298,7 @@ The `mdsFilterChange` event's `value` field is a comma-joined string of the sele
 
 #### Do Not Customize Via Undocumented Shadow Selectors
 
-The supported customization surface for `<mds-filter>` is the documented `--mds-filter-*` CSS custom properties. Piercing the shadow DOM via `>>>` or undocumented `::part()` names couples your code to the implementation and will break on minor releases.
+The supported customization surface for `<mds-filter>` is its public `--mds-filter-*` CSS custom properties. Piercing the shadow DOM via `>>>` or undocumented `::part()` names couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -315,7 +312,7 @@ mds-filter::part(items-wrapper) {
 /* CORRECT */
 mds-filter {
   --mds-filter-items-background: rgb(var(--magma-wash-strong));
-  --mds-filter-wrapper-shadow-color: rgb(var(--magma-accent-border));
+  --mds-filter-wrapper-shadow: 0 0 0 calc(var(--spacing) * 50) rgb(var(--magma-accent-border)) inset;
 }
 ```
 
@@ -347,18 +344,18 @@ mds-filter {
 
 ## CSS Custom Properties
 
-| Name                                   | Description                                                             |
-| -------------------------------------- | ----------------------------------------------------------------------- |
-| `--mds-filter-items-background`        | Sets the background-color of the items row area                         |
-| `--mds-filter-items-background-active` | Sets the background-color of the items row area when a filter is active |
-| `--mds-filter-items-gap`               | Sets the gap between items                                              |
-| `--mds-filter-items-padding`           | Sets the padding of the items row area                                  |
-| `--mds-filter-items-radius`            | Sets the border-radius of the items row area                            |
-| `--mds-filter-items-scroll-behavior`   | Sets the scroll-behavior animation;                                     |
-| `--mds-filter-label-padding`           | Sets the padding of the label                                           |
-| `--mds-filter-wrapper-shadow`          | Sets the shadow used as outline border                                  |
-| `--mds-filter-wrapper-shadow-color`    | Sets the effect of the outline border                                   |
-| `--mds-filter-wrapper-shadow-opacity`  | Sets the opacity of the outline border                                  |
+| Name                                   | Description                                                                     |
+| -------------------------------------- | ------------------------------------------------------------------------------- |
+| `--mds-filter-items-background`        | Public. Sets the background-color of the items row area                         |
+| `--mds-filter-items-background-active` | Public. Sets the background-color of the items row area when a filter is active |
+| `--mds-filter-items-gap`               | Sets the gap between items                                                      |
+| `--mds-filter-items-padding`           | Sets the padding of the items row area                                          |
+| `--mds-filter-items-radius`            | Sets the border-radius of the items row area                                    |
+| `--mds-filter-items-scroll-behavior`   | Sets the scroll-behavior animation;                                             |
+| `--mds-filter-label-padding`           | Sets the padding of the label                                                   |
+| `--mds-filter-wrapper-shadow`          | Public. Sets the shadow used as outline border                                  |
+| `--mds-filter-wrapper-shadow-color`    | Sets the effect of the outline border                                           |
+| `--mds-filter-wrapper-shadow-opacity`  | Sets the opacity of the outline border                                          |
 
 
 ## Dependencies

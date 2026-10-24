@@ -113,14 +113,12 @@ Use `strategy="disabled"` when you want to position the badge yourself with util
 
 #### Styling Customization via CSS Custom Properties
 
-Customize the badge only through the documented `--mds-notification-*` CSS custom properties. Set them on the host element or a parent selector. Use the Magma color tokens with `rgb(var(--<token>))` so dark mode and high-contrast stay consistent.
+Customize the badge only through its public `--mds-notification-*` CSS custom properties, the ink color and the size; the fill and the ring of the dot come from the component. Set them on the host element or a parent selector. Use the Magma color tokens with `rgb(var(--<token>))` so dark mode and high-contrast stay consistent.
 
 ```css
-/* Colore di sfondo personalizzato, cerchio senza bordo */
+/* Badge piu' grande, inchiostro abbinato al riempimento di stato */
 .header-nav mds-notification {
-  --mds-notification-dot-background: rgb(var(--magma-warning-emphasis));
-  --mds-notification-color: rgb(var(--magma-warning-on-emphasis));
-  --mds-notification-ring-size: 0px;
+  --mds-notification-color: rgb(var(--magma-danger-on-emphasis));
   --mds-notification-size: 18px;
 }
 ```
@@ -192,7 +190,7 @@ Without `target`, the component cannot locate its anchor, automatically falls ba
 
 #### Do Not Pierce Shadow DOM to Style the Inner Dot
 
-The internal `.dot` element is not a documented `::part()`. Targeting it with `::part(dot)` or deep-selector hacks breaks on any internal refactor. Use the documented `--mds-notification-*` CSS custom properties instead.
+The internal `.dot` element is not a documented `::part()`. Targeting it with `::part(dot)` or deep-selector hacks breaks on any internal refactor. The dot keeps the fill the component gives it: adjust only what the public `--mds-notification-color` and `--mds-notification-size` CSS custom properties expose.
 
 ```css
 /* INCORRECT */
@@ -202,7 +200,7 @@ mds-notification::part(dot) {
 
 /* CORRECT */
 mds-notification {
-  --mds-notification-dot-background: rgb(var(--magma-warning-emphasis));
+  --mds-notification-size: calc(var(--spacing) * 600);
 }
 ```
 
@@ -221,20 +219,20 @@ mds-notification {
 
 ## CSS Custom Properties
 
-| Name                                            | Description                                             |
-| ----------------------------------------------- | ------------------------------------------------------- |
-| `--mds-notification-color`                      | The text/icon color of the notification component.      |
-| `--mds-notification-dot-background`             | The background color of the notification dot.           |
-| `--mds-notification-dot-padding`                | The padding around the notification dot.                |
-| `--mds-notification-min-width`                  | The minimum width of the notification component.        |
-| `--mds-notification-ring-color`                 | The color of the notification ring.                     |
-| `--mds-notification-ring-size`                  | The thickness of the notification ring.                 |
-| `--mds-notification-size`                       | The base size of the notification element.              |
-| `--mds-notification-transition-duration`        | Duration of notification transitions.                   |
-| `--mds-notification-transition-timing-function` | Timing function for notification transitions.           |
-| `--mds-notification-translate`                  | The CSS transform applied for notification positioning. |
-| `--mds-notification-translate-offset-x`         | X-axis offset factor for notification translation.      |
-| `--mds-notification-translate-offset-y`         | Y-axis offset factor for notification translation.      |
+| Name                                            | Description                                                |
+| ----------------------------------------------- | ---------------------------------------------------------- |
+| `--mds-notification-color`                      | Public. The text/icon color of the notification component. |
+| `--mds-notification-dot-background`             | The background color of the notification dot.              |
+| `--mds-notification-dot-padding`                | The padding around the notification dot.                   |
+| `--mds-notification-min-width`                  | The minimum width of the notification component.           |
+| `--mds-notification-ring-color`                 | The color of the notification ring.                        |
+| `--mds-notification-ring-size`                  | The thickness of the notification ring.                    |
+| `--mds-notification-size`                       | Public. The base size of the notification element.         |
+| `--mds-notification-transition-duration`        | Duration of notification transitions.                      |
+| `--mds-notification-transition-timing-function` | Timing function for notification transitions.              |
+| `--mds-notification-translate`                  | The CSS transform applied for notification positioning.    |
+| `--mds-notification-translate-offset-x`         | X-axis offset factor for notification translation.         |
+| `--mds-notification-translate-offset-y`         | Y-axis offset factor for notification translation.         |
 
 
 ## Dependencies

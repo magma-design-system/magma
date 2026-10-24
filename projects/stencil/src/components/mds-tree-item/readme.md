@@ -187,7 +187,7 @@ Listen to `mdsTreeItemExpand` and `mdsTreeItemCollapse` to keep external state (
 
 #### Multi-Line Label with Clamping
 
-Set `truncate="all"` on the tree (it overwrites the items' own value) to allow multi-line text with clamping controlled by `--mds-tree-item-line-clamp`. Use this for long file paths or descriptive labels.
+Set `truncate="all"` on the tree (it overwrites the items' own value) to allow multi-line text with clamping controlled by the tree's public `--mds-tree-line-clamp`. Use this for long file paths or descriptive labels.
 
 ```html
 <mds-tree truncate="all">
@@ -200,22 +200,17 @@ Set `truncate="all"` on the tree (it overwrites the items' own value) to allow m
 
 #### CSS Customization
 
-Customize the item's appearance only through its documented `--mds-tree-item-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` to stay compatible with dark mode and high-contrast.
+`mds-tree-item` has no public CSS custom property: the colours of its label, branch and toggle, its spacing and its transitions follow the semantic roles, so they stay compatible with dark mode and high-contrast. Shape the items with their props (`icon`, and the `toggle`, `toggle-position`, `appearance` and `truncate` the tree passes down), the public `--mds-tree-line-clamp` of the parent `mds-tree` and the two documented parts below.
 
 ```css
-.archivio-tree mds-tree-item {
-  --mds-tree-item-branch-border-color: rgb(var(--magma-accent-border));
-  --mds-tree-item-branch-dot-expanded-color: rgb(var(--magma-accent-fg));
-  --mds-tree-item-label-hover-background: rgb(var(--magma-wash-base));
-  --mds-tree-item-toggle-icon-chevron-default-color: rgb(var(--magma-accent-on-emphasis));
-  --mds-tree-item-toggle-gap: calc(var(--spacing) * 200);
-  --mds-tree-item-transition-duration: 200ms;
+.archivio-tree mds-tree {
+  --mds-tree-line-clamp: 3;
 }
 ```
 
 #### Styling the Actions Container via Shadow Parts
 
-Use `::part(actions-container)` and `::part(actions-list)` to style the wrapper and inner list of action controls when the CSS custom properties are not sufficient. This is the documented exception - do not target other internal parts.
+Use `::part(actions-container)` and `::part(actions-list)` to style the wrapper and inner list of action controls. They are the only documented parts - do not target other internal parts.
 
 ```css
 mds-tree-item::part(actions-container) {
@@ -324,7 +319,7 @@ Stencil reads the exact string `"false"` as `false`, so the node renders closed,
 
 #### Do Not Pierce the Shadow DOM to Style Internals
 
-The only supported customization surface is `--mds-tree-item-*` CSS custom properties and the two documented shadow parts (`actions-container`, `actions-list`). Targeting internal classes via `>>>`, `/deep/`, or undocumented `::part()` names couples your code to implementation details that can change on any minor release.
+`mds-tree-item` has no public CSS custom property: the only supported customization surface is its props, the two documented shadow parts (`actions-container`, `actions-list`) and the public `--mds-tree-line-clamp` of the parent `mds-tree`. Targeting internal classes via `>>>`, `/deep/`, or undocumented `::part()` names couples your code to implementation details that can change on any minor release.
 
 ```css
 /* INCORRECT */
@@ -336,10 +331,6 @@ mds-tree-item::part(toggle-icon) {
 }
 
 /* CORRECT */
-mds-tree-item {
-  --mds-tree-item-label-hover-background: rgb(var(--magma-wash-base));
-  --mds-tree-item-toggle-icon-chevron-default-color: rgb(var(--magma-accent-on-emphasis));
-}
 mds-tree-item::part(actions-list) {
   gap: calc(var(--spacing) * 200);
 }

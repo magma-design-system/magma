@@ -144,16 +144,14 @@ Listen on the documented `mdsCalendarChange` event - not the native `change` eve
 
 #### Styling Customization via CSS Custom Properties
 
-Adjust the calendar appearance only through the documented `--mds-calendar-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles so dark mode, named themes and high contrast keep working. The day cells inherit from the calendar both its `--mds-calendar-day-number-color` and their own `--mds-calendar-cell-*` properties, documented on [`mds-calendar-cell`](../../mds-calendar-cell).
+Adjust the calendar appearance only through the public `--mds-calendar-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles so dark mode, named themes and high contrast keep working. The day cells inherit from the calendar their own public `--mds-calendar-cell-*` properties, documented on [`mds-calendar-cell`](../../mds-calendar-cell).
 
 ```css
 .booking-widget mds-calendar {
   --mds-calendar-background: rgb(var(--magma-surface-muted));
   --mds-calendar-border-radius: var(--magma-radius-xl);
   --mds-calendar-padding: calc(var(--spacing) * 500);
-  --mds-calendar-cell-gap: calc(var(--spacing) * 100);
   --mds-calendar-cell-other-month-visibility: hidden;
-  --mds-calendar-day-number-color: rgb(var(--magma-text-muted));
 }
 ```
 
@@ -246,7 +244,7 @@ Dates must be chronologically ordered: `startDate` must precede `endDate`. The c
 
 #### Do Not Style Internals via Undocumented `::part()` Selectors
 
-The only supported customization surface is the set of `--mds-calendar-*` CSS custom properties. Targeting shadow-DOM internals with `::part()` selectors that are not in the documentation couples your code to the implementation and will break on minor releases.
+The only supported customization surface is the set of public `--mds-calendar-*` CSS custom properties. Targeting shadow-DOM internals with `::part()` selectors that are not in the documentation couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -325,13 +323,13 @@ Type: `Promise<void>`
 
 | Name                                         | Description                                                                                                                                            |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `--mds-calendar-background`                  | The background color of the calendar container.                                                                                                        |
-| `--mds-calendar-border-radius`               | The border-radius of the calendar container.                                                                                                           |
+| `--mds-calendar-background`                  | Public. The background color of the calendar container.                                                                                                |
+| `--mds-calendar-border-radius`               | Public. The border-radius of the calendar container.                                                                                                   |
 | `--mds-calendar-cell-gap`                    | The spacing between calendar day cells.                                                                                                                |
-| `--mds-calendar-cell-other-month-visibility` | Controls visibility of days from other months (e.g. "visible", "hidden").                                                                              |
+| `--mds-calendar-cell-other-month-visibility` | Public. Controls visibility of days from other months (e.g. "visible", "hidden").                                                                      |
 | `--mds-calendar-day-number-color`            | The color of the day numbers of the current month, weekend days aside (`--mds-calendar-cell-weekend-color`); `--mds-calendar-cell-color` wins over it. |
 | `--mds-calendar-max-width`                   | The maximum inline size of the calendar; it fills its container up to this width.                                                                      |
-| `--mds-calendar-padding`                     | The internal padding of the calendar container.                                                                                                        |
+| `--mds-calendar-padding`                     | Public. The internal padding of the calendar container.                                                                                                |
 | `--mds-calendar-select-month-or-year-height` | The height of the month/year selector in the calendar header.                                                                                          |
 | `--mds-calendar-select-month-or-year-width`  | The width of the month/year selector in the calendar header.                                                                                           |
 

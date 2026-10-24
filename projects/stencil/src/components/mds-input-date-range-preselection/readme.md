@@ -22,7 +22,7 @@ The `<mds-input-date-range-preselection>` web component is a compound child of [
 - **`start`** (required) and **`end`**: Define the ISO date range this shortcut applies. Provide both for a true range; omit `end` to express a single-day preselection.
 - **`selected`**: Reflects whether this preselection is currently the active one. Treat it as read-only in normal use - the parent sets it; do not hand-toggle it to drive selection.
 
-The default slot holds the human-readable label. Visual states (default, hover, selected) are themed through the `--mds-date-range-preselection-*` CSS custom properties listed in [`readme.md`](../readme.md); the component does not expose `variant`/`tone` props of its own.
+The default slot holds the human-readable label. Visual states (default, hover, selected) follow the theme: the component has no public CSS custom property and does not expose `variant`/`tone` props of its own.
 
 
 ### 2. Pattern
@@ -108,17 +108,7 @@ Listen to the parent's `mdsInputDateRangeValueChange` event to read the chosen r
 
 #### Styling Customization
 
-Override the three visual states - default, hover, and selected - through the documented `--mds-date-range-preselection-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and themes keep working. The background and color properties take a color (`rgb(var(--magma-<role>))`); the three `-border` properties take a bare RGB triplet (`var(--magma-<role>)`, no `rgb()`).
-
-```css
-.dashboard mds-input-date-range-preselection {
-  --mds-date-range-preselection-default-background: rgb(var(--magma-wash-strong) / 0.1);
-  --mds-date-range-preselection-default-border: var(--magma-neutral-border);
-  --mds-date-range-preselection-selected-background: rgb(var(--magma-accent-emphasis-hover));
-  --mds-date-range-preselection-selected-border: var(--magma-accent-emphasis-hover);
-  --mds-date-range-preselection-selected-color: rgb(var(--magma-accent-on-emphasis));
-}
-```
+`<mds-input-date-range-preselection>` has no public CSS custom property and no shadow part: it paints its three visual states - default, hover, and selected - from the semantic color roles ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and themes keep working without overrides. The parent marks the active shortcut with `selected`; do not restyle the states by hand.
 
 
 ### 3. Antipattern
@@ -244,7 +234,7 @@ The default slot is the plain-text label read by the internal `<mds-button>`. Pl
 
 #### Do Not Customize via Undocumented Shadow Parts or Internal Selectors
 
-The only supported customization surface is the `--mds-date-range-preselection-*` CSS custom properties for the three visual states. Targeting the inner `mds-button` or its shadow internals couples your code to implementation details that can change without notice.
+The component has no public CSS custom property and no shadow part: its three visual states come from the semantic color roles and the `selected` state the parent sets. Targeting the inner `mds-button` or its shadow internals couples your code to implementation details that can change without notice.
 
 ```css
 /* INCORRECT */
@@ -254,12 +244,17 @@ mds-input-date-range-preselection .action {
 mds-input-date-range-preselection::part(button) {
   border-radius: 0;
 }
+```
 
-/* CORRECT */
-mds-input-date-range-preselection {
-  --mds-date-range-preselection-default-background: rgb(var(--magma-wash-strong) / 0.1);
-  --mds-date-range-preselection-selected-background: rgb(var(--magma-accent-emphasis-hover));
-}
+```html
+<!-- CORRECT: no override, the states follow the theme and the parent sets selected -->
+<mds-input-date-range name="periodo">
+  <mds-input-date slot="start"></mds-input-date>
+  <mds-input-date slot="end"></mds-input-date>
+  <mds-input-date-range-preselection start="2025-06-01" end="2025-06-30">
+    Questo mese
+  </mds-input-date-range-preselection>
+</mds-input-date-range>
 ```
 
 

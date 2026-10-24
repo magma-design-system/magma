@@ -333,21 +333,17 @@ table.addEventListener('mdsTableHeaderCellSort', async (event) => {
 
 #### Styling Customization
 
-Customize the table appearance only through its documented `--mds-table-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and themes keep working.
+Customize the table appearance only through its public `--mds-table-*` CSS custom properties: the background, the text colour and the cell padding. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and themes keep working.
 
 ```css
 .tabella-contratti mds-table {
   --mds-table-background: rgb(var(--magma-surface-raised));
-  --mds-table-background-alt: rgb(var(--magma-surface-muted));
-  --mds-table-border-color: rgb(var(--magma-accent-border));
-  --mds-table-border-width: 1px;
   --mds-table-cell-padding: calc(var(--spacing) * 500);
   --mds-table-color: rgb(var(--magma-text-default));
-  --mds-table-separator-color: rgb(var(--magma-border-muted));
 }
 ```
 
-`--mds-table-border-color` colours the frame of the table only. The lines inside it - between the rows, under the header, above the footer and at the edge of the batch actions panel - take `--mds-table-separator-color`. Both default to `--magma-border-muted`, so frame and grid read as one: set both to recolour every line, or only one to set the frame apart from the grid. `--mds-table-border-width` sets the thickness of both.
+The frame of the table and the lines inside it - between the rows, under the header, above the footer and at the edge of the batch actions panel - take the `--magma-border-muted` role, so frame and grid read as one and follow the theme and the colour mode.
 
 
 ### 3. Antipattern
@@ -596,12 +592,12 @@ Type: `Promise<void>`
 | Name                          | Description                                                                                                                           |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `--mds-table-actions-gap`     | Gap between table action elements.                                                                                                    |
-| `--mds-table-background`      | Default background color of the table.                                                                                                |
+| `--mds-table-background`      | Public. Default background color of the table.                                                                                        |
 | `--mds-table-background-alt`  | Background color of the rows while a column sorts the table, and of the table behind them.                                            |
 | `--mds-table-border-color`    | Color of the frame of the table; the lines inside it take --mds-table-separator-color.                                                |
 | `--mds-table-border-width`    | Width of the table border.                                                                                                            |
-| `--mds-table-cell-padding`    | Padding inside table cells.                                                                                                           |
-| `--mds-table-color`           | Default text color of the table.                                                                                                      |
+| `--mds-table-cell-padding`    | Public. Padding inside table cells.                                                                                                   |
+| `--mds-table-color`           | Public. Default text color of the table.                                                                                              |
 | `--mds-table-color-alt`       | Text color of the rows while a column sorts the table.                                                                                |
 | `--mds-table-separator-color` | Color of the lines inside the table: between the rows, under the header, above the footer and at the edge of the batch actions panel. |
 

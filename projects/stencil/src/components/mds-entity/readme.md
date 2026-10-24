@@ -140,15 +140,12 @@ Combine `await` with `icon` and `variant` to drive a state machine: show the spi
 
 #### Styling Customization
 
-Style the entity only through its documented `--mds-entity-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. `--mds-entity-icon-background` and `--mds-entity-icon-color` paint the avatar only while it has no `variant` (none set, and no `initials`, which derive one).
+Style the entity only through its public `--mds-entity-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. The avatar takes its colours from `variant` and `tone`, not from a custom property.
 
 ```css
 .entity-highlight mds-entity {
   --mds-entity-background: rgb(var(--magma-accent-surface));
   --mds-entity-color: rgb(var(--magma-accent-fg));
-  --mds-entity-detail-color: rgb(var(--magma-text-muted));
-  --mds-entity-icon-background: rgb(var(--magma-accent-surface-hover));
-  --mds-entity-icon-color: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -251,7 +248,7 @@ The component resolves to a single avatar representation. Setting all three does
 
 #### Do Not Pierce the Shadow DOM to Style the Avatar
 
-The component exposes a `::part(avatar)` surface for styling the inner `<mds-avatar>`, but the part is the limit: the nodes inside it are not API. Use `--mds-entity-icon-background`, `--mds-entity-icon-color`, and other `--mds-entity-*` custom properties for color customization; do not target undocumented internals.
+The component exposes a `::part(avatar)` surface for styling the inner `<mds-avatar>`, but the part is the limit: the nodes inside it are not API. Color the avatar with the `variant` and `tone` props, and the entity with its public `--mds-entity-background` and `--mds-entity-color` custom properties; do not target undocumented internals.
 
 ```css
 /* INCORRECT */
@@ -264,9 +261,16 @@ mds-entity >>> mds-avatar {
 
 /* CORRECT */
 mds-entity {
-  --mds-entity-icon-background: rgb(var(--magma-accent-surface-hover));
-  --mds-entity-icon-color: rgb(var(--magma-accent-fg));
+  --mds-entity-background: rgb(var(--magma-accent-surface));
+  --mds-entity-color: rgb(var(--magma-accent-fg));
 }
+```
+
+```html
+<!-- CORRECT -->
+<mds-entity icon="mi/baseline/business" variant="primary" tone="weak">
+  <mds-text truncate="word" typography="h6">Divisione Commerciale</mds-text>
+</mds-entity>
 ```
 
 
@@ -303,13 +307,13 @@ mds-entity {
 
 ## CSS Custom Properties
 
-| Name                           | Description                        |
-| ------------------------------ | ---------------------------------- |
-| `--mds-entity-background`      | The background-color of the entity |
-| `--mds-entity-color`           | The color of the entity name       |
-| `--mds-entity-detail-color`    | The color of the text details      |
-| `--mds-entity-icon-background` | The background-color of the icon   |
-| `--mds-entity-icon-color`      | The color of the icon              |
+| Name                           | Description                                |
+| ------------------------------ | ------------------------------------------ |
+| `--mds-entity-background`      | Public. The background-color of the entity |
+| `--mds-entity-color`           | Public. The color of the entity name       |
+| `--mds-entity-detail-color`    | The color of the text details              |
+| `--mds-entity-icon-background` | The background-color of the icon           |
+| `--mds-entity-icon-color`      | The color of the icon                      |
 
 
 ## Dependencies

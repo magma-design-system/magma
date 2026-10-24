@@ -191,13 +191,13 @@ Apply a Magma label-color utility class directly to `<mds-price-table-list>` to 
 </mds-price-table>
 ```
 
-#### Separator Color Customization
+#### Styling a Plan Column
 
-`<mds-price-table-list>` exposes one CSS custom property, `--mds-price-table-list-separator-color`, to style the horizontal rule that separates the header from the item list. Set it on the host, naming a semantic role ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
+`<mds-price-table-list>` has no public CSS custom property: the horizontal rule that separates the header from the item list keeps the colour the component gives it, in every mode and contrast preference. Adjust the layout of a plan through its documented `header`, `content` and `footer` shadow parts, and name a semantic role ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) for any colour you set there.
 
 ```css
-.featured-plan mds-price-table-list {
-  --mds-price-table-list-separator-color: rgb(var(--magma-accent-border));
+.featured-plan mds-price-table-list::part(header) {
+  padding-bottom: calc(var(--spacing) * 200);
 }
 ```
 

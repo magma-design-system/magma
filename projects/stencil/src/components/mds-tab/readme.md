@@ -251,26 +251,16 @@ Mark an individual tab as unavailable with `disabled`. The parent's selection me
 
 #### Styling Customization
 
-Style the component only through its documented `--mds-tab-*` CSS custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the component only through its public `--mds-tab-*` CSS custom properties: the background, margin and shadow of the tab strip and the columns of the vertical layout. The colours and shadows of the items and the timing of the transitions are not part of them. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .scheda-primaria mds-tab {
   --mds-tab-tabs-background: rgb(var(--magma-accent-surface));
-  --mds-tab-tabs-radius: var(--magma-radius-xl);
-  --mds-tab-item-selected-background: rgb(var(--magma-accent-emphasis));
-  --mds-tab-item-selected-color: rgb(var(--magma-accent-on-emphasis));
-  --mds-tab-transition-duration: 0.3s;
+  --mds-tab-tabs-wrapper-shadow: 0 0 0 calc(var(--spacing) * 50) rgb(var(--magma-accent-border)) inset;
 }
 ```
 
-With `animation="fade"` every item paints its own states: `--mds-tab-item-default-shadow` gives a shadow to the items that are not selected, and `--mds-tab-item-hover-shadow` to the hovered one (the default shadow when it is not set). With the slider (`animation="slide"`) the items stay transparent over it, so the backgrounds and shadows set on the tab for the items do not apply.
-
-```css
-.schede-a-schedario mds-tab {
-  --mds-tab-item-default-shadow: var(--shadow-xs);
-  --mds-tab-item-hover-shadow: var(--shadow-sm);
-}
-```
+With `animation="fade"` every item paints its own states (resting, hover and selected). With the slider (`animation="slide"`) the items stay transparent over it, and the slider (`::part(slider)`) paints the selected one.
 
 
 ### 3. Antipattern
@@ -436,7 +426,7 @@ The default slot expects `<mds-tab-item>` elements only. Placing a raw `<button>
 
 #### Do Not Customize via Undocumented Shadow Parts or Internal Selectors
 
-The supported customization surface is the `--mds-tab-*` CSS custom properties and the documented shadow parts (`tabs`, `contents`, `slider`). Targeting other internals via `>>>`, `/deep/`, or undocumented class names couples your code to the shadow DOM implementation and will break on minor releases.
+The supported customization surface is the public `--mds-tab-*` CSS custom properties and the documented shadow parts (`tabs`, `contents`, `slider`). Targeting other internals via `>>>`, `/deep/`, or undocumented class names couples your code to the shadow DOM implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -450,8 +440,6 @@ mds-tab::part(tabs-wrapper) {
 /* CORRECT */
 mds-tab {
   --mds-tab-tabs-background: rgb(var(--magma-accent-surface));
-  --mds-tab-tabs-padding: calc(var(--spacing) * 400);
-  --mds-tab-tabs-radius: var(--magma-radius-xl);
 }
 mds-tab::part(tabs) {
   outline: 2px solid rgb(var(--magma-accent-border));
@@ -500,7 +488,7 @@ mds-tab::part(tabs) {
 
 | Name                                          | Description                                                    |
 | --------------------------------------------- | -------------------------------------------------------------- |
-| `--mds-tab-direction-vertical-columns`        | Defines the column layout for vertical tabs.                   |
+| `--mds-tab-direction-vertical-columns`        | Public. Defines the column layout for vertical tabs.           |
 | `--mds-tab-item-default-background`           | Background color for default tab items.                        |
 | `--mds-tab-item-default-color`                | Text color for default tab items.                              |
 | `--mds-tab-item-default-shadow`               | Shadow for default tab items.                                  |
@@ -518,15 +506,15 @@ mds-tab::part(tabs) {
 | `--mds-tab-scroll-scrollbar-thumb-background` | Background color of scrollbar thumb.                           |
 | `--mds-tab-scroll-scrollbar-track-background` | Background color of scrollbar track.                           |
 | `--mds-tab-slide-delay`                       | Delay before tab slide animation.                              |
-| `--mds-tab-tabs-background`                   | Background color of the tabs container.                        |
+| `--mds-tab-tabs-background`                   | Public. Background color of the tabs container.                |
 | `--mds-tab-tabs-gap`                          | Gap between tabs.                                              |
 | `--mds-tab-tabs-overflow-shadow`              | Shadow applied to overflowed tabs.                             |
 | `--mds-tab-tabs-overflow-shadow-size`         | Size of the overflow shadow.                                   |
 | `--mds-tab-tabs-padding`                      | Padding inside the tabs container.                             |
 | `--mds-tab-tabs-radius`                       | Border radius of the tabs container.                           |
-| `--mds-tab-tabs-wrapper-margin`               | Margin for the tabs wrapper.                                   |
+| `--mds-tab-tabs-wrapper-margin`               | Public. Margin for the tabs wrapper.                           |
 | `--mds-tab-tabs-wrapper-outline-opacity`      | Opacity of the wrapper outline.                                |
-| `--mds-tab-tabs-wrapper-shadow`               | Shadow for the tabs wrapper.                                   |
+| `--mds-tab-tabs-wrapper-shadow`               | Public. Shadow for the tabs wrapper.                           |
 | `--mds-tab-tabs-wrapper-shadow-color`         | Color of the wrapper shadow.                                   |
 | `--mds-tab-transition-duration`               | Duration of tab transition animation.                          |
 | `--mds-tab-transition-timing-function`        | Timing function for tab transition animation.                  |

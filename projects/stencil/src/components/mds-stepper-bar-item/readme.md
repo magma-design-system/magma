@@ -219,14 +219,11 @@ Lower the `typography` prop (default `h6`) when horizontal space is tight or whe
 
 #### Styling Customization
 
-Style items only through the documented `--mds-stepper-bar-item-*` CSS custom properties. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Target the `::part(badge)` surface only when a deep visual override of the badge wrapper is required.
+Style items only through the public `--mds-stepper-bar-item-*` CSS custom properties: the text colour and the minimum width. The icon and progress colours follow the state the parent sets (queued, current, done) and are not set by the page. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Target the `::part(badge)` surface only when a deep visual override of the badge wrapper is required.
 
 ```css
 .checkout-flow mds-stepper-bar-item {
-  --mds-stepper-bar-item-icon-background-current: rgb(var(--magma-accent-emphasis));
-  --mds-stepper-bar-item-icon-color-current: rgb(var(--magma-accent-on-emphasis));
-  --mds-stepper-bar-item-icon-background-done: rgb(var(--magma-success-emphasis));
-  --mds-stepper-bar-item-progress-color: rgb(var(--magma-success-emphasis));
+  --mds-stepper-bar-item-color: rgb(var(--magma-text-muted));
   --mds-stepper-bar-item-min-width: 160px;
 }
 ```
@@ -305,7 +302,7 @@ Each item numbers itself among its own siblings, and the parent's track lays out
 
 #### Do Not Use Undocumented `::part()` Targets to Style the Icon or Progress
 
-The only documented shadow part is `badge`. Targeting internals such as `::part(icon)` or `::part(progress)` couples code to the private Shadow DOM structure and will break on minor releases. Use the `--mds-stepper-bar-item-*` CSS custom properties instead.
+The only documented shadow part is `badge`. Targeting internals such as `::part(icon)` or `::part(progress)` couples code to the private Shadow DOM structure and will break on minor releases. The icon and the progress line take their colours from the step state; style the item through its public `--mds-stepper-bar-item-*` CSS custom properties instead.
 
 ```css
 /* INCORRECT */
@@ -318,8 +315,8 @@ mds-stepper-bar-item::part(progress) {
 
 /* CORRECT */
 mds-stepper-bar-item {
-  --mds-stepper-bar-item-icon-background-current: rgb(var(--magma-accent-emphasis));
-  --mds-stepper-bar-item-progress-thickness: 6px;
+  --mds-stepper-bar-item-color: rgb(var(--magma-text-default));
+  --mds-stepper-bar-item-min-width: 160px;
 }
 ```
 
@@ -376,7 +373,7 @@ Both are required props. An item without `label` has no accessible or visual des
 
 | Name                                             | Description                                                         |
 | ------------------------------------------------ | ------------------------------------------------------------------- |
-| `--mds-stepper-bar-item-color`                   | Sets the color of the text                                          |
+| `--mds-stepper-bar-item-color`                   | Public. Sets the color of the text                                  |
 | `--mds-stepper-bar-item-duration`                | Sets the duration of the animation                                  |
 | `--mds-stepper-bar-item-icon-background`         | Sets the background-color of the icon                               |
 | `--mds-stepper-bar-item-icon-background-current` | Sets the background-color of the icon when the component is current |
@@ -384,7 +381,7 @@ Both are required props. An item without `label` has no accessible or visual des
 | `--mds-stepper-bar-item-icon-color`              | Sets the color of the icon                                          |
 | `--mds-stepper-bar-item-icon-color-current`      | Sets the color of the icon when the component is current            |
 | `--mds-stepper-bar-item-icon-color-done`         | Sets the color of the icon when the component is done               |
-| `--mds-stepper-bar-item-min-width`               | Sets the minimum width of the component                             |
+| `--mds-stepper-bar-item-min-width`               | Public. Sets the minimum width of the component                     |
 | `--mds-stepper-bar-item-progress-background`     | Sets the background color of the progress bar                       |
 | `--mds-stepper-bar-item-progress-color`          | Sets the color of the progress bar                                  |
 | `--mds-stepper-bar-item-progress-thickness`      | Sets the thickness of the progress bar                              |

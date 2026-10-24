@@ -141,13 +141,12 @@ new MutationObserver(() => {
 
 #### Styling Customization
 
-Adjust colors and lighting only through the documented `--mds-keyboard-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode continues to work.
+Adjust colors and padding only through the public `--mds-keyboard-*` CSS custom properties; the keys take their colours from the theme. Use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode continues to work.
 
 ```css
 .custom-keyboard mds-keyboard {
   --mds-keyboard-background: rgb(var(--magma-surface-inverse));
   --mds-keyboard-color: rgb(var(--magma-on-inverse));
-  --mds-keyboard-key-background: rgb(var(--magma-surface-inverse-muted));
   --mds-keyboard-padding: calc(var(--spacing) * 300);
 }
 ```
@@ -242,19 +241,19 @@ The component inserts a styled `+` between consecutive keys automatically. Addin
 
 #### Do Not Customize Colors with Raw CSS Values Instead of Tokens
 
-Setting `--mds-keyboard-background` or `--mds-keyboard-key-background` to a raw hex or `rgba()` literal bypasses the palette layer and breaks dark mode. Always use a semantic color role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
+Setting `--mds-keyboard-background` or `--mds-keyboard-color` to a raw hex or `rgba()` literal bypasses the palette layer and breaks dark mode. Always use a semantic color role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
 
 ```css
 /* INCORRECT */
 mds-keyboard {
   --mds-keyboard-background: #1a1a2e;
-  --mds-keyboard-key-background: #16213e;
+  --mds-keyboard-color: #e0e0e0;
 }
 
 /* CORRECT */
 mds-keyboard {
   --mds-keyboard-background: rgb(var(--magma-surface-inverse));
-  --mds-keyboard-key-background: rgb(var(--magma-surface-inverse-muted));
+  --mds-keyboard-color: rgb(var(--magma-on-inverse));
 }
 ```
 
@@ -277,28 +276,28 @@ mds-keyboard {
 
 ## CSS Custom Properties
 
-| Name                                            | Description                                                                           |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `--mds-keyboard-background`                     | Set the background color of the keyboard area.                                        |
-| `--mds-keyboard-background-default`             | `private` Set the default background color of the keyboard area.                      |
-| `--mds-keyboard-background-fail`                | Set the background color of the keyboard area when the test fails.                    |
-| `--mds-keyboard-background-pass`                | Set the background color of the keyboard area when the test passes.                   |
-| `--mds-keyboard-color`                          | Set the text color of the keyboard area, will impact on `mds-keyboard-key` component. |
-| `--mds-keyboard-fill-fail`                      | Set the fill color of the combination-checker button when the test fails.             |
-| `--mds-keyboard-fill-pass`                      | Set the fill color of the combination-checker button when the test passes.            |
-| `--mds-keyboard-illumination-dark`              | Set the dark illumination.                                                            |
-| `--mds-keyboard-illumination-dark-opacity`      | Set the opacity of the dark illumination.                                             |
-| `--mds-keyboard-illumination-dark-size`         | Set the size of the dark illumination.                                                |
-| `--mds-keyboard-illumination-light`             | Set the light illumination.                                                           |
-| `--mds-keyboard-illumination-light-opacity`     | Set the opacity of the light illumination.                                            |
-| `--mds-keyboard-illumination-light-size`        | Set the size of the light illumination.                                               |
-| `--mds-keyboard-illumination-shadow`            | Set the shadow of the keyboard area.                                                  |
-| `--mds-keyboard-key-background`                 | Set the background color of the keyboard key.                                         |
-| `--mds-keyboard-key-illumination-dark-opacity`  | Set the opacity of the dark illumination of the keyboard key.                         |
-| `--mds-keyboard-key-illumination-light-opacity` | Set the opacity of the light illumination of the keyboard key.                        |
-| `--mds-keyboard-key-illumination-shadow`        | Set the shadow of the keyboard key.                                                   |
-| `--mds-keyboard-padding`                        | Set the padding of the keyboard area.                                                 |
-| `--mds-keyboard-spinner-duration`               | Set the duration of the spinner animation.                                            |
+| Name                                            | Description                                                                                   |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `--mds-keyboard-background`                     | Public. Set the background color of the keyboard area.                                        |
+| `--mds-keyboard-background-default`             | `private` Set the default background color of the keyboard area.                              |
+| `--mds-keyboard-background-fail`                | Set the background color of the keyboard area when the test fails.                            |
+| `--mds-keyboard-background-pass`                | Set the background color of the keyboard area when the test passes.                           |
+| `--mds-keyboard-color`                          | Public. Set the text color of the keyboard area, will impact on `mds-keyboard-key` component. |
+| `--mds-keyboard-fill-fail`                      | Set the fill color of the combination-checker button when the test fails.                     |
+| `--mds-keyboard-fill-pass`                      | Set the fill color of the combination-checker button when the test passes.                    |
+| `--mds-keyboard-illumination-dark`              | Set the dark illumination.                                                                    |
+| `--mds-keyboard-illumination-dark-opacity`      | Set the opacity of the dark illumination.                                                     |
+| `--mds-keyboard-illumination-dark-size`         | Set the size of the dark illumination.                                                        |
+| `--mds-keyboard-illumination-light`             | Set the light illumination.                                                                   |
+| `--mds-keyboard-illumination-light-opacity`     | Set the opacity of the light illumination.                                                    |
+| `--mds-keyboard-illumination-light-size`        | Set the size of the light illumination.                                                       |
+| `--mds-keyboard-illumination-shadow`            | Set the shadow of the keyboard area.                                                          |
+| `--mds-keyboard-key-background`                 | Set the background color of the keyboard key.                                                 |
+| `--mds-keyboard-key-illumination-dark-opacity`  | Set the opacity of the dark illumination of the keyboard key.                                 |
+| `--mds-keyboard-key-illumination-light-opacity` | Set the opacity of the light illumination of the keyboard key.                                |
+| `--mds-keyboard-key-illumination-shadow`        | Set the shadow of the keyboard key.                                                           |
+| `--mds-keyboard-padding`                        | Public. Set the padding of the keyboard area.                                                 |
+| `--mds-keyboard-spinner-duration`               | Set the duration of the spinner animation.                                                    |
 
 
 ## Dependencies

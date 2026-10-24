@@ -191,13 +191,14 @@ Set `direction="vertical"` on the parent to stack the tabs alongside the panels.
 
 #### CSS Customization
 
-Style items only through the documented `--mds-tab-item-*` CSS custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
+`mds-tab-item` has no public CSS custom property: style it with its props (`size`, `icon`, `icon-position`), its `button` part and the public `--mds-tab-*` properties of the parent `mds-tab`. The resting, hover and selected states follow the parent and its `animation`. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
-.schede-contratto mds-tab-item {
-  --mds-tab-item-default-background: rgb(var(--magma-wash-soft));
-  --mds-tab-item-hover-background: rgb(var(--magma-wash-base));
-  --mds-tab-item-selected-background: rgb(var(--magma-accent-surface));
+.schede-contratto mds-tab {
+  --mds-tab-tabs-background: rgb(var(--magma-wash-soft));
+}
+.schede-contratto mds-tab-item::part(button) {
+  border-radius: var(--magma-radius-lg);
 }
 ```
 
@@ -296,7 +297,7 @@ The parent pushes its `size` down to every child item on load and whenever `size
 
 #### Do Not Pierce the Shadow DOM to Style the Inner Button
 
-The only supported customization surface is the `--mds-tab-item-*` CSS custom properties and the documented `button` shadow part. Targeting internals via `::part(button) >>> .button` or undocumented selectors couples your code to the implementation.
+`mds-tab-item` has no public CSS custom property: the only supported customization surface is the documented `button` shadow part and the public `--mds-tab-*` properties of the parent `mds-tab`. Targeting internals via `::part(button) >>> .button` or undocumented selectors couples your code to the implementation.
 
 ```css
 /* INCORRECT */
@@ -305,8 +306,8 @@ mds-tab-item::part(button) >>> .text {
 }
 
 /* CORRECT */
-mds-tab-item {
-  --mds-tab-item-selected-background: rgb(var(--magma-accent-surface));
+mds-tab {
+  --mds-tab-tabs-background: rgb(var(--magma-accent-surface));
 }
 mds-tab-item::part(button) {
   border-radius: var(--magma-radius-lg);

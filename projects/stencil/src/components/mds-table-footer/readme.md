@@ -123,15 +123,13 @@ Use the footer to display computed totals or aggregated values that summarize th
 
 #### Cell-Level Styling via Parent `--mds-table-*` Custom Properties
 
-`mds-table-footer` inherits visual styling from the CSS custom properties defined on the parent `mds-table`. Set those properties on `mds-table` (or a wrapping selector) to restyle borders, backgrounds, and cell padding uniformly across the whole table - including the footer. The line above the footer is part of the grid, so it follows `--mds-table-separator-color`, not the frame's `--mds-table-border-color`. `--mds-table-cell-padding` takes a single length: the table also halves it and adds it to other measures.
+`mds-table-footer` has no public CSS custom property: it inherits visual styling from the public CSS custom properties defined on the parent `mds-table`. Set those properties on `mds-table` (or a wrapping selector) to restyle the background, the text colour and the cell padding uniformly across the whole table - including the footer. The line above the footer is part of the grid, so it takes the same colour as the other lines of the table. `--mds-table-cell-padding` takes a single length: the table also halves it and adds it to other measures.
 
 ```css
 .bilancio-table mds-table {
   --mds-table-background: rgb(var(--magma-surface-raised));
-  --mds-table-border-color: rgb(var(--magma-border-default));
-  --mds-table-border-width: 2px;
   --mds-table-cell-padding: calc(var(--spacing) * 300);
-  --mds-table-separator-color: rgb(var(--magma-border-muted));
+  --mds-table-color: rgb(var(--magma-text-default));
 }
 ```
 
@@ -204,7 +202,7 @@ Using the native `<tfoot>` inside `mds-table` bypasses the shared CSS token casc
 
 #### Do Not Style the Footer by Piercing Shadow DOM
 
-`mds-table-footer` has no documented `--mds-table-footer-*` custom properties. Styling changes (background, border color, cell spacing) must go through the `--mds-table-*` custom properties on the parent `mds-table`. Targeting internals via `>>>` or undocumented selectors will break on future releases.
+`mds-table-footer` has no public CSS custom property. Styling changes (background, text colour, cell spacing) must go through the public `--mds-table-*` custom properties on the parent `mds-table`. Targeting internals via `>>>` or undocumented selectors will break on future releases.
 
 ```css
 /* INCORRECT */
@@ -215,7 +213,7 @@ mds-table-footer >>> :host {
 /* CORRECT */
 mds-table {
   --mds-table-background: rgb(var(--magma-surface-raised));
-  --mds-table-border-color: rgb(var(--magma-border-default));
+  --mds-table-cell-padding: calc(var(--spacing) * 300);
 }
 ```
 

@@ -112,7 +112,7 @@ Size is not set per item - it is set once on the parent with `size` (`sm`, `md`,
 
 #### Styling Customization
 
-Style individual items through their documented `--mds-avatar-stack-item-*` CSS custom properties, or control the whole stack at once via the parent's `--mds-avatar-stack-*` counterparts (the item vars inherit from those). Use semantic color roles with `rgb(var(--magma-<role>))` so dark mode keeps working.
+Style individual items through their public `--mds-avatar-stack-item-*` CSS custom properties, or control the whole stack at once via the parent's public `--mds-avatar-stack-background` (the item ring color inherits from it). Use semantic color roles with `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
 /* Override the separator ring color for the whole stack */
@@ -120,10 +120,9 @@ Style individual items through their documented `--mds-avatar-stack-item-*` CSS 
   --mds-avatar-stack-background: rgb(var(--magma-surface-raised));
 }
 
-/* Override count badge colors for a specific stack */
-.collab-panel mds-avatar-stack {
-  --mds-avatar-stack-count-background-color: rgb(var(--magma-accent-emphasis));
-  --mds-avatar-stack-count-color: rgb(var(--magma-accent-on-emphasis));
+/* Override the separator ring color of a single item */
+.collab-panel mds-avatar-stack-item.highlight {
+  --mds-avatar-stack-item-background: rgb(var(--magma-accent-emphasis));
 }
 ```
 
@@ -250,15 +249,15 @@ The parent counts only its direct `mds-avatar-stack-item` children to compute th
 
 ## CSS Custom Properties
 
-| Name                                             | Description                                      |
-| ------------------------------------------------ | ------------------------------------------------ |
-| `--mds-avatar-stack-item-background`             | The background color of each avatar in the stack |
-| `--mds-avatar-stack-item-border`                 | Computed active border (based on selected size)  |
-| `--mds-avatar-stack-item-count-background-color` | Background color of the count badge in the stack |
-| `--mds-avatar-stack-item-count-color`            | Text color for the count badge in the stack      |
-| `--mds-avatar-stack-item-offset`                 | Computed active offset (based on selected size)  |
-| `--mds-avatar-stack-item-offset-margin`          | Computed margin for overlapping avatars          |
-| `--mds-avatar-stack-item-size`                   | Computed active size (based on selected size)    |
+| Name                                             | Description                                              |
+| ------------------------------------------------ | -------------------------------------------------------- |
+| `--mds-avatar-stack-item-background`             | Public. The background color of each avatar in the stack |
+| `--mds-avatar-stack-item-border`                 | Computed active border (based on selected size)          |
+| `--mds-avatar-stack-item-count-background-color` | Background color of the count badge in the stack         |
+| `--mds-avatar-stack-item-count-color`            | Text color for the count badge in the stack              |
+| `--mds-avatar-stack-item-offset`                 | Computed active offset (based on selected size)          |
+| `--mds-avatar-stack-item-offset-margin`          | Computed margin for overlapping avatars                  |
+| `--mds-avatar-stack-item-size`                   | Public. Computed active size (based on selected size)    |
 
 
 ## Dependencies

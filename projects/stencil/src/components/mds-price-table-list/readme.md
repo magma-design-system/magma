@@ -30,7 +30,7 @@ The `<mds-price-table-list>` web component is a single pricing-plan column insid
 - **`price`**: the plan's price, shown in the grouped footer.
 - **`action`**: the call-to-action; `<mds-button>` is recommended.
 
-The style hooks are the `--mds-price-table-list-separator-color` CSS custom property, controlling the divider drawn between the header and the feature list, and the `header`, `content` and `footer` shadow parts.
+`<mds-price-table-list>` has no public CSS custom property: the style hooks are the `header`, `content` and `footer` shadow parts, while the divider drawn between the header and the feature list keeps the colour the component gives it.
 
 
 ### 2. Pattern
@@ -137,19 +137,24 @@ Nest an [`<mds-help>`](../../mds-help) component inside a `<mds-price-table-list
 </mds-price-table-list>
 ```
 
-#### Styling via CSS Custom Property
+#### Highlighting a Plan
 
-Use `--mds-price-table-list-separator-color` to change the divider between the header and the feature list. Set it on the host element or a parent selector; name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
+`<mds-price-table-list>` has no public CSS custom property: the divider between the header and the feature list keeps the colour the component gives it, in every mode and contrast preference. To set a recommended plan apart, apply a Magma label-color utility class to the host instead, as in [`<mds-price-table>`](../../mds-price-table).
 
-```css
-.highlight-plan mds-price-table-list {
-  --mds-price-table-list-separator-color: rgb(var(--magma-accent-border) / 0.4);
-}
+```html
+<mds-price-table-list class="bg-label-amaranth-10">
+  <mds-text typography="h5" slot="header">Piano Pro</mds-text>
+
+  <mds-price-table-list-item supported>Utenti illimitati</mds-price-table-list-item>
+
+  <mds-text typography="h3" slot="price">79 EUR</mds-text>
+  <mds-button slot="action" variant="dark">Attiva piano</mds-button>
+</mds-price-table-list>
 ```
 
 #### Styling via Shadow Parts
 
-Use the documented `::part()` targets - `header`, `content`, and `footer` - when you need to override layout that the CSS custom property surface does not cover. Limit part overrides to layout-only changes; do not pierce the shadow DOM via `>>>` or undocumented class names.
+Use the documented `::part()` targets - `header`, `content`, and `footer` - when you need to override layout. Limit part overrides to layout-only changes; do not pierce the shadow DOM via `>>>` or undocumented class names.
 
 ```css
 mds-price-table-list::part(footer) {
@@ -269,7 +274,7 @@ The `price` slot is for the price text only; the `action` slot is where `<mds-bu
 
 #### Do Not Pierce the Shadow DOM to Style Internal Regions
 
-The supported customization surface is `--mds-price-table-list-separator-color` and the three documented `::part()` targets (`header`, `content`, `footer`). Targeting undocumented class names with `>>>` or deep selectors couples your code to the internal markup and breaks on minor releases.
+`<mds-price-table-list>` has no public CSS custom property: the supported customization surface is the three documented `::part()` targets (`header`, `content`, `footer`). Targeting undocumented class names with `>>>` or deep selectors couples your code to the internal markup and breaks on minor releases.
 
 ```css
 /* INCORRECT */
@@ -281,9 +286,6 @@ mds-price-table-list::part(separator) {
 }
 
 /* CORRECT */
-mds-price-table-list {
-  --mds-price-table-list-separator-color: rgb(var(--magma-accent-border) / 0.3);
-}
 mds-price-table-list::part(content) {
   gap: calc(var(--spacing) * 400);
 }

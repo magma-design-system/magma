@@ -274,13 +274,11 @@ Use `readonly` when the value should be visible but not editable. A persistent t
 
 #### Styling Customization
 
-Style the input only through its documented `--mds-input-*` CSS custom properties. Set them on the host or a parent selector. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the input only through its public `--mds-input-*` CSS custom properties. Set them on the host or a parent selector. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .search-bar mds-input {
   --mds-input-background: rgb(var(--magma-wash-base));
-  --mds-input-placeholder-default-color: rgb(var(--magma-text-disabled));
-  --mds-input-icon-color: rgb(var(--magma-accent-fg));
 }
 
 /* Textarea: fixed height, allow resize */
@@ -411,7 +409,7 @@ The component renders its own increment/decrement buttons and hides the native b
 
 #### Do Not Pierce the Shadow DOM to Style Internal Parts
 
-The supported customization surface is `--mds-input-*` CSS custom properties plus the documented shadow parts (`field`, `tip-top`, `tip-bottom`, `tip-count`, `password-toggle-button`, `counter-button-increase`, `counter-button-decrease`, `mic-toggle-button`). Targeting undocumented internals via `>>>` or arbitrary class names couples your code to the Shadow DOM implementation.
+The supported customization surface is the public `--mds-input-*` CSS custom properties plus the documented shadow parts (`field`, `tip-top`, `tip-bottom`, `tip-count`, `password-toggle-button`, `counter-button-increase`, `counter-button-decrease`, `mic-toggle-button`). Targeting undocumented internals via `>>>` or arbitrary class names couples your code to the Shadow DOM implementation.
 
 ```css
 /* INCORRECT */
@@ -576,24 +574,24 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                        | Description                                                  |
-| ------------------------------------------- | ------------------------------------------------------------ |
-| `--mds-input-background`                    | The background color of the input field.                     |
-| `--mds-input-icon-color`                    | The color of the icons inside the input.                     |
-| `--mds-input-placeholder-default-color`     | The placeholder color in the default state.                  |
-| `--mds-input-placeholder-focus-color`       | The placeholder color when the input is focused.             |
-| `--mds-input-placeholder-hover-color`       | The placeholder color when the input is hovered.             |
-| `--mds-input-ring`                          | The outline ring applied to the input on interactive states. |
-| `--mds-input-shadow`                        | The box-shadow applied to the input component.               |
-| `--mds-input-textarea-field-sizing`         | The field-sizing behavior of the textarea.                   |
-| `--mds-input-textarea-max-height`           | The max-height applied to the textarea.                      |
-| `--mds-input-textarea-min-height`           | The min-height applied to the textarea.                      |
-| `--mds-input-textarea-resize`               | Controls whether the textarea is resizable.                  |
-| `--mds-input-tip-background`                | The background color of the input tip/inline help.           |
-| `--mds-input-tip-horizontal-offset`         | The default horizontal offset applied to the input tip       |
-| `--mds-input-tip-horizontal-offset-focused` | The horizontal offset applied when the input tip is focused  |
-| `--mds-input-tip-vertical-offset`           | The vertical offset applied to the input tip                 |
-| `--mds-input-variant-color-rgb`             | The raw RGB channels used for variant-driven styling.        |
+| Name                                        | Description                                                          |
+| ------------------------------------------- | -------------------------------------------------------------------- |
+| `--mds-input-background`                    | Public. The background color of the input field.                     |
+| `--mds-input-icon-color`                    | The color of the icons inside the input.                             |
+| `--mds-input-placeholder-default-color`     | The placeholder color in the default state.                          |
+| `--mds-input-placeholder-focus-color`       | The placeholder color when the input is focused.                     |
+| `--mds-input-placeholder-hover-color`       | The placeholder color when the input is hovered.                     |
+| `--mds-input-ring`                          | Public. The outline ring applied to the input on interactive states. |
+| `--mds-input-shadow`                        | Public. The box-shadow applied to the input component.               |
+| `--mds-input-textarea-field-sizing`         | The field-sizing behavior of the textarea.                           |
+| `--mds-input-textarea-max-height`           | Public. The max-height applied to the textarea.                      |
+| `--mds-input-textarea-min-height`           | Public. The min-height applied to the textarea.                      |
+| `--mds-input-textarea-resize`               | Public. Controls whether the textarea is resizable.                  |
+| `--mds-input-tip-background`                | Public. The background color of the input tip/inline help.           |
+| `--mds-input-tip-horizontal-offset`         | The default horizontal offset applied to the input tip               |
+| `--mds-input-tip-horizontal-offset-focused` | The horizontal offset applied when the input tip is focused          |
+| `--mds-input-tip-vertical-offset`           | The vertical offset applied to the input tip                         |
+| `--mds-input-variant-color-rgb`             | Public. The raw RGB channels used for variant-driven styling.        |
 
 
 ## Dependencies

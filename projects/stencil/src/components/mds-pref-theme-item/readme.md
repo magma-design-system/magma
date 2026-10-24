@@ -105,15 +105,11 @@ Declare it on the parent, not with `selected`: when it loads, `<mds-pref-theme>`
 
 #### CSS Customization via Documented Properties
 
-Override the swatch colours only through the documented `--mds-pref-theme-item-*` CSS custom properties. Set them on the host element or a parent selector and name a semantic role for the colour values, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so mode, theme and contrast keep working.
+Override the swatch only through the public `--mds-pref-theme-item-color-background` CSS custom property, the background behind the preview dots; the dots themselves are painted by the component. Set it on the host element or a parent selector and name a semantic role for the colour value, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so mode, theme and contrast keep working.
 
 ```css
-/* override the colour preview dots of one theme item */
+/* override the swatch background of one theme item */
 mds-pref-theme-item[name="warm"] {
-  --mds-pref-theme-item-color-variant-primary: rgb(var(--magma-accent-emphasis-hover));
-  --mds-pref-theme-item-color-status-success: rgb(var(--magma-success-emphasis));
-  --mds-pref-theme-item-color-status-warning: rgb(var(--magma-warning-emphasis));
-  --mds-pref-theme-item-color-status-error: rgb(var(--magma-danger-emphasis));
   --mds-pref-theme-item-color-background: rgb(var(--magma-wash-strong));
 }
 ```
@@ -179,7 +175,7 @@ A raw `click` carries no `detail`: you have to read `name` back from the element
 
 #### Do Not Pierce Shadow DOM to Style the Inner Button
 
-The supported customization surface is the five `--mds-pref-theme-item-*` CSS custom properties. Targeting internal selectors or `::part()` names not present in this component's public API couples your code to the implementation and will break on minor releases.
+The supported customization surface is the public `--mds-pref-theme-item-color-background` CSS custom property. Targeting internal selectors or `::part()` names not present in this component's public API couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -192,7 +188,6 @@ mds-pref-theme-item .theme-preview {
 
 /* CORRECT */
 mds-pref-theme-item[name="warm"] {
-  --mds-pref-theme-item-color-variant-primary: rgb(var(--magma-accent-emphasis-hover));
   --mds-pref-theme-item-color-background: rgb(var(--magma-wash-strong));
 }
 ```
@@ -234,7 +229,7 @@ mds-pref-theme-item[name="warm"] {
 
 | Name                                          | Description                                           |
 | --------------------------------------------- | ----------------------------------------------------- |
-| `--mds-pref-theme-item-color-background`      | Background color of a theme item.                     |
+| `--mds-pref-theme-item-color-background`      | Public. Background color of a theme item.             |
 | `--mds-pref-theme-item-color-status-error`    | Color representing an error status for a theme item.  |
 | `--mds-pref-theme-item-color-status-success`  | Color representing a success status for a theme item. |
 | `--mds-pref-theme-item-color-status-warning`  | Color representing a warning status for a theme item. |

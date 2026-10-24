@@ -25,7 +25,7 @@ This component is essentially a layout/semantic child and exposes a single non-o
 
 - **`value`**: Provide this when the cell's visible content is not directly comparable for sorting, when the displayed text differs from the value you want to sort by (e.g. a formatted date or currency string), or to get a numeric sort (two values that both read as numbers, such as `value="1250.50"`, are compared numerically). When omitted, the column sort uses the rendered text content instead.
 
-There are no `variant` or `tone` props; visual presentation is controlled through the documented CSS custom properties listed in [`readme.md`](../readme.md): the background and text colors, and the `-alt` pair that paints the cells of the sorted column (the column whose `mds-table-header-cell` has a `direction`).
+There are no `variant` or `tone` props; visual presentation is controlled through the public CSS custom properties listed in [`readme.md`](../readme.md): the background and text colors. The cells of the sorted column (the column whose `mds-table-header-cell` has a `direction`) take an alternate tone of their own.
 
 
 ### 2. Pattern
@@ -180,19 +180,13 @@ The canonical structure. Each cell sits inside an `mds-table-row` of `mds-table-
 
 #### Styling Customization
 
-Customize cell colors through the documented `--mds-table-cell-*` CSS custom properties. Set them on the host or on a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
+Customize cell colors through the public `--mds-table-cell-*` CSS custom properties, the background and the text colour. Set them on the host or on a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working. The cells of the column the table is sorted by take an alternate tone of their own.
 
 ```css
 /* Highlight a column of cells with a custom background */
 .tabella-fatture mds-table-cell.colonna-importo {
   --mds-table-cell-background: rgb(var(--magma-info-emphasis));
   --mds-table-cell-color: rgb(var(--magma-info-on-emphasis));
-}
-
-/* The cells of the column the table is sorted by */
-.tabella-fatture mds-table-cell {
-  --mds-table-cell-background-alt: rgb(var(--magma-accent-surface-subtle));
-  --mds-table-cell-color-alt: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -259,7 +253,7 @@ If a cell shows a formatted value (localized date, currency, percentage) and the
 
 #### Do Not Style Cells by Piercing Shadow DOM
 
-`<mds-table-cell>` does not expose named `::part()` targets; the documented customization surface is `--mds-table-cell-background`, `--mds-table-cell-background-alt`, `--mds-table-cell-color`, and `--mds-table-cell-color-alt`. Targeting internals via `>>>` or undocumented selectors couples your code to implementation details that can change.
+`<mds-table-cell>` does not expose named `::part()` targets; the supported customization surface is the public `--mds-table-cell-background` and `--mds-table-cell-color`. Targeting internals via `>>>` or undocumented selectors couples your code to implementation details that can change.
 
 ```css
 /* INCORRECT */
@@ -311,9 +305,9 @@ Inserting a `<div>` or `<span>` wrapper around `<mds-table-cell>` inside `<mds-t
 
 | Name                              | Description                                         |
 | --------------------------------- | --------------------------------------------------- |
-| `--mds-table-cell-background`     | Default background color of table cells.            |
+| `--mds-table-cell-background`     | Public. Default background color of table cells.    |
 | `--mds-table-cell-background-alt` | Background color of the cells of the sorted column. |
-| `--mds-table-cell-color`          | Default text color of table cells.                  |
+| `--mds-table-cell-color`          | Public. Default text color of table cells.          |
 | `--mds-table-cell-color-alt`      | Text color of the cells of the sorted column.       |
 
 

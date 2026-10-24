@@ -124,12 +124,10 @@ Place multiple `<mds-file>` cards inside a container and attach a single delegat
 
 #### Styling Customization
 
-Style the preview panel only through the three documented `--mds-file-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the preview panel only through its public `--mds-file-preview-color` CSS custom property. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .archivio-documenti mds-file {
-  --mds-file-preview-icon-color: rgb(var(--magma-accent-fg));
-  --mds-file-preview-icon-background: rgb(var(--magma-accent-surface-subtle));
   --mds-file-preview-color: rgb(var(--magma-accent-fg));
 }
 ```
@@ -171,7 +169,7 @@ Common incorrect uses of `<mds-file>`. Each entry pairs the wrong form with the 
 
 #### Do Not Pierce Shadow DOM to Style the Preview Panel
 
-The supported customization surface is `--mds-file-preview-*` CSS custom properties. Targeting internal elements with `>>>`, `/deep/`, or undocumented selectors couples your code to the Shadow DOM structure and will break on minor releases.
+The supported customization surface is the public `--mds-file-preview-color` CSS custom property. Targeting internal elements with `>>>`, `/deep/`, or undocumented selectors couples your code to the Shadow DOM structure and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -181,8 +179,7 @@ mds-file >>> .preview {
 
 /* CORRECT */
 mds-file {
-  --mds-file-preview-icon-background: rgb(var(--magma-accent-surface-subtle));
-  --mds-file-preview-icon-color: rgb(var(--magma-accent-fg));
+  --mds-file-preview-color: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -244,11 +241,11 @@ The host is already focusable (`tabindex="0"`) and emits its own interaction eve
 
 ## CSS Custom Properties
 
-| Name                                 | Description                                        |
-| ------------------------------------ | -------------------------------------------------- |
-| `--mds-file-preview-color`           | Sets the text color used in the file preview       |
-| `--mds-file-preview-icon-background` | Sets the background color of the file preview icon |
-| `--mds-file-preview-icon-color`      | Sets the color of the file preview icon            |
+| Name                                 | Description                                          |
+| ------------------------------------ | ---------------------------------------------------- |
+| `--mds-file-preview-color`           | Public. Sets the text color used in the file preview |
+| `--mds-file-preview-icon-background` | Sets the background color of the file preview icon   |
+| `--mds-file-preview-icon-color`      | Sets the color of the file preview icon              |
 
 
 ## Dependencies

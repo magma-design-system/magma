@@ -148,17 +148,6 @@ Set `animation="yugop"` together with the `text` prop to run a randomized charac
 ></mds-text>
 ```
 
-#### Custom Text Selection Colors
-
-Override the default selection highlight via `--mds-text-selection-background` and `--mds-text-selection-color`. Use Magma color tokens inside `rgb()` so dark mode keeps working.
-
-```css
-.articolo-in-evidenza mds-text {
-  --mds-text-selection-background: rgb(var(--label-orange-09));
-  --mds-text-selection-color: rgb(var(--label-orange-01));
-}
-```
-
 #### Custom Line-Clamp Count
 
 Set `--mds-text-line-clamp` on the component host (or a parent selector) to vary the clamp depth per context without duplicating attributes.
@@ -250,7 +239,7 @@ Replace raw `<h1>`-`<h6>`, `<p>`, `<span>`, `<label>`, and `<code>` styled with 
 
 #### Do Not Reach Into Shadow DOM to Style Internal Elements
 
-The component exposes five `--mds-text-*` CSS custom properties for customization. Do not pierce the shadow DOM via `::part()` or `>>>` selectors targeting the internal `.text` element - that implementation detail is not a documented part and may change.
+The component exposes three public `--mds-text-*` CSS custom properties for customization (the animation speed, the animation placeholder character and the line clamp); the other text styles are set on the host. Do not pierce the shadow DOM via `::part()` or `>>>` selectors targeting the internal `.text` element - that implementation detail is not a documented part and may change.
 
 ```css
 /* INCORRECT */
@@ -261,7 +250,6 @@ mds-text >>> .text {
 /* CORRECT - set via host; the host styles cascade into the shadow text node */
 mds-text {
   letter-spacing: 0.1em;
-  --mds-text-selection-background: rgb(var(--label-sky-09));
 }
 ```
 
@@ -304,13 +292,13 @@ mds-text {
 
 ## CSS Custom Properties
 
-| Name                                    | Description                                       |
-| --------------------------------------- | ------------------------------------------------- |
-| `--mds-text-animation-placeholder-char` | Placeholder character used during text animation. |
-| `--mds-text-animation-speed`            | Speed of text animation.                          |
-| `--mds-text-line-clamp`                 | Number of lines to clamp text to (line-clamp).    |
-| `--mds-text-selection-background`       | Background color used when text is selected.      |
-| `--mds-text-selection-color`            | Text color used when text is selected.            |
+| Name                                    | Description                                               |
+| --------------------------------------- | --------------------------------------------------------- |
+| `--mds-text-animation-placeholder-char` | Public. Placeholder character used during text animation. |
+| `--mds-text-animation-speed`            | Public. Speed of text animation.                          |
+| `--mds-text-line-clamp`                 | Public. Number of lines to clamp text to (line-clamp).    |
+| `--mds-text-selection-background`       | Background color used when text is selected.              |
+| `--mds-text-selection-color`            | Text color used when text is selected.                    |
 
 
 ## Dependencies

@@ -27,7 +27,7 @@ This component exposes a single behavioral prop:
 
 - **`hideBack`** removes the leading arrow control. Leave it off (the default) for multi-level trails where users benefit from a one-tap step backwards; set it for shallow or display-only breadcrumbs where reverse navigation adds no value.
 
-Visual styling (item button colors, separator arrow color) is driven by the CSS custom properties documented in [`readme.md`](../readme.md), not by props; the selected item's colors come from `--mds-breadcrumb-button-background-selected` and `--mds-breadcrumb-button-color-selected`, which every child [`mds-breadcrumb-item`](../../mds-breadcrumb-item) reads (one item can still override them with its own `--mds-breadcrumb-item-button-*-selected`). The shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) do not apply here; per-item labels and selection state live on the `<mds-breadcrumb-item>` children.
+Visual styling (item button colors, separator arrow color) is not driven by props, and `mds-breadcrumb` has no public CSS custom property: the colors follow the semantic roles of the theme, the selected item's included. To restyle the buttons, target the `button` part of the child [`mds-breadcrumb-item`](../../mds-breadcrumb-item): it is the item's `<mds-button>`, so it takes the public `--mds-button-*` custom properties. The shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) do not apply here; per-item labels and selection state live on the `<mds-breadcrumb-item>` children.
 
 
 ### 2. Pattern
@@ -102,14 +102,14 @@ Always set the text with the `label` prop on `<mds-breadcrumb-item>`: the item h
 
 #### Styling Customization via CSS Custom Properties
 
-Apply `--mds-breadcrumb-*` vars on the host to retheme the whole trail at once. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Changes on the parent propagate into the child items because the item vars inherit from the parent vars, the selected item's colors included. `--mds-breadcrumb-button-color-current` and `--mds-breadcrumb-current-button-color` are deprecated names of `--mds-breadcrumb-button-color-selected`: use the new name.
+`mds-breadcrumb` has no public CSS custom property: style it with its props, the `button` part of its items and the semantic roles. The item colors, the selected item's included, and the separator arrow follow the semantic color roles of the theme, so dark mode and high-contrast modes keep working with no override. To retheme the whole trail at once, target the `button` part of every child `<mds-breadcrumb-item>` from a parent selector: the part is the item's `<mds-button>`, so it takes the public `--mds-button-*` custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))`.
 
 ```css
-.sidebar-nav mds-breadcrumb {
-  --mds-breadcrumb-button-color: rgb(var(--magma-accent-fg));
-  --mds-breadcrumb-button-color-hover: rgb(var(--magma-text-default));
-  --mds-breadcrumb-arrow-depth-color: rgb(var(--magma-accent-fg));
-  --mds-breadcrumb-button-color-selected: rgb(var(--magma-text-default));
+.sidebar-nav mds-breadcrumb-item::part(button) {
+  --mds-button-color: rgb(var(--magma-accent-fg));
+}
+.sidebar-nav mds-breadcrumb-item[selected]::part(button) {
+  --mds-button-color: rgb(var(--magma-text-default));
 }
 ```
 
@@ -209,7 +209,7 @@ The parent tracks which item is selected internally; toggling CSS classes or `ar
 
 #### Do Not Pierce the Shadow DOM to Style the Internal Back Button
 
-The back button rendered inside `<mds-breadcrumb>` is a private implementation detail: it exposes no part, and the only documented custom property that reaches it is `--mds-breadcrumb-button-background-disabled`, its background while the first item is selected. To remove it, set `hide-back`.
+The back button rendered inside `<mds-breadcrumb>` is a private implementation detail: it exposes no part and no public custom property. To remove it, set `hide-back`.
 
 ```css
 /* INCORRECT */

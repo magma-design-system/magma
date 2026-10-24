@@ -179,9 +179,9 @@ While an `mds-modal` is open, everything outside it is inert, the region include
 
 ## CSS Custom Properties
 
-| Name                     | Description                                      |
-| ------------------------ | ------------------------------------------------ |
-| `--mds-toast-region-gap` | Space between the toasts lined up in the region. |
+| Name                     | Description                                              |
+| ------------------------ | -------------------------------------------------------- |
+| `--mds-toast-region-gap` | Public. Space between the toasts lined up in the region. |
 
 
 ----------------------------------------------

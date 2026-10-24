@@ -157,13 +157,11 @@ The `typography` prop controls the text role (`'caption'`, `'detail'` [default],
 
 #### Styling Customization
 
-Style the link color and underline through the documented `--mds-bibliography-*` CSS custom properties. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the link color through the public `--mds-bibliography-color` CSS custom property; the underline colors are not public and follow the theme. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .riferimenti mds-bibliography {
   --mds-bibliography-color: rgb(var(--magma-accent-fg));
-  --mds-bibliography-text-decoration: rgb(var(--magma-accent-border));
-  --mds-bibliography-text-decoration-hover: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -273,7 +271,7 @@ Only `'apa'`, `'mla'`, and `'turabian'` are valid. Passing an unrecognised strin
 
 #### Customize via Documented CSS Vars, Not Internal Selectors
 
-The supported customization surface is the three `--mds-bibliography-*` CSS custom properties. Targeting the `.link` class or other internals via shadow-piercing selectors or undocumented `::part()` names couples your code to the implementation and will break on minor releases.
+The supported customization surface is the public `--mds-bibliography-color` CSS custom property. Targeting the `.link` class or other internals via shadow-piercing selectors or undocumented `::part()` names couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -287,8 +285,6 @@ mds-bibliography::part(link) {
 /* CORRECT */
 .sezione-riferimenti mds-bibliography {
   --mds-bibliography-color: rgb(var(--magma-accent-fg));
-  --mds-bibliography-text-decoration: rgb(var(--magma-accent-border));
-  --mds-bibliography-text-decoration-hover: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -314,7 +310,7 @@ mds-bibliography::part(link) {
 
 | Name                                       | Description                                                          |
 | ------------------------------------------ | -------------------------------------------------------------------- |
-| `--mds-bibliography-color`                 | Sets the text color of the component                                 |
+| `--mds-bibliography-color`                 | Public. Sets the text color of the component                         |
 | `--mds-bibliography-text-decoration`       | Sets the text decoration color of the link                           |
 | `--mds-bibliography-text-decoration-hover` | Sets the text decoration color of the link when the mouse is over it |
 

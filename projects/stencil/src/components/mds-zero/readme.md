@@ -265,9 +265,9 @@ mds-zero::part(contents) {
 
 ## CSS Custom Properties
 
-| Name                            | Description                                                         |
-| ------------------------------- | ------------------------------------------------------------------- |
-| `--mds-zero-contents-max-width` | Set if the contents has a max width to be centered in the component |
+| Name                            | Description                                                                 |
+| ------------------------------- | --------------------------------------------------------------------------- |
+| `--mds-zero-contents-max-width` | Public. Set if the contents has a max width to be centered in the component |
 
 
 ----------------------------------------------

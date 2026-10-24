@@ -213,15 +213,13 @@ document
 
 #### Styling Customization
 
-Customize the item only through its documented `--mds-push-notification-item-*` CSS custom properties.
+Customize the item only through its public `--mds-push-notification-item-*` CSS custom properties.
 
 ```css
 .app-notifications mds-push-notification-item {
   --mds-push-notification-item-shadow: var(--shadow-md-sharp);
   --mds-push-notification-item-message-line-clamp: 3;
   --mds-push-notification-item-subject-line-clamp: 2;
-  --mds-push-notification-item-icon-background-color: rgb(var(--magma-accent-emphasis));
-  --mds-push-notification-item-icon-color: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
@@ -400,9 +398,9 @@ mds-push-notification-item::part(content) {
 | `--mds-push-notification-item-duration`              | Duration of the individual push notification item animation. |
 | `--mds-push-notification-item-icon-background-color` | Background color of the item's icon.                         |
 | `--mds-push-notification-item-icon-color`            | Color of the item's icon.                                    |
-| `--mds-push-notification-item-message-line-clamp`    | Number of lines to clamp the message text.                   |
-| `--mds-push-notification-item-shadow`                | Shadow applied to the push notification item.                |
-| `--mds-push-notification-item-subject-line-clamp`    | Number of lines to clamp the subject text.                   |
+| `--mds-push-notification-item-message-line-clamp`    | Public. Number of lines to clamp the message text.           |
+| `--mds-push-notification-item-shadow`                | Public. Shadow applied to the push notification item.        |
+| `--mds-push-notification-item-subject-line-clamp`    | Public. Number of lines to clamp the subject text.           |
 | `--mds-push-notification-item-timing-function`       | Timing function used for the item animation.                 |
 
 

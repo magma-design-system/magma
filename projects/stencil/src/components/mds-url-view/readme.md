@@ -119,7 +119,7 @@ Listen for `mdsUrlViewClose` to update application state when the user clicks th
 
 #### Styling Customization
 
-Style the component only through its documented `--mds-url-view-*` CSS custom properties. Set them on the host or on a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the component only through its public `--mds-url-view-*` CSS custom properties: the background, the text colour, the radius and the shadow of the container. Set them on the host or on a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .anteprima-documento mds-url-view {
@@ -127,7 +127,6 @@ Style the component only through its documented `--mds-url-view-*` CSS custom pr
   --mds-url-view-color: rgb(var(--magma-text-default));
   --mds-url-view-radius: var(--magma-radius-lg);
   --mds-url-view-shadow: var(--shadow-xl);
-  --mds-url-view-header-shadow: var(--shadow-md-sharp);
 }
 ```
 
@@ -190,7 +189,7 @@ Reaching for a bare `<iframe>` skips the header, dismiss control, accessibility 
 
 #### Do Not Pierce the Shadow DOM to Style Internals
 
-The supported customization surface is the five `--mds-url-view-*` CSS custom properties. Targeting shadow internals via `::part()` on undocumented parts, `>>>`, or class-name hacks couples your code to the implementation and will break on minor releases.
+The supported customization surface is the four public `--mds-url-view-*` CSS custom properties. Targeting shadow internals via `::part()` on undocumented parts, `>>>`, or class-name hacks couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -205,7 +204,6 @@ mds-url-view >>> .iframe {
 mds-url-view {
   --mds-url-view-background: rgb(var(--magma-accent-surface));
   --mds-url-view-color: rgb(var(--magma-accent-fg));
-  --mds-url-view-header-shadow: var(--shadow-md-sharp);
 }
 ```
 
@@ -254,13 +252,13 @@ The component calls `new URL(src)` to extract the hostname for the fallback titl
 
 ## CSS Custom Properties
 
-| Name                           | Description                                            |
-| ------------------------------ | ------------------------------------------------------ |
-| `--mds-url-view-background`    | Background color of the URL view container.            |
-| `--mds-url-view-color`         | Text color used inside the URL view.                   |
-| `--mds-url-view-header-shadow` | Box-shadow applied to the header area of the URL view. |
-| `--mds-url-view-radius`        | Border-radius applied to the URL view container.       |
-| `--mds-url-view-shadow`        | Box-shadow applied to the entire URL view container.   |
+| Name                           | Description                                                  |
+| ------------------------------ | ------------------------------------------------------------ |
+| `--mds-url-view-background`    | Public. Background color of the URL view container.          |
+| `--mds-url-view-color`         | Public. Text color used inside the URL view.                 |
+| `--mds-url-view-header-shadow` | Box-shadow applied to the header area of the URL view.       |
+| `--mds-url-view-radius`        | Public. Border-radius applied to the URL view container.     |
+| `--mds-url-view-shadow`        | Public. Box-shadow applied to the entire URL view container. |
 
 
 ## Dependencies

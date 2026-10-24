@@ -24,7 +24,7 @@ The `<mds-details>` web component is the disclosure widget of the Magma Design S
 
 #### Properties & Visual Configurations
 
-This component intentionally exposes a single behavioral prop. Visual surface is driven through slots and the exposed CSS custom properties rather than through variant/tone props.
+This component intentionally exposes a single behavioral prop. Visual surface is driven through slots and the documented shadow parts (`header`, `title`, `content`) rather than through variant/tone props: the component has no public CSS custom property.
 
 - **`opened`** sets the expanded state. Set it to pre-expand the block on first render, or change it to open / close the block from code. A user toggle writes it back too (property and reflected attribute), so it always holds the current state.
 
@@ -139,19 +139,17 @@ Assign the `opened` property to drive the disclosure from code - for example to 
 
 #### CSS Customization
 
-Style the component only through its documented `--mds-details-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode, named themes and high contrast keep working.
+`mds-details` has no public CSS custom property: style it with its props, its parts and the semantic roles. The icon colors and the open/close transition follow the theme. Set colors on the documented parts with the semantic color roles via `rgb(var(--magma-<role>))` so dark mode, named themes and high contrast keep working.
 
 ```css
-.custom-faq mds-details {
-  --mds-details-duration: 500ms;
-  --mds-details-icon-color: rgb(var(--magma-accent-emphasis));
-  --mds-details-helper-icon-color: rgb(var(--magma-text-subtle));
+.custom-faq mds-details::part(header) {
+  background: rgb(var(--magma-surface-muted));
 }
 ```
 
 #### Styling Shadow Parts
 
-When CSS custom properties are not sufficient, use the documented shadow `::part()` names: `header`, `title`, and `content`. Do not target undocumented internals.
+Use the documented shadow `::part()` names: `header`, `title`, and `content`. Do not target undocumented internals.
 
 ```css
 /* Increase header padding for a spacious FAQ layout */
@@ -267,7 +265,7 @@ Clicking the header triggers `mdsDetailsChange` with the new state. Listening fo
 
 #### Do Not Pierce the Shadow DOM to Style Internals
 
-The only supported customization surface is the three documented `--mds-details-*` CSS custom properties and the three documented shadow parts (`header`, `title`, `content`). Targeting undocumented class names or using `>>>` couples your code to the internal implementation and will break on minor releases.
+`mds-details` has no public CSS custom property: the only supported customization surface is the three documented shadow parts (`header`, `title`, `content`). Targeting undocumented class names or using `>>>` couples your code to the internal implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -279,10 +277,6 @@ mds-details >>> .header {
 }
 
 /* CORRECT */
-mds-details {
-  --mds-details-helper-icon-color: rgb(var(--magma-danger-fg));
-  --mds-details-duration: 200ms;
-}
 mds-details::part(header) {
   background: rgb(var(--magma-surface-muted));
 }

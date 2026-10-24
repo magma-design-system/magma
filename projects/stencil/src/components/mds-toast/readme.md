@@ -97,7 +97,7 @@ Pair `variant` with `tone` to adjust visual weight. `strong` (default) uses the 
 
 #### Toast with Icon
 
-Use the `icon` slot with an `<mds-icon>` to add a leading glyph. The icon color inherits from `--mds-toast-icon-color` which is tuned per variant.
+Use the `icon` slot with an `<mds-icon>` to add a leading glyph. The icon color is tuned per variant.
 
 ```html
 <mds-toast visible variant="success">
@@ -196,13 +196,12 @@ document.querySelector('mds-toast').addEventListener('mdsToastClose', (event) =>
 
 #### Styling Customization
 
-Style the toast only through its documented `--mds-toast-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the toast only through its public `--mds-toast-*` CSS custom properties: the background, the text colour, the width and the shadow. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .app-notifications mds-toast {
   --mds-toast-background: rgb(var(--magma-surface-inverse));
   --mds-toast-color: rgb(var(--magma-on-inverse));
-  --mds-toast-icon-color: rgb(var(--magma-on-inverse));
   --mds-toast-width: 480px;
   --mds-toast-shadow: var(--shadow-xl);
 }
@@ -336,7 +335,7 @@ toast.addEventListener('mdsToastClose', () => {
 
 #### Do Not Customize via Undocumented Shadow Parts or Internal Selectors
 
-The supported surface is `--mds-toast-*` CSS custom properties. There are no documented `::part()` targets for `<mds-toast>`; targeting internal class names with `::part()`, `>>>`, or attribute-selector hacks couples your code to the shadow DOM implementation and will break on minor releases.
+The supported surface is the public `--mds-toast-*` CSS custom properties. There are no documented `::part()` targets for `<mds-toast>`; targeting internal class names with `::part()`, `>>>`, or attribute-selector hacks couples your code to the shadow DOM implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -344,7 +343,7 @@ mds-toast >>> .dialog {
   border-radius: 0;
 }
 
-/* CORRECT - use the documented custom properties */
+/* CORRECT - use the public custom properties */
 mds-toast {
   --mds-toast-background: rgb(var(--magma-surface-inverse));
   --mds-toast-color: rgb(var(--magma-on-inverse));
@@ -386,12 +385,12 @@ mds-toast {
 
 | Name                     | Description                                                                                                                                                                 |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-toast-background` | Background color of the toast component.                                                                                                                                    |
-| `--mds-toast-color`      | Text color inside the toast.                                                                                                                                                |
+| `--mds-toast-background` | Public. Background color of the toast component.                                                                                                                            |
+| `--mds-toast-color`      | Public. Text color inside the toast.                                                                                                                                        |
 | `--mds-toast-duration`   | Duration of the transition that shows and hides the toast; `mdsToastClose` is emitted when the hiding one is over. How long the toast stays visible is the `duration` prop. |
 | `--mds-toast-icon-color` | Color of the icon inside the toast.                                                                                                                                         |
-| `--mds-toast-shadow`     | Shadow applied to the toast container.                                                                                                                                      |
-| `--mds-toast-width`      | Width of the toast component.                                                                                                                                               |
+| `--mds-toast-shadow`     | Public. Shadow applied to the toast container.                                                                                                                              |
+| `--mds-toast-width`      | Public. Width of the toast component.                                                                                                                                       |
 
 
 ## Dependencies

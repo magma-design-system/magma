@@ -102,12 +102,10 @@ Drop several `<mds-mention>` tokens in the same text flow. Each is a self-contai
 
 #### Styling Customization
 
-Adjust the icon size through the documented `--mds-mention-icon-size` CSS custom property. Set it on the host element or a parent selector; use Magma spacing tokens to stay on the design grid.
+`<mds-mention>` has no public CSS custom property and no shadow parts: the icon size follows the `size` prop (see Sizing above), which keeps the icon, the padding and the typography in step. For a larger icon, pick the next size instead of resizing the icon by hand.
 
-```css
-.featured-comment mds-mention {
-  --mds-mention-icon-size: calc(var(--spacing) * 700);
-}
+```html
+<mds-mention label="lucia.ferrari" icon="mi/baseline/person" size="md"></mds-mention>
 ```
 
 
@@ -156,18 +154,18 @@ The `size` prop drives icon dimensions, padding, and typography together as a co
 
 #### Do Not Customize Style by Piercing the Shadow DOM
 
-The only supported customization surface is `--mds-mention-icon-size`. Targeting internal elements via `>>>`, `/deep/`, or undocumented `::part()` names couples your code to implementation details and will break on minor releases.
+`<mds-mention>` has no public CSS custom property and no shadow parts: the icon size comes from the `size` prop. Targeting internal elements via `>>>`, `/deep/`, or undocumented `::part()` names couples your code to implementation details and will break on minor releases.
 
 ```css
 /* INCORRECT */
 mds-mention >>> mds-icon {
   width: 32px;
 }
+```
 
-/* CORRECT */
-mds-mention {
-  --mds-mention-icon-size: calc(var(--spacing) * 700);
-}
+```html
+<!-- CORRECT -->
+<mds-mention label="anna.verdi" size="md"></mds-mention>
 ```
 
 #### Do Not Listen for `click` on the Remove Button Directly

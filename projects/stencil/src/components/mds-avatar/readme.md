@@ -112,14 +112,13 @@ Use `count` to render a "+N" overflow badge for the last slot in an avatar stack
 
 #### Styling Customization
 
-Style the avatar only through its documented `--mds-avatar-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes work correctly.
+Style the avatar only through its public `--mds-avatar-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes work correctly.
 
 ```css
 .profilo-utente mds-avatar {
   --mds-avatar-background-color: rgb(var(--magma-accent-emphasis));
   --mds-avatar-color: rgb(var(--magma-accent-on-emphasis));
   --mds-avatar-radius: var(--magma-radius-md);
-  --mds-avatar-initials-padding: 15%;
 
   corner-shape: var(--magma-corner-shape);
 }
@@ -203,7 +202,7 @@ The component derives the background color deterministically from the characters
 
 #### Do Not Pierce Shadow DOM to Change Internal Colors
 
-The supported customization surface is the five documented `--mds-avatar-*` CSS custom properties and, for a deep customisation, the documented parts `wrapper`, `media` and `icon`. Using undocumented part names, `>>>`, or internal class names to target internals couples your code to the Shadow DOM implementation and breaks on minor releases.
+The supported customization surface is the three public `--mds-avatar-*` CSS custom properties and, for a deep customisation, the documented parts `wrapper`, `media` and `icon`. Using undocumented part names, `>>>`, or internal class names to target internals couples your code to the Shadow DOM implementation and breaks on minor releases.
 
 ```css
 /* INCORRECT */
@@ -264,11 +263,11 @@ When an avatar-style UI element is needed, reach for `<mds-avatar>` rather than 
 
 | Name                                    | Description                                        |
 | --------------------------------------- | -------------------------------------------------- |
-| `--mds-avatar-background-color`         | The background-color of the component              |
+| `--mds-avatar-background-color`         | Public. The background-color of the component      |
 | `--mds-avatar-background-color-pending` | The background-color when an image is loading      |
-| `--mds-avatar-color`                    | The color of the placeholder icon                  |
+| `--mds-avatar-color`                    | Public. The color of the placeholder icon          |
 | `--mds-avatar-initials-padding`         | Sets the padding of the initials inside the avatar |
-| `--mds-avatar-radius`                   | The border-radius of the element                   |
+| `--mds-avatar-radius`                   | Public. The border-radius of the element           |
 
 
 ## Dependencies

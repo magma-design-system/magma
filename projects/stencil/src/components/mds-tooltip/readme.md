@@ -150,14 +150,12 @@ Use `strategy="absolute"` when the tooltip must be contained within a scrolling 
 
 #### Styling Customization
 
-Style the tooltip only through its documented `--mds-tooltip-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the tooltip only through its public `--mds-tooltip-*` CSS custom properties: the background (the arrow follows it), the delay and the z-index. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .onboarding-hint mds-tooltip {
   --mds-tooltip-background: rgb(var(--magma-accent-surface));
-  --mds-tooltip-arrow-background: rgb(var(--magma-accent-surface));
   --mds-tooltip-delay: 0.25s;
-  --mds-tooltip-duration: 0.3s;
   --mds-tooltip-z-index: 5000;
 }
 ```
@@ -231,7 +229,7 @@ document.querySelector('mds-tooltip').visible = false;
 
 #### Do Not Pierce the Shadow DOM to Style Internal Parts
 
-The only supported customization surface is the set of `--mds-tooltip-*` CSS custom properties and the documented `text` shadow part. Targeting undocumented internal selectors couples your code to the implementation and will break on minor releases.
+The only supported customization surface is the set of public `--mds-tooltip-*` CSS custom properties and the documented `text` shadow part. Targeting undocumented internal selectors couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -317,15 +315,15 @@ The native `title` tooltip is not styleable and not announced consistently by sc
 | Name                             | Description                                              |
 | -------------------------------- | -------------------------------------------------------- |
 | `--mds-tooltip-arrow-background` | Background color of the tooltip arrow.                   |
-| `--mds-tooltip-background`       | Background color of the tooltip body.                    |
-| `--mds-tooltip-delay`            | Delay before showing the tooltip.                        |
+| `--mds-tooltip-background`       | Public. Background color of the tooltip body.            |
+| `--mds-tooltip-delay`            | Public. Delay before showing the tooltip.                |
 | `--mds-tooltip-dot-padding`      | Padding around the tooltip dot (if present).             |
 | `--mds-tooltip-drop-shadow`      | Drop shadow applied to the tooltip.                      |
 | `--mds-tooltip-duration`         | Duration of the tooltip animation.                       |
 | `--mds-tooltip-ease`             | Timing function for the tooltip animation.               |
 | `--mds-tooltip-transform-from`   | Transform applied at the start of the tooltip animation. |
 | `--mds-tooltip-transform-to`     | Transform applied at the end of the tooltip animation.   |
-| `--mds-tooltip-z-index`          | z-index of the tooltip container.                        |
+| `--mds-tooltip-z-index`          | Public. z-index of the tooltip container.                |
 
 
 ## Dependencies

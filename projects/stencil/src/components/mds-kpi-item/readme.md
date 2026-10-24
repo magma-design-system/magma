@@ -26,7 +26,7 @@ The `<mds-kpi-item>` web component is a compound child that represents a single 
 - **`label`** holds the headline figure (rendered as `h2` typography) and **`description`** the supporting caption (rendered as `label` typography); together they form the item's spoken accessible name, so prefer concise, self-explanatory values.
 - **`icon`** takes an `mds-icon` name and adds a leading visual marker above the figure; omit it for text-only KPIs.
 
-Animation pacing and colors are tunable per item via the CSS custom properties documented in [`readme.md`](../readme.md) (`--mds-kpi-item-text-animation-speed`, `--mds-kpi-item-icon-color`, and related).
+`<mds-kpi-item>` has no public CSS custom property of its own: the animation pacing comes from the public `--mds-kpi-text-animation-speed` and `--mds-kpi-text-animation-placeholder-char` of the parent [`<mds-kpi>`](../../mds-kpi), and colors are tuned through the shadow parts documented in [`readme.md`](../readme.md) (`icon-container`, `icon`, `content`).
 
 
 ### 2. Pattern
@@ -112,20 +112,18 @@ Omit `label` and `description` to display only the icon as a decorative tile. In
 
 #### Styling Customization
 
-Tune icon color, text-area background, and animation timing through the documented `--mds-kpi-item-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode keeps working.
+`<mds-kpi-item>` has no public CSS custom property. Tune the animation timing on the parent with the public `--mds-kpi-text-animation-*` properties of [`<mds-kpi>`](../../mds-kpi), which every item inherits; icon color and text-area background go through the shadow parts below.
 
 ```css
-.highlight-kpi mds-kpi-item {
-  --mds-kpi-item-icon-color: rgb(var(--magma-success-emphasis));
-  --mds-kpi-item-info-background: rgb(var(--magma-surface-overlay));
-  --mds-kpi-item-text-animation-speed: 0.08;
-  --mds-kpi-item-text-animation-placeholder-char: "0";
+.highlight-kpi mds-kpi {
+  --mds-kpi-text-animation-speed: 0.08;
+  --mds-kpi-text-animation-placeholder-char: "0";
 }
 ```
 
 #### Targeting Shadow Parts for Deep Customization
 
-When the CSS custom properties are insufficient, target the three documented shadow parts: `icon-container`, `icon`, and `content`. Reserve this for exceptional cases - prefer `--mds-kpi-item-*` vars whenever they cover your need.
+Style the item through its three documented shadow parts: `icon-container`, `icon`, and `content`. Use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode keeps working.
 
 ```css
 mds-kpi-item::part(icon-container) {
@@ -135,6 +133,10 @@ mds-kpi-item::part(icon-container) {
 
 mds-kpi-item::part(icon) {
   fill: rgb(var(--magma-accent-fg));
+}
+
+mds-kpi-item::part(content) {
+  background-color: rgb(var(--magma-surface-overlay));
 }
 ```
 
@@ -213,7 +215,7 @@ The `icon` prop passes the slug to the internal `<mds-icon>` instance. Slotting 
 
 #### Do Not Pierce Shadow DOM to Style Internal Elements
 
-The supported customization surface is `--mds-kpi-item-*` CSS custom properties and the three documented shadow parts (`icon-container`, `icon`, `content`). Reaching inside the shadow DOM via `>>>` or undocumented class names couples your code to the implementation and will break on minor releases.
+The supported customization surface is the three documented shadow parts (`icon-container`, `icon`, `content`), plus the public `--mds-kpi-text-animation-*` properties of the parent `<mds-kpi>`. Reaching inside the shadow DOM via `>>>` or undocumented class names couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -225,10 +227,8 @@ mds-kpi-item >>> .value {
 }
 
 /* CORRECT */
-mds-kpi-item {
-  --mds-kpi-item-info-background: rgb(var(--magma-surface-overlay));
-}
 mds-kpi-item::part(content) {
+  background-color: rgb(var(--magma-surface-overlay));
   padding: calc(var(--spacing) * 600);
 }
 ```

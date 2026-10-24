@@ -151,18 +151,9 @@ Set `icon` to any slug from the Magma icon library to override the default check
 <mds-input-switch name="lettura" value="1" typography="paragraph" variant="read">Testo di lettura</mds-input-switch>
 ```
 
-#### CSS Custom Property Customization
+#### Styling Customization
 
-Style the switch only through the documented `--mds-input-switch-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and high-contrast modes keep working.
-
-```css
-.settings-panel mds-input-switch {
-  --mds-input-switch-box-color-enabled-checked: rgb(var(--magma-success-emphasis));
-  --mds-input-switch-toggle-color-enabled-checked: rgb(var(--magma-success-on-emphasis));
-  --mds-input-switch-duration: 200ms;
-  --mds-input-switch-toggle-size: var(--mds-input-switch-toggle-size-lg);
-}
-```
+`<mds-input-switch>` has no public CSS custom property and no shadow part: the box and the toggle take their checked colour from the accent role ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so themes and dark mode recolour them without overrides. Size the toggle with `size`, set the checked icon with `icon` or `explicit` and the label with `typography`, as in the patterns above.
 
 
 ### 3. Antipattern
@@ -258,7 +249,7 @@ Without a shared `name`, the radios do not form a group: as with native radios, 
 
 #### Do Not Customize with Undocumented CSS Parts or Internal Selectors
 
-The only supported customization surface is the documented `--mds-input-switch-*` CSS custom properties. Targeting shadow internals via `::part()` on undocumented parts or via `>>>` will break on minor releases.
+`<mds-input-switch>` has no public CSS custom property and no shadow part: style it with its `size`, `icon`, `explicit` and `typography` props, and let the checked colour follow the accent role. Targeting shadow internals via `::part()` on undocumented parts or via `>>>` will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -268,12 +259,11 @@ mds-input-switch >>> .switch {
 mds-input-switch::part(toggle) {
   box-shadow: none;
 }
+```
 
-/* CORRECT */
-mds-input-switch {
-  --mds-input-switch-box-color-enabled-checked: rgb(var(--magma-success-emphasis));
-  --mds-input-switch-duration: 150ms;
-}
+```html
+<!-- CORRECT -->
+<mds-input-switch name="notifiche" value="1" size="lg" checked>Notifiche</mds-input-switch>
 ```
 
 

@@ -293,13 +293,13 @@ mds-radial-progress::part(value-container) {
 
 ## CSS Custom Properties
 
-| Name                                           | Description                                                      |
-| ---------------------------------------------- | ---------------------------------------------------------------- |
-| `--mds-radial-progress-background`             | Color of the ring track, behind the progress arc                 |
-| `--mds-radial-progress-color`                  | Color of the progress arc and of the icon                        |
-| `--mds-radial-progress-text-background`        | Background color of the inner circle that holds the value        |
-| `--mds-radial-progress-text-background-shadow` | Box shadow of the inner circle that holds the value              |
-| `--mds-radial-progress-text-suffix`            | Text written after the value, as a CSS string (`'%'` by default) |
+| Name                                           | Description                                                              |
+| ---------------------------------------------- | ------------------------------------------------------------------------ |
+| `--mds-radial-progress-background`             | Public. Color of the ring track, behind the progress arc                 |
+| `--mds-radial-progress-color`                  | Public. Color of the progress arc and of the icon                        |
+| `--mds-radial-progress-text-background`        | Background color of the inner circle that holds the value                |
+| `--mds-radial-progress-text-background-shadow` | Box shadow of the inner circle that holds the value                      |
+| `--mds-radial-progress-text-suffix`            | Public. Text written after the value, as a CSS string (`'%'` by default) |
 
 
 ## Dependencies

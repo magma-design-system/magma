@@ -115,12 +115,10 @@ Set `--mds-paginator-scroll-behavior` to `auto` to remove the animated scroll wh
 
 #### Styling Individual Items
 
-The items the paginator renders live in its shadow DOM and expose no shadow parts, but they inherit their `--mds-paginator-item-*` CSS custom properties, documented on [`mds-paginator-item`](../../mds-paginator-item): set them on the `mds-paginator` host (or a parent selector) to restyle every page item at once. Use the semantic color roles so dark mode keeps working.
+The items the paginator renders live in its shadow DOM and expose no shadow parts, but they inherit their public `--mds-paginator-item-*` CSS custom properties, documented on [`mds-paginator-item`](../../mds-paginator-item): set them on the `mds-paginator` host (or a parent selector) to restyle every page item at once. Use the semantic color roles so dark mode keeps working.
 
 ```css
 .archivio mds-paginator {
-  --mds-paginator-item-background-selected: rgb(var(--magma-accent-surface));
-  --mds-paginator-item-color-selected: rgb(var(--magma-accent-fg));
   --mds-paginator-item-radius: var(--magma-radius-md);
 }
 ```
@@ -235,10 +233,10 @@ mds-paginator {
 
 ## CSS Custom Properties
 
-| Name                              | Description                                                   |
-| --------------------------------- | ------------------------------------------------------------- |
-| `--mds-paginator-background`      | Sets the background-color of the pages area, behind the items |
-| `--mds-paginator-scroll-behavior` | Sets the scroll-behavior animation                            |
+| Name                              | Description                                                           |
+| --------------------------------- | --------------------------------------------------------------------- |
+| `--mds-paginator-background`      | Public. Sets the background-color of the pages area, behind the items |
+| `--mds-paginator-scroll-behavior` | Public. Sets the scroll-behavior animation                            |
 
 
 ## Dependencies

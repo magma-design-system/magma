@@ -160,20 +160,18 @@ The default slot accepts any HTML or components - not just text. Use it for stru
 
 #### Styling Customization
 
-Style each item only through its documented `--mds-accordion-item-*` CSS custom properties. Setting vars on the parent `<mds-accordion>` propagates to all children via the `--mds-accordion-*` cascade variables the items consume.
+Style each item only through its public `--mds-accordion-item-*` CSS custom properties. Setting the public `--mds-accordion-*` properties on the parent `<mds-accordion>` propagates to all children via the cascade variables the items consume.
 
 ```css
 /* Customize all items via the parent */
 mds-accordion {
-  --mds-accordion-border-color: rgb(var(--magma-accent-border));
-  --mds-accordion-duration: 200ms;
+  --mds-accordion-padding-selected: calc(var(--spacing) * 600) 0 calc(var(--spacing) * 800) 0;
+  --mds-accordion-padding-unselected: calc(var(--spacing) * 400) 0;
 }
 
 /* Or target a single item directly */
 .sidebar mds-accordion-item {
   --mds-accordion-item-color: rgb(var(--magma-text-default));
-  --mds-accordion-item-padding-selected: 1.5rem 0 2.5rem 0;
-  --mds-accordion-item-padding-unselected: 1rem 0;
 }
 ```
 
@@ -351,7 +349,7 @@ The item already is a styled disclosure widget. Nesting a native `<details>` ins
 | ----------------------------------------- | ------------------------------------------------------------------------- |
 | `--mds-accordion-item-border-color`       | Sets the border-color of the component                                    |
 | `--mds-accordion-item-border-width`       | Sets the border-width of the separators of the component                  |
-| `--mds-accordion-item-color`              | Sets the text-color of the component                                      |
+| `--mds-accordion-item-color`              | Public. Sets the text-color of the component                              |
 | `--mds-accordion-item-description-color`  | Sets the color of the always visible title description                    |
 | `--mds-accordion-item-duration`           | Sets the transition duration of the close/open animation of the component |
 | `--mds-accordion-item-padding-selected`   | Sets the vertical padding of the component when it's selected             |

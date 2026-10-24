@@ -26,7 +26,7 @@ The internal trigger consumes the shared `variant` / `tone` / `size` ladders def
 
 #### Other behavioral props
 
-- **`angleStart`** and **`angleEnd`** define the angular sweep (in degrees) over which items are distributed; a 360-degree span produces a full ring, while a narrower range produces a fan. Setting `angleStart` greater than `angleEnd` reverses the distribution. Unset, they leave the sweep to `--mds-radial-menu-angle-start` / `-angle-end` (a full ring from `0deg` by default).
+- **`angleStart`** and **`angleEnd`** define the angular sweep (in degrees) over which items are distributed; a 360-degree span produces a full ring, while a narrower range produces a fan. Setting `angleStart` greater than `angleEnd` reverses the distribution. Unset, the sweep is a full ring from `0deg`.
 - **`radius`** sets the distance (in `rem`) of the items from the centre, controlling how far they travel when the menu opens. Unset, it leaves it to `--mds-radial-menu-radius` (`5rem` by default).
 - **`direction`** chooses whether items lay out `'clockwise'` or `'counterclockwise'` around the arc.
 - **`interaction`** selects how the menu is summoned: `'click'` shows the trigger button, `'rightclick'` hides it and opens at the cursor.
@@ -167,19 +167,15 @@ Use the `size` prop to resize the trigger button and all items simultaneously. D
 
 #### Styling Customization
 
-Style the component through its documented `--mds-radial-menu-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. The radius and the angles can come from a stylesheet too, through `--mds-radial-menu-radius`, `--mds-radial-menu-angle-start` and `--mds-radial-menu-angle-end` set on the element: the `radius`, `angle-start` and `angle-end` props, when set, write the same properties inline and win over the stylesheet.
+Style the component through its public `--mds-radial-menu-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. The radius can come from a stylesheet too, through `--mds-radial-menu-radius` set on the element: the `radius` prop, when set, writes the same property inline and wins over the stylesheet. The angles have no public CSS custom property: set them with the `angle-start` and `angle-end` props (see Fan Layout with Angle Range above).
 
 ```css
 .my-context mds-radial-menu {
-  --mds-radial-menu-transition-duration: 300ms;
-  --mds-radial-menu-disc-background: rgb(var(--magma-surface-overlay) / 0.8);
   --mds-radial-menu-disc-size: 12rem;
 }
 
-/* a fan in the top right corner, on wide screens a larger one */
+/* a ring in the top right corner, on wide screens a larger one */
 .corner-actions mds-radial-menu {
-  --mds-radial-menu-angle-start: 0deg;
-  --mds-radial-menu-angle-end: 90deg;
   --mds-radial-menu-radius: 5rem;
 }
 
@@ -329,14 +325,14 @@ The arc geometry is driven by the `angle-start`, `angle-end`, `radius`, and `dir
 | ---------------------------------------------- | ---------------------------------------------------------------------------------- |
 | `--mds-radial-menu-angle-end`                  | Ending angle of the radial menu; the `angle-end` prop, when set, wins over it.     |
 | `--mds-radial-menu-angle-start`                | Starting angle of the radial menu; the `angle-start` prop, when set, wins over it. |
-| `--mds-radial-menu-context-menu-z-index`       | Z-index of the radial menu context.                                                |
+| `--mds-radial-menu-context-menu-z-index`       | Public. Z-index of the radial menu context.                                        |
 | `--mds-radial-menu-delay`                      | Delay before the radial menu opens.                                                |
 | `--mds-radial-menu-direction`                  | Direction multiplier for menu expansion (-1 or 1).                                 |
 | `--mds-radial-menu-disc-background`            | Background color of the radial menu disc.                                          |
 | `--mds-radial-menu-disc-filter`                | Filter applied to the radial menu disc.                                            |
 | `--mds-radial-menu-disc-shadow`                | Shadow applied to the radial menu disc.                                            |
-| `--mds-radial-menu-disc-size`                  | Size of the radial menu disc.                                                      |
-| `--mds-radial-menu-radius`                     | Radius of the radial menu; the `radius` prop, when set, wins over it.              |
+| `--mds-radial-menu-disc-size`                  | Public. Size of the radial menu disc.                                              |
+| `--mds-radial-menu-radius`                     | Public. Radius of the radial menu; the `radius` prop, when set, wins over it.      |
 | `--mds-radial-menu-transition-duration`        | Duration of the radial menu open/close transition.                                 |
 | `--mds-radial-menu-transition-timing-function` | Timing function of the radial menu transition.                                     |
 

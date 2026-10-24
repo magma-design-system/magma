@@ -191,13 +191,12 @@ When `deletable` is set and the banner lives inside an `<mds-modal>`, activating
 
 #### CSS Custom Property Customization
 
-Override appearance only through the documented `--mds-banner-*` custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Override appearance only through the public `--mds-banner-*` custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .featured-notice mds-banner {
   --mds-banner-background: rgb(var(--magma-accent-emphasis));
   --mds-banner-color: rgb(var(--magma-accent-on-emphasis));
-  --mds-banner-headline-color: rgb(var(--magma-accent-on-emphasis));
   --mds-banner-radius: var(--magma-radius-sm);
   --mds-banner-shadow: 0 4px 16px rgb(var(--magma-shadow-ink) / 0.15);
 }
@@ -292,7 +291,7 @@ The `action` named slot is the correct place for inline controls. Placing button
 
 #### Do Not Pierce Shadow DOM to Style Internals
 
-The only supported customization surface is the `--mds-banner-*` CSS custom properties plus the `::part(text)` shadow part. Targeting internal class names with `>>>` or undocumented `::part()` names couples your code to the implementation and breaks on minor releases.
+The only supported customization surface is the public `--mds-banner-*` CSS custom properties plus the `::part(text)` shadow part. Targeting internal class names with `>>>` or undocumented `::part()` names couples your code to the implementation and breaks on minor releases.
 
 ```css
 /* INCORRECT */
@@ -305,7 +304,6 @@ mds-banner::part(content) {
 
 /* CORRECT */
 mds-banner {
-  --mds-banner-headline-color: rgb(var(--magma-accent-fg));
   --mds-banner-radius: var(--magma-radius-sm);
 }
 mds-banner::part(text) {
@@ -379,15 +377,15 @@ The component fires `mdsBannerClose` only when the close button is activated (bo
 
 | Name                                      | Description                                                                                          |
 | ----------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `--mds-banner-background`                 | Sets the background-color of the component                                                           |
+| `--mds-banner-background`                 | Public. Sets the background-color of the component                                                   |
 | `--mds-banner-cockade-background`         | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background |
 | `--mds-banner-cockade-distance`           | When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color |
-| `--mds-banner-color`                      | Sets the text color of the component                                                                 |
+| `--mds-banner-color`                      | Public. Sets the text color of the component                                                         |
 | `--mds-banner-content-gap`                | Sets gap between banner elements                                                                     |
 | `--mds-banner-headline-color`             | The text color of the headline                                                                       |
 | `--mds-banner-icon-color`                 | Sets the close icon fill color of the component                                                      |
-| `--mds-banner-radius`                     | Sets the border-radius of the component                                                              |
-| `--mds-banner-shadow`                     | Sets the box-shadow of the component                                                                 |
+| `--mds-banner-radius`                     | Public. Sets the border-radius of the component                                                      |
+| `--mds-banner-shadow`                     | Public. Sets the box-shadow of the component                                                         |
 | `--mds-banner-transition-duration`        | Sets the transition duration                                                                         |
 | `--mds-banner-transition-timing-function` | Sets the transition timing function                                                                  |
 
