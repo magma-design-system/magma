@@ -235,9 +235,12 @@ Any other colour that is not a role keeps its literal under a disable comment th
 An `--mds-*` custom property, set or read, that no component promises. A component's
 `AGENTS.md` lists its public custom properties, the only ones a product sets; the others are
 internal, its implementation, and may change or go in any release without notice. A name no
-component documents is reported too. Stylelint reads the stylesheets; ESLint reads the
-inline styles of the templates: a `style` attribute, a React `style={{ '--mds-<name>': ... }}`
-object, an Angular `[style.--mds-<name>]` binding.
+component documents is reported too. Stylelint reads the stylesheets, the classes of `@apply`
+included; ESLint reads the inline styles of the templates (a `style` attribute, a React
+`style={{ '--mds-<name>': ... }}` object, an Angular `[style.--mds-<name>]` binding) and their
+Tailwind classes, through variants and `!`: an arbitrary property that sets one
+(`[--mds-<name>:<value>]`, on the component or on a parent that sets it for its descendants)
+and an arbitrary value that reads one (`bg-[var(--mds-<name>)]`, `bg-(--mds-<name>)`).
 
 ```css
 /* INCORRECT: internal, it may change in any release */

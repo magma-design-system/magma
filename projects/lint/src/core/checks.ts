@@ -4,7 +4,14 @@
   follow docs/agents (conventions.md, color.md), where each rule is written in prose.
 */
 import type { ComponentInfo, PaletteInfo, StyleInfo } from './data.js';
-import { attributeOf, isSet, type Finding, type LintElement } from './element.js';
+import {
+  attributeOf,
+  customPropertiesOf,
+  isSet,
+  type Finding,
+  type LintCustomProperty,
+  type LintElement,
+} from './element.js';
 
 /** `<mds-banner tone="outline">`: a value outside the closed union of the prop. */
 export const validAttributeValues = (element: LintElement, component: ComponentInfo): Finding[] => {
@@ -144,9 +151,20 @@ export const internalTokenMessage = (
     : `"${name}" is not a custom property any Magma component promises: ${instead}.`;
 };
 
-/** `style="--mds-chip-icon-color: ..."`: an `--mds-*` that no component promises. */
+/**
+ * The `--mds-*` names a class sets or reads through Tailwind, read through its variants and
+ * `!` as `utilityOf` reads them: an arbitrary property (`dark:[--mds-x:red]`, also on a parent
+ * that sets it for its descendants) or an arbitrary value (`bg-[var(--mds-x)]`, `bg-(--mds-x)`).
+ */
+export const classCustomPropertiesOf = (element: LintElement): LintCustomProperty[] =>
+  element.classes.flatMap(({ name, node }) => customPropertiesOf(utilityOf(name), node));
+
+/**
+ * `style="--mds-chip-icon-color: ..."`, `class="[--mds-chip-icon-color:red]"`: an `--mds-*`
+ * that no component promises, in every form the template writes one.
+ */
 export const noInternalTokens = (element: LintElement, styles: Map<string, StyleInfo>): Finding[] =>
-  element.customProperties.flatMap(({ name, node }) => {
+  [...element.customProperties, ...classCustomPropertiesOf(element)].flatMap(({ name, node }) => {
     const message = internalTokenMessage(name, styles.get(name));
     return message ? [{ node, message }] : [];
   });

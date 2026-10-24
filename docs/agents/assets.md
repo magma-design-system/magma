@@ -418,7 +418,8 @@ Known limits, nothing to configure:
 - [ ] `@fontsource` fonts installed and imported in the `vendor` layer
 - [ ] Every icon slug the app uses served at `<mdsIconSvgPath><slug>.svg` (iconsauce or
       the copy script, run before dev and build, output folder out of git)
-- [ ] `mdsIconSvgPath` set to that public path before hydration
+- [ ] That public path set before hydration (`IconsSetService.setSvgPath()` or the
+      `mdsIconSvgPath` key of `sessionStorage`)
 - [ ] (optional) `identity` installed if brand assets are used
 - [ ] Components registered per your target track
 - [ ] (VS Code) the editor keys merged into `.vscode/settings.json` and `extensions.json`;

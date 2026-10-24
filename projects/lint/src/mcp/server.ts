@@ -12,7 +12,7 @@ import { checkMarkup, checkSetup } from './checks.js';
 import { findComponent, getComponent, getUsage } from './components.js';
 import { getGuide } from './guides.js';
 import { findIcon } from './icons.js';
-import { createHandler, type Tool } from './protocol.js';
+import { createHandler, toolList, type Tool } from './protocol.js';
 import { explainClass, listTokens, suggestRole } from './tokens.js';
 
 /** What the agent reads when it connects: when to reach for the server. */
@@ -35,6 +35,12 @@ export const toolsOf = (context: ToolContext): Tool[] =>
     checkMarkup,
     checkSetup,
   ].map((tool) => tool(context));
+
+/**
+ * The tools as data, the answer of `tools/list`: a definition reads nothing of the project, so
+ * any context gives the same. The stencil build writes it into dist/lint/mcp/tools.json.
+ */
+export const toolsList = (context: ToolContext) => toolList(toolsOf(context));
 
 /**
  * The Magma mark, the icon a client may show next to the server: the stencil build copies it

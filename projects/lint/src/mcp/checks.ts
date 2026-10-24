@@ -290,6 +290,42 @@ const sourceFiles = (root: string, limit = 3000): string[] => {
 const firstExisting = (root: string, names: string[]) =>
   names.map((name) => path.join(root, name)).find((file) => existsSync(file));
 
+/**
+ * How a project tells mds-icon where the icons are: the ways IconsSetService reads the path
+ * (agents/assets.md, "Tell mds-icon where the icons are"; mds-icon, 2. Pattern.md), that is
+ * setSvgPath() of IconsSetService or of an mds-icon, and the mdsIconSvgPath key of
+ * sessionStorage. Any other mention of the name (`window.mdsIconSvgPath = ...`) is read by no one.
+ */
+const ICON_PATH_SETTERS = [
+  /\bsetSvgPath\s*\(/,
+  /sessionStorage\s*\.\s*setItem\s*\(\s*['"`]mdsIconSvgPath['"`]/,
+];
+
+/**
+ * The configuration files each tool loads, in the order it looks for them: ESLint 9
+ * (`FLAT_CONFIG_FILENAMES` of eslint/lib/config/config-loader.js), Stylelint 16 (the default
+ * search places of cosmiconfig 9, after the `stylelint` key of package.json). A project that
+ * extends the preset from any of them is set up: a check that knows fewer would send the agent
+ * to write a second one.
+ */
+const ESLINT_CONFIGS = [
+  'eslint.config.js',
+  'eslint.config.mjs',
+  'eslint.config.cjs',
+  'eslint.config.ts',
+  'eslint.config.mts',
+  'eslint.config.cts',
+];
+const RC_EXTENSIONS = ['', '.json', '.yaml', '.yml', '.js', '.ts', '.cjs', '.mjs'];
+const STYLELINT_CONFIGS = [
+  ...RC_EXTENSIONS.map((extension) => `.stylelintrc${extension}`),
+  ...RC_EXTENSIONS.map((extension) => `.config/stylelintrc${extension}`),
+  'stylelint.config.js',
+  'stylelint.config.ts',
+  'stylelint.config.cjs',
+  'stylelint.config.mjs',
+];
+
 /** The Magma plugin is enabled in these Claude Code settings (`enabledPlugins`, `magma@magma`). */
 export const pluginEnabled = (file: string): boolean =>
   readJsonFile<{ enabledPlugins?: Record<string, boolean> }>(file)?.enabledPlugins?.[
@@ -348,6 +384,7 @@ export const checkSetup = (context: ToolContext): Tool => ({
     const project = readJsonFile<{
       dependencies?: Record<string, string>;
       devDependencies?: Record<string, string>;
+      stylelint?: unknown;
     }>(path.join(root, 'package.json'));
     if (!project)
       throw new ToolError(
@@ -446,26 +483,27 @@ export const checkSetup = (context: ToolContext): Tool => ({
           : 'No icon set and no iconsauce configuration: mds-icon renders nothing.',
       guide: 'agents/assets.md (Icons)',
     });
-    const sources = sourceFiles(root);
-    const pathSet = sources.some((file) => readFileSync(file, 'utf8').includes('mdsIconSvgPath'));
+    const sources = sourceFiles(root).map((file) => ({ file, text: readFileSync(file, 'utf8') }));
+    const setter = sources.find(({ text }) => ICON_PATH_SETTERS.some((one) => one.test(text)));
+    const stray = sources.find(({ text }) => text.includes('mdsIconSvgPath'));
     checks.push({
       id: 'icon-path',
-      ok: pathSet,
-      detail: pathSet
-        ? 'mdsIconSvgPath is set in the sources.'
-        : 'mdsIconSvgPath is not set in src/ or app/: mds-icon does not know where the icons are.',
+      ok: Boolean(setter),
+      detail: setter
+        ? `${path.relative(root, setter.file)} sets the icon path.`
+        : stray
+          ? `${path.relative(root, stray.file)} names mdsIconSvgPath, but mds-icon reads the path only from IconsSetService.setSvgPath() and from sessionStorage.setItem('mdsIconSvgPath', ...).`
+          : 'Nothing in the sources sets the icon path: mds-icon does not know where the icons are. Call IconsSetService.setSvgPath() from @maggioli-design-system/magma/services before the first mds-icon renders.',
       guide: 'agents/assets.md (Tell mds-icon where the icons are)',
     });
 
     // the lint, and this server
+    // the file the tool loads, the first it finds, has to name the preset
     const mentions = (names: string[], text: string) => {
       const file = firstExisting(root, names);
       return Boolean(file && readFileSync(file, 'utf8').includes(text));
     };
-    const eslintOk = mentions(
-      ['eslint.config.js', 'eslint.config.mjs', 'eslint.config.cjs', 'eslint.config.ts'],
-      '@maggioli-design-system/magma/eslint',
-    );
+    const eslintOk = mentions(ESLINT_CONFIGS, '@maggioli-design-system/magma/eslint');
     checks.push({
       id: 'lint-eslint',
       ok: eslintOk,
@@ -474,16 +512,10 @@ export const checkSetup = (context: ToolContext): Tool => ({
         : 'The ESLint configuration does not load @maggioli-design-system/magma/eslint.',
       guide: 'agents/lint.md',
     });
-    const stylelintOk = mentions(
-      [
-        'stylelint.config.mjs',
-        'stylelint.config.js',
-        'stylelint.config.cjs',
-        '.stylelintrc.json',
-        '.stylelintrc',
-      ],
-      '@maggioli-design-system/magma/stylelint',
-    );
+    const stylelintOk =
+      project.stylelint !== undefined
+        ? JSON.stringify(project.stylelint).includes('@maggioli-design-system/magma/stylelint')
+        : mentions(STYLELINT_CONFIGS, '@maggioli-design-system/magma/stylelint');
     checks.push({
       id: 'lint-stylelint',
       ok: stylelintOk,

@@ -27,6 +27,21 @@ export interface Tool {
   ) => Record<string, unknown> | Promise<Record<string, unknown>>;
 }
 
+/**
+ * The answer of `tools/list`: what a client learns of each tool. The stencil build writes the
+ * same object into dist/lint/mcp/tools.json, for the documentation.
+ */
+export const toolList = (tools: Tool[]) => ({
+  tools: tools.map(({ name, title, description, inputSchema, outputSchema }) => ({
+    name,
+    title,
+    description,
+    inputSchema,
+    outputSchema,
+    annotations: { readOnlyHint: true, openWorldHint: false },
+  })),
+});
+
 /** A failure the tool explains to the agent: returned as a tool error, not a protocol one. */
 export class ToolError extends Error {}
 
@@ -85,16 +100,7 @@ export const createHandler =
       case 'ping':
         return ok({});
       case 'tools/list':
-        return ok({
-          tools: tools.map(({ name, title, description, inputSchema, outputSchema }) => ({
-            name,
-            title,
-            description,
-            inputSchema,
-            outputSchema,
-            annotations: { readOnlyHint: true, openWorldHint: false },
-          })),
-        });
+        return ok(toolList(tools));
       case 'tools/call': {
         const tool = tools.find((one) => one.name === params.name);
         if (!tool) return error(id, ERROR.params, `Unknown tool: ${String(params.name)}`);

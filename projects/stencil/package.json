@@ -78,6 +78,7 @@
     "./agents/*": "./agents/*",
     "./CHANGELOG.md": "./CHANGELOG.md",
     "./dist/documentation.json": "./dist/documentation.json",
+    "./dist/lint/mcp/tools.json": "./dist/lint/mcp/tools.json",
     "./dist/collection/components/*.md": "./dist/collection/components/*.md",
     "./dist/collection/components/*/documentation.json": "./dist/collection/components/*/documentation.json",
     "./package.json": "./package.json"

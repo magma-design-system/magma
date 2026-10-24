@@ -112,6 +112,27 @@ export const locate = (kind: keyof typeof PACKAGE, settings: MagmaSettings = {})
   );
 };
 
+/** Inside magma this module is dist/lint/core/data.js: the manifest of magma is three folders up. */
+const OWN_MANIFEST = path.resolve(path.dirname(HERE), '../../../package.json');
+
+/** The version of the magma these rules ship in; undefined in the sources of the repository. */
+export const shippedVersion = (): string | undefined => {
+  if (!existsSync(OWN_MANIFEST)) return undefined;
+  const { name, version } = JSON.parse(readFileSync(OWN_MANIFEST, 'utf8')) as {
+    name?: string;
+    version?: string;
+  };
+  return name === '@maggioli-design-system/magma' ? version : undefined;
+};
+
+/**
+ * A section of the lint guide at the release these rules ship in, its tag `magma@<version>`:
+ * a project on an older version reads the rule it runs, not the one on main. Main only from
+ * the sources, which belong to no release.
+ */
+export const lintGuideUrl = (anchor: string, version = shippedVersion()): string =>
+  `https://github.com/magma-design-system/magma/blob/${version ? `magma@${version}` : 'main'}/docs/agents/lint.md#${anchor}`;
+
 const cache = new Map<string, unknown>();
 /** What `build` makes of a JSON file, once per `key` (the file, and what else it depends on). */
 const readJson = <T>(file: string, build: (json: never) => T, key = file): T => {

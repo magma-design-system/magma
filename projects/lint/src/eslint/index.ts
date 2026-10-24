@@ -12,6 +12,7 @@
 import path from 'node:path';
 import type { ESLint, Linter, Rule } from 'eslint';
 import {
+  lintGuideUrl,
   loadComponents,
   loadPalette,
   loadStyles,
@@ -29,8 +30,6 @@ import {
 } from '../core/checks.js';
 import type { Finding, LintElement } from '../core/element.js';
 import { fromAngular, fromHtml, fromJsx } from './adapters.js';
-
-const DOCS = 'https://github.com/magma-design-system/magma/blob/main/docs/agents/lint.md';
 
 interface Data {
   component: (tag: string) => ComponentInfo | undefined;
@@ -52,7 +51,7 @@ const onComponents =
 const createRule = (name: string, description: string, check: Check): Rule.RuleModule => ({
   meta: {
     type: 'problem',
-    docs: { description, url: `${DOCS}#${name}` },
+    docs: { description, url: lintGuideUrl(name) },
     schema: [],
   },
   create(context) {
@@ -100,9 +99,11 @@ const rules: Record<string, Rule.RuleModule> = {
   ),
   'no-internal-tokens': createRule(
     'no-internal-tokens',
-    'An inline style sets or reads only the custom properties a Magma component promises.',
+    'An inline style or a Tailwind class sets or reads only the custom properties a Magma component promises.',
     (element, data) =>
-      element.customProperties.length ? noInternalTokens(element, data.styles()) : [],
+      element.customProperties.length || element.classes.some(({ name }) => name.includes('--mds-'))
+        ? noInternalTokens(element, data.styles())
+        : [],
   ),
 };
 

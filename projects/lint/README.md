@@ -14,6 +14,7 @@ own: the stencil build compiles them into `@maggioli-design-system/magma` (`dist
 | `./stylelint/recommended`, `./stylelint/strict` | the Stylelint presets |
 | `./lint` | the core, for tools that run the same checks |
 | `magma-mcp` (bin) | the MCP server on stdio: `dist/lint/mcp/cli.js` |
+| `./dist/lint/mcp/tools.json` | the tools of the server as data, the answer of `tools/list`, for the documentation |
 
 So both arrive with the components, at the same version, with nothing for a project to
 install or keep aligned. How a project sets them up is in the consumer guides,
@@ -60,6 +61,47 @@ or on the guide it enforces, not only on fixtures picked by hand.
   ([`projects/stencil/SPEC.md`](../stencil/SPEC.md), "Discovering available slugs"): the tests
   hold `find_icon` to it both ways, and run the routes of the guide
   (`projects/stencil/scripts/agent-docs-icons.spec.ts`) on a multi-word slug.
+- **What `check_setup` accepts**: every way its guide documents and every file the tool
+  itself loads, not one form picked among them, or the agent adds a second setup to a project
+  that has one. The icon path is set where `IconsSetService` reads it: its `setSvgPath()` (or
+  the one of an `mds-icon`) and the `mdsIconSvgPath` key of `sessionStorage`, and nowhere
+  else; the test collects those lines from the code blocks of the guides. The lint
+  configuration is the first file the tool loads: ESLint 9 `FLAT_CONFIG_FILENAMES`, then for
+  Stylelint 16 the `stylelint` key of `package.json` and the search places of cosmiconfig 9.
+- **Token values** (`list_tokens`, `explain_class`): the value is what the CSS writes. Where the
+  package records a `cssValue` (the CSS writes the quantity differently from the JSON:
+  `em` letter spacing, ratios, elevations on `--depth`, design-tokens README, "Token data")
+  that is the value; otherwise the DTCG value is serialised by its `$type`, as DTCG 2025.10
+  defines each type and composite type (a shadow is one `[inset] x y blur spread color` layer
+  per item), aliases resolved inside composites too. A type with no single CSS value
+  (`typography`, `gradient`) has none, and so does a part with no serialiser: never
+  `[object Object]`. The fixtures hold one token of every `$type` and shape the published
+  data has, and a test runs every value of the built data when there is one.
+- **What a colour paints** (`suggest_role`): each root of the `--color` namespace of the
+  consumption map is classified by the CSS property Tailwind writes for it (text, border,
+  background, shadow; the masks read only the alpha, no role), in a table a test holds to the
+  map, so a new root fails a test instead of reading as a background. A role is matched in
+  its family, `--magma-shadow-ink` for a shadow (or a fill, for a glow), and the class keeps
+  the utility and the opacity of the class given.
+- **Where a rule looks** (`no-internal-tokens`, `no-raw-palette-classes`): everywhere a
+  project writes the thing it checks, with the stack Magma ships, not only the first form that
+  comes to mind. A custom property is written in an inline style, in a framework binding, in a
+  Tailwind class (an arbitrary property or value, behind variants and `!`, read with
+  `utilityOf` like the palette classes) and in `@apply`; the tests cover each form on each
+  parser. The forms a class is written in are the surfaces of the codemod
+  (`projects/codemod/src/surfaces`: markup, `clsx()` and other expressions of a React
+  `className`, Angular `[ngClass]`, `[class]` and `[attr.class]`, `@apply`). The lint reads
+  the static `class` and `className` (a string or a template literal) and, for custom
+  properties, `@apply`; the other surfaces are a known gap.
+- **What a tool or a rule says about itself** (the documentation site reads it from the
+  installed package, magma-design-system/docs#1): the same fields on both plugins, a
+  description and the URL of its section of `agents/lint.md` (an ESLint rule in
+  `meta.docs`, a Stylelint rule in its `meta`, which Stylelint gives no description field);
+  the tools as `tools.json`, the very object `tools/list` answers. A link a shipped file
+  prints points at the release it ships in, the tag `magma@<version>` (`lintGuideUrl`), so
+  an older project reads the rule it runs; only the sources, which belong to no release,
+  link `main`. The tests hold every rule to a description, its URL and an existing heading
+  of the guide.
 
 ## Tests
 
@@ -78,9 +120,10 @@ stencil pipeline builds the package with the lint inside.
 1. Write the check: a template rule in `src/core/checks.ts` on the element of
    `src/core/element.ts`, a CSS rule in `src/stylelint/`. Read what it needs from the
    installed data (`src/core/data.ts`), not from a list.
-2. Register it in `src/eslint/index.ts` or `src/stylelint/index.ts`, and in the presets:
-   `recommended` makes what is broken or not accessible an error and token discipline a
-   warning, `strict` makes everything an error.
+2. Register it in `src/eslint/index.ts` or `src/stylelint/index.ts`, with a one-sentence
+   description (`createRule`, `metaOf`: the documentation site prints it), and in the
+   presets: `recommended` makes what is broken or not accessible an error and token
+   discipline a warning, `strict` makes everything an error.
 3. Test it on every parser it supports, valid and invalid cases.
 4. Document it in [`docs/agents/lint.md`](../../docs/agents/lint.md), with an INCORRECT and a
    CORRECT example, and check that the guides' own examples pass it: the strict preset run
@@ -94,7 +137,8 @@ command, `src/mcp/cli.ts`, serves them on stdio from the project it starts in (`
 points elsewhere; `--documentation`, `--tokens`, `--consumption`, `--globals` and
 `--icons-<set>` point the data elsewhere). The server writes only protocol messages to
 stdout. The icon it shows its clients is the Magma mark of identity, copied into
-`dist/lint/mcp/icon.svg` by the stencil build.
+`dist/lint/mcp/icon.svg` by the stencil build, which also writes the tools as data into
+`dist/lint/mcp/tools.json`: the answer of `tools/list` (`toolsList`), from the compiled server.
 
 A tool is read-only and answers from data the packages ship: add one in the file of its area,
 give it an `outputSchema` its result matches (the official client checks it), register it in

@@ -1,5 +1,6 @@
 // The template rules on each parser they support, against fixtures cut from the real data
 // (test/fixtures: a few components of documentation.json, a few palette tokens).
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as angular from '@angular-eslint/template-parser';
@@ -7,6 +8,7 @@ import * as html from '@html-eslint/parser';
 import { RuleTester, type Linter } from 'eslint';
 import { describe, expect, it, test } from 'vitest';
 
+import { lintGuideUrl, shippedVersion } from '../src/core/data.js';
 import plugin, { rules } from '../src/eslint/index.js';
 
 RuleTester.describe = describe;
@@ -266,12 +268,39 @@ describe('no-internal-tokens', () => {
         filename: filename.html,
       },
       { code: '<div style="--gap: 4px; color: red"></div>', filename: filename.html },
+      // a Tailwind class that sets a public one, or no custom property at all
+      {
+        code: '<mds-text class="md:[--mds-text-line-clamp:2]"></mds-text>',
+        filename: filename.html,
+      },
+      { code: '<div class="[--gap:4px] bg-surface-raised p-400"></div>', filename: filename.html },
     ],
     invalid: [
       {
         code: '<div style="--mds-chip-icon-color: rgb(var(--magma-accent-fg))"></div>',
         filename: filename.html,
         errors: [{ message: internal }],
+      },
+      // the arbitrary property of Tailwind sets it as an inline style does
+      {
+        code: '<mds-chip label="y" class="[--mds-chip-icon-color:red]"></mds-chip>',
+        filename: filename.html,
+        errors: [{ message: internal }],
+      },
+      // through variants and !, on a parent that sets it for its descendants
+      {
+        code: '<ul class="flex dark:hover:![--mds-chip-icon-color:red]"><li></li></ul>',
+        filename: filename.html,
+        errors: [{ message: internal }],
+      },
+      // an arbitrary value reads it, in both spellings
+      {
+        code: '<div class="bg-(--mds-chip-icon-color) text-[var(--mds-chip-nope)]"></div>',
+        filename: filename.html,
+        errors: [
+          { message: internal },
+          { message: /"--mds-chip-nope" is not a custom property any Magma component promises/ },
+        ],
       },
       {
         code: '<mds-chip style="margin: var(--mds-chip-nope)"></mds-chip>',
@@ -300,6 +329,11 @@ describe('no-internal-tokens', () => {
         filename: filename.angular,
         errors: [{ message: internal }],
       },
+      {
+        code: '<mds-chip class="[--mds-chip-icon-color:red]"></mds-chip>',
+        filename: filename.angular,
+        errors: [{ message: internal }],
+      },
     ],
   });
   tester('jsx').run('jsx', rule, {
@@ -318,6 +352,16 @@ describe('no-internal-tokens', () => {
         filename: filename.jsx,
         errors: [{ message: internal }],
       },
+      {
+        code: '<MdsChip className="[--mds-chip-icon-color:red]" />',
+        filename: filename.jsx,
+        errors: [{ message: internal }],
+      },
+      {
+        code: '<ul className={`md:[--mds-chip-icon-color:red] ${extra}`} />',
+        filename: filename.jsx,
+        errors: [{ message: internal }],
+      },
     ],
   });
 });
@@ -333,4 +377,35 @@ test('the presets name every rule, as errors in strict', () => {
   );
   expect(plugin.configs.recommended.rules?.['magma/no-raw-palette-classes']).toBe('warn');
   expect(plugin.configs.recommended.rules?.['magma/no-internal-tokens']).toBe('warn');
+});
+
+/** The headings of docs/agents/lint.md, as GitHub anchors them. */
+const guideAnchors = () =>
+  [
+    ...readFileSync(
+      path.join(path.dirname(fileURLToPath(import.meta.url)), '../../../docs/agents/lint.md'),
+      'utf8',
+    ).matchAll(/^#+ (.+)$/gm),
+  ].map(([, heading]) =>
+    heading!
+      .toLowerCase()
+      .replace(/[^a-z0-9 -]/g, '')
+      .replace(/ /g, '-'),
+  );
+
+test('every rule describes itself and links its section of the guide, at the installed release', () => {
+  const anchors = guideAnchors();
+  for (const [name, rule] of Object.entries(rules)) {
+    expect(rule.meta?.docs?.description, name).toMatch(/^[A-Z].+\.$/);
+    expect(rule.meta?.docs?.url, name).toBe(lintGuideUrl(name));
+    expect(anchors, name).toContain(name);
+  }
+  // the sources belong to no release: main; inside magma, its tag
+  expect(shippedVersion()).toBeUndefined();
+  expect(lintGuideUrl('no-false-boolean')).toBe(
+    'https://github.com/magma-design-system/magma/blob/main/docs/agents/lint.md#no-false-boolean',
+  );
+  expect(lintGuideUrl('no-false-boolean', '2.6.0')).toBe(
+    'https://github.com/magma-design-system/magma/blob/magma@2.6.0/docs/agents/lint.md#no-false-boolean',
+  );
 });

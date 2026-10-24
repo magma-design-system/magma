@@ -1,14 +1,22 @@
 // The ten tools of the MCP server on fixtures cut from the real data, and the mi and mdi icon
 // sets installed in this repository.
-import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-import { mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
+import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
-import { toolsOf } from '../src/mcp/server.js';
-import { context } from './mcp-context.js';
+import { createServer, toolsList, toolsOf } from '../src/mcp/server.js';
+import { tokensOf, USE_OF_UTILITY } from '../src/mcp/tokens.js';
+import { context, data } from './mcp-context.js';
 
 /** Every slug the iconsauce plugins serve, dumped by the stencil build (projects/stencil/SPEC.md, Icons). */
 const ICONS_DICTIONARY = path.join(
@@ -36,6 +44,17 @@ test('the server has its ten tools', () => {
     'list_tokens',
     'suggest_role',
   ]);
+});
+
+test('the tools as data are the answer of tools/list, whatever the project', async () => {
+  const { handle } = createServer(context);
+  expect(await handle({ jsonrpc: '2.0', id: 1, method: 'tools/list' })).toEqual({
+    jsonrpc: '2.0',
+    id: 1,
+    result: toolsList(context),
+  });
+  // what the stencil build writes into dist/lint/mcp/tools.json, from no project at all
+  expect(toolsList({ root: tmpdir(), settings: {} })).toEqual(toolsList(context));
 });
 
 describe('the component tools', () => {
@@ -142,6 +161,102 @@ describe('the token tools', () => {
     });
     expect(await run('explain_class', { class: 'w-[13px]' })).toMatchObject({ kind: 'arbitrary' });
     expect(await run('explain_class', { class: 'flex' })).toMatchObject({ kind: 'other' });
+  });
+
+  test('every value reads as CSS, by its DTCG type', async () => {
+    const byCss = Object.fromEntries(
+      tokensOf(context)
+        .filter((entry) => entry.css)
+        .map((entry) => [entry.css, entry.value]),
+    );
+    // shadows: one layer per item, inset first, a colour with its alpha
+    expect(byCss['--shadow-xs']).toBe('0px 1px 2px 0px rgb(0 0 0 / 0.05)');
+    expect(byCss['--shadow-highlight-strong']).toBe(
+      '0px 0px 0px 2px rgb(0 0 0 / 0.4), 0px 4px 6px -1px rgb(0 0 0 / 0.65)',
+    );
+    expect(byCss['--shadow-inset-sm']).toMatch(
+      /^inset 0px 2px 4px 0px rgb\(0 0 0 \/ 0\.05\), inset /,
+    );
+    // an alias of a shadow, a border whose colour is an alias
+    expect(byCss['--shadow-sharp']).toBe(byCss['--shadow-sm-sharp']);
+    expect(byCss['--magma-outline-blur']).toBe('2px solid rgb(0 0 0 / 0)');
+    // where the CSS writes it differently, the cssValue the package records
+    expect(byCss['--mds-elevation-raised']).toMatch(/^0 calc\(1px \* var\(--depth\)\)/);
+    expect(byCss['--aspect-book']).toBe('1/1.4');
+    expect(byCss['--text-size-title-h1--letter-spacing']).toBe('-0.025em');
+    expect(byCss['--ease-in-back']).toMatch(/^cubic-bezier\(/);
+    expect(byCss['--font-code']).toBe("'Roboto Mono', 'Courier New', monospace");
+
+    const { tokens } = await run('list_tokens', { query: 'shadow', tier: 'all' });
+    expect(tokens.some((token: { value?: string }) => token.value?.includes('[object'))).toBe(
+      false,
+    );
+    expect(await run('explain_class', { class: 'shadow-highlight-strong' })).toMatchObject({
+      tokens: [{ css: '--shadow-highlight-strong', value: byCss['--shadow-highlight-strong'] }],
+    });
+  });
+
+  /** No value is garbage, and only the types CSS has no single value for have none. */
+  const expectCssValues = (entries: ReturnType<typeof tokensOf>) => {
+    const bad = entries.filter(
+      (entry) =>
+        (entry.value === undefined && !['typography', 'gradient'].includes(entry.type)) ||
+        /\[object|undefined|NaN/.test(entry.value ?? ''),
+    );
+    expect(bad.map((entry) => `${entry.path} (${entry.type}): ${entry.value}`)).toEqual([]);
+  };
+
+  test('the fixtures hold a token of every shape the published data has', () => {
+    expectCssValues(tokensOf(context));
+  });
+
+  // the build of design-tokens and styles, when there is one: a shape the fixtures miss fails here
+  const built = {
+    tokens: path.join(import.meta.dirname, '../../design-tokens/dist/dtcg/base.tokens.json'),
+    globals: path.join(import.meta.dirname, '../../styles/dist/dtcg/globals.tokens.json'),
+    consumption: path.join(import.meta.dirname, '../../styles/dist/tailwind/consumption.json'),
+  };
+  test.skipIf(!Object.values(built).every((file) => existsSync(file)))(
+    'every token of the built data reads as CSS',
+    () => {
+      expectCssValues(tokensOf({ ...context, settings: { ...context.settings, ...built } }));
+      const roots = JSON.parse(readFileSync(built.consumption, 'utf8')).namespaces['--color']
+        .utilities as string[];
+      expect(roots.filter((root) => !USE_OF_UTILITY[root] && !root.startsWith('mask-'))).toEqual(
+        [],
+      );
+    },
+  );
+
+  test('suggest_role keeps the utility and the opacity of a class, a shadow too', async () => {
+    // a coloured glow takes a fill role, as a shadow class
+    const glow = await run('suggest_role', { color: 'shadow-variant-primary-03/80' });
+    expect(glow.use).toBe('shadow');
+    expect(glow.roles[0]).toMatchObject({
+      css: '--magma-accent-emphasis-hover',
+      class: 'shadow-accent-emphasis-hover/80',
+      distance: 0,
+    });
+    expect(
+      (await run('suggest_role', { color: 'hover:border-tone-neutral-03/50' })).roles[0].class,
+    ).toMatch(/^border-.+\/50$/);
+    // the role made for a projected shadow is a candidate of the shadow use only
+    const ink = await run('suggest_role', { color: '--magma-shadow-ink', use: 'shadow' });
+    expect(ink.roles[0]).toMatchObject({ css: '--magma-shadow-ink', class: 'shadow-shadow-ink' });
+    expect(
+      (await run('suggest_role', { color: '--magma-shadow-ink' })).roles.map(
+        (role: { css: string }) => role.css,
+      ),
+    ).not.toContain('--magma-shadow-ink');
+    await expect(run('suggest_role', { color: 'mask-t-from-gray-100' })).rejects.toThrow(
+      /only the alpha/,
+    );
+  });
+
+  test('every colour utility says what it paints', () => {
+    const roots = JSON.parse(readFileSync(data.consumption, 'utf8')).namespaces['--color']
+      .utilities as string[];
+    expect(roots.filter((root) => !USE_OF_UTILITY[root] && !root.startsWith('mask-'))).toEqual([]);
   });
 
   test('the colour arithmetic reads CSS colours', () => {
@@ -308,6 +423,73 @@ describe('the check tools', () => {
     expect(byId['lint-eslint'].ok).toBe(true);
     expect(byId['lint-stylelint'].ok).toBe(false);
     expect(byId.mcp.ok).toBe(true);
+  });
+
+  /** The checks of check_setup on a project made of `files`. */
+  const setupOf = async (files: Record<string, string>) => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-setup-'));
+    for (const [name, text] of Object.entries({ 'package.json': '{}', ...files })) {
+      mkdirSync(path.dirname(path.join(root, name)), { recursive: true });
+      writeFileSync(path.join(root, name), text);
+    }
+    const { checks } = (await checkSetup({ ...context, root }).run({})) as Result;
+    return Object.fromEntries(
+      checks.map((check: { id: string; ok: boolean; detail: string }) => [check.id, check]),
+    );
+  };
+
+  test('check_setup accepts every way the guides set the icon path, and only those', async () => {
+    // every line of a code block of the guides that sets the path, from the guides themselves
+    const repo = path.join(import.meta.dirname, '../../..');
+    const guides = [
+      ...readdirSync(path.join(repo, 'docs/agents')).map((name) => `docs/agents/${name}`),
+      ...readdirSync(path.join(repo, 'projects/stencil/src/components/mds-icon/usage')).map(
+        (name) => `projects/stencil/src/components/mds-icon/usage/${name}`,
+      ),
+    ].filter((name) => name.endsWith('.md'));
+    const ways = guides.flatMap((name) =>
+      [...readFileSync(path.join(repo, name), 'utf8').matchAll(/```\w*\n([\s\S]*?)```/g)]
+        .flatMap(([, body]) => body!.split('\n'))
+        .filter((line) => /setSvgPath\(|setItem\('mdsIconSvgPath'/.test(line))
+        .map((line) => line.replace(/^\s*(\/\/ or: )?/, '')),
+    );
+    expect(ways.some((line) => line.startsWith('IconsSetService.setSvgPath('))).toBe(true);
+    expect(ways.some((line) => line.includes('sessionStorage.setItem('))).toBe(true);
+    for (const line of new Set(ways))
+      expect((await setupOf({ 'src/main.ts': line }))['icon-path'], line).toMatchObject({
+        ok: true,
+      });
+
+    // a name mds-icon never reads
+    expect(
+      (await setupOf({ 'src/main.ts': "window.mdsIconSvgPath = '/svg/';" }))['icon-path'],
+    ).toMatchObject({
+      ok: false,
+      detail: expect.stringMatching(/reads the path only from IconsSetService.setSvgPath\(\)/),
+    });
+  });
+
+  test('check_setup reads the lint preset from every file ESLint and Stylelint load', async () => {
+    const eslint = "import magma from '@maggioli-design-system/magma/eslint';";
+    const stylelint = "extends: ['@maggioli-design-system/magma/stylelint/recommended']";
+    for (const name of ['eslint.config.mts', 'eslint.config.cts'])
+      expect((await setupOf({ [name]: eslint }))['lint-eslint'].ok, name).toBe(true);
+    for (const name of ['.stylelintrc.yml', '.config/stylelintrc.json', 'stylelint.config.ts'])
+      expect((await setupOf({ [name]: stylelint }))['lint-stylelint'].ok, name).toBe(true);
+    const inPackage = await setupOf({
+      'package.json': JSON.stringify({
+        stylelint: { extends: ['@maggioli-design-system/magma/stylelint/recommended'] },
+      }),
+      // package.json comes first: Stylelint never reads this file
+      'stylelint.config.mjs': 'export default {};',
+    });
+    expect(inPackage['lint-stylelint'].ok).toBe(true);
+    // the file the tool loads is the first it finds
+    expect(
+      (await setupOf({ '.stylelintrc.json': '{}', 'stylelint.config.mjs': stylelint }))[
+        'lint-stylelint'
+      ].ok,
+    ).toBe(false);
   });
 
   test('an entry that starts magma-mcp with npx without --no is unsafe', () => {

@@ -1,4 +1,5 @@
 import { setAssetPath } from '@maggioli-design-system/magma/components';
+import { IconsSetService } from '@maggioli-design-system/magma/services';
 
-window.mdsIconSvgPath = '/svg/';
+IconsSetService.setSvgPath('/svg/');
 setAssetPath(window.location.origin);

@@ -79,7 +79,7 @@ client starts servers elsewhere than the project's root, pass it:
 | `get_component` | the API of one component: props with their values and default, events, methods, slots, parts, public CSS custom properties | reading its `AGENTS.md` |
 | `get_usage` | how HTML, React or Angular writes it: import, props, events (`onMdsInputChange`, `(mdsInputChange)`) | guessing the names |
 | `list_tokens` | the role for a need ("secondary text"), with its value and class | reading [`color.md`](color.md) |
-| `suggest_role` | the role for a colour, a raw class or a palette step | picking a role by eye |
+| `suggest_role` | the role for a colour, a raw class or a palette step, as a class of the same utility (`shadow-*/80` stays a shadow class) | picking a role by eye |
 | `explain_class` | what a class does with the Magma theme | the trap of the scale: `p-4` is 0.01rem, `p-400` is 1rem |
 | `find_icon` | a slug that exists, by meaning, or whether a slug exists | an `icon="..."` that renders nothing |
 | `get_guide` | one section of a guide | reading the whole file |
@@ -87,7 +87,8 @@ client starts servers elsewhere than the project's root, pass it:
 | `check_setup` | what the Magma integration of the project misses | checking the install steps by hand |
 
 `check_markup` uses the ESLint, Stylelint and template parsers the project installed with
-the lint ([`lint.md`](lint.md)).
+the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents them, are in
+`@maggioli-design-system/magma/dist/lint/mcp/tools.json`: what `tools/list` answers.
 
 ## When to call them
 
