@@ -44,7 +44,10 @@
   /* Sized as an image is: a width alone, or a height alone, sets the other one from the
      proportions of the book. With neither it fills its container, as a block does. */
   aspect-ratio: var(--private-book-ratio, 17 / 24);
-  cursor: grab;
+
+  /* a drag turns the book from side to side only, and spins a lying one: no cursor says to
+     rotate, so the two arrows say the axis, at rest and through the drag */
+  cursor: ew-resize;
   display: block;
 
   /* the width a height gives it wins over the natural width below, which would otherwise be
@@ -56,6 +59,7 @@
 
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- see above */
   touch-action: pan-y;
+  user-select: none;
 }
 
 :host([pose='fore-edge']) {
@@ -100,7 +104,6 @@
 }
 
 .scene--dragging {
-  cursor: grabbing;
   user-select: none;
 }
 

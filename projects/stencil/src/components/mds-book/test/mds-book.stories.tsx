@@ -274,7 +274,7 @@ const Product = ({ book }: { book: (typeof catalogue)[number] }) => (
       />
       <mds-badge class="shrink-0" label={`-${discount * 100}%`} variant="orange" tone="strong" />
     </mds-card-header>
-    <mds-card-media class="bg-surface-muted px-[18%] py-1000">
+    <mds-card-media class="bg-surface-raised p-600">
       <mds-book
         class="w-full max-w-[200px] justify-self-center"
         binding={book.binding as 'paperback'}
@@ -311,7 +311,7 @@ const Product = ({ book }: { book: (typeof catalogue)[number] }) => (
       <mds-button
         aria-label="Aggiungi alla lista dei desideri"
         icon="mi/outline/favorite-border"
-        tone="outline"
+        tone="text"
       />
     </mds-card-footer>
   </mds-card>

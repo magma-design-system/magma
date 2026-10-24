@@ -647,12 +647,14 @@ describe('mds-book', () => {
 
     it('turns on a drag to show the spine, as far as its limit, and goes back when released', async () => {
       const root = await book();
+      expect(getComputedStyle(root).cursor).toBe('ew-resize');
       pointer(root, 'pointerenter', 0.5);
       pointer(root, 'pointerdown', 0.5);
 
       pointer(root, 'pointermove', 3);
       await settled(root, { glare: 1, turn: 64 });
       expect(light(root, 'spine')).toBeGreaterThan(light(root, 'front'));
+      expect(getComputedStyle(part(root, '.scene')!).cursor).toBe('ew-resize');
 
       pointer(root, 'pointerup', 3);
       pointer(root, 'pointerleave', 3);
