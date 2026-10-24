@@ -133,7 +133,7 @@ Global design decisions overridable via CSS custom properties on `:root`:
 
 ### 2.6 `stencil`
 
-The web component library. 115 components built with StencilJS, compiled to standard Custom Elements. Also outputs framework-specific wrappers:
+The web component library. 117 components built with StencilJS, compiled to standard Custom Elements. Also outputs framework-specific wrappers:
 
 - `@maggioli-design-system/magma` — vanilla JS / HTML
 - `@maggioli-design-system/magma-react` — React wrapper
@@ -162,6 +162,10 @@ through the official MCP client. The consumer guides are [`docs/agents/lint.md`]
 The Claude Code plugin of Magma (`projects/claude-plugin`, #1114): the skills that run a whole job (`/magma:setup`, `/magma:review`, `/magma:migrate`, and `ui`, which Claude loads by itself for UI work) and the entry that starts the MCP server of section 2.7. It is not an npm package: `.claude-plugin/marketplace.json` at the repository root is the marketplace `magma`, whose plugin is this folder, so Claude Code reads it from `main`. A consumer project registers it for its team in its `.claude/settings.json`, which the bootstrap of the packages' `AGENTS.md` writes.
 
 The skills are procedures that defer to the installed version (the MCP server, the shipped guides), so the plugin follows `main` with no version of its own. They are generated from `templates/` with what they list taken from the code and the guides (the packages per target, the tools of the server, the rules of the lint, the codemod), and the `claude-plugin-ci` workflow fails when one is out of date or breaks the Agent Skills format. How to change one: [`projects/claude-plugin/README.md`](../projects/claude-plugin/README.md).
+
+### 2.9 `codemod`
+
+The `@maggioli-design-system/magma-codemods` package (`projects/codemod`): it migrates consumer code from v1 to v2, rewriting HTML, React, Angular templates (external and inline) and CSS/SCSS, and reports what needs a human decision. Its rules are a manifest (`src/manifest/manifest.ts`), drafted from the `documentation.json` of the two versions; one module per surface (`src/surfaces/`) decides where an attribute or a class is written, the forms the class rules of the lint read too ([`docs/CONTRACTS.md`](CONTRACTS.md)). The contributor notes are [`projects/codemod/README.md`](../projects/codemod/README.md).
 
 ---
 
