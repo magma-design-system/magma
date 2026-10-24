@@ -1,15 +1,15 @@
 @import './css/mds-filter-fouc.css';
 
 /**
- * @prop --mds-filter-items-background-active: Sets the background-color of the items row area when a filter is active
- * @prop --mds-filter-items-background: Sets the background-color of the items row area
+ * @prop --mds-filter-items-background-active: Public. Sets the background-color of the items row area when a filter is active
+ * @prop --mds-filter-items-background: Public. Sets the background-color of the items row area
  * @prop --mds-filter-items-gap: Sets the gap between items
  * @prop --mds-filter-items-padding: Sets the padding of the items row area
  * @prop --mds-filter-items-radius: Sets the border-radius of the items row area
  * @prop --mds-filter-items-scroll-behavior: Sets the scroll-behavior animation;
  * @prop --mds-filter-label-padding: Sets the padding of the label
  * @prop --mds-filter-wrapper-shadow-color: Sets the effect of the outline border
- * @prop --mds-filter-wrapper-shadow: Sets the shadow used as outline border
+ * @prop --mds-filter-wrapper-shadow: Public. Sets the shadow used as outline border
  * @prop --mds-filter-wrapper-shadow-opacity: Sets the opacity of the outline border
  */
 

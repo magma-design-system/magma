@@ -1,7 +1,7 @@
 @import './css/mds-button-dropdown-fouc.css';
 
 /**
- * @prop --mds-button-dropdown-radius: Sets the border-radius of the component
+ * @prop --mds-button-dropdown-radius: Public. Sets the border-radius of the component
  */
 
 :host {

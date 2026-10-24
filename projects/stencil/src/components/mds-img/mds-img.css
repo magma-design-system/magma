@@ -1,8 +1,8 @@
 @import './css/mds-img-fouc.css';
 
 /**
- * @prop --mds-img-background: The background color of the image container.
- * @prop --mds-img-color: The foreground/text color used inside the image component.
+ * @prop --mds-img-background: Public. The background color of the image container.
+ * @prop --mds-img-color: Public. The foreground/text color used inside the image component.
  * @prop --mds-img-icon-color: The color applied to icons displayed within the image element.
  * @prop --mds-img-error-background: The background color shown when the image fails to load.
  * @prop --mds-img-error-color: The text or foreground color shown in the error state.

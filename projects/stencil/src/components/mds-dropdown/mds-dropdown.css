@@ -3,16 +3,16 @@
 /**
  * @prop --mds-dropdown-arrow-background: Sets the fill color of the arrow.
  * @prop --mds-dropdown-backdrop-duration: Sets the duration of the fade of the backdrop shown with the `backdrop` attribute, the one of the page backdrop by default.
- * @prop --mds-dropdown-backdrop-z-index: Sets the z-index of the backdrop shown with the `backdrop` attribute, the one of the page backdrop by default.
- * @prop --mds-dropdown-background: Sets the background-color of the dropdown.
+ * @prop --mds-dropdown-backdrop-z-index: Public. Sets the z-index of the backdrop shown with the `backdrop` attribute, the one of the page backdrop by default.
+ * @prop --mds-dropdown-background: Public. Sets the background-color of the dropdown.
  * @prop --mds-dropdown-drop-shadow-color-rgb: Sets the color used for the dropdown shadow
  * @prop --mds-dropdown-drop-shadow: Sets the drop-shadow of the dropdown.
  * @prop --mds-dropdown-duration: Sets the duration of the dropdown animation.
  * @prop --mds-dropdown-ease: Sets the easing of the dropdown animation.
- * @prop --mds-dropdown-mouseover-delay: Sets the delay duration of the component when the caller trigger mouseover event, it's used by the javascript code.
+ * @prop --mds-dropdown-mouseover-delay: Public. Sets the delay duration of the component when the caller trigger mouseover event, it's used by the javascript code.
  * @prop --mds-dropdown-transform-from: Sets the from animation transform of the dropdown.
  * @prop --mds-dropdown-transform-to: Sets the to animation transform of the dropdown.
- * @prop --mds-dropdown-z-index: Sets the z-index of the component.
+ * @prop --mds-dropdown-z-index: Public. Sets the z-index of the component.
  */
 
 /* The following properties are not supported by Houdini:

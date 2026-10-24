@@ -2,7 +2,7 @@
 @import './css/mds-avatar-stack-slotted-size.css';
 
 /**
- * @prop --mds-avatar-stack-background: Background color for the avatar stack container
+ * @prop --mds-avatar-stack-background: Public. Background color for the avatar stack container
  * @prop --mds-avatar-stack-count-background-color: Background color of the count indicator (e.g., "+3")
  * @prop --mds-avatar-stack-count-color: Text color of the count indicator
  * @prop --mds-avatar-stack-lg-border: Border width for large avatar stack items

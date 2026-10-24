@@ -2,12 +2,12 @@
 @import './css/mds-toast-fouc.css';
 
 /**
- * @prop --mds-toast-background: Background color of the toast component.
- * @prop --mds-toast-color: Text color inside the toast.
+ * @prop --mds-toast-background: Public. Background color of the toast component.
+ * @prop --mds-toast-color: Public. Text color inside the toast.
  * @prop --mds-toast-duration: Duration of the transition that shows and hides the toast; `mdsToastClose` is emitted when the hiding one is over. How long the toast stays visible is the `duration` prop.
  * @prop --mds-toast-icon-color: Color of the icon inside the toast.
- * @prop --mds-toast-shadow: Shadow applied to the toast container.
- * @prop --mds-toast-width: Width of the toast component.
+ * @prop --mds-toast-shadow: Public. Shadow applied to the toast container.
+ * @prop --mds-toast-width: Public. Width of the toast component.
  */
 
 /* ❌ Not supported

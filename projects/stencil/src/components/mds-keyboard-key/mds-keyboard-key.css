@@ -5,7 +5,7 @@
  * @prop --mds-keyboard-key-illumination-light-size: Set the size of the light illumination of the keyboard key.
  * @prop --mds-keyboard-key-illumination-dark: Set the dark illumination of the keyboard key.
  * @prop --mds-keyboard-key-illumination-light: Set the light illumination of the keyboard key.
- * @prop --mds-keyboard-key-padding: Set the padding of the keyboard key.
+ * @prop --mds-keyboard-key-padding: Public. Set the padding of the keyboard key.
  * @prop --mds-keyboard-key-transition-duration: Set the transition duration of the keyboard key.
  */
 

@@ -7,7 +7,7 @@
  * @prop --mds-tree-label-icon-hover-color: Sets the text color of the icon used at the near right of the label when the mouse is over the item.
  * @prop --mds-tree-label-default-background: Sets the default text color of the icon used at the near right of the label.
  * @prop --mds-tree-label-hover-background: Sets the background-color of the label when the mouse is over the item.
- * @prop --mds-tree-line-clamp: Sets the number of lines to show before truncating the text, it only works when attribute `truncate` is set to `all`.
+ * @prop --mds-tree-line-clamp: Public. Sets the number of lines to show before truncating the text, it only works when attribute `truncate` is set to `all`.
  * @prop --mds-tree-branch-border-color: Sets the border color of the tree branch.
  * @prop --mds-tree-branch-use-rounded-border: Sets the tree branch has rounded connectors or not, use it as a boolean value `true` or `false`.
  * @prop --mds-tree-branch-border-size: Sets the border size of the tree branch.

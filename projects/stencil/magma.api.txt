@@ -6,11 +6,11 @@ mds-accordion prop disableClose (attr disable-close): boolean | undefined = fals
 mds-accordion prop multiple (attr multiple): boolean | undefined = false
 mds-accordion event mdsAccordionChange: MdsAccordionEventDetail [bubbles, cancelable, composed]
 mds-accordion slot (default)
-mds-accordion css --mds-accordion-border-color
-mds-accordion css --mds-accordion-border-width
+mds-accordion css --mds-accordion-border-color INTERNAL
+mds-accordion css --mds-accordion-border-width INTERNAL
 mds-accordion css --mds-accordion-color
-mds-accordion css --mds-accordion-description-color
-mds-accordion css --mds-accordion-duration
+mds-accordion css --mds-accordion-description-color INTERNAL
+mds-accordion css --mds-accordion-duration INTERNAL
 mds-accordion css --mds-accordion-padding-selected
 mds-accordion css --mds-accordion-padding-unselected
 mds-accordion-item encapsulation shadow
@@ -24,23 +24,23 @@ mds-accordion-item slot (default)
 mds-accordion-item part content
 mds-accordion-item part icon
 mds-accordion-item part label
-mds-accordion-item css --mds-accordion-item-border-color
-mds-accordion-item css --mds-accordion-item-border-width
+mds-accordion-item css --mds-accordion-item-border-color INTERNAL
+mds-accordion-item css --mds-accordion-item-border-width INTERNAL
 mds-accordion-item css --mds-accordion-item-color
-mds-accordion-item css --mds-accordion-item-description-color
-mds-accordion-item css --mds-accordion-item-duration
-mds-accordion-item css --mds-accordion-item-padding-selected
-mds-accordion-item css --mds-accordion-item-padding-unselected
+mds-accordion-item css --mds-accordion-item-description-color INTERNAL
+mds-accordion-item css --mds-accordion-item-duration INTERNAL
+mds-accordion-item css --mds-accordion-item-padding-selected INTERNAL
+mds-accordion-item css --mds-accordion-item-padding-unselected INTERNAL
 mds-accordion-timer encapsulation shadow
 mds-accordion-timer prop duration (attr duration) [reflect]: number = 10000
 mds-accordion-timer prop paused (attr paused) [reflect]: boolean | undefined
 mds-accordion-timer event mdsAccordionTimerChange: MdsAccordionTimerEventDetail [bubbles, cancelable, composed]
 mds-accordion-timer slot (default)
 mds-accordion-timer css --mds-accordion-timer-color
-mds-accordion-timer css --mds-accordion-timer-duration
-mds-accordion-timer css --mds-accordion-timer-progress-bar-background
-mds-accordion-timer css --mds-accordion-timer-progress-bar-color
-mds-accordion-timer css --mds-accordion-timer-progress-bar-thickness
+mds-accordion-timer css --mds-accordion-timer-duration INTERNAL
+mds-accordion-timer css --mds-accordion-timer-progress-bar-background INTERNAL
+mds-accordion-timer css --mds-accordion-timer-progress-bar-color INTERNAL
+mds-accordion-timer css --mds-accordion-timer-progress-bar-thickness INTERNAL
 mds-accordion-timer-item encapsulation shadow
 mds-accordion-timer-item prop description (attr description) [required]: string
 mds-accordion-timer-item prop duration (attr duration) [reflect]: number | undefined
@@ -58,10 +58,10 @@ mds-accordion-timer-item part icon
 mds-accordion-timer-item part label
 mds-accordion-timer-item part progress
 mds-accordion-timer-item css --mds-accordion-timer-item-color
-mds-accordion-timer-item css --mds-accordion-timer-item-duration
-mds-accordion-timer-item css --mds-accordion-timer-item-progress-bar-background
-mds-accordion-timer-item css --mds-accordion-timer-item-progress-bar-color
-mds-accordion-timer-item css --mds-accordion-timer-item-progress-bar-thickness
+mds-accordion-timer-item css --mds-accordion-timer-item-duration INTERNAL
+mds-accordion-timer-item css --mds-accordion-timer-item-progress-bar-background INTERNAL
+mds-accordion-timer-item css --mds-accordion-timer-item-progress-bar-color INTERNAL
+mds-accordion-timer-item css --mds-accordion-timer-item-progress-bar-thickness INTERNAL
 mds-author encapsulation shadow
 mds-author slot (default)
 mds-author slot avatar
@@ -76,26 +76,26 @@ mds-avatar part icon
 mds-avatar part media
 mds-avatar part wrapper
 mds-avatar css --mds-avatar-background-color
-mds-avatar css --mds-avatar-background-color-pending
+mds-avatar css --mds-avatar-background-color-pending INTERNAL
 mds-avatar css --mds-avatar-color
-mds-avatar css --mds-avatar-initials-padding
+mds-avatar css --mds-avatar-initials-padding INTERNAL
 mds-avatar css --mds-avatar-radius
 mds-avatar-stack encapsulation shadow
 mds-avatar-stack prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined
 mds-avatar-stack prop total (attr total) [reflect]: number | undefined
 mds-avatar-stack slot (default)
 mds-avatar-stack css --mds-avatar-stack-background
-mds-avatar-stack css --mds-avatar-stack-count-background-color
-mds-avatar-stack css --mds-avatar-stack-count-color
-mds-avatar-stack css --mds-avatar-stack-lg-border
-mds-avatar-stack css --mds-avatar-stack-lg-offset
-mds-avatar-stack css --mds-avatar-stack-lg-size
-mds-avatar-stack css --mds-avatar-stack-md-border
-mds-avatar-stack css --mds-avatar-stack-md-offset
-mds-avatar-stack css --mds-avatar-stack-md-size
-mds-avatar-stack css --mds-avatar-stack-sm-border
-mds-avatar-stack css --mds-avatar-stack-sm-offset
-mds-avatar-stack css --mds-avatar-stack-sm-size
+mds-avatar-stack css --mds-avatar-stack-count-background-color INTERNAL
+mds-avatar-stack css --mds-avatar-stack-count-color INTERNAL
+mds-avatar-stack css --mds-avatar-stack-lg-border INTERNAL
+mds-avatar-stack css --mds-avatar-stack-lg-offset INTERNAL
+mds-avatar-stack css --mds-avatar-stack-lg-size INTERNAL
+mds-avatar-stack css --mds-avatar-stack-md-border INTERNAL
+mds-avatar-stack css --mds-avatar-stack-md-offset INTERNAL
+mds-avatar-stack css --mds-avatar-stack-md-size INTERNAL
+mds-avatar-stack css --mds-avatar-stack-sm-border INTERNAL
+mds-avatar-stack css --mds-avatar-stack-sm-offset INTERNAL
+mds-avatar-stack css --mds-avatar-stack-sm-size INTERNAL
 mds-avatar-stack-item encapsulation shadow
 mds-avatar-stack-item prop count (attr count) [reflect]: number | undefined
 mds-avatar-stack-item prop initials (attr initials) [reflect, mutable]: string | undefined
@@ -103,11 +103,11 @@ mds-avatar-stack-item prop src (attr src) [reflect]: string | undefined
 mds-avatar-stack-item prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'weak'
 mds-avatar-stack-item prop variant (attr variant) [reflect]: "amaranth" | "aqua" | "blue" | "error" | "green" | "info" | "lime" | "orange" | "orchid" | "primary" | "purple" | "red" | "sky" | "success" | "violet" | "warning" | "yellow" | undefined
 mds-avatar-stack-item css --mds-avatar-stack-item-background
-mds-avatar-stack-item css --mds-avatar-stack-item-border
-mds-avatar-stack-item css --mds-avatar-stack-item-count-background-color
-mds-avatar-stack-item css --mds-avatar-stack-item-count-color
-mds-avatar-stack-item css --mds-avatar-stack-item-offset
-mds-avatar-stack-item css --mds-avatar-stack-item-offset-margin
+mds-avatar-stack-item css --mds-avatar-stack-item-border INTERNAL
+mds-avatar-stack-item css --mds-avatar-stack-item-count-background-color INTERNAL
+mds-avatar-stack-item css --mds-avatar-stack-item-count-color INTERNAL
+mds-avatar-stack-item css --mds-avatar-stack-item-offset INTERNAL
+mds-avatar-stack-item css --mds-avatar-stack-item-offset-margin INTERNAL
 mds-avatar-stack-item css --mds-avatar-stack-item-size
 mds-badge encapsulation shadow
 mds-badge prop label (attr label) [reflect, mutable]: string | undefined
@@ -116,8 +116,8 @@ mds-badge prop typography (attr typography) [reflect]: "label" | "option" = 'opt
 mds-badge prop variant (attr variant) [reflect]: "amaranth" | "aqua" | "blue" | "dark" | "error" | "green" | "info" | "light" | "lime" | "orange" | "orchid" | "purple" | "red" | "sky" | "success" | "violet" | "warning" | "yellow" | undefined = 'green'
 mds-badge slot (default)
 mds-badge css --mds-badge-background
-mds-badge css --mds-badge-border-color
-mds-badge css --mds-badge-border-width
+mds-badge css --mds-badge-border-color INTERNAL
+mds-badge css --mds-badge-border-width INTERNAL
 mds-badge css --mds-badge-color
 mds-badge css --mds-badge-radius
 mds-banner encapsulation shadow
@@ -132,16 +132,16 @@ mds-banner slot (default)
 mds-banner slot action
 mds-banner part text
 mds-banner css --mds-banner-background
-mds-banner css --mds-banner-cockade-background
-mds-banner css --mds-banner-cockade-distance
+mds-banner css --mds-banner-cockade-background INTERNAL
+mds-banner css --mds-banner-cockade-distance INTERNAL
 mds-banner css --mds-banner-color
-mds-banner css --mds-banner-content-gap
-mds-banner css --mds-banner-headline-color
-mds-banner css --mds-banner-icon-color
+mds-banner css --mds-banner-content-gap INTERNAL
+mds-banner css --mds-banner-headline-color INTERNAL
+mds-banner css --mds-banner-icon-color INTERNAL
 mds-banner css --mds-banner-radius
 mds-banner css --mds-banner-shadow
-mds-banner css --mds-banner-transition-duration
-mds-banner css --mds-banner-transition-timing-function
+mds-banner css --mds-banner-transition-duration INTERNAL
+mds-banner css --mds-banner-transition-timing-function INTERNAL
 mds-benchmark-bar encapsulation shadow
 mds-benchmark-bar prop alias (attr alias): string | undefined
 mds-benchmark-bar prop label (attr label) [reflect, mutable]: string | undefined
@@ -163,8 +163,8 @@ mds-bibliography prop typography (attr typography): "caption" | "detail" | "labe
 mds-bibliography prop url (attr url): string | undefined
 mds-bibliography prop variant (attr variant): "code" | "info" | "read" | "title" | undefined
 mds-bibliography css --mds-bibliography-color
-mds-bibliography css --mds-bibliography-text-decoration
-mds-bibliography css --mds-bibliography-text-decoration-hover
+mds-bibliography css --mds-bibliography-text-decoration INTERNAL
+mds-bibliography css --mds-bibliography-text-decoration-hover INTERNAL
 mds-book encapsulation shadow
 mds-book prop alt (attr alt): string | undefined
 mds-book prop author (attr author): string | undefined
@@ -177,38 +177,38 @@ mds-book prop pose (attr pose) [reflect]: "fore-edge" | "front" | "lying" | "lyi
 mds-book prop publisher (attr publisher): string | undefined
 mds-book prop src (attr src): string | undefined
 mds-book part cover
-mds-book css --mds-book-color
-mds-book css --mds-book-page-weight-max
-mds-book css --mds-book-page-weight-min
-mds-book css --mds-book-paper-color
-mds-book css --mds-book-spine-color
-mds-book css --mds-book-text-color
+mds-book css --mds-book-color [static]
+mds-book css --mds-book-page-weight-max INTERNAL
+mds-book css --mds-book-page-weight-min INTERNAL
+mds-book css --mds-book-paper-color INTERNAL
+mds-book css --mds-book-spine-color [static]
+mds-book css --mds-book-text-color [static]
 mds-breadcrumb encapsulation shadow
 mds-breadcrumb prop hideBack (attr hide-back): boolean | undefined = false
 mds-breadcrumb event mdsBreadcrumbChange: MdsBreadcrumbEventDetail [bubbles, cancelable, composed]
 mds-breadcrumb slot (default)
-mds-breadcrumb css --mds-breadcrumb-arrow-depth-color
-mds-breadcrumb css --mds-breadcrumb-button-background
-mds-breadcrumb css --mds-breadcrumb-button-background-disabled
-mds-breadcrumb css --mds-breadcrumb-button-background-hover
-mds-breadcrumb css --mds-breadcrumb-button-background-selected
-mds-breadcrumb css --mds-breadcrumb-button-color
-mds-breadcrumb css --mds-breadcrumb-button-color-current
-mds-breadcrumb css --mds-breadcrumb-button-color-hover
-mds-breadcrumb css --mds-breadcrumb-button-color-selected
-mds-breadcrumb css --mds-breadcrumb-current-button-color
+mds-breadcrumb css --mds-breadcrumb-arrow-depth-color INTERNAL
+mds-breadcrumb css --mds-breadcrumb-button-background INTERNAL
+mds-breadcrumb css --mds-breadcrumb-button-background-disabled INTERNAL
+mds-breadcrumb css --mds-breadcrumb-button-background-hover INTERNAL
+mds-breadcrumb css --mds-breadcrumb-button-background-selected INTERNAL
+mds-breadcrumb css --mds-breadcrumb-button-color INTERNAL
+mds-breadcrumb css --mds-breadcrumb-button-color-current INTERNAL
+mds-breadcrumb css --mds-breadcrumb-button-color-hover INTERNAL
+mds-breadcrumb css --mds-breadcrumb-button-color-selected INTERNAL
+mds-breadcrumb css --mds-breadcrumb-current-button-color INTERNAL
 mds-breadcrumb-item encapsulation shadow
 mds-breadcrumb-item prop label (attr label) [reflect]: string | undefined
 mds-breadcrumb-item prop selected (attr selected) [reflect, mutable]: boolean | undefined
 mds-breadcrumb-item event mdsBreadcrumbItemSelect: MdsBreadcrumbItemEventDetail [bubbles, cancelable, composed]
 mds-breadcrumb-item part button
-mds-breadcrumb-item css --mds-breadcrumb-item-arrow-depth-color
-mds-breadcrumb-item css --mds-breadcrumb-item-button-background
-mds-breadcrumb-item css --mds-breadcrumb-item-button-background-hover
-mds-breadcrumb-item css --mds-breadcrumb-item-button-background-selected
-mds-breadcrumb-item css --mds-breadcrumb-item-button-color
-mds-breadcrumb-item css --mds-breadcrumb-item-button-color-hover
-mds-breadcrumb-item css --mds-breadcrumb-item-button-color-selected
+mds-breadcrumb-item css --mds-breadcrumb-item-arrow-depth-color INTERNAL
+mds-breadcrumb-item css --mds-breadcrumb-item-button-background INTERNAL
+mds-breadcrumb-item css --mds-breadcrumb-item-button-background-hover INTERNAL
+mds-breadcrumb-item css --mds-breadcrumb-item-button-background-selected INTERNAL
+mds-breadcrumb-item css --mds-breadcrumb-item-button-color INTERNAL
+mds-breadcrumb-item css --mds-breadcrumb-item-button-color-hover INTERNAL
+mds-breadcrumb-item css --mds-breadcrumb-item-button-color-selected INTERNAL
 mds-button encapsulation shadow
 mds-button prop active (attr active) [reflect, mutable]: boolean
 mds-button prop animation (attr animation) [reflect]: "none" | "yugop" | undefined = 'none'
@@ -231,18 +231,18 @@ mds-button slot (default)
 mds-button slot notification
 mds-button part icon
 mds-button part label
-mds-button css --mds-button-await-duration
+mds-button css --mds-button-await-duration INTERNAL
 mds-button css --mds-button-background
-mds-button css --mds-button-border-color-rgb
-mds-button css --mds-button-border-default-opacity
-mds-button css --mds-button-border-high-contrast-hover-width
-mds-button css --mds-button-border-high-contrast-width
-mds-button css --mds-button-border-hover-opacity
-mds-button css --mds-button-border-opacity
-mds-button css --mds-button-border-tone-outline-hover-width
-mds-button css --mds-button-border-tone-strong-hover-width
-mds-button css --mds-button-border-tone-weak-hover-width
-mds-button css --mds-button-border-width
+mds-button css --mds-button-border-color-rgb INTERNAL
+mds-button css --mds-button-border-default-opacity INTERNAL
+mds-button css --mds-button-border-high-contrast-hover-width INTERNAL
+mds-button css --mds-button-border-high-contrast-width INTERNAL
+mds-button css --mds-button-border-hover-opacity INTERNAL
+mds-button css --mds-button-border-opacity INTERNAL
+mds-button css --mds-button-border-tone-outline-hover-width INTERNAL
+mds-button css --mds-button-border-tone-strong-hover-width INTERNAL
+mds-button css --mds-button-border-tone-weak-hover-width INTERNAL
+mds-button css --mds-button-border-width INTERNAL
 mds-button css --mds-button-color
 mds-button css --mds-button-gap
 mds-button css --mds-button-label-transform
@@ -290,13 +290,13 @@ mds-calendar method updateCurrentDate(date: string) => Promise<void>
 mds-calendar slot preselection
 mds-calendar css --mds-calendar-background
 mds-calendar css --mds-calendar-border-radius
-mds-calendar css --mds-calendar-cell-gap
+mds-calendar css --mds-calendar-cell-gap INTERNAL
 mds-calendar css --mds-calendar-cell-other-month-visibility
-mds-calendar css --mds-calendar-day-number-color
-mds-calendar css --mds-calendar-max-width
+mds-calendar css --mds-calendar-day-number-color INTERNAL
+mds-calendar css --mds-calendar-max-width INTERNAL
 mds-calendar css --mds-calendar-padding
-mds-calendar css --mds-calendar-select-month-or-year-height
-mds-calendar css --mds-calendar-select-month-or-year-width
+mds-calendar css --mds-calendar-select-month-or-year-height INTERNAL
+mds-calendar css --mds-calendar-select-month-or-year-width INTERNAL
 mds-calendar-cell encapsulation shadow
 mds-calendar-cell prop date (attr date) [reflect]: string | undefined
 mds-calendar-cell prop disabled (attr disabled) [reflect]: boolean | undefined = undefined
@@ -307,41 +307,41 @@ mds-calendar-cell prop preview (attr preview) [reflect]: boolean | undefined = f
 mds-calendar-cell prop selection (attr selection) [reflect]: "end" | "middle" | "none" | "single" | "start" | undefined
 mds-calendar-cell prop today (attr today) [reflect]: boolean | undefined = undefined
 mds-calendar-cell css --mds-calendar-cell-background
-mds-calendar-cell css --mds-calendar-cell-boundaries-background
-mds-calendar-cell css --mds-calendar-cell-boundaries-color
-mds-calendar-cell css --mds-calendar-cell-boundaries-padding
+mds-calendar-cell css --mds-calendar-cell-boundaries-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-boundaries-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-boundaries-padding INTERNAL
 mds-calendar-cell css --mds-calendar-cell-color
-mds-calendar-cell css --mds-calendar-cell-disabled-background
-mds-calendar-cell css --mds-calendar-cell-disabled-color
-mds-calendar-cell css --mds-calendar-cell-other-month-background
-mds-calendar-cell css --mds-calendar-cell-other-month-color
-mds-calendar-cell css --mds-calendar-cell-preselection-current-month-background
-mds-calendar-cell css --mds-calendar-cell-preselection-current-month-boundaries-background
-mds-calendar-cell css --mds-calendar-cell-preselection-current-month-boundaries-color
-mds-calendar-cell css --mds-calendar-cell-preselection-current-month-color
-mds-calendar-cell css --mds-calendar-cell-preselection-other-month-background
-mds-calendar-cell css --mds-calendar-cell-preselection-other-month-boundaries-background
-mds-calendar-cell css --mds-calendar-cell-preselection-other-month-boundaries-color
-mds-calendar-cell css --mds-calendar-cell-preselection-other-month-color
-mds-calendar-cell css --mds-calendar-cell-preselection-today-background
-mds-calendar-cell css --mds-calendar-cell-preselection-today-color
-mds-calendar-cell css --mds-calendar-cell-selection-boundaries-border-radius
-mds-calendar-cell css --mds-calendar-cell-selection-current-month-background
-mds-calendar-cell css --mds-calendar-cell-selection-current-month-boundaries-background
-mds-calendar-cell css --mds-calendar-cell-selection-current-month-boundaries-color
-mds-calendar-cell css --mds-calendar-cell-selection-current-month-color
-mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-background
-mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-boundaries-background
-mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-boundaries-color
-mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-color
-mds-calendar-cell css --mds-calendar-cell-selection-other-month-background
-mds-calendar-cell css --mds-calendar-cell-selection-other-month-boundaries-background
-mds-calendar-cell css --mds-calendar-cell-selection-other-month-boundaries-color
-mds-calendar-cell css --mds-calendar-cell-selection-other-month-color
-mds-calendar-cell css --mds-calendar-cell-selection-week-boundaries-border-radius
-mds-calendar-cell css --mds-calendar-cell-size
-mds-calendar-cell css --mds-calendar-cell-weekend-background
-mds-calendar-cell css --mds-calendar-cell-weekend-color
+mds-calendar-cell css --mds-calendar-cell-disabled-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-disabled-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-other-month-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-other-month-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-current-month-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-current-month-boundaries-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-current-month-boundaries-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-current-month-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-other-month-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-other-month-boundaries-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-other-month-boundaries-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-other-month-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-today-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-preselection-today-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-boundaries-border-radius INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-boundaries-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-boundaries-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-boundaries-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-boundaries-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-current-month-weekend-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-other-month-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-other-month-boundaries-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-other-month-boundaries-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-other-month-color INTERNAL
+mds-calendar-cell css --mds-calendar-cell-selection-week-boundaries-border-radius INTERNAL
+mds-calendar-cell css --mds-calendar-cell-size INTERNAL
+mds-calendar-cell css --mds-calendar-cell-weekend-background INTERNAL
+mds-calendar-cell css --mds-calendar-cell-weekend-color INTERNAL
 mds-card encapsulation shadow
 mds-card prop disableAutoGrid (attr disable-auto-grid) [reflect]: boolean = false
 mds-card slot content
@@ -377,18 +377,18 @@ mds-chip event mdsChipClickLabel: MdsChipEvent [bubbles, cancelable, composed]
 mds-chip event mdsChipDelete: MdsChipEvent [bubbles, cancelable, composed]
 mds-chip event mdsChipSelect: MdsChipEvent [bubbles, cancelable, composed]
 mds-chip css --mds-chip-background
-mds-chip css --mds-chip-background-selected
-mds-chip css --mds-chip-border
-mds-chip css --mds-chip-border-selected
+mds-chip css --mds-chip-background-selected INTERNAL
+mds-chip css --mds-chip-border INTERNAL
+mds-chip css --mds-chip-border-selected INTERNAL
 mds-chip css --mds-chip-color
-mds-chip css --mds-chip-color-selected
+mds-chip css --mds-chip-color-selected INTERNAL
 mds-chip css --mds-chip-icon-background
-mds-chip css --mds-chip-icon-background-selected
-mds-chip css --mds-chip-icon-color
-mds-chip css --mds-chip-icon-color-selected
-mds-chip css --mds-chip-opacity-disabled
+mds-chip css --mds-chip-icon-background-selected INTERNAL
+mds-chip css --mds-chip-icon-color INTERNAL
+mds-chip css --mds-chip-icon-color-selected INTERNAL
+mds-chip css --mds-chip-opacity-disabled INTERNAL
 mds-chip css --mds-chip-shadow
-mds-chip css --mds-chip-shadow-selected
+mds-chip css --mds-chip-shadow-selected INTERNAL
 mds-details encapsulation shadow
 mds-details prop opened (attr opened) [reflect, mutable]: boolean = false
 mds-details event mdsDetailsChange: boolean [bubbles, cancelable, composed]
@@ -399,9 +399,9 @@ mds-details slot title
 mds-details part content
 mds-details part header
 mds-details part title
-mds-details css --mds-details-duration
-mds-details css --mds-details-helper-icon-color
-mds-details css --mds-details-icon-color
+mds-details css --mds-details-duration INTERNAL
+mds-details css --mds-details-helper-icon-color INTERNAL
+mds-details css --mds-details-icon-color INTERNAL
 mds-dropdown encapsulation shadow
 mds-dropdown prop arrowPadding (attr arrow-padding): number = 24
 mds-dropdown prop backdrop (attr backdrop) [reflect]: boolean | undefined = false
@@ -422,17 +422,17 @@ mds-dropdown event mdsDropdownChange: MdsDropdownEventDetail [bubbles, cancelabl
 mds-dropdown event mdsDropdownHide: MdsDropdownEventDetail [bubbles, cancelable, composed]
 mds-dropdown event mdsDropdownVisible: MdsDropdownEventDetail [bubbles, cancelable, composed]
 mds-dropdown slot (default)
-mds-dropdown css --mds-dropdown-arrow-background
-mds-dropdown css --mds-dropdown-backdrop-duration
+mds-dropdown css --mds-dropdown-arrow-background INTERNAL
+mds-dropdown css --mds-dropdown-backdrop-duration INTERNAL
 mds-dropdown css --mds-dropdown-backdrop-z-index
 mds-dropdown css --mds-dropdown-background
-mds-dropdown css --mds-dropdown-drop-shadow
-mds-dropdown css --mds-dropdown-drop-shadow-color-rgb
-mds-dropdown css --mds-dropdown-duration
-mds-dropdown css --mds-dropdown-ease
+mds-dropdown css --mds-dropdown-drop-shadow INTERNAL
+mds-dropdown css --mds-dropdown-drop-shadow-color-rgb INTERNAL
+mds-dropdown css --mds-dropdown-duration INTERNAL
+mds-dropdown css --mds-dropdown-ease INTERNAL
 mds-dropdown css --mds-dropdown-mouseover-delay
-mds-dropdown css --mds-dropdown-transform-from
-mds-dropdown css --mds-dropdown-transform-to
+mds-dropdown css --mds-dropdown-transform-from INTERNAL
+mds-dropdown css --mds-dropdown-transform-to INTERNAL
 mds-dropdown css --mds-dropdown-z-index
 mds-emoji encapsulation shadow
 mds-emoji prop name (attr name) [reflect]: "mia" | "simi" = 'mia'
@@ -445,36 +445,36 @@ mds-emoji method startThinking(duration?: number) => Promise<void>
 mds-emoji method stopBlinking() => Promise<void>
 mds-emoji method stopFollowMouse() => Promise<void>
 mds-emoji method stopThinking(duration?: number) => Promise<void>
-mds-emoji css --mds-emoji-expression-follow-mouse-head-duration
-mds-emoji css --mds-emoji-expression-follow-mouse-traits-duration
+mds-emoji css --mds-emoji-expression-follow-mouse-head-duration INTERNAL
+mds-emoji css --mds-emoji-expression-follow-mouse-traits-duration INTERNAL
 mds-emoji css --mds-emoji-expression-max-rotation
-mds-emoji css --mds-emoji-mia-eyes-color
-mds-emoji css --mds-emoji-mia-hands-color
-mds-emoji css --mds-emoji-mia-head-color
-mds-emoji css --mds-emoji-mia-head-stroke-color
-mds-emoji css --mds-emoji-mia-head-stroke-width
-mds-emoji css --mds-emoji-mia-mouth-color
-mds-emoji css --mds-emoji-offset-ears
-mds-emoji css --mds-emoji-offset-eyebrows
-mds-emoji css --mds-emoji-offset-eyes
-mds-emoji css --mds-emoji-offset-gadget
-mds-emoji css --mds-emoji-offset-hands
-mds-emoji css --mds-emoji-offset-head
-mds-emoji css --mds-emoji-offset-mouth
-mds-emoji css --mds-emoji-perspective
-mds-emoji css --mds-emoji-simi-eye
-mds-emoji css --mds-emoji-simi-eye-light
-mds-emoji css --mds-emoji-simi-eyebrow
-mds-emoji css --mds-emoji-simi-gadget
-mds-emoji css --mds-emoji-simi-mouth
-mds-emoji css --mds-emoji-simi-mouth-teeth
-mds-emoji css --mds-emoji-simi-mouth-throat
-mds-emoji css --mds-emoji-simi-nose
-mds-emoji css --mds-emoji-simi-nose-light
-mds-emoji css --mds-emoji-simi-outline
-mds-emoji css --mds-emoji-simi-skin
-mds-emoji css --mds-emoji-simi-skin-dark
-mds-emoji css --mds-emoji-simi-skin-light
+mds-emoji css --mds-emoji-mia-eyes-color INTERNAL
+mds-emoji css --mds-emoji-mia-hands-color INTERNAL
+mds-emoji css --mds-emoji-mia-head-color INTERNAL
+mds-emoji css --mds-emoji-mia-head-stroke-color INTERNAL
+mds-emoji css --mds-emoji-mia-head-stroke-width INTERNAL
+mds-emoji css --mds-emoji-mia-mouth-color INTERNAL
+mds-emoji css --mds-emoji-offset-ears INTERNAL
+mds-emoji css --mds-emoji-offset-eyebrows INTERNAL
+mds-emoji css --mds-emoji-offset-eyes INTERNAL
+mds-emoji css --mds-emoji-offset-gadget INTERNAL
+mds-emoji css --mds-emoji-offset-hands INTERNAL
+mds-emoji css --mds-emoji-offset-head INTERNAL
+mds-emoji css --mds-emoji-offset-mouth INTERNAL
+mds-emoji css --mds-emoji-perspective INTERNAL
+mds-emoji css --mds-emoji-simi-eye INTERNAL
+mds-emoji css --mds-emoji-simi-eye-light INTERNAL
+mds-emoji css --mds-emoji-simi-eyebrow INTERNAL
+mds-emoji css --mds-emoji-simi-gadget INTERNAL
+mds-emoji css --mds-emoji-simi-mouth INTERNAL
+mds-emoji css --mds-emoji-simi-mouth-teeth INTERNAL
+mds-emoji css --mds-emoji-simi-mouth-throat INTERNAL
+mds-emoji css --mds-emoji-simi-nose INTERNAL
+mds-emoji css --mds-emoji-simi-nose-light INTERNAL
+mds-emoji css --mds-emoji-simi-outline INTERNAL
+mds-emoji css --mds-emoji-simi-skin [static]
+mds-emoji css --mds-emoji-simi-skin-dark [static]
+mds-emoji css --mds-emoji-simi-skin-light [static]
 mds-entity encapsulation shadow
 mds-entity prop await (attr await) [reflect]: boolean | undefined
 mds-entity prop icon (attr icon) [reflect]: string | undefined
@@ -490,9 +490,9 @@ mds-entity part infos
 mds-entity part spinner
 mds-entity css --mds-entity-background
 mds-entity css --mds-entity-color
-mds-entity css --mds-entity-detail-color
-mds-entity css --mds-entity-icon-background
-mds-entity css --mds-entity-icon-color
+mds-entity css --mds-entity-detail-color INTERNAL
+mds-entity css --mds-entity-icon-background INTERNAL
+mds-entity css --mds-entity-icon-color INTERNAL
 mds-file encapsulation shadow
 mds-file prop description (attr description): string | undefined
 mds-file prop filename (attr filename): string
@@ -502,8 +502,8 @@ mds-file prop preview (attr preview): string | undefined
 mds-file prop suffix (attr suffix) [reflect]: "7z" | "ace" | "ai" | "db" | "default" | "dmg" | "doc" | "docm" | "docx" | "eml" | "eps" | "exe" | "flac" | "gif" | "heic" | "htm" | "html" | "jpe" | "jpeg" | "jpg" | "js" | "json" | "jsx" | "m2v" | "mp2" | "mp3" | "mp4" | "mp4v" | "mpeg" | "mpg" | "mpg4" | "mpga" | "odf" | "odp" | "ods" | "odt" | "ole" | "p7m" | "pdf" | "php" | "png" | "ppt" | "rar" | "rtf" | "sass" | "shtml" | "svg" | "tar" | "tiff" | "ts" | "tsd" | "txt" | "wav" | "webp" | "xar" | "xls" | "xlsx" | "xml" | "zip" | undefined
 mds-file event mdsFileDownload: MdsFileEventDetail [bubbles, cancelable, composed]
 mds-file css --mds-file-preview-color
-mds-file css --mds-file-preview-icon-background
-mds-file css --mds-file-preview-icon-color
+mds-file css --mds-file-preview-icon-background INTERNAL
+mds-file css --mds-file-preview-icon-color INTERNAL
 mds-file-preview encapsulation shadow
 mds-file-preview prop deletable (attr deletable) [reflect]: boolean | undefined
 mds-file-preview prop description (attr description) [reflect]: string | undefined
@@ -523,8 +523,8 @@ mds-file-preview part card
 mds-file-preview css --mds-file-preview-background-color
 mds-file-preview css --mds-file-preview-border-radius
 mds-file-preview css --mds-file-preview-color
-mds-file-preview css --mds-file-preview-icon-background
-mds-file-preview css --mds-file-preview-icon-color
+mds-file-preview css --mds-file-preview-icon-background INTERNAL
+mds-file-preview css --mds-file-preview-icon-color INTERNAL
 mds-filter encapsulation shadow
 mds-filter prop autoReset (attr auto-reset) [reflect]: boolean | undefined
 mds-filter prop label (attr label): string | undefined
@@ -534,14 +534,14 @@ mds-filter event mdsFilterChange: MdsFilterEventDetail [bubbles, cancelable, com
 mds-filter slot (default)
 mds-filter css --mds-filter-items-background
 mds-filter css --mds-filter-items-background-active
-mds-filter css --mds-filter-items-gap
-mds-filter css --mds-filter-items-padding
-mds-filter css --mds-filter-items-radius
-mds-filter css --mds-filter-items-scroll-behavior
-mds-filter css --mds-filter-label-padding
+mds-filter css --mds-filter-items-gap INTERNAL
+mds-filter css --mds-filter-items-padding INTERNAL
+mds-filter css --mds-filter-items-radius INTERNAL
+mds-filter css --mds-filter-items-scroll-behavior INTERNAL
+mds-filter css --mds-filter-label-padding INTERNAL
 mds-filter css --mds-filter-wrapper-shadow
-mds-filter css --mds-filter-wrapper-shadow-color
-mds-filter css --mds-filter-wrapper-shadow-opacity
+mds-filter css --mds-filter-wrapper-shadow-color INTERNAL
+mds-filter css --mds-filter-wrapper-shadow-opacity INTERNAL
 mds-filter-item encapsulation shadow
 mds-filter-item prop count (attr count) [reflect]: string | undefined
 mds-filter-item prop disabled (attr disabled) [reflect]: boolean | undefined
@@ -550,10 +550,10 @@ mds-filter-item prop label (attr label) [reflect]: string
 mds-filter-item prop selected (attr selected) [reflect, mutable]: boolean | undefined
 mds-filter-item prop value (attr value) [reflect]: string
 mds-filter-item event mdsFilterItemSelect: MdsFilterItemEventDetail [bubbles, cancelable, composed]
-mds-filter-item css --mds-filter-item-count-background-default
-mds-filter-item css --mds-filter-item-count-background-selected
-mds-filter-item css --mds-filter-item-count-color-default
-mds-filter-item css --mds-filter-item-count-color-selected
+mds-filter-item css --mds-filter-item-count-background-default INTERNAL
+mds-filter-item css --mds-filter-item-count-background-selected INTERNAL
+mds-filter-item css --mds-filter-item-count-color-default INTERNAL
+mds-filter-item css --mds-filter-item-count-color-selected INTERNAL
 mds-header encapsulation shadow
 mds-header prop appearance (attr appearance) [reflect, mutable]: string = 'stripe'
 mds-header prop appearanceSet (attr appearance-set) [reflect]: string | undefined
@@ -570,13 +570,13 @@ mds-header slot (default)
 mds-header slot menu
 mds-header part menu
 mds-header css --mds-header-backdrop-background-image
-mds-header css --mds-header-backdrop-blur-strength
-mds-header css --mds-header-backdrop-height
-mds-header css --mds-header-backdrop-show
+mds-header css --mds-header-backdrop-blur-strength INTERNAL
+mds-header css --mds-header-backdrop-height INTERNAL
+mds-header css --mds-header-backdrop-show INTERNAL
 mds-header css --mds-header-color
-mds-header css --mds-header-hidden-bar-translate-inline
-mds-header css --mds-header-hidden-bar-translate-stripe
-mds-header css --mds-header-icon-color
+mds-header css --mds-header-hidden-bar-translate-inline INTERNAL
+mds-header css --mds-header-hidden-bar-translate-stripe INTERNAL
+mds-header css --mds-header-icon-color INTERNAL
 mds-header css --mds-header-inline-margin
 mds-header css --mds-header-inline-margin-mobile
 mds-header css --mds-header-z-index
@@ -591,7 +591,7 @@ mds-header-bar part actions
 mds-header-bar part content
 mds-header-bar part hamburger
 mds-header-bar part nav
-mds-header-bar css --mds-header-bar-hamburger-color
+mds-header-bar css --mds-header-bar-hamburger-color INTERNAL
 mds-help encapsulation shadow
 mds-help prop disableAutoPlacement (attr disable-auto-placement) [reflect]: boolean | undefined = false
 mds-help prop icon (attr icon): string | undefined
@@ -608,16 +608,17 @@ mds-horizontal-scroll prop navigation (attr navigation) [reflect]: "none" | "pos
 mds-horizontal-scroll prop snap (attr snap) [reflect]: "center" | "end" | "none" | "start" | undefined = 'start'
 mds-horizontal-scroll slot (default)
 mds-horizontal-scroll part content
-mds-horizontal-scroll css --mds-horizontal-scroll-behavior
-mds-horizontal-scroll css --mds-horizontal-scroll-dot-area-background
-mds-horizontal-scroll css --mds-horizontal-scroll-dot-background
-mds-horizontal-scroll css --mds-horizontal-scroll-dot-max-width
+mds-horizontal-scroll css --mds-horizontal-scroll-behavior INTERNAL
+mds-horizontal-scroll css --mds-horizontal-scroll-controls-margin
+mds-horizontal-scroll css --mds-horizontal-scroll-dot-area-background INTERNAL
+mds-horizontal-scroll css --mds-horizontal-scroll-dot-background INTERNAL
+mds-horizontal-scroll css --mds-horizontal-scroll-dot-max-width INTERNAL
 mds-horizontal-scroll css --mds-horizontal-scroll-max-width
-mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-margin
-mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-radius
-mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-size
-mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-thumb-background
-mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-track-background
+mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-margin INTERNAL
+mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-radius INTERNAL
+mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-size INTERNAL
+mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-thumb-background INTERNAL
+mds-horizontal-scroll css --mds-horizontal-scroll-scrollbar-track-background INTERNAL
 mds-hr encapsulation shadow
 mds-icon encapsulation shadow
 mds-icon prop name (attr name) [reflect, required]: string
@@ -639,10 +640,10 @@ mds-img event mdsImgLoadSuccess: MdsImgEventDetail [bubbles, cancelable, compose
 mds-img part media
 mds-img css --mds-img-background
 mds-img css --mds-img-color
-mds-img css --mds-img-error-background
-mds-img css --mds-img-error-color
-mds-img css --mds-img-error-icon-color
-mds-img css --mds-img-icon-color
+mds-img css --mds-img-error-background INTERNAL
+mds-img css --mds-img-error-color INTERNAL
+mds-img css --mds-img-error-icon-color INTERNAL
+mds-img css --mds-img-icon-color INTERNAL
 mds-input encapsulation shadow
 mds-input prop accessibleName (attr aria-label): string | undefined
 mds-input prop autocomplete (attr autocomplete) [reflect]: "additional-name" | "address" | "address-level1" | "address-level2" | "address-level3" | "address-level4" | "address-line1" | "address-line2" | "address-line3" | "bday" | "bday-day" | "bday-month" | "bday-year" | "cc-additional-name" | "cc-csc" | "cc-exp" | "cc-exp-month" | "cc-exp-year" | "cc-family-name" | "cc-given-name" | "cc-name" | "cc-number" | "cc-type" | "country" | "country-name" | "current-password" | "email" | "family-name" | "given-name" | "honorific-prefix" | "honorific-suffix" | "impp" | "language" | "name" | "new-password" | "nickname" | "off" | "on" | "one-time-code" | "organization" | "organization-title" | "photo" | "postal-code" | "sex" | "street-address" | "tel" | "tel-area-code" | "tel-country-code" | "tel-extension" | "tel-local" | "tel-national" | "transaction-amount" | "transaction-currency" | "url" | "username" | undefined = 'off'
@@ -693,20 +694,20 @@ mds-input part tip-bottom
 mds-input part tip-count
 mds-input part tip-top
 mds-input css --mds-input-background
-mds-input css --mds-input-icon-color
-mds-input css --mds-input-placeholder-default-color
-mds-input css --mds-input-placeholder-focus-color
-mds-input css --mds-input-placeholder-hover-color
+mds-input css --mds-input-icon-color INTERNAL
+mds-input css --mds-input-placeholder-default-color INTERNAL
+mds-input css --mds-input-placeholder-focus-color INTERNAL
+mds-input css --mds-input-placeholder-hover-color INTERNAL
 mds-input css --mds-input-ring
 mds-input css --mds-input-shadow
-mds-input css --mds-input-textarea-field-sizing
+mds-input css --mds-input-textarea-field-sizing INTERNAL
 mds-input css --mds-input-textarea-max-height
 mds-input css --mds-input-textarea-min-height
 mds-input css --mds-input-textarea-resize
 mds-input css --mds-input-tip-background
-mds-input css --mds-input-tip-horizontal-offset
-mds-input css --mds-input-tip-horizontal-offset-focused
-mds-input css --mds-input-tip-vertical-offset
+mds-input css --mds-input-tip-horizontal-offset INTERNAL
+mds-input css --mds-input-tip-horizontal-offset-focused INTERNAL
+mds-input css --mds-input-tip-vertical-offset INTERNAL
 mds-input css --mds-input-variant-color-rgb
 mds-input-date encapsulation shadow
 mds-input-date prop accessibleName (attr aria-label): string | undefined
@@ -728,17 +729,17 @@ mds-input-date method getErrors() => Promise<MdsValidationErrors | null>
 mds-input-date method setValue(value: string) => Promise<void>
 mds-input-date part input-date
 mds-input-date css --mds-input-date-background
-mds-input-date css --mds-input-date-field-background-empty
-mds-input-date css --mds-input-date-field-color-empty
-mds-input-date css --mds-input-date-icon-color
-mds-input-date css --mds-input-date-icon-color-rgb
+mds-input-date css --mds-input-date-field-background-empty INTERNAL
+mds-input-date css --mds-input-date-field-color-empty INTERNAL
+mds-input-date css --mds-input-date-icon-color INTERNAL
+mds-input-date css --mds-input-date-icon-color-rgb INTERNAL
 mds-input-date css --mds-input-date-ring
 mds-input-date css --mds-input-date-shadow
 mds-input-date css --mds-input-date-variant-color-rgb
 mds-input-date css --mds-input-tip-background
-mds-input-date css --mds-input-tip-horizontal-offset
-mds-input-date css --mds-input-tip-horizontal-offset-focused
-mds-input-date css --mds-input-tip-vertical-offset
+mds-input-date css --mds-input-tip-horizontal-offset INTERNAL
+mds-input-date css --mds-input-tip-horizontal-offset-focused INTERNAL
+mds-input-date css --mds-input-tip-vertical-offset INTERNAL
 mds-input-date-range encapsulation shadow
 mds-input-date-range prop accessibleName (attr aria-label): string | undefined
 mds-input-date-range prop delay (attr delay) [reflect]: number = 500
@@ -757,10 +758,10 @@ mds-input-date-range slot calendar-preselection
 mds-input-date-range slot end
 mds-input-date-range slot start
 mds-input-date-range css --mds-input-date-range-background
-mds-input-date-range css --mds-input-date-range-calendar-width
-mds-input-date-range css --mds-input-date-range-fields-firefox-justify-content
+mds-input-date-range css --mds-input-date-range-calendar-width INTERNAL
+mds-input-date-range css --mds-input-date-range-fields-firefox-justify-content INTERNAL
 mds-input-date-range css --mds-input-date-range-fields-gap
-mds-input-date-range css --mds-input-date-range-icon-color
+mds-input-date-range css --mds-input-date-range-icon-color INTERNAL
 mds-input-date-range css --mds-input-date-range-ring
 mds-input-date-range css --mds-input-date-range-shadow
 mds-input-date-range css --mds-input-date-range-variant-color-rgb
@@ -769,15 +770,15 @@ mds-input-date-range-preselection prop end (attr end) [reflect]: string | undefi
 mds-input-date-range-preselection prop selected (attr selected) [reflect, mutable]: boolean | undefined
 mds-input-date-range-preselection prop start (attr start) [reflect, required]: string
 mds-input-date-range-preselection slot (default)
-mds-input-date-range-preselection css --mds-date-range-preselection-default-background
-mds-input-date-range-preselection css --mds-date-range-preselection-default-border
-mds-input-date-range-preselection css --mds-date-range-preselection-default-color
-mds-input-date-range-preselection css --mds-date-range-preselection-hover-background
-mds-input-date-range-preselection css --mds-date-range-preselection-hover-border
-mds-input-date-range-preselection css --mds-date-range-preselection-hover-color
-mds-input-date-range-preselection css --mds-date-range-preselection-selected-background
-mds-input-date-range-preselection css --mds-date-range-preselection-selected-border
-mds-input-date-range-preselection css --mds-date-range-preselection-selected-color
+mds-input-date-range-preselection css --mds-date-range-preselection-default-background INTERNAL
+mds-input-date-range-preselection css --mds-date-range-preselection-default-border INTERNAL
+mds-input-date-range-preselection css --mds-date-range-preselection-default-color INTERNAL
+mds-input-date-range-preselection css --mds-date-range-preselection-hover-background INTERNAL
+mds-input-date-range-preselection css --mds-date-range-preselection-hover-border INTERNAL
+mds-input-date-range-preselection css --mds-date-range-preselection-hover-color INTERNAL
+mds-input-date-range-preselection css --mds-date-range-preselection-selected-background INTERNAL
+mds-input-date-range-preselection css --mds-date-range-preselection-selected-border INTERNAL
+mds-input-date-range-preselection css --mds-date-range-preselection-selected-color INTERNAL
 mds-input-field encapsulation shadow
 mds-input-field prop label (attr label) [mutable]: string | undefined
 mds-input-field prop message (attr message) [mutable]: string | undefined
@@ -804,15 +805,15 @@ mds-input-range event mdsInputRangeChange: number [bubbles, cancelable, composed
 mds-input-range slot (default)
 mds-input-range part header
 mds-input-range part track
-mds-input-range css --mds-input-range-thumb-background
-mds-input-range css --mds-input-range-thumb-background-disabled
-mds-input-range css --mds-input-range-thumb-cursor
-mds-input-range css --mds-input-range-thumb-size
-mds-input-range css --mds-input-range-track-background
-mds-input-range css --mds-input-range-track-background-disabled
-mds-input-range css --mds-input-range-track-progress-background
-mds-input-range css --mds-input-range-track-progress-background-disabled
-mds-input-range css --mds-input-range-track-size
+mds-input-range css --mds-input-range-thumb-background INTERNAL
+mds-input-range css --mds-input-range-thumb-background-disabled INTERNAL
+mds-input-range css --mds-input-range-thumb-cursor INTERNAL
+mds-input-range css --mds-input-range-thumb-size INTERNAL
+mds-input-range css --mds-input-range-track-background INTERNAL
+mds-input-range css --mds-input-range-track-background-disabled INTERNAL
+mds-input-range css --mds-input-range-track-progress-background INTERNAL
+mds-input-range css --mds-input-range-track-progress-background-disabled INTERNAL
+mds-input-range css --mds-input-range-track-size INTERNAL
 mds-input-select encapsulation shadow
 mds-input-select prop accessibleName (attr aria-label): string | undefined
 mds-input-select prop autocomplete (attr autocomplete) [reflect]: "on" | undefined
@@ -832,12 +833,12 @@ mds-input-select method setValue(value: string | number | null) => Promise<void>
 mds-input-select slot (default)
 mds-input-select part select
 mds-input-select part tip-top
-mds-input-select css --mds-input-select-arrow-icon-background-color
-mds-input-select css --mds-input-select-arrow-icon-blur-background-color
-mds-input-select css --mds-input-select-arrow-icon-blur-color
-mds-input-select css --mds-input-select-arrow-icon-color
-mds-input-select css --mds-input-select-arrow-icon-hover-background-color
-mds-input-select css --mds-input-select-arrow-icon-hover-color
+mds-input-select css --mds-input-select-arrow-icon-background-color INTERNAL
+mds-input-select css --mds-input-select-arrow-icon-blur-background-color INTERNAL
+mds-input-select css --mds-input-select-arrow-icon-blur-color INTERNAL
+mds-input-select css --mds-input-select-arrow-icon-color INTERNAL
+mds-input-select css --mds-input-select-arrow-icon-hover-background-color INTERNAL
+mds-input-select css --mds-input-select-arrow-icon-hover-color INTERNAL
 mds-input-select css --mds-input-select-ring
 mds-input-select css --mds-input-select-shadow
 mds-input-select css --mds-input-select-variant-color-rgb
@@ -856,49 +857,49 @@ mds-input-switch prop value (attr value) [reflect, mutable]: string | undefined 
 mds-input-switch prop variant (attr variant) [reflect]: "code" | "info" | "read" | "title" | undefined
 mds-input-switch event mdsInputSwitchChange: MdsInputSwitchEventDetail [bubbles, cancelable, composed]
 mds-input-switch slot (default)
-mds-input-switch css --mds-input-switch-animation-timing-adjust
-mds-input-switch css --mds-input-switch-animation-timing-function
-mds-input-switch css --mds-input-switch-box-color-disabled-checked
-mds-input-switch css --mds-input-switch-box-color-disabled-unchecked
-mds-input-switch css --mds-input-switch-box-color-enabled-checked
-mds-input-switch css --mds-input-switch-box-color-enabled-unchecked
-mds-input-switch css --mds-input-switch-box-padding
-mds-input-switch css --mds-input-switch-box-padding-lg
-mds-input-switch css --mds-input-switch-box-padding-md
-mds-input-switch css --mds-input-switch-box-padding-sm
-mds-input-switch css --mds-input-switch-duration
-mds-input-switch css --mds-input-switch-icon-color-checked
-mds-input-switch css --mds-input-switch-icon-color-checked-disabled
-mds-input-switch css --mds-input-switch-icon-color-indeterminate
-mds-input-switch css --mds-input-switch-icon-color-indeterminate-disabled
-mds-input-switch css --mds-input-switch-icon-color-unchecked
-mds-input-switch css --mds-input-switch-icon-color-unchecked-disabled
-mds-input-switch css --mds-input-switch-icon-explicit-color
-mds-input-switch css --mds-input-switch-toggle-color-disabled-checked
-mds-input-switch css --mds-input-switch-toggle-color-disabled-unchecked
-mds-input-switch css --mds-input-switch-toggle-color-enabled-checked
-mds-input-switch css --mds-input-switch-toggle-color-enabled-unchecked
-mds-input-switch css --mds-input-switch-toggle-container-size
-mds-input-switch css --mds-input-switch-toggle-size
-mds-input-switch css --mds-input-switch-toggle-size-lg
-mds-input-switch css --mds-input-switch-toggle-size-md
-mds-input-switch css --mds-input-switch-toggle-size-sm
+mds-input-switch css --mds-input-switch-animation-timing-adjust INTERNAL
+mds-input-switch css --mds-input-switch-animation-timing-function INTERNAL
+mds-input-switch css --mds-input-switch-box-color-disabled-checked INTERNAL
+mds-input-switch css --mds-input-switch-box-color-disabled-unchecked INTERNAL
+mds-input-switch css --mds-input-switch-box-color-enabled-checked INTERNAL
+mds-input-switch css --mds-input-switch-box-color-enabled-unchecked INTERNAL
+mds-input-switch css --mds-input-switch-box-padding INTERNAL
+mds-input-switch css --mds-input-switch-box-padding-lg INTERNAL
+mds-input-switch css --mds-input-switch-box-padding-md INTERNAL
+mds-input-switch css --mds-input-switch-box-padding-sm INTERNAL
+mds-input-switch css --mds-input-switch-duration INTERNAL
+mds-input-switch css --mds-input-switch-icon-color-checked INTERNAL
+mds-input-switch css --mds-input-switch-icon-color-checked-disabled INTERNAL
+mds-input-switch css --mds-input-switch-icon-color-indeterminate INTERNAL
+mds-input-switch css --mds-input-switch-icon-color-indeterminate-disabled INTERNAL
+mds-input-switch css --mds-input-switch-icon-color-unchecked INTERNAL
+mds-input-switch css --mds-input-switch-icon-color-unchecked-disabled INTERNAL
+mds-input-switch css --mds-input-switch-icon-explicit-color INTERNAL
+mds-input-switch css --mds-input-switch-toggle-color-disabled-checked INTERNAL
+mds-input-switch css --mds-input-switch-toggle-color-disabled-unchecked INTERNAL
+mds-input-switch css --mds-input-switch-toggle-color-enabled-checked INTERNAL
+mds-input-switch css --mds-input-switch-toggle-color-enabled-unchecked INTERNAL
+mds-input-switch css --mds-input-switch-toggle-container-size INTERNAL
+mds-input-switch css --mds-input-switch-toggle-size INTERNAL
+mds-input-switch css --mds-input-switch-toggle-size-lg INTERNAL
+mds-input-switch css --mds-input-switch-toggle-size-md INTERNAL
+mds-input-switch css --mds-input-switch-toggle-size-sm INTERNAL
 mds-input-tip encapsulation shadow
 mds-input-tip prop active (attr active) [reflect]: boolean | undefined = false
 mds-input-tip prop position (attr position) [reflect]: "bottom" | "top" | undefined = 'top'
 mds-input-tip slot (default)
-mds-input-tip css --mds-input-tip-active-translate
+mds-input-tip css --mds-input-tip-active-translate INTERNAL
 mds-input-tip css --mds-input-tip-background
-mds-input-tip css --mds-input-tip-horizontal-offset
-mds-input-tip css --mds-input-tip-horizontal-offset-focused
-mds-input-tip css --mds-input-tip-vertical-offset
+mds-input-tip css --mds-input-tip-horizontal-offset INTERNAL
+mds-input-tip css --mds-input-tip-horizontal-offset-focused INTERNAL
+mds-input-tip css --mds-input-tip-vertical-offset INTERNAL
 mds-input-tip-item encapsulation shadow
 mds-input-tip-item prop expanded (attr expanded) [reflect, mutable]: boolean | undefined
 mds-input-tip-item prop variant (attr variant) [reflect]: "count-almost" | "count-almost-full" | "count-empty" | "count-full" | "count-incomplete" | "disabled" | "readonly" | "required" | "required-success" | "text" | undefined = 'required'
 mds-input-tip-item slot (default)
 mds-input-tip-item css --mds-input-tip-item-background
 mds-input-tip-item css --mds-input-tip-item-color
-mds-input-tip-item css --mds-input-tip-item-icon-color
+mds-input-tip-item css --mds-input-tip-item-icon-color INTERNAL
 mds-input-upload encapsulation shadow
 mds-input-upload prop accept (attr accept) [reflect]: string = ''
 mds-input-upload prop disabled (attr disabled) [reflect]: boolean | undefined = false
@@ -911,44 +912,44 @@ mds-input-upload event mdsInputUploadChange: FileList | null [bubbles, cancelabl
 mds-input-upload method getFiles() => Promise<FileList | null>
 mds-input-upload method getFilesError() => Promise<FileError[] | null>
 mds-input-upload method reset() => Promise<void>
-mds-input-upload css --mds-input-upload-drag-area-background-color
-mds-input-upload css --mds-input-upload-drag-area-background-color-on-drag
-mds-input-upload css --mds-input-upload-drag-area-border
-mds-input-upload css --mds-input-upload-drag-area-border-on-drag
+mds-input-upload css --mds-input-upload-drag-area-background-color INTERNAL
+mds-input-upload css --mds-input-upload-drag-area-background-color-on-drag INTERNAL
+mds-input-upload css --mds-input-upload-drag-area-border INTERNAL
+mds-input-upload css --mds-input-upload-drag-area-border-on-drag INTERNAL
 mds-input-upload css --mds-input-upload-min-cols
 mds-keyboard encapsulation shadow
 mds-keyboard prop test (attr test) [reflect, mutable]: "fail" | "pass" | undefined
 mds-keyboard prop try (attr try) [reflect]: boolean | undefined
 mds-keyboard slot (default)
 mds-keyboard css --mds-keyboard-background
-mds-keyboard css --mds-keyboard-background-default
-mds-keyboard css --mds-keyboard-background-fail
-mds-keyboard css --mds-keyboard-background-pass
+mds-keyboard css --mds-keyboard-background-default INTERNAL
+mds-keyboard css --mds-keyboard-background-fail INTERNAL
+mds-keyboard css --mds-keyboard-background-pass INTERNAL
 mds-keyboard css --mds-keyboard-color
-mds-keyboard css --mds-keyboard-fill-fail
-mds-keyboard css --mds-keyboard-fill-pass
-mds-keyboard css --mds-keyboard-illumination-dark
-mds-keyboard css --mds-keyboard-illumination-dark-opacity
-mds-keyboard css --mds-keyboard-illumination-dark-size
-mds-keyboard css --mds-keyboard-illumination-light
-mds-keyboard css --mds-keyboard-illumination-light-opacity
-mds-keyboard css --mds-keyboard-illumination-light-size
-mds-keyboard css --mds-keyboard-illumination-shadow
-mds-keyboard css --mds-keyboard-key-background
-mds-keyboard css --mds-keyboard-key-illumination-dark-opacity
-mds-keyboard css --mds-keyboard-key-illumination-light-opacity
-mds-keyboard css --mds-keyboard-key-illumination-shadow
+mds-keyboard css --mds-keyboard-fill-fail INTERNAL
+mds-keyboard css --mds-keyboard-fill-pass INTERNAL
+mds-keyboard css --mds-keyboard-illumination-dark INTERNAL
+mds-keyboard css --mds-keyboard-illumination-dark-opacity INTERNAL
+mds-keyboard css --mds-keyboard-illumination-dark-size INTERNAL
+mds-keyboard css --mds-keyboard-illumination-light INTERNAL
+mds-keyboard css --mds-keyboard-illumination-light-opacity INTERNAL
+mds-keyboard css --mds-keyboard-illumination-light-size INTERNAL
+mds-keyboard css --mds-keyboard-illumination-shadow INTERNAL
+mds-keyboard css --mds-keyboard-key-background INTERNAL
+mds-keyboard css --mds-keyboard-key-illumination-dark-opacity INTERNAL
+mds-keyboard css --mds-keyboard-key-illumination-light-opacity INTERNAL
+mds-keyboard css --mds-keyboard-key-illumination-shadow INTERNAL
 mds-keyboard css --mds-keyboard-padding
-mds-keyboard css --mds-keyboard-spinner-duration
+mds-keyboard css --mds-keyboard-spinner-duration INTERNAL
 mds-keyboard-key encapsulation shadow
 mds-keyboard-key prop name (attr name) [reflect]: "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "a" | "alt" | "altleft" | "altright" | "arrowdown" | "arrowleft" | "arrowright" | "arrowup" | "b" | "backspace" | "c" | "capslock" | "command" | "commandleft" | "commandright" | "control" | "controlleft" | "controlright" | "d" | "delete" | "e" | "end" | "enter" | "escape" | "f" | "f1" | "f10" | "f11" | "f12" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" | "f8" | "f9" | "g" | "h" | "home" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "option" | "optionleft" | "optionright" | "p" | "pagedown" | "pageup" | "q" | "r" | "s" | "shift" | "shiftleft" | "shiftright" | "space" | "t" | "tab" | "u" | "v" | "w" | "windows" | "windowsleft" | "windowsright" | "x" | "y" | "z"
 mds-keyboard-key prop pressed (attr pressed) [reflect]: boolean | undefined
-mds-keyboard-key css --mds-keyboard-key-illumination-dark
-mds-keyboard-key css --mds-keyboard-key-illumination-dark-size
-mds-keyboard-key css --mds-keyboard-key-illumination-light
-mds-keyboard-key css --mds-keyboard-key-illumination-light-size
+mds-keyboard-key css --mds-keyboard-key-illumination-dark INTERNAL
+mds-keyboard-key css --mds-keyboard-key-illumination-dark-size INTERNAL
+mds-keyboard-key css --mds-keyboard-key-illumination-light INTERNAL
+mds-keyboard-key css --mds-keyboard-key-illumination-light-size INTERNAL
 mds-keyboard-key css --mds-keyboard-key-padding
-mds-keyboard-key css --mds-keyboard-key-transition-duration
+mds-keyboard-key css --mds-keyboard-key-transition-duration INTERNAL
 mds-kpi encapsulation shadow
 mds-kpi slot (default)
 mds-kpi css --mds-kpi-text-animation-placeholder-char
@@ -961,10 +962,10 @@ mds-kpi-item prop threshold (attr threshold): number | undefined = 0
 mds-kpi-item part content
 mds-kpi-item part icon
 mds-kpi-item part icon-container
-mds-kpi-item css --mds-kpi-item-icon-color
-mds-kpi-item css --mds-kpi-item-info-background
-mds-kpi-item css --mds-kpi-item-text-animation-placeholder-char
-mds-kpi-item css --mds-kpi-item-text-animation-speed
+mds-kpi-item css --mds-kpi-item-icon-color INTERNAL
+mds-kpi-item css --mds-kpi-item-info-background INTERNAL
+mds-kpi-item css --mds-kpi-item-text-animation-placeholder-char INTERNAL
+mds-kpi-item css --mds-kpi-item-text-animation-speed INTERNAL
 mds-label encapsulation shadow
 mds-label prop deletable (attr deletable): boolean = false
 mds-label prop label (attr label) [reflect]: string | undefined
@@ -974,13 +975,13 @@ mds-label prop typography (attr typography): "caption" | "detail" | "tip" = 'cap
 mds-label prop variant (attr variant) [reflect]: "amaranth" | "aqua" | "blue" | "error" | "green" | "info" | "lime" | "orange" | "orchid" | "purple" | "red" | "sky" | "success" | "violet" | "warning" | "yellow" = 'sky'
 mds-label event mdsLabelDelete: void [bubbles, cancelable, composed]
 mds-label css --mds-label-background
-mds-label css --mds-label-button-background
-mds-label css --mds-label-button-background-hover
-mds-label css --mds-label-button-icon-color
+mds-label css --mds-label-button-background INTERNAL
+mds-label css --mds-label-button-background-hover INTERNAL
+mds-label css --mds-label-button-icon-color INTERNAL
 mds-label css --mds-label-color
-mds-label css --mds-label-icon-color
-mds-label css --mds-label-selection-background
-mds-label css --mds-label-selection-color
+mds-label css --mds-label-icon-color INTERNAL
+mds-label css --mds-label-selection-background INTERNAL
+mds-label css --mds-label-selection-color INTERNAL
 mds-link encapsulation shadow
 mds-link prop href (attr href) [reflect]: string | undefined
 mds-link prop icon (attr icon) [reflect]: string | undefined
@@ -993,14 +994,14 @@ mds-link prop variant (attr variant) [reflect]: "inherit" | "primary" | undefine
 mds-link slot (default)
 mds-link part icon
 mds-link part link
-mds-link css --mds-link-background-hover
+mds-link css --mds-link-background-hover INTERNAL
 mds-link css --mds-link-color
-mds-link css --mds-link-icon-gap
-mds-link css --mds-link-icon-size
-mds-link css --mds-link-transition-duration
-mds-link css --mds-link-underline-color
-mds-link css --mds-link-underline-offset
-mds-link css --mds-link-underline-thickness
+mds-link css --mds-link-icon-gap INTERNAL
+mds-link css --mds-link-icon-size INTERNAL
+mds-link css --mds-link-transition-duration INTERNAL
+mds-link css --mds-link-underline-color INTERNAL
+mds-link css --mds-link-underline-offset INTERNAL
+mds-link css --mds-link-underline-thickness INTERNAL
 mds-list encapsulation shadow
 mds-list slot (default)
 mds-list-item encapsulation shadow
@@ -1010,14 +1011,14 @@ mds-list-item prop variant (attr variant): "info" | "read" | undefined = 'info'
 mds-list-item slot (default)
 mds-list-item part icon
 mds-list-item part text
-mds-list-item css --mds-list-item-icon-margin
+mds-list-item css --mds-list-item-icon-margin INTERNAL
 mds-mention encapsulation shadow
 mds-mention prop deletable (attr deletable) [reflect]: boolean | undefined
 mds-mention prop icon (attr icon) [reflect]: string | undefined
 mds-mention prop label (attr label) [reflect]: string | undefined
 mds-mention prop size (attr size) [reflect]: "lg" | "md" | "sm" | undefined = 'sm'
 mds-mention event mdsMentionDelete: MdsMentionEvent [bubbles, cancelable, composed]
-mds-mention css --mds-mention-icon-size
+mds-mention css --mds-mention-icon-size INTERNAL
 mds-modal encapsulation shadow
 mds-modal prop accessibleName (attr aria-label): string | undefined
 mds-modal prop animation (attr animation) [reflect]: "3d" | "custom" | "slide" | undefined = 'slide'
@@ -1040,18 +1041,18 @@ mds-modal part dialog
 mds-modal part window
 mds-modal css --mds-modal-custom-closed-transform
 mds-modal css --mds-modal-custom-window-distance
-mds-modal css --mds-modal-overlay-color
-mds-modal css --mds-modal-overlay-opacity
-mds-modal css --mds-modal-transition-duration
-mds-modal css --mds-modal-transition-timing-funciton
-mds-modal css --mds-modal-transition-timing-function
-mds-modal css --mds-modal-window-background
+mds-modal css --mds-modal-overlay-color INTERNAL
+mds-modal css --mds-modal-overlay-opacity INTERNAL
+mds-modal css --mds-modal-transition-duration INTERNAL
+mds-modal css --mds-modal-transition-timing-funciton INTERNAL
+mds-modal css --mds-modal-transition-timing-function INTERNAL
+mds-modal css --mds-modal-window-background INTERNAL
 mds-modal css --mds-modal-window-distance
 mds-modal css --mds-modal-window-max-width
 mds-modal css --mds-modal-window-min-width
 mds-modal css --mds-modal-window-overflow
-mds-modal css --mds-modal-window-radius
-mds-modal css --mds-modal-window-shadow
+mds-modal css --mds-modal-window-radius INTERNAL
+mds-modal css --mds-modal-window-shadow INTERNAL
 mds-modal css --mds-modal-z-index
 mds-note encapsulation shadow
 mds-note prop deletable (attr deletable): boolean | undefined = false
@@ -1061,10 +1062,10 @@ mds-note slot (default)
 mds-note slot title
 mds-note css --mds-note-background
 mds-note css --mds-note-color
-mds-note css --mds-note-fold-color
-mds-note css --mds-note-fold-size
-mds-note css --mds-note-selection-background
-mds-note css --mds-note-selection-color
+mds-note css --mds-note-fold-color INTERNAL
+mds-note css --mds-note-fold-size INTERNAL
+mds-note css --mds-note-selection-background INTERNAL
+mds-note css --mds-note-selection-color INTERNAL
 mds-notification encapsulation shadow
 mds-notification prop dismissed (attr dismissed) [reflect, mutable]: boolean = false
 mds-notification prop max (attr max) [reflect]: number | undefined
@@ -1072,17 +1073,17 @@ mds-notification prop strategy (attr strategy) [reflect, mutable]: "absolute" | 
 mds-notification prop target (attr target): string
 mds-notification prop value (attr value) [reflect, mutable]: number = 0
 mds-notification css --mds-notification-color
-mds-notification css --mds-notification-dot-background
-mds-notification css --mds-notification-dot-padding
-mds-notification css --mds-notification-min-width
-mds-notification css --mds-notification-ring-color
-mds-notification css --mds-notification-ring-size
+mds-notification css --mds-notification-dot-background INTERNAL
+mds-notification css --mds-notification-dot-padding INTERNAL
+mds-notification css --mds-notification-min-width INTERNAL
+mds-notification css --mds-notification-ring-color INTERNAL
+mds-notification css --mds-notification-ring-size INTERNAL
 mds-notification css --mds-notification-size
-mds-notification css --mds-notification-transition-duration
-mds-notification css --mds-notification-transition-timing-function
-mds-notification css --mds-notification-translate
-mds-notification css --mds-notification-translate-offset-x
-mds-notification css --mds-notification-translate-offset-y
+mds-notification css --mds-notification-transition-duration INTERNAL
+mds-notification css --mds-notification-transition-timing-function INTERNAL
+mds-notification css --mds-notification-translate INTERNAL
+mds-notification css --mds-notification-translate-offset-x INTERNAL
+mds-notification css --mds-notification-translate-offset-y INTERNAL
 mds-paginator encapsulation shadow
 mds-paginator prop currentPage (attr current-page) [reflect, mutable]: number = 1
 mds-paginator prop pages (attr pages): number = 0
@@ -1095,18 +1096,18 @@ mds-paginator-item prop icon (attr icon) [reflect]: string | undefined
 mds-paginator-item prop selected (attr selected) [reflect]: boolean | undefined
 mds-paginator-item slot (default)
 mds-paginator-item css --mds-paginator-item-background
-mds-paginator-item css --mds-paginator-item-background-disabled
-mds-paginator-item css --mds-paginator-item-background-hover
-mds-paginator-item css --mds-paginator-item-background-selected
+mds-paginator-item css --mds-paginator-item-background-disabled INTERNAL
+mds-paginator-item css --mds-paginator-item-background-hover INTERNAL
+mds-paginator-item css --mds-paginator-item-background-selected INTERNAL
 mds-paginator-item css --mds-paginator-item-color
-mds-paginator-item css --mds-paginator-item-color-disabled
-mds-paginator-item css --mds-paginator-item-color-hover
-mds-paginator-item css --mds-paginator-item-color-selected
+mds-paginator-item css --mds-paginator-item-color-disabled INTERNAL
+mds-paginator-item css --mds-paginator-item-color-hover INTERNAL
+mds-paginator-item css --mds-paginator-item-color-selected INTERNAL
 mds-paginator-item css --mds-paginator-item-radius
 mds-paginator-item css --mds-paginator-item-shadow
-mds-paginator-item css --mds-paginator-item-shadow-disabled
-mds-paginator-item css --mds-paginator-item-shadow-hover
-mds-paginator-item css --mds-paginator-item-shadow-selected
+mds-paginator-item css --mds-paginator-item-shadow-disabled INTERNAL
+mds-paginator-item css --mds-paginator-item-shadow-hover INTERNAL
+mds-paginator-item css --mds-paginator-item-shadow-selected INTERNAL
 mds-paginator-item css --mds-paginator-item-size
 mds-policy-ai encapsulation shadow
 mds-policy-ai prop description (attr description) [reflect]: string | undefined
@@ -1150,8 +1151,8 @@ mds-pref-mode prop mode (attr mode) [reflect, mutable]: "dark" | "light" | "syst
 mds-pref-mode prop size (attr size) [reflect]: "md" | "sm" | undefined
 mds-pref-mode prop transition (attr transition) [reflect, mutable]: "flash" | "none" | "smooth" = 'smooth'
 mds-pref-mode event mdsPrefChange: MdsPrefChangeEventDetail [bubbles, cancelable, composed]
-mds-pref-mode css --mds-pref-mode-overlay-fadeout-duration
-mds-pref-mode css --mds-pref-mode-overlay-show-duration
+mds-pref-mode css --mds-pref-mode-overlay-fadeout-duration INTERNAL
+mds-pref-mode css --mds-pref-mode-overlay-show-duration INTERNAL
 mds-pref-mode css --mds-pref-mode-overlay-z-index
 mds-pref-theme encapsulation shadow
 mds-pref-theme prop cornerShape (attr corner-shape) [reflect, mutable]: "bevel" | "default" | "notch" | "round" | "scoop" | "square" | "squircle" | undefined
@@ -1168,35 +1169,35 @@ mds-pref-theme-item prop scheme (attr scheme) [reflect]: "all" | "dark" | "light
 mds-pref-theme-item prop selected (attr selected) [reflect]: boolean | undefined = false
 mds-pref-theme-item event mdsPrefThemeItemSelect: MdsPrefThemeEventDetail [bubbles, cancelable, composed]
 mds-pref-theme-item css --mds-pref-theme-item-color-background
-mds-pref-theme-item css --mds-pref-theme-item-color-status-error
-mds-pref-theme-item css --mds-pref-theme-item-color-status-success
-mds-pref-theme-item css --mds-pref-theme-item-color-status-warning
-mds-pref-theme-item css --mds-pref-theme-item-color-variant-primary
+mds-pref-theme-item css --mds-pref-theme-item-color-status-error INTERNAL
+mds-pref-theme-item css --mds-pref-theme-item-color-status-success INTERNAL
+mds-pref-theme-item css --mds-pref-theme-item-color-status-warning INTERNAL
+mds-pref-theme-item css --mds-pref-theme-item-color-variant-primary INTERNAL
 mds-price-table encapsulation shadow
 mds-price-table slot (default)
 mds-price-table-features encapsulation shadow
 mds-price-table-features prop label (attr label): string | undefined
 mds-price-table-features slot (default)
 mds-price-table-features part header
-mds-price-table-features css --mds-price-table-features-border-color
+mds-price-table-features css --mds-price-table-features-border-color INTERNAL
 mds-price-table-features css --mds-price-table-features-padding
 mds-price-table-features-cell encapsulation shadow
 mds-price-table-features-cell prop type (attr type) [reflect]: "custom" | "label" | "supported" | "text" | "unsupported" | undefined = 'text'
 mds-price-table-features-cell slot (default)
 mds-price-table-features-cell part icon
 mds-price-table-features-cell part text
-mds-price-table-features-cell css --mds-price-table-features-cell-border-color
-mds-price-table-features-cell css --mds-price-table-features-cell-icon-supported-color
-mds-price-table-features-cell css --mds-price-table-features-cell-icon-supported-color-hover
-mds-price-table-features-cell css --mds-price-table-features-cell-icon-unsupported-color
-mds-price-table-features-cell css --mds-price-table-features-cell-icon-unsupported-color-hover
+mds-price-table-features-cell css --mds-price-table-features-cell-border-color INTERNAL
+mds-price-table-features-cell css --mds-price-table-features-cell-icon-supported-color INTERNAL
+mds-price-table-features-cell css --mds-price-table-features-cell-icon-supported-color-hover INTERNAL
+mds-price-table-features-cell css --mds-price-table-features-cell-icon-unsupported-color INTERNAL
+mds-price-table-features-cell css --mds-price-table-features-cell-icon-unsupported-color-hover INTERNAL
 mds-price-table-features-cell css --mds-price-table-features-cell-padding
 mds-price-table-features-row encapsulation shadow
 mds-price-table-features-row slot (default)
 mds-price-table-features-row css --mds-price-table-features-row-background
-mds-price-table-features-row css --mds-price-table-features-row-background-hover
+mds-price-table-features-row css --mds-price-table-features-row-background-hover INTERNAL
 mds-price-table-features-row css --mds-price-table-features-row-color
-mds-price-table-features-row css --mds-price-table-features-row-color-hover
+mds-price-table-features-row css --mds-price-table-features-row-color-hover INTERNAL
 mds-price-table-header encapsulation shadow
 mds-price-table-header slot (default)
 mds-price-table-list encapsulation shadow
@@ -1207,15 +1208,15 @@ mds-price-table-list slot price
 mds-price-table-list part content
 mds-price-table-list part footer
 mds-price-table-list part header
-mds-price-table-list css --mds-price-table-list-separator-color
+mds-price-table-list css --mds-price-table-list-separator-color INTERNAL
 mds-price-table-list-item encapsulation shadow
 mds-price-table-list-item prop supported (attr supported) [reflect]: boolean = false
 mds-price-table-list-item prop typography (attr typography) [reflect]: "caption" | "detail" | "paragraph" = 'detail'
 mds-price-table-list-item slot (default)
 mds-price-table-list-item part icon
-mds-price-table-list-item css --mds-price-table-list-item-supported-icon-color
-mds-price-table-list-item css --mds-price-table-list-item-supported-icon-color-hover
-mds-price-table-list-item css --mds-price-table-list-item-unsupported-icon-color
+mds-price-table-list-item css --mds-price-table-list-item-supported-icon-color INTERNAL
+mds-price-table-list-item css --mds-price-table-list-item-supported-icon-color-hover INTERNAL
+mds-price-table-list-item css --mds-price-table-list-item-unsupported-icon-color INTERNAL
 mds-progress encapsulation shadow
 mds-progress prop direction (attr direction) [reflect]: "horizontal" | "radial" | "vertical" | undefined = 'horizontal'
 mds-progress prop progress (attr progress): number = 0
@@ -1244,11 +1245,11 @@ mds-push-notification part notifications
 mds-push-notification css --mds-push-notification-background
 mds-push-notification css --mds-push-notification-fadeout-delay
 mds-push-notification css --mds-push-notification-gap
-mds-push-notification css --mds-push-notification-items-duration
-mds-push-notification css --mds-push-notification-items-gap
-mds-push-notification css --mds-push-notification-items-intro-delay
-mds-push-notification css --mds-push-notification-items-outro-delay
-mds-push-notification css --mds-push-notification-items-timing-function
+mds-push-notification css --mds-push-notification-items-duration INTERNAL
+mds-push-notification css --mds-push-notification-items-gap INTERNAL
+mds-push-notification css --mds-push-notification-items-intro-delay INTERNAL
+mds-push-notification css --mds-push-notification-items-outro-delay INTERNAL
+mds-push-notification css --mds-push-notification-items-timing-function INTERNAL
 mds-push-notification-item encapsulation shadow
 mds-push-notification-item prop dateFormat (attr date-format) [reflect]: string = 'timeago'
 mds-push-notification-item prop datetime (attr datetime) [reflect, mutable]: string | undefined
@@ -1268,13 +1269,13 @@ mds-push-notification-item part actions
 mds-push-notification-item part avatar
 mds-push-notification-item part content
 mds-push-notification-item part picture
-mds-push-notification-item css --mds-push-notification-item-duration
-mds-push-notification-item css --mds-push-notification-item-icon-background-color
-mds-push-notification-item css --mds-push-notification-item-icon-color
+mds-push-notification-item css --mds-push-notification-item-duration INTERNAL
+mds-push-notification-item css --mds-push-notification-item-icon-background-color INTERNAL
+mds-push-notification-item css --mds-push-notification-item-icon-color INTERNAL
 mds-push-notification-item css --mds-push-notification-item-message-line-clamp
 mds-push-notification-item css --mds-push-notification-item-shadow
 mds-push-notification-item css --mds-push-notification-item-subject-line-clamp
-mds-push-notification-item css --mds-push-notification-item-timing-function
+mds-push-notification-item css --mds-push-notification-item-timing-function INTERNAL
 mds-quote encapsulation shadow
 mds-quote prop tag (attr tag): "h1" | "h2" | "h3" | "h4" | "h5" | "h6" = 'h3'
 mds-quote prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" = 'h3'
@@ -1295,26 +1296,26 @@ mds-radial-menu prop tone (attr tone) [reflect]: "outline" | "strong" | "text" |
 mds-radial-menu prop variant (attr variant) [reflect]: "ai" | "apple" | "dark" | "error" | "google" | "info" | "light" | "primary" | "secondary" | "success" | "warning" | undefined = 'dark'
 mds-radial-menu slot item
 mds-radial-menu part radial-menu
-mds-radial-menu css --mds-radial-menu-angle-end
-mds-radial-menu css --mds-radial-menu-angle-start
+mds-radial-menu css --mds-radial-menu-angle-end INTERNAL
+mds-radial-menu css --mds-radial-menu-angle-start INTERNAL
 mds-radial-menu css --mds-radial-menu-context-menu-z-index
-mds-radial-menu css --mds-radial-menu-delay
-mds-radial-menu css --mds-radial-menu-direction
-mds-radial-menu css --mds-radial-menu-disc-background
-mds-radial-menu css --mds-radial-menu-disc-filter
-mds-radial-menu css --mds-radial-menu-disc-shadow
+mds-radial-menu css --mds-radial-menu-delay INTERNAL
+mds-radial-menu css --mds-radial-menu-direction INTERNAL
+mds-radial-menu css --mds-radial-menu-disc-background INTERNAL
+mds-radial-menu css --mds-radial-menu-disc-filter INTERNAL
+mds-radial-menu css --mds-radial-menu-disc-shadow INTERNAL
 mds-radial-menu css --mds-radial-menu-disc-size
 mds-radial-menu css --mds-radial-menu-radius
-mds-radial-menu css --mds-radial-menu-transition-duration
-mds-radial-menu css --mds-radial-menu-transition-timing-function
+mds-radial-menu css --mds-radial-menu-transition-duration INTERNAL
+mds-radial-menu css --mds-radial-menu-transition-timing-function INTERNAL
 mds-radial-menu-item encapsulation shadow
 mds-radial-menu-item prop icon (attr icon) [reflect, mutable]: string | undefined
 mds-radial-menu-item prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'lg'
 mds-radial-menu-item prop tone (attr tone) [reflect]: "outline" | "strong" | "text" | "weak" | undefined = 'weak'
 mds-radial-menu-item prop tooltip (attr tooltip) [reflect]: string | undefined
 mds-radial-menu-item prop variant (attr variant) [reflect]: "ai" | "apple" | "dark" | "error" | "google" | "info" | "light" | "primary" | "secondary" | "success" | "warning" | undefined = 'dark'
-mds-radial-menu-item css --mds-radial-menu-item-transition-duration
-mds-radial-menu-item css --mds-radial-menu-item-transition-timing-function
+mds-radial-menu-item css --mds-radial-menu-item-transition-duration INTERNAL
+mds-radial-menu-item css --mds-radial-menu-item-transition-timing-function INTERNAL
 mds-radial-progress encapsulation shadow
 mds-radial-progress prop icon (attr icon) [reflect]: string | undefined
 mds-radial-progress prop progress (attr progress): number = 0
@@ -1324,8 +1325,8 @@ mds-radial-progress part icon
 mds-radial-progress part value-container
 mds-radial-progress css --mds-radial-progress-background
 mds-radial-progress css --mds-radial-progress-color
-mds-radial-progress css --mds-radial-progress-text-background
-mds-radial-progress css --mds-radial-progress-text-background-shadow
+mds-radial-progress css --mds-radial-progress-text-background INTERNAL
+mds-radial-progress css --mds-radial-progress-text-background-shadow INTERNAL
 mds-radial-progress css --mds-radial-progress-text-suffix
 mds-separator encapsulation shadow
 mds-separator css --mds-separator-background
@@ -1342,8 +1343,8 @@ mds-status-bar slot (default)
 mds-status-bar part actions
 mds-status-bar part status-bar
 mds-status-bar part status-bar-area
-mds-status-bar css --mds-status-bar-backdrop
-mds-status-bar css --mds-status-bar-backdrop-filter
+mds-status-bar css --mds-status-bar-backdrop INTERNAL
+mds-status-bar css --mds-status-bar-backdrop-filter INTERNAL
 mds-status-bar css --mds-status-bar-max-width
 mds-stepper-bar encapsulation shadow
 mds-stepper-bar prop itemsDone (attr items-done): number = 1
@@ -1355,12 +1356,12 @@ mds-stepper-bar part contents
 mds-stepper-bar part items
 mds-stepper-bar css --mds-stepper-bar-gap
 mds-stepper-bar css --mds-stepper-bar-offset-margin
-mds-stepper-bar css --mds-stepper-bar-scroll-behavior
-mds-stepper-bar css --mds-stepper-bar-scrollbar-margin
-mds-stepper-bar css --mds-stepper-bar-scrollbar-radius
-mds-stepper-bar css --mds-stepper-bar-scrollbar-size
-mds-stepper-bar css --mds-stepper-bar-scrollbar-thumb-background
-mds-stepper-bar css --mds-stepper-bar-scrollbar-track-background
+mds-stepper-bar css --mds-stepper-bar-scroll-behavior INTERNAL
+mds-stepper-bar css --mds-stepper-bar-scrollbar-margin INTERNAL
+mds-stepper-bar css --mds-stepper-bar-scrollbar-radius INTERNAL
+mds-stepper-bar css --mds-stepper-bar-scrollbar-size INTERNAL
+mds-stepper-bar css --mds-stepper-bar-scrollbar-thumb-background INTERNAL
+mds-stepper-bar css --mds-stepper-bar-scrollbar-track-background INTERNAL
 mds-stepper-bar-item encapsulation shadow
 mds-stepper-bar-item prop badge (attr badge) [reflect, mutable]: boolean
 mds-stepper-bar-item prop current (attr current) [reflect, mutable]: boolean = false
@@ -1374,17 +1375,17 @@ mds-stepper-bar-item prop value (attr value) [reflect]: string | undefined
 mds-stepper-bar-item event mdsStepperBarItemDone: MdsStepperBarItemEventDetail [bubbles, cancelable, composed]
 mds-stepper-bar-item part badge
 mds-stepper-bar-item css --mds-stepper-bar-item-color
-mds-stepper-bar-item css --mds-stepper-bar-item-duration
-mds-stepper-bar-item css --mds-stepper-bar-item-icon-background
-mds-stepper-bar-item css --mds-stepper-bar-item-icon-background-current
-mds-stepper-bar-item css --mds-stepper-bar-item-icon-background-done
-mds-stepper-bar-item css --mds-stepper-bar-item-icon-color
-mds-stepper-bar-item css --mds-stepper-bar-item-icon-color-current
-mds-stepper-bar-item css --mds-stepper-bar-item-icon-color-done
+mds-stepper-bar-item css --mds-stepper-bar-item-duration INTERNAL
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-background INTERNAL
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-background-current INTERNAL
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-background-done INTERNAL
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-color INTERNAL
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-color-current INTERNAL
+mds-stepper-bar-item css --mds-stepper-bar-item-icon-color-done INTERNAL
 mds-stepper-bar-item css --mds-stepper-bar-item-min-width
-mds-stepper-bar-item css --mds-stepper-bar-item-progress-background
-mds-stepper-bar-item css --mds-stepper-bar-item-progress-color
-mds-stepper-bar-item css --mds-stepper-bar-item-progress-thickness
+mds-stepper-bar-item css --mds-stepper-bar-item-progress-background INTERNAL
+mds-stepper-bar-item css --mds-stepper-bar-item-progress-color INTERNAL
+mds-stepper-bar-item css --mds-stepper-bar-item-progress-thickness INTERNAL
 mds-tab encapsulation shadow
 mds-tab prop animation (attr animation) [reflect]: "fade" | "slide" | undefined = 'slide'
 mds-tab prop direction (attr direction) [reflect, mutable]: "horizontal" | "vertical" | undefined = 'horizontal'
@@ -1399,35 +1400,35 @@ mds-tab part contents
 mds-tab part slider
 mds-tab part tabs
 mds-tab css --mds-tab-direction-vertical-columns
-mds-tab css --mds-tab-item-default-background
-mds-tab css --mds-tab-item-default-color
-mds-tab css --mds-tab-item-default-shadow
-mds-tab css --mds-tab-item-hover-background
-mds-tab css --mds-tab-item-hover-color
-mds-tab css --mds-tab-item-hover-shadow
-mds-tab css --mds-tab-item-radius
-mds-tab css --mds-tab-item-selected-background
-mds-tab css --mds-tab-item-selected-color
-mds-tab css --mds-tab-item-selected-shadow
-mds-tab css --mds-tab-scroll-behavior
-mds-tab css --mds-tab-scroll-scrollbar-margin
-mds-tab css --mds-tab-scroll-scrollbar-radius
-mds-tab css --mds-tab-scroll-scrollbar-size
-mds-tab css --mds-tab-scroll-scrollbar-thumb-background
-mds-tab css --mds-tab-scroll-scrollbar-track-background
-mds-tab css --mds-tab-slide-delay
+mds-tab css --mds-tab-item-default-background INTERNAL
+mds-tab css --mds-tab-item-default-color INTERNAL
+mds-tab css --mds-tab-item-default-shadow INTERNAL
+mds-tab css --mds-tab-item-hover-background INTERNAL
+mds-tab css --mds-tab-item-hover-color INTERNAL
+mds-tab css --mds-tab-item-hover-shadow INTERNAL
+mds-tab css --mds-tab-item-radius INTERNAL
+mds-tab css --mds-tab-item-selected-background INTERNAL
+mds-tab css --mds-tab-item-selected-color INTERNAL
+mds-tab css --mds-tab-item-selected-shadow INTERNAL
+mds-tab css --mds-tab-scroll-behavior INTERNAL
+mds-tab css --mds-tab-scroll-scrollbar-margin INTERNAL
+mds-tab css --mds-tab-scroll-scrollbar-radius INTERNAL
+mds-tab css --mds-tab-scroll-scrollbar-size INTERNAL
+mds-tab css --mds-tab-scroll-scrollbar-thumb-background INTERNAL
+mds-tab css --mds-tab-scroll-scrollbar-track-background INTERNAL
+mds-tab css --mds-tab-slide-delay INTERNAL
 mds-tab css --mds-tab-tabs-background
-mds-tab css --mds-tab-tabs-gap
-mds-tab css --mds-tab-tabs-overflow-shadow
-mds-tab css --mds-tab-tabs-overflow-shadow-size
-mds-tab css --mds-tab-tabs-padding
-mds-tab css --mds-tab-tabs-radius
+mds-tab css --mds-tab-tabs-gap INTERNAL
+mds-tab css --mds-tab-tabs-overflow-shadow INTERNAL
+mds-tab css --mds-tab-tabs-overflow-shadow-size INTERNAL
+mds-tab css --mds-tab-tabs-padding INTERNAL
+mds-tab css --mds-tab-tabs-radius INTERNAL
 mds-tab css --mds-tab-tabs-wrapper-margin
-mds-tab css --mds-tab-tabs-wrapper-outline-opacity
+mds-tab css --mds-tab-tabs-wrapper-outline-opacity INTERNAL
 mds-tab css --mds-tab-tabs-wrapper-shadow
-mds-tab css --mds-tab-tabs-wrapper-shadow-color
-mds-tab css --mds-tab-transition-duration
-mds-tab css --mds-tab-transition-timing-function
+mds-tab css --mds-tab-tabs-wrapper-shadow-color INTERNAL
+mds-tab css --mds-tab-transition-duration INTERNAL
+mds-tab css --mds-tab-transition-timing-function INTERNAL
 mds-tab-bar encapsulation shadow
 mds-tab-bar event mdsTabBarChange: MdsTabBarEventDetail [bubbles, cancelable, composed]
 mds-tab-bar slot (default)
@@ -1439,9 +1440,9 @@ mds-tab-bar-item prop typography (attr typography): "option" | "tip" | undefined
 mds-tab-bar-item event mdsTabBarItemSelect: string [bubbles, cancelable, composed]
 mds-tab-bar-item slot (default)
 mds-tab-bar-item css --mds-tab-bar-item-background
-mds-tab-bar-item css --mds-tab-bar-item-background-selected
+mds-tab-bar-item css --mds-tab-bar-item-background-selected INTERNAL
 mds-tab-bar-item css --mds-tab-bar-item-color
-mds-tab-bar-item css --mds-tab-bar-item-color-selected
+mds-tab-bar-item css --mds-tab-bar-item-color-selected INTERNAL
 mds-tab-item encapsulation shadow
 mds-tab-item prop animation (attr animation) [reflect]: "fade" | "slide" | undefined
 mds-tab-item prop await (attr await) [reflect]: boolean
@@ -1459,11 +1460,11 @@ mds-tab-item prop value (attr value) [reflect]: string | undefined
 mds-tab-item event mdsTabItemFocus: MdsTabItemEventDetail [bubbles, cancelable, composed]
 mds-tab-item event mdsTabItemSelect: MdsTabItemEventDetail [bubbles, cancelable, composed]
 mds-tab-item part button
-mds-tab-item css --mds-tab-item-default-background
-mds-tab-item css --mds-tab-item-default-shadow
-mds-tab-item css --mds-tab-item-hover-background
-mds-tab-item css --mds-tab-item-selected-background
-mds-tab-item css --mds-tab-item-selected-shadow
+mds-tab-item css --mds-tab-item-default-background INTERNAL
+mds-tab-item css --mds-tab-item-default-shadow INTERNAL
+mds-tab-item css --mds-tab-item-hover-background INTERNAL
+mds-tab-item css --mds-tab-item-selected-background INTERNAL
+mds-tab-item css --mds-tab-item-selected-shadow INTERNAL
 mds-table encapsulation shadow
 mds-table prop interactive (attr interactive): boolean | undefined
 mds-table prop selectable (attr selectable): boolean | undefined
@@ -1479,31 +1480,31 @@ mds-table part batch-actions
 mds-table part batch-actions-wrapper
 mds-table part table
 mds-table part table-wrapper
-mds-table css --mds-table-actions-gap
+mds-table css --mds-table-actions-gap INTERNAL
 mds-table css --mds-table-background
-mds-table css --mds-table-background-alt
-mds-table css --mds-table-border-color
-mds-table css --mds-table-border-width
+mds-table css --mds-table-background-alt INTERNAL
+mds-table css --mds-table-border-color INTERNAL
+mds-table css --mds-table-border-width INTERNAL
 mds-table css --mds-table-cell-padding
 mds-table css --mds-table-color
-mds-table css --mds-table-color-alt
-mds-table css --mds-table-separator-color
+mds-table css --mds-table-color-alt INTERNAL
+mds-table css --mds-table-separator-color INTERNAL
 mds-table-body encapsulation shadow
 mds-table-body prop interactive (attr interactive) [reflect]: boolean | undefined
 mds-table-body prop selection (attr selection) [reflect]: boolean | undefined
 mds-table-body slot (default)
 mds-table-body css --mds-table-body-background
-mds-table-body css --mds-table-body-background-alt
-mds-table-body css --mds-table-body-background-hover
+mds-table-body css --mds-table-body-background-alt INTERNAL
+mds-table-body css --mds-table-body-background-hover INTERNAL
 mds-table-body css --mds-table-body-color
-mds-table-body css --mds-table-body-color-alt
+mds-table-body css --mds-table-body-color-alt INTERNAL
 mds-table-cell encapsulation shadow
 mds-table-cell prop value (attr value) [reflect]: number | string | undefined
 mds-table-cell slot (default)
 mds-table-cell css --mds-table-cell-background
-mds-table-cell css --mds-table-cell-background-alt
+mds-table-cell css --mds-table-cell-background-alt INTERNAL
 mds-table-cell css --mds-table-cell-color
-mds-table-cell css --mds-table-cell-color-alt
+mds-table-cell css --mds-table-cell-color-alt INTERNAL
 mds-table-footer encapsulation shadow
 mds-table-footer prop selectable (attr selectable): boolean | undefined
 mds-table-footer slot (default)
@@ -1530,11 +1531,11 @@ mds-table-row prop selection (attr selection) [reflect]: boolean | undefined
 mds-table-row prop value (attr value) [reflect]: number | string | undefined
 mds-table-row slot (default)
 mds-table-row slot action
-mds-table-row css --mds-table-row-actions-gap
-mds-table-row css --mds-table-row-background-alt
-mds-table-row css --mds-table-row-background-hover
-mds-table-row css --mds-table-row-color-alt
-mds-table-row css --mds-table-row-color-hover
+mds-table-row css --mds-table-row-actions-gap INTERNAL
+mds-table-row css --mds-table-row-background-alt INTERNAL
+mds-table-row css --mds-table-row-background-hover INTERNAL
+mds-table-row css --mds-table-row-color-alt INTERNAL
+mds-table-row css --mds-table-row-color-hover INTERNAL
 mds-text encapsulation shadow
 mds-text prop animation (attr animation) [reflect]: "none" | "yugop" | undefined = 'none'
 mds-text prop tag (attr tag) [reflect, mutable]: "abbr" | "address" | "article" | "b" | "bdo" | "blockquote" | "cite" | "code" | "dd" | "del" | "details" | "dfn" | "div" | "dl" | "dt" | "em" | "figcaption" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "i" | "ins" | "kbd" | "label" | "legend" | "li" | "mark" | "ol" | "p" | "pre" | "q" | "rb" | "rt" | "ruby" | "s" | "samp" | "small" | "span" | "strong" | "sub" | "summary" | "sup" | "time" | "u" | "ul" | "var"
@@ -1546,8 +1547,8 @@ mds-text slot (default)
 mds-text css --mds-text-animation-placeholder-char
 mds-text css --mds-text-animation-speed
 mds-text css --mds-text-line-clamp
-mds-text css --mds-text-selection-background
-mds-text css --mds-text-selection-color
+mds-text css --mds-text-selection-background INTERNAL
+mds-text css --mds-text-selection-color INTERNAL
 mds-toast encapsulation shadow
 mds-toast prop deletable (attr deletable): boolean | undefined
 mds-toast prop duration (attr duration) [reflect, mutable]: number | undefined = 5000
@@ -1561,8 +1562,8 @@ mds-toast slot action
 mds-toast slot icon
 mds-toast css --mds-toast-background
 mds-toast css --mds-toast-color
-mds-toast css --mds-toast-duration
-mds-toast css --mds-toast-icon-color
+mds-toast css --mds-toast-duration INTERNAL
+mds-toast css --mds-toast-icon-color INTERNAL
 mds-toast css --mds-toast-shadow
 mds-toast css --mds-toast-width
 mds-toast-region encapsulation shadow
@@ -1584,15 +1585,15 @@ mds-tooltip prop typography (attr typography): "caption" | "detail" | "tip" = 't
 mds-tooltip prop visible (attr visible) [reflect, mutable]: boolean = false
 mds-tooltip slot (default)
 mds-tooltip part text
-mds-tooltip css --mds-tooltip-arrow-background
+mds-tooltip css --mds-tooltip-arrow-background INTERNAL
 mds-tooltip css --mds-tooltip-background
 mds-tooltip css --mds-tooltip-delay
-mds-tooltip css --mds-tooltip-dot-padding
-mds-tooltip css --mds-tooltip-drop-shadow
-mds-tooltip css --mds-tooltip-duration
-mds-tooltip css --mds-tooltip-ease
-mds-tooltip css --mds-tooltip-transform-from
-mds-tooltip css --mds-tooltip-transform-to
+mds-tooltip css --mds-tooltip-dot-padding INTERNAL
+mds-tooltip css --mds-tooltip-drop-shadow INTERNAL
+mds-tooltip css --mds-tooltip-duration INTERNAL
+mds-tooltip css --mds-tooltip-ease INTERNAL
+mds-tooltip css --mds-tooltip-transform-from INTERNAL
+mds-tooltip css --mds-tooltip-transform-to INTERNAL
 mds-tooltip css --mds-tooltip-z-index
 mds-tree encapsulation shadow
 mds-tree prop actions (attr actions) [reflect]: "auto" | "visible" | undefined = 'auto'
@@ -1604,34 +1605,34 @@ mds-tree prop toggle (attr toggle) [reflect]: "chevron" | "folder" = 'chevron'
 mds-tree prop togglePosition (attr toggle-position) [reflect]: "left" | "right" = 'left'
 mds-tree prop truncate (attr truncate) [reflect]: "all" | "none" | "word" = 'word'
 mds-tree slot (default)
-mds-tree css --mds-tree-actions-border-radius
-mds-tree css --mds-tree-actions-gap
-mds-tree css --mds-tree-branch-border-color
-mds-tree css --mds-tree-branch-border-size
-mds-tree css --mds-tree-branch-dot-default-color
-mds-tree css --mds-tree-branch-dot-expanded-color
-mds-tree css --mds-tree-branch-use-rounded-border
-mds-tree css --mds-tree-label-default-background
-mds-tree css --mds-tree-label-hover-background
-mds-tree css --mds-tree-label-icon-default-color
-mds-tree css --mds-tree-label-icon-hover-color
+mds-tree css --mds-tree-actions-border-radius INTERNAL
+mds-tree css --mds-tree-actions-gap INTERNAL
+mds-tree css --mds-tree-branch-border-color INTERNAL
+mds-tree css --mds-tree-branch-border-size INTERNAL
+mds-tree css --mds-tree-branch-dot-default-color INTERNAL
+mds-tree css --mds-tree-branch-dot-expanded-color INTERNAL
+mds-tree css --mds-tree-branch-use-rounded-border INTERNAL
+mds-tree css --mds-tree-label-default-background INTERNAL
+mds-tree css --mds-tree-label-hover-background INTERNAL
+mds-tree css --mds-tree-label-icon-default-color INTERNAL
+mds-tree css --mds-tree-label-icon-hover-color INTERNAL
 mds-tree css --mds-tree-line-clamp
-mds-tree css --mds-tree-toggle-gap
-mds-tree css --mds-tree-toggle-icon-async-background
-mds-tree css --mds-tree-toggle-icon-async-color
-mds-tree css --mds-tree-toggle-icon-chevron-default-background
-mds-tree css --mds-tree-toggle-icon-chevron-default-color
-mds-tree css --mds-tree-toggle-icon-chevron-expanded-background
-mds-tree css --mds-tree-toggle-icon-chevron-expanded-color
-mds-tree css --mds-tree-toggle-icon-folder-default-background
-mds-tree css --mds-tree-toggle-icon-folder-default-color
-mds-tree css --mds-tree-toggle-icon-folder-expanded-color
-mds-tree css --mds-tree-toggle-icon-position-right-default-background
-mds-tree css --mds-tree-toggle-icon-position-right-default-color
-mds-tree css --mds-tree-toggle-icon-position-right-expanded-background
-mds-tree css --mds-tree-toggle-icon-position-right-expanded-color
-mds-tree css --mds-tree-transition-duration
-mds-tree css --mds-tree-transition-timing-function
+mds-tree css --mds-tree-toggle-gap INTERNAL
+mds-tree css --mds-tree-toggle-icon-async-background INTERNAL
+mds-tree css --mds-tree-toggle-icon-async-color INTERNAL
+mds-tree css --mds-tree-toggle-icon-chevron-default-background INTERNAL
+mds-tree css --mds-tree-toggle-icon-chevron-default-color INTERNAL
+mds-tree css --mds-tree-toggle-icon-chevron-expanded-background INTERNAL
+mds-tree css --mds-tree-toggle-icon-chevron-expanded-color INTERNAL
+mds-tree css --mds-tree-toggle-icon-folder-default-background INTERNAL
+mds-tree css --mds-tree-toggle-icon-folder-default-color INTERNAL
+mds-tree css --mds-tree-toggle-icon-folder-expanded-color INTERNAL
+mds-tree css --mds-tree-toggle-icon-position-right-default-background INTERNAL
+mds-tree css --mds-tree-toggle-icon-position-right-default-color INTERNAL
+mds-tree css --mds-tree-toggle-icon-position-right-expanded-background INTERNAL
+mds-tree css --mds-tree-toggle-icon-position-right-expanded-color INTERNAL
+mds-tree css --mds-tree-transition-duration INTERNAL
+mds-tree css --mds-tree-transition-timing-function INTERNAL
 mds-tree-item encapsulation shadow
 mds-tree-item prop actions (attr actions) [reflect]: "auto" | "visible" | undefined
 mds-tree-item prop appearance (attr appearance) [reflect]: "depth" | "none" | undefined
@@ -1651,36 +1652,36 @@ mds-tree-item slot (default)
 mds-tree-item slot action
 mds-tree-item part actions-container
 mds-tree-item part actions-list
-mds-tree-item css --mds-tree-item-actions-border-radius
-mds-tree-item css --mds-tree-item-actions-gap
-mds-tree-item css --mds-tree-item-branch-border-color
-mds-tree-item css --mds-tree-item-branch-border-radius
-mds-tree-item css --mds-tree-item-branch-border-size
-mds-tree-item css --mds-tree-item-branch-dot-default-color
-mds-tree-item css --mds-tree-item-branch-dot-expanded-color
-mds-tree-item css --mds-tree-item-label-default-background
-mds-tree-item css --mds-tree-item-label-hover-background
-mds-tree-item css --mds-tree-item-label-icon-default-color
-mds-tree-item css --mds-tree-item-label-icon-hover-color
-mds-tree-item css --mds-tree-item-line-clamp
-mds-tree-item css --mds-tree-item-toggle-gap
-mds-tree-item css --mds-tree-item-toggle-icon-async-background
-mds-tree-item css --mds-tree-item-toggle-icon-async-color
-mds-tree-item css --mds-tree-item-toggle-icon-chevron-default-background
-mds-tree-item css --mds-tree-item-toggle-icon-chevron-default-color
-mds-tree-item css --mds-tree-item-toggle-icon-chevron-expanded-background
-mds-tree-item css --mds-tree-item-toggle-icon-chevron-expanded-color
-mds-tree-item css --mds-tree-item-toggle-icon-folder-default-background
-mds-tree-item css --mds-tree-item-toggle-icon-folder-default-color
-mds-tree-item css --mds-tree-item-toggle-icon-folder-expanded-background
-mds-tree-item css --mds-tree-item-toggle-icon-folder-expanded-color
-mds-tree-item css --mds-tree-item-toggle-icon-position-right-default-background
-mds-tree-item css --mds-tree-item-toggle-icon-position-right-default-color
-mds-tree-item css --mds-tree-item-toggle-icon-position-right-expanded-background
-mds-tree-item css --mds-tree-item-toggle-icon-position-right-expanded-color
-mds-tree-item css --mds-tree-item-toggle-size
-mds-tree-item css --mds-tree-item-transition-duration
-mds-tree-item css --mds-tree-item-transition-timing-function
+mds-tree-item css --mds-tree-item-actions-border-radius INTERNAL
+mds-tree-item css --mds-tree-item-actions-gap INTERNAL
+mds-tree-item css --mds-tree-item-branch-border-color INTERNAL
+mds-tree-item css --mds-tree-item-branch-border-radius INTERNAL
+mds-tree-item css --mds-tree-item-branch-border-size INTERNAL
+mds-tree-item css --mds-tree-item-branch-dot-default-color INTERNAL
+mds-tree-item css --mds-tree-item-branch-dot-expanded-color INTERNAL
+mds-tree-item css --mds-tree-item-label-default-background INTERNAL
+mds-tree-item css --mds-tree-item-label-hover-background INTERNAL
+mds-tree-item css --mds-tree-item-label-icon-default-color INTERNAL
+mds-tree-item css --mds-tree-item-label-icon-hover-color INTERNAL
+mds-tree-item css --mds-tree-item-line-clamp INTERNAL
+mds-tree-item css --mds-tree-item-toggle-gap INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-async-background INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-async-color INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-chevron-default-background INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-chevron-default-color INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-chevron-expanded-background INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-chevron-expanded-color INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-folder-default-background INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-folder-default-color INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-folder-expanded-background INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-folder-expanded-color INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-position-right-default-background INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-position-right-default-color INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-position-right-expanded-background INTERNAL
+mds-tree-item css --mds-tree-item-toggle-icon-position-right-expanded-color INTERNAL
+mds-tree-item css --mds-tree-item-toggle-size INTERNAL
+mds-tree-item css --mds-tree-item-transition-duration INTERNAL
+mds-tree-item css --mds-tree-item-transition-timing-function INTERNAL
 mds-url-view encapsulation shadow
 mds-url-view prop icon (attr icon) [reflect]: string | undefined
 mds-url-view prop label (attr label) [reflect]: string | undefined
@@ -1689,7 +1690,7 @@ mds-url-view prop src (attr src) [reflect, required]: string
 mds-url-view event mdsUrlViewClose: void [bubbles, cancelable, composed]
 mds-url-view css --mds-url-view-background
 mds-url-view css --mds-url-view-color
-mds-url-view css --mds-url-view-header-shadow
+mds-url-view css --mds-url-view-header-shadow INTERNAL
 mds-url-view css --mds-url-view-radius
 mds-url-view css --mds-url-view-shadow
 mds-usage encapsulation shadow
@@ -1700,9 +1701,9 @@ mds-usage slot (default)
 mds-usage part header
 mds-usage part icon
 mds-usage part label
-mds-usage css --mds-usage-border-color
-mds-usage css --mds-usage-header-background
-mds-usage css --mds-usage-header-color
+mds-usage css --mds-usage-border-color INTERNAL
+mds-usage css --mds-usage-header-background INTERNAL
+mds-usage css --mds-usage-header-color INTERNAL
 mds-video-wall encapsulation shadow
 mds-video-wall prop autoplay (attr autoplay): boolean = true
 mds-video-wall prop loop (attr loop): boolean = true
@@ -1713,9 +1714,9 @@ mds-video-wall prop preload (attr preload): "auto" | "metadata" | "none" | undef
 mds-video-wall prop src (attr src): string | undefined
 mds-video-wall slot (default)
 mds-video-wall slot content
-mds-video-wall css --mds-video-wall-noise-background-color
-mds-video-wall css --mds-video-wall-noise-background-size
-mds-video-wall css --mds-video-wall-noise-filter
+mds-video-wall css --mds-video-wall-noise-background-color INTERNAL
+mds-video-wall css --mds-video-wall-noise-background-size INTERNAL
+mds-video-wall css --mds-video-wall-noise-filter INTERNAL
 mds-video-wall css --mds-video-wall-video-fit
 mds-zero encapsulation shadow
 mds-zero slot (default)

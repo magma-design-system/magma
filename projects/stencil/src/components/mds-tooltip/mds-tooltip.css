@@ -2,15 +2,15 @@
 
 /**
  * @prop --mds-tooltip-arrow-background: Background color of the tooltip arrow.
- * @prop --mds-tooltip-background: Background color of the tooltip body.
- * @prop --mds-tooltip-delay: Delay before showing the tooltip.
+ * @prop --mds-tooltip-background: Public. Background color of the tooltip body.
+ * @prop --mds-tooltip-delay: Public. Delay before showing the tooltip.
  * @prop --mds-tooltip-drop-shadow: Drop shadow applied to the tooltip.
  * @prop --mds-tooltip-duration: Duration of the tooltip animation.
  * @prop --mds-tooltip-ease: Timing function for the tooltip animation.
  * @prop --mds-tooltip-dot-padding: Padding around the tooltip dot (if present).
  * @prop --mds-tooltip-transform-from: Transform applied at the start of the tooltip animation.
  * @prop --mds-tooltip-transform-to: Transform applied at the end of the tooltip animation.
- * @prop --mds-tooltip-z-index: z-index of the tooltip container.
+ * @prop --mds-tooltip-z-index: Public. z-index of the tooltip container.
  */
 
 /* ❌ Not supported

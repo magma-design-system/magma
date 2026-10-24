@@ -1,22 +1,22 @@
 @import './css/mds-input-fouc.css';
 
 /**
- * @prop --mds-input-background: The background color of the input field.
+ * @prop --mds-input-background: Public. The background color of the input field.
  * @prop --mds-input-icon-color: The color of the icons inside the input.
  * @prop --mds-input-placeholder-default-color: The placeholder color in the default state.
  * @prop --mds-input-placeholder-focus-color: The placeholder color when the input is focused.
  * @prop --mds-input-placeholder-hover-color: The placeholder color when the input is hovered.
- * @prop --mds-input-ring: The outline ring applied to the input on interactive states.
- * @prop --mds-input-shadow: The box-shadow applied to the input component.
+ * @prop --mds-input-ring: Public. The outline ring applied to the input on interactive states.
+ * @prop --mds-input-shadow: Public. The box-shadow applied to the input component.
  * @prop --mds-input-textarea-field-sizing: The field-sizing behavior of the textarea.
- * @prop --mds-input-textarea-max-height: The max-height applied to the textarea.
- * @prop --mds-input-textarea-min-height: The min-height applied to the textarea.
- * @prop --mds-input-textarea-resize: Controls whether the textarea is resizable.
- * @prop --mds-input-tip-background: The background color of the input tip/inline help.
+ * @prop --mds-input-textarea-max-height: Public. The max-height applied to the textarea.
+ * @prop --mds-input-textarea-min-height: Public. The min-height applied to the textarea.
+ * @prop --mds-input-textarea-resize: Public. Controls whether the textarea is resizable.
+ * @prop --mds-input-tip-background: Public. The background color of the input tip/inline help.
  * @prop --mds-input-tip-horizontal-offset-focused: The horizontal offset applied when the input tip is focused
  * @prop --mds-input-tip-horizontal-offset: The default horizontal offset applied to the input tip
  * @prop --mds-input-tip-vertical-offset: The vertical offset applied to the input tip
- * @prop --mds-input-variant-color-rgb: The raw RGB channels used for variant-driven styling.
+ * @prop --mds-input-variant-color-rgb: Public. The raw RGB channels used for variant-driven styling.
  */
 
 /* ❌ Not supported: box-shadow cannot be expressed with @property syntax

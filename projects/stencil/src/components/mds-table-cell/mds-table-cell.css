@@ -1,8 +1,8 @@
 /**
- * @prop --mds-table-cell-background: Default background color of table cells.
+ * @prop --mds-table-cell-background: Public. Default background color of table cells.
  * @prop --mds-table-cell-background-alt: Background color of the cells of the sorted column.
  * @prop --mds-table-cell-color-alt: Text color of the cells of the sorted column.
- * @prop --mds-table-cell-color: Default text color of table cells.
+ * @prop --mds-table-cell-color: Public. Default text color of table cells.
  */
 
 /*

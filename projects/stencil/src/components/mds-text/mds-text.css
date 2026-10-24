@@ -3,9 +3,9 @@
 /**
  * @prop --mds-text-selection-background: Background color used when text is selected.
  * @prop --mds-text-selection-color: Text color used when text is selected.
- * @prop --mds-text-line-clamp: Number of lines to clamp text to (line-clamp).
- * @prop --mds-text-animation-speed: Speed of text animation.
- * @prop --mds-text-animation-placeholder-char: Placeholder character used during text animation.
+ * @prop --mds-text-line-clamp: Public. Number of lines to clamp text to (line-clamp).
+ * @prop --mds-text-animation-speed: Public. Speed of text animation.
+ * @prop --mds-text-animation-placeholder-char: Public. Placeholder character used during text animation.
  */
 
 :host {

@@ -3,12 +3,12 @@
 /**
  * @prop --mds-table-actions-gap: Gap between table action elements.
  * @prop --mds-table-background-alt: Background color of the rows while a column sorts the table, and of the table behind them.
- * @prop --mds-table-background: Default background color of the table.
+ * @prop --mds-table-background: Public. Default background color of the table.
  * @prop --mds-table-border-color: Color of the frame of the table; the lines inside it take --mds-table-separator-color.
  * @prop --mds-table-border-width: Width of the table border.
- * @prop --mds-table-cell-padding: Padding inside table cells.
+ * @prop --mds-table-cell-padding: Public. Padding inside table cells.
  * @prop --mds-table-color-alt: Text color of the rows while a column sorts the table.
- * @prop --mds-table-color: Default text color of the table.
+ * @prop --mds-table-color: Public. Default text color of the table.
  * @prop --mds-table-separator-color: Color of the lines inside the table: between the rows, under the header, above the footer and at the edge of the batch actions panel.
  */
 

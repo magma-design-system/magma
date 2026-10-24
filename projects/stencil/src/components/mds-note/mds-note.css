@@ -1,8 +1,8 @@
 @import './css/mds-note-fouc.css';
 
 /**
- * @prop --mds-note-background: Sets the background-color of the component
- * @prop --mds-note-color: Sets the text color of the component
+ * @prop --mds-note-background: Public. Sets the background-color of the component
+ * @prop --mds-note-color: Public. Sets the text color of the component
  * @prop --mds-note-fold-color: Sets the color of the fold decoration at the bottom right of the component
  * @prop --mds-note-fold-size: Sets the size of the fold decoration at the bottom right of the component
  * @prop --mds-note-selection-background: Sets the selection text background-color of the component

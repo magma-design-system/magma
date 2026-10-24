@@ -1,9 +1,9 @@
 @import './css/mds-input-select-fouc.css';
 
 /**
- * @prop --mds-input-select-variant-color-rgb: Base color used to derive all select component visual states
- * @prop --mds-input-select-ring: Ring applied around the select at rest; hover and focus draw a 3px ring in the variant color
- * @prop --mds-input-select-shadow: Shadow applied to the select component
+ * @prop --mds-input-select-variant-color-rgb: Public. Base color used to derive all select component visual states
+ * @prop --mds-input-select-ring: Public. Ring applied around the select at rest; hover and focus draw a 3px ring in the variant color
+ * @prop --mds-input-select-shadow: Public. Shadow applied to the select component
  * @prop --mds-input-select-arrow-icon-background-color: Background color behind the arrow icon
  * @prop --mds-input-select-arrow-icon-blur-background-color: Transparent background used for blurred states of the arrow icon
  * @prop --mds-input-select-arrow-icon-blur-color: Color applied to the arrow icon in blurred states

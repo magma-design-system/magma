@@ -1,8 +1,8 @@
 @import './css/mds-kpi-fouc.css';
 
 /**
- * @prop --mds-kpi-text-animation-placeholder-char: Sets the animation placeholder char of the text
- * @prop --mds-kpi-text-animation-speed: Sets the animation speed of the text
+ * @prop --mds-kpi-text-animation-placeholder-char: Public. Sets the animation placeholder char of the text
+ * @prop --mds-kpi-text-animation-speed: Public. Sets the animation speed of the text
  */
 
 /*

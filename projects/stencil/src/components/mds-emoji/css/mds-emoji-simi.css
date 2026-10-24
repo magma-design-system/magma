@@ -9,9 +9,9 @@
  * @prop --mds-emoji-simi-nose-light: Sets the light color of Simi's nose
  * @prop --mds-emoji-simi-nose: Sets the color of Simi's nose
  * @prop --mds-emoji-simi-outline: Sets the color of Simi's outline
- * @prop --mds-emoji-simi-skin-dark: Sets the dark shade of Simi's skin
- * @prop --mds-emoji-simi-skin-light: Sets the light shade of Simi's skin
- * @prop --mds-emoji-simi-skin: Sets the base color of Simi's skin
+ * @prop --mds-emoji-simi-skin-dark: Public, static. Sets the dark shade of Simi's skin
+ * @prop --mds-emoji-simi-skin-light: Public, static. Sets the light shade of Simi's skin
+ * @prop --mds-emoji-simi-skin: Public, static. Sets the base color of Simi's skin
  * @prop --mds-emoji-offset-hands: Sets the positional offset for the hands
  * @prop --mds-emoji-offset-mouth: Sets the positional offset for the mouth
  * @prop --mds-emoji-offset-gadget: Sets the positional offset for gadgets

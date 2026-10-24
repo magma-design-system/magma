@@ -1,11 +1,11 @@
 @import './css/mds-calendar-cell-fouc.css';
 
 /**
- * @prop --mds-calendar-cell-background: Background of calendar cells.
+ * @prop --mds-calendar-cell-background: Public. Background of calendar cells.
  * @prop --mds-calendar-cell-boundaries-background: Deprecated, read by nothing: the selection boundaries take the `-selection-*-boundaries-background` and `-preselection-*-boundaries-background` properties.
  * @prop --mds-calendar-cell-boundaries-color: Deprecated, read by nothing: the selection boundaries take the `-selection-*-boundaries-color` and `-preselection-*-boundaries-color` properties.
  * @prop --mds-calendar-cell-boundaries-padding: Padding inside selection boundaries.
- * @prop --mds-calendar-cell-color: Text color of calendar cells.
+ * @prop --mds-calendar-cell-color: Public. Text color of calendar cells.
  * @prop --mds-calendar-cell-other-month-background: Background of days from adjacent months.
  * @prop --mds-calendar-cell-other-month-color: Text color of days from adjacent months.
  * @prop --mds-calendar-cell-disabled-background: Background for disabled days.

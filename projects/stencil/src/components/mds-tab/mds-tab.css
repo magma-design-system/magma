@@ -1,7 +1,7 @@
 @import './css/mds-tab-fouc.css';
 
 /**
- * @prop --mds-tab-direction-vertical-columns: Defines the column layout for vertical tabs.
+ * @prop --mds-tab-direction-vertical-columns: Public. Defines the column layout for vertical tabs.
  * @prop --mds-tab-item-default-background: Background color for default tab items.
  * @prop --mds-tab-item-default-color: Text color for default tab items.
  * @prop --mds-tab-item-default-shadow: Shadow for default tab items.
@@ -19,16 +19,16 @@
  * @prop --mds-tab-scroll-scrollbar-thumb-background: Background color of scrollbar thumb.
  * @prop --mds-tab-scroll-scrollbar-track-background: Background color of scrollbar track.
  * @prop --mds-tab-slide-delay: Delay before tab slide animation.
- * @prop --mds-tab-tabs-background: Background color of the tabs container.
+ * @prop --mds-tab-tabs-background: Public. Background color of the tabs container.
  * @prop --mds-tab-tabs-gap: Gap between tabs.
  * @prop --mds-tab-tabs-overflow-shadow-size: Size of the overflow shadow.
  * @prop --mds-tab-tabs-overflow-shadow: Shadow applied to overflowed tabs.
  * @prop --mds-tab-tabs-padding: Padding inside the tabs container.
  * @prop --mds-tab-tabs-radius: Border radius of the tabs container.
- * @prop --mds-tab-tabs-wrapper-margin: Margin for the tabs wrapper.
+ * @prop --mds-tab-tabs-wrapper-margin: Public. Margin for the tabs wrapper.
  * @prop --mds-tab-tabs-wrapper-outline-opacity: Opacity of the wrapper outline.
  * @prop --mds-tab-tabs-wrapper-shadow-color: Color of the wrapper shadow.
- * @prop --mds-tab-tabs-wrapper-shadow: Shadow for the tabs wrapper.
+ * @prop --mds-tab-tabs-wrapper-shadow: Public. Shadow for the tabs wrapper.
  * @prop --mds-tab-transition-duration: Duration of tab transition animation.
  * @prop --mds-tab-transition-timing-function: Timing function for tab transition animation.
  */

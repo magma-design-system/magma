@@ -3,12 +3,12 @@
 @import './css/mds-book-pref-consumption.css';
 
 /**
- * @prop --mds-book-color: The colour of the binding where the cover image cannot continue: the spine and the board edges without an image, and the cover drawn when there is no image.
+ * @prop --mds-book-color: Public, static. The colour of the binding where the cover image cannot continue: the spine and the board edges without an image, and the cover drawn when there is no image.
  * @prop --mds-book-page-weight-max: The thickness of a page, in millimetres (a number), on a book of 1000 pages and more: the thin paper of a volume.
  * @prop --mds-book-page-weight-min: The thickness of a page, in millimetres (a number), on a book of 1 page; between 1 and 1000 pages it goes to --mds-book-page-weight-max in proportion.
  * @prop --mds-book-paper-color: The colour of the page block.
- * @prop --mds-book-spine-color: A solid colour for the spine and the board edges. Unset, they continue the edges of the cover image.
- * @prop --mds-book-text-color: The colour of the text on the spine and on the cover drawn when there is no image.
+ * @prop --mds-book-spine-color: Public, static. A solid colour for the spine and the board edges. Unset, they continue the edges of the cover image.
+ * @prop --mds-book-text-color: Public, static. The colour of the text on the spine and on the cover drawn when there is no image.
  */
 
 :host {

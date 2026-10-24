@@ -1,9 +1,9 @@
 @import './css/mds-price-table-features-row-fouc.css';
 
 /**
- * @prop --mds-price-table-features-row-background: Default background color of a features row.
+ * @prop --mds-price-table-features-row-background: Public. Default background color of a features row.
  * @prop --mds-price-table-features-row-background-hover: Background color of a features row on hover.
- * @prop --mds-price-table-features-row-color: Default text color of a features row.
+ * @prop --mds-price-table-features-row-color: Public. Default text color of a features row.
  * @prop --mds-price-table-features-row-color-hover: Text color of a features row on hover.
  */
 

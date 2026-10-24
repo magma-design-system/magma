@@ -2,10 +2,10 @@
 @import './css/mds-help-fouc.css';
 
 /**
- * @prop --mds-help-tooltip-width: The width of the tooltip element.
- * @prop --mds-help-tooltip-max-width: The maximum allowed width of the tooltip.
- * @prop --mds-help-tooltip-min-width: The minimum allowed width of the tooltip.
- * @prop --mds-help-tooltip-delay: The delay before the tooltip becomes visible.
+ * @prop --mds-help-tooltip-width: Public. The width of the tooltip element.
+ * @prop --mds-help-tooltip-max-width: Public. The maximum allowed width of the tooltip.
+ * @prop --mds-help-tooltip-min-width: Public. The minimum allowed width of the tooltip.
+ * @prop --mds-help-tooltip-delay: Public. The delay before the tooltip becomes visible.
  */
 
 /* ❌ Not supported: 'fit-content' is not allowed in <length>. Requires <size> syntax, which @property does not support.

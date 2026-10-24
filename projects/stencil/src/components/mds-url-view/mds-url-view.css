@@ -1,11 +1,11 @@
 @import './css/mds-url-view-fouc.css';
 
 /**
- * @prop --mds-url-view-background: Background color of the URL view container.
- * @prop --mds-url-view-color: Text color used inside the URL view.
- * @prop --mds-url-view-radius: Border-radius applied to the URL view container.
+ * @prop --mds-url-view-background: Public. Background color of the URL view container.
+ * @prop --mds-url-view-color: Public. Text color used inside the URL view.
+ * @prop --mds-url-view-radius: Public. Border-radius applied to the URL view container.
  * @prop --mds-url-view-header-shadow: Box-shadow applied to the header area of the URL view.
- * @prop --mds-url-view-shadow: Box-shadow applied to the entire URL view container.
+ * @prop --mds-url-view-shadow: Public. Box-shadow applied to the entire URL view container.
  */
 
 /* ❌ Not supported

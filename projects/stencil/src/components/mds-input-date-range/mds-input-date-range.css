@@ -1,14 +1,14 @@
 @import './css/mds-input-date-range-fouc.css';
 
 /**
- * @prop --mds-input-date-range-background: Sets the background-color of the component
+ * @prop --mds-input-date-range-background: Public. Sets the background-color of the component
  * @prop --mds-input-date-range-calendar-width: Sets the width of each calendar shown in the dropdown
  * @prop --mds-input-date-range-fields-firefox-justify-content: Sets the justify-content of the component in Firefox
- * @prop --mds-input-date-range-fields-gap: Sets the gap between the fields of the component
+ * @prop --mds-input-date-range-fields-gap: Public. Sets the gap between the fields of the component
  * @prop --mds-input-date-range-icon-color: Sets the icon color of the component
- * @prop --mds-input-date-range-ring: Sets the box-shadow of the component's input to perform the ring effect
- * @prop --mds-input-date-range-shadow: Sets the box-shadow of the component's input
- * @prop --mds-input-date-range-variant-color-rgb: Sets the variant colors of the component
+ * @prop --mds-input-date-range-ring: Public. Sets the box-shadow of the component's input to perform the ring effect
+ * @prop --mds-input-date-range-shadow: Public. Sets the box-shadow of the component's input
+ * @prop --mds-input-date-range-variant-color-rgb: Public. Sets the variant colors of the component
  */
 
 /* ❌ Not supported
