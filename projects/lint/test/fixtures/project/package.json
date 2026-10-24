@@ -5,6 +5,6 @@
     "@fontsource/karla": "5.0.0",
     "@fontsource/roboto": "5.0.0",
     "@maggioli-design-system/magma": "2.5.1",
-    "@maggioli-design-system/styles": "^17.4.0"
+    "@maggioli-design-system/styles": "17.3.0"
   }
 }
