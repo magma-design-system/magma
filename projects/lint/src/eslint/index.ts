@@ -14,13 +14,16 @@ import type { ESLint, Linter, Rule } from 'eslint';
 import {
   loadComponents,
   loadPalette,
+  loadStyles,
   type ComponentInfo,
   type MagmaSettings,
   type PaletteInfo,
+  type StyleInfo,
 } from '../core/data.js';
 import {
   accessibleName,
   noFalseBoolean,
+  noInternalTokens,
   noRawPaletteClasses,
   validAttributeValues,
 } from '../core/checks.js';
@@ -32,6 +35,7 @@ const DOCS = 'https://github.com/magma-design-system/magma/blob/main/docs/agents
 interface Data {
   component: (tag: string) => ComponentInfo | undefined;
   palette: () => PaletteInfo;
+  styles: () => Map<string, StyleInfo>;
 }
 
 type Check = (element: LintElement, data: Data) => Finding[];
@@ -57,6 +61,7 @@ const createRule = (name: string, description: string, check: Check): Rule.RuleM
     const data: Data = {
       component: (tag) => loadComponents(settings).get(tag),
       palette: () => loadPalette(settings),
+      styles: () => loadStyles(settings),
     };
     const run = (element: LintElement | undefined) => {
       if (!element) return;
@@ -93,6 +98,12 @@ const rules: Record<string, Rule.RuleModule> = {
     "Colour classes name a role, not Tailwind's palette or a raw Magma step.",
     (element, data) => (element.classes.length ? noRawPaletteClasses(element, data.palette()) : []),
   ),
+  'no-internal-tokens': createRule(
+    'no-internal-tokens',
+    'An inline style sets or reads only the custom properties a Magma component promises.',
+    (element, data) =>
+      element.customProperties.length ? noInternalTokens(element, data.styles()) : [],
+  ),
 };
 
 const plugin: ESLint.Plugin & { configs: Record<'recommended' | 'strict', Linter.Config> } = {
@@ -102,8 +113,9 @@ const plugin: ESLint.Plugin & { configs: Record<'recommended' | 'strict', Linter
 };
 
 /**
- * `recommended`: what is broken or not accessible is an error, the palette a warning, for a
- * product that already exists; `strict`: everything an error, for a new one.
+ * `recommended`: what is broken or not accessible is an error, the palette and an internal
+ * custom property a warning, for a product that already exists; `strict`: everything an
+ * error, for a new one.
  */
 plugin.configs.recommended = {
   name: '@maggioli-design-system/magma/eslint/recommended',
@@ -113,6 +125,7 @@ plugin.configs.recommended = {
     'magma/no-false-boolean': 'error',
     'magma/accessible-name': 'error',
     'magma/no-raw-palette-classes': 'warn',
+    'magma/no-internal-tokens': 'warn',
   },
 };
 plugin.configs.strict = {

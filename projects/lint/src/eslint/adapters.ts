@@ -4,11 +4,19 @@
   - JSX: the `JSXOpeningElement` of espree or typescript-eslint, for `<mds-button>` and the
     React wrappers (`<MdsButton>`);
   - Angular: the `Element` of @angular-eslint/template-parser, static attributes, property
-    bindings (`[disabled]`) and attribute bindings (`[attr.disabled]`).
+    bindings (`[disabled]`), attribute bindings (`[attr.disabled]`) and style bindings
+    (`[style.--mds-x]`, for the custom properties).
   The nodes are typed by what the adapters read: the parsers are optional peers of the
   consumer, not dependencies of this package.
 */
-import { tagOf, type LintAttribute, type LintClass, type LintElement } from '../core/element.js';
+import {
+  tagOf,
+  type LintAttribute,
+  type LintClass,
+  type LintElement,
+  customPropertiesOf,
+  type LintCustomProperty,
+} from '../core/element.js';
 
 /** A tag of a custom element: `<mds-button>` or the React wrapper `<MdsButton>`. */
 const isCustom = (name: string): boolean => /^[a-z][a-z0-9]*-/.test(name) || /^Mds[A-Z]/.test(name);
@@ -49,17 +57,21 @@ export const fromHtml = (node: HtmlNode): LintElement | undefined => {
   if (!node.name) return undefined;
   const attributes: LintAttribute[] = [];
   const classes: LintClass[] = [];
+  const customProperties: LintCustomProperty[] = [];
   for (const attribute of node.attributes ?? []) {
     const name = attribute.key?.value;
     if (!name) continue;
     const value = htmlValue(attribute);
     attributes.push({ name: name.toLowerCase(), binding: 'static', value, node: attribute });
     if (name.toLowerCase() === 'class') classes.push(...classesOf(value, attribute));
+    if (name.toLowerCase() === 'style')
+      customProperties.push(...customPropertiesOf(value, attribute));
   }
   return {
     tag: node.name.toLowerCase(),
     attributes,
     classes,
+    customProperties,
     content: htmlContent(node),
     spread: false,
     node,
@@ -81,6 +93,9 @@ interface JsxNode {
   openingElement?: JsxNode;
   quasis?: Array<{ value: { cooked: string | null } }>;
   expressions?: JsxNode[];
+  /** The properties of an object literal, and the key of one of them. */
+  properties?: JsxNode[];
+  key?: JsxNode;
   parent?: JsxNode;
 }
 
@@ -130,11 +145,42 @@ const jsxContent = (element: JsxNode | undefined): boolean =>
     return true;
   });
 
+/** The `--mds-*` names of a JSX style: the keys of an object literal, the static text of its values or of a string. */
+const jsxCustomProperties = (
+  value: JsxNode | undefined | null,
+  attribute: unknown,
+): LintCustomProperty[] => {
+  if (!value) return [];
+  if (value.type === 'Literal' && typeof value.value === 'string')
+    return customPropertiesOf(value.value, attribute);
+  const expression = value.type === 'JSXExpressionContainer' ? value.expression : undefined;
+  if (expression?.type !== 'ObjectExpression') return [];
+  const found: LintCustomProperty[] = [];
+  for (const property of expression.properties ?? []) {
+    if (property.type !== 'Property') continue;
+    const key = property.key;
+    if (key?.type === 'Literal' && typeof key.value === 'string')
+      found.push(...customPropertiesOf(key.value, key));
+    const text = property.value as JsxNode | undefined;
+    if (text?.type === 'Literal' && typeof text.value === 'string')
+      found.push(...customPropertiesOf(text.value, text));
+    if (text?.type === 'TemplateLiteral')
+      found.push(
+        ...customPropertiesOf(
+          (text.quasis ?? []).map((quasi) => quasi.value.cooked ?? '').join(' '),
+          text,
+        ),
+      );
+  }
+  return found;
+};
+
 export const fromJsx = (node: JsxNode): LintElement | undefined => {
   const name = jsxName(node.name);
   if (!name) return undefined;
   const attributes: LintAttribute[] = [];
   const classes: LintClass[] = [];
+  const customProperties: LintCustomProperty[] = [];
   let spread = false;
   for (const attribute of node.attributes ?? []) {
     if (attribute.type === 'JSXSpreadAttribute') {
@@ -146,11 +192,13 @@ export const fromJsx = (node: JsxNode): LintElement | undefined => {
     attributes.push({ name: key, binding: 'property', value: jsxValue(value), node: attribute });
     if (key === 'className' || key === 'class')
       classes.push(...classesOf(jsxClassText(value), attribute));
+    if (key === 'style') customProperties.push(...jsxCustomProperties(value, attribute));
   }
   return {
     tag: isCustom(name) ? tagOf(name) : name,
     attributes,
     classes,
+    customProperties,
     content: jsxContent(node.parent),
     spread,
     node,
@@ -189,15 +237,20 @@ export const fromAngular = (node: AngularNode): LintElement | undefined => {
   if (!node.name) return undefined;
   const attributes: LintAttribute[] = [];
   const classes: LintClass[] = [];
+  const customProperties: LintCustomProperty[] = [];
   for (const attribute of node.attributes ?? []) {
     if (!attribute.name) continue;
     const value = typeof attribute.value === 'string' ? attribute.value : '';
     attributes.push({ name: attribute.name, binding: 'static', value, node: attribute });
     if (attribute.name === 'class') classes.push(...classesOf(value, attribute));
+    if (attribute.name === 'style') customProperties.push(...customPropertiesOf(value, attribute));
   }
   for (const input of node.inputs ?? []) {
     if (!input.name) continue;
     const kind = input.__originalType;
+    // [style.--mds-x] sets a custom property; the parser writes its name as --%NS%mds-x
+    if (kind === 3)
+      customProperties.push(...customPropertiesOf(input.name.replace('%NS%', ''), input));
     // [class.x] and [style.x] bind a class or a style, not the prop of the same name
     if (kind === 2 || kind === 3) continue;
     attributes.push({
@@ -211,6 +264,7 @@ export const fromAngular = (node: AngularNode): LintElement | undefined => {
     tag: node.name,
     attributes,
     classes,
+    customProperties,
     content: angularContent(node),
     spread: false,
     node,

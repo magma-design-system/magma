@@ -3,7 +3,7 @@
   data of ./data.ts. Each returns what it finds; the ESLint plugin reports it. The texts
   follow docs/agents (conventions.md, color.md), where each rule is written in prose.
 */
-import type { ComponentInfo, PaletteInfo } from './data.js';
+import type { ComponentInfo, PaletteInfo, StyleInfo } from './data.js';
 import { attributeOf, isSet, type Finding, type LintElement } from './element.js';
 
 /** `<mds-banner tone="outline">`: a value outside the closed union of the prop. */
@@ -128,3 +128,25 @@ export const noRawPaletteClasses = (element: LintElement, palette: PaletteInfo):
   }
   return found;
 };
+
+/**
+ * What is wrong with setting or reading the custom property `name`, undefined when a
+ * component promises it. Shared by the ESLint and the Stylelint rule.
+ */
+export const internalTokenMessage = (
+  name: string,
+  style: StyleInfo | undefined,
+): string | undefined => {
+  if (style?.visibility === 'public') return undefined;
+  const instead = `set a public one (the component's AGENTS.md lists them), a prop, a part or a role (agents/conventions.md)`;
+  return style
+    ? `"${name}" is an internal custom property of ${style.tags.map((tag) => `<${tag}>`).join(', ')}: it may change in any release. Instead, ${instead}.`
+    : `"${name}" is not a custom property any Magma component promises: ${instead}.`;
+};
+
+/** `style="--mds-chip-icon-color: ..."`: an `--mds-*` that no component promises. */
+export const noInternalTokens = (element: LintElement, styles: Map<string, StyleInfo>): Finding[] =>
+  element.customProperties.flatMap(({ name, node }) => {
+    const message = internalTokenMessage(name, styles.get(name));
+    return message ? [{ node, message }] : [];
+  });

@@ -2,16 +2,26 @@
   The Stylelint plugin: the rules of a consumer's own CSS and SCSS.
   - magma/no-raw-color: a hex, rgb(), hsl() or other colour literal where a role belongs;
   - magma/no-color-scheme-override: a hand-written @media (prefers-color-scheme), which
-    follows the OS and not the mode the user picked in Magma.
+    follows the OS and not the mode the user picked in Magma;
+  - magma/no-internal-tokens: an `--mds-*` custom property set or read that no component
+    promises: internal ones may change in any release.
 
     // stylelint.config.mjs
     export default { extends: ['@maggioli-design-system/magma/stylelint/recommended'] };
 
   The colour rule is the consumer side of magma/token-values, which holds the component
-  sheets of this repository to the same roles (projects/stencil/scripts).
+  sheets of this repository to the same roles (projects/stencil/scripts). It lets through
+  the public custom properties marked static, which take a value of their own (the colours
+  of an illustration), not a role.
+
+  The rules that read the installed documentation.json find it beside them, inside magma;
+  their secondary options `root` and `documentation` point elsewhere, as `settings.magma`
+  does for the ESLint plugin.
 */
 import stylelint, { type Rule } from 'stylelint';
 import { colorLiterals } from '../core/colors.js';
+import { internalTokenMessage } from '../core/checks.js';
+import { loadStyles, type MagmaSettings, type StyleInfo } from '../core/data.js';
 
 const {
   createPlugin,
@@ -19,6 +29,22 @@ const {
 } = stylelint;
 
 const DOCS = 'https://github.com/magma-design-system/magma/blob/main/docs/agents/lint.md';
+
+const isString = (value: unknown) => typeof value === 'string';
+/** The secondary options that point the data elsewhere (core/data.ts). */
+const DATA_OPTIONS = { root: [isString], documentation: [isString] };
+
+/** The custom properties of the installed components, or undefined when there is no documentation.json to read. */
+const stylesOf = (secondary: unknown): Map<string, StyleInfo> | undefined => {
+  const { root, documentation } = (secondary ?? {}) as MagmaSettings;
+  try {
+    return loadStyles({ ...(root ? { root } : {}), ...(documentation ? { documentation } : {}) });
+  } catch {
+    return undefined;
+  }
+};
+
+const COMPONENT_VAR = /--mds-[\w-]+/g;
 
 /** A mask paints with the alpha of its image: black and white there are not colours. */
 const MASK = /^(?:-webkit-)?mask(?:-image)?$/i;
@@ -30,10 +56,24 @@ const noRawColorMessages = ruleMessages(noRawColorName, {
     `Unexpected colour literal "${literal}": ${hint}, so it follows the mode, the named theme and the contrast preference (agents/color.md)`,
 });
 
-const noRawColor: Rule = (primary) => (root, result) => {
-  if (!validateOptions(result, noRawColorName, { actual: primary })) return;
+const noRawColor: Rule = (primary, secondary) => (root, result) => {
+  if (
+    !validateOptions(
+      result,
+      noRawColorName,
+      { actual: primary },
+      { actual: secondary, possible: DATA_OPTIONS, optional: true },
+    )
+  )
+    return;
+  let styles: Map<string, StyleInfo> | undefined | null = null;
   root.walkDecls((decl) => {
     if (MASK.test(decl.prop)) return;
+    // a static custom property takes a colour of its own, not a role (the skin of an illustration)
+    if (decl.prop.startsWith('--mds-')) {
+      if (styles === null) styles = stylesOf(secondary);
+      if (styles?.get(decl.prop)?.static) return;
+    }
     // a registration cannot name a token: its initial value is a literal by definition
     if (decl.parent?.type === 'atrule' && (decl.parent as { name?: string }).name === 'property')
       return;
@@ -79,9 +119,48 @@ noColorSchemeOverride.ruleName = noColorSchemeName;
 noColorSchemeOverride.messages = noColorSchemeMessages;
 noColorSchemeOverride.meta = { url: `${DOCS}#no-color-scheme-override` };
 
+const noInternalTokensName = 'magma/no-internal-tokens';
+const noInternalTokensMessages = ruleMessages(noInternalTokensName, {
+  rejected: (message: string) => message,
+});
+
+const noInternalTokens: Rule = (primary, secondary) => (root, result) => {
+  if (
+    !validateOptions(
+      result,
+      noInternalTokensName,
+      { actual: primary },
+      { actual: secondary, possible: DATA_OPTIONS, optional: true },
+    )
+  )
+    return;
+  const styles = stylesOf(secondary);
+  // without the documentation of the installed version there is nothing to hold the names to
+  if (!styles) return;
+  root.walkDecls((decl) => {
+    const names = new Set(decl.value.match(COMPONENT_VAR) ?? []);
+    if (decl.prop.startsWith('--mds-')) names.add(decl.prop);
+    for (const name of names) {
+      const message = internalTokenMessage(name, styles.get(name));
+      if (message)
+        report({
+          ruleName: noInternalTokensName,
+          result,
+          node: decl,
+          word: name,
+          message: noInternalTokensMessages.rejected(message),
+        });
+    }
+  });
+};
+noInternalTokens.ruleName = noInternalTokensName;
+noInternalTokens.messages = noInternalTokensMessages;
+noInternalTokens.meta = { url: `${DOCS}#no-internal-tokens` };
+
 const plugins = [
   createPlugin(noRawColorName, noRawColor),
   createPlugin(noColorSchemeName, noColorSchemeOverride),
+  createPlugin(noInternalTokensName, noInternalTokens),
 ];
 
 export default plugins;

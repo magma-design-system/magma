@@ -1,10 +1,16 @@
-// The CSS rules, through Stylelint itself.
+// The CSS rules, through Stylelint itself; the ones that read the installed API read the
+// fixtures cut from the real data (test/fixtures).
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import stylelint from 'stylelint';
 import { describe, expect, test } from 'vitest';
 
 import { colorLiterals } from '../src/core/colors.js';
 import plugins from '../src/stylelint/index.js';
 import recommended from '../src/stylelint/recommended.js';
+
+const fixtures = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures');
+const data = { documentation: path.join(fixtures, 'magma/data/documentation.json') };
 
 const lint = async (code: string, rules: Record<string, unknown>) => {
   const { results } = await stylelint.lint({ code, config: { plugins, rules } });
@@ -52,6 +58,60 @@ describe('magma/no-raw-color', () => {
   });
 });
 
+describe('magma/no-raw-color on the static custom properties', () => {
+  test('lets a static one take a colour of its own, not the others', async () => {
+    const warnings = await lint(
+      'mds-book { --mds-book-spine-color: #123a6b; --mds-book-paper-color: #fff; }',
+      { 'magma/no-raw-color': [true, data] },
+    );
+    expect(warnings.map(({ text }) => text)).toEqual([
+      expect.stringMatching(/Unexpected colour literal "#fff"/),
+    ]);
+  });
+});
+
+describe('magma/no-internal-tokens', () => {
+  test('rejects an internal custom property, set or read, and names its component', async () => {
+    const warnings = await lint(
+      [
+        '.a { --mds-button-await-duration: 2s; }',
+        '.b { color: var(--mds-button-color); margin: var(--mds-chip-icon-color, 0); }',
+      ].join('\n'),
+      { 'magma/no-internal-tokens': [true, data] },
+    );
+    expect(warnings.map(({ text }) => text)).toEqual([
+      expect.stringMatching(
+        /^"--mds-button-await-duration" is an internal custom property of <mds-button>: it may change in any release/,
+      ),
+      expect.stringMatching(
+        /^"--mds-chip-icon-color" is an internal custom property of <mds-chip>/,
+      ),
+    ]);
+  });
+
+  test('rejects a name no component documents', async () => {
+    const warnings = await lint('.a { --mds-button-nope: 0; }', {
+      'magma/no-internal-tokens': [true, data],
+    });
+    expect(warnings.map(({ text }) => text)).toEqual([
+      expect.stringMatching(
+        /^"--mds-button-nope" is not a custom property any Magma component promises/,
+      ),
+    ]);
+  });
+
+  test('lets the public ones, static included, and the other custom properties through', async () => {
+    const warnings = await lint(
+      [
+        'mds-button { --mds-button-radius: var(--magma-radius-md); --gap: 4px; }',
+        'mds-book { --mds-book-color: #f2a93b; color: var(--mds-text-line-clamp); }',
+      ].join('\n'),
+      { 'magma/no-internal-tokens': [true, data] },
+    );
+    expect(warnings).toEqual([]);
+  });
+});
+
 describe('magma/no-color-scheme-override', () => {
   test('rejects a prefers-color-scheme query', async () => {
     const warnings = await lint(
@@ -61,6 +121,22 @@ describe('magma/no-color-scheme-override', () => {
     expect(warnings.map(({ rule }) => rule)).toEqual(['magma/no-color-scheme-override']);
     expect(warnings[0]!.text).toMatch(/not the mode the user picked in Magma/);
   });
+});
+
+test('the recommended preset warns on an internal custom property', async () => {
+  const { results } = await stylelint.lint({
+    code: '.a { --mds-button-await-duration: 2s; }',
+    config: {
+      ...recommended,
+      rules: {
+        ...recommended.rules,
+        'magma/no-internal-tokens': [true, { ...data, severity: 'warning' }],
+      },
+    },
+  });
+  expect(results[0]!.warnings.map(({ rule, severity }) => `${rule} ${severity}`)).toEqual([
+    'magma/no-internal-tokens warning',
+  ]);
 });
 
 test('the recommended preset warns on a colour and stops on a colour-scheme query', async () => {

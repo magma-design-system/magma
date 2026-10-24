@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'vitest';
 
-import { loadComponents, loadPalette, locate, propInfo } from '../src/core/data.js';
+import { loadComponents, loadPalette, loadStyles, locate, propInfo } from '../src/core/data.js';
 
 const fixtures = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures');
 const settings = {
@@ -63,6 +63,22 @@ test('the raw palette keys leave out label, brand, the seed and the roles', () =
   expect(colorUtilities).toContain('bg');
   // longest first, so `border-t` wins over `border`
   expect(colorUtilities.indexOf('border-t')).toBeLessThan(colorUtilities.indexOf('border'));
+});
+
+test('the custom properties carry their contract, and a public one wins across components', () => {
+  const styles = loadStyles(settings);
+  expect(styles.get('--mds-button-radius')).toEqual({
+    name: '--mds-button-radius',
+    tags: ['mds-button'],
+    visibility: 'public',
+    static: false,
+  });
+  expect(styles.get('--mds-book-spine-color')).toMatchObject({
+    visibility: 'public',
+    static: true,
+  });
+  expect(styles.get('--mds-button-await-duration')?.visibility).toBe('internal');
+  expect(styles.has('--mds-button-nope')).toBe(false);
 });
 
 test('a setting that names a missing file says so', () => {

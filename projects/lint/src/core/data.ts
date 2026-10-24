@@ -2,8 +2,8 @@
   The data the rules check against, read from the installed version of Magma, never from a
   list written by hand, so the rules follow the components and the tokens release by
   release:
-  - the components, their props and the values each prop takes: the documentation.json of
-    @maggioli-design-system/magma;
+  - the components, their props and the values each prop takes, and which of their CSS
+    custom properties are public: the documentation.json of @maggioli-design-system/magma;
   - which colour classes are a raw palette step: the DTCG base set of
     @maggioli-design-system/design-tokens (which families are primitives) and the
     consumption map of @maggioli-design-system/styles (the Tailwind key of each token and
@@ -49,6 +49,16 @@ export interface ComponentInfo {
   props: Map<string, PropInfo>;
   /** The component renders a default slot. */
   defaultSlot: boolean;
+}
+
+export interface StyleInfo {
+  name: string;
+  /** The components that document it. */
+  tags: string[];
+  /** Public: promised to the products. Internal: it may change in any release. */
+  visibility: 'public' | 'internal';
+  /** A public one that takes a value of its own (an illustration colour), not a token or a role. */
+  static: boolean;
 }
 
 export interface PaletteInfo {
@@ -126,10 +136,16 @@ interface DocsProp {
   attr?: string;
   values?: DocsValue[];
 }
+interface DocsStyle {
+  name: string;
+  visibility?: 'public' | 'internal';
+  static?: boolean;
+}
 interface DocsComponent {
   tag: string;
   props: DocsProp[];
   slots: Array<{ name: string }>;
+  styles?: DocsStyle[];
 }
 
 /** The types a union may hold next to its literals and still be closed. */
@@ -167,6 +183,40 @@ export const loadComponents = (settings?: MagmaSettings): Map<string, ComponentI
     }
     return components;
   });
+
+/**
+ * The CSS custom properties the components document, by name. An entry without `visibility`
+ * comes from a release before the contract (#1095), when every documented one was promised:
+ * it reads as public. One documented by several components is public when any of them
+ * promises it.
+ */
+export const loadStyles = (settings?: MagmaSettings): Map<string, StyleInfo> => {
+  const file = locate('documentation', settings);
+  return readJson(
+    file,
+    (json: { components: DocsComponent[] }) => {
+      const styles = new Map<string, StyleInfo>();
+      for (const { tag, styles: own = [] } of json.components)
+        for (const style of own) {
+          const isPublic = style.visibility !== 'internal';
+          const known = styles.get(style.name);
+          if (known) {
+            known.tags.push(tag);
+            if (isPublic) known.visibility = 'public';
+            if (style.static) known.static = true;
+          } else
+            styles.set(style.name, {
+              name: style.name,
+              tags: [tag],
+              visibility: isPublic ? 'public' : 'internal',
+              static: style.static === true,
+            });
+        }
+      return styles;
+    },
+    `styles:${file}`,
+  );
+};
 
 type DtcgNode = { [key: string]: DtcgNode | unknown };
 
