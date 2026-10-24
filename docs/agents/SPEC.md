@@ -54,7 +54,7 @@ Regardless of target, a working integration is the sum of five things:
 
 1. **Styles** - color tokens, reset, globals, base, anti-FOUC, in cascade-layer order
 2. **Fonts** - Karla, Merriweather, Roboto, Roboto Mono (via `@fontsource`)
-3. **Icons** - the SVG library copied to a static path + `mdsIconSvgPath` set at runtime
+3. **Icons** - the SVG library copied to a static path + the icon path set at runtime
 4. **Component registration** - the only step that differs per target
 5. **Lint** - the ESLint and Stylelint rules that ship in `magma`, added to the project's
    configurations and run after every change

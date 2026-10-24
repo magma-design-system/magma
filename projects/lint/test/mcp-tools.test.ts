@@ -1,11 +1,11 @@
 // The ten tools of the MCP server on fixtures cut from the real data, and the mi and mdi icon
 // sets installed in this repository.
-import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-import { mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
+import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
 import { toolsOf } from '../src/mcp/server.js';
 import { context } from './mcp-context.js';
@@ -308,6 +308,73 @@ describe('the check tools', () => {
     expect(byId['lint-eslint'].ok).toBe(true);
     expect(byId['lint-stylelint'].ok).toBe(false);
     expect(byId.mcp.ok).toBe(true);
+  });
+
+  /** The checks of check_setup on a project made of `files`. */
+  const setupOf = async (files: Record<string, string>) => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-setup-'));
+    for (const [name, text] of Object.entries({ 'package.json': '{}', ...files })) {
+      mkdirSync(path.dirname(path.join(root, name)), { recursive: true });
+      writeFileSync(path.join(root, name), text);
+    }
+    const { checks } = (await checkSetup({ ...context, root }).run({})) as Result;
+    return Object.fromEntries(
+      checks.map((check: { id: string; ok: boolean; detail: string }) => [check.id, check]),
+    );
+  };
+
+  test('check_setup accepts every way the guides set the icon path, and only those', async () => {
+    // every line of a code block of the guides that sets the path, from the guides themselves
+    const repo = path.join(import.meta.dirname, '../../..');
+    const guides = [
+      ...readdirSync(path.join(repo, 'docs/agents')).map((name) => `docs/agents/${name}`),
+      ...readdirSync(path.join(repo, 'projects/stencil/src/components/mds-icon/usage')).map(
+        (name) => `projects/stencil/src/components/mds-icon/usage/${name}`,
+      ),
+    ].filter((name) => name.endsWith('.md'));
+    const ways = guides.flatMap((name) =>
+      [...readFileSync(path.join(repo, name), 'utf8').matchAll(/```\w*\n([\s\S]*?)```/g)]
+        .flatMap(([, body]) => body!.split('\n'))
+        .filter((line) => /setSvgPath\(|setItem\('mdsIconSvgPath'/.test(line))
+        .map((line) => line.replace(/^\s*(\/\/ or: )?/, '')),
+    );
+    expect(ways.some((line) => line.startsWith('IconsSetService.setSvgPath('))).toBe(true);
+    expect(ways.some((line) => line.includes('sessionStorage.setItem('))).toBe(true);
+    for (const line of new Set(ways))
+      expect((await setupOf({ 'src/main.ts': line }))['icon-path'], line).toMatchObject({
+        ok: true,
+      });
+
+    // a name mds-icon never reads
+    expect(
+      (await setupOf({ 'src/main.ts': "window.mdsIconSvgPath = '/svg/';" }))['icon-path'],
+    ).toMatchObject({
+      ok: false,
+      detail: expect.stringMatching(/reads the path only from IconsSetService.setSvgPath\(\)/),
+    });
+  });
+
+  test('check_setup reads the lint preset from every file ESLint and Stylelint load', async () => {
+    const eslint = "import magma from '@maggioli-design-system/magma/eslint';";
+    const stylelint = "extends: ['@maggioli-design-system/magma/stylelint/recommended']";
+    for (const name of ['eslint.config.mts', 'eslint.config.cts'])
+      expect((await setupOf({ [name]: eslint }))['lint-eslint'].ok, name).toBe(true);
+    for (const name of ['.stylelintrc.yml', '.config/stylelintrc.json', 'stylelint.config.ts'])
+      expect((await setupOf({ [name]: stylelint }))['lint-stylelint'].ok, name).toBe(true);
+    const inPackage = await setupOf({
+      'package.json': JSON.stringify({
+        stylelint: { extends: ['@maggioli-design-system/magma/stylelint/recommended'] },
+      }),
+      // package.json comes first: Stylelint never reads this file
+      'stylelint.config.mjs': 'export default {};',
+    });
+    expect(inPackage['lint-stylelint'].ok).toBe(true);
+    // the file the tool loads is the first it finds
+    expect(
+      (await setupOf({ '.stylelintrc.json': '{}', 'stylelint.config.mjs': stylelint }))[
+        'lint-stylelint'
+      ].ok,
+    ).toBe(false);
   });
 
   test('an entry that starts magma-mcp with npx without --no is unsafe', () => {

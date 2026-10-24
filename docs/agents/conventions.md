@@ -116,7 +116,8 @@ Maggioli):
 ```
 
 `mds-icon` fetches `<mdsIconSvgPath><slug>.svg`; the path is configured once at startup
-(see [`assets.md`](assets.md)): `sessionStorage.setItem('mdsIconSvgPath', '/svg/')`.
+(see [`assets.md`](assets.md)): `IconsSetService.setSvgPath('/svg/')`, or
+`sessionStorage.setItem('mdsIconSvgPath', '/svg/')`.
 
 ## Accessibility
 

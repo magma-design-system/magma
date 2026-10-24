@@ -60,6 +60,13 @@ or on the guide it enforces, not only on fixtures picked by hand.
   ([`projects/stencil/SPEC.md`](../stencil/SPEC.md), "Discovering available slugs"): the tests
   hold `find_icon` to it both ways, and run the routes of the guide
   (`projects/stencil/scripts/agent-docs-icons.spec.ts`) on a multi-word slug.
+- **What `check_setup` accepts**: every way its guide documents and every file the tool
+  itself loads, not one form picked among them, or the agent adds a second setup to a project
+  that has one. The icon path is set where `IconsSetService` reads it: its `setSvgPath()` (or
+  the one of an `mds-icon`) and the `mdsIconSvgPath` key of `sessionStorage`, and nowhere
+  else; the test collects those lines from the code blocks of the guides. The lint
+  configuration is the first file the tool loads: ESLint 9 `FLAT_CONFIG_FILENAMES`, then for
+  Stylelint 16 the `stylelint` key of `package.json` and the search places of cosmiconfig 9.
 
 ## Tests
 
