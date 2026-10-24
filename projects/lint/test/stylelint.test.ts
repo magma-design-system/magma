@@ -1,11 +1,13 @@
 // The CSS rules, through Stylelint itself; the ones that read the installed API read the
 // fixtures cut from the real data (test/fixtures).
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import stylelint from 'stylelint';
 import { describe, expect, test } from 'vitest';
 
 import { colorLiterals } from '../src/core/colors.js';
+import { lintGuideUrl } from '../src/core/data.js';
 import plugins from '../src/stylelint/index.js';
 import recommended from '../src/stylelint/recommended.js';
 
@@ -164,4 +166,29 @@ test('the recommended preset warns on a colour and stops on a colour-scheme quer
     'magma/no-color-scheme-override error',
     'magma/no-raw-color warning',
   ]);
+});
+
+/** The headings of docs/agents/lint.md, as GitHub anchors them. */
+const guideAnchors = () =>
+  [
+    ...readFileSync(
+      path.join(path.dirname(fileURLToPath(import.meta.url)), '../../../docs/agents/lint.md'),
+      'utf8',
+    ).matchAll(/^#+ (.+)$/gm),
+  ].map(([, heading]) =>
+    heading!
+      .toLowerCase()
+      .replace(/[^a-z0-9 -]/g, '')
+      .replace(/ /g, '-'),
+  );
+
+test('every rule describes itself and links its section of the guide, as the ESLint ones', () => {
+  const anchors = guideAnchors();
+  for (const { ruleName, rule } of plugins) {
+    const name = ruleName.replace(/^magma\//, '');
+    const meta = rule.meta as { url: string; description?: string };
+    expect(meta.description, name).toMatch(/^[A-Z].+\.$/);
+    expect(meta.url, name).toBe(lintGuideUrl(name));
+    expect(anchors, name).toContain(name);
+  }
 });

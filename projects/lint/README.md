@@ -14,6 +14,7 @@ own: the stencil build compiles them into `@maggioli-design-system/magma` (`dist
 | `./stylelint/recommended`, `./stylelint/strict` | the Stylelint presets |
 | `./lint` | the core, for tools that run the same checks |
 | `magma-mcp` (bin) | the MCP server on stdio: `dist/lint/mcp/cli.js` |
+| `./dist/lint/mcp/tools.json` | the tools of the server as data, the answer of `tools/list`, for the documentation |
 
 So both arrive with the components, at the same version, with nothing for a project to
 install or keep aligned. How a project sets them up is in the consumer guides,
@@ -92,6 +93,15 @@ or on the guide it enforces, not only on fixtures picked by hand.
   `className`, Angular `[ngClass]`, `[class]` and `[attr.class]`, `@apply`). The lint reads
   the static `class` and `className` (a string or a template literal) and, for custom
   properties, `@apply`; the other surfaces are a known gap.
+- **What a tool or a rule says about itself** (the documentation site reads it from the
+  installed package, magma-design-system/docs#1): the same fields on both plugins, a
+  description and the URL of its section of `agents/lint.md` (an ESLint rule in
+  `meta.docs`, a Stylelint rule in its `meta`, which Stylelint gives no description field);
+  the tools as `tools.json`, the very object `tools/list` answers. A link a shipped file
+  prints points at the release it ships in, the tag `magma@<version>` (`lintGuideUrl`), so
+  an older project reads the rule it runs; only the sources, which belong to no release,
+  link `main`. The tests hold every rule to a description, its URL and an existing heading
+  of the guide.
 
 ## Tests
 
@@ -110,9 +120,10 @@ stencil pipeline builds the package with the lint inside.
 1. Write the check: a template rule in `src/core/checks.ts` on the element of
    `src/core/element.ts`, a CSS rule in `src/stylelint/`. Read what it needs from the
    installed data (`src/core/data.ts`), not from a list.
-2. Register it in `src/eslint/index.ts` or `src/stylelint/index.ts`, and in the presets:
-   `recommended` makes what is broken or not accessible an error and token discipline a
-   warning, `strict` makes everything an error.
+2. Register it in `src/eslint/index.ts` or `src/stylelint/index.ts`, with a one-sentence
+   description (`createRule`, `metaOf`: the documentation site prints it), and in the
+   presets: `recommended` makes what is broken or not accessible an error and token
+   discipline a warning, `strict` makes everything an error.
 3. Test it on every parser it supports, valid and invalid cases.
 4. Document it in [`docs/agents/lint.md`](../../docs/agents/lint.md), with an INCORRECT and a
    CORRECT example, and check that the guides' own examples pass it: the strict preset run
@@ -126,7 +137,8 @@ command, `src/mcp/cli.ts`, serves them on stdio from the project it starts in (`
 points elsewhere; `--documentation`, `--tokens`, `--consumption`, `--globals` and
 `--icons-<set>` point the data elsewhere). The server writes only protocol messages to
 stdout. The icon it shows its clients is the Magma mark of identity, copied into
-`dist/lint/mcp/icon.svg` by the stencil build.
+`dist/lint/mcp/icon.svg` by the stencil build, which also writes the tools as data into
+`dist/lint/mcp/tools.json`: the answer of `tools/list` (`toolsList`), from the compiled server.
 
 A tool is read-only and answers from data the packages ship: add one in the file of its area,
 give it an `outputSchema` its result matches (the official client checks it), register it in

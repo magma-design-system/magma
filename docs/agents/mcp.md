@@ -87,7 +87,8 @@ client starts servers elsewhere than the project's root, pass it:
 | `check_setup` | what the Magma integration of the project misses | checking the install steps by hand |
 
 `check_markup` uses the ESLint, Stylelint and template parsers the project installed with
-the lint ([`lint.md`](lint.md)).
+the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents them, are in
+`@maggioli-design-system/magma/dist/lint/mcp/tools.json`: what `tools/list` answers.
 
 ## When to call them
 

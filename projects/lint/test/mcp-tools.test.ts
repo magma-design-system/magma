@@ -14,7 +14,7 @@ import { describe, expect, test } from 'vitest';
 
 import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
-import { toolsOf } from '../src/mcp/server.js';
+import { createServer, toolsList, toolsOf } from '../src/mcp/server.js';
 import { tokensOf, USE_OF_UTILITY } from '../src/mcp/tokens.js';
 import { context, data } from './mcp-context.js';
 
@@ -44,6 +44,17 @@ test('the server has its ten tools', () => {
     'list_tokens',
     'suggest_role',
   ]);
+});
+
+test('the tools as data are the answer of tools/list, whatever the project', async () => {
+  const { handle } = createServer(context);
+  expect(await handle({ jsonrpc: '2.0', id: 1, method: 'tools/list' })).toEqual({
+    jsonrpc: '2.0',
+    id: 1,
+    result: toolsList(context),
+  });
+  // what the stencil build writes into dist/lint/mcp/tools.json, from no project at all
+  expect(toolsList({ root: tmpdir(), settings: {} })).toEqual(toolsList(context));
 });
 
 describe('the component tools', () => {

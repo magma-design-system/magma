@@ -19,18 +19,25 @@
   their secondary options `root` and `documentation` point elsewhere, as `settings.magma`
   does for the ESLint plugin.
 */
-import stylelint, { type Rule } from 'stylelint';
+import stylelint, { type Rule, type RuleMeta } from 'stylelint';
 import { colorLiterals } from '../core/colors.js';
 import { internalTokenMessage, utilityOf } from '../core/checks.js';
 import { customPropertiesOf } from '../core/element.js';
-import { loadStyles, type MagmaSettings, type StyleInfo } from '../core/data.js';
+import { lintGuideUrl, loadStyles, type MagmaSettings, type StyleInfo } from '../core/data.js';
 
 const {
   createPlugin,
   utils: { report, ruleMessages, validateOptions },
 } = stylelint;
 
-const DOCS = 'https://github.com/magma-design-system/magma/blob/main/docs/agents/lint.md';
+/**
+ * The meta of a rule: the section of the guide at the installed release and, as the ESLint
+ * rules have in meta.docs, what the rule asks for. Stylelint's own meta has no description.
+ */
+const metaOf = (name: string, description: string): RuleMeta & { description: string } => ({
+  url: lintGuideUrl(name),
+  description,
+});
 
 const isString = (value: unknown) => typeof value === 'string';
 /** The secondary options that point the data elsewhere (core/data.ts). */
@@ -96,7 +103,10 @@ const noRawColor: Rule = (primary, secondary) => (root, result) => {
 };
 noRawColor.ruleName = noRawColorName;
 noRawColor.messages = noRawColorMessages;
-noRawColor.meta = { url: `${DOCS}#no-raw-color` };
+noRawColor.meta = metaOf(
+  'no-raw-color',
+  'A stylesheet paints with a role, rgb(var(--magma-*)), not with a colour literal (hex, rgb(), hsl() and the other colour functions).',
+);
 
 const noColorSchemeName = 'magma/no-color-scheme-override';
 const noColorSchemeMessages = ruleMessages(noColorSchemeName, {
@@ -119,7 +129,10 @@ const noColorSchemeOverride: Rule = (primary) => (root, result) => {
 };
 noColorSchemeOverride.ruleName = noColorSchemeName;
 noColorSchemeOverride.messages = noColorSchemeMessages;
-noColorSchemeOverride.meta = { url: `${DOCS}#no-color-scheme-override` };
+noColorSchemeOverride.meta = metaOf(
+  'no-color-scheme-override',
+  'A stylesheet follows the mode the user picked in Magma, not the OS: no prefers-color-scheme query.',
+);
 
 const noInternalTokensName = 'magma/no-internal-tokens';
 const noInternalTokensMessages = ruleMessages(noInternalTokensName, {
@@ -171,7 +184,10 @@ const noInternalTokens: Rule = (primary, secondary) => (root, result) => {
 };
 noInternalTokens.ruleName = noInternalTokensName;
 noInternalTokens.messages = noInternalTokensMessages;
-noInternalTokens.meta = { url: `${DOCS}#no-internal-tokens` };
+noInternalTokens.meta = metaOf(
+  'no-internal-tokens',
+  'A declaration or a class of @apply sets or reads only the custom properties a Magma component promises.',
+);
 
 const plugins = [
   createPlugin(noRawColorName, noRawColor),
