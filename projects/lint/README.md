@@ -161,3 +161,10 @@ give it an `outputSchema` its result matches (the official client checks it), re
 the call through the official client (`test/mcp-stdio.test.ts`), and list it in
 [`docs/agents/mcp.md`](../../docs/agents/mcp.md). Keep the tools few: an agent picks one by its
 name and description.
+
+What the server lacks is learned from the agents that use it (#1137). An answer that finds
+nothing for a well-formed question, or a tool that says it does not know, carries `gap`
+(`GAP` of `src/mcp/context.ts`), and the instructions of the server tell the agent, then,
+to propose an issue on Magma as `agents/reporting.md` describes ("A tool or an answer the
+MCP server is missing"), only with the user's agreement. An input error never carries
+`gap`, and neither does a weak match: the agent judges that one from the instructions.

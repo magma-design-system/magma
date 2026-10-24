@@ -102,3 +102,17 @@ export const firstSentence = (markdown = ''): string => {
   const plain = line.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1');
   return (plain.split(/\.\s/)[0] ?? plain).replace(/\s+/g, ' ').trim().replace(/\.$/, '') + '.';
 };
+
+/**
+ * What an answer adds when the installed Magma has nothing for a well-formed question (a
+ * search that matches nothing, a value it cannot read): the gap is Magma's to fill, and the
+ * agent proposes an issue (agents/reporting.md, section 7, #1137). An input error is not a gap.
+ */
+export const GAP =
+  'Magma has nothing for this. If it should, tell the user, and at the end of the task propose an issue on Magma: get_guide reporting, section "A tool or an answer the MCP server is missing".';
+
+/** The output schema of the optional `gap` of an answer. */
+export const GAP_SCHEMA = {
+  type: 'string',
+  description: 'Set when Magma has nothing for the question: a gap to report.',
+};

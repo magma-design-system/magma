@@ -8,7 +8,7 @@ import { loadPalette, readData } from '../core/data.js';
 import { utilityOf } from '../core/checks.js';
 import { readFileSync } from 'node:fs';
 import { distance, parseColor, toHex, type Rgb } from './color.js';
-import { resolvePackage, wordsOf, type ToolContext } from './context.js';
+import { GAP, GAP_SCHEMA, resolvePackage, wordsOf, type ToolContext } from './context.js';
 import { ToolError, type Tool } from './protocol.js';
 
 interface DtcgToken {
@@ -374,6 +374,7 @@ export const listTokens = (context: ToolContext): Tool => ({
         },
       },
       total: { type: 'number' },
+      gap: GAP_SCHEMA,
     },
     required: ['tokens', 'total'],
   },
@@ -403,6 +404,7 @@ export const listTokens = (context: ToolContext): Tool => ({
     const max = typeof limit === 'number' && limit > 0 ? limit : 30;
     return {
       total: found.length,
+      ...(found.length ? {} : { gap: GAP }),
       tokens: found.slice(0, max).map(({ entry }) => ({
         ...(entry.css ? { css: entry.css } : {}),
         path: entry.path,
@@ -494,7 +496,7 @@ export const suggestRole = (context: ToolContext): Tool => ({
           );
         if (!paints && !kind)
           throw new ToolError(
-            `suggest_role does not know what ${root}-* paints: pass use (${USES.join(', ')}).`,
+            `suggest_role does not know what ${root}-* paints: pass use (${USES.join(', ')}). ${GAP}`,
           );
         kind ??= paints;
         opacity = /\/[\w.[\]()%-]+$/.exec(input.replace(/!$/, ''))?.[0] ?? '';

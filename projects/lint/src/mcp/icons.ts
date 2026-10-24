@@ -12,7 +12,7 @@
 */
 import { existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { packageDir, readJsonFile, wordsOf, type ToolContext } from './context.js';
+import { GAP, GAP_SCHEMA, packageDir, readJsonFile, wordsOf, type ToolContext } from './context.js';
 import { ToolError, type Tool } from './protocol.js';
 
 type IconSet = 'mi' | 'mdi' | 'mgg';
@@ -139,6 +139,7 @@ export const findIcon = (context: ToolContext): Tool => ({
           required: ['slug', 'set', 'name'],
         },
       },
+      gap: GAP_SCHEMA,
     },
     required: ['sets', 'icons'],
   },
@@ -215,13 +216,13 @@ export const findIcon = (context: ToolContext): Tool => ({
         return { icon, score };
       });
     });
-    return {
-      sets: status,
-      icons: scored
-        .filter(({ score }) => score > 0)
-        .sort((a, b) => b.score - a.score || a.icon.name.length - b.icon.name.length)
-        .slice(0, typeof limit === 'number' && limit > 0 ? limit : 12)
-        .map(({ icon }) => ({ slug: slugOf(icon), set: icon.set, name: icon.name })),
-    };
+    const icons = scored
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score || a.icon.name.length - b.icon.name.length)
+      .slice(0, typeof limit === 'number' && limit > 0 ? limit : 12)
+      .map(({ icon }) => ({ slug: slugOf(icon), set: icon.set, name: icon.name }));
+    // with no set installed the gap is the project's, which `sets` already says
+    const searched = status.some((one) => one.installed);
+    return { sets: status, icons, ...(searched && !icons.length ? { gap: GAP } : {}) };
   },
 });
