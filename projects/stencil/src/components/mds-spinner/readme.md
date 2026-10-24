@@ -225,9 +225,9 @@ mds-spinner {
 
 ## CSS Custom Properties
 
-| Name                     | Description                        |
-| ------------------------ | ---------------------------------- |
-| `--mds-spinner-duration` | Duration of the spinner animation. |
+| Name                     | Description                                |
+| ------------------------ | ------------------------------------------ |
+| `--mds-spinner-duration` | Public. Duration of the spinner animation. |
 
 
 ## Dependencies

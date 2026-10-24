@@ -21,7 +21,7 @@ Run the project's ESLint and Stylelint on those files. When the Magma presets ar
 
 For each Magma component in the changed code:
 
-- `get_component`: are the events listened to the ones it emits, the slots the ones it has, the parts the documented ones? Is it styled only through its documented custom properties and parts?
+- `get_component`: are the events listened to the ones it emits, the slots the ones it has, the parts the documented ones? Is it styled only through its public custom properties (the ones `get_component` lists) and documented parts?
 - Its `pattern.md` and `antipattern.md` (paths in `get_component`): does the code follow the pattern?
 - Classes and colours: `explain_class` on the doubtful ones, `suggest_role` for a literal colour.
 - `get_guide` on conventions (booleans, events, compound components, accessibility) and anti-patterns.

@@ -118,13 +118,11 @@ wall.loop = false;
 
 #### CSS Customization via Documented Properties
 
-Style the noise overlay and video fit only through the documented `--mds-video-wall-*` CSS custom properties. Set them on the host element or a parent selector, using the semantic color roles for mode-aware values.
+Set the video fit through the public `--mds-video-wall-video-fit` CSS custom property, on the host element or a parent selector. The noise overlay has no public CSS custom property: pick its texture with the `noise` prop (`classic`, `sharp`, `soft`, `tv`) or turn it off with `noise="none"`.
 
 ```css
-/* Warm amber noise tint, contained fit for a non-16:9 source */
+/* Contained fit for a non-16:9 source */
 .hero-section mds-video-wall {
-  --mds-video-wall-noise-background-color: rgb(var(--magma-warning-emphasis-hover) / 0.6);
-  --mds-video-wall-noise-background-size: 4px;
   --mds-video-wall-video-fit: contain;
 }
 ```
@@ -186,18 +184,18 @@ The default slot is projected inside the native `<video>` element and is shown o
 
 #### Do Not Override Shadow DOM Internals Directly
 
-The noise overlay is inside the Shadow DOM. Reach it only through the documented `--mds-video-wall-noise-background-color` custom property; do not pierce the shadow with `>>>` or undocumented selectors.
+The noise overlay is inside the Shadow DOM and has no public CSS custom property. Choose its texture with the `noise` prop (or remove it with `noise="none"`); do not pierce the shadow with `>>>` or undocumented selectors.
 
 ```css
 /* INCORRECT */
 mds-video-wall >>> .noise {
   background-color: rgb(var(--magma-danger-emphasis-hover) / 0.5);
 }
+```
 
-/* CORRECT */
-mds-video-wall {
-  --mds-video-wall-noise-background-color: rgb(var(--magma-danger-emphasis-hover) / 0.5);
-}
+```html
+<!-- CORRECT -->
+<mds-video-wall src="/assets/video/ambient.mp4" noise="soft"></mds-video-wall>
 ```
 
 #### Do Not Rely on `preload` While `autoplay` Is Active
@@ -246,12 +244,12 @@ The browser ignores the `preload` hint entirely when `autoplay` is set (which is
 
 ## CSS Custom Properties
 
-| Name                                      | Description                                                                             |
-| ----------------------------------------- | --------------------------------------------------------------------------------------- |
-| `--mds-video-wall-noise-background-color` | The background color applied to the noise layer of the video wall.                      |
-| `--mds-video-wall-noise-background-size`  | The background-size used for the noise texture.                                         |
-| `--mds-video-wall-noise-filter`           | The CSS filter applied to the noise layer (e.g., blur, brightness).                     |
-| `--mds-video-wall-video-fit`              | Defines how the video content should scale to fit its container (e.g., cover, contain). |
+| Name                                      | Description                                                                                     |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `--mds-video-wall-noise-background-color` | The background color applied to the noise layer of the video wall.                              |
+| `--mds-video-wall-noise-background-size`  | The background-size used for the noise texture.                                                 |
+| `--mds-video-wall-noise-filter`           | The CSS filter applied to the noise layer (e.g., blur, brightness).                             |
+| `--mds-video-wall-video-fit`              | Public. Defines how the video content should scale to fit its container (e.g., cover, contain). |
 
 
 ----------------------------------------------

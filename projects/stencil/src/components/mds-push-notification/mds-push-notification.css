@@ -1,14 +1,14 @@
 @import './css/mds-push-notification-fouc.css';
 
 /**
- * @prop --mds-push-notification-fadeout-delay: Delay before the push notification starts fading out.
- * @prop --mds-push-notification-gap: Gap between multiple push notifications.
+ * @prop --mds-push-notification-fadeout-delay: Public. Delay before the push notification starts fading out.
+ * @prop --mds-push-notification-gap: Public. Gap between multiple push notifications.
  * @prop --mds-push-notification-items-intro-delay: Delay before items inside the notification animate in.
  * @prop --mds-push-notification-items-outro-delay: Delay before items inside the notification animate out.
  * @prop --mds-push-notification-items-duration: Duration of the item animation inside the notification.
  * @prop --mds-push-notification-items-gap: Gap between items inside the notification.
  * @prop --mds-push-notification-items-timing-function: Timing function used for item animations inside the notification.
- * @prop --mds-push-notification-background: Background of the push notification, supports gradients.
+ * @prop --mds-push-notification-background: Public. Background of the push notification, supports gradients.
  */
 
 /* ❌ Not supported

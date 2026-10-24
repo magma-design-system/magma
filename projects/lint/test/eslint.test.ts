@@ -255,6 +255,73 @@ describe('no-raw-palette-classes', () => {
   });
 });
 
+describe('no-internal-tokens', () => {
+  const rule = rules['no-internal-tokens']!;
+  const internal =
+    /"--mds-chip-icon-color" is an internal custom property of <mds-chip>: it may change in any release/;
+  tester('html').run('html', rule, {
+    valid: [
+      {
+        code: '<mds-book style="--mds-book-spine-color: #123a6b"></mds-book>',
+        filename: filename.html,
+      },
+      { code: '<div style="--gap: 4px; color: red"></div>', filename: filename.html },
+    ],
+    invalid: [
+      {
+        code: '<div style="--mds-chip-icon-color: rgb(var(--magma-accent-fg))"></div>',
+        filename: filename.html,
+        errors: [{ message: internal }],
+      },
+      {
+        code: '<mds-chip style="margin: var(--mds-chip-nope)"></mds-chip>',
+        filename: filename.html,
+        errors: [
+          { message: /"--mds-chip-nope" is not a custom property any Magma component promises/ },
+        ],
+      },
+    ],
+  });
+  tester('angular').run('angular', rule, {
+    valid: [
+      {
+        code: '<mds-text [style.--mds-text-line-clamp]="lines"></mds-text>',
+        filename: filename.angular,
+      },
+    ],
+    invalid: [
+      {
+        code: '<mds-chip [style.--mds-chip-icon-color]="color"></mds-chip>',
+        filename: filename.angular,
+        errors: [{ message: internal }],
+      },
+      {
+        code: '<mds-chip style="--mds-chip-icon-color: red"></mds-chip>',
+        filename: filename.angular,
+        errors: [{ message: internal }],
+      },
+    ],
+  });
+  tester('jsx').run('jsx', rule, {
+    valid: [
+      { code: "<MdsText style={{ '--mds-text-line-clamp': 2 }} />", filename: filename.jsx },
+      { code: '<div style={styles} />', filename: filename.jsx },
+    ],
+    invalid: [
+      {
+        code: "<MdsChip style={{ '--mds-chip-icon-color': 'red' }} />",
+        filename: filename.jsx,
+        errors: [{ message: internal }],
+      },
+      {
+        code: "<div style={{ color: 'var(--mds-chip-icon-color)' }} />",
+        filename: filename.jsx,
+        errors: [{ message: internal }],
+      },
+    ],
+  });
+});
+
 test('the presets name every rule, as errors in strict', () => {
   expect(Object.keys(plugin.configs.recommended.rules ?? {}).sort()).toEqual(
     Object.keys(rules)
@@ -265,4 +332,5 @@ test('the presets name every rule, as errors in strict', () => {
     Object.keys(rules).map(() => 'error'),
   );
   expect(plugin.configs.recommended.rules?.['magma/no-raw-palette-classes']).toBe('warn');
+  expect(plugin.configs.recommended.rules?.['magma/no-internal-tokens']).toBe('warn');
 });

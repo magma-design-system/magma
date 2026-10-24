@@ -3,7 +3,7 @@
 /**
  * @prop --mds-emoji-expression-follow-mouse-head-duration: Sets the duration for the head to follow the mouse
  * @prop --mds-emoji-expression-follow-mouse-traits-duration: Sets the duration for facial traits to follow the mouse
- * @prop --mds-emoji-expression-max-rotation: Sets the maximum rotation angle for the emoji expression
+ * @prop --mds-emoji-expression-max-rotation: Public. Sets the maximum rotation angle for the emoji expression
  * @prop --mds-emoji-offset-ears: Sets the positional offset for the ears
  * @prop --mds-emoji-offset-eyebrows: Sets the positional offset for eyebrows
  * @prop --mds-emoji-offset-eyes: Sets the positional offset for eyes

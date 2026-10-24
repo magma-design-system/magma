@@ -1,8 +1,8 @@
 @import './css/mds-stepper-bar-fouc.css';
 
 /**
- * @prop --mds-stepper-bar-gap: Sets the gap between the stepper bar items.
- * @prop --mds-stepper-bar-offset-margin: Sets the offset margin of the stepper bar.
+ * @prop --mds-stepper-bar-gap: Public. Sets the gap between the stepper bar items.
+ * @prop --mds-stepper-bar-offset-margin: Public. Sets the offset margin of the stepper bar.
  * @prop --mds-stepper-bar-scroll-behavior: Sets the scroll behavior of the stepper bar.
  * @prop --mds-stepper-bar-scrollbar-margin: Sets the margin of the scrollbar.
  * @prop --mds-stepper-bar-scrollbar-radius: Sets the radius of the scrollbar.

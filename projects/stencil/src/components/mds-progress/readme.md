@@ -280,13 +280,13 @@ mds-progress::part(progress) {
 
 ## CSS Custom Properties
 
-| Name                        | Description                                 |
-| --------------------------- | ------------------------------------------- |
-| `--mds-progress-background` | Background color of the progress bar.       |
-| `--mds-progress-color`      | Foreground color of the progress indicator. |
-| `--mds-progress-duration`   | Duration of the progress animation.         |
-| `--mds-progress-radius`     | Border-radius of the progress bar.          |
-| `--mds-progress-thickness`  | Thickness (height) of the progress bar.     |
+| Name                        | Description                                         |
+| --------------------------- | --------------------------------------------------- |
+| `--mds-progress-background` | Public. Background color of the progress bar.       |
+| `--mds-progress-color`      | Public. Foreground color of the progress indicator. |
+| `--mds-progress-duration`   | Public. Duration of the progress animation.         |
+| `--mds-progress-radius`     | Public. Border-radius of the progress bar.          |
+| `--mds-progress-thickness`  | Public. Thickness (height) of the progress bar.     |
 
 
 ## Dependencies

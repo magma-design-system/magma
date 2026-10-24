@@ -341,11 +341,11 @@ The `header` slot is intended for title and action controls. Placing an `<mds-im
 
 ## CSS Custom Properties
 
-| Name                    | Description                                                                                                                           |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-card-background` | Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`) |
-| `--mds-card-gap`        | Sets the spacing between card elements                                                                                                |
-| `--mds-card-padding`    | Sets the spacing around card elements                                                                                                 |
+| Name                    | Description                                                                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-card-background` | Public. Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`) |
+| `--mds-card-gap`        | Public. Sets the spacing between card elements                                                                                                |
+| `--mds-card-padding`    | Public. Sets the spacing around card elements                                                                                                 |
 
 
 ----------------------------------------------

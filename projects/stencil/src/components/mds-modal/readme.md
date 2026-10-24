@@ -237,22 +237,18 @@ document.getElementById('pannello-info').hideBackdrop = true;
 
 #### CSS Customization
 
-Style the window surface only through the documented `--mds-modal-*` CSS custom properties. Set them on the host element.
+Size and place the window only through the public `--mds-modal-*` CSS custom properties. Set them on the host element; the window takes its background, radius and shadow from the component.
 
 ```css
-/* Rounded card-style center modal */
+/* Narrow center modal */
 #modal-card {
-  --mds-modal-window-radius: var(--magma-radius-xl);
   --mds-modal-window-distance: calc(var(--spacing) * 600);
   --mds-modal-window-overflow: hidden;
-  --mds-modal-window-background: rgb(var(--magma-surface-overlay));
-  --mds-modal-window-shadow: var(--shadow-2xl);
   --mds-modal-window-max-width: 480px;
 }
 
 /* Full-width drawer */
 #drawer-bottom {
-  --mds-modal-window-radius: var(--magma-radius-lg) var(--magma-radius-lg) 0 0;
   --mds-modal-window-max-width: 100%;
   --mds-modal-window-min-width: 100%;
 }
@@ -295,7 +291,7 @@ The `window` slot completely bypasses the built-in surface, header/footer region
 
 #### Do Not Reach Into Shadow Parts to Style the Window
 
-The only supported customization surface is `--mds-modal-*` CSS custom properties and the documented shadow parts (`dialog`, `window`, `action-close`). Targeting internal shadow selectors couples your code to implementation details that will break on minor releases.
+The only supported customization surface is the public `--mds-modal-*` CSS custom properties and the documented shadow parts (`dialog`, `window`, `action-close`). Targeting internal shadow selectors couples your code to implementation details that will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -308,8 +304,6 @@ mds-modal::part(window) > div {
 
 /* CORRECT */
 mds-modal {
-  --mds-modal-window-background: rgb(var(--magma-surface-overlay));
-  --mds-modal-window-radius: var(--magma-radius-xl);
   --mds-modal-window-distance: calc(var(--spacing) * 400);
 }
 ```
@@ -410,21 +404,21 @@ Type: `Promise<void>`
 
 | Name                                     | Description                                                                                                                                        |
 | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-modal-custom-closed-transform`    | Sets the transform position of the custom window when it's outside the viewport, to it's default position                                          |
-| `--mds-modal-custom-window-distance`     | Set the distance between the slotted modal window and the screen bounds                                                                            |
+| `--mds-modal-custom-closed-transform`    | Public. Sets the transform position of the custom window when it's outside the viewport, to it's default position                                  |
+| `--mds-modal-custom-window-distance`     | Public. Set the distance between the slotted modal window and the screen bounds                                                                    |
 | `--mds-modal-overlay-color`              | Set the overlay color of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`.         |
 | `--mds-modal-overlay-opacity`            | Set the overlay color opacity of the background when the component is opened, this property can be inherited from `globals.css` in `styles^8.0.0`. |
 | `--mds-modal-transition-duration`        | Sets the `transition-duration` of the modal elements                                                                                               |
 | `--mds-modal-transition-timing-funciton` | Deprecated, misspelled name of `--mds-modal-transition-timing-function`; read only when that one is not set                                        |
 | `--mds-modal-transition-timing-function` | Sets the `transition-timing-function` of the modal elements                                                                                        |
 | `--mds-modal-window-background`          | Set the background color of the window                                                                                                             |
-| `--mds-modal-window-distance`            | Set the distance between the modal window and the screen bounds                                                                                    |
-| `--mds-modal-window-max-width`           | If the viewport is greather than mobile, max-width will be considered with this value;                                                             |
-| `--mds-modal-window-min-width`           | If the viewport is greather than mobile, min-width will be considered with this value;                                                             |
-| `--mds-modal-window-overflow`            | Set the overflow of the window                                                                                                                     |
+| `--mds-modal-window-distance`            | Public. Set the distance between the modal window and the screen bounds                                                                            |
+| `--mds-modal-window-max-width`           | Public. If the viewport is greather than mobile, max-width will be considered with this value;                                                     |
+| `--mds-modal-window-min-width`           | Public. If the viewport is greather than mobile, min-width will be considered with this value;                                                     |
+| `--mds-modal-window-overflow`            | Public. Set the overflow of the window                                                                                                             |
 | `--mds-modal-window-radius`              | Set the border radius of the window                                                                                                                |
 | `--mds-modal-window-shadow`              | Set the box shadow of the window                                                                                                                   |
-| `--mds-modal-z-index`                    | Set the z-index of the window when the component is opened                                                                                         |
+| `--mds-modal-z-index`                    | Public. Set the z-index of the window when the component is opened                                                                                 |
 
 
 ## Dependencies

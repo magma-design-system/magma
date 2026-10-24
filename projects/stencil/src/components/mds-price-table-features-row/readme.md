@@ -133,14 +133,12 @@ A `type="text"` cell accepts arbitrary HTML in its slot, so you can pair the val
 
 #### Styling Customization
 
-Override the row's background and text colors for resting and hover states through the documented `--mds-price-table-features-row-*` CSS custom properties. Always name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working.
+Override the row's resting background and text colors through the public `--mds-price-table-features-row-*` CSS custom properties; the hover state is set by the component. Always name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working.
 
 ```css
 .pricing-section mds-price-table-features-row {
   --mds-price-table-features-row-background: rgb(var(--magma-surface-muted));
-  --mds-price-table-features-row-background-hover: rgb(var(--magma-wash-base));
   --mds-price-table-features-row-color: rgb(var(--magma-text-muted));
-  --mds-price-table-features-row-color-hover: rgb(var(--magma-text-default));
 }
 ```
 
@@ -285,12 +283,12 @@ All rows inside a [`<mds-price-table-features>`](../../mds-price-table-features)
 
 ## CSS Custom Properties
 
-| Name                                              | Description                                  |
-| ------------------------------------------------- | -------------------------------------------- |
-| `--mds-price-table-features-row-background`       | Default background color of a features row.  |
-| `--mds-price-table-features-row-background-hover` | Background color of a features row on hover. |
-| `--mds-price-table-features-row-color`            | Default text color of a features row.        |
-| `--mds-price-table-features-row-color-hover`      | Text color of a features row on hover.       |
+| Name                                              | Description                                         |
+| ------------------------------------------------- | --------------------------------------------------- |
+| `--mds-price-table-features-row-background`       | Public. Default background color of a features row. |
+| `--mds-price-table-features-row-background-hover` | Background color of a features row on hover.        |
+| `--mds-price-table-features-row-color`            | Public. Default text color of a features row.       |
+| `--mds-price-table-features-row-color-hover`      | Text color of a features row on hover.              |
 
 
 ----------------------------------------------

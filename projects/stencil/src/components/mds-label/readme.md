@@ -128,14 +128,12 @@ Choose `typography` to match the surrounding text hierarchy. The default `captio
 
 #### Styling Customization
 
-Style the label only through its documented `--mds-label-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the label only through its public `--mds-label-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .categoria-speciale mds-label {
   --mds-label-background: rgb(var(--label-orchid-08));
   --mds-label-color: rgb(var(--label-orchid-02));
-  --mds-label-button-background: rgb(var(--label-orchid-07));
-  --mds-label-button-icon-color: rgb(var(--label-orchid-03));
 }
 ```
 
@@ -251,11 +249,11 @@ mds-label {
 
 | Name                                  | Description                                              |
 | ------------------------------------- | -------------------------------------------------------- |
-| `--mds-label-background`              | The background color of the label component.             |
+| `--mds-label-background`              | Public. The background color of the label component.     |
 | `--mds-label-button-background`       | The background color of a button inside the label.       |
 | `--mds-label-button-background-hover` | The background color of the button when hovered.         |
 | `--mds-label-button-icon-color`       | The color of the icon inside the button.                 |
-| `--mds-label-color`                   | The text color of the label.                             |
+| `--mds-label-color`                   | Public. The text color of the label.                     |
 | `--mds-label-icon-color`              | The color applied to any icon inside the label.          |
 | `--mds-label-selection-background`    | The background color applied when the label is selected. |
 | `--mds-label-selection-color`         | The text color applied when the label is selected.       |

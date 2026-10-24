@@ -180,14 +180,10 @@ The component is form-associated: a form reset clears every selected file automa
 
 #### CSS Customization
 
-Style the component only through its documented `--mds-input-upload-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode keeps working.
+Style the component only through its public `--mds-input-upload-min-cols` CSS custom property, the minimum number of columns of the file list. Set it on the host or a parent selector. The drag area takes its colours from the semantic color roles ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode keeps working without overrides.
 
 ```css
 .upload-area-evidenziata mds-input-upload {
-  --mds-input-upload-drag-area-background-color: rgb(var(--magma-accent-surface-subtle));
-  --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--magma-accent-surface));
-  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--magma-accent-border));
-  --mds-input-upload-drag-area-border-on-drag: 3px dashed rgb(var(--magma-accent-emphasis));
   --mds-input-upload-min-cols: 2;
 }
 ```
@@ -290,7 +286,7 @@ The sort tab bar only appears when `sort` is explicitly set to `"date"` or `"sta
 
 #### Do Not Customize Through Undocumented Internal Selectors
 
-The only supported customization surface is the five `--mds-input-upload-*` CSS custom properties. Do not target internal classes or parts not listed in the API.
+The only supported customization surface is the public `--mds-input-upload-min-cols` CSS custom property. Do not target internal classes or parts not listed in the API.
 
 ```css
 /* INCORRECT */
@@ -303,8 +299,7 @@ mds-input-upload .main-action {
 
 /* CORRECT */
 mds-input-upload {
-  --mds-input-upload-drag-area-background-color: rgb(var(--magma-accent-surface-subtle));
-  --mds-input-upload-drag-area-border: 3px dashed rgb(var(--magma-accent-border));
+  --mds-input-upload-min-cols: 2;
 }
 ```
 
@@ -394,7 +389,7 @@ Type: `Promise<void>`
 | `--mds-input-upload-drag-area-background-color-on-drag` | Set the background color of the drag area when a file is dragged over it. |
 | `--mds-input-upload-drag-area-border`                   | Sets the border of the drag area.                                         |
 | `--mds-input-upload-drag-area-border-on-drag`           | Set the border of the drag area when a file is dragged over it.           |
-| `--mds-input-upload-min-cols`                           | Set the minimum number of columns for the file list.                      |
+| `--mds-input-upload-min-cols`                           | Public. Set the minimum number of columns for the file list.              |
 
 
 ## Dependencies

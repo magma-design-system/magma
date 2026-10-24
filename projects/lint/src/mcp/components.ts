@@ -26,7 +26,12 @@ interface DocsComponent {
   methods: Array<{ name: string; signature: string; docs: string }>;
   slots: Array<{ name: string; docs: string }>;
   parts: Array<{ name: string; docs: string }>;
-  styles: Array<{ name: string; docs: string }>;
+  styles: Array<{
+    name: string;
+    docs: string;
+    visibility?: 'public' | 'internal';
+    static?: boolean;
+  }>;
 }
 
 const componentsOf = (context: ToolContext): DocsComponent[] =>
@@ -115,7 +120,7 @@ export const getComponent = (context: ToolContext): Tool => ({
   name: 'get_component',
   title: 'Read the API of a Magma component',
   description:
-    'The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and CSS custom properties, and the files of its usage guide (pattern, antipattern). Use it before writing the component.',
+    'The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), and the files of its usage guide (pattern, antipattern). Use it before writing the component.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -183,9 +188,22 @@ export const getComponent = (context: ToolContext): Tool => ({
         type: 'array',
         items: {
           type: 'object',
-          properties: { name: string, description: string },
+          properties: {
+            name: string,
+            description: string,
+            static: {
+              type: 'boolean',
+              description:
+                'It takes a value of its own (an illustration colour), not a token or a role.',
+            },
+          },
           required: ['name', 'description'],
         },
+      },
+      internalCssProperties: {
+        type: 'integer',
+        description:
+          'How many more it has, internal: not to be set, they may change in any release.',
       },
       files: { type: 'object', properties: { api: string, pattern: string, antipattern: string } },
     },
@@ -198,6 +216,7 @@ export const getComponent = (context: ToolContext): Tool => ({
       'slots',
       'parts',
       'cssProperties',
+      'internalCssProperties',
       'files',
     ],
   },
@@ -240,7 +259,16 @@ export const getComponent = (context: ToolContext): Tool => ({
         description: docs,
       })),
       parts: component.parts.map(({ name, docs }) => ({ name, description: docs })),
-      cssProperties: component.styles.map(({ name, docs }) => ({ name, description: docs })),
+      // an entry without visibility comes from a release before the contract: all were promised
+      cssProperties: component.styles
+        .filter((style) => style.visibility !== 'internal')
+        .map((style) => ({
+          name: style.name,
+          description: style.docs,
+          ...(style.static ? { static: true } : {}),
+        })),
+      internalCssProperties: component.styles.filter((style) => style.visibility === 'internal')
+        .length,
       files,
     };
   },

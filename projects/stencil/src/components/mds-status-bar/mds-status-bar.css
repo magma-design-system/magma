@@ -1,7 +1,7 @@
 @import './css/mds-status-bar-fouc.css';
 
 /**
- * @prop --mds-status-bar-max-width: Maximum width of the status bar.
+ * @prop --mds-status-bar-max-width: Public. Maximum width of the status bar.
  * @prop --mds-status-bar-backdrop: Background color of the status bar backdrop.
  * @prop --mds-status-bar-backdrop-filter: Filter applied to the status bar backdrop.
  */

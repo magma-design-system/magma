@@ -1,8 +1,8 @@
 @import './css/mds-label-fouc.css';
 
 /**
- * @prop --mds-label-background: The background color of the label component.
- * @prop --mds-label-color: The text color of the label.
+ * @prop --mds-label-background: Public. The background color of the label component.
+ * @prop --mds-label-color: Public. The text color of the label.
  * @prop --mds-label-icon-color: The color applied to any icon inside the label.
  * @prop --mds-label-selection-background: The background color applied when the label is selected.
  * @prop --mds-label-selection-color: The text color applied when the label is selected.

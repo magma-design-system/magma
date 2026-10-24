@@ -167,57 +167,68 @@
     {
      "name": "--mds-banner-background",
      "annotation": "prop",
-     "docs": "Sets the background-color of the component"
+     "docs": "Sets the background-color of the component",
+     "visibility": "public"
     },
     {
      "name": "--mds-banner-cockade-background",
      "annotation": "prop",
-     "docs": "When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background"
+     "docs": "When cockade attribute is set, the icon will be wrapper with a colored area, this is it's background",
+     "visibility": "internal"
     },
     {
      "name": "--mds-banner-cockade-distance",
      "annotation": "prop",
-     "docs": "When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color"
+     "docs": "When cockade attribute is set, the icon will be wrapper with a colored area, this is it's icon color",
+     "visibility": "internal"
     },
     {
      "name": "--mds-banner-color",
      "annotation": "prop",
-     "docs": "Sets the text color of the component"
+     "docs": "Sets the text color of the component",
+     "visibility": "public"
     },
     {
      "name": "--mds-banner-content-gap",
      "annotation": "prop",
-     "docs": "Sets gap between banner elements"
+     "docs": "Sets gap between banner elements",
+     "visibility": "internal"
     },
     {
      "name": "--mds-banner-headline-color",
      "annotation": "prop",
-     "docs": "The text color of the headline"
+     "docs": "The text color of the headline",
+     "visibility": "internal"
     },
     {
      "name": "--mds-banner-icon-color",
      "annotation": "prop",
-     "docs": "Sets the close icon fill color of the component"
+     "docs": "Sets the close icon fill color of the component",
+     "visibility": "internal"
     },
     {
      "name": "--mds-banner-radius",
      "annotation": "prop",
-     "docs": "Sets the border-radius of the component"
+     "docs": "Sets the border-radius of the component",
+     "visibility": "public"
     },
     {
      "name": "--mds-banner-shadow",
      "annotation": "prop",
-     "docs": "Sets the box-shadow of the component"
+     "docs": "Sets the box-shadow of the component",
+     "visibility": "public"
     },
     {
      "name": "--mds-banner-transition-duration",
      "annotation": "prop",
-     "docs": "Sets the transition duration"
+     "docs": "Sets the transition duration",
+     "visibility": "internal"
     },
     {
      "name": "--mds-banner-transition-timing-function",
      "annotation": "prop",
-     "docs": "Sets the transition timing function"
+     "docs": "Sets the transition timing function",
+     "visibility": "internal"
     }
    ]
   },
@@ -428,32 +439,41 @@
     {
      "name": "--mds-book-color",
      "annotation": "prop",
-     "docs": "The colour of the binding where the cover image cannot continue: the spine and the board edges without an image, and the cover drawn when there is no image."
+     "docs": "The colour of the binding where the cover image cannot continue: the spine and the board edges without an image, and the cover drawn when there is no image.",
+     "visibility": "public",
+     "static": true
     },
     {
      "name": "--mds-book-page-weight-max",
      "annotation": "prop",
-     "docs": "The thickness of a page, in millimetres (a number), on a book of 1000 pages and more: the thin paper of a volume."
+     "docs": "The thickness of a page, in millimetres (a number), on a book of 1000 pages and more: the thin paper of a volume.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-book-page-weight-min",
      "annotation": "prop",
-     "docs": "The thickness of a page, in millimetres (a number), on a book of 1 page; between 1 and 1000 pages it goes to --mds-book-page-weight-max in proportion."
+     "docs": "The thickness of a page, in millimetres (a number), on a book of 1 page; between 1 and 1000 pages it goes to --mds-book-page-weight-max in proportion.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-book-paper-color",
      "annotation": "prop",
-     "docs": "The colour of the page block."
+     "docs": "The colour of the page block.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-book-spine-color",
      "annotation": "prop",
-     "docs": "A solid colour for the spine and the board edges. Unset, they continue the edges of the cover image."
+     "docs": "A solid colour for the spine and the board edges. Unset, they continue the edges of the cover image.",
+     "visibility": "public",
+     "static": true
     },
     {
      "name": "--mds-book-text-color",
      "annotation": "prop",
-     "docs": "The colour of the text on the spine and on the cover drawn when there is no image."
+     "docs": "The colour of the text on the spine and on the cover drawn when there is no image.",
+     "visibility": "public",
+     "static": true
     }
    ]
   },
@@ -850,82 +870,98 @@
     {
      "name": "--mds-button-await-duration",
      "annotation": "prop",
-     "docs": "Sets the duration of the rotation of the spinner await component"
+     "docs": "Sets the duration of the rotation of the spinner await component",
+     "visibility": "internal"
     },
     {
      "name": "--mds-button-background",
      "annotation": "prop",
-     "docs": "Sets the background-color of the component"
+     "docs": "Sets the background-color of the component",
+     "visibility": "public"
     },
     {
      "name": "--mds-button-border-color-rgb",
      "annotation": "prop",
-     "docs": "Sets the color of the border of the component (based on box-shadow declaration)"
+     "docs": "Sets the color of the border of the component (based on box-shadow declaration)",
+     "visibility": "internal"
     },
     {
      "name": "--mds-button-border-default-opacity",
      "annotation": "prop",
-     "docs": "Sets the default opacity of the border color of the component (based on box-shadow declaration)"
+     "docs": "Sets the default opacity of the border color of the component (based on box-shadow declaration)",
+     "visibility": "internal"
     },
     {
      "name": "--mds-button-border-high-contrast-hover-width",
      "annotation": "prop",
-     "docs": "Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles."
+     "docs": "Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-button-border-high-contrast-width",
      "annotation": "prop",
-     "docs": "Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles."
+     "docs": "Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-button-border-hover-opacity",
      "annotation": "prop",
-     "docs": "Sets the opacity of the border color when the component is hovered (based on box-shadow declaration)"
+     "docs": "Sets the opacity of the border color when the component is hovered (based on box-shadow declaration)",
+     "visibility": "internal"
     },
     {
      "name": "--mds-button-border-opacity",
      "annotation": "prop",
-     "docs": "Sets the border opacity of the component (based on box-shadow declaration)"
+     "docs": "Sets the border opacity of the component (based on box-shadow declaration)",
+     "visibility": "internal"
     },
     {
      "name": "--mds-button-border-tone-outline-hover-width",
      "annotation": "prop",
-     "docs": "Sets the width of the border when the component is hovered when the tone is set to `outline` (based on box-shadow declaration)"
+     "docs": "Sets the width of the border when the component is hovered when the tone is set to `outline` (based on box-shadow declaration)",
+     "visibility": "internal"
     },
     {
      "name": "--mds-button-border-tone-strong-hover-width",
      "annotation": "prop",
-     "docs": "Sets the width of the border when the component is hovered when the tone is set to `strong` (based on box-shadow declaration)"
+     "docs": "Sets the width of the border when the component is hovered when the tone is set to `strong` (based on box-shadow declaration)",
+     "visibility": "internal"
     },
     {
      "name": "--mds-button-border-tone-weak-hover-width",
      "annotation": "prop",
-     "docs": "Sets the width of the border when the component is hovered when the tone is set to `weak` (based on box-shadow declaration)"
+     "docs": "Sets the width of the border when the component is hovered when the tone is set to `weak` (based on box-shadow declaration)",
+     "visibility": "internal"
     },
     {
      "name": "--mds-button-border-width",
      "annotation": "prop",
-     "docs": "Sets the border width of the component (based on box-shadow declaration)"
+     "docs": "Sets the border width of the component (based on box-shadow declaration)",
+     "visibility": "internal"
     },
     {
      "name": "--mds-button-color",
      "annotation": "prop",
-     "docs": "Sets the text color of the component"
+     "docs": "Sets the text color of the component",
+     "visibility": "public"
     },
     {
      "name": "--mds-button-gap",
      "annotation": "prop",
-     "docs": "Sets the distance betwen element inside the components, use it instead of setting gap property directly."
+     "docs": "Sets the distance betwen element inside the components, use it instead of setting gap property directly.",
+     "visibility": "public"
     },
     {
      "name": "--mds-button-label-transform",
      "annotation": "prop",
-     "docs": "Sets the text-transform of the first letter of the label, `uppercase` by default; `none` shows the label as written. It inherits: set on `mds-button-dropdown` or any ancestor, it reaches the buttons inside other components too"
+     "docs": "Sets the text-transform of the first letter of the label, `uppercase` by default; `none` shows the label as written. It inherits: set on `mds-button-dropdown` or any ancestor, it reaches the buttons inside other components too",
+     "visibility": "public"
     },
     {
      "name": "--mds-button-radius",
      "annotation": "prop",
-     "docs": "Sets the border-radius of the component"
+     "docs": "Sets the border-radius of the component",
+     "visibility": "public"
     }
    ]
   },
@@ -1179,67 +1215,80 @@
     {
      "name": "--mds-chip-background",
      "annotation": "prop",
-     "docs": "Sets the `background-color` of the component"
+     "docs": "Sets the `background-color` of the component",
+     "visibility": "public"
     },
     {
      "name": "--mds-chip-background-selected",
      "annotation": "prop",
-     "docs": "Sets the `background-color` of the component when it's selected"
+     "docs": "Sets the `background-color` of the component when it's selected",
+     "visibility": "internal"
     },
     {
      "name": "--mds-chip-border",
      "annotation": "prop",
-     "docs": "Sets the `border-color` of the component"
+     "docs": "Sets the `border-color` of the component",
+     "visibility": "internal"
     },
     {
      "name": "--mds-chip-border-selected",
      "annotation": "prop",
-     "docs": "Sets the `border-color` of the component when it's selected"
+     "docs": "Sets the `border-color` of the component when it's selected",
+     "visibility": "internal"
     },
     {
      "name": "--mds-chip-color",
      "annotation": "prop",
-     "docs": "Sets the `color` of the component"
+     "docs": "Sets the `color` of the component",
+     "visibility": "public"
     },
     {
      "name": "--mds-chip-color-selected",
      "annotation": "prop",
-     "docs": "Sets the `color` of the component when it's selected"
+     "docs": "Sets the `color` of the component when it's selected",
+     "visibility": "internal"
     },
     {
      "name": "--mds-chip-icon-background",
      "annotation": "prop",
-     "docs": "Sets the `background-color` of the icon"
+     "docs": "Sets the `background-color` of the icon",
+     "visibility": "public"
     },
     {
      "name": "--mds-chip-icon-background-selected",
      "annotation": "prop",
-     "docs": "Sets the `background-color` of the icon when the component is selected"
+     "docs": "Sets the `background-color` of the icon when the component is selected",
+     "visibility": "internal"
     },
     {
      "name": "--mds-chip-icon-color",
      "annotation": "prop",
-     "docs": "Sets the `fill` color of the icon of the component"
+     "docs": "Sets the `fill` color of the icon of the component",
+     "visibility": "internal"
     },
     {
      "name": "--mds-chip-icon-color-selected",
      "annotation": "prop",
-     "docs": "Sets the `fill` color of the icon of the component when it's selected"
+     "docs": "Sets the `fill` color of the icon of the component when it's selected",
+     "visibility": "internal"
     },
     {
      "name": "--mds-chip-opacity-disabled",
      "annotation": "prop",
-     "docs": "Sets the `opacity` of the component when it's disabled"
+     "docs": "Sets the `opacity` of the component when it's disabled",
+     "visibility": "internal"
     },
     {
      "name": "--mds-chip-shadow",
      "annotation": "prop",
-     "docs": "Sets the `box-shadow` of the component"
+     "docs": "Sets the `box-shadow` of the component",
+     "visibility": "public"
     },
     {
      "name": "--mds-chip-shadow-selected",
      "annotation": "prop",
-     "docs": "Sets the `box-shadow` of the component when it's selected"
+     "docs": "Sets the `box-shadow` of the component when it's selected",
+     "visibility": "internal"
     }
    ]
   },
@@ -1450,32 +1499,38 @@
     {
      "name": "--mds-img-background",
      "annotation": "prop",
-     "docs": "The background color of the image container."
+     "docs": "The background color of the image container.",
+     "visibility": "public"
     },
     {
      "name": "--mds-img-color",
      "annotation": "prop",
-     "docs": "The foreground/text color used inside the image component."
+     "docs": "The foreground/text color used inside the image component.",
+     "visibility": "public"
     },
     {
      "name": "--mds-img-error-background",
      "annotation": "prop",
-     "docs": "The background color shown when the image fails to load."
+     "docs": "The background color shown when the image fails to load.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-img-error-color",
      "annotation": "prop",
-     "docs": "The text or foreground color shown in the error state."
+     "docs": "The text or foreground color shown in the error state.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-img-error-icon-color",
      "annotation": "prop",
-     "docs": "The icon color used in the error state."
+     "docs": "The icon color used in the error state.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-img-icon-color",
      "annotation": "prop",
-     "docs": "The color applied to icons displayed within the image element."
+     "docs": "The color applied to icons displayed within the image element.",
+     "visibility": "internal"
     }
    ]
   },
@@ -2309,82 +2364,98 @@
     {
      "name": "--mds-input-background",
      "annotation": "prop",
-     "docs": "The background color of the input field."
+     "docs": "The background color of the input field.",
+     "visibility": "public"
     },
     {
      "name": "--mds-input-icon-color",
      "annotation": "prop",
-     "docs": "The color of the icons inside the input."
+     "docs": "The color of the icons inside the input.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-placeholder-default-color",
      "annotation": "prop",
-     "docs": "The placeholder color in the default state."
+     "docs": "The placeholder color in the default state.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-placeholder-focus-color",
      "annotation": "prop",
-     "docs": "The placeholder color when the input is focused."
+     "docs": "The placeholder color when the input is focused.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-placeholder-hover-color",
      "annotation": "prop",
-     "docs": "The placeholder color when the input is hovered."
+     "docs": "The placeholder color when the input is hovered.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-ring",
      "annotation": "prop",
-     "docs": "The outline ring applied to the input on interactive states."
+     "docs": "The outline ring applied to the input on interactive states.",
+     "visibility": "public"
     },
     {
      "name": "--mds-input-shadow",
      "annotation": "prop",
-     "docs": "The box-shadow applied to the input component."
+     "docs": "The box-shadow applied to the input component.",
+     "visibility": "public"
     },
     {
      "name": "--mds-input-textarea-field-sizing",
      "annotation": "prop",
-     "docs": "The field-sizing behavior of the textarea."
+     "docs": "The field-sizing behavior of the textarea.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-textarea-max-height",
      "annotation": "prop",
-     "docs": "The max-height applied to the textarea."
+     "docs": "The max-height applied to the textarea.",
+     "visibility": "public"
     },
     {
      "name": "--mds-input-textarea-min-height",
      "annotation": "prop",
-     "docs": "The min-height applied to the textarea."
+     "docs": "The min-height applied to the textarea.",
+     "visibility": "public"
     },
     {
      "name": "--mds-input-textarea-resize",
      "annotation": "prop",
-     "docs": "Controls whether the textarea is resizable."
+     "docs": "Controls whether the textarea is resizable.",
+     "visibility": "public"
     },
     {
      "name": "--mds-input-tip-background",
      "annotation": "prop",
-     "docs": "The background color of the input tip/inline help."
+     "docs": "The background color of the input tip/inline help.",
+     "visibility": "public"
     },
     {
      "name": "--mds-input-tip-horizontal-offset",
      "annotation": "prop",
-     "docs": "The default horizontal offset applied to the input tip"
+     "docs": "The default horizontal offset applied to the input tip",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-tip-horizontal-offset-focused",
      "annotation": "prop",
-     "docs": "The horizontal offset applied when the input tip is focused"
+     "docs": "The horizontal offset applied when the input tip is focused",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-tip-vertical-offset",
      "annotation": "prop",
-     "docs": "The vertical offset applied to the input tip"
+     "docs": "The vertical offset applied to the input tip",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-variant-color-rgb",
      "annotation": "prop",
-     "docs": "The raw RGB channels used for variant-driven styling."
+     "docs": "The raw RGB channels used for variant-driven styling.",
+     "visibility": "public"
     }
    ]
   },
@@ -2597,42 +2668,50 @@
     {
      "name": "--mds-input-date-range-background",
      "annotation": "prop",
-     "docs": "Sets the background-color of the component"
+     "docs": "Sets the background-color of the component",
+     "visibility": "public"
     },
     {
      "name": "--mds-input-date-range-calendar-width",
      "annotation": "prop",
-     "docs": "Sets the width of each calendar shown in the dropdown"
+     "docs": "Sets the width of each calendar shown in the dropdown",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-date-range-fields-firefox-justify-content",
      "annotation": "prop",
-     "docs": "Sets the justify-content of the component in Firefox"
+     "docs": "Sets the justify-content of the component in Firefox",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-date-range-fields-gap",
      "annotation": "prop",
-     "docs": "Sets the gap between the fields of the component"
+     "docs": "Sets the gap between the fields of the component",
+     "visibility": "public"
     },
     {
      "name": "--mds-input-date-range-icon-color",
      "annotation": "prop",
-     "docs": "Sets the icon color of the component"
+     "docs": "Sets the icon color of the component",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-date-range-ring",
      "annotation": "prop",
-     "docs": "Sets the box-shadow of the component's input to perform the ring effect"
+     "docs": "Sets the box-shadow of the component's input to perform the ring effect",
+     "visibility": "public"
     },
     {
      "name": "--mds-input-date-range-shadow",
      "annotation": "prop",
-     "docs": "Sets the box-shadow of the component's input"
+     "docs": "Sets the box-shadow of the component's input",
+     "visibility": "public"
     },
     {
      "name": "--mds-input-date-range-variant-color-rgb",
      "annotation": "prop",
-     "docs": "Sets the variant colors of the component"
+     "docs": "Sets the variant colors of the component",
+     "visibility": "public"
     }
    ]
   },
@@ -2886,137 +2965,164 @@
     {
      "name": "--mds-input-switch-animation-timing-adjust",
      "annotation": "prop",
-     "docs": "Multiplier used to fine-tune animation timing"
+     "docs": "Multiplier used to fine-tune animation timing",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-animation-timing-function",
      "annotation": "prop",
-     "docs": "Easing function applied to switch animations"
+     "docs": "Easing function applied to switch animations",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-box-color-disabled-checked",
      "annotation": "prop",
-     "docs": "Background color of the switch box when disabled and checked"
+     "docs": "Background color of the switch box when disabled and checked",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-box-color-disabled-unchecked",
      "annotation": "prop",
-     "docs": "Background color of the switch box when disabled and unchecked"
+     "docs": "Background color of the switch box when disabled and unchecked",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-box-color-enabled-checked",
      "annotation": "prop",
-     "docs": "Background color of the switch box when enabled and checked"
+     "docs": "Background color of the switch box when enabled and checked",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-box-color-enabled-unchecked",
      "annotation": "prop",
-     "docs": "Background color of the switch box when enabled and unchecked"
+     "docs": "Background color of the switch box when enabled and unchecked",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-box-padding",
      "annotation": "prop",
-     "docs": "Effective padding used for the switch box"
+     "docs": "Effective padding used for the switch box",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-box-padding-lg",
      "annotation": "prop",
-     "docs": "Padding of the switch container (large size)"
+     "docs": "Padding of the switch container (large size)",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-box-padding-md",
      "annotation": "prop",
-     "docs": "Padding of the switch container (medium size)"
+     "docs": "Padding of the switch container (medium size)",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-box-padding-sm",
      "annotation": "prop",
-     "docs": "Padding of the switch container (small size)"
+     "docs": "Padding of the switch container (small size)",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-duration",
      "annotation": "prop",
-     "docs": "Duration of switch state transitions"
+     "docs": "Duration of switch state transitions",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-icon-color-checked",
      "annotation": "prop",
-     "docs": "Icon color when checked"
+     "docs": "Icon color when checked",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-icon-color-checked-disabled",
      "annotation": "prop",
-     "docs": "Icon color when checked and disabled"
+     "docs": "Icon color when checked and disabled",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-icon-color-indeterminate",
      "annotation": "prop",
-     "docs": "Icon color for indeterminate state"
+     "docs": "Icon color for indeterminate state",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-icon-color-indeterminate-disabled",
      "annotation": "prop",
-     "docs": "Icon color for indeterminate state when disabled"
+     "docs": "Icon color for indeterminate state when disabled",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-icon-color-unchecked",
      "annotation": "prop",
-     "docs": "Icon color when unchecked"
+     "docs": "Icon color when unchecked",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-icon-color-unchecked-disabled",
      "annotation": "prop",
-     "docs": "Icon color when unchecked and disabled"
+     "docs": "Icon color when unchecked and disabled",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-icon-explicit-color",
      "annotation": "prop",
-     "docs": "Explicitly forced icon color"
+     "docs": "Explicitly forced icon color",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-toggle-color-disabled-checked",
      "annotation": "prop",
-     "docs": "Toggle color when disabled and checked"
+     "docs": "Toggle color when disabled and checked",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-toggle-color-disabled-unchecked",
      "annotation": "prop",
-     "docs": "Toggle color when disabled and unchecked"
+     "docs": "Toggle color when disabled and unchecked",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-toggle-color-enabled-checked",
      "annotation": "prop",
-     "docs": "Toggle color when enabled and checked"
+     "docs": "Toggle color when enabled and checked",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-toggle-color-enabled-unchecked",
      "annotation": "prop",
-     "docs": "Toggle color when enabled and unchecked"
+     "docs": "Toggle color when enabled and unchecked",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-toggle-container-size",
      "annotation": "prop",
-     "docs": "Computed size of the toggle container"
+     "docs": "Computed size of the toggle container",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-toggle-size",
      "annotation": "prop",
-     "docs": "Effective toggle size currently in use"
+     "docs": "Effective toggle size currently in use",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-toggle-size-lg",
      "annotation": "prop",
-     "docs": "Toggle size for large variant"
+     "docs": "Toggle size for large variant",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-toggle-size-md",
      "annotation": "prop",
-     "docs": "Toggle size for medium variant"
+     "docs": "Toggle size for medium variant",
+     "visibility": "internal"
     },
     {
      "name": "--mds-input-switch-toggle-size-sm",
      "annotation": "prop",
-     "docs": "Toggle size for small variant"
+     "docs": "Toggle size for small variant",
+     "visibility": "internal"
     }
    ]
   },
@@ -3201,42 +3307,50 @@
     {
      "name": "--mds-link-background-hover",
      "annotation": "prop",
-     "docs": "The background that fills the link from the bottom under the pointer."
+     "docs": "The background that fills the link from the bottom under the pointer.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-link-color",
      "annotation": "prop",
-     "docs": "The color of the text, the underline and the icon of the link."
+     "docs": "The color of the text, the underline and the icon of the link.",
+     "visibility": "public"
     },
     {
      "name": "--mds-link-icon-gap",
      "annotation": "prop",
-     "docs": "The distance between the icon and the text."
+     "docs": "The distance between the icon and the text.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-link-icon-size",
      "annotation": "prop",
-     "docs": "The size of the icon."
+     "docs": "The size of the icon.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-link-transition-duration",
      "annotation": "prop",
-     "docs": "The duration of the background filling the link under the pointer, and of the focus ring closing in on it."
+     "docs": "The duration of the background filling the link under the pointer, and of the focus ring closing in on it.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-link-underline-color",
      "annotation": "prop",
-     "docs": "The color of the underline, of which tone `weak` takes a tint; the tint of the band with the `marker` style."
+     "docs": "The color of the underline, of which tone `weak` takes a tint; the tint of the band with the `marker` style.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-link-underline-offset",
      "annotation": "prop",
-     "docs": "The distance between the text and the underline."
+     "docs": "The distance between the text and the underline.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-link-underline-thickness",
      "annotation": "prop",
-     "docs": "The thickness of the underline, thicker for the `dotted` style, the height of the band with the `marker` style."
+     "docs": "The thickness of the underline, thicker for the `dotted` style, the height of the band with the `marker` style.",
+     "visibility": "internal"
     }
    ]
   },
@@ -3624,27 +3738,32 @@
     {
      "name": "--mds-text-animation-placeholder-char",
      "annotation": "prop",
-     "docs": "Placeholder character used during text animation."
+     "docs": "Placeholder character used during text animation.",
+     "visibility": "public"
     },
     {
      "name": "--mds-text-animation-speed",
      "annotation": "prop",
-     "docs": "Speed of text animation."
+     "docs": "Speed of text animation.",
+     "visibility": "public"
     },
     {
      "name": "--mds-text-line-clamp",
      "annotation": "prop",
-     "docs": "Number of lines to clamp text to (line-clamp)."
+     "docs": "Number of lines to clamp text to (line-clamp).",
+     "visibility": "public"
     },
     {
      "name": "--mds-text-selection-background",
      "annotation": "prop",
-     "docs": "Background color used when text is selected."
+     "docs": "Background color used when text is selected.",
+     "visibility": "internal"
     },
     {
      "name": "--mds-text-selection-color",
      "annotation": "prop",
-     "docs": "Text color used when text is selected."
+     "docs": "Text color used when text is selected.",
+     "visibility": "internal"
     }
    ]
   }

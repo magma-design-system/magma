@@ -3,7 +3,7 @@
 /**
  * @prop --mds-pref-mode-overlay-fadeout-duration: Sets the fadeout duration of the overlay which hides UI color flash on theme change
  * @prop --mds-pref-mode-overlay-show-duration: Sets the show duration of the overlay which hides UI color flash on theme change
- * @prop --mds-pref-mode-overlay-z-index: Sets the z-index of the overlay which hides UI color flash on theme change
+ * @prop --mds-pref-mode-overlay-z-index: Public. Sets the z-index of the overlay which hides UI color flash on theme change
  */
 
 :host {

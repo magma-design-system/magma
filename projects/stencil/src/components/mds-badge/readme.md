@@ -135,7 +135,7 @@ The default `"option"` is the smaller scale and suits dense contexts such as tab
 
 #### Styling Customization
 
-Style the badge only through its documented `--mds-badge-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the badge only through its public `--mds-badge-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .custom-tag mds-badge {
@@ -144,13 +144,10 @@ Style the badge only through its documented `--mds-badge-*` CSS custom propertie
 }
 ```
 
-For `tone="outline"`, also set the border properties. The outline badge is always transparent, so `--mds-badge-background` has no effect on it:
+For `tone="outline"`, the border is not a public custom property: its color follows the `variant` prop. The outline badge is always transparent, so `--mds-badge-background` has no effect on it:
 
-```css
-.custom-tag mds-badge[tone='outline'] {
-  --mds-badge-border-color: rgb(var(--label-orchid-06));
-  --mds-badge-border-width: 2px;
-}
+```html
+<mds-badge label="Archiviato" variant="orchid" tone="outline"></mds-badge>
 ```
 
 
@@ -223,7 +220,7 @@ Slotted text still works as a legacy fallback but will be removed in a future re
 
 #### Do Not Customize via Undocumented Selectors
 
-The supported customization surface is `--mds-badge-*` CSS custom properties. Targeting shadow-DOM internals via `>>>`, `/deep/`, or undocumented `::part()` names couples your code to implementation details that can change on any release.
+The supported customization surface is the public `--mds-badge-*` CSS custom properties. Targeting shadow-DOM internals via `>>>`, `/deep/`, or undocumented `::part()` names couples your code to implementation details that can change on any release.
 
 ```css
 /* INCORRECT */
@@ -274,11 +271,11 @@ mds-badge {
 
 | Name                       | Description                                                   |
 | -------------------------- | ------------------------------------------------------------- |
-| `--mds-badge-background`   | Sets the background-color of the component                    |
+| `--mds-badge-background`   | Public. Sets the background-color of the component            |
 | `--mds-badge-border-color` | Sets the border color of the component when tone is "outline" |
 | `--mds-badge-border-width` | Sets the border width of the component when tone is "outline" |
-| `--mds-badge-color`        | Sets the text color of the component                          |
-| `--mds-badge-radius`       | Sets the border-radius of the component                       |
+| `--mds-badge-color`        | Public. Sets the text color of the component                  |
+| `--mds-badge-radius`       | Public. Sets the border-radius of the component               |
 
 
 ## Dependencies

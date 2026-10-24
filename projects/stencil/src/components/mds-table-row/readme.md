@@ -170,16 +170,13 @@ Set `interactive` on the parent `<mds-table>` to enable per-row hover highlights
 
 #### Styling Customization
 
-Override the documented `--mds-table-row-*` CSS custom properties on the row host or on a parent selector. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes stay consistent.
+`mds-table-row` has no public CSS custom property: a row takes its colours from the parent `mds-table-body` (and `mds-table`), and its hover, selected and sorted colours and the spacing of its actions follow its states. Restyle the rows through the public `--mds-table-body-*` or `--mds-table-*` properties of the parents. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes stay consistent.
 
 ```css
-/* Customize hover (and selected) and sorted-row colors for a branded table */
-.tabella-brand mds-table-row {
-  --mds-table-row-background-hover: rgb(var(--magma-accent-emphasis));
-  --mds-table-row-color-hover: rgb(var(--magma-accent-on-emphasis));
-  --mds-table-row-background-alt: rgb(var(--magma-surface-inverse));
-  --mds-table-row-color-alt: rgb(var(--magma-on-inverse));
-  --mds-table-row-actions-gap: calc(var(--spacing) * 200);
+/* Branded colours for the rows of a table */
+.tabella-brand mds-table-body {
+  --mds-table-body-background: rgb(var(--magma-surface-raised));
+  --mds-table-body-color: rgb(var(--magma-text-default));
 }
 ```
 
@@ -300,7 +297,7 @@ Buttons in the `action` slot render without visible labels. An `<mds-button>` th
 
 #### Do Not Override Row Appearance with Inline Styles or Undocumented Selectors
 
-The only supported customization surface is the five `--mds-table-row-*` CSS custom properties. Targeting internal shadow parts or setting `background-color` / `color` directly on the host element bypasses the interactive and selected state logic and will break on minor releases.
+`mds-table-row` has no public CSS custom property and no shadow part: restyle the rows through the public `--mds-table-body-*` or `--mds-table-*` properties of the parents. Targeting internal shadow parts or setting `background-color` / `color` directly on the host element bypasses the interactive and selected state logic and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -313,10 +310,9 @@ mds-table-row::part(actions) {
 }
 
 /* CORRECT */
-mds-table-row {
-  --mds-table-row-background-alt: rgb(var(--magma-surface-inverse));
-  --mds-table-row-color-alt: rgb(var(--magma-on-inverse));
-  --mds-table-row-actions-gap: calc(var(--spacing) * 200);
+mds-table-body {
+  --mds-table-body-background: rgb(var(--magma-surface-raised));
+  --mds-table-body-color: rgb(var(--magma-text-default));
 }
 ```
 

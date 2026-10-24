@@ -9,6 +9,10 @@
  * composed), methods (signature), slots, parts, documented CSS custom properties,
  * custom states, then the declarations of the types they reference. Prose (JSDoc, usage
  * docs) is left out on purpose: rewording a description does not change the API.
+ *
+ * A CSS custom property is listed with its contract (scripts/style-contract-lib.ts):
+ * `[static]` on a public one that takes a value of its own, `INTERNAL` on one that is not
+ * promised, so pr-risk weighs its removal as a patch.
  */
 
 interface ApiReference {
@@ -53,7 +57,7 @@ export interface ApiComponent {
   }[];
   slots: { name: string }[];
   parts: { name: string }[];
-  styles: { name: string }[];
+  styles: { name: string; visibility?: 'public' | 'internal'; static?: boolean }[];
   states?: { name: string }[];
 }
 
@@ -122,7 +126,10 @@ export const apiSnapshot = (docs: ApiDocs): string[] => {
       lines.push(`${t} slot ${!s.name || s.name === 'default' ? '(default)' : s.name}`);
     }
     for (const p of byName(c.parts, (p) => p.name)) lines.push(`${t} part ${p.name}`);
-    for (const s of byName(c.styles, (s) => s.name)) lines.push(`${t} css ${s.name}`);
+    for (const s of byName(c.styles, (s) => s.name))
+      lines.push(
+        `${t} css ${s.name}${s.static ? ' [static]' : ''}${s.visibility === 'internal' ? ' INTERNAL' : ''}`,
+      );
     for (const s of byName(c.states, (s) => s.name)) lines.push(`${t} state ${s.name}`);
   }
 

@@ -94,12 +94,11 @@ When `icon` is set, the item renders an icon instead of the text slot and is use
 
 #### CSS Customization
 
-The items live in the shadow DOM of the parent `mds-paginator`, so the documented `--mds-paginator-item-*` CSS custom properties reach them by inheritance: set them on the `mds-paginator` host or on a containing selector, next to the parent's own `--mds-paginator-background` and `--mds-paginator-scroll-behavior`. Use the semantic color roles so dark mode keeps working.
+The items live in the shadow DOM of the parent `mds-paginator`, so the public `--mds-paginator-item-*` CSS custom properties reach them by inheritance: set them on the `mds-paginator` host or on a containing selector, next to the parent's own `--mds-paginator-background` and `--mds-paginator-scroll-behavior`. Use the semantic color roles so dark mode keeps working.
 
 ```css
 mds-paginator {
   --mds-paginator-background: rgb(var(--magma-wash-strong));
-  --mds-paginator-item-background-hover: rgb(var(--magma-wash-soft));
   --mds-paginator-item-size: calc(var(--spacing) * 800);
 }
 ```
@@ -217,20 +216,20 @@ mds-paginator {
 
 | Name                                       | Description                                                     |
 | ------------------------------------------ | --------------------------------------------------------------- |
-| `--mds-paginator-item-background`          | Sets the background-color of the item                           |
+| `--mds-paginator-item-background`          | Public. Sets the background-color of the item                   |
 | `--mds-paginator-item-background-disabled` | Sets the background-color of the item when is disabled          |
 | `--mds-paginator-item-background-hover`    | Sets the background-color of the item when the mouse is over it |
 | `--mds-paginator-item-background-selected` | Sets the background-color of the item when is selected          |
-| `--mds-paginator-item-color`               | Sets the text color of the component                            |
+| `--mds-paginator-item-color`               | Public. Sets the text color of the component                    |
 | `--mds-paginator-item-color-disabled`      | Sets the color of the item when is disabled                     |
 | `--mds-paginator-item-color-hover`         | Sets the text color of the item when the mouse is over it       |
 | `--mds-paginator-item-color-selected`      | Sets the text color of the item when is selected                |
-| `--mds-paginator-item-radius`              | Sets the border-radius of the component                         |
-| `--mds-paginator-item-shadow`              | Sets the box-shadow of the component                            |
+| `--mds-paginator-item-radius`              | Public. Sets the border-radius of the component                 |
+| `--mds-paginator-item-shadow`              | Public. Sets the box-shadow of the component                    |
 | `--mds-paginator-item-shadow-disabled`     | Sets the box-shadow of the item when is disabled                |
 | `--mds-paginator-item-shadow-hover`        | Sets the box-shadow of the item when the mouse is over it       |
 | `--mds-paginator-item-shadow-selected`     | Sets the box-shadow of the item when is selected                |
-| `--mds-paginator-item-size`                | Sets the height and the min-width of the paginator item         |
+| `--mds-paginator-item-size`                | Public. Sets the height and the min-width of the paginator item |
 
 
 ## Dependencies

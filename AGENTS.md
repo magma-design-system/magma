@@ -43,7 +43,8 @@ The lint and the checks catch most of these; do not write them in the first plac
 - `disabled="false"` or `await="false"` to turn a boolean off: remove the attribute.
 - Dark mode written by hand (a `dark:` that corrects a role, a bare `@media (prefers-color-scheme: dark)`): the palette flips globally, `dark:` is only for a deliberate per-mode choice in the light DOM (it follows the Magma mode), and a component refines the mode only in its `*-pref-mode.css` sheet, on `:host([pref-mode])` (`projects/stencil/SPEC.md`).
 - Typography composed from `font-*` and `text-*` primitives: use the semantic `text-*` utilities (`text-title-h3`, `text-info-detail`).
-- Piercing a component's shadow DOM (`>>>`, `/deep/`, an undocumented `::part()` or internal class): style it through its documented custom properties and parts.
+- Piercing a component's shadow DOM (`>>>`, `/deep/`, an undocumented `::part()` or internal class): style it through its public custom properties and documented parts.
+- An `@prop` written without `Public.` at the start of its description: it is internal, and products may not set it. Mark it public only when a product needs it and no role, theme or prop gives it; `Public, static.` for one that takes a value of its own (`projects/stencil/SPEC.md`).
 - Editing a generated file: a component's `readme.md` (edit its `usage/*.md` and the JSDoc), `magma.api.txt` (rebuild), the packages' `AGENTS.md` and `agents/` (edit `docs/agents/`).
 - The commit types `doc` and `refact`: write `docs` and `refactor`, with a scope (`docs/COMMITS.md`).
 

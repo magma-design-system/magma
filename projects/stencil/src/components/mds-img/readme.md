@@ -130,15 +130,12 @@ Set `width` and `height` (as string pixel values) to reserve layout space and pr
 
 #### Styling Customization
 
-Style the component through its documented `--mds-img-*` CSS custom properties. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the component through its public `--mds-img-*` CSS custom properties. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
 
 ```css
 .card-copertina mds-img {
   --mds-img-background: rgb(var(--magma-accent-emphasis-hover));
   --mds-img-color: rgb(var(--magma-accent-surface));
-  --mds-img-icon-color: rgb(var(--magma-accent-border));
-  --mds-img-error-background: rgb(var(--magma-danger-wash-base));
-  --mds-img-error-color: rgb(var(--magma-danger-fg));
 }
 ```
 
@@ -222,7 +219,7 @@ Each entry in `srcset-consumption` must end with `low`, `medium`, or `high`. Ent
 
 #### Do Not Pierce the Shadow DOM to Style the Inner `<img>`
 
-Targeting internal selectors with `>>>`, `/deep/`, or undocumented class names couples your code to the shadow DOM structure and will break on minor releases. Use `--mds-img-*` CSS custom properties for color theming, and the documented `::part(media)` for geometry/object-fit overrides.
+Targeting internal selectors with `>>>`, `/deep/`, or undocumented class names couples your code to the shadow DOM structure and will break on minor releases. Use the public `--mds-img-*` CSS custom properties for color theming, and the documented `::part(media)` for geometry/object-fit overrides.
 
 ```css
 /* INCORRECT */
@@ -289,14 +286,14 @@ mds-img::part(media) {
 
 ## CSS Custom Properties
 
-| Name                         | Description                                                    |
-| ---------------------------- | -------------------------------------------------------------- |
-| `--mds-img-background`       | The background color of the image container.                   |
-| `--mds-img-color`            | The foreground/text color used inside the image component.     |
-| `--mds-img-error-background` | The background color shown when the image fails to load.       |
-| `--mds-img-error-color`      | The text or foreground color shown in the error state.         |
-| `--mds-img-error-icon-color` | The icon color used in the error state.                        |
-| `--mds-img-icon-color`       | The color applied to icons displayed within the image element. |
+| Name                         | Description                                                        |
+| ---------------------------- | ------------------------------------------------------------------ |
+| `--mds-img-background`       | Public. The background color of the image container.               |
+| `--mds-img-color`            | Public. The foreground/text color used inside the image component. |
+| `--mds-img-error-background` | The background color shown when the image fails to load.           |
+| `--mds-img-error-color`      | The text or foreground color shown in the error state.             |
+| `--mds-img-error-icon-color` | The icon color used in the error state.                            |
+| `--mds-img-icon-color`       | The color applied to icons displayed within the image element.     |
 
 
 ## Dependencies

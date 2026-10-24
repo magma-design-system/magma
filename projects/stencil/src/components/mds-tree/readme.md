@@ -212,21 +212,15 @@ Use the `icon` prop on `<mds-tree-item>` to show a glyph next to the label. Refe
 
 #### Styling Customization
 
-Style the tree only through the documented `--mds-tree-*` CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+The only public CSS custom property of the tree is `--mds-tree-line-clamp`, the number of lines a label keeps with `truncate="all"` (2 by default). The colours of the labels, branches and toggles, their spacing and the transitions follow the semantic roles, so dark mode and high-contrast modes keep working: shape the tree with its props (`appearance`, `toggle`, `toggle-position`, `truncate`, `actions`) instead. Set the property on the host element or a parent selector.
 
 ```css
 .navigazione-laterale mds-tree {
-  --mds-tree-label-hover-background: rgb(var(--magma-wash-base));
-  --mds-tree-branch-border-color: rgb(var(--magma-border-muted));
-  --mds-tree-toggle-icon-chevron-default-background: rgb(var(--magma-accent-emphasis));
-  --mds-tree-toggle-icon-chevron-default-color: rgb(var(--magma-accent-on-emphasis));
-  --mds-tree-toggle-icon-chevron-expanded-background: rgb(var(--magma-accent-emphasis-hover));
-  --mds-tree-toggle-gap: calc(var(--spacing) * 200);
-  --mds-tree-transition-duration: 200ms;
+  --mds-tree-line-clamp: 3;
 }
 ```
 
-The `-expanded-` colours of the toggle paint the items that are open and default to the `-default-` ones. `--mds-tree-toggle-gap` is the distance between the toggle and the label of every item (4px by default); the connectors of the branches follow it.
+The toggle of an open item takes its expanded colours, and the connectors of the branches follow the distance between the toggle and the label of every item.
 
 
 ### 3. Antipattern
@@ -339,7 +333,7 @@ Stencil reads the exact string `"false"` as `false`, but the attribute stays on 
 
 #### Do Not Use Undocumented `::part()` Targets or `>>>` to Style Internals
 
-The supported customization surface for `<mds-tree>` is the `--mds-tree-*` CSS custom properties. Shadow-DOM piercing (`>>>`, `/deep/`) is not supported and `<mds-tree>` exposes no `::part()`. Coupling to internal selectors will break on minor releases.
+The supported customization surface for `<mds-tree>` is its props and its public `--mds-tree-line-clamp` CSS custom property. Shadow-DOM piercing (`>>>`, `/deep/`) is not supported and `<mds-tree>` exposes no `::part()`. Coupling to internal selectors will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -349,14 +343,13 @@ mds-tree >>> .header {
 
 /* CORRECT */
 mds-tree {
-  --mds-tree-label-hover-background: rgb(var(--magma-wash-base));
-  --mds-tree-branch-border-color: rgb(var(--magma-border-muted));
+  --mds-tree-line-clamp: 3;
 }
 ```
 
 #### Do Not Wrap `<mds-tree-item>` in an Extra Div to Add Spacing
 
-Inserting wrapper elements breaks the compound slot protocol - `<mds-tree>` communicates with items via `querySelectorAll` and slot assignment, and wrappers interrupt both. Use the documented CSS custom properties for spacing instead.
+Inserting wrapper elements breaks the compound slot protocol - `<mds-tree>` communicates with items via `querySelectorAll` and slot assignment, and wrappers interrupt both. Keep the items as direct children: the tree sets their spacing itself, and it has no public CSS custom property for it.
 
 ```html
 <!-- INCORRECT -->
@@ -401,36 +394,36 @@ Inserting wrapper elements breaks the compound slot protocol - `<mds-tree>` comm
 
 ## CSS Custom Properties
 
-| Name                                                        | Description                                                                                                            |
-| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `--mds-tree-actions-border-radius`                          | Sets the border-radius of the wrapper container of the actions.                                                        |
-| `--mds-tree-actions-gap`                                    | Sets the gap between the actions.                                                                                      |
-| `--mds-tree-branch-border-color`                            | Sets the border color of the tree branch.                                                                              |
-| `--mds-tree-branch-border-size`                             | Sets the border size of the tree branch.                                                                               |
-| `--mds-tree-branch-dot-default-color`                       | Sets the default color of the tree branch dot.                                                                         |
-| `--mds-tree-branch-dot-expanded-color`                      | Sets the color of the tree branch dot when the item is expanded.                                                       |
-| `--mds-tree-branch-use-rounded-border`                      | Sets the tree branch has rounded connectors or not, use it as a boolean value `true` or `false`.                       |
-| `--mds-tree-label-default-background`                       | Sets the default text color of the icon used at the near right of the label.                                           |
-| `--mds-tree-label-hover-background`                         | Sets the background-color of the label when the mouse is over the item.                                                |
-| `--mds-tree-label-icon-default-color`                       | Sets the default text color of the icon used at the near right of the label.                                           |
-| `--mds-tree-label-icon-hover-color`                         | Sets the text color of the icon used at the near right of the label when the mouse is over the item.                   |
-| `--mds-tree-line-clamp`                                     | Sets the number of lines to show before truncating the text, it only works when attribute `truncate` is set to `all`.  |
-| `--mds-tree-toggle-gap`                                     | Sets the gap between the toggle icon and the label.                                                                    |
-| `--mds-tree-toggle-icon-async-background`                   | Sets the background-color of the icon when the attribute `async` is set.                                               |
-| `--mds-tree-toggle-icon-async-color`                        | Sets the text color of the icon when the attribute `async` is set.                                                     |
-| `--mds-tree-toggle-icon-chevron-default-background`         | Sets the background-color of the chevron icon when the item is collapsed.                                              |
-| `--mds-tree-toggle-icon-chevron-default-color`              | Sets the text color of the chevron icon when the item is collapsed.                                                    |
-| `--mds-tree-toggle-icon-chevron-expanded-background`        | Sets the background-color of the chevron icon when the item is expanded.                                               |
-| `--mds-tree-toggle-icon-chevron-expanded-color`             | Sets the text color of the chevron icon when the item is expanded.                                                     |
-| `--mds-tree-toggle-icon-folder-default-background`          | Sets the background-color of the folder icon when the item is collapsed.                                               |
-| `--mds-tree-toggle-icon-folder-default-color`               | Sets the text color of the folder icon when the item is collapsed.                                                     |
-| `--mds-tree-toggle-icon-folder-expanded-color`              | Sets the text color of the folder icon when the item is expanded.                                                      |
-| `--mds-tree-toggle-icon-position-right-default-background`  | Sets the background-color of the icon when the attribute `toggle-position` is set to `right`.                          |
-| `--mds-tree-toggle-icon-position-right-default-color`       | Sets the text color of the icon when the attribute `toggle-position` is set to `right`.                                |
-| `--mds-tree-toggle-icon-position-right-expanded-background` | Sets the background-color of the icon when the attribute `toggle-position` is set to `right` and the item is expanded. |
-| `--mds-tree-toggle-icon-position-right-expanded-color`      | Sets the text color of the icon when the attribute `toggle-position` is set to `right` and the item is expanded.       |
-| `--mds-tree-transition-duration`                            | Sets the duration of the transition effect.                                                                            |
-| `--mds-tree-transition-timing-function`                     | Sets the timing function of the transition effect.                                                                     |
+| Name                                                        | Description                                                                                                                   |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-tree-actions-border-radius`                          | Sets the border-radius of the wrapper container of the actions.                                                               |
+| `--mds-tree-actions-gap`                                    | Sets the gap between the actions.                                                                                             |
+| `--mds-tree-branch-border-color`                            | Sets the border color of the tree branch.                                                                                     |
+| `--mds-tree-branch-border-size`                             | Sets the border size of the tree branch.                                                                                      |
+| `--mds-tree-branch-dot-default-color`                       | Sets the default color of the tree branch dot.                                                                                |
+| `--mds-tree-branch-dot-expanded-color`                      | Sets the color of the tree branch dot when the item is expanded.                                                              |
+| `--mds-tree-branch-use-rounded-border`                      | Sets the tree branch has rounded connectors or not, use it as a boolean value `true` or `false`.                              |
+| `--mds-tree-label-default-background`                       | Sets the default text color of the icon used at the near right of the label.                                                  |
+| `--mds-tree-label-hover-background`                         | Sets the background-color of the label when the mouse is over the item.                                                       |
+| `--mds-tree-label-icon-default-color`                       | Sets the default text color of the icon used at the near right of the label.                                                  |
+| `--mds-tree-label-icon-hover-color`                         | Sets the text color of the icon used at the near right of the label when the mouse is over the item.                          |
+| `--mds-tree-line-clamp`                                     | Public. Sets the number of lines to show before truncating the text, it only works when attribute `truncate` is set to `all`. |
+| `--mds-tree-toggle-gap`                                     | Sets the gap between the toggle icon and the label.                                                                           |
+| `--mds-tree-toggle-icon-async-background`                   | Sets the background-color of the icon when the attribute `async` is set.                                                      |
+| `--mds-tree-toggle-icon-async-color`                        | Sets the text color of the icon when the attribute `async` is set.                                                            |
+| `--mds-tree-toggle-icon-chevron-default-background`         | Sets the background-color of the chevron icon when the item is collapsed.                                                     |
+| `--mds-tree-toggle-icon-chevron-default-color`              | Sets the text color of the chevron icon when the item is collapsed.                                                           |
+| `--mds-tree-toggle-icon-chevron-expanded-background`        | Sets the background-color of the chevron icon when the item is expanded.                                                      |
+| `--mds-tree-toggle-icon-chevron-expanded-color`             | Sets the text color of the chevron icon when the item is expanded.                                                            |
+| `--mds-tree-toggle-icon-folder-default-background`          | Sets the background-color of the folder icon when the item is collapsed.                                                      |
+| `--mds-tree-toggle-icon-folder-default-color`               | Sets the text color of the folder icon when the item is collapsed.                                                            |
+| `--mds-tree-toggle-icon-folder-expanded-color`              | Sets the text color of the folder icon when the item is expanded.                                                             |
+| `--mds-tree-toggle-icon-position-right-default-background`  | Sets the background-color of the icon when the attribute `toggle-position` is set to `right`.                                 |
+| `--mds-tree-toggle-icon-position-right-default-color`       | Sets the text color of the icon when the attribute `toggle-position` is set to `right`.                                       |
+| `--mds-tree-toggle-icon-position-right-expanded-background` | Sets the background-color of the icon when the attribute `toggle-position` is set to `right` and the item is expanded.        |
+| `--mds-tree-toggle-icon-position-right-expanded-color`      | Sets the text color of the icon when the attribute `toggle-position` is set to `right` and the item is expanded.              |
+| `--mds-tree-transition-duration`                            | Sets the duration of the transition effect.                                                                                   |
+| `--mds-tree-transition-timing-function`                     | Sets the timing function of the transition effect.                                                                            |
 
 
 ----------------------------------------------

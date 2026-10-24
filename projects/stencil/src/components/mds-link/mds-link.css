@@ -6,7 +6,7 @@
 
 /**
  * @prop --mds-link-background-hover: The background that fills the link from the bottom under the pointer.
- * @prop --mds-link-color: The color of the text, the underline and the icon of the link.
+ * @prop --mds-link-color: Public. The color of the text, the underline and the icon of the link.
  * @prop --mds-link-icon-gap: The distance between the icon and the text.
  * @prop --mds-link-icon-size: The size of the icon.
  * @prop --mds-link-transition-duration: The duration of the background filling the link under the pointer, and of the focus ring closing in on it.

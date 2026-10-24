@@ -1,7 +1,7 @@
 @import '../../tailwind/fouc.css';
 
 /**
- * @prop --mds-separator-background: Background color of the separator element.
+ * @prop --mds-separator-background: Public. Background color of the separator element.
  */
 
 :host {

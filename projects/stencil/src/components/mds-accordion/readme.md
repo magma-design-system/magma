@@ -162,14 +162,11 @@ The default slot of each `mds-accordion-item` accepts text, HTML elements, and o
 
 #### Styling Customization
 
-Style the accordion only through its documented `--mds-accordion-*` CSS custom properties. The properties cascade into all child `mds-accordion-item` elements from the host.
+Style the accordion only through its public `--mds-accordion-*` CSS custom properties. The properties cascade into all child `mds-accordion-item` elements from the host.
 
 ```css
 .custom-faq mds-accordion {
-  --mds-accordion-border-color: rgb(var(--magma-accent-border));
   --mds-accordion-color: rgb(var(--magma-text-default));
-  --mds-accordion-description-color: rgb(var(--magma-text-muted));
-  --mds-accordion-duration: 200ms;
   --mds-accordion-padding-selected: calc(var(--spacing) * 600) 0 calc(var(--spacing) * 800) 0;
   --mds-accordion-padding-unselected: calc(var(--spacing) * 400) 0;
 }
@@ -272,7 +269,7 @@ A native `click` bubbles up from anywhere inside the accordion, panel content in
 
 #### Do Not Pierce Shadow DOM to Style Internals
 
-The only supported customization surface is the `--mds-accordion-*` CSS custom properties and the documented `::part()` names on `mds-accordion-item` (`content`, `icon`, `label`). Targeting undocumented internals via `>>>` or deep class selectors couples code to the Shadow DOM implementation and breaks on minor releases.
+The only supported customization surface is the public `--mds-accordion-*` CSS custom properties and the documented `::part()` names on `mds-accordion-item` (`content`, `icon`, `label`). Targeting undocumented internals via `>>>` or deep class selectors couples code to the Shadow DOM implementation and breaks on minor releases.
 
 ```css
 /* INCORRECT */
@@ -286,7 +283,6 @@ mds-accordion-item::part(spinner) {
 /* CORRECT */
 mds-accordion {
   --mds-accordion-color: rgb(var(--magma-text-default));
-  --mds-accordion-border-color: rgb(var(--magma-accent-border));
 }
 mds-accordion-item::part(label) {
   font-style: italic;
@@ -323,11 +319,11 @@ mds-accordion-item::part(label) {
 | ------------------------------------ | ----------------------------------------------------------------------------------------------------- |
 | `--mds-accordion-border-color`       | Sets the border-color of the component children mds-accordion-item                                    |
 | `--mds-accordion-border-width`       | Sets the border-width of the separators of the component children mds-accordion-item                  |
-| `--mds-accordion-color`              | Sets the text-color of the component children mds-accordion-item                                      |
+| `--mds-accordion-color`              | Public. Sets the text-color of the component children mds-accordion-item                              |
 | `--mds-accordion-description-color`  | Sets the color of the always visible title description                                                |
 | `--mds-accordion-duration`           | Sets the transition duration of the close/open animation of the component children mds-accordion-item |
-| `--mds-accordion-padding-selected`   | Sets the vertical padding of the component children mds-accordion-item when it's selected             |
-| `--mds-accordion-padding-unselected` | Sets the vertical padding of the component children mds-accordion-item when it's unselected           |
+| `--mds-accordion-padding-selected`   | Public. Sets the vertical padding of the component children mds-accordion-item when it's selected     |
+| `--mds-accordion-padding-unselected` | Public. Sets the vertical padding of the component children mds-accordion-item when it's unselected   |
 
 
 ----------------------------------------------

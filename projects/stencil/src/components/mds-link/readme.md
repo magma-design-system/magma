@@ -15,7 +15,7 @@ The `<mds-link>` web component is the inline link of Magma: a word or a phrase i
 - **A real anchor with `href`**: the link is an `<a href>` in the shadow root, and it is the element that takes the focus. The browser gives it what it gives every link: a new tab on a modifier or middle click, the context menu, drag. A click listener on the host can cancel the navigation with `preventDefault()`, and a client-side router registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`) takes the plain clicks over. A `click()` from a script follows the link too, unless a listener cancels it.
 - **An inline button without `href`**: the link becomes an element with `role="button"` in the tab order; a click, Enter and Space each fire one native `click` on the host. It never submits the form it sits in. It is not a native `<button>`, which cannot wrap across lines.
 - **New tab**: `target="blank"` opens the URL in a new tab without giving it access to the page (`rel="noopener noreferrer"`) and adds a hidden "(opens in a new tab)", in the language of the page, to the name the assistive technology reads. No icon is added: pick one with `icon` if the design wants it.
-- **Icon**: `icon` draws an icon, hidden from the assistive technology, sized by `--mds-link-icon-size` (a step of the spacing scale, the same in every typography). It stays on the line of the word next to it: it never wraps to a line of its own.
+- **Icon**: `icon` draws an icon, hidden from the assistive technology, sized on a step of the spacing scale, the same in every typography. It stays on the line of the word next to it: it never wraps to a line of its own.
 - **Underline always visible**: the underline is what tells the link from the text without its color (WCAG 1.4.1), so every style keeps one, and its weight never changes. Under the pointer every link fills with a faint background that rises from the bottom, and a `weak` one also gives its line the whole color; under high contrast the tints take the full color.
 
 #### Properties & Visual Configurations
@@ -252,7 +252,7 @@ mds-link::part(link) {
 | Name                             | Description                                                                                                     |
 | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | `--mds-link-background-hover`    | The background that fills the link from the bottom under the pointer.                                           |
-| `--mds-link-color`               | The color of the text, the underline and the icon of the link.                                                  |
+| `--mds-link-color`               | Public. The color of the text, the underline and the icon of the link.                                          |
 | `--mds-link-icon-gap`            | The distance between the icon and the text.                                                                     |
 | `--mds-link-icon-size`           | The size of the icon.                                                                                           |
 | `--mds-link-transition-duration` | The duration of the background filling the link under the pointer, and of the focus ring closing in on it.      |

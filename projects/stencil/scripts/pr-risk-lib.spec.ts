@@ -121,6 +121,8 @@ describe('memberKey', () => {
     ['mds-tab method select(index: number) => Promise<void>', 'mds-tab method select'],
     ['mds-tab slot (default)', 'mds-tab slot (default)'],
     ['mds-tab css --mds-tab-gap', 'mds-tab css --mds-tab-gap'],
+    ['mds-tab css --mds-tab-gap INTERNAL', 'mds-tab css --mds-tab-gap'],
+    ['mds-tab css --mds-tab-skin [static]', 'mds-tab css --mds-tab-skin'],
     ['mds-tab encapsulation shadow DEPRECATED', 'mds-tab encapsulation'],
     ['type Size = "md" | "sm"', 'type Size'],
     ['interface Detail { id: string; }', 'type Detail'],
@@ -150,6 +152,17 @@ describe('apiChanges', () => {
       bump: 'minor',
       why: 'added',
     });
+  });
+
+  it('weighs a CSS custom property by its contract', () => {
+    const css = (rest: string) => `mds-x css --mds-x-gap${rest}`;
+    expect(one(css(''), '')).toEqual({ bump: 'major', why: 'removed' });
+    expect(one(css(' INTERNAL'), '')).toEqual({ bump: 'patch', why: 'removed, it was internal' });
+    expect(one('', css(' INTERNAL'))).toEqual({ bump: 'patch', why: 'added, internal' });
+    expect(one(css(''), css(' INTERNAL'))).toEqual({ bump: 'minor', why: 'now internal' });
+    expect(one(css(' INTERNAL'), css(''))).toEqual({ bump: 'minor', why: 'now public' });
+    expect(one(css(''), css(' [static]'))).toEqual({ bump: 'minor', why: 'now static' });
+    expect(one(css(' [static]'), css(''))).toEqual({ bump: 'minor', why: 'no longer static' });
   });
 
   it('needs a major for a new required prop', () => {

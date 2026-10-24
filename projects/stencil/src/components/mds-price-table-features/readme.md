@@ -26,7 +26,7 @@ This component has essentially one configurable prop:
 
 - **`label`**: Sets an optional title rendered in the header band above the matrix. Provide it to name the feature group (e.g. a section heading shared across all plan columns); omit it when the matrix should appear without a heading.
 
-All other variation comes from the slotted children rather than from props. Column widths are computed by each `mds-price-table-features-row`, and the visual treatment of each cell is driven by the `type` prop on `mds-price-table-features-cell`. Spacing can be tuned through `--mds-price-table-features-padding` (the header band and, by inheritance, every cell) and the dividers through `--mds-price-table-features-border-color` (the header band and, by inheritance, every cell; one cell can still set its own `--mds-price-table-features-cell-border-color`), both listed in [`readme.md`](../readme.md).
+All other variation comes from the slotted children rather than from props. Column widths are computed by each `mds-price-table-features-row`, and the visual treatment of each cell is driven by the `type` prop on `mds-price-table-features-cell`. Spacing can be tuned through the public `--mds-price-table-features-padding` (the header band and, by inheritance, every cell), listed in [`readme.md`](../readme.md); the dividers of the header band and of the cells keep the colour the component gives them.
 
 
 ### 2. Pattern
@@ -163,16 +163,15 @@ Compose several `<mds-price-table-features>` blocks inside one [`<mds-price-tabl
 
 #### Styling Customization
 
-Tune the header band's divider and the cell spacing through the documented CSS custom properties. Set them on the host or on a parent selector; name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working.
+Tune the cell spacing through the public `--mds-price-table-features-padding` CSS custom property, set on the host or on a parent selector; the dividers of the header band and of the cells keep the colour the component gives them.
 
 ```css
 .pricing-section mds-price-table-features {
-  --mds-price-table-features-border-color: rgb(var(--magma-accent-border));
   --mds-price-table-features-padding: calc(var(--spacing) * 400);
 }
 ```
 
-To style the header band independently, target the documented `header` shadow part:
+To style the header band independently, target the documented `header` shadow part; name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working:
 
 ```css
 .pricing-section mds-price-table-features::part(header) {
@@ -319,7 +318,6 @@ mds-price-table-features >>> table {
 
 /* CORRECT */
 mds-price-table-features {
-  --mds-price-table-features-border-color: rgb(var(--magma-accent-border));
   --mds-price-table-features-padding: calc(var(--spacing) * 400);
 }
 mds-price-table-features::part(header) {
@@ -355,7 +353,7 @@ mds-price-table-features::part(header) {
 | Name                                      | Description                                                                                                                              |
 | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `--mds-price-table-features-border-color` | Sets the border-color of the header and of the children cells, unless a cell sets its own `--mds-price-table-features-cell-border-color` |
-| `--mds-price-table-features-padding`      | Sets the cell padding of the children components                                                                                         |
+| `--mds-price-table-features-padding`      | Public. Sets the cell padding of the children components                                                                                 |
 
 
 ## Dependencies

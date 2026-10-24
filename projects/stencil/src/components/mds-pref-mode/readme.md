@@ -106,12 +106,10 @@ The component emits `mdsPrefChange` with `{ preference: 'mode' }` once per chang
 
 #### Customizing the Transition Overlay
 
-Tune the overlay timing and stacking order via the documented `--mds-pref-mode-overlay-*` CSS custom properties. Set them on the host or a parent selector. Use Magma time tokens where available so animations stay in sync with the design system.
+Tune the overlay stacking order via the public `--mds-pref-mode-overlay-z-index` CSS custom property, when the page has layers above the default one; the overlay timing is set by the component. Set it on the host or a parent selector.
 
 ```css
 mds-pref-mode {
-  --mds-pref-mode-overlay-show-duration: 400ms;
-  --mds-pref-mode-overlay-fadeout-duration: 250ms;
   --mds-pref-mode-overlay-z-index: 9000;
 }
 ```
@@ -199,7 +197,7 @@ Setting `size` on `<mds-pref-mode>` alone when siblings exist produces inconsist
 
 #### Do Not Target the Injected Overlay to Customize It
 
-The overlay element is injected into `document.body` at runtime with inline styles, which win over a class selector anyway. Do not target it by class name or adjust its properties through JavaScript. Use the documented `--mds-pref-mode-overlay-*` CSS custom properties instead.
+The overlay element is injected into `document.body` at runtime with inline styles, which win over a class selector anyway. Do not target it by class name or adjust its properties through JavaScript. Use the public `--mds-pref-mode-overlay-z-index` CSS custom property instead.
 
 ```css
 /* INCORRECT */
@@ -210,7 +208,6 @@ The overlay element is injected into `document.body` at runtime with inline styl
 
 /* CORRECT */
 mds-pref-mode {
-  --mds-pref-mode-overlay-show-duration: 400ms;
   --mds-pref-mode-overlay-z-index: 9000;
 }
 ```
@@ -240,7 +237,7 @@ mds-pref-mode {
 | ------------------------------------------ | ----------------------------------------------------------------------------------- |
 | `--mds-pref-mode-overlay-fadeout-duration` | Sets the fadeout duration of the overlay which hides UI color flash on theme change |
 | `--mds-pref-mode-overlay-show-duration`    | Sets the show duration of the overlay which hides UI color flash on theme change    |
-| `--mds-pref-mode-overlay-z-index`          | Sets the z-index of the overlay which hides UI color flash on theme change          |
+| `--mds-pref-mode-overlay-z-index`          | Public. Sets the z-index of the overlay which hides UI color flash on theme change  |
 
 
 ## Dependencies

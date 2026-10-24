@@ -19,7 +19,7 @@ The `<mds-push-notification>` web component is the Magma Design System container
 - **Empty-stack auto-hide**: When the last remaining item animates out, the container hides itself regardless of behavior; the clear button and `hide()` hide it too.
 - **Emitted events**: `mdsPushNotificationShow` fires when it becomes visible, `mdsPushNotificationHide` when hidden, and `mdsPushNotificationChange` on every transition carrying a `{ visible: boolean }` detail.
 - **Imperative API**: Exposes `show()` and `hide()` methods to control visibility programmatically, plus `removeNotification()` to dismiss one or an array of `mds-push-notification-item` elements with the standard outro animation.
-- **Animation timing**: Intro/outro durations and inter-item gap are read from CSS custom properties (`--mds-push-notification-items-intro-delay`, `--mds-push-notification-items-outro-delay`, `--mds-push-notification-items-gap`), so motion is themeable without code changes.
+- **Animation timing**: The intro and outro motion of the items is set by the component; the fade-out delay and the gap between items are read from the public CSS custom properties `--mds-push-notification-fadeout-delay` and `--mds-push-notification-gap`, so they are themeable without code changes.
 
 #### Properties & Visual Configurations
 
@@ -211,14 +211,11 @@ Use `variant` and `tone` on the item to reflect the semantic nature of the notif
 
 #### Styling Customization via CSS Custom Properties
 
-Override animation timing, inter-item gap, and the panel background through the documented `--mds-push-notification-*` properties. Set them on the host or a parent selector; for colours name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
+Override the fade-out delay, the gap between items, and the panel background through the public `--mds-push-notification-*` properties; the intro and outro motion of the items is set by the component. Set them on the host or a parent selector; for colours name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
 
 ```css
 mds-push-notification {
-  --mds-push-notification-items-intro-delay: 200ms;
-  --mds-push-notification-items-outro-delay: 100ms;
-  --mds-push-notification-items-duration: 250ms;
-  --mds-push-notification-items-gap: calc(var(--spacing) * 300);
+  --mds-push-notification-gap: calc(var(--spacing) * 300);
   --mds-push-notification-fadeout-delay: 0.5s;
   --mds-push-notification-background: linear-gradient(
     to right,
@@ -312,7 +309,7 @@ With `behavior="manual"` the container never auto-shows when items are added; yo
 
 #### Do Not Pierce Shadow DOM to Style Item Internals
 
-The only supported customization surface for the container is the `--mds-push-notification-*` CSS custom properties plus the documented `::part(notifications)` part. Use per-item CSS custom properties (prefixed `--mds-push-notification-item-*`) for item-level styling. Do not reach into shadow parts that are not documented.
+The only supported customization surface for the container is the public `--mds-push-notification-*` CSS custom properties plus the documented `::part(notifications)` part. Use the public per-item CSS custom properties (prefixed `--mds-push-notification-item-*`) for item-level styling. Do not reach into shadow parts that are not documented.
 
 ```css
 /* INCORRECT */
@@ -326,7 +323,7 @@ mds-push-notification::part(content) {
 /* CORRECT */
 mds-push-notification {
   --mds-push-notification-background: rgb(var(--magma-surface-overlay) / 0.9);
-  --mds-push-notification-items-gap: calc(var(--spacing) * 300);
+  --mds-push-notification-gap: calc(var(--spacing) * 300);
 }
 mds-push-notification::part(notifications) {
   /* documented part - safe to target */
@@ -453,9 +450,9 @@ Type: `Promise<void>`
 
 | Name                                            | Description                                                       |
 | ----------------------------------------------- | ----------------------------------------------------------------- |
-| `--mds-push-notification-background`            | Background of the push notification, supports gradients.          |
-| `--mds-push-notification-fadeout-delay`         | Delay before the push notification starts fading out.             |
-| `--mds-push-notification-gap`                   | Gap between multiple push notifications.                          |
+| `--mds-push-notification-background`            | Public. Background of the push notification, supports gradients.  |
+| `--mds-push-notification-fadeout-delay`         | Public. Delay before the push notification starts fading out.     |
+| `--mds-push-notification-gap`                   | Public. Gap between multiple push notifications.                  |
 | `--mds-push-notification-items-duration`        | Duration of the item animation inside the notification.           |
 | `--mds-push-notification-items-gap`             | Gap between items inside the notification.                        |
 | `--mds-push-notification-items-intro-delay`     | Delay before items inside the notification animate in.            |

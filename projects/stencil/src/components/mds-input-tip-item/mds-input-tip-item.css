@@ -1,8 +1,8 @@
 @import './css/mds-input-tip-item-fouc.css';
 
 /**
- * @prop --mds-input-tip-item-background: Sets the background color of the tip item.
- * @prop --mds-input-tip-item-color: Sets the text color of the tip item.
+ * @prop --mds-input-tip-item-background: Public. Sets the background color of the tip item.
+ * @prop --mds-input-tip-item-color: Public. Sets the text color of the tip item.
  * @prop --mds-input-tip-item-icon-color: Sets the icon color fill of the tip item.
  */
 

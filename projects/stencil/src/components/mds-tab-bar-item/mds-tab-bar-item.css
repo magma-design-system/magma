@@ -3,9 +3,9 @@
 
 /**
  * @prop --mds-tab-bar-item-background-selected: Sets the background-color of the component when it's selected
- * @prop --mds-tab-bar-item-background: Sets the background-color of the component
+ * @prop --mds-tab-bar-item-background: Public. Sets the background-color of the component
  * @prop --mds-tab-bar-item-color-selected: Sets the text color of the component when it's selected
- * @prop --mds-tab-bar-item-color: Sets the text color of the component
+ * @prop --mds-tab-bar-item-color: Public. Sets the text color of the component
  */
 
 :host {

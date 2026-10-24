@@ -5,7 +5,7 @@
  * @prop --mds-input-upload-drag-area-background-color: Sets the background-color of the drag area.
  * @prop --mds-input-upload-drag-area-border-on-drag: Set the border of the drag area when a file is dragged over it.
  * @prop --mds-input-upload-drag-area-border: Sets the border of the drag area.
- * @prop --mds-input-upload-min-cols: Set the minimum number of columns for the file list.
+ * @prop --mds-input-upload-min-cols: Public. Set the minimum number of columns for the file list.
  */
 
 /* ❌ Not supported

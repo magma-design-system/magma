@@ -180,7 +180,7 @@ Set `disabled` to dim the chip and block it: a clickable label leaves the tab or
 
 #### Styling Customization
 
-Style the chip only through its documented `--mds-chip-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode, named themes and high contrast keep working. Every token has a `-selected` twin (`--mds-chip-background-selected`, `--mds-chip-border-selected`, `--mds-chip-color-selected`, `--mds-chip-icon-background-selected`, `--mds-chip-icon-color-selected`, `--mds-chip-shadow-selected`); when `selected` is set the component swaps each token for its twin, so override the twin to restyle the selected state. A resting token set on the host from outside wins over that swap: scope it to `:not([selected])`.
+Style the chip only through its public `--mds-chip-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode, named themes and high contrast keep working. When `selected` is set the component swaps each property for a selected value of its own, which is not public. A property set on the host from outside wins over that swap: scope the resting values to `:not([selected])`, and set the same public properties on `[selected]` to restyle the selected state.
 
 ```css
 .filtri-categoria mds-chip:not([selected]) {
@@ -188,11 +188,9 @@ Style the chip only through its documented `--mds-chip-*` CSS custom properties.
   --mds-chip-color: rgb(var(--magma-accent-fg));
 }
 
-.filtri-categoria mds-chip {
-  --mds-chip-icon-background: rgb(var(--magma-accent-emphasis));
-  --mds-chip-icon-color: rgb(var(--magma-accent-on-emphasis));
-  --mds-chip-background-selected: rgb(var(--magma-accent-emphasis));
-  --mds-chip-color-selected: rgb(var(--magma-accent-on-emphasis));
+.filtri-categoria mds-chip[selected] {
+  --mds-chip-background: rgb(var(--magma-accent-emphasis));
+  --mds-chip-color: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
@@ -264,7 +262,7 @@ Without `clickable`, the chip has no `role`, no focus management, and no keyboar
 
 #### Do Not Pierce Shadow DOM to Style the Delete Button
 
-The inner `mds-button` used for the delete affordance is a Shadow DOM implementation detail with no styling API of its own: targeting it with `>>>` or undocumented `::part()` names will break on minor releases. Restyle the chip and its leading icon through the documented `--mds-chip-*` properties.
+The inner `mds-button` used for the delete affordance is a Shadow DOM implementation detail with no styling API of its own: targeting it with `>>>` or undocumented `::part()` names will break on minor releases. Restyle the chip and its leading icon through the public `--mds-chip-*` properties.
 
 ```css
 /* INCORRECT */
@@ -274,8 +272,7 @@ mds-chip >>> .button-delete {
 
 /* CORRECT */
 mds-chip {
-  --mds-chip-icon-color: rgb(var(--magma-danger-fg));
-  --mds-chip-icon-background: rgb(var(--magma-danger-wash-base));
+  --mds-chip-icon-background: rgb(var(--magma-danger-emphasis));
 }
 ```
 
@@ -340,18 +337,18 @@ With `selected="false"` the component reads the prop as `false` and drops the at
 
 | Name                                  | Description                                                            |
 | ------------------------------------- | ---------------------------------------------------------------------- |
-| `--mds-chip-background`               | Sets the `background-color` of the component                           |
+| `--mds-chip-background`               | Public. Sets the `background-color` of the component                   |
 | `--mds-chip-background-selected`      | Sets the `background-color` of the component when it's selected        |
 | `--mds-chip-border`                   | Sets the `border-color` of the component                               |
 | `--mds-chip-border-selected`          | Sets the `border-color` of the component when it's selected            |
-| `--mds-chip-color`                    | Sets the `color` of the component                                      |
+| `--mds-chip-color`                    | Public. Sets the `color` of the component                              |
 | `--mds-chip-color-selected`           | Sets the `color` of the component when it's selected                   |
-| `--mds-chip-icon-background`          | Sets the `background-color` of the icon                                |
+| `--mds-chip-icon-background`          | Public. Sets the `background-color` of the icon                        |
 | `--mds-chip-icon-background-selected` | Sets the `background-color` of the icon when the component is selected |
 | `--mds-chip-icon-color`               | Sets the `fill` color of the icon of the component                     |
 | `--mds-chip-icon-color-selected`      | Sets the `fill` color of the icon of the component when it's selected  |
 | `--mds-chip-opacity-disabled`         | Sets the `opacity` of the component when it's disabled                 |
-| `--mds-chip-shadow`                   | Sets the `box-shadow` of the component                                 |
+| `--mds-chip-shadow`                   | Public. Sets the `box-shadow` of the component                         |
 | `--mds-chip-shadow-selected`          | Sets the `box-shadow` of the component when it's selected              |
 
 

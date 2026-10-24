@@ -27,7 +27,7 @@ The `<mds-tab-bar-item>` web component is a single selectable tab within the [`<
 - **`selected`**: Marks this item as the active tab. You typically do not toggle it manually at runtime - the parent manages it - but you can set it on one item as the initial active tab.
 - **`typography`**: Controls the label's text style, constrained to the smaller typography set (`tip` by default, or `option`). Pick `option` for a slightly more prominent label.
 
-The active vs. resting appearance is configured through the `--mds-tab-bar-item-*` CSS custom properties (background and color, each with a `-selected` variant) listed in [`readme.md`](../readme.md).
+The resting appearance is configured through the public `--mds-tab-bar-item-background` and `--mds-tab-bar-item-color` CSS custom properties listed in [`readme.md`](../readme.md); the selected item keeps its own accent colouring.
 
 
 ### 2. Pattern
@@ -123,14 +123,12 @@ Use `typography="option"` for a slightly more prominent label when the tab bar s
 
 #### Styling Customization
 
-Override colors through the four documented `--mds-tab-bar-item-*` CSS custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
+Override colors through the two public `--mds-tab-bar-item-*` CSS custom properties, the background and the text colour of the item at rest (the selected item keeps its accent colouring). Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
 .app-bottom-nav mds-tab-bar-item {
   --mds-tab-bar-item-background: rgb(var(--magma-wash-base));
   --mds-tab-bar-item-color: rgb(var(--magma-text-muted));
-  --mds-tab-bar-item-background-selected: rgb(var(--magma-accent-surface-subtle));
-  --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -275,9 +273,9 @@ The `icon` prop renders the glyph through the shared icon service and positions 
 
 | Name                                     | Description                                                   |
 | ---------------------------------------- | ------------------------------------------------------------- |
-| `--mds-tab-bar-item-background`          | Sets the background-color of the component                    |
+| `--mds-tab-bar-item-background`          | Public. Sets the background-color of the component            |
 | `--mds-tab-bar-item-background-selected` | Sets the background-color of the component when it's selected |
-| `--mds-tab-bar-item-color`               | Sets the text color of the component                          |
+| `--mds-tab-bar-item-color`               | Public. Sets the text color of the component                  |
 | `--mds-tab-bar-item-color-selected`      | Sets the text color of the component when it's selected       |
 
 

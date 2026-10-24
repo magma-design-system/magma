@@ -4,11 +4,13 @@
  * scripts/usage-docs-lib.spec.ts can test them directly.
  *
  * Only what is certainly wrong is reported: a tag, attribute, value, slot, part, event,
- * custom property or icon that does not exist, a colour or radius that bypasses the
+ * custom property or icon that does not exist, an `--mds-*` property that is not public
+ * (scripts/style-contract-lib.ts), a colour or radius that bypasses the
  * semantic roles or the corner axis, markup that does not parse as written. The
  * INCORRECT half of an antipattern example is wrong on purpose and is skipped.
  */
 import { parseFragment, type DefaultTreeAdapterMap } from 'parse5';
+import { isPublic, type Visibility } from './style-contract-lib';
 
 type Node = DefaultTreeAdapterMap['node'];
 type Element = DefaultTreeAdapterMap['element'];
@@ -20,7 +22,7 @@ export interface ApiComponent {
   events: { event: string }[];
   slots: { name: string }[];
   parts: { name: string }[];
-  styles: { name: string }[];
+  styles: { name: string; visibility?: Visibility }[];
 }
 
 /** Everything a usage doc is checked against. */
@@ -30,7 +32,7 @@ export interface UsageModel {
   formAssociated: Set<string>;
   /** custom properties defined by the token layer (design-tokens, styles, Tailwind theme) */
   tokens: Set<string>;
-  /** `--mds-*` set inside the component sheets without `@prop`: real, not API */
+  /** `--mds-*` set inside the component sheets without `@prop`: real, not API, so a doc naming one gets internal-css-var, not unknown-css-var */
   privateVars: Set<string>;
   icons: Set<string>;
 }
@@ -47,6 +49,7 @@ export type UsageFindingKind =
   | 'unknown-part'
   | 'unknown-event'
   | 'unknown-css-var'
+  | 'internal-css-var'
   | 'unknown-token'
   | 'palette-color'
   | 'raw-radius'
@@ -181,15 +184,18 @@ function isBoolean(p: ApiComponent['props'][number]): boolean {
 
 class UsageChecker {
   readonly findings: UsageFinding[] = [];
-  private readonly documentedVars: Set<string>;
+  /** the custom properties the components promise: the only `--mds-*` a doc may name */
+  private readonly publicVars: Set<string>;
+  /** documented, but internal: they may change in any release */
+  private readonly internalVars: Set<string>;
   private readonly allEvents: Set<string>;
   /** custom properties the doc itself declares (an example defining its own token) */
   private readonly docVars = new Set<string>();
 
   constructor(private readonly model: UsageModel) {
-    this.documentedVars = new Set(
-      [...model.components.values()].flatMap((c) => c.styles.map((s) => s.name)),
-    );
+    const styles = [...model.components.values()].flatMap((c) => c.styles);
+    this.publicVars = new Set(styles.filter(isPublic).map((s) => s.name));
+    this.internalVars = new Set(styles.filter((s) => !isPublic(s)).map((s) => s.name));
     this.allEvents = new Set(
       [...model.components.values()].flatMap((c) => c.events.map((e) => e.event)),
     );
@@ -207,11 +213,17 @@ class UsageChecker {
     }
   }
 
+  /** A doc names only public `--mds-*`: an internal or private one is real, but not promised. */
+  checkComponentVar(name: string, line: number): void {
+    if (this.publicVars.has(name)) return;
+    if (this.internalVars.has(name) || this.model.privateVars.has(name))
+      this.add(line, 'internal-css-var', name);
+    else this.add(line, 'unknown-css-var', name);
+  }
+
   checkVarName(name: string, line: number): void {
     if (name.startsWith('--mds-')) {
-      if (!this.documentedVars.has(name) && !this.model.privateVars.has(name)) {
-        this.add(line, 'unknown-css-var', name);
-      }
+      this.checkComponentVar(name, line);
       return;
     }
     if (!this.model.tokens.has(name) && !this.docVars.has(name))
@@ -385,10 +397,8 @@ class UsageChecker {
             /[*<]/.test(code.slice(v.index! + name.length, v.index! + name.length + 1))
           )
             continue;
-          if (name.startsWith('--mds-')) {
-            if (!this.documentedVars.has(name) && !this.model.privateVars.has(name))
-              this.add(line, 'unknown-css-var', name);
-          } else if (
+          if (name.startsWith('--mds-')) this.checkComponentVar(name, line);
+          else if (
             /^--(magma|tone|variant|status|label|brand|radius|shadow|spacing|font)-/.test(name)
           ) {
             if (!this.model.tokens.has(name)) this.add(line, 'unknown-token', name);

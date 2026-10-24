@@ -151,16 +151,16 @@ const items = document.querySelectorAll('mds-accordion-timer-item');
 items[2].selected = true;
 ```
 
-#### Customizing the Progress Bar via CSS Custom Properties
+#### Customizing the Text Color via CSS Custom Properties
 
-Style the component only through its documented `--mds-accordion-timer-*` CSS custom properties. Set them on the parent host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode continues to work.
+Style the component only through its public `--mds-accordion-timer-color` CSS custom property, which sets the text color of every item. Set it on the parent host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode continues to work. The colors and the thickness of the progress bar are not public: the bar follows the theme. Each item exposes it as its `progress` part, and its header text as the `label` part.
 
 ```css
 .promo-slider mds-accordion-timer {
-  --mds-accordion-timer-progress-bar-color: rgb(var(--magma-accent-fg));
-  --mds-accordion-timer-progress-bar-background: rgb(var(--magma-wash-base));
-  --mds-accordion-timer-progress-bar-thickness: 3px;
-  --mds-accordion-timer-duration: 300ms;
+  --mds-accordion-timer-color: rgb(var(--magma-accent-fg));
+}
+.promo-slider mds-accordion-timer-item::part(label) {
+  font-weight: 600;
 }
 ```
 
@@ -260,7 +260,7 @@ accordion.paused = undefined; // or false: the property takes a real boolean
 
 #### Do Not Pierce the Shadow DOM to Restyle the Progress Bar
 
-The progress bar and the label are exposed on each item only as the documented `progress` and `label` parts. Use the documented `--mds-accordion-timer-*` CSS custom properties on the host (or a parent selector) to change their appearance. Targeting internal class names or undocumented parts couples your code to the implementation and will break on minor releases.
+The progress bar and the label are exposed on each item only as the documented `progress` and `label` parts. Use the public `--mds-accordion-timer-color` CSS custom property on the host (or a parent selector) to change the text color, and those parts for the rest of their appearance. Targeting internal class names or undocumented parts couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -273,8 +273,10 @@ mds-accordion-timer-item::part(unknown-part) {
 
 /* CORRECT */
 mds-accordion-timer {
-  --mds-accordion-timer-progress-bar-color: rgb(var(--magma-accent-fg));
-  --mds-accordion-timer-progress-bar-thickness: 3px;
+  --mds-accordion-timer-color: rgb(var(--magma-accent-fg));
+}
+mds-accordion-timer-item::part(label) {
+  font-weight: 600;
 }
 ```
 
@@ -320,7 +322,7 @@ accordion.addEventListener('mdsAccordionTimerChange', (e) => {
 
 | Name                                            | Description                                                                                 |
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `--mds-accordion-timer-color`                   | Sets the text color of the component mds-accordion-timer-item                               |
+| `--mds-accordion-timer-color`                   | Public. Sets the text color of the component mds-accordion-timer-item                       |
 | `--mds-accordion-timer-duration`                | Sets the transition duration of open/close animation of the mds-accordion-timer-item        |
 | `--mds-accordion-timer-progress-bar-background` | Sets the background-color of the progress bar when the mds-accordion-timer-item is selected |
 | `--mds-accordion-timer-progress-bar-color`      | Sets the color of the progress bar when the mds-accordion-timer-item is selected            |

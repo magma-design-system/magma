@@ -185,14 +185,13 @@ Set `icon` to override the auto-detected glyph with any icon slug from the Magma
 
 #### Styling Customization
 
-Style the card only through its documented `--mds-file-preview-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` and the `--magma-radius-*` scale so dark mode and the corner geometry keep working.
+Style the card only through its public `--mds-file-preview-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` and the `--magma-radius-*` scale so dark mode and the corner geometry keep working.
 
 ```css
 .carta-allegato mds-file-preview {
   --mds-file-preview-background-color: rgb(var(--magma-accent-surface-subtle));
   --mds-file-preview-border-radius: var(--magma-radius-md);
-  --mds-file-preview-icon-background: rgb(var(--magma-accent-emphasis));
-  --mds-file-preview-icon-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-file-preview-color: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -312,7 +311,7 @@ mds-file-preview >>> .file-name {
 
 /* CORRECT */
 mds-file-preview {
-  --mds-file-preview-icon-color: rgb(var(--magma-accent-fg));
+  --mds-file-preview-color: rgb(var(--magma-accent-fg));
   --mds-file-preview-background-color: rgb(var(--magma-accent-surface-subtle));
 }
 mds-file-preview::part(card) {
@@ -357,13 +356,13 @@ mds-file-preview::part(card) {
 
 ## CSS Custom Properties
 
-| Name                                  | Description                                             |
-| ------------------------------------- | ------------------------------------------------------- |
-| `--mds-file-preview-background-color` | Sets the background color of the file preview container |
-| `--mds-file-preview-border-radius`    | Sets the border-radius of the file preview container    |
-| `--mds-file-preview-color`            | Sets the text color used inside the file preview        |
-| `--mds-file-preview-icon-background`  | Sets the background color of the file preview icon      |
-| `--mds-file-preview-icon-color`       | Sets the color of the file preview icon                 |
+| Name                                  | Description                                                     |
+| ------------------------------------- | --------------------------------------------------------------- |
+| `--mds-file-preview-background-color` | Public. Sets the background color of the file preview container |
+| `--mds-file-preview-border-radius`    | Public. Sets the border-radius of the file preview container    |
+| `--mds-file-preview-color`            | Public. Sets the text color used inside the file preview        |
+| `--mds-file-preview-icon-background`  | Sets the background color of the file preview icon              |
+| `--mds-file-preview-icon-color`       | Sets the color of the file preview icon                         |
 
 
 ## Dependencies

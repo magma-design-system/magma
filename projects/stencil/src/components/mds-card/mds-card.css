@@ -1,9 +1,9 @@
 @import './css/mds-card-fouc.css';
 
 /**
- * @prop --mds-card-background: Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`)
- * @prop --mds-card-gap: Sets the spacing between card elements
- * @prop --mds-card-padding: Sets the spacing around card elements
+ * @prop --mds-card-background: Public. Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`)
+ * @prop --mds-card-gap: Public. Sets the spacing between card elements
+ * @prop --mds-card-padding: Public. Sets the spacing around card elements
  */
 
 :host {

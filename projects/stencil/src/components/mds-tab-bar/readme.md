@@ -98,12 +98,12 @@ Use `typography` on individual items to match the text density to the surroundin
 
 #### Styling Customization via CSS Custom Properties
 
-Style individual items through the documented `--mds-tab-bar-item-*` CSS custom properties. Set them on the specific item or on a parent selector. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast keep working.
+Style individual items through the public `--mds-tab-bar-item-*` CSS custom properties: the background and the text colour of the item at rest (the selected item keeps its accent colouring). Set them on the specific item or on a parent selector. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast keep working.
 
 ```css
-/* Brand-specific active color for the whole bar */
+/* A resting background for the whole bar */
 mds-tab-bar mds-tab-bar-item {
-  --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-fg));
+  --mds-tab-bar-item-background: rgb(var(--magma-wash-base));
 }
 
 /* A single item with a distinct idle color */
@@ -198,7 +198,7 @@ The item's `icon` prop renders the glyph through the shared icon service and pos
 
 #### Do Not Style Items by Piercing Shadow DOM
 
-The only supported customization surface is the four `--mds-tab-bar-item-*` CSS custom properties. Targeting internal nodes via `::part()`, `>>>`, or undocumented class names couples your code to the Shadow DOM implementation and will break on minor releases.
+The only supported customization surface is the two public `--mds-tab-bar-item-*` CSS custom properties, `--mds-tab-bar-item-background` and `--mds-tab-bar-item-color` (the icon follows the text colour). Targeting internal nodes via `::part()`, `>>>`, or undocumented class names couples your code to the Shadow DOM implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -208,7 +208,7 @@ mds-tab-bar-item >>> mds-icon {
 
 /* CORRECT */
 mds-tab-bar mds-tab-bar-item {
-  --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-fg));
+  --mds-tab-bar-item-color: rgb(var(--magma-text-muted));
 }
 ```
 

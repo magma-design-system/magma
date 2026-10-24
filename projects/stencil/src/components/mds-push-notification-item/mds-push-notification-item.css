@@ -4,9 +4,9 @@
  * @prop --mds-push-notification-item-duration: Duration of the individual push notification item animation.
  * @prop --mds-push-notification-item-icon-background-color: Background color of the item's icon.
  * @prop --mds-push-notification-item-icon-color: Color of the item's icon.
- * @prop --mds-push-notification-item-message-line-clamp: Number of lines to clamp the message text.
- * @prop --mds-push-notification-item-shadow: Shadow applied to the push notification item.
- * @prop --mds-push-notification-item-subject-line-clamp: Number of lines to clamp the subject text.
+ * @prop --mds-push-notification-item-message-line-clamp: Public. Number of lines to clamp the message text.
+ * @prop --mds-push-notification-item-shadow: Public. Shadow applied to the push notification item.
+ * @prop --mds-push-notification-item-subject-line-clamp: Public. Number of lines to clamp the subject text.
  * @prop --mds-push-notification-item-timing-function: Timing function used for the item animation.
  */
 

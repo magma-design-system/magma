@@ -141,16 +141,11 @@ Cells must always be children of [`<mds-price-table-features-row>`](../../mds-pr
 
 #### Styling Customization
 
-Style the cell only through its documented `--mds-price-table-features-cell-*` CSS custom properties. Set them on the host or a parent selector; name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working (the green of the supported icon is the categorical `label-green` palette, as in the component's own default).
+Style the cell only through its public `--mds-price-table-features-cell-*` CSS custom properties and its documented `icon` and `text` shadow parts. Set them on the host or a parent selector; the border and the icon colours (the categorical `label-green` palette for a supported feature) come from the component and follow dark mode and high-contrast modes by themselves. For any colour you set on a part, name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
 
 ```css
 mds-price-table-features-cell {
   --mds-price-table-features-cell-padding: calc(var(--spacing) * 400);
-  --mds-price-table-features-cell-border-color: rgb(var(--magma-border-default));
-  --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-07));
-  --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-08));
-  --mds-price-table-features-cell-icon-unsupported-color: rgb(var(--magma-text-subtle));
-  --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--magma-text-disabled));
 }
 ```
 
@@ -237,7 +232,7 @@ Without `type="label"`, the first cell falls back to `type="text"` and its conte
 
 #### Do Not Pierce the Shadow DOM to Restyle Icon or Text Parts
 
-The only supported customization surface for this component is `--mds-price-table-features-cell-*` CSS custom properties and the two documented shadow parts (`icon`, `text`). Targeting undocumented internal selectors will break on any minor release.
+The only supported customization surface for this component is the public `--mds-price-table-features-cell-*` CSS custom properties and the two documented shadow parts (`icon`, `text`). Targeting undocumented internal selectors will break on any minor release.
 
 ```css
 /* INCORRECT */
@@ -246,8 +241,8 @@ mds-price-table-features-cell >>> .icon--supported {
 }
 
 /* CORRECT */
-mds-price-table-features-cell {
-  --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-orchid-06));
+mds-price-table-features-cell[type="supported"]::part(icon) {
+  fill: rgb(var(--label-orchid-06));
 }
 mds-price-table-features-cell::part(icon) {
   opacity: 0.8;
@@ -287,7 +282,7 @@ mds-price-table-features-cell::part(icon) {
 | `--mds-price-table-features-cell-icon-supported-color-hover`   | Color of the supported feature icon on hover.                                          |
 | `--mds-price-table-features-cell-icon-unsupported-color`       | Default color of the unsupported feature icon.                                         |
 | `--mds-price-table-features-cell-icon-unsupported-color-hover` | Color of the unsupported feature icon on hover.                                        |
-| `--mds-price-table-features-cell-padding`                      | Padding applied to each feature cell, defaults to the section padding.                 |
+| `--mds-price-table-features-cell-padding`                      | Public. Padding applied to each feature cell, defaults to the section padding.         |
 
 
 ## Dependencies

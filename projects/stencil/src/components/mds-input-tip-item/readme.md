@@ -24,7 +24,7 @@ The `<mds-input-tip-item>` web component is a single contextual hint row rendere
 - **`variant`** is the only meaningful prop and selects both the message type and its source of text. Use `required` / `required-success` for required-field feedback (the success value swaps the label for a checkmark icon), `readonly` and `disabled` for field-state notices (auto-labeled from the dictionary), `text` for an arbitrary slotted hint, and the `count-*` family (`count-empty`, `count-incomplete`, `count-almost`, `count-almost-full`, `count-full`) for character-count feedback whose label text is slotted in by the parent. The full enumerated list lives in [`readme.md`](../readme.md).
 - **`expanded`** controls the expansion within the tip (collapsed, the item shrinks to a small colored dot without text) and is intended to be driven by the parent rather than set by hand.
 
-Styling hooks (`--mds-input-tip-item-background`, `--mds-input-tip-item-color`, `--mds-input-tip-item-icon-color`) are documented in [`readme.md`](../readme.md).
+Its public styling hooks (`--mds-input-tip-item-background`, `--mds-input-tip-item-color`) are documented in [`readme.md`](../readme.md).
 
 
 ### 2. Pattern
@@ -118,13 +118,12 @@ The `expanded` attribute controls the reveal animation. Drive it from the parent
 
 #### Styling Customization
 
-Override the visual appearance only through the three documented CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode keeps working.
+Override the visual appearance only through its two public CSS custom properties. Set them on the host element or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode keeps working.
 
 ```css
 .campo-personalizzato mds-input-tip-item {
   --mds-input-tip-item-background: rgb(var(--magma-accent-emphasis));
   --mds-input-tip-item-color: rgb(var(--magma-accent-on-emphasis));
-  --mds-input-tip-item-icon-color: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
@@ -203,7 +202,7 @@ The default slot accepts plain text only (`variant="text"` and the `count-*` var
 
 #### Do Not Pierce the Shadow DOM to Change Appearance
 
-The only supported customization surface is the three `--mds-input-tip-item-*` CSS custom properties. Targeting internal elements with `::part()`, `>>>`, or undocumented selectors will break on future releases.
+The only supported customization surface is the two public `--mds-input-tip-item-*` CSS custom properties. Targeting internal elements with `::part()`, `>>>`, or undocumented selectors will break on future releases.
 
 ```css
 /* INCORRECT */
@@ -217,7 +216,7 @@ mds-input-tip-item::part(icon) {
 /* CORRECT */
 mds-input-tip-item {
   --mds-input-tip-item-background: rgb(var(--magma-accent-emphasis));
-  --mds-input-tip-item-icon-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-input-tip-item-color: rgb(var(--magma-accent-on-emphasis));
 }
 ```
 
@@ -240,11 +239,11 @@ mds-input-tip-item {
 
 ## CSS Custom Properties
 
-| Name                              | Description                                |
-| --------------------------------- | ------------------------------------------ |
-| `--mds-input-tip-item-background` | Sets the background color of the tip item. |
-| `--mds-input-tip-item-color`      | Sets the text color of the tip item.       |
-| `--mds-input-tip-item-icon-color` | Sets the icon color fill of the tip item.  |
+| Name                              | Description                                        |
+| --------------------------------- | -------------------------------------------------- |
+| `--mds-input-tip-item-background` | Public. Sets the background color of the tip item. |
+| `--mds-input-tip-item-color`      | Public. Sets the text color of the tip item.       |
+| `--mds-input-tip-item-icon-color` | Sets the icon color fill of the tip item.          |
 
 
 ## Dependencies

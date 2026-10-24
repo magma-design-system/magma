@@ -4,7 +4,7 @@
  * @prop --mds-video-wall-noise-background-color: The background color applied to the noise layer of the video wall.
  * @prop --mds-video-wall-noise-background-size: The background-size used for the noise texture.
  * @prop --mds-video-wall-noise-filter: The CSS filter applied to the noise layer (e.g., blur, brightness).
- * @prop --mds-video-wall-video-fit: Defines how the video content should scale to fit its container (e.g., cover, contain).
+ * @prop --mds-video-wall-video-fit: Public. Defines how the video content should scale to fit its container (e.g., cover, contain).
  */
 
 /*

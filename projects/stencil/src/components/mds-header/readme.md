@@ -193,19 +193,17 @@ Use the `setOpened()` method to open or close the mobile menu from JavaScript - 
 
 #### Styling Customization
 
-Customize the header through its documented `--mds-header-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast continue to work. `--mds-header-icon-color` (or, when it is not set, `--mds-header-color`) also colors the hamburger of the child `mds-header-bar`.
+Customize the header through its public `--mds-header-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast continue to work. `--mds-header-color` also colors the icons, the hamburger of the child `mds-header-bar` included.
 
 ```css
 mds-header {
   --mds-header-color: rgb(var(--magma-text-muted));
-  --mds-header-icon-color: rgb(var(--magma-accent-fg));
   --mds-header-z-index: 200;
 }
 
 /* Inline appearance: wider floating margin on desktop */
 mds-header[appearance='inline'] {
   --mds-header-inline-margin: 2rem;
-  --mds-header-backdrop-blur-strength: 4px;
 }
 ```
 
@@ -384,19 +382,19 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                       | Description                                                                                                                                                                              |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-header-backdrop-background-image`   | Sets the background-image of the backdrop element visibile when the component attribute `appearance` is set to `inline`, by default is shown when mds-pref-consumtion is set to `medium` |
-| `--mds-header-backdrop-blur-strength`      | Sets the blur strength of the backdrop element visibile when the component attribute `appearance` is set to `inline`, by default is shown when mds-pref-consumtion is set to `high`      |
-| `--mds-header-backdrop-height`             | Sets the height of the backdrop element visibile when the component attribute `appearance` is set to `inline`                                                                            |
-| `--mds-header-backdrop-show`               | Sets if the backdrop element is visible or not, only visible when the component attribute `appearance` is set to `inline`                                                                |
-| `--mds-header-color`                       | Sets the text color of the header and, unless `--mds-header-icon-color` is set, the color of its icons, the hamburger toggler of `mds-header-bar` included                               |
-| `--mds-header-hidden-bar-translate-inline` | Sets translateY value for the appearance inline `mds-header-bar` element                                                                                                                 |
-| `--mds-header-hidden-bar-translate-stripe` | Sets translateY value for the appearance stripe `mds-header-bar` element                                                                                                                 |
-| `--mds-header-icon-color`                  | Sets the color of the icons of the header, the hamburger toggler of `mds-header-bar` included                                                                                            |
-| `--mds-header-inline-margin`               | Sets inline margin of `the mds-header-bar` when attribute `appearance` is set to `inline`                                                                                                |
-| `--mds-header-inline-margin-mobile`        | Sets inline margin on mobile viewport of `the mds-header-bar` when attribute `appearance` is set to `inline`                                                                             |
-| `--mds-header-z-index`                     | Sets the z-index of the modal                                                                                                                                                            |
+| Name                                       | Description                                                                                                                                                                                      |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--mds-header-backdrop-background-image`   | Public. Sets the background-image of the backdrop element visibile when the component attribute `appearance` is set to `inline`, by default is shown when mds-pref-consumtion is set to `medium` |
+| `--mds-header-backdrop-blur-strength`      | Sets the blur strength of the backdrop element visibile when the component attribute `appearance` is set to `inline`, by default is shown when mds-pref-consumtion is set to `high`              |
+| `--mds-header-backdrop-height`             | Sets the height of the backdrop element visibile when the component attribute `appearance` is set to `inline`                                                                                    |
+| `--mds-header-backdrop-show`               | Sets if the backdrop element is visible or not, only visible when the component attribute `appearance` is set to `inline`                                                                        |
+| `--mds-header-color`                       | Public. Sets the text color of the header and the color of its icons, the hamburger toggler of `mds-header-bar` included                                                                         |
+| `--mds-header-hidden-bar-translate-inline` | Sets translateY value for the appearance inline `mds-header-bar` element                                                                                                                         |
+| `--mds-header-hidden-bar-translate-stripe` | Sets translateY value for the appearance stripe `mds-header-bar` element                                                                                                                         |
+| `--mds-header-icon-color`                  | Sets the color of the icons of the header, the hamburger toggler of `mds-header-bar` included                                                                                                    |
+| `--mds-header-inline-margin`               | Public. Sets inline margin of `the mds-header-bar` when attribute `appearance` is set to `inline`                                                                                                |
+| `--mds-header-inline-margin-mobile`        | Public. Sets inline margin on mobile viewport of `the mds-header-bar` when attribute `appearance` is set to `inline`                                                                             |
+| `--mds-header-z-index`                     | Public. Sets the z-index of the modal                                                                                                                                                            |
 
 
 ## Dependencies

@@ -48,6 +48,18 @@ describe('the component tools', () => {
       default: "'primary'",
     });
     expect(button.slots.map((slot: { name: string }) => slot.name)).toContain('default');
+    expect(button.cssProperties.map((style: { name: string }) => style.name)).toEqual([
+      '--mds-button-background',
+      '--mds-button-color',
+      '--mds-button-gap',
+      '--mds-button-label-transform',
+      '--mds-button-radius',
+    ]);
+    expect(button.internalCssProperties).toBe(11);
+    const book = await run('get_component', { tag: 'mds-book' });
+    expect(book.cssProperties).toContainEqual(
+      expect.objectContaining({ name: '--mds-book-spine-color', static: true }),
+    );
     const input = await run('get_component', { tag: 'mds-input' });
     expect(input.events.map((event: { name: string }) => event.name)).toContain('mdsInputChange');
     await expect(run('get_component', { tag: 'mds-buton' })).rejects.toThrow(
@@ -203,6 +215,14 @@ describe('the check tools', () => {
     const css = await run('check_markup', { code: '.a { color: #333; }', language: 'css' });
     expect(css.findings).toEqual([
       expect.objectContaining({ rule: 'magma/no-raw-color', severity: 'error' }),
+    ]);
+    const tokens = await run('check_markup', {
+      code: 'mds-book { --mds-book-spine-color: #123a6b; --mds-book-paper-color: #fff; }',
+      language: 'css',
+    });
+    expect(tokens.findings.map((finding: { rule: string }) => finding.rule).sort()).toEqual([
+      'magma/no-internal-tokens',
+      'magma/no-raw-color',
     ]);
     expect(
       (

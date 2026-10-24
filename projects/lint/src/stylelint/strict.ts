@@ -6,6 +6,7 @@ const config: Config = {
   plugins,
   rules: {
     'magma/no-color-scheme-override': true,
+    'magma/no-internal-tokens': true,
     'magma/no-raw-color': true,
   },
 };

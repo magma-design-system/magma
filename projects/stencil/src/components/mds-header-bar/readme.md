@@ -135,11 +135,15 @@ To open or close the drawer from external code - for instance after route naviga
 
 #### Styling the Hamburger Icon Color
 
-Use `--mds-header-bar-hamburger-color` to theme the hamburger icon. Set it on the bar itself: the bar declares its default on its own host, so a value set on a parent does not reach it. Inside an `mds-header`, the header's `--mds-header-icon-color` (or `--mds-header-color`) colors the hamburger too. Use a semantic color role wrapped with `rgb(var(--magma-<role>))` so dark-mode works automatically.
+`mds-header-bar` has no public CSS custom property. Inside an `mds-header`, the hamburger takes the header's public `--mds-header-color`: set it on the header. To color the hamburger of a bar used on its own, set `fill` on its documented `hamburger` part. Use a semantic color role wrapped with `rgb(var(--magma-<role>))` so dark-mode works automatically.
 
 ```css
-mds-header-bar {
-  --mds-header-bar-hamburger-color: rgb(var(--magma-accent-fg));
+mds-header {
+  --mds-header-color: rgb(var(--magma-accent-fg));
+}
+
+mds-header-bar::part(hamburger) {
+  fill: rgb(var(--magma-accent-fg));
 }
 ```
 
@@ -223,7 +227,7 @@ Setting both to `none` hides all interactive regions and leaves a branding-only 
 
 #### Do Not Pierce Shadow DOM to Style the Hamburger or Nav
 
-The only documented customization hooks are `--mds-header-bar-hamburger-color` (CSS custom property) and the shadow parts `content`, `actions`, `nav`, `hamburger`. Targeting undocumented internal classes couples your code to implementation details that can change at any minor release.
+`mds-header-bar` has no public CSS custom property: the documented customization hooks are the shadow parts `content`, `actions`, `nav`, `hamburger`, and, inside an `mds-header`, the header's public `--mds-header-color`, which colors the hamburger too. Targeting undocumented internal classes couples your code to implementation details that can change at any minor release.
 
 ```css
 /* INCORRECT */
@@ -235,11 +239,9 @@ mds-header-bar::part(icon) {
 }
 
 /* CORRECT */
-mds-header-bar {
-  --mds-header-bar-hamburger-color: rgb(var(--magma-accent-fg));
-}
 mds-header-bar::part(hamburger) {
   background-color: rgb(var(--magma-wash-base));
+  fill: rgb(var(--magma-accent-fg));
 }
 ```
 

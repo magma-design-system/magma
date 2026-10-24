@@ -105,16 +105,14 @@ Omit `tooltip` only when the icon is self-evident in context and the action is l
 </mds-radial-menu>
 ```
 
-#### Customizing Transition Timing
+#### Styling a Spoke
 
-Use the two documented CSS custom properties to control how fast each spoke animates in and out. Set them on the item host or on a parent selector.
+`<mds-radial-menu-item>` has no public CSS custom property and no shadow parts: how fast each spoke animates in and out is set by the component. Style a spoke with its `variant` and `tone` props (see Variant and Tone for Emphasis above); its size comes from the parent.
 
-```css
-/* Slow, elastic entrance for a playful UI */
-mds-radial-menu-item {
-  --mds-radial-menu-item-transition-duration: 700ms;
-  --mds-radial-menu-item-transition-timing-function: var(--ease-out-back);
-}
+```html
+<mds-radial-menu opened>
+  <mds-radial-menu-item icon="mi/baseline/star" tooltip="Preferiti" variant="primary" tone="strong"></mds-radial-menu-item>
+</mds-radial-menu>
 ```
 
 
@@ -204,18 +202,20 @@ Omitting `tooltip` leaves the inner `<mds-button>` with no hover description and
 
 #### Do Not Style via Undocumented Shadow Internals
 
-The only supported customization surface is `--mds-radial-menu-item-transition-duration` and `--mds-radial-menu-item-transition-timing-function`. Targeting shadow-internal classes or undocumented `::part()` names couples code to the implementation and breaks on minor releases.
+`<mds-radial-menu-item>` has no public CSS custom property and no shadow parts: its styling surface is the `variant` and `tone` props. Targeting shadow-internal classes or undocumented `::part()` names couples code to the implementation and breaks on minor releases.
 
 ```css
 /* INCORRECT */
 mds-radial-menu-item >>> .button {
   border-radius: 0;
 }
+```
 
-/* CORRECT: use the documented CSS custom properties */
-mds-radial-menu-item {
-  --mds-radial-menu-item-transition-duration: 300ms;
-}
+```html
+<!-- CORRECT: use the variant and tone props -->
+<mds-radial-menu>
+  <mds-radial-menu-item icon="mi/baseline/edit" tooltip="Modifica" variant="primary" tone="weak"></mds-radial-menu-item>
+</mds-radial-menu>
 ```
 
 

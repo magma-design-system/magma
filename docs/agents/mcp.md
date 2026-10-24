@@ -76,7 +76,7 @@ client starts servers elsewhere than the project's root, pass it:
 | Tool | Ask it | Instead of |
 | --- | --- | --- |
 | `find_component` | which component fits a need ("a date range picker") | reading the catalogue |
-| `get_component` | the API of one component: props with their values and default, events, methods, slots, parts, CSS properties | reading its `AGENTS.md` |
+| `get_component` | the API of one component: props with their values and default, events, methods, slots, parts, public CSS custom properties | reading its `AGENTS.md` |
 | `get_usage` | how HTML, React or Angular writes it: import, props, events (`onMdsInputChange`, `(mdsInputChange)`) | guessing the names |
 | `list_tokens` | the role for a need ("secondary text"), with its value and class | reading [`color.md`](color.md) |
 | `suggest_role` | the role for a colour, a raw class or a palette step | picking a role by eye |

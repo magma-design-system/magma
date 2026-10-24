@@ -1,5 +1,5 @@
 /**
- * @prop --mds-spinner-duration: Duration of the spinner animation.
+ * @prop --mds-spinner-duration: Public. Duration of the spinner animation.
  */
 
 :host {

@@ -1,11 +1,11 @@
 @import '../../tailwind/fouc.css';
 
 /**
- * @prop --mds-progress-background: Background color of the progress bar.
- * @prop --mds-progress-color: Foreground color of the progress indicator.
- * @prop --mds-progress-duration: Duration of the progress animation.
- * @prop --mds-progress-radius: Border-radius of the progress bar.
- * @prop --mds-progress-thickness: Thickness (height) of the progress bar.
+ * @prop --mds-progress-background: Public. Background color of the progress bar.
+ * @prop --mds-progress-color: Public. Foreground color of the progress indicator.
+ * @prop --mds-progress-duration: Public. Duration of the progress animation.
+ * @prop --mds-progress-radius: Public. Border-radius of the progress bar.
+ * @prop --mds-progress-thickness: Public. Thickness (height) of the progress bar.
  */
 
 :host {

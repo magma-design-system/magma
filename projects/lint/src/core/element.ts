@@ -31,11 +31,20 @@ export interface LintClass {
   node: unknown;
 }
 
+export interface LintCustomProperty {
+  /** An `--mds-*` name its inline style sets or reads. */
+  name: string;
+  /** What to report on: the attribute, binding or object key that holds it. */
+  node: unknown;
+}
+
 export interface LintElement {
   /** The custom element tag: `mds-button` for `<mds-button>` and `<MdsButton>`. */
   tag: string;
   attributes: LintAttribute[];
   classes: LintClass[];
+  /** The `--mds-*` custom properties its inline style names, as written in the template. */
+  customProperties: LintCustomProperty[];
   /** It has, or may have, content for the default slot: text, an element, an expression. */
   content: boolean;
   /** It spreads attributes the template does not show (`{...props}`): nothing is sure. */
@@ -47,6 +56,10 @@ export interface Finding {
   node: unknown;
   message: string;
 }
+
+/** The `--mds-*` names a piece of inline style sets or reads (`--mds-x: 1; color: var(--mds-y)`). */
+export const customPropertiesOf = (text: string, node: unknown): LintCustomProperty[] =>
+  [...new Set(text.match(/--mds-[\w-]+/g) ?? [])].map((name) => ({ name, node }));
 
 /** `MdsButtonDropdown` -> `mds-button-dropdown`; a lowercase tag stays as it is. */
 export const tagOf = (name: string): string =>

@@ -140,12 +140,11 @@ By default the calendar closes 500 ms after a complete range is picked. Set `del
 
 #### Styling Customization
 
-Style the component only through its documented `--mds-input-date-range-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and themes keep working.
+Style the component only through its public `--mds-input-date-range-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and themes keep working.
 
 ```css
 .filtro-avanzato mds-input-date-range {
   --mds-input-date-range-background: rgb(var(--magma-surface-sunken));
-  --mds-input-date-range-icon-color: rgb(var(--magma-accent-fg));
   --mds-input-date-range-fields-gap: 0 calc(var(--spacing) * 400);
 }
 ```
@@ -369,16 +368,16 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                                    | Description                                                             |
-| ------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `--mds-input-date-range-background`                     | Sets the background-color of the component                              |
-| `--mds-input-date-range-calendar-width`                 | Sets the width of each calendar shown in the dropdown                   |
-| `--mds-input-date-range-fields-firefox-justify-content` | Sets the justify-content of the component in Firefox                    |
-| `--mds-input-date-range-fields-gap`                     | Sets the gap between the fields of the component                        |
-| `--mds-input-date-range-icon-color`                     | Sets the icon color of the component                                    |
-| `--mds-input-date-range-ring`                           | Sets the box-shadow of the component's input to perform the ring effect |
-| `--mds-input-date-range-shadow`                         | Sets the box-shadow of the component's input                            |
-| `--mds-input-date-range-variant-color-rgb`              | Sets the variant colors of the component                                |
+| Name                                                    | Description                                                                     |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `--mds-input-date-range-background`                     | Public. Sets the background-color of the component                              |
+| `--mds-input-date-range-calendar-width`                 | Sets the width of each calendar shown in the dropdown                           |
+| `--mds-input-date-range-fields-firefox-justify-content` | Sets the justify-content of the component in Firefox                            |
+| `--mds-input-date-range-fields-gap`                     | Public. Sets the gap between the fields of the component                        |
+| `--mds-input-date-range-icon-color`                     | Sets the icon color of the component                                            |
+| `--mds-input-date-range-ring`                           | Public. Sets the box-shadow of the component's input to perform the ring effect |
+| `--mds-input-date-range-shadow`                         | Public. Sets the box-shadow of the component's input                            |
+| `--mds-input-date-range-variant-color-rgb`              | Public. Sets the variant colors of the component                                |
 
 
 ## Dependencies

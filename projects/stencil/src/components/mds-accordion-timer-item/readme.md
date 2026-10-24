@@ -147,16 +147,12 @@ Listen for `mdsAccordionTimerItemClickSelect` to detect user-initiated selection
 
 #### Styling Customization
 
-Style the item only through its documented `--mds-accordion-timer-item-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Note that these custom properties are also inherited from the parent's `--mds-accordion-timer-*` counterparts - setting them on the parent applies to all items at once.
+Style the item only through its public `--mds-accordion-timer-item-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Note that `--mds-accordion-timer-item-color` is also inherited from the parent's `--mds-accordion-timer-color` counterpart - setting it on the parent applies to all items at once.
 
 ```css
 /* Customise a single item by targeting its host */
 .featured-section mds-accordion-timer-item {
   --mds-accordion-timer-item-color: rgb(var(--magma-accent-fg));
-  --mds-accordion-timer-item-progress-bar-color: rgb(var(--magma-accent-fg));
-  --mds-accordion-timer-item-progress-bar-background: rgb(var(--magma-wash-base));
-  --mds-accordion-timer-item-progress-bar-thickness: 4px;
-  --mds-accordion-timer-item-duration: 300ms;
 }
 ```
 
@@ -257,7 +253,7 @@ The parent does not enforce single selection at load: every item marked `selecte
 
 #### Do Not Pierce Shadow Parts for Styling
 
-The documented customization surface is `--mds-accordion-timer-item-*` CSS custom properties plus the four shadow parts (`content`, `icon`, `label`, `progress`). Targeting undocumented internals couples code to the implementation and will break on minor releases.
+The documented customization surface is the public `--mds-accordion-timer-item-*` CSS custom properties plus the four shadow parts (`content`, `icon`, `label`, `progress`). Targeting undocumented internals couples code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -271,7 +267,6 @@ mds-accordion-timer-item::part(spinner) {
 /* CORRECT */
 mds-accordion-timer-item {
   --mds-accordion-timer-item-color: rgb(var(--magma-accent-fg));
-  --mds-accordion-timer-item-progress-bar-color: rgb(var(--magma-accent-fg));
 }
 mds-accordion-timer-item::part(label) {
   font-weight: 600;
@@ -343,7 +338,7 @@ mds-accordion-timer-item::part(label) {
 
 | Name                                                 | Description                                                             |
 | ---------------------------------------------------- | ----------------------------------------------------------------------- |
-| `--mds-accordion-timer-item-color`                   | Sets the text color of the component                                    |
+| `--mds-accordion-timer-item-color`                   | Public. Sets the text color of the component                            |
 | `--mds-accordion-timer-item-duration`                | Sets the transition duration of open/close animation                    |
 | `--mds-accordion-timer-item-progress-bar-background` | Sets the background-color of the progress bar when the item is selected |
 | `--mds-accordion-timer-item-progress-bar-color`      | Sets the color of the progress bar when the item is selected            |

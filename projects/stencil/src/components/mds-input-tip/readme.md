@@ -132,14 +132,11 @@ Slot several `<mds-input-tip-item>` elements inside a single `<mds-input-tip>`. 
 
 #### CSS Customization
 
-Style the tip only through the documented `--mds-input-tip-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode keeps working.
+Style the tip only through its public `--mds-input-tip-background` CSS custom property; its offsets come from `position` and `active`. Set it on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode keeps working.
 
 ```css
 .custom-input-wrapper mds-input-tip {
   --mds-input-tip-background: rgb(var(--magma-surface-inverse));
-  --mds-input-tip-vertical-offset: calc(var(--spacing) * 200);
-  --mds-input-tip-horizontal-offset: calc(var(--spacing) * 300);
-  --mds-input-tip-horizontal-offset-focused: 4px;
 }
 ```
 
@@ -230,7 +227,7 @@ Slotting arbitrary HTML or other Magma components (e.g. `<mds-badge>`, `<span>`)
 
 #### Do Not Override Positioning via Inline Styles
 
-The tip is absolutely positioned by its own CSS, driven by `--mds-input-tip-*` custom properties. Setting `position`, `top`, `left`, or `right` inline breaks the animation transform and the active-state offset calculation.
+The tip is absolutely positioned by its own CSS, driven by its `position` and `active` props. Setting `position`, `top`, `left`, or `right` inline breaks the animation transform and the active-state offset calculation.
 
 ```css
 /* INCORRECT */
@@ -238,12 +235,16 @@ mds-input-tip {
   position: relative;
   top: 10px;
 }
+```
 
-/* CORRECT */
-mds-input-tip {
-  --mds-input-tip-vertical-offset: calc(var(--spacing) * 200);
-  --mds-input-tip-horizontal-offset: calc(var(--spacing) * 300);
-}
+```html
+<!-- CORRECT -->
+<div style="position: relative;">
+  <mds-input-tip position="bottom" active>
+    <mds-input-tip-item variant="text" expanded>Inserisci almeno 8 caratteri</mds-input-tip-item>
+  </mds-input-tip>
+  <input type="text" />
+</div>
 ```
 
 
@@ -268,7 +269,7 @@ mds-input-tip {
 | Name                                        | Description                                         |
 | ------------------------------------------- | --------------------------------------------------- |
 | `--mds-input-tip-active-translate`          | Transform applied to the tip when active            |
-| `--mds-input-tip-background`                | Background color of the input tip                   |
+| `--mds-input-tip-background`                | Public. Background color of the input tip           |
 | `--mds-input-tip-horizontal-offset`         | Default horizontal offset of the input tip          |
 | `--mds-input-tip-horizontal-offset-focused` | Horizontal offset applied when the input is focused |
 | `--mds-input-tip-vertical-offset`           | Vertical offset of the input tip                    |

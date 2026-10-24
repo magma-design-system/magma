@@ -29,7 +29,7 @@ The `<mds-input-range>` web component is the Magma Design System slider control 
 - **`value`** is the committed numeric selection, kept clamped and snapped - set it programmatically to move the thumb.
 - **`formatValue`** is a function `(value: number) => string` for presentation only: use it to render the header value as currency, a percentage, or a unit-suffixed label without changing the underlying numeric `value`.
 
-This component does not use the shared `variant` / `tone` ladders ([`docs/agents/variants.md`](../../../../../../docs/agents/variants.md)); appearance is tuned through the documented CSS custom properties (thumb and track colors and sizes) listed in [`readme.md`](../readme.md).
+This component does not use the shared `variant` / `tone` ladders ([`docs/agents/variants.md`](../../../../../../docs/agents/variants.md)); it has no public CSS custom property: the thumb and the track follow the theme, and the `header` and `track` parts listed in [`readme.md`](../readme.md) are its styling hooks.
 
 
 ### 2. Pattern
@@ -122,19 +122,9 @@ Use `::part(header)` to hide the label-and-value header when the surrounding UI 
 }
 ```
 
-#### Styling Customization via CSS Custom Properties
+#### Styling Customization
 
-Override the documented `--mds-input-range-*` custom properties on the host or a parent selector to change thumb and track appearance. Use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and high-contrast work correctly. The thumb is drawn inside the track: keep `--mds-input-range-thumb-size` smaller than `--mds-input-range-track-size` (16px inside 24px by default).
-
-```css
-.slider-brand mds-input-range {
-  --mds-input-range-thumb-background: rgb(var(--magma-accent-emphasis-hover));
-  --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis-hover));
-  --mds-input-range-track-background: rgb(var(--magma-wash-base));
-  --mds-input-range-thumb-size: calc(var(--spacing) * 500);
-  --mds-input-range-track-size: calc(var(--spacing) * 700);
-}
-```
+`<mds-input-range>` has no public CSS custom property: the thumb and the track take their sizes from the component and their colours from the semantic color roles ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), the progress from the accent, so themes and dark mode recolour it without overrides. Adjust the slider only through its documented `header` and `track` parts, as in the example above.
 
 
 ### 3. Antipattern
@@ -215,7 +205,7 @@ A `step` of zero or negative is invalid: as on a native input it is ignored and 
 
 #### Do Not Pierce the Shadow DOM to Style the Track or Thumb
 
-The component exposes `::part(header)` and `::part(track)` plus the `--mds-input-range-*` CSS custom properties for all supported customization. Targeting internal class names via `>>>` or undocumented `::part()` names couples your code to the implementation and will break on minor releases.
+The component exposes `::part(header)` and `::part(track)` for all supported customization; it has no public CSS custom property, and the thumb and the track take their colours from the theme. Targeting internal class names via `>>>` or undocumented `::part()` names couples your code to the implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -227,10 +217,6 @@ mds-input-range::part(thumb) { /* "thumb" is not a documented part */
 }
 
 /* CORRECT */
-mds-input-range {
-  --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis-hover));
-  --mds-input-range-thumb-size: calc(var(--spacing) * 500);
-}
 mds-input-range::part(track) { /* "track" is a documented part */
   opacity: 0.8;
 }

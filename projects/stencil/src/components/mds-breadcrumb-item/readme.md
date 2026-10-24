@@ -23,7 +23,7 @@ The `<mds-breadcrumb-item>` web component represents a single navigable depth in
 
 #### Properties & Visual Configurations
 
-This child exposes essentially no visual configuration of its own - appearance is inherited from `<mds-breadcrumb>` and the shared button system, and styling overrides are done through the `--mds-breadcrumb-item-*` CSS custom properties listed in [`readme.md`](../readme.md).
+This child exposes essentially no visual configuration of its own - appearance is inherited from `<mds-breadcrumb>` and the shared button system, and it has no public CSS custom property: styling overrides are done through its `button` part, the item's `<mds-button>`, with the public `--mds-button-*` custom properties.
 
 - **`label`**: The item's visible text. This is the only way to set the text - the component renders it through an internal `<mds-button>` and exposes no default slot. It matches the `label` prop convention used across Magma components.
 - **`selected`**: Marks this item as the current depth. In normal use you set it on at most one item as the initial state; thereafter the parent manages it in response to navigation. Use it only to seed which depth is active on first render.
@@ -77,30 +77,28 @@ Listen to `mdsBreadcrumbItemSelect` on the item, or to `mdsBreadcrumbChange`, wh
 
 #### Styling the Arrow Separator
 
-Override `--mds-breadcrumb-item-arrow-depth-color` on the host or a parent selector to recolour the separator icon without touching the button label color. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode keeps working.
-
-```css
-.header-nav mds-breadcrumb-item {
-  --mds-breadcrumb-item-arrow-depth-color: rgb(var(--magma-accent-fg));
-}
-```
+`mds-breadcrumb-item` has no public CSS custom property, and the separator icon exposes no part: it takes the subtle text color of the theme, so it keeps working in dark mode and high-contrast modes with no override. Restyle the button of the item instead, through its `button` part.
 
 #### Styling Button States
 
-Override the button color and background tokens to match a custom surface. All three state variants - default, hover, and selected - have dedicated custom properties.
+Restyle the button through the `button` part: it is the item's `<mds-button>`, so it takes the public `--mds-button-*` custom properties. Target the hover state with `:hover` on the part and the selected one with the item's `selected` attribute, and use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode keeps working.
 
 ```css
-.sidebar-nav mds-breadcrumb-item {
-  --mds-breadcrumb-item-button-color: rgb(var(--magma-text-muted));
-  --mds-breadcrumb-item-button-color-hover: rgb(var(--magma-text-default));
-  --mds-breadcrumb-item-button-color-selected: rgb(var(--magma-accent-fg));
-  --mds-breadcrumb-item-button-background-selected: rgb(var(--magma-accent-surface-subtle));
+.sidebar-nav mds-breadcrumb-item::part(button) {
+  --mds-button-color: rgb(var(--magma-text-muted));
+}
+.sidebar-nav mds-breadcrumb-item::part(button):hover {
+  --mds-button-color: rgb(var(--magma-text-default));
+}
+.sidebar-nav mds-breadcrumb-item[selected]::part(button) {
+  --mds-button-background: rgb(var(--magma-accent-surface-subtle));
+  --mds-button-color: rgb(var(--magma-accent-fg));
 }
 ```
 
 #### Styling the Internal Button via `::part(button)`
 
-The internal `<mds-button>` is exposed as `::part(button)`. Use it only when the documented CSS custom properties are insufficient - for example to adjust padding or border radius for a product-specific surface.
+The internal `<mds-button>` is exposed as `::part(button)`. Use it for what the item does not expose - for example to adjust padding or border radius for a product-specific surface.
 
 ```css
 .compact-nav mds-breadcrumb-item::part(button) {
@@ -198,7 +196,7 @@ The component emits `mdsBreadcrumbItemSelect` when a step is activated and the p
 
 #### Do Not Pierce Shadow DOM to Style Internals
 
-The supported customization surface is the documented `--mds-breadcrumb-item-*` CSS custom properties and the `::part(button)` export. Targeting internal classes directly couples your code to the shadow DOM implementation and will break on minor releases.
+`mds-breadcrumb-item` has no public CSS custom property: the supported customization surface is the `::part(button)` export, the item's `<mds-button>` with its public `--mds-button-*` custom properties. The separator icon follows the theme. Targeting internal classes directly couples your code to the shadow DOM implementation and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -207,8 +205,8 @@ mds-breadcrumb-item >>> .icon {
 }
 
 /* CORRECT */
-mds-breadcrumb-item {
-  --mds-breadcrumb-item-arrow-depth-color: rgb(var(--magma-accent-fg));
+mds-breadcrumb-item::part(button) {
+  --mds-button-color: rgb(var(--magma-accent-fg));
 }
 ```
 

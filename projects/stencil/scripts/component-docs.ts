@@ -9,11 +9,14 @@
  *   antipattern.md       mistakes to avoid    (usage/3. Antipattern.md)
  *   documentation.json   its docs-json entry, same shape as dist/documentation.json
  *
- * It also rewrites the usage links of dist/documentation.json for the shipped layout
- * (relative to the component's folder), then checks that every relative link of the
- * shipped agent docs - the per-component ones and the AGENTS.md + agents/ of the
- * three entry-point packages - resolves inside the package. A broken link fails the
- * build.
+ * It first moves the public / internal mark of each CSS custom property from its
+ * description into the fields of dist/documentation.json (scripts/style-contract-lib.ts),
+ * so magma.api.txt and the docs written here read the contract; a description that tries
+ * the mark and misses it fails the build. It also rewrites the usage links of
+ * dist/documentation.json for the shipped layout (relative to the component's folder),
+ * then checks that every relative link of the shipped agent docs - the per-component
+ * ones and the AGENTS.md + agents/ of the three entry-point packages - resolves inside
+ * the package. A broken link fails the build.
  *
  * Runs after the stencil build (it reads dist/documentation.json); the shared
  * fragments it links are written before the build by sync-agent-docs.ts.
@@ -31,6 +34,7 @@ import {
   rewriteUsageEntries,
   type DocsComponent,
 } from './agent-docs-lib';
+import { markStyles } from './style-contract-lib';
 
 const STENCIL_DIR = process.cwd();
 const DOCS_JSON = path.join(STENCIL_DIR, 'dist', 'documentation.json');
@@ -137,6 +141,20 @@ function main(): void {
   const version: string = JSON.parse(
     fs.readFileSync(path.join(STENCIL_DIR, 'package.json'), 'utf8'),
   ).version;
+
+  const markErrors: string[] = [];
+  for (const component of docs.components) {
+    const { styles, errors } = markStyles(component.styles ?? []);
+    component.styles = styles;
+    for (const e of errors) markErrors.push(`${component.tag} ${e}`);
+  }
+  if (markErrors.length) {
+    console.error(
+      `${markErrors.length} CSS custom property mark(s) to fix in the @prop of the sheets:`,
+    );
+    for (const e of markErrors) console.error(`  ${e}`);
+    process.exit(1);
+  }
 
   const count = writeComponentDocs(docs, version);
   for (const component of docs.components) component.usage = rewriteUsageEntries(component.usage);

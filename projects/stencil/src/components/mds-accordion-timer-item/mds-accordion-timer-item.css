@@ -1,7 +1,7 @@
 @import './css/mds-accordion-timer-item-fouc.css';
 
 /**
- * @prop --mds-accordion-timer-item-color: Sets the text color of the component
+ * @prop --mds-accordion-timer-item-color: Public. Sets the text color of the component
  * @prop --mds-accordion-timer-item-duration: Sets the transition duration of open/close animation
  * @prop --mds-accordion-timer-item-progress-bar-background: Sets the background-color of the progress bar when the item is selected
  * @prop --mds-accordion-timer-item-progress-bar-color: Sets the color of the progress bar when the item is selected

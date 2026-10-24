@@ -31,7 +31,10 @@ const button: ApiComponent = {
   events: [],
   slots: [{ name: '' }, { name: 'notification' }],
   parts: [{ name: 'icon' }],
-  styles: [{ name: '--mds-button-radius' }],
+  styles: [
+    { name: '--mds-button-radius', visibility: 'public' },
+    { name: '--mds-button-icon-color', visibility: 'internal' },
+  ],
 };
 const input: ApiComponent = {
   tag: 'mds-input',
@@ -101,7 +104,7 @@ describe('checkUsageDoc', () => {
       '',
       fence(
         'css',
-        'mds-button {\n  --mds-button-radius: var(--magma-radius-md);\n  --mds-button-private: 1px;\n}\nmds-button::part(icon) { fill: rgb(var(--magma-accent-emphasis)); }',
+        'mds-button {\n  --mds-button-radius: var(--magma-radius-md);\n}\nmds-button::part(icon) { fill: rgb(var(--magma-accent-emphasis)); }',
       ),
       '',
       fence('javascript', "el.addEventListener('mdsInputChange', () => {});"),
@@ -207,6 +210,20 @@ describe('checkUsageDoc', () => {
       'unknown-css-var',
       'palette-color',
       'unknown-token',
+    ]);
+  });
+
+  it('reports an internal or private component property, in CSS and in prose', () => {
+    const css = [
+      'mds-button {',
+      '  --mds-button-radius: var(--magma-radius-md);',
+      '  --mds-button-icon-color: rgb(var(--magma-accent-emphasis));',
+      '  --mds-button-private: 0;',
+      '}',
+    ].join('\n');
+    expect(kinds(fence('css', css))).toEqual(['internal-css-var', 'internal-css-var']);
+    expect(kinds('Set `--mds-button-radius`, never `--mds-button-icon-color`.')).toEqual([
+      'internal-css-var',
     ]);
   });
 
