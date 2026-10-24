@@ -55,9 +55,21 @@ for m in "$@"; do
   echo "Updated $m -> $V"
 done
 
-MAP=$(find projects -name package.json \
-        -not -path '*/node_modules/*' -not -path '*/dist/*' -not -path '*/deprecated/*' \
-        -exec jq -c '{(.name): .version}' {} \; | jq -s 'add // {}')
+# the internal manifests, without build outputs, archived packages and test
+# fixtures: a fixture can take the name of a real package at a version of its
+# own (projects/lint/test/fixtures/magma is a fake magma)
+ENTRIES=$(find projects -name package.json \
+            -not -path '*/node_modules/*' -not -path '*/dist/*' -not -path '*/deprecated/*' -not -path '*/fixtures/*' \
+            -exec jq -c --arg path {} '{name, version, path: $path}' {} \; | jq -s -c .)
+# two manifests with one name leave the map with whichever is read last, so a
+# release pinned the wrappers to the magma of a fixture (#1119): fail instead
+DUPLICATES=$(jq -r 'group_by(.name)[] | select(length > 1) | "\(.[0].name): \(map(.path) | join(", "))"' <<< "$ENTRIES")
+if [ -n "$DUPLICATES" ]; then
+  echo "two internal manifests share a name, the package map would be ambiguous:" >&2
+  echo "$DUPLICATES" >&2
+  exit 1
+fi
+MAP=$(jq 'map({(.name): .version}) | add // {}' <<< "$ENTRIES")
 echo "internal package map: $MAP"
 
 # internal packages pinned to the exact version (lockstep, see above)
@@ -106,7 +118,7 @@ while IFS= read -r m; do
     CHANGED+=("$m")
     echo "Pinned the new version of $(jq -r 'join(", ")' <<< "$BUMPED_NAMES") in $m"
   fi
-done < <(git ls-files -- projects | grep -E '(^|/)package\.json$' | grep -vE '/(node_modules|dist|deprecated)/')
+done < <(git ls-files -- projects | grep -E '(^|/)package\.json$' | grep -vE '/(node_modules|dist|deprecated|fixtures)/')
 
 LOCK=package-lock.json
 [ -f "$LOCK" ] || exit 0
