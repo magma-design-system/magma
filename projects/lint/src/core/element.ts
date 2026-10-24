@@ -27,7 +27,7 @@ export interface LintAttribute {
 export interface LintClass {
   /** One class, as written (`dark:bg-white/50`). */
   name: string;
-  /** What to report on: the attribute that holds it. */
+  /** What to report on: the attribute or binding that holds it, in JSX the literal. */
   node: unknown;
 }
 

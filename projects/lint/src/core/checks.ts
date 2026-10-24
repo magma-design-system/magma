@@ -114,27 +114,28 @@ export const utilityOf = (name: string): string => {
     .replace(/\/[\w.[\]()%-]+$/, '');
 };
 
-/** A colour class that paints the interface with a raw palette instead of a role. */
-export const noRawPaletteClasses = (element: LintElement, palette: PaletteInfo): Finding[] => {
-  const found: Finding[] = [];
-  for (const { name, node } of element.classes) {
-    const utility = utilityOf(name);
-    const root = palette.colorUtilities.find((one) => utility.startsWith(`${one}-`));
-    if (!root) continue;
-    const key = utility.slice(root.length + 1);
-    if (palette.rawKeys.has(key))
-      found.push({
-        node,
-        message: `${name} paints with a raw Magma step, which follows the mode only: use a role (bg-surface-*, text-fg-*, border-border-*), see agents/color.md; label-* and brand-* are for colour that encodes data.`,
-      });
-    else if (TAILWIND_PALETTE.test(key))
-      found.push({
-        node,
-        message: `${name} paints with Tailwind's palette, which ignores Magma's mode, themes and contrast: use a role (bg-surface-*, text-fg-*, border-border-*), see agents/color.md.`,
-      });
-  }
-  return found;
+/**
+ * What is wrong with the class `name`, undefined when it does not paint with a raw palette.
+ * Shared by the ESLint and the Stylelint rule.
+ */
+export const rawPaletteMessage = (name: string, palette: PaletteInfo): string | undefined => {
+  const utility = utilityOf(name);
+  const root = palette.colorUtilities.find((one) => utility.startsWith(`${one}-`));
+  if (!root) return undefined;
+  const key = utility.slice(root.length + 1);
+  if (palette.rawKeys.has(key))
+    return `${name} paints with a raw Magma step, which follows the mode only: use a role (bg-surface-*, text-fg-*, border-border-*), see agents/color.md; label-* and brand-* are for colour that encodes data.`;
+  if (TAILWIND_PALETTE.test(key))
+    return `${name} paints with Tailwind's palette, which ignores Magma's mode, themes and contrast: use a role (bg-surface-*, text-fg-*, border-border-*), see agents/color.md.`;
+  return undefined;
 };
+
+/** A colour class that paints the interface with a raw palette instead of a role. */
+export const noRawPaletteClasses = (element: LintElement, palette: PaletteInfo): Finding[] =>
+  element.classes.flatMap(({ name, node }) => {
+    const message = rawPaletteMessage(name, palette);
+    return message ? [{ node, message }] : [];
+  });
 
 /**
  * What is wrong with setting or reading the custom property `name`, undefined when a

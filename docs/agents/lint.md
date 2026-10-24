@@ -50,8 +50,9 @@ export default [
 ];
 ```
 
-The rules read both `<mds-button>` and the wrappers of `magma-react` (`<MdsButton>`), and a
-`className` written as a string or a template literal.
+The rules read both `<mds-button>` and the wrappers of `magma-react` (`<MdsButton>`), and the
+classes of a `className` wherever its expression writes them, `clsx()` and ternaries included
+(see [`no-raw-palette-classes`](#no-raw-palette-classes)).
 
 ### Angular
 
@@ -106,7 +107,7 @@ component may change in any release. When a rule is wrong about Magma itself, re
 | [`valid-attribute-values`](#valid-attribute-values) | ESLint | error | error |
 | [`no-false-boolean`](#no-false-boolean) | ESLint | error | error |
 | [`accessible-name`](#accessible-name) | ESLint | error | error |
-| [`no-raw-palette-classes`](#no-raw-palette-classes) | ESLint | warn | error |
+| [`no-raw-palette-classes`](#no-raw-palette-classes) | ESLint, Stylelint | warn | error |
 | [`no-color-scheme-override`](#no-color-scheme-override) | Stylelint | error | error |
 | [`no-raw-color`](#no-raw-color) | Stylelint | warning | error |
 | [`no-internal-tokens`](#no-internal-tokens) | ESLint, Stylelint | warn | error |
@@ -185,8 +186,30 @@ read through: `dark:hover:bg-white/50` is `bg-white`.
 ```
 
 Not reported: `label-*` and `brand-*`, for colour that encodes data, and the seed of a tone,
-the pure extreme of the mode. Only the classes written in the template are read: a class
-built at run time (`clsx(...)`, an Angular `[ngClass]`) is not.
+the pure extreme of the mode.
+
+A class is read wherever the project writes one, in the forms the codemod migrates:
+
+- the `class` attribute of HTML and Angular templates;
+- React: every string in a `className` (or `class`) expression, the arguments and object keys
+  of `clsx()` or `classnames()`, both branches of a ternary, a `||` fallback, and the fixed
+  parts of a template literal;
+- Angular: the key of `[class.<name>]` and the quoted strings of `[ngClass]`, `[class]` and
+  `[attr.class]`;
+- Stylelint: the classes of `@apply`.
+
+```tsx
+// INCORRECT
+<div className={clsx('p-400', active && 'bg-white')} />
+
+// CORRECT
+<div className={clsx('p-400', active && 'bg-surface-raised')} />
+```
+
+Not read: a class put together at run time (`bg-${tone}-03`, of which only the fixed parts are
+read), classes kept in a variable outside the attribute (`const card = clsx(...)`), and HTML
+written as a string in a script (`el.innerHTML = ...`). A string compared in a condition is
+read too, and reported only when it is itself a palette class.
 
 ### no-color-scheme-override
 
@@ -238,7 +261,8 @@ internal, its implementation, and may change or go in any release without notice
 component documents is reported too. Stylelint reads the stylesheets, the classes of `@apply`
 included; ESLint reads the inline styles of the templates (a `style` attribute, a React
 `style={{ '--mds-<name>': ... }}` object, an Angular `[style.--mds-<name>]` binding) and their
-Tailwind classes, through variants and `!`: an arbitrary property that sets one
+Tailwind classes, wherever [`no-raw-palette-classes`](#no-raw-palette-classes) reads a class,
+through variants and `!`: an arbitrary property that sets one
 (`[--mds-<name>:<value>]`, on the component or on a parent that sets it for its descendants)
 and an arbitrary value that reads one (`bg-[var(--mds-<name>)]`, `bg-(--mds-<name>)`).
 
@@ -264,5 +288,6 @@ The rules need no settings: they read the `documentation.json` beside them in th
 `magma`, and the tokens of the `design-tokens` and `styles` it depends on. To check against
 other files, set their paths under `settings.magma` in the ESLint configuration (relative to
 `root`, the project by default): `documentation`, `tokens`, `consumption`. The Stylelint rules
-take `root` and `documentation` as secondary options:
+take the paths they read as secondary options, `root` and `documentation` for `no-internal-tokens`
+and `no-raw-color`, `root`, `tokens` and `consumption` for `no-raw-palette-classes`:
 `'magma/no-internal-tokens': [true, { documentation: './documentation.json' }]`.

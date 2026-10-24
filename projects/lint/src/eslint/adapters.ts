@@ -6,6 +6,10 @@
   - Angular: the `Element` of @angular-eslint/template-parser, static attributes, property
     bindings (`[disabled]`), attribute bindings (`[attr.disabled]`) and style bindings
     (`[style.--mds-x]`, for the custom properties).
+  The classes are read where the codemod reads them (projects/codemod/src/surfaces): the
+  static `class`; in JSX, every string and template literal of a `className` or `class`
+  expression (react.ts); in Angular, the key of `[class.x]` and the quoted strings of
+  `[ngClass]`, `[class]` and `[attr.class]` (angular.ts).
   The nodes are typed by what the adapters read: the parsers are optional peers of the
   consumer, not dependencies of this package.
 */
@@ -121,16 +125,36 @@ const jsxValue = (value: JsxNode | undefined | null): LintAttribute['value'] => 
   return undefined;
 };
 
-/** The static text of a class value: a string, or the fixed parts of a template literal. */
-const jsxClassText = (value: JsxNode | undefined | null): string => {
-  if (!value) return '';
-  if (value.type === 'Literal' && typeof value.value === 'string') return value.value;
-  const expression = value.type === 'JSXExpressionContainer' ? value.expression : undefined;
-  if (expression?.type === 'Literal' && typeof expression.value === 'string')
-    return expression.value;
-  if (expression?.type === 'TemplateLiteral')
-    return (expression.quasis ?? []).map((quasi) => quasi.value.cooked ?? '').join(' ');
-  return '';
+/**
+ * The classes of a `className` or `class` value, each on the literal that holds it: every
+ * string literal anywhere in the expression, as the codemod rewrites them (`clsx()` and
+ * `classnames()` arguments and object keys, both branches of a ternary, a `||` fallback),
+ * and the fixed parts of every template literal. A string compared in a condition is read
+ * too, as the codemod reads it: it is reported only when it is itself a class the rule
+ * rejects.
+ */
+const jsxClasses = (value: JsxNode | undefined | null): LintClass[] => {
+  const found: LintClass[] = [];
+  const walk = (node: unknown): void => {
+    if (Array.isArray(node)) {
+      node.forEach(walk);
+      return;
+    }
+    if (!node || typeof node !== 'object' || typeof (node as JsxNode).type !== 'string') return;
+    const current = node as JsxNode;
+    if (current.type === 'Literal' && typeof current.value === 'string')
+      found.push(...classesOf(current.value, current));
+    if (current.type === 'TemplateLiteral')
+      found.push(
+        ...classesOf(
+          (current.quasis ?? []).map((quasi) => quasi.value.cooked ?? '').join(' '),
+          current,
+        ),
+      );
+    for (const [key, child] of Object.entries(current)) if (key !== 'parent') walk(child);
+  };
+  walk(value);
+  return found;
 };
 
 const jsxContent = (element: JsxNode | undefined): boolean =>
@@ -190,8 +214,7 @@ export const fromJsx = (node: JsxNode): LintElement | undefined => {
     const key = jsxName(attribute.name);
     const value = attribute.value as JsxNode | null | undefined;
     attributes.push({ name: key, binding: 'property', value: jsxValue(value), node: attribute });
-    if (key === 'className' || key === 'class')
-      classes.push(...classesOf(jsxClassText(value), attribute));
+    if (key === 'className' || key === 'class') classes.push(...jsxClasses(value));
     if (key === 'style') customProperties.push(...jsxCustomProperties(value, attribute));
   }
   return {
@@ -210,7 +233,8 @@ export const fromJsx = (node: JsxNode): LintElement | undefined => {
 interface AngularNode {
   type: string;
   name?: string;
-  value?: string | { ast?: { type: string; value?: unknown } };
+  /** A static value, or the expression of a binding, its AST and its text as written. */
+  value?: string | { ast?: { type: string; value?: unknown }; source?: string };
   attributes?: AngularNode[];
   inputs?: AngularNode[];
   children?: AngularNode[];
@@ -233,6 +257,19 @@ const angularValue = (input: AngularNode): LintAttribute['value'] => {
   return ast?.type === 'LiteralPrimitive' ? (ast.value as LintAttribute['value']) : undefined;
 };
 
+/** A quoted string of a bound expression, matched as the codemod matches it (angular.ts). */
+const QUOTED = /(['"`])((?:\\.|(?!\1)[^\\])*)\1/g;
+
+/**
+ * The classes of `[ngClass]`, `[class]` and `[attr.class]`: the quoted strings of the
+ * expression, as the codemod reads them (object keys, array items, both branches of a
+ * ternary). An unquoted `[ngClass]` key is a single word, never a class the rules reject.
+ */
+const angularClasses = (input: AngularNode): LintClass[] => {
+  const source = typeof input.value === 'object' ? (input.value.source ?? '') : '';
+  return [...source.matchAll(QUOTED)].flatMap(([, , text]) => classesOf(text ?? '', input));
+};
+
 export const fromAngular = (node: AngularNode): LintElement | undefined => {
   if (!node.name) return undefined;
   const attributes: LintAttribute[] = [];
@@ -251,8 +288,13 @@ export const fromAngular = (node: AngularNode): LintElement | undefined => {
     // [style.--mds-x] sets a custom property; the parser writes its name as --%NS%mds-x
     if (kind === 3)
       customProperties.push(...customPropertiesOf(input.name.replace('%NS%', ''), input));
+    // [class.bg-white]="on" toggles the class of its key
+    if (kind === 2) classes.push(...classesOf(input.name, input));
     // [class.x] and [style.x] bind a class or a style, not the prop of the same name
     if (kind === 2 || kind === 3) continue;
+    // [ngClass] and [class] are property bindings, [attr.class] an attribute binding
+    if ((kind === 0 && input.name === 'ngClass') || input.name === 'class')
+      classes.push(...angularClasses(input));
     attributes.push({
       name: input.name,
       binding: kind === 1 ? 'attribute' : 'property',
