@@ -10,9 +10,14 @@ import { colorLiterals } from '../src/core/colors.js';
 import { lintGuideUrl } from '../src/core/data.js';
 import plugins from '../src/stylelint/index.js';
 import recommended from '../src/stylelint/recommended.js';
+import strict from '../src/stylelint/strict.js';
 
 const fixtures = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures');
 const data = { documentation: path.join(fixtures, 'magma/data/documentation.json') };
+const palette = {
+  tokens: path.join(fixtures, 'design-tokens/base.tokens.json'),
+  consumption: path.join(fixtures, 'styles/consumption.json'),
+};
 
 const lint = async (code: string, rules: Record<string, unknown>) => {
   const { results } = await stylelint.lint({ code, config: { plugins, rules } });
@@ -130,6 +135,35 @@ describe('magma/no-internal-tokens', () => {
   });
 });
 
+describe('magma/no-raw-palette-classes', () => {
+  test('reads the classes of @apply as the ESLint rule reads a class attribute', async () => {
+    const warnings = await lint(
+      [
+        '.a { @apply p-400 bg-white dark:hover:!text-gray-700/50; }',
+        '.b { @apply bg-tone-neutral-03 text-fg-default !important; }',
+      ].join('\n'),
+      { 'magma/no-raw-palette-classes': [true, palette] },
+    );
+    expect(warnings.map(({ text }) => text)).toEqual([
+      expect.stringMatching(/^bg-white paints with Tailwind's palette/),
+      expect.stringMatching(/^dark:hover:!text-gray-700\/50 paints with Tailwind's palette/),
+      expect.stringMatching(/^bg-tone-neutral-03 paints with a raw Magma step/),
+    ]);
+  });
+
+  test('lets the roles, the data colours and the seed through', async () => {
+    const warnings = await lint(
+      [
+        '.a { @apply bg-surface-raised text-fg-muted border-2 text-title-h3; }',
+        '.b { @apply bg-label-sky-09 text-brand-maggioli-04 bg-tone-neutral-seed; }',
+        '.c { background: white; }',
+      ].join('\n'),
+      { 'magma/no-raw-palette-classes': [true, palette] },
+    );
+    expect(warnings).toEqual([]);
+  });
+});
+
 describe('magma/no-color-scheme-override', () => {
   test('rejects a prefers-color-scheme query', async () => {
     const warnings = await lint(
@@ -165,6 +199,27 @@ test('the recommended preset warns on a colour and stops on a colour-scheme quer
   expect(results[0]!.warnings.map(({ rule, severity }) => `${rule} ${severity}`).sort()).toEqual([
     'magma/no-color-scheme-override error',
     'magma/no-raw-color warning',
+  ]);
+});
+
+test('the recommended preset warns on a palette class, the strict one stops on it', async () => {
+  expect(recommended.rules?.['magma/no-raw-palette-classes']).toEqual([
+    true,
+    { severity: 'warning' },
+  ]);
+  expect(strict.rules?.['magma/no-raw-palette-classes']).toBe(true);
+  const { results } = await stylelint.lint({
+    code: '.a { @apply bg-white; }',
+    config: {
+      ...recommended,
+      rules: {
+        ...recommended.rules,
+        'magma/no-raw-palette-classes': [true, { ...palette, severity: 'warning' }],
+      },
+    },
+  });
+  expect(results[0]!.warnings.map(({ rule, severity }) => `${rule} ${severity}`)).toEqual([
+    'magma/no-raw-palette-classes warning',
   ]);
 });
 

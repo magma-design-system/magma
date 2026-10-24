@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as angular from '@angular-eslint/template-parser';
 import * as html from '@html-eslint/parser';
+import * as tsx from '@typescript-eslint/parser';
 import { RuleTester, type Linter } from 'eslint';
 import { describe, expect, it, test } from 'vitest';
 
@@ -31,9 +32,22 @@ const parsers: Record<string, Linter.Config> = {
     languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
     settings,
   },
+  // the parser of a TypeScript project, whose nodes carry its types too
+  tsx: {
+    languageOptions: {
+      parser: tsx as Linter.Parser,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    settings,
+  },
 };
 const tester = (parser: keyof typeof parsers) => new RuleTester(parsers[parser]);
-const filename = { html: 'page.html', angular: 'page.component.html', jsx: 'page.jsx' };
+const filename = {
+  html: 'page.html',
+  angular: 'page.component.html',
+  jsx: 'page.jsx',
+  tsx: 'page.tsx',
+};
 
 describe('valid-attribute-values', () => {
   const rule = rules['valid-attribute-values']!;
@@ -238,13 +252,62 @@ describe('no-raw-palette-classes', () => {
     ],
   });
   tester('angular').run('angular', rule, {
-    valid: [{ code: '<div class="bg-surface-raised"></div>', filename: filename.angular }],
-    invalid: [{ code: '<div class="bg-white"></div>', filename: filename.angular, errors: 1 }],
+    valid: [
+      { code: '<div class="bg-surface-raised"></div>', filename: filename.angular },
+      // the bindings the codemod reads, with roles; an unquoted key is a word, never a palette class
+      {
+        code: `<div [ngClass]="{ 'bg-surface-raised p-400': active, muted: m }" [class.text-fg-muted]="m"></div>`,
+        filename: filename.angular,
+      },
+      // not a class binding
+      { code: `<mds-button [label]="'bg-white'"></mds-button>`, filename: filename.angular },
+    ],
+    invalid: [
+      { code: '<div class="bg-white"></div>', filename: filename.angular, errors: 1 },
+      // the string literals of [ngClass], [class] and [attr.class], as the codemod reads them
+      {
+        code: `<div [ngClass]="{ 'p-400 bg-white': active }"></div>`,
+        filename: filename.angular,
+        errors: [{ message: /bg-white paints with Tailwind's palette/ }],
+      },
+      {
+        code: `<div [ngClass]="['p-400', muted ? 'text-gray-700' : 'text-fg-default']"></div>`,
+        filename: filename.angular,
+        errors: [{ message: /text-gray-700 paints with Tailwind's palette/ }],
+      },
+      {
+        code: `<div [class]="active ? 'bg-tone-neutral-03' : ''"></div>`,
+        filename: filename.angular,
+        errors: [{ message: /bg-tone-neutral-03 paints with a raw Magma step/ }],
+      },
+      {
+        code: `<div [attr.class]="'dark:bg-white/50'"></div>`,
+        filename: filename.angular,
+        errors: 1,
+      },
+      // the class in the key of [class.x]
+      {
+        code: '<div [class.hover:bg-white]="active"></div>',
+        filename: filename.angular,
+        errors: [{ message: /hover:bg-white paints with Tailwind's palette/ }],
+      },
+    ],
   });
   tester('jsx').run('jsx', rule, {
     valid: [
       { code: '<div className={styles} />', filename: filename.jsx },
       { code: '<div className="bg-surface-raised" />', filename: filename.jsx },
+      {
+        code: "<div className={clsx('p-400', active && 'bg-surface-raised')} />",
+        filename: filename.jsx,
+      },
+      // a string compared in a condition is read too, and is no class of the palette
+      {
+        code: "<div className={tone === 'white' ? 'bg-surface-raised' : 'bg-surface-default'} />",
+        filename: filename.jsx,
+      },
+      // not a class attribute
+      { code: "<div title={clsx('bg-white')} />", filename: filename.jsx },
     ],
     invalid: [
       { code: '<div className="bg-white" />', filename: filename.jsx, errors: 1 },
@@ -252,6 +315,55 @@ describe('no-raw-palette-classes', () => {
         code: '<div className={`p-400 ${a} text-tone-neutral-01`} />',
         filename: filename.jsx,
         errors: 1,
+      },
+      // every string literal of the expression, as the codemod reads them
+      {
+        code: "<div className={clsx('p-400', active && 'bg-white')} />",
+        filename: filename.jsx,
+        errors: [{ message: /bg-white paints with Tailwind's palette/ }],
+      },
+      {
+        code: "<div className={classnames({ 'text-gray-700': muted }, 'p-400')} />",
+        filename: filename.jsx,
+        errors: [{ message: /text-gray-700 paints with Tailwind's palette/ }],
+      },
+      {
+        code: "<div className={active ? 'bg-tone-neutral-03' : 'bg-surface-raised'} />",
+        filename: filename.jsx,
+        errors: [{ message: /bg-tone-neutral-03 paints with a raw Magma step/ }],
+      },
+      {
+        code: "<div className={extra || 'dark:bg-white/50'} />",
+        filename: filename.jsx,
+        errors: 1,
+      },
+      // the fixed parts of a template literal inside a call, and a string inside its holes
+      {
+        code: "<div className={cn(`bg-white ${size}`, `p-400 ${on ? 'text-gray-700' : ''}`)} />",
+        filename: filename.jsx,
+        errors: [
+          { message: /bg-white paints with Tailwind's palette/ },
+          { message: /text-gray-700 paints with Tailwind's palette/ },
+        ],
+      },
+      { code: "<MdsButton class={['bg-white'].join(' ')} />", filename: filename.jsx, errors: 1 },
+    ],
+  });
+  tester('tsx').run('tsx', rule, {
+    valid: [
+      {
+        code: "<div className={cn<string>('p-400', (on as boolean) && 'bg-surface-raised')} />",
+        filename: filename.tsx,
+      },
+    ],
+    invalid: [
+      {
+        code: "<div className={clsx({ 'bg-white': on satisfies boolean }, tone ?? ('text-gray-700' as const))} />",
+        filename: filename.tsx,
+        errors: [
+          { message: /bg-white paints with Tailwind's palette/ },
+          { message: /text-gray-700 paints with Tailwind's palette/ },
+        ],
       },
     ],
   });
@@ -334,12 +446,27 @@ describe('no-internal-tokens', () => {
         filename: filename.angular,
         errors: [{ message: internal }],
       },
+      // the classes of the bindings, as no-raw-palette-classes reads them
+      {
+        code: `<mds-chip [ngClass]="{ '[--mds-chip-icon-color:red]': on }"></mds-chip>`,
+        filename: filename.angular,
+        errors: [{ message: internal }],
+      },
+      {
+        code: `<ul [class]="on ? 'md:[--mds-chip-icon-color:red]' : ''"></ul>`,
+        filename: filename.angular,
+        errors: [{ message: internal }],
+      },
     ],
   });
   tester('jsx').run('jsx', rule, {
     valid: [
       { code: "<MdsText style={{ '--mds-text-line-clamp': 2 }} />", filename: filename.jsx },
       { code: '<div style={styles} />', filename: filename.jsx },
+      {
+        code: "<MdsText className={clsx(lines && 'md:[--mds-text-line-clamp:2]')} />",
+        filename: filename.jsx,
+      },
     ],
     invalid: [
       {
@@ -360,6 +487,32 @@ describe('no-internal-tokens', () => {
       {
         code: '<ul className={`md:[--mds-chip-icon-color:red] ${extra}`} />',
         filename: filename.jsx,
+        errors: [{ message: internal }],
+      },
+      // the classes of the expression, as no-raw-palette-classes reads them
+      {
+        code: "<MdsChip className={clsx('p-400', on && '[--mds-chip-icon-color:red]')} />",
+        filename: filename.jsx,
+        errors: [{ message: internal }],
+      },
+      {
+        code: "<div className={dark ? 'bg-(--mds-chip-icon-color)' : undefined} />",
+        filename: filename.jsx,
+        errors: [{ message: internal }],
+      },
+    ],
+  });
+  tester('tsx').run('tsx', rule, {
+    valid: [
+      {
+        code: "<MdsText className={cn(lines! > 1 && ('[--mds-text-line-clamp:2]' as const))} />",
+        filename: filename.tsx,
+      },
+    ],
+    invalid: [
+      {
+        code: "<MdsChip className={cn(on && ('[--mds-chip-icon-color:red]' as string))} />",
+        filename: filename.tsx,
         errors: [{ message: internal }],
       },
     ],

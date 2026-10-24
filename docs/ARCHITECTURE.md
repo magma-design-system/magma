@@ -133,7 +133,7 @@ Global design decisions overridable via CSS custom properties on `:root`:
 
 ### 2.6 `stencil`
 
-The web component library. 115 components built with StencilJS, compiled to standard Custom Elements. Also outputs framework-specific wrappers:
+The web component library. 117 components built with StencilJS, compiled to standard Custom Elements. Also outputs framework-specific wrappers:
 
 - `@maggioli-design-system/magma` — vanilla JS / HTML
 - `@maggioli-design-system/magma-react` — React wrapper
@@ -145,7 +145,7 @@ The wrappers are separate npm workspaces, `projects/stencil-react` and `projects
 
 The consumer lint (`projects/lint`, #1102): the ESLint and Stylelint rules that hold a consumer's code to the installed version of Magma, the executable form of the prose rules of `docs/agents/` (conventions, color, theming). It is not a package of its own: the stencil build compiles it into `@maggioli-design-system/magma` (`dist/lint`, `scripts/build-lint.ts`), which exports `./eslint`, `./stylelint` (with `./stylelint/recommended` and `./stylelint/strict`) and `./lint` (the core). So the rules arrive with the components and always match their release; `stencil` lists `lint` as an implicit dependency, so its build follows a change of the rules.
 
-One core reads the data of the installed packages, never a list written by hand: the props and their values from the `documentation.json` beside it, the raw palette steps from the DTCG base set (`design-tokens`) and the colour utilities from `consumption.json` (`styles`), both resolved from where magma is installed. On top of it, the template rules (`valid-attribute-values`, `no-false-boolean`, `accessible-name`, `no-raw-palette-classes`) with one adapter per parser (HTML, JSX, Angular templates), the CSS rules (`no-raw-color`, `no-color-scheme-override`, the consumer side of the `magma/token-values` rule of the component sheets), and `recommended` / `strict` presets.
+One core reads the data of the installed packages, never a list written by hand: the props and their values from the `documentation.json` beside it, the raw palette steps from the DTCG base set (`design-tokens`) and the colour utilities from `consumption.json` (`styles`), both resolved from where magma is installed. On top of it, the template rules (`valid-attribute-values`, `no-false-boolean`, `accessible-name`, `no-raw-palette-classes`, `no-internal-tokens`) with one adapter per parser (HTML, JSX, Angular templates), which reads a class in every form the codemod migrates, the CSS rules (`no-raw-color`, `no-color-scheme-override`, the consumer side of the `magma/token-values` rule of the component sheets; `no-internal-tokens` and `no-raw-palette-classes` on declarations and the classes of `@apply`), and `recommended` / `strict` presets.
 
 The same project holds the MCP server (#1107): the `magma-mcp` command of magma
 (`dist/lint/mcp/cli.js`), which answers an agent's questions from the same data (ten
@@ -162,6 +162,10 @@ through the official MCP client. The consumer guides are [`docs/agents/lint.md`]
 The Claude Code plugin of Magma (`projects/claude-plugin`, #1114): the skills that run a whole job (`/magma:setup`, `/magma:review`, `/magma:migrate`, and `ui`, which Claude loads by itself for UI work) and the entry that starts the MCP server of section 2.7. It is not an npm package: `.claude-plugin/marketplace.json` at the repository root is the marketplace `magma`, whose plugin is this folder, so Claude Code reads it from `main`. A consumer project registers it for its team in its `.claude/settings.json`, which the bootstrap of the packages' `AGENTS.md` writes.
 
 The skills are procedures that defer to the installed version (the MCP server, the shipped guides), so the plugin follows `main` with no version of its own. They are generated from `templates/` with what they list taken from the code and the guides (the packages per target, the tools of the server, the rules of the lint, the codemod), and the `claude-plugin-ci` workflow fails when one is out of date or breaks the Agent Skills format. How to change one: [`projects/claude-plugin/README.md`](../projects/claude-plugin/README.md).
+
+### 2.9 `codemod`
+
+The `@maggioli-design-system/magma-codemods` package (`projects/codemod`): it migrates consumer code from v1 to v2, rewriting HTML, React, Angular templates (external and inline) and CSS/SCSS, and reports what needs a human decision. Its rules are a manifest (`src/manifest/manifest.ts`), drafted from the `documentation.json` of the two versions; one module per surface (`src/surfaces/`) decides where an attribute or a class is written, the forms the class rules of the lint read too ([`docs/CONTRACTS.md`](CONTRACTS.md)). The contributor notes are [`projects/codemod/README.md`](../projects/codemod/README.md).
 
 ---
 

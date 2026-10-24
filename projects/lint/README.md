@@ -88,11 +88,26 @@ or on the guide it enforces, not only on fixtures picked by hand.
   comes to mind. A custom property is written in an inline style, in a framework binding, in a
   Tailwind class (an arbitrary property or value, behind variants and `!`, read with
   `utilityOf` like the palette classes) and in `@apply`; the tests cover each form on each
-  parser. The forms a class is written in are the surfaces of the codemod
-  (`projects/codemod/src/surfaces`: markup, `clsx()` and other expressions of a React
-  `className`, Angular `[ngClass]`, `[class]` and `[attr.class]`, `@apply`). The lint reads
-  the static `class` and `className` (a string or a template literal) and, for custom
-  properties, `@apply`; the other surfaces are a known gap.
+  parser. The forms a class is written in, and what in each is a class, are those of the
+  codemod, which migrates the same classes (`projects/codemod/src/surfaces`), and both rules
+  read them all: the static `class`; every string literal of a JSX `className` or `class`
+  expression, so the arguments and object keys of `clsx()` and `classnames()`, both branches
+  of a ternary and a `||` fallback (`react.ts`), and every template literal by its fixed parts
+  (the codemod reports one with `${}` instead of rewriting it); the key of an Angular
+  `[class.x]` and the quoted strings of `[ngClass]`, `[class]` and `[attr.class]`, matched
+  with the expression of `angular.ts`; the classes of `@apply` (`css.ts`). As in the codemod,
+  a string compared in a condition is read too (it is reported only when it is itself a class
+  the rule rejects) and an unquoted `[ngClass]` key is not (a single word, never such a
+  class). The palette check of `@apply` is a Stylelint rule named as the ESLint one, as
+  `no-internal-tokens` is, not a case of `no-raw-color`: the codemod migrates the palette
+  classes of `@apply` as those of markup
+  (`projects/codemod/fixtures/css/apply-semantic-utility-classes`), to a role class, the fix
+  `no-raw-palette-classes` gives and `no-raw-color` (a colour literal, fixed with
+  `rgb(var(--magma-*))`) does not; one name also keeps one switch for one finding. Of
+  `inline-templates.ts`, the inline `template` of an Angular component is read through the
+  inline-template processor of angular-eslint (`agents/lint.md`); HTML written as a string in
+  a script (`el.innerHTML`) is not, since ESLint parses a script with a script parser, which
+  sees that HTML as a string.
 - **What a tool or a rule says about itself** (the documentation site reads it from the
   installed package, magma-design-system/docs#1): the same fields on both plugins, a
   description and the URL of its section of `agents/lint.md` (an ESLint rule in

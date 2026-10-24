@@ -37,7 +37,7 @@ When the tools do not give you what the task needs (you would read Magma's files
 | `explain_class` | What a Tailwind class does with the Magma theme: the token it reads and its value, the Magma utility it is, or the trap it falls in (p-4 is 0.01rem in Magma, not 16px; bg-white ignores the theme). |
 | `find_icon` | Icon slugs that exist in the sets the project installed (mi/<variant>/<name> from @material-icons/svg, mdi/<name> from @mdi/svg, mgg/<name> from svg-icons). |
 | `get_guide` | The guides Magma ships for agents (installation, conventions, color, typography, theming, lint...): without arguments the list with their sections, with a guide its headings, with a guide and a section the text of that section only. |
-| `check_markup` | Run the Magma lint on a snippet before writing it: prop values outside their union, "false" booleans, icon-only controls without a name, raw palette classes (templates), raw colours and prefers-color-scheme queries (CSS). |
+| `check_markup` | Run the Magma lint on a snippet before writing it: prop values outside their union, "false" booleans, icon-only controls without a name, raw palette classes (templates and @apply), raw colours and prefers-color-scheme queries (CSS). |
 | `check_setup` | Look at the project and list what its Magma integration misses, each with the guide that fixes it: design-tokens and styles installed in the range magma depends on, the React or Angular wrapper at magma's version, the fonts of the typography, an icon set, the icon path, the lint in ESLint and Stylelint, this server in the client configuration. |
 
 ## Without the server

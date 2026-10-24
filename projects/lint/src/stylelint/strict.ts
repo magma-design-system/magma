@@ -8,6 +8,7 @@ const config: Config = {
     'magma/no-color-scheme-override': true,
     'magma/no-internal-tokens': true,
     'magma/no-raw-color': true,
+    'magma/no-raw-palette-classes': true,
   },
 };
 
