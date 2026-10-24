@@ -10,6 +10,7 @@
  * the link rewriting and the rendering directly.
  */
 import path from 'path';
+import { isPublic, type ContractStyle } from './style-contract-lib';
 
 /** Folder of one component's docs inside the magma package. */
 export const COMPONENT_DOCS_DIR = 'dist/collection/components';
@@ -152,7 +153,7 @@ export interface DocsComponent {
   methods?: { name: string; signature: string; docs?: string; deprecation?: string }[];
   slots?: { name: string; docs?: string }[];
   parts?: { name: string; docs?: string }[];
-  styles?: { name: string; docs?: string }[];
+  styles?: ContractStyle[];
   dependencies?: string[];
   dependents?: string[];
   [key: string]: unknown;
@@ -193,7 +194,7 @@ export function renderComponentAgentsMd(component: DocsComponent, pkgVersion: st
 
   const encapsulation =
     component.encapsulation === 'shadow'
-      ? 'Shadow DOM: style it only through the CSS custom properties and parts below.'
+      ? 'Shadow DOM: style it only through the public CSS custom properties and the parts below.'
       : component.encapsulation === 'scoped'
         ? 'Scoped styles (no shadow root): it takes part natively in HTML form submission.'
         : '';
@@ -242,12 +243,32 @@ export function renderComponentAgentsMd(component: DocsComponent, pkgVersion: st
         component.parts.map((p) => [`\`${p.name}\``, cell(p.docs)]),
       )
     : undefined;
-  const styles = component.styles?.length
-    ? table(
-        ['Property', 'Description'],
-        component.styles.map((s) => [`\`${s.name}\``, cell(s.docs)]),
-      )
-    : undefined;
+  const publicStyles = (component.styles ?? []).filter(isPublic);
+  const internal = (component.styles?.length ?? 0) - publicStyles.length;
+  const styles = !component.styles?.length
+    ? undefined
+    : !publicStyles.length
+      ? `None is public: its ${internal === 1 ? 'custom property is' : `${internal} custom properties are`} internal and may change in any release. Style it with its props, its parts and the semantic roles.`
+      : [
+          table(
+            ['Property', 'Description'],
+            publicStyles.map((s) => [
+              `\`${s.name}\``,
+              cell(
+                s.static
+                  ? `**Static**: a value of its own, not a token or a role. ${s.docs ?? ''}`
+                  : s.docs,
+              ),
+            ]),
+          ),
+          internal
+            ? internal === 1
+              ? 'Only these are public. Its other one is internal: it may change in any release, do not set it.'
+              : `Only these are public. Its other ${internal} are internal: they may change in any release, do not set them.`
+            : '',
+        ]
+          .filter(Boolean)
+          .join('\n\n');
   const deps = [
     component.dependencies?.length
       ? `Uses: ${component.dependencies.map((d) => `\`${d}\``).join(', ')}.`

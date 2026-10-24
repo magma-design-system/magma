@@ -179,6 +179,9 @@ const deprecation = (before: string, after: string): [Bump, string][] => {
 const undeprecated = (line: string) => line.replace(/ DEPRECATED$/, '');
 
 const PROP = /^\S+ prop \S+ \(([^)]*)\)(?: \[([^\]]*)\])?: (.*?)(?: = (.*))?$/;
+/* a CSS custom property with its contract: `[static]`, `INTERNAL` (scripts/style-contract-lib.ts) */
+const CSS = /^\S+ css \S+( \[static\])?( INTERNAL)?$/;
+const isInternalCss = (line: string) => CSS.exec(line)?.[2] !== undefined;
 const EVENT = /^\S+ event \S+: (.*?)(?: \[([^\]]*)\])?$/;
 const INTERFACE = /^interface \w+(?:<[^>]*>)?(?: extends (.*?))? \{ (.*) \}$/;
 const ALIAS = /^type \w+(?:<[^>]*>)? = (.*)$/;
@@ -222,6 +225,17 @@ const changedLine = (before: string, after: string, declared: Declared): [Bump, 
   const b = undeprecated(before);
   const a = undeprecated(after);
   if (b === a) return facets;
+
+  /* becoming internal is like a deprecation: what a product sets still works, but stops being promised */
+  const css = [CSS.exec(b), CSS.exec(a)];
+  if (css[0] && css[1]) {
+    const [, staticB, internalB] = css[0];
+    const [, staticA, internalA] = css[1];
+    if (!internalB && internalA) facets.push(['minor', 'now internal']);
+    if (internalB && !internalA) facets.push(['minor', 'now public']);
+    if (staticB !== staticA) facets.push(['minor', staticA ? 'now static' : 'no longer static']);
+    return facets;
+  }
 
   const props = [PROP.exec(b), PROP.exec(a)];
   if (props[0] && props[1]) {
@@ -304,7 +318,12 @@ export const apiChanges = (before: string, after: string): ApiChange[] => {
   const changes: ApiChange[] = [];
   for (const [key, line] of b) {
     const now = a.get(key);
-    if (now === undefined) changes.push({ key, before: line, bump: 'major', why: 'removed' });
+    if (now === undefined)
+      changes.push(
+        isInternalCss(line)
+          ? { key, before: line, bump: 'patch', why: 'removed, it was internal' }
+          : { key, before: line, bump: 'major', why: 'removed' },
+      );
     else if (now !== line) {
       const facets = changedLine(line, now, declared);
       const bump = maxBump(facets.map(([f]) => f)) ?? 'patch';
@@ -323,7 +342,9 @@ export const apiChanges = (before: string, after: string): ApiChange[] => {
     changes.push(
       required
         ? { key, after: line, bump: 'major', why: 'added as required' }
-        : { key, after: line, bump: 'minor', why: 'added' },
+        : isInternalCss(line)
+          ? { key, after: line, bump: 'patch', why: 'added, internal' }
+          : { key, after: line, bump: 'minor', why: 'added' },
     );
   }
   return changes.sort((x, y) => bumpRank(y.bump) - bumpRank(x.bump) || x.key.localeCompare(y.key));

@@ -196,6 +196,43 @@ describe('renderComponentAgentsMd', () => {
   it('omits the sections a component does not have', () => {
     expect(md).not.toContain('## Methods');
   });
+
+  it('lists only the public custom properties, marks the static ones and counts the internal', () => {
+    const contract = renderComponentAgentsMd(
+      {
+        ...button,
+        styles: [
+          { name: '--mds-button-radius', docs: 'Corner radius', visibility: 'public' },
+          { name: '--mds-button-skin', docs: 'The skin', visibility: 'public', static: true },
+          { name: '--mds-button-icon-color', docs: 'Icon colour', visibility: 'internal' },
+          { name: '--mds-button-gap-inner', docs: 'Inner gap', visibility: 'internal' },
+        ],
+      },
+      '2.1.0',
+    );
+    expect(contract).toContain('| `--mds-button-radius` | Corner radius |');
+    expect(contract).toContain(
+      '| `--mds-button-skin` | **Static**: a value of its own, not a token or a role. The skin |',
+    );
+    expect(contract).not.toContain('--mds-button-icon-color');
+    expect(contract).toContain(
+      'Only these are public. Its other 2 are internal: they may change in any release, do not set them.',
+    );
+  });
+
+  it('says so when none of its custom properties is public', () => {
+    const contract = renderComponentAgentsMd(
+      {
+        ...button,
+        styles: [{ name: '--mds-button-icon-color', docs: 'Icon colour', visibility: 'internal' }],
+      },
+      '2.1.0',
+    );
+    expect(contract).toContain(
+      'None is public: its custom property is internal and may change in any release. Style it with its props, its parts and the semantic roles.',
+    );
+    expect(contract).not.toContain('--mds-button-icon-color');
+  });
 });
 
 describe('renderUsageFile', () => {

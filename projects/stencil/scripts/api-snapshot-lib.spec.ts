@@ -140,6 +140,20 @@ describe('apiSnapshot', () => {
     expect(lines).toContain('mds-button method focusLabel() => Promise<void> DEPRECATED');
   });
 
+  it('writes the contract of the CSS custom properties: [static] and INTERNAL', () => {
+    const marked = button();
+    marked.styles = [
+      { name: '--mds-button-radius', visibility: 'public' },
+      { name: '--mds-button-skin', visibility: 'public', static: true },
+      { name: '--mds-button-icon-color', visibility: 'internal' },
+    ];
+    expect(apiSnapshot(docs([marked])).filter((line) => line.includes(' css '))).toEqual([
+      'mds-button css --mds-button-icon-color INTERNAL',
+      'mds-button css --mds-button-radius',
+      'mds-button css --mds-button-skin [static]',
+    ]);
+  });
+
   it('lists custom states', () => {
     const stateful = badge();
     stateful.states = [{ name: 'open' }];

@@ -6,7 +6,8 @@
  *
  * What this checks, outside the INCORRECT half of the antipattern examples (wrong on
  * purpose): every `mds-*` tag, attribute, enumerated value, slot, documented part,
- * event and `--mds-*` property exists in dist/documentation.json; every other custom
+ * event and `--mds-*` property exists in dist/documentation.json, and every `--mds-*` is a
+ * public one (an internal one may change in any release, #1095); every other custom
  * property exists in the token layer; no palette step (`--tone-*`, `--variant-*`,
  * `--status-*`, raw palette classes) where a semantic role belongs; no raw `--radius-*`
  * (it ignores the corner axis); every icon slug exists; no `="false"` booleans, no
