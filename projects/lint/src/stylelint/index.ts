@@ -5,7 +5,10 @@
     follows the OS and not the mode the user picked in Magma;
   - magma/no-internal-tokens: an `--mds-*` custom property set or read that no component
     promises, in a declaration or in a class of `@apply`: internal ones may change in any
-    release.
+    release;
+  - magma/no-raw-palette-classes: a class of `@apply` that paints with Tailwind's palette or
+    a raw Magma step, the check of the ESLint rule of the same name on the classes a sheet
+    applies, as no-internal-tokens is.
 
     // stylelint.config.mjs
     export default { extends: ['@maggioli-design-system/magma/stylelint/recommended'] };
@@ -15,15 +18,23 @@
   the public custom properties marked static, which take a value of their own (the colours
   of an illustration), not a role.
 
-  The rules that read the installed documentation.json find it beside them, inside magma;
-  their secondary options `root` and `documentation` point elsewhere, as `settings.magma`
+  The rules that read the installed documentation.json find it beside them, inside magma,
+  and the palette rule resolves design-tokens and styles from there; their secondary options
+  `root`, `documentation`, `tokens` and `consumption` point elsewhere, as `settings.magma`
   does for the ESLint plugin.
 */
 import stylelint, { type Rule, type RuleMeta } from 'stylelint';
 import { colorLiterals } from '../core/colors.js';
-import { internalTokenMessage, utilityOf } from '../core/checks.js';
+import { internalTokenMessage, rawPaletteMessage, utilityOf } from '../core/checks.js';
 import { customPropertiesOf } from '../core/element.js';
-import { lintGuideUrl, loadStyles, type MagmaSettings, type StyleInfo } from '../core/data.js';
+import {
+  lintGuideUrl,
+  loadPalette,
+  loadStyles,
+  type MagmaSettings,
+  type PaletteInfo,
+  type StyleInfo,
+} from '../core/data.js';
 
 const {
   createPlugin,
@@ -48,6 +59,23 @@ const stylesOf = (secondary: unknown): Map<string, StyleInfo> | undefined => {
   const { root, documentation } = (secondary ?? {}) as MagmaSettings;
   try {
     return loadStyles({ ...(root ? { root } : {}), ...(documentation ? { documentation } : {}) });
+  } catch {
+    return undefined;
+  }
+};
+
+/** The secondary options of the palette rule: the files of loadPalette. */
+const PALETTE_OPTIONS = { root: [isString], tokens: [isString], consumption: [isString] };
+
+/** The palette of the installed version, or undefined when its tokens or consumption map cannot be found. */
+const paletteOf = (secondary: unknown): PaletteInfo | undefined => {
+  const { root, tokens, consumption } = (secondary ?? {}) as MagmaSettings;
+  try {
+    return loadPalette({
+      ...(root ? { root } : {}),
+      ...(tokens ? { tokens } : {}),
+      ...(consumption ? { consumption } : {}),
+    });
   } catch {
     return undefined;
   }
@@ -189,10 +217,51 @@ noInternalTokens.meta = metaOf(
   'A declaration or a class of @apply sets or reads only the custom properties a Magma component promises.',
 );
 
+const noRawPaletteClassesName = 'magma/no-raw-palette-classes';
+const noRawPaletteClassesMessages = ruleMessages(noRawPaletteClassesName, {
+  rejected: (message: string) => message,
+});
+
+const noRawPaletteClasses: Rule = (primary, secondary) => (root, result) => {
+  if (
+    !validateOptions(
+      result,
+      noRawPaletteClassesName,
+      { actual: primary },
+      { actual: secondary, possible: PALETTE_OPTIONS, optional: true },
+    )
+  )
+    return;
+  const palette = paletteOf(secondary);
+  // without the tokens of the installed version there is nothing to tell a raw step from a role
+  if (!palette) return;
+  // the classes a sheet applies, as the templates write them; the codemod migrates them too
+  root.walkAtRules('apply', (rule) => {
+    for (const name of rule.params.split(/\s+/).filter(Boolean)) {
+      const message = rawPaletteMessage(name, palette);
+      if (message)
+        report({
+          ruleName: noRawPaletteClassesName,
+          result,
+          node: rule,
+          word: name,
+          message: noRawPaletteClassesMessages.rejected(message),
+        });
+    }
+  });
+};
+noRawPaletteClasses.ruleName = noRawPaletteClassesName;
+noRawPaletteClasses.messages = noRawPaletteClassesMessages;
+noRawPaletteClasses.meta = metaOf(
+  'no-raw-palette-classes',
+  "A class of @apply names a role, not Tailwind's palette or a raw Magma step.",
+);
+
 const plugins = [
   createPlugin(noRawColorName, noRawColor),
   createPlugin(noColorSchemeName, noColorSchemeOverride),
   createPlugin(noInternalTokensName, noInternalTokens),
+  createPlugin(noRawPaletteClassesName, noRawPaletteClasses),
 ];
 
 export default plugins;

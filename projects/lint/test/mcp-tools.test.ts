@@ -392,6 +392,19 @@ describe('the check tools', () => {
       'magma/no-internal-tokens',
       'magma/no-raw-color',
     ]);
+    // the palette rule reads the tokens and the consumption map of the context
+    const apply = await run('check_markup', {
+      code: '.a { @apply p-400 bg-tone-neutral-03; }',
+      language: 'css',
+      preset: 'recommended',
+    });
+    expect(apply.findings).toEqual([
+      expect.objectContaining({
+        rule: 'magma/no-raw-palette-classes',
+        severity: 'warning',
+        message: expect.stringMatching(/^bg-tone-neutral-03 paints with a raw Magma step/),
+      }),
+    ]);
     expect(
       (
         await run('check_markup', {

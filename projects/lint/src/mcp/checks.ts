@@ -51,22 +51,27 @@ interface Finding {
   column: number;
 }
 
-/** The Stylelint rules that read the installed API, and the settings that point them at it. */
-const DATA_RULES = new Set(['magma/no-internal-tokens', 'magma/no-raw-color']);
+/**
+ * The Stylelint rules that read the installed data, and the settings that point each at it:
+ * the secondary options it takes (../stylelint/index.ts).
+ */
+const DATA_RULES: Record<string, Array<keyof ToolContext['settings']>> = {
+  'magma/no-internal-tokens': ['root', 'documentation'],
+  'magma/no-raw-color': ['root', 'documentation'],
+  'magma/no-raw-palette-classes': ['root', 'tokens', 'consumption'],
+};
 
 /** A Stylelint config whose data rules read the data of the context, as the ESLint rules read `settings.magma`. */
 const withData = (
   config: Record<string, unknown>,
   settings: ToolContext['settings'],
 ): Record<string, unknown> => {
-  const data = {
-    ...(settings.root ? { root: settings.root } : {}),
-    ...(settings.documentation ? { documentation: settings.documentation } : {}),
-  };
-  if (!Object.keys(data).length) return config;
   const rules = Object.fromEntries(
     Object.entries((config.rules ?? {}) as Record<string, unknown>).map(([name, value]) => {
-      if (!DATA_RULES.has(name)) return [name, value];
+      const data = Object.fromEntries(
+        (DATA_RULES[name] ?? []).flatMap((key) => (settings[key] ? [[key, settings[key]]] : [])),
+      );
+      if (!Object.keys(data).length) return [name, value];
       const [primary, secondary] = Array.isArray(value) ? value : [value, {}];
       return [name, [primary, { ...(secondary as object), ...data }]];
     }),
@@ -78,7 +83,7 @@ export const checkMarkup = (context: ToolContext): Tool => ({
   name: 'check_markup',
   title: 'Check a snippet with the Magma lint',
   description:
-    'Run the Magma lint on a snippet before writing it: prop values outside their union, "false" booleans, icon-only controls without a name, raw palette classes (templates), raw colours and prefers-color-scheme queries (CSS). Uses the ESLint, Stylelint and parsers the project installed; strict preset by default, so every finding is shown.',
+    'Run the Magma lint on a snippet before writing it: prop values outside their union, "false" booleans, icon-only controls without a name, raw palette classes (templates and @apply), raw colours and prefers-color-scheme queries (CSS). Uses the ESLint, Stylelint and parsers the project installed; strict preset by default, so every finding is shown.',
   inputSchema: {
     type: 'object',
     properties: {
