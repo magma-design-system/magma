@@ -1,6 +1,6 @@
 {
   "name": "@maggioli-design-system/magma-react",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "license": "MIT",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -35,7 +35,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@maggioli-design-system/magma": "2.6.0",
+    "@maggioli-design-system/magma": "2.7.0",
     "@stencil/react-output-target": "1.6.5"
   },
   "repository": {

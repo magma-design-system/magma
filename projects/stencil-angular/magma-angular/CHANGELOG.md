@@ -7,6 +7,30 @@ package.
 It is released together with `magma`, at the same version: the sections are the
 releases of `magma`.
 
+## [magma@2.7.0] - 2026-10-24
+
+### Bug Fixes
+
+- *(lint)* Spell multi-word Material slugs with hyphens, as iconsauce serves them
+- *(lint)* Check_setup accepts every icon path and lint config its guides document
+- *(lint)* Serialise every DTCG type of the token tools, keep the class of suggest_role
+- *(lint)* No-internal-tokens reads the custom properties of Tailwind classes and @apply
+
+### Build
+
+- *(magma)* Keep test fixtures out of the release package map
+
+### Documentation
+
+- *(magma)* Write where each answer of the lint and the MCP server comes from
+- *(magma)* Route agents to the data contracts, stop loading the consumer guides
+
+### Features
+
+- *(lint)* Ship the MCP tools as data, describe the Stylelint rules, link the release
+- *(lint)* Lead the agent to propose an issue when the MCP server lacks a tool
+- *(lint)* Read classes in clsx(), ternaries, [ngClass] and @apply, as the codemod does
+
 ## [magma@2.6.0] - 2026-10-24
 
 ### Bug Fixes
