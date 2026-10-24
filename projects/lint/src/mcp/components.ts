@@ -7,7 +7,7 @@ import path from 'node:path';
 import { magmaRoot, propInfo, readData } from '../core/data.js';
 import { tagOf } from '../core/element.js';
 import { ToolError, type Tool } from './protocol.js';
-import { firstSentence, pascalOf, wordsOf, type ToolContext } from './context.js';
+import { firstSentence, GAP, GAP_SCHEMA, pascalOf, wordsOf, type ToolContext } from './context.js';
 
 interface DocsComponent {
   tag: string;
@@ -84,6 +84,7 @@ export const findComponent = (context: ToolContext): Tool => ({
           required: ['tag', 'summary', 'score'],
         },
       },
+      gap: GAP_SCHEMA,
     },
     required: ['components'],
   },
@@ -104,12 +105,11 @@ export const findComponent = (context: ToolContext): Tool => ({
       );
       return { tag: component.tag, summary: summaryOf(component), score };
     });
-    return {
-      components: scored
-        .filter(({ score }) => score > 0)
-        .sort((a, b) => b.score - a.score || a.tag.localeCompare(b.tag))
-        .slice(0, typeof limit === 'number' && limit > 0 ? limit : 8),
-    };
+    const components = scored
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score || a.tag.localeCompare(b.tag))
+      .slice(0, typeof limit === 'number' && limit > 0 ? limit : 8);
+    return { components, ...(components.length ? {} : { gap: GAP }) };
   },
 });
 
