@@ -25,12 +25,13 @@ Run the project's ESLint and Stylelint on those files. When the Magma presets ar
 | `magma/no-raw-palette-classes` | A colour class names a role (`color.md`), never Tailwind's palette (`bg-white`, `text-gray-700`), which ignores Magma, nor a raw Magma step (`bg-tone-neutral-03`, `border-surface-neutral-default`), which follows the mode only. |
 | `magma/no-color-scheme-override` | A `prefers-color-scheme` media query follows the OS, not the mode the user picked (`mds-pref-mode`). |
 | `magma/no-raw-color` | A hex, `rgb()`, `hsl()`, `oklch()` or other colour literal where a role belongs. |
+| `magma/no-internal-tokens` | An `--mds-*` custom property, set or read, that no component promises. |
 
 ## 2. What the lint does not see
 
 For each Magma component in the changed code:
 
-- `get_component`: are the events listened to the ones it emits, the slots the ones it has, the parts the documented ones? Is it styled only through its documented custom properties and parts?
+- `get_component`: are the events listened to the ones it emits, the slots the ones it has, the parts the documented ones? Is it styled only through its public custom properties (the ones `get_component` lists) and documented parts?
 - Its `pattern.md` and `antipattern.md` (paths in `get_component`): does the code follow the pattern?
 - Classes and colours: `explain_class` on the doubtful ones, `suggest_role` for a literal colour.
 - `get_guide` on conventions (booleans, events, compound components, accessibility) and anti-patterns.
