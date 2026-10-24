@@ -4,6 +4,51 @@ Every release of `@maggioli-design-system/magma`, newest first. Each section is 
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [magma@2.6.0] - 2026-10-24
+
+### Bug Fixes
+
+- *(mds-book)* Cut the caps of a rounded spine on the arc of its slats
+- *(magma,lint)* Start magma-mcp with npx --no, never letting npx install it
+
+### Changes
+
+- *(mds-book)* Show the side-to-side drag with an ew-resize cursor
+
+### Documentation
+
+- *(magma)* Point the Copilot instructions to AGENTS.md
+- *(mds-book)* Show the Catalogue story as a page of a bookshop
+- *(magma,styles)* Allow dark: for a deliberate per-mode choice
+- *(design-tokens,magma)* Document the Android, iOS and Flutter color files
+- *(stencil)* Give an alt to the images of the usage examples, a name to the paginator arrows
+- *(magma)* Set up the lint at bootstrap and run it after every change
+- *(magma)* Set up the MCP server at bootstrap and say when to call each tool
+- *(magma)* Get the Claude Code plugin at bootstrap, the MCP entry for the other clients
+- *(magma,stencil)* Describe the component categories and group the reference by them
+- *(storybook)* File the component stories under their categories, keeping their URLs
+- *(magma,stencil)* Describe where a component page sits in Storybook
+- *(magma)* Name only public CSS custom properties in the usage docs
+- *(magma)* The contract of the component CSS custom properties
+
+### Features
+
+- *(mds-book)* Add a book drawn as a physical object in 3D from its front cover
+- *(lint)* Add the ESLint and Stylelint rules that check consumer code against the installed Magma
+- *(lint)* Point no-color-scheme-override to the dark variant for a per-mode choice
+- *(magma,lint)* Ship the consumer lint inside magma as ./eslint and ./stylelint
+- *(lint)* The MCP server, ten read-only tools on the data of the installed magma
+- *(magma,lint)* Ship the MCP server in magma as the magma-mcp command
+- *(lint)* Check_setup counts the Magma plugin as the MCP server of Claude Code
+- *(stencil)* Sort the components into categories, their parts under their parent
+- *(stencil)* Carry the public or internal mark of each CSS custom property
+- *(magma)* Promise 184 CSS custom properties, the other 520 are internal
+- *(lint)* Reject internal custom properties, let the static ones take a colour
+
+### Styling
+
+- *(mds-push-notification)* Paint the light fade with --magma-surface-sunken
+
 ## [magma@2.5.1] - 2026-10-22
 
 ### Bug Fixes

@@ -4,6 +4,20 @@ Every release of `@maggioli-design-system/design-tokens`, newest first. Each sec
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [design-tokens@15.3.0] - 2026-10-24
+
+### Documentation
+
+- *(design-tokens,magma)* Document the Android, iOS and Flutter color files
+
+### Features
+
+- *(design-tokens)* Describe every group of the DTCG export and each typography style
+
+### Refactor
+
+- *(design-tokens,styles)* Print the dark selectors of the palette from one list
+
 ## [design-tokens@15.2.2] - 2026-10-21
 
 ### Bug Fixes

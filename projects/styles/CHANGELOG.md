@@ -4,6 +4,21 @@ Every release of `@maggioli-design-system/styles`, newest first. Each section is
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [styles@17.4.0] - 2026-10-24
+
+### Documentation
+
+- *(magma,styles)* Allow dark: for a deliberate per-mode choice
+
+### Features
+
+- *(styles)* Describe every global in the DTCG export and in the editor sheet
+- *(styles)* Bring back the dark: variant, on the Magma mode instead of the OS
+
+### Refactor
+
+- *(design-tokens,styles)* Print the dark selectors of the palette from one list
+
 ## [styles@17.3.0] - 2026-10-21
 
 ### Bug Fixes
