@@ -100,9 +100,11 @@ const rules: Record<string, Rule.RuleModule> = {
   ),
   'no-internal-tokens': createRule(
     'no-internal-tokens',
-    'An inline style sets or reads only the custom properties a Magma component promises.',
+    'An inline style or a Tailwind class sets or reads only the custom properties a Magma component promises.',
     (element, data) =>
-      element.customProperties.length ? noInternalTokens(element, data.styles()) : [],
+      element.customProperties.length || element.classes.some(({ name }) => name.includes('--mds-'))
+        ? noInternalTokens(element, data.styles())
+        : [],
   ),
 };
 

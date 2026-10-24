@@ -266,12 +266,39 @@ describe('no-internal-tokens', () => {
         filename: filename.html,
       },
       { code: '<div style="--gap: 4px; color: red"></div>', filename: filename.html },
+      // a Tailwind class that sets a public one, or no custom property at all
+      {
+        code: '<mds-text class="md:[--mds-text-line-clamp:2]"></mds-text>',
+        filename: filename.html,
+      },
+      { code: '<div class="[--gap:4px] bg-surface-raised p-400"></div>', filename: filename.html },
     ],
     invalid: [
       {
         code: '<div style="--mds-chip-icon-color: rgb(var(--magma-accent-fg))"></div>',
         filename: filename.html,
         errors: [{ message: internal }],
+      },
+      // the arbitrary property of Tailwind sets it as an inline style does
+      {
+        code: '<mds-chip label="y" class="[--mds-chip-icon-color:red]"></mds-chip>',
+        filename: filename.html,
+        errors: [{ message: internal }],
+      },
+      // through variants and !, on a parent that sets it for its descendants
+      {
+        code: '<ul class="flex dark:hover:![--mds-chip-icon-color:red]"><li></li></ul>',
+        filename: filename.html,
+        errors: [{ message: internal }],
+      },
+      // an arbitrary value reads it, in both spellings
+      {
+        code: '<div class="bg-(--mds-chip-icon-color) text-[var(--mds-chip-nope)]"></div>',
+        filename: filename.html,
+        errors: [
+          { message: internal },
+          { message: /"--mds-chip-nope" is not a custom property any Magma component promises/ },
+        ],
       },
       {
         code: '<mds-chip style="margin: var(--mds-chip-nope)"></mds-chip>',
@@ -300,6 +327,11 @@ describe('no-internal-tokens', () => {
         filename: filename.angular,
         errors: [{ message: internal }],
       },
+      {
+        code: '<mds-chip class="[--mds-chip-icon-color:red]"></mds-chip>',
+        filename: filename.angular,
+        errors: [{ message: internal }],
+      },
     ],
   });
   tester('jsx').run('jsx', rule, {
@@ -315,6 +347,16 @@ describe('no-internal-tokens', () => {
       },
       {
         code: "<div style={{ color: 'var(--mds-chip-icon-color)' }} />",
+        filename: filename.jsx,
+        errors: [{ message: internal }],
+      },
+      {
+        code: '<MdsChip className="[--mds-chip-icon-color:red]" />',
+        filename: filename.jsx,
+        errors: [{ message: internal }],
+      },
+      {
+        code: '<ul className={`md:[--mds-chip-icon-color:red] ${extra}`} />',
         filename: filename.jsx,
         errors: [{ message: internal }],
       },

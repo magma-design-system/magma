@@ -82,6 +82,16 @@ or on the guide it enforces, not only on fixtures picked by hand.
   map, so a new root fails a test instead of reading as a background. A role is matched in
   its family, `--magma-shadow-ink` for a shadow (or a fill, for a glow), and the class keeps
   the utility and the opacity of the class given.
+- **Where a rule looks** (`no-internal-tokens`, `no-raw-palette-classes`): everywhere a
+  project writes the thing it checks, with the stack Magma ships, not only the first form that
+  comes to mind. A custom property is written in an inline style, in a framework binding, in a
+  Tailwind class (an arbitrary property or value, behind variants and `!`, read with
+  `utilityOf` like the palette classes) and in `@apply`; the tests cover each form on each
+  parser. The forms a class is written in are the surfaces of the codemod
+  (`projects/codemod/src/surfaces`: markup, `clsx()` and other expressions of a React
+  `className`, Angular `[ngClass]`, `[class]` and `[attr.class]`, `@apply`). The lint reads
+  the static `class` and `className` (a string or a template literal) and, for custom
+  properties, `@apply`; the other surfaces are a known gap.
 
 ## Tests
 

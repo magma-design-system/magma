@@ -4,7 +4,8 @@
   - magma/no-color-scheme-override: a hand-written @media (prefers-color-scheme), which
     follows the OS and not the mode the user picked in Magma;
   - magma/no-internal-tokens: an `--mds-*` custom property set or read that no component
-    promises: internal ones may change in any release.
+    promises, in a declaration or in a class of `@apply`: internal ones may change in any
+    release.
 
     // stylelint.config.mjs
     export default { extends: ['@maggioli-design-system/magma/stylelint/recommended'] };
@@ -20,7 +21,8 @@
 */
 import stylelint, { type Rule } from 'stylelint';
 import { colorLiterals } from '../core/colors.js';
-import { internalTokenMessage } from '../core/checks.js';
+import { internalTokenMessage, utilityOf } from '../core/checks.js';
+import { customPropertiesOf } from '../core/element.js';
 import { loadStyles, type MagmaSettings, type StyleInfo } from '../core/data.js';
 
 const {
@@ -137,21 +139,35 @@ const noInternalTokens: Rule = (primary, secondary) => (root, result) => {
   const styles = stylesOf(secondary);
   // without the documentation of the installed version there is nothing to hold the names to
   if (!styles) return;
-  root.walkDecls((decl) => {
-    const names = new Set(decl.value.match(COMPONENT_VAR) ?? []);
-    if (decl.prop.startsWith('--mds-')) names.add(decl.prop);
+  const check = (node: Parameters<typeof report>[0]['node'], names: Set<string>) => {
     for (const name of names) {
       const message = internalTokenMessage(name, styles.get(name));
       if (message)
         report({
           ruleName: noInternalTokensName,
           result,
-          node: decl,
+          node,
           word: name,
           message: noInternalTokensMessages.rejected(message),
         });
     }
+  };
+  root.walkDecls((decl) => {
+    const names = new Set(decl.value.match(COMPONENT_VAR) ?? []);
+    if (decl.prop.startsWith('--mds-')) names.add(decl.prop);
+    check(decl, names);
   });
+  // the classes a sheet applies, as the templates write them: `@apply [--mds-x:red]`
+  root.walkAtRules('apply', (rule) =>
+    check(
+      rule,
+      new Set(
+        rule.params
+          .split(/\s+/)
+          .flatMap((name) => customPropertiesOf(utilityOf(name), rule).map((one) => one.name)),
+      ),
+    ),
+  );
 };
 noInternalTokens.ruleName = noInternalTokensName;
 noInternalTokens.messages = noInternalTokensMessages;

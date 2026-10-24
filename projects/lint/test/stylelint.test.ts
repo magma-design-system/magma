@@ -89,6 +89,22 @@ describe('magma/no-internal-tokens', () => {
     ]);
   });
 
+  test('reads the classes of @apply, as the templates write them', async () => {
+    const warnings = await lint(
+      [
+        '.a { @apply p-400 dark:![--mds-chip-icon-color:red]; }',
+        '.b { @apply [--mds-text-line-clamp:2] bg-(--mds-button-nope); }',
+      ].join('\n'),
+      { 'magma/no-internal-tokens': [true, data] },
+    );
+    expect(warnings.map(({ text }) => text)).toEqual([
+      expect.stringMatching(
+        /^"--mds-chip-icon-color" is an internal custom property of <mds-chip>/,
+      ),
+      expect.stringMatching(/^"--mds-button-nope" is not a custom property any Magma component/),
+    ]);
+  });
+
   test('rejects a name no component documents', async () => {
     const warnings = await lint('.a { --mds-button-nope: 0; }', {
       'magma/no-internal-tokens': [true, data],
