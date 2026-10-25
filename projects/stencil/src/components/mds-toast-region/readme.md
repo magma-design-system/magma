@@ -33,7 +33,15 @@ Correct and idiomatic ways to use the `<mds-toast-region>` component, ordered fr
 
 #### One Region in the Application Shell
 
-Place one region in the shell of the application, outside the content that changes from page to page, so it is in the page before any message. Every toast of the application goes into it.
+The region holds the `<mds-toast>` elements of the application: every toast of the application goes into it, and the region lines them up at its edge and announces them. A toast shown in it leaves after its `duration`.
+
+```html
+<mds-toast-region>
+  <mds-toast visible variant="success">Documento salvato</mds-toast>
+</mds-toast-region>
+```
+
+Place one region in the shell of the application, outside the content that changes from page to page, so it is in the page before any message; the toasts are added to it from code (see the next pattern).
 
 ```html
 <body>
