@@ -2626,10 +2626,15 @@ export namespace Components {
          */
         "datetime"?: string;
         /**
-          * Specifies if the component is dismissable; when set, a dismiss button is shown.
+          * Shows the dismiss button, as `dismissible` does.
+          * @deprecated Use `dismissible`: the button dismisses the notification, it deletes nothing. Goes in the next major.
           * @default false
          */
         "deletable"?: boolean;
+        /**
+          * Shows a dismiss button: activating it emits `mdsPushNotificationItemClose`, and a parent `mds-push-notification` takes the item out of the stack
+         */
+        "dismissible"?: boolean;
         /**
           * Specifies the icon to be displayed
          */
@@ -8133,10 +8138,15 @@ declare namespace LocalJSX {
          */
         "datetime"?: string;
         /**
-          * Specifies if the component is dismissable; when set, a dismiss button is shown.
+          * Shows the dismiss button, as `dismissible` does.
+          * @deprecated Use `dismissible`: the button dismisses the notification, it deletes nothing. Goes in the next major.
           * @default false
          */
         "deletable"?: boolean;
+        /**
+          * Shows a dismiss button: activating it emits `mdsPushNotificationItemClose`, and a parent `mds-push-notification` takes the item out of the stack
+         */
+        "dismissible"?: boolean;
         /**
           * Specifies the icon to be displayed
          */
@@ -9549,6 +9559,7 @@ declare namespace LocalJSX {
     interface MdsPushNotificationItemAttributes {
         "datetime": string;
         "dateFormat": NotificationItemDateFormatType;
+        "dismissible": boolean;
         "deletable": boolean;
         "icon": string;
         "initials": string;

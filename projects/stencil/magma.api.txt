@@ -1253,7 +1253,8 @@ mds-push-notification css --mds-push-notification-items-timing-function INTERNAL
 mds-push-notification-item encapsulation shadow
 mds-push-notification-item prop dateFormat (attr date-format) [reflect]: string = 'timeago'
 mds-push-notification-item prop datetime (attr datetime) [reflect, mutable]: string | undefined
-mds-push-notification-item prop deletable (attr deletable) [reflect, mutable]: boolean | undefined = false
+mds-push-notification-item prop deletable (attr deletable) [reflect, mutable]: boolean | undefined = false DEPRECATED
+mds-push-notification-item prop dismissible (attr dismissible) [reflect, mutable]: boolean | undefined
 mds-push-notification-item prop icon (attr icon) [reflect]: string | undefined
 mds-push-notification-item prop initials (attr initials) [reflect, mutable]: string | undefined
 mds-push-notification-item prop message (attr message) [reflect]: string = 'Nessun messaggio disponibile'

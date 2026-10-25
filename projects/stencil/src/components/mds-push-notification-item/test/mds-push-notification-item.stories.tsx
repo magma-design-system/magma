@@ -33,10 +33,9 @@ export default {
       options: notificationItemDateFormatDictionary,
       control: { type: 'select' },
     },
-    deletable: {
+    dismissible: {
       type: { name: 'boolean' },
-      description:
-        'Specifies if the component is dismissable; when set, a dismiss button is shown.',
+      description: 'Shows a dismiss button that emits `mdsPushNotificationItemClose`',
     },
     icon: {
       type: { name: 'string' },
@@ -146,7 +145,7 @@ export const Default = {
   },
 };
 
-export const Deletable = {
+export const Dismissible = {
   render: Template,
 
   args: {
@@ -154,7 +153,7 @@ export const Deletable = {
     icon: 'mi/baseline/email',
     message: 'You have 3 new messages from different accounts',
     subject: 'New messages',
-    deletable: true,
+    dismissible: true,
   },
 };
 
