@@ -23,6 +23,7 @@ import {
 } from '../core/data.js';
 import {
   accessibleName,
+  noDeprecated,
   noFalseBoolean,
   noInternalTokens,
   noRawPaletteClasses,
@@ -92,6 +93,11 @@ const rules: Record<string, Rule.RuleModule> = {
     'An icon-only Magma control has a label or an aria-label, a Magma image an alt.',
     onComponents(accessibleName),
   ),
+  'no-deprecated': createRule(
+    'no-deprecated',
+    'A deprecated Magma prop is replaced before the next major removes it.',
+    onComponents(noDeprecated),
+  ),
   'no-raw-palette-classes': createRule(
     'no-raw-palette-classes',
     "Colour classes name a role, not Tailwind's palette or a raw Magma step.",
@@ -114,9 +120,9 @@ const plugin: ESLint.Plugin & { configs: Record<'recommended' | 'strict', Linter
 };
 
 /**
- * `recommended`: what is broken or not accessible is an error, the palette and an internal
- * custom property a warning, for a product that already exists; `strict`: everything an
- * error, for a new one.
+ * `recommended`: what is broken or not accessible is an error, the palette, an internal
+ * custom property and a deprecated prop a warning, for a product that already exists;
+ * `strict`: everything an error, for a new one.
  */
 plugin.configs.recommended = {
   name: '@maggioli-design-system/magma/eslint/recommended',
@@ -125,6 +131,7 @@ plugin.configs.recommended = {
     'magma/valid-attribute-values': 'error',
     'magma/no-false-boolean': 'error',
     'magma/accessible-name': 'error',
+    'magma/no-deprecated': 'warn',
     'magma/no-raw-palette-classes': 'warn',
     'magma/no-internal-tokens': 'warn',
   },

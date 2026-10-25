@@ -45,6 +45,23 @@ export const noFalseBoolean = (element: LintElement, component: ComponentInfo): 
       message: `${attribute.name}="false" on <${element.tag}>: remove the attribute to turn ${attribute.name} off. A form-associated component reads any value as on, "false" included, as a native control does; from a framework, bind a real boolean to the property.`,
     }));
 
+/**
+ * `<mds-toast deletable>`: a deprecated prop, which goes in the next major. The message is the
+ * `@deprecated` text of the prop, which says what to use instead.
+ */
+export const noDeprecated = (element: LintElement, component: ComponentInfo): Finding[] => {
+  const found: Finding[] = [];
+  for (const attribute of element.attributes) {
+    const deprecation = component.props.get(attribute.name)?.deprecation;
+    if (deprecation == null) continue;
+    found.push({
+      node: attribute.node,
+      message: `${attribute.name} on <${element.tag}> is deprecated: ${deprecation}`,
+    });
+  }
+  return found;
+};
+
 /** The props, attributes and properties that give an element its accessible name. */
 const NAME = ['aria-label', 'aria-labelledby', 'ariaLabel', 'ariaLabelledby', 'title'];
 

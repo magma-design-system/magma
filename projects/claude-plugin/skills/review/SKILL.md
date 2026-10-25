@@ -22,6 +22,7 @@ Run the project's ESLint and Stylelint on those files. When the Magma presets ar
 | `magma/valid-attribute-values` | A prop whose type is a union of literals takes one of them (the values each prop takes are in the component's `AGENTS.md`). |
 | `magma/no-false-boolean` | A boolean prop is turned off by removing its attribute (`conventions.md`): a form-associated component reads any value as on, `"false"` included. |
 | `magma/accessible-name` | A component that takes an `icon` next to a `label` or a default slot, shown with its icon alone, needs a name: without `label` or `aria-label`, `mds-button` is announced by the slug of its icon, which names the icon and not the action. |
+| `magma/no-deprecated` | A deprecated prop still works, and the next major removes it. |
 | `magma/no-raw-palette-classes` | A colour class names a role (`color.md`), never Tailwind's palette (`bg-white`, `text-gray-700`), which ignores Magma, nor a raw Magma step (`bg-tone-neutral-03`, `border-surface-neutral-default`), which follows the mode only. |
 | `magma/no-color-scheme-override` | A `prefers-color-scheme` media query follows the OS, not the mode the user picked (`mds-pref-mode`). |
 | `magma/no-raw-color` | A hex, `rgb()`, `hsl()`, `oklch()` or other colour literal where a role belongs. |

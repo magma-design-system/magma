@@ -215,6 +215,44 @@ describe('accessible-name', () => {
   });
 });
 
+describe('no-deprecated', () => {
+  const rule = rules['no-deprecated']!;
+  tester('html').run('html', rule, {
+    valid: [
+      { code: '<mds-banner dismissible>Saved</mds-banner>', filename: filename.html },
+      // deletable is right on a chip, which removes a value: only the banner's is deprecated
+      { code: '<mds-chip label="Tag" deletable></mds-chip>', filename: filename.html },
+    ],
+    invalid: [
+      {
+        code: '<mds-banner deletable>Saved</mds-banner>',
+        filename: filename.html,
+        errors: [
+          {
+            // the @deprecated text, on one line
+            message:
+              'deletable on <mds-banner> is deprecated: Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.',
+          },
+        ],
+      },
+    ],
+  });
+  tester('angular').run('angular', rule, {
+    valid: [{ code: '<mds-banner [dismissible]="true"></mds-banner>', filename: filename.angular }],
+    invalid: [
+      {
+        code: '<mds-banner [deletable]="true"></mds-banner>',
+        filename: filename.angular,
+        errors: 1,
+      },
+    ],
+  });
+  tester('jsx').run('jsx', rule, {
+    valid: [{ code: '<MdsBanner dismissible={open} />', filename: filename.jsx }],
+    invalid: [{ code: '<MdsBanner deletable={true} />', filename: filename.jsx, errors: 1 }],
+  });
+});
+
 describe('no-raw-palette-classes', () => {
   const rule = rules['no-raw-palette-classes']!;
   tester('html').run('html', rule, {

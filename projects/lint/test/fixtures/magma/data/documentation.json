@@ -9,8 +9,23 @@
    "props": [
     {
      "name": "deletable",
-     "attr": "deletable",
      "type": "boolean | undefined",
+     "complexType": {
+      "original": "boolean",
+      "resolved": "boolean | undefined",
+      "references": {}
+     },
+     "mutable": false,
+     "attr": "deletable",
+     "reflectToAttr": false,
+     "docs": "Shows the close button, as `dismissible` does.",
+     "docsTags": [
+      {
+       "name": "deprecated",
+       "text": "Use `dismissible`: the button dismisses the message, it deletes nothing.\nGoes in the next major."
+      }
+     ],
+     "deprecation": "Use `dismissible`: the button dismisses the message, it deletes nothing.\nGoes in the next major.",
      "values": [
       {
        "type": "boolean"
@@ -19,8 +34,36 @@
        "type": "undefined"
       }
      ],
+     "optional": true,
      "required": false,
-     "docs": "Shows the cross icon to perform cancel/delete action on element"
+     "getter": false,
+     "setter": false
+    },
+    {
+     "name": "dismissible",
+     "type": "boolean | undefined",
+     "complexType": {
+      "original": "boolean",
+      "resolved": "boolean | undefined",
+      "references": {}
+     },
+     "mutable": false,
+     "attr": "dismissible",
+     "reflectToAttr": false,
+     "docs": "Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`",
+     "docsTags": [],
+     "values": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "undefined"
+      }
+     ],
+     "optional": true,
+     "required": false,
+     "getter": false,
+     "setter": false
     },
     {
      "name": "headline",
