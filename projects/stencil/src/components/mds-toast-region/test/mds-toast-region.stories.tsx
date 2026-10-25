@@ -49,7 +49,7 @@ const Template = (args) => (
   <div class="toast-region-story">
     <mds-button onClick={showToast}>Mostra una conferma</mds-button>
     <mds-toast-region {...args}>
-      <mds-toast visible deletable duration={0} variant="error">
+      <mds-toast visible dismissible duration={0} variant="error">
         <mds-icon slot="icon" name="mi/baseline/warning" />
         Invio non riuscito
         <mds-button slot="action" size="sm" variant="error" tone="weak">

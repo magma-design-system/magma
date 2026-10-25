@@ -66,7 +66,7 @@ export class MdsToast {
   @State() stacked = false;
 
   /**
-   * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `deletable` so the person can hide it too.
+   * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `dismissible` so the person can hide it too.
    */
   @Prop({ mutable: true, reflect: true }) readonly duration?: number = 5000;
 
@@ -92,6 +92,13 @@ export class MdsToast {
 
   /**
    * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
+   */
+  @Prop() readonly dismissible?: boolean;
+
+  /**
+   * Shows the hide button, as `dismissible` does.
+   * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing.
+   * Goes in the next major.
    */
   @Prop() readonly deletable?: boolean;
 
@@ -304,7 +311,7 @@ export class MdsToast {
           <div class={clsx('actions', !this.hasActions && 'actions--hidden')}>
             <slot name="action" onSlotchange={this.onActionSlotChange} />
           </div>
-          {this.deletable && (
+          {(this.dismissible || this.deletable) && (
             <mds-button
               aria-label={this.t.get('hide')}
               class="hide"

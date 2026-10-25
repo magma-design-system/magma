@@ -92,24 +92,31 @@ describe('mds-toast', () => {
     const hideButton = (root: HTMLElement): HTMLMdsButtonElement | null =>
       root.shadowRoot!.querySelector<HTMLMdsButtonElement>('mds-button.hide');
 
-    it('has no hide button unless it is deletable', async () => {
+    it('has no hide button unless it is dismissible', async () => {
       const { root } = await render('<mds-toast visible duration="0">Text</mds-toast>');
 
       expect(hideButton(root)).toBeNull();
     });
 
     it('has a hide button with a name, out of any form', async () => {
-      const { root } = await render('<mds-toast visible deletable duration="0">Text</mds-toast>');
+      const { root } = await render('<mds-toast visible dismissible duration="0">Text</mds-toast>');
 
       expect(hideButton(root)).toEqualAttribute('aria-label', 'Nascondi');
       expect(hideButton(root)).toEqualAttribute('type', 'button');
+    });
+
+    // #1145: the button dismisses the message, it deletes nothing; the old name still works
+    it('keeps deletable as a deprecated name of dismissible', async () => {
+      const { root } = await render('<mds-toast visible deletable duration="0">Text</mds-toast>');
+
+      expect(hideButton(root)).toEqualAttribute('aria-label', 'Nascondi');
     });
 
     // an arrow, not a cross, next to an action that may itself be a cancel: it points to the
     // edge the toast leaves by
     it('draws the hide button as an arrow towards the edge of the toast', async () => {
       const { root, waitForChanges } = await render<HTMLMdsToastElement>(
-        '<mds-toast visible deletable duration="0" position="bottom-left">Text</mds-toast>',
+        '<mds-toast visible dismissible duration="0" position="bottom-left">Text</mds-toast>',
       );
       // the paths of mi/baseline/arrow-downward and arrow-upward
       expect(hideButton(root)!.getAttribute('icon')).toContain('M20 12l-1.41-1.41L13 16.17');
@@ -122,7 +129,7 @@ describe('mds-toast', () => {
 
     it('hides on the hide button and emits mdsToastClose once as closed', async () => {
       const { root, spyOnEvent, waitForChanges } = await render<HTMLMdsToastElement>(
-        '<mds-toast visible deletable duration="0" style="--mds-toast-duration: 0s">Text</mds-toast>',
+        '<mds-toast visible dismissible duration="0" style="--mds-toast-duration: 0s">Text</mds-toast>',
       );
       const close = spyOnEvent('mdsToastClose');
 

@@ -69,7 +69,7 @@ An error that the person must act on stays (`duration="0"`) with its action and 
 
 ```html
 <mds-toast-region>
-  <mds-toast visible variant="error" duration="0" deletable>
+  <mds-toast visible variant="error" duration="0" dismissible>
     Invio non riuscito
     <mds-button slot="action" size="sm" variant="error" tone="weak">Riprova</mds-button>
   </mds-toast>

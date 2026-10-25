@@ -11,9 +11,9 @@ export default {
       type: { name: 'boolean' },
       description: 'Hides the decoration around the banner icon',
     },
-    deletable: {
+    dismissible: {
       type: { name: 'boolean' },
-      description: 'Shows the cross icon to perform cancel/delete action on element',
+      description: 'Shows a close button that dismisses the banner',
     },
     headline: {
       type: { name: 'string' },
@@ -143,7 +143,7 @@ export const Deletable = {
   render: Template,
 
   args: {
-    deletable: true,
+    dismissible: true,
   },
 };
 
@@ -157,7 +157,7 @@ export const Variant = {
   args: {
     headline: 'Impostazioni account',
     icon: 'mi/baseline/info',
-    deletable: true,
+    dismissible: true,
   },
 };
 
@@ -167,7 +167,7 @@ export const VariantDark = {
   args: {
     headline: 'Impostazioni account',
     icon: 'mi/baseline/info',
-    deletable: true,
+    dismissible: true,
     variant: 'dark',
   },
 };
@@ -178,7 +178,7 @@ export const VariantLight = {
   args: {
     headline: 'Impostazioni account',
     icon: 'mi/baseline/info',
-    deletable: true,
+    dismissible: true,
     variant: 'light',
   },
 };
@@ -198,7 +198,7 @@ const VariantsTableTemplate = () => (
       {variantToneCombinations.map(({ tone, variant }) => (
         <mds-table-row key={`${variant}-${tone}`}>
           <mds-table-cell>
-            <mds-banner class="w-10000" variant={variant} tone={tone} deletable>
+            <mds-banner class="w-10000" variant={variant} tone={tone} dismissible>
               <mds-text typography="detail">
                 Il tuo account è stato aggiornato alla versione PRO, ora puoi utilizzare le
                 notifiche su aggiornamenti di norme di legge e la consultazione dei volumi

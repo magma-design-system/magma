@@ -8,7 +8,7 @@ export default {
   title: 'UI / Feedback / Toast',
   id: 'ui-toast',
   argTypes: {
-    deletable: {
+    dismissible: {
       description: 'Shows a button that closes the toast',
       type: { name: 'boolean', required: false },
     },
@@ -85,7 +85,7 @@ export const Spinner = {
 // a toast with an action stays until it is closed, and the person can close it
 export const Persistent = {
   args: {
-    deletable: true,
+    dismissible: true,
     duration: 0,
     variant: 'error',
     visible: true,
