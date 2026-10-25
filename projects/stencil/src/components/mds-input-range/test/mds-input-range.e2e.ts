@@ -94,7 +94,8 @@ describe('in a disabled fieldset', () => {
 });
 
 // #1073: in dark the thumb took accent-emphasis, the colour of its ring and of the progress:
-// thumb, ring and progress were one shape and the thumb could not be seen
+// thumb, ring and progress were one shape and the thumb could not be seen. #1141: then it took
+// text-default, as light as the progress (1.61:1): over the progress it was gone again
 describe('the thumb in dark', () => {
   let sheet: HTMLStyleElement | undefined;
 
@@ -130,7 +131,7 @@ describe('the thumb in dark', () => {
   const contrast = (a: number, b: number): number =>
     (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 
-  it('is lighter than the progress and its ring, and stands out on the empty track', async () => {
+  it('stands out on the progress and its ring, and on the empty track', async () => {
     await inDark();
     const { root } = await render<HTMLMdsInputRangeElement>(
       '<mds-input-range value="18" min="14" max="24" step="2"></mds-input-range>',
@@ -142,8 +143,23 @@ describe('the thumb in dark', () => {
     const progress = read('--mds-input-range-track-progress-background');
     const track = read('--mds-input-range-track-background');
 
-    expect(thumb).toBeGreaterThan(progress);
+    expect(contrast(thumb, progress)).toBeGreaterThanOrEqual(3);
     expect(contrast(thumb, track)).toBeGreaterThanOrEqual(3);
+  });
+
+  // one rule for a handle on an accent fill: the ink of the fill
+  it('takes the colour of the knob of a switch that is on', async () => {
+    await inDark();
+    const { root } = await render(
+      '<div><mds-input-range value="18" min="14" max="24" step="2"></mds-input-range><mds-input-switch checked></mds-input-switch></div>',
+    );
+    // the channels: a registered property serialises with commas, an unregistered one without
+    const read = (selector: string, name: string): string[] | null =>
+      getComputedStyle(root.querySelector(selector)!).getPropertyValue(name).match(/\d+/g);
+
+    expect(read('mds-input-range', '--mds-input-range-thumb-background')).toEqual(
+      read('mds-input-switch', '--mds-input-switch-toggle-color-enabled-checked'),
+    );
   });
 
   // the dark sheet came after the disabled one, with selectors of the same weight: a disabled
