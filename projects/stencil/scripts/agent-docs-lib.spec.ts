@@ -197,6 +197,17 @@ describe('renderComponentAgentsMd', () => {
     expect(md).not.toContain('## Methods');
   });
 
+  it('links the Storybook page of the component when it knows the published Storybook', () => {
+    expect(md).not.toContain('[Storybook]');
+    expect(
+      renderComponentAgentsMd(
+        { ...button, storybook: 'ui-button--docs' },
+        '2.1.0',
+        'https://sb.test/',
+      ),
+    ).toContain('[Storybook](https://sb.test/?path=/docs/ui-button--docs)');
+  });
+
   it('lists only the public custom properties, marks the static ones and counts the internal', () => {
     const contract = renderComponentAgentsMd(
       {

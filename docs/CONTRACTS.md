@@ -20,10 +20,14 @@ keep in step.
 
 - **What**: the API of every component as the build sees it: props and their values, events,
   methods, slots, parts, and the CSS custom properties with their contract (`visibility`
-  public or internal, `static`).
+  public or internal, `static`). Beside them, where each component is in the published
+  Storybook: `storybook` at the top is its address, `storybook` on a component the id of its
+  docs page, which opens at `<storybook>?path=/docs/<id>` (#1148).
 - **Produced by**: the stencil build (`--docs-json dist/documentation.json`), then
   `projects/stencil/scripts/component-docs.ts`, which moves the public mark of each `@prop`
-  into `visibility` and `static`.
+  into `visibility` and `static`, and reads the Storybook ids from the stories files
+  (`scripts/story-titles-lib.ts`, the id of the meta or its title, through Storybook's own
+  `toId`).
 - **Contract**: [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md), "Authoring rules"
   (the styling API and the public mark); [`docs/ARCHITECTURE.md`](ARCHITECTURE.md), 3.5.
 - **Read by**: the lint core (`projects/lint/src/core/data.ts`), the component tools of the MCP
@@ -31,7 +35,8 @@ keep in step.
   manifest ([`projects/codemod/README.md`](../projects/codemod/README.md), "Regenerating the
   manifest from the docs"), the docs site.
 - **Held by**: `component-docs.ts` fails the build on a mark it cannot read
-  (`style-contract-lib.spec.ts`); `check.usage-docs`; `check.api-snapshot`.
+  (`style-contract-lib.spec.ts`) and on a component with no Storybook page of its own
+  (`story-titles-lib.spec.ts`); `check.usage-docs`; `check.api-snapshot`.
 
 ## `magma.api.txt` (magma)
 
