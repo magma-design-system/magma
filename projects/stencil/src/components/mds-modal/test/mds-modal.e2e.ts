@@ -295,6 +295,9 @@ describe('mds-modal', () => {
   });
 });
 
+// a content taller than any screen of the tests
+const tall = Array.from({ length: 80 }, (_, line) => `<p>Riga ${line + 1}</p>`).join('');
+
 // #1143: on a phone a centred modal filled the screen with its close button hidden: nothing
 // was left to tap but its own content
 describe('mds-modal on a narrow screen', () => {
@@ -333,13 +336,94 @@ describe('mds-modal on a narrow screen', () => {
     expect(window.offsetTop).toBe(0);
     expect(window.offsetWidth).toBeLessThan(360);
   });
+
+  // #1160: top and bottom are as tall as their content, and a tall one covered the whole screen,
+  // with the close button hidden
+  it('keeps a strip of backdrop above a tall bottom window, with a close button that works', async () => {
+    await page.viewport(360, 640);
+    const { root, waitForChanges } = await render(
+      `<mds-modal opened position="bottom" interaction="strict"><div>${tall}</div></mds-modal>`,
+    );
+    const close = root.shadowRoot!.querySelector<HTMLElement>('.action-close')!;
+    const window = root.shadowRoot!.querySelector<HTMLElement>('.window')!;
+    await vi.waitFor(() => expect(getComputedStyle(close).opacity).toBe('1'));
+
+    expect(window.offsetTop).toBeGreaterThanOrEqual(close.offsetTop + close.offsetHeight);
+    expect(window.offsetTop + window.offsetHeight).toBe(640);
+    // the content scrolls inside the window, which does not scroll with it
+    expect(window.scrollHeight).toBe(window.clientHeight);
+
+    await userEvent.click(close);
+    await waitForChanges();
+    expect(root).not.toHaveAttribute('opened');
+  });
+
+  it('keeps a strip of backdrop below a tall top window, with a close button that works', async () => {
+    await page.viewport(360, 640);
+    const { root, waitForChanges } = await render(
+      `<mds-modal opened position="top" interaction="strict"><div>${tall}</div></mds-modal>`,
+    );
+    const close = root.shadowRoot!.querySelector<HTMLElement>('.action-close')!;
+    const window = root.shadowRoot!.querySelector<HTMLElement>('.window')!;
+    await vi.waitFor(() => expect(getComputedStyle(close).opacity).toBe('1'));
+
+    expect(window.offsetTop).toBe(0);
+    expect(window.offsetTop + window.offsetHeight).toBeLessThanOrEqual(close.offsetTop);
+    expect(close.offsetTop + close.offsetHeight).toBeLessThanOrEqual(640);
+    expect(window.scrollHeight).toBe(window.clientHeight);
+
+    await userEvent.click(close);
+    await waitForChanges();
+    expect(root).not.toHaveAttribute('opened');
+  });
+});
+
+// #1160: on a wide screen the close button showed only for left and right, while a strict modal
+// has nothing else to close it by; center, top and bottom left 40px on each side, too few for it
+describe('mds-modal on a wide screen', () => {
+  it.each(['center', 'top', 'bottom', 'top-left', 'bottom-left'])(
+    'leaves a strip of backdrop at the right of %s, with a close button that works',
+    async (position) => {
+      const { root, waitForChanges } = await render(
+        `<mds-modal opened position="${position}" interaction="strict"><div>${tall}</div></mds-modal>`,
+      );
+      const close = root.shadowRoot!.querySelector<HTMLElement>('.action-close')!;
+      const window = root.shadowRoot!.querySelector<HTMLElement>('.window')!;
+      await vi.waitFor(() => expect(getComputedStyle(close).opacity).toBe('1'));
+
+      expect(close.offsetLeft).toBeGreaterThanOrEqual(window.offsetLeft + window.offsetWidth);
+      expect(close.offsetLeft + close.offsetWidth).toBeLessThanOrEqual(1280);
+
+      await userEvent.click(close);
+      await waitForChanges();
+      expect(root).not.toHaveAttribute('opened');
+    },
+  );
+
+  it.each(['top-right', 'bottom-right'])(
+    'leaves a strip of backdrop at the left of %s, with a close button that works',
+    async (position) => {
+      const { root, waitForChanges } = await render(
+        `<mds-modal opened position="${position}" interaction="strict"><div>${tall}</div></mds-modal>`,
+      );
+      const close = root.shadowRoot!.querySelector<HTMLElement>('.action-close')!;
+      const window = root.shadowRoot!.querySelector<HTMLElement>('.window')!;
+      await vi.waitFor(() => expect(getComputedStyle(close).opacity).toBe('1'));
+
+      expect(close.offsetLeft).toBeGreaterThanOrEqual(0);
+      expect(close.offsetLeft + close.offsetWidth).toBeLessThanOrEqual(window.offsetLeft);
+
+      await userEvent.click(close);
+      await waitForChanges();
+      expect(root).not.toHaveAttribute('opened');
+    },
+  );
 });
 
 // #1143: the distance was a bare 0, which calc() cannot take from 100dvh: without globals.css,
 // which registers it as a length, the window lost its max height and a tall content ran off the
 // screen, out of reach
 it('keeps a tall modal inside the screen, without the global stylesheet', async () => {
-  const tall = Array.from({ length: 80 }, (_, line) => `<p>Riga ${line + 1}</p>`).join('');
   const { root } = await render(`<mds-modal opened><div>${tall}</div></mds-modal>`);
   const window = root.shadowRoot!.querySelector('.window')!;
 

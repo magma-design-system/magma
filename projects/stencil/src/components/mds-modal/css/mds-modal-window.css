@@ -22,10 +22,15 @@
 /* `overflow` here is the closed/initial state. While the window's transform is
  * animating, the component freezes this to `hidden` inline and restores it on
  * the transform's `transitionend` (a live overflow:auto with overflowing
- * content janks the transform). See setContentOverflow in the component. */
+ * content janks the transform). See setContentOverflow in the component.
+ *
+ * The max height is the window's own: a window as tall as its content sizes
+ * this box before its max height applies, and a box taller than the window
+ * made the window scroll too, with the end of the content under its bottom
+ * edge (#1160, top and bottom on a narrow screen). */
 
 .window-content-wrapper {
-  max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
+  max-height: var(--mds-modal-window-max-height);
   overflow: hidden;
 }
 
