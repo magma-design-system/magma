@@ -36,7 +36,7 @@ Correct and idiomatic ways to use the `<mds-input-otp>` component, ordered from 
 
 #### Default Six-Digit Code
 
-The component renders six single-digit cells by default. Drop it into a form with a `name` attribute so the concatenated value is submitted as a named field.
+The component renders six single-digit cells by default. Drop it into a form with a `name` attribute so the concatenated value is submitted as a named field; the server behind the form's `action` checks the code.
 
 ```html
 <form action="/verify" method="post">
