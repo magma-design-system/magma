@@ -184,6 +184,13 @@ describe('renderComponentAgentsMd', () => {
     expect(md).toContain('| `old` | - | `boolean` | - | **Deprecated**: use `tone`. Old prop |');
   });
 
+  it('ends a deprecation that is a full sentence with one full stop', () => {
+    const props = [{ name: 'old', type: 'boolean', docs: 'Old prop', deprecation: 'Use `tone`.' }];
+    expect(renderComponentAgentsMd({ ...button, props }, '2.1.0')).toContain(
+      '**Deprecated**: Use `tone`. Old prop |',
+    );
+  });
+
   it('renders events, slots (default first), parts, CSS custom properties and dependencies', () => {
     expect(md).toContain('| `mdsButtonClick` | `MouseEvent` | Emitted on click |');
     expect(md).toContain('| (default) | Text only |');

@@ -161,8 +161,9 @@ export interface DocsComponent {
 
 function described(docs: string | undefined, deprecation?: string, required?: boolean): string {
   const parts: string[] = [];
+  // a @deprecated text that ends its own sentence keeps one full stop, not two
   if (deprecation !== undefined)
-    parts.push(`**Deprecated**${deprecation ? `: ${deprecation}` : ''}.`);
+    parts.push(`**Deprecated**${deprecation ? `: ${deprecation.replace(/\.$/, '')}` : ''}.`);
   if (required) parts.push('**Required**.');
   if (docs) parts.push(docs);
   return cell(parts.join(' '));
