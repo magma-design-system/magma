@@ -45,6 +45,12 @@
   syntax: 'smooth | auto';
 }
 
+@property --mds-filter-label-gap {
+  inherits: true;
+  initial-value: --spacing(300);
+  syntax: '<length>';
+}
+
 @property --mds-filter-label-padding {
   inherits: true;
   initial-value: 0 --spacing(600);
