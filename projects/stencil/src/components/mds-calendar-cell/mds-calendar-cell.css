@@ -164,9 +164,12 @@
     --mds-calendar-cell-selection-current-month-weekend-background,
     rgb(var(--magma-accent-emphasis-hover))
   );
+
+  /* inside a range the weekend keeps its step of the band and takes the text of the selection:
+   * the muted accent-border it took read 3.15:1 in light, 2.16:1 in dark (#1142) */
   --private-calendar-cell-selection-current-month-weekend-color: var(
     --mds-calendar-cell-selection-current-month-weekend-color,
-    rgb(var(--magma-accent-border))
+    rgb(var(--magma-text-on-emphasis))
   );
   --private-calendar-cell-selection-current-month-weekend-boundaries-background: var(
     --mds-calendar-cell-selection-current-month-weekend-boundaries-background,
