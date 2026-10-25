@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import type { ComponentTaxonomy } from './agent-docs-lib';
 import { COMPONENTS_DIR } from './meta';
-import { readComponentStories, readStoryTitle, storyTitleErrors } from './story-titles-lib';
+import fs from 'node:fs';
+import {
+  readComponentStories,
+  readStoryId,
+  readStoryTitle,
+  storybookDocsIds,
+  storyTitleErrors,
+} from './story-titles-lib';
 
 describe('readStoryTitle', () => {
   it('reads the title of the meta of a stories file', () => {
@@ -18,6 +25,65 @@ describe('readStoryTitle', () => {
 
 <Meta title="UI / Data / Table / Cell" id="layout-table-cell" />`;
     expect(readStoryTitle('mds-table-cell.mdx', source)).toBe('UI / Data / Table / Cell');
+  });
+});
+
+describe('readStoryId', () => {
+  it('reads the id of the meta of a stories file, and of the Meta block of an MDX page', () => {
+    expect(
+      readStoryId('mds-input.stories.tsx', "  title: 'UI / Forms / Input',\n  id: 'form-input',"),
+    ).toBe('form-input');
+    expect(
+      readStoryId(
+        'mds-table-cell.mdx',
+        '<Meta title="UI / Data / Table / Cell" id="layout-table-cell" />',
+      ),
+    ).toBe('layout-table-cell');
+  });
+
+  it('reads nothing when the page sets no id', () => {
+    expect(
+      readStoryId('mds-pref-mode.stories.tsx', "  title: 'UI / Preferences / Mode',"),
+    ).toBeUndefined();
+  });
+});
+
+// #1148: what the published Storybook answers for these pages (its index.json, 2026-10-25)
+describe('storybookDocsIds', () => {
+  const ids = storybookDocsIds([
+    { tag: 'mds-img', file: 'mds-img.stories.tsx', title: 'UI / Content / Image', id: 'ui-image' },
+    {
+      tag: 'mds-img',
+      file: 'mds-img-accessibility.stories.tsx',
+      title: 'UI / Content / Image / ARIA',
+      id: 'ui-image-aria',
+    },
+    { tag: 'mds-pref-mode', file: 'mds-pref-mode.stories.tsx', title: 'UI / Preferences / Mode' },
+    {
+      tag: 'mds-policy-ai',
+      file: 'mds-policy.stories.tsx',
+      title: 'UI / Tags / Policy AI',
+      id: 'ui-policy-ai',
+    },
+    {
+      tag: 'mds-table-row',
+      file: 'mds-table-row.mdx',
+      title: 'UI / Data / Table / Row',
+      id: 'layout-table-row',
+    },
+  ]);
+
+  it('takes the id of the page named after the component, not of its other pages', () => {
+    expect(ids.get('mds-img')).toBe('ui-image--docs');
+  });
+
+  it('makes an id of the title when the page sets none, as Storybook does', () => {
+    expect(ids.get('mds-pref-mode')).toBe('ui-preferences-mode--docs');
+  });
+
+  it('reads a stories file with a shorter name, and an MDX page when there is no stories file', () => {
+    expect(ids.get('mds-policy-ai')).toBe('ui-policy-ai--docs');
+    expect(ids.get('mds-table-row')).toBe('layout-table-row--docs');
   });
 });
 
@@ -57,6 +123,13 @@ describe('storyTitleErrors', () => {
       'mds-table-row/test/mds-table-row.mdx: title "UI / Data / Row" is not under "Layout / Table", the page of mds-table',
     ]);
   });
+});
+
+// The real tree: every component has a docs page to link to
+it('gives every component the id of a Storybook docs page', () => {
+  const tags = fs.readdirSync(COMPONENTS_DIR).filter((name) => name.startsWith('mds-'));
+  const ids = storybookDocsIds(readComponentStories(COMPONENTS_DIR).pages);
+  expect(tags.filter((tag) => !ids.has(tag))).toEqual([]);
 });
 
 // The real tree: the pages of every component against its @category and @parent tags

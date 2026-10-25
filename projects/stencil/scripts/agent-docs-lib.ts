@@ -156,6 +156,8 @@ export interface DocsComponent {
   styles?: ContractStyle[];
   dependencies?: string[];
   dependents?: string[];
+  /** The id of its docs page in the published Storybook (component-docs.ts, #1148). */
+  storybook?: string;
   [key: string]: unknown;
 }
 
@@ -178,7 +180,11 @@ function section(title: string, body: string | undefined): string {
  * compact tables, with links to the pattern / antipattern files beside it and to the
  * rules shared by every component.
  */
-export function renderComponentAgentsMd(component: DocsComponent, pkgVersion: string): string {
+export function renderComponentAgentsMd(
+  component: DocsComponent,
+  pkgVersion: string,
+  storybookUrl?: string,
+): string {
   const { tag } = component;
   const usage = component.usage ?? {};
   const description = usage['1. Description']?.trim();
@@ -188,6 +194,9 @@ export function renderComponentAgentsMd(component: DocsComponent, pkgVersion: st
   const readNext = [
     hasPattern ? '[`pattern.md`](pattern.md) - correct usage, with examples' : '',
     hasAntipattern ? '[`antipattern.md`](antipattern.md) - mistakes to avoid' : '',
+    storybookUrl && component.storybook
+      ? `[Storybook](${storybookUrl}?path=/docs/${component.storybook}) - the live examples, in the published Storybook of \`main\``
+      : '',
     `[\`conventions.md\`](${TO_PACKAGE_ROOT}agents/conventions.md), ` +
       `[\`variants.md\`](${TO_PACKAGE_ROOT}agents/variants.md), ` +
       `[\`anti-patterns.md\`](${TO_PACKAGE_ROOT}agents/anti-patterns.md) - the rules shared by every component`,

@@ -14,7 +14,11 @@
  * so magma.api.txt and the docs written here read the contract; a description that tries
  * the mark and misses it fails the build. It also rewrites the usage links of
  * dist/documentation.json for the shipped layout (relative to the component's folder),
- * then checks that every relative link of the shipped agent docs - the per-component
+ * It gives each component the id of its Storybook docs page (`storybook`) and the file the
+ * address of the published Storybook (scripts/story-titles-lib.ts), since the ids follow
+ * neither the tags nor always the titles (#1148).
+ *
+ * It then checks that every relative link of the shipped agent docs - the per-component
  * ones and the AGENTS.md + agents/ of the three entry-point packages - resolves inside
  * the package. A broken link fails the build.
  *
@@ -34,7 +38,9 @@ import {
   rewriteUsageEntries,
   type DocsComponent,
 } from './agent-docs-lib';
+import { COMPONENTS_DIR } from './meta';
 import { markStyles } from './style-contract-lib';
+import { readComponentStories, STORYBOOK_URL, storybookDocsIds } from './story-titles-lib';
 
 const STENCIL_DIR = process.cwd();
 const DOCS_JSON = path.join(STENCIL_DIR, 'dist', 'documentation.json');
@@ -46,6 +52,8 @@ const PACKAGES = ['.', '../stencil-react', '../stencil-angular/magma-angular'];
 interface DocsJson {
   timestamp?: string;
   compiler?: unknown;
+  /** The published Storybook: a component's docs page opens at `?path=/docs/<storybook>`. */
+  storybook?: string;
   components: DocsComponent[];
   [key: string]: unknown;
 }
@@ -56,7 +64,10 @@ function writeComponentDocs(docs: DocsJson, version: string): number {
     fs.mkdirSync(dir, { recursive: true });
     const usage = component.usage ?? {};
 
-    fs.writeFileSync(path.join(dir, 'AGENTS.md'), renderComponentAgentsMd(component, version));
+    fs.writeFileSync(
+      path.join(dir, 'AGENTS.md'),
+      renderComponentAgentsMd(component, version, docs.storybook),
+    );
     for (const [key, file, title] of [
       ['2. Pattern', 'pattern.md', 'patterns'],
       ['3. Antipattern', 'antipattern.md', 'anti-patterns'],
@@ -69,6 +80,7 @@ function writeComponentDocs(docs: DocsJson, version: string): number {
     const single = {
       timestamp: docs.timestamp,
       compiler: docs.compiler,
+      storybook: docs.storybook,
       components: [componentDocsJson(component)],
     };
     fs.writeFileSync(path.join(dir, 'documentation.json'), JSON.stringify(single, null, 2) + '\n');
@@ -155,6 +167,18 @@ function main(): void {
     for (const e of markErrors) console.error(`  ${e}`);
     process.exit(1);
   }
+
+  const storybookIds = storybookDocsIds(readComponentStories(COMPONENTS_DIR).pages);
+  const unlisted = docs.components.filter(({ tag }) => !storybookIds.has(tag));
+  if (unlisted.length) {
+    console.error(
+      `${unlisted.length} component(s) with no Storybook page of their own (a stories file or an MDX page named after the tag in <tag>/test/):`,
+    );
+    for (const { tag } of unlisted) console.error(`  ${tag}`);
+    process.exit(1);
+  }
+  docs.storybook = STORYBOOK_URL;
+  for (const component of docs.components) component.storybook = storybookIds.get(component.tag);
 
   const count = writeComponentDocs(docs, version);
   for (const component of docs.components) component.usage = rewriteUsageEntries(component.usage);
