@@ -22,7 +22,9 @@ The `<mds-modal>` web component is the Magma Design System overlay container for
 - **Body scroll lock**: When `overflow="auto"` the component locks body scroll while open and restores it on close.
 - **Touch dismissal**: On touch devices a horizontal swipe past a threshold closes a `relaxed` modal, respecting the swipe direction implied by edge `position` values.
 - **Slot-driven layout**: With no `window` slot, the default slot renders centered content framed by optional `top` (header) and `bottom` (footer) slots, and a close button is rendered automatically, icon-only and named in the page language (the `lang` of `<html>`) ("Close"). Slotting a `window` element suppresses the built-in chrome and close button so the consumer supplies the entire surface.
-- **Narrow screens**: At a viewport of 480px or less a window that would fill the screen (`center` and the four corners) leaves a strip of backdrop at the top, where the close button shows, as `left` and `right` leave one at their side; `top` and `bottom` stay as tall as their content, with the backdrop around them.
+- **Close button placement**: The built-in close button sits on the backdrop, in a strip the window always leaves free, so a `strict` modal can be closed whatever its content. `left` and `right` leave it at their side at every width.
+- **Narrow screens**: At a viewport of 480px or less a window that would fill the screen (`center` and the four corners) leaves a strip of backdrop at the top, where the close button shows, as `left` and `right` leave one at their side; `top` and `bottom` stay as tall as their content but never taller than the screen less that strip, which stays on their free side with the close button at its edge (top right for `bottom`, bottom right for `top`).
+- **Wide screens**: Above 480px every window leaves a strip of backdrop at its side, with the close button at its top: `center`, `top` and `bottom` one on each side, the button at the top right; the corners one on the side away from their own, the button there.
 
 #### Properties & Visual Configurations
 

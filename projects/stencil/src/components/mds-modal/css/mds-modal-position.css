@@ -196,6 +196,19 @@
     align-items: flex-end;
   }
 
+  /* top and bottom stay as tall as their content, but never taller than the screen less the
+   * strip, which stays on their free side: a tall content covered the whole screen, with the close
+   * button hidden (#1160). The button sits in the strip at the edge of the screen, for bottom at
+   * the top right as for the windows above, for top at the bottom right. */
+
+  :host([position='bottom']),
+  :host([position='top']) {
+    --mds-modal-window-max-height: calc(
+      100dvh - var(--private-modal-window-close-margin) - var(--mds-modal-window-distance) * 2
+    );
+  }
+
+  :host([position='bottom']) .action-close,
   :host([position='bottom-left']) .action-close,
   :host([position='bottom-right']) .action-close,
   :host([position='center']) .action-close,
@@ -205,21 +218,33 @@
     top: --spacing(300);
   }
 
+  :host([position='top']) .action-close {
+    bottom: --spacing(300);
+    right: --spacing(300);
+  }
+
+  :host([position='bottom'][opened]) .action-close,
   :host([position='bottom-left'][opened]) .action-close,
   :host([position='bottom-right'][opened]) .action-close,
   :host([position='center'][opened]) .action-close,
+  :host([position='top'][opened]) .action-close,
   :host([position='top-left'][opened]) .action-close,
   :host([position='top-right'][opened]) .action-close {
     opacity: 1;
     pointer-events: auto;
   }
 
+  :host([position='bottom']:not([opened])) .action-close,
   :host([position='bottom-left']:not([opened])) .action-close,
   :host([position='bottom-right']:not([opened])) .action-close,
   :host([position='center']:not([opened])) .action-close,
   :host([position='top-left']:not([opened])) .action-close,
   :host([position='top-right']:not([opened])) .action-close {
     transform: translateY(-120%) rotate(45deg);
+  }
+
+  :host([position='top']:not([opened])) .action-close {
+    transform: translateY(120%) rotate(-45deg);
   }
 }
 
@@ -237,5 +262,55 @@
   :host([position='left']),
   :host([position='right']) {
     --private-modal-width: var(--mds-modal-window-max-width);
+  }
+
+  /* Every window leaves a strip of backdrop at its side, as left and right do, with the close
+   * button at the top of it: it was hidden, and a strict modal had nothing else to be closed by
+   * (#1160). The corners already leave the strip on the side away from their own; center, top and
+   * bottom leave one on each side, where the 40px they left were too few for the button. */
+
+  :host([position='bottom']),
+  :host([position='center']),
+  :host([position='top']) {
+    --private-modal-width: calc(100vw - var(--private-modal-window-close-margin) * 2);
+  }
+
+  :host([position='bottom']) .action-close,
+  :host([position='bottom-left']) .action-close,
+  :host([position='center']) .action-close,
+  :host([position='top']) .action-close,
+  :host([position='top-left']) .action-close {
+    right: --spacing(300);
+    top: --spacing(300);
+  }
+
+  :host([position='bottom-right']) .action-close,
+  :host([position='top-right']) .action-close {
+    left: --spacing(300);
+    top: --spacing(300);
+  }
+
+  :host([position='bottom'][opened]) .action-close,
+  :host([position='bottom-left'][opened]) .action-close,
+  :host([position='bottom-right'][opened]) .action-close,
+  :host([position='center'][opened]) .action-close,
+  :host([position='top'][opened]) .action-close,
+  :host([position='top-left'][opened]) .action-close,
+  :host([position='top-right'][opened]) .action-close {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  :host([position='bottom']:not([opened])) .action-close,
+  :host([position='bottom-left']:not([opened])) .action-close,
+  :host([position='center']:not([opened])) .action-close,
+  :host([position='top']:not([opened])) .action-close,
+  :host([position='top-left']:not([opened])) .action-close {
+    transform: translateY(-120%) rotate(45deg);
+  }
+
+  :host([position='bottom-right']:not([opened])) .action-close,
+  :host([position='top-right']:not([opened])) .action-close {
+    transform: translateY(-120%) rotate(-45deg);
   }
 }
