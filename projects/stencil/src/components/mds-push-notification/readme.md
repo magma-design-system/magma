@@ -13,7 +13,7 @@ The `<mds-push-notification>` web component is the Magma Design System container
 
 #### Semantic Behavior
 
-- **Slot-driven lifecycle**: Items placed in the default slot are animated in automatically; each item animates out and is removed when closed (an item shows its close button only with `deletable`).
+- **Slot-driven lifecycle**: Items placed in the default slot are animated in automatically; each item animates out and is removed when closed (an item shows its close button only with `dismissible`).
 - **Built-in clear button**: The container always renders its own clear button, labelled in the page language ("Clear notifications", "Cancella notifiche"), which animates out every item and hides the container.
 - **Auto vs. manual behavior**: With `behavior="auto"` the container shows itself as soon as one or more items are added; with `behavior="manual"` visibility is driven only by the `visible` prop or the imperative methods.
 - **Empty-stack auto-hide**: When the last remaining item animates out, the container hides itself regardless of behavior; the clear button and `hide()` hide it too.
@@ -37,12 +37,12 @@ Correct and idiomatic ways to use the `<mds-push-notification>` component, order
 
 #### Minimal Auto-Managed Stack
 
-The default `behavior="auto"` configuration. Drop `mds-push-notification-item` children into the default slot and the container shows itself, animates each item in, and hides itself when all items have been dismissed. Set `deletable` on an item to give it its own close button.
+The default `behavior="auto"` configuration. Drop `mds-push-notification-item` children into the default slot and the container shows itself, animates each item in, and hides itself when all items have been dismissed. Set `dismissible` on an item to give it its own close button.
 
 ```html
 <mds-push-notification>
   <mds-push-notification-item
-    deletable
+    dismissible
     subject="Nuovo messaggio"
     message="Il documento e' pronto per la revisione."
   ></mds-push-notification-item>

@@ -71,7 +71,15 @@ export class MdsPushNotificationItem {
   @Prop({ reflect: true }) readonly dateFormat: NotificationItemDateFormatType = 'timeago';
 
   /**
-   * Specifies if the component is dismissable; when set, a dismiss button is shown.
+   * Shows a dismiss button: activating it emits `mdsPushNotificationItemClose`, and a parent
+   * `mds-push-notification` takes the item out of the stack
+   */
+  @Prop({ reflect: true, mutable: true }) dismissible?: boolean;
+
+  /**
+   * Shows the dismiss button, as `dismissible` does.
+   * @deprecated Use `dismissible`: the button dismisses the notification, it deletes nothing.
+   * Goes in the next major.
    */
   @Prop({ reflect: true, mutable: true }) deletable?: boolean = false;
 
@@ -128,8 +136,11 @@ export class MdsPushNotificationItem {
   };
 
   componentDidLoad(): void {
+    this.handleDismissibleChange(this.dismissible);
     this.handleDeletableChange(this.deletable);
   }
+
+  private isDismissible = (): boolean => this.dismissible === true || this.deletable === true;
 
   private onSlotChange = (): void => {
     this.hasActions = hasChildWithSlot(this.host, 'action');
@@ -161,6 +172,14 @@ export class MdsPushNotificationItem {
     };
 
     dayjs.locale('custom-locale', { relativeTime: relativeTimeCustom as RelativeTimeType });
+  }
+
+  // a false boolean is an absent attribute: `dismissible="false"` leaves the host once loaded
+  @Watch('dismissible')
+  handleDismissibleChange(newValue?: boolean): void {
+    if (newValue === false) {
+      this.dismissible = undefined;
+    }
   }
 
   @Watch('deletable')
@@ -219,7 +238,7 @@ export class MdsPushNotificationItem {
             <slot name="action" onSlotchange={this.onSlotChange}></slot>
           </div>
         </div>
-        {this.deletable && (
+        {this.isDismissible() && (
           <mds-button
             class="close-button"
             variant="dark"
