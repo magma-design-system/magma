@@ -30,6 +30,24 @@ describe('mds-header', () => {
     expect(bar.menu).toBe('desktop');
   });
 
+  it('relays nav and menu to the attributes of the bar, which its CSS reads', async () => {
+    // the bar shows its regions per breakpoint with :host([nav]) and :host([menu]) (#1147)
+    const { root, waitForChanges } = await render<HTMLMdsHeaderElement>(
+      '<mds-header nav="all"><mds-header-bar><mds-button slot="nav" label="Accedi"></mds-button></mds-header-bar></mds-header>',
+    );
+    const bar = root.querySelector('mds-header-bar')!;
+    await vi.waitFor(() => expect(bar).toHaveAttribute('nav', 'all'));
+    expect(bar).toHaveAttribute('menu', 'none');
+
+    root.nav = 'mobile';
+    await waitForChanges();
+    expect(bar).toHaveAttribute('nav', 'mobile');
+
+    root.setAttribute('nav', 'none');
+    await waitForChanges();
+    expect(bar).toHaveAttribute('nav', 'none');
+  });
+
   it('goes back to the plain appearance once appearance-set is removed', async () => {
     const consoleError = vi.spyOn(console, 'error');
     const { root, waitForChanges } = await render(
