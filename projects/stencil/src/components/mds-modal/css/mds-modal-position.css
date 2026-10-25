@@ -171,6 +171,56 @@
   :host([position='right']) {
     --private-modal-width: calc(100% - var(--private-modal-window-close-margin));
   }
+
+  /* The windows that fill the screen here leave a strip of backdrop at the top, as the side
+   * positions leave one at their side: the built-in close button sits in it, and a tap on it
+   * closes a relaxed modal. Without it a phone could close them only from their content or
+   * with Esc (#1143). top and bottom are as tall as their content, the backdrop around them. */
+
+  :host([position='bottom-left']),
+  :host([position='bottom-right']),
+  :host([position='center']),
+  :host([position='top-left']),
+  :host([position='top-right']) {
+    --mds-modal-window-height: calc(
+      100dvh - var(--private-modal-window-close-margin) - var(--mds-modal-window-distance) * 2
+    );
+    --mds-modal-window-max-height: var(--mds-modal-window-height);
+  }
+
+  :host([position='bottom-left']) .dialog,
+  :host([position='bottom-right']) .dialog,
+  :host([position='center']) .dialog,
+  :host([position='top-left']) .dialog,
+  :host([position='top-right']) .dialog {
+    align-items: flex-end;
+  }
+
+  :host([position='bottom-left']) .action-close,
+  :host([position='bottom-right']) .action-close,
+  :host([position='center']) .action-close,
+  :host([position='top-left']) .action-close,
+  :host([position='top-right']) .action-close {
+    right: --spacing(300);
+    top: --spacing(300);
+  }
+
+  :host([position='bottom-left'][opened]) .action-close,
+  :host([position='bottom-right'][opened]) .action-close,
+  :host([position='center'][opened]) .action-close,
+  :host([position='top-left'][opened]) .action-close,
+  :host([position='top-right'][opened]) .action-close {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  :host([position='bottom-left']:not([opened])) .action-close,
+  :host([position='bottom-right']:not([opened])) .action-close,
+  :host([position='center']:not([opened])) .action-close,
+  :host([position='top-left']:not([opened])) .action-close,
+  :host([position='top-right']:not([opened])) .action-close {
+    transform: translateY(-120%) rotate(45deg);
+  }
 }
 
 @media (width > 480px) {

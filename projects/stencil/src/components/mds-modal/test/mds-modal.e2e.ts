@@ -1,7 +1,7 @@
-import { render } from '@stencil/vitest';
+import { render, vi } from '@stencil/vitest';
 import { useLanguage } from '@test/language';
 import { createSlottedChild, describeConditionalSlot } from '@test/slot';
-import { userEvent } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 
 describe('mds-modal', () => {
   it('renders', async () => {
@@ -293,6 +293,58 @@ describe('mds-modal', () => {
       expect(root.querySelector('[slot="window"]')).not.toHaveAttribute('role');
     });
   });
+});
+
+// #1143: on a phone a centred modal filled the screen with its close button hidden: nothing
+// was left to tap but its own content
+describe('mds-modal on a narrow screen', () => {
+  afterEach(async () => {
+    // the size of the browser project in vitest.config.mts
+    await page.viewport(1280, 800);
+  });
+
+  it.each(['center', 'top-right'])(
+    'leaves a strip of backdrop at the top, with a close button that works (%s)',
+    async (position) => {
+      await page.viewport(360, 640);
+      const { root, waitForChanges } = await render(
+        `<mds-modal opened position="${position}" interaction="strict"><p>Contenuto</p></mds-modal>`,
+      );
+      const close = root.shadowRoot!.querySelector<HTMLElement>('.action-close')!;
+      const window = root.shadowRoot!.querySelector<HTMLElement>('.window')!;
+      await vi.waitFor(() => expect(getComputedStyle(close).opacity).toBe('1'));
+
+      // the boxes of the layout, in the dialog: the entry still moves them with a transform
+      expect(window.offsetTop).toBeGreaterThanOrEqual(close.offsetTop + close.offsetHeight);
+      expect(window.offsetTop + window.offsetHeight).toBe(640);
+
+      await userEvent.click(close);
+      await waitForChanges();
+      expect(root).not.toHaveAttribute('opened');
+    },
+  );
+
+  it('keeps the strip at the side of a side position', async () => {
+    await page.viewport(360, 640);
+    const { root } = await render('<mds-modal opened position="left"><p>Contenuto</p></mds-modal>');
+    const window = root.shadowRoot!.querySelector<HTMLElement>('.window')!;
+
+    expect(window.offsetLeft).toBe(0);
+    expect(window.offsetTop).toBe(0);
+    expect(window.offsetWidth).toBeLessThan(360);
+  });
+});
+
+// #1143: the distance was a bare 0, which calc() cannot take from 100dvh: without globals.css,
+// which registers it as a length, the window lost its max height and a tall content ran off the
+// screen, out of reach
+it('keeps a tall modal inside the screen, without the global stylesheet', async () => {
+  const tall = Array.from({ length: 80 }, (_, line) => `<p>Riga ${line + 1}</p>`).join('');
+  const { root } = await render(`<mds-modal opened><div>${tall}</div></mds-modal>`);
+  const window = root.shadowRoot!.querySelector('.window')!;
+
+  expect(window.getBoundingClientRect().height).toBeLessThanOrEqual(800);
+  expect(window.getBoundingClientRect().top).toBeGreaterThanOrEqual(0);
 });
 
 // #937: the close button is an icon-only button

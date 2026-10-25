@@ -43,7 +43,10 @@
     var(--ease-in-out-quint)
   );
   --mds-modal-window-background: rgb(var(--magma-surface-overlay));
-  --mds-modal-window-distance: 0;
+
+  /* 0px, not 0: the height subtracts it from 100dvh, and calc() cannot take a number from a
+   * length; unless globals.css registers it, the window lost its height and max-height (#1143) */
+  --mds-modal-window-distance: 0px;
   --mds-modal-window-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
   --mds-modal-window-max-height: calc(100dvh - calc(var(--mds-modal-window-distance) * 2));
   --mds-modal-window-overflow: auto;
