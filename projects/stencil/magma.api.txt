@@ -1531,6 +1531,7 @@ mds-table-row prop selection (attr selection) [reflect]: boolean | undefined
 mds-table-row prop value (attr value) [reflect]: number | string | undefined
 mds-table-row slot (default)
 mds-table-row slot action
+mds-table-row css --mds-table-row-actions-background
 mds-table-row css --mds-table-row-actions-gap INTERNAL
 mds-table-row css --mds-table-row-background-alt INTERNAL
 mds-table-row css --mds-table-row-background-hover INTERNAL

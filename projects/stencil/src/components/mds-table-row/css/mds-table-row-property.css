@@ -12,6 +12,8 @@
     - --mds-table-row-background-alt, --mds-table-row-color-alt: read directly by
       mds-table-cell, which sets no default of its own, so a registration would substitute a
       static light value there whenever mds-table-row is absent.
+    - --mds-table-row-actions-background: read-only, the actions box sets it in every state, so a
+      registration would only give a static light value to a reader outside the action slot.
 */
 
 @property --mds-table-row-actions-gap {

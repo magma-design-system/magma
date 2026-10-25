@@ -170,7 +170,7 @@ Set `interactive` on the parent `<mds-table>` to enable per-row hover highlights
 
 #### Styling Customization
 
-`mds-table-row` has no public CSS custom property: a row takes its colours from the parent `mds-table-body` (and `mds-table`), and its hover, selected and sorted colours and the spacing of its actions follow its states. Restyle the rows through the public `--mds-table-body-*` or `--mds-table-*` properties of the parents. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes stay consistent.
+A row takes its colours from the parent `mds-table-body` (and `mds-table`), and its hover, selected and sorted colours and the spacing of its actions follow its states. Restyle the rows through the public `--mds-table-body-*` or `--mds-table-*` properties of the parents. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes stay consistent.
 
 ```css
 /* Branded colours for the rows of a table */
@@ -178,6 +178,19 @@ Set `interactive` on the parent `<mds-table>` to enable per-row hover highlights
   --mds-table-body-background: rgb(var(--magma-surface-raised));
   --mds-table-body-color: rgb(var(--magma-text-default));
 }
+```
+
+The one public custom property of the row, `--mds-table-row-actions-background`, is read-only: it is the background the actions box paints in the current state of the row (at rest, on hover, while a column sorts a selectable table). Content of the `action` slot reads it to paint the same colour when it moves out of the box, for example a status that follows the part of a tall row on screen. Read it, never set it: the box sets it itself, so a value set from outside changes nothing.
+
+```html
+<mds-table interactive>
+  <mds-table-body>
+    <mds-table-row value="p-01">
+      <mds-table-cell><mds-text typography="detail">Pratica 01</mds-text></mds-table-cell>
+      <mds-text slot="action" typography="detail" class="bg-(--mds-table-row-actions-background)">Copiato</mds-text>
+    </mds-table-row>
+  </mds-table-body>
+</mds-table>
 ```
 
 
@@ -340,13 +353,14 @@ mds-table-body {
 
 ## CSS Custom Properties
 
-| Name                               | Description                                                  |
-| ---------------------------------- | ------------------------------------------------------------ |
-| `--mds-table-row-actions-gap`      | Gap spacing for actions inside table rows.                   |
-| `--mds-table-row-background-alt`   | Background color of the rows while a column sorts the table. |
-| `--mds-table-row-background-hover` | Background color for table row on hover.                     |
-| `--mds-table-row-color-alt`        | Text color of the rows while a column sorts the table.       |
-| `--mds-table-row-color-hover`      | Text color for table row on hover.                           |
+| Name                                 | Description                                                                                                                                                                                                                                                                                                   |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-table-row-actions-background` | Public. Read-only: the background the actions box paints in the current state of the row (at rest, on hover, while a column sorts a selectable table), for content of the `action` slot that paints it too when it moves out of the box. The box sets it itself, so a value set from outside changes nothing. |
+| `--mds-table-row-actions-gap`        | Gap spacing for actions inside table rows.                                                                                                                                                                                                                                                                    |
+| `--mds-table-row-background-alt`     | Background color of the rows while a column sorts the table.                                                                                                                                                                                                                                                  |
+| `--mds-table-row-background-hover`   | Background color for table row on hover.                                                                                                                                                                                                                                                                      |
+| `--mds-table-row-color-alt`          | Text color of the rows while a column sorts the table.                                                                                                                                                                                                                                                        |
+| `--mds-table-row-color-hover`        | Text color for table row on hover.                                                                                                                                                                                                                                                                            |
 
 
 ## Dependencies

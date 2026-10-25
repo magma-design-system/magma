@@ -1,6 +1,7 @@
 import { render } from '@stencil/vitest';
 import { describeConditionalSlot } from '@test/slot';
 import { hydrate, renderToString, reveal } from '@test/ssr';
+import { userEvent } from 'vitest/browser';
 
 const tableWithActions =
   '<mds-table><mds-table-body><mds-table-row><mds-table-cell>Cell</mds-table-cell>' +
@@ -58,6 +59,43 @@ describe('mds-table-row', () => {
       reveal(root.parentElement!);
 
       await expectActionsMeasured(root.querySelector('mds-table-row')!);
+    });
+  });
+
+  describe('the background of the actions box', () => {
+    // public and read-only (#1139): what the box paints, for content of the action slot that
+    // moves out of the box and has to paint it too; a distinct hover colour tells the states apart
+    const ROW = `
+<mds-table>
+  <mds-table-body>
+    <mds-table-row style="--mds-table-row-background-hover: rgb(10 20 30)">
+      <mds-table-cell>Cell</mds-table-cell>
+      <div slot="action" style="background-color: var(--mds-table-row-actions-background)">Copied</div>
+    </mds-table-row>
+  </mds-table-body>
+</mds-table>`;
+
+    const actionsBackground = (element: Element): string =>
+      getComputedStyle(element).getPropertyValue('--mds-table-row-actions-background').trim();
+
+    it('reaches the content of the action slot, and follows the state of the row', async () => {
+      const { root, waitForChanges } = await render(ROW);
+      const row = root.querySelector('mds-table-row')!;
+      const content = row.querySelector('[slot="action"]')!;
+      const { actions } = queryActionParts(row);
+      // the tests share the page, and the pointer stays where the last one left it
+      await userEvent.unhover(row);
+      await waitForChanges();
+
+      expect(actionsBackground(actions)).not.toBe('');
+      expect(actionsBackground(content)).toBe(actionsBackground(actions));
+      expect(getComputedStyle(content).backgroundColor).not.toBe('rgb(10, 20, 30)');
+
+      await userEvent.hover(row.querySelector('mds-table-cell')!);
+      await waitForChanges();
+
+      expect(actionsBackground(content)).toBe(actionsBackground(actions));
+      expect(getComputedStyle(content).backgroundColor).toBe('rgb(10, 20, 30)');
     });
   });
 
