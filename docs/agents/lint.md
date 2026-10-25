@@ -96,8 +96,8 @@ npx stylelint "src/**/*.{css,scss}"
 ```
 
 An error is something broken or not accessible; a warning of `recommended` is a colour that
-does not follow the mode, the named theme and the contrast preference, or a custom property a
-component may change in any release. When a rule is wrong about Magma itself, report it
+does not follow the mode, the named theme and the contrast preference, a custom property a
+component may change in any release, or a prop the next major removes. When a rule is wrong about Magma itself, report it
 ([`reporting.md`](reporting.md)) instead of disabling it.
 
 ## Rules
@@ -107,6 +107,7 @@ component may change in any release. When a rule is wrong about Magma itself, re
 | [`valid-attribute-values`](#valid-attribute-values) | ESLint | error | error |
 | [`no-false-boolean`](#no-false-boolean) | ESLint | error | error |
 | [`accessible-name`](#accessible-name) | ESLint | error | error |
+| [`no-deprecated`](#no-deprecated) | ESLint | warn | error |
 | [`no-raw-palette-classes`](#no-raw-palette-classes) | ESLint, Stylelint | warn | error |
 | [`no-color-scheme-override`](#no-color-scheme-override) | Stylelint | error | error |
 | [`no-raw-color`](#no-raw-color) | Stylelint | warning | error |
@@ -169,6 +170,23 @@ named after its file: describe the image, or set `alt=""` when it is decorative.
 Left alone, because one element does not show its name: an element with an `id` (an
 `mds-tooltip` with `relation="label"`, or an `aria-labelledby` elsewhere, may name it) and
 one that spreads its props (`{...props}`).
+
+### no-deprecated
+
+A deprecated prop still works, and the next major removes it. The message quotes its
+`@deprecated` text, which says what to use instead; the component's `AGENTS.md` marks the
+same props as **Deprecated**.
+
+```html
+<!-- INCORRECT: deletable is the old name of dismissible -->
+<mds-toast visible deletable duration="0">Invio non riuscito</mds-toast>
+
+<!-- CORRECT -->
+<mds-toast visible dismissible duration="0">Invio non riuscito</mds-toast>
+```
+
+A prop set by a binding is reported too (`[deletable]="true"`, `deletable={true}`): the name is
+deprecated, whatever its value.
 
 ### no-raw-palette-classes
 

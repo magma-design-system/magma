@@ -41,6 +41,8 @@ export interface PropInfo {
   boolean: boolean;
   /** Every value it takes, when the type is a closed union of literals; undefined when open. */
   values?: string[];
+  /** What to use instead, when the prop is deprecated (its `@deprecated` text). */
+  deprecation?: string;
 }
 
 export interface ComponentInfo {
@@ -156,6 +158,7 @@ interface DocsProp {
   name: string;
   attr?: string;
   values?: DocsValue[];
+  deprecation?: string;
 }
 interface DocsStyle {
   name: string;
@@ -172,7 +175,7 @@ interface DocsComponent {
 /** The types a union may hold next to its literals and still be closed. */
 const EMPTY = new Set(['undefined', 'null']);
 
-export const propInfo = ({ name, attr, values = [] }: DocsProp): PropInfo => {
+export const propInfo = ({ name, attr, values = [], deprecation }: DocsProp): PropInfo => {
   const literals = values.filter((value) => value.value !== undefined);
   const closed =
     literals.length > 0 &&
@@ -182,6 +185,8 @@ export const propInfo = ({ name, attr, values = [] }: DocsProp): PropInfo => {
     ...(attr ? { attr } : {}),
     boolean: values.some((value) => value.type === 'boolean'),
     ...(closed ? { values: literals.map((value) => String(value.value)) } : {}),
+    // the JSDoc wraps it over several lines
+    ...(deprecation != null ? { deprecation: deprecation.replace(/\s+/g, ' ').trim() } : {}),
   };
 };
 

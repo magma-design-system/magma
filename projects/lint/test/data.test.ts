@@ -38,6 +38,14 @@ describe('propInfo', () => {
     ).toBeUndefined();
     expect(propInfo({ name: 'disabled', values: [{ type: 'boolean' }] }).boolean).toBe(true);
   });
+
+  test('a deprecated prop keeps its @deprecated text, on one line', () => {
+    expect(
+      propInfo({ name: 'async', deprecation: 'Set `async` on the items.\nGoes in the next major.' })
+        .deprecation,
+    ).toBe('Set `async` on the items. Goes in the next major.');
+    expect(propInfo({ name: 'label' })).not.toHaveProperty('deprecation');
+  });
 });
 
 test('the components answer by prop name and by attribute', () => {

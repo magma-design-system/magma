@@ -367,9 +367,14 @@ export namespace Components {
      */
     interface MdsBanner {
         /**
-          * Shows the cross icon to perform cancel/delete action on element
+          * Shows the close button, as `dismissible` does.
+          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
          */
         "deletable"?: boolean;
+        /**
+          * Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`
+         */
+        "dismissible"?: boolean;
         /**
           * The title on the top of the banner
          */
@@ -3187,11 +3192,16 @@ export namespace Components {
      */
     interface MdsToast {
         /**
-          * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
+          * Shows the hide button, as `dismissible` does.
+          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
          */
         "deletable"?: boolean;
         /**
-          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `deletable` so the person can hide it too.
+          * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
+         */
+        "dismissible"?: boolean;
+        /**
+          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `dismissible` so the person can hide it too.
           * @default 5000
          */
         "duration"?: number;
@@ -5711,9 +5721,14 @@ declare namespace LocalJSX {
      */
     interface MdsBanner {
         /**
-          * Shows the cross icon to perform cancel/delete action on element
+          * Shows the close button, as `dismissible` does.
+          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
          */
         "deletable"?: boolean;
+        /**
+          * Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`
+         */
+        "dismissible"?: boolean;
         /**
           * The title on the top of the banner
          */
@@ -8707,11 +8722,16 @@ declare namespace LocalJSX {
      */
     interface MdsToast {
         /**
-          * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
+          * Shows the hide button, as `dismissible` does.
+          * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.
          */
         "deletable"?: boolean;
         /**
-          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `deletable` so the person can hide it too.
+          * Shows a button that hides the toast, an arrow towards the edge the toast leaves by
+         */
+        "dismissible"?: boolean;
+        /**
+          * If set, specifies the visibility duration in milliseconds of the element inside the viewport, when the time is up the visible property will be set to false. The countdown waits while the pointer is over the toast or the focus is inside it. If the duration is set to 0 the toast stays until it is hidden: give it `dismissible` so the person can hide it too.
           * @default 5000
          */
         "duration"?: number;
@@ -9057,6 +9077,7 @@ declare namespace LocalJSX {
         "variant": ThemeVariantType;
         "tone": ToneMinimalBoxVariantType;
         "hideCockade": boolean;
+        "dismissible": boolean;
         "deletable": boolean;
         "headline": string;
         "icon": string;
@@ -9690,6 +9711,7 @@ declare namespace LocalJSX {
         "variant": ThemeVariantType;
         "tone": ToneMinimalVariantType;
         "position": ToastPosition;
+        "dismissible": boolean;
         "deletable": boolean;
     }
     interface MdsToastRegionAttributes {

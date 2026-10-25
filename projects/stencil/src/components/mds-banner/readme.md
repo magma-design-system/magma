@@ -17,7 +17,7 @@ The `<mds-banner>` web component is the Magma Design System surface for contextu
 
 - **Variant-driven ARIA**: The announcement role is derived from `variant`, not set manually. `error` and `warning` announce assertively (`role="alert"`); `ai`, `info`, `primary`, and `success` announce politely (`role="status"`); `light` and `dark` are decorative and silent.
 - **Headline as label**: When `headline` is set it also becomes the banner's accessible label.
-- **Dismissal**: When `deletable` is true a close button is rendered; activating it emits `mdsBannerClose` and, if the banner sits inside an `mds-modal`, closes that modal.
+- **Dismissal**: When `dismissible` is true a close button is rendered; activating it emits `mdsBannerClose` and, if the banner sits inside an `mds-modal`, closes that modal.
 - **Localized close button**: The close button title is localized (el/en/es/it) from the host language.
 - **Action slot**: The `action` region is rendered only when a direct `[slot="action"]` child is present, so banners without actions produce no empty container.
 
@@ -29,7 +29,8 @@ This component uses the shared `variant` / `tone` ladders defined in [`docs/agen
 
 - **`hideCockade`** (default `false`) removes the colored decorative badge wrapping the leading `icon`; set it for a flatter icon presentation.
 - **`icon`** is a Magma icon library slug shown at the top-left, surfaced as decorative.
-- **`deletable`** opts the banner into being dismissible - choose it for transient or user-acknowledged messages rather than persistent context.
+- **`dismissible`** shows the close button - choose it for transient or user-acknowledged messages rather than persistent context.
+- **`deletable`** is the old name of `dismissible`, deprecated: the button dismisses the message, it deletes nothing. It still works, and goes in the next major.
 - The **default slot** carries the body text/markup; the **`action` slot** holds inline controls, with `mds-button` the recommended element.
 
 
@@ -100,10 +101,10 @@ Set `icon` to a Magma icon slug. The icon is decorative (`aria-hidden="true"`). 
 
 #### Dismissible Banner
 
-Set `deletable` to show a close button. The button emits `mdsBannerClose` when activated. Listen for the event to remove the banner from the DOM or update application state.
+Set `dismissible` to show a close button. The button emits `mdsBannerClose` when activated. Listen for the event to remove the banner from the DOM or update application state.
 
 ```html
-<mds-banner variant="info" deletable id="promo-banner">
+<mds-banner variant="info" dismissible id="promo-banner">
   <mds-text typography="detail">
     Scopri le nuove funzioni premium disponibili nel tuo piano.
   </mds-text>
@@ -175,11 +176,11 @@ Use `variant="ai"` to mark banners that present AI-generated content or AI-power
 
 #### Dismissible Banner inside mds-modal
 
-When `deletable` is set and the banner lives inside an `<mds-modal>`, activating the close button emits `mdsBannerClose` and also closes the modal automatically - no extra JavaScript needed.
+When `dismissible` is set and the banner lives inside an `<mds-modal>`, activating the close button emits `mdsBannerClose` and also closes the modal automatically - no extra JavaScript needed.
 
 ```html
 <mds-modal opened>
-  <mds-banner variant="warning" deletable headline="Attenzione">
+  <mds-banner variant="warning" dismissible headline="Attenzione">
     <mds-text typography="detail">
       Stai per eliminare tutti i dati. L'azione non e reversibile.
     </mds-text>
@@ -257,13 +258,13 @@ The `action` named slot is the correct place for inline controls. Placing button
 </mds-banner>
 ```
 
-#### Do Not Set `deletable="false"` to Hide the Close Button
+#### Do Not Set `dismissible="false"` to Hide the Close Button
 
-`deletable` is a boolean prop, and a false boolean is an absent attribute ([`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md)). Stencil reads the string `"false"` as `false` here, so the button is hidden, but the attribute stays on the element and any `[deletable]` selector still matches it. Remove the attribute (or omit it) to hide the button.
+`dismissible` is a boolean prop, and a false boolean is an absent attribute ([`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md)). Stencil reads the string `"false"` as `false` here, so the button is hidden, but the attribute stays on the element and any `[dismissible]` selector still matches it. Remove the attribute (or omit it) to hide the button.
 
 ```html
 <!-- INCORRECT -->
-<mds-banner variant="error" deletable="false">
+<mds-banner variant="error" dismissible="false">
   <mds-text typography="detail">Errore permanente - non dismissibile.</mds-text>
 </mds-banner>
 
@@ -317,7 +318,7 @@ The component fires `mdsBannerClose` only when the close button is activated (bo
 
 ```html
 <!-- INCORRECT -->
-<mds-banner variant="info" deletable id="notice">
+<mds-banner variant="info" dismissible id="notice">
   <mds-text typography="detail">Avviso temporaneo.</mds-text>
 </mds-banner>
 <script>
@@ -327,7 +328,7 @@ The component fires `mdsBannerClose` only when the close button is activated (bo
 </script>
 
 <!-- CORRECT -->
-<mds-banner variant="info" deletable id="notice">
+<mds-banner variant="info" dismissible id="notice">
   <mds-text typography="detail">Avviso temporaneo.</mds-text>
 </mds-banner>
 <script>
@@ -341,14 +342,15 @@ The component fires `mdsBannerClose` only when the close button is activated (bo
 
 ## Properties
 
-| Property      | Attribute      | Description                                                     | Type                                                                                                 | Default     |
-| ------------- | -------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
-| `deletable`   | `deletable`    | Shows the cross icon to perform cancel/delete action on element | `boolean \| undefined`                                                                               | `undefined` |
-| `headline`    | `headline`     | The title on the top of the banner                              | `string \| undefined`                                                                                | `undefined` |
-| `hideCockade` | `hide-cockade` | Hides the decoration around the banner icon                     | `boolean \| undefined`                                                                               | `false`     |
-| `icon`        | `icon`         | An icon displayed at the top left of the banner                 | `string \| undefined`                                                                                | `undefined` |
-| `tone`        | `tone`         | Sets the tone of the color variant                              | `"box" \| "strong" \| "weak" \| undefined`                                                           | `'weak'`    |
-| `variant`     | `variant`      | Sets the theme variant colors                                   | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
+| Property      | Attribute      | Description                                                                                                                                                                                              | Type                                                                                                 | Default     |
+| ------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ----------- |
+| `deletable`   | `deletable`    | <span style="color:red">**[DEPRECATED]**</span> Use `dismissible`: the button dismisses the message, it deletes nothing. Goes in the next major.<br/><br/>Shows the close button, as `dismissible` does. | `boolean \| undefined`                                                                               | `undefined` |
+| `dismissible` | `dismissible`  | Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`                                                                                                                     | `boolean \| undefined`                                                                               | `undefined` |
+| `headline`    | `headline`     | The title on the top of the banner                                                                                                                                                                       | `string \| undefined`                                                                                | `undefined` |
+| `hideCockade` | `hide-cockade` | Hides the decoration around the banner icon                                                                                                                                                              | `boolean \| undefined`                                                                               | `false`     |
+| `icon`        | `icon`         | An icon displayed at the top left of the banner                                                                                                                                                          | `string \| undefined`                                                                                | `undefined` |
+| `tone`        | `tone`         | Sets the tone of the color variant                                                                                                                                                                       | `"box" \| "strong" \| "weak" \| undefined`                                                           | `'weak'`    |
+| `variant`     | `variant`      | Sets the theme variant colors                                                                                                                                                                            | `"ai" \| "dark" \| "error" \| "info" \| "light" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Events

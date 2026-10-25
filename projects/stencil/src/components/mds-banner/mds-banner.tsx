@@ -64,7 +64,14 @@ export class MdsBanner {
   @Prop({ reflect: true }) readonly hideCockade?: boolean = false;
 
   /**
-   * Shows the cross icon to perform cancel/delete action on element
+   * Shows a close button that dismisses the banner: activating it emits `mdsBannerClose`
+   */
+  @Prop() readonly dismissible?: boolean;
+
+  /**
+   * Shows the close button, as `dismissible` does.
+   * @deprecated Use `dismissible`: the button dismisses the message, it deletes nothing.
+   * Goes in the next major.
    */
   @Prop() readonly deletable?: boolean;
 
@@ -92,8 +99,10 @@ export class MdsBanner {
     warning: { role: 'alert', live: 'assertive' },
   };
 
-  private deletableHandler = (): void => {
-    if (this.deletable) {
+  private isDismissible = (): boolean => this.dismissible === true || this.deletable === true;
+
+  private dismissibleHandler = (): void => {
+    if (this.isDismissible()) {
       const closeIcon = this.host.shadowRoot?.querySelector('.close-button') as HTMLElement;
       this.km.addElement(closeIcon);
       this.km.attachClickBehavior();
@@ -108,11 +117,11 @@ export class MdsBanner {
   }
 
   componentDidLoad(): void {
-    this.deletableHandler();
+    this.dismissibleHandler();
   }
 
   componentDidUpdate(): void {
-    this.deletableHandler();
+    this.dismissibleHandler();
   }
 
   disconnectedCallback(): void {
@@ -164,7 +173,7 @@ export class MdsBanner {
         pref-mode={preferenceStore.state.mode}
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
-        <div class="body">
+        <div class={clsx('body', this.isDismissible() && 'body--dismissible')}>
           {this.icon && <mds-icon aria-hidden="true" class="icon" name={this.icon} />}
           <div class="content">
             {this.headline && (
@@ -176,7 +185,7 @@ export class MdsBanner {
               <slot />
             </div>
           </div>
-          {this.deletable && (
+          {this.isDismissible() && (
             <mds-button
               class="close-button"
               icon={miBaselineClose}

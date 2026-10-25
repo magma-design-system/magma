@@ -121,7 +121,8 @@ mds-badge css --mds-badge-border-width INTERNAL
 mds-badge css --mds-badge-color
 mds-badge css --mds-badge-radius
 mds-banner encapsulation shadow
-mds-banner prop deletable (attr deletable): boolean | undefined
+mds-banner prop deletable (attr deletable): boolean | undefined DEPRECATED
+mds-banner prop dismissible (attr dismissible): boolean | undefined
 mds-banner prop headline (attr headline): string | undefined
 mds-banner prop hideCockade (attr hide-cockade) [reflect]: boolean | undefined = false
 mds-banner prop icon (attr icon): string | undefined
@@ -1552,7 +1553,8 @@ mds-text css --mds-text-line-clamp
 mds-text css --mds-text-selection-background INTERNAL
 mds-text css --mds-text-selection-color INTERNAL
 mds-toast encapsulation shadow
-mds-toast prop deletable (attr deletable): boolean | undefined
+mds-toast prop deletable (attr deletable): boolean | undefined DEPRECATED
+mds-toast prop dismissible (attr dismissible): boolean | undefined
 mds-toast prop duration (attr duration) [reflect, mutable]: number | undefined = 5000
 mds-toast prop position (attr position) [reflect, mutable]: "bottom-center" | "bottom-left" | "bottom-right" | "top-center" | "top-left" | "top-right" = 'bottom-center'
 mds-toast prop tone (attr tone) [reflect]: "strong" | "weak" | undefined = 'strong'

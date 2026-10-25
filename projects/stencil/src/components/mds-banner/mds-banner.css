@@ -106,17 +106,14 @@
   gap: var(--mds-banner-content-gap);
 }
 
-@container mds-banner (max-width: 300px) {
-  :host([deletable]:not([deletable='false'])) {
-    & .headline {
-      padding-right: --spacing(800);
-    }
+/* .body--dismissible: in a narrow banner the close button sits at the top right, and the first
+ * line keeps clear of it. A class, not the attribute of the host: dismissible and deletable are
+ * not reflected, a framework sets them as properties */
 
-    &:host(:not([headline])) {
-      & .content {
-        padding-right: --spacing(800);
-      }
-    }
+@container mds-banner (max-width: 300px) {
+  .body--dismissible .headline,
+  .body--dismissible .content:not(:has(.headline)) {
+    padding-right: --spacing(800);
   }
 
   ::slotted([slot='action']) {
