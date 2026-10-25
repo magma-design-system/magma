@@ -538,6 +538,7 @@ mds-filter css --mds-filter-items-gap INTERNAL
 mds-filter css --mds-filter-items-padding INTERNAL
 mds-filter css --mds-filter-items-radius INTERNAL
 mds-filter css --mds-filter-items-scroll-behavior INTERNAL
+mds-filter css --mds-filter-label-gap INTERNAL
 mds-filter css --mds-filter-label-padding INTERNAL
 mds-filter css --mds-filter-wrapper-shadow
 mds-filter css --mds-filter-wrapper-shadow-color INTERNAL

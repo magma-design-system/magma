@@ -352,6 +352,7 @@ mds-filter {
 | `--mds-filter-items-padding`           | Sets the padding of the items row area                                          |
 | `--mds-filter-items-radius`            | Sets the border-radius of the items row area                                    |
 | `--mds-filter-items-scroll-behavior`   | Sets the scroll-behavior animation;                                             |
+| `--mds-filter-label-gap`               | Sets the gap between the label and the items row area                           |
 | `--mds-filter-label-padding`           | Sets the padding of the label                                                   |
 | `--mds-filter-wrapper-shadow`          | Public. Sets the shadow used as outline border                                  |
 | `--mds-filter-wrapper-shadow-color`    | Sets the effect of the outline border                                           |
