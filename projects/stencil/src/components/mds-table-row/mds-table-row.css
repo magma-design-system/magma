@@ -6,6 +6,7 @@
  * @prop --mds-table-row-background-hover: Background color for table row on hover.
  * @prop --mds-table-row-background-alt: Background color of the rows while a column sorts the table.
  * @prop --mds-table-row-actions-gap: Gap spacing for actions inside table rows.
+ * @prop --mds-table-row-actions-background: Public. Read-only: the background the actions box paints in the current state of the row (at rest, on hover, while a column sorts a selectable table), for content of the `action` slot that paints it too when it moves out of the box. The box sets it itself, so a value set from outside changes nothing.
  */
 
 :host {
