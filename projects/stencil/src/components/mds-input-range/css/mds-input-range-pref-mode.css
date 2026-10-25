@@ -4,19 +4,21 @@
  * for dark. `dark` is the explicit choice; `system` and no controller follow the
  * OS via @media; the scheme axis gates it. Cross-browser, no :host-context.
  *
- * The thumb is light in dark, as the off knob of mds-input-switch: text-default, 5.19:1 on the
- * empty track. It used to take accent-emphasis, the colour of its own ring and of the progress,
- * so the three were one shape and the thumb could not be seen. */
+ * In dark the progress is accent-emphasis, a light blue, and the thumb sits on it inside a ring of
+ * the same colour: it takes the ink of that fill, text-on-emphasis, as the knob of an
+ * mds-input-switch that is on (#1141). 10.19:1 on the progress, 3.16:1 on the empty track.
+ * It used to take accent-emphasis, the colour of its ring and of the progress, so the three
+ * were one shape (#1073); then text-default, light like the progress, 1.61:1 on it. */
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
-  --mds-input-range-thumb-background: rgb(var(--magma-text-default));
+  --mds-input-range-thumb-background: rgb(var(--magma-text-on-emphasis));
   --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis));
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode])) {
-    --mds-input-range-thumb-background: rgb(var(--magma-text-default));
+    --mds-input-range-thumb-background: rgb(var(--magma-text-on-emphasis));
     --mds-input-range-track-progress-background: rgb(var(--magma-accent-emphasis));
   }
 }
