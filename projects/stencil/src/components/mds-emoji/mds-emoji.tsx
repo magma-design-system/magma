@@ -9,6 +9,23 @@ import miaSvg from './asset/mia.svg';
 import simiSvg from './asset/simi.svg';
 
 /**
+ * The transform origin of each part of a face, in the box of the part: the head turns from its
+ * bottom left corner, the others from their centre. Every state of a part gets it as soon as
+ * the face is in the shadow root, and the tweens of moveHead repeat it (#1140): a tween that
+ * moves the origin of a part while a blink has it scaled makes GSAP add a translation to keep
+ * the part still, and the translation stays once the scale is back to 1.
+ */
+const PART_ORIGINS: Record<keyof SvgDictionary, string> = {
+  ears: '50% 50%',
+  eyebrows: '50% 50%',
+  eyes: '50% 50%',
+  gadget: '50% 50%',
+  hand: '50% 50%',
+  head: '0% 100%',
+  mouth: '50% 50%',
+};
+
+/**
  * @category content
  */
 @Component({
@@ -356,6 +373,8 @@ export class MdsEmoji {
     // points at detached elements: drop them so they rebuild against the new SVG.
     this.resetAnimationState();
     if (this.host.shadowRoot) this.host.shadowRoot.innerHTML = this.svgRootEl.outerHTML;
+    // before the blink timeline, whose fromTo scales the eyes at once: see PART_ORIGINS
+    if (Build.isBrowser) this.setPartOrigins();
     if (this.isBlinking) {
       this.blinkTimeline = this.buildBlinkTimeline();
       this.scheduleBlink();
@@ -403,6 +422,15 @@ export class MdsEmoji {
     this.gadgetEl = null;
     this.eyebrowsEl = null;
     this.earsEl = null;
+  };
+
+  private setPartOrigins = (): void => {
+    const face = this.host.shadowRoot?.firstElementChild;
+    if (!face) return;
+    for (const [part, transformOrigin] of Object.entries(PART_ORIGINS)) {
+      const states = face.querySelectorAll(`[id^='${part}-']`);
+      if (states.length > 0) gsap.set(states, { transformOrigin });
+    }
   };
 
   private queryPart = (id: string): SVGElement | null =>
@@ -1079,7 +1107,7 @@ export class MdsEmoji {
       gsap.to(this.eyesEl, {
         translateX: this.eyesOffsetX,
         translateY: this.eyesOffsetY,
-        transformOrigin: '50% 50%',
+        transformOrigin: PART_ORIGINS.eyes,
         ...traitVars,
       });
     }
@@ -1088,7 +1116,7 @@ export class MdsEmoji {
       gsap.to(this.handEl, {
         translateX: this.handOffsetX,
         translateY: this.handOffsetY,
-        transformOrigin: '50% 50%',
+        transformOrigin: PART_ORIGINS.hand,
         ...traitVars,
       });
     }
@@ -1097,7 +1125,7 @@ export class MdsEmoji {
       gsap.to(this.headEl, {
         translateX: this.headOffsetX,
         translateY: this.headOffsetY,
-        transformOrigin: '0% 100%',
+        transformOrigin: PART_ORIGINS.head,
         ...traitVars,
       });
     }
@@ -1106,7 +1134,7 @@ export class MdsEmoji {
       gsap.to(this.mouthEl, {
         translateX: this.mouthOffsetX,
         translateY: this.mouthOffsetY,
-        transformOrigin: '50% 50%',
+        transformOrigin: PART_ORIGINS.mouth,
         ...traitVars,
       });
     }
@@ -1115,7 +1143,7 @@ export class MdsEmoji {
       gsap.to(this.gadgetEl, {
         translateX: this.gadgetOffsetX,
         translateY: this.gadgetOffsetY,
-        transformOrigin: '50% 50%',
+        transformOrigin: PART_ORIGINS.gadget,
         ...traitVars,
       });
     }
@@ -1124,7 +1152,7 @@ export class MdsEmoji {
       gsap.to(this.eyebrowsEl, {
         translateX: this.eyebrowsOffsetX,
         translateY: this.eyebrowsOffsetY,
-        transformOrigin: '50% 50%',
+        transformOrigin: PART_ORIGINS.eyebrows,
         ...traitVars,
       });
     }
@@ -1133,7 +1161,7 @@ export class MdsEmoji {
       gsap.to(this.earsEl, {
         translateX: this.earsOffsetX,
         translateY: this.earsOffsetY,
-        transformOrigin: '50% 50%',
+        transformOrigin: PART_ORIGINS.ears,
         ...traitVars,
       });
     }

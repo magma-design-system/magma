@@ -51,6 +51,47 @@ describe('mds-emoji', () => {
     expect(await settledPose()).toBe(before);
   });
 
+  // #1140: blinking started in the frame of the load, while the first pose of the face moved
+  // the origin of the eyes the blink had squashed, left them lower than the face draws them,
+  // for good (48 viewBox units on simi, half a unit on mia)
+  describe('the eyes, when blinking and tracking start in the frame of the load', () => {
+    /**
+     * How far the transform of a part moves its centre from where the face draws it, in viewBox
+     * units. A blink may leave the hidden closed eyes scaled, around their centre: that moves
+     * nothing.
+     */
+    const centreShift = (emoji: HTMLElement, id: string): number => {
+      const part = emoji.shadowRoot!.querySelector(`[id='${id}']`) as SVGGraphicsElement;
+      const box = part.getBBox();
+      const centre = new DOMPoint(box.x + box.width / 2, box.y + box.height / 2);
+      const moved = centre.matrixTransform(part.transform.baseVal.consolidate()?.matrix);
+      return Math.hypot(moved.x - centre.x, moved.y - centre.y);
+    };
+
+    it.each(['simi', 'mia'])('of %s go back where the face draws them', async (name) => {
+      const { root } = await render('<div></div>');
+      const emoji = document.createElement('mds-emoji');
+      emoji.setAttribute('name', name);
+      emoji.style.width = '100px';
+      root.appendChild(emoji);
+      await emoji.componentOnReady();
+      // the same frame, as a page that starts the face as soon as it is there
+      void emoji.startBlinking();
+      void emoji.startFollowMouse();
+      await new Promise((resolve) => setTimeout(resolve, 600));
+
+      await emoji.stopBlinking();
+      await emoji.stopFollowMouse();
+
+      for (const id of ['eyes-default', 'eyes-closed']) {
+        await vi.waitFor(() => expect(centreShift(emoji, id)).toBeLessThan(0.05), {
+          interval: 100,
+          timeout: 3000,
+        });
+      }
+    });
+  });
+
   // #825: a name outside the dictionary threw a TypeError
   describe('an unknown name', () => {
     beforeEach(() => {
