@@ -30,6 +30,14 @@
   syntax: '<color>';
 }
 
+@property --mds-book-publisher-color {
+  inherits: true;
+
+  /* the colour of the text, which the host points it to */
+  initial-value: rgb(var(--magma-accent-on-emphasis));
+  syntax: '<color>';
+}
+
 @property --mds-book-page-weight-max {
   inherits: true;
   initial-value: 0.05;

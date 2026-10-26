@@ -53,6 +53,11 @@ export default {
       description: 'The publisher, printed at the foot of the spine and of the drawn cover',
       type: { name: 'string', required: false },
     },
+    'publisher-logo': {
+      description:
+        'The mark of the publisher, printed instead of its name in --mds-book-publisher-color',
+      type: { name: 'string', required: false },
+    },
     src: {
       control: { type: 'select' },
       description: 'Specifies the path to the image of the front cover',
@@ -71,6 +76,9 @@ const squareCover = `data:image/svg+xml,${encodeURIComponent(
 )}`;
 
 const cover = (n: number) => `./book-cover-${String(n).padStart(2, '0')}.webp`;
+
+// the mark of Maggioli Editore, from the identity package
+const publisherLogo = './logo-maggioli-editore.svg';
 
 // the titles of the twelve covers in assets/, in order
 const titles = [
@@ -114,6 +122,7 @@ const Row = ({ label, children }: { label: string; children?: unknown }) => (
 
 // how many books a row holds, by the width of the canvas
 const twoBooks = 'grid gap-1200 items-end grid-cols-1 @md:grid-cols-2';
+const threeBooks = 'grid gap-1200 items-end grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3';
 const fourBooks = 'grid gap-1200 items-end grid-cols-1 @md:grid-cols-2 @5xl:grid-cols-4';
 const fiveBooks =
   'grid gap-1200 items-end grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3 @6xl:grid-cols-5';
@@ -221,6 +230,7 @@ export const DrawnCover = {
     author: 'Michele Iaselli',
     name: 'Chief AI Officer',
     publisher: 'Maggioli Editore',
+    'publisher-logo': publisherLogo,
     pages: 640,
   },
 };
@@ -228,13 +238,29 @@ export const DrawnCover = {
 export const CustomColors = {
   render: () => (
     <Stage>
-      <div class={twoBooks}>
+      <div class={threeBooks}>
         <Row label="--mds-book-color">
           <mds-book
             name="Agenda dei servizi demografici 2027"
+            author="Redazione Maggioli"
             publisher="Maggioli Editore"
+            publisher-logo={publisherLogo}
             pages={640}
             style={{ '--mds-book-color': '#f2a93b', '--mds-book-text-color': '#ffffff' }}
+          />
+        </Row>
+        <Row label="--mds-book-publisher-color">
+          <mds-book
+            name="Codice della strada commentato"
+            author="Mario Rossi"
+            publisher="Maggioli Editore"
+            publisher-logo={publisherLogo}
+            pages={640}
+            style={{
+              '--mds-book-color': '#123a6b',
+              '--mds-book-publisher-color': '#f2a93b',
+              '--mds-book-text-color': '#ffffff',
+            }}
           />
         </Row>
         <Row label="--mds-book-spine-color">

@@ -7,6 +7,7 @@
  * @prop --mds-book-page-weight-max: The thickness of a page, in millimetres (a number), on a book of 1000 pages and more: the thin paper of a volume.
  * @prop --mds-book-page-weight-min: The thickness of a page, in millimetres (a number), on a book of 1 page; between 1 and 1000 pages it goes to --mds-book-page-weight-max in proportion.
  * @prop --mds-book-paper-color: The colour of the page block.
+ * @prop --mds-book-publisher-color: Public, static. The colour of the publisher at the foot of the spine and of the cover drawn when there is no image, its mark or its name. Unset, the colour of the text.
  * @prop --mds-book-spine-color: Public, static. A solid colour for the spine and the board edges. Unset, they continue the edges of the cover image.
  * @prop --mds-book-text-color: Public, static. The colour of the text on the spine and on the cover drawn when there is no image.
  */
@@ -17,6 +18,7 @@
   /* stylelint-disable-next-line magma/token-values -- paper, the one colour of the physical object that no role says: it stays paper in dark mode, as the cover image stays the same picture */
   --mds-book-paper-color: rgb(250 248 242);
   --mds-book-text-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-book-publisher-color: var(--mds-book-text-color);
 
   /* the thickness of a page, in millimetres: the bulky paper of a short book, the thin paper
      of a volume of 1000 pages and more */
@@ -51,11 +53,11 @@
   display: block;
 
   /* the width a height gives it wins over the natural width below, which would otherwise be
-     its least width */
+  its least width */
   min-width: 0;
 
   /* a vertical swipe still scrolls the page, a horizontal one turns the book; Safari ignores
-     it, and may take a horizontal drag of a finger for the page */
+  it, and may take a horizontal drag of a finger for the page */
 
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features -- see above */
   touch-action: pan-y;
@@ -388,9 +390,35 @@
   overflow-wrap: anywhere;
 }
 
-.drawn-publisher {
-  font-size: 4.5cqi;
+.drawn-publisher,
+.drawn-logo {
   margin-top: auto;
+}
+
+.drawn-publisher {
+  color: var(--mds-book-publisher-color);
+  font-size: 4.5cqi;
+}
+
+/* The mark of the publisher is the shape of its image, a mask filled with the colour of the
+   publisher, so a mark of any colour prints in the ink of the book. Its box is the most it
+   takes: the mark keeps its proportions inside, at the foot. */
+
+.drawn-logo,
+.spine-logo {
+  background-color: var(--mds-book-publisher-color);
+  flex-shrink: 0;
+  mask-image: var(--private-book-logo);
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+
+/* on the cover, under the text and aligned with it */
+
+.drawn-logo {
+  height: 15cqi;
+  mask-position: left bottom;
+  width: 50cqi;
 }
 
 /* The faces made of the cover material: the board edges, the slats of a rounded spine and
@@ -807,9 +835,22 @@
   @apply font-bold;
 }
 
-.spine-publisher {
+.spine-publisher,
+.spine-logo {
   flex-shrink: 0;
   margin-inline-start: auto;
+}
+
+.spine-publisher {
+  color: var(--mds-book-publisher-color);
+}
+
+/* the mark stands upright, across most of a narrow spine */
+
+.spine-logo {
+  height: 2lh;
+  mask-position: center bottom;
+  width: 1.4lh;
 }
 
 /* Where the spine has room for two lines, three times as wide as its text is high, the author
@@ -832,7 +873,8 @@
     grid-area: 2 / 1;
   }
 
-  .spine-publisher {
+  .spine-publisher,
+  .spine-logo {
     grid-area: 1 / 2 / span 2;
   }
 }
