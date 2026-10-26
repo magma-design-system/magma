@@ -4,6 +4,31 @@ Every release of `@maggioli-design-system/magma`, newest first. Each section is 
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [magma@2.8.0] - 2026-10-26
+
+### Bug Fixes
+
+- *(mds-emoji)* Give every part its transform origin once, so a blink leaves no offset
+- *(mds-filter)* Leave the gap of a field under the label of a filter
+- *(magma)* One full stop after a deprecation in the props of AGENTS.md
+- *(mds-input-range)* In dark the thumb takes the ink of the progress, as a switch that is on
+- *(mds-calendar-cell)* A weekend day inside a range takes the text of the selection
+- *(mds-modal)* On a narrow screen a full window leaves a strip of backdrop with the close button
+- *(mds-modal)* The built-in close button shows at every position, in a strip of backdrop
+
+### Documentation
+
+- *(mds-header)* A header without a menu slot needs no menu="none"
+- *(stencil)* Open four Pattern files with the form that shows the component
+
+### Features
+
+- *(mds-table-row)* The background of the actions box as a public read-only property
+- *(mds-toast,mds-banner)* Dismissible, with deletable as a deprecated name
+- *(lint)* No-deprecated reports a deprecated prop, with what to use instead
+- *(magma)* Say where each component is in the published Storybook
+- *(mds-push-notification-item)* Dismissible, with deletable as a deprecated name
+
 ## [magma@2.7.0] - 2026-10-24
 
 ### Bug Fixes
