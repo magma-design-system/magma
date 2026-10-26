@@ -377,8 +377,12 @@
   line-height: 1.2;
 }
 
+/* The title is set as the titles of Magma are (text-title-h1 to h5, and mds-text): their face
+   and weight. Its size stays the book's, a share of its width, which no text-title utility
+   gives. */
+
 .drawn-name {
-  @apply font-bold;
+  @apply antialiased font-black font-title;
 
   -webkit-box-orient: vertical;
   display: -webkit-box;
@@ -831,8 +835,10 @@
   flex-shrink: 4;
 }
 
+/* in the face of the titles, as on the cover (see .drawn-name) */
+
 .spine-name {
-  @apply font-bold;
+  @apply antialiased font-black font-title;
 }
 
 .spine-publisher,
