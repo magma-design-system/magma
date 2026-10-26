@@ -154,7 +154,8 @@ sections, the lint on a snippet, the integration of the project). Its protocol, 
 stdio, is written in the project, so magma carries no MCP SDK; its icon is the Magma mark of
 identity, which `stencil` therefore also builds after.
 
-Its tests run on fixtures cut from the real data, in the `magma-lint-ci` workflow, the server's
+Its tests run on fixtures cut from the real data, in the `consumer-lint` job of the stencil
+workflow (on the `lint:build` of the same run), the server's
 through the official MCP client. The consumer guides are [`docs/agents/lint.md`](agents/lint.md) and [`docs/agents/mcp.md`](agents/mcp.md), shipped as `agents/lint.md` and `agents/mcp.md`, which the packages' `AGENTS.md` sets up at bootstrap; the contributor notes are [`projects/lint/README.md`](../projects/lint/README.md).
 
 ### 2.8 `claude-plugin`
