@@ -131,6 +131,18 @@ describe('mds-book', () => {
       expect(part(root, '.drawn-publisher')).toEqualText('Maggioli Editore');
     });
 
+    // the padding of the drawn cover pushed its foot past the bottom edge, where it was cut off
+    it('keeps the publisher at the foot of a drawn cover inside it', async () => {
+      const { root } = await render(
+        '<mds-book name="Manuale" publisher="Maggioli Editore"></mds-book>',
+      );
+      const publisher = part(root, '.drawn-publisher')!;
+
+      expect(publisher.offsetTop + publisher.offsetHeight).toBeLessThan(
+        part(root, '.front')!.offsetHeight,
+      );
+    });
+
     it('draws the cover when the image fails to load', async () => {
       const { root } = await render(
         '<mds-book src="/missing-cover.webp" name="Manuale"></mds-book>',

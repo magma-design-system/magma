@@ -358,7 +358,10 @@
   width: 100%;
 }
 
+/* its padding inside the cover, or the publisher at its foot falls off the bottom edge */
+
 .drawn-cover {
+  box-sizing: border-box;
   color: var(--mds-book-text-color);
   display: flex;
   flex-direction: column;
