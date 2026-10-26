@@ -1,10 +1,10 @@
 name: design-tokens
 
 on:
-  push:
-    branches: [main]
   pull_request:
-  # the merge queue of main runs the required checks here (docs/WORKFLOW.md, rule 1)
+  # the merge queue of main runs the required checks here (docs/WORKFLOW.md, rule 1), on
+  # the very commit it then lands on main: this run is the CI of that commit, and
+  # nothing runs again on the push
   merge_group:
 
 concurrency:

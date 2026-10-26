@@ -5,6 +5,11 @@
 # Path filtering happens in the `changes` job instead of the caller's trigger:
 # GitHub evaluates trigger `paths` only on the first 300 files of the diff, so
 # big merges silently skip workflows.
+#
+# The callers run on pull requests and in the merge queue. A commit landed by
+# the queue keeps the SHA of its merge-group run, so that run is the CI of the
+# commit on main (publish.yml checks it, deploy-storybook.yml reuses its
+# artifact) and nothing runs again on the push.
 name: package-pipeline
 
 on:
@@ -71,10 +76,6 @@ jobs:
         if: ${{ github.event_name != 'merge_group' }}
         id: filter
         with:
-          # diff push events against the commit before the push instead of the
-          # default branch (ignored on pull_request events, which diff against
-          # the PR base)
-          base: ${{ github.ref_name }}
           filters: |
             project:
               - '${{ inputs.path }}'
