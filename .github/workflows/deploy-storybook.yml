@@ -27,6 +27,17 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  # Nx 23 keeps the task cache and the database that indexes it in ~/.nx/<id>/,
+  # shared by every checkout of the workspace: here both go under .nx, where
+  # actions/cache saves and restores them together (they must move together: the
+  # database rows index the cache directory)
+  NX_CACHE_DIRECTORY: .nx/cache
+  NX_WORKSPACE_DATA_DIRECTORY: .nx/workspace-data
+  # Nx drops the least recently used entries past this size (default: 10% of the
+  # disk), so a cache restored and saved run after run stays small
+  NX_MAX_CACHE_SIZE: 300MB
+
 permissions:
   contents: read
 
@@ -147,9 +158,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          key: nx-storybook-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
+            nx-storybook-${{ hashFiles('package-lock.json') }}-
       # the preview loads the components from dist/esm/loader and serves dist
       # and assets as static files; Nx builds design-tokens, styles and
       # svg-icons first

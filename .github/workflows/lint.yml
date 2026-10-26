@@ -5,7 +5,7 @@
 # per-package job in _package-pipeline.yml: linting the whole monorepo takes
 # seconds, one status check is easier to require than seven conditional ones,
 # and changes to the root ESLint/Stylelint configs are covered too. The Nx cache
-# restored from the build jobs skips the projects whose inputs did not change.
+# of the previous run of the branch skips the projects whose inputs did not change.
 name: lint
 
 on:
@@ -20,6 +20,17 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # Nx 23 keeps the task cache and the database that indexes it in ~/.nx/<id>/,
+  # shared by every checkout of the workspace: here both go under .nx, where
+  # actions/cache saves and restores them together (they must move together: the
+  # database rows index the cache directory)
+  NX_CACHE_DIRECTORY: .nx/cache
+  NX_WORKSPACE_DATA_DIRECTORY: .nx/workspace-data
+  # Nx drops the least recently used entries past this size (default: 10% of the
+  # disk), so a cache restored and saved run after run stays small
+  NX_MAX_CACHE_SIZE: 300MB
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -33,8 +44,8 @@ jobs:
         uses: actions/cache@v6
         with:
           path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          key: nx-lint-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
+            nx-lint-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       - run: npm run lint

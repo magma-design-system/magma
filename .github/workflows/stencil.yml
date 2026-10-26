@@ -12,6 +12,17 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # Nx 23 keeps the task cache and the database that indexes it in ~/.nx/<id>/,
+  # shared by every checkout of the workspace: here both go under .nx, where
+  # actions/cache saves and restores them together (they must move together: the
+  # database rows index the cache directory)
+  NX_CACHE_DIRECTORY: .nx/cache
+  NX_WORKSPACE_DATA_DIRECTORY: .nx/workspace-data
+  # Nx drops the least recently used entries past this size (default: 10% of the
+  # disk), so a cache restored and saved run after run stays small
+  NX_MAX_CACHE_SIZE: 300MB
+
 jobs:
   # Builds stencil and runs the e2e tests; its build artifact
   # also feeds the react/angular builds and tests below
@@ -58,13 +69,15 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - name: Restore Nx cache
-        uses: actions/cache@v6
+      # the Nx cache `magma / build` saved in this run: stencil:build and the builds it
+      # depends on come from it, so the wrapper build below runs its own task only
+      - name: Restore the Nx cache of the stencil build
+        uses: actions/cache/restore@v6
         with:
           path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          key: nx-stencil-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
+            nx-stencil-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
@@ -103,13 +116,15 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - name: Restore Nx cache
-        uses: actions/cache@v6
+      # the Nx cache `magma / build` saved in this run: stencil:build and the builds it
+      # depends on come from it, so the wrapper build below runs its own task only
+      - name: Restore the Nx cache of the stencil build
+        uses: actions/cache/restore@v6
         with:
           path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          key: nx-stencil-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
+            nx-stencil-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
@@ -141,13 +156,6 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - name: Restore Nx cache
-        uses: actions/cache@v6
-        with:
-          path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
-          restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
@@ -170,13 +178,6 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - name: Restore Nx cache
-        uses: actions/cache@v6
-        with:
-          path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
-          restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
@@ -202,13 +203,6 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - name: Restore Nx cache
-        uses: actions/cache@v6
-        with:
-          path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
-          restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
@@ -231,13 +225,6 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - name: Restore Nx cache
-        uses: actions/cache@v6
-        with:
-          path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
-          restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
@@ -259,13 +246,6 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - name: Restore Nx cache
-        uses: actions/cache@v6
-        with:
-          path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
-          restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
@@ -286,13 +266,6 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - name: Restore Nx cache
-        uses: actions/cache@v6
-        with:
-          path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
-          restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       - uses: actions/download-artifact@v8
         with:
