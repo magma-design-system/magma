@@ -277,6 +277,58 @@ export const CustomColors = {
   ),
 };
 
+// a made-up book, drawn without an image
+const record = {
+  author: 'Mario Rossi',
+  name: 'Manuale di contabilità pubblica',
+  publisher: 'Maggioli Editore',
+};
+
+// The text of the spine by its depth: none under 5 mm, one line, title then author, and the
+// author under the title from about 23 mm (some 270 pages on a 17x24 paperback).
+export const Spine = {
+  render: () => (
+    <Stage>
+      <div class={fourBooks}>
+        {[40, 150, 300, 640].map((pages) => (
+          <Row key={pages} label={`${pages} pages`}>
+            <mds-book {...record} pages={pages} />
+          </Row>
+        ))}
+      </div>
+    </Stage>
+  ),
+};
+
+// The foot of the spine and of a drawn cover: the name of the publisher, or its mark, which
+// a cover image leaves to the spine alone; a mark that does not load leaves the name.
+export const Publisher = {
+  render: () => (
+    <Stage>
+      <div class={fourBooks}>
+        <Row label="publisher">
+          <mds-book {...record} pages={640} />
+        </Row>
+        <Row label="publisher-logo">
+          <mds-book {...record} publisher-logo={publisherLogo} pages={640} />
+        </Row>
+        <Row label="publisher-logo, with a cover image">
+          <mds-book
+            src={cover(4)}
+            name="Gli appalti pubblici dopo il nuovo Codice"
+            publisher="Maggioli Editore"
+            publisher-logo={publisherLogo}
+            pages={640}
+          />
+        </Row>
+        <Row label="publisher-logo that does not load">
+          <mds-book {...record} publisher-logo="./broken-logo-path.svg" pages={640} />
+        </Row>
+      </div>
+    </Stage>
+  ),
+};
+
 // The twelve covers as a bookshop lists them. The bindings, the pages, the list prices and
 // the promotions are made up for the story.
 const catalogue = titles.map((name, i) => ({
