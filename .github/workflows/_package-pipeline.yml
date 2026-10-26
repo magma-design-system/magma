@@ -137,13 +137,20 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci --prefer-offline
+      # the browser revision is pinned by the playwright version: the key reads it
+      # from the lockfile instead of hashing the whole file, which changes with
+      # every bump of any dependency and kept a dozen copies of the same browser
+      - name: Read the Playwright version
+        if: ${{ inputs.install-playwright-browsers }}
+        id: playwright
+        run: |
+          echo "version=$(jq -r '.packages["node_modules/playwright-core"].version' package-lock.json)" >> "$GITHUB_OUTPUT"
       - name: Restore Playwright browsers cache
         if: ${{ inputs.install-playwright-browsers }}
         uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
-          # the browser revision is pinned by the playwright version in the lockfile
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
       # no-op for the browser when cached, still installs the system libraries
       - if: ${{ inputs.install-playwright-browsers }}
         run: npx playwright install --with-deps chromium

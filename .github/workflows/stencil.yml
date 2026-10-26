@@ -84,12 +84,17 @@ jobs:
           name: stencil-build
           path: projects
       - run: npx nx run stencil-react:build
+      # the browser revision is pinned by the playwright version, read from the
+      # lockfile as in _package-pipeline.yml
+      - name: Read the Playwright version
+        id: playwright
+        run: |
+          echo "version=$(jq -r '.packages["node_modules/playwright-core"].version' package-lock.json)" >> "$GITHUB_OUTPUT"
       - name: Restore Playwright browsers cache
         uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
-          # the browser revision is pinned by the playwright version in the lockfile
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
       # no-op for the browser when cached, still installs the system libraries
       - run: npx playwright install --with-deps chromium
       # the wrapper against the real custom elements (browser) and its SSR modules (node)

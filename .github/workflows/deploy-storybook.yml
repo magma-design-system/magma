@@ -168,13 +168,19 @@ jobs:
         run: npx nx run stencil:build
       # without a green stencil run, the stories are tested here as in its
       # test job (play functions and a11y checks, Playwright Chromium)
+      # the browser revision is pinned by the playwright version, read from the
+      # lockfile as in _package-pipeline.yml
+      - name: Read the Playwright version
+        if: ${{ steps.stencil.outputs.run-id == '' }}
+        id: playwright
+        run: |
+          echo "version=$(jq -r '.packages["node_modules/playwright-core"].version' package-lock.json)" >> "$GITHUB_OUTPUT"
       - name: Restore Playwright browsers cache
         if: ${{ steps.stencil.outputs.run-id == '' }}
         uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
-          # the browser revision is pinned by the playwright version in the lockfile
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
       # no-op for the browser when cached, still installs the system libraries
       - if: ${{ steps.stencil.outputs.run-id == '' }}
         run: npx playwright install --with-deps chromium
