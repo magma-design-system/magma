@@ -283,14 +283,15 @@ machinery.
 
 ```
 feature branch ──PR──▶ merge queue of main ──merge commit──▶ main
-                                                               │
-          ┌────────────────────────────────────────────────────┼─────────────────────────┐
-          ▼                                                    ▼                         ▼
-   CI of the commit                              publish.yml, push trigger            deploy storybook
-   (design-tokens, icons, identity, styles,      (icons and svg-icons, automatic:      (GitHub Pages)
-    svg-icons, stencil, lint)                     chore(release) commit pushed to main
-                                                  with a rebase-retry, tags, GitHub
-                                                  releases, build ──▶ npm)
+                              │                                 │
+                              ▼                    ┌────────────┴──────────────┐
+                       CI of the commit            ▼                           ▼
+                       (design-tokens, icons,   publish.yml, push trigger   deploy storybook
+                        identity, styles,       (icons and svg-icons,       (GitHub Pages, from the
+                        svg-icons, stencil,      automatic: chore(release)   stencil-build artifact
+                        lint: the merge-group    commit pushed to main       of the merge-group run)
+                        run, on the SHA that     with a rebase-retry, tags,
+                        then lands on main)      GitHub releases, build ──▶ npm)
 
 maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dry-run, tag)
    ──▶ the CI of the dispatched commit is green ──▶ the plan in the job summary
@@ -308,12 +309,12 @@ maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dr
 
 | Piece | Where | What it does |
 |---|---|---|
-| Package CI | `.github/workflows/{design-tokens,icons,identity,styles,svg-icons,stencil}.yml` over `_package-pipeline.yml` | change detection (path filter, everything on `merge_group`) → build (artifact kept one day) → test, on pull requests, in the merge queue and on every push to `main` |
+| Package CI | `.github/workflows/{design-tokens,icons,identity,styles,svg-icons,stencil}.yml` over `_package-pipeline.yml` | change detection (path filter, everything on `merge_group`) → build (artifact kept one day) → test, on pull requests and in the merge queue: the merge-group run is the CI of the commit that lands on `main`. The build job keeps the Nx cache under `.nx` with one key per Nx project and commit; `stencil.yml` adds the wrapper builds and tests (on that cache), the `check.*` guards and `consumer-lint`, the tests of `projects/lint` |
 | Lint | `lint.yml` | `npm run lint` on the whole monorepo, same triggers |
 | Review level | `pr-risk.yml` + `projects/stencil/scripts/pr-risk.ts` | `risk-*` label, the semver check of `magma.api.txt` against the commits' declared release |
 | Release and publish | `publish.yml` over `semantic-release.yml` + `scripts/release/*` + `scripts/set-release-version.sh` | `workflow_dispatch` on `main`: `package` (`all` or one), `channel` (`stable`/`beta`), `dry-run`, `tag` (an existing release published again); the CI of the commit checked, the plan before the approval, versions from the conventional commits of each package's scopes (semantic-release dry-run), pins, lock, `CHANGELOG.md` (git-cliff), tags, GitHub releases, then the build of the selected packages and one `npm publish` per package with OIDC trusted publishing (a package is skipped when its version is already on npm) |
 | Automatic icon releases | the `push` trigger of `publish.yml` | on every push to `main`: the same chain for `icons` and `svg-icons`, without approval; a rejected push is rebased and retried |
-| Storybook | `deploy-storybook.yml` | the static Storybook of `main` to GitHub Pages, after the `magma / test` job of the same commit; also dispatched by `publish.yml` after a release of `svg-icons` (the `mds-icon` story shows its version; the `chore(release)` commit runs no workflow of its own) |
+| Storybook | `deploy-storybook.yml` | the static Storybook of `main` to GitHub Pages, from the merge-group `stencil` run of the same commit (its `magma / test` verdict, its `stencil-build` artifact; a commit without one is built and tested there); also dispatched by `publish.yml` after a release of `svg-icons` (the `mds-icon` story shows its version; the `chore(release)` commit runs no workflow of its own) |
 | Local rehearsal | `scripts/test-release.sh` | the release plan of a commit on either channel, in a throwaway clone, nothing pushed |
 
 Protections, set on GitHub and documented here because they shape the flow:
