@@ -177,6 +177,15 @@ env:
     projects/stencil/package.json
     projects/stencil-react/package.json
     projects/stencil-angular/magma-angular/package.json
+  # Nx 23 keeps the task cache and the database that indexes it in ~/.nx/<id>/,
+  # shared by every checkout of the workspace: here both go under .nx, where
+  # actions/cache saves and restores them together (they must move together: the
+  # database rows index the cache directory)
+  NX_CACHE_DIRECTORY: .nx/cache
+  NX_WORKSPACE_DATA_DIRECTORY: .nx/workspace-data
+  # Nx drops the least recently used entries past this size (default: 10% of the
+  # disk), so a cache restored and saved run after run stays small
+  NX_MAX_CACHE_SIZE: 300MB
 
 jobs:
   guard:
@@ -268,10 +277,11 @@ jobs:
           # the dispatched commit, or the one of `tag`
           START: ${{ steps.list.outputs.sha }}
         run: |
-          # the latest push or merge-queue run of each CI workflow of this
-          # commit (a commit landed by the merge queue keeps the SHA of its
-          # merge-group run); pull_request runs test the pull request head,
-          # not this commit
+          # the latest merge-queue or push run of each CI workflow of this
+          # commit: the merge-group run (a commit landed by the queue keeps its
+          # SHA, and the CI runs nowhere else), or the push run of a commit
+          # pushed around the queue while the workflows still had a push
+          # trigger; pull_request runs test the pull request head, not this commit
           WATCHED='["design-tokens", "icons", "identity", "styles", "svg-icons", "stencil", "lint"]'
           # a chore(release) commit is pushed with [skip ci] and has no CI of its
           # own: the code it versions is its parent's, so that is the commit to
@@ -291,7 +301,7 @@ jobs:
             | jq --argjson watched "$WATCHED" '[.workflow_runs[] | select((.event == "push" or .event == "merge_group") and (.name as $n | $watched | index($n)))] | group_by(.name) | map(max_by(.id))')
           echo "$RUNS" | jq -r '.[] | "\(.name): \(.status) (\(.conclusion))"'
           if [ "$(echo "$RUNS" | jq length)" = 0 ]; then
-            echo "::warning::no CI run of $SHA: releasing a commit without a CI of its own"
+            echo "::warning::no CI run of $SHA: releasing a commit without a CI of its own (pushed around the merge queue?)"
             exit 0
           fi
           PENDING=$(echo "$RUNS" | jq '[.[] | select(.status != "completed")] | length')
@@ -453,9 +463,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          key: nx-publish-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
+            nx-publish-${{ hashFiles('package-lock.json') }}-
       - if: ${{ steps.select.outputs.to-publish != '[]' }}
         run: npm ci --prefer-offline
       # Nx builds design-tokens, styles and svg-icons first when a package needs them

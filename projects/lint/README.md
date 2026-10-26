@@ -127,8 +127,9 @@ nx run lint:test
 The tests run on fixtures cut from the real data (`test/fixtures`: a few components of
 `documentation.json`, a few palette tokens, the colour utilities), so they need no build of
 the other projects: every template rule on HTML, JSX and Angular templates through ESLint's
-`RuleTester`, the CSS rules through Stylelint. The `magma-lint-ci` workflow runs them; the
-stencil pipeline builds the package with the lint inside.
+`RuleTester`, the CSS rules through Stylelint. The `consumer-lint` job of the stencil workflow
+runs them, on the `lint:build` of the same run; the stencil pipeline builds the package with
+the lint inside.
 
 ## Adding a rule
 

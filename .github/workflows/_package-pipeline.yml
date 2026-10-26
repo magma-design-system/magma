@@ -5,6 +5,16 @@
 # Path filtering happens in the `changes` job instead of the caller's trigger:
 # GitHub evaluates trigger `paths` only on the first 300 files of the diff, so
 # big merges silently skip workflows.
+#
+# The callers run on pull requests and in the merge queue. A commit landed by
+# the queue keeps the SHA of its merge-group run, so that run is the CI of the
+# commit on main (publish.yml checks it, deploy-storybook.yml reuses its
+# artifact) and nothing runs again on the push.
+#
+# The build job keeps the Nx cache under a key of its own Nx project and commit,
+# so each build saves one (a key shared by every job of a commit was saved by
+# the first to finish, lint, and held no build) and the next push of the branch
+# restores the latest; the wrapper jobs of stencil.yml restore the stencil one.
 name: package-pipeline
 
 on:
@@ -55,6 +65,17 @@ on:
         description: Whether files matching `path` changed in this event
         value: ${{ jobs.changes.outputs.changed }}
 
+env:
+  # Nx 23 keeps the task cache and the database that indexes it in ~/.nx/<id>/,
+  # shared by every checkout of the workspace: here both go under .nx, where
+  # actions/cache saves and restores them together (they must move together: the
+  # database rows index the cache directory)
+  NX_CACHE_DIRECTORY: .nx/cache
+  NX_WORKSPACE_DATA_DIRECTORY: .nx/workspace-data
+  # Nx drops the least recently used entries past this size (default: 10% of the
+  # disk), so a cache restored and saved run after run stays small
+  NX_MAX_CACHE_SIZE: 300MB
+
 jobs:
   changes:
     runs-on: ubuntu-latest
@@ -71,10 +92,6 @@ jobs:
         if: ${{ github.event_name != 'merge_group' }}
         id: filter
         with:
-          # diff push events against the commit before the push instead of the
-          # default branch (ignored on pull_request events, which diff against
-          # the PR base)
-          base: ${{ github.ref_name }}
           filters: |
             project:
               - '${{ inputs.path }}'
@@ -94,9 +111,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          key: nx-${{ inputs.nx-project }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
+            nx-${{ inputs.nx-project }}-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       - run: npx nx run ${{ inputs.nx-project }}:build
       - uses: actions/upload-artifact@v7
@@ -120,13 +137,20 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci --prefer-offline
+      # the browser revision is pinned by the playwright version: the key reads it
+      # from the lockfile instead of hashing the whole file, which changes with
+      # every bump of any dependency and kept a dozen copies of the same browser
+      - name: Read the Playwright version
+        if: ${{ inputs.install-playwright-browsers }}
+        id: playwright
+        run: |
+          echo "version=$(jq -r '.packages["node_modules/playwright-core"].version' package-lock.json)" >> "$GITHUB_OUTPUT"
       - name: Restore Playwright browsers cache
         if: ${{ inputs.install-playwright-browsers }}
         uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
-          # the browser revision is pinned by the playwright version in the lockfile
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
       # no-op for the browser when cached, still installs the system libraries
       - if: ${{ inputs.install-playwright-browsers }}
         run: npx playwright install --with-deps chromium

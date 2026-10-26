@@ -9,12 +9,13 @@
 # commit is pushed with [skip ci] and the mds-icon story shows the svg-icons
 # version read from its manifest.
 #
-# The stencil workflow builds and tests the same commit on the same push, the
-# stories included (test-storybook and `storybook build`, in `magma / test`):
-# this one waits for those tests, publishes nothing when they fail, and
-# reuses the `stencil-build` artifact. When that run gives no verdict (a push
-# that changes only tokens, styles or icons skips it, a newer push cancels it,
-# artifacts expire after a day) the components are built and the stories
+# The stencil workflow built and tested the same commit in the merge queue (a
+# commit landed by the queue keeps the SHA of its merge-group run), the stories
+# included (test-storybook and `storybook build`, in `magma / test`): this one
+# reads that run, publishes nothing when its tests failed, and reuses its
+# `stencil-build` artifact. When there is no verdict (a commit pushed around the
+# queue has no stencil run, or a push run that skipped or cancelled its jobs;
+# an artifact expired after a day) the components are built and the stories
 # tested here before publishing.
 #
 # A repository has a single Pages site and every deploy replaces it whole:
@@ -26,6 +27,17 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+
+env:
+  # Nx 23 keeps the task cache and the database that indexes it in ~/.nx/<id>/,
+  # shared by every checkout of the workspace: here both go under .nx, where
+  # actions/cache saves and restores them together (they must move together: the
+  # database rows index the cache directory)
+  NX_CACHE_DIRECTORY: .nx/cache
+  NX_WORKSPACE_DATA_DIRECTORY: .nx/workspace-data
+  # Nx drops the least recently used entries past this size (default: 10% of the
+  # disk), so a cache restored and saved run after run stays small
+  NX_MAX_CACHE_SIZE: 300MB
 
 permissions:
   contents: read
@@ -86,22 +98,20 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           api="repos/$GITHUB_REPOSITORY/actions"
-          # the stencil run is created by the same push: give it a minute to show up
-          for _ in $(seq 12); do
-            RUN_ID=$(gh api "$api/workflows/stencil.yml/runs?event=push&head_sha=$SHA" --jq '[.workflow_runs[].id] | max // empty')
-            [ -n "$RUN_ID" ] && break
-            sleep 5
-          done
+          # the latest stencil run of this commit: its merge-group run (complete
+          # before the commit lands), or the push run of a commit pushed around
+          # the queue; pull_request runs test the pull request head, not this commit
+          RUN_ID=$(gh api "$api/workflows/stencil.yml/runs?head_sha=$SHA&per_page=100" --jq '[.workflow_runs[] | select(.event == "merge_group" or .event == "push") | .id] | max // empty')
           if [ -z "$RUN_ID" ]; then
             echo "::notice::no stencil run for $SHA, building and testing here"
             exit 0
           fi
           # `magma / build` and `magma / test` are the jobs of the `magma` job in
           # stencil.yml. A failure stops the publication; any other outcome
-          # (skipped: no change under projects/stencil; cancelled: superseded by
-          # a newer push, which also cancels this job if it changes the
-          # Storybook) leaves the verdict to this job. If the jobs are renamed,
-          # the wait lasts until the run ends and everything happens here
+          # (skipped: a push run of a commit that changes nothing under
+          # projects/stencil; cancelled: a push run superseded by a newer push)
+          # leaves the verdict to this job. If the jobs are renamed, the wait
+          # lasts until the run ends and everything happens here
           while :; do
             RUN_STATUS=$(gh api "$api/runs/$RUN_ID" --jq '.status')
             JOBS=$(gh api "$api/runs/$RUN_ID/jobs" --jq '[.jobs[] | {(.name): "\(.status) \(.conclusion // "")"}] | add // {}')
@@ -147,9 +157,9 @@ jobs:
         uses: actions/cache@v6
         with:
           path: .nx
-          key: nx-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          key: nx-storybook-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-${{ hashFiles('package-lock.json') }}-
+            nx-storybook-${{ hashFiles('package-lock.json') }}-
       # the preview loads the components from dist/esm/loader and serves dist
       # and assets as static files; Nx builds design-tokens, styles and
       # svg-icons first
@@ -157,13 +167,19 @@ jobs:
         run: npx nx run stencil:build
       # without a green stencil run, the stories are tested here as in its
       # test job (play functions and a11y checks, Playwright Chromium)
+      # the browser revision is pinned by the playwright version, read from the
+      # lockfile as in _package-pipeline.yml
+      - name: Read the Playwright version
+        if: ${{ steps.stencil.outputs.run-id == '' }}
+        id: playwright
+        run: |
+          echo "version=$(jq -r '.packages["node_modules/playwright-core"].version' package-lock.json)" >> "$GITHUB_OUTPUT"
       - name: Restore Playwright browsers cache
         if: ${{ steps.stencil.outputs.run-id == '' }}
         uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
-          # the browser revision is pinned by the playwright version in the lockfile
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
       # no-op for the browser when cached, still installs the system libraries
       - if: ${{ steps.stencil.outputs.run-id == '' }}
         run: npx playwright install --with-deps chromium
