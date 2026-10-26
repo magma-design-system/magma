@@ -491,7 +491,7 @@ export namespace Components {
          */
         "alt"?: string;
         /**
-          * The author, printed on the spine and on the cover drawn when there is no image
+          * The author, printed on the cover drawn when there is no image, above the title, and on the spine after the title, or under it where the spine has room for two lines
          */
         "author"?: string;
         /**
@@ -5854,7 +5854,7 @@ declare namespace LocalJSX {
          */
         "alt"?: string;
         /**
-          * The author, printed on the spine and on the cover drawn when there is no image
+          * The author, printed on the cover drawn when there is no image, above the title, and on the spine after the title, or under it where the spine has room for two lines
          */
         "author"?: string;
         /**

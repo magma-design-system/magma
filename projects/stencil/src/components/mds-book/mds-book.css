@@ -684,6 +684,9 @@
 .spine,
 .spine-label {
   box-sizing: border-box;
+
+  /* what the text asks whether two lines fit across the spine (see .spine-text) */
+  container-type: inline-size;
   display: flex;
 
   /* the lengths of the text are set here: in the vertical text, cqi would measure the
@@ -794,7 +797,7 @@
   white-space: nowrap;
 }
 
-/* short of room, the author gives way first, the publisher last */
+/* short of room, the author gives way first, the publisher, at the foot, last */
 
 .spine-author {
   flex-shrink: 4;
@@ -807,5 +810,30 @@
 .spine-publisher {
   flex-shrink: 0;
   margin-inline-start: auto;
+}
+
+/* Where the spine has room for two lines, three times as wide as its text is high, the author
+   goes under the title, smaller, as on a thick volume, and the publisher stays at the foot,
+   across both. A narrower spine keeps one line. */
+
+@container (width >= 3em) {
+  .spine-text {
+    display: grid;
+    gap: 0 0.8lh;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .spine-name {
+    grid-area: 1 / 1;
+  }
+
+  .spine-author {
+    font-size: 80%;
+    grid-area: 2 / 1;
+  }
+
+  .spine-publisher {
+    grid-area: 1 / 2 / span 2;
+  }
 }
 

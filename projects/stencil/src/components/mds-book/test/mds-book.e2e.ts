@@ -312,6 +312,45 @@ describe('mds-book', () => {
       expect(part(root, '.spine-publisher')).toEqualText('Maggioli Editore');
     });
 
+    // where the spans are laid out on the spine, before the 3D turns it: the text runs top to
+    // bottom, and its lines from right to left
+    const placeOf = (root: HTMLElement, selector: string) => {
+      const span = part(root, selector)!;
+      return {
+        fontSize: parseFloat(getComputedStyle(span).fontSize),
+        left: span.offsetLeft,
+        top: span.offsetTop,
+      };
+    };
+
+    // 150 pages make a spine of 14 mm on a 17 cm book: one line across it
+    it('prints the author after the title on a spine with room for one line', async () => {
+      const { root } = await render(
+        '<div style="width: 200px"><mds-book pages="150" name="Manuale" author="Mario Rossi"></mds-book></div>',
+      );
+      const book = root.querySelector('mds-book')!;
+      const name = placeOf(book, '.spine-name');
+      const author = placeOf(book, '.spine-author');
+
+      expect(author.top).toBeGreaterThan(name.top);
+      expect(author.left).toBe(name.left);
+      expect(author.fontSize).toBe(name.fontSize);
+    });
+
+    // 640 pages make a spine of 44 mm: room for a second line
+    it('prints the author under the title, smaller, on a spine with room for two lines', async () => {
+      const { root } = await render(
+        '<div style="width: 200px"><mds-book pages="640" name="Manuale" author="Mario Rossi"></mds-book></div>',
+      );
+      const book = root.querySelector('mds-book')!;
+      const name = placeOf(book, '.spine-name');
+      const author = placeOf(book, '.spine-author');
+
+      expect(author.left).toBeLessThan(name.left);
+      expect(author.top).toBe(name.top);
+      expect(author.fontSize).toBeLessThan(name.fontSize);
+    });
+
     it('fades the text out on a spine under 5 mm, too narrow to print on', async () => {
       const { root, waitForChanges } = await render('<mds-book name="Manuale"></mds-book>');
       const opacity = () => getComputedStyle(part(root, '.spine-text')!).opacity;

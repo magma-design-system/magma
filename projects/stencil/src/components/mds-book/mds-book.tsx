@@ -75,7 +75,8 @@ export class MdsBook {
   @Prop() readonly alt?: string;
 
   /**
-   * The author, printed on the spine and on the cover drawn when there is no image
+   * The author, printed on the cover drawn when there is no image, above the title, and on the
+   * spine after the title, or under it where the spine has room for two lines
    */
   @Prop() readonly author?: string;
 
@@ -474,8 +475,8 @@ export class MdsBook {
   // a spine too narrow for its text shows none, as a thin booklet does (see .spine-text)
   private renderSpineText = () => (
     <div class="spine-text">
-      {this.author && <span class="spine-author">{this.author}</span>}
       {this.name && <span class="spine-name">{this.name}</span>}
+      {this.author && <span class="spine-author">{this.author}</span>}
       {this.publisher && <span class="spine-publisher">{this.publisher}</span>}
     </div>
   );
