@@ -1,0 +1,88 @@
+<!--
+================================================================================
+AUTHORING RULES - 2. Examples.md
+================================================================================
+Purpose: show CORRECT, idiomatic ways to use this component.
+         The reader is an AI agent generating code or a developer copy-pasting
+         a snippet, not someone reading documentation linearly.
+
+Companion docs to read first (do not re-derive their content here):
+  - docs/agents/conventions.md, variants.md, color.md, mistakes.md - the
+                               rules shared by every component, shipped to consumers.
+  - projects/stencil/SPEC.md - "Per-component usage docs": the usage/ contract and
+                               what `npm run check.usage-docs` verifies in CI.
+
+MUST contain:
+  - One '#### Title' section per example, ordered from most common to most
+    specialized.
+  - Each example: short title, 1-2 sentence "use this when..." intro, then
+    a SINGLE fenced code block (`html`, `tsx`, or `css`).
+  - The canonical / preferred form as #1 (typically: text via the `label`
+    prop rather than the default slot).
+  - A styling-customization example as the LAST entry, demonstrating the
+    component's `--mds-<name>-*` CSS custom properties.
+
+MUST NOT contain:
+  - Mistakes (those live in `mistakes.md`).
+  - Prop reference tables or full type signatures (those live in `readme.md`
+    and `components.d.ts`).
+  - Multiple alternative ways to do the same thing without ranking - agents
+    pick whichever appears first. Always label which is preferred.
+  - Pseudo-code or invented prop / icon names. Every snippet must be
+    runnable; verify prop names against the component's `.tsx` source and
+    icon slugs (`mi/...`, `mdi/...`, `mgg/...`) against
+    `src/fixtures/icons-dictionary.json`. Colours are semantic roles
+    (`rgb(var(--magma-<role>))`, docs/agents/color.md), radii the
+    `--magma-radius-*` scale; custom elements are never self-closed in HTML.
+
+STYLE & LENGTH:
+  - One code block per section. Keep examples minimal - only the attributes
+    needed to demonstrate the case.
+  - 5-12 examples is the sweet spot. <5 means you're under-documenting;
+    >12 means edge cases that probably belong in `mistakes.md` or are
+    out of scope.
+  - Reference props by their HTML attribute form inside code blocks
+    (`icon-position`, not `iconPosition`); prose can use either, but stay
+    consistent within a file.
+  - Delete this comment block before committing.
+================================================================================
+-->
+
+Correct and idiomatic ways to use the `<{{componentName}}>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+
+#### <!-- preferred / canonical use case, usually the `label` prop form -->
+
+<!-- 1-2 sentences: when to reach for this form and why it is the canonical form. -->
+
+```html
+<{{componentName}}></{{componentName}}>
+```
+
+#### <!-- next most common use case -->
+
+<!-- 1-2 sentences. -->
+
+```html
+<{{componentName}}></{{componentName}}>
+```
+
+<!--
+Continue with examples 3, 4, 5... Cover at minimum:
+  - Each main visual configuration (variant, tone, size if applicable)
+  - Composition with related components (parent/child, named slots)
+  - Accessibility requirements (e.g. icon-only buttons needing aria-label)
+  - State examples (await / loading, disabled, active) - only if the
+    component has them; otherwise skip
+  - Form integration if the component is form-associated
+  - External customization via CSS Custom Properties (always LAST)
+-->
+
+#### Styling Customization
+
+Style the component only through its documented `--mds-{{componentNameWithNoPrefix}}-*` CSS custom properties. Paint with the semantic color roles via `rgb(var(--magma-<role>))` so dark mode, named themes and high contrast keep working - see [`docs/agents/color.md`](../../../../../../docs/agents/color.md).
+
+```css
+.my-{{componentNameWithNoPrefix}} {
+  /* --mds-{{componentNameWithNoPrefix}}-... properties go here */
+}
+```

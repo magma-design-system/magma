@@ -31,9 +31,9 @@ The `<mds-note>` web component is the annotation surface of the Magma Design Sys
 `<mds-note>` does **not** use the shared `tone` / `variant` ladders from [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). Instead, its `variant` prop selects a flat **color palette** for the note paper (the `ThemeLabelVariantType` set, e.g. `'yellow'`, `'blue'`, `'green'`, `'red'`), defaulting to `'yellow'`. Choose the color to convey the note's category, not a state or a hierarchy of emphasis: a label color never communicates state, for a warning or an error use [`mds-banner`](../../mds-banner).
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-note>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the label-color variants documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-note>` component, ordered from most common to most specialized. The examples assume a working knowledge of the label-color variants documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Plain Note with Body Text
 
@@ -133,9 +133,9 @@ Place several notes in a layout container; each note is independent and carries 
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-note>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-note>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Remove the Note Directly - Listen for `mdsNoteDelete`
 

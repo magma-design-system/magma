@@ -33,9 +33,9 @@ This component exposes only timing controls; it has no `variant` / `tone` / `siz
 - **`paused`** freezes the countdown at its current remaining time when set and resumes it when cleared. While paused, hover-driven pause/resume is disabled; selecting an item, by click or from code, clears it.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-accordion-timer>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-accordion-timer>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Auto-Advancing Accordion
 
@@ -165,9 +165,9 @@ Style the component only through its public `--mds-accordion-timer-color` CSS cu
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-accordion-timer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-accordion-timer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use mds-accordion-timer-item Outside mds-accordion-timer
 
@@ -215,7 +215,7 @@ The parent discovers children via `querySelectorAll('mds-accordion-timer-item')`
 
 #### Do Not Set paused="false" to Resume the Timer
 
-`paused` is a boolean prop, and a false boolean is an absent attribute ([`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md)). Stencil reads the string `"false"` as `false` here, but the attribute stays on the element, so anything that checks `[paused]` still sees the timer as paused. Remove the attribute entirely (or set the property to `undefined` or `false`) to resume.
+`paused` is a boolean prop, and a false boolean is an absent attribute ([`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md)). Stencil reads the string `"false"` as `false` here, but the attribute stays on the element, so anything that checks `[paused]` still sees the timer as paused. Remove the attribute entirely (or set the property to `undefined` or `false`) to resume.
 
 ```html
 <!-- INCORRECT -->

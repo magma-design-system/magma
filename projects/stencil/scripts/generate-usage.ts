@@ -11,7 +11,7 @@ dontUseWithNX();
 
 const componentNamePrefix = 'mds-';
 const usageDirName = 'usage';
-const usageFileStems = ['1. Description', '2. Pattern', '3. Antipattern'];
+const usageFileStems = ['1. Description', '2. Examples', '3. Mistakes'];
 
 const capitalizeWord = (componentName: string) =>
   componentName

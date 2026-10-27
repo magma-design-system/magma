@@ -22,7 +22,7 @@ const TO_PACKAGE_ROOT = '../../../../';
 export const SHARED_FRAGMENTS = [
   'conventions.md',
   'variants.md',
-  'anti-patterns.md',
+  'mistakes.md',
   'color.md',
   'typography.md',
   'theming.md',
@@ -74,7 +74,7 @@ export function rewriteUsageLinks(md: string): string {
  * Rewrites the links of a docs/agents/ fragment for its shipped copy in <package>/agents/.
  * `componentDocs` is the folder of the per-component docs as seen from there: the magma
  * package's dist/collection/components, `../../magma/...` from a wrapper. A component's
- * Pattern and Antipattern become its shipped pattern.md and antipattern.md, any other doc of
+ * Examples and Mistakes become its shipped examples.md and mistakes.md, any other doc of
  * it its AGENTS.md, the install entry point and the per-target
  * tracks become the files the package ships. Any other link into the monorepo is left as it
  * is, so component-docs.ts fails the build on it: turned into plain text, it used to ship
@@ -83,9 +83,9 @@ export function rewriteUsageLinks(md: string): string {
 export function rewriteGuideLinks(md: string, componentDocs: string): string {
   return (
     md
-      // a component's Pattern or Antipattern usage file -> its shipped pattern.md / antipattern.md
+      // a component's Examples or Mistakes usage file -> its shipped examples.md / mistakes.md
       .replace(
-        /\[([^\]]*)\]\((?:\.\.\/)+projects\/stencil\/src\/components\/(mds-[a-z0-9-]+)\/usage\/[23]\.(?:%20| )(Pattern|Antipattern)\.md(#[a-z0-9-]+)?\)/g,
+        /\[([^\]]*)\]\((?:\.\.\/)+projects\/stencil\/src\/components\/(mds-[a-z0-9-]+)\/usage\/[23]\.(?:%20| )(Examples|Mistakes)\.md(#[a-z0-9-]+)?\)/g,
         (_m, text: string, tag: string, file: string, anchor = '') =>
           `[${text}](${componentDocs}/${tag}/${file.toLowerCase()}.md${anchor})`,
       )
@@ -177,7 +177,7 @@ function section(title: string, body: string | undefined): string {
 
 /**
  * Renders a component's AGENTS.md: what it is (its usage description), then its API as
- * compact tables, with links to the pattern / antipattern files beside it and to the
+ * compact tables, with links to the examples / mistakes files beside it and to the
  * rules shared by every component.
  */
 export function renderComponentAgentsMd(
@@ -188,18 +188,18 @@ export function renderComponentAgentsMd(
   const { tag } = component;
   const usage = component.usage ?? {};
   const description = usage['1. Description']?.trim();
-  const hasPattern = !!usage['2. Pattern']?.trim();
-  const hasAntipattern = !!usage['3. Antipattern']?.trim();
+  const hasExamples = !!usage['2. Examples']?.trim();
+  const hasMistakes = !!usage['3. Mistakes']?.trim();
 
   const readNext = [
-    hasPattern ? '[`pattern.md`](pattern.md) - correct usage, with examples' : '',
-    hasAntipattern ? '[`antipattern.md`](antipattern.md) - mistakes to avoid' : '',
+    hasExamples ? '[`examples.md`](examples.md) - correct usage, from the most common case' : '',
+    hasMistakes ? '[`mistakes.md`](mistakes.md) - the wrong forms, each with the right one' : '',
     storybookUrl && component.storybook
       ? `[Storybook](${storybookUrl}?path=/docs/${component.storybook}) - the live examples, in the published Storybook of \`main\``
       : '',
     `[\`conventions.md\`](${TO_PACKAGE_ROOT}agents/conventions.md), ` +
       `[\`variants.md\`](${TO_PACKAGE_ROOT}agents/variants.md), ` +
-      `[\`anti-patterns.md\`](${TO_PACKAGE_ROOT}agents/anti-patterns.md) - the rules shared by every component`,
+      `[\`mistakes.md\`](${TO_PACKAGE_ROOT}agents/mistakes.md) - the rules shared by every component`,
   ].filter(Boolean);
 
   const encapsulation =
@@ -315,7 +315,7 @@ export function renderComponentAgentsMd(
     .concat('\n');
 }
 
-/** A usage file (pattern / antipattern) as shipped beside the component's AGENTS.md. */
+/** A usage file (examples / mistakes) as shipped beside the component's AGENTS.md. */
 export function renderUsageFile(tag: string, title: string, md: string): string {
   return `<!--
   GENERATED FILE - do not edit by hand.

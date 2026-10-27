@@ -120,7 +120,7 @@ export const getComponent = (context: ToolContext): Tool => ({
   name: 'get_component',
   title: 'Read the API of a Magma component',
   description:
-    'The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), and the files of its usage guide (pattern, antipattern). Use it before writing the component.',
+    'The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), and the files of its usage guide (examples, mistakes). Use it before writing the component.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -205,7 +205,7 @@ export const getComponent = (context: ToolContext): Tool => ({
         description:
           'How many more it has, internal: not to be set, they may change in any release.',
       },
-      files: { type: 'object', properties: { api: string, pattern: string, antipattern: string } },
+      files: { type: 'object', properties: { api: string, examples: string, mistakes: string } },
     },
     required: [
       'tag',
@@ -225,7 +225,7 @@ export const getComponent = (context: ToolContext): Tool => ({
     const dir = path.join(magmaRoot(context.settings), 'dist/collection/components', component.tag);
     // the shipped docs of the component, when the package has them
     const files = Object.fromEntries(
-      Object.entries({ api: 'AGENTS.md', pattern: 'pattern.md', antipattern: 'antipattern.md' })
+      Object.entries({ api: 'AGENTS.md', examples: 'examples.md', mistakes: 'mistakes.md' })
         .map(([key, name]) => [key, path.join(dir, name)])
         .filter(([, full]) => existsSync(full!)),
     );

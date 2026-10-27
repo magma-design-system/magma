@@ -5,8 +5,8 @@
  *
  *   AGENTS.md            what it is + its API (props with allowed values, events,
  *                        methods, slots, parts, CSS custom properties)
- *   pattern.md           correct usage        (usage/2. Pattern.md)
- *   antipattern.md       mistakes to avoid    (usage/3. Antipattern.md)
+ *   examples.md          correct usage        (usage/2. Examples.md)
+ *   mistakes.md          mistakes to avoid    (usage/3. Mistakes.md)
  *   documentation.json   its docs-json entry, same shape as dist/documentation.json
  *
  * It first moves the public / internal mark of each CSS custom property from its
@@ -69,8 +69,8 @@ function writeComponentDocs(docs: DocsJson, version: string): number {
       renderComponentAgentsMd(component, version, docs.storybook),
     );
     for (const [key, file, title] of [
-      ['2. Pattern', 'pattern.md', 'patterns'],
-      ['3. Antipattern', 'antipattern.md', 'anti-patterns'],
+      ['2. Examples', 'examples.md', 'examples'],
+      ['3. Mistakes', 'mistakes.md', 'mistakes'],
     ] as const) {
       const target = path.join(dir, file);
       if (usage[key]?.trim())
@@ -114,7 +114,7 @@ function shippedDocs(): { file: string; root: string; resolve: (link: string) =>
     }
   }
   for (const tag of fs.readdirSync(COMPONENTS_OUT)) {
-    for (const f of ['AGENTS.md', 'pattern.md', 'antipattern.md']) {
+    for (const f of ['AGENTS.md', 'examples.md', 'mistakes.md']) {
       const file = path.join(COMPONENTS_OUT, tag, f);
       if (fs.existsSync(file))
         out.push({

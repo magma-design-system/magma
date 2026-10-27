@@ -33,9 +33,9 @@ The shared `tone` / `variant` ladders are defined in [`docs/agents/variants.md`]
 - **`action`** holds trailing controls; `mds-button` is the recommended element here.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-entity>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-entity>` component, ordered from most common to most specialized. The examples assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Person Entity with Image
 
@@ -160,9 +160,9 @@ The name and the `detail` row stack in the `infos` part, 2px apart, so a badge o
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-entity>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-entity>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Put the Name as a Plain Text String in the Default Slot
 
@@ -182,7 +182,7 @@ The default slot accepts HTML elements and components, and the component applies
 
 #### Do Not Use `await="false"` to Cancel the Loading State
 
-`await` is a boolean attribute: turn it off by removing it (or setting the prop to `undefined`), as for every boolean ([`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md)). The runtime happens to read the string `"false"` as `false`, but the attribute stays in the markup until the component renders, and HTML, `[await]` selectors and `hasAttribute()` read a present attribute as set.
+`await` is a boolean attribute: turn it off by removing it (or setting the prop to `undefined`), as for every boolean ([`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md)). The runtime happens to read the string `"false"` as `false`, but the attribute stays in the markup until the component renders, and HTML, `[await]` selectors and `hasAttribute()` read a present attribute as set.
 
 ```html
 <!-- INCORRECT -->

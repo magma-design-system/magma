@@ -6,7 +6,7 @@ Purpose: explain WHAT this component is and what each prop MEANS.
          The reader is an AI agent or a developer deciding whether to use it.
 
 Companion docs to read first (do not re-derive their content here):
-  - docs/agents/conventions.md, variants.md, color.md, anti-patterns.md - the
+  - docs/agents/conventions.md, variants.md, color.md, mistakes.md - the
                                rules shared by every component, shipped to consumers.
   - projects/stencil/SPEC.md - "Per-component usage docs": the usage/ contract and
                                what `npm run check.usage-docs` verifies in CI.
@@ -31,8 +31,8 @@ MUST NOT contain:
     auto-generated from `@Prop()` JSDoc).
   - Exhaustive lists of allowed string values (lives in `components.d.ts`
     and `src/type/*.ts` - those are the source of truth).
-  - Code examples - those belong in `pattern.md`.
-  - Anti-patterns or "don't do X" - those belong in `antipattern.md`.
+  - Code examples - those belong in `examples.md`.
+  - Mistakes or "don't do X" - those belong in `mistakes.md`.
   - Rules that apply to every component - those live in `docs/agents/`
     (`conventions.md`, `variants.md`): link them instead.
   - Trivial props (`label`, `name`, `id`, `autoFocus`) whose meaning is

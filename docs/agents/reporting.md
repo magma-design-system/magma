@@ -9,8 +9,8 @@
 
 ## 1. Make sure it is Magma's
 
-- Read the component's `AGENTS.md` and `antipattern.md`, and
-  [`anti-patterns.md`](anti-patterns.md): a documented mistake is the project's to fix,
+- Read the component's `AGENTS.md` and its own `mistakes.md`, and
+  [`mistakes.md`](mistakes.md): a documented mistake is the project's to fix,
   not a Magma bug.
 - Check that the installed `magma`, `styles` and `design-tokens` versions belong
   together (the ones a `magma` release depends on): mismatched versions break tokens

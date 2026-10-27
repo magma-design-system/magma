@@ -30,9 +30,9 @@ This component has no properties. All configuration is expressed through its two
 See [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) for the shared compound-component conventions and the usage contract.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-author>` component, ordered from most common to most specialized. Patterns assume a working knowledge of compound-component conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-author>` component, ordered from most common to most specialized. The examples assume a working knowledge of compound-component conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Full Byline with Avatar
 
@@ -126,9 +126,9 @@ When the author represents an organization or system - rather than a person - pa
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-author>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-author>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Put Plain Text Directly in the Default Slot
 

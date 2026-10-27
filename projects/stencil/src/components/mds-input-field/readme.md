@@ -26,9 +26,9 @@ The `<mds-input-field>` web component is the form-field wrapper of the Magma Des
 - **`variant`** drives the field's status colouring. It is not the full theme ladder: the allowed set is the input-specific variant ladder (`'ai'`, `'primary'`, plus the status values `'error'`, `'info'`, `'success'`, `'warning'`), drawn from the families in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). It defaults to `'primary'` and is normally managed automatically by validation rather than set by hand.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-input-field>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-input-field>` component, ordered from most common to most specialized. The examples assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Labeled Input
 
@@ -116,9 +116,9 @@ Adjust the message area colors through the two documented `--mds-input-field-*` 
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-input-field>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-field>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use It Without a Slotted Input
 

@@ -106,7 +106,7 @@ keep in step.
   (`projects/stencil/src/components/mds-icon/services/icons-set.service.ts`), which reads
   `setSvgPath()` (of the service, or the method of an `mds-icon`) and, as a fallback, the
   `mdsIconSvgPath` key of `sessionStorage`. Nothing else.
-- **Contract**: the `mds-icon` usage docs, `2. Pattern.md`;
+- **Contract**: the `mds-icon` usage docs, `2. Examples.md`;
   [`docs/agents/assets.md`](agents/assets.md), "Tell mds-icon where the icons are".
 - **Read by**: the MCP `check_setup` (`icon-path`).
 - **Held by**: the `check_setup` test, which collects every line that sets the path from the
@@ -115,7 +115,7 @@ keep in step.
 ## The agent guides
 
 - **What**: what the agent of a consumer project reads: the `AGENTS.md` and `agents/*.md` of
-  the three entry packages, and the `AGENTS.md`, `pattern.md` and `antipattern.md` of each
+  the three entry packages, and the `AGENTS.md`, `examples.md` and `mistakes.md` of each
   component. Written for a consumer project, never for work on this repository: the root
   `CLAUDE.md` keeps Claude Code from loading the generated ones here.
 - **Produced by**: `projects/stencil/scripts/sync-agent-docs.ts` from `docs/agents/`, before the

@@ -13,7 +13,7 @@ The `<mds-pref-language>` web component is the language-preference control of th
 
 #### Semantic Behavior
 
-- **Usually inside `<mds-pref>`**: Placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it also works on its own, since it applies and stores the language by itself. What it gives up on its own is in the antipattern docs. In turn it hosts its own `<mds-pref-language-item>` children, supplied via its default slot.
+- **Usually inside `<mds-pref>`**: Placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it also works on its own, since it applies and stores the language by itself. What it gives up on its own is in its mistakes. In turn it hosts its own `<mds-pref-language-item>` children, supplied via its default slot.
 - **Default slot hosts the items**: The default slot accepts one or more `<mds-pref-language-item>` elements; when the control loads, and whenever its items change, the item whose `code` matches the resolved language is marked selected; an item added after load is picked like the others (a later change of `set` does not move the selection).
 - **Selection orchestration**: Selecting an item clears the others, closes the dropdown, and resolves the new language - the children report up to this component, which centralizes the single-selection state.
 - **Language resolution & persistence**: When `set` is `auto` the active language is resolved in priority order from the persisted value, then the `<html lang>` attribute, then `navigator.language`. The resolved value is persisted and written to `<html lang>` - the single page-wide source of truth for the language. Every localized Magma component (including ones nested in shadow DOM) reacts automatically through a shared reactive store; there is no per-element `lang` override and no imperative refresh method. Applications that manage the language themselves can simply set `<html lang>`: the store observes it.
@@ -27,9 +27,9 @@ The `<mds-pref-language>` web component is the language-preference control of th
 - **`size`**: Sizes the nested tab trigger (`sm` / `md`). Inside `<mds-pref>`, the parent's `size` reaches this control on load and when it changes, and overwrites its own: set it on the parent.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-pref-language>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-pref-language>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Language Selector Inside `mds-pref`
 
@@ -126,9 +126,9 @@ Listen to `mdsPrefLanguageChange` to react when the user picks a language (for e
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-pref-language>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-pref-language>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `mds-pref`
 
