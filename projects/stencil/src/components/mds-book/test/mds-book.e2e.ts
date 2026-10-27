@@ -9,6 +9,11 @@ const cover = (width: number, height: number, fill = '#e8a33d'): string =>
     `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><rect width="100%" height="100%" fill="${fill}"/></svg>`,
   )}`;
 
+// the mark of a publisher, black on a transparent ground as a mark usually is
+const logo = `data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="30"><circle cx="20" cy="15" r="12" fill="black"/></svg>',
+)}`;
+
 // the host lays out the unturned book, so its box gives the proportions of the format
 const ratioOf = (element: Element): number => {
   const { width, height } = element.getBoundingClientRect();
@@ -129,6 +134,30 @@ describe('mds-book', () => {
       expect(part(root, '.drawn-name')).toEqualText('Manuale');
       expect(part(root, '.drawn-author')).toEqualText('Mario Rossi');
       expect(part(root, '.drawn-publisher')).toEqualText('Maggioli Editore');
+    });
+
+    // the padding of the drawn cover pushed its foot past the bottom edge, where it was cut off
+    it('keeps the publisher at the foot of a drawn cover inside it', async () => {
+      const { root } = await render(
+        '<mds-book name="Manuale" publisher="Maggioli Editore"></mds-book>',
+      );
+      const publisher = part(root, '.drawn-publisher')!;
+
+      expect(publisher.offsetTop + publisher.offsetHeight).toBeLessThan(
+        part(root, '.front')!.offsetHeight,
+      );
+    });
+
+    it('prints the mark of the publisher instead of its name, at the foot of a drawn cover', async () => {
+      const { root } = await render(
+        `<mds-book name="Manuale" publisher="Maggioli Editore" publisher-logo="${logo}"></mds-book>`,
+      );
+      await vi.waitFor(() => expect(part(root, '.drawn-logo')).not.toBeNull());
+      const mark = part(root, '.drawn-logo')!;
+
+      expect(part(root, '.drawn-publisher')).toBeNull();
+      expect(mark.offsetTop + mark.offsetHeight).toBeLessThan(part(root, '.front')!.offsetHeight);
+      expect(getComputedStyle(mark).maskImage).toContain('data:image/svg+xml');
     });
 
     it('draws the cover when the image fails to load', async () => {
@@ -298,6 +327,86 @@ describe('mds-book', () => {
       expect(part(root, '.spine-author')).toEqualText('Mario Rossi');
       expect(part(root, '.spine-name')).toEqualText('Manuale');
       expect(part(root, '.spine-publisher')).toEqualText('Maggioli Editore');
+    });
+
+    // where the spans are laid out on the spine, before the 3D turns it: the text runs top to
+    // bottom, and its lines from right to left
+    const placeOf = (root: HTMLElement, selector: string) => {
+      const span = part(root, selector)!;
+      return {
+        fontSize: parseFloat(getComputedStyle(span).fontSize),
+        left: span.offsetLeft,
+        top: span.offsetTop,
+      };
+    };
+
+    // 150 pages make a spine of 14 mm on a 17 cm book: one line across it
+    it('prints the author after the title on a spine with room for one line', async () => {
+      const { root } = await render(
+        '<div style="width: 200px"><mds-book pages="150" name="Manuale" author="Mario Rossi"></mds-book></div>',
+      );
+      const book = root.querySelector('mds-book')!;
+      const name = placeOf(book, '.spine-name');
+      const author = placeOf(book, '.spine-author');
+
+      expect(author.top).toBeGreaterThan(name.top);
+      expect(author.left).toBe(name.left);
+      expect(author.fontSize).toBe(name.fontSize);
+    });
+
+    // 640 pages make a spine of 44 mm: room for a second line
+    it('prints the author under the title, smaller, on a spine with room for two lines', async () => {
+      const { root } = await render(
+        '<div style="width: 200px"><mds-book pages="640" name="Manuale" author="Mario Rossi"></mds-book></div>',
+      );
+      const book = root.querySelector('mds-book')!;
+      const name = placeOf(book, '.spine-name');
+      const author = placeOf(book, '.spine-author');
+
+      expect(author.left).toBeLessThan(name.left);
+      expect(author.top).toBe(name.top);
+      expect(author.fontSize).toBeLessThan(name.fontSize);
+    });
+
+    it('prints the mark of the publisher instead of its name at the foot, on a cover image too', async () => {
+      const { root } = await render(
+        `<mds-book src="${cover(170, 240)}" loading="eager" name="Manuale" publisher="Maggioli Editore" publisher-logo="${logo}"></mds-book>`,
+      );
+      await vi.waitFor(() => expect(part(root, '.spine-logo')).not.toBeNull());
+
+      expect(part(root, '.spine-publisher')).toBeNull();
+      expect(getComputedStyle(part(root, '.spine-logo')!).maskImage).toContain(
+        'data:image/svg+xml',
+      );
+    });
+
+    it('paints the publisher in the colour of the text, or in a colour of its own', async () => {
+      const { root, waitForChanges } = await render(
+        `<mds-book publisher="Maggioli Editore" publisher-logo="${logo}" style="--mds-book-text-color: rgb(255, 255, 255)"></mds-book>`,
+      );
+      await vi.waitFor(() => expect(part(root, '.spine-logo')).not.toBeNull());
+      const ink = () => getComputedStyle(part(root, '.spine-logo')!).backgroundColor;
+      expect(ink()).toBe('rgb(255, 255, 255)');
+
+      root.style.setProperty('--mds-book-publisher-color', 'rgb(27, 94, 32)');
+      expect(ink()).toBe('rgb(27, 94, 32)');
+
+      root.removeAttribute('publisher-logo');
+      await waitForChanges();
+
+      expect(getComputedStyle(part(root, '.spine-publisher')!).color).toBe('rgb(27, 94, 32)');
+    });
+
+    it('prints the name of the publisher when its mark does not load', async () => {
+      const { root } = await render(
+        '<mds-book publisher="Maggioli Editore" publisher-logo="/missing-logo.svg"></mds-book>',
+      );
+
+      await vi.waitFor(() =>
+        expect(part(root, '.spine-publisher')).toEqualText('Maggioli Editore'),
+      );
+      expect(part(root, '.spine-logo')).toBeNull();
+      expect(part(root, '.drawn-publisher')).toEqualText('Maggioli Editore');
     });
 
     it('fades the text out on a spine under 5 mm, too narrow to print on', async () => {

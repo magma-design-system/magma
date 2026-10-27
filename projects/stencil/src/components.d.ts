@@ -491,7 +491,7 @@ export namespace Components {
          */
         "alt"?: string;
         /**
-          * The author, printed on the spine and on the cover drawn when there is no image
+          * The author, printed on the cover drawn when there is no image, above the title, and on the spine after the title, or under it where the spine has room for two lines
          */
         "author"?: string;
         /**
@@ -525,9 +525,14 @@ export namespace Components {
          */
         "pose": BookPoseType;
         /**
-          * The publisher, printed at the foot of the spine and of the cover drawn when there is no image
+          * The publisher, printed at the foot of the spine and of the cover drawn when there is no image, unless its `publisher-logo` is printed there instead
          */
         "publisher"?: string;
+        /**
+          * The mark of the publisher, printed instead of its name at the foot of the spine and of the cover drawn when there is no image: the path to an svg, or a png on a transparent ground. Its shape is printed, not its colours, in `--mds-book-publisher-color`. An image from another origin needs CORS headers, as any mask does; one that does not load leaves the name
+          * @example '/logos/maggioli-editore.svg'
+         */
+        "publisherLogo"?: string;
         /**
           * Specifies the path to the image of the front cover
          */
@@ -5854,7 +5859,7 @@ declare namespace LocalJSX {
          */
         "alt"?: string;
         /**
-          * The author, printed on the spine and on the cover drawn when there is no image
+          * The author, printed on the cover drawn when there is no image, above the title, and on the spine after the title, or under it where the spine has room for two lines
          */
         "author"?: string;
         /**
@@ -5888,9 +5893,14 @@ declare namespace LocalJSX {
          */
         "pose"?: BookPoseType;
         /**
-          * The publisher, printed at the foot of the spine and of the cover drawn when there is no image
+          * The publisher, printed at the foot of the spine and of the cover drawn when there is no image, unless its `publisher-logo` is printed there instead
          */
         "publisher"?: string;
+        /**
+          * The mark of the publisher, printed instead of its name at the foot of the spine and of the cover drawn when there is no image: the path to an svg, or a png on a transparent ground. Its shape is printed, not its colours, in `--mds-book-publisher-color`. An image from another origin needs CORS headers, as any mask does; one that does not load leaves the name
+          * @example '/logos/maggioli-editore.svg'
+         */
+        "publisherLogo"?: string;
         /**
           * Specifies the path to the image of the front cover
          */
@@ -9122,6 +9132,7 @@ declare namespace LocalJSX {
         "pages": number;
         "pose": BookPoseType;
         "publisher": string;
+        "publisherLogo": string;
         "src": string;
     }
     interface MdsBreadcrumbAttributes {

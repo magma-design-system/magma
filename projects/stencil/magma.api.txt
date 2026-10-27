@@ -176,12 +176,14 @@ mds-book prop name (attr name): string | undefined
 mds-book prop pages (attr pages): number = 300
 mds-book prop pose (attr pose) [reflect]: "fore-edge" | "front" | "lying" | "lying-turned" | "spine" = 'spine'
 mds-book prop publisher (attr publisher): string | undefined
+mds-book prop publisherLogo (attr publisher-logo): string | undefined
 mds-book prop src (attr src): string | undefined
 mds-book part cover
 mds-book css --mds-book-color [static]
 mds-book css --mds-book-page-weight-max INTERNAL
 mds-book css --mds-book-page-weight-min INTERNAL
 mds-book css --mds-book-paper-color INTERNAL
+mds-book css --mds-book-publisher-color [static]
 mds-book css --mds-book-spine-color [static]
 mds-book css --mds-book-text-color [static]
 mds-breadcrumb encapsulation shadow

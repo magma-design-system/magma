@@ -41,6 +41,9 @@ export class MdsBook {
   @State() private imageError: boolean = false;
   // the proportions of the loaded image, what `format="auto"` shapes the book on
   @State() private imageRatio?: number;
+  @State() private logoError: boolean = false;
+  // the mark of the publisher as loaded, its absolute url: what its mask is painted with
+  @State() private logoUrl?: string;
 
   // The pose is animated here, not in CSS: the light on each face and the gloss of the cover
   // follow the angle frame by frame, which a transition of the transform alone cannot do. It
@@ -56,6 +59,8 @@ export class MdsBook {
   private goal: BookPose = restPose();
   private hovering = false;
   private lastTime?: number;
+  // the mark of the publisher, loaded apart to know whether its mask can be painted
+  private logoLoader?: HTMLImageElement;
   // where the pointer is on the book, from -1 to 1 on each axis
   private pointer = { x: 0, y: 0 };
   private scene?: HTMLDivElement;
@@ -75,7 +80,8 @@ export class MdsBook {
   @Prop() readonly alt?: string;
 
   /**
-   * The author, printed on the spine and on the cover drawn when there is no image
+   * The author, printed on the cover drawn when there is no image, above the title, and on the
+   * spine after the title, or under it where the spine has room for two lines
    */
   @Prop() readonly author?: string;
 
@@ -122,9 +128,19 @@ export class MdsBook {
   @Prop({ reflect: true }) readonly pose: BookPoseType = 'spine';
 
   /**
-   * The publisher, printed at the foot of the spine and of the cover drawn when there is no image
+   * The publisher, printed at the foot of the spine and of the cover drawn when there is no
+   * image, unless its `publisher-logo` is printed there instead
    */
   @Prop() readonly publisher?: string;
+
+  /**
+   * The mark of the publisher, printed instead of its name at the foot of the spine and of the
+   * cover drawn when there is no image: the path to an svg, or a png on a transparent ground.
+   * Its shape is printed, not its colours, in `--mds-book-publisher-color`. An image from
+   * another origin needs CORS headers, as any mask does; one that does not load leaves the name
+   * @example '/logos/maggioli-editore.svg'
+   */
+  @Prop() readonly publisherLogo?: string;
 
   /**
    * Specifies the path to the image of the front cover
@@ -145,6 +161,11 @@ export class MdsBook {
   @Watch('pose')
   poseHandler(): void {
     this.aim();
+  }
+
+  @Watch('publisherLogo')
+  publisherLogoHandler(): void {
+    this.loadLogo();
   }
 
   @Watch('src')
@@ -247,6 +268,7 @@ export class MdsBook {
     this.warnInvalidFormat(this.format);
     this.warnInvalidPages(this.pages);
     this.current = this.goal = restPose(this.pose);
+    this.loadLogo();
   }
 
   // after every render, so the faces a new binding brings take the light of the pose at once,
@@ -433,6 +455,33 @@ export class MdsBook {
 
   private hasImage = (): boolean => (this.src ?? '') !== '' && !this.imageError;
 
+  // The mark is fetched as a mask fetches its image, with CORS, so a mark the mask could not
+  // paint fails here too and leaves the name of the publisher; a new one forgets the last.
+  private loadLogo = (): void => {
+    if (this.logoLoader) {
+      this.logoLoader.onload = null;
+      this.logoLoader.onerror = null;
+    }
+    this.logoLoader = undefined;
+    this.logoError = false;
+    this.logoUrl = undefined;
+    const src = (this.publisherLogo ?? '').trim();
+    if (src === '' || !Build.isBrowser) return;
+    const image = new Image();
+    image.crossOrigin = 'anonymous';
+    image.onload = () => {
+      this.logoUrl = image.src;
+    };
+    image.onerror = () => {
+      this.logoError = true;
+    };
+    image.src = src;
+    this.logoLoader = image;
+  };
+
+  private logoPending = (): boolean =>
+    (this.publisherLogo ?? '').trim() !== '' && this.logoUrl === undefined && !this.logoError;
+
   // a fixed format wins over the image; auto waits for it, and keeps 17x24 without one
   private ratio = (): number => bookFormatRatio(this.format) ?? this.imageRatio ?? defaultBookRatio;
 
@@ -468,15 +517,27 @@ export class MdsBook {
     if (this.coverUrl !== undefined && this.hasImage()) {
       style['--private-book-cover'] = cssUrl(this.coverUrl);
     }
+    if (this.logoUrl !== undefined) {
+      style['--private-book-logo'] = cssUrl(this.logoUrl);
+    }
     return style;
+  };
+
+  // The publisher at the foot of the spine and of a drawn cover: its mark once loaded, its name
+  // without one or when the mark fails. While the mark loads the place stays empty, so the name
+  // does not show for a moment and then give way to it.
+  private renderPublisher = (place: 'drawn' | 'spine') => {
+    if (this.logoUrl !== undefined) return <span class={`${place}-logo`}></span>;
+    if (this.logoPending() || (this.publisher ?? '') === '') return null;
+    return <span class={`${place}-publisher`}>{this.publisher}</span>;
   };
 
   // a spine too narrow for its text shows none, as a thin booklet does (see .spine-text)
   private renderSpineText = () => (
     <div class="spine-text">
-      {this.author && <span class="spine-author">{this.author}</span>}
       {this.name && <span class="spine-name">{this.name}</span>}
-      {this.publisher && <span class="spine-publisher">{this.publisher}</span>}
+      {this.author && <span class="spine-author">{this.author}</span>}
+      {this.renderPublisher('spine')}
     </div>
   );
 
@@ -599,7 +660,7 @@ export class MdsBook {
                     <div aria-hidden="true" class="drawn-cover">
                       {this.author && <span class="drawn-author">{this.author}</span>}
                       {this.name && <span class="drawn-name">{this.name}</span>}
-                      {this.publisher && <span class="drawn-publisher">{this.publisher}</span>}
+                      {this.renderPublisher('drawn')}
                     </div>
                   )}
                   <span class="gloss"></span>
