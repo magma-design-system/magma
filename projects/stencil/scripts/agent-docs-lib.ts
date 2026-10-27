@@ -161,6 +161,20 @@ export interface DocsComponent {
   [key: string]: unknown;
 }
 
+/**
+ * The usage files of a component, as the keys of its `usage` in documentation.json: the file
+ * name without `.md`, the number only sets the order. A contract with the readers of
+ * documentation.json, the docs site first (docs/CONTRACTS.md, "documentation.json"), which
+ * leaves out a name it does not know: a name outside this list fails the build instead.
+ */
+export const USAGE_FILES = ['1. Description', '2. Examples', '3. Mistakes'] as const;
+
+/** The keys of a component's `usage` that are not in USAGE_FILES. */
+export const unknownUsageFiles = (component: DocsComponent): string[] =>
+  Object.keys(component.usage ?? {}).filter(
+    (key) => !(USAGE_FILES as readonly string[]).includes(key),
+  );
+
 function described(docs: string | undefined, deprecation?: string, required?: boolean): string {
   const parts: string[] = [];
   // a @deprecated text that ends its own sentence keeps one full stop, not two

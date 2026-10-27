@@ -36,6 +36,8 @@ import {
   renderComponentAgentsMd,
   renderUsageFile,
   rewriteUsageEntries,
+  unknownUsageFiles,
+  USAGE_FILES,
   type DocsComponent,
 } from './agent-docs-lib';
 import { COMPONENTS_DIR } from './meta';
@@ -165,6 +167,17 @@ function main(): void {
       `${markErrors.length} CSS custom property mark(s) to fix in the @prop of the sheets:`,
     );
     for (const e of markErrors) console.error(`  ${e}`);
+    process.exit(1);
+  }
+
+  const unknownUsage = docs.components.flatMap((component) =>
+    unknownUsageFiles(component).map((key) => `${component.tag}/usage/${key}.md`),
+  );
+  if (unknownUsage.length) {
+    console.error(
+      `${unknownUsage.length} usage file(s) whose name the readers of documentation.json do not know (${USAGE_FILES.join(', ')}; docs/CONTRACTS.md):`,
+    );
+    for (const e of unknownUsage) console.error(`  ${e}`);
     process.exit(1);
   }
 

@@ -4,6 +4,7 @@ import { ask } from 'stdio';
 import { mkdir, readFile, stat, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { COMPONENTS_DIR, TEMPLATES_DIR } from './meta';
+import { USAGE_FILES } from './agent-docs-lib';
 import { checkComponentExistence } from './lib';
 import { dontUseWithNX, logFileSavedTo, logStatus } from '../../../scripts/log';
 
@@ -11,7 +12,7 @@ dontUseWithNX();
 
 const componentNamePrefix = 'mds-';
 const usageDirName = 'usage';
-const usageFileStems = ['1. Description', '2. Examples', '3. Mistakes'];
+const usageFileStems = USAGE_FILES;
 
 const capitalizeWord = (componentName: string) =>
   componentName

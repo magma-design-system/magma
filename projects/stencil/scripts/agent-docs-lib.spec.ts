@@ -13,6 +13,7 @@ import {
   rewriteUsageLinks,
   rootOf,
   taxonomyErrors,
+  unknownUsageFiles,
   type ComponentTaxonomy,
   type DocsComponent,
 } from './agent-docs-lib';
@@ -259,6 +260,19 @@ describe('renderUsageFile', () => {
     expect(md).toContain('# mds-button - examples');
     expect(md).toContain('[`AGENTS.md`](AGENTS.md)');
     expect(md).toContain('(../../../../agents/conventions.md#slots)');
+  });
+});
+
+describe('unknownUsageFiles', () => {
+  it('names the usage files outside the contract, the names from before #1169 too', () => {
+    expect(unknownUsageFiles(button)).toEqual([]);
+    expect(
+      unknownUsageFiles({
+        tag: 'mds-x',
+        usage: { '1. Description': 'x', '2. Pattern': 'x', '3. Mistakes': 'x', '4. Notes': 'x' },
+      }),
+    ).toEqual(['2. Pattern', '4. Notes']);
+    expect(unknownUsageFiles({ tag: 'mds-x' })).toEqual([]);
   });
 });
 
