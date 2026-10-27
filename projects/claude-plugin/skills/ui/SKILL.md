@@ -30,7 +30,7 @@ When the tools do not give you what the task needs (you would read Magma's files
 | Tool | What it answers |
 | --- | --- |
 | `find_component` | Find the Magma components that fit a need, described in words ("a date range picker", "a dismissible notice"). |
-| `get_component` | The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), and the files of its usage guide (pattern, antipattern). |
+| `get_component` | The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), and the files of its usage guide (examples, mistakes). |
 | `get_usage` | How to write one Magma component in a framework: the import, the element or wrapper name, every prop and event as that framework writes them (attribute, React prop and onMdsX handler, Angular [input] and (output)), an example and the traps of that framework. |
 | `list_tokens` | The Magma roles and tokens of the installed version, each with what it is for, its CSS custom property, its light value and the Tailwind class that reads it. |
 | `suggest_role` | The semantic role to use instead of a raw colour: a literal (#f5f5f5, rgb(...), oklch(...)), a Tailwind class (bg-gray-100, text-tone-neutral-03, shadow-gray-900/20) or a palette step (--tone-neutral-09). |
@@ -42,4 +42,4 @@ When the tools do not give you what the task needs (you would read Magma's files
 
 ## Without the server
 
-Read the guides installed with the package: `node_modules/@maggioli-design-system/magma/AGENTS.md`, its `agents/*.md` (conventions, color, typography, theming, lint) and, for one component, `dist/collection/components/<tag>/AGENTS.md` with `pattern.md` and `antipattern.md` beside it.
+Read the guides installed with the package: `node_modules/@maggioli-design-system/magma/AGENTS.md`, its `agents/*.md` (conventions, color, typography, theming, lint) and, for one component, `dist/collection/components/<tag>/AGENTS.md`, which links the files of its examples and mistakes beside it.
