@@ -4,6 +4,26 @@ Every release of `@maggioli-design-system/magma`, newest first. Each section is 
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [magma@2.9.0] - 2026-10-27
+
+### Bug Fixes
+
+- *(mds-book)* Keep the publisher of a drawn cover inside its bottom edge
+
+### Documentation
+
+- *(magma)* The CI of a commit on main is its merge-group run
+- *(mds-book)* Show the spine by its depth and the four ways of the publisher
+
+### Features
+
+- *(mds-book)* Print the author under the title where the spine has room
+- *(mds-book)* Print the mark of the publisher with publisher-logo
+
+### Styling
+
+- *(mds-book)* Set the title of the book in the face of the titles
+
 ## [magma@2.8.0] - 2026-10-26
 
 ### Bug Fixes
