@@ -38,7 +38,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "postcss-value-parser": "4.2.0"
+    "postcss-value-parser": "4.2.0",
+    "yaml": "2.9.1"
   },
   "devDependencies": {
     "@angular-eslint/template-parser": "22.5.0",

@@ -1,4 +1,4 @@
-// The ten tools of the MCP server on fixtures cut from the real data, and the mi and mdi icon
+// The eleven tools of the MCP server on fixtures cut from the real data, and the mi and mdi icon
 // sets installed in this repository.
 import {
   existsSync,
@@ -32,7 +32,7 @@ type Result = Record<string, any>;
 const run = async (name: string, args: Record<string, unknown> = {}): Promise<Result> =>
   tools[name]!.run(args);
 
-test('the server has its ten tools', () => {
+test('the server has its eleven tools', () => {
   expect(Object.keys(tools).sort()).toEqual([
     'check_markup',
     'check_setup',
@@ -41,6 +41,7 @@ test('the server has its ten tools', () => {
     'find_icon',
     'get_component',
     'get_guide',
+    'get_pattern',
     'get_usage',
     'list_tokens',
     'suggest_role',
@@ -377,6 +378,119 @@ describe('the guide tool', () => {
     expect(section.text).not.toMatch(/Run it after writing/);
     await expect(run('get_guide', { guide: 'nope' })).rejects.toThrow(
       /the guides are AGENTS, color, lint/,
+    );
+  });
+});
+
+describe('the pattern tool', () => {
+  test('without arguments the list, as get_guide lists the guides', async () => {
+    const { patterns } = await run('get_pattern');
+    // by group, in the order of the docs site, then by id
+    expect(patterns.map((one: { id: string }) => one.id)).toEqual([
+      'consent-and-legal',
+      'confirm-action',
+      'message-placement',
+    ]);
+    expect(patterns[2]).toMatchObject({
+      title: 'Where a message goes',
+      group: 'messages-and-states',
+      status: 'decided',
+      validatedOn: [],
+    });
+  });
+
+  test('a need finds the patterns that answer it; none is a gap', async () => {
+    const { patterns, gap } = await run('get_pattern', {
+      need: 'tell the user a save failed, try again',
+    });
+    expect(patterns[0].id).toBe('message-placement');
+    expect(gap).toBeUndefined();
+    expect(await run('get_pattern', { need: 'zzqxv' })).toEqual({ patterns: [], gap: GAP });
+  });
+
+  test('a pattern comes with the layer of the project applied, its rules untouched', async () => {
+    const { pattern } = await run('get_pattern', { id: 'message-placement' });
+    expect(pattern.layers).toEqual(['magma', 'example-backoffice']);
+    expect(pattern['open-choices'][0]).toMatchObject({
+      id: 'success-toast-duration',
+      default: '5000 ms',
+      value: 8000,
+      'narrowed-by': 'example-backoffice',
+    });
+    expect(pattern['always-true'].map((rule: { id: string }) => rule.id)).toContain(
+      'toast-action-stays',
+    );
+    expect(pattern.situations.at(-1)).toMatchObject({
+      case: 'action-done-elsewhere',
+      layer: 'example-backoffice',
+    });
+    expect(pattern.sections).toContain('Behaviour over time');
+  });
+
+  test('a layer that narrows an "Always true" rule is not applied, and says why', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-layer-'));
+    mkdirSync(path.join(root, 'magma/patterns'), { recursive: true });
+    writeFileSync(
+      path.join(root, 'magma/patterns/message-placement.md'),
+      '---\nid: message-placement\nextends: magma:message-placement\nlayer: rogue\nnarrows:\n  toast-action-stays: false\n---\n',
+    );
+    const tool = toolsOf({ ...context, root }).find((one) => one.name === 'get_pattern')!;
+    const result = (await tool.run({ id: 'message-placement' })) as Result;
+    expect(result.pattern.layers).toEqual(['magma']);
+    expect(result.layerErrors).toEqual([
+      'magma/patterns/message-placement.md: narrows toast-action-stays: an "Always true" rule holds in every product, a layer cannot change it',
+    ]);
+  });
+
+  test('the values of the variables give the case to follow', async () => {
+    const placement = { about: 'action', outcome: 'failure', place: 'off-screen', timing: 'now' };
+    expect(await run('get_pattern', { id: 'message-placement', situation: placement })).toEqual({
+      id: 'message-placement',
+      answer: expect.objectContaining({
+        kind: 'case',
+        id: 'action-failed-elsewhere',
+        use: ['mds-toast variant=error duration=0 dismissible'],
+      }),
+    });
+    // not enough to decide: the cases still possible, and the variables that tell them apart
+    const open = await run('get_pattern', {
+      id: 'message-placement',
+      situation: { about: 'action', outcome: 'success' },
+    });
+    expect(open.candidates.map((one: { id?: string }) => one.id)).toEqual([
+      'action-done-elsewhere',
+      'action-done-in-page',
+      'action-done-in-part',
+      'action-later',
+    ]);
+    expect(open.missing.map((one: { variable: string }) => one.variable)).toEqual([
+      'place',
+      'timing',
+      'scope',
+    ]);
+    expect(
+      await run('get_pattern', {
+        id: 'message-placement',
+        situation: { about: 'field', place: 'off-screen' },
+      }),
+    ).toMatchObject({
+      answer: { kind: 'not-applicable', why: 'a message about a field goes with its field' },
+    });
+    await expect(
+      run('get_pattern', { id: 'message-placement', situation: { about: 'page' } }),
+    ).rejects.toThrow('about of message-placement is one of field, region, action, application');
+  });
+
+  test('one section, a candidate as a gap, an unknown id', async () => {
+    const section = await run('get_pattern', { id: 'confirm-action', section: 'behaviour' });
+    expect(section).toMatchObject({ id: 'confirm-action', section: 'Behaviour over time' });
+    expect(section.text).toMatch(/^- On the action: `await`/);
+    expect(await run('get_pattern', { id: 'consent-and-legal' })).toMatchObject({
+      pattern: { id: 'consent-and-legal', status: 'candidate' },
+      gap: expect.stringContaining('no default for it yet'),
+    });
+    await expect(run('get_pattern', { id: 'nope' })).rejects.toThrow(
+      'No pattern nope: the patterns are confirm-action, consent-and-legal, message-placement',
     );
   });
 });

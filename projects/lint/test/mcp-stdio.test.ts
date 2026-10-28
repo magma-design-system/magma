@@ -47,9 +47,9 @@ test('the handshake names the server, the version of magma and when to use it', 
   expect(client.getInstructions()).toMatch(/check_markup/);
 });
 
-test('lists the ten tools, read-only, each with an output schema', async () => {
+test('lists the eleven tools, read-only, each with an output schema', async () => {
   const { tools } = await client.listTools();
-  expect(tools).toHaveLength(10);
+  expect(tools).toHaveLength(11);
   for (const tool of tools) {
     expect(tool.annotations?.readOnlyHint).toBe(true);
     expect(tool.outputSchema?.type).toBe('object');
@@ -65,6 +65,25 @@ test.each([
   ['explain_class', { class: 'p-4' }],
   ['find_icon', { query: 'send' }],
   ['get_guide', { guide: 'color', section: 'name the role' }],
+  ['get_pattern', {}],
+  ['get_pattern', { need: 'a save failed' }],
+  ['get_pattern', { id: 'message-placement' }],
+  ['get_pattern', { id: 'message-placement', situation: { about: 'action', outcome: 'success' } }],
+  [
+    'get_pattern',
+    {
+      id: 'confirm-action',
+      situation: {
+        reversible: 'no',
+        'reaches-others': 'no',
+        items: 'one',
+        frequency: 'occasional',
+        stakes: 'normal',
+      },
+    },
+  ],
+  ['get_pattern', { id: 'confirm-action', section: 'Parts' }],
+  ['get_pattern', { id: 'consent-and-legal' }],
   ['check_markup', { code: '<mds-button disabled="false">Go</mds-button>', language: 'html' }],
   ['check_setup', {}],
 ])(

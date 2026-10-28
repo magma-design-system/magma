@@ -26,6 +26,8 @@ For each Magma component in the changed code:
 - Classes and colours: `explain_class` on the doubtful ones, `suggest_role` for a literal colour.
 - `get_guide` on conventions (booleans, events, compound components, accessibility) and anti-patterns.
 
+For each flow in the changed code that tells the person something or makes them wait or decide (a message, a confirmation, an empty, a loading or a failed part): `get_pattern` with the values of its variables, then check that the code follows the case it returns and the "Always true" rules of the pattern. A flow that no pattern covers is a decision to report, not a finding.
+
 ## 3. The report
 
 Group the findings by file, most severe first; for each one: the line, what is wrong, the rule or the guide section, and the fix. Change the code only if the person asks to.

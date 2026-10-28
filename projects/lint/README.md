@@ -30,11 +30,12 @@ sets both up at bootstrap.
 | `src/core/element.ts` | the element the template rules check, whatever the template language |
 | `src/core/checks.ts` | one check per template rule, pure |
 | `src/core/colors.ts` | the colour literals of a CSS value |
+| `src/core/patterns.ts` | the patterns (#1174): reading a pattern or a product layer, the checks of its format, cases, links and layer, the case for a situation, the sections written from the frontmatter ([`docs/PATTERNS.md`](../../docs/PATTERNS.md)) |
 | `src/eslint/adapters.ts` | one adapter per parser: HTML (`@html-eslint/parser`), JSX, Angular templates (`@angular-eslint/template-parser`) |
 | `src/eslint/index.ts` | the ESLint rules and presets |
 | `src/stylelint/` | the Stylelint rules and presets |
 | `src/mcp/protocol.ts` | the part of the Model Context Protocol the server speaks, written here so magma carries no SDK: JSON-RPC over stdio, `initialize`, `tools/list`, `tools/call` |
-| `src/mcp/*.ts` | the ten read-only tools (components, tokens, icons, guides, checks), the server and its command |
+| `src/mcp/*.ts` | the eleven read-only tools (components, tokens, icons, guides, patterns, checks), the server and its command |
 
 The data is never a list written by hand. Inside magma, the core reads the
 `documentation.json` beside it (`dist/documentation.json`) and resolves design-tokens and
@@ -108,6 +109,22 @@ or on the guide it enforces, not only on fixtures picked by hand.
   inline-template processor of angular-eslint (`agents/lint.md`); HTML written as a string in
   a script (`el.innerHTML`) is not, since ESLint parses a script with a script parser, which
   sees that HTML as a string.
+- **The patterns** (`get_pattern`, `src/core/patterns.ts`): the format is
+  [`docs/PATTERNS.md`](../../docs/PATTERNS.md), decided on #1174. A case holds for a
+  combination when every variable it gives has that value (a list, any of its values) and a
+  variable it leaves out means any value, except `decision`, which means `none`, as the cases
+  were written; a question that leaves `decision` out means `none` too, for the same reason.
+  What answers a combination is its case; with none, its first gap; else its first
+  not-applicable entry, since two reasons for the same "not applicable" make no difference to
+  the agent. With some variables unknown, `get_pattern` returns the cases still possible and
+  the variables that tell them apart (a variable is missing when, the others equal, two of its
+  values lead to a different answer), never a guess among them. A search by need scores the
+  words of the need (`wordsOf`, as `find_component`) against the keywords (3), the title (2),
+  the need and the situations (1): the keywords are the words the author chose for that need. A
+  product layer is read from `magma/patterns/` of the project, the folder decided on #1174,
+  and applied only when it holds to the rules of a layer (`layerErrors`); otherwise the answer
+  is the Magma default, with `layerErrors` saying why. A candidate is a gap: Magma knows the
+  need and has no default.
 - **What a tool or a rule says about itself** (the documentation site reads it from the
   installed package, magma-design-system/docs#1): the same fields on both plugins, a
   description and the URL of its section of `agents/lint.md` (an ESLint rule in
@@ -148,7 +165,7 @@ the lint inside.
 
 ## The MCP server
 
-`src/mcp/server.ts` puts the ten tools behind the protocol of `src/mcp/protocol.ts`; the
+`src/mcp/server.ts` puts the eleven tools behind the protocol of `src/mcp/protocol.ts`; the
 command, `src/mcp/cli.ts`, serves them on stdio from the project it starts in (`--root`
 points elsewhere; `--documentation`, `--tokens`, `--consumption`, `--globals` and
 `--icons-<set>` point the data elsewhere). The server writes only protocol messages to
