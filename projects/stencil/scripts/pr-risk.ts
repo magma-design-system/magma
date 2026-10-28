@@ -1,7 +1,8 @@
 /**
  * The review level of a pull request and the semver check of its public API change
  * (#843), from git alone: the files the branch changes, the magma.api.txt of its base and
- * of its head, and the commits it adds. The logic is in scripts/pr-risk-lib.ts.
+ * of its head, the patterns of both (docs/agents/patterns, #1174), and the commits it adds.
+ * The logic is in scripts/pr-risk-lib.ts.
  *
  * Prints a Markdown report (the CI posts it as a PR comment and sets the risk-* label from
  * the level) and exits 1 when the commits declare less than the API change needs, so a
@@ -26,6 +27,7 @@ import {
   declaredRelease,
   fileTier,
   manifestReachesConsumers,
+  patternChanges,
   prTier,
   releaseCommitScope,
   renderReport,
@@ -37,6 +39,7 @@ import { inScope } from '../../../scripts/release/commit-scopes.mjs';
 
 const REPO = join(PROJECT_DIR, '../..');
 const SNAPSHOT = 'projects/stencil/magma.api.txt';
+const PATTERNS = 'docs/agents/patterns';
 const RELEASE_WORKFLOW = '.github/workflows/publish.yml';
 
 const option = (name: string, fallback?: string): string | undefined => {
@@ -87,6 +90,16 @@ const changes =
     ? waiveCompatible(apiChanges(before, after), compatibleMembers(commits))
     : null;
 
+/** The patterns of a ref, by file. */
+const patternsAt = (ref: string): Map<string, string> =>
+  new Map(
+    git('ls-tree', '-r', '--name-only', ref, '--', PATTERNS)
+      .split('\n')
+      .filter((path) => path.endsWith('.md'))
+      .map((path) => [path, show(ref, path) ?? '']),
+  );
+const patterns = patternChanges(patternsAt(base), patternsAt(head));
+
 const scope = releaseCommitScope(readFileSync(join(REPO, RELEASE_WORKFLOW), 'utf8'), 'magma');
 if (!scope) {
   console.error(`no commit-scope of magma in ${RELEASE_WORKFLOW}`);
@@ -94,10 +107,12 @@ if (!scope) {
 }
 const messages = commits.filter((m) => inScope(m, scope));
 
-const { tier, because } = prTier(files, Boolean(changes?.length));
+const { tier, because } = prTier(files, Boolean(changes?.length), [
+  ...new Set(patterns.map((change) => change.file)),
+]);
 const required = changes ? requiredBump(changes) : null;
 const declared = declaredRelease(messages);
-const report = renderReport({ tier, because, changes, required, declared, scope });
+const report = renderReport({ tier, because, changes, required, declared, scope, patterns });
 
 process.stdout.write(report);
 const reportFile = option('report');

@@ -129,6 +129,28 @@ keep in step.
   the build on a relative link of a shipped guide that does not resolve inside its package;
   `agent-docs-lib.spec.ts`; `nx run claude-plugin:check`.
 
+## The patterns
+
+- **What**: the solutions to a task across components that Magma ships as its default, one file
+  each (`agents/patterns/<id>.md`, its frontmatter the data, its body the text), with their
+  catalogue `agents/patterns.md`; and the layer a product keeps in its own repository,
+  `magma/patterns/<id>.md`, of the same shape.
+- **Produced by**: the maintainers, in `docs/agents/patterns/` (the template
+  `projects/stencil/template/pattern.md`, `nx run stencil:generate.pattern`, the skills of
+  `.claude/skills/`); `projects/stencil/scripts/sync-agent-docs.ts` copies them into the entry
+  packages and writes the catalogue.
+- **Contract**: [`docs/PATTERNS.md`](PATTERNS.md), "The format" and "Product layers"; the reader
+  side in `projects/lint/src/core/patterns.ts` and
+  [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes from".
+- **Read by**: `get_pattern` of the MCP server, the `ui` and `review` skills of the Claude Code
+  plugin, `pr-risk` (`patternChanges` of `projects/stencil/scripts/pr-risk-lib.ts`), the agents
+  of the products, the docs site (later).
+- **Held by**: `check.patterns` (the format, every combination in one case, the components,
+  attributes, lint rules and links named, the generated sections; a layer with `--layer`);
+  `check.usage-docs` on their bodies; `test/patterns.test.ts` of `projects/lint` on the files
+  of the repository; `pr-risk` sets the review level to contract on a change to what a pattern
+  promises.
+
 ## The surfaces of a class
 
 - **What**: the places a project writes a CSS class: markup, the expressions of a React

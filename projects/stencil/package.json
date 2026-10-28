@@ -105,6 +105,7 @@
     "build.watch": "npm run build.icons && stencil build -c stencil.dev.config.ts --dev --watch",
     "build.watch-no-cache": "stencil build --no-cache --watch",
     "check.api-snapshot": "tsx --tsconfig script.tsconfig.json ./scripts/api-snapshot.ts --check",
+    "check.patterns": "tsx --tsconfig script.tsconfig.json ./scripts/check-patterns.ts",
     "check.pr-risk": "tsx --tsconfig script.tsconfig.json ./scripts/pr-risk.ts",
     "check.ssr": "tsx --tsconfig script.tsconfig.json ./scripts/check-ssr.ts",
     "check.tokens": "tsx --tsconfig script.tsconfig.json ./scripts/check-dangling-tokens.ts",
@@ -114,11 +115,13 @@
     "clean": "tsx --tsconfig script.tsconfig.json ./scripts/clean.ts",
     "dev": "npm run clean && npm run build.icons && stencil build -c stencil.dev.config.ts --docs-readme --watch",
     "generate": "stencil generate",
+    "generate.pattern": "tsx --tsconfig script.tsconfig.json ./scripts/generate-pattern.ts",
     "generate.usage": "tsx --tsconfig script.tsconfig.json ./scripts/generate-usage.ts",
     "lint": "npm run lint.ts && npm run lint.css",
     "lint:fix": "npm run lint.css --fix && npm run lint.ts --fix",
     "lint.css": "stylelint -c ./stylelint.config.mjs  'src/**/*.css'",
     "lint.ts": "eslint .",
+    "list.patterns": "tsx --tsconfig script.tsconfig.json ./scripts/list-patterns.ts",
     "patch.custom-elements": "tsx --tsconfig script.tsconfig.json ./scripts/patch-custom-elements-lazy-import.ts",
     "sort.icons-dictionary": "tsx --tsconfig script.tsconfig.json ./scripts/sort-icons-dictionary.ts",
     "start": "npm run storybook.clear-cache && storybook dev -p 6006",
@@ -150,7 +153,8 @@
     "luxon": "3.7.2",
     "mime": "4.1.2",
     "mustache": "4.2.0",
-    "postcss-value-parser": "4.2.0"
+    "postcss-value-parser": "4.2.0",
+    "yaml": "2.9.1"
   },
   "peerDependencies": {
     "eslint": ">=9.0.0",

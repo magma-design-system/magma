@@ -547,3 +547,44 @@ ${rows.join('\n')}
 `;
   }).join('\n');
 }
+
+/** One pattern as the catalogue lists it (the `listPatterns` entry of the lint core). */
+export interface PatternEntry {
+  id: string;
+  title: string;
+  group: string;
+  status: string;
+  need: string;
+  validatedOn: string[];
+}
+
+/**
+ * The body of agents/patterns.md: a section per group, in the order of `groups`, each pattern
+ * linked to its file in agents/patterns/, with its need and where it stands (#1174). A group
+ * with no pattern is left out.
+ */
+export function renderPatternCatalogue(
+  patterns: PatternEntry[],
+  groups: Record<string, string>,
+): string {
+  const row = (one: PatternEntry): string => {
+    const status =
+      one.status === 'decided' && one.validatedOn.length
+        ? `decided, validated on ${one.validatedOn.join(', ')}`
+        : one.status;
+    return `| [\`${one.id}\`](patterns/${one.id}.md) | ${toAscii(one.title)} | ${toAscii(one.need).replace(/\|/g, '\\|')} | ${status} |`;
+  };
+  return Object.entries(groups)
+    .map(([group, title]) => {
+      const rows = patterns.filter((one) => one.group === group);
+      if (!rows.length) return '';
+      return `## ${title}
+
+| Pattern | Title | Need | Status |
+| ------- | ----- | ---- | ------ |
+${rows.map(row).join('\n')}
+`;
+    })
+    .filter(Boolean)
+    .join('\n');
+}

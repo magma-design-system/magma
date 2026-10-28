@@ -45,7 +45,7 @@ The lint and the checks catch most of these; do not write them in the first plac
 - Typography composed from `font-*` and `text-*` primitives: use the semantic `text-*` utilities (`text-title-h3`, `text-info-detail`).
 - Piercing a component's shadow DOM (`>>>`, `/deep/`, an undocumented `::part()` or internal class): style it through its public custom properties and documented parts.
 - An `@prop` written without `Public.` at the start of its description: it is internal, and products may not set it. Mark it public only when a product needs it and no role, theme or prop gives it; `Public, static.` for one that takes a value of its own (`projects/stencil/SPEC.md`).
-- Editing a generated file: a component's `readme.md` (edit its `usage/*.md` and the JSDoc), `magma.api.txt` (rebuild), the packages' `AGENTS.md` and `agents/` (edit `docs/agents/`).
+- Editing a generated file: a component's `readme.md` (edit its `usage/*.md` and the JSDoc), `magma.api.txt` (rebuild), the packages' `AGENTS.md` and `agents/` (edit `docs/agents/`), the sections Cases, Always true, Open choices and Situations of a pattern (edit its frontmatter, then `nx run stencil:generate.pattern -- --sync`).
 - The commit types `doc` and `refact`: write `docs` and `refactor`, with a scope (`docs/COMMITS.md`).
 - A choice with no source: a spelling, a default branch or the forms of input a check accepts, guessed instead of read from where it is decided (the guide the check enforces, the installed data, the upstream package, the specification). Find the source (for data another project produces, its entry in `docs/CONTRACTS.md`), write the criterion next to the code and in the project's doc (for the lint and the MCP server, "Where each answer comes from" in `projects/lint/README.md`), test it on the real data, and let the case the source does not cover answer "unknown" instead of falling through to a default.
 
@@ -73,6 +73,9 @@ nx run stencil:test-storybook                        # run the stories' play fun
 nx run stencil:check.api-snapshot                    # after a build: fail if the committed magma.api.txt differs from the built component API
 nx run stencil:check.types                           # after a build: tsc on the tests and stories too (tsconfig.json), as the CI types job
 nx run stencil:check.pr-risk                         # the review level of your branch and its semver check against main (what the pr-risk workflow posts)
+nx run stencil:check.patterns                        # after a build: the patterns of docs/agents/patterns, their cases, components, lint rules and links (docs/PATTERNS.md)
+nx run stencil:generate.pattern <id> --group <g>     # a new pattern from the template; with -- --sync, the sections written from the frontmatter
+nx run stencil:list.patterns                         # the patterns by group, with their status
 nx run stencil-react:test                            # run the React wrapper tests (Vitest browser + node projects)
 nx run stencil-angular:test                          # run the Angular wrapper tests (Vitest in jsdom, Angular unit-test builder)
 nx run lint:build                                    # build the consumer lint (shipped in magma as ./eslint and ./stylelint)
@@ -122,6 +125,7 @@ What one project produces and another reads (`documentation.json`, the token dat
 | Contribution workflow and git governance: branching, merge queue, releases, tests, issue labels | `docs/WORKFLOW.md`                      |
 | Writing and running tests: Vitest spec, e2e, storybook (play + a11y) and wrapper tests | `projects/stencil/HOWTO.md`                      |
 | Navigable catalogue of all 117 components, which per-component file to read, authoring usage docs | `docs/COMPONENTS.md`                  |
+| Writing or changing a pattern (a task across components, shipped as `agents/patterns/<id>.md`): the method, the format, the check, product layers; the skills `/pattern-new`, `/pattern-change`, `/pattern-list` | `docs/PATTERNS.md` |
 | Token families: which ones UI code paints with, how to consume them                    | `docs/TOKENS.md`                                 |
 | Editor autocomplete for tokens: setup, generated sheet, extension traps                | `docs/EDITOR_TOKENS.md`                          |
 | Design tokens: structure, levels, semantics, naming convention                         | `projects/design-tokens/SPEC.md`                 |

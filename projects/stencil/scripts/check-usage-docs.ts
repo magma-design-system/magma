@@ -16,7 +16,8 @@
  *
  * The same rules hold for the shared agent guides of docs/agents/, which ship next to them
  * in the three entry-point packages as agents/*.md: a prop or value renamed in a component
- * must not survive in a guide either. A guide also fences commands, JSON and prompts.
+ * must not survive in a guide either. A guide also fences commands, JSON and prompts. The
+ * bodies of the patterns (docs/agents/patterns/*.md, #1174) are guides too.
  *
  * It also keeps the readme.md of every component free of hand-written text: above the
  * generated part only the title and the generic intro, since the usage files are the only
@@ -112,8 +113,8 @@ const model: UsageModel = {
 };
 
 let total = 0;
-const check = (path: string, guide = false): void => {
-  const findings = checkUsageDoc(readFileSync(path, 'utf8'), model, guide);
+const check = (path: string, guide = false, text = readFileSync(path, 'utf8')): void => {
+  const findings = checkUsageDoc(text, model, guide);
   if (!findings.length) return;
   total += findings.length;
   console.error(`\n${relative(REPO, path)}`);
@@ -140,6 +141,21 @@ const guides = readdirSync(GUIDES)
   .filter((f) => f.endsWith('.md') && f !== 'SPEC.md')
   .sort();
 for (const name of guides) check(join(GUIDES, name), true);
+
+// the patterns ship beside them as agents/patterns/*.md: their bodies follow the same rules; the
+// frontmatter, data, is held by check.patterns (scripts/check-patterns.ts), so it is blanked
+// here, line for line, to keep the line numbers
+const PATTERNS = join(GUIDES, 'patterns');
+const patterns = existsSync(PATTERNS)
+  ? readdirSync(PATTERNS)
+      .filter((f) => f.endsWith('.md'))
+      .sort()
+  : [];
+for (const name of patterns) {
+  const text = readFileSync(join(PATTERNS, name), 'utf8');
+  const front = /^---\n[\s\S]*?\n---\n/.exec(text)?.[0] ?? '';
+  check(join(PATTERNS, name), true, front.replace(/[^\n]/g, '') + text.slice(front.length));
+}
 
 // the readmes: Stencil keeps what is written above its marker and ships it in documentation.json
 const handWritten: string[] = [];
@@ -191,5 +207,5 @@ if (total) {
   process.exit(1);
 }
 console.log(
-  `OK - ${files} usage docs of ${model.components.size} components and ${guides.length} shared agent guides match the API and the token layer, every member of the API has a description, with its tags as code`,
+  `OK - ${files} usage docs of ${model.components.size} components and ${guides.length} shared agent guides and ${patterns.length} patterns match the API and the token layer, every member of the API has a description, with its tags as code`,
 );
