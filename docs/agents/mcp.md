@@ -20,8 +20,9 @@ the file.
 ### Claude Code: the Magma plugin
 
 In Claude Code, the Magma plugin starts the server for you and adds the skills that run a
-whole job: `/magma:setup`, `/magma:review`, `/magma:migrate`, and `ui`, which Claude loads by
-itself for UI work. Register it for the whole team in the project's committed
+whole job: `/magma:setup`, `/magma:review`, `/magma:migrate`, `/magma:pattern-layer` (the
+layer of a pattern for the product, [`patterns.md`](patterns.md)), and `ui`, which Claude loads
+by itself for UI work. Register it for the whole team in the project's committed
 `.claude/settings.json`; Claude Code loads it once the folder is trusted, in the terminal and
 in the desktop app, which reads the same settings:
 
@@ -83,6 +84,7 @@ client starts servers elsewhere than the project's root, pass it:
 | `explain_class` | what a class does with the Magma theme | the trap of the scale: `p-4` is 0.01rem, `p-400` is 1rem |
 | `find_icon` | a slug that exists, by meaning, or whether a slug exists | an `icon="..."` that renders nothing |
 | `get_guide` | one section of a guide | reading the whole file |
+| `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow; the layer of the project (`magma/patterns/<id>.md`) applied | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
 | `check_markup` | whether a snippet passes the lint, before it is written | a lint run after the fact |
 | `check_setup` | what the Magma integration of the project misses | checking the install steps by hand |
 
@@ -94,6 +96,7 @@ the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents
 
 - Before writing a component: `find_component`, then `get_component` and `get_usage`.
 - Before a colour, a spacing or a class: `list_tokens`, `suggest_role`, `explain_class`.
+- Before a flow that tells the person something or makes them wait or decide: `get_pattern`.
 - Before an icon: `find_icon`.
 - After writing: `check_markup`, then the project's lint ([`lint.md`](lint.md)).
 - After the bootstrap, or when something does not render: `check_setup`.

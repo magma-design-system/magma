@@ -6,7 +6,8 @@
  * relevant install track plus the shared fragments (one topic per file, see
  * SHARED_FRAGMENTS) into each package, rewrites the repo-internal links so they
  * resolve inside node_modules (rewriteGuideLinks), generates the component
- * catalogue linking each component's own docs, and emits a version-stamped AGENTS.md
+ * catalogue linking each component's own docs, copies the patterns (docs/agents/patterns/,
+ * #1174) into agents/patterns/ with their catalogue, and emits a version-stamped AGENTS.md
  * entry point: the detect-then-ask install procedure plus a routing table, so an agent
  * reads only the fragment it needs.
  *
@@ -24,15 +25,18 @@ import {
   SHARED_FRAGMENTS,
   readTaxonomy,
   renderCatalogue,
+  renderPatternCatalogue,
   rewriteGuideLinks,
   taxonomyErrors,
   toAscii,
 } from './agent-docs-lib';
+import { PATTERN_GROUPS, listPatterns, readPatternDir } from '../../lint/src/core/patterns';
 
 // cwd is the stencil package dir when run via npm script.
 const STENCIL_DIR = process.cwd();
 const SOURCE_DIR = path.resolve(STENCIL_DIR, '../../docs/agents');
 const COMPONENTS_DIR = path.resolve(STENCIL_DIR, 'src/components');
+const PATTERNS_DIR = path.join(SOURCE_DIR, 'patterns');
 
 interface Target {
   /** package dir relative to the stencil package */
@@ -141,7 +145,8 @@ Ask the user only what detection left undecided. Typical questions:
    the \`magma-mcp\` command, started with \`npx --no magma-mcp\` (never without \`--no\`, which
    would let npx install a package of that name from the registry). For Claude Code, register
    the Magma plugin in the project's \`.claude/settings.json\` instead: it starts the server and
-   adds the Magma skills (\`/magma:setup\`, \`/magma:review\`, \`/magma:migrate\`). For the other
+   adds the Magma skills (\`/magma:setup\`, \`/magma:review\`, \`/magma:migrate\`,
+   \`/magma:pattern-layer\`). For the other
    clients MERGE the entry into \`.vscode/mcp.json\` or \`.cursor/mcp.json\`; never both the
    plugin and an \`.mcp.json\` entry, or the server runs twice. Then call its \`check_setup\`
    tool: it lists what the integration still misses.
@@ -162,6 +167,7 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 | You need | Read |
 | -------- | ---- |
 | Which component to reach for | [\`agents/components.md\`](agents/components.md) - the catalogue by category, one line each |
+| A task that spans components, solved the same way in every product: where a message goes, confirming an action, an empty, a loading or a failed part | [\`agents/patterns.md\`](agents/patterns.md) - the catalogue of the patterns; ask \`get_pattern\` of the MCP server for the case of your situation |
 | One component's API (props with allowed values, events, methods, slots, parts, CSS vars) | its \`AGENTS.md\`, linked from the catalogue |
 | Correct usage and mistakes for one component | \`examples.md\` / \`mistakes.md\` beside its \`AGENTS.md\` |
 | Rules shared by every component: naming, events, slots, compound, icons, a11y, styling from outside | [\`agents/conventions.md\`](agents/conventions.md) |
@@ -256,6 +262,73 @@ function buildComponentsMd(docsPrefix: string): string {
 ${renderCatalogue(readComponentTaxonomy(), summaries, docsPrefix)}`;
 }
 
+/**
+ * Builds agents/patterns.md from the patterns of docs/agents/patterns/, by group. Like the
+ * component catalogue it reads the sources, so it runs before the stencil build.
+ */
+function buildPatternsMd(): string {
+  const entries = listPatterns(readPatternDir(PATTERNS_DIR).map((one) => one.data));
+  const defined = entries.filter((one) => one.status !== 'candidate').length;
+  return `${BANNER}# Magma patterns catalogue (${defined} patterns, ${entries.length - defined} candidates)
+
+> Generated from the patterns of the magma monorepo. A pattern is the solution to a task that
+> spans components (where a message goes, when to ask before acting), the same in every
+> product: Magma's default. Each one is defined on a few variables of the situation; read its
+> file in \`agents/patterns/\`, or ask the MCP server: \`get_pattern\` with the values of the
+> variables you know gives the case to follow. Its "Always true" rules hold in every product.
+> A product may keep a layer in its own repository, \`magma/patterns/<id>.md\`, that narrows the
+> open choices and adds situations (A product's layer, below); \`get_pattern\` applies it. A candidate is a need Magma knows
+> and has not defined yet: no default covers it, so say which choice you made and why.
+
+${renderPatternCatalogue(entries, PATTERN_GROUPS)}
+## A product's layer
+
+A product adapts a pattern in its own repository, one file per pattern, named after it:
+\`magma/patterns/<id>.md\` under the project's root. The layer fixes the open choices the pattern
+leaves to the products, within what each one \`may\`, and maps the situations of the product's
+domain to the cases of the pattern. It never changes an "Always true" rule nor a case: a product
+that needs one changed asks Magma for it (\`reporting.md\`).
+
+\`\`\`markdown
+---
+id: message-placement
+extends: magma:message-placement
+layer: example-backoffice
+narrows:
+  success-toast-duration: 8000
+situations:
+  - situation: A protocol number is assigned to a filed document
+    case: action-done-elsewhere
+    note: the toast carries Copy, so it stays (toast-action-stays)
+---
+
+# Where a message goes, in Example Backoffice
+
+## Why
+
+The operators read slowly between two phone calls: 8 seconds instead of 5. (2026-10-29)
+\`\`\`
+
+| Field | What it holds |
+| ----- | ------------- |
+| \`id\` | The id of the Magma pattern, the name of the file. |
+| \`extends\` | \`magma:<id>\`. |
+| \`layer\` | The name of the product, never \`magma\`. |
+| \`narrows\` | \`<open choice>: <value>\`, only for the open choices of the pattern. |
+| \`situations\` | \`{ situation, case, note }\`, with a case of the pattern or a list of them; or \`{ situation, use: <pattern> }\` when another pattern answers it. |
+
+The body is free: why each choice was made, with its date, for whoever changes it next.
+\`get_pattern\` without arguments lists in \`layerErrors\` what is wrong in the folder; with the
+id it returns the pattern with the layer applied (\`narrowed-by\` on each choice it fixes, \`layer\`
+on each situation it adds). A layer with an error is not applied: the answer stays Magma's
+default until it is fixed. A need no Magma pattern covers, which the product cannot wait for,
+may get a pattern of its own in the same folder, in the shape of Magma's files (its own
+\`layer\`, no \`extends\`, never an id Magma has); a pattern that comes back in two or three
+products is proposed to Magma. In Claude Code, the Magma plugin writes and checks a layer with
+\`/magma:pattern-layer\`.
+`;
+}
+
 function ensureDir(dir: string): void {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
@@ -289,6 +362,14 @@ function main(): void {
       fs.writeFileSync(path.join(agentsDir, fragment), BANNER + rewriteGuideLinks(src, docsPrefix));
     }
     fs.writeFileSync(path.join(agentsDir, 'components.md'), buildComponentsMd(docsPrefix));
+    // the patterns keep their frontmatter at the top, where readers parse it: no banner
+    ensureDir(path.join(agentsDir, 'patterns'));
+    for (const file of fs.readdirSync(PATTERNS_DIR).filter((one) => one.endsWith('.md')))
+      fs.writeFileSync(
+        path.join(agentsDir, 'patterns', file),
+        rewriteGuideLinks(fs.readFileSync(path.join(PATTERNS_DIR, file), 'utf8'), docsPrefix),
+      );
+    fs.writeFileSync(path.join(agentsDir, 'patterns.md'), buildPatternsMd());
 
     console.log(
       `agent docs synced -> ${target.wrapperPkg} (${path.relative(STENCIL_DIR, pkgRoot) || '.'})`,

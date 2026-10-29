@@ -10,6 +10,7 @@ is the marketplace `magma`, whose plugin `magma` is this folder.
 | `/magma:setup` | the person, or Claude on "install Magma" | brings Magma into a project: the package of its target, then the bootstrap of the installed `AGENTS.md`, ending with `check_setup` |
 | `/magma:review` | the person, or Claude after UI work | checks the changed files: the lint, `check_markup`, the rules of the guides |
 | `/magma:migrate` | the person | Magma 1 to 2 with the codemod: dry run, report, write, lint |
+| `/magma:pattern-layer` | the person, or Claude when a product wants a pattern narrowed | writes the layer of a Magma pattern for the product (`magma/patterns/<id>.md`: its open choices, its situations) and checks it with `get_pattern` until it is applied |
 | `/magma:ui` | Claude, on UI work in a Magma project | the procedure for writing UI with the tools of the server |
 
 The skills are procedures, not data: the API, the tokens and the rules come from the MCP

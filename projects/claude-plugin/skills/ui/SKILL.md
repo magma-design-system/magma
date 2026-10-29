@@ -15,11 +15,12 @@ Magma answers from the version installed in this project: ask it instead of gues
 
 ## The procedure
 
-1. **The component.** `find_component` with the need in words; then `get_component` for its API (props and their values, events, slots, parts) and `get_usage` for how the project's framework writes it. Never invent a prop, a value or an event name.
-2. **Colour, spacing, classes.** Paint with roles, never with Tailwind's palette or a raw palette step: `list_tokens` finds the role for a need, `suggest_role` the role for a colour you were given. Magma spacing steps are hundredths of a rem (`p-400` is 16px, `p-4` is 0.16px): `explain_class` on any class you are not sure of.
-3. **Icons.** `find_icon` for a slug that exists in the sets the project serves; check every slug before writing it in `icon="..."`.
-4. **Before saving.** `check_markup` on the template or the stylesheet you wrote; fix what it reports.
-5. **After writing.** Run the project's lint (ESLint and Stylelint with the Magma presets).
+1. **The flow.** When the UI tells the person something or makes them wait or decide (a message, a confirmation, an empty, a loading or a failed part), `get_pattern` with the need in words, then with the pattern and the values of its variables you know: it returns the case to follow, the same in every product, and its "Always true" rules. Tell the user when no pattern covers the task, or only a candidate, and which choice you made instead. An open choice the product wants fixed for good goes in its layer, not in the code: `/magma:pattern-layer`.
+2. **The component.** `find_component` with the need in words; then `get_component` for its API (props and their values, events, slots, parts) and `get_usage` for how the project's framework writes it. Never invent a prop, a value or an event name.
+3. **Colour, spacing, classes.** Paint with roles, never with Tailwind's palette or a raw palette step: `list_tokens` finds the role for a need, `suggest_role` the role for a colour you were given. Magma spacing steps are hundredths of a rem (`p-400` is 16px, `p-4` is 0.16px): `explain_class` on any class you are not sure of.
+4. **Icons.** `find_icon` for a slug that exists in the sets the project serves; check every slug before writing it in `icon="..."`.
+5. **Before saving.** `check_markup` on the template or the stylesheet you wrote; fix what it reports.
+6. **After writing.** Run the project's lint (ESLint and Stylelint with the Magma presets).
 
 When a rule is not clear, read the section you need with `get_guide` (conventions, color, typography, theming).
 
@@ -37,6 +38,7 @@ When the tools do not give you what the task needs (you would read Magma's files
 | `explain_class` | What a Tailwind class does with the Magma theme: the token it reads and its value, the Magma utility it is, or the trap it falls in (p-4 is 0.01rem in Magma, not 16px; bg-white ignores the theme). |
 | `find_icon` | Icon slugs that exist in the sets the project installed (mi/<variant>/<name> from @material-icons/svg, mdi/<name> from @mdi/svg, mgg/<name> from svg-icons). |
 | `get_guide` | The guides Magma ships for agents (installation, conventions, color, typography, theming, lint...): without arguments the list with their sections, with a guide its headings, with a guide and a section the text of that section only. |
+| `get_pattern` | The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product. |
 | `check_markup` | Run the Magma lint on a snippet before writing it: prop values outside their union, "false" booleans, icon-only controls without a name, raw palette classes (templates and @apply), raw colours and prefers-color-scheme queries (CSS). |
 | `check_setup` | Look at the project and list what its Magma integration misses, each with the guide that fixes it: design-tokens and styles installed in the range magma depends on, the React or Angular wrapper at magma's version, the fonts of the typography, an icon set, the icon path, the lint in ESLint and Stylelint, this server in the client configuration. |
 

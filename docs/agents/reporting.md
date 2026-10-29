@@ -134,7 +134,10 @@ when:
 - a tool said Magma has nothing for a well-formed question: its answer carries `gap`, or
   its error says it does not know;
 - a tool answered, but not with what the task needed: a field it does not return, a
-  filter or an argument it does not take.
+  filter or an argument it does not take;
+- a flow across components that no pattern covers (`get_pattern` finds none for the need,
+  or only a candidate, or its answer for your situation is a gap): the pattern is the
+  missing answer, `magma-mcp: no pattern for <the need>`.
 
 It is not a gap when the answer is right but not the one you hoped for, when your own
 input was wrong (an unknown tag, a missing argument), or when the question is about the

@@ -8,6 +8,7 @@ import {
   fileTier,
   manifestReachesConsumers,
   memberKey,
+  patternChanges,
   prTier,
   releaseCommitScope,
   renderReport,
@@ -111,6 +112,61 @@ describe('prTier', () => {
 
   it('is contract whenever the API snapshot changes', () => {
     expect(prTier(files, true).tier).toBe('contract');
+  });
+
+  it('is contract whenever a pattern changes its promise, and names it', () => {
+    expect(prTier(files, false, ['docs/agents/patterns/a.md'])).toEqual({
+      tier: 'contract',
+      because: ['docs/agents/patterns/a.md'],
+    });
+  });
+});
+
+describe('patternChanges', () => {
+  const FILE = 'docs/agents/patterns/a.md';
+  const pattern = (front: string) => `---\nid: a\n${front}\n---\n\n# A\n`;
+  const RULES = `always-true:
+  - { id: kept, rule: Kept., checked-by: review }
+  - { id: edited, rule: Before., checked-by: review }
+  - { id: dropped, rule: Dropped., checked-by: review }
+cases:
+  - { id: one, where: here }
+  - { id: two, where: there }
+open-choices:
+  - { id: wording, default: ours, may: write its own }`;
+  const at = (text: string, file = FILE) => new Map([[file, text]]);
+
+  it('reports a rule added, changed or removed, a case or a choice removed', () => {
+    const after = `always-true:
+  - { id: kept, rule: Kept., checked-by: review }
+  - { id: edited, rule: After., checked-by: review }
+  - { id: fresh, rule: New., checked-by: review }
+cases:
+  - { id: one, where: somewhere else }
+open-choices: []`;
+    expect(patternChanges(at(pattern(RULES)), at(pattern(after))).map((c) => c.why)).toEqual([
+      'always-true edited changed',
+      'always-true dropped removed',
+      'always-true fresh added: it binds every product',
+      'case two removed',
+      'open choice wording removed',
+    ]);
+  });
+
+  it('reports a pattern removed, not one renamed with its old id kept', () => {
+    expect(patternChanges(at(pattern(RULES)), new Map())).toEqual([
+      { file: FILE, id: 'a', why: expect.stringMatching(/^removed/) },
+    ]);
+    const renamed = `---\nid: b\naliases: [a]\n${RULES}\n---\n`;
+    expect(patternChanges(at(pattern(RULES)), at(renamed, 'docs/agents/patterns/b.md'))).toEqual(
+      [],
+    );
+  });
+
+  it('leaves out what does not change the promise: a new pattern, the text of a case', () => {
+    expect(patternChanges(new Map(), at(pattern(RULES)))).toEqual([]);
+    const reworded = RULES.replace('where: there', 'where: over there');
+    expect(patternChanges(at(pattern(RULES)), at(pattern(reworded)))).toEqual([]);
   });
 });
 
@@ -442,6 +498,16 @@ describe('renderReport', () => {
   it('names the files that set a behaviour or visual level, not a low one', () => {
     expect(renderReport({ ...base, tier: 'behaviour', because: ['a.tsx'] })).toContain('- `a.tsx`');
     expect(renderReport({ ...base, because: ['a.md'] })).not.toContain('a.md');
+  });
+
+  it('lists the pattern changes', () => {
+    const text = renderReport({
+      ...base,
+      tier: 'contract',
+      patterns: [{ file: 'a.md', id: 'a', why: 'always-true x changed' }],
+    });
+    expect(text).toContain('#### Pattern changes (1)');
+    expect(text).toContain('- `a`: always-true x changed');
   });
 
   it('says when there is no snapshot to compare with', () => {

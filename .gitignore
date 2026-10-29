@@ -10,7 +10,9 @@ $RECYCLE.BIN/
 *~
 .DS_Store
 .cache/
-.claude/
+# the local work of Claude Code stays out; the skills of the repository are shared (#1174)
+/.claude/*
+!/.claude/skills/
 .directory/
 .env/
 .idea/

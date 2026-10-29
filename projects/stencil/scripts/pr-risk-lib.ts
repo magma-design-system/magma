@@ -4,7 +4,8 @@
  * scripts/pr-risk-lib.spec.ts can test it directly.
  *
  * The review level is the highest of:
- * - contract: magma.api.txt changes (the public component API, see api-snapshot-lib.ts);
+ * - contract: magma.api.txt changes (the public component API, see api-snapshot-lib.ts), or
+ *   what a pattern promises to every product (patternChanges below);
  * - behaviour: sources that ship as code change (components, wrappers, codemods, the
  *   consumer-facing fields of a package manifest);
  * - visual: only CSS, tokens, styles, icons or brand assets change;
@@ -18,6 +19,8 @@
  * listener still finds every field it read. The release the commits declare (the stock
  * commit-analyzer rules, as semantic-release reads them) must be at least that.
  */
+
+import { parsePatternFile, type Pattern } from '../../lint/src/core/patterns';
 
 export type Tier = 'contract' | 'behaviour' | 'visual' | 'low';
 export type FileTier = Exclude<Tier, 'contract'>;
@@ -82,14 +85,102 @@ export const manifestReachesConsumers = (before: string | null, after: string | 
   return strip(before) !== strip(after);
 };
 
-/** The review level of a PR and the files that set it. */
+/** The review level of a PR and the files that set it; `patternFiles`, the patterns whose promise changes. */
 export const prTier = (
   files: { path: string; tier: FileTier }[],
   apiChanged: boolean,
+  patternFiles: string[] = [],
 ): { tier: Tier; because: string[] } => {
-  if (apiChanged) return { tier: 'contract', because: ['projects/stencil/magma.api.txt'] };
+  if (apiChanged || patternFiles.length)
+    return {
+      tier: 'contract',
+      because: [...(apiChanged ? ['projects/stencil/magma.api.txt'] : []), ...patternFiles],
+    };
   const tier = files.reduce<Tier>((t, f) => (TIER_RANK[f.tier] > TIER_RANK[t] ? f.tier : t), 'low');
   return { tier, because: files.filter((f) => f.tier === tier).map((f) => f.path) };
+};
+
+/* ---- the patterns ------------------------------------------------------------------ */
+
+export interface PatternChange {
+  file: string;
+  id: string;
+  why: string;
+}
+
+const parsed = (files: Map<string, string>): Map<string, { file: string; data: Pattern }> => {
+  const out = new Map<string, { file: string; data: Pattern }>();
+  for (const [file, text] of files)
+    try {
+      const { data } = parsePatternFile(text, file);
+      if (typeof data.id === 'string') out.set(data.id, { file, data });
+    } catch {
+      // a file that does not parse is check.patterns' to report
+    }
+  return out;
+};
+
+const idsOf = (list: { id: string }[] | undefined) => new Set((list ?? []).map((one) => one.id));
+
+/**
+ * What a branch changes in the promise the patterns make to every product and to the agents
+ * that cite them (#1174; the ids are a contract, docs/PATTERNS.md): a pattern removed (a rename
+ * keeps the old id as an alias, so it is not one); an "Always true" rule added, changed or
+ * removed; a case or an open choice removed, which a product layer may cite. Each raises the
+ * review level to contract; none asks for a release of its own, as no product layer exists yet
+ * that a removal would break. `before` and `after` map the files of docs/agents/patterns to
+ * their text.
+ */
+export const patternChanges = (
+  before: Map<string, string>,
+  after: Map<string, string>,
+): PatternChange[] => {
+  const old = parsed(before);
+  const now = parsed(after);
+  const renamed = new Map<string, string>();
+  for (const { data } of now.values())
+    for (const alias of data.aliases ?? []) renamed.set(alias, data.id);
+  const changes: PatternChange[] = [];
+  for (const [id, { file, data: was }] of old) {
+    const current = now.get(id) ?? now.get(renamed.get(id) ?? '');
+    if (!current) {
+      changes.push({
+        file,
+        id,
+        why: 'removed: a reference to it breaks; a rename keeps the old id in aliases',
+      });
+      continue;
+    }
+    const is = current.data;
+    const rules = new Map((is['always-true'] ?? []).map((rule) => [rule.id, rule]));
+    for (const rule of was['always-true'] ?? []) {
+      const next = rules.get(rule.id);
+      if (!next) changes.push({ file: current.file, id, why: `always-true ${rule.id} removed` });
+      else if (
+        next.rule !== rule.rule ||
+        next['checked-by'] !== rule['checked-by'] ||
+        next.from !== rule.from
+      )
+        changes.push({ file: current.file, id, why: `always-true ${rule.id} changed` });
+    }
+    const had = idsOf(was['always-true']);
+    for (const rule of is['always-true'] ?? [])
+      if (!had.has(rule.id))
+        changes.push({
+          file: current.file,
+          id,
+          why: `always-true ${rule.id} added: it binds every product`,
+        });
+    const cases = idsOf(is.cases);
+    for (const one of was.cases ?? [])
+      if (!cases.has(one.id))
+        changes.push({ file: current.file, id, why: `case ${one.id} removed` });
+    const choices = idsOf(is['open-choices']);
+    for (const one of was['open-choices'] ?? [])
+      if (!choices.has(one.id))
+        changes.push({ file: current.file, id, why: `open choice ${one.id} removed` });
+  }
+  return changes;
 };
 
 /* ---- the snapshot diff ------------------------------------------------------------- */
@@ -428,7 +519,7 @@ export const REPORT_MARKER = '<!-- magma-pr-risk -->';
 
 export const REVIEW: Record<Tier, string> = {
   contract:
-    'The public component API changes. Read the members below one by one: each must be intended, and the release must say so.',
+    'The public component API, or what a pattern promises to every product, changes. Read the changes below one by one: each must be intended, and the release must say so for an API change.',
   behaviour:
     'Shipped code changes, the public API does not. Review the tests that cover the change: do they describe the new behaviour, and would they fail on the old code?',
   visual:
@@ -447,6 +538,8 @@ export interface RiskReport {
   required: Bump | null;
   declared: Bump | null;
   scope: string;
+  /** What the branch changes in the patterns (patternChanges). */
+  patterns?: PatternChange[];
 }
 
 export const renderReport = (r: RiskReport): string => {
@@ -456,6 +549,13 @@ export const renderReport = (r: RiskReport): string => {
     out.push(`Set by ${r.because.length} file(s):`, '');
     for (const path of r.because.slice(0, 10)) out.push(`- \`${path}\``);
     if (r.because.length > 10) out.push(`- ... ${r.because.length - 10} more`);
+    out.push('');
+  }
+
+  if (r.patterns?.length) {
+    out.push(`#### Pattern changes (${r.patterns.length})`, '');
+    for (const c of r.patterns.slice(0, SHOWN)) out.push(`- \`${c.id}\`: ${c.why}`);
+    if (r.patterns.length > SHOWN) out.push(`- ... ${r.patterns.length - SHOWN} more`);
     out.push('');
   }
 

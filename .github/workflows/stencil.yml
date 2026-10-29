@@ -214,6 +214,10 @@ jobs:
           name: stencil-build
           path: projects
       - run: npx nx run stencil:check.usage-docs
+      # The patterns of docs/agents/patterns (#1174): their format, every combination of their
+      # variables in one case, a gap or not applicable, every component, attribute, lint rule
+      # and link they name, their generated sections up to date. Reads dist/documentation.json.
+      - run: npx nx run stencil:check.patterns
 
   # Guards the public API snapshot: magma.api.txt lists every prop, event, method,
   # slot, part and documented custom property, one line each, so a PR that changes

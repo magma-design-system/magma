@@ -16,6 +16,7 @@ import {
   unknownUsageFiles,
   type ComponentTaxonomy,
   type DocsComponent,
+  renderPatternCatalogue,
 } from './agent-docs-lib';
 
 const button: DocsComponent = {
@@ -419,5 +420,29 @@ export class MdsX {}
       '| [`mds-table-footer`](../docs/mds-table-footer/AGENTS.md), part of `mds-table` | Its totals |',
       '| [`mds-table-row`](../docs/mds-table-row/AGENTS.md), part of `mds-table-body` | A row |',
     ]);
+  });
+});
+
+describe('renderPatternCatalogue', () => {
+  const entry = (id: string, group: string, status = 'decided', validatedOn: string[] = []) => ({
+    id,
+    title: id,
+    group,
+    status,
+    need: `The need of ${id} | with a pipe.`,
+    validatedOn,
+  });
+
+  it('a section per group in order, each pattern linked to its file, empty groups left out', () => {
+    const text = renderPatternCatalogue(
+      [entry('b', 'data', 'candidate'), entry('a', 'messages-and-states', 'decided', ['mindy'])],
+      { navigation: 'Navigation', data: 'Data', 'messages-and-states': 'Messages and states' },
+    );
+    expect(text).not.toContain('Navigation');
+    expect(text.indexOf('## Data')).toBeLessThan(text.indexOf('## Messages and states'));
+    expect(text).toContain(
+      '| [`b`](patterns/b.md) | b | The need of b \\| with a pipe. | candidate |',
+    );
+    expect(text).toContain('| decided, validated on mindy |');
   });
 });

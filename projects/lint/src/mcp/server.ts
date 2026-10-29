@@ -1,5 +1,5 @@
 /*
-  The Magma MCP server: the ten tools on the data of the installed magma, behind the protocol
+  The Magma MCP server: the eleven tools on the data of the installed magma, behind the protocol
   of ./protocol.ts. `createServer` is what the command (./cli.ts) serves on stdio and what the
   tests talk to directly.
 */
@@ -12,6 +12,7 @@ import { checkMarkup, checkSetup } from './checks.js';
 import { findComponent, getComponent, getUsage } from './components.js';
 import { getGuide } from './guides.js';
 import { findIcon } from './icons.js';
+import { getPattern } from './patterns.js';
 import { createHandler, toolList, type Tool } from './protocol.js';
 import { explainClass, listTokens, suggestRole } from './tokens.js';
 
@@ -19,6 +20,7 @@ import { explainClass, listTokens, suggestRole } from './tokens.js';
 export const INSTRUCTIONS = [
   'Magma is the design system of this project: web components (mds-*), tokens and Tailwind classes. The tools answer from the version installed here.',
   'Before writing a component, find it (find_component), read its API (get_component) and how your framework writes it (get_usage). Before a colour, a spacing or a class, ask list_tokens, suggest_role or explain_class: Magma spacing steps are hundredths of a rem (p-4 is 0.01rem, p-400 is 1rem).',
+  'Before a flow that spans components (a message, a confirmation, an empty, a loading or a failed state), ask get_pattern: given the values of its variables it returns the case to follow, the same in every product; say when no pattern covers the task.',
   'Before an icon slug, check it with find_icon. After writing, check the snippet with check_markup. When the integration itself may be incomplete, run check_setup. For a rule or a setup step, read the section you need with get_guide.',
   'When you need something these tools do not answer (you had to read Magma files by hand or guess, or an answer carries gap), tell the user, and at the end of the task propose an issue on Magma, one per missing capability, as get_guide reporting describes (section "A tool or an answer the MCP server is missing"); open it only once the user agrees.',
 ].join(' ');
@@ -33,6 +35,7 @@ export const toolsOf = (context: ToolContext): Tool[] =>
     explainClass,
     findIcon,
     getGuide,
+    getPattern,
     checkMarkup,
     checkSetup,
   ].map((tool) => tool(context));
