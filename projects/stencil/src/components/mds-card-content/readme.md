@@ -25,9 +25,9 @@ The `<mds-card-content>` web component is the body region of a [`<mds-card>`](..
 This component is intentionally prop-free. Its only API is the **default slot**, which accepts text strings, HTML elements, or other components that make up the card's main content. All visual configuration (responsive behavior, grid layout) is governed by the parent `<mds-card>` through its `disableAutoGrid` prop and the `--mds-card-gap` / `--mds-card-padding` custom properties; see the compound-component and slot rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-card-content>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-card-content>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Card with Content
 
@@ -111,9 +111,9 @@ Omitting sibling regions is valid. A card holding only `<mds-card-content>` rend
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-card-content>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-card-content>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-card-content>` Outside `<mds-card>`
 

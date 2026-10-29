@@ -29,4 +29,4 @@ When the tools do not give you what the task needs (you would read Magma's files
 
 ## Without the server
 
-Read the guides installed with the package: `node_modules/@maggioli-design-system/magma/AGENTS.md`, its `agents/*.md` (conventions, color, typography, theming, lint) and, for one component, `dist/collection/components/<tag>/AGENTS.md` with `pattern.md` and `antipattern.md` beside it.
+Read the guides installed with the package: `node_modules/@maggioli-design-system/magma/AGENTS.md`, its `agents/*.md` (conventions, color, typography, theming, lint) and, for one component, `dist/collection/components/<tag>/AGENTS.md`, which links the files of its examples and mistakes beside it.

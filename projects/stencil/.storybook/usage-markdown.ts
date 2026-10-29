@@ -4,7 +4,7 @@
  * the `Markdown` block, the spec in src/storybook/test checks them.
  */
 
-export type UsageSectionKey = 'description' | 'pattern' | 'antipattern';
+export type UsageSectionKey = 'description' | 'examples' | 'mistakes';
 
 export interface UsageSection {
   key: UsageSectionKey;
@@ -18,8 +18,8 @@ export type UsageSections = Record<UsageSectionKey, string>;
 
 export const USAGE_SECTIONS: readonly UsageSection[] = [
   { key: 'description', file: '1. Description.md', heading: 'Description' },
-  { key: 'pattern', file: '2. Pattern.md', heading: 'Pattern' },
-  { key: 'antipattern', file: '3. Antipattern.md', heading: 'Antipattern' },
+  { key: 'examples', file: '2. Examples.md', heading: 'Examples' },
+  { key: 'mistakes', file: '3. Mistakes.md', heading: 'Mistakes' },
 ];
 
 export const COMPONENTS_PATH = 'projects/stencil/src/components';

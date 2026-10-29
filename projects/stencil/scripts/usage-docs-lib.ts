@@ -7,7 +7,7 @@
  * custom property or icon that does not exist, an `--mds-*` property that is not public
  * (scripts/style-contract-lib.ts), a colour or radius that bypasses the
  * semantic roles or the corner axis, markup that does not parse as written. The
- * INCORRECT half of an antipattern example is wrong on purpose and is skipped.
+ * INCORRECT half of the example of a mistake is wrong on purpose and is skipped.
  */
 import { parseFragment, type DefaultTreeAdapterMap } from 'parse5';
 import { isPublic, type Visibility } from './style-contract-lib';

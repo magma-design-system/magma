@@ -29,9 +29,9 @@ This component has essentially one configurable prop:
 All other variation comes from the slotted children rather than from props. Column widths are computed by each `mds-price-table-features-row`, and the visual treatment of each cell is driven by the `type` prop on `mds-price-table-features-cell`. Spacing can be tuned through the public `--mds-price-table-features-padding` (the header band and, by inheritance, every cell), listed in [`readme.md`](../readme.md); the dividers of the header band and of the cells keep the colour the component gives them.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-price-table-features>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-price-table-features>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Feature Matrix
 
@@ -180,9 +180,9 @@ To style the header band independently, target the documented `header` shadow pa
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-price-table-features>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-price-table-features>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `<mds-price-table>`
 

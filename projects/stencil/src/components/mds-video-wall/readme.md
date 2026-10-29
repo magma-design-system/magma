@@ -34,9 +34,9 @@ This component does not use the shared `variant` / `tone` ladders; its props map
 - **`src`** is the URL of the video file driving the wall.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-video-wall>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-video-wall>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Minimal Ambient Background
 
@@ -100,7 +100,7 @@ When the video should not play automatically - for example on a media showcase p
 <!--
   autoplay and loop default to true: turn them off with a framework
   property binding or the JS properties below.
-  Do NOT write autoplay="false" in plain HTML - see antipattern.md.
+  Do NOT write autoplay="false" in plain HTML - see mistakes.md.
 -->
 <mds-video-wall
   src="/assets/video/showcase.mp4"
@@ -128,9 +128,9 @@ Set the video fit through the public `--mds-video-wall-video-fit` CSS custom pro
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-video-wall>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-video-wall>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use `autoplay="false"` or `loop="false"` to Disable Boolean Props
 

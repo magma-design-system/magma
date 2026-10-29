@@ -163,10 +163,10 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 | -------- | ---- |
 | Which component to reach for | [\`agents/components.md\`](agents/components.md) - the catalogue by category, one line each |
 | One component's API (props with allowed values, events, methods, slots, parts, CSS vars) | its \`AGENTS.md\`, linked from the catalogue |
-| Correct usage and mistakes for one component | \`pattern.md\` / \`antipattern.md\` beside its \`AGENTS.md\` |
+| Correct usage and mistakes for one component | \`examples.md\` / \`mistakes.md\` beside its \`AGENTS.md\` |
 | Rules shared by every component: naming, events, slots, compound, icons, a11y, styling from outside | [\`agents/conventions.md\`](agents/conventions.md) |
 | \`variant\` and \`tone\` values | [\`agents/variants.md\`](agents/variants.md) |
-| Mistakes to avoid with any component | [\`agents/anti-patterns.md\`](agents/anti-patterns.md) |
+| Mistakes to avoid with any component | [\`agents/mistakes.md\`](agents/mistakes.md) |
 | Coloring your own UI | [\`agents/color.md\`](agents/color.md) |
 | Colors in an Android, iOS or Flutter app, where the components do not run | [\`agents/color.md\`](agents/color.md), "Outside the web" |
 | Typography utilities | [\`agents/typography.md\`](agents/typography.md) |
@@ -244,10 +244,10 @@ function buildComponentsMd(docsPrefix: string): string {
   return `${BANNER}# Magma components catalogue (${summaries.size} components)
 
 > Generated from each component's usage description. Each tag links the component's
-> own \`AGENTS.md\` (its API, with \`pattern.md\` and \`antipattern.md\` beside it) in
+> own \`AGENTS.md\` (its API, with \`examples.md\` and \`mistakes.md\` beside it) in
 > \`@maggioli-design-system/magma/${COMPONENT_DOCS_DIR}/<tag>/\`. The rules shared by
 > every component: [\`conventions.md\`](conventions.md), [\`variants.md\`](variants.md),
-> [\`anti-patterns.md\`](anti-patterns.md).
+> [\`mistakes.md\`](mistakes.md).
 >
 > Grouped by category (the \`@category\` docs tag of each component in
 > \`dist/documentation.json\`). A part of a compound component (\`@parent\`) follows its

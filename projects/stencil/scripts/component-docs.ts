@@ -5,8 +5,8 @@
  *
  *   AGENTS.md            what it is + its API (props with allowed values, events,
  *                        methods, slots, parts, CSS custom properties)
- *   pattern.md           correct usage        (usage/2. Pattern.md)
- *   antipattern.md       mistakes to avoid    (usage/3. Antipattern.md)
+ *   examples.md          correct usage        (usage/2. Examples.md)
+ *   mistakes.md          mistakes to avoid    (usage/3. Mistakes.md)
  *   documentation.json   its docs-json entry, same shape as dist/documentation.json
  *
  * It first moves the public / internal mark of each CSS custom property from its
@@ -36,6 +36,8 @@ import {
   renderComponentAgentsMd,
   renderUsageFile,
   rewriteUsageEntries,
+  unknownUsageFiles,
+  USAGE_FILES,
   type DocsComponent,
 } from './agent-docs-lib';
 import { COMPONENTS_DIR } from './meta';
@@ -69,8 +71,8 @@ function writeComponentDocs(docs: DocsJson, version: string): number {
       renderComponentAgentsMd(component, version, docs.storybook),
     );
     for (const [key, file, title] of [
-      ['2. Pattern', 'pattern.md', 'patterns'],
-      ['3. Antipattern', 'antipattern.md', 'anti-patterns'],
+      ['2. Examples', 'examples.md', 'examples'],
+      ['3. Mistakes', 'mistakes.md', 'mistakes'],
     ] as const) {
       const target = path.join(dir, file);
       if (usage[key]?.trim())
@@ -114,7 +116,7 @@ function shippedDocs(): { file: string; root: string; resolve: (link: string) =>
     }
   }
   for (const tag of fs.readdirSync(COMPONENTS_OUT)) {
-    for (const f of ['AGENTS.md', 'pattern.md', 'antipattern.md']) {
+    for (const f of ['AGENTS.md', 'examples.md', 'mistakes.md']) {
       const file = path.join(COMPONENTS_OUT, tag, f);
       if (fs.existsSync(file))
         out.push({
@@ -165,6 +167,17 @@ function main(): void {
       `${markErrors.length} CSS custom property mark(s) to fix in the @prop of the sheets:`,
     );
     for (const e of markErrors) console.error(`  ${e}`);
+    process.exit(1);
+  }
+
+  const unknownUsage = docs.components.flatMap((component) =>
+    unknownUsageFiles(component).map((key) => `${component.tag}/usage/${key}.md`),
+  );
+  if (unknownUsage.length) {
+    console.error(
+      `${unknownUsage.length} usage file(s) whose name the readers of documentation.json do not know (${USAGE_FILES.join(', ')}; docs/CONTRACTS.md):`,
+    );
+    for (const e of unknownUsage) console.error(`  ${e}`);
     process.exit(1);
   }
 

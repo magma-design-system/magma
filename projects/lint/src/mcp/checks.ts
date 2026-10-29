@@ -297,7 +297,7 @@ const firstExisting = (root: string, names: string[]) =>
 
 /**
  * How a project tells mds-icon where the icons are: the ways IconsSetService reads the path
- * (agents/assets.md, "Tell mds-icon where the icons are"; mds-icon, 2. Pattern.md), that is
+ * (agents/assets.md, "Tell mds-icon where the icons are"; mds-icon, 2. Examples.md), that is
  * setSvgPath() of IconsSetService or of an mds-icon, and the mdsIconSvgPath key of
  * sessionStorage. Any other mention of the name (`window.mdsIconSvgPath = ...`) is read by no one.
  */

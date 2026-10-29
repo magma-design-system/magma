@@ -27,9 +27,9 @@ The `<mds-icon>` web component is the single glyph primitive of the Magma Design
 This component does not use the shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); the color comes from the inherited CSS `fill` and the size from the host `width` (24px by default, the height follows the square aspect ratio), which is how parent components tint and scale their icons.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-icon>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the icon slug conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the icon setup in [`docs/agents/assets.md`](../../../../../../docs/agents/assets.md).
+Correct and idiomatic ways to use the `<mds-icon>` component, ordered from most common to most specialized. The examples assume a working knowledge of the icon slug conventions documented in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md) and the icon setup in [`docs/agents/assets.md`](../../../../../../docs/agents/assets.md).
 
 #### Icon Slug from the Shared Library
 
@@ -157,9 +157,9 @@ mds-icon::part(svg) {
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-icon>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-icon>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<img>` or Inline `<svg>` Instead of `<mds-icon>`
 

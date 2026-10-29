@@ -1,6 +1,6 @@
 # Components reference
 
-This document is the **contributor-facing guide** to Magma's web components, in the repo. It exists alongside, not instead of, the per-component docs: each component owns a Stencil-generated `readme.md` (props/events/slots/CSS vars) and a hand-authored `usage/` folder (description, patterns, anti-patterns). This guide tells you **which component to reach for**, **how to read the docs around it**, and **how to author them**. The rules shared by every component live in [`docs/agents/`](./agents/), see "Rules for using the components" below.
+This document is the **contributor-facing guide** to Magma's web components, in the repo. It exists alongside, not instead of, the per-component docs: each component owns a Stencil-generated `readme.md` (props/events/slots/CSS vars) and a hand-authored `usage/` folder (description, examples, mistakes). This guide tells you **which component to reach for**, **how to read the docs around it**, and **how to author them**. The rules shared by every component live in [`docs/agents/`](./agents/), see "Rules for using the components" below.
 
 If you only need to look up the props of a known component, skip this and read its `readme.md`. If you need to _pick_ a component, _use it correctly_, or _author new usage docs_, start here.
 
@@ -11,16 +11,18 @@ Every component under [`projects/stencil/src/components/<name>/`](../projects/st
 | File                                     | Owner             | Versioned | Answers                                                                                  |
 | ---------------------------------------- | ----------------- | --------- | ---------------------------------------------------------------------------------------- |
 | `usage/1. Description.md`                | Authored          | yes       | What the component **is**, its semantic behavior, why it exists                          |
-| `usage/2. Pattern.md`                    | Authored          | yes       | How to use it **correctly** - recommended recipes with code                              |
-| `usage/3. Antipattern.md`                | Authored          | yes       | How **not** to use it - paired `INCORRECT` / `CORRECT` snippets                          |
+| `usage/2. Examples.md`                   | Authored          | yes       | How to use it **correctly** - recommended recipes with code                              |
+| `usage/3. Mistakes.md`                   | Authored          | yes       | How **not** to use it - paired `INCORRECT` / `CORRECT` snippets                          |
 | `readme.md`                              | Stencil (auto)    | yes       | What props, events, slots, methods, CSS vars exist (human-readable), plus the usage text |
 | `dist/collection/components/<name>/AGENTS.md` | build (auto) | no        | The shipped API: props with their allowed values, events, methods, slots, parts, CSS vars |
-| `dist/collection/components/<name>/pattern.md`, `antipattern.md` | build (auto) | no | The shipped copies of `2. Pattern.md` / `3. Antipattern.md`, links rewritten |
+| `dist/collection/components/<name>/examples.md`, `mistakes.md` | build (auto) | no | The shipped copies of `2. Examples.md` / `3. Mistakes.md`, links rewritten |
 | `dist/collection/components/<name>/documentation.json` | build (auto) | no | Its entry of the docs JSON, with full type metadata                                |
 
 **Build flow.** Only the three `usage/*.md` files are hand-authored. On build, Stencil bundles them into `dist/documentation.json` (all components, gitignored) and injects the content into `readme.md`; then `scripts/component-docs.ts` writes the per-component files of `dist/collection/components/<name>/`. As a consequence: never hand-edit `readme.md` or a generated file - they are regenerated and your edits will be lost. The one exception is worse: Stencil keeps whatever sits above `<!-- Auto Generated Below -->` in a readme and ships it in the `readme` field of `dist/documentation.json`, where nobody keeps it current. Only the title and the generic intro belong there, and `check.usage-docs` fails on anything else. To change what a component's docs say, edit the matching `usage/*.md` (and the JSDoc of the props, events, methods, slots, parts and CSS vars: `check.usage-docs` also fails on a member without a description). A prop whose value has a format or a syntax the name does not reveal (a date, a CSS selector, a `srcset`, a language code, a pattern) also carries an `@example`: one value, on one line, quoted, as `@example '2025-06-15'`; it reaches `documentation.json`, where the docs site shows it as the placeholder of the field. A prop whose value is plain text (`label`, `name`, `headline`) needs none. Everything under `dist/` exists only after `nx run stencil:build`.
 
-**Storybook.** The same three files make up each component's Docs page in Storybook (sections Description, Pattern and Antipattern around the primary story), read at runtime from `usage/*.md`: see the Storybook paragraph of [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md#per-component-usage-docs).
+**Storybook.** The same three files make up each component's Docs page in Storybook (sections Description, Examples and Mistakes around the primary story), read at runtime from `usage/*.md`: see the Storybook paragraph of [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md#per-component-usage-docs).
+
+**Examples and mistakes, not patterns.** In Magma a pattern is the solution to a task people carry out again and again (confirm an action, search a list), across components and over time: the definition of the docs site (`agents/patterns.md` in `magma-design-system/docs`) that phase 5 of #1083 ships in the package. The two files of one component show how to write it and what not to write, so they take the words its shipped `AGENTS.md` always used for them, "correct usage, with examples" and "mistakes to avoid"; not "usage", already the folder, the `usage` field of `documentation.json` and the MCP `get_usage` (#1169).
 
 ### Which file should the agent read?
 
@@ -29,7 +31,7 @@ Pick by task, not by preference:
 | You need...                                                       | Read                                                                                                                                        |
 | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Semantic intent ("what is this for, when do I use it?")         | `usage/1. Description.md` (smallest, always present, hand-authored)                                                                         |
-| Idiomatic examples / common mistakes                            | `usage/2. Pattern.md` and `usage/3. Antipattern.md`                                                                                         |
+| Idiomatic examples / common mistakes                            | `usage/2. Examples.md` and `usage/3. Mistakes.md`                                                                                           |
 | Props (with allowed values), events, slots, parts, CSS custom properties | the generated `AGENTS.md` after a build (compact); otherwise `readme.md` (always present)                                            |
 | Typed prop value sets (what `tone` / `variant` / `size` accept) | [`components.d.ts`](../projects/stencil/src/components.d.ts) + [`type/*.ts`](../projects/stencil/src/type/) - the versioned source of truth |
 | Full type metadata, cross-references (for codemods / tooling)   | the per-component `documentation.json` after a build; otherwise build first or fall back to `components.d.ts`                              |
@@ -48,19 +50,19 @@ Plain prose. Sections in this order:
 2. **`## Semantic Behavior`** - bulleted list of _intrinsic_ behavior the component encapsulates (e.g. "Form Association", "Active State", "Disabled State"). Each bullet has a bold lead and a short explanation. Cover only behaviors that survive across themes, sizes, and variants.
 3. **`## Properties & Visual Configurations`** - bulleted reference for each prop that drives appearance or semantics. Group sub-options with nested bullets. This is _not_ a duplicate of `readme.md`'s prop table - it explains the _intent_ and _combinations_, not the type signature.
 
-Avoid: code snippets, anti-patterns, "how to use" instructions. Those belong in the other two files.
+Avoid: code snippets, mistakes, "how to use" instructions. Those belong in the other two files.
 
-### `2. Pattern.md`
+### `2. Examples.md`
 
 Numbered list (`## 1.`, `## 2.`, ...) of correct usage recipes. Each entry:
 
 - A short title (`## 5. Navigation Link Style`).
-- One or two sentences on when/why to use this pattern.
-- One ` ```html ` (or ` ```css ` for styling patterns) code block.
+- One or two sentences on when/why to use this form.
+- One ` ```html ` (or ` ```css ` for styling examples) code block.
 
-Order patterns from most-common to most-specialized. Include at least one styling-customization pattern showing the public `--mds-*` CSS custom properties (or, for a component without any, its parts and props). Always reach for `label` props before slots when both are available.
+Order examples from most-common to most-specialized. Include at least one styling-customization example showing the public `--mds-*` CSS custom properties (or, for a component without any, its parts and props). Always reach for `label` props before slots when both are available.
 
-### `3. Antipattern.md`
+### `3. Mistakes.md`
 
 Numbered list (`## 1.`, `## 2.`, ...) of mistakes. Each entry:
 
@@ -68,7 +70,7 @@ Numbered list (`## 1.`, `## 2.`, ...) of mistakes. Each entry:
 - One or two sentences explaining _why_ it's wrong (accessibility, framework semantics, theme break, etc.).
 - A paired code block with both the `<!-- INCORRECT -->` and `<!-- CORRECT -->` form.
 
-Prioritize anti-patterns that an AI agent or new contributor is statistically likely to commit (boolean attrs as strings, slot misuse, shadow-DOM piercing, raw HTML elements replacing components).
+Prioritize mistakes that an AI agent or new contributor is statistically likely to commit (boolean attrs as strings, slot misuse, shadow-DOM piercing, raw HTML elements replacing components).
 
 ## Categories
 
@@ -281,12 +283,12 @@ packages as `agents/*.md`:
 | ----- | ---- |
 | Naming, boolean props, sizing, events, slots, compound components, icons, accessibility, styling from outside | [`agents/conventions.md`](./agents/conventions.md) |
 | `variant` (color role) and `tone` (visual weight), and what one component accepts | [`agents/variants.md`](./agents/variants.md) |
-| System-level anti-patterns | [`agents/anti-patterns.md`](./agents/anti-patterns.md) |
+| Mistakes to avoid with any component | [`agents/mistakes.md`](./agents/mistakes.md) |
 | Dark mode, preferences, named themes, surface levels and elevation, global design decisions, corner geometry | [`agents/theming.md`](./agents/theming.md) |
 | Color tokens and utilities | [`agents/color.md`](./agents/color.md) |
 | Typography utilities | [`agents/typography.md`](./agents/typography.md) |
 
-Contributor-only anti-pattern, on top of those: never hand-edit a component's
+Contributor-only mistake, on top of those: never hand-edit a component's
 `readme.md` or `components.d.ts` - both are regenerated on build. Text written above the
 generated part of a readme survives the build instead, and goes stale: put it in `usage/`.
 
@@ -296,11 +298,11 @@ When creating `usage/` files for a component that doesn't yet have them:
 
 1. **Read the component first.** Open `<component>/readme.md` (props, events, slots, CSS vars) and the component's `.tsx` source. Note the prop names, the default slot's content rules, and what events fire.
 2. **Skim a sibling that already has `usage/`.** Mirror its file structure and headings exactly. [`mds-button`](../projects/stencil/src/components/mds-button/usage/) is the current reference.
-3. **Write `1. Description.md` first.** It scopes the other two - once you know what the component _is_, the patterns and anti-patterns surface naturally.
-4. **Cap each file's length.** `1. Description.md` about 20-40 lines, `2. Pattern.md` at most 12 recipes, `3. Antipattern.md` at most 8 entries. Longer means you're describing implementation rather than usage.
+3. **Write `1. Description.md` first.** It scopes the other two - once you know what the component _is_, the examples and the mistakes surface naturally.
+4. **Cap each file's length.** `1. Description.md` about 20-40 lines, `2. Examples.md` at most 12 recipes, `3. Mistakes.md` at most 8 entries. Longer means you're describing implementation rather than usage.
 5. **Use real, runnable code blocks.** No pseudo-code. Use prop names exactly as they appear in `readme.md`.
 6. **Do not duplicate `readme.md`.** Don't restate the prop type table; explain _combinations_ and _intent_.
-7. **Validate against the system-level anti-patterns** in [`agents/anti-patterns.md`](./agents/anti-patterns.md). If a pattern you wrote violates one, fix the pattern.
+7. **Validate against the mistakes shared by every component** in [`agents/mistakes.md`](./agents/mistakes.md). If an example you wrote makes one, fix the example.
 
 ## Where to look next
 

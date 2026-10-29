@@ -112,8 +112,8 @@ export const UsageDocsPage = () => {
       <UsageSection tag={tag} section="description" content={sections.description} />
       <Primary />
       <Controls />
-      <UsageSection tag={tag} section="pattern" content={sections.pattern} />
-      <UsageSection tag={tag} section="antipattern" content={sections.antipattern} />
+      <UsageSection tag={tag} section="examples" content={sections.examples} />
+      <UsageSection tag={tag} section="mistakes" content={sections.mistakes} />
     </>
   );
 };

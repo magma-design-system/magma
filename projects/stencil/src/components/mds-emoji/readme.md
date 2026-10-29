@@ -30,9 +30,9 @@ The only public prop is `name`, which selects the mascot identity. It accepts `'
 There are no variant, tone, or size props. The expression is configured imperatively through method calls (`agree`, `smile`, `disagree`, `startThinking` / `stopThinking`, `startBlinking` / `stopBlinking`, `startFollowMouse` / `stopFollowMouse`), and the reach of the mouse following is tuned through the public `--mds-emoji-expression-max-rotation` CSS custom property, and Simi's skin tones through `--mds-emoji-simi-skin`, `--mds-emoji-simi-skin-dark` and `--mds-emoji-simi-skin-light`, rather than through attributes.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-emoji>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-emoji>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Mascot Display
 
@@ -228,9 +228,9 @@ The per-layer parallax offsets and the perspective are not public: the component
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-emoji>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-emoji>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use an Unknown `name` Value
 

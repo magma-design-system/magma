@@ -46,9 +46,9 @@ The `<mds-book>` web component shows a book as a physical object, from the image
 - **Size**: the book is sized as an image is, in the proportions of its format: give it a width, and its height follows; give it a height, and its width follows. With neither, it fills the width of its container, as a block does; where nothing gives it a width (a row of a flex layout) it is 200 px wide. Its box is the front cover at rest: the turned book reaches a little beyond it, by a few percent of its width on each side standing, by up to a third lying spun round, so leave it some room inside a container that clips.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-book>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-book>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### A Book from Its Cover
 
@@ -180,9 +180,9 @@ The book is an image, not a control: wrap it in a link, with the link named by t
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-book>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-book>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use the `title` Attribute for the Title
 

@@ -32,9 +32,9 @@ The `<mds-tree>` web component is the root container of the Magma Design System 
 - **`expanded`** is the only mutable, reflected state prop; set it on the root to open the entire tree on first render, or change it to open or close the entire tree programmatically.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-tree>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-tree>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Nested Hierarchy
 
@@ -223,9 +223,9 @@ The only public CSS custom property of the tree is `--mds-tree-line-clamp`, the 
 The toggle of an open item takes its expanded colours, and the connectors of the branches follow the distance between the toggle and the label of every item.
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-tree>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-tree>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Put Non-`mds-tree-item` Elements Directly in `<mds-tree>`
 

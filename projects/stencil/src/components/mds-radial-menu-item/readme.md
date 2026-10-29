@@ -25,9 +25,9 @@ The `<mds-radial-menu-item>` web component is a single actionable spoke of the [
 The shared `variant` / `tone` / `size` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); they are forwarded to the inner `<mds-button>`. Defaults are deliberately distinct from a standalone button: `variant` defaults to `dark` and `tone` to `weak` so items read as secondary spokes against the parent's trigger button (which defaults to the `strong` tone). Set `icon` to the glyph that represents the action - it is the primary content of each item since the label lives only in the `tooltip`. Use `tooltip` both to describe the action on hover and to supply the accessible name; omit it only when the icon is unambiguous and labelled elsewhere. Prefer leaving `size` unset and letting the parent menu drive it for visual consistency across all spokes.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-radial-menu-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-radial-menu-item>` component, ordered from most common to most specialized. The examples assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Item with Icon and Tooltip
 
@@ -116,9 +116,9 @@ Omit `tooltip` only when the icon is self-evident in context and the action is l
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-radial-menu-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-radial-menu-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `<mds-radial-menu>`
 

@@ -33,9 +33,9 @@ This child exposes only three props, none of which a consumer normally sets dire
 Visual appearance (size, radius, colors, shadows for the default, hover, selected, and disabled states) is set through the `--mds-paginator-item-*` CSS custom properties listed in [`readme.md`](../readme.md) rather than through props. The items live in the shadow DOM of `mds-paginator`, so set them on the paginator (or a parent selector): the items inherit them.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-paginator-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-paginator-item>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 > **Note:** `<mds-paginator-item>` is an internal sub-part of [`mds-paginator`](../../mds-paginator). The idiomatic way to display page navigation is to use `<mds-paginator>` directly - it renders and manages all items automatically. The patterns below document the component's surface to show how the parent assembles it.
 
@@ -104,9 +104,9 @@ mds-paginator {
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-paginator-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-paginator-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use mds-paginator-item Standalone
 
