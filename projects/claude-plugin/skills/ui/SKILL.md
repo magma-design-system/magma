@@ -22,6 +22,8 @@ Magma answers from the version installed in this project: ask it instead of gues
 5. **Before saving.** `check_markup` on the template or the stylesheet you wrote; fix what it reports.
 6. **After writing.** Run the project's lint (ESLint and Stylelint with the Magma presets).
 
+When the person has to decide on an interface (a layout, where a message goes, which of two components), show it, never words alone: `render_preview` each option with the real components and texts, read its report and fix the markup until it is representative, then send the person the image files, which Claude Code does not show them by itself. Ask with each image, a name and one line, the recommended option first; let them flag an image, and keep an empty field for an answer of their own: render what you understood of it and act only once they confirm. The procedure: `get_guide` mcp, section "Show the person what you mean".
+
 When a rule is not clear, read the section you need with `get_guide` (conventions, color, typography, theming).
 
 When the tools do not give you what the task needs (you would read Magma's files by hand or guess, or an answer carries `gap`), tell the user, and at the end of the task propose an issue on Magma, one per missing capability: `get_guide` reporting, section "A tool or an answer the MCP server is missing". Open it only once the user agrees.
@@ -41,6 +43,7 @@ When the tools do not give you what the task needs (you would read Magma's files
 | `get_pattern` | The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product. |
 | `check_markup` | Run the Magma lint on a snippet before writing it: prop values outside their union, "false" booleans, icon-only controls without a name, raw palette classes (templates and @apply), raw colours and prefers-color-scheme queries (CSS). |
 | `check_setup` | Look at the project and list what its Magma integration misses, each with the guide that fixes it: design-tokens and styles installed in the range magma depends on, the React or Angular wrapper at magma's version, the fonts of the typography, an icon set, the icon path, the lint in ESLint and Stylelint, this server in the client configuration. |
+| `render_preview` | Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. |
 
 ## Without the server
 

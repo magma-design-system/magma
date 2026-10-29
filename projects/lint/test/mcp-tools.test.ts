@@ -1,4 +1,4 @@
-// The eleven tools of the MCP server on fixtures cut from the real data, and the mi and mdi icon
+// The twelve tools of the MCP server on fixtures cut from the real data, and the mi and mdi icon
 // sets installed in this repository.
 import {
   existsSync,
@@ -15,9 +15,20 @@ import { describe, expect, test } from 'vitest';
 import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
 import { GAP } from '../src/mcp/context.js';
+import {
+  breakpointsOf,
+  DEFAULT_WIDTH,
+  LAYERS,
+  MAX_SIDE,
+  PREVIEW_DIR,
+  render,
+  renderPreview,
+  STYLESHEETS,
+  themesOf,
+} from '../src/mcp/render.js';
 import { createServer, INSTRUCTIONS, toolsList, toolsOf } from '../src/mcp/server.js';
 import { tokensOf, USE_OF_UTILITY } from '../src/mcp/tokens.js';
-import { context, data } from './mcp-context.js';
+import { context, data, fixtures } from './mcp-context.js';
 
 /** Every slug the iconsauce plugins serve, dumped by the stencil build (projects/stencil/SPEC.md, Icons). */
 const ICONS_DICTIONARY = path.join(
@@ -32,7 +43,7 @@ type Result = Record<string, any>;
 const run = async (name: string, args: Record<string, unknown> = {}): Promise<Result> =>
   tools[name]!.run(args);
 
-test('the server has its eleven tools', () => {
+test('the server has its twelve tools', () => {
   expect(Object.keys(tools).sort()).toEqual([
     'check_markup',
     'check_setup',
@@ -44,6 +55,7 @@ test('the server has its eleven tools', () => {
     'get_pattern',
     'get_usage',
     'list_tokens',
+    'render_preview',
     'suggest_role',
   ]);
 });
@@ -769,4 +781,234 @@ describe('the check tools', () => {
     expect(satisfies('2.6.0', '>=2.5.0')).toBe(true);
     expect(satisfies('1.2.9', '~1.2.3')).toBe(true);
   });
+});
+
+describe('render_preview', () => {
+  // the stand-in loader of the fixtures (mds-fixture hydrates, mds-stuck never does, mds-fail
+  // throws), a project of its own for the images, the styles installed in this repository
+  const root = mkdtempSync(path.join(tmpdir(), 'magma-render-'));
+  const loader = path.join(fixtures, 'components/magma-components.esm.js');
+  const renderContext = { ...context, root, loader };
+  const preview = renderPreview(renderContext);
+  /** A short render: a fixture that never hydrates would hold the default budget. */
+  const shoot = async (markup: string, options: { widths?: number[]; height?: number } = {}) => {
+    const [image] = await render(renderContext, {
+      markup,
+      widths: options.widths ?? [480],
+      mode: 'light',
+      ...(options.height ? { height: options.height } : {}),
+      timeout: 3000,
+    });
+    return image!;
+  };
+  const kinds = (image: { problems: Array<{ kind: string }> }) =>
+    image.problems.map((one) => one.kind);
+  /** The size a PNG declares in its IHDR chunk. */
+  const sizeOf = (file: string) => {
+    const png = readFileSync(file);
+    return { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
+  };
+
+  test('loads the stylesheets of agents/assets.md, in its order and layers', () => {
+    const guide = readFileSync(
+      path.join(import.meta.dirname, '../../../docs/agents/assets.md'),
+      'utf8',
+    );
+    const block = guide.split('### Import order (mandatory)')[1]!.split('```')[1]!;
+    const imports = [...block.matchAll(/^@import '([^']+)' layer\((\w+)\);/gm)].map((one) => ({
+      module: one[1]!,
+      layer: one[2]!,
+    }));
+    expect(STYLESHEETS).toEqual(imports);
+    expect(block).toContain(LAYERS);
+  });
+
+  test('a markup that renders well is representative: the image, its file and no problem', async () => {
+    const result = await preview.run({ markup: '<mds-fixture>Salva</mds-fixture>', widths: [480] });
+    expect(result).toMatchObject({ magma: '2.5.1', mode: 'light', representative: true });
+    const [image] = result.images as Array<{
+      file: string;
+      width: number;
+      height: number;
+      problems: unknown[];
+    }>;
+    expect(image!.problems).toEqual([]);
+    expect(image!.file.startsWith(path.join(root, PREVIEW_DIR))).toBe(true);
+    // as tall as the content: the 24 px around the markup and the fixture
+    expect(sizeOf(image!.file)).toEqual({ width: 480, height: image!.height });
+    expect(image!.height).toBeLessThan(120);
+  }, 30_000);
+
+  test('names each problem with the element it is in', async () => {
+    const stuck = await shoot('<mds-stuck>Ciao</mds-stuck>');
+    expect(stuck.problems).toContainEqual(
+      expect.objectContaining({ kind: 'not-hydrated', element: 'mds-stuck "Ciao"' }),
+    );
+    expect(stuck.representative).toBe(false);
+
+    const unknown = await shoot('<mds-nope>Ciao</mds-nope>');
+    expect(unknown.problems).toContainEqual(
+      expect.objectContaining({ kind: 'unknown-component', element: 'mds-nope "Ciao"' }),
+    );
+
+    const fail = await shoot('<mds-fail></mds-fail>');
+    expect(fail.problems).toContainEqual(
+      expect.objectContaining({
+        kind: 'console-error',
+        detail: expect.stringContaining('mds-fail cannot render'),
+      }),
+    );
+
+    const zero = await shoot(
+      '<mds-fixture style="display: block; width: 0; padding: 0; overflow: hidden">Salva</mds-fixture>',
+    );
+    expect(zero.problems).toContainEqual(
+      expect.objectContaining({ kind: 'zero-size', element: 'mds-fixture "Salva"' }),
+    );
+
+    const word = await shoot(
+      '<div style="width: 40px; overflow-wrap: anywhere">Straordinariamente</div>',
+    );
+    expect(word.problems).toContainEqual(
+      expect.objectContaining({
+        kind: 'broken-word',
+        detail: expect.stringContaining('"Straordinariamente"'),
+      }),
+    );
+    // a line that breaks between words breaks no word
+    expect(
+      kinds(await shoot('<div style="width: 80px">Salva e chiudi la scheda</div>')),
+    ).not.toContain('broken-word');
+  }, 60_000);
+
+  test('catches a blank or grey region: a component whose content does not show, an empty image', async () => {
+    // the text painted in the colour of the fixture's own background
+    const hidden = await shoot('<mds-fixture style="color: #2563eb">Salva</mds-fixture>');
+    expect(hidden.problems).toContainEqual(
+      expect.objectContaining({
+        kind: 'flat',
+        element: 'mds-fixture "Salva"',
+        detail: expect.stringContaining('#2563eb'),
+      }),
+    );
+    const empty = await shoot('<p hidden>Nothing shows</p>');
+    expect(empty.problems).toContainEqual(
+      expect.objectContaining({
+        kind: 'flat',
+        detail: expect.stringMatching(/^The whole image is one flat colour/),
+      }),
+    );
+    // a component with no content of its own may be one colour
+    expect(kinds(await shoot('<mds-fixture></mds-fixture>'))).not.toContain('flat');
+  }, 60_000);
+
+  test('serves only the installed packages, offline, and reports what did not load', async () => {
+    const [icon] = readdirSync(path.join(fixtures, 'icons/mgg'));
+    const image = await shoot(
+      `<img src="https://example.com/logo.png" alt="Logo" width="40" height="40">
+<script>fetch('/svg/mgg/${icon}'); fetch('/svg/mgg/no-such-icon.svg'); fetch('/node_modules/vitest/package.json');</script>`,
+    );
+    const details = image.problems.filter((one) => one.kind === 'asset').map((one) => one.detail);
+    expect(details).toContainEqual(
+      expect.stringContaining('https://example.com/logo.png was not loaded'),
+    );
+    expect(details).toContainEqual(
+      expect.stringContaining('The icon mgg/no-such-icon is not in the icon sets'),
+    );
+    expect(details).toContainEqual(expect.stringContaining('/node_modules/vitest/package.json'));
+    expect(details.join()).not.toContain(icon);
+    expect(image.problems).toContainEqual(
+      expect.objectContaining({
+        kind: 'asset',
+        element: 'img',
+        detail: expect.stringContaining('did not load'),
+      }),
+    );
+  }, 30_000);
+
+  test('reports a font with no face loaded, and content cut at the longest side', async () => {
+    const font = await shoot('<p style="font-family: \'Nope Sans\', sans-serif">Testo</p>');
+    expect(font.problems).toContainEqual(
+      expect.objectContaining({ kind: 'font', detail: expect.stringContaining('Nope Sans') }),
+    );
+    const tall = await shoot(`<div style="height: ${MAX_SIDE + 500}px">Lungo</div>`);
+    expect(kinds(tall)).toContain('cut');
+    expect(sizeOf(tall.file).height).toBe(MAX_SIDE);
+  }, 30_000);
+
+  test('renders in the mode asked: prefers-color-scheme of the page', async () => {
+    const markup =
+      "<script>console.error(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')</script>";
+    const [dark] = await render(renderContext, {
+      markup,
+      widths: [480],
+      mode: 'dark',
+      timeout: 3000,
+    });
+    expect(dark!.problems).toContainEqual({ kind: 'console-error', detail: 'dark' });
+  }, 30_000);
+
+  test('reads the widths and the themes from the installed styles, and refuses the rest', async () => {
+    const breakpoints = breakpointsOf(renderContext);
+    expect(breakpoints[DEFAULT_WIDTH]).toBeTypeOf('number');
+    const result = await preview.run({
+      markup: '<mds-fixture>Salva</mds-fixture>',
+      widths: ['mobile'],
+    });
+    expect((result.images as Array<{ width: number }>)[0]!.width).toBe(breakpoints.mobile);
+    await expect(preview.run({ markup: 'x', widths: ['huge'] })).rejects.toThrow(
+      /No breakpoint huge: the installed styles name .*desktop/,
+    );
+    await expect(preview.run({ markup: 'x', widths: [100] })).rejects.toThrow(/from 320 to 2000/);
+    await expect(preview.run({ markup: 'x', widths: [400, 500, 600, 700, 800] })).rejects.toThrow(
+      /At most 4/,
+    );
+    await expect(preview.run({ markup: 'x', theme: 'neon' })).rejects.toThrow(
+      new RegExp(`No theme neon: the installed styles name ${themesOf(renderContext).join(', ')}`),
+    );
+    await expect(preview.run({ markup: 'x', lang: '"><script>' })).rejects.toThrow(
+      /lang is a language tag/,
+    );
+    await expect(preview.run({ markup: ' ' })).rejects.toThrow(/Give the markup/);
+  }, 30_000);
+
+  test('answers tools/call with the images as image content, after the text', async () => {
+    const { handle } = createServer(renderContext);
+    const answer = (await handle({
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'tools/call',
+      params: {
+        name: 'render_preview',
+        arguments: { markup: '<mds-fixture>Salva</mds-fixture>', widths: [480, 640] },
+      },
+    })) as Result;
+    const { content, structuredContent } = answer.result;
+    expect(content.map((one: { type: string }) => one.type)).toEqual(['text', 'image', 'image']);
+    expect(content[1]).toMatchObject({
+      mimeType: 'image/png',
+      data: expect.stringMatching(/^iVBORw0KGgo/),
+    });
+    // the structured content, and its text, carry the files and never the image data
+    expect(JSON.stringify(structuredContent)).not.toContain('iVBORw0KGgo');
+    expect(JSON.parse(content[0].text)).toEqual(structuredContent);
+  }, 30_000);
+});
+
+// the components of the build of this repository: the real hydration, the real styles
+const BUILT = path.join(
+  import.meta.dirname,
+  '../../stencil/dist/magma-components/magma-components.esm.js',
+);
+describe.skipIf(!existsSync(BUILT) && !process.env.CI)('render_preview on the built magma', () => {
+  test('mds-button hydrates, shows its label and looks different in dark mode', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-render-built-'));
+    const built = { root, settings: { root } };
+    const markup = '<mds-button>Salva</mds-button>';
+    const [light] = await render(built, { markup, widths: [480], mode: 'light' });
+    const [dark] = await render(built, { markup, widths: [480], mode: 'dark' });
+    expect(light!.problems).toEqual([]);
+    expect(dark!.problems).toEqual([]);
+    expect(readFileSync(light!.file).equals(readFileSync(dark!.file))).toBe(false);
+  }, 60_000);
 });

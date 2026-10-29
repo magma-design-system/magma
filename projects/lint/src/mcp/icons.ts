@@ -40,7 +40,7 @@ interface Icon {
 }
 
 /** The svg folder of a set: the setting of the tests, else the installed package. */
-const folderOf = (context: ToolContext, set: IconSet): string | undefined => {
+export const folderOf = (context: ToolContext, set: IconSet): string | undefined => {
   if (context.icons?.[set]) return context.icons[set];
   const dir = packageDir(context, PACKAGES[set].name);
   const folder = dir && path.join(dir, PACKAGES[set].svg);
@@ -79,7 +79,7 @@ const iconsOf = (context: ToolContext, set: IconSet, folder: string): Icon[] => 
 };
 
 /** The file a slug is served from, in its package. */
-const fileOf = (folder: string, slug: string): string | undefined => {
+export const slugFile = (folder: string, slug: string): string | undefined => {
   const [set, ...rest] = slug.split('/');
   // an underscore is the folder's spelling, which no slug served by iconsauce has
   if (set === 'mi' && rest.length === 2)
@@ -162,7 +162,7 @@ export const findIcon = (context: ToolContext): Tool => ({
     if (typeof slug === 'string' && slug) {
       const own = slug.split('/')[0] as IconSet;
       const folder = PACKAGES[own] ? (folders.get(own) ?? folderOf(context, own)) : undefined;
-      const file = folder && fileOf(folder, slug);
+      const file = folder && slugFile(folder, slug);
       const exists = Boolean(file && existsSync(file));
       // when it does not exist, the icons of the same name in the installed sets, in the
       // variant the slug asked for; an underscore (the folder's spelling) reads as a hyphen

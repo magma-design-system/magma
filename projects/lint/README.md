@@ -35,7 +35,8 @@ sets both up at bootstrap.
 | `src/eslint/index.ts` | the ESLint rules and presets |
 | `src/stylelint/` | the Stylelint rules and presets |
 | `src/mcp/protocol.ts` | the part of the Model Context Protocol the server speaks, written here so magma carries no SDK: JSON-RPC over stdio, `initialize`, `tools/list`, `tools/call` |
-| `src/mcp/*.ts` | the eleven read-only tools (components, tokens, icons, guides, patterns, checks), the server and its command |
+| `src/mcp/render.ts`, `src/mcp/render-page.ts` | `render_preview`: the page served from the installed packages and driven by the project's playwright-core, and the part that runs in the page (waiting, then the checks of the image) |
+| `src/mcp/*.ts` | the other eleven tools, read-only (components, tokens, icons, guides, patterns, checks), the server and its command |
 
 The data is never a list written by hand. Inside magma, the core reads the
 `documentation.json` beside it (`dist/documentation.json`) and resolves design-tokens and
@@ -137,6 +138,31 @@ or on the guide it enforces, not only on fixtures picked by hand.
   its path, and the answer for a situation carries the stage with what to try, since that is
   the one case the agent builds and its markup is short. Only Magma's cases have previews: a
   product layer adds situations, never a case to show.
+- **What a render loads, and when it is ready** (`render_preview`, #1180): the page a consumer
+  writes, not one of the tool's own. The stylesheets are the import block of
+  `agents/assets.md`, "Import order (mandatory)", in its order and layers (a test holds
+  `STYLESHEETS` to the block), each resolved from the project as Node resolves it, and left
+  out when the project did not install it; the components, the lazy loader of the dist
+  (`dist/magma-components`); the icons, the contract of `agents/assets.md`, served at the path
+  set in `sessionStorage`, from the sets `find_icon` reads. The widths a name gives are the
+  `--breakpoint-*` of the installed `typography.css`, the default `desktop`; the themes, the
+  `data-theme-name` values of the installed `themes.css`; the mode, `prefers-color-scheme`,
+  which `colors-rgb.css` and `semantic.css` follow. The page is ready when Stencil has emitted
+  `appload` on window, every component defined carries the flag `styles/dist/css/hydrated.css`
+  hides it by (`[hydrated]` or `.hydrated`), `document.fonts` is ready and every animation is
+  finished (an infinite one paused). An image is not representative when the page reports a
+  problem: a tag the loader did not define, a component without the flag, a component or an
+  image displayed with no width or height (`display: none` is a choice, not a failure), a
+  component with text or media whose whole box is one colour (99.8% of the pixels within 8
+  levels of the most frequent one), a console error or an uncaught exception, a request the
+  page cannot be served, a font family the text asks for with no face loaded, a word (the run
+  between two places a line may break: a space, a hyphen, a dash, a slash) on more than one
+  line, content taller than the image. An image is at most 2000 px a side, the cap of Claude
+  Code (CHANGELOG 2.1.122) and of the Anthropic API for a request with many images, and four
+  of them stay under the 25,000 tokens Claude Code allows a tool result. The driver is the
+  project's playwright-core (else playwright), an optional peer of magma from 1.9, the version
+  that has every call the tool makes (playwright.dev/docs/api); the browser, Chrome, then
+  Edge, the channels of playwright.dev/docs/browsers, then Playwright's own Chromium.
 - **What a tool or a rule says about itself** (the documentation site reads it from the
   installed package, magma-design-system/docs#1): the same fields on both plugins, a
   description and the URL of its section of `agents/lint.md` (an ESLint rule in
@@ -157,8 +183,8 @@ The tests run on fixtures cut from the real data (`test/fixtures`: a few compone
 `documentation.json`, a few palette tokens, the colour utilities), so they need no build of
 the other projects: every template rule on HTML, JSX and Angular templates through ESLint's
 `RuleTester`, the CSS rules through Stylelint. The `consumer-lint` job of the stencil workflow
-runs them, on the `lint:build` of the same run; the stencil pipeline builds the package with
-the lint inside.
+runs them, on the `lint:build` of the same run and its build artifact (the render of the built
+`mds-button`); the stencil pipeline builds the package with the lint inside.
 
 ## Adding a rule
 
@@ -177,20 +203,31 @@ the lint inside.
 
 ## The MCP server
 
-`src/mcp/server.ts` puts the eleven tools behind the protocol of `src/mcp/protocol.ts`; the
+`src/mcp/server.ts` puts the twelve tools behind the protocol of `src/mcp/protocol.ts`; the
 command, `src/mcp/cli.ts`, serves them on stdio from the project it starts in (`--root`
-points elsewhere; `--documentation`, `--tokens`, `--consumption`, `--globals` and
-`--icons-<set>` point the data elsewhere). The server writes only protocol messages to
+points elsewhere; `--documentation`, `--tokens`, `--consumption`, `--globals`,
+`--icons-<set>` and `--loader`, the loader of the components `render_preview` loads, point
+the data elsewhere). The server writes only protocol messages to
 stdout. The icon it shows its clients is the Magma mark of identity, copied into
 `dist/lint/mcp/icon.svg` by the stencil build, which also writes the tools as data into
 `dist/lint/mcp/tools.json`: the answer of `tools/list` (`toolsList`), from the compiled server.
 
-A tool is read-only and answers from data the packages ship: add one in the file of its area,
-give it an `outputSchema` its result matches (the official client checks it), register it in
-`toolsOf` of `src/mcp/server.ts`, test it on the fixtures (`test/mcp-tools.test.ts`) and in
-the call through the official client (`test/mcp-stdio.test.ts`), and list it in
-[`docs/agents/mcp.md`](../../docs/agents/mcp.md). Keep the tools few: an agent picks one by its
-name and description.
+A tool answers from data the packages ship and is read-only: one that writes says so in its
+`annotations` (`render_preview`, `readOnlyHint: false`), and writes only where nothing is
+committed. Add one in the file of its area, give it an `outputSchema` its result matches (the
+official client checks it), register it in `toolsOf` of `src/mcp/server.ts`, test it on the
+fixtures (`test/mcp-tools.test.ts`) and in the call through the official client
+(`test/mcp-stdio.test.ts`), and list it in [`docs/agents/mcp.md`](../../docs/agents/mcp.md).
+A result with images returns them through `withImages`: `tools/call` answers them as image
+content after the text, and keeps them out of the structured content. A tool that needs a
+package magma does not depend on resolves it from the project (`resolvePackage`) and, when it
+is missing, says how to install it, as `check_markup` does for ESLint and `render_preview` for
+playwright-core. Keep the tools few: an agent picks one by its name and description.
+
+`render_preview` is tested on a stand-in loader (`test/fixtures/components`), whose
+components hydrate, never hydrate or throw on purpose, so each problem of the report has a
+test without a build; one test renders `mds-button` on the build of this repository. Both
+need a Chrome or an Edge on the machine (the runners of GitHub have Chrome).
 
 What the server lacks is learned from the agents that use it (#1137). An answer that finds
 nothing for a well-formed question, or a tool that says it does not know, carries `gap`

@@ -6,9 +6,10 @@
 
 The server answers from the version installed in the project: the components and their
 API, the roles and tokens with what each one is for, the classes of the Magma Tailwind
-theme, the icon slugs that exist, the sections of these guides, and the lint
-([`lint.md`](lint.md)) on a snippet before it is written. It is read-only: no tool changes
-a file.
+theme, the icon slugs that exist, the sections of these guides, the lint
+([`lint.md`](lint.md)) on a snippet before it is written, and an image of markup rendered
+with the installed components. No tool changes the project's code: only `render_preview`
+writes, its images, into `node_modules/.cache/magma/previews/`.
 
 ## Set it up
 
@@ -65,6 +66,11 @@ VS Code (GitHub Copilot), `.vscode/mcp.json`:
 
 Cursor, `.cursor/mcp.json`: the same entry as Claude Code, under `mcpServers`.
 
+`render_preview` also needs a browser driver, which Magma does not install:
+`npm i -D playwright-core` (a project with `@playwright/test` has it already). It drives the
+Google Chrome or Microsoft Edge of the machine and downloads no browser; on a machine with
+neither, `npx playwright install chromium`.
+
 `npx --no magma-mcp` runs the installed version, so the answers always match the components
 the project uses. Keep `--no`: without it, a client that starts the server before
 `npm install` (a fresh clone with the configuration committed) lets `npx` download and run
@@ -87,6 +93,7 @@ client starts servers elsewhere than the project's root, pass it:
 | `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow, with its preview (the stage, live, and what to try in it) when Magma has one; the layer of the project (`magma/patterns/<id>.md`) applied | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
 | `check_markup` | whether a snippet passes the lint, before it is written | a lint run after the fact |
 | `check_setup` | what the Magma integration of the project misses | checking the install steps by hand |
+| `render_preview` | an image of markup with Magma components, at the widths (pixels or Magma breakpoints), the mode and the theme you give, with a report of what in it is not representative | describing an interface in words, or a wireframe of your own |
 
 `check_markup` uses the ESLint, Stylelint and template parsers the project installed with
 the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents them, are in
@@ -100,6 +107,41 @@ the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents
 - Before an icon: `find_icon`.
 - After writing: `check_markup`, then the project's lint ([`lint.md`](lint.md)).
 - After the bootstrap, or when something does not render: `check_setup`.
+- Before asking the person to decide on an interface: `render_preview`, one render per
+  option ([Show the person what you mean](#show-the-person-what-you-mean)).
 - When no tool gives you what the task needs, or an answer carries `gap`: tell the user,
   and at the end of the task propose an issue on Magma
   ([`reporting.md`](reporting.md), "A tool or an answer the MCP server is missing").
+
+## Show the person what you mean
+
+A decision on an interface taken from words is taken blind: the person reads the concept and
+imagines a screen of their own. Show the real components instead, rendered on the version the
+project installed.
+
+1. **Render each option.** `render_preview` with the markup of the option, as the product
+   would write it: the real components, the real texts, the layout around them. A modal, a
+   drawer or a toast sits on the viewport: give a `height`. One width is enough unless the
+   option changes with it (`["mobile", "desktop"]`).
+2. **Read the report before the image.** `representative: false` names what is wrong,
+   element by element: a component unknown or not hydrated, an element with no size, a
+   component that is one flat colour, a console error, an icon, a font or an image that did
+   not load, a word broken across lines, content cut. Fix your markup and render again; show
+   an image with a problem only with the problem said next to it.
+3. **Show the images.** The tool returns each image as image content and as a file. VS Code
+   and Cursor show the image to the person; Claude Code passes it to you and may not show it,
+   so there attach the file (`file`) the way your client sends a file to the person, or give
+   its path. Never copy the image data by hand.
+4. **Ask.** Each option with its image, a name and one line on what it means, the one you
+   recommend first and marked as such. Ask with your client's question tool when it has one.
+   Always offer:
+   - a way to flag an image ("the second one did not render", "this is not what I meant");
+   - an empty field for an answer of the person's own.
+5. **Render the free answer before acting on it.** What the person writes in the empty field
+   is an instruction you interpret: render what you understood, show it and ask whether that
+   is it. Act only once they confirm; otherwise render again with their correction.
+6. **A flagged image.** Render it again and compare the report. When the markup was yours
+   to fix, fix it. When the markup is right and the image still does not show it (the
+   report says representative, the person sees something else), the render is at fault: tell
+   the person and propose an issue on Magma ([`reporting.md`](reporting.md), "A tool or an
+   answer the MCP server is missing").

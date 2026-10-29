@@ -1,6 +1,7 @@
 // The command over stdio, through the official MCP client: the handshake, the list of tools,
 // and a call of each one, whose structured content the client validates against the tool's
 // output schema.
+import { rmSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
@@ -31,6 +32,8 @@ beforeAll(async () => {
       data.globals,
       '--icons-mgg',
       path.join(fixtures, 'icons/mgg'),
+      '--loader',
+      path.join(fixtures, 'components/magma-components.esm.js'),
     ],
     stderr: 'pipe',
   });
@@ -40,6 +43,8 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await client?.close();
+  // the images render_preview wrote into the fixture project
+  rmSync(path.join(context.root, 'node_modules'), { recursive: true, force: true });
 });
 
 test('the handshake names the server, the version of magma and when to use it', () => {
@@ -47,11 +52,12 @@ test('the handshake names the server, the version of magma and when to use it', 
   expect(client.getInstructions()).toMatch(/check_markup/);
 });
 
-test('lists the eleven tools, read-only, each with an output schema', async () => {
+test('lists the twelve tools, each with an output schema, read-only but the render', async () => {
   const { tools } = await client.listTools();
-  expect(tools).toHaveLength(11);
+  expect(tools).toHaveLength(12);
   for (const tool of tools) {
-    expect(tool.annotations?.readOnlyHint).toBe(true);
+    // render_preview writes its images into node_modules/.cache of the project
+    expect(tool.annotations?.readOnlyHint).toBe(tool.name !== 'render_preview');
     expect(tool.outputSchema?.type).toBe('object');
   }
 });
@@ -96,6 +102,25 @@ test.each([
   },
   30_000,
 );
+
+test('render_preview answers its images as image content, its report as structured content', async () => {
+  const result = await client.callTool(
+    {
+      name: 'render_preview',
+      arguments: { markup: '<mds-fixture>Salva</mds-fixture>', widths: [480] },
+    },
+    CallToolResultSchema,
+  );
+  expect(result.isError).toBeFalsy();
+  expect(result.content).toEqual([
+    expect.objectContaining({ type: 'text' }),
+    expect.objectContaining({ type: 'image', mimeType: 'image/png' }),
+  ]);
+  expect(result.structuredContent).toMatchObject({
+    representative: true,
+    images: [{ width: 480 }],
+  });
+}, 30_000);
 
 test('a tool error comes back as content the agent can read', async () => {
   const result = await client.callTool(

@@ -1,7 +1,14 @@
 // The protocol of the MCP server, message by message, without a transport.
 import { describe, expect, test } from 'vitest';
 
-import { PROTOCOL_VERSIONS, ToolError, createHandler, type Tool } from '../src/mcp/protocol.js';
+import {
+  PROTOCOL_VERSIONS,
+  ToolError,
+  createHandler,
+  toolList,
+  withImages,
+  type Tool,
+} from '../src/mcp/protocol.js';
 
 const echo: Tool = {
   name: 'echo',
@@ -78,6 +85,41 @@ describe('the MCP protocol', () => {
     ).toMatchObject({
       result: { isError: true, content: [{ type: 'text', text: 'Give a text.' }] },
     });
+  });
+
+  test('answers the images of a result as image content, out of its structured content', async () => {
+    const shot: Tool = {
+      ...echo,
+      name: 'shot',
+      annotations: { readOnlyHint: false },
+      run: () => withImages({ file: 'a.png' }, [{ data: 'iVBORw0KGgo=', mimeType: 'image/png' }]),
+    };
+    const answer = await createHandler(
+      [shot],
+      { name: 'test', title: 'Test', version: '1.0.0' },
+      '',
+    )({
+      jsonrpc: '2.0',
+      id: 9,
+      method: 'tools/call',
+      params: { name: 'shot', arguments: {} },
+    });
+    expect(JSON.parse(JSON.stringify(answer))).toEqual({
+      jsonrpc: '2.0',
+      id: 9,
+      result: {
+        content: [
+          { type: 'text', text: JSON.stringify({ file: 'a.png' }, null, 2) },
+          { type: 'image', data: 'iVBORw0KGgo=', mimeType: 'image/png' },
+        ],
+        structuredContent: { file: 'a.png' },
+      },
+    });
+    // a tool that writes says so; the others keep the read-only default
+    expect(toolList([echo, shot]).tools.map((one) => one.annotations)).toEqual([
+      { readOnlyHint: true, openWorldHint: false },
+      { readOnlyHint: false, openWorldHint: false },
+    ]);
   });
 
   test('answers no notification, and a JSON-RPC error to what it does not know', async () => {
