@@ -200,6 +200,25 @@ keep in step.
   read from `publish.yml`).
 - **Held by**: the commit-msg hook (commitlint); `pr-risk-lib.spec.ts`.
 
+## The page a render loads
+
+- **What**: what `render_preview` puts on its page and reads off it: the import block of the
+  stylesheets, the lazy loader of the components (`dist/magma-components`), the flag of a
+  hydrated component, the Magma breakpoints (`--breakpoint-*` of `typography.css`) and the named
+  themes (`data-theme-name` of `themes.css`).
+- **Produced by**: `docs/agents/assets.md` (the import block); the stencil build (the loader, and
+  Stencil's `appload` event and `hydrated` flag, `hydratedFlag` of `stencil.config.ts`);
+  `projects/styles` (`hydrated.css`, which hides a component until the flag, `typography.css`,
+  `themes.css`).
+- **Contract**: [`docs/agents/assets.md`](agents/assets.md), "Import order (mandatory)" and "Tell
+  mds-icon where the icons are"; [`projects/lint/README.md`](../projects/lint/README.md), "Where
+  each answer comes from" (what a render loads, and when it is ready).
+- **Read by**: the MCP `render_preview` (`projects/lint/src/mcp/render.ts`, `render-page.ts`).
+- **Held by**: the `render_preview` tests: `STYLESHEETS` equals the block of the guide, the widths
+  and the themes come from the installed styles, and `mds-button` renders hydrated and
+  representative on the build of this repository (the `consumer-lint` job, on the build
+  artifact).
+
 ## The sources of the wrappers
 
 - **What**: the React and Angular wrapper components.
@@ -220,5 +239,7 @@ of one of them changes what it decides, the code and the line that cites it chan
 | DTCG Format Module 2025.10 | the types and composite types of the token data, and their CSS | `projects/lint/src/mcp/tokens.ts`, the design-tokens README |
 | ESLint 9 (`FLAT_CONFIG_FILENAMES`), Stylelint 16 with the search places of cosmiconfig 9 | which configuration file each tool loads | `projects/lint/src/mcp/checks.ts` |
 | Tailwind 4, through the consumption map | the colour utilities, and the CSS property each one writes | `projects/lint/src/mcp/tokens.ts` |
-| MCP specification 2025-11-25 | the protocol of the server | `projects/lint/src/mcp/protocol.ts` |
+| MCP specification 2025-11-25 | the protocol of the server, the image content of a result | `projects/lint/src/mcp/protocol.ts` |
+| Playwright (playwright.dev/docs/browsers, docs/api) | the browser channels a render tries, the API floor of the peer range (1.9) | `projects/lint/src/mcp/render.ts` |
+| Claude Code (CHANGELOG 2.1.122, MCP docs), Anthropic vision docs | the 2000 px cap on a side of an image, the 25,000 tokens of a tool result | `projects/lint/src/mcp/render.ts` |
 | Claude Code memory docs | how `CLAUDE.md` and `AGENTS.md` load, nested ones included | `CLAUDE.md` |

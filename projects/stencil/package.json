@@ -158,10 +158,14 @@
   },
   "peerDependencies": {
     "eslint": ">=9.0.0",
+    "playwright-core": ">=1.9.0",
     "stylelint": ">=16.0.0"
   },
   "peerDependenciesMeta": {
     "eslint": {
+      "optional": true
+    },
+    "playwright-core": {
       "optional": true
     },
     "stylelint": {
