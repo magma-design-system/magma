@@ -1,4 +1,4 @@
-const bindingDictionary = ['paperback', 'hardcover'];
+const bindingDictionary = ['paperback', 'hardcover', 'none'];
 
 // the named formats; any other format is written as `WxH`, in centimetres
 const formatDictionary = ['auto', 'a4', 'a5', 'b5'];

@@ -3,10 +3,10 @@
 @import './css/mds-book-pref-consumption.css';
 
 /**
- * @prop --mds-book-color: Public, static. The colour of the binding where the cover image cannot continue: the spine and the board edges without an image, and the cover drawn when there is no image.
+ * @prop --mds-book-color: Public, static. The colour of the cover drawn when there is no image (no src, or one that fails), with its spine and board edges. A book with an image does not take it: it is printed on paper.
  * @prop --mds-book-page-weight-max: The thickness of a page, in millimetres (a number), on a book of 1000 pages and more: the thin paper of a volume.
  * @prop --mds-book-page-weight-min: The thickness of a page, in millimetres (a number), on a book of 1 page; between 1 and 1000 pages it goes to --mds-book-page-weight-max in proportion.
- * @prop --mds-book-paper-color: The colour of the page block.
+ * @prop --mds-book-paper-color: The colour of paper: the page block, and the binding of a book with an image, under it.
  * @prop --mds-book-publisher-color: Public, static. The colour of the publisher at the foot of the spine and of the cover drawn when there is no image, its mark or its name. Unset, the colour of the text.
  * @prop --mds-book-spine-color: Public, static. A solid colour for the spine and the board edges. Unset, they continue the edges of the cover image.
  * @prop --mds-book-text-color: Public, static. The colour of the text on the spine and on the cover drawn when there is no image.
@@ -121,7 +121,8 @@
    at 0), y down, z toward the reader (the front at 0, the back at minus the depth). It is laid
    back first (lay), then turned and tilted.
    --private-book-wrap is what the spine and the board edges are made of: the cover image,
-   whose edges they stretch, or the solid colour the consumer sets instead.
+   whose edges they stretch, or the solid colour the consumer sets instead; under it,
+   --private-book-binding, the colour of a drawn cover or the paper of a printed one.
    The component writes its measures on it, in shares of its width: the page block
    (--private-book-pages, from the number of pages), and the thickness and the overhang of
    rigid boards (--private-book-board, --private-book-square); a paperback is cut flush, its
@@ -227,11 +228,15 @@
   width: 100%;
 }
 
-/* waiting for its image, the book is a neutral shape, not a coloured one that turns into
-   another when the cover arrives */
+/* A book with an image is printed on paper, from the start: a blank book while the image is
+   on the way, and the paper wherever the image does not reach, its transparent parts and the
+   spine and the edges until they paint it. Not the colour of a drawn cover, which flashed on
+   the spine when the cover arrived (#1171), nor a role that follows the mode, which turned
+   light at that moment in dark mode: the image is the same picture in every mode, so is the
+   paper it is printed on. */
 
-.book--pending {
-  --private-book-binding: rgb(var(--magma-surface-sunken));
+.book--printed {
+  --private-book-binding: var(--mds-book-paper-color);
 }
 
 /* Every face starts flat at the top left corner of the front and is moved into place by its
@@ -350,6 +355,21 @@
       color-mix(in srgb, var(--mds-book-paper-color) 16%, transparent),
       transparent 45%
     );
+}
+
+/* with no binding the cover is a sheet: no fold on the side of the spine, and no gloss, a sheet
+   of paper is not laminated */
+
+:host([binding='none']) .front::after {
+  background-image: linear-gradient(
+    105deg,
+    color-mix(in srgb, var(--mds-book-paper-color) 16%, transparent),
+    transparent 45%
+  );
+}
+
+:host([binding='none']) .gloss {
+  display: none;
 }
 
 .cover {
@@ -549,7 +569,8 @@
 
 .pages-top,
 .pages-bottom,
-.pages-fore {
+.pages-fore,
+.pages-spine {
   background-color: var(--mds-book-paper-color);
   background-repeat: no-repeat, repeat, no-repeat;
   background-size:
@@ -614,7 +635,8 @@
   width: 1cqi;
 }
 
-.pages-fore {
+.pages-fore,
+.pages-spine {
   background-image:
     linear-gradient(
       to right,
@@ -630,6 +652,9 @@
       color-mix(in srgb, var(--mds-book-paper-color), rgb(var(--magma-shadow-ink)) 9%) 0.45cqi
         0.55cqi
     );
+}
+
+.pages-fore {
   height: calc(100% - var(--private-book-square) * 2);
   transform: translate3d(
       calc(100cqi - var(--private-book-square)),
@@ -708,6 +733,21 @@
 .pages-flush--along::after {
   left: auto;
   right: 0;
+}
+
+/* Loose, with no binding: a stack of sheets cut flush as a paperback is, with nothing around
+   it, so no hairline of a cover at its ends, and the edges of the pages on the side of the
+   spine as well. */
+
+.pages-loose::before,
+.pages-loose::after {
+  content: none;
+}
+
+.pages-spine {
+  height: 100%;
+  transform: translateZ(calc(var(--private-book-depth) * -1)) rotateY(-90deg);
+  width: var(--private-book-depth);
 }
 
 /* The spine. Flat on a paperback, the cover folded at its two edges; on rigid boards an arc

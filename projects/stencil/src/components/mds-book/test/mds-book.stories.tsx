@@ -17,7 +17,8 @@ export default {
     },
     binding: {
       control: { type: 'select' },
-      description: 'How the book is bound: a flexible cover, or rigid boards',
+      description:
+        'How the book is bound: a flexible cover, rigid boards, or none, a stack of loose sheets',
       options: bindingDictionary,
       type: { name: 'string', required: false },
     },
@@ -77,6 +78,9 @@ const squareCover = `data:image/svg+xml,${encodeURIComponent(
 
 const cover = (n: number) => `./book-cover-${String(n).padStart(2, '0')}.webp`;
 
+// the first page of a made-up document, the minutes of a council session, A4
+const documentPage = './document-page-01.svg';
+
 // the mark of Maggioli Editore, from the identity package
 const publisherLogo = './logo-maggioli-editore.svg';
 
@@ -121,7 +125,6 @@ const Row = ({ label, children }: { label: string; children?: unknown }) => (
 );
 
 // how many books a row holds, by the width of the canvas
-const twoBooks = 'grid gap-1200 items-end grid-cols-1 @md:grid-cols-2';
 const threeBooks = 'grid gap-1200 items-end grid-cols-1 @md:grid-cols-2 @3xl:grid-cols-3';
 const fourBooks = 'grid gap-1200 items-end grid-cols-1 @md:grid-cols-2 @5xl:grid-cols-4';
 const fiveBooks =
@@ -159,12 +162,23 @@ export const Pages = {
 export const Binding = {
   render: (args) => (
     <Stage>
-      <div class={twoBooks}>
+      <div class={threeBooks}>
         <Row label="paperback">
           <mds-book {...args} binding="paperback" />
         </Row>
         <Row label="hardcover">
           <mds-book {...args} binding="hardcover" />
+        </Row>
+        {/* not bound, a document: its first page is the sheet on top */}
+        <Row label="none">
+          <mds-book
+            {...args}
+            binding="none"
+            name="Verbale della seduta del Consiglio comunale n. 14"
+            publisher="Comune di Valfiorita"
+            src={documentPage}
+            pages={120}
+          />
         </Row>
       </div>
     </Stage>
@@ -271,6 +285,41 @@ export const CustomColors = {
             binding="hardcover"
             style={{ '--mds-book-spine-color': '#123a6b' }}
           />
+        </Row>
+      </div>
+    </Stage>
+  ),
+};
+
+// a cover with a transparent ground, inline so the story needs no network
+const transparentCover = `data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="510" height="720"><circle cx="255" cy="300" r="170" fill="#c0392b"/><text x="255" y="580" fill="#1f2933" font-family="sans-serif" font-size="56" font-weight="700" text-anchor="middle">Bilancio</text></svg>',
+)}`;
+
+// One library, one colour for every book: it paints the covers the component draws, while the
+// books with an image are printed on paper, which shows where the image is transparent. A
+// document is not bound: its cover is the sheet on top of its pages.
+const libraryColor = { '--mds-book-color': '#123a6b', '--mds-book-text-color': '#ffffff' };
+
+export const Library = {
+  render: () => (
+    <Stage>
+      <div class={threeBooks}>
+        <Row label="a cover image">
+          <mds-book src={cover(3)} name={titles[2]} pages={640} style={libraryColor} />
+        </Row>
+        <Row label="a document, no image, binding none">
+          <mds-book
+            binding="none"
+            name="Circolare n. 122"
+            author="Direzione centrale entrate"
+            publisher="INPS"
+            pages={24}
+            style={libraryColor}
+          />
+        </Row>
+        <Row label="a cover image with a transparent ground">
+          <mds-book src={transparentCover} name="Bilancio" pages={160} style={libraryColor} />
         </Row>
       </div>
     </Stage>

@@ -86,8 +86,10 @@ export class MdsBook {
   @Prop() readonly author?: string;
 
   /**
-   * How the book is bound: a thin flexible cover flush with the pages, or rigid boards a little
-   * larger than the page block, with a rounded spine
+   * How the book is bound: a thin flexible cover flush with the pages, rigid boards a little
+   * larger than the page block, with a rounded spine, or not at all (`none`), a stack of loose
+   * sheets, a document: its cover is only the sheet on top, and the pages show on every side,
+   * the side of the spine too, where nothing is printed
    */
   @Prop({ reflect: true }) readonly binding: BookBindingType = 'paperback';
 
@@ -620,9 +622,37 @@ export class MdsBook {
     </div>,
   ];
 
+  // Unbound, a stack of sheets cut flush: the cover is only the sheet on top, nothing wraps the
+  // pages, so they show on the side of the spine too, which has no text.
+  private renderLoose = () => [
+    <div key="pages-top" class="face pages-top pages-flush pages-flush--across pages-loose lit-top">
+      {this.shade()}
+    </div>,
+    <div
+      key="pages-bottom"
+      class="face pages-bottom pages-flush pages-flush--across pages-loose lit-bottom"
+    >
+      {this.shade()}
+    </div>,
+    <div
+      key="pages-fore"
+      class="face pages-fore pages-flush pages-flush--along pages-loose lit-fore"
+    >
+      {this.shade()}
+    </div>,
+    <div key="pages-spine" class="face pages-spine lit-spine">
+      {this.shade()}
+    </div>,
+  ];
+
+  private renderBinding = () => {
+    if (this.binding === 'hardcover') return this.renderHardcover();
+    if (this.binding === 'none') return this.renderLoose();
+    return this.renderPaperback();
+  };
+
   render() {
-    const hardcover = this.binding === 'hardcover';
-    if (!hardcover) this.slats = [];
+    if (this.binding !== 'hardcover') this.slats = [];
     return (
       <Host
         {...this.hostRole()}
@@ -636,7 +666,7 @@ export class MdsBook {
             <div
               class={{
                 book: true,
-                'book--pending': this.hasImage() && this.coverUrl === undefined,
+                'book--printed': this.hasImage(),
               }}
               style={this.bookStyle()}
             >
@@ -666,7 +696,7 @@ export class MdsBook {
                   <span class="gloss"></span>
                   {this.shade()}
                 </div>
-                {hardcover ? this.renderHardcover() : this.renderPaperback()}
+                {this.renderBinding()}
               </div>
             </div>
           </div>

@@ -313,6 +313,12 @@ describe('apiChanges', () => {
     expect(one('interface D { id: string; }', 'interface D { id: number; }').bump).toBe('major');
     expect(one('type S = "a" | "b"', 'type S = "a" | "b" | "c"').bump).toBe('minor');
     expect(one('type S = "a" | "b"', 'type S = "a"').bump).toBe('major');
+    // the closing semicolon of the source is not part of the last member (#1171)
+    expect(one("type S = 'a' | 'b';", "type S = 'a' | 'b' | 'c';")).toEqual({
+      bump: 'minor',
+      why: "the type also has 'c'",
+    });
+    expect(one("type S = 'a' | 'b';", "type S = 'a';").bump).toBe('major');
   });
 
   it('weighs the types an interface extends, not the JSDoc of its fields', () => {
