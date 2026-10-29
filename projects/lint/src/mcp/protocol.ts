@@ -21,7 +21,11 @@ export interface Tool {
   description: string;
   inputSchema: JsonSchema;
   outputSchema: JsonSchema;
-  /** Read-only: no tool of this server changes the project or the world. */
+  /**
+   * What the tool does to the project, over the default: read-only, no tool of this server
+   * changes the project or the world; render_preview writes its images into a cache folder.
+   */
+  annotations?: { readOnlyHint?: boolean; destructiveHint?: boolean; idempotentHint?: boolean };
   run: (
     args: Record<string, unknown>,
   ) => Record<string, unknown> | Promise<Record<string, unknown>>;
@@ -32,18 +36,45 @@ export interface Tool {
  * same object into dist/lint/mcp/tools.json, for the documentation.
  */
 export const toolList = (tools: Tool[]) => ({
-  tools: tools.map(({ name, title, description, inputSchema, outputSchema }) => ({
+  tools: tools.map(({ name, title, description, inputSchema, outputSchema, annotations }) => ({
     name,
     title,
     description,
     inputSchema,
     outputSchema,
-    annotations: { readOnlyHint: true, openWorldHint: false },
+    annotations: { readOnlyHint: true, openWorldHint: false, ...annotations },
   })),
 });
 
 /** A failure the tool explains to the agent: returned as a tool error, not a protocol one. */
 export class ToolError extends Error {}
+
+/**
+ * Where a result keeps its images: a symbol, not enumerable, so neither its JSON nor its
+ * structured content carries them.
+ */
+const IMAGES = Symbol('images');
+
+interface ImageContent {
+  type: 'image';
+  data: string;
+  mimeType: string;
+}
+
+/**
+ * A result with images: `tools/call` answers them as image content, after the text of the
+ * result (https://modelcontextprotocol.io/specification/2025-11-25/server/tools#image-content).
+ */
+export const withImages = <T extends Record<string, unknown>>(
+  result: T,
+  images: Array<{ data: string; mimeType: string }>,
+): T =>
+  Object.defineProperty(result, IMAGES, {
+    value: images.map((one): ImageContent => ({ type: 'image', ...one })),
+  });
+
+const imagesOf = (result: Record<string, unknown>): ImageContent[] =>
+  (result as { [IMAGES]?: ImageContent[] })[IMAGES] ?? [];
 
 interface Request {
   jsonrpc: '2.0';
@@ -107,7 +138,7 @@ export const createHandler =
         try {
           const result = await tool.run((params.arguments ?? {}) as Record<string, unknown>);
           return ok({
-            content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+            content: [{ type: 'text', text: JSON.stringify(result, null, 2) }, ...imagesOf(result)],
             structuredContent: result,
           });
         } catch (failure) {

@@ -676,6 +676,26 @@ describe('pattern', () => {
   });
 });
 
+// The trim of the typography (text-box) left the glyphs taller than the line the field scrolls,
+// so a drag that selected the text scrolled it up and down
+describe('the text of the field', () => {
+  it.each([
+    '<mds-input value="Maggioli Spa"></mds-input>',
+    '<mds-input size="md" value="Maggioli Spa"></mds-input>',
+    '<mds-input size="sm" value="Maggioli Spa"></mds-input>',
+    '<mds-input typography="snippet" value="Maggioli Spa"></mds-input>',
+    '<mds-input type="cf" value="MRCRSS83B21D704L"></mds-input>',
+  ])('does not scroll vertically in %s', async (html) => {
+    const { root } = await render(html);
+    const input = root.shadowRoot!.querySelector('input')!;
+
+    input.scrollTop = 10;
+
+    expect(input.scrollTop).toBe(0);
+    expect(input.scrollHeight).toBe(input.clientHeight);
+  });
+});
+
 // The event is named after keydown and typed KeyboardEvent: it carries the key (#822)
 describe('mdsInputKeydown', () => {
   it.each(['<mds-input></mds-input>', '<mds-input type="textarea"></mds-input>'])(

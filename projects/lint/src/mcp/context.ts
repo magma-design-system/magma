@@ -16,6 +16,8 @@ export interface ToolContext {
   settings: MagmaSettings;
   /** The folders of the icon sets, by set (mi, mdi, mgg): the installed packages when unset. */
   icons?: Partial<Record<'mi' | 'mdi' | 'mgg', string>>;
+  /** The lazy loader of the components render_preview loads: the one of the installed magma when unset. */
+  loader?: string;
 }
 
 const HERE = fileURLToPath(import.meta.url);
