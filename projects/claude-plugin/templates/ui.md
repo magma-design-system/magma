@@ -20,6 +20,8 @@ Magma answers from the version installed in this project: ask it instead of gues
 5. **Before saving.** `check_markup` on the template or the stylesheet you wrote; fix what it reports.
 6. **After writing.** Run the project's lint (ESLint and Stylelint with the Magma presets).
 
+When the person has to decide on an interface (a layout, where a message goes, which of two components), show it, never words alone: `render_preview` each option with the real components and texts, read its report and fix the markup until it is representative, then send the person the image files, which Claude Code does not show them by itself. Ask with each image, a name and one line, the recommended option first; let them flag an image, and keep an empty field for an answer of their own: render what you understood of it and act only once they confirm. The procedure: `get_guide` mcp, section "Show the person what you mean".
+
 When a rule is not clear, read the section you need with `get_guide` (conventions, color, typography, theming).
 
 When the tools do not give you what the task needs (you would read Magma's files by hand or guess, or an answer carries `gap`), tell the user, and at the end of the task propose an issue on Magma, one per missing capability: `get_guide` reporting, section "A tool or an answer the MCP server is missing". Open it only once the user agrees.
