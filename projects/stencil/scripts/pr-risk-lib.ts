@@ -184,7 +184,9 @@ const CSS = /^\S+ css \S+( \[static\])?( INTERNAL)?$/;
 const isInternalCss = (line: string) => CSS.exec(line)?.[2] !== undefined;
 const EVENT = /^\S+ event \S+: (.*?)(?: \[([^\]]*)\])?$/;
 const INTERFACE = /^interface \w+(?:<[^>]*>)?(?: extends (.*?))? \{ (.*) \}$/;
-const ALIAS = /^type \w+(?:<[^>]*>)? = (.*)$/;
+/* the snapshot keeps a type alias as its source writes it, with or without the closing `;`
+   (`type BookBindingType = 'paperback' | 'hardcover';`), which is not part of its last member */
+const ALIAS = /^type \w+(?:<[^>]*>)? = (.*?);?$/;
 
 /** The line that declares a type in the snapshot, by name: `Detail<T>` finds `Detail`. */
 type Declared = (type: string) => string | undefined;
