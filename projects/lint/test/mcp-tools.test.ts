@@ -442,6 +442,52 @@ describe('the pattern tool', () => {
     ]);
   });
 
+  test("without arguments it says what is wrong in the project's folder; a broken file breaks nothing", async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-layer-'));
+    const dir = path.join(root, 'magma/patterns');
+    mkdirSync(dir, { recursive: true });
+    const layer = (id: string, rest = '') =>
+      `---\nid: ${id}\nextends: magma:${id}\nlayer: backoffice\n${rest}---\n`;
+    writeFileSync(path.join(dir, 'confirm-action.md'), '---\nid: [\n---\n');
+    writeFileSync(
+      path.join(dir, 'consent-and-legal.md'),
+      '---\nid: consent-and-legal\nkind: pattern\ntitle: Ours\ngroup: input\nlayer: backoffice\nstatus: candidate\nneed: A need.\n---\n',
+    );
+    writeFileSync(path.join(dir, 'loading.md'), layer('loading'));
+    writeFileSync(
+      path.join(dir, 'message-placement.md'),
+      layer('message-placement', 'narrows:\n  success-toast-duration: 8000\n'),
+    );
+    writeFileSync(path.join(dir, 'placement-again.md'), layer('message-placement'));
+    writeFileSync(
+      path.join(dir, 'quick-export.md'),
+      '---\nid: quick-export\nkind: pattern\ntitle: Quick export\ngroup: data\nlayer: backoffice\nstatus: candidate\nneed: Export a list.\n---\n',
+    );
+    const tool = toolsOf({ ...context, root }).find((one) => one.name === 'get_pattern')!;
+
+    const list = (await tool.run({})) as Result;
+    expect(list.patterns.map((one: { id: string }) => one.id)).toContain('quick-export');
+    expect(list.layerErrors).toEqual([
+      expect.stringMatching(/^magma\/patterns\/confirm-action\.md: not read: /),
+      'magma/patterns/consent-and-legal.md: Magma has a pattern consent-and-legal: extend it (extends: magma:consent-and-legal)',
+      'magma/patterns/loading.md: Magma has no pattern loading',
+      'magma/patterns/placement-again.md: message-placement.md extends message-placement too: one layer per pattern',
+    ]);
+
+    // the first layer of a pattern holds, so it is applied; the broken file of another is named
+    const placement = (await tool.run({ id: 'message-placement' })) as Result;
+    expect(placement.pattern.layers).toEqual(['magma', 'backoffice']);
+    expect(placement.layerErrors).toBeUndefined();
+    const confirm = (await tool.run({ id: 'confirm-action' })) as Result;
+    expect(confirm.pattern.layers).toEqual(['magma']);
+    expect(confirm.layerErrors).toEqual([
+      expect.stringMatching(/^magma\/patterns\/confirm-action\.md: not read: /),
+    ]);
+    // a pattern of the project under an id Magma has never replaces Magma's
+    const consent = (await tool.run({ id: 'consent-and-legal' })) as Result;
+    expect(consent.pattern.title).not.toBe('Ours');
+  });
+
   test('the values of the variables give the case to follow', async () => {
     const placement = { about: 'action', outcome: 'failure', place: 'off-screen', timing: 'now' };
     expect(await run('get_pattern', { id: 'message-placement', situation: placement })).toEqual({

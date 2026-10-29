@@ -122,9 +122,16 @@ or on the guide it enforces, not only on fixtures picked by hand.
   words of the need (`wordsOf`, as `find_component`) against the keywords (3), the title (2),
   the need and the situations (1): the keywords are the words the author chose for that need. A
   product layer is read from `magma/patterns/` of the project, the folder decided on #1174,
-  and applied only when it holds to the rules of a layer (`layerErrors`); otherwise the answer
-  is the Magma default, with `layerErrors` saying why. A candidate is a gap: Magma knows the
-  need and has no default.
+  and applied only when it holds to the rules of a layer (`projectErrors`); otherwise the
+  answer is the Magma default, with `layerErrors` saying why. Without arguments the list
+  carries the `layerErrors` of the whole folder, so a product checks its layer where it has no
+  `check.patterns`. The files are read one by one, so a file that does not parse is named and
+  the others answer; of two layers of one pattern the first by file name is applied, as the
+  folder lists it; a pattern of the product under an id Magma has is reported and never
+  replaces Magma's, since Magma's id is the contract the products cite. A pattern of the
+  product's own is held to the format, the cases and the components, not to the lint rules
+  (its lint may have rules of its own) nor to the generated body (the generator does not
+  ship). A candidate is a gap: Magma knows the need and has no default.
 - **What a tool or a rule says about itself** (the documentation site reads it from the
   installed package, magma-design-system/docs#1): the same fields on both plugins, a
   description and the URL of its section of `agents/lint.md` (an ESLint rule in

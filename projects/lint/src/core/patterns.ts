@@ -268,6 +268,25 @@ export const coverage = (pattern: Pattern): Coverage => {
   return result;
 };
 
+/** The coverage as the check reports it: the combinations with no entry and the ones two cases hold for, five of each at most. */
+export const coverageErrors = ({ total, none, conflicts }: Coverage): string[] => {
+  const pairs = (combo: Record<string, string>) =>
+    Object.entries(combo)
+      .map(([name, value]) => `${name}=${value}`)
+      .join(' ');
+  const errors: string[] = [];
+  if (none.length)
+    errors.push(
+      `${none.length} of ${total} combinations have no case, gap or not-applicable entry, such as:\n${none
+        .slice(0, 5)
+        .map((combo) => `    ${pairs(combo)}`)
+        .join('\n')}`,
+    );
+  for (const { combo, cases } of conflicts.slice(0, 5))
+    errors.push(`two cases on one combination, ${cases.join(' and ')}: ${pairs(combo)}`);
+  return errors;
+};
+
 export interface Answer {
   /** The entries that may answer, given what is known: one when the situation is decided. */
   hits: Hit[];
@@ -689,6 +708,86 @@ export const resolveLayer = (base: Pattern, layer?: Layer): Resolved => {
       ...(layer.situations ?? []).map((one) => ({ ...one, layer: layer.layer })),
     ],
   };
+};
+
+/* ---- a product's folder ------------------------------------------------------------- */
+
+/**
+ * The files of a product's folder (magma/patterns/), its layers and its own patterns, read one
+ * by one: a file that does not parse is kept with why, so one broken file leaves the others
+ * readable.
+ */
+export const readProjectDir = (
+  dir: string,
+): { files: PatternFile<Layer | Pattern>[]; unreadable: Map<string, string> } => {
+  const files: PatternFile<Layer | Pattern>[] = [];
+  const unreadable = new Map<string, string>();
+  if (!existsSync(dir)) return { files, unreadable };
+  for (const name of readdirSync(dir)
+    .filter((one) => one.endsWith('.md'))
+    .sort()) {
+    const file = path.join(dir, name);
+    try {
+      files.push(parsePatternFile<Layer | Pattern>(readFileSync(file, 'utf8'), file));
+    } catch (error) {
+      // the first line of the message: the YAML parser adds the lines around the error
+      const [why] = (error as Error).message.replace(`${file}: `, '').split('\n');
+      unreadable.set(file, `not read: ${why!.replace(/:$/, '')}`);
+    }
+  }
+  return { files, unreadable };
+};
+
+/**
+ * What is wrong in a product's folder, by file. A layer: what layerErrors says, and one layer
+ * per pattern (the first file by name is the one applied). A pattern of the product's own: the
+ * format, the cases and the components as check.patterns holds Magma's, never an id Magma has,
+ * its links against Magma's patterns and the product's; not its lint rules (a product may name
+ * rules of its own, which Magma cannot see) nor its body (the generator of the sections does not
+ * ship).
+ */
+export const projectErrors = (
+  files: PatternFile<Layer | Pattern>[],
+  patterns: Pattern[],
+  components?: Map<string, ComponentInfo>,
+): Map<string, string[]> => {
+  const found = new Map<string, string[]>();
+  const add = (file: string, errors: string[]) => {
+    if (errors.length) found.set(file, [...(found.get(file) ?? []), ...errors]);
+  };
+  const { byId, aliases } = indexPatterns(patterns);
+  const extended = new Map<string, string>();
+  const own: PatternFile[] = [];
+  for (const file of files) {
+    if (isLayer(file.data)) {
+      const layer = file as PatternFile<Layer>;
+      const errors = layerErrors(layer, patterns);
+      const id = extendedId(layer.data);
+      const first = id && extended.get(id);
+      if (first) errors.push(`${path.basename(first)} extends ${id} too: one layer per pattern`);
+      else if (id) extended.set(id, file.file);
+      add(file.file, errors);
+      continue;
+    }
+    const pattern = file as PatternFile;
+    const { data } = pattern;
+    const errors = formatErrors(pattern);
+    const magmaId = byId.has(data.id) ? data.id : aliases.get(data.id);
+    if (magmaId)
+      errors.push(`Magma has a pattern ${data.id}: extend it (extends: magma:${magmaId})`);
+    if (data.layer === MAGMA_LAYER) errors.push('layer is the name of the product');
+    if (!errors.length) {
+      own.push(pattern);
+      if (data.status !== 'candidate') {
+        errors.push(...coverageErrors(coverage(data)));
+        if (components) errors.push(...componentErrors(data, components));
+      }
+    }
+    add(file.file, errors);
+  }
+  const links = linkErrors([...patterns, ...own.map((one) => one.data)]);
+  for (const one of own) add(one.file, links.get(one.data.id) ?? []);
+  return found;
 };
 
 /* ---- the list ----------------------------------------------------------------------- */

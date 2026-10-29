@@ -145,7 +145,8 @@ Ask the user only what detection left undecided. Typical questions:
    the \`magma-mcp\` command, started with \`npx --no magma-mcp\` (never without \`--no\`, which
    would let npx install a package of that name from the registry). For Claude Code, register
    the Magma plugin in the project's \`.claude/settings.json\` instead: it starts the server and
-   adds the Magma skills (\`/magma:setup\`, \`/magma:review\`, \`/magma:migrate\`). For the other
+   adds the Magma skills (\`/magma:setup\`, \`/magma:review\`, \`/magma:migrate\`,
+   \`/magma:pattern-layer\`). For the other
    clients MERGE the entry into \`.vscode/mcp.json\` or \`.cursor/mcp.json\`; never both the
    plugin and an \`.mcp.json\` entry, or the server runs twice. Then call its \`check_setup\`
    tool: it lists what the integration still misses.
@@ -276,10 +277,56 @@ function buildPatternsMd(): string {
 > file in \`agents/patterns/\`, or ask the MCP server: \`get_pattern\` with the values of the
 > variables you know gives the case to follow. Its "Always true" rules hold in every product.
 > A product may keep a layer in its own repository, \`magma/patterns/<id>.md\`, that narrows the
-> open choices and adds situations; \`get_pattern\` applies it. A candidate is a need Magma knows
+> open choices and adds situations (A product's layer, below); \`get_pattern\` applies it. A candidate is a need Magma knows
 > and has not defined yet: no default covers it, so say which choice you made and why.
 
-${renderPatternCatalogue(entries, PATTERN_GROUPS)}`;
+${renderPatternCatalogue(entries, PATTERN_GROUPS)}
+## A product's layer
+
+A product adapts a pattern in its own repository, one file per pattern, named after it:
+\`magma/patterns/<id>.md\` under the project's root. The layer fixes the open choices the pattern
+leaves to the products, within what each one \`may\`, and maps the situations of the product's
+domain to the cases of the pattern. It never changes an "Always true" rule nor a case: a product
+that needs one changed asks Magma for it (\`reporting.md\`).
+
+\`\`\`markdown
+---
+id: message-placement
+extends: magma:message-placement
+layer: example-backoffice
+narrows:
+  success-toast-duration: 8000
+situations:
+  - situation: A protocol number is assigned to a filed document
+    case: action-done-elsewhere
+    note: the toast carries Copy, so it stays (toast-action-stays)
+---
+
+# Where a message goes, in Example Backoffice
+
+## Why
+
+The operators read slowly between two phone calls: 8 seconds instead of 5. (2026-10-29)
+\`\`\`
+
+| Field | What it holds |
+| ----- | ------------- |
+| \`id\` | The id of the Magma pattern, the name of the file. |
+| \`extends\` | \`magma:<id>\`. |
+| \`layer\` | The name of the product, never \`magma\`. |
+| \`narrows\` | \`<open choice>: <value>\`, only for the open choices of the pattern. |
+| \`situations\` | \`{ situation, case, note }\`, with a case of the pattern or a list of them; or \`{ situation, use: <pattern> }\` when another pattern answers it. |
+
+The body is free: why each choice was made, with its date, for whoever changes it next.
+\`get_pattern\` without arguments lists in \`layerErrors\` what is wrong in the folder; with the
+id it returns the pattern with the layer applied (\`narrowed-by\` on each choice it fixes, \`layer\`
+on each situation it adds). A layer with an error is not applied: the answer stays Magma's
+default until it is fixed. A need no Magma pattern covers, which the product cannot wait for,
+may get a pattern of its own in the same folder, in the shape of Magma's files (its own
+\`layer\`, no \`extends\`, never an id Magma has); a pattern that comes back in two or three
+products is proposed to Magma. In Claude Code, the Magma plugin writes and checks a layer with
+\`/magma:pattern-layer\`.
+`;
 }
 
 function ensureDir(dir: string): void {

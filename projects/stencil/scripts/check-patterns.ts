@@ -13,8 +13,10 @@
  * - the links: every pattern, case and rule cited exists, and no reference uses an old id;
  * - the body: its sections in the order of the template, the generated ones up to date.
  *
- * With `--layer <dir>` it checks a product layer too (magma/patterns/ of a product): a layer may
- * narrow the open choices and add situations, never narrow an "Always true" rule.
+ * With `--layer <dir>` it checks a product's folder too (magma/patterns/ of a product), as
+ * get_pattern does without arguments (projectErrors of the core): a layer may narrow the open
+ * choices and add situations, never narrow an "Always true" rule; a pattern of the product's own
+ * holds to the format, the cases and the components as Magma's do.
  *
  * The logic is in the lint core (projects/lint/src/core/patterns.ts); the format is written in
  * docs/PATTERNS.md. Needs the build (dist/documentation.json).
@@ -29,13 +31,12 @@ import {
   bodyErrors,
   componentErrors,
   coverage,
+  coverageErrors,
   formatErrors,
-  isLayer,
-  layerErrors,
   lintErrors,
   linkErrors,
-  readPatternDir,
-  type Layer,
+  projectErrors,
+  readProjectDir,
   type PatternFile,
 } from '../../lint/src/core/patterns';
 import { rules as eslintRules } from '../../lint/src/eslint/index';
@@ -58,17 +59,6 @@ const found = new Map<string, string[]>();
 const report = (file: string, errors: string[]) => {
   if (errors.length) found.set(file, [...(found.get(file) ?? []), ...errors]);
 };
-const sample = (combos: Record<string, string>[]) =>
-  combos
-    .slice(0, 5)
-    .map(
-      (combo) =>
-        `    ${Object.entries(combo)
-          .map(([name, value]) => `${name}=${value}`)
-          .join(' ')}`,
-    )
-    .join('\n');
-
 let files: PatternFile[] = [];
 try {
   files = readPatterns();
@@ -84,18 +74,9 @@ for (const file of files) {
   if (data.layer !== MAGMA_LAYER)
     errors.push(`layer is ${MAGMA_LAYER}: a product layer lives in its product`);
   if (!errors.length && data.status !== 'candidate') {
-    const { total, none, conflicts } = coverage(data);
-    combinations += total;
-    if (none.length)
-      errors.push(
-        `${none.length} of ${total} combinations have no case, gap or not-applicable entry, such as:\n${sample(none)}`,
-      );
-    for (const { combo, cases } of conflicts.slice(0, 5))
-      errors.push(
-        `two cases on one combination, ${cases.join(' and ')}: ${Object.entries(combo)
-          .map(([name, value]) => `${name}=${value}`)
-          .join(' ')}`,
-      );
+    const covered = coverage(data);
+    combinations += covered.total;
+    errors.push(...coverageErrors(covered));
     errors.push(...componentErrors(data, components), ...lintErrors(data, lintRules));
     errors.push(...bodyErrors(data, file.body, patterns));
   }
@@ -107,20 +88,10 @@ for (const [id, errors] of linkErrors(patterns))
 const layerArg = process.argv.indexOf('--layer');
 if (layerArg > -1) {
   const dir = resolve(process.argv[layerArg + 1] ?? '');
-  const ids = new Set(patterns.flatMap((one) => [one.id, ...(one.aliases ?? [])]));
-  for (const file of readPatternDir<Layer>(dir)) {
-    if (isLayer(file.data)) report(file.file, layerErrors(file, patterns));
-    else {
-      const own = file as unknown as PatternFile;
-      const errors = formatErrors(own);
-      if (ids.has(own.data.id))
-        errors.push(
-          `Magma has a pattern ${own.data.id}: extend it (extends: magma:${own.data.id})`,
-        );
-      if (own.data.layer === MAGMA_LAYER) errors.push('layer is the name of the product');
-      report(file.file, errors);
-    }
-  }
+  const { files: layerFiles, unreadable } = readProjectDir(dir);
+  for (const [file, error] of unreadable) report(file, [error]);
+  for (const [file, errors] of projectErrors(layerFiles, patterns, components))
+    report(file, errors);
 }
 
 if (found.size) {

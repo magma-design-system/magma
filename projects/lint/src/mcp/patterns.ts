@@ -7,17 +7,17 @@
   narrows the open choices and adds situations; it never changes an "Always true" rule.
 */
 import path from 'node:path';
-import { magmaRoot } from '../core/data.js';
+import { loadComponents, magmaRoot } from '../core/data.js';
 import {
   MAGMA_LAYER,
   answer,
   extendedId,
-  formatErrors,
   indexPatterns,
   isLayer,
-  layerErrors,
   listPatterns,
+  projectErrors,
   readPatternDir,
+  readProjectDir,
   resolveLayer,
   splitBody,
   type Layer,
@@ -32,21 +32,43 @@ export const PRODUCT_LAYER_DIR = 'magma/patterns';
 
 interface Read {
   patterns: PatternFile[];
-  /** The layer files of the project, by the Magma id they extend. */
+  /** The layer files of the project, by the Magma id they extend: the first file by name. */
   layers: Map<string, PatternFile<Layer>>;
-  /** The product's own patterns. */
+  /** The product's own patterns, but for one under an id Magma has. */
   own: PatternFile[];
+  /** What is wrong in the project's folder, by file, a file that does not parse among them. */
+  problems: Map<string, string[]>;
 }
 
 const read = (context: ToolContext): Read => {
   const patterns = readPatternDir(path.join(magmaRoot(context.settings), 'agents', 'patterns'));
+  const { byId, aliases } = indexPatterns(patterns.map((one) => one.data));
+  const { files, unreadable } = readProjectDir(path.join(context.root, PRODUCT_LAYER_DIR));
   const layers = new Map<string, PatternFile<Layer>>();
   const own: PatternFile[] = [];
-  for (const file of readPatternDir<Layer>(path.join(context.root, PRODUCT_LAYER_DIR))) {
-    if (isLayer(file.data)) layers.set(extendedId(file.data) ?? file.data.id, file);
-    else own.push(file as unknown as PatternFile);
+  for (const file of files) {
+    if (isLayer(file.data)) {
+      const id = extendedId(file.data) ?? file.data.id;
+      if (!layers.has(id)) layers.set(id, file as PatternFile<Layer>);
+    } else if (!byId.has(file.data.id) && !aliases.has(file.data.id)) own.push(file as PatternFile);
   }
-  return { patterns, layers, own };
+  const problems = files.length
+    ? projectErrors(
+        files,
+        patterns.map((one) => one.data),
+        loadComponents(context.settings),
+      )
+    : new Map<string, string[]>();
+  for (const [file, error] of unreadable) problems.set(file, [error]);
+  return { patterns, layers, own, problems };
+};
+
+/** The problems of the project's files, each with the file it is in. */
+const problemsIn = (context: ToolContext, problems: Map<string, string[]>, files: string[]) => {
+  const found = files.flatMap((file) =>
+    (problems.get(file) ?? []).map((one) => `${path.relative(context.root, file)}: ${one}`),
+  );
+  return found.length ? { layerErrors: found } : {};
 };
 
 /** The words of a pattern a need is matched against, by weight. */
@@ -75,7 +97,7 @@ export const getPattern = (context: ToolContext): Tool => ({
   name: 'get_pattern',
   title: 'Read a Magma pattern',
   description:
-    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product. Without arguments the list; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow, or which variables are still to settle; with id and section the text of that section. Ask before building a flow, and follow the case it gives.',
+    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product. Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow, or which variables are still to settle; with id and section the text of that section. Ask before building a flow, and follow the case it gives.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -136,7 +158,7 @@ export const getPattern = (context: ToolContext): Tool => ({
     },
   },
   run: ({ id, need, situation, section }) => {
-    const { patterns, layers, own } = read(context);
+    const { patterns, layers, own, problems } = read(context);
     if (!patterns.length)
       throw new ToolError('This magma ships no patterns (agents/patterns/): update it.');
     const all = [...patterns, ...own].map((one) => one.data);
@@ -159,7 +181,10 @@ export const getPattern = (context: ToolContext): Tool => ({
           ...(found.some((one) => one.status !== 'candidate') ? {} : { gap: GAP }),
         };
       }
-      return { patterns: listPatterns(all) };
+      return {
+        patterns: listPatterns(all),
+        ...problemsIn(context, problems, [...problems.keys()].sort()),
+      };
     }
 
     const { byId, aliases } = indexPatterns(all);
@@ -185,24 +210,18 @@ export const getPattern = (context: ToolContext): Tool => ({
         gap: CANDIDATE,
       };
 
-    // the layer of this project, applied only when it holds to the rules of a layer
+    // the layer of this project, applied only when it holds to the rules of a layer; without
+    // one, the file named after the pattern may be a layer that does not parse
     const layerFile = base.layer === MAGMA_LAYER ? layers.get(base.id) : undefined;
-    const errors = layerFile
-      ? layerErrors(
-          layerFile,
-          patterns.map((one) => one.data),
-        )
-      : base.layer === MAGMA_LAYER
-        ? []
-        : formatErrors(file);
-    const resolved = resolveLayer(base, layerFile && !errors.length ? layerFile.data : undefined);
-    const problems = errors.length
-      ? {
-          layerErrors: errors.map(
-            (one) => `${path.relative(context.root, (layerFile ?? file).file)}: ${one}`,
-          ),
-        }
-      : {};
+    const projectFile =
+      base.layer === MAGMA_LAYER
+        ? (layerFile?.file ?? path.join(context.root, PRODUCT_LAYER_DIR, `${base.id}.md`))
+        : file.file;
+    const resolved = resolveLayer(
+      base,
+      layerFile && !problems.has(layerFile.file) ? layerFile.data : undefined,
+    );
+    const mine = problemsIn(context, problems, [projectFile]);
 
     if (typeof section === 'string' && section.trim()) {
       const { sections } = splitBody(file.body);
@@ -241,19 +260,19 @@ export const getPattern = (context: ToolContext): Tool => ({
         return {
           id: base.id,
           ...renamed,
-          ...problems,
+          ...mine,
           answer: hit,
           ...(hit!.kind === 'gap' ? { gap: GAP } : {}),
         };
       }
-      return { id: base.id, ...renamed, ...problems, candidates: hits, missing };
+      return { id: base.id, ...renamed, ...mine, candidates: hits, missing };
     }
 
     const { sections } = splitBody(file.body);
     return {
       pattern: { ...resolved, sections: sections.map((one) => one.heading) },
       ...renamed,
-      ...problems,
+      ...mine,
     };
   },
 });

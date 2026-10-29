@@ -1,7 +1,8 @@
 // The patterns core (#1174): the format, the coverage of the cases, the links, the layers, the
 // answer for a situation and the generated body, on the patterns Magma ships and on small ones
 // written here to break one rule each.
-import { readFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
@@ -18,7 +19,9 @@ import {
   listPatterns,
   parsePatternFile,
   parseUse,
+  projectErrors,
   readPatternDir,
+  readProjectDir,
   resolveLayer,
   syncBody,
   type Layer,
@@ -367,6 +370,77 @@ describe('a product layer', () => {
     expect(layerErrors({ ...layer, data: candidate }, sources)).toContain(
       'notification-center is a candidate: there is nothing to narrow yet',
     );
+  });
+});
+
+describe("a product's folder", () => {
+  const sources = readPatternDir(SOURCES).map((one) => one.data);
+  const layer = parsePatternFile<Layer>(readFileSync(LAYER, 'utf8'), LAYER);
+  const components = loadComponents({ documentation: data.documentation });
+  const own = (over: Partial<Pattern> = {}): PatternFile =>
+    file(small({ id: 'own-small', layer: 'example-backoffice', ...over }));
+
+  test('a file that does not parse is kept with why, the others read', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-patterns-'));
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(path.join(dir, 'broken.md'), '---\nid: [\n---\n');
+    writeFileSync(path.join(dir, 'plain.md'), 'no frontmatter\n');
+    writeFileSync(path.join(dir, 'message-placement.md'), readFileSync(LAYER, 'utf8'));
+    const { files, unreadable } = readProjectDir(dir);
+    expect(files.map((one) => one.data.id)).toEqual(['message-placement']);
+    expect([...unreadable.keys()].map((one) => path.basename(one))).toEqual([
+      'broken.md',
+      'plain.md',
+    ]);
+    expect(unreadable.get(path.join(dir, 'plain.md'))).toBe(
+      'not read: no frontmatter between two --- lines at the top',
+    );
+    expect(readProjectDir(path.join(dir, 'missing'))).toEqual({
+      files: [],
+      unreadable: new Map(),
+    });
+  });
+
+  test('a good layer and a good pattern of its own say nothing', () => {
+    const files = [layer, own({ components: [] })];
+    expect(projectErrors(files, sources, components)).toEqual(new Map());
+  });
+
+  test('one layer per pattern: the second file is the wrong one', () => {
+    const again = { ...layer, file: '/p/magma/patterns/placement-again.md' };
+    expect(projectErrors([layer, again], sources)).toEqual(
+      new Map([
+        [again.file, ['message-placement.md extends message-placement too: one layer per pattern']],
+      ]),
+    );
+  });
+
+  test('a pattern of its own holds to the format, the cases, the components and the links', () => {
+    const bad = own({
+      components: ['mds-banner'],
+      cases: [
+        {
+          id: 'on-field',
+          about: 'field',
+          where: 'under the field',
+          use: ['mds-banner loudness=high'],
+        },
+        { id: 'ask', about: 'action', decision: 'needed', where: 'a dialog', see: 'nowhere' },
+      ],
+    });
+    expect(projectErrors([bad], sources, components).get(bad.file)).toEqual([
+      '1 of 4 combinations have no case, gap or not-applicable entry, such as:\n    about=action decision=none',
+      'case on-field: mds-banner has no attribute loudness',
+      'case ask: see: no pattern nowhere',
+    ]);
+  });
+
+  test('never under an id Magma has, nor in the layer of Magma', () => {
+    const taken = own({ id: 'message-placement', layer: 'magma' });
+    expect(projectErrors([taken], sources).get(taken.file)).toEqual([
+      'Magma has a pattern message-placement: extend it (extends: magma:message-placement)',
+      'layer is the name of the product',
+    ]);
   });
 });
 

@@ -20,8 +20,9 @@ the file.
 ### Claude Code: the Magma plugin
 
 In Claude Code, the Magma plugin starts the server for you and adds the skills that run a
-whole job: `/magma:setup`, `/magma:review`, `/magma:migrate`, and `ui`, which Claude loads by
-itself for UI work. Register it for the whole team in the project's committed
+whole job: `/magma:setup`, `/magma:review`, `/magma:migrate`, `/magma:pattern-layer` (the
+layer of a pattern for the product, [`patterns.md`](patterns.md)), and `ui`, which Claude loads
+by itself for UI work. Register it for the whole team in the project's committed
 `.claude/settings.json`; Claude Code loads it once the folder is trusted, in the terminal and
 in the desktop app, which reads the same settings:
 

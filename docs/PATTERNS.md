@@ -88,8 +88,19 @@ choices) and `situations` of its domain, mapped to the cases of the Magma patter
 not narrow an "Always true" rule, nor a choice the pattern does not leave open, nor replace a
 case: `get_pattern` applies a layer that holds to these rules and reports the one that does
 not. A product may also write a pattern of its own (no `extends`, its own `layer`), never
-under an id Magma has. `nx run stencil:check.patterns -- --layer <folder>` checks a layer.
-A pattern that comes back in the layers of two or three products is proposed for the default.
+under an id Magma has; it holds to the format, the cases and the components as Magma's do, not
+to the lint rules (a product may name rules of its own) nor to the generated body (the
+generator does not ship). A pattern that comes back in the layers of two or three products is
+proposed for the default.
+
+The products learn the format from the section "A product's layer" of the shipped catalogue
+(`agents/patterns.md`, written by `sync-agent-docs.ts`), and write a layer with the plugin
+skill `/magma:pattern-layer`. They check it with `get_pattern` without arguments, whose
+`layerErrors` lists what is wrong in their folder (`projectErrors` of the core): a file that
+does not parse is named and leaves the others readable; of two layers of one pattern, the first
+file by name is applied and the second reported; a pattern of the product under an id Magma has
+never replaces Magma's. Here, `nx run stencil:check.patterns -- --layer <folder>` runs the same
+check on a product's folder.
 
 ## The commands
 
