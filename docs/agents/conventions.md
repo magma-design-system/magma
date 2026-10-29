@@ -4,7 +4,7 @@
 > slots, compound components, icons, accessibility, styling from outside. Apply them
 > once; do not re-derive them per component. The `variant` / `tone` axes have their own
 > file: [`variants.md`](variants.md). Mistakes that apply to every component:
-> [`anti-patterns.md`](anti-patterns.md).
+> [`mistakes.md`](mistakes.md).
 >
 > For one component's API (props with their allowed values, events, methods, slots,
 > parts, CSS custom properties) read its own `AGENTS.md`, listed in

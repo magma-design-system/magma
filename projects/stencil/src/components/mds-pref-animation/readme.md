@@ -26,9 +26,9 @@ The `<mds-pref-animation>` web component is a preference control that lets users
 - **`size`**: Sizes the nested tab items (`sm` or `md`). Inside `<mds-pref>`, set it on the parent instead: the parent's `size` reaches every `mds-pref-*` child on load and when it changes, and overwrites the child's own.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-pref-animation>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-pref-animation>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Default Usage Inside `mds-pref`
 
@@ -107,9 +107,9 @@ When a `<mds-pref controller>` element is placed in the DOM, it applies preferen
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-pref-animation>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-pref-animation>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Turn Off with `mode="false"` or Remove the Attribute to Reset
 

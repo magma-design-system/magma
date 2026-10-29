@@ -19,7 +19,7 @@ Every published entry point is tree-shakeable except the lazy loader, which regi
 | `magma`         | `.`                                                               | lazy runtime + `IconsSetService`, `NavigationService` (no components)                              | n/a                               |
 | `magma`         | `/services`                                                       | `IconsSetService`, `NavigationService`                                                             | n/a                               |
 | `magma`         | `/AGENTS.md`, `/agents/*`                                         | the agent docs (install guide, `docs/agents/` fragments)                                           | n/a                               |
-| `magma`         | `/dist/documentation.json`, `/dist/collection/components/<tag>/*` | the docs JSON, and per component `AGENTS.md`, `pattern.md`, `antipattern.md`, `documentation.json` | n/a                               |
+| `magma`         | `/dist/documentation.json`, `/dist/collection/components/<tag>/*` | the docs JSON, and per component `AGENTS.md`, `examples.md`, `mistakes.md`, `documentation.json` | n/a                               |
 | `magma-react`   | `.`                                                               | barrel of `Mds*` React wrappers                                                                    | ✅                                |
 | `magma-react`   | `/mds-button.js`                                                  | one wrapper per file                                                                               | ✅                                |
 | `magma-react`   | `/mds-button.server.js`, `/components.server.js`                  | SSR wrappers, one per file or all at once                                                          | server only                       |
@@ -207,8 +207,8 @@ Every component documents its **semantic intent** in a `usage/` folder containin
 src/components/mds-component-name/
 └── usage/
     ├── 1. Description.md   ← purpose, semantic behaviour, prop intent
-    ├── 2. Pattern.md       ← numbered list of correct usage patterns with code examples
-    └── 3. Antipattern.md   ← numbered list of incorrect uses with INCORRECT/CORRECT pairs
+    ├── 2. Examples.md      ← numbered list of correct uses, each with its code
+    └── 3. Mistakes.md      ← numbered list of incorrect uses with INCORRECT/CORRECT pairs
 ```
 
 The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of sections in the auto-generated `readme.md` — Stencil sorts usage files alphabetically by filename, and the headings it emits (`### 1. Description`, etc.) double as a deterministic table of contents.
@@ -218,18 +218,18 @@ The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of section
 | File                | Owns                                                                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | `1. Description.md` | One-sentence purpose, runtime/semantic behaviour, the **intent** of each prop's values (when to pick `tone="strong"` vs `weak`) |
-| `2. Pattern.md`     | 5-12 numbered patterns showing correct, idiomatic use. Each has a "use this when…" line and one code block                      |
-| `3. Antipattern.md` | 3-8 numbered anti-patterns. Each pairs an INCORRECT example with the CORRECT alternative and a one-line "why"                   |
+| `2. Examples.md`    | 5-12 numbered examples showing correct, idiomatic use. Each has a "use this when…" line and one code block                      |
+| `3. Mistakes.md`    | 3-8 numbered mistakes. Each pairs an INCORRECT example with the CORRECT alternative and a one-line "why"                       |
 
 ### What `usage/` must NOT contain
 
 - The full props table - it is auto-generated into `readme.md` from JSDoc
 - The list of allowed string values for a prop - that lives in the typed dictionaries (`src/type/*.ts`, or the component's `meta/`)
-- Rules that apply to every component - those live in [`docs/agents/`](../../docs/agents/) (`conventions.md`, `variants.md`, `anti-patterns.md`): link them instead of restating them
+- Rules that apply to every component - those live in [`docs/agents/`](../../docs/agents/) (`conventions.md`, `variants.md`, `mistakes.md`): link them instead of restating them
 
 ### Auto-generation flow
 
-`usage/*.md` files are bundled by the Stencil build into `dist/documentation.json` and then injected into `readme.md`; after the build, `scripts/component-docs.ts` writes the shipped per-component docs (`AGENTS.md`, `pattern.md`, `antipattern.md`, `documentation.json`) into `dist/collection/components/<tag>/`. As a consequence:
+`usage/*.md` files are bundled by the Stencil build into `dist/documentation.json` and then injected into `readme.md`; after the build, `scripts/component-docs.ts` writes the shipped per-component docs (`AGENTS.md`, `examples.md`, `mistakes.md`, `documentation.json`) into `dist/collection/components/<tag>/`. As a consequence:
 
 - **Do not edit `readme.md` or a generated file by hand** - they are regenerated on every build
 - **`dist/documentation.json`** is a structured JSON mirror of the same content plus full prop type metadata and cross-references. It is **gitignored** and only exists after a local build - do not assume it is present in a fresh clone or on GitHub
@@ -237,11 +237,11 @@ The `1. ` / `2. ` / `3. ` numeric prefixes exist to control the order of section
 
 ### Checked in CI
 
-`scripts/check-usage-docs.ts` (`npm run check.usage-docs`, after a build) checks every usage doc against the built API and the token layer, outside the INCORRECT half of the antipattern examples, which is wrong on purpose: every `mds-*` tag, attribute, enumerated value, slot, documented part, event, `--mds-*` property, token and icon slug must exist, and every `--mds-*` property must be public (an internal one, documented or not, is `internal-css-var`); no palette step (`--tone-*`, `--variant-*`, `--status-*`) where a semantic role belongs ([`docs/agents/color.md`](../../docs/agents/color.md)), no raw `--radius-*`, no `="false"` boolean, no self-closed `<mds-* />` (HTML leaves it open), no `>>>`, `dark:` or preference media query, a language on every fence, no emoji. It also fails on a component member that ships without a description: every prop, event, method, slot, part and `@prop` custom property needs one, since its JSDoc is its only line in the readme and in the shipped `AGENTS.md`. Stencil lists a part that `render()` sets even without an `@part`, with an empty description, and reads `@part` and `@slot` only from the JSDoc right above `@Component`: a plain `/*` comment, or a block above another declaration, never reaches the docs. It runs in CI on every stencil build; the pure checks are tested in `scripts/usage-docs-lib.spec.ts`.
+`scripts/check-usage-docs.ts` (`npm run check.usage-docs`, after a build) checks every usage doc against the built API and the token layer, outside the INCORRECT half of the examples of a mistake, which is wrong on purpose: every `mds-*` tag, attribute, enumerated value, slot, documented part, event, `--mds-*` property, token and icon slug must exist, and every `--mds-*` property must be public (an internal one, documented or not, is `internal-css-var`); no palette step (`--tone-*`, `--variant-*`, `--status-*`) where a semantic role belongs ([`docs/agents/color.md`](../../docs/agents/color.md)), no raw `--radius-*`, no `="false"` boolean, no self-closed `<mds-* />` (HTML leaves it open), no `>>>`, `dark:` or preference media query, a language on every fence, no emoji. It also fails on a component member that ships without a description: every prop, event, method, slot, part and `@prop` custom property needs one, since its JSDoc is its only line in the readme and in the shipped `AGENTS.md`. Stencil lists a part that `render()` sets even without an `@part`, with an empty description, and reads `@part` and `@slot` only from the JSDoc right above `@Component`: a plain `/*` comment, or a block above another declaration, never reaches the docs. It runs in CI on every stencil build; the pure checks are tested in `scripts/usage-docs-lib.spec.ts`.
 
 ### Storybook
 
-The three files are also the component's **Docs page** in Storybook. `.storybook/usage-docs.jsx` replaces the autodocs template (`parameters.docs.page` in `.storybook/preview.jsx`) with the default blocks around the usage docs: title and subtitle, `1. Description.md` as the **Description** section, the primary story with its Controls table, then **Pattern** (`2. Pattern.md`) and **Antipattern** (`3. Antipattern.md`). The files are read at runtime through a Vite glob (`?raw`), so editing a `.md` updates the open page without a build; a table of contents (`parameters.docs.toc`) lists the sections and their headings. On the way the `####` headings of the files are shifted right below their section heading, and the repository-relative links (`docs/COMPONENTS.md`, `SPEC.md`, a sibling component) are pointed at GitHub, `main` branch. Code blocks are left untouched. The transforms live in `.storybook/usage-markdown.ts`, with their spec in `src/storybook/test/`.
+The three files are also the component's **Docs page** in Storybook. `.storybook/usage-docs.jsx` replaces the autodocs template (`parameters.docs.page` in `.storybook/preview.jsx`) with the default blocks around the usage docs: title and subtitle, `1. Description.md` as the **Description** section, the primary story with its Controls table, then **Examples** (`2. Examples.md`) and **Mistakes** (`3. Mistakes.md`). The files are read at runtime through a Vite glob (`?raw`), so editing a `.md` updates the open page without a build; a table of contents (`parameters.docs.toc`) lists the sections and their headings. On the way the `####` headings of the files are shifted right below their section heading, and the repository-relative links (`docs/COMPONENTS.md`, `SPEC.md`, a sibling component) are pointed at GitHub, `main` branch. Code blocks are left untouched. The transforms live in `.storybook/usage-markdown.ts`, with their spec in `src/storybook/test/`.
 
 A component without a stories file (a part of a compound component, e.g. `mds-table-cell`) has no autodocs page: it gets a `test/<name>.mdx` of a few lines that imports its three files and renders them with `UsageDocs`, under the title of its compound (`UI / Data / Table / Cell`, see [Where a page sits in Storybook](#tests)). Copy one of them when adding such a component. The stories file of a use case (`mds-tree-apk.stories.tsx`) keeps the default autodocs page: only the file named after its component folder, or after a prefix of it (`mds-input-tip-item/test/mds-input-tip.stories.tsx`), carries the usage docs.
 
@@ -269,7 +269,7 @@ src/components/mds-component-name/
 ├── mds-component-name.css    ← component styles
 ├── css/                      ← split CSS files (variants, sizes, etc.)
 ├── meta/                     ← component-specific types, dictionaries, locales
-├── usage/                    ← 1. Description.md, 2. Pattern.md, 3. Antipattern.md (canonical docs)
+├── usage/                    ← 1. Description.md, 2. Examples.md, 3. Mistakes.md (canonical docs)
 └── test/
     ├── mds-component-name.e2e.ts
     └── mds-component-name.stories.tsx

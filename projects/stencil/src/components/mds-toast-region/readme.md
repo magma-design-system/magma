@@ -27,9 +27,9 @@ The `<mds-toast-region>` web component is the place where an application shows i
 - **`max`** is how many toasts may be visible at once before the oldest one with a timer leaves to make room; keep it small, a column of toasts covers the page.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-toast-region>` component, ordered from most common to most specialized. The toasts follow the patterns of `<mds-toast>`; the shared component rules live in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-toast-region>` component, ordered from most common to most specialized. The toasts follow the examples of `<mds-toast>`; the shared component rules live in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### One Region in the Application Shell
 
@@ -112,9 +112,9 @@ mds-toast-region {
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-toast-region>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-toast-region>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Place a Region in Every Page or Component
 

@@ -30,9 +30,9 @@ The `<mds-quote>` web component is the Magma Design System primitive for renderi
 `<mds-quote>` is a purely presentational component: it has no `variant` / `tone` ladder, no state props, no events, and no form association. The shared system rules live in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-quote>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-quote>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Quote with Attribution
 
@@ -133,9 +133,9 @@ Place `<mds-quote>` inside [`mds-card-content`](../../mds-card-content) to embed
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-quote>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-quote>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Replace `<mds-quote>` with a Raw `<blockquote>`
 

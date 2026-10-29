@@ -112,11 +112,11 @@ describe('renderUsageMarkdown', () => {
   });
 
   it('names the section after the heading of its usage file', () => {
-    expect(renderUsageMarkdown({ tag: 'mds-button', section: 'pattern', content: 'x' })).toBe(
-      '## Pattern\n\nx\n',
+    expect(renderUsageMarkdown({ tag: 'mds-button', section: 'examples', content: 'x' })).toBe(
+      '## Examples\n\nx\n',
     );
-    expect(renderUsageMarkdown({ tag: 'mds-button', section: 'antipattern', content: 'x' })).toBe(
-      '## Antipattern\n\nx\n',
+    expect(renderUsageMarkdown({ tag: 'mds-button', section: 'mistakes', content: 'x' })).toBe(
+      '## Mistakes\n\nx\n',
     );
   });
 

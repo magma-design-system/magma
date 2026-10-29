@@ -47,7 +47,7 @@ Allowed values depend on the component but draw from these families:
 | `success`    | Status   | Successful operations, positive confirmation                                |
 | `warning`    | Status   | Caution, non-blocking issues that require attention                         |
 | `info`       | Status   | Neutral informational content or guidance                                   |
-| `dark`       | Neutral  | Neutral chrome. Painted with roles that follow the mode, so it is not "for light backgrounds": check the component's `pattern.md` for how it renders |
+| `dark`       | Neutral  | Neutral chrome. Painted with roles that follow the mode, so it is not "for light backgrounds": check the component's `examples.md` for how it renders |
 | `light`      | Neutral  | The other half of the neutral pair, same caveat as `dark`                   |
 | `amaranth`   | Label    | Decorative amaranth label for tags, categories, or visual grouping          |
 | `red`        | Label    | Decorative red label for tags, categories, or visual grouping               |

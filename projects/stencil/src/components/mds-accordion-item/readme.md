@@ -27,9 +27,9 @@ The `<mds-accordion-item>` web component is a single collapsible panel of the Ma
 - **`typography`** picks the title style applied to the header label, defaulting to `h5`. Choose a heavier heading level (`h1`-`h4`) for more prominent section headers or `action` for a compact, control-like header; match it to the document's heading hierarchy. The header is rendered inside a `<button>`, whose content is presentational, so the level is visual: assistive technology does not announce it as a heading.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-accordion-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-accordion-item>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Accordion
 
@@ -176,9 +176,9 @@ mds-accordion {
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-accordion-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-accordion-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use `mds-accordion-item` Outside `mds-accordion`
 

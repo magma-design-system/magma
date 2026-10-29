@@ -38,7 +38,7 @@ describe('fileTier', () => {
     ['projects/identity/resources/logo.svg', 'visual'],
     ['projects/stencil/src/components/mds-button/test/mds-button.e2e.ts', 'low'],
     ['projects/stencil/src/components/mds-button/mds-button.stories.tsx', 'low'],
-    ['projects/stencil/src/components/mds-button/usage/pattern.md', 'low'],
+    ['projects/stencil/src/components/mds-button/usage/2. Examples.md', 'low'],
     ['projects/stencil/src/components/mds-button/readme.md', 'low'],
     ['projects/stencil/src/components.d.ts', 'low'],
     ['projects/stencil/magma.api.txt', 'low'],

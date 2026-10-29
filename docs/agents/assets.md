@@ -314,7 +314,7 @@ IconsSetService.setSvgPath('/svg/');
 Icons mounted before a path set through `sessionStorage` reload on
 `window.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'))`. Every option, with its
 snippet, is in the
-[`mds-icon` pattern](../../projects/stencil/src/components/mds-icon/usage/2.%20Pattern.md).
+[`mds-icon` examples](../../projects/stencil/src/components/mds-icon/usage/2.%20Examples.md).
 
 Reference an icon by slug, never inline SVG and never import from an icon-set package:
 

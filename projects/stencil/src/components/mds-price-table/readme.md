@@ -25,9 +25,9 @@ The `<mds-price-table>` web component is the layout container of the Magma Desig
 This component is a pure compound parent and intentionally has no configurable props. Visual variation comes from the children it wraps - for example the `type` attribute on `mds-price-table-features-cell` (`'label'`, `'text'`, `'supported'`, `'unsupported'`) drives what each matrix cell renders, and the named slots on `mds-price-table-list` (`header`, `price`, `action`) position each plan's heading, price and call-to-action. Refer to those child components' own documentation for their value ladders.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-price-table>` family, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-price-table>` family, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Single-Plan Card (Mobile Layout)
 
@@ -202,9 +202,9 @@ Apply a Magma label-color utility class directly to `<mds-price-table-list>` to 
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of the `<mds-price-table>` family. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of the `<mds-price-table>` family. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use Child Components Outside Their Parent
 

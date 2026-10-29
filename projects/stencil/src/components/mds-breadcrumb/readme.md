@@ -30,9 +30,9 @@ This component exposes a single behavioral prop:
 Visual styling (item button colors, separator arrow color) is not driven by props, and `mds-breadcrumb` has no public CSS custom property: the colors follow the semantic roles of the theme, the selected item's included. To restyle the buttons, target the `button` part of the child [`mds-breadcrumb-item`](../../mds-breadcrumb-item): it is the item's `<mds-button>`, so it takes the public `--mds-button-*` custom properties. The shared `variant` / `tone` / `size` ladders defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) do not apply here; per-item labels and selection state live on the `<mds-breadcrumb-item>` children.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-breadcrumb>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-breadcrumb>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Navigation Trail
 
@@ -125,9 +125,9 @@ mds-breadcrumb-item[selected]::part(button) {
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-breadcrumb>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-breadcrumb>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Slot Raw HTML Inside `<mds-breadcrumb>`
 

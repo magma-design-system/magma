@@ -32,7 +32,7 @@ export const Button = {
       const sections = canvas
         .getAllByRole('heading', { level: 2 })
         .map((heading) => heading.textContent);
-      expect(sections).toEqual(['Description', 'Pattern', 'Antipattern']);
+      expect(sections).toEqual(['Description', 'Examples', 'Mistakes']);
     });
 
     // the `####` headings of the files sit right below their section
@@ -41,9 +41,7 @@ export const Button = {
 
     // the repository-relative links point at GitHub
     const links = canvas.getAllByRole('link').map((link) => link.getAttribute('href'));
-    expect(links).toContain(
-      `${REPOSITORY_URL}/blob/${REPOSITORY_BRANCH}/docs/agents/anti-patterns.md`,
-    );
+    expect(links).toContain(`${REPOSITORY_URL}/blob/${REPOSITORY_BRANCH}/docs/agents/mistakes.md`);
     expect(links.filter((href) => href.startsWith('.'))).toHaveLength(0);
 
     // the examples are code blocks

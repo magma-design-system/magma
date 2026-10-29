@@ -26,9 +26,9 @@ The only meaningful prop is `code`: the BCP 47 / RFC 5646 language tag (such as 
 `selected` is a state flag managed by the parent rather than a configuration choice. Sizing and styling are fixed by the parent's layout, so this item exposes no `variant` / `tone` of its own; the shared ladders in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) are applied internally and are not configurable from the host.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-pref-language-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-pref-language-item>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Language List Inside the Parent
 
@@ -106,9 +106,9 @@ Add as many items as needed - the parent lists them all in its dropdown. Each it
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-pref-language-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-pref-language-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use the Item Outside Its Parent
 

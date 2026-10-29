@@ -26,9 +26,9 @@ The `<mds-avatar-stack>` web component groups a set of overlapping `<mds-avatar-
 This component does not use the shared `variant` / `tone` ladders; per-avatar appearance (tone, variant, initials, image source) is configured on each `<mds-avatar-stack-item>` instead.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-avatar-stack>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-avatar-stack>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Avatar Stack
 
@@ -143,9 +143,9 @@ Style the stack only through its public `--mds-avatar-stack-*` CSS custom proper
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-avatar-stack>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-avatar-stack>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Place `<mds-avatar-stack-item>` Inside a Wrapper Element
 

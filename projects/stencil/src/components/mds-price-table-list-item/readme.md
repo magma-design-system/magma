@@ -27,9 +27,9 @@ The `<mds-price-table-list-item>` web component represents a single feature row 
 - **`typography`**: Selects the text scale applied to both the icon wrapper and the label (the icon itself keeps a fixed size), accepting one of the shared read typography tokens (default `detail`). Use a larger value such as `paragraph` when the list should read at body size, or `caption` for denser tables.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-price-table-list-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-price-table-list-item>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Supported Feature Row
 
@@ -130,9 +130,9 @@ The full compound pattern: `<mds-price-table-list>` with header, items, a price,
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-price-table-list-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-price-table-list-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `<mds-price-table-list>`
 

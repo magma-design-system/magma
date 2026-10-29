@@ -24,9 +24,9 @@ The `<mds-table-footer>` web component is a structural child of [`<mds-table>`](
 `<mds-table-footer>` has one prop, `selectable`, which `<mds-table>` sets: leave it to the parent. Its main API is its **default slot**, into which you place one `mds-table-cell` per column of your data, not counting the selection and actions columns. Visual styling (background, borders, cell padding) is inherited from the CSS custom properties defined on the parent `<mds-table>`.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-table-footer>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-table-footer>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Summary Row with Column Labels
 
@@ -134,9 +134,9 @@ Use the footer to display computed totals or aggregated values that summarize th
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-table-footer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-table-footer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use `mds-table-footer` Outside `mds-table`
 
