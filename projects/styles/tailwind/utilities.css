@@ -18,19 +18,36 @@
   animation-play-state: running;
 }
 
+/* The text-box utilities trim nothing in an <input>: its line scrolls inside a box exactly as
+ * tall as the line, the trim leaves the glyphs taller than that box, and a drag that selects the
+ * text scrolls it up and down by the trimmed half-leading. The field sets its own height, so the
+ * trim gains nothing there. A <textarea> or a <select> keeps it: it adds no scroll to them. */
+
 @utility text-box-uppercase {
   min-height: auto;
   text-box: trim-both cap alphabetic;
+
+  &:where(input) {
+    text-box: normal;
+  }
 }
 
 @utility text-box-vertical-margin {
   min-height: auto;
   text-box: trim-both text;
+
+  &:where(input) {
+    text-box: normal;
+  }
 }
 
 @utility text-box-vertical-align {
   min-height: auto;
   text-box: trim-both cap alphabetic;
+
+  &:where(input) {
+    text-box: normal;
+  }
 }
 
 @utility hide-scrollbar {
