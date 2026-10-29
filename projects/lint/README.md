@@ -69,6 +69,14 @@ or on the guide it enforces, not only on fixtures picked by hand.
   else; the test collects those lines from the code blocks of the guides. The lint
   configuration is the first file the tool loads: ESLint 9 `FLAT_CONFIG_FILENAMES`, then for
   Stylelint 16 the `stylelint` key of `package.json` and the search places of cosmiconfig 9.
+  The MCP server is started by the file each client reads in the project: `.mcp.json`
+  (`mcpServers`) or the Magma plugin in `.claude/settings.json` for Claude Code,
+  `.vscode/mcp.json` (`servers`), `.cursor/mcp.json` (`mcpServers`), and for OpenCode
+  `opencode.json` and `opencode.jsonc`, in the root and in `.opencode/` (`names` of its
+  `ConfigDiscovery`), these read as JSONC as OpenCode reads them, with the servers where its
+  `normalizeMcp` finds them: `mcp.servers` (OpenCode 2) and right under `mcp` (OpenCode 1).
+  magma-mcp serves on stdio only, so an OpenCode server counts when `local` and not turned
+  off (`disabled`, or `enabled: false` in OpenCode 1).
 - **Token values** (`list_tokens`, `explain_class`): the value is what the CSS writes. Where the
   package records a `cssValue` (the CSS writes the quantity differently from the JSON:
   `em` letter spacing, ratios, elevations on `--depth`, design-tokens README, "Token data")

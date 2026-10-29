@@ -147,9 +147,9 @@ Ask the user only what detection left undecided. Typical questions:
    the Magma plugin in the project's \`.claude/settings.json\` instead: it starts the server and
    adds the Magma skills (\`/magma:setup\`, \`/magma:review\`, \`/magma:migrate\`,
    \`/magma:pattern-layer\`). For the other
-   clients MERGE the entry into \`.vscode/mcp.json\` or \`.cursor/mcp.json\`; never both the
-   plugin and an \`.mcp.json\` entry, or the server runs twice. Then call its \`check_setup\`
-   tool: it lists what the integration still misses.
+   clients MERGE the entry into \`.vscode/mcp.json\`, \`.cursor/mcp.json\` or
+   \`opencode.json\`; never both the plugin and an \`.mcp.json\` entry, or the server runs
+   twice. Then call its \`check_setup\` tool: it lists what the integration still misses.
 
 ## Step 4 - verify
 

@@ -47,11 +47,34 @@ export const requireFromProject = (context: ToolContext, id: string): unknown =>
   return createRequire(path.join(context.root, 'package.json'))(file);
 };
 
-/** A JSON file, or undefined when it is missing or not JSON. */
-export const readJsonFile = <T = Record<string, unknown>>(file: string): T | undefined => {
+/** A JSON string, matched first so that a comment or a comma inside it stays as it is. */
+const STRING = /"(?:[^"\\]|\\.)*"/.source;
+
+/**
+ * JSONC as JSON: the comments and the trailing commas removed, the strings untouched. These
+ * are what jsonc-parser accepts beyond JSON, and OpenCode reads its configuration with it
+ * (`parse` of anomalyco/opencode, packages/core/src/config.ts).
+ */
+const jsonOfJsonc = (text: string): string =>
+  text
+    .replace(
+      new RegExp(`(${STRING})|//[^\\n]*|/\\*[\\s\\S]*?\\*/`, 'g'),
+      (_, string) => string ?? '',
+    )
+    .replace(new RegExp(`(${STRING})|,(\\s*[}\\]])`, 'g'), (_, string, close) => string ?? close);
+
+/**
+ * A JSON file, or undefined when it is missing or not JSON; with `jsonc`, the comments and
+ * the trailing commas of JSONC are allowed too.
+ */
+export const readJsonFile = <T = Record<string, unknown>>(
+  file: string,
+  { jsonc = false } = {},
+): T | undefined => {
   if (!existsSync(file)) return undefined;
   try {
-    return JSON.parse(readFileSync(file, 'utf8')) as T;
+    const text = readFileSync(file, 'utf8');
+    return JSON.parse(jsonc ? jsonOfJsonc(text) : text) as T;
   } catch {
     return undefined;
   }

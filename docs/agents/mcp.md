@@ -65,12 +65,30 @@ VS Code (GitHub Copilot), `.vscode/mcp.json`:
 
 Cursor, `.cursor/mcp.json`: the same entry as Claude Code, under `mcpServers`.
 
+OpenCode, `opencode.json` (or `opencode.jsonc`) at the project root: a `local` server, whose
+`command` lists the program and its arguments. OpenCode 2 reads the servers under
+`mcp.servers`:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "magma": { "type": "local", "command": ["npx", "--no", "magma-mcp"] }
+    }
+  }
+}
+```
+
+OpenCode 1 reads them right under `mcp` (`"mcp": { "magma": { ... } }`), a form OpenCode 2
+still reads but deprecates.
+
 `npx --no magma-mcp` runs the installed version, so the answers always match the components
 the project uses. Keep `--no`: without it, a client that starts the server before
 `npm install` (a fresh clone with the configuration committed) lets `npx` download and run
 whatever package the npm registry has under that name; with it, `npx` stops instead. When the
 client starts servers elsewhere than the project's root, pass it:
-`"args": ["--no", "magma-mcp", "--root", "<the project's folder>"]`.
+`"args": ["--no", "magma-mcp", "--root", "<the project's folder>"]` (in OpenCode, at the end
+of `command`).
 
 ## The tools
 

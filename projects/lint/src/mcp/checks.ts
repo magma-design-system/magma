@@ -338,21 +338,64 @@ export const pluginEnabled = (file: string): boolean =>
   ] === true;
 
 /**
- * The entries of a client configuration that start magma-mcp (`mcpServers` of Claude Code
- * and Cursor, `servers` of VS Code), each safe unless it runs npx without `--no`.
+ * The files of a project OpenCode reads its configuration from, JSONC all: `opencode.json`
+ * and `opencode.jsonc` (`names` of ConfigDiscovery, anomalyco/opencode,
+ * packages/core/src/config/discovery.ts), in the folder and, since OpenCode 2, in its
+ * `.opencode` folder.
  */
-export const mcpEntries = (file: string): Array<{ safe: boolean }> => {
+export const OPENCODE_CONFIGS = [
+  'opencode.json',
+  'opencode.jsonc',
+  '.opencode/opencode.json',
+  '.opencode/opencode.jsonc',
+];
+
+type OpencodeServer = { type?: string; command?: string[]; disabled?: boolean; enabled?: boolean };
+
+/**
+ * The servers under the `mcp` key of OpenCode, read as `normalizeMcp` reads them
+ * (anomalyco/opencode, packages/core/src/config/normalize.ts): a value with a `type` is a
+ * server of OpenCode 1, which OpenCode 2 still reads; `servers` is the map of OpenCode 2;
+ * anything else (`timeout`, an entry with only `enabled`) is not a server.
+ */
+const opencodeServers = (mcp: Record<string, unknown> = {}): OpencodeServer[] =>
+  Object.entries(mcp).flatMap(([name, value]) => {
+    const entry = value as OpencodeServer | null;
+    if (entry?.type === 'local' || entry?.type === 'remote') return [entry];
+    return name === 'servers' && typeof entry === 'object' && entry
+      ? Object.values(entry as Record<string, OpencodeServer>)
+      : [];
+  });
+
+/**
+ * The entries of a client configuration that start magma-mcp, each safe unless it runs npx
+ * without `--no`: `mcpServers` of Claude Code and Cursor and `servers` of VS Code, a
+ * `command` and its `args`; the `mcp` servers of OpenCode, a `command` that lists the
+ * program and its arguments. magma-mcp serves on stdio only, so an OpenCode server starts it
+ * only when `local`, and not when turned off (`disabled` in OpenCode 2, `enabled: false` in
+ * OpenCode 1). With `jsonc`, read as OpenCode reads its files, comments and trailing commas
+ * allowed.
+ */
+export const mcpEntries = (file: string, { jsonc = false } = {}): Array<{ safe: boolean }> => {
   const config = readJsonFile<{
     mcpServers?: Record<string, { command?: string; args?: string[] }>;
     servers?: Record<string, { command?: string; args?: string[] }>;
-  }>(file);
+    mcp?: Record<string, unknown>;
+  }>(file, { jsonc });
   if (!config) return [];
-  return Object.values({ ...config.mcpServers, ...config.servers })
-    .filter((entry) =>
-      [entry.command, ...(entry.args ?? [])].some((part) => part?.includes('magma-mcp')),
-    )
-    .map((entry) => ({
-      safe: !/(^|\/)npx$/.test(entry.command ?? '') || (entry.args ?? []).includes('--no'),
+  const commands = [
+    ...Object.values({ ...config.mcpServers, ...config.servers }).map((entry) => [
+      entry.command,
+      ...(entry.args ?? []),
+    ]),
+    ...opencodeServers(config.mcp)
+      .filter((server) => server.type === 'local' && !server.disabled && server.enabled !== false)
+      .map((server) => server.command ?? []),
+  ];
+  return commands
+    .filter((command) => command.some((part) => part?.includes('magma-mcp')))
+    .map(([program, ...args]) => ({
+      safe: !/(^|\/)npx$/.test(program ?? '') || args.includes('--no'),
     }));
 };
 
@@ -529,11 +572,27 @@ export const checkSetup = (context: ToolContext): Tool => ({
         : 'The Stylelint configuration does not extend @maggioli-design-system/magma/stylelint.',
       guide: 'agents/lint.md',
     });
-    const entries = ['.mcp.json', '.vscode/mcp.json', '.cursor/mcp.json'].flatMap((name) =>
-      mcpEntries(path.join(root, name)).map((entry) => ({ name, ...entry })),
+    const entries = [
+      '.mcp.json',
+      '.vscode/mcp.json',
+      '.cursor/mcp.json',
+      ...OPENCODE_CONFIGS,
+    ].flatMap((name) =>
+      mcpEntries(path.join(root, name), { jsonc: OPENCODE_CONFIGS.includes(name) }).map(
+        (entry) => ({ name, ...entry }),
+      ),
     );
     // npx without --no installs and runs whatever the registry has under the name (#1112)
     const unsafe = entries.filter((entry) => !entry.safe);
+    const fixes = [
+      ...new Set(
+        unsafe.map((entry) =>
+          OPENCODE_CONFIGS.includes(entry.name)
+            ? `"command": ["npx", "--no", "magma-mcp"] in ${entry.name}`
+            : `"args": ["--no", "magma-mcp"] in ${entry.name}`,
+        ),
+      ),
+    ];
     // in Claude Code the Magma plugin starts the server: with an .mcp.json entry too it runs twice
     const plugin = pluginEnabled(path.join(root, '.claude/settings.json'));
     const twice = plugin && entries.some((entry) => entry.name === '.mcp.json');
@@ -541,7 +600,7 @@ export const checkSetup = (context: ToolContext): Tool => ({
       id: 'mcp',
       ok: (plugin || entries.length > 0) && !unsafe.length && !twice,
       detail: unsafe.length
-        ? `${unsafe.map((entry) => entry.name).join(', ')} starts magma-mcp with npx without --no: when magma is not installed, npx downloads and runs a package of that name from the registry. Write "args": ["--no", "magma-mcp"].`
+        ? `${[...new Set(unsafe.map((entry) => entry.name))].join(', ')} starts magma-mcp with npx without --no: when magma is not installed, npx downloads and runs a package of that name from the registry. Write ${fixes.join(', ')}.`
         : twice
           ? 'Both the Magma plugin (.claude/settings.json) and .mcp.json start magma-mcp: Claude Code runs the server twice. Keep the plugin and drop the .mcp.json entry.'
           : plugin || entries.length
@@ -549,7 +608,7 @@ export const checkSetup = (context: ToolContext): Tool => ({
                 ...(plugin ? ['the Magma plugin of .claude/settings.json'] : []),
                 ...entries.map((entry) => entry.name),
               ].join(', ') + ' starts magma-mcp.'
-            : 'No client configuration starts magma-mcp: the Magma plugin in .claude/settings.json for Claude Code, .vscode/mcp.json or .cursor/mcp.json for the others.',
+            : 'No client configuration starts magma-mcp: the Magma plugin in .claude/settings.json for Claude Code, .vscode/mcp.json for VS Code, .cursor/mcp.json for Cursor, opencode.json for OpenCode.',
       guide: 'agents/mcp.md',
     });
 
