@@ -42,7 +42,13 @@ A change to an "Always true" rule is never a product's: say that it holds in eve
 - A decision the sources do not settle: a multiple-choice question, recommended option first.
 - Add a row to `## Decisions`: the date, the decision, why.
 
-## 4. The check and the pull request
+## 4. The previews
+
+A case added or changed needs its preview again, a renamed case moves its file
+(`docs/agents/patterns/previews/<id>/<case>.html`): follow
+`.claude/skills/pattern-preview/SKILL.md` for those cases.
+
+## 5. The check and the pull request
 
 ```bash
 npx nx run stencil:check.patterns

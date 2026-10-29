@@ -4,7 +4,9 @@
   waiting or a failed part. Without arguments the list, as get_guide lists the guides; with a
   need the patterns that answer it; with a pattern its data; with the values of its variables
   the one case for the situation. A product layer in the project (magma/patterns/<id>.md)
-  narrows the open choices and adds situations; it never changes an "Always true" rule.
+  narrows the open choices and adds situations; it never changes an "Always true" rule. A case
+  Magma has a preview of (agents/patterns/previews/<id>/<case>.html, #1186) names it: the path
+  in the pattern, the stage itself and what to try in it in the answer for a situation.
 */
 import path from 'node:path';
 import { loadComponents, magmaRoot } from '../core/data.js';
@@ -15,14 +17,17 @@ import {
   indexPatterns,
   isLayer,
   listPatterns,
+  previewOf,
   projectErrors,
   readPatternDir,
+  readPreviews,
   readProjectDir,
   resolveLayer,
   splitBody,
   type Layer,
   type Pattern,
   type PatternFile,
+  type Preview,
 } from '../core/patterns.js';
 import { ToolError, type Tool } from './protocol.js';
 import { GAP, GAP_SCHEMA, wordsOf, type ToolContext } from './context.js';
@@ -38,10 +43,13 @@ interface Read {
   own: PatternFile[];
   /** What is wrong in the project's folder, by file, a file that does not parse among them. */
   problems: Map<string, string[]>;
+  /** The previews of the cases Magma ships. */
+  previews: Preview[];
 }
 
 const read = (context: ToolContext): Read => {
-  const patterns = readPatternDir(path.join(magmaRoot(context.settings), 'agents', 'patterns'));
+  const shipped = path.join(magmaRoot(context.settings), 'agents', 'patterns');
+  const patterns = readPatternDir(shipped);
   const { byId, aliases } = indexPatterns(patterns.map((one) => one.data));
   const { files, unreadable } = readProjectDir(path.join(context.root, PRODUCT_LAYER_DIR));
   const layers = new Map<string, PatternFile<Layer>>();
@@ -60,8 +68,16 @@ const read = (context: ToolContext): Read => {
       )
     : new Map<string, string[]>();
   for (const [file, error] of unreadable) problems.set(file, [error]);
-  return { patterns, layers, own, problems };
+  return { patterns, layers, own, problems, previews: readPreviews(shipped) };
 };
+
+/** A preview as the answer for a situation gives it: where it is, what to try, the stage. */
+const previewIn = (context: ToolContext, preview: Preview) => ({
+  file: path.relative(context.root, preview.file),
+  try: preview.try,
+  ...(preview.height ? { height: preview.height } : {}),
+  markup: preview.markup,
+});
 
 /** The problems of the project's files, each with the file it is in. */
 const problemsIn = (context: ToolContext, problems: Map<string, string[]>, files: string[]) => {
@@ -97,7 +113,7 @@ export const getPattern = (context: ToolContext): Tool => ({
   name: 'get_pattern',
   title: 'Read a Magma pattern',
   description:
-    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product. Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow, or which variables are still to settle; with id and section the text of that section. Ask before building a flow, and follow the case it gives.',
+    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product. Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, and what to try in it), or which variables are still to settle; with id and section the text of that section. Ask before building a flow, and follow the case it gives.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -158,7 +174,7 @@ export const getPattern = (context: ToolContext): Tool => ({
     },
   },
   run: ({ id, need, situation, section }) => {
-    const { patterns, layers, own, problems } = read(context);
+    const { patterns, layers, own, problems, previews } = read(context);
     if (!patterns.length)
       throw new ToolError('This magma ships no patterns (agents/patterns/): update it.');
     const all = [...patterns, ...own].map((one) => one.data);
@@ -257,11 +273,15 @@ export const getPattern = (context: ToolContext): Tool => ({
       const hits = result.hits.map(({ kind, entry }) => ({ kind, ...entry }));
       if (hits.length === 1 && !missing.length) {
         const [hit] = hits;
+        const preview =
+          hit!.kind === 'case'
+            ? previewOf(previews, base.id, String((hit as { id?: unknown }).id))
+            : undefined;
         return {
           id: base.id,
           ...renamed,
           ...mine,
-          answer: hit,
+          answer: preview ? { ...hit, preview: previewIn(context, preview) } : hit,
           ...(hit!.kind === 'gap' ? { gap: GAP } : {}),
         };
       }
@@ -269,8 +289,16 @@ export const getPattern = (context: ToolContext): Tool => ({
     }
 
     const { sections } = splitBody(file.body);
+    const cases = resolved.cases?.map((one) => {
+      const preview = previewOf(previews, base.id, one.id);
+      return preview ? { ...one, preview: path.relative(context.root, preview.file) } : one;
+    });
     return {
-      pattern: { ...resolved, sections: sections.map((one) => one.heading) },
+      pattern: {
+        ...resolved,
+        ...(cases ? { cases } : {}),
+        sections: sections.map((one) => one.heading),
+      },
       ...renamed,
       ...mine,
     };

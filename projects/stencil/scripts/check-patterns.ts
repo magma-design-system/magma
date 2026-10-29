@@ -11,7 +11,11 @@
  * - the lint: every "Always true" rule checked by lint names a rule the lint has; a planned one
  *   names a rule it does not have yet;
  * - the links: every pattern, case and rule cited exists, and no reference uses an old id;
- * - the body: its sections in the order of the template, the generated ones up to date.
+ * - the body: its sections in the order of the template, the generated ones up to date;
+ * - the previews of the cases (docs/agents/patterns/previews/<pattern>/<case>.html, #1186): each
+ *   of a case that exists, with its keys, only a stage, and its markup clean for the Magma lint
+ *   (the strict preset, as check_markup runs it); the cases with no preview are listed as a
+ *   warning, which does not fail the check while previews are being made.
  *
  * With `--layer <dir>` it checks a product's folder too (magma/patterns/ of a product), as
  * get_pattern does without arguments (projectErrors of the core): a layer may narrow the open
@@ -23,6 +27,8 @@
  *
  * Run from the stencil package dir:  npm run check.patterns [-- --layer <dir>]
  */
+import * as htmlParser from '@html-eslint/parser';
+import { Linter } from 'eslint';
 import { existsSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { loadComponents } from '../../lint/src/core/data';
@@ -35,11 +41,14 @@ import {
   formatErrors,
   lintErrors,
   linkErrors,
+  missingPreviews,
+  previewLinkErrors,
   projectErrors,
+  readPreviews,
   readProjectDir,
   type PatternFile,
 } from '../../lint/src/core/patterns';
-import { rules as eslintRules } from '../../lint/src/eslint/index';
+import magmaEslint, { rules as eslintRules } from '../../lint/src/eslint/index';
 import stylelintPlugins from '../../lint/src/stylelint/index';
 import { PROJECT_DIR } from './meta';
 import { PATTERNS_DIR, REPO, readPatterns } from './patterns-lib';
@@ -85,6 +94,31 @@ for (const file of files) {
 for (const [id, errors] of linkErrors(patterns))
   report(files.find((one) => one.data.id === id)!.file, errors);
 
+// the previews: their keys and their stage, the case they show, and their markup through the
+// lint the products run (strict, every finding an error here)
+const previews = readPreviews(PATTERNS_DIR);
+const linter = new Linter({ cwd: REPO });
+const lintConfig: Linter.Config[] = [
+  {
+    files: ['**/*.html'],
+    languageOptions: { parser: htmlParser as Linter.Parser },
+    ...magmaEslint.configs.strict,
+    settings: { magma: { root: REPO, documentation: DOCUMENTATION } },
+  },
+];
+for (const preview of previews) {
+  const errors = [...preview.errors];
+  for (const message of linter.verify(preview.markup, lintConfig, { filename: preview.file }))
+    errors.push(
+      message.fatal
+        ? `the stage does not parse as HTML: ${message.message}`
+        : `${message.ruleId}: ${message.message} (line ${message.line} of the stage)`,
+    );
+  report(preview.file, errors);
+}
+for (const [file, errors] of previewLinkErrors(previews, patterns)) report(file, errors);
+const missing = missingPreviews(patterns, previews);
+
 const layerArg = process.argv.indexOf('--layer');
 if (layerArg > -1) {
   const dir = resolve(process.argv[layerArg + 1] ?? '');
@@ -104,9 +138,17 @@ if (found.size) {
   );
   process.exit(1);
 }
+if (missing.length)
+  console.warn(
+    `${missing.length} case(s) with no preview yet (docs/PATTERNS.md, "The preview of a case"; /pattern-preview <id> makes them):\n${missing
+      .map((one) => `  - ${one}`)
+      .join('\n')}\n`,
+  );
 const decided = patterns.filter((one) => one.status !== 'candidate').length;
 console.log(
   `OK - ${patterns.length} patterns in ${relative(REPO, PATTERNS_DIR)} (${decided} defined, ${
     patterns.length - decided
-  } candidates): ${combinations} combinations each in one case, a gap or not applicable; every component, attribute, lint rule and link exists`,
+  } candidates): ${combinations} combinations each in one case, a gap or not applicable; every component, attribute, lint rule and link exists; ${
+    previews.length
+  } preview(s), each of a case and clean`,
 );

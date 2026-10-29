@@ -1,0 +1,20 @@
+<!--
+try: Press Salva: the error shows above the form, and what was written stays.
+-->
+<div style="display: grid; gap: calc(var(--spacing) * 300)">
+  <mds-banner id="message" variant="error" headline="Salvataggio non riuscito" style="display: none">
+    Il server non risponde. I dati sono ancora qui: riprova.
+  </mds-banner>
+  <mds-input-field label="Ragione sociale">
+    <mds-input value="Maggioli SpA"></mds-input>
+  </mds-input-field>
+  <div style="display: flex; gap: calc(var(--spacing) * 200); justify-content: end">
+    <mds-button tone="weak" id="cancel">Annulla</mds-button>
+    <mds-button id="save">Salva</mds-button>
+  </div>
+</div>
+<script>
+  const message = document.getElementById('message');
+  document.getElementById('save').addEventListener('click', () => (message.style.display = ''));
+  document.getElementById('cancel').addEventListener('click', () => (message.style.display = 'none'));
+</script>

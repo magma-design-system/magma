@@ -144,24 +144,31 @@ keep in step.
 
 - **What**: the solutions to a task across components that Magma ships as its default, one file
   each (`agents/patterns/<id>.md`, its frontmatter the data, its body the text), with their
-  catalogue `agents/patterns.md`; and the layer a product keeps in its own repository,
-  `magma/patterns/<id>.md`, of the same shape.
+  catalogue `agents/patterns.md` and the preview of each case
+  (`agents/patterns/previews/<id>/<case>.html`: the stage, what to try in it, an optional
+  height; never a page, the reader adds the stylesheets and the loader and runs it in a document
+  of its own); and the layer a product keeps in its own repository, `magma/patterns/<id>.md`, of
+  the same shape.
 - **Produced by**: the maintainers, in `docs/agents/patterns/` (the template
   `projects/stencil/template/pattern.md`, `nx run stencil:generate.pattern`, the skills of
   `.claude/skills/`); `projects/stencil/scripts/sync-agent-docs.ts` copies them into the entry
   packages and writes the catalogue.
-- **Contract**: [`docs/PATTERNS.md`](PATTERNS.md), "The format" and "Product layers"; the reader
+- **Contract**: [`docs/PATTERNS.md`](PATTERNS.md), "The format", "The preview of a case" and
+  "Product layers"; the reader
   side in `projects/lint/src/core/patterns.ts` and
   [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes from".
-- **Read by**: `get_pattern` of the MCP server, the `ui`, `review` and `pattern-layer` skills
-  of the Claude Code plugin, `pr-risk` (`patternChanges` of `projects/stencil/scripts/pr-risk-lib.ts`), the agents
-  of the products, the docs site (later).
+- **Read by**: `get_pattern` and `render_preview` (the preview of a case) of the MCP server, the
+  `ui`, `review` and `pattern-layer` skills of the Claude Code plugin, `pr-risk`
+  (`patternChanges` of `projects/stencil/scripts/pr-risk-lib.ts`), the agents of the products,
+  the docs site (the previews: magma-design-system/docs#89).
 - **Held by**: `check.patterns` (the format, every combination in one case, the components,
   attributes, lint rules and links named, the generated sections; a product's folder with
-  `--layer`, which `get_pattern` checks too in the product);
+  `--layer`, which `get_pattern` checks too in the product; each preview of a case that exists,
+  only a stage, its markup clean for the strict lint, the cases without one as a warning);
   `check.usage-docs` on their bodies; `test/patterns.test.ts` of `projects/lint` on the files
-  of the repository; `pr-risk` sets the review level to contract on a change to what a pattern
-  promises.
+  of the repository, and `test/mcp-tools.test.ts`, which renders every preview on the build and
+  fails on a problem of the image; `pr-risk` sets the review level to contract on a change to
+  what a pattern promises.
 
 ## The surfaces of a class
 

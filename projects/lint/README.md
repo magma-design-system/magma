@@ -132,7 +132,12 @@ or on the guide it enforces, not only on fixtures picked by hand.
   replaces Magma's, since Magma's id is the contract the products cite. A pattern of the
   product's own is held to the format, the cases and the components, not to the lint rules
   (its lint may have rules of its own) nor to the generated body (the generator does not
-  ship). A candidate is a gap: Magma knows the need and has no default.
+  ship). A candidate is a gap: Magma knows the need and has no default. The preview of a case
+  (#1186) is the file `previews/<pattern>/<case>.html` beside the patterns, matched by its path
+  only, so a renamed case moves its file and the check says so; each case of a pattern names
+  its path, and the answer for a situation carries the stage with what to try, since that is
+  the one case the agent builds and its markup is short. Only Magma's cases have previews: a
+  product layer adds situations, never a case to show.
 - **What a render loads, and when it is ready** (`render_preview`, #1180): the page a consumer
   writes, not one of the tool's own. The stylesheets are the import block of
   `agents/assets.md`, "Import order (mandatory)", in its order and layers (a test holds
@@ -157,7 +162,11 @@ or on the guide it enforces, not only on fixtures picked by hand.
   of them stay under the 25,000 tokens Claude Code allows a tool result. The driver is the
   project's playwright-core (else playwright), an optional peer of magma from 1.9, the version
   that has every call the tool makes (playwright.dev/docs/api); the browser, Chrome, then
-  Edge, the channels of playwright.dev/docs/browsers, then Playwright's own Chromium.
+  Edge, the channels of playwright.dev/docs/browsers, then Playwright's own Chromium. With
+  `pattern` and `case` instead of markup it renders the preview Magma ships for that case
+  (#1186), found under an old id of the pattern too: at the height the preview declares, the
+  page an overlay needs, and with `lang="it"`, the language of the words of the previews
+  (`docs/PATTERNS.md`), unless the call gives its own.
 - **What a tool or a rule says about itself** (the documentation site reads it from the
   installed package, magma-design-system/docs#1): the same fields on both plugins, a
   description and the URL of its section of `agents/lint.md` (an ESLint rule in
