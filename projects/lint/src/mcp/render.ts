@@ -9,13 +9,16 @@
   The decisions of #1180: the driver is playwright-core from the project (an optional peer of
   magma, as ESLint and Stylelint are), driving a browser of the machine; the image goes back
   as MCP image content and as a file in node_modules/.cache, which the agent attaches where its
-  client does not show the image to the person.
+  client does not show the image to the person. Instead of markup it renders the preview of a
+  case of a pattern (agents/patterns/previews/<pattern>/<case>.html, #1186), with the height of
+  its page and the language of its words, so the check of the image runs on every preview.
 */
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { magmaRoot } from '../core/data.js';
+import { indexPatterns, previewOf, readPatternDir, readPreviews } from '../core/patterns.js';
 import { packageDir, readJsonFile, resolvePackage, type ToolContext } from './context.js';
 import { folderOf, slugFile } from './icons.js';
 import { ToolError, withImages, type Tool } from './protocol.js';
@@ -414,11 +417,35 @@ export const render = async (
 
 const string = { type: 'string' };
 
+/**
+ * The preview of a case Magma ships, by the id of its pattern (an old one too) and of its case;
+ * the words of the previews are Italian, as the examples of the components (docs/PATTERNS.md).
+ */
+const PREVIEW_LANG = 'it';
+const shippedPreview = (context: ToolContext, pattern: string, id: string) => {
+  const dir = path.join(magmaRoot(context.settings), 'agents', 'patterns');
+  const { byId, aliases } = indexPatterns(readPatternDir(dir).map((one) => one.data));
+  const realId = byId.has(pattern) ? pattern : aliases.get(pattern);
+  if (!realId)
+    throw new ToolError(
+      `No pattern ${pattern} in this magma: the patterns are ${[...byId.keys()].join(', ')}.`,
+    );
+  const previews = readPreviews(dir).filter((one) => one.pattern === realId);
+  const found = previewOf(previews, realId, id);
+  if (!found)
+    throw new ToolError(
+      previews.length
+        ? `No preview of the case ${id} of ${realId}: the cases with one are ${previews.map((one) => one.case).join(', ')}.`
+        : `${realId} has no preview of its cases in this magma yet.`,
+    );
+  return found;
+};
+
 export const renderPreview = (context: ToolContext): Tool => ({
   name: 'render_preview',
   title: 'Render Magma markup as an image',
   description:
-    'Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. Render each option before asking a person to decide on an interface. Needs playwright-core in the project and Chrome or Edge on the machine; writes the image into node_modules/.cache/magma/previews.',
+    'Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. Instead of markup, pattern and case render the preview Magma ships for that case of a pattern. Render each option before asking a person to decide on an interface. Needs playwright-core in the project and Chrome or Edge on the machine; writes the image into node_modules/.cache/magma/previews.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -426,6 +453,16 @@ export const renderPreview = (context: ToolContext): Tool => ({
         type: 'string',
         description:
           'The HTML to render, the body of a page: mds-* components, plain elements, a <style> for the layout; a <script> runs, offline. Images as data: URLs.',
+      },
+      pattern: {
+        type: 'string',
+        description:
+          'Instead of markup, with case: a pattern of get_pattern, such as "message-placement".',
+      },
+      case: {
+        type: 'string',
+        description:
+          'With pattern: one of its cases, such as "action-failed-in-place"; its preview is rendered with the height and the language it declares.',
       },
       widths: {
         type: 'array',
@@ -452,7 +489,6 @@ export const renderPreview = (context: ToolContext): Tool => ({
           'The lang of the page, such as "it": the components localise their own texts from it.',
       },
     },
-    required: ['markup'],
   },
   outputSchema: {
     type: 'object',
@@ -460,6 +496,11 @@ export const renderPreview = (context: ToolContext): Tool => ({
       magma: string,
       mode: string,
       theme: string,
+      preview: {
+        type: 'object',
+        properties: { pattern: string, case: string, file: string, try: string },
+        required: ['pattern', 'case', 'file'],
+      },
       representative: { type: 'boolean' },
       images: {
         type: 'array',
@@ -486,9 +527,15 @@ export const renderPreview = (context: ToolContext): Tool => ({
     required: ['magma', 'mode', 'representative', 'images'],
   },
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true },
-  run: async ({ markup, widths, height, mode = 'light', theme, lang }) => {
-    if (typeof markup !== 'string' || !markup.trim())
-      throw new ToolError('Give the markup to render.');
+  run: async ({ markup, widths, height, mode = 'light', theme, lang, pattern, case: caseId }) => {
+    const byCase = pattern !== undefined || caseId !== undefined;
+    if (byCase && markup !== undefined)
+      throw new ToolError('Give markup, or pattern and case: not both.');
+    if (byCase && (typeof pattern !== 'string' || typeof caseId !== 'string'))
+      throw new ToolError('Give both pattern and case, to render the preview of a case.');
+    const shipped = byCase ? shippedPreview(context, String(pattern), String(caseId)) : undefined;
+    if (!shipped && (typeof markup !== 'string' || !markup.trim()))
+      throw new ToolError('Give the markup to render, or pattern and case.');
     if (!MODES.includes(mode as (typeof MODES)[number]))
       throw new ToolError(`mode is ${MODES.join(' or ')}.`);
     if (theme !== undefined) {
@@ -525,13 +572,15 @@ export const renderPreview = (context: ToolContext): Tool => ({
       return size;
     });
 
+    const pageHeight = typeof height === 'number' ? height : shipped?.height;
+    const pageLang = typeof lang === 'string' ? lang : shipped ? PREVIEW_LANG : undefined;
     const images = await render(context, {
-      markup,
+      markup: shipped ? shipped.markup : String(markup),
       widths: sizes,
-      ...(typeof height === 'number' ? { height } : {}),
+      ...(pageHeight !== undefined ? { height: pageHeight } : {}),
       mode: mode as (typeof MODES)[number],
       ...(typeof theme === 'string' ? { theme } : {}),
-      ...(typeof lang === 'string' ? { lang } : {}),
+      ...(pageLang ? { lang: pageLang } : {}),
     });
     const version =
       readJsonFile<{ version: string }>(path.join(magmaRoot(context.settings), 'package.json'))
@@ -541,6 +590,16 @@ export const renderPreview = (context: ToolContext): Tool => ({
         magma: version,
         mode: String(mode),
         ...(typeof theme === 'string' ? { theme } : {}),
+        ...(shipped
+          ? {
+              preview: {
+                pattern: shipped.pattern,
+                case: shipped.case,
+                file: path.relative(context.root, shipped.file),
+                ...(shipped.try ? { try: shipped.try } : {}),
+              },
+            }
+          : {}),
         representative: images.every((one) => one.representative),
         images: images.map(({ width, height, file, representative, problems }) => ({
           width,

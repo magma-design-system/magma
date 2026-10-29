@@ -99,7 +99,10 @@ try: Press Salva: the error shows above the form, and what was written stays.
   it, since `mds-modal` is a `<dialog>` in the top layer sized on the viewport and takes no room
   in the stage. A banner that is the message of a modal goes in its `window` slot.
 - **Who reads it.** The docs site from `node_modules`; `get_pattern` gives its path on each case
-  of a pattern, and the stage itself with what to try in the answer for a situation.
+  of a pattern, and the stage itself with what to try in the answer for a situation;
+  `render_preview` renders it with `pattern` and `case`, at its height, with the check of the
+  image (a component not hydrated, a flat region, a font or an icon not loaded, a word broken).
+  The lint tests render every preview on the build, in CI too, and fail on any problem.
 
 `/pattern-preview <id>` makes the previews a pattern lacks; `/pattern-new` and
 `/pattern-change` call it at the end, so a new or changed case leaves with its preview.

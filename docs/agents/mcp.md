@@ -93,7 +93,7 @@ client starts servers elsewhere than the project's root, pass it:
 | `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow, with its preview (the stage, live, and what to try in it) when Magma has one; the layer of the project (`magma/patterns/<id>.md`) applied | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
 | `check_markup` | whether a snippet passes the lint, before it is written | a lint run after the fact |
 | `check_setup` | what the Magma integration of the project misses | checking the install steps by hand |
-| `render_preview` | an image of markup with Magma components, at the widths (pixels or Magma breakpoints), the mode and the theme you give, with a report of what in it is not representative | describing an interface in words, or a wireframe of your own |
+| `render_preview` | an image of markup with Magma components, or of the preview Magma ships for a case of a pattern (`pattern` and `case`), at the widths (pixels or Magma breakpoints), the mode and the theme you give, with a report of what in it is not representative | describing an interface in words, or a wireframe of your own |
 
 `check_markup` uses the ESLint, Stylelint and template parsers the project installed with
 the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents them, are in

@@ -12,6 +12,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
+import { readPreviews } from '../src/core/patterns.js';
 import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
 import { GAP } from '../src/mcp/context.js';
@@ -972,6 +973,55 @@ describe('render_preview', () => {
     await expect(preview.run({ markup: ' ' })).rejects.toThrow(/Give the markup/);
   }, 30_000);
 
+  test('renders the preview of a case, at the height it declares', async () => {
+    const result = await preview.run({
+      pattern: 'message-placement',
+      case: 'region-info',
+      widths: [480],
+    });
+    expect(result).toMatchObject({
+      representative: true,
+      preview: {
+        pattern: 'message-placement',
+        case: 'region-info',
+        file: expect.stringMatching(
+          /agents\/patterns\/previews\/message-placement\/region-info\.html$/,
+        ),
+        try: 'Look at the message in the region.',
+      },
+    });
+    const [image] = result.images as Array<{ file: string; height: number }>;
+    expect(image!.height).toBe(300);
+    expect(sizeOf(image!.file)).toEqual({ width: 480, height: 300 });
+  }, 30_000);
+
+  test('a case with no preview, or markup and a case together, are refused', async () => {
+    await expect(
+      preview.run({ pattern: 'message-placement', case: 'field-error' }),
+    ).rejects.toThrow(
+      'No preview of the case field-error of message-placement: the cases with one are action-failed-in-place, region-info.',
+    );
+    await expect(preview.run({ pattern: 'confirm-action', case: 'ask-first' })).rejects.toThrow(
+      'confirm-action has no preview of its cases in this magma yet.',
+    );
+    await expect(preview.run({ pattern: 'nope', case: 'x' })).rejects.toThrow(
+      /^No pattern nope in this magma: the patterns are /,
+    );
+    await expect(preview.run({ pattern: 'message-placement' })).rejects.toThrow(
+      'Give both pattern and case, to render the preview of a case.',
+    );
+    await expect(
+      preview.run({
+        markup: '<mds-fixture>x</mds-fixture>',
+        pattern: 'message-placement',
+        case: 'region-info',
+      }),
+    ).rejects.toThrow('Give markup, or pattern and case: not both.');
+    await expect(preview.run({})).rejects.toThrow(
+      'Give the markup to render, or pattern and case.',
+    );
+  });
+
   test('answers tools/call with the images as image content, after the text', async () => {
     const { handle } = createServer(renderContext);
     const answer = (await handle({
@@ -1011,4 +1061,24 @@ describe.skipIf(!existsSync(BUILT) && !process.env.CI)('render_preview on the bu
     expect(dark!.problems).toEqual([]);
     expect(readFileSync(light!.file).equals(readFileSync(dark!.file))).toBe(false);
   }, 60_000);
+
+  test('every preview of a case Magma ships renders representative', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-render-previews-'));
+    const built = { root, settings: { root } };
+    const previews = readPreviews(path.join(import.meta.dirname, '../../../docs/agents/patterns'));
+    expect(previews.length).toBeGreaterThan(0);
+    for (const one of previews) {
+      const [image] = await render(built, {
+        markup: one.markup,
+        widths: [480],
+        mode: 'light',
+        lang: 'it',
+        ...(one.height ? { height: one.height } : {}),
+      });
+      expect({ preview: `${one.pattern}/${one.case}`, problems: image!.problems }).toEqual({
+        preview: `${one.pattern}/${one.case}`,
+        problems: [],
+      });
+    }
+  }, 120_000);
 });

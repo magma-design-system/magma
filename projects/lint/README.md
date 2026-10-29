@@ -162,7 +162,11 @@ or on the guide it enforces, not only on fixtures picked by hand.
   of them stay under the 25,000 tokens Claude Code allows a tool result. The driver is the
   project's playwright-core (else playwright), an optional peer of magma from 1.9, the version
   that has every call the tool makes (playwright.dev/docs/api); the browser, Chrome, then
-  Edge, the channels of playwright.dev/docs/browsers, then Playwright's own Chromium.
+  Edge, the channels of playwright.dev/docs/browsers, then Playwright's own Chromium. With
+  `pattern` and `case` instead of markup it renders the preview Magma ships for that case
+  (#1186), found under an old id of the pattern too: at the height the preview declares, the
+  page an overlay needs, and with `lang="it"`, the language of the words of the previews
+  (`docs/PATTERNS.md`), unless the call gives its own.
 - **What a tool or a rule says about itself** (the documentation site reads it from the
   installed package, magma-design-system/docs#1): the same fields on both plugins, a
   description and the URL of its section of `agents/lint.md` (an ESLint rule in
