@@ -13,7 +13,7 @@ The `<mds-pref-theme>` web component is the theme-switcher segment of the Magma 
 
 #### Semantic Behavior
 
-- **Usually inside `<mds-pref>`**: Placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it also works on its own, since it applies and stores the theme by itself. What it gives up on its own is in the antipattern docs.
+- **Usually inside `<mds-pref>`**: Placed as a direct slot child of `<mds-pref>`, alongside the other `mds-pref-*` controls; it also works on its own, since it applies and stores the theme by itself. What it gives up on its own is in its mistakes.
 - **Acts as a sub-parent itself**: Its own default slot must contain one or more `mds-pref-theme-item` elements; it drives their selected state so only the active theme is marked selected.
 - **Global theme application**: Selecting an item applies the theme document-wide: it writes `data-theme-name` and the `pref-theme-scheme-*` class on `<html>`.
 - **Persistence and hydration**: The current name, scheme and corner shape are persisted and restored across reloads: a stored value outranks the matching prop.
@@ -31,9 +31,9 @@ The `<mds-pref-theme>` web component is the theme-switcher segment of the Magma 
 - **`cornerShape`** (attribute `corner-shape`): The corner geometry of the whole page - `round`, `squircle`, `bevel`, `notch`, `scoop`, `square`, or `default`. It writes `data-corner-shape` on `<html>` and is persisted like the theme; `default` removes the attribute, and leaving the prop unset touches nothing ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)).
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-pref-theme>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the preferences system documented in [`docs/agents/theming.md`](../../../../../../docs/agents/theming.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-pref-theme>` component, ordered from most common to most specialized. The examples assume a working knowledge of the preferences system documented in [`docs/agents/theming.md`](../../../../../../docs/agents/theming.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Theme Chooser
 
@@ -122,9 +122,9 @@ mds-pref-theme-item {
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-pref-theme>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind colour utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-pref-theme>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind colour utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use the Component Outside `<mds-pref>`
 

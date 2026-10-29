@@ -29,9 +29,9 @@ This child exposes essentially no visual configuration of its own - appearance i
 - **`selected`**: Marks this item as the current depth. In normal use you set it on at most one item as the initial state; thereafter the parent manages it in response to navigation. Use it only to seed which depth is active on first render.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-breadcrumb-item>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-breadcrumb-item>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Breadcrumb Trail
 
@@ -107,9 +107,9 @@ The internal `<mds-button>` is exposed as `::part(button)`. Use it for what the 
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-breadcrumb-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-breadcrumb-item>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use Outside `<mds-breadcrumb>`
 

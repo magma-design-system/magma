@@ -33,9 +33,9 @@ This component intentionally exposes a single behavioral prop. Visual surface is
 - The **`title`** slot is recommended to hold an `mds-text`; the **`icon`** slot an `mds-icon`; and the **`action`** slot an `mds-button` for the primary action tied to the disclosed content.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-details>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-details>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Disclosure Block
 
@@ -164,9 +164,9 @@ Use the documented shadow `::part()` names: `header`, `title`, and `content`. Do
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-details>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-details>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Put the Title Text in the Default Slot
 

@@ -4,7 +4,7 @@
   from @material-icons/svg (searched with the tags of its data.json), mdi/<name> from @mdi/svg
   (with the aliases and tags of its meta.json), mgg/<name> from svg-icons (by name).
 
-  The slug is what the active iconsauce plugin writes (mds-icon, "2. Pattern.md"), not the name
+  The slug is what the active iconsauce plugin writes (mds-icon, "2. Examples.md"), not the name
   of the file in the package: @iconsauce/material-icons spells a Material name with hyphens
   (check_circle/baseline.svg is mi/baseline/check-circle) and serves the variants baseline,
   outline, round and sharp only, so a twotone slug is a 404 there. No Material folder has a

@@ -13,6 +13,7 @@ import {
   rewriteUsageLinks,
   rootOf,
   taxonomyErrors,
+  unknownUsageFiles,
   type ComponentTaxonomy,
   type DocsComponent,
   renderPatternCatalogue,
@@ -25,9 +26,9 @@ const button: DocsComponent = {
   usage: {
     '1. Description':
       'The `<mds-button>` is an action. See [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md).',
-    '2. Pattern':
+    '2. Examples':
       'Use it. Rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md#slots).',
-    '3. Antipattern': '',
+    '3. Mistakes': '',
   },
   props: [
     {
@@ -99,21 +100,21 @@ describe('rewriteGuideLinks', () => {
     );
   });
 
-  it("points a component's Pattern and Antipattern to the shipped files, keeping the link text", () => {
+  it("points a component's Examples and Mistakes to the shipped files, keeping the link text", () => {
     expect(
       rewriteGuideLinks(
-        'in the [`mds-icon` pattern](../../projects/stencil/src/components/mds-icon/usage/2.%20Pattern.md)',
+        'in the [`mds-icon` examples](../../projects/stencil/src/components/mds-icon/usage/2.%20Examples.md)',
         fromWrapper,
       ),
     ).toBe(
-      'in the [`mds-icon` pattern](../../magma/dist/collection/components/mds-icon/pattern.md)',
+      'in the [`mds-icon` examples](../../magma/dist/collection/components/mds-icon/examples.md)',
     );
     expect(
       rewriteGuideLinks(
-        '[no](../../projects/stencil/src/components/mds-table/usage/3.%20Antipattern.md#do-not)',
+        '[no](../../projects/stencil/src/components/mds-table/usage/3.%20Mistakes.md#do-not)',
         fromMagma,
       ),
-    ).toBe('[no](../dist/collection/components/mds-table/antipattern.md#do-not)');
+    ).toBe('[no](../dist/collection/components/mds-table/mistakes.md#do-not)');
   });
 
   it("points a component's description to its shipped AGENTS.md", () => {
@@ -169,9 +170,9 @@ describe('renderComponentAgentsMd', () => {
     expect(md).toContain('See [`agents/variants.md`](../../../../agents/variants.md).');
   });
 
-  it('links the pattern file only when the component documents one', () => {
-    expect(md).toContain('[`pattern.md`](pattern.md)');
-    expect(md).not.toContain('antipattern.md');
+  it('links the examples file only when the component documents one', () => {
+    expect(md).toContain('[`examples.md`](examples.md)');
+    expect(md).not.toContain('[`mistakes.md`](mistakes.md)');
   });
 
   it('lists the allowed values of each prop, escaped for the table', () => {
@@ -256,10 +257,23 @@ describe('renderComponentAgentsMd', () => {
 
 describe('renderUsageFile', () => {
   it('titles the file, links back to the API and rewrites the links', () => {
-    const md = renderUsageFile('mds-button', 'patterns', button.usage!['2. Pattern']);
-    expect(md).toContain('# mds-button - patterns');
+    const md = renderUsageFile('mds-button', 'examples', button.usage!['2. Examples']);
+    expect(md).toContain('# mds-button - examples');
     expect(md).toContain('[`AGENTS.md`](AGENTS.md)');
     expect(md).toContain('(../../../../agents/conventions.md#slots)');
+  });
+});
+
+describe('unknownUsageFiles', () => {
+  it('names the usage files outside the contract, the names from before #1169 too', () => {
+    expect(unknownUsageFiles(button)).toEqual([]);
+    expect(
+      unknownUsageFiles({
+        tag: 'mds-x',
+        usage: { '1. Description': 'x', '2. Pattern': 'x', '3. Mistakes': 'x', '4. Notes': 'x' },
+      }),
+    ).toEqual(['2. Pattern', '4. Notes']);
+    expect(unknownUsageFiles({ tag: 'mds-x' })).toEqual([]);
   });
 });
 

@@ -1,10 +1,10 @@
 /**
  * Guards the component usage docs (src/components/<tag>/usage/*.md) against drift
- * from the code they describe. They ship as pattern.md / antipattern.md next to each
+ * from the code they describe. They ship as examples.md / mistakes.md next to each
  * component's AGENTS.md, and agents copy their examples verbatim, so a wrong example
  * becomes wrong code in consumer apps.
  *
- * What this checks, outside the INCORRECT half of the antipattern examples (wrong on
+ * What this checks, outside the INCORRECT half of the examples of a mistake (wrong on
  * purpose): every `mds-*` tag, attribute, enumerated value, slot, documented part,
  * event and `--mds-*` property exists in dist/documentation.json, and every `--mds-*` is a
  * public one (an internal one may change in any release, #1095); every other custom

@@ -32,9 +32,9 @@ The shared `variant` ladder is defined in [`docs/agents/variants.md`](../../../.
 - **`typography`** controls the type token of the centered percentage text, restricted to the technical scale (`'option'` by default, or `'label'`) so the readout stays sized for the ring.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-radial-progress>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant ladder documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-radial-progress>` component, ordered from most common to most specialized. The examples assume a working knowledge of the variant ladder documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Progress Indicator
 
@@ -171,9 +171,9 @@ mds-radial-progress::part(icon) {
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-radial-progress>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-radial-progress>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Pass `progress` Outside the 0-1 Range
 

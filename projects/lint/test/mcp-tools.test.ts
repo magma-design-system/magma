@@ -118,6 +118,28 @@ describe('the component tools', () => {
     );
   });
 
+  test('get_component lists the shipped docs of the component: its API, examples and mistakes', async () => {
+    // a magma package with the shipped docs of mds-button beside its documentation.json
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-docs-'));
+    const documentation = path.join(root, 'data/documentation.json');
+    mkdirSync(path.dirname(documentation), { recursive: true });
+    writeFileSync(documentation, readFileSync(data.documentation));
+    const dir = path.join(root, 'dist/collection/components/mds-button');
+    mkdirSync(dir, { recursive: true });
+    for (const name of ['AGENTS.md', 'examples.md', 'mistakes.md'])
+      writeFileSync(path.join(dir, name), '');
+    const settings = { ...context.settings, documentation };
+    const getComponent = toolsOf({ ...context, settings }).find(
+      (tool) => tool.name === 'get_component',
+    )!;
+    const { files } = (await getComponent.run({ tag: 'mds-button' })) as Result;
+    expect(files).toEqual({
+      api: path.join(dir, 'AGENTS.md'),
+      examples: path.join(dir, 'examples.md'),
+      mistakes: path.join(dir, 'mistakes.md'),
+    });
+  });
+
   test('get_usage writes props and events as each framework does', async () => {
     const react = await run('get_usage', { tag: 'mds-input', framework: 'react' });
     expect(react.import).toBe("import { MdsInput } from '@maggioli-design-system/magma-react';");

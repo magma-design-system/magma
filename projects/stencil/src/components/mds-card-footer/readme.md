@@ -25,9 +25,9 @@ The `<mds-card-footer>` web component is the footer region of a [`<mds-card>`](.
 This component exposes a single default slot and has no configurable properties. Pass any `text`, `HTML elements`, or other components (commonly `<mds-button>` actions) into the default slot; they will be rendered in the card's footer region. The footer lays its children out in a row aligned to the end, with a fixed gap and padding; the placement of the region and the responsive behavior are owned by the parent `<mds-card>`.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-card-footer>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-card-footer>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Action Row Inside a Full Card
 
@@ -115,9 +115,9 @@ When you prefer a plain `<div>` or need to place a non-`mds-card-*` wrapper in t
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-card-footer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-card-footer>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use `<mds-card-footer>` Outside `<mds-card>`
 

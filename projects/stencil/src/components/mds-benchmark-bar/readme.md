@@ -29,9 +29,9 @@ The `<mds-benchmark-bar>` web component is a read-only data-visualization elemen
 The shared `variant` and `size` ladders are defined in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md); `variant` sets the progress bar theme colors (defaulting to `'dark'`), and `size` controls the progress bar height (defaulting to `'md'`). This component does not add values beyond the shared sets.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-benchmark-bar>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-benchmark-bar>` component, ordered from most common to most specialized. The examples assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Benchmark via `label` and `value`
 
@@ -126,9 +126,9 @@ The inner progress bar is exposed as the `progress-bar` shadow part. Use it to a
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-benchmark-bar>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-benchmark-bar>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Put HTML in the Default Slot
 

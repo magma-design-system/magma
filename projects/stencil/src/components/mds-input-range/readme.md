@@ -32,9 +32,9 @@ The `<mds-input-range>` web component is the Magma Design System slider control 
 This component does not use the shared `variant` / `tone` ladders ([`docs/agents/variants.md`](../../../../../../docs/agents/variants.md)); it has no public CSS custom property: the thumb and the track follow the theme, and the `header` and `track` parts listed in [`readme.md`](../readme.md) are its styling hooks.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-input-range>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-input-range>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic Slider with a Label
 
@@ -127,9 +127,9 @@ Use `::part(header)` to hide the label-and-value header when the surrounding UI 
 `<mds-input-range>` has no public CSS custom property: the thumb and the track take their sizes from the component and their colours from the semantic color roles ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), the progress from the accent, so themes and dark mode recolour it without overrides. Adjust the slider only through its documented `header` and `track` parts, as in the example above.
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-input-range>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-range>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use a Raw `<input type="range">` Instead of the Component
 

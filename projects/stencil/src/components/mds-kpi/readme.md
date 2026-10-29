@@ -28,9 +28,9 @@ The `<mds-kpi>` web component is the layout container of the Magma Design System
 - **`--mds-kpi-text-animation-speed`** and **`--mds-kpi-text-animation-placeholder-char`**: tune the scramble/reveal text effect used by children. The animation only runs when a child sets a non-zero `threshold`, which animates the value in once the item scrolls into view; with the default `threshold` of `0` the figure renders statically.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-kpi>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-kpi>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Basic KPI Panel
 
@@ -135,9 +135,9 @@ mds-kpi-item::part(content) {
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-kpi>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-kpi>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Place Raw HTML in the Default Slot
 

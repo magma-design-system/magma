@@ -34,9 +34,9 @@ This component uses the shared `variant` / `tone` ladders defined in [`docs/agen
 - The **default slot** carries the body text/markup; the **`action` slot** holds inline controls, with `mds-button` the recommended element.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-banner>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-banner>` component, ordered from most common to most specialized. The examples assume a working knowledge of the variant / tone ladders documented in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md) and the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Informational Banner
 
@@ -204,9 +204,9 @@ Override appearance only through the public `--mds-banner-*` custom properties. 
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-banner>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-banner>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Use an Invalid `tone` Value
 
@@ -260,7 +260,7 @@ The `action` named slot is the correct place for inline controls. Placing button
 
 #### Do Not Set `dismissible="false"` to Hide the Close Button
 
-`dismissible` is a boolean prop, and a false boolean is an absent attribute ([`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md)). Stencil reads the string `"false"` as `false` here, so the button is hidden, but the attribute stays on the element and any `[dismissible]` selector still matches it. Remove the attribute (or omit it) to hide the button.
+`dismissible` is a boolean prop, and a false boolean is an absent attribute ([`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md)). Stencil reads the string `"false"` as `false` here, so the button is hidden, but the attribute stays on the element and any `[dismissible]` selector still matches it. Remove the attribute (or omit it) to hide the button.
 
 ```html
 <!-- INCORRECT -->

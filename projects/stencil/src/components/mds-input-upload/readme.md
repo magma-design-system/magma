@@ -33,9 +33,9 @@ The `<mds-input-upload>` web component is the Magma Design System file-upload co
 - **`sort`** controls whether the sort chooser is shown. When `sort` is set to `'date'` or `'status'`, the files start in that order and the sort tab bar appears once more than one file is present; the user's choice from the tab bar then stays in place as files are added, the highlighted tab is always the order applied, and the choice persists to `localStorage`. Changing `sort` applies the new order. When `sort` is omitted, no tab bar is shown and the last `localStorage` preference (defaulting to `'date'`) is applied silently.
 
 
-### 2. Pattern
+### 2. Examples
 
-Correct and idiomatic ways to use the `<mds-input-upload>` component, ordered from most common to most specialized. Patterns assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
+Correct and idiomatic ways to use the `<mds-input-upload>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
 #### Single-File Upload (Default)
 
@@ -189,9 +189,9 @@ Style the component only through its public `--mds-input-upload-min-cols` CSS cu
 ```
 
 
-### 3. Antipattern
+### 3. Mistakes
 
-Common incorrect uses of `<mds-input-upload>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/anti-patterns.md`](../../../../../../docs/agents/anti-patterns.md) - they apply here too but are not repeated.
+Common incorrect uses of `<mds-input-upload>`. Each entry pairs the wrong form with the right one and a one-line reason. System-wide rules (boolean-as-string, shadow piercing, Tailwind color utilities, raw native event listening) live in [`docs/agents/mistakes.md`](../../../../../../docs/agents/mistakes.md) - they apply here too but are not repeated.
 
 #### Do Not Replace the Component with a Raw `<input type="file">`
 
