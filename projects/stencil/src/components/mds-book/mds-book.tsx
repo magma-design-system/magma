@@ -636,7 +636,7 @@ export class MdsBook {
             <div
               class={{
                 book: true,
-                'book--pending': this.hasImage() && this.coverUrl === undefined,
+                'book--printed': this.hasImage(),
               }}
               style={this.bookStyle()}
             >

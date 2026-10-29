@@ -23,6 +23,13 @@ const ratioOf = (element: Element): number => {
 const part = (root: HTMLElement, selector: string): HTMLElement | null =>
   root.shadowRoot!.querySelector<HTMLElement>(selector);
 
+const background = (root: HTMLElement, selector: string, pseudo?: string): string =>
+  getComputedStyle(part(root, selector)!, pseudo).backgroundColor;
+
+// the colour a consumer gives the drawn cover, and the paper a printed one is bound in
+const drawnColor = 'rgb(27, 94, 32)';
+const paper = 'rgb(250, 248, 242)';
+
 const loaded = async (root: HTMLElement): Promise<void> => {
   const image = part(root, 'img') as HTMLImageElement;
   await vi.waitFor(() => expect(image.complete && image.naturalWidth > 0).toBe(true));
@@ -160,37 +167,50 @@ describe('mds-book', () => {
       expect(getComputedStyle(mark).maskImage).toContain('data:image/svg+xml');
     });
 
-    it('draws the cover when the image fails to load', async () => {
+    it('draws the cover when the image fails to load, in the colour of a drawn cover', async () => {
       const { root } = await render(
-        '<mds-book src="/missing-cover.webp" name="Manuale"></mds-book>',
+        `<mds-book src="/missing-cover.webp" name="Manuale" style="--mds-book-color: ${drawnColor}"></mds-book>`,
       );
 
       await vi.waitFor(() => expect(part(root, '.drawn-name')).toEqualText('Manuale'));
       expect(part(root, 'img')).toBeNull();
+      expect(background(root, '.front')).toBe(drawnColor);
+      expect(background(root, '.spine')).toBe(drawnColor);
     });
 
-    // a lazy catalogue showed every book in the accent colour until its cover arrived
-    it('is a neutral shape while its image is on the way, not the colour of a drawn cover', async () => {
+    // A lazy catalogue showed every book in the colour of drawn covers until its cover arrived,
+    // and the spine flashed in it again once the cover had arrived (#1171): a book with an
+    // image is printed on paper, from the start.
+    it('is a blank book of paper while its image is on the way, not the colour of a drawn cover', async () => {
       const { root } = await render(
         // far below the viewport, a lazy image is not requested yet (a data: url would load at once)
-        '<div><mds-book></mds-book><div style="height: 20000px"></div><mds-book src="/far-below.webp"></mds-book></div>',
+        `<div><mds-book style="--mds-book-color: ${drawnColor}"></mds-book><div style="height: 20000px"></div><mds-book src="/far-below.webp" style="--mds-book-color: ${drawnColor}"></mds-book></div>`,
       );
-      const [drawn, waiting] = Array.from(root.querySelectorAll('mds-book'));
-      const front = (book: Element) =>
-        getComputedStyle(part(book as HTMLElement, '.front')!).backgroundColor;
+      const [drawn, waiting] = Array.from(root.querySelectorAll<HTMLElement>('mds-book'));
 
-      expect(part(waiting as HTMLElement, '.book')).toHaveClass('book--pending');
-      expect(part(drawn as HTMLElement, '.book')).not.toHaveClass('book--pending');
-      expect(front(waiting)).not.toBe(front(drawn));
+      expect(background(drawn, '.front')).toBe(drawnColor);
+      expect(background(waiting, '.front')).toBe(paper);
+      expect(background(waiting, '.spine')).toBe(paper);
     });
 
-    it('takes the colours of its cover once the image has loaded', async () => {
+    it('keeps the paper under its image once loaded, on the spine and the board edges', async () => {
       const { root } = await render(
-        `<mds-book src="${cover(170, 240)}" loading="eager"></mds-book>`,
+        `<div>
+          <mds-book src="${cover(170, 240)}" loading="eager" style="--mds-book-color: ${drawnColor}"></mds-book>
+          <mds-book src="${cover(170, 240)}" loading="eager" binding="hardcover" style="--mds-book-color: ${drawnColor}"></mds-book>
+        </div>`,
       );
-      await loaded(root);
+      const [paperback, hardcover] = Array.from(root.querySelectorAll<HTMLElement>('mds-book'));
+      await loaded(paperback);
+      await loaded(hardcover);
 
-      expect(part(root, '.book')).not.toHaveClass('book--pending');
+      expect(getComputedStyle(part(paperback, '.spine')!).backgroundImage).toContain(
+        'data:image/svg+xml',
+      );
+      expect(background(paperback, '.spine')).toBe(paper);
+      expect(background(paperback, '.pages-top', '::after')).toBe(paper);
+      expect(background(hardcover, '.slat')).toBe(paper);
+      expect(background(hardcover, '.board-top')).toBe(paper);
     });
 
     it('tries a new image again after a failed one', async () => {

@@ -14,9 +14,9 @@ The `<mds-book>` web component shows a book as a physical object, from the image
 #### Semantic Behavior
 
 - **One image of the book**: The host is a single `role="img"` named by `alt`, or by `name` and `author` ("Title by Author", localised in el/en/es/it), or by a generic "Book" when there is neither. An empty `alt` marks the book as decorative (`role="presentation"`). The text printed on the spine and on a drawn cover is hidden from assistive technologies, since it repeats that name.
-- **The sides come from the cover**: The spine continues the left edge of the cover image and the board edges its top and right edges, as a wraparound cover prints its design on, so no spine or back cover image is needed. Without an image they take `--mds-book-color`.
-- **A drawn cover instead of a broken image**: Without `src`, or when the image fails to load, the front shows the author, the title and the publisher, or its mark, on `--mds-book-color`. A new `src` tries again.
-- **A neutral shape while loading**: Until its image arrives, a book with `src` is drawn in a neutral surface colour, so a lazy catalogue does not flash in the colour of drawn covers.
+- **The sides come from the cover**: The spine continues the left edge of the cover image and the board edges its top and right edges, as a wraparound cover prints its design on, so no spine or back cover image is needed. Without an image they take the colour of the drawn cover.
+- **A drawn cover instead of a broken image**: Without `src`, or when the image fails to load, the front shows the author, the title and the publisher, or its mark, on `--mds-book-color`, which paints the drawn cover only. A new `src` tries again.
+- **Printed on paper**: A book with `src` is bound in the colour of paper, the same in light and dark mode, as the image is: a blank book until its image arrives, then the paper wherever the image does not reach (its transparent parts, the spine and the edges until they paint it). So neither a lazy catalogue nor a cover that has just arrived flashes in the colour of drawn covers, and one library can mix books with and without a cover image with no setting.
 - **Light and shadow**: The book is seen a little from above. Each face takes the light by how it turns toward it, in a light touch that shows the volume without drawing the eye. Its shadow falls on the surface it rests on, under its tail when it stands and under its back cover when it lies, darkest where it touches and soon gone; around its outline only a halo faint enough to part a light cover from a light page.
 - **Movement**: The book rests in its `pose`. On hover it rises off the surface, its shadow fading there, and leans a little toward the pointer, with a faint sheen on the cover. A drag (mouse, pen or finger) turns it further, within limits, to show the spine or the pages, never the back, or spins a lying book on its surface; it settles back when released, or when the pointer leaves the window or the frame of the page, where its release could not reach the book. A vertical swipe still scrolls the page.
 - **Not a control**: The book has no action of its own. To make it a link, wrap it: the click that ends a drag does not follow the link, a plain click does.
@@ -118,7 +118,7 @@ With `format="auto"` (the default) the book takes the proportions of its image o
 
 #### A Book Without a Cover Image
 
-Without `src`, the component draws a cover with the title, the author and the publisher. Give it the colour of the series.
+Without `src`, the component draws a cover with the title, the author and the publisher. Give it the colour of the series: `--mds-book-color` paints only the drawn cover, also when an image fails, so it can be set on every book of a library, the books with an image keep the colours of their cover.
 
 ```html
 <mds-book
@@ -275,15 +275,15 @@ The book is already named after `name` and `author`. A visible caption that repe
 
 ## CSS Custom Properties
 
-| Name                         | Description                                                                                                                                                                  |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-book-color`           | Public, static. The colour of the binding where the cover image cannot continue: the spine and the board edges without an image, and the cover drawn when there is no image. |
-| `--mds-book-page-weight-max` | The thickness of a page, in millimetres (a number), on a book of 1000 pages and more: the thin paper of a volume.                                                            |
-| `--mds-book-page-weight-min` | The thickness of a page, in millimetres (a number), on a book of 1 page; between 1 and 1000 pages it goes to --mds-book-page-weight-max in proportion.                       |
-| `--mds-book-paper-color`     | The colour of the page block.                                                                                                                                                |
-| `--mds-book-publisher-color` | Public, static. The colour of the publisher at the foot of the spine and of the cover drawn when there is no image, its mark or its name. Unset, the colour of the text.     |
-| `--mds-book-spine-color`     | Public, static. A solid colour for the spine and the board edges. Unset, they continue the edges of the cover image.                                                         |
-| `--mds-book-text-color`      | Public, static. The colour of the text on the spine and on the cover drawn when there is no image.                                                                           |
+| Name                         | Description                                                                                                                                                                                      |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--mds-book-color`           | Public, static. The colour of the cover drawn when there is no image (no src, or one that fails), with its spine and board edges. A book with an image does not take it: it is printed on paper. |
+| `--mds-book-page-weight-max` | The thickness of a page, in millimetres (a number), on a book of 1000 pages and more: the thin paper of a volume.                                                                                |
+| `--mds-book-page-weight-min` | The thickness of a page, in millimetres (a number), on a book of 1 page; between 1 and 1000 pages it goes to --mds-book-page-weight-max in proportion.                                           |
+| `--mds-book-paper-color`     | The colour of paper: the page block, and the binding of a book with an image, under it.                                                                                                          |
+| `--mds-book-publisher-color` | Public, static. The colour of the publisher at the foot of the spine and of the cover drawn when there is no image, its mark or its name. Unset, the colour of the text.                         |
+| `--mds-book-spine-color`     | Public, static. A solid colour for the spine and the board edges. Unset, they continue the edges of the cover image.                                                                             |
+| `--mds-book-text-color`      | Public, static. The colour of the text on the spine and on the cover drawn when there is no image.                                                                                               |
 
 
 ----------------------------------------------

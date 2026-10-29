@@ -277,6 +277,33 @@ export const CustomColors = {
   ),
 };
 
+// a cover with a transparent ground, inline so the story needs no network
+const transparentCover = `data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="510" height="720"><circle cx="255" cy="300" r="170" fill="#c0392b"/><text x="255" y="580" fill="#1f2933" font-family="sans-serif" font-size="56" font-weight="700" text-anchor="middle">Bilancio</text></svg>',
+)}`;
+
+// One library, one colour for every book: it paints the covers the component draws, while the
+// books with an image are printed on paper, which shows where the image is transparent.
+const libraryColor = { '--mds-book-color': '#123a6b', '--mds-book-text-color': '#ffffff' };
+
+export const Library = {
+  render: () => (
+    <Stage>
+      <div class={threeBooks}>
+        <Row label="a cover image">
+          <mds-book src={cover(3)} name={titles[2]} pages={640} style={libraryColor} />
+        </Row>
+        <Row label="no image">
+          <mds-book name="Circolare n. 122" publisher="INPS" pages={24} style={libraryColor} />
+        </Row>
+        <Row label="a cover image with a transparent ground">
+          <mds-book src={transparentCover} name="Bilancio" pages={160} style={libraryColor} />
+        </Row>
+      </div>
+    </Stage>
+  ),
+};
+
 // a made-up book, drawn without an image
 const record = {
   author: 'Mario Rossi',
