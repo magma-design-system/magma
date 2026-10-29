@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="1188" viewBox="0 0 840 1188">
+  <!-- The first page of a made-up document, A4, for the binding="none" stories of mds-book:
+       the minutes of a council session of an invented municipality. The ground is the paper of
+       the page block (the paper colour of mds-book), so the sheet on top matches the stack. -->
+  <rect width="840" height="1188" fill="#faf8f2"/>
+
+  <g font-family="Helvetica, Arial, sans-serif">
+    <circle cx="110" cy="108" r="32" fill="none" stroke="#1d3f72" stroke-width="3"/>
+    <text x="110" y="116" fill="#1d3f72" font-size="22" font-weight="700" text-anchor="middle">CV</text>
+    <text x="160" y="104" fill="#1f2328" font-size="22" font-weight="700" letter-spacing="1.5">COMUNE DI VALFIORITA</text>
+    <text x="160" y="128" fill="#5b6470" font-size="14">Segreteria generale e organi istituzionali</text>
+    <text x="760" y="104" fill="#5b6470" font-size="13" text-anchor="end">Prot. n. 4821/2026</text>
+    <text x="760" y="124" fill="#5b6470" font-size="13" text-anchor="end">Class. 1.6.2</text>
+  </g>
+  <rect x="80" y="156" width="680" height="3" fill="#1d3f72"/>
+
+  <g font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    <text x="420" y="222" fill="#1f2328" font-size="30" font-weight="700" letter-spacing="1">VERBALE DELLA SEDUTA</text>
+    <text x="420" y="252" fill="#1f2328" font-size="18">del Consiglio comunale</text>
+    <text x="420" y="278" fill="#5b6470" font-size="15">Seduta n. 14 del 22 ottobre 2026, in sessione ordinaria</text>
+  </g>
+
+  <rect x="80" y="306" width="680" height="104" rx="4" fill="#efebe1"/>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#5b6470" letter-spacing="0.8">
+    <text x="104" y="346">DATA</text>
+    <text x="104" y="384">PRESIEDE</text>
+    <text x="440" y="346">LUOGO</text>
+    <text x="440" y="384">VERBALIZZA</text>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif" font-size="15" fill="#1f2328">
+    <text x="196" y="346">22 ottobre 2026, ore 18:00</text>
+    <text x="196" y="384">Laura Bianchi</text>
+    <text x="538" y="346">Sala consiliare</text>
+    <text x="538" y="384">Marco Rossi, segretario</text>
+  </g>
+
+  <g font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#1d3f72">
+    <text x="80" y="458">Presenti</text>
+    <text x="80" y="560">Ordine del giorno</text>
+    <text x="80" y="744">Svolgimento della seduta</text>
+  </g>
+
+  <g font-family="Georgia, 'Times New Roman', serif" font-size="15" fill="#1f2328">
+    <text x="80" y="484">Laura Bianchi (presidente), Giulia Verdi, Andrea Russo, Francesca Esposito, Paolo</text>
+    <text x="80" y="508">Colombo, Sara Ricci, Davide Gallo, Elena Conti. Assente giustificato: Luca Marino.</text>
+
+    <text x="80" y="588">1.  Comunicazioni del Sindaco</text>
+    <text x="80" y="614">2.  Approvazione dei verbali della seduta precedente</text>
+    <text x="80" y="640">3.  Variazione al bilancio di previsione 2026-2028</text>
+    <text x="80" y="666">4.  Regolamento per l'uso degli spazi pubblici</text>
+    <text x="80" y="692">5.  Mozioni e interrogazioni</text>
+
+    <text x="80" y="772">Alle ore 18:05, constatata la presenza del numero legale, la presidente dichiara aperta</text>
+    <text x="80" y="796">la seduta e passa all'esame del primo punto all'ordine del giorno. Il Sindaco informa</text>
+    <text x="80" y="820">il Consiglio dell'avvio dei lavori nella scuola primaria di via dei Tigli, che saranno</text>
+    <text x="80" y="844">conclusi entro l'inizio del prossimo anno scolastico.</text>
+    <text x="80" y="880">Sul secondo punto la presidente ricorda che i verbali della seduta del 30 settembre sono</text>
+    <text x="80" y="904">stati trasmessi ai consiglieri il 15 ottobre. Non essendovi osservazioni, il Consiglio</text>
+    <text x="80" y="928">li approva all'unanimità dei presenti.</text>
+    <text x="80" y="964">Sul terzo punto interviene l'assessore al bilancio, che illustra la proposta di variazione:</text>
+    <text x="80" y="988">maggiori entrate per contributi regionali e una diversa ripartizione delle spese correnti,</text>
+    <text x="80" y="1012">senza modificare gli equilibri di bilancio. Segue la discussione, nella quale intervengono</text>
+    <text x="80" y="1036">i consiglieri Verdi e Colombo.</text>
+  </g>
+
+  <rect x="80" y="1100" width="680" height="1" fill="#c9c4b8"/>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#5b6470">
+    <text x="80" y="1128">Comune di Valfiorita - Verbale del Consiglio comunale n. 14/2026</text>
+    <text x="760" y="1128" text-anchor="end">Pagina 1 di 120</text>
+  </g>
+</svg>

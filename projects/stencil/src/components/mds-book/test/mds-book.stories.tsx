@@ -78,6 +78,9 @@ const squareCover = `data:image/svg+xml,${encodeURIComponent(
 
 const cover = (n: number) => `./book-cover-${String(n).padStart(2, '0')}.webp`;
 
+// the first page of a made-up document, the minutes of a council session, A4
+const documentPage = './document-page-01.svg';
+
 // the mark of Maggioli Editore, from the identity package
 const publisherLogo = './logo-maggioli-editore.svg';
 
@@ -166,8 +169,16 @@ export const Binding = {
         <Row label="hardcover">
           <mds-book {...args} binding="hardcover" />
         </Row>
+        {/* not bound, a document: its first page is the sheet on top */}
         <Row label="none">
-          <mds-book {...args} binding="none" />
+          <mds-book
+            {...args}
+            binding="none"
+            name="Verbale della seduta del Consiglio comunale n. 14"
+            publisher="Comune di Valfiorita"
+            src={documentPage}
+            pages={120}
+          />
         </Row>
       </div>
     </Stage>
