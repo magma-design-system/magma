@@ -549,6 +549,27 @@ describe('the pattern tool', () => {
     ).rejects.toThrow('about of message-placement is one of field, region, action, application');
   });
 
+  test('a case Magma has a preview of names it; the answer for a situation gives the stage', async () => {
+    const file = '../magma/agents/patterns/previews/message-placement/action-failed-in-place.html';
+    const { pattern } = await run('get_pattern', { id: 'message-placement' });
+    const byId = (id: string) => pattern.cases.find((one: { id: string }) => one.id === id);
+    expect(byId('action-failed-in-place').preview).toBe(file);
+    expect(byId('field-error').preview).toBeUndefined();
+    const { answer } = await run('get_pattern', {
+      id: 'message-placement',
+      situation: { about: 'action', outcome: 'failure', place: 'on-screen', timing: 'now' },
+    });
+    expect(answer).toMatchObject({
+      id: 'action-failed-in-place',
+      preview: {
+        file,
+        try: 'Press Salva: the error shows above the form, and what was written stays.',
+      },
+    });
+    expect(answer.preview.markup).toMatch(/^<div[\s\S]*<mds-banner id="message" variant="error"/);
+    expect(answer.preview.markup).not.toMatch(/<!--/);
+  });
+
   test('one section, a candidate as a gap, an unknown id', async () => {
     const section = await run('get_pattern', { id: 'confirm-action', section: 'behaviour' });
     expect(section).toMatchObject({ id: 'confirm-action', section: 'Behaviour over time' });

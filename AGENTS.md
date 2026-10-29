@@ -125,7 +125,7 @@ What one project produces and another reads (`documentation.json`, the token dat
 | Contribution workflow and git governance: branching, merge queue, releases, tests, issue labels | `docs/WORKFLOW.md`                      |
 | Writing and running tests: Vitest spec, e2e, storybook (play + a11y) and wrapper tests | `projects/stencil/HOWTO.md`                      |
 | Navigable catalogue of all 117 components, which per-component file to read, authoring usage docs | `docs/COMPONENTS.md`                  |
-| Writing or changing a pattern (a task across components, shipped as `agents/patterns/<id>.md`): the method, the format, the check, product layers; the skills `/pattern-new`, `/pattern-change`, `/pattern-list` | `docs/PATTERNS.md` |
+| Writing or changing a pattern (a task across components, shipped as `agents/patterns/<id>.md`): the method, the format, the preview of each case, the check, product layers; the skills `/pattern-new`, `/pattern-change`, `/pattern-preview`, `/pattern-list` | `docs/PATTERNS.md` |
 | Token families: which ones UI code paints with, how to consume them                    | `docs/TOKENS.md`                                 |
 | Editor autocomplete for tokens: setup, generated sheet, extension traps                | `docs/EDITOR_TOKENS.md`                          |
 | Design tokens: structure, levels, semantics, naming convention                         | `projects/design-tokens/SPEC.md`                 |

@@ -71,7 +71,12 @@ Ask the maintainer, two or three at a time, each a multiple-choice question with
 recommended option first and a one-line reason for each option. Every answer becomes a row of
 `## Decisions`. When no gap is left, set `status: decided`.
 
-## 6. The pull request
+## 6. The previews
+
+For each case, its preview: follow `.claude/skills/pattern-preview/SKILL.md` for this pattern
+(two options live, the maintainer chooses), so the pattern leaves with every case shown.
+
+## 7. The pull request
 
 Run `npx nx run stencil:check.usage-docs` and `npx nx run lint:test` too, commit
 (`feat(magma): add the pattern <id>`; ASCII only, `docs/COMMITS.md`), check `origin/main` in its

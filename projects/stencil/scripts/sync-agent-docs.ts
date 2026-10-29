@@ -7,7 +7,8 @@
  * SHARED_FRAGMENTS) into each package, rewrites the repo-internal links so they
  * resolve inside node_modules (rewriteGuideLinks), generates the component
  * catalogue linking each component's own docs, copies the patterns (docs/agents/patterns/,
- * #1174) into agents/patterns/ with their catalogue, and emits a version-stamped AGENTS.md
+ * #1174) into agents/patterns/ with their catalogue and the previews of their cases (#1186),
+ * and emits a version-stamped AGENTS.md
  * entry point: the detect-then-ask install procedure plus a routing table, so an agent
  * reads only the fragment it needs.
  *
@@ -30,7 +31,12 @@ import {
   taxonomyErrors,
   toAscii,
 } from './agent-docs-lib';
-import { PATTERN_GROUPS, listPatterns, readPatternDir } from '../../lint/src/core/patterns';
+import {
+  PATTERN_GROUPS,
+  PREVIEWS_DIR,
+  listPatterns,
+  readPatternDir,
+} from '../../lint/src/core/patterns';
 
 // cwd is the stencil package dir when run via npm script.
 const STENCIL_DIR = process.cwd();
@@ -369,6 +375,10 @@ function main(): void {
         path.join(agentsDir, 'patterns', file),
         rewriteGuideLinks(fs.readFileSync(path.join(PATTERNS_DIR, file), 'utf8'), docsPrefix),
       );
+    // the previews of the cases (#1186), as they are: a stage, read by the docs site and get_pattern
+    const previewsDir = path.join(PATTERNS_DIR, PREVIEWS_DIR);
+    if (fs.existsSync(previewsDir))
+      fs.cpSync(previewsDir, path.join(agentsDir, 'patterns', PREVIEWS_DIR), { recursive: true });
     fs.writeFileSync(path.join(agentsDir, 'patterns.md'), buildPatternsMd());
 
     console.log(

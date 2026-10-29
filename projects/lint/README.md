@@ -131,7 +131,12 @@ or on the guide it enforces, not only on fixtures picked by hand.
   replaces Magma's, since Magma's id is the contract the products cite. A pattern of the
   product's own is held to the format, the cases and the components, not to the lint rules
   (its lint may have rules of its own) nor to the generated body (the generator does not
-  ship). A candidate is a gap: Magma knows the need and has no default.
+  ship). A candidate is a gap: Magma knows the need and has no default. The preview of a case
+  (#1186) is the file `previews/<pattern>/<case>.html` beside the patterns, matched by its path
+  only, so a renamed case moves its file and the check says so; each case of a pattern names
+  its path, and the answer for a situation carries the stage with what to try, since that is
+  the one case the agent builds and its markup is short. Only Magma's cases have previews: a
+  product layer adds situations, never a case to show.
 - **What a tool or a rule says about itself** (the documentation site reads it from the
   installed package, magma-design-system/docs#1): the same fields on both plugins, a
   description and the URL of its section of `agents/lint.md` (an ESLint rule in

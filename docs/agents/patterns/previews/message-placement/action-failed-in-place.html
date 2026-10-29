@@ -1,0 +1,33 @@
+<!--
+try: Press Salva in the dialog: the error shows inside it, above the field, and what was written stays.
+height: 460
+-->
+<mds-button id="open" tone="weak">Modifica azienda</mds-button>
+<mds-modal id="dialog" opened>
+  <div slot="top" style="padding: calc(var(--spacing) * 400)">
+    <mds-text typography="h5">Modifica azienda</mds-text>
+  </div>
+  <div style="display: grid; gap: calc(var(--spacing) * 300); padding: 0 calc(var(--spacing) * 400)">
+    <mds-banner id="message" variant="error" headline="Salvataggio non riuscito" style="display: none">
+      Il server non risponde. I dati sono ancora qui: riprova.
+    </mds-banner>
+    <mds-input-field label="Ragione sociale">
+      <mds-input value="Maggioli SpA"></mds-input>
+    </mds-input-field>
+  </div>
+  <div slot="bottom" style="display: flex; gap: calc(var(--spacing) * 200); justify-content: end; padding: calc(var(--spacing) * 400)">
+    <mds-button tone="weak" id="cancel">Annulla</mds-button>
+    <mds-button id="save">Salva</mds-button>
+  </div>
+</mds-modal>
+<script>
+  const dialog = document.getElementById('dialog');
+  const message = document.getElementById('message');
+  document.getElementById('open').addEventListener('click', () => {
+    message.style.display = 'none';
+    dialog.opened = true;
+  });
+  dialog.addEventListener('mdsModalClose', () => (dialog.opened = undefined));
+  document.getElementById('save').addEventListener('click', () => (message.style.display = ''));
+  document.getElementById('cancel').addEventListener('click', () => dialog.close());
+</script>

@@ -11,11 +11,12 @@ default, the same in every product, so that the agents of the products ask for i
 | What | Where |
 | --- | --- |
 | The patterns, one file each | `docs/agents/patterns/<id>.md`, written by the maintainers of Magma |
-| What ships | `agents/patterns/<id>.md` and the catalogue `agents/patterns.md` in the three entry packages, written by `projects/stencil/scripts/sync-agent-docs.ts` before the build |
+| The preview of each case | `docs/agents/patterns/previews/<id>/<case>.html` (#1186) |
+| What ships | `agents/patterns/<id>.md`, the previews in `agents/patterns/previews/` and the catalogue `agents/patterns.md` in the three entry packages, written by `projects/stencil/scripts/sync-agent-docs.ts` before the build |
 | Who reads them | the `get_pattern` tool of the MCP server, the `ui` and `review` skills of the Claude Code plugin, the agents of the products, the docs site |
 | The format and its checks | `projects/lint/src/core/patterns.ts`, which ships inside `magma` |
 | The template | `projects/stencil/template/pattern.md` |
-| The contributor skills | `.claude/skills/pattern-new`, `pattern-change`, `pattern-list` (not in the plugin that ships) |
+| The contributor skills | `.claude/skills/pattern-new`, `pattern-change`, `pattern-preview`, `pattern-list` (not in the plugin that ships) |
 | A product layer | `magma/patterns/<id>.md` in the product's own repository |
 
 ## The method
@@ -63,6 +64,46 @@ Content, Magma gaps, Decisions. The title, the principle and the sections Cases,
 Open choices and Situations are written from the frontmatter by the generator: edit the data,
 never those sections. When to use it, What decides it and Decisions are required.
 
+## The preview of a case
+
+Each case of a pattern has a preview: the case working, with the real components, so the docs
+site, a decision and an agent show what the case does instead of describing it. The maintainer
+chose it in a decision (#1182: the options live, the recommended one first), and the option
+chosen is saved as the preview. One file per case, `previews/<id>/<case>.html` beside the
+patterns:
+
+```html
+<!--
+try: Press Salva: the error shows above the form, and what was written stays.
+-->
+<div style="display: grid; gap: calc(var(--spacing) * 300)">
+  <mds-banner id="message" variant="error" headline="Salvataggio non riuscito" style="display: none">
+    ...
+</div>
+<script>
+  ...
+</script>
+```
+
+- **Only the stage.** The markup of the case and its own small script, never a page: no
+  `<head>`, `<link>`, `<style>` nor a script with `src`, nothing from another address. The page
+  around it adds the stylesheets of `agents/assets.md` and the loader of the installed magma, so
+  the preview runs on the version the reader has. Its layout takes the tokens
+  (`calc(var(--spacing) * 300)`), its words are Italian as in the examples of the components.
+- **What to try**, required: one line, what to do in the preview ("Press Salva: ..."), or what
+  to look at when there is nothing to do. The page shows it under the stage. A live preview with
+  nothing said is a still form; the maintainer chose the line and no animation (#1186).
+- **A page of its own.** The page runs each preview in a document of its own (an iframe): its
+  styles, ids and script stay inside, and the Magma of the stage never mixes with the page
+  around it. `height`, optional, gives that document a fixed height in pixels: an overlay needs
+  it, since `mds-modal` is a `<dialog>` in the top layer sized on the viewport and takes no room
+  in the stage. A banner that is the message of a modal goes in its `window` slot.
+- **Who reads it.** The docs site from `node_modules`; `get_pattern` gives its path on each case
+  of a pattern, and the stage itself with what to try in the answer for a situation.
+
+`/pattern-preview <id>` makes the previews a pattern lacks; `/pattern-new` and
+`/pattern-change` call it at the end, so a new or changed case leaves with its preview.
+
 ## The check
 
 `nx run stencil:check.patterns`, in CI after the build (the `usage-docs` job of
@@ -76,7 +117,10 @@ never those sections. When to use it, What decides it and Decisions are required
 - the lint: a rule `checked-by: lint` names a rule the lint has; a `lint-planned` one, a rule it
   does not have yet (once written, the check asks to switch it to `lint`);
 - the links: every pattern, case and rule cited exists, never under an old id;
-- the body: the sections in order, the generated ones up to date.
+- the body: the sections in order, the generated ones up to date;
+- the previews: each of a case that exists (a renamed case moves its file), with what to try, only
+  a stage, and its markup clean for the Magma lint (the strict preset); the cases with no preview
+  are listed as a warning, which does not fail the check while the previews are being made.
 
 `check.usage-docs` reads the bodies too, with the rules of every agent guide.
 
@@ -111,6 +155,8 @@ With Claude Code on this repository:
   the sources do not settle, opens the pull request;
 - `/pattern-change <id>`: shows why the current answer was decided, asks whether the change is
   the default or one product's layer, keeps the old id on a rename;
+- `/pattern-preview <id>`: for each case with no preview, shows two options live and saves the
+  one the maintainer chooses;
 - `/pattern-list`: the list, read only.
 
 Without Claude:

@@ -17,10 +17,14 @@ import {
   linkErrors,
   lintErrors,
   listPatterns,
+  missingPreviews,
   parsePatternFile,
+  parsePreview,
   parseUse,
+  previewLinkErrors,
   projectErrors,
   readPatternDir,
+  readPreviews,
   readProjectDir,
   resolveLayer,
   syncBody,
@@ -465,5 +469,98 @@ describe('the body', () => {
   test('a pattern with no open choice has no section for them', () => {
     const synced = syncBody(small({ 'open-choices': [] }), '# S\n\n## Open choices\n\nOld.\n');
     expect(synced).not.toMatch(/Open choices/);
+  });
+});
+
+describe('the previews of the cases', () => {
+  const stage = (head: string, markup = '<mds-button>Salva</mds-button>') =>
+    parsePreview(`${head}\n${markup}\n`, '/p/previews/small/on-field.html');
+
+  test('a preview is its keys and a stage, named after its pattern and case', () => {
+    const preview = stage('<!--\ntry: Press Salva.\nheight: 260\n-->');
+    expect(preview).toMatchObject({
+      pattern: 'small',
+      case: 'on-field',
+      try: 'Press Salva.',
+      height: 260,
+      errors: [],
+    });
+    expect(preview.markup).toBe('<mds-button>Salva</mds-button>\n');
+  });
+
+  test('what to try is required, every key known, the height in range', () => {
+    expect(stage('<mds-text>No comment</mds-text>', '').errors).toEqual([
+      'it opens with a comment of keys: try, height (docs/PATTERNS.md)',
+    ]);
+    expect(stage('<!--\nheight: 260\n-->').errors).toEqual([
+      'try is required: what to do in the preview, or what to look at',
+    ]);
+    expect(stage('<!--\ntry: Look.\nplay: #save\nwhy not\n-->').errors).toEqual([
+      'play is not a key of a preview: try, height',
+      '"why not" in the opening comment is not a key: value line',
+    ]);
+    const low = stage('<!--\ntry: Look.\nheight: 90\n-->');
+    expect(low.errors).toEqual(['height is a whole number of pixels, 120 to 2000']);
+    expect(low.height).toBeUndefined();
+  });
+
+  test('only a stage: no page, no script that loads, nothing from outside', () => {
+    const head = '<!--\ntry: Look.\n-->';
+    expect(stage(head, '').errors).toEqual(['the stage is empty']);
+    expect(stage(head, '<link rel="stylesheet" href="a.css"><style>p {}</style>').errors).toEqual([
+      '<link> belongs to the page around the stage: a preview is only the stage',
+      '<style> belongs to the page around the stage: a preview is only the stage',
+    ]);
+    expect(stage(head, '<script type="module" src="./loader.js"></script>').errors).toEqual([
+      'a script with src: the page around the stage loads Magma, a preview loads nothing',
+    ]);
+    expect(
+      stage(head, '<img src="https://example.com/a.png"><script>import("//cdn.x/y.js")</script>')
+        .errors,
+    ).toEqual([
+      'https://example.com/a.png is outside the preview: a stage loads nothing',
+      '//cdn.x/y.js is outside the preview: a stage loads nothing',
+    ]);
+  });
+
+  test('each preview shows a case that exists; the cases without one are listed', () => {
+    const at = (name: string) =>
+      parsePreview('<!--\ntry: Look.\n-->\n<mds-text>A</mds-text>', `/p/previews/${name}.html`);
+    const previews = [at('small/on-field'), at('small/gone'), at('old/on-field'), at('later/x')];
+    const patterns = [
+      small({ aliases: ['old'] }),
+      small({ id: 'later', status: 'candidate', cases: [] }),
+    ];
+    expect([...previewLinkErrors(previews, patterns)]).toEqual([
+      [
+        '/p/previews/small/gone.html',
+        ['small has no case gone: its cases are on-field, on-action, ask'],
+      ],
+      ['/p/previews/old/on-field.html', ['old is an old id of small: move the folder']],
+      ['/p/previews/later/x.html', ['later is a candidate: it has no cases to show']],
+    ]);
+    expect(missingPreviews(patterns, previews)).toEqual(['small/on-action', 'small/ask']);
+  });
+
+  test('the previews Magma ships are clean, each of a case', () => {
+    const previews = readPreviews(SOURCES);
+    expect(previews.length).toBeGreaterThan(0);
+    expect(previews.flatMap((one) => one.errors.map((error) => `${one.file}: ${error}`))).toEqual(
+      [],
+    );
+    expect([
+      ...previewLinkErrors(
+        previews,
+        readPatternDir(SOURCES).map((one) => one.data),
+      ),
+    ]).toEqual([]);
+  });
+
+  test('a folder with no previews has none', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-previews-'));
+    expect(readPreviews(dir)).toEqual([]);
+    mkdirSync(path.join(dir, 'previews/small'), { recursive: true });
+    writeFileSync(path.join(dir, 'previews/small/notes.md'), 'not a preview');
+    expect(readPreviews(dir)).toEqual([]);
   });
 });

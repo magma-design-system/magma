@@ -1073,3 +1073,163 @@ export const bodyErrors = (
     );
   return errors;
 };
+
+/*
+  The previews of the cases (#1186): one file per case, previews/<pattern>/<case>.html beside
+  the patterns, the stage the docs site, a decision and render_preview show. Only the stage: the
+  Magma markup of the case and its own small script, never a page; whoever shows it adds the
+  stylesheets of agents/assets.md and the loader of the installed magma. It opens with a comment
+  of keys, as a pattern opens with its frontmatter:
+
+    <!--
+    try: Press Salva: the error shows above the form and stays until it is solved.
+    height: 260
+    -->
+
+  `try`, required: what to do in the preview, or what to look at when there is nothing to do;
+  the page shows it under the stage (a live preview with nothing said is a still form: the
+  maintainer's call on #1186, a line and no animation). `height`, optional: the stage is a page
+  of its own that tall, as an overlay needs (mds-modal is a <dialog> in the top layer, sized on
+  the viewport, so inline it covers the page around the stage).
+*/
+
+/** The folder of the previews, inside the folder of the patterns. */
+export const PREVIEWS_DIR = 'previews';
+/** The keys of the opening comment of a preview. */
+export const PREVIEW_KEYS = ['try', 'height'] as const;
+/** The height of a stage that is a page of its own, in pixels: up to the side of an image of render_preview (#1180). */
+export const PREVIEW_HEIGHT = { min: 120, max: 2000 } as const;
+
+export interface Preview {
+  file: string;
+  /** The pattern and the case, from the path. */
+  pattern: string;
+  case: string;
+  try?: string;
+  height?: number;
+  /** The stage, without its opening comment. */
+  markup: string;
+  /** What is wrong in the file by itself: its keys, its markup. */
+  errors: string[];
+}
+
+const PREVIEW_HEAD = /^\s*<!--([\s\S]*?)-->[ \t]*\n?/;
+/** What makes a page, not a stage: the page around the preview has it once. */
+const PAGE_ELEMENT = /<(!doctype|html|head|body|meta|base|link|style|iframe)\b/gi;
+/** An address outside the preview, in an attribute or a script: a stage loads nothing. */
+const OUTSIDE_URL =
+  /(?:\b(?:src|href|srcset|action|poster)\s*=\s*["']?|\burl\(\s*["']?|\bimport\s*\(?\s*["'])((?:[a-z][a-z0-9+.-]*:)?\/\/[^\s"')]+)/gi;
+
+/** A preview, read from its text; the pattern and the case are the names of its folder and file. */
+export const parsePreview = (text: string, file: string): Preview => {
+  const pattern = path.basename(path.dirname(file));
+  const id = path.basename(file, '.html');
+  const errors: string[] = [];
+  const source = text.replace(/\r\n/g, '\n');
+  const head = PREVIEW_HEAD.exec(source);
+  const keys: Record<string, string> = {};
+  if (!head)
+    errors.push(`it opens with a comment of keys: ${PREVIEW_KEYS.join(', ')} (docs/PATTERNS.md)`);
+  else
+    for (const line of head[1]!.split('\n')) {
+      if (!line.trim()) continue;
+      const match = /^\s*([a-z-]+):\s*(.*?)\s*$/.exec(line);
+      if (!match) {
+        errors.push(`"${line.trim()}" in the opening comment is not a key: value line`);
+        continue;
+      }
+      if (!(PREVIEW_KEYS as readonly string[]).includes(match[1]!))
+        errors.push(`${match[1]} is not a key of a preview: ${PREVIEW_KEYS.join(', ')}`);
+      else keys[match[1]!] = match[2]!;
+    }
+  if (head && !keys.try)
+    errors.push('try is required: what to do in the preview, or what to look at');
+  let height: number | undefined;
+  if (keys.height !== undefined) {
+    const value = Number(keys.height);
+    if (!Number.isInteger(value) || value < PREVIEW_HEIGHT.min || value > PREVIEW_HEIGHT.max)
+      errors.push(
+        `height is a whole number of pixels, ${PREVIEW_HEIGHT.min} to ${PREVIEW_HEIGHT.max}`,
+      );
+    else height = value;
+  }
+  const markup = head ? source.slice(head[0].length) : source;
+  if (!markup.trim()) errors.push('the stage is empty');
+  for (const [, tag] of markup.matchAll(PAGE_ELEMENT))
+    errors.push(
+      `<${tag!.toLowerCase()}> belongs to the page around the stage: a preview is only the stage`,
+    );
+  if (/<script\b[^>]*\bsrc\s*=/i.test(markup))
+    errors.push(
+      'a script with src: the page around the stage loads Magma, a preview loads nothing',
+    );
+  for (const [, url] of markup.matchAll(OUTSIDE_URL))
+    errors.push(`${url} is outside the preview: a stage loads nothing`);
+  return {
+    file,
+    pattern,
+    case: id,
+    ...(keys.try ? { try: keys.try } : {}),
+    ...(height !== undefined ? { height } : {}),
+    markup,
+    errors,
+  };
+};
+
+/** Every preview of a folder of patterns (previews/<pattern>/<case>.html), by path; none when it has none. */
+export const readPreviews = (patternsDir: string): Preview[] => {
+  const root = path.join(patternsDir, PREVIEWS_DIR);
+  if (!existsSync(root)) return [];
+  return readdirSync(root, { withFileTypes: true })
+    .filter((one) => one.isDirectory())
+    .map((one) => one.name)
+    .sort()
+    .flatMap((pattern) =>
+      readdirSync(path.join(root, pattern))
+        .filter((name) => name.endsWith('.html'))
+        .sort()
+        .map((name) => {
+          const file = path.join(root, pattern, name);
+          return parsePreview(readFileSync(file, 'utf8'), file);
+        }),
+    );
+};
+
+/** The preview of a case, when it has one. */
+export const previewOf = (previews: Preview[], pattern: string, id: string) =>
+  previews.find((one) => one.pattern === pattern && one.case === id);
+
+/** A preview whose case does not exist, by file: a pattern Magma does not have, a candidate, a case it does not have. */
+export const previewLinkErrors = (
+  previews: Preview[],
+  patterns: Pattern[],
+): Map<string, string[]> => {
+  const { byId, aliases } = indexPatterns(patterns);
+  const found = new Map<string, string[]>();
+  for (const one of previews) {
+    const pattern = byId.get(one.pattern);
+    let error: string | undefined;
+    if (!pattern)
+      error = aliases.has(one.pattern)
+        ? `${one.pattern} is an old id of ${aliases.get(one.pattern)}: move the folder`
+        : `there is no pattern ${one.pattern}`;
+    else if (pattern.status === 'candidate')
+      error = `${one.pattern} is a candidate: it has no cases to show`;
+    else if (!(pattern.cases ?? []).some((entry) => entry.id === one.case))
+      error = `${one.pattern} has no case ${one.case}: its cases are ${(pattern.cases ?? [])
+        .map((entry) => entry.id)
+        .join(', ')}`;
+    if (error) found.set(one.file, [error]);
+  }
+  return found;
+};
+
+/** The cases with no preview yet, as <pattern>/<case>, the candidates aside. */
+export const missingPreviews = (patterns: Pattern[], previews: Preview[]): string[] =>
+  patterns
+    .filter((one) => one.status !== 'candidate')
+    .flatMap((one) =>
+      (one.cases ?? [])
+        .filter((entry) => !previewOf(previews, one.id, entry.id))
+        .map((entry) => `${one.id}/${entry.id}`),
+    );
