@@ -538,6 +538,47 @@ describe('mds-book', () => {
       expect(size(root, '.spine')[0]).toBe(51);
     });
 
+    // a document: its cover is only the sheet on top of the stack
+    it('leaves a book with no binding a stack of loose sheets, the pages on the side of the spine too', async () => {
+      const root = await book(
+        `binding="none" name="Circolare n. 122" author="Direzione centrale" publisher="INPS" style="--mds-book-color: ${drawnColor}"`,
+      );
+
+      expect(root).toEqualAttribute('binding', 'none');
+      expect(part(root, '.spine')).toBeNull();
+      expect(part(root, '.spine-text')).toBeNull();
+      expect(part(root, '.board-top')).toBeNull();
+      expect(size(root, '.pages-top')[0]).toBe(200);
+      expect(size(root, '.pages-fore')[1]).toBe(size(root, '.front')[1]);
+      // as deep as a paperback of the same pages, the pages where its spine would be
+      expect(size(root, '.pages-spine')).toEqual([51, size(root, '.front')[1]]);
+      // nothing wraps the pages: no hairline of a cover at their ends
+      for (const face of ['.pages-top', '.pages-bottom', '.pages-fore']) {
+        expect(getComputedStyle(part(root, face)!, '::before').content).toBe('none');
+        expect(getComputedStyle(part(root, face)!, '::after').content).toBe('none');
+      }
+      // the cover is still printed on the sheet on top, in its colour, with no gloss
+      expect(part(root, '.drawn-author')).toEqualText('Direzione centrale');
+      expect(part(root, '.drawn-name')).toEqualText('Circolare n. 122');
+      expect(part(root, '.drawn-publisher')).toEqualText('INPS');
+      expect(background(root, '.front')).toBe(drawnColor);
+      expect(getComputedStyle(part(root, '.gloss')!).display).toBe('none');
+    });
+
+    it('prints a cover image on the sheet on top of a book with no binding', async () => {
+      const { root } = await render(
+        `<mds-book src="${cover(170, 240)}" loading="eager" binding="none"></mds-book>`,
+      );
+      await loaded(root);
+
+      const edges = (selector: string) => getComputedStyle(part(root, selector)!).backgroundImage;
+
+      expect(part(root, '.front img')).not.toBeNull();
+      expect(part(root, '.spine')).toBeNull();
+      // the side of the spine shows the edges of the pages, not the edge of the image
+      expect(edges('.pages-spine')).toBe(edges('.pages-fore'));
+    });
+
     it('gives a hardcover boards with a thickness, overhanging a page block set in from them', async () => {
       const root = await book('binding="hardcover"');
       const [, board] = size(root, '.board-top--front');
@@ -587,6 +628,12 @@ describe('mds-book', () => {
       await vi.waitFor(() => expect(part(root, '.board-top')).not.toBeNull());
 
       expect(part(root, '.spine')).toBeNull();
+
+      root.setAttribute('binding', 'none');
+      await vi.waitFor(() => expect(part(root, '.pages-spine')).not.toBeNull());
+
+      expect(part(root, '.board-top')).toBeNull();
+      expect(part(root, '.slat')).toBeNull();
     });
   });
 

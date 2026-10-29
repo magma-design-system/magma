@@ -495,7 +495,7 @@ export namespace Components {
          */
         "author"?: string;
         /**
-          * How the book is bound: a thin flexible cover flush with the pages, or rigid boards a little larger than the page block, with a rounded spine
+          * How the book is bound: a thin flexible cover flush with the pages, rigid boards a little larger than the page block, with a rounded spine, or not at all (`none`), a stack of loose sheets, a document: its cover is only the sheet on top, and the pages show on every side, the side of the spine too, where nothing is printed
           * @default 'paperback'
          */
         "binding": BookBindingType;
@@ -5863,7 +5863,7 @@ declare namespace LocalJSX {
          */
         "author"?: string;
         /**
-          * How the book is bound: a thin flexible cover flush with the pages, or rigid boards a little larger than the page block, with a rounded spine
+          * How the book is bound: a thin flexible cover flush with the pages, rigid boards a little larger than the page block, with a rounded spine, or not at all (`none`), a stack of loose sheets, a document: its cover is only the sheet on top, and the pages show on every side, the side of the spine too, where nothing is printed
           * @default 'paperback'
          */
         "binding"?: BookBindingType;

@@ -39,6 +39,7 @@ The `<mds-book>` web component shows a book as a physical object, from the image
 - **`binding`**: how the book is built, which shows on its head, its fore edge and its spine.
   - `'paperback'`: cut flush, the cover a hairline on the same edge as the pages, a flat spine.
   - `'hardcover'`: rigid boards about 2.5 mm thick, overhanging a page block set in from them by about 3 mm, the endpapers showing in the gap, a headband, a rounded spine and a hinge groove on the front.
+  - `'none'`: not bound, a stack of loose sheets cut flush, as a document is. The cover, image or drawn (author, title, publisher and its colour), is only the sheet on top, with no fold and no gloss; the pages show on all four sides, the side of the spine too, which carries no text.
 - **`name`**, **`author`**, **`publisher`**: the same names as on `<mds-bibliography>`, so one catalogue record feeds both.
 - **The spine**: the title, then the author, at the head, and the publisher at the foot. Where the spine has room for two lines, at least 13.5% as deep as the book is wide (about 23 mm on a 17x24, some 270 pages in paperback), the author goes under the title, smaller, as on a thick volume.
 - **`publisher-logo`**: the mark of the publisher, printed instead of its name at the foot of the spine and of a drawn cover (a cover image carries its own). Only its shape is printed, as a mask, in `--mds-book-publisher-color`, which is the colour of the text unless set, so a mark of any colour prints in the ink of the book. Give an svg, or a png on a transparent ground; an image from another origin needs CORS headers, as any mask does. The place stays empty while the mark loads, and the name of the publisher is printed if it fails.
@@ -125,6 +126,20 @@ Without `src`, the component draws a cover with the title, the author and the pu
   name="Agenda dei servizi demografici 2027"
   publisher="Maggioli Editore"
   style="--mds-book-color: #f2a93b; --mds-book-text-color: #ffffff"
+></mds-book>
+```
+
+#### A Document
+
+A document is not bound: give it `binding="none"` and it is a stack of sheets, its pages showing on every side, its cover (the image, or the one the component draws) the sheet on top. A library of books and documents keeps one record shape: only the binding changes.
+
+```html
+<mds-book
+  binding="none"
+  name="Circolare n. 122"
+  author="Direzione centrale entrate"
+  publisher="INPS"
+  pages="24"
 ></mds-book>
 ```
 
@@ -255,7 +270,7 @@ The book is already named after `name` and `author`. A visible caption that repe
 | --------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | ------------- |
 | `alt`           | `alt`            | The accessible name of the book. Without it the name is built from `name` and `author`; an empty `alt` marks the book as decorative, left out by assistive technologies                                                                                                                                                                                                                                                                                    | `string \| undefined`                                            | `undefined`   |
 | `author`        | `author`         | The author, printed on the cover drawn when there is no image, above the title, and on the spine after the title, or under it where the spine has room for two lines                                                                                                                                                                                                                                                                                       | `string \| undefined`                                            | `undefined`   |
-| `binding`       | `binding`        | How the book is bound: a thin flexible cover flush with the pages, or rigid boards a little larger than the page block, with a rounded spine                                                                                                                                                                                                                                                                                                               | `"hardcover" \| "paperback"`                                     | `'paperback'` |
+| `binding`       | `binding`        | How the book is bound: a thin flexible cover flush with the pages, rigid boards a little larger than the page block, with a rounded spine, or not at all (`none`), a stack of loose sheets, a document: its cover is only the sheet on top, and the pages show on every side, the side of the spine too, where nothing is printed                                                                                                                          | `"hardcover" \| "none" \| "paperback"`                           | `'paperback'` |
 | `format`        | `format`         | The proportions of the book. `auto` takes them from the image; a named format (`a4`, `a5`, `b5`) is portrait; any other one is `WxH` in centimetres, the order of the two numbers being the orientation (`17x24` portrait, `24x17` landscape, `21x21` square)                                                                                                                                                                                              | `` "a4" \| "a5" \| "auto" \| "b5" \| `${number}x${number}` ``    | `'auto'`      |
 | `loading`       | `loading`        | Specifies whether a browser should load the cover immediately or defer it until it is near the viewport                                                                                                                                                                                                                                                                                                                                                    | `"eager" \| "lazy" \| undefined`                                 | `'lazy'`      |
 | `name`          | `name`           | The title of the book, printed on the spine and on the cover drawn when there is no image                                                                                                                                                                                                                                                                                                                                                                  | `string \| undefined`                                            | `undefined`   |

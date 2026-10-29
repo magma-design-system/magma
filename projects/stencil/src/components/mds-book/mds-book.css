@@ -357,6 +357,21 @@
     );
 }
 
+/* with no binding the cover is a sheet: no fold on the side of the spine, and no gloss, a sheet
+   of paper is not laminated */
+
+:host([binding='none']) .front::after {
+  background-image: linear-gradient(
+    105deg,
+    color-mix(in srgb, var(--mds-book-paper-color) 16%, transparent),
+    transparent 45%
+  );
+}
+
+:host([binding='none']) .gloss {
+  display: none;
+}
+
 .cover {
   display: block;
   height: 100%;
@@ -554,7 +569,8 @@
 
 .pages-top,
 .pages-bottom,
-.pages-fore {
+.pages-fore,
+.pages-spine {
   background-color: var(--mds-book-paper-color);
   background-repeat: no-repeat, repeat, no-repeat;
   background-size:
@@ -619,7 +635,8 @@
   width: 1cqi;
 }
 
-.pages-fore {
+.pages-fore,
+.pages-spine {
   background-image:
     linear-gradient(
       to right,
@@ -635,6 +652,9 @@
       color-mix(in srgb, var(--mds-book-paper-color), rgb(var(--magma-shadow-ink)) 9%) 0.45cqi
         0.55cqi
     );
+}
+
+.pages-fore {
   height: calc(100% - var(--private-book-square) * 2);
   transform: translate3d(
       calc(100cqi - var(--private-book-square)),
@@ -713,6 +733,21 @@
 .pages-flush--along::after {
   left: auto;
   right: 0;
+}
+
+/* Loose, with no binding: a stack of sheets cut flush as a paperback is, with nothing around
+   it, so no hairline of a cover at its ends, and the edges of the pages on the side of the
+   spine as well. */
+
+.pages-loose::before,
+.pages-loose::after {
+  content: none;
+}
+
+.pages-spine {
+  height: 100%;
+  transform: translateZ(calc(var(--private-book-depth) * -1)) rotateY(-90deg);
+  width: var(--private-book-depth);
 }
 
 /* The spine. Flat on a paperback, the cover folded at its two edges; on rigid boards an arc
