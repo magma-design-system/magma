@@ -1,13 +1,17 @@
 /*
   The component tools: find the one that fits a need, read its API, and write it in HTML,
-  React or Angular. Everything comes from the documentation.json of the installed magma.
+  React or Angular. Everything comes from the documentation.json of the installed magma; the
+  rules of the design language that govern a component, from the domains of Foundation it
+  ships in agents/patterns/ (#1198).
 */
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { magmaRoot, propInfo, readData } from '../core/data.js';
 import { tagOf } from '../core/element.js';
+import { readPatternDir, rulesOfComponent } from '../core/patterns.js';
 import { ToolError, type Tool } from './protocol.js';
 import { firstSentence, GAP, GAP_SCHEMA, pascalOf, wordsOf, type ToolContext } from './context.js';
+import { patternsDir, RULE_SCHEMA } from './patterns.js';
 
 interface DocsComponent {
   tag: string;
@@ -120,7 +124,7 @@ export const getComponent = (context: ToolContext): Tool => ({
   name: 'get_component',
   title: 'Read the API of a Magma component',
   description:
-    'The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), and the files of its usage guide (examples, mistakes). Use it before writing the component.',
+    'The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), the files of its usage guide (examples, mistakes), and in rules the rules of the design language that govern it (the relations and rules of the domains of Foundation it carries or that write it, each with its domain and its text; the whole domain with get_guide). Use it before writing the component.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -206,6 +210,7 @@ export const getComponent = (context: ToolContext): Tool => ({
           'How many more it has, internal: not to be set, they may change in any release.',
       },
       files: { type: 'object', properties: { api: string, examples: string, mistakes: string } },
+      rules: { type: 'array', items: RULE_SCHEMA },
     },
     required: [
       'tag',
@@ -218,6 +223,7 @@ export const getComponent = (context: ToolContext): Tool => ({
       'cssProperties',
       'internalCssProperties',
       'files',
+      'rules',
     ],
   },
   run: ({ tag }) => {
@@ -270,6 +276,10 @@ export const getComponent = (context: ToolContext): Tool => ({
       internalCssProperties: component.styles.filter((style) => style.visibility === 'internal')
         .length,
       files,
+      rules: rulesOfComponent(
+        readPatternDir(patternsDir(context)).map((one) => one.data),
+        component.tag,
+      ),
     };
   },
 });

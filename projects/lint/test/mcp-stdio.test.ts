@@ -50,6 +50,7 @@ afterAll(async () => {
 test('the handshake names the server, the version of magma and when to use it', () => {
   expect(client.getServerVersion()).toMatchObject({ name: 'magma', version: '2.5.1' });
   expect(client.getInstructions()).toMatch(/check_markup/);
+  expect(client.getInstructions()).toMatch(/domains of Foundation/);
 });
 
 test('lists the twelve tools, each with an output schema, read-only but the render', async () => {
@@ -65,12 +66,16 @@ test('lists the twelve tools, each with an output schema, read-only but the rend
 test.each([
   ['find_component', { query: 'date range' }],
   ['get_component', { tag: 'mds-input' }],
+  ['get_component', { tag: 'mds-banner' }],
   ['get_usage', { tag: 'mds-input', framework: 'angular' }],
   ['list_tokens', { query: 'radius', tier: 'all' }],
   ['suggest_role', { color: 'bg-tone-neutral-03' }],
   ['explain_class', { class: 'p-4' }],
   ['find_icon', { query: 'send' }],
   ['get_guide', { guide: 'color', section: 'name the role' }],
+  ['get_guide', {}],
+  ['get_guide', { guide: 'rhythm', section: 'Cases' }],
+  ['get_pattern', { id: 'rhythm', situation: { relation: 'inset' } }],
   ['get_pattern', {}],
   ['get_pattern', { need: 'a save failed' }],
   ['get_pattern', { id: 'message-placement' }],

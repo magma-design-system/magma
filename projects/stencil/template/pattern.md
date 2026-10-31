@@ -33,7 +33,8 @@ validated-on: []
 variables: {}
 # 4-6. The cases, as values of the variables: a variable left out means any of its values,
 # except decision, which means none; a list of values means any of them.
-#   - { id: ..., <variable>: <value>, where: "...", use: ["mds-tag attribute=value"], see: <case or pattern>, magma-gap: "..." }
+#   - { id: ..., <variable>: <value>, where: "...", use: ["mds-tag attribute=value"], see: <case or pattern>, magma-gap: "...", rules: [<domain>/<id>] }
+# rules: the rules and relations of the domains of Foundation the case and its preview rely on.
 cases: []
 # The combinations still open, { <variable>: <value>, note: "the question" }; none once decided.
 gaps: []
