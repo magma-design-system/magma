@@ -29,6 +29,14 @@ Generated at {{ date }}
   {{/each}}
 {{/each}}
 
+{{!-- titles by role (#1189): text-size-title-page, read by the text-title-<role> utilities --}}
+{{#each properties.role.title as | title |}}
+  --text-size-title-{{@key}}: var(--text-size-title-{{title.value}});
+  --text-size-title-{{@key}}--font-weight: var(--text-size-title-{{title.value}}--font-weight);
+  --text-size-title-{{@key}}--letter-spacing: var(--text-size-title-{{title.value}}--letter-spacing);
+  --text-size-title-{{@key}}--line-height: var(--text-size-title-{{title.value}}--line-height);
+{{/each}}
+
 {{!-- leading --}}
 {{#each properties as | property |}}
   {{#each property.leading as | leading |}}
@@ -46,6 +54,14 @@ Generated at {{ date }}
 {{#each properties.container as | container |}}
   --container-{{@key}}: {{container.value}};
 {{/each}}
+
+{{!-- the bridges of the design language (#1189): a relation of the rhythm is a spacing key
+  (gap-between-fields, p-inset), the column of a form a container key (max-w-form). The roles
+  are declared by typography.css; the literal is the fallback, which editors show --}}
+{{#each properties.role.rhythm as | step |}}
+  --spacing-{{@key}}: var(--magma-rhythm-{{@key}}, {{step.value}});
+{{/each}}
+  --container-form: var(--magma-width-form, {{properties.role.width.reading.value}});
 
 {{!-- size utilities: w-*, min-w-*, max-w-* and basis-* read their own namespace, then
   spacing, then container. A key spacing and container share (2xl) is a container size:
