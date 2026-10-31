@@ -74,8 +74,10 @@ keep in step.
   [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md) for the levels and the
   naming.
 - **Read by**: the token tools of the MCP server (`projects/lint/src/mcp/tokens.ts`: the value
-  is `cssValue`, else the DTCG value by its type), the lint core (the raw palette steps), the
-  DTCG globals of styles (their aliases), the docs site.
+  is `cssValue`, else the DTCG value by its type), the lint core (the raw palette steps; the
+  custom properties a domain of Foundation names as carriers, `css` of the tokens that are not
+  internal and of the `cssOnly` entries), the DTCG globals of styles (their aliases), the docs
+  site.
 - **Held by**: the design-tokens build fails on a group with no `$description` or a stale one
   (`describeGroups`, `staleDescriptions`); the lint tests run every value of the built data
   when it is there.

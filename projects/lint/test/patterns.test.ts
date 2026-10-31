@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-import { loadComponents, loadStyles, loadThemeNames } from '../src/core/data.js';
+import { loadComponents, loadStyles, loadThemeNames, loadTokenNames } from '../src/core/data.js';
 import {
   answer,
   bodyErrors,
@@ -426,6 +426,7 @@ describe('a domain of Foundation', () => {
       components: loadComponents({ documentation: data.documentation }),
       styles: loadStyles({ documentation: data.documentation }),
       theme: loadThemeNames({ consumption: data.consumption }),
+      tokens: loadTokenNames({ tokens: data.tokens }),
       lintRules: new Set(['magma/token-values']),
     };
     expect(carrierErrors(domain(), release)).toEqual([]);
@@ -443,6 +444,9 @@ describe('a domain of Foundation', () => {
             '--mds-banner-background',
             '--mds-banner-cockade-distance',
             '--spacing-md',
+            '--magma-width-page',
+            '--magma-width-dialog',
+            '--magma-tint-accent-fg',
             '--nope',
             'gap-md',
             'max-w-md',
@@ -479,6 +483,7 @@ describe('a domain of Foundation', () => {
       'case inline: carried by mds-nope, but mds-nope is not a component of this release',
       'case inline: carried by mds-banner variant=nope, but variant of mds-banner is one of ai, dark, error, info, light, primary, success, warning, not nope',
       'case inline: carried by --mds-banner-cockade-distance, but --mds-banner-cockade-distance is internal to mds-banner: a carrier is public',
+      'case inline: carried by --magma-tint-accent-fg, but the release has no custom property --magma-tint-accent-fg',
       'case inline: carried by --nope, but the release has no custom property --nope',
       'case inline: carried by gap-nope, but the theme makes no class gap-nope',
       'case inline: carried by magma/nope, but the lint has no rule magma/nope',

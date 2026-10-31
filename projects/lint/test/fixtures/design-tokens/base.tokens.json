@@ -3210,6 +3210,44 @@
      }
     }
    }
+  },
+  "width": {
+   "$description": "The widths of the design language, named after their rule (widths/form is --magma-width-form): the measure of text, the column of a form, the frame of a page and the window of a dialog.",
+   "$extensions": {
+    "it.maggioli.magma": {
+     "cssOnly": [
+      {
+       "css": "--magma-width-reading",
+       "value": "56ch",
+       "description": "widths/reading: the measure of text to read, 65 to 80 characters on a full line."
+      },
+      {
+       "css": "--magma-width-form",
+       "value": "var(--magma-width-reading)",
+       "description": "widths/form: the column of a form, the measure of the text around it (max-w-form)."
+      },
+      {
+       "css": "--magma-width-dialog",
+       "value": "calc(var(--magma-width-form) + 2 * var(--magma-rhythm-inset))",
+       "description": "widths/dialog: the window of a dialog, the column of a form plus its inset."
+      }
+     ]
+    }
+   },
+   "page": {
+    "$type": "dimension",
+    "$value": {
+     "value": 80,
+     "unit": "rem"
+    },
+    "$description": "widths/page: the largest width of the content of a page, the frame mds-header-bar shares (page-frame).",
+    "$extensions": {
+     "it.maggioli.magma": {
+      "css": "--magma-width-page",
+      "tier": "semantic"
+     }
+    }
+   }
   }
  },
  "shadow": {

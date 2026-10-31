@@ -886,6 +886,8 @@ export interface Release {
   styles: Map<string, StyleInfo>;
   /** The custom properties and the classes of the theme (loadThemeNames of the data). */
   theme: ThemeNames;
+  /** The custom properties of the tokens that are not internal, from their DTCG data (loadTokenNames of the data). */
+  tokens: Set<string>;
   /** The rules of the lint, `magma/<name>`. */
   lintRules: Set<string>;
 }
@@ -896,7 +898,8 @@ const carrierMissing = (carrier: Carrier, release: Release): string | undefined 
     case 'component':
       return useErrors(carrier.use, release.components).join('; ') || undefined;
     case 'token': {
-      if (release.theme.properties.has(carrier.text)) return undefined;
+      if (release.theme.properties.has(carrier.text) || release.tokens.has(carrier.text))
+        return undefined;
       const style = release.styles.get(carrier.text);
       if (!style) return `the release has no custom property ${carrier.text}`;
       return style.visibility === 'internal'

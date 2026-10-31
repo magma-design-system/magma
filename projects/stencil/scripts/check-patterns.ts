@@ -37,7 +37,12 @@ import * as htmlParser from '@html-eslint/parser';
 import { Linter } from 'eslint';
 import { existsSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
-import { loadComponents, loadStyles, loadThemeNames } from '../../lint/src/core/data';
+import {
+  loadComponents,
+  loadStyles,
+  loadThemeNames,
+  loadTokenNames,
+} from '../../lint/src/core/data';
 import {
   BLOCK,
   FOUNDATION,
@@ -74,11 +79,13 @@ const lintRules = new Set([
   ...stylelintPlugins.map((plugin) => plugin.ruleName),
 ]);
 // what the carriers of a domain are checked against: the styles beside the built
-// documentation.json, the theme of the styles package of this repository
+// documentation.json, the theme of the styles package and the tokens of the design-tokens
+// package of this repository
 const release: Release = {
   components,
   styles: loadStyles({ documentation: DOCUMENTATION }),
   theme: loadThemeNames({ root: REPO }),
+  tokens: loadTokenNames({ root: REPO }),
   lintRules,
 };
 

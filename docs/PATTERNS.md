@@ -101,7 +101,7 @@ changes:
   | Form | Carrier | It exists when |
   | --- | --- | --- |
   | `mds-input-field`, `mds-modal slot=window` | the default of a component, with the attributes that carry it | the component takes the attributes and their values |
-  | `--magma-rhythm-inset` | a custom property: a token, a role, the public one of a component | styles publishes it as a token, or a component documents it as public |
+  | `--magma-rhythm-inset` | a custom property: a token, a role, the public one of a component | design-tokens publishes it (its DTCG data, `cssOnly` entries included, internal tokens left out) or styles through its theme, or a component documents it as public |
   | `gap-between-fields`, `page-frame` | a utility: one class, no variant nor arbitrary value | the theme makes the class, or Magma writes it as a utility |
   | `magma/<rule>` | a lint rule, on a case (a rule takes it in `lint`) | the lint has it |
 
