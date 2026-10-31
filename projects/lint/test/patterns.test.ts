@@ -119,8 +119,16 @@ describe('the patterns Magma ships', () => {
 
   test('the domains of Foundation come first, rhythm among them', () => {
     const listed = listPatterns(patterns);
-    expect(listed[0]).toMatchObject({ id: 'rhythm', kind: 'foundation', status: 'decided' });
+    expect(listed[0]).toMatchObject({ kind: 'foundation', status: 'decided' });
     expect(listed[0]).not.toHaveProperty('group');
+    expect(listed.filter((one) => one.kind === 'foundation').map((one) => one.id)).toEqual([
+      'actions',
+      'density',
+      'rhythm',
+      'surfaces',
+      'titles',
+      'widths',
+    ]);
     expect(listed.findLastIndex((one) => one.kind === 'foundation')).toBeLessThan(
       listed.findIndex((one) => one.kind !== 'foundation'),
     );
@@ -161,9 +169,9 @@ describe('the patterns Magma ships', () => {
             rulesOfComponent(patterns, carrier.use.tag).map((rule) => `${rule.from}/${rule.id}`),
           ).toContain(`${domain.id}/${one.id}`);
         }
-    expect(rulesOfComponent(patterns, 'mds-input-field').map((rule) => rule.id)).toEqual([
-      'label-control',
-    ]);
+    expect(
+      rulesOfComponent(patterns, 'mds-input-field').map((rule) => `${rule.from}/${rule.id}`),
+    ).toEqual(['rhythm/label-control', 'widths/field']);
   });
 
   test('message-placement answers each of its 384 combinations once', () => {
