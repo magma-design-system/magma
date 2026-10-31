@@ -11,7 +11,7 @@ import postcss from 'postcss'
 import { __unstable__loadDesignSystem } from 'tailwindcss'
 import { beforeAll, describe, expect, test } from 'vitest'
 
-import { publishedTokens } from '../scripts/dtcg/globals'
+import { publishedTokens, tokenDescriptions } from '../scripts/dtcg/globals'
 
 const PROJECT = resolve(__dirname, '..')
 const DIST = resolve(PROJECT, 'dist')
@@ -61,6 +61,10 @@ const dtcgTokens = new Map([
   ...publishedTokens(JSON.parse(readFileSync(join(DIST, 'dtcg', 'globals.tokens.json'), 'utf8'))),
 ])
 const dtcgNames = new Set(dtcgTokens.keys())
+const dtcgDescriptions = new Map([
+  ...tokenDescriptions(JSON.parse(readFileSync(resolve(PROJECT, '../design-tokens/dist/dtcg/base.tokens.json'), 'utf8'))),
+  ...tokenDescriptions(JSON.parse(readFileSync(join(DIST, 'dtcg', 'globals.tokens.json'), 'utf8'))),
+])
 
 let ds: Awaited<ReturnType<typeof __unstable__loadDesignSystem>>
 const compile = (classes: string[]) => ds.candidatesToCss(classes)
@@ -127,7 +131,7 @@ describe('coverage', () => {
 
   test('a token carries the $description of its dtcg token, every semantic role has one (#876)', () => {
     const wrong = Object.entries(map.tokens).filter(
-      ([token, { description }]) => description !== dtcgTokens.get(token)?.$description,
+      ([token, { description }]) => description !== dtcgDescriptions.get(token),
     )
     expect(wrong.map(([token]) => token)).toEqual([])
     expect(map.tokens['--magma-surface-default'].description).toBe('The page canvas, the background of the body.')

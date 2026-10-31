@@ -76,6 +76,59 @@
   visibility: hidden;
 }
 
+/* The frame of a page (widths/page, #1189): the content stops at --magma-width-page and the
+ * gutter stays outside it, so the edge of the page is the edge of the content of mds-header-bar
+ * at every width. One element: the frame is the gutter and the width together. */
+@utility page-frame {
+  box-sizing: content-box;
+  margin-inline: auto;
+  max-width: var(--magma-width-page, 1280px);
+  padding-inline: var(--magma-width-page-gutter, 24px);
+}
+
+/* A group of fields (widths/field and titles/group, #1189): the fieldset of a form, with no
+ * border and no inset of its own, its legend in the style of a group title, the fields
+ * --magma-rhythm-between-fields apart. From 28rem up it lays out two tracks: a short field
+ * (mds-input-field short) takes one, so two short fields in a row share it and a lone one is
+ * half; every other child spans both. A track is never narrower than half of 28rem less half
+ * the gap, so the threshold is measured on the group itself, with no container query to place,
+ * and min(100%) keeps a track inside a narrow window. 28rem stays a literal: it is where the
+ * longest short answer mds-input knows, the tax code (16 characters), still fits a half. The
+ * rendered legend is no item of the grid: its space is a margin under it. */
+@utility field-group {
+  align-items: start;
+  border: 0;
+  display: grid;
+  gap: var(--magma-rhythm-between-fields, 24px);
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(
+      min(
+        100%,
+        max(
+          14rem - var(--magma-rhythm-between-fields, 24px) / 2,
+          (100% - var(--magma-rhythm-between-fields, 24px)) / 2 - 1px
+        )
+      ),
+      1fr
+    )
+  );
+  margin: 0;
+  min-inline-size: 0;
+  padding: 0;
+
+  & > :not([short], legend) {
+    grid-column: 1 / -1;
+  }
+
+  & > legend {
+    @apply text-title-group;
+
+    margin-block-end: var(--magma-rhythm-title-content, 12px);
+    padding: 0;
+  }
+}
+
 @layer utilities {
   /* .focus-bounce:focus-visible {
     --magma-outline-blur: var(--magma-outline-focus);

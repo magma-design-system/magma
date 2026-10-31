@@ -5,7 +5,7 @@ import { createRequire } from 'module';
 import { readFile, readdir, writeFile } from 'fs/promises';
 import { __unstable__loadDesignSystem } from 'tailwindcss';
 import { DIST_DIR, PROJECT_DIR } from './meta';
-import { publishedTokens } from './dtcg/globals';
+import { publishedTokens, tokenDescriptions } from './dtcg/globals';
 import type { DtcgGroup } from '../../design-tokens/scripts/dtcg/sets';
 
 /*
@@ -190,13 +190,11 @@ const main = async (): Promise<void> => {
   const tokenNames = new Set<string>();
   // what each token is for, when its source says it: the semantic roles all have one (#876)
   const descriptions = new Map<string, string>();
-  for (const file of DTCG_FILES)
-    for (const [name, published] of publishedTokens(
-      JSON.parse(await readFile(file, 'utf8')) as DtcgGroup,
-    )) {
-      tokenNames.add(name);
-      if (published?.$description) descriptions.set(name, published.$description);
-    }
+  for (const file of DTCG_FILES) {
+    const tree = JSON.parse(await readFile(file, 'utf8')) as DtcgGroup;
+    for (const name of publishedTokens(tree).keys()) tokenNames.add(name);
+    for (const [name, description] of tokenDescriptions(tree)) descriptions.set(name, description);
+  }
 
   // --- what Magma puts in the theme, and the @utility it defines ---------------------
   const themeVariables: ThemeVariable[] = [];
@@ -231,9 +229,12 @@ const main = async (): Promise<void> => {
   /**
    * The theme variable another one republishes whole, under the namespace of other
    * utilities: `--max-width-2xl: var(--container-2xl)` makes `max-w-2xl` read the
-   * container instead of the spacing step (#1057). It is an alias of that token.
+   * container instead of the spacing step (#1057). It is an alias of that token. A
+   * variable that is a token of its own is none, though it points at another: a title by
+   * role, `--text-size-title-page: var(--text-size-title-h3)` (#1189).
    */
   const aliasOf = ({ name, value }: ThemeVariable): string | undefined => {
+    if (tokenNames.has(name)) return undefined;
     const target = /^var\((--[a-z0-9-]+)\)$/.exec(value)?.[1];
     return target && target !== name && magma.has(target) ? target : undefined;
   };
@@ -419,9 +420,12 @@ const main = async (): Promise<void> => {
       const { namespace, key } = at;
       const shadowed: Record<string, string | null> = {};
       const published = new Set([variable.name, ...(entry.aliases ?? [])]);
+      // A class or variant Tailwind looks the token up for and then compiles to nothing reads
+      // no variable: `@form:` from `--container-form`, whose value is a var(), which a
+      // container query cannot read (#1189)
       const check = (slot: string, candidate: string) => {
-        const { hits } = compile(candidate);
-        if (hits.some((hit) => published.has(hit.variable))) return;
+        const { css, hits } = compile(candidate);
+        if (css && hits.some((hit) => published.has(hit.variable))) return;
         shadowed[slot] =
           hits.find((hit) => hit.key === key && hit.namespace !== namespace)?.variable ?? null;
       };

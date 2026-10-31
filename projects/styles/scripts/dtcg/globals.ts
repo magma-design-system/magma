@@ -189,6 +189,28 @@ export const publishedTokens = (tree: DtcgGroup): Map<string, PublishedToken | n
   return found;
 };
 
+/**
+ * What each custom property of a tree is for: the `$description` of its token, or of its
+ * `cssOnly` entry (a width in ch or written from other roles, which has no DTCG type).
+ */
+export const tokenDescriptions = (tree: DtcgGroup): Map<string, string> => {
+  const found = new Map<string, string>();
+  for (const [css, token] of publishedTokens(tree))
+    if (token?.$description) found.set(css, token.$description);
+  const walk = (node: DtcgGroup) => {
+    const extension = (
+      node.$extensions as Record<string, { cssOnly?: Array<{ css: string; description?: string }> }>
+    )?.[NAMESPACE];
+    for (const { css, description } of extension?.cssOnly ?? [])
+      if (description) found.set(css, description);
+    for (const [key, child] of Object.entries(node))
+      if (!key.startsWith('$') && !isToken(child) && typeof child === 'object' && child !== null)
+        walk(child as DtcgGroup);
+  };
+  walk(tree);
+  return found;
+};
+
 /** The index of the parenthesis that closes the one at `open`. */
 const closing = (value: string, open: number): number => {
   let depth = 0;
