@@ -32,6 +32,7 @@ import {
   toAscii,
 } from './agent-docs-lib';
 import {
+  BLOCK,
   FOUNDATION,
   PATTERN_GROUPS,
   PREVIEWS_DIR,
@@ -277,10 +278,11 @@ ${renderCatalogue(readComponentTaxonomy(), summaries, docsPrefix)}`;
 function buildPatternsMd(): string {
   const entries = listPatterns(readPatternDir(PATTERNS_DIR).map((one) => one.data));
   const domains = entries.filter((one) => one.kind === FOUNDATION).length;
+  const blocks = entries.filter((one) => one.kind === BLOCK).length;
   const defined = entries.filter(
-    (one) => one.kind !== FOUNDATION && one.status !== 'candidate',
+    (one) => one.kind === 'pattern' && one.status !== 'candidate',
   ).length;
-  return `${BANNER}# Magma patterns catalogue (${defined} patterns, ${entries.length - domains - defined} candidates, ${domains} ${domains === 1 ? 'domain' : 'domains'} of Foundation)
+  return `${BANNER}# Magma patterns catalogue (${defined} patterns, ${entries.length - domains - blocks - defined} candidates, ${blocks} building ${blocks === 1 ? 'block' : 'blocks'}, ${domains} ${domains === 1 ? 'domain' : 'domains'} of Foundation)
 
 > Generated from the patterns of the magma monorepo. A pattern is the solution to a task that
 > spans components (where a message goes, when to ask before acting), the same in every
@@ -295,6 +297,10 @@ function buildPatternsMd(): string {
 > \`get_guide\` serves each domain by its id; the answer of \`get_pattern\` for a situation
 > lists in \`rules\` the ones its case relies on, and \`get_component\` the ones that govern a
 > component.
+> The building blocks (\`kind: block\`) are the sections of a page that come back in several
+> patterns (the head of a page): space, not time. A block has regions in the order of the page
+> instead of cases, each saying when it shows; \`get_pattern\` with the values of its variables
+> gives the regions to lay out, and its Layout section says how they stand.
 > A product may keep a layer in its own repository, \`magma/patterns/<id>.md\`, that narrows the
 > open choices and adds situations (A product's layer, below); \`get_pattern\` applies it. A candidate is a need Magma knows
 > and has not defined yet: no default covers it, so say which choice you made and why.

@@ -28,13 +28,16 @@ import {
   readPatternDir,
   readPreviews,
   readProjectDir,
+  regionsFor,
   resolveLayer,
   rulesOfCase,
   rulesOfComponent,
   syncBody,
+  coverageErrors,
   type Layer,
   type Pattern,
   type PatternFile,
+  type Situation,
 } from '../src/core/patterns.js';
 import { data } from './mcp-context.js';
 
@@ -82,12 +85,36 @@ describe('the patterns Magma ships', () => {
   const files = readPatternDir(SOURCES);
   const patterns = files.map((one) => one.data);
 
-  test('the five of Messages and states are decided, their candidates cited', () => {
+  test('the patterns of Data and of Messages and states are decided, their candidates cited', () => {
     expect(
       listPatterns(patterns)
         .filter((one) => one.kind === 'pattern' && one.status === 'decided')
         .map((one) => one.id),
-    ).toEqual(['confirm-action', 'empty-state', 'error-recovery', 'loading', 'message-placement']);
+    ).toEqual([
+      'list-with-filters',
+      'record-detail',
+      'confirm-action',
+      'empty-state',
+      'error-recovery',
+      'loading',
+      'message-placement',
+    ]);
+  });
+
+  test('the building blocks come after the domains, before the patterns: page-header, used by the two of Data', () => {
+    const listed = listPatterns(patterns);
+    const kinds = listed.map((one) => one.kind);
+    expect(kinds.indexOf('block')).toBeGreaterThan(kinds.lastIndexOf('foundation'));
+    expect(kinds.lastIndexOf('block')).toBeLessThan(kinds.indexOf('pattern'));
+    const header = patterns.find((one) => one.id === 'page-header')!;
+    expect(header).toMatchObject({ kind: 'block', status: 'decided' });
+    expect(header['used-by']).toEqual(['list-with-filters', 'record-detail']);
+    expect(
+      regionsFor(header, { level: 'nested', subject: 'item' }).regions.map((one) => one.id),
+    ).toEqual(['back', 'number', 'title', 'status', 'summary', 'actions']);
+    expect(
+      regionsFor(header, { level: 'top', subject: 'set' }).regions.map((one) => one.id),
+    ).toEqual(['title', 'summary', 'actions']);
   });
 
   test('the domains of Foundation come first, rhythm among them', () => {
@@ -632,6 +659,248 @@ describe('a domain of Foundation', () => {
       '| `ladder` | Only the steps of the ladder. | intuitive | the guide | review |',
     );
     expect(syncBody(domain(), synced)).toBe(synced);
+  });
+});
+
+/** A decided building block small enough to read: one variable, a required region, two patterns that use it. */
+const block = (over: Partial<Pattern> = {}): Pattern => ({
+  id: 'head',
+  kind: 'block',
+  title: 'Head',
+  group: 'navigation',
+  layer: 'magma',
+  status: 'decided',
+  need: 'The person sees what the page is about.',
+  principle: 'The head names the page.',
+  keywords: ['head'],
+  'validated-on': [],
+  'used-by': ['small', 'other'],
+  variables: { level: { values: ['top', 'nested'], means: 'where the page sits' } },
+  regions: [
+    { id: 'back', when: { level: 'nested' }, what: 'a link to the page above' },
+    { id: 'title', required: true, what: 'the heading of the page' },
+    { id: 'actions', what: 'the actions on the page' },
+  ],
+  'always-true': [{ id: 'one-h1', rule: 'The title is the only h1.', 'checked-by': 'review' }],
+  situations: [
+    { situation: 'A list', level: 'top' } as Situation,
+    { situation: 'An item of the list', level: 'nested' } as Situation,
+  ],
+  ...over,
+});
+/** The two patterns the block comes back in, each naming it among its related. */
+const users = () => [small({ related: ['head'] }), small({ id: 'other', related: ['head'] })];
+
+describe('a building block', () => {
+  test('a complete block has no error, and every combination shows a required region', () => {
+    expect(formatErrors(file(block()))).toEqual([]);
+    expect(coverage(block())).toEqual({ total: 2, none: [], conflicts: [], of: 'regions' });
+    expect([...linkErrors([block(), ...users()])]).toEqual([]);
+  });
+
+  test('regions in place of cases; regions and used-by belong to a block', () => {
+    expect(
+      formatErrors(file(block({ cases: [{ id: 'a', where: 'w' }], gaps: [], regions: undefined }))),
+    ).toEqual([
+      'cases belongs to a pattern: a building block has regions, each saying when it shows',
+      'gaps belongs to a pattern: a building block has regions, each saying when it shows',
+      'regions is required, as a list',
+    ]);
+    expect(
+      formatErrors(file(small({ regions: [{ id: 'a', what: 'w' }], 'used-by': ['x'] }))),
+    ).toEqual([
+      'regions belongs to a building block (kind block)',
+      'used-by belongs to a building block (kind block)',
+    ]);
+  });
+
+  test('a region has an id, what goes in it, a when on the variables; one is required at least', () => {
+    const errors = formatErrors(
+      file(
+        block({
+          regions: [
+            { id: 'back', when: { level: 'deep', side: 'left' }, what: 'w', use: ['button'] },
+            { id: 'back', what: '', required: 'yes' as unknown as boolean, colour: 'red' } as never,
+          ],
+        }),
+      ),
+    );
+    expect(errors).toEqual([
+      'region back: use "button" is not "mds-tag attribute=value ..."',
+      'region back: level is one of top, nested, not deep',
+      'region back: when names side, which is not a variable',
+      'region back: unknown field colour',
+      'region back: the id is used twice',
+      'region back: what is required: what goes in it',
+      'region back: required is true or false',
+      'a building block has a required region at least: what makes it the block',
+    ]);
+  });
+
+  test('every combination shows a required region', () => {
+    const one = block({
+      regions: [{ id: 'back', when: { level: 'nested' }, required: true, what: 'w' }],
+    });
+    const covered = coverage(one);
+    expect(covered.none).toEqual([{ level: 'top' }]);
+    expect(coverageErrors(covered)).toEqual([
+      '1 of 2 combinations show no required region, such as:\n    level=top',
+    ]);
+  });
+
+  test('used-by names two patterns at least, each defined and naming the block among its related', () => {
+    expect(formatErrors(file(block({ 'used-by': ['small', 'small'] })))).toEqual([
+      'used-by names the patterns the block comes back in, 2 at least: a section becomes a block when it comes back',
+    ]);
+    const errors = linkErrors([
+      block({ 'used-by': ['small', 'other', 'missing', 'spacing', 'later'] }),
+      small({ related: ['head'] }),
+      small({ id: 'other' }),
+      domain(),
+      {
+        id: 'later',
+        kind: 'pattern',
+        title: 'L',
+        group: 'data',
+        layer: 'magma',
+        status: 'candidate',
+        need: 'n',
+      },
+    ]);
+    expect(errors.get('head')).toEqual([
+      'used-by: other does not name head among its related',
+      'used-by: no pattern missing',
+      'used-by: spacing is not a pattern (kind foundation)',
+      'used-by: later is a candidate: it has no cases to use the block in',
+    ]);
+  });
+
+  test('a situation gives every variable of the block, never a case', () => {
+    expect(
+      formatErrors(
+        file(
+          block({
+            situations: [
+              { situation: 'A list', case: 'title' },
+              { situation: 'An item', level: 'deep' } as Situation,
+              { situation: 'Members', use: 'small' },
+            ],
+          }),
+        ),
+      ),
+    ).toEqual([
+      'situation 1: a block has no cases: give the values of its variables',
+      'situation 1: a situation of a block gives every variable; level missing',
+      'situation 2: level is one of top, nested, not deep',
+    ]);
+  });
+
+  test('the regions for a situation, and the ones that wait on a variable still unknown', () => {
+    const ids = (list: { id: string }[]) => list.map((one) => one.id);
+    const nested = regionsFor(block(), { level: 'nested' });
+    expect(ids(nested.regions)).toEqual(['back', 'title', 'actions']);
+    expect(nested.missing).toEqual([]);
+    const open = regionsFor(block(), {});
+    expect(ids(open.regions)).toEqual(['title', 'actions']);
+    expect(ids(open.depends)).toEqual(['back']);
+    expect(open.missing).toEqual(['level']);
+    expect(() => regionsFor(block(), { level: 'deep' })).toThrow(
+      'level of head is one of top, nested, not deep.',
+    );
+  });
+
+  test('a component of a region exists in the release, and is among the components', () => {
+    const components = loadComponents({ documentation: data.documentation });
+    const one = block({
+      components: ['mds-button'],
+      regions: [
+        { id: 'title', required: true, what: 'w', use: ['mds-text'] },
+        { id: 'actions', what: 'w', use: ['mds-button tone=nope'] },
+      ],
+    });
+    expect(componentErrors(one, components)).toEqual([
+      'region title: mds-text is missing from components',
+      expect.stringMatching(/^region actions: tone of mds-button is one of .*, not nope$/),
+    ]);
+  });
+
+  test('its body has Regions and Layout where a pattern has Cases, Parts and Behaviour over time', () => {
+    const body = [
+      '',
+      '# Head',
+      '',
+      '## When to use it',
+      '',
+      'At the top.',
+      '',
+      '## What decides it',
+      '',
+      'Where the page sits.',
+      '',
+      '## Layout',
+      '',
+      'The way back first.',
+      '',
+      '## Decisions',
+      '',
+      '| Date | Decision | Why |',
+      '',
+    ].join('\n');
+    const synced = syncBody(block(), body);
+    expect(synced).toContain('## Regions');
+    expect(synced).not.toContain('## Cases');
+    expect(synced.indexOf('## Regions')).toBeLessThan(synced.indexOf('## Layout'));
+    expect(synced).toContain('| `back` | level: nested |  | a link to the page above |  |');
+    expect(synced).toContain('| `title` | any | yes | the heading of the page |  |');
+    expect(synced).toContain('| An item of the list | `back`, `title`, `actions` |');
+    expect(bodyErrors(block(), synced)).toEqual([]);
+    const wrong = synced.replace('## Layout', '## Parts');
+    expect(bodyErrors(block(), wrong)).toEqual([
+      'the body has no section Layout',
+      'section Parts is not one of a building block: When to use it, What decides it, Regions, Layout, Always true, Open choices, Situations, Accessibility, Content, Magma gaps, Decisions',
+    ]);
+  });
+
+  test('a layer of a block gives its situations by the variables, and narrows no rule', () => {
+    const layer = (over: Partial<Layer>): PatternFile<Layer> => ({
+      file: 'head.md',
+      data: { id: 'head', extends: 'magma:head', layer: 'shop', ...over },
+      body: '',
+    });
+    expect(
+      layerErrors(layer({ situations: [{ situation: 'Orders', level: 'top' } as Situation] }), [
+        block(),
+      ]),
+    ).toEqual([]);
+    expect(
+      layerErrors(
+        layer({
+          narrows: { 'one-h1': false },
+          situations: [{ situation: 'Orders', case: 'title' }],
+        }),
+        [block()],
+      ),
+    ).toEqual([
+      'narrows one-h1: an "Always true" rule holds in every product, a layer cannot change it',
+      'situation 1: a block has no cases: give the values of its variables',
+      'situation 1: a situation of a block gives every variable; level missing',
+    ]);
+  });
+
+  test('the list puts it between the domains and the patterns; it has no previews yet', () => {
+    expect(listPatterns([small(), block(), domain()]).map((one) => one.kind)).toEqual([
+      'foundation',
+      'block',
+      'pattern',
+    ]);
+    expect(missingPreviews([block()], [])).toEqual([]);
+    const preview = parsePreview(
+      '<!--\ntry: Look.\n-->\n<mds-text>x</mds-text>\n',
+      'previews/head/title.html',
+    );
+    expect([...previewLinkErrors([preview], [block()]).values()]).toEqual([
+      ['head is a building block: whether a block gets previews is still open (#1210)'],
+    ]);
   });
 });
 

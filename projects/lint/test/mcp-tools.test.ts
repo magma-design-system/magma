@@ -742,6 +742,67 @@ describe('the pattern tool', () => {
       (await run('get_pattern', { id: 'message-placement', situation: placement })).answer,
     ).not.toHaveProperty('rules');
   });
+
+  test('a building block answers a situation with its regions, in the order of the page', async () => {
+    // a magma that ships a block beside its patterns
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-block-'));
+    cpSync(path.join(fixtures, 'magma'), magma, { recursive: true });
+    writeFileSync(
+      path.join(magma, 'agents/patterns/head.md'),
+      [
+        '---',
+        'id: head',
+        'kind: block',
+        'title: Head',
+        'group: navigation',
+        'layer: magma',
+        'status: decided',
+        'need: The person sees what the page is about.',
+        'principle: The head names the page.',
+        'keywords: [head]',
+        'used-by: [confirm-action, message-placement]',
+        'validated-on: []',
+        'variables:',
+        '  level: { values: [top, nested], means: "where the page sits" }',
+        'regions:',
+        '  - { id: back, when: { level: nested }, what: "a link to the page above" }',
+        '  - { id: title, required: true, what: "the heading of the page", use: ["mds-text tag=h1"] }',
+        'always-true:',
+        '  - { id: inline, from: rhythm }',
+        'situations:',
+        '  - { situation: A list, level: top }',
+        '---',
+        '',
+        '# Head',
+        '',
+      ].join('\n'),
+    );
+    const settings = {
+      ...context.settings,
+      documentation: path.join(magma, 'data/documentation.json'),
+    };
+    const tool = toolsOf({ ...context, settings }).find((one) => one.name === 'get_pattern')!;
+    const list = (await tool.run({})) as Result;
+    expect(list.patterns.map((one: { kind: string }) => one.kind).slice(0, 2)).toEqual([
+      'foundation',
+      'block',
+    ]);
+    const nested = (await tool.run({ id: 'head', situation: { level: 'nested' } })) as Result;
+    expect(nested.answer.kind).toBe('regions');
+    expect(nested.answer.regions.map((one: { id: string }) => one.id)).toEqual(['back', 'title']);
+    expect(nested.answer.rules.map((one: { id: string }) => one.id)).toEqual(['inline']);
+    expect(nested).not.toHaveProperty('missing');
+    // a variable still unknown: the regions that show anyway, and those that wait on it
+    const open = (await tool.run({ id: 'head', situation: {} })) as Result;
+    expect(open.answer.regions.map((one: { id: string }) => one.id)).toEqual(['title']);
+    expect(open.candidates.map((one: { id: string }) => one.id)).toEqual(['back']);
+    expect(open.missing).toEqual([
+      { variable: 'level', values: ['top', 'nested'], means: 'where the page sits' },
+    ]);
+    expect(() => tool.run({ id: 'head', situation: { level: 'deep' } })).toThrow(
+      'level of head is one of top, nested, not deep.',
+    );
+  });
 });
 
 describe('the check tools', () => {

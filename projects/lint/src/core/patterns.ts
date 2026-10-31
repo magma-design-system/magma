@@ -13,6 +13,11 @@
   carrier not built yet), and a pattern cites them as it cites the rules of another pattern;
   a case names the ones it and its preview rely on in `rules` (#1198).
 
+  A building block (`block`, #1210) is a section of a page that comes back in the same
+  arrangement in two patterns or more: about space, not time. It has the base of a pattern with
+  `regions` in the order of the page instead of `cases`, each saying when it shows, and
+  `used-by`, the patterns it comes back in.
+
   The format is written in docs/PATTERNS.md, "The format"; the decisions behind it are on
   #1174 and, for the domains, on #1189 and #1196. This module holds what every reader shares: parsing a file, the checks that need no
   other data (the format, the coverage of the cases, the links, the layers), the answer for a
@@ -27,13 +32,22 @@ import type { ComponentInfo, StyleInfo, ThemeNames } from './data.js';
 /** Where a pattern stands: a known need with no definition yet, being written, every case decided. */
 export const PATTERN_STATUSES = ['candidate', 'draft', 'decided'] as const;
 /**
- * A pattern is a flow of components over time; a building block, a structure of the page
- * (later); a foundation file, a domain of the design language, the rules of composition both
- * stand on (#1189), named after the Foundation item of the docs site, where the domains go.
+ * A pattern is a flow of components over time; a building block, a section of the page that
+ * comes back in two patterns or more (#1210); a foundation file, a domain of the design
+ * language, the rules of composition both stand on (#1189), named after the Foundation item of
+ * the docs site, where the domains go.
  */
 export const PATTERN_KINDS = ['pattern', 'block', 'foundation'] as const;
 /** The kind of a domain of the design language: it has no group, Foundation is its place. */
 export const FOUNDATION = 'foundation';
+/**
+ * The kind of a building block: regions in the order of the page instead of cases, and the
+ * patterns it comes back in (#1210). A section becomes a block when it comes back in two or
+ * three patterns (plan/DIRECTION.md of magma-design-system/docs, "Building blocks section").
+ */
+export const BLOCK = 'block';
+/** The least number of patterns a block comes back in: two, the threshold of the docs site. */
+export const BLOCK_USED_BY = 2;
 /**
  * The principles a rule of a domain serves (`serves`): the four of Magma, as the docs site
  * writes them (src/content/docs/foundation/principles.md of magma-design-system/docs), which
@@ -96,7 +110,13 @@ const PATTERN_KEYS = new Set([
   'always-true',
   'open-choices',
   'situations',
+  'regions',
+  'used-by',
 ]);
+/** The fields only a building block has, and the ones it has in their place. */
+const BLOCK_KEYS = ['regions', 'used-by'] as const;
+const NOT_IN_BLOCK = ['cases', 'gaps', 'not-applicable'] as const;
+const REGION_KEYS = new Set(['id', 'when', 'required', 'what', 'use']);
 const LAYER_KEYS = new Set(['id', 'extends', 'layer', 'narrows', 'situations']);
 const RULE_KEYS = new Set([
   'id',
@@ -167,10 +187,23 @@ export interface Choice {
 
 export interface Situation {
   situation: string;
+  /** In a building block, which has no cases, the situation gives the values of its variables. */
   case?: string | string[];
   /** Another pattern answers it. */
   use?: string;
   note?: string;
+}
+
+/** A region of a building block, in the order of the page: when it shows, what goes in it. */
+export interface Region {
+  id: string;
+  /** The values of the variables it shows for, as a case gives them; none, every combination. */
+  when?: Record<string, string | string[]>;
+  /** It always shows where its `when` holds; the others show when there is something to put in them. */
+  required?: boolean;
+  what: string;
+  /** `tag attribute=value ...`, checked as the `use` of a case. */
+  use?: string[];
 }
 
 export interface Pattern {
@@ -198,6 +231,10 @@ export interface Pattern {
   'always-true'?: Rule[];
   'open-choices'?: Choice[];
   situations?: Situation[];
+  /** In a building block, in place of the cases. */
+  regions?: Region[];
+  /** In a building block: the patterns it comes back in. */
+  'used-by'?: string[];
 }
 
 /** A product layer of a Magma pattern: it narrows the open choices and adds its situations. */
@@ -289,14 +326,34 @@ const entriesOf = (pattern: Pattern): Hit[] => [
 
 export interface Coverage {
   total: number;
-  /** Combinations no case, gap or not-applicable entry holds for. */
+  /** Combinations no case, gap or not-applicable entry holds for; in a block, no required region shows in. */
   none: Record<string, string>[];
   /** Combinations two cases hold for: gaps and not-applicable entries may overlap. */
   conflicts: { combo: Record<string, string>; cases: string[] }[];
+  /** Set for a building block, whose combinations need a required region, not a case. */
+  of?: 'regions';
 }
 
-/** The check of #1174: every combination in exactly one case, or in a gap or a not-applicable entry. */
+/** Does a region show for a combination: every variable of its `when` has one of its values. */
+export const regionShows = (region: Region, combo: Record<string, string>) =>
+  Object.entries(region.when ?? {}).every(([name, value]) => [value].flat().includes(combo[name]!));
+
+/**
+ * The check of #1174: every combination in exactly one case, or in a gap or a not-applicable
+ * entry. In a building block (#1210), every combination shows a required region at least: the
+ * block is never left with nothing that makes it the block.
+ */
 export const coverage = (pattern: Pattern): Coverage => {
+  if (pattern.kind === BLOCK) {
+    const combos = variableNames(pattern).length ? combinations(pattern.variables!) : [];
+    const required = (pattern.regions ?? []).filter((one) => one.required === true);
+    return {
+      total: combos.length,
+      none: combos.filter((combo) => !required.some((one) => regionShows(one, combo))),
+      conflicts: [],
+      of: 'regions',
+    };
+  }
   const names = variableNames(pattern);
   const entries = entriesOf(pattern);
   const combos = names.length ? combinations(pattern.variables!) : [];
@@ -312,7 +369,7 @@ export const coverage = (pattern: Pattern): Coverage => {
 };
 
 /** The coverage as the check reports it: the combinations with no entry and the ones two cases hold for, five of each at most. */
-export const coverageErrors = ({ total, none, conflicts }: Coverage): string[] => {
+export const coverageErrors = ({ total, none, conflicts, of }: Coverage): string[] => {
   const pairs = (combo: Record<string, string>) =>
     Object.entries(combo)
       .map(([name, value]) => `${name}=${value}`)
@@ -320,7 +377,7 @@ export const coverageErrors = ({ total, none, conflicts }: Coverage): string[] =
   const errors: string[] = [];
   if (none.length)
     errors.push(
-      `${none.length} of ${total} combinations have no case, gap or not-applicable entry, such as:\n${none
+      `${none.length} of ${total} combinations ${of === 'regions' ? 'show no required region' : 'have no case, gap or not-applicable entry'}, such as:\n${none
         .slice(0, 5)
         .map((combo) => `    ${pairs(combo)}`)
         .join('\n')}`,
@@ -344,16 +401,7 @@ export interface Answer {
 export const answer = (pattern: Pattern, known: Record<string, string>): Answer => {
   const variables = pattern.variables ?? {};
   const names = Object.keys(variables);
-  for (const [name, value] of Object.entries(known)) {
-    if (!(name in variables))
-      throw new Error(
-        `${pattern.id} has no variable ${name}: its variables are ${names.join(', ')}.`,
-      );
-    if (!variables[name]!.values.includes(value))
-      throw new Error(
-        `${name} of ${pattern.id} is one of ${variables[name]!.values.join(', ')}, not ${value}.`,
-      );
-  }
+  assertKnown(pattern, known);
   const fixed =
     NONE_WHEN_LEFT_OUT in variables && !(NONE_WHEN_LEFT_OUT in known)
       ? { ...known, [NONE_WHEN_LEFT_OUT]: 'none' }
@@ -386,6 +434,51 @@ export const answer = (pattern: Pattern, known: Record<string, string>): Answer 
   });
   const hits = [...new Set(found.flat())].sort((a, b) => a - b).map((index) => entries[index]!);
   return { hits, missing };
+};
+
+/** Throws on a variable or a value the pattern does not have. */
+const assertKnown = (pattern: Pattern, known: Record<string, string>) => {
+  const variables = pattern.variables ?? {};
+  for (const [name, value] of Object.entries(known)) {
+    if (!(name in variables))
+      throw new Error(
+        `${pattern.id} has no variable ${name}: its variables are ${Object.keys(variables).join(', ')}.`,
+      );
+    if (!variables[name]!.values.includes(value))
+      throw new Error(
+        `${name} of ${pattern.id} is one of ${variables[name]!.values.join(', ')}, not ${value}.`,
+      );
+  }
+};
+
+export interface RegionAnswer {
+  /** The regions that show whatever the values still unknown, in the order of the page. */
+  regions: Region[];
+  /** The regions that show for some of the values still unknown: they wait on `missing`. */
+  depends: Region[];
+  /** The variables still to know to tell whether the regions of `depends` show. */
+  missing: string[];
+}
+
+/**
+ * The regions of a building block for a situation (#1210): the values the agent knows, the
+ * others open. A region shows when its `when` holds; one that holds for some of the open values
+ * only waits on them. Throws on a variable or a value the block does not have.
+ */
+export const regionsFor = (pattern: Pattern, known: Record<string, string>): RegionAnswer => {
+  assertKnown(pattern, known);
+  const combos = combinations(pattern.variables ?? {}, known);
+  const regions: Region[] = [];
+  const depends: Region[] = [];
+  for (const region of pattern.regions ?? []) {
+    const shown = combos.filter((combo) => regionShows(region, combo)).length;
+    if (shown === combos.length) regions.push(region);
+    else if (shown) depends.push(region);
+  }
+  const missing = variableNames(pattern).filter(
+    (name) => !(name in known) && depends.some((one) => name in (one.when ?? {})),
+  );
+  return { regions, depends, missing };
 };
 
 /* ---- the format --------------------------------------------------------------------- */
@@ -476,14 +569,36 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
   for (const [index, one] of (data['not-for'] ?? []).entries())
     if (!isString(one?.need) || !isString(one?.use))
       say(`not-for ${index + 1} has a need and the pattern to use`);
+  // a building block lays out regions where a pattern and a domain have cases (#1210)
+  const isBlock = data.kind === BLOCK;
+  if (isBlock) {
+    for (const key of NOT_IN_BLOCK)
+      if (data[key] !== undefined)
+        say(`${key} belongs to a pattern: a building block has regions, each saying when it shows`);
+  } else
+    for (const key of BLOCK_KEYS)
+      if (data[key] !== undefined) say(`${key} belongs to a building block (kind ${BLOCK})`);
 
   if (data.status === 'candidate') return errors;
 
   // a draft or a decided pattern answers its need
   for (const key of ['principle'] as const)
     if (!isString(data[key])) say(`${key} is required, as text`);
-  for (const key of ['keywords', 'cases', 'always-true', 'situations', 'validated-on'] as const)
-    if (!Array.isArray(data[key])) say(`${key} is required, as a list`);
+  const lists = [
+    'keywords',
+    ...(isBlock ? (['regions', 'used-by'] as const) : (['cases'] as const)),
+    'always-true',
+    'situations',
+    'validated-on',
+  ] as const;
+  for (const key of lists) if (!Array.isArray(data[key])) say(`${key} is required, as a list`);
+  if (isBlock && Array.isArray(data['used-by'])) {
+    if (!isStringList(data['used-by'])) say('used-by is a list of the ids of patterns');
+    else if (new Set(data['used-by']).size < BLOCK_USED_BY)
+      say(
+        `used-by names the patterns the block comes back in, ${BLOCK_USED_BY} at least: a section becomes a block when it comes back`,
+      );
+  }
 
   const variables = data.variables;
   if (!variables || typeof variables !== 'object' || !Object.keys(variables).length) {
@@ -492,6 +607,8 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
   }
   for (const [name, variable] of Object.entries(variables)) {
     if (RESERVED.has(name)) say(`no variable may be named ${name}: it is a key of the entries`);
+    else if (isBlock && SITUATION_KEYS.has(name))
+      say(`no variable of a block may be named ${name}: it is a key of its situations`);
     if (!ID.test(name)) say(`variable ${name} is not kebab-case`);
     if (!variable || !isStringList(variable.values) || !variable.values.length)
       say(`variable ${name} has its values, a list of text (quote yes, no and numbers)`);
@@ -593,6 +710,40 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
   if (data.status === 'decided' && data.gaps?.length)
     say('a decided pattern has no gaps: decide them, or set the status to draft');
 
+  const regionIds = new Set<string>();
+  for (const [index, one] of (data.regions ?? []).entries()) {
+    const label = `region ${isString(one?.id) ? one.id : index + 1}`;
+    for (const key of Object.keys(one ?? {}))
+      if (!REGION_KEYS.has(key)) say(`${label}: unknown field ${key}`);
+    if (!isString(one?.id) || !ID.test(one.id)) say(`${label}: id is required, kebab-case`);
+    else if (regionIds.has(one.id)) say(`${label}: the id is used twice`);
+    else regionIds.add(one.id);
+    if (!isString(one?.what)) say(`${label}: what is required: what goes in it`);
+    if (one?.required !== undefined && typeof one.required !== 'boolean')
+      say(`${label}: required is true or false`);
+    if (one?.use !== undefined) {
+      if (!isStringList(one.use)) say(`${label}: use is a list of "tag attribute=value"`);
+      else
+        for (const use of one.use)
+          if (!parseUse(use)) say(`${label}: use "${use}" is not "mds-tag attribute=value ..."`);
+    }
+    if (one?.when === undefined) continue;
+    if (!one.when || typeof one.when !== 'object' || Array.isArray(one.when)) {
+      say(`${label}: when maps variables to the values it shows for`);
+      continue;
+    }
+    for (const [key, value] of Object.entries(one.when)) {
+      const variable = variables[key];
+      if (!variable) say(`${label}: when names ${key}, which is not a variable`);
+      else
+        for (const each of [value].flat())
+          if (typeof each !== 'string' || !variable.values?.includes(each))
+            say(`${label}: ${key} is one of ${variable.values?.join(', ')}, not ${String(each)}`);
+    }
+  }
+  if (isBlock && data.regions?.length && !data.regions.some((one) => one?.required === true))
+    say('a building block has a required region at least: what makes it the block');
+
   const ruleIds = new Set<string>();
   for (const [index, rule] of (data['always-true'] ?? []).entries()) {
     const label = `always-true ${isString(rule?.id) ? rule.id : index + 1}`;
@@ -631,20 +782,43 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
       say(`${label}: default is required`);
     if (!isString(choice?.may)) say(`${label}: may is required: what a product may choose`);
   }
-  situationErrors(data.situations ?? [], 'situation', say);
+  situationErrors(data.situations ?? [], 'situation', say, isBlock ? variables : undefined);
   return errors;
 };
 
+/**
+ * What is wrong in the situations of a pattern or a layer. A building block has no cases: its
+ * situations give a value of every variable (`variables`), so the regions they show are known,
+ * or name the pattern to use instead.
+ */
 const situationErrors = (
   situations: Situation[],
   label: string,
   say: (message: string) => void,
+  variables?: Record<string, Variable>,
 ) => {
   for (const [index, one] of situations.entries()) {
     const at = `${label} ${index + 1}`;
+    if (!isString(one?.situation)) say(`${at}: situation is required`);
+    if (variables) {
+      for (const [key, value] of Object.entries(one ?? {})) {
+        if (key === 'case') say(`${at}: a block has no cases: give the values of its variables`);
+        else if (key in variables) {
+          if (typeof value !== 'string' || !variables[key]!.values?.includes(value))
+            say(
+              `${at}: ${key} is one of ${variables[key]!.values?.join(', ')}, not ${String(value)}`,
+            );
+        } else if (!SITUATION_KEYS.has(key)) say(`${at}: unknown field ${key}`);
+      }
+      if (one?.use === undefined) {
+        const left = Object.keys(variables).filter((name) => !(name in (one ?? {})));
+        if (left.length)
+          say(`${at}: a situation of a block gives every variable; ${left.join(', ')} missing`);
+      }
+      continue;
+    }
     for (const key of Object.keys(one ?? {}))
       if (!SITUATION_KEYS.has(key)) say(`${at}: unknown field ${key}`);
-    if (!isString(one?.situation)) say(`${at}: situation is required`);
     if ((one?.case === undefined) === (one?.use === undefined))
       say(`${at}: a situation has a case, or the pattern to use instead`);
     if (one?.case !== undefined && !isString(one.case) && !isStringList(one.case))
@@ -689,13 +863,18 @@ export const componentErrors = (
   const listed = new Set(pattern.components ?? []);
   for (const tag of listed)
     if (!components.has(tag)) errors.push(`components: ${tag} is not a component of this release`);
-  for (const one of pattern.cases ?? [])
-    for (const text of one.use ?? []) {
+  // the cases of a pattern, the regions of a block
+  const uses: [string, string[] | undefined][] = [
+    ...(pattern.cases ?? []).map((one) => [`case ${one.id}`, one.use] as [string, string[]]),
+    ...(pattern.regions ?? []).map((one) => [`region ${one.id}`, one.use] as [string, string[]]),
+  ];
+  for (const [label, list] of uses)
+    for (const text of list ?? []) {
       const use = parseUse(text);
       if (!use) continue;
       if (components.has(use.tag) && !listed.has(use.tag))
-        errors.push(`case ${one.id}: ${use.tag} is missing from components`);
-      errors.push(...useErrors(use, components).map((error) => `case ${one.id}: ${error}`));
+        errors.push(`${label}: ${use.tag} is missing from components`);
+      errors.push(...useErrors(use, components).map((error) => `${label}: ${error}`));
     }
   return errors;
 };
@@ -826,9 +1005,14 @@ export const domainRule = (
  * The rules of the domains a case relies on, as the answer for a situation gives them (#1198):
  * those its `rules` name, then those its pattern cites from a domain in always-true, which
  * hold for every case; each once, with its text. A citation that names nothing is left out:
- * check.patterns, and for a product's own pattern get_pattern's layerErrors, say why.
+ * check.patterns, and for a product's own pattern get_pattern's layerErrors, say why. A
+ * building block has no cases: `{}` gives the rules its always-true cites (#1210).
  */
-export const rulesOfCase = (pattern: Pattern, one: Case, patterns: Pattern[]): CitedRule[] => {
+export const rulesOfCase = (
+  pattern: Pattern,
+  one: Pick<Case, 'rules'>,
+  patterns: Pattern[],
+): CitedRule[] => {
   const { byId } = indexPatterns(patterns);
   const refs = [
     ...(isStringList(one.rules) ? one.rules : []).map(parseRuleRef),
@@ -918,6 +1102,16 @@ export const linkErrors = (patterns: Pattern[]): Map<string, string[]> => {
         if (!caseIds.has(id)) say(`situation "${one.situation}": no case ${id}`);
       if (one.use) toPattern(`situation "${one.situation}"`, one.use);
     }
+    // a block comes back in patterns that name it among their related (#1210)
+    for (const id of pattern['used-by'] ?? []) {
+      const user = byId.get(id);
+      if (!user) toPattern('used-by', id);
+      else if (user.kind !== 'pattern') say(`used-by: ${id} is not a pattern (kind ${user.kind})`);
+      else if (user.status === 'candidate')
+        say(`used-by: ${id} is a candidate: it has no cases to use the block in`);
+      else if (!(user.related ?? []).includes(pattern.id))
+        say(`used-by: ${id} does not name ${pattern.id} among its related`);
+    }
     for (const rule of pattern['always-true'] ?? []) {
       if (!rule.from) continue;
       toPattern(`always-true ${rule.id}: from`, rule.from);
@@ -972,10 +1166,13 @@ export const layerErrors = ({ data }: PatternFile<Layer>, patterns: Pattern[]): 
       say(`narrows ${key}: ${id} has no open choice ${key} (${[...choices].join(', ') || 'none'})`);
   }
   const caseIds = new Set((base.cases ?? []).map((one) => one.id));
-  situationErrors(data.situations ?? [], 'situation', say);
+  // the situations of a layer of a block give the values of its variables, as the block's do
+  const isBlock = base.kind === BLOCK;
+  situationErrors(data.situations ?? [], 'situation', say, isBlock ? base.variables : undefined);
   for (const one of data.situations ?? []) {
-    for (const each of [one.case ?? []].flat())
-      if (!caseIds.has(each)) say(`situation "${one.situation}": ${id} has no case ${each}`);
+    if (!isBlock)
+      for (const each of [one.case ?? []].flat())
+        if (!caseIds.has(each)) say(`situation "${one.situation}": ${id} has no case ${each}`);
     if (one.use && !byId.has(one.use)) say(`situation "${one.situation}": no pattern ${one.use}`);
   }
   return errors;
@@ -1101,14 +1298,19 @@ export interface ListEntry {
   validatedOn: string[];
 }
 
+/** The kinds in the order of the rail of the docs site: Foundation, Building blocks, Patterns. */
+const KIND_ORDER: readonly string[] = [FOUNDATION, BLOCK, 'pattern'];
+
 /**
- * One line per file: the domains of Foundation first, as the rail of the docs site puts
- * Foundation before Building blocks and Patterns, then by group in the order of
- * PATTERN_GROUPS, then by id.
+ * One line per file: the domains of Foundation first, then the building blocks, then the
+ * patterns, as the rail of the docs site puts Foundation before Building blocks and Patterns;
+ * within a kind by group in the order of PATTERN_GROUPS, then by id.
  */
 export const listPatterns = (patterns: Pattern[]): ListEntry[] => {
   const order = Object.keys(PATTERN_GROUPS);
-  const rank = (one: Pattern) => (one.kind === FOUNDATION ? -1 : order.indexOf(one.group ?? ''));
+  // a domain has no group (-1): each kind takes one more rank than there are groups
+  const rank = (one: Pattern) =>
+    KIND_ORDER.indexOf(one.kind) * (order.length + 1) + order.indexOf(one.group ?? '');
   return [...patterns]
     .sort((a, b) => rank(a) - rank(b) || a.id.localeCompare(b.id))
     .map((one) => ({
@@ -1127,12 +1329,18 @@ export const listPatterns = (patterns: Pattern[]): ListEntry[] => {
 
 /* ---- the body ----------------------------------------------------------------------- */
 
-/** The sections of the body, in order. The generated ones are written from the frontmatter. */
+/**
+ * The sections of the body, in order. The generated ones are written from the frontmatter. A
+ * building block has Regions and Layout where a pattern has Cases, Parts and Behaviour over time
+ * (#1210): space, not time.
+ */
 export const SECTION_ORDER = [
   'When to use it',
   'What decides it',
   'Cases',
+  'Regions',
   'Parts',
+  'Layout',
   'Behaviour over time',
   'Always true',
   'Open choices',
@@ -1142,9 +1350,28 @@ export const SECTION_ORDER = [
   'Magma gaps',
   'Decisions',
 ] as const;
-export const GENERATED_SECTIONS = ['Cases', 'Always true', 'Open choices', 'Situations'] as const;
+export const GENERATED_SECTIONS = [
+  'Cases',
+  'Regions',
+  'Always true',
+  'Open choices',
+  'Situations',
+] as const;
 /** The sections a draft or a decided pattern must have besides the generated ones. */
 export const REQUIRED_SECTIONS = ['When to use it', 'What decides it', 'Decisions'] as const;
+
+const ONLY_BLOCK: readonly string[] = ['Regions', 'Layout'];
+const NOT_BLOCK: readonly string[] = ['Cases', 'Parts', 'Behaviour over time'];
+
+/** The sections of a kind, in order: a block lays out its regions, the others tell their cases. */
+export const sectionsOf = (kind: string): string[] =>
+  SECTION_ORDER.filter((one) => !(kind === BLOCK ? NOT_BLOCK : ONLY_BLOCK).includes(one));
+
+/** The sections a kind must have besides the generated ones: a block, its Layout too. */
+export const requiredSectionsOf = (kind: string): string[] =>
+  kind === BLOCK
+    ? [...REQUIRED_SECTIONS.slice(0, 2), 'Layout', 'Decisions']
+    : [...REQUIRED_SECTIONS];
 
 export const GENERATED_NOTE =
   '<!-- Generated from the frontmatter: edit it there, then run nx run stencil:generate.pattern -- --sync. -->';
@@ -1205,15 +1432,48 @@ export const renderSections = (
   // the rules of the domains a case relies on, once one case names them (#1198)
   const cites = (pattern.cases ?? []).some((one) => one.rules?.length);
   const rulesOf = (one: Case) => (cites ? [(one.rules ?? []).map(code).join(', ')] : []);
-  const cases = [
+  const variablesTable = table(
+    ['Variable', 'Values', 'Means'],
+    Object.entries(variables).map(([name, variable]) => [
+      code(name),
+      variable.values.map(code).join(', '),
+      cell(variable.means),
+    ]),
+  );
+  const isBlock = pattern.kind === BLOCK;
+  // a building block: its regions in the order of the page, each with when it shows (#1210)
+  const regions = [
+    variablesTable,
+    'A region shows where its When holds, in this order: a required one always, the others when there is something to put in them.',
     table(
-      ['Variable', 'Values', 'Means'],
-      Object.entries(variables).map(([name, variable]) => [
-        code(name),
-        variable.values.map(code).join(', '),
-        cell(variable.means),
+      ['Region', 'When', 'Required', 'What', 'Use'],
+      (pattern.regions ?? []).map((one) => [
+        code(one.id),
+        cell(whenOf(pattern, one.when ?? {})),
+        one.required ? 'yes' : '',
+        cell(one.what),
+        (one.use ?? []).map(code).join(', '),
       ]),
     ),
+  ];
+  // the regions a situation of a block shows: none when its values do not hold (the check says why)
+  const regionsOfSituation = (one: Situation) => {
+    const known = Object.fromEntries(
+      Object.keys(variables).flatMap((name) => {
+        const value = (one as unknown as Entry)[name];
+        return typeof value === 'string' ? [[name, value]] : [];
+      }),
+    );
+    try {
+      return regionsFor(pattern, known)
+        .regions.map((region) => code(region.id))
+        .join(', ');
+    } catch {
+      return '';
+    }
+  };
+  const cases = [
+    variablesTable,
     `A case that leaves a variable out holds for any of its values${NONE_WHEN_LEFT_OUT in variables ? `, except \`${NONE_WHEN_LEFT_OUT}\`, which then means \`none\`` : ''}.`,
     table(
       ['Case', 'When', 'Where', 'Use', ...(cites ? ['Rules'] : []), ...groundedHead],
@@ -1265,7 +1525,8 @@ export const renderSections = (
       .join('; ');
   const choices = pattern['open-choices'] ?? [];
   return {
-    Cases: cases.join('\n\n'),
+    Cases: isBlock ? undefined : cases.join('\n\n'),
+    Regions: isBlock ? regions.join('\n\n') : undefined,
     'Always true': [
       'These hold in every product: a product layer cannot change them.',
       table(
@@ -1288,14 +1549,20 @@ export const renderSections = (
         ].join('\n\n')
       : undefined,
     Situations: [
-      "Situations every application has, each with its case: they give the examples, the texts and the keywords. The situations of a product's own domain go in its layer.",
+      isBlock
+        ? "Situations every application has, each with the regions it shows: they give the examples, the texts and the keywords. The situations of a product's own domain go in its layer."
+        : "Situations every application has, each with its case: they give the examples, the texts and the keywords. The situations of a product's own domain go in its layer.",
       table(
-        ['Situation', 'Case'],
+        ['Situation', isBlock ? 'Regions' : 'Case'],
         (pattern.situations ?? []).map((one) => [
           cell(one.situation),
           cell(
             [
-              one.use ? `not here: \`${one.use}\`` : [one.case ?? []].flat().map(code).join(', '),
+              one.use
+                ? `not here: \`${one.use}\``
+                : isBlock
+                  ? regionsOfSituation(one)
+                  : [one.case ?? []].flat().map(code).join(', '),
               one.note ?? '',
             ]
               .filter(Boolean)
@@ -1385,22 +1652,20 @@ export const bodyErrors = (
   const errors: string[] = [];
   const { sections } = splitBody(body);
   const headings = sections.map((one) => one.heading);
-  for (const heading of REQUIRED_SECTIONS)
+  const order = sectionsOf(pattern.kind);
+  const of = pattern.kind === BLOCK ? 'a building block' : 'the template';
+  for (const heading of requiredSectionsOf(pattern.kind))
     if (!headings.includes(heading)) errors.push(`the body has no section ${heading}`);
   for (const heading of headings)
-    if (!(SECTION_ORDER as readonly string[]).includes(heading))
-      errors.push(`section ${heading} is not one of the template: ${SECTION_ORDER.join(', ')}`);
-  const known = headings.filter((one) => (SECTION_ORDER as readonly string[]).includes(one));
-  const sorted = [...known].sort(
-    (a, b) =>
-      (SECTION_ORDER as readonly string[]).indexOf(a) -
-      (SECTION_ORDER as readonly string[]).indexOf(b),
-  );
+    if (!order.includes(heading))
+      errors.push(`section ${heading} is not one of ${of}: ${order.join(', ')}`);
+  const known = headings.filter((one) => order.includes(one));
+  const sorted = [...known].sort((a, b) => order.indexOf(a) - order.indexOf(b));
   if (known.join() !== sorted.join())
-    errors.push(`the sections are in the order ${SECTION_ORDER.join(', ')}`);
+    errors.push(`the sections are in the order ${order.join(', ')}`);
   if (syncBody(pattern, body, patterns) !== body)
     errors.push(
-      'the title, the principle or a generated section (Cases, Always true, Open choices, Situations) is out of date: nx run stencil:generate.pattern -- --sync',
+      `the title, the principle or a generated section (${GENERATED_SECTIONS.filter((one) => order.includes(one)).join(', ')}) is out of date: nx run stencil:generate.pattern -- --sync`,
     );
   return errors;
 };
@@ -1546,6 +1811,8 @@ export const previewLinkErrors = (
         : `there is no pattern ${one.pattern}`;
     else if (pattern.status === 'candidate')
       error = `${one.pattern} is a candidate: it has no cases to show`;
+    else if (pattern.kind === BLOCK)
+      error = `${one.pattern} is a building block: whether a block gets previews is still open (#1210)`;
     else if (!(pattern.cases ?? []).some((entry) => entry.id === one.case))
       error = `${one.pattern} has no case ${one.case}: its cases are ${(pattern.cases ?? [])
         .map((entry) => entry.id)
@@ -1558,11 +1825,12 @@ export const previewLinkErrors = (
 /**
  * The cases with no preview yet, as <pattern>/<case>, the candidates aside. The domains of
  * Foundation too: a preview is the case of a pattern working, and whether a relation of a
- * domain gets one is still open (#1189).
+ * domain gets one is still open (#1189); a building block has regions, not cases, and whether
+ * it gets previews is open too (#1210).
  */
 export const missingPreviews = (patterns: Pattern[], previews: Preview[]): string[] =>
   patterns
-    .filter((one) => one.status !== 'candidate' && one.kind !== FOUNDATION)
+    .filter((one) => one.status !== 'candidate' && one.kind === 'pattern')
     .flatMap((one) =>
       (one.cases ?? [])
         .filter((entry) => !previewOf(previews, one.id, entry.id))

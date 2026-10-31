@@ -456,4 +456,19 @@ describe('renderPatternCatalogue', () => {
     expect(text).toContain('| [`rhythm`](patterns/rhythm.md) | rhythm |');
     expect(text.split('## Data')[1]).not.toContain('rhythm');
   });
+
+  it('the building blocks after the domains, before the patterns, in a section of their own', () => {
+    const text = renderPatternCatalogue(
+      [
+        entry('a', 'data'),
+        { ...entry('page-header', 'data'), kind: 'block' },
+        { ...entry('rhythm', ''), kind: 'foundation', group: undefined },
+      ],
+      { data: 'Data' },
+    );
+    expect(text).toContain('## Building blocks\n\n| Block | Title | Need | Status |\n| ----- |');
+    expect(text.indexOf('## Foundation')).toBeLessThan(text.indexOf('## Building blocks'));
+    expect(text.indexOf('## Building blocks')).toBeLessThan(text.indexOf('## Data'));
+    expect(text.split('## Data')[1]).not.toContain('page-header');
+  });
 });

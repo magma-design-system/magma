@@ -576,7 +576,8 @@ export interface PatternEntry {
 
 /**
  * The body of agents/patterns.md: the domains of Foundation first (#1196), the rules of
- * composition the patterns stand on, then a section per group, in the order of `groups`; each
+ * composition the patterns stand on, then the building blocks (#1210), the sections of a page
+ * they come back in, then a section of patterns per group, in the order of `groups`; each
  * linked to its file in agents/patterns/, with its need and where it stands (#1174). A section
  * with nothing in it is left out.
  */
@@ -601,13 +602,15 @@ ${rows.map(row).join('\n')}
 `
       : '';
   const isDomain = (one: PatternEntry) => one.kind === 'foundation';
+  const isBlock = (one: PatternEntry) => one.kind === 'block';
   return [
     section('Foundation', 'Domain', patterns.filter(isDomain)),
+    section('Building blocks', 'Block', patterns.filter(isBlock)),
     ...Object.entries(groups).map(([group, title]) =>
       section(
         title,
         'Pattern',
-        patterns.filter((one) => !isDomain(one) && one.group === group),
+        patterns.filter((one) => !isDomain(one) && !isBlock(one) && one.group === group),
       ),
     ),
   ]

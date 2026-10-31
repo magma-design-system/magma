@@ -183,6 +183,21 @@ open-choices: []`;
       'case three added: it binds every product',
     ]);
   });
+
+  it('in a building block, reports a region removed or made required, not one added or reworded', () => {
+    const file = 'docs/agents/patterns/b.md';
+    const block = (regions: string) => `---\nid: b\nkind: block\nregions:\n${regions}\n---\n`;
+    const before = block(`  - { id: back, what: a link }
+  - { id: title, required: true, what: the heading }
+  - { id: summary, what: one line }`);
+    const after = block(`  - { id: title, required: true, what: the heading of the page }
+  - { id: summary, required: true, what: one line }
+  - { id: actions, what: the actions }`);
+    expect(patternChanges(at(before, file), at(after, file)).map((c) => c.why)).toEqual([
+      'region back removed',
+      'region summary made required: every page that lays out the block shows it',
+    ]);
+  });
 });
 
 describe('memberKey', () => {

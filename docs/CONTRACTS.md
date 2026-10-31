@@ -150,6 +150,9 @@ keep in step.
   of its own); the domains of the design language (`kind: foundation`, #1189), the rules of
   composition the patterns stand on, in the same folder and catalogue, each case and rule with
   the principle it serves (`serves`) and where it lives (`carried-by`, `carried-by-planned`);
+  the building blocks (`kind: block`, #1210), the sections of a page that come back in two
+  patterns or more, with `regions` in the order of the page in place of cases and the patterns
+  that use them (`used-by`);
   and the layer a product keeps in its own repository, `magma/patterns/<id>.md`, of the same
   shape.
 - **Produced by**: the maintainers, in `docs/agents/patterns/` (the template

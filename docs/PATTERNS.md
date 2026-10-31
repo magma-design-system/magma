@@ -8,7 +8,9 @@ default, the same in every product, so that the agents of the products ask for i
 
 The domains of the design language (rhythm, density, actions, titles, surfaces, widths: #1189)
 are files of the same format, of a third kind: the rules of composition the patterns stand on
-(A domain of Foundation, below).
+(A domain of Foundation, below). The building blocks are files of the same format too: the
+sections of a page that come back in the same arrangement in two patterns or more (A building
+block, below).
 
 ## Where it lives
 
@@ -16,11 +18,12 @@ are files of the same format, of a third kind: the rules of composition the patt
 | --- | --- |
 | The patterns, one file each | `docs/agents/patterns/<id>.md`, written by the maintainers of Magma |
 | The domains of Foundation, one file each | the same folder, `kind: foundation`: one catalogue, told apart by kind |
+| The building blocks, one file each | the same folder, `kind: block` |
 | The preview of each case | `docs/agents/patterns/previews/<id>/<case>.html` (#1186) |
 | What ships | `agents/patterns/<id>.md`, the previews in `agents/patterns/previews/` and the catalogue `agents/patterns.md` in the three entry packages, written by `projects/stencil/scripts/sync-agent-docs.ts` before the build |
 | Who reads them | the `get_pattern` tool of the MCP server, the `ui` and `review` skills of the Claude Code plugin, the agents of the products, the docs site |
 | The format and its checks | `projects/lint/src/core/patterns.ts`, which ships inside `magma` |
-| The template | `projects/stencil/template/pattern.md`; for a domain, `projects/stencil/template/foundation.md` |
+| The template | `projects/stencil/template/pattern.md`; for a domain, `projects/stencil/template/foundation.md`; for a block, `projects/stencil/template/block.md` |
 | The contributor skills | `.claude/skills/pattern-new`, `pattern-change`, `pattern-preview`, `pattern-list` (not in the plugin that ships) |
 | A product layer | `magma/patterns/<id>.md` in the product's own repository |
 
@@ -49,7 +52,7 @@ A Markdown file: the frontmatter is the data, the body is for people and agents 
 | --- | --- |
 | `id` | Kebab-case, the file name. A contract: the products and their agents cite it. |
 | `aliases` | The old ids after a rename. A reference to an alias fails the check; `get_pattern` resolves it. |
-| `kind` | `pattern`; `block` is kept for the building blocks, which come from the patterns of the Data group; `foundation` for a domain of the design language. |
+| `kind` | `pattern`; `block` for a building block, a section of a page that comes back in two patterns or more; `foundation` for a domain of the design language. |
 | `title`, `group`, `layer` | The group is one of `navigation`, `data`, `input`, `messages-and-states`, `ai` (the groups of the docs site); a domain has none. The layer is `magma`. |
 | `status` | `candidate` (a need Magma knows, not defined: only `id`, `kind`, `title`, `group`, `layer`, `need`), `draft`, `decided` (no gaps left). |
 | `need` | What the person must do or know, in one sentence, with no component in it. |
@@ -61,15 +64,19 @@ A Markdown file: the frontmatter is the data, the body is for people and agents 
 | `not-applicable` | `{ <variable>: <value>, why }`: a combination with no meaning. |
 | `always-true` | `{ id, rule, checked-by: review or lint, lint, lint-planned, note }`: what holds in every product, which a product layer cannot change. A rule of another pattern is cited as `{ id, from: <pattern> }`; a rule or a relation of a domain as `{ id, from: <domain> }`. |
 | `open-choices` | `{ id, default, may }`: what a product layer may narrow. |
-| `situations` | `{ situation, case, note }`, or `{ situation, use: <pattern> }` when another pattern answers it. |
+| `situations` | `{ situation, case, note }`, or `{ situation, use: <pattern> }` when another pattern answers it; in a block, `{ situation, <variable>: <value>, note }` with every variable. |
+| `regions` | In a block only, in place of `cases`, `gaps` and `not-applicable`: `{ id, when, required, what, use }` in the order of the page. `when` gives the values of the variables it shows for, as a case does (left out: every combination); `required: true` shows it wherever its `when` holds, the others show when there is something to put in them. |
+| `used-by` | In a block only: the patterns it comes back in, two at least, each naming the block among its `related`. |
 | `serves` | In a domain only, on each case and each rule: the principle it serves, `inclusive`, `enabling`, `intuitive` or `flexible`, or a list of them. |
 | `carried-by`, `carried-by-planned` | In a domain only, on a case or a rule: where it lives, strongest first, and where it will live once built. |
 
 The body has the sections of the template, in this order: When to use it, What decides it,
 Cases, Parts, Behaviour over time, Always true, Open choices, Situations, Accessibility,
-Content, Magma gaps, Decisions. The title, the principle and the sections Cases, Always true,
+Content, Magma gaps, Decisions; a block has Regions and Layout in place of Cases, Parts and
+Behaviour over time. The title, the principle and the sections Cases (Regions), Always true,
 Open choices and Situations are written from the frontmatter by the generator: edit the data,
-never those sections. When to use it, What decides it and Decisions are required.
+never those sections. When to use it, What decides it and Decisions are required, and Layout
+in a block.
 
 ## A domain of Foundation
 
@@ -114,6 +121,36 @@ changes:
   by its id.
 - **No previews yet**: a preview is the case of a pattern working; whether a relation of a
   domain gets one is open on #1189, so the check does not list them as missing.
+
+## A building block
+
+A building block (#1210) is a section of a page that comes back in the same arrangement in two
+patterns or more: the head of a page, later a bar of filters or a row of actions. It is about
+space, not time: its rules are about structure and layout, it has no data, no business logic and
+no behaviour of its own (the docs site, `plan/DIRECTION.md`, "Building blocks section"). Blocks
+are not designed in advance: a section becomes one when it comes back in two or three patterns,
+so the first one, `page-header`, came out of the patterns of the group Data. It is a file of the
+format with `kind: block`, read, listed, searched and checked as a pattern is. What changes:
+
+- **Regions, not cases.** Its parts are independent: as cases, the page header would be eight
+  near copies. Each region says, in the order of the page, when it shows (`when`, on the
+  variables of the block), whether it always shows there (`required`), what goes in it and what
+  to use. The coverage asks that every combination shows a required region at least: what
+  makes the section the block.
+- **`used-by`**: the patterns it comes back in, two at least, each defined and naming the block
+  among its `related`, so the two sides never drift apart.
+- **Situations by the variables**: a block has no case to name, so a situation gives a value of
+  every variable, and the generated table shows the regions it lays out.
+- **Regions and Layout** in the body, in place of Cases, Parts and Behaviour over time: Regions is
+  generated, Layout says how the regions stand (the order, the alignment on a wide and a narrow
+  screen, the spaces as relations of the rhythm, cited in `always-true` as `{ id, from: rhythm }`).
+- **The answer**: `get_pattern` with the values of its variables gives the regions to lay out,
+  in order, with the rules of the domains the block cites; with a variable still unknown, the
+  regions that show anyway, and in `candidates` the ones that wait on it.
+- **Markup to apply**, not a component: no new API to version. A component is weighed once the
+  block is stable in the layers of two or three products.
+- **No previews yet**: whether a block gets one, and of what (a situation, a region), is open,
+  so the check does not list them as missing and refuses one.
 
 ## The preview of a case
 
@@ -166,6 +203,8 @@ try: Press Salva: the error shows above the form, and what was written stays.
 - the format: every field, typed; every entry on the pattern's own variables;
 - the cases: every combination in exactly one case, or in a gap or a not-applicable entry; two
   cases on one combination are a conflict, a gap or a not-applicable entry may overlap;
+- the regions of a block: each `when` on the block's variables, a required region in every
+  combination, `used-by` naming two patterns or more that name the block back;
 - the release: every component and attribute named exists in `dist/documentation.json`, with a
   value it takes;
 - the lint: a rule `checked-by: lint` names a rule the lint has; a `lint-planned` one, a rule it
@@ -220,6 +259,7 @@ Without Claude:
 
 ```bash
 nx run stencil:generate.pattern <id> --group <group> --need "<the need>"  # a draft from the template
+nx run stencil:generate.pattern <id> --kind block --group <group> --need "<the need>"  # a block
 nx run stencil:generate.pattern <id> --kind foundation --need "<what it settles>"  # a domain
 nx run stencil:generate.pattern -- --sync     # the generated parts, from the frontmatter
 nx run stencil:check.patterns                 # after nx run stencil:build
@@ -233,8 +273,9 @@ nx run stencil:list.patterns -- --kind foundation
 - `pr-risk` sets the review level to contract when an "Always true" rule is added, changed or
   removed, when a pattern goes, and when a case or an open choice goes, since a product layer
   may cite them; in a domain, when a case is added or changed too (its combination, `where`,
-  `use`), since its cases are rules that bind every product. A carrier that moves from planned
-  to built changes no promise. It asks for no release of its own: no product layer exists yet that a removal
+  `use`), since its cases are rules that bind every product; in a block, when a region goes or
+  becomes required, since every page that lays out the block must then change. A carrier that
+  moves from planned to built changes no promise. It asks for no release of its own: no product layer exists yet that a removal
   would break.
 - Every change adds a row to `## Decisions`.
 - A pattern ships with the next release of `magma`: a commit `feat(magma): ...` for a new

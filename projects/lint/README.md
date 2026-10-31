@@ -162,6 +162,22 @@ or on the guide it enforces, not only on fixtures picked by hand.
   domain by a rule or by a case, `{ id, from: rhythm }`, since the relations of a domain are its
   rules too; a domain gives a case and a rule the same id never, or one citation would name
   both. The relations of a domain have no previews yet: whether they get one is open on #1189.
+- **The building blocks** (`kind: block`, `src/core/patterns.ts`, #1210): a section of a page
+  that comes back in two patterns or more, the threshold of the docs site (`plan/DIRECTION.md`,
+  "Building blocks section"), with `regions` in place of cases, as decided on #1174 (the page
+  header as cases would be eight near copies). A region shows for a combination when every
+  variable of its `when` has one of its values, as a case reads them, a `when` left out
+  meaning every combination; `decision` means nothing special here, since a block has no case
+  to leave it out of. With some variables unknown, `get_pattern` answers the regions that show
+  whatever their values and, in `candidates`, those that show for some of them only, with the
+  variables of their `when` still to know: what the agent can lay out now, and what it must
+  ask. The coverage asks every combination to show a required region, what makes the section
+  the block. `used-by` names patterns that are defined (a candidate has no case to use the
+  block in) and name the block among their `related`, so the two sides are checked against
+  each other. A situation of a block gives a value of every variable, since there is no case
+  to name; the regions it shows are computed for the generated table. The rules of the domains
+  a block cites in `always-true` come with the regions, as with a case. Blocks have no
+  previews yet: whether they get one, and of what, is open.
 - **The rules of the design language in the answers** (`get_guide`, `get_pattern`,
   `get_component`, #1198): found where the agent already looks (#1189, "The context for the
   agents", point 2). `get_guide` serves each domain of `agents/patterns/` as a guide, named by

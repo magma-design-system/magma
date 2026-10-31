@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { formatErrors, listPatterns, parsePatternFile } from '../../lint/src/core/patterns';
 import {
+  BLOCK_TEMPLATE,
   FOUNDATION_TEMPLATE,
   TEMPLATE,
   fromTemplate,
@@ -59,22 +60,50 @@ describe('the template of a new domain of Foundation', () => {
   });
 });
 
+describe('the template of a new building block', () => {
+  const text = fromTemplate(readFileSync(BLOCK_TEMPLATE, 'utf8'), {
+    id: 'filter-bar',
+    title: titleOf('filter-bar'),
+    group: 'data',
+    need: 'The person narrows a list by the properties of its items.',
+    date: '2026-10-31',
+  });
+
+  it('is a draft block, and the check says only what is still missing', () => {
+    expect(text).not.toMatch(/\{\{/);
+    const file = parsePatternFile(text, 'filter-bar.md');
+    expect(file.data).toMatchObject({ id: 'filter-bar', kind: 'block', status: 'draft' });
+    expect(file.data).not.toHaveProperty('cases');
+    expect(formatErrors(file)).toEqual([
+      'principle is required, as text',
+      'used-by names the patterns the block comes back in, 2 at least: a section becomes a block when it comes back',
+      'variables is required: what decides the case',
+    ]);
+  });
+});
+
 describe('renderList', () => {
   const entries = listPatterns(readPatterns().map((one) => one.data));
 
-  it('lists the domains of Foundation first, then the patterns by group, with their status', () => {
+  it('lists the domains of Foundation first, the building blocks, then the patterns by group, with their status', () => {
     const text = renderList(entries);
     expect(text).toMatch(/^Foundation\n {2}rhythm +decided +Rhythm\n/);
-    expect(text.indexOf('Foundation\n')).toBeLessThan(text.indexOf('Data\n'));
+    expect(text).toMatch(/\nBuilding blocks\n {2}page-header +decided +Page header\n/);
+    expect(text.indexOf('Foundation\n')).toBeLessThan(text.indexOf('Building blocks\n'));
+    expect(text.indexOf('Building blocks\n')).toBeLessThan(text.indexOf('Data\n'));
     expect(text).toMatch(
       /Messages and states\n(.*\n)* {2}message-placement +decided +Where a message goes\n/,
     );
-    expect(text).toMatch(/\d+ pattern\(s\) and \d+ domain\(s\) of Foundation, \d+ decided\.\n$/);
+    expect(text).toMatch(
+      /\d+ pattern\(s\), \d+ building block\(s\) and \d+ domain\(s\) of Foundation, \d+ decided\.\n$/,
+    );
   });
 
   it('filters by kind, group, status and validation', () => {
     expect(renderList(entries, { kind: 'foundation' })).toMatch(/^Foundation\n/);
+    expect(renderList(entries, { kind: 'block' })).toMatch(/^Building blocks\n {2}page-header /);
     expect(renderList(entries, { kind: 'pattern' })).not.toContain('rhythm');
+    expect(renderList(entries, { kind: 'pattern' })).not.toContain('page-header');
     expect(renderList(entries, { status: 'decided' })).not.toContain('candidate');
     expect(renderList(entries, { group: 'input' })).toMatch(/^Input\n/);
     expect(renderList(entries, { group: 'ai' })).toBe('No pattern matches.\n');
