@@ -49,6 +49,8 @@ always-true:
     from: rhythm
   - id: inline
     from: rhythm
+  - id: between-sections
+    from: rhythm
 
 open-choices:
   - { id: actions-overflow, default: "every action visible, wrapping under the title on a narrow screen", may: "move the actions used least into a menu next to the main one (mds-button-dropdown)" }
@@ -111,8 +113,9 @@ A region shows where its When holds, in this order: a required one always, the o
 - The spaces are relations of the rhythm: `gap-300` inside the identity, between a title and
   what it names (`rhythm/title-content`); `gap-300` between the actions, and between the
   identity and the actions, side by side in one row (`rhythm/inline`).
-- The space between the header and the content under it belongs to the page, not to the block:
-  no rule of the rhythm decides it yet (#1210).
+- The header is the first section of the page: the page puts `gap-1600` between it and the
+  content under it, as between two sections (`rhythm/between-sections`), with the gap of the
+  container that lays out its sections; the block has no margin of its own.
 - A region with nothing to show is left out, with its space: a page with no actions has no empty
   bar.
 - The tabs of a page, when it has views, are the first section under the header.
@@ -132,6 +135,7 @@ These hold in every product: a product layer cannot change them.
 | `main-action-last` | The main action comes last, in the strong tone; the others are outlined, `variant="dark" tone="outline"`; an action that destroys the record is never among them, it goes last in the menu of the record. (from `record-detail`) | review |
 | `title-content` | `gap-300` between a title and the content it names (from `rhythm`) |  |
 | `inline` | `gap-300` between elements side by side in one row: the actions of a row, a field and the button beside it (from `rhythm`) |  |
+| `between-sections` | `gap-1600` between two sections of a page, each with its title (from `rhythm`) |  |
 
 ## Open choices
 
@@ -193,3 +197,4 @@ Situations every application has, each with the regions it shows: they give the 
 | 2026-10-31 | The group is `navigation` | The docs site, `plan/DIRECTION.md`, Patterns section: Navigation names the page header among the building blocks. |
 | 2026-10-31 | The actions other than the main one are `variant="dark" tone="outline"`, no longer weak; an action that destroys the item goes in its menu, never in the row | The design language, #1189: `actions/secondary` and `actions/destructive-in-menu`. |
 | 2026-10-31 | The spaces of the Layout are relations of the rhythm, `title-content` and `inline` (`gap-300`), no longer 200 and 400 | The design language, #1189: the rhythm, on main since #1206; the old values came from the previews. |
+| 2026-10-31 | The header is the first section of the page: `gap-1600` between it and the content under it (`rhythm/between-sections`), put by the page, not by the block | The header names the whole page: at the step of the sections it belongs to none of them (`step-ratio`), and the rhythm needs no new relation. Rejected: `gap-1000`, which on a page of several sections puts the header nearer to the first one than that one to the next, so it reads as the head of the first section. Chosen live on a record with sections and on a list (#1210). |

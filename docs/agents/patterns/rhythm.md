@@ -94,6 +94,7 @@ situations:
   - { situation: "The fields of a form in a dialog", case: between-fields }
   - { situation: "The personal data and the residence of a long form, each in its fieldset", case: between-groups }
   - { situation: "The sections of the page of a record", case: between-sections }
+  - { situation: "The header of a page and the content under it", case: between-sections, note: "the header (the block page-header) is the first section of the page" }
   - { situation: "The content of a card, a banner or the window of a dialog", case: inset }
   - { situation: "The cards of a list of results", case: between-containers }
 ---
@@ -167,6 +168,7 @@ Situations every application has, each with its case: they give the examples, th
 | The fields of a form in a dialog | `between-fields` |
 | The personal data and the residence of a long form, each in its fieldset | `between-groups` |
 | The sections of the page of a record | `between-sections` |
+| The header of a page and the content under it | `between-sections`: the header (the block page-header) is the first section of the page |
 | The content of a card, a banner or the window of a dialog | `inset` |
 | The cards of a list of results | `between-containers` |
 
@@ -193,3 +195,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-30 | Between containers with a boundary `gap-400`; the 400 joins the ladder for this relation only, and `step-ratio` holds for the relations with no boundary (`between-containers`, `ladder-only`). | A boundary (a border, a shadow, a surface) separates by itself. Chosen live against 600 (as the inset) and 1000 (as between groups). https://github.com/magma-design-system/magma/issues/1189#issuecomment-6517707506 |
 | 2026-10-30 | The carriers: a role token per relation, `--magma-rhythm-<id>`, bridged to Tailwind as `--spacing-<id>` (`gap-<id>`, `p-<id>`); the components paint with the tokens, and a density redefines them. | An agent writes the relation, never its step, and a density or a theme moves every space from one place. Rejected: utilities with a fixed property (`rhythm-inset`); numeric steps with a guide and a lint rule. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6518548217 |
 | 2026-10-31 | The principle each rule serves (`serves`), written with the format (#1196): intuitive for every relation and rule, since the relation reads from the space without being learned, the same in every product; `ladder-only` flexible too, one ladder a density or a theme moves at once. | Foundation asks every decision to say the principle it serves (the Principles page of the docs site). Proposed with the format, to confirm in its review. |
+| 2026-10-31 | The header of a page and the content under it are two sections: `between-sections`, `gap-1600`; the header is the first section of the page. | The header names the whole page, so at the step of the sections it belongs to none of them (`step-ratio`); no new relation. Rejected: `gap-1000`, which puts the header nearer to the first section than that one to the next. Chosen live on a record with sections and on a list (#1210, `page-header`). |
