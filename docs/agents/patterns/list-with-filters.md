@@ -261,8 +261,8 @@ Situations every application has, each with its case: they give the examples, th
 - No dot that calls attention: the dot of `show-new-items` (the info colour, three pulses,
   stopped by a reduced animation) is drawn by the page in the render of 2026-10-31, with values
   of its own. `mds-notification` draws a dot (`value="0"`), but in the danger colour only (its
-  background is not public) and with no pulse. Until Magma carries it, the line goes without the
-  dot; a product never writes the animation itself.
+  background is not public) and with no pulse. Until Magma carries it (#1216), the line goes
+  without the dot; a product never writes the animation itself.
 
 ## Decisions
 
