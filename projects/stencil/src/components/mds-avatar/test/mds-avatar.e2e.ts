@@ -1,6 +1,12 @@
 import { render, vi } from '@stencil/vitest';
 import { mockIconFetch } from '@test/fetch';
 
+// an image that loads in the test page: a remote URL made the avatar fall back whenever its error
+// came back before the assertion, so the result depended on the network (#1208)
+const PIXEL = `data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>',
+)}`;
+
 const initialsText = (root: HTMLElement): string | null | undefined =>
   root.shadowRoot!.querySelector('.initials-text')?.textContent;
 
@@ -72,9 +78,7 @@ describe('mds-avatar', () => {
 
   // the sources resolve in one order: count, image, initials, icon, person glyph
   it('shows the count over an image', async () => {
-    const { root } = await render(
-      '<mds-avatar src="https://example.com/foto.jpg" count="3"></mds-avatar>',
-    );
+    const { root } = await render(`<mds-avatar src="${PIXEL}" count="3"></mds-avatar>`);
 
     expect(initialsText(root)).toBe('+3');
     expect(root.shadowRoot!.querySelector('mds-img')).toBeNull();
@@ -82,7 +86,7 @@ describe('mds-avatar', () => {
 
   it('shows the image over the initials and the icon', async () => {
     const { root } = await render(
-      '<mds-avatar src="https://example.com/foto.jpg" initials="NT" icon="mdi/alien"></mds-avatar>',
+      `<mds-avatar src="${PIXEL}" initials="NT" icon="mdi/alien"></mds-avatar>`,
     );
 
     expect(root.shadowRoot!.querySelector('mds-img')).not.toBeNull();
@@ -126,10 +130,10 @@ describe('mds-avatar', () => {
     it('tries a new src again', async () => {
       const { root, waitForChanges } = await renderFailed();
 
-      root.setAttribute('src', 'https://example.com/foto.jpg');
+      root.setAttribute('src', PIXEL);
       await waitForChanges();
 
-      expect(root.shadowRoot!.querySelector('mds-img')?.src).toBe('https://example.com/foto.jpg');
+      expect(root.shadowRoot!.querySelector('mds-img')?.src).toBe(PIXEL);
       expect(hasFallbackIcon(root)).toBe(false);
     });
 
