@@ -55,8 +55,8 @@ A Markdown file: the frontmatter is the data, the body is for people and agents 
 | `need` | What the person must do or know, in one sentence, with no component in it. |
 | `principle` | The rule of the pattern in one sentence: the bold line under the title. |
 | `keywords`, `not-for`, `assumptions`, `high-stakes`, `components`, `related`, `validated-on` | The words of the need; the needs another pattern answers (`{ need, use: <id> }`); what the default takes for granted; whether it is a payment, a destructive action or a legal step; the components the cases use; the neighbouring patterns; the products it was validated on. |
-| `variables` | `name: { values: [...], means: "..." }`. Values are text: quote `yes`, `no` and numbers. No variable may take the name of a key of the entries (`id`, `where`, `use`, `see`, `magma-gap`, `serves`, `carried-by`, `carried-by-planned`, `note`, `why`). |
-| `cases` | `{ id, <variable>: <value>, where, use, see, magma-gap }`. A variable left out means any of its values, except `decision`, which means `none`; a list of values means any of them. `use` names components as `mds-tag attribute=value` (a bare attribute is a boolean, or a value of the application's); `see` names a case of the pattern or another pattern. |
+| `variables` | `name: { values: [...], means: "..." }`. Values are text: quote `yes`, `no` and numbers. No variable may take the name of a key of the entries (`id`, `where`, `use`, `see`, `magma-gap`, `rules`, `serves`, `carried-by`, `carried-by-planned`, `note`, `why`). |
+| `cases` | `{ id, <variable>: <value>, where, use, see, magma-gap, rules }`. A variable left out means any of its values, except `decision`, which means `none`; a list of values means any of them. `use` names components as `mds-tag attribute=value` (a bare attribute is a boolean, or a value of the application's); `see` names a case of the pattern or another pattern; `rules` names the rules and relations of the domains the case and its preview rely on, as `<domain>/<id>` (`[rhythm/inset, rhythm/between-fields]`). |
 | `gaps` | `{ <variable>: <value>, note }`: a combination still open, with its question. |
 | `not-applicable` | `{ <variable>: <value>, why }`: a combination with no meaning. |
 | `always-true` | `{ id, rule, checked-by: review or lint, lint, lint-planned, note }`: what holds in every product, which a product layer cannot change. A rule of another pattern is cited as `{ id, from: <pattern> }`; a rule or a relation of a domain as `{ id, from: <domain> }`. |
@@ -105,7 +105,13 @@ changes:
   plain text, not as code: it cannot be written yet.
 - **Cited by id**: a pattern cites a rule or a relation of a domain as it cites the rules of
   another pattern, `{ id, from: rhythm }`, in short `rhythm/<id>`; a domain never gives a case
-  and a rule the same id.
+  and a rule the same id. A rule the pattern cites in `always-true` holds for every case; the
+  ones a single case and its preview rely on go in its `rules`, `[rhythm/inset,
+  rhythm/inline]` (the choice of the maintainer on #1198: declared and checked, since a rule
+  checked by review has no carrier the markup could show). The answer of `get_pattern` for a
+  situation gives both with their text, `get_component` the ones that govern a component (it
+  carries them, or a relation writes it in `use`), and `get_guide` serves each domain whole,
+  by its id.
 - **No previews yet**: a preview is the case of a pattern working; whether a relation of a
   domain gets one is open on #1189, so the check does not list them as missing.
 
@@ -166,7 +172,8 @@ try: Press Salva: the error shows above the form, and what was written stays.
   does not have yet (once written, the check asks to switch it to `lint`);
 - the carriers of a domain: every one of `carried-by` is in the release, every one of
   `carried-by-planned` is not yet;
-- the links: every pattern, case and rule cited exists, never under an old id;
+- the links: every pattern, case and rule cited exists, never under an old id; the `rules` of a
+  case name a rule or a relation of a domain, never of a pattern nor of the domain itself;
 - the body: the sections in order, the generated ones up to date;
 - the previews: each of a case that exists (a renamed case moves its file), with what to try, only
   a stage, and its markup clean for the Magma lint (the strict preset); the cases with no preview

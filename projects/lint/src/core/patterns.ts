@@ -10,7 +10,8 @@
   widths) are files of the same format, of a third kind, `foundation`: the rules of composition
   the patterns and blocks stand on. Their relations are the cases, the principle each rule
   serves is `serves`, where a rule lives is `carried-by` (and `carried-by-planned`, for a
-  carrier not built yet), and a pattern cites them as it cites the rules of another pattern.
+  carrier not built yet), and a pattern cites them as it cites the rules of another pattern;
+  a case names the ones it and its preview rely on in `rules` (#1198).
 
   The format is written in docs/PATTERNS.md, "The format"; the decisions behind it are on
   #1174 and, for the domains, on #1189 and #1196. This module holds what every reader shares: parsing a file, the checks that need no
@@ -65,7 +66,7 @@ export const NONE_WHEN_LEFT_OUT = 'decision';
 const FOUNDATION_KEYS = ['serves', 'carried-by', 'carried-by-planned'] as const;
 /** The keys of each kind of entry that are not variables: no variable may take their names. */
 const ENTRY_KEYS = {
-  case: ['id', 'where', 'use', 'see', 'magma-gap', ...FOUNDATION_KEYS],
+  case: ['id', 'where', 'use', 'see', 'magma-gap', 'rules', ...FOUNDATION_KEYS],
   gap: ['note'],
   'not-applicable': ['why'],
 } as const;
@@ -131,6 +132,8 @@ export interface Case extends Entry, Grounded {
   see?: string;
   /** What Magma lacks for this case. */
   'magma-gap'?: string;
+  /** The rules and relations of the domains the case and its preview rely on, `<domain>/<id>`. */
+  rules?: string[];
 }
 
 /** What a case and a rule of a domain add: the principle it serves, where it lives. */
@@ -435,6 +438,15 @@ export const parseCarrier = (text: string): Carrier | undefined => {
   return undefined;
 };
 
+/**
+ * A rule a case relies on (`rules`, #1198): `<domain>/<id>`, the short form of `{ id, from }`
+ * the rhythm decided on #1189 ("The ids"), as the docs and the decisions write a citation.
+ */
+export const parseRuleRef = (text: string): { from: string; id: string } | undefined => {
+  const [from, id, ...rest] = text.trim().split('/');
+  return from && id && !rest.length && ID.test(from) && ID.test(id) ? { from, id } : undefined;
+};
+
 /** What is wrong in the format of a Magma pattern or a product's own one: complete, typed, its entries on its own variables. */
 export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => {
   const errors: string[] = [];
@@ -556,6 +568,17 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
     }
     for (const key of ['see', 'magma-gap'] as const)
       if (one?.[key] !== undefined && !isString(one[key])) say(`${label}: ${key} is text`);
+    if (one?.rules !== undefined) {
+      if (!isStringList(one.rules))
+        say(`${label}: rules is a list of <domain>/<id>, such as rhythm/inline`);
+      else
+        for (const [index, text] of one.rules.entries()) {
+          if (!parseRuleRef(text))
+            say(`${label}: rules "${text}" is not <domain>/<id>, such as rhythm/inline`);
+          if (one.rules.indexOf(text) !== index)
+            say(`${label}: ${text} is named twice in its rules`);
+        }
+    }
     entry('case', one, label);
     grounded(one, label);
   }
@@ -766,6 +789,88 @@ export const indexPatterns = (patterns: Pattern[]) => {
   return { byId, aliases };
 };
 
+/** A rule or a relation of a domain as the answers cite it: its domain, and a relation's answer (`where`) as its rule. */
+export interface CitedRule extends Rule {
+  from: string;
+  rule: string;
+  /** The components a relation writes, as its case gives them. */
+  use?: string[];
+}
+
+/** The rule or the relation `id` of the domain `from`, of its own (never one it cites); none when `from` is no domain. */
+export const domainRule = (
+  patterns: Map<string, Pattern>,
+  from: string,
+  id: string,
+): CitedRule | undefined => {
+  const source = patterns.get(from);
+  if (source?.kind !== FOUNDATION) return undefined;
+  const own = source['always-true']?.find((one) => one.id === id && !one.from);
+  if (own) return { ...own, rule: own.rule ?? '', from };
+  const relation = source.cases?.find((one) => one.id === id);
+  if (!relation) return undefined;
+  return {
+    id,
+    from,
+    rule: relation.where,
+    ...(relation.use ? { use: relation.use } : {}),
+    ...(relation.serves !== undefined ? { serves: relation.serves } : {}),
+    ...(relation['carried-by'] ? { 'carried-by': relation['carried-by'] } : {}),
+    ...(relation['carried-by-planned']
+      ? { 'carried-by-planned': relation['carried-by-planned'] }
+      : {}),
+  };
+};
+
+/**
+ * The rules of the domains a case relies on, as the answer for a situation gives them (#1198):
+ * those its `rules` name, then those its pattern cites from a domain in always-true, which
+ * hold for every case; each once, with its text. A citation that names nothing is left out:
+ * check.patterns, and for a product's own pattern get_pattern's layerErrors, say why.
+ */
+export const rulesOfCase = (pattern: Pattern, one: Case, patterns: Pattern[]): CitedRule[] => {
+  const { byId } = indexPatterns(patterns);
+  const refs = [
+    ...(isStringList(one.rules) ? one.rules : []).map(parseRuleRef),
+    ...(pattern['always-true'] ?? []).map((rule) =>
+      rule.from ? { from: rule.from, id: rule.id } : undefined,
+    ),
+  ];
+  const found = new Map<string, CitedRule>();
+  for (const ref of refs) {
+    const rule = ref && domainRule(byId, ref.from, ref.id);
+    if (rule && rule.from !== pattern.id) found.set(`${rule.from}/${rule.id}`, rule);
+  }
+  return [...found.values()];
+};
+
+/**
+ * The rules of the domains that govern a component, as get_component names them (#1198): a
+ * relation or a rule that the component carries, now or once built (`carried-by`,
+ * `carried-by-planned`, whatever its attributes), and a relation whose `use` writes it; by
+ * domain, then in the order of its file. The `components` of a domain are not read: they name
+ * what the domain speaks of, a component it says lacks the rule among them (mds-card in the
+ * rhythm), not what each rule governs.
+ */
+export const rulesOfComponent = (patterns: Pattern[], tag: string): CitedRule[] => {
+  const { byId } = indexPatterns(patterns);
+  const carries = (one: Grounded) =>
+    [...(one['carried-by'] ?? []), ...(one['carried-by-planned'] ?? [])].some((text) => {
+      const carrier = parseCarrier(text);
+      return carrier?.kind === 'component' && carrier.use.tag === tag;
+    });
+  const writes = (one: Case) => (one.use ?? []).some((text) => parseUse(text)?.tag === tag);
+  return patterns
+    .filter((one) => one.kind === FOUNDATION && one.status !== 'candidate')
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .flatMap((domain) =>
+      [
+        ...(domain.cases ?? []).filter((one) => carries(one) || writes(one)),
+        ...(domain['always-true'] ?? []).filter((one) => !one.from && carries(one)),
+      ].flatMap((one) => domainRule(byId, domain.id, one.id) ?? []),
+    );
+};
+
 /** Every id a pattern cites names a pattern, a case or a rule that exists, never an old id. */
 export const linkErrors = (patterns: Pattern[]): Map<string, string[]> => {
   const { byId, aliases } = indexPatterns(patterns);
@@ -794,6 +899,20 @@ export const linkErrors = (patterns: Pattern[]): Map<string, string[]> => {
       if (isCase && isPattern) say(`case ${one.id}: see ${one.see} is both a case and a pattern`);
       else if (!isCase) toPattern(`case ${one.id}: see`, one.see);
     }
+    // the rules a case relies on are those of a domain, its relations among them (#1198)
+    for (const one of pattern.cases ?? [])
+      for (const text of isStringList(one.rules) ? one.rules : []) {
+        const ref = parseRuleRef(text);
+        if (!ref) continue;
+        const where = `case ${one.id}: rules ${text}`;
+        const source = byId.get(ref.from);
+        if (!source) toPattern(where, ref.from);
+        else if (source.kind !== FOUNDATION)
+          say(`${where}: ${ref.from} is not a domain of Foundation (kind ${FOUNDATION})`);
+        else if (source === pattern) say(`${where}: a domain does not cite its own rules`);
+        else if (!domainRule(byId, ref.from, ref.id))
+          say(`${where}: ${ref.from} has no rule nor case ${ref.id} of its own`);
+      }
     for (const one of pattern.situations ?? []) {
       for (const id of [one.case ?? []].flat())
         if (!caseIds.has(id)) say(`situation "${one.situation}": no case ${id}`);
@@ -1083,6 +1202,9 @@ export const renderSections = (
   const isDomain = pattern.kind === FOUNDATION;
   const grounded = (one: Grounded) => (isDomain ? [cell(servesOf(one)), carriersOf(one)] : []);
   const groundedHead = isDomain ? ['Serves', 'Carried by'] : [];
+  // the rules of the domains a case relies on, once one case names them (#1198)
+  const cites = (pattern.cases ?? []).some((one) => one.rules?.length);
+  const rulesOf = (one: Case) => (cites ? [(one.rules ?? []).map(code).join(', ')] : []);
   const cases = [
     table(
       ['Variable', 'Values', 'Means'],
@@ -1094,7 +1216,7 @@ export const renderSections = (
     ),
     `A case that leaves a variable out holds for any of its values${NONE_WHEN_LEFT_OUT in variables ? `, except \`${NONE_WHEN_LEFT_OUT}\`, which then means \`none\`` : ''}.`,
     table(
-      ['Case', 'When', 'Where', 'Use', ...groundedHead],
+      ['Case', 'When', 'Where', 'Use', ...(cites ? ['Rules'] : []), ...groundedHead],
       (pattern.cases ?? []).map((one) => [
         code(one.id),
         cell(whenOf(pattern, one)),
@@ -1108,6 +1230,7 @@ export const renderSections = (
             .join('; '),
         ),
         (one.use ?? []).map(code).join(', '),
+        ...rulesOf(one),
         ...grounded(one),
       ]),
     ),

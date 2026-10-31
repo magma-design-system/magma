@@ -101,14 +101,14 @@ of `command`).
 | Tool | Ask it | Instead of |
 | --- | --- | --- |
 | `find_component` | which component fits a need ("a date range picker") | reading the catalogue |
-| `get_component` | the API of one component: props with their values and default, events, methods, slots, parts, public CSS custom properties | reading its `AGENTS.md` |
+| `get_component` | the API of one component: props with their values and default, events, methods, slots, parts, public CSS custom properties; and in `rules` the rules of the design language that govern it (the inset `mds-banner` draws, from the rhythm) | reading its `AGENTS.md` |
 | `get_usage` | how HTML, React or Angular writes it: import, props, events (`onMdsInputChange`, `(mdsInputChange)`) | guessing the names |
 | `list_tokens` | the role for a need ("secondary text"), with its value and class | reading [`color.md`](color.md) |
 | `suggest_role` | the role for a colour, a raw class or a palette step, as a class of the same utility (`shadow-*/80` stays a shadow class) | picking a role by eye |
 | `explain_class` | what a class does with the Magma theme | the trap of the scale: `p-4` is 0.01rem, `p-400` is 1rem |
 | `find_icon` | a slug that exists, by meaning, or whether a slug exists | an `icon="..."` that renders nothing |
-| `get_guide` | one section of a guide | reading the whole file |
-| `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow, with its preview (the stage, live, and what to try in it) when Magma has one; the layer of the project (`magma/patterns/<id>.md`) applied | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
+| `get_guide` | one section of a guide, or of a domain of Foundation, the rules of composition of the design language (`rhythm`: the space between elements) | reading the whole file |
+| `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow, with its preview (the stage, live, and what to try in it) when Magma has one and in `rules` the rules of the domains it relies on; the layer of the project (`magma/patterns/<id>.md`) applied; the domains of Foundation first in the list | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
 | `check_markup` | whether a snippet passes the lint, before it is written | a lint run after the fact |
 | `check_setup` | what the Magma integration of the project misses | checking the install steps by hand |
 | `render_preview` | an image of markup with Magma components, or of the preview Magma ships for a case of a pattern (`pattern` and `case`), at the widths (pixels or Magma breakpoints), the mode and the theme you give, with a report of what in it is not representative | describing an interface in words, or a wireframe of your own |
@@ -122,6 +122,10 @@ the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents
 - Before writing a component: `find_component`, then `get_component` and `get_usage`.
 - Before a colour, a spacing or a class: `list_tokens`, `suggest_role`, `explain_class`.
 - Before a flow that tells the person something or makes them wait or decide: `get_pattern`.
+- Before laying out a page, a form, a dialog or a card: the domains of Foundation, which
+  `get_pattern` lists first (`kind: foundation`), each read with `get_guide` by its id
+  (`rhythm`); follow the `rules` that `get_pattern` gives with a case and `get_component`
+  with a component.
 - Before an icon: `find_icon`.
 - After writing: `check_markup`, then the project's lint ([`lint.md`](lint.md)).
 - After the bootstrap, or when something does not render: `check_setup`.

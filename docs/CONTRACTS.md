@@ -160,13 +160,14 @@ keep in step.
   preview of a case" and "Product layers"; the reader
   side in `projects/lint/src/core/patterns.ts` and
   [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes from".
-- **Read by**: `get_pattern` and `render_preview` (the preview of a case) of the MCP server, the
-  `ui`, `review` and `pattern-layer` skills of the Claude Code plugin, `pr-risk`
+- **Read by**: `get_pattern` and `render_preview` (the preview of a case) of the MCP server,
+  `get_guide` (each domain as a guide) and `get_component` (the rules of the domains that govern
+  a component), the `ui`, `review` and `pattern-layer` skills of the Claude Code plugin, `pr-risk`
   (`patternChanges` of `projects/stencil/scripts/pr-risk-lib.ts`), the agents of the products,
   the docs site (the previews: magma-design-system/docs#89).
 - **Held by**: `check.patterns` (the format, every combination in one case, the components,
-  attributes, lint rules and links named, the carriers of a domain in the release and the
-  planned ones not yet, the generated sections; a product's folder with
+  attributes, lint rules and links named, the rules of the domains a case names, the carriers
+  of a domain in the release and the planned ones not yet, the generated sections; a product's folder with
   `--layer`, which `get_pattern` checks too in the product; each preview of a case that exists,
   only a stage, its markup clean for the strict lint, the cases without one as a warning);
   `check.usage-docs` on their bodies; `test/patterns.test.ts` of `projects/lint` on the files
