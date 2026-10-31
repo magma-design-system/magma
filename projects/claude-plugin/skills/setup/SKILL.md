@@ -40,7 +40,7 @@ Ask the person only what detection leaves open (which framework, when several ar
 }
 ```
 
-   Write the `.vscode/mcp.json` or `.cursor/mcp.json` entry of `agents/mcp.md` only for the people of the team who use those clients.
+   Write the `.vscode/mcp.json`, `.cursor/mcp.json` or `opencode.json` entry of `agents/mcp.md` only for the people of the team who use those clients.
 
 ## 3. Check
 
