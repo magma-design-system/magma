@@ -20,7 +20,12 @@
  * commit-analyzer rules, as semantic-release reads them) must be at least that.
  */
 
-import { parsePatternFile, type Pattern } from '../../lint/src/core/patterns';
+import {
+  FOUNDATION,
+  parsePatternFile,
+  type Case,
+  type Pattern,
+} from '../../lint/src/core/patterns';
 
 export type Tier = 'contract' | 'behaviour' | 'visual' | 'low';
 export type FileTier = Exclude<Tier, 'contract'>;
@@ -121,12 +126,16 @@ const parsed = (files: Map<string, string>): Map<string, { file: string; data: P
 };
 
 const idsOf = (list: { id: string }[] | undefined) => new Set((list ?? []).map((one) => one.id));
+/** The keys of a case of a domain that say why and where it lives, not what it promises. */
+const GROUNDING = new Set(['serves', 'carried-by', 'carried-by-planned']);
 
 /**
  * What a branch changes in the promise the patterns make to every product and to the agents
  * that cite them (#1174; the ids are a contract, docs/PATTERNS.md): a pattern removed (a rename
  * keeps the old id as an alias, so it is not one); an "Always true" rule added, changed or
- * removed; a case or an open choice removed, which a product layer may cite. Each raises the
+ * removed; a case or an open choice removed, which a product layer may cite; in a domain of
+ * Foundation (#1196), a case added or changed too, since its cases are rules that bind every
+ * product as the "Always true" ones do (a layer narrows only the open choices). Each raises the
  * review level to contract; none asks for a release of its own, as no product layer exists yet
  * that a removal would break. `before` and `after` map the files of docs/agents/patterns to
  * their text.
@@ -175,6 +184,24 @@ export const patternChanges = (
     for (const one of was.cases ?? [])
       if (!cases.has(one.id))
         changes.push({ file: current.file, id, why: `case ${one.id} removed` });
+    if (is.kind === FOUNDATION) {
+      // what a rule of a domain promises: its combination, where it goes, what it uses; not the
+      // principle it serves, nor its carriers, which move from planned to built as they are made
+      const promise = (one: Case) =>
+        JSON.stringify(Object.entries(one).filter(([key]) => !GROUNDING.has(key)));
+      const before = new Map((was.cases ?? []).map((one) => [one.id, promise(one)]));
+      for (const one of is.cases ?? []) {
+        const old = before.get(one.id);
+        if (old === undefined)
+          changes.push({
+            file: current.file,
+            id,
+            why: `case ${one.id} added: it binds every product`,
+          });
+        else if (old !== promise(one))
+          changes.push({ file: current.file, id, why: `case ${one.id} changed` });
+      }
+    }
     const choices = idsOf(is['open-choices']);
     for (const one of was['open-choices'] ?? [])
       if (!choices.has(one.id))

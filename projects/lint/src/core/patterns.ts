@@ -6,8 +6,14 @@
   same shape, lives in the product's own repository (magma/patterns/<id>.md) and may add and
   narrow, never contradict an "Always true" rule.
 
+  The domains of the design language (#1189: rhythm, density, actions, titles, surfaces,
+  widths) are files of the same format, of a third kind, `foundation`: the rules of composition
+  the patterns and blocks stand on. Their relations are the cases, the principle each rule
+  serves is `serves`, where a rule lives is `carried-by` (and `carried-by-planned`, for a
+  carrier not built yet), and a pattern cites them as it cites the rules of another pattern.
+
   The format is written in docs/PATTERNS.md, "The format"; the decisions behind it are on
-  #1174. This module holds what every reader shares: parsing a file, the checks that need no
+  #1174 and, for the domains, on #1189 and #1196. This module holds what every reader shares: parsing a file, the checks that need no
   other data (the format, the coverage of the cases, the links, the layers), the answer for a
   situation, and the sections of the body generated from the frontmatter. What needs the
   installed data (the components, the lint rules) takes it as an argument.
@@ -15,12 +21,24 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { parse } from 'yaml';
-import type { ComponentInfo } from './data.js';
+import type { ComponentInfo, StyleInfo, ThemeNames } from './data.js';
 
 /** Where a pattern stands: a known need with no definition yet, being written, every case decided. */
 export const PATTERN_STATUSES = ['candidate', 'draft', 'decided'] as const;
-/** A pattern is a flow of components over time; a building block, a structure of the page (later). */
-export const PATTERN_KINDS = ['pattern', 'block'] as const;
+/**
+ * A pattern is a flow of components over time; a building block, a structure of the page
+ * (later); a foundation file, a domain of the design language, the rules of composition both
+ * stand on (#1189), named after the Foundation item of the docs site, where the domains go.
+ */
+export const PATTERN_KINDS = ['pattern', 'block', 'foundation'] as const;
+/** The kind of a domain of the design language: it has no group, Foundation is its place. */
+export const FOUNDATION = 'foundation';
+/**
+ * The principles a rule of a domain serves (`serves`): the four of Magma, as the docs site
+ * writes them (src/content/docs/foundation/principles.md of magma-design-system/docs), which
+ * asks every decision of Foundation to say the one it serves.
+ */
+export const PRINCIPLES = ['inclusive', 'enabling', 'intuitive', 'flexible'] as const;
 /**
  * The groups of the patterns, as the docs site names them (plan/DIRECTION.md of
  * magma-design-system/docs, "Patterns section"; Feedback became Messages and states on
@@ -43,9 +61,11 @@ export const MAGMA_LAYER = 'magma';
  */
 export const NONE_WHEN_LEFT_OUT = 'decision';
 
+/** The keys only the cases and the rules of a domain have: the principle, where it lives. */
+const FOUNDATION_KEYS = ['serves', 'carried-by', 'carried-by-planned'] as const;
 /** The keys of each kind of entry that are not variables: no variable may take their names. */
 const ENTRY_KEYS = {
-  case: ['id', 'where', 'use', 'see', 'magma-gap'],
+  case: ['id', 'where', 'use', 'see', 'magma-gap', ...FOUNDATION_KEYS],
   gap: ['note'],
   'not-applicable': ['why'],
 } as const;
@@ -77,7 +97,16 @@ const PATTERN_KEYS = new Set([
   'situations',
 ]);
 const LAYER_KEYS = new Set(['id', 'extends', 'layer', 'narrows', 'situations']);
-const RULE_KEYS = new Set(['id', 'rule', 'checked-by', 'lint', 'lint-planned', 'note', 'from']);
+const RULE_KEYS = new Set([
+  'id',
+  'rule',
+  'checked-by',
+  'lint',
+  'lint-planned',
+  'note',
+  'from',
+  ...FOUNDATION_KEYS,
+]);
 const CHOICE_KEYS = new Set(['id', 'default', 'may']);
 const SITUATION_KEYS = new Set(['situation', 'case', 'use', 'note']);
 
@@ -93,7 +122,7 @@ export interface Variable {
 /** A case, a gap or a not-applicable entry: values of the variables, plus its own keys. */
 export type Entry = Record<string, unknown>;
 
-export interface Case extends Entry {
+export interface Case extends Entry, Grounded {
   id: string;
   where: string;
   /** `tag attribute=value ...`, each checked against the components of the release. */
@@ -104,7 +133,17 @@ export interface Case extends Entry {
   'magma-gap'?: string;
 }
 
-export interface Rule {
+/** What a case and a rule of a domain add: the principle it serves, where it lives. */
+export interface Grounded {
+  /** One of PRINCIPLES, or a list of them. */
+  serves?: string | string[];
+  /** Where the rule lives now, strongest first: a component, a token, a utility, a lint rule. */
+  'carried-by'?: string[];
+  /** Where it will live, not built yet: the check asks to move one once the release has it. */
+  'carried-by-planned'?: string[];
+}
+
+export interface Rule extends Grounded {
   id: string;
   rule?: string;
   'checked-by'?: 'review' | 'lint';
@@ -136,7 +175,8 @@ export interface Pattern {
   aliases?: string[];
   kind: Kind;
   title: string;
-  group: string;
+  /** One of PATTERN_GROUPS; a domain of Foundation has none. */
+  group?: string;
   layer: string;
   status: Status;
   need: string;
@@ -372,14 +412,41 @@ export const parseUse = (use: string): Use | undefined => {
   return { tag, attributes };
 };
 
+/**
+ * A carrier of a rule of a domain (`carried-by`, #1196): what it is, read from its form, as a
+ * `use` is read. A component, with the attributes whose default carries the rule
+ * (`mds-input-field`, `mds-modal slot=window`); a custom property, a token or the public one
+ * of a component (`--magma-rhythm-inset`); a lint rule (`magma/<rule>`); any other name, a
+ * utility (`gap-between-fields`, `page-frame`): one class, with no variant nor arbitrary value.
+ */
+export type Carrier =
+  | { kind: 'component'; text: string; use: Use }
+  | { kind: 'token' | 'lint' | 'utility'; text: string };
+
+export const parseCarrier = (text: string): Carrier | undefined => {
+  const value = text.trim();
+  if (value.startsWith('mds-')) {
+    const use = parseUse(value);
+    return use && { kind: 'component', text: value, use };
+  }
+  if (/^--[a-z0-9-]+$/.test(value)) return { kind: 'token', text: value };
+  if (/^magma\/[a-z0-9-]+$/.test(value)) return { kind: 'lint', text: value };
+  if (/^[a-z][a-z0-9-]*$/.test(value)) return { kind: 'utility', text: value };
+  return undefined;
+};
+
 /** What is wrong in the format of a Magma pattern or a product's own one: complete, typed, its entries on its own variables. */
 export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => {
   const errors: string[] = [];
   const say = (message: string) => errors.push(message);
   for (const key of Object.keys(data)) if (!PATTERN_KEYS.has(key)) say(`unknown field ${key}`);
 
+  const isDomain = data.kind === FOUNDATION;
   for (const key of ['id', 'title', 'group', 'layer', 'status', 'need', 'kind'] as const)
-    if (!isString(data[key])) say(`${key} is required, as text`);
+    if (key === 'group' && isDomain) {
+      if (data.group !== undefined)
+        say('a domain of Foundation has no group: Foundation is its place');
+    } else if (!isString(data[key])) say(`${key} is required, as text`);
   if (isString(data.id) && !ID.test(data.id)) say(`id ${data.id} is not kebab-case`);
   if (file && isString(data.id) && path.basename(file) !== `${data.id}.md`)
     say(`the file of ${data.id} is ${data.id}.md`);
@@ -387,7 +454,7 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
     say(`kind is one of ${PATTERN_KINDS.join(', ')}`);
   if (isString(data.status) && !(PATTERN_STATUSES as readonly string[]).includes(data.status))
     say(`status is one of ${PATTERN_STATUSES.join(', ')}`);
-  if (isString(data.group) && !(data.group in PATTERN_GROUPS))
+  if (!isDomain && isString(data.group) && !(data.group in PATTERN_GROUPS))
     say(`group is one of ${Object.keys(PATTERN_GROUPS).join(', ')}`);
   if (data.aliases !== undefined && !isStringList(data.aliases)) say('aliases is a list of ids');
   for (const key of ['keywords', 'assumptions', 'components', 'related', 'validated-on'] as const)
@@ -439,6 +506,41 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
           say(`${label}: ${key} is one of ${variable.values?.join(', ')}, not ${String(each)}`);
     }
   };
+  // the principle and the carriers of a case or a rule of a domain; a pattern has neither
+  const grounded = (one: Grounded | undefined, label: string, rule = false) => {
+    if (!isDomain) {
+      for (const key of FOUNDATION_KEYS)
+        if (one?.[key] !== undefined)
+          say(`${label}: ${key} belongs to a domain of Foundation (kind ${FOUNDATION})`);
+      return;
+    }
+    const serves = [one?.serves ?? []].flat();
+    if (!serves.length)
+      say(`${label}: serves is required: the principle it serves, ${PRINCIPLES.join(', ')}`);
+    for (const each of serves)
+      if (!(PRINCIPLES as readonly string[]).includes(each))
+        say(`${label}: serves is one of ${PRINCIPLES.join(', ')}, not ${String(each)}`);
+    const named = new Set<string>();
+    for (const key of ['carried-by', 'carried-by-planned'] as const) {
+      const list = one?.[key];
+      if (list === undefined) continue;
+      if (!isStringList(list)) {
+        say(`${label}: ${key} is a list of carriers`);
+        continue;
+      }
+      for (const text of list) {
+        const carrier = parseCarrier(text);
+        if (!carrier)
+          say(
+            `${label}: ${key} "${text}" is not a component (mds-tag attribute=value), a custom property (--name), a lint rule (magma/<rule>) or a utility (one class)`,
+          );
+        else if (rule && carrier.kind === 'lint')
+          say(`${label}: the lint rule of an always-true rule goes in lint or lint-planned`);
+        if (named.has(text)) say(`${label}: ${text} is named twice in its carriers`);
+        named.add(text);
+      }
+    }
+  };
   const caseIds = new Set<string>();
   for (const [index, one] of (data.cases ?? []).entries()) {
     const label = `case ${isString(one?.id) ? one.id : index + 1}`;
@@ -455,6 +557,7 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
     for (const key of ['see', 'magma-gap'] as const)
       if (one?.[key] !== undefined && !isString(one[key])) say(`${label}: ${key} is text`);
     entry('case', one, label);
+    grounded(one, label);
   }
   for (const [index, one] of (data.gaps ?? []).entries()) {
     if (!isString(one?.note)) say(`gap ${index + 1}: note is required: the question left open`);
@@ -472,6 +575,8 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
     const label = `always-true ${isString(rule?.id) ? rule.id : index + 1}`;
     if (!isString(rule?.id) || !ID.test(rule.id)) say(`${label}: id is required, kebab-case`);
     else if (ruleIds.has(rule.id)) say(`${label}: the id is used twice`);
+    else if (isDomain && caseIds.has(rule.id))
+      say(`${label}: a case of the domain has this id: a citation would name both`);
     else ruleIds.add(rule.id);
     for (const key of Object.keys(rule ?? {}))
       if (!RULE_KEYS.has(key)) say(`${label}: unknown field ${key}`);
@@ -490,6 +595,7 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
     for (const key of ['lint', 'lint-planned'] as const)
       if (rule?.[key] !== undefined && !/^magma\/[a-z0-9-]+$/.test(String(rule[key])))
         say(`${label}: ${key} is magma/<rule>`);
+    grounded(rule, label, true);
   }
   for (const [index, choice] of (data['open-choices'] ?? []).entries()) {
     const label = `open-choices ${isString(choice?.id) ? choice.id : index + 1}`;
@@ -528,6 +634,29 @@ const situationErrors = (
 /** Global attributes a `use` may set on any component. */
 const GLOBAL_ATTRIBUTE = /^(slot|role|id|title|lang|dir|hidden|tabindex|aria-[a-z]+|data-[a-z-]+)$/;
 
+/** What a component and its attributes lack in the release: the tag, an attribute, a value it takes; a deprecated attribute. */
+const useErrors = (use: Use, components: Map<string, ComponentInfo>): string[] => {
+  const component = components.get(use.tag);
+  if (!component) return [`${use.tag} is not a component of this release`];
+  const errors: string[] = [];
+  for (const { name, value } of use.attributes) {
+    if (GLOBAL_ATTRIBUTE.test(name)) continue;
+    const prop = component.props.get(name);
+    if (!prop) {
+      errors.push(`${use.tag} has no attribute ${name}`);
+      continue;
+    }
+    if (prop.deprecation !== undefined)
+      errors.push(`${name} of ${use.tag} is deprecated: ${prop.deprecation}`);
+    if (value === undefined) continue;
+    if (prop.boolean && !prop.values?.length)
+      errors.push(`${name} of ${use.tag} is a boolean: write it bare`);
+    else if (prop.values && !prop.values.includes(value))
+      errors.push(`${name} of ${use.tag} is one of ${prop.values.join(', ')}, not ${value}`);
+  }
+  return errors;
+};
+
 /** Every component and attribute a pattern names exists in the release, with a value it takes. */
 export const componentErrors = (
   pattern: Pattern,
@@ -541,31 +670,72 @@ export const componentErrors = (
     for (const text of one.use ?? []) {
       const use = parseUse(text);
       if (!use) continue;
-      const component = components.get(use.tag);
-      if (!component) {
-        errors.push(`case ${one.id}: ${use.tag} is not a component of this release`);
-        continue;
-      }
-      if (!listed.has(use.tag))
+      if (components.has(use.tag) && !listed.has(use.tag))
         errors.push(`case ${one.id}: ${use.tag} is missing from components`);
-      for (const { name, value } of use.attributes) {
-        if (GLOBAL_ATTRIBUTE.test(name)) continue;
-        const prop = component.props.get(name);
-        if (!prop) {
-          errors.push(`case ${one.id}: ${use.tag} has no attribute ${name}`);
-          continue;
-        }
-        if (prop.deprecation !== undefined)
-          errors.push(`case ${one.id}: ${name} of ${use.tag} is deprecated: ${prop.deprecation}`);
-        if (value === undefined) continue;
-        if (prop.boolean && !prop.values?.length)
-          errors.push(`case ${one.id}: ${name} of ${use.tag} is a boolean: write it bare`);
-        else if (prop.values && !prop.values.includes(value))
-          errors.push(
-            `case ${one.id}: ${name} of ${use.tag} is one of ${prop.values.join(', ')}, not ${value}`,
-          );
-      }
+      errors.push(...useErrors(use, components).map((error) => `case ${one.id}: ${error}`));
     }
+  return errors;
+};
+
+/** What a release offers the carriers of a domain: its components, their public custom properties, the names of its theme, its lint rules. */
+export interface Release {
+  components: Map<string, ComponentInfo>;
+  /** The custom properties of the components, by name (loadStyles of the data). */
+  styles: Map<string, StyleInfo>;
+  /** The custom properties and the classes of the theme (loadThemeNames of the data). */
+  theme: ThemeNames;
+  /** The rules of the lint, `magma/<name>`. */
+  lintRules: Set<string>;
+}
+
+/** Why the release lacks a carrier, or undefined when it has it. */
+const carrierMissing = (carrier: Carrier, release: Release): string | undefined => {
+  switch (carrier.kind) {
+    case 'component':
+      return useErrors(carrier.use, release.components).join('; ') || undefined;
+    case 'token': {
+      if (release.theme.properties.has(carrier.text)) return undefined;
+      const style = release.styles.get(carrier.text);
+      if (!style) return `the release has no custom property ${carrier.text}`;
+      return style.visibility === 'internal'
+        ? `${carrier.text} is internal to ${style.tags.join(', ')}: a carrier is public`
+        : undefined;
+    }
+    case 'utility':
+      return release.theme.classes.has(carrier.text)
+        ? undefined
+        : `the theme makes no class ${carrier.text}`;
+    case 'lint':
+      return release.lintRules.has(carrier.text)
+        ? undefined
+        : `the lint has no rule ${carrier.text}`;
+  }
+};
+
+/**
+ * Every carrier of a domain is in the release; a planned one is not yet, and once it is, the
+ * check asks to move it to carried-by, as a planned lint rule (#1196).
+ */
+export const carrierErrors = (pattern: Pattern, release: Release): string[] => {
+  const errors: string[] = [];
+  const entries: [string, Grounded][] = [
+    ...(pattern.cases ?? []).map((one) => [`case ${one.id}`, one] as [string, Grounded]),
+    ...(pattern['always-true'] ?? []).map(
+      (one) => [`always-true ${one.id}`, one] as [string, Grounded],
+    ),
+  ];
+  for (const [label, one] of entries) {
+    for (const text of one['carried-by'] ?? []) {
+      const carrier = parseCarrier(text);
+      const missing = carrier && carrierMissing(carrier, release);
+      if (missing) errors.push(`${label}: carried by ${text}, but ${missing}`);
+    }
+    for (const text of one['carried-by-planned'] ?? []) {
+      const carrier = parseCarrier(text);
+      if (carrier && !carrierMissing(carrier, release))
+        errors.push(`${label}: ${text} exists now: move it from carried-by-planned to carried-by`);
+    }
+  }
   return errors;
 };
 
@@ -632,9 +802,17 @@ export const linkErrors = (patterns: Pattern[]): Map<string, string[]> => {
     for (const rule of pattern['always-true'] ?? []) {
       if (!rule.from) continue;
       toPattern(`always-true ${rule.id}: from`, rule.from);
-      const cited = byId.get(rule.from)?.['always-true']?.find((one) => one.id === rule.id);
-      if (byId.has(rule.from) && (!cited || cited.from))
-        say(`always-true ${rule.id}: ${rule.from} has no rule ${rule.id} of its own`);
+      // a domain is cited by its rules and by its relations, its cases (#1189)
+      const source = byId.get(rule.from);
+      const cited = source?.['always-true']?.find((one) => one.id === rule.id);
+      const relation =
+        source?.kind === FOUNDATION && (source.cases ?? []).some((one) => one.id === rule.id);
+      if (source && !relation && (!cited || cited.from))
+        say(
+          source.kind === FOUNDATION
+            ? `always-true ${rule.id}: ${rule.from} has no rule nor case ${rule.id} of its own`
+            : `always-true ${rule.id}: ${rule.from} has no rule ${rule.id} of its own`,
+        );
     }
     if (errors.length) found.set(pattern.id, errors);
   }
@@ -795,7 +973,8 @@ export const projectErrors = (
 export interface ListEntry {
   id: string;
   title: string;
-  group: string;
+  /** None for a domain of Foundation. */
+  group?: string;
   kind: string;
   status: string;
   layer: string;
@@ -803,15 +982,20 @@ export interface ListEntry {
   validatedOn: string[];
 }
 
-/** One line per pattern, by group in the order of PATTERN_GROUPS, then by id. */
+/**
+ * One line per file: the domains of Foundation first, as the rail of the docs site puts
+ * Foundation before Building blocks and Patterns, then by group in the order of
+ * PATTERN_GROUPS, then by id.
+ */
 export const listPatterns = (patterns: Pattern[]): ListEntry[] => {
   const order = Object.keys(PATTERN_GROUPS);
+  const rank = (one: Pattern) => (one.kind === FOUNDATION ? -1 : order.indexOf(one.group ?? ''));
   return [...patterns]
-    .sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group) || a.id.localeCompare(b.id))
+    .sort((a, b) => rank(a) - rank(b) || a.id.localeCompare(b.id))
     .map((one) => ({
       id: one.id,
       title: one.title,
-      group: one.group,
+      ...(one.group !== undefined ? { group: one.group } : {}),
       kind: one.kind,
       status: one.status,
       layer: one.layer,
@@ -862,13 +1046,31 @@ const whenOf = (pattern: Pattern, entry: Entry) =>
     .map((name) => `${name}: ${[entry[name]].flat().join(' or ')}`)
     .join('; ') || 'any';
 
-const ruleOf = (rule: Rule, patterns: Map<string, Pattern>): Rule =>
-  rule.from
-    ? {
-        ...(patterns.get(rule.from)?.['always-true']?.find((one) => one.id === rule.id) ?? rule),
-        from: rule.from,
-      }
-    : rule;
+/** A rule as the table shows it: a cited one with the text of its source, a relation of a domain with its answer. */
+const ruleOf = (rule: Rule, patterns: Map<string, Pattern>): Rule => {
+  if (!rule.from) return rule;
+  const source = patterns.get(rule.from);
+  const own = source?.['always-true']?.find((one) => one.id === rule.id);
+  if (own) return { ...own, from: rule.from };
+  const relation =
+    source?.kind === FOUNDATION ? source.cases?.find((one) => one.id === rule.id) : undefined;
+  return relation ? { id: rule.id, rule: relation.where, from: rule.from } : rule;
+};
+
+/** `serves` as a cell: the principles, in the order written. */
+const servesOf = (one: Grounded) => [one.serves ?? []].flat().join(', ');
+
+/**
+ * The carriers as a cell: the built ones as code, then the planned ones as plain text, since
+ * they cannot be written yet (check.usage-docs holds every name in code to the release).
+ */
+const carriersOf = (one: Grounded) =>
+  [
+    (one['carried-by'] ?? []).map(code).join(', '),
+    one['carried-by-planned']?.length ? `planned: ${one['carried-by-planned'].join(', ')}` : '',
+  ]
+    .filter(Boolean)
+    .join('; ') || 'the guide';
 
 /** The text of each generated section, from the frontmatter. */
 export const renderSections = (
@@ -877,6 +1079,10 @@ export const renderSections = (
 ): Record<(typeof GENERATED_SECTIONS)[number], string | undefined> => {
   const { byId } = indexPatterns(patterns);
   const variables = pattern.variables ?? {};
+  // a domain says of each rule the principle it serves and where it lives
+  const isDomain = pattern.kind === FOUNDATION;
+  const grounded = (one: Grounded) => (isDomain ? [cell(servesOf(one)), carriersOf(one)] : []);
+  const groundedHead = isDomain ? ['Serves', 'Carried by'] : [];
   const cases = [
     table(
       ['Variable', 'Values', 'Means'],
@@ -888,7 +1094,7 @@ export const renderSections = (
     ),
     `A case that leaves a variable out holds for any of its values${NONE_WHEN_LEFT_OUT in variables ? `, except \`${NONE_WHEN_LEFT_OUT}\`, which then means \`none\`` : ''}.`,
     table(
-      ['Case', 'When', 'Where', 'Use'],
+      ['Case', 'When', 'Where', 'Use', ...groundedHead],
       (pattern.cases ?? []).map((one) => [
         code(one.id),
         cell(whenOf(pattern, one)),
@@ -902,6 +1108,7 @@ export const renderSections = (
             .join('; '),
         ),
         (one.use ?? []).map(code).join(', '),
+        ...grounded(one),
       ]),
     ),
   ];
@@ -939,10 +1146,11 @@ export const renderSections = (
     'Always true': [
       'These hold in every product: a product layer cannot change them.',
       table(
-        ['Id', 'Rule', 'Checked by'],
+        ['Id', 'Rule', ...groundedHead, 'Checked by'],
         rules.map((rule) => [
           code(rule.id),
           cell(`${rule.rule ?? ''}${rule.from ? ` (from \`${rule.from}\`)` : ''}`),
+          ...grounded(rule),
           cell(checkedBy(rule)),
         ]),
       ),
@@ -1224,10 +1432,14 @@ export const previewLinkErrors = (
   return found;
 };
 
-/** The cases with no preview yet, as <pattern>/<case>, the candidates aside. */
+/**
+ * The cases with no preview yet, as <pattern>/<case>, the candidates aside. The domains of
+ * Foundation too: a preview is the case of a pattern working, and whether a relation of a
+ * domain gets one is still open (#1189).
+ */
 export const missingPreviews = (patterns: Pattern[], previews: Preview[]): string[] =>
   patterns
-    .filter((one) => one.status !== 'candidate')
+    .filter((one) => one.status !== 'candidate' && one.kind !== FOUNDATION)
     .flatMap((one) =>
       (one.cases ?? [])
         .filter((entry) => !previewOf(previews, one.id, entry.id))

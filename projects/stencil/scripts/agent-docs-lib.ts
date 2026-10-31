@@ -566,16 +566,19 @@ ${rows.join('\n')}
 export interface PatternEntry {
   id: string;
   title: string;
-  group: string;
+  /** pattern, block or foundation; a domain of Foundation has no group. */
+  kind?: string;
+  group?: string;
   status: string;
   need: string;
   validatedOn: string[];
 }
 
 /**
- * The body of agents/patterns.md: a section per group, in the order of `groups`, each pattern
- * linked to its file in agents/patterns/, with its need and where it stands (#1174). A group
- * with no pattern is left out.
+ * The body of agents/patterns.md: the domains of Foundation first (#1196), the rules of
+ * composition the patterns stand on, then a section per group, in the order of `groups`; each
+ * linked to its file in agents/patterns/, with its need and where it stands (#1174). A section
+ * with nothing in it is left out.
  */
 export function renderPatternCatalogue(
   patterns: PatternEntry[],
@@ -588,17 +591,26 @@ export function renderPatternCatalogue(
         : one.status;
     return `| [\`${one.id}\`](patterns/${one.id}.md) | ${toAscii(one.title)} | ${toAscii(one.need).replace(/\|/g, '\\|')} | ${status} |`;
   };
-  return Object.entries(groups)
-    .map(([group, title]) => {
-      const rows = patterns.filter((one) => one.group === group);
-      if (!rows.length) return '';
-      return `## ${title}
+  const section = (title: string, first: string, rows: PatternEntry[]) =>
+    rows.length
+      ? `## ${title}
 
-| Pattern | Title | Need | Status |
-| ------- | ----- | ---- | ------ |
+| ${first} | Title | Need | Status |
+| ${'-'.repeat(first.length)} | ----- | ---- | ------ |
 ${rows.map(row).join('\n')}
-`;
-    })
+`
+      : '';
+  const isDomain = (one: PatternEntry) => one.kind === 'foundation';
+  return [
+    section('Foundation', 'Domain', patterns.filter(isDomain)),
+    ...Object.entries(groups).map(([group, title]) =>
+      section(
+        title,
+        'Pattern',
+        patterns.filter((one) => !isDomain(one) && one.group === group),
+      ),
+    ),
+  ]
     .filter(Boolean)
     .join('\n');
 }
