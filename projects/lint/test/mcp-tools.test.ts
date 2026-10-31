@@ -1,6 +1,7 @@
 // The twelve tools of the MCP server on fixtures cut from the real data, and the mi and mdi icon
 // sets installed in this repository.
 import {
+  cpSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
@@ -121,6 +122,7 @@ describe('the component tools', () => {
     ]);
     expect(button.internalCssProperties).toBe(11);
     const book = await run('get_component', { tag: 'mds-book' });
+    expect(book.rules).toEqual([]);
     expect(book.cssProperties).toContainEqual(
       expect.objectContaining({ name: '--mds-book-spine-color', static: true }),
     );
@@ -151,6 +153,64 @@ describe('the component tools', () => {
       examples: path.join(dir, 'examples.md'),
       mistakes: path.join(dir, 'mistakes.md'),
     });
+  });
+
+  test('get_component names the rules of the domains that govern the component', async () => {
+    const { rules } = await run('get_component', { tag: 'mds-banner' });
+    expect(rules).toEqual([
+      expect.objectContaining({ id: 'inset', from: 'rhythm', serves: 'intuitive' }),
+    ]);
+    // a domain that writes mds-button in a relation, and carries a rule on it
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-rules-'));
+    cpSync(path.join(fixtures, 'magma'), magma, { recursive: true });
+    writeFileSync(
+      path.join(magma, 'agents/patterns/actions.md'),
+      [
+        '---',
+        'id: actions',
+        'kind: foundation',
+        'title: Actions',
+        'layer: magma',
+        'status: decided',
+        'need: Weigh the actions of a region.',
+        'variables: { weight: { values: [main, other], means: "how much the action weighs" } }',
+        'cases:',
+        '  - { id: main, weight: main, where: "the main action", use: ["mds-button variant=primary"], serves: intuitive }',
+        '  - { id: other, weight: other, where: "any other action", serves: intuitive }',
+        'always-true:',
+        '  - { id: one-main, rule: "One main action per region.", serves: intuitive, checked-by: review, carried-by-planned: [mds-button] }',
+        '  - { id: by-hand, rule: "Written by hand.", serves: intuitive, checked-by: review }',
+        '---',
+        '# Actions',
+      ].join('\n'),
+    );
+    const settings = {
+      ...context.settings,
+      documentation: path.join(magma, 'data/documentation.json'),
+    };
+    const tool = toolsOf({ ...context, settings }).find((one) => one.name === 'get_component')!;
+    const button = (await tool.run({ tag: 'mds-button' })) as Result;
+    expect(button.rules).toEqual([
+      {
+        id: 'main',
+        from: 'actions',
+        rule: 'the main action',
+        use: ['mds-button variant=primary'],
+        serves: 'intuitive',
+      },
+      {
+        id: 'one-main',
+        from: 'actions',
+        rule: 'One main action per region.',
+        serves: 'intuitive',
+        'checked-by': 'review',
+        'carried-by-planned': ['mds-button'],
+      },
+    ]);
+    const banner = (await tool.run({ tag: 'mds-banner' })) as Result;
+    expect(
+      banner.rules.map((one: { from: string; id: string }) => `${one.from}/${one.id}`),
+    ).toEqual(['rhythm/inset']);
   });
 
   test('get_usage writes props and events as each framework does', async () => {
@@ -402,6 +462,7 @@ describe('the guide tool', () => {
       'AGENTS',
       'color',
       'lint',
+      'rhythm',
     ]);
     const lint = await run('get_guide', { guide: 'lint.md' });
     expect(lint.sections.map((section: { heading: string }) => section.heading)).toContain(
@@ -412,21 +473,50 @@ describe('the guide tool', () => {
     expect(section.text).toMatch(/### React/);
     expect(section.text).not.toMatch(/Run it after writing/);
     await expect(run('get_guide', { guide: 'nope' })).rejects.toThrow(
-      /the guides are AGENTS, color, lint/,
+      /the guides are AGENTS, color, lint, rhythm/,
     );
+  });
+
+  test('serves the domains of Foundation by their id, without their frontmatter', async () => {
+    const { guides } = await run('get_guide');
+    expect(guides.at(-1)).toEqual({
+      name: 'rhythm',
+      title: 'Rhythm',
+      kind: 'foundation',
+      sections: [
+        'When to use it',
+        'What decides it',
+        'Cases',
+        'Always true',
+        'Situations',
+        'Magma gaps',
+        'Decisions',
+      ],
+    });
+    expect(guides[0]).not.toHaveProperty('kind');
+    const rhythm = await run('get_guide', { guide: 'rhythm' });
+    expect(rhythm).toMatchObject({ guide: 'rhythm', title: 'Rhythm' });
+    // the path under agents/ names it too
+    expect(await run('get_guide', { guide: 'agents/patterns/rhythm.md' })).toEqual(rhythm);
+    const cases = await run('get_guide', { guide: 'rhythm', section: 'cases' });
+    expect(cases.text).toMatch(/^## Cases\n/);
+    expect(cases.text).toContain('| `between-fields` | relation: between-fields | `gap-600`');
+    expect(cases.text).not.toMatch(/^id: rhythm$/m);
   });
 });
 
 describe('the pattern tool', () => {
   test('without arguments the list, as get_guide lists the guides', async () => {
     const { patterns } = await run('get_pattern');
-    // by group, in the order of the docs site, then by id
+    // the domains of Foundation first, then by group in the order of the docs site, then by id
     expect(patterns.map((one: { id: string }) => one.id)).toEqual([
+      'rhythm',
       'consent-and-legal',
       'confirm-action',
       'message-placement',
     ]);
-    expect(patterns[2]).toMatchObject({
+    expect(patterns[0]).toMatchObject({ kind: 'foundation', status: 'decided' });
+    expect(patterns[3]).toMatchObject({
       title: 'Where a message goes',
       group: 'messages-and-states',
       status: 'decided',
@@ -592,8 +682,65 @@ describe('the pattern tool', () => {
       gap: expect.stringContaining('no default for it yet'),
     });
     await expect(run('get_pattern', { id: 'nope' })).rejects.toThrow(
-      'No pattern nope: the patterns are confirm-action, consent-and-legal, message-placement',
+      'No pattern nope: the patterns are confirm-action, consent-and-legal, message-placement, rhythm',
     );
+  });
+
+  test('the answer for a situation lists the rules of the domains its case relies on', async () => {
+    // a magma whose case names rules, and whose pattern cites one for every case
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-rules-'));
+    cpSync(path.join(fixtures, 'magma'), magma, { recursive: true });
+    const file = path.join(magma, 'agents/patterns/message-placement.md');
+    writeFileSync(
+      file,
+      readFileSync(file, 'utf8')
+        .replace(
+          /^( {2}- \{ id: action-failed-in-place,.*?) \}$/m,
+          '$1, rules: [rhythm/inset, rhythm/inline] }',
+        )
+        .replace(/^always-true:\n/m, 'always-true:\n  - { id: ladder-only, from: rhythm }\n'),
+    );
+    const settings = {
+      ...context.settings,
+      documentation: path.join(magma, 'data/documentation.json'),
+    };
+    const tool = toolsOf({ ...context, settings }).find((one) => one.name === 'get_pattern')!;
+    const placement = { about: 'action', outcome: 'failure', place: 'on-screen', timing: 'now' };
+    const { answer } = (await tool.run({
+      id: 'message-placement',
+      situation: placement,
+    })) as Result;
+    expect(answer).toMatchObject({ id: 'action-failed-in-place', preview: expect.any(Object) });
+    // the rules of the case, then those of the pattern, with their text and where they live
+    expect(answer.rules).toEqual([
+      {
+        id: 'inset',
+        from: 'rhythm',
+        rule: '`p-600` inside a container of a part (a card, a banner, a note, a dropdown, the window of a dialog), shared by its regions',
+        serves: 'intuitive',
+        'carried-by': ['mds-banner', 'mds-note', 'mds-dropdown'],
+        'carried-by-planned': ['--magma-rhythm-inset', 'p-inset'],
+      },
+      expect.objectContaining({
+        id: 'inline',
+        from: 'rhythm',
+        rule: expect.stringMatching(/^`gap-300` between elements side by side/),
+      }),
+      expect.objectContaining({
+        id: 'ladder-only',
+        from: 'rhythm',
+        rule: expect.stringMatching(/^Every space between the elements/),
+        serves: ['intuitive', 'flexible'],
+        'checked-by': 'review',
+      }),
+    ]);
+    // every other case gets the rule its pattern cites; with none, an answer has no rules
+    const elsewhere = { ...placement, place: 'off-screen' };
+    const other = (await tool.run({ id: 'message-placement', situation: elsewhere })) as Result;
+    expect(other.answer.rules.map((one: { id: string }) => one.id)).toEqual(['ladder-only']);
+    expect(
+      (await run('get_pattern', { id: 'message-placement', situation: placement })).answer,
+    ).not.toHaveProperty('rules');
   });
 });
 

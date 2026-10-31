@@ -6,7 +6,8 @@
   the one case for the situation. A product layer in the project (magma/patterns/<id>.md)
   narrows the open choices and adds situations; it never changes an "Always true" rule. A case
   Magma has a preview of (agents/patterns/previews/<id>/<case>.html, #1186) names it: the path
-  in the pattern, the stage itself and what to try in it in the answer for a situation.
+  in the pattern, the stage itself and what to try in it in the answer for a situation, with
+  the rules of the domains of Foundation the case relies on (#1198).
 */
 import path from 'node:path';
 import { loadComponents, magmaRoot } from '../core/data.js';
@@ -19,11 +20,13 @@ import {
   listPatterns,
   previewOf,
   projectErrors,
+  rulesOfCase,
   readPatternDir,
   readPreviews,
   readProjectDir,
   resolveLayer,
   splitBody,
+  type Case,
   type Layer,
   type Pattern,
   type PatternFile,
@@ -34,6 +37,36 @@ import { GAP, GAP_SCHEMA, wordsOf, type ToolContext } from './context.js';
 
 /** Where a product keeps its layer, in its own repository (#1174, "The code: the plan"). */
 export const PRODUCT_LAYER_DIR = 'magma/patterns';
+
+/** Where the installed magma ships its patterns and the domains of Foundation. */
+export const patternsDir = (context: ToolContext) =>
+  path.join(magmaRoot(context.settings), 'agents', 'patterns');
+
+const string = { type: 'string' };
+const strings = { type: 'array', items: string };
+const object = { type: 'object' };
+
+/** A rule or a relation of a domain as an answer cites it (CitedRule of the core). */
+export const RULE_SCHEMA = {
+  type: 'object',
+  properties: {
+    id: string,
+    from: { type: 'string', description: 'The domain of Foundation, such as rhythm.' },
+    rule: {
+      type: 'string',
+      description: 'The rule, or for a relation of the domain the answer it gives.',
+    },
+    serves: { anyOf: [string, strings] },
+    use: strings,
+    'carried-by': strings,
+    'carried-by-planned': strings,
+    'checked-by': string,
+    lint: string,
+    'lint-planned': string,
+    note: string,
+  },
+  required: ['id', 'from', 'rule'],
+};
 
 interface Read {
   patterns: PatternFile[];
@@ -48,7 +81,7 @@ interface Read {
 }
 
 const read = (context: ToolContext): Read => {
-  const shipped = path.join(magmaRoot(context.settings), 'agents', 'patterns');
+  const shipped = patternsDir(context);
   const patterns = readPatternDir(shipped);
   const { byId, aliases } = indexPatterns(patterns.map((one) => one.data));
   const { files, unreadable } = readProjectDir(path.join(context.root, PRODUCT_LAYER_DIR));
@@ -105,15 +138,11 @@ export const CANDIDATE =
   'A candidate: Magma knows this need and has no default for it yet. Do not present a choice of yours as the Magma default: tell the user which choice you made and why. ' +
   GAP;
 
-const string = { type: 'string' };
-const strings = { type: 'array', items: string };
-const object = { type: 'object' };
-
 export const getPattern = (context: ToolContext): Tool => ({
   name: 'get_pattern',
   title: 'Read a Magma pattern',
   description:
-    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product. Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, and what to try in it), or which variables are still to settle; with id and section the text of that section. Ask before building a flow, and follow the case it gives.',
+    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product, and first the domains of Foundation (kind foundation), the rules of composition every pattern stands on (the space between elements, ...). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, and what to try in it, and in rules the rules of the domains it relies on, each with its domain and its text), or which variables are still to settle; with id and section the text of that section. Ask before building a flow, and follow the case it gives and its rules.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -273,17 +302,22 @@ export const getPattern = (context: ToolContext): Tool => ({
       }));
       const hits = result.hits.map(({ kind, entry }) => ({ kind, ...entry }));
       if (hits.length === 1 && !missing.length) {
-        const [hit] = hits;
-        const preview =
-          hit!.kind === 'case'
-            ? previewOf(previews, base.id, String((hit as { id?: unknown }).id))
-            : undefined;
+        const { kind, entry } = result.hits[0]!;
+        const isCase = kind === 'case';
+        const preview = isCase ? previewOf(previews, base.id, String(entry.id)) : undefined;
+        // the rules of the domains the case relies on, with their text, in place of their ids
+        const rules = isCase ? rulesOfCase(base, entry as Case, all) : [];
         return {
           id: base.id,
           ...renamed,
           ...mine,
-          answer: preview ? { ...hit, preview: previewIn(context, preview) } : hit,
-          ...(hit!.kind === 'gap' ? { gap: GAP } : {}),
+          answer: {
+            kind,
+            ...entry,
+            ...(rules.length ? { rules } : {}),
+            ...(preview ? { preview: previewIn(context, preview) } : {}),
+          },
+          ...(kind === 'gap' ? { gap: GAP } : {}),
         };
       }
       return { id: base.id, ...renamed, ...mine, candidates: hits, missing };

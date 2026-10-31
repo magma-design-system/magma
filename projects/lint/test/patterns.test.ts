@@ -1,7 +1,7 @@
 // The patterns core (#1174): the format, the coverage of the cases, the links, the layers, the
 // answer for a situation and the generated body, on the patterns Magma ships and on small ones
 // written here to break one rule each.
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
@@ -29,6 +29,8 @@ import {
   readPreviews,
   readProjectDir,
   resolveLayer,
+  rulesOfCase,
+  rulesOfComponent,
   syncBody,
   type Layer,
   type Pattern,
@@ -110,6 +112,31 @@ describe('the patterns Magma ships', () => {
 
   test('every link resolves', () => {
     expect([...linkErrors(patterns)]).toEqual([]);
+  });
+
+  test('get_guide names a domain by its id: no guide has it', () => {
+    const guides = readdirSync(path.join(SOURCES, '..'))
+      .filter((name) => name.endsWith('.md'))
+      .map((name) => name.slice(0, -3).toLowerCase());
+    const domains = patterns.filter((one) => one.kind === 'foundation').map((one) => one.id);
+    expect(domains).toContain('rhythm');
+    expect(domains.filter((id) => guides.includes(id))).toEqual([]);
+  });
+
+  test('each component a domain carries a rule on is governed by it', () => {
+    const domains = patterns.filter((one) => one.kind === 'foundation');
+    for (const domain of domains)
+      for (const one of [...(domain.cases ?? []), ...(domain['always-true'] ?? [])])
+        for (const text of [...(one['carried-by'] ?? []), ...(one['carried-by-planned'] ?? [])]) {
+          const carrier = parseCarrier(text);
+          if (carrier?.kind !== 'component') continue;
+          expect(
+            rulesOfComponent(patterns, carrier.use.tag).map((rule) => `${rule.from}/${rule.id}`),
+          ).toContain(`${domain.id}/${one.id}`);
+        }
+    expect(rulesOfComponent(patterns, 'mds-input-field').map((rule) => rule.id)).toEqual([
+      'label-control',
+    ]);
   });
 
   test('message-placement answers each of its 384 combinations once', () => {
@@ -459,6 +486,138 @@ describe('a domain of Foundation', () => {
     );
   });
 
+  test('a case names the rules of the domains it relies on, by <domain>/<id>', () => {
+    const errors = formatErrors(
+      file(
+        small({
+          cases: [
+            { id: 'on-field', about: 'field', where: 'w', rules: ['spacing/inline', 'spacing'] },
+            {
+              id: 'on-action',
+              about: 'action',
+              where: 'w',
+              rules: ['spacing/inset', 'spacing/inset', 'a/b/c'],
+            },
+            { id: 'ask', about: 'action', decision: 'needed', where: 'w', rules: 'spacing/inline' },
+          ],
+        }),
+      ),
+    );
+    expect(errors).toEqual([
+      'case on-field: rules "spacing" is not <domain>/<id>, such as rhythm/inline',
+      'case on-action: spacing/inset is named twice in its rules',
+      'case on-action: rules "a/b/c" is not <domain>/<id>, such as rhythm/inline',
+      'case ask: rules is a list of <domain>/<id>, such as rhythm/inline',
+    ]);
+    expect(
+      formatErrors(file(small({ variables: { rules: { values: ['a'], means: 'm' } }, cases: [] }))),
+    ).toContain('no variable may be named rules: it is a key of the entries');
+  });
+
+  test('a rule a case names is a rule or a relation of a domain, never one it lacks', () => {
+    const other = small({ id: 'other', aliases: ['older'] });
+    const one = small({
+      cases: [
+        {
+          id: 'on-field',
+          about: 'field',
+          where: 'w',
+          rules: ['spacing/inline', 'spacing/ladder', 'spacing/nope', 'nowhere/inline'],
+        },
+        { id: 'on-action', about: 'action', where: 'w', rules: ['other/one-rule', 'older/x'] },
+        { id: 'ask', about: 'action', decision: 'needed', where: 'w' },
+      ],
+    });
+    const own = domain({
+      cases: [
+        ...domain().cases!.slice(0, 1),
+        { ...domain().cases![1]!, rules: ['spacing/inline'] },
+      ],
+    });
+    const errors = linkErrors([one, other, own]);
+    expect(errors.get('small')).toEqual([
+      'case on-field: rules spacing/nope: spacing has no rule nor case nope of its own',
+      'case on-field: rules nowhere/inline: no pattern nowhere',
+      'case on-action: rules other/one-rule: other is not a domain of Foundation (kind foundation)',
+      'case on-action: rules older/x: older was renamed other',
+    ]);
+    expect(errors.get('spacing')).toEqual([
+      'case inset: rules spacing/inline: a domain does not cite its own rules',
+    ]);
+  });
+
+  test('the answer cites the rules of its case, then those of its pattern, each once', () => {
+    const one = small({
+      cases: [
+        {
+          id: 'on-field',
+          about: 'field',
+          where: 'w',
+          rules: ['spacing/inset', 'spacing/nope', 'spacing/ladder'],
+        },
+        { id: 'on-action', about: 'action', where: 'w' },
+        { id: 'ask', about: 'action', decision: 'needed', where: 'w' },
+      ],
+      'always-true': [
+        { id: 'one-rule', rule: 'A rule.', 'checked-by': 'review' },
+        { id: 'ladder', from: 'spacing' },
+        { id: 'kept', from: 'other' },
+      ],
+    });
+    const other = small({
+      id: 'other',
+      'always-true': [{ id: 'kept', rule: 'K.', 'checked-by': 'review' }],
+    });
+    const all = [one, other, domain()];
+    expect(rulesOfCase(one, one.cases![0]!, all)).toEqual([
+      {
+        id: 'inset',
+        from: 'spacing',
+        rule: 'p-md',
+        serves: ['intuitive', 'flexible'],
+        'carried-by': ['mds-banner'],
+      },
+      {
+        id: 'ladder',
+        from: 'spacing',
+        rule: 'Only the steps of the ladder.',
+        serves: 'intuitive',
+        'checked-by': 'review',
+      },
+    ]);
+    expect(rulesOfCase(one, one.cases![1]!, all).map((rule) => rule.id)).toEqual(['ladder']);
+  });
+
+  test('a component is governed by the rules it carries, now or once built, and the relations that write it', () => {
+    const spacing = domain({
+      cases: [
+        { ...domain().cases![0]!, use: ['mds-button variant=primary'] },
+        {
+          ...domain().cases![1]!,
+          'carried-by': ['mds-modal slot=window'],
+          'carried-by-planned': ['mds-card'],
+        },
+      ],
+      'always-true': [
+        { ...domain()['always-true']![0]!, 'carried-by': ['mds-card'] },
+        { id: 'inline', from: 'other' },
+      ],
+      components: ['mds-banner'],
+    });
+    const later = domain({ id: 'later', status: 'candidate' });
+    const all = [small(), spacing, later];
+    const ids = (tag: string) => rulesOfComponent(all, tag).map((one) => `${one.from}/${one.id}`);
+    expect(ids('mds-button')).toEqual(['spacing/inline']);
+    expect(ids('mds-modal')).toEqual(['spacing/inset']);
+    expect(ids('mds-card')).toEqual(['spacing/inset', 'spacing/ladder']);
+    // the components of a domain name what it speaks of, not what a rule governs
+    expect(ids('mds-banner')).toEqual([]);
+    expect(rulesOfComponent(all, 'mds-button')[0]).toMatchObject({
+      rule: 'gap-md',
+      use: ['mds-button variant=primary'],
+    });
+  });
+
   test('its generated sections say the principle each rule serves and what carries it', () => {
     const synced = syncBody(domain(), '# S\n\n## When to use it\n\nKept.\n');
     expect(synced).toContain('| Case | When | Where | Use | Serves | Carried by |');
@@ -744,6 +903,23 @@ describe('the body', () => {
     expect(bodyErrors(small({ principle: 'Another.' }), synced)).toContain(
       'the title, the principle or a generated section (Cases, Always true, Open choices, Situations) is out of date: nx run stencil:generate.pattern -- --sync',
     );
+  });
+
+  test('the rules a case names get a column once one case names them', () => {
+    expect(syncBody(small(), '# S\n')).toContain('| Case | When | Where | Use |\n');
+    const one = small({
+      cases: [
+        { id: 'on-field', about: 'field', where: 'w', rules: ['spacing/inline', 'spacing/ladder'] },
+        { id: 'on-action', about: 'action', where: 'w' },
+        { id: 'ask', about: 'action', decision: 'needed', where: 'w' },
+      ],
+    });
+    const synced = syncBody(one, '# S\n');
+    expect(synced).toContain('| Case | When | Where | Use | Rules |');
+    expect(synced).toContain(
+      '| `on-field` | about: field | w |  | `spacing/inline`, `spacing/ladder` |',
+    );
+    expect(synced).toContain('| `on-action` | about: action | w |  |  |');
   });
 
   test('a pattern with no open choice has no section for them', () => {

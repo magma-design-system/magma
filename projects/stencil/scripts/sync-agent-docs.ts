@@ -175,7 +175,7 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 | -------- | ---- |
 | Which component to reach for | [\`agents/components.md\`](agents/components.md) - the catalogue by category, one line each |
 | A task that spans components, solved the same way in every product: where a message goes, confirming an action, an empty, a loading or a failed part | [\`agents/patterns.md\`](agents/patterns.md) - the catalogue of the patterns; ask \`get_pattern\` of the MCP server for the case of your situation |
-| How the parts of a screen stand together: the space between two elements, which action weighs more, the style of a title, when a surface, how wide | [\`agents/patterns.md\`](agents/patterns.md), section Foundation - the domains of the design language; ask \`get_pattern\` for the rule of your context |
+| How the parts of a screen stand together: the space between two elements, which action weighs more, the style of a title, when a surface, how wide | [\`agents/patterns.md\`](agents/patterns.md), section Foundation - the domains of the design language; ask \`get_pattern\` for the rule of your context, \`get_guide\` for a domain by its id (\`rhythm\`) |
 | One component's API (props with allowed values, events, methods, slots, parts, CSS vars) | its \`AGENTS.md\`, linked from the catalogue |
 | Correct usage and mistakes for one component | \`examples.md\` / \`mistakes.md\` beside its \`AGENTS.md\` |
 | Rules shared by every component: naming, events, slots, compound, icons, a11y, styling from outside | [\`agents/conventions.md\`](agents/conventions.md) |
@@ -292,6 +292,9 @@ function buildPatternsMd(): string {
 > a surface, how wide. They are read the same way, and each rule says the principle it serves and
 > what carries it (a component, a token, a utility, a lint rule): write the carrier, not its
 > value; a carrier still planned is not there yet, so write the value the case gives.
+> \`get_guide\` serves each domain by its id; the answer of \`get_pattern\` for a situation
+> lists in \`rules\` the ones its case relies on, and \`get_component\` the ones that govern a
+> component.
 > A product may keep a layer in its own repository, \`magma/patterns/<id>.md\`, that narrows the
 > open choices and adds situations (A product's layer, below); \`get_pattern\` applies it. A candidate is a need Magma knows
 > and has not defined yet: no default covers it, so say which choice you made and why.

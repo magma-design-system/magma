@@ -162,6 +162,23 @@ or on the guide it enforces, not only on fixtures picked by hand.
   domain by a rule or by a case, `{ id, from: rhythm }`, since the relations of a domain are its
   rules too; a domain gives a case and a rule the same id never, or one citation would name
   both. The relations of a domain have no previews yet: whether they get one is open on #1189.
+- **The rules of the design language in the answers** (`get_guide`, `get_pattern`,
+  `get_component`, #1198): found where the agent already looks (#1189, "The context for the
+  agents", point 2). `get_guide` serves each domain of `agents/patterns/` as a guide, named by
+  its id as the patterns cite it (`rhythm/<id>`), after the guides of `agents/`, read without
+  its frontmatter, the data `get_pattern` answers from; a guide of the same name would come
+  first, the domain answering as `patterns/<id>`, and a test holds the ids of the domains apart
+  from the names of the guides. A case names the rules it and its preview rely on in `rules`,
+  `<domain>/<id>`, declared rather than derived from the markup (the choice of the maintainer
+  on #1198): a rule checked by review (`step-ratio`) has no carrier a preview could show, and
+  most carriers are planned. The answer for a situation gives them with their text (a
+  relation's `where`, a rule's `rule`), then the rules its pattern cites from a domain in
+  `always-true`, which hold for every case, each once; a citation that names nothing is left
+  out, and `check.patterns`, or `layerErrors` for a product's own pattern, says why.
+  `get_component` names a relation or a rule of a domain when the component carries it, built
+  or planned (`carried-by`, `carried-by-planned`, whatever the attributes of the carrier), or
+  when a relation writes it in `use`; not the `components` of a domain, which name what it
+  speaks of, a component it says lacks a rule among them (`mds-card` in the rhythm).
 - **What a render loads, and when it is ready** (`render_preview`, #1180): the page a consumer
   writes, not one of the tool's own. The stylesheets are the import block of
   `agents/assets.md`, "Import order (mandatory)", in its order and layers (a test holds
