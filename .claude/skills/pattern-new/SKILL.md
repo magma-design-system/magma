@@ -21,9 +21,11 @@ their `need`, `keywords` and `situations` in `docs/agents/patterns/`):
 - a candidate covers it: this skill turns that candidate into the pattern, keeping its id;
 - nothing covers it: choose a new id, kebab-case, named after the task, not a component.
 
-Then ask, as a multiple choice, whether it is a pattern (a flow of components over time) or a
-building block (a structure of the page). Building blocks are not written yet: they come from
-the patterns of the Data group (#1083), so for a block stop here and say so.
+Then ask, as a multiple choice, whether it is a pattern (a flow of components over time), a
+building block (a structure of the page) or a domain of Foundation (a rule of composition the
+patterns stand on: a space, a weight, a style, a surface, a width; `docs/PATTERNS.md`, "A domain
+of Foundation"). Building blocks are not written yet: they come from the patterns of the Data
+group (#1083), so for a block stop here and say so.
 
 ## 2. The draft
 
@@ -31,6 +33,7 @@ Work on a branch of its own, off `main` (`docs/WORKFLOW.md`), never on `main`. T
 
 ```bash
 npx nx run stencil:generate.pattern <id> --group <group> --need "<the need>"
+npx nx run stencil:generate.pattern <id> --kind foundation --need "<what it settles>"  # a domain
 ```
 
 ## 3. Research, then write
@@ -49,6 +52,10 @@ field a question that defines a pattern:
   copy a link, export a big file, lose the connection), each with its case;
 - **what is always true**, each rule `checked-by: review` or `lint` (with `lint-planned` for a
   rule to write), and the **open choices** a product may narrow;
+- for a domain, on each case and rule: **`serves`**, the principle it serves, and
+  **`carried-by`**, what carries it (a component default first, then a token or a utility, then
+  a lint rule), with `carried-by-planned` for a carrier not built yet and today's value in the
+  case;
 - the parts, the behaviour over time, accessibility, content, and the **Magma gaps** found.
 
 Write the source of every choice the sources settle as a row of `## Decisions` (date, decision,

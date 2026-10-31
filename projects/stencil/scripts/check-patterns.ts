@@ -10,6 +10,9 @@
  *   value it takes;
  * - the lint: every "Always true" rule checked by lint names a rule the lint has; a planned one
  *   names a rule it does not have yet;
+ * - the carriers of a domain of Foundation (kind foundation, #1196): each component, custom
+ *   property, utility and lint rule of carried-by is in the release, each of carried-by-planned
+ *   is not yet;
  * - the links: every pattern, case and rule cited exists, and no reference uses an old id;
  * - the body: its sections in the order of the template, the generated ones up to date;
  * - the previews of the cases (docs/agents/patterns/previews/<pattern>/<case>.html, #1186): each
@@ -31,10 +34,12 @@ import * as htmlParser from '@html-eslint/parser';
 import { Linter } from 'eslint';
 import { existsSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
-import { loadComponents } from '../../lint/src/core/data';
+import { loadComponents, loadStyles, loadThemeNames } from '../../lint/src/core/data';
 import {
+  FOUNDATION,
   MAGMA_LAYER,
   bodyErrors,
+  carrierErrors,
   componentErrors,
   coverage,
   coverageErrors,
@@ -47,6 +52,7 @@ import {
   readPreviews,
   readProjectDir,
   type PatternFile,
+  type Release,
 } from '../../lint/src/core/patterns';
 import magmaEslint, { rules as eslintRules } from '../../lint/src/eslint/index';
 import stylelintPlugins from '../../lint/src/stylelint/index';
@@ -63,6 +69,14 @@ const lintRules = new Set([
   ...Object.keys(eslintRules).map((name) => `magma/${name}`),
   ...stylelintPlugins.map((plugin) => plugin.ruleName),
 ]);
+// what the carriers of a domain are checked against: the styles beside the built
+// documentation.json, the theme of the styles package of this repository
+const release: Release = {
+  components,
+  styles: loadStyles({ documentation: DOCUMENTATION }),
+  theme: loadThemeNames({ root: REPO }),
+  lintRules,
+};
 
 const found = new Map<string, string[]>();
 const report = (file: string, errors: string[]) => {
@@ -87,6 +101,7 @@ for (const file of files) {
     combinations += covered.total;
     errors.push(...coverageErrors(covered));
     errors.push(...componentErrors(data, components), ...lintErrors(data, lintRules));
+    if (data.kind === FOUNDATION) errors.push(...carrierErrors(data, release));
     errors.push(...bodyErrors(data, file.body, patterns));
   }
   report(file.file, errors);
@@ -144,11 +159,14 @@ if (missing.length)
       .map((one) => `  - ${one}`)
       .join('\n')}\n`,
   );
-const decided = patterns.filter((one) => one.status !== 'candidate').length;
+const domains = patterns.filter((one) => one.kind === FOUNDATION).length;
+const decided = patterns.filter(
+  (one) => one.kind !== FOUNDATION && one.status !== 'candidate',
+).length;
 console.log(
-  `OK - ${patterns.length} patterns in ${relative(REPO, PATTERNS_DIR)} (${decided} defined, ${
-    patterns.length - decided
-  } candidates): ${combinations} combinations each in one case, a gap or not applicable; every component, attribute, lint rule and link exists; ${
+  `OK - ${patterns.length - domains} patterns and ${domains} domain(s) of Foundation in ${relative(REPO, PATTERNS_DIR)} (${decided} patterns defined, ${
+    patterns.length - domains - decided
+  } candidates): ${combinations} combinations each in one case, a gap or not applicable; every component, attribute, carrier, lint rule and link exists; ${
     previews.length
   } preview(s), each of a case and clean`,
 );

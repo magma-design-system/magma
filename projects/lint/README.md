@@ -30,7 +30,7 @@ sets both up at bootstrap.
 | `src/core/element.ts` | the element the template rules check, whatever the template language |
 | `src/core/checks.ts` | one check per template rule, pure |
 | `src/core/colors.ts` | the colour literals of a CSS value |
-| `src/core/patterns.ts` | the patterns (#1174): reading a pattern or a product layer, the checks of its format, cases, links and layer, the case for a situation, the sections written from the frontmatter ([`docs/PATTERNS.md`](../../docs/PATTERNS.md)) |
+| `src/core/patterns.ts` | the patterns (#1174) and the domains of Foundation (#1196): reading a pattern or a product layer, the checks of its format, cases, carriers, links and layer, the case for a situation, the sections written from the frontmatter ([`docs/PATTERNS.md`](../../docs/PATTERNS.md)) |
 | `src/eslint/adapters.ts` | one adapter per parser: HTML (`@html-eslint/parser`), JSX, Angular templates (`@angular-eslint/template-parser`) |
 | `src/eslint/index.ts` | the ESLint rules and presets |
 | `src/stylelint/` | the Stylelint rules and presets |
@@ -138,6 +138,22 @@ or on the guide it enforces, not only on fixtures picked by hand.
   its path, and the answer for a situation carries the stage with what to try, since that is
   the one case the agent builds and its markup is short. Only Magma's cases have previews: a
   product layer adds situations, never a case to show.
+- **The domains of Foundation** (`kind: foundation`, `src/core/patterns.ts`, #1196): the
+  domains of the design language decided on #1189, in the same format, so they are listed,
+  searched and answered as the patterns are, first in the list as the rail of the docs site puts
+  Foundation first. `serves` takes the four principles of the docs site's Principles page, which
+  asks every decision of Foundation to name the one it serves. A carrier is read from its form,
+  as a `use` is (the choice of the maintainer on #1196): `mds-*` a component and its attributes,
+  checked as a `use`; `--*` a custom property, which exists when the consumption map of styles
+  lists it as a token or as the theme name a token publishes, or when a component documents it
+  as public; `magma/*` a rule of the lint; any other name a class, which exists when it is a
+  Magma utility of the consumption map or `<utility>-<key>` of a namespace and a token or a
+  keyword of it, as `explain_class` reads a class (`loadThemeNames` of `src/core/data.ts`). A
+  planned carrier must not exist yet, as a planned lint rule; the release that has it makes the
+  check ask to move it, so the files follow the carriers as they are built. A pattern cites a
+  domain by a rule or by a case, `{ id, from: rhythm }`, since the relations of a domain are its
+  rules too; a domain gives a case and a rule the same id never, or one citation would name
+  both. The relations of a domain have no previews yet: whether they get one is open on #1189.
 - **What a render loads, and when it is ready** (`render_preview`, #1180): the page a consumer
   writes, not one of the tool's own. The stylesheets are the import block of
   `agents/assets.md`, "Import order (mandatory)", in its order and layers (a test holds
