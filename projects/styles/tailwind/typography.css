@@ -54,6 +54,45 @@
     text-size-title-action;
 }
 
+/* Titles by role (#1189): what the title is, not its level. Each reads the tokens of its role,
+ * --text-size-title-<role>, which point at the level the role is styled as (page h3, section and
+ * dialog h5, part and group h6), weight included: a theme moves a role in one place. */
+
+@utility text-title-page {
+  @apply antialiased
+    font-title
+    text-box-vertical-margin
+    text-size-title-page;
+}
+
+@utility text-title-section {
+  @apply antialiased
+    font-title
+    text-box-vertical-margin
+    text-size-title-section;
+}
+
+@utility text-title-dialog {
+  @apply antialiased
+    font-title
+    text-box-vertical-margin
+    text-size-title-dialog;
+}
+
+@utility text-title-part {
+  @apply antialiased
+    font-title
+    text-box-vertical-margin
+    text-size-title-part;
+}
+
+@utility text-title-group {
+  @apply antialiased
+    font-title
+    text-box-vertical-margin
+    text-size-title-group;
+}
+
 @utility text-info-paragraph {
   @apply antialiased
     font-info

@@ -56,9 +56,10 @@ The theme and the contrast preference are one modifier because they are not inde
 | :--- | :--- | :--- |
 | `palette.<group>.<family>.<step>` | `--tone-neutral-08` | The color primitives. The family's own color is `$root` (`--status-info`), the paper of the mode is `seed`. Aliased families (`variant`) are aliases of the family they name. |
 | `magma.<group>.<key>` | `--magma-surface-default` | The semantic roles, as aliases of the primitive they point at. `magma.tint` holds the internal `--magma-tint-*` pointers that themes and contrast repoint; an accent with an infix is a group of its own (`magma.accent-ai`). |
+| `magma.rhythm.<id>`, `magma.width.<id>` | `--magma-rhythm-between-fields` | The roles of the design language (#1189): the space of each relation of the rhythm, an alias of its size step, and the widths. |
 | `font.<family>` | `--font-title` | Font families. |
 | `text-size.<family>.<style>` | `--text-size-title-h1` | The size of a style (`$root`) and its `font-weight`, `letter-spacing`, `line-height`. |
-| `typography.<family>.<style>` | none | The same style as one `typography` token. |
+| `typography.<family>.<style>` | none | The same style as one `typography` token. The titles by role (`typography.title.page`, `section`, `dialog`, `part`, `group`) are aliases of the level they are styled as, and so are their `text-size` parts. |
 | `leading`, `spacing`, `container`, `breakpoint`, `aspect`, `border`, `radius`, `shadow`, `duration`, `ease` | `--leading-md`, `--spacing-xs`, ... | One group per CSS prefix. `spacing.$root` is `--spacing`, the multiplier of the numeric utilities. |
 | `size.<step>` | none | The primitive sizing scale that spacing, container, border and radius name. |
 
@@ -77,7 +78,8 @@ Where the JSON and the CSS write a value differently:
 - **Line height** of a `typography` token: a multiplier of the font size, as DTCG defines it. The `line-height` token of the style keeps the length.
 - **Aspect ratios**: a `number` (`5/3` becomes `1.6666666666666667`); `cssValue` keeps the ratio.
 - **Ring shadows** (`--shadow-ring*`): the CSS draws them with `--tone-neutral-01`; the JSON resolves that color, so `mode-dark` restates them.
-- **No DTCG type**: the text measures `--spacing-phrase`, `-prose`, `-text`, `-title` (in `ch`) and the `--transition-property-*` lists are listed in the `cssOnly` extension of their group.
+- **No DTCG type**: the text measures `--spacing-phrase`, `-prose`, `-text`, `-title` (in `ch`), the widths `--magma-width-reading` (in `ch`), `-form` and `-dialog` (written from other roles), and the `--transition-property-*` lists are listed in the `cssOnly` extension of their group, each `{ css, value }`, with its `description` where it has one.
+- **Titles by role**: the CSS points at the custom property of the level (`--text-size-title-page: var(--text-size-title-h3)`), kept in `cssValue`; the JSON is an alias of the level.
 
 Component tokens (`--mds-*`) are not in this data: they belong to each component.
 

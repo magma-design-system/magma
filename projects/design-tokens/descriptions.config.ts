@@ -12,7 +12,11 @@
 /** Groups and tokens of the base set, by their DTCG path. */
 export const tokenDescriptions: Record<string, string> = {
   magma:
-    'The semantic layer: the roles UI code paints with, which follow the mode, the named theme and the contrast preference.',
+    'The semantic layer: the roles UI code paints with. The colour roles follow the mode, the named theme and the contrast preference; rhythm and width are the spaces and the widths of the design language.',
+  'magma.rhythm':
+    'The space of each relation of the rhythm, named after its rule (rhythm/between-fields is --magma-rhythm-between-fields): UI code writes the relation (gap-between-fields, p-inset), never its step, and a project that changes --spacing does not move it.',
+  'magma.width':
+    'The widths of the design language, named after their rule (widths/form is --magma-width-form): the measure of text, the column of a form, the frame of a page and the window of a dialog.',
 
   palette:
     'The colour primitives the semantic roles are built from: they follow the light and dark mode, not the named themes or the contrast preference. Each ramp runs from 01, the most contrast against the page, to 10, the closest to it.',

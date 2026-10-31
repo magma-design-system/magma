@@ -216,6 +216,39 @@ Font families used in Magma:
 Each family has a system-font fallback; the webfonts are loaded by the consumer (see the
 styles README).
 
+## Design language roles (#1189)
+
+The composition rules of the design language are carried by role tokens: UI code writes the
+relation, the width or the role of a title, never its value, and a theme moves a role in one
+place. The sources are `tokens/sizing/role.json` (rhythm and widths) and
+`tokens/typography/role.json` (titles); `tailwind4.json` publishes them in `typography.css` and
+bridges them in `tailwind-theme-typography.css`.
+
+| Rule | Custom property | Value | Tailwind |
+| --- | --- | --- | --- |
+| `rhythm/<id>` | `--magma-rhythm-<id>` | a literal from `sizing.primitive` (`between-fields` 24px) | `--spacing-<id>`: `gap-between-fields`, `p-inset` |
+| `widths/reading` | `--magma-width-reading` | `56ch` | (the reset and `mds-text` carry it) |
+| `widths/form` | `--magma-width-form` | `var(--magma-width-reading)` | `--container-form`: `max-w-form` |
+| `widths/page` | `--magma-width-page`, `--magma-width-page-gutter` | 1280px, 24px | the `page-frame` utility of styles |
+| `widths/dialog` | `--magma-width-dialog` | `calc(var(--magma-width-form) + 2 * var(--magma-rhythm-inset))` | none: the default of `mds-modal` |
+| `titles/<role>` | `--text-size-title-<role>` and its three companions | `var()` of the level (page `h3`, section and dialog `h5`, part and group `h6`) | `text-title-<role>` utilities of styles |
+
+- **The relations of the rhythm**: `inline`, `title-content`, `label-control` (300),
+  `between-containers` (400), `between-fields`, `inset` (600), `between-groups` (1000),
+  `between-sections` (1600). Each is a literal, so a project that changes `--spacing` in its
+  `@theme` does not move it; `test/roles.test.mts` holds the values and `rhythm/step-ratio`
+  (each relation at least 1.5 times the one it contains).
+- **Density** (#691) will turn each rhythm token into a multiple of `--magma-unit-container`
+  and declare it again on each density scope. A custom property resolves where it is declared:
+  the Tailwind bridge `--spacing-<id>` is declared on `:root`, so a scope below it (a region)
+  has to declare the bridges again as well, or the utilities keep the value of `:root`.
+- **`--spacing-text`** stays `75ch` until the reading measure moves onto `--magma-width-reading`
+  (its own change, #1204).
+- **In DTCG** the rhythm and the widths are `magma.rhythm.<id>` and `magma.width.<id>`, next to
+  the colour roles (`tier: semantic`, each with what it is for); the widths with no DTCG type
+  (in `ch`, or written from other roles) are `cssOnly` entries of `magma.width`. The titles by
+  role are `text-size.title.<role>` and `typography.title.<role>`, aliases of their level.
+
 ## Generating a custom palette
 
 Use the CLI to generate a custom palette for a new product brand:

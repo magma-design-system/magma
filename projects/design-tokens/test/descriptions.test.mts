@@ -122,7 +122,8 @@ describe('the descriptions of the other groups', () => {
         .filter(([key]) => !key.startsWith('$'))
         .map(([style, node]) => [`${family}.${style}`, node as Group] as const),
     )
-    expect(styles).toHaveLength(18)
+    // 18 levels and the 5 titles by role of #1189 (page, section, dialog, part, group)
+    expect(styles).toHaveLength(23)
     expect(styles.filter(([, node]) => !node.$description).map(([name]) => name)).toEqual([])
     expect(staleDescriptions(base)).toEqual([])
   })

@@ -306,9 +306,19 @@ export function buildDtcg({
     value: round(dimension(String(px)).value / 16),
     unit: 'rem',
   });
-  const cssOnly: Record<string, Array<{ css: string; value: string }>> = {};
-  const keepCssOnly = (group: string, css: string, value: string) =>
-    (cssOnly[group] ??= []).push({ css, value });
+  /** Whether DTCG can type a CSS length: `dimension()` takes px and rem only, and throws. */
+  const typed = (literal: string): boolean => {
+    try {
+      dimension(literal);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+  /** By the dotted path of the group: `spacing`, `magma.width`. */
+  const cssOnly: Record<string, Array<{ css: string; value: string; description?: string }>> = {};
+  const keepCssOnly = (group: string, css: string, value: string, description?: string) =>
+    (cssOnly[group] ??= []).push({ css, value, ...(description ? { description } : {}) });
 
   // size: the primitive scale every spacing, container, border and radius names.
   // Not a custom property of its own: the CSS publishes the resolved values.
@@ -391,6 +401,49 @@ export function buildDtcg({
       );
     }
 
+  // titles by role (#1189): `--text-size-title-<role>` and its three companions point at
+  // the level the role is styled as, and so does the style of the role, as an alias
+  const companions: Array<[string, string]> = [
+    ['font-weight', 'fontWeight'],
+    ['letter-spacing', 'dimension'],
+    ['line-height', 'dimension'],
+  ];
+  for (const [role, { value: level, description }] of entries('role.title')) {
+    const at = ['text-size', 'title', role];
+    const to = ['text-size', 'title', String(level)];
+    const css = `--text-size-title-${role}`;
+    const target = `--text-size-title-${String(level)}`;
+    put(
+      base,
+      [...at, '$root'],
+      token('dimension', alias([...to, '$root']), {
+        css,
+        tier: 'semantic',
+        cssValue: `var(${target})`,
+      }),
+    );
+    for (const [part, type] of companions)
+      put(
+        base,
+        [...at, part],
+        token(type, alias([...to, part]), {
+          css: `${css}--${part}`,
+          tier: 'semantic',
+          cssValue: `var(${target}--${part})`,
+        }),
+      );
+    put(
+      base,
+      ['typography', 'title', role],
+      token(
+        'typography',
+        alias(['typography', 'title', String(level)]),
+        { tier: 'semantic' },
+        extra(description),
+      ),
+    );
+  }
+
   for (const [key, { value }] of entries('typography.leading'))
     put(
       base,
@@ -428,6 +481,36 @@ export function buildDtcg({
         tier: 'primitive',
       }),
     );
+
+  // the roles of the design language (#1189), next to the colour roles: the space of each
+  // relation of the rhythm (`--magma-rhythm-*`), an alias of the size step it takes, and the
+  // widths (`--magma-width-*`). A measure in ch, and a width written from other roles
+  // (var(), calc()), have no DTCG type: they stay on the group, with what they are for.
+  for (const [key, { value, description }] of entries('role.rhythm'))
+    put(
+      base,
+      ['magma', 'rhythm', key],
+      token(
+        'dimension',
+        sourceAlias(value) ?? dimension(String(resolved(value))),
+        { css: `--magma-rhythm-${key}`, tier: 'semantic' },
+        extra(description),
+      ),
+    );
+  for (const [key, { value, description }] of entries('role.width')) {
+    const css = `--magma-width-${key}`;
+    const link = sourceAlias(value);
+    const literal = String(resolved(value));
+    if (!link && !typed(literal)) {
+      keepCssOnly('magma.width', css, literal, description);
+      continue;
+    }
+    put(
+      base,
+      ['magma', 'width', key],
+      token('dimension', link ?? dimension(literal), { css, tier: 'semantic' }, extra(description)),
+    );
+  }
 
   for (const [key, range] of Object.entries(
     source('screen') as Record<string, { min: { value: string } }>,
@@ -520,10 +603,13 @@ export function buildDtcg({
     keepCssOnly('transition-property', `--transition-property-${key}`, String(value));
 
   // Custom properties DTCG has no type for (a `ch` measure, a list of property
-  // names) stay on their group, so the JSON still lists every global token.
+  // names, a calc() of other roles) stay on their group, so the JSON still lists
+  // every global token.
   for (const [group, list] of Object.entries(cssOnly)) {
-    base[group] ??= {};
-    (base[group] as DtcgGroup).$extensions = { [NAMESPACE]: { cssOnly: list } };
+    const node = group
+      .split('.')
+      .reduce<DtcgGroup>((parent, key) => (parent[key] ??= {}) as DtcgGroup, base);
+    node.$extensions = { [NAMESPACE]: { cssOnly: list } };
   }
 
   // what every other group is for, and each typography style; the groups of the layer were
