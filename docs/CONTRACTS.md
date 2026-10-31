@@ -147,14 +147,17 @@ keep in step.
   catalogue `agents/patterns.md` and the preview of each case
   (`agents/patterns/previews/<id>/<case>.html`: the stage, what to try in it, an optional
   height; never a page, the reader adds the stylesheets and the loader and runs it in a document
-  of its own); and the layer a product keeps in its own repository, `magma/patterns/<id>.md`, of
-  the same shape.
+  of its own); the domains of the design language (`kind: foundation`, #1189), the rules of
+  composition the patterns stand on, in the same folder and catalogue, each case and rule with
+  the principle it serves (`serves`) and where it lives (`carried-by`, `carried-by-planned`);
+  and the layer a product keeps in its own repository, `magma/patterns/<id>.md`, of the same
+  shape.
 - **Produced by**: the maintainers, in `docs/agents/patterns/` (the template
   `projects/stencil/template/pattern.md`, `nx run stencil:generate.pattern`, the skills of
   `.claude/skills/`); `projects/stencil/scripts/sync-agent-docs.ts` copies them into the entry
   packages and writes the catalogue.
-- **Contract**: [`docs/PATTERNS.md`](PATTERNS.md), "The format", "The preview of a case" and
-  "Product layers"; the reader
+- **Contract**: [`docs/PATTERNS.md`](PATTERNS.md), "The format", "A domain of Foundation", "The
+  preview of a case" and "Product layers"; the reader
   side in `projects/lint/src/core/patterns.ts` and
   [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes from".
 - **Read by**: `get_pattern` and `render_preview` (the preview of a case) of the MCP server, the
@@ -162,7 +165,8 @@ keep in step.
   (`patternChanges` of `projects/stencil/scripts/pr-risk-lib.ts`), the agents of the products,
   the docs site (the previews: magma-design-system/docs#89).
 - **Held by**: `check.patterns` (the format, every combination in one case, the components,
-  attributes, lint rules and links named, the generated sections; a product's folder with
+  attributes, lint rules and links named, the carriers of a domain in the release and the
+  planned ones not yet, the generated sections; a product's folder with
   `--layer`, which `get_pattern` checks too in the product; each preview of a case that exists,
   only a stage, its markup clean for the strict lint, the cases without one as a warning);
   `check.usage-docs` on their bodies; `test/patterns.test.ts` of `projects/lint` on the files

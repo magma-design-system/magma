@@ -29,6 +29,9 @@ Ask, as a multiple choice:
 
 A change to an "Always true" rule is never a product's: say that it holds in every product, that
 `pr-risk` raises the review level of the pull request to contract, and ask for an explicit yes.
+In a domain of Foundation (`kind: foundation`) the cases are rules too: a case added or changed
+binds every product the same way; only its open choices go to a layer. A carrier that is built
+moves from `carried-by-planned` to `carried-by` (the check asks for it), with no decision.
 
 ## 3. The change
 
@@ -44,7 +47,8 @@ A change to an "Always true" rule is never a product's: say that it holds in eve
 
 ## 4. The previews
 
-A case added or changed needs its preview again, a renamed case moves its file
+A case of a pattern added or changed needs its preview again (the relations of a domain have
+none yet), a renamed case moves its file
 (`docs/agents/patterns/previews/<id>/<case>.html`): follow
 `.claude/skills/pattern-preview/SKILL.md` for those cases.
 

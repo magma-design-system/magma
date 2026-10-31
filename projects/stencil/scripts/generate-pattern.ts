@@ -3,7 +3,8 @@
  *
  * - a new pattern from the template (template/pattern.md), as a draft whose fields are the
  *   questions that define one; a candidate of the same id becomes the draft, with its title,
- *   group and need;
+ *   group and need; with --kind foundation, a domain of the design language from
+ *   template/foundation.md (#1196), which has no group;
  * - with --sync, the parts of every pattern written from its frontmatter: the title and the
  *   principle at the top, the sections Cases, Always true, Open choices and Situations.
  *
@@ -11,12 +12,26 @@
  *
  * Run from the stencil package dir:
  *   npm run generate.pattern -- <id> --group <group> [--title "..."] [--need "..."]
+ *   npm run generate.pattern -- <id> --kind foundation [--title "..."] [--need "..."]
  *   npm run generate.pattern -- --sync
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
-import { PATTERN_GROUPS, parsePatternFile, syncBody } from '../../lint/src/core/patterns';
-import { PATTERNS_DIR, REPO, TEMPLATE, fromTemplate, readPatterns, titleOf } from './patterns-lib';
+import {
+  FOUNDATION,
+  PATTERN_GROUPS,
+  parsePatternFile,
+  syncBody,
+} from '../../lint/src/core/patterns';
+import {
+  FOUNDATION_TEMPLATE,
+  PATTERNS_DIR,
+  REPO,
+  TEMPLATE,
+  fromTemplate,
+  readPatterns,
+  titleOf,
+} from './patterns-lib';
 
 const option = (name: string): string | undefined => {
   const i = process.argv.indexOf(`--${name}`);
@@ -47,7 +62,9 @@ const id = process.argv
   .slice(2)
   .find((arg, index, all) => !arg.startsWith('--') && !all[index - 1]?.startsWith('--'));
 if (!id || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(id))
-  fail('Give the id of the pattern, kebab-case: npm run generate.pattern -- <id> --group <group>');
+  fail(
+    'Give the id of the pattern, kebab-case: npm run generate.pattern -- <id> --group <group> (or --kind foundation)',
+  );
 const file = join(PATTERNS_DIR, `${id}.md`);
 const existing = existsSync(file)
   ? parsePatternFile(readFileSync(file, 'utf8'), file).data
@@ -56,11 +73,17 @@ if (existing && existing.status !== 'candidate')
   fail(
     `${relative(REPO, file)} exists, ${existing.status}: change it instead (/pattern-change ${id}).`,
   );
-const group = option('group') ?? existing?.group;
-if (!group || !(group in PATTERN_GROUPS))
+const kind = option('kind') ?? existing?.kind ?? 'pattern';
+if (kind !== 'pattern' && kind !== FOUNDATION)
+  fail(
+    `--kind is pattern or ${FOUNDATION}: building blocks come from the patterns of the Data group`,
+  );
+const isDomain = kind === FOUNDATION;
+const group = isDomain ? '' : (option('group') ?? existing?.group);
+if (!isDomain && (!group || !(group in PATTERN_GROUPS)))
   fail(`Give its group, one of ${Object.keys(PATTERN_GROUPS).join(', ')}: --group <group>`);
 
-const text = fromTemplate(readFileSync(TEMPLATE, 'utf8'), {
+const text = fromTemplate(readFileSync(isDomain ? FOUNDATION_TEMPLATE : TEMPLATE, 'utf8'), {
   id: id!,
   title: option('title') ?? existing?.title ?? titleOf(id!),
   group: group!,

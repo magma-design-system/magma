@@ -151,7 +151,8 @@ export const getPattern = (context: ToolContext): Tool => ({
             need: string,
             validatedOn: strings,
           },
-          required: ['id', 'title', 'group', 'status', 'need'],
+          // a domain of Foundation (kind foundation) has no group
+          required: ['id', 'title', 'kind', 'status', 'need'],
         },
       },
       pattern: object,

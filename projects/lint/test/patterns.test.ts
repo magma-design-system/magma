@@ -6,10 +6,11 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-import { loadComponents } from '../src/core/data.js';
+import { loadComponents, loadStyles, loadThemeNames } from '../src/core/data.js';
 import {
   answer,
   bodyErrors,
+  carrierErrors,
   componentErrors,
   coverage,
   formatErrors,
@@ -18,6 +19,7 @@ import {
   lintErrors,
   listPatterns,
   missingPreviews,
+  parseCarrier,
   parsePatternFile,
   parsePreview,
   parseUse,
@@ -81,9 +83,18 @@ describe('the patterns Magma ships', () => {
   test('the five of Messages and states are decided, their candidates cited', () => {
     expect(
       listPatterns(patterns)
-        .filter((one) => one.status === 'decided')
+        .filter((one) => one.kind === 'pattern' && one.status === 'decided')
         .map((one) => one.id),
     ).toEqual(['confirm-action', 'empty-state', 'error-recovery', 'loading', 'message-placement']);
+  });
+
+  test('the domains of Foundation come first, rhythm among them', () => {
+    const listed = listPatterns(patterns);
+    expect(listed[0]).toMatchObject({ id: 'rhythm', kind: 'foundation', status: 'decided' });
+    expect(listed[0]).not.toHaveProperty('group');
+    expect(listed.findLastIndex((one) => one.kind === 'foundation')).toBeLessThan(
+      listed.findIndex((one) => one.kind !== 'foundation'),
+    );
   });
 
   test.each(files.map((one) => [one.data.id, one] as const))(
@@ -193,6 +204,275 @@ describe('the format', () => {
       ],
     });
     expect(parseUse('a toast, with an action')).toBeUndefined();
+  });
+});
+
+/** A domain of Foundation small enough to read: one variable, its relations the cases. */
+const domain = (over: Partial<Pattern> = {}): Pattern => ({
+  id: 'spacing',
+  kind: 'foundation',
+  title: 'Spacing',
+  layer: 'magma',
+  status: 'decided',
+  need: 'Space two elements by their relation.',
+  principle: 'Nearer is closer.',
+  keywords: ['space'],
+  'validated-on': [],
+  variables: { relation: { values: ['inline', 'inset'], means: 'how the two relate' } },
+  cases: [
+    {
+      id: 'inline',
+      relation: 'inline',
+      where: 'gap-md',
+      serves: 'intuitive',
+      'carried-by': ['gap-md'],
+      'carried-by-planned': ['gap-inline'],
+    },
+    {
+      id: 'inset',
+      relation: 'inset',
+      where: 'p-md',
+      serves: ['intuitive', 'flexible'],
+      'carried-by': ['mds-banner'],
+    },
+  ],
+  'always-true': [
+    {
+      id: 'ladder',
+      rule: 'Only the steps of the ladder.',
+      serves: 'intuitive',
+      'checked-by': 'review',
+    },
+  ],
+  situations: [{ situation: 'Two buttons in a row', case: 'inline' }],
+  ...over,
+});
+
+describe('a domain of Foundation', () => {
+  test('a complete domain has no error, and no group', () => {
+    expect(formatErrors(file(domain()))).toEqual([]);
+    expect(formatErrors(file(domain({ group: 'data' })))).toEqual([
+      'a domain of Foundation has no group: Foundation is its place',
+    ]);
+    const groupless = small();
+    delete groupless.group;
+    expect(formatErrors(file(groupless))).toEqual(['group is required, as text']);
+  });
+
+  test('every case and rule says the principle it serves', () => {
+    const errors = formatErrors(
+      file(
+        domain({
+          cases: [
+            { id: 'inline', relation: 'inline', where: 'w' },
+            { id: 'inset', relation: 'inset', where: 'w', serves: ['flexible', 'pretty'] },
+          ],
+          'always-true': [{ id: 'ladder', rule: 'R.', 'checked-by': 'review' }],
+        }),
+      ),
+    );
+    expect(errors).toEqual([
+      'case inline: serves is required: the principle it serves, inclusive, enabling, intuitive, flexible',
+      'case inset: serves is one of inclusive, enabling, intuitive, flexible, not pretty',
+      'always-true ladder: serves is required: the principle it serves, inclusive, enabling, intuitive, flexible',
+    ]);
+  });
+
+  test('a carrier is a component, a custom property, a lint rule or a utility, named once', () => {
+    expect(parseCarrier('mds-modal slot=window')).toMatchObject({
+      kind: 'component',
+      use: { tag: 'mds-modal', attributes: [{ name: 'slot', value: 'window' }] },
+    });
+    expect(parseCarrier('--magma-rhythm-inset')).toEqual({
+      kind: 'token',
+      text: '--magma-rhythm-inset',
+    });
+    expect(parseCarrier('magma/token-values')).toEqual({
+      kind: 'lint',
+      text: 'magma/token-values',
+    });
+    expect(parseCarrier('gap-between-fields')).toEqual({
+      kind: 'utility',
+      text: 'gap-between-fields',
+    });
+    for (const text of ['md:gap-md', 'p-[3px]', 'gap md', 'mds-Card'])
+      expect(parseCarrier(text)).toBeUndefined();
+    const errors = formatErrors(
+      file(
+        domain({
+          cases: [
+            {
+              id: 'inline',
+              relation: 'inline',
+              where: 'w',
+              serves: 'intuitive',
+              'carried-by': ['md:gap-md', 'gap-md'],
+              'carried-by-planned': ['gap-md'],
+            },
+            {
+              id: 'inset',
+              relation: 'inset',
+              where: 'w',
+              serves: 'intuitive',
+              'carried-by': 'p-md' as unknown as string[],
+            },
+          ],
+          'always-true': [
+            {
+              id: 'ladder',
+              rule: 'R.',
+              serves: 'intuitive',
+              'checked-by': 'review',
+              'carried-by-planned': ['magma/ladder'],
+            },
+          ],
+        }),
+      ),
+    );
+    expect(errors).toEqual([
+      'case inline: carried-by "md:gap-md" is not a component (mds-tag attribute=value), a custom property (--name), a lint rule (magma/<rule>) or a utility (one class)',
+      'case inline: gap-md is named twice in its carriers',
+      'case inset: carried-by is a list of carriers',
+      'always-true ladder: the lint rule of an always-true rule goes in lint or lint-planned',
+    ]);
+  });
+
+  test('serves and the carriers belong to a domain, and its ids name one thing', () => {
+    expect(
+      formatErrors(
+        file(
+          small({
+            cases: [
+              { id: 'on-field', about: 'field', where: 'w', serves: 'intuitive' },
+              { id: 'on-action', about: 'action', where: 'w', 'carried-by': ['mds-banner'] },
+              { id: 'ask', about: 'action', decision: 'needed', where: 'w' },
+            ],
+          }),
+        ),
+      ),
+    ).toEqual([
+      'case on-field: serves belongs to a domain of Foundation (kind foundation)',
+      'case on-action: carried-by belongs to a domain of Foundation (kind foundation)',
+    ]);
+    expect(
+      formatErrors(
+        file(
+          domain({
+            'always-true': [
+              { id: 'inline', rule: 'R.', serves: 'intuitive', 'checked-by': 'review' },
+            ],
+          }),
+        ),
+      ),
+    ).toEqual(['always-true inline: a case of the domain has this id: a citation would name both']);
+  });
+
+  test('every carrier is in the release; a planned one is not yet', () => {
+    const release = {
+      components: loadComponents({ documentation: data.documentation }),
+      styles: loadStyles({ documentation: data.documentation }),
+      theme: loadThemeNames({ consumption: data.consumption }),
+      lintRules: new Set(['magma/token-values']),
+    };
+    expect(carrierErrors(domain(), release)).toEqual([]);
+    const one = domain({
+      cases: [
+        {
+          id: 'inline',
+          relation: 'inline',
+          where: 'w',
+          serves: 'intuitive',
+          'carried-by': [
+            'mds-banner variant=error',
+            'mds-nope',
+            'mds-banner variant=nope',
+            '--mds-banner-background',
+            '--mds-banner-cockade-distance',
+            '--spacing-md',
+            '--nope',
+            'gap-md',
+            'max-w-md',
+            'text-title-h3',
+            'gap-nope',
+            'magma/token-values',
+            'magma/nope',
+          ],
+        },
+        {
+          id: 'inset',
+          relation: 'inset',
+          where: 'w',
+          serves: 'intuitive',
+          'carried-by-planned': [
+            'gap-md',
+            'gap-inset',
+            'mds-banner variant=nope',
+            'magma/token-values',
+          ],
+        },
+      ],
+      'always-true': [
+        {
+          id: 'ladder',
+          rule: 'R.',
+          serves: 'intuitive',
+          'checked-by': 'review',
+          'carried-by': ['--magma-rhythm-ladder'],
+        },
+      ],
+    });
+    expect(carrierErrors(one, release)).toEqual([
+      'case inline: carried by mds-nope, but mds-nope is not a component of this release',
+      'case inline: carried by mds-banner variant=nope, but variant of mds-banner is one of ai, dark, error, info, light, primary, success, warning, not nope',
+      'case inline: carried by --mds-banner-cockade-distance, but --mds-banner-cockade-distance is internal to mds-banner: a carrier is public',
+      'case inline: carried by --nope, but the release has no custom property --nope',
+      'case inline: carried by gap-nope, but the theme makes no class gap-nope',
+      'case inline: carried by magma/nope, but the lint has no rule magma/nope',
+      'case inset: gap-md exists now: move it from carried-by-planned to carried-by',
+      'case inset: magma/token-values exists now: move it from carried-by-planned to carried-by',
+      'always-true ladder: carried by --magma-rhythm-ladder, but the release has no custom property --magma-rhythm-ladder',
+    ]);
+  });
+
+  test('its cases cover its variables, and answer for a context', () => {
+    expect(coverage(domain())).toEqual({ total: 2, none: [], conflicts: [] });
+    expect(answer(domain(), { relation: 'inset' }).hits.map(({ entry }) => entry.id)).toEqual([
+      'inset',
+    ]);
+  });
+
+  test('a pattern cites a relation or a rule of a domain, never one it lacks', () => {
+    const one = small({
+      'always-true': [
+        { id: 'inline', from: 'spacing' },
+        { id: 'ladder', from: 'spacing' },
+        { id: 'nope', from: 'spacing' },
+      ],
+    });
+    expect(linkErrors([one, domain()]).get('small')).toEqual([
+      'always-true nope: spacing has no rule nor case nope of its own',
+    ]);
+    const synced = syncBody(one, '# S\n', [one, domain()]);
+    expect(synced).toContain('| `inline` | gap-md (from `spacing`) |  |');
+    expect(synced).toContain(
+      '| `ladder` | Only the steps of the ladder. (from `spacing`) | review |',
+    );
+  });
+
+  test('its generated sections say the principle each rule serves and what carries it', () => {
+    const synced = syncBody(domain(), '# S\n\n## When to use it\n\nKept.\n');
+    expect(synced).toContain('| Case | When | Where | Use | Serves | Carried by |');
+    expect(synced).toContain(
+      '| `inline` | relation: inline | gap-md |  | intuitive | `gap-md`; planned: gap-inline |',
+    );
+    expect(synced).toContain(
+      '| `inset` | relation: inset | p-md |  | intuitive, flexible | `mds-banner` |',
+    );
+    expect(synced).toContain('| Id | Rule | Serves | Carried by | Checked by |');
+    expect(synced).toContain(
+      '| `ladder` | Only the steps of the ladder. | intuitive | the guide | review |',
+    );
+    expect(syncBody(domain(), synced)).toBe(synced);
   });
 });
 
@@ -540,6 +820,8 @@ describe('the previews of the cases', () => {
       ['/p/previews/later/x.html', ['later is a candidate: it has no cases to show']],
     ]);
     expect(missingPreviews(patterns, previews)).toEqual(['small/on-action', 'small/ask']);
+    // a domain of Foundation is listed by nobody: whether its relations get a preview is open
+    expect(missingPreviews([domain()], [])).toEqual([]);
   });
 
   test('the previews Magma ships are clean, each of a case', () => {

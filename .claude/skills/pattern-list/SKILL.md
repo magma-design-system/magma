@@ -11,10 +11,11 @@ Read only: this command changes nothing. The filters, if any: $ARGUMENTS.
 Run, from the root of the repository, with the filters the arguments name:
 
 ```bash
-npx nx run stencil:list.patterns -- [--group <group>] [--status candidate|draft|decided] [--not-validated]
+npx nx run stencil:list.patterns -- [--kind pattern|foundation] [--group <group>] [--status candidate|draft|decided] [--not-validated]
 ```
 
-The groups are `navigation`, `data`, `input`, `messages-and-states` and `ai`. It is the same
+The domains of Foundation (`kind: foundation`, the design language of #1189) come first, with
+no group. The groups are `navigation`, `data`, `input`, `messages-and-states` and `ai`. It is the same
 list the `get_pattern` tool of the MCP server gives with no argument, read from
 `docs/agents/patterns/`.
 

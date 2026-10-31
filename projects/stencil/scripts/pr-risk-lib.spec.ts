@@ -168,6 +168,21 @@ open-choices: []`;
     const reworded = RULES.replace('where: there', 'where: over there');
     expect(patternChanges(at(pattern(RULES)), at(pattern(reworded)))).toEqual([]);
   });
+
+  it('in a domain of Foundation, reports a case added or changed too, not its carriers', () => {
+    const file = 'docs/agents/patterns/d.md';
+    const domain = (cases: string) => `---\nid: d\nkind: foundation\ncases:\n${cases}\n---\n`;
+    const before =
+      domain(`  - { id: one, where: gap-300, serves: intuitive, carried-by-planned: [gap-one] }
+  - { id: two, where: gap-600, serves: intuitive }`);
+    const after = domain(`  - { id: one, where: gap-300, serves: intuitive, carried-by: [gap-one] }
+  - { id: two, where: gap-1000, serves: intuitive }
+  - { id: three, where: gap-400, serves: intuitive }`);
+    expect(patternChanges(at(before, file), at(after, file)).map((c) => c.why)).toEqual([
+      'case two changed',
+      'case three added: it binds every product',
+    ]);
+  });
 });
 
 describe('memberKey', () => {

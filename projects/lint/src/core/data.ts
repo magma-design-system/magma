@@ -63,6 +63,13 @@ export interface StyleInfo {
   static: boolean;
 }
 
+export interface ThemeNames {
+  /** The custom properties of the tokens: their own names and the Tailwind theme names they publish. */
+  properties: Set<string>;
+  /** The classes the theme makes: `<utility>-<key>` of each token and keyword of a namespace, and the Magma utilities. */
+  classes: Set<string>;
+}
+
 export interface PaletteInfo {
   /** The Tailwind utilities that take a colour (`bg`, `text`, `border-t`...), longest first. */
   colorUtilities: string[];
@@ -268,6 +275,41 @@ const rawPaletteCss = (base: DtcgNode): Set<string> => {
   for (const [group, node] of Object.entries((base.palette ?? {}) as DtcgNode))
     if (!group.startsWith('$') && !DATA_FAMILIES.has(group)) walk(node as DtcgNode);
   return found;
+};
+
+/**
+ * The names a project writes from the theme of the installed version, from the consumption map
+ * of styles: the custom property of every token and the Tailwind theme name it publishes; the
+ * classes Tailwind makes from them, a utility of a namespace and the key of a token or a
+ * keyword of that namespace (`gap-between-fields` from `--spacing-between-fields`), as
+ * explain_class reads a class; and the utilities Magma writes itself (`text-title-h3`). The
+ * carriers of a domain are checked against them (#1196).
+ */
+export const loadThemeNames = (settings?: MagmaSettings): ThemeNames => {
+  const consumption = locate('consumption', settings);
+  return readJson(
+    consumption,
+    (json: {
+      tokens: Record<string, { theme?: string; namespace?: string; key?: string | null }>;
+      keywords: Record<string, { namespace: string; key: string }>;
+      namespaces: Record<string, { utilities?: string[] }>;
+      utilities: Record<string, unknown>;
+    }) => {
+      const properties = new Set<string>();
+      const classes = new Set(Object.keys(json.utilities));
+      const keyed = [...Object.values(json.tokens), ...Object.values(json.keywords)];
+      for (const [css, token] of Object.entries(json.tokens)) {
+        properties.add(css);
+        if (token.theme) properties.add(token.theme);
+      }
+      for (const { namespace, key } of keyed)
+        if (namespace && key)
+          for (const root of json.namespaces[namespace]?.utilities ?? [])
+            classes.add(`${root}-${key}`);
+      return { properties, classes };
+    },
+    `names:${consumption}`,
+  );
 };
 
 /** The colour utilities and the raw palette keys of the installed version. */

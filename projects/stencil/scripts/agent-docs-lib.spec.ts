@@ -445,4 +445,15 @@ describe('renderPatternCatalogue', () => {
     );
     expect(text).toContain('| decided, validated on mindy |');
   });
+
+  it('the domains of Foundation first, in a section of their own', () => {
+    const text = renderPatternCatalogue(
+      [entry('a', 'data'), { ...entry('rhythm', ''), kind: 'foundation', group: undefined }],
+      { data: 'Data' },
+    );
+    expect(text).toMatch(/^## Foundation\n\n\| Domain \| Title \| Need \| Status \|\n\| ------ \|/);
+    expect(text.indexOf('## Foundation')).toBeLessThan(text.indexOf('## Data'));
+    expect(text).toContain('| [`rhythm`](patterns/rhythm.md) | rhythm |');
+    expect(text.split('## Data')[1]).not.toContain('rhythm');
+  });
 });
