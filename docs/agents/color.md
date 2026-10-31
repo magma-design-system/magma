@@ -66,10 +66,10 @@ named theme retints all of it at once.
 | Token (`--magma-*`) | Tailwind | Use |
 | --- | --- | --- |
 | `surface-default` | `bg-surface-default` | the page canvas (the `body` already has it) |
-| `surface-raised` | `bg-surface-raised` | cards, panels, sticky headers |
+| `surface-raised` | `bg-surface-raised` | cards (an item of a set), panels; the bars that stay put draw it themselves (`surfaces/band`) |
 | `surface-overlay` | `bg-surface-overlay` | modal, dropdown, popover, sheet, and anything lifted with a shadow |
 | `surface-sunken` | `bg-surface-sunken` | wells, insets, code blocks, tracks |
-| `surface-muted` | `bg-surface-muted` | same-plane grouping: zebra rows, a subtle section |
+| `surface-muted` | `bg-surface-muted` | same-plane grouping inside a component: zebra rows; never the background of a section (`surfaces/tints-in-components`) |
 | `wash-soft` / `wash-base` / `wash-strong` | `bg-wash-*` | a flat neutral pill or chip (no shadow), by how marked it is |
 | `surface-inverse` / `surface-inverse-muted` | `bg-surface-inverse*` | the chip that flips with the mode (dark on a light UI) |
 | `on-inverse` | `text-on-inverse` | text and icons on either inverse level |
@@ -93,7 +93,9 @@ shadow in light, and how themes and high contrast move them: [`theming.md`](them
 ### Accent: actions and selection
 
 Two accents with the same nine roles: `accent` (the brand action colour) and `accent-ai`
-(AI-driven features). A named theme can repoint them.
+(AI-driven features). A named theme can repoint them. The interface is neutral, so the
+accent stays rare: a view has one primary action in it (`actions/primary`), and which
+weight every other action takes is the domain [`actions`](patterns/actions.md).
 
 | Token | Tailwind | Use |
 | --- | --- | --- |

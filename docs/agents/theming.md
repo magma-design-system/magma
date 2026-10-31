@@ -56,13 +56,16 @@ consumer feature yet.
 ## Surfaces and elevation
 
 Every neutral background is one of five surface levels. They are not five greys to pick
-from: each one says where the element sits relative to the page.
+from: each one says where the element sits relative to the page. When an element gets a
+surface at all (a card is an item of a set, the groups of one subject are bare sections, a
+band is drawn only by a component that stays put) is the domain
+[`surfaces`](patterns/surfaces.md).
 
 ```text
 surface-default          the page, the canvas everything else sits on
   surface-sunken         recessed into the page: wells, insets, code blocks, tracks
-  surface-muted          on the page plane, grouped: zebra rows, a subtle section
-  surface-raised         lifted off the page: cards, panels, sticky headers
+  surface-muted          on the page plane, grouped, inside components: zebra rows
+  surface-raised         lifted off the page: cards, panels, the bars that stay put
     surface-overlay      floating above everything: modal, dropdown, popover, tooltip
 ```
 

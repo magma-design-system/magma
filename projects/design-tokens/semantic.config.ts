@@ -368,7 +368,8 @@ export interface SemanticDecl {
 /** The neutral roles, the inverse pair and the shadow ink, by name without `magma-`. */
 export const roleDescriptions: Record<string, string> = {
   'surface-sunken': 'Below the page: wells, insets, code blocks, tracks.',
-  'surface-muted': 'Same-plane grouping on the page: zebra rows, a subtle section.',
+  'surface-muted':
+    'Same-plane grouping inside a component: zebra rows; never the background of a section.',
   'surface-default': 'The page canvas, the background of the body.',
   'surface-raised': 'Above the page: cards, panels, sticky headers.',
   'surface-overlay': 'Floating above everything: modal, dropdown, popover, sheet.',
