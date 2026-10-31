@@ -21,6 +21,7 @@ const SOURCES = [
   'typography/default.json',
   'typography/leading.json',
   'typography/size.json',
+  'typography/sizing.json',
   'typography/role.json',
   'cosmetic/border.json',
   'cosmetic/box-shadow.json',

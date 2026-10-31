@@ -39,7 +39,8 @@ export class MdsText {
   @Prop({ reflect: true }) readonly animation?: TextAnimationType = 'none';
 
   /**
-   * Specifies the HTML tag of the element
+   * Specifies the HTML tag of the element. With `p`, `li` or `figcaption` the text stops at the
+   * reading measure (`max-w-text`), as the reset does for the plain tags
    */
   @Prop({ mutable: true, reflect: true }) tag: TypographyTagType;
 

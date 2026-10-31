@@ -153,6 +153,15 @@
   display: block;
 }
 
+/* Text to read stops at the reading measure, as the reset does for the plain tags. On the
+   host, which carries the type style, so the ch is that of its own text. */
+
+:host([tag='figcaption']),
+:host([tag='li']),
+:host([tag='p']) {
+  @apply max-w-text;
+}
+
 :host([tag='abbr']),
 :host([tag='address']),
 :host([tag='b']),

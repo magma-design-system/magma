@@ -35,7 +35,7 @@
       "value": "65ch"
     },
     "text": {
-      "value": "75ch"
+      "value": "var(--magma-width-reading, {role.width.reading})"
     },
     "title": {
       "value": "30ch"

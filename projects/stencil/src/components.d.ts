@@ -3176,7 +3176,7 @@ export namespace Components {
          */
         "animation"?: TextAnimationType1;
         /**
-          * Specifies the HTML tag of the element
+          * Specifies the HTML tag of the element. With `p`, `li` or `figcaption` the text stops at the reading measure (`max-w-text`), as the reset does for the plain tags
          */
         "tag": TypographyTagType;
         /**
@@ -8716,7 +8716,7 @@ declare namespace LocalJSX {
          */
         "animation"?: TextAnimationType1;
         /**
-          * Specifies the HTML tag of the element
+          * Specifies the HTML tag of the element. With `p`, `li` or `figcaption` the text stops at the reading measure (`max-w-text`), as the reset does for the plain tags
          */
         "tag"?: TypographyTagType;
         /**
