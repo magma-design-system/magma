@@ -68,6 +68,9 @@
 - name: prd-mindy
   color: 5319e7
   description: 'Reported from Mindy (mindy-webapp)'
+- name: prd-leo-planner
+  color: 5319e7
+  description: 'Reported from LEO (leo-planner)'
 
 # --- Review level (set on every PR by the pr-risk workflow, #843) ---
 - name: risk-contract

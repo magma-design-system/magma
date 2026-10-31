@@ -765,6 +765,82 @@ describe('the check tools', () => {
     expect(entries({ mcpServers: { other: { command: 'npx', args: ['other-mcp'] } } })).toEqual([]);
   });
 
+  test('the mcp servers of OpenCode 2 and 1 start magma-mcp when local and on', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-opencode-'));
+    const file = path.join(dir, 'opencode.json');
+    const entries = (mcp: unknown) => {
+      writeFileSync(file, JSON.stringify({ $schema: 'https://opencode.ai/config.json', mcp }));
+      return mcpEntries(file);
+    };
+    const safe = { type: 'local', command: ['npx', '--no', 'magma-mcp'] };
+    // OpenCode 2: the servers under mcp.servers
+    expect(entries({ servers: { magma: safe } })).toEqual([{ safe: true }]);
+    expect(
+      entries({ servers: { magma: { type: 'local', command: ['npx', 'magma-mcp'] } } }),
+    ).toEqual([{ safe: false }]);
+    expect(entries({ servers: { magma: { ...safe, disabled: true } } })).toEqual([]);
+    // OpenCode 1: the servers right under mcp, still read by OpenCode 2, a server named servers too
+    expect(entries({ magma: safe, timeout: { startup: 1000 } })).toEqual([{ safe: true }]);
+    expect(entries({ servers: safe })).toEqual([{ safe: true }]);
+    expect(entries({ magma: { ...safe, enabled: false } })).toEqual([]);
+    // magma-mcp serves on stdio: a remote server, or an entry with only enabled, is not it
+    expect(entries({ magma: { type: 'remote', url: 'http://localhost/magma-mcp' } })).toEqual([]);
+    expect(entries({ magma: { enabled: true } })).toEqual([]);
+  });
+
+  test('the configuration of OpenCode is read as JSONC, the others as JSON', async () => {
+    const jsonc = `{
+      // the server of Magma
+      "mcp": {
+        "servers": {
+          /* one, "local" */
+          "magma": { "type": "local", "command": ["npx", "--no", "magma-mcp"], },
+          "docs": { "type": "remote", "url": "https://example.com/mcp,}" },
+        },
+      },
+    }`;
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-jsonc-'));
+    const file = path.join(dir, 'opencode.jsonc');
+    writeFileSync(file, jsonc);
+    expect(mcpEntries(file, { jsonc: true })).toEqual([{ safe: true }]);
+    expect(mcpEntries(file)).toEqual([]);
+    expect((await setupOf({ 'opencode.jsonc': jsonc })).mcp.ok).toBe(true);
+  });
+
+  test('check_setup finds magma-mcp in the configuration of OpenCode', async () => {
+    // the configuration of #1183, where the check said no client starts magma-mcp
+    const opencode = JSON.stringify({
+      mcp: {
+        servers: {
+          magma: { type: 'local', command: ['npx', '--no', 'magma-mcp'] },
+        },
+      },
+    });
+    for (const name of ['opencode.json', 'opencode.jsonc', '.opencode/opencode.jsonc'])
+      expect((await setupOf({ [name]: opencode })).mcp, name).toMatchObject({
+        ok: true,
+        detail: `${name} starts magma-mcp.`,
+      });
+    expect(
+      (
+        await setupOf({
+          'opencode.json': JSON.stringify({
+            mcp: { magma: { type: 'local', command: ['npx', 'magma-mcp'] } },
+          }),
+        })
+      ).mcp,
+    ).toMatchObject({
+      ok: false,
+      detail: expect.stringContaining(
+        'Write "command": ["npx", "--no", "magma-mcp"] in opencode.json.',
+      ),
+    });
+    expect((await setupOf({})).mcp).toMatchObject({
+      ok: false,
+      detail: expect.stringContaining('opencode.json for OpenCode'),
+    });
+  });
+
   test('the Magma plugin counts as enabled only from enabledPlugins', () => {
     const dir = mkdtempSync(path.join(tmpdir(), 'magma-plugin-'));
     const file = path.join(dir, 'settings.json');

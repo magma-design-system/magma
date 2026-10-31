@@ -94,10 +94,11 @@ Keep a PR to one level when you can: a behaviour fix and a CSS touch-up in two P
 
 An issue opened for a problem found in another project (the docs site, a consumer app) carries that project's **origin label**, `prd-<project>`, so that what each project reported can be listed with one filter, and the project can be told when its issues are fixed.
 
-| Label       | The issue comes from                      |
-| ----------- | ----------------------------------------- |
-| `prd-docs`  | the docs site, `magma-design-system/docs` |
-| `prd-mindy` | Mindy (`mindy-webapp`)                    |
+| Label             | The issue comes from                      |
+| ----------------- | ----------------------------------------- |
+| `prd-docs`        | the docs site, `magma-design-system/docs` |
+| `prd-mindy`       | Mindy (`mindy-webapp`)                    |
+| `prd-leo-planner` | LEO (`leo-planner`)                       |
 
 - Set it when the issue is opened, whoever opens it, agent or human.
 - It says where the problem was seen, not which package it affects: that is still the `prg-*` label, and an issue usually carries both (`prd-mindy` and `prg-stencil`). A problem reported by more than one project gets one origin label per project.
