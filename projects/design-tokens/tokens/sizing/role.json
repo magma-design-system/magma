@@ -1,0 +1,60 @@
+{
+  "role": {
+    "rhythm": {
+      "inline": {
+        "value": "{sizing.primitive.300}",
+        "description": "rhythm/inline: between elements side by side, such as the actions of a row (gap-inline)."
+      },
+      "title-content": {
+        "value": "{sizing.primitive.300}",
+        "description": "rhythm/title-content: between a title and its content (gap-title-content)."
+      },
+      "label-control": {
+        "value": "{sizing.primitive.300}",
+        "description": "rhythm/label-control: between the label of a field and its control (gap-label-control)."
+      },
+      "between-containers": {
+        "value": "{sizing.primitive.400}",
+        "description": "rhythm/between-containers: between containers with a boundary, such as the cards of a set (gap-between-containers)."
+      },
+      "between-fields": {
+        "value": "{sizing.primitive.600}",
+        "description": "rhythm/between-fields: between the fields of a form (gap-between-fields)."
+      },
+      "inset": {
+        "value": "{sizing.primitive.600}",
+        "description": "rhythm/inset: inside a container of a part, such as a card or a banner, shared by its regions (p-inset)."
+      },
+      "between-groups": {
+        "value": "{sizing.primitive.1000}",
+        "description": "rhythm/between-groups: between the groups of fields of a form (gap-between-groups)."
+      },
+      "between-sections": {
+        "value": "{sizing.primitive.1600}",
+        "description": "rhythm/between-sections: between the sections of a page (gap-between-sections)."
+      }
+    },
+    "width": {
+      "reading": {
+        "value": "56ch",
+        "description": "widths/reading: the measure of text to read, 65 to 80 characters on a full line."
+      },
+      "form": {
+        "value": "var(--magma-width-reading)",
+        "description": "widths/form: the column of a form, the measure of the text around it (max-w-form)."
+      },
+      "page": {
+        "value": "{sizing.primitive.32000}",
+        "description": "widths/page: the largest width of the content of a page, the frame mds-header-bar shares (page-frame)."
+      },
+      "page-gutter": {
+        "value": "{sizing.primitive.600}",
+        "description": "widths/page: the space between the edge of the window and the frame of the page (page-frame)."
+      },
+      "dialog": {
+        "value": "calc(var(--magma-width-form) + 2 * var(--magma-rhythm-inset))",
+        "description": "widths/dialog: the window of a dialog, the column of a form plus its inset."
+      }
+    }
+  }
+}

@@ -26,46 +26,44 @@ variables:
 cases:
   - id: inline
     relation: inline
-    where: "`gap-300` between elements side by side in one row: the actions of a row, a field and the button beside it"
+    where: "`gap-inline` (300) between elements side by side in one row: the actions of a row, a field and the button beside it"
     serves: intuitive
-    carried-by-planned: [--magma-rhythm-inline, gap-inline]
+    carried-by: [--magma-rhythm-inline, gap-inline]
   - id: title-content
     relation: title-content
-    where: "`gap-300` between a title and the content it names"
+    where: "`gap-title-content` (300) between a title and the content it names"
     serves: intuitive
-    carried-by-planned: [--magma-rhythm-title-content, gap-title-content]
+    carried-by: [--magma-rhythm-title-content, gap-title-content]
   - id: label-control
     relation: label-control
-    where: "`gap-300` between the label of a field, its control and its message"
+    where: "`gap-label-control` (300) between the label of a field, its control and its message"
     serves: intuitive
-    carried-by: [mds-input-field]
-    carried-by-planned: [--magma-rhythm-label-control, gap-label-control]
+    carried-by: [mds-input-field, --magma-rhythm-label-control, gap-label-control]
   - id: between-fields
     relation: between-fields
-    where: "`gap-600` between two fields of a form, or two rows of data"
+    where: "`gap-between-fields` (600) between two fields of a form, or two rows of data"
     serves: intuitive
-    carried-by-planned: [--magma-rhythm-between-fields, gap-between-fields]
+    carried-by: [--magma-rhythm-between-fields, gap-between-fields]
   - id: between-groups
     relation: between-groups
-    where: "`gap-1000` between two groups of fields of one form (the fieldsets of personal data and of residence)"
+    where: "`gap-between-groups` (1000) between two groups of fields of one form (the fieldsets of personal data and of residence)"
     serves: intuitive
-    carried-by-planned: [--magma-rhythm-between-groups, gap-between-groups]
+    carried-by: [--magma-rhythm-between-groups, gap-between-groups]
   - id: between-sections
     relation: between-sections
-    where: "`gap-1600` between two sections of a page, each with its title"
+    where: "`gap-between-sections` (1600) between two sections of a page, each with its title"
     serves: intuitive
-    carried-by-planned: [--magma-rhythm-between-sections, gap-between-sections]
+    carried-by: [--magma-rhythm-between-sections, gap-between-sections]
   - id: inset
     relation: inset
-    where: "`p-600` inside a container of a part (a card, a banner, a note, a dropdown, the window of a dialog), shared by its regions"
+    where: "`p-inset` (600) inside a container of a part (a card, a banner, a note, a dropdown, the window of a dialog), shared by its regions"
     serves: intuitive
-    carried-by: [mds-banner, mds-note, mds-dropdown]
-    carried-by-planned: [--magma-rhythm-inset, p-inset]
+    carried-by: [mds-banner, mds-note, mds-dropdown, --magma-rhythm-inset, p-inset]
   - id: between-containers
     relation: between-containers
-    where: "`gap-400` between containers with a boundary of their own (the cards of a section, of a grid, of a list of cards)"
+    where: "`gap-between-containers` (400) between containers with a boundary of their own (the cards of a section, of a grid, of a list of cards)"
     serves: intuitive
-    carried-by-planned: [--magma-rhythm-between-containers, gap-between-containers]
+    carried-by: [--magma-rhythm-between-containers, gap-between-containers]
 
 gaps: []
 not-applicable: []
@@ -131,14 +129,14 @@ A case that leaves a variable out holds for any of its values.
 
 | Case | When | Where | Use | Serves | Carried by |
 | --- | --- | --- | --- | --- | --- |
-| `inline` | relation: inline | `gap-300` between elements side by side in one row: the actions of a row, a field and the button beside it |  | intuitive | planned: --magma-rhythm-inline, gap-inline |
-| `title-content` | relation: title-content | `gap-300` between a title and the content it names |  | intuitive | planned: --magma-rhythm-title-content, gap-title-content |
-| `label-control` | relation: label-control | `gap-300` between the label of a field, its control and its message |  | intuitive | `mds-input-field`; planned: --magma-rhythm-label-control, gap-label-control |
-| `between-fields` | relation: between-fields | `gap-600` between two fields of a form, or two rows of data |  | intuitive | planned: --magma-rhythm-between-fields, gap-between-fields |
-| `between-groups` | relation: between-groups | `gap-1000` between two groups of fields of one form (the fieldsets of personal data and of residence) |  | intuitive | planned: --magma-rhythm-between-groups, gap-between-groups |
-| `between-sections` | relation: between-sections | `gap-1600` between two sections of a page, each with its title |  | intuitive | planned: --magma-rhythm-between-sections, gap-between-sections |
-| `inset` | relation: inset | `p-600` inside a container of a part (a card, a banner, a note, a dropdown, the window of a dialog), shared by its regions |  | intuitive | `mds-banner`, `mds-note`, `mds-dropdown`; planned: --magma-rhythm-inset, p-inset |
-| `between-containers` | relation: between-containers | `gap-400` between containers with a boundary of their own (the cards of a section, of a grid, of a list of cards) |  | intuitive | planned: --magma-rhythm-between-containers, gap-between-containers |
+| `inline` | relation: inline | `gap-inline` (300) between elements side by side in one row: the actions of a row, a field and the button beside it |  | intuitive | `--magma-rhythm-inline`, `gap-inline` |
+| `title-content` | relation: title-content | `gap-title-content` (300) between a title and the content it names |  | intuitive | `--magma-rhythm-title-content`, `gap-title-content` |
+| `label-control` | relation: label-control | `gap-label-control` (300) between the label of a field, its control and its message |  | intuitive | `mds-input-field`, `--magma-rhythm-label-control`, `gap-label-control` |
+| `between-fields` | relation: between-fields | `gap-between-fields` (600) between two fields of a form, or two rows of data |  | intuitive | `--magma-rhythm-between-fields`, `gap-between-fields` |
+| `between-groups` | relation: between-groups | `gap-between-groups` (1000) between two groups of fields of one form (the fieldsets of personal data and of residence) |  | intuitive | `--magma-rhythm-between-groups`, `gap-between-groups` |
+| `between-sections` | relation: between-sections | `gap-between-sections` (1600) between two sections of a page, each with its title |  | intuitive | `--magma-rhythm-between-sections`, `gap-between-sections` |
+| `inset` | relation: inset | `p-inset` (600) inside a container of a part (a card, a banner, a note, a dropdown, the window of a dialog), shared by its regions |  | intuitive | `mds-banner`, `mds-note`, `mds-dropdown`, `--magma-rhythm-inset`, `p-inset` |
+| `between-containers` | relation: between-containers | `gap-between-containers` (400) between containers with a boundary of their own (the cards of a section, of a grid, of a list of cards) |  | intuitive | `--magma-rhythm-between-containers`, `gap-between-containers` |
 
 No gaps: every combination has a case or is not applicable.
 
@@ -174,9 +172,6 @@ Situations every application has, each with its case: they give the examples, th
 
 ## Magma gaps
 
-- The role tokens and their utilities are planned (decision 4 of the rhythm on #1189): until they
-  ship, write the step of the case (`gap-600`), never a Tailwind t-shirt name (`gap-lg`) nor a
-  value of your own.
 - `mds-card` pads each of its regions with `p-400`, so its title stands 800 from its content,
   farther than two fields: it moves to one `p-600` shared by its regions (`inset`,
   `shared-inset`).

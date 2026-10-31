@@ -301,7 +301,9 @@ describe('values match the stylesheets', () => {
 
   test('a value the CSS writes differently is the same quantity', () => {
     // letter spacing: the em of the CSS, at the style's own font size
-    for (const [path, token] of walk(lightTree).filter(([path]) => path.at(-1) === 'letter-spacing')) {
+    // (a title by role points at the letter spacing of its level, a var() checked with the roles)
+    for (const [path, token] of walk(lightTree).filter(([path, token]) =>
+      path.at(-1) === 'letter-spacing' && !ext(token).cssValue!.startsWith('var('))) {
       const size = lookup(lightTree, [...path.slice(0, -1), '$root'].join('.')).$value as DtcgDimension
       const em = Number(ext(token).cssValue!.replace('em', ''))
       expect((token.$value as DtcgDimension).value, path.join('.')).toBeCloseTo(em * size.value, 4)
@@ -351,7 +353,8 @@ describe('values match the stylesheets', () => {
       return palette.get(`--${name}`) ?? light.get(`--${name}`)!
     }
     const tree = scenario(mode, contrast ? `${theme}-contrast-more` : theme)
-    const roles = walk(tree).filter(([path]) => path[0] === 'magma')
+    // the colour roles: magma.rhythm and magma.width hold the spaces and widths of #1189
+    const roles = walk(tree).filter(([path, token]) => path[0] === 'magma' && token.$type === 'color')
     expect(roles.length).toBe(vars.size)
     for (const [path, token] of roles) {
       const name = ext(token).css!.slice(2)

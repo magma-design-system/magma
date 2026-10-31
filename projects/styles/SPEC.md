@@ -282,6 +282,43 @@ Typography utilities are semantic and map directly to Magma's type scale. Use th
 | `text-code-snippet`               | Roboto Mono   | Code blocks                           |
 | `text-code-hack`                  | Roboto Mono   | Inline code                           |
 
+**Titles by role** (#1189): a title is written by what it is, not by its level. Each utility
+reads `--text-size-title-<role>` of design-tokens, which points at the level the role is
+styled as, weight included, so a theme moves a role in one place; in plain CSS the classes are
+`typography-title-<role>`. The tag still follows the outline of the page (`titles/tag-is-structure`).
+
+| Utility               | Rule             | Styled as |
+| --------------------- | ---------------- | --------- |
+| `text-title-page`     | `titles/page`    | `h3`      |
+| `text-title-section`  | `titles/section` | `h5`      |
+| `text-title-dialog`   | `titles/dialog`  | `h5`      |
+| `text-title-part`     | `titles/part`    | `h6`      |
+| `text-title-group`    | `titles/group`   | `h6`      |
+
+## Composition utilities (#1189)
+
+The rules of the design language that a box carries, written by the role, never by the value.
+They read the role tokens of design-tokens (`typography.css`), with their value as the fallback.
+
+- **The rhythm**: each relation is a key of the spacing namespace (`--spacing-<id>` bridges
+  `--magma-rhythm-<id>`), so `gap-between-fields`, `gap-y-title-content`, `p-inset`,
+  `space-y-between-sections`. Tailwind makes every utility of that namespace from it; a role is
+  for gap, padding, margin and space only (`w-inset` is legal CSS and a mistake).
+- **`max-w-form`**: the column of a form, the reading measure (`--container-form` bridges
+  `--magma-width-form`). Tailwind makes no `@form:` container variant from it, since its value is
+  a `var()`; `consumption.json` records the variants as reading nothing.
+- **`page-frame`**: the frame of a page, one element. `box-sizing: content-box`, the content at
+  most `--magma-width-page` (1280px) and the gutter `--magma-width-page-gutter` outside it,
+  centred: the edge of the page is the edge of the content of `mds-header-bar`.
+- **`field-group`**: a group of fields, on the `fieldset` of `titles/group`. No border, no inset
+  and no margin of its own; the `legend` in the style of `text-title-group`,
+  `rhythm/title-content` above the first field; the fields `rhythm/between-fields` apart. From
+  28rem up it lays out two tracks: a short field (`mds-input-field short`) takes one, every other
+  child spans both. The threshold is measured on the group itself (each track at least half of
+  28rem less half the gap), so there is no container query to place; 28rem stays a literal, the
+  width where the tax code still fits a half. The browser test is
+  `projects/stencil/src/test/design-language.e2e.ts`.
+
 ## Focus utilities
 
 Use these utilities instead of writing focus styles manually:

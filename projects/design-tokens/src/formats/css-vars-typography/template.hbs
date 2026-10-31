@@ -29,6 +29,15 @@ Generated at {{ date }}
   {{/each}}
 {{/each}}
 
+{{!-- titles by role (#1189): each role points at the level it is styled as, so a theme
+  moves a role in one place --}}
+{{#each properties.role.title as | title |}}
+  --text-size-title-{{@key}}: var(--text-size-title-{{title.value}});
+  --text-size-title-{{@key}}--font-weight: var(--text-size-title-{{title.value}}--font-weight);
+  --text-size-title-{{@key}}--letter-spacing: var(--text-size-title-{{title.value}}--letter-spacing);
+  --text-size-title-{{@key}}--line-height: var(--text-size-title-{{title.value}}--line-height);
+{{/each}}
+
 {{!-- leading --}}
 {{#each properties as | property |}}
   {{#each property.leading as | leading |}}
@@ -45,6 +54,15 @@ Generated at {{ date }}
 {{!-- container with --}}
 {{#each properties.container as | container |}}
   --container-{{@key}}: {{container.value}};
+{{/each}}
+
+{{!-- the roles of the design language (#1189): the space of each relation of the rhythm, a
+  literal so a project that changes --spacing does not move it, and the widths --}}
+{{#each properties.role.rhythm as | step |}}
+  --magma-rhythm-{{@key}}: {{step.value}};
+{{/each}}
+{{#each properties.role.width as | width |}}
+  --magma-width-{{@key}}: {{width.value}};
 {{/each}}
 
 {{!-- screens breakpoint --}}

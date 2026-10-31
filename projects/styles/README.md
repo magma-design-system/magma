@@ -343,7 +343,11 @@ token of `tokens.editor.css`. Every group and token of `globals.tokens.json` has
 - **`shadowed`**: the roots (or variant patterns) where that class reads another
   variable, and which one (`null`: none of the theme). `--container-xs` has
   `"inline": "--spacing-xs"`: the logical utilities have no namespace of their own, so
-  `inline-xs` is 4px; the container is `inline-(--container-xs)`.
+  `inline-xs` is 4px; the container is `inline-(--container-xs)`. A class or variant that
+  Tailwind compiles to nothing is shadowed by `null` too: `--container-form` (`max-w-form`,
+  #1189) has `"@*": null`, since its value is a `var()` and a container query cannot read one.
+- **`description`**: what the token is for, the `$description` of its DTCG token, or of its
+  `cssOnly` entry for a value DTCG cannot type (`--magma-width-form`).
 - **`keywords`**: the `@theme` variables that hold a CSS keyword and publish no token.
   `--max-width-none: none` makes `max-w-none` set no limit, where the spacing step would
   set `0px`.

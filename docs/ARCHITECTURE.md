@@ -39,6 +39,7 @@ Generates design tokens for colors, typography, spacing, borders and other platf
 - Describes every global token, the semantic layer included, as DTCG 2025.10 JSON in `dist/dtcg/` (sets per mode, theme and contrast, plus a resolver document). The semantic layer comes from `semantic.model.ts`, which both this export and the styles generator read
 - Color palette categories: `tone` (neutrals), `status` (info/success/warning/error), `label` (semantic accent colors), `variant` (primary/secondary/ai), `brand`
 - Token levels: **primitive** (raw values) → **semantic** (role-based) → **component** (component-scoped CSS vars)
+- The roles of the design language (#1189): the rhythm (`--magma-rhythm-*`), the widths (`--magma-width-*`) and the titles by role (`--text-size-title-<role>`) in `typography.css`, bridged to Tailwind as `--spacing-<id>` and `--container-form`
 - Exposes a CLI (`npx magma-design-tokens`) to generate custom palettes from a config file
 
 Key output files consumed by other sub-projects:
@@ -101,7 +102,7 @@ CSS and Tailwind 4 styles consumed by the web component library and consumer app
 | `dist/css/colors-rgb-*.css` | RGB color tokens (required for Tailwind and web components) |
 | `dist/css/hydrated.css` | FOUC prevention for StencilJS, and the box of the hydrated components kept against page resets (Tailwind's preflight) |
 | `dist/css/animations.css` | Shared animations |
-| `dist/tailwind/` | Tailwind 4 layers: base, typography, utilities |
+| `dist/tailwind/` | Tailwind 4 layers: base, typography, utilities (the titles by role and the composition utilities `page-frame` and `field-group` of #1189 included) |
 | `dist/tailwind/dark-mode.css` | The `dark:` variant on the Magma mode, imported by `dist/tailwind/theme.css`; generated from the selectors the palette turns dark on |
 | `dist/tailwind/consumption.json` | How each global token is consumed through Tailwind 4, keyed by its DTCG `css` name, with the token's DTCG `$description` when it has one; generated from Tailwind's design system |
 | `dist/dtcg/` | The styles globals as DTCG 2025.10 (corner and depth sets), with a resolver that adds them to the design-tokens sets |

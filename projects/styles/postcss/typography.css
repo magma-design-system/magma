@@ -31,6 +31,26 @@
   @apply text-title-action;
 }
 
+.typography-title-page {
+  @apply text-title-page;
+}
+
+.typography-title-section {
+  @apply text-title-section;
+}
+
+.typography-title-dialog {
+  @apply text-title-dialog;
+}
+
+.typography-title-part {
+  @apply text-title-part;
+}
+
+.typography-title-group {
+  @apply text-title-group;
+}
+
 .typography-info-paragraph {
   @apply text-info-paragraph;
 }

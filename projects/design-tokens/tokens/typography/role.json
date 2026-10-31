@@ -1,0 +1,26 @@
+{
+  "role": {
+    "title": {
+      "page": {
+        "value": "h3",
+        "description": "titles/page: the title of a page of an application, its h1 (text-title-page)."
+      },
+      "section": {
+        "value": "h5",
+        "description": "titles/section: the title of a section of a page (text-title-section)."
+      },
+      "dialog": {
+        "value": "h5",
+        "description": "titles/dialog: the title of a dialog (text-title-dialog)."
+      },
+      "part": {
+        "value": "h6",
+        "description": "titles/part: the title of a part, such as a card, a panel or an accordion item (text-title-part)."
+      },
+      "group": {
+        "value": "h6",
+        "description": "titles/group: the legend of a group of fields (text-title-group)."
+      }
+    }
+  }
+}
