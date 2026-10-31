@@ -60,7 +60,7 @@
   "devDependencies": {
     "color-namer": "1.4.0",
     "fflate": "0.8.3",
-    "preact": "11.1.0",
+    "preact": "11.1.1",
     "vite": "8.3.5"
   },
   "repository": {
