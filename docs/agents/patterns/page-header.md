@@ -110,12 +110,13 @@ A region shows where its When holds, in this order: a required one always, the o
   identity and wrap.
 - The status sits next to the title and wraps under it when there is no room; a long title wraps
   too (`min-w-0`), it never pushes the actions out.
-- The spaces are relations of the rhythm: `gap-300` inside the identity, between a title and
-  what it names (`rhythm/title-content`); `gap-300` between the actions, and between the
-  identity and the actions, side by side in one row (`rhythm/inline`).
-- The header is the first section of the page: the page puts `gap-1600` between it and the
-  content under it, as between two sections (`rhythm/between-sections`), with the gap of the
-  container that lays out its sections; the block has no margin of its own.
+- The spaces are relations of the rhythm, written by their role: `gap-title-content` (300)
+  inside the identity, between a title and what it names (`rhythm/title-content`);
+  `gap-inline` (300) between the actions, and between the identity and the actions, side by
+  side in one row (`rhythm/inline`).
+- The header is the first section of the page: the page puts `gap-between-sections` (1600)
+  between it and the content under it, as between two sections (`rhythm/between-sections`),
+  with the gap of the container that lays out its sections; the block has no margin of its own.
 - A region with nothing to show is left out, with its space: a page with no actions has no empty
   bar.
 - The tabs of a page, when it has views, are the first section under the header.
@@ -133,9 +134,9 @@ These hold in every product: a product layer cannot change them.
 | `back-names-the-parent` | The way back is a link that names the page it returns to ("Requests"), never "Back". | review |
 | `not-the-app-bar` | The page header is the head of the main content, under the bar of the application; the navigation of the application is never in it. | review |
 | `main-action-last` | The main action comes last, in the strong tone; the others are outlined, `variant="dark" tone="outline"`; an action that destroys the record is never among them, it goes last in the menu of the record. (from `record-detail`) | review |
-| `title-content` | `gap-300` between a title and the content it names (from `rhythm`) |  |
-| `inline` | `gap-300` between elements side by side in one row: the actions of a row, a field and the button beside it (from `rhythm`) |  |
-| `between-sections` | `gap-1600` between two sections of a page, each with its title (from `rhythm`) |  |
+| `title-content` | `gap-title-content` (300) between a title and the content it names (from `rhythm`) |  |
+| `inline` | `gap-inline` (300) between elements side by side in one row: the actions of a row, a field and the button beside it (from `rhythm`) |  |
+| `between-sections` | `gap-between-sections` (1600) between two sections of a page, each with its title (from `rhythm`) |  |
 
 ## Open choices
 
