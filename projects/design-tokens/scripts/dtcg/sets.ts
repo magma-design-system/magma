@@ -279,6 +279,10 @@ export function buildDtcg({
     }
     return current;
   };
+  /** A value written around references (`var(--x, {a.b})`), each one followed to the end, as the
+   * Style Dictionary build prints it. */
+  const interpolated = (value: unknown): string =>
+    String(resolved(value)).replace(/\{([^{}]+)\}/g, (ref) => String(resolved(ref)));
   /** The DTCG alias of a source reference, for the source groups that are published too. */
   const SOURCE_GROUPS: Array<[string, string]> = [
     ['sizing.primitive.', 'size'],
@@ -460,8 +464,10 @@ export function buildDtcg({
   );
   for (const [key, { value }] of entries('spacing')) {
     const css = `--spacing-${key}`;
-    const literal = String(resolved(value));
-    if (/ch$/.test(literal)) {
+    const literal = interpolated(value);
+    // a measure in ch, or one that points at a role (the text measure, var() of
+    // --magma-width-reading), has no DTCG type
+    if (!typed(literal)) {
       keepCssOnly('spacing', css, literal);
       continue;
     }

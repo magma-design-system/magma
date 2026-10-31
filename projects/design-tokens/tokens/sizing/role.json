@@ -36,7 +36,7 @@
     },
     "width": {
       "reading": {
-        "value": "56ch",
+        "value": "{typography.sizing.text}",
         "description": "widths/reading: the measure of text to read, 65 to 80 characters on a full line."
       },
       "form": {

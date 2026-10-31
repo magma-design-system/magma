@@ -227,7 +227,7 @@ bridges them in `tailwind-theme-typography.css`.
 | Rule | Custom property | Value | Tailwind |
 | --- | --- | --- | --- |
 | `rhythm/<id>` | `--magma-rhythm-<id>` | a literal from `sizing.primitive` (`between-fields` 24px) | `--spacing-<id>`: `gap-between-fields`, `p-inset` |
-| `widths/reading` | `--magma-width-reading` | `56ch` | (the reset and `mds-text` carry it) |
+| `widths/reading` | `--magma-width-reading` | `56ch` (`typography.sizing.text`) | `--spacing-text`: `max-w-text`, the cap of the reset and of `mds-text` |
 | `widths/form` | `--magma-width-form` | `var(--magma-width-reading)` | `--container-form`: `max-w-form` |
 | `widths/page` | `--magma-width-page`, `--magma-width-page-gutter` | 1280px, 24px | the `page-frame` utility of styles |
 | `widths/dialog` | `--magma-width-dialog` | `calc(var(--magma-width-form) + 2 * var(--magma-rhythm-inset))` | none: the default of `mds-modal` |
@@ -242,8 +242,12 @@ bridges them in `tailwind-theme-typography.css`.
   and declare it again on each density scope. A custom property resolves where it is declared:
   the Tailwind bridge `--spacing-<id>` is declared on `:root`, so a scope below it (a region)
   has to declare the bridges again as well, or the utilities keep the value of `:root`.
-- **`--spacing-text`** stays `75ch` until the reading measure moves onto `--magma-width-reading`
-  (its own change, #1204).
+- **The measure of text** (#1204): `--spacing-text`, the `max-w-text` the reset puts on `p`, `li`
+  and `figcaption`, is `var(--magma-width-reading, 56ch)`, so a theme that moves the reading
+  measure moves every capped text with it. The literal `56ch` is written once, in
+  `tokens/typography/sizing.json` (`typography.sizing.text`): the role points at it, and the
+  Tailwind 3 preset (`dist/js/tailwind-props.js`, which has no role) prints it as `max-w-text`.
+  `phrase` (`50ch`), `prose` (`65ch`) and `title` (`30ch`) have no role and stay as they are.
 - **In DTCG** the rhythm and the widths are `magma.rhythm.<id>` and `magma.width.<id>`, next to
   the colour roles (`tier: semantic`, each with what it is for); the widths with no DTCG type
   (in `ch`, or written from other roles) are `cssOnly` entries of `magma.width`. The titles by

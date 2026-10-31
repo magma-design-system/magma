@@ -88,9 +88,8 @@
     @apply max-w-title;
   }
 
-  p {
-    @apply max-w-title;
-  }
+  /* p takes the cap of the reset, max-w-text (the reading measure, #1204): a cap written
+   * here, in a later layer, would win over it. */
 
   /* The box of the hydrated components (against Tailwind's preflight) is kept by
    * hydrated.css: imported into `base` with layer(base), this file lands in a

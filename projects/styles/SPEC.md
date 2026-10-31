@@ -295,6 +295,13 @@ styled as, weight included, so a theme moves a role in one place; in plain CSS t
 | `text-title-part`     | `titles/part`    | `h6`      |
 | `text-title-group`    | `titles/group`   | `h6`      |
 
+**The measure of text** (#1204, `widths/reading`): `reset.css` caps `p`, `li` and `figcaption`
+at `max-w-text`, the reading measure (`--spacing-text`, a `var()` of `--magma-width-reading`,
+`56ch`: 65 to 80 characters on a full line), and the titles `h1`-`h6` at `max-w-title`
+(`30ch`). `base.css` puts no cap of its own on `p`: its layer comes after the reset and would
+win. `mds-text` carries the same cap on its host with those three tags. The browser test is
+`projects/stencil/src/test/design-language.e2e.ts`.
+
 ## Composition utilities (#1189)
 
 The rules of the design language that a box carries, written by the role, never by the value.

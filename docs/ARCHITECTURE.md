@@ -39,7 +39,7 @@ Generates design tokens for colors, typography, spacing, borders and other platf
 - Describes every global token, the semantic layer included, as DTCG 2025.10 JSON in `dist/dtcg/` (sets per mode, theme and contrast, plus a resolver document). The semantic layer comes from `semantic.model.ts`, which both this export and the styles generator read
 - Color palette categories: `tone` (neutrals), `status` (info/success/warning/error), `label` (semantic accent colors), `variant` (primary/secondary/ai), `brand`
 - Token levels: **primitive** (raw values) → **semantic** (role-based) → **component** (component-scoped CSS vars)
-- The roles of the design language (#1189): the rhythm (`--magma-rhythm-*`), the widths (`--magma-width-*`) and the titles by role (`--text-size-title-<role>`) in `typography.css`, bridged to Tailwind as `--spacing-<id>` and `--container-form`
+- The roles of the design language (#1189): the rhythm (`--magma-rhythm-*`), the widths (`--magma-width-*`) and the titles by role (`--text-size-title-<role>`) in `typography.css`, bridged to Tailwind as `--spacing-<id>` and `--container-form`; `--spacing-text` (`max-w-text`, the cap of the reset and of `mds-text` on `p`, `li` and `figcaption`) points at the reading measure, `56ch` (#1204)
 - Exposes a CLI (`npx magma-design-tokens`) to generate custom palettes from a config file
 
 Key output files consumed by other sub-projects:

@@ -185,3 +185,62 @@ describe('the role utilities of the design language', () => {
       expect(byRole[property], property).toBe(byLevel[property]);
   });
 });
+
+/**
+ * The reading measure (#1204) on the plain tags, through the built sheets a page imports as the
+ * styles README says: the reset caps p, li and figcaption at max-w-text, and base.css, a later
+ * layer, no longer caps p at a title's 30ch.
+ */
+describe('the reading measure on the plain tags', () => {
+  let sheet: HTMLStyleElement;
+  let stage: HTMLElement;
+
+  beforeAll(async () => {
+    sheet = document.createElement('style');
+    sheet.textContent = await commands.compileTailwind(
+      [
+        "@import '@maggioli-design-system/styles/dist/css/layer.css';",
+        "@import '@maggioli-design-system/styles/dist/css/reset.css' layer(reset);",
+        "@import '@maggioli-design-system/styles/dist/css/typography.css' layer(theme);",
+        "@import '@maggioli-design-system/styles/dist/css/base.css' layer(base);",
+      ].join('\n'),
+    );
+  });
+
+  beforeEach(() => {
+    document.head.append(sheet);
+    stage = document.createElement('div');
+    stage.style.width = '1280px';
+    document.body.append(stage);
+  });
+
+  afterEach(() => {
+    sheet.remove();
+    stage.remove();
+  });
+
+  // each tag next to one of its own set at 56ch, so the ch is that of the same text
+  it.each([
+    ['p', '<p>Testo</p><p style="max-width: 56ch">Testo</p>'],
+    ['li', '<ul><li>Voce</li><li style="max-width: 56ch">Voce</li></ul>'],
+    [
+      'figcaption',
+      '<figure><figcaption>Testo</figcaption><figcaption style="max-width: 56ch">Testo</figcaption></figure>',
+    ],
+  ])('caps %s at 56ch of its own text', (tag, html) => {
+    stage.innerHTML = html;
+    const [capped, measure] = Array.from(stage.querySelectorAll(tag)).map(
+      (element) => getComputedStyle(element).maxWidth,
+    );
+    expect(capped).toMatch(/px$/);
+    expect(capped).toBe(measure);
+  });
+
+  it('leaves the titles at their own measure', () => {
+    stage.innerHTML = '<h1>Titolo</h1><h1 style="max-width: 30ch">Titolo</h1>';
+    const [capped, measure] = Array.from(stage.querySelectorAll('h1')).map(
+      (element) => getComputedStyle(element).maxWidth,
+    );
+    expect(capped).toBe(measure);
+  });
+});

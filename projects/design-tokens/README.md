@@ -78,7 +78,7 @@ Where the JSON and the CSS write a value differently:
 - **Line height** of a `typography` token: a multiplier of the font size, as DTCG defines it. The `line-height` token of the style keeps the length.
 - **Aspect ratios**: a `number` (`5/3` becomes `1.6666666666666667`); `cssValue` keeps the ratio.
 - **Ring shadows** (`--shadow-ring*`): the CSS draws them with `--tone-neutral-01`; the JSON resolves that color, so `mode-dark` restates them.
-- **No DTCG type**: the text measures `--spacing-phrase`, `-prose`, `-text`, `-title` (in `ch`), the widths `--magma-width-reading` (in `ch`), `-form` and `-dialog` (written from other roles), and the `--transition-property-*` lists are listed in the `cssOnly` extension of their group, each `{ css, value }`, with its `description` where it has one.
+- **No DTCG type**: the text measures `--spacing-phrase`, `-prose`, `-title` (in `ch`) and `-text` (`var()` of the reading measure), the widths `--magma-width-reading` (in `ch`), `-form` and `-dialog` (written from other roles), and the `--transition-property-*` lists are listed in the `cssOnly` extension of their group, each `{ css, value }`, with its `description` where it has one.
 - **Titles by role**: the CSS points at the custom property of the level (`--text-size-title-page: var(--text-size-title-h3)`), kept in `cssValue`; the JSON is an alias of the level.
 
 Component tokens (`--mds-*`) are not in this data: they belong to each component.

@@ -89,8 +89,15 @@ describe('widths', () => {
     expect(vars.get('--magma-width-dialog')).toBe('calc(var(--magma-width-form) + 2 * var(--magma-rhythm-inset))')
   })
 
-  test('--spacing-text is not moved here: the reading measure is a change of its own', () => {
-    expect(vars.get('--spacing-text')).toBe('75ch')
+  // #1204: max-w-text, the cap of the reset on p, li and figcaption, is the reading measure
+  test('the measure of text points at the reading measure, in both sheets', () => {
+    expect(vars.get('--spacing-text')).toBe('var(--magma-width-reading, 56ch)')
+    expect(theme.get('--spacing-text')).toBe('var(--magma-width-reading, 56ch)')
+  })
+
+  test('the Tailwind 3 preset measures text at the same 56ch', () => {
+    const props = readFileSync(resolve(DIST, 'js', 'tailwind-props.js'), 'utf8')
+    expect([...props.matchAll(/'text': '([^']+)'/g)].map((m) => m[1])).toEqual(['56ch', '56ch'])
   })
 })
 
@@ -130,5 +137,10 @@ describe('the roles in the DTCG export', () => {
     const cssOnly = at('magma.width').$extensions[NAMESPACE].cssOnly!
     expect(cssOnly.map(({ css }) => css)).toEqual(['--magma-width-reading', '--magma-width-form', '--magma-width-dialog'])
     for (const { css, value } of cssOnly) expect(vars.get(css)).toBe(value)
+  })
+
+  test('the measure of text points at the reading measure, with no DTCG type', () => {
+    const text = at('spacing').$extensions[NAMESPACE].cssOnly!.find(({ css }) => css === '--spacing-text')
+    expect(text?.value).toBe('var(--magma-width-reading, 56ch)')
   })
 })

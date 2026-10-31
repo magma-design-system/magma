@@ -316,4 +316,43 @@ describe('mds-text', () => {
       expect(getComputedStyle(root).transitionDuration).toBe('1e-05s');
     });
   });
+
+  describe('the reading measure (#1204)', () => {
+    /** The max-width of the host `html` renders, read before the next render replaces it. */
+    const maxWidth = async (html: string): Promise<string> => {
+      const { root } = await render(html);
+      return getComputedStyle(root).maxWidth;
+    };
+
+    // next to a host of the same typography set at 56ch, so the ch is that of the same text
+    it.each(['p', 'li', 'figcaption'])(
+      'caps the host at 56ch of its own text with the tag %s',
+      async (tag) => {
+        for (const typography of ['detail', 'paragraph', 'h4']) {
+          const capped = await maxWidth(
+            `<mds-text tag="${tag}" typography="${typography}">${textContent}</mds-text>`,
+          );
+          const measure = await maxWidth(
+            `<mds-text tag="span" typography="${typography}" style="max-width: 56ch">${textContent}</mds-text>`,
+          );
+          expect(capped, typography).toMatch(/px$/);
+          expect(capped, typography).toBe(measure);
+        }
+      },
+    );
+
+    it('caps the default text, whose tag is p', async () => {
+      const capped = await maxWidth(`<mds-text>${textContent}</mds-text>`);
+      expect(capped).toBe(
+        await maxWidth(`<mds-text tag="span" style="max-width: 56ch">${textContent}</mds-text>`),
+      );
+    });
+
+    it.each(['span', 'div', 'h2', 'label', 'blockquote'])(
+      'leaves the host free with the tag %s',
+      async (tag) => {
+        expect(await maxWidth(`<mds-text tag="${tag}">${textContent}</mds-text>`)).toBe('none');
+      },
+    );
+  });
 });
