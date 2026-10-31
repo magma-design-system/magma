@@ -115,6 +115,20 @@ describe('mds-input-select', () => {
 
     const markup = '<mds-input-select><option value="a">A</option></mds-input-select>';
 
+    // The pointer stays where the last case left it, and every case renders its select in the
+    // same place, at the top of the page: after the hover case the next select appears under
+    // the pointer and Chromium hovers it a few frames later, before or between the reads of a
+    // case that wants the ring at rest. Park the pointer in the bottom right corner, away
+    // from the select, before each case renders; userEvent.unhover is no help, it points at
+    // the centre of the body, wherever the layout puts it.
+    beforeEach(async () => {
+      const corner = document.createElement('span');
+      corner.style.cssText = 'position: fixed; right: 0; bottom: 0; width: 8px; height: 8px';
+      document.body.append(corner);
+      await userEvent.hover(corner);
+      corner.remove();
+    });
+
     it.each([
       { preferences: 'none', classes: [] },
       { preferences: 'dark', classes: ['pref-mode-dark'] },
@@ -154,6 +168,9 @@ describe('mds-input-select', () => {
 
       expect(root).toEqualAttribute('pref-mode', 'dark');
       expect(ringOf(root)).toBe(strongRing);
+      // both reads are of the ring at rest: a hover at any point before here would still be
+      // on, and the case would compare the hover ring with itself
+      expect(root.matches(':hover')).toBe(false);
     });
   });
 
