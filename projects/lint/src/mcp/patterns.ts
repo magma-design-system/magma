@@ -7,11 +7,13 @@
   narrows the open choices and adds situations; it never changes an "Always true" rule. A case
   Magma has a preview of (agents/patterns/previews/<id>/<case>.html, #1186) names it: the path
   in the pattern, the stage itself and what to try in it in the answer for a situation, with
-  the rules of the domains of Foundation the case relies on (#1198).
+  the rules of the domains of Foundation the case relies on (#1198). A building block (#1210)
+  answers a situation with its regions, in the order of the page.
 */
 import path from 'node:path';
 import { loadComponents, magmaRoot } from '../core/data.js';
 import {
+  BLOCK,
   MAGMA_LAYER,
   answer,
   extendedId,
@@ -24,6 +26,7 @@ import {
   readPatternDir,
   readPreviews,
   readProjectDir,
+  regionsFor,
   resolveLayer,
   splitBody,
   type Case,
@@ -142,7 +145,7 @@ export const getPattern = (context: ToolContext): Tool => ({
   name: 'get_pattern',
   title: 'Read a Magma pattern',
   description:
-    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product, and first the domains of Foundation (kind foundation), the rules of composition every pattern stands on (the space between elements, ...). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, and what to try in it, and in rules the rules of the domains it relies on, each with its domain and its text), or which variables are still to settle; with id and section the text of that section. Ask before building a flow, and follow the case it gives and its rules.',
+    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of Foundation (kind foundation), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, and what to try in it, and in rules the rules of the domains it relies on, each with its domain and its text), or which variables are still to settle; for a block, the regions that show, in the order of the page; with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -283,23 +286,42 @@ export const getPattern = (context: ToolContext): Tool => ({
     }
 
     if (situation && typeof situation === 'object' && !Array.isArray(situation)) {
+      const known = Object.fromEntries(
+        Object.entries(situation).map(([name, value]) => [name, String(value)]),
+      );
+      const variables = base.variables ?? {};
+      const missingOf = (names: string[]) =>
+        names.map((name) => ({
+          variable: name,
+          values: variables[name]!.values,
+          means: variables[name]!.means,
+        }));
+      if (base.kind === BLOCK) {
+        // a block: the regions that show, and those that wait on a variable still unknown
+        let regions;
+        try {
+          regions = regionsFor(base, known);
+        } catch (error) {
+          throw new ToolError((error as Error).message);
+        }
+        const rules = rulesOfCase(base, {}, all);
+        return {
+          id: base.id,
+          ...renamed,
+          ...mine,
+          answer: { kind: 'regions', regions: regions.regions, ...(rules.length ? { rules } : {}) },
+          ...(regions.missing.length
+            ? { candidates: regions.depends, missing: missingOf(regions.missing) }
+            : {}),
+        };
+      }
       let result;
       try {
-        result = answer(
-          base,
-          Object.fromEntries(
-            Object.entries(situation).map(([name, value]) => [name, String(value)]),
-          ),
-        );
+        result = answer(base, known);
       } catch (error) {
         throw new ToolError((error as Error).message);
       }
-      const variables = base.variables ?? {};
-      const missing = result.missing.map((name) => ({
-        variable: name,
-        values: variables[name]!.values,
-        means: variables[name]!.means,
-      }));
+      const missing = missingOf(result.missing);
       const hits = result.hits.map(({ kind, entry }) => ({ kind, ...entry }));
       if (hits.length === 1 && !missing.length) {
         const { kind, entry } = result.hits[0]!;

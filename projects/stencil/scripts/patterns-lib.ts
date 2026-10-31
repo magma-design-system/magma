@@ -8,6 +8,7 @@
 import { join } from 'node:path';
 import { PROJECT_DIR } from './meta';
 import {
+  BLOCK,
   FOUNDATION,
   PATTERN_GROUPS,
   readPatternDir,
@@ -22,6 +23,8 @@ export const PATTERNS_DIR = join(REPO, 'docs/agents/patterns');
 export const TEMPLATE = join(PROJECT_DIR, 'template/pattern.md');
 /** The template of a new domain of Foundation (kind foundation, #1196). */
 export const FOUNDATION_TEMPLATE = join(PROJECT_DIR, 'template/foundation.md');
+/** The template of a new building block (kind block, #1210). */
+export const BLOCK_TEMPLATE = join(PROJECT_DIR, 'template/block.md');
 
 export const readPatterns = (dir = PATTERNS_DIR): PatternFile[] => readPatternDir(dir);
 
@@ -53,7 +56,7 @@ export interface ListFilter {
   notValidated?: boolean;
 }
 
-/** The list as the maintainer reads it in a terminal: the domains of Foundation, then the patterns by group, one line each. */
+/** The list as the maintainer reads it in a terminal: the domains of Foundation, the building blocks, then the patterns by group, one line each. */
 export const renderList = (entries: ListEntry[], filter: ListFilter = {}): string => {
   const shown = entries.filter(
     (one) =>
@@ -66,9 +69,10 @@ export const renderList = (entries: ListEntry[], filter: ListFilter = {}): strin
   const out: string[] = [];
   const sections: [string, ListEntry[]][] = [
     ['Foundation', shown.filter((one) => one.kind === FOUNDATION)],
+    ['Building blocks', shown.filter((one) => one.kind === BLOCK)],
     ...Object.entries(PATTERN_GROUPS).map(
       ([group, title]) =>
-        [title, shown.filter((one) => one.kind !== FOUNDATION && one.group === group)] as [
+        [title, shown.filter((one) => one.kind === 'pattern' && one.group === group)] as [
           string,
           ListEntry[],
         ],
@@ -88,8 +92,9 @@ export const renderList = (entries: ListEntry[], filter: ListFilter = {}): strin
   }
   const decided = shown.filter((one) => one.status === 'decided').length;
   const domains = shown.filter((one) => one.kind === FOUNDATION).length;
+  const blocks = shown.filter((one) => one.kind === BLOCK).length;
   out.push(
-    `${shown.length - domains} pattern(s) and ${domains} domain(s) of Foundation, ${decided} decided.`,
+    `${shown.length - domains - blocks} pattern(s), ${blocks} building block(s) and ${domains} domain(s) of Foundation, ${decided} decided.`,
   );
   return `${out.join('\n')}\n`;
 };

@@ -6,6 +6,9 @@
  * - the cases: every combination of the variables in exactly one case, or in a declared gap or
  *   not-applicable entry (a variable left out means any value, except `decision`, which means
  *   none); only two cases on one combination are a conflict;
+ * - the regions of a building block (kind block, #1210): each `when` on the block's own
+ *   variables, a required region in every combination, the patterns of `used-by` (two at least)
+ *   naming the block among their related;
  * - the release: every component and attribute named exists in dist/documentation.json, with a
  *   value it takes;
  * - the lint: every "Always true" rule checked by lint names a rule the lint has; a planned one
@@ -36,6 +39,7 @@ import { existsSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { loadComponents, loadStyles, loadThemeNames } from '../../lint/src/core/data';
 import {
+  BLOCK,
   FOUNDATION,
   MAGMA_LAYER,
   bodyErrors,
@@ -160,13 +164,14 @@ if (missing.length)
       .join('\n')}\n`,
   );
 const domains = patterns.filter((one) => one.kind === FOUNDATION).length;
+const blocks = patterns.filter((one) => one.kind === BLOCK).length;
 const decided = patterns.filter(
-  (one) => one.kind !== FOUNDATION && one.status !== 'candidate',
+  (one) => one.kind === 'pattern' && one.status !== 'candidate',
 ).length;
 console.log(
-  `OK - ${patterns.length - domains} patterns and ${domains} domain(s) of Foundation in ${relative(REPO, PATTERNS_DIR)} (${decided} patterns defined, ${
-    patterns.length - domains - decided
-  } candidates): ${combinations} combinations each in one case, a gap or not applicable; every component, attribute, carrier, lint rule and link exists; ${
+  `OK - ${patterns.length - domains - blocks} patterns, ${blocks} building block(s) and ${domains} domain(s) of Foundation in ${relative(REPO, PATTERNS_DIR)} (${decided} patterns defined, ${
+    patterns.length - domains - blocks - decided
+  } candidates): ${combinations} combinations each in one case, a gap or not applicable, or with a required region of a block; every component, attribute, carrier, lint rule and link exists; ${
     previews.length
   } preview(s), each of a case and clean`,
 );

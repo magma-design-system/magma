@@ -135,7 +135,9 @@ const GROUNDING = new Set(['serves', 'carried-by', 'carried-by-planned']);
  * keeps the old id as an alias, so it is not one); an "Always true" rule added, changed or
  * removed; a case or an open choice removed, which a product layer may cite; in a domain of
  * Foundation (#1196), a case added or changed too, since its cases are rules that bind every
- * product as the "Always true" ones do (a layer narrows only the open choices). Each raises the
+ * product as the "Always true" ones do (a layer narrows only the open choices); in a building
+ * block (#1210), a region removed, or made required, since every page that lays out the block
+ * must then change. Each raises the
  * review level to contract; none asks for a release of its own, as no product layer exists yet
  * that a removal would break. `before` and `after` map the files of docs/agents/patterns to
  * their text.
@@ -201,6 +203,17 @@ export const patternChanges = (
         else if (old !== promise(one))
           changes.push({ file: current.file, id, why: `case ${one.id} changed` });
       }
+    }
+    const regions = new Map((is.regions ?? []).map((one) => [one.id, one]));
+    for (const one of was.regions ?? []) {
+      const next = regions.get(one.id);
+      if (!next) changes.push({ file: current.file, id, why: `region ${one.id} removed` });
+      else if (next.required === true && one.required !== true)
+        changes.push({
+          file: current.file,
+          id,
+          why: `region ${one.id} made required: every page that lays out the block shows it`,
+        });
     }
     const choices = idsOf(is['open-choices']);
     for (const one of was['open-choices'] ?? [])
