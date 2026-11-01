@@ -119,8 +119,10 @@ changes:
   situation gives both with their text, `get_component` the ones that govern a component (it
   carries them, or a relation writes it in `use`), and `get_guide` serves each domain whole,
   by its id.
-- **No previews yet**: a preview is the case of a pattern working; whether a relation of a
-  domain gets one is open on #1189, so the check does not list them as missing.
+- **Previews, a pilot**: a case of a domain may have a preview, as a case of a pattern does
+  (`previews/<domain>/<case>.html`); the domain shows the rule at work. `widths` is the pilot
+  (#1189, 2026-11-01): one preview per case, made from the option chosen live. Until the pilot is
+  weighed, the check takes the previews of a domain and does not list the ones a domain lacks.
 
 ## A building block
 
@@ -178,6 +180,9 @@ try: Press Salva: the error shows above the form, and what was written stays.
   around it adds the stylesheets of `agents/assets.md` and the loader of the installed magma, so
   the preview runs on the version the reader has. Its layout takes the tokens
   (`calc(var(--spacing) * 300)`), its words are Italian as in the examples of the components.
+  No class of Magma's Tailwind layer (`page-frame`, `field-group`, `max-w-form`): Tailwind is
+  optional (`agents/assets.md`), so the page around has none of them, and the stage writes the
+  custom property the class carries (`max-width: var(--magma-width-form)`).
 - **What to try**, required: one line, what to do in the preview ("Press Salva: ..."), or what
   to look at when there is nothing to do. The page shows it under the stage. A live preview with
   nothing said is a still form; the maintainer chose the line and no animation (#1186).
@@ -185,7 +190,10 @@ try: Press Salva: the error shows above the form, and what was written stays.
   styles, ids and script stay inside, and the Magma of the stage never mixes with the page
   around it. `height`, optional, gives that document a fixed height in pixels: an overlay needs
   it, since `mds-modal` is a `<dialog>` in the top layer sized on the viewport and takes no room
-  in the stage. A banner that is the message of a modal goes in its `window` slot.
+  in the stage. A banner that is the message of a modal goes in its `window` slot. Every stage
+  gets an inset from the page around it; `whole-page: true`, optional, takes it away from a
+  stage that is a whole page and lays out its own frame (`widths/page`: the bar and the gutter
+  of the page start at the edge of the document, as in an application).
 - **Who reads it.** The docs site from `node_modules`; `get_pattern` gives its path on each case
   of a pattern, and the stage itself with what to try in the answer for a situation;
   `render_preview` renders it with `pattern` and `case`, at its height, with the check of the
