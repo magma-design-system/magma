@@ -1228,18 +1228,29 @@ describe('the previews of the cases', () => {
 
   test('what to try is required, every key known, the height in range', () => {
     expect(stage('<mds-text>No comment</mds-text>', '').errors).toEqual([
-      'it opens with a comment of keys: try, height (docs/PATTERNS.md)',
+      'it opens with a comment of keys: try, height, whole-page (docs/PATTERNS.md)',
     ]);
     expect(stage('<!--\nheight: 260\n-->').errors).toEqual([
       'try is required: what to do in the preview, or what to look at',
     ]);
     expect(stage('<!--\ntry: Look.\nplay: #save\nwhy not\n-->').errors).toEqual([
-      'play is not a key of a preview: try, height',
+      'play is not a key of a preview: try, height, whole-page',
       '"why not" in the opening comment is not a key: value line',
     ]);
     const low = stage('<!--\ntry: Look.\nheight: 90\n-->');
     expect(low.errors).toEqual(['height is a whole number of pixels, 120 to 2000']);
     expect(low.height).toBeUndefined();
+  });
+
+  test('a whole page has no inset around it: whole-page is true or left out', () => {
+    expect(stage('<!--\ntry: Look.\nwhole-page: true\n-->')).toMatchObject({
+      wholePage: true,
+      errors: [],
+    });
+    expect(stage('<!--\ntry: Look.\n-->').wholePage).toBeUndefined();
+    const wrong = stage('<!--\ntry: Look.\nwhole-page: yes\n-->');
+    expect(wrong.errors).toEqual(['whole-page is true, or left out']);
+    expect(wrong.wholePage).toBeUndefined();
   });
 
   test('only a stage: no page, no script that loads, nothing from outside', () => {

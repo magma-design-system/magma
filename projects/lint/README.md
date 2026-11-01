@@ -224,8 +224,9 @@ or on the guide it enforces, not only on fixtures picked by hand.
   Edge, the channels of playwright.dev/docs/browsers, then Playwright's own Chromium. With
   `pattern` and `case` instead of markup it renders the preview Magma ships for that case
   (#1186), found under an old id of the pattern too: at the height the preview declares, the
-  page an overlay needs, and with `lang="it"`, the language of the words of the previews
-  (`docs/PATTERNS.md`), unless the call gives its own.
+  page an overlay needs, with no inset around a stage that declares `whole-page`, and with
+  `lang="it"`, the language of the words of the previews (`docs/PATTERNS.md`), unless the call
+  gives its own.
 - **What a tool or a rule says about itself** (the documentation site reads it from the
   installed package, magma-design-system/docs#1): the same fields on both plugins, a
   description and the URL of its section of `agents/lint.md` (an ESLint rule in

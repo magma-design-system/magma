@@ -112,6 +112,7 @@ const previewIn = (context: ToolContext, preview: Preview) => ({
   file: path.relative(context.root, preview.file),
   try: preview.try,
   ...(preview.height ? { height: preview.height } : {}),
+  ...(preview.wholePage ? { wholePage: true } : {}),
   markup: preview.markup,
 });
 

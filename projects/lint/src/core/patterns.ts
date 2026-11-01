@@ -1689,13 +1689,15 @@ export const bodyErrors = (
   the page shows it under the stage (a live preview with nothing said is a still form: the
   maintainer's call on #1186, a line and no animation). `height`, optional: the stage is a page
   of its own that tall, as an overlay needs (mds-modal is a <dialog> in the top layer, sized on
-  the viewport, so inline it covers the page around the stage).
+  the viewport, so inline it covers the page around the stage). `whole-page: true`, optional:
+  the stage is a whole page that lays out its own frame (widths/page, its bar and its gutter), so
+  whoever shows it gives it no inset of its own, where every other stage gets one.
 */
 
 /** The folder of the previews, inside the folder of the patterns. */
 export const PREVIEWS_DIR = 'previews';
 /** The keys of the opening comment of a preview. */
-export const PREVIEW_KEYS = ['try', 'height'] as const;
+export const PREVIEW_KEYS = ['try', 'height', 'whole-page'] as const;
 /** The height of a stage that is a page of its own, in pixels: up to the side of an image of render_preview (#1180). */
 export const PREVIEW_HEIGHT = { min: 120, max: 2000 } as const;
 
@@ -1706,6 +1708,8 @@ export interface Preview {
   case: string;
   try?: string;
   height?: number;
+  /** The stage is a whole page, with a frame of its own: no inset around it. */
+  wholePage?: boolean;
   /** The stage, without its opening comment. */
   markup: string;
   /** What is wrong in the file by itself: its keys, its markup. */
@@ -1752,6 +1756,8 @@ export const parsePreview = (text: string, file: string): Preview => {
       );
     else height = value;
   }
+  if (keys['whole-page'] !== undefined && keys['whole-page'] !== 'true')
+    errors.push('whole-page is true, or left out');
   const markup = head ? source.slice(head[0].length) : source;
   if (!markup.trim()) errors.push('the stage is empty');
   for (const [, tag] of markup.matchAll(PAGE_ELEMENT))
@@ -1770,6 +1776,7 @@ export const parsePreview = (text: string, file: string): Preview => {
     case: id,
     ...(keys.try ? { try: keys.try } : {}),
     ...(height !== undefined ? { height } : {}),
+    ...(keys['whole-page'] === 'true' ? { wholePage: true } : {}),
     markup,
     errors,
   };
@@ -1827,9 +1834,9 @@ export const previewLinkErrors = (
 
 /**
  * The cases with no preview yet, as <pattern>/<case>, the candidates aside. The domains of
- * Foundation too: a preview is the case of a pattern working, and whether a relation of a
- * domain gets one is still open (#1189); a building block has regions, not cases, and whether
- * it gets previews is open too (#1210).
+ * Foundation too: a case of a domain may have a preview, and widths is the pilot (#1189), so
+ * the ones a domain lacks are not listed until it is weighed; a building block has regions,
+ * not cases, and whether it gets previews is open too (#1210).
  */
 export const missingPreviews = (patterns: Pattern[], previews: Preview[]): string[] =>
   patterns
