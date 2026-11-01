@@ -16,6 +16,7 @@ The `<mds-text>` web component is the foundational typography primitive of the M
 #### Semantic Behavior
 
 - **Typography drives the rendered tag**: when `tag` is left unset, a sensible default element is resolved from the chosen `typography` (e.g. `typography="h2"` -> `<h2>`, `paragraph`/`detail` -> `<p>`, `label`/`option` -> `<label>`, `snippet`/`hack` -> `<code>`, `tip` -> `<div>`). Setting `tag` explicitly overrides this.
+- **A title is written by its role**: `page`, `section`, `dialog`, `part` and `group` are the titles of the design language (`titles/page` and the others). Each takes the style of its role, the level the role is styled as (the title of a page is styled as `h3`, of a section and a dialog as `h5`, of a part and a group as `h6`), so a theme moves a role in one place. Left without `tag`, a role renders the tag of that level; the outline of the page sets the tag (`titles/tag-is-structure`), so the title of a page is `typography="page" tag="h1"`.
 - **Semantics vs. visual style are independent**: `typography` controls the visual ramp and the default element, but you may pin any allowed `tag` to keep the correct document outline (accessibility) while choosing a different visual scale.
 - **Text to read stops at the reading measure**: with the tag `p`, `li` or `figcaption` (`p` is the default of `detail` and `paragraph`) the host is capped at `max-w-text`, the reading measure (`--spacing-text`, `56ch`), as the reset caps the plain tags. The cap sits on the host, which carries the type style, so the `ch` is that of its own text; every other tag leaves the host as wide as its container.
 - **Text source is slot or prop**: text is normally provided through the default slot. Passing the `text` prop renders that string instead of the slotted content - required for the animation path, since the animation watches the `text` value.
@@ -25,7 +26,7 @@ The `<mds-text>` web component is the foundational typography primitive of the M
 
 #### Properties & Visual Configurations
 
-- **`typography`** selects the semantic text role from the shared typography ramp (titles `h1`-`h6` and `action`; informational `detail`, `paragraph`, `caption`, `label`, `option`, `tip`; monospaced `snippet`, `hack`). It is the primary prop and also determines the default rendered tag. Defaults to `'detail'`.
+- **`typography`** selects the semantic text role from the shared typography ramp (titles `h1`-`h6` and `action`; informational `detail`, `paragraph`, `caption`, `label`, `option`, `tip`; monospaced `snippet`, `hack`) or, for a title, its role in the design language (`page`, `section`, `dialog`, `part`, `group`, values of `mds-text` only). It is the primary prop and also determines the default rendered tag. Defaults to `'detail'`.
 - **`variant`** refines the _tone of a typography role_ and is specific to this component - it is the typography variation (`'title'`, `'info'`, `'read'`, `'code'`), not the shared component tone/variant ladder. Only `'read'` has a visual effect, and only on `paragraph`, `detail` and `caption` (it switches them to the reading family); the other values change nothing, and leaving it unset uses the role's default styling.
 - **`tag`** is an escape hatch to force a specific HTML element independently of `typography`, e.g. rendering a visually large heading as a `<span>` or marking text as `<strong>`/`<em>`/`<mark>` without changing the visual scale.
 - **`truncate`** governs overflow clipping: `'word'` forces single-line truncation (no wrapping), `'all'` clamps to a multi-line block whose line count is controlled by `--mds-text-line-clamp`, and `'none'` lets text flow normally. `'word'` and `'none'` clip only the end of the line, for the ellipsis, so the accents and the descenders of the `label` and `option` typographies (whose box is trimmed to the capitals) stay visible. `'all'` has to hide the lines after the clamp: the accents of its first line stay visible, while the descenders of its last visible line (a cedilla, the tail of a comma) are cut where the box ends.
@@ -43,13 +44,23 @@ The canonical form for body copy. Slot a plain text string; `typography` default
 <mds-text>Inserisci il testo del messaggio nel campo sottostante.</mds-text>
 ```
 
-#### Choosing a Typography Role
+#### A Title by Its Role
 
-Set `typography` to match the semantic role. The component resolves the correct HTML element automatically - `h1`-`h6` emit heading elements, `paragraph`/`detail` emit `<p>`, `label`/`option` emit `<label>`, `snippet`/`hack` emit `<code>`, `tip` and `action` emit `<div>` and `<span>` respectively.
+Write a title by what it is: `page`, `section`, `dialog`, `part` or `group`. Each takes the style of its role (the page as `h3`, a section and a dialog as `h5`, a part and a group as `h6`), and `tag` gives the level of its place in the outline: one `h1`, the title of the page.
 
 ```html
-<mds-text typography="h1">Benvenuto nel portale</mds-text>
-<mds-text typography="h2">Impostazioni account</mds-text>
+<mds-text typography="page" tag="h1">Pratiche di residenza</mds-text>
+<mds-text typography="section" tag="h2">Dati del richiedente</mds-text>
+<mds-text typography="part" tag="h3">Indirizzo di residenza</mds-text>
+```
+
+#### Choosing a Typography Role
+
+Set `typography` to match the semantic role. The component resolves the correct HTML element automatically - `h1`-`h6` emit heading elements, a title role emits the heading of the level it is styled as, `paragraph`/`detail` emit `<p>`, `label`/`option` emit `<label>`, `snippet`/`hack` emit `<code>`, `tip` and `action` emit `<div>` and `<span>` respectively.
+
+```html
+<mds-text typography="page" tag="h1">Benvenuto nel portale</mds-text>
+<mds-text typography="section" tag="h2">Impostazioni account</mds-text>
 <mds-text typography="paragraph">Questo e' il corpo principale della pagina.</mds-text>
 <mds-text typography="caption">Nota: i campi obbligatori sono contrassegnati con *</mds-text>
 <mds-text typography="label">Nome utente</mds-text>
@@ -224,6 +235,19 @@ The yugop animation requires the `text` prop because it watches prop changes to 
 <mds-text typography="paragraph" variant="read">Testo editoriale lungo.</mds-text>
 ```
 
+#### Do Not Style a Title by Its Level
+
+A title is written by its role, not by the level it happens to look like: a level ties the title to one style, and a theme that moves the title of a page would have to move every `h3`. Nor does the tag choose the style: the title of a page is the one `h1` of the page and keeps the style of its role.
+
+```html
+<!-- INCORRECT -->
+<mds-text typography="h1">Pratiche di residenza</mds-text>
+<mds-text typography="h3" tag="h1">Pratiche di residenza</mds-text>
+
+<!-- CORRECT -->
+<mds-text typography="page" tag="h1">Pratiche di residenza</mds-text>
+```
+
 #### Do Not Use Raw HTML Headings Instead of `<mds-text>`
 
 Replace raw `<h1>`-`<h6>`, `<p>`, `<span>`, `<label>`, and `<code>` styled with generic utilities with `<mds-text>` in Magma-managed views (or apply the typography utilities of [`docs/agents/typography.md`](../../../../../../docs/agents/typography.md)). Generic sizes and weights bypass the design-token typography ramp, causing visual inconsistency across themes and sizes.
@@ -234,7 +258,7 @@ Replace raw `<h1>`-`<h6>`, `<p>`, `<span>`, `<label>`, and `<code>` styled with 
 <p class="text-sm text-fg-muted">Totale: 128,00 EUR</p>
 
 <!-- CORRECT -->
-<mds-text typography="h2">Riepilogo ordine</mds-text>
+<mds-text typography="section" tag="h2">Riepilogo ordine</mds-text>
 <mds-text typography="caption">Totale: 128,00 EUR</mds-text>
 ```
 
@@ -290,14 +314,14 @@ A paragraph (the tag `p`, the default of `detail` and `paragraph`) stops at the 
 
 ## Properties
 
-| Property     | Attribute    | Description                                                                                                                                                      | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Default     |
-| ------------ | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `animation`  | `animation`  | Specifies if the text is animated when it is rendered                                                                                                            | `"none" \| "yugop" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                             | `'none'`    |
-| `tag`        | `tag`        | Specifies the HTML tag of the element. With `p`, `li` or `figcaption` the text stops at the reading measure (`max-w-text`), as the reset does for the plain tags | `"abbr" \| "address" \| "article" \| "b" \| "bdo" \| "blockquote" \| "cite" \| "code" \| "dd" \| "del" \| "details" \| "dfn" \| "div" \| "dl" \| "dt" \| "em" \| "figcaption" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "i" \| "ins" \| "kbd" \| "label" \| "legend" \| "li" \| "mark" \| "ol" \| "p" \| "pre" \| "q" \| "rb" \| "rt" \| "ruby" \| "s" \| "samp" \| "small" \| "span" \| "strong" \| "sub" \| "summary" \| "sup" \| "time" \| "u" \| "ul" \| "var"` | `undefined` |
-| `text`       | `text`       | Specifies the text string to the component instead of passing an HTML node                                                                                       | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `undefined` |
-| `truncate`   | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text                                                                                       | `"all" \| "none" \| "word" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                     | `undefined` |
-| `typography` | `typography` | Specifies the font typography of the element                                                                                                                     | `"action" \| "caption" \| "detail" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "hack" \| "label" \| "option" \| "paragraph" \| "snippet" \| "tip"`                                                                                                                                                                                                                                                                                                                    | `'detail'`  |
-| `variant`    | `variant`    | Specifies the variant for `typography`                                                                                                                           | `"code" \| "info" \| "read" \| "title" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                         | `undefined` |
+| Property     | Attribute    | Description                                                                                                                                                                                                                                                        | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Default     |
+| ------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `animation`  | `animation`  | Specifies if the text is animated when it is rendered                                                                                                                                                                                                              | `"none" \| "yugop" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                             | `'none'`    |
+| `tag`        | `tag`        | Specifies the HTML tag of the element. With `p`, `li` or `figcaption` the text stops at the reading measure (`max-w-text`), as the reset does for the plain tags                                                                                                   | `"abbr" \| "address" \| "article" \| "b" \| "bdo" \| "blockquote" \| "cite" \| "code" \| "dd" \| "del" \| "details" \| "dfn" \| "div" \| "dl" \| "dt" \| "em" \| "figcaption" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "i" \| "ins" \| "kbd" \| "label" \| "legend" \| "li" \| "mark" \| "ol" \| "p" \| "pre" \| "q" \| "rb" \| "rt" \| "ruby" \| "s" \| "samp" \| "small" \| "span" \| "strong" \| "sub" \| "summary" \| "sup" \| "time" \| "u" \| "ul" \| "var"` | `undefined` |
+| `text`       | `text`       | Specifies the text string to the component instead of passing an HTML node                                                                                                                                                                                         | `string \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `undefined` |
+| `truncate`   | `truncate`   | Specifies if the text shoud be truncated or should behave as a normal text                                                                                                                                                                                         | `"all" \| "none" \| "word" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                                     | `undefined` |
+| `typography` | `typography` | Specifies the font typography of the element. A title is written by its role (`page`, `section`, `dialog`, `part`, `group`), which takes the style of that role, and the tag of the level it is styled as unless `tag` gives the level of its place in the outline | `"action" \| "caption" \| "detail" \| "dialog" \| "group" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| "hack" \| "label" \| "option" \| "page" \| "paragraph" \| "part" \| "section" \| "snippet" \| "tip"`                                                                                                                                                                                                                                                            | `'detail'`  |
+| `variant`    | `variant`    | Specifies the variant for `typography`                                                                                                                                                                                                                             | `"code" \| "info" \| "read" \| "title" \| undefined`                                                                                                                                                                                                                                                                                                                                                                                                                         | `undefined` |
 
 
 ## Slots

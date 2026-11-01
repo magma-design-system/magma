@@ -64,6 +64,44 @@ const typographyDefaultsVariant = {
       title: 'text-title-h6',
     },
   },
+  // A title by role (#1189) takes the tag of the level its role is styled as, the value of
+  // role.title in projects/design-tokens/tokens/typography/role.json (the e2e test reads it);
+  // the outline of the page sets the tag, so a page title is written with tag="h1".
+  page: {
+    tag: 'h3',
+    selector: {
+      default: 'text-title-page',
+      title: 'text-title-page',
+    },
+  },
+  section: {
+    tag: 'h5',
+    selector: {
+      default: 'text-title-section',
+      title: 'text-title-section',
+    },
+  },
+  dialog: {
+    tag: 'h5',
+    selector: {
+      default: 'text-title-dialog',
+      title: 'text-title-dialog',
+    },
+  },
+  part: {
+    tag: 'h6',
+    selector: {
+      default: 'text-title-part',
+      title: 'text-title-part',
+    },
+  },
+  group: {
+    tag: 'h6',
+    selector: {
+      default: 'text-title-group',
+      title: 'text-title-group',
+    },
+  },
   hack: {
     tag: 'code',
     selector: {

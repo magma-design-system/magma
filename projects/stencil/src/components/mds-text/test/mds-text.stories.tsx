@@ -1,7 +1,7 @@
 import { typographyDictionary, typographyVariationsDictionary } from '@type/typography';
 import { h } from '@stencil/core';
 import { useState } from 'react';
-import { tagsDictionary, textAnimateDictionary } from '../meta/dictionary';
+import { tagsDictionary, textAnimateDictionary, textTitleRoleDictionary } from '../meta/dictionary';
 import { truncateDictionary } from '@type/text';
 
 export default {
@@ -30,7 +30,7 @@ export default {
     typography: {
       control: { type: 'select' },
       description: 'Specifies the font typography of the element',
-      options: typographyDictionary,
+      options: [...typographyDictionary, ...textTitleRoleDictionary],
     },
     variant: {
       control: { type: 'select' },
@@ -85,8 +85,33 @@ const AnimateTemplate = () => {
   );
 };
 
+// the titles of the design language (#1189), each in the tag of its place in the outline
+const TitlesByRoleTemplate = () => (
+  <div class="grid gap-between-fields">
+    <mds-text typography="page" tag="h1">
+      Pratiche di residenza
+    </mds-text>
+    <mds-text typography="section" tag="h2">
+      Dati del richiedente
+    </mds-text>
+    <mds-text typography="dialog" tag="h2">
+      Elimina la pratica
+    </mds-text>
+    <mds-text typography="part" tag="h3">
+      Indirizzo di residenza
+    </mds-text>
+    <mds-text typography="group" tag="h4">
+      Recapiti
+    </mds-text>
+  </div>
+);
+
 export const Default = {
   render: Template,
+};
+
+export const TitlesByRole = {
+  render: TitlesByRoleTemplate,
 };
 
 export const Animation = {
