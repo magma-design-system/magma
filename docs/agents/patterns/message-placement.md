@@ -52,7 +52,7 @@ cases:
   - { id: decision, decision: needed, where: "dialog", use: ["mds-modal"], see: confirm-action }
   - { id: app-info, about: application, outcome: info, decision: none, where: "toast", use: ["mds-toast"] }
   - { id: app-failed, about: application, outcome: failure, where: "in place of the content of the page, with Try again; the shell stays", use: ["mds-banner variant=error"], see: region-failed }
-  - { id: app-deadline, about: application, decision: deadline, where: "dialog, also over an open one", use: ["mds-modal interaction=strict"] }
+  - { id: app-deadline, about: application, decision: deadline, where: "dialog, also over an open one; closing it means staying (`deadline-close` of actions)", use: ["mds-modal", "mds-banner slot=window variant=warning tone=box dismissible"] }
 gaps: []
 not-applicable:
   - { about: field, place: off-screen, why: "a message about a field goes with its field" }
@@ -165,7 +165,7 @@ A case that leaves a variable out holds for any of its values, except `decision`
 | `decision` | decision: needed | dialog; see `confirm-action` | `mds-modal` |
 | `app-info` | about: application; outcome: info; decision: none | toast | `mds-toast` |
 | `app-failed` | about: application; outcome: failure | in place of the content of the page, with Try again; the shell stays; see `region-failed` | `mds-banner variant=error` |
-| `app-deadline` | about: application; decision: deadline | dialog, also over an open one | `mds-modal interaction=strict` |
+| `app-deadline` | about: application; decision: deadline | dialog, also over an open one; closing it means staying (`deadline-close` of actions) | `mds-modal`, `mds-banner slot=window variant=warning tone=box dismissible` |
 
 Not applicable:
 
@@ -289,9 +289,10 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-28 | Information about a region goes in that region, as an info banner (`region-info`) | The rule: a message goes where the thing it talks about is. |
 | 2026-10-28 | The whole application failing is a region that failed, the largest one: the shell stays (`app-failed`) | No new case for the same answer; the person keeps the menu and the way out. |
 | 2026-10-28 | Information about a field is its helper text; an application does not succeed; information about an action joins the gap "later" | The last combinations the check found with no answer. |
-| 2026-10-28 | Confirmed: a valid field shows its state and no message (`field-valid`); the session ending is a strict dialog, also over an open one (`app-deadline`) | Magma already does the first; a toast over an open dialog can be seen but not used. |
+| 2026-10-28 | Confirmed: a valid field shows its state and no message (`field-valid`); the session ending is a strict dialog, also over an open one (`app-deadline`); strict superseded on 2026-11-01 | Magma already does the first; a toast over an open dialog can be seen but not used. |
 | 2026-10-28 | A success whose place stays on screen depends on what the action changed: data shown across the page, a toast (`action-done-in-page`); a part that works on its own, a confirmation next to it (`action-done-in-part`). `success-after-change` rewritten to match | A change that shows in many places is not "here"; an independent part is, and the confirmation belongs to it. |
 | 2026-10-28 | To decide: the two gaps, later and partial | An outcome that comes later may belong to the candidate "Notification center"; a partial one to `error-recovery`. |
 | 2026-10-28 | An outcome that comes later is a toast with its action, kept in the notification center (`action-later`); an action taken in charge says so at once (`action-taken`) | The person may have moved on or left: told when it comes, found again later. The notification center becomes a pattern of its own. |
 | 2026-10-28 | A partial outcome goes where a failure goes (`action-partial-in-place`, `action-partial-elsewhere`); what to say and how to retry the ones that failed is `error-recovery` | The same places as a failure; the difference is in the text and in the retry. |
 | 2026-11-01 | The toast of a removal, with or without Undo, is the default `light` toast; `success` is for what an action creates or completes (`removal-toast-neutral`) | A removal is a loss the person wanted, and green celebrates it; the colour follows the kind of action, not the presence of Undo. Chosen live with the domain Actions of the design language. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6556983924 |
+| 2026-11-01 | The session ending is a dialog that closes as Resta collegato: the default `interaction`, the `warning` window with its X; `strict` goes (`app-deadline`) | No gesture loses the work, and Esc closes it as every dialog; the focus and the meaning of closing are `deadline-close` of the domain Actions. Chosen live with the domain Actions of the design language. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6558535505 |

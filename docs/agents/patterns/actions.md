@@ -143,6 +143,10 @@ always-true:
     rule: "When the action of a dialog fails, its error stands right above the row of actions, an mds-banner variant=\"error\" tone=\"strong\" that is not dismissible; what was written stays, and the focus stays on the action, which is the retry: no Riprova button."
     serves: [enabling, inclusive]
     checked-by: review
+  - id: deadline-close
+    rule: "The deadline dialog opens with the focus on Resta collegato (`autofocus`), the simple action that extends the session, and closing it, with its X, Esc or the backdrop, means Resta collegato: mds-modal keeps the default interaction, relaxed, the window keeps its X, and the application extends the session on mdsModalClose; only Esci ends it."
+    serves: [inclusive, enabling]
+    checked-by: review
 
 open-choices: []
 
@@ -156,7 +160,7 @@ situations:
   - { situation: "Delete a request with its attachments, contacts and protocol", case: danger-zone }
   - { situation: "Elimina in the dialog that confirms the deletion of a note", case: confirm }
   - { situation: "The X of the dialog New contact", case: dismiss }
-  - { situation: "Resta collegato in the warning that the session is about to end", case: banner, note: "a warning window: Resta collegato warning strong, Esci warning outline" }
+  - { situation: "Resta collegato in the warning that the session is about to end", case: banner, note: "a warning window: Resta collegato warning strong, Esci warning outline; the focus on Resta collegato, and closing the dialog means it (`deadline-close`)" }
   - { situation: "Usa la descrizione in an ai banner that offers a text written by the assistant", case: banner }
   - { situation: "Riprova in an error toast", case: toast }
   - { situation: "Ripristina in the toast of an attachment removed", case: toast, note: "dark outline on the default light toast, the toast of a removal (`removal-toast-neutral` of message-placement)" }
@@ -248,9 +252,8 @@ A destructive action, by its severity:
 | `delete` | an entity alone, that takes nothing with it | the menu of the entity, last after a separator | a dialog that names it and says it cannot be recovered | Elimina `variant="error" tone="text"`; in the dialog `error strong` |
 | `delete-with-consequences` | it takes linked records or the data of other people | the danger zone of the page of the entity | a dialog that lists what goes with it and asks to type its name or number | `variant="error" tone="outline"`; in the dialog `error strong` |
 
-Still open inside the domain, outside the cases: the initial focus and the meaning of the X of
-the deadline dialog (closing it lets the session end), and the width at which a row stacks
-(`mds-banner` uses a container query on its own width).
+Still open inside the domain, outside the cases: the width at which a row stacks (`mds-banner`
+uses a container query on its own width).
 
 ## Behaviour over time
 
@@ -260,6 +263,8 @@ the deadline dialog (closing it lets the session end), and the width at which a 
 - When the action of a dialog fails, the error appears right above the row, where the focus and
   the eye already are (`failed`); the window keeps its variant.
 - A toast with an action stays until the person acts or closes it.
+- The deadline dialog opens with the focus on Resta collegato; its X, Esc and the backdrop close
+  it as Resta collegato does, and only Esci ends the session (`deadline-close`).
 
 ## Always true
 
@@ -275,6 +280,7 @@ These hold in every product: a product layer cannot change them.
 | `destructive` | A destructive action never stands in the row of the actions of an edit in progress: it has two places, the contextual menu of its entity and the danger zone of its page, and its distance from the other actions grows with the severity of its consequences. | enabling | the guide | review |
 | `severity` | The level of a destructive action comes from the model, with two questions: can it be put back (remove)? does it take other things with it, linked records or the data of other people (delete-with-consequences, otherwise delete)? Place, confirmation and words grow with the level. | enabling | the guide | review |
 | `failed` | When the action of a dialog fails, its error stands right above the row of actions, an mds-banner variant="error" tone="strong" that is not dismissible; what was written stays, and the focus stays on the action, which is the retry: no Riprova button. | enabling, inclusive | the guide | review |
+| `deadline-close` | The deadline dialog opens with the focus on Resta collegato (`autofocus`), the simple action that extends the session, and closing it, with its X, Esc or the backdrop, means Resta collegato: mds-modal keeps the default interaction, relaxed, the window keeps its X, and the application extends the session on mdsModalClose; only Esci ends it. | inclusive, enabling | the guide | review |
 
 ## Situations
 
@@ -293,7 +299,7 @@ Situations every application has, each with its case: they give the examples, th
 | Delete a request with its attachments, contacts and protocol | `danger-zone` |
 | Elimina in the dialog that confirms the deletion of a note | `confirm` |
 | The X of the dialog New contact | `dismiss` |
-| Resta collegato in the warning that the session is about to end | `banner`: a warning window: Resta collegato warning strong, Esci warning outline |
+| Resta collegato in the warning that the session is about to end | `banner`: a warning window: Resta collegato warning strong, Esci warning outline; the focus on Resta collegato, and closing the dialog means it (`deadline-close`) |
 | Usa la descrizione in an ai banner that offers a text written by the assistant | `banner` |
 | Riprova in an error toast | `toast` |
 | Ripristina in the toast of an attachment removed | `toast`: dark outline on the default light toast, the toast of a removal (`removal-toast-neutral` of message-placement) |
@@ -310,6 +316,9 @@ Situations every application has, each with its case: they give the examples, th
   honours.
 - The error of a failed action is the only live region of an ordinary dialog
   (`role="alert"`): a screen reader reads the error, not the whole form.
+- The deadline dialog warns before the time runs out and extends it with one simple action,
+  Invio on Resta collegato (WCAG 2.2.1); Esc closes it as every dialog (WAI-ARIA Authoring
+  Practices), without ending the session.
 
 ## Content
 
@@ -367,3 +376,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-30 | The action of a toast is `size="sm" tone="outline"` in the variant of the toast, `dark` on the default `light` toast, and the toast stays until the person acts (`toast`). | The outline reads as a button in every toast and in both modes, and it does not compete with the main action of the view. Rejected: `strong`, a filled block over the page; `dark weak` in every toast. The `weak` of the guide of `mds-toast` reads as text. Chosen live on two toasts of the patterns. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6525391988 |
 | 2026-10-31 | The file of the domain: three variables (region, role, severity) whose combinations each have one answer; the rule one primary action per view moves here from the Color page of the docs site (`primary`), which keeps its reason. | The issue of the five domains (#1197). |
 | 2026-11-01 | The toast with Ripristina after a removal is the default `light` toast, and Ripristina `dark outline` (`toast`); the rule of every removal goes to `message-placement` (`removal-toast-neutral`) and `confirm-action`. | Green would celebrate a loss the person wanted; on the neutral toast no colour judges the removal or Ripristina, and the action keeps the rule of every toast. Rejected: `success`, as `confirm-action` gave it; Ripristina `success weak` on the neutral toast, which puts the green back on the button that undoes the choice and makes it look suggested. Chosen live, in light and in dark. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6556983924 |
+| 2026-11-01 | The deadline dialog opens with the focus on Resta collegato, and closing it, with its X, Esc or the backdrop, means Resta collegato: the default `interaction`, the X of the window kept, the session extended on `mdsModalClose` (`deadline-close`). | No gesture loses the work; Esc closes it as every dialog (WAI-ARIA Authoring Practices, the timeout warning of HMRC), and the X keeps one meaning, the safe answer; the focus makes Invio the simple action of WCAG 2.2.1. Rejected: no X and `strict`, the forced action of USWDS, an exception to `dismiss` where Esc does nothing. Chosen live, the behaviour checked on the build. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6558535505 |
