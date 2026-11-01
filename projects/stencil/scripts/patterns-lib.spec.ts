@@ -87,7 +87,10 @@ describe('renderList', () => {
 
   it('lists the domains of Foundation first, the building blocks, then the patterns by group, with their status', () => {
     const text = renderList(entries);
-    expect(text).toMatch(/^Foundation\n {2}rhythm +decided +Rhythm\n/);
+    // the six domains of #1189, by id as every group
+    expect(text).toMatch(
+      /^Foundation\n {2}actions +decided +Actions\n {2}density +decided +Density\n {2}rhythm +decided +Rhythm\n {2}surfaces +decided +Surfaces\n {2}titles +decided +Titles\n {2}widths +decided +Widths and alignment\n/,
+    );
     expect(text).toMatch(/\nBuilding blocks\n {2}page-header +decided +Page header\n/);
     expect(text.indexOf('Foundation\n')).toBeLessThan(text.indexOf('Building blocks\n'));
     expect(text.indexOf('Building blocks\n')).toBeLessThan(text.indexOf('Data\n'));
