@@ -178,11 +178,16 @@ try: Press Salva: the error shows above the form, and what was written stays.
 - **Only the stage.** The markup of the case and its own small script, never a page: no
   `<head>`, `<link>`, `<style>` nor a script with `src`, nothing from another address. The page
   around it adds the stylesheets of `agents/assets.md` and the loader of the installed magma, so
-  the preview runs on the version the reader has. Its layout takes the tokens
-  (`calc(var(--spacing) * 300)`), its words are Italian as in the examples of the components.
-  No class of Magma's Tailwind layer (`page-frame`, `field-group`, `max-w-form`): Tailwind is
-  optional (`agents/assets.md`), so the page around has none of them, and the stage writes the
-  custom property the class carries (`max-width: var(--magma-width-form)`).
+  the preview runs on the version the reader has. Its words are Italian as in the examples of
+  the components.
+- **Laid out with Tailwind**, the default (#1220): the classes of Magma's Tailwind layer, as a
+  product with Tailwind writes them: the carriers (`page-frame`, `field-group`, `max-w-form`),
+  the rhythm (`gap-between-fields`, `gap-title-content`), the steps (`gap-300`, `p-400`), the
+  variants (`dark:`, `@max-[23.75rem]:`). The page around compiles them with Tailwind 4 and the
+  entry point of `agents/assets.md`, "Tailwind (optional)", so `render_preview` and
+  `serve.previews` show them; a product without Tailwind writes the custom property a class
+  carries (`max-width: var(--magma-width-form)`). A `style` attribute only for what no class
+  carries.
 - **What to try**, required: one line, what to do in the preview ("Press Salva: ..."), or what
   to look at when there is nothing to do. The page shows it under the stage. A live preview with
   nothing said is a still form; the maintainer chose the line and no animation (#1186).

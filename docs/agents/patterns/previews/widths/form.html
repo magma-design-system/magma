@@ -1,15 +1,15 @@
 <!--
 try: Look at the end of the form: it stops where the text above it stops, its fields take the whole column and their messages stay on one line. Narrow the stage: the column follows it.
 -->
-<div style="display: grid; gap: var(--magma-rhythm-between-groups)">
-  <div style="display: grid; gap: var(--magma-rhythm-title-content)">
+<div class="grid gap-between-groups">
+  <div class="grid gap-title-content">
     <mds-text typography="h3" tag="h1">Nuovo referente</mds-text>
     <mds-text typography="detail" tag="p">
       Il referente riceve le comunicazioni dell'ente sulla pratica e risponde a nome
       dell'azienda. Puoi cambiarlo in ogni momento dalla scheda dell'azienda.
     </mds-text>
   </div>
-  <form style="display: grid; gap: var(--magma-rhythm-between-fields); max-width: var(--magma-width-form)">
+  <form class="grid max-w-form gap-between-fields">
     <mds-input-field label="Nome e cognome">
       <mds-input value="Marco Bianchi"></mds-input>
     </mds-input-field>
@@ -19,7 +19,7 @@ try: Look at the end of the form: it stops where the text above it stops, its fi
     <mds-input-field label="Ufficio" message="L'ufficio che segue la pratica per l'azienda.">
       <mds-input value="Ufficio tecnico"></mds-input>
     </mds-input-field>
-    <div style="display: flex; gap: var(--magma-rhythm-inline); justify-content: end">
+    <div class="flex justify-end gap-inline">
       <mds-button variant="dark" tone="outline">Annulla</mds-button>
       <mds-button>Aggiungi</mds-button>
     </div>

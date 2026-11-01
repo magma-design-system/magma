@@ -4,20 +4,18 @@ height: 520
 whole-page: true
 -->
 <mds-header menu="none">
-  <mds-header-bar style="position: sticky">
+  <mds-header-bar class="sticky">
     <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
     <mds-button slot="nav" variant="dark" tone="text">Pratiche</mds-button>
     <mds-button slot="nav" variant="dark" tone="text">Archivio</mds-button>
   </mds-header-bar>
 </mds-header>
-<main
-  style="box-sizing: content-box; display: grid; gap: var(--magma-rhythm-between-groups); margin-inline: auto; max-width: var(--magma-width-page); padding: var(--magma-rhythm-between-sections) var(--magma-width-page-gutter)"
->
-  <div style="display: grid; gap: var(--magma-rhythm-title-content)">
+<main class="page-frame grid gap-between-groups py-between-sections">
+  <div class="grid gap-title-content">
     <mds-text typography="h3" tag="h1">Pratiche di residenza</mds-text>
     <mds-text typography="detail" tag="p">Le richieste degli ultimi trenta giorni, dalla più recente.</mds-text>
   </div>
-  <mds-table style="width: 100%">
+  <mds-table class="w-full">
     <mds-table-header>
       <mds-table-header-cell label="Protocollo"></mds-table-header-cell>
       <mds-table-header-cell label="Richiedente"></mds-table-header-cell>

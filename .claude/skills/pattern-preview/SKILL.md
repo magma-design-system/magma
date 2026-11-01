@@ -34,7 +34,9 @@ where `lint:serve.previews` shows them; never in `docs/` before the choice):
   there is nothing to do;
 - an overlay gets a `height`, and a banner that is the message of a modal goes in its `window`
   slot; a stage that is a whole page, with its own bar and frame, gets `whole-page: true`;
-- the words are Italian, short, of an ordinary application (a form, a list, a record).
+- the words are Italian, short, of an ordinary application (a form, a list, a record);
+- the layout with the classes of Magma's Tailwind layer, the default (`grid gap-between-fields`,
+  `max-w-form`, `field-group`), a `style` attribute only for what no class carries.
 
 Choose the one to recommend, with a reason in one line.
 
@@ -52,7 +54,9 @@ Show the two options as the client allows, the recommended one first:
   description; then "Qualcosa non va" (left) and "Scelgo N" (right), which send the answer back.
   Under the cards the free answer, with "Prova". The top right of the widget stays empty: the
   client draws its menu there. The CDN serves the published release: say so when the branch
-  changed a component the preview uses.
+  changed a component the preview uses. The widget compiles no Tailwind: show an option whose
+  stage has Tailwind classes with `render_preview` or `lint:serve.previews` (step 4), or the
+  widget shows it without their rules.
 - **With `render_preview`** of the Magma MCP server: one image per option, attached where the
   client does not show it.
 - **Otherwise as text**: the options in order, the recommended first, each with its `try` line,

@@ -149,7 +149,9 @@ keep in step.
   catalogue `agents/patterns.md` and the preview of each case
   (`agents/patterns/previews/<id>/<case>.html`: the stage, what to try in it, an optional
   height and `whole-page`, a stage with a frame of its own that takes no inset; never a page,
-  the reader adds the stylesheets and the loader and runs it in a document of its own); the
+  the reader adds the stylesheets and the loader, compiles its Tailwind classes with the entry
+  point of `agents/assets.md`, "Tailwind (optional)" (#1220), and runs it in a document of its
+  own); the
   domains of the design language (`kind: foundation`, #1189), the rules of composition the
   patterns stand on, in the same folder and catalogue, each case and rule with the principle it
   serves (`serves`) and where it lives (`carried-by`, `carried-by-planned`);
