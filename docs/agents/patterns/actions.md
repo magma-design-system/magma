@@ -132,7 +132,11 @@ always-true:
     checked-by: review
     carried-by: [mds-banner]
   - id: at-most-three
-    rule: "A row has at most three actions, and the labels of a row of three fit in 380 px with their gaps: the threshold of `stacked` is computed on them."
+    rule: "A row has at most three actions, and the labels of a row of three fit in 380 px with their gaps: the threshold of `stacked` is computed on them. Beyond three, the menu of the item takes one of the places (`more-in-menu`)."
+    serves: intuitive
+    checked-by: review
+  - id: more-in-menu
+    rule: "When an item has more than three actions, its row keeps the main action, the secondary used most and the menu of the item, at the start of the row: an icon-only mds-button (more_vert, variant=\"dark\" tone=\"text\", an aria-label that names the item) with mds-dropdown. The menu holds the other actions, and Elimina last after an mds-separator (`destructive-in-menu`): one menu per item."
     serves: intuitive
     checked-by: review
   - id: destructive
@@ -256,9 +260,6 @@ A destructive action, by its severity:
 | `delete` | an entity alone, that takes nothing with it | the menu of the entity, last after a separator | a dialog that names it and says it cannot be recovered | Elimina `variant="error" tone="text"`; in the dialog `error strong` |
 | `delete-with-consequences` | it takes linked records or the data of other people | the danger zone of the page of the entity | a dialog that lists what goes with it and asks to type its name or number | `variant="error" tone="outline"`; in the dialog `error strong` |
 
-Still open inside the domain, outside the cases: where an action beyond the third goes
-(`at-most-three`).
-
 ## Behaviour over time
 
 - A confirmation opens with the focus on Annulla, the least destructive control, one Tab from
@@ -281,7 +282,8 @@ These hold in every product: a product layer cannot change them.
 | `place` | The row of actions that closes a form, a dialog, a card or a banner stands at the end of its container; in the form of a page, at the end of its column (widths/form). A form that is the whole page docks its row in mds-status-bar (surfaces/edit-actions). | intuitive | `mds-card-footer`, `mds-banner` | review |
 | `order` | In a row of actions the main action is the last, on the edge, with the secondary action right before it: the order of the code, which is the order of Tab. | intuitive, inclusive | the guide | review |
 | `stacked` | A row stacks under 380 px of its container (23.75rem), a container query, the same threshold for every row: every button at the full width, in the order of the row, the main action at the bottom; above it the row stays on one line, never a ragged wrap where one button drops to a line of its own. | inclusive | `mds-banner` | review |
-| `at-most-three` | A row has at most three actions, and the labels of a row of three fit in 380 px with their gaps: the threshold of `stacked` is computed on them. | intuitive | the guide | review |
+| `at-most-three` | A row has at most three actions, and the labels of a row of three fit in 380 px with their gaps: the threshold of `stacked` is computed on them. Beyond three, the menu of the item takes one of the places (`more-in-menu`). | intuitive | the guide | review |
+| `more-in-menu` | When an item has more than three actions, its row keeps the main action, the secondary used most and the menu of the item, at the start of the row: an icon-only mds-button (more_vert, variant="dark" tone="text", an aria-label that names the item) with mds-dropdown. The menu holds the other actions, and Elimina last after an mds-separator (`destructive-in-menu`): one menu per item. | intuitive | the guide | review |
 | `destructive` | A destructive action never stands in the row of the actions of an edit in progress: it has two places, the contextual menu of its entity and the danger zone of its page, and its distance from the other actions grows with the severity of its consequences. | enabling | the guide | review |
 | `severity` | The level of a destructive action comes from the model, with two questions: can it be put back (remove)? does it take other things with it, linked records or the data of other people (delete-with-consequences, otherwise delete)? Place, confirmation and words grow with the level. | enabling | the guide | review |
 | `failed` | When the action of a dialog fails, its error stands right above the row of actions, an mds-banner variant="error" tone="strong" that is not dismissible; what was written stays, and the focus stays on the action, which is the retry: no Riprova button. | enabling, inclusive | the guide | review |
@@ -319,6 +321,8 @@ Situations every application has, each with its case: they give the examples, th
 - The focus of a confirmation goes to Annulla, as the WAI-ARIA Authoring Practices advise for a
   step that cannot be undone: `autofocus` on the button, which the `dialog` of `mds-modal`
   honours.
+- The button of the menu of an item is an icon with an `aria-label` that names the item
+  ("Azioni della pratica"), not a bare "Altro".
 - The error of a failed action is the only live region of an ordinary dialog
   (`role="alert"`): a screen reader reads the error, not the whole form.
 - The deadline dialog warns before the time runs out and extends it with one simple action,
@@ -332,7 +336,7 @@ Situations every application has, each with its case: they give the examples, th
   `delete-with-consequences` it lists what goes with it.
 - The way out of a dialog is "Annulla" in the row; the X closes and is named "Chiudi".
 - A row has at most three actions, with short labels: the three fit in 380 px
-  (`at-most-three`).
+  (`at-most-three`); the others go in the menu of the item (`more-in-menu`).
 
 ## Magma gaps
 
@@ -390,3 +394,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-11-01 | The toast with Ripristina after a removal is the default `light` toast, and Ripristina `dark outline` (`toast`); the rule of every removal goes to `message-placement` (`removal-toast-neutral`) and `confirm-action`. | Green would celebrate a loss the person wanted; on the neutral toast no colour judges the removal or Ripristina, and the action keeps the rule of every toast. Rejected: `success`, as `confirm-action` gave it; Ripristina `success weak` on the neutral toast, which puts the green back on the button that undoes the choice and makes it look suggested. Chosen live, in light and in dark. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6556983924 |
 | 2026-11-01 | The deadline dialog opens with the focus on Resta collegato, and closing it, with its X, Esc or the backdrop, means Resta collegato: the default `interaction`, the X of the window kept, the session extended on `mdsModalClose` (`deadline-close`). | No gesture loses the work; Esc closes it as every dialog (WAI-ARIA Authoring Practices, the timeout warning of HMRC), and the X keeps one meaning, the safe answer; the focus makes Invio the simple action of WCAG 2.2.1. Rejected: no X and `strict`, the forced action of USWDS, an exception to `dismiss` where Esc does nothing. Chosen live, the behaviour checked on the build. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6558535505 |
 | 2026-11-01 | A row stacks under 380 px of its container, 23.75rem, a container query with one threshold for every row (`stacked`); a row has at most three actions, whose labels fit in 380 px (`at-most-three`). | CSS only, no script or observer for a rule of layout; three actions at most make the threshold computable: the rows of the patterns need up to 270 px with two actions and 365 px with three. The value is the maintainer's. Rejected: measuring whether the buttons fit (Material), with a `ResizeObserver` or the Switcher of Every Layout; a threshold by number of actions; `--container-xs`, under which a row of three goes ragged; the media query at 480 px, blind to the container. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6560982526 |
+| 2026-11-01 | With more than three actions, the row keeps the main one, the secondary used most and the menu of the item at its start, which holds the others and Elimina last after a separator (`more-in-menu`). | One menu per item, the one that already holds Elimina; the secondary stays right before the main action (`order`), and the menu, far from it, reads as the rest. Rejected: the menu right before the main action, which parts the secondary from it; the arrow of the main action, `mds-button-dropdown`, which reads as another way of doing it and would put Elimina under it or make two menus. Chosen live on the header of a request. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6561221595 |
