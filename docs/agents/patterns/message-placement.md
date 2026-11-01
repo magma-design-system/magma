@@ -41,8 +41,8 @@ cases:
   - { id: region-failed, about: region, outcome: failure, where: "in that region, with Try again; what was there stays", use: ["mds-banner variant=error"] }
   - { id: region-info, about: region, outcome: info, where: "in that region", use: ["mds-banner variant=info"] }
   - { id: action-failed-in-place, about: action, outcome: failure, place: on-screen, timing: now, where: "in its place (the dialog); what was written stays", use: ["mds-banner variant=error"] }
-  - { id: action-done-elsewhere, about: action, outcome: success, place: off-screen, timing: now, where: "toast", use: ["mds-toast variant=success"] }
-  - { id: action-done-in-page, about: action, outcome: success, place: on-screen, timing: now, scope: page, where: "toast", use: ["mds-toast variant=success"] }
+  - { id: action-done-elsewhere, about: action, outcome: success, place: off-screen, timing: now, where: "toast; the default light toast for a removal (`removal-toast-neutral`)", use: ["mds-toast variant=success"] }
+  - { id: action-done-in-page, about: action, outcome: success, place: on-screen, timing: now, scope: page, where: "toast; the default light toast for a removal (`removal-toast-neutral`)", use: ["mds-toast variant=success"] }
   - { id: action-done-in-part, about: action, outcome: success, place: on-screen, timing: now, scope: part, where: "next to the part that was saved, inside it", use: ["mds-banner variant=success"], magma-gap: "no light confirmation that goes away" }
   - { id: action-failed-elsewhere, about: action, outcome: failure, place: off-screen, timing: now, where: "a toast that stays, with Try again", use: ["mds-toast variant=error duration=0 dismissible"] }
   - { id: action-partial-in-place, about: action, outcome: partial, place: on-screen, timing: now, where: "as a failure in its place: a banner that says how many worked and which did not", use: ["mds-banner variant=error"], see: error-recovery }
@@ -79,6 +79,9 @@ always-true:
   - id: success-after-change
     rule: "After every create, edit and delete the person is told it worked: a toast, or a confirmation next to the part when that part works on its own."
     checked-by: review
+  - id: removal-toast-neutral
+    rule: "The toast of a removal (an item removed, archived, deleted after a confirmation), with or without Undo, is the default light toast: variant=\"success\" is for what an action creates or completes."
+    checked-by: review
   - id: no-internal-text
     rule: Never internal messages, HTTP status text or "coming soon".
     checked-by: review
@@ -95,7 +98,7 @@ situations:
   - { situation: A list shows data that are updated once a night, case: region-info }
   - { situation: Saving a form in a dialog fails, case: action-failed-in-place }
   - { situation: "Saving a form in a dialog works, and the dialog closes", case: action-done-elsewhere }
-  - { situation: An item is deleted from a list, case: action-done-elsewhere }
+  - { situation: An item is deleted from a list, case: action-done-elsewhere, note: "the default light toast (`removal-toast-neutral`)" }
   - { situation: A link is copied, case: action-done-elsewhere }
   - { situation: "Saving the details of a record, shown in its header and its tabs too, works", case: action-done-in-page }
   - { situation: "Saving a card of settings that has its own Save, on a page that stays open, works", case: action-done-in-part }
@@ -151,8 +154,8 @@ A case that leaves a variable out holds for any of its values, except `decision`
 | `region-failed` | about: region; outcome: failure | in that region, with Try again; what was there stays | `mds-banner variant=error` |
 | `region-info` | about: region; outcome: info | in that region | `mds-banner variant=info` |
 | `action-failed-in-place` | about: action; outcome: failure; place: on-screen; timing: now | in its place (the dialog); what was written stays | `mds-banner variant=error` |
-| `action-done-elsewhere` | about: action; outcome: success; place: off-screen; timing: now | toast | `mds-toast variant=success` |
-| `action-done-in-page` | about: action; outcome: success; place: on-screen; timing: now; scope: page | toast | `mds-toast variant=success` |
+| `action-done-elsewhere` | about: action; outcome: success; place: off-screen; timing: now | toast; the default light toast for a removal (`removal-toast-neutral`) | `mds-toast variant=success` |
+| `action-done-in-page` | about: action; outcome: success; place: on-screen; timing: now; scope: page | toast; the default light toast for a removal (`removal-toast-neutral`) | `mds-toast variant=success` |
 | `action-done-in-part` | about: action; outcome: success; place: on-screen; timing: now; scope: part | next to the part that was saved, inside it; Magma gap: no light confirmation that goes away | `mds-banner variant=success` |
 | `action-failed-elsewhere` | about: action; outcome: failure; place: off-screen; timing: now | a toast that stays, with Try again | `mds-toast variant=error duration=0 dismissible` |
 | `action-partial-in-place` | about: action; outcome: partial; place: on-screen; timing: now | as a failure in its place: a banner that says how many worked and which did not; see `error-recovery` | `mds-banner variant=error` |
@@ -202,6 +205,7 @@ These hold in every product: a product layer cannot change them.
 | `toast-action-stays` | A toast with an action has duration="0" and dismissible. | review; lint `magma/toast-action-stays` to write |
 | `no-dismissible-banner-in-dialog` | A banner inside an mds-modal is not dismissible: closing it closes the dialog, and what the person wrote is lost. | review; lint `magma/no-dismissible-banner-in-modal` to write |
 | `success-after-change` | After every create, edit and delete the person is told it worked: a toast, or a confirmation next to the part when that part works on its own. | review |
+| `removal-toast-neutral` | The toast of a removal (an item removed, archived, deleted after a confirmation), with or without Undo, is the default light toast: variant="success" is for what an action creates or completes. | review |
 | `no-internal-text` | Never internal messages, HTTP status text or "coming soon". | review |
 
 ## Open choices
@@ -230,7 +234,7 @@ Situations every application has, each with its case: they give the examples, th
 | A list shows data that are updated once a night | `region-info` |
 | Saving a form in a dialog fails | `action-failed-in-place` |
 | Saving a form in a dialog works, and the dialog closes | `action-done-elsewhere` |
-| An item is deleted from a list | `action-done-elsewhere` |
+| An item is deleted from a list | `action-done-elsewhere`: the default light toast (`removal-toast-neutral`) |
 | A link is copied | `action-done-elsewhere` |
 | Saving the details of a record, shown in its header and its tabs too, works | `action-done-in-page` |
 | Saving a card of settings that has its own Save, on a page that stays open, works | `action-done-in-part` |
@@ -290,3 +294,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-28 | To decide: the two gaps, later and partial | An outcome that comes later may belong to the candidate "Notification center"; a partial one to `error-recovery`. |
 | 2026-10-28 | An outcome that comes later is a toast with its action, kept in the notification center (`action-later`); an action taken in charge says so at once (`action-taken`) | The person may have moved on or left: told when it comes, found again later. The notification center becomes a pattern of its own. |
 | 2026-10-28 | A partial outcome goes where a failure goes (`action-partial-in-place`, `action-partial-elsewhere`); what to say and how to retry the ones that failed is `error-recovery` | The same places as a failure; the difference is in the text and in the retry. |
+| 2026-11-01 | The toast of a removal, with or without Undo, is the default `light` toast; `success` is for what an action creates or completes (`removal-toast-neutral`) | A removal is a loss the person wanted, and green celebrates it; the colour follows the kind of action, not the presence of Undo. Chosen live with the domain Actions of the design language. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6556983924 |
