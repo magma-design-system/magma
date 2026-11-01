@@ -199,6 +199,19 @@ try: Press Salva: the error shows above the form, and what was written stays.
   `render_preview` renders it with `pattern` and `case`, at its height, with the check of the
   image (a component not hydrated, a flat region, a font or an icon not loaded, a word broken).
   The lint tests render every preview on the build, in CI too, and fail on any problem.
+- **Editing one live.** `nx run lint:serve.previews` serves the previews, and the drafts not
+  chosen yet in `.claude/previews/<folder>/<name>.html` (untracked, the same format), at
+  `http://localhost:5180/`. The page of each stage is the page `render_preview` renders, on the
+  local build (`projects/stencil/dist`, `projects/styles/dist`: `nx run stencil:build` first).
+  The frame around it is the viewport of a render: as wide as the width asked, as tall as the
+  `height` of the preview or else as its content; under it, what to try and what is wrong in
+  the file. `?mode=dark`, `?theme=<name>` and `?width=<breakpoint or pixels>` choose the view,
+  as `render_preview` takes them; the mode is set in the page as `mds-pref` sets it
+  (`data-magma-pref` and `pref-mode-<mode>` on `<html>`), since a frame takes the
+  `prefers-color-scheme` of the system, and a lint test proves it gives the image of the
+  emulated mode. Save the file in the editor and the stage loads again; a file added or removed
+  changes the list. `-- --port <n>`, `--previews <dir>` and `--drafts <dir>` serve other
+  folders (the previews of another worktree).
 
 `/pattern-preview <id>` makes the previews a pattern lacks; `/pattern-new` and
 `/pattern-change` call it at the end, so a new or changed case leaves with its preview.
@@ -260,7 +273,8 @@ With Claude Code on this repository:
 - `/pattern-change <id>`: shows why the current answer was decided, asks whether the change is
   the default or one product's layer, keeps the old id on a rename;
 - `/pattern-preview <id>`: for each case with no preview, shows two options live and saves the
-  one the maintainer chooses;
+  one the maintainer chooses; its drafts and the saved previews open in `lint:serve.previews`,
+  for the maintainer to adjust by hand;
 - `/pattern-list`: the list, read only.
 
 Without Claude:
@@ -271,6 +285,7 @@ nx run stencil:generate.pattern <id> --kind block --group <group> --need "<the n
 nx run stencil:generate.pattern <id> --kind foundation --need "<what it settles>"  # a domain
 nx run stencil:generate.pattern -- --sync     # the generated parts, from the frontmatter
 nx run stencil:check.patterns                 # after nx run stencil:build
+nx run lint:serve.previews                    # the previews and the drafts, live, after the build
 nx run stencil:list.patterns -- --status candidate
 nx run stencil:list.patterns -- --kind foundation
 ```

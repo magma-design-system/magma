@@ -37,6 +37,7 @@ sets both up at bootstrap.
 | `src/mcp/protocol.ts` | the part of the Model Context Protocol the server speaks, written here so magma carries no SDK: JSON-RPC over stdio, `initialize`, `tools/list`, `tools/call` |
 | `src/mcp/render.ts`, `src/mcp/render-page.ts` | `render_preview`: the page served from the installed packages and driven by the project's playwright-core, and the part that runs in the page (waiting, then the checks of the image) |
 | `src/mcp/*.ts` | the other eleven tools, read-only (components, tokens, icons, guides, patterns, checks), the server and its command |
+| `scripts/serve-previews.ts` | `nx run lint:serve.previews`: the previews of the patterns and their drafts, served live on the page of `render_preview` ("Serving the previews"); a tool of this repository, outside `src`, so it does not ship |
 
 The data is never a list written by hand. Inside magma, the core reads the
 `documentation.json` beside it (`dist/documentation.json`) and resolves design-tokens and
@@ -206,7 +207,14 @@ or on the guide it enforces, not only on fixtures picked by hand.
   set in `sessionStorage`, from the sets `find_icon` reads. The widths a name gives are the
   `--breakpoint-*` of the installed `typography.css`, the default `desktop`; the themes, the
   `data-theme-name` values of the installed `themes.css`; the mode, `prefers-color-scheme`,
-  which `colors-rgb.css` and `semantic.css` follow. The page is ready when Stencil has emitted
+  which `colors-rgb.css` and `semantic.css` follow on a page with no `data-magma-pref`. The
+  path of the icons and the record of `appload` are the first script of the page
+  (`INIT_SCRIPT`), not an init script of the driver, so that `serve.previews` shows the very
+  page; it sets the mode in the page instead (`prefMode`), as `mds-pref` does,
+  `data-magma-pref` and `pref-mode-<mode>` on `<html>` (`projects/styles/SPEC.md`), since a
+  browser gives a frame the `prefers-color-scheme` of the system whatever the `color-scheme`
+  of the frame (Chrome 154), and a test proves the image is the one of the emulated mode, pixel
+  by pixel, both ways. The page is ready when Stencil has emitted
   `appload` on window, every component defined carries the flag `styles/dist/css/hydrated.css`
   hides it by (`[hydrated]` or `.hydrated`), `document.fonts` is ready and every animation is
   finished (an infinite one paused). An image is not representative when the page reports a
@@ -299,3 +307,37 @@ nothing for a well-formed question, or a tool that says it does not know, carrie
 to propose an issue on Magma as `agents/reporting.md` describes ("A tool or an answer the
 MCP server is missing"), only with the user's agreement. An input error never carries
 `gap`, and neither does a weak match: the agent judges that one from the instructions.
+
+## Serving the previews
+
+```bash
+nx run lint:serve.previews                     # after nx run stencil:build
+nx run lint:serve.previews -- --port 5181 --previews ../another-worktree/docs/agents/patterns/previews
+```
+
+A tool of this repository (#1220), in `scripts/serve-previews.ts`, outside `src`, so it does
+not ship in magma: it serves the previews of the cases (`docs/agents/patterns/previews`) and
+the drafts not chosen yet (`.claude/previews/<folder>/<name>.html`, untracked) at
+`http://localhost:5180/`, so that a maintainer edits a stage in the editor and sees it again
+on save. What it shows is what the agents compare their markup with:
+
+- **The page is the page of `render_preview`**: `stagePage` calls `pageOf` of
+  `src/mcp/render.ts`, and the server answers every other path with `fileOf`, so the
+  stylesheets, the loader, the icons and the first script are the ones a render loads, from
+  the packages of the workspace (`projects/stencil/dist`, `projects/styles/dist`). The words
+  are in `PREVIEW_LANG`, as for a preview a render shows.
+- **The view is the one a render takes**: `mode`, `theme` and `width` in the query, checked as
+  `render_preview` checks them (a breakpoint or pixels from 320 to 2000); the mode set in the
+  page (`prefMode`, "What a render loads"). The frame is the viewport: as wide as the width, as
+  tall as the `height` of the preview or else as its content, up to 2000 px; what to try and
+  what is wrong in the file (`parsePreview`) are under it.
+- **A save reloads the stage**: a recursive `fs.watch` on both folders, settled for the writes
+  of one save, sends server-sent events on `/events`: `change` with the key of a stage, `list`
+  with every key when a stage is added or removed. The page around the stage loads the stage
+  again on its own `change`, and itself on a `list`; nothing to install in the editor.
+
+`test/serve-previews.test.ts` holds it: on the fixtures, the page of a stage equals `pageOf`
+with the same options, the files are the ones of `fileOf` and nothing outside, the frame
+honours the header and the view, and a save, an added and a removed stage are told; on the
+build, a mode set in the page gives the image of the emulated mode both ways, and Chrome loads
+a saved stage again without reloading the page around it.

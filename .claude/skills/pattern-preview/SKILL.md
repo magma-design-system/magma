@@ -1,6 +1,6 @@
 ---
 name: pattern-preview
-description: Make the previews a Magma pattern of this repository lacks (docs/agents/patterns/previews/<id>/<case>.html, #1186) - for each case with none, two options rendered with the real components, shown to the maintainer as a decision, the chosen one saved as the preview of the case. Use when a maintainer asks for the previews of a pattern, when check.patterns lists cases with no preview, and at the end of pattern-new and pattern-change.
+description: Make the previews a Magma pattern of this repository lacks (docs/agents/patterns/previews/<id>/<case>.html, #1186) - for each case with none, two options rendered with the real components, shown to the maintainer as a decision, the chosen one saved as the preview of the case. Use when a maintainer asks for the previews of a pattern, when check.patterns lists cases with no preview, at the end of pattern-new and pattern-change, and when a maintainer wants to adjust a preview or a draft by hand, live (lint:serve.previews).
 argument-hint: <id> [case]
 ---
 
@@ -24,7 +24,8 @@ Work on a branch of its own, off `main` (`docs/WORKFLOW.md`), never on `main`.
 Read the case in `docs/agents/patterns/<id>.md`: its values, `where`, `use` and `see`, and the
 rules of "Always true" it must not break. Read the usage files of the components it names
 (`projects/stencil/src/components/<tag>/usage/`). Then write two stages, each a preview in the
-format, in a scratch folder (never in `docs/` before the choice):
+format, as drafts in `.claude/previews/<id>/<case>-1.html` and `<case>-2.html` (untracked,
+where `lint:serve.previews` shows them; never in `docs/` before the choice):
 
 - both do what the case says, with the components and attributes of its `use`;
 - they differ on something the case leaves open (where exactly, the words, what sets it off),
@@ -68,7 +69,25 @@ Then:
 The maintainer may answer for several cases at once ("the recommended one for all"): then save
 the recommended stage of each.
 
-## 4. The check
+## 4. Live editing
+
+When the maintainer wants to adjust a stage by hand (its look, its words, its spacing) rather
+than describe the change, or asks to see the drafts in the editor:
+
+1. Start `npx nx run lint:serve.previews` in the background (after `npx nx run
+   stencil:build` when `projects/stencil/dist` is missing; `-- --port <n>` when 5180 is
+   taken). It serves the previews and the drafts on the page `render_preview` renders, on the
+   local build (`docs/PATTERNS.md`, "Editing one live").
+2. Give the maintainer the address of each stage and the path of its file:
+   `http://localhost:5180/view/previews/<id>/<case>` or `.../view/drafts/<id>/<case>-<n>`;
+   `?mode=dark`, `?theme=<name>` and `?width=<breakpoint or pixels>` choose the view. They edit
+   the file in their editor; on each save the page loads the stage again.
+3. When they say they are done, read the file again (it changed under you), show what changed,
+   and keep their markup: fix only what step 5 reports, and say what you fixed. A draft they
+   chose is saved as `docs/agents/patterns/previews/<id>/<case>.html`.
+4. Stop the server when the work is done.
+
+## 5. The check
 
 ```bash
 npx nx run stencil:check.patterns
@@ -79,7 +98,7 @@ until no preview is wrong: the check reads the file, the lint tests render every
 build and fail on a problem of the image (`render_preview` with `pattern` and `case` shows one).
 Then the next case, from step 2.
 
-## 5. The pull request
+## 6. The pull request
 
 Run `npx nx run stencil:check.usage-docs` and `npx nx run lint:test` too, commit
 (`feat(magma): the previews of the cases of <id>`; ASCII only, `docs/COMMITS.md`), check

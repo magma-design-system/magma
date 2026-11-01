@@ -73,7 +73,18 @@ const loaderOf = (context: ToolContext): string =>
   context.loader ?? path.join(magmaRoot(context.settings), LOADER);
 
 /** The path mds-icon fetches the icons from, set the way agents/assets.md gives (the sessionStorage key). */
-const ICON_PATH = '/svg/';
+export const ICON_PATH = '/svg/';
+
+/**
+ * The first script of the page, before the loader: mds-icon reads its path before the first
+ * icon renders; Stencil emits appload once the components of the first load are ready
+ * (./render-page.ts); `__name` is the helper a TypeScript runner that keeps function names
+ * (tsx) puts in the source sent to the page. In the page, not in an init script of the
+ * driver, so that the page serve.previews shows (scripts/serve-previews.ts) is this one.
+ */
+export const INIT_SCRIPT = `sessionStorage.setItem('mdsIconSvgPath', '${ICON_PATH}');
+addEventListener('appload', () => { window.magmaAppLoaded = true; });
+globalThis.__name = (fn) => fn;`;
 
 export const MODES = ['light', 'dark'] as const;
 
@@ -84,7 +95,7 @@ export const MODES = ['light', 'dark'] as const;
  */
 export const MAX_SIDE = 2000;
 export const MAX_IMAGES = 4;
-const MIN_WIDTH = 320;
+export const MIN_WIDTH = 320;
 
 /** A stylesheet of the installed styles, or undefined. */
 const stylesOf = (context: ToolContext, name: string): string | undefined => {
@@ -187,7 +198,7 @@ const launch = async (chromium: Chromium): Promise<Browser> => {
 };
 
 /** The file a path of the page is served from, or undefined when the page may not read it. */
-const fileOf = (context: ToolContext, pathname: string): string | undefined => {
+export const fileOf = (context: ToolContext, pathname: string): string | undefined => {
   const inside = (dir: string | undefined, rest: string) => {
     if (!dir) return undefined;
     const file = path.resolve(dir, rest);
@@ -214,7 +225,8 @@ const fileOf = (context: ToolContext, pathname: string): string | undefined => {
   return undefined;
 };
 
-const TYPES: Record<string, string> = {
+/** The content types of the files the page loads, by extension. */
+export const TYPES: Record<string, string> = {
   '.js': 'text/javascript',
   '.mjs': 'text/javascript',
   '.css': 'text/css',
@@ -225,8 +237,11 @@ const TYPES: Record<string, string> = {
   '.ttf': 'font/ttf',
 };
 
+/** What makes the page; the other options are how it is captured. */
+export type PageOptions = Pick<Options, 'markup' | 'wholePage' | 'prefMode' | 'theme' | 'lang'>;
+
 /** The page: the stylesheets of a consumer, the loader of the components, the markup. */
-const pageOf = (context: ToolContext, options: Options): string => {
+export const pageOf = (context: ToolContext, options: PageOptions): string => {
   // each module as Node resolves it from the project: a bare `normalize.css` is its main file
   const imports = STYLESHEETS.flatMap(({ module, layer }) => {
     const file = resolvePackage(context, module);
@@ -237,8 +252,9 @@ const pageOf = (context: ToolContext, options: Options): string => {
   });
   const lang = options.lang ? ` lang="${options.lang}"` : '';
   const theme = options.theme ? ` data-theme-name="${options.theme}"` : '';
+  const pref = options.prefMode ? ` data-magma-pref class="pref-mode-${options.prefMode}"` : '';
   return `<!doctype html>
-<html${lang}${theme}>
+<html${lang}${theme}${pref}>
 <head>
 <meta charset="utf-8">
 <style>
@@ -246,6 +262,9 @@ ${LAYERS}
 ${imports.join('\n')}
 #${PREVIEW_ID} { display: flow-root; padding: ${options.wholePage ? 0 : 24}px; }
 </style>
+<script>
+${INIT_SCRIPT}
+</script>
 <script type="module" src="/components/${path.basename(loaderOf(context))}"></script>
 </head>
 <body>
@@ -266,6 +285,14 @@ interface Options {
   /** The markup is a whole page, with a frame of its own: no inset around it. */
   wholePage?: boolean;
   mode: (typeof MODES)[number];
+  /**
+   * The mode set in the page, as a controller sets it (`data-magma-pref` and
+   * `pref-mode-<mode>` on <html>, styles/SPEC.md), instead of the mode of the system the
+   * driver emulates: a browser gives a frame the prefers-color-scheme of the system,
+   * whatever the color-scheme of the frame (Chrome 154), so serve.previews sets it this
+   * way; the tests prove the image is the one of the emulated mode.
+   */
+  prefMode?: (typeof MODES)[number];
   theme?: string;
   lang?: string;
   /** How long a page may take to load and settle: the tests shorten it. */
@@ -323,14 +350,6 @@ const capture = async (
         contentType: TYPES[path.extname(file)] ?? 'application/octet-stream',
       });
     });
-    // mds-icon reads its path before the first icon renders; Stencil emits appload once the
-    // components of the first load are ready (./render-page.ts); `__name` is the helper a
-    // TypeScript runner that keeps function names (tsx) puts in the source sent to the page
-    await session.addInitScript(
-      `sessionStorage.setItem('mdsIconSvgPath', '${ICON_PATH}');
-addEventListener('appload', () => { window.magmaAppLoaded = true; });
-globalThis.__name = (fn) => fn;`,
-    );
     const page = await session.newPage();
     page.on('console', (message: { type: () => string; text: () => string }) => {
       // the browser's own line for a failed request: the asset problem names it better
@@ -423,7 +442,7 @@ const string = { type: 'string' };
  * The preview of a case Magma ships, by the id of its pattern (an old one too) and of its case;
  * the words of the previews are Italian, as the examples of the components (docs/PATTERNS.md).
  */
-const PREVIEW_LANG = 'it';
+export const PREVIEW_LANG = 'it';
 const shippedPreview = (context: ToolContext, pattern: string, id: string) => {
   const dir = path.join(magmaRoot(context.settings), 'agents', 'patterns');
   const { byId, aliases } = indexPatterns(readPatternDir(dir).map((one) => one.data));

@@ -80,6 +80,7 @@ nx run stencil-react:test                            # run the React wrapper tes
 nx run stencil-angular:test                          # run the Angular wrapper tests (Vitest in jsdom, Angular unit-test builder)
 nx run lint:build                                    # build the consumer lint (shipped in magma as ./eslint and ./stylelint)
 nx run lint:test                                     # its tests: the rules on HTML, JSX, Angular and CSS, the MCP server through the official client
+nx run lint:serve.previews                           # edit the previews of the patterns live: the page of render_preview on the local build, reloaded on save
 nx run claude-plugin:build                           # regenerate the skills of the Claude Code plugin from projects/claude-plugin/templates
 nx run claude-plugin:check                           # fail when a skill is out of date or breaks the Agent Skills format (also run in CI)
 npm run lint                                         # ESLint + Stylelint on every project (also run in CI)

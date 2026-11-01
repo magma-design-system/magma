@@ -170,7 +170,8 @@ keep in step.
   `get_guide` (each domain as a guide) and `get_component` (the rules of the domains that govern
   a component), the `ui`, `review` and `pattern-layer` skills of the Claude Code plugin, `pr-risk`
   (`patternChanges` of `projects/stencil/scripts/pr-risk-lib.ts`), the agents of the products,
-  the docs site (the previews: magma-design-system/docs#89).
+  the docs site (the previews: magma-design-system/docs#89), `lint:serve.previews` (the
+  previews, live, `projects/lint/scripts/serve-previews.ts`).
 - **Held by**: `check.patterns` (the format, every combination in one case, the components,
   attributes, lint rules and links named, the rules of the domains a case names, the carriers
   of a domain in the release and the planned ones not yet, the generated sections; a product's folder with
@@ -231,7 +232,8 @@ keep in step.
 - **Contract**: [`docs/agents/assets.md`](agents/assets.md), "Import order (mandatory)" and "Tell
   mds-icon where the icons are"; [`projects/lint/README.md`](../projects/lint/README.md), "Where
   each answer comes from" (what a render loads, and when it is ready).
-- **Read by**: the MCP `render_preview` (`projects/lint/src/mcp/render.ts`, `render-page.ts`).
+- **Read by**: the MCP `render_preview` (`projects/lint/src/mcp/render.ts`, `render-page.ts`);
+  `lint:serve.previews` (`projects/lint/scripts/serve-previews.ts`), on the same page.
 - **Held by**: the `render_preview` tests: `STYLESHEETS` equals the block of the guide, the widths
   and the themes come from the installed styles, and `mds-button` renders hydrated and
   representative on the build of this repository (the `consumer-lint` job, on the build
