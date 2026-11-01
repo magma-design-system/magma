@@ -32,6 +32,8 @@ import { context, fixtures } from './mcp-context.js';
 const stagesOf = () => {
   const root = mkdtempSync(path.join(tmpdir(), 'magma-serve-'));
   const dirs = { previews: path.join(root, 'previews'), drafts: path.join(root, 'drafts') };
+  // a checkout: the paths shown start at its root
+  mkdirSync(path.join(root, '.git'));
   cpSync(path.join(fixtures, 'magma/agents/patterns/previews'), dirs.previews, {
     recursive: true,
   });
@@ -175,9 +177,9 @@ describe('serve.previews', () => {
       });
   });
 
-  test('every stage names its whole file, a link that opens it in VS Code', async () => {
+  test('every stage names its file from the root of its checkout, a link that opens it in VS Code', async () => {
     const draft = path.join(dirs.drafts, 'decision/option-a.html');
-    const link = `<a class="file" href="vscode://file${encodeURI(draft)}" title="Open in VS Code"><code>${draft}</code></a>`;
+    const link = `<a class="file" href="vscode://file${encodeURI(draft)}" title="Open in VS Code"><code>drafts/decision/option-a.html</code></a>`;
     // the page that shows no stage lists them all, each with its file
     const index = await (await get('/')).text();
     for (const one of listStages(dirs))

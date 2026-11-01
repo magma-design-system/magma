@@ -172,12 +172,25 @@ const escape = (text: string): string =>
   text.replace(/[&<>"']/g, (one) => `&#${one.charCodeAt(0)};`);
 
 /**
- * The file of a stage, whole, as a link that opens it in VS Code: `vscode://file/<full path>`
- * (code.visualstudio.com, "Opening VS Code with URLs"). The whole path, never one relative to
- * this checkout: the drafts may live in another one (`--drafts`).
+ * The path of a file as the explorer of the editor shows it: from the root of the checkout that
+ * holds it, the nearest folder with a `.git` (a folder, or the file of a worktree), not from
+ * the checkout of the server: the drafts may live in another one (`--drafts`). A file in no
+ * checkout keeps its whole path.
+ */
+export const repoPath = (file: string): string => {
+  const whole = path.resolve(file);
+  for (let dir = path.dirname(whole); dir !== path.dirname(dir); dir = path.dirname(dir))
+    if (existsSync(path.join(dir, '.git'))) return path.relative(dir, whole);
+  return whole;
+};
+
+/**
+ * The file of a stage, a link that opens it in VS Code: `vscode://file/<full path>`
+ * (code.visualstudio.com, "Opening VS Code with URLs"); the full path only in the link, the
+ * path shown is the one of the repository (`repoPath`).
  */
 export const fileLink = (file: string): string =>
-  `<a class="file" href="vscode://file${encodeURI(path.resolve(file))}" title="Open in VS Code"><code>${escape(path.resolve(file))}</code></a>`;
+  `<a class="file" href="vscode://file${encodeURI(path.resolve(file))}" title="Open in VS Code"><code>${escape(repoPath(file))}</code></a>`;
 
 /** The page around the stages: the list, the stage asked in its frame, what to try in it. */
 const framePage = (
@@ -205,7 +218,7 @@ const framePage = (
               .join('')}</ul></li>`,
         )
         .join('');
-      return `<section><h2>${source} <code>${escape(path.resolve(dirs[source]))}</code></h2>${items ? `<ul>${items}</ul>` : '<p>None yet.</p>'}</section>`;
+      return `<section><h2>${source} <code>${escape(repoPath(dirs[source]))}</code></h2>${items ? `<ul>${items}</ul>` : '<p>None yet.</p>'}</section>`;
     })
     .join('');
   const breakpoints = Object.entries(breakpointsOf(context)).sort((a, b) => a[1] - b[1]);
@@ -482,7 +495,7 @@ const main = async () => {
   console.info(`serve.previews: ${server.url}`);
   for (const source of Object.keys(SOURCES) as SourceName[])
     console.info(
-      `  ${source.padEnd(9)}${dirs[source]} (${stages.filter((one) => one.source === source).length})`,
+      `  ${source.padEnd(9)}${repoPath(dirs[source])} (${stages.filter((one) => one.source === source).length})`,
     );
   console.info(
     `  magma    ${path.relative(REPO, path.dirname(path.dirname(loader)))}, the local build`,
