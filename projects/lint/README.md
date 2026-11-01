@@ -340,6 +340,9 @@ on save. What it shows is what the agents compare their markup with:
   root of the checkout that holds it (`repoPath`, the nearest folder with a `.git`), as the
   explorer of the editor shows it, a link that opens it in VS Code (`vscode://file/<path>`);
   the page that shows no stage lists them all with their files.
+- **The page around is a page of Magma** too: its chrome is markup with Magma components
+  (`mds-link`, `mds-input-select`, `mds-table`, `mds-banner`) and Tailwind classes, served on
+  `pageOf` with no inset and the mode of the system, so it has no stylesheet of its own.
 - **A save reloads the stage**: a recursive `fs.watch` on both folders, settled for the writes
   of one save, sends server-sent events on `/events`: `change` with the key of a stage, `list`
   with every key when a stage is added or removed. The page around the stage loads the stage

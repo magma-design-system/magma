@@ -184,16 +184,37 @@ describe('serve.previews', () => {
 
   test('every stage names its file from the root of its checkout, a link that opens it in VS Code', async () => {
     const draft = path.join(dirs.drafts, 'decision/option-a.html');
-    const link = `<a class="file" href="vscode://file${encodeURI(draft)}" title="Open in VS Code"><code>drafts/decision/option-a.html</code></a>`;
+    const link = `<mds-link href="vscode://file${encodeURI(draft)}" icon="mi/baseline/open-in-new" label="drafts/decision/option-a.html"></mds-link>`;
     // the page that shows no stage lists them all, each with its file
     const index = await (await get('/')).text();
     for (const one of listStages(dirs))
       expect(index).toContain(
-        `<td><a href="/view/${one.key}">${one.key}</a></td><td><a class="file" href="vscode://file${encodeURI(one.file)}"`,
+        `<mds-link href="/view/${one.key}">${one.key}</mds-link></mds-text></mds-table-cell><mds-table-cell><mds-text typography="detail"><mds-link href="vscode://file${encodeURI(one.file)}"`,
       );
     expect(index).toContain(link);
-    // the page of a stage, over it
-    expect(await (await get('/view/drafts/decision/option-a')).text()).toContain(`<p>${link}</p>`);
+    // the page of a stage, under its title
+    expect(await (await get('/view/drafts/decision/option-a')).text()).toContain(
+      `<mds-text typography="detail" tag="p">${link}</mds-text>`,
+    );
+  });
+
+  test('the page around the stages is a page of Magma: its components, its Tailwind classes', async () => {
+    const page = await (await get('/view/drafts/decision/option-a?mode=dark')).text();
+    // the page of render_preview, with no inset and the mode of the system
+    expect(page).toContain(INIT_SCRIPT);
+    expect(page).toContain('<script type="module" src="/components/magma-components.esm.js">');
+    expect(page).toContain('#magma-preview { display: flow-root; padding: 0px; }');
+    expect(page).not.toContain('data-magma-pref');
+    // the view in mds-input-select, the classes of the chrome compiled
+    expect(page).toContain('<mds-input-select name="mode" value="dark">');
+    expect(page).toMatch(/\.grid-cols-\\\[16rem_1fr\\\] \{\s*grid-template-columns: 16rem 1fr;/);
+    // the stage asked is the current item of the list, the others are links
+    expect(page).toContain(
+      '<li aria-current="page"><mds-text typography="action">option-a</mds-text></li>',
+    );
+    expect(page).toContain(
+      '<mds-link href="/view/previews/message-placement/region-info?mode=dark">region-info</mds-link>',
+    );
   });
 
   test('the frame shows the stage at the width asked and the height it declares, and what to try', async () => {
@@ -204,7 +225,9 @@ describe('serve.previews', () => {
     expect(frame).toContain(
       `src="/stage/previews/message-placement/region-info?width=tablet" data-key="previews/message-placement/region-info" data-height="300" style="width: ${tablet}px; height: 300px"`,
     );
-    expect(frame).toContain('<p class="try">Look at the message in the region.</p>');
+    expect(frame).toContain(
+      '<mds-text typography="detail" tag="p">Look at the message in the region.</mds-text>',
+    );
     // a view render_preview refuses is said, and the default is shown instead
     const wrong = await (
       await get('/view/previews/message-placement/region-info?width=100&theme=neon')

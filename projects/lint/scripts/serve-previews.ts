@@ -194,16 +194,21 @@ export const repoPath = (file: string): string => {
  * path shown is the one of the repository (`repoPath`).
  */
 export const fileLink = (file: string): string =>
-  `<a class="file" href="vscode://file${encodeURI(path.resolve(file))}" title="Open in VS Code"><code>${escape(repoPath(file))}</code></a>`;
+  `<mds-link href="vscode://file${encodeURI(path.resolve(file))}" icon="mi/baseline/open-in-new" label="${escape(repoPath(file))}"></mds-link>`;
 
-/** The page around the stages: the list, the stage asked in its frame, what to try in it. */
-const framePage = (
+/**
+ * The page around the stages, itself a page of Magma: the chrome is markup with Magma
+ * components and Tailwind classes, served on `pageOf` as a stage is (no inset, the mode of the
+ * system), so it needs no stylesheet of its own. The list, the stage asked in its frame, what
+ * to try in it and what is wrong in its file.
+ */
+const framePage = async (
   context: ToolContext,
   dirs: Options['dirs'],
   view: View,
   stage?: { key: string; preview: Preview },
   missing?: string,
-): string => {
+): Promise<string> => {
   const query = queryOf(view);
   const stages = listStages(dirs);
   const list = (Object.keys(SOURCES) as SourceName[])
@@ -212,98 +217,113 @@ const framePage = (
       const folders = [...new Set(mine.map((one) => one.key.split('/')[1]!))];
       const items = folders
         .map(
-          (folder) =>
-            `<li><span>${escape(folder)}</span><ul>${mine
-              .filter((one) => one.key.split('/')[1] === folder)
-              .map(
-                (one) =>
-                  `<li><a href="/view/${one.key}${query}"${one.key === stage?.key ? ' aria-current="page"' : ''}>${escape(one.key.split('/')[2]!)}</a></li>`,
-              )
-              .join('')}</ul></li>`,
+          (folder) => `<div class="grid gap-100">
+<mds-text typography="label" tag="h3">${escape(folder)}</mds-text>
+<ul class="m-0 grid list-none gap-100 p-0">${mine
+            .filter((one) => one.key.split('/')[1] === folder)
+            .map((one) =>
+              one.key === stage?.key
+                ? `<li aria-current="page"><mds-text typography="action">${escape(one.key.split('/')[2]!)}</mds-text></li>`
+                : `<li><mds-text typography="detail"><mds-link href="/view/${one.key}${query}">${escape(one.key.split('/')[2]!)}</mds-link></mds-text></li>`,
+            )
+            .join('')}</ul>
+</div>`,
         )
         .join('');
-      return `<section><h2>${source} <code>${escape(repoPath(dirs[source]))}</code></h2>${items ? `<ul>${items}</ul>` : '<p>None yet.</p>'}</section>`;
+      return `<section class="grid gap-title-content">
+<div class="grid">
+<mds-text typography="h6" tag="h2">${source}</mds-text>
+<mds-text typography="caption" tag="p" class="break-all text-fg-muted">${escape(repoPath(dirs[source]))}</mds-text>
+</div>
+${items ? `<div class="grid gap-300">${items}</div>` : '<mds-text typography="detail" tag="p">None yet.</mds-text>'}
+</section>`;
     })
     .join('');
   const breakpoints = Object.entries(breakpointsOf(context)).sort((a, b) => a[1] - b[1]);
   const widths = breakpoints.some(([name]) => name === view.width)
     ? breakpoints
     : [...breakpoints, [view.width, view.pixels] as [string, number]];
-  const option = (value: string, label: string, chosen: boolean) =>
-    `<option value="${escape(value)}"${chosen ? ' selected' : ''}>${escape(label)}</option>`;
-  const toolbar = `<form method="get">
-<label>Mode <select name="mode">${MODES.map((one) => option(one, one, one === view.mode)).join('')}</select></label>
-<label>Theme <select name="theme">${option('', 'default', !view.theme)}${themesOf(context)
-    .map((one) => option(one, one, one === view.theme))
-    .join('')}</select></label>
-<label>Width <select name="width">${widths.map(([name, pixels]) => option(name, /^\d+$/.test(name) ? `${pixels} px` : `${name} (${pixels} px)`, name === view.width)).join('')}</select></label>
-</form>`;
-  const info = (preview?: Preview) =>
-    `<div id="info">${preview?.try ? `<p class="try">${escape(preview.try)}</p>` : ''}${
-      [...view.errors, ...(preview?.errors ?? [])].length
-        ? `<ul class="errors">${[...view.errors, ...(preview?.errors ?? [])].map((one) => `<li>${escape(one)}</li>`).join('')}</ul>`
-        : ''
-    }<p class="cut" hidden>The content is taller than ${MAX_SIDE} px: render_preview shows its first ${MAX_SIDE}.</p></div>`;
+  const option = (value: string, label: string) =>
+    `<option value="${escape(value)}">${escape(label)}</option>`;
+  const select = (label: string, name: string, value: string, options: string) =>
+    `<mds-input-field label="${label}" class="w-3xs"><mds-input-select name="${name}" value="${escape(value)}">${options}</mds-input-select></mds-input-field>`;
+  const toolbar = `<div class="flex flex-wrap items-end gap-400">
+${select('Mode', 'mode', view.mode, MODES.map((one) => option(one, one)).join(''))}
+${select(
+  'Theme',
+  'theme',
+  view.theme ?? '',
+  option('', 'default') +
+    themesOf(context)
+      .map((one) => option(one, one))
+      .join(''),
+)}
+${select('Width', 'width', view.width, widths.map(([name, pixels]) => option(name, /^\d+$/.test(name) ? `${pixels} px` : `${name} (${pixels} px)`)).join(''))}
+</div>`;
+  const info = (preview?: Preview) => {
+    const errors = [...view.errors, ...(preview?.errors ?? [])];
+    return `<div id="info" class="grid gap-300">
+${preview?.try ? `<mds-text typography="detail" tag="p">${escape(preview.try)}</mds-text>` : ''}
+${errors.length ? `<mds-banner variant="error" headline="What is wrong">${errors.map((one) => `<mds-text typography="detail" tag="p">${escape(one)}</mds-text>`).join('')}</mds-banner>` : ''}
+<mds-banner id="cut" variant="warning" class="hidden" headline="Taller than an image">The content is taller than ${MAX_SIDE} px: render_preview shows its first ${MAX_SIDE}.</mds-banner>
+</div>`;
+  };
   // every stage with its file, on the page that shows none
-  const files = `<table class="files"><thead><tr><th>Stage</th><th>File</th></tr></thead><tbody>${stages
+  const files = `<mds-table class="w-full">
+<mds-table-header><mds-table-header-cell label="Stage"></mds-table-header-cell><mds-table-header-cell label="File"></mds-table-header-cell></mds-table-header>
+<mds-table-body>${stages
     .map(
       (one) =>
-        `<tr><td><a href="/view/${one.key}${query}">${escape(one.key)}</a></td><td>${fileLink(one.file)}</td></tr>`,
+        `<mds-table-row><mds-table-cell><mds-text typography="detail"><mds-link href="/view/${one.key}${query}">${escape(one.key)}</mds-link></mds-text></mds-table-cell><mds-table-cell><mds-text typography="detail">${fileLink(one.file)}</mds-text></mds-table-cell></mds-table-row>`,
     )
-    .join('')}</tbody></table>`;
+    .join('')}</mds-table-body>
+</mds-table>`;
+  const header = (title: string, line: string) => `<header class="grid gap-title-content">
+<mds-text typography="h4" tag="h1">${escape(title)}</mds-text>
+<mds-text typography="detail" tag="p">${line}</mds-text>
+</header>`;
   const main = stage
-    ? `<h1>${escape(stage.key)}</h1>
-<p>${fileLink(stage.preview.file)}</p>
+    ? `${header(stage.key, fileLink(stage.preview.file))}
 ${toolbar}
-<div class="stage"><iframe id="stage" title="${escape(stage.key)}" src="/stage/${stage.key}${query}" data-key="${escape(stage.key)}" data-height="${stage.preview.height ?? 'auto'}" style="width: ${view.pixels}px; height: ${stage.preview.height ?? 0}px"></iframe></div>
+<div class="overflow-auto"><iframe id="stage" class="block border border-dashed border-border-default" title="${escape(stage.key)}" src="/stage/${stage.key}${query}" data-key="${escape(stage.key)}" data-height="${stage.preview.height ?? 'auto'}" style="width: ${view.pixels}px; height: ${stage.preview.height ?? 0}px"></iframe></div>
 ${info(stage.preview)}`
     : missing
-      ? `<h1>${escape(missing)}</h1><p>No such stage: it was moved or deleted.</p>`
-      : `<h1>serve.previews</h1><p>Choose a stage. Edit its file and save: the page shows it again.</p>${toolbar}${files}`;
-  return `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${escape(stage?.key ?? missing ?? 'serve.previews')}</title>
-<style>
-:root { color-scheme: light dark; font: 14px/1.4 system-ui, sans-serif; }
-body { margin: 0; display: grid; grid-template-columns: 16rem 1fr; min-height: 100vh; }
-nav { padding: 1rem; border-right: 1px solid #8884; overflow: auto; }
-nav h2 { font-size: 0.85rem; margin: 1rem 0 0.25rem; }
-nav h2 code { display: block; font-weight: normal; opacity: 0.7; word-break: break-all; }
-nav ul { list-style: none; margin: 0; padding: 0 0 0 0.75rem; }
-nav > section > ul { padding: 0; }
-nav a[aria-current] { font-weight: bold; }
-main { padding: 1rem; min-width: 0; }
-h1 { font-size: 1.1rem; margin: 0; }
-.file { word-break: break-all; }
-main > p:has(.file) { margin: 0.25rem 0 0.75rem; }
-.files { border-collapse: collapse; margin-top: 1rem; }
-.files th, .files td { text-align: start; padding: 0.25rem 1rem 0.25rem 0; vertical-align: top; }
-form { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
-.stage { overflow: auto; }
-iframe { display: block; border: 1px dashed #8888; box-sizing: content-box; }
-.try { margin: 0.75rem 0 0; }
-.errors { color: #c62828; }
-@media (prefers-color-scheme: dark) { .errors { color: #ef9a9a; } }
-</style>
-</head>
-<body>
-<nav>${list}</nav>
-<main>${main}</main>
+      ? header(missing, 'No such stage: it was moved or deleted.')
+      : `${header('serve.previews', 'Choose a stage. Edit its file and save: the page shows it again.')}
+${toolbar}
+${files}`;
+  const chrome = `<title>${escape(stage?.key ?? missing ?? 'serve.previews')}</title>
+<div class="grid min-h-dvh grid-cols-[16rem_1fr]">
+<nav aria-label="Stages" class="flex flex-col gap-between-groups overflow-auto border-e border-border-muted bg-surface-sunken p-inset">${list}</nav>
+<main class="grid min-w-0 content-start gap-between-groups p-inset">${main}</main>
+</div>
 <script>
 ${clientScript}
-</script>
-</body>
-</html>`;
+</script>`;
+  const utilities = await tailwindOf(context, chrome);
+  return pageOf(context, {
+    markup: chrome,
+    wholePage: true,
+    lang: 'en',
+    ...(utilities ? { utilities } : {}),
+  });
 };
 
 /**
- * The script of the page around the stages: the height of the frame, and the stage loaded
- * again when its file changes, the page when a stage is added or removed.
+ * The script of the page around the stages: the view from the selects, the height of the
+ * frame, and the stage loaded again when its file changes, the page when a stage is added or
+ * removed.
  */
-const clientScript = `const stage = document.getElementById('stage');
+const clientScript = `for (const select of document.querySelectorAll('mds-input-select[name]'))
+  select.addEventListener('mdsInputSelectChange', (event) => {
+    const name = select.getAttribute('name');
+    const query = new URLSearchParams(location.search);
+    if ((query.get(name) ?? select.getAttribute('value')) === event.detail.value) return;
+    if (event.detail.value) query.set(name, event.detail.value);
+    else query.delete(name);
+    location.search = query.toString();
+  });
+const stage = document.getElementById('stage');
 const MAX = ${MAX_SIDE};
 const fit = () => {
   if (!stage || stage.dataset.height !== 'auto') return;
@@ -311,7 +331,7 @@ const fit = () => {
   if (!root) return;
   const height = Math.ceil(root.getBoundingClientRect().bottom + stage.contentWindow.scrollY);
   stage.style.height = Math.min(height, MAX) + 'px';
-  document.querySelector('.cut').hidden = height <= MAX;
+  document.getElementById('cut').classList.toggle('hidden', height <= MAX);
 };
 if (stage)
   stage.addEventListener('load', () => {
@@ -331,7 +351,6 @@ events.addEventListener('message', async (event) => {
   stage.dataset.height = next.dataset.height;
   if (next.dataset.height !== 'auto') stage.style.height = next.dataset.height + 'px';
   stage.contentWindow.location.reload();
-  window.dispatchEvent(new CustomEvent('stage-reload', { detail: change.key }));
 });`;
 
 const send = (
@@ -378,7 +397,7 @@ export const servePreviews = async ({
       return;
     }
     const view = viewOf(context, url.searchParams);
-    if (pathname === '/') return send(response, 200, framePage(context, dirs, view));
+    if (pathname === '/') return send(response, 200, await framePage(context, dirs, view));
     for (const [prefix, page] of [
       ['/view/', 'frame'],
       ['/stage/', 'stage'],
@@ -390,14 +409,14 @@ export const servePreviews = async ({
           return send(
             response,
             404,
-            page === 'frame' ? framePage(context, dirs, view, undefined, key) : '',
+            page === 'frame' ? await framePage(context, dirs, view, undefined, key) : '',
           );
         const preview = parsePreview(readFileSync(stage.file, 'utf8'), stage.file);
         return send(
           response,
           200,
           page === 'frame'
-            ? framePage(context, dirs, view, { key, preview })
+            ? await framePage(context, dirs, view, { key, preview })
             : await stagePage(context, preview, view),
         );
       }
