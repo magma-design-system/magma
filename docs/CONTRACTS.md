@@ -222,19 +222,23 @@ keep in step.
 ## The page a render loads
 
 - **What**: what `render_preview` puts on its page and reads off it: the import block of the
-  stylesheets, the lazy loader of the components (`dist/magma-components`), the flag of a
+  stylesheets, the Tailwind entry point compiled on the classes of the markup with the
+  project's Tailwind 4, the lazy loader of the components (`dist/magma-components`), the flag of a
   hydrated component, the Magma breakpoints (`--breakpoint-*` of `typography.css`) and the named
   themes (`data-theme-name` of `themes.css`).
-- **Produced by**: `docs/agents/assets.md` (the import block); the stencil build (the loader, and
+- **Produced by**: `docs/agents/assets.md` (the import block, and the Tailwind entry point of
+  "Tailwind (optional)" with `projects/styles/dist/tailwind`); the stencil build (the loader, and
   Stencil's `appload` event and `hydrated` flag, `hydratedFlag` of `stencil.config.ts`);
   `projects/styles` (`hydrated.css`, which hides a component until the flag, `typography.css`,
   `themes.css`).
-- **Contract**: [`docs/agents/assets.md`](agents/assets.md), "Import order (mandatory)" and "Tell
-  mds-icon where the icons are"; [`projects/lint/README.md`](../projects/lint/README.md), "Where
-  each answer comes from" (what a render loads, and when it is ready).
+- **Contract**: [`docs/agents/assets.md`](agents/assets.md), "Import order (mandatory)", "Tell
+  mds-icon where the icons are" and "Tailwind (optional)";
+  [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes from" (what
+  a render loads, and when it is ready).
 - **Read by**: the MCP `render_preview` (`projects/lint/src/mcp/render.ts`, `render-page.ts`);
   `lint:serve.previews` (`projects/lint/scripts/serve-previews.ts`), on the same page.
-- **Held by**: the `render_preview` tests: `STYLESHEETS` equals the block of the guide, the widths
+- **Held by**: the `render_preview` tests: `STYLESHEETS` and `TAILWIND` equal the blocks of the
+  guide, the Magma utilities compile on the classes of the markup, the widths
   and the themes come from the installed styles, and `mds-button` renders hydrated and
   representative on the build of this repository (the `consumer-lint` job, on the build
   artifact).

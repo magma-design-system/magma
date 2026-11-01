@@ -18,6 +18,8 @@ export interface ToolContext {
   icons?: Partial<Record<'mi' | 'mdi' | 'mgg', string>>;
   /** The lazy loader of the components render_preview loads: the one of the installed magma when unset. */
   loader?: string;
+  /** false: render_preview finds no Tailwind, as in a project without it (the tests); the project's when unset. */
+  tailwind?: false;
 }
 
 const HERE = fileURLToPath(import.meta.url);

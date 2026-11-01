@@ -208,6 +208,12 @@ or on the guide it enforces, not only on fixtures picked by hand.
   `--breakpoint-*` of the installed `typography.css`, the default `desktop`; the themes, the
   `data-theme-name` values of the installed `themes.css`; the mode, `prefers-color-scheme`,
   which `colors-rgb.css` and `semantic.css` follow on a page with no `data-magma-pref`. The
+  classes are the ones of Tailwind (#1220): the Tailwind entry point of `agents/assets.md`,
+  "Tailwind (optional)" (`TAILWIND`, held to the block by a test), compiled with the project's
+  Tailwind 4 (`compile` of tailwindcss, which its PostCSS and Vite plugins call) on the tokens
+  of the markup, as Tailwind scans a source, and put after the stylesheets of the consumer; a
+  project without Tailwind 4 gets no rules for them, and an image whose markup has classes and
+  no style element of its own reports it. The
   path of the icons and the record of `appload` are the first script of the page
   (`INIT_SCRIPT`), not an init script of the driver, so that `serve.previews` shows the very
   page; it sets the mode in the page instead (`prefMode`), as `mds-pref` does,

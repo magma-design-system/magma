@@ -38,6 +38,7 @@ import {
   MODES,
   pageOf,
   PREVIEW_LANG,
+  tailwindOf,
   themesOf,
   TYPES,
 } from '../src/mcp/render.js';
@@ -154,19 +155,22 @@ const queryOf = (view: View): string => {
   return text ? `?${text}` : '';
 };
 
-/** The page of a stage: the page of render_preview, in the mode and the theme asked. */
-export const stagePage = (
+/** The page of a stage: the page of render_preview, its Tailwind classes compiled, in the mode and the theme asked. */
+export const stagePage = async (
   context: ToolContext,
   preview: Preview,
   view: Pick<View, 'mode' | 'theme'>,
-): string =>
-  pageOf(context, {
+): Promise<string> => {
+  const utilities = await tailwindOf(context, preview.markup);
+  return pageOf(context, {
     markup: preview.markup,
     ...(preview.wholePage ? { wholePage: true } : {}),
     prefMode: view.mode,
     ...(view.theme ? { theme: view.theme } : {}),
     lang: PREVIEW_LANG,
+    ...(utilities ? { utilities } : {}),
   });
+};
 
 const escape = (text: string): string =>
   text.replace(/[&<>"']/g, (one) => `&#${one.charCodeAt(0)};`);
@@ -359,7 +363,7 @@ export const servePreviews = async ({
     for (const client of clients) client.write(`data: ${JSON.stringify(change)}\n\n`);
   };
 
-  const handle = (request: IncomingMessage, response: ServerResponse) => {
+  const handle = async (request: IncomingMessage, response: ServerResponse) => {
     const url = new URL(request.url ?? '/', 'http://localhost');
     const pathname = decodeURIComponent(url.pathname);
     if (pathname === '/events') {
@@ -394,7 +398,7 @@ export const servePreviews = async ({
           200,
           page === 'frame'
             ? framePage(context, dirs, view, { key, preview })
-            : stagePage(context, preview, view),
+            : await stagePage(context, preview, view),
         );
       }
     // what the page of render_preview loads: the components, the icons, the stylesheets
@@ -408,11 +412,9 @@ export const servePreviews = async ({
     );
   };
   const server = createServer((request, response) => {
-    try {
-      handle(request, response);
-    } catch (error) {
-      send(response, 500, String((error as Error).stack ?? error), 'text/plain; charset=utf-8');
-    }
+    handle(request, response).catch((error: unknown) =>
+      send(response, 500, String((error as Error).stack ?? error), 'text/plain; charset=utf-8'),
+    );
   });
 
   // one save may be several writes: each key is told once they end, the list when it changed

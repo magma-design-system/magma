@@ -23,6 +23,7 @@ import {
   PREVIEW_LANG,
   render,
   STYLESHEETS,
+  tailwindOf,
   themesOf,
 } from '../src/mcp/render.js';
 import { listStages, servePreviews, type PreviewServer } from '../scripts/serve-previews.js';
@@ -114,6 +115,7 @@ describe('serve.previews', () => {
         prefMode: 'dark',
         ...(theme ? { theme } : {}),
         lang: PREVIEW_LANG,
+        utilities: (await tailwindOf(serveContext, preview.markup))!,
       }),
     );
     // what render_preview loads: its first script, the loader, the stylesheets in their layers
@@ -134,7 +136,7 @@ describe('serve.previews', () => {
     const file = path.join(dirs.drafts, 'decision/whole.html');
     writeFileSync(
       file,
-      '<!--\ntry: Look at the edge.\nwhole-page: true\n-->\n<mds-fixture>Pagina</mds-fixture>\n',
+      '<!--\ntry: Look at the edge.\nwhole-page: true\n-->\n<mds-fixture class="p-0">Pagina</mds-fixture>\n',
     );
     try {
       const page = await (await get('/stage/drafts/decision/whole')).text();
@@ -144,9 +146,12 @@ describe('serve.previews', () => {
           wholePage: true,
           prefMode: 'light',
           lang: PREVIEW_LANG,
+          utilities: (await tailwindOf(serveContext, previewOf(file).markup))!,
         }),
       );
       expect(page).toContain('#magma-preview { display: flow-root; padding: 0px; }');
+      // its Tailwind classes compiled, as render_preview compiles them
+      expect(page).toMatch(/\.p-0 \{\s*padding: 0px;/);
     } finally {
       rmSync(file);
     }
@@ -309,7 +314,10 @@ describe.skipIf(!existsSync(BUILT) && !process.env.CI)('serve.previews on the bu
     const dirs = { previews: path.join(root, 'previews'), drafts: path.join(root, 'drafts') };
     const file = path.join(dirs.drafts, 'live/save.html');
     mkdirSync(path.dirname(file), { recursive: true });
-    writeFileSync(file, '<!--\ntry: Look at the label.\n-->\n<mds-button>Salva</mds-button>\n');
+    writeFileSync(
+      file,
+      '<!--\ntry: Look at the label.\n-->\n<div id="row" class="flex gap-600"><mds-button>Salva</mds-button></div>\n',
+    );
     const server = await servePreviews({ context: built(), dirs, port: 0, settle: 20 });
     const browser = await launch();
     try {
@@ -317,6 +325,10 @@ describe.skipIf(!existsSync(BUILT) && !process.env.CI)('serve.previews on the bu
       await page.goto(`${server.url}view/drafts/live/save`);
       const stage = page.frameLocator('#stage');
       await stage.locator(`mds-button${HYDRATED}`, { hasText: 'Salva' }).waitFor();
+      // a Tailwind class of the draft applies in the stage
+      expect(await stage.locator('#row').evaluate((row) => getComputedStyle(row).display)).toBe(
+        'flex',
+      );
       await page.evaluate(() => Object.assign(window, { untouched: true }));
       writeFileSync(file, readFileSync(file, 'utf8').replace('>Salva<', '>Salva e chiudi<'));
       await stage
