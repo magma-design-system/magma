@@ -101,6 +101,37 @@ one-off local names. None of them is a name only Tailwind's theme publishes any 
 ones the components read (`--radius`, `--ease-in-out`, `--drop-shadow-sm`, ...) moved onto
 Magma tokens in #998 and #1000.
 
+## Tailwind classes
+
+Tailwind CSS IntelliSense (`bradlc.vscode-tailwindcss`) completes and explains the Magma
+utilities (`bg-surface-raised`, `gap-between-fields`, `max-w-form`) once it knows which
+Tailwind entry point governs a file. In this monorepo its discovery finds none: it examines
+some 1800 stylesheets (every component sheet, `.nx/cache`, the `dist` folders, the worktrees)
+and no project claims the sources, so a story or a preview gets no completion and no hover
+(measured by driving its language server, 2026-10-21 and 2026-11-01). Map each entry point to
+the files it governs, in `.vscode/settings.json`:
+
+```json
+{
+  "tailwindCSS.experimental.configFile": {
+    "projects/stencil/.storybook/styles.css": "projects/stencil/src/**",
+    ".claude/previews/tailwind.css": [".claude/previews/**", "docs/agents/patterns/previews/**"]
+  }
+}
+```
+
+- **The stories** take the entry point of Storybook.
+- **The previews and their drafts** take `.claude/previews/tailwind.css`, which
+  `nx run lint:serve.previews` writes when it starts (#1220): the entry point of
+  `agents/assets.md` that the page of a stage compiles (`TAILWIND` of
+  `projects/lint/src/mcp/render.ts`), each import resolved to the file the page reads. The
+  editor then completes the very classes the page gives rules to, on the build of the
+  checkout that runs the server, even when the editor has another checkout open (one on an
+  older build of `projects/styles` lacks the rhythm utilities). The file is untracked and
+  holds whole paths of the machine; the server rewrites it when they change.
+- A mapped entry point that does not exist yet (the server never ran) is skipped: the other
+  projects still load.
+
 ## Extensions
 
 | extension                              | verdict                                                                                                                                                                                                                    |

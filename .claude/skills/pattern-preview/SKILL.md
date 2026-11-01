@@ -85,7 +85,8 @@ than describe the change, or asks to see the drafts in the editor:
 2. Give the maintainer the address of each stage and the path of its file:
    `http://localhost:5180/view/previews/<id>/<case>` or `.../view/drafts/<id>/<case>-<n>`;
    `?mode=dark`, `?theme=<name>` and `?width=<breakpoint or pixels>` choose the view. They edit
-   the file in their editor; on each save the page loads the stage again.
+   the file in their editor; on each save the page loads the stage again. For the completion
+   of the Tailwind classes, point them to `docs/EDITOR_TOKENS.md`, "Tailwind classes".
 3. When they say they are done, read the file again (it changed under you), show what changed,
    and keep their markup: fix only what step 5 reports, and say what you fixed. A draft they
    chose is saved as `docs/agents/patterns/previews/<id>/<case>.html`.

@@ -23,10 +23,17 @@ import {
   PREVIEW_LANG,
   render,
   STYLESHEETS,
+  TAILWIND,
   tailwindOf,
   themesOf,
 } from '../src/mcp/render.js';
-import { listStages, servePreviews, type PreviewServer } from '../scripts/serve-previews.js';
+import {
+  EDITOR_ENTRY,
+  editorEntryOf,
+  listStages,
+  servePreviews,
+  type PreviewServer,
+} from '../scripts/serve-previews.js';
 import { context, fixtures } from './mcp-context.js';
 
 /** The two folders of stages, of their own so that a test may write in them: the previews of the fixtures and a draft. */
@@ -99,6 +106,25 @@ describe('serve.previews', () => {
       'previews/message-placement/region-info',
       'drafts/decision/option-a',
     ]);
+  });
+
+  test('writes the Tailwind entry point of the editor beside the drafts, on the files the page compiles', () => {
+    const entry = readFileSync(path.join(dirs.drafts, EDITOR_ENTRY), 'utf8');
+    expect(entry).toBe(editorEntryOf(serveContext));
+    // one import per import of TAILWIND, in its order, each the whole path of a file there is
+    const ids = [...TAILWIND.matchAll(/@import '([^']+)'/g)].map((one) => one[1]!);
+    const files = [...entry.matchAll(/@import '([^']+)'/g)].map((one) => one[1]!);
+    expect(files).toHaveLength(ids.length);
+    files.forEach((file, at) => {
+      expect(path.isAbsolute(file) && existsSync(file)).toBe(true);
+      expect(file.split(path.sep).join('/')).toMatch(
+        new RegExp(`${ids[at]!.split('/').slice(-2).join('/').replace('.', '\\.')}$`),
+      );
+    });
+    // the layers of the guide stay on their imports
+    expect(entry).toContain("utilities.css' layer(utilities);");
+    // not a stage
+    expect(listStages(dirs).map((one) => one.key)).not.toContain('drafts/tailwind');
   });
 
   test('the page of a stage is the page of render_preview, in the mode and the theme asked', async () => {

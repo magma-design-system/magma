@@ -343,6 +343,10 @@ on save. What it shows is what the agents compare their markup with:
 - **The page around is a page of Magma** too: its chrome is markup with Magma components
   (`mds-link`, `mds-input-select`, `mds-table`, `mds-banner`) and Tailwind classes, served on
   `pageOf` with no inset and the mode of the system, so it has no stylesheet of its own.
+- **The editor completes the classes the page compiles**: on start the server writes
+  `tailwind.css` beside the drafts (`editorEntryOf`), `TAILWIND` with each import resolved to
+  the file the page reads, the entry point Tailwind CSS IntelliSense maps to the stages
+  (`docs/EDITOR_TOKENS.md`, "Tailwind classes").
 - **A save reloads the stage**: a recursive `fs.watch` on both folders, settled for the writes
   of one save, sends server-sent events on `/events`: `change` with the key of a stage, `list`
   with every key when a stage is added or removed. The page around the stage loads the stage

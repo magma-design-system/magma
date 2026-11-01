@@ -22,13 +22,21 @@
   skill): <folder>/<name>.html, in the format of a preview, checked only as a file, since it
   is the stage of no case yet.
 */
-import { existsSync, mkdirSync, readdirSync, readFileSync, watch, type FSWatcher } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  watch,
+  writeFileSync,
+  type FSWatcher,
+} from 'node:fs';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parsePreview, type Preview } from '../src/core/patterns.js';
-import type { ToolContext } from '../src/mcp/context.js';
+import { resolvePackage, type ToolContext } from '../src/mcp/context.js';
 import {
   breakpointsOf,
   DEFAULT_WIDTH,
@@ -38,6 +46,7 @@ import {
   MODES,
   pageOf,
   PREVIEW_LANG,
+  TAILWIND,
   tailwindOf,
   themesOf,
   TYPES,
@@ -154,6 +163,25 @@ const queryOf = (view: View): string => {
   const text = query.toString();
   return text ? `?${text}` : '';
 };
+
+/** The file of the entry point of the editor, in the drafts folder. */
+export const EDITOR_ENTRY = 'tailwind.css';
+
+/**
+ * The Tailwind entry point of the editor, for Tailwind CSS IntelliSense
+ * (`tailwindCSS.experimental.configFile`, docs/EDITOR_TOKENS.md): `TAILWIND`, each import
+ * resolved to the file the page compiles, so the editor completes the very classes the page
+ * gives rules to, on the build of the server, whatever the checkout the editor has open. A
+ * file of this machine, untracked: whole paths.
+ */
+export const editorEntryOf = (context: ToolContext): string =>
+  `/* Written by nx run lint:serve.previews from TAILWIND (projects/lint/src/mcp/render.ts):
+   the Tailwind entry point of a stage, for the editor (docs/EDITOR_TOKENS.md). */
+${TAILWIND.replace(/@import '([^']+)'/g, (whole, id: string) => {
+  const file = resolvePackage(context, id);
+  return file ? `@import '${file}'` : whole;
+})}
+`;
 
 /** The page of a stage: the page of render_preview, its Tailwind classes compiled, in the mode and the theme asked. */
 export const stagePage = async (
@@ -435,6 +463,12 @@ export const servePreviews = async ({
       send(response, 500, String((error as Error).stack ?? error), 'text/plain; charset=utf-8'),
     );
   });
+
+  // the entry point of the editor, beside the drafts, rewritten only when it changes
+  mkdirSync(dirs.drafts, { recursive: true });
+  const entry = path.join(dirs.drafts, EDITOR_ENTRY);
+  const text = editorEntryOf(context);
+  if (!existsSync(entry) || readFileSync(entry, 'utf8') !== text) writeFileSync(entry, text);
 
   // one save may be several writes: each key is told once they end, the list when it changed
   let known = new Set(listStages(dirs).map((one) => one.key));
