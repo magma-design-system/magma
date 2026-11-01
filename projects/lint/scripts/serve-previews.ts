@@ -171,6 +171,14 @@ export const stagePage = (
 const escape = (text: string): string =>
   text.replace(/[&<>"']/g, (one) => `&#${one.charCodeAt(0)};`);
 
+/**
+ * The file of a stage, whole, as a link that opens it in VS Code: `vscode://file/<full path>`
+ * (code.visualstudio.com, "Opening VS Code with URLs"). The whole path, never one relative to
+ * this checkout: the drafts may live in another one (`--drafts`).
+ */
+export const fileLink = (file: string): string =>
+  `<a class="file" href="vscode://file${encodeURI(path.resolve(file))}" title="Open in VS Code"><code>${escape(path.resolve(file))}</code></a>`;
+
 /** The page around the stages: the list, the stage asked in its frame, what to try in it. */
 const framePage = (
   context: ToolContext,
@@ -197,7 +205,7 @@ const framePage = (
               .join('')}</ul></li>`,
         )
         .join('');
-      return `<section><h2>${source} <code>${escape(path.relative(REPO, dirs[source]) || dirs[source])}</code></h2>${items ? `<ul>${items}</ul>` : '<p>None yet.</p>'}</section>`;
+      return `<section><h2>${source} <code>${escape(path.resolve(dirs[source]))}</code></h2>${items ? `<ul>${items}</ul>` : '<p>None yet.</p>'}</section>`;
     })
     .join('');
   const breakpoints = Object.entries(breakpointsOf(context)).sort((a, b) => a[1] - b[1]);
@@ -219,15 +227,22 @@ const framePage = (
         ? `<ul class="errors">${[...view.errors, ...(preview?.errors ?? [])].map((one) => `<li>${escape(one)}</li>`).join('')}</ul>`
         : ''
     }<p class="cut" hidden>The content is taller than ${MAX_SIDE} px: render_preview shows its first ${MAX_SIDE}.</p></div>`;
+  // every stage with its file, on the page that shows none
+  const files = `<table class="files"><thead><tr><th>Stage</th><th>File</th></tr></thead><tbody>${stages
+    .map(
+      (one) =>
+        `<tr><td><a href="/view/${one.key}${query}">${escape(one.key)}</a></td><td>${fileLink(one.file)}</td></tr>`,
+    )
+    .join('')}</tbody></table>`;
   const main = stage
     ? `<h1>${escape(stage.key)}</h1>
-<p class="file"><code>${escape(path.relative(REPO, stage.preview.file))}</code></p>
+<p>${fileLink(stage.preview.file)}</p>
 ${toolbar}
 <div class="stage"><iframe id="stage" title="${escape(stage.key)}" src="/stage/${stage.key}${query}" data-key="${escape(stage.key)}" data-height="${stage.preview.height ?? 'auto'}" style="width: ${view.pixels}px; height: ${stage.preview.height ?? 0}px"></iframe></div>
 ${info(stage.preview)}`
     : missing
       ? `<h1>${escape(missing)}</h1><p>No such stage: it was moved or deleted.</p>`
-      : `<h1>serve.previews</h1><p>Choose a stage. Edit its file and save: the page shows it again.</p>${toolbar}`;
+      : `<h1>serve.previews</h1><p>Choose a stage. Edit its file and save: the page shows it again.</p>${toolbar}${files}`;
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -239,13 +254,16 @@ ${info(stage.preview)}`
 body { margin: 0; display: grid; grid-template-columns: 16rem 1fr; min-height: 100vh; }
 nav { padding: 1rem; border-right: 1px solid #8884; overflow: auto; }
 nav h2 { font-size: 0.85rem; margin: 1rem 0 0.25rem; }
-nav h2 code { font-weight: normal; opacity: 0.7; }
+nav h2 code { display: block; font-weight: normal; opacity: 0.7; word-break: break-all; }
 nav ul { list-style: none; margin: 0; padding: 0 0 0 0.75rem; }
 nav > section > ul { padding: 0; }
 nav a[aria-current] { font-weight: bold; }
 main { padding: 1rem; min-width: 0; }
 h1 { font-size: 1.1rem; margin: 0; }
-.file { margin: 0.25rem 0 0.75rem; opacity: 0.7; }
+.file { word-break: break-all; }
+main > p:has(.file) { margin: 0.25rem 0 0.75rem; }
+.files { border-collapse: collapse; margin-top: 1rem; }
+.files th, .files td { text-align: start; padding: 0.25rem 1rem 0.25rem 0; vertical-align: top; }
 form { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
 .stage { overflow: auto; }
 iframe { display: block; border: 1px dashed #8888; box-sizing: content-box; }
@@ -464,7 +482,7 @@ const main = async () => {
   console.info(`serve.previews: ${server.url}`);
   for (const source of Object.keys(SOURCES) as SourceName[])
     console.info(
-      `  ${source.padEnd(9)}${path.relative(REPO, dirs[source]) || dirs[source]} (${stages.filter((one) => one.source === source).length})`,
+      `  ${source.padEnd(9)}${dirs[source]} (${stages.filter((one) => one.source === source).length})`,
     );
   console.info(
     `  magma    ${path.relative(REPO, path.dirname(path.dirname(loader)))}, the local build`,

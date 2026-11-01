@@ -205,7 +205,8 @@ try: Press Salva: the error shows above the form, and what was written stays.
   local build (`projects/stencil/dist`, `projects/styles/dist`: `nx run stencil:build` first).
   The frame around it is the viewport of a render: as wide as the width asked, as tall as the
   `height` of the preview or else as its content; under it, what to try and what is wrong in
-  the file. `?mode=dark`, `?theme=<name>` and `?width=<breakpoint or pixels>` choose the view,
+  the file; over it, the whole path of the file, a link that opens it in VS Code (the first
+  page lists every stage with its file). `?mode=dark`, `?theme=<name>` and `?width=<breakpoint or pixels>` choose the view,
   as `render_preview` takes them; the mode is set in the page as `mds-pref` sets it
   (`data-magma-pref` and `pref-mode-<mode>` on `<html>`), since a frame takes the
   `prefers-color-scheme` of the system, and a lint test proves it gives the image of the

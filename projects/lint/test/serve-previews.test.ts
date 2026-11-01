@@ -175,6 +175,20 @@ describe('serve.previews', () => {
       });
   });
 
+  test('every stage names its whole file, a link that opens it in VS Code', async () => {
+    const draft = path.join(dirs.drafts, 'decision/option-a.html');
+    const link = `<a class="file" href="vscode://file${encodeURI(draft)}" title="Open in VS Code"><code>${draft}</code></a>`;
+    // the page that shows no stage lists them all, each with its file
+    const index = await (await get('/')).text();
+    for (const one of listStages(dirs))
+      expect(index).toContain(
+        `<td><a href="/view/${one.key}">${one.key}</a></td><td><a class="file" href="vscode://file${encodeURI(one.file)}"`,
+      );
+    expect(index).toContain(link);
+    // the page of a stage, over it
+    expect(await (await get('/view/drafts/decision/option-a')).text()).toContain(`<p>${link}</p>`);
+  });
+
   test('the frame shows the stage at the width asked and the height it declares, and what to try', async () => {
     const { tablet } = breakpointsOf(serveContext);
     const frame = await (

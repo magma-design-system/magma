@@ -330,7 +330,9 @@ on save. What it shows is what the agents compare their markup with:
   `render_preview` checks them (a breakpoint or pixels from 320 to 2000); the mode set in the
   page (`prefMode`, "What a render loads"). The frame is the viewport: as wide as the width, as
   tall as the `height` of the preview or else as its content, up to 2000 px; what to try and
-  what is wrong in the file (`parsePreview`) are under it.
+  what is wrong in the file (`parsePreview`) are under it. Each stage names its file whole, a
+  link that opens it in VS Code (`vscode://file/<path>`), since the drafts may live in another
+  checkout; the page that shows no stage lists them all with their files.
 - **A save reloads the stage**: a recursive `fs.watch` on both folders, settled for the writes
   of one save, sends server-sent events on `/events`: `change` with the key of a stage, `list`
   with every key when a stage is added or removed. The page around the stage loads the stage
