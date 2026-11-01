@@ -28,7 +28,7 @@ This component has no shared `variant` / `tone` / `size` props; its two booleans
 - **`multiple`** switches the group from accordion behavior (one panel at a time) to independent toggles, allowing several panels open simultaneously.
 - **`disableClose`** prevents the active panel from being dismissed; set it to force at least one panel to stay expanded at all times.
 
-Per-panel presentation - the visible `label`, heading `typography`, and the slotted body content - is configured on each `<mds-accordion-item>` child, not on the accordion itself.
+Per-panel presentation - the visible `label`, the title style `typography`, and the slotted body content - is configured on each `<mds-accordion-item>` child, not on the accordion itself.
 
 
 ### 2. Examples
@@ -104,17 +104,18 @@ Set `disable-close` to prevent the open panel from being collapsed. The currentl
 </mds-accordion>
 ```
 
-#### Heading Typography on Items
+#### A Title Above, Parts Inside
 
-Set `typography` on each `mds-accordion-item` to align the header level with the document outline. Defaults to `h5`; use a heavier heading for more prominent section headers.
+The accordion stands under the title of its section, written by its role; each item is a part, whose title is styled as `h6` (`titles/part`): write `typography="h6"` until the default moves from `h5` with the next major (#1218). The label of an item sits inside the button that opens it, so its `typography` is a style, not a level of the outline.
 
 ```html
+<mds-text typography="section" tag="h2">Documenti richiesti</mds-text>
 <mds-accordion>
-  <mds-accordion-item label="Sezione principale" typography="h3">
-    <mds-text>Contenuto della sezione principale.</mds-text>
+  <mds-accordion-item label="Documento di identita'" typography="h6">
+    <mds-text>Carta d'identita' o passaporto in corso di validita'.</mds-text>
   </mds-accordion-item>
-  <mds-accordion-item label="Sottosezione" typography="h4">
-    <mds-text>Contenuto della sottosezione.</mds-text>
+  <mds-accordion-item label="Codice fiscale" typography="h6">
+    <mds-text>La tessera sanitaria o il certificato di attribuzione.</mds-text>
   </mds-accordion-item>
 </mds-accordion>
 ```
