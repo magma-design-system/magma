@@ -40,11 +40,10 @@ cases:
     carried-by: [max-w-form, --magma-width-form]
   - id: field
     box: short-field
-    where: "half the column of its form: the whole mds-input-field (label, control, message), not the control inside it; two short fields of one subject share a row, in reading order, and under a column of `28rem` the halves take the whole column. `field-group` on the group lays them out and reads the attribute `short` on its children, so the attribute works before mds-input-field takes it as a property (#1202)"
+    where: "half the column of its form: the whole mds-input-field (label, control, message), not the control inside it; two short fields of one subject share a row, in reading order, and under a column of `28rem` the halves take the whole column. `field-group` on the group lays them out, reading the property `short` of mds-input-field"
     use: ["mds-input-field"]
     serves: [enabling, intuitive]
-    carried-by: [field-group]
-    carried-by-planned: [mds-input-field short]
+    carried-by: [field-group, mds-input-field short]
   - id: page
     box: [page, collection]
     where: "`page-frame` on the page: at most 1280 px, centred in the window, a gutter of `600` outside it, the column the bar gives its own content; everything inside starts at the start edge of the frame, and a table or a list takes the whole frame"
@@ -52,7 +51,7 @@ cases:
     carried-by: [page-frame, --magma-width-page, --magma-width-page-gutter]
   - id: dialog
     box: dialog
-    where: "at most the column of a form plus its inset, `--magma-width-dialog` (580 px at 16 px), one width for every dialog, confirmations included; on a phone the window takes the screen, as mds-modal does under 480 px. Until mds-modal gives it to its window (#1202) the window takes `w-full max-w-(--magma-width-dialog)`"
+    where: "at most the column of a form plus its inset, `--magma-width-dialog` (580 px at 16 px), one width for every dialog, confirmations included; on a phone the window takes the screen, as mds-modal does under 480 px; mds-modal gives it to its window"
     use: ["mds-modal", "mds-banner slot=window"]
     serves: [enabling, intuitive]
     carried-by: [--magma-width-dialog]
@@ -117,9 +116,9 @@ A case that leaves a variable out holds for any of its values.
 | --- | --- | --- | --- | --- | --- |
 | `reading` | box: text | the reading measure, `56ch` (65 to 80 characters on a full line in Karla): the reset caps `p`, `li` and `figcaption`, and mds-text caps itself with those tags, so whoever writes a page writes nothing; `max-w-text` elsewhere |  | inclusive | `mds-text`, `--magma-width-reading`, `max-w-text` |
 | `form` | box: form | `max-w-form` on the form, the width of the text around it (`56ch`, 532 px at 16 px); its fields take the whole column, and its row of actions stands at the end of the column (`actions/place`) |  | inclusive, enabling | `max-w-form`, `--magma-width-form` |
-| `field` | box: short-field | half the column of its form: the whole mds-input-field (label, control, message), not the control inside it; two short fields of one subject share a row, in reading order, and under a column of `28rem` the halves take the whole column. `field-group` on the group lays them out and reads the attribute `short` on its children, so the attribute works before mds-input-field takes it as a property (#1202) | `mds-input-field` | enabling, intuitive | `field-group`; planned: mds-input-field short |
+| `field` | box: short-field | half the column of its form: the whole mds-input-field (label, control, message), not the control inside it; two short fields of one subject share a row, in reading order, and under a column of `28rem` the halves take the whole column. `field-group` on the group lays them out, reading the property `short` of mds-input-field | `mds-input-field` | enabling, intuitive | `field-group`, `mds-input-field short` |
 | `page` | box: page or collection | `page-frame` on the page: at most 1280 px, centred in the window, a gutter of `600` outside it, the column the bar gives its own content; everything inside starts at the start edge of the frame, and a table or a list takes the whole frame |  | intuitive | `page-frame`, `--magma-width-page`, `--magma-width-page-gutter` |
-| `dialog` | box: dialog | at most the column of a form plus its inset, `--magma-width-dialog` (580 px at 16 px), one width for every dialog, confirmations included; on a phone the window takes the screen, as mds-modal does under 480 px. Until mds-modal gives it to its window (#1202) the window takes `w-full max-w-(--magma-width-dialog)` | `mds-modal`, `mds-banner slot=window` | enabling, intuitive | `--magma-width-dialog` |
+| `dialog` | box: dialog | at most the column of a form plus its inset, `--magma-width-dialog` (580 px at 16 px), one width for every dialog, confirmations included; on a phone the window takes the screen, as mds-modal does under 480 px; mds-modal gives it to its window | `mds-modal`, `mds-banner slot=window` | enabling, intuitive | `--magma-width-dialog` |
 
 No gaps: every combination has a case or is not applicable.
 
@@ -133,7 +132,7 @@ The widths at 16 px, and what an agent writes:
 | `form` | `56ch`, the column of the text | `max-w-form` on the form | `--magma-width-form` |
 | `field` | half the column; the whole column under `28rem` | `short` on `mds-input-field`, `field-group` on the group | none: `28rem` lives in the utility |
 | `page` | at most 1280 px, gutter `600` outside | `page-frame` on the page | `--magma-width-page`, `--magma-width-page-gutter` |
-| `dialog` | `56ch` plus twice the inset, 580 px | nothing once `mds-modal` carries it (#1202) | `--magma-width-dialog` |
+| `dialog` | `56ch` plus twice the inset, 580 px | nothing: `mds-modal` carries it | `--magma-width-dialog` |
 
 Why `56ch`: the zero of Karla is 9.5 px at 16 px, wider than an average character, so a measure
 in `ch` holds fewer characters than its number says. `56ch` is the one value whose full lines
@@ -182,14 +181,6 @@ Situations every application has, each with its case: they give the examples, th
 
 ## Magma gaps
 
-- `mds-input-field` has no property `short` yet (#1202): `field-group` reads the attribute all
-  the same, but the lint and the API do not know it.
-- `mds-modal` does not size its window (#1202): until it does, the window takes
-  `w-full max-w-(--magma-width-dialog)`, and the example of the guide of `mds-modal` drops
-  `max-w-md w-full mx-400`.
-- `mds-header-bar` caps its content at `--breakpoint-wide` with a padding of its own: it moves
-  to `--magma-width-page` and `--magma-width-page-gutter`, so a theme that moves the page moves
-  the bar with it (#1202).
 - `mds-banner` keeps its close button in a column beside the whole body, so in a window the
   fields end before the row of actions; with the X in the title row (`actions/dismiss`) the body
   of the window is the column of a form exactly.
