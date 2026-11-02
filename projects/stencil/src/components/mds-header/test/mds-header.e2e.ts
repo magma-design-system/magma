@@ -1,4 +1,6 @@
 import { render, vi } from '@stencil/vitest';
+import base from '../../../../../styles/dist/css/base.css?raw';
+import typography from '../../../../../styles/dist/css/typography.css?raw';
 import { page } from 'vitest/browser';
 
 describe('mds-header', () => {
@@ -150,6 +152,136 @@ describe('mds-header', () => {
       const { root } = await header('');
 
       expect(await fillOf(hamburgerOf(root))).toBe(own);
+    });
+  });
+  // #1189 surfaces/band: the header stands in the flow and stays put while the page scrolls
+  // (sticky), so the page starts under its bar with no number to keep in step with its height
+  describe('in the flow of the page', () => {
+    const BAR =
+      '<mds-header-bar><span>Servizi demografici</span><mds-button slot="nav">Pratiche</mds-button></mds-header-bar>';
+    // the header is the first child of the page, as in an application, and the page goes on
+    // under it, tall enough to scroll
+    const layout = async (attributes = '', bar = BAR) => {
+      const { root, waitForChanges } = await render(
+        `<div><mds-header ${attributes}>${bar}</mds-header><p>Pratiche</p><div style="height: 3000px"></div></div>`,
+      );
+      const header = root.querySelector<HTMLMdsHeaderElement>('mds-header')!;
+      const headerBar = header.querySelector('mds-header-bar')!;
+      await settled(headerBar);
+      return { header, headerBar, text: root.querySelector('p')!, waitForChanges };
+    };
+    // the bar slides between its appearances and its visibilities
+    const settled = (element: Element) =>
+      Promise.all(element.getAnimations().map((animation) => animation.finished));
+    const boxOf = (element: Element) => element.getBoundingClientRect();
+    // what a click at the middle of the box would reach
+    const hitAt = ({ left, top, width, height }: DOMRect) =>
+      document.elementFromPoint(left + width / 2, top + height / 2);
+
+    afterEach(async () => {
+      window.scrollTo(0, 0);
+      await page.viewport(1280, 800);
+    });
+
+    it('starts the page under its bar', async () => {
+      const { header, headerBar, text } = await layout();
+
+      expect(getComputedStyle(header).position).toBe('sticky');
+      expect(boxOf(header).height).toBeCloseTo(boxOf(headerBar).height, 1);
+      expect(boxOf(text).top).toBeGreaterThanOrEqual(boxOf(headerBar).bottom);
+    });
+
+    it('stays put while the page scrolls', async () => {
+      const { header, headerBar, text } = await layout();
+
+      window.scrollTo(0, 400);
+
+      await vi.waitFor(() => expect(window.scrollY).toBe(400));
+      expect(boxOf(header).top).toBe(0);
+      expect(boxOf(headerBar).top).toBe(0);
+      expect(boxOf(text).bottom).toBeLessThan(0);
+    });
+
+    it('keeps the room of its bar alone when the bar floats, its margin lower', async () => {
+      const { header, headerBar } = await layout('appearance="inline"');
+
+      expect(boxOf(header).height).toBeCloseTo(boxOf(headerBar).height, 1);
+      expect(boxOf(headerBar).top - boxOf(header).top).toBe(24);
+    });
+
+    it('does not move the page when the appearance changes on scroll', async () => {
+      const { header, headerBar, text, waitForChanges } = await layout();
+      const top = boxOf(text).top;
+
+      header.appearance = 'inline';
+      await waitForChanges();
+      await settled(headerBar);
+
+      expect(boxOf(text).top).toBe(top);
+    });
+
+    it('takes the clicks on its bar', async () => {
+      const { header, headerBar } = await layout();
+
+      expect(header.contains(hitAt(boxOf(headerBar)))).toBe(true);
+    });
+
+    it('lets the clicks through where its bar was, once auto-hide hides it', async () => {
+      const { header, headerBar } = await layout('auto-hide="100"');
+      const box = boxOf(header);
+
+      window.scrollTo(0, 600);
+      await vi.waitFor(() => expect(header.visibility).toBe('hidden'));
+      await settled(headerBar);
+
+      expect(boxOf(header).top).toBe(0);
+      expect(boxOf(headerBar).bottom).toBeLessThanOrEqual(0);
+      expect(header.contains(hitAt(box))).toBe(false);
+    });
+
+    it('lets the clicks through around the floating bar', async () => {
+      const { header } = await layout('appearance="inline" hide-backdrop');
+      const { left, top } = boxOf(header);
+
+      expect(header.contains(document.elementFromPoint(left + 4, top + 4))).toBe(false);
+    });
+
+    // the styles keep a field reached with Shift+Tab under the bar, rhythm/between-fields lower
+    // (base.css), with no script that measures it: the bar is one row
+    describe('the scroll padding of the page', () => {
+      const html = document.documentElement;
+      let sheet: HTMLStyleElement;
+      const padding = () => parseFloat(getComputedStyle(html).scrollPaddingTop);
+
+      beforeEach(() => {
+        sheet = document.createElement('style');
+        sheet.textContent = [typography, base].join('\n');
+        document.head.append(sheet);
+      });
+
+      afterEach(() => sheet.remove());
+
+      it.each([
+        [1280, 'stripe'],
+        [1280, 'inline'],
+        [375, 'stripe'],
+        [375, 'inline'],
+      ])('at %ipx, %s, ends rhythm/between-fields under the bar', async (width, appearance) => {
+        await page.viewport(width, 800);
+        // on a phone the navigation folds into the hamburger of the menu
+        const { headerBar } = await layout(
+          `appearance="${appearance}"`,
+          `${BAR}<div slot="menu">Pratiche</div>`,
+        );
+
+        expect(padding()).toBeCloseTo(boxOf(headerBar).bottom + 24, 0);
+      });
+
+      it('leaves the page alone without a header', async () => {
+        await render('<p>Pratiche</p>');
+
+        expect(getComputedStyle(html).scrollPaddingTop).toBe('auto');
+      });
     });
   });
 });

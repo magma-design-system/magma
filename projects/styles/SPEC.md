@@ -344,6 +344,15 @@ many resets do, wins over every layer. A page that scrolls in a box of its own p
 `var(--magma-status-bar-room, 0px)` at the end of that box. The browser test is in
 `mds-status-bar.e2e.ts`: when the sheet of the bar changes a part, the room follows it there.
 
+## The bar of mds-header (#1189)
+
+`mds-header` stands in the flow at the top of the page and stays put, sticky: the page starts under
+its bar by itself, and `base.css` only keeps a field reached with Shift+Tab under the bar
+(WCAG 2.4.11), `rhythm/between-fields` lower: `html:has(mds-header)` takes a `scroll-padding-top`
+of the bar, one row (its inset, 400 twice, and a button, 900), plus the margin the floating bar
+(`appearance="inline"`) stands lower, 600 and 400 up to 767px. No script measures the bar; content
+taller than a button makes it taller than that room. The browser test is in `mds-header.e2e.ts`.
+
 ## Focus utilities
 
 Use these utilities instead of writing focus styles manually:

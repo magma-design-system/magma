@@ -16,6 +16,9 @@ The `<mds-header>` web component is the top-level page header container of the M
 #### Semantic Behavior
 
 - **Compound parent**: Hosts `<mds-header-bar>` children in the default slot and relays its `menu` and `nav` settings down to the bar.
+- **In the flow, and it stays put**: The header takes the room of its bar at the top of the page, so the page starts under it with no padding of its own, and it stays at the top of the window while the page scrolls (`position: sticky`, `surfaces/band` of the design language). The room is the bar alone, whatever the appearance: the floating bar (`'inline'`) stands its margin lower, over the space under the header, so the page never moves when `appearanceSet` changes the appearance. Sticky holds inside the box of the parent: place the header first in the element that holds the whole page (`body`, or the root of the application); an ancestor with `overflow: hidden` or `auto` that does not scroll the page stops it (`overflow: clip` does not).
+- **Room for the focus**: While a header is on the page, the styles of Magma (`base.css`) stop a field reached with Shift+Tab under the bar, `rhythm/between-fields` lower (`scroll-padding-top`, WCAG 2.4.11), with no script that measures it: the bar is one row, its inset and a button. Content taller than a button (a logo over two lines of text) makes the bar taller than that room.
+- **Clicks**: The box of the header takes no click, only its bar, its backdrop and its menu do: the space around the floating bar and where the bar was before auto-hide hid it leave the page under them usable.
 - **Mobile menu**: A `[slot="menu"]` child is rendered inside a right-positioned modal. When it is absent there is no modal, and the bar receives `menu="none"` whatever `menu` says, so no hamburger shows that would open nothing.
 - **Open/close control**: The menu modal is opened by the bar's hamburger or programmatically via the `setOpened()` method; when the user closes it, `mdsHeaderClose` is emitted (with the bound bar).
 - **Scroll-driven appearance**: When `appearanceSet` names two appearances, `appearance` swaps between them as the page scrolls past its pixel threshold (300 when the third token is omitted).
@@ -39,7 +42,7 @@ Correct and idiomatic ways to use the `<mds-header>` component, ordered from mos
 
 #### Minimal Header with Navigation Bar
 
-The default form. Place exactly one `<mds-header-bar>` in the default slot. The bar receives the `menu` and `nav` breakpoint settings from the parent automatically; without a `menu` slot it receives `menu="none"`, so it shows no hamburger that would open nothing.
+The default form. Place the header first in the page and exactly one `<mds-header-bar>` in its default slot: the header stands in the flow and stays put as the page scrolls, so the page starts under the bar with no padding of its own. The bar receives the `menu` and `nav` breakpoint settings from the parent automatically; without a `menu` slot it receives `menu="none"`, so it shows no hamburger that would open nothing.
 
 ```html
 <mds-header>
@@ -228,6 +231,48 @@ Common incorrect uses of `<mds-header>`. Each entry pairs the wrong form with th
     <mds-img src="/logo.svg" alt="Logo"></mds-img>
   </mds-header-bar>
 </mds-header>
+```
+
+#### Do Not Reserve the Room of the Bar by Hand
+
+The header stands in the flow at the top of the page and stays put as it scrolls: the page already starts under its bar. A `padding-top` or a margin that made room for a fixed bar doubles it.
+
+```html
+<!-- INCORRECT -->
+<body class="pt-1700">
+  <mds-header>
+    <mds-header-bar>...</mds-header-bar>
+  </mds-header>
+  <main class="page-frame">...</main>
+</body>
+
+<!-- CORRECT -->
+<body>
+  <mds-header>
+    <mds-header-bar>...</mds-header-bar>
+  </mds-header>
+  <main class="page-frame">...</main>
+</body>
+```
+
+#### Do Not Wrap the Header Alone or Place It After the Content
+
+Sticky holds inside the box of the parent: a header alone in a wrapper scrolls away with it, and a header placed after the content stands at the end of the page. Make it the first child of the element that holds the whole page.
+
+```html
+<!-- INCORRECT -->
+<div class="top">
+  <mds-header>
+    <mds-header-bar>...</mds-header-bar>
+  </mds-header>
+</div>
+<main class="page-frame">...</main>
+
+<!-- CORRECT -->
+<mds-header>
+  <mds-header-bar>...</mds-header-bar>
+</mds-header>
+<main class="page-frame">...</main>
 ```
 
 #### Do Not Drive Scroll Appearance with JavaScript When `appearance-set` Is Available

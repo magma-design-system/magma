@@ -16,7 +16,7 @@ principle: >-
 keywords: [surface, card, band, sheet, background, elevation, container, sticky, panel, fill, well, canvas]
 assumptions:
   - "The surface roles of the palette (surface-default, -raised, -overlay, -muted, -sunken) flip with the mode by themselves."
-components: [mds-card, mds-header-bar, mds-status-bar, mds-modal, mds-banner, mds-button]
+components: [mds-card, mds-header, mds-header-bar, mds-status-bar, mds-modal, mds-banner, mds-button]
 related: [rhythm, titles, widths, actions]
 validated-on: []
 
@@ -44,10 +44,10 @@ cases:
     carried-by: [mds-card, gap-between-containers]
   - id: band
     content: fixed
-    where: "a band, a strip of surface as wide as the page, drawn by the component that stays put: the bar of the application (mds-header-bar, `surface-raised`, `shadow-md-sharp`), the actions of an edit (mds-status-bar, `surface-overlay`, `shadow-md`); never a header of the page made sticky"
-    use: ["mds-header-bar", "mds-status-bar"]
+    where: "a band, a strip of surface as wide as the page, drawn by the component that stays put, which keeps its room: the bar of the application (mds-header-bar in mds-header, `surface-raised`, `shadow-md-sharp`, in the flow at the top and sticky, so the page starts under it), the actions of an edit (mds-status-bar, `surface-overlay`, `shadow-md`, its room kept at the end of the page); never the header of the page (`section`) made sticky"
+    use: ["mds-header", "mds-header-bar", "mds-status-bar"]
     serves: intuitive
-    carried-by: [mds-header-bar, mds-status-bar]
+    carried-by: [mds-header, mds-header-bar, mds-status-bar]
   - id: edit-actions
     content: edit-actions
     where: "an mds-status-bar docked at the bottom of the window for the whole edit, in the order of `actions/order` (Annulla, then Salva last); the form has no row at its end. A form inside a page, a dialog or a card keeps its row at its end (`actions/place`)"
@@ -120,7 +120,7 @@ A case that leaves a variable out holds for any of its values.
 | `canvas` | content: page | `surface-default`, which the base styles already give the body; the content stands on it with no sheet: only the items of a set, what stays put and the window of a dialog rise from it |  | intuitive | `--magma-surface-default` |
 | `section` | content: section | bare: no surface, no border, no inset of its own; its title (`titles/section`) and `gap-between-sections` (1600) set it apart. The header of the page is the first section, in the flow, and scrolls away with the content |  | intuitive | `gap-between-sections` |
 | `card` | content: item | a card, whose boundary tells where one item ends and the next begins: `p-inset` (600) inside, `gap-between-containers` (400) between the cards, its title `titles/part` | `mds-card` | intuitive | `mds-card`, `gap-between-containers` |
-| `band` | content: fixed | a band, a strip of surface as wide as the page, drawn by the component that stays put: the bar of the application (mds-header-bar, `surface-raised`, `shadow-md-sharp`), the actions of an edit (mds-status-bar, `surface-overlay`, `shadow-md`); never a header of the page made sticky | `mds-header-bar`, `mds-status-bar` | intuitive | `mds-header-bar`, `mds-status-bar` |
+| `band` | content: fixed | a band, a strip of surface as wide as the page, drawn by the component that stays put, which keeps its room: the bar of the application (mds-header-bar in mds-header, `surface-raised`, `shadow-md-sharp`, in the flow at the top and sticky, so the page starts under it), the actions of an edit (mds-status-bar, `surface-overlay`, `shadow-md`, its room kept at the end of the page); never the header of the page (`section`) made sticky | `mds-header`, `mds-header-bar`, `mds-status-bar` | intuitive | `mds-header`, `mds-header-bar`, `mds-status-bar` |
 | `edit-actions` | content: edit-actions | an mds-status-bar docked at the bottom of the window for the whole edit, in the order of `actions/order` (Annulla, then Salva last); the form has no row at its end. A form inside a page, a dialog or a card keeps its row at its end (`actions/place`) | `mds-status-bar`, `mds-button variant=dark tone=outline`, `mds-button variant=primary tone=strong` | enabling | `mds-status-bar` |
 | `dialog` | content: dialog | the window is `mds-banner slot="window" variant="light" tone="box" dismissible` for a form, a choice and a confirmation; only a dialog that announces a state the person did not ask for, with a decision (the deadline of the application), takes the variant of that state, `box`. The window never changes variant when a state arrives, and no dialog is opened to announce a state that has happened (`message-placement`) | `mds-modal`, `mds-banner slot=window variant=light tone=box dismissible`, `mds-banner slot=window variant=warning tone=box dismissible` | inclusive, intuitive | `mds-banner slot=window variant=light tone=box` |
 
@@ -142,7 +142,7 @@ What stays put, and the surface its component draws:
 
 | Component | Surface | Where |
 | --- | --- | --- |
-| `mds-header-bar` (in `mds-header`) | `surface-raised`, `shadow-md-sharp` | a band across the top of the page |
+| `mds-header-bar` (in `mds-header`) | `surface-raised`, `shadow-md-sharp` | a band across the top of the page, in the flow and sticky: the page starts under it |
 | `mds-status-bar` | `surface-overlay`, `shadow-md` | docked to the bottom edge, for the actions of an edit |
 | the window of a dialog | the case `dialog` | over the page, which is inert |
 
@@ -181,9 +181,10 @@ Situations every application has, each with its case: they give the examples, th
   message as well as the name of the dialog. An `error` window would interrupt the screen
   reader for a question nothing has gone wrong yet in, which is why a confirmation stays
   `light`.
-- A bar docked at the bottom must never hide the field that has the focus (WCAG 2.4.11, Focus
-  Not Obscured): the page reserves its room while the bar is visible, a rule of the styles of
-  Magma with no script (#1203).
+- A bar that stays put must never hide the field that has the focus (WCAG 2.4.11, Focus Not
+  Obscured): the page reserves the room of the bar docked at the bottom while it is visible
+  (#1203), and stops a field reached with Shift+Tab under the bar at the top
+  (`scroll-padding-top`), rules of the styles of Magma with no script.
 
 ## Magma gaps
 
@@ -208,3 +209,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-31 | The file of the domain, with the window of a dialog as one case whose Parts give the table; "a subtle section" goes from `docs/agents/color.md` and `theming.md`. | The issue of the five domains (#1197). |
 | 2026-11-02 | A field stands a step off its surface: inside a surface that paints `overlay` (the window of a dialog, `mds-banner`, `mds-status-bar`, `mds-dropdown`, `mds-table`) it paints `surface-default`, passed down as `--magma-field-fill` (#1193). | The fill of a field sets it apart from where it stands, the layers of Carbon; the window keeps `overlay`, the meaning of the ladder in `theming.md`, and stands off the dimmed page in dark. Rejected: the window down a step, and the field as an outline only. Review round 1 of #1189. |
 | 2026-11-02 | While an `mds-status-bar` is visible, the styles reserve its room: a box after the body and `scroll-padding-bottom`, the tallest bar for its content plus `rhythm/between-fields`, counted with `:has()` (#1203). | CSS only, no script that measures (the rule of layout); the content of the bar has limits (one line of description, at most three actions), so its tallest is known. A box, not a padding of `html`, which a reset out of any layer would zero. Rejected: a class the page writes, which a page forgets. Review round 1 of #1189. |
+| 2026-11-02 | The bar of the application stands in the flow: `mds-header` is sticky at the top, the page starts under its bar, and the styles stop a field reached with Shift+Tab under it (`scroll-padding-top`, `band`). The room is the bar alone: the floating bar stands its margin lower, and the box of the header lets the clicks through. | The bar was fixed and nothing reserved its room: the title of a page stood 13 px under it instead of `gap-between-sections`, and a field could end under it. Sticky takes the room by itself, with no number to keep in step with its height; a room that followed the appearance would move the page when `appearance-set` changes it on scroll. Rejected: the bar fixed with a padding of the page from the styles, as at the bottom (#1203), a number to keep in step. A page that kept the room by hand gets it twice. Review round 1 of #1189. |

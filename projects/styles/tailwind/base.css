@@ -138,6 +138,33 @@
     }
   }
 
+  /* The bar of mds-header (#1189, surfaces/band): the header stands in the flow, sticky, so the
+   * page starts under it by itself; while it stays put it covers the top of the window, and a
+   * field reached with Shift+Tab stops under it (WCAG 2.4.11), rhythm/between-fields lower, as at
+   * the bar of mds-status-bar. No script measures the bar: it is one row, its inset (400 twice) and
+   * a button (900); the floating bar (`inline`) stands its margin lower, 600, and 400 up to 767px
+   * (--mds-header-inline-margin, -mobile). */
+
+  html:has(mds-header) {
+    scroll-padding-top: calc(
+      2 * --spacing(400) + --spacing(900) + var(--magma-rhythm-between-fields)
+    );
+  }
+
+  html:has(mds-header[appearance='inline']) {
+    scroll-padding-top: calc(
+      --spacing(600) + 2 * --spacing(400) + --spacing(900) + var(--magma-rhythm-between-fields)
+    );
+  }
+
+  @media (width <= 767px) {
+    html:has(mds-header[appearance='inline']) {
+      scroll-padding-top: calc(
+        --spacing(400) + 2 * --spacing(400) + --spacing(900) + var(--magma-rhythm-between-fields)
+      );
+    }
+  }
+
   /* The box of the hydrated components (against Tailwind's preflight) is kept by
    * hydrated.css: imported into `base` with layer(base), this file lands in a
    * sublayer, and the rules of a sublayer lose to the ones of `base` itself. */
