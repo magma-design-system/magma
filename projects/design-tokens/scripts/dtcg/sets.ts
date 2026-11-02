@@ -517,6 +517,18 @@ export function buildDtcg({
       token('dimension', link ?? dimension(literal), { css, tier: 'semantic' }, extra(description)),
     );
   }
+  // the threshold of a row of actions (actions/stacked, `--magma-container-*`)
+  for (const [key, { value, description }] of entries('role.container'))
+    put(
+      base,
+      ['magma', 'container', key],
+      token(
+        'dimension',
+        dimension(String(resolved(value))),
+        { css: `--magma-container-${key}`, tier: 'semantic' },
+        extra(description),
+      ),
+    );
 
   for (const [key, range] of Object.entries(
     source('screen') as Record<string, { min: { value: string } }>,

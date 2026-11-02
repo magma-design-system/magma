@@ -231,6 +231,7 @@ bridges them in `tailwind-theme-typography.css`.
 | `widths/form` | `--magma-width-form` | `var(--magma-width-reading)` | `--container-form`: `max-w-form` |
 | `widths/page` | `--magma-width-page`, `--magma-width-page-gutter` | 1280px, 24px | the `page-frame` utility of styles |
 | `widths/dialog` | `--magma-width-dialog` | `calc(var(--magma-width-form) + 2 * var(--magma-rhythm-inset))` | none: the default of `mds-modal` |
+| `actions/stacked` | `--magma-container-actions` | `23.75rem` (380px) | `--container-actions`, its literal: `@actions:`, `@max-actions:` |
 | `titles/<role>` | `--text-size-title-<role>` and its three companions | `var()` of the level (page `h3`, section and dialog `h5`, part and group `h6`) | `text-title-<role>` utilities of styles |
 
 - **The relations of the rhythm**: `inline`, `title-content`, `label-control` (300),
@@ -238,6 +239,11 @@ bridges them in `tailwind-theme-typography.css`.
   `between-sections` (1600). Each is a literal, so a project that changes `--spacing` in its
   `@theme` does not move it; `test/roles.test.mts` holds the values and `rhythm/step-ratio`
   (each relation at least 1.5 times the one it contains).
+- **The threshold of a row of actions**: under `--magma-container-actions` of its container a
+  row of actions stacks. A container query reads no `var()`, so the Tailwind bridge holds the
+  literal (`role.container` of `tokens/sizing/role.json`, `--container-<key>`), and a theme that
+  moves the role does not move the queries; `test/roles.test.mts` holds the two equal. UI code
+  writes `@max-actions:`, a component sheet `@container (width < --theme(--container-actions))`.
 - **Density** (#691) will turn each rhythm token into a multiple of `--magma-unit-container`
   and declare it again on each density scope. A custom property resolves where it is declared:
   the Tailwind bridge `--spacing-<id>` is declared on `:root`, so a scope below it (a region)

@@ -17,6 +17,8 @@ export const tokenDescriptions: Record<string, string> = {
     'The space of each relation of the rhythm, named after its rule (rhythm/between-fields is --magma-rhythm-between-fields): UI code writes the relation (gap-between-fields, p-inset), never its step, and a project that changes --spacing does not move it.',
   'magma.width':
     'The widths of the design language, named after their rule (widths/form is --magma-width-form): the measure of text, the column of a form, the frame of a page and the window of a dialog.',
+  'magma.container':
+    'The widths of a container under which a layout of the design language changes, named after their rule (actions/stacked is --magma-container-actions): a container query reads no var(), so UI code writes the Tailwind variant (@max-actions:) and a component sheet --theme(--container-actions).',
 
   palette:
     'The colour primitives the semantic roles are built from: they follow the light and dark mode, not the named themes or the contrast preference. Each ramp runs from 01, the most contrast against the page, to 10, the closest to it.',
