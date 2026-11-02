@@ -86,6 +86,25 @@ describe('mds-status-bar', () => {
     expect(start.top).toBeGreaterThanOrEqual(innerHeight - 1);
   });
 
+  // #1202: mds-modal gives a slotted window the width of a dialog; the area of the bar is the
+  // window of its inner modal, and it hugs the bar at the end of the screen all the same
+  it('hugs its bar at the end of a wide screen', async () => {
+    const { root } = await render<HTMLMdsStatusBarElement>(
+      '<mds-status-bar visible description="Modifiche non salvate"><button>Annulla</button><button>Salva</button></mds-status-bar>',
+    );
+    const area = root.shadowRoot!.querySelector<HTMLElement>('.status-bar-area')!;
+    const bar = root.shadowRoot!.querySelector<HTMLElement>('.status-bar')!;
+    const areaStyle = getComputedStyle(area);
+    const areaBox = area.getBoundingClientRect();
+    const barBox = bar.getBoundingClientRect();
+
+    expect(areaBox.width).toBeCloseTo(
+      barBox.width + parseFloat(areaStyle.paddingLeft) + parseFloat(areaStyle.paddingRight),
+      0,
+    );
+    expect(areaBox.right).toBeCloseTo(innerWidth - parseFloat(areaStyle.marginRight), 0);
+  });
+
   // #1070: the mobile rule gives the bar the full width, and its padding came on top of it
   describe('at 480px and less', () => {
     afterEach(async () => {
