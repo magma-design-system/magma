@@ -120,8 +120,8 @@ for (const file of files) {
 for (const [id, errors] of linkErrors(patterns))
   report(files.find((one) => one.data.id === id)!.file, errors);
 
-// the previews: their keys and their stage, the case they show, and their markup through the
-// lint the products run (strict, every finding an error here)
+// the previews: their keys and their stage, the case or the rule of a domain they show, and their
+// markup through the lint the products run (strict, every finding an error here)
 const previews = readPreviews(PATTERNS_DIR);
 const linter = new Linter({ cwd: REPO });
 const lintConfig: Linter.Config[] = [
@@ -180,5 +180,5 @@ console.log(
     patterns.length - domains - blocks - decided
   } candidates): ${combinations} combinations each in one case, a gap or not applicable, or with a required region of a block; every component, attribute, carrier, lint rule and link exists; ${
     previews.length
-  } preview(s), each of a case and clean`,
+  } preview(s), each of a case or a rule of a domain and clean`,
 );

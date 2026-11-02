@@ -501,6 +501,14 @@ describe('the guide tool', () => {
     expect(rhythm).toMatchObject({ guide: 'rhythm', title: 'Rhythm' });
     // the path under agents/ names it too
     expect(await run('get_guide', { guide: 'agents/patterns/rhythm.md' })).toEqual(rhythm);
+    // the previews of its cases and of its rules, for render_preview (#1221)
+    expect(rhythm.previews).toEqual([
+      {
+        id: 'shared-inset',
+        kind: 'rule',
+        file: '../magma/agents/patterns/previews/rhythm/shared-inset.html',
+      },
+    ]);
     const cases = await run('get_guide', { guide: 'rhythm', section: 'cases' });
     expect(cases.text).toMatch(/^## Cases\n/);
     expect(cases.text).toContain('| `between-fields` | relation: between-fields | `gap-600`');
@@ -676,6 +684,29 @@ describe('the pattern tool', () => {
     expect(answer.preview.markup).not.toMatch(/<!--/);
   });
 
+  // #1221: a rule of a domain may have a preview, and a case more examples
+  test('a case names its other examples, a domain the previews of its rules', async () => {
+    const previews = '../magma/agents/patterns/previews';
+    const { pattern } = await run('get_pattern', { id: 'message-placement' });
+    expect(pattern.cases.find((one: { id: string }) => one.id === 'region-info')).toMatchObject({
+      preview: `${previews}/message-placement/region-info.html`,
+      examples: [`${previews}/message-placement/region-info.2.html`],
+    });
+    const { answer } = await run('get_pattern', {
+      id: 'message-placement',
+      situation: { about: 'region', outcome: 'info' },
+    });
+    expect(answer).toMatchObject({
+      id: 'region-info',
+      preview: { file: `${previews}/message-placement/region-info.html` },
+      examples: [`${previews}/message-placement/region-info.2.html`],
+    });
+    const rhythm = (await run('get_pattern', { id: 'rhythm' })).pattern;
+    const rule = (id: string) => rhythm['always-true'].find((one: { id: string }) => one.id === id);
+    expect(rule('shared-inset').preview).toBe(`${previews}/rhythm/shared-inset.html`);
+    expect(rule('step-ratio')).not.toHaveProperty('preview');
+  });
+
   test('one section, a candidate as a gap, an unknown id', async () => {
     const section = await run('get_pattern', { id: 'confirm-action', section: 'behaviour' });
     expect(section).toMatchObject({ id: 'confirm-action', section: 'Behaviour over time' });
@@ -699,7 +730,7 @@ describe('the pattern tool', () => {
       readFileSync(file, 'utf8')
         .replace(
           /^( {2}- \{ id: action-failed-in-place,.*?) \}$/m,
-          '$1, rules: [rhythm/inset, rhythm/inline] }',
+          '$1, rules: [rhythm/inset, rhythm/inline, rhythm/shared-inset] }',
         )
         .replace(/^always-true:\n/m, 'always-true:\n  - { id: ladder-only, from: rhythm }\n'),
     );
@@ -728,6 +759,12 @@ describe('the pattern tool', () => {
         id: 'inline',
         from: 'rhythm',
         rule: expect.stringMatching(/^`gap-300` between elements side by side/),
+      }),
+      // a rule with a preview names its path (#1221)
+      expect.objectContaining({
+        id: 'shared-inset',
+        from: 'rhythm',
+        preview: expect.stringMatching(/agents\/patterns\/previews\/rhythm\/shared-inset\.html$/),
       }),
       expect.objectContaining({
         id: 'ladder-only',
@@ -1340,6 +1377,59 @@ describe('render_preview', () => {
     expect(sizeOf(image!.file)).toEqual({ width: 480, height: 300 });
   }, 30_000);
 
+  // #1221: the preview of a rule of a domain, and another example of a case
+  test('renders the preview of a rule of a domain, and another example of a case', async () => {
+    const rule = await preview.run({ pattern: 'rhythm', rule: 'shared-inset', widths: [480] });
+    expect(rule).toMatchObject({
+      representative: true,
+      preview: {
+        pattern: 'rhythm',
+        rule: 'shared-inset',
+        file: expect.stringMatching(/agents\/patterns\/previews\/rhythm\/shared-inset\.html$/),
+      },
+    });
+    expect(rule.preview).not.toHaveProperty('case');
+    const second = await preview.run({
+      pattern: 'message-placement',
+      case: 'region-info',
+      example: 2,
+      widths: [480],
+    });
+    expect(second).toMatchObject({
+      preview: {
+        case: 'region-info',
+        example: 2,
+        try: 'Look at the message in the region, with longer words.',
+      },
+    });
+  }, 30_000);
+
+  test('a rule asked as a case, a missing example, a rule with no preview, are refused', async () => {
+    await expect(preview.run({ pattern: 'rhythm', case: 'shared-inset' })).rejects.toThrow(
+      'shared-inset is a rule of rhythm, not a case: give rule.',
+    );
+    await expect(preview.run({ pattern: 'rhythm', rule: 'inline' })).rejects.toThrow(
+      'inline is a case of rhythm, not a rule: give case.',
+    );
+    await expect(preview.run({ pattern: 'rhythm', rule: 'step-ratio' })).rejects.toThrow(
+      'No preview of the rule step-ratio of rhythm: the rules with one are shared-inset.',
+    );
+    await expect(preview.run({ pattern: 'rhythm', rule: 'nope' })).rejects.toThrow(
+      'rhythm has no rule nope of its own: its rules are step-ratio, shared-inset, ladder-only.',
+    );
+    await expect(
+      preview.run({ pattern: 'message-placement', case: 'region-info', example: 3 }),
+    ).rejects.toThrow(
+      'The case region-info of message-placement has 2 examples: example is 1 to 2.',
+    );
+    await expect(
+      preview.run({ pattern: 'message-placement', case: 'region-info', rule: 'x' }),
+    ).rejects.toThrow('Give case or rule: not both.');
+    await expect(
+      preview.run({ pattern: 'message-placement', case: 'region-info', example: 0 }),
+    ).rejects.toThrow('example is a whole number from 1, the first example.');
+  });
+
   test('a case with no preview, or markup and a case together, are refused', async () => {
     await expect(
       preview.run({ pattern: 'message-placement', case: 'field-error' }),
@@ -1353,7 +1443,7 @@ describe('render_preview', () => {
       /^No pattern nope in this magma: the patterns are /,
     );
     await expect(preview.run({ pattern: 'message-placement' })).rejects.toThrow(
-      'Give both pattern and case, to render the preview of a case.',
+      'Give both pattern and case, to render the preview of a case, or pattern and rule for a rule of a domain.',
     );
     await expect(
       preview.run({
@@ -1421,10 +1511,8 @@ describe.skipIf(!existsSync(BUILT) && !process.env.CI)('render_preview on the bu
         ...(one.height ? { height: one.height } : {}),
         ...(one.wholePage ? { wholePage: true } : {}),
       });
-      expect({ preview: `${one.pattern}/${one.case}`, problems: image!.problems }).toEqual({
-        preview: `${one.pattern}/${one.case}`,
-        problems: [],
-      });
+      const name = `${one.pattern}/${one.id}${one.example > 1 ? `.${one.example}` : ''}`;
+      expect({ preview: name, problems: image!.problems }).toEqual({ preview: name, problems: [] });
     }
   }, 120_000);
 });

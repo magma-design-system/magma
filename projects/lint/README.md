@@ -145,7 +145,10 @@ or on the guide it enforces, not only on fixtures picked by hand.
   (#1186) is the file `previews/<pattern>/<case>.html` beside the patterns, matched by its path
   only, so a renamed case moves its file and the check says so; each case of a pattern names
   its path, and the answer for a situation carries the stage with what to try, since that is
-  the one case the agent builds and its markup is short. Only Magma's cases have previews: a
+  the one case the agent builds and its markup is short. More examples of a case are
+  `<case>.<n>.html` from 2, with no gap (the choice of the maintainer on #1221, beside the first
+  rather than in a folder of their own, so the folder of a pattern stays one level): the pattern
+  names their paths in `examples`, the answer too, and `render_preview` takes `example`. Only Magma's cases have previews: a
   product layer adds situations, never a case to show.
 - **The domains of Foundation** (`kind: foundation`, `src/core/patterns.ts`, #1196): the
   domains of the design language decided on #1189, in the same format, so they are listed,
@@ -164,7 +167,11 @@ or on the guide it enforces, not only on fixtures picked by hand.
   check ask to move it, so the files follow the carriers as they are built. A pattern cites a
   domain by a rule or by a case, `{ id, from: rhythm }`, since the relations of a domain are its
   rules too; a domain gives a case and a rule the same id never, or one citation would name
-  both. The relations of a domain have no previews yet: whether they get one is open on #1189.
+  both. A relation of a domain has a preview as a case of a pattern does, and a rule of its own
+  may have one too, `previews/<domain>/<rule>.html` (the choice of the maintainer on #1221), never
+  a rule it cites, which its own domain shows: `get_pattern` names its path on the rule and on
+  the rules of an answer, `get_guide` lists the previews of a domain with the kind of each, case
+  or rule, and `render_preview` takes `rule`, telling a rule asked as a case apart.
 - **The building blocks** (`kind: block`, `src/core/patterns.ts`, #1210): a section of a page
   that comes back in two patterns or more, the threshold of the docs site (`plan/DIRECTION.md`,
   "Building blocks section"), with `regions` in place of cases, as decided on #1174 (the page
@@ -237,7 +244,8 @@ or on the guide it enforces, not only on fixtures picked by hand.
   that has every call the tool makes (playwright.dev/docs/api); the browser, Chrome, then
   Edge, the channels of playwright.dev/docs/browsers, then Playwright's own Chromium. With
   `pattern` and `case` instead of markup it renders the preview Magma ships for that case
-  (#1186), found under an old id of the pattern too: at the height the preview declares, the
+  (#1186), with `rule` the preview of a rule of a domain and with `example` another example of
+  either (#1221), found under an old id of the pattern too: at the height the preview declares, the
   page an overlay needs, with no inset around a stage that declares `whole-page`, and with
   `lang="it"`, the language of the words of the previews (`docs/PATTERNS.md`), unless the call
   gives its own.

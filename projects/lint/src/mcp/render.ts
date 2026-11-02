@@ -10,8 +10,9 @@
   magma, as ESLint and Stylelint are), driving a browser of the machine; the image goes back
   as MCP image content and as a file in node_modules/.cache, which the agent attaches where its
   client does not show the image to the person. Instead of markup it renders the preview of a
-  case of a pattern (agents/patterns/previews/<pattern>/<case>.html, #1186), with the height of
-  its page and the language of its words, so the check of the image runs on every preview.
+  case of a pattern (agents/patterns/previews/<pattern>/<case>.html, #1186), or of a rule of a
+  domain, and another example of either (<id>.<n>.html, #1221), with the height of its page and
+  the language of its words, so the check of the image runs on every preview.
 */
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -19,7 +20,14 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { magmaRoot } from '../core/data.js';
-import { indexPatterns, previewOf, readPatternDir, readPreviews } from '../core/patterns.js';
+import {
+  examplesOf,
+  indexPatterns,
+  ownRules,
+  previewOf,
+  readPatternDir,
+  readPreviews,
+} from '../core/patterns.js';
 import { packageDir, readJsonFile, resolvePackage, type ToolContext } from './context.js';
 import { folderOf, slugFile } from './icons.js';
 import { ToolError, withImages, type Tool } from './protocol.js';
@@ -529,26 +537,51 @@ export const render = async (
 const string = { type: 'string' };
 
 /**
- * The preview of a case Magma ships, by the id of its pattern (an old one too) and of its case;
- * the words of the previews are Italian, as the examples of the components (docs/PATTERNS.md).
+ * The preview Magma ships of a case of a pattern, or of a rule of a domain (#1221), by the id of
+ * its pattern (an old one too) and of the case or the rule, its first example unless another is
+ * asked; the words of the previews are Italian, as the examples of the components
+ * (docs/PATTERNS.md).
  */
 export const PREVIEW_LANG = 'it';
-const shippedPreview = (context: ToolContext, pattern: string, id: string) => {
+const shippedPreview = (
+  context: ToolContext,
+  pattern: string,
+  wanted: { kind: 'case' | 'rule'; id: string },
+  example: number,
+) => {
   const dir = path.join(magmaRoot(context.settings), 'agents', 'patterns');
   const { byId, aliases } = indexPatterns(readPatternDir(dir).map((one) => one.data));
   const realId = byId.has(pattern) ? pattern : aliases.get(pattern);
-  if (!realId)
+  const data = realId ? byId.get(realId) : undefined;
+  if (!realId || !data)
     throw new ToolError(
       `No pattern ${pattern} in this magma: the patterns are ${[...byId.keys()].join(', ')}.`,
     );
-  const previews = readPreviews(dir).filter((one) => one.pattern === realId);
-  const found = previewOf(previews, realId, id);
-  if (!found)
+  const { kind, id } = wanted;
+  const cases = (data.cases ?? []).map((one) => one.id);
+  const rules = ownRules(data);
+  // a case asked as a rule, or a rule as a case: say which it is
+  if (kind === 'case' && !cases.includes(id) && rules.includes(id))
+    throw new ToolError(`${id} is a rule of ${realId}, not a case: give rule.`);
+  if (kind === 'rule' && !rules.includes(id))
     throw new ToolError(
-      previews.length
-        ? `No preview of the case ${id} of ${realId}: the cases with one are ${previews.map((one) => one.case).join(', ')}.`
-        : `${realId} has no preview of its cases in this magma yet.`,
+      cases.includes(id)
+        ? `${id} is a case of ${realId}, not a rule: give case.`
+        : `${realId} has no rule ${id} of its own${rules.length ? `: its rules are ${rules.join(', ')}` : ''}.`,
     );
+  const previews = readPreviews(dir).filter((one) => one.pattern === realId);
+  const ofKind = previews.filter((one) => (kind === 'rule') === rules.includes(one.id));
+  const found = previewOf(previews, realId, id, example);
+  if (!found) {
+    const examples = examplesOf(previews, realId, id);
+    throw new ToolError(
+      examples.length
+        ? `The ${kind} ${id} of ${realId} has ${examples.length} example${examples.length > 1 ? 's' : ''}: example is 1 to ${examples.length}.`
+        : ofKind.length
+          ? `No preview of the ${kind} ${id} of ${realId}: the ${kind}s with one are ${[...new Set(ofKind.map((one) => one.id))].join(', ')}.`
+          : `${realId} has no preview of its ${kind}s in this magma yet.`,
+    );
+  }
   return found;
 };
 
@@ -556,7 +589,7 @@ export const renderPreview = (context: ToolContext): Tool => ({
   name: 'render_preview',
   title: 'Render Magma markup as an image',
   description:
-    'Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. Instead of markup, pattern and case render the preview Magma ships for that case of a pattern. Render each option before asking a person to decide on an interface. Needs playwright-core in the project and Chrome or Edge on the machine; writes the image into node_modules/.cache/magma/previews.',
+    'Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. Instead of markup, pattern and case render the preview Magma ships for that case of a pattern, pattern and rule the preview of a rule of a domain of Foundation, and example another example of either. Render each option before asking a person to decide on an interface. Needs playwright-core in the project and Chrome or Edge on the machine; writes the image into node_modules/.cache/magma/previews.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -574,6 +607,17 @@ export const renderPreview = (context: ToolContext): Tool => ({
         type: 'string',
         description:
           'With pattern: one of its cases, such as "action-failed-in-place"; its preview is rendered with the height and the language it declares.',
+      },
+      rule: {
+        type: 'string',
+        description:
+          'With pattern, instead of case: a rule of a domain of Foundation with a preview, such as "stacked" of "actions" (get_guide lists them).',
+      },
+      example: {
+        type: 'integer',
+        minimum: 1,
+        description:
+          'With case or rule: which example of it, 1 (default) for the first, 2 on for the others get_pattern lists in examples.',
       },
       widths: {
         type: 'array',
@@ -609,8 +653,15 @@ export const renderPreview = (context: ToolContext): Tool => ({
       theme: string,
       preview: {
         type: 'object',
-        properties: { pattern: string, case: string, file: string, try: string },
-        required: ['pattern', 'case', 'file'],
+        properties: {
+          pattern: string,
+          case: string,
+          rule: string,
+          example: { type: 'integer' },
+          file: string,
+          try: string,
+        },
+        required: ['pattern', 'file'],
       },
       representative: { type: 'boolean' },
       images: {
@@ -638,13 +689,39 @@ export const renderPreview = (context: ToolContext): Tool => ({
     required: ['magma', 'mode', 'representative', 'images'],
   },
   annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true },
-  run: async ({ markup, widths, height, mode = 'light', theme, lang, pattern, case: caseId }) => {
-    const byCase = pattern !== undefined || caseId !== undefined;
+  run: async ({
+    markup,
+    widths,
+    height,
+    mode = 'light',
+    theme,
+    lang,
+    pattern,
+    case: caseId,
+    rule,
+    example,
+  }) => {
+    const byCase =
+      pattern !== undefined || caseId !== undefined || rule !== undefined || example !== undefined;
     if (byCase && markup !== undefined)
       throw new ToolError('Give markup, or pattern and case: not both.');
-    if (byCase && (typeof pattern !== 'string' || typeof caseId !== 'string'))
-      throw new ToolError('Give both pattern and case, to render the preview of a case.');
-    const shipped = byCase ? shippedPreview(context, String(pattern), String(caseId)) : undefined;
+    if (caseId !== undefined && rule !== undefined)
+      throw new ToolError('Give case or rule: not both.');
+    const id = caseId ?? rule;
+    if (byCase && (typeof pattern !== 'string' || typeof id !== 'string'))
+      throw new ToolError(
+        'Give both pattern and case, to render the preview of a case, or pattern and rule for a rule of a domain.',
+      );
+    if (example !== undefined && (!Number.isInteger(example) || (example as number) < 1))
+      throw new ToolError('example is a whole number from 1, the first example.');
+    const shipped = byCase
+      ? shippedPreview(
+          context,
+          String(pattern),
+          { kind: rule !== undefined ? 'rule' : 'case', id: String(id) },
+          (example as number | undefined) ?? 1,
+        )
+      : undefined;
     if (!shipped && (typeof markup !== 'string' || !markup.trim()))
       throw new ToolError('Give the markup to render, or pattern and case.');
     if (!MODES.includes(mode as (typeof MODES)[number]))
@@ -706,7 +783,8 @@ export const renderPreview = (context: ToolContext): Tool => ({
           ? {
               preview: {
                 pattern: shipped.pattern,
-                case: shipped.case,
+                [rule !== undefined ? 'rule' : 'case']: shipped.id,
+                ...(shipped.example > 1 ? { example: shipped.example } : {}),
                 file: path.relative(context.root, shipped.file),
                 ...(shipped.try ? { try: shipped.try } : {}),
               },

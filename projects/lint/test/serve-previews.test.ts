@@ -104,6 +104,8 @@ describe('serve.previews', () => {
     expect(listStages(dirs).map((one) => one.key)).toEqual([
       'previews/message-placement/action-failed-in-place',
       'previews/message-placement/region-info',
+      'previews/message-placement/region-info.2',
+      'previews/rhythm/shared-inset',
       'drafts/decision/option-a',
     ]);
   });

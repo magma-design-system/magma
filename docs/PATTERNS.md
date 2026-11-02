@@ -19,7 +19,7 @@ block, below).
 | The patterns, one file each | `docs/agents/patterns/<id>.md`, written by the maintainers of Magma |
 | The domains of Foundation, one file each | the same folder, `kind: foundation`: one catalogue, told apart by kind |
 | The building blocks, one file each | the same folder, `kind: block` |
-| The preview of each case | `docs/agents/patterns/previews/<id>/<case>.html` (#1186) |
+| The preview of each case | `docs/agents/patterns/previews/<id>/<case>.html` (#1186); of a rule of a domain `<domain>/<rule>.html`, and the other examples of a case or a rule `<case>.2.html`, `<case>.3.html` (#1221) |
 | What ships | `agents/patterns/<id>.md`, the previews in `agents/patterns/previews/` and the catalogue `agents/patterns.md` in the three entry packages, written by `projects/stencil/scripts/sync-agent-docs.ts` before the build |
 | Who reads them | the `get_pattern` tool of the MCP server, the `ui` and `review` skills of the Claude Code plugin, the agents of the products, the docs site |
 | The format and its checks | `projects/lint/src/core/patterns.ts`, which ships inside `magma` |
@@ -120,7 +120,8 @@ changes:
   carries them, or a relation writes it in `use`), and `get_guide` serves each domain whole,
   by its id.
 - **Previews, a pilot**: a case of a domain may have a preview, as a case of a pattern does
-  (`previews/<domain>/<case>.html`); the domain shows the rule at work. `widths` is the pilot
+  (`previews/<domain>/<case>.html`), and a rule of its own too (`previews/<domain>/<rule>.html`,
+  #1221); the domain shows the rule at work. `widths` is the pilot
   (#1189, 2026-11-01): one preview per case, made from the option chosen live. Until the pilot is
   weighed, the check takes the previews of a domain and does not list the ones a domain lacks.
 
@@ -188,6 +189,13 @@ try: Press Salva: the error shows above the form, and what was written stays.
   `serve.previews` show them; a product without Tailwind writes the custom property a class
   carries (`max-width: var(--magma-width-form)`). A `style` attribute only for what no class
   carries.
+- **A rule of a domain, more examples** (#1221). A rule of a domain of its own (an
+  `always-true` entry with no `from`) may have a preview, `previews/<domain>/<rule>.html`, when an
+  example shows a rule rather than a case (`actions/stacked`: a row of three actions that stacks
+  under its threshold). A case or a rule may have more examples, another context or another
+  length of the words, to show what it keeps the same and what it lets vary: `<case>.2.html`,
+  `<case>.3.html`, after `<case>.html`, with no gap. A rule of a pattern has none: its cases show
+  it.
 - **What to try**, required: one line, what to do in the preview ("Press Salva: ..."), or what
   to look at when there is nothing to do. The page shows it under the stage. A live preview with
   nothing said is a still form; the maintainer chose the line and no animation (#1186).
@@ -200,9 +208,12 @@ try: Press Salva: the error shows above the form, and what was written stays.
   stage that is a whole page and lays out its own frame (`widths/page`: the bar and the gutter
   of the page start at the edge of the document, as in an application).
 - **Who reads it.** The docs site from `node_modules`; `get_pattern` gives its path on each case
-  of a pattern, and the stage itself with what to try in the answer for a situation;
-  `render_preview` renders it with `pattern` and `case`, at its height, with the check of the
-  image (a component not hydrated, a flat region, a font or an icon not loaded, a word broken).
+  of a pattern and on each rule of a domain, the paths of the other examples in `examples`, and
+  in the answer for a situation the stage itself with what to try, the paths of the other
+  examples and of the previews of the rules the case relies on; `get_guide` lists the previews of
+  a domain; `render_preview` renders it with `pattern` and `case`, or `rule`, and `example` from
+  2, at its height, with the check of the image (a component not hydrated, a flat region, a font
+  or an icon not loaded, a word broken).
   The lint tests render every preview on the build, in CI too, and fail on any problem.
 - **Editing one live.** `nx run lint:serve.previews` serves the previews, and the drafts not
   chosen yet in `.claude/previews/<folder>/<name>.html` (untracked, the same format), at
@@ -243,8 +254,9 @@ try: Press Salva: the error shows above the form, and what was written stays.
 - the links: every pattern, case and rule cited exists, never under an old id; the `rules` of a
   case name a rule or a relation of a domain, never of a pattern nor of the domain itself;
 - the body: the sections in order, the generated ones up to date;
-- the previews: each of a case that exists (a renamed case moves its file), with what to try, only
-  a stage, and its markup clean for the Magma lint (the strict preset); the cases with no preview
+- the previews: each of a case that exists, or of a rule of its own of a domain (a renamed case
+  moves its files), its examples following one another from the first, with what to try, only a
+  stage, and its markup clean for the Magma lint (the strict preset); the cases with no preview
   are listed as a warning, which does not fail the check while the previews are being made.
 
 `check.usage-docs` reads the bodies too, with the rules of every agent guide.

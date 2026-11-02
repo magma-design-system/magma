@@ -13,6 +13,7 @@ import {
   carrierErrors,
   componentErrors,
   coverage,
+  examplesOf,
   formatErrors,
   layerErrors,
   linkErrors,
@@ -24,6 +25,7 @@ import {
   parsePreview,
   parseUse,
   previewLinkErrors,
+  previewOf,
   projectErrors,
   readPatternDir,
   readPreviews,
@@ -1218,7 +1220,8 @@ describe('the previews of the cases', () => {
     const preview = stage('<!--\ntry: Press Salva.\nheight: 260\n-->');
     expect(preview).toMatchObject({
       pattern: 'small',
-      case: 'on-field',
+      id: 'on-field',
+      example: 1,
       try: 'Press Salva.',
       height: 260,
       errors: [],
@@ -1293,7 +1296,80 @@ describe('the previews of the cases', () => {
     expect(missingPreviews([domain()], [])).toEqual([]);
   });
 
-  test('the previews Magma ships are clean, each of a case', () => {
+  // #1221: a rule of a domain may have a preview, and a case or a rule more examples
+  test('an example after the first is <id>.<n>.html, from 2', () => {
+    const at = (name: string) =>
+      parsePreview(
+        '<!--\ntry: Look.\n-->\n<mds-text>A</mds-text>',
+        `/p/previews/small/${name}.html`,
+      );
+    expect(at('on-field.2')).toMatchObject({ id: 'on-field', example: 2, errors: [] });
+    expect(at('on-field.12')).toMatchObject({ id: 'on-field', example: 12 });
+    expect(at('on-field.1').errors).toEqual([
+      'the first example of on-field is on-field.html, the next ones on-field.2.html, on-field.3.html',
+    ]);
+  });
+
+  test('a rule of its own of a domain may have a preview; the examples follow one another', () => {
+    const at = (name: string) =>
+      parsePreview('<!--\ntry: Look.\n-->\n<mds-text>A</mds-text>', `/p/previews/${name}.html`);
+    const cited = domain({
+      'always-true': [
+        ...(domain()['always-true'] ?? []),
+        { id: 'one-rule', from: 'small', serves: 'intuitive' },
+      ],
+    });
+    const previews = [
+      at('spacing/ladder'),
+      at('spacing/ladder.2'),
+      at('spacing/inline.3'),
+      at('spacing/inset.2'),
+      at('spacing/one-rule'),
+      at('small/on-field'),
+      at('small/on-field.2'),
+      at('small/one-rule'),
+    ];
+    expect([...previewLinkErrors(previews, [small(), cited])]).toEqual([
+      [
+        '/p/previews/spacing/inline.3.html',
+        ['example 3 of inline follows inline.2.html, which is missing'],
+      ],
+      [
+        '/p/previews/spacing/inset.2.html',
+        ['example 2 of inset follows inset.html, which is missing'],
+      ],
+      [
+        '/p/previews/spacing/one-rule.html',
+        ['spacing has no case nor rule one-rule: its cases are inline, inset, its rules ladder'],
+      ],
+      [
+        '/p/previews/small/one-rule.html',
+        ['small has no case one-rule: its cases are on-field, on-action, ask'],
+      ],
+    ]);
+    expect(examplesOf(previews, 'spacing', 'ladder').map((one) => one.example)).toEqual([1, 2]);
+    expect(previewOf(previews, 'small', 'on-field', 2)?.file).toBe(
+      '/p/previews/small/on-field.2.html',
+    );
+  });
+
+  test('the examples of a case are read in their order', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-previews-'));
+    mkdirSync(path.join(dir, 'previews/small'), { recursive: true });
+    for (const name of ['on-field.10', 'on-field.2', 'on-field', 'ask'])
+      writeFileSync(
+        path.join(dir, `previews/small/${name}.html`),
+        '<!--\ntry: Look.\n-->\n<mds-text>A</mds-text>',
+      );
+    expect(readPreviews(dir).map((one) => `${one.id}.${one.example}`)).toEqual([
+      'ask.1',
+      'on-field.1',
+      'on-field.2',
+      'on-field.10',
+    ]);
+  });
+
+  test('the previews Magma ships are clean, each of a case or a rule of a domain', () => {
     const previews = readPreviews(SOURCES);
     expect(previews.length).toBeGreaterThan(0);
     expect(previews.flatMap((one) => one.errors.map((error) => `${one.file}: ${error}`))).toEqual(

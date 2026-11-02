@@ -83,7 +83,10 @@ export interface Options {
 
 const SEGMENT = /^[\w-][\w.-]*$/;
 
-/** Every stage of the folders, by source, folder and name: <folder>/<name>.html. */
+/**
+ * Every stage of the folders, by source, folder and name: <folder>/<name>.html; the examples of a
+ * case or a rule after it, in their order (<id>.2.html, <id>.10.html, #1221).
+ */
 export const listStages = (dirs: Options['dirs']): Stage[] =>
   (Object.keys(SOURCES) as SourceName[]).flatMap((source) => {
     const dir = dirs[source];
@@ -95,11 +98,12 @@ export const listStages = (dirs: Options['dirs']): Stage[] =>
       .flatMap((folder) =>
         readdirSync(path.join(dir, folder))
           .filter((name) => name.endsWith('.html') && SEGMENT.test(name))
-          .sort()
+          .map((name) => name.slice(0, -'.html'.length))
+          .sort((a, b) => a.localeCompare(b, 'en', { numeric: true }))
           .map((name) => ({
-            key: `${source}/${folder}/${name.slice(0, -'.html'.length)}`,
+            key: `${source}/${folder}/${name}`,
             source,
-            file: path.join(dir, folder, name),
+            file: path.join(dir, folder, `${name}.html`),
           })),
       );
   });

@@ -1675,7 +1675,11 @@ export const bodyErrors = (
 
 /*
   The previews of the cases (#1186): one file per case, previews/<pattern>/<case>.html beside
-  the patterns, the stage the docs site, a decision and render_preview show. Only the stage: the
+  the patterns, the stage the docs site, a decision and render_preview show; a rule of a domain
+  of Foundation may have one too, previews/<domain>/<rule>.html, and a case or a rule more
+  examples, <id>.2.html, <id>.3.html, with no gap (the choices of the maintainer on #1221: a
+  rule that an example chosen live shows, actions/stacked, and another context or another length
+  of the words, to show what the case keeps the same and what it lets vary). Only the stage: the
   Magma markup of the case and its own small script, never a page; whoever shows it adds the
   stylesheets of agents/assets.md and the loader of the installed magma. It opens with a comment
   of keys, as a pattern opens with its frontmatter:
@@ -1703,9 +1707,11 @@ export const PREVIEW_HEIGHT = { min: 120, max: 2000 } as const;
 
 export interface Preview {
   file: string;
-  /** The pattern and the case, from the path. */
+  /** The pattern, from the folder; the case or the rule of a domain, from the name of the file. */
   pattern: string;
-  case: string;
+  id: string;
+  /** Which example of it: 1 for <id>.html, n for <id>.<n>.html (#1221). */
+  example: number;
   try?: string;
   height?: number;
   /** The stage is a whole page, with a frame of its own: no inset around it. */
@@ -1723,11 +1729,21 @@ const PAGE_ELEMENT = /<(!doctype|html|head|body|meta|base|link|style|iframe)\b/g
 const OUTSIDE_URL =
   /(?:\b(?:src|href|srcset|action|poster)\s*=\s*["']?|\burl\(\s*["']?|\bimport\s*\(?\s*["'])((?:[a-z][a-z0-9+.-]*:)?\/\/[^\s"')]+)/gi;
 
-/** A preview, read from its text; the pattern and the case are the names of its folder and file. */
+/** The name of the file of an example after the first: <id>.<n>.html. */
+const EXAMPLE_NAME = /^(.+)\.(\d+)$/;
+
+/** A preview, read from its text; the pattern, the case or rule and the example are in its path. */
 export const parsePreview = (text: string, file: string): Preview => {
   const pattern = path.basename(path.dirname(file));
-  const id = path.basename(file, '.html');
+  const name = path.basename(file, '.html');
+  const numbered = EXAMPLE_NAME.exec(name);
+  const id = numbered ? numbered[1]! : name;
+  const example = numbered ? Number(numbered[2]) : 1;
   const errors: string[] = [];
+  if (numbered && example < 2)
+    errors.push(
+      `the first example of ${id} is ${id}.html, the next ones ${id}.2.html, ${id}.3.html`,
+    );
   const source = text.replace(/\r\n/g, '\n');
   const head = PREVIEW_HEAD.exec(source);
   const keys: Record<string, string> = {};
@@ -1773,7 +1789,8 @@ export const parsePreview = (text: string, file: string): Preview => {
   return {
     file,
     pattern,
-    case: id,
+    id,
+    example,
     ...(keys.try ? { try: keys.try } : {}),
     ...(height !== undefined ? { height } : {}),
     ...(keys['whole-page'] === 'true' ? { wholePage: true } : {}),
@@ -1782,7 +1799,10 @@ export const parsePreview = (text: string, file: string): Preview => {
   };
 };
 
-/** Every preview of a folder of patterns (previews/<pattern>/<case>.html), by path; none when it has none. */
+/**
+ * Every preview of a folder of patterns (previews/<pattern>/<id>.html and <id>.<n>.html), by
+ * pattern, id and example; none when it has none.
+ */
 export const readPreviews = (patternsDir: string): Preview[] => {
   const root = path.join(patternsDir, PREVIEWS_DIR);
   if (!existsSync(root)) return [];
@@ -1793,19 +1813,36 @@ export const readPreviews = (patternsDir: string): Preview[] => {
     .flatMap((pattern) =>
       readdirSync(path.join(root, pattern))
         .filter((name) => name.endsWith('.html'))
-        .sort()
         .map((name) => {
           const file = path.join(root, pattern, name);
           return parsePreview(readFileSync(file, 'utf8'), file);
-        }),
+        })
+        // by id as code units, as a plain sort orders the names, then by example
+        .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : a.example - b.example)),
     );
 };
 
-/** The preview of a case, when it has one. */
-export const previewOf = (previews: Preview[], pattern: string, id: string) =>
-  previews.find((one) => one.pattern === pattern && one.case === id);
+/** The preview of a case or a rule, its first example unless another is asked, when it has one. */
+export const previewOf = (previews: Preview[], pattern: string, id: string, example = 1) =>
+  previews.find((one) => one.pattern === pattern && one.id === id && one.example === example);
 
-/** A preview whose case does not exist, by file: a pattern Magma does not have, a candidate, a case it does not have. */
+/** Every example of a case or a rule, the first one first. */
+export const examplesOf = (previews: Preview[], pattern: string, id: string): Preview[] =>
+  previews
+    .filter((one) => one.pattern === pattern && one.id === id)
+    .sort((a, b) => a.example - b.example);
+
+/** The rules of a domain of Foundation that may have a preview: its own, never one it cites (#1221). */
+export const ownRules = (pattern: Pattern): string[] =>
+  pattern.kind === FOUNDATION
+    ? (pattern['always-true'] ?? []).filter((one) => !one.from).map((one) => one.id)
+    : [];
+
+/**
+ * A preview that shows nothing that exists, by file: a pattern Magma does not have, a candidate,
+ * a case it does not have, or for a domain a rule of its own it does not have; an example whose
+ * previous one is missing, since the examples of a case follow one another from <id>.html.
+ */
 export const previewLinkErrors = (
   previews: Preview[],
   patterns: Pattern[],
@@ -1823,10 +1860,19 @@ export const previewLinkErrors = (
       error = `${one.pattern} is a candidate: it has no cases to show`;
     else if (pattern.kind === BLOCK)
       error = `${one.pattern} is a building block: whether a block gets previews is still open (#1210)`;
-    else if (!(pattern.cases ?? []).some((entry) => entry.id === one.case))
-      error = `${one.pattern} has no case ${one.case}: its cases are ${(pattern.cases ?? [])
-        .map((entry) => entry.id)
-        .join(', ')}`;
+    else {
+      const cases = (pattern.cases ?? []).map((entry) => entry.id);
+      const rules = ownRules(pattern);
+      if (!cases.includes(one.id) && !rules.includes(one.id))
+        error =
+          pattern.kind === FOUNDATION
+            ? `${one.pattern} has no case nor rule ${one.id}: its cases are ${cases.join(', ')}, its rules ${rules.join(', ') || 'none'}`
+            : `${one.pattern} has no case ${one.id}: its cases are ${cases.join(', ')}`;
+      else if (one.example > 1 && !previewOf(previews, one.pattern, one.id, one.example - 1))
+        error = `example ${one.example} of ${one.id} follows ${
+          one.example === 2 ? `${one.id}.html` : `${one.id}.${one.example - 1}.html`
+        }, which is missing`;
+    }
     if (error) found.set(one.file, [error]);
   }
   return found;
