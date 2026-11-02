@@ -1,0 +1,51 @@
+<!--
+try: Look at the background: the page is one canvas, the title and the data stand on it with no sheet around them, and only the bar and the cards of the related requests rise from it.
+whole-page: true
+-->
+<mds-header menu="none">
+  <mds-header-bar>
+    <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
+    <mds-button slot="nav" variant="dark" tone="text">Pratiche</mds-button>
+    <mds-button slot="nav" variant="dark" tone="text">Archivio</mds-button>
+  </mds-header-bar>
+</mds-header>
+<main class="page-frame grid gap-between-sections py-between-sections">
+  <div class="grid gap-title-content">
+    <mds-text typography="page" tag="h1">Cambio di residenza</mds-text>
+    <mds-text typography="detail" tag="p" class="text-fg-muted">Pratica 2026/0142, ricevuta il 3 marzo 2026</mds-text>
+  </div>
+  <section class="grid gap-title-content">
+    <mds-text typography="section" tag="h2">Richiedente</mds-text>
+    <dl class="m-0 grid grid-cols-2 gap-between-fields">
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Nome e cognome</mds-text>
+        <mds-text tag="dd" class="m-0">Marco Bianchi</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Nuovo indirizzo</mds-text>
+        <mds-text tag="dd" class="m-0">Via Emilia 12, Rimini</mds-text>
+      </div>
+    </dl>
+  </section>
+  <section class="grid gap-title-content">
+    <mds-text typography="section" tag="h2">Pratiche collegate</mds-text>
+    <div class="grid grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-between-containers">
+      <mds-card>
+        <mds-card-header>
+          <mds-text typography="part" tag="h3">Iscrizione anagrafica</mds-text>
+        </mds-card-header>
+        <mds-card-content>
+          <mds-text typography="detail" tag="p">Pratica 2026/0098, conclusa.</mds-text>
+        </mds-card-content>
+      </mds-card>
+      <mds-card>
+        <mds-card-header>
+          <mds-text typography="part" tag="h3">Carta di identità</mds-text>
+        </mds-card-header>
+        <mds-card-content>
+          <mds-text typography="detail" tag="p">Pratica 2026/0131, in attesa.</mds-text>
+        </mds-card-content>
+      </mds-card>
+    </div>
+  </section>
+</main>

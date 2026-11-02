@@ -1,0 +1,19 @@
+<!--
+try: Look at the open menu of the note: Modifica and Duplica, then a separator, and Elimina nota last, in red with its icon. Press the button of the menu to close and open it.
+height: 340
+-->
+<mds-card class="max-w-form">
+  <mds-card-header>
+    <mds-text typography="part" tag="h2">Sopralluogo del 12 marzo</mds-text>
+    <mds-button id="azioni-nota" slot="action" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni della nota"></mds-button>
+  </mds-card-header>
+  <mds-card-content>
+    <mds-text>Sentire l'ufficio tecnico prima di venerdì.</mds-text>
+  </mds-card-content>
+</mds-card>
+<mds-dropdown target="#azioni-nota" placement="bottom-end" visible>
+  <mds-button icon="mi/baseline/edit" variant="dark" tone="text" label="Modifica"></mds-button>
+  <mds-button icon="mi/baseline/content-copy" variant="dark" tone="text" label="Duplica"></mds-button>
+  <mds-separator></mds-separator>
+  <mds-button icon="mi/baseline/delete" variant="error" tone="text" label="Elimina nota"></mds-button>
+</mds-dropdown>

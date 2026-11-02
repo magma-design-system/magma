@@ -1,0 +1,58 @@
+<!--
+try: Scroll the page: the bar of the application stays put above the list, while the title of the page scrolls away under it with the content.
+height: 520
+whole-page: true
+-->
+<mds-header menu="none">
+  <mds-header-bar>
+    <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
+    <mds-button slot="nav" variant="dark" tone="text">Pratiche</mds-button>
+    <mds-button slot="nav" variant="dark" tone="text">Archivio</mds-button>
+  </mds-header-bar>
+</mds-header>
+<main class="page-frame grid gap-between-sections py-between-sections">
+  <div class="grid gap-title-content">
+    <mds-text typography="page" tag="h1">Pratiche</mds-text>
+    <mds-text typography="detail" tag="p" class="text-fg-muted">Le richieste degli ultimi trenta giorni, dalla più recente.</mds-text>
+  </div>
+  <mds-table class="w-full">
+    <mds-table-header>
+      <mds-table-header-cell label="Protocollo"></mds-table-header-cell>
+      <mds-table-header-cell label="Oggetto"></mds-table-header-cell>
+    </mds-table-header>
+    <mds-table-body>
+      <mds-table-row>
+        <mds-table-cell><mds-text typography="detail">2026/0142</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Cambio di residenza</mds-text></mds-table-cell>
+      </mds-table-row>
+      <mds-table-row>
+        <mds-table-cell><mds-text typography="detail">2026/0141</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Iscrizione anagrafica</mds-text></mds-table-cell>
+      </mds-table-row>
+      <mds-table-row>
+        <mds-table-cell><mds-text typography="detail">2026/0139</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Carta di identità</mds-text></mds-table-cell>
+      </mds-table-row>
+      <mds-table-row>
+        <mds-table-cell><mds-text typography="detail">2026/0137</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Certificato di residenza</mds-text></mds-table-cell>
+      </mds-table-row>
+      <mds-table-row>
+        <mds-table-cell><mds-text typography="detail">2026/0136</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Cambio di indirizzo</mds-text></mds-table-cell>
+      </mds-table-row>
+      <mds-table-row>
+        <mds-table-cell><mds-text typography="detail">2026/0134</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Iscrizione AIRE</mds-text></mds-table-cell>
+      </mds-table-row>
+      <mds-table-row>
+        <mds-table-cell><mds-text typography="detail">2026/0131</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Stato di famiglia</mds-text></mds-table-cell>
+      </mds-table-row>
+      <mds-table-row>
+        <mds-table-cell><mds-text typography="detail">2026/0129</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Certificato di nascita</mds-text></mds-table-cell>
+      </mds-table-row>
+    </mds-table-body>
+  </mds-table>
+</main>

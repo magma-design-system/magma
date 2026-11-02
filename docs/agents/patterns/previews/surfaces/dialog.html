@@ -1,0 +1,28 @@
+<!--
+try: Look at the window: the neutral surface of every form, choice and confirmation, with its title and its X in the colour of the text; the page behind it is dimmed and inert.
+height: 560
+-->
+<div class="grid gap-title-content">
+  <mds-text typography="page" tag="h1">Ditta Bianchi Costruzioni</mds-text>
+  <mds-text typography="detail" tag="p" class="text-fg-muted">I referenti ricevono le comunicazioni dell'ente sulle pratiche.</mds-text>
+</div>
+<mds-modal opened aria-label="Nuovo referente">
+  <mds-banner
+    slot="window"
+    variant="light"
+    tone="box"
+    dismissible
+    headline="Nuovo referente"
+  >
+    <form class="grid gap-between-fields">
+      <mds-input-field label="Nome e cognome">
+        <mds-input value="Marco Bianchi"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="PEC">
+        <mds-input type="email" value="m.bianchi@pec.esempio.it"></mds-input>
+      </mds-input-field>
+    </form>
+    <mds-button slot="action" variant="dark" tone="outline">Annulla</mds-button>
+    <mds-button slot="action">Aggiungi</mds-button>
+  </mds-banner>
+</mds-modal>

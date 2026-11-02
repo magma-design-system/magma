@@ -1,0 +1,35 @@
+<!--
+try: Correct a field anywhere in the form and save without scrolling: Annulla and Salva stay docked at the bottom of the window for the whole edit, and the form has no row of its own at its end.
+height: 560
+whole-page: true
+-->
+<main class="page-frame grid gap-between-sections py-between-sections">
+  <mds-text typography="page" tag="h1">Modifica pratica</mds-text>
+  <form class="grid max-w-form gap-between-fields">
+    <mds-input-field label="Oggetto">
+      <mds-input value="Rinnovo concessione suolo pubblico"></mds-input>
+    </mds-input-field>
+    <mds-input-field label="Richiedente">
+      <mds-input value="Marco Bianchi"></mds-input>
+    </mds-input-field>
+    <mds-input-field label="Codice fiscale">
+      <mds-input value="BNCMRC80A01H294K"></mds-input>
+    </mds-input-field>
+    <mds-input-field label="PEC">
+      <mds-input type="email" value="m.bianchi@pec.esempio.it"></mds-input>
+    </mds-input-field>
+    <mds-input-field label="Indirizzo">
+      <mds-input value="Via Emilia 12"></mds-input>
+    </mds-input-field>
+    <mds-input-field label="Comune">
+      <mds-input value="Santarcangelo di Romagna"></mds-input>
+    </mds-input-field>
+    <mds-input-field label="Durata in giorni">
+      <mds-input value="90"></mds-input>
+    </mds-input-field>
+  </form>
+</main>
+<mds-status-bar visible description="Modifiche non salvate">
+  <mds-button variant="dark" tone="outline">Annulla</mds-button>
+  <mds-button>Salva</mds-button>
+</mds-status-bar>

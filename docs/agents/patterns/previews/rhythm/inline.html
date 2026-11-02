@@ -1,0 +1,12 @@
+<!--
+try: Look at Annulla and Salva at the end of the form: 300 apart, the step of a row. Narrow the stage under 380 px: they stack, still 300 apart, Salva at the bottom.
+-->
+<form class="@container grid max-w-form gap-content-actions">
+  <mds-input-field label="Motivo della richiesta">
+    <mds-input value="Trasferimento per lavoro"></mds-input>
+  </mds-input-field>
+  <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+    <mds-button variant="dark" tone="outline">Annulla</mds-button>
+    <mds-button>Salva</mds-button>
+  </div>
+</form>

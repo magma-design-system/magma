@@ -1,0 +1,15 @@
+<!--
+try: Press the X of the banner: the message goes, and the section closes the room it took.
+-->
+<section class="grid max-w-form gap-title-content">
+  <mds-text typography="section" tag="h2">Deleghe</mds-text>
+  <div class="grid gap-between-fields">
+    <mds-banner id="notice" variant="info" dismissible headline="Nuovo modulo di delega">
+      <mds-text>Da dicembre le deleghe si presentano con il modulo aggiornato.</mds-text>
+    </mds-banner>
+    <mds-text tag="p">Anna Rossi presenta le pratiche dell'azienda per tutto il 2026.</mds-text>
+  </div>
+</section>
+<script>
+  document.getElementById('notice').addEventListener('mdsBannerClose', (event) => event.target.remove());
+</script>

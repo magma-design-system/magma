@@ -1,0 +1,21 @@
+<!--
+try: Look at the actions of the ai banner, in its variant: Usa la descrizione filled and last, Ignora outlined. Press Usa la descrizione: the text goes into the field.
+-->
+<div class="grid max-w-form gap-between-fields">
+  <mds-banner id="suggestion" variant="ai" icon="mi/baseline/auto-awesome" headline="Suggerimento IA">
+    <mds-text>L'assistente ha scritto una descrizione della pratica dai tre documenti allegati.</mds-text>
+    <mds-button id="ignore" slot="action" variant="ai" tone="outline">Ignora</mds-button>
+    <mds-button id="use" slot="action" variant="ai" tone="strong">Usa la descrizione</mds-button>
+  </mds-banner>
+  <mds-input-field label="Descrizione">
+    <mds-input id="description"></mds-input>
+  </mds-input-field>
+</div>
+<script>
+  const suggestion = document.getElementById('suggestion');
+  document.getElementById('use').addEventListener('click', () => {
+    document.getElementById('description').value = 'Accesso ai verbali del sopralluogo del 12 marzo.';
+    suggestion.remove();
+  });
+  document.getElementById('ignore').addEventListener('click', () => suggestion.remove());
+</script>

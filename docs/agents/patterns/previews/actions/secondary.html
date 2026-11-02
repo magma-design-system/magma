@@ -1,0 +1,20 @@
+<!--
+try: Look at Salva come bozza: outlined in the neutral, right before Invia, which stays the one filled action of the page.
+-->
+<div class="grid gap-between-sections">
+  <mds-text typography="page" tag="h1">Nuova comunicazione</mds-text>
+  <form class="@container grid max-w-form gap-content-actions">
+    <div class="grid gap-between-fields">
+      <mds-input-field label="Destinatario">
+        <mds-input value="Ufficio tributi"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Oggetto">
+        <mds-input value="Rimborso TARI 2025"></mds-input>
+      </mds-input-field>
+    </div>
+    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+      <mds-button name="azione" value="bozza" variant="dark" tone="outline">Salva come bozza</mds-button>
+      <mds-button name="azione" value="invio">Invia</mds-button>
+    </div>
+  </form>
+</div>
