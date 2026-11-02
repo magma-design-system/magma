@@ -1,5 +1,12 @@
+/* widths/dialog (#1189): the window of a dialog is at most the column of a form plus its inset, so
+   its body is the column of the page and a form keeps its shape in it; a narrower screen shrinks
+   it. A bespoke window writes its own width with a class: from the light DOM it wins over this
+   default */
+
 :host ::slotted([slot='window']) {
   margin: var(--mds-modal-custom-window-distance);
+  max-width: var(--magma-width-dialog);
+  width: 100%;
 }
 
 .window {

@@ -12,7 +12,9 @@
   color: rgb(var(--magma-text-default));
   corner-shape: var(--magma-corner-shape);
   display: grid;
-  gap: --spacing(300);
+
+  /* between the label and the control (#1189, rhythm/label-control) */
+  gap: var(--magma-rhythm-label-control);
 }
 
 .message-window {

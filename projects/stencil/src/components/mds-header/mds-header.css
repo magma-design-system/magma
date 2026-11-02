@@ -78,7 +78,10 @@
   corner-shape: var(--magma-corner-shape);
   margin-bottom: var(--mds-header-inline-margin-current);
   margin-top: var(--mds-header-inline-margin-current);
-  max-width: var(--breakpoint-wide);
+
+  /* the content of the floating bar stands on the frame of the page, its padding outside it
+     (#1189, widths/page): on a wide window it starts where the content of a page-frame does */
+  max-width: var(--magma-width-page);
   width: calc(100% - calc(var(--mds-header-inline-margin-current) * 2));
 }
 
