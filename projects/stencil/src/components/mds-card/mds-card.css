@@ -2,13 +2,16 @@
 
 /**
  * @prop --mds-card-background: Public. Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`)
- * @prop --mds-card-gap: Public. Sets the spacing between card elements
- * @prop --mds-card-padding: Public. Sets the spacing around card elements
+ * @prop --mds-card-gap: Public. Sets the space between the regions of the card, `--magma-rhythm-title-content` by default; the footer keeps at least `--magma-rhythm-content-actions` from the region before it
+ * @prop --mds-card-padding: Public. Sets the inset of the card, shared by its regions, `--magma-rhythm-inset` by default; the media region reaches out of it to the edges it touches
  */
 
+/* one inset shared by the regions, which pad nothing of their own: the title of a card stands
+   nearer to its content than to the edge (#1189, rhythm/inset and rhythm/shared-inset) */
+
 :host {
-  --mds-card-gap: 0;
-  --mds-card-padding: 0;
+  --mds-card-gap: var(--magma-rhythm-title-content);
+  --mds-card-padding: var(--magma-rhythm-inset);
   --mds-card-background: rgb(var(--magma-surface-raised));
 
   background-color: var(--mds-card-background);
@@ -22,8 +25,27 @@
   overflow: hidden;
 }
 
+/* rhythm/media-bleed (#1189): the media reaches the edges of the card it touches, and stands
+   --mds-card-gap from the other regions. The sides it touches follow the grid areas of the
+   layout (vertical here, horizontal in the container query below), never the order of the slots:
+   both edges of the inline axis always, the top when no header stands above it, the bottom when
+   nothing stands below it */
+
 .layout:not(.layout--disabled) ::slotted([slot='media']) {
   grid-area: media;
+  margin-inline: calc(-1 * var(--mds-card-padding));
+}
+
+.layout--cfm:not(.layout--disabled) ::slotted([slot='media']),
+.layout--cm:not(.layout--disabled) ::slotted([slot='media']),
+.layout--fm:not(.layout--disabled) ::slotted([slot='media']),
+.layout--m:not(.layout--disabled) ::slotted([slot='media']) {
+  margin-block-start: calc(-1 * var(--mds-card-padding));
+}
+
+.layout--hm:not(.layout--disabled) ::slotted([slot='media']),
+.layout--m:not(.layout--disabled) ::slotted([slot='media']) {
+  margin-block-end: calc(-1 * var(--mds-card-padding));
 }
 
 .layout:not(.layout--disabled) ::slotted([slot='header']) {
@@ -40,6 +62,14 @@
 .layout:not(.layout--disabled) ::slotted([slot='footer']) {
   align-self: end;
   grid-area: footer;
+}
+
+/* rhythm/content-actions (#1189): the row of actions acts on the whole card, so the footer stands
+   from the region before it as far as the fields of a form from each other; a larger
+   --mds-card-gap still wins */
+
+.layout:not(.layout--disabled, .layout--f) ::slotted([slot='footer']) {
+  margin-block-start: max(0px, var(--magma-rhythm-content-actions) - var(--mds-card-gap));
 }
 
 .layout {
@@ -225,12 +255,23 @@
       min-content;
   }
 
+  /* one row: a second, empty one put a gap under the content */
+
   .layout--cm:not(.layout--disabled) {
     grid-template-areas: 'media content';
     grid-template-columns: minmax(--spacing(6000), 1fr) 2fr;
-    grid-template-rows:
-      1fr
-      min-content;
+    grid-template-rows: 1fr;
+  }
+
+  /* rhythm/media-bleed: in the start column the media touches the top, the bottom and the start */
+
+  .layout--cfhm:not(.layout--disabled) ::slotted([slot='media']),
+  .layout--chm:not(.layout--disabled) ::slotted([slot='media']),
+  .layout--fhm:not(.layout--disabled) ::slotted([slot='media']),
+  .layout--cfm:not(.layout--disabled) ::slotted([slot='media']),
+  .layout--cm:not(.layout--disabled) ::slotted([slot='media']) {
+    margin-block: calc(-1 * var(--mds-card-padding));
+    margin-inline: calc(-1 * var(--mds-card-padding)) 0;
   }
 }
 

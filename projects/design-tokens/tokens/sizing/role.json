@@ -21,6 +21,10 @@
         "value": "{sizing.primitive.600}",
         "description": "rhythm/between-fields: between the fields of a form (gap-between-fields)."
       },
+      "content-actions": {
+        "value": "{sizing.primitive.600}",
+        "description": "rhythm/content-actions: between the content of a container and the row of actions that closes it, such as the footer of a card (gap-content-actions)."
+      },
       "inset": {
         "value": "{sizing.primitive.600}",
         "description": "rhythm/inset: inside a container of a part, such as a card or a banner, shared by its regions (p-inset)."

@@ -13,6 +13,7 @@ const RHYTHM: Array<[string, number]> = [
   ['label-control', 12],
   ['between-containers', 16],
   ['between-fields', 24],
+  ['content-actions', 24],
   ['inset', 24],
   ['between-groups', 40],
   ['between-sections', 64],

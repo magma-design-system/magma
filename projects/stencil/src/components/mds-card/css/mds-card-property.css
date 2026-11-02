@@ -16,12 +16,12 @@
 
 @property --mds-card-gap {
   inherits: true;
-  initial-value: 0;
+  initial-value: var(--magma-rhythm-title-content);
   syntax: '<length>';
 }
 
 @property --mds-card-padding {
   inherits: true;
-  initial-value: 0;
+  initial-value: var(--magma-rhythm-inset);
   syntax: '<length>';
 }
