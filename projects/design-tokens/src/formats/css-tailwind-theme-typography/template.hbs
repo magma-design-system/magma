@@ -29,12 +29,19 @@ Generated at {{ date }}
   {{/each}}
 {{/each}}
 
-{{!-- titles by role (#1189): text-size-title-page, read by the text-title-<role> utilities --}}
-{{#each properties.role.title as | title |}}
-  --text-size-title-{{@key}}: var(--text-size-title-{{title.value}});
-  --text-size-title-{{@key}}--font-weight: var(--text-size-title-{{title.value}}--font-weight);
-  --text-size-title-{{@key}}--letter-spacing: var(--text-size-title-{{title.value}}--letter-spacing);
-  --text-size-title-{{@key}}--line-height: var(--text-size-title-{{title.value}}--line-height);
+{{!-- titles by role (#1189): text-size-title-page, read by the text-title-<role> utilities. The
+  literal of the level is the fallback, as for the rhythm bridges: a sheet that references this
+  theme (the components, @reference) gets the value as Tailwind writes it, var(--role, value),
+  and without it a page with no token sheet would fall back to the inherited size --}}
+{{#each properties.role.title as | title role |}}
+  {{#with (lookup @root.properties.typography.title.variants title.value) as | level |}}
+  --text-size-title-{{role}}: var(--text-size-title-{{title.value}}, {{#tailwindFontSize 'fontSize' level.fontSize.value}}{{/tailwindFontSize}});
+    {{#each level as | rules prop |}}
+      {{#ifTailwindFontSizeProp prop}}
+  --text-size-title-{{role}}--{{#kebabCase}}{{prop}}{{/kebabCase}}: var(--text-size-title-{{title.value}}--{{#kebabCase}}{{prop}}{{/kebabCase}}, {{#tailwindFontSize prop rules.value}}{{/tailwindFontSize}});
+      {{/ifTailwindFontSizeProp}}
+    {{/each}}
+  {{/with}}
 {{/each}}
 
 {{!-- leading --}}

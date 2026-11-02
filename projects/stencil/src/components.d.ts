@@ -86,7 +86,7 @@ import { MdsTableRowSelection, MdsTableSortingType } from "./components/mds-tabl
 import { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
 import { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 import { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header-cell/meta/event-detail";
-import { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
+import { TextAnimationType as TextAnimationType1, TextTypographyType } from "./components/mds-text/meta/types";
 import { ToastPosition } from "./components/mds-toast/meta/types";
 import { MdsToastCloseEventDetail } from "./components/mds-toast/meta/event-detail";
 import { ToastPosition as ToastPosition1 } from "./components/mds-toast/meta/types";
@@ -175,7 +175,7 @@ export { MdsTableRowSelection, MdsTableSortingType } from "./components/mds-tabl
 export { MdsTableSelectionEventDetail } from "./components/mds-table/meta/event-detail";
 export { SortDirectionType } from "./components/mds-table-header-cell/meta/types";
 export { MdsTableHeaderCellSortEventDetail } from "./components/mds-table-header-cell/meta/event-detail";
-export { TextAnimationType as TextAnimationType1 } from "./components/mds-text/meta/types";
+export { TextAnimationType as TextAnimationType1, TextTypographyType } from "./components/mds-text/meta/types";
 export { ToastPosition } from "./components/mds-toast/meta/types";
 export { MdsToastCloseEventDetail } from "./components/mds-toast/meta/event-detail";
 export { ToastPosition as ToastPosition1 } from "./components/mds-toast/meta/types";
@@ -212,7 +212,7 @@ export namespace Components {
          */
         "selected"?: boolean;
         /**
-          * Specifies the typography of the element
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
           * @default 'h5'
          */
         "typography"?: TypographyTitleType;
@@ -254,7 +254,7 @@ export namespace Components {
          */
         "selected": boolean;
         /**
-          * Specifies the typography of the element
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
           * @default 'h5'
          */
         "typography": TypographyTitleType;
@@ -3188,10 +3188,10 @@ export namespace Components {
          */
         "truncate"?: TypographyTruncateType;
         /**
-          * Specifies the font typography of the element
+          * Specifies the font typography of the element. A title is written by its role (`page`, `section`, `dialog`, `part`, `group`), which takes the style of that role, and the tag of the level it is styled as unless `tag` gives the level of its place in the outline
           * @default 'detail'
          */
-        "typography": TypographyType;
+        "typography": TextTypographyType;
         /**
           * Specifies the variant for `typography`
          */
@@ -5556,7 +5556,7 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
         /**
-          * Specifies the typography of the element
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
           * @default 'h5'
          */
         "typography"?: TypographyTitleType;
@@ -5618,7 +5618,7 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
         /**
-          * Specifies the typography of the element
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
           * @default 'h5'
          */
         "typography"?: TypographyTitleType;
@@ -8728,10 +8728,10 @@ declare namespace LocalJSX {
          */
         "truncate"?: TypographyTruncateType;
         /**
-          * Specifies the font typography of the element
+          * Specifies the font typography of the element. A title is written by its role (`page`, `section`, `dialog`, `part`, `group`), which takes the style of that role, and the tag of the level it is styled as unless `tag` gives the level of its place in the outline
           * @default 'detail'
          */
-        "typography"?: TypographyType;
+        "typography"?: TextTypographyType;
         /**
           * Specifies the variant for `typography`
          */
@@ -9724,7 +9724,7 @@ declare namespace LocalJSX {
         "tag": TypographyTagType;
         "text": string;
         "truncate": TypographyTruncateType;
-        "typography": TypographyType;
+        "typography": TextTypographyType;
         "variant": TypographyVariants;
     }
     interface MdsToastAttributes {

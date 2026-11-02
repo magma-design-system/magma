@@ -105,13 +105,16 @@ describe('titles by role', () => {
   const ROLES: Record<string, string> = { page: 'h3', section: 'h5', dialog: 'h5', part: 'h6', group: 'h6' }
   const PARTS = ['', '--font-weight', '--letter-spacing', '--line-height']
 
+  // typography.css declares the level next to the role; the Tailwind theme gives the literal
+  // of the level as fallback, which a component that references the theme gets as Tailwind
+  // writes it (#1200: with no token sheet the titles fell back to the inherited size)
   test.each(Object.entries(ROLES))('%s points at %s, in typography.css and in the Tailwind theme', (role, level) => {
-    for (const sheet of [vars, theme])
-      for (const part of PARTS) {
-        const target = `--text-size-title-${level}${part}`
-        expect(sheet.has(target), target).toBe(true)
-        expect(sheet.get(`--text-size-title-${role}${part}`)).toBe(`var(${target})`)
-      }
+    for (const part of PARTS) {
+      const target = `--text-size-title-${level}${part}`
+      for (const sheet of [vars, theme]) expect(sheet.has(target), target).toBe(true)
+      expect(vars.get(`--text-size-title-${role}${part}`)).toBe(`var(${target})`)
+      expect(theme.get(`--text-size-title-${role}${part}`)).toBe(`var(${target}, ${theme.get(target)})`)
+    }
   })
 
   test.each(Object.entries(ROLES))('the DTCG style of %s is an alias of %s', (role, level) => {
