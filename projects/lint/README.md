@@ -232,7 +232,10 @@ or on the guide it enforces, not only on fixtures picked by hand.
   hides it by (`[hydrated]` or `.hydrated`), `document.fonts` is ready and every animation is
   finished (an infinite one paused). An image is not representative when the page reports a
   problem: a tag the loader did not define, a component without the flag, a component or an
-  image displayed with no width or height (`display: none` is a choice, not a failure), a
+  image displayed with no width or height (`display: none` is a choice, not a failure, and so is
+  the empty box of an element whose content stands out of it by design: fixed on the viewport,
+  as an `mds-toast-region` with no toast, or a dialog or a popover in its light or shadow tree,
+  shown in the top layer or closed, as the window of `mds-status-bar`), a
   component with text or media whose whole box is one colour (99.8% of the pixels within 8
   levels of the most frequent one), a console error or an uncaught exception, a request the
   page cannot be served, a font family the text asks for with no face loaded, a word (the run

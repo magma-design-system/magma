@@ -1248,6 +1248,14 @@ describe('render_preview', () => {
     expect(zero.problems).toContainEqual(
       expect.objectContaining({ kind: 'zero-size', element: 'mds-fixture "Salva"' }),
     );
+    // a box of nothing where the content stands out of it by design: an empty region fixed on
+    // the viewport (mds-toast-region), an overlay shown in the top layer or closed (mds-status-bar)
+    for (const away of [
+      '<mds-fixture style="position: fixed; inset: auto 0 0; display: flex; padding: 0"></mds-fixture>',
+      '<mds-layer open>Salva</mds-layer>',
+      '<mds-layer>Salva</mds-layer>',
+    ])
+      expect(kinds(await shoot(away))).not.toContain('zero-size');
 
     const word = await shoot(
       '<div style="width: 40px; overflow-wrap: anywhere">Straordinariamente</div>',
