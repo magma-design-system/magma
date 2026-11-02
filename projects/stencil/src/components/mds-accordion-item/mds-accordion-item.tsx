@@ -21,7 +21,10 @@ export class MdsAccordionItem {
   @Element() private element: HTMLMdsAccordionItemElement;
 
   /**
-   * Specifies the typography of the element
+   * Specifies the typography of the title. An item is a part of the page, whose title is
+   * styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next
+   * major (#1218). The title sits inside the button that opens the item, so this is its style
+   * only, never a level of the outline
    */
   @Prop() readonly typography?: TypographyTitleType = 'h5';
 

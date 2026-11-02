@@ -52,4 +52,7 @@ const tagsDictionary = [
 
 const textAnimateDictionary = ['none', 'yugop'];
 
-export { tagsDictionary, textAnimateDictionary };
+// titles/page, -section, -dialog, -part and -group of the design language (#1189)
+const textTitleRoleDictionary = ['page', 'section', 'dialog', 'part', 'group'] as const;
+
+export { tagsDictionary, textAnimateDictionary, textTitleRoleDictionary };

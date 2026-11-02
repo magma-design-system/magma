@@ -73,12 +73,40 @@
   @apply text-title-h6;
 }
 
+/* Titles by role (#1189): each reads the tokens of its role, which point at the level it is
+   styled as, so a theme moves a role in one place */
+
+:host([typography='page']) {
+  @apply text-title-page;
+}
+
+:host([typography='section']) {
+  @apply text-title-section;
+}
+
+:host([typography='dialog']) {
+  @apply text-title-dialog;
+}
+
+:host([typography='part']) {
+  @apply text-title-part;
+}
+
+:host([typography='group']) {
+  @apply text-title-group;
+}
+
 :host([typography='h1']),
 :host([typography='h2']),
 :host([typography='h3']),
 :host([typography='h4']),
 :host([typography='h5']),
-:host([typography='h6']) {
+:host([typography='h6']),
+:host([typography='page']),
+:host([typography='section']),
+:host([typography='dialog']),
+:host([typography='part']),
+:host([typography='group']) {
   text-wrap: balance;
 }
 

@@ -1,11 +1,15 @@
 import { render, vi } from '@stencil/vitest';
 import { TypographyType } from '@type/typography';
+// the level each role of a title is styled as: the source the defaults of mds-text follow
+import roles from '../../../../../design-tokens/tokens/typography/role.json';
+import { textTitleRoleDictionary } from '../meta/dictionary';
+import { TextTypographyType } from '../meta/types';
 
 describe('mds-text', () => {
   const titleTypes = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'action'];
   const infoTypes = ['paragraph', 'detail', 'caption', 'label', 'option', 'tip'];
   const monoTypes = ['snippet', 'hack'];
-  const typographies = [...titleTypes, ...infoTypes, ...monoTypes];
+  const typographies = [...titleTypes, ...textTitleRoleDictionary, ...infoTypes, ...monoTypes];
 
   const readVariants = ['detail', 'caption', 'paragraph'];
 
@@ -26,7 +30,7 @@ describe('mds-text', () => {
     expect(element.textContent).toEqual(textContent);
   });
 
-  it.each(typographies)('renders typography %s', async (typography: TypographyType) => {
+  it.each(typographies)('renders typography %s', async (typography: TextTypographyType) => {
     element.typography = typography;
     await waitForChanges();
 
@@ -314,6 +318,51 @@ describe('mds-text', () => {
 
       expect(root).toHaveAttribute('pref-animation', 'reduce');
       expect(getComputedStyle(root).transitionDuration).toBe('1e-05s');
+    });
+  });
+
+  describe('the titles by role (#1189)', () => {
+    const levels = Object.entries(roles.role.title).map(([role, { value }]) => [role, value]);
+    const painted = (host: Element): Element => host.shadowRoot!.querySelector('.text')!;
+
+    /** The role and its level side by side, hydrated; `attributes` go on the role. */
+    const pair = async (role: string, level: string, attributes = '') => {
+      const { root } = await render(`<div>
+        <mds-text typography="${role}"${attributes}>${textContent}</mds-text>
+        <mds-text typography="${level}">${textContent}</mds-text>
+      </div>`);
+      return Array.from(root.querySelectorAll('mds-text')) as HTMLMdsTextElement[];
+    };
+
+    it.each(levels)('styles the role %s as %s', async (role, level) => {
+      const [byRole, byLevel] = (await pair(role, level)).map((host) => getComputedStyle(host));
+      for (const property of [
+        'fontFamily',
+        'fontSize',
+        'fontWeight',
+        'lineHeight',
+        'letterSpacing',
+        'textWrap',
+      ] as const)
+        expect(byRole[property], property).toBe(byLevel[property]);
+    });
+
+    it.each(levels)(
+      'gives the role %s the tag %s when the tag is left out',
+      async (role, level) => {
+        const [host] = await pair(role, level);
+
+        expect(host).toEqualAttribute('tag', level);
+        expect(painted(host).localName).toBe(level);
+      },
+    );
+
+    it.each(levels)('keeps the tag written on the role %s, and its style', async (role, level) => {
+      const [host, byLevel] = await pair(role, level, ' tag="h1"');
+
+      expect(host).toEqualAttribute('tag', 'h1');
+      expect(painted(host).localName).toBe('h1');
+      expect(getComputedStyle(host).fontSize).toBe(getComputedStyle(byLevel).fontSize);
     });
   });
 

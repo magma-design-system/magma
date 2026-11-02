@@ -1,8 +1,8 @@
 import { Component, Element, Host, Prop, h, Watch } from '@stencil/core';
-import { TextAnimationType } from './meta/types';
+import { TextAnimationType, TextTypographyType } from './meta/types';
 import { TypographyTagType } from '@type/text';
 import { TypographyTruncateType } from '@type/text';
-import { TypographyType, TypographyVariants } from '@type/typography';
+import { TypographyVariants } from '@type/typography';
 import { typographyDefaultsVariant } from './meta/variants';
 import RandomText from '@common/yugop';
 import { preferenceStore, prefersReducedMotion } from '@common/preference';
@@ -55,9 +55,11 @@ export class MdsText {
   @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType;
 
   /**
-   * Specifies the font typography of the element
+   * Specifies the font typography of the element. A title is written by its role (`page`,
+   * `section`, `dialog`, `part`, `group`), which takes the style of that role, and the tag of
+   * the level it is styled as unless `tag` gives the level of its place in the outline
    */
-  @Prop({ reflect: true }) readonly typography: TypographyType = 'detail';
+  @Prop({ reflect: true }) readonly typography: TextTypographyType = 'detail';
 
   /**
    * Specifies the variant for `typography`
@@ -105,8 +107,8 @@ export class MdsText {
 
   componentWillRender(): void {
     // Stencil sets a string @Prop to null when its attribute is removed, so `typography` can be
-    // outside TypographyType at runtime and the lookup misses; fall back to the documented default
-    // instead of throwing out of the lifecycle.
+    // outside TextTypographyType at runtime and the lookup misses; fall back to the documented
+    // default instead of throwing out of the lifecycle.
     const { tag } = typographyDefaultsVariant[this.typography] ?? typographyDefaultsVariant.detail;
     this.tag = this.tag ?? (tag as TypographyTagType);
   }

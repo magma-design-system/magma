@@ -1547,7 +1547,7 @@ mds-text prop animation (attr animation) [reflect]: "none" | "yugop" | undefined
 mds-text prop tag (attr tag) [reflect, mutable]: "abbr" | "address" | "article" | "b" | "bdo" | "blockquote" | "cite" | "code" | "dd" | "del" | "details" | "dfn" | "div" | "dl" | "dt" | "em" | "figcaption" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "i" | "ins" | "kbd" | "label" | "legend" | "li" | "mark" | "ol" | "p" | "pre" | "q" | "rb" | "rt" | "ruby" | "s" | "samp" | "small" | "span" | "strong" | "sub" | "summary" | "sup" | "time" | "u" | "ul" | "var"
 mds-text prop text (attr text) [reflect]: string | undefined
 mds-text prop truncate (attr truncate) [reflect]: "all" | "none" | "word" | undefined
-mds-text prop typography (attr typography) [reflect]: "action" | "caption" | "detail" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "hack" | "label" | "option" | "paragraph" | "snippet" | "tip" = 'detail'
+mds-text prop typography (attr typography) [reflect]: "action" | "caption" | "detail" | "dialog" | "group" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "hack" | "label" | "option" | "page" | "paragraph" | "part" | "section" | "snippet" | "tip" = 'detail'
 mds-text prop variant (attr variant) [reflect]: "code" | "info" | "read" | "title" | undefined
 mds-text slot (default)
 mds-text css --mds-text-animation-placeholder-char
@@ -1778,7 +1778,7 @@ type InputTextType = "number" | "text" | "time" | "email" | "tel" | "url" | "dat
 type InputTipItemVariantType = "text" | "required" | "disabled" | "count-almost" | "count-almost-full" | "count-empty" | "count-full" | "count-incomplete" | "readonly" | "required-success"
 type InputTipPositionType = 'top' | 'bottom';
 type Interaction = 'click' | 'rightclick';
-type KeyboardKeyName = "option" | "a" | "1" | "2" | "b" | "i" | "p" | "q" | "s" | "u" | "end" | "0" | "3" | "4" | "5" | "6" | "7" | "v" | "shift" | "g" | "8" | "9" | "alt" | "altleft" | "altright" | "arrowdown" | "arrowleft" | "arrowright" | "arrowup" | "backspace" | "c" | "capslock" | "command" | "commandleft" | "commandright" | "control" | "controlleft" | "controlright" | "d" | "delete" | "e" | "enter" | "escape" | "f" | "f1" | "f10" | "f11" | "f12" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" | "f8" | "f9" | "h" | "home" | "j" | "k" | "l" | "m" | "n" | "o" | "optionleft" | "optionright" | "pagedown" | "pageup" | "r" | "shiftleft" | "shiftright" | "space" | "t" | "tab" | "w" | "windows" | "windowsleft" | "windowsright" | "x" | "y" | "z"
+type KeyboardKeyName = "option" | "b" | "i" | "p" | "q" | "s" | "u" | "a" | "1" | "2" | "end" | "0" | "3" | "4" | "5" | "6" | "7" | "v" | "shift" | "g" | "8" | "9" | "alt" | "altleft" | "altright" | "arrowdown" | "arrowleft" | "arrowright" | "arrowup" | "backspace" | "c" | "capslock" | "command" | "commandleft" | "commandright" | "control" | "controlleft" | "controlright" | "d" | "delete" | "e" | "enter" | "escape" | "f" | "f1" | "f10" | "f11" | "f12" | "f2" | "f3" | "f4" | "f5" | "f6" | "f7" | "f8" | "f9" | "h" | "home" | "j" | "k" | "l" | "m" | "n" | "o" | "optionleft" | "optionright" | "pagedown" | "pageup" | "r" | "shiftleft" | "shiftright" | "space" | "t" | "tab" | "w" | "windows" | "windowsleft" | "windowsright" | "x" | "y" | "z"
 type KeyboardTest = 'pass' | 'fail';
 type LinkUnderlineType = "marker" | "solid" | "dotted"
 type LinkVariantType = "primary" | "inherit"
@@ -1848,6 +1848,7 @@ type StepperBarNavigationType = 'none' | 'scrollbar';
 type StrategyType = 'absolute' | 'fixed' | 'disabled';
 type TabSizeType = "sm" | "md"
 type TextAnimationType = 'none' | 'yugop';
+type TextTypographyType = TypographyType | TextTitleRoleType;
 type ThemeFullVariantAvatarType = "info" | "error" | "success" | "warning" | "amaranth" | "red" | "aqua" | "blue" | "green" | "lime" | "orange" | "orchid" | "purple" | "sky" | "violet" | "yellow" | "primary"
 type ThemeFullVariantType = "info" | "error" | "success" | "warning" | "amaranth" | "red" | "aqua" | "blue" | "green" | "lime" | "orange" | "orchid" | "purple" | "sky" | "violet" | "yellow" | "dark" | "light"
 type ThemeInputVariantType = "info" | "error" | "success" | "warning" | "ai" | "primary"
