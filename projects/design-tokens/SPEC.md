@@ -234,7 +234,7 @@ bridges them in `tailwind-theme-typography.css`.
 | `titles/<role>` | `--text-size-title-<role>` and its three companions | `var()` of the level (page `h3`, section and dialog `h5`, part and group `h6`) | `text-title-<role>` utilities of styles |
 
 - **The relations of the rhythm**: `inline`, `title-content`, `label-control` (300),
-  `between-containers` (400), `between-fields`, `inset` (600), `between-groups` (1000),
+  `between-containers` (400), `between-fields`, `content-actions`, `inset` (600), `between-groups` (1000),
   `between-sections` (1600). Each is a literal, so a project that changes `--spacing` in its
   `@theme` does not move it; `test/roles.test.mts` holds the values and `rhythm/step-ratio`
   (each relation at least 1.5 times the one it contains).

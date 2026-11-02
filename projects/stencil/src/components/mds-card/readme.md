@@ -18,6 +18,9 @@ The `<mds-card>` web component is the surface container of the Magma Design Syst
 - **Layout is inferred, not declared**: The card detects which of the `media` / `header` / `content` / `footer` regions are present, again whenever its content changes, and reshapes itself to whatever content you provide.
 - **Compound parent/child relationship**: `<mds-card-media>`, `<mds-card-header>`, `<mds-card-content>` and `<mds-card-footer>` are recognized by tag name and mapped onto the corresponding region, so they slot in without an explicit `slot` attribute. Plain elements given the matching `slot` value land in that region and take part in the managed grid the same way.
 - **Responsive by width**: The card's internal layout switches between stacked and media-beside-content arrangements based on the card's own width, independent of viewport or theme.
+- **One inset, shared by the regions**: The card pads its regions once, with `--magma-rhythm-inset` (600), and sets them `--magma-rhythm-title-content` (300) apart, so the title of a card stands nearer to its content than to the edge. The regions pad nothing of their own (`rhythm/inset`, `rhythm/shared-inset` in the design language).
+- **The media reaches the edges it touches**: `<mds-card-media>` leaves the inset on the sides where it meets the edge of the card: both sides when the regions are stacked, the top too when no header stands above it, the top, the bottom and the start when it stands beside the content. From the other regions it stands 300, as they do from each other (`rhythm/media-bleed`).
+- **The actions stand apart**: The footer stands `--magma-rhythm-content-actions` (600) from the region before it, as the row of actions of a form or of a dialog: the actions act on the whole card, not on its last line (`rhythm/content-actions`).
 - **The footer closes the card**: The footer region sits at the bottom of the card whatever the other regions are. When the card is taller than its parts (a media taller than header and footer together, or a grid row that stretches a set of cards to one height) and there is no content to take the free space, that space stays above the footer, in the card's background.
 - **Slot regions are fixed**: Only the four named regions are rendered; there is no default (unnamed) slot, so loose text or elements without a recognized slot/tag are not laid out.
 
@@ -27,7 +30,7 @@ The `<mds-card>` web component is the surface container of the Magma Design Syst
 
 - **`disableAutoGrid`** (default `false`) toggles the intrinsic responsive grid. Leave it off to let the card own the placement and reflow of its regions; set it to opt out of the managed grid and lay the slotted content out yourself.
 
-Spacing is tuned through the `--mds-card-gap` and `--mds-card-padding` CSS custom properties rather than props, the background of the card and of its regions through `--mds-card-background`.
+The inset and the gap follow the rhythm roles, so a density theme moves them with every other space. `--mds-card-padding` and `--mds-card-gap` override them for a set of cards, with another rhythm role, never a step; the background of the card and of its regions is `--mds-card-background`.
 
 
 ### 2. Examples
@@ -133,16 +136,16 @@ Omitting the header region shifts media to the top and content immediately below
 
 #### Using Raw Slot Attributes Instead of Compound Children
 
-When the compound children (`mds-card-*`) do not fit the use case, assign the `slot` attribute directly on any element, with the same four values: `media`, `header`, `content`, and `footer`. The card reads the regions from the `slot` values, so plain elements get the same managed grid as the compound children.
+When the compound children (`mds-card-*`) do not fit the use case, assign the `slot` attribute directly on any element, with the same four values: `media`, `header`, `content`, and `footer`. The card reads the regions from the `slot` values, so plain elements get the same managed grid and the same inset as the compound children: do not pad them.
 
 ```html
 <mds-card>
-  <div slot="header" class="flex items-center gap-400 px-400 py-400">
+  <div slot="header" class="flex items-center gap-inline">
     <mds-avatar initials="LB"></mds-avatar>
     <mds-text typography="h6">Luca Bianchi</mds-text>
   </div>
   <mds-img slot="media" src="/immagini/lavoro.jpg" alt="Luca Bianchi in cantiere" class="object-cover"></mds-img>
-  <mds-text slot="content" class="px-400">
+  <mds-text slot="content">
     Responsabile del progetto infrastrutture.
   </mds-text>
 </mds-card>
@@ -165,12 +168,11 @@ Set `disable-auto-grid` to opt out of the managed responsive grid. The regions s
 
 #### Styling Customization via CSS Custom Properties
 
-Set `--mds-card-gap` and `--mds-card-padding` on the host or a parent selector. Use Magma spacing tokens so the values remain consistent across themes. `--mds-card-background` recolors the card and its regions together; name a surface role so dark mode keeps working.
+The card already takes its inset and its gap from the rhythm roles (`--magma-rhythm-inset`, `--magma-rhythm-title-content`), and a density theme moves them. Set `--mds-card-gap` and `--mds-card-padding` on the host or a parent selector only to give a set of cards another relation of the rhythm, written as its role, never as a step. `--mds-card-background` recolors the card and its regions together; name a surface role so dark mode keeps working.
 
 ```css
-.scheda-articolo mds-card {
-  --mds-card-gap: calc(var(--spacing) * 200);
-  --mds-card-padding: calc(var(--spacing) * 400);
+.scheda-dati mds-card {
+  --mds-card-gap: var(--magma-rhythm-between-fields);
   --mds-card-background: rgb(var(--magma-surface-overlay));
 }
 ```
@@ -295,6 +297,30 @@ The `header` slot is intended for title and action controls. Placing an `<mds-im
 </mds-card>
 ```
 
+#### Do Not Pad the Regions of a Card
+
+The card pads its regions once, with its inset. A padding on a region, or on a plain element in a slot, adds to the inset: the title moves away from the edge and from its content, as when every region padded `p-400` of its own and the title stood 800 from its text. A padding on the media also takes it away from the edges it should reach.
+
+```html
+<!-- INCORRECT -->
+<mds-card>
+  <mds-card-header class="p-400">
+    <mds-text typography="h6">Riepilogo ordine</mds-text>
+  </mds-card-header>
+  <mds-text slot="content" class="px-400">Il tuo ordine e' stato elaborato correttamente.</mds-text>
+</mds-card>
+
+<!-- CORRECT -->
+<mds-card>
+  <mds-card-header>
+    <mds-text typography="h6">Riepilogo ordine</mds-text>
+  </mds-card-header>
+  <mds-card-content>
+    <mds-text>Il tuo ordine e' stato elaborato correttamente.</mds-text>
+  </mds-card-content>
+</mds-card>
+```
+
 #### Do Not Override Card Dimensions with Inline Styles
 
 `<mds-card>` manages its own min-height and responsive grid. A fixed `height` clips the regions (the card hides its overflow), and a fixed `width` pins the container-query layout instead of letting it follow the space its container gives.
@@ -341,11 +367,11 @@ The `header` slot is intended for title and action controls. Placing an `<mds-im
 
 ## CSS Custom Properties
 
-| Name                    | Description                                                                                                                                   |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-card-background` | Public. Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`) |
-| `--mds-card-gap`        | Public. Sets the spacing between card elements                                                                                                |
-| `--mds-card-padding`    | Public. Sets the spacing around card elements                                                                                                 |
+| Name                    | Description                                                                                                                                                                             |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-card-background` | Public. Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`)                                           |
+| `--mds-card-gap`        | Public. Sets the space between the regions of the card, `--magma-rhythm-title-content` by default; the footer keeps at least `--magma-rhythm-content-actions` from the region before it |
+| `--mds-card-padding`    | Public. Sets the inset of the card, shared by its regions, `--magma-rhythm-inset` by default; the media region reaches out of it to the edges it touches                                |
 
 
 ----------------------------------------------

@@ -1,10 +1,13 @@
 @import '../../tailwind/fouc.css';
 
+/* rhythm/title-content between its children: a card with no header opens its content with its
+   title (the guide of mds-card, media + content + footer); rows of data written inside it take
+   their own gap-between-fields. The inset is the card's, shared by its regions (#1189) */
+
 :host {
   background-color: var(--mds-card-background);
   display: grid;
-  gap: --spacing(400);
+  gap: var(--magma-rhythm-title-content);
   grid-template-columns: repeat(auto-fit, minmax(1px, 100%));
   min-width: 0;
-  padding: --spacing(400);
 }
