@@ -244,7 +244,7 @@ const pageOf = (context: ToolContext, options: Options): string => {
 <style>
 ${LAYERS}
 ${imports.join('\n')}
-#${PREVIEW_ID} { display: flow-root; padding: 24px; }
+#${PREVIEW_ID} { display: flow-root; padding: ${options.wholePage ? 0 : 24}px; }
 </style>
 <script type="module" src="/components/${path.basename(loaderOf(context))}"></script>
 </head>
@@ -263,6 +263,8 @@ interface Options {
   markup: string;
   widths: number[];
   height?: number;
+  /** The markup is a whole page, with a frame of its own: no inset around it. */
+  wholePage?: boolean;
   mode: (typeof MODES)[number];
   theme?: string;
   lang?: string;
@@ -578,6 +580,7 @@ export const renderPreview = (context: ToolContext): Tool => ({
       markup: shipped ? shipped.markup : String(markup),
       widths: sizes,
       ...(pageHeight !== undefined ? { height: pageHeight } : {}),
+      ...(shipped?.wholePage ? { wholePage: true } : {}),
       mode: mode as (typeof MODES)[number],
       ...(typeof theme === 'string' ? { theme } : {}),
       ...(pageLang ? { lang: pageLang } : {}),

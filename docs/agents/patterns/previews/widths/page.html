@@ -1,0 +1,36 @@
+<!--
+try: Look at the start edge: the name of the application in the bar, the title and the table start on one line, and the table takes the whole frame. Narrow the stage: the gutter stays the same at every width.
+height: 520
+whole-page: true
+-->
+<mds-header menu="none">
+  <mds-header-bar style="position: sticky">
+    <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
+    <mds-button slot="nav" variant="dark" tone="text">Pratiche</mds-button>
+    <mds-button slot="nav" variant="dark" tone="text">Archivio</mds-button>
+  </mds-header-bar>
+</mds-header>
+<main
+  style="box-sizing: content-box; display: grid; gap: var(--magma-rhythm-between-groups); margin-inline: auto; max-width: var(--magma-width-page); padding: var(--magma-rhythm-between-sections) var(--magma-width-page-gutter)"
+>
+  <div style="display: grid; gap: var(--magma-rhythm-title-content)">
+    <mds-text typography="h3" tag="h1">Pratiche di residenza</mds-text>
+    <mds-text typography="detail" tag="p">Le richieste degli ultimi trenta giorni, dalla più recente.</mds-text>
+  </div>
+  <mds-table style="width: 100%">
+    <mds-table-header>
+      <mds-table-header-cell label="Protocollo"></mds-table-header-cell>
+      <mds-table-header-cell label="Richiedente"></mds-table-header-cell>
+    </mds-table-header>
+    <mds-table-body>
+      <mds-table-row>
+        <mds-table-cell><mds-text typography="detail">2026/0412</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Giulia Bianchi</mds-text></mds-table-cell>
+      </mds-table-row>
+      <mds-table-row>
+        <mds-table-cell><mds-text typography="detail">2026/0398</mds-text></mds-table-cell>
+        <mds-table-cell><mds-text typography="detail">Luca Ferri</mds-text></mds-table-cell>
+      </mds-table-row>
+    </mds-table-body>
+  </mds-table>
+</main>

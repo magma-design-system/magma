@@ -312,6 +312,43 @@ export const loadThemeNames = (settings?: MagmaSettings): ThemeNames => {
   );
 };
 
+/**
+ * The custom properties of the tokens of the installed version, from their DTCG data: the `css`
+ * of every token that is not internal, and the `css` of the `cssOnly` entries of a group (a
+ * value with no DTCG type, `--magma-width-reading`: the README of design-tokens, "Token data").
+ * A role a utility or a component reads with no Tailwind theme variable (`--magma-width-page`)
+ * is here and not in the consumption map; the carriers of a domain are checked against both.
+ */
+export const loadTokenNames = (settings?: MagmaSettings): Set<string> => {
+  const tokens = locate('tokens', settings);
+  return readJson(
+    tokens,
+    (base: DtcgNode) => {
+      const found = new Set<string>();
+      const walk = (node: DtcgNode) => {
+        for (const [key, child] of Object.entries(node)) {
+          if (key.startsWith('$') || !child || typeof child !== 'object') continue;
+          const magma = (
+            child as {
+              $extensions?: Record<
+                string,
+                { css?: string; tier?: string; cssOnly?: { css?: string }[] }
+              >;
+            }
+          ).$extensions?.['it.maggioli.magma'];
+          for (const entry of magma?.cssOnly ?? []) if (entry.css) found.add(entry.css);
+          if ('$value' in child) {
+            if (magma?.css && magma.tier !== 'internal') found.add(magma.css);
+          } else walk(child as DtcgNode);
+        }
+      };
+      walk(base);
+      return found;
+    },
+    `token-names:${tokens}`,
+  );
+};
+
 /** The colour utilities and the raw palette keys of the installed version. */
 export const loadPalette = (settings?: MagmaSettings): PaletteInfo => {
   const tokens = locate('tokens', settings);

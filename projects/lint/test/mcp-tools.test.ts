@@ -1358,6 +1358,7 @@ describe.skipIf(!existsSync(BUILT) && !process.env.CI)('render_preview on the bu
         mode: 'light',
         lang: 'it',
         ...(one.height ? { height: one.height } : {}),
+        ...(one.wholePage ? { wholePage: true } : {}),
       });
       expect({ preview: `${one.pattern}/${one.case}`, problems: image!.problems }).toEqual({
         preview: `${one.pattern}/${one.case}`,

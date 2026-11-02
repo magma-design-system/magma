@@ -1,0 +1,37 @@
+<!--
+try: Look at the window: the column of a form plus its inset, with Telefono and Interno side by side as on a page. Narrow the stage under 480 px: the window fills the width, and its fields and actions go one under the other.
+height: 640
+-->
+<mds-modal opened interaction="strict" aria-label="Nuovo referente">
+  <mds-banner
+    slot="window"
+    variant="light"
+    tone="box"
+    dismissible
+    headline="Nuovo referente"
+    style="max-width: var(--magma-width-dialog); width: 100%"
+  >
+    <form
+      style="align-items: start; display: grid; gap: var(--magma-rhythm-between-fields); grid-template-columns: repeat(auto-fill, minmax(min(100%, max(14rem - var(--magma-rhythm-between-fields) / 2, (100% - var(--magma-rhythm-between-fields)) / 2 - 1px)), 1fr))"
+    >
+      <mds-input-field label="Nome e cognome" style="grid-column: 1 / -1">
+        <mds-input value="Marco Bianchi"></mds-input>
+      </mds-input-field>
+      <mds-input-field
+        label="PEC"
+        message="La posta certificata delle comunicazioni ufficiali."
+        style="grid-column: 1 / -1"
+      >
+        <mds-input type="email" value="m.bianchi@pec.comune.esempio.it"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Telefono">
+        <mds-input type="tel" value="0541 123456"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Interno">
+        <mds-input value="214"></mds-input>
+      </mds-input-field>
+    </form>
+    <mds-button slot="action" variant="dark" tone="outline">Annulla</mds-button>
+    <mds-button slot="action">Aggiungi</mds-button>
+  </mds-banner>
+</mds-modal>

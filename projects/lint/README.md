@@ -26,7 +26,7 @@ sets both up at bootstrap.
 
 | Folder | What |
 | --- | --- |
-| `src/core/data.ts` | the data of the installed version: props and values from `documentation.json`, raw palette steps from the DTCG of design-tokens, colour utilities from the consumption map of styles |
+| `src/core/data.ts` | the data of the installed version: props and values from `documentation.json`, raw palette steps and the custom properties of the tokens from the DTCG of design-tokens, colour utilities from the consumption map of styles |
 | `src/core/element.ts` | the element the template rules check, whatever the template language |
 | `src/core/checks.ts` | one check per template rule, pure |
 | `src/core/colors.ts` | the colour literals of a CSS value |
@@ -153,8 +153,10 @@ or on the guide it enforces, not only on fixtures picked by hand.
   asks every decision of Foundation to name the one it serves. A carrier is read from its form,
   as a `use` is (the choice of the maintainer on #1196): `mds-*` a component and its attributes,
   checked as a `use`; `--*` a custom property, which exists when the consumption map of styles
-  lists it as a token or as the theme name a token publishes, or when a component documents it
-  as public; `magma/*` a rule of the lint; any other name a class, which exists when it is a
+  lists it as a token or as the theme name a token publishes, when the DTCG data of
+  design-tokens has it as a token that is not internal or as a `cssOnly` entry of a group (a
+  role no Tailwind theme variable publishes, `--magma-width-page`, `--magma-width-dialog`:
+  `loadTokenNames`), or when a component documents it as public; `magma/*` a rule of the lint; any other name a class, which exists when it is a
   Magma utility of the consumption map or `<utility>-<key>` of a namespace and a token or a
   keyword of it, as `explain_class` reads a class (`loadThemeNames` of `src/core/data.ts`). A
   planned carrier must not exist yet, as a planned lint rule; the release that has it makes the
@@ -222,8 +224,9 @@ or on the guide it enforces, not only on fixtures picked by hand.
   Edge, the channels of playwright.dev/docs/browsers, then Playwright's own Chromium. With
   `pattern` and `case` instead of markup it renders the preview Magma ships for that case
   (#1186), found under an old id of the pattern too: at the height the preview declares, the
-  page an overlay needs, and with `lang="it"`, the language of the words of the previews
-  (`docs/PATTERNS.md`), unless the call gives its own.
+  page an overlay needs, with no inset around a stage that declares `whole-page`, and with
+  `lang="it"`, the language of the words of the previews (`docs/PATTERNS.md`), unless the call
+  gives its own.
 - **What a tool or a rule says about itself** (the documentation site reads it from the
   installed package, magma-design-system/docs#1): the same fields on both plugins, a
   description and the URL of its section of `agents/lint.md` (an ESLint rule in

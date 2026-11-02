@@ -107,7 +107,7 @@ of `command`).
 | `suggest_role` | the role for a colour, a raw class or a palette step, as a class of the same utility (`shadow-*/80` stays a shadow class) | picking a role by eye |
 | `explain_class` | what a class does with the Magma theme | the trap of the scale: `p-4` is 0.01rem, `p-400` is 1rem |
 | `find_icon` | a slug that exists, by meaning, or whether a slug exists | an `icon="..."` that renders nothing |
-| `get_guide` | one section of a guide, or of a domain of Foundation, the rules of composition of the design language (`rhythm`: the space between elements) | reading the whole file |
+| `get_guide` | one section of a guide, or of a domain of Foundation, the rules of composition of the design language (`rhythm`, `density`, `actions`, `titles`, `surfaces`, `widths`) | reading the whole file |
 | `get_pattern` | how a task across components is solved in every product (where a message goes, confirming an action, an empty, a loading or a failed part): the list, the patterns for a need, or, with the values of the variables of a pattern, the one case to follow, with its preview (the stage, live, and what to try in it) when Magma has one and in `rules` the rules of the domains it relies on; the layer of the project (`magma/patterns/<id>.md`) applied; the domains of Foundation first in the list, then the building blocks (`kind: block`, the page header), which answer with the regions to lay out, in order | inventing the flow, or reading [`patterns.md`](patterns.md) and each pattern by hand |
 | `check_markup` | whether a snippet passes the lint, before it is written | a lint run after the fact |
 | `check_setup` | what the Magma integration of the project misses | checking the install steps by hand |
@@ -126,7 +126,7 @@ the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents
   `page-header`, `get_pattern` with its id and the values of its variables.
 - Before laying out a page, a form, a dialog or a card: the domains of Foundation, which
   `get_pattern` lists first (`kind: foundation`), each read with `get_guide` by its id
-  (`rhythm`); follow the `rules` that `get_pattern` gives with a case and `get_component`
+  (`rhythm`, `actions`, `titles`, `surfaces`, `widths`, `density`); follow the `rules` that `get_pattern` gives with a case and `get_component`
   with a component.
 - Before an icon: `find_icon`.
 - After writing: `check_markup`, then the project's lint ([`lint.md`](lint.md)).

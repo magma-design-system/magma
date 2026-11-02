@@ -32,9 +32,9 @@ variables:
   preview: { values: [seen, unseen], means: "does the person see what goes and to whom when acting" }
 
 cases:
-  - { id: act-then-undo, reversible: "yes", reaches-others: "no", stakes: normal, where: "act at once, then a toast with Undo, which stays until closed", use: ["mds-toast variant=success duration=0 dismissible", "mds-button slot=action"] }
+  - { id: act-then-undo, reversible: "yes", reaches-others: "no", stakes: normal, where: "act at once, then a toast with Undo, the default light toast, which stays until closed", use: ["mds-toast duration=0 dismissible", "mds-button slot=action"] }
   - { id: ask-first, reversible: "no", reaches-others: "no", items: one, frequency: occasional, stakes: normal, where: "a dialog before acting: the question names the item, the text says the consequence", use: ["mds-modal"] }
-  - { id: make-reversible, reversible: "no", reaches-others: "no", items: one, frequency: frequent, stakes: normal, where: "make it reversible: act at once, then a toast with Undo; the item is kept for a while to restore it", use: ["mds-toast variant=success duration=0 dismissible", "mds-button slot=action"], see: act-then-undo }
+  - { id: make-reversible, reversible: "no", reaches-others: "no", items: one, frequency: frequent, stakes: normal, where: "make it reversible: act at once, then a toast with Undo; the item is kept for a while to restore it", use: ["mds-toast duration=0 dismissible", "mds-button slot=action"], see: act-then-undo }
   - { id: ask-first-many, reversible: "no", reaches-others: "no", items: many, stakes: normal, where: "a dialog before acting that says how many", use: ["mds-modal"] }
   - { id: send-as-shown, reaches-others: "yes", preview: seen, stakes: normal, where: "no dialog: the Send button, with what and to whom in front of the person, is the confirmation", use: ["mds-button"] }
   - { id: ask-before-sending, reaches-others: "yes", preview: unseen, stakes: normal, where: "a dialog that shows what goes and to whom before sending", use: ["mds-modal"] }
@@ -105,9 +105,9 @@ A case that leaves a variable out holds for any of its values.
 
 | Case | When | Where | Use |
 | --- | --- | --- | --- |
-| `act-then-undo` | reversible: yes; reaches-others: no; stakes: normal | act at once, then a toast with Undo, which stays until closed | `mds-toast variant=success duration=0 dismissible`, `mds-button slot=action` |
+| `act-then-undo` | reversible: yes; reaches-others: no; stakes: normal | act at once, then a toast with Undo, the default light toast, which stays until closed | `mds-toast duration=0 dismissible`, `mds-button slot=action` |
 | `ask-first` | reversible: no; reaches-others: no; items: one; frequency: occasional; stakes: normal | a dialog before acting: the question names the item, the text says the consequence | `mds-modal` |
-| `make-reversible` | reversible: no; reaches-others: no; items: one; frequency: frequent; stakes: normal | make it reversible: act at once, then a toast with Undo; the item is kept for a while to restore it; see `act-then-undo` | `mds-toast variant=success duration=0 dismissible`, `mds-button slot=action` |
+| `make-reversible` | reversible: no; reaches-others: no; items: one; frequency: frequent; stakes: normal | make it reversible: act at once, then a toast with Undo; the item is kept for a while to restore it; see `act-then-undo` | `mds-toast duration=0 dismissible`, `mds-button slot=action` |
 | `ask-first-many` | reversible: no; reaches-others: no; items: many; stakes: normal | a dialog before acting that says how many | `mds-modal` |
 | `send-as-shown` | reaches-others: yes; stakes: normal; preview: seen | no dialog: the Send button, with what and to whom in front of the person, is the confirmation | `mds-button` |
 | `ask-before-sending` | reaches-others: yes; stakes: normal; preview: unseen | a dialog that shows what goes and to whom before sending | `mds-modal` |
@@ -136,8 +136,9 @@ The dialog of `ask-first` and `ask-first-many`:
 ## Behaviour over time
 
 - On the action: `await` on its button, which cannot be pressed again.
-- It works: the dialog closes, a success toast; if the element that opened the dialog is gone,
-  the focus goes to the title of the page.
+- It works: the dialog closes, a toast that names what went, the default `light` toast of a
+  removal (`message-placement`, `removal-toast-neutral`); if the element that opened the dialog
+  is gone, the focus goes to the title of the page.
 - It fails: the banner in the dialog, "Nothing was changed"; the dialog stays open.
 - Cancel or Esc: the dialog closes (to verify on `mds-modal`: the focus goes back to what
   opened it).
@@ -197,3 +198,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-28 | An action that reaches others asks only when the person does not see what goes and to whom (`send-as-shown`, `ask-before-sending`) | With the content and the recipient in front of them, the Send button is already the confirmation. |
 | 2026-10-28 | The toast with Undo stays until closed | The rule of every toast with an action, there for accessibility; the time limit is the application's. |
 | 2026-10-28 | No typed confirmation in the default; a product may add it (`typed-confirmation`) | The dialog that names the item and says how many is enough for a default. |
+| 2026-11-01 | The toast of a removal, with Undo or after a confirmation, is the default `light` toast, not `success` (`act-then-undo`, `make-reversible`) | A removal is a loss the person wanted, and green celebrates it; on the neutral toast no colour judges the removal or Undo (`removal-toast-neutral` of `message-placement`). https://github.com/magma-design-system/magma/issues/1189#issuecomment-6556983924 |

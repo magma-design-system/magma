@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-import { loadComponents, loadStyles, loadThemeNames } from '../src/core/data.js';
+import { loadComponents, loadStyles, loadThemeNames, loadTokenNames } from '../src/core/data.js';
 import {
   answer,
   bodyErrors,
@@ -119,8 +119,16 @@ describe('the patterns Magma ships', () => {
 
   test('the domains of Foundation come first, rhythm among them', () => {
     const listed = listPatterns(patterns);
-    expect(listed[0]).toMatchObject({ id: 'rhythm', kind: 'foundation', status: 'decided' });
+    expect(listed[0]).toMatchObject({ kind: 'foundation', status: 'decided' });
     expect(listed[0]).not.toHaveProperty('group');
+    expect(listed.filter((one) => one.kind === 'foundation').map((one) => one.id)).toEqual([
+      'actions',
+      'density',
+      'rhythm',
+      'surfaces',
+      'titles',
+      'widths',
+    ]);
     expect(listed.findLastIndex((one) => one.kind === 'foundation')).toBeLessThan(
       listed.findIndex((one) => one.kind !== 'foundation'),
     );
@@ -161,9 +169,9 @@ describe('the patterns Magma ships', () => {
             rulesOfComponent(patterns, carrier.use.tag).map((rule) => `${rule.from}/${rule.id}`),
           ).toContain(`${domain.id}/${one.id}`);
         }
-    expect(rulesOfComponent(patterns, 'mds-input-field').map((rule) => rule.id)).toEqual([
-      'label-control',
-    ]);
+    expect(
+      rulesOfComponent(patterns, 'mds-input-field').map((rule) => `${rule.from}/${rule.id}`),
+    ).toEqual(['rhythm/label-control', 'widths/field']);
   });
 
   test('message-placement answers each of its 384 combinations once', () => {
@@ -426,6 +434,7 @@ describe('a domain of Foundation', () => {
       components: loadComponents({ documentation: data.documentation }),
       styles: loadStyles({ documentation: data.documentation }),
       theme: loadThemeNames({ consumption: data.consumption }),
+      tokens: loadTokenNames({ tokens: data.tokens }),
       lintRules: new Set(['magma/token-values']),
     };
     expect(carrierErrors(domain(), release)).toEqual([]);
@@ -443,6 +452,9 @@ describe('a domain of Foundation', () => {
             '--mds-banner-background',
             '--mds-banner-cockade-distance',
             '--spacing-md',
+            '--magma-width-page',
+            '--magma-width-dialog',
+            '--magma-tint-accent-fg',
             '--nope',
             'gap-md',
             'max-w-md',
@@ -479,6 +491,7 @@ describe('a domain of Foundation', () => {
       'case inline: carried by mds-nope, but mds-nope is not a component of this release',
       'case inline: carried by mds-banner variant=nope, but variant of mds-banner is one of ai, dark, error, info, light, primary, success, warning, not nope',
       'case inline: carried by --mds-banner-cockade-distance, but --mds-banner-cockade-distance is internal to mds-banner: a carrier is public',
+      'case inline: carried by --magma-tint-accent-fg, but the release has no custom property --magma-tint-accent-fg',
       'case inline: carried by --nope, but the release has no custom property --nope',
       'case inline: carried by gap-nope, but the theme makes no class gap-nope',
       'case inline: carried by magma/nope, but the lint has no rule magma/nope',
@@ -1215,18 +1228,29 @@ describe('the previews of the cases', () => {
 
   test('what to try is required, every key known, the height in range', () => {
     expect(stage('<mds-text>No comment</mds-text>', '').errors).toEqual([
-      'it opens with a comment of keys: try, height (docs/PATTERNS.md)',
+      'it opens with a comment of keys: try, height, whole-page (docs/PATTERNS.md)',
     ]);
     expect(stage('<!--\nheight: 260\n-->').errors).toEqual([
       'try is required: what to do in the preview, or what to look at',
     ]);
     expect(stage('<!--\ntry: Look.\nplay: #save\nwhy not\n-->').errors).toEqual([
-      'play is not a key of a preview: try, height',
+      'play is not a key of a preview: try, height, whole-page',
       '"why not" in the opening comment is not a key: value line',
     ]);
     const low = stage('<!--\ntry: Look.\nheight: 90\n-->');
     expect(low.errors).toEqual(['height is a whole number of pixels, 120 to 2000']);
     expect(low.height).toBeUndefined();
+  });
+
+  test('a whole page has no inset around it: whole-page is true or left out', () => {
+    expect(stage('<!--\ntry: Look.\nwhole-page: true\n-->')).toMatchObject({
+      wholePage: true,
+      errors: [],
+    });
+    expect(stage('<!--\ntry: Look.\n-->').wholePage).toBeUndefined();
+    const wrong = stage('<!--\ntry: Look.\nwhole-page: yes\n-->');
+    expect(wrong.errors).toEqual(['whole-page is true, or left out']);
+    expect(wrong.wholePage).toBeUndefined();
   });
 
   test('only a stage: no page, no script that loads, nothing from outside', () => {

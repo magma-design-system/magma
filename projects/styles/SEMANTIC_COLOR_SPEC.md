@@ -204,7 +204,7 @@ and same-plane prominence (`muted`). 5 roles:
 | Token | Axis | Use |
 |---|---|---|
 | `--magma-surface-sunken` | elevation | wells, insets, code blocks, tracks |
-| `--magma-surface-muted` | prominence | same-plane grouping (zebra rows, subtle sections) |
+| `--magma-surface-muted` | prominence | same-plane grouping inside a component (zebra rows), never a section (`surfaces/tints-in-components`) |
 | `--magma-surface-default` | - | canvas / page |
 | `--magma-surface-raised` | elevation | cards, panels, sticky headers |
 | `--magma-surface-overlay` | elevation | modal, dropdown, popover, tooltip, sheet; chip, banner |

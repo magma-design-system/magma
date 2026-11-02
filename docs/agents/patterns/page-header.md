@@ -14,7 +14,7 @@ keywords: [page header, page title, heading, title bar, back link, page actions,
 not-for: []
 used-by: [list-with-filters, record-detail]
 high-stakes: false
-components: [mds-button, mds-text, mds-badge]
+components: [mds-button, mds-text, mds-badge, mds-dropdown, mds-separator]
 related: [list-with-filters, record-detail]
 validated-on: []
 
@@ -28,7 +28,7 @@ regions:
   - { id: title, required: true, what: "the heading of the page: what the set holds, in the plural, or the subject of the item", use: ["mds-text typography=h3 tag=h1"] }
   - { id: status, when: { subject: item }, what: "the status of the item, next to the title, when it has one", use: ["mds-badge"] }
   - { id: summary, what: "one line: what the set holds, or where the item belongs and when it arrived", use: ["mds-text typography=detail tag=p"] }
-  - { id: actions, what: "the actions on what the page shows, the main one last in the strong tone, the others outlined; an action that destroys the item is never in the row: it goes last in the menu of the item, after a separator", use: ["mds-button variant=dark tone=outline", "mds-button tone=strong"] }
+  - { id: actions, what: "the actions on what the page shows, the main one last in the strong tone, the others outlined; an action that destroys the item is never in the row: it goes last in the menu of the item, after a separator; with more than three actions the row keeps the main one, the secondary used most and the menu of the item at its start, which holds the others (actions/more-in-menu)", use: ["mds-button variant=dark tone=outline", "mds-button tone=strong", "mds-button variant=dark tone=text icon", "mds-dropdown", "mds-separator"] }
 
 always-true:
   - id: one-h1
@@ -45,6 +45,10 @@ always-true:
     checked-by: review
   - id: main-action-last
     from: record-detail
+  - id: at-most-three
+    from: actions
+  - id: more-in-menu
+    from: actions
   - id: title-content
     from: rhythm
   - id: inline
@@ -52,8 +56,7 @@ always-true:
   - id: between-sections
     from: rhythm
 
-open-choices:
-  - { id: actions-overflow, default: "every action visible, wrapping under the title on a narrow screen", may: "move the actions used least into a menu next to the main one (mds-button-dropdown)" }
+open-choices: []
 
 situations:
   - { situation: The list of the requests of an office, level: top, subject: set }
@@ -100,7 +103,7 @@ A region shows where its When holds, in this order: a required one always, the o
 | `title` | any | yes | the heading of the page: what the set holds, in the plural, or the subject of the item | `mds-text typography=h3 tag=h1` |
 | `status` | subject: item |  | the status of the item, next to the title, when it has one | `mds-badge` |
 | `summary` | any |  | one line: what the set holds, or where the item belongs and when it arrived | `mds-text typography=detail tag=p` |
-| `actions` | any |  | the actions on what the page shows, the main one last in the strong tone, the others outlined; an action that destroys the item is never in the row: it goes last in the menu of the item, after a separator | `mds-button variant=dark tone=outline`, `mds-button tone=strong` |
+| `actions` | any |  | the actions on what the page shows, the main one last in the strong tone, the others outlined; an action that destroys the item is never in the row: it goes last in the menu of the item, after a separator; with more than three actions the row keeps the main one, the secondary used most and the menu of the item at its start, which holds the others (actions/more-in-menu) | `mds-button variant=dark tone=outline`, `mds-button tone=strong`, `mds-button variant=dark tone=text icon`, `mds-dropdown`, `mds-separator` |
 
 ## Layout
 
@@ -134,19 +137,11 @@ These hold in every product: a product layer cannot change them.
 | `back-names-the-parent` | The way back is a link that names the page it returns to ("Requests"), never "Back". | review |
 | `not-the-app-bar` | The page header is the head of the main content, under the bar of the application; the navigation of the application is never in it. | review |
 | `main-action-last` | The main action comes last, in the strong tone; the others are outlined, `variant="dark" tone="outline"`; an action that destroys the record is never among them, it goes last in the menu of the record. (from `record-detail`) | review |
+| `at-most-three` | A row has at most three actions, and the labels of a row of three fit in 380 px with their gaps: the threshold of `stacked` is computed on them. Beyond three, the menu of the item takes one of the places (`more-in-menu`). (from `actions`) | review |
+| `more-in-menu` | When an item has more than three actions, its row keeps the main action, the secondary used most and the menu of the item, at the start of the row: an icon-only mds-button (more_vert, variant="dark" tone="text", an aria-label that names the item) with mds-dropdown. The menu holds the other actions, and Elimina last after an mds-separator (`destructive-in-menu`): one menu per item. (from `actions`) | review |
 | `title-content` | `gap-title-content` (300) between a title and the content it names (from `rhythm`) |  |
 | `inline` | `gap-inline` (300) between elements side by side in one row: the actions of a row, a field and the button beside it (from `rhythm`) |  |
 | `between-sections` | `gap-between-sections` (1600) between two sections of a page, each with its title (from `rhythm`) |  |
-
-## Open choices
-
-<!-- Generated from the frontmatter: edit it there, then run nx run stencil:generate.pattern -- --sync. -->
-
-The default decides these; a product layer may narrow them.
-
-| Id | Default | A product may |
-| --- | --- | --- |
-| `actions-overflow` | every action visible, wrapping under the title on a narrow screen | move the actions used least into a menu next to the main one (mds-button-dropdown) |
 
 ## Situations
 
@@ -199,3 +194,4 @@ Situations every application has, each with the regions it shows: they give the 
 | 2026-10-31 | The actions other than the main one are `variant="dark" tone="outline"`, no longer weak; an action that destroys the item goes in its menu, never in the row | The design language, #1189: `actions/secondary` and `actions/destructive-in-menu`. |
 | 2026-10-31 | The spaces of the Layout are relations of the rhythm, `title-content` and `inline` (`gap-300`), no longer 200 and 400 | The design language, #1189: the rhythm, on main since #1206; the old values came from the previews. |
 | 2026-10-31 | The header is the first section of the page: `gap-1600` between it and the content under it (`rhythm/between-sections`), put by the page, not by the block | The header names the whole page: at the step of the sections it belongs to none of them (`step-ratio`), and the rhythm needs no new relation. Rejected: `gap-1000`, which on a page of several sections puts the header nearer to the first one than that one to the next, so it reads as the head of the first section. Chosen live on a record with sections and on a list (#1210). |
+| 2026-11-01 | With more than three actions, the row keeps the main one, the secondary used most and the menu of the item at its start; the open choice `actions-overflow` goes | The design language, #1189: `actions/at-most-three` and `actions/more-in-menu`. The arrow of the main action (`mds-button-dropdown`) read as another way of doing it; every action visible broke the limit of three. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6561221595 |

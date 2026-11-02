@@ -32,7 +32,7 @@ format, in a scratch folder (never in `docs/` before the choice):
 - each opens with its `try`: what to do in it ("Press Salva: ..."), or what to look at when
   there is nothing to do;
 - an overlay gets a `height`, and a banner that is the message of a modal goes in its `window`
-  slot;
+  slot; a stage that is a whole page, with its own bar and frame, gets `whole-page: true`;
 - the words are Italian, short, of an ordinary application (a form, a list, a record).
 
 Choose the one to recommend, with a reason in one line.
