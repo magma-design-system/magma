@@ -40,6 +40,7 @@ const RHYTHM: Record<string, number> = {
   'label-control': 12,
   'between-containers': 16,
   'between-fields': 24,
+  'content-actions': 24,
   'inset': 24,
   'between-groups': 40,
   'between-sections': 64,
@@ -66,6 +67,13 @@ describe('rhythm', () => {
   test('the inset of a container is the step between fields, and its boundary lets the cards stand closer', () => {
     expect(vars.get('--magma-rhythm-inset')).toBe(vars.get('--magma-rhythm-between-fields'))
     expect(px(vars.get('--magma-rhythm-between-containers'))).toBeLessThan(px(vars.get('--magma-rhythm-inset')))
+  })
+
+  // #1189 rhythm 6: the row of actions acts on the whole container, so it stands as far from the
+  // content as the fields of a form from each other, never as near as a title to its content
+  test('the row of actions that closes a container stands from its content as far as the fields from each other', () => {
+    expect(vars.get('--magma-rhythm-content-actions')).toBe(vars.get('--magma-rhythm-between-fields'))
+    expect(px(vars.get('--magma-rhythm-content-actions'))).toBeGreaterThan(px(vars.get('--magma-rhythm-title-content')))
   })
 
   test.each(Object.keys(RHYTHM))('the Tailwind theme bridges %s as a spacing key, with its value as fallback', (id) => {
