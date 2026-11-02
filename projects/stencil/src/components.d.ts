@@ -1744,6 +1744,11 @@ export namespace Components {
          */
         "message"?: string;
         /**
+          * States that the answer of the field is short, such as a house number, a postcode, a tax code or a date: in a `field-group` the field takes half the column, and two short fields in a row share it (#1189, widths/field). The group lays it out; on its own the field keeps its width
+          * @default false
+         */
+        "short"?: boolean;
+        /**
           * Display the variant of a message at the bottom of the input text field
           * @default 'primary'
          */
@@ -7180,6 +7185,11 @@ declare namespace LocalJSX {
          */
         "name"?: string;
         /**
+          * States that the answer of the field is short, such as a house number, a postcode, a tax code or a date: in a `field-group` the field takes half the column, and two short fields in a row share it (#1189, widths/field). The group lays it out; on its own the field keeps its width
+          * @default false
+         */
+        "short"?: boolean;
+        /**
           * Display the variant of a message at the bottom of the input text field
           * @default 'primary'
          */
@@ -9384,6 +9394,7 @@ declare namespace LocalJSX {
     interface MdsInputFieldAttributes {
         "label": string;
         "message": string;
+        "short": boolean;
         "variant": ThemeInputVariantType;
     }
     interface MdsInputOtpAttributes {

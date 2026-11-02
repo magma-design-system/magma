@@ -23,6 +23,7 @@ The `<mds-input-field>` web component is the form-field wrapper of the Magma Des
 #### Properties & Visual Configurations
 
 - **`message`** is the helper/error text shown under the control. It is author-set initially but is overwritten by the validation cycle once the slotted control emits validation (replaced by the errors, or cleared when there are none), so a manually set message persists only until the first validation.
+- **`short`** states that the answer of the field is short: a house number, a postcode, a tax code, a date. It says the meaning, and the `field-group` utility of the styles package lays it out: from a column of `28rem` a short field takes half of it and two in a row share it, under it each takes the whole column (`widths/field` of the design language). Out of a `field-group` the field keeps its width.
 - **`variant`** drives the field's status colouring. It is not the full theme ladder: the allowed set is the input-specific variant ladder (`'ai'`, `'primary'`, plus the status values `'error'`, `'info'`, `'success'`, `'warning'`), drawn from the families in [`docs/agents/variants.md`](../../../../../../docs/agents/variants.md). It defaults to `'primary'` and is normally managed automatically by validation rather than set by hand.
 
 
@@ -101,6 +102,27 @@ The slotted `<mds-input>` is itself form-associated and submits under its own `n
   </mds-input-field>
 
   <mds-button type="submit" label="Registrati" variant="primary" tone="strong"></mds-button>
+</form>
+```
+
+#### Short Answers in a Group of Fields
+
+Set `short` on a field whose answer is short (a house number, a postcode, a tax code, a date), and put the fields of one subject in a `fieldset` with the `field-group` utility of the styles package. A short field takes half the column and two in a row share it, in reading order: number and postcode, tax code and date of birth. Every other field takes the whole column, and under a column of `28rem` the halves take it too. The group reads its direct children: a framework component that wraps the field carries `short` on its own host.
+
+```html
+<form class="max-w-form">
+  <fieldset class="field-group">
+    <legend>Residenza</legend>
+    <mds-input-field label="Via">
+      <mds-input name="street"></mds-input>
+    </mds-input-field>
+    <mds-input-field label="Numero civico" short>
+      <mds-input name="number"></mds-input>
+    </mds-input-field>
+    <mds-input-field label="CAP" short>
+      <mds-input name="postcode"></mds-input>
+    </mds-input-field>
+  </fieldset>
 </form>
 ```
 
@@ -208,6 +230,33 @@ Native DOM events (`change`, `input`) do not carry validation state and may not 
 </mds-input-field>
 ```
 
+#### Do Not Narrow a Short Field by Hand
+
+A width written on the field, or a wrapper per pair, gives every field an edge of its own and copies the threshold under which the halves take the whole column. `short` in a `field-group` keeps two widths, the whole column and half of it, and the threshold in one place.
+
+```html
+<!-- INCORRECT -->
+<div class="flex flex-wrap gap-between-fields">
+  <mds-input-field label="Numero civico" class="w-32">
+    <mds-input name="number"></mds-input>
+  </mds-input-field>
+  <mds-input-field label="CAP" class="w-1/2">
+    <mds-input name="postcode"></mds-input>
+  </mds-input-field>
+</div>
+
+<!-- CORRECT -->
+<fieldset class="field-group">
+  <legend>Residenza</legend>
+  <mds-input-field label="Numero civico" short>
+    <mds-input name="number"></mds-input>
+  </mds-input-field>
+  <mds-input-field label="CAP" short>
+    <mds-input name="postcode"></mds-input>
+  </mds-input-field>
+</fieldset>
+```
+
 #### Do Not Pierce the Shadow DOM to Style the Message Area
 
 The only supported customization surface is `--mds-input-field-message-color` and `--mds-input-field-message-background`, plus the `content` shadow part. Targeting internal elements via `>>>` or undocumented class names couples your code to the implementation and will break on minor releases.
@@ -229,11 +278,12 @@ mds-input-field {
 
 ## Properties
 
-| Property  | Attribute | Description                                                            | Type                                                                            | Default     |
-| --------- | --------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------- |
-| `label`   | `label`   | Display a text on the top of the input text field                      | `string \| undefined`                                                           | `undefined` |
-| `message` | `message` | Display a message at the bottom of the input text field                | `string \| undefined`                                                           | `undefined` |
-| `variant` | `variant` | Display the variant of a message at the bottom of the input text field | `"ai" \| "error" \| "info" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
+| Property  | Attribute | Description                                                                                                                                                                                                                                                                           | Type                                                                            | Default     |
+| --------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------- |
+| `label`   | `label`   | Display a text on the top of the input text field                                                                                                                                                                                                                                     | `string \| undefined`                                                           | `undefined` |
+| `message` | `message` | Display a message at the bottom of the input text field                                                                                                                                                                                                                               | `string \| undefined`                                                           | `undefined` |
+| `short`   | `short`   | States that the answer of the field is short, such as a house number, a postcode, a tax code or a date: in a `field-group` the field takes half the column, and two short fields in a row share it (#1189, widths/field). The group lays it out; on its own the field keeps its width | `boolean \| undefined`                                                          | `false`     |
+| `variant` | `variant` | Display the variant of a message at the bottom of the input text field                                                                                                                                                                                                                | `"ai" \| "error" \| "info" \| "primary" \| "success" \| "warning" \| undefined` | `'primary'` |
 
 
 ## Slots

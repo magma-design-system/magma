@@ -21,6 +21,7 @@ The `<mds-header-bar>` web component is the top bar of a Magma application layou
 - **Hamburger trigger**: When `menu` is not `'none'` the component renders a menu button that opens the menu on click, icon-only and named in the page language (the `lang` of `<html>`) ("Open menu").
 - **Open event**: Clicking the hamburger emits the bubbling `mdsHeaderBarOpen` event and opens the drawer on the surrounding `mds-header`.
 - **Imperative open control**: The public `setOpened(isOpened = true)` method opens or closes the drawer of the surrounding `mds-header`, as the hamburger does; outside an `mds-header` it does nothing.
+- **The frame of the page**: The content of the bar stops at the width of the page, `--magma-width-page` (1280px), centred, with the gutter of the page, `--magma-width-page-gutter` (`600`), outside it: it starts where the content of an element with the `page-frame` utility starts, at every width (`widths/page` of the design language). A theme that moves the two tokens moves the bar and the page together.
 
 #### Properties & Visual Configurations
 
@@ -64,6 +65,21 @@ The canonical form. Place branding content in the default slot (left side) and `
   </mds-header-bar>
   <!-- drawer and other header regions go here -->
 </mds-header>
+```
+
+#### On the Frame of the Page
+
+The content of the bar stands on the frame of the page. Put the `page-frame` utility on the content of the page, one element, and its edges meet the edges of the content of the bar at every width; write no width or gutter of your own.
+
+```html
+<mds-header>
+  <mds-header-bar>
+    <mds-text typography="h6">Gestione Pratiche</mds-text>
+  </mds-header-bar>
+</mds-header>
+<main class="page-frame">
+  <h1 class="text-title-page">Pratiche</h1>
+</main>
 ```
 
 #### Controlling Hamburger Visibility

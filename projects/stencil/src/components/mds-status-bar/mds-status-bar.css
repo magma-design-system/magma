@@ -37,8 +37,13 @@ mds-modal {
   corner-shape: var(--magma-corner-shape);
   margin-left: --spacing(600);
   margin-right: --spacing(600);
+
+  /* the area is the window of the inner mds-modal, which gives a slotted window the width of a
+     dialog (#1202): the area hugs the bar instead, and a rule of this tree wins over ::slotted */
+  max-width: none;
   padding: --spacing(200) --spacing(200) --spacing(600);
   transition-property: background-color, transform, opacity;
+  width: auto;
 }
 
 .status-bar {

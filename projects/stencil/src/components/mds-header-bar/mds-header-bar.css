@@ -21,7 +21,11 @@
   margin-left: auto;
   margin-right: auto;
   max-width: 100%;
-  padding: --spacing(400) --spacing(600);
+
+  /* the gutter of the page outside the content, its frame inside (#1189, widths/page): the content
+     of the bar starts where the content of a page-frame does, and a theme that moves the page moves
+     the bar with it */
+  padding: --spacing(400) var(--magma-width-page-gutter);
   position: fixed;
   transition-duration: var(--private-header-bar-transition-duration);
   transition-property: background-color, border-radius, margin, max-width, transform, width;
@@ -41,7 +45,7 @@
   flex-grow: 1;
   gap: --spacing(400);
   justify-content: space-between;
-  max-width: var(--breakpoint-wide);
+  max-width: var(--magma-width-page);
 }
 
 .actions {

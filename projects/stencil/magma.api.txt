@@ -786,6 +786,7 @@ mds-input-date-range-preselection css --mds-date-range-preselection-selected-col
 mds-input-field encapsulation shadow
 mds-input-field prop label (attr label) [mutable]: string | undefined
 mds-input-field prop message (attr message) [mutable]: string | undefined
+mds-input-field prop short (attr short) [reflect]: boolean | undefined = false
 mds-input-field prop variant (attr variant) [reflect, mutable]: "ai" | "error" | "info" | "primary" | "success" | "warning" | undefined = 'primary'
 mds-input-field slot (default)
 mds-input-field part content

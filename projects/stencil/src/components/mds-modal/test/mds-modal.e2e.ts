@@ -183,6 +183,25 @@ describe('mds-modal', () => {
       expect(shadow.querySelector('.window')).not.toBeNull();
       expect(shadow.querySelector('.action-close')).not.toBeNull();
     });
+
+    // #1189 widths/dialog: the window of a dialog is the column of a form plus its inset
+    it('stops the window at the width of a dialog, the column of a form plus its inset', async () => {
+      const { root } = await render(
+        '<mds-modal opened><div slot="window">Window</div></mds-modal><div style="width: calc(56ch + 48px)"></div>',
+      );
+      const window = root.querySelector('[slot="window"]')!.getBoundingClientRect();
+
+      expect(window.width).toBe(root.nextElementSibling!.getBoundingClientRect().width);
+      expect(window.left + window.width / 2).toBe(640);
+    });
+
+    it('leaves a bespoke window the width its class gives it', async () => {
+      const { root } = await render(
+        '<mds-modal opened><div slot="window" class="bespoke">Window</div></mds-modal><style>.bespoke { max-width: 60rem; }</style>',
+      );
+
+      expect(root.querySelector('[slot="window"]')!.getBoundingClientRect().width).toBe(960);
+    });
   });
 
   // a horizontal swipe closed the modal whatever the interaction: strict vetoed Esc and the
@@ -326,6 +345,14 @@ describe('mds-modal on a narrow screen', () => {
       expect(root).not.toHaveAttribute('opened');
     },
   );
+
+  // #1189 widths/dialog: the window shrinks with the screen, its margin around it
+  it('gives a slotted window the screen less its margin', async () => {
+    await page.viewport(360, 640);
+    const { root } = await render('<mds-modal opened><div slot="window">Window</div></mds-modal>');
+
+    expect(root.querySelector('[slot="window"]')!.getBoundingClientRect().width).toBe(360 - 48);
+  });
 
   it('keeps the strip at the side of a side position', async () => {
     await page.viewport(360, 640);

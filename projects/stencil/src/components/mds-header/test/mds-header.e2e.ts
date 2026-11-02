@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { page } from 'vitest/browser';
 
 describe('mds-header', () => {
   it('renders', async () => {
@@ -73,6 +74,41 @@ describe('mds-header', () => {
     await waitForChanges();
 
     expect(root.visibility).toBe('visible');
+  });
+
+  // #1189 widths/page: the content of the floating bar stands on the frame of the page, its
+  // padding outside it, and moves with a theme that moves the page
+  describe('inline, on the frame of the page', () => {
+    // the bar slides to its width: wait for the end of the transition
+    const expectFloatingContent = async (left: number, width: number): Promise<void> => {
+      const { root } = await render(
+        '<mds-header appearance="inline"><mds-header-bar><span>Logo</span></mds-header-bar></mds-header>',
+      );
+      const content = root.querySelector('mds-header-bar')!.shadowRoot!.querySelector('.content')!;
+      await vi.waitFor(() => {
+        const box = content.getBoundingClientRect();
+        expect([box.left, box.width]).toEqual([left, width]);
+      });
+    };
+
+    afterEach(async () => {
+      document.documentElement.style.removeProperty('--magma-width-page');
+      // the size of the browser project in vitest.config.mts
+      await page.viewport(1280, 800);
+    });
+
+    it('starts its content where the content of a page-frame starts, on a wide window', async () => {
+      await page.viewport(1440, 800);
+
+      await expectFloatingContent(80, 1280);
+    });
+
+    it('follows a theme that moves the page', async () => {
+      await page.viewport(1440, 800);
+      document.documentElement.style.setProperty('--magma-width-page', '1024px');
+
+      await expectFloatingContent(208, 1024);
+    });
   });
 
   // #824: the icon colours of the header never reached the hamburger of its bar
