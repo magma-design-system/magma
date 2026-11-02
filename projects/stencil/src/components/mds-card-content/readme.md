@@ -101,12 +101,11 @@ Omitting sibling regions is valid. A card holding only `<mds-card-content>` rend
 
 #### Adjusting Card Spacing via Parent Custom Properties
 
-`<mds-card-content>` has no CSS custom properties of its own. Control the spacing of the card composition through the parent's `--mds-card-gap` (between the regions) and `--mds-card-padding` (around them) properties; the content region's own inner padding and gap are fixed. Set them on the `<mds-card>` host or on a parent selector.
+`<mds-card-content>` has no CSS custom properties and no padding of its own: the card pads its regions with one inset (`--mds-card-padding`, `--magma-rhythm-inset` by default) and sets them `--mds-card-gap` apart (`--magma-rhythm-title-content`). Inside, the content sets its children `--magma-rhythm-title-content` apart, since a card with no header opens its content with its title; rows of data written inside it take their own `gap-between-fields`. Set the card's properties on the `<mds-card>` host or on a parent selector, with a rhythm role.
 
 ```css
-.card-compatta mds-card {
-  --mds-card-gap: calc(var(--spacing) * 200);
-  --mds-card-padding: calc(var(--spacing) * 300);
+.scheda-dati mds-card {
+  --mds-card-gap: var(--magma-rhythm-between-fields);
 }
 ```
 
@@ -155,7 +154,7 @@ Common incorrect uses of `<mds-card-content>`. Each entry pairs the wrong form w
 
 #### Do Not Replace `<mds-card-content>` with a Raw `<div slot="content">`
 
-A raw element placed directly in `slot="content"` bypasses the card-content component's internal grid and consistent padding, and the card, which infers its grid from the tag names of its children, does not recognise it as the content region: the managed layout breaks.
+A raw element placed directly in `slot="content"` bypasses the card-content component's internal grid and the rhythm of its children, and the card, which infers its grid from the tag names of its children, does not recognise it as the content region: the managed layout breaks.
 
 ```html
 <!-- INCORRECT -->
@@ -175,7 +174,7 @@ A raw element placed directly in `slot="content"` bypasses the card-content comp
 
 #### Do Not Try to Style Spacing via `<mds-card-content>` CSS Vars
 
-`<mds-card-content>` exposes no `--mds-card-content-*` custom properties. Setting them has no effect: its inner padding and gap are fixed. The spacing you can set is the card's, through `--mds-card-gap` (between the regions) and `--mds-card-padding` (around them) on the parent `<mds-card>`.
+`<mds-card-content>` exposes no `--mds-card-content-*` custom properties. Setting them has no effect: it has no padding (the inset is the card's) and its gap is `--magma-rhythm-title-content`. The spacing you can set is the card's, through `--mds-card-gap` (between the regions) and `--mds-card-padding` (around them) on the parent `<mds-card>`, with a rhythm role.
 
 ```css
 /* INCORRECT - has no effect */
@@ -184,10 +183,9 @@ mds-card-content {
   --mds-card-content-gap: calc(var(--spacing) * 400);
 }
 
-/* CORRECT - set on the parent card host */
+/* CORRECT - set on the parent card host, with a rhythm role */
 mds-card {
-  --mds-card-gap: calc(var(--spacing) * 200);
-  --mds-card-padding: calc(var(--spacing) * 400);
+  --mds-card-gap: var(--magma-rhythm-between-fields);
 }
 ```
 
