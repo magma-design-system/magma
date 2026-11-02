@@ -22,7 +22,10 @@ $RECYCLE.BIN/
 .sass-cache/
 .stencil/
 .versions/
-.vscode/
+# the editor setup of the repository is tracked (docs/EDITOR_TOKENS.md), the rest stays local
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 Thumbs.db
 UserInterfaceState.xcuserstate
 build/

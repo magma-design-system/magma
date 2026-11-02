@@ -1,0 +1,7 @@
+{
+  // The extensions of the editor setup (docs/EDITOR_TOKENS.md, "Extensions"): VS Code offers
+  // to install them when the folder opens.
+  "recommendations": ["dbaeumer.vscode-eslint", "phoenisx.cssvar", "bradlc.vscode-tailwindcss"],
+  // it sorts the tokens alphabetically and never opens its list on its own
+  "unwantedRecommendations": ["vunguyentuan.vscode-css-variables"]
+}

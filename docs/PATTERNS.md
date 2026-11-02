@@ -218,7 +218,7 @@ try: Press Salva: the error shows above the form, and what was written stays.
   emulated mode. Save the file in the editor and the stage loads again; a file added or removed
   changes the list. `-- --port <n>`, `--previews <dir>` and `--drafts <dir>` serve other
   folders (the previews of another worktree). The editor completes the Tailwind classes of a
-  stage once `.vscode/settings.json` maps the entry point the server writes,
+  stage: the repository's `.vscode/settings.json` maps the entry point the server writes,
   `.claude/previews/tailwind.css` (`docs/EDITOR_TOKENS.md`, "Tailwind classes").
 
 `/pattern-preview <id>` makes the previews a pattern lacks; `/pattern-new` and

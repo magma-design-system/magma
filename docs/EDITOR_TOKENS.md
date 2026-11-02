@@ -9,27 +9,16 @@ packages), see the "Editor autocomplete" section of
 
 ## Setup
 
-1. Install [CSS Var Complete](https://marketplace.visualstudio.com/items?itemName=phoenisx.cssvar)
-   (`phoenisx.cssvar`) and uninstall `vunguyentuan.vscode-css-variables` if present - see
-   [Extensions](#extensions).
+The repository tracks the editor setup: `.vscode/settings.json` (ESLint, CSS Var Complete,
+the Tailwind map below) and `.vscode/extensions.json` (the extensions to install, the one to
+remove); the rest of `.vscode/` stays local. Personal preferences go in the user settings of
+VS Code, never in these files.
+
+1. Install the extensions VS Code recommends when the folder opens, and uninstall
+   `vunguyentuan.vscode-css-variables` if present - see [Extensions](#extensions).
 2. Build the styles package once, so the generated sheet exists:
    `nx run styles:build`.
-3. Put this in `.vscode/settings.json`. The folder is gitignored, so it stays local and
-   every contributor pastes it from here:
-
-```json
-{
-  "cssvar.files": ["projects/styles/dist/css/tokens.editor.css"],
-  "cssvar.ignore": [],
-  "cssvar.disableSort": true,
-
-  "[css]": {
-    "editor.inlineSuggest.enabled": false
-  }
-}
-```
-
-4. Reload the window.
+3. Reload the window.
 
 You then get, inside `var(`: the list opening on its own, one entry per token, scales in
 scale order, the value in the completion detail, a color swatch on color tokens, and
@@ -109,7 +98,7 @@ Tailwind entry point governs a file. In this monorepo its discovery finds none: 
 some 1800 stylesheets (every component sheet, `.nx/cache`, the `dist` folders, the worktrees)
 and no project claims the sources, so a story or a preview gets no completion and no hover
 (measured by driving its language server, 2026-10-21 and 2026-11-01). Map each entry point to
-the files it governs, in `.vscode/settings.json`:
+the files it governs: the map of the repository's `.vscode/settings.json`,
 
 ```json
 {
