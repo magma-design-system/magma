@@ -105,7 +105,10 @@
   @apply text-info-detail;
 
   appearance: none;
-  background-color: rgb(var(--magma-surface-overlay));
+
+  /* a field stands a step off its surface: overlay on a page, the step below inside an overlay
+     surface, which passes it as --magma-field-fill (#1193) */
+  background-color: rgb(var(--magma-field-fill, var(--magma-surface-overlay)));
   border: 0;
   border-radius: inherit;
   box-shadow: var(--mds-input-select-ring), var(--mds-input-select-shadow);

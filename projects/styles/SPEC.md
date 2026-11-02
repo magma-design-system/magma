@@ -314,6 +314,10 @@ They read the role tokens of design-tokens (`typography.css`), with their value 
 - **`max-w-form`**: the column of a form, the reading measure (`--container-form` bridges
   `--magma-width-form`). Tailwind makes no `@form:` container variant from it, since its value is
   a `var()`; `consumption.json` records the variants as reading nothing.
+- **`@max-actions:`**: the threshold of a row of actions (`actions/stacked`). `--container-actions`
+  bridges `--magma-container-actions` with its literal, 23.75rem, since a container query reads
+  no `var()`; `consumption.json` gives the bridge its role. The box of the row is a container
+  (`@container`) and the row stacks under it (`@max-actions:flex-col`).
 - **`page-frame`**: the frame of a page, one element. `box-sizing: content-box`, the content at
   most `--magma-width-page` (1280px) and the gutter `--magma-width-page-gutter` outside it,
   centred: the edge of the page is the edge of the content of `mds-header-bar`.
@@ -325,6 +329,20 @@ They read the role tokens of design-tokens (`typography.css`), with their value 
   28rem less half the gap), so there is no container query to place; 28rem stays a literal, the
   width where the tax code still fits a half. The browser test is
   `projects/stencil/src/test/design-language.e2e.ts`.
+
+## The room of mds-status-bar (#1203)
+
+While an `mds-status-bar` is visible, `base.css` gives the page the room of the bar: a box after
+the body as tall as `--magma-status-bar-room`, and `scroll-padding-bottom` of the same, so the
+last field ends above the bar and a field reached with Tab stops above it (WCAG 2.4.11). No
+script measures the bar: the room is the tallest bar for its content, written from the parts of
+its sheet (the margin of its area, its inset, one line of description, the gap, a button), plus
+`rhythm/between-fields`; up to 480px, where the actions stack, `html:has(mds-status-bar[visible]
+> :nth-child(n))` adds a button and `rhythm/inline` for each action after the first, up to three.
+A box, not a padding of `html`: a page that zeroes the padding of `html` out of any layer, as
+many resets do, wins over every layer. A page that scrolls in a box of its own puts
+`var(--magma-status-bar-room, 0px)` at the end of that box. The browser test is in
+`mds-status-bar.e2e.ts`: when the sheet of the bar changes a part, the room follows it there.
 
 ## Focus utilities
 

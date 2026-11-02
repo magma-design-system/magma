@@ -32,7 +32,10 @@
   --private-input-date-range-height: --spacing(1200);
   --private-input-date-range-padding-inline: --spacing(400);
   --private-input-date-range-calendar-area: --spacing(1200);
-  --mds-input-date-range-background: rgb(var(--magma-surface-overlay));
+
+  /* a field stands a step off its surface: overlay on a page, the step below inside an overlay
+     surface, which passes it as --magma-field-fill (#1193) */
+  --mds-input-date-range-background: rgb(var(--magma-field-fill, var(--magma-surface-overlay)));
   --mds-input-date-range-calendar-width: --spacing(8800);
   --mds-input-date-range-fields-firefox-justify-content: start;
   --mds-input-date-range-fields-gap: 0 --spacing(200);

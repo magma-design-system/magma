@@ -182,17 +182,13 @@ Situations every application has, each with its case: they give the examples, th
   reader for a question nothing has gone wrong yet in, which is why a confirmation stays
   `light`.
 - A bar docked at the bottom must never hide the field that has the focus (WCAG 2.4.11, Focus
-  Not Obscured): the page reserves its room (Magma gaps).
+  Not Obscured): the page reserves its room while the bar is visible, a rule of the styles of
+  Magma with no script (#1203).
 
 ## Magma gaps
 
-- `mds-status-bar` does not reserve its room on the page: the last field ends under it, and a
-  field reached with Tab can slide under it on a phone. It reserves the height of the bar plus
-  `600` in `padding-bottom` and `scroll-padding-bottom` while visible, and its actions move to
-  `gap-inline` (#1203).
 - `mds-card` pads each of its regions with `p-400`: it moves to one `p-inset` shared by its
   regions (#1201, `rhythm/shared-inset`).
-- A field in a dialog has the fill of the window, so only its outline shows (#1193).
 - The example "Custom Window via `window` Slot" of `mds-modal` takes the default variant of
   the banner, `primary` with `tone="box"`, and Annulla `primary text`: it takes the window of
   the case `dialog` (#1189, the examples of the components aligned).
@@ -210,3 +206,5 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-30 | When a form is the page, its row is an `mds-status-bar` docked at the bottom for the whole edit; a form inside a page, a dialog or a card keeps its row at its end (`edit-actions`). | Whoever corrects one field saves without scrolling, the edit bar of SAP Fiori and Salesforce, and the bar draws its own surface. Rejected: the row at the end of every form, where a correction costs a scroll of four windows. Chosen live; the recommendation changed on the render. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6530822583 |
 | 2026-10-30 | The page is `surface-default` with no sheet (`canvas`); `surface-muted` and `surface-sunken` live inside components only (`tints-in-components`). | A sheet around one subject is a card around one subject, and the cards of a set would stand on their own fill (both `surface-raised`); a tinted section reads as a well, in dark as a hole. Shown live next to the alternatives and confirmed. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6531557197 |
 | 2026-10-31 | The file of the domain, with the window of a dialog as one case whose Parts give the table; "a subtle section" goes from `docs/agents/color.md` and `theming.md`. | The issue of the five domains (#1197). |
+| 2026-11-02 | A field stands a step off its surface: inside a surface that paints `overlay` (the window of a dialog, `mds-banner`, `mds-status-bar`, `mds-dropdown`, `mds-table`) it paints `surface-default`, passed down as `--magma-field-fill` (#1193). | The fill of a field sets it apart from where it stands, the layers of Carbon; the window keeps `overlay`, the meaning of the ladder in `theming.md`, and stands off the dimmed page in dark. Rejected: the window down a step, and the field as an outline only. Review round 1 of #1189. |
+| 2026-11-02 | While an `mds-status-bar` is visible, the styles reserve its room: a box after the body and `scroll-padding-bottom`, the tallest bar for its content plus `rhythm/between-fields`, counted with `:has()` (#1203). | CSS only, no script that measures (the rule of layout); the content of the bar has limits (one line of description, at most three actions), so its tallest is known. A box, not a padding of `html`, which a reset out of any layer would zero. Rejected: a class the page writes, which a page forgets. Review round 1 of #1189. |

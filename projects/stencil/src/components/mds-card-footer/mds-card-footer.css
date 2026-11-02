@@ -1,14 +1,35 @@
 @import '../../tailwind/fouc.css';
 
 /* a row: the actions side by side at rhythm/inline; the inset is the card's, shared by its
-   regions (#1189, rhythm/shared-inset) */
+   regions (#1189, rhythm/shared-inset). The host is the container of its row (actions/stacked) */
 
 :host {
-  align-items: center;
   background-color: var(--mds-card-background);
-  display: flex;
+  container-type: inline-size;
+  display: block;
   flex-grow: 1;
+  min-width: 0;
+}
+
+.actions {
+  align-items: center;
+  display: flex;
   gap: var(--magma-rhythm-inline);
   justify-content: flex-end;
-  min-width: 0;
+}
+
+/* actions/stacked (#1189): under --magma-container-actions the row stacks, every action at the
+   full width in the order of the row, the main action at the bottom; the query reads its Tailwind
+   bridge at build time, since a container query reads no var() */
+
+@container (width < --theme(--container-actions)) {
+  .actions {
+    flex-direction: column;
+  }
+
+  /* mds-button holds itself at the start of a row: stretched here, a rule of this tree wins */
+
+  ::slotted(*) {
+    align-self: stretch;
+  }
 }

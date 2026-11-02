@@ -35,7 +35,10 @@
   --private-input-date-padding-inline: --spacing(400);
   --private-input-date-calendar-area: --spacing(1200);
   --mds-input-date-icon-color: rgb(var(--magma-accent-fg));
-  --mds-input-date-background: rgb(var(--magma-surface-overlay));
+
+  /* a field stands a step off its surface: overlay on a page, the step below inside an overlay
+     surface, which passes it as --magma-field-fill (#1193) */
+  --mds-input-date-background: rgb(var(--magma-field-fill, var(--magma-surface-overlay)));
   --mds-input-date-field-background-empty: rgb(var(--magma-danger-wash-soft));
   --mds-input-date-field-color-empty: rgb(var(--magma-danger-text-default));
   --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color-rgb) / 0.1);

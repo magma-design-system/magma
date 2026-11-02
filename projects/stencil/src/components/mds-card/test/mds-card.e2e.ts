@@ -137,12 +137,26 @@ describe('mds-card', () => {
 
     it('sets the actions of the footer 12px apart', async () => {
       const { root } = await render(`
-        <mds-card style="width: 20rem">
+        <mds-card style="width: 30rem">
           <mds-card-footer><mds-button label="Annulla"></mds-button><mds-button label="Apri"></mds-button></mds-card-footer>
         </mds-card>`);
       const [first, second] = Array.from(root.querySelectorAll('mds-button'));
 
       expect(rect(second).left - rect(first).right).toBeCloseTo(12, 0);
+    });
+
+    // actions/stacked: under 380px of the footer (272px in a card of 20rem) the row stacks, every
+    // action at the full width in the order of the row, rhythm/inline between them
+    it('stacks the actions of a narrow footer, each at its full width', async () => {
+      const { root } = await render(`
+        <mds-card style="width: 20rem">
+          <mds-card-footer><mds-button label="Annulla"></mds-button><mds-button label="Apri"></mds-button></mds-card-footer>
+        </mds-card>`);
+      const footer = rect(root.querySelector('mds-card-footer')!);
+      const [first, second] = Array.from(root.querySelectorAll('mds-button')).map(rect);
+
+      expect(second.top - first.bottom).toBeCloseTo(12, 0);
+      for (const action of [first, second]) expect(action.width).toBeCloseTo(footer.width, 0);
     });
 
     it('takes the media to the side edges of a narrow card, 12px from the title and the content', async () => {

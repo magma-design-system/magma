@@ -47,6 +47,10 @@ mds-modal {
 }
 
 .status-bar {
+
+  /* overlay: the fields inside take the step below (#1193) */
+  --magma-field-fill: var(--magma-surface-default);
+
   align-items: flex-start;
   background-color: rgb(var(--magma-surface-overlay));
   border-radius: var(--magma-radius-lg);
@@ -64,7 +68,7 @@ mds-modal {
   display: inline-flex;
   flex-grow: 1;
   flex-wrap: wrap;
-  gap: --spacing(400);
+  gap: var(--magma-rhythm-inline);
 }
 
 @media (width <= 480px) {
@@ -76,16 +80,33 @@ mds-modal {
     width: 100%;
   }
 
-  .status-bar {
-    width: 100%;
-  }
+  /* the bar takes the width of the window here, so it is the container of its row of actions */
 
-  .actions {
-    gap: --spacing(200);
+  .status-bar {
+    container-name: status-bar;
+    container-type: inline-size;
+    width: 100%;
   }
 
   ::slotted(*) {
     flex-grow: 1;
+  }
+}
+
+/* actions/stacked (#1189): under --magma-container-actions the row stacks on a line of its own,
+   every action at the full width in the order of the row, the main action at the bottom; the
+   query reads its Tailwind bridge at build time, since a container query reads no var() */
+
+@container status-bar (width < --theme(--container-actions)) {
+  .actions {
+    flex-basis: 100%;
+    flex-direction: column;
+  }
+
+  /* mds-button holds itself at the start of a row: stretched here, a rule of this tree wins */
+
+  ::slotted(*) {
+    align-self: stretch;
   }
 }
 

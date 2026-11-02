@@ -1,4 +1,9 @@
+import { render } from '@stencil/vitest';
 import { commands } from 'vitest/browser';
+
+import colors from '../../../styles/dist/css/colors-rgb.css?raw';
+import globals from '../../../styles/dist/css/globals.css?raw';
+import semantic from '../../../styles/dist/css/semantic.css?raw';
 
 declare module 'vitest/browser' {
   interface BrowserCommands {
@@ -39,6 +44,8 @@ describe('the role utilities of the design language', () => {
     'max-w-form',
     'page-frame',
     'field-group',
+    '@container',
+    '@max-actions:flex-col',
     ...TITLES.flatMap(([role, level]) => [`text-title-${role}`, `text-title-${level}`]),
   ];
   let css: string;
@@ -170,6 +177,20 @@ describe('the role utilities of the design language', () => {
     });
   });
 
+  // actions/stacked: the threshold of a row of actions is a container size of the theme
+  it('@max-actions: stacks a row under 380px of its container, and keeps it on one line from 380px', () => {
+    const row = (width: number) =>
+      getComputedStyle(
+        render(
+          '<div class="@container"><div class="flex @max-actions:flex-col"></div></div>',
+          width,
+        ).firstElementChild!,
+      ).flexDirection;
+
+    expect(row(379)).toBe('column');
+    expect(row(380)).toBe('row');
+  });
+
   it.each(TITLES)('text-title-%s takes the style of %s', (role, level) => {
     const [byRole, byLevel] = Array.from(
       render(
@@ -243,5 +264,78 @@ describe('the reading measure on the plain tags', () => {
       (element) => getComputedStyle(element).maxWidth,
     );
     expect(capped).toBe(measure);
+  });
+});
+
+/**
+ * The fill of a field (#1193): a step off the surface it stands on. On a page (surface-default)
+ * a field paints surface-overlay; inside a surface that paints overlay it paints surface-default,
+ * which that surface passes down as --magma-field-fill; a banner that paints a tint of its own
+ * gives the fields overlay back. In both modes.
+ */
+describe('the fill of a field', () => {
+  const html = document.documentElement;
+  const FIELDS =
+    '<mds-input value="Polizia locale"></mds-input><mds-input-select><option>Polizia locale</option></mds-input-select>';
+  const CONTEXTS: Array<[string, 'default' | 'overlay', string]> = [
+    ['a page', 'overlay', '<div>%s</div>'],
+    [
+      'the window of a dialog',
+      'default',
+      '<mds-modal opened aria-label="Nuovo referente"><mds-banner slot="window" variant="light" tone="box" headline="Nuovo referente">%s</mds-banner></mds-modal>',
+    ],
+    ['mds-status-bar', 'default', '<mds-status-bar visible>%s</mds-status-bar>'],
+    [
+      'a banner of a status in a dialog',
+      'overlay',
+      '<mds-modal opened aria-label="Errore"><mds-banner slot="window" variant="error" tone="strong" headline="Errore">%s</mds-banner></mds-modal>',
+    ],
+    [
+      'a weak banner of a status in a dialog',
+      'default',
+      '<mds-modal opened aria-label="Errore"><mds-banner slot="window" variant="error" tone="weak" headline="Errore">%s</mds-banner></mds-modal>',
+    ],
+  ];
+  let sheet: HTMLStyleElement;
+
+  beforeEach(() => {
+    sheet = document.createElement('style');
+    sheet.textContent = [colors, globals, semantic].join('\n');
+    document.head.append(sheet);
+    html.setAttribute('data-magma-pref', '');
+  });
+
+  afterEach(() => {
+    sheet.remove();
+    html.removeAttribute('data-magma-pref');
+  });
+
+  /** `value` as the browser computes a colour, on the page. */
+  const colourOf = (value: string): string => {
+    const probe = document.createElement('i');
+    document.body.append(probe);
+    probe.style.color = value;
+    const colour = getComputedStyle(probe).color;
+    probe.remove();
+    return colour;
+  };
+  const fillOf = (field: Element): string =>
+    field.localName === 'mds-input-select'
+      ? getComputedStyle(field.shadowRoot!.querySelector('.input')!).backgroundColor
+      : colourOf(getComputedStyle(field).getPropertyValue('--mds-input-background'));
+
+  describe.each(['light', 'dark'])('in %s', (mode) => {
+    beforeEach(() => {
+      html.classList.add(`pref-mode-${mode}`);
+    });
+
+    it.each(CONTEXTS)('on %s takes surface-%s', async (_, step, context) => {
+      const { root } = await render<HTMLElement>(context.replace('%s', FIELDS));
+      const fields = Array.from(root.querySelectorAll('mds-input, mds-input-select'));
+
+      expect(fields).toHaveLength(2);
+      for (const field of fields)
+        expect(fillOf(field), field.localName).toBe(colourOf(`rgb(var(--magma-surface-${step}))`));
+    });
   });
 });

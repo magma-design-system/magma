@@ -30,6 +30,9 @@
 
 :host {
   --mds-banner-background: rgb(var(--magma-surface-overlay));
+
+  /* overlay: the fields inside take the step below (#1193) */
+  --magma-field-fill: var(--magma-surface-default);
   --mds-banner-cockade-background: rgb(var(--magma-wash-base));
   --mds-banner-cockade-distance: --spacing(600);
   --mds-banner-color: rgb(var(--magma-text-default));
@@ -116,6 +119,13 @@
     padding-right: --spacing(800);
   }
 
+}
+
+/* actions/stacked (#1189): under --magma-container-actions the row stacks, every action at the
+   full width in the order of the row, the main action at the bottom; the query reads its Tailwind
+   bridge at build time, since a container query reads no var() */
+
+@container mds-banner (width < --theme(--container-actions)) {
   ::slotted([slot='action']) {
     flex-basis: 100%;
     flex-grow: 1;

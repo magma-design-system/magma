@@ -17,6 +17,8 @@ The `<mds-status-bar>` web component is a persistent action bar of the Magma Des
 - **Visibility control**: The bar shows only while `visible` is truthy; the exposed `hide()` method resets it to hidden.
 - **Overflow delegation**: The `overflow` prop governs whether body scrolling is locked while the bar is shown.
 - **Default slot is actions**: The default slot is intended for interactive content (recommended: `mds-button`), placed next to the optional description text.
+- **Reserves its room**: while the bar is visible, the styles of Magma (`base.css`) end the page above it and keep a field reached with Tab above it (WCAG 2.4.11): the room of its tallest content (one line of description, at most three actions) plus `rhythm/between-fields`, with no script that measures it. A page that scrolls in a box of its own puts `var(--magma-status-bar-room, 0px)` at the end of that box.
+- **Its actions keep the rhythm of a row**: `rhythm/inline` apart; on a window of 480px or less, where the bar takes the whole width, they stack under `--magma-container-actions` of the bar (380px), each at the full width, the main action at the bottom (`actions/stacked`).
 
 #### Properties & Visual Configurations
 
@@ -33,15 +35,22 @@ The `<mds-status-bar>` web component is a persistent action bar of the Magma Des
 
 Correct and idiomatic ways to use the `<mds-status-bar>` component, ordered from most common to most specialized. The examples assume a working knowledge of the shared component rules in [`docs/agents/conventions.md`](../../../../../../docs/agents/conventions.md).
 
-#### Basic Action Bar
+#### The Edit of a Page
 
-The canonical form. Place `mds-button` elements in the default slot and show the bar by setting `visible`. The bar docks to the bottom-right corner of the viewport by default.
+The canonical form: when a form is the whole page, its row of actions docks in the bar for the whole edit (`surfaces/edit-actions`), Annulla `dark outline` and Salva `primary strong` last (`actions/order`). Show the bar by setting `visible`; it docks to the bottom-right corner of the viewport by default, and the page keeps its room. Inside the `<form>`, Salva submits it and Annulla resets it.
 
 ```html
-<mds-status-bar visible>
-  <mds-button id="cancel" variant="dark" tone="weak">Annulla</mds-button>
-  <mds-button id="confirm" variant="primary" tone="strong">Conferma azione</mds-button>
-</mds-status-bar>
+<main class="page-frame">
+  <form class="max-w-form grid gap-between-fields">
+    <mds-input-field label="Oggetto"><mds-input value="Rinnovo concessione suolo pubblico"></mds-input></mds-input-field>
+    <mds-input-field label="Note per l'ufficio"><mds-input type="textarea"></mds-input></mds-input-field>
+
+    <mds-status-bar visible description="Modifiche non salvate">
+      <mds-button type="reset" variant="dark" tone="outline">Annulla</mds-button>
+      <mds-button>Salva</mds-button>
+    </mds-status-bar>
+  </form>
+</main>
 ```
 
 #### Showing a Contextual Description
@@ -50,7 +59,7 @@ Use `description` to render an optional caption beside the slotted actions when 
 
 ```html
 <mds-status-bar visible description="Stai modificando 4 elementi">
-  <mds-button variant="dark" tone="weak">Annulla</mds-button>
+  <mds-button variant="dark" tone="outline">Annulla</mds-button>
   <mds-button variant="primary" tone="strong">Salva</mds-button>
 </mds-status-bar>
 ```
@@ -79,7 +88,7 @@ Toggle the bar imperatively: set `visible = true` to show it and call `hide()` t
 <mds-button id="edit-trigger">Modifica elementi</mds-button>
 
 <mds-status-bar id="bar" description="Stai modificando la selezione">
-  <mds-button id="cancel" variant="dark" tone="weak">Annulla</mds-button>
+  <mds-button id="cancel" variant="dark" tone="outline">Annulla</mds-button>
   <mds-button id="save" variant="primary" tone="strong">Salva modifiche</mds-button>
 </mds-status-bar>
 
@@ -100,7 +109,7 @@ Show an in-flight state on the confirm button using `await`, then call `hide()` 
 
 ```html
 <mds-status-bar id="bar" visible description="Stai modificando 3 elementi">
-  <mds-button id="cancel" variant="dark" tone="weak">Annulla</mds-button>
+  <mds-button id="cancel" variant="dark" tone="outline">Annulla</mds-button>
   <mds-button id="confirm" variant="primary" tone="strong">Conferma</mds-button>
 </mds-status-bar>
 
@@ -125,7 +134,7 @@ Set `overflow="auto"` to prevent the page from scrolling while the status bar is
 
 ```html
 <mds-status-bar visible overflow="auto" description="Salvataggio in corso">
-  <mds-button variant="dark" tone="weak">Annulla</mds-button>
+  <mds-button variant="dark" tone="outline">Annulla</mds-button>
   <mds-button variant="primary" tone="strong" await>Salva</mds-button>
 </mds-status-bar>
 ```

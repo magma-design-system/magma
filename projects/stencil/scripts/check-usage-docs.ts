@@ -92,6 +92,13 @@ for (const rel of TOKEN_SOURCES) {
   }
 }
 
+/* a `--magma-*` property the sheet of a component declares for what it holds, as the step of
+ * the fill of a field an overlay surface passes down (#1193), is part of the token layer: the
+ * same criterion as check-dangling-tokens, which accepts a name the sheets declare */
+for (const f of walk(COMPONENTS, /\.css$/)) {
+  for (const m of readFileSync(f, 'utf8').matchAll(/(--magma-[\w-]+)\s*:/g)) tokens.add(m[1]);
+}
+
 const privateVars = new Set<string>();
 for (const f of walk(COMPONENTS, /\.css$/)) {
   for (const m of readFileSync(f, 'utf8').matchAll(/(--mds-[\w-]+)\s*:/g)) privateVars.add(m[1]);

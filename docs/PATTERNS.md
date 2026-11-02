@@ -183,7 +183,7 @@ try: Press Salva: the error shows above the form, and what was written stays.
 - **Laid out with Tailwind**, the default (#1220): the classes of Magma's Tailwind layer, as a
   product with Tailwind writes them: the carriers (`page-frame`, `field-group`, `max-w-form`),
   the rhythm (`gap-between-fields`, `gap-title-content`), the steps (`gap-300`, `p-400`), the
-  variants (`dark:`, `@max-[23.75rem]:`). The page around compiles them with Tailwind 4 and the
+  variants (`dark:`, `@max-actions:`). The page around compiles them with Tailwind 4 and the
   entry point of `agents/assets.md`, "Tailwind (optional)", so `render_preview` and
   `serve.previews` show them; a product without Tailwind writes the custom property a class
   carries (`max-width: var(--magma-width-form)`). A `style` attribute only for what no class
