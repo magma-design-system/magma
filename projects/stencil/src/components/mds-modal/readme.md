@@ -22,6 +22,7 @@ The `<mds-modal>` web component is the Magma Design System overlay container for
 - **Body scroll lock**: When `overflow="auto"` the component locks body scroll while open and restores it on close.
 - **Touch dismissal**: On touch devices a horizontal swipe past a threshold closes a `relaxed` modal, respecting the swipe direction implied by edge `position` values.
 - **Slot-driven layout**: With no `window` slot, the default slot renders centered content framed by optional `top` (header) and `bottom` (footer) slots, and a close button is rendered automatically, icon-only and named in the page language (the `lang` of `<html>`) ("Close"). Slotting a `window` element suppresses the built-in chrome and close button so the consumer supplies the entire surface.
+- **Width of a slotted window**: The `window` element stops at the width of a dialog, `--magma-width-dialog` (the column of a form plus its inset, 580px at 16px: `widths/dialog` of the design language), and shrinks with a narrower screen, its margin around it. A class on the element wins over it, for a bespoke surface.
 - **Close button placement**: The built-in close button sits on the backdrop, in a strip the window always leaves free, so a `strict` modal can be closed whatever its content. `left` and `right` leave it at their side at every width.
 - **Narrow screens**: At a viewport of 480px or less a window that would fill the screen (`center` and the four corners) leaves a strip of backdrop at the top, where the close button shows, as `left` and `right` leave one at their side; `top` and `bottom` stay as tall as their content but never taller than the screen less that strip, which stays on their free side with the close button at its edge (top right for `bottom`, bottom right for `top`).
 - **Wide screens**: Above 480px every window leaves a strip of backdrop at its side, with the close button at its top: `center`, `top` and `bottom` one on each side, the button at the top right; the corners one on the side away from their own, the button there.
@@ -201,22 +202,28 @@ Call the async `close()` method from JavaScript when you need to dismiss the mod
 </mds-modal>
 ```
 
-#### Custom Window via `window` Slot
+#### The Window of a Dialog via the `window` Slot
 
-Slot any element with `slot="window"` to completely replace the built-in chrome (the window surface and the close button). The slotted element gets no `role` of its own: the `<dialog>` the component renders is already the dialog. Use this when a completely bespoke surface is needed - for example, a full-screen banner.
+Slot an element with `slot="window"` to replace the built-in chrome (the window surface and the close button). A dialog slots an [`mds-banner`](../../mds-banner) `variant="light"` `tone="box"` `dismissible`: its own close button closes the modal. The slotted element gets no `role` of its own: the `<dialog>` the component renders is already the dialog, named by the `aria-label` of the host. The actions follow the rules of a dialog: the secondary one `dark` `outline`, the main one last.
+
+The window stops at the width of a dialog, the column of a form plus its inset (`--magma-width-dialog`, 580px at 16px, `widths/dialog` of the design language), and shrinks with a narrower screen. Write no width on it: a form keeps in the window the shape it has in the page.
 
 ```html
-<mds-modal id="modal-banner" animation="custom">
-  <mds-banner
-    slot="window"
-    class="max-w-md w-full mx-400"
-    tone="box"
-    deletable
-    headline="Azione richiesta"
-  >
+<mds-modal id="modal-banner" aria-label="Azione richiesta">
+  <mds-banner slot="window" variant="light" tone="box" dismissible headline="Azione richiesta">
     <mds-text typography="detail">Conferma la tua identita' per procedere.</mds-text>
-    <mds-button slot="action" variant="primary" tone="text">Annulla</mds-button>
+    <mds-button slot="action" variant="dark" tone="outline">Annulla</mds-button>
     <mds-button slot="action" variant="primary" tone="strong">Conferma</mds-button>
+  </mds-banner>
+</mds-modal>
+```
+
+A bespoke surface, such as a banner as wide as the screen, writes its own width with a class: from the light DOM it wins over the width of a dialog.
+
+```html
+<mds-modal id="modal-novita" aria-label="Novita'">
+  <mds-banner slot="window" class="max-w-none" variant="light" tone="box" dismissible headline="Novita'">
+    <mds-text typography="detail">Da oggi puoi firmare i documenti dall'app.</mds-text>
   </mds-banner>
 </mds-modal>
 ```
@@ -240,7 +247,7 @@ document.getElementById('pannello-info').hideBackdrop = true;
 
 #### CSS Customization
 
-Size and place the window only through the public `--mds-modal-*` CSS custom properties. Set them on the host element; the window takes its background, radius and shadow from the component.
+Size and place the window only through the public `--mds-modal-*` CSS custom properties. Set them on the host element; the window takes its background, radius and shadow from the component. They size the built-in window: a slotted window takes the width of a dialog, or the one its class gives it.
 
 ```css
 /* Narrow center modal */
@@ -289,6 +296,26 @@ The `window` slot completely bypasses the built-in surface, header/footer region
 <mds-modal id="modal">
   <header slot="top" class="p-400 bg-surface-overlay">Titolo</header>
   <div class="p-400">Contenuto del dialogo</div>
+</mds-modal>
+```
+
+#### Do Not Size the Window of a Dialog by Hand
+
+A slotted window already stops at the width of a dialog, the column of a form plus its inset (`widths/dialog`), and shrinks with the screen. A width written by hand copies a value the theme no longer moves, and a narrower one breaks the form inside: at `max-w-md` (448px) the body of the window is under the `28rem` of `field-group`, so its short fields stack as on a phone.
+
+```html
+<!-- INCORRECT -->
+<mds-modal aria-label="Nuovo referente">
+  <mds-banner slot="window" class="max-w-md w-full mx-400" variant="light" tone="box" dismissible headline="Nuovo referente">
+    <fieldset class="field-group">...</fieldset>
+  </mds-banner>
+</mds-modal>
+
+<!-- CORRECT -->
+<mds-modal aria-label="Nuovo referente">
+  <mds-banner slot="window" variant="light" tone="box" dismissible headline="Nuovo referente">
+    <fieldset class="field-group">...</fieldset>
+  </mds-banner>
 </mds-modal>
 ```
 
