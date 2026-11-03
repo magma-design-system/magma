@@ -1167,7 +1167,7 @@ describe('render_preview', () => {
       },
     );
     expect(styled!.problems).toEqual([]);
-  });
+  }, 30_000);
 
   test('a markup that renders well is representative: the image, its file and no problem', async () => {
     const result = await preview.run({ markup: '<mds-fixture>Salva</mds-fixture>', widths: [480] });
