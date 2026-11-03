@@ -1,0 +1,18 @@
+<!--
+try: Look at Nuovo contatto, the headline of the window with its X at the end of the row: it names the dialog on screen, and aria-label on mds-modal names it for a screen reader.
+height: 400
+-->
+<mds-modal opened interaction="strict" aria-label="Nuovo contatto">
+  <mds-banner slot="window" variant="light" tone="box" dismissible headline="Nuovo contatto">
+    <form class="grid gap-between-fields">
+      <mds-input-field label="Nome e cognome">
+        <mds-input value="Marco Bianchi"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Email">
+        <mds-input type="email" value="m.bianchi@comune.esempio.it"></mds-input>
+      </mds-input-field>
+    </form>
+    <mds-button slot="action" variant="dark" tone="outline">Annulla</mds-button>
+    <mds-button slot="action">Aggiungi</mds-button>
+  </mds-banner>
+</mds-modal>

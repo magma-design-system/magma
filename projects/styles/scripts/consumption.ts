@@ -250,6 +250,11 @@ const main = async (): Promise<void> => {
   /** The token a theme variable publishes: itself, or the one its value wraps. */
   const tokenOf = ({ name, value }: ThemeVariable): string => {
     if (tokenNames.has(name)) return name;
+    // a threshold of the design language bridges its role with the literal, since a container
+    // query reads no var(): --container-actions is --magma-container-actions (role.container of
+    // design-tokens, whose roles test holds the two values equal)
+    const role = name.replace(/^--container-/, '--magma-container-');
+    if (role !== name && tokenNames.has(role)) return role;
     const wrapped = [...value.matchAll(/var\((--[a-z0-9-]+)/g)].map((match) => match[1]);
     const token = wrapped.find((candidate) => tokenNames.has(candidate));
     if (!token) throw new Error(`@theme ${name}: ${value} publishes no token of dist/dtcg`);

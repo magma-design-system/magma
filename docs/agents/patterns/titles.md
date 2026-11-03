@@ -29,14 +29,14 @@ variables:
 cases:
   - id: page
     role: page
-    where: "the style `h3` (30px), the tag `h1`; until mds-text takes the roles (#1200) `typography=\"h3\" tag=\"h1\"`"
-    use: ["mds-text typography=h3 tag=h1"]
+    where: "the style `h3` (30px), the tag `h1`"
+    use: ["mds-text typography=page tag=h1"]
     serves: intuitive
     carried-by: [text-title-page, --text-size-title-page, mds-text typography=page]
   - id: section
     role: section
-    where: "the style `h5` (20px), the tag of its place in the outline (`h2` under the page); until mds-text takes the roles (#1200) `typography=\"h5\" tag=\"h2\"`"
-    use: ["mds-text typography=h5 tag=h2"]
+    where: "the style `h5` (20px), the tag of its place in the outline (`h2` under the page)"
+    use: ["mds-text typography=section tag=h2"]
     serves: intuitive
     carried-by: [text-title-section, --text-size-title-section, mds-text typography=section]
   - id: dialog
@@ -47,8 +47,8 @@ cases:
     carried-by: [text-title-dialog, --text-size-title-dialog, mds-text typography=dialog]
   - id: part
     role: part
-    where: "the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner, mds-push-notification-item, mds-file); an item of an accordion is a part, `typography=\"h6\"` until its default moves (#1200)"
-    use: ["mds-text typography=h6", "mds-accordion-item typography=h6"]
+    where: "the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner, mds-push-notification-item, mds-file); an item of an accordion is a part, `h6` by default"
+    use: ["mds-text typography=part", "mds-accordion-item"]
     serves: intuitive
     carried-by: [mds-banner, mds-push-notification-item, mds-file, text-title-part, --text-size-title-part, mds-text typography=part]
   - id: group
@@ -118,10 +118,10 @@ A case that leaves a variable out holds for any of its values.
 
 | Case | When | Where | Use | Serves | Carried by |
 | --- | --- | --- | --- | --- | --- |
-| `page` | role: page | the style `h3` (30px), the tag `h1`; until mds-text takes the roles (#1200) `typography="h3" tag="h1"` | `mds-text typography=h3 tag=h1` | intuitive | `text-title-page`, `--text-size-title-page`, `mds-text typography=page` |
-| `section` | role: section | the style `h5` (20px), the tag of its place in the outline (`h2` under the page); until mds-text takes the roles (#1200) `typography="h5" tag="h2"` | `mds-text typography=h5 tag=h2` | intuitive | `text-title-section`, `--text-size-title-section`, `mds-text typography=section` |
+| `page` | role: page | the style `h3` (30px), the tag `h1` | `mds-text typography=page tag=h1` | intuitive | `text-title-page`, `--text-size-title-page`, `mds-text typography=page` |
+| `section` | role: section | the style `h5` (20px), the tag of its place in the outline (`h2` under the page) | `mds-text typography=section tag=h2` | intuitive | `text-title-section`, `--text-size-title-section`, `mds-text typography=section` |
 | `dialog` | role: dialog | the style `h5`, the headline of the window; the dialog takes its name from aria-label on mds-modal, since the headline is hidden from screen readers. mds-banner draws its headline in h6 today (#1192) | `mds-modal aria-label`, `mds-banner slot=window headline` | intuitive | `text-title-dialog`, `--text-size-title-dialog`, `mds-text typography=dialog` |
-| `part` | role: part | the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner, mds-push-notification-item, mds-file); an item of an accordion is a part, `typography="h6"` until its default moves (#1200) | `mds-text typography=h6`, `mds-accordion-item typography=h6` | intuitive | `mds-banner`, `mds-push-notification-item`, `mds-file`, `text-title-part`, `--text-size-title-part`, `mds-text typography=part` |
+| `part` | role: part | the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner, mds-push-notification-item, mds-file); an item of an accordion is a part, `h6` by default | `mds-text typography=part`, `mds-accordion-item` | intuitive | `mds-banner`, `mds-push-notification-item`, `mds-file`, `text-title-part`, `--text-size-title-part`, `mds-text typography=part` |
 | `group` | role: group | a `fieldset` with no border and no inset of its own, its title the `legend` in the style `h6`: not a heading of the page; `field-group` on the fieldset draws it, the legend `gap-title-content` (300) from its first field |  | inclusive, intuitive | `field-group`, `text-title-group`, `--text-size-title-group` |
 
 No gaps: every combination has a case or is not applicable.
@@ -130,13 +130,13 @@ No gaps: every combination has a case or is not applicable.
 
 The ladder at the default theme, and how to write each role:
 
-| Role | Style | Tag | Today | With the roles in `mds-text` (#1200) | Without components |
-| --- | --- | --- | --- | --- | --- |
-| `page` | `h3` (30px) | `h1` | `typography="h3" tag="h1"` | `typography="page" tag="h1"` | `text-title-page` |
-| `section` | `h5` (20px) | `h2` | `typography="h5" tag="h2"` | `typography="section" tag="h2"` | `text-title-section` |
-| `dialog` | `h5` | the headline of the window | drawn by `mds-banner` (`h6` until #1192) | the same | `text-title-dialog` |
-| `part` | `h6` (16px, weight 700) | the level of its place | `typography="h6"` with the tag of its place | `typography="part"` | `text-title-part` |
-| `group` | `h6` | `legend` | `field-group` on the `fieldset` | the same | `text-title-group` |
+| Role | Style | Tag | `mds-text` | Without components |
+| --- | --- | --- | --- | --- |
+| `page` | `h3` (30px) | `h1` | `typography="page" tag="h1"` | `text-title-page` |
+| `section` | `h5` (20px) | `h2` | `typography="section" tag="h2"` | `text-title-section` |
+| `dialog` | `h5` | the headline of the window | drawn by `mds-banner` (`h6` until #1192) | `text-title-dialog` |
+| `part` | `h6` (16px, weight 700) | the level of its place | `typography="part"` with the tag of its place | `text-title-part` |
+| `group` | `h6` | `legend` | `field-group` on the `fieldset` | `text-title-group` |
 
 The three levels read apart, 30, 20 and 16px, 1.5 and 1.25 times the level below. A theme moves
 a role through its token (`--text-size-title-<role>` and its modifiers), not through the
@@ -184,10 +184,6 @@ Situations every application has, each with its case: they give the examples, th
 
 ## Magma gaps
 
-- `mds-text` takes no roles yet: `typography="page"`, `"section"`, `"dialog"`, `"part"` and
-  `"group"` come with #1200, which also moves the default `typography` of
-  `mds-accordion-item` and `mds-accordion-timer-item` from `h5` to `h6`. Until then write the
-  style of the level with its tag, as in Parts.
 - `mds-banner` draws its headline in `h6`, always: the window of a dialog needs `h5`, a choice
   of the style of the headline (#1192).
 - The examples of `mds-card-header` give 13 titles `h5` with no `tag`, so a card renders an

@@ -59,6 +59,12 @@
         "value": "calc(var(--magma-width-form) + 2 * var(--magma-rhythm-inset))",
         "description": "widths/dialog: the window of a dialog, the column of a form plus its inset."
       }
+    },
+    "container": {
+      "actions": {
+        "value": "23.75rem",
+        "description": "actions/stacked: the width of its container under which a row of actions stacks (@max-actions:)."
+      }
     }
   }
 }

@@ -75,6 +75,36 @@ describe('mds-banner', () => {
     });
   });
 
+  // actions/stacked (#1189): under 380px of its content the row of actions stacks, every action
+  // at the full width in the order of the row; above it the row stays on one line
+  describe('the row of actions', () => {
+    const banner = (width: string) =>
+      render(
+        `<mds-banner headline="Bozza" style="box-sizing: border-box; width: ${width}"><mds-button slot="action" variant="dark" tone="outline">Ignora</mds-button><mds-button slot="action">Usa la descrizione</mds-button></mds-banner>`,
+      );
+    const boxes = (root: HTMLElement) =>
+      Array.from(root.querySelectorAll('mds-button')).map((action) =>
+        action.getBoundingClientRect(),
+      );
+
+    // 26rem less the inset of 600 on both sides: 368px of content
+    it('stacks under 380px of its content, each action at the full width', async () => {
+      const { root } = await banner('26rem');
+      const [first, second] = boxes(root);
+
+      expect(second.top).toBeGreaterThan(first.bottom);
+      expect(first.width).toBeCloseTo(second.width, 0);
+    });
+
+    // 27rem: 384px of content
+    it('keeps the row on one line from 380px of its content', async () => {
+      const { root } = await banner('27rem');
+      const [first, second] = boxes(root);
+
+      expect(second.top).toBeCloseTo(first.top, 0);
+    });
+  });
+
   describe('close button', () => {
     const closeButton = (root: HTMLElement): HTMLElement | null =>
       root.shadowRoot!.querySelector('.close-button');

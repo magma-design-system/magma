@@ -1,0 +1,28 @@
+<!--
+try: Look at Scarica in the card of the document: the action of a part, in the accent and outlined, one tone under Invia pratica, the one filled action of the page.
+-->
+<div class="grid gap-between-sections">
+  <mds-text typography="page" tag="h1">Nuova pratica</mds-text>
+  <form class="@container grid max-w-form gap-content-actions">
+    <div class="grid gap-between-fields">
+      <mds-input-field label="Oggetto">
+        <mds-input value="Richiesta di accesso agli atti"></mds-input>
+      </mds-input-field>
+      <mds-card>
+        <mds-card-header>
+          <mds-text typography="part" tag="h2">Modulo di delega</mds-text>
+        </mds-card-header>
+        <mds-card-content>
+          <mds-text>Scaricalo, firmalo e allegalo alla pratica.</mds-text>
+        </mds-card-content>
+        <mds-card-footer>
+          <mds-button type="button" icon="mi/baseline/download" variant="primary" tone="outline">Scarica</mds-button>
+        </mds-card-footer>
+      </mds-card>
+    </div>
+    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+      <mds-button type="button" variant="dark" tone="outline">Annulla</mds-button>
+      <mds-button>Invia pratica</mds-button>
+    </div>
+  </form>
+</div>

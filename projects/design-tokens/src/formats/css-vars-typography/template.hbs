@@ -64,6 +64,9 @@ Generated at {{ date }}
 {{#each properties.role.width as | width |}}
   --magma-width-{{@key}}: {{width.value}};
 {{/each}}
+{{#each properties.role.container as | size |}}
+  --magma-container-{{@key}}: {{size.value}};
+{{/each}}
 
 {{!-- screens breakpoint --}}
 {{#each properties.screen as | screen |}}

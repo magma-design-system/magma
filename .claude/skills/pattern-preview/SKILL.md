@@ -64,7 +64,9 @@ Show the two options as the client allows, the recommended one first:
 
 Then:
 
-- **"Scelgo N"**: save that stage as `docs/agents/patterns/previews/<id>/<case>.html`;
+- **"Scelgo N"**: save that stage as `docs/agents/patterns/previews/<id>/<case>.html`; another
+  example of a case the maintainer keeps goes beside it as `<case>.2.html`, `<case>.3.html`, and
+  the preview of a rule of a domain as `<domain>/<rule>.html` (#1221, `docs/PATTERNS.md`);
 - **"Qualcosa non va"**: find what does not show (hydration, an overlay with no `height`, a
   wrong attribute), fix it and show the decision again;
 - **"Prova: ..."**: write what the maintainer described as a new option and show it next to the

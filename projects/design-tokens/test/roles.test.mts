@@ -109,6 +109,26 @@ describe('widths', () => {
   })
 })
 
+// #1189 actions/stacked: the threshold under which a row of actions stacks, 380px
+describe('the threshold of a row of actions', () => {
+  test('is the role --magma-container-actions, 23.75rem', () => {
+    expect(vars.get('--magma-container-actions')).toBe('23.75rem')
+  })
+
+  // a container size, so Tailwind makes @actions: and @max-actions: from it; its literal, not a
+  // var() of the role, since a container query reads no var()
+  test('the Tailwind theme bridges it as the container size actions, with its literal', () => {
+    expect(theme.get('--container-actions')).toBe(vars.get('--magma-container-actions'))
+  })
+
+  test('the DTCG export names it by its rule', () => {
+    const token = at('magma.container.actions')
+    expect(token.$value).toEqual({ value: 23.75, unit: 'rem' })
+    expect(token.$description).toMatch(/^actions\/stacked: /)
+    expect(token.$extensions[NAMESPACE]).toEqual({ css: '--magma-container-actions', tier: 'semantic' })
+  })
+})
+
 describe('titles by role', () => {
   const ROLES: Record<string, string> = { page: 'h3', section: 'h5', dialog: 'h5', part: 'h6', group: 'h6' }
   const PARTS = ['', '--font-weight', '--letter-spacing', '--line-height']

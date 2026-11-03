@@ -3,12 +3,13 @@
   instead of a whole file: the list of guides, the headings of one, or the text of one section.
   The domains of Foundation (agents/patterns/<id>.md of kind foundation, #1189) are guides too,
   the rules of composition of the design language (#1198): named by their id, read without
-  their frontmatter, the data get_pattern answers from.
+  their frontmatter, the data get_pattern answers from; a domain names the previews of its
+  cases and of its rules (#1221), which render_preview renders by case or rule.
 */
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { magmaRoot } from '../core/data.js';
-import { FOUNDATION, readPatternDir } from '../core/patterns.js';
+import { FOUNDATION, ownRules, readPatternDir, readPreviews } from '../core/patterns.js';
 import { ToolError, type Tool } from './protocol.js';
 import { patternsDir } from './patterns.js';
 import type { ToolContext } from './context.js';
@@ -19,6 +20,16 @@ interface Guide {
   read: () => string;
   /** `foundation` for a domain. */
   kind?: string;
+  /** For a domain, the previews of its cases and of its rules, in the order of the folder. */
+  previews?: GuidePreview[];
+}
+
+interface GuidePreview {
+  id: string;
+  kind: 'case' | 'rule';
+  file: string;
+  /** From 2, the example after the first (<id>.<n>.html). */
+  example?: number;
 }
 
 const guidesOf = (context: ToolContext): Guide[] => {
@@ -37,9 +48,25 @@ const guidesOf = (context: ToolContext): Guide[] => {
       .sort())
       guides.push(guide(file.slice(0, -3), path.join(dir, file)));
   // after the guides, by id; a guide of the same name comes first, the domain stays patterns/<id>
+  const previews = readPreviews(patternsDir(context));
   for (const { data, body } of readPatternDir(patternsDir(context)))
-    if (data.kind === FOUNDATION)
-      guides.push({ name: data.id, read: () => body, kind: FOUNDATION });
+    if (data.kind === FOUNDATION) {
+      const rules = ownRules(data);
+      const mine: GuidePreview[] = previews
+        .filter((one) => one.pattern === data.id)
+        .map((one) => ({
+          id: one.id,
+          kind: rules.includes(one.id) ? 'rule' : 'case',
+          file: path.relative(context.root, one.file),
+          ...(one.example > 1 ? { example: one.example } : {}),
+        }));
+      guides.push({
+        name: data.id,
+        read: () => body,
+        kind: FOUNDATION,
+        ...(mine.length ? { previews: mine } : {}),
+      });
+    }
   return guides;
 };
 
@@ -72,7 +99,7 @@ export const getGuide = (context: ToolContext): Tool => ({
   name: 'get_guide',
   title: 'Read a Magma guide',
   description:
-    'The guides Magma ships for agents (installation, conventions, color, typography, theming, lint...) and the domains of Foundation, the rules of composition of the design language (kind foundation, such as rhythm: the space between elements): without arguments the list with their sections, with a guide its headings, with a guide and a section the text of that section only. Read the section you need, not the whole file.',
+    'The guides Magma ships for agents (installation, conventions, color, typography, theming, lint...) and the domains of Foundation, the rules of composition of the design language (kind foundation, such as rhythm: the space between elements): without arguments the list with their sections, with a guide its headings (a domain also the previews of its cases and rules, for render_preview), with a guide and a section the text of that section only. Read the section you need, not the whole file.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -114,6 +141,21 @@ export const getGuide = (context: ToolContext): Tool => ({
       },
       section: { type: 'string' },
       text: { type: 'string' },
+      previews: {
+        type: 'array',
+        description:
+          'For a domain: the previews of its cases and of its rules, for render_preview (pattern with case or rule, and example from 2).',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            kind: { type: 'string', enum: ['case', 'rule'] },
+            file: { type: 'string' },
+            example: { type: 'number' },
+          },
+          required: ['id', 'kind', 'file'],
+        },
+      },
     },
   },
   run: ({ guide, section }) => {
@@ -159,6 +201,7 @@ export const getGuide = (context: ToolContext): Tool => ({
         sections: headings
           .filter((one) => one.level > 1)
           .map(({ heading, level }) => ({ heading, level })),
+        ...(found.previews ? { previews: found.previews } : {}),
       };
 
     const wanted = section.toLowerCase();

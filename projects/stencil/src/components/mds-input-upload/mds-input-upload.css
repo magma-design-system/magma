@@ -24,7 +24,10 @@
 
 :host {
   --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--magma-wash-soft));
-  --mds-input-upload-drag-area-background-color: rgb(var(--magma-surface-overlay));
+
+  /* a field stands a step off its surface: overlay on a page, the step below inside an overlay
+     surface, which passes it as --magma-field-fill (#1193) */
+  --mds-input-upload-drag-area-background-color: rgb(var(--magma-field-fill, var(--magma-surface-overlay)));
   --mds-input-upload-drag-area-border-on-drag: --spacing(75) dashed rgb(var(--magma-border-strong));
   --mds-input-upload-drag-area-border: --spacing(75) dashed rgb(var(--magma-border-default));
   --mds-input-upload-min-cols: 3;

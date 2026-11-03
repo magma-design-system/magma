@@ -1,0 +1,35 @@
+<!--
+try: Look at the sections: no fill, no border, no inset of their own; the title of each and the space between them set them apart. The header of the page is the first one, in the flow.
+-->
+<div class="grid gap-between-sections">
+  <div class="grid gap-title-content">
+    <mds-text typography="page" tag="h1">Cambio di residenza</mds-text>
+    <mds-text typography="detail" tag="p" class="text-fg-muted">Pratica 2026/0142, ricevuta il 3 marzo 2026</mds-text>
+  </div>
+  <section class="grid gap-title-content">
+    <mds-text typography="section" tag="h2">Richiedente</mds-text>
+    <dl class="m-0 grid grid-cols-2 gap-between-fields">
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Nome e cognome</mds-text>
+        <mds-text tag="dd" class="m-0">Marco Bianchi</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Nato il</mds-text>
+        <mds-text tag="dd" class="m-0">12 aprile 1980</mds-text>
+      </div>
+    </dl>
+  </section>
+  <section class="grid gap-title-content">
+    <mds-text typography="section" tag="h2">Nuova residenza</mds-text>
+    <dl class="m-0 grid grid-cols-2 gap-between-fields">
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Indirizzo</mds-text>
+        <mds-text tag="dd" class="m-0">Via Emilia 12, Rimini</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Dal</mds-text>
+        <mds-text tag="dd" class="m-0">1 marzo 2026</mds-text>
+      </div>
+    </dl>
+  </section>
+</div>

@@ -44,6 +44,9 @@
   );
   --mds-modal-window-background: rgb(var(--magma-surface-overlay));
 
+  /* overlay: the fields inside take the step below (#1193) */
+  --magma-field-fill: var(--magma-surface-default);
+
   /* 0px, not 0: the height subtracts it from 100dvh, and calc() cannot take a number from a
    * length; unless globals.css registers it, the window lost its height and max-height (#1143) */
   --mds-modal-window-distance: 0px;

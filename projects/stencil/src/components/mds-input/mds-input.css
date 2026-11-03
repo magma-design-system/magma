@@ -36,7 +36,10 @@
 */
 
 :host {
-  --mds-input-background: rgb(var(--magma-surface-overlay));
+
+  /* a field stands a step off its surface: overlay on a page, the step below inside an overlay
+     surface, which passes it as --magma-field-fill (#1193) */
+  --mds-input-background: rgb(var(--magma-field-fill, var(--magma-surface-overlay)));
   --mds-input-icon-color: rgb(var(--magma-accent-fg));
   --mds-input-placeholder-default-color: rgb(var(--magma-text-disabled));
   --mds-input-placeholder-focus-color: rgb(var(--magma-text-disabled));

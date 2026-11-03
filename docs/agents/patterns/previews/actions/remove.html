@@ -1,0 +1,44 @@
+<!--
+try: Press the X next to planimetria.pdf: the attachment goes at once, with no question, and a toast says what went and offers Ripristina.
+height: 340
+-->
+<section class="grid max-w-form gap-title-content">
+  <mds-text typography="section" tag="h2">Allegati</mds-text>
+  <div id="allegati" class="grid">
+    <div class="flex items-center justify-between gap-inline">
+      <mds-text>planimetria.pdf</mds-text>
+      <mds-button icon="mi/baseline/close" variant="dark" tone="text" aria-label="Rimuovi planimetria.pdf"></mds-button>
+    </div>
+    <div class="flex items-center justify-between gap-inline">
+      <mds-text>delega-firmata.pdf</mds-text>
+      <mds-button icon="mi/baseline/close" variant="dark" tone="text" aria-label="Rimuovi delega-firmata.pdf"></mds-button>
+    </div>
+    <div class="flex items-center justify-between gap-inline">
+      <mds-text>visura-catastale.pdf</mds-text>
+      <mds-button icon="mi/baseline/close" variant="dark" tone="text" aria-label="Rimuovi visura-catastale.pdf"></mds-button>
+    </div>
+  </div>
+</section>
+<mds-toast-region>
+  <mds-toast id="toast" duration="0" dismissible>
+    Allegato rimosso: planimetria.pdf
+    <mds-button id="restore" slot="action" size="sm" variant="dark" tone="outline">Ripristina</mds-button>
+  </mds-toast>
+</mds-toast-region>
+<script>
+  const list = document.getElementById('allegati');
+  const toast = document.getElementById('toast');
+  let removed;
+  list.addEventListener('click', (event) => {
+    const item = event.target.closest('mds-button')?.parentElement;
+    if (!item) return;
+    removed = { item, next: item.nextElementSibling };
+    toast.firstChild.data = `Allegato rimosso: ${item.querySelector('mds-text').textContent}`;
+    item.remove();
+    toast.visible = true;
+  });
+  document.getElementById('restore').addEventListener('click', () => {
+    list.insertBefore(removed.item, removed.next);
+    toast.visible = undefined;
+  });
+</script>

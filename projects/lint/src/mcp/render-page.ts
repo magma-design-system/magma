@@ -186,12 +186,34 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
           inside.querySelector('img, svg, canvas, video')),
       );
     };
+    // what stands out of the box of an element by design: fixed on the viewport, or in the top
+    // layer once shown (a dialog, a popover), in its light or its shadow tree, nested too
+    const outOfFlow = (element: Element): boolean => {
+      const away = (one: Element) =>
+        one.localName === 'dialog' ||
+        one.hasAttribute('popover') ||
+        getComputedStyle(one).position === 'fixed';
+      const inside = (root: Element | ShadowRoot): boolean =>
+        [...root.querySelectorAll('*')].some(
+          (one) => away(one) || (one.shadowRoot !== null && inside(one.shadowRoot)),
+        );
+      return (
+        away(element) ||
+        (element.shadowRoot !== null && inside(element.shadowRoot)) ||
+        inside(element)
+      );
+    };
     for (const element of preview.querySelectorAll('*')) {
       if (!isComponent(element) && element.localName !== 'img') continue;
       // display: none (a closed overlay, `hidden`) is a choice of the markup, not a failure
       if (!element.checkVisibility()) continue;
       const box = element.getBoundingClientRect();
       if (box.width < 1 || box.height < 1) {
+        // a box of nothing is the layout of an element whose content stands out of it: fixed on
+        // the viewport (mds-toast-region, empty until a toast shows), or a dialog or a popover,
+        // shown in the top layer or closed, which shows nothing as display: none does
+        // (mds-status-bar, its window an mds-modal); only a box in the flow collapses
+        if (outOfFlow(element)) continue;
         problems.push({
           kind: 'zero-size',
           element: label(element),

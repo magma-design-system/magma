@@ -70,6 +70,14 @@ Generated at {{ date }}
 {{/each}}
   --container-form: var(--magma-width-form, {{properties.role.width.reading.value}});
 
+{{!-- the bridge of --magma-container-actions, the threshold of a row of actions
+  (actions/stacked): a container size, so Tailwind makes @actions: and @max-actions: from it, and
+  its literal, not a var() of the role, since a container query reads no var(); the sheets of the
+  components read it at build time with --theme(--container-actions) --}}
+{{#each properties.role.container as | size |}}
+  --container-{{@key}}: {{size.value}};
+{{/each}}
+
 {{!-- size utilities: w-*, min-w-*, max-w-* and basis-* read their own namespace, then
   spacing, then container. A key spacing and container share (2xl) is a container size:
   point the own namespace at it, or the spacing step wins (max-w-2xl would be 48px).

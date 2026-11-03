@@ -41,24 +41,6 @@ export default {
 
 const Template = (args) => (
   <div>
-    <div class="grid">
-      {Array(40)
-        .fill(null)
-        .map((_value, index) => (
-          <div
-            key={index}
-            class="h-[100px] flex items-start justify-center text-center border-0 border-t border-solid border-t-tone-neutral-07"
-          >
-            <mds-text
-              class="px-200 py-100 rounded-b-lg bg-tone-neutral-10 border-t-0 border border-solid border-tone-neutral-07"
-              typography="snippet"
-              tag="div"
-            >
-              {index === 0 ? '0px' : index + '00px'}
-            </mds-text>
-          </div>
-        ))}
-    </div>
     <mds-header {...args}>
       <mds-header-bar>
         <div class="flex gap-400 items-center">
@@ -99,29 +81,29 @@ const Template = (args) => (
         </div>
       </div>
     </mds-header>
+    <div class="grid">
+      {Array(40)
+        .fill(null)
+        .map((_value, index) => (
+          <div
+            key={index}
+            class="h-[100px] flex items-start justify-center text-center border-0 border-t border-solid border-t-tone-neutral-07"
+          >
+            <mds-text
+              class="px-200 py-100 rounded-b-lg bg-tone-neutral-10 border-t-0 border border-solid border-tone-neutral-07"
+              typography="snippet"
+              tag="div"
+            >
+              {index === 0 ? '0px' : index + '00px'}
+            </mds-text>
+          </div>
+        ))}
+    </div>
   </div>
 );
 
 const TemplateAutoHide = (args) => (
   <div>
-    <div class="grid">
-      {Array(40)
-        .fill(null)
-        .map((_value, index) => (
-          <div
-            key={index}
-            class="h-[100px] flex items-start justify-center text-center border-0 border-t border-solid border-t-tone-neutral-07"
-          >
-            <mds-text
-              class="px-200 py-100 rounded-b-lg bg-tone-neutral-10 border-t-0 border border-solid border-tone-neutral-07"
-              typography="snippet"
-              tag="div"
-            >
-              {index === 0 ? '0px' : index + '00px'}
-            </mds-text>
-          </div>
-        ))}
-    </div>
     <mds-header {...args}>
       <mds-header-bar>
         <div class="flex gap-400 items-center">
@@ -162,12 +144,70 @@ const TemplateAutoHide = (args) => (
         </div>
       </div>
     </mds-header>
+    <div class="grid">
+      {Array(40)
+        .fill(null)
+        .map((_value, index) => (
+          <div
+            key={index}
+            class="h-[100px] flex items-start justify-center text-center border-0 border-t border-solid border-t-tone-neutral-07"
+          >
+            <mds-text
+              class="px-200 py-100 rounded-b-lg bg-tone-neutral-10 border-t-0 border border-solid border-tone-neutral-07"
+              typography="snippet"
+              tag="div"
+            >
+              {index === 0 ? '0px' : index + '00px'}
+            </mds-text>
+          </div>
+        ))}
+    </div>
   </div>
 );
 
 const TemplateLandingPage = (args) => (
   <div class="-m-600">
-    <div class="bg-label-amaranth-06 text-fg-on-emphasis flex text-center items-center justify-center h-[600px] flex-col pt-2000 select-none">
+    <mds-header {...args}>
+      <mds-header-bar>
+        <div class="flex gap-400 items-center">
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <div class="mb-100 grid grid-cols-full gap-100">
+            <mds-text typography="h5" tag="h3">
+              Mobile menu
+            </mds-text>
+            <mds-text typography="option" class="text-tone-neutral-04">
+              Shows up under 1024px
+            </mds-text>
+          </div>
+        </div>
+        <mds-button slot="nav" variant="dark" tone="outline">
+          Accedi
+        </mds-button>
+        <mds-button slot="nav" icon="mi/round/person">
+          Registrati
+        </mds-button>
+      </mds-header-bar>
+      <div slot="menu">
+        <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
+          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
+          <div class="mb-100">
+            <mds-text typography="h6" tag="h4">
+              Gruppo Maggioli
+            </mds-text>
+            <mds-text typography="option" class="text-tone-neutral-04">
+              Header by RD Team
+            </mds-text>
+          </div>
+        </div>
+        <div class="grid gap-200 p-600">
+          <mds-button variant="dark" tone="outline">
+            Accedi
+          </mds-button>
+          <mds-button icon="mi/round/person">Registrati</mds-button>
+        </div>
+      </div>
+    </mds-header>
+    <div class="bg-label-amaranth-06 text-fg-on-emphasis flex text-center items-center justify-center h-[600px] flex-col select-none">
       <mds-text typography="h1">Hey</mds-text>
       <mds-text typography="h1">WelcomeTo</mds-text>
       <mds-text typography="h1">ThisBeautiful</mds-text>
@@ -195,46 +235,6 @@ const TemplateLandingPage = (args) => (
           ))}
       </div>
     </div>
-    <mds-header {...args}>
-      <mds-header-bar>
-        <div class="flex gap-400 items-center">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
-          <div class="mb-100 grid grid-cols-full gap-100">
-            <mds-text typography="h5" tag="h3">
-              Mobile menu
-            </mds-text>
-            <mds-text typography="option" class="text-tone-neutral-04">
-              Shows up under 1024px
-            </mds-text>
-          </div>
-        </div>
-        <mds-button slot="nav" variant="dark" tone="outline">
-          Accedi
-        </mds-button>
-        <mds-button slot="nav" icon="mi/round/person">
-          Registrati
-        </mds-button>
-      </mds-header-bar>
-      <div slot="menu">
-        <div class="flex gap-200 items-center p-600 border-b border-tone-neutral-09">
-          <mds-img class="w-1000" src="./logo-gruppo-maggioli.svg" />
-          <div class="mb-100">
-            <mds-text typography="h6" tag="h4">
-              Gruppo Maggioli
-            </mds-text>
-            <mds-text typography="option" class="text-tone-neutral-04">
-              Header by RD Team
-            </mds-text>
-          </div>
-        </div>
-        <div class="grid gap-200 p-600">
-          <mds-button variant="dark" tone="outline">
-            Accedi
-          </mds-button>
-          <mds-button icon="mi/round/person">Registrati</mds-button>
-        </div>
-      </div>
-    </mds-header>
   </div>
 );
 

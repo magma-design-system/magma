@@ -127,10 +127,10 @@ always-true:
     serves: [intuitive, inclusive]
     checked-by: review
   - id: stacked
-    rule: "A row stacks under 380 px of its container (23.75rem), a container query, the same threshold for every row: every button at the full width, in the order of the row, the main action at the bottom; above it the row stays on one line, never a ragged wrap where one button drops to a line of its own."
+    rule: "A row stacks under 380 px of its container (`--magma-container-actions`, `@max-actions:` in a class), a container query, the same threshold for every row: every button at the full width, in the order of the row, the main action at the bottom; above it the row stays on one line, never a ragged wrap where one button drops to a line of its own."
     serves: inclusive
     checked-by: review
-    carried-by: [mds-banner]
+    carried-by: [mds-banner, mds-card-footer, mds-status-bar]
   - id: at-most-three
     rule: "A row has at most three actions, and the labels of a row of three fit in 380 px with their gaps: the threshold of `stacked` is computed on them. Beyond three, the menu of the item takes one of the places (`more-in-menu`)."
     serves: intuitive
@@ -281,7 +281,7 @@ These hold in every product: a product layer cannot change them.
 | --- | --- | --- | --- | --- |
 | `place` | The row of actions that closes a form, a dialog, a card or a banner stands at the end of its container; in the form of a page, at the end of its column (widths/form). A form that is the whole page docks its row in mds-status-bar (surfaces/edit-actions). | intuitive | `mds-card-footer`, `mds-banner` | review |
 | `order` | In a row of actions the main action is the last, on the edge, with the secondary action right before it: the order of the code, which is the order of Tab. | intuitive, inclusive | the guide | review |
-| `stacked` | A row stacks under 380 px of its container (23.75rem), a container query, the same threshold for every row: every button at the full width, in the order of the row, the main action at the bottom; above it the row stays on one line, never a ragged wrap where one button drops to a line of its own. | inclusive | `mds-banner` | review |
+| `stacked` | A row stacks under 380 px of its container (`--magma-container-actions`, `@max-actions:` in a class), a container query, the same threshold for every row: every button at the full width, in the order of the row, the main action at the bottom; above it the row stays on one line, never a ragged wrap where one button drops to a line of its own. | inclusive | `mds-banner`, `mds-card-footer`, `mds-status-bar` | review |
 | `at-most-three` | A row has at most three actions, and the labels of a row of three fit in 380 px with their gaps: the threshold of `stacked` is computed on them. Beyond three, the menu of the item takes one of the places (`more-in-menu`). | intuitive | the guide | review |
 | `more-in-menu` | When an item has more than three actions, its row keeps the main action, the secondary used most and the menu of the item, at the start of the row: an icon-only mds-button (more_vert, variant="dark" tone="text", an aria-label that names the item) with mds-dropdown. The menu holds the other actions, and Elimina last after an mds-separator (`destructive-in-menu`): one menu per item. | intuitive | the guide | review |
 | `destructive` | A destructive action never stands in the row of the actions of an edit in progress: it has two places, the contextual menu of its entity and the danger zone of its page, and its distance from the other actions grows with the severity of its consequences. | enabling | the guide | review |
@@ -345,13 +345,6 @@ Situations every application has, each with its case: they give the examples, th
   `close` ("Chiudi"), as the X of `mds-modal`.
 - `mds-banner` keeps its X in a column beside the whole body: `dismiss` puts it at the end of
   the title row (`widths/dialog`).
-- `mds-banner` stacks its actions under 300 px of its content, a length of its own: the
-  threshold becomes 380 px (`stacked`).
-- `mds-card-footer` keeps its actions on one row with no wrap, and `mds-status-bar` lets them
-  wrap and changes at 480 px of the screen: both get the stack under 380 px of their container
-  (`stacked`).
-- The threshold has no name: a container query needs a value in its condition, so the sheets
-  write `23.75rem` until a token or a container size of Tailwind names it by its role.
 - The guide of `mds-modal` calls the slot `window` a bespoke surface: the banner window becomes
   its first pattern, and the examples that write their own bands move to it.
 - The planned lint `magma/no-dismissible-banner-in-modal` leaves out the banner of the window
@@ -395,3 +388,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-11-01 | The deadline dialog opens with the focus on Resta collegato, and closing it, with its X, Esc or the backdrop, means Resta collegato: the default `interaction`, the X of the window kept, the session extended on `mdsModalClose` (`deadline-close`). | No gesture loses the work; Esc closes it as every dialog (WAI-ARIA Authoring Practices, the timeout warning of HMRC), and the X keeps one meaning, the safe answer; the focus makes Invio the simple action of WCAG 2.2.1. Rejected: no X and `strict`, the forced action of USWDS, an exception to `dismiss` where Esc does nothing. Chosen live, the behaviour checked on the build. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6558535505 |
 | 2026-11-01 | A row stacks under 380 px of its container, 23.75rem, a container query with one threshold for every row (`stacked`); a row has at most three actions, whose labels fit in 380 px (`at-most-three`). | CSS only, no script or observer for a rule of layout; three actions at most make the threshold computable: the rows of the patterns need up to 270 px with two actions and 365 px with three. The value is the maintainer's. Rejected: measuring whether the buttons fit (Material), with a `ResizeObserver` or the Switcher of Every Layout; a threshold by number of actions; `--container-xs`, under which a row of three goes ragged; the media query at 480 px, blind to the container. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6560982526 |
 | 2026-11-01 | With more than three actions, the row keeps the main one, the secondary used most and the menu of the item at its start, which holds the others and Elimina last after a separator (`more-in-menu`). | One menu per item, the one that already holds Elimina; the secondary stays right before the main action (`order`), and the menu, far from it, reads as the rest. Rejected: the menu right before the main action, which parts the secondary from it; the arrow of the main action, `mds-button-dropdown`, which reads as another way of doing it and would put Elimina under it or make two menus. Chosen live on the header of a request. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6561221595 |
+| 2026-11-02 | The threshold of `stacked` is the role `--magma-container-actions`, which the Tailwind theme bridges as the container size `actions` with its literal (`@max-actions:`); `mds-banner`, `mds-card-footer` and `mds-status-bar` stack under it. | A container query reads no `var()`, so the bridge holds the literal and the sheets read it at build time with `--theme()`; the name follows the roles of Magma (`--magma-width-*`). Review round 1 of #1189. |

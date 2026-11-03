@@ -98,9 +98,13 @@ describe('coverage', () => {
     expect([...themeVariables.keys()].filter((name) => !listed(name))).toEqual([])
     expect(byTheme.size + byAlias.size + Object.keys(map.keywords).length).toBe(themeVariables.size)
     expect(Object.keys(map.tokens).filter((token) => !dtcgNames.has(token))).toEqual([])
-    // the token is the variable itself, or the custom property its value wraps
+    // the token is the variable itself, or the custom property its value wraps; a threshold of
+    // the design language holds the literal of its role, since a container query reads no var()
+    // (the roles test of design-tokens holds the two equal)
+    expect(byTheme.get('--container-actions')).toBe('--magma-container-actions')
     for (const [theme, token] of byTheme)
-      if (theme !== token) expect(themeVariables.get(theme), theme).toContain(`var(${token}`)
+      if (theme !== token && !token.startsWith('--magma-container-'))
+        expect(themeVariables.get(theme), theme).toContain(`var(${token}`)
     // an alias is the @theme variable of its token, whole; a keyword is its own value (#1057)
     for (const [alias, token] of byAlias)
       expect(themeVariables.get(alias), alias).toBe(`var(${map.tokens[token].theme})`)

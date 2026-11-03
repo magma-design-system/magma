@@ -14,7 +14,9 @@ export class MdsCardFooter {
   render() {
     return (
       <Host slot="footer">
-        <slot></slot>
+        <div class="actions">
+          <slot></slot>
+        </div>
       </Host>
     );
   }

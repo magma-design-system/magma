@@ -1,0 +1,25 @@
+<!--
+try: Press the X at the end of the title row: it closes the dialog, as Annulla does in the row; Nuovo referente opens it again.
+height: 480
+-->
+<mds-button id="open">Nuovo referente</mds-button>
+<mds-modal id="dialog" opened aria-label="Nuovo referente">
+  <mds-banner slot="window" variant="light" tone="box" dismissible headline="Nuovo referente">
+    <form class="grid gap-between-fields">
+      <mds-input-field label="Nome e cognome">
+        <mds-input value="Marco Bianchi"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Ufficio">
+        <mds-input value="Protocollo"></mds-input>
+      </mds-input-field>
+    </form>
+    <mds-button id="cancel" slot="action" variant="dark" tone="outline">Annulla</mds-button>
+    <mds-button slot="action">Aggiungi</mds-button>
+  </mds-banner>
+</mds-modal>
+<script>
+  const dialog = document.getElementById('dialog');
+  document.getElementById('open').addEventListener('click', () => (dialog.opened = true));
+  document.getElementById('cancel').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('mdsModalClose', () => (dialog.opened = undefined));
+</script>

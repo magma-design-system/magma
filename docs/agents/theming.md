@@ -102,6 +102,22 @@ components do (`mds-card` uses `--shadow-md-sharp`, `mds-modal` `--shadow-2xl`):
 An overlay separates from what is under it by its shadow, not by a border: in dark
 `border-muted` is darker than `surface-overlay`.
 
+**A field stands a step off its surface** (#1193). On the page a field (`mds-input`,
+`mds-input-select`, `mds-input-date`, the drop area of `mds-input-upload`) paints
+`surface-overlay`; inside a surface that paints `overlay` (the window of a dialog, `mds-banner`,
+`mds-status-bar`, `mds-dropdown`, `mds-table`) it paints `surface-default`, the step below, so
+its fill never melts into the window. The surface passes the step down as
+`--magma-field-fill`, an inherited custom property, and a field reads it with `overlay` as the
+fallback. A surface of your own that paints `overlay` passes it the same way:
+
+```css
+.panel {
+  --magma-field-fill: var(--magma-surface-default);
+
+  background: rgb(var(--magma-surface-overlay));
+}
+```
+
 **Text is safe on every level.** Each text role is computed against the least
 contrasting surface of its family, so `text-default`, `text-muted` and the rest are
 legible on all five levels in both modes (checked in CI). The tinted pills are a

@@ -7,15 +7,19 @@
   narrows the open choices and adds situations; it never changes an "Always true" rule. A case
   Magma has a preview of (agents/patterns/previews/<id>/<case>.html, #1186) names it: the path
   in the pattern, the stage itself and what to try in it in the answer for a situation, with
-  the rules of the domains of Foundation the case relies on (#1198). A building block (#1210)
-  answers a situation with its regions, in the order of the page.
+  the rules of the domains of Foundation the case relies on (#1198). A rule of a domain may have
+  a preview too, and a case or a rule more examples (<id>.2.html, #1221): the pattern names
+  their paths, the answer the paths of the other examples and of the previews of its rules. A
+  building block (#1210) answers a situation with its regions, in the order of the page.
 */
 import path from 'node:path';
 import { loadComponents, magmaRoot } from '../core/data.js';
 import {
   BLOCK,
+  FOUNDATION,
   MAGMA_LAYER,
   answer,
+  examplesOf,
   extendedId,
   indexPatterns,
   isLayer,
@@ -30,6 +34,7 @@ import {
   resolveLayer,
   splitBody,
   type Case,
+  type CitedRule,
   type Layer,
   type Pattern,
   type PatternFile,
@@ -67,6 +72,7 @@ export const RULE_SCHEMA = {
     lint: string,
     'lint-planned': string,
     note: string,
+    preview: { type: 'string', description: 'The path of its preview, when it has one.' },
   },
   required: ['id', 'from', 'rule'],
 };
@@ -116,6 +122,22 @@ const previewIn = (context: ToolContext, preview: Preview) => ({
   markup: preview.markup,
 });
 
+/**
+ * The paths of the previews of a case or a rule, as the pattern names them: `preview` the first
+ * example, `examples` the others in order (<id>.2.html, ...), render_preview's `example` 2 on.
+ */
+export const previewPaths = (
+  context: ToolContext,
+  previews: Preview[],
+  pattern: string,
+  id: string,
+): { preview?: string; examples?: string[] } => {
+  const [first, ...more] = examplesOf(previews, pattern, id).map((one) =>
+    path.relative(context.root, one.file),
+  );
+  return first ? { preview: first, ...(more.length ? { examples: more } : {}) } : {};
+};
+
 /** The problems of the project's files, each with the file it is in. */
 const problemsIn = (context: ToolContext, problems: Map<string, string[]>, files: string[]) => {
   const found = files.flatMap((file) =>
@@ -146,7 +168,7 @@ export const getPattern = (context: ToolContext): Tool => ({
   name: 'get_pattern',
   title: 'Read a Magma pattern',
   description:
-    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of Foundation (kind foundation), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, and what to try in it, and in rules the rules of the domains it relies on, each with its domain and its text), or which variables are still to settle; for a block, the regions that show, in the order of the page; with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
+    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of Foundation (kind foundation), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, and what to try in it, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page; with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -211,6 +233,11 @@ export const getPattern = (context: ToolContext): Tool => ({
     const { patterns, layers, own, problems, previews } = read(context);
     if (!patterns.length)
       throw new ToolError('This magma ships no patterns (agents/patterns/): update it.');
+    // a rule or a relation of a domain an answer cites, with the path of its preview (#1221)
+    const withPreview = (rule: CitedRule) => {
+      const { preview } = previewPaths(context, previews, rule.from, rule.id);
+      return preview ? { ...rule, preview } : rule;
+    };
     const all = [...patterns, ...own].map((one) => one.data);
 
     if (typeof id !== 'string' || !id.trim()) {
@@ -305,7 +332,7 @@ export const getPattern = (context: ToolContext): Tool => ({
         } catch (error) {
           throw new ToolError((error as Error).message);
         }
-        const rules = rulesOfCase(base, {}, all);
+        const rules = rulesOfCase(base, {}, all).map(withPreview);
         return {
           id: base.id,
           ...renamed,
@@ -328,8 +355,12 @@ export const getPattern = (context: ToolContext): Tool => ({
         const { kind, entry } = result.hits[0]!;
         const isCase = kind === 'case';
         const preview = isCase ? previewOf(previews, base.id, String(entry.id)) : undefined;
-        // the rules of the domains the case relies on, with their text, in place of their ids
-        const rules = isCase ? rulesOfCase(base, entry as Case, all) : [];
+        const examples = isCase
+          ? previewPaths(context, previews, base.id, String(entry.id)).examples
+          : undefined;
+        // the rules of the domains the case relies on, with their text, in place of their ids,
+        // and the path of the preview of the ones that have one
+        const rules = isCase ? rulesOfCase(base, entry as Case, all).map(withPreview) : [];
         return {
           id: base.id,
           ...renamed,
@@ -339,6 +370,7 @@ export const getPattern = (context: ToolContext): Tool => ({
             ...entry,
             ...(rules.length ? { rules } : {}),
             ...(preview ? { preview: previewIn(context, preview) } : {}),
+            ...(examples ? { examples } : {}),
           },
           ...(kind === 'gap' ? { gap: GAP } : {}),
         };
@@ -347,14 +379,22 @@ export const getPattern = (context: ToolContext): Tool => ({
     }
 
     const { sections } = splitBody(file.body);
-    const cases = resolved.cases?.map((one) => {
-      const preview = previewOf(previews, base.id, one.id);
-      return preview ? { ...one, preview: path.relative(context.root, preview.file) } : one;
-    });
+    const cases = resolved.cases?.map((one) => ({
+      ...one,
+      ...previewPaths(context, previews, base.id, one.id),
+    }));
+    // a rule of a domain of its own may have a preview too (#1221), never one it cites
+    const rules =
+      base.kind === FOUNDATION
+        ? resolved['always-true']?.map((one) =>
+            one.from ? one : { ...one, ...previewPaths(context, previews, base.id, one.id) },
+          )
+        : undefined;
     return {
       pattern: {
         ...resolved,
         ...(cases ? { cases } : {}),
+        ...(rules ? { 'always-true': rules } : {}),
         sections: sections.map((one) => one.heading),
       },
       ...renamed,

@@ -15,7 +15,6 @@
   background-color: rgb(var(--magma-surface-raised));
   box-shadow: var(--shadow-md-sharp);
   display: flex;
-  inset: 0 0 auto;
   interpolate-size: allow-keywords; /* not supported yet https://youtu.be/JN-nme9oF10 */
   justify-content: center;
   margin-left: auto;
@@ -26,7 +25,9 @@
      of the bar starts where the content of a page-frame does, and a theme that moves the page moves
      the bar with it */
   padding: --spacing(400) var(--magma-width-page-gutter);
-  position: fixed;
+
+  /* in the flow of mds-header, which stays put while the page scrolls (#1189, surfaces/band) */
+  position: relative;
   transition-duration: var(--private-header-bar-transition-duration);
   transition-property: background-color, border-radius, margin, max-width, transform, width;
   transition-timing-function: var(--ease-out-expo);

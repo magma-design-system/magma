@@ -1,0 +1,20 @@
+<!--
+try: Look at Salva: the one filled action of the page, in the accent, last in the row at the end of the form; Annulla before it is outlined.
+-->
+<div class="grid gap-between-sections">
+  <mds-text typography="page" tag="h1">Nuova richiesta</mds-text>
+  <form class="@container grid max-w-form gap-content-actions">
+    <div class="grid gap-between-fields">
+      <mds-input-field label="Oggetto">
+        <mds-input value="Accesso agli atti"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Ufficio">
+        <mds-input value="Ufficio tecnico"></mds-input>
+      </mds-input-field>
+    </div>
+    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+      <mds-button type="button" variant="dark" tone="outline">Annulla</mds-button>
+      <mds-button>Salva</mds-button>
+    </div>
+  </form>
+</div>

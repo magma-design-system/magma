@@ -59,10 +59,26 @@
      reads them through a fallback for its hamburger, which keeps its own default colour, and a
      value declared here would always win that fallback */
   color: var(--mds-header-color, rgb(var(--magma-text-default)));
-  display: block;
+
+  /* the header stands in the flow and stays put while the page scrolls (#1189, surfaces/band):
+     the page starts under its bar, with no number to keep in step with its height. Sticky holds
+     inside the box of the parent, so it is the host, the child of the page, that sticks; its own
+     box holds the margins of the floating bar (flow-root) */
+  display: flow-root;
   fill: var(--mds-header-icon-color, var(--mds-header-color, rgb(var(--magma-text-default))));
-  position: relative;
+
+  /* the box of the header lets the clicks through: around the floating bar and where the hidden
+     bar was (auto-hide), only what it draws takes them */
+  pointer-events: none;
+  position: sticky;
+  top: 0;
   z-index: var(--mds-header-z-index);
+}
+
+::slotted(*),
+.backdrop,
+.menu {
+  pointer-events: auto;
 }
 
 .modal {
@@ -76,7 +92,11 @@
 
   border-radius: var(--magma-radius-lg);
   corner-shape: var(--magma-corner-shape);
-  margin-bottom: var(--mds-header-inline-margin-current);
+
+  /* the room of the header is its bar alone, whatever its appearance: the floating bar stands its
+     margin lower, over the space under the header, so the page never moves when appearance-set
+     changes the appearance on scroll */
+  margin-bottom: calc(var(--mds-header-inline-margin-current) * -1);
   margin-top: var(--mds-header-inline-margin-current);
 
   /* the content of the floating bar stands on the frame of the page, its padding outside it

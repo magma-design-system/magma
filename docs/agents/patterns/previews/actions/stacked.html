@@ -1,0 +1,17 @@
+<!--
+try: Narrow the stage (?width=420, then 520): under 380 px of the row the three actions stack at full width, Invia pratica at the bottom; above it they stay on one line, never a ragged wrap.
+-->
+<mds-banner
+  variant="light"
+  tone="box"
+  dismissible
+  headline="Nuova pratica"
+  class="mx-auto w-full max-w-(--magma-width-dialog)"
+>
+  <mds-input-field label="Oggetto">
+    <mds-input value="Richiesta di accesso agli atti"></mds-input>
+  </mds-input-field>
+  <mds-button slot="action" variant="dark" tone="outline">Annulla</mds-button>
+  <mds-button slot="action" variant="dark" tone="outline">Salva come bozza</mds-button>
+  <mds-button slot="action">Invia pratica</mds-button>
+</mds-banner>
