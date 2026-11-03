@@ -18,6 +18,13 @@
   design-tokens in a consumer project) is not in the graph: the rule of AGENTS.md keeps those
   arrows, not this check.
 
+  The colour of a box is its axis (`AXES`), so the diagrams read alike:
+
+  - every diagram writes the whole `PALETTE`, as it is here, after its nodes and arrows;
+  - every node has one axis, given by a `class` line, and the subgraph of the project is `area`;
+  - a project declares its axis as the Nx tag `axis:<name>` in its project.json, and the node
+    that stands for it takes that axis in every diagram.
+
   The diagrams are read in the forms they are written in (`readDiagram`); a line in any other
   form fails with its number instead of being skipped, so the check never passes on a part of a
   diagram it did not read.
@@ -37,16 +44,41 @@ export interface Diagram {
   subgraphs: Map<string, string>;
   /** Each arrow, from its source to its target; a two-way arrow is two. */
   edges: Array<[string, string]>;
+  /** The classes of each node or subgraph, by id, from its `class` lines. */
+  classes: Map<string, string[]>;
+  /** The style of each class, from its `classDef` line. */
+  classDefs: Map<string, string>;
 }
 
 /** The part of the graph of `nx graph --file` the check reads. */
 export interface ProjectGraph {
-  nodes: Record<string, { data: { root: string } }>;
+  nodes: Record<string, { data: { root: string; tags?: string[] } }>;
   dependencies: Record<string, Array<{ target: string }>>;
 }
 
 /** The section of docs/ARCHITECTURE.md that holds the overview. */
 export const OVERVIEW = { file: 'docs/ARCHITECTURE.md', section: '1. System Overview' };
+
+/**
+ * The axes a box belongs to: what serves agents, the icons and the brand, the tokens and the CSS,
+ * the components, the checks and the migration, and what has no axis (an app, a site).
+ */
+export const AXES = ['ai', 'assets', 'visual', 'components', 'tooling', 'outside'] as const;
+
+/**
+ * The styles of the axes and of the subgraph of a project (`area`). A light fill with dark text
+ * and a strong stroke reads the same on the light and the dark themes of GitHub, which colour
+ * the arrows and the background but keep the styles a class sets.
+ */
+export const PALETTE: Record<(typeof AXES)[number] | 'area', string> = {
+  ai: 'fill:#efe5ff,stroke:#8250df,color:#3e1f79',
+  assets: 'fill:#fff1d6,stroke:#bf8700,color:#5c3d00',
+  visual: 'fill:#dcf5ec,stroke:#1a7f64,color:#0b4a3a',
+  components: 'fill:#ddf0ff,stroke:#0969da,color:#0a3069',
+  tooling: 'fill:#eceff3,stroke:#57606a,color:#24292f',
+  outside: 'fill:#ffffff,stroke:#8c959f,color:#24292f',
+  area: 'fill:none,stroke:#8c959f',
+};
 
 const DIRECTION = '(?:LR|RL|TB|TD|BT)';
 const ID = '[A-Za-z][A-Za-z0-9_]*';
@@ -98,15 +130,19 @@ const readStatement = (line: string): { groups: Ref[][]; arrows: string[] } | un
 };
 
 /**
- * The nodes, subgraphs and arrows of a Mermaid flowchart. Throws on a line it cannot read: the
- * header (`flowchart LR`, `graph TD`), `subgraph id["title"]`, `end`, `direction TB`, `%%`
- * comments, and nodes or arrows in the shapes above are the forms the diagrams are written in.
+ * The nodes, subgraphs, arrows and classes of a Mermaid flowchart. Throws on a line it cannot
+ * read: the header (`flowchart LR`, `graph TD`), `subgraph id["title"]`, `end`, `direction TB`,
+ * `%%` comments, nodes or arrows in the shapes above, `class a,b name` and `classDef name style`
+ * are the forms the diagrams are written in.
  */
 export const readDiagram = (source: string): Diagram => {
   const nodes = new Map<string, string>();
   const subgraphs = new Map<string, string>();
   const edges: Array<[string, string]> = [];
+  const classes = new Map<string, string[]>();
+  const classDefs = new Map<string, string>();
   const unlabelled = new Set<string>();
+  const classed: Array<{ id: string; line: number }> = [];
   const lines = source.split('\n');
   let header = false;
   lines.forEach((raw, index) => {
@@ -125,6 +161,20 @@ export const readDiagram = (source: string): Diagram => {
     const subgraph = new RegExp(`^subgraph (${ID})\\["([^"]*)"\\]$`).exec(line);
     if (subgraph) {
       subgraphs.set(subgraph[1], subgraph[2]);
+      return;
+    }
+    const classDef = new RegExp(`^classDef (${ID}) (\\S+)$`).exec(line);
+    if (classDef) {
+      if (classDefs.has(classDef[1])) fail(`class ${classDef[1]} is defined twice`);
+      classDefs.set(classDef[1], classDef[2]);
+      return;
+    }
+    const classLine = new RegExp(`^class (${ID}(?:\\s*,\\s*${ID})*) (${ID})$`).exec(line);
+    if (classLine) {
+      for (const id of classLine[1].split(/\s*,\s*/)) {
+        classes.set(id, [...(classes.get(id) ?? []), classLine[2]]);
+        classed.push({ id, line: index + 1 });
+      }
       return;
     }
     const statement = readStatement(line);
@@ -146,7 +196,36 @@ export const readDiagram = (source: string): Diagram => {
   if (!header) throw new Error('no flowchart');
   // an id written only bare is a node labelled by its id, unless it is a subgraph
   for (const id of unlabelled) if (!nodes.has(id) && !subgraphs.has(id)) nodes.set(id, id);
-  return { nodes, subgraphs, edges };
+  for (const { id, line } of classed)
+    if (!nodes.has(id) && !subgraphs.has(id))
+      throw new Error(`line ${line}: class names ${id}, which is no node or subgraph`);
+  return { nodes, subgraphs, edges, classes, classDefs };
+};
+
+/** What is wrong with the colours of a diagram, given the axis of each project it draws. */
+export const colourErrors = (diagram: Diagram, axisOf: Map<string, string>): string[] => {
+  const errors: string[] = [];
+  for (const [name, style] of Object.entries(PALETTE)) {
+    const written = diagram.classDefs.get(name);
+    if (written === undefined) errors.push(`no classDef ${name} (classDef ${name} ${style})`);
+    else if (written !== style) errors.push(`classDef ${name} is not the palette's: ${style}`);
+  }
+  for (const name of diagram.classDefs.keys())
+    if (!(name in PALETTE)) errors.push(`classDef ${name} is no axis of the palette`);
+  for (const [id, label] of diagram.nodes) {
+    const axes = diagram.classes.get(id) ?? [];
+    const axis = axes[0];
+    if (axes.length !== 1 || !(AXES as readonly string[]).includes(axis))
+      errors.push(`node ${id} needs one axis (${AXES.join(', ')}), it has ${axes.join(', ') || 'none'}`);
+    else if (axisOf.has(firstLine(label)) && axisOf.get(firstLine(label)) !== axis)
+      errors.push(`node ${id} stands for ${firstLine(label)}, whose axis is ${axisOf.get(firstLine(label))}, not ${axis}`);
+  }
+  for (const id of diagram.subgraphs.keys()) {
+    const axes = diagram.classes.get(id) ?? [];
+    if (axes.length !== 1 || axes[0] !== 'area')
+      errors.push(`subgraph ${id} needs the class area, it has ${axes.join(', ') || 'none'}`);
+  }
+  return errors;
 };
 
 /**
@@ -195,6 +274,17 @@ export const checkDiagrams = (
     for (const { target } of dependencies)
       if (projects.includes(dependent) && projects.includes(target) && target !== dependent)
         links.add(`${target}>${dependent}`);
+  // the axis each project declares, as the Nx tag axis:<name>
+  const axisOf = new Map<string, string>();
+  for (const project of projects) {
+    const tags = (graph.nodes[project].data.tags ?? []).filter((tag) => tag.startsWith('axis:'));
+    const axis = tags[0]?.slice('axis:'.length);
+    if (tags.length !== 1 || !(AXES as readonly string[]).includes(axis!))
+      errors.push(
+        `${graph.nodes[project].data.root}/project.json: ${project} needs one tag axis:<${AXES.join('|')}>, it has ${tags.join(', ') || 'none'}`,
+      );
+    else axisOf.set(project, axis!);
+  }
 
   /** The one diagram of a section, or undefined after recording why there is none. */
   const diagramOf = (file: string, title: string): Diagram | undefined => {
@@ -205,11 +295,14 @@ export const checkDiagrams = (
     const blocks = mermaidBlocks(section);
     if (blocks.length !== 1)
       return void errors.push(`${file}: "${title}" holds ${blocks.length} Mermaid blocks, not 1`);
+    let diagram: Diagram;
     try {
-      return readDiagram(blocks[0]);
+      diagram = readDiagram(blocks[0]);
     } catch (error) {
       return void errors.push(`${file}: the diagram of "${title}", ${(error as Error).message}`);
     }
+    for (const error of colourErrors(diagram, axisOf)) errors.push(`${file}: ${error}`);
+    return diagram;
   };
 
   for (const project of projects) {
