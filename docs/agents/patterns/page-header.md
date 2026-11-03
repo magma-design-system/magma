@@ -25,7 +25,7 @@ variables:
 regions:
   - { id: back, when: { level: nested }, what: "a link to the page above, named after it, with an arrow", use: ["mds-button href icon variant=dark tone=text size=sm"] }
   - { id: number, when: { subject: item }, what: "the number or code of the item, small, above the title, when it has one", use: ["mds-text typography=caption tag=p"] }
-  - { id: title, required: true, what: "the heading of the page: what the set holds, in the plural, or the subject of the item", use: ["mds-text typography=h3 tag=h1"] }
+  - { id: title, required: true, what: "the heading of the page: what the set holds, in the plural, or the subject of the item", use: ["mds-text typography=page tag=h1"] }
   - { id: status, when: { subject: item }, what: "the status of the item, next to the title, when it has one", use: ["mds-badge"] }
   - { id: summary, what: "one line: what the set holds, or where the item belongs and when it arrived", use: ["mds-text typography=detail tag=p"] }
   - { id: actions, what: "the actions on what the page shows, the main one last in the strong tone, the others outlined; an action that destroys the item is never in the row: it goes last in the menu of the item, after a separator; with more than three actions the row keeps the main one, the secondary used most and the menu of the item at its start, which holds the others (actions/more-in-menu)", use: ["mds-button variant=dark tone=outline", "mds-button tone=strong", "mds-button variant=dark tone=text icon", "mds-dropdown", "mds-separator"] }
@@ -59,11 +59,11 @@ always-true:
 open-choices: []
 
 situations:
-  - { situation: The list of the requests of an office, level: top, subject: set }
-  - { situation: A request opened from the list, level: nested, subject: item }
-  - { situation: "The members of a group, on a page of their own", level: nested, subject: set }
-  - { situation: The profile of the person signed in, level: top, subject: item }
-  - { situation: A contact being edited, level: nested, subject: item, note: "the title says the action (\"Edit Mario Rossi\"); the buttons of the form follow form-and-validation" }
+  - { id: requests-of-an-office, situation: The list of the requests of an office, level: top, subject: set }
+  - { id: request-from-the-list, situation: A request opened from the list, level: nested, subject: item }
+  - { id: members-of-a-group, situation: "The members of a group, on a page of their own", level: nested, subject: set }
+  - { id: own-profile, situation: The profile of the person signed in, level: top, subject: item, note: "no status: a profile has none to show" }
+  - { id: contact-being-edited, situation: A contact being edited, level: nested, subject: item, note: "the way back to the item and the title only, which says the action (\"Edit Mario Rossi\"); no actions: the row of the form docks in mds-status-bar (surfaces/edit-actions)" }
 ---
 
 # Page header
@@ -100,7 +100,7 @@ A region shows where its When holds, in this order: a required one always, the o
 | --- | --- | --- | --- | --- |
 | `back` | level: nested |  | a link to the page above, named after it, with an arrow | `mds-button href icon variant=dark tone=text size=sm` |
 | `number` | subject: item |  | the number or code of the item, small, above the title, when it has one | `mds-text typography=caption tag=p` |
-| `title` | any | yes | the heading of the page: what the set holds, in the plural, or the subject of the item | `mds-text typography=h3 tag=h1` |
+| `title` | any | yes | the heading of the page: what the set holds, in the plural, or the subject of the item | `mds-text typography=page tag=h1` |
 | `status` | subject: item |  | the status of the item, next to the title, when it has one | `mds-badge` |
 | `summary` | any |  | one line: what the set holds, or where the item belongs and when it arrived | `mds-text typography=detail tag=p` |
 | `actions` | any |  | the actions on what the page shows, the main one last in the strong tone, the others outlined; an action that destroys the item is never in the row: it goes last in the menu of the item, after a separator; with more than three actions the row keeps the main one, the secondary used most and the menu of the item at its start, which holds the others (actions/more-in-menu) | `mds-button variant=dark tone=outline`, `mds-button tone=strong`, `mds-button variant=dark tone=text icon`, `mds-dropdown`, `mds-separator` |
@@ -109,10 +109,12 @@ A region shows where its When holds, in this order: a required one always, the o
 
 - The way back first, on its own line, aligned to the start.
 - Then the identity (number, title with its status, summary) at the start, and the actions at
-  the end, aligned to the top, on a wide screen; on a narrow one the actions go under the
-  identity and wrap.
-- The status sits next to the title and wraps under it when there is no room; a long title wraps
-  too (`min-w-0`), it never pushes the actions out.
+  the end, aligned to the top, on a wide screen; with less room the actions go under the
+  identity, on one line at the start, and under 380 px of the header they stack at the full
+  width, the main one at the bottom (`actions/stacked`, on the header as `@container`).
+- The status sits next to the title and wraps under it when there is no room. The identity
+  keeps at least the width of a row of actions (`basis-actions`, with `min-w-0`): a long title
+  wraps and never moves the actions; with less room than both, the actions go under.
 - The spaces are relations of the rhythm, written by their role: `gap-title-content` (300)
   inside the identity, between a title and what it names (`rhythm/title-content`);
   `gap-inline` (300) between the actions, and between the identity and the actions, side by
@@ -149,13 +151,13 @@ These hold in every product: a product layer cannot change them.
 
 Situations every application has, each with the regions it shows: they give the examples, the texts and the keywords. The situations of a product's own domain go in its layer.
 
-| Situation | Regions |
-| --- | --- |
-| The list of the requests of an office | `title`, `summary`, `actions` |
-| A request opened from the list | `back`, `number`, `title`, `status`, `summary`, `actions` |
-| The members of a group, on a page of their own | `back`, `title`, `summary`, `actions` |
-| The profile of the person signed in | `number`, `title`, `status`, `summary`, `actions` |
-| A contact being edited | `back`, `number`, `title`, `status`, `summary`, `actions`: the title says the action ("Edit Mario Rossi"); the buttons of the form follow form-and-validation |
+| Id | Situation | Regions |
+| --- | --- | --- |
+| `requests-of-an-office` | The list of the requests of an office | `title`, `summary`, `actions` |
+| `request-from-the-list` | A request opened from the list | `back`, `number`, `title`, `status`, `summary`, `actions` |
+| `members-of-a-group` | The members of a group, on a page of their own | `back`, `title`, `summary`, `actions` |
+| `own-profile` | The profile of the person signed in | `number`, `title`, `status`, `summary`, `actions`: no status: a profile has none to show |
+| `contact-being-edited` | A contact being edited | `back`, `number`, `title`, `status`, `summary`, `actions`: the way back to the item and the title only, which says the action ("Edit Mario Rossi"); no actions: the row of the form docks in mds-status-bar (surfaces/edit-actions) |
 
 ## Accessibility
 
@@ -195,3 +197,5 @@ Situations every application has, each with the regions it shows: they give the 
 | 2026-10-31 | The spaces of the Layout are relations of the rhythm, `title-content` and `inline` (`gap-300`), no longer 200 and 400 | The design language, #1189: the rhythm, on main since #1206; the old values came from the previews. |
 | 2026-10-31 | The header is the first section of the page: `gap-1600` between it and the content under it (`rhythm/between-sections`), put by the page, not by the block | The header names the whole page: at the step of the sections it belongs to none of them (`step-ratio`), and the rhythm needs no new relation. Rejected: `gap-1000`, which on a page of several sections puts the header nearer to the first one than that one to the next, so it reads as the head of the first section. Chosen live on a record with sections and on a list (#1210). |
 | 2026-11-01 | With more than three actions, the row keeps the main one, the secondary used most and the menu of the item at its start; the open choice `actions-overflow` goes | The design language, #1189: `actions/at-most-three` and `actions/more-in-menu`. The arrow of the main action (`mds-button-dropdown`) read as another way of doing it; every action visible broke the limit of three. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6561221595 |
+| 2026-11-03 | A block has a preview for each situation, named after the id of the situation | The maintainer's choice for the round of the building blocks: a situation already gives every variable and the words, as a case does; one preview of the whole block would not show what goes when a variable changes. |
+| 2026-11-03 | With less room the actions go under the identity on one line and stack under 380 px of the header; the identity keeps the width of a row of actions, so a long title wraps instead of moving them; the title takes the role `page` | The previews of the round of the building blocks: the old "wrap" made a ragged row that `actions/stacked` forbids, and a long title pushed the actions under it at 1024 px; `typography=h3` was the size, `page` is the role (`titles/by-role`). |

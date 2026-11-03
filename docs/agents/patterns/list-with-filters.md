@@ -30,7 +30,7 @@ assumptions:
   - The application knows whether other people or systems change the set while it is on screen.
 high-stakes: false
 components: [mds-input, mds-input-field, mds-input-select, mds-filter, mds-filter-item, mds-table, mds-table-header-cell, mds-paginator, mds-text, mds-badge, mds-button, mds-card]
-related: [loading, empty-state, error-recovery, message-placement, confirm-action, record-detail, choose-items, page-header]
+related: [loading, empty-state, error-recovery, message-placement, confirm-action, record-detail, choose-items, page-header, item-list, app-shell]
 validated-on: []
 
 variables:
@@ -149,6 +149,8 @@ No gaps: every combination has a case or is not applicable.
   cards in a grid (`mds-card`) when the items are seen rather than read. What was searched is
   marked in each result (`loading`, `keep-while-reloading`).
 - **The pages**: `mds-paginator`, only when there is more than one page.
+- The search form, the summary, the results and the pages stand as the block `item-list` lays
+  them out, around the page in the block `app-shell`.
 - When the person acts on several items: `selectable` on `mds-table`, and the actions as
   `mds-button` in its `batch-action` slot; the bar says how many are selected.
 - When others change the set: at the end of the line of the summary, a dot that pulses, how many
