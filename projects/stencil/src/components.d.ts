@@ -2271,6 +2271,11 @@ export namespace Components {
          */
         "max"?: number;
         /**
+          * Specifies if the dot pulses when `value` grows: a ring that grows from it and fades, three beats and then still. Never on the first render, nor with a reduced animation
+          * @default false
+         */
+        "pulse": boolean;
+        /**
           * Specifies the position strategy of the notification
           * @default 'fixed'
          */
@@ -2285,6 +2290,11 @@ export namespace Components {
           * @default 0
          */
         "value": number;
+        /**
+          * Specifies the colour of the dot and of the badge, a status: `error`, the danger colour, by default; `info` for something new that is not wrong, `success` and `warning`
+          * @default 'error'
+         */
+        "variant": ThemeStatusVariantType;
     }
     /**
      * @category navigation
@@ -7760,6 +7770,11 @@ declare namespace LocalJSX {
          */
         "max"?: number;
         /**
+          * Specifies if the dot pulses when `value` grows: a ring that grows from it and fades, three beats and then still. Never on the first render, nor with a reduced animation
+          * @default false
+         */
+        "pulse"?: boolean;
+        /**
           * Specifies the position strategy of the notification
           * @default 'fixed'
          */
@@ -7774,6 +7789,11 @@ declare namespace LocalJSX {
           * @default 0
          */
         "value"?: number;
+        /**
+          * Specifies the colour of the dot and of the badge, a status: `error`, the danger colour, by default; `info` for something new that is not wrong, `success` and `warning`
+          * @default 'error'
+         */
+        "variant"?: ThemeStatusVariantType;
     }
     /**
      * @category navigation
@@ -9519,6 +9539,8 @@ declare namespace LocalJSX {
         "dismissed": boolean;
         "strategy": StrategyType;
         "max": number;
+        "variant": ThemeStatusVariantType;
+        "pulse": boolean;
     }
     interface MdsPaginatorAttributes {
         "pages": number;

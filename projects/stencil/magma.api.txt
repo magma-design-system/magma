@@ -1074,13 +1074,17 @@ mds-note css --mds-note-selection-color INTERNAL
 mds-notification encapsulation shadow
 mds-notification prop dismissed (attr dismissed) [reflect, mutable]: boolean = false
 mds-notification prop max (attr max) [reflect]: number | undefined
+mds-notification prop pulse (attr pulse): boolean = false
 mds-notification prop strategy (attr strategy) [reflect, mutable]: "absolute" | "disabled" | "fixed" = 'fixed'
 mds-notification prop target (attr target): string
 mds-notification prop value (attr value) [reflect, mutable]: number = 0
+mds-notification prop variant (attr variant) [reflect]: "error" | "info" | "success" | "warning" = 'error'
 mds-notification css --mds-notification-color
 mds-notification css --mds-notification-dot-background INTERNAL
 mds-notification css --mds-notification-dot-padding INTERNAL
 mds-notification css --mds-notification-min-width INTERNAL
+mds-notification css --mds-notification-pulse-duration INTERNAL
+mds-notification css --mds-notification-pulse-spread INTERNAL
 mds-notification css --mds-notification-ring-color INTERNAL
 mds-notification css --mds-notification-ring-size INTERNAL
 mds-notification css --mds-notification-size

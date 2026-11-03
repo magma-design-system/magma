@@ -37,6 +37,14 @@ const emulateColorScheme: BrowserCommand<[scheme: 'light' | 'dark' | null]> = as
   await context.page.emulateMedia({ colorScheme: scheme });
 };
 
+// the OS motion preference the page sees (prefers-reduced-motion), null back to the browser's own
+const emulateReducedMotion: BrowserCommand<[motion: 'reduce' | 'no-preference' | null]> = async (
+  context,
+  motion,
+) => {
+  await context.page.emulateMedia({ reducedMotion: motion });
+};
+
 // @stencil/vitest does not read the tsconfig `paths`: mirror the aliases of stencil.config.ts
 const alias = [
   { find: /^@common\/(.*)$/, replacement: src('src/common') },
@@ -93,7 +101,7 @@ export default defineVitestConfig({
             viewport: { width: 1280, height: 800 },
             screenshotFailures: false,
             instances: [{ browser: 'chromium' }],
-            commands: { renderToString, compileTailwind, emulateColorScheme },
+            commands: { renderToString, compileTailwind, emulateColorScheme, emulateReducedMotion },
           },
         },
       },

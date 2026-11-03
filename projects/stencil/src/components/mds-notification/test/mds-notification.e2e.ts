@@ -1,7 +1,16 @@
 import { render, vi } from '@stencil/vitest';
+import { commands } from 'vitest/browser';
 
-const dotText = (root: HTMLElement): string =>
-  root.shadowRoot!.querySelector('.dot')!.textContent ?? '';
+declare module 'vitest/browser' {
+  interface BrowserCommands {
+    // defined in vitest.config.mts, run in Node
+    emulateReducedMotion: (motion: 'reduce' | 'no-preference' | null) => Promise<void>;
+  }
+}
+
+const dot = (root: HTMLElement): HTMLElement => root.shadowRoot!.querySelector('.dot')!;
+
+const dotText = (root: HTMLElement): string => dot(root).textContent ?? '';
 
 describe('mds-notification', () => {
   it('renders', async () => {
@@ -148,5 +157,191 @@ describe('mds-notification leaving the page', () => {
     badge.remove();
 
     expect(remove).toHaveBeenCalledWith('scroll', expect.any(Function));
+  });
+});
+
+// the line of the new items of a list wants a dot in the info colour that pulses three times
+// when the count grows: the dot had the danger colour only, and no pulse (#1216)
+describe('mds-notification variant', () => {
+  const html = document.documentElement;
+
+  afterEach(() => {
+    html.removeAttribute('style');
+  });
+
+  it.each([
+    { variant: 'error', hue: 'danger' },
+    { variant: 'info', hue: 'info' },
+    { variant: 'success', hue: 'success' },
+    { variant: 'warning', hue: 'warning' },
+  ])(
+    'paints the $variant dot with the fill of the $hue status and its ink',
+    async ({ variant, hue }) => {
+      html.style.setProperty(`--magma-${hue}-emphasis`, '1 2 3');
+      html.style.setProperty(`--magma-${hue}-on-emphasis`, '4 5 6');
+      const { root } = await render(
+        `<mds-notification variant="${variant}" value="3" strategy="disabled"></mds-notification>`,
+      );
+
+      expect(getComputedStyle(dot(root)).backgroundColor).toBe('rgb(1, 2, 3)');
+      expect(getComputedStyle(dot(root)).color).toBe('rgb(4, 5, 6)');
+    },
+  );
+
+  it('is the danger colour it always had by default', async () => {
+    html.style.setProperty('--magma-danger-emphasis', '1 2 3');
+    const { root } = await render(
+      '<mds-notification value="3" strategy="disabled"></mds-notification>',
+    );
+
+    expect(root).toEqualAttribute('variant', 'error');
+    expect(getComputedStyle(dot(root)).backgroundColor).toBe('rgb(1, 2, 3)');
+  });
+});
+
+describe('mds-notification pulse', () => {
+  const html = document.documentElement;
+
+  const pulses = (root: HTMLElement): CSSAnimation[] =>
+    dot(root)
+      .getAnimations()
+      .filter(
+        (animation): animation is CSSAnimation =>
+          (animation as CSSAnimation).animationName === 'notification-pulse',
+      );
+
+  const pulsing = (root: HTMLElement): boolean => dot(root).classList.contains('pulse');
+
+  // in a line of text, where the line of the new items puts it: no target
+  const stage = (attributes = 'pulse') =>
+    render<HTMLMdsNotificationElement>(
+      `<mds-notification variant="info" value="1" ${attributes}></mds-notification>`,
+    );
+
+  it('does not pulse on the first render', async () => {
+    const { root, waitForChanges } = await stage();
+    await waitForChanges();
+
+    expect(root).toEqualAttribute('strategy', 'disabled');
+    expect(pulsing(root)).toBe(false);
+    expect(pulses(root)).toHaveLength(0);
+  });
+
+  it('pulses when the value grows, three beats and then still', async () => {
+    const { root, waitForChanges } = await stage();
+
+    root.value = 2;
+    await waitForChanges();
+
+    const [pulse] = pulses(root);
+    expect(pulses(root)).toHaveLength(1);
+    const timing = pulse.effect!.getComputedTiming();
+    expect(timing.iterations).toBe(3);
+    // the three beats end under the 5 seconds after which WCAG 2.2.2 wants a way to stop them
+    expect(Number(timing.activeDuration)).toBeGreaterThan(0);
+    expect(Number(timing.activeDuration)).toBeLessThanOrEqual(5000);
+
+    // to the end of the third beat: finish() would not fire the animationend that ends it
+    pulse.currentTime = Number(timing.activeDuration) - 10;
+    await vi.waitFor(() => expect(pulsing(root)).toBe(false));
+    expect(pulses(root)).toHaveLength(0);
+
+    // still, until the count grows again
+    root.value = 3;
+    await waitForChanges();
+    expect(pulses(root)).toHaveLength(1);
+  });
+
+  it('does not start over when the value grows while it pulses', async () => {
+    const { root, waitForChanges } = await stage();
+    root.value = 2;
+    await waitForChanges();
+    const [pulse] = pulses(root);
+    pulse.currentTime = 1500;
+
+    root.value = 3;
+    await waitForChanges();
+
+    expect(pulses(root)).toEqual([pulse]);
+    expect(Number(pulse.currentTime)).toBeGreaterThanOrEqual(1500);
+  });
+
+  it('stays still when the value goes down', async () => {
+    const { root, waitForChanges } = await stage('pulse value="3"');
+
+    root.value = 0;
+    await waitForChanges();
+
+    expect(pulsing(root)).toBe(false);
+    expect(pulses(root)).toHaveLength(0);
+  });
+
+  it('stays still without pulse', async () => {
+    const { root, waitForChanges } = await stage('');
+
+    root.value = 2;
+    await waitForChanges();
+
+    expect(pulsing(root)).toBe(false);
+    expect(pulses(root)).toHaveLength(0);
+  });
+
+  it('stops once pulse is taken off, and keeps still when it comes back', async () => {
+    const { root, waitForChanges } = await stage();
+    root.value = 2;
+    await waitForChanges();
+    expect(pulses(root)).toHaveLength(1);
+
+    root.removeAttribute('pulse');
+    await waitForChanges();
+    await vi.waitFor(() => expect(pulsing(root)).toBe(false));
+
+    root.setAttribute('pulse', '');
+    await waitForChanges();
+    expect(pulses(root)).toHaveLength(0);
+  });
+
+  describe('with a reduced animation', () => {
+    // the class and the emulated media live on the page, so they would outlive this file
+    afterEach(async () => {
+      html.classList.remove('pref-animation-reduce');
+      await commands.emulateReducedMotion(null);
+    });
+
+    it('does not pulse with the animation preference set to reduce', async () => {
+      html.classList.add('pref-animation-reduce');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      const { root, waitForChanges } = await stage();
+      expect(root).toEqualAttribute('pref-animation', 'reduce');
+
+      root.value = 2;
+      await waitForChanges();
+
+      expect(pulsing(root)).toBe(false);
+      expect(pulses(root)).toHaveLength(0);
+    });
+
+    it('does not pulse with a reduced motion of the system', async () => {
+      await commands.emulateReducedMotion('reduce');
+      const { root, waitForChanges } = await stage();
+
+      root.value = 2;
+      await waitForChanges();
+
+      expect(pulsing(root)).toBe(false);
+      expect(pulses(root)).toHaveLength(0);
+    });
+
+    it('ends a pulse that is playing when the preference turns to reduce', async () => {
+      const { root, waitForChanges } = await stage();
+      root.value = 2;
+      await waitForChanges();
+      expect(pulses(root)).toHaveLength(1);
+
+      html.classList.add('pref-animation-reduce');
+
+      await vi.waitFor(() => expect(pulsing(root)).toBe(false));
+      expect(pulses(root)).toHaveLength(0);
+    });
   });
 });
