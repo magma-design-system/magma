@@ -40,7 +40,7 @@ variables:
 cases:
   - { id: find-and-open, goal: open, changes: "no", where: "the title of the list, a search form, the summary, the results and the pages; the name or the number of each item is the link to its page", use: ["mds-input type=search", "mds-filter", "mds-input-select", "mds-table sorting=external", "mds-table-header-cell sortable sort-key", "mds-paginator"] }
   - { id: act-on-many, goal: act, changes: "no", where: "a checkbox on each row and the bar of the batch actions, with how many are selected; the selection is the page on screen; an action that cannot be taken back asks first, saying how many; the outcome is told as message-placement says, a partial one as error-recovery says", use: ["mds-table selectable", "mds-button slot=batch-action"], see: confirm-action }
-  - { id: show-new-items, changes: by-others, where: "nothing on screen moves by itself: at the end of the line of the summary, a dot that pulses three times when the count grows (once Magma carries it, see Magma gaps; until then none), how many items are new or changed in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus", use: ["mds-text typography=detail", "mds-button variant=info tone=outline size=sm"] }
+  - { id: show-new-items, changes: by-others, where: "nothing on screen moves by itself: at the end of the line of the summary, a dot that pulses three times when the count grows (once Magma carries it, see Magma gaps; until then none), how many items are new or changed in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus; Show hides once pressed, and the focus goes to the heading of the list", use: ["mds-text typography=detail", "mds-button variant=info tone=outline size=sm"] }
 gaps: []
 not-applicable: []
 
@@ -126,7 +126,7 @@ A case that leaves a variable out holds for any of its values.
 | --- | --- | --- | --- |
 | `find-and-open` | goal: open; changes: no | the title of the list, a search form, the summary, the results and the pages; the name or the number of each item is the link to its page | `mds-input type=search`, `mds-filter`, `mds-input-select`, `mds-table sorting=external`, `mds-table-header-cell sortable sort-key`, `mds-paginator` |
 | `act-on-many` | goal: act; changes: no | a checkbox on each row and the bar of the batch actions, with how many are selected; the selection is the page on screen; an action that cannot be taken back asks first, saying how many; the outcome is told as message-placement says, a partial one as error-recovery says; see `confirm-action` | `mds-table selectable`, `mds-button slot=batch-action` |
-| `show-new-items` | changes: by-others | nothing on screen moves by itself: at the end of the line of the summary, a dot that pulses three times when the count grows (once Magma carries it, see Magma gaps; until then none), how many items are new or changed in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus | `mds-text typography=detail`, `mds-button variant=info tone=outline size=sm` |
+| `show-new-items` | changes: by-others | nothing on screen moves by itself: at the end of the line of the summary, a dot that pulses three times when the count grows (once Magma carries it, see Magma gaps; until then none), how many items are new or changed in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus; Show hides once pressed, and the focus goes to the heading of the list | `mds-text typography=detail`, `mds-button variant=info tone=outline size=sm` |
 
 No gaps: every combination has a case or is not applicable.
 
@@ -136,13 +136,18 @@ No gaps: every combination has a case or is not applicable.
   Actions on the whole set (New, Export) sit next to it: the block `page-header`.
 - **The search form**, `role="search"`: a field that searches the number and the name
   (`mds-input type="search"` in `mds-input-field`), a select for each property with a few values
-  (`mds-input-select`), the order.
+  (`mds-input-select`).
+- **The order**: the headers of the columns that can sort (`sortable` and `sort-key` on
+  `mds-table-header-cell`), never a field of the search form.
 - **The status filter**: the statuses as `mds-filter`, one at a time, each with the number of
   items it would show (`count` on `mds-filter-item`).
 - **The summary**: which items are on screen out of how many ("11-20 of 46 requests"), with
-  Clear filters when there are any; `role="status"`.
+  Clear filters ("Rimuovi i filtri", the words of `mds-filter`) when there are any;
+  `role="status"`. When nothing matches, Clear filters is only in the panel of `clear-filters`
+  (`empty-state`), not in the summary too.
 - **The results**: one row per item in `mds-table`, its number or name the link to its page; or
-  cards in a grid (`mds-card`) when the items are seen rather than read.
+  cards in a grid (`mds-card`) when the items are seen rather than read. What was searched is
+  marked in each result (`loading`, `keep-while-reloading`).
 - **The pages**: `mds-paginator`, only when there is more than one page.
 - When the person acts on several items: `selectable` on `mds-table`, and the actions as
   `mds-button` in its `batch-action` slot; the bar says how many are selected.
@@ -170,8 +175,8 @@ No gaps: every combination has a case or is not applicable.
   grows while they come; at each new count the dot pulses three times and stops (3 seconds,
   under the 5 of WCAG 2.2.2), and not at all when the animation is reduced
   (`pref-animation-reduce`, or the system with no preference of Magma). Show loads the list
-  again, with the same query, empties the selection and empties the line. Nothing moves before
-  that.
+  again, with the same query, empties the selection and empties the line; Show is gone, so the
+  focus goes to the heading of the list. Nothing moves before that.
 - Nothing matches: the `clear-filters` case of `empty-state`, never an error. The request fails:
   `retry-content` of `error-recovery`, never "No requests match".
 
@@ -274,3 +279,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-29 | Items added or changed by others wait behind a line with how many and Show (`show-new-items`) | What the person is about to click never moves; the person decides when the list changes. |
 | 2026-10-31 | The line of the new items sits at the end of the line of the summary, no longer an info `mds-banner` above the results: a dot that pulses three times when the count grows, the count in the info colour, Show `variant="info" tone="outline" size="sm"`; the line keeps its place while empty | The banner pushed the results down by 167 px when it appeared, against the case itself; in the line of the summary nothing moves, on a phone too. A line with no dot was too quiet (vittorio); the pulse stops after three beats (WCAG 2.2.2) and honours a reduced animation. Show is outlined as the action of a toast (`actions/toast`, #1189). Chosen live against the banner and the plain line (#1210). |
 | 2026-10-29 | Choosing items for something else is a pattern of its own, the candidate `choose-items` | The selection lives across searches and ends in a choice, not in work on the items; each pattern stays shorter. |
+| 2026-11-03 | The order is chosen from the headers of the columns, not from the search form; Clear filters is in the summary, but only in the panel when nothing matches; after Show the focus goes to the heading; what was searched is marked in the results | What the previews of the cases showed, confirmed in review round 2 of the previews: https://github.com/magma-design-system/magma/issues/1233 |

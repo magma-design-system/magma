@@ -42,7 +42,7 @@ cases:
   - { id: run-at-once, action: at-once, changes: "no", where: "the button waits; then the page shows the record the back end returns, the outcome is a toast, and the focus goes to the heading when the button is gone", use: ["mds-button await"], see: message-placement }
   - { id: ask-for-words, action: with-words, changes: "no", where: "a dialog named after the action, with a required field; left empty, the field says what is missing and takes the focus; the confirm button repeats the action; a failure stays in the dialog with what was written", use: ["mds-modal", "mds-input-field", "mds-input type=textarea required", "mds-button type=submit await"] }
   - { id: edit-data, action: edit, changes: "no", where: "Edit, one of the actions the status allows, turns the page into the form, at the address of the record with /edit; Save returns to the detail with a toast and the focus on the heading; Cancel or Back return to it as it was", use: ["mds-button"], see: form-and-validation }
-  - { id: record-changed, changes: by-others, action: [none, at-once, with-words], where: "nothing on screen moves by itself: a line under the identity says who changed the record and when, with Show, which loads it again; the actions on screen may no longer hold, and the line says so before the click", use: ["mds-banner variant=info", "mds-button slot=action"] }
+  - { id: record-changed, changes: by-others, action: [none, at-once, with-words], where: "an info banner under the identity says who changed the record and when, and that the actions on screen may no longer hold; Show, its action, loads the record again; nothing else changes before the click; then the banner goes and the focus goes to the heading", use: ["mds-banner variant=info", "mds-button slot=action variant=info tone=strong"] }
 gaps: []
 not-applicable:
   - { action: edit, changes: by-others, why: "two people changing the same record at the same time is the candidate concurrent-editing" }
@@ -130,7 +130,7 @@ A case that leaves a variable out holds for any of its values.
 | `run-at-once` | action: at-once; changes: no | the button waits; then the page shows the record the back end returns, the outcome is a toast, and the focus goes to the heading when the button is gone; see `message-placement` | `mds-button await` |
 | `ask-for-words` | action: with-words; changes: no | a dialog named after the action, with a required field; left empty, the field says what is missing and takes the focus; the confirm button repeats the action; a failure stays in the dialog with what was written | `mds-modal`, `mds-input-field`, `mds-input type=textarea required`, `mds-button type=submit await` |
 | `edit-data` | action: edit; changes: no | Edit, one of the actions the status allows, turns the page into the form, at the address of the record with /edit; Save returns to the detail with a toast and the focus on the heading; Cancel or Back return to it as it was; see `form-and-validation` | `mds-button` |
-| `record-changed` | action: none or at-once or with-words; changes: by-others | nothing on screen moves by itself: a line under the identity says who changed the record and when, with Show, which loads it again; the actions on screen may no longer hold, and the line says so before the click | `mds-banner variant=info`, `mds-button slot=action` |
+| `record-changed` | action: none or at-once or with-words; changes: by-others | an info banner under the identity says who changed the record and when, and that the actions on screen may no longer hold; Show, its action, loads the record again; nothing else changes before the click; then the banner goes and the focus goes to the heading | `mds-banner variant=info`, `mds-button slot=action variant=info tone=strong` |
 
 Not applicable:
 
@@ -172,8 +172,10 @@ No gaps: every combination has a case or is not applicable.
 - A record that is deleted takes the person back to the list, with a toast (`message-placement`).
 - Edit turns the page into the form, at its own address: Back leaves it, a reload keeps it. What
   is checked and when, and what happens to changes not saved, is `form-and-validation`.
-- Someone else changes the record: the line says who and when ("Anna Bianchi took the request
-  in charge at 10:42"), and Show loads it again. Nothing moves before that. An action sent
+- Someone else changes the record: an info banner under the identity says who and when ("Anna
+  Bianchi took the request in charge at 10:42") and that the actions may no longer hold, and
+  Show loads it again; the banner goes and the focus goes to the heading. Nothing else changes
+  before that: the banner pushes the content down once, when it comes. An action sent
   meanwhile, from the page or from an open dialog, that the new status no longer allows is
   refused by the back end: `changed-meanwhile` of `error-recovery`.
 
@@ -263,3 +265,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-29 | A change made by others waits behind a line with who, when and Show (`record-changed`) | As in `list-with-filters`: nothing moves under the pointer, and the person learns before the click that an action may no longer hold. |
 | 2026-10-29 | Previous and Next are a product's choice (`next-record`) | Most records are opened one at a time; a product that works through a queue adds them. |
 | 2026-10-31 | The actions other than the main one are outlined (`variant="dark" tone="outline"`); Delete leaves the row for the menu of the record, last after a separator, in the error text tone with its icon | The design language, #1189: `actions/secondary`, `actions/destructive-in-menu` and the severity of a deletion (level 2: the menu of the item, and a confirmation that names it). |
+| 2026-11-03 | A record changed by others shows an info banner under the identity, with Show (`record-changed`), not the quiet line of `show-new-items` | The change of the record that is open can make its actions wrong, and the banner is not missed; it moves the content once, which the line of a list avoids. Chosen in review round 2 of the previews (https://github.com/magma-design-system/magma/issues/1233), over the line. |
