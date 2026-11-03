@@ -1,0 +1,33 @@
+<!--
+try: The server answers nothing: the bar of the application and the title of the page stay, the message takes the place of the content. Press Riprova: the page loads.
+height: 440
+whole-page: true
+-->
+<mds-header menu="none">
+  <mds-header-bar>
+    <mds-text typography="h6" tag="p">Gestione pratiche</mds-text>
+    <mds-button slot="nav" variant="dark" tone="text">Pratiche</mds-button>
+    <mds-button slot="nav" variant="dark" tone="text">Scadenze</mds-button>
+  </mds-header-bar>
+</mds-header>
+<main class="page-frame grid gap-between-sections py-between-sections">
+  <mds-text typography="page" tag="h1">Pratiche</mds-text>
+  <mds-banner id="message" variant="error" tone="strong" headline="Il servizio non risponde">
+    <mds-text>Non è stato possibile caricare la pagina. Riprova tra qualche istante.</mds-text>
+    <mds-button id="retry" slot="action" variant="error" tone="strong">Riprova</mds-button>
+  </mds-banner>
+  <mds-list id="content" class="hidden">
+    <mds-list-item>2026/114, Rossi Mario: in istruttoria</mds-list-item>
+    <mds-list-item>2026/118, Bianchi Anna: da integrare</mds-list-item>
+  </mds-list>
+</main>
+<script>
+  const retry = document.getElementById('retry');
+  retry.addEventListener('click', () => {
+    retry.await = true;
+    setTimeout(() => {
+      document.getElementById('message').remove();
+      document.getElementById('content').classList.remove('hidden');
+    }, 400);
+  });
+</script>

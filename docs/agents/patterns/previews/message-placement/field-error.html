@@ -1,0 +1,28 @@
+<!--
+try: Press Salva with the fields empty: under each one shows what to write, and the focus goes to the first.
+-->
+<form id="form" class="@container grid max-w-form gap-content-actions" novalidate>
+  <div class="grid gap-between-fields">
+    <mds-input-field label="Nome">
+      <mds-input id="name" name="name" required></mds-input>
+    </mds-input-field>
+    <mds-input-field label="Email">
+      <mds-input id="email" name="email" type="email" required></mds-input>
+    </mds-input-field>
+  </div>
+  <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+    <mds-button id="save" type="submit">Salva</mds-button>
+  </div>
+</form>
+<script>
+  const form = document.getElementById('form');
+  const messages = { name: 'Scrivi il nome', email: "Scrivi l'indirizzo email" };
+  customElements.whenDefined('mds-input').then(() => {
+    for (const [id, text] of Object.entries(messages))
+      document.getElementById(id).addValidator((value) => (value ? null : { required: text }));
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!form.checkValidity()) form.querySelector('mds-input:invalid')?.setFocus();
+  });
+</script>

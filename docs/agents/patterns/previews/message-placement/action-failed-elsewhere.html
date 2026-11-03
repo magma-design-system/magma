@@ -1,0 +1,40 @@
+<!--
+try: Press Invia promemoria in the open menu of Bianchi Anna: the menu closes, the sending fails, and a toast that stays says so, with Riprova.
+height: 400
+-->
+<div class="grid gap-title-content">
+  <mds-text typography="page" tag="h1">Iscritti al corso</mds-text>
+  <div class="grid">
+    <div class="flex items-center justify-between gap-inline">
+      <mds-text>Rossi Mario</mds-text>
+      <mds-button icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni di Rossi Mario"></mds-button>
+    </div>
+    <div class="flex items-center justify-between gap-inline">
+      <mds-text>Bianchi Anna</mds-text>
+      <mds-button id="actions" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni di Bianchi Anna"></mds-button>
+    </div>
+  </div>
+</div>
+<mds-dropdown id="menu" target="#actions" placement="bottom-end" visible>
+  <mds-button id="remind" icon="mi/baseline/send" variant="dark" tone="text" label="Invia promemoria"></mds-button>
+</mds-dropdown>
+<mds-toast-region>
+  <mds-toast id="failed" variant="error" duration="0" dismissible>
+    Promemoria a Bianchi Anna non inviato
+    <mds-button id="retry" slot="action" size="sm" variant="error" tone="outline">Riprova</mds-button>
+  </mds-toast>
+  <mds-toast id="sent" variant="success">Promemoria inviato a Bianchi Anna</mds-toast>
+</mds-toast-region>
+<script>
+  const menu = document.getElementById('menu');
+  const failed = document.getElementById('failed');
+  // the first sending fails, the second works
+  document.getElementById('remind').addEventListener('click', () => {
+    menu.visible = false;
+    failed.visible = true;
+  });
+  document.getElementById('retry').addEventListener('click', () => {
+    failed.visible = undefined;
+    document.getElementById('sent').visible = true;
+  });
+</script>

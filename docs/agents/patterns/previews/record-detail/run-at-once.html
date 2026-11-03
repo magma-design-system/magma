@@ -1,0 +1,73 @@
+<!--
+try: Press Prendi in carico: the button waits for the answer, then the page shows the practice as the back end returns it, with its new status and actions, a toast says it was done, and the focus goes to the heading.
+whole-page: true
+-->
+<mds-header menu="none">
+  <mds-header-bar>
+    <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
+    <mds-button slot="nav" variant="dark" tone="text">Pratiche</mds-button>
+    <mds-button slot="nav" variant="dark" tone="text">Contatti</mds-button>
+  </mds-header-bar>
+</mds-header>
+<main class="page-frame grid gap-between-sections py-between-sections">
+  <header class="grid gap-title-content">
+    <mds-button href="#" icon="mi/baseline/arrow-back" variant="dark" tone="text" size="sm" class="justify-self-start">Pratiche</mds-button>
+    <div class="flex flex-wrap items-start justify-between gap-inline">
+      <div class="grid min-w-0 grow gap-title-content">
+        <mds-text typography="caption" tag="p" class="text-fg-muted">Pratica 2026/0142</mds-text>
+        <div class="flex flex-wrap items-center gap-inline">
+          <mds-text id="titolo" typography="page" tag="h1" tabindex="-1">Cambio di residenza</mds-text>
+          <mds-badge id="stato" variant="info" label="Nuova"></mds-badge>
+        </div>
+        <mds-text typography="detail" tag="p" class="text-fg-muted">Ufficio anagrafe, ricevuta il 3 marzo 2026</mds-text>
+      </div>
+      <div id="azioni" class="flex flex-wrap gap-inline">
+        <mds-button id="prendi">Prendi in carico</mds-button>
+      </div>
+    </div>
+  </header>
+  <div class="grid gap-between-fields">
+    <mds-tab>
+      <mds-tab-item label="Dati" href="#dati" selected></mds-tab-item>
+      <mds-tab-item label="Documenti" href="#documenti"></mds-tab-item>
+      <mds-tab-item label="Storico" href="#storico"></mds-tab-item>
+    </mds-tab>
+    <dl class="m-0 grid grid-cols-2 gap-between-fields">
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Richiedente</mds-text>
+        <mds-text tag="dd" class="m-0">Giulia Bianchi</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Codice fiscale</mds-text>
+        <mds-text tag="dd" class="m-0">BNCGLI85C43H294K</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Nuovo indirizzo</mds-text>
+        <mds-text tag="dd" class="m-0">Via Emilia 12, Rimini</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Dal</mds-text>
+        <mds-text tag="dd" class="m-0">1 marzo 2026</mds-text>
+      </div>
+    </dl>
+  </div>
+</main>
+<mds-toast-region>
+  <mds-toast id="esito" variant="success">La pratica è stata presa in carico.</mds-toast>
+</mds-toast-region>
+<script>
+  const take = document.getElementById('prendi');
+  take.addEventListener('click', async () => {
+    take.await = true;
+    // the back end answers with the record: its status and the actions the status allows
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const status = document.getElementById('stato');
+    status.label = 'In lavorazione';
+    status.variant = 'warning';
+    document.getElementById('azioni').innerHTML =
+      '<mds-button variant="dark" tone="outline">Richiedi documenti</mds-button><mds-button>Chiudi pratica</mds-button>';
+    // the button that ran it is gone: the focus goes to the heading
+    document.getElementById('titolo').focus();
+    document.getElementById('esito').visible = true;
+  });
+</script>

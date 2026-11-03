@@ -1,0 +1,25 @@
+<!--
+try: Press Invia richiesta: a toast says the request is taken in charge and how the answer will come, then leaves.
+height: 480
+-->
+<div class="grid gap-between-sections">
+  <mds-text typography="page" tag="h1">Richiesta di assistenza</mds-text>
+  <form id="form" class="@container grid max-w-form gap-content-actions">
+    <mds-input-field label="Descrivi il problema">
+      <mds-input id="text" type="textarea" value="Non riesco a scaricare la ricevuta di settembre."></mds-input>
+    </mds-input-field>
+    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+      <mds-button id="send" type="submit">Invia richiesta</mds-button>
+    </div>
+  </form>
+</div>
+<mds-toast-region>
+  <mds-toast id="toast" variant="info">Richiesta presa in carico: la risposta arriva per email entro 2 giorni lavorativi.</mds-toast>
+</mds-toast-region>
+<script>
+  document.getElementById('form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    document.getElementById('text').value = '';
+    document.getElementById('toast').visible = true;
+  });
+</script>

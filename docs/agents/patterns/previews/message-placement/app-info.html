@@ -1,0 +1,39 @@
+<!--
+try: Look at the toast: the connection dropped, a trouble that does not stop the work, so a warning; it leaves after its time like any toast without an action, while what was written stays. Press Simula il ritorno: another toast says the connection is back.
+height: 400
+-->
+<div class="grid gap-between-sections">
+  <mds-text typography="page" tag="h1">Nuova pratica</mds-text>
+  <form class="grid max-w-form gap-between-fields">
+    <mds-input-field label="Oggetto">
+      <mds-input value="Richiesta di accesso agli atti"></mds-input>
+    </mds-input-field>
+  </form>
+  <div>
+    <mds-button id="simulate" variant="dark" tone="outline" label="Simula il ritorno"></mds-button>
+  </div>
+</div>
+<mds-toast-region>
+  <mds-toast id="lost" variant="warning" visible>Connessione persa: quello che scrivi resta qui finché non torna</mds-toast>
+  <mds-toast id="back" variant="info">Connessione tornata</mds-toast>
+</mds-toast-region>
+<script>
+  const lost = document.getElementById('lost');
+  const back = document.getElementById('back');
+  const simulate = document.getElementById('simulate');
+  let online = false;
+  window.addEventListener('offline', () => {
+    back.visible = undefined;
+    lost.visible = true;
+  });
+  window.addEventListener('online', () => {
+    lost.visible = undefined;
+    back.visible = true;
+  });
+  // the preview simulates the network; in the product the browser fires offline and online
+  simulate.addEventListener('click', () => {
+    online = !online;
+    window.dispatchEvent(new Event(online ? 'online' : 'offline'));
+    simulate.label = online ? 'Simula la caduta' : 'Simula il ritorno';
+  });
+</script>

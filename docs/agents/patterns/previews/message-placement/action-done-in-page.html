@@ -1,0 +1,53 @@
+<!--
+try: Press Salva in the bar: the edit closes, the page shows the record again with the new name in its title, and a toast says it was saved; Modifica opens the edit again.
+height: 400
+-->
+<div id="view" hidden>
+  <header class="flex flex-wrap items-start justify-between gap-inline">
+    <div class="grid gap-title-content">
+      <mds-text id="title" typography="page" tag="h1" tabindex="-1">Maggioli SpA</mds-text>
+      <mds-text typography="detail" tag="p" class="text-fg-muted">Cliente dal 2019, sede a Santarcangelo di Romagna.</mds-text>
+    </div>
+    <mds-button id="edit">Modifica</mds-button>
+  </header>
+</div>
+<form id="form">
+  <div class="grid gap-between-sections">
+    <mds-text typography="page" tag="h1">Modifica azienda</mds-text>
+    <div class="grid max-w-form gap-between-fields">
+      <mds-input-field label="Ragione sociale">
+        <mds-input id="name" value="Maggioli Editore SpA"></mds-input>
+      </mds-input-field>
+    </div>
+  </div>
+  <mds-status-bar id="bar" visible description="Modifiche non salvate">
+    <mds-button id="cancel" type="button" variant="dark" tone="outline">Annulla</mds-button>
+    <mds-button id="save" type="submit">Salva</mds-button>
+  </mds-status-bar>
+</form>
+<mds-toast-region>
+  <mds-toast id="toast" variant="success">Dati di Maggioli SpA salvati</mds-toast>
+</mds-toast-region>
+<script>
+  const view = document.getElementById('view');
+  const form = document.getElementById('form');
+  const bar = document.getElementById('bar');
+  const title = document.getElementById('title');
+  const toast = document.getElementById('toast');
+  const show = (editing) => {
+    view.hidden = editing;
+    form.hidden = !editing;
+    bar.visible = editing || undefined;
+  };
+  document.getElementById('edit').addEventListener('click', () => show(true));
+  document.getElementById('cancel').addEventListener('click', () => show(false));
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    title.textContent = document.getElementById('name').value;
+    show(false);
+    title.focus();
+    // the new name shows in the title and in every part of the page: the outcome goes in a toast
+    toast.firstChild.data = `Dati di ${title.textContent} salvati`;
+    toast.visible = true;
+  });
+</script>

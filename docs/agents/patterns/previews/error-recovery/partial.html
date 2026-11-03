@@ -1,0 +1,29 @@
+<!--
+try: Look at the error above the list: 9 archived, 3 not, each with its reason; Riprova acts only on the two the server did not receive.
+-->
+<section class="grid gap-title-content">
+  <mds-text typography="section" tag="h2">Pratiche concluse</mds-text>
+  <div class="grid gap-between-fields">
+    <mds-banner variant="error" tone="strong" headline="9 pratiche archiviate, 3 no">
+      <mds-text>
+        La 2026/0412 è aperta da Anna Rossi: si archivia quando la chiude. La 2026/0398 e la
+        2026/0377 non sono arrivate al server: Riprova archivia solo queste due.
+      </mds-text>
+      <mds-button slot="action" variant="error" tone="strong">Riprova</mds-button>
+    </mds-banner>
+    <div class="grid">
+      <div class="flex items-center justify-between gap-inline">
+        <mds-text>2026/0412, Giulia Bianchi</mds-text>
+        <mds-button icon="mi/baseline/archive" variant="dark" tone="text" aria-label="Archivia la pratica 2026/0412"></mds-button>
+      </div>
+      <div class="flex items-center justify-between gap-inline">
+        <mds-text>2026/0398, Luca Ferri</mds-text>
+        <mds-button icon="mi/baseline/archive" variant="dark" tone="text" aria-label="Archivia la pratica 2026/0398"></mds-button>
+      </div>
+      <div class="flex items-center justify-between gap-inline">
+        <mds-text>2026/0377, Paolo Neri</mds-text>
+        <mds-button icon="mi/baseline/archive" variant="dark" tone="text" aria-label="Archivia la pratica 2026/0377"></mds-button>
+      </div>
+    </div>
+  </div>
+</section>

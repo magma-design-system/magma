@@ -1,0 +1,65 @@
+<!--
+try: Look at the contact: its name as the heading, Modifica as the main action and its data as labels and values. Open the menu at the start of the row: Stampa, then a separator, and Elimina contatto last, in red with its icon.
+whole-page: true
+-->
+<mds-header menu="none">
+  <mds-header-bar>
+    <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
+    <mds-button slot="nav" variant="dark" tone="text">Pratiche</mds-button>
+    <mds-button slot="nav" variant="dark" tone="text">Contatti</mds-button>
+  </mds-header-bar>
+</mds-header>
+<main class="page-frame grid gap-between-sections py-between-sections">
+  <header class="grid gap-title-content">
+    <mds-button href="#" icon="mi/baseline/arrow-back" variant="dark" tone="text" size="sm" class="justify-self-start">Contatti</mds-button>
+    <div class="flex flex-wrap items-start justify-between gap-inline">
+      <div class="grid min-w-0 grow gap-title-content">
+        <mds-text typography="page" tag="h1" tabindex="-1">Mario Rossi</mds-text>
+        <mds-text typography="detail" tag="p" class="text-fg-muted">Ufficio anagrafe, aggiunto il 12 gennaio 2024</mds-text>
+      </div>
+      <div class="flex flex-wrap gap-inline">
+        <mds-button id="azioni-contatto" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni di Mario Rossi"></mds-button>
+        <mds-button>Modifica</mds-button>
+      </div>
+    </div>
+  </header>
+  <section class="grid gap-title-content">
+    <mds-text typography="section" tag="h2">Dati anagrafici</mds-text>
+    <dl class="m-0 grid grid-cols-2 gap-between-fields">
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Codice fiscale</mds-text>
+        <mds-text tag="dd" class="m-0">RSSMRA80A01H294X</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Nato il</mds-text>
+        <mds-text tag="dd" class="m-0">1 gennaio 1980</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Luogo di nascita</mds-text>
+        <mds-text tag="dd" class="m-0">Rimini</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Cittadinanza</mds-text>
+        <mds-text tag="dd" class="m-0">Italiana</mds-text>
+      </div>
+    </dl>
+  </section>
+  <section class="grid gap-title-content">
+    <mds-text typography="section" tag="h2">Recapiti</mds-text>
+    <dl class="m-0 grid grid-cols-2 gap-between-fields">
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Email</mds-text>
+        <mds-text tag="dd" class="m-0">m.rossi@esempio.it</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Telefono</mds-text>
+        <mds-text tag="dd" class="m-0">0541 123456</mds-text>
+      </div>
+    </dl>
+  </section>
+</main>
+<mds-dropdown target="#azioni-contatto" placement="bottom-start">
+  <mds-button icon="mi/baseline/print" variant="dark" tone="text" label="Stampa"></mds-button>
+  <mds-separator></mds-separator>
+  <mds-button icon="mi/baseline/delete" variant="error" tone="text" label="Elimina contatto"></mds-button>
+</mds-dropdown>

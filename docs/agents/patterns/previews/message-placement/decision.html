@@ -1,0 +1,49 @@
+<!--
+try: Look at the question: it stops the person in a dialog, before anything happens, with the focus on Annulla. Press Elimina pratica: the dialog closes, the request leaves the list, and a toast says so.
+height: 440
+-->
+<div class="grid gap-title-content">
+  <mds-text id="title" typography="page" tag="h1" tabindex="-1">Pratiche concluse</mds-text>
+  <div class="grid">
+    <div class="flex items-center justify-between gap-inline">
+      <mds-text>2026/114, Rossi Mario</mds-text>
+      <mds-button id="more-114" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni della pratica 2026/114"></mds-button>
+    </div>
+    <div id="row-118" class="flex items-center justify-between gap-inline">
+      <mds-text>2026/118, Bianchi Anna</mds-text>
+      <mds-button id="more-118" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni della pratica 2026/118"></mds-button>
+    </div>
+  </div>
+</div>
+<mds-dropdown target="#more-118" placement="bottom-end">
+  <mds-button id="delete" icon="mi/baseline/delete" variant="error" tone="text" label="Elimina pratica"></mds-button>
+</mds-dropdown>
+<mds-modal id="dialog" opened aria-label="Eliminare la pratica 2026/118?">
+  <mds-banner slot="window" variant="light" tone="box" dismissible headline="Eliminare la pratica 2026/118?">
+    <mds-text>La pratica di Bianchi Anna viene cancellata e non si può recuperare.</mds-text>
+    <mds-button id="cancel" slot="action" variant="dark" tone="outline" autofocus>Annulla</mds-button>
+    <mds-button id="confirm" slot="action" variant="error" tone="strong">Elimina pratica</mds-button>
+  </mds-banner>
+</mds-modal>
+<mds-toast-region>
+  <mds-toast id="toast">Pratica 2026/118 eliminata</mds-toast>
+</mds-toast-region>
+<script>
+  const dialog = document.getElementById('dialog');
+  let deleted = false;
+  document.getElementById('delete').addEventListener('click', () => (dialog.opened = true));
+  document.getElementById('cancel').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('mdsModalClose', () => (dialog.opened = undefined));
+  document.getElementById('confirm').addEventListener('click', () => {
+    deleted = true;
+    dialog.close();
+  });
+  // the button that opened the dialog is gone with its row: the focus goes to the title of the page
+  dialog.addEventListener('mdsModalHide', () => {
+    if (!deleted) return;
+    deleted = false;
+    document.getElementById('row-118').remove();
+    document.getElementById('title').focus();
+    document.getElementById('toast').visible = true;
+  });
+</script>

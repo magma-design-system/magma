@@ -1,0 +1,30 @@
+<!--
+try: Read the hint under Codice fiscale and the example in each empty field, write a wrong code and leave the field: the error takes the place of the hint; correct it and the hint comes back.
+-->
+<form class="grid max-w-form gap-between-fields">
+  <mds-input-field label="Nome e cognome">
+    <mds-input name="name" placeholder="Es: Mario Rossi"></mds-input>
+  </mds-input-field>
+  <div class="field-group">
+    <mds-input-field id="field" label="Codice fiscale" short message="16 caratteri, lettere e numeri: lo trovi sulla tessera sanitaria">
+      <mds-input id="code" type="cf" name="cf" placeholder="Es: ABCDEF99G99H999I"></mds-input>
+    </mds-input-field>
+  </div>
+</form>
+<script>
+  // Magma gap: the validation of the field overwrites its message; put the hint back when there is no error
+  const field = document.getElementById('field');
+  const code = document.getElementById('code');
+  const hint = field.getAttribute('message');
+  // after the field has loaded, so that this runs after its own listener
+  customElements
+    .whenDefined('mds-input-field')
+    .then(() => field.componentOnReady())
+    .then(() =>
+      code.addEventListener('mdsInputValidation', () =>
+        code.getErrors().then((errors) => {
+          if (errors == null) field.message = hint;
+        }),
+      ),
+    );
+</script>

@@ -1,0 +1,57 @@
+<!--
+try: Press Invia: the message leaves with no question, since the recipient and the text are on screen as they go; a banner takes the place of the form, so nothing can be sent twice, and Scrivi un'altra comunicazione brings back an empty form.
+height: 640
+-->
+<div class="grid gap-between-sections">
+  <mds-text id="title" typography="page" tag="h1" tabindex="-1">Nuova comunicazione</mds-text>
+  <form id="form" class="@container grid max-w-form gap-content-actions">
+    <div class="grid gap-between-fields">
+      <mds-input-field label="Destinatario">
+        <mds-input type="email" name="to" value="m.bianchi@pec.esempio.it"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Oggetto">
+        <mds-input name="subject" value="Documenti mancanti, pratica 2026/0412"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Testo">
+        <mds-input
+          type="textarea"
+          name="text"
+          value="Buongiorno, per chiudere la pratica manca la planimetria dell'immobile. Può caricarla entro il 30 marzo."
+        ></mds-input>
+      </mds-input-field>
+    </div>
+    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+      <mds-button type="button" variant="dark" tone="outline">Annulla</mds-button>
+      <mds-button id="send" type="submit">Invia</mds-button>
+    </div>
+  </form>
+  <mds-banner id="sent" variant="success" tone="strong" headline="Comunicazione inviata" class="hidden max-w-form">
+    <mds-text>A m.bianchi@pec.esempio.it, con oggetto Documenti mancanti, pratica 2026/0412.</mds-text>
+    <mds-button id="again" slot="action" variant="success" tone="strong">Scrivi un'altra comunicazione</mds-button>
+  </mds-banner>
+</div>
+<script>
+  const form = document.getElementById('form');
+  const send = document.getElementById('send');
+  const sent = document.getElementById('sent');
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    send.await = true;
+    // the preview answers at once; in the product the back end does
+    setTimeout(() => {
+      send.await = undefined;
+      // the form goes: what was sent cannot be sent again by a second press
+      form.classList.add('hidden');
+      sent.classList.remove('hidden');
+      // Invia is gone: the focus goes to the heading, the banner is read out
+      document.getElementById('title').focus();
+    }, 400);
+  });
+  document.getElementById('again').addEventListener('click', () => {
+    for (const input of form.querySelectorAll('mds-input')) input.value = '';
+    sent.classList.add('hidden');
+    form.classList.remove('hidden');
+    // Scrivi un'altra comunicazione is gone: the focus goes back to the heading, over the empty form
+    document.getElementById('title').focus();
+  });
+</script>

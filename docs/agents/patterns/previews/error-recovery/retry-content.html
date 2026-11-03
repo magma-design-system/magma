@@ -1,0 +1,40 @@
+<!--
+try: Press Riprova in Allegati: it waits, then the attachments come in and the error goes; Richiedente, which had loaded, never moved.
+-->
+<div class="grid gap-between-sections">
+  <section class="grid gap-title-content">
+    <mds-text typography="section" tag="h2">Richiedente</mds-text>
+    <dl class="m-0 grid grid-cols-2 gap-between-fields">
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Nome e cognome</mds-text>
+        <mds-text tag="dd" class="m-0">Giulia Bianchi</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Pratica</mds-text>
+        <mds-text tag="dd" class="m-0">2026/0412</mds-text>
+      </div>
+    </dl>
+  </section>
+  <section class="grid gap-title-content">
+    <mds-text id="title" typography="section" tag="h2" tabindex="-1">Allegati</mds-text>
+    <mds-banner id="error" variant="error" tone="strong" headline="Allegati non caricati">
+      <mds-text>Controlla la connessione, poi riprova.</mds-text>
+      <mds-button id="retry" slot="action" variant="error" tone="strong">Riprova</mds-button>
+    </mds-banner>
+    <div id="list" class="grid gap-between-containers hidden">
+      <mds-file filename="planimetria.pdf"></mds-file>
+      <mds-file filename="delega-firmata.pdf"></mds-file>
+    </div>
+  </section>
+</div>
+<script>
+  const retry = document.getElementById('retry');
+  retry.addEventListener('click', () => {
+    retry.await = true;
+    setTimeout(() => {
+      document.getElementById('error').remove();
+      document.getElementById('list').classList.remove('hidden');
+      document.getElementById('title').focus();
+    }, 500);
+  });
+</script>

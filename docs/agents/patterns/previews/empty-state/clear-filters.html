@@ -1,0 +1,33 @@
+<!--
+try: Look at the search for Rossini among the open requests: the summary and the panel say nothing matches, and the panel offers Rimuovi i filtri only; Nuova richiesta stays in the header.
+-->
+<div class="grid gap-between-sections">
+  <div class="flex flex-wrap items-start justify-between gap-inline">
+    <mds-text typography="page" tag="h1" class="min-w-0">Richieste</mds-text>
+    <mds-button>Nuova richiesta</mds-button>
+  </div>
+  <div class="grid gap-between-groups">
+    <form role="search" class="grid max-w-form gap-between-fields">
+      <mds-input-field label="Cerca per nome o numero">
+        <mds-input type="search" value="Rossini"></mds-input>
+      </mds-input-field>
+      <mds-filter label="Stato">
+        <mds-filter-item label="Tutte" value="all"></mds-filter-item>
+        <mds-filter-item label="Aperte" value="open" selected></mds-filter-item>
+        <mds-filter-item label="Chiuse" value="closed"></mds-filter-item>
+      </mds-filter>
+    </form>
+    <div class="grid gap-title-content">
+      <mds-text typography="detail" tag="p" role="status" class="text-fg-muted">Nessuna richiesta corrisponde</mds-text>
+      <mds-zero>
+        <div slot="content" class="grid gap-title-content">
+          <mds-text typography="part" tag="h2">Nessuna richiesta trovata</mds-text>
+          <mds-text typography="detail" tag="p">
+            Prova con altre parole, o rimuovi i filtri per vedere tutte le richieste.
+          </mds-text>
+        </div>
+        <mds-button slot="action" variant="primary" tone="outline">Rimuovi i filtri</mds-button>
+      </mds-zero>
+    </div>
+  </div>
+</div>
