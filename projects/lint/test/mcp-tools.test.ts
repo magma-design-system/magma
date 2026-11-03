@@ -1292,8 +1292,7 @@ describe('render_preview', () => {
       },
     );
     expect(styled!.problems).toEqual([]);
-    // two renders, each a browser and its budget: the default 5 s ran out on a busy runner
-  }, 60_000);
+  }, 30_000);
 
   test('a markup that renders well is representative: the image, its file and no problem', async () => {
     const result = await preview.run({ markup: '<mds-fixture>Salva</mds-fixture>', widths: [480] });
@@ -1384,6 +1383,11 @@ describe('render_preview', () => {
     // nor one hidden by visibility, which keeps the place of what shows later
     expect(
       kinds(await shoot('<p>Ciao</p><mds-fixture style="visibility: hidden">Salva</mds-fixture>')),
+    ).not.toContain('flat');
+    // nor one another element covers, as the window of a dialog covers the page under it
+    const layer = 'position: fixed; inset: 0; display: grid; align-items: end; background: #fff';
+    expect(
+      kinds(await shoot(`<mds-fixture>Salva</mds-fixture><div style="${layer}">Coperto</div>`)),
     ).not.toContain('flat');
   }, 60_000);
 
