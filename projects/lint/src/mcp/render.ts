@@ -10,8 +10,9 @@
   magma, as ESLint and Stylelint are), driving a browser of the machine; the image goes back
   as MCP image content and as a file in node_modules/.cache, which the agent attaches where its
   client does not show the image to the person. Instead of markup it renders the preview of a
-  case of a pattern (agents/patterns/previews/<pattern>/<case>.html, #1186), or of a rule of a
-  domain, and another example of either (<id>.<n>.html, #1221), with the height of its page and
+  case of a pattern (agents/patterns/previews/<pattern>/<case>.html, #1186), of a situation of a
+  building block (previews/<block>/<situation>.html, asked as its case), or of a rule of a
+  domain, and another example of any (<id>.<n>.html, #1221), with the height of its page and
   the language of its words, so the check of the image runs on every preview.
 */
 import { createHash } from 'node:crypto';
@@ -21,12 +22,14 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { magmaRoot } from '../core/data.js';
 import {
+  BLOCK,
   examplesOf,
   indexPatterns,
   ownRules,
   previewOf,
   readPatternDir,
   readPreviews,
+  situationIds,
 } from '../core/patterns.js';
 import { packageDir, readJsonFile, resolvePackage, type ToolContext } from './context.js';
 import { folderOf, slugFile } from './icons.js';
@@ -537,8 +540,9 @@ export const render = async (
 const string = { type: 'string' };
 
 /**
- * The preview Magma ships of a case of a pattern, or of a rule of a domain (#1221), by the id of
- * its pattern (an old one too) and of the case or the rule, its first example unless another is
+ * The preview Magma ships of a case of a pattern, of a situation of a building block (asked as
+ * its case: a block has no cases), or of a rule of a domain (#1221), by the id of its pattern (an
+ * old one too) and of the case, the situation or the rule, its first example unless another is
  * asked; the words of the previews are Italian, as the examples of the components
  * (docs/PATTERNS.md).
  */
@@ -558,7 +562,10 @@ const shippedPreview = (
       `No pattern ${pattern} in this magma: the patterns are ${[...byId.keys()].join(', ')}.`,
     );
   const { kind, id } = wanted;
-  const cases = (data.cases ?? []).map((one) => one.id);
+  // the situations of a block stand where the cases of a pattern do: each has its preview
+  const isBlock = data.kind === BLOCK;
+  const cases = isBlock ? situationIds(data) : (data.cases ?? []).map((one) => one.id);
+  const noun = isBlock && kind === 'case' ? 'situation' : kind;
   const rules = ownRules(data);
   // a case asked as a rule, or a rule as a case: say which it is
   if (kind === 'case' && !cases.includes(id) && rules.includes(id))
@@ -576,10 +583,10 @@ const shippedPreview = (
     const examples = examplesOf(previews, realId, id);
     throw new ToolError(
       examples.length
-        ? `The ${kind} ${id} of ${realId} has ${examples.length} example${examples.length > 1 ? 's' : ''}: example is 1 to ${examples.length}.`
+        ? `The ${noun} ${id} of ${realId} has ${examples.length} example${examples.length > 1 ? 's' : ''}: example is 1 to ${examples.length}.`
         : ofKind.length
-          ? `No preview of the ${kind} ${id} of ${realId}: the ${kind}s with one are ${[...new Set(ofKind.map((one) => one.id))].join(', ')}.`
-          : `${realId} has no preview of its ${kind}s in this magma yet.`,
+          ? `No preview of the ${noun} ${id} of ${realId}: the ${noun}s with one are ${[...new Set(ofKind.map((one) => one.id))].join(', ')}.`
+          : `${realId} has no preview of its ${noun}s in this magma yet.`,
     );
   }
   return found;
@@ -589,7 +596,7 @@ export const renderPreview = (context: ToolContext): Tool => ({
   name: 'render_preview',
   title: 'Render Magma markup as an image',
   description:
-    'Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. Instead of markup, pattern and case render the preview Magma ships for that case of a pattern, pattern and rule the preview of a rule of a domain of Foundation, and example another example of either. Render each option before asking a person to decide on an interface. Needs playwright-core in the project and Chrome or Edge on the machine; writes the image into node_modules/.cache/magma/previews.',
+    'Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. Instead of markup, pattern and case render the preview Magma ships for that case of a pattern (for a building block, case is the id of one of its situations), pattern and rule the preview of a rule of a domain of Foundation, and example another example of either. Render each option before asking a person to decide on an interface. Needs playwright-core in the project and Chrome or Edge on the machine; writes the image into node_modules/.cache/magma/previews.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -606,7 +613,7 @@ export const renderPreview = (context: ToolContext): Tool => ({
       case: {
         type: 'string',
         description:
-          'With pattern: one of its cases, such as "action-failed-in-place"; its preview is rendered with the height and the language it declares.',
+          'With pattern: one of its cases, such as "action-failed-in-place", or for a building block the id of one of its situations, such as "requests-of-an-office" of "page-header"; its preview is rendered with the height and the language it declares.',
       },
       rule: {
         type: 'string',

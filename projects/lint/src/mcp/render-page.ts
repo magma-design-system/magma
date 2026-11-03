@@ -203,10 +203,51 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
         inside(element)
       );
     };
+    // whether an ancestor hides part of a box: a box that scrolls away inside one of them (a
+    // column of mds-table past its border on a phone, which scrolls on its own) or that one of
+    // them clips shows a part only, maybe its padding alone, which is one colour by right; so a
+    // clipped box is left out of the check, as one with display: none is. The ancestors are
+    // those of the flat tree, through the slot a child is assigned to and the host of a shadow
+    // root.
+    const clipped = (element: Element, box: DOMRect): boolean => {
+      let left = box.left;
+      let top = box.top;
+      let right = box.right;
+      let bottom = box.bottom;
+      let at: Element | null = element;
+      while (at && at !== preview) {
+        const parent: Element | null =
+          at.assignedSlot ??
+          at.parentElement ??
+          (at.parentNode instanceof ShadowRoot ? at.parentNode.host : null);
+        if (!parent) break;
+        const style = getComputedStyle(parent);
+        if (style.overflowX !== 'visible' || style.overflowY !== 'visible') {
+          const edge = parent.getBoundingClientRect();
+          if (style.overflowX !== 'visible') {
+            left = Math.max(left, edge.left);
+            right = Math.min(right, edge.right);
+          }
+          if (style.overflowY !== 'visible') {
+            top = Math.max(top, edge.top);
+            bottom = Math.min(bottom, edge.bottom);
+          }
+        }
+        at = parent;
+      }
+      return (
+        left > box.left + 0.5 ||
+        top > box.top + 0.5 ||
+        right < box.right - 0.5 ||
+        bottom < box.bottom - 0.5
+      );
+    };
     for (const element of preview.querySelectorAll('*')) {
       if (!isComponent(element) && element.localName !== 'img') continue;
-      // display: none (a closed overlay, `hidden`) is a choice of the markup, not a failure
-      if (!element.checkVisibility()) continue;
+      // display: none (a closed overlay, `hidden`) is a choice of the markup, not a failure, and
+      // so is visibility: hidden (`invisible`: a line that keeps its place until it has something
+      // to say, the sentence of a wait, Show of the new items)
+      if (!element.checkVisibility({ visibilityProperty: true })) continue;
       const box = element.getBoundingClientRect();
       if (box.width < 1 || box.height < 1) {
         // a box of nothing is the layout of an element whose content stands out of it: fixed on
@@ -231,7 +272,7 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
           });
         continue;
       }
-      if (box.width >= 8 && box.height >= 8 && hasContent(element))
+      if (box.width >= 8 && box.height >= 8 && hasContent(element) && !clipped(element, box))
         regions.push({
           element: label(element),
           x: box.left + window.scrollX,

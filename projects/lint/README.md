@@ -238,8 +238,20 @@ or on the guide it enforces, not only on fixtures picked by hand.
   block in) and name the block among their `related`, so the two sides are checked against
   each other. A situation of a block gives a value of every variable, since there is no case
   to name; the regions it shows are computed for the generated table. The rules of the domains
-  a block cites in `always-true` come with the regions, as with a case. Blocks have no
-  previews yet: whether they get one, and of what, is open.
+  a block cites in `always-true` come with the regions, as with a case. A block has a preview
+  per situation, `previews/<block>/<situation>.html`, named after the id of the situation (the
+  choice of the maintainer on 2026-11-03: a situation gives every variable and the words, as a
+  case does, where one preview of the whole block would not show what goes when a variable
+  changes). The id is kebab-case and unique in the block, required in every situation of a
+  decided block of Magma, optional in a draft and in the situations a product layer adds (whose
+  ids may not repeat the block's, since `get_pattern` merges the two lists), and refused on a
+  situation that names another pattern and on a situation of a pattern, which names its case.
+  `get_pattern` gives the preview of a situation only when the values match it exactly, every
+  variable given and equal: a preview shows every region decided, so with a variable still
+  unknown it would show a choice the agent has not made; with two situations on the same
+  values, the first in the file is the stage and the next ones' previews go in `examples`.
+  `missingPreviews` lists the situations of a decided block only, since a draft may still
+  change them.
 - **The rules of the design language in the answers** (`get_guide`, `get_pattern`,
   `get_component`, #1198): found where the agent already looks (#1189, "The context for the
   agents", point 2). `get_guide` serves each domain of `agents/patterns/` as a guide, named by
@@ -289,7 +301,10 @@ or on the guide it enforces, not only on fixtures picked by hand.
   as an `mds-toast-region` with no toast, or a dialog or a popover in its light or shadow tree,
   shown in the top layer or closed, as the window of `mds-status-bar`), a
   component with text or media whose whole box is one colour (99.8% of the pixels within 8
-  levels of the most frequent one), a console error or an uncaught exception, a request the
+  levels of the most frequent one; a box with `visibility: hidden`, kept in its place, is a
+  choice too, and a box an ancestor scrolls away or clips, as a column of `mds-table` past its
+  border on a phone, shows a part only, maybe its padding alone, so neither is measured), a
+  console error or an uncaught exception, a request the
   page cannot be served, a font family the text asks for with no face loaded, a word (the run
   between two places a line may break: a space, a hyphen, a dash, a slash) on more than one
   line, content taller than the image. An image is at most 2000 px a side, the cap of Claude

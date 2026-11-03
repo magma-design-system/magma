@@ -16,7 +16,8 @@
   A building block (`block`, #1210) is a section of a page that comes back in the same
   arrangement in two patterns or more: about space, not time. It has the base of a pattern with
   `regions` in the order of the page instead of `cases`, each saying when it shows, and
-  `used-by`, the patterns it comes back in.
+  `used-by`, the patterns it comes back in; each of its situations has an id, the name of its
+  preview (2026-11-03).
 
   The format is written in docs/PATTERNS.md, "The format"; the decisions behind it are on
   #1174 and, for the domains, on #1189 and #1196. This module holds what every reader shares: parsing a file, the checks that need no
@@ -129,7 +130,8 @@ const RULE_KEYS = new Set([
   ...FOUNDATION_KEYS,
 ]);
 const CHOICE_KEYS = new Set(['id', 'default', 'may']);
-const SITUATION_KEYS = new Set(['situation', 'case', 'use', 'note']);
+/** The keys of a situation; `id` only in a block, where it names the preview of the situation. */
+const SITUATION_KEYS = new Set(['id', 'situation', 'case', 'use', 'note']);
 
 export type Status = (typeof PATTERN_STATUSES)[number];
 export type Kind = (typeof PATTERN_KINDS)[number];
@@ -186,6 +188,12 @@ export interface Choice {
 }
 
 export interface Situation {
+  /**
+   * In a building block only: kebab-case, unique in the block, the name of its preview,
+   * previews/<block>/<id>.html (the maintainer's choice, 2026-11-03). A situation of a pattern
+   * names its case instead.
+   */
+  id?: string;
   situation: string;
   /** In a building block, which has no cases, the situation gives the values of its variables. */
   case?: string | string[];
@@ -479,6 +487,38 @@ export const regionsFor = (pattern: Pattern, known: Record<string, string>): Reg
     (name) => !(name in known) && depends.some((one) => name in (one.when ?? {})),
   );
   return { regions, depends, missing };
+};
+
+/**
+ * The situations of a building block that have an id, the name of their preview
+ * (previews/<block>/<id>.html), in the order of the file; one that names another pattern
+ * (`use`) has none (#1210, the maintainer's choice on 2026-11-03).
+ */
+export const situationsWithId = (pattern: Pattern): (Situation & { id: string })[] =>
+  pattern.kind === BLOCK
+    ? (pattern.situations ?? []).filter(
+        (one): one is Situation & { id: string } => isString(one?.id) && one.use === undefined,
+      )
+    : [];
+
+/** The ids of the situations of a building block, in the order of the file. */
+export const situationIds = (pattern: Pattern): string[] =>
+  situationsWithId(pattern).map((one) => one.id);
+
+/**
+ * The situations of a building block the values match exactly, in the order of the file: every
+ * variable of the block given, each equal to the value the situation gives. None while a
+ * variable is still unknown: a preview shows one situation, with every region decided.
+ */
+export const situationsMatching = (
+  pattern: Pattern,
+  known: Record<string, string>,
+): (Situation & { id: string })[] => {
+  const names = variableNames(pattern);
+  if (!names.length || names.some((name) => !(name in known))) return [];
+  return situationsWithId(pattern).filter((one) =>
+    names.every((name) => (one as unknown as Entry)[name] === known[name]),
+  );
 };
 
 /* ---- the format --------------------------------------------------------------------- */
@@ -782,25 +822,49 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
       say(`${label}: default is required`);
     if (!isString(choice?.may)) say(`${label}: may is required: what a product may choose`);
   }
-  situationErrors(data.situations ?? [], 'situation', say, isBlock ? variables : undefined);
+  // the id of a situation of a block names its preview: required once a Magma block is decided
+  situationErrors(
+    data.situations ?? [],
+    'situation',
+    say,
+    isBlock
+      ? { variables, idRequired: data.layer === MAGMA_LAYER && data.status === 'decided' }
+      : undefined,
+  );
   return errors;
 };
 
+/** What situationErrors needs to know of a building block. */
+interface SituationsOfBlock {
+  variables: Record<string, Variable>;
+  /** Every situation that gives the variables has an id: a decided block of Magma. */
+  idRequired: boolean;
+  /** The ids a layer may not take: those of the situations of the block it extends. */
+  taken?: Set<string>;
+}
+
 /**
  * What is wrong in the situations of a pattern or a layer. A building block has no cases: its
- * situations give a value of every variable (`variables`), so the regions they show are known,
- * or name the pattern to use instead.
+ * situations give a value of every variable, so the regions they show are known, or name the
+ * pattern to use instead. A situation of a block that gives the variables has an id, the name
+ * of its preview (previews/<block>/<id>.html, the maintainer's choice on 2026-11-03: a situation
+ * gives every variable and the words, as a case does): kebab-case, unique in the block,
+ * required in a decided block of Magma, optional in a draft and in the situations a product
+ * adds, never on one that names another pattern (that pattern shows it). A situation of a
+ * pattern names its case, so it has no id.
  */
 const situationErrors = (
   situations: Situation[],
   label: string,
   say: (message: string) => void,
-  variables?: Record<string, Variable>,
+  block?: SituationsOfBlock,
 ) => {
+  const ids = new Set<string>();
   for (const [index, one] of situations.entries()) {
     const at = `${label} ${index + 1}`;
     if (!isString(one?.situation)) say(`${at}: situation is required`);
-    if (variables) {
+    if (block) {
+      const { variables } = block;
       for (const [key, value] of Object.entries(one ?? {})) {
         if (key === 'case') say(`${at}: a block has no cases: give the values of its variables`);
         else if (key in variables) {
@@ -810,15 +874,32 @@ const situationErrors = (
             );
         } else if (!SITUATION_KEYS.has(key)) say(`${at}: unknown field ${key}`);
       }
-      if (one?.use === undefined) {
-        const left = Object.keys(variables).filter((name) => !(name in (one ?? {})));
-        if (left.length)
-          say(`${at}: a situation of a block gives every variable; ${left.join(', ')} missing`);
+      if (one?.use !== undefined) {
+        if (one.id !== undefined)
+          say(
+            `${at}: a situation another pattern answers has no id: its previews are that pattern's`,
+          );
+        continue;
       }
+      const left = Object.keys(variables).filter((name) => !(name in (one ?? {})));
+      if (left.length)
+        say(`${at}: a situation of a block gives every variable; ${left.join(', ')} missing`);
+      const id = one?.id;
+      if (id === undefined) {
+        if (block.idRequired)
+          say(`${at}: id is required, kebab-case: it names the preview of the situation`);
+      } else if (!isString(id) || !ID.test(id)) say(`${at}: id is kebab-case, not ${String(id)}`);
+      else if (ids.has(id)) say(`${at}: the id ${id} is used twice`);
+      else if (block.taken?.has(id)) say(`${at}: the id ${id} is a situation of the block already`);
+      else ids.add(id);
       continue;
     }
     for (const key of Object.keys(one ?? {}))
       if (!SITUATION_KEYS.has(key)) say(`${at}: unknown field ${key}`);
+    if (one?.id !== undefined)
+      say(
+        `${at}: id belongs to a situation of a building block (kind ${BLOCK}): a situation of a pattern names its case`,
+      );
     if ((one?.case === undefined) === (one?.use === undefined))
       say(`${at}: a situation has a case, or the pattern to use instead`);
     if (one?.case !== undefined && !isString(one.case) && !isStringList(one.case))
@@ -1169,9 +1250,17 @@ export const layerErrors = ({ data }: PatternFile<Layer>, patterns: Pattern[]): 
       say(`narrows ${key}: ${id} has no open choice ${key} (${[...choices].join(', ') || 'none'})`);
   }
   const caseIds = new Set((base.cases ?? []).map((one) => one.id));
-  // the situations of a layer of a block give the values of its variables, as the block's do
+  // the situations of a layer of a block give the values of its variables, as the block's do;
+  // their id is optional, and never one of the block's own, since the two lists are merged
   const isBlock = base.kind === BLOCK;
-  situationErrors(data.situations ?? [], 'situation', say, isBlock ? base.variables : undefined);
+  situationErrors(
+    data.situations ?? [],
+    'situation',
+    say,
+    isBlock && base.variables
+      ? { variables: base.variables, idRequired: false, taken: new Set(situationIds(base)) }
+      : undefined,
+  );
   for (const one of data.situations ?? []) {
     if (!isBlock)
       for (const each of [one.case ?? []].flat())
@@ -1527,6 +1616,8 @@ export const renderSections = (
       .filter(Boolean)
       .join('; ');
   const choices = pattern['open-choices'] ?? [];
+  // the id of a situation of a block, the name of its preview, once one situation has one
+  const named = isBlock && situationIds(pattern).length > 0;
   return {
     Cases: isBlock ? undefined : cases.join('\n\n'),
     Regions: isBlock ? regions.join('\n\n') : undefined,
@@ -1556,8 +1647,9 @@ export const renderSections = (
         ? "Situations every application has, each with the regions it shows: they give the examples, the texts and the keywords. The situations of a product's own domain go in its layer."
         : "Situations every application has, each with its case: they give the examples, the texts and the keywords. The situations of a product's own domain go in its layer.",
       table(
-        ['Situation', isBlock ? 'Regions' : 'Case'],
+        [...(named ? ['Id'] : []), 'Situation', isBlock ? 'Regions' : 'Case'],
         (pattern.situations ?? []).map((one) => [
+          ...(named ? [isString(one.id) ? code(one.id) : ''] : []),
           cell(one.situation),
           cell(
             [
@@ -1679,7 +1771,11 @@ export const bodyErrors = (
   of Foundation may have one too, previews/<domain>/<rule>.html, and a case or a rule more
   examples, <id>.2.html, <id>.3.html, with no gap (the choices of the maintainer on #1221: a
   rule that an example chosen live shows, actions/stacked, and another context or another length
-  of the words, to show what the case keeps the same and what it lets vary). Only the stage: the
+  of the words, to show what the case keeps the same and what it lets vary). A building block
+  has one per situation, previews/<block>/<situation>.html, named after the id of the situation,
+  with its examples as a case (the maintainer's choice on 2026-11-03: a situation gives every
+  variable and the words, as a case does, and one preview of the whole block would not show what
+  goes when a variable changes). Only the stage: the
   Magma markup of the case and its own small script, never a page; whoever shows it adds the
   stylesheets of agents/assets.md and the loader of the installed magma. It opens with a comment
   of keys, as a pattern opens with its frontmatter:
@@ -1707,7 +1803,7 @@ export const PREVIEW_HEIGHT = { min: 120, max: 2000 } as const;
 
 export interface Preview {
   file: string;
-  /** The pattern, from the folder; the case or the rule of a domain, from the name of the file. */
+  /** The pattern, from the folder; the case, the rule of a domain or the situation of a block, from the name of the file. */
   pattern: string;
   id: string;
   /** Which example of it: 1 for <id>.html, n for <id>.<n>.html (#1221). */
@@ -1840,8 +1936,9 @@ export const ownRules = (pattern: Pattern): string[] =>
 
 /**
  * A preview that shows nothing that exists, by file: a pattern Magma does not have, a candidate,
- * a case it does not have, or for a domain a rule of its own it does not have; an example whose
- * previous one is missing, since the examples of a case follow one another from <id>.html.
+ * a case it does not have, for a domain a rule of its own it does not have, for a building block
+ * a situation it does not have, by its id (2026-11-03); an example whose previous one is missing,
+ * since the examples of a case or a situation follow one another from <id>.html.
  */
 export const previewLinkErrors = (
   previews: Preview[],
@@ -1857,18 +1954,20 @@ export const previewLinkErrors = (
         ? `${one.pattern} is an old id of ${aliases.get(one.pattern)}: move the folder`
         : `there is no pattern ${one.pattern}`;
     else if (pattern.status === 'candidate')
-      error = `${one.pattern} is a candidate: it has no cases to show`;
-    else if (pattern.kind === BLOCK)
-      error = `${one.pattern} is a building block: whether a block gets previews is still open (#1210)`;
+      error = `${one.pattern} is a candidate: it has no ${pattern.kind === BLOCK ? 'situations' : 'cases'} to show`;
     else {
       const cases = (pattern.cases ?? []).map((entry) => entry.id);
       const rules = ownRules(pattern);
-      if (!cases.includes(one.id) && !rules.includes(one.id))
+      const situations = situationIds(pattern);
+      if (pattern.kind === BLOCK) {
+        if (!situations.includes(one.id))
+          error = `${one.pattern} has no situation ${one.id}: its situations are ${situations.join(', ') || 'none with an id'}`;
+      } else if (!cases.includes(one.id) && !rules.includes(one.id))
         error =
           pattern.kind === FOUNDATION
             ? `${one.pattern} has no case nor rule ${one.id}: its cases are ${cases.join(', ')}, its rules ${rules.join(', ') || 'none'}`
             : `${one.pattern} has no case ${one.id}: its cases are ${cases.join(', ')}`;
-      else if (one.example > 1 && !previewOf(previews, one.pattern, one.id, one.example - 1))
+      if (!error && one.example > 1 && !previewOf(previews, one.pattern, one.id, one.example - 1))
         error = `example ${one.example} of ${one.id} follows ${
           one.example === 2 ? `${one.id}.html` : `${one.id}.${one.example - 1}.html`
         }, which is missing`;
@@ -1879,16 +1978,19 @@ export const previewLinkErrors = (
 };
 
 /**
- * The cases with no preview yet, as <pattern>/<case>, the candidates aside. The domains of
- * Foundation too: a case of a domain may have a preview, and widths is the pilot (#1189), so
- * the ones a domain lacks are not listed until it is weighed; a building block has regions,
- * not cases, and whether it gets previews is open too (#1210).
+ * What has no preview yet, the candidates aside: each case of a pattern, as <pattern>/<case>,
+ * and each situation of a decided building block, as <block>/<situation> (the maintainer's
+ * choice on 2026-11-03; a draft block may still change its situations), in the order of the
+ * files. Not the domains of Foundation: a case of a domain may have a preview, and widths is
+ * the pilot (#1189), so the ones a domain lacks are not listed until it is weighed.
  */
 export const missingPreviews = (patterns: Pattern[], previews: Preview[]): string[] =>
-  patterns
-    .filter((one) => one.status !== 'candidate' && one.kind === 'pattern')
-    .flatMap((one) =>
-      (one.cases ?? [])
-        .filter((entry) => !previewOf(previews, one.id, entry.id))
-        .map((entry) => `${one.id}/${entry.id}`),
-    );
+  patterns.flatMap((one) => {
+    const ids =
+      one.kind === 'pattern' && one.status !== 'candidate'
+        ? (one.cases ?? []).map((entry) => entry.id)
+        : one.kind === BLOCK && one.status === 'decided'
+          ? situationIds(one)
+          : [];
+    return ids.filter((id) => !previewOf(previews, one.id, id)).map((id) => `${one.id}/${id}`);
+  });
