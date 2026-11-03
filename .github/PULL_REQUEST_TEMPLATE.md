@@ -67,4 +67,5 @@ None
 - [ ] Storybook story added or updated when the change affects look, interaction, accessibility or composition with other components (visual / interaction / a11y tests)
 - [ ] Commit messages follow `docs/COMMITS.md`
 - [ ] Updated the relevant `SPEC.md` (and `docs/ARCHITECTURE.md` if system-wide)
+- [ ] When a project starts or stops reading what another produces (a file, an export, a command), the `Architecture` diagram in the README of both is updated (`nx run magma:check.diagrams`)
 - [ ] I am **not** merging this into `main` myself, nor adding it to the merge queue - that is a maintainer's step

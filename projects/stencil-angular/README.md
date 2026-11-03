@@ -2,6 +2,44 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.11.
 
+It is the workspace of `@maggioli-design-system/magma-angular`: the library is `magma-angular/`,
+whose README is the one published with the package.
+
+## Architecture
+
+The stencil build writes the proxies and the value accessors; `MagmaModule`, written by hand,
+gathers them for the apps that use an NgModule, and a standalone app imports the proxies one by
+one. At runtime each proxy loads the custom element of magma.
+
+```mermaid
+flowchart LR
+  WC["stencil<br/>package magma, angularOutputTarget"]
+  subgraph an["stencil-angular<br/>package @maggioli-design-system/magma-angular"]
+    GEN["src/stencil-generated<br/>standalone proxies, DIRECTIVES"]
+    VA["value accessors, generated<br/>text, select, number, boolean"]
+    MOD["src/lib/magma.module.ts<br/>MagmaModule, by hand"]
+    GEN & VA --> MOD
+  end
+  WC -->|"writes stencil-generated/"| GEN & VA
+  WC -.->|"dist/components/tag.js"| GEN
+  GEN & VA & MOD -.->|"src/public-api.ts"| APP(["Angular app<br/>NgModule or standalone"])
+  class WC,GEN,VA,MOD components
+  class APP outside
+  class an area
+  classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
+  classDef assets fill:#fff1d6,stroke:#bf8700,color:#5c3d00
+  classDef visual fill:#dcf5ec,stroke:#1a7f64,color:#0b4a3a
+  classDef components fill:#ddf0ff,stroke:#0969da,color:#0a3069
+  classDef tooling fill:#eceff3,stroke:#57606a,color:#24292f
+  classDef outside fill:#ffffff,stroke:#8c959f,color:#24292f
+  classDef area fill:none,stroke:#8c959f
+```
+
+Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the repository;
+dashed: where the package is installed. Labels: the file, export or command that crosses.
+Colours: purple ai, amber assets, teal visual, blue components, grey tooling, white outside
+([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.

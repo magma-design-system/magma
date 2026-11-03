@@ -2,29 +2,116 @@
 
 ## 1. System Overview
 
-Magma is a monorepo managed with NX and npm workspaces. It is composed of six independent sub-projects, each published as a separate npm package under the `@maggioli-design-system` scope. Sub-projects have a strict one-directional dependency graph: no circular dependencies are allowed.
+Magma is a monorepo managed with NX and npm workspaces. It is composed of eleven projects: eight are published as npm packages under the `@maggioli-design-system` scope, `lint` ships inside `magma` and `claude-plugin` is served from `main`. The projects have a strict one-directional dependency graph: no circular dependencies are allowed. The overview draws that graph as Nx computes it (`nx graph`), with an arrow from each project to the projects that depend on it.
 
 ```mermaid
 graph TD
-  DT["@maggioli-design-system/design-tokens"]
-  ID["@maggioli-design-system/identity"]
-  SI["@maggioli-design-system/svg-icons"]
-  IC["@maggioli-design-system/icons"]
-  ST["@maggioli-design-system/styles"]
-  WC["@maggioli-design-system/magma (stencil)"]
+  DT["design-tokens<br/>@maggioli-design-system/design-tokens"]
+  ID["identity<br/>@maggioli-design-system/identity"]
+  SI["svg-icons<br/>@maggioli-design-system/svg-icons"]
+  IC["icons<br/>@maggioli-design-system/icons"]
+  ST["styles<br/>@maggioli-design-system/styles"]
+  LINT["lint<br/>inside magma, dist/lint"]
+  WC["stencil<br/>@maggioli-design-system/magma"]
+  RE["stencil-react<br/>@maggioli-design-system/magma-react"]
+  AN["stencil-angular<br/>@maggioli-design-system/magma-angular"]
+  CM["codemod<br/>@maggioli-design-system/magma-codemods"]
+  CP["claude-plugin<br/>served from main"]
 
   DT --> ST
+  DT --> WC
   ST --> WC
-  SI --> IC
   SI --> WC
+  SI --> IC
   ID --> WC
+  LINT --> WC
+  LINT --> CP
+  WC --> RE
+  WC --> AN
+  RE -->|"imported by its React fixtures"| CM
+  class LINT,CP ai
+  class ID,SI,IC assets
+  class DT,ST visual
+  class WC,RE,AN components
+  class CM tooling
+  classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
+  classDef assets fill:#fff1d6,stroke:#bf8700,color:#5c3d00
+  classDef visual fill:#dcf5ec,stroke:#1a7f64,color:#0b4a3a
+  classDef components fill:#ddf0ff,stroke:#0969da,color:#0a3069
+  classDef tooling fill:#eceff3,stroke:#57606a,color:#24292f
+  classDef outside fill:#ffffff,stroke:#8c959f,color:#24292f
+  classDef area fill:none,stroke:#8c959f
 ```
 
-**Required build order**: `design-tokens` → `styles`, and `svg-icons` → `icons`, before `stencil`
+**Required build order**: `design-tokens` → `styles`, and `svg-icons`, before `stencil` → `stencil-react`, `stencil-angular`
 
 > `svg-icons` ships the SVG artwork; `icons` turns a curated selection of it — plus third-party
 > icons — into a font. `icons` is the only sub-project the web components do not depend on: they
 > read the SVGs directly.
+
+### Diagrams of the projects
+
+The README of every project draws, in its `Architecture` section, the parts of the project and
+what it reads from and gives to the others:
+[`claude-plugin`](../projects/claude-plugin/README.md#architecture),
+[`codemod`](../projects/codemod/README.md#architecture),
+[`design-tokens`](../projects/design-tokens/README.md#architecture),
+[`icons`](../projects/icons/README.md#architecture),
+[`identity`](../projects/identity/README.md#architecture),
+[`lint`](../projects/lint/README.md#architecture),
+[`stencil`](../projects/stencil/README.md#architecture),
+[`stencil-angular`](../projects/stencil-angular/README.md#architecture),
+[`stencil-react`](../projects/stencil-react/README.md#architecture),
+[`styles`](../projects/styles/README.md#architecture),
+[`svg-icons`](../projects/svg-icons/README.md#architecture).
+
+They follow one convention, so they read alike:
+
+- A Mermaid `flowchart`, where a subgraph titled with the name of the project holds its parts,
+  at the level of modules and folders, not functions.
+- Rectangles are this repository: the parts of the project, the other projects, folders such as
+  `docs/agents`. Rounded boxes are outside it: the consumer project, the agent's client, the docs
+  site, third-party packages.
+- Arrows follow the data. Solid ones run inside the repository (a build, an import, a contract
+  that one project follows); dashed ones run where the package is installed (the lint reading
+  `documentation.json` in a consumer project, the agent's client calling the MCP server).
+- The label of an arrow is the API that crosses: the file, the export or the command, as
+  [`CONTRACTS.md`](CONTRACTS.md) names it.
+- A node that stands for another project starts its label with the name of the project
+  (`stencil<br/>build-lint.ts`): that is how the check tells it.
+- The colour of a box is its axis, given by a `class` line at the end of the diagram; the
+  subgraph of the project is `area`, a grey outline. A box that mixes two axes takes the one it
+  mostly serves.
+
+  | Axis | Colour | What it covers |
+  | --- | --- | --- |
+  | `ai` | purple | what serves agents: the MCP server, the skills, the guides for agents, an agent's client |
+  | `assets` | amber | the icons and the brand: `svg-icons`, `icons`, `identity`, third-party icon sets |
+  | `visual` | teal | the tokens and the CSS: `design-tokens`, `styles`, the Tailwind theme, palettes, Figma variables |
+  | `components` | blue | the web components and their wrappers: `stencil`, `stencil-react`, `stencil-angular` |
+  | `tooling` | grey | the checks and the migration: lint rules, `check.*`, the codemod, editor support |
+  | `outside` | white | what has no axis: an app, a site, a product |
+
+  A project declares its axis as the Nx tag `axis:<name>` in its `project.json`, and the box that
+  stands for it takes that axis in every diagram. The styles are `PALETTE` of
+  [`scripts/diagrams.ts`](../scripts/diagrams.ts), written whole at the end of every diagram: a
+  light fill, dark text and a strong stroke read the same on the light and the dark themes of
+  GitHub.
+
+Keeping them current:
+
+- When a project starts or stops reading what another produces, or reads it through another
+  file, export or command, update the diagram in the README of both, in the same branch, and the
+  entry of [`CONTRACTS.md`](CONTRACTS.md) when the artifact has one. A change of the build graph
+  (a dependency, an implicit dependency) updates the overview above too.
+- `nx run magma:check.diagrams` (`scripts/diagrams.ts`, run by the `lint` workflow) holds the
+  diagrams to the project graph of Nx: every project has its diagram, every diagram draws the
+  projects the graph links to it, and the overview draws exactly the arrows of the graph. It also
+  holds the colours: every box has an axis, a project's box has the axis of its tag, every
+  diagram has the palette, and a project without an `axis:` tag fails. What a project reads at
+  runtime is not in the graph, so a missing dashed arrow is for the review to see.
+- A new project declares its `axis:` tag, draws its diagram and joins the overview; a change of
+  `PALETTE` is written in every diagram (the check prints the line it expects).
 
 ---
 
@@ -311,7 +398,7 @@ maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dr
 | Piece | Where | What it does |
 |---|---|---|
 | Package CI | `.github/workflows/{design-tokens,icons,identity,styles,svg-icons,stencil}.yml` over `_package-pipeline.yml` | change detection (path filter, everything on `merge_group`) → build (artifact kept one day) → test, on pull requests and in the merge queue: the merge-group run is the CI of the commit that lands on `main`. The build job keeps the Nx cache under `.nx` with one key per Nx project and commit; `stencil.yml` adds the wrapper builds and tests (on that cache), the `check.*` guards and `consumer-lint`, the tests of `projects/lint` |
-| Lint | `lint.yml` | `npm run lint` on the whole monorepo, same triggers |
+| Lint | `lint.yml` | `npm run lint` on the whole monorepo, then `nx run magma:check.diagrams` (the README diagrams against the project graph), same triggers |
 | Review level | `pr-risk.yml` + `projects/stencil/scripts/pr-risk.ts` | `risk-*` label, the semver check of `magma.api.txt` against the commits' declared release |
 | Release and publish | `publish.yml` over `semantic-release.yml` + `scripts/release/*` + `scripts/set-release-version.sh` | `workflow_dispatch` on `main`: `package` (`all` or one), `channel` (`stable`/`beta`), `dry-run`, `tag` (an existing release published again); the CI of the commit checked, the plan before the approval, versions from the conventional commits of each package's scopes (semantic-release dry-run), pins, lock, `CHANGELOG.md` (git-cliff), tags, GitHub releases, then the build of the selected packages and one `npm publish` per package with OIDC trusted publishing (a package is skipped when its version is already on npm) |
 | Automatic icon releases | the `push` trigger of `publish.yml` | on every push to `main`: the same chain for `icons` and `svg-icons`, without approval; a rejected push is rebased and retried |
