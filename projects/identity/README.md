@@ -8,6 +8,30 @@ The rasters come in several widths (`-256w`, `-512w`, `-1024w`); the WebP files 
 so they show the same pixels as the PNG files at about half the size. `dist/directory-tree.json`
 lists every file.
 
+##### Architecture
+
+The artworks and the facts written next to them (`identity.meta.json`) make the build: the
+rasters, the PDF and the catalogue, with checks that every file belongs to a family. The stencil
+build takes the Magma mark from it, as the icon of the MCP server.
+
+```mermaid
+flowchart LR
+  subgraph id["identity"]
+    RES["resources/<br/>the SVG artworks, per owner"]
+    META["identity.meta.json<br/>owners, families, lines"]
+    BUILD["scripts/<br/>manifest, assets, check.signatures, dir-tree"]
+    RES --> BUILD
+    META --> BUILD
+  end
+  BUILD -->|"dist/internal/magma-design-system/logo-magma.svg"| WC["stencil<br/>build-lint.ts: the icon of the MCP server"]
+  BUILD -.->|"SVG, PNG, WebP, PDF"| APP(["products and sites"])
+  BUILD -.->|"dist/identity.json, dist/directory-tree.json"| TOOLS(["tools that list the artworks"])
+```
+
+Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the repository;
+dashed: where the package is installed. Labels: the file, export or command that crosses
+([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
+
 ##### Installation
 
 ```

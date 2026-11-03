@@ -80,6 +80,43 @@ Questa libreria fornisce una lista di componenti basati sullo standard web-compo
 
 Fa uso della libreria [@maggioli-design-system/styles](https://www.npmjs.com/package/@maggioli-design-system/styles) per gli sitli dei componenti
 
+## Architecture
+
+One build makes the whole package: the slug dictionary, the guides for agents, the components
+through the output targets of Stencil (which also write the sources of the React and Angular
+wrappers), the docs of each component, the API snapshot, and the lint with its MCP server.
+
+```mermaid
+flowchart LR
+  DT["design-tokens<br/>dist/dtcg, for the checks"]
+  ST["styles<br/>the Tailwind theme"]
+  SI["svg-icons<br/>dist/iconsauce.json"]
+  AGD["docs/agents<br/>the guides, the patterns"]
+  LINT["lint<br/>its sources"]
+  ID["identity<br/>logo-magma.svg"]
+  subgraph wc["stencil<br/>package @maggioli-design-system/magma"]
+    BUILD["stencil build<br/>117 mds-* components, build.icons"]
+    DOCS["agent docs, API snapshot<br/>sync-agent-docs, component-docs"]
+    BL["scripts/build-lint.ts<br/>dist/lint"]
+    BUILD --> DOCS
+  end
+  DT & ST & SI --> BUILD
+  AGD --> DOCS
+  LINT & ID --> BL
+  BUILD -->|"src/, one module per tag"| RE["stencil-react"]
+  BUILD -->|"stencil-generated/"| AN["stencil-angular"]
+  BUILD -.->|"./components, ./loader, ./hydrate, ./services"| APP(["consumer app"])
+  DOCS -->|"documentation.json"| CM["codemod"]
+  DOCS -->|"magma.api.txt"| RISK["check.pr-risk"]
+  DOCS -.->|"AGENTS.md, agents/"| AGENT(["the agent of a consumer project"])
+  DOCS -.->|"documentation.json"| SITE(["docs site"])
+  BL -.->|"./eslint, ./stylelint, magma-mcp"| AGENT
+```
+
+Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the repository;
+dashed: where the package is installed. Labels: the file, export or command that crosses
+([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
+
 ## Installation
 
 ```

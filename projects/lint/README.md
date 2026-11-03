@@ -22,6 +22,43 @@ install or keep aligned. How a project sets them up is in the consumer guides,
 shipped in the packages as `agents/lint.md` and `agents/mcp.md`; the packages' `AGENTS.md`
 sets both up at bootstrap.
 
+## Architecture
+
+One core reads the data of the version installed in the project; the ESLint and Stylelint rules
+and the MCP server sit on it, and `check_markup` runs the rules for the server. The stencil build
+compiles the whole project into magma, so the rules and the server always match the components.
+
+```mermaid
+flowchart LR
+  WC["stencil<br/>package magma: documentation.json, agents/"]
+  DT["design-tokens<br/>dist/dtcg"]
+  ST["styles<br/>consumption.json, dist/dtcg"]
+  SI["svg-icons<br/>dist/svg"]
+  EXT(["@mdi/svg, @material-icons/svg"])
+  PROJ(["the consumer project<br/>configurations, magma/patterns/, playwright-core"])
+  subgraph lint["lint<br/>compiled into magma as dist/lint by scripts/build-lint.ts"]
+    CORE["src/core<br/>data, element, checks, patterns"]
+    ESL["src/eslint<br/>rules, one adapter per parser"]
+    STY["src/stylelint<br/>rules, presets"]
+    MCP["src/mcp<br/>read-only tools, check_markup runs the rules"]
+    CORE --> ESL
+    CORE --> STY
+    CORE --> MCP
+  end
+  WC & DT & ST -.-> CORE
+  WC -.->|"get_guide, get_pattern"| MCP
+  SI & EXT -.->|"find_icon"| MCP
+  PROJ -.->|"check_setup, render_preview"| MCP
+  ESL -.->|"magma/eslint"| PE(["ESLint of the project"])
+  STY -.->|"magma/stylelint"| PS(["Stylelint of the project"])
+  MCP <-.->|"bin magma-mcp, stdio"| CLIENT(["agent client<br/>Claude Code, VS Code, Cursor"])
+  MCP -->|"toolsOf"| CP["claude-plugin<br/>the skills list the tools"]
+```
+
+Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the repository;
+dashed: where the package is installed. Labels: the file, export or command that crosses
+([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
+
 ## Layout
 
 | Folder | What |

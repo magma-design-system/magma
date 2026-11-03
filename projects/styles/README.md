@@ -4,6 +4,39 @@ These are the CSS and Tailwind styles used by components libraries of [Magma Des
 
 ---
 
+### Architecture
+
+The generators turn the tokens of `design-tokens` into the semantic roles, the globals and the
+dark mode; the Tailwind 4 theme sits on them, and the token data describes both for the tools.
+The components compile their sheets against the theme; a consumer app imports the sheets in
+cascade layers.
+
+```mermaid
+flowchart LR
+  DT["design-tokens<br/>dist/css, dist/dtcg, semantic.model.ts"]
+  subgraph st["styles"]
+    GENS["scripts/<br/>semantic, corner, properties, dark-variant, hydrated"]
+    SHEETS["css/, postcss/<br/>reset, base, layer, typography"]
+    TW["tailwind/<br/>the Tailwind 4 theme, utilities"]
+    DATA["scripts/<br/>consumption from the theme, dtcg, editor-tokens"]
+    GENS --> TW
+  end
+  DT --> GENS
+  DT --> DATA
+  TW -->|"@reference"| WC["stencil<br/>component sheets"]
+  GENS -->|"generate.semantic"| CM["codemod<br/>semantic table"]
+  SHEETS & GENS & TW -.->|"dist/css, dist/tailwind"| APP(["consumer app"])
+  DATA -.->|"consumption.json, dist/dtcg"| LINT["lint<br/>core, MCP server"]
+  DATA -.->|"consumption.json, dist/dtcg"| DOCS(["docs site"])
+  DATA -.->|"tokens.editor.css"| EDITOR(["editor autocomplete"])
+```
+
+Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the repository;
+dashed: where the package is installed. Labels: the file, export or command that crosses
+([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
+
+---
+
 ### Compatibility
 
 Use the version of this package matching the major version of [`@maggioli-design-system/magma`](https://www.npmjs.com/package/@maggioli-design-system/magma) you are using:

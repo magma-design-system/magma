@@ -11,7 +11,10 @@ keep in step.
 - **Before writing code that reads an artifact**, read its entry and the section it names, and
   cite that section next to the code.
 - **When an artifact changes** what it holds, update the producer's section, every reader the
-  entry lists, and the entry when its readers or its check change.
+  entry lists, and the entry when its readers or its check change. When a reader comes or goes,
+  or the artifact moves to another file, export or command, update the `Architecture` diagrams
+  of the producer and of the readers too ([`ARCHITECTURE.md`](ARCHITECTURE.md), "Diagrams of the
+  projects").
 - **A choice the contract does not settle** (a spelling, a default, an input it does not cover)
   is written in the producer's section first, then followed by the readers, never guessed by
   one of them (`AGENTS.md`, "A choice with no source").

@@ -2,6 +2,32 @@
 
 Magma React specific building blocks on top of [@maggioli-design-system/magma](https://www.npmjs.com/package/@maggioli-design-system/magma) components.
 
+## Architecture
+
+Every source of this package is written by the stencil build: a client wrapper per component, a
+server wrapper that renders it with the hydrate module of magma, and a barrel of re-exports. The
+package compiles them; at runtime the wrappers load the custom elements of magma.
+
+```mermaid
+flowchart LR
+  WC["stencil<br/>package magma, reactOutputTarget"]
+  subgraph re["stencil-react<br/>package @maggioli-design-system/magma-react"]
+    CLIENT["client wrappers<br/>src/tag.ts, generated"]
+    SERVER["server wrappers<br/>src/tag.server.ts, generated"]
+    BARREL["src/components.ts<br/>re-exports only"]
+  end
+  WC -->|"writes src/ at every build"| CLIENT & SERVER & BARREL
+  BARREL -->|"MdsX, imported by its React fixtures"| CM["codemod"]
+  WC -.->|"dist/components/tag.js"| CLIENT
+  WC -.->|"./hydrate: renderToString, declarative shadow DOM"| SERVER
+  SERVER -.->|"on the client"| CLIENT
+  BARREL -.->|"MdsButton, MdsText, ... from magma-react"| APP(["React app, Next.js"])
+```
+
+Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the repository;
+dashed: where the package is installed. Labels: the file, export or command that crosses
+([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
+
 ## Install with an AI agent
 
 This package ships an agent-readable install guide, versioned with the package. Point
