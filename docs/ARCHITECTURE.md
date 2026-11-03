@@ -29,6 +29,18 @@ graph TD
   WC --> RE
   WC --> AN
   RE -->|"imported by its React fixtures"| CM
+  class LINT,CP ai
+  class ID,SI,IC assets
+  class DT,ST visual
+  class WC,RE,AN components
+  class CM tooling
+  classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
+  classDef assets fill:#fff1d6,stroke:#bf8700,color:#5c3d00
+  classDef visual fill:#dcf5ec,stroke:#1a7f64,color:#0b4a3a
+  classDef components fill:#ddf0ff,stroke:#0969da,color:#0a3069
+  classDef tooling fill:#eceff3,stroke:#57606a,color:#24292f
+  classDef outside fill:#ffffff,stroke:#8c959f,color:#24292f
+  classDef area fill:none,stroke:#8c959f
 ```
 
 **Required build order**: `design-tokens` → `styles`, and `svg-icons`, before `stencil` → `stencil-react`, `stencil-angular`
@@ -67,6 +79,24 @@ They follow one convention, so they read alike:
   [`CONTRACTS.md`](CONTRACTS.md) names it.
 - A node that stands for another project starts its label with the name of the project
   (`stencil<br/>build-lint.ts`): that is how the check tells it.
+- The colour of a box is its axis, given by a `class` line at the end of the diagram; the
+  subgraph of the project is `area`, a grey outline. A box that mixes two axes takes the one it
+  mostly serves.
+
+  | Axis | Colour | What it covers |
+  | --- | --- | --- |
+  | `ai` | purple | what serves agents: the MCP server, the skills, the guides for agents, an agent's client |
+  | `assets` | amber | the icons and the brand: `svg-icons`, `icons`, `identity`, third-party icon sets |
+  | `visual` | teal | the tokens and the CSS: `design-tokens`, `styles`, the Tailwind theme, palettes, Figma variables |
+  | `components` | blue | the web components and their wrappers: `stencil`, `stencil-react`, `stencil-angular` |
+  | `tooling` | grey | the checks and the migration: lint rules, `check.*`, the codemod, editor support |
+  | `outside` | white | what has no axis: an app, a site, a product |
+
+  A project declares its axis as the Nx tag `axis:<name>` in its `project.json`, and the box that
+  stands for it takes that axis in every diagram. The styles are `PALETTE` of
+  [`scripts/diagrams.ts`](../scripts/diagrams.ts), written whole at the end of every diagram: a
+  light fill, dark text and a strong stroke read the same on the light and the dark themes of
+  GitHub.
 
 Keeping them current:
 
@@ -76,9 +106,12 @@ Keeping them current:
   (a dependency, an implicit dependency) updates the overview above too.
 - `nx run magma:check.diagrams` (`scripts/diagrams.ts`, run by the `lint` workflow) holds the
   diagrams to the project graph of Nx: every project has its diagram, every diagram draws the
-  projects the graph links to it, and the overview draws exactly the arrows of the graph. What a
-  project reads at runtime is not in the graph, so a missing dashed arrow is for the review to
-  see.
+  projects the graph links to it, and the overview draws exactly the arrows of the graph. It also
+  holds the colours: every box has an axis, a project's box has the axis of its tag, every
+  diagram has the palette, and a project without an `axis:` tag fails. What a project reads at
+  runtime is not in the graph, so a missing dashed arrow is for the review to see.
+- A new project declares its `axis:` tag, draws its diagram and joins the overview; a change of
+  `PALETTE` is written in every diagram (the check prints the line it expects).
 
 ---
 

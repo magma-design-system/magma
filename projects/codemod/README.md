@@ -31,10 +31,24 @@ flowchart LR
   RE -->|"React fixtures"| FIX
   SURF -->|"the forms of a class"| LINT["lint<br/>class rules"]
   RUN -.->|"magma-codemods: diff, reports"| APP(["consumer code on Magma 1"])
+  class LINT ai
+  class ST visual
+  class WC,RE components
+  class RULES,SURF,RUN,FIX tooling
+  class APP outside
+  class cm area
+  classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
+  classDef assets fill:#fff1d6,stroke:#bf8700,color:#5c3d00
+  classDef visual fill:#dcf5ec,stroke:#1a7f64,color:#0b4a3a
+  classDef components fill:#ddf0ff,stroke:#0969da,color:#0a3069
+  classDef tooling fill:#eceff3,stroke:#57606a,color:#24292f
+  classDef outside fill:#ffffff,stroke:#8c959f,color:#24292f
+  classDef area fill:none,stroke:#8c959f
 ```
 
 Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the repository;
-dashed: where the package is installed. Labels: the file, export or command that crosses
+dashed: where the package is installed. Labels: the file, export or command that crosses.
+Colours: purple ai, amber assets, teal visual, blue components, grey tooling, white outside
 ([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
 
 ## Usage
