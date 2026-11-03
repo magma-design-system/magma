@@ -1,10 +1,8 @@
-@supports (-moz-appearance: none) {
-  .action-open-calendar {
-    display: none;
-  }
+/* The slotted mds-input-date fields hide the native calendar button of Firefox themselves, so
+   the custom calendar button of the range stays visible, as in Chromium (#1235). */
 
+@supports (-moz-appearance: none) {
   .inputs {
     justify-content: var(--mds-input-date-range-fields-firefox-justify-content);
-    padding-right: --spacing(400);
   }
 }

@@ -1,9 +1,36 @@
+/* Firefox paints its own calendar button inside <input type="date"> and offers no pseudo-element
+   to hide it (Chromium's ::-webkit-calendar-picker-indicator has no counterpart). The custom
+   calendar button stays visible, as in Chromium, and the native one is hidden (#1235). */
+
 @supports (-moz-appearance: none) {
-  .action-open-calendar {
-    display: none;
+
+  /* in a range the field is slotted and paints nothing: clip the native button away, and give
+     back the room it takes so the fields sit as in Chromium */
+
+  :host([slot]) .input {
+    clip-path: inset(0 --spacing(500) 0 0);
+    margin-right: calc(-1 * --spacing(500));
   }
 
+  /* standalone: the field paints the background and the ring, so it cannot be clipped. The
+     native button sits at its right edge, under the square of the custom one, which is made
+     opaque with the background of the field to cover it */
+
   :host(:not([slot])) .input {
-    padding-right: --spacing(400);
+    padding-right: 0;
+  }
+
+  :host(:not([slot])) .action-open-calendar-wrapper {
+    background-color: var(--mds-input-date-background);
+    border-radius: inherit;
+    corner-shape: inherit;
+  }
+
+  :host([empty]:not([slot])) .action-open-calendar-wrapper {
+    background-color: var(--mds-input-date-field-background-empty);
+  }
+
+  :host(:not([slot])) .input:disabled ~ .action-open-calendar-wrapper {
+    background-color: rgb(var(--magma-wash-soft));
   }
 }
