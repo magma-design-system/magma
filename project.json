@@ -16,6 +16,14 @@
         "stencil-react:build",
         "stencil-angular:build"
       ]
+    },
+    "check.diagrams": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "commands": ["tsx --test scripts/diagrams.spec.ts", "tsx scripts/diagrams.ts"],
+        "parallel": false
+      }
     }
   }
 }
