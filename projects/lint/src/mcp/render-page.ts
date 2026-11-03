@@ -203,51 +203,39 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
         inside(element)
       );
     };
-    // whether an ancestor hides part of a box: a box that scrolls away inside one of them (a
-    // column of mds-table past its border on a phone, which scrolls on its own) or that one of
-    // them clips shows a part only, maybe its padding alone, which is one colour by right; so a
-    // clipped box is left out of the check, as one with display: none is. The ancestors are
-    // those of the flat tree, through the slot a child is assigned to and the host of a shadow
-    // root.
-    const clipped = (element: Element, box: DOMRect): boolean => {
-      let left = box.left;
-      let top = box.top;
-      let right = box.right;
-      let bottom = box.bottom;
-      let at: Element | null = element;
-      while (at && at !== preview) {
-        const parent: Element | null =
-          at.assignedSlot ??
-          at.parentElement ??
-          (at.parentNode instanceof ShadowRoot ? at.parentNode.host : null);
-        if (!parent) break;
-        const style = getComputedStyle(parent);
-        if (style.overflowX !== 'visible' || style.overflowY !== 'visible') {
-          const edge = parent.getBoundingClientRect();
-          if (style.overflowX !== 'visible') {
-            left = Math.max(left, edge.left);
-            right = Math.min(right, edge.right);
-          }
-          if (style.overflowY !== 'visible') {
-            top = Math.max(top, edge.top);
-            bottom = Math.min(bottom, edge.bottom);
-          }
-        }
-        at = parent;
+    // whether a box with an overflow that is not visible, up the composed tree, cuts or hides the
+    // box of an element (the last columns of a table that scrolls at a narrow width): the image
+    // holds a slice of it at most, maybe its padding alone, and the page where the rest would be,
+    // so its colours say nothing of its content; a box clips at its padding box, 1 px of slack
+    const cut = (element: Element, box: DOMRect): boolean => {
+      const up = (one: Element): Element | null => {
+        const root = one.getRootNode();
+        return (
+          one.assignedSlot ?? one.parentElement ?? (root instanceof ShadowRoot ? root.host : null)
+        );
+      };
+      for (let one = up(element); one && one !== preview; one = up(one)) {
+        const style = getComputedStyle(one);
+        const outer = one.getBoundingClientRect();
+        const left = outer.left + one.clientLeft;
+        const top = outer.top + one.clientTop;
+        if (
+          style.overflowX !== 'visible' &&
+          (box.left < left - 1 || box.right > left + one.clientWidth + 1)
+        )
+          return true;
+        if (
+          style.overflowY !== 'visible' &&
+          (box.top < top - 1 || box.bottom > top + one.clientHeight + 1)
+        )
+          return true;
       }
-      return (
-        left > box.left + 0.5 ||
-        top > box.top + 0.5 ||
-        right < box.right - 0.5 ||
-        bottom < box.bottom - 0.5
-      );
+      return false;
     };
     for (const element of preview.querySelectorAll('*')) {
       if (!isComponent(element) && element.localName !== 'img') continue;
-      // display: none (a closed overlay, `hidden`) is a choice of the markup, not a failure, and
-      // so is visibility: hidden (`invisible`: a line that keeps its place until it has something
-      // to say, the sentence of a wait, Show of the new items)
-      if (!element.checkVisibility({ visibilityProperty: true })) continue;
+      // display: none (a closed overlay, `hidden`) is a choice of the markup, not a failure
+      if (!element.checkVisibility()) continue;
       const box = element.getBoundingClientRect();
       if (box.width < 1 || box.height < 1) {
         // a box of nothing is the layout of an element whose content stands out of it: fixed on
@@ -272,7 +260,10 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
           });
         continue;
       }
-      if (box.width >= 8 && box.height >= 8 && hasContent(element) && !clipped(element, box))
+      // visibility: hidden keeps the place of content that shows later (the line that comes with
+      // a wait), a choice of the markup as display: none is: the image shows the page there
+      const shown = element.checkVisibility({ visibilityProperty: true } as CheckVisibilityOptions);
+      if (box.width >= 8 && box.height >= 8 && shown && hasContent(element) && !cut(element, box))
         regions.push({
           element: label(element),
           x: box.left + window.scrollX,

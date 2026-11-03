@@ -1381,35 +1381,22 @@ describe('render_preview', () => {
     );
     // a component with no content of its own may be one colour
     expect(kinds(await shoot('<mds-fixture></mds-fixture>'))).not.toContain('flat');
+    // nor one hidden by visibility, which keeps the place of what shows later
+    expect(
+      kinds(await shoot('<p>Ciao</p><mds-fixture style="visibility: hidden">Salva</mds-fixture>')),
+    ).not.toContain('flat');
   }, 60_000);
 
-  // round 3 of the building blocks: a column of mds-table past its border on a phone
-  test('leaves out a component an ancestor scrolls away or clips, and still sees one in view', async () => {
-    const row = (third: string) =>
-      `<div style="width: 200px; overflow-x: auto"><div style="display: flex; width: 600px">` +
-      `<mds-fixture style="flex: none; width: 150px">Visibile</mds-fixture>` +
-      `<mds-fixture style="flex: none; width: 150px; padding-left: 60px">Tagliato</mds-fixture>` +
-      `${third}</div></div>`;
-    // the second shows only its padding, the third nothing: neither is a content that does not show
-    const scrolled = await shoot(
-      row('<mds-fixture style="flex: none; width: 150px">Lontano</mds-fixture>'),
+  test('judges the components a scroll container shows whole, not those it cuts or hides', async () => {
+    // a row that scrolls: Uno shows whole, of Due only its padding, Tre stands past the edge of
+    // the row but inside the image, where the image shows the page
+    const fixture = (text: string, color = '#fff') =>
+      `<mds-fixture style="flex: none; box-sizing: border-box; width: 100px; color: ${color}">${text}</mds-fixture>`;
+    const row = await shoot(
+      `<div style="display: flex; width: 108px; overflow-x: auto">${fixture('Uno', '#2563eb')}${fixture('Due')}${fixture('Tre')}</div>`,
     );
-    expect(kinds(scrolled)).not.toContain('flat');
-    // the first, in view, painted in the colour of its own background, is still caught
-    const hidden = await shoot(
-      row('').replace('width: 150px">Visibile', 'width: 150px; color: #2563eb">Visibile'),
-    );
-    expect(hidden.problems).toContainEqual(
-      expect.objectContaining({ kind: 'flat', element: 'mds-fixture [1 of 2] "Visibile"' }),
-    );
-    // a component kept in its place but not shown yet (`invisible`) is a choice of the markup
-    expect(
-      kinds(
-        await shoot(
-          '<p>Totale</p><div style="visibility: hidden"><mds-fixture>Salva</mds-fixture></div>',
-        ),
-      ),
-    ).not.toContain('flat');
+    const flat = row.problems.filter((one) => one.kind === 'flat');
+    expect(flat).toEqual([expect.objectContaining({ element: 'mds-fixture [1 of 3] "Uno"' })]);
   }, 60_000);
 
   test('serves only the installed packages, offline, and reports what did not load', async () => {
