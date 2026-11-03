@@ -1295,6 +1295,11 @@ describe('render_preview', () => {
     expect(
       kinds(await shoot('<p>Ciao</p><mds-fixture style="visibility: hidden">Salva</mds-fixture>')),
     ).not.toContain('flat');
+    // nor one another element covers, as the window of a dialog covers the page under it
+    const layer = 'position: fixed; inset: 0; display: grid; align-items: end; background: #fff';
+    expect(
+      kinds(await shoot(`<mds-fixture>Salva</mds-fixture><div style="${layer}">Coperto</div>`)),
+    ).not.toContain('flat');
   }, 60_000);
 
   test('judges the components a scroll container shows whole, not those it cuts or hides', async () => {

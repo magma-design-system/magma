@@ -232,6 +232,15 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
       }
       return false;
     };
+    // whether another element is painted over the middle of the box: the window or the backdrop
+    // of an open dialog, a toast on the viewport; the image shows what covers it there (a button
+    // of the page under the window of mds-modal, where the fonts of Linux set it lower). An
+    // element that takes no pointer is not in the stack of the point, and is judged
+    const covered = (element: Element, box: DOMRect): boolean => {
+      const stack = document.elementsFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+      const at = stack.findIndex((one) => one === element || element.contains(one));
+      return at > 0 && stack.slice(0, at).some((one) => !one.contains(element));
+    };
     for (const element of preview.querySelectorAll('*')) {
       if (!isComponent(element) && element.localName !== 'img') continue;
       // display: none (a closed overlay, `hidden`) is a choice of the markup, not a failure
@@ -263,7 +272,14 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
       // visibility: hidden keeps the place of content that shows later (the line that comes with
       // a wait), a choice of the markup as display: none is: the image shows the page there
       const shown = element.checkVisibility({ visibilityProperty: true } as CheckVisibilityOptions);
-      if (box.width >= 8 && box.height >= 8 && shown && hasContent(element) && !cut(element, box))
+      if (
+        box.width >= 8 &&
+        box.height >= 8 &&
+        shown &&
+        hasContent(element) &&
+        !cut(element, box) &&
+        !covered(element, box)
+      )
         regions.push({
           element: label(element),
           x: box.left + window.scrollX,
