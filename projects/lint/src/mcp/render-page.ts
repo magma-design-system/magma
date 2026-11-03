@@ -203,6 +203,35 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
         inside(element)
       );
     };
+    // whether a box with an overflow that is not visible, up the composed tree, cuts or hides the
+    // box of an element (the last columns of a table that scrolls at a narrow width): the image
+    // holds a slice of it at most, maybe its padding alone, and the page where the rest would be,
+    // so its colours say nothing of its content; a box clips at its padding box, 1 px of slack
+    const cut = (element: Element, box: DOMRect): boolean => {
+      const up = (one: Element): Element | null => {
+        const root = one.getRootNode();
+        return (
+          one.assignedSlot ?? one.parentElement ?? (root instanceof ShadowRoot ? root.host : null)
+        );
+      };
+      for (let one = up(element); one && one !== preview; one = up(one)) {
+        const style = getComputedStyle(one);
+        const outer = one.getBoundingClientRect();
+        const left = outer.left + one.clientLeft;
+        const top = outer.top + one.clientTop;
+        if (
+          style.overflowX !== 'visible' &&
+          (box.left < left - 1 || box.right > left + one.clientWidth + 1)
+        )
+          return true;
+        if (
+          style.overflowY !== 'visible' &&
+          (box.top < top - 1 || box.bottom > top + one.clientHeight + 1)
+        )
+          return true;
+      }
+      return false;
+    };
     for (const element of preview.querySelectorAll('*')) {
       if (!isComponent(element) && element.localName !== 'img') continue;
       // display: none (a closed overlay, `hidden`) is a choice of the markup, not a failure
@@ -231,7 +260,10 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
           });
         continue;
       }
-      if (box.width >= 8 && box.height >= 8 && hasContent(element))
+      // visibility: hidden keeps the place of content that shows later (the line that comes with
+      // a wait), a choice of the markup as display: none is: the image shows the page there
+      const shown = element.checkVisibility({ visibilityProperty: true } as CheckVisibilityOptions);
+      if (box.width >= 8 && box.height >= 8 && shown && hasContent(element) && !cut(element, box))
         regions.push({
           element: label(element),
           x: box.left + window.scrollX,

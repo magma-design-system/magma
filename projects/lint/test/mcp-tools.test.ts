@@ -1291,7 +1291,23 @@ describe('render_preview', () => {
     );
     // a component with no content of its own may be one colour
     expect(kinds(await shoot('<mds-fixture></mds-fixture>'))).not.toContain('flat');
+    // nor one hidden by visibility, which keeps the place of what shows later
+    expect(
+      kinds(await shoot('<p>Ciao</p><mds-fixture style="visibility: hidden">Salva</mds-fixture>')),
+    ).not.toContain('flat');
   }, 60_000);
+
+  test('judges the components a scroll container shows whole, not those it cuts or hides', async () => {
+    // a row that scrolls: Uno shows whole, of Due only its padding, Tre stands past the edge of
+    // the row but inside the image, where the image shows the page
+    const fixture = (text: string, color = '#fff') =>
+      `<mds-fixture style="flex: none; box-sizing: border-box; width: 100px; color: ${color}">${text}</mds-fixture>`;
+    const row = await shoot(
+      `<div style="display: flex; width: 108px; overflow-x: auto">${fixture('Uno', '#2563eb')}${fixture('Due')}${fixture('Tre')}</div>`,
+    );
+    const flat = row.problems.filter((one) => one.kind === 'flat');
+    expect(flat).toEqual([expect.objectContaining({ element: 'mds-fixture [1 of 3] "Uno"' })]);
+  }, 30_000);
 
   test('serves only the installed packages, offline, and reports what did not load', async () => {
     const [icon] = readdirSync(path.join(fixtures, 'icons/mgg'));

@@ -289,7 +289,10 @@ or on the guide it enforces, not only on fixtures picked by hand.
   as an `mds-toast-region` with no toast, or a dialog or a popover in its light or shadow tree,
   shown in the top layer or closed, as the window of `mds-status-bar`), a
   component with text or media whose whole box is one colour (99.8% of the pixels within 8
-  levels of the most frequent one), a console error or an uncaught exception, a request the
+  levels of the most frequent one; not judged: a box hidden by `visibility: hidden`, which keeps
+  the place of content that shows later, and a box that an ancestor with an overflow that is not
+  visible cuts or hides, as the last columns of a table that scrolls at a narrow width: the image
+  holds a slice of it at most, and the page where the rest would be), a console error or an uncaught exception, a request the
   page cannot be served, a font family the text asks for with no face loaded, a word (the run
   between two places a line may break: a space, a hyphen, a dash, a slash) on more than one
   line, content taller than the image. An image is at most 2000 px a side, the cap of Claude
