@@ -1292,7 +1292,8 @@ describe('render_preview', () => {
       },
     );
     expect(styled!.problems).toEqual([]);
-  });
+    // two renders, each a browser and its budget: the default 5 s ran out on a busy runner
+  }, 60_000);
 
   test('a markup that renders well is representative: the image, its file and no problem', async () => {
     const result = await preview.run({ markup: '<mds-fixture>Salva</mds-fixture>', widths: [480] });
@@ -1308,7 +1309,8 @@ describe('render_preview', () => {
     // as tall as the content: the 24 px around the markup and the fixture
     expect(sizeOf(image!.file)).toEqual({ width: 480, height: image!.height });
     expect(image!.height).toBeLessThan(120);
-  }, 30_000);
+    // a render waits up to its own budget (TIMEOUT, 15 s, then the settle) on a busy runner
+  }, 60_000);
 
   test('names each problem with the element it is in', async () => {
     const stuck = await shoot('<mds-stuck>Ciao</mds-stuck>');
