@@ -168,15 +168,7 @@ CI runs the same `npm run lint` on every pull request (`lint` workflow), so a li
 
 ## Development setup
 
-Using VSCode you should install at least the ESLint extension (Dirk Baeumer) and configure the editor: create `.vscode/settings.json` with the following content:
-
-```json
-{
-  "eslint.workingDirectories": [
-    { "pattern": "./projects/*/" }
-  ]
-}
-```
+With VS Code, the repository brings its editor setup: `.vscode/settings.json` (ESLint on each project, the completion of the tokens and of the Tailwind classes) and `.vscode/extensions.json`, whose extensions VS Code offers to install when the folder opens. Personal preferences go in your user settings, not in these files. See [docs/EDITOR_TOKENS.md](docs/EDITOR_TOKENS.md).
 
 Commits follow the [Conventional Commits](https://www.conventionalcommits.org/) convention, enforced by commitlint + husky — see [docs/COMMITS.md](docs/COMMITS.md).
 

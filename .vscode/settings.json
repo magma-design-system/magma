@@ -1,0 +1,40 @@
+{
+  // The editor setup of this repository: project settings only (docs/EDITOR_TOKENS.md).
+  // Personal preferences go in the user settings of VS Code, not here.
+
+  // ESLint (dbaeumer.vscode-eslint): each project as its own working directory, as
+  // `npm run lint` runs it (stencil and design-tokens have a config of their own).
+  "eslint.workingDirectories": [{ "pattern": "./projects/*/" }],
+
+  // CSS Var Complete (phoenisx.cssvar): the Magma tokens inside var().
+  //
+  // One generated file: projects/styles/scripts/editor-tokens.ts gathers every public token
+  // (scales, motion, palette, semantic, globals, and the tokens of each component) in
+  // tokens.editor.css, deduplicated and in scale order. The real sheets would give 4 to 8
+  // entries per token, since the extension dedupes within one file and not across files.
+  "cssvar.files": ["projects/styles/dist/css/tokens.editor.css"],
+  // the default is ["**/node_modules/**"], applied as an ignore over cssvar.files, so it
+  // would drop the explicit paths inside node_modules too
+  "cssvar.ignore": [],
+  // no alphabetical sort of VS Code: the list keeps the order of the file, that is
+  // --radius-none 0px to --radius-full 1000px
+  "cssvar.disableSort": true,
+
+  // Tailwind CSS IntelliSense (bradlc.vscode-tailwindcss): the Magma classes in the stories
+  // and in the previews of the patterns.
+  //
+  // Without this map its discovery examines some 1800 stylesheets (every component sheet,
+  // .nx/cache, the dist folders, the worktrees) and no project claims the sources: no
+  // completion and no hover. An @source in the entry point of Storybook is not enough
+  // (measured 2026-10-21). The entry point of the previews and the drafts is written by
+  // nx run lint:serve.previews when it starts (#1220); until then it is missing, and the
+  // extension skips it (measured 2026-11-01).
+  "tailwindCSS.experimental.configFile": {
+    "projects/stencil/.storybook/styles.css": "projects/stencil/src/**",
+    ".claude/previews/tailwind.css": [".claude/previews/**", "docs/agents/patterns/previews/**"]
+  },
+
+  "[css]": {
+    "editor.inlineSuggest.enabled": false
+  }
+}

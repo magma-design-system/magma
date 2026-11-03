@@ -25,7 +25,10 @@ import {
   PREVIEW_DIR,
   render,
   renderPreview,
+  pageOf,
   STYLESHEETS,
+  TAILWIND,
+  tailwindOf,
   themesOf,
 } from '../src/mcp/render.js';
 import { createServer, INSTRUCTIONS, toolsList, toolsOf } from '../src/mcp/server.js';
@@ -1107,6 +1110,64 @@ describe('render_preview', () => {
     expect(STYLESHEETS).toEqual(imports);
     expect(block).toContain(LAYERS);
   });
+
+  test('compiles the Tailwind entry of agents/assets.md on the classes of the markup', async () => {
+    const guide = readFileSync(
+      path.join(import.meta.dirname, '../../../docs/agents/assets.md'),
+      'utf8',
+    );
+    const block = guide.split('### Tailwind (optional)')[1]!.split('```')[1]!;
+    expect(TAILWIND.split('\n')).toEqual(
+      block.split('\n').filter((one) => one.startsWith('@import')),
+    );
+    const css = (await tailwindOf(
+      renderContext,
+      '<mds-dropdown class="p-0 max-w-form dark:bg-surface-sunken">Salva</mds-dropdown>',
+    ))!;
+    expect(css).toMatch(/\.p-0 \{\s*padding: 0px;/);
+    expect(css).toMatch(/\.max-w-form \{\s*max-width: var\(--container-form\);/);
+    // dark: on the Magma mode, not the system's only (#1100)
+    expect(css).toMatch(
+      /\.dark\\:bg-surface-sunken:where\(:root:not\(\.pref-theme-scheme-light\)\.pref-mode-dark/,
+    );
+    // a token that names no utility gives nothing
+    expect(css).not.toContain('Salva');
+    // in the page, after the stylesheets of the consumer
+    const page = pageOf(renderContext, { markup: '<div class="p-0"></div>', utilities: css });
+    expect(page.indexOf(css)).toBeGreaterThan(page.lastIndexOf('@import url('));
+    expect(
+      await tailwindOf({ ...renderContext, tailwind: false }, '<div class="p-0"></div>'),
+    ).toBeUndefined();
+  });
+
+  test('classes in a project without Tailwind 4 are a problem of the image', async () => {
+    const [image] = await render(
+      { ...renderContext, tailwind: false },
+      {
+        markup: '<mds-fixture class="p-0">Salva</mds-fixture>',
+        widths: [480],
+        mode: 'light',
+        timeout: 3000,
+      },
+    );
+    expect(image!.problems).toEqual([
+      expect.objectContaining({
+        kind: 'asset',
+        detail: expect.stringContaining('the project has no Tailwind 4'),
+      }),
+    ]);
+    // classes with a style element of their own are not Tailwind's
+    const [styled] = await render(
+      { ...renderContext, tailwind: false },
+      {
+        markup: '<style>.own { padding: 0 }</style><mds-fixture class="own">Salva</mds-fixture>',
+        widths: [480],
+        mode: 'light',
+        timeout: 3000,
+      },
+    );
+    expect(styled!.problems).toEqual([]);
+  }, 30_000);
 
   test('a markup that renders well is representative: the image, its file and no problem', async () => {
     const result = await preview.run({ markup: '<mds-fixture>Salva</mds-fixture>', widths: [480] });

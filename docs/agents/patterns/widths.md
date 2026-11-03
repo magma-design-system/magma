@@ -43,8 +43,7 @@ cases:
     where: "half the column of its form: the whole mds-input-field (label, control, message), not the control inside it; two short fields of one subject share a row, in reading order, and under a column of `28rem` the halves take the whole column. `field-group` on the group lays them out and reads the attribute `short` on its children, so the attribute works before mds-input-field takes it as a property (#1202)"
     use: ["mds-input-field"]
     serves: [enabling, intuitive]
-    carried-by: [field-group]
-    carried-by-planned: [mds-input-field short]
+    carried-by: [field-group, mds-input-field short]
   - id: page
     box: [page, collection]
     where: "`page-frame` on the page: at most 1280 px, centred in the window, a gutter of `600` outside it, the column the bar gives its own content; everything inside starts at the start edge of the frame, and a table or a list takes the whole frame"
@@ -117,7 +116,7 @@ A case that leaves a variable out holds for any of its values.
 | --- | --- | --- | --- | --- | --- |
 | `reading` | box: text | the reading measure, `56ch` (65 to 80 characters on a full line in Karla): the reset caps `p`, `li` and `figcaption`, and mds-text caps itself with those tags, so whoever writes a page writes nothing; `max-w-text` elsewhere |  | inclusive | `mds-text`, `--magma-width-reading`, `max-w-text` |
 | `form` | box: form | `max-w-form` on the form, the width of the text around it (`56ch`, 532 px at 16 px); its fields take the whole column, and its row of actions stands at the end of the column (`actions/place`) |  | inclusive, enabling | `max-w-form`, `--magma-width-form` |
-| `field` | box: short-field | half the column of its form: the whole mds-input-field (label, control, message), not the control inside it; two short fields of one subject share a row, in reading order, and under a column of `28rem` the halves take the whole column. `field-group` on the group lays them out and reads the attribute `short` on its children, so the attribute works before mds-input-field takes it as a property (#1202) | `mds-input-field` | enabling, intuitive | `field-group`; planned: mds-input-field short |
+| `field` | box: short-field | half the column of its form: the whole mds-input-field (label, control, message), not the control inside it; two short fields of one subject share a row, in reading order, and under a column of `28rem` the halves take the whole column. `field-group` on the group lays them out and reads the attribute `short` on its children, so the attribute works before mds-input-field takes it as a property (#1202) | `mds-input-field` | enabling, intuitive | `field-group`, `mds-input-field short` |
 | `page` | box: page or collection | `page-frame` on the page: at most 1280 px, centred in the window, a gutter of `600` outside it, the column the bar gives its own content; everything inside starts at the start edge of the frame, and a table or a list takes the whole frame |  | intuitive | `page-frame`, `--magma-width-page`, `--magma-width-page-gutter` |
 | `dialog` | box: dialog | at most the column of a form plus its inset, `--magma-width-dialog` (580 px at 16 px), one width for every dialog, confirmations included; on a phone the window takes the screen, as mds-modal does under 480 px. Until mds-modal gives it to its window (#1202) the window takes `w-full max-w-(--magma-width-dialog)` | `mds-modal`, `mds-banner slot=window` | enabling, intuitive | `--magma-width-dialog` |
 

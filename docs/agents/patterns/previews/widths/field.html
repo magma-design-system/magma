@@ -1,23 +1,21 @@
 <!--
 try: Look at Civico and CAP: two short fields of one address share a row, each half the column. Narrow the stage under 28rem: they take the whole column, one under the other.
 -->
-<form style="max-width: var(--magma-width-form)">
-  <fieldset
-    style="align-items: start; border: 0; display: grid; gap: var(--magma-rhythm-between-fields); grid-template-columns: repeat(auto-fill, minmax(min(100%, max(14rem - var(--magma-rhythm-between-fields) / 2, (100% - var(--magma-rhythm-between-fields)) / 2 - 1px)), 1fr)); margin: 0; min-inline-size: 0; padding: 0"
-  >
-    <legend style="margin-block-end: var(--magma-rhythm-title-content); padding: 0">
+<form class="max-w-form">
+  <fieldset class="field-group">
+    <legend>
       <mds-text typography="h6">Nuova residenza</mds-text>
     </legend>
-    <mds-input-field label="Via" style="grid-column: 1 / -1">
+    <mds-input-field label="Via">
       <mds-input value="Via Emilia"></mds-input>
     </mds-input-field>
-    <mds-input-field label="Civico">
+    <mds-input-field label="Civico" short>
       <mds-input value="12/A"></mds-input>
     </mds-input-field>
-    <mds-input-field label="CAP" variant="error" message="Il CAP ha cinque cifre: ne mancano due.">
+    <mds-input-field label="CAP" short variant="error" message="Il CAP ha cinque cifre: ne mancano due.">
       <mds-input value="470"></mds-input>
     </mds-input-field>
-    <mds-input-field label="Comune" style="grid-column: 1 / -1">
+    <mds-input-field label="Comune">
       <mds-input value="Santarcangelo di Romagna"></mds-input>
     </mds-input-field>
   </fieldset>
