@@ -5,6 +5,48 @@
 The icon **font** of the Maggioli Design System (`mgg-icons`), built from Maggioli artwork plus
 Google Material and Material Design Icons community sets.
 
+##### Architecture
+
+The dictionary maps each class of the font to a source icon in one of four groups; the check
+holds it to the sources before every build, so an icon is either in the font or declared out of
+it.
+
+```mermaid
+flowchart LR
+  SI["svg-icons<br/>dist/svg"]
+  EXT(["material-design-icons-updated,<br/>@material-icons/svg, @mdi/svg"])
+  subgraph ic["icons"]
+    DICT["dictionary.json<br/>font class to source icon"]
+    UNM["unmapped-icons.json<br/>sources kept out"]
+    CHECK["check.dictionary"]
+    FONT["scripts/font-icons.ts<br/>svgtofont"]
+    DICT --> CHECK
+    UNM --> CHECK
+    CHECK --> FONT
+    DICT --> FONT
+  end
+  SI -->|"group maggioli"| FONT
+  SI --> CHECK
+  EXT -->|"groups material, material-icons-svg, mdi"| FONT
+  FONT -.->|"dist: the mgg-icons font, CSS, SCSS, LESS"| APP(["consumer app<br/>class mgg-icons-*"])
+  class SI,EXT,DICT,UNM,FONT assets
+  class CHECK tooling
+  class APP outside
+  class ic area
+  classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
+  classDef assets fill:#fff1d6,stroke:#bf8700,color:#5c3d00
+  classDef visual fill:#dcf5ec,stroke:#1a7f64,color:#0b4a3a
+  classDef components fill:#ddf0ff,stroke:#0969da,color:#0a3069
+  classDef tooling fill:#eceff3,stroke:#57606a,color:#24292f
+  classDef outside fill:#ffffff,stroke:#8c959f,color:#24292f
+  classDef area fill:none,stroke:#8c959f
+```
+
+Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the repository;
+dashed: where the package is installed. Labels: the file, export or command that crosses.
+Colours: purple ai, amber assets, teal visual, blue components, grey tooling, white outside
+([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
+
 ##### Installation
 
 ```

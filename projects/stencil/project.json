@@ -2,7 +2,7 @@
   "name": "stencil",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
-  "tags": ["type:lib"],
+  "tags": ["type:lib", "axis:components"],
   "implicitDependencies": ["lint", "identity"],
   "targets": {
     "build": {

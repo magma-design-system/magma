@@ -18,6 +18,79 @@ server and the guides of the version installed in the project. So the plugin car
 `version` and follows the commits of `main` (the validator warns about it, on purpose), and
 it stays right for a project on any release.
 
+## Architecture
+
+The generator fills each template with what it lists, read from where it is decided. Claude Code
+gets the plugin from the marketplace of this repository, loads the skills when a job comes up and
+starts the server of the magma version installed in the project.
+
+```mermaid
+flowchart LR
+  LINT["lint<br/>src/mcp: toolsOf"]
+  AG["docs/agents<br/>SPEC.md, lint.md"]
+  CM["codemod<br/>package.json"]
+  MKT[".claude-plugin/marketplace.json<br/>at the repository root"]
+  subgraph cp["claude-plugin<br/>served from main, not on npm"]
+    GEN["scripts/skills.ts<br/>fills templates/, checks"]
+    SK["skills/*/SKILL.md<br/>generated, one per template"]
+    MAN[".claude-plugin/plugin.json<br/>.mcp.json: npx --no magma-mcp"]
+    GEN --> SK
+  end
+  LINT & AG & CM --> GEN
+  MKT --> MAN
+  SERVER["stencil<br/>package magma, installed: magma-mcp"] <-.->|"tool calls, stdio"| CC(["Claude Code in the consumer project"])
+  MAN -.->|"magma@magma, starts the server"| CC
+  SK -.->|"loaded on demand"| CC
+  class LINT,AG,MKT,GEN,SK,MAN,CC ai
+  class SERVER components
+  class CM tooling
+  class cp area
+  classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
+  classDef assets fill:#fff1d6,stroke:#bf8700,color:#5c3d00
+  classDef visual fill:#dcf5ec,stroke:#1a7f64,color:#0b4a3a
+  classDef components fill:#ddf0ff,stroke:#0969da,color:#0a3069
+  classDef tooling fill:#eceff3,stroke:#57606a,color:#24292f
+  classDef outside fill:#ffffff,stroke:#8c959f,color:#24292f
+  classDef area fill:none,stroke:#8c959f
+```
+
+Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the repository;
+dashed: where the package is installed. Labels: the file, export or command that crosses.
+Colours: purple ai, amber assets, teal visual, blue components, grey tooling, white outside
+([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
+
+## Why an MCP server and skills
+
+They are not alternatives: they answer different questions, and the skills call the server.
+
+- **A skill is a procedure**: what to do, and in which order, for a whole job (setting Magma
+  up, reviewing, migrating, writing UI). It is Markdown that Claude Code loads when the job
+  comes up, by itself (`ui`) or on a command (`/magma:setup`).
+- **The server is data and computation**: what is true in the version of Magma installed in the
+  project. The skills call its tools; without it, they fall back to the guides installed with
+  the package.
+
+Why the data is not in the skills:
+
+1. **The version.** The plugin follows `main` and serves projects on any release, while the
+   API, the tokens and the icon slugs change from one release to the next. The server is a
+   command of the magma package (`magma-mcp`), so it answers from the `documentation.json`, the
+   DTCG data and the consumption map of the version the project installed (#1083).
+2. **Computation, not text.** `check_markup` runs the project's ESLint and Stylelint on a
+   snippet, `suggest_role` finds the role nearest to a colour, `check_setup` reads the files of
+   the project, `explain_class` resolves a class with the Magma theme. A skill could carry
+   scripts, but they would be code at the version of `main`, not at the project's.
+3. **Other clients.** MCP is a standard: VS Code (GitHub Copilot) and Cursor start the same
+   server ([`docs/agents/mcp.md`](../../docs/agents/mcp.md)); the plugin is for Claude Code.
+4. **Fewer tokens.** A tool answers one question, where the agent would otherwise read the
+   catalogue, the `AGENTS.md` of a component or a whole guide (the "Instead of" column of
+   `agents/mcp.md`).
+
+The server is not a remote service: the agent's client starts it from `node_modules` with
+`npx --no magma-mcp` and speaks JSON-RPC to it on stdio, with no network. The order was decided
+in #1083: the lint first (deterministic), then the server on the same data core, then the skills
+on top.
+
 ## How people get it
 
 A project registers it for the whole team in its committed `.claude/settings.json`, as

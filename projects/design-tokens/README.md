@@ -4,6 +4,52 @@ Generates design tokens for colors and other type of agnostic tokens targeted on
 
 This library is based on [Adobe Leonardo][adobe-leonardo] and [Amazon Style Dictionary][style-dictionary].
 
+# Architecture
+
+One configuration generates the palette; Style Dictionary writes it, with the other tokens, in
+every format, and the DTCG export describes the whole set, the semantic layer included. `styles`
+builds on the CSS and on the semantic model; the tools read the DTCG data where the package is
+installed.
+
+```mermaid
+flowchart LR
+  subgraph dt["design-tokens"]
+    GEN["generator, CLI, src/lib<br/>.magma-design-tokensrc.json, Leonardo"]
+    TOK["tokens/<br/>sizing, typography, screen"]
+    SD["Style Dictionary<br/>src/formats"]
+    MODEL["semantic.model.ts<br/>dark-scheme.ts"]
+    DTCG["DTCG export<br/>scripts/dtcg"]
+    GEN --> SD
+    TOK --> SD
+    MODEL --> DTCG
+    SD --> DTCG
+  end
+  SD & MODEL & DTCG -->|"dist/css, dist/dtcg, semantic model"| ST["styles"]
+  DTCG -->|"dist/dtcg"| WC["stencil<br/>usage docs check"]
+  DTCG -.->|"dist/dtcg"| LINT["lint<br/>core, MCP server"]
+  DTCG -.->|"dist/dtcg"| DOCS(["docs site, design tools"])
+  SD -.->|"android, ios-swift, flutter"| NATIVE(["native apps"])
+  SD -.->|"dist/json"| FIGMA(["Figma variables"])
+  GEN -.->|"npx magma-design-tokens"| PROD(["a product palette"])
+  class LINT ai
+  class GEN,TOK,SD,MODEL,DTCG,ST,FIGMA,PROD visual
+  class WC components
+  class DOCS,NATIVE outside
+  class dt area
+  classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
+  classDef assets fill:#fff1d6,stroke:#bf8700,color:#5c3d00
+  classDef visual fill:#dcf5ec,stroke:#1a7f64,color:#0b4a3a
+  classDef components fill:#ddf0ff,stroke:#0969da,color:#0a3069
+  classDef tooling fill:#eceff3,stroke:#57606a,color:#24292f
+  classDef outside fill:#ffffff,stroke:#8c959f,color:#24292f
+  classDef area fill:none,stroke:#8c959f
+```
+
+Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the repository;
+dashed: where the package is installed. Labels: the file, export or command that crosses.
+Colours: purple ai, amber assets, teal visual, blue components, grey tooling, white outside
+([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
+
 # Compatibility
 
 Use the version of this package matching the major version of [`@maggioli-design-system/magma`](https://www.npmjs.com/package/@maggioli-design-system/magma) you are using:

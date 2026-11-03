@@ -7,6 +7,50 @@ need a human decision.
 
 ESM package, Node ≥ 22.
 
+## Architecture
+
+The rules are a manifest, drafted from the `documentation.json` of a v1 and a v2 build and
+reviewed by hand, plus a table from raw colours to roles; one module per surface finds where an
+attribute or a class is written. The lint reads classes in the same forms.
+
+```mermaid
+flowchart LR
+  WC["stencil<br/>documentation.json, v1 and v2"]
+  ST["styles<br/>dist, with v1 design-tokens"]
+  RE["stencil-react<br/>MdsX"]
+  subgraph cm["codemod<br/>package @maggioli-design-system/magma-codemods"]
+    RULES["src/manifest, src/semantic<br/>v1 to v2 rules, colour to role"]
+    SURF["src/surfaces<br/>html, react, angular, css"]
+    RUN["src/cli.ts, src/index.ts<br/>applies the rules, src/report"]
+    FIX["fixtures/<br/>cases per rule and surface"]
+    RULES --> RUN
+    SURF --> RUN
+  end
+  WC -->|"generate.candidate"| RULES
+  ST -->|"generate.semantic"| RULES
+  RE -->|"React fixtures"| FIX
+  SURF -->|"the forms of a class"| LINT["lint<br/>class rules"]
+  RUN -.->|"magma-codemods: diff, reports"| APP(["consumer code on Magma 1"])
+  class LINT ai
+  class ST visual
+  class WC,RE components
+  class RULES,SURF,RUN,FIX tooling
+  class APP outside
+  class cm area
+  classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
+  classDef assets fill:#fff1d6,stroke:#bf8700,color:#5c3d00
+  classDef visual fill:#dcf5ec,stroke:#1a7f64,color:#0b4a3a
+  classDef components fill:#ddf0ff,stroke:#0969da,color:#0a3069
+  classDef tooling fill:#eceff3,stroke:#57606a,color:#24292f
+  classDef outside fill:#ffffff,stroke:#8c959f,color:#24292f
+  classDef area fill:none,stroke:#8c959f
+```
+
+Rectangles: this repository; rounded boxes: outside it. Solid arrows: inside the repository;
+dashed: where the package is installed. Labels: the file, export or command that crosses.
+Colours: purple ai, amber assets, teal visual, blue components, grey tooling, white outside
+([convention](../../docs/ARCHITECTURE.md#diagrams-of-the-projects)).
+
 ## Usage
 
 ```bash
