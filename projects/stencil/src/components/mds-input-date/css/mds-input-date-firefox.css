@@ -8,8 +8,8 @@
      back the room it takes so the fields sit as in Chromium */
 
   :host([slot]) .input {
-    clip-path: inset(0 --spacing(700) 0 0);
-    margin-right: calc(-1 * --spacing(700));
+    clip-path: inset(0 --spacing(500) 0 0);
+    margin-right: calc(-1 * --spacing(500));
   }
 
   /* standalone: the field paints the background and the ring, so it cannot be clipped. The
