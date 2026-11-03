@@ -15,6 +15,7 @@
 */
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { magmaRoot } from '../core/data.js';
@@ -59,6 +60,74 @@ export const STYLESHEETS: Array<{ module: string; layer: string }> = [
 /** The layer order those imports rely on, the first line of the same block. */
 export const LAYERS = '@layer reset, vendor, theme, base, components, utilities, overrides;';
 
+/**
+ * The Tailwind entry point of a consumer, agents/assets.md, "Tailwind (optional)": the page
+ * compiles it with the project's Tailwind 4 on the classes of the markup, so the markup may
+ * write the Magma utilities (`max-w-form`, `p-0`, `dark:`) as a product with Tailwind writes
+ * them (#1220). A test holds it to the block of the guide.
+ */
+export const TAILWIND = `@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import '@maggioli-design-system/styles/dist/tailwind/theme.css';
+@import '@maggioli-design-system/styles/dist/tailwind/typography.css';
+@import '@maggioli-design-system/styles/dist/tailwind/utilities.css';`;
+
+type Compile = (
+  css: string,
+  options: {
+    base: string;
+    loadStylesheet: (
+      id: string,
+      base: string,
+    ) => Promise<{ path: string; base: string; content: string }>;
+  },
+) => Promise<{ build: (candidates: string[]) => string }>;
+
+/** A module resolved from a folder, as an @import of a stylesheet there resolves it. */
+const resolveIn = (base: string, id: string): string | undefined => {
+  if (id.startsWith('.') || path.isAbsolute(id)) return path.resolve(base, id);
+  try {
+    return createRequire(path.join(base, 'package.json')).resolve(id);
+  } catch {
+    return undefined;
+  }
+};
+
+/**
+ * The CSS of the Tailwind classes of the markup, or undefined when the project has no
+ * Tailwind 4 (`compile` of tailwindcss, the API its PostCSS and Vite plugins call). The
+ * candidates are the tokens of the markup between spaces, quotes, angle brackets and `=`:
+ * Tailwind keeps the ones that name a utility and drops the others, as when it scans a
+ * source, so a word of the text that names one (`flex`) gives its rule, as in a build.
+ */
+export const tailwindOf = async (
+  context: ToolContext,
+  markup: string,
+): Promise<string | undefined> => {
+  const file = context.tailwind === false ? undefined : resolvePackage(context, 'tailwindcss');
+  if (!file) return undefined;
+  const module = (await import(pathToFileURL(file).href)) as {
+    compile?: Compile;
+    default?: { compile?: Compile };
+  };
+  const compile = module.compile ?? module.default?.compile;
+  // Tailwind 3 has no compile: its classes come from its own build
+  if (!compile) return undefined;
+  const compiler = await compile(TAILWIND, {
+    base: context.root,
+    loadStylesheet: async (id, base) => {
+      const found = resolveIn(base, id) ?? resolvePackage(context, id);
+      if (!found || !existsSync(found))
+        throw new ToolError(
+          `The Tailwind entry of agents/assets.md imports ${id}, which the project does not have.`,
+        );
+      return { path: found, base: path.dirname(found), content: readFileSync(found, 'utf8') };
+    },
+  });
+  const candidates = [...new Set(markup.split(/[\s"'`<>=]+/).filter(Boolean))];
+  return compiler.build(candidates);
+};
+
 /** `@fontsource/karla/400.css` -> `@fontsource/karla`. */
 const packageOf = (module: string): string => {
   const [first, second] = module.split('/');
@@ -73,7 +142,18 @@ const loaderOf = (context: ToolContext): string =>
   context.loader ?? path.join(magmaRoot(context.settings), LOADER);
 
 /** The path mds-icon fetches the icons from, set the way agents/assets.md gives (the sessionStorage key). */
-const ICON_PATH = '/svg/';
+export const ICON_PATH = '/svg/';
+
+/**
+ * The first script of the page, before the loader: mds-icon reads its path before the first
+ * icon renders; Stencil emits appload once the components of the first load are ready
+ * (./render-page.ts); `__name` is the helper a TypeScript runner that keeps function names
+ * (tsx) puts in the source sent to the page. In the page, not in an init script of the
+ * driver, so that the page serve.previews shows (scripts/serve-previews.ts) is this one.
+ */
+export const INIT_SCRIPT = `sessionStorage.setItem('mdsIconSvgPath', '${ICON_PATH}');
+addEventListener('appload', () => { window.magmaAppLoaded = true; });
+globalThis.__name = (fn) => fn;`;
 
 export const MODES = ['light', 'dark'] as const;
 
@@ -84,7 +164,7 @@ export const MODES = ['light', 'dark'] as const;
  */
 export const MAX_SIDE = 2000;
 export const MAX_IMAGES = 4;
-const MIN_WIDTH = 320;
+export const MIN_WIDTH = 320;
 
 /** A stylesheet of the installed styles, or undefined. */
 const stylesOf = (context: ToolContext, name: string): string | undefined => {
@@ -187,7 +267,7 @@ const launch = async (chromium: Chromium): Promise<Browser> => {
 };
 
 /** The file a path of the page is served from, or undefined when the page may not read it. */
-const fileOf = (context: ToolContext, pathname: string): string | undefined => {
+export const fileOf = (context: ToolContext, pathname: string): string | undefined => {
   const inside = (dir: string | undefined, rest: string) => {
     if (!dir) return undefined;
     const file = path.resolve(dir, rest);
@@ -214,7 +294,8 @@ const fileOf = (context: ToolContext, pathname: string): string | undefined => {
   return undefined;
 };
 
-const TYPES: Record<string, string> = {
+/** The content types of the files the page loads, by extension. */
+export const TYPES: Record<string, string> = {
   '.js': 'text/javascript',
   '.mjs': 'text/javascript',
   '.css': 'text/css',
@@ -225,8 +306,14 @@ const TYPES: Record<string, string> = {
   '.ttf': 'font/ttf',
 };
 
+/** What makes the page; the other options are how it is captured. */
+export type PageOptions = Pick<Options, 'markup' | 'wholePage' | 'prefMode' | 'theme' | 'lang'> & {
+  /** The CSS of the Tailwind classes of the markup (`tailwindOf`). */
+  utilities?: string;
+};
+
 /** The page: the stylesheets of a consumer, the loader of the components, the markup. */
-const pageOf = (context: ToolContext, options: Options): string => {
+export const pageOf = (context: ToolContext, options: PageOptions): string => {
   // each module as Node resolves it from the project: a bare `normalize.css` is its main file
   const imports = STYLESHEETS.flatMap(({ module, layer }) => {
     const file = resolvePackage(context, module);
@@ -237,15 +324,20 @@ const pageOf = (context: ToolContext, options: Options): string => {
   });
   const lang = options.lang ? ` lang="${options.lang}"` : '';
   const theme = options.theme ? ` data-theme-name="${options.theme}"` : '';
+  const pref = options.prefMode ? ` data-magma-pref class="pref-mode-${options.prefMode}"` : '';
   return `<!doctype html>
-<html${lang}${theme}>
+<html${lang}${theme}${pref}>
 <head>
 <meta charset="utf-8">
 <style>
 ${LAYERS}
 ${imports.join('\n')}
+${(options.utilities ?? '').replace(/<\/style/gi, '<\\/style')}
 #${PREVIEW_ID} { display: flow-root; padding: ${options.wholePage ? 0 : 24}px; }
 </style>
+<script>
+${INIT_SCRIPT}
+</script>
 <script type="module" src="/components/${path.basename(loaderOf(context))}"></script>
 </head>
 <body>
@@ -266,6 +358,14 @@ interface Options {
   /** The markup is a whole page, with a frame of its own: no inset around it. */
   wholePage?: boolean;
   mode: (typeof MODES)[number];
+  /**
+   * The mode set in the page, as a controller sets it (`data-magma-pref` and
+   * `pref-mode-<mode>` on <html>, styles/SPEC.md), instead of the mode of the system the
+   * driver emulates: a browser gives a frame the prefers-color-scheme of the system,
+   * whatever the color-scheme of the frame (Chrome 154), so serve.previews sets it this
+   * way; the tests prove the image is the one of the emulated mode.
+   */
+  prefMode?: (typeof MODES)[number];
   theme?: string;
   lang?: string;
   /** How long a page may take to load and settle: the tests shorten it. */
@@ -323,14 +423,6 @@ const capture = async (
         contentType: TYPES[path.extname(file)] ?? 'application/octet-stream',
       });
     });
-    // mds-icon reads its path before the first icon renders; Stencil emits appload once the
-    // components of the first load are ready (./render-page.ts); `__name` is the helper a
-    // TypeScript runner that keeps function names (tsx) puts in the source sent to the page
-    await session.addInitScript(
-      `sessionStorage.setItem('mdsIconSvgPath', '${ICON_PATH}');
-addEventListener('appload', () => { window.magmaAppLoaded = true; });
-globalThis.__name = (fn) => fn;`,
-    );
     const page = await session.newPage();
     page.on('console', (message: { type: () => string; text: () => string }) => {
       // the browser's own line for a failed request: the asset problem names it better
@@ -392,7 +484,22 @@ export const render = async (
   const version =
     readJsonFile<{ version: string }>(path.join(magmaRoot(context.settings), 'package.json'))
       ?.version ?? '';
-  const html = pageOf(context, options);
+  const utilities = await tailwindOf(context, options.markup);
+  const html = pageOf(context, { ...options, ...(utilities ? { utilities } : {}) });
+  // classes with no style element of the markup to give them rules are Tailwind classes, which
+  // a project without Tailwind 4 cannot compile: the image shows them without their rules
+  const untailwinded: PageProblem[] =
+    utilities === undefined &&
+    /\bclass\s*=/i.test(options.markup) &&
+    !/<style\b/i.test(options.markup)
+      ? [
+          {
+            kind: 'asset',
+            detail:
+              'The markup has classes and the project has no Tailwind 4 (tailwindcss): its Tailwind classes give nothing in the image. Install it (agents/assets.md, "Tailwind (optional)"), or write the custom property a class carries in a style attribute.',
+          },
+        ]
+      : [];
   const out = path.join(context.root, PREVIEW_DIR);
   mkdirSync(out, { recursive: true });
   // the same markup, options and magma give the same file, written again: the time a page
@@ -406,7 +513,9 @@ export const render = async (
   try {
     const images: Array<Image & { png: Buffer }> = [];
     for (const width of options.widths) {
-      const { png, height, problems } = await capture(context, browser, html, width, options);
+      const captured = await capture(context, browser, html, width, options);
+      const { png, height } = captured;
+      const problems = [...untailwinded, ...captured.problems];
       const file = path.join(out, `${id}-${width}-${options.mode}.png`);
       writeFileSync(file, png);
       images.push({ width, height, file, png, representative: !problems.length, problems });
@@ -423,7 +532,7 @@ const string = { type: 'string' };
  * The preview of a case Magma ships, by the id of its pattern (an old one too) and of its case;
  * the words of the previews are Italian, as the examples of the components (docs/PATTERNS.md).
  */
-const PREVIEW_LANG = 'it';
+export const PREVIEW_LANG = 'it';
 const shippedPreview = (context: ToolContext, pattern: string, id: string) => {
   const dir = path.join(magmaRoot(context.settings), 'agents', 'patterns');
   const { byId, aliases } = indexPatterns(readPatternDir(dir).map((one) => one.data));

@@ -152,7 +152,9 @@ keep in step.
   catalogue `agents/patterns.md` and the preview of each case
   (`agents/patterns/previews/<id>/<case>.html`: the stage, what to try in it, an optional
   height and `whole-page`, a stage with a frame of its own that takes no inset; never a page,
-  the reader adds the stylesheets and the loader and runs it in a document of its own); the
+  the reader adds the stylesheets and the loader, compiles its Tailwind classes with the entry
+  point of `agents/assets.md`, "Tailwind (optional)" (#1220), and runs it in a document of its
+  own); the
   domains of the design language (`kind: foundation`, #1189), the rules of composition the
   patterns stand on, in the same folder and catalogue, each case and rule with the principle it
   serves (`serves`) and where it lives (`carried-by`, `carried-by-planned`);
@@ -173,7 +175,8 @@ keep in step.
   `get_guide` (each domain as a guide) and `get_component` (the rules of the domains that govern
   a component), the `ui`, `review` and `pattern-layer` skills of the Claude Code plugin, `pr-risk`
   (`patternChanges` of `projects/stencil/scripts/pr-risk-lib.ts`), the agents of the products,
-  the docs site (the previews: magma-design-system/docs#89).
+  the docs site (the previews: magma-design-system/docs#89), `lint:serve.previews` (the
+  previews, live, `projects/lint/scripts/serve-previews.ts`).
 - **Held by**: `check.patterns` (the format, every combination in one case, the components,
   attributes, lint rules and links named, the rules of the domains a case names, the carriers
   of a domain in the release and the planned ones not yet, the generated sections; a product's folder with
@@ -224,18 +227,23 @@ keep in step.
 ## The page a render loads
 
 - **What**: what `render_preview` puts on its page and reads off it: the import block of the
-  stylesheets, the lazy loader of the components (`dist/magma-components`), the flag of a
+  stylesheets, the Tailwind entry point compiled on the classes of the markup with the
+  project's Tailwind 4, the lazy loader of the components (`dist/magma-components`), the flag of a
   hydrated component, the Magma breakpoints (`--breakpoint-*` of `typography.css`) and the named
   themes (`data-theme-name` of `themes.css`).
-- **Produced by**: `docs/agents/assets.md` (the import block); the stencil build (the loader, and
+- **Produced by**: `docs/agents/assets.md` (the import block, and the Tailwind entry point of
+  "Tailwind (optional)" with `projects/styles/dist/tailwind`); the stencil build (the loader, and
   Stencil's `appload` event and `hydrated` flag, `hydratedFlag` of `stencil.config.ts`);
   `projects/styles` (`hydrated.css`, which hides a component until the flag, `typography.css`,
   `themes.css`).
-- **Contract**: [`docs/agents/assets.md`](agents/assets.md), "Import order (mandatory)" and "Tell
-  mds-icon where the icons are"; [`projects/lint/README.md`](../projects/lint/README.md), "Where
-  each answer comes from" (what a render loads, and when it is ready).
-- **Read by**: the MCP `render_preview` (`projects/lint/src/mcp/render.ts`, `render-page.ts`).
-- **Held by**: the `render_preview` tests: `STYLESHEETS` equals the block of the guide, the widths
+- **Contract**: [`docs/agents/assets.md`](agents/assets.md), "Import order (mandatory)", "Tell
+  mds-icon where the icons are" and "Tailwind (optional)";
+  [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes from" (what
+  a render loads, and when it is ready).
+- **Read by**: the MCP `render_preview` (`projects/lint/src/mcp/render.ts`, `render-page.ts`);
+  `lint:serve.previews` (`projects/lint/scripts/serve-previews.ts`), on the same page.
+- **Held by**: the `render_preview` tests: `STYLESHEETS` and `TAILWIND` equal the blocks of the
+  guide, the Magma utilities compile on the classes of the markup, the widths
   and the themes come from the installed styles, and `mds-button` renders hydrated and
   representative on the build of this repository (the `consumer-lint` job, on the build
   artifact).

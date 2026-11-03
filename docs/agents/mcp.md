@@ -144,7 +144,8 @@ imagines a screen of their own. Show the real components instead, rendered on th
 project installed.
 
 1. **Render each option.** `render_preview` with the markup of the option, as the product
-   would write it: the real components, the real texts, the layout around them. A modal, a
+   would write it: the real components, the real texts, the layout around them, with the
+   Magma Tailwind utilities (the render compiles them with the project's Tailwind 4). A modal, a
    drawer or a toast sits on the viewport: give a `height`. One width is enough unless the
    option changes with it (`["mobile", "desktop"]`).
 2. **Read the report before the image.** `representative: false` names what is wrong,

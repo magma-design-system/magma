@@ -178,11 +178,16 @@ try: Press Salva: the error shows above the form, and what was written stays.
 - **Only the stage.** The markup of the case and its own small script, never a page: no
   `<head>`, `<link>`, `<style>` nor a script with `src`, nothing from another address. The page
   around it adds the stylesheets of `agents/assets.md` and the loader of the installed magma, so
-  the preview runs on the version the reader has. Its layout takes the tokens
-  (`calc(var(--spacing) * 300)`), its words are Italian as in the examples of the components.
-  No class of Magma's Tailwind layer (`page-frame`, `field-group`, `max-w-form`): Tailwind is
-  optional (`agents/assets.md`), so the page around has none of them, and the stage writes the
-  custom property the class carries (`max-width: var(--magma-width-form)`).
+  the preview runs on the version the reader has. Its words are Italian as in the examples of
+  the components.
+- **Laid out with Tailwind**, the default (#1220): the classes of Magma's Tailwind layer, as a
+  product with Tailwind writes them: the carriers (`page-frame`, `field-group`, `max-w-form`),
+  the rhythm (`gap-between-fields`, `gap-title-content`), the steps (`gap-300`, `p-400`), the
+  variants (`dark:`, `@max-[23.75rem]:`). The page around compiles them with Tailwind 4 and the
+  entry point of `agents/assets.md`, "Tailwind (optional)", so `render_preview` and
+  `serve.previews` show them; a product without Tailwind writes the custom property a class
+  carries (`max-width: var(--magma-width-form)`). A `style` attribute only for what no class
+  carries.
 - **What to try**, required: one line, what to do in the preview ("Press Salva: ..."), or what
   to look at when there is nothing to do. The page shows it under the stage. A live preview with
   nothing said is a still form; the maintainer chose the line and no animation (#1186).
@@ -199,6 +204,22 @@ try: Press Salva: the error shows above the form, and what was written stays.
   `render_preview` renders it with `pattern` and `case`, at its height, with the check of the
   image (a component not hydrated, a flat region, a font or an icon not loaded, a word broken).
   The lint tests render every preview on the build, in CI too, and fail on any problem.
+- **Editing one live.** `nx run lint:serve.previews` serves the previews, and the drafts not
+  chosen yet in `.claude/previews/<folder>/<name>.html` (untracked, the same format), at
+  `http://localhost:5180/`. The page of each stage is the page `render_preview` renders, on the
+  local build (`projects/stencil/dist`, `projects/styles/dist`: `nx run stencil:build` first).
+  The frame around it is the viewport of a render: as wide as the width asked, as tall as the
+  `height` of the preview or else as its content; under it, what to try and what is wrong in
+  the file; over it, the path of the file from the root of its repository, a link that opens
+  it in VS Code (the first page lists every stage with its file). `?mode=dark`, `?theme=<name>` and `?width=<breakpoint or pixels>` choose the view,
+  as `render_preview` takes them; the mode is set in the page as `mds-pref` sets it
+  (`data-magma-pref` and `pref-mode-<mode>` on `<html>`), since a frame takes the
+  `prefers-color-scheme` of the system, and a lint test proves it gives the image of the
+  emulated mode. Save the file in the editor and the stage loads again; a file added or removed
+  changes the list. `-- --port <n>`, `--previews <dir>` and `--drafts <dir>` serve other
+  folders (the previews of another worktree). The editor completes the Tailwind classes of a
+  stage: the repository's `.vscode/settings.json` maps the entry point the server writes,
+  `.claude/previews/tailwind.css` (`docs/EDITOR_TOKENS.md`, "Tailwind classes").
 
 `/pattern-preview <id>` makes the previews a pattern lacks; `/pattern-new` and
 `/pattern-change` call it at the end, so a new or changed case leaves with its preview.
@@ -260,7 +281,8 @@ With Claude Code on this repository:
 - `/pattern-change <id>`: shows why the current answer was decided, asks whether the change is
   the default or one product's layer, keeps the old id on a rename;
 - `/pattern-preview <id>`: for each case with no preview, shows two options live and saves the
-  one the maintainer chooses;
+  one the maintainer chooses; its drafts and the saved previews open in `lint:serve.previews`,
+  for the maintainer to adjust by hand;
 - `/pattern-list`: the list, read only.
 
 Without Claude:
@@ -271,6 +293,7 @@ nx run stencil:generate.pattern <id> --kind block --group <group> --need "<the n
 nx run stencil:generate.pattern <id> --kind foundation --need "<what it settles>"  # a domain
 nx run stencil:generate.pattern -- --sync     # the generated parts, from the frontmatter
 nx run stencil:check.patterns                 # after nx run stencil:build
+nx run lint:serve.previews                    # the previews and the drafts, live, after the build
 nx run stencil:list.patterns -- --status candidate
 nx run stencil:list.patterns -- --kind foundation
 ```
