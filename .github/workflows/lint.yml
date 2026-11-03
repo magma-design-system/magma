@@ -6,6 +6,11 @@
 # seconds, one status check is easier to require than seven conditional ones,
 # and changes to the root ESLint/Stylelint configs are covered too. The Nx cache
 # of the previous run of the branch skips the projects whose inputs did not change.
+#
+# The same job holds the architecture diagrams of the READMEs to the project graph
+# of Nx (`nx run magma:check.diagrams`, docs/ARCHITECTURE.md, "Diagrams of the
+# projects"): a diagram can go stale from a change to any project, so it runs on
+# every pull request, like the lint.
 name: lint
 
 on:
@@ -49,3 +54,4 @@ jobs:
             nx-lint-${{ hashFiles('package-lock.json') }}-
       - run: npm ci --prefer-offline
       - run: npm run lint
+      - run: npx nx run magma:check.diagrams
