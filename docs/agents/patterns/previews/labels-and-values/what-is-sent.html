@@ -1,0 +1,25 @@
+<!--
+try: Look at the dialog that asks before sending the reminder: Destinatario and Testo as labels and values in the window, with no title of their own; the text takes the whole row.
+height: 480
+-->
+<mds-modal opened aria-label="Inviare il sollecito a Marco Bianchi?">
+  <mds-banner slot="window" variant="light" tone="box" dismissible headline="Inviare il sollecito a Marco Bianchi?">
+    <div class="@container">
+      <dl class="m-0 grid items-start gap-between-fields @md:grid-cols-2">
+        <div class="grid gap-label-control">
+          <mds-text typography="label" tag="dt" class="text-fg-muted">Destinatario</mds-text>
+          <mds-text tag="dd" class="m-0">m.bianchi@pec.esempio.it</mds-text>
+        </div>
+        <div class="col-span-full grid gap-label-control">
+          <mds-text typography="label" tag="dt" class="text-fg-muted">Testo</mds-text>
+          <mds-text tag="dd" class="m-0">
+            Per la pratica 2026/0412 manca ancora la planimetria dell'immobile. La carichi entro il 30
+            marzo, o la pratica viene archiviata.
+          </mds-text>
+        </div>
+      </dl>
+    </div>
+    <mds-button slot="action" variant="dark" tone="outline" autofocus>Annulla</mds-button>
+    <mds-button slot="action">Invia sollecito</mds-button>
+  </mds-banner>
+</mds-modal>

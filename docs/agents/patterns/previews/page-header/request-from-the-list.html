@@ -1,0 +1,33 @@
+<!--
+try: Look at the head of the request: Richieste to go back, the number above Cambio di residenza with its status, then the row with the menu at its start and Chiudi richiesta last. Open the menu: Assegna and Stampa; a request is deleted from the danger zone of its page, never from a menu.
+height: 420
+-->
+<main class="grid gap-between-sections">
+  <header class="@container grid gap-title-content">
+    <mds-button href="#" icon="mi/baseline/arrow-back" variant="dark" tone="text" size="sm" class="justify-self-start">Richieste</mds-button>
+    <div class="flex flex-wrap items-start justify-between gap-inline">
+      <div class="grid min-w-0 grow basis-actions gap-title-content">
+        <mds-text typography="caption" tag="p" class="text-fg-muted">Richiesta 2026/0142</mds-text>
+        <div class="flex flex-wrap items-center gap-inline">
+          <mds-text typography="page" tag="h1" class="min-w-0">Cambio di residenza</mds-text>
+          <mds-badge variant="warning" label="In lavorazione"></mds-badge>
+        </div>
+        <mds-text typography="detail" tag="p" class="text-fg-muted">Ufficio anagrafe, ricevuta il 3 marzo 2026</mds-text>
+      </div>
+      <div class="flex gap-inline @max-actions:basis-full @max-actions:flex-col @max-actions:*:self-stretch">
+        <mds-button id="azioni-richiesta" class="@max-actions:w-fit" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni della richiesta 2026/0142"></mds-button>
+        <mds-button variant="dark" tone="outline">Richiedi documenti</mds-button>
+        <mds-button>Chiudi richiesta</mds-button>
+      </div>
+    </div>
+  </header>
+  <mds-tab>
+    <mds-tab-item label="Dati" href="#dati" selected></mds-tab-item>
+    <mds-tab-item label="Documenti" href="#documenti"></mds-tab-item>
+    <mds-tab-item label="Storico" href="#storico"></mds-tab-item>
+  </mds-tab>
+</main>
+<mds-dropdown target="#azioni-richiesta" placement="bottom-start">
+  <mds-button icon="mi/baseline/assignment-ind" variant="dark" tone="text" label="Assegna"></mds-button>
+  <mds-button icon="mi/baseline/print" variant="dark" tone="text" label="Stampa"></mds-button>
+</mds-dropdown>
