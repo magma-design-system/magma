@@ -70,7 +70,8 @@ npx nx run stencil:generate.pattern -- --sync
 npx nx run stencil:check.patterns
 ```
 
-The check needs the build (`npx nx run stencil:build` when `dist/documentation.json` is missing).
+The check needs the build (`npx nx run stencil:build` when `dist/documentation.json` is missing,
+and again after a preview is added or changed: the build makes its images, #1243).
 Every combination of the variables with no answer becomes a case, a gap (`note`: the question)
 or a not-applicable entry (`why`); two cases on one combination are a conflict to resolve.
 

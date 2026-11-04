@@ -55,10 +55,14 @@ none yet), a renamed case moves its file
 ## 5. The check and the pull request
 
 ```bash
+npx nx run stencil:build
 npx nx run stencil:check.patterns
 npx nx run stencil:check.usage-docs
 npx nx run stencil:check.pr-risk
 ```
+
+The build makes the images of the previews again (#1243): a preview added, changed or moved by
+a renamed case has its images only after it, and `check.patterns` fails on one without them.
 
 Then commit (`feat(magma): ...` for a new rule or case, `fix(magma): ...` for a wrong one;
 ASCII only), check `origin/main` in its own step and merge it if it moved, push the branch and

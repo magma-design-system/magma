@@ -103,13 +103,17 @@ than describe the change, or asks to see the drafts in the editor:
 ## 5. The check
 
 ```bash
+npx nx run stencil:build
 npx nx run stencil:check.patterns
 npx nx run lint:test
 ```
 
-until no preview is wrong: the check reads the file, the lint tests render every preview on the
-build and fail on a problem of the image (`render_preview` with `pattern` and `case` shows one).
-Then the next case, from step 2.
+until no preview is wrong: the build renders every preview into the two images magma ships
+beside it (`<case>.light.webp`, `<case>.dark.webp`, #1243) and fails on a problem of an image,
+naming the preview; the check reads the file and fails on a preview without its images in the
+build; the lint tests render every preview on the build too and fail on a problem of the image
+(`render_preview` with `pattern` and `case` shows one). The images are made, never written by
+hand nor committed. Then the next case, from step 2.
 
 ## 6. The pull request
 
