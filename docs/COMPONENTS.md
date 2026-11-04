@@ -265,7 +265,7 @@ Parts (e.g. `mds-table-cell`, `mds-card-header`) always compose inside their par
 | ------------------------ | --------------- | ---------------------------------------------------------- |
 | `mds-pref`               | -               | Root preferences panel grouping all `mds-pref-*` controls. |
 | `mds-pref-mode`          | -               | Light / dark / system mode selector.                       |
-| `mds-pref-theme`         | -               | Named theme chooser (default, `cool`, `warm`).             |
+| `mds-pref-theme`         | -               | Named theme chooser (`business`, `editorial`).             |
 | `mds-pref-theme-item`    | -               | Single named theme inside `mds-pref-theme`.                |
 | `mds-pref-contrast`      | -               | High-contrast preference toggle.                           |
 | `mds-pref-animation`     | -               | Reduced-motion / animation preference toggle.              |

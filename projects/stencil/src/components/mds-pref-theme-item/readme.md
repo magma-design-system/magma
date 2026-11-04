@@ -17,11 +17,11 @@ The `<mds-pref-theme-item>` web component is a single selectable theme entry ins
 - **Selection is parent-driven**: On click each item emits `mdsPrefThemeItemSelect` (carrying `{ name, scheme }`), and the parent responds by clearing the siblings and selecting the clicked one. Setting `selected` directly on a single item does not coordinate the others.
 - **Click bubbles up**: The emitted event is what the parent listens to in order to apply the theme to the document and persist the choice.
 - **Auto-derived label**: If `label` is omitted, it is generated from `name` by capitalizing the first letter and replacing hyphens with spaces (e.g. `maggioli-editore` becomes `Maggioli editore`).
-- **Static color preview**: The four swatches (primary, success, warning, error) and the preview background are painted by the `--mds-pref-theme-item-*` CSS custom properties, not by props. Their defaults are the page's current roles (accent, the status emphases, `wash-base`), so every item shows the same swatches until you set the properties per item.
+- **Preview of the theme it names**: The preview background and the primary dot show the wash and the accent of the theme named by `name`, which the styles of that theme publish as `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent` (`themes.css` does for every theme Magma ships), so each item of the picker shows its own theme whatever the active one. The success, warning and error dots are the page's status emphases, which no theme retints. A theme that publishes no preview shows the active theme. The `--mds-pref-theme-item-*` CSS custom properties paint all of it and still override it.
 
 #### Properties & Visual Configurations
 
-- **`name`**: The theme identifier reported to the parent and matched against the parent's active `name` to compute initial selection. Use a simple or kebab-case string; the named themes are `cool` and `warm`, and `default` is the base theme ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)). The parent validates the lowercase/kebab format and ignores an invalid name with a console warning.
+- **`name`**: The theme identifier reported to the parent and matched against the parent's active `name` to compute initial selection. Use a simple or kebab-case string; the named themes are `business`, the base theme, and `editorial` ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)). `default`, `cool` and `warm` still work and are deprecated: they leave at the next major. The parent validates the lowercase/kebab format and ignores an invalid name with a console warning.
 - **`scheme`**: Declares which color schemes the theme supports - `all` (default, both light and dark), or `light` / `dark` to force a single mode. This value travels with the selection event and is applied by the parent when the item is chosen.
 - **`selected`**: Reflects whether this item is the active theme. The parent sets it on every item when it loads and on each pick, so a value set by hand is overwritten.
 
@@ -35,10 +35,9 @@ Correct and idiomatic ways to use the `<mds-pref-theme-item>` component, ordered
 `<mds-pref-theme-item>` must always be a direct child of [`<mds-pref-theme>`](../../mds-pref-theme). Each item represents one selectable colour theme; the parent manages selection state so all siblings stay in sync.
 
 ```html
-<mds-pref-theme name="default" scheme="all">
-  <mds-pref-theme-item name="default" label="Predefinito" scheme="all"></mds-pref-theme-item>
-  <mds-pref-theme-item name="cool" label="Freddo" scheme="all"></mds-pref-theme-item>
-  <mds-pref-theme-item name="warm" label="Caldo" scheme="all"></mds-pref-theme-item>
+<mds-pref-theme name="business" scheme="all">
+  <mds-pref-theme-item name="business" label="Gestionale" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme-item name="editorial" label="Editoriale" scheme="all"></mds-pref-theme-item>
 </mds-pref-theme>
 ```
 
@@ -47,11 +46,10 @@ Correct and idiomatic ways to use the `<mds-pref-theme-item>` component, ordered
 Omit `label` and let the component generate it from `name`: the first letter is capitalised and hyphens are replaced with spaces. Use this shorthand when the theme name is already human-readable.
 
 ```html
-<mds-pref-theme name="default" scheme="all">
-  <!-- renders "Default", "Cool", "Warm" without explicit label props -->
-  <mds-pref-theme-item name="default" scheme="all"></mds-pref-theme-item>
-  <mds-pref-theme-item name="cool" scheme="all"></mds-pref-theme-item>
-  <mds-pref-theme-item name="warm" scheme="all"></mds-pref-theme-item>
+<mds-pref-theme name="business" scheme="all">
+  <!-- renders "Business" and "Editorial" without explicit label props -->
+  <mds-pref-theme-item name="business" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme-item name="editorial" scheme="all"></mds-pref-theme-item>
 </mds-pref-theme>
 ```
 
@@ -60,15 +58,12 @@ Omit `label` and let the component generate it from `name`: the first letter is 
 Set `scheme` to `"light"` or `"dark"` when a theme must be offered in a single colour mode only. The parent applies the forced mode when the item is selected.
 
 ```html
-<mds-pref-theme name="default" scheme="all">
+<mds-pref-theme name="business" scheme="all">
   <!-- this theme works in both modes -->
-  <mds-pref-theme-item name="default" label="Predefinito" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme-item name="business" label="Gestionale" scheme="all"></mds-pref-theme-item>
 
   <!-- offered light-only; selecting it locks the UI in light mode -->
-  <mds-pref-theme-item name="cool" label="Freddo chiaro" scheme="light"></mds-pref-theme-item>
-
-  <!-- offered dark-only; selecting it locks the UI in dark mode -->
-  <mds-pref-theme-item name="warm" label="Caldo scuro" scheme="dark"></mds-pref-theme-item>
+  <mds-pref-theme-item name="editorial" label="Editoriale chiaro" scheme="light"></mds-pref-theme-item>
 </mds-pref-theme>
 ```
 
@@ -77,9 +72,9 @@ Set `scheme` to `"light"` or `"dark"` when a theme must be offered in a single c
 Attach a listener for `mdsPrefThemeItemSelect` when you need to react to a selection at the item level - for example to log analytics. The detail carries `{ name, scheme }`. Normally the parent handles theme application automatically; only listen at this level for side-effects.
 
 ```html
-<mds-pref-theme name="default" scheme="all">
-  <mds-pref-theme-item name="default" label="Predefinito" scheme="all"></mds-pref-theme-item>
-  <mds-pref-theme-item name="cool" label="Freddo" scheme="all"></mds-pref-theme-item>
+<mds-pref-theme name="business" scheme="all">
+  <mds-pref-theme-item name="business" label="Gestionale" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme-item name="editorial" label="Editoriale" scheme="all"></mds-pref-theme-item>
 </mds-pref-theme>
 
 <script>
@@ -96,20 +91,19 @@ Attach a listener for `mdsPrefThemeItemSelect` when you need to react to a selec
 Declare it on the parent, not with `selected`: when it loads, `<mds-pref-theme>` marks the item whose `name` matches the active theme (the stored choice, or its own `name` on a first visit) and overwrites any `selected` written in the markup.
 
 ```html
-<mds-pref-theme name="cool" scheme="all">
-  <mds-pref-theme-item name="default" label="Predefinito" scheme="all"></mds-pref-theme-item>
-  <mds-pref-theme-item name="cool" label="Freddo" scheme="all"></mds-pref-theme-item>
-  <mds-pref-theme-item name="warm" label="Caldo" scheme="all"></mds-pref-theme-item>
+<mds-pref-theme name="editorial" scheme="all">
+  <mds-pref-theme-item name="business" label="Gestionale" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme-item name="editorial" label="Editoriale" scheme="all"></mds-pref-theme-item>
 </mds-pref-theme>
 ```
 
 #### CSS Customization via Documented Properties
 
-Override the swatch only through the public `--mds-pref-theme-item-color-background` CSS custom property, the background behind the preview dots; the dots themselves are painted by the component. Set it on the host element or a parent selector and name a semantic role for the colour value, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so mode, theme and contrast keep working.
+Override the swatch only through the public `--mds-pref-theme-item-color-background` CSS custom property, the background behind the preview dots; the dots themselves are painted by the component. Set it on the host element or a parent selector and name a semantic role for the colour value, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so mode, theme and contrast keep working. It replaces the preview of the theme the item names.
 
 ```css
 /* override the swatch background of one theme item */
-mds-pref-theme-item[name="warm"] {
+mds-pref-theme-item[name="editorial"] {
   --mds-pref-theme-item-color-background: rgb(var(--magma-wash-strong));
 }
 ```
@@ -125,11 +119,11 @@ Common incorrect uses of `<mds-pref-theme-item>`. Each entry pairs the wrong for
 
 ```html
 <!-- INCORRECT -->
-<mds-pref-theme-item name="cool" label="Freddo" scheme="all"></mds-pref-theme-item>
+<mds-pref-theme-item name="editorial" label="Editoriale" scheme="all"></mds-pref-theme-item>
 
 <!-- CORRECT -->
-<mds-pref-theme name="default" scheme="all">
-  <mds-pref-theme-item name="cool" label="Freddo" scheme="all"></mds-pref-theme-item>
+<mds-pref-theme name="business" scheme="all">
+  <mds-pref-theme-item name="editorial" label="Editoriale" scheme="all"></mds-pref-theme-item>
 </mds-pref-theme>
 ```
 
@@ -139,17 +133,15 @@ Setting `selected` on one item does not deselect the others - the parent is the 
 
 ```html
 <!-- INCORRECT - the parent overwrites both on load and marks "default" -->
-<mds-pref-theme name="default" scheme="all">
-  <mds-pref-theme-item name="default" label="Predefinito" scheme="all"></mds-pref-theme-item>
-  <mds-pref-theme-item name="cool" label="Freddo" scheme="all" selected></mds-pref-theme-item>
-  <mds-pref-theme-item name="warm" label="Caldo" scheme="all" selected></mds-pref-theme-item>
+<mds-pref-theme name="business" scheme="all">
+  <mds-pref-theme-item name="business" label="Gestionale" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme-item name="editorial" label="Editoriale" scheme="all" selected></mds-pref-theme-item>
 </mds-pref-theme>
 
 <!-- CORRECT - set the active theme on the parent; it marks the matching child -->
-<mds-pref-theme name="cool" scheme="all">
-  <mds-pref-theme-item name="default" label="Predefinito" scheme="all"></mds-pref-theme-item>
-  <mds-pref-theme-item name="cool" label="Freddo" scheme="all"></mds-pref-theme-item>
-  <mds-pref-theme-item name="warm" label="Caldo" scheme="all"></mds-pref-theme-item>
+<mds-pref-theme name="editorial" scheme="all">
+  <mds-pref-theme-item name="business" label="Gestionale" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme-item name="editorial" label="Editoriale" scheme="all"></mds-pref-theme-item>
 </mds-pref-theme>
 ```
 
@@ -187,7 +179,7 @@ mds-pref-theme-item .theme-preview {
 }
 
 /* CORRECT */
-mds-pref-theme-item[name="warm"] {
+mds-pref-theme-item[name="editorial"] {
   --mds-pref-theme-item-color-background: rgb(var(--magma-wash-strong));
 }
 ```
@@ -198,24 +190,24 @@ mds-pref-theme-item[name="warm"] {
 
 ```html
 <!-- INCORRECT -->
-<mds-pref-theme-item name="cool" scheme="light-only"></mds-pref-theme-item>
-<mds-pref-theme-item name="warm" scheme="night"></mds-pref-theme-item>
+<mds-pref-theme-item name="editorial" scheme="light-only"></mds-pref-theme-item>
+<mds-pref-theme-item name="business" scheme="night"></mds-pref-theme-item>
 
 <!-- CORRECT -->
-<mds-pref-theme-item name="cool" scheme="light"></mds-pref-theme-item>
-<mds-pref-theme-item name="warm" scheme="dark"></mds-pref-theme-item>
+<mds-pref-theme-item name="editorial" scheme="light"></mds-pref-theme-item>
+<mds-pref-theme-item name="business" scheme="dark"></mds-pref-theme-item>
 ```
 
 
 
 ## Properties
 
-| Property   | Attribute  | Description                                                      | Type                                      | Default     |
-| ---------- | ---------- | ---------------------------------------------------------------- | ----------------------------------------- | ----------- |
-| `label`    | `label`    | Specifies the theme name                                         | `string \| undefined`                     | `undefined` |
-| `name`     | `name`     | Specifies the theme name                                         | `string`                                  | `'default'` |
-| `scheme`   | `scheme`   | Specifies the theme scheme which can be 'light', 'dark' or 'all' | `"all" \| "dark" \| "light" \| undefined` | `'all'`     |
-| `selected` | `selected` | Specifies if the element is selected                             | `boolean \| undefined`                    | `false`     |
+| Property   | Attribute  | Description                                                                                                                                    | Type                                      | Default     |
+| ---------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ----------- |
+| `label`    | `label`    | Specifies the theme name                                                                                                                       | `string \| undefined`                     | `undefined` |
+| `name`     | `name`     | Specifies the theme name; the swatch shows the preview that theme publishes, `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent` | `string`                                  | `'default'` |
+| `scheme`   | `scheme`   | Specifies the theme scheme which can be 'light', 'dark' or 'all'                                                                               | `"all" \| "dark" \| "light" \| undefined` | `'all'`     |
+| `selected` | `selected` | Specifies if the element is selected                                                                                                           | `boolean \| undefined`                    | `false`     |
 
 
 ## Events
@@ -227,13 +219,13 @@ mds-pref-theme-item[name="warm"] {
 
 ## CSS Custom Properties
 
-| Name                                          | Description                                           |
-| --------------------------------------------- | ----------------------------------------------------- |
-| `--mds-pref-theme-item-color-background`      | Public. Background color of a theme item.             |
-| `--mds-pref-theme-item-color-status-error`    | Color representing an error status for a theme item.  |
-| `--mds-pref-theme-item-color-status-success`  | Color representing a success status for a theme item. |
-| `--mds-pref-theme-item-color-status-warning`  | Color representing a warning status for a theme item. |
-| `--mds-pref-theme-item-color-variant-primary` | Color for the primary variant item.                   |
+| Name                                          | Description                                                               |
+| --------------------------------------------- | ------------------------------------------------------------------------- |
+| `--mds-pref-theme-item-color-background`      | Public. Background color of a theme item: the wash of the theme it names. |
+| `--mds-pref-theme-item-color-status-error`    | Color representing an error status for a theme item.                      |
+| `--mds-pref-theme-item-color-status-success`  | Color representing a success status for a theme item.                     |
+| `--mds-pref-theme-item-color-status-warning`  | Color representing a warning status for a theme item.                     |
+| `--mds-pref-theme-item-color-variant-primary` | Color for the primary variant item: the accent of the theme it names.     |
 
 
 ## Dependencies

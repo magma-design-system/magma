@@ -181,7 +181,7 @@ function walkCssOnly (tree: Node): string[] {
 }
 
 describe('DTCG 2025.10', () => {
-  const files = ['base', 'mode-dark', 'contrast-more', 'theme-cool', 'theme-cool-contrast-more', 'theme-warm', 'theme-warm-contrast-more']
+  const files = ['base', 'mode-dark', 'contrast-more', 'theme-editorial', 'theme-editorial-contrast-more', 'theme-cool', 'theme-cool-contrast-more', 'theme-warm', 'theme-warm-contrast-more']
   const TYPES = ['color', 'dimension', 'fontFamily', 'fontWeight', 'duration', 'cubicBezier', 'number', 'shadow', 'typography']
   const isDimension = (value: unknown) =>
     typeof (value as DtcgDimension)?.value === 'number' && ['px', 'rem'].includes((value as DtcgDimension).unit)
@@ -329,9 +329,9 @@ describe('values match the stylesheets', () => {
   })
 
   // The semantic layer, resolved the way the browser cascades semantic.css and
-  // themes.css: base, then the dark ink, the base contrast block, the theme block
-  // and the theme's own contrast block. Each role ends on a palette custom property,
-  // whose channels come from colors-rgb.css.
+  // themes.css: base and the preview of every theme, then the dark ink, the base
+  // contrast block, the theme block and the theme's own contrast block. Each role
+  // ends on a palette custom property, whose channels come from colors-rgb.css.
   const model = semanticModel()
   const scenarios = ['light', 'dark'].flatMap((mode) =>
     model.themes.flatMap(({ name }) => [false, true].map((contrast) => ({ mode, theme: name, contrast }))))
@@ -340,6 +340,7 @@ describe('values match the stylesheets', () => {
     const themed = model.themes.find(({ name }) => name === theme)!
     const cascade = [
       ...model.base.flatMap(({ decls }) => decls),
+      ...model.themes.flatMap(({ preview }) => preview),
       ...(mode === 'dark' ? model.dark : []),
       ...(contrast ? model.contrast : []),
       ...themed.decls,

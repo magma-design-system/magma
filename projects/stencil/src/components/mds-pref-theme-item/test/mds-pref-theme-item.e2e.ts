@@ -53,6 +53,53 @@ describe('mds-pref-theme-item', () => {
       ).toBe('rgb(1, 2, 3)');
     });
 
+    // it painted the active theme, so every item of the picker looked the same (#692)
+    describe('of the theme it names', () => {
+      // the active theme, and the preview the styles of editorial publish, with values of their own
+      const page = document.createElement('style');
+      page.textContent = `:root {
+        --magma-wash-base: 7 8 9;
+        --magma-accent-emphasis: 10 11 12;
+        --magma-preview-editorial-wash: 1 2 3;
+        --magma-preview-editorial-accent: 4 5 6;
+      }`;
+      beforeAll(() => document.head.append(page));
+      afterAll(() => page.remove());
+
+      const colors = (root: HTMLElement) => ({
+        wash: getComputedStyle(root.shadowRoot!.querySelector('.theme-preview')!).backgroundColor,
+        accent: getComputedStyle(root.shadowRoot!.querySelector('.theme-color--variant-primary')!)
+          .backgroundColor,
+      });
+
+      it('shows its wash and its accent, not the ones of the active theme', async () => {
+        const { root } = await render<HTMLMdsPrefThemeItemElement>(
+          '<mds-pref-theme-item name="editorial"></mds-pref-theme-item>',
+        );
+
+        expect(colors(root)).toEqual({ wash: 'rgb(1, 2, 3)', accent: 'rgb(4, 5, 6)' });
+      });
+
+      it('shows the active theme for a theme that publishes no preview', async () => {
+        const { root } = await render<HTMLMdsPrefThemeItemElement>(
+          '<mds-pref-theme-item name="neon"></mds-pref-theme-item>',
+        );
+
+        expect(colors(root)).toEqual({ wash: 'rgb(7, 8, 9)', accent: 'rgb(10, 11, 12)' });
+      });
+
+      it('follows a new name', async () => {
+        const { root, waitForChanges } = await render<HTMLMdsPrefThemeItemElement>(
+          '<mds-pref-theme-item name="neon"></mds-pref-theme-item>',
+        );
+
+        root.setAttribute('name', 'editorial');
+        await waitForChanges();
+
+        expect(colors(root)).toEqual({ wash: 'rgb(1, 2, 3)', accent: 'rgb(4, 5, 6)' });
+      });
+    });
+
     it('selects the theme when clicked, as the label does', async () => {
       const { root, spyOnEvent, waitForChanges } =
         await render<HTMLMdsPrefThemeItemElement>(markup);

@@ -168,8 +168,15 @@ Four independent axes on `<html>`, on top of the semantic layer:
   case is retinting the neutral scaffolding with ONE swap: a theme repoints the
   `--magma-tint-*` block at another generated family (`porcelain` for a cool cast,
   `bisque` for warm) and every surface, border and text role follows; it can repoint
-  the accents too (`--magma-tint-accent-*`). Shipped examples: `cool`, `warm`,
-  generated into `dist/css/themes.css` from the `themes` map of `semantic.config.ts`.
+  the accents too (`--magma-tint-accent-*`). The shipped themes (#692) are `business`,
+  the base `:root`, which emits no rule, so no `data-theme-name` means `business`; and
+  `editorial`, `bisque` with the Maggioli Editore accent (`variant-secondary`). `default`
+  (the old name of `business`), `cool` and `warm` stay until the next major, deprecated.
+  All of them are generated into `dist/css/themes.css` from the `themes` map of
+  `semantic.config.ts`, which also opens with the preview of every theme on `:root`,
+  `--magma-preview-<name>-{wash,accent}`: what `mds-pref-theme-item` shows for a theme
+  that is not the active one. The contrast gate verifies every theme in its own family
+  and accents.
 - **`--depth`** (number 0..1, `dist/css/theme.css`) - shadow/elevation intensity,
   multiplied into every term of `--mds-elevation-{raised,overlay}` via `calc()`.
   `--depth: 0` is perfectly flat, `1` is full. Set it directly, or use
@@ -180,7 +187,7 @@ Four independent axes on `<html>`, on top of the semantic layer:
   shape AND the radius scale tuned for it, moved together. See Corner geometry below.
 
 ```html
-<html class="pref-mode-dark" data-theme-name="cool" data-theme-depth="flat" data-corner-shape="round">
+<html class="pref-mode-dark" data-theme-name="editorial" data-theme-depth="flat" data-corner-shape="round">
 ```
 
 ## Corner geometry (`data-corner-shape`)

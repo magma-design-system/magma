@@ -21,9 +21,8 @@ const TemplateController = (args) => <mds-pref-theme {...args}></mds-pref-theme>
 
 const Template = (args) => (
   <mds-pref-theme {...args}>
-    <mds-pref-theme-item label="Default" scheme="all" name="default" />
-    <mds-pref-theme-item label="Summer" name="summer" scheme="light" />
-    <mds-pref-theme-item label="Twilight" name="twilight" scheme="dark" />
+    <mds-pref-theme-item label="Business" name="business" />
+    <mds-pref-theme-item label="Editorial" name="editorial" />
   </mds-pref-theme>
 );
 

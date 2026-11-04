@@ -15,11 +15,14 @@ import {
   applyBaseline,
   contrastAliasesFromConfig,
   evaluatePairs,
+  evaluateTheme,
   formatRow,
   resolvePrimitive,
+  themeMappingsFromConfig,
   type AliasMap,
   type Baseline,
   type ColorTree,
+  type PairResult,
 } from '../src/lib/contrast-gate.js';
 
 const baseline = (): Baseline =>
@@ -210,8 +213,46 @@ test('every semantic pair resolves and is evaluated in both modes', async () => 
   expect(results.some((r) => r.category === 'on-emphasis')).toBe(true);
 });
 
+/** What the CLI gates: the base layer, then every named theme that repoints something (#692). */
+const gated = async (): Promise<PairResult[]> => {
+  const tree = await loadTree();
+  return [
+    ...evaluatePairs(tree, aliasesFromConfig(semantic)),
+    ...themeMappingsFromConfig(semantic, semantic.themes).flatMap((theme) =>
+      evaluateTheme(tree, theme),
+    ),
+  ];
+};
+
+test('every named theme that repoints something is gated in its own family and accents (#692)', () => {
+  const themes = Object.fromEntries(
+    themeMappingsFromConfig(semantic, semantic.themes).map(({ name, mapping }) => [name, mapping]),
+  );
+  // the base and its old name repoint nothing: the base layer already covers them
+  expect(themes.business).toBeUndefined();
+  expect(themes.default).toBeUndefined();
+  expect(themes.editorial.tint).toBe('bisque');
+  const editorial = aliasesFromConfig(themes.editorial);
+  expect(editorial['--magma-surface-default']).toBe('--surface-bisque-default');
+  expect(editorial['--magma-accent-emphasis']).toBe('--variant-secondary-04');
+  // an accent the theme does not repoint keeps the base one
+  expect(editorial['--magma-accent-ai-emphasis']).toBe(
+    aliasesFromConfig(semantic)['--magma-accent-ai-emphasis'],
+  );
+});
+
+test('the pairs of a named theme are its own, keyed apart from the base ones', async () => {
+  const tree = await loadTree();
+  const editorial = themeMappingsFromConfig(semantic, semantic.themes).find(
+    ({ name }) => name === 'editorial',
+  )!;
+  const results = evaluateTheme(tree, editorial);
+  expect(results.length).toBe(evaluatePairs(tree, aliasesFromConfig(semantic)).length);
+  expect(results.every((r) => r.key.startsWith('editorial:'))).toBe(true);
+});
+
 test('THE GATE: no enforced pair fails outside the baseline', async () => {
-  const results = evaluatePairs(await loadTree(), aliasesFromConfig(semantic));
+  const results = await gated();
   const { violations } = applyBaseline(results, baseline());
   expect(
     violations,
@@ -221,7 +262,7 @@ test('THE GATE: no enforced pair fails outside the baseline', async () => {
 });
 
 test('the committed baseline has no stale entries', async () => {
-  const results = evaluatePairs(await loadTree(), aliasesFromConfig(semantic));
+  const results = await gated();
   const { staleBaseline } = applyBaseline(results, baseline());
   expect(
     staleBaseline,

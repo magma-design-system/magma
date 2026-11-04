@@ -34,22 +34,27 @@ inside a component's shadow root it matches nothing.
 ## Named themes
 
 A named theme retints the whole neutral scaffolding of the page at once - surfaces,
-wash, borders, text, the inverse chip - and keeps it contrast-checked. It is one
-attribute on `<html>`, and it needs `themes.css` ([`assets.md`](assets.md)):
+wash, borders, text, the inverse chip - and the accent, and keeps it contrast-checked.
+It is one attribute on `<html>`, and it needs `themes.css` ([`assets.md`](assets.md)):
 
 ```html
-<html data-theme-name="cool"><!-- or "warm"; no attribute = the default theme --></html>
+<html data-theme-name="editorial"><!-- no attribute = business --></html>
 ```
 
-| Theme | Family | Cast |
-| --- | --- | --- |
-| (none) | `neutral` | grey |
-| `cool` | `porcelain` | blue-grey |
-| `warm` | `bisque` | warm grey |
+| Theme | For | Family | Accent |
+| --- | --- | --- | --- |
+| `business` (no attribute) | the management software | `neutral`, grey | the Maggioli brand |
+| `editorial` | the publishing side | `bisque`, warm grey | the Maggioli Editore brand |
+
+No `data-theme-name` means `business`: it is the base `:root` and emits no rule.
+`default` (its old name), `cool` and `warm` still work and are deprecated: they leave at
+the next major.
 
 The status colors (info, success, warning, danger) never change with the theme. To let
 the user choose, use `mds-pref-theme`: it writes the attribute, remembers the choice and
-also carries the corner shape (below). A theme works only on code that paints with the
+also carries the corner shape (below). Each `mds-pref-theme-item` shows the theme it
+names, from the preview every theme publishes on the page (`--magma-preview-<name>-wash`,
+`--magma-preview-<name>-accent`). A theme works only on code that paints with the
 semantic roles; a raw palette step stays as it is. Defining your own theme is not a
 consumer feature yet.
 

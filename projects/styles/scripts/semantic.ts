@@ -126,17 +126,26 @@ const layerCss =
   `${HEADER('Semantic color layer (--magma-*) - the contract components consume.')}${layer.join('\n')}` +
   (contrastCss ? `\n${contrastComment}\n${contrastCss}\n` : '');
 
-// Named themes (spec 8): one override block per theme, then its own contrast
-// blocks. A theme that changes nothing (the base tint, no accent override) emits
-// nothing.
+// Named themes (spec 8): first the preview of every theme, on `:root` whatever the
+// active one, so a picker shows each theme it lists (#692); then one override block
+// per theme, then its own contrast blocks. A theme that changes nothing (the base
+// tint, no accent override) emits no block, only its preview. A deprecated theme
+// says why it goes on the line above its block.
+const previewBlock = [
+  '/* The preview of each theme (#692): its wash and its accent, for a theme picker. */',
+  ':root {',
+  ...model.themes.flatMap(({ preview }) => preview.map(cssDecl)),
+  '}',
+].join('\n');
 const themeBlocks = model.themes
-  .map(({ name, decls, contrast }) => {
+  .map(({ name, decls, contrast, deprecated }) => {
     const scope = `[data-theme-name='${name}']`;
     const block = decls.length ? `:root${scope} {\n${decls.map(cssDecl).join('\n')}\n}` : '';
-    return [block, contrastBlocks(scope, contrast)].filter(Boolean).join('\n\n');
+    const body = [block, contrastBlocks(scope, contrast)].filter(Boolean).join('\n\n');
+    return body && deprecated ? `/* ${name}, deprecated: ${deprecated}. */\n${body}` : body;
   })
   .filter(Boolean);
-const themesCss = `${HEADER('Named themes - retint the --magma-tint-* block per data-theme-name (spec 8).')}\n${themeBlocks.join('\n\n')}\n`;
+const themesCss = `${HEADER('Named themes - retint the --magma-tint-* block per data-theme-name (spec 8).')}\n${[previewBlock, ...themeBlocks].join('\n\n')}\n`;
 
 /** Every ramp family a theme points at, so they can be checked against the tokens. */
 const rampFamilies = new Map<string, string>([

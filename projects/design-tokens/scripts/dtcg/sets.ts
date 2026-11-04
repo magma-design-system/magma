@@ -253,8 +253,9 @@ export function buildDtcg({
     decls.map(semanticToken).forEach(([path, value]) => put(set, path, value));
     return set;
   };
-  model.base
-    .flatMap(({ decls }) => decls)
+  // the previews of the themes are declared on `:root` whatever the active theme
+  // (themes.css, #692), so they belong to the base set and not to a theme context
+  [...model.base.flatMap(({ decls }) => decls), ...model.themes.flatMap(({ preview }) => preview)]
     .map(semanticToken)
     .forEach(([path, value]) => put(base, path, value));
   // the groups of the layer, described in semantic.config.ts next to their roles
@@ -660,9 +661,14 @@ export function buildDtcg({
     themeContexts[theme.name] = files;
     themeContexts[`${theme.name}-contrast-more`] = contrastFiles;
   }
-  // the base theme is the one that repoints nothing: the `:root` layer itself
-  const baseTheme = model.themes.find((theme) => !theme.decls.length)?.name;
+  // the base theme is the first that repoints nothing: the `:root` layer itself
+  // (`business`; `default`, its deprecated old name, repoints nothing too)
+  const baseTheme = model.themes.find((theme) => !theme.decls.length && !theme.deprecated)?.name;
   if (!baseTheme) throw new Error('semantic.config: no theme is the base layer');
+  // a resolver context has no field of its own for it, so the modifier says it
+  const deprecatedThemes = model.themes
+    .filter(({ deprecated }) => deprecated)
+    .map(({ name, deprecated }) => `${name} (${deprecated})`);
 
   const resolver = {
     $schema: 'https://www.designtokens.org/schemas/2025.10/resolver.json',
@@ -685,7 +691,10 @@ export function buildDtcg({
       },
       theme: {
         description:
-          'Named theme (data-theme-name) and contrast preference (pref-contrast-more) together: under a theme the contrast promotions are restated in the theme family, so the two cannot be two modifiers.',
+          'Named theme (data-theme-name) and contrast preference (pref-contrast-more) together: under a theme the contrast promotions are restated in the theme family, so the two cannot be two modifiers.' +
+          (deprecatedThemes.length
+            ? ` Deprecated, removed in the next major: ${deprecatedThemes.join('; ')}.`
+            : ''),
         contexts: themeContexts,
         default: baseTheme,
       },
