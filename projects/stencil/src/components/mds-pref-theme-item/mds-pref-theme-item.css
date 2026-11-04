@@ -1,19 +1,25 @@
 @import './css/mds-pref-theme-item-fouc.css';
 
 /**
- * @prop --mds-pref-theme-item-color-background: Public. Background color of a theme item.
+ * @prop --mds-pref-theme-item-color-background: Public. Background color of a theme item: the wash of the theme it names.
  * @prop --mds-pref-theme-item-color-status-error: Color representing an error status for a theme item.
  * @prop --mds-pref-theme-item-color-status-success: Color representing a success status for a theme item.
  * @prop --mds-pref-theme-item-color-status-warning: Color representing a warning status for a theme item.
- * @prop --mds-pref-theme-item-color-variant-primary: Color for the primary variant item.
+ * @prop --mds-pref-theme-item-color-variant-primary: Color for the primary variant item: the accent of the theme it names.
  */
 
+/* the preview of the theme the item names (#692): the component sets --private-theme-wash and
+   --private-theme-accent to that theme's --magma-preview-<name>-*; a theme that publishes none
+   leaves them invalid, and the active theme shows instead */
+
 :host {
-  --mds-pref-theme-item-color-background: rgb(var(--magma-wash-base));
+  --mds-pref-theme-item-color-background: rgb(var(--private-theme-wash, var(--magma-wash-base)));
   --mds-pref-theme-item-color-status-error: rgb(var(--magma-danger-emphasis));
   --mds-pref-theme-item-color-status-success: rgb(var(--magma-success-emphasis));
   --mds-pref-theme-item-color-status-warning: rgb(var(--magma-warning-emphasis));
-  --mds-pref-theme-item-color-variant-primary: rgb(var(--magma-accent-emphasis));
+  --mds-pref-theme-item-color-variant-primary: rgb(
+    var(--private-theme-accent, var(--magma-accent-emphasis))
+  );
 
   align-items: center;
   cursor: pointer;
@@ -41,11 +47,11 @@
   width: --spacing(600);
 }
 
-/* the neutral step 09 of the active theme, which a named theme retints; 16px on a 6px dot was
-   a circle, the pill */
+/* the wash of the theme the item names, under the colour of each dot; 16px on a 6px dot was a
+   circle, the pill */
 
 .theme-color {
-  background-color: rgb(var(--magma-wash-base));
+  background-color: var(--mds-pref-theme-item-color-background);
   border-radius: var(--magma-radius-full);
   height: --spacing(150);
   position: relative;

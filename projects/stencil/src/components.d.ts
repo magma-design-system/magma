@@ -2503,8 +2503,8 @@ export namespace Components {
          */
         "label"?: string;
         /**
-          * Specifies the theme name
-          * @example 'maggioli-editore'
+          * Specifies the theme name; the swatch shows the preview that theme publishes, `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent`
+          * @example 'editorial'
           * @default 'default'
          */
         "name": string;
@@ -8042,8 +8042,8 @@ declare namespace LocalJSX {
          */
         "label"?: string;
         /**
-          * Specifies the theme name
-          * @example 'maggioli-editore'
+          * Specifies the theme name; the swatch shows the preview that theme publishes, `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent`
+          * @example 'editorial'
           * @default 'default'
          */
         "name"?: string;

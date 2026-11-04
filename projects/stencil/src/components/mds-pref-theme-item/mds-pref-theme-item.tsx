@@ -5,6 +5,9 @@ import { MdsPrefThemeEventDetail } from '@event/theme';
 import { PreferenceThemeSchemeType } from '@type/preference';
 import { labelFromName } from '@common/string';
 
+/** The names mds-pref-theme accepts: a theme's preview custom properties carry the name. */
+const THEME_NAME = /^[a-z]+(-[a-z]+)*$/;
+
 /**
  * @parent mds-pref-theme
  */
@@ -20,8 +23,9 @@ export class MdsPrefThemeItem {
   @Prop({ reflect: true, mutable: true }) label?: string;
 
   /**
-   * Specifies the theme name
-   * @example 'maggioli-editore'
+   * Specifies the theme name; the swatch shows the preview that theme publishes,
+   * `--magma-preview-<name>-wash` and `--magma-preview-<name>-accent`
+   * @example 'editorial'
    */
   @Prop({ reflect: true }) readonly name: string = 'default';
 
@@ -51,11 +55,24 @@ export class MdsPrefThemeItem {
     this.selectThemeEvent.emit({ name: this.name, scheme: this.scheme });
   };
 
+  /**
+   * The preview of the theme the item names, which the styles of that theme publish on the page
+   * (`--magma-preview-<name>-{wash,accent}`, #692), so the item shows its own theme and not the
+   * active one. The stylesheet falls back to the active theme when a theme publishes none.
+   */
+  private previewStyle = (): Record<string, string> | undefined =>
+    THEME_NAME.test(this.name)
+      ? {
+          '--private-theme-wash': `var(--magma-preview-${this.name}-wash)`,
+          '--private-theme-accent': `var(--magma-preview-${this.name}-accent)`,
+        }
+      : undefined;
+
   render() {
     return (
       // the item is an entry of the `menu` the mds-dropdown of the controller opens:
       // without the role axe rejects it as a child of that menu (aria-required-children)
-      <Host onClick={this.handleClick} role="menuitem">
+      <Host onClick={this.handleClick} role="menuitem" style={this.previewStyle()}>
         <mds-button
           icon={this.selected ? miBaselineCheckCircle : miOutlineCircle}
           variant="dark"
