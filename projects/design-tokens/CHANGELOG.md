@@ -4,6 +4,13 @@ Every release of `@maggioli-design-system/design-tokens`, newest first. Each sec
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [design-tokens@15.5.0] - 2026-11-04
+
+### Features
+
+- *(design-tokens,styles)* Name the two product themes, business and editorial
+- *(design-tokens)* Verify every named theme in the contrast gate, in its own family
+
 ## [design-tokens@15.4.0] - 2026-11-04
 
 ### Bug Fixes

@@ -4,6 +4,12 @@ Every release of `@maggioli-design-system/styles`, newest first. Each section is
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [styles@17.6.0] - 2026-11-04
+
+### Features
+
+- *(design-tokens,styles)* Name the two product themes, business and editorial
+
 ## [styles@17.5.0] - 2026-11-04
 
 ### Bug Fixes

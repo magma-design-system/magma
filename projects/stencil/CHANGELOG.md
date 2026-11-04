@@ -4,6 +4,27 @@ Every release of `@maggioli-design-system/magma`, newest first. Each section is 
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [magma@2.11.0] - 2026-11-04
+
+### Bug Fixes
+
+- *(mds-pref-theme)* Mark the business item when the theme is left on its default
+
+### Build
+
+- *(stencil)* Build magma again when docs/agents changes
+
+### Documentation
+
+- *(storybook)* Watch the contrast promotion under editorial in the semantic lab
+- *(magma)* Build magma before checking a new or changed preview
+
+### Features
+
+- *(mds-pref-theme-item)* Show in the swatch the theme the item names
+- *(lint)* Let render_preview take the base theme by its name
+- *(magma,lint)* Ship an image of each preview, light and dark, beside its stage
+
 ## [magma@2.10.0] - 2026-11-04
 
 ### Bug Fixes

@@ -1,11 +1,11 @@
 {
   "name": "@maggioli-design-system/magma-angular",
-  "version": "2.10.0",
+  "version": "2.11.0",
   "license": "MIT",
   "peerDependencies": {
     "@angular/common": ">=20.0.0",
     "@angular/core": ">=20.0.0",
-    "@maggioli-design-system/magma": "2.10.0"
+    "@maggioli-design-system/magma": "2.11.0"
   },
   "dependencies": {
     "tslib": "2.9.1"
