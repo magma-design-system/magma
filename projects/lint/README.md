@@ -201,7 +201,12 @@ or on the guide it enforces, not only on fixtures picked by hand.
   `<case>.<n>.html` from 2, with no gap (the choice of the maintainer on #1221, beside the first
   rather than in a folder of their own, so the folder of a pattern stays one level): the pattern
   names their paths in `examples`, the answer too, and `render_preview` takes `example`. Only Magma's cases have previews: a
-  product layer adds situations, never a case to show.
+  product layer adds situations, never a case to show. The preview of an answer names its two
+  images in `images` (#1243), `<case>.light.webp` and `<case>.dark.webp` beside it, which the
+  build of magma makes with `renderPreviewImages`: the paths only, for a client that cannot run
+  the stage, and only the files that exist, since a magma built before them has none and a path
+  to nothing would send the client after a file that is not there. The pattern does not repeat
+  them on each case: they follow the path of the preview.
 - **The domains of Foundation** (`kind: foundation`, `src/core/patterns.ts`, #1196): the
   domains of the design language decided on #1189, in the same format, so they are listed,
   searched and answered as the patterns are, first in the list as the rail of the docs site puts

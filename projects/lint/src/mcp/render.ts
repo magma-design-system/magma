@@ -14,6 +14,10 @@
   building block (previews/<block>/<situation>.html, asked as its case), or of a rule of a
   domain, and another example of any (<id>.<n>.html, #1221), with the height of its page and
   the language of its words, so the check of the image runs on every preview.
+
+  The same render makes the images magma ships of its previews (#1243, renderPreviewImages):
+  the build of magma renders every preview in the frame of PREVIEW_IMAGE of the core, light and
+  dark, and fails on an image with a problem, so no image ships that the check did not pass.
 */
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -26,10 +30,14 @@ import {
   examplesOf,
   indexPatterns,
   ownRules,
+  PREVIEW_IMAGE,
+  PREVIEW_IMAGE_MODES,
   previewOf,
   readPatternDir,
   readPreviews,
   situationIds,
+  type Preview,
+  type PreviewImageMode,
 } from '../core/patterns.js';
 import { packageDir, readJsonFile, resolvePackage, type ToolContext } from './context.js';
 import { folderOf, slugFile } from './icons.js';
@@ -394,6 +402,17 @@ export interface Image {
 /** How long a page may take to load and settle. */
 const TIMEOUT = 15_000;
 
+/**
+ * A frame of a fixed size, the one of the images Magma ships of its previews (#1243): the
+ * viewport keeps its height whatever the content, the image has scale device pixels per CSS
+ * pixel and is encoded as WebP at that quality too.
+ */
+interface Frame {
+  height: number;
+  scale: number;
+  quality: number;
+}
+
 /** One page at one width: the image and what is wrong in it. */
 const capture = async (
   context: ToolContext,
@@ -401,10 +420,11 @@ const capture = async (
   html: string,
   width: number,
   options: Options,
-): Promise<{ png: Buffer; height: number; problems: PageProblem[] }> => {
+  frame?: Frame,
+): Promise<{ png: Buffer; webp?: Buffer; height: number; problems: PageProblem[] }> => {
   const session = await browser.newContext({
-    viewport: { width, height: options.height ?? 600 },
-    deviceScaleFactor: 1,
+    viewport: { width, height: frame?.height ?? options.height ?? 600 },
+    deviceScaleFactor: frame?.scale ?? 1,
     colorScheme: options.mode,
   });
   try {
@@ -448,25 +468,44 @@ const capture = async (
     await page.goto(`${ORIGIN}/`, { waitUntil: 'networkidle', timeout });
     await page.evaluate(inPage, { step: 'settle', timeout: timeout / 2 });
     let inspection = (await page.evaluate(inPage, { step: 'inspect' })) as Inspection;
-    const height = options.height ?? Math.min(inspection.height, MAX_SIDE);
-    if (!options.height) {
+    const height = frame?.height ?? options.height ?? Math.min(inspection.height, MAX_SIDE);
+    // a frame shows what fits in it, by its choice: the rest of the content is no cut
+    const sized = frame !== undefined || options.height !== undefined;
+    if (!sized) {
       // the viewport as tall as the content: a layout that depends on the height settles again
       await page.setViewportSize({ width, height });
       await page.evaluate(inPage, { step: 'settle', timeout: Math.min(2000, timeout / 2) });
       inspection = (await page.evaluate(inPage, { step: 'inspect' })) as Inspection;
     }
-    if (!options.height && inspection.height > MAX_SIDE)
+    if (!sized && inspection.height > MAX_SIDE)
       problems.push({
         kind: 'cut',
         detail: `The content is ${inspection.height} px tall and the image shows its first ${MAX_SIDE}: render a part of it, or each part on its own.`,
       });
     const png = await page.screenshot({ type: 'png' });
+    // in a frame, a component its edge cuts shows a part of itself, which may be all one colour
+    // (the top of a card): the frame judges the components it shows whole
+    const regions = frame
+      ? inspection.regions.filter(
+          (one) => one.x + one.width <= width && one.y + one.height <= frame.height,
+        )
+      : inspection.regions;
     const flat = (await page.evaluate(inPage, {
       step: 'pixels',
       png: png.toString('base64'),
-      scale: 1,
-      regions: inspection.regions,
+      scale: frame?.scale ?? 1,
+      regions,
     })) as PageProblem[];
+    const webp = frame
+      ? Buffer.from(
+          (await page.evaluate(inPage, {
+            step: 'encode',
+            png: png.toString('base64'),
+            quality: frame.quality,
+          })) as string,
+          'base64',
+        )
+      : undefined;
     const all = [...problems, ...inspection.problems, ...flat];
     // one problem once: a component asks for a missing icon on each render
     const seen = new Set<string>();
@@ -474,17 +513,14 @@ const capture = async (
       const key = JSON.stringify(one);
       return !seen.has(key) && seen.add(key);
     });
-    return { png, height, problems: unique };
+    return { png, ...(webp ? { webp } : {}), height, problems: unique };
   } finally {
     await session.close();
   }
 };
 
-/** Render the markup at each width: the image, the file it is written to and what is wrong in it. */
-export const render = async (
-  context: ToolContext,
-  options: Options,
-): Promise<Array<Image & { png: Buffer }>> => {
+/** The browser the images are made in, once the project has a driver and its magma can load its components. */
+const browserFor = async (context: ToolContext): Promise<Browser> => {
   const chromium = await chromiumOf(context);
   if (!chromium)
     throw new ToolError(
@@ -492,9 +528,14 @@ export const render = async (
     );
   if (!existsSync(loaderOf(context)))
     throw new ToolError(`The installed magma has no ${LOADER}: the components cannot load.`);
-  const version =
-    readJsonFile<{ version: string }>(path.join(magmaRoot(context.settings), 'package.json'))
-      ?.version ?? '';
+  return launch(chromium);
+};
+
+/** The page of the markup, and the problem every image of it has when its Tailwind classes cannot compile. */
+const pageFor = async (
+  context: ToolContext,
+  options: PageOptions,
+): Promise<{ html: string; untailwinded: PageProblem[] }> => {
   const utilities = await tailwindOf(context, options.markup);
   const html = pageOf(context, { ...options, ...(utilities ? { utilities } : {}) });
   // classes with no style element of the markup to give them rules are Tailwind classes, which
@@ -511,6 +552,18 @@ export const render = async (
           },
         ]
       : [];
+  return { html, untailwinded };
+};
+
+/** Render the markup at each width: the image, the file it is written to and what is wrong in it. */
+export const render = async (
+  context: ToolContext,
+  options: Options,
+): Promise<Array<Image & { png: Buffer }>> => {
+  const version =
+    readJsonFile<{ version: string }>(path.join(magmaRoot(context.settings), 'package.json'))
+      ?.version ?? '';
+  const { html, untailwinded } = await pageFor(context, options);
   const out = path.join(context.root, PREVIEW_DIR);
   mkdirSync(out, { recursive: true });
   // the same markup, options and magma give the same file, written again: the time a page
@@ -520,7 +573,7 @@ export const render = async (
     .digest('hex')
     .slice(0, 12);
 
-  const browser = await launch(chromium);
+  const browser = await browserFor(context);
   try {
     const images: Array<Image & { png: Buffer }> = [];
     for (const width of options.widths) {
@@ -532,6 +585,69 @@ export const render = async (
       images.push({ width, height, file, png, representative: !problems.length, problems });
     }
     return images;
+  } finally {
+    await browser.close();
+  }
+};
+
+/** The image of a preview Magma ships in one mode, as WebP, and what is wrong in it. */
+export interface PreviewImage {
+  preview: Preview;
+  mode: PreviewImageMode;
+  webp: Buffer;
+  problems: PageProblem[];
+}
+
+/**
+ * The images of the previews Magma ships (#1243): each preview in each mode, in the frame of
+ * PREVIEW_IMAGE of the core, checked as render_preview checks an image and encoded as WebP from
+ * the capture it checked; its words in the language of the previews and a whole page without
+ * the inset, as render_preview renders a preview. One browser, a few previews at a time (a page
+ * waits mostly for its components and its fonts); the images in the order of the previews.
+ */
+export const renderPreviewImages = async (
+  context: ToolContext,
+  previews: Preview[],
+  concurrency = 2,
+): Promise<PreviewImage[]> => {
+  const browser = await browserFor(context);
+  const images: PreviewImage[][] = [];
+  let next = 0;
+  const work = async () => {
+    while (next < previews.length) {
+      const at = next++;
+      const preview = previews[at]!;
+      const options = {
+        markup: preview.markup,
+        lang: PREVIEW_LANG,
+        ...(preview.wholePage ? { wholePage: true } : {}),
+      };
+      const made: PreviewImage[] = [];
+      try {
+        const { html, untailwinded } = await pageFor(context, options);
+        for (const mode of PREVIEW_IMAGE_MODES) {
+          const { webp, problems } = await capture(
+            context,
+            browser,
+            html,
+            PREVIEW_IMAGE.width,
+            { ...options, widths: [PREVIEW_IMAGE.width], mode },
+            PREVIEW_IMAGE,
+          );
+          made.push({ preview, mode, webp: webp!, problems: [...untailwinded, ...problems] });
+        }
+      } catch (error) {
+        // a page that does not load (a timeout): the preview it is, not only the driver's words
+        throw new Error(
+          `${path.relative(context.root, preview.file)}: ${error instanceof Error ? error.message : String(error)}`,
+        );
+      }
+      images[at] = made;
+    }
+  };
+  try {
+    await Promise.all(Array.from({ length: Math.max(1, concurrency) }, work));
+    return images.flat();
   } finally {
     await browser.close();
   }

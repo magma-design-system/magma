@@ -23,7 +23,9 @@
  *   a domain or a situation that exists, with its keys, only a stage, and its markup clean for
  *   the Magma lint (the strict preset, as check_markup runs it); the cases and the situations of
  *   a decided block with no preview are listed as a warning, which does not fail the check while
- *   previews are being made.
+ *   previews are being made;
+ * - the images of the previews in the build (agents/patterns/previews/ of magma, #1243): each
+ *   preview with its light and its dark image, WebP of the frame, and no image of no preview.
  *
  * With `--layer <dir>` it checks a product's folder too (magma/patterns/ of a product), as
  * get_pattern does without arguments (projectErrors of the core): a layer may narrow the open
@@ -58,6 +60,7 @@ import {
   lintErrors,
   linkErrors,
   missingPreviews,
+  previewImageErrors,
   previewLinkErrors,
   projectErrors,
   readPreviews,
@@ -146,6 +149,9 @@ for (const preview of previews) {
 }
 for (const [file, errors] of previewLinkErrors(previews, patterns)) report(file, errors);
 const missing = missingPreviews(patterns, previews);
+// the images the build made of them (scripts/preview-images.ts), in the package
+for (const [file, errors] of previewImageErrors(previews, join(PROJECT_DIR, 'agents/patterns')))
+  report(file, errors);
 
 const layerArg = process.argv.indexOf('--layer');
 if (layerArg > -1) {
@@ -182,5 +188,5 @@ console.log(
     patterns.length - domains - blocks - decided
   } candidates): ${combinations} combinations each in one case, a gap or not applicable, or with a required region of a block; every component, attribute, carrier, lint rule and link exists; ${
     previews.length
-  } preview(s), each of a case, a rule of a domain or a situation of a block and clean`,
+  } preview(s), each of a case, a rule of a domain or a situation of a block and clean, each with its light and dark image in the build`,
 );

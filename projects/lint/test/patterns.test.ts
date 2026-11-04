@@ -1,7 +1,7 @@
 // The patterns core (#1174): the format, the coverage of the cases, the links, the layers, the
 // answer for a situation and the generated body, on the patterns Magma ships and on small ones
 // written here to break one rule each.
-import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
@@ -24,6 +24,9 @@ import {
   parsePatternFile,
   parsePreview,
   parseUse,
+  PREVIEW_IMAGE,
+  previewImageErrors,
+  previewImageFile,
   previewLinkErrors,
   previewOf,
   projectErrors,
@@ -37,6 +40,7 @@ import {
   situationsMatching,
   syncBody,
   coverageErrors,
+  webpSize,
   type Layer,
   type Pattern,
   type PatternFile,
@@ -1487,5 +1491,85 @@ describe('the previews of the cases', () => {
     mkdirSync(path.join(dir, 'previews/small'), { recursive: true });
     writeFileSync(path.join(dir, 'previews/small/notes.md'), 'not a preview');
     expect(readPreviews(dir)).toEqual([]);
+  });
+});
+
+// #1243: the images the build of magma makes of the previews, beside them in the package
+describe('the images of the previews', () => {
+  /** The header of a WebP of each kind (RFC 9649), as far as webpSize reads it. */
+  const webp = (chunk: 'VP8 ' | 'VP8L' | 'VP8X', width: number, height: number): Buffer => {
+    const bytes = Buffer.alloc(30);
+    bytes.write('RIFF', 0, 'latin1');
+    bytes.writeUInt32LE(22, 4);
+    bytes.write('WEBP', 8, 'latin1');
+    bytes.write(chunk, 12, 'latin1');
+    if (chunk === 'VP8 ') {
+      bytes.set([0x9d, 0x01, 0x2a], 23);
+      bytes.writeUInt16LE(width, 26);
+      bytes.writeUInt16LE(height, 28);
+    } else if (chunk === 'VP8L') {
+      bytes[20] = 0x2f;
+      bytes.writeUInt32LE((width - 1) | ((height - 1) << 14), 21);
+    } else {
+      bytes.writeUIntLE(width - 1, 24, 3);
+      bytes.writeUIntLE(height - 1, 27, 3);
+    }
+    return bytes;
+  };
+  const frame = {
+    width: PREVIEW_IMAGE.width * PREVIEW_IMAGE.scale,
+    height: PREVIEW_IMAGE.height * PREVIEW_IMAGE.scale,
+  };
+
+  test('the frame is 8:5, 1440 x 900 pixels', () => {
+    expect(frame).toEqual({ width: 1440, height: 900 });
+  });
+
+  test('an image is named after its preview and its mode, beside it or in a package', () => {
+    expect(previewImageFile('/p/previews/small/on-field.html', 'light')).toBe(
+      '/p/previews/small/on-field.light.webp',
+    );
+    expect(previewImageFile('/p/previews/small/on-field.2.html', 'dark', '/magma/patterns')).toBe(
+      '/magma/patterns/previews/small/on-field.2.dark.webp',
+    );
+  });
+
+  test('the size of a WebP comes from its first chunk, of any kind', () => {
+    for (const chunk of ['VP8 ', 'VP8L', 'VP8X'] as const)
+      expect(webpSize(webp(chunk, 1440, 900))).toEqual({ width: 1440, height: 900 });
+    expect(webpSize(Buffer.from('\x89PNG\r\n\x1a\n'.padEnd(40, '\0'), 'latin1'))).toBeUndefined();
+  });
+
+  test('each preview has its two images of the frame in the package, and no image is of no preview', () => {
+    const source = mkdtempSync(path.join(tmpdir(), 'magma-previews-'));
+    const shipped = mkdtempSync(path.join(tmpdir(), 'magma-package-'));
+    for (const dir of [source, shipped])
+      mkdirSync(path.join(dir, 'previews/small'), { recursive: true });
+    for (const name of ['on-field', 'ask'])
+      writeFileSync(
+        path.join(source, `previews/small/${name}.html`),
+        '<!--\ntry: Look.\n-->\n<mds-text>A</mds-text>',
+      );
+    const image = (name: string, bytes: Buffer) =>
+      writeFileSync(path.join(shipped, `previews/small/${name}`), bytes);
+    image('on-field.light.webp', webp('VP8 ', 1440, 900));
+    image('on-field.dark.webp', webp('VP8X', 960, 600));
+    image('ask.light.webp', Buffer.from('not an image'));
+    image('ask.dark.webp', webp('VP8L', 1440, 900));
+    image('gone.light.webp', webp('VP8 ', 1440, 900));
+    const at = (name: string) => path.join(shipped, `previews/small/${name}`);
+    expect(previewImageErrors(readPreviews(source), shipped)).toEqual(
+      new Map([
+        [at('ask.light.webp'), ['it is not WebP']],
+        [at('on-field.dark.webp'), ['it is 960x600, the frame is 1440x900']],
+        [at('gone.light.webp'), ['it is the image of no preview']],
+      ]),
+    );
+    rmSync(at('ask.dark.webp'));
+    expect(
+      previewImageErrors(readPreviews(source), shipped).get(
+        path.join(source, 'previews/small/ask.html'),
+      ),
+    ).toEqual([`no dark image in ${at('ask.dark.webp')}: build magma`]);
   });
 });
