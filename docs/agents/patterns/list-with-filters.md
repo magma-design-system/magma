@@ -29,7 +29,7 @@ assumptions:
   - The back end can search, count, sort and page the set.
   - The application knows whether other people or systems change the set while it is on screen.
 high-stakes: false
-components: [mds-input, mds-input-field, mds-input-select, mds-filter, mds-filter-item, mds-table, mds-table-header-cell, mds-paginator, mds-text, mds-badge, mds-button, mds-card]
+components: [mds-input, mds-input-field, mds-input-select, mds-filter, mds-filter-item, mds-table, mds-table-header-cell, mds-paginator, mds-notification, mds-text, mds-badge, mds-button, mds-card]
 related: [loading, empty-state, error-recovery, message-placement, confirm-action, record-detail, choose-items, page-header, item-list, app-shell]
 validated-on: []
 
@@ -40,7 +40,7 @@ variables:
 cases:
   - { id: find-and-open, goal: open, changes: "no", where: "the title of the list, a search form, the summary, the results and the pages; the name or the number of each item is the link to its page", use: ["mds-input type=search", "mds-filter", "mds-input-select", "mds-table sorting=external", "mds-table-header-cell sortable sort-key", "mds-paginator"] }
   - { id: act-on-many, goal: act, changes: "no", where: "a checkbox on each row and the bar of the batch actions, with how many are selected; the selection is the page on screen; an action that cannot be taken back asks first, saying how many; the outcome is told as message-placement says, a partial one as error-recovery says", use: ["mds-table selectable", "mds-button slot=batch-action"], see: confirm-action }
-  - { id: show-new-items, changes: by-others, where: "nothing on screen moves by itself: at the end of the line of the summary, a dot that pulses three times when the count grows (once Magma carries it, see Magma gaps; until then none), how many items are new or changed in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus; Show hides once pressed, and the focus goes to the heading of the list", use: ["mds-text typography=detail", "mds-button variant=info tone=outline size=sm"] }
+  - { id: show-new-items, changes: by-others, where: "nothing on screen moves by itself: at the end of the line of the summary, how many items are new or changed, the count in an info dot that pulses three times when it grows and the words in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus; Show hides once pressed, and the focus goes to the heading of the list", use: ["mds-notification variant=info pulse", "mds-text typography=detail", "mds-button variant=info tone=outline size=sm"] }
 gaps: []
 not-applicable: []
 
@@ -126,7 +126,7 @@ A case that leaves a variable out holds for any of its values.
 | --- | --- | --- | --- |
 | `find-and-open` | goal: open; changes: no | the title of the list, a search form, the summary, the results and the pages; the name or the number of each item is the link to its page | `mds-input type=search`, `mds-filter`, `mds-input-select`, `mds-table sorting=external`, `mds-table-header-cell sortable sort-key`, `mds-paginator` |
 | `act-on-many` | goal: act; changes: no | a checkbox on each row and the bar of the batch actions, with how many are selected; the selection is the page on screen; an action that cannot be taken back asks first, saying how many; the outcome is told as message-placement says, a partial one as error-recovery says; see `confirm-action` | `mds-table selectable`, `mds-button slot=batch-action` |
-| `show-new-items` | changes: by-others | nothing on screen moves by itself: at the end of the line of the summary, a dot that pulses three times when the count grows (once Magma carries it, see Magma gaps; until then none), how many items are new or changed in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus; Show hides once pressed, and the focus goes to the heading of the list | `mds-text typography=detail`, `mds-button variant=info tone=outline size=sm` |
+| `show-new-items` | changes: by-others | nothing on screen moves by itself: at the end of the line of the summary, how many items are new or changed, the count in an info dot that pulses three times when it grows and the words in the info colour, and Show, which loads the list again with the same query; the line keeps its place while there is nothing new, so the results never move; the count is read out without moving the focus; Show hides once pressed, and the focus goes to the heading of the list | `mds-notification variant=info pulse`, `mds-text typography=detail`, `mds-button variant=info tone=outline size=sm` |
 
 No gaps: every combination has a case or is not applicable.
 
@@ -153,12 +153,13 @@ No gaps: every combination has a case or is not applicable.
   them out, around the page in the block `app-shell`.
 - When the person acts on several items: `selectable` on `mds-table`, and the actions as
   `mds-button` in its `batch-action` slot; the bar says how many are selected.
-- When others change the set: at the end of the line of the summary, a dot that pulses, how many
-  items are new in the info colour (`--magma-info-fg`) and Show (`mds-button variant="info"
-  tone="outline" size="sm"`). The line keeps its place while there is nothing new: Show is
-  hidden (`visibility: hidden`), not removed, and on a narrow screen the line sits under the
-  summary from the start, so neither its arrival nor its count moves the results. The dot waits
-  for Magma (Magma gaps): until then, the line without it.
+- When others change the set: at the end of the line of the summary, how many items are new: the
+  count as the `value` of `mds-notification variant="info" pulse`, the words after it in the
+  info colour (`--magma-info-fg`), `gap-inline` between them, then Show (`mds-button
+  variant="info" tone="outline" size="sm"`). The line keeps its place while there is nothing
+  new: Show is hidden (`visibility: hidden`), not removed, the dot is `dismissed`, and on a
+  narrow screen the line sits under the summary from the start, so neither its arrival nor its
+  count moves the results.
 
 ## Behaviour over time
 
@@ -239,7 +240,8 @@ Situations every application has, each with its case: they give the examples, th
   shown out of how many, while the focus stays on the control just used.
 - The line of the new items is read out when it appears and when its count changes, without
   moving the focus: its count sits in a status region that is always on the page (a live region
-  added together with its text is not read reliably); the dot is decorative (`aria-hidden`).
+  added together with its text is not read reliably); the dot is the count, read with the words
+  after it (an `mds-notification` with no `target` is plain text).
 - The status of each item is the text of its badge, not only its colour.
 - The table keeps its column headers; on a narrow screen it scrolls sideways instead of
   squeezing the columns.
@@ -265,11 +267,6 @@ Situations every application has, each with its case: they give the examples, th
   ("Anagraf-e") and `mds-badge` breaks its own label (seen on the render of 2026-10-29).
 - `mds-table` sorts the rows in the DOM by default (`sorting="internal"`): a list with pages
   must set `sorting="external"`, or a click on a header sorts only the page on screen.
-- No dot that calls attention: the dot of `show-new-items` (the info colour, three pulses,
-  stopped by a reduced animation) is drawn by the page in the render of 2026-10-31, with values
-  of its own. `mds-notification` draws a dot (`value="0"`), but in the danger colour only (its
-  background is not public) and with no pulse. Until Magma carries it (#1216), the line goes
-  without the dot; a product never writes the animation itself.
 
 ## Decisions
 
@@ -281,4 +278,5 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-29 | Items added or changed by others wait behind a line with how many and Show (`show-new-items`) | What the person is about to click never moves; the person decides when the list changes. |
 | 2026-10-31 | The line of the new items sits at the end of the line of the summary, no longer an info `mds-banner` above the results: a dot that pulses three times when the count grows, the count in the info colour, Show `variant="info" tone="outline" size="sm"`; the line keeps its place while empty | The banner pushed the results down by 167 px when it appeared, against the case itself; in the line of the summary nothing moves, on a phone too. A line with no dot was too quiet (vittorio); the pulse stops after three beats (WCAG 2.2.2) and honours a reduced animation. Show is outlined as the action of a toast (`actions/toast`, #1189). Chosen live against the banner and the plain line (#1210). |
 | 2026-10-29 | Choosing items for something else is a pattern of its own, the candidate `choose-items` | The selection lives across searches and ends in a choice, not in work on the items; each pattern stays shorter. |
+| 2026-11-04 | The dot of the new items is `mds-notification variant="info" pulse`, the count its `value`, before the words of the line inside its status region; Show `dismissed` it | Magma carries it since #1216 (PR #1239): the pulse follows `value`, so the dot shows the count, and the count is in the info colour as decided on 2026-10-31; a product never writes the animation itself. It replaces the dot the render of 2026-10-31 drew by hand. |
 | 2026-11-03 | The order is chosen from the headers of the columns, not from the search form; Clear filters is in the summary, but only in the panel when nothing matches; after Show the focus goes to the heading; what was searched is marked in the results | What the previews of the cases showed, confirmed in review round 2 of the previews: https://github.com/magma-design-system/magma/issues/1233 |

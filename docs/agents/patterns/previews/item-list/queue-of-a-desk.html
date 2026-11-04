@@ -1,5 +1,5 @@
 <!--
-try: Look at the end of the line of the summary: 2 practices arrived while the queue was open, and the table did not move. Press Mostra: the 2 practices join the end of the queue, the summary counts them, and the line empties without giving up its place.
+try: Look at the end of the line of the summary: 2 practices arrived while the queue was open, and the table did not move. Wait a few seconds: a third arrives, the count in the dot grows and the dot pulses three times. Press Mostra: the new practices join the end of the queue, the summary counts them, and the line empties without giving up its place.
 -->
 <div class="grid gap-between-groups">
   <form role="search" class="grid gap-between-fields">
@@ -32,7 +32,10 @@ try: Look at the end of the line of the summary: 2 practices arrived while the q
           <mds-button variant="dark" tone="text" size="sm">Rimuovi i filtri</mds-button>
         </div>
         <div id="nuove" class="flex basis-full items-center gap-inline @2xl:basis-auto">
-          <span role="status"><mds-text id="quante" typography="detail" tag="p" class="text-info-fg">2 nuove pratiche</mds-text></span>
+          <p role="status" class="flex items-center gap-inline">
+            <mds-notification id="punto" variant="info" value="2" pulse></mds-notification>
+            <mds-text id="quante" typography="detail" class="text-info-fg">nuove pratiche</mds-text>
+          </p>
           <mds-button id="mostra" variant="info" tone="outline" size="sm">Mostra</mds-button>
         </div>
       </div>
@@ -80,18 +83,26 @@ try: Look at the end of the line of the summary: 2 practices arrived while the q
     ['2026/0158', 'Stato di famiglia', 'Sara Galli', '3 marzo 2026, 10:10'],
   ];
   const cell = (text) => `<mds-table-cell><mds-text typography="detail">${text}</mds-text></mds-table-cell>`;
+  // a third practice arrives while the queue is open: the count in the dot grows and the dot pulses
+  const arriving = setTimeout(() => {
+    arrived.push(['2026/0159', 'Carta di identità', 'Elena Fontana', '3 marzo 2026, 10:16']);
+    document.getElementById('punto').value = arrived.length;
+  }, 4000);
   document.getElementById('mostra').addEventListener('click', () => {
-    // the list loads again with the same search: oldest first, so the 2 new ones join the end of this last page
+    clearTimeout(arriving);
+    // the list loads again with the same search: oldest first, so the new ones join the end of this last page
     const rows = arrived.map(
       ([number, subject, person, received]) =>
         `<mds-table-row><mds-table-cell><mds-text typography="detail"><mds-link href="#">${number}</mds-link></mds-text></mds-table-cell>${cell(subject)}${cell(person)}${cell(received)}</mds-table-row>`,
     );
     document.getElementById('righe').insertAdjacentHTML('beforeend', rows.join(''));
-    document.getElementById('summary').textContent = '21-26 di 26 pratiche';
-    document.getElementById('stato-nuove').setAttribute('count', '26');
-    document.getElementById('tutte').setAttribute('count', '132');
-    // the line empties but keeps its place (visibility: hidden, not removed): the items never move
+    const total = 24 + arrived.length;
+    document.getElementById('summary').textContent = `21-${total} di ${total} pratiche`;
+    document.getElementById('stato-nuove').setAttribute('count', `${total}`);
+    document.getElementById('tutte').setAttribute('count', `${130 + arrived.length}`);
+    // the line empties but keeps its place (Mostra hidden, not removed): the items never move
     document.getElementById('quante').textContent = '';
+    document.getElementById('punto').dismissed = true;
     document.getElementById('mostra').style.visibility = 'hidden';
     // Mostra is gone: the focus goes to the heading of the list, in page-header, outside this block
   });

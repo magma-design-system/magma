@@ -1,5 +1,5 @@
 <!--
-try: Look at the end of the line of the summary: 2 practices arrived while the list was open, and nothing above or below moved. Press Mostra: the list loads again with the same search, and the line empties without giving up its place.
+try: Look at the end of the line of the summary: 2 practices arrived while the list was open, and nothing above or below moved. Wait a few seconds: a third arrives, the count in the dot grows and the dot pulses three times. Press Mostra: the list loads again with the same search, and the line empties without giving up its place.
 whole-page: true
 -->
 <mds-header>
@@ -57,8 +57,10 @@ whole-page: true
           <mds-button variant="dark" tone="text" size="sm">Rimuovi i filtri</mds-button>
         </div>
         <div class="flex basis-full items-center gap-inline @2xl:basis-auto">
-          <span id="punto" aria-hidden="true" class="size-200 shrink-0 rounded-full bg-info-emphasis"></span>
-          <span role="status"><mds-text id="nuove" typography="detail" tag="p" class="text-info-fg">2 nuove pratiche</mds-text></span>
+          <p role="status" class="flex items-center gap-inline">
+            <mds-notification id="punto" variant="info" value="2" pulse></mds-notification>
+            <mds-text id="nuove" typography="detail" class="text-info-fg">nuove pratiche</mds-text>
+          </p>
           <mds-button id="mostra" variant="info" tone="outline" size="sm">Mostra</mds-button>
         </div>
       </div>
@@ -105,18 +107,24 @@ whole-page: true
     ['2026/0142', 'Stato di famiglia', 'Sara Galli'],
   ];
   const cell = (text) => `<mds-table-cell><mds-text typography="detail">${text}</mds-text></mds-table-cell>`;
+  // a third practice arrives while the list is open: the count in the dot grows and the dot pulses
+  const arriving = setTimeout(() => {
+    arrived.unshift(['2026/0144', 'Carta di identità', 'Elena Fontana']);
+    document.getElementById('punto').value = arrived.length;
+  }, 4000);
   document.getElementById('mostra').addEventListener('click', (event) => {
+    clearTimeout(arriving);
     const rows = arrived.map(
       ([number, subject, person]) =>
         `<mds-table-row><mds-table-cell><mds-text typography="detail"><mds-link href="#">${number}</mds-link></mds-text></mds-table-cell>${cell(subject)}${cell(person)}${cell('3 marzo 2026')}</mds-table-row>`,
     );
     document.getElementById('righe').insertAdjacentHTML('afterbegin', rows.join(''));
-    document.getElementById('summary').textContent = '6 pratiche';
-    document.getElementById('stato-nuove').setAttribute('count', '6');
-    document.getElementById('tutte').setAttribute('count', '130');
-    // the line empties but keeps its place (visibility: hidden, not removed): the results never move
+    document.getElementById('summary').textContent = `${4 + arrived.length} pratiche`;
+    document.getElementById('stato-nuove').setAttribute('count', `${4 + arrived.length}`);
+    document.getElementById('tutte').setAttribute('count', `${128 + arrived.length}`);
+    // the line empties but keeps its place (Mostra hidden, not removed): the results never move
     document.getElementById('nuove').textContent = '';
-    document.getElementById('punto').style.visibility = 'hidden';
+    document.getElementById('punto').dismissed = true;
     event.currentTarget.style.visibility = 'hidden';
     // Mostra is gone: the focus goes to the heading of the page
     document.getElementById('titolo').focus();

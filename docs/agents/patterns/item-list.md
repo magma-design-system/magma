@@ -19,7 +19,7 @@ not-for:
 assumptions:
   - The back end can search, count, sort and page the set (list-with-filters).
 high-stakes: false
-components: [mds-input, mds-input-field, mds-input-select, mds-filter, mds-filter-item, mds-text, mds-button, mds-table, mds-table-header-cell, mds-file, mds-paginator]
+components: [mds-input, mds-input-field, mds-input-select, mds-filter, mds-filter-item, mds-notification, mds-text, mds-button, mds-table, mds-table-header-cell, mds-file, mds-paginator]
 used-by: [list-with-filters, empty-state, loading]
 related: [list-with-filters, empty-state, loading, error-recovery, page-header, choose-items]
 validated-on: []
@@ -33,7 +33,7 @@ regions:
   - { id: search, when: { size: many }, what: "the search form: a field that searches the number and the name, then a select for each property with a few values, as short fields under it, two to a row, in a group of fields at the width of a form", use: ["mds-input type=search", "mds-input-field", "mds-input-select"] }
   - { id: filters, when: { size: many }, what: "the statuses as one filter, each with how many items it would show, in the search form under its fields, when the items have a status", use: ["mds-filter", "mds-filter-item"] }
   - { id: summary, when: { size: many }, what: "one line: which items are on screen out of how many (\"11-20 di 46 pratiche\"), read out after every change, with Rimuovi i filtri when there are any", use: ["mds-text typography=detail tag=p", "mds-button variant=dark tone=text size=sm"] }
-  - { id: new-items, when: { changes: by-others }, what: "at the end of the line of the summary: how many items are new, in the info colour, and Mostra; a dot that pulses when the count grows once Magma carries it (#1216), until then none; the line keeps its place while nothing is new; Mostra hides once pressed and the focus goes to the heading of the list (list-with-filters, show-new-items)", use: ["mds-text typography=detail", "mds-button variant=info tone=outline size=sm"] }
+  - { id: new-items, when: { changes: by-others }, what: "at the end of the line of the summary: how many items are new, the count in an info dot that pulses when it grows and the words in the info colour, and Mostra; the line keeps its place while nothing is new; Mostra hides once pressed and the focus goes to the heading of the list (list-with-filters, show-new-items)", use: ["mds-notification variant=info pulse", "mds-text typography=detail", "mds-button variant=info tone=outline size=sm"] }
   - { id: selection, when: { goal: act }, what: "a checkbox on each row and the bar of the batch actions, with how many are selected (list-with-filters, act-on-many)", use: ["mds-table selectable", "mds-button slot=batch-action"] }
   - { id: results, required: true, what: "the items: one row each, its number or its name the link to its page; the columns that can order the list order it from their headers; files as mds-file, one per file, in a grid; cards in a grid when the items are seen rather than read (results-as-cards)", use: ["mds-table sorting=external", "mds-table-header-cell sortable sort-key", "mds-file"] }
   - { id: pages, when: { size: many }, what: "the pages, under the items, only when there is more than one", use: ["mds-paginator"] }
@@ -113,7 +113,7 @@ A region shows where its When holds, in this order: a required one always, the o
 | `search` | size: many |  | the search form: a field that searches the number and the name, then a select for each property with a few values, as short fields under it, two to a row, in a group of fields at the width of a form | `mds-input type=search`, `mds-input-field`, `mds-input-select` |
 | `filters` | size: many |  | the statuses as one filter, each with how many items it would show, in the search form under its fields, when the items have a status | `mds-filter`, `mds-filter-item` |
 | `summary` | size: many |  | one line: which items are on screen out of how many ("11-20 di 46 pratiche"), read out after every change, with Rimuovi i filtri when there are any | `mds-text typography=detail tag=p`, `mds-button variant=dark tone=text size=sm` |
-| `new-items` | changes: by-others |  | at the end of the line of the summary: how many items are new, in the info colour, and Mostra; a dot that pulses when the count grows once Magma carries it (#1216), until then none; the line keeps its place while nothing is new; Mostra hides once pressed and the focus goes to the heading of the list (list-with-filters, show-new-items) | `mds-text typography=detail`, `mds-button variant=info tone=outline size=sm` |
+| `new-items` | changes: by-others |  | at the end of the line of the summary: how many items are new, the count in an info dot that pulses when it grows and the words in the info colour, and Mostra; the line keeps its place while nothing is new; Mostra hides once pressed and the focus goes to the heading of the list (list-with-filters, show-new-items) | `mds-notification variant=info pulse`, `mds-text typography=detail`, `mds-button variant=info tone=outline size=sm` |
 | `selection` | goal: act |  | a checkbox on each row and the bar of the batch actions, with how many are selected (list-with-filters, act-on-many) | `mds-table selectable`, `mds-button slot=batch-action` |
 | `results` | any | yes | the items: one row each, its number or its name the link to its page; the columns that can order the list order it from their headers; files as mds-file, one per file, in a grid; cards in a grid when the items are seen rather than read (results-as-cards) | `mds-table sorting=external`, `mds-table-header-cell sortable sort-key`, `mds-file` |
 | `pages` | size: many |  | the pages, under the items, only when there is more than one | `mds-paginator` |
@@ -198,7 +198,7 @@ Situations every application has, each with the regions it shows: they give the 
   `empty-state` takes the place of the items, with Rimuovi i filtri only in the panel
   (`clear-filters`).
 - Rimuovi i filtri, the words of `mds-filter`.
-- The new items: "2 nuove pratiche", then Mostra.
+- The new items: "2 nuove pratiche", the 2 in the dot, then Mostra.
 
 ## Magma gaps
 
@@ -211,3 +211,4 @@ Situations every application has, each with the regions it shows: they give the 
 | 2026-11-03 | The list of items is a block: the search, the summary, the items and the pages come back in `list-with-filters`, `empty-state` and `loading` | The round of the building blocks, from the previews of the three patterns; the docs site names the filter bar and the results summary among the candidates (`plan/DIRECTION.md`, Building blocks section). |
 | 2026-11-03 | One block, not a bar of filters and a summary apart | The maintainer's choice: the regions always come together, in one order, with related spaces, so one answer of `get_pattern` gives the whole list; the regions with a When cover the list of a section, with no search. |
 | 2026-11-03 | The line of the new items carries the dot that pulses when the count grows, from `mds-notification` once #1216 lands; until then, none | The maintainer's note in the review of round 3 ("l'elemento dovrebbe avere una icona pulsante"); asked whether to draw it by hand meanwhile, he chose #1216 first: a product never writes the animation itself (`list-with-filters`, Magma gaps). |
+| 2026-11-04 | The dot of the new items is `mds-notification variant="info" pulse`, the count its `value` | #1216 landed (PR #1239), as the decision of 2026-11-03 waited for: the pulse follows `value`, so the dot carries the count (`list-with-filters`). |
