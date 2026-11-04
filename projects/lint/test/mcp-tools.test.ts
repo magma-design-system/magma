@@ -13,7 +13,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-import { readPreviews } from '../src/core/patterns.js';
+import { readPreviews, webpSize } from '../src/core/patterns.js';
 import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
 import { GAP } from '../src/mcp/context.js';
@@ -25,6 +25,7 @@ import {
   PREVIEW_DIR,
   render,
   renderPreview,
+  renderPreviewImages,
   pageOf,
   STYLESHEETS,
   TAILWIND,
@@ -682,6 +683,25 @@ describe('the pattern tool', () => {
     });
     expect(answer.preview.markup).toMatch(/^<div[\s\S]*<mds-banner id="message" variant="error"/);
     expect(answer.preview.markup).not.toMatch(/<!--/);
+  });
+
+  // #1243: the images the build makes beside each preview, by path, for a client with no browser
+  test('the preview of an answer names its images when the package has them', async () => {
+    const previews = '../magma/agents/patterns/previews/message-placement';
+    const { answer } = await run('get_pattern', {
+      id: 'message-placement',
+      situation: { about: 'action', outcome: 'failure', place: 'on-screen', timing: 'now' },
+    });
+    expect(answer.preview.images).toEqual({
+      light: `${previews}/action-failed-in-place.light.webp`,
+      dark: `${previews}/action-failed-in-place.dark.webp`,
+    });
+    // a magma built before the images, as region-info is in the fixtures, names none
+    const before = await run('get_pattern', {
+      id: 'message-placement',
+      situation: { about: 'region', outcome: 'info' },
+    });
+    expect(before.answer.preview).not.toHaveProperty('images');
   });
 
   // #1221: a rule of a domain may have a preview, and a case more examples
@@ -1717,4 +1737,38 @@ describe.skipIf(!existsSync(BUILT) && !process.env.CI)('render_preview on the bu
     }
     // one render a preview, about a second each: 108 previews since the round of the blocks
   }, 300_000);
+
+  // #1243: the images the build of magma ships, each preview light and dark in one frame
+  test('a preview renders into its two images of the frame, checked and encoded as WebP', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-render-images-'));
+    const built = { root, settings: { root } };
+    const previews = readPreviews(
+      path.join(import.meta.dirname, '../../../docs/agents/patterns'),
+    ).filter(
+      (one) =>
+        (one.pattern === 'actions' && one.id === 'primary') ||
+        // 1043 px of content in a frame of 600: what the edge cuts is no problem
+        (one.pattern === 'list-with-filters' && one.id === 'find-and-open'),
+    );
+    expect(previews).toHaveLength(2);
+    const images = await renderPreviewImages(built, previews);
+    expect(
+      images.map((one) => ({
+        preview: `${one.preview.pattern}/${one.preview.id}`,
+        mode: one.mode,
+        size: webpSize(one.webp),
+        problems: one.problems,
+      })),
+    ).toEqual(
+      ['actions/primary', 'list-with-filters/find-and-open'].flatMap((preview) =>
+        ['light', 'dark'].map((mode) => ({
+          preview,
+          mode,
+          size: { width: 1440, height: 900 },
+          problems: [],
+        })),
+      ),
+    );
+    expect(images[0]!.webp.equals(images[1]!.webp)).toBe(false);
+  }, 60_000);
 });

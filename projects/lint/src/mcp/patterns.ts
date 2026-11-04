@@ -13,8 +13,11 @@
   building block (#1210) answers a situation with its regions, in the order of the page, and
   has a preview per situation, named after its id (previews/<block>/<situation>.html, the
   maintainer's choice on 2026-11-03): when the values match a situation exactly, every variable
-  given, the answer carries its preview as a case answer does.
+  given, the answer carries its preview as a case answer does. The preview of an answer names its
+  images too (<case>.light.webp and <case>.dark.webp beside it, #1243), the path and not the
+  bytes, for a client that cannot run the stage; a magma before them has none, and names none.
 */
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { loadComponents, magmaRoot } from '../core/data.js';
 import {
@@ -27,6 +30,8 @@ import {
   indexPatterns,
   isLayer,
   listPatterns,
+  PREVIEW_IMAGE_MODES,
+  previewImageFile,
   previewOf,
   projectErrors,
   rulesOfCase,
@@ -117,14 +122,23 @@ const read = (context: ToolContext): Read => {
   return { patterns, layers, own, problems, previews: readPreviews(shipped) };
 };
 
-/** A preview as the answer for a situation gives it: where it is, what to try, the stage. */
-const previewIn = (context: ToolContext, preview: Preview) => ({
-  file: path.relative(context.root, preview.file),
-  try: preview.try,
-  ...(preview.height ? { height: preview.height } : {}),
-  ...(preview.wholePage ? { wholePage: true } : {}),
-  markup: preview.markup,
-});
+/** A preview as the answer for a situation gives it: where it is, its images, what to try, the stage. */
+const previewIn = (context: ToolContext, preview: Preview) => {
+  const images = Object.fromEntries(
+    PREVIEW_IMAGE_MODES.flatMap((mode) => {
+      const file = previewImageFile(preview.file, mode);
+      return existsSync(file) ? [[mode, path.relative(context.root, file)]] : [];
+    }),
+  );
+  return {
+    file: path.relative(context.root, preview.file),
+    ...(Object.keys(images).length ? { images } : {}),
+    try: preview.try,
+    ...(preview.height ? { height: preview.height } : {}),
+    ...(preview.wholePage ? { wholePage: true } : {}),
+    markup: preview.markup,
+  };
+};
 
 /**
  * The paths of the previews of a case or a rule, as the pattern names them: `preview` the first
@@ -172,7 +186,7 @@ export const getPattern = (context: ToolContext): Tool => ({
   name: 'get_pattern',
   title: 'Read a Magma pattern',
   description:
-    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of Foundation (kind foundation), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, and what to try in it, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page, and when the values match one of its situations, every variable given, the preview of that situation as for a case (the stage, what to try, the other examples); with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
+    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of Foundation (kind foundation), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, what to try in it and the paths of its images, light and dark, to show where the stage cannot run, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page, and when the values match one of its situations, every variable given, the preview of that situation as for a case (the stage, what to try, the other examples); with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
   inputSchema: {
     type: 'object',
     properties: {

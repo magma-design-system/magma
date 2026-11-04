@@ -228,6 +228,24 @@ try: Press Salva: the error shows above the form, and what was written stays.
   2, at its height, with the check of the image (a component not hydrated, a flat region, a font
   or an icon not loaded, a word broken).
   The lint tests render every preview on the build, in CI too, and fail on any problem.
+- **Its images** (#1243). The build of magma renders every preview into two images beside it
+  in the package, `<case>.light.webp` and `<case>.dark.webp` (`<case>.2.light.webp` for an
+  example), for the readers that cannot run the stage: the cards of the docs site, `get_pattern`
+  for a client without a browser (`images` on the preview of an answer: the paths, not the
+  bytes), a decision that cannot run live. The repository keeps the stages only. One frame for
+  all, a whole page included, so a gallery lines them up without cropping each one: a layout
+  960 CSS pixels wide and 600 tall, 8:5 as the cards of the site, in the tablet range where the
+  bar of an app shell keeps its items, at 1.5 device pixels per CSS pixel (1440 x 900), WebP at
+  quality 0.8; the default theme, light and dark; the words in Italian. The frame shows what
+  fits in it: a taller stage is cut at its edge, and only the components it shows whole are
+  judged flat. The maintainer chose the frame, every preview and the two modes on #1243, from
+  three frames rendered side by side; the criteria are written beside `PREVIEW_IMAGE` in
+  `projects/lint/src/core/patterns.ts`. The render is the one of `render_preview`, with its
+  check: an image with a problem fails the build (`projects/stencil/scripts/preview-images.ts`,
+  which writes it all the same, to be looked at), so no image ships that its check did not pass;
+  `check.patterns` fails on a preview without its two images of the frame in the build, or on
+  an image of no preview. Since the build of magma reads `docs/agents/`, a change there alone
+  builds magma again (its Nx inputs), so the images follow their stage.
 - **Editing one live.** `nx run lint:serve.previews` serves the previews, and the drafts not
   chosen yet in `.claude/previews/<folder>/<name>.html` (untracked, the same format), at
   `http://localhost:5180/`. The page of each stage is the page `render_preview` renders, on the

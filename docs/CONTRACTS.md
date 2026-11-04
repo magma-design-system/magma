@@ -156,7 +156,9 @@ keep in step.
   height and `whole-page`, a stage with a frame of its own that takes no inset; never a page,
   the reader adds the stylesheets and the loader, compiles its Tailwind classes with the entry
   point of `agents/assets.md`, "Tailwind (optional)" (#1220), and runs it in a document of its
-  own); the
+  own); in magma only, the two images of each preview beside it, `<case>.light.webp` and
+  `<case>.dark.webp` (#1243): WebP, every one in the same frame, 1440 x 900 pixels of a layout
+  960 x 600 CSS pixels wide, the default theme, for a reader that cannot run the stage; the
   domains of the design language (`kind: foundation`, #1189), the rules of composition the
   patterns stand on, in the same folder and catalogue, each case and rule with the principle it
   serves (`serves`) and where it lives (`carried-by`, `carried-by-planned`);
@@ -168,7 +170,9 @@ keep in step.
 - **Produced by**: the maintainers, in `docs/agents/patterns/` (the template
   `projects/stencil/template/pattern.md`, `nx run stencil:generate.pattern`, the skills of
   `.claude/skills/`); `projects/stencil/scripts/sync-agent-docs.ts` copies them into the entry
-  packages and writes the catalogue.
+  packages and writes the catalogue; `projects/stencil/scripts/preview-images.ts`, the last step
+  of the build of magma, renders the images of the previews (`renderPreviewImages` of
+  `projects/lint/src/mcp/render.ts`, the frame `PREVIEW_IMAGE` of the core).
 - **Contract**: [`docs/PATTERNS.md`](PATTERNS.md), "The format", "A domain of Foundation", "The
   preview of a case" and "Product layers"; the reader
   side in `projects/lint/src/core/patterns.ts` and
@@ -177,19 +181,23 @@ keep in step.
   domain, by example) of the MCP server, `get_guide` (each domain as a guide, with its previews) and `get_component` (the rules of the domains that govern
   a component), the `ui`, `review` and `pattern-layer` skills of the Claude Code plugin, `pr-risk`
   (`patternChanges` of `projects/stencil/scripts/pr-risk-lib.ts`), the agents of the products,
-  the docs site (the previews: magma-design-system/docs#89), `lint:serve.previews` (the
-  previews, live, `projects/lint/scripts/serve-previews.ts`).
+  the docs site (the previews: magma-design-system/docs#89; the images, in the cards of the
+  galleries: magma-design-system/docs#101), `get_pattern` again (the paths of the images, in
+  `images` on the preview of an answer), `lint:serve.previews` (the previews, live,
+  `projects/lint/scripts/serve-previews.ts`).
 - **Held by**: `check.patterns` (the format, every combination in one case, the components,
   attributes, lint rules and links named, the rules of the domains a case names, the carriers
   of a domain in the release and the planned ones not yet, the generated sections; a product's folder with
   `--layer`, which `get_pattern` checks too in the product; each preview of a case, of a rule of
   a domain or of a situation of a block that exists, its examples in sequence,
   only a stage, its markup clean for the strict lint, the cases and the situations of a decided
-  block without one as a warning);
+  block without one as a warning; each preview with its two images of the frame in the build,
+  and no image of no preview);
+  the build of magma itself, which fails on an image with a problem;
   `check.usage-docs` on their bodies; `test/patterns.test.ts` of `projects/lint` on the files
   of the repository, and `test/mcp-tools.test.ts`, which renders every preview on the build and
-  fails on a problem of the image; `pr-risk` sets the review level to contract on a change to
-  what a pattern promises.
+  fails on a problem of the image, and renders two into their images; `pr-risk` sets the review
+  level to contract on a change to what a pattern promises.
 
 ## The surfaces of a class
 

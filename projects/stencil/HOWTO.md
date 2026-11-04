@@ -14,6 +14,10 @@ nx run stencil:generate mds-component-name
 nx run stencil:build --skip-nx-cache
 ```
 
+Its last step renders every preview of the patterns into its images (`scripts/preview-images.ts`,
+#1243), in a browser of the machine: Google Chrome, Microsoft Edge, or the Chromium of
+`npx playwright install chromium`. An image with a problem fails the build and names the preview.
+
 ---
 
 ## Tests

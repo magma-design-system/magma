@@ -84,7 +84,9 @@ Fa uso della libreria [@maggioli-design-system/styles](https://www.npmjs.com/pac
 
 One build makes the whole package: the slug dictionary, the guides for agents, the components
 through the output targets of Stencil (which also write the sources of the React and Angular
-wrappers), the docs of each component, the API snapshot, and the lint with its MCP server.
+wrappers), the docs of each component, the API snapshot, the lint with its MCP server, and the
+images of the previews of the patterns, rendered on the components just built (#1243: the build
+needs a browser, as `render_preview` does).
 
 ```mermaid
 flowchart LR
@@ -98,7 +100,8 @@ flowchart LR
     BUILD["stencil build<br/>117 mds-* components, build.icons"]
     DOCS["agent docs, API snapshot<br/>sync-agent-docs, component-docs"]
     BL["scripts/build-lint.ts<br/>dist/lint"]
-    BUILD --> DOCS
+    IMG["scripts/preview-images.ts<br/>the images of the previews"]
+    BUILD --> DOCS --> IMG
   end
   DT & ST & SI --> BUILD
   AGD --> DOCS
@@ -110,8 +113,9 @@ flowchart LR
   DOCS -->|"magma.api.txt"| RISK["check.pr-risk"]
   DOCS -.->|"AGENTS.md, agents/"| AGENT(["the agent of a consumer project"])
   DOCS -.->|"documentation.json"| SITE(["docs site"])
+  IMG -.->|"agents/patterns/previews/*.webp"| SITE
   BL -.->|"./eslint, ./stylelint, magma-mcp"| AGENT
-  class AGD,LINT,DOCS,BL,AGENT ai
+  class AGD,LINT,DOCS,BL,IMG,AGENT ai
   class SI,ID assets
   class DT,ST visual
   class BUILD,RE,AN components

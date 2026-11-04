@@ -1928,6 +1928,113 @@ export const examplesOf = (previews: Preview[], pattern: string, id: string): Pr
     .filter((one) => one.pattern === pattern && one.id === id)
     .sort((a, b) => a.example - b.example);
 
+/*
+  The images of the previews (#1243): in the entry package each preview has two beside it,
+  <id>.light.webp and <id>.dark.webp (<id>.<n>.light.webp for an example), for the readers that
+  cannot run the stage: the cards of the docs site, an agent whose client has no browser, a
+  decision that cannot run live. The build of magma makes them with the render that checks the
+  preview (projects/stencil/scripts/preview-images.ts), so an image never differs from its stage
+  in that version; the repository keeps the stages only.
+
+  The maintainer's choices on #1243 (2026-11-04), from three frames rendered side by side: one
+  frame for every image, a whole page included, so a gallery lines them up without cropping
+  each one; 8:5, the ratio of the cards of the docs site; a layout 960 CSS pixels wide, in the
+  tablet range of the Magma breakpoints (768-1023), where the bar of an app shell keeps its items
+  (at 720 they collapse into the menu) and the words still read in a card 320 pixels wide (at
+  1440 they do not); 1.5 device pixels per CSS pixel, 1440 x 900 pixels, enough for a card of
+  720 CSS pixels on a screen of 2; every preview, not only the first of each pattern, since an
+  agent and a decision show the case they are about; the default theme, light and dark, as the
+  page around them is. The quality, 0.8 of the WebP encoder of Chrome, is measured on the same
+  captures: the text at twice its size shows no difference from 0.9, and the 216 images of 2.10.0
+  weigh a fifth less (about 15 KB each).
+*/
+
+/** The frame of every image: the viewport, in CSS pixels, the device pixels per CSS pixel and the WebP quality. */
+export const PREVIEW_IMAGE = { width: 960, height: 600, scale: 1.5, quality: 0.8 } as const;
+/** The modes an image is made in, each the mode the browser emulates. */
+export const PREVIEW_IMAGE_MODES = ['light', 'dark'] as const;
+export type PreviewImageMode = (typeof PREVIEW_IMAGE_MODES)[number];
+
+/**
+ * The image of a preview in a mode, beside it: <id>.html -> <id>.<mode>.webp; with the folder
+ * of the patterns of a package, the one in that package.
+ */
+export const previewImageFile = (
+  file: string,
+  mode: PreviewImageMode,
+  patternsDir?: string,
+): string => {
+  const image = file.replace(/\.html$/, `.${mode}.webp`);
+  return patternsDir
+    ? path.join(patternsDir, PREVIEWS_DIR, path.basename(path.dirname(image)), path.basename(image))
+    : image;
+};
+
+/**
+ * The size of a WebP image in pixels, from the header of its first chunk (RFC 9649: the lossy
+ * VP8 frame, the lossless VP8L bitstream or the extended VP8X canvas), or undefined when the
+ * bytes are not WebP.
+ */
+export const webpSize = (bytes: Buffer): { width: number; height: number } | undefined => {
+  if (
+    bytes.length < 30 ||
+    bytes.toString('latin1', 0, 4) !== 'RIFF' ||
+    bytes.toString('latin1', 8, 12) !== 'WEBP'
+  )
+    return undefined;
+  const chunk = bytes.toString('latin1', 12, 16);
+  if (chunk === 'VP8 ')
+    return { width: bytes.readUInt16LE(26) & 0x3fff, height: bytes.readUInt16LE(28) & 0x3fff };
+  if (chunk === 'VP8L') {
+    const bits = bytes.readUInt32LE(21);
+    return { width: (bits & 0x3fff) + 1, height: ((bits >>> 14) & 0x3fff) + 1 };
+  }
+  if (chunk === 'VP8X')
+    return { width: bytes.readUIntLE(24, 3) + 1, height: bytes.readUIntLE(27, 3) + 1 };
+  return undefined;
+};
+
+/**
+ * What is wrong in the images of the previews in the folder of the patterns of a package, by
+ * file: a preview without its image in a mode (the preview, by its file), an image that is not
+ * WebP or not of the frame, an image of no preview.
+ */
+export const previewImageErrors = (
+  previews: Preview[],
+  patternsDir: string,
+): Map<string, string[]> => {
+  const found = new Map<string, string[]>();
+  const add = (file: string, error: string) => found.set(file, [...(found.get(file) ?? []), error]);
+  const width = PREVIEW_IMAGE.width * PREVIEW_IMAGE.scale;
+  const height = PREVIEW_IMAGE.height * PREVIEW_IMAGE.scale;
+  const expected = new Set<string>();
+  for (const preview of previews)
+    for (const mode of PREVIEW_IMAGE_MODES) {
+      const file = previewImageFile(preview.file, mode, patternsDir);
+      expected.add(file);
+      if (!existsSync(file)) {
+        add(preview.file, `no ${mode} image in ${file}: build magma`);
+        continue;
+      }
+      const size = webpSize(readFileSync(file));
+      if (!size) add(file, 'it is not WebP');
+      else if (size.width !== width || size.height !== height)
+        add(file, `it is ${size.width}x${size.height}, the frame is ${width}x${height}`);
+    }
+  const root = path.join(patternsDir, PREVIEWS_DIR);
+  if (existsSync(root))
+    for (const folder of readdirSync(root, { withFileTypes: true }).filter((one) =>
+      one.isDirectory(),
+    ))
+      for (const name of readdirSync(path.join(root, folder.name)).filter((one) =>
+        one.endsWith('.webp'),
+      )) {
+        const file = path.join(root, folder.name, name);
+        if (!expected.has(file)) add(file, 'it is the image of no preview');
+      }
+  return found;
+};
+
 /** The rules of a domain of Foundation that may have a preview: its own, never one it cites (#1221). */
 export const ownRules = (pattern: Pattern): string[] =>
   pattern.kind === FOUNDATION

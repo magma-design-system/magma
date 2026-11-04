@@ -47,7 +47,8 @@ export interface Region {
 export type Step =
   | { step: 'settle'; timeout: number }
   | { step: 'inspect' }
-  | { step: 'pixels'; png: string; scale: number; regions: Region[] };
+  | { step: 'pixels'; png: string; scale: number; regions: Region[] }
+  | { step: 'encode'; png: string; quality: number };
 
 export interface Inspection {
   problems: PageProblem[];
@@ -60,7 +61,7 @@ export interface Inspection {
 /** The id of the element the markup is written into. */
 export const PREVIEW_ID = 'magma-preview';
 
-export const inPage = async (args: Step): Promise<void | Inspection | PageProblem[]> => {
+export const inPage = async (args: Step): Promise<void | Inspection | PageProblem[] | string> => {
   const HYDRATED = ':is([hydrated], .hydrated)';
   const sleep = (ms: number) => new Promise((done) => setTimeout(done, ms));
   const frame = () => new Promise((done) => requestAnimationFrame(() => done(undefined)));
@@ -353,6 +354,25 @@ export const inPage = async (args: Step): Promise<void | Inspection | PageProble
 
     const content = preview.getBoundingClientRect();
     return { problems, regions, height: Math.ceil(content.bottom + window.scrollY) };
+  }
+
+  // the image as WebP, base64, for the images Magma ships of its previews (#1243): encoded from
+  // the capture the pixels are judged on, so the image shipped is the image checked
+  if (args.step === 'encode') {
+    const decoded = await createImageBitmap(
+      await (await fetch(`data:image/png;base64,${args.png}`)).blob(),
+    );
+    const canvas = new OffscreenCanvas(decoded.width, decoded.height);
+    canvas.getContext('2d')!.drawImage(decoded, 0, 0);
+    const blob = await canvas.convertToBlob({ type: 'image/webp', quality: args.quality });
+    // a browser that cannot encode WebP gives PNG instead (HTML, "serialising bitmaps")
+    if (blob.type !== 'image/webp') throw new Error(`The browser encodes no WebP: ${blob.type}`);
+    const url = await new Promise<string>((done) => {
+      const reader = new FileReader();
+      reader.onload = () => done(String(reader.result));
+      reader.readAsDataURL(blob);
+    });
+    return url.slice(url.indexOf(',') + 1);
   }
 
   // the image, region by region: one colour from edge to edge means nothing of it rendered
