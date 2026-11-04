@@ -8,6 +8,8 @@
  * Loads the token config (in-memory model), the semantic mapping from
  * semantic.config.ts, and the baseline, then prints a readable table and
  * fails on any enforced pair that is not covered by the baseline (section 9.1).
+ * The base layer first, then every named theme that repoints something, in its
+ * own family and accents (#692): a theme the gate never saw is not verified.
  */
 import chalk from 'chalk';
 import fs from 'fs';
@@ -20,10 +22,13 @@ import {
   applyBaseline,
   buildBaseline,
   evaluatePairs,
+  evaluateTheme,
   formatRow,
   formatTable,
+  themeMappingsFromConfig,
   type Baseline,
   type ColorTree,
+  type PairResult,
 } from '../src/lib/contrast-gate.js';
 
 const BASELINE_FILE = path.resolve(__dirname, '../contrast-baseline.json');
@@ -54,7 +59,15 @@ async function main() {
   const tree = (createColorTokens(rc.config as MagmaConfig).tokens as { color: ColorTree }).color;
   const aliases = aliasesFromConfig(semantic);
 
-  const results = evaluatePairs(tree, aliases);
+  const base = evaluatePairs(tree, aliases);
+  const themes = themeMappingsFromConfig(semantic, semantic.themes).map((theme) => ({
+    name: theme.name,
+    results: evaluateTheme(tree, theme),
+  }));
+  const results = [...base, ...themes.flatMap((theme) => theme.results)];
+  // the theme of a row, which formatRow does not print: the prefix of its key
+  const row = (r: PairResult) =>
+    (r.key.includes(':') ? `${r.key.split(':')[0]}  ` : '') + formatRow(r);
 
   if (UPDATE) {
     const baseline = buildBaseline(results);
@@ -69,14 +82,18 @@ async function main() {
   const outcome = applyBaseline(results, readBaseline());
 
   console.log(chalk.bold('\nAPCA contrast gate (semantic pairs, both modes)'));
-  console.log(formatTable(results, outcome));
+  console.log(formatTable(base, outcome));
+  for (const theme of themes) {
+    console.log(chalk.bold(`\nTheme ${theme.name} (its own family and accents)`));
+    console.log(formatTable(theme.results, outcome));
+  }
 
   const warnFailures = results.filter((r) => r.severity === 'warn' && !r.pass);
   if (warnFailures.length) {
     console.log(
       chalk.yellow(`\n${warnFailures.length} report-only pair(s) below target (not gated):`),
     );
-    for (const r of warnFailures) console.log('  ' + chalk.yellow(formatRow(r)));
+    for (const r of warnFailures) console.log('  ' + chalk.yellow(row(r)));
   }
 
   if (outcome.baselinedFailures.length) {
@@ -85,7 +102,7 @@ async function main() {
         `\n${outcome.baselinedFailures.length} known offender(s) accepted by baseline (to tune, issue #571):`,
       ),
     );
-    for (const r of outcome.baselinedFailures) console.log('  ' + chalk.dim(formatRow(r)));
+    for (const r of outcome.baselinedFailures) console.log('  ' + chalk.dim(row(r)));
   }
 
   if (outcome.staleBaseline.length) {
@@ -101,7 +118,7 @@ async function main() {
         `\nFAIL: ${outcome.violations.length} enforced pair(s) below target and not baselined:`,
       ),
     );
-    for (const r of outcome.violations) console.log('  ' + chalk.red(formatRow(r)));
+    for (const r of outcome.violations) console.log('  ' + chalk.red(row(r)));
     console.log('');
     process.exitCode = 1;
     return;

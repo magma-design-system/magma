@@ -377,7 +377,7 @@ export const wcag2Ratio = (aHex: string, bHex: string): number => chroma.contras
 
 export interface PairResult {
   category: Category;
-  /** Stable id for the baseline: `<fg>|<bg>|<mode>`. */
+  /** Stable id for the baseline: `<fg>|<bg>|<mode>`, after `<theme>:` for a named theme. */
   key: string;
   fgToken: string;
   bgToken: string;
@@ -566,6 +566,60 @@ export function evaluatePairs(
     }
   }
   return out;
+}
+
+/** A named theme as the config writes it: a surface family, or the object form. */
+export type ThemeDefLike =
+  string | { surface?: string; accents?: Record<string, string>; scale?: string };
+
+/** A named theme the gate verifies on its own: its name and the mapping it resolves through. */
+export interface ThemeMapping {
+  name: string;
+  mapping: SemanticMapping;
+}
+
+/**
+ * The mapping of every named theme that repoints something (#692): the base mapping with the
+ * three things a theme can repoint, its tint family, the ramp behind it and its accents. A
+ * theme that repoints nothing IS the base layer, already verified, and has none. Mirrors
+ * `themeOf` in semantic.model, which the gate cannot import (see `SemanticMapping`).
+ */
+export function themeMappingsFromConfig(
+  m: SemanticMapping,
+  themes: Record<string, ThemeDefLike>,
+): ThemeMapping[] {
+  return Object.entries(themes).flatMap(([name, def]) => {
+    const { surface, accents, scale } = typeof def === 'string' ? { surface: def } : def;
+    const tint = surface ?? m.tint;
+    if (tint === m.tint && !accents) return [];
+    return [
+      {
+        name,
+        mapping: {
+          ...m,
+          tint,
+          // the ramp follows the family only when the theme retints it, as in themeOf
+          scale: tint === m.tint ? m.scale : scale,
+          accents: { ...m.accents, ...accents },
+        },
+      },
+    ];
+  });
+}
+
+/**
+ * Every pair of one named theme, keyed `<theme>:<fg>|<bg>|<mode>`, so its baseline entries
+ * never collide with the ones of the base layer.
+ */
+export function evaluateTheme(
+  tree: ColorTree,
+  { name, mapping }: ThemeMapping,
+  targets: GateTargets = DEFAULT_TARGETS,
+): PairResult[] {
+  return evaluatePairs(tree, aliasesFromConfig(mapping), targets).map((r) => ({
+    ...r,
+    key: `${name}:${r.key}`,
+  }));
 }
 
 export interface BaselineEntry {
