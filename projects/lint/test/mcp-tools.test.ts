@@ -1196,6 +1196,41 @@ describe('the check tools', () => {
   });
 });
 
+describe('the named themes of the installed styles', () => {
+  /** A project whose styles ship `css` as dist/css/themes.css. */
+  const projectWith = (css: string) => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-themes-'));
+    const styles = path.join(root, 'node_modules/@maggioli-design-system/styles');
+    mkdirSync(path.join(styles, 'dist/css'), { recursive: true });
+    writeFileSync(path.join(styles, 'package.json'), '{"name":"@maggioli-design-system/styles"}');
+    writeFileSync(path.join(styles, 'dist/css/themes.css'), css);
+    return { ...context, root };
+  };
+
+  // the base theme emits no rule of its own, only its preview (#692)
+  test('lists the themes with a preview first, the base one included, then the rules', () => {
+    const themes = projectWith(
+      [
+        ':root {',
+        '  --magma-preview-business-wash: var(--tone-neutral-09);',
+        '  --magma-preview-business-accent: var(--variant-primary-04);',
+        '  --magma-preview-editorial-wash: var(--tone-bisque-09);',
+        '}',
+        ":root[data-theme-name='editorial'] { --magma-tint-default: var(--surface-bisque-default); }",
+        ":root[data-theme-name='cool'] { --magma-tint-default: var(--surface-porcelain-default); }",
+      ].join('\n'),
+    );
+    expect(themesOf(themes)).toEqual(['business', 'editorial', 'cool']);
+  });
+
+  test('reads the rules alone of a themes.css older than the previews', () => {
+    const themes = projectWith(
+      ":root[data-theme-name='cool'] { --magma-tint-default: var(--surface-porcelain-default); }",
+    );
+    expect(themesOf(themes)).toEqual(['cool']);
+  });
+});
+
 describe('render_preview', () => {
   // the stand-in loader of the fixtures (mds-fixture hydrates, mds-stuck never does, mds-fail
   // throws), a project of its own for the images, the styles installed in this repository

@@ -234,7 +234,8 @@ keep in step.
   stylesheets, the Tailwind entry point compiled on the classes of the markup with the
   project's Tailwind 4, the lazy loader of the components (`dist/magma-components`), the flag of a
   hydrated component, the Magma breakpoints (`--breakpoint-*` of `typography.css`) and the named
-  themes (`data-theme-name` of `themes.css`).
+  themes (the previews `--magma-preview-<name>-wash` of `themes.css`, which name every theme with
+  the base one, #692, then its `data-theme-name` rules).
 - **Produced by**: `docs/agents/assets.md` (the import block, and the Tailwind entry point of
   "Tailwind (optional)" with `projects/styles/dist/tailwind`); the stencil build (the loader, and
   Stencil's `appload` event and `hydrated` flag, `hydratedFlag` of `stencil.config.ts`);

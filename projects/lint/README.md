@@ -265,7 +265,9 @@ or on the guide it enforces, not only on fixtures picked by hand.
   (`dist/magma-components`); the icons, the contract of `agents/assets.md`, served at the path
   set in `sessionStorage`, from the sets `find_icon` reads. The widths a name gives are the
   `--breakpoint-*` of the installed `typography.css`, the default `desktop`; the themes, the
-  `data-theme-name` values of the installed `themes.css`; the mode, `prefers-color-scheme`,
+  names of the installed `themes.css`: the previews `--magma-preview-<name>-wash`, which name
+  every theme with the base one (`business` emits no rule, #692), then the `data-theme-name`
+  values, the only names an older `themes.css` has; the mode, `prefers-color-scheme`,
   which `colors-rgb.css` and `semantic.css` follow on a page with no `data-magma-pref`. The
   classes are the ones of Tailwind (#1220): the Tailwind entry point of `agents/assets.md`,
   "Tailwind (optional)" (`TAILWIND`, held to the block by a test), compiled with the project's

@@ -184,14 +184,21 @@ const stylesOf = (context: ToolContext, name: string): string | undefined => {
   return file && existsSync(file) ? readFileSync(file, 'utf8') : undefined;
 };
 
-/** The named themes of the installed styles: the values of `data-theme-name` themes.css styles. */
-export const themesOf = (context: ToolContext): string[] => [
-  ...new Set(
-    [...(stylesOf(context, 'themes.css') ?? '').matchAll(/\[data-theme-name=['"]?([\w-]+)/g)].map(
-      (one) => one[1]!,
-    ),
-  ),
-];
+/**
+ * The named themes of the installed styles, as themes.css names them: first every theme it
+ * publishes a preview of (`--magma-preview-<name>-wash`, since #692), in the order of the config,
+ * which includes the base theme (business emits no rule of its own); then the values of
+ * `data-theme-name` it styles, the only names an older themes.css has.
+ */
+export const themesOf = (context: ToolContext): string[] => {
+  const css = stylesOf(context, 'themes.css') ?? '';
+  return [
+    ...new Set([
+      ...[...css.matchAll(/--magma-preview-([a-z]+(?:-[a-z]+)*)-wash\s*:/g)].map((one) => one[1]!),
+      ...[...css.matchAll(/\[data-theme-name=['"]?([\w-]+)/g)].map((one) => one[1]!),
+    ]),
+  ];
+};
 
 /** The Magma breakpoints, by name: the `--breakpoint-*` of the installed typography.css. */
 export const breakpointsOf = (context: ToolContext): Record<string, number> =>
@@ -643,7 +650,7 @@ export const renderPreview = (context: ToolContext): Tool => ({
       theme: {
         type: 'string',
         description:
-          'A named theme of the installed styles (data-theme-name). Default: the default theme.',
+          'A named theme of the installed styles (data-theme-name). Default: the base theme, the page with no data-theme-name.',
       },
       lang: {
         type: 'string',
