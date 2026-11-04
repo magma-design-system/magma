@@ -1,9 +1,6 @@
 {
   "known": [
     "--ease-linear",
-    "--opacity-disabled",
-    "--size-lg",
-    "--size-md",
-    "--variant-ai-seed"
+    "--opacity-disabled"
   ]
 }
