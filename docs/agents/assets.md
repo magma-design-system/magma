@@ -72,7 +72,7 @@ What each file provides:
 | `transitions.css`, `animations.css` | Shared motion |
 | `globals.css` | Global `--magma-*` design decisions |
 | `semantic.css` | The semantic color roles (`--magma-surface-*`, `--magma-text-*`, ..., see [`color.md`](color.md)). Required: without it the page `body` has no colour, the Tailwind role utilities are stuck on their light default (the fallback that gives editors a swatch), and components lose dark mode, named themes and high contrast |
-| `themes.css` | The named themes (`data-theme-name`): retint the semantic roles. Import it after `semantic.css` |
+| `themes.css` | The named themes (`data-theme-name`): retint the semantic roles, and publish the preview of each theme for a picker (`--magma-preview-<name>-*`). Import it after `semantic.css` |
 | `base.css` | Base element styles (sets `--font-info` body font, etc.) |
 
 DO NOT import `colors-hex-*.css` when using components or Tailwind - they cannot be

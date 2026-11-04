@@ -536,10 +536,10 @@ corner geometry (`data-corner-shape`), carries no colour and is documented in `S
   no per-token edits:
 
   ```css
-  :root[data-theme-name='cool'] {
-    --magma-tint-default:        var(--surface-porcelain-default);
-    --magma-tint-border-default: var(--border-porcelain-default);
-    --magma-tint-text-default:   var(--text-porcelain-default);
+  :root[data-theme-name='editorial'] {
+    --magma-tint-default:        var(--surface-bisque-default);
+    --magma-tint-border-default: var(--border-bisque-default);
+    --magma-tint-text-default:   var(--text-bisque-default);
     /* ...the rest of the block, same family... */
   }
   ```
@@ -572,6 +572,24 @@ corner geometry (`data-corner-shape`), carries no colour and is documented in `S
   primitives and FAILS the build otherwise. The ramp family is assumed to be
   `tone-<surface>` - correct as long as a theme is a tint - and a theme drawn from another
   group names it: `blue: { surface: 'blue', scale: 'label-blue' }`.
+
+  **The shipped themes (#692)** are named by their use, so they survive a rebrand: `business`
+  is the base `:root` (tint `neutral`, accent `variant-primary`) and emits no rule, so no
+  `data-theme-name` means `business`; `editorial` is `bisque` with the accent on
+  `variant-secondary`, the alias of `brand.maggioli-editore`. `default` (the old name of
+  `business`, which `mds-pref-theme` still writes), `cool` and `warm` shipped with magma
+  2.0.0 and stay until the next major, marked `deprecated` in the config: a comment above
+  their block, `$deprecated` on their preview tokens, the description of the DTCG `theme`
+  modifier. The contrast gate verifies every theme that repoints something in its own
+  family and accents, not only the base layer.
+
+  **Every theme publishes its preview** on `:root`, whatever the active theme:
+  `--magma-preview-<name>-wash` (the `base` wash step of its ramp, what `--magma-wash-base`
+  resolves to under it) and `--magma-preview-<name>-accent` (the emphasis step of its accent).
+  A picker shows themes that are not the active one, and a theme lives only on `<html>`, so a
+  24px swatch cannot scope one; both colours are ramp steps, so they flip with the mode.
+  `mds-pref-theme-item` reads the ones of its `name`, and shows the active theme for a theme
+  that publishes none.
 
   `--magma-tint-scale-*` is internal to the layer and deliberately NOT bridged to Tailwind:
   it is the retint mechanism, not a vocabulary. Publishing `--color-scale-09` utilities

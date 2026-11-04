@@ -28,9 +28,12 @@
  * A named theme's cosmetic override (spec 8). The string shorthand names only
  * the surface family (back-compat); the object form can also repoint individual
  * accents, so a theme retints its accents the same way it retints surfaces.
+ * `deprecated` keeps a shipped name working until the next major and says why it
+ * goes: the theme still emits its block, and the outputs mark it.
  */
 export type ThemeDef =
-  string | { surface?: string; accents?: Record<string, string>; scale?: string };
+  | string
+  | { surface?: string; accents?: Record<string, string>; scale?: string; deprecated?: string };
 
 /**
  * A contrast preference level that carries role promotions (spec 9.3). Only `more`
@@ -220,10 +223,13 @@ export interface SemanticConfig {
    * `{surface,border,text}` scales retint the `--magma-tint-*` block, and any
    * `accents` override retints `--magma-tint-accent-*`, under
    * `:root[data-theme-name='<name>']`. The `tint` family is the base `:root`
-   * (default theme) and emits NO surface override; a theme with no accent
-   * override keeps the base accents. A colour family gives a monochromatic
+   * (the first theme, `business`) and emits NO surface override; a theme with no
+   * accent override keeps the base accents. A colour family gives a monochromatic
    * theme (A7 verifies text against that family's own surfaces). Future cosmetic
-   * axes (spacing, radii, shadow) attach under the same `data-theme-name`.
+   * axes (spacing, radii, shadow) attach under the same `data-theme-name`. Every
+   * theme also publishes its preview, `--magma-preview-<name>-{wash,accent}`, so a
+   * picker can show a theme that is not the active one (#692). Names are
+   * lowercase kebab-case, the names `mds-pref-theme` accepts.
    */
   themes: Record<string, ThemeDef>;
   /**
@@ -289,10 +295,29 @@ export const semantic: SemanticConfig = {
     'surface-hover': '08',
     'surface-subtle': '10',
   },
+  // The two themes of the products (#692), named by their use so they survive a rebrand:
+  // `business` for the management software, `editorial` for the publishing side. The base
+  // comes first: the DTCG export takes the first theme that repoints nothing as its default.
   themes: {
-    default: 'neutral', // base :root (== tint); emits no override rule
-    cool: 'porcelain',
-    warm: 'bisque',
+    business: 'neutral', // base :root (== tint); emits no override rule
+    // the warm family, and the accent of the Maggioli Editore brand (variant.secondary is its
+    // alias, kept when the accents were collapsed to {accent, ai} for this theme, #606)
+    editorial: { surface: 'bisque', accents: { accent: 'variant-secondary' } },
+    // Shipped since magma 2.0.0, so they stay until the next major (#692).
+    default: {
+      surface: 'neutral',
+      deprecated:
+        'the old name of business: mds-pref-theme still writes it until the next major, when its default becomes business',
+    },
+    cool: {
+      surface: 'porcelain',
+      deprecated:
+        'a worked example of the theme axis, not a product theme: use business or editorial',
+    },
+    warm: {
+      surface: 'bisque',
+      deprecated: 'a worked example of the theme axis, not a product theme: use editorial',
+    },
   },
   contrast: {
     // muted/subtle text shift one step stronger; decorative and default borders
@@ -454,6 +479,8 @@ export const semanticGroupDescriptions: Record<string, string> = {
   accent: 'The brand accent: actions and selection.',
   'accent-ai': 'The AI accent: actions and selection of AI-driven features.',
   tint: 'Internal pointers of the active theme: not an API, never read outside this layer.',
+  preview:
+    'The preview of each named theme, whichever is active: its wash and its accent, for a theme picker. UI paints with the roles, which follow the active theme.',
 };
 
 /**

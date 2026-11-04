@@ -45,6 +45,13 @@ export interface SemanticTheme {
   decls: SemanticDecl[];
   /** The contrast promotions restated in the theme's own family, under the theme's scope. */
   contrast: SemanticDecl[];
+  /**
+   * `--magma-preview-<name>-{wash,accent}`, declared on `:root` whatever the active theme: the
+   * colours a picker shows for this theme (#692). Every theme has them, the base one included.
+   */
+  preview: SemanticDecl[];
+  /** Set on a name kept until the next major: why it goes and what replaces it. */
+  deprecated?: string;
 }
 
 export interface SemanticModel {
@@ -352,11 +359,50 @@ const contrastDecls = (): SemanticDecl[] => [
 // nothing. String shorthand == surface family only (back-compat).
 const normalizeTheme = (
   def: ThemeDef,
-): { surface?: string; accents?: Record<string, string>; scale?: string } =>
+): { surface?: string; accents?: Record<string, string>; scale?: string; deprecated?: string } =>
   typeof def === 'string' ? { surface: def } : def;
 
+// The names mds-pref-theme accepts (its `handleNameChange`): the preview custom properties
+// carry the name, so a name that is no CSS identifier part would emit a broken declaration.
+const THEME_NAME = /^[a-z]+(-[a-z]+)*$/;
+
+/**
+ * What a picker shows for a theme (#692): the wash its pills take (the `base` wash step of its
+ * ramp, what `--magma-wash-base` resolves to under it) and its accent fill (the `emphasis`
+ * pointer of its accent, what `--magma-accent-emphasis` resolves to under it). Both are ramp
+ * steps, so they flip with the mode as the theme does.
+ */
+const previewOf = (
+  name: string,
+  ramp: string,
+  accentFamily: string,
+  deprecated?: string,
+): SemanticDecl[] => {
+  const emphasis = accentTintDecls('accent', accentFamily).find(
+    (decl) => decl.name === 'magma-tint-accent-emphasis',
+  )!;
+  const extra = deprecated ? { deprecated } : {};
+  return [
+    {
+      name: `magma-preview-${name}-wash`,
+      ref: `${ramp}-${washSteps.base}`,
+      description: `The wash of the ${name} theme, for its preview in a theme picker.`,
+      ...extra,
+    },
+    {
+      name: `magma-preview-${name}-accent`,
+      ref: emphasis.ref,
+      description: `The accent fill of the ${name} theme, for its preview in a theme picker.`,
+      ...extra,
+    },
+  ];
+};
+
 const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
-  const { surface, accents: accentOverride, scale } = normalizeTheme(def);
+  if (!THEME_NAME.test(name)) {
+    throw new Error(`semantic.config: the theme "${name}" is not lowercase kebab-case`);
+  }
+  const { surface, accents: accentOverride, scale, deprecated } = normalizeTheme(def);
   const retints = Boolean(surface && surface !== tint);
   const ramp = retints ? scaleFamily(surface, scale) : undefined;
   const decls: SemanticDecl[] = [];
@@ -385,7 +431,13 @@ const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
   // A theme that only overrides accents leaves the tint text/border alone, so the
   // base block already covers it and nothing extra is emitted.
   const contrast = retints ? contrastTintDecls(surface, CONTRAST_LEVEL) : [];
-  return { name, ramp, decls, contrast };
+  const preview = previewOf(
+    name,
+    ramp ?? scaleFamily(surface ?? tint, scale),
+    accentOverride?.accent ?? accents.accent,
+    deprecated,
+  );
+  return { name, ramp, decls, contrast, preview, ...(deprecated ? { deprecated } : {}) };
 };
 
 /**
