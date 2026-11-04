@@ -88,7 +88,7 @@ const PROBED = [...TEXT_ROLES, ...BORDER_ROLES, ...HUE_ROLES].map((role) => role
 
 const CONTRAST_VALUES = ['no-preference', 'system', 'more'];
 const THEME_MODES = ['light', 'dark'];
-const THEME_NAMES = ['default', 'cool', 'warm'];
+const THEME_NAMES = ['business', 'editorial'];
 
 const readClassValue = (prefix: string, values: string[], fallback: string): string =>
   values.find((value) => document.documentElement.classList.contains(`${prefix}${value}`)) ??
@@ -101,13 +101,13 @@ const applyClassValue = (prefix: string, values: string[], next: string): void =
 };
 
 const readThemeName = (): string =>
-  document.documentElement.getAttribute('data-theme-name') ?? 'default';
+  document.documentElement.getAttribute('data-theme-name') ?? 'business';
 
 const applyThemeName = (next: string): void => {
   const root = document.documentElement;
-  // `default` IS the base tint and emits no override block, so the attribute is
+  // `business` IS the base tint and emits no override block, so the attribute is
   // removed rather than set - exactly what a consumer would do.
-  if (next === 'default') {
+  if (next === 'business') {
     root.removeAttribute('data-theme-name');
     return;
   }
@@ -629,15 +629,16 @@ const ContrastPage = () => {
       >
         <Callout>
           <mds-text typography="detail" style={{ color: textVar('muted') }}>
-            Switch <strong>Theme</strong> to <Code>cool</Code> or <Code>warm</Code> with contrast on{' '}
-            <Code>more</Code>: the promotion must survive, and in the THEME family (porcelain /
-            bisque), not the base neutral. This is the case worth watching, because{' '}
-            <Code>:root[data-theme-name=&apos;cool&apos;]</Code> and{' '}
+            Switch <strong>Theme</strong> to <Code>editorial</Code> with contrast on{' '}
+            <Code>more</Code>: the promotion must survive, and in the THEME family (bisque), not the
+            base neutral. This is the case worth watching, because{' '}
+            <Code>:root[data-theme-name=&apos;editorial&apos;]</Code> and{' '}
             <Code>:root.pref-contrast-more</Code> carry the same specificity - if the theme block
             were not scoped to the theme, which one wins would depend on the order{' '}
             <Code>semantic.css</Code> and <Code>themes.css</Code> happen to be loaded in. The
-            generator emits <Code>:root[data-theme-name=&apos;cool&apos;].pref-contrast-more</Code>{' '}
-            for exactly this reason.
+            generator emits{' '}
+            <Code>:root[data-theme-name=&apos;editorial&apos;].pref-contrast-more</Code> for exactly
+            this reason.
           </mds-text>
         </Callout>
       </Section>
