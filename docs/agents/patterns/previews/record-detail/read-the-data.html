@@ -2,30 +2,45 @@
 try: Look at the contact: its name as the heading, Modifica as the main action and its data as labels and values. Open the menu at the start of the row: Stampa, then a separator, and Elimina contatto last, in red with its icon.
 whole-page: true
 -->
-<mds-header menu="none">
+<mds-header>
   <mds-header-bar>
     <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
-    <mds-button slot="nav" variant="dark" tone="text">Pratiche</mds-button>
-    <mds-button slot="nav" variant="dark" tone="text">Contatti</mds-button>
+    <mds-button slot="nav" href="#" variant="dark" tone="text">Pratiche</mds-button>
+    <mds-button slot="nav" href="#" aria-current="page" variant="dark" tone="weak">Contatti</mds-button>
+    <mds-button id="persona" slot="nav" icon="mi/baseline/account-circle" variant="dark" tone="text" aria-label="Account di Mario Rossi"></mds-button>
   </mds-header-bar>
+  <nav slot="menu" class="grid gap-inline p-inset">
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Pratiche</mds-button>
+    <mds-button href="#" aria-current="page" variant="dark" tone="weak" class="w-full justify-start">Contatti</mds-button>
+    <mds-separator></mds-separator>
+    <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Profilo</mds-button>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Esci</mds-button>
+  </nav>
 </mds-header>
+<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed">
+  <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
+  <mds-button href="#" icon="mi/baseline/person" variant="dark" tone="text" label="Profilo"></mds-button>
+  <mds-separator></mds-separator>
+  <mds-button href="#" icon="mi/baseline/logout" variant="dark" tone="text" label="Esci"></mds-button>
+</mds-dropdown>
 <main class="page-frame grid gap-between-sections py-between-sections">
-  <header class="grid gap-title-content">
+  <header class="@container grid gap-title-content">
     <mds-button href="#" icon="mi/baseline/arrow-back" variant="dark" tone="text" size="sm" class="justify-self-start">Contatti</mds-button>
     <div class="flex flex-wrap items-start justify-between gap-inline">
-      <div class="grid min-w-0 grow gap-title-content">
+      <div class="grid min-w-0 grow basis-actions gap-title-content">
         <mds-text typography="page" tag="h1" tabindex="-1">Mario Rossi</mds-text>
         <mds-text typography="detail" tag="p" class="text-fg-muted">Ufficio anagrafe, aggiunto il 12 gennaio 2024</mds-text>
       </div>
-      <div class="flex flex-wrap gap-inline">
-        <mds-button id="azioni-contatto" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni di Mario Rossi"></mds-button>
+      <div class="flex gap-inline @max-actions:basis-full @max-actions:flex-col @max-actions:*:self-stretch">
+        <mds-button id="azioni-contatto" class="@max-actions:w-fit" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni di Mario Rossi"></mds-button>
         <mds-button>Modifica</mds-button>
       </div>
     </div>
   </header>
   <section class="grid gap-title-content">
     <mds-text typography="section" tag="h2">Dati anagrafici</mds-text>
-    <dl class="m-0 grid grid-cols-2 gap-between-fields">
+    <dl class="m-0 grid max-w-form items-start gap-between-fields @md:grid-cols-2">
       <div class="grid gap-label-control">
         <mds-text typography="label" tag="dt" class="text-fg-muted">Codice fiscale</mds-text>
         <mds-text tag="dd" class="m-0">RSSMRA80A01H294X</mds-text>
@@ -46,7 +61,7 @@ whole-page: true
   </section>
   <section class="grid gap-title-content">
     <mds-text typography="section" tag="h2">Recapiti</mds-text>
-    <dl class="m-0 grid grid-cols-2 gap-between-fields">
+    <dl class="m-0 grid max-w-form items-start gap-between-fields @md:grid-cols-2">
       <div class="grid gap-label-control">
         <mds-text typography="label" tag="dt" class="text-fg-muted">Email</mds-text>
         <mds-text tag="dd" class="m-0">m.rossi@esempio.it</mds-text>

@@ -3,18 +3,33 @@ try: Look at the start edge: the name of the application in the bar, the title a
 height: 520
 whole-page: true
 -->
-<mds-header menu="none">
+<mds-header>
   <mds-header-bar>
     <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
-    <mds-button slot="nav" variant="dark" tone="text">Pratiche</mds-button>
-    <mds-button slot="nav" variant="dark" tone="text">Archivio</mds-button>
+    <mds-button slot="nav" href="#" aria-current="page" variant="dark" tone="weak">Pratiche</mds-button>
+    <mds-button slot="nav" href="#" variant="dark" tone="text">Archivio</mds-button>
+    <mds-button id="persona" slot="nav" icon="mi/baseline/account-circle" variant="dark" tone="text" aria-label="Account di Mario Rossi"></mds-button>
   </mds-header-bar>
+  <nav slot="menu" class="grid gap-inline p-inset">
+    <mds-button href="#" aria-current="page" variant="dark" tone="weak" class="w-full justify-start">Pratiche</mds-button>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Archivio</mds-button>
+    <mds-separator></mds-separator>
+    <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Profilo</mds-button>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Esci</mds-button>
+  </nav>
 </mds-header>
+<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed">
+  <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
+  <mds-button href="#" icon="mi/baseline/person" variant="dark" tone="text" label="Profilo"></mds-button>
+  <mds-separator></mds-separator>
+  <mds-button href="#" icon="mi/baseline/logout" variant="dark" tone="text" label="Esci"></mds-button>
+</mds-dropdown>
 <main class="page-frame grid gap-between-sections py-between-sections">
-  <div class="grid gap-title-content">
+  <header class="grid gap-title-content">
     <mds-text typography="page" tag="h1">Pratiche di residenza</mds-text>
-    <mds-text typography="detail" tag="p">Le richieste degli ultimi trenta giorni, dalla più recente.</mds-text>
-  </div>
+    <mds-text typography="detail" tag="p" class="text-fg-muted">Le richieste degli ultimi trenta giorni, dalla più recente.</mds-text>
+  </header>
   <mds-table class="w-full">
     <mds-table-header>
       <mds-table-header-cell label="Protocollo"></mds-table-header-cell>

@@ -18,10 +18,12 @@
  *   is not yet;
  * - the links: every pattern, case and rule cited exists, and no reference uses an old id;
  * - the body: its sections in the order of the template, the generated ones up to date;
- * - the previews of the cases (docs/agents/patterns/previews/<pattern>/<case>.html, #1186): each
- *   of a case that exists, with its keys, only a stage, and its markup clean for the Magma lint
- *   (the strict preset, as check_markup runs it); the cases with no preview are listed as a
- *   warning, which does not fail the check while previews are being made.
+ * - the previews of the cases (docs/agents/patterns/previews/<pattern>/<case>.html, #1186) and of
+ *   the situations of a block (<block>/<situation>.html, 2026-11-03): each of a case, a rule of
+ *   a domain or a situation that exists, with its keys, only a stage, and its markup clean for
+ *   the Magma lint (the strict preset, as check_markup runs it); the cases and the situations of
+ *   a decided block with no preview are listed as a warning, which does not fail the check while
+ *   previews are being made.
  *
  * With `--layer <dir>` it checks a product's folder too (magma/patterns/ of a product), as
  * get_pattern does without arguments (projectErrors of the core): a layer may narrow the open
@@ -166,7 +168,7 @@ if (found.size) {
 }
 if (missing.length)
   console.warn(
-    `${missing.length} case(s) with no preview yet (docs/PATTERNS.md, "The preview of a case"; /pattern-preview <id> makes them):\n${missing
+    `${missing.length} case(s) or situation(s) of a block with no preview yet (docs/PATTERNS.md, "The preview of a case"; /pattern-preview <id> makes them):\n${missing
       .map((one) => `  - ${one}`)
       .join('\n')}\n`,
   );
@@ -180,5 +182,5 @@ console.log(
     patterns.length - domains - blocks - decided
   } candidates): ${combinations} combinations each in one case, a gap or not applicable, or with a required region of a block; every component, attribute, carrier, lint rule and link exists; ${
     previews.length
-  } preview(s), each of a case or a rule of a domain and clean`,
+  } preview(s), each of a case, a rule of a domain or a situation of a block and clean`,
 );

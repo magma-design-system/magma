@@ -20,7 +20,7 @@ assumptions:
   - The action starts from a control the person chose (a button, a menu item).
 high-stakes: true
 components: [mds-modal, mds-button, mds-banner, mds-toast]
-related: [message-placement, error-recovery, notification-center]
+related: [message-placement, error-recovery, notification-center, labels-and-values]
 validated-on: []
 
 variables:

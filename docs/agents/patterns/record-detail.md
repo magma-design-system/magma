@@ -28,7 +28,7 @@ assumptions:
   - The application knows whether other people or systems change the record while it is on screen.
 high-stakes: false
 components: [mds-text, mds-badge, mds-button, mds-dropdown, mds-separator, mds-tab, mds-tab-item, mds-file, mds-author, mds-modal, mds-input-field, mds-input, mds-banner]
-related: [list-with-filters, message-placement, confirm-action, empty-state, loading, error-recovery, form-and-validation, concurrent-editing, permissions, page-header]
+related: [list-with-filters, message-placement, confirm-action, empty-state, loading, error-recovery, form-and-validation, concurrent-editing, permissions, page-header, labels-and-values, app-shell]
 validated-on: []
 
 variables:
@@ -150,8 +150,8 @@ No gaps: every combination has a case or is not applicable.
   tone. Back to the list, the identity and the actions are the block `page-header`.
 - **The tabs**: the data, the documents and the history, one at a time (`mds-tab`), only when
   there is more than one part; a section of their own, right under the header.
-- **The data**: labels and values, in two columns when there is room: a `dl` of `mds-text`
-  (`tag="dt"`, `tag="dd"`).
+- **The data**: labels and values, in two columns when there is room: the block
+  `labels-and-values`, a `dl` of `mds-text` (`tag="dt"`, `tag="dd"`).
 - **The documents**: one `mds-file` for each file.
 - **The history**: who did what, and when (`mds-author`), the newest first, with the note written
   with the action.
@@ -253,7 +253,7 @@ Situations every application has, each with its case: they give the examples, th
 ## Magma gaps
 
 - No component for labels and values in two columns: a `dl` of `mds-text` with `tag="dt"` and
-  `tag="dd"`, laid out by the product.
+  `tag="dd"`, laid out as the block `labels-and-values` says.
 
 ## Decisions
 

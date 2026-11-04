@@ -1,0 +1,21 @@
+<!--
+try: Look at the data of the payment above Paga: Richiesta and Importo side by side in the column of the form, one under the other on a phone, with no title of their own.
+-->
+<div class="grid gap-between-sections">
+  <mds-text typography="page" tag="h1">Pagamento del bollo</mds-text>
+  <form class="@container grid max-w-form gap-content-actions">
+    <dl class="m-0 grid items-start gap-between-fields @md:grid-cols-2">
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Richiesta</mds-text>
+        <mds-text tag="dd" class="m-0">2026/0412</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Importo</mds-text>
+        <mds-text tag="dd" class="m-0">16,00 euro con pagoPA</mds-text>
+      </div>
+    </dl>
+    <div class="flex justify-end gap-inline">
+      <mds-button>Paga</mds-button>
+    </div>
+  </form>
+</div>

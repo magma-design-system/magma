@@ -7,18 +7,20 @@ try: Look at the search for Rossini among the open requests: the summary and the
     <mds-button>Nuova richiesta</mds-button>
   </div>
   <div class="grid gap-between-groups">
-    <form role="search" class="grid max-w-form gap-between-fields">
-      <mds-input-field label="Cerca per nome o numero">
-        <mds-input type="search" value="Rossini"></mds-input>
-      </mds-input-field>
-      <mds-filter label="Stato">
+    <form role="search" class="grid gap-between-fields">
+      <div class="field-group max-w-form">
+        <mds-input-field label="Cerca per nome o numero">
+          <mds-input type="search" name="q" value="Rossini"></mds-input>
+        </mds-input-field>
+      </div>
+      <mds-filter label="Stato" class="justify-self-start">
         <mds-filter-item label="Tutte" value="all"></mds-filter-item>
         <mds-filter-item label="Aperte" value="open" selected></mds-filter-item>
         <mds-filter-item label="Chiuse" value="closed"></mds-filter-item>
       </mds-filter>
     </form>
     <div class="grid gap-title-content">
-      <mds-text typography="detail" tag="p" role="status" class="text-fg-muted">Nessuna richiesta corrisponde</mds-text>
+      <mds-text typography="detail" tag="p" role="status">Nessuna richiesta corrisponde</mds-text>
       <mds-zero>
         <div slot="content" class="grid gap-title-content">
           <mds-text typography="part" tag="h2">Nessuna richiesta trovata</mds-text>

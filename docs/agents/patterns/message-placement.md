@@ -23,7 +23,7 @@ assumptions:
   - Desktop and mobile; on mobile with the keyboard open the bottom edge is still to verify.
 high-stakes: false
 components: [mds-input-field, mds-input, mds-banner, mds-toast, mds-toast-region, mds-modal]
-related: [confirm-action, error-recovery, loading, empty-state, notification-center]
+related: [confirm-action, error-recovery, loading, empty-state, notification-center, app-shell]
 validated-on: []
 
 variables:

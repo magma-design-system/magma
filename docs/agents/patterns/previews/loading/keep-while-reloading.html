@@ -4,29 +4,31 @@ try: Type Ferr in Cerca: the field waits with its spinner while the three reques
 <div class="grid gap-between-sections">
   <mds-text typography="page" tag="h1">Richieste</mds-text>
   <div class="grid gap-between-groups">
-    <form id="find" role="search" class="grid max-w-form">
-      <mds-input-field label="Cerca per nome o numero">
-        <mds-input id="search" type="search"></mds-input>
-      </mds-input-field>
+    <form id="find" role="search" class="grid gap-between-fields">
+      <div class="field-group max-w-form">
+        <mds-input-field label="Cerca per nome o numero">
+          <mds-input id="search" type="search" name="q"></mds-input>
+        </mds-input-field>
+      </div>
     </form>
     <div class="grid gap-title-content">
-      <mds-text id="summary" typography="detail" tag="p" role="status" class="text-fg-muted">3 richieste</mds-text>
-      <mds-table id="results" class="w-full">
+      <mds-text id="summary" typography="detail" tag="p" role="status">3 richieste</mds-text>
+      <mds-table id="results" class="w-full [&_mds-table-cell]:text-nowrap [&_mds-text]:text-nowrap">
         <mds-table-header>
           <mds-table-header-cell label="Protocollo"></mds-table-header-cell>
           <mds-table-header-cell label="Richiedente"></mds-table-header-cell>
         </mds-table-header>
         <mds-table-body>
           <mds-table-row>
-            <mds-table-cell><mds-text typography="detail">2026/0412</mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0412</mds-link></mds-text></mds-table-cell>
             <mds-table-cell><mds-text typography="detail">Giulia Bianchi</mds-text></mds-table-cell>
           </mds-table-row>
           <mds-table-row>
-            <mds-table-cell><mds-text typography="detail">2026/0398</mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0398</mds-link></mds-text></mds-table-cell>
             <mds-table-cell><mds-text typography="detail">Luca Ferri</mds-text></mds-table-cell>
           </mds-table-row>
           <mds-table-row>
-            <mds-table-cell><mds-text typography="detail">2026/0371</mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0371</mds-link></mds-text></mds-table-cell>
             <mds-table-cell><mds-text typography="detail">Anna Ferrari</mds-text></mds-table-cell>
           </mds-table-row>
         </mds-table-body>
@@ -40,7 +42,8 @@ try: Type Ferr in Cerca: the field waits with its spinner while the three reques
   const summary = document.getElementById('summary');
   let pause;
   let latest = 0;
-  // what was searched, marked in the text of a cell: built from text nodes, never from markup
+  // what was searched, marked in the text of a cell: built from text nodes, never from markup;
+  // the number is a link, and mds-link takes text only in its slot, so it is left unmarked
   const mark = (text, query) => {
     const whole = text.dataset.text ?? (text.dataset.text = text.textContent);
     const at = query ? whole.toLowerCase().indexOf(query) : -1;
@@ -66,7 +69,7 @@ try: Type Ferr in Cerca: the field waits with its spinner while the three reques
           const match = row.textContent.toLowerCase().includes(query);
           row.hidden = !match;
           if (match) shown++;
-          for (const text of row.querySelectorAll('mds-text')) mark(text, query);
+          for (const text of row.querySelectorAll('mds-text:not(:has(mds-link))')) mark(text, query);
         }
         summary.textContent = shown === 1 ? '1 richiesta' : `${shown} richieste`;
         search.await = undefined;

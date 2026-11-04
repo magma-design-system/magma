@@ -9,6 +9,12 @@ argument-hint: <id> [case]
 The pattern, and the case if one is named: $ARGUMENTS. The format of a preview is in
 `docs/PATTERNS.md`, "The preview of a case": read it first.
 
+A building block (`kind: block`) has situations where a pattern has cases: each situation has
+an `id` and its preview is `previews/<block>/<situation-id>.html` (the round of the building
+blocks, 2026-11-03). Everywhere below, read "case" as "situation" for a block: its values give
+the regions that show, and the stage lays them out as the Layout of the block says.
+`render_preview` takes the id of the situation as its `case`.
+
 ## 1. What is missing
 
 Run `npx nx run stencil:check.patterns` (it needs the build: `npx nx run stencil:build` when

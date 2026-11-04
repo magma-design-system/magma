@@ -22,7 +22,7 @@ assumptions:
   - The application knows before starting whether an operation is long and whether it can tell how far it is.
 high-stakes: false
 components: [mds-spinner, mds-progress, mds-button, mds-input, mds-text, mds-toast]
-related: [message-placement, empty-state, error-recovery, list-with-filters, record-detail]
+related: [message-placement, empty-state, error-recovery, list-with-filters, record-detail, item-list]
 validated-on: []
 
 variables:

@@ -1,0 +1,31 @@
+<!--
+try: Look at Dati anagrafici: four short data in two columns as wide as the column of a form, one under the other on a phone; the address takes the whole row, and Stato civile says Non indicato in the muted foreground.
+-->
+<div class="grid gap-between-sections">
+  <mds-text typography="page" tag="h1">Mario Rossi</mds-text>
+  <section class="grid gap-title-content">
+    <mds-text typography="section" tag="h2">Dati anagrafici</mds-text>
+    <dl class="m-0 grid max-w-form items-start gap-between-fields @md:grid-cols-2">
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Codice fiscale</mds-text>
+        <mds-text tag="dd" class="m-0">RSSMRA80A01H294X</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Nato il</mds-text>
+        <mds-text tag="dd" class="m-0">1 gennaio 1980</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Luogo di nascita</mds-text>
+        <mds-text tag="dd" class="m-0">Rimini</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Stato civile</mds-text>
+        <mds-text tag="dd" class="m-0 text-fg-muted">Non indicato</mds-text>
+      </div>
+      <div class="col-span-full grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Residenza</mds-text>
+        <mds-text tag="dd" class="m-0">Via Roma 21<br>47921 Rimini (RN)</mds-text>
+      </div>
+    </dl>
+  </section>
+</div>
