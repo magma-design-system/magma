@@ -6,6 +6,7 @@
   "implicitDependencies": ["lint", "identity"],
   "targets": {
     "build": {
+      "inputs": ["default", "^default", "{workspaceRoot}/docs/agents/**/*"],
       "outputs": [
         "{projectRoot}/dist",
         "{projectRoot}/www",
