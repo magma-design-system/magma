@@ -5,6 +5,8 @@
  * @prop --mds-notification-dot-background: The background color of the notification dot.
  * @prop --mds-notification-dot-padding: The padding around the notification dot.
  * @prop --mds-notification-min-width: The minimum width of the notification component.
+ * @prop --mds-notification-pulse-duration: Duration of one beat of the pulse.
+ * @prop --mds-notification-pulse-spread: How far the ring of the pulse grows past the ring of the dot.
  * @prop --mds-notification-ring-color: The color of the notification ring.
  * @prop --mds-notification-ring-size: The thickness of the notification ring.
  * @prop --mds-notification-size: Public. The base size of the notification element.
@@ -36,6 +38,9 @@
   --mds-notification-dot-transition-duration: var(--duration-300);
   --private-notification-dot-transition-duration: var(--mds-notification-dot-transition-duration);
   --mds-notification-transition-timing-function: var(--ease-out-cubic);
+  --mds-notification-pulse-duration: var(--duration-1000);
+  --private-notification-pulse-duration: var(--mds-notification-pulse-duration);
+  --mds-notification-pulse-spread: --spacing(200);
   --mds-notification-translate-offset-x: -1.75;
   --mds-notification-translate-offset-y: -2;
   --mds-notification-translate: translate(
@@ -101,6 +106,35 @@
   position: absolute;
 }
 
+/* The pulse (#1216): a ring that grows from the edge of the dot and fades, three beats and then
+   still. A beat is the longest step of --duration-*, so the three end after 3s, under the 5s
+   after which WCAG 2.2.2 wants a way to stop what moves; --ease-out-cubic leaves fast and
+   settles, as a ripple does. The ring is a second shadow under the dot's own ring: it needs no
+   element and moves nothing around the dot, and a forced-colours mode, which drops shadows,
+   drops it too. The component sets the class when the value grows and takes it off at the end. */
+
+.pulse {
+  animation-duration: var(--private-notification-pulse-duration);
+  animation-iteration-count: 3;
+  animation-name: notification-pulse;
+  animation-timing-function: var(--ease-out-cubic);
+}
+
+@keyframes notification-pulse {
+  from {
+    box-shadow:
+      0 0 0 var(--mds-notification-ring-size) var(--mds-notification-ring-color),
+      0 0 0 var(--mds-notification-ring-size) var(--mds-notification-dot-background);
+  }
+
+  to {
+    box-shadow:
+      0 0 0 var(--mds-notification-ring-size) var(--mds-notification-ring-color),
+      0 0 0 calc(var(--mds-notification-ring-size) + var(--mds-notification-pulse-spread))
+        transparent;
+  }
+}
+
 .spacer {
   box-sizing: border-box;
   display: inline-flex;
@@ -149,4 +183,5 @@
   display: none;
 }
 
+@import './css/mds-notification-variant.css';
 @import './css/mds-notification-pref-animation.css';

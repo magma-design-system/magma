@@ -5,11 +5,17 @@
  * these plain shadow selectors then zero the private duration(s) the base CSS
  * reads. `reduce` always stops; `system` and no controller follow the OS via
  * @media; `no-preference` keeps the base value. Customization composes (the base
- * sets --private from the public token, this only overrides it when reduced). */
+ * sets --private from the public token, this only overrides it when reduced).
+ *
+ * The pulse is held back the same way, by its duration: the component starts none with a
+ * reduced animation, and a pulse that is playing when the preference changes ends at once
+ * with a duration of 0s, firing the animationend that takes its class off. Three beats are
+ * finite, so 0s cannot spin out of control as it would on a loader. */
 
 :host([pref-animation='reduce']) {
   --private-notification-transition-duration: 0s;
   --private-notification-dot-transition-duration: 0s;
+  --private-notification-pulse-duration: 0s;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -17,5 +23,6 @@
   :host(:not([pref-animation])) {
     --private-notification-transition-duration: 0s;
     --private-notification-dot-transition-duration: 0s;
+    --private-notification-pulse-duration: 0s;
   }
 }

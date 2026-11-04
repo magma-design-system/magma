@@ -19,6 +19,7 @@ The `<mds-notification>` web component is a numeric badge/dot indicator of the M
 - **Missing target falls back**: If `target` is not set, positioning is disabled; if `target` is set but resolves to no element, it logs a console warning (`mds-notification: no valid target found`) and falls back to `strategy="disabled"` as well.
 - **Zero value**: When `value` is `0` the badge renders without a number, as a plain dot; it is not hidden.
 - **Count overflow**: When `max` is set and `value` exceeds it, the displayed text becomes `+max` (e.g. `+9`) instead of the raw number; otherwise the value is locale-formatted.
+- **Pulse**: With `pulse`, the dot calls attention when `value` grows: a ring grows from it and fades, three beats and then still (3 seconds, under the 5 of WCAG 2.2.2). It never plays on the first render, nor when the count goes down, nor with a reduced animation (`pref-animation="reduce"`, or the reduced motion of the system); a growth while it plays does not start it over.
 - **Accessibility**: The count describes the target (`aria-describedby` on it, next to the descriptions it already has), so a screen reader reads it with the element it sits on; the badge itself is then hidden from assistive technologies, or the count would be read twice. A dismissed badge, a plain dot and a target in another shadow tree describe nothing. Without a target the count is plain text, read with whatever contains it (the name of the `mds-button` it sits in).
 
 #### Properties & Visual Configurations
@@ -26,6 +27,8 @@ The `<mds-notification>` web component is a numeric badge/dot indicator of the M
 - **`target`** is the CSS selector of the element the badge anchors to; it is effectively mandatory for positioned rendering.
 - **`value`** is the count shown in the badge and also the description of the target; `0` shows a plain dot without a number.
 - **`max`** caps the visible number - pick it when raw counts could grow large and you want a compact `+N` ceiling.
+- **`variant`** is the colour of the dot and of the badge, a status (`docs/agents/variants.md`): `error`, the danger colour, by default; `info` for something new that is not wrong, such as the items others added to a list; `success` and `warning`. The ink of the count follows the fill.
+- **`pulse`** makes the dot pulse when its count grows; leave it off on a count that grows all the time, where every message would call attention.
 - **`dismissed`** hides the badge independently of its value (the badge is shown by default): with the floating strategies (`fixed`, `absolute`) it scales out, with `disabled` it is taken out of the layout at once.
 
 #### Other behavioral props
@@ -86,6 +89,25 @@ When `value` is `0` the badge renders without a number, appearing as a plain dot
 <mds-button id="attivita-recente" label="Attivita" variant="primary" tone="weak"></mds-button>
 ```
 
+#### Info Dot That Pulses When the Count Grows, in a Line of Text
+
+Use `variant="info"` with `pulse` to call attention to new items without moving anything on screen, such as the items others added to a list while the person works through it. Without a `target` the badge sits in the line, and its count is read with the words around it: keep it inside the text that says what is new, the one with `role="status"`, so the number is read out when it changes, and the action outside it. The dot pulses each time `value` grows, three beats and then still.
+
+```html
+<div class="flex items-center gap-200">
+  <p role="status" class="flex items-center gap-100">
+    <mds-notification variant="info" value="3" pulse></mds-notification>
+    <mds-text typography="detail">nuove pratiche</mds-text>
+  </p>
+  <mds-button variant="info" tone="outline" size="sm">Mostra</mds-button>
+</div>
+```
+
+```js
+// the count grows: the dot pulses
+document.querySelector('mds-notification').value = 5;
+```
+
 #### Absolute Positioning Strategy
 
 Use `strategy="absolute"` when the badge must be positioned relative to a scrolling container rather than the viewport. The target element must have `position: relative` (or another non-static position) set on its nearest containing block.
@@ -113,7 +135,7 @@ Use `strategy="disabled"` when you want to position the badge yourself with util
 
 #### Styling Customization via CSS Custom Properties
 
-Customize the badge only through its public `--mds-notification-*` CSS custom properties, the ink color and the size; the fill and the ring of the dot come from the component. Set them on the host element or a parent selector. Use the Magma color tokens with `rgb(var(--<token>))` so dark mode and high-contrast stay consistent.
+Customize the badge only through its public `--mds-notification-*` CSS custom properties, the ink color and the size; the fill and the ring of the dot come from the component, the fill from its `variant`. Set them on the host element or a parent selector. Use the Magma color tokens with `rgb(var(--<token>))` so dark mode and high-contrast stay consistent.
 
 ```css
 /* Badge piu' grande, inchiostro abbinato al riempimento di stato */
@@ -170,6 +192,18 @@ Without `target`, the component cannot locate its anchor, automatically falls ba
 <mds-badge variant="success" label="Online"></mds-badge>
 ```
 
+#### Do Not Animate the Dot Yourself
+
+A pulse written by the page, with a keyframe, a scale and an opacity of its own, ignores the animation preference and never stops. `pulse` plays three beats when the count grows, and none with a reduced animation.
+
+```html
+<!-- INCORRECT -->
+<mds-notification class="animate-ping" variant="info" value="3"></mds-notification>
+
+<!-- CORRECT -->
+<mds-notification variant="info" value="3" pulse></mds-notification>
+```
+
 #### Do Not Wrap the Target in a Relative Container and Use `strategy="fixed"`
 
 `strategy="fixed"` anchors the badge to the viewport coordinate system. If the target sits inside a CSS-transformed or `position: relative` parent, `fixed` positioning will not track it correctly. Switch to `strategy="absolute"` and ensure the containing block has a non-static position.
@@ -190,7 +224,7 @@ Without `target`, the component cannot locate its anchor, automatically falls ba
 
 #### Do Not Pierce Shadow DOM to Style the Inner Dot
 
-The internal `.dot` element is not a documented `::part()`. Targeting it with `::part(dot)` or deep-selector hacks breaks on any internal refactor. The dot keeps the fill the component gives it: adjust only what the public `--mds-notification-color` and `--mds-notification-size` CSS custom properties expose.
+The internal `.dot` element is not a documented `::part()`. Targeting it with `::part(dot)` or deep-selector hacks breaks on any internal refactor. The dot keeps the fill the component gives it, from its `variant`: adjust only what the public `--mds-notification-color` and `--mds-notification-size` CSS custom properties expose.
 
 ```css
 /* INCORRECT */
@@ -208,31 +242,35 @@ mds-notification {
 
 ## Properties
 
-| Property    | Attribute   | Description                                                                                                                                              | Type                                  | Default     |
-| ----------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ----------- |
-| `dismissed` | `dismissed` | Specifies if the notification is dismissed                                                                                                               | `boolean`                             | `false`     |
-| `max`       | `max`       | Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9       | `number \| undefined`                 | `undefined` |
-| `strategy`  | `strategy`  | Specifies the position strategy of the notification                                                                                                      | `"absolute" \| "disabled" \| "fixed"` | `'fixed'`   |
-| `target`    | `target`    | Specifies the selector of the target element, this attribute is used with `querySelector` method.                                                        | `string`                              | `undefined` |
-| `value`     | `value`     | Specifies the number of notifications to display. At 0 the badge shows no number, as an empty dot: it is not hidden, `dismissed` takes it off its target | `number`                              | `0`         |
+| Property    | Attribute   | Description                                                                                                                                                              | Type                                          | Default     |
+| ----------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------- | ----------- |
+| `dismissed` | `dismissed` | Specifies if the notification is dismissed                                                                                                                               | `boolean`                                     | `false`     |
+| `max`       | `max`       | Specifies the maximum number that can be seen, assuming that the number is for example 9 and that this is exceeded with 15, the component shows +9                       | `number \| undefined`                         | `undefined` |
+| `pulse`     | `pulse`     | Specifies if the dot pulses when `value` grows: a ring that grows from it and fades, three beats and then still. Never on the first render, nor with a reduced animation | `boolean`                                     | `false`     |
+| `strategy`  | `strategy`  | Specifies the position strategy of the notification                                                                                                                      | `"absolute" \| "disabled" \| "fixed"`         | `'fixed'`   |
+| `target`    | `target`    | Specifies the selector of the target element, this attribute is used with `querySelector` method.                                                                        | `string`                                      | `undefined` |
+| `value`     | `value`     | Specifies the number of notifications to display. At 0 the badge shows no number, as an empty dot: it is not hidden, `dismissed` takes it off its target                 | `number`                                      | `0`         |
+| `variant`   | `variant`   | Specifies the colour of the dot and of the badge, a status: `error`, the danger colour, by default; `info` for something new that is not wrong, `success` and `warning`  | `"error" \| "info" \| "success" \| "warning"` | `'error'`   |
 
 
 ## CSS Custom Properties
 
-| Name                                            | Description                                                |
-| ----------------------------------------------- | ---------------------------------------------------------- |
-| `--mds-notification-color`                      | Public. The text/icon color of the notification component. |
-| `--mds-notification-dot-background`             | The background color of the notification dot.              |
-| `--mds-notification-dot-padding`                | The padding around the notification dot.                   |
-| `--mds-notification-min-width`                  | The minimum width of the notification component.           |
-| `--mds-notification-ring-color`                 | The color of the notification ring.                        |
-| `--mds-notification-ring-size`                  | The thickness of the notification ring.                    |
-| `--mds-notification-size`                       | Public. The base size of the notification element.         |
-| `--mds-notification-transition-duration`        | Duration of notification transitions.                      |
-| `--mds-notification-transition-timing-function` | Timing function for notification transitions.              |
-| `--mds-notification-translate`                  | The CSS transform applied for notification positioning.    |
-| `--mds-notification-translate-offset-x`         | X-axis offset factor for notification translation.         |
-| `--mds-notification-translate-offset-y`         | Y-axis offset factor for notification translation.         |
+| Name                                            | Description                                                   |
+| ----------------------------------------------- | ------------------------------------------------------------- |
+| `--mds-notification-color`                      | Public. The text/icon color of the notification component.    |
+| `--mds-notification-dot-background`             | The background color of the notification dot.                 |
+| `--mds-notification-dot-padding`                | The padding around the notification dot.                      |
+| `--mds-notification-min-width`                  | The minimum width of the notification component.              |
+| `--mds-notification-pulse-duration`             | Duration of one beat of the pulse.                            |
+| `--mds-notification-pulse-spread`               | How far the ring of the pulse grows past the ring of the dot. |
+| `--mds-notification-ring-color`                 | The color of the notification ring.                           |
+| `--mds-notification-ring-size`                  | The thickness of the notification ring.                       |
+| `--mds-notification-size`                       | Public. The base size of the notification element.            |
+| `--mds-notification-transition-duration`        | Duration of notification transitions.                         |
+| `--mds-notification-transition-timing-function` | Timing function for notification transitions.                 |
+| `--mds-notification-translate`                  | The CSS transform applied for notification positioning.       |
+| `--mds-notification-translate-offset-x`         | X-axis offset factor for notification translation.            |
+| `--mds-notification-translate-offset-y`         | Y-axis offset factor for notification translation.            |
 
 
 ## Dependencies
