@@ -4,6 +4,25 @@ Every release of `@maggioli-design-system/styles`, newest first. Each section is
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [styles@17.5.0] - 2026-11-04
+
+### Bug Fixes
+
+- *(styles,mds-input)* Leave the text of an input untrimmed, so a drag no longer scrolls it
+
+### Documentation
+
+- *(magma,design-tokens,styles)* Point the guides to the domains
+
+### Features
+
+- *(styles)* Titles by role, page-frame and field-group, the utilities of the design language
+- *(design-tokens,styles,mds-text)* The reading measure reaches the text (56ch)
+- *(design-tokens,styles)* The rhythm of the row of actions, content-actions
+- *(design-tokens,styles)* The threshold of a row of actions as --magma-container-actions
+- *(stencil,styles)* Rows of actions stack, the status bar keeps its room, fields step down
+- *(mds-header,styles)* The bar stands in the flow, sticky: drop the padding kept for it
+
 ## [styles@17.4.0] - 2026-10-24
 
 ### Documentation

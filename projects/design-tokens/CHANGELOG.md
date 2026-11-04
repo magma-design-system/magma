@@ -4,6 +4,23 @@ Every release of `@maggioli-design-system/design-tokens`, newest first. Each sec
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [design-tokens@15.4.0] - 2026-11-04
+
+### Bug Fixes
+
+- *(design-tokens)* Give the title roles of the Tailwind theme the literal of their level
+
+### Documentation
+
+- *(magma,design-tokens,styles)* Point the guides to the domains
+
+### Features
+
+- *(design-tokens)* The role tokens of the design language, rhythm, widths and titles
+- *(design-tokens,styles,mds-text)* The reading measure reaches the text (56ch)
+- *(design-tokens,styles)* The rhythm of the row of actions, content-actions
+- *(design-tokens,styles)* The threshold of a row of actions as --magma-container-actions
+
 ## [design-tokens@15.3.0] - 2026-10-24
 
 ### Documentation

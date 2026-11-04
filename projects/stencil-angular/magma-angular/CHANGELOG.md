@@ -7,6 +7,94 @@ package.
 It is released together with `magma`, at the same version: the sections are the
 releases of `magma`.
 
+## [magma@2.10.0] - 2026-11-04
+
+### Bug Fixes
+
+- *(mds-book)* Bind a book with an image in paper, keep the accent for the drawn cover
+- *(styles,mds-input)* Leave the text of an input untrimmed, so a drag no longer scrolls it
+- *(magma,lint)* Check_setup finds magma-mcp in the configuration of OpenCode
+- *(lint)* Find the tokens a domain carries in the DTCG data too
+- *(mds-status-bar)* Hug the bar again under the dialog width of the window slot
+- *(lint)* No box of nothing reported where the content stands out of it by design
+- *(magma)* The previews of the widths on the roles and the carriers that ship
+- *(lint)* Judge no flat colour where the image cannot show the content
+- *(lint)* Judge no flat colour on a box another element covers
+- *(mds-input-date)* Show the custom calendar button on firefox and hide the native one
+- *(mds-input-date)* Clip only the native calendar button on firefox, not the year
+
+### Build
+
+- *(stencil)* Rate a type alias without its closing semicolon
+- *(magma)* Track the editor setup of the repository in .vscode
+
+### Documentation
+
+- *(mds-book)* Show binding none on a document, the first page of its minutes
+- *(magma)* The carriers of the rhythm ship, so its cases name them
+- *(magma)* Put the page header at the step of the sections
+- *(magma)* Show the new items of a list in the line of the summary
+- *(magma)* Point the gap of the attention dot at its issue
+- *(magma)* Write the spaces of the page header by their role
+- *(magma)* Write the other five domains of the design language as files
+- *(magma,design-tokens,styles)* Point the guides to the domains
+- *(magma)* Show the cases of widths at work, the pilot of the domain previews
+- *(magma)* Write the planned carriers of density as plain text
+- *(magma)* Keep the table of the widths/page preview to two columns
+- *(magma)* Give the toast of a removal the default light variant
+- *(magma)* Let closing the deadline dialog mean staying connected
+- *(magma)* Stack a row of actions under 380 px of its container
+- *(magma)* Put the actions beyond the third in the menu of the item
+- *(magma)* Lay out the previews with Tailwind, the default
+- *(magma)* Show the error of action-failed-in-place in the strong tone
+- *(mds-accordion-item)* Write h6 for the title of an item, until the default moves
+- *(magma)* The rhythm names the row of actions and lets an image reach its edges
+- *(magma)* Link the decisions of the card to their comments on #1189
+- *(magma)* The titles and the widths on the carriers that ship
+- *(magma)* The patterns follow the design language and the choices of review round 2
+- *(magma)* Draw the architecture of every project in its README
+- *(magma)* Colour the diagrams of the projects by axis
+- *(magma)* Move the shipped carriers of titles and widths to carried-by
+
+### Features
+
+- *(lint)* Read the patterns and answer get_pattern
+- *(magma)* Ship the five patterns of Messages and states
+- *(magma)* The plugin skill that writes a product's pattern layer
+- *(magma,lint)* Ship the usage files of a component as examples.md and mistakes.md
+- *(magma)* Fail the build on a usage file the readers of documentation.json do not know
+- *(mds-book)* Binding none, a document as a stack of loose sheets
+- *(magma,lint)* A live preview for every case of a pattern, checked and shipped
+- *(magma)* Render_preview renders Magma markup, checks the image and asks with it
+- *(magma,lint)* Render_preview renders the preview of a case, and every one is checked
+- *(magma)* Domains of Foundation in the pattern format, with serves and carried-by
+- *(magma)* The rhythm, first domain of Foundation
+- *(magma,lint)* The rules of the design language in get_guide, get_pattern, get_component
+- *(design-tokens,styles,mds-text)* The reading measure reaches the text (56ch)
+- *(magma,lint)* Building blocks in the pattern format, the patterns of Data and the page header
+- *(lint)* Give a preview that is a whole page no inset, with whole-page
+- *(lint)* Serve the previews of the patterns live, on the page of render_preview
+- *(lint)* Name the whole file of each stage, a link that opens it in VS Code
+- *(lint)* Show the file of a stage from the root of its repository
+- *(lint)* Compile the Tailwind classes of the markup in the page of a render
+- *(lint)* Build the page of serve.previews with Magma components
+- *(lint)* Write the Tailwind entry point of the editor beside the drafts
+- *(mds-text)* Write a title by its role, page, section, dialog, part or group
+- *(mds-card)* One inset shared by the regions, the image to the edges it touches
+- *(mds-input-field)* Short, a short answer that field-group lays out on half the column
+- *(mds-modal)* The window slot stops at the width of a dialog
+- *(mds-header-bar,mds-header)* The content of the bar on the frame of the page
+- *(stencil,styles)* Rows of actions stack, the status bar keeps its room, fields step down
+- *(mds-header,styles)* The bar stands in the flow, sticky: drop the padding kept for it
+- *(lint,magma)* Previews of the rules of a domain, and more examples of a case
+- *(magma)* The previews of the rhythm, the actions, the titles and the surfaces
+- *(magma)* A preview for every case of the seven decided patterns
+- *(magma,lint)* A preview for each situation of a building block
+- *(magma)* The building blocks app-shell, item-list and labels-and-values
+- *(magma)* The previews of the four blocks, and the previews of the patterns realigned
+- *(mds-notification)* A status variant, and a pulse when the count grows
+- *(magma)* The dot of the new items from mds-notification, pulsing when the count grows
+
 ## [magma@2.9.0] - 2026-10-27
 
 ### Bug Fixes
