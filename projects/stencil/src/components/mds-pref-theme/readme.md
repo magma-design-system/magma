@@ -25,7 +25,7 @@ The `<mds-pref-theme>` web component is the theme-switcher segment of the Magma 
 
 #### Properties & Visual Configurations
 
-- **`name`**: The active theme name (default `'default'`); it is overridden at runtime by any persisted value. Use it to declare the initial theme when no preference has been stored yet. The named themes are `cool` and `warm`; `default` is the base theme ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)).
+- **`name`**: The active theme name; it is overridden at runtime by any persisted value. Use it to declare the initial theme when no preference has been stored yet. The named themes are `business`, the base theme, and `editorial` ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)). The default `'default'` is the old name of `business`, kept until the next major, when the default becomes `'business'`: the two names stand for the same theme, so with `name` left out the item `business` is the one marked, and an item named `default` is marked under `business`. `cool` and `warm` are deprecated.
 - **`scheme`**: Constrains the colour modes of the theme to `'light'`, `'dark'`, or `'all'` (default). Pick `'all'` for themes that ship both light and dark palettes; pick `'light'` or `'dark'` to force a single mode for a theme offered in one mode only.
 - **`size`**: Sets the size (`'sm'` / `'md'`) of the nested tab UI. Inside `<mds-pref>`, set it on the parent: it reaches every `mds-pref-*` segment on load and when it changes, and overwrites the segment's own.
 - **`cornerShape`** (attribute `corner-shape`): The corner geometry of the whole page - `round`, `squircle`, `bevel`, `notch`, `scoop`, `square`, or `default`. It writes `data-corner-shape` on `<html>` and is persisted like the theme; `default` removes the attribute, and leaving the prop unset touches nothing ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)).
@@ -37,14 +37,13 @@ Correct and idiomatic ways to use the `<mds-pref-theme>` component, ordered from
 
 #### Basic Theme Chooser
 
-The canonical form. Place `<mds-pref-theme>` inside [`<mds-pref>`](../../mds-pref) and populate its default slot with one [`<mds-pref-theme-item>`](../../mds-pref-theme-item) per available theme. The item whose `name` matches the active theme (the stored choice, or the parent's `name` on a first visit) starts as selected. The named themes are `cool` and `warm`; `default` is the base theme.
+The canonical form. Place `<mds-pref-theme>` inside [`<mds-pref>`](../../mds-pref) and populate its default slot with one [`<mds-pref-theme-item>`](../../mds-pref-theme-item) per available theme. The item whose `name` matches the active theme (the stored choice, or the parent's `name` on a first visit) starts as selected. The named themes are `business`, the base theme of the management software, and `editorial`, the theme of the publishing side.
 
 ```html
 <mds-pref>
-  <mds-pref-theme name="default" scheme="all">
-    <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Freddo" name="cool" scheme="all"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Caldo" name="warm" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme name="business" scheme="all">
+    <mds-pref-theme-item label="Gestionale" name="business" scheme="all"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Editoriale" name="editorial" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```
@@ -55,12 +54,10 @@ Use `scheme="light"` or `scheme="dark"` on a `<mds-pref-theme-item>` when the th
 
 ```html
 <mds-pref>
-  <mds-pref-theme name="default" scheme="all">
-    <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme name="business" scheme="all">
+    <mds-pref-theme-item label="Gestionale" name="business" scheme="all"></mds-pref-theme-item>
     <!-- light only - dark mode will not activate with this item -->
-    <mds-pref-theme-item label="Freddo chiaro" name="cool" scheme="light"></mds-pref-theme-item>
-    <!-- dark only -->
-    <mds-pref-theme-item label="Caldo scuro" name="warm" scheme="dark"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Editoriale chiaro" name="editorial" scheme="light"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```
@@ -71,9 +68,9 @@ React to the user's selection via `mdsPrefThemeChange`. The event detail carries
 
 ```html
 <mds-pref>
-  <mds-pref-theme id="theme-chooser" name="default" scheme="all">
-    <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Freddo" name="cool" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme id="theme-chooser" name="business" scheme="all">
+    <mds-pref-theme-item label="Gestionale" name="business" scheme="all"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Editoriale" name="editorial" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 
@@ -90,10 +87,10 @@ Use the `name` prop to declare which theme should be active before the user make
 
 ```html
 <mds-pref>
-  <!-- First-visit default is "warm" -->
-  <mds-pref-theme name="warm" scheme="all">
-    <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Caldo" name="warm" scheme="all"></mds-pref-theme-item>
+  <!-- First-visit default is "editorial" -->
+  <mds-pref-theme name="editorial" scheme="all">
+    <mds-pref-theme-item label="Gestionale" name="business" scheme="all"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Editoriale" name="editorial" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```
@@ -104,9 +101,9 @@ Pass `size="sm"` when the preferences panel must fit a compact layout: on `<mds-
 
 ```html
 <mds-pref size="sm">
-  <mds-pref-theme name="default" scheme="all">
-    <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Freddo" name="cool" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme name="business" scheme="all">
+    <mds-pref-theme-item label="Gestionale" name="business" scheme="all"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Editoriale" name="editorial" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```
@@ -132,14 +129,14 @@ Common incorrect uses of `<mds-pref-theme>`. Each entry pairs the wrong form wit
 
 ```html
 <!-- INCORRECT -->
-<mds-pref-theme name="default" scheme="all">
-  <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
+<mds-pref-theme name="business" scheme="all">
+  <mds-pref-theme-item label="Gestionale" name="business" scheme="all"></mds-pref-theme-item>
 </mds-pref-theme>
 
 <!-- CORRECT -->
 <mds-pref>
-  <mds-pref-theme name="default" scheme="all">
-    <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme name="business" scheme="all">
+    <mds-pref-theme-item label="Gestionale" name="business" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```
@@ -151,17 +148,17 @@ The default slot is reserved exclusively for `<mds-pref-theme-item>` elements. A
 ```html
 <!-- INCORRECT -->
 <mds-pref>
-  <mds-pref-theme name="default" scheme="all">
-    <button>Predefinito</button>
-    <span>Estate</span>
+  <mds-pref-theme name="business" scheme="all">
+    <button>Gestionale</button>
+    <span>Editoriale</span>
   </mds-pref-theme>
 </mds-pref>
 
 <!-- CORRECT -->
 <mds-pref>
-  <mds-pref-theme name="default" scheme="all">
-    <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
-    <mds-pref-theme-item label="Freddo" name="cool" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme name="business" scheme="all">
+    <mds-pref-theme-item label="Gestionale" name="business" scheme="all"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Editoriale" name="editorial" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```
@@ -177,7 +174,7 @@ The `name` prop must match the pattern `^[a-z]+(-[a-z]+)*$` (lowercase letters a
 <mds-pref-theme name="MyTheme" scheme="all">...</mds-pref-theme>
 
 <!-- CORRECT -->
-<mds-pref-theme name="warm" scheme="all">...</mds-pref-theme>
+<mds-pref-theme name="editorial" scheme="all">...</mds-pref-theme>
 ```
 
 #### Do Not Listen for the Native `change` Event
@@ -208,14 +205,14 @@ The `name` prop must match the pattern `^[a-z]+(-[a-z]+)*$` (lowercase letters a
 <!-- INCORRECT -->
 <mds-pref size="sm">
   <mds-pref-theme size="md" name="default" scheme="all">
-    <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
+    <mds-pref-theme-item label="Gestionale" name="business" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 
 <!-- CORRECT -->
 <mds-pref size="sm">
-  <mds-pref-theme name="default" scheme="all">
-    <mds-pref-theme-item label="Predefinito" name="default" scheme="all"></mds-pref-theme-item>
+  <mds-pref-theme name="business" scheme="all">
+    <mds-pref-theme-item label="Gestionale" name="business" scheme="all"></mds-pref-theme-item>
   </mds-pref-theme>
 </mds-pref>
 ```

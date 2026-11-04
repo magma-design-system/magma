@@ -221,6 +221,37 @@ describe('mds-pref-theme', () => {
 
       expect(triggerOf(root).label).toBe('Neutral');
     });
+
+    // `default` is the old name of business (#692): a picker of the two product themes, with
+    // the name left on its default, showed "Default" and marked no item
+    it('stands default for the business item, while default is the default of name', async () => {
+      const { root } = await render(`
+<mds-pref-theme>
+  <mds-pref-theme-item name="business" label="Gestionale"></mds-pref-theme-item>
+  <mds-pref-theme-item name="editorial" label="Editoriale"></mds-pref-theme-item>
+</mds-pref-theme>`);
+
+      expect(triggerOf(root).label).toBe('Gestionale');
+      expect(root.querySelector<HTMLMdsPrefThemeItemElement>('[name="business"]')!.selected).toBe(
+        true,
+      );
+      expect(root.querySelector<HTMLMdsPrefThemeItemElement>('[name="editorial"]')!.selected).toBe(
+        false,
+      );
+    });
+
+    it('marks an item named default when the active theme is business', async () => {
+      const { root } = await render(`
+<mds-pref-theme name="business">
+  <mds-pref-theme-item name="default" label="Neutro"></mds-pref-theme-item>
+  <mds-pref-theme-item name="editorial" label="Editoriale"></mds-pref-theme-item>
+</mds-pref-theme>`);
+
+      expect(triggerOf(root).label).toBe('Neutro');
+      expect(root.querySelector<HTMLMdsPrefThemeItemElement>('[name="default"]')!.selected).toBe(
+        true,
+      );
+    });
   });
 
   // #826: the items got their listener once, on load: an item added later did nothing when picked
