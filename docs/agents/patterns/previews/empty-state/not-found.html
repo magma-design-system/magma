@@ -1,0 +1,38 @@
+<!--
+try: Look at the page of a deleted request: under the bar of the application the panel takes the place of the page, its title is the h1, and Vai alle richieste leads back to the list.
+whole-page: true
+-->
+<mds-header>
+  <mds-header-bar>
+    <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
+    <mds-button slot="nav" href="#" aria-current="page" variant="dark" tone="weak">Richieste</mds-button>
+    <mds-button slot="nav" href="#" variant="dark" tone="text">Archivio</mds-button>
+    <mds-button id="persona" slot="nav" icon="mi/baseline/account-circle" variant="dark" tone="text" aria-label="Account di Mario Rossi"></mds-button>
+  </mds-header-bar>
+  <nav slot="menu" class="grid gap-inline p-inset">
+    <mds-button href="#" aria-current="page" variant="dark" tone="weak" class="w-full justify-start">Richieste</mds-button>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Archivio</mds-button>
+    <mds-separator></mds-separator>
+    <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Profilo</mds-button>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Esci</mds-button>
+  </nav>
+</mds-header>
+<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed">
+  <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
+  <mds-button href="#" icon="mi/baseline/person" variant="dark" tone="text" label="Profilo"></mds-button>
+  <mds-separator></mds-separator>
+  <mds-button href="#" icon="mi/baseline/logout" variant="dark" tone="text" label="Esci"></mds-button>
+</mds-dropdown>
+<main class="page-frame py-between-sections">
+  <mds-zero>
+    <div slot="content" class="grid gap-title-content">
+      <mds-text typography="page" tag="h1">Richiesta non trovata</mds-text>
+      <mds-text typography="detail" tag="p">
+        La richiesta 2026/0412 non esiste più: è stata eliminata, o l'indirizzo è sbagliato.
+        Cercala nell'elenco delle richieste.
+      </mds-text>
+    </div>
+    <mds-button slot="action" href="#">Vai alle richieste</mds-button>
+  </mds-zero>
+</main>

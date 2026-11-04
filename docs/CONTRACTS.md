@@ -150,8 +150,9 @@ keep in step.
 - **What**: the solutions to a task across components that Magma ships as its default, one file
   each (`agents/patterns/<id>.md`, its frontmatter the data, its body the text), with their
   catalogue `agents/patterns.md` and the preview of each case
-  (`agents/patterns/previews/<id>/<case>.html`, of a rule of a domain `<domain>/<rule>.html`, the
-  other examples of either `<id>.<n>.html` from 2, #1221: the stage, what to try in it, an optional
+  (`agents/patterns/previews/<id>/<case>.html`, of a rule of a domain `<domain>/<rule>.html`, of
+  a situation of a block `<block>/<situation>.html`, the other examples of each `<id>.<n>.html`
+  from 2, #1221: the stage, what to try in it, an optional
   height and `whole-page`, a stage with a frame of its own that takes no inset; never a page,
   the reader adds the stylesheets and the loader, compiles its Tailwind classes with the entry
   point of `agents/assets.md`, "Tailwind (optional)" (#1220), and runs it in a document of its
@@ -181,9 +182,10 @@ keep in step.
 - **Held by**: `check.patterns` (the format, every combination in one case, the components,
   attributes, lint rules and links named, the rules of the domains a case names, the carriers
   of a domain in the release and the planned ones not yet, the generated sections; a product's folder with
-  `--layer`, which `get_pattern` checks too in the product; each preview of a case or of a rule of
-  a domain that exists, its examples in sequence,
-  only a stage, its markup clean for the strict lint, the cases without one as a warning);
+  `--layer`, which `get_pattern` checks too in the product; each preview of a case, of a rule of
+  a domain or of a situation of a block that exists, its examples in sequence,
+  only a stage, its markup clean for the strict lint, the cases and the situations of a decided
+  block without one as a warning);
   `check.usage-docs` on their bodies; `test/patterns.test.ts` of `projects/lint` on the files
   of the repository, and `test/mcp-tools.test.ts`, which renders every preview on the build and
   fails on a problem of the image; `pr-risk` sets the review level to contract on a change to

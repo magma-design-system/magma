@@ -125,7 +125,9 @@ test('render_preview answers its images as image content, its report as structur
     representative: true,
     images: [{ width: 480 }],
   });
-}, 30_000);
+  // a render waits up to its own budget (TIMEOUT of render.ts, 15 s, then the settle) on a busy
+  // runner, while the other files render too
+}, 60_000);
 
 test('a tool error comes back as content the agent can read', async () => {
   const result = await client.callTool(

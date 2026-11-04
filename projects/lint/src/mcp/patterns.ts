@@ -10,7 +10,10 @@
   the rules of the domains of Foundation the case relies on (#1198). A rule of a domain may have
   a preview too, and a case or a rule more examples (<id>.2.html, #1221): the pattern names
   their paths, the answer the paths of the other examples and of the previews of its rules. A
-  building block (#1210) answers a situation with its regions, in the order of the page.
+  building block (#1210) answers a situation with its regions, in the order of the page, and
+  has a preview per situation, named after its id (previews/<block>/<situation>.html, the
+  maintainer's choice on 2026-11-03): when the values match a situation exactly, every variable
+  given, the answer carries its preview as a case answer does.
 */
 import path from 'node:path';
 import { loadComponents, magmaRoot } from '../core/data.js';
@@ -32,6 +35,7 @@ import {
   readProjectDir,
   regionsFor,
   resolveLayer,
+  situationsMatching,
   splitBody,
   type Case,
   type CitedRule,
@@ -168,7 +172,7 @@ export const getPattern = (context: ToolContext): Tool => ({
   name: 'get_pattern',
   title: 'Read a Magma pattern',
   description:
-    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of Foundation (kind foundation), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, and what to try in it, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page; with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
+    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of Foundation (kind foundation), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, and what to try in it, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page, and when the values match one of its situations, every variable given, the preview of that situation as for a case (the stage, what to try, the other examples); with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -333,11 +337,25 @@ export const getPattern = (context: ToolContext): Tool => ({
           throw new ToolError((error as Error).message);
         }
         const rules = rulesOfCase(base, {}, all).map(withPreview);
+        // the preview of the situation the values match exactly, as a case gives its own: the
+        // first in the file is the stage, its other examples and the previews of the next ones
+        // that match the same values are the examples (2026-11-03)
+        const [stage, ...more] = situationsMatching(base, known).flatMap((one) =>
+          examplesOf(previews, base.id, one.id),
+        );
         return {
           id: base.id,
           ...renamed,
           ...mine,
-          answer: { kind: 'regions', regions: regions.regions, ...(rules.length ? { rules } : {}) },
+          answer: {
+            kind: 'regions',
+            regions: regions.regions,
+            ...(rules.length ? { rules } : {}),
+            ...(stage ? { preview: previewIn(context, stage) } : {}),
+            ...(more.length
+              ? { examples: more.map((one) => path.relative(context.root, one.file)) }
+              : {}),
+          },
           ...(regions.missing.length
             ? { candidates: regions.depends, missing: missingOf(regions.missing) }
             : {}),
@@ -383,6 +401,13 @@ export const getPattern = (context: ToolContext): Tool => ({
       ...one,
       ...previewPaths(context, previews, base.id, one.id),
     }));
+    // a situation of a block has a preview, named after its id, as a case (2026-11-03)
+    const situations =
+      base.kind === BLOCK
+        ? resolved.situations?.map((one) =>
+            one.id ? { ...one, ...previewPaths(context, previews, base.id, one.id) } : one,
+          )
+        : undefined;
     // a rule of a domain of its own may have a preview too (#1221), never one it cites
     const rules =
       base.kind === FOUNDATION
@@ -394,6 +419,7 @@ export const getPattern = (context: ToolContext): Tool => ({
       pattern: {
         ...resolved,
         ...(cases ? { cases } : {}),
+        ...(situations ? { situations } : {}),
         ...(rules ? { 'always-true': rules } : {}),
         sections: sections.map((one) => one.heading),
       },

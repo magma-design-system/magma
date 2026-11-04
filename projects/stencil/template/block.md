@@ -42,8 +42,10 @@ regions: []
 always-true: []
 # What a product layer may narrow: { id: ..., default: ..., may: "..." }.
 open-choices: []
-# Situations every application has, no domain, each with a value of every variable:
-#   { situation: "...", <variable>: <value>, note: "..." }, or { situation: "...", use: <id> }.
+# Situations every application has, no domain, each with a value of every variable and an id,
+# kebab-case and unique in the block (required once decided), the name of its preview,
+# previews/<block>/<id>.html:
+#   { id: ..., situation: "...", <variable>: <value>, note: "..." }, or { situation: "...", use: <id> }.
 situations: []
 ---
 

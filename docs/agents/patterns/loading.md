@@ -22,7 +22,7 @@ assumptions:
   - The application knows before starting whether an operation is long and whether it can tell how far it is.
 high-stakes: false
 components: [mds-spinner, mds-progress, mds-button, mds-input, mds-text, mds-toast]
-related: [message-placement, empty-state, error-recovery, list-with-filters, record-detail]
+related: [message-placement, empty-state, error-recovery, list-with-filters, record-detail, item-list]
 validated-on: []
 
 variables:
@@ -33,14 +33,14 @@ variables:
   needed: { values: ["yes", "no"], means: "does the person need the result before going on" }
 
 cases:
-  - { id: first-load, what: content, on-screen: nothing, length: short, where: "a skeleton with the shape of the content, in its place; until Magma has one, a spinner in the middle of the part; aria-busy on the part", use: ["mds-spinner"], magma-gap: "no skeleton" }
-  - { id: keep-while-reloading, what: content, on-screen: previous, length: short, where: "what was there stays; the region has aria-busy; the control that started it waits; a newer request cancels the older", use: ["mds-input await"] }
-  - { id: long-load, what: content, length: long, measurable: "no", where: "the indicator of the short case, with a sentence that says what is happening", use: ["mds-text"] }
-  - { id: long-load-measured, what: content, length: long, measurable: "yes", where: "a progress bar in the region, with a sentence that says what is happening", use: ["mds-progress steps"] }
+  - { id: first-load, what: content, on-screen: nothing, length: short, where: "a skeleton with the shape of the content, in its place; until Magma has one, a well as tall as the content to come (`surface-muted`, `rounded-md`) with a spinner in the middle; aria-busy on the part", use: ["mds-spinner"], magma-gap: "no skeleton" }
+  - { id: keep-while-reloading, what: content, on-screen: previous, length: short, where: "what was there stays; the region has aria-busy; the control that started it waits; a newer request cancels the older; in the new results, what was searched is marked (`mark`)", use: ["mds-input await"] }
+  - { id: long-load, what: content, length: long, measurable: "no", where: "the well and the spinner of the short case, with a sentence under the spinner that says what is happening", use: ["mds-spinner", "mds-text"] }
+  - { id: long-load-measured, what: content, length: long, measurable: "yes", where: "the well and the spinner of the short case, a sentence that says what is happening and how far, and a progress bar under it", use: ["mds-spinner", "mds-text", "mds-progress steps"] }
   - { id: await-the-control, what: action, length: short, where: "the control that started it waits: its spinner, no second press, aria-busy, the focus stays on it", use: ["mds-button await"] }
   - { id: progress-in-place, what: action, length: long, measurable: "yes", needed: "yes", where: "a progress bar next to the control, with a sentence that says what is happening", use: ["mds-progress steps", "mds-button await"] }
   - { id: await-and-say, what: action, length: long, measurable: "no", needed: "yes", where: "the control waits, and a sentence next to it says what is happening", use: ["mds-button await", "mds-text"] }
-  - { id: run-in-background, what: action, length: long, needed: "no", where: "the control stops waiting at once and a toast says it started; the outcome comes later, as action-later", use: ["mds-toast"], see: message-placement }
+  - { id: run-in-background, what: action, length: long, needed: "no", where: "the control stops waiting at once and a toast says it started; the outcome comes later, as action-later", use: ["mds-toast variant=info"], see: message-placement }
 gaps: []
 not-applicable: []
 
@@ -113,29 +113,32 @@ A case that leaves a variable out holds for any of its values.
 
 | Case | When | Where | Use |
 | --- | --- | --- | --- |
-| `first-load` | what: content; on-screen: nothing; length: short | a skeleton with the shape of the content, in its place; until Magma has one, a spinner in the middle of the part; aria-busy on the part; Magma gap: no skeleton | `mds-spinner` |
-| `keep-while-reloading` | what: content; on-screen: previous; length: short | what was there stays; the region has aria-busy; the control that started it waits; a newer request cancels the older | `mds-input await` |
-| `long-load` | what: content; length: long; measurable: no | the indicator of the short case, with a sentence that says what is happening | `mds-text` |
-| `long-load-measured` | what: content; length: long; measurable: yes | a progress bar in the region, with a sentence that says what is happening | `mds-progress steps` |
+| `first-load` | what: content; on-screen: nothing; length: short | a skeleton with the shape of the content, in its place; until Magma has one, a well as tall as the content to come (`surface-muted`, `rounded-md`) with a spinner in the middle; aria-busy on the part; Magma gap: no skeleton | `mds-spinner` |
+| `keep-while-reloading` | what: content; on-screen: previous; length: short | what was there stays; the region has aria-busy; the control that started it waits; a newer request cancels the older; in the new results, what was searched is marked (`mark`) | `mds-input await` |
+| `long-load` | what: content; length: long; measurable: no | the well and the spinner of the short case, with a sentence under the spinner that says what is happening | `mds-spinner`, `mds-text` |
+| `long-load-measured` | what: content; length: long; measurable: yes | the well and the spinner of the short case, a sentence that says what is happening and how far, and a progress bar under it | `mds-spinner`, `mds-text`, `mds-progress steps` |
 | `await-the-control` | what: action; length: short | the control that started it waits: its spinner, no second press, aria-busy, the focus stays on it | `mds-button await` |
 | `progress-in-place` | what: action; length: long; measurable: yes; needed: yes | a progress bar next to the control, with a sentence that says what is happening | `mds-progress steps`, `mds-button await` |
 | `await-and-say` | what: action; length: long; measurable: no; needed: yes | the control waits, and a sentence next to it says what is happening | `mds-button await`, `mds-text` |
-| `run-in-background` | what: action; length: long; needed: no | the control stops waiting at once and a toast says it started; the outcome comes later, as action-later; see `message-placement` | `mds-toast` |
+| `run-in-background` | what: action; length: long; needed: no | the control stops waiting at once and a toast says it started; the outcome comes later, as action-later; see `message-placement` | `mds-toast variant=info` |
 
 No gaps: every combination has a case or is not applicable.
 
 ## Parts
 
 - The first load of a part: a skeleton with the shape of the content (rows of a list, the
-  blocks of a detail), so the layout does not jump when the data comes; until Magma has one,
-  `mds-spinner` in the middle of the part.
+  blocks of a detail), so the layout does not jump when the data comes; until Magma has one, a
+  well that keeps the place of the content (`bg-surface-muted rounded-md`, as tall as what
+  comes), with `mds-spinner` in its middle: the spinner never floats alone on the page.
 - A reload: the content stays, the region has `aria-busy="true"`, the control that started it
-  waits (`await` on `mds-input` shows the spinner in the search field).
+  waits (`await` on `mds-input` shows the spinner in the search field). In the results of a
+  search, what was searched is marked (`mark`, painted with `bg-warning-surface`).
 - An action: `await` on `mds-button`, which shows its spinner, refuses a second press, sets
   `aria-busy` and keeps the focus.
-- A long wait: a sentence that says what is happening ("Preparing the PDF..."), next to the
-  indicator; `mds-progress` when the application can tell how far it is, with `steps` in the
-  language of the page.
+- A long wait: a sentence that says what is happening ("Preparing the PDF..."), under the
+  spinner, in the well; `mds-progress` under the sentence when the application can tell how far
+  it is, with `steps` in the language of the page: the spinner stays, so the wait looks alive
+  between two steps of the bar.
 - A long action the person does not need to wait for: a toast that says it started, then the
   outcome as `action-later` of `message-placement`.
 
@@ -197,7 +200,11 @@ Situations every application has, each with its case: they give the examples, th
 
 ## Magma gaps
 
-- No skeleton, neither a component nor a utility: an issue to open; until then, the spinner.
+- No skeleton, neither a component nor a utility, and no component for the states of a load
+  (the well, the spinner, the sentence, the bar): an issue to open; until then, the well
+  written with classes.
+- `mark` has no Magma style: the browser paints it in its own yellow, so the previews paint it
+  with `bg-warning-surface text-inherit`.
 - `mds-progress`: the default `steps` are in Italian (`Inizio,Un quarto,...`) whatever the
   language of the page.
 
@@ -210,3 +217,5 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-28 | The first load shows a skeleton with the shape of the content; a spinner until Magma has one (`first-load`) | The layout does not jump when the data comes; the open decision of the docs site. |
 | 2026-10-28 | A wait is long when the operation can take more than 10 s, known before it starts | The application picks the form of the wait before starting; 10 s is the limit of attention (Nielsen). |
 | 2026-10-28 | Cancel next to a long wait the person needs, only when the operation can be stopped | A Cancel that only hides the wait lies about what happens. |
+| 2026-11-03 | Until Magma has a skeleton, the first load is a well that keeps the place of the content, with the spinner in its middle; a long load keeps the well and the spinner, and adds the sentence and the bar (`first-load`, `long-load`, `long-load-measured`) | A spinner alone floats on the page and says nothing of what is coming, or where. Asked in review round 2 of the previews: https://github.com/magma-design-system/magma/issues/1233 |
+| 2026-11-03 | In the results of a search, what was searched is marked (`keep-while-reloading`) | The person sees at once why each result is there. Asked in review round 2 of the previews: https://github.com/magma-design-system/magma/issues/1233 |

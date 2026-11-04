@@ -1,0 +1,44 @@
+<!--
+try: Look at the error above the row: the session ended and nothing was saved, so Salva is hidden and Accedi, in the banner, is the only way on. Press Accedi: the sign-in opens in a new tab; back here the banner goes and Salva comes back, with what was written.
+-->
+<div class="grid gap-between-sections">
+  <mds-text typography="page" tag="h1">Modifica referente</mds-text>
+  <form id="form" class="@container grid max-w-form gap-content-actions">
+    <div class="grid gap-between-fields">
+      <mds-input-field label="Nome e cognome">
+        <mds-input value="Marco Bianchi"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="PEC">
+        <mds-input type="email" value="m.bianchi@pec.esempio.it"></mds-input>
+      </mds-input-field>
+      <mds-banner id="expired" variant="error" tone="strong" headline="Sessione scaduta">
+        <mds-text>
+          Non è stato salvato nulla. Accedi di nuovo in un'altra scheda, poi torna qui e salva: quello
+          che hai scritto resta in questa pagina.
+        </mds-text>
+        <mds-button id="sign-in" slot="action" href="#" target="blank" icon="mi/baseline/open-in-new" icon-position="right" variant="error" tone="strong">Accedi</mds-button>
+      </mds-banner>
+    </div>
+    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+      <mds-button type="button" variant="dark" tone="outline">Annulla</mds-button>
+      <mds-button id="save" type="submit" class="hidden">Salva</mds-button>
+    </div>
+  </form>
+</div>
+<script>
+  const expired = document.getElementById('expired');
+  const save = document.getElementById('save');
+  document.getElementById('form').addEventListener('submit', (event) => event.preventDefault());
+  // the session is back: the banner goes, Salva comes back and takes the focus
+  const signedIn = () => {
+    expired.classList.add('hidden');
+    save.classList.remove('hidden');
+    save.focus();
+  };
+  // the preview simulates the sign-in in the other tab; in the product the page checks the
+  // session when it is shown again (visibilitychange) and calls signedIn
+  document.getElementById('sign-in').addEventListener('click', (event) => {
+    event.preventDefault();
+    setTimeout(signedIn, 300);
+  });
+</script>

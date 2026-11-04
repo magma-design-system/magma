@@ -1,0 +1,44 @@
+<!--
+try: Press the archive button of 2026/0412: the request leaves the list at once, with no question, and a toast says what went and offers Ripristina.
+height: 340
+-->
+<section class="grid gap-title-content">
+  <mds-text typography="section" tag="h2">Pratiche concluse</mds-text>
+  <div id="pratiche" class="grid">
+    <div class="flex items-center justify-between gap-inline">
+      <mds-text>2026/0412, Giulia Bianchi</mds-text>
+      <mds-button icon="mi/baseline/archive" variant="dark" tone="text" aria-label="Archivia la pratica 2026/0412"></mds-button>
+    </div>
+    <div class="flex items-center justify-between gap-inline">
+      <mds-text>2026/0398, Luca Ferri</mds-text>
+      <mds-button icon="mi/baseline/archive" variant="dark" tone="text" aria-label="Archivia la pratica 2026/0398"></mds-button>
+    </div>
+    <div class="flex items-center justify-between gap-inline">
+      <mds-text>2026/0377, Anna Rossi</mds-text>
+      <mds-button icon="mi/baseline/archive" variant="dark" tone="text" aria-label="Archivia la pratica 2026/0377"></mds-button>
+    </div>
+  </div>
+</section>
+<mds-toast-region>
+  <mds-toast id="toast" duration="0" dismissible>
+    Pratica archiviata: 2026/0412
+    <mds-button id="restore" slot="action" size="sm" variant="dark" tone="outline">Ripristina</mds-button>
+  </mds-toast>
+</mds-toast-region>
+<script>
+  const list = document.getElementById('pratiche');
+  const toast = document.getElementById('toast');
+  let archived;
+  list.addEventListener('click', (event) => {
+    const item = event.target.closest('mds-button')?.parentElement;
+    if (!item) return;
+    archived = { item, next: item.nextElementSibling };
+    toast.firstChild.data = `Pratica archiviata: ${item.querySelector('mds-text').textContent.split(',')[0]}`;
+    item.remove();
+    toast.visible = true;
+  });
+  document.getElementById('restore').addEventListener('click', () => {
+    list.insertBefore(archived.item, archived.next);
+    toast.visible = undefined;
+  });
+</script>

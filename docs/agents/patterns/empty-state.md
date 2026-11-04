@@ -24,7 +24,7 @@ assumptions:
   - The application knows why the part is empty (nothing yet, nothing matches, all done, does not exist).
 high-stakes: false
 components: [mds-zero, mds-text, mds-button, mds-img]
-related: [list-with-filters, record-detail, loading, error-recovery]
+related: [list-with-filters, record-detail, loading, error-recovery, item-list, app-shell]
 validated-on: []
 
 variables:

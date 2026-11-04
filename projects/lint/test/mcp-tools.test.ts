@@ -810,7 +810,7 @@ describe('the pattern tool', () => {
         'always-true:',
         '  - { id: inline, from: rhythm }',
         'situations:',
-        '  - { situation: A list, level: top }',
+        '  - { id: list, situation: A list, level: top }',
         '---',
         '',
         '# Head',
@@ -842,6 +842,94 @@ describe('the pattern tool', () => {
     expect(() => tool.run({ id: 'head', situation: { level: 'deep' } })).toThrow(
       'level of head is one of top, nested, not deep.',
     );
+  });
+
+  test('a building block gives the preview of the situation the values match exactly', async () => {
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-block-'));
+    cpSync(path.join(fixtures, 'magma'), magma, { recursive: true });
+    writeFileSync(
+      path.join(magma, 'agents/patterns/head.md'),
+      [
+        '---',
+        'id: head',
+        'kind: block',
+        'title: Head',
+        'group: navigation',
+        'layer: magma',
+        'status: decided',
+        'need: The person sees what the page is about.',
+        'principle: The head names the page.',
+        'keywords: [head]',
+        'used-by: [confirm-action, message-placement]',
+        'validated-on: []',
+        'variables:',
+        '  level: { values: [top, nested], means: "where the page sits" }',
+        'regions:',
+        '  - { id: back, when: { level: nested }, what: "a link to the page above" }',
+        '  - { id: title, required: true, what: "the heading of the page" }',
+        'always-true: []',
+        'situations:',
+        '  - { id: list, situation: A list, level: top }',
+        '  - { id: item, situation: An item of the list, level: nested }',
+        '  - { id: sub-list, situation: A list under an item, level: nested }',
+        '---',
+        '',
+        '# Head',
+        '',
+      ].join('\n'),
+    );
+    const stages = path.join(magma, 'agents/patterns/previews/head');
+    mkdirSync(stages, { recursive: true });
+    for (const name of ['list', 'list.2', 'item', 'sub-list'])
+      writeFileSync(
+        path.join(stages, `${name}.html`),
+        `<!--\ntry: Look at the head of ${name}.\n-->\n<mds-text tag="h1">${name}</mds-text>\n`,
+      );
+    const settings = {
+      ...context.settings,
+      documentation: path.join(magma, 'data/documentation.json'),
+    };
+    const tool = toolsOf({ ...context, settings }).find((one) => one.name === 'get_pattern')!;
+    const at = (name: string) => path.relative(context.root, path.join(stages, `${name}.html`));
+    // one situation on these values: its preview, as a case gives its own, and its other examples
+    const top = (await tool.run({ id: 'head', situation: { level: 'top' } })) as Result;
+    expect(top.answer).toMatchObject({
+      kind: 'regions',
+      preview: {
+        file: at('list'),
+        try: 'Look at the head of list.',
+        markup: '<mds-text tag="h1">list</mds-text>\n',
+      },
+      examples: [at('list.2')],
+    });
+    expect(top.answer.regions.map((one: { id: string }) => one.id)).toEqual(['title']);
+    // two on the same values: the first in the file is the stage, the other in examples
+    const nested = (await tool.run({ id: 'head', situation: { level: 'nested' } })) as Result;
+    expect(nested.answer.preview.file).toBe(at('item'));
+    expect(nested.answer.examples).toEqual([at('sub-list')]);
+    // a variable still unknown: no preview, the regions that wait on it
+    const open = (await tool.run({ id: 'head', situation: {} })) as Result;
+    expect(open.answer).not.toHaveProperty('preview');
+    expect(open.answer).not.toHaveProperty('examples');
+    expect(open.missing.map((one: { variable: string }) => one.variable)).toEqual(['level']);
+    // the block names the preview of each situation, as a pattern names those of its cases
+    const { pattern } = (await tool.run({ id: 'head' })) as Result;
+    expect(pattern.situations).toEqual([
+      {
+        id: 'list',
+        situation: 'A list',
+        level: 'top',
+        preview: at('list'),
+        examples: [at('list.2')],
+      },
+      { id: 'item', situation: 'An item of the list', level: 'nested', preview: at('item') },
+      {
+        id: 'sub-list',
+        situation: 'A list under an item',
+        level: 'nested',
+        preview: at('sub-list'),
+      },
+    ]);
   });
 });
 
@@ -1220,7 +1308,8 @@ describe('render_preview', () => {
     // as tall as the content: the 24 px around the markup and the fixture
     expect(sizeOf(image!.file)).toEqual({ width: 480, height: image!.height });
     expect(image!.height).toBeLessThan(120);
-  }, 30_000);
+    // a render waits up to its own budget (TIMEOUT, 15 s, then the settle) on a busy runner
+  }, 60_000);
 
   test('names each problem with the element it is in', async () => {
     const stuck = await shoot('<mds-stuck>Ciao</mds-stuck>');
@@ -1291,6 +1380,27 @@ describe('render_preview', () => {
     );
     // a component with no content of its own may be one colour
     expect(kinds(await shoot('<mds-fixture></mds-fixture>'))).not.toContain('flat');
+    // nor one hidden by visibility, which keeps the place of what shows later
+    expect(
+      kinds(await shoot('<p>Ciao</p><mds-fixture style="visibility: hidden">Salva</mds-fixture>')),
+    ).not.toContain('flat');
+    // nor one another element covers, as the window of a dialog covers the page under it
+    const layer = 'position: fixed; inset: 0; display: grid; align-items: end; background: #fff';
+    expect(
+      kinds(await shoot(`<mds-fixture>Salva</mds-fixture><div style="${layer}">Coperto</div>`)),
+    ).not.toContain('flat');
+  }, 60_000);
+
+  test('judges the components a scroll container shows whole, not those it cuts or hides', async () => {
+    // a row that scrolls: Uno shows whole, of Due only its padding, Tre stands past the edge of
+    // the row but inside the image, where the image shows the page
+    const fixture = (text: string, color = '#fff') =>
+      `<mds-fixture style="flex: none; box-sizing: border-box; width: 100px; color: ${color}">${text}</mds-fixture>`;
+    const row = await shoot(
+      `<div style="display: flex; width: 108px; overflow-x: auto">${fixture('Uno', '#2563eb')}${fixture('Due')}${fixture('Tre')}</div>`,
+    );
+    const flat = row.problems.filter((one) => one.kind === 'flat');
+    expect(flat).toEqual([expect.objectContaining({ element: 'mds-fixture [1 of 3] "Uno"' })]);
   }, 60_000);
 
   test('serves only the installed packages, offline, and reports what did not load', async () => {
@@ -1438,6 +1548,54 @@ describe('render_preview', () => {
     ).rejects.toThrow('example is a whole number from 1, the first example.');
   });
 
+  // the round of the building blocks (2026-11-03): a block is asked by the id of a situation
+  test('a situation of a building block with no preview is refused, naming the ones with one', async () => {
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-block-render-'));
+    cpSync(path.join(fixtures, 'magma'), magma, { recursive: true });
+    writeFileSync(
+      path.join(magma, 'agents/patterns/head.md'),
+      [
+        '---',
+        'id: head',
+        'kind: block',
+        'title: Head',
+        'group: navigation',
+        'layer: magma',
+        'status: decided',
+        'need: The person sees what the page is about.',
+        'principle: The head names the page.',
+        'keywords: [head]',
+        'used-by: [confirm-action, message-placement]',
+        'validated-on: []',
+        'variables:',
+        '  level: { values: [top, nested], means: "where the page sits" }',
+        'regions:',
+        '  - { id: title, required: true, what: "the heading of the page" }',
+        'always-true: []',
+        'situations:',
+        '  - { id: list, situation: A list, level: top }',
+        '  - { id: item, situation: An item of the list, level: nested }',
+        '---',
+        '',
+        '# Head',
+        '',
+      ].join('\n'),
+    );
+    mkdirSync(path.join(magma, 'agents/patterns/previews/head'), { recursive: true });
+    writeFileSync(
+      path.join(magma, 'agents/patterns/previews/head/list.html'),
+      '<!--\ntry: Look at the head.\n-->\n<mds-fixture></mds-fixture>\n',
+    );
+    const settings = {
+      ...renderContext.settings,
+      documentation: path.join(magma, 'data/documentation.json'),
+    };
+    const block = renderPreview({ ...renderContext, settings });
+    await expect(block.run({ pattern: 'head', case: 'item' })).rejects.toThrow(
+      'No preview of the situation item of head: the situations with one are list.',
+    );
+  });
+
   test('a case with no preview, or markup and a case together, are refused', async () => {
     await expect(
       preview.run({ pattern: 'message-placement', case: 'field-error' }),
@@ -1522,5 +1680,6 @@ describe.skipIf(!existsSync(BUILT) && !process.env.CI)('render_preview on the bu
       const name = `${one.pattern}/${one.id}${one.example > 1 ? `.${one.example}` : ''}`;
       expect({ preview: name, problems: image!.problems }).toEqual({ preview: name, problems: [] });
     }
-  }, 120_000);
+    // one render a preview, about a second each: 108 previews since the round of the blocks
+  }, 300_000);
 });

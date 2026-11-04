@@ -1,0 +1,25 @@
+<!--
+try: Look at the head of the edit: Mario Rossi to go back to the contact and the title that says the action, with no actions of its own, since Annulla and Salva stay docked at the bottom for the whole edit.
+height: 620
+-->
+<main class="grid gap-between-sections">
+  <header class="grid gap-title-content">
+    <mds-button href="#" icon="mi/baseline/arrow-back" variant="dark" tone="text" size="sm" class="justify-self-start">Mario Rossi</mds-button>
+    <mds-text typography="page" tag="h1">Modifica Mario Rossi</mds-text>
+  </header>
+  <form class="max-w-form">
+    <fieldset class="field-group">
+      <legend>Residenza</legend>
+      <mds-input-field label="Via">
+        <mds-input name="via" value="Via Roma"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Civico" short>
+        <mds-input name="civico" value="21"></mds-input>
+      </mds-input-field>
+    </fieldset>
+    <mds-status-bar visible description="Modifiche non salvate">
+      <mds-button type="reset" variant="dark" tone="outline">Annulla</mds-button>
+      <mds-button type="submit">Salva</mds-button>
+    </mds-status-bar>
+  </form>
+</main>

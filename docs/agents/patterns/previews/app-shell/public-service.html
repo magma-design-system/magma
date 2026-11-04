@@ -1,0 +1,31 @@
+<!--
+try: Look at the bar of a citizen not signed in yet: the name of the service, its sections with Servizi marked as the current one, and Accedi last. Narrow the stage to a phone: the sections and Accedi move into the menu of the bar.
+height: 520
+whole-page: true
+-->
+<mds-header>
+  <mds-header-bar>
+    <mds-text typography="h6" tag="p">Sportello del cittadino</mds-text>
+    <mds-button slot="nav" href="#" aria-current="page" variant="dark" tone="weak">Servizi</mds-button>
+    <mds-button slot="nav" href="#" variant="dark" tone="text">Pagamenti</mds-button>
+    <mds-button slot="nav" href="#" variant="dark" tone="text">Appuntamenti</mds-button>
+    <mds-button slot="nav" href="#" variant="dark" tone="outline">Accedi</mds-button>
+  </mds-header-bar>
+  <nav slot="menu" class="grid gap-inline p-inset">
+    <mds-button href="#" aria-current="page" variant="dark" tone="weak" class="w-full justify-start">Servizi</mds-button>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Pagamenti</mds-button>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Appuntamenti</mds-button>
+    <mds-separator></mds-separator>
+    <mds-button href="#" variant="dark" tone="outline" class="w-full">Accedi</mds-button>
+  </nav>
+</mds-header>
+<main class="page-frame grid gap-between-sections py-between-sections">
+  <header class="grid gap-title-content">
+    <mds-text typography="page" tag="h1">Servizi</mds-text>
+    <mds-text typography="detail" tag="p" class="text-fg-muted">Le richieste che puoi fare al Comune senza andare allo sportello.</mds-text>
+  </header>
+  <section class="grid gap-title-content">
+    <mds-text typography="section" tag="h2">I più richiesti</mds-text>
+    <mds-text tag="p">Certificato di residenza, cambio di indirizzo, carta d'identità.</mds-text>
+  </section>
+</main>

@@ -34,6 +34,7 @@ import {
   resolveLayer,
   rulesOfCase,
   rulesOfComponent,
+  situationsMatching,
   syncBody,
   coverageErrors,
   type Layer,
@@ -698,8 +699,8 @@ const block = (over: Partial<Pattern> = {}): Pattern => ({
   ],
   'always-true': [{ id: 'one-h1', rule: 'The title is the only h1.', 'checked-by': 'review' }],
   situations: [
-    { situation: 'A list', level: 'top' } as Situation,
-    { situation: 'An item of the list', level: 'nested' } as Situation,
+    { id: 'list', situation: 'A list', level: 'top' } as Situation,
+    { id: 'item', situation: 'An item of the list', level: 'nested' } as Situation,
   ],
   ...over,
 });
@@ -796,8 +797,8 @@ describe('a building block', () => {
         file(
           block({
             situations: [
-              { situation: 'A list', case: 'title' },
-              { situation: 'An item', level: 'deep' } as Situation,
+              { id: 'list', situation: 'A list', case: 'title' },
+              { id: 'item', situation: 'An item', level: 'deep' } as Situation,
               { situation: 'Members', use: 'small' },
             ],
           }),
@@ -867,7 +868,8 @@ describe('a building block', () => {
     expect(synced.indexOf('## Regions')).toBeLessThan(synced.indexOf('## Layout'));
     expect(synced).toContain('| `back` | level: nested |  | a link to the page above |  |');
     expect(synced).toContain('| `title` | any | yes | the heading of the page |  |');
-    expect(synced).toContain('| An item of the list | `back`, `title`, `actions` |');
+    expect(synced).toContain('| Id | Situation | Regions |');
+    expect(synced).toContain('| `item` | An item of the list | `back`, `title`, `actions` |');
     expect(bodyErrors(block(), synced)).toEqual([]);
     const wrong = synced.replace('## Layout', '## Parts');
     expect(bodyErrors(block(), wrong)).toEqual([
@@ -902,20 +904,116 @@ describe('a building block', () => {
     ]);
   });
 
-  test('the list puts it between the domains and the patterns; it has no previews yet', () => {
+  test('the list puts it between the domains and the patterns', () => {
     expect(listPatterns([small(), block(), domain()]).map((one) => one.kind)).toEqual([
       'foundation',
       'block',
       'pattern',
     ]);
-    expect(missingPreviews([block()], [])).toEqual([]);
-    const preview = parsePreview(
-      '<!--\ntry: Look.\n-->\n<mds-text>x</mds-text>\n',
-      'previews/head/title.html',
-    );
-    expect([...previewLinkErrors([preview], [block()]).values()]).toEqual([
-      ['head is a building block: whether a block gets previews is still open (#1210)'],
+  });
+
+  // 2026-11-03: a block has a preview per situation, named after the id of the situation
+  test('a situation of a decided block of Magma has an id, kebab-case, unique in the block', () => {
+    const situations = [
+      { situation: 'A list', level: 'top' },
+      { id: 'An_Item', situation: 'An item', level: 'nested' },
+      { id: 'list', situation: 'A list again', level: 'top' },
+      { id: 'list', situation: 'Another list', level: 'top' },
+      { id: 'members', situation: 'Members', use: 'small' },
+    ] as Situation[];
+    expect(formatErrors(file(block({ situations })))).toEqual([
+      'situation 1: id is required, kebab-case: it names the preview of the situation',
+      'situation 2: id is kebab-case, not An_Item',
+      'situation 4: the id list is used twice',
+      "situation 5: a situation another pattern answers has no id: its previews are that pattern's",
     ]);
+    // optional in a draft, and in a product's own block; never on a situation of a pattern
+    const loose = [{ situation: 'A list', level: 'top' } as Situation];
+    expect(formatErrors(file(block({ status: 'draft', situations: loose })))).toEqual([]);
+    expect(formatErrors(file(block({ layer: 'shop', situations: loose })))).toEqual([]);
+    expect(
+      formatErrors(
+        file(small({ situations: [{ id: 'field', situation: 'A thing', case: 'on-field' }] })),
+      ),
+    ).toEqual([
+      'situation 1: id belongs to a situation of a building block (kind block): a situation of a pattern names its case',
+    ]);
+  });
+
+  test('a layer of a block may name its situations, never with an id of the block', () => {
+    const layer = (extend: string, situations: Situation[]): PatternFile<Layer> => ({
+      file: `${extend}.md`,
+      data: { id: extend, extends: `magma:${extend}`, layer: 'shop', situations },
+      body: '',
+    });
+    expect(
+      layerErrors(
+        layer('head', [
+          { situation: 'Orders', level: 'top' },
+          { id: 'orders', situation: 'Orders again', level: 'top' },
+          { id: 'orders', situation: 'Orders once more', level: 'top' },
+          { id: 'item', situation: 'An order', level: 'nested' },
+        ] as unknown as Situation[]),
+        [block()],
+      ),
+    ).toEqual([
+      'situation 3: the id orders is used twice',
+      'situation 4: the id item is a situation of the block already',
+    ]);
+    expect(
+      layerErrors(layer('small', [{ id: 'mine', situation: 'A thing', case: 'on-field' }]), [
+        small(),
+      ]),
+    ).toEqual([
+      'situation 1: id belongs to a situation of a building block (kind block): a situation of a pattern names its case',
+    ]);
+  });
+
+  test('the situations the values match exactly, in the order of the file', () => {
+    const ids = (list: { id: string }[]) => list.map((one) => one.id);
+    const two = block({
+      situations: [
+        ...(block().situations ?? []),
+        { id: 'sub-list', situation: 'A list under an item', level: 'nested' } as Situation,
+        { situation: 'Members', use: 'small' },
+      ],
+    });
+    expect(ids(situationsMatching(two, { level: 'top' }))).toEqual(['list']);
+    expect(ids(situationsMatching(two, { level: 'nested' }))).toEqual(['item', 'sub-list']);
+    // a variable still unknown: no situation, every region is not decided yet
+    expect(situationsMatching(two, {})).toEqual([]);
+    // no situation on these values
+    const lists = block({ situations: [block().situations![0]!] });
+    expect(situationsMatching(lists, { level: 'nested' })).toEqual([]);
+  });
+
+  test('a preview shows a situation of the block, by its id; the decided ones without one are listed', () => {
+    const at = (name: string) =>
+      parsePreview('<!--\ntry: Look.\n-->\n<mds-text>x</mds-text>\n', `/p/previews/${name}.html`);
+    const previews = [
+      at('head/list'),
+      at('head/list.2'),
+      at('head/title'),
+      at('head/item.3'),
+      at('later/x'),
+    ];
+    const later = block({ id: 'later', status: 'candidate', situations: [] });
+    expect([...previewLinkErrors(previews, [block(), later])]).toEqual([
+      [
+        '/p/previews/head/title.html',
+        ['head has no situation title: its situations are list, item'],
+      ],
+      ['/p/previews/head/item.3.html', ['example 3 of item follows item.2.html, which is missing']],
+      ['/p/previews/later/x.html', ['later is a candidate: it has no situations to show']],
+    ]);
+    expect(missingPreviews([small(), block()], previews)).toEqual([
+      'small/on-field',
+      'small/on-action',
+      'small/ask',
+      'head/item',
+    ]);
+    // a draft block may still change its situations: none listed
+    expect(missingPreviews([block({ status: 'draft' })], [])).toEqual([]);
   });
 });
 

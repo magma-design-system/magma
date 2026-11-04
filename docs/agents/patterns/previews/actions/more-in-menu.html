@@ -1,22 +1,21 @@
 <!--
-try: Look at the row of the request: the menu of the item at its start, then Esporta PDF and Modifica; the menu, open, holds Duplica and Stampa, and Elimina last after a separator.
+try: Look at the row of the contact: the menu of the item at its start, then Invia email and Modifica; the menu, open, holds Duplica and Stampa, and Elimina contatto last after a separator.
 height: 340
 -->
-<header class="grid gap-title-content">
-  <mds-text typography="caption" tag="p">Pratica 2026/0142</mds-text>
-  <div class="flex flex-wrap items-center justify-between gap-inline">
-    <mds-text typography="page" tag="h1">Accesso agli atti</mds-text>
-    <div class="flex items-center gap-inline">
-      <mds-button id="more" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni della pratica"></mds-button>
-      <mds-button variant="dark" tone="outline">Esporta PDF</mds-button>
-      <mds-button>Modifica</mds-button>
-    </div>
+<header class="@container flex flex-wrap items-start justify-between gap-inline">
+  <div class="grid min-w-0 grow basis-actions gap-title-content">
+    <mds-text typography="page" tag="h1">Mario Rossi</mds-text>
+    <mds-text typography="detail" tag="p" class="text-fg-muted">Ufficio anagrafe, aggiunto il 12 gennaio 2024</mds-text>
   </div>
-  <mds-text typography="detail" tag="p">Ufficio tecnico, arrivata il 28 ottobre 2026</mds-text>
+  <div class="flex gap-inline @max-actions:basis-full @max-actions:flex-col @max-actions:*:self-stretch">
+    <mds-button id="more" class="@max-actions:w-fit" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni di Mario Rossi"></mds-button>
+    <mds-button variant="dark" tone="outline">Invia email</mds-button>
+    <mds-button>Modifica</mds-button>
+  </div>
 </header>
 <mds-dropdown id="menu" target="#more" placement="bottom-start" disable-auto-placement visible class="p-200 gap-200">
   <mds-button variant="dark" tone="text" icon="mi/baseline/content-copy" label="Duplica"></mds-button>
   <mds-button variant="dark" tone="text" icon="mi/baseline/print" label="Stampa"></mds-button>
   <mds-separator class="-mx-200 bg-surface-muted dark:bg-surface-raised"></mds-separator>
-  <mds-button variant="error" tone="text" icon="mi/baseline/delete" label="Elimina"></mds-button>
+  <mds-button variant="error" tone="text" icon="mi/baseline/delete" label="Elimina contatto"></mds-button>
 </mds-dropdown>

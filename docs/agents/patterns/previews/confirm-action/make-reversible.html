@@ -1,0 +1,54 @@
+<!--
+try: Press Chiudi segnalazione on the first card: it closes at once, with no question, and a toast offers Riapri while the application still keeps it.
+height: 520
+-->
+<section class="grid gap-title-content">
+  <mds-text typography="section" tag="h2">Segnalazioni risolte</mds-text>
+  <div id="segnalazioni" class="grid gap-between-containers">
+    <mds-card>
+      <mds-card-header>
+        <mds-text typography="part" tag="h3">Lampione spento in via Roma</mds-text>
+      </mds-card-header>
+      <mds-card-content>
+        <mds-text typography="detail" tag="p">Segnalazione 2026/0412, riparato dalla squadra esterna.</mds-text>
+      </mds-card-content>
+      <mds-card-footer>
+        <mds-button variant="primary" tone="outline">Chiudi segnalazione</mds-button>
+      </mds-card-footer>
+    </mds-card>
+    <mds-card>
+      <mds-card-header>
+        <mds-text typography="part" tag="h3">Buca in via Emilia</mds-text>
+      </mds-card-header>
+      <mds-card-content>
+        <mds-text typography="detail" tag="p">Segnalazione 2026/0398, asfalto rifatto il 3 marzo.</mds-text>
+      </mds-card-content>
+      <mds-card-footer>
+        <mds-button variant="primary" tone="outline">Chiudi segnalazione</mds-button>
+      </mds-card-footer>
+    </mds-card>
+  </div>
+</section>
+<mds-toast-region>
+  <mds-toast id="toast" duration="0" dismissible>
+    Segnalazione chiusa: Lampione spento in via Roma
+    <mds-button id="reopen" slot="action" size="sm" variant="dark" tone="outline">Riapri</mds-button>
+  </mds-toast>
+</mds-toast-region>
+<script>
+  const list = document.getElementById('segnalazioni');
+  const toast = document.getElementById('toast');
+  let closed;
+  list.addEventListener('click', (event) => {
+    const card = event.target.closest('mds-button')?.closest('mds-card');
+    if (!card) return;
+    closed = { card, next: card.nextElementSibling };
+    toast.firstChild.data = `Segnalazione chiusa: ${card.querySelector('mds-text').textContent}`;
+    card.remove();
+    toast.visible = true;
+  });
+  document.getElementById('reopen').addEventListener('click', () => {
+    list.insertBefore(closed.card, closed.next);
+    toast.visible = undefined;
+  });
+</script>

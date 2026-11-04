@@ -91,7 +91,10 @@ describe('renderList', () => {
     expect(text).toMatch(
       /^Foundation\n {2}actions +decided +Actions\n {2}density +decided +Density\n {2}rhythm +decided +Rhythm\n {2}surfaces +decided +Surfaces\n {2}titles +decided +Titles\n {2}widths +decided +Widths and alignment\n/,
     );
-    expect(text).toMatch(/\nBuilding blocks\n {2}page-header +decided +Page header\n/);
+    // the four blocks of the round of the building blocks (2026-11-03): by group, then by id
+    expect(text).toMatch(
+      /\nBuilding blocks\n {2}app-shell +decided +Application shell\n {2}page-header +decided +Page header\n {2}item-list +decided +Item list\n {2}labels-and-values +decided +Labels and values\n/,
+    );
     expect(text.indexOf('Foundation\n')).toBeLessThan(text.indexOf('Building blocks\n'));
     expect(text.indexOf('Building blocks\n')).toBeLessThan(text.indexOf('Data\n'));
     expect(text).toMatch(
@@ -104,7 +107,7 @@ describe('renderList', () => {
 
   it('filters by kind, group, status and validation', () => {
     expect(renderList(entries, { kind: 'foundation' })).toMatch(/^Foundation\n/);
-    expect(renderList(entries, { kind: 'block' })).toMatch(/^Building blocks\n {2}page-header /);
+    expect(renderList(entries, { kind: 'block' })).toMatch(/^Building blocks\n {2}app-shell /);
     expect(renderList(entries, { kind: 'pattern' })).not.toContain('rhythm');
     expect(renderList(entries, { kind: 'pattern' })).not.toContain('page-header');
     expect(renderList(entries, { status: 'decided' })).not.toContain('candidate');

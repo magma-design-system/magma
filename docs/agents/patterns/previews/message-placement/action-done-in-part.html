@@ -1,0 +1,42 @@
+<!--
+try: Press Salva in Notifiche: the confirmation shows inside that card, right above its row, and stays until the next change in it; Profilo does not move.
+-->
+<div class="grid gap-between-containers">
+  <form id="form">
+    <mds-card>
+      <mds-card-header>
+        <mds-text typography="part" tag="h2">Notifiche</mds-text>
+      </mds-card-header>
+      <mds-card-content>
+        <div class="grid gap-between-fields">
+          <mds-input-switch name="email" value="1" checked>Avvisi via email</mds-input-switch>
+          <mds-input-switch id="sms" name="sms" value="1">Avvisi via SMS</mds-input-switch>
+          <mds-banner id="done" variant="success" tone="strong" headline="Notifiche salvate" class="hidden">
+            <mds-text>Valgono da subito per i prossimi avvisi.</mds-text>
+          </mds-banner>
+        </div>
+      </mds-card-content>
+      <mds-card-footer>
+        <mds-button id="save" type="submit" variant="primary" tone="outline">Salva</mds-button>
+      </mds-card-footer>
+    </mds-card>
+  </form>
+  <mds-card>
+    <mds-card-header>
+      <mds-text typography="part" tag="h2">Profilo</mds-text>
+    </mds-card-header>
+    <mds-card-content>
+      <mds-text>Anna Rossi, ufficio tributi.</mds-text>
+    </mds-card-content>
+  </mds-card>
+</div>
+<script>
+  const form = document.getElementById('form');
+  const done = document.getElementById('done');
+  // Magma gap: no light confirmation that goes away; the banner stays until the next change
+  form.addEventListener('mdsInputSwitchChange', () => done.classList.add('hidden'));
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    done.classList.remove('hidden');
+  });
+</script>

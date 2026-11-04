@@ -64,7 +64,7 @@ A Markdown file: the frontmatter is the data, the body is for people and agents 
 | `not-applicable` | `{ <variable>: <value>, why }`: a combination with no meaning. |
 | `always-true` | `{ id, rule, checked-by: review or lint, lint, lint-planned, note }`: what holds in every product, which a product layer cannot change. A rule of another pattern is cited as `{ id, from: <pattern> }`; a rule or a relation of a domain as `{ id, from: <domain> }`. |
 | `open-choices` | `{ id, default, may }`: what a product layer may narrow. |
-| `situations` | `{ situation, case, note }`, or `{ situation, use: <pattern> }` when another pattern answers it; in a block, `{ situation, <variable>: <value>, note }` with every variable. |
+| `situations` | `{ situation, case, note }`, or `{ situation, use: <pattern> }` when another pattern answers it; in a block, `{ id, situation, <variable>: <value>, note }` with every variable, the id kebab-case and unique in the block, the name of its preview (required once the block is decided). |
 | `regions` | In a block only, in place of `cases`, `gaps` and `not-applicable`: `{ id, when, required, what, use }` in the order of the page. `when` gives the values of the variables it shows for, as a case does (left out: every combination); `required: true` shows it wherever its `when` holds, the others show when there is something to put in them. |
 | `used-by` | In a block only: the patterns it comes back in, two at least, each naming the block among its `related`. |
 | `serves` | In a domain only, on each case and each rule: the principle it serves, `inclusive`, `enabling`, `intuitive` or `flexible`, or a list of them. |
@@ -143,17 +143,27 @@ format with `kind: block`, read, listed, searched and checked as a pattern is. W
 - **`used-by`**: the patterns it comes back in, two at least, each defined and naming the block
   among its `related`, so the two sides never drift apart.
 - **Situations by the variables**: a block has no case to name, so a situation gives a value of
-  every variable, and the generated table shows the regions it lays out.
+  every variable, and the generated table shows the regions it lays out, with the id of the
+  situation. The id is kebab-case and unique in the block; a decided block gives one to every
+  situation, a draft and the situations a product layer adds may leave it out, and a situation
+  that names another pattern (`use`) has none: that pattern shows it.
 - **Regions and Layout** in the body, in place of Cases, Parts and Behaviour over time: Regions is
   generated, Layout says how the regions stand (the order, the alignment on a wide and a narrow
   screen, the spaces as relations of the rhythm, cited in `always-true` as `{ id, from: rhythm }`).
 - **The answer**: `get_pattern` with the values of its variables gives the regions to lay out,
   in order, with the rules of the domains the block cites; with a variable still unknown, the
-  regions that show anyway, and in `candidates` the ones that wait on it.
+  regions that show anyway, and in `candidates` the ones that wait on it. When the values are
+  those of a situation, every variable given, the answer carries its preview as for a case: the
+  stage, what to try, the other examples (with two situations on the same values, the first in
+  the file is the stage and the other one's previews go in `examples`).
 - **Markup to apply**, not a component: no new API to version. A component is weighed once the
   block is stable in the layers of two or three products.
-- **No previews yet**: whether a block gets one, and of what (a situation, a region), is open,
-  so the check does not list them as missing and refuses one.
+- **One preview per situation**, named after its id: `previews/<block>/<situation>.html`, with
+  more examples as a case has them (`<situation>.2.html`). A situation already gives every
+  variable and the real words, as a case does, so its preview is the block laid out for it; one
+  preview of the whole block would not show what goes when a variable changes. The maintainer's
+  choice on 2026-11-03, for the round of the building blocks; the check lists the situations of
+  a decided block with no preview, as it lists the cases.
 
 ## The preview of a case
 
@@ -161,7 +171,8 @@ Each case of a pattern has a preview: the case working, with the real components
 site, a decision and an agent show what the case does instead of describing it. The maintainer
 chose it in a decision (#1182: the options live, the recommended one first), and the option
 chosen is saved as the preview. One file per case, `previews/<id>/<case>.html` beside the
-patterns:
+patterns; a building block has one per situation, `previews/<block>/<situation>.html`, named
+after the id of the situation, and everything below holds for it as for a case:
 
 ```html
 <!--
@@ -208,9 +219,11 @@ try: Press Salva: the error shows above the form, and what was written stays.
   stage that is a whole page and lays out its own frame (`widths/page`: the bar and the gutter
   of the page start at the edge of the document, as in an application).
 - **Who reads it.** The docs site from `node_modules`; `get_pattern` gives its path on each case
-  of a pattern and on each rule of a domain, the paths of the other examples in `examples`, and
-  in the answer for a situation the stage itself with what to try, the paths of the other
-  examples and of the previews of the rules the case relies on; `get_guide` lists the previews of
+  of a pattern, on each rule of a domain and on each situation of a block, the paths of the
+  other examples in `examples`, and in the answer for a situation the stage itself with what to
+  try, the paths of the other examples and of the previews of the rules the case relies on (for
+  a block, the preview of the situation the values match exactly, every variable given; the
+  previews of the next situations with the same values go in `examples`); `get_guide` lists the previews of
   a domain; `render_preview` renders it with `pattern` and `case`, or `rule`, and `example` from
   2, at its height, with the check of the image (a component not hydrated, a flat region, a font
   or an icon not loaded, a word broken).
@@ -254,10 +267,14 @@ try: Press Salva: the error shows above the form, and what was written stays.
 - the links: every pattern, case and rule cited exists, never under an old id; the `rules` of a
   case name a rule or a relation of a domain, never of a pattern nor of the domain itself;
 - the body: the sections in order, the generated ones up to date;
-- the previews: each of a case that exists, or of a rule of its own of a domain (a renamed case
-  moves its files), its examples following one another from the first, with what to try, only a
-  stage, and its markup clean for the Magma lint (the strict preset); the cases with no preview
-  are listed as a warning, which does not fail the check while the previews are being made.
+- the previews: each of a case that exists, of a rule of its own of a domain or of a situation
+  of a block, by its id (a renamed case or situation moves its files), its examples following
+  one another from the first, with what to try, only a stage, and its markup clean for the
+  Magma lint (the strict preset); the cases and the situations of a decided block with no
+  preview are listed as a warning, which does not fail the check while the previews are being
+  made;
+- the situations of a block: the id of each, kebab-case and unique in the block, required once
+  the block is decided; none on a situation of a pattern, which names its case.
 
 `check.usage-docs` reads the bodies too, with the rules of every agent guide.
 

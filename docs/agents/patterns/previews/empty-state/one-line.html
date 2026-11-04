@@ -1,0 +1,12 @@
+<!--
+try: Look under Comune di residenza: no town matches the text typed, so one line says so where the options would be; the field above it is the way out.
+height: 220
+-->
+<div class="grid max-w-form">
+  <mds-input-field label="Comune di residenza">
+    <mds-input id="comune" value="Santarcangiolo"></mds-input>
+  </mds-input-field>
+</div>
+<mds-dropdown target="#comune" interaction="none" placement="bottom-start" role="status" visible>
+  <mds-text typography="detail" class="text-fg-muted">Nessun comune corrisponde a "Santarcangiolo"</mds-text>
+</mds-dropdown>

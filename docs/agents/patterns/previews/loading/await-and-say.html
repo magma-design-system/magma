@@ -1,0 +1,41 @@
+<!--
+try: Press Paga: the button waits and a sentence beside it says the payment is under way and may be slow; there is no Annulla, since a payment sent cannot be called back.
+-->
+<div class="grid gap-between-sections">
+  <mds-text typography="page" tag="h1">Pagamento del bollo</mds-text>
+  <form id="form" class="@container grid max-w-form gap-content-actions">
+    <dl class="m-0 grid items-start gap-between-fields @md:grid-cols-2">
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Richiesta</mds-text>
+        <mds-text tag="dd" class="m-0">2026/0412</mds-text>
+      </div>
+      <div class="grid gap-label-control">
+        <mds-text typography="label" tag="dt" class="text-fg-muted">Importo</mds-text>
+        <mds-text tag="dd" class="m-0">16,00 euro con pagoPA</mds-text>
+      </div>
+    </dl>
+    <div class="flex items-center justify-end gap-inline">
+      <div role="status" class="min-w-0 flex-1">
+        <div id="waiting" class="invisible">
+          <mds-text id="say" typography="detail" tag="p">Pagamento in corso: può richiedere fino a un minuto.</mds-text>
+        </div>
+      </div>
+      <mds-button id="pay">Paga</mds-button>
+    </div>
+  </form>
+</div>
+<script>
+  const pay = document.getElementById('pay');
+  const waiting = document.getElementById('waiting');
+  const say = document.getElementById('say');
+  document.getElementById('form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    pay.await = true;
+    // the line keeps its place while hidden, so its arrival moves nothing
+    waiting.classList.remove('invisible');
+    setTimeout(() => {
+      pay.await = undefined;
+      say.textContent = 'Pagamento eseguito.';
+    }, 6000);
+  });
+</script>

@@ -1,0 +1,38 @@
+<!--
+try: Press Salva: the dialog closes and a toast says what was saved; Modifica azienda opens it again.
+height: 400
+-->
+<mds-button id="open">Modifica azienda</mds-button>
+<mds-modal id="dialog" opened aria-label="Modifica azienda">
+  <mds-banner slot="window" variant="light" tone="box" dismissible headline="Modifica azienda">
+    <form class="grid gap-between-fields">
+      <mds-input-field label="Ragione sociale">
+        <mds-input id="name" value="Maggioli SpA"></mds-input>
+      </mds-input-field>
+    </form>
+    <mds-button id="cancel" slot="action" variant="dark" tone="outline">Annulla</mds-button>
+    <mds-button id="save" slot="action">Salva</mds-button>
+  </mds-banner>
+</mds-modal>
+<mds-toast-region>
+  <mds-toast id="toast" variant="success">Maggioli SpA salvata</mds-toast>
+</mds-toast-region>
+<script>
+  const dialog = document.getElementById('dialog');
+  const toast = document.getElementById('toast');
+  let saved = false;
+  document.getElementById('open').addEventListener('click', () => (dialog.opened = true));
+  document.getElementById('cancel').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('mdsModalClose', () => (dialog.opened = undefined));
+  // the toast waits for the dialog to be gone: never a toast over an open dialog
+  dialog.addEventListener('mdsModalHide', () => {
+    if (!saved) return;
+    saved = false;
+    toast.firstChild.data = `${document.getElementById('name').value} salvata`;
+    toast.visible = true;
+  });
+  document.getElementById('save').addEventListener('click', () => {
+    saved = true;
+    dialog.close();
+  });
+</script>

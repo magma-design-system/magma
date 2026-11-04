@@ -1,0 +1,104 @@
+<!--
+try: Look at the page turned into the form, with Annulla and Salva docked at the bottom for the whole edit. Press Salva: the page goes back to the contact, a toast says it was saved, and the focus goes to the heading.
+whole-page: true
+-->
+<mds-header>
+  <mds-header-bar>
+    <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
+    <mds-button slot="nav" href="#" variant="dark" tone="text">Pratiche</mds-button>
+    <mds-button slot="nav" href="#" aria-current="page" variant="dark" tone="weak">Contatti</mds-button>
+    <mds-button id="persona" slot="nav" icon="mi/baseline/account-circle" variant="dark" tone="text" aria-label="Account di Mario Rossi"></mds-button>
+  </mds-header-bar>
+  <nav slot="menu" class="grid gap-inline p-inset">
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Pratiche</mds-button>
+    <mds-button href="#" aria-current="page" variant="dark" tone="weak" class="w-full justify-start">Contatti</mds-button>
+    <mds-separator></mds-separator>
+    <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Profilo</mds-button>
+    <mds-button href="#" variant="dark" tone="text" class="w-full justify-start">Esci</mds-button>
+  </nav>
+</mds-header>
+<mds-dropdown target="#persona" placement="bottom-end" strategy="fixed">
+  <mds-text typography="detail" tag="p" class="text-fg-muted">Mario Rossi</mds-text>
+  <mds-button href="#" icon="mi/baseline/person" variant="dark" tone="text" label="Profilo"></mds-button>
+  <mds-separator></mds-separator>
+  <mds-button href="#" icon="mi/baseline/logout" variant="dark" tone="text" label="Esci"></mds-button>
+</mds-dropdown>
+<div id="modifica">
+  <main class="page-frame grid gap-between-sections py-between-sections">
+    <header class="grid gap-title-content">
+      <mds-button href="#" icon="mi/baseline/arrow-back" variant="dark" tone="text" size="sm" class="justify-self-start">Mario Rossi</mds-button>
+      <mds-text typography="page" tag="h1">Modifica Mario Rossi</mds-text>
+    </header>
+    <form id="contatto" class="max-w-form">
+      <fieldset class="field-group">
+        <legend>Residenza</legend>
+        <mds-input-field label="Via">
+          <mds-input name="via" value="Via Roma"></mds-input>
+        </mds-input-field>
+        <mds-input-field label="Civico" short>
+          <mds-input name="civico" value="21"></mds-input>
+        </mds-input-field>
+        <mds-input-field label="CAP" short>
+          <mds-input name="cap" value="47921"></mds-input>
+        </mds-input-field>
+        <mds-input-field label="Comune">
+          <mds-input name="comune" value="Rimini"></mds-input>
+        </mds-input-field>
+      </fieldset>
+      <mds-status-bar id="barra" visible description="Modifiche non salvate">
+        <mds-button type="reset" variant="dark" tone="outline">Annulla</mds-button>
+        <mds-button id="salva" type="submit">Salva</mds-button>
+      </mds-status-bar>
+    </form>
+  </main>
+</div>
+<div id="scheda" hidden>
+  <main class="page-frame grid gap-between-sections py-between-sections">
+    <header class="@container grid gap-title-content">
+      <mds-button href="#" icon="mi/baseline/arrow-back" variant="dark" tone="text" size="sm" class="justify-self-start">Contatti</mds-button>
+      <div class="flex flex-wrap items-start justify-between gap-inline">
+        <div class="grid min-w-0 grow basis-actions gap-title-content">
+          <mds-text id="titolo" typography="page" tag="h1" tabindex="-1">Mario Rossi</mds-text>
+          <mds-text typography="detail" tag="p" class="text-fg-muted">Ufficio anagrafe, aggiunto il 12 gennaio 2024</mds-text>
+        </div>
+        <div class="flex gap-inline @max-actions:basis-full @max-actions:flex-col @max-actions:*:self-stretch">
+          <mds-button id="azioni-contatto" class="@max-actions:w-fit" icon="mi/baseline/more-vert" variant="dark" tone="text" aria-label="Azioni di Mario Rossi"></mds-button>
+          <mds-button>Modifica</mds-button>
+        </div>
+      </div>
+    </header>
+    <section class="grid gap-title-content">
+      <mds-text typography="section" tag="h2">Residenza</mds-text>
+      <dl class="m-0 grid max-w-form items-start gap-between-fields @md:grid-cols-2">
+        <div class="grid gap-label-control">
+          <mds-text typography="label" tag="dt" class="text-fg-muted">Indirizzo</mds-text>
+          <mds-text tag="dd" class="m-0">Via Roma 21</mds-text>
+        </div>
+        <div class="grid gap-label-control">
+          <mds-text typography="label" tag="dt" class="text-fg-muted">Comune</mds-text>
+          <mds-text tag="dd" class="m-0">47921 Rimini</mds-text>
+        </div>
+      </dl>
+    </section>
+  </main>
+  <mds-dropdown target="#azioni-contatto" placement="bottom-start">
+    <mds-button icon="mi/baseline/print" variant="dark" tone="text" label="Stampa"></mds-button>
+    <mds-separator></mds-separator>
+    <mds-button icon="mi/baseline/delete" variant="error" tone="text" label="Elimina contatto"></mds-button>
+  </mds-dropdown>
+</div>
+<mds-toast-region>
+  <mds-toast id="esito" variant="success">I dati di Mario Rossi sono stati salvati.</mds-toast>
+</mds-toast-region>
+<script>
+  // Salva sends the form; the back end answers, and the page returns to the record it saved
+  document.getElementById('contatto').addEventListener('submit', (event) => {
+    event.preventDefault();
+    document.getElementById('barra').visible = undefined;
+    document.getElementById('modifica').hidden = true;
+    document.getElementById('scheda').hidden = false;
+    document.getElementById('titolo').focus();
+    document.getElementById('esito').visible = true;
+  });
+</script>

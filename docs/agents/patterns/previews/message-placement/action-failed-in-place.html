@@ -1,24 +1,21 @@
 <!--
-try: Press Salva in the dialog: the error shows inside it, above the field, and what was written stays.
-height: 460
+try: Press Salva: the error shows right above the row of the dialog, what was written stays, and the focus stays on Salva, the way to try again.
+height: 480
 -->
-<mds-button id="open" tone="weak">Modifica azienda</mds-button>
-<mds-modal id="dialog" opened>
-  <div slot="top" class="p-400">
-    <mds-text typography="h5">Modifica azienda</mds-text>
-  </div>
-  <div class="grid gap-300 px-400">
-    <mds-banner id="message" variant="error" tone="strong" headline="Salvataggio non riuscito" class="hidden">
-      Il server non risponde, i dati sono ancora qui, riprova.
-    </mds-banner>
-    <mds-input-field label="Ragione sociale">
-      <mds-input value="Maggioli SpA"></mds-input>
-    </mds-input-field>
-  </div>
-  <div slot="bottom" class="flex justify-end gap-200 p-400">
-    <mds-button tone="weak" id="cancel">Annulla</mds-button>
-    <mds-button id="save">Salva</mds-button>
-  </div>
+<mds-button id="open">Modifica azienda</mds-button>
+<mds-modal id="dialog" opened aria-label="Modifica azienda">
+  <mds-banner slot="window" variant="light" tone="box" dismissible headline="Modifica azienda">
+    <form class="grid gap-between-fields">
+      <mds-input-field label="Ragione sociale">
+        <mds-input value="Maggioli SpA"></mds-input>
+      </mds-input-field>
+      <mds-banner id="message" variant="error" tone="strong" headline="Salvataggio non riuscito" class="hidden">
+        <mds-text>Il server non risponde. I dati sono ancora qui: riprova.</mds-text>
+      </mds-banner>
+    </form>
+    <mds-button id="cancel" slot="action" variant="dark" tone="outline">Annulla</mds-button>
+    <mds-button id="save" slot="action">Salva</mds-button>
+  </mds-banner>
 </mds-modal>
 <script>
   const dialog = document.getElementById('dialog');
@@ -28,6 +25,7 @@ height: 460
     dialog.opened = true;
   });
   dialog.addEventListener('mdsModalClose', () => (dialog.opened = undefined));
-  document.getElementById('save').addEventListener('click', () => message.classList.remove('hidden'));
   document.getElementById('cancel').addEventListener('click', () => dialog.close());
+  // the save fails: the error goes right above the row, and the focus stays on Salva
+  document.getElementById('save').addEventListener('click', () => message.classList.remove('hidden'));
 </script>

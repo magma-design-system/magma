@@ -1,0 +1,80 @@
+<!--
+try: Look at the two rows selected: the bar of the table says how many and offers Archivia and Assegna, the main one last; the search, the summary and the pages stay where they are in every list.
+-->
+<div class="grid gap-between-groups">
+  <form role="search" class="grid gap-between-fields">
+    <div class="field-group max-w-form">
+      <mds-input-field label="Cerca">
+        <mds-input type="search" name="q" placeholder="Numero o oggetto"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="Ufficio" short>
+        <mds-input-select name="ufficio">
+          <option value="">Tutti gli uffici</option>
+          <option value="anagrafe">Anagrafe</option>
+          <option value="stato-civile">Stato civile</option>
+        </mds-input-select>
+      </mds-input-field>
+    </div>
+    <mds-filter label="Stato" class="justify-self-start">
+      <mds-filter-item label="Tutte" value="" count="128"></mds-filter-item>
+      <mds-filter-item label="Da assegnare" value="da-assegnare" count="14" selected></mds-filter-item>
+      <mds-filter-item label="In lavorazione" value="in-lavorazione" count="31"></mds-filter-item>
+      <mds-filter-item label="In attesa" value="in-attesa" count="12"></mds-filter-item>
+      <mds-filter-item label="Chiuse" value="chiusa" count="71"></mds-filter-item>
+    </mds-filter>
+  </form>
+  <div class="grid gap-between-fields">
+    <div class="grid gap-title-content">
+      <div class="flex flex-wrap items-center gap-inline">
+        <mds-text typography="detail" tag="p" role="status">11-14 di 14 pratiche</mds-text>
+        <mds-button variant="dark" tone="text" size="sm">Rimuovi i filtri</mds-button>
+      </div>
+      <mds-table id="pratiche" selectable sorting="external" class="w-full [&_mds-table-cell]:text-nowrap [&_mds-text]:text-nowrap">
+        <mds-table-header>
+          <mds-table-header-cell label="Numero" sortable sort-key="numero"></mds-table-header-cell>
+          <mds-table-header-cell label="Oggetto"></mds-table-header-cell>
+          <mds-table-header-cell label="Richiedente"></mds-table-header-cell>
+          <mds-table-header-cell label="Ricevuta il" sortable sort-key="ricevuta" direction="descending"></mds-table-header-cell>
+        </mds-table-header>
+        <mds-table-body>
+          <mds-table-row value="2026/0101">
+            <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0101</mds-link></mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">Cambio di residenza</mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">Giulia Bianchi</mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">16 febbraio 2026</mds-text></mds-table-cell>
+          </mds-table-row>
+          <mds-table-row value="2026/0097">
+            <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0097</mds-link></mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">Iscrizione anagrafica</mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">Luca Ferri</mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">13 febbraio 2026</mds-text></mds-table-cell>
+          </mds-table-row>
+          <mds-table-row value="2026/0094">
+            <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0094</mds-link></mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">Certificato di residenza</mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">Marco Rossi</mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">12 febbraio 2026</mds-text></mds-table-cell>
+          </mds-table-row>
+          <mds-table-row value="2026/0090">
+            <mds-table-cell><mds-text typography="detail"><mds-link href="#">2026/0090</mds-link></mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">Cambio di indirizzo</mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">Anna Conti</mds-text></mds-table-cell>
+            <mds-table-cell><mds-text typography="detail">10 febbraio 2026</mds-text></mds-table-cell>
+          </mds-table-row>
+        </mds-table-body>
+        <mds-button slot="batch-action" variant="dark" tone="outline" size="sm">Archivia</mds-button>
+        <mds-button slot="batch-action" variant="primary" tone="outline" size="sm">Assegna</mds-button>
+      </mds-table>
+    </div>
+    <mds-paginator pages="2" current-page="2" class="justify-self-start"></mds-paginator>
+  </div>
+</div>
+<script>
+  // two rows the person has ticked; a row selected in the markup is not counted by the table
+  const table = document.getElementById('pratiche');
+  customElements.whenDefined('mds-table-row').then(async () => {
+    const rows = ['2026/0097', '2026/0094'].map((value) => table.querySelector(`mds-table-row[value="${value}"]`));
+    await Promise.all(rows.map((row) => row.componentOnReady()));
+    rows.forEach((row) => (row.selected = true));
+  });
+</script>

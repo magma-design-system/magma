@@ -1,0 +1,52 @@
+<!--
+try: Press Allega file: the button waits, a bar beside it fills as the file is sent and a sentence under it says how much; Interrompi stops the upload, and the sentence says the file is not attached.
+-->
+<form class="grid max-w-form gap-between-fields">
+  <mds-input-field label="Oggetto">
+    <mds-input value="Agibilità dell'immobile in via Emilia 12"></mds-input>
+  </mds-input-field>
+  <div class="grid gap-label-control">
+    <mds-text typography="label" tag="p">Planimetria</mds-text>
+    <div class="flex items-center gap-inline">
+      <mds-button id="upload" type="button" variant="dark" tone="outline" icon="mi/baseline/upload">Allega file</mds-button>
+      <mds-progress
+        id="bar"
+        class="hidden flex-1"
+        steps="Inizio,Un quarto,Metà,Tre quarti,Fine"
+        aria-label="Invio di planimetria.pdf"
+      ></mds-progress>
+      <mds-button id="stop" type="button" variant="dark" tone="outline" class="hidden">Interrompi</mds-button>
+    </div>
+    <mds-text id="say" typography="detail" tag="p" class="text-fg-muted">PDF, al massimo 10 MB.</mds-text>
+  </div>
+</form>
+<script>
+  const upload = document.getElementById('upload');
+  const bar = document.getElementById('bar');
+  const stop = document.getElementById('stop');
+  const say = document.getElementById('say');
+  let timer;
+  const show = (sending) => {
+    upload.await = sending || undefined;
+    bar.classList.toggle('hidden', !sending);
+    stop.classList.toggle('hidden', !sending);
+  };
+  const send = (mb) => {
+    bar.progress = mb / 8;
+    say.textContent = `Invio di planimetria.pdf: ${mb} MB di 8.`;
+    if (mb < 8) timer = setTimeout(() => send(mb + 2), 1500);
+    else {
+      show(false);
+      say.textContent = 'Allegato: planimetria.pdf, 8 MB.';
+    }
+  };
+  upload.addEventListener('click', () => {
+    show(true);
+    send(2);
+  });
+  stop.addEventListener('click', () => {
+    clearTimeout(timer);
+    show(false);
+    say.textContent = 'Invio interrotto: il file non è allegato.';
+  });
+</script>

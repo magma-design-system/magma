@@ -1,0 +1,35 @@
+<!--
+try: Press Salva: the save fails, the error stands right above the row, what was written stays, and Salva, which keeps the focus, is the way to try again.
+height: 520
+-->
+<div class="grid gap-between-sections">
+  <mds-text typography="page" tag="h1">Modifica referente</mds-text>
+  <form id="form" class="@container grid max-w-form gap-content-actions">
+    <div class="grid gap-between-fields">
+      <mds-input-field label="Nome e cognome">
+        <mds-input value="Marco Bianchi"></mds-input>
+      </mds-input-field>
+      <mds-input-field label="PEC">
+        <mds-input type="email" value="m.bianchi@pec.esempio.it"></mds-input>
+      </mds-input-field>
+      <mds-banner id="error" variant="error" tone="strong" headline="Modifiche non salvate" class="hidden">
+        <mds-text>Il server non ha risposto e non è cambiato nulla. Quello che hai scritto è qui: salva di nuovo tra poco.</mds-text>
+      </mds-banner>
+    </div>
+    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+      <mds-button type="button" variant="dark" tone="outline">Annulla</mds-button>
+      <mds-button id="save">Salva</mds-button>
+    </div>
+  </form>
+</div>
+<script>
+  const save = document.getElementById('save');
+  document.getElementById('form').addEventListener('submit', (event) => event.preventDefault());
+  save.addEventListener('click', () => {
+    save.await = true;
+    setTimeout(() => {
+      save.await = undefined;
+      document.getElementById('error').classList.remove('hidden');
+    }, 400);
+  });
+</script>
