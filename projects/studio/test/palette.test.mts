@@ -290,3 +290,11 @@ test('Download all tokens is the main action of the head, the other downloads in
     click.mockRestore()
   }
 })
+
+test('a page of Colors opens at its top, not at the scroll the page before it left', async () => {
+  const main = root.querySelector('main.content')!
+  const set: number[] = []
+  Object.defineProperty(main, 'scrollTop', { configurable: true, get: () => 0, set: (top: number) => set.push(top) })
+  render(h(App, { view: 'scales', onConfig: (config: MagmaConfig) => configs.push(config) }), root)
+  await vi.waitFor(() => expect(set).toContain(0))
+})

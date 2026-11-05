@@ -590,6 +590,12 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
   );
   const [ownView, setOwnView] = useState<View>(() => bootDraft?.view ?? 'colors');
   const view = routedView ?? ownView;
+  // the pages of Colors share the region that scrolls: a page opens at its top, never at the
+  // scroll the page before it left there
+  const content = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (content.current) content.current.scrollTop = 0;
+  }, [view]);
   const setView = onNavigate ?? setOwnView;
   // the menus of the head of the page, closed once one of their actions ran
   const fileInput = useRef<HTMLInputElement>(null);
@@ -1661,7 +1667,7 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
         </mds-modal>
       )}
 
-      <main class="content">
+      <main class="content" ref={content}>
         {view === 'colors' && selected && (
           <div class="palette-detail">
             <section class="palette-color" aria-labelledby="palette-color-title">

@@ -15,6 +15,7 @@
 /* a column on the canvas, apart from the detail by a divider; it scrolls on its own */
 
 .palette-list {
+  position: relative;
   align-content: start;
   border-inline-end: thin solid rgb(var(--magma-border-muted));
   display: grid;

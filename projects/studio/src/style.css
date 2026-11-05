@@ -6,11 +6,17 @@
   calc(var(--spacing) * N), as the components write --spacing(N).
 */
 
-/* the shell: the bar, then the section, the whole height of the window */
+/*
+  The shell: the bar, then the section, the whole height of the window. The document never
+  scrolls: the regions of a page do (.content, .studio-page, the list of the Palette), each the
+  containing block of what it positions, so nothing inside them (the hidden name of a slider,
+  magma.css) reaches past the window and makes the window scroll too.
+*/
 .studio {
   display: flex;
   flex-direction: column;
   height: 100dvh;
+  overflow: clip;
 }
 
 .studio-header {
@@ -98,6 +104,7 @@
 }
 
 .studio-page {
+  position: relative;
   display: grid;
   gap: var(--magma-rhythm-between-sections);
   align-content: start;
@@ -172,6 +179,7 @@
 }
 
 .content {
+  position: relative;
   grid-area: content;
   padding: var(--magma-rhythm-inset) var(--magma-width-page-gutter)
     var(--magma-rhythm-between-sections);
