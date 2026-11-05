@@ -1,6 +1,7 @@
 import { h } from '@stencil/core';
 import { iconsDictionary } from '@type/icon';
 import {
+  buttonCurrentDictionary,
   buttonVariantDictionary,
   buttonSizeDictionary,
   buttonTargetDictionary,
@@ -31,6 +32,13 @@ export default {
       type: { name: 'string' },
       description: 'Specifies if the text is animated when it is rendered',
       options: textAnimateDictionary,
+      control: { type: 'select' },
+    },
+    current: {
+      type: { name: 'string' },
+      description:
+        'Marks the button that leads to the view you are in: `page` (or the attribute alone) is that view, inert; `section` is a view inside it, still a link',
+      options: buttonCurrentDictionary,
       control: { type: 'select' },
     },
     disabled: {
@@ -489,6 +497,50 @@ export const Target = {
 
 export const Notifications = {
   render: TemplateNotifications,
+};
+
+// the button that leads to the view you are in (#1264): the sections of a bar as links, then a
+// switcher in every tone, with the current one in the middle
+const TemplateCurrent = () => (
+  <div class="grid gap-600">
+    <nav aria-label="Sezioni" class="flex flex-wrap gap-200">
+      <mds-button href="#pratiche" variant="dark" tone="text" current>
+        Pratiche
+      </mds-button>
+      <mds-button href="#contatti" variant="dark" tone="text">
+        Contatti
+      </mds-button>
+      <mds-button href="#scadenze" variant="dark" tone="text">
+        Scadenze
+      </mds-button>
+    </nav>
+    {toneBoxVariantDictionary.map((tone) => (
+      <div key={tone} class="flex flex-wrap items-center gap-200">
+        <mds-text typography="detail" class="w-1600 text-fg-muted">
+          {tone}
+        </mds-text>
+        {['Giorno', 'Settimana', 'Mese'].map((label) => (
+          <mds-button
+            key={label}
+            tone={tone}
+            type="button"
+            label={label}
+            current={label === 'Settimana' ? true : undefined}
+          ></mds-button>
+        ))}
+      </div>
+    ))}
+  </div>
+);
+
+export const Current = {
+  render: TemplateCurrent,
+  play: async ({ canvas }) => {
+    const here = (await canvas.findByRole('link', { name: 'Pratiche' })) as HTMLMdsButtonElement;
+    await waitFor(() => expect(here).toHaveAttribute('aria-current', 'page'));
+    expect(here).toHaveAttribute('tabindex', '0');
+    expect(canvas.getByRole('link', { name: 'Contatti' })).not.toHaveAttribute('aria-current');
+  },
 };
 
 export const FormParticipation = {

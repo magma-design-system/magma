@@ -2,7 +2,12 @@
  * paper of the mode, --tone-neutral-seed (#fff light / #000 dark), dark in the
  * ink of the mode. The seed is the intended value here, not a surface: no
  * elevation role is paper in both modes (SEMANTIC_COLOR_SPEC 10 and 15).
- * In the roles of mds-button-variant.css. */
+ * In the roles of mds-button-variant.css.
+ *
+ * Both keep the wash of weak on hover, so the current button cannot take the hover wash (#1264):
+ * dark, at rest on the strongest wash already, steps back to wash-base; light, paper at rest,
+ * takes the inverse wash of its text tone, with the ink that goes on it. Light keeps the fill
+ * of strong on hover too: its strong takes the same, as strong and weak are one paper at rest. */
 
 :host([variant='light']) {
   --private-button-fill: var(--tone-neutral-seed);
@@ -17,6 +22,10 @@
   --private-button-text-ink: var(--private-button-outline);
   --private-button-text-ink-hover: var(--magma-on-inverse);
   --private-button-text-wash: var(--magma-surface-inverse-muted);
+  --private-button-current-fill: var(--private-button-text-wash);
+  --private-button-current-on-fill: var(--private-button-text-ink);
+  --private-button-current-wash: var(--private-button-text-wash);
+  --private-button-current-ink: var(--private-button-text-ink);
 }
 
 :host([variant='dark']) {
@@ -31,4 +40,5 @@
   --private-button-text-ink: var(--private-button-ink);
   --private-button-text-ink-hover: var(--private-button-ink);
   --private-button-text-wash: var(--magma-wash-soft);
+  --private-button-current-wash: var(--magma-wash-base);
 }

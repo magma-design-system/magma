@@ -21,7 +21,7 @@ import { LoadingType } from "./type/loading";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 import { TextAnimationType } from "./components/mds-text/meta/types";
-import { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
+import { ButtonCurrentType, ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -110,7 +110,7 @@ export { LoadingType } from "./type/loading";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 export { TextAnimationType } from "./components/mds-text/meta/types";
-export { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
+export { ButtonCurrentType, ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -583,6 +583,10 @@ export namespace Components {
          */
         "await"?: boolean;
         /**
+          * Marks the button that leads to the view you are in, as the current section of a bar or the current view of a switcher, with a look of its own: an area lighter than the hover of its tone (the fill of `weak` for `tone="text"`) and a heavier label. `current`, or `current="page"`, is that view: the button neither navigates nor submits, a click and Enter do nothing, but it stays in the Tab order, announced with `aria-current` (`"page"` on a link, `"true"` otherwise). `current="section"` is a view inside it, as a record of its list: the same look, and the button stays a link that brings you back, announced with `aria-current="true"`. An `aria-current` written on the host stays as written.
+         */
+        "current"?: ButtonCurrentType;
+        /**
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
@@ -658,6 +662,10 @@ export namespace Components {
           * Specifies if the button is awaiting for a response
          */
         "await"?: boolean;
+        /**
+          * Marks the primary action as the one that leads to the view you are in, as `current` does on `mds-button`: `current` (or `current="page"`) is that view, and the primary action neither navigates nor submits nor emits `mdsButtonDropdownClick`; `current="section"` is a view inside it, and the primary action stays a link back. Both halves take the look; only the primary action is announced with `aria-current`, the chevron keeps opening the menu
+         */
+        "current"?: ButtonCurrentType;
         /**
           * Specifies if the component is disabled or not
          */
@@ -5974,6 +5982,10 @@ declare namespace LocalJSX {
          */
         "await"?: boolean;
         /**
+          * Marks the button that leads to the view you are in, as the current section of a bar or the current view of a switcher, with a look of its own: an area lighter than the hover of its tone (the fill of `weak` for `tone="text"`) and a heavier label. `current`, or `current="page"`, is that view: the button neither navigates nor submits, a click and Enter do nothing, but it stays in the Tab order, announced with `aria-current` (`"page"` on a link, `"true"` otherwise). `current="section"` is a view inside it, as a record of its list: the same look, and the button stays a link that brings you back, announced with `aria-current="true"`. An `aria-current` written on the host stays as written.
+         */
+        "current"?: ButtonCurrentType;
+        /**
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
@@ -6053,6 +6065,10 @@ declare namespace LocalJSX {
           * Specifies if the button is awaiting for a response
          */
         "await"?: boolean;
+        /**
+          * Marks the primary action as the one that leads to the view you are in, as `current` does on `mds-button`: `current` (or `current="page"`) is that view, and the primary action neither navigates nor submits nor emits `mdsButtonDropdownClick`; `current="section"` is a view inside it, and the primary action stays a link back. Both halves take the look; only the primary action is announced with `aria-current`, the chevron keeps opening the menu
+         */
+        "current"?: ButtonCurrentType;
         /**
           * Specifies if the component is disabled or not
          */
@@ -9189,6 +9205,7 @@ declare namespace LocalJSX {
         "await": boolean;
         "href": string;
         "target": ButtonTargetType;
+        "current": string;
         "truncate": TypographyTruncateType;
     }
     interface MdsButtonDropdownAttributes {
@@ -9206,6 +9223,7 @@ declare namespace LocalJSX {
         "await": boolean;
         "href": string;
         "target": ButtonTargetType;
+        "current": string;
         "truncate": TypographyTruncateType;
     }
     interface MdsCalendarAttributes {
