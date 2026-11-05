@@ -64,11 +64,37 @@ test('the Theme section shows the theme in a document of its own, its controls o
     if (!root.querySelector('.studio-theme')) throw new Error('no theme page yet')
   })
   expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('scene.html')
-  const options = [...root.querySelectorAll('.studio-toolbar mds-input-select option')]
-  expect(options.map((option) => option.getAttribute('value'))).toEqual(['business', 'editorial'])
+  // the themes of the configuration, once it is loaded: porcelain is one, though Magma ships none
+  // by that name
+  await vi.waitFor(() => {
+    const options = [...root.querySelectorAll('.studio-toolbar mds-input-select option')]
+    expect(options.map((option) => option.getAttribute('value'))).toEqual(['business', 'porcelain', 'editorial'])
+  })
   const axes = [...root.querySelectorAll('.studio-toolbar mds-button')]
   expect(axes.filter((axis) => !axis.hasAttribute('disabled')).map((axis) => axis.getAttribute('aria-label')))
     .toEqual(['Preferences of the person'])
+})
+
+test('the header sets what the theme is checked under: both modes are two frames, the width a breakpoint', async () => {
+  await at('#/theme')
+  const head = await vi.waitFor(() => {
+    const found = root.querySelector('.studio-theme-head')
+    if (!found) throw new Error('no header yet')
+    return found
+  })
+  const [, modes] = [...head.querySelectorAll('mds-filter')]
+  expect([...modes.querySelectorAll('mds-filter-item')].map((item) => item.getAttribute('value')))
+    .toEqual(['light', 'dark', 'both'])
+  modes.dispatchEvent(new CustomEvent('mdsFilterChange', { detail: { value: 'both' }, bubbles: true }))
+  await vi.waitFor(() => expect(root.querySelectorAll('iframe.studio-scene')).toHaveLength(2))
+  expect([...root.querySelectorAll('iframe.studio-scene')].map((frame) => frame.getAttribute('title')))
+    .toEqual(['The theme on a page of a product, light mode', 'The theme on a page of a product, dark mode'])
+
+  const width = head.querySelector('mds-input-select')!
+  expect([...width.querySelectorAll('option')].map((option) => option.getAttribute('value')))
+    .toEqual(['full', 'desktop', 'tablet', 'mobile'])
+  width.dispatchEvent(new CustomEvent('mdsInputSelectChange', { detail: { value: 'tablet' }, bubbles: true }))
+  await vi.waitFor(() => expect(root.querySelector('.studio-frames')?.getAttribute('data-width')).toBe('tablet'))
 })
 
 test('the bar says the version of the Magma the studio runs on, under its name', async () => {

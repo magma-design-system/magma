@@ -5,6 +5,7 @@ import logo from '@maggioli-design-system/identity/dist/internal/magma-design-sy
 import { App } from './app.js';
 import { readDraft } from './draft.js';
 import { gateVerdict, type GateVerdict } from './gate.js';
+import { sceneStyle } from './scene-css.js';
 import {
   BEHAVIOR_PAGES,
   COLORS_PAGES,
@@ -57,7 +58,7 @@ export function Studio() {
           onConfig={setConfig}
         />
       </div>
-      {route.section === 'theme' && <ThemePage />}
+      {route.section === 'theme' && <ThemePage config={config} />}
       {route.section === 'behavior' && <BehaviorPageView page={route.page} />}
     </div>
   );
@@ -253,18 +254,115 @@ export const PREVIEW_THEMES = Object.entries(semantic.themes)
 
 const titleOf = (name: string): string => name.charAt(0).toUpperCase() + name.slice(1);
 
+/*
+  What the author checks the theme UNDER, apart from what they edit: the header over the frame
+  holds it, the bar at the bottom holds the theme and its axes (#697, "The right column"). The
+  mode and the contrast are not exported: they are the preferences of the person.
+*/
+
+export type Scheme = 'light' | 'dark';
+type ModeView = Scheme | 'both';
+const MODE_VIEWS: ReadonlyArray<{ id: ModeView; label: string }> = [
+  { id: 'light', label: 'Light' },
+  { id: 'dark', label: 'Dark' },
+  { id: 'both', label: 'Both' },
+];
+
+/** The views of the same theme (#697): Scenes, compositions of a product; Groups, to come. */
+const VIEWS = [
+  { id: 'scenes', label: 'Scenes', ready: true },
+  { id: 'groups', label: 'Groups', ready: false },
+] as const;
+
 /**
- * The Theme section: the theme full screen, on a scene of a product in an iframe, and its
- * controls over it. The scene is a document of its own: a theme set on its <html> and the
- * preferences of its own panel move it and leave the studio alone (#695, "The dogfooding
- * constraint").
+ * The widths of the frame: the room of the section, or a breakpoint of Magma (tokens/screen,
+ * docs/TOKENS.md), the widths its layouts change at, so the frame shows the layout from that
+ * breakpoint up. style.css sizes the frame with `--breakpoint-<id>`; the label reads the same
+ * property, so it never names a width the frame does not have.
  */
-function ThemePage() {
-  const frame = useRef<HTMLIFrameElement>(null);
+const WIDTHS = ['full', 'desktop', 'tablet', 'mobile'] as const;
+type Width = (typeof WIDTHS)[number];
+const widthLabel = (width: Width): string => {
+  if (width === 'full') return 'Full width';
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue(`--breakpoint-${width}`)
+    .trim();
+  return value ? `${titleOf(width)} (${value})` : titleOf(width);
+};
+
+const PREF_CLASSES = [
+  'pref-mode-light',
+  'pref-mode-dark',
+  'pref-mode-system',
+  'pref-contrast-more',
+  'pref-contrast-no-preference',
+  'pref-contrast-system',
+];
+
+/**
+ * Sets on the document of a frame what the author checks the theme under: the theme, the mode
+ * and the contrast, written as the preferences of Magma write them on <html> (`data-magma-pref`,
+ * `pref-mode-*`, `pref-contrast-*`, mds-pref-mode and mds-pref-contrast), so the frame follows
+ * them and neither the system nor the choice the person stored. The scene has no mode nor
+ * contrast of its own (scene.html): two frames side by side share the storage of the origin, and
+ * a stored mode would bring both to the same one.
+ */
+export function applyFrame(
+  scene: Document,
+  {
+    theme,
+    scheme,
+    contrast,
+    css,
+  }: { theme: string; scheme: Scheme; contrast: boolean; css?: string },
+) {
+  const html = scene.documentElement;
+  html.setAttribute('data-theme-name', theme);
+  html.setAttribute('data-magma-pref', '');
+  html.classList.remove(...PREF_CLASSES);
+  html.classList.add(
+    `pref-mode-${scheme}`,
+    contrast ? 'pref-contrast-more' : 'pref-contrast-no-preference',
+  );
+  // the palette and the themes of the configuration (scene-css.ts), over the stylesheets of the
+  // installed Magma: an unlayered rule wins over their layers, whatever their order
+  let style = scene.getElementById(CONFIGURATION_STYLE) as HTMLStyleElement | null;
+  if (css === undefined) {
+    style?.remove();
+    return;
+  }
+  if (!style) {
+    style = scene.createElement('style');
+    style.id = CONFIGURATION_STYLE;
+    scene.head.append(style);
+  }
+  if (style.textContent !== css) style.textContent = css;
+}
+
+const CONFIGURATION_STYLE = 'studio-configuration';
+
+/**
+ * The Theme section: the theme on a scene of a product in an iframe, the header of what it is
+ * checked under over it, the bar of the theme and its axes at the bottom. The scene is a document
+ * of its own: what is set on its <html> and the preferences of its own panel move it and leave
+ * the studio alone (#695, "The dogfooding constraint"). Both modes are two frames side by side,
+ * scrolled together; the panel of the preferences opens in the first. The select offers the
+ * themes of the configuration the person edits, which the frame paints (scene-css.ts); until the
+ * configuration is loaded, the themes Magma ships.
+ */
+function ThemePage({ config }: { config: MagmaConfig | null }) {
+  const frames = useRef<Array<HTMLIFrameElement | null>>([]);
   const select = useRef<HTMLElement>(null);
-  const [theme, setTheme] = useState(PREVIEW_THEMES[0]);
+  const scene = useMemo(() => (config ? sceneStyle(config) : null), [config]);
+  const names = scene?.themes.map((one) => one.name) ?? PREVIEW_THEMES;
+  const [chosen, setTheme] = useState(PREVIEW_THEMES[0]);
+  const theme = names.includes(chosen) ? chosen : names[0];
   const [panel, setPanel] = useState<Axis | null>(null);
+  const [mode, setMode] = useState<ModeView>('light');
+  const [contrast, setContrast] = useState(false);
+  const [width, setWidth] = useState<Width>('full');
   const [loaded, setLoaded] = useState(0);
+  const schemes: Scheme[] = mode === 'both' ? ['light', 'dark'] : [mode];
 
   useEffect(() => {
     const element = select.current;
@@ -278,25 +376,115 @@ function ThemePage() {
   }, []);
 
   useEffect(() => {
-    const scene = frame.current?.contentDocument;
-    if (!scene) return;
-    scene.documentElement.setAttribute('data-theme-name', theme);
-    const pref = scene.getElementById('studio-pref');
-    if (pref) pref.hidden = panel !== 'preferences';
-  }, [theme, panel, loaded]);
+    schemes.forEach((scheme, index) => {
+      const frame = frames.current[index]?.contentDocument;
+      if (!frame?.documentElement) return;
+      applyFrame(frame, { theme, scheme, contrast, css: scene?.css });
+      const pref = frame.getElementById('studio-pref');
+      if (pref) pref.hidden = index > 0 || panel !== 'preferences';
+    });
+  }, [theme, panel, mode, contrast, scene, loaded]);
+
+  // the frames side by side scroll together, so the same card is in view in both modes: the
+  // frame the person scrolls leads, the other jumps to it (the scene scrolls smoothly, and a
+  // smooth follower would hand back each step of its way), and the scroll event of that jump,
+  // at the position it was given, is its echo, not a scroll of the person
+  useEffect(() => {
+    const views = frames.current
+      .slice(0, schemes.length)
+      .map((frame) => frame?.contentWindow)
+      .filter((view): view is Window => !!view);
+    if (views.length < 2) return;
+    const echoes = new Map<Window, number>();
+    const listeners = views.map((view) => {
+      const follow = () => {
+        const top = Math.round(view.scrollY);
+        if (echoes.get(view) === top) {
+          echoes.delete(view);
+          return;
+        }
+        views.forEach((other) => {
+          if (other === view || Math.round(other.scrollY) === top) return;
+          echoes.set(other, top);
+          other.scrollTo({ top, behavior: 'instant' });
+        });
+      };
+      view.addEventListener('scroll', follow);
+      return () => view.removeEventListener('scroll', follow);
+    });
+    return () => listeners.forEach((remove) => remove());
+  }, [mode, loaded]);
 
   return (
     <div class="studio-theme">
-      <iframe
-        ref={frame}
-        class="studio-scene"
-        src="scene.html"
-        title="The theme on a page of a product"
-        onLoad={() => setLoaded((count) => count + 1)}
-      />
+      <div class="studio-theme-head" role="toolbar" aria-label="Preview">
+        <mds-filter aria-label="View">
+          {VIEWS.map((view) => (
+            <mds-filter-item
+              label={view.label}
+              value={view.id}
+              selected={view.id === 'scenes'}
+              disabled={!view.ready}
+              title={view.ready ? undefined : `${view.label}: comes with the Groups view (#697)`}
+            ></mds-filter-item>
+          ))}
+        </mds-filter>
+        <div class="studio-theme-checks">
+          <mds-filter
+            aria-label="Mode"
+            onmdsFilterChange={(event: CustomEvent<{ value?: string }>) => {
+              const value = event.detail?.value as ModeView | undefined;
+              if (value) setMode(value);
+            }}
+          >
+            {MODE_VIEWS.map((view) => (
+              <mds-filter-item
+                label={view.label}
+                value={view.id}
+                selected={view.id === mode}
+              ></mds-filter-item>
+            ))}
+          </mds-filter>
+          <mds-input-select
+            aria-label="Width of the frame"
+            size="md"
+            value={width}
+            onmdsInputSelectChange={(event: CustomEvent<{ value?: string }>) => {
+              const value = event.detail?.value as Width | undefined;
+              if (value) setWidth(value);
+            }}
+          >
+            {WIDTHS.map((one) => (
+              <option value={one} selected={one === width}>
+                {widthLabel(one)}
+              </option>
+            ))}
+          </mds-input-select>
+          <mds-input-switch
+            type="switch"
+            checked={contrast}
+            onmdsInputSwitchChange={(event: CustomEvent<{ checked: boolean }>) =>
+              setContrast(event.detail.checked)
+            }
+          >
+            More contrast
+          </mds-input-switch>
+        </div>
+      </div>
+      <div class="studio-frames" data-width={width}>
+        {schemes.map((scheme, index) => (
+          <iframe
+            ref={(frame) => (frames.current[index] = frame)}
+            class="studio-scene"
+            src="scene.html"
+            title={`The theme on a page of a product, ${scheme} mode`}
+            onLoad={() => setLoaded((count) => count + 1)}
+          />
+        ))}
+      </div>
       <div class="studio-toolbar" role="toolbar" aria-label="Theme">
         <mds-input-select ref={select} aria-label="Theme" size="md" value={theme}>
-          {PREVIEW_THEMES.map((name) => (
+          {names.map((name) => (
             <option value={name}>{titleOf(name)}</option>
           ))}
         </mds-input-select>

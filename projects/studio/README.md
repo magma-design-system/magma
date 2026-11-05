@@ -22,7 +22,7 @@ sections, in the order of the work (#693, decided 2026-11-05):
 | Section | Pages | What it is |
 | --- | --- | --- |
 | **Colors** (a menu) | Palette, Contrast scales, Semantic surface, Themes, Groups, then Diffs | the tokens playground that used to live in `design-tokens` (#695), one page per view; the menu opens with the verdict of the contrast gate on the configuration being edited |
-| **Theme** | one page | the theme full screen, on a scene of a product in an iframe, with its controls floating over it: the theme to show, then one button per axis (typography, shape, density, depth, the preferences of the person, dimension) |
+| **Theme** | one page | the theme on a scene of a product in an iframe: over it a header of what the theme is checked under (the view, the mode, the width of the frame, the contrast), at the bottom the bar of what is edited: the theme to show, then one button per axis (typography, shape, density, depth, the preferences of the person, dimension) |
 | **Behavior** (a menu) | Design language, Patterns, Blocks | what Magma decided and the layer of a product, read-only; placeholders until their turn (#693, "The plan") |
 
 Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
@@ -34,8 +34,25 @@ config, Copy JSON or Save, and Download last).
 The Theme section shows the scene (`scene.html`) in an iframe, a document of its own: the theme is
 set on its `<html>` (`data-theme-name`), and the preferences of the person live in its own
 `mds-pref` panel, which writes on its own document. Both move the scene and leave the studio alone
-(#695, "The dogfooding constraint"). Today the select offers the themes Magma ships and only the
-preferences have a panel; the panels of the other axes come with #696.
+(#695, "The dogfooding constraint"). Only the preferences have a panel; the panels of the other
+axes come with #696.
+
+The select offers the themes of the configuration being edited, the ones the Themes page lists
+(each tint with a surface, the base first), and the frame paints them: the studio writes into it,
+over the stylesheets of the installed Magma, the palette of the configuration and the block of
+each theme, printed by the code that writes the files Magma ships (`colors-rgb.css` and
+`themes.css`, `src/scene-css.ts`). So `porcelain` is a theme of the bundled configuration though
+Magma ships none by that name. A theme takes the name of the theme Magma draws from its family,
+else the name of the family: the name given on the Themes page stays in that page until the
+configuration keeps it.
+
+The header over the frame holds what the theme is checked under, not what is edited (#697): the
+view (Scenes; Groups comes next), the mode (light, dark, or both side by side, two frames that
+scroll together), the width of the frame (the room of the section, or a breakpoint of Magma,
+`--breakpoint-desktop`, `-tablet`, `-mobile`, where its layouts change) and the contrast. The mode
+and the contrast are not exported: the header writes them on the `<html>` of each frame as the
+preferences of Magma do (`applyFrame`), and the panel of the scene has neither, since a mode
+stored in the origin would bring the two frames to the same one.
 
 The scene is a demo of the components, as the one of the daisyUI theme generator (#697, Scenes):
 the desk of an office of a back office, one card per task side by side in columns, so a theme is

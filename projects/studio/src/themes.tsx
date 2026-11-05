@@ -83,16 +83,18 @@ export const RESERVED_THEME_NAMES: ReadonlySet<string> = new Set(Object.keys(sem
  * The themes Magma ships, by the family they are drawn from: their name and their accents. The
  * deprecated ones are no starting point, so they are not offered.
  */
-const SHIPPED_BY_FAMILY: ReadonlyMap<string, { name: string; accents: Record<string, string> }> =
-  new Map(
-    Object.entries(semantic.themes)
-      .map(([name, def]) => ({ name, ...defOf(def) }))
-      .filter(({ deprecated }) => !deprecated)
-      .map(({ name, surface, accents }) => [
-        surface ?? semantic.tint,
-        { name, accents: accents ?? {} },
-      ]),
-  );
+export const SHIPPED_BY_FAMILY: ReadonlyMap<
+  string,
+  { name: string; accents: Record<string, string> }
+> = new Map(
+  Object.entries(semantic.themes)
+    .map(([name, def]) => ({ name, ...defOf(def) }))
+    .filter(({ deprecated }) => !deprecated)
+    .map(({ name, surface, accents }) => [
+      surface ?? semantic.tint,
+      { name, accents: accents ?? {} },
+    ]),
+);
 
 /** Why a name a person gave a theme cannot be used, or null when it can. */
 export function themeNameProblem(name: string, family: string, names: Record<string, string>) {
