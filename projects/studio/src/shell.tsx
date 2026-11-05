@@ -31,6 +31,10 @@ function startRoute(): Route {
   return COLORS_PAGES.some((page) => page.id === view) ? { section: 'colors', view: view! } : HOME;
 }
 
+/** The version of the Magma the studio runs on, written into the page by vendor.ts. */
+const magmaVersionOf = () =>
+  document.querySelector<HTMLMetaElement>('meta[name="magma-version"]')?.content || undefined;
+
 export function Studio() {
   const route = useRoute(startRoute());
   // the Colors view stays mounted under the other sections, so its work is not lost
@@ -130,6 +134,7 @@ function StudioBar({ route, verdict }: { route: Route; verdict: GateVerdict | nu
   const colorsView = route.section === 'colors' ? route.view : undefined;
   const behaviorPage = route.section === 'behavior' ? route.page : undefined;
   const sectionTone = (section: Route['section']) => (route.section === section ? 'weak' : 'text');
+  const version = magmaVersionOf();
 
   return (
     <>
@@ -141,9 +146,21 @@ function StudioBar({ route, verdict }: { route: Route; verdict: GateVerdict | nu
               <mds-text typography="h6" tag="p">
                 Magma Studio
               </mds-text>
-              <mds-text typography="caption" tag="p" class="studio-product-role">
-                Product designer
-              </mds-text>
+              <span class="studio-product-meta">
+                <mds-text typography="label" tag="span" class="studio-product-role">
+                  Product designer
+                </mds-text>
+                {version && (
+                  <mds-text
+                    typography="label"
+                    tag="span"
+                    class="studio-product-version"
+                    title={`The studio runs on Magma ${version}`}
+                  >
+                    {`v${version}`}
+                  </mds-text>
+                )}
+              </span>
             </span>
           </a>
           <mds-button

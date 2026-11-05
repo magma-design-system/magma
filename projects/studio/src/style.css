@@ -39,6 +39,17 @@
   text-transform: uppercase;
 }
 
+/* the role of the person, then the version of the Magma the studio runs on */
+.studio-product-meta {
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+  align-items: baseline;
+}
+
+.studio-product-version {
+  color: rgb(var(--magma-text-muted));
+}
+
 .studio-dropdown {
   display: grid;
   gap: var(--magma-rhythm-inline);
