@@ -3,6 +3,7 @@ import {
   accentInfix,
   accentTintDecls,
   contrastTintDecls,
+  cssDecl,
   emphasisStateSteps,
   hueContrastDecls,
   roleDescription,
@@ -307,7 +308,7 @@ const accentSection = (accentRole: string, family: string): SemanticSection => {
       // tint pointers (internal; repointed per theme, not bridged to Tailwind): the
       // quintet steps + interaction states (spec 6.6 accent exception), each an
       // existing ramp step so it mode-flips and retints per theme like the quintet.
-      // Shared with the theme overrides + playground via accentTintDecls().
+      // Shared with the theme overrides + the studio via accentTintDecls().
       ...accentTintDecls(accentRole, family),
       accent('surface'),
       accent('fg'),
@@ -398,7 +399,11 @@ const previewOf = (
   ];
 };
 
-const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
+/**
+ * One named theme expanded from its definition: what `semanticModel` does for each entry of
+ * `themes`, and what the studio (projects/studio) does for the themes it edits.
+ */
+export const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
   if (!THEME_NAME.test(name)) {
     throw new Error(`semantic.config: the theme "${name}" is not lowercase kebab-case`);
   }
@@ -489,4 +494,45 @@ export function semanticModel(): SemanticModel {
     contrast: contrastDecls(),
     themes: Object.entries(themes).map(([name, def]) => themeOf(name, def)),
   };
+}
+
+// Two selectors per scope, the same shape the global dark layer uses (see the
+// design-tokens css-vars-rgb template) and the per-component `*-pref-contrast.css`
+// sheets: the explicit `pref-contrast-more` class published by mds-pref-contrast,
+// then an @media block covering `pref-contrast-system` and a page with no mds-pref
+// controller at all. An explicit `pref-contrast-no-preference` matches neither, so
+// opting out keeps the base steps.
+/**
+ * The contrast blocks for one scope. `scope` is an extra `:root` qualifier (empty
+ * for the base layer, `[data-theme-name='x']` for a named theme). Empty string when
+ * nothing is promoted.
+ */
+export function contrastBlocks(scope: string, decls: SemanticDecl[]): string {
+  const rules = decls.map(cssDecl);
+  if (!rules.length) return '';
+  return [
+    `:root${scope}.pref-contrast-${CONTRAST_LEVEL} {`,
+    rules.join('\n'),
+    '}',
+    '',
+    `@media (prefers-contrast: ${CONTRAST_LEVEL}) {`,
+    `  :root${scope}.pref-contrast-system,`,
+    `  :root${scope}:not([data-magma-pref]) {`,
+    rules.map((rule) => `  ${rule}`).join('\n'),
+    '  }',
+    '}',
+  ].join('\n');
+}
+
+/**
+ * The CSS of one named theme (spec 8): its `:root[data-theme-name]` block, then its own
+ * contrast blocks; a deprecated theme says why it goes on the line above. Empty when the
+ * theme changes nothing (the base tint, no accent override). The styles generator prints
+ * `themes.css` with it and the studio its export, so the two cannot drift.
+ */
+export function namedThemeCss({ name, decls, contrast, deprecated }: SemanticTheme): string {
+  const scope = `[data-theme-name='${name}']`;
+  const block = decls.length ? `:root${scope} {\n${decls.map(cssDecl).join('\n')}\n}` : '';
+  const body = [block, contrastBlocks(scope, contrast)].filter(Boolean).join('\n\n');
+  return body && deprecated ? `/* ${name}, deprecated: ${deprecated}. */\n${body}` : body;
 }
