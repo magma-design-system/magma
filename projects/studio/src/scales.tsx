@@ -1,7 +1,13 @@
 import { useMemo, useRef, useState } from 'preact/hooks';
-import type { Formula, MagmaConfig } from '../../src/lib/color.mjs';
-import { resolveFormula, resolveRatiosName } from '../../src/lib/color.mjs';
-import { CONTRAST_RANGE, classifyRatioTarget } from '../../src/lib/contrast-range.js';
+import type { Formula, MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import {
+  resolveFormula,
+  resolveRatiosName,
+} from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import {
+  CONTRAST_RANGE,
+  classifyRatioTarget,
+} from '@maggioli-design-system/design-tokens/src/lib/contrast-range.js';
 
 export interface RatioSet {
   [scaleName: string]: number[];

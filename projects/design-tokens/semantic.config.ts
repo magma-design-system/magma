@@ -382,7 +382,7 @@ export const scaleStepList = (): string[] =>
  * group (`tone.neutral` becomes `--surface-neutral-*`) while the ramp keeps it
  * (`--tone-neutral-09`), and the group is NOT recoverable from the surface name - so
  * `tone` is assumed, which is exactly right today because a theme must be a tint
- * (the playground restricts theme candidates to the `tone` group: a theme repoints
+ * (the studio restricts theme candidates to the `tone` group: a theme repoints
  * the whole neutral scaffolding). A future theme drawn from another group states its
  * ramp explicitly, e.g. `blue: { surface: 'blue', scale: 'label-blue' }`.
  */
@@ -391,7 +391,7 @@ export const scaleFamily = (surface: string, scale?: string): string => scale ??
 /**
  * One declaration of the semantic layer, `--<name>: var(--<ref>);`, as data. Every
  * generated output reads these instead of printing its own: the stylesheets of the
- * styles package (`scripts/semantic.ts`), the playground theme export and the DTCG
+ * styles package (`scripts/semantic.ts`), the theme export of the studio and the DTCG
  * export of this package, so a role cannot point at one primitive in the CSS and at
  * another in the JSON. Names are written without the leading `--`.
  */
@@ -550,8 +550,8 @@ export const scaleTintDecls = (family: string): SemanticDecl[] =>
 
 /**
  * The `--magma-tint-scale-*` lines pointing the ramp at one family. SHARED for the
- * same reason as `accentTintOverride`: the styles generator and the playground theme
- * export must emit byte-identical CSS.
+ * same reason as `accentTintOverride`: the styles generator and the theme export of
+ * the studio must emit byte-identical CSS.
  */
 export const scaleTintOverride = (family: string): string[] => scaleTintDecls(family).map(cssDecl);
 
@@ -591,8 +591,8 @@ export const accentTintDecls = (role: string, family: string): SemanticDecl[] =>
  * interaction states, prefixed per `accentInfix` (general accent = no infix,
  * `ai` = `ai-`). `on-emphasis` is family-independent (the seed) so it is not
  * repointed. SHARED so the styles generator (`scripts/semantic.ts`, both the base
- * layer and each named-theme override) and the playground theme export
- * (`playground/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
+ * layer and each named-theme override) and the theme export of the studio
+ * (`projects/studio/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
  * accent exactly the way the base layer declares it.
  */
 export const accentTintOverride = (role: string, family: string): string[] =>

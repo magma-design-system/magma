@@ -3,8 +3,8 @@ import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 
-// the generator sources are .mts files imported with .mjs specifiers
-// (node/tsc convention); vite needs help mapping the extension
+// the generator sources of design-tokens are .mts files imported with .mjs
+// specifiers (node/tsc convention); vite needs help mapping the extension
 function resolveMts(): Plugin {
   return {
     name: 'resolve-mts',
@@ -23,26 +23,29 @@ const chalkStub = fileURLToPath(new URL('./src/chalk-stub.ts', import.meta.url))
 export default defineConfig({
   root: fileURLToPath(new URL('.', import.meta.url)),
   plugins: [resolveMts()],
-  esbuild: {
-    jsx: 'automatic',
-    jsxImportSource: 'preact',
+  oxc: {
+    jsx: { runtime: 'automatic', importSource: 'preact' },
   },
   resolve: {
     alias: {
       chalk: chalkStub,
     },
   },
-  // relative asset paths so the built bundle works wherever the `ui` command
-  // mounts it; output lands in dist/playground and ships with the package
+  // relative asset paths: the built studio works wherever it is mounted (a
+  // path of the Pages site, a command serving it inside a project), never only
+  // at the root of its own origin
   base: './',
   build: {
-    outDir: fileURLToPath(new URL('../dist/playground', import.meta.url)),
+    outDir: fileURLToPath(new URL('./dist', import.meta.url)),
     emptyOutDir: true,
   },
   server: {
     port: 5177,
-    // pin the port: if 5177 is busy it is this same playground, so fail fast
+    // pin the port: if 5177 is busy it is this same studio, so fail fast
     // instead of silently moving to 5178 (which spawns confusing extra instances)
     strictPort: true,
+  },
+  test: {
+    include: ['test/**/*.test.mts'],
   },
 });

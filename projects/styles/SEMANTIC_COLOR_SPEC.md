@@ -2,7 +2,8 @@
 
 Status: DRAFT (issue #570 / epic #328). This document is the contract shared by the
 generative work in `projects/design-tokens` and the semantic work in `projects/styles`.
-Numbers marked "proposed" are tuned in the playground (issue #571) before they are frozen.
+Numbers marked "proposed" are tuned in the studio (`projects/studio`, the tokens playground of
+issue #571) before they are frozen.
 
 ASCII only. Arrows are written `->`.
 
@@ -112,7 +113,7 @@ surface(family, mode, role) = oklch( L[mode][role], C_family * taper(L), H_famil
 
 GOTCHA: OKLCH lightness compresses the dark end. `L 16%` is `#0d0d0d` (near black), not
 `#161616`. A comfortable dark canvas `#161616` is `L 20%`. Pick by perceptual step and
-verify the hex; this is what the playground preview is for.
+verify the hex; this is what the preview of the studio is for.
 
 ### 5.2 Config
 
@@ -790,7 +791,7 @@ and `subtle` to `muted`, and the hierarchy between them is kept one step up.
 Neutral family (C = 0), as `theme.surfaces` / `theme.borders` of
 `design-tokens/.magma-design-tokensrc.json` set it (measured 2026-10-08). Lc is
 `text-default` on the surface (`#fcfcfc` dark / `#050505` light), apca-w3. Tuned in the
-playground: re-measure after a retune.
+studio: re-measure after a retune.
 
 | Role | DARK  L / hex / Lc | LIGHT  L / hex / Lc |
 |---|---|---|
@@ -928,5 +929,5 @@ Epic: #328.
 - Table "gabbia": decorative borders -> `border-muted` (soft, no 3:1 floor) or zebra;
   only state borders stay full contrast (section 9.2).
 
-Remaining to tune in the playground (issue #571): the exact L / hex / border-delta values
+Remaining to tune in the studio (issue #571): the exact L / hex / border-delta values
 in section 10.

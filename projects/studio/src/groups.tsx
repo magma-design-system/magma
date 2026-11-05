@@ -1,6 +1,14 @@
 import { useState } from 'preact/hooks';
-import type { ColorConfig, Formula, GroupConfig, MagmaConfig } from '../../src/lib/color.mjs';
-import { resolveFormula, resolveRatiosName } from '../../src/lib/color.mjs';
+import type {
+  ColorConfig,
+  Formula,
+  GroupConfig,
+  MagmaConfig,
+} from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import {
+  resolveFormula,
+  resolveRatiosName,
+} from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import type { ColorScales, Step } from './generator.js';
 
 interface GroupsManagerProps {

@@ -1,7 +1,10 @@
 import { useMemo } from 'preact/hooks';
 import chroma from 'chroma-js';
-import initialConfigJson from '../../.magma-design-tokensrc.json';
-import { createColorTokens, type MagmaConfig } from '../../src/lib/color.mjs';
+import initialConfigJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
+import {
+  createColorTokens,
+  type MagmaConfig,
+} from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 
 // The diff compares the palette generated from the edited config against the
 // one generated from the committed configuration (.magma-design-tokensrc.json,

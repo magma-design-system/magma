@@ -1,18 +1,24 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
-import type { ColorConfig, MagmaConfig } from '../../src/lib/color.mjs';
-import { createColorTokens } from '../../src/lib/color.mjs';
+import type {
+  ColorConfig,
+  MagmaConfig,
+} from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import { createColorTokens } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import {
   SURFACE_ROLES,
   BORDER_ROLES,
   groupOf,
   resolveSurfaceOptIn,
   type ThemeConfig,
-} from '../../src/lib/surface.mjs';
-import { TEXT_ROLES } from '../../src/lib/text-role.mjs';
-import { DEFAULT_TARGETS, wcag2Ratio } from '../../src/lib/contrast-gate.js';
-import boxShadowTokens from '../../tokens/cosmetic/box-shadow.json';
+} from '@maggioli-design-system/design-tokens/src/lib/surface.mjs';
+import { TEXT_ROLES } from '@maggioli-design-system/design-tokens/src/lib/text-role.mjs';
+import {
+  DEFAULT_TARGETS,
+  wcag2Ratio,
+} from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js';
+import boxShadowTokens from '@maggioli-design-system/design-tokens/tokens/cosmetic/box-shadow.json';
 
 type Mode = 'light' | 'dark';
 const MODES: Mode[] = ['light', 'dark'];
@@ -81,7 +87,7 @@ const BORDER_PURPOSE: Record<string, string> = {
 // carry the 3:1 floor of WCAG 1.4.11 - decorative borders deliberately have none, so a
 // verdict on them would be permanent noise. Both facts mirror the severity split in
 // contrast-gate.ts ("borders vs the elevated surfaces": strong/focus are `warn`, the rest
-// `info`), so the playground and the CI gate cannot drift apart.
+// `info`), so the studio and the CI gate cannot drift apart.
 // NOTE the gate measures every border on `surface-raised` too, while the chip can only show
 // the surface it is actually drawn on (`default`); in dark `raised` is the stricter of the
 // two, so the chip is not always the worst case the gate reports.

@@ -1,0 +1,26 @@
+name: studio
+
+# The studio of Magma (projects/studio, #695): an app, not a package. It runs the engine of
+# design-tokens in the browser, so a change to design-tokens builds and tests it too.
+on:
+  pull_request:
+  # the merge queue of main runs the checks here (docs/WORKFLOW.md, rule 1), on the very
+  # commit it then lands on main
+  merge_group:
+
+concurrency:
+  # one run per ref: a newer push cancels the superseded run
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  studio:
+    uses: ./.github/workflows/_package-pipeline.yml
+    with:
+      path: projects/studio/**
+      extra-path: projects/design-tokens/**
+      nx-project: studio
+      artifact-paths: projects/studio/dist
+      artifact-download-path: projects/studio/dist
+      run-tests: true
+      test-working-directory: projects/studio

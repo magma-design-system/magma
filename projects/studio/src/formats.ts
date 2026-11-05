@@ -1,10 +1,15 @@
 import Handlebars from 'handlebars';
-import hexTemplate from '../../src/formats/css-vars-hex/template.hbs?raw';
-import rgbTemplate from '../../src/formats/css-vars-rgb/template.hbs?raw';
-import gimpTemplate from '../../src/formats/gimp-palette/template.hbs?raw';
-import { ifEquals, leadZero, rgbChannel, gimpRgbChannel } from '../../src/formats/helpers.js';
-import { darkSchemeTemplateData as dark } from '../../src/formats/dark-scheme.js';
-import { version } from '../../package.json';
+import hexTemplate from '@maggioli-design-system/design-tokens/src/formats/css-vars-hex/template.hbs?raw';
+import rgbTemplate from '@maggioli-design-system/design-tokens/src/formats/css-vars-rgb/template.hbs?raw';
+import gimpTemplate from '@maggioli-design-system/design-tokens/src/formats/gimp-palette/template.hbs?raw';
+import {
+  ifEquals,
+  leadZero,
+  rgbChannel,
+  gimpRgbChannel,
+} from '@maggioli-design-system/design-tokens/src/formats/helpers.js';
+import { darkSchemeTemplateData as dark } from '@maggioli-design-system/design-tokens/src/formats/dark-scheme.js';
+import { version } from '@maggioli-design-system/design-tokens/package.json';
 
 // The CSS and GIMP outputs are Handlebars templates rendered over the token
 // tree (dictionary.properties in Style Dictionary). That tree is the whole

@@ -1,15 +1,15 @@
 import { useMemo, useState } from 'preact/hooks';
 import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
-import type { MagmaConfig } from '../../src/lib/color.mjs';
-import { createColorTokens } from '../../src/lib/color.mjs';
+import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import { createColorTokens } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 
 import {
   semantic,
   accentTintOverride,
   scaleFamily,
   scaleTintOverride,
-} from '../../semantic.config';
+} from '@maggioli-design-system/design-tokens/semantic.config';
 import { borderVerdict } from './surfaces.js';
 
 /**
@@ -26,7 +26,7 @@ import { borderVerdict } from './surfaces.js';
  * theme gets an accent ASSIGNMENT: per role, pick which variant it uses (default =
  * the base variant). The card previews the accent APPLIED per mode and the export
  * emits `--magma-tint-accent-*` via the SAME helper the styles generator uses, so
- * the playground export and the shipped `themes.css` stay identical.
+ * the studio export and the shipped `themes.css` stay identical.
  */
 
 type Mode = 'light' | 'dark';

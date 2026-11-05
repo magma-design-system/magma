@@ -20,7 +20,7 @@
 #
 # A repository has a single Pages site and every deploy replaces it whole:
 # Storybook lives in storybook/ and the root redirects to it, leaving room
-# for the tokens playground and theme-studio (#695) next to it.
+# for the studio (#695) next to it.
 name: deploy storybook
 
 on:

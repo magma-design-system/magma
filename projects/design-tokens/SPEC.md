@@ -133,7 +133,7 @@ overrides levels for one family. One opted-in family yields `--surface-<family>-
 (3 roles: muted, default, strong), each flipping per mode like the tones. They
 ship in the `theme` export group (`colors-rgb-theme.css`) and in the aggregate
 `colors-rgb.css`. The values above are the repo config (`.magma-design-tokensrc.json`),
-tuned in the playground; the measured ladder is in `SEMANTIC_COLOR_SPEC.md` section 10.
+tuned in the studio (`projects/studio`); the measured ladder is in `SEMANTIC_COLOR_SPEC.md` section 10.
 
 ## Text-role engine (by-target / A7, issue #591)
 
@@ -358,7 +358,7 @@ Colors can also declare an optional `hueShift` field (`{ "dark": -18, "light": 1
 | `dist/flutter/colors-*.dart` | the same colors split by group, under the same two class names | one of them instead of `colors.dart` |
 | `dist/flutter/fonts.dart` | Flutter `TextStyle`s; does not compile (`fontSize: 48px`, the fallback fonts unquoted) | none |
 | `dist/gimp/colors.gpl` | GIMP palette | GIMP, Inkscape (light) |
-| `dist/config/magma-design-tokensrc.schema.json` | JSON Schema | editors, the CLI `ui` command |
+| `dist/config/magma-design-tokensrc.schema.json` | JSON Schema | editors, the studio |
 | `dist/config/magma-theme.schema.json` | JSON Schema of a theme (#694) | the `magma/themes/<name>.json` of a product |
 
 ## Anti-patterns

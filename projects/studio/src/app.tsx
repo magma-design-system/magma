@@ -1,26 +1,38 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import initialConfigJson from '../../.magma-design-tokensrc.json';
-import DEFAULT_COLOR_CONFIG from '../../src/config/default-color.json';
+import initialConfigJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
+import DEFAULT_COLOR_CONFIG from '@maggioli-design-system/design-tokens/src/config/default-color.json';
 import { zipSync } from 'fflate';
-import type { ColorConfig, Formula, GroupConfig, MagmaConfig } from '../../src/lib/color.mjs';
+import type {
+  ColorConfig,
+  Formula,
+  GroupConfig,
+  MagmaConfig,
+} from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import {
   createColorTokens,
   resolveExport,
   resolveFormula,
   resolveRatiosName,
-} from '../../src/lib/color.mjs';
+} from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { cssHex, cssRgb, gimpPalette } from './formats.js';
-import { validateConfig } from '../../src/lib/schema.mjs';
-import { colorsToDtcg, type ColorTokenTree } from '../../src/lib/dtcg.mjs';
+import { validateConfig } from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
+import {
+  colorsToDtcg,
+  type ColorTokenTree,
+} from '@maggioli-design-system/design-tokens/src/lib/dtcg.mjs';
 import { GroupsManager } from './groups.js';
 import { DiffView } from './diff.js';
 import { BatchExportModal } from './batch.js';
-import { hasHueShift, resolveCurveWeights, type HueShiftConfig } from '../../src/lib/hue-shift.mjs';
+import {
+  hasHueShift,
+  resolveCurveWeights,
+  type HueShiftConfig,
+} from '@maggioli-design-system/design-tokens/src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
 import { ScalesManager, type RatioSet, type ScaleOrigin } from './scales.js';
 import { SurfaceManager, DEFAULT_THEME } from './surfaces.js';
 import { ThemesManager } from './themes.js';
-import type { ThemeConfig } from '../../src/lib/surface.mjs';
+import type { ThemeConfig } from '@maggioli-design-system/design-tokens/src/lib/surface.mjs';
 import { nearestColorName } from './color-names.js';
 import {
   clearDraft,
@@ -29,7 +41,7 @@ import {
   reconcileDraft,
   writeDraft,
   type DraftSource,
-  type PlaygroundDraft,
+  type StudioDraft,
 } from './draft.js';
 const COLORSPACES = [
   'HSL',
@@ -527,7 +539,7 @@ function ColorEditor({
 export function App() {
   // a persisted working state, restored once at mount, takes precedence over
   // the bundled defaults
-  const bootDraft = useMemo(() => readDraft() as PlaygroundDraft<View> | null, []);
+  const bootDraft = useMemo(() => readDraft() as StudioDraft<View> | null, []);
   const [config, setConfig] = useState<CloneableConfig>(() =>
     bootDraft ? bootDraft.config : clone(initialConfigJson as unknown as CloneableConfig),
   );
@@ -540,8 +552,9 @@ export function App() {
   const [copied, setCopied] = useState(false);
   const [downloadOpen, setDownloadOpen] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
-  // server mode: the config is served by the `ui` command and can be saved
-  // back to disk. When the playground runs standalone these stay inert.
+  // server mode: the config is served by a command that answers /api/config
+  // (the `ui` command of design-tokens 15 did; the studio's own command comes
+  // with #695) and can be saved back to disk. On its own these stay inert.
   const [serverMode, setServerMode] = useState(false);
   const [savePath, setSavePath] = useState<string | null>(null);
   // why the server refuses saves (a JavaScript config or package.json), or null
@@ -740,7 +753,7 @@ export function App() {
     });
   }, [JSON.stringify(config), selectedName, view, origin, draftConflict]);
 
-  // when served by the `ui` command, adopt the on-disk config and enable
+  // when served by a command, adopt the on-disk config and enable
   // saving; in both modes, check a restored draft against the config it was
   // made on before letting it win
   useEffect(() => {
@@ -755,7 +768,7 @@ export function App() {
         const res = await fetch('/api/config');
         if (res.ok) served = await res.json();
       } catch {
-        // not served by the ui command: the source is the bundled default
+        // not served by a command: the source is the bundled default
       }
       if (cancelled) return;
       const fileConfig =
@@ -1162,7 +1175,7 @@ export function App() {
     <div class={`layout${showSidebar ? '' : ' no-sidebar'}`}>
       <header class="topbar">
         <h1>
-          magma design tokens <span>playground</span>
+          magma <span>studio</span>
         </h1>
         <nav>
           <button class={view === 'colors' ? 'active' : ''} onClick={() => setView('colors')}>

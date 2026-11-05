@@ -1,0 +1,6 @@
+{
+  "name": "studio",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "type": "application",
+  "tags": ["type:app", "axis:visual"]
+}

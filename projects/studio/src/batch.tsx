@@ -1,5 +1,8 @@
 import { useMemo, useState } from 'preact/hooks';
-import type { ColorConfig, MagmaConfig } from '../../src/lib/color.mjs';
+import type {
+  ColorConfig,
+  MagmaConfig,
+} from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { generateScales } from './generator.js';
 
 interface BatchExportModalProps {

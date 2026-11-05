@@ -1,12 +1,14 @@
-import type { MagmaConfig } from '../../src/lib/color.mjs';
+import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 
 // the working state is mirrored to localStorage so a reload keeps the edited
-// or loaded configuration instead of falling back to the source config
+// or loaded configuration instead of falling back to the source config. The key
+// is the one of the tokens playground the studio comes from, so a draft made
+// there survives the move (same origin, same port)
 export const DRAFT_STORAGE_KEY = 'magma-design-tokens:playground:draft';
 
 /**
- * The config a draft was made on: the file the `ui` command serves (`path`),
- * or the bundled default when the playground runs standalone (`path` null).
+ * The config a draft was made on: the file a server serves (`path`), or the
+ * bundled default when the studio runs on its own (`path` null).
  * `hash` fingerprints its content, null when the server found no file.
  */
 export interface DraftSource {
@@ -14,7 +16,7 @@ export interface DraftSource {
   hash: string | null;
 }
 
-export interface PlaygroundDraft<View extends string = string> {
+export interface StudioDraft<View extends string = string> {
   config: MagmaConfig & Record<string, unknown>;
   selectedName: string;
   view: View;
@@ -25,7 +27,7 @@ export interface PlaygroundDraft<View extends string = string> {
 }
 
 export type DraftDecision =
-  /** keep the draft: it was made on the source the playground has now */
+  /** keep the draft: it was made on the source the studio has now */
   | { use: 'draft' }
   /** show the source config: no draft, or one with nothing of its own */
   | { use: 'source' }
@@ -52,12 +54,12 @@ function sourceLabel(path: string | null): string {
 }
 
 /**
- * Decides what the playground shows at start when a draft was restored:
+ * Decides what the studio shows at start when a draft was restored:
  * `sourceJson` is the JSON of the config it would show without one (the file
  * on disk, or the bundled default when there is no file or no server).
  */
 export function reconcileDraft(
-  draft: PlaygroundDraft | null,
+  draft: StudioDraft | null,
   source: DraftSource,
   sourceJson: string,
 ): DraftDecision {
@@ -71,9 +73,9 @@ export function reconcileDraft(
 
   let why: string;
   if (!from) {
-    why = `this draft comes from an older playground and may not match ${sourceLabel(source.path)}`;
+    why = `this draft comes from an older studio and may not match ${sourceLabel(source.path)}`;
   } else if (from.path !== source.path) {
-    why = `this draft was made on ${sourceLabel(from.path)}, the playground now shows ${sourceLabel(source.path)}`;
+    why = `this draft was made on ${sourceLabel(from.path)}, the studio now shows ${sourceLabel(source.path)}`;
   } else if (source.hash === null) {
     why = `${sourceLabel(source.path)} was removed after this draft was saved`;
   } else if (from.hash === null) {
@@ -84,11 +86,11 @@ export function reconcileDraft(
   return { use: 'ask', reason: why };
 }
 
-export function readDraft(): PlaygroundDraft | null {
+export function readDraft(): StudioDraft | null {
   try {
     const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
     if (!raw) return null;
-    const draft = JSON.parse(raw) as PlaygroundDraft;
+    const draft = JSON.parse(raw) as StudioDraft;
     if (!draft.config || !Array.isArray(draft.config.colors) || draft.config.colors.length === 0) {
       return null;
     }
@@ -98,7 +100,7 @@ export function readDraft(): PlaygroundDraft | null {
   }
 }
 
-export function writeDraft(draft: PlaygroundDraft): void {
+export function writeDraft(draft: StudioDraft): void {
   try {
     localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
   } catch {

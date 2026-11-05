@@ -2,20 +2,20 @@
 import { afterEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 
-import initialConfig from '../.magma-design-tokensrc.json'
+import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import {
   DRAFT_STORAGE_KEY,
   hashText,
   reconcileDraft,
-  type PlaygroundDraft,
-} from '../playground/src/draft.js'
-import { App } from '../playground/src/app.js'
+  type StudioDraft,
+} from '../src/draft.js'
+import { App } from '../src/app.js'
 
-// The playground mirrors its working config to localStorage. A restored draft
+// The studio mirrors its working config to localStorage. A restored draft
 // used to win over the config on disk even after the file changed or was
 // removed; it is now checked against the config it was made on.
 
-type Config = PlaygroundDraft['config']
+type Config = StudioDraft['config']
 
 const PATH = '/project/.magma-design-tokensrc.json'
 const disk = initialConfig as unknown as Config
@@ -24,7 +24,7 @@ const changed = { ...disk, colors: disk.colors.slice(1) } as Config
 const changedJson = JSON.stringify(changed)
 const edits = { ...disk, colors: disk.colors.slice(2) } as Config
 
-function draftOf (config: Config, source: PlaygroundDraft['source'], edited?: boolean): PlaygroundDraft {
+function draftOf (config: Config, source: StudioDraft['source'], edited?: boolean): StudioDraft {
   return { config, selectedName: config.colors[0].name, view: 'colors', source, edited }
 }
 
@@ -54,7 +54,7 @@ test('reconcileDraft asks when the source changed under a draft with edits', () 
 
 test('reconcileDraft says why: removed, created, another file, an older draft', () => {
   const was = { path: PATH, hash: hashText(diskJson) }
-  const ask = (draft: PlaygroundDraft, source: { path: string | null, hash: string | null }) =>
+  const ask = (draft: StudioDraft, source: { path: string | null, hash: string | null }) =>
     reconcileDraft(draft, source, changedJson)
 
   expect(ask(draftOf(edits, was, true), { path: PATH, hash: null })).toEqual({
@@ -64,13 +64,13 @@ test('reconcileDraft says why: removed, created, another file, an older draft', 
     use: 'ask', reason: `${PATH} was created after this draft was saved`,
   })
   expect(ask(draftOf(edits, was, true), { path: '/other/rc.json', hash: was.hash })).toEqual({
-    use: 'ask', reason: `this draft was made on ${PATH}, the playground now shows /other/rc.json`,
+    use: 'ask', reason: `this draft was made on ${PATH}, the studio now shows /other/rc.json`,
   })
   expect(ask(draftOf(edits, { path: null, hash: was.hash }, true), was)).toEqual({
-    use: 'ask', reason: `this draft was made on the bundled config, the playground now shows ${PATH}`,
+    use: 'ask', reason: `this draft was made on the bundled config, the studio now shows ${PATH}`,
   })
   expect(ask(draftOf(edits, undefined), was)).toEqual({
-    use: 'ask', reason: `this draft comes from an older playground and may not match ${PATH}`,
+    use: 'ask', reason: `this draft comes from an older studio and may not match ${PATH}`,
   })
 })
 
@@ -90,8 +90,8 @@ function serve (config: Config | null): void {
   })
 }
 
-function storedDraft (): PlaygroundDraft {
-  return JSON.parse(localStorage.getItem(DRAFT_STORAGE_KEY) ?? 'null') as PlaygroundDraft
+function storedDraft (): StudioDraft {
+  return JSON.parse(localStorage.getItem(DRAFT_STORAGE_KEY) ?? 'null') as StudioDraft
 }
 
 function button (label: string): HTMLButtonElement | undefined {

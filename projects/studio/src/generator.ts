@@ -1,5 +1,9 @@
 import chroma from 'chroma-js';
-import { createColorTokens, type ColorConfig, type MagmaConfig } from '../../src/lib/color.mjs';
+import {
+  createColorTokens,
+  type ColorConfig,
+  type MagmaConfig,
+} from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 
 export interface Step {
   value: string;

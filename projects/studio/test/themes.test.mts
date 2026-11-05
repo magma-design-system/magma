@@ -2,11 +2,11 @@
 import { afterEach, expect, test } from 'vitest'
 import { h, render } from 'preact'
 
-import initialConfig from '../.magma-design-tokensrc.json'
-import type { MagmaConfig } from '../src/lib/color.mjs'
-import { ThemesManager } from '../playground/src/themes.js'
+import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
+import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
+import { ThemesManager } from '../src/themes.js'
 
-// Smoke test for the playground themes section: it builds the export CSS while
+// Smoke test for the themes section of the studio: it builds the export CSS while
 // rendering, so a throw anywhere in that path (e.g. a helper used but never
 // imported) silently drops the whole block from the page.
 
