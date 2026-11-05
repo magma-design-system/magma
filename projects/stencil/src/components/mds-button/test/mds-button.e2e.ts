@@ -1195,39 +1195,67 @@ describe('mds-button', () => {
           .split(/\s+/)
           .join(', ')})`;
 
-      // text has the softest hover already: its current takes the fill of weak (#1264)
-      it.each(['primary', 'dark', 'light', 'error'])(
-        'gives the text tone of %s the fill of weak at rest',
-        async (variant) => {
-          const { root } = await render(
-            `<mds-button variant="${variant}" tone="text" label="Here" current></mds-button>`,
-          );
-          await settled();
+      const current = async (variant: string, tone: string) => {
+        const { root } = await render(
+          `<mds-button variant="${variant}" tone="${tone}" label="Here" current></mds-button>`,
+        );
+        await settled();
+        return root;
+      };
 
-          expect(getComputedStyle(root).backgroundColor).toBe(role(root, 'wash'));
-        },
-      );
+      // the area halfway between rest and hover, until full colours: the selected wash of the
+      // family, a role of the tokens (#1269). The page of the tests loads no semantic layer, so
+      // the button paints the fallback of the role; a value set on the page for the role proves
+      // it reads the role itself
+      describe('weak', () => {
+        afterEach(() => document.documentElement.removeAttribute('style'));
 
-      // dark and light keep the wash of weak on hover, light the fill of strong too: the current
-      // area is a step of its own there
-      const variants = ['primary', 'dark', 'light', 'error', 'ai'];
-      it.each([
-        ...variants.map((variant) => [variant, 'strong', 'current-fill', 'fill']),
-        ...variants.map((variant) => [variant, 'weak', 'current-wash', 'wash']),
-      ])(
-        'sets %s %s apart from its area at rest, without the ring of the hover',
-        async (variant, tone, current, rest) => {
-          const { root } = await render(
-            `<mds-button variant="${variant}" tone="${tone}" label="Here" current></mds-button>`,
-          );
-          await settled();
+        it.each([
+          ['primary', 'accent-surface-selected'],
+          ['ai', 'accent-ai-surface-selected'],
+          ['error', 'danger-wash-soft'],
+          ['info', 'info-wash-soft'],
+        ])('paints %s with the selected wash %s, without the ring', async (variant, name) => {
+          const root = await current(variant, 'weak');
           const { backgroundColor, boxShadow } = getComputedStyle(root);
-
-          expect(backgroundColor).toBe(role(root, current));
-          expect(backgroundColor).not.toBe(role(root, rest));
+          expect(backgroundColor).not.toBe(role(root, 'wash'));
           expect(boxShadow).toMatch(/ 0px$/);
-        },
-      );
+
+          document.documentElement.style.setProperty(`--magma-${name}`, '1 2 3');
+          await settled();
+
+          expect(getComputedStyle(root).backgroundColor).toBe('rgb(1, 2, 3)');
+        });
+      });
+
+      // their hover keeps the area, and so does the current button: its bold label marks it
+      it.each([
+        ['dark', 'weak', 'wash'],
+        ['light', 'weak', 'wash'],
+        ...['primary', 'dark', 'light', 'error', 'ai'].map((variant) => [
+          variant,
+          'strong',
+          'fill',
+        ]),
+      ])('keeps %s %s on its area at rest, without the ring', async (variant, tone, rest) => {
+        const root = await current(variant, tone);
+        const { backgroundColor, boxShadow } = getComputedStyle(root);
+
+        expect(backgroundColor).toBe(role(root, rest));
+        expect(boxShadow).toMatch(/ 0px$/);
+      });
+
+      // no area at rest: the wash of their hover
+      it.each(
+        ['primary', 'dark', 'light', 'error'].flatMap((variant) => [
+          [variant, 'text'],
+          [variant, 'outline'],
+        ]),
+      )('gives %s %s the wash of its hover', async (variant, tone) => {
+        const root = await current(variant, tone);
+
+        expect(getComputedStyle(root).backgroundColor).toBe(role(root, 'text-wash'));
+      });
     });
   });
 

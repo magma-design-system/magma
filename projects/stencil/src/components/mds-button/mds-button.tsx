@@ -140,8 +140,8 @@ export class MdsButton {
 
   /**
    * Marks the button that leads to the view you are in, as the current section of a bar or the
-   * current view of a switcher, with a look of its own: an area lighter than the hover of its
-   * tone (the fill of `weak` for `tone="text"`) and a heavier label. `current`, or
+   * current view of a switcher, with a look of its own: an area that weighs less than the hover of
+   * its tone, never its ring, and a heavier label. `current`, or
    * `current="page"`, is that view: the button neither navigates nor submits, a click and Enter do
    * nothing, but it stays in the Tab order, announced with `aria-current` (`"page"` on a link,
    * `"true"` otherwise). `current="section"` is a view inside it, as a record of its list: the
