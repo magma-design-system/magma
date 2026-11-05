@@ -24,8 +24,9 @@
   overflow-y: auto;
 
   /* the inline padding and the one of a row put the swatches on the start edge of the title of
-     the page, which stands at the gutter of the page */
-  padding: 0 var(--magma-rhythm-inline) var(--magma-rhythm-inset);
+     the page, which stands at the gutter of the page; the few at the top keep the focus ring of Add
+     color, the first thing in the list, inside the area the list scrolls */
+  padding: calc(var(--spacing) * 200) var(--magma-rhythm-inline) var(--magma-rhythm-inset);
 }
 
 .palette-list-group {
