@@ -41,6 +41,32 @@ from `bisque`. The names of the themes Magma ships (`semantic.config.ts`, `theme
 the deprecated ones included, so a theme of a product never takes one, and a name is lowercase
 words joined by hyphens (`THEME_NAME` of `semantic.model.ts`).
 
+## The pages in Magma
+
+Every page is written with the components of Magma (#695): the controls of a form go through the
+bridges of `src/magma.tsx` (`Field`, `TextInput`, `Select`, `Check`, `Range`), which hand back
+the next value as a native control of Preact does and never the echo of a value the page set (the
+change events of `mds-input`, `mds-input-select` and `mds-input-range` leave on that too). A value
+the page parses or sorts (a name, a stop of a scale, a list of export groups) takes
+`commit="leave"`: it is handed back on Enter or on leaving the field, as the change of a native
+input, not at every key. Dialogs are an `mds-modal` with an `mds-banner` window, the main action
+last; destructive actions sit in the menu of their item.
+
+Each page keeps its rules in the sheet beside its module (`palette.css`, `scales.css`, ...),
+from the tokens only: spaces from the rhythm, widths from the widths, colours from the semantic
+roles, a length with no relation a step of `--spacing`. `style.css` holds the frame: the shell,
+the Theme section and the frame of the pages of Colors; the document is the one of Magma.
+
+Four pieces Magma does not have yet stay native, painted with the tokens, each marked in the code
+with its issue until the component lands:
+
+| Piece | Where | Issue |
+| --- | --- | --- |
+| a colour field | the base colour of a family, New color | #1260 |
+| a range of several values | the axis of a contrast scale | #1261 |
+| a list and its detail | the families of the Palette | #1262 |
+| a chip with a colour swatch | the families of Semantic surface, the usage of a scale | #1263 |
+
 ## Magma from the installed one
 
 The studio never bundles the Magma components nor their stylesheets: its pages load them from the
@@ -163,8 +189,8 @@ blocks, printed by `namedThemeCss` of `design-tokens/semantic.model.ts`, the fun
 A reload keeps the work: the studio mirrors it to the browser's localStorage as a draft, stamped
 with the configuration it was made on (the bundled one, or the file a server serves). When that
 configuration changed after the draft was saved (edited, removed, or another file), a draft with
-no edits of its own gives way to it, and a draft with edits shows why and asks: **use the file on
-disk** (or **use the bundled config**) or **keep the draft**. Saving stays off until you pick, so
+no edits of its own gives way to it, and a draft with edits shows why and asks: **Use the file on
+disk** (or **Use the bundled config**) or **Keep the draft**. Saving stays off until you pick, so
 the draft cannot overwrite the newer file by mistake.
 
 Served by a command that answers `GET` / `PUT /api/config` and `POST /api/build` (the `ui` command
