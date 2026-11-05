@@ -1,4 +1,4 @@
 import { render } from 'preact';
-import { App } from './app.js';
+import { Studio } from './shell.js';
 
-render(<App />, document.getElementById('app')!);
+render(<Studio />, document.getElementById('app')!);

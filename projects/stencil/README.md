@@ -109,6 +109,7 @@ flowchart LR
   BUILD -->|"src/, one module per tag"| RE["stencil-react"]
   BUILD -->|"stencil-generated/"| AN["stencil-angular"]
   BUILD -.->|"./components, ./loader, ./hydrate, ./services"| APP(["consumer app"])
+  BUILD -->|"dist/magma-components, loaded by its pages"| STU["studio"]
   DOCS -->|"documentation.json"| CM["codemod"]
   DOCS -->|"magma.api.txt"| RISK["check.pr-risk"]
   DOCS -.->|"AGENTS.md, agents/"| AGENT(["the agent of a consumer project"])
@@ -117,7 +118,7 @@ flowchart LR
   BL -.->|"./eslint, ./stylelint, magma-mcp"| AGENT
   class AGD,LINT,DOCS,BL,IMG,AGENT ai
   class SI,ID assets
-  class DT,ST visual
+  class DT,ST,STU visual
   class BUILD,RE,AN components
   class CM,RISK tooling
   class APP,SITE outside

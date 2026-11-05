@@ -4,13 +4,8 @@ The studio of Magma: whoever installs Magma defines a theme from a UI, honest ab
 aware of every axis Magma has (epic #693). It is an app of this repository, not a package: it is
 not published on npm.
 
-Today it is the tokens playground that used to live in `design-tokens` (#695): the colours, the
-contrast scales, the surfaces and the themes of a configuration, generated in the browser by the
-engine of `design-tokens`. Its interface is rebuilt with Magma components next (#696, #697), and
-it grows the sections of a product's definition (Foundation, Patterns, Blocks) after the theme.
-
 ```bash
-nx run studio:serve    # the dev server, on http://localhost:5177
+nx run studio:serve    # the dev server, on http://localhost:5177 (builds the components first)
 nx run studio:build    # the static app, in dist/
 nx run studio:test     # Vitest, jsdom
 ```
@@ -18,28 +13,91 @@ nx run studio:test     # Vitest, jsdom
 The port is pinned (`strictPort`): when 5177 is busy the studio is already running, so the server
 stops instead of opening a second instance on another port.
 
+## The shell
+
+The bar of the studio follows the app-shell block of Magma (the logo, "Magma Studio", "Product
+designer") and holds three sections, in the order of the work (#693, decided 2026-11-05):
+
+| Section | Pages | What it is |
+| --- | --- | --- |
+| **Colors** (a menu) | Palette, Contrast scales, Semantic surface, Themes, Groups, then Diffs | the tokens playground that used to live in `design-tokens` (#695), one page per view; the menu opens with the verdict of the contrast gate on the configuration being edited |
+| **Theme** | one page | the theme full screen, on a scene of a product in an iframe, with its controls floating over it: the theme to show, then one button per axis (typography, shape, density, depth, the preferences of the person, dimension) |
+| **Behavior** (a menu) | Design language, Patterns, Blocks | what Magma decided and the layer of a product, read-only; placeholders until their turn (#693, "The plan") |
+
+Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
+`#/behavior/patterns`, `src/routes.ts`), so the studio works from whatever folder serves it. The
+Colors pages stay mounted under the other sections, so their work is not lost; each opens with the
+head of the page-header block: the title, one line, then the actions (a menu with Reset and Load
+config, Copy JSON or Save, and Download last).
+
+The Theme section shows the scene (`scene.html`) in an iframe, a document of its own: the theme is
+set on its `<html>` (`data-theme-name`), and the preferences of the person live in its own
+`mds-pref` panel, which writes on its own document. Both move the scene and leave the studio alone
+(#695, "The dogfooding constraint"). Today the select offers the themes Magma ships and only the
+preferences have a panel; the panels of the other axes come with #696, the scenes with #697.
+
+The **Themes** page names each theme apart from the family it is drawn from: `editorial` is drawn
+from `bisque`. The names of the themes Magma ships (`semantic.config.ts`, `themes`) are reserved,
+the deprecated ones included, so a theme of a product never takes one, and a name is lowercase
+words joined by hyphens (`THEME_NAME` of `semantic.model.ts`).
+
+## Magma from the installed one
+
+The studio never bundles the Magma components nor their stylesheets: its pages load them from the
+Magma installed where the studio runs ([`ARCHITECTURE.md`](../../docs/ARCHITECTURE.md), "Magma as
+an external vendor"), as a render of the MCP server does. `vendor.ts` uses the code of the render
+(`projects/lint/src/mcp/render.ts`; "The page a render loads" in
+[`CONTRACTS.md`](../../docs/CONTRACTS.md)):
+
+- each page imports the stylesheets of `agents/assets.md` in their layers (`stylesheetImports`),
+  sets the folder of the icons for `mds-icon` and loads the lazy loader of the installed magma
+  (`loaderOf`), with paths relative to the page: `node_modules/`, `svg/`, `components/`;
+- the dev server and `vite preview` serve those three paths from the installed packages (`fileOf`);
+- the tags are written after Vite has processed the page, so the build leaves them as they are:
+  whoever hosts the built studio serves the same three paths beside it.
+
+In this repository the installed magma is the build of `stencil`, so `serve` and `build` build it
+first (an implicit dependency). A test holds the bundle to the rule: no component and no runtime
+of Stencil in `dist/assets`.
+
 ## Architecture
 
 The studio runs the engine of `design-tokens` in the browser: it imports its sources (Vite turns
 the `.mjs` specifiers of the `.mts` files into the sources, and replaces `chalk` with a stub) and
 generates the palette, the surfaces and the themes on every edit. Nothing it shows is computed by
 a copy: the default balances are the `theme` block of `.magma-design-tokensrc.json`, the floors
-of the text roles those of the contrast gate, and the export of a theme is printed by the code
-that writes `themes.css`.
+of the text roles those of the contrast gate, the verdict of the Colors menu the pairs of
+`gatePairs` judged against the baseline of design-tokens, and the export of a theme is printed by
+the code that writes `themes.css`.
 
 ```mermaid
 flowchart LR
   DT["design-tokens<br/>src/lib, semantic.model.ts, .magma-design-tokensrc.json"]
+  LINT["lint<br/>src/mcp/render.ts"]
+  WC["stencil<br/>dist/magma-components"]
+  ID["identity<br/>logo-magma.svg"]
   subgraph stu["studio<br/>an app, not on npm"]
-    APP["src/app.tsx<br/>colours, scales, groups, diff"]
-    SURF["src/surfaces.tsx, src/themes.tsx<br/>balances, themes, contrast chips"]
+    SHELL["src/shell.tsx, src/routes.ts<br/>the bar, Colors, Theme, Behavior"]
+    APP["src/app.tsx<br/>the pages of Colors"]
+    SURF["src/surfaces.tsx, src/themes.tsx<br/>balances, themes, names"]
     OUT["src/formats.ts, src/batch.tsx<br/>zip, DTCG, CSS, GIMP, config"]
+    VEN["vendor.ts<br/>serves Magma to the pages"]
+    SCENE["scene.html<br/>the page the Theme section shows"]
+    SHELL --> APP
+    SHELL --> SCENE
     APP --> SURF
     APP --> OUT
   end
-  DT -->|"createColorTokens, themeOf, namedThemeCss, DEFAULT_TARGETS"| APP
+  DT -->|"createColorTokens, gatePairs, themeOf, namedThemeCss"| APP
+  LINT -->|"stylesheetImports, loaderOf, fileOf"| VEN
+  WC -->|"the lazy loader"| VEN
+  ID -->|"the logo of the bar"| SHELL
+  VEN -.->|"node_modules/, svg/, components/"| SHELL
   OUT -.->|"download"| AUTHOR(["the author of a theme"])
-  class DT,APP,SURF,OUT visual
+  class DT,APP,SURF,OUT,SHELL,VEN,SCENE visual
+  class LINT ai
+  class WC components
+  class ID assets
   class AUTHOR outside
   class stu area
   classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
@@ -58,19 +116,17 @@ Colours: purple ai, amber assets, teal visual, blue components, grey tooling, wh
 
 The engine, `semantic.config.ts` and the theme files stay in `design-tokens`: the builds of
 `design-tokens` and `styles` read them, and moving them here would make `design-tokens` depend on
-the studio. The studio never bundles the Magma components nor their stylesheets: it takes them
-from the Magma installed where it runs ([`ARCHITECTURE.md`](../../docs/ARCHITECTURE.md), "Magma as
-an external vendor").
+the studio.
 
-## Views
+## The pages of Colors
 
 The studio loads `.magma-design-tokensrc.json` of `design-tokens` and runs the real token
-generator in the browser, so every preview matches the build output exactly. It has five views:
-**colors** (the two-column editor: color list on the left, editing and live light/dark scale
-previews with achieved contrast on the right; `neutral` is selected by default when present),
-**contrast scales**, **themes** (opt families into the surface engine, tune the surface/border/text
-levels, and preview each opted family as a named theme with its accent assignment and contrast
-checks), **groups** and **diff**. Selecting a color from the sidebar while in contrast scales
+generator in the browser, so every preview matches the build output exactly. Colors has six
+pages: **Palette** (the two-column editor: color list on the left, editing and live light/dark
+scale previews with achieved contrast on the right; `neutral` is selected by default when
+present), **Contrast scales**, **Semantic surface** (opt families into the surface engine, tune
+the surface/border/text levels), **Themes** (each opted family as a named theme, with its accent
+assignment and contrast checks), **Groups** and **Diffs**. Selecting a color from the sidebar while in contrast scales
 keeps you there, since the scale samples follow the selected color.
 
 The **diff** view compares the current palette against the one generated from the committed
@@ -80,9 +136,9 @@ changed - outlining each changed step and badging the color with the largest per
 `design-tokens/tokens/color/generated/` are build artifacts and not committed, so the committed
 config is the baseline.
 
-The studio works with any configuration, not just the repo one: **load config** opens a
-`.magma-design-tokensrc.json` from disk and **copy JSON** copies the edited configuration to the
-clipboard. The **download** menu offers:
+The studio works with any configuration, not just the repo one: **Load config** (in the menu of
+the head of the page) opens a `.magma-design-tokensrc.json` from disk and **Copy JSON** copies the
+edited configuration to the clipboard. The **Download** menu offers:
 
 - **All tokens (zip)** - the configuration, the generated JSON tokens (whole palette + one file
   per export group) and the CSS and GIMP renders, mirroring the `dist` layout of `design-tokens`;
@@ -99,9 +155,10 @@ group. When that yields more than one file the download is a zip (`magma-css.zip
 the same Handlebars templates the build uses, so they match the CLI output. Editing is in-memory
 only: nothing touches the repo files.
 
-The **themes** view exports the CSS of every theme it shows: the `data-theme-name` block of each
-family opted into a surface, its reassigned accents and its own contrast blocks, printed by
-`namedThemeCss` of `design-tokens/semantic.model.ts`, the function that writes `themes.css`.
+The **Themes** page exports the CSS of every theme it shows: the `data-theme-name` block of each
+theme, under its name, drawn from its family, with its reassigned accents and its own contrast
+blocks, printed by `namedThemeCss` of `design-tokens/semantic.model.ts`, the function that writes
+`themes.css`: the block of `editorial` is the one `themes.css` ships.
 
 A reload keeps the work: the studio mirrors it to the browser's localStorage as a draft, stamped
 with the configuration it was made on (the bundled one, or the file a server serves). When that
@@ -112,8 +169,8 @@ the draft cannot overwrite the newer file by mistake.
 
 Served by a command that answers `GET` / `PUT /api/config` and `POST /api/build` (the `ui` command
 of `design-tokens` did it until version 16; the command of the studio comes with #695), the
-studio loads the configuration on disk, swaps **copy JSON** for **save** and adds **Build tokens on
-disk** to the download menu. Run on its own, the API is absent and editing stays in memory.
+studio loads the configuration on disk, swaps **Copy JSON** for **Save** and adds **Build tokens on
+disk** to the Download menu. Run on its own, the API is absent and editing stays in memory.
 
 New colors are created from a dialog: pick the value and the name auto-completes underneath from
 the "Name That Color" vocabulary (via [color-namer](https://github.com/colorjs/color-namer), ~1500

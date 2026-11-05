@@ -94,9 +94,16 @@ function storedDraft (): StudioDraft {
   return JSON.parse(localStorage.getItem(DRAFT_STORAGE_KEY) ?? 'null') as StudioDraft
 }
 
-function button (label: string): HTMLButtonElement | undefined {
-  return [...root.querySelectorAll('button')].find((b) => b.textContent === label)
+// a button of the page, or an mds-button of its head; jsdom does not upgrade an mds-button,
+// so its state is the attribute Preact writes
+function button (label: string): HTMLElement | undefined {
+  return [...root.querySelectorAll<HTMLElement>('button, mds-button')].find(
+    (b) => b.textContent?.trim() === label,
+  )
 }
+
+const isDisabled = (el: HTMLElement | undefined): boolean =>
+  Boolean(el?.hasAttribute('disabled') || (el as HTMLButtonElement | undefined)?.disabled)
 
 test('the app asks before a draft with edits wins over a changed file, and can take the file', async () => {
   localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(
@@ -112,7 +119,7 @@ test('the app asks before a draft with edits wins over a changed file, and can t
   })
   expect(banner.textContent).toContain(`${PATH} changed after this draft was saved`)
   // saving now would write the draft over the file that changed
-  expect(button('save *')?.disabled).toBe(true)
+  expect(isDisabled(button('Save *'))).toBe(true)
   // until answered, the stored draft keeps its old stamp: a reload asks again
   expect(storedDraft().source).toEqual({ path: PATH, hash: hashText(diskJson) })
 
@@ -126,7 +133,7 @@ test('the app asks before a draft with edits wins over a changed file, and can t
     expect(draft.source).toEqual({ path: PATH, hash: hashText(changedJson) })
     expect(draft.edited).toBe(false)
   })
-  expect(button('saved')?.disabled).toBe(true)
+  expect(isDisabled(button('Saved'))).toBe(true)
 })
 
 test('keeping the draft restamps it on the file now on disk, with its edits unsaved', async () => {
@@ -147,7 +154,7 @@ test('keeping the draft restamps it on the file now on disk, with its edits unsa
     expect(draft.edited).toBe(true)
   })
   expect(root.querySelector('.draft-conflict')).toBeNull()
-  expect(button('save *')?.disabled).toBe(false)
+  expect(isDisabled(button('Save *'))).toBe(false)
 })
 
 test('a draft made on the file still on disk is restored without asking', async () => {
@@ -158,7 +165,7 @@ test('a draft made on the file still on disk is restored without asking', async 
   render(h(App, {}), root)
 
   await vi.waitFor(() => {
-    if (!button('save *')) throw new Error('server mode not adopted yet')
+    if (!button('Save *')) throw new Error('server mode not adopted yet')
   })
   expect(root.querySelector('.draft-conflict')).toBeNull()
   expect(storedDraft().config).toEqual(edits)

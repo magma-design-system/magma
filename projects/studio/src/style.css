@@ -16,16 +16,42 @@
 
 body { background: var(--bg); min-width: 960px; }
 
+/* the shell (src/shell.tsx): the bar, then the section, the whole height of the window */
+.studio { display: flex; flex-direction: column; height: 100dvh; }
+.studio-header { flex: none; }
+.studio-section { flex: 1; min-height: 0; }
+.studio-section[hidden] { display: none; }
+.studio-product { align-items: center; color: inherit; display: flex; gap: var(--magma-rhythm-inline); text-decoration: none; }
+.studio-product-role { color: rgb(var(--magma-text-muted)); text-transform: uppercase; }
+.studio-dropdown { display: grid; gap: var(--magma-rhythm-inline); min-width: 240px; }
+.studio-dropdown-head { display: flex; }
+.studio-menu { display: grid; gap: var(--magma-rhythm-inline); padding: var(--magma-rhythm-inset); }
+.studio-menu-title { color: rgb(var(--magma-text-muted)); }
+.studio-menu-link { justify-content: start; width: 100%; }
+.studio-muted { color: rgb(var(--magma-text-muted)); }
+.studio-page-head { align-items: start; display: flex; flex-wrap: wrap; gap: var(--magma-rhythm-inline); justify-content: space-between; padding: var(--magma-rhythm-inset) var(--magma-width-page-gutter); }
+.layout > .studio-page-head { grid-area: head; }
+.studio-page-title { display: grid; flex: 1 1 360px; gap: var(--magma-rhythm-title-content); min-width: 0; }
+.studio-page-actions { align-items: center; display: flex; gap: var(--magma-rhythm-inline); }
+.studio-page { display: grid; align-content: start; gap: var(--magma-rhythm-between-sections); overflow-y: auto; padding-block-end: var(--magma-rhythm-between-sections); }
+.studio-page > mds-banner { margin-inline: var(--magma-width-page-gutter); max-width: var(--magma-width-reading); }
+
+/* the Theme section: the scene full screen, its controls floating over it */
+.studio-theme { flex: 1; min-height: 0; position: relative; }
+.studio-scene { border: 0; display: block; height: 100%; width: 100%; }
+.studio-toolbar { align-items: center; background: rgb(var(--magma-surface-overlay)); border-radius: var(--magma-radius-2xl); box-shadow: var(--shadow-box-lg); display: flex; gap: var(--magma-rhythm-inline); inset-block-end: var(--magma-rhythm-inset); inset-inline-start: 50%; padding: var(--magma-rhythm-inline); position: absolute; translate: -50% 0; }
+.studio-toolbar mds-input-select { min-width: 200px; }
+
 .layout {
   display: grid;
-  grid-template: "topbar topbar" auto "error error" auto "sidebar content" 1fr / 240px 1fr;
-  height: 100vh;
+  grid-template: "head head" auto "error error" auto "sidebar content" 1fr / 240px 1fr;
+  height: 100%;
 }
 
 /* surfaces/groups/diff drop the color picker: the content spans full width */
 
 .layout.no-sidebar {
-  grid-template: "topbar" auto "error" auto "content" 1fr / 1fr;
+  grid-template: "head" auto "error" auto "content" 1fr / 1fr;
 }
 
 .load-error {
@@ -41,79 +67,7 @@ body { background: var(--bg); min-width: 960px; }
 .draft-conflict { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
 .draft-conflict span { color: var(--ink); }
 
-.file-button {
-  align-items: center;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  color: var(--ink);
-  cursor: pointer;
-  display: inline-flex;
-  font: inherit;
-  padding: 5px 12px;
-  position: relative;
-}
-.file-button:hover { border-color: var(--ink-soft); }
-.file-button input { cursor: pointer; inset: 0; opacity: 0; position: absolute; }
-
-.topbar {
-  align-items: center;
-  background: var(--panel);
-  border-bottom: 1px solid var(--line);
-  display: flex;
-  gap: 24px;
-  grid-area: topbar;
-  padding: 10px 20px;
-}
-.topbar h1 { font-size: 15px; font-weight: 650; letter-spacing: 0.01em; }
-.topbar h1 span { color: var(--ink-soft); font-weight: 400; }
-.topbar nav { display: flex; gap: 4px; }
-.topbar-actions { align-items: center; display: flex; gap: 8px; margin-left: auto; }
-
 .save-status { color: var(--ink-soft); font-size: 12px; }
-
-.download-menu { position: relative; }
-.download-backdrop { inset: 0; position: fixed; z-index: 5; }
-
-.download-list {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.14);
-  list-style: none;
-  margin: 0;
-  min-width: 180px;
-  padding: 4px;
-  position: absolute;
-  right: 0;
-  top: calc(100% + 4px);
-  z-index: 6;
-}
-.download-list li { display: block; }
-
-.download-list button {
-  align-items: center;
-  background: none;
-  border: none;
-  border-radius: 6px;
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  padding: 7px 10px;
-  text-align: left;
-  width: 100%;
-}
-.download-list button:hover { background: var(--bg); }
-
-.download-list .badge {
-  background: var(--line);
-  border-radius: 99px;
-  color: var(--ink-soft);
-  font-size: 9px;
-  letter-spacing: 0.04em;
-  padding: 1px 5px;
-  text-transform: uppercase;
-}
 
 button {
   background: var(--panel);
@@ -684,7 +638,7 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
   flex-direction: column;
   gap: 12px;
   min-width: 0; /* let the per-mode grids shrink instead of overflowing the row */
-  /* .content is the scroll container and the topbar is a separate grid row above it,
+  /* .content is the scroll container and the head of the page is a separate grid row above it,
      so top: 0 pins the preview flush under the viewport while the levels column scrolls */
   position: sticky;
   top: 0;
@@ -901,3 +855,11 @@ button.danger:hover { border-color: #c0392b; color: #c0392b; }
   font-family: ui-monospace, monospace; font-size: 11px; line-height: 1.6; margin-top: 8px;
   overflow-x: auto; padding: 12px 14px; white-space: pre;
 }
+
+/* the name of a theme, separate from its family (themes.tsx) */
+.theme-name-ctl { align-items: center; display: inline-flex; gap: 6px; }
+.theme-name-ctl input { font: inherit; padding: 2px 6px; width: 160px; }
+.theme-name-ctl input[aria-invalid='true'] { border-color: #b3261e; }
+.theme-name-problem { color: #8d2f16; display: block; font-size: 12px; margin: 4px 0; }
+.theme-card .scale-card-head { align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
+.theme-card .scale-card-head .theme-attr-code { flex-basis: 100%; }

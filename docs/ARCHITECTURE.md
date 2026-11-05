@@ -22,6 +22,9 @@ graph TD
   DT --> ST
   DT --> WC
   DT --> SD
+  WC --> SD
+  ID --> SD
+  LINT --> SD
   ST --> WC
   SI --> WC
   SI --> IC
@@ -295,7 +298,13 @@ tests it when it or `design-tokens` changes.
   contrast gate, the CSS of a theme from `namedThemeCss` of `semantic.model.ts`, the same function
   the styles generator prints `themes.css` with.
 - **Magma as an external vendor** (section 1): the studio never bundles the Magma components nor
-  their stylesheets.
+  their stylesheets. Its pages load them as a render of the MCP server does, with the code of the
+  render (`stylesheetImports`, `loaderOf`, `fileOf` of `projects/lint/src/mcp/render.ts`), from
+  the installed magma: in this repository the build of `stencil`, an implicit dependency.
+- **The shell** follows the app-shell block: three sections, Colors (the pages of the playground,
+  from a menu that opens with the verdict of the contrast gate), Theme (the theme full screen in an
+  iframe, its controls over it) and Behavior (design language, patterns, blocks, from a menu). A
+  section that opens its pages from a menu is a case the app-shell block does not have yet.
 - **Two hosts, one app** (#695): the docs site mounts it with nothing to install, and a command of
   the `magma` package serves it inside a project, on its `magma/` folder.
 

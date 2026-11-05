@@ -35,6 +35,7 @@ import {
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
 import { ScalesManager, type RatioSet, type ScaleOrigin } from './scales.js';
 import { SurfaceManager, DEFAULT_THEME } from './surfaces.js';
+import { COLORS_PAGES, type ColorsView } from './routes.js';
 import { ThemesManager } from './themes.js';
 import type { ThemeConfig } from '@maggioli-design-system/design-tokens/src/lib/surface.mjs';
 import { nearestColorName } from './color-names.js';
@@ -53,7 +54,9 @@ type CurveKind = CurvePreset | 'custom';
 const CURVE_KINDS: CurveKind[] = [...(Object.keys(CURVE_PRESETS) as CurvePreset[]), 'custom'];
 
 type CloneableConfig = MagmaConfig & Record<string, unknown>;
-type View = 'colors' | 'scales' | 'surface' | 'groups' | 'diff';
+// the views of the Colors section of the studio (routes.ts); 'surface' keeps its id so the
+// drafts saved before the views were split keep working
+type View = ColorsView;
 
 // the color list on the left drives only the per-color views (edit a color,
 // sample its contrast scales). Surfaces, groups and diff operate on the whole
@@ -536,7 +539,30 @@ function ColorEditor({
   );
 }
 
-export function App() {
+interface AppProps {
+  /** The view the shell routes to; without a shell the view is the App's own state. */
+  view?: View;
+  /** Opens a view: the shell follows its link. */
+  onNavigate?: (view: View) => void;
+  /** The working config, on every change: the shell judges it with the contrast gate. */
+  onConfig?: (config: MagmaConfig) => void;
+}
+
+/** One line under the title of each view: what it holds. */
+const VIEW_SUMMARY: Record<View, string> = {
+  colors:
+    'The families of colour of the configuration, each solved into a ramp of steps in light and dark.',
+  scales:
+    'The contrast ratios the families solve their steps at, against the background of the mode.',
+  surface:
+    'The families that generate surfaces, and the balances: the lightness of the surfaces and borders, the targets of the text.',
+  themes:
+    'Each family with surfaces is a theme: its name, its accents and the CSS that switches it in.',
+  groups: 'The ratios, formula and export of each group of the configuration.',
+  diff: 'The palette against the configuration Magma builds with.',
+};
+
+export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
   // a persisted working state, restored once at mount, takes precedence over
   // the bundled defaults
   const bootDraft = useMemo(() => readDraft() as StudioDraft<View> | null, []);
@@ -548,9 +574,17 @@ export function App() {
       ? bootDraft.selectedName
       : defaultSelected((initialConfigJson as unknown as MagmaConfig).colors),
   );
-  const [view, setView] = useState<View>(() => bootDraft?.view ?? 'colors');
+  const [ownView, setOwnView] = useState<View>(() => bootDraft?.view ?? 'colors');
+  const view = routedView ?? ownView;
+  const setView = onNavigate ?? setOwnView;
+  // the menus of the head of the page, closed once one of their actions ran
+  const fileInput = useRef<HTMLInputElement>(null);
+  const moreMenu = useRef<HTMLElement & { visible?: boolean }>(null);
+  const downloadMenu = useRef<HTMLElement & { visible?: boolean }>(null);
+  const closeMenus = () => {
+    for (const menu of [moreMenu.current, downloadMenu.current]) if (menu) menu.visible = false;
+  };
   const [copied, setCopied] = useState(false);
-  const [downloadOpen, setDownloadOpen] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   // server mode: the config is served by a command that answers /api/config
   // (the `ui` command of design-tokens 15 did; the studio's own command comes
@@ -732,6 +766,11 @@ export function App() {
     });
     return map;
   }, [view, scalesFormula, JSON.stringify(config), selectedName]);
+
+  // the shell judges the working config with the contrast gate
+  useEffect(() => {
+    onConfig?.(config);
+  }, [config]);
 
   // mirror the working state to localStorage on every change, stamped with
   // the config it is made on. Until the start-up check has run, and while a
@@ -1173,107 +1212,127 @@ export function App() {
 
   return (
     <div class={`layout${showSidebar ? '' : ' no-sidebar'}`}>
-      <header class="topbar">
-        <h1>
-          magma <span>studio</span>
-        </h1>
-        <nav>
-          <button class={view === 'colors' ? 'active' : ''} onClick={() => setView('colors')}>
-            colors
-          </button>
-          <button class={view === 'scales' ? 'active' : ''} onClick={() => setView('scales')}>
-            contrast scales
-          </button>
-          {/* One workflow: opt families into surfaces, then use them as themes. The view
-              id stays 'surface' so existing localStorage drafts keep working. */}
-          <button class={view === 'surface' ? 'active' : ''} onClick={() => setView('surface')}>
-            themes
-          </button>
-          <button class={view === 'groups' ? 'active' : ''} onClick={() => setView('groups')}>
-            groups
-          </button>
-          <button class={view === 'diff' ? 'active' : ''} onClick={() => setView('diff')}>
-            diff
-          </button>
-        </nav>
-        <div class="topbar-actions">
-          <button
-            title="discard the loaded config and any local changes, back to the built-in default"
-            disabled={!canReset}
-            onClick={() => {
-              clearDraft();
-              const base = clone(initialConfigJson as unknown as CloneableConfig);
-              setConfig(base);
-              setSelectedName(defaultSelected(base.colors));
-              setView('colors');
-              setLoadError(null);
-            }}
-          >
-            reset
-          </button>
-          <label class="file-button">
-            load config
-            <input
-              type="file"
-              accept=".json,application/json"
-              onChange={(e) => {
-                const input = e.target as HTMLInputElement;
-                const file = input.files?.[0];
-                if (file) loadConfigFile(file);
-                input.value = '';
-              }}
-            />
-          </label>
+      <header class="studio-page-head">
+        <div class="studio-page-title">
+          <mds-text typography="page" tag="h1">
+            {COLORS_PAGES.find((page) => page.id === view)?.label}
+          </mds-text>
+          <mds-text typography="detail" tag="p" class="studio-muted">
+            {VIEW_SUMMARY[view]}
+          </mds-text>
+        </div>
+        {/* the actions of the page (the page-header block of Magma): the menu of the others
+            first, the secondary used most, the main one last in the strong tone */}
+        <div class="studio-page-actions">
           {statusMsg && <span class="save-status">{statusMsg}</span>}
+          <mds-button
+            id="studio-more"
+            icon="mi/baseline/more-horiz"
+            variant="dark"
+            tone="text"
+            aria-label="More actions"
+          ></mds-button>
+          <input
+            ref={fileInput}
+            type="file"
+            accept=".json,application/json"
+            hidden
+            onChange={(e) => {
+              const input = e.target as HTMLInputElement;
+              const file = input.files?.[0];
+              if (file) loadConfigFile(file);
+              input.value = '';
+            }}
+          />
           {serverMode ? (
             saveRefusal ? (
-              <button class="primary" disabled title={saveRefusal}>
-                {dirty ? 'read-only *' : 'read-only'}
-              </button>
+              <mds-button variant="dark" tone="outline" disabled title={saveRefusal}>
+                {dirty ? 'Read-only *' : 'Read-only'}
+              </mds-button>
             ) : (
-              <button
-                class="primary"
+              <mds-button
+                variant="dark"
+                tone="outline"
                 onClick={saveConfig}
                 disabled={saving || !dirty || !!draftConflict}
                 title={savePath ?? undefined}
               >
-                {saving ? 'saving...' : dirty ? 'save *' : 'saved'}
-              </button>
+                {saving ? 'Saving...' : dirty ? 'Save *' : 'Saved'}
+              </mds-button>
             )
           ) : (
-            <button onClick={copyJson}>{copied ? 'copied!' : 'copy JSON'}</button>
+            <mds-button variant="dark" tone="outline" onClick={copyJson}>
+              {copied ? 'Copied!' : 'Copy JSON'}
+            </mds-button>
           )}
-          <div class="download-menu">
-            <button onClick={() => setDownloadOpen((open) => !open)}>download {'▾'}</button>
-            {downloadOpen && (
-              <>
-                <div class="download-backdrop" onClick={() => setDownloadOpen(false)} />
-                <ul class="download-list">
-                  {[
-                    { label: 'All tokens (zip)', run: downloadZip },
-                    { label: 'Figma tokens (DTCG)', run: downloadFigmaDtcg },
-                    { label: 'Config (json)', run: downloadJson },
-                    { label: 'CSS tokens', run: downloadCss },
-                    { label: 'GIMP palette', run: downloadGimp },
-                    ...(serverMode ? [{ label: 'Build tokens on disk', run: buildTokens }] : []),
-                  ].map((item) => (
-                    <li>
-                      <button
-                        onClick={() => {
-                          setDownloadOpen(false);
-                          item.run();
-                        }}
-                      >
-                        {item.label}
-                        {item.soon && <span class="badge">soon</span>}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-          </div>
+          <mds-button id="studio-download" icon="mi/baseline/file-download">
+            Download
+          </mds-button>
         </div>
+        <mds-dropdown ref={moreMenu} target="#studio-more" placement="bottom-end" strategy="fixed">
+          <div class="studio-dropdown">
+            <mds-button
+              icon="mi/baseline/restart-alt"
+              variant="dark"
+              tone="text"
+              class="studio-menu-link"
+              title="discard the loaded config and any local changes, back to the built-in default"
+              disabled={!canReset}
+              onClick={() => {
+                closeMenus();
+                clearDraft();
+                const base = clone(initialConfigJson as unknown as CloneableConfig);
+                setConfig(base);
+                setSelectedName(defaultSelected(base.colors));
+                setView('colors');
+                setLoadError(null);
+              }}
+            >
+              Reset
+            </mds-button>
+            <mds-button
+              icon="mi/baseline/upload-file"
+              variant="dark"
+              tone="text"
+              class="studio-menu-link"
+              onClick={() => {
+                closeMenus();
+                fileInput.current?.click();
+              }}
+            >
+              Load config
+            </mds-button>
+          </div>
+        </mds-dropdown>
+        <mds-dropdown
+          ref={downloadMenu}
+          target="#studio-download"
+          placement="bottom-end"
+          strategy="fixed"
+        >
+          <div class="studio-dropdown">
+            {[
+              { label: 'All tokens (zip)', run: downloadZip },
+              { label: 'Figma tokens (DTCG)', run: downloadFigmaDtcg },
+              { label: 'Config (json)', run: downloadJson },
+              { label: 'CSS tokens', run: downloadCss },
+              { label: 'GIMP palette', run: downloadGimp },
+              ...(serverMode ? [{ label: 'Build tokens on disk', run: buildTokens }] : []),
+            ].map((item) => (
+              <mds-button
+                variant="dark"
+                tone="text"
+                class="studio-menu-link"
+                onClick={() => {
+                  closeMenus();
+                  item.run();
+                }}
+              >
+                {item.label}
+              </mds-button>
+            ))}
+          </div>
+        </mds-dropdown>
       </header>
 
       {loadError ? (
@@ -1701,10 +1760,6 @@ export function App() {
         )}
         {view === 'surface' && (
           <>
-            <div class="content-head">
-              <h2>surfaces</h2>
-              <span class="scales-hint">the palettes themes are built from</span>
-            </div>
             <SurfaceManager
               config={config}
               onToggleSurface={(colorName, on) =>
@@ -1754,10 +1809,10 @@ export function App() {
                 })
               }
             />
-            {/* Themes are DERIVED from the surfaces opt-in above - same axis, one step down. */}
-            <ThemesManager config={config} />
           </>
         )}
+        {/* Themes are DERIVED from the surfaces opt-in of the view above - same axis, one step down. */}
+        {view === 'themes' && <ThemesManager config={config} />}
         {view === 'groups' && (
           <GroupsManager
             config={config}
