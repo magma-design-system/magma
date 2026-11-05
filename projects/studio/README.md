@@ -35,7 +35,14 @@ The Theme section shows the scene (`scene.html`) in an iframe, a document of its
 set on its `<html>` (`data-theme-name`), and the preferences of the person live in its own
 `mds-pref` panel, which writes on its own document. Both move the scene and leave the studio alone
 (#695, "The dogfooding constraint"). Today the select offers the themes Magma ships and only the
-preferences have a panel; the panels of the other axes come with #696, the scenes with #697.
+preferences have a panel; the panels of the other axes come with #696.
+
+The scene is a demo of the components, as the one of the daisyUI theme generator (#697, Scenes):
+the desk of an office of a back office, one card per task side by side in columns, so a theme is
+judged on most of Magma at once: a hue on a themed surface, text at every prominence, borders, a
+disabled state, the solid fills of the main actions, the colours of the states. The steps of the
+request in hand take the width of the page above the columns: `mds-stepper-bar` centres the
+current step and would push the first out of a column.
 
 The **Themes** page names each theme apart from the family it is drawn from: `editorial` is drawn
 from `bisque`. The names of the themes Magma ships (`semantic.config.ts`, `themes`) are reserved,
