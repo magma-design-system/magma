@@ -237,10 +237,21 @@ test('the usage panel picks a scale and samples its first color', () => {
   const select = root.querySelector('.scales-usage mds-input-select')!
   emit(select, 'mdsInputSelectChange', { value: 'tint' })
   expect(spies.onSelectColor).toHaveBeenCalledWith(config.colors[0].name)
-  const chips = [...root.querySelectorAll<HTMLElement>('.scales-usage .scales-chip')]
+  const chips = [...root.querySelectorAll<HTMLElement>('.scales-usage mds-chip.scales-chip')]
   expect(chips).toHaveLength(1)
-  click(chips[0])
-  expect(spies.onSelectColor).toHaveBeenLastCalledWith(config.colors[0].name)
+  const [chip] = chips
+  const [color] = config.colors
+  // a selectable chip with the swatch of the colour as its icon
+  expect(chip.getAttribute('label')).toBe(color.name.split('.')[1])
+  expect(chip.hasAttribute('selectable')).toBe(true)
+  expect((chip as unknown as { icon: string }).icon ?? chip.getAttribute('icon')).toContain(
+    `fill="${color.color}"`,
+  )
+  emit(chip, 'mdsChipSelect', { element: chip, selected: true })
+  expect(spies.onSelectColor).toHaveBeenLastCalledWith(color.name)
+  // the sample clicked again stays selected, though mds-chip unselects itself
+  emit(chip, 'mdsChipSelect', { element: chip, selected: undefined })
+  expect((chip as unknown as { selected?: boolean }).selected).toBe(true)
   // the formula is a Magma select too
   emit(root.querySelector('.scales-formula mds-input-select')!, 'mdsInputSelectChange', { value: 'wcag2' })
   expect(spies.onFormulaChange).toHaveBeenCalledWith('wcag2')

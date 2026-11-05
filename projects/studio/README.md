@@ -66,7 +66,7 @@ with its issue until the component lands:
 | a colour field | the base colour of a family, New color | #1260 |
 | a range of several values | the axis of a contrast scale | #1261 |
 | a list and its detail | the families of the Palette | #1262 |
-| a chip with a colour swatch | the families of Semantic surface, the usage of a scale | #1263 |
+| a chip with a colour swatch | the families of Semantic surface (the usage of a scale draws the swatch as the icon of an `mds-chip`, `swatchIcon`) | #1263 |
 
 ## Magma from the installed one
 

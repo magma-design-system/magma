@@ -8,7 +8,7 @@ import {
   CONTRAST_RANGE,
   classifyRatioTarget,
 } from '@maggioli-design-system/design-tokens/src/lib/contrast-range.js';
-import { Field, Select, TextInput, type Option } from './magma.js';
+import { Field, Select, TextInput, swatchIcon, type Option } from './magma.js';
 import './scales.css';
 
 /*
@@ -16,8 +16,8 @@ import './scales.css';
   (mds-card, its title the part title, its actions in the menu of the card with Delete last,
   docs/agents/patterns/actions.md, destructive-in-menu), the fields of Magma for the stops and the
   distribution, mds-modal for the rename and for the confirmation of a delete. The axis of the
-  stops stays native: Magma has no range of several values yet (#1261). The chips of the usage
-  panel stay native buttons, since they show the colour and mds-chip has no swatch yet (#1263).
+  stops stays native: Magma has no range of several values yet (#1261). The colours of the usage
+  panel are selectable mds-chips, their swatch the icon (swatchIcon, until #1263).
 */
 
 export interface RatioSet {
@@ -595,16 +595,24 @@ export function ScalesManager({
                     </dt>
                     <dd class="scales-chips">
                       {colors.map((color) => (
-                        <button
-                          type="button"
+                        <mds-chip
+                          key={color.name}
                           class="scales-chip"
-                          aria-pressed={color.name === selectedName ? 'true' : 'false'}
+                          label={color.name.split('.')[1]}
+                          icon={swatchIcon(color.color)}
+                          selectable
+                          selected={color.name === selectedName}
                           title={`${color.name} (${color.color}) - click to use it as the sample color`}
-                          onClick={() => onSelectColor(color.name)}
-                        >
-                          <span class="studio-swatch" style={{ background: color.color }} />
-                          {color.name.split('.')[1]}
-                        </button>
+                          onmdsChipSelect={(
+                            event: CustomEvent<{ element: HTMLElement; selected?: boolean }>,
+                          ) => {
+                            onSelectColor(color.name);
+                            // one colour is the sample: the chip of the sample, clicked again,
+                            // stays selected, though mds-chip unselects itself
+                            if (!event.detail?.selected)
+                              (event.detail.element as { selected?: boolean }).selected = true;
+                          }}
+                        ></mds-chip>
                       ))}
                     </dd>
                   </div>

@@ -26,6 +26,19 @@ import './magma.css';
 
 type Detail<T> = CustomEvent<T>;
 
+/**
+ * The swatch of a colour as the icon of an mds-chip, until mds-chip has a swatch of its own
+ * (#1263): mds-icon draws the markup of an <svg> it is given (its `name`), and the fill of the
+ * disc wins over the one the chip sets on its icon. The ring takes the colour of the text of the
+ * chip, so a white or empty swatch stays visible in both modes; the page clears the background
+ * of the icon (--mds-chip-icon-background, public). The colour goes into markup: anything but the
+ * characters of a CSS colour (a quote, a bracket) draws an empty swatch instead.
+ */
+export const swatchIcon = (color: string | undefined): string => {
+  const fill = color && /^[#\w(),.%\s/-]+$/.test(color) ? color : 'none';
+  return `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="${fill}" stroke="currentColor" stroke-opacity="0.3" stroke-width="1.5"/></svg>`;
+};
+
 /** The variants a field takes to say how its value stands (`mds-input-field`, `mds-input`). */
 export type FieldVariant = 'error' | 'info' | 'success' | 'warning';
 

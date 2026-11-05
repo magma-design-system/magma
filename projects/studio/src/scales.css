@@ -72,42 +72,9 @@
   gap: var(--magma-rhythm-inline);
 }
 
-/*
-  A colour of the panel: a native button, since it shows the colour and mds-chip has no swatch
-  yet (#1263). Every property the old `button` rule of style.css sets is set here, and its hover
-  is outweighed by a selector of two classes.
-*/
-
+/* a colour of the panel: its swatch is the icon of the chip, on no background of its own */
 .scales-chip {
-  align-items: center;
-  background-color: rgb(var(--magma-surface-default));
-  border: thin solid rgb(var(--magma-border-default));
-  border-radius: var(--magma-radius-full);
-  color: rgb(var(--magma-text-default));
-  cursor: pointer;
-  display: inline-flex;
-  font-family: var(--font-info);
-  font-size: var(--text-size-info-caption);
-  gap: calc(var(--spacing) * 200);
-  line-height: var(--text-size-info-caption--line-height);
-  padding-block: calc(var(--spacing) * 100);
-  padding-inline: calc(var(--spacing) * 200) calc(var(--spacing) * 300);
-}
-
-.scales-chip.scales-chip:hover {
-  border-color: rgb(var(--magma-border-strong));
-}
-
-.scales-chip:focus-visible {
-  outline: calc(var(--spacing) * 50) solid rgb(var(--magma-border-focus));
-  outline-offset: calc(var(--spacing) * 50);
-}
-
-.scales-chip[aria-pressed='true'],
-.scales-chip.scales-chip[aria-pressed='true']:hover {
-  background-color: rgb(var(--magma-surface-inverse));
-  border-color: rgb(var(--magma-surface-inverse));
-  color: rgb(var(--magma-on-inverse));
+  --mds-chip-icon-background: transparent;
 }
 
 /* a scale card: the title, its badge and its count in one row, the menu at the end */
