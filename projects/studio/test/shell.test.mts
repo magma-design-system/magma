@@ -79,7 +79,7 @@ test('the bar says the role of the person and the version of the Magma the studi
     const role = root.querySelector('.studio-product-role')!
     expect(role.getAttribute('typography')).toBe('label')
     expect(role.textContent?.trim()).toBe('Product designer')
-    expect(root.querySelector('.studio-product-version')?.textContent).toBe('v2.11.0')
+    expect(root.querySelector('.studio-product-version')?.textContent).toBe('for Magma v2.11.0')
   } finally {
     meta.remove()
   }
