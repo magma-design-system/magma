@@ -594,12 +594,10 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
   // the menus of the head of the page, closed once one of their actions ran
   const fileInput = useRef<HTMLInputElement>(null);
   const moreMenu = useRef<HTMLElement & { visible?: boolean }>(null);
-  const downloadMenu = useRef<HTMLElement & { visible?: boolean }>(null);
   // the menu of the colour selected, closed as well once one of its actions ran
   const colorMenu = useRef<HTMLElement & { visible?: boolean }>(null);
   const closeMenus = () => {
-    for (const menu of [moreMenu.current, downloadMenu.current, colorMenu.current])
-      if (menu) menu.visible = false;
+    for (const menu of [moreMenu.current, colorMenu.current]) if (menu) menu.visible = false;
   };
   const [copied, setCopied] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -1293,9 +1291,30 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
               label={copied ? 'Copied!' : 'Copy JSON'}
             ></mds-button>
           )}
-          <mds-button id="studio-download" icon="mi/baseline/file-download">
-            Download
-          </mds-button>
+          {/* the main action of the page: the zip of every token, the other downloads in the
+              menu of its split button (vittorio, 2026-11-05) */}
+          <mds-button-dropdown
+            icon="mi/outline/file-download"
+            label="Download all tokens (zip)"
+            onmdsButtonDropdownClick={downloadZip}
+          >
+            {[
+              { label: 'Figma tokens (DTCG)', run: downloadFigmaDtcg },
+              { label: 'Config (json)', run: downloadJson },
+              { label: 'CSS tokens', run: downloadCss },
+              { label: 'GIMP palette', run: downloadGimp },
+              ...(serverMode ? [{ label: 'Build tokens on disk', run: buildTokens }] : []),
+            ].map((item) => (
+              <mds-button
+                type="button"
+                variant="dark"
+                tone="text"
+                class="studio-menu-link"
+                label={item.label}
+                onClick={item.run}
+              ></mds-button>
+            ))}
+          </mds-button-dropdown>
         </div>
         <mds-dropdown ref={moreMenu} target="#studio-more" placement="bottom-end" strategy="fixed">
           <div class="studio-dropdown">
@@ -1330,35 +1349,6 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
             >
               Load config
             </mds-button>
-          </div>
-        </mds-dropdown>
-        <mds-dropdown
-          ref={downloadMenu}
-          target="#studio-download"
-          placement="bottom-end"
-          strategy="fixed"
-        >
-          <div class="studio-dropdown">
-            {[
-              { label: 'All tokens (zip)', run: downloadZip },
-              { label: 'Figma tokens (DTCG)', run: downloadFigmaDtcg },
-              { label: 'Config (json)', run: downloadJson },
-              { label: 'CSS tokens', run: downloadCss },
-              { label: 'GIMP palette', run: downloadGimp },
-              ...(serverMode ? [{ label: 'Build tokens on disk', run: buildTokens }] : []),
-            ].map((item) => (
-              <mds-button
-                variant="dark"
-                tone="text"
-                class="studio-menu-link"
-                onClick={() => {
-                  closeMenus();
-                  item.run();
-                }}
-              >
-                {item.label}
-              </mds-button>
-            ))}
           </div>
         </mds-dropdown>
       </header>

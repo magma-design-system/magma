@@ -260,3 +260,33 @@ test('choosing a reference in the dialog makes a reference in the variant group'
   )
   expect(heading()).toBe('variant.sky')
 })
+
+test('Download all tokens is the main action of the head, the other downloads in its menu', async () => {
+  const split = root.querySelector('mds-button-dropdown')!
+  expect(split.getAttribute('label')).toBe('Download all tokens (zip)')
+  expect(split.getAttribute('icon')).toBe('mi/outline/file-download')
+  expect([...split.querySelectorAll('mds-button')].map((item) => item.getAttribute('label'))).toEqual([
+    'Figma tokens (DTCG)',
+    'Config (json)',
+    'CSS tokens',
+    'GIMP palette',
+  ])
+
+  // the primary action of the split button downloads the zip of every token
+  const files: string[] = []
+  vi.stubGlobal('URL', Object.assign(Object.create(URL), {
+    createObjectURL: () => 'blob:tokens',
+    revokeObjectURL: () => undefined,
+  }))
+  const click = vi
+    .spyOn(HTMLAnchorElement.prototype, 'click')
+    .mockImplementation(function (this: HTMLAnchorElement) {
+      files.push(this.download)
+    })
+  try {
+    emit(split, 'mdsButtonDropdownClick')
+    await vi.waitFor(() => expect(files).toEqual(['magma-design-tokens.zip']))
+  } finally {
+    click.mockRestore()
+  }
+})

@@ -28,7 +28,8 @@ Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
 `#/behavior/patterns`, `src/routes.ts`), so the studio works from whatever folder serves it. The
 Colors pages stay mounted under the other sections, so their work is not lost; each opens with the
 head of the page-header block: the title, one line, then the actions (a menu with Reset and Load
-config, Copy JSON or Save, and Download last).
+config, Copy JSON or Save, and last Download all tokens, a split button whose menu holds the
+other downloads).
 
 The Theme section shows the scene (`scene.html`) in an iframe, a document of its own: the theme is
 set on its `<html>` (`data-theme-name`), and the preferences of the person live in its own
@@ -164,9 +165,10 @@ config is the baseline.
 
 The studio works with any configuration, not just the repo one: **Load config** (in the menu of
 the head of the page) opens a `.magma-design-tokensrc.json` from disk and **Copy JSON** copies the
-edited configuration to the clipboard. The **Download** menu offers:
+edited configuration to the clipboard. **Download all tokens (zip)** is the main action of the
+page, a split button (`mds-button-dropdown`) whose menu offers the other downloads:
 
-- **All tokens (zip)** - the configuration, the generated JSON tokens (whole palette + one file
+- **All tokens (zip)**, the main action - the configuration, the generated JSON tokens (whole palette + one file
   per export group) and the CSS and GIMP renders, mirroring the `dist` layout of `design-tokens`;
 - **Figma tokens (DTCG)** - the color palette in the W3C DTCG format, one file per theme mode,
   zipped together (the "Figma export" of the `design-tokens` README);
