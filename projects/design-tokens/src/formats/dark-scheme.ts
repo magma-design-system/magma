@@ -10,8 +10,15 @@
 export const darkScheme = {
   /** Dark whatever the OS: the dark mode unless the theme is light only, a theme dark only. */
   forced: [':root:not(.pref-theme-scheme-light).pref-mode-dark', ':root.pref-theme-scheme-dark'],
-  /** Dark when the OS is (`media`): the system mode unless the theme is light only, a page with no mds-pref controller. */
-  system: [':root:not(.pref-theme-scheme-light).pref-mode-system', ':root:not([data-magma-pref])'],
+  /**
+   * Dark when the OS is (`media`): the system mode, or a page with no mds-pref controller, unless
+   * the theme is light only. A standalone mds-pref-theme writes the scheme class without the
+   * `data-magma-pref` of mds-pref, so the no-controller selector excludes it too (#1274).
+   */
+  system: [
+    ':root:not(.pref-theme-scheme-light).pref-mode-system',
+    ':root:not(.pref-theme-scheme-light):not([data-magma-pref])',
+  ],
   media: '(prefers-color-scheme: dark)',
 } as const;
 

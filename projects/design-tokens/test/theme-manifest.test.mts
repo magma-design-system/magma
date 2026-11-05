@@ -4,6 +4,7 @@ import { expect, test, vi } from 'vitest'
 import { Ajv } from 'ajv'
 
 import {
+  lockedMode,
   readTheme,
   themeDefOf,
   THEME_SCHEMA,
@@ -11,6 +12,7 @@ import {
   type ThemeManifest,
 } from '../src/lib/theme-manifest.mjs'
 import { semantic } from '../semantic.config.js'
+import { COLOR_MODES_PROPERTY, namedThemeCss, semanticModel, themeOf } from '../semantic.model.js'
 
 const themesDir = fileURLToPath(new URL('../themes/', import.meta.url))
 const themeFiles = readdirSync(themesDir).filter((file) => file.endsWith('.json'))
@@ -97,6 +99,45 @@ test('a theme is refused on any field the format does not have', () => {
   refused(theme({ color: { tint: 'bisque', radius: 4 } }), '/color')
   refused(theme({ color: { tint: '--surface-bisque' } }), '/color/tint')
   refused(theme({ color: { tint: 'bisque', accents: { accent: 'Variant Secondary' } } }), '/color/accents')
+  // the modes are the values of color-scheme, each once, at least one
+  refused(theme({ color: { tint: 'bisque', modes: ['night'] } }), '/color/modes/0')
+  refused(theme({ color: { tint: 'bisque', modes: [] } }), '/color/modes')
+  refused(theme({ color: { tint: 'bisque', modes: ['dark', 'dark'] } }), '/color/modes')
+  refused(theme({ color: { tint: 'bisque', modes: 'dark' } }), '/color/modes')
+})
+
+// format 1 takes the field: left out it means both modes, what every file meant before it
+test('a theme lists the colour modes it can be used in, both when it says nothing', () => {
+  const moded = (modes: string[]) => theme({ color: { tint: 'bisque', modes } })
+  expect(validateTheme(moded(['dark'])).valid).toBe(true)
+  expect(validateTheme(moded(['light', 'dark'])).valid).toBe(true)
+
+  expect(lockedMode()).toBeUndefined()
+  expect(lockedMode(['light', 'dark'])).toBeUndefined()
+  expect(lockedMode(['dark'])).toBe('dark')
+  expect(lockedMode(['light'])).toBe('light')
+
+  // a single mode reaches the config, both modes leave the entry as it was
+  expect(themeDefOf(moded(['dark']) as ThemeManifest)).toEqual({ surface: 'bisque', modes: ['dark'] })
+  expect(themeDefOf(moded(['dark', 'light']) as ThemeManifest)).toEqual({ surface: 'bisque' })
+})
+
+test('the block of a single-mode theme declares its mode first, a theme for both says nothing', () => {
+  const night = namedThemeCss(themeOf('night', { surface: 'bisque', modes: ['dark'] }))
+  expect(night).toMatch(new RegExp(`^:root\\[data-theme-name='night'\\] \\{\n  ${COLOR_MODES_PROPERTY}: dark;\n  --magma-tint-`))
+  expect(night.match(new RegExp(COLOR_MODES_PROPERTY, 'g'))).toHaveLength(1)
+
+  // a theme that only locks the mode still has a block, the mode alone
+  expect(namedThemeCss(themeOf('paper', { surface: semantic.tint, modes: ['light'] }))).toBe(
+    `:root[data-theme-name='paper'] {\n  ${COLOR_MODES_PROPERTY}: light;\n}`,
+  )
+  expect(namedThemeCss(themeOf('both', { surface: semantic.tint, modes: ['light', 'dark'] }))).toBe('')
+
+  // the themes Magma ships take both modes: themes.css does not change
+  for (const shipped of semanticModel().themes) {
+    expect(shipped.mode, shipped.name).toBeUndefined()
+    expect(namedThemeCss(shipped)).not.toContain(COLOR_MODES_PROPERTY)
+  }
 })
 
 test('readTheme throws every error with the name of the theme', () => {

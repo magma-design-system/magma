@@ -1,14 +1,16 @@
 /* The hovered row is the paper of the mode: --magma-surface-default, which the
  * layer promotes to the seed under pref-contrast-more (spec 9.3). */
 
-:host([pref-contrast='more'][pref-mode='dark']) {
+:host([pref-contrast='more'][pref-mode='dark']:not([pref-theme-scheme='light'])),
+:host([pref-contrast='more'][pref-theme-scheme='dark']) {
   --mds-table-background: rgb(var(--magma-wash-strong));
   --mds-table-body-background-hover: rgb(var(--magma-surface-default));
   --mds-table-color: rgb(var(--magma-text-default));
 }
 
 @media (prefers-contrast: more) {
-  :host([pref-contrast='system'][pref-mode='dark']) {
+  :host([pref-contrast='system'][pref-mode='dark']:not([pref-theme-scheme='light'])),
+  :host([pref-contrast='system'][pref-theme-scheme='dark']) {
     --mds-table-background: rgb(var(--magma-wash-strong));
     --mds-table-body-background-hover: rgb(var(--magma-surface-default));
     --mds-table-color: rgb(var(--magma-text-default));
@@ -16,7 +18,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host([pref-contrast='more'][pref-mode='system']) {
+  :host([pref-contrast='more'][pref-mode='system']:not([pref-theme-scheme='light'])) {
     --mds-table-background: rgb(var(--magma-wash-strong));
     --mds-table-body-background-hover: rgb(var(--magma-surface-default));
     --mds-table-color: rgb(var(--magma-text-default));
@@ -24,7 +26,7 @@
 }
 
 @media (prefers-contrast: more) and (prefers-color-scheme: dark) {
-  :host([pref-contrast='system'][pref-mode='system']) {
+  :host([pref-contrast='system'][pref-mode='system']:not([pref-theme-scheme='light'])) {
     --mds-table-background: rgb(var(--magma-wash-strong));
     --mds-table-body-background-hover: rgb(var(--magma-surface-default));
     --mds-table-color: rgb(var(--magma-text-default));

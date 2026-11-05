@@ -595,6 +595,25 @@ corner geometry (`data-corner-shape`), carries no colour and is documented in `S
   `mds-pref-theme-item` reads the ones of its `name`, and shows the active theme for a theme
   that publishes none.
 
+  **A theme can lock the mode (#1274).** A theme file lists the colour modes it can be used
+  in (`color.modes`, light and dark when it says nothing). A theme of one mode declares it
+  first in its block, `--magma-color-modes: dark` (or `light`); a theme of both declares
+  nothing, so `business` and `editorial` print what they did. The declaration does not flip
+  the palette by itself: `mds-pref-theme` reads it on `<html>` once it has written
+  `data-theme-name` and writes `pref-theme-scheme-<mode>`, the class every sheet that flips
+  with the palette already obeys (the palette and the dark block of this layer through
+  `darkScheme`, the `dark:` variant, `color-scheme` in `base.css`, the `*-pref-mode.css`
+  sheets of the components) and that locks `mds-pref-mode` to the theme's mode. The theme
+  declares, the class applies: one path for the themes Magma ships and for the ones a
+  product keeps, since the studio export prints the block with the same `namedThemeCss`.
+  Putting the theme's name in the `darkScheme` lists instead would have needed no script,
+  but only for the themes Magma compiles: a product's theme cannot join the palette sheet,
+  its `dark:` would not see it, and the components would still need the class. A page that
+  applies a theme without `mds-pref-theme` writes the class itself next to
+  `data-theme-name`. A theme locked to light stays light with the OS dark and no `mds-pref`
+  on the page too: the no-controller selector of `darkScheme` excludes
+  `pref-theme-scheme-light` like the system one.
+
   `--magma-tint-scale-*` is internal to the layer and deliberately NOT bridged to Tailwind:
   it is the retint mechanism, not a vocabulary. Publishing `--color-scale-09` utilities
   would make the raw step the easy choice again and freeze the step-indexed habit this
