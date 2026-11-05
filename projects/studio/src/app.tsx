@@ -1396,6 +1396,30 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
 
       {showSidebar && (
         <aside class="palette-list" aria-label="The families of colour">
+          {/* the main action of the list, a part of the page: primary outline (actions.md,
+              part-primary), the primary strong being Download in the head of the page. At the
+              top of the list, in view on loading: at the end it sat under some thirty families,
+              out of the window (vittorio, 2026-11-05). The
+              buttons of the page take their text in `label`: mds-button keeps the first text of
+              its slot as its label, and would not follow a text that changes */}
+          <mds-button
+            type="button"
+            icon="mi/baseline/add"
+            variant="primary"
+            tone="outline"
+            class="palette-add"
+            label="Add color"
+            onClick={() =>
+              setAddModal({
+                kind: 'color',
+                color: '#4f8fd9',
+                alias: aliasTargets[0] ?? '',
+                name: nearestColorName('#4f8fd9'),
+                group: 'label',
+                manual: false,
+              })
+            }
+          ></mds-button>
           {[...groups.entries()].map(([group, colors]) => (
             <div class="palette-list-group">
               <mds-text typography="part" tag="h2">
@@ -1447,28 +1471,6 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
               </ul>
             </div>
           ))}
-          {/* the main action of the list, a part of the page: primary outline (actions.md,
-              part-primary), the primary strong being Download in the head of the page. The
-              buttons of the page take their text in `label`: mds-button keeps the first text of
-              its slot as its label, and would not follow a text that changes */}
-          <mds-button
-            type="button"
-            icon="mi/baseline/add"
-            variant="primary"
-            tone="outline"
-            class="palette-add"
-            label="Add color"
-            onClick={() =>
-              setAddModal({
-                kind: 'color',
-                color: '#4f8fd9',
-                alias: aliasTargets[0] ?? '',
-                name: nearestColorName('#4f8fd9'),
-                group: 'label',
-                manual: false,
-              })
-            }
-          ></mds-button>
         </aside>
       )}
 
