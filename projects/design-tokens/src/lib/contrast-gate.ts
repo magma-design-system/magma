@@ -622,6 +622,26 @@ export function evaluateTheme(
   }));
 }
 
+/**
+ * Every pair the gate measures on a token tree: the base layer, then each named theme that
+ * repoints something, in its own family and accents (#692). The CLI (scripts/check-contrast.ts)
+ * prints them and the studio (projects/studio) sums them up, so both judge the same pairs.
+ */
+export function gatePairs(
+  tree: ColorTree,
+  m: SemanticMapping,
+  themes: Record<string, ThemeDefLike>,
+  targets: GateTargets = DEFAULT_TARGETS,
+): { base: PairResult[]; themes: Array<{ name: string; results: PairResult[] }> } {
+  return {
+    base: evaluatePairs(tree, aliasesFromConfig(m), targets),
+    themes: themeMappingsFromConfig(m, themes).map((theme) => ({
+      name: theme.name,
+      results: evaluateTheme(tree, theme, targets),
+    })),
+  };
+}
+
 export interface BaselineEntry {
   achieved: number;
   target: number;

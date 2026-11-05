@@ -365,7 +365,8 @@ const normalizeTheme = (
 
 // The names mds-pref-theme accepts (its `handleNameChange`): the preview custom properties
 // carry the name, so a name that is no CSS identifier part would emit a broken declaration.
-const THEME_NAME = /^[a-z]+(-[a-z]+)*$/;
+// The studio checks the name a person gives a theme against it.
+export const THEME_NAME = /^[a-z]+(-[a-z]+)*$/;
 
 /**
  * What a picker shows for a theme (#692): the wash its pills take (the `base` wash step of its
