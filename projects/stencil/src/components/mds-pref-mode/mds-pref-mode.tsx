@@ -80,11 +80,12 @@ export class MdsPrefMode {
   @Prop({ mutable: true, reflect: true }) transition: PreferenceThemeTransitionType = 'smooth';
 
   /**
-   * Locks the mode items forbidden by a scheme-constrained theme, without
-   * touching the stored preference: `light` disables the explicit `dark` item,
-   * `dark` disables the explicit `light` item, `all` (or unset) locks nothing;
-   * the `system` item is never locked. Set by the `mds-pref` controller from the
-   * active theme's `scheme`; not meant to be set directly.
+   * Locks the mode choice to one mode, `light` or `dark`: the control shows that mode
+   * selected and disables the other two items, without touching the stored preference,
+   * which comes back when the lock goes. `all` locks nothing. Unset, the control follows
+   * the active theme: a theme that can be used in one mode only (`pref-theme-scheme-light`
+   * or `-dark` on `<html>`, written by `mds-pref-theme` from the mode the theme declares,
+   * #1274) locks it the same way. Not meant to be set directly.
    */
   @Prop({ reflect: true }) readonly lockedScheme?: PreferenceThemeSchemeType;
 
@@ -263,18 +264,30 @@ export class MdsPrefMode {
     }, 1);
   };
 
+  /**
+   * The mode the choice is locked to: the prop, or else the scheme of the active theme, which
+   * the store mirrors from `<html>`. Read in render, so a theme picked anywhere re-renders it.
+   */
+  private readonly lockedMode = (): 'light' | 'dark' | undefined => {
+    const scheme = this.lockedScheme ?? preferenceStore.state['theme-scheme'];
+    return scheme === 'light' || scheme === 'dark' ? scheme : undefined;
+  };
+
+  /**
+   * The mode the control shows: the one the theme locks the page to, since that is the mode
+   * the page is in whatever was picked, or else the person's choice.
+   */
+  private readonly shownMode = (): PreferenceModeType =>
+    this.lockedMode() ?? this.mode ?? this.defaultMode;
+
   private readonly isModeDisabled = (mode: PreferenceModeType): boolean => {
-    if (this.lockedScheme === 'light') {
-      return mode === 'dark';
-    }
-    if (this.lockedScheme === 'dark') {
-      return mode === 'light';
-    }
-    return false;
+    const locked = this.lockedMode();
+    return locked !== undefined && mode !== locked;
   };
 
   private changeMode = (mode: PreferenceModeType): void => {
-    if (this.isModeDisabled(mode)) {
+    // under a lock no item changes the mode: the shown one is the theme's, not a pick
+    if (this.lockedMode() !== undefined) {
       return;
     }
 
@@ -318,12 +331,12 @@ export class MdsPrefMode {
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <mds-text class="info" typography="caption">
-          <b>{this.t.get('label')}</b> {this.t.get(this.modes[this.mode ?? this.defaultMode].label)}
+          <b>{this.t.get('label')}</b> {this.t.get(this.modes[this.shownMode()].label)}
         </mds-text>
         <mds-tab fill size={this.size}>
           <mds-tab-item
             disabled={this.isModeDisabled('light')}
-            selected={this.mode === 'light'}
+            selected={this.shownMode() === 'light'}
             onClick={this.handleModeClick('light')}
             class="item item--light"
             icon={miBaselineLightMode}
@@ -331,7 +344,7 @@ export class MdsPrefMode {
           ></mds-tab-item>
           <mds-tab-item
             disabled={this.isModeDisabled('system')}
-            selected={this.mode === 'system'}
+            selected={this.shownMode() === 'system'}
             onClick={this.handleModeClick('system')}
             class="item item--system"
             icon={miBaselineSettings}
@@ -339,10 +352,10 @@ export class MdsPrefMode {
           ></mds-tab-item>
           <mds-tab-item
             disabled={this.isModeDisabled('dark')}
-            selected={this.mode === 'dark'}
+            selected={this.shownMode() === 'dark'}
             onClick={this.handleModeClick('dark')}
             class="item item--dark"
-            icon={this.mode === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}
+            icon={this.shownMode() === 'dark' ? miBaselineDarkMode : miOutlineDarkMode}
             title={this.t.get(this.modes.dark.label)}
           ></mds-tab-item>
         </mds-tab>

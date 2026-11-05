@@ -223,7 +223,9 @@ reset → vendor → theme → base → components → utilities → overrides
 Dark mode is handled via palette-level CSS custom properties. Activation classes on `<html>`:
 - `pref-mode-light / dark` - manual mode
 - `pref-mode-system` - follows OS preference (as a page with no `mds-pref` controller does)
-- `pref-theme-scheme-dark / light / all` - a named theme locked to one scheme wins over the mode
+- `pref-theme-scheme-dark / light / all` - a named theme locked to one scheme wins over the mode;
+  `mds-pref-theme` writes it from the mode the theme declares in its block
+  (`--magma-color-modes`, from `color.modes` of the theme file), or else from the item's `scheme`
 
 The selectors the palette turns dark on are one list (`darkScheme`,
 `projects/design-tokens/src/formats/dark-scheme.ts`), printed by the palette templates, the

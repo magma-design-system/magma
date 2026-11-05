@@ -13,10 +13,10 @@ The `<mds-pref>` web component is the accessibility-preferences panel of the Mag
 
 #### Semantic Behavior
 
-- **Compound parent**: Expects `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-mode`, `mds-pref-theme` and/or `mds-pref-language` children in its default slot; it owns no preference UI of its own beyond coordination (a scheme-constrained `mds-pref-theme` locks the matching `mds-pref-mode` item).
+- **Compound parent**: Expects `mds-pref-animation`, `mds-pref-consumption`, `mds-pref-contrast`, `mds-pref-mode`, `mds-pref-theme` and/or `mds-pref-language` children in its default slot; it owns no preference UI of its own beyond coordination (it forwards `size`, flags the document and asks for a reload). The lock of a single-mode theme on `mds-pref-mode` needs no parent: the mode control reads it from `<html>`.
 - **Size propagation**: `size` cascades down to every nested `mds-pref-*` child, on load, on every change and to the children added later; without a `size` on the panel each child keeps its own.
 - **Reload notice**: The panel shows an inline caption prompting the user to refresh the page when a preference that cannot apply live (`consumption` or `language`) changes after load. A `controller` panel, which is hidden, shows none.
-- **Document flag**: While at least one `<mds-pref>` is on the page, `<html>` carries `data-magma-pref`, which turns off the styles' fallback to the OS preferences; it is removed only when the last instance leaves the page, so a settings page that unmounts its own panel leaves the app controller in charge. Moving a panel in the DOM (between a sidebar and a menu, or with a client router that keeps it across pages) keeps the flag, the reload notice and the theme lock on the mode control.
+- **Document flag**: While at least one `<mds-pref>` is on the page, `<html>` carries `data-magma-pref`, which turns off the styles' fallback to the OS preferences; it is removed only when the last instance leaves the page, so a settings page that unmounts its own panel leaves the app controller in charge. Moving a panel in the DOM (between a sidebar and a menu, or with a client router that keeps it across pages) keeps the flag and the reload notice.
 - **Live language sync**: When a `language` change is emitted, the panel re-resolves its own locale so the reload notice is shown in the newly selected language.
 
 #### Properties & Visual Configurations
@@ -34,7 +34,7 @@ Correct and idiomatic ways to use the `<mds-pref>` component, ordered from most 
 
 #### Full Preferences Panel
 
-The canonical form: slot every `mds-pref-*` control directly inside `<mds-pref>`. The parent coordinates the theme and mode controls automatically (a scheme-constrained theme locks the matching mode item) - no extra wiring is needed.
+The canonical form: slot every `mds-pref-*` control directly inside `<mds-pref>`. No extra wiring is needed: the mode control follows the active theme by itself (a theme of one mode locks it to that mode).
 
 ```html
 <mds-pref>
@@ -139,7 +139,7 @@ The default slot accepts only `mds-pref-animation`, `mds-pref-consumption`, `mds
 
 #### Do Not Use `mds-pref-*` Children Outside `<mds-pref>`
 
-Each control applies and stores its own preference, but the coordination between the controls of a panel lives in the parent: a scheme-constrained `mds-pref-theme` item locks the matching `mds-pref-mode` item only inside `<mds-pref>`, and only the parent forwards `size` changes. Group the controls of a panel in `<mds-pref>`.
+Each control applies and stores its own preference, but the coordination between the controls of a panel lives in the parent: only the parent forwards `size` changes and sets the `data-magma-pref` flag that turns off the fallback to the OS preferences. Group the controls of a panel in `<mds-pref>`.
 
 ```html
 <!-- INCORRECT -->

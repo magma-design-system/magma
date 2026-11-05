@@ -20,7 +20,12 @@ import {
   preferenceCornerShapeChoiceType,
 } from '@type/preference';
 import { Locale } from '@common/locale';
-import { MODE_VALUES, preferenceStore } from '@common/preference';
+import {
+  COLOR_MODES_PROPERTY,
+  MODE_VALUES,
+  lockedSchemeOf,
+  preferenceStore,
+} from '@common/preference';
 import { labelFromName } from '@common/string';
 import localeEl from './meta/locale.el.json';
 import localeEn from './meta/locale.en.json';
@@ -58,7 +63,8 @@ export class MdsPrefTheme {
   private readonly localStorageAliasCornerShape: string = 'mdsPrefCornerShape';
   private currentSelectedItem: HTMLMdsPrefThemeItemElement;
   private itemsObserver?: MutationObserver;
-  // the theme (`name/scheme`) and the corner shape this instance applied last
+  // the theme (`name/scheme`, the scheme it is applied with) and the corner shape this instance
+  // applied last
   private appliedTheme?: string;
   private appliedCornerShape?: PreferenceCornerShapeChoiceType;
   private themeItems: NodeListOf<HTMLMdsPrefThemeItemElement>;
@@ -97,6 +103,8 @@ export class MdsPrefTheme {
    * Specifies the theme scheme which can be 'light', 'dark' or 'all'
    * Default is 'all' which means this theme supporto both light and dark.
    * If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only.
+   * A theme whose stylesheet declares one mode (`--magma-color-modes`, from `color.modes` of its
+   * file) is applied in that mode whatever this says: the theme's own lock wins.
    */
   @Prop({ mutable: true, reflect: true }) scheme: PreferenceThemeSchemeType = 'all';
 
@@ -116,7 +124,9 @@ export class MdsPrefTheme {
   @Prop({ mutable: true, reflect: true }) cornerShape?: PreferenceCornerShapeChoiceType;
 
   /**
-   * Emits when the component changes the language selected from the click event of the dropdown list item
+   * Emits when the component changes the language selected from the click event of the dropdown list item.
+   * Its `scheme` is the one the theme is applied with: the mode the theme declares, when it
+   * declares one, or else the scheme of the item.
    */
   @Event({ eventName: 'mdsPrefThemeChange' })
   themeChangeEvent: EventEmitter<MdsPrefThemeEventDetail>;
@@ -248,7 +258,9 @@ export class MdsPrefTheme {
     this.currentSelectedItem.selected = true;
     const name: string = e.detail.name.toLowerCase();
     const scheme: PreferenceThemeSchemeType = e.detail.scheme.toLowerCase();
-    this.themeChangeEvent.emit({ name, scheme });
+    const applied =
+      this.isThemeName(name) && this.isScheme(scheme) ? this.appliedSchemeOf(name, scheme) : scheme;
+    this.themeChangeEvent.emit({ name, scheme: applied });
     this.showDropdown = false;
     this.setTheme(name, scheme);
   }
@@ -259,6 +271,24 @@ export class MdsPrefTheme {
     this.themeItems.forEach((element) => {
       element.selected = sameTheme(element.name, this.name);
     });
+  };
+
+  /**
+   * The scheme a theme is applied with: the one mode its stylesheet declares on `<html>`
+   * (`--magma-color-modes`, printed from `color.modes` of the theme file, #1274), or else the
+   * scheme of the item or the prop. The theme's lock wins over the item's: its colours are made
+   * for that mode, and a product that keeps the theme in a file does not repeat it on every
+   * item. The declaration lives under `:root[data-theme-name]`, so the name is written first;
+   * the stylesheet of the theme has to be on the page when the theme is applied.
+   */
+  private readonly appliedSchemeOf = (
+    name: string,
+    scheme: PreferenceThemeSchemeType,
+  ): PreferenceThemeSchemeType => {
+    if (!Build.isBrowser || typeof getComputedStyle !== 'function') return scheme;
+    const html = document.documentElement;
+    if (html.getAttribute('data-theme-name') !== name) html.setAttribute('data-theme-name', name);
+    return lockedSchemeOf(getComputedStyle(html).getPropertyValue(COLOR_MODES_PROPERTY)) ?? scheme;
   };
 
   private readonly setTheme = (name: string, scheme: PreferenceThemeSchemeType): void => {
@@ -278,10 +308,13 @@ export class MdsPrefTheme {
     }
     this.name = name;
     this.scheme = scheme;
+    // the scheme it is applied with; the storage keeps the pick, so a theme that stops declaring
+    // a mode is not held to it by an old visit
+    const applied = this.appliedSchemeOf(name, scheme);
     // every render comes here (the storage is read again, so a pick made in another instance is
     // followed): only a change is applied and announced, and the first application, the one of
     // load, is no change. It used to emit mdsPrefChange on every render
-    const theme = `${name}/${scheme}`;
+    const theme = `${name}/${applied}`;
     if (theme === this.appliedTheme) return;
     const isFirstApplication = this.appliedTheme === undefined;
     this.appliedTheme = theme;
@@ -301,13 +334,13 @@ export class MdsPrefTheme {
       }
       // set new selection
       element?.setAttribute('data-theme-name', this.name);
-      element?.classList.add(this.schemeSet[this.scheme]);
+      element?.classList.add(this.schemeSet[applied]);
       element?.classList.add(this.clasNameThemeNamePrefix + this.name);
       element?.style.setProperty(this.customPropertyAliasThemeName, this.name);
-      element?.style.setProperty(this.customPropertyAliasThemeScheme, this.scheme);
+      element?.style.setProperty(this.customPropertyAliasThemeScheme, applied);
       this.previousName = this.name;
     }
-    preferenceStore.state['theme-scheme'] = this.scheme;
+    preferenceStore.state['theme-scheme'] = applied;
     if (!isFirstApplication) {
       this.prefChangeEvent.emit({ preference: 'theme' });
     }

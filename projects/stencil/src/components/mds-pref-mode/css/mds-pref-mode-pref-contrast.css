@@ -1,4 +1,5 @@
-:host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
+:host([pref-mode='dark']:not([pref-theme-scheme='light'])),
+:host([pref-theme-scheme='dark']) {
   .item {
     --mds-tab-item-default-color: rgb(var(--magma-text-default));
   }

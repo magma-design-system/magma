@@ -99,6 +99,24 @@ keep in step.
 - **Held by**: the lint tests hold `USE_OF_UTILITY` to the roots of the `--color` namespace, in
   the fixtures and in the built map.
 
+## The mode of a theme
+
+- **What**: `--magma-color-modes`, the one colour mode (`light` or `dark`) a theme can be used
+  in, declared first in its `:root[data-theme-name]` block of `themes.css` and of the studio
+  export; a theme of both modes declares nothing.
+- **Produced by**: design-tokens, `namedThemeCss` and `COLOR_MODES_PROPERTY` of
+  `semantic.model.ts`, from `color.modes` of the theme file; the styles build prints
+  `themes.css` with it.
+- **Contract**: [`projects/styles/SEMANTIC_COLOR_SPEC.md`](../projects/styles/SEMANTIC_COLOR_SPEC.md),
+  section 8 ("A theme can lock the mode"); the field in
+  [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md), "Themes: the public
+  format".
+- **Read by**: `mds-pref-theme` (`COLOR_MODES_PROPERTY` and `lockedSchemeOf` of
+  `projects/stencil/src/common/preference.ts`), which writes `pref-theme-scheme-<mode>` from it.
+- **Held by**: `test/theme-manifest.test.mts` of design-tokens (the block of a single-mode
+  theme, the shipped themes declare nothing); `src/common/test/preference-modes.spec.ts` of
+  stencil (the name the producer exports, the values read); the `mds-pref-theme` e2e.
+
 ## Icon slugs
 
 - **What**: the name `mds-icon` fetches, `mi/<variant>/<name>`, `mdi/<name>` or `mgg/<name>`,

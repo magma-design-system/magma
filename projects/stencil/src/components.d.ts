@@ -2453,7 +2453,7 @@ export namespace Components {
      */
     interface MdsPrefMode {
         /**
-          * Locks the mode items forbidden by a scheme-constrained theme, without touching the stored preference: `light` disables the explicit `dark` item, `dark` disables the explicit `light` item, `all` (or unset) locks nothing; the `system` item is never locked. Set by the `mds-pref` controller from the active theme's `scheme`; not meant to be set directly.
+          * Locks the mode choice to one mode, `light` or `dark`: the control shows that mode selected and disables the other two items, without touching the stored preference, which comes back when the lock goes. `all` locks nothing. Unset, the control follows the active theme: a theme that can be used in one mode only (`pref-theme-scheme-light` or `-dark` on `<html>`, written by `mds-pref-theme` from the mode the theme declares, #1274) locks it the same way. Not meant to be set directly.
          */
         "lockedScheme"?: PreferenceThemeSchemeType;
         /**
@@ -2485,7 +2485,7 @@ export namespace Components {
          */
         "name": string;
         /**
-          * Specifies the theme scheme which can be 'light', 'dark' or 'all' Default is 'all' which means this theme supporto both light and dark. If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only.
+          * Specifies the theme scheme which can be 'light', 'dark' or 'all' Default is 'all' which means this theme supporto both light and dark. If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only. A theme whose stylesheet declares one mode (`--magma-color-modes`, from `color.modes` of its file) is applied in that mode whatever this says: the theme's own lock wins.
           * @default 'all'
          */
         "scheme": PreferenceThemeSchemeType;
@@ -7980,7 +7980,7 @@ declare namespace LocalJSX {
      */
     interface MdsPrefMode {
         /**
-          * Locks the mode items forbidden by a scheme-constrained theme, without touching the stored preference: `light` disables the explicit `dark` item, `dark` disables the explicit `light` item, `all` (or unset) locks nothing; the `system` item is never locked. Set by the `mds-pref` controller from the active theme's `scheme`; not meant to be set directly.
+          * Locks the mode choice to one mode, `light` or `dark`: the control shows that mode selected and disables the other two items, without touching the stored preference, which comes back when the lock goes. `all` locks nothing. Unset, the control follows the active theme: a theme that can be used in one mode only (`pref-theme-scheme-light` or `-dark` on `<html>`, written by `mds-pref-theme` from the mode the theme declares, #1274) locks it the same way. Not meant to be set directly.
          */
         "lockedScheme"?: PreferenceThemeSchemeType;
         /**
@@ -8020,11 +8020,11 @@ declare namespace LocalJSX {
          */
         "onMdsPrefChange"?: (event: MdsPrefThemeCustomEvent<MdsPrefChangeEventDetail>) => void;
         /**
-          * Emits when the component changes the language selected from the click event of the dropdown list item
+          * Emits when the component changes the language selected from the click event of the dropdown list item. Its `scheme` is the one the theme is applied with: the mode the theme declares, when it declares one, or else the scheme of the item.
          */
         "onMdsPrefThemeChange"?: (event: MdsPrefThemeCustomEvent<MdsPrefThemeEventDetail>) => void;
         /**
-          * Specifies the theme scheme which can be 'light', 'dark' or 'all' Default is 'all' which means this theme supporto both light and dark. If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only.
+          * Specifies the theme scheme which can be 'light', 'dark' or 'all' Default is 'all' which means this theme supporto both light and dark. If you set 'light' means this theme support only light mode and will be forced and shown light colors mode only. A theme whose stylesheet declares one mode (`--magma-color-modes`, from `color.modes` of its file) is applied in that mode whatever this says: the theme's own lock wins.
           * @default 'all'
          */
         "scheme"?: PreferenceThemeSchemeType;
