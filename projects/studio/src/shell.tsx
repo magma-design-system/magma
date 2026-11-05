@@ -146,21 +146,16 @@ function StudioBar({ route, verdict }: { route: Route; verdict: GateVerdict | nu
               <mds-text typography="h6" tag="p">
                 Magma Studio
               </mds-text>
-              <span class="studio-product-meta">
-                <mds-text typography="label" tag="span" class="studio-product-role">
-                  Product designer
+              <mds-text typography="label" tag="p" class="studio-product-role">
+                Product designer
+              </mds-text>
+              {/* the Magma the studio runs on, on a line of its own: beside the role it read as
+                  the version of the studio */}
+              {version && (
+                <mds-text typography="caption" tag="p" class="studio-product-version">
+                  {`for Magma v${version}`}
                 </mds-text>
-                {version && (
-                  <mds-text
-                    typography="label"
-                    tag="span"
-                    class="studio-product-version"
-                    title={`The studio runs on Magma ${version}`}
-                  >
-                    {`v${version}`}
-                  </mds-text>
-                )}
-              </span>
+              )}
             </span>
           </a>
           <mds-button
