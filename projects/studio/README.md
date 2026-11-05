@@ -47,7 +47,7 @@ else the name of the family: the name given on the Themes page stays in that pag
 configuration keeps it.
 
 The header over the frame holds what the theme is checked under, not what is edited (#697): the
-view (Scenes; Groups comes next), the mode (light, dark, or both side by side, two frames that
+view (Scenes or Groups, below), the mode (light, dark, or both side by side, two frames that
 scroll together), the width of the frame (the room of the section, or a breakpoint of Magma,
 `--breakpoint-desktop`, `-tablet`, `-mobile`, where its layouts change) and the contrast. The mode
 and the contrast are not exported: the header writes them on the `<html>` of each frame as the
@@ -60,6 +60,19 @@ judged on most of Magma at once: a hue on a themed surface, text at every promin
 disabled state, the solid fills of the main actions, the colours of the states. The steps of the
 request in hand take the width of the page above the columns: `mds-stepper-bar` centres the
 current step and would push the first out of a column.
+
+The Groups view (`groups.html`) shows the components by their role in the composition, the
+vocabulary of the dimension axis, so the preview explains the controls beside it: `container`
+(card, banner, accordion, table, dropdown, tooltip, the window of a dialog), `control` (button,
+input, select, textarea, tab) and `marker` (checkbox, switch, badge, chip, label, avatar, dot).
+The groups and their members are those of the draft of the axis (#691,
+`projects/styles/draft/theme-dimension-design.md`, section 3, on `691-dimension-axis-draft`) until
+the axis lands. Each component is shown at every variant, tone and state it publishes
+(`magma.api.txt`), the brand buttons aside, with the surfaces, the text at every prominence and the
+borders at every level. Two things it does not draw on load: the focus ring, since a frame that
+took the focus would take it from the studio (Tab into the frame to see it), and an open modal,
+which would cover the frame (its window stands for it). The avatars carry an icon: initials pick
+the colour of the person and override the variant.
 
 The **Themes** page names each theme apart from the family it is drawn from: `editorial` is drawn
 from `bisque`. The names of the themes Magma ships (`semantic.config.ts`, `themes`) are reserved,

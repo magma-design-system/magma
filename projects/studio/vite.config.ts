@@ -41,11 +41,12 @@ export default defineConfig({
   build: {
     outDir: fileURLToPath(new URL('./dist', import.meta.url)),
     emptyOutDir: true,
-    // the studio, and the page of a scene the Theme section shows in its iframe
+    // the studio, and the pages the Theme section shows in its iframe: the scene and the groups
     rollupOptions: {
       input: {
         main: fileURLToPath(new URL('./index.html', import.meta.url)),
         scene: fileURLToPath(new URL('./scene.html', import.meta.url)),
+        groups: fileURLToPath(new URL('./groups.html', import.meta.url)),
       },
     },
   },

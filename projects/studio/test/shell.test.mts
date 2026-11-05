@@ -82,7 +82,14 @@ test('the header sets what the theme is checked under: both modes are two frames
     if (!found) throw new Error('no header yet')
     return found
   })
-  const [, modes] = [...head.querySelectorAll('mds-filter')]
+  const [views, modes] = [...head.querySelectorAll('mds-filter')]
+  expect([...views.querySelectorAll('mds-filter-item')].map((item) => item.getAttribute('value')))
+    .toEqual(['scenes', 'groups'])
+  views.dispatchEvent(new CustomEvent('mdsFilterChange', { detail: { value: 'groups' }, bubbles: true }))
+  await vi.waitFor(() => expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('groups.html'))
+  views.dispatchEvent(new CustomEvent('mdsFilterChange', { detail: { value: 'scenes' }, bubbles: true }))
+  await vi.waitFor(() => expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('scene.html'))
+
   expect([...modes.querySelectorAll('mds-filter-item')].map((item) => item.getAttribute('value')))
     .toEqual(['light', 'dark', 'both'])
   modes.dispatchEvent(new CustomEvent('mdsFilterChange', { detail: { value: 'both' }, bubbles: true }))

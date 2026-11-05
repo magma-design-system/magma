@@ -268,11 +268,16 @@ const MODE_VIEWS: ReadonlyArray<{ id: ModeView; label: string }> = [
   { id: 'both', label: 'Both' },
 ];
 
-/** The views of the same theme (#697): Scenes, compositions of a product; Groups, to come. */
+/**
+ * The views of the same theme (#697), each a page of its own in the frame: Scenes, compositions
+ * that look like a product, where a theme is judged as a whole; Groups, the components by their
+ * role in the composition (container, control, marker), at every variant, tone and state.
+ */
 const VIEWS = [
-  { id: 'scenes', label: 'Scenes', ready: true },
-  { id: 'groups', label: 'Groups', ready: false },
+  { id: 'scenes', label: 'Scenes', page: 'scene.html', title: 'The theme on a page of a product' },
+  { id: 'groups', label: 'Groups', page: 'groups.html', title: 'The theme on every component' },
 ] as const;
+type View = (typeof VIEWS)[number]['id'];
 
 /**
  * The widths of the frame: the room of the section, or a breakpoint of Magma (tokens/screen,
@@ -358,6 +363,8 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
   const [chosen, setTheme] = useState(PREVIEW_THEMES[0]);
   const theme = names.includes(chosen) ? chosen : names[0];
   const [panel, setPanel] = useState<Axis | null>(null);
+  const [view, setView] = useState<View>('scenes');
+  const page = VIEWS.find((one) => one.id === view)!;
   const [mode, setMode] = useState<ModeView>('light');
   const [contrast, setContrast] = useState(false);
   const [width, setWidth] = useState<Width>('full');
@@ -390,27 +397,27 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
   // smooth follower would hand back each step of its way), and the scroll event of that jump,
   // at the position it was given, is its echo, not a scroll of the person
   useEffect(() => {
-    const views = frames.current
+    const panes = frames.current
       .slice(0, schemes.length)
       .map((frame) => frame?.contentWindow)
-      .filter((view): view is Window => !!view);
-    if (views.length < 2) return;
+      .filter((pane): pane is Window => !!pane);
+    if (panes.length < 2) return;
     const echoes = new Map<Window, number>();
-    const listeners = views.map((view) => {
+    const listeners = panes.map((pane) => {
       const follow = () => {
-        const top = Math.round(view.scrollY);
-        if (echoes.get(view) === top) {
-          echoes.delete(view);
+        const top = Math.round(pane.scrollY);
+        if (echoes.get(pane) === top) {
+          echoes.delete(pane);
           return;
         }
-        views.forEach((other) => {
-          if (other === view || Math.round(other.scrollY) === top) return;
+        panes.forEach((other) => {
+          if (other === pane || Math.round(other.scrollY) === top) return;
           echoes.set(other, top);
           other.scrollTo({ top, behavior: 'instant' });
         });
       };
-      view.addEventListener('scroll', follow);
-      return () => view.removeEventListener('scroll', follow);
+      pane.addEventListener('scroll', follow);
+      return () => pane.removeEventListener('scroll', follow);
     });
     return () => listeners.forEach((remove) => remove());
   }, [mode, loaded]);
@@ -418,14 +425,18 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
   return (
     <div class="studio-theme">
       <div class="studio-theme-head" role="toolbar" aria-label="Preview">
-        <mds-filter aria-label="View">
-          {VIEWS.map((view) => (
+        <mds-filter
+          aria-label="View"
+          onmdsFilterChange={(event: CustomEvent<{ value?: string }>) => {
+            const value = event.detail?.value as View | undefined;
+            if (value) setView(value);
+          }}
+        >
+          {VIEWS.map((one) => (
             <mds-filter-item
-              label={view.label}
-              value={view.id}
-              selected={view.id === 'scenes'}
-              disabled={!view.ready}
-              title={view.ready ? undefined : `${view.label}: comes with the Groups view (#697)`}
+              label={one.label}
+              value={one.id}
+              selected={one.id === view}
             ></mds-filter-item>
           ))}
         </mds-filter>
@@ -476,8 +487,8 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
           <iframe
             ref={(frame) => (frames.current[index] = frame)}
             class="studio-scene"
-            src="scene.html"
-            title={`The theme on a page of a product, ${scheme} mode`}
+            src={page.page}
+            title={`${page.title}, ${scheme} mode`}
             onLoad={() => setLoaded((count) => count + 1)}
           />
         ))}
