@@ -8,7 +8,11 @@ import {
   semantic,
   accentTintOverride,
 } from '@maggioli-design-system/design-tokens/semantic.config';
-import { namedThemeCss, themeOf } from '@maggioli-design-system/design-tokens/semantic.model';
+import {
+  THEME_NAME,
+  namedThemeCss,
+  themeOf,
+} from '@maggioli-design-system/design-tokens/semantic.model';
 import { borderVerdict } from './surfaces.js';
 
 /**
@@ -63,6 +67,44 @@ const variantHex = (
 /** per-theme accent assignment: theme family -> role -> variant family. */
 type AccentAssignment = Record<string, Record<string, string>>;
 
+/** A ThemeDef of semantic.config.ts as surface and accents (a string is the surface alone). */
+const defOf = (def: (typeof semantic.themes)[string]) =>
+  typeof def === 'string' ? { surface: def, accents: undefined, deprecated: undefined } : def;
+
+/**
+ * The name of a theme is its own, not the name of the family it is drawn from (decided with
+ * vittorio, 2026-11-05): `editorial` is drawn from `bisque`. Every name Magma ships is reserved,
+ * the deprecated ones included while themes.css still emits them, so a theme of a product never
+ * takes one (semantic.config.ts, `themes`).
+ */
+export const RESERVED_THEME_NAMES: ReadonlySet<string> = new Set(Object.keys(semantic.themes));
+
+/**
+ * The themes Magma ships, by the family they are drawn from: their name and their accents. The
+ * deprecated ones are no starting point, so they are not offered.
+ */
+const SHIPPED_BY_FAMILY: ReadonlyMap<string, { name: string; accents: Record<string, string> }> =
+  new Map(
+    Object.entries(semantic.themes)
+      .map(([name, def]) => ({ name, ...defOf(def) }))
+      .filter(({ deprecated }) => !deprecated)
+      .map(({ name, surface, accents }) => [
+        surface ?? semantic.tint,
+        { name, accents: accents ?? {} },
+      ]),
+  );
+
+/** Why a name a person gave a theme cannot be used, or null when it can. */
+export function themeNameProblem(name: string, family: string, names: Record<string, string>) {
+  if (!THEME_NAME.test(name))
+    return 'lowercase words joined by hyphens, as editorial or my-product';
+  if (RESERVED_THEME_NAMES.has(name))
+    return `${name} is a theme Magma ships: pick a name of your own`;
+  const taken = Object.entries(names).find(([other, value]) => other !== family && value === name);
+  if (taken) return `the theme drawn from ${taken[0]} is named ${name} already`;
+  return null;
+}
+
 interface ThemesManagerProps {
   config: MagmaConfig;
 }
@@ -108,27 +150,46 @@ export function ThemesManager({ config }: ThemesManagerProps) {
   const extras = opted.filter((family) => family !== semantic.tint);
   const previewFamilies = [...(opted.includes(semantic.tint) ? [semantic.tint] : []), ...extras];
 
-  // per-theme accent assignment (only overrides are stored; missing = base variant)
+  // per-theme accent assignment (only overrides are stored; missing = the accents of the theme
+  // Magma ships from the family, then the base variant)
   const [accents, setAccents] = useState<AccentAssignment>({});
   const setAccent = (family: string, role: string, variant: string) =>
     setAccents((prev) => ({ ...prev, [family]: { ...prev[family], [role]: variant } }));
   const accentFor = (family: string, role: string): string =>
-    accents[family]?.[role] ?? semantic.accents[role];
+    accents[family]?.[role] ??
+    SHIPPED_BY_FAMILY.get(family)?.accents[role] ??
+    semantic.accents[role];
+
+  // the name of each theme: the shipped one for a family Magma draws a theme from, else the
+  // one the person gives it, the family name until then
+  const [names, setNames] = useState<Record<string, string>>({});
+  const nameOf = (family: string): string =>
+    SHIPPED_BY_FAMILY.get(family)?.name ?? names[family] ?? family;
+  const givenNames = Object.fromEntries(
+    extras
+      .filter((family) => !SHIPPED_BY_FAMILY.has(family))
+      .map((family) => [family, nameOf(family)]),
+  );
 
   // export: the block of each non-default theme, expanded and printed by the code
   // that writes themes.css (design-tokens semantic.model.ts): the tint block of the
   // family with its ramp, each reassigned accent, and the theme's own contrast blocks.
   // A family whose name is no theme name (the model refuses it) says why instead.
   const themeCss = (family: string): string => {
+    const name = nameOf(family);
+    const problem = SHIPPED_BY_FAMILY.has(family)
+      ? null
+      : themeNameProblem(name, family, givenNames);
+    if (problem) return `/* the theme drawn from ${family}: ${problem} */`;
     const accentOverrides = Object.fromEntries(
       ACCENT_ROLES.map((role) => [role, accentFor(family, role)]).filter(
         ([role, variant]) => variant !== semantic.accents[role],
       ),
     );
     try {
-      return namedThemeCss(themeOf(family, { surface: family, accents: accentOverrides }));
+      return namedThemeCss(themeOf(name, { surface: family, accents: accentOverrides }));
     } catch (error) {
-      return `/* ${family}: ${error instanceof Error ? error.message : String(error)} */`;
+      return `/* ${name}: ${error instanceof Error ? error.message : String(error)} */`;
     }
   };
   // the default family is the base :root: it emits no surface/border/text override,
@@ -157,23 +218,20 @@ export function ThemesManager({ config }: ThemesManagerProps) {
 
   return (
     <div class="themes-manager">
-      <div class="content-head">
-        <h2>themes</h2>
-        <span class="scales-hint">derived from the surfaces above</span>
-      </div>
       <p class="scales-hint">
-        Each family you opt into a surface above is a theme: the <code>default</code> (
-        <code>{semantic.tint}</code>) is the base <code>:root</code>, and every other one switches
-        in via <code>data-theme-name</code>, repointing the whole <code>--magma-tint-*</code> block
-        (surface + border + text) to that family. An accent is a role that points at a{' '}
-        <code>variant</code>; a theme may repoint it - pick a variant per role below and the accent
-        retints with the theme. Any tint works; text comes from the family's own scale.
+        Each family opted into a surface (Semantic surface) is a theme with a name of its own:{' '}
+        <code>{nameOf(semantic.tint)}</code>, drawn from <code>{semantic.tint}</code>, is the base{' '}
+        <code>:root</code>, and every other one switches in via <code>data-theme-name</code>,
+        repointing the whole <code>--magma-tint-*</code> block (surface + border + text) to its
+        family. The names of the themes Magma ships are reserved. An accent is a role that points at
+        a <code>variant</code>; a theme may repoint it - pick a variant per role below and the
+        accent retints with the theme. Any tint works; text comes from the family's own scale.
       </p>
 
       {extras.length === 0 && (
         <p class="scales-hint">
-          Only the <code>{semantic.tint}</code> default so far - opt another family into a surface
-          above and it appears here as a theme.
+          Only the base theme so far - opt another family into a surface (Semantic surface) and it
+          appears here as a theme.
         </p>
       )}
 
@@ -182,6 +240,14 @@ export function ThemesManager({ config }: ThemesManagerProps) {
         {previewFamilies.map((family) => (
           <ThemeCard
             family={family}
+            name={nameOf(family)}
+            shipped={SHIPPED_BY_FAMILY.has(family)}
+            nameProblem={
+              SHIPPED_BY_FAMILY.has(family)
+                ? null
+                : themeNameProblem(nameOf(family), family, givenNames)
+            }
+            onName={(name) => setNames((prev) => ({ ...prev, [family]: name }))}
             surfaces={surfaces}
             texts={texts}
             borders={borders}
@@ -213,6 +279,13 @@ export function ThemesManager({ config }: ThemesManagerProps) {
 
 interface ThemeCardProps {
   family: string;
+  /** The name of the theme drawn from the family. */
+  name: string;
+  /** A theme Magma ships: its name is fixed. */
+  shipped: boolean;
+  /** Why the name cannot be used, or null. */
+  nameProblem: string | null;
+  onName: (name: string) => void;
   surfaces: Record<string, FamilyModes>;
   texts: Record<string, FamilyModes>;
   borders: Record<string, FamilyModes>;
@@ -224,6 +297,10 @@ interface ThemeCardProps {
 
 function ThemeCard({
   family,
+  name,
+  shipped,
+  nameProblem,
+  onName,
   surfaces,
   texts,
   borders,
@@ -240,12 +317,27 @@ function ThemeCard({
   return (
     <div class="theme-card">
       <div class="scale-card-head">
-        <span class="scale-usage">
-          {family}
-          {isDefault && <span class="theme-fam"> (default)</span>}
+        {shipped ? (
+          <span class="scale-usage" title="a theme Magma ships: its name is reserved">
+            {name}
+          </span>
+        ) : (
+          <label class="theme-name-ctl">
+            <span class="theme-accent-role">name</span>
+            <input
+              value={name}
+              aria-invalid={nameProblem ? 'true' : undefined}
+              onInput={(e) => onName((e.target as HTMLInputElement).value.trim())}
+            />
+          </label>
+        )}
+        <span class="theme-fam">
+          drawn from <code>{family}</code>
+          {isDefault && ' (base)'}
         </span>
-        <code class="theme-attr-code">{isDefault ? ':root' : `data-theme-name='${family}'`}</code>
+        <code class="theme-attr-code">{isDefault ? ':root' : `data-theme-name='${name}'`}</code>
       </div>
+      {nameProblem && <span class="theme-name-problem">{nameProblem}</span>}
 
       {/* accent assignment: pick a variant per role. Every theme - including the
           default (:root) - can repoint an accent role to another variant; the roles
