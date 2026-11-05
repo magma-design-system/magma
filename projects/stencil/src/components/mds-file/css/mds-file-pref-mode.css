@@ -4,7 +4,8 @@
  * for dark. `dark` is the explicit choice; `system` and no controller follow the
  * OS via @media; the scheme axis gates it. Cross-browser, no :host-context. */
 
-:host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
+:host([pref-mode='dark']:not([pref-theme-scheme='light'])),
+:host([pref-theme-scheme='dark']) {
   box-shadow: var(--shadow-ring);
 
   &:host(:hover) {
@@ -14,7 +15,7 @@
 
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
-  :host(:not([pref-mode])) {
+  :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
     box-shadow: var(--shadow-ring);
 
     &:host(:hover) {
