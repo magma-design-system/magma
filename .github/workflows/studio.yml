@@ -1,7 +1,8 @@
 name: studio
 
 # The studio of Magma (projects/studio, #695): an app, not a package. It runs the engine of
-# design-tokens in the browser, so a change to design-tokens builds and tests it too.
+# design-tokens in the browser and loads its pages as a render of the MCP server does (the
+# sources of lint), so a change to either builds and tests it too.
 on:
   pull_request:
   # the merge queue of main runs the checks here (docs/WORKFLOW.md, rule 1), on the very
@@ -18,9 +19,15 @@ jobs:
     uses: ./.github/workflows/_package-pipeline.yml
     with:
       path: projects/studio/**
-      extra-path: projects/design-tokens/**
+      extra-path: '{projects/design-tokens/**,projects/lint/src/**}'
       nx-project: studio
-      artifact-paths: projects/studio/dist
-      artifact-download-path: projects/studio/dist
+      # the tests read the builds the studio stands on, as the installed packages: the logo
+      # of identity, the stylesheets of styles, the loader and documentation.json of magma
+      artifact-paths: |
+        projects/studio/dist
+        projects/identity/dist
+        projects/styles/dist
+        projects/stencil/dist
+      artifact-download-path: projects
       run-tests: true
       test-working-directory: projects/studio

@@ -19,8 +19,9 @@ const tags = () =>
 test('the page imports the stylesheets of agents/assets.md in their layers, after the layer order', () => {
   const style = tags().find((one) => one.tag === 'style')!.children!.split('\n')
   expect(style[0]).toBe(LAYERS)
+  // every stylesheet of the list: one missing means a package (or its build) is not installed
   const imported = style.slice(1)
-  expect(imported.length).toBeGreaterThan(0)
+  expect(imported).toHaveLength(STYLESHEETS.length)
   // in the order of the list, each in its layer, relative to the page
   const order = imported.map((line) =>
     STYLESHEETS.findIndex(
