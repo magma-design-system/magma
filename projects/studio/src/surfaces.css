@@ -193,6 +193,12 @@
   font-family: var(--font-code);
 }
 
+/* a mode out of use (a theme that does not offer it, Themes): in view, dimmed */
+
+.surfaces-canvas-off {
+  opacity: var(--magma-disabled-opacity);
+}
+
 .surfaces-boxes {
   display: flex;
   gap: calc(var(--spacing) * 200);

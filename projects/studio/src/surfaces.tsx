@@ -526,7 +526,7 @@ function TextPanel({
  * One mode of a family: its canvas with the surfaces on it (sunken, muted, raised and the overlay
  * on it), the text roles with their Lc and verdict, the borders with their ratio. Semantic surface
  * shows the two modes side by side; Themes shows them one under the other, each with the accents
- * of the theme (children).
+ * of the theme (children), and dims the mode a theme does not offer (`off`).
  */
 export function SurfaceCanvas({
   mode,
@@ -535,6 +535,7 @@ export function SurfaceCanvas({
   ink,
   ownText,
   canvasText,
+  off,
   children,
 }: {
   mode: Mode;
@@ -545,16 +546,19 @@ export function SurfaceCanvas({
   /** false when the family borrows the neutral ink, which the canvas says */
   ownText: boolean;
   canvasText: string;
+  /** Why the mode is out of use: the canvas is dimmed and its label says why. */
+  off?: string;
   children?: ComponentChildren;
 }) {
   return (
     <div
-      class="surfaces-canvas"
+      class={off ? 'surfaces-canvas surfaces-canvas-off' : 'surfaces-canvas'}
       style={{ background: hex(s, 'default'), color: canvasText }}
       title={SURFACE_PURPOSE.default}
     >
       <span class="surfaces-canvas-label">
         {mode} - canvas <code>{hex(s, 'default')}</code>
+        {off && ` - ${off}`}
       </span>
       <div class="surfaces-boxes">
         <div

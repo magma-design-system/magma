@@ -44,7 +44,9 @@ mode over the dark one, each with the accents of the theme, and names each theme
 family it is drawn from: `editorial` is drawn
 from `bisque`. The names of the themes Magma ships (`semantic.config.ts`, `themes`) are reserved,
 the deprecated ones included, so a theme of a product never takes one, and a name is lowercase
-words joined by hyphens (`THEME_NAME` of `semantic.model.ts`).
+words joined by hyphens (`THEME_NAME` of `semantic.model.ts`). Under its accents a theme says the
+colour modes it can be used in, the `color.modes` of a theme file (#1274): light and dark, the
+default, light only or dark only; the mode it does not offer stays in view, dimmed.
 
 ## The pages in Magma
 
@@ -157,7 +159,7 @@ pages: **Palette** (the two-column editor: color list on the left, editing and l
 scale previews with achieved contrast on the right; `neutral` is selected by default when
 present), **Contrast scales**, **Semantic surface** (opt families into the surface engine, tune
 the surface/border/text levels), **Themes** (each opted family as a named theme, with its accent
-assignment and contrast checks), **Groups** and **Diffs**. Selecting a color from the sidebar while in contrast scales
+assignment, its colour modes and contrast checks), **Groups** and **Diffs**. Selecting a color from the sidebar while in contrast scales
 keeps you there, since the scale samples follow the selected color.
 
 The **diff** view compares the current palette against the one generated from the committed
@@ -190,7 +192,9 @@ only: nothing touches the repo files.
 The **Themes** page exports the CSS of every theme it shows: the `data-theme-name` block of each
 theme, under its name, drawn from its family, with its reassigned accents and its own contrast
 blocks, printed by `namedThemeCss` of `design-tokens/semantic.model.ts`, the function that writes
-`themes.css`: the block of `editorial` is the one `themes.css` ships.
+`themes.css`: the block of `editorial` is the one `themes.css` ships. A theme of one mode
+declares it first in its block (`--magma-color-modes`, read by `mds-pref-theme`); the base theme
+declares it under its own name too, since a lock in `:root` would reach every theme.
 
 A reload keeps the work: the studio mirrors it to the browser's localStorage as a draft, stamped
 with the configuration it was made on (the bundled one, or the file a server serves). When that

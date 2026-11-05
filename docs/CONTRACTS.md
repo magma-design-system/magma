@@ -115,7 +115,9 @@ keep in step.
   `projects/stencil/src/common/preference.ts`), which writes `pref-theme-scheme-<mode>` from it.
 - **Held by**: `test/theme-manifest.test.mts` of design-tokens (the block of a single-mode
   theme, the shipped themes declare nothing); `src/common/test/preference-modes.spec.ts` of
-  stencil (the name the producer exports, the values read); the `mds-pref-theme` e2e.
+  stencil (the name the producer exports, the values read); the `mds-pref-theme` e2e;
+  `test/themes.test.mts` of the studio (the export of a theme of one mode, the base one under its
+  name, each choice of the modes a value of `color.modes`).
 
 ## Icon slugs
 
