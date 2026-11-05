@@ -71,15 +71,14 @@ test('the Theme section shows the theme in a document of its own, its controls o
     .toEqual(['Preferences of the person'])
 })
 
-test('the bar says the role of the person and the version of the Magma the studio runs on', async () => {
+test('the bar says the version of the Magma the studio runs on, under its name', async () => {
   const meta = Object.assign(document.createElement('meta'), { name: 'magma-version', content: '2.11.0' })
   document.head.append(meta)
   try {
     await at('#/colors/palette')
-    const role = root.querySelector('.studio-product-role')!
-    expect(role.getAttribute('typography')).toBe('label')
-    expect(role.textContent?.trim()).toBe('Product designer')
-    expect(root.querySelector('.studio-product-version')?.textContent).toBe('for Magma v2.11.0')
+    const version = root.querySelector('.studio-product-version')!
+    expect(version.getAttribute('typography')).toBe('label')
+    expect(version.textContent).toBe('for Magma v2.11.0')
   } finally {
     meta.remove()
   }

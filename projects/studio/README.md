@@ -15,8 +15,9 @@ stops instead of opening a second instance on another port.
 
 ## The shell
 
-The bar of the studio follows the app-shell block of Magma (the logo, "Magma Studio", "Product
-designer") and holds three sections, in the order of the work (#693, decided 2026-11-05):
+The bar of the studio follows the app-shell block of Magma (the logo, "Magma Studio" and under it
+the version of the Magma it runs on, which `vendor.ts` writes into the page) and holds three
+sections, in the order of the work (#693, decided 2026-11-05):
 
 | Section | Pages | What it is |
 | --- | --- | --- |
