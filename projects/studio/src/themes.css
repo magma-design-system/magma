@@ -97,68 +97,18 @@
   justify-self: stretch;
 }
 
+/* the two modes one under the other, each the canvas of Semantic surface (SurfaceCanvas) with
+   the accents of the theme under it */
+
 .themes-modes {
   display: grid;
   gap: var(--magma-rhythm-inline);
 }
 
-@container theme (width >= 40rem) {
-  .themes-modes {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* the boxes of a mode: the canvas and what stands on it, painted with the generated colours */
-
-.themes-mode {
-  border: thin solid rgb(var(--magma-border-muted));
-  border-radius: var(--magma-radius-md);
-  corner-shape: var(--magma-corner-shape);
-  display: flex;
-  flex-direction: column;
-  font-size: var(--text-size-info-tip);
-  gap: calc(var(--spacing) * 200);
-  line-height: normal;
-  padding: var(--magma-rhythm-inline);
-}
-
-.themes-mode code {
-  font-family: var(--font-code);
-}
-
-.themes-raised {
-  border: thin solid;
-  border-radius: var(--magma-radius-sm);
-  corner-shape: var(--magma-corner-shape);
-  padding: calc(var(--spacing) * 200);
-}
-
-.themes-texts {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--spacing) * 100);
-}
-
-.themes-text {
-  align-items: baseline;
-  display: flex;
-  gap: calc(var(--spacing) * 200);
-}
-
-.themes-borders,
 .themes-samples {
   display: flex;
   flex-wrap: wrap;
   gap: calc(var(--spacing) * 200);
-}
-
-/* the border of the role is the data: the chip draws it at the width the interface does */
-
-.themes-border {
-  border: thin solid;
-  border-radius: var(--magma-radius-sm);
-  corner-shape: var(--magma-corner-shape);
-  padding: calc(var(--spacing) * 100) calc(var(--spacing) * 200);
 }
 
 .themes-sample {

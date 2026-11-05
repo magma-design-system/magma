@@ -13,7 +13,7 @@ import {
   namedThemeCss,
   themeOf,
 } from '@maggioli-design-system/design-tokens/semantic.model';
-import { borderVerdict } from './surfaces.js';
+import { SurfaceCanvas } from './surfaces.js';
 import { Field, Select, TextInput } from './magma.js';
 import './themes.css';
 
@@ -38,9 +38,6 @@ type Mode = 'light' | 'dark';
 const MODES: Mode[] = ['light', 'dark'];
 type RoleSet = Record<string, { value: string }>;
 type FamilyModes = { light: RoleSet; dark: RoleSet };
-
-const BORDER_ROLES = semantic.borderRoles;
-const TEXT_ROLES = semantic.textRoles;
 
 // accent roles (accent/ai). An accent is derivative of a variant: you pick WHICH
 // variant it points at, nothing more - to add a new accent colour you add a variant
@@ -404,52 +401,21 @@ function ThemeCard({
           <code>{family}</code> has no surface+text scale.
         </mds-text>
       ) : (
+        // the same canvas as Semantic surface, one mode under the other: the surfaces of the
+        // theme are in view (vittorio, 2026-11-05), the accents of the theme under each
         <div class="themes-modes">
           {MODES.map((mode) => {
             const s = surfaces[family][mode];
             const t = texts[family]?.[mode];
-            const b = borders[family]?.[mode];
-            const canvas = hex(s, 'default');
             return (
-              <div class="themes-mode" style={{ background: canvas, color: hex(t, 'default') }}>
-                <span class="themes-mode-label">
-                  {mode} - surface <code>{canvas}</code>
-                </span>
-                <div
-                  class="themes-raised"
-                  style={{ background: hex(s, 'raised'), borderColor: hex(b, 'default') }}
-                >
-                  raised <code>{hex(s, 'raised')}</code>
-                </div>
-                <div class="themes-texts">
-                  {(TEXT_ROLES as readonly string[]).map((role) => {
-                    const c = hex(t, role);
-                    return (
-                      <span class="themes-text" style={{ color: c }}>
-                        text {role} <code>Lc {apcaLc(c, canvas).toFixed(0)}</code>
-                      </span>
-                    );
-                  })}
-                </div>
-                <div class="themes-borders">
-                  {(BORDER_ROLES as readonly string[]).map((role) => {
-                    // Ratio only, NO pass/warn verdict: these cards report numbers so the
-                    // families can be compared (same as the text roles above, which show
-                    // Lc without a verdict). The verdict against the 3:1 floor lives in
-                    // the surface panel; `borderVerdict` is still the source of the number
-                    // so the rounding cannot drift between the two previews.
-                    const v = borderVerdict(hex(b, role), canvas, role);
-                    return (
-                      <span
-                        class="themes-border"
-                        style={{ borderColor: hex(b, role), background: canvas }}
-                        title={v.note}
-                      >
-                        border {role} <code>{v.ratio}:1</code>
-                      </span>
-                    );
-                  })}
-                </div>
+              <SurfaceCanvas
+                mode={mode}
+                s={s}
+                b={borders[family]?.[mode]}
+                ink={t}
+                ownText
+                canvasText={hex(t, 'default')}
+              >
                 {/* accents applied on THIS theme's surface, per mode. Each role: a
                     solid pill (emphasis fill + on-emphasis text) with its APCA Lc,
                     plus the soft surface tint chip (accent-<role>-surface / -fg). */}
@@ -483,7 +449,7 @@ function ThemeCard({
                     );
                   })}
                 </div>
-              </div>
+              </SurfaceCanvas>
             );
           })}
         </div>

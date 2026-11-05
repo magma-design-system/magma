@@ -1,3 +1,4 @@
+import type { ComponentChildren } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { APCAcontrast, sRGBtoY } from 'apca-w3';
 import chroma from 'chroma-js';
@@ -521,6 +522,140 @@ function TextPanel({
   );
 }
 
+/**
+ * One mode of a family: its canvas with the surfaces on it (sunken, muted, raised and the overlay
+ * on it), the text roles with their Lc and verdict, the borders with their ratio. Semantic surface
+ * shows the two modes side by side; Themes shows them one under the other, each with the accents
+ * of the theme (children).
+ */
+export function SurfaceCanvas({
+  mode,
+  s,
+  b,
+  ink,
+  ownText,
+  canvasText,
+  children,
+}: {
+  mode: Mode;
+  /** the surfaces, the borders and the text of the family in this mode */
+  s: RoleSet | undefined;
+  b: RoleSet | undefined;
+  ink: RoleSet | undefined;
+  /** false when the family borrows the neutral ink, which the canvas says */
+  ownText: boolean;
+  canvasText: string;
+  children?: ComponentChildren;
+}) {
+  return (
+    <div
+      class="surfaces-canvas"
+      style={{ background: hex(s, 'default'), color: canvasText }}
+      title={SURFACE_PURPOSE.default}
+    >
+      <span class="surfaces-canvas-label">
+        {mode} - canvas <code>{hex(s, 'default')}</code>
+      </span>
+      <div class="surfaces-boxes">
+        <div
+          class="surfaces-box"
+          style={{ background: hex(s, 'sunken') }}
+          title={SURFACE_PURPOSE.sunken}
+        >
+          sunken <code>{hex(s, 'sunken')}</code>
+        </div>
+        <div
+          class="surfaces-box"
+          style={{ background: hex(s, 'muted') }}
+          title={SURFACE_PURPOSE.muted}
+        >
+          muted <code>{hex(s, 'muted')}</code>
+        </div>
+      </div>
+      <div
+        class="surfaces-box surfaces-box--raised"
+        style={{ background: hex(s, 'raised') }}
+        title={SURFACE_PURPOSE.raised}
+      >
+        <span>
+          raised <code>{hex(s, 'raised')}</code>
+        </span>
+        <div
+          class="surfaces-box"
+          style={{ background: hex(s, 'overlay') }}
+          title={SURFACE_PURPOSE.overlay}
+        >
+          overlay <code>{hex(s, 'overlay')}</code>
+        </div>
+      </div>
+      {/* text roles (A7) below the surface swatches: by-target step + achieved
+        APCA Lc vs the canvas. A surface-only family borrows the neutral ink. */}
+      <div class="surfaces-texts">
+        {!ownText && (
+          <span title="No tone scale of its own, so this surface shows the default NEUTRAL ink (foreground = active counterpart of surface). Check the Lc to see if the neutral ink is legible on this surface.">
+            <mds-badge variant="info" label="inherits neutral ink"></mds-badge>
+          </span>
+        )}
+        {(() => {
+          // every role's Lc first (rounded, as displayed), so each can be
+          // compared to the higher-priority role directly above it
+          const roleLc = TEXT_ROLES.map((role) => {
+            const c = ink ? hex(ink, role) : canvasText;
+            return { role, c, lc: Math.round(apcaLc(c, hex(s, 'default'))) };
+          });
+          return roleLc.map(({ role, c, lc }, i) => {
+            const floor = TEXT_ROLE_MIN_LC[role] ?? 0;
+            const above = i > 0 ? roleLc[i - 1] : null;
+            // valid = clears its legibility floor AND does not out-contrast
+            // the (more important) role above it
+            const belowFloor = lc < floor;
+            const outOfOrder = above ? lc > above.lc : false;
+            const title = belowFloor
+              ? `${TEXT_PURPOSE[role]} - Lc ${lc} is below the ${floor} legibility floor`
+              : outOfOrder && above
+                ? `${TEXT_PURPOSE[role]} - Lc ${lc} out-contrasts ${above.role} (Lc ${above.lc}); a lower role must stay softer`
+                : `${TEXT_PURPOSE[role]} - Lc ${lc} OK (floor ${floor})`;
+            return (
+              <span class="surfaces-text" style={{ color: c }} title={title}>
+                text {role} <code>{c}</code> <code>Lc {lc}</code>
+                {belowFloor ? (
+                  <Verdict state="error" label={`under Lc ${floor}`} />
+                ) : outOfOrder && above ? (
+                  <Verdict state="warning" label={`over ${above.role}`} />
+                ) : (
+                  <Verdict state="success" label="OK" />
+                )}
+              </span>
+            );
+          });
+        })()}
+      </div>
+      <div class="surfaces-borders">
+        {(BORDER_ROLES as readonly string[]).map((role) => {
+          const bg = hex(s, 'default');
+          const v = borderVerdict(hex(b, role), bg, role);
+          return (
+            <span
+              class="surfaces-border"
+              style={{ borderColor: hex(b, role), background: bg }}
+              title={`${BORDER_PURPOSE[role]} - ${v.note}`}
+            >
+              border {role} <code>{v.ratio}:1</code>
+              {v.isState &&
+                (v.ok ? (
+                  <Verdict state="success" label="OK" />
+                ) : (
+                  <Verdict state="warning" label={`under ${BORDER_MIN_RATIO}:1`} />
+                ))}
+            </span>
+          );
+        })}
+      </div>
+      {children}
+    </div>
+  );
+}
+
 /** Surface: the surfaces, the text roles and the borders of the family, per mode. */
 function SurfacePanel({
   family,
@@ -538,8 +673,6 @@ function SurfacePanel({
       </div>
       <div class="surfaces-modes">
         {MODES.map((mode) => {
-          const s = surfaces[family]?.[mode];
-          const b = borders[family]?.[mode];
           // Foreground = the active INK. A full tint (tone + surface) carries its own
           // by-target text; a surface-only family (a colored tint with no tone scale,
           // e.g. label.green) has none, so it inherits the NEUTRAL ink - the default
@@ -549,112 +682,15 @@ function SurfacePanel({
           // black-on-dark-surface bug this guards against.
           const ownText = texts[family]?.[mode];
           const ink = ownText ?? texts.neutral?.[mode];
-          const canvasText = ink ? hex(ink, 'default') : hex(tones.neutral?.[mode], '3');
           return (
-            <div
-              class="surfaces-canvas"
-              style={{ background: hex(s, 'default'), color: canvasText }}
-              title={SURFACE_PURPOSE.default}
-            >
-              <span class="surfaces-canvas-label">
-                {mode} - canvas <code>{hex(s, 'default')}</code>
-              </span>
-              <div class="surfaces-boxes">
-                <div
-                  class="surfaces-box"
-                  style={{ background: hex(s, 'sunken') }}
-                  title={SURFACE_PURPOSE.sunken}
-                >
-                  sunken <code>{hex(s, 'sunken')}</code>
-                </div>
-                <div
-                  class="surfaces-box"
-                  style={{ background: hex(s, 'muted') }}
-                  title={SURFACE_PURPOSE.muted}
-                >
-                  muted <code>{hex(s, 'muted')}</code>
-                </div>
-              </div>
-              <div
-                class="surfaces-box surfaces-box--raised"
-                style={{ background: hex(s, 'raised') }}
-                title={SURFACE_PURPOSE.raised}
-              >
-                <span>
-                  raised <code>{hex(s, 'raised')}</code>
-                </span>
-                <div
-                  class="surfaces-box"
-                  style={{ background: hex(s, 'overlay') }}
-                  title={SURFACE_PURPOSE.overlay}
-                >
-                  overlay <code>{hex(s, 'overlay')}</code>
-                </div>
-              </div>
-              {/* text roles (A7) below the surface swatches: by-target step + achieved
-                APCA Lc vs the canvas. A surface-only family borrows the neutral ink. */}
-              <div class="surfaces-texts">
-                {!ownText && (
-                  <span title="No tone scale of its own, so this surface shows the default NEUTRAL ink (foreground = active counterpart of surface). Check the Lc to see if the neutral ink is legible on this surface.">
-                    <mds-badge variant="info" label="inherits neutral ink"></mds-badge>
-                  </span>
-                )}
-                {(() => {
-                  // every role's Lc first (rounded, as displayed), so each can be
-                  // compared to the higher-priority role directly above it
-                  const roleLc = TEXT_ROLES.map((role) => {
-                    const c = ink ? hex(ink, role) : canvasText;
-                    return { role, c, lc: Math.round(apcaLc(c, hex(s, 'default'))) };
-                  });
-                  return roleLc.map(({ role, c, lc }, i) => {
-                    const floor = TEXT_ROLE_MIN_LC[role] ?? 0;
-                    const above = i > 0 ? roleLc[i - 1] : null;
-                    // valid = clears its legibility floor AND does not out-contrast
-                    // the (more important) role above it
-                    const belowFloor = lc < floor;
-                    const outOfOrder = above ? lc > above.lc : false;
-                    const title = belowFloor
-                      ? `${TEXT_PURPOSE[role]} - Lc ${lc} is below the ${floor} legibility floor`
-                      : outOfOrder && above
-                        ? `${TEXT_PURPOSE[role]} - Lc ${lc} out-contrasts ${above.role} (Lc ${above.lc}); a lower role must stay softer`
-                        : `${TEXT_PURPOSE[role]} - Lc ${lc} OK (floor ${floor})`;
-                    return (
-                      <span class="surfaces-text" style={{ color: c }} title={title}>
-                        text {role} <code>{c}</code> <code>Lc {lc}</code>
-                        {belowFloor ? (
-                          <Verdict state="error" label={`under Lc ${floor}`} />
-                        ) : outOfOrder && above ? (
-                          <Verdict state="warning" label={`over ${above.role}`} />
-                        ) : (
-                          <Verdict state="success" label="OK" />
-                        )}
-                      </span>
-                    );
-                  });
-                })()}
-              </div>
-              <div class="surfaces-borders">
-                {(BORDER_ROLES as readonly string[]).map((role) => {
-                  const bg = hex(s, 'default');
-                  const v = borderVerdict(hex(b, role), bg, role);
-                  return (
-                    <span
-                      class="surfaces-border"
-                      style={{ borderColor: hex(b, role), background: bg }}
-                      title={`${BORDER_PURPOSE[role]} - ${v.note}`}
-                    >
-                      border {role} <code>{v.ratio}:1</code>
-                      {v.isState &&
-                        (v.ok ? (
-                          <Verdict state="success" label="OK" />
-                        ) : (
-                          <Verdict state="warning" label={`under ${BORDER_MIN_RATIO}:1`} />
-                        ))}
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
+            <SurfaceCanvas
+              mode={mode}
+              s={surfaces[family]?.[mode]}
+              b={borders[family]?.[mode]}
+              ink={ink}
+              ownText={Boolean(ownText)}
+              canvasText={ink ? hex(ink, 'default') : hex(tones.neutral?.[mode], '3')}
+            />
           );
         })}
       </div>

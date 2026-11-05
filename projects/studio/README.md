@@ -39,7 +39,9 @@ set on its `<html>` (`data-theme-name`), and the preferences of the person live 
 (#695, "The dogfooding constraint"). Today the select offers the themes Magma ships and only the
 preferences have a panel; the panels of the other axes come with #696, the scenes with #697.
 
-The **Themes** page names each theme apart from the family it is drawn from: `editorial` is drawn
+The **Themes** page shows each theme on the canvas of Semantic surface (`SurfaceCanvas`), the light
+mode over the dark one, each with the accents of the theme, and names each theme apart from the
+family it is drawn from: `editorial` is drawn
 from `bisque`. The names of the themes Magma ships (`semantic.config.ts`, `themes`) are reserved,
 the deprecated ones included, so a theme of a product never takes one, and a name is lowercase
 words joined by hyphens (`THEME_NAME` of `semantic.model.ts`).

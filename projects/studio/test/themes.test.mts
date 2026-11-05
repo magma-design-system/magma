@@ -117,3 +117,20 @@ test('an accent is a Magma select: another variant marks the override and repoin
   expect(accent.querySelector('mds-badge')?.getAttribute('label')).toMatch(/override|changed/)
   expect(exportOf()).not.toBe(before)
 })
+
+test('a theme shows the canvas of Semantic surface per mode, its accents on each', () => {
+  show()
+  const card = root.querySelector('.themes-grid > .themes-card')!
+  const canvases = [...card.querySelectorAll('.surfaces-canvas')]
+  expect(canvases.map((one) => one.querySelector('.surfaces-canvas-label')?.textContent?.split(' ')[0])).toEqual([
+    'light',
+    'dark',
+  ])
+  for (const canvas of canvases) {
+    const surfaces = [...canvas.querySelectorAll('.surfaces-box')].map((box) => box.textContent?.trim().split(' ')[0])
+    expect(surfaces).toEqual(['sunken', 'muted', 'raised', 'overlay'])
+    // the verdicts of the text roles and the accents of the theme, on its own canvas
+    expect(canvas.querySelectorAll('.surfaces-text mds-badge').length).toBeGreaterThan(0)
+    expect(canvas.querySelector('.themes-samples')).not.toBeNull()
+  }
+})
