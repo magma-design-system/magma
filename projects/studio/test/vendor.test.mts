@@ -59,3 +59,10 @@ test('the dev server serves the stylesheets and the icons from the installed pac
   expect(await served('/node_modules/.vite/deps/preact.js')).toBeUndefined()
   expect(await served('/src/main.tsx')).toBeUndefined()
 })
+
+test('the page carries the version of the installed magma, for the bar of the studio', () => {
+  const require = createRequire(path.join(root, 'package.json'))
+  const { version } = require('@maggioli-design-system/magma/package.json') as { version: string }
+  const meta = tags().find((one) => one.tag === 'meta' && one.attrs?.name === 'magma-version')
+  expect(meta?.attrs?.content).toBe(version)
+})

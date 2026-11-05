@@ -164,6 +164,14 @@ const LOADER = 'dist/magma-components/magma-components.esm.js';
 export const loaderOf = (context: ToolContext): string =>
   context.loader ?? path.join(magmaRoot(context.settings), LOADER);
 
+/**
+ * The version of the Magma installed where the render runs, from its package.json; undefined
+ * when it cannot be read. The image of a render carries it, and the studio shows it in its bar.
+ */
+export const magmaVersion = (context: ToolContext): string | undefined =>
+  readJsonFile<{ version?: string }>(path.join(magmaRoot(context.settings), 'package.json'))
+    ?.version;
+
 /** The path mds-icon fetches the icons from, set the way agents/assets.md gives (the sessionStorage key). */
 export const ICON_PATH = '/svg/';
 
@@ -579,9 +587,7 @@ export const render = async (
   context: ToolContext,
   options: Options,
 ): Promise<Array<Image & { png: Buffer }>> => {
-  const version =
-    readJsonFile<{ version: string }>(path.join(magmaRoot(context.settings), 'package.json'))
-      ?.version ?? '';
+  const version = magmaVersion(context) ?? '';
   const { html, untailwinded } = await pageFor(context, options);
   const out = path.join(context.root, PREVIEW_DIR);
   mkdirSync(out, { recursive: true });
@@ -913,9 +919,7 @@ export const renderPreview = (context: ToolContext): Tool => ({
       ...(typeof theme === 'string' ? { theme } : {}),
       ...(pageLang ? { lang: pageLang } : {}),
     });
-    const version =
-      readJsonFile<{ version: string }>(path.join(magmaRoot(context.settings), 'package.json'))
-        ?.version ?? 'unknown';
+    const version = magmaVersion(context) ?? 'unknown';
     return withImages(
       {
         magma: version,

@@ -70,3 +70,21 @@ test('the Theme section shows the theme in a document of its own, its controls o
   expect(axes.filter((axis) => !axis.hasAttribute('disabled')).map((axis) => axis.getAttribute('aria-label')))
     .toEqual(['Preferences of the person'])
 })
+
+test('the bar says the role of the person and the version of the Magma the studio runs on', async () => {
+  const meta = Object.assign(document.createElement('meta'), { name: 'magma-version', content: '2.11.0' })
+  document.head.append(meta)
+  try {
+    await at('#/colors/palette')
+    const role = root.querySelector('.studio-product-role')!
+    expect(role.getAttribute('typography')).toBe('label')
+    expect(role.textContent?.trim()).toBe('Product designer')
+    expect(root.querySelector('.studio-product-version')?.textContent).toBe('v2.11.0')
+  } finally {
+    meta.remove()
+  }
+  // served without vendor.ts (a test, a page of its own): no version rather than a wrong one
+  render(null, root)
+  await at('#/colors/palette')
+  expect(root.querySelector('.studio-product-version')).toBeNull()
+})

@@ -8,13 +8,34 @@
 
   The plugin serves those three paths (the dev server and `vite preview`) and writes their tags
   into each page after Vite has processed it, so the build never bundles them: whoever hosts the
-  built studio serves the same paths beside it.
+  built studio serves the same paths beside it. Beside them goes the version of that magma, in
+  `<meta name="magma-version">`, which the bar of the studio shows: the Magma installed when the
+  page is served, or the one a build is published with.
 */
 import { createReadStream } from 'node:fs';
 import path from 'node:path';
 import type { Connect, Plugin } from 'vite';
 import type { ToolContext } from '../lint/src/mcp/context.ts';
-import { LAYERS, TYPES, fileOf, loaderOf, stylesheetImports } from '../lint/src/mcp/render.ts';
+import {
+  LAYERS,
+  TYPES,
+  fileOf,
+  loaderOf,
+  magmaVersion,
+  stylesheetImports,
+} from '../lint/src/mcp/render.ts';
+
+/** The version of the installed magma for the bar of the studio; none when it cannot be read. */
+const versionTag = (version: string | undefined) =>
+  version
+    ? [
+        {
+          tag: 'meta',
+          attrs: { name: 'magma-version', content: version },
+          injectTo: 'head' as const,
+        },
+      ]
+    : [];
 
 /** The paths a page loads Magma from, relative to the page: `fileOf` serves them. */
 const VENDOR = /\/(components|svg|node_modules)\/.*$/;
@@ -52,6 +73,7 @@ export function magmaVendor(root: string): Plugin {
     transformIndexHtml: {
       order: 'post',
       handler: () => [
+        ...versionTag(magmaVersion(context)),
         {
           tag: 'style',
           children: [LAYERS, ...stylesheetImports(context, 'node_modules/')].join('\n'),
