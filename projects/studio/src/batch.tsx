@@ -4,6 +4,8 @@ import type {
   MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { generateScales } from './generator.js';
+import { Check, Field, TextInput } from './magma.js';
+import './batch.css';
 
 interface BatchExportModalProps {
   /** colors that entered the batch (names), in config order */
@@ -68,56 +70,70 @@ export function BatchExportModal({
       return next;
     });
 
+  const title = `Batch export (${activeNames.length})`;
   return (
-    <div class="modal-overlay">
-      <div class="modal batch-modal">
-        <h2>Batch export ({activeNames.length})</h2>
-        {error && <div class="preview-error">{error}</div>}
-        <div class="batch-list">
-          {names.map((name) => {
-            const color = colorsByName.get(name);
-            const light = (scales as Map<string, { light: { value: string }[] }> | null)?.get(
-              name,
-            )?.light;
-            return (
-              <label class={`batch-row ${checked.has(name) ? '' : 'dropped'}`}>
-                <input type="checkbox" checked={checked.has(name)} onChange={() => toggle(name)} />
-                <span class="swatch" style={{ background: color?.color }} />
-                <span class="batch-row-name">{name}</span>
-                {light && (
-                  <span class="batch-row-scale">
-                    {light.map((step) => (
-                      <span class="batch-swatch" style={{ background: step.value }} />
-                    ))}
-                  </span>
-                )}
-              </label>
-            );
-          })}
+    <mds-modal opened aria-label={title} onmdsModalClose={onClose}>
+      <mds-banner
+        slot="window"
+        variant="light"
+        tone="box"
+        dismissible
+        headline={title}
+        onmdsBannerClose={onClose}
+      >
+        <div class="studio-dialog">
+          {error && <div class="preview-error">{error}</div>}
+          <div class="batch-list" role="group" aria-label="The colors of the batch">
+            {names.map((name) => {
+              const color = colorsByName.get(name);
+              const light = (scales as Map<string, { light: { value: string }[] }> | null)?.get(
+                name,
+              )?.light;
+              return (
+                <div class={`batch-row ${checked.has(name) ? '' : 'dropped'}`}>
+                  <Check checked={checked.has(name)} onChecked={() => toggle(name)}>
+                    <span class="batch-row-name">
+                      <span class="studio-swatch" style={{ background: color?.color }} />
+                      {name}
+                    </span>
+                  </Check>
+                  {light && (
+                    <span class="batch-row-scale">
+                      {light.map((step) => (
+                        <span class="batch-swatch" style={{ background: step.value }} />
+                      ))}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <Field label="Export groups" message="Comma-separated, e.g. city, palette">
+            <TextInput value={exportValue} onValue={setExportValue} />
+          </Field>
         </div>
-        <label class="batch-export-field">
-          export groups
-          <input
-            type="text"
-            value={exportValue}
-            placeholder="e.g. city, palette"
-            onInput={(e) => setExportValue((e.target as HTMLInputElement).value)}
-          />
-        </label>
-        <div class="modal-actions">
-          <button onClick={onClose}>cancel</button>
-          <button disabled={activeNames.length === 0} onClick={() => onExport(activeNames)}>
-            export selection
-          </button>
-          <button
-            class="primary"
-            disabled={activeNames.length === 0}
-            onClick={() => onSave(activeNames, exportList.length ? exportList : undefined)}
-          >
-            save export
-          </button>
-        </div>
-      </div>
-    </div>
+        <mds-button slot="action" type="button" variant="dark" tone="outline" onClick={onClose}>
+          Cancel
+        </mds-button>
+        <mds-button
+          slot="action"
+          type="button"
+          variant="dark"
+          tone="outline"
+          disabled={activeNames.length === 0}
+          onClick={() => onExport(activeNames)}
+        >
+          Export selection
+        </mds-button>
+        <mds-button
+          slot="action"
+          type="button"
+          disabled={activeNames.length === 0}
+          onClick={() => onSave(activeNames, exportList.length ? exportList : undefined)}
+        >
+          Save export
+        </mds-button>
+      </mds-banner>
+    </mds-modal>
   );
 }

@@ -1,0 +1,30 @@
+/*
+  The layout the pages of the studio share once they are written in Magma (src/magma.tsx): spaces
+  from the rhythm, widths from the widths, colours from the semantic roles, never a literal length
+  or colour (docs/agents/patterns/rhythm.md, widths.md, surfaces.md). The rules of one page live in
+  the sheet of that page, beside its module.
+*/
+
+/* the content of a dialog, inside its mds-banner window: the fields one under the other */
+.studio-dialog {
+  display: grid;
+  gap: var(--magma-rhythm-between-fields);
+  max-inline-size: var(--magma-width-dialog);
+}
+
+/* a row of controls side by side, wrapping on a narrow width */
+.studio-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-inline);
+  align-items: center;
+}
+
+/* the swatch of a colour beside its name: a disc with a thin ring, visible on any surface */
+.studio-swatch {
+  flex: none;
+  inline-size: 1em;
+  block-size: 1em;
+  border: thin solid rgb(var(--magma-border-default));
+  border-radius: var(--magma-radius-full);
+}

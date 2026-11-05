@@ -1,0 +1,37 @@
+/*
+  The batch export dialog (batch.tsx): the colours of the batch, each with its light ramp, the
+  ramps lined up in one column. The list does not scroll on its own: the window of mds-modal
+  scrolls when the batch is long, and a scrolling list would take the first focus of the dialog.
+*/
+.batch-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--magma-rhythm-inline);
+  align-items: center;
+}
+
+.batch-row {
+  display: contents;
+}
+
+/* a colour unticked stays in the list, faded: it leaves the operation, not the dialog */
+.batch-row.dropped .batch-row-scale {
+  opacity: 0.4;
+}
+
+.batch-row-name {
+  display: inline-flex;
+  gap: var(--magma-rhythm-inline);
+  align-items: center;
+}
+
+.batch-row-scale {
+  display: flex;
+  overflow: hidden;
+  border-radius: var(--magma-radius-sm);
+}
+
+.batch-swatch {
+  flex: 1;
+  block-size: 1lh;
+}
