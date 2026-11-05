@@ -289,7 +289,10 @@ or on the guide it enforces, not only on fixtures picked by hand.
   by pixel, both ways. The page is ready when Stencil has emitted
   `appload` on window, every component defined carries the flag `styles/dist/css/hydrated.css`
   hides it by (`[hydrated]` or `.hydrated`), `document.fonts` is ready and every animation is
-  finished (an infinite one paused). An image is not representative when the page reports a
+  finished (an infinite one paused). The page has 15 s to load and settle, and no call of the
+  render waits on it longer: a page whose script never yields answers no call of the driver and
+  gives no image (Chrome draws it no frame), so the render ends with an error that says the page
+  stopped answering (#1271). An image is not representative when the page reports a
   problem: a tag the loader did not define, a component without the flag, a component or an
   image displayed with no width or height (`display: none` is a choice, not a failure, and so is
   the empty box of an element whose content stands out of it by design: fixed on the viewport,

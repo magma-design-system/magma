@@ -410,6 +410,28 @@ export interface Image {
 const TIMEOUT = 15_000;
 
 /**
+ * A call to the page that answers in ms, or an error that says the page stopped answering.
+ * page.evaluate has no timeout of its own, and a page whose script never yields answers none of
+ * the calls of the driver, nor gives an image (Chrome draws it no frame): the render waited for
+ * it past any timeout. The call left behind ends when its context closes.
+ */
+const within = <T>(call: Promise<T>, ms: number, what: string): Promise<T> => {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const late = new Promise<never>((_, reject) => {
+    timer = setTimeout(
+      () =>
+        reject(
+          new ToolError(
+            `The page did not answer in ${ms} ms while ${what}: a script of the markup that never yields (a loop with no end) holds it, or the machine is too busy to run it.`,
+          ),
+        ),
+      ms,
+    );
+  });
+  return Promise.race([call, late]).finally(() => clearTimeout(timer));
+};
+
+/**
  * A frame of a fixed size, the one of the images Magma ships of its previews (#1243): the
  * viewport keeps its height whatever the content, the image has scale device pixels per CSS
  * pixel and is encoded as WebP at that quality too.
@@ -429,11 +451,17 @@ const capture = async (
   options: Options,
   frame?: Frame,
 ): Promise<{ png: Buffer; webp?: Buffer; height: number; problems: PageProblem[] }> => {
-  const session = await browser.newContext({
-    viewport: { width, height: frame?.height ?? options.height ?? 600 },
-    deviceScaleFactor: frame?.scale ?? 1,
-    colorScheme: options.mode,
-  });
+  const timeout = options.timeout ?? TIMEOUT;
+  // no call to the page waits longer than the page may take to load
+  const answer = <T>(call: Promise<T>, what: string) => within(call, timeout, what);
+  const session = await answer(
+    browser.newContext({
+      viewport: { width, height: frame?.height ?? options.height ?? 600 },
+      deviceScaleFactor: frame?.scale ?? 1,
+      colorScheme: options.mode,
+    }),
+    'it opened',
+  );
   try {
     const problems: PageProblem[] = [];
     await session.route('**/*', async (route) => {
@@ -461,7 +489,7 @@ const capture = async (
         contentType: TYPES[path.extname(file)] ?? 'application/octet-stream',
       });
     });
-    const page = await session.newPage();
+    const page = await answer(session.newPage(), 'it opened');
     page.on('console', (message: { type: () => string; text: () => string }) => {
       // the browser's own line for a failed request: the asset problem names it better
       if (message.type() === 'error' && !message.text().startsWith('Failed to load resource'))
@@ -471,25 +499,33 @@ const capture = async (
       problems.push({ kind: 'console-error', detail: error.message }),
     );
 
-    const timeout = options.timeout ?? TIMEOUT;
     await page.goto(`${ORIGIN}/`, { waitUntil: 'networkidle', timeout });
-    await page.evaluate(inPage, { step: 'settle', timeout: timeout / 2 });
-    let inspection = (await page.evaluate(inPage, { step: 'inspect' })) as Inspection;
+    await answer(page.evaluate(inPage, { step: 'settle', timeout: timeout / 2 }), 'it settled');
+    let inspection = (await answer(
+      page.evaluate(inPage, { step: 'inspect' }),
+      'it was inspected',
+    )) as Inspection;
     const height = frame?.height ?? options.height ?? Math.min(inspection.height, MAX_SIDE);
     // a frame shows what fits in it, by its choice: the rest of the content is no cut
     const sized = frame !== undefined || options.height !== undefined;
     if (!sized) {
       // the viewport as tall as the content: a layout that depends on the height settles again
-      await page.setViewportSize({ width, height });
-      await page.evaluate(inPage, { step: 'settle', timeout: Math.min(2000, timeout / 2) });
-      inspection = (await page.evaluate(inPage, { step: 'inspect' })) as Inspection;
+      await answer(page.setViewportSize({ width, height }), 'it was resized');
+      await answer(
+        page.evaluate(inPage, { step: 'settle', timeout: Math.min(2000, timeout / 2) }),
+        'it settled',
+      );
+      inspection = (await answer(
+        page.evaluate(inPage, { step: 'inspect' }),
+        'it was inspected',
+      )) as Inspection;
     }
     if (!sized && inspection.height > MAX_SIDE)
       problems.push({
         kind: 'cut',
         detail: `The content is ${inspection.height} px tall and the image shows its first ${MAX_SIDE}: render a part of it, or each part on its own.`,
       });
-    const png = await page.screenshot({ type: 'png' });
+    const png = await answer(page.screenshot({ type: 'png' }), 'it was captured');
     // in a frame, a component its edge cuts shows a part of itself, which may be all one colour
     // (the top of a card): the frame judges the components it shows whole
     const regions = frame
@@ -497,19 +533,25 @@ const capture = async (
           (one) => one.x + one.width <= width && one.y + one.height <= frame.height,
         )
       : inspection.regions;
-    const flat = (await page.evaluate(inPage, {
-      step: 'pixels',
-      png: png.toString('base64'),
-      scale: frame?.scale ?? 1,
-      regions,
-    })) as PageProblem[];
+    const flat = (await answer(
+      page.evaluate(inPage, {
+        step: 'pixels',
+        png: png.toString('base64'),
+        scale: frame?.scale ?? 1,
+        regions,
+      }),
+      'its image was checked',
+    )) as PageProblem[];
     const webp = frame
       ? Buffer.from(
-          (await page.evaluate(inPage, {
-            step: 'encode',
-            png: png.toString('base64'),
-            quality: frame.quality,
-          })) as string,
+          (await answer(
+            page.evaluate(inPage, {
+              step: 'encode',
+              png: png.toString('base64'),
+              quality: frame.quality,
+            }),
+            'its image was encoded',
+          )) as string,
           'base64',
         )
       : undefined;

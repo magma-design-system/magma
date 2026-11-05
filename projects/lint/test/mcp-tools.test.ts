@@ -1349,6 +1349,22 @@ describe('render_preview', () => {
     expect(styled!.problems).toEqual([]);
   }, 30_000);
 
+  test('a page whose script never yields ends the render in its time, not a hang', async () => {
+    // the loop starts once the page has loaded: the page answers no call of the driver after
+    // it, and Chrome takes no image of it, so the render ends with an error that names why
+    const started = Date.now();
+    await expect(
+      render(renderContext, {
+        markup:
+          '<mds-fixture>Salva</mds-fixture><script>addEventListener("load", () => setTimeout(() => { for (;;); }))</script>',
+        widths: [480],
+        mode: 'light',
+        timeout: 3000,
+      }),
+    ).rejects.toThrow(/did not answer in 3000 ms/);
+    expect(Date.now() - started).toBeLessThan(15_000);
+  }, 30_000);
+
   test('a markup that renders well is representative: the image, its file and no problem', async () => {
     const result = await preview.run({ markup: '<mds-fixture>Salva</mds-fixture>', widths: [480] });
     expect(result).toMatchObject({ magma: '2.5.1', mode: 'light', representative: true });
