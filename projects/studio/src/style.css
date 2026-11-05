@@ -131,6 +131,8 @@
   border: 0;
 }
 
+/* the edge one step past the gap between the controls (400 against 300), so the bar does not
+   read as one more gap; the select and the buttons both size md (vittorio, 2026-11-05) */
 .studio-toolbar {
   position: absolute;
   inset-block-end: var(--magma-rhythm-inset);
@@ -138,7 +140,7 @@
   display: flex;
   gap: var(--magma-rhythm-inline);
   align-items: center;
-  padding: var(--magma-rhythm-inline);
+  padding: calc(var(--spacing) * 400);
   background: rgb(var(--magma-surface-overlay));
   border-radius: var(--magma-radius-2xl);
   box-shadow: var(--shadow-box-lg);
@@ -147,6 +149,11 @@
 
 .studio-toolbar mds-input-select {
   min-width: calc(var(--spacing) * 5000);
+}
+
+/* the host of mds-button sets align-self: flex-start, which beats align-items of the bar */
+.studio-toolbar mds-button {
+  align-self: center;
 }
 
 /* the pages of Colors: the list of the Palette beside the region that scrolls, or that region

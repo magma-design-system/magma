@@ -295,7 +295,7 @@ function ThemePage() {
         onLoad={() => setLoaded((count) => count + 1)}
       />
       <div class="studio-toolbar" role="toolbar" aria-label="Theme">
-        <mds-input-select ref={select} aria-label="Theme" value={theme}>
+        <mds-input-select ref={select} aria-label="Theme" size="md" value={theme}>
           {PREVIEW_THEMES.map((name) => (
             <option value={name}>{titleOf(name)}</option>
           ))}
