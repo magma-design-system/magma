@@ -19,6 +19,7 @@ import {
   wcag2Ratio,
 } from '@maggioli-design-system/design-tokens/src/lib/contrast-gate.js';
 import boxShadowTokens from '@maggioli-design-system/design-tokens/tokens/cosmetic/box-shadow.json';
+import committedConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
 
 type Mode = 'light' | 'dark';
 const MODES: Mode[] = ['light', 'dark'];
@@ -40,24 +41,11 @@ const SHADOW_OPTIONS: { name: string; value: string }[] = [
   })),
 ];
 
-// fallback ramp when a loaded config opts a family in but carries no theme block
-export const DEFAULT_THEME: ThemeConfig = {
-  colorspace: 'OKLCH',
-  surfaces: {
-    light: { sunken: '93%', muted: '94%', default: '96%', raised: '98%', overlay: '100%' },
-    dark: { sunken: '9%', muted: '16%', default: '23%', raised: '31%', overlay: '41%' },
-  },
-  borders: {
-    light: { muted: '89%', default: '82%', strong: '64%' },
-    dark: { muted: '37%', default: '54%', strong: '74%' },
-  },
-  // APCA Lc targets per text role vs the worst-case surface (A7); engine picks the
-  // step. Each target must land in a DIFFERENT band of the ramp on every family, in
-  // both modes - the bands are only 8-11 Lc wide and sit lower on a saturated family,
-  // so targets closer than that make two roles resolve to one step (#632). Keep in
-  // sync with `theme.text` in `.magma-design-tokensrc.json`.
-  text: { default: 91, muted: 73, subtle: 64, disabled: 40 },
-};
+// fallback ramp when a loaded config opts a family in but carries no theme block:
+// the `theme` block of the configuration Magma builds with (design-tokens
+// `.magma-design-tokensrc.json`), its surface and border levels and the APCA Lc
+// targets of the text roles (A7, #632)
+export const DEFAULT_THEME = (committedConfig as { theme: ThemeConfig }).theme;
 
 /** APCA Lc magnitude (Magma flips the sign in dark; the preview shows the size). */
 const apcaLc = (fg: string, bg: string): number =>
@@ -125,15 +113,10 @@ const TEXT_PURPOSE: Record<string, string> = {
   disabled: 'disabled / inactive (lowest)',
 };
 // APCA Lc floor per text role: the minimum legible contrast, INDEPENDENT of the
-// editable theme.text target (SEMANTIC_COLOR_SPEC 9.1, mirrors the CI contrast gate
-// in contrast-gate.ts). Below its floor a role is illegible; a role must also never
+// editable theme.text target (SEMANTIC_COLOR_SPEC 9.1): the floors of the CI contrast
+// gate (contrast-gate.ts). Below its floor a role is illegible; a role must also never
 // out-contrast the role above it in the hierarchy (default > muted > subtle > disabled).
-const TEXT_ROLE_MIN_LC: Record<string, number> = {
-  default: 75,
-  muted: 75,
-  subtle: 45,
-  disabled: 30,
-};
+const TEXT_ROLE_MIN_LC: Record<string, number> = DEFAULT_TARGETS.text;
 
 // Slider ranges for the lightness editors. Surfaces are confined to a band per mode
 // (high in light, low in dark) because they ARE the canvas. Borders are not: a border

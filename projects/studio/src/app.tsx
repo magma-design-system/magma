@@ -15,7 +15,10 @@ import {
   resolveRatiosName,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { cssHex, cssRgb, gimpPalette } from './formats.js';
-import { validateConfig } from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
+import {
+  COLORSPACES,
+  validateConfig,
+} from '@maggioli-design-system/design-tokens/src/lib/schema.mjs';
 import {
   colorsToDtcg,
   type ColorTokenTree,
@@ -24,6 +27,7 @@ import { GroupsManager } from './groups.js';
 import { DiffView } from './diff.js';
 import { BatchExportModal } from './batch.js';
 import {
+  CURVE_PRESETS,
   hasHueShift,
   resolveCurveWeights,
   type HueShiftConfig,
@@ -43,19 +47,10 @@ import {
   type DraftSource,
   type StudioDraft,
 } from './draft.js';
-const COLORSPACES = [
-  'HSL',
-  'OKLCH',
-  'LCH',
-  'LAB',
-  'OKLAB',
-  'CAM02',
-  'CAM02p',
-  'HSLuv',
-  'RGB',
-  'HSV',
-];
-const CURVE_PRESETS = ['smooth', 'hard', 'custom'] as const;
+// the named curves of the engine, then a custom one edited by its parameters
+type CurvePreset = keyof typeof CURVE_PRESETS;
+type CurveKind = CurvePreset | 'custom';
+const CURVE_KINDS: CurveKind[] = [...(Object.keys(CURVE_PRESETS) as CurvePreset[]), 'custom'];
 
 type CloneableConfig = MagmaConfig & Record<string, unknown>;
 type View = 'colors' | 'scales' | 'surface' | 'groups' | 'diff';
@@ -180,12 +175,17 @@ function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShif
   const dark = value?.dark ?? 0;
   const light = value?.light ?? 0;
   const curve = value?.curve ?? 'smooth';
-  const curveKind: (typeof CURVE_PRESETS)[number] =
-    curve === 'smooth' || curve === 'hard' ? curve : 'custom';
+  const curveKind: CurveKind = typeof curve === 'string' ? curve : 'custom';
+  // a custom curve starts from the default (smooth) one of the engine
+  const { deadZone: defaultDeadZone, easing: defaultEasing } = CURVE_PRESETS.smooth;
   const deadZone =
-    typeof curve === 'object' && !Array.isArray(curve) ? (curve.deadZone ?? 1 / 3) : 1 / 3;
+    typeof curve === 'object' && !Array.isArray(curve)
+      ? (curve.deadZone ?? defaultDeadZone)
+      : defaultDeadZone;
   const easing =
-    typeof curve === 'object' && !Array.isArray(curve) ? (curve.easing ?? 'linear') : 'linear';
+    typeof curve === 'object' && !Array.isArray(curve)
+      ? (curve.easing ?? defaultEasing)
+      : defaultEasing;
 
   const weights = useMemo(() => {
     try {
@@ -254,11 +254,11 @@ function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShif
                 onChange={(e) => {
                   const kind = (e.target as HTMLSelectElement).value;
                   patch({
-                    curve: kind === 'custom' ? { deadZone, easing } : (kind as 'smooth' | 'hard'),
+                    curve: kind === 'custom' ? { deadZone, easing } : (kind as CurvePreset),
                   });
                 }}
               >
-                {CURVE_PRESETS.map((preset) => (
+                {CURVE_KINDS.map((preset) => (
                   <option value={preset}>{preset}</option>
                 ))}
               </select>

@@ -50,7 +50,8 @@ export type ThemeMode = "light" | "dark";
 // just wraps around to the other direction
 const MAX_ANGLE = 180;
 
-const CURVE_PRESETS: Record<string, Required<HueShiftCurveParams>> = {
+// the named curves; the studio offers them, plus a custom one, from here
+export const CURVE_PRESETS: Record<"smooth" | "hard", Required<HueShiftCurveParams>> = {
   smooth: { deadZone: 1 / 3, easing: "linear" },
   hard: { deadZone: 1 / 3, easing: "step" },
 };

@@ -7,9 +7,8 @@ import { createColorTokens } from '@maggioli-design-system/design-tokens/src/lib
 import {
   semantic,
   accentTintOverride,
-  scaleFamily,
-  scaleTintOverride,
 } from '@maggioli-design-system/design-tokens/semantic.config';
+import { namedThemeCss, themeOf } from '@maggioli-design-system/design-tokens/semantic.model';
 import { borderVerdict } from './surfaces.js';
 
 /**
@@ -25,8 +24,8 @@ import { borderVerdict } from './surfaces.js';
  * `variant` family, and a theme may repoint it. So each non-default
  * theme gets an accent ASSIGNMENT: per role, pick which variant it uses (default =
  * the base variant). The card previews the accent APPLIED per mode and the export
- * emits `--magma-tint-accent-*` via the SAME helper the styles generator uses, so
- * the studio export and the shipped `themes.css` stay identical.
+ * prints each theme with `namedThemeCss`, the function the styles generator writes
+ * `themes.css` with, so the export and the shipped `themes.css` stay identical.
  */
 
 type Mode = 'light' | 'dark';
@@ -34,7 +33,6 @@ const MODES: Mode[] = ['light', 'dark'];
 type RoleSet = Record<string, { value: string }>;
 type FamilyModes = { light: RoleSet; dark: RoleSet };
 
-const SURFACE_ROLES = semantic.surfaceRoles;
 const BORDER_ROLES = semantic.borderRoles;
 const TEXT_ROLES = semantic.textRoles;
 
@@ -117,26 +115,21 @@ export function ThemesManager({ config }: ThemesManagerProps) {
   const accentFor = (family: string, role: string): string =>
     accents[family]?.[role] ?? semantic.accents[role];
 
-  // export: the override block per non-default theme. Surface/border/text from the
-  // family; each reassigned accent via the shared helper (identical to themes.css).
+  // export: the block of each non-default theme, expanded and printed by the code
+  // that writes themes.css (design-tokens semantic.model.ts): the tint block of the
+  // family with its ramp, each reassigned accent, and the theme's own contrast blocks.
+  // A family whose name is no theme name (the model refuses it) says why instead.
   const themeCss = (family: string): string => {
-    const lines = [`:root[data-theme-name='${family}'] {`];
-    SURFACE_ROLES.forEach((r) => lines.push(`  --magma-tint-${r}: var(--surface-${family}-${r});`));
-    BORDER_ROLES.forEach((r) =>
-      lines.push(`  --magma-tint-border-${r}: var(--border-${family}-${r});`),
+    const accentOverrides = Object.fromEntries(
+      ACCENT_ROLES.map((role) => [role, accentFor(family, role)]).filter(
+        ([role, variant]) => variant !== semantic.accents[role],
+      ),
     );
-    TEXT_ROLES.forEach((r) => lines.push(`  --magma-tint-text-${r}: var(--text-${family}-${r});`));
-    // the ramp travels with the block: the wash band, the shadow ink, the inverse
-    // pair and the neutral hue resolve through --magma-tint-scale-*, so a theme that
-    // retinted only surface/border/text would leave those on the base tint. Same
-    // shared helper the styles generator uses.
-    lines.push(...scaleTintOverride(scaleFamily(family)));
-    ACCENT_ROLES.forEach((role) => {
-      const variant = accentFor(family, role);
-      if (variant !== semantic.accents[role]) lines.push(...accentTintOverride(role, variant));
-    });
-    lines.push('}');
-    return lines.join('\n');
+    try {
+      return namedThemeCss(themeOf(family, { surface: family, accents: accentOverrides }));
+    } catch (error) {
+      return `/* ${family}: ${error instanceof Error ? error.message : String(error)} */`;
+    }
   };
   // the default family is the base :root: it emits no surface/border/text override,
   // but a repointed accent IS a base change, so surface it as a :root accent block.

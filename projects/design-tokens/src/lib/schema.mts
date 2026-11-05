@@ -1,7 +1,8 @@
 import { Ajv, type ErrorObject } from 'ajv'
 
-// Interpolation colorspaces Leonardo accepts (kept in sync with the studio)
-const COLORSPACES = [
+// Interpolation colorspaces Leonardo accepts: the schema enum, and the choices
+// the studio (projects/studio) offers
+export const COLORSPACES = [
   'HSL', 'OKLCH', 'LCH', 'LAB', 'OKLAB', 'CAM02', 'CAM02p', 'HSLuv', 'RGB', 'HSV',
 ]
 
