@@ -33,7 +33,7 @@ import {
 } from './agent-docs-lib';
 import {
   BLOCK,
-  FOUNDATION,
+  DESIGN_LANGUAGE,
   PATTERN_GROUPS,
   PREVIEWS_DIR,
   listPatterns,
@@ -176,7 +176,7 @@ Once installed, do not guess component APIs or rules - read only the file you ne
 | -------- | ---- |
 | Which component to reach for | [\`agents/components.md\`](agents/components.md) - the catalogue by category, one line each |
 | A task that spans components, solved the same way in every product: where a message goes, confirming an action, an empty, a loading or a failed part | [\`agents/patterns.md\`](agents/patterns.md) - the catalogue of the patterns; ask \`get_pattern\` of the MCP server for the case of your situation |
-| How the parts of a screen stand together: the space between two elements, which action weighs more, the style of a title, when a surface, how wide | [\`agents/patterns.md\`](agents/patterns.md), section Foundation - the domains of the design language; ask \`get_pattern\` for the rule of your context, \`get_guide\` for a domain by its id (\`rhythm\`) |
+| How the parts of a screen stand together: the space between two elements, which action weighs more, the style of a title, when a surface, how wide | [\`agents/patterns.md\`](agents/patterns.md), section Design language - the rules of composition; ask \`get_pattern\` for the rule of your context, \`get_guide\` for a domain by its id (\`rhythm\`) |
 | One component's API (props with allowed values, events, methods, slots, parts, CSS vars) | its \`AGENTS.md\`, linked from the catalogue |
 | Correct usage and mistakes for one component | \`examples.md\` / \`mistakes.md\` beside its \`AGENTS.md\` |
 | Rules shared by every component: naming, events, slots, compound, icons, a11y, styling from outside | [\`agents/conventions.md\`](agents/conventions.md) |
@@ -277,23 +277,24 @@ ${renderCatalogue(readComponentTaxonomy(), summaries, docsPrefix)}`;
  */
 function buildPatternsMd(): string {
   const entries = listPatterns(readPatternDir(PATTERNS_DIR).map((one) => one.data));
-  const domains = entries.filter((one) => one.kind === FOUNDATION).length;
+  const domains = entries.filter((one) => one.kind === DESIGN_LANGUAGE).length;
   const blocks = entries.filter((one) => one.kind === BLOCK).length;
   const defined = entries.filter(
     (one) => one.kind === 'pattern' && one.status !== 'candidate',
   ).length;
-  return `${BANNER}# Magma patterns catalogue (${defined} patterns, ${entries.length - domains - blocks - defined} candidates, ${blocks} building ${blocks === 1 ? 'block' : 'blocks'}, ${domains} ${domains === 1 ? 'domain' : 'domains'} of Foundation)
+  return `${BANNER}# Magma patterns catalogue (${defined} patterns, ${entries.length - domains - blocks - defined} candidates, ${blocks} building ${blocks === 1 ? 'block' : 'blocks'}, ${domains} ${domains === 1 ? 'domain' : 'domains'} of the design language)
 
 > Generated from the patterns of the magma monorepo. A pattern is the solution to a task that
 > spans components (where a message goes, when to ask before acting), the same in every
 > product: Magma's default. Each one is defined on a few variables of the situation; read its
 > file in \`agents/patterns/\`, or ask the MCP server: \`get_pattern\` with the values of the
 > variables you know gives the case to follow. Its "Always true" rules hold in every product.
-> The domains of Foundation (\`kind: foundation\`) are the rules of composition the patterns
-> stand on: the space between two elements, which action weighs more, the style of a title, when
-> a surface, how wide. They are read the same way, and each rule says the principle it serves and
-> what carries it (a component, a token, a utility, a lint rule): write the carrier, not its
-> value; a carrier still planned is not there yet, so write the value the case gives.
+> The domains of the design language (\`kind: design-language\`) are the rules of composition
+> the patterns stand on: the space between two elements, which action weighs more, the style of
+> a title, when a surface, how wide. They are read the same way, and each rule says the
+> principle it serves and what carries it (a component, a token, a utility, a lint rule): write
+> the carrier, not its value; a carrier still planned is not there yet, so write the value the
+> case gives.
 > \`get_guide\` serves each domain by its id; the answer of \`get_pattern\` for a situation
 > lists in \`rules\` the ones its case relies on, and \`get_component\` the ones that govern a
 > component.

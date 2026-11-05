@@ -719,7 +719,7 @@ export const renderPreview = (context: ToolContext): Tool => ({
   name: 'render_preview',
   title: 'Render Magma markup as an image',
   description:
-    'Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. Instead of markup, pattern and case render the preview Magma ships for that case of a pattern (for a building block, case is the id of one of its situations), pattern and rule the preview of a rule of a domain of Foundation, and example another example of either. Render each option before asking a person to decide on an interface. Needs playwright-core in the project and Chrome or Edge on the machine; writes the image into node_modules/.cache/magma/previews.',
+    'Render HTML with Magma components on the magma installed in the project, offline, and get the image (to look at, and to show the person) with its file, and a report of what in it is not representative: a component unknown or not hydrated, an element with no size, a component that shows one flat colour, a console error, an icon, a font or an image that did not load, a word broken across lines, content cut. Instead of markup, pattern and case render the preview Magma ships for that case of a pattern (for a building block, case is the id of one of its situations), pattern and rule the preview of a rule of a domain of the design language, and example another example of either. Render each option before asking a person to decide on an interface. Needs playwright-core in the project and Chrome or Edge on the machine; writes the image into node_modules/.cache/magma/previews.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -741,7 +741,7 @@ export const renderPreview = (context: ToolContext): Tool => ({
       rule: {
         type: 'string',
         description:
-          'With pattern, instead of case: a rule of a domain of Foundation with a preview, such as "stacked" of "actions" (get_guide lists them).',
+          'With pattern, instead of case: a rule of a domain of the design language with a preview, such as "stacked" of "actions" (get_guide lists them).',
       },
       example: {
         type: 'integer',

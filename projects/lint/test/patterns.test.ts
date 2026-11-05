@@ -111,7 +111,7 @@ describe('the patterns Magma ships', () => {
   test('the building blocks come after the domains, before the patterns: page-header, used by the two of Data', () => {
     const listed = listPatterns(patterns);
     const kinds = listed.map((one) => one.kind);
-    expect(kinds.indexOf('block')).toBeGreaterThan(kinds.lastIndexOf('foundation'));
+    expect(kinds.indexOf('block')).toBeGreaterThan(kinds.lastIndexOf('design-language'));
     expect(kinds.lastIndexOf('block')).toBeLessThan(kinds.indexOf('pattern'));
     const header = patterns.find((one) => one.id === 'page-header')!;
     expect(header).toMatchObject({ kind: 'block', status: 'decided' });
@@ -124,11 +124,11 @@ describe('the patterns Magma ships', () => {
     ).toEqual(['title', 'summary', 'actions']);
   });
 
-  test('the domains of Foundation come first, rhythm among them', () => {
+  test('the domains of the design language come first, rhythm among them', () => {
     const listed = listPatterns(patterns);
-    expect(listed[0]).toMatchObject({ kind: 'foundation', status: 'decided' });
+    expect(listed[0]).toMatchObject({ kind: 'design-language', status: 'decided' });
     expect(listed[0]).not.toHaveProperty('group');
-    expect(listed.filter((one) => one.kind === 'foundation').map((one) => one.id)).toEqual([
+    expect(listed.filter((one) => one.kind === 'design-language').map((one) => one.id)).toEqual([
       'actions',
       'density',
       'rhythm',
@@ -136,8 +136,8 @@ describe('the patterns Magma ships', () => {
       'titles',
       'widths',
     ]);
-    expect(listed.findLastIndex((one) => one.kind === 'foundation')).toBeLessThan(
-      listed.findIndex((one) => one.kind !== 'foundation'),
+    expect(listed.findLastIndex((one) => one.kind === 'design-language')).toBeLessThan(
+      listed.findIndex((one) => one.kind !== 'design-language'),
     );
   });
 
@@ -160,13 +160,13 @@ describe('the patterns Magma ships', () => {
     const guides = readdirSync(path.join(SOURCES, '..'))
       .filter((name) => name.endsWith('.md'))
       .map((name) => name.slice(0, -3).toLowerCase());
-    const domains = patterns.filter((one) => one.kind === 'foundation').map((one) => one.id);
+    const domains = patterns.filter((one) => one.kind === 'design-language').map((one) => one.id);
     expect(domains).toContain('rhythm');
     expect(domains.filter((id) => guides.includes(id))).toEqual([]);
   });
 
   test('each component a domain carries a rule on is governed by it', () => {
-    const domains = patterns.filter((one) => one.kind === 'foundation');
+    const domains = patterns.filter((one) => one.kind === 'design-language');
     for (const domain of domains)
       for (const one of [...(domain.cases ?? []), ...(domain['always-true'] ?? [])])
         for (const text of [...(one['carried-by'] ?? []), ...(one['carried-by-planned'] ?? [])]) {
@@ -276,10 +276,10 @@ describe('the format', () => {
   });
 });
 
-/** A domain of Foundation small enough to read: one variable, its relations the cases. */
+/** A domain of the design language small enough to read: one variable, its relations the cases. */
 const domain = (over: Partial<Pattern> = {}): Pattern => ({
   id: 'spacing',
-  kind: 'foundation',
+  kind: 'design-language',
   title: 'Spacing',
   layer: 'magma',
   status: 'decided',
@@ -317,15 +317,21 @@ const domain = (over: Partial<Pattern> = {}): Pattern => ({
   ...over,
 });
 
-describe('a domain of Foundation', () => {
+describe('a domain of the design language', () => {
   test('a complete domain has no error, and no group', () => {
     expect(formatErrors(file(domain()))).toEqual([]);
     expect(formatErrors(file(domain({ group: 'data' })))).toEqual([
-      'a domain of Foundation has no group: Foundation is its place',
+      'a domain of the design language has no group: the design language is its place',
     ]);
     const groupless = small();
     delete groupless.group;
     expect(formatErrors(file(groupless))).toEqual(['group is required, as text']);
+  });
+
+  test('its kind is design-language: foundation, its name in magma 2.11 and before, is not read (#1253)', () => {
+    const errors = formatErrors(file(domain({ kind: 'foundation' as unknown as Pattern['kind'] })));
+    expect(errors).toContain('kind is one of pattern, block, design-language');
+    expect(errors).toContain('group is required, as text');
   });
 
   test('every case and rule says the principle it serves', () => {
@@ -420,8 +426,8 @@ describe('a domain of Foundation', () => {
         ),
       ),
     ).toEqual([
-      'case on-field: serves belongs to a domain of Foundation (kind foundation)',
-      'case on-action: carried-by belongs to a domain of Foundation (kind foundation)',
+      'case on-field: serves belongs to a domain of the design language (kind design-language)',
+      'case on-action: carried-by belongs to a domain of the design language (kind design-language)',
     ]);
     expect(
       formatErrors(
@@ -585,7 +591,7 @@ describe('a domain of Foundation', () => {
     expect(errors.get('small')).toEqual([
       'case on-field: rules spacing/nope: spacing has no rule nor case nope of its own',
       'case on-field: rules nowhere/inline: no pattern nowhere',
-      'case on-action: rules other/one-rule: other is not a domain of Foundation (kind foundation)',
+      'case on-action: rules other/one-rule: other is not a domain of the design language (kind design-language)',
       'case on-action: rules older/x: older was renamed other',
     ]);
     expect(errors.get('spacing')).toEqual([
@@ -790,7 +796,7 @@ describe('a building block', () => {
     expect(errors.get('head')).toEqual([
       'used-by: other does not name head among its related',
       'used-by: no pattern missing',
-      'used-by: spacing is not a pattern (kind foundation)',
+      'used-by: spacing is not a pattern (kind design-language)',
       'used-by: later is a candidate: it has no cases to use the block in',
     ]);
   });
@@ -910,7 +916,7 @@ describe('a building block', () => {
 
   test('the list puts it between the domains and the patterns', () => {
     expect(listPatterns([small(), block(), domain()]).map((one) => one.kind)).toEqual([
-      'foundation',
+      'design-language',
       'block',
       'pattern',
     ]);
@@ -1394,7 +1400,7 @@ describe('the previews of the cases', () => {
       ['/p/previews/later/x.html', ['later is a candidate: it has no cases to show']],
     ]);
     expect(missingPreviews(patterns, previews)).toEqual(['small/on-action', 'small/ask']);
-    // a domain of Foundation is listed by nobody: whether its relations get a preview is open
+    // a domain of the design language is listed by nobody: whether its relations get a preview is open
     expect(missingPreviews([domain()], [])).toEqual([]);
   });
 

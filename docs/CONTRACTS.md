@@ -78,9 +78,9 @@ keep in step.
   naming.
 - **Read by**: the token tools of the MCP server (`projects/lint/src/mcp/tokens.ts`: the value
   is `cssValue`, else the DTCG value by its type), the lint core (the raw palette steps; the
-  custom properties a domain of Foundation names as carriers, `css` of the tokens that are not
-  internal and of the `cssOnly` entries), the DTCG globals of styles (their aliases), the docs
-  site.
+  custom properties a domain of the design language names as carriers, `css` of the tokens that
+  are not internal and of the `cssOnly` entries), the DTCG globals of styles (their aliases), the
+  docs site.
 - **Held by**: the design-tokens build fails on a group with no `$description` or a stale one
   (`describeGroups`, `staleDescriptions`); the lint tests run every value of the built data
   when it is there.
@@ -159,9 +159,10 @@ keep in step.
   own); in magma only, the two images of each preview beside it, `<case>.light.webp` and
   `<case>.dark.webp` (#1243): WebP, every one in the same frame, 1440 x 900 pixels of a layout
   960 x 600 CSS pixels wide, the default theme, for a reader that cannot run the stage; the
-  domains of the design language (`kind: foundation`, #1189), the rules of composition the
-  patterns stand on, in the same folder and catalogue, each case and rule with the principle it
-  serves (`serves`) and where it lives (`carried-by`, `carried-by-planned`);
+  domains of the design language (`kind: design-language`, #1189; `foundation` in magma 2.11
+  and before, #1253), the rules of composition the patterns stand on, in the same folder and
+  catalogue, each case and rule with the principle it serves (`serves`) and where it lives
+  (`carried-by`, `carried-by-planned`);
   the building blocks (`kind: block`, #1210), the sections of a page that come back in two
   patterns or more, with `regions` in the order of the page in place of cases and the patterns
   that use them (`used-by`);
@@ -173,9 +174,9 @@ keep in step.
   packages and writes the catalogue; `projects/stencil/scripts/preview-images.ts`, the last step
   of the build of magma, renders the images of the previews (`renderPreviewImages` of
   `projects/lint/src/mcp/render.ts`, the frame `PREVIEW_IMAGE` of the core).
-- **Contract**: [`docs/PATTERNS.md`](PATTERNS.md), "The format", "A domain of Foundation", "The
-  preview of a case" and "Product layers"; the reader
-  side in `projects/lint/src/core/patterns.ts` and
+- **Contract**: [`docs/PATTERNS.md`](PATTERNS.md), "The format", "A domain of the design
+  language", "The preview of a case" and "Product layers"; the reader side in
+  `projects/lint/src/core/patterns.ts` and
   [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes from".
 - **Read by**: `get_pattern` and `render_preview` (the previews of a case and of a rule of a
   domain, by example) of the MCP server, `get_guide` (each domain as a guide, with its previews) and `get_component` (the rules of the domains that govern

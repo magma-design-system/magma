@@ -172,7 +172,7 @@ describe('the component tools', () => {
       [
         '---',
         'id: actions',
-        'kind: foundation',
+        'kind: design-language',
         'title: Actions',
         'layer: magma',
         'status: decided',
@@ -481,12 +481,12 @@ describe('the guide tool', () => {
     );
   });
 
-  test('serves the domains of Foundation by their id, without their frontmatter', async () => {
+  test('serves the domains of the design language by their id, without their frontmatter', async () => {
     const { guides } = await run('get_guide');
     expect(guides.at(-1)).toEqual({
       name: 'rhythm',
       title: 'Rhythm',
-      kind: 'foundation',
+      kind: 'design-language',
       sections: [
         'When to use it',
         'What decides it',
@@ -520,14 +520,14 @@ describe('the guide tool', () => {
 describe('the pattern tool', () => {
   test('without arguments the list, as get_guide lists the guides', async () => {
     const { patterns } = await run('get_pattern');
-    // the domains of Foundation first, then by group in the order of the docs site, then by id
+    // the domains of the design language first, then by group in the order of the docs site, then by id
     expect(patterns.map((one: { id: string }) => one.id)).toEqual([
       'rhythm',
       'consent-and-legal',
       'confirm-action',
       'message-placement',
     ]);
-    expect(patterns[0]).toMatchObject({ kind: 'foundation', status: 'decided' });
+    expect(patterns[0]).toMatchObject({ kind: 'design-language', status: 'decided' });
     expect(patterns[3]).toMatchObject({
       title: 'Where a message goes',
       group: 'messages-and-states',
@@ -844,7 +844,7 @@ describe('the pattern tool', () => {
     const tool = toolsOf({ ...context, settings }).find((one) => one.name === 'get_pattern')!;
     const list = (await tool.run({})) as Result;
     expect(list.patterns.map((one: { kind: string }) => one.kind).slice(0, 2)).toEqual([
-      'foundation',
+      'design-language',
       'block',
     ]);
     const nested = (await tool.run({ id: 'head', situation: { level: 'nested' } })) as Result;

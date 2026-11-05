@@ -21,7 +21,7 @@
  */
 
 import {
-  FOUNDATION,
+  DESIGN_LANGUAGE,
   parsePatternFile,
   type Case,
   type Pattern,
@@ -134,8 +134,8 @@ const GROUNDING = new Set(['serves', 'carried-by', 'carried-by-planned']);
  * that cite them (#1174; the ids are a contract, docs/PATTERNS.md): a pattern removed (a rename
  * keeps the old id as an alias, so it is not one); an "Always true" rule added, changed or
  * removed; a case or an open choice removed, which a product layer may cite; in a domain of
- * Foundation (#1196), a case added or changed too, since its cases are rules that bind every
- * product as the "Always true" ones do (a layer narrows only the open choices); in a building
+ * the design language (#1196), a case added or changed too, since its cases are rules that
+ * bind every product as the "Always true" ones do (a layer narrows only the open choices); in a building
  * block (#1210), a region removed, or made required, since every page that lays out the block
  * must then change. Each raises the
  * review level to contract; none asks for a release of its own, as no product layer exists yet
@@ -186,7 +186,7 @@ export const patternChanges = (
     for (const one of was.cases ?? [])
       if (!cases.has(one.id))
         changes.push({ file: current.file, id, why: `case ${one.id} removed` });
-    if (is.kind === FOUNDATION) {
+    if (is.kind === DESIGN_LANGUAGE) {
       // what a rule of a domain promises: its combination, where it goes, what it uses; not the
       // principle it serves, nor its carriers, which move from planned to built as they are made
       const promise = (one: Case) =>

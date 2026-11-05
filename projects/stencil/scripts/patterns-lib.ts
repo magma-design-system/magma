@@ -9,7 +9,7 @@ import { join } from 'node:path';
 import { PROJECT_DIR } from './meta';
 import {
   BLOCK,
-  FOUNDATION,
+  DESIGN_LANGUAGE,
   PATTERN_GROUPS,
   readPatternDir,
   type ListEntry,
@@ -21,8 +21,8 @@ export const REPO = join(PROJECT_DIR, '../..');
 export const PATTERNS_DIR = join(REPO, 'docs/agents/patterns');
 /** The template of a new pattern: its fields are the questions that define one. */
 export const TEMPLATE = join(PROJECT_DIR, 'template/pattern.md');
-/** The template of a new domain of Foundation (kind foundation, #1196). */
-export const FOUNDATION_TEMPLATE = join(PROJECT_DIR, 'template/foundation.md');
+/** The template of a new domain of the design language (kind design-language, #1196). */
+export const DESIGN_LANGUAGE_TEMPLATE = join(PROJECT_DIR, 'template/design-language.md');
 /** The template of a new building block (kind block, #1210). */
 export const BLOCK_TEMPLATE = join(PROJECT_DIR, 'template/block.md');
 
@@ -35,7 +35,7 @@ export const titleOf = (id: string): string =>
 export interface NewPattern {
   id: string;
   title: string;
-  /** Empty for a domain of Foundation, whose template has no group. */
+  /** Empty for a domain of the design language, whose template has no group. */
   group: string;
   need: string;
   date: string;
@@ -48,7 +48,7 @@ export const fromTemplate = (template: string, fields: NewPattern): string =>
   );
 
 export interface ListFilter {
-  /** pattern, block or foundation. */
+  /** pattern, block or design-language. */
   kind?: string;
   group?: string;
   status?: string;
@@ -56,7 +56,7 @@ export interface ListFilter {
   notValidated?: boolean;
 }
 
-/** The list as the maintainer reads it in a terminal: the domains of Foundation, the building blocks, then the patterns by group, one line each. */
+/** The list as the maintainer reads it in a terminal: the domains of the design language, the building blocks, then the patterns by group, one line each. */
 export const renderList = (entries: ListEntry[], filter: ListFilter = {}): string => {
   const shown = entries.filter(
     (one) =>
@@ -68,7 +68,7 @@ export const renderList = (entries: ListEntry[], filter: ListFilter = {}): strin
   if (!shown.length) return 'No pattern matches.\n';
   const out: string[] = [];
   const sections: [string, ListEntry[]][] = [
-    ['Foundation', shown.filter((one) => one.kind === FOUNDATION)],
+    ['Design language', shown.filter((one) => one.kind === DESIGN_LANGUAGE)],
     ['Building blocks', shown.filter((one) => one.kind === BLOCK)],
     ...Object.entries(PATTERN_GROUPS).map(
       ([group, title]) =>
@@ -91,10 +91,10 @@ export const renderList = (entries: ListEntry[], filter: ListFilter = {}): strin
     out.push('');
   }
   const decided = shown.filter((one) => one.status === 'decided').length;
-  const domains = shown.filter((one) => one.kind === FOUNDATION).length;
+  const domains = shown.filter((one) => one.kind === DESIGN_LANGUAGE).length;
   const blocks = shown.filter((one) => one.kind === BLOCK).length;
   out.push(
-    `${shown.length - domains - blocks} pattern(s), ${blocks} building block(s) and ${domains} domain(s) of Foundation, ${decided} decided.`,
+    `${shown.length - domains - blocks} pattern(s), ${blocks} building block(s) and ${domains} domain(s) of the design language, ${decided} decided.`,
   );
   return `${out.join('\n')}\n`;
 };

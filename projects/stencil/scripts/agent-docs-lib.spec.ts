@@ -446,13 +446,15 @@ describe('renderPatternCatalogue', () => {
     expect(text).toContain('| decided, validated on mindy |');
   });
 
-  it('the domains of Foundation first, in a section of their own', () => {
+  it('the domains of the design language first, in a section of their own', () => {
     const text = renderPatternCatalogue(
-      [entry('a', 'data'), { ...entry('rhythm', ''), kind: 'foundation', group: undefined }],
+      [entry('a', 'data'), { ...entry('rhythm', ''), kind: 'design-language', group: undefined }],
       { data: 'Data' },
     );
-    expect(text).toMatch(/^## Foundation\n\n\| Domain \| Title \| Need \| Status \|\n\| ------ \|/);
-    expect(text.indexOf('## Foundation')).toBeLessThan(text.indexOf('## Data'));
+    expect(text).toMatch(
+      /^## Design language\n\n\| Domain \| Title \| Need \| Status \|\n\| ------ \|/,
+    );
+    expect(text.indexOf('## Design language')).toBeLessThan(text.indexOf('## Data'));
     expect(text).toContain('| [`rhythm`](patterns/rhythm.md) | rhythm |');
     expect(text.split('## Data')[1]).not.toContain('rhythm');
   });
@@ -462,12 +464,12 @@ describe('renderPatternCatalogue', () => {
       [
         entry('a', 'data'),
         { ...entry('page-header', 'data'), kind: 'block' },
-        { ...entry('rhythm', ''), kind: 'foundation', group: undefined },
+        { ...entry('rhythm', ''), kind: 'design-language', group: undefined },
       ],
       { data: 'Data' },
     );
     expect(text).toContain('## Building blocks\n\n| Block | Title | Need | Status |\n| ----- |');
-    expect(text.indexOf('## Foundation')).toBeLessThan(text.indexOf('## Building blocks'));
+    expect(text.indexOf('## Design language')).toBeLessThan(text.indexOf('## Building blocks'));
     expect(text.indexOf('## Building blocks')).toBeLessThan(text.indexOf('## Data'));
     expect(text.split('## Data')[1]).not.toContain('page-header');
   });

@@ -1,9 +1,9 @@
 ---
-# A domain of Foundation, the design language (#1189): the format and the commands are in
-# docs/PATTERNS.md, "A domain of Foundation". The check says what is still missing:
+# A domain of the design language (#1189): the format and the commands are in
+# docs/PATTERNS.md, "A domain of the design language". The check says what is still missing:
 # nx run stencil:check.patterns (after nx run stencil:build).
 id: widths
-kind: foundation
+kind: design-language
 title: Widths and alignment
 layer: magma
 status: decided
@@ -200,3 +200,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-30 | The window of a dialog is the column of a form plus its inset, 580 px, one width for every dialog (`dialog`). | A form moves between a page and a dialog without changing shape: the halves stay side by side, the messages on one line. Rejected: `container-md` (448 px), whose body falls under `28rem`, so a form takes its phone shape. Chosen live. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6532648084 |
 | 2026-10-30 | The widths are carried by roles: `--magma-width-*`, `max-w-form`, `page-frame`, `short` with `field-group`, the default of `mds-modal` (`by-role`). | The role reads in the code, a check can hold it, a theme moves it in one place, and the threshold and the sum of the dialog live in one place instead of in every product (the previews copied a width and got 384 px). Rejected: the values by hand, the same render with nothing a check can tell apart; the pair as a wrapper, where "short" is not on the field. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6533809808 |
 | 2026-10-31 | The file of the domain; tables and lists are a value of their own in the case `page`. | The issue of the five domains (#1197); `widths/page` names tables and lists among its answers. |
+| 2026-11-05 | The kind of the domain is `design-language`, no longer `foundation`. | Named after what the file is, a domain of the design language, not after the item of the docs site that holds it: Foundation there is the umbrella of the decisions Magma stands on (principles, accessibility, color, typography, illustration, content), and the design language is one group of it. The design language, the building blocks and the patterns together are Behavior, as the header of the studio names them (#1253). |

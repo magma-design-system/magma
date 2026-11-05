@@ -13,9 +13,9 @@
  *   value it takes;
  * - the lint: every "Always true" rule checked by lint names a rule the lint has; a planned one
  *   names a rule it does not have yet;
- * - the carriers of a domain of Foundation (kind foundation, #1196): each component, custom
- *   property, utility and lint rule of carried-by is in the release, each of carried-by-planned
- *   is not yet;
+ * - the carriers of a domain of the design language (kind design-language, #1196): each
+ *   component, custom property, utility and lint rule of carried-by is in the release, each of
+ *   carried-by-planned is not yet;
  * - the links: every pattern, case and rule cited exists, and no reference uses an old id;
  * - the body: its sections in the order of the template, the generated ones up to date;
  * - the previews of the cases (docs/agents/patterns/previews/<pattern>/<case>.html, #1186) and of
@@ -49,7 +49,7 @@ import {
 } from '../../lint/src/core/data';
 import {
   BLOCK,
-  FOUNDATION,
+  DESIGN_LANGUAGE,
   MAGMA_LAYER,
   bodyErrors,
   carrierErrors,
@@ -117,7 +117,7 @@ for (const file of files) {
     combinations += covered.total;
     errors.push(...coverageErrors(covered));
     errors.push(...componentErrors(data, components), ...lintErrors(data, lintRules));
-    if (data.kind === FOUNDATION) errors.push(...carrierErrors(data, release));
+    if (data.kind === DESIGN_LANGUAGE) errors.push(...carrierErrors(data, release));
     errors.push(...bodyErrors(data, file.body, patterns));
   }
   report(file.file, errors);
@@ -178,13 +178,13 @@ if (missing.length)
       .map((one) => `  - ${one}`)
       .join('\n')}\n`,
   );
-const domains = patterns.filter((one) => one.kind === FOUNDATION).length;
+const domains = patterns.filter((one) => one.kind === DESIGN_LANGUAGE).length;
 const blocks = patterns.filter((one) => one.kind === BLOCK).length;
 const decided = patterns.filter(
   (one) => one.kind === 'pattern' && one.status !== 'candidate',
 ).length;
 console.log(
-  `OK - ${patterns.length - domains - blocks} patterns, ${blocks} building block(s) and ${domains} domain(s) of Foundation in ${relative(REPO, PATTERNS_DIR)} (${decided} patterns defined, ${
+  `OK - ${patterns.length - domains - blocks} patterns, ${blocks} building block(s) and ${domains} domain(s) of the design language in ${relative(REPO, PATTERNS_DIR)} (${decided} patterns defined, ${
     patterns.length - domains - blocks - decided
   } candidates): ${combinations} combinations each in one case, a gap or not applicable, or with a required region of a block; every component, attribute, carrier, lint rule and link exists; ${
     previews.length

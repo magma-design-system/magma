@@ -1,9 +1,9 @@
 ---
-# A domain of Foundation, the design language (#1189): the format and the commands are in
-# docs/PATTERNS.md, "A domain of Foundation". The check says what is still missing:
+# A domain of the design language (#1189): the format and the commands are in
+# docs/PATTERNS.md, "A domain of the design language". The check says what is still missing:
 # nx run stencil:check.patterns (after nx run stencil:build).
 id: density
-kind: foundation
+kind: design-language
 title: Density
 layer: magma
 status: decided
@@ -234,3 +234,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-30 | An explicit choice of the person wins over the regions: mds-pref-density is `auto` by default, and a level the person chose applies to the regions too (`region`). | The precedence system < theme < person carried through: a region is a decision of the product, as the theme is. Who chose `comfortable` because pointing is hard gets it where the targets are densest. Rejected: the region wins inside itself, the choice of the person included. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6519287396 |
 | 2026-10-30 | The markers follow the density like the rhythm and the controls (`markers`); at `compact` the checkbox passes WCAG 2.5.8 by its spacing exception, and a list that selects its rows with bare checkboxes keeps its rows at least 600 high (`dense-targets`). | One factor on every unit, with no exception: the switch stays lower than the button at every level, and at `comfortable` the smallest targets grow too, the reason that level exists. Rejected: the markers unchanged at every density, where the compact switch stands taller than the button and the density has two rules. Chosen live. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6519554134 |
 | 2026-10-31 | The file of the domain, with the levels as its cases, each carried by the units of #691 once they ship, and the rest as always-true rules; `product-density` and `region-density` are the open choices of a product layer. | The format of #1196 and the issue of the five domains (#1197); #1189 names density as the first open choice of a product layer. |
+| 2026-11-05 | The kind of the domain is `design-language`, no longer `foundation`. | Named after what the file is, a domain of the design language, not after the item of the docs site that holds it: Foundation there is the umbrella of the decisions Magma stands on (principles, accessibility, color, typography, illustration, content), and the design language is one group of it. The design language, the building blocks and the patterns together are Behavior, as the header of the studio names them (#1253). |

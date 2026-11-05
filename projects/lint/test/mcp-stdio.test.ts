@@ -50,7 +50,7 @@ afterAll(async () => {
 test('the handshake names the server, the version of magma and when to use it', () => {
   expect(client.getServerVersion()).toMatchObject({ name: 'magma', version: '2.5.1' });
   expect(client.getInstructions()).toMatch(/check_markup/);
-  expect(client.getInstructions()).toMatch(/domains of Foundation/);
+  expect(client.getInstructions()).toMatch(/domains of the design language/);
 });
 
 test('lists the twelve tools, each with an output schema, read-only but the render', async () => {

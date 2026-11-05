@@ -1,9 +1,9 @@
 ---
-# A domain of Foundation, the design language (#1189): the format and the commands are in
-# docs/PATTERNS.md, "A domain of Foundation". The check says what is still missing:
+# A domain of the design language (#1189): the format and the commands are in
+# docs/PATTERNS.md, "A domain of the design language". The check says what is still missing:
 # nx run stencil:check.patterns (after nx run stencil:build).
 id: surfaces
-kind: foundation
+kind: design-language
 title: Surfaces
 layer: magma
 status: decided
@@ -210,3 +210,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-11-02 | A field stands a step off its surface: inside a surface that paints `overlay` (the window of a dialog, `mds-banner`, `mds-status-bar`, `mds-dropdown`, `mds-table`) it paints `surface-default`, passed down as `--magma-field-fill` (#1193). | The fill of a field sets it apart from where it stands, the layers of Carbon; the window keeps `overlay`, the meaning of the ladder in `theming.md`, and stands off the dimmed page in dark. Rejected: the window down a step, and the field as an outline only. Review round 1 of #1189. |
 | 2026-11-02 | While an `mds-status-bar` is visible, the styles reserve its room: a box after the body and `scroll-padding-bottom`, the tallest bar for its content plus `rhythm/between-fields`, counted with `:has()` (#1203). | CSS only, no script that measures (the rule of layout); the content of the bar has limits (one line of description, at most three actions), so its tallest is known. A box, not a padding of `html`, which a reset out of any layer would zero. Rejected: a class the page writes, which a page forgets. Review round 1 of #1189. |
 | 2026-11-02 | The bar of the application stands in the flow: `mds-header` is sticky at the top, the page starts under its bar, and the styles stop a field reached with Shift+Tab under it (`scroll-padding-top`, `band`). The room is the bar alone: the floating bar stands its margin lower, and the box of the header lets the clicks through. | The bar was fixed and nothing reserved its room: the title of a page stood 13 px under it instead of `gap-between-sections`, and a field could end under it. Sticky takes the room by itself, with no number to keep in step with its height; a room that followed the appearance would move the page when `appearance-set` changes it on scroll. Rejected: the bar fixed with a padding of the page from the styles, as at the bottom (#1203), a number to keep in step. A page that kept the room by hand gets it twice. Review round 1 of #1189. |
+| 2026-11-05 | The kind of the domain is `design-language`, no longer `foundation`. | Named after what the file is, a domain of the design language, not after the item of the docs site that holds it: Foundation there is the umbrella of the decisions Magma stands on (principles, accessibility, color, typography, illustration, content), and the design language is one group of it. The design language, the building blocks and the patterns together are Behavior, as the header of the studio names them (#1253). |

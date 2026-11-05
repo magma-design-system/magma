@@ -7,8 +7,8 @@
   narrows the open choices and adds situations; it never changes an "Always true" rule. A case
   Magma has a preview of (agents/patterns/previews/<id>/<case>.html, #1186) names it: the path
   in the pattern, the stage itself and what to try in it in the answer for a situation, with
-  the rules of the domains of Foundation the case relies on (#1198). A rule of a domain may have
-  a preview too, and a case or a rule more examples (<id>.2.html, #1221): the pattern names
+  the rules of the domains of the design language the case relies on (#1198). A rule of a
+  domain may have a preview too, and a case or a rule more examples (<id>.2.html, #1221): the pattern names
   their paths, the answer the paths of the other examples and of the previews of its rules. A
   building block (#1210) answers a situation with its regions, in the order of the page, and
   has a preview per situation, named after its id (previews/<block>/<situation>.html, the
@@ -22,7 +22,7 @@ import path from 'node:path';
 import { loadComponents, magmaRoot } from '../core/data.js';
 import {
   BLOCK,
-  FOUNDATION,
+  DESIGN_LANGUAGE,
   MAGMA_LAYER,
   answer,
   examplesOf,
@@ -55,7 +55,7 @@ import { GAP, GAP_SCHEMA, wordsOf, type ToolContext } from './context.js';
 /** Where a product keeps its layer, in its own repository (#1174, "The code: the plan"). */
 export const PRODUCT_LAYER_DIR = 'magma/patterns';
 
-/** Where the installed magma ships its patterns and the domains of Foundation. */
+/** Where the installed magma ships its patterns and the domains of the design language. */
 export const patternsDir = (context: ToolContext) =>
   path.join(magmaRoot(context.settings), 'agents', 'patterns');
 
@@ -68,7 +68,7 @@ export const RULE_SCHEMA = {
   type: 'object',
   properties: {
     id: string,
-    from: { type: 'string', description: 'The domain of Foundation, such as rhythm.' },
+    from: { type: 'string', description: 'The domain of the design language, such as rhythm.' },
     rule: {
       type: 'string',
       description: 'The rule, or for a relation of the domain the answer it gives.',
@@ -186,7 +186,7 @@ export const getPattern = (context: ToolContext): Tool => ({
   name: 'get_pattern',
   title: 'Read a Magma pattern',
   description:
-    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of Foundation (kind foundation), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, what to try in it and the paths of its images, light and dark, to show where the stage cannot run, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page, and when the values match one of its situations, every variable given, the preview of that situation as for a case (the stage, what to try, the other examples); with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
+    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of the design language (kind design-language), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, what to try in it and the paths of its images, light and dark, to show where the stage cannot run, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page, and when the values match one of its situations, every variable given, the preview of that situation as for a case (the stage, what to try, the other examples); with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -224,7 +224,7 @@ export const getPattern = (context: ToolContext): Tool => ({
             need: string,
             validatedOn: strings,
           },
-          // a domain of Foundation (kind foundation) has no group
+          // a domain of the design language (kind design-language) has no group
           required: ['id', 'title', 'kind', 'status', 'need'],
         },
       },
@@ -424,7 +424,7 @@ export const getPattern = (context: ToolContext): Tool => ({
         : undefined;
     // a rule of a domain of its own may have a preview too (#1221), never one it cites
     const rules =
-      base.kind === FOUNDATION
+      base.kind === DESIGN_LANGUAGE
         ? resolved['always-true']?.map((one) =>
             one.from ? one : { ...one, ...previewPaths(context, previews, base.id, one.id) },
           )

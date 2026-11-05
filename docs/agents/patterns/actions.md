@@ -1,9 +1,9 @@
 ---
-# A domain of Foundation, the design language (#1189): the format and the commands are in
-# docs/PATTERNS.md, "A domain of Foundation". The check says what is still missing:
+# A domain of the design language (#1189): the format and the commands are in
+# docs/PATTERNS.md, "A domain of the design language". The check says what is still missing:
 # nx run stencil:check.patterns (after nx run stencil:build).
 id: actions
-kind: foundation
+kind: design-language
 title: Actions
 layer: magma
 status: decided
@@ -391,3 +391,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-11-02 | The threshold of `stacked` is the role `--magma-container-actions`, which the Tailwind theme bridges as the container size `actions` with its literal (`@max-actions:`); `mds-banner`, `mds-card-footer` and `mds-status-bar` stack under it. | A container query reads no `var()`, so the bridge holds the literal and the sheets read it at build time with `--theme()`; the name follows the roles of Magma (`--magma-width-*`). Review round 1 of #1189. |
 | 2026-11-03 | Under the threshold of `stacked`, every labelled button takes the full width and the icon-only menu of the item keeps its size, at the start | The previews of the building blocks: stretched, the square menu button of `more-in-menu` became a 352 px square at 400 px. The maintainer's check in the review of round 3. |
 | 2026-11-03 | A request or a practice with its attachments, contacts and protocol is deleted from the danger zone of its page, never from a menu; a menu holds Elimina only for an item deleted without consequences (a contact, a note). The previews of `more-in-menu` and of `message-placement/decision` show a contact and a note | `severity` decides it, and the situation of this domain already sent such a request to the danger zone; two previews put Elimina richiesta in a menu. The maintainer's choice A in the review of round 3. |
+| 2026-11-05 | The kind of the domain is `design-language`, no longer `foundation`. | Named after what the file is, a domain of the design language, not after the item of the docs site that holds it: Foundation there is the umbrella of the decisions Magma stands on (principles, accessibility, color, typography, illustration, content), and the design language is one group of it. The design language, the building blocks and the patterns together are Behavior, as the header of the studio names them (#1253). |

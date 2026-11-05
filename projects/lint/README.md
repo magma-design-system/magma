@@ -82,7 +82,7 @@ Colours: purple ai, amber assets, teal visual, blue components, grey tooling, wh
 | `src/core/element.ts` | the element the template rules check, whatever the template language |
 | `src/core/checks.ts` | one check per template rule, pure |
 | `src/core/colors.ts` | the colour literals of a CSS value |
-| `src/core/patterns.ts` | the patterns (#1174) and the domains of Foundation (#1196): reading a pattern or a product layer, the checks of its format, cases, carriers, links and layer, the case for a situation, the sections written from the frontmatter ([`docs/PATTERNS.md`](../../docs/PATTERNS.md)) |
+| `src/core/patterns.ts` | the patterns (#1174) and the domains of the design language (#1196): reading a pattern or a product layer, the checks of its format, cases, carriers, links and layer, the case for a situation, the sections written from the frontmatter ([`docs/PATTERNS.md`](../../docs/PATTERNS.md)) |
 | `src/eslint/adapters.ts` | one adapter per parser: HTML (`@html-eslint/parser`), JSX, Angular templates (`@angular-eslint/template-parser`) |
 | `src/eslint/index.ts` | the ESLint rules and presets |
 | `src/stylelint/` | the Stylelint rules and presets |
@@ -207,16 +207,18 @@ or on the guide it enforces, not only on fixtures picked by hand.
   the stage, and only the files that exist, since a magma built before them has none and a path
   to nothing would send the client after a file that is not there. The pattern does not repeat
   them on each case: they follow the path of the preview.
-- **The domains of Foundation** (`kind: foundation`, `src/core/patterns.ts`, #1196): the
-  domains of the design language decided on #1189, in the same format, so they are listed,
-  searched and answered as the patterns are, first in the list as the rail of the docs site puts
-  Foundation first. `serves` takes the four principles of the docs site's Principles page, which
-  asks every decision of Foundation to name the one it serves. A carrier is read from its form,
-  as a `use` is (the choice of the maintainer on #1196): `mds-*` a component and its attributes,
-  checked as a `use`; `--*` a custom property, which exists when the consumption map of styles
-  lists it as a token or as the theme name a token publishes, when the DTCG data of
-  design-tokens has it as a token that is not internal or as a `cssOnly` entry of a group (a
-  role no Tailwind theme variable publishes, `--magma-width-page`, `--magma-width-dialog`:
+- **The domains of the design language** (`kind: design-language`, `src/core/patterns.ts`,
+  #1196; `foundation` in magma 2.11 and before, #1253): the domains decided on #1189, in the
+  same format, so they are listed, searched and answered as the patterns are, first in the list
+  as the rail of the docs site puts Foundation, which holds the design language, before Building
+  blocks and Patterns. The kind is named after what the files are, not after the Foundation item
+  of the docs site, the umbrella that holds them as one of its groups. `serves` takes the four
+  principles of the docs site's Principles page, the principles behind every decision of Magma,
+  each of which names the one it serves. A carrier is read from its form, as a `use` is (the
+  choice of the maintainer on #1196): `mds-*` a component and its attributes, checked as a
+  `use`; `--*` a custom property, which exists when the consumption map of styles lists it as a
+  token or as the theme name a token publishes, when the DTCG data of design-tokens has it as a
+  token that is not internal or as a `cssOnly` entry of a group (a role no Tailwind theme variable publishes, `--magma-width-page`, `--magma-width-dialog`:
   `loadTokenNames`), or when a component documents it as public; `magma/*` a rule of the lint; any other name a class, which exists when it is a
   Magma utility of the consumption map or `<utility>-<key>` of a namespace and a token or a
   keyword of it, as `explain_class` reads a class (`loadThemeNames` of `src/core/data.ts`). A

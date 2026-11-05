@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { formatErrors, listPatterns, parsePatternFile } from '../../lint/src/core/patterns';
 import {
   BLOCK_TEMPLATE,
-  FOUNDATION_TEMPLATE,
+  DESIGN_LANGUAGE_TEMPLATE,
   TEMPLATE,
   fromTemplate,
   readPatterns,
@@ -39,8 +39,8 @@ describe('the template of a new pattern', () => {
   });
 });
 
-describe('the template of a new domain of Foundation', () => {
-  const text = fromTemplate(readFileSync(FOUNDATION_TEMPLATE, 'utf8'), {
+describe('the template of a new domain of the design language', () => {
+  const text = fromTemplate(readFileSync(DESIGN_LANGUAGE_TEMPLATE, 'utf8'), {
     id: 'motion',
     title: titleOf('motion'),
     group: '',
@@ -51,7 +51,7 @@ describe('the template of a new domain of Foundation', () => {
   it('is a draft with no group, and the check says only what is still missing', () => {
     expect(text).not.toMatch(/\{\{/);
     const file = parsePatternFile(text, 'motion.md');
-    expect(file.data).toMatchObject({ id: 'motion', kind: 'foundation', status: 'draft' });
+    expect(file.data).toMatchObject({ id: 'motion', kind: 'design-language', status: 'draft' });
     expect(file.data).not.toHaveProperty('group');
     expect(formatErrors(file)).toEqual([
       'principle is required, as text',
@@ -85,28 +85,28 @@ describe('the template of a new building block', () => {
 describe('renderList', () => {
   const entries = listPatterns(readPatterns().map((one) => one.data));
 
-  it('lists the domains of Foundation first, the building blocks, then the patterns by group, with their status', () => {
+  it('lists the domains of the design language first, the building blocks, then the patterns by group, with their status', () => {
     const text = renderList(entries);
     // the six domains of #1189, by id as every group
     expect(text).toMatch(
-      /^Foundation\n {2}actions +decided +Actions\n {2}density +decided +Density\n {2}rhythm +decided +Rhythm\n {2}surfaces +decided +Surfaces\n {2}titles +decided +Titles\n {2}widths +decided +Widths and alignment\n/,
+      /^Design language\n {2}actions +decided +Actions\n {2}density +decided +Density\n {2}rhythm +decided +Rhythm\n {2}surfaces +decided +Surfaces\n {2}titles +decided +Titles\n {2}widths +decided +Widths and alignment\n/,
     );
     // the four blocks of the round of the building blocks (2026-11-03): by group, then by id
     expect(text).toMatch(
       /\nBuilding blocks\n {2}app-shell +decided +Application shell\n {2}page-header +decided +Page header\n {2}item-list +decided +Item list\n {2}labels-and-values +decided +Labels and values\n/,
     );
-    expect(text.indexOf('Foundation\n')).toBeLessThan(text.indexOf('Building blocks\n'));
+    expect(text.indexOf('Design language\n')).toBeLessThan(text.indexOf('Building blocks\n'));
     expect(text.indexOf('Building blocks\n')).toBeLessThan(text.indexOf('Data\n'));
     expect(text).toMatch(
       /Messages and states\n(.*\n)* {2}message-placement +decided +Where a message goes\n/,
     );
     expect(text).toMatch(
-      /\d+ pattern\(s\), \d+ building block\(s\) and \d+ domain\(s\) of Foundation, \d+ decided\.\n$/,
+      /\d+ pattern\(s\), \d+ building block\(s\) and \d+ domain\(s\) of the design language, \d+ decided\.\n$/,
     );
   });
 
   it('filters by kind, group, status and validation', () => {
-    expect(renderList(entries, { kind: 'foundation' })).toMatch(/^Foundation\n/);
+    expect(renderList(entries, { kind: 'design-language' })).toMatch(/^Design language\n/);
     expect(renderList(entries, { kind: 'block' })).toMatch(/^Building blocks\n {2}app-shell /);
     expect(renderList(entries, { kind: 'pattern' })).not.toContain('rhythm');
     expect(renderList(entries, { kind: 'pattern' })).not.toContain('page-header');

@@ -169,9 +169,9 @@ open-choices: []`;
     expect(patternChanges(at(pattern(RULES)), at(pattern(reworded)))).toEqual([]);
   });
 
-  it('in a domain of Foundation, reports a case added or changed too, not its carriers', () => {
+  it('in a domain of the design language, reports a case added or changed too, not its carriers', () => {
     const file = 'docs/agents/patterns/d.md';
-    const domain = (cases: string) => `---\nid: d\nkind: foundation\ncases:\n${cases}\n---\n`;
+    const domain = (cases: string) => `---\nid: d\nkind: design-language\ncases:\n${cases}\n---\n`;
     const before =
       domain(`  - { id: one, where: gap-300, serves: intuitive, carried-by-planned: [gap-one] }
   - { id: two, where: gap-600, serves: intuitive }`);
