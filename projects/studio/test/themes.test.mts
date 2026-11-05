@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, expect, test } from 'vitest'
 import { h, render } from 'preact'
+import { act } from 'preact/test-utils'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
@@ -18,23 +19,30 @@ afterEach(() => render(null, root))
 
 const show = () => render(h(ThemesManager, { config: initialConfig as unknown as MagmaConfig }), root)
 
+const cardsOf = () => [...root.querySelectorAll('.themes-grid > .themes-card')]
+const exportOf = () => root.querySelector('.themes-export')?.textContent ?? ''
+const emit = (element: Element, type: string, detail: unknown) =>
+  act(() => {
+    element.dispatchEvent(new CustomEvent(type, { detail, bubbles: true }))
+  })
+
 test('the themes view renders a card per theme, the base first, each named apart from its family', () => {
   show()
 
-  const cards = [...root.querySelectorAll('.theme-card')]
+  const cards = cardsOf()
   expect(cards.length).toBeGreaterThan(1)
-  expect(cards[0].querySelector('.theme-attr-code')?.textContent).toBe(':root')
-  expect(cards[0].querySelector('.scale-usage')?.textContent).toBe('business')
-  expect(cards[0].querySelector('.theme-fam')?.textContent).toContain(semantic.tint)
-  const editorial = cards.find((card) => card.querySelector('.scale-usage')?.textContent === 'editorial')
-  expect(editorial?.querySelector('.theme-fam')?.textContent).toContain('bisque')
-  expect(editorial?.querySelector('.theme-attr-code')?.textContent).toBe("data-theme-name='editorial'")
+  expect(cards[0].querySelector('.themes-attr')?.textContent).toBe(':root')
+  expect(cards[0].querySelector('.themes-name')?.textContent).toBe('business')
+  expect(cards[0].querySelector('.themes-family')?.textContent).toContain(semantic.tint)
+  const editorial = cards.find((card) => card.querySelector('.themes-name')?.textContent === 'editorial')
+  expect(editorial?.querySelector('.themes-family')?.textContent).toContain('bisque')
+  expect(editorial?.querySelector('.themes-attr')?.textContent).toBe("data-theme-name='editorial'")
 })
 
 test('the export repoints the tint ramp for every non-base theme', () => {
   show()
 
-  const exported = root.querySelector('.theme-export')?.textContent ?? ''
+  const exported = exportOf()
   const blocks = exported.match(/:root\[data-theme-name='[^']+'\] \{[^}]*\}/g) ?? []
   expect(blocks.length).toBeGreaterThan(0)
   for (const block of blocks) expect(block).toContain('--magma-tint-scale-')
@@ -43,7 +51,7 @@ test('the export repoints the tint ramp for every non-base theme', () => {
 test('the export prints each theme as themes.css does: the shipped ones by their name and accents', () => {
   show()
 
-  const exported = root.querySelector('.theme-export')?.textContent ?? ''
+  const exported = exportOf()
   const names = [...exported.matchAll(/^:root\[data-theme-name='([^']+)'\] \{/gm)].map((m) => m[1])
   expect(names).toContain('editorial')
   expect(names).not.toContain('bisque')
@@ -64,4 +72,48 @@ test('a theme of the person never takes a name Magma ships, nor a name already g
   expect(themeNameProblem('My Theme', 'porcelain', {})).toMatch(/lowercase/)
   expect(themeNameProblem('studio', 'porcelain', { kaolin: 'studio' })).toMatch(/kaolin/)
   expect(themeNameProblem('my-product', 'porcelain', { porcelain: 'my-product' })).toBeNull()
+})
+
+test('a theme of the person takes its name in a Magma field, and the export follows the name', async () => {
+  show()
+
+  // a family Magma draws no theme from: named by the person, the family name until then
+  const card = cardsOf().find((each) => each.querySelector('.themes-name-field') !== null)!
+  const family = card.querySelector('.themes-family code')!.textContent!
+  const input = card.querySelector('.themes-name-field mds-input')!
+  expect(input.getAttribute('value')).toBe(family)
+
+  await emit(input, 'mdsInputChange', { value: 'my-product ' })
+  expect(card.querySelector('.themes-attr')?.textContent).toBe("data-theme-name='my-product'")
+  expect(card.querySelector('.themes-name')?.textContent).toBe('my-product')
+  expect(exportOf()).toContain(":root[data-theme-name='my-product'] {")
+  expect(card.querySelector('.themes-name-field mds-input-field')?.hasAttribute('variant')).toBe(false)
+
+  // a name Magma ships is refused: the field says why, and the export carries the reason
+  await emit(input, 'mdsInputChange', { value: 'editorial' })
+  const field = card.querySelector('.themes-name-field')!
+  expect(field.querySelector('mds-input-field')?.getAttribute('variant')).toBe('error')
+  expect(field.querySelector('mds-input')?.getAttribute('aria-invalid')).toBe('true')
+  expect(field.querySelector('mds-input-field')?.getAttribute('message')).toMatch(/Magma ships/)
+  expect(exportOf()).toContain(`/* the theme drawn from ${family}: editorial is a theme Magma ships`)
+})
+
+test('an accent is a Magma select: another variant marks the override and repoints the export', async () => {
+  show()
+
+  const editorial = cardsOf().find((card) => card.querySelector('.themes-name')?.textContent === 'editorial')!
+  const [accent] = [...editorial.querySelectorAll('.themes-accent')]
+  const select = accent.querySelector('mds-input-select')!
+  const before = exportOf()
+  const current = select.getAttribute('value')
+  // a variant that is neither the current one nor the base of the role
+  const other = [...select.querySelectorAll('option')]
+    .filter((option) => !option.textContent?.endsWith('(base)'))
+    .map((option) => option.value)
+    .find((value) => value !== current)!
+
+  await emit(select, 'mdsInputSelectChange', { value: other, values: [other] })
+  expect(select.getAttribute('value')).toBe(other)
+  expect(accent.querySelector('mds-badge')?.getAttribute('label')).toMatch(/override|changed/)
+  expect(exportOf()).not.toBe(before)
 })

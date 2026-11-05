@@ -14,6 +14,8 @@ import {
   themeOf,
 } from '@maggioli-design-system/design-tokens/semantic.model';
 import { borderVerdict } from './surfaces.js';
+import { Field, Select, TextInput } from './magma.js';
+import './themes.css';
 
 /**
  * Themes - a DERIVED section under surfaces (epic #328, spec 8). It reads the
@@ -217,8 +219,8 @@ export function ThemesManager({ config }: ThemesManagerProps) {
   if (genError) return null;
 
   return (
-    <div class="themes-manager">
-      <p class="scales-hint">
+    <div class="themes">
+      <mds-text typography="detail" tag="p" class="themes-muted">
         Each family opted into a surface (Semantic surface) is a theme with a name of its own:{' '}
         <code>{nameOf(semantic.tint)}</code>, drawn from <code>{semantic.tint}</code>, is the base{' '}
         <code>:root</code>, and every other one switches in via <code>data-theme-name</code>,
@@ -226,17 +228,17 @@ export function ThemesManager({ config }: ThemesManagerProps) {
         family. The names of the themes Magma ships are reserved. An accent is a role that points at
         a <code>variant</code>; a theme may repoint it - pick a variant per role below and the
         accent retints with the theme. Any tint works; text comes from the family's own scale.
-      </p>
+      </mds-text>
 
       {extras.length === 0 && (
-        <p class="scales-hint">
-          Only the base theme so far - opt another family into a surface (Semantic surface) and it
+        <mds-text typography="detail" tag="p" class="themes-muted">
+          Only the base theme so far: opt another family into a surface (Semantic surface) and it
           appears here as a theme.
-        </p>
+        </mds-text>
       )}
 
       {/* Preview: default + derived themes, side by side */}
-      <div class="theme-preview-grid">
+      <div class="themes-grid">
         {previewFamilies.map((family) => (
           <ThemeCard
             family={family}
@@ -261,21 +263,37 @@ export function ThemesManager({ config }: ThemesManagerProps) {
 
       {/* Export */}
       {extras.length > 0 && (
-        <div class="scale-card">
-          <div class="scale-card-head">
-            <span class="scale-usage">export</span>
-            <span class="scales-hint">
-              paste into a styles theme file; the <code>default</code> is the base{' '}
-              <code>:root</code> from <code>semantic.css</code>, so only the overrides are emitted
-            </span>
+        <div class="themes-card">
+          <div class="themes-head">
+            <mds-text typography="part" tag="h2">
+              Export
+            </mds-text>
+            <mds-text typography="caption" tag="p" class="themes-muted">
+              Paste into a styles theme file; the <code>default</code> is the base{' '}
+              <code>:root</code> from <code>semantic.css</code>, so only the overrides are emitted.
+            </mds-text>
           </div>
-          <button onClick={copy}>{copied ? 'copied' : 'copy CSS'}</button>
-          <pre class="theme-export">{exportCss}</pre>
+          <div class="studio-row">
+            <mds-button
+              type="button"
+              variant="dark"
+              tone="outline"
+              size="md"
+              icon={copied ? 'mi/baseline/check' : 'mi/baseline/content-copy'}
+              onClick={copy}
+              label={copied ? 'Copied' : 'Copy CSS'}
+            ></mds-button>
+          </div>
+          <pre class="themes-export">{exportCss}</pre>
         </div>
       )}
     </div>
   );
 }
+
+/** The label of an accent role in its field: `ai` is an acronym. */
+const accentLabel = (role: string): string =>
+  role === 'ai' ? 'AI' : role.charAt(0).toUpperCase() + role.slice(1);
 
 interface ThemeCardProps {
   family: string;
@@ -315,97 +333,107 @@ function ThemeCard({
   // role defaults to (so a theme can repoint an accent to e.g. variant-secondary).
   const variantFamilies = Object.keys(variants).map((k) => `variant-${k}`);
   return (
-    <div class="theme-card">
-      <div class="scale-card-head">
-        {shipped ? (
-          <span class="scale-usage" title="a theme Magma ships: its name is reserved">
-            {name}
-          </span>
-        ) : (
-          <label class="theme-name-ctl">
-            <span class="theme-accent-role">name</span>
-            <input
-              value={name}
-              aria-invalid={nameProblem ? 'true' : undefined}
-              onInput={(e) => onName((e.target as HTMLInputElement).value.trim())}
-            />
-          </label>
-        )}
-        <span class="theme-fam">
+    <div class="themes-card">
+      <div class="themes-head">
+        <div class="themes-title">
+          <mds-text typography="part" tag="h2" class="themes-name">
+            {name || family}
+          </mds-text>
+          {isDefault && <mds-badge variant="dark" label="base"></mds-badge>}
+          {shipped && (
+            <span title="a theme Magma ships: its name is reserved">
+              <mds-badge variant="dark" label="shipped"></mds-badge>
+            </span>
+          )}
+        </div>
+        <mds-text typography="caption" tag="p" class="themes-family themes-muted">
           drawn from <code>{family}</code>
-          {isDefault && ' (base)'}
-        </span>
-        <code class="theme-attr-code">{isDefault ? ':root' : `data-theme-name='${name}'`}</code>
+        </mds-text>
+        <code class="themes-attr">{isDefault ? ':root' : `data-theme-name='${name}'`}</code>
       </div>
-      {nameProblem && <span class="theme-name-problem">{nameProblem}</span>}
+
+      {!shipped && (
+        <div class="themes-name-field">
+          <Field
+            label="Name"
+            message={nameProblem ?? undefined}
+            variant={nameProblem ? 'error' : undefined}
+          >
+            <TextInput
+              value={name}
+              variant={nameProblem ? 'error' : undefined}
+              onValue={(value) => onName(value.trim())}
+            />
+          </Field>
+        </div>
+      )}
 
       {/* accent assignment: pick a variant per role. Every theme - including the
           default (:root) - can repoint an accent role to another variant; the roles
           themselves are fixed (never renamed or removed). On the default a change is
           a BASE change (exported as a :root block), elsewhere a per-theme override. */}
       {hasScales && (
-        <div class="theme-accent-controls">
+        <div class="themes-accents" role="group" aria-label={`The accents of ${name || family}`}>
           {ACCENT_ROLES.map((role) => {
             const current = accentFor(family, role);
             const isBase = current === semantic.accents[role];
             return (
-              <label class="theme-accent-ctl">
-                <span class="theme-accent-role">{role}</span>
-                <select
-                  value={current}
-                  onChange={(e) => onAccent(family, role, (e.target as HTMLSelectElement).value)}
-                >
-                  {variantFamilies.map((v) => (
-                    <option value={v}>
-                      {v.replace('variant-', '')}
-                      {v === semantic.accents[role] ? ' (base)' : ''}
-                    </option>
-                  ))}
-                </select>
+              <div class="themes-accent">
+                <Field label={accentLabel(role)}>
+                  <Select
+                    size="md"
+                    value={current}
+                    onValue={(variant) => onAccent(family, role, variant)}
+                    options={variantFamilies.map((v) => ({
+                      value: v,
+                      label: `${v.replace('variant-', '')}${v === semantic.accents[role] ? ' (base)' : ''}`,
+                    }))}
+                  />
+                </Field>
                 {!isBase && (
-                  <span class="theme-accent-flag">{isDefault ? 'changed' : 'override'}</span>
+                  <mds-badge variant="info" label={isDefault ? 'changed' : 'override'}></mds-badge>
                 )}
-              </label>
+              </div>
             );
           })}
         </div>
       )}
 
       {!hasScales ? (
-        <span class="scales-hint">
+        <mds-text typography="caption" tag="p" class="themes-muted">
           <code>{family}</code> has no surface+text scale.
-        </span>
+        </mds-text>
       ) : (
-        <div class="theme-modes">
+        <div class="themes-modes">
           {MODES.map((mode) => {
             const s = surfaces[family][mode];
             const t = texts[family]?.[mode];
             const b = borders[family]?.[mode];
             const canvas = hex(s, 'default');
             return (
-              <div class="tsw" style={{ background: canvas, color: hex(t, 'default') }}>
-                <div class="tsw-lab">
+              <div class="themes-mode" style={{ background: canvas, color: hex(t, 'default') }}>
+                <span class="themes-mode-label">
                   {mode} - surface <code>{canvas}</code>
-                </div>
+                </span>
                 <div
-                  class="tsw-raised"
-                  style={{ background: hex(s, 'raised'), border: `1px solid ${hex(b, 'default')}` }}
+                  class="themes-raised"
+                  style={{ background: hex(s, 'raised'), borderColor: hex(b, 'default') }}
                 >
                   raised <code>{hex(s, 'raised')}</code>
                 </div>
-                <div class="tsw-texts">
+                <div class="themes-texts">
                   {(TEXT_ROLES as readonly string[]).map((role) => {
                     const c = hex(t, role);
                     return (
-                      <span class="tsw-text" style={{ color: c }}>
+                      <span class="themes-text" style={{ color: c }}>
                         text {role} <code>Lc {apcaLc(c, canvas).toFixed(0)}</code>
                       </span>
                     );
                   })}
                 </div>
-                <div class="tsw-borders">
+                <div class="themes-borders">
                   {(BORDER_ROLES as readonly string[]).map((role) => {
-                    // Ratio only, NO pass/warn tick: these cards report numbers so the
+                    // Ratio only, NO pass/warn verdict: these cards report numbers so the
                     // families can be compared (same as the text roles above, which show
                     // Lc without a verdict). The verdict against the 3:1 floor lives in
                     // the surface panel; `borderVerdict` is still the source of the number
@@ -413,7 +441,7 @@ function ThemeCard({
                     const v = borderVerdict(hex(b, role), canvas, role);
                     return (
                       <span
-                        class="tsw-bchip"
+                        class="themes-border"
                         style={{ borderColor: hex(b, role), background: canvas }}
                         title={v.note}
                       >
@@ -425,7 +453,7 @@ function ThemeCard({
                 {/* accents applied on THIS theme's surface, per mode. Each role: a
                     solid pill (emphasis fill + on-emphasis text) with its APCA Lc,
                     plus the soft surface tint chip (accent-<role>-surface / -fg). */}
-                <div class="tsw-accents">
+                <div class="themes-samples">
                   {ACCENT_ROLES.map((role) => {
                     const variant = accentFor(family, role);
                     const emphasis = variantHex(variants, variant, mode, ACCENT_STEPS.emphasis);
@@ -437,17 +465,20 @@ function ThemeCard({
                     const aSurface = variantHex(variants, variant, mode, ACCENT_STEPS.surface);
                     const aFg = variantHex(variants, variant, mode, ACCENT_STEPS.fg);
                     return (
-                      <span class="tsw-accent">
+                      <span class="themes-sample">
                         <span
-                          class="tsw-accent-pill"
+                          class="themes-sample-pill"
                           style={{ background: emphasis, color: onEmph }}
                         >
                           {role}
                         </span>
-                        <span class="tsw-accent-soft" style={{ background: aSurface, color: aFg }}>
+                        <span
+                          class="themes-sample-soft"
+                          style={{ background: aSurface, color: aFg }}
+                        >
                           Aa
                         </span>
-                        <code class="tsw-accent-lc">Lc {apcaLc(onEmph, emphasis).toFixed(0)}</code>
+                        <code>Lc {apcaLc(onEmph, emphasis).toFixed(0)}</code>
                       </span>
                     );
                   })}

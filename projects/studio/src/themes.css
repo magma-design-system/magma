@@ -1,0 +1,193 @@
+/*
+  The Themes page (themes.tsx): one card per theme, its name, its accents and its two modes, then
+  the export. Spaces from the rhythm, colours from the semantic roles
+  (docs/agents/patterns/rhythm.md, surfaces.md); the boxes of the modes paint the colours the
+  configuration generates inline, so only their frame is written here.
+*/
+
+.themes {
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+}
+
+.themes-muted {
+  color: rgb(var(--magma-text-muted));
+}
+
+/* the code named in the running text, set apart from the words around it */
+
+.themes mds-text code {
+  background-color: rgb(var(--magma-wash-soft));
+  border-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
+  font-family: var(--font-code);
+  padding-inline: calc(var(--spacing) * 100);
+}
+
+/*
+  The cards side by side, each at least as wide as a short field (half the column of a form,
+  widths/field), sharing the row: a theme alone takes the row, and its two modes stand side by
+  side in it.
+*/
+
+.themes-grid {
+  align-items: start;
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, calc(var(--magma-width-form) / 2)), 1fr)
+  );
+}
+
+/* a card: a part of the page on a raised surface, its title and its content inside one inset */
+
+.themes-card {
+  align-content: start;
+  background-color: rgb(var(--magma-surface-raised));
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-lg);
+  container: theme / inline-size;
+  corner-shape: var(--magma-corner-shape);
+  display: grid;
+  gap: var(--magma-rhythm-between-fields);
+  min-inline-size: 0;
+  padding: var(--magma-rhythm-inset);
+}
+
+.themes-head {
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+}
+
+.themes-title {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing) * 200);
+}
+
+.themes-attr {
+  color: rgb(var(--magma-text-muted));
+  font-family: var(--font-code);
+  font-size: var(--text-size-info-tip);
+}
+
+/* the accents one under the other in a narrow card, side by side where it has room */
+
+.themes-accents {
+  display: grid;
+  gap: var(--magma-rhythm-inline);
+}
+
+@container theme (width >= 20rem) {
+  .themes-accents {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.themes-accent {
+  align-content: start;
+  display: grid;
+  gap: var(--magma-rhythm-label-control);
+  justify-items: start;
+}
+
+.themes-accent > mds-input-field {
+  justify-self: stretch;
+}
+
+.themes-modes {
+  display: grid;
+  gap: var(--magma-rhythm-inline);
+}
+
+@container theme (width >= 40rem) {
+  .themes-modes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* the boxes of a mode: the canvas and what stands on it, painted with the generated colours */
+
+.themes-mode {
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-md);
+  corner-shape: var(--magma-corner-shape);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-size-info-tip);
+  gap: calc(var(--spacing) * 200);
+  line-height: normal;
+  padding: var(--magma-rhythm-inline);
+}
+
+.themes-mode code {
+  font-family: var(--font-code);
+}
+
+.themes-raised {
+  border: thin solid;
+  border-radius: var(--magma-radius-sm);
+  corner-shape: var(--magma-corner-shape);
+  padding: calc(var(--spacing) * 200);
+}
+
+.themes-texts {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 100);
+}
+
+.themes-text {
+  align-items: baseline;
+  display: flex;
+  gap: calc(var(--spacing) * 200);
+}
+
+.themes-borders,
+.themes-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing) * 200);
+}
+
+/* the border of the role is the data: the chip draws it at the width the interface does */
+
+.themes-border {
+  border: thin solid;
+  border-radius: var(--magma-radius-sm);
+  corner-shape: var(--magma-corner-shape);
+  padding: calc(var(--spacing) * 100) calc(var(--spacing) * 200);
+}
+
+.themes-sample {
+  align-items: center;
+  display: flex;
+  gap: calc(var(--spacing) * 100);
+}
+
+.themes-sample-pill,
+.themes-sample-soft {
+  border-radius: var(--magma-radius-sm);
+  corner-shape: var(--magma-corner-shape);
+  font-weight: 700;
+  padding: calc(var(--spacing) * 100) calc(var(--spacing) * 200);
+}
+
+.themes-sample-pill {
+  text-transform: capitalize;
+}
+
+.themes-export {
+  background-color: rgb(var(--magma-surface-sunken));
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-md);
+  color: rgb(var(--magma-text-default));
+  corner-shape: var(--magma-corner-shape);
+  font-family: var(--font-code);
+  font-size: var(--text-size-info-tip);
+  overflow-x: auto;
+  padding: var(--magma-rhythm-inline);
+  white-space: pre;
+}
