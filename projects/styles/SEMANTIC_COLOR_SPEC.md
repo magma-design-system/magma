@@ -581,7 +581,10 @@ corner geometry (`data-corner-shape`), carries no colour and is documented in `S
   2.0.0 and stay until the next major, marked `deprecated` in the config: a comment above
   their block, `$deprecated` on their preview tokens, the description of the DTCG `theme`
   modifier. The contrast gate verifies every theme that repoints something in its own
-  family and accents, not only the base layer.
+  family and accents, not only the base layer. `business` and `editorial` are files in the
+  public theme format (`design-tokens/themes/<name>.json`, #694) that `semantic.config.ts`
+  reads: `business` is the base, so `:root` takes its tint and its accents
+  (design-tokens SPEC.md, "Themes: the public format").
 
   **Every theme publishes its preview** on `:root`, whatever the active theme:
   `--magma-preview-<name>-wash` (the `base` wash step of its ramp, what `--magma-wash-base`

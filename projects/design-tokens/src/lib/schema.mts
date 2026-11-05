@@ -212,7 +212,8 @@ export interface ValidationResult {
 const ajv = new Ajv({ allErrors: true })
 const validate = ajv.compile(CONFIG_SCHEMA)
 
-function formatError (error: ErrorObject): string {
+/** One Ajv error as a line: where it is in the document, and what is wrong there. */
+export function formatError (error: ErrorObject): string {
   const path = error.instancePath || '(root)'
   return `${path} ${error.message ?? 'is invalid'}`
 }
