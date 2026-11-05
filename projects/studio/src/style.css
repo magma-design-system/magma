@@ -22,9 +22,8 @@ body { background: var(--bg); min-width: 960px; }
 .studio-section { flex: 1; min-height: 0; }
 .studio-section[hidden] { display: none; }
 .studio-product { align-items: center; color: inherit; display: flex; gap: var(--magma-rhythm-inline); text-decoration: none; }
-.studio-product-role { color: rgb(var(--magma-text-muted)); text-transform: uppercase; }
 .studio-product-name { display: grid; }
-.studio-product-version { color: rgb(var(--magma-text-muted)); margin-block-start: calc(var(--spacing) * 200); }
+.studio-product-version { color: rgb(var(--magma-text-muted)); margin-block-start: calc(var(--spacing) * 200); text-transform: uppercase; }
 .studio-dropdown { display: grid; gap: var(--magma-rhythm-inline); min-width: 240px; }
 .studio-dropdown-head { display: flex; }
 .studio-menu { display: grid; gap: var(--magma-rhythm-inline); padding: var(--magma-rhythm-inset); }
