@@ -39,13 +39,14 @@
   text-transform: uppercase;
 }
 
-/* the name of the studio, the role of the person, the version of the Magma it runs on */
+/* the name of the studio and the role of the person together, the version of the Magma it runs
+   on set apart below them */
 .studio-product-name {
   display: grid;
-  gap: calc(var(--spacing) * 200);
 }
 
 .studio-product-version {
+  margin-block-start: calc(var(--spacing) * 200);
   color: rgb(var(--magma-text-muted));
 }
 
