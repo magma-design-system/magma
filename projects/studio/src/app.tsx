@@ -48,6 +48,8 @@ import {
   type DraftSource,
   type StudioDraft,
 } from './draft.js';
+import { Check, Field, Range, Select, TextInput, type Option } from './magma.js';
+import './palette.css';
 // the named curves of the engine, then a custom one edited by its parameters
 type CurvePreset = keyof typeof CURVE_PRESETS;
 type CurveKind = CurvePreset | 'custom';
@@ -137,11 +139,13 @@ function ScaleRow({ label, steps, seed }: { label: string; steps: Step[]; seed?:
   );
 }
 
+// the ramps of the colour selected: the cards and the cells are data, drawn in the colours they
+// show; a configuration the engine cannot solve says why in place of the ramps
 function Preview({ scales, error }: { scales: ColorScales | null; error: string | null }) {
-  if (error) return <div class="preview-error">{error}</div>;
+  if (error) return <mds-banner variant="error">{error}</mds-banner>;
   if (!scales) return null;
   return (
-    <div class="preview">
+    <div class="palette-ramps">
       <div class="preview-card light">
         <ScaleRow label="light" steps={scales.light} seed={scales.lightColor} />
       </div>
@@ -206,117 +210,144 @@ function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShif
     else onChange(undefined);
   };
 
+  const modes: Option[] = [
+    ...(allowInherit
+      ? [{ value: 'inherit', label: `Inherit global (${globalActive ? 'active' : 'off'})` }]
+      : []),
+    { value: 'custom', label: 'Custom' },
+    { value: 'off', label: 'Off' },
+  ];
+
+  // a group of fields of the form: a fieldset with no border, its legend the title of the group
+  // (docs/agents/patterns/titles.md, `group`). What comes and goes with the mode stays inside
+  // one box of the fieldset: Chromium, given a new child of a fieldset in the frame a select of
+  // Magma changes, drops the box of that select until its style is computed again
   return (
-    <fieldset class="hue-shift">
+    <fieldset class="palette-group">
       <legend>
-        hue shifting
-        <select
-          value={mode}
-          onChange={(e) => setMode((e.target as HTMLSelectElement).value as HueShiftMode)}
-        >
-          {allowInherit && (
-            <option value="inherit">inherit global ({globalActive ? 'active' : 'off'})</option>
-          )}
-          <option value="custom">custom</option>
-          <option value="off">off</option>
-        </select>
+        <mds-text typography="group" tag="span">
+          Hue shifting
+        </mds-text>
       </legend>
-      {enabled && (
-        <>
-          <label class="slider-row">
-            <span>
-              dark <code>{dark}deg</code>
-            </span>
-            <input
-              type="range"
-              min={-180}
-              max={180}
-              step={1}
-              value={dark}
-              onInput={(e) => patch({ dark: Number((e.target as HTMLInputElement).value) })}
+      <div class="palette-group-content">
+        <div class="palette-fields">
+          <Field label="Mode">
+            <Select
+              value={mode}
+              onValue={(next) => setMode(next as HueShiftMode)}
+              options={modes}
             />
-          </label>
-          <label class="slider-row">
-            <span>
-              light <code>{light}deg</code>
-            </span>
-            <input
-              type="range"
-              min={-180}
-              max={180}
-              step={1}
-              value={light}
-              onInput={(e) => patch({ light: Number((e.target as HTMLInputElement).value) })}
-            />
-          </label>
-          <div class="curve-controls">
-            <label>
-              curve
-              <select
-                value={curveKind}
-                onChange={(e) => {
-                  const kind = (e.target as HTMLSelectElement).value;
-                  patch({
-                    curve: kind === 'custom' ? { deadZone, easing } : (kind as CurvePreset),
-                  });
-                }}
-              >
-                {CURVE_KINDS.map((preset) => (
-                  <option value={preset}>{preset}</option>
-                ))}
-              </select>
-            </label>
-            {curveKind === 'custom' && (
-              <>
-                <label class="slider-row">
-                  <span>
-                    dead zone <code>{deadZone.toFixed(2)}</code>
-                  </span>
-                  <input
-                    type="range"
-                    min={0}
-                    max={0.95}
-                    step={0.05}
-                    value={deadZone}
-                    onInput={(e) =>
-                      patch({
-                        curve: { deadZone: Number((e.target as HTMLInputElement).value), easing },
-                      })
-                    }
-                  />
-                </label>
-                <label>
-                  easing
-                  <select
-                    value={easing}
-                    onChange={(e) =>
-                      patch({
-                        curve: {
-                          deadZone,
-                          easing: (e.target as HTMLSelectElement).value as 'linear' | 'step',
-                        },
-                      })
-                    }
-                  >
-                    <option value="linear">linear</option>
-                    <option value="step">step</option>
-                  </select>
-                </label>
-              </>
-            )}
-          </div>
-          {weights && (
-            <div class="weights" title="shift intensity per step (10-step scale)">
-              {weights.map((weight) => (
-                <div class="weight-bar">
-                  <div class="weight-fill" style={{ height: `${Math.max(weight, 2)}%` }} />
-                </div>
-              ))}
-            </div>
+          </Field>
+          {enabled && (
+            <>
+              <Field label="Dark (degrees)">
+                <Range
+                  value={dark}
+                  min={-180}
+                  max={180}
+                  label="Dark (degrees)"
+                  onValue={(next) => patch({ dark: next })}
+                />
+              </Field>
+              <Field label="Light (degrees)">
+                <Range
+                  value={light}
+                  min={-180}
+                  max={180}
+                  label="Light (degrees)"
+                  onValue={(next) => patch({ light: next })}
+                />
+              </Field>
+              <Field label="Curve">
+                <Select
+                  value={curveKind}
+                  options={CURVE_KINDS.map((kind) => ({ value: kind, label: kind }))}
+                  onValue={(kind) =>
+                    patch({
+                      curve: kind === 'custom' ? { deadZone, easing } : (kind as CurvePreset),
+                    })
+                  }
+                />
+              </Field>
+              {curveKind === 'custom' && (
+                <>
+                  <Field label="Dead zone">
+                    <Range
+                      value={deadZone}
+                      min={0}
+                      max={0.95}
+                      step={0.05}
+                      label="Dead zone"
+                      onValue={(next) => patch({ curve: { deadZone: next, easing } })}
+                    />
+                  </Field>
+                  <Field label="Easing">
+                    <Select
+                      value={easing}
+                      options={[
+                        { value: 'linear', label: 'linear' },
+                        { value: 'step', label: 'step' },
+                      ]}
+                      onValue={(next) =>
+                        patch({ curve: { deadZone, easing: next as 'linear' | 'step' } })
+                      }
+                    />
+                  </Field>
+                </>
+              )}
+            </>
           )}
-        </>
-      )}
+        </div>
+        {enabled && weights && (
+          <div
+            class="palette-weights"
+            role="img"
+            aria-label="Shift intensity per step (10-step scale)"
+            title="shift intensity per step (10-step scale)"
+          >
+            {weights.map((weight) => (
+              <div class="palette-weight">
+                {/* the height of a bar is the datum it draws */}
+                <div class="palette-weight-fill" style={{ height: `${Math.max(weight, 2)}%` }} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </fieldset>
+  );
+}
+
+/**
+ * A labelled text field whose value is handed over when the person commits it, on Enter or on
+ * leaving it (TextInput, commit "leave"): a name handed over at every key would meet the name of
+ * another colour halfway and select it, and the export groups would lose the comma just typed.
+ */
+function CommitText({
+  label,
+  value,
+  onCommit,
+  placeholder,
+  message,
+  disabled,
+}: {
+  label: string;
+  value: string;
+  onCommit: (value: string) => void;
+  placeholder?: string;
+  message?: string;
+  disabled?: boolean;
+}) {
+  return (
+    <Field label={label} message={message}>
+      <TextInput
+        commit="leave"
+        value={value}
+        onValue={onCommit}
+        placeholder={placeholder}
+        disabled={disabled}
+      />
+    </Field>
   );
 }
 
@@ -361,36 +392,31 @@ function ColorEditor({
   onColorCommit,
 }: ColorEditorProps) {
   const exportField = (
-    <label>
-      export groups
-      <input
-        type="text"
-        value={(color.export ?? []).join(', ')}
-        placeholder={
-          inheritedExport.length ? `inherit (${inheritedExport.join(', ')})` : 'e.g. tones, default'
-        }
-        onChange={(e) => {
-          const raw = (e.target as HTMLInputElement).value
-            .split(',')
-            .map((s) => s.trim())
-            .filter(Boolean);
-          onChange({ export: raw.length ? raw : undefined });
-        }}
-      />
-    </label>
+    <CommitText
+      label="Export groups"
+      value={(color.export ?? []).join(', ')}
+      placeholder={
+        inheritedExport.length ? `inherit (${inheritedExport.join(', ')})` : 'e.g. tones, default'
+      }
+      onCommit={(text) => {
+        const raw = text
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        onChange({ export: raw.length ? raw : undefined });
+      }}
+    />
   );
 
+  // on/off settings that apply at once: switches (mds-input-switch, "Type")
   const disabledField = (
-    <label class="checkbox">
-      <input
-        type="checkbox"
-        checked={color.disabled ?? false}
-        onChange={(e) =>
-          onChange({ disabled: (e.target as HTMLInputElement).checked || undefined })
-        }
-      />
-      disabled
-    </label>
+    <Check
+      type="switch"
+      checked={color.disabled ?? false}
+      onChecked={(checked) => onChange({ disabled: checked || undefined })}
+    >
+      Disabled
+    </Check>
   );
 
   // An alias family is a reference: it re-exports the source family's already
@@ -399,135 +425,123 @@ function ColorEditor({
   // points at; built-in variants keep that editable but lock name/delete.
   if (isAlias) {
     const targetKnown = !!color.alias && aliasTargets.includes(color.alias);
+    const references: Option[] = [
+      ...(!targetKnown && color.alias
+        ? [{ value: color.alias, label: `${color.alias} (missing)` }]
+        : []),
+      ...aliasTargets.map((name) => ({ value: name, label: name })),
+    ];
+    // keyed apart from the editor of an own colour, and the name of a built-in variant apart from
+    // the name of another reference: mds-input-field draws the window of its message for an empty
+    // message too, and a field reused with no message gets the empty string from Preact
     return (
-      <div class="editor">
-        <div class="editor-grid">
-          <label>
-            name
-            <input
-              type="text"
-              value={color.name}
-              disabled={isBuiltin}
-              title={isBuiltin ? 'built-in variant: cannot be renamed' : undefined}
-              onChange={(e) => onChange({ name: (e.target as HTMLInputElement).value })}
+      <div class="palette-editor" key="reference">
+        <div class="palette-fields">
+          <CommitText
+            key={isBuiltin ? 'built-in-name' : 'name'}
+            label="Name"
+            value={color.name}
+            disabled={isBuiltin}
+            message={isBuiltin ? 'Built-in variant: it cannot be renamed' : undefined}
+            onCommit={(name) => onChange({ name })}
+          />
+          <Field label="Reference">
+            <Select
+              value={color.alias ?? ''}
+              options={references}
+              onValue={(alias) => onChange({ alias })}
             />
-          </label>
-          <label>
-            reference
-            <select
-              value={color.alias}
-              onChange={(e) => onChange({ alias: (e.target as HTMLSelectElement).value })}
-            >
-              {!targetKnown && color.alias && (
-                <option value={color.alias}>{color.alias} (missing)</option>
-              )}
-              {aliasTargets.map((name) => (
-                <option value={name}>{name}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            resolves to
-            <span class="color-input readonly">
-              <span class="alias-swatch" style={{ background: resolvedColor ?? 'transparent' }} />
-              <code>{resolvedColor ?? 'unresolved'}</code>
-            </span>
-          </label>
+          </Field>
+          {/* a read-only datum: a label and its value (docs/agents/patterns/labels-and-values.md) */}
+          <dl class="palette-value">
+            <div>
+              <mds-text typography="label" tag="dt" class="studio-muted">
+                Resolves to
+              </mds-text>
+              <mds-text tag="dd">
+                <span class="palette-resolved">
+                  <span
+                    class="studio-swatch"
+                    style={{ background: resolvedColor ?? 'transparent' }}
+                  />
+                  {resolvedColor ?? 'unresolved'}
+                </span>
+              </mds-text>
+            </div>
+          </dl>
           {exportField}
-          {disabledField}
+          <div class="studio-row palette-switches">{disabledField}</div>
         </div>
-        <p class="alias-note">
-          Reference to <code>{color.alias}</code>: this family re-exports the source's resolved
-          scale. Base color, hue shift, ratios and formula are defined by the source, not here.
-        </p>
+        <mds-text tag="p" class="studio-muted">
+          Reference to {color.alias}: this family re-exports the resolved scale of the source. Base
+          color, hue shift, ratios and formula are defined by the source, not here.
+        </mds-text>
       </div>
     );
   }
 
   return (
-    <div class="editor">
-      <div class="editor-grid">
-        <label>
-          name
+    <div class="palette-editor" key="own">
+      <div class="palette-fields">
+        <CommitText label="Name" value={color.name} onCommit={(name) => onChange({ name })} />
+        <Field label="Base color" message={color.color}>
+          {/* until Magma has a colour field: #1260 */}
           <input
-            type="text"
-            value={color.name}
-            onChange={(e) => onChange({ name: (e.target as HTMLInputElement).value })}
+            type="color"
+            class="palette-picker"
+            value={color.color}
+            onInput={(e) =>
+              onChange({ color: (e.target as HTMLInputElement).value as ColorConfig['color'] })
+            }
+            onChange={(e) => onColorCommit((e.target as HTMLInputElement).value)}
           />
-        </label>
-        <label>
-          base color
-          <span class="color-input">
-            <input
-              type="color"
-              value={color.color}
-              onInput={(e) =>
-                onChange({ color: (e.target as HTMLInputElement).value as ColorConfig['color'] })
-              }
-              onChange={(e) => onColorCommit((e.target as HTMLInputElement).value)}
-            />
-            <code>{color.color}</code>
-          </span>
-        </label>
-        <label>
-          ratios
-          <select
+        </Field>
+        <Field label="Ratios">
+          <Select
             value={color.ratios ?? ''}
-            onChange={(e) =>
-              onChange({ ratios: (e.target as HTMLSelectElement).value || undefined })
-            }
-          >
-            <option value="">inherit ({inheritedRatios})</option>
-            {scaleNames.map((preset) => (
-              <option value={preset}>{labelFor(preset)}</option>
-            ))}
-          </select>
-        </label>
-        <label>
-          formula
-          <select
+            options={[
+              { value: '', label: `inherit (${inheritedRatios})` },
+              ...scaleNames.map((preset) => ({ value: preset, label: labelFor(preset) })),
+            ]}
+            onValue={(ratios) => onChange({ ratios: ratios || undefined })}
+          />
+        </Field>
+        <Field label="Formula">
+          <Select
             value={color.formula ?? ''}
-            onChange={(e) =>
-              onChange({
-                formula: ((e.target as HTMLSelectElement).value ||
-                  undefined) as ColorConfig['formula'],
-              })
-            }
-          >
-            <option value="">inherit ({inheritedFormula})</option>
-            <option value="wcag2">wcag2</option>
-            <option value="wcag3">wcag3</option>
-          </select>
-        </label>
-        <label>
-          colorspace
-          <select
-            value={color.colorspace ?? ''}
-            onChange={(e) =>
-              onChange({
-                colorspace: ((e.target as HTMLSelectElement).value ||
-                  undefined) as ColorConfig['colorspace'],
-              })
-            }
-          >
-            <option value="">inherit</option>
-            {COLORSPACES.map((space) => (
-              <option value={space}>{space}</option>
-            ))}
-          </select>
-        </label>
-        {exportField}
-        <label class="checkbox">
-          <input
-            type="checkbox"
-            checked={color.smooth ?? false}
-            onChange={(e) =>
-              onChange({ smooth: (e.target as HTMLInputElement).checked || undefined })
+            options={[
+              { value: '', label: `inherit (${inheritedFormula})` },
+              { value: 'wcag2', label: 'wcag2' },
+              { value: 'wcag3', label: 'wcag3' },
+            ]}
+            onValue={(formula) =>
+              onChange({ formula: (formula || undefined) as ColorConfig['formula'] })
             }
           />
-          smooth
-        </label>
-        {disabledField}
+        </Field>
+        <Field label="Colorspace">
+          <Select
+            value={color.colorspace ?? ''}
+            options={[
+              { value: '', label: 'inherit' },
+              ...COLORSPACES.map((space) => ({ value: space, label: space })),
+            ]}
+            onValue={(colorspace) =>
+              onChange({ colorspace: (colorspace || undefined) as ColorConfig['colorspace'] })
+            }
+          />
+        </Field>
+        {exportField}
+        <div class="studio-row palette-switches">
+          <Check
+            type="switch"
+            checked={color.smooth ?? false}
+            onChecked={(checked) => onChange({ smooth: checked || undefined })}
+          >
+            Smooth
+          </Check>
+          {disabledField}
+        </div>
       </div>
       <HueShiftEditor
         value={color.hueShift}
@@ -581,8 +595,11 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
   const fileInput = useRef<HTMLInputElement>(null);
   const moreMenu = useRef<HTMLElement & { visible?: boolean }>(null);
   const downloadMenu = useRef<HTMLElement & { visible?: boolean }>(null);
+  // the menu of the colour selected, closed as well once one of its actions ran
+  const colorMenu = useRef<HTMLElement & { visible?: boolean }>(null);
   const closeMenus = () => {
-    for (const menu of [moreMenu.current, downloadMenu.current]) if (menu) menu.visible = false;
+    for (const menu of [moreMenu.current, downloadMenu.current, colorMenu.current])
+      if (menu) menu.visible = false;
   };
   const [copied, setCopied] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -839,7 +856,7 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
         setDraftConflict({
           reason: decision.reason,
           config: sourceConfig,
-          label: fileConfig ? 'use the file on disk' : 'use the bundled config',
+          label: fileConfig ? 'Use the file on disk' : 'Use the bundled config',
         });
       }
       setOrigin({ ...source, json });
@@ -1224,7 +1241,11 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
         {/* the actions of the page (the page-header block of Magma): the menu of the others
             first, the secondary used most, the main one last in the strong tone */}
         <div class="studio-page-actions">
-          {statusMsg && <span class="save-status">{statusMsg}</span>}
+          {statusMsg && (
+            <mds-text typography="caption" tag="span" class="studio-muted" role="status">
+              {statusMsg}
+            </mds-text>
+          )}
           <mds-button
             id="studio-more"
             icon="mi/baseline/more-horiz"
@@ -1244,11 +1265,16 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
               input.value = '';
             }}
           />
+          {/* the texts that change go in `label`: mds-button reads its slotted text only once */}
           {serverMode ? (
             saveRefusal ? (
-              <mds-button variant="dark" tone="outline" disabled title={saveRefusal}>
-                {dirty ? 'Read-only *' : 'Read-only'}
-              </mds-button>
+              <mds-button
+                variant="dark"
+                tone="outline"
+                disabled
+                title={saveRefusal}
+                label={dirty ? 'Read-only *' : 'Read-only'}
+              ></mds-button>
             ) : (
               <mds-button
                 variant="dark"
@@ -1256,14 +1282,16 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
                 onClick={saveConfig}
                 disabled={saving || !dirty || !!draftConflict}
                 title={savePath ?? undefined}
-              >
-                {saving ? 'Saving...' : dirty ? 'Save *' : 'Saved'}
-              </mds-button>
+                label={saving ? 'Saving...' : dirty ? 'Save *' : 'Saved'}
+              ></mds-button>
             )
           ) : (
-            <mds-button variant="dark" tone="outline" onClick={copyJson}>
-              {copied ? 'Copied!' : 'Copy JSON'}
-            </mds-button>
+            <mds-button
+              variant="dark"
+              tone="outline"
+              onClick={copyJson}
+              label={copied ? 'Copied!' : 'Copy JSON'}
+            ></mds-button>
           )}
           <mds-button id="studio-download" icon="mi/baseline/file-download">
             Download
@@ -1335,363 +1363,460 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
         </mds-dropdown>
       </header>
 
+      {/* what keeps the configuration from loading or saving, above the page */}
       {loadError ? (
-        <div class="load-error">{loadError}</div>
+        <mds-banner class="studio-notice" variant="error">
+          {loadError}
+        </mds-banner>
       ) : draftConflict ? (
-        <div class="load-error save-notice draft-conflict">
-          <span>
-            {draftConflict.reason}, and the draft restored from this browser has edits of its own.
-          </span>
-          <button onClick={() => resolveDraftConflict(true)}>{draftConflict.label}</button>
-          <button onClick={() => resolveDraftConflict(false)}>keep the draft</button>
-        </div>
+        <mds-banner class="studio-notice draft-conflict" variant="warning">
+          {draftConflict.reason}, and the draft restored from this browser has edits of its own.
+          <mds-button
+            slot="action"
+            type="button"
+            variant="dark"
+            tone="outline"
+            label={draftConflict.label}
+            onClick={() => resolveDraftConflict(true)}
+          ></mds-button>
+          <mds-button
+            slot="action"
+            type="button"
+            label="Keep the draft"
+            onClick={() => resolveDraftConflict(false)}
+          ></mds-button>
+        </mds-banner>
       ) : (
-        saveRefusal && <div class="load-error save-notice">saving is off: {saveRefusal}</div>
+        saveRefusal && (
+          <mds-banner class="studio-notice" variant="info">
+            Saving is off: {saveRefusal}
+          </mds-banner>
+        )
       )}
 
       {showSidebar && (
-        <aside class="sidebar">
+        <aside class="palette-list" aria-label="The families of colour">
           {[...groups.entries()].map(([group, colors]) => (
-            <div class="group">
-              <h2>{group}</h2>
-              {colors.map((color) => (
-                <button
-                  class={`color-item ${color.name === selectedName ? 'active' : ''} ${color.disabled ? 'disabled' : ''}`}
-                  onClick={() => {
-                    setSelectedName(color.name);
-                    // the scales view works on the selected color: switching
-                    // color must not leave it
-                    if (view !== 'scales') setView('colors');
-                  }}
-                >
-                  <span class="swatch" style={{ background: resolveBaseColor(config, color) }} />
-                  {color.name.split('.')[1]}
-                  {isAliasColor(color) ? (
-                    <span class="badge ref" title={`alias -> ${color.alias}`}>
-                      ref
-                    </span>
-                  ) : (
-                    hasHueShift(color.hueShift ?? config.hueShift) && (
-                      <span class="badge" title="hue shifting active">
-                        hs
-                      </span>
-                    )
-                  )}
-                </button>
-              ))}
+            <div class="palette-list-group">
+              <mds-text typography="part" tag="h2">
+                {group}
+              </mds-text>
+              <ul class="palette-list-items">
+                {colors.map((color) => (
+                  <li>
+                    {/* until Magma has a list and detail: #1262. Native buttons painted with the
+                        tokens, the family shown in the detail marked by aria-current */}
+                    <button
+                      type="button"
+                      class={`palette-item${color.disabled ? ' palette-item-off' : ''}`}
+                      aria-current={color.name === selectedName ? 'true' : undefined}
+                      onClick={() => {
+                        setSelectedName(color.name);
+                        // the scales view works on the selected color: switching
+                        // color must not leave it
+                        if (view !== 'scales') setView('colors');
+                      }}
+                    >
+                      <span
+                        class="studio-swatch"
+                        style={{ background: resolveBaseColor(config, color) }}
+                      />
+                      <mds-text typography="detail" tag="span" class="palette-item-name">
+                        {color.name.split('.')[1]}
+                      </mds-text>
+                      {isAliasColor(color) ? (
+                        <mds-badge
+                          variant="dark"
+                          tone="weak"
+                          label="ref"
+                          title={`alias -> ${color.alias}`}
+                        ></mds-badge>
+                      ) : (
+                        hasHueShift(color.hueShift ?? config.hueShift) && (
+                          <mds-badge
+                            variant="dark"
+                            tone="weak"
+                            label="hs"
+                            title="hue shifting active"
+                          ></mds-badge>
+                        )
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
-          <div class="sidebar-actions">
-            <button
-              onClick={() =>
-                setAddModal({
-                  kind: 'color',
-                  color: '#4f8fd9',
-                  alias: aliasTargets[0] ?? '',
-                  name: nearestColorName('#4f8fd9'),
-                  group: 'label',
-                  manual: false,
-                })
-              }
-            >
-              + add color
-            </button>
-          </div>
+          {/* the main action of the list, a part of the page: primary outline (actions.md,
+              part-primary), the primary strong being Download in the head of the page. The
+              buttons of the page take their text in `label`: mds-button keeps the first text of
+              its slot as its label, and would not follow a text that changes */}
+          <mds-button
+            type="button"
+            icon="mi/baseline/add"
+            variant="primary"
+            tone="outline"
+            class="palette-add"
+            label="Add color"
+            onClick={() =>
+              setAddModal({
+                kind: 'color',
+                color: '#4f8fd9',
+                alias: aliasTargets[0] ?? '',
+                name: nearestColorName('#4f8fd9'),
+                group: 'label',
+                manual: false,
+              })
+            }
+          ></mds-button>
         </aside>
       )}
 
-      {/* the dialog has no click-outside dismissal: an accidental click must not lose the input */}
+      {/* no dismissal by a click outside nor by Esc (interaction strict): an accidental click must
+          not lose the input; the X of the window and Cancel close it */}
       {addModal && (
-        <div class="modal-overlay">
-          <div class="modal">
-            <h2>{addModal.kind === 'alias' ? 'New reference' : 'New color'}</h2>
-            <div class="modal-kind">
-              <button
-                class={addModal.kind === 'color' ? 'active' : ''}
-                onClick={() =>
-                  setAddModal(
-                    (state) =>
-                      state && {
-                        ...state,
-                        kind: 'color',
-                        // A2: leaving reference mode must not keep the alias-only `variant` family
-                        group: state.group === 'variant' ? 'label' : state.group,
-                      },
-                  )
-                }
-              >
-                own color
-              </button>
-              <button
-                class={addModal.kind === 'alias' ? 'active' : ''}
-                disabled={aliasTargets.length === 0}
-                title={
-                  aliasTargets.length === 0
-                    ? 'no base-color family to reference yet'
-                    : 'reference another family instead of solving a palette'
-                }
-                onClick={() =>
-                  setAddModal((state) => {
-                    if (!state) return state;
-                    const target = state.alias || aliasTargets[0] || '';
-                    return {
-                      ...state,
-                      kind: 'alias',
-                      alias: target,
-                      // A1: a reference can only live in the alias-only `variant` family
-                      group: 'variant',
-                      name: state.manual ? state.name : (target.split('.')[1] ?? state.name),
-                    };
-                  })
-                }
-              >
-                reference
-              </button>
-            </div>
-            {addModal.kind === 'color' ? (
-              <input
-                class="modal-picker"
-                type="color"
-                value={addModal.color}
-                onInput={(e) => {
-                  const hex = (e.target as HTMLInputElement).value;
-                  setAddModal(
-                    (state) =>
-                      state && {
-                        ...state,
-                        color: hex,
-                        name: state.manual ? state.name : nearestColorName(hex),
-                      },
-                  );
-                }}
-              />
-            ) : (
-              <label class="modal-ref">
-                references
-                <select
-                  value={addModal.alias}
-                  onChange={(e) => {
-                    const target = (e.target as HTMLSelectElement).value;
-                    setAddModal(
-                      (state) =>
-                        state && {
+        <mds-modal
+          opened
+          interaction="strict"
+          aria-label={addModal.kind === 'alias' ? 'New reference' : 'New color'}
+          onmdsModalClose={() => setAddModal(null)}
+        >
+          <mds-banner
+            slot="window"
+            variant="light"
+            tone="box"
+            dismissible
+            headline={addModal.kind === 'alias' ? 'New reference' : 'New color'}
+            onmdsBannerClose={() => setAddModal(null)}
+          >
+            <div class="studio-dialog">
+              <fieldset class="palette-choice">
+                <legend>
+                  <mds-text typography="label" tag="span">
+                    Kind
+                  </mds-text>
+                </legend>
+                <div class="studio-row">
+                  <Check
+                    type="radio"
+                    name="palette-new-kind"
+                    value="color"
+                    checked={addModal.kind === 'color'}
+                    onChecked={(checked) =>
+                      checked &&
+                      setAddModal(
+                        (state) =>
+                          state && {
+                            ...state,
+                            kind: 'color',
+                            // A2: leaving reference mode must not keep the alias-only `variant` family
+                            group: state.group === 'variant' ? 'label' : state.group,
+                          },
+                      )
+                    }
+                  >
+                    Own color
+                  </Check>
+                  <Check
+                    type="radio"
+                    name="palette-new-kind"
+                    value="alias"
+                    checked={addModal.kind === 'alias'}
+                    disabled={aliasTargets.length === 0}
+                    onChecked={(checked) =>
+                      checked &&
+                      setAddModal((state) => {
+                        if (!state) return state;
+                        const target = state.alias || aliasTargets[0] || '';
+                        return {
                           ...state,
+                          kind: 'alias',
                           alias: target,
+                          // A1: a reference can only live in the alias-only `variant` family
+                          group: 'variant',
                           name: state.manual ? state.name : (target.split('.')[1] ?? state.name),
-                        },
-                    );
-                  }}
-                >
-                  {aliasTargets.map((name) => (
-                    <option value={name}>{name}</option>
-                  ))}
-                </select>
-              </label>
-            )}
-            <div class="modal-fields">
-              <label>
-                group
-                <select
+                        };
+                      })
+                    }
+                  >
+                    Reference
+                  </Check>
+                </div>
+                <mds-text typography="caption" tag="p" class="studio-muted">
+                  {aliasTargets.length === 0
+                    ? 'No base-color family to reference yet.'
+                    : 'A reference follows another family instead of solving a palette.'}
+                </mds-text>
+              </fieldset>
+              {addModal.kind === 'color' ? (
+                // keyed apart: the field of the picker has a message, the select none
+                <Field key="color" label="Color" message={addModal.color}>
+                  {/* until Magma has a colour field: #1260 */}
+                  <input
+                    type="color"
+                    class="palette-picker palette-picker-large"
+                    value={addModal.color}
+                    onInput={(e) => {
+                      const hex = (e.target as HTMLInputElement).value;
+                      setAddModal(
+                        (state) =>
+                          state && {
+                            ...state,
+                            color: hex,
+                            name: state.manual ? state.name : nearestColorName(hex),
+                          },
+                      );
+                    }}
+                  />
+                </Field>
+              ) : (
+                <Field key="references" label="References">
+                  <Select
+                    value={addModal.alias}
+                    options={aliasTargets.map((name) => ({ value: name, label: name }))}
+                    onValue={(target) =>
+                      setAddModal(
+                        (state) =>
+                          state && {
+                            ...state,
+                            alias: target,
+                            name: state.manual ? state.name : (target.split('.')[1] ?? state.name),
+                          },
+                      )
+                    }
+                  />
+                </Field>
+              )}
+              <Field label="Group">
+                <Select
                   // A1: references are locked to the alias-only `variant` family
                   value={addModal.kind === 'alias' ? 'variant' : addModal.group}
                   disabled={addModal.kind === 'alias'}
-                  onChange={(e) =>
-                    setAddModal(
-                      (state) =>
-                        state && { ...state, group: (e.target as HTMLSelectElement).value },
-                    )
-                  }
-                >
-                  {[...new Set([...groups.keys(), 'label', 'variant'])]
+                  options={[...new Set([...groups.keys(), 'label', 'variant'])]
                     // A2: an own color can never live in the alias-only `variant` family
                     .filter((group) => addModal.kind === 'alias' || group !== 'variant')
-                    .map((group) => (
-                      <option value={group}>{group}</option>
-                    ))}
-                </select>
-              </label>
-              <label>
-                name
-                <input
-                  type="text"
+                    .map((group) => ({ value: group, label: group }))}
+                  onValue={(group) => setAddModal((state) => state && { ...state, group })}
+                />
+              </Field>
+              <Field label="Name">
+                <TextInput
                   value={addModal.name}
-                  onInput={(e) =>
-                    setAddModal(
-                      (state) =>
-                        state && {
-                          ...state,
-                          name: (e.target as HTMLInputElement).value,
-                          manual: true,
-                        },
-                    )
+                  // a name the person types stops following the picker; the echo of a name the
+                  // studio sets never reaches here (magma.tsx)
+                  onValue={(name) =>
+                    setAddModal((state) => state && { ...state, name, manual: true })
                   }
                 />
-              </label>
+              </Field>
+              <div class="studio-row palette-new-preview">
+                <span
+                  class="studio-swatch"
+                  style={{
+                    background:
+                      addModal.kind === 'alias'
+                        ? (config.colors.find((c) => c.name === addModal.alias)?.color ??
+                          'transparent')
+                        : addModal.color,
+                  }}
+                />
+                <mds-text typography="snippet" tag="code">
+                  {`${addModal.group}.${addModal.name}`}
+                </mds-text>
+                <mds-text typography="snippet" tag="code" class="studio-muted">
+                  {addModal.kind === 'alias' ? `-> ${addModal.alias}` : addModal.color}
+                </mds-text>
+              </div>
             </div>
-            <p class="modal-preview">
-              <span
-                class="swatch"
-                style={{
-                  background:
-                    addModal.kind === 'alias'
-                      ? (config.colors.find((c) => c.name === addModal.alias)?.color ??
-                        'transparent')
-                      : addModal.color,
-                }}
-              />
-              <code>
-                {addModal.group}.{addModal.name}
-              </code>
-              <code>{addModal.kind === 'alias' ? `-> ${addModal.alias}` : addModal.color}</code>
-            </p>
-            <div class="modal-actions">
-              <button onClick={() => setAddModal(null)}>cancel</button>
-              <button
-                class="primary"
-                disabled={!addModal.name.trim() || (addModal.kind === 'alias' && !addModal.alias)}
-                onClick={() => {
-                  const base = addModal.name.trim();
-                  let candidate = base;
-                  let suffix = 2;
-                  while (config.colors.some((c) => c.name === `${addModal.group}.${candidate}`)) {
-                    candidate = `${base}-${suffix}`;
-                    suffix += 1;
-                  }
-                  const fullName = `${addModal.group}.${candidate}`;
-                  const { kind, alias: aliasTarget, color: colorHex, manual } = addModal;
-                  if (kind === 'color' && !manual) autoNamedRef.current.add(fullName);
-                  updateConfig((draft) => {
-                    // color XOR alias: emit exactly one of the two fields
-                    draft.colors.push(
-                      (kind === 'alias'
-                        ? { name: fullName, alias: aliasTarget }
-                        : { name: fullName, color: colorHex }) as ColorConfig,
-                    );
-                  });
-                  setSelectedName(fullName);
-                  setView('colors');
-                  setAddModal(null);
-                }}
-              >
-                {addModal.kind === 'alias' ? 'add reference' : 'add color'}
-              </button>
-            </div>
-          </div>
-        </div>
+            <mds-button
+              slot="action"
+              type="button"
+              variant="dark"
+              tone="outline"
+              label="Cancel"
+              onClick={() => setAddModal(null)}
+            ></mds-button>
+            <mds-button
+              slot="action"
+              type="button"
+              disabled={!addModal.name.trim() || (addModal.kind === 'alias' && !addModal.alias)}
+              label={addModal.kind === 'alias' ? 'Add reference' : 'Add color'}
+              onClick={() => {
+                const base = addModal.name.trim();
+                let candidate = base;
+                let suffix = 2;
+                while (config.colors.some((c) => c.name === `${addModal.group}.${candidate}`)) {
+                  candidate = `${base}-${suffix}`;
+                  suffix += 1;
+                }
+                const fullName = `${addModal.group}.${candidate}`;
+                const { kind, alias: aliasTarget, color: colorHex, manual } = addModal;
+                if (kind === 'color' && !manual) autoNamedRef.current.add(fullName);
+                updateConfig((draft) => {
+                  // color XOR alias: emit exactly one of the two fields
+                  draft.colors.push(
+                    (kind === 'alias'
+                      ? { name: fullName, alias: aliasTarget }
+                      : { name: fullName, color: colorHex }) as ColorConfig,
+                  );
+                });
+                setSelectedName(fullName);
+                setView('colors');
+                setAddModal(null);
+              }}
+            ></mds-button>
+          </mds-banner>
+        </mds-modal>
       )}
 
       <main class="content">
         {view === 'colors' && selected && (
-          <>
-            <div class="content-head">
-              <h2>{selected.name}</h2>
-              <div class="content-head-actions">
-                <button
-                  onClick={() =>
+          <div class="palette-detail">
+            <section class="palette-color" aria-labelledby="palette-color-title">
+              <div class="palette-color-head">
+                <div class="palette-title-row">
+                  <mds-text id="palette-color-title" typography="section" tag="h2">
+                    {selected.name}
+                  </mds-text>
+                  {/* the actions of the family in its menu, Delete last after a separator
+                      (docs/agents/patterns/actions.md, destructive-in-menu) */}
+                  <mds-button
+                    id="palette-color-actions"
+                    type="button"
+                    icon="mi/baseline/more-vert"
+                    variant="dark"
+                    tone="text"
+                    aria-label={`Actions of ${selected.name}`}
+                  ></mds-button>
+                </div>
+                <Preview scales={selectedScales} error={selectedError} />
+              </div>
+              <ColorEditor
+                color={selected}
+                hasGlobalShift={config.hueShift !== undefined}
+                scaleNames={scaleNamesFor(selected)}
+                labelFor={(name) => scaleLabel(resolveFormula(selected, config), name)}
+                inheritedRatios={resolveRatiosName({ ...selected, ratios: undefined }, config)}
+                inheritedFormula={resolveFormula({ ...selected, formula: undefined }, config)}
+                inheritedExport={config.groups?.[selected.name.split('.')[0]]?.export ?? []}
+                isAlias={isAliasColor(selected)}
+                isBuiltin={BUILTIN_ALIAS_NAMES.has(selected.name)}
+                aliasTargets={aliasTargets}
+                resolvedColor={resolveBaseColor(config, selected)}
+                onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
+                onChange={(patch) => {
+                  // a name typed by the user opts the color out of auto-naming
+                  if ('name' in patch) autoNamedRef.current.delete(selected.name);
+                  updateConfig((draft) => {
+                    const target = draft.colors[selectedIndex] as Record<string, unknown>;
+                    Object.entries(patch).forEach(([key, value]) => {
+                      if (value === undefined) delete target[key];
+                      else target[key] = value;
+                    });
+                    // keep the schema's color XOR alias invariant: a family carries
+                    // EITHER its own base color OR a reference, never both
+                    if ('alias' in patch && patch.alias) delete target.color;
+                    if ('color' in patch && patch.color) delete target.alias;
+                    if ('name' in patch && typeof patch.name === 'string')
+                      setSelectedName(patch.name);
+                  });
+                }}
+              />
+            </section>
+            <mds-dropdown
+              ref={colorMenu}
+              target="#palette-color-actions"
+              placement="bottom-start"
+              strategy="fixed"
+            >
+              <div class="studio-dropdown">
+                <mds-button
+                  type="button"
+                  icon="mi/baseline/content-copy"
+                  variant="dark"
+                  tone="text"
+                  class="studio-menu-link"
+                  label="Duplicate"
+                  onClick={() => {
+                    closeMenus();
                     updateConfig((draft) => {
                       const source = draft.colors[selectedIndex];
                       const copy = clone(source);
                       copy.name = `${source.name}-copy`;
                       draft.colors.splice(selectedIndex + 1, 0, copy);
                       setSelectedName(copy.name);
-                    })
-                  }
-                >
-                  duplicate
-                </button>
-                <button
-                  class="danger"
+                    });
+                  }}
+                ></mds-button>
+                <mds-separator></mds-separator>
+                <mds-button
+                  type="button"
+                  icon="mi/baseline/delete"
+                  variant="error"
+                  tone="text"
+                  class="studio-menu-link"
+                  label="Delete color"
                   disabled={BUILTIN_ALIAS_NAMES.has(selected.name)}
                   title={
                     BUILTIN_ALIAS_NAMES.has(selected.name)
                       ? 'built-in variant: cannot be deleted'
                       : undefined
                   }
-                  onClick={() =>
+                  onClick={() => {
+                    closeMenus();
                     updateConfig((draft) => {
                       draft.colors.splice(selectedIndex, 1);
                       setSelectedName(draft.colors[0]?.name ?? '');
+                    });
+                  }}
+                ></mds-button>
+              </div>
+            </mds-dropdown>
+            {/* the settings of the whole configuration, open at first as the native details was */}
+            <mds-details opened class="palette-global">
+              <mds-text slot="title" typography="part" tag="span">
+                Global settings
+              </mds-text>
+              <div class="palette-editor">
+                <div class="palette-fields">
+                  <Field label="Colorspace">
+                    <Select
+                      value={config.colorspace ?? 'HSL'}
+                      options={COLORSPACES.map((space) => ({ value: space, label: space }))}
+                      onValue={(colorspace) =>
+                        updateConfig((draft) => {
+                          draft.colorspace = colorspace;
+                        })
+                      }
+                    />
+                  </Field>
+                  <div class="studio-row palette-switches">
+                    <Check
+                      type="switch"
+                      checked={config.smooth ?? false}
+                      onChecked={(checked) =>
+                        updateConfig((draft) => {
+                          draft.smooth = checked;
+                        })
+                      }
+                    >
+                      Smooth
+                    </Check>
+                  </div>
+                </div>
+                <HueShiftEditor
+                  value={config.hueShift}
+                  onChange={(hueShift) =>
+                    updateConfig((draft) => {
+                      if (hueShift === undefined)
+                        delete (draft as Record<string, unknown>).hueShift;
+                      else draft.hueShift = hueShift;
                     })
                   }
-                >
-                  delete
-                </button>
+                />
               </div>
-            </div>
-            <Preview scales={selectedScales} error={selectedError} />
-            <ColorEditor
-              color={selected}
-              hasGlobalShift={config.hueShift !== undefined}
-              scaleNames={scaleNamesFor(selected)}
-              labelFor={(name) => scaleLabel(resolveFormula(selected, config), name)}
-              inheritedRatios={resolveRatiosName({ ...selected, ratios: undefined }, config)}
-              inheritedFormula={resolveFormula({ ...selected, formula: undefined }, config)}
-              inheritedExport={config.groups?.[selected.name.split('.')[0]]?.export ?? []}
-              isAlias={isAliasColor(selected)}
-              isBuiltin={BUILTIN_ALIAS_NAMES.has(selected.name)}
-              aliasTargets={aliasTargets}
-              resolvedColor={resolveBaseColor(config, selected)}
-              onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
-              onChange={(patch) => {
-                // a name typed by the user opts the color out of auto-naming
-                if ('name' in patch) autoNamedRef.current.delete(selected.name);
-                updateConfig((draft) => {
-                  const target = draft.colors[selectedIndex] as Record<string, unknown>;
-                  Object.entries(patch).forEach(([key, value]) => {
-                    if (value === undefined) delete target[key];
-                    else target[key] = value;
-                  });
-                  // keep the schema's color XOR alias invariant: a family carries
-                  // EITHER its own base color OR a reference, never both
-                  if ('alias' in patch && patch.alias) delete target.color;
-                  if ('color' in patch && patch.color) delete target.alias;
-                  if ('name' in patch && typeof patch.name === 'string')
-                    setSelectedName(patch.name);
-                });
-              }}
-            />
-            <details class="global-settings" open>
-              <summary>global settings</summary>
-              <div class="editor-grid">
-                <label>
-                  colorspace
-                  <select
-                    value={config.colorspace ?? 'HSL'}
-                    onChange={(e) =>
-                      updateConfig((draft) => {
-                        draft.colorspace = (e.target as HTMLSelectElement).value;
-                      })
-                    }
-                  >
-                    {COLORSPACES.map((space) => (
-                      <option value={space}>{space}</option>
-                    ))}
-                  </select>
-                </label>
-                <label class="checkbox">
-                  <input
-                    type="checkbox"
-                    checked={config.smooth ?? false}
-                    onChange={(e) =>
-                      updateConfig((draft) => {
-                        draft.smooth = (e.target as HTMLInputElement).checked;
-                      })
-                    }
-                  />
-                  smooth
-                </label>
-              </div>
-              <HueShiftEditor
-                value={config.hueShift}
-                onChange={(hueShift) =>
-                  updateConfig((draft) => {
-                    if (hueShift === undefined) delete (draft as Record<string, unknown>).hueShift;
-                    else draft.hueShift = hueShift;
-                  })
-                }
-              />
-            </details>
-          </>
+            </mds-details>
+          </div>
         )}
         {view === 'scales' && (
           <ScalesManager

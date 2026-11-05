@@ -95,10 +95,10 @@ function storedDraft (): StudioDraft {
 }
 
 // a button of the page, or an mds-button of its head; jsdom does not upgrade an mds-button,
-// so its state is the attribute Preact writes
+// so its state is the attribute Preact writes, and its text the `label` when it has one
 function button (label: string): HTMLElement | undefined {
   return [...root.querySelectorAll<HTMLElement>('button, mds-button')].find(
-    (b) => b.textContent?.trim() === label,
+    (b) => (b.getAttribute('label') ?? b.textContent)?.trim() === label,
   )
 }
 
@@ -123,7 +123,7 @@ test('the app asks before a draft with edits wins over a changed file, and can t
   // until answered, the stored draft keeps its old stamp: a reload asks again
   expect(storedDraft().source).toEqual({ path: PATH, hash: hashText(diskJson) })
 
-  button('use the file on disk')!.click()
+  button('Use the file on disk')!.click()
   await vi.waitFor(() => {
     if (root.querySelector('.draft-conflict')) throw new Error('banner still shown')
   })
@@ -144,9 +144,9 @@ test('keeping the draft restamps it on the file now on disk, with its edits unsa
   render(h(App, {}), root)
 
   await vi.waitFor(() => {
-    if (!button('keep the draft')) throw new Error('no conflict banner yet')
+    if (!button('Keep the draft')) throw new Error('no conflict banner yet')
   })
-  button('keep the draft')!.click()
+  button('Keep the draft')!.click()
   await vi.waitFor(() => {
     const draft = storedDraft()
     expect(draft.config).toEqual(edits)

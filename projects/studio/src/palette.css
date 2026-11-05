@@ -1,0 +1,360 @@
+/*
+  The Palette page (app.tsx): the families of colour of the configuration in a column, the one
+  selected beside it, then the settings of the whole configuration. Spaces from the rhythm, widths
+  from the widths, colours from the semantic roles (docs/agents/patterns/rhythm.md, widths.md,
+  surfaces.md, docs/agents/color.md): the page is the canvas, its sections stand on it bare. The
+  ramps and swatches drawn in the colours of the configuration are data, painted inline.
+
+  A length the rhythm has no relation for (the padding of a row of the list, the height of a
+  control) is a step of the spacing scale of Magma, calc(var(--spacing) * N), as the components
+  write --spacing(N).
+*/
+
+/* ---- the list of the families: until Magma has a list and detail, #1262 ---- */
+
+/* a column on the canvas, apart from the detail by a divider; it scrolls on its own */
+
+.palette-list {
+  align-content: start;
+  border-inline-end: thin solid rgb(var(--magma-border-muted));
+  display: grid;
+  gap: var(--magma-rhythm-between-fields);
+  grid-area: sidebar;
+  min-block-size: 0;
+  overflow-y: auto;
+
+  /* the inline padding and the one of a row put the swatches on the start edge of the title of
+     the page, which stands at the gutter of the page */
+  padding: 0 var(--magma-rhythm-inline) var(--magma-rhythm-inset);
+}
+
+.palette-list-group {
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+}
+
+.palette-list-group > mds-text {
+  padding-inline: var(--magma-rhythm-inline);
+}
+
+.palette-list-items {
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* a row: the swatch, the name, a badge; a native button painted with the roles */
+
+.palette-item {
+  align-items: center;
+  background-color: transparent;
+  border: thin solid transparent;
+  border-radius: var(--magma-radius-sm);
+  color: rgb(var(--magma-text-default));
+  corner-shape: var(--magma-corner-shape);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: var(--magma-rhythm-inline);
+  inline-size: 100%;
+  padding: calc(var(--spacing) * 200) var(--magma-rhythm-inline);
+  text-align: start;
+}
+
+/* a hover is a grey that reads in both modes, a wash; the family shown is a selected row, the
+   tinted surface of the accent (color.md) */
+
+.palette-item:hover {
+  background-color: rgb(var(--magma-wash-soft));
+  border-color: transparent;
+}
+
+.palette-item[aria-current='true'] {
+  background-color: rgb(var(--magma-accent-surface));
+}
+
+.palette-item[aria-current='true']:hover {
+  background-color: rgb(var(--magma-accent-surface-hover));
+}
+
+.palette-item:focus-visible {
+  outline: var(--magma-outline-focus);
+  outline-offset: var(--magma-outline-focus-offset);
+}
+
+/* a family the configuration leaves out of the build */
+
+.palette-item-off {
+  opacity: var(--magma-disabled-opacity);
+}
+
+.palette-item-name {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.palette-add {
+  inline-size: 100%;
+}
+
+/* ---- the detail: the family selected, then the settings of the configuration ---- */
+
+.palette-detail {
+  align-content: start;
+  display: grid;
+  gap: var(--magma-rhythm-between-sections);
+}
+
+.palette-color {
+  display: grid;
+  gap: var(--magma-rhythm-between-groups);
+}
+
+.palette-color-head {
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+}
+
+.palette-title-row {
+  align-items: center;
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+}
+
+/* mds-details lays its title and its content out at the width of what they hold, a grid of
+   fields that would take the width of one field: a grid on the host stretches them to the width
+   of the page */
+
+.palette-global {
+  display: grid;
+}
+
+/* the light and the dark ramp, two cards of data */
+
+.palette-ramps {
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+}
+
+/* each card stands on the background its ramp is solved against, white for light and black for
+   dark (generator.ts): data, like the steps, not a surface of the page */
+.preview-card {
+  padding: var(--magma-rhythm-inline) var(--magma-rhythm-inset);
+  border-radius: var(--magma-radius-lg);
+}
+
+.preview-card.light {
+  border: thin solid rgb(var(--magma-border-muted));
+  background: white;
+}
+
+.preview-card.dark {
+  background: black;
+}
+
+.scale-row {
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+  align-items: center;
+}
+
+/* the name of the mode, legible on the background of its card whatever the mode of the page */
+.scale-label {
+  flex: none;
+  inline-size: 5ch;
+  font-size: var(--text-size-info-tip);
+  color: dimgray;
+}
+
+.preview-card.dark .scale-label {
+  color: darkgray;
+}
+
+.scale-cells {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  border-radius: var(--magma-radius-md);
+}
+
+.scale-cell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 0;
+  block-size: calc(var(--spacing) * 1300);
+}
+
+/* the colour of the token beside its ramp */
+.scale-cell.seed {
+  flex: 0 0 calc(var(--spacing) * 1300);
+  margin-inline-start: var(--magma-rhythm-inline);
+  border-radius: var(--magma-radius-md);
+}
+
+.cell-contrast {
+  font-size: var(--text-size-info-tip);
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-hex {
+  font-family: var(--font-code);
+  font-size: var(--text-size-info-tip);
+}
+
+.palette-editor {
+  display: grid;
+  gap: var(--magma-rhythm-between-groups);
+}
+
+/* the fields side by side, each as wide as a short field (half the column of a form, widths.md),
+   as many in a row as the width holds */
+
+.palette-fields {
+  align-items: start;
+  display: grid;
+  gap: var(--magma-rhythm-between-fields);
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, calc(var(--magma-width-form) / 2)), 1fr)
+  );
+}
+
+/* the switches of the form, on a row of their own under the fields */
+
+.palette-switches {
+  grid-column: 1 / -1;
+}
+
+/* a group of fields: a fieldset with no border and no inset, its legend the title of the group
+   (titles.md, group) */
+
+.palette-group,
+.palette-choice {
+  border: 0;
+  margin: 0;
+  min-inline-size: 0;
+  padding: 0;
+}
+
+.palette-group > legend {
+  padding: 0 0 var(--magma-rhythm-title-content);
+}
+
+/* the content of the group in one box, the fieldset never laid out as a grid of children that
+   come and go (app.tsx, HueShiftEditor: a Chromium trap) */
+
+.palette-group-content {
+  display: grid;
+  gap: var(--magma-rhythm-between-fields);
+}
+
+/* the choice of the dialog reads as a field: its legend is a label above the radios; its
+   children never change */
+
+.palette-choice {
+  display: grid;
+  gap: var(--magma-rhythm-label-control);
+}
+
+.palette-choice > legend {
+  padding: 0 0 var(--magma-rhythm-label-control);
+}
+
+/* the intensity of the hue shift along the steps: a bar of data for each step, on a track */
+
+.palette-weights {
+  align-items: end;
+  block-size: 3lh;
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+  max-inline-size: var(--magma-width-form);
+}
+
+.palette-weight {
+  align-items: end;
+  background-color: rgb(var(--magma-surface-sunken));
+  block-size: 100%;
+  border-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
+  display: flex;
+  flex: 1;
+}
+
+.palette-weight-fill {
+  background-color: rgb(var(--magma-accent-emphasis));
+  border-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
+  inline-size: 100%;
+}
+
+/* a datum to read, not to edit: its label above its value (labels-and-values.md) */
+
+.palette-value {
+  margin: 0;
+}
+
+.palette-value > div {
+  display: grid;
+  gap: var(--magma-rhythm-label-control);
+}
+
+.palette-resolved {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--magma-rhythm-inline);
+}
+
+/* until Magma has a colour field, #1260: the native picker drawn as a field of Magma, as tall as
+   mds-input (lg, --spacing(1200)), its corner capped at a part of that height as mds-input caps
+   its own (#913), on the surface and the outline of a field */
+
+.palette-picker {
+  --palette-picker-height: calc(var(--spacing) * 1200);
+  --palette-picker-inset: calc(var(--spacing) * 100);
+  --palette-picker-radius: min(
+    var(--magma-radius-xl),
+    var(--magma-corner-cap) * var(--palette-picker-height)
+  );
+
+  background-color: rgb(var(--magma-surface-default));
+  block-size: var(--palette-picker-height);
+  border: thin solid rgb(var(--magma-border-default));
+  border-radius: var(--palette-picker-radius);
+  corner-shape: var(--magma-corner-shape);
+  cursor: pointer;
+  display: block;
+  inline-size: 100%;
+  padding: var(--palette-picker-inset);
+}
+
+.palette-picker:focus-visible {
+  outline: var(--magma-outline-focus);
+  outline-offset: var(--magma-outline-focus-offset);
+}
+
+.palette-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+/* the sample inside, its corner concentric with the one of the field */
+
+.palette-picker::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--palette-picker-radius) - var(--palette-picker-inset));
+  corner-shape: var(--magma-corner-shape);
+}
+
+.palette-picker::-moz-color-swatch {
+  border: 0;
+  border-radius: calc(var(--palette-picker-radius) - var(--palette-picker-inset));
+}
+
+/* in the dialog the colour is the subject: a taller sample */
+
+.palette-picker-large {
+  --palette-picker-height: calc(var(--spacing) * 2400);
+}
