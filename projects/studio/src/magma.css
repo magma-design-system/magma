@@ -28,3 +28,13 @@
   border: thin solid rgb(var(--magma-border-default));
   border-radius: var(--magma-radius-full);
 }
+
+/* read by assistive technologies, hidden from the eye (the name of a slider, magma.tsx) */
+.studio-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
