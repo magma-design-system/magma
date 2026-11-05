@@ -24,10 +24,10 @@
   min-block-size: 0;
   overflow-y: auto;
 
-  /* the inline padding and the one of a row put the swatches on the start edge of the title of
-     the page, which stands at the gutter of the page; the few at the top keep the focus ring of Add
-     color, the first thing in the list, inside the area the list scrolls */
-  padding: calc(var(--spacing) * 200) var(--magma-rhythm-inline) var(--magma-rhythm-inset);
+  /* the inline padding and the one of a row put the swatches on the start edge of the gutter of
+     the page; at the top the space of the region beside it, so Add color stands level with the
+     title of the page, its focus ring inside the area the list scrolls */
+  padding: var(--magma-rhythm-inset) var(--magma-rhythm-inline);
 }
 
 .palette-list-group {

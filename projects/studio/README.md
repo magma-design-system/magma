@@ -28,7 +28,8 @@ sections, in the order of the work (#693, decided 2026-11-05):
 Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
 `#/behavior/patterns`, `src/routes.ts`), so the studio works from whatever folder serves it. The
 Colors pages stay mounted under the other sections, so their work is not lost; each opens with the
-head of the page-header block: the title, one line, then the actions (a menu with Reset and Load
+head of the page-header block, the first thing of the region that scrolls (it scrolls with the
+page, and beside the list of the Palette it heads the larger column): the title, one line, then the actions (a menu with Reset and Load
 config, Copy JSON or Save, and last Download all tokens, a split button whose menu holds the
 other downloads).
 

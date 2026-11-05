@@ -149,33 +149,17 @@
   min-width: calc(var(--spacing) * 5000);
 }
 
-/* the pages of Colors: the head, what keeps the configuration from loading or saving, then the
-   list of the Palette beside the content, or the content alone */
+/* the pages of Colors: the list of the Palette beside the region that scrolls, or that region
+   alone; the head of the page and the notices are the first things of the region, so they
+   scroll with the page and head the larger column (vittorio, 2026-11-05) */
 .layout {
   display: grid;
-  grid-template:
-    'head head' auto
-    'error error' auto
-    'sidebar content' 1fr / calc(var(--spacing) * 6000) 1fr;
+  grid-template: 'sidebar content' 1fr / calc(var(--spacing) * 6000) 1fr;
   height: 100%;
 }
 
 .layout.no-sidebar {
-  grid-template:
-    'head' auto
-    'error' auto
-    'content' 1fr / 1fr;
-}
-
-.layout > .studio-page-head {
-  grid-area: head;
-}
-
-.studio-notice {
-  grid-area: error;
-  max-width: var(--magma-width-reading);
-  margin-inline: var(--magma-width-page-gutter);
-  margin-block-end: var(--magma-rhythm-inset);
+  grid-template: 'content' 1fr / 1fr;
 }
 
 .content {
@@ -184,4 +168,16 @@
   padding: var(--magma-rhythm-inset) var(--magma-width-page-gutter)
     var(--magma-rhythm-between-sections);
   overflow-y: auto;
+}
+
+/* inside the region the head takes its spaces from it: none of its own around it, the space of a
+   section below it */
+.content > .studio-page-head {
+  padding: 0;
+  margin-block-end: var(--magma-rhythm-between-sections);
+}
+
+.studio-notice {
+  max-width: var(--magma-width-reading);
+  margin-block-end: var(--magma-rhythm-between-sections);
 }

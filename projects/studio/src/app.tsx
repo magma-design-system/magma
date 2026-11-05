@@ -1233,163 +1233,6 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
 
   return (
     <div class={`layout${showSidebar ? '' : ' no-sidebar'}`}>
-      <header class="studio-page-head">
-        <div class="studio-page-title">
-          <mds-text typography="page" tag="h1">
-            {COLORS_PAGES.find((page) => page.id === view)?.label}
-          </mds-text>
-          <mds-text typography="detail" tag="p" class="studio-muted">
-            {VIEW_SUMMARY[view]}
-          </mds-text>
-        </div>
-        {/* the actions of the page (the page-header block of Magma): the menu of the others
-            first, the secondary used most, the main one last in the strong tone */}
-        <div class="studio-page-actions">
-          {statusMsg && (
-            <mds-text typography="caption" tag="span" class="studio-muted" role="status">
-              {statusMsg}
-            </mds-text>
-          )}
-          <mds-button
-            id="studio-more"
-            icon="mi/baseline/more-horiz"
-            variant="dark"
-            tone="text"
-            aria-label="More actions"
-          ></mds-button>
-          <input
-            ref={fileInput}
-            type="file"
-            accept=".json,application/json"
-            hidden
-            onChange={(e) => {
-              const input = e.target as HTMLInputElement;
-              const file = input.files?.[0];
-              if (file) loadConfigFile(file);
-              input.value = '';
-            }}
-          />
-          {/* the texts that change go in `label`: mds-button reads its slotted text only once */}
-          {serverMode ? (
-            saveRefusal ? (
-              <mds-button
-                variant="dark"
-                tone="outline"
-                disabled
-                title={saveRefusal}
-                label={dirty ? 'Read-only *' : 'Read-only'}
-              ></mds-button>
-            ) : (
-              <mds-button
-                variant="dark"
-                tone="outline"
-                onClick={saveConfig}
-                disabled={saving || !dirty || !!draftConflict}
-                title={savePath ?? undefined}
-                label={saving ? 'Saving...' : dirty ? 'Save *' : 'Saved'}
-              ></mds-button>
-            )
-          ) : (
-            <mds-button
-              variant="dark"
-              tone="outline"
-              onClick={copyJson}
-              label={copied ? 'Copied!' : 'Copy JSON'}
-            ></mds-button>
-          )}
-          {/* the main action of the page: the zip of every token, the other downloads in the
-              menu of its split button (vittorio, 2026-11-05) */}
-          <mds-button-dropdown
-            icon="mi/outline/file-download"
-            label="Download all tokens (zip)"
-            onmdsButtonDropdownClick={downloadZip}
-          >
-            {[
-              { label: 'Figma tokens (DTCG)', run: downloadFigmaDtcg },
-              { label: 'Config (json)', run: downloadJson },
-              { label: 'CSS tokens', run: downloadCss },
-              { label: 'GIMP palette', run: downloadGimp },
-              ...(serverMode ? [{ label: 'Build tokens on disk', run: buildTokens }] : []),
-            ].map((item) => (
-              <mds-button
-                type="button"
-                variant="dark"
-                tone="text"
-                class="studio-menu-link"
-                label={item.label}
-                onClick={item.run}
-              ></mds-button>
-            ))}
-          </mds-button-dropdown>
-        </div>
-        <mds-dropdown ref={moreMenu} target="#studio-more" placement="bottom-end" strategy="fixed">
-          <div class="studio-dropdown">
-            <mds-button
-              icon="mi/baseline/restart-alt"
-              variant="dark"
-              tone="text"
-              class="studio-menu-link"
-              title="discard the loaded config and any local changes, back to the built-in default"
-              disabled={!canReset}
-              onClick={() => {
-                closeMenus();
-                clearDraft();
-                const base = clone(initialConfigJson as unknown as CloneableConfig);
-                setConfig(base);
-                setSelectedName(defaultSelected(base.colors));
-                setView('colors');
-                setLoadError(null);
-              }}
-            >
-              Reset
-            </mds-button>
-            <mds-button
-              icon="mi/baseline/upload-file"
-              variant="dark"
-              tone="text"
-              class="studio-menu-link"
-              onClick={() => {
-                closeMenus();
-                fileInput.current?.click();
-              }}
-            >
-              Load config
-            </mds-button>
-          </div>
-        </mds-dropdown>
-      </header>
-
-      {/* what keeps the configuration from loading or saving, above the page */}
-      {loadError ? (
-        <mds-banner class="studio-notice" variant="error">
-          {loadError}
-        </mds-banner>
-      ) : draftConflict ? (
-        <mds-banner class="studio-notice draft-conflict" variant="warning">
-          {draftConflict.reason}, and the draft restored from this browser has edits of its own.
-          <mds-button
-            slot="action"
-            type="button"
-            variant="dark"
-            tone="outline"
-            label={draftConflict.label}
-            onClick={() => resolveDraftConflict(true)}
-          ></mds-button>
-          <mds-button
-            slot="action"
-            type="button"
-            label="Keep the draft"
-            onClick={() => resolveDraftConflict(false)}
-          ></mds-button>
-        </mds-banner>
-      ) : (
-        saveRefusal && (
-          <mds-banner class="studio-notice" variant="info">
-            Saving is off: {saveRefusal}
-          </mds-banner>
-        )
-      )}
-
       {showSidebar && (
         <aside class="palette-list" aria-label="The families of colour">
           {/* the main action of the list, a part of the page: primary outline (actions.md,
@@ -1668,6 +1511,171 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
       )}
 
       <main class="content" ref={content}>
+        {/* the head of the page and what keeps the configuration from loading or saving: the
+            first things of the region that scrolls, so they scroll with the page, and on a page
+            with the list of the families they head the larger column, not the whole width */}
+        <header class="studio-page-head">
+          <div class="studio-page-title">
+            <mds-text typography="page" tag="h1">
+              {COLORS_PAGES.find((page) => page.id === view)?.label}
+            </mds-text>
+            <mds-text typography="detail" tag="p" class="studio-muted">
+              {VIEW_SUMMARY[view]}
+            </mds-text>
+          </div>
+          {/* the actions of the page (the page-header block of Magma): the menu of the others
+              first, the secondary used most, the main one last in the strong tone */}
+          <div class="studio-page-actions">
+            {statusMsg && (
+              <mds-text typography="caption" tag="span" class="studio-muted" role="status">
+                {statusMsg}
+              </mds-text>
+            )}
+            <mds-button
+              id="studio-more"
+              icon="mi/baseline/more-horiz"
+              variant="dark"
+              tone="text"
+              aria-label="More actions"
+            ></mds-button>
+            <input
+              ref={fileInput}
+              type="file"
+              accept=".json,application/json"
+              hidden
+              onChange={(e) => {
+                const input = e.target as HTMLInputElement;
+                const file = input.files?.[0];
+                if (file) loadConfigFile(file);
+                input.value = '';
+              }}
+            />
+            {/* the texts that change go in `label`: mds-button reads its slotted text only once */}
+            {serverMode ? (
+              saveRefusal ? (
+                <mds-button
+                  variant="dark"
+                  tone="outline"
+                  disabled
+                  title={saveRefusal}
+                  label={dirty ? 'Read-only *' : 'Read-only'}
+                ></mds-button>
+              ) : (
+                <mds-button
+                  variant="dark"
+                  tone="outline"
+                  onClick={saveConfig}
+                  disabled={saving || !dirty || !!draftConflict}
+                  title={savePath ?? undefined}
+                  label={saving ? 'Saving...' : dirty ? 'Save *' : 'Saved'}
+                ></mds-button>
+              )
+            ) : (
+              <mds-button
+                variant="dark"
+                tone="outline"
+                onClick={copyJson}
+                label={copied ? 'Copied!' : 'Copy JSON'}
+              ></mds-button>
+            )}
+            {/* the main action of the page: the zip of every token, the other downloads in the
+                menu of its split button (vittorio, 2026-11-05) */}
+            <mds-button-dropdown
+              icon="mi/outline/file-download"
+              label="Download all tokens (zip)"
+              onmdsButtonDropdownClick={downloadZip}
+            >
+              {[
+                { label: 'Figma tokens (DTCG)', run: downloadFigmaDtcg },
+                { label: 'Config (json)', run: downloadJson },
+                { label: 'CSS tokens', run: downloadCss },
+                { label: 'GIMP palette', run: downloadGimp },
+                ...(serverMode ? [{ label: 'Build tokens on disk', run: buildTokens }] : []),
+              ].map((item) => (
+                <mds-button
+                  type="button"
+                  variant="dark"
+                  tone="text"
+                  class="studio-menu-link"
+                  label={item.label}
+                  onClick={item.run}
+                ></mds-button>
+              ))}
+            </mds-button-dropdown>
+          </div>
+          <mds-dropdown
+            ref={moreMenu}
+            target="#studio-more"
+            placement="bottom-end"
+            strategy="fixed"
+          >
+            <div class="studio-dropdown">
+              <mds-button
+                icon="mi/baseline/restart-alt"
+                variant="dark"
+                tone="text"
+                class="studio-menu-link"
+                title="discard the loaded config and any local changes, back to the built-in default"
+                disabled={!canReset}
+                onClick={() => {
+                  closeMenus();
+                  clearDraft();
+                  const base = clone(initialConfigJson as unknown as CloneableConfig);
+                  setConfig(base);
+                  setSelectedName(defaultSelected(base.colors));
+                  setView('colors');
+                  setLoadError(null);
+                }}
+              >
+                Reset
+              </mds-button>
+              <mds-button
+                icon="mi/baseline/upload-file"
+                variant="dark"
+                tone="text"
+                class="studio-menu-link"
+                onClick={() => {
+                  closeMenus();
+                  fileInput.current?.click();
+                }}
+              >
+                Load config
+              </mds-button>
+            </div>
+          </mds-dropdown>
+        </header>
+
+        {/* what keeps the configuration from loading or saving, above the page */}
+        {loadError ? (
+          <mds-banner class="studio-notice" variant="error">
+            {loadError}
+          </mds-banner>
+        ) : draftConflict ? (
+          <mds-banner class="studio-notice draft-conflict" variant="warning">
+            {draftConflict.reason}, and the draft restored from this browser has edits of its own.
+            <mds-button
+              slot="action"
+              type="button"
+              variant="dark"
+              tone="outline"
+              label={draftConflict.label}
+              onClick={() => resolveDraftConflict(true)}
+            ></mds-button>
+            <mds-button
+              slot="action"
+              type="button"
+              label="Keep the draft"
+              onClick={() => resolveDraftConflict(false)}
+            ></mds-button>
+          </mds-banner>
+        ) : (
+          saveRefusal && (
+            <mds-banner class="studio-notice" variant="info">
+              Saving is off: {saveRefusal}
+            </mds-banner>
+          )
+        )}
+
         {view === 'colors' && selected && (
           <div class="palette-detail">
             <section class="palette-color" aria-labelledby="palette-color-title">
