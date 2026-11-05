@@ -29,10 +29,10 @@ variables:
 
 regions:
   - { id: product, required: true, what: "the name of the application at the start of the bar, as text; a product may put its logo in its place (logo)", use: ["mds-text typography=h6 tag=p"] }
-  - { id: sections, when: { sections: few }, what: "the sections of the application as links, in the order of the work, the current one marked: aria-current=page and a look of its own; in the bar from the width of the desktop, in the menu under it", use: ["mds-button slot=nav href variant=dark tone=text"] }
+  - { id: sections, when: { sections: few }, what: "the sections of the application as links, in the order of the work, the current one marked with current, or current=section on a page inside it (a record of its list); in the bar from the width of the desktop, in the menu under it", use: ["mds-button slot=nav href variant=dark tone=text current"] }
   - { id: person, when: { person: signed-in }, what: "the last element of the bar: a button named after the person signed in, which opens their menu: their name, Profilo, then Esci after a separator", use: ["mds-button slot=nav icon variant=dark tone=text", "mds-dropdown", "mds-separator"] }
   - { id: sign-in, when: { person: guest }, what: "the last element of the bar: Accedi, a link to the sign-in", use: ["mds-button slot=nav href variant=dark tone=outline"] }
-  - { id: menu, what: "the menu of the bar, opened by its button: the sections, the current one marked, then after a separator the name of the person, Profilo and Esci, or Accedi, which keeps its outline; under the width of the desktop with few sections, at every width with many", use: ["mds-header menu", "mds-button href variant=dark tone=text", "mds-button href variant=dark tone=outline", "mds-separator"] }
+  - { id: menu, what: "the menu of the bar, opened by its button: the sections, the current one marked with current as in the bar, then after a separator the name of the person, Profilo and Esci, or Accedi, which keeps its outline; under the width of the desktop with few sections, at every width with many", use: ["mds-header menu", "mds-button href variant=dark tone=text current", "mds-button href variant=dark tone=outline", "mds-separator"] }
   - { id: main, required: true, what: "the content of the page, under the bar: one main in the frame of the page, its header first (page-header), then its sections" }
 
 always-true:
@@ -40,7 +40,7 @@ always-true:
     rule: "The application has one bar: mds-header with one mds-header-bar, first in the page; the page starts under it, with no room reserved by hand."
     checked-by: review
   - id: sections-are-links
-    rule: "The sections are links to their pages (mds-button with href), the current one marked with aria-current=\"page\"; never a button that runs a script to change page."
+    rule: "The sections are links to their pages (mds-button with href), the current one marked with current, or current=\"section\" on a page inside it; never a button that runs a script to change page, never aria-current or a tone set by hand."
     checked-by: review
   - id: every-width
     rule: "Every section is reached at every width: in the bar from the width of the desktop, in the menu of the bar under it; never menu=\"none\" on a bar with sections."
@@ -107,10 +107,10 @@ A region shows where its When holds, in this order: a required one always, the o
 | Region | When | Required | What | Use |
 | --- | --- | --- | --- | --- |
 | `product` | any | yes | the name of the application at the start of the bar, as text; a product may put its logo in its place (logo) | `mds-text typography=h6 tag=p` |
-| `sections` | sections: few |  | the sections of the application as links, in the order of the work, the current one marked: aria-current=page and a look of its own; in the bar from the width of the desktop, in the menu under it | `mds-button slot=nav href variant=dark tone=text` |
+| `sections` | sections: few |  | the sections of the application as links, in the order of the work, the current one marked with current, or current=section on a page inside it (a record of its list); in the bar from the width of the desktop, in the menu under it | `mds-button slot=nav href variant=dark tone=text current` |
 | `person` | person: signed-in |  | the last element of the bar: a button named after the person signed in, which opens their menu: their name, Profilo, then Esci after a separator | `mds-button slot=nav icon variant=dark tone=text`, `mds-dropdown`, `mds-separator` |
 | `sign-in` | person: guest |  | the last element of the bar: Accedi, a link to the sign-in | `mds-button slot=nav href variant=dark tone=outline` |
-| `menu` | any |  | the menu of the bar, opened by its button: the sections, the current one marked, then after a separator the name of the person, Profilo and Esci, or Accedi, which keeps its outline; under the width of the desktop with few sections, at every width with many | `mds-header menu`, `mds-button href variant=dark tone=text`, `mds-button href variant=dark tone=outline`, `mds-separator` |
+| `menu` | any |  | the menu of the bar, opened by its button: the sections, the current one marked with current as in the bar, then after a separator the name of the person, Profilo and Esci, or Accedi, which keeps its outline; under the width of the desktop with few sections, at every width with many | `mds-header menu`, `mds-button href variant=dark tone=text current`, `mds-button href variant=dark tone=outline`, `mds-separator` |
 | `main` | any | yes | the content of the page, under the bar: one main in the frame of the page, its header first (page-header), then its sections |  |
 
 ## Layout
@@ -145,7 +145,7 @@ These hold in every product: a product layer cannot change them.
 | Id | Rule | Checked by |
 | --- | --- | --- |
 | `one-bar` | The application has one bar: mds-header with one mds-header-bar, first in the page; the page starts under it, with no room reserved by hand. | review |
-| `sections-are-links` | The sections are links to their pages (mds-button with href), the current one marked with aria-current="page"; never a button that runs a script to change page. | review |
+| `sections-are-links` | The sections are links to their pages (mds-button with href), the current one marked with current, or current="section" on a page inside it; never a button that runs a script to change page, never aria-current or a tone set by hand. | review |
 | `every-width` | Every section is reached at every width: in the bar from the width of the desktop, in the menu of the bar under it; never menu="none" on a bar with sections. | review |
 | `person-named` | The button of the person is named after them ("Account di Mario Rossi") and their menu opens with their name: the person always sees who is signed in. | review |
 | `one-main` | The content of a page is one main under the bar, in the frame of the page, its header first; the bar never holds the title or the actions of a page. | review |
@@ -181,8 +181,11 @@ Situations every application has, each with the regions it shows: they give the 
 
 - `mds-header-bar` draws the `nav` landmark around its `nav` slot; the content of the page is
   the one `main` landmark.
-- The current section carries `aria-current="page"` on its `mds-button`, which keeps the role
-  of link on its host; its look is not the only sign of it.
+- The current section is `current` on its `mds-button`, which writes `aria-current="page"` and
+  keeps the role of link on its host: on the page of the section it does nothing when clicked,
+  but stays in the Tab order, so the keyboard reaches where it is. On a page inside the section,
+  a record of its list, it is `current="section"`: `aria-current="true"`, and still a link back
+  to the list. Its look is not only a colour: the label is bold.
 - The button of the person has an `aria-label` that names them, and opens its menu with
   `mds-dropdown`, a `menu` by default: the arrows walk its entries, Esc closes it and gives the
   focus back to the button.
@@ -200,9 +203,6 @@ Situations every application has, each with the regions it shows: they give the 
 
 ## Magma gaps
 
-- `mds-button` has no state for the current section of a bar: `active` is the pressed look, which
-  the button clears when the pointer is released. The look of the current section is a decision
-  of the round of the building blocks, written with the props Magma has: `tone="weak"`, a filled shape, which still stands at 1.45:1 against the bar in the light mode and 2.48:1 in the dark, under the 3:1 of a state.
 - No side navigation: with many sections, the menu of the bar holds them at every width, and
   they are not in view beside the page.
 - No link that skips the bar to the content: a screen reader jumps to the `main` landmark, a
@@ -221,3 +221,4 @@ Situations every application has, each with the regions it shows: they give the 
 | 2026-11-03 | The application shell is a block: the bar and the frame of the page come back in `list-with-filters`, `record-detail`, `empty-state` and `message-placement` | The round of the building blocks: every whole-page preview wrote them by hand, each a little differently; the docs site already names the app shell among the building blocks (`plan/DIRECTION.md`, Patterns section, Navigation). |
 | 2026-11-03 | The sections are links with the current one marked, and they reach a phone through the menu of the bar | The previews had buttons with no address, no current section and `menu="none"`, which hides every section under the width of the desktop (`nav="desktop"` is the default of `mds-header`). |
 | 2026-11-03 | The current section is `variant="dark" tone="weak"`, the others `tone="text"`, in the bar and in the menu | A filled shape, not only a colour: `primary text` (B) changed only the ink, and in the dark mode the accent is near the other sections (1.22:1), so the current one could not be seen. Neither reaches 3:1 against the bar: a Magma gap. The maintainer's choice A in the review of round 3. |
+| 2026-11-05 | The current section is `current` on its `mds-button` (`current="section"` on a page inside it), which replaces `tone="weak"` and `aria-current` written by hand | The Magma gap closed by #1264: one look for every product, an area lighter than the hover of the tone (for `tone="text"` the fill of `weak`) and a bold label, which marks the state where the area stays under 3:1. The section of the page on screen does nothing when clicked, so it never reloads the page; on a record it stays a link back to the list. The maintainer's choices on live renders. |
