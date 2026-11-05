@@ -82,7 +82,7 @@ export function BatchExportModal({
         onmdsBannerClose={onClose}
       >
         <div class="studio-dialog">
-          {error && <div class="preview-error">{error}</div>}
+          {error && <mds-banner variant="error">{error}</mds-banner>}
           <div class="batch-list" role="group" aria-label="The colors of the batch">
             {names.map((name) => {
               const color = colorsByName.get(name);

@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import type {
   ColorConfig,
   Formula,
@@ -10,6 +10,8 @@ import {
   resolveRatiosName,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import type { ColorScales, Step } from './generator.js';
+import { Check, Field, Select, TextInput } from './magma.js';
+import './groups.css';
 
 interface GroupsManagerProps {
   config: MagmaConfig;
@@ -29,17 +31,27 @@ interface GroupsManagerProps {
   onOpenBatch: () => void;
 }
 
-function CompactRow({ steps }: { steps: Step[] }) {
+/** The export field of a group as the person writes it: comma-separated names. */
+const parseExport = (text: string): string[] =>
+  text
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+
+const plural = (count: number, noun: string): string => `${count} ${noun}${count === 1 ? '' : 's'}`;
+
+// the light ramp of a colour: data, so each step keeps its own colour inline
+function Ramp({ steps }: { steps: Step[] }) {
   return (
-    <div class="group-row-cells">
+    <span class="groups-ramp">
       {steps.map((step) => (
-        <div
-          class="group-row-cell"
+        <span
+          class="groups-ramp-step"
           style={{ background: step.value }}
           title={`${step.value} - ${step.contrast.toFixed(2)}:1`}
         />
       ))}
-    </div>
+    </span>
   );
 }
 
@@ -65,8 +77,23 @@ export function GroupsManager({
   // when on, selected colors are lifted into a dedicated section on top so
   // they can be compared side by side; the rest stay grouped below
   const [groupSelected, setGroupSelected] = useState(false);
+  // the export picked in "Select by export": it acts once, then the select goes back to its
+  // placeholder, so the same export can be picked again. The reset is a render of its own, after
+  // the one that took the pick: a value equal to the last one rendered never reaches the
+  // component, which would keep showing the pick.
+  const [exportPick, setExportPick] = useState('');
+  useEffect(() => {
+    if (exportPick) setExportPick('');
+  }, [exportPick]);
+  // the export of a group, from the field that commits on Enter or on leaving it (TextInput,
+  // commit "leave"): a list parsed at every key would lose the comma just typed
+  const commitExport = (groupName: string, groupConfig: GroupConfig, text: string) => {
+    const list = parseExport(text);
+    if (list.join(',') === (groupConfig.export ?? []).join(',')) return;
+    onUpdateGroup(groupName, { ...groupConfig, export: list.length ? list : undefined });
+  };
 
-  // one color row: checkbox, swatch, name (+ override badge), meta and its
+  // one color row: checkbox with the swatch and the name (+ override badge), meta and its
   // light scale. Shared by the group cards and the Selected section.
   const renderMember = (color: ColorConfig) => {
     const memberGroup = color.name.split('.')[0];
@@ -90,29 +117,31 @@ export function GroupsManager({
     ].filter(Boolean);
     const resolvedExport = color.export ?? groupConfig.export ?? [];
     const scales = preview?.get(color.name);
+    // keyed by the name: mds-input-switch reads its accessible name ("Select porcelain") from
+    // its text once, so its element must never pass from one colour to another
     return (
-      <div class="group-member">
-        <input
-          type="checkbox"
-          class="group-member-check"
-          checked={selected.has(color.name)}
-          title="select for batch export"
-          onChange={() => onToggleSelect(color.name)}
-        />
-        <span class="swatch" style={{ background: color.color }} />
-        <span class="group-member-name">
-          {color.name.split('.')[1]}
-          {overrides.length > 0 && (
-            <span class="badge" title={`overrides the group: ${overrides.join(', ')}`}>
-              override
+      <div class="groups-member" key={color.name}>
+        <span class="groups-member-check">
+          <Check checked={selected.has(color.name)} onChecked={() => onToggleSelect(color.name)}>
+            <span class="groups-member-name">
+              <span class="studio-swatch" style={{ background: color.color }} />
+              {color.name.split('.')[1]}
             </span>
+          </Check>
+          {overrides.length > 0 && (
+            <mds-badge
+              label="override"
+              variant="info"
+              tone="weak"
+              title={`overrides the group: ${overrides.join(', ')}`}
+            />
           )}
         </span>
-        <span class="group-member-meta">
+        <mds-text typography="caption" tag="p" class="groups-member-meta studio-muted">
           {resolveRatiosName(color, config)} - {resolveFormula(color, config)}
           {resolvedExport.length > 0 && ` - ${resolvedExport.join(', ')}`}
-        </span>
-        {scales && <CompactRow steps={scales.light} />}
+        </mds-text>
+        {scales && <Ramp steps={scales.light} />}
       </div>
     );
   };
@@ -121,56 +150,65 @@ export function GroupsManager({
   const selectedColors = [...groups.values()].flat().filter((color) => selected.has(color.name));
 
   return (
-    <div class="groups-manager">
-      <p class="scales-hint">
+    <div class="groups-page">
+      <mds-text typography="detail" tag="p" class="groups-hint studio-muted">
         Ratios, formula and export are managed per token group here (the <code>groups</code> section
         of the configuration). Tick colors across groups to set their export together, or pick an
-        existing export to load every color that uses it.
-      </p>
-      <div class="batch-toolbar">
-        <span class="scale-usage">{selected.size} selected</span>
-        <button disabled={selected.size === 0} onClick={onOpenBatch}>
-          batch export
-        </button>
-        <label
-          class="batch-toggle"
-          title="lift selected colors into a section on top to compare them"
-        >
-          <input
-            type="checkbox"
-            checked={groupSelected}
-            onChange={(e) => setGroupSelected((e.target as HTMLInputElement).checked)}
-          />
-          group selected
-        </label>
-        <label class="batch-select-export">
-          select by export
-          <select
-            value=""
-            onChange={(e) => {
-              const value = (e.target as HTMLSelectElement).value;
-              if (value) onSelectByExport(value);
-              (e.target as HTMLSelectElement).value = '';
-            }}
+        existing export to load every color that uses it. Group selected lifts the ticked colors
+        into a section on top, to compare them.
+      </mds-text>
+      {/* the selection of the batch (docs/agents/patterns/item-list.md, "selection"): how many,
+          then the batch action; the view of the selection and the selection by export follow */}
+      <div class="groups-selection">
+        <div class="groups-selection-bar">
+          <mds-text typography="detail" tag="p" role="status">
+            {selected.size} selected
+          </mds-text>
+          <mds-button
+            type="button"
+            variant="primary"
+            tone="outline"
+            disabled={selected.size === 0}
+            onClick={onOpenBatch}
           >
-            <option value="">choose...</option>
-            {exportNames.map((name) => (
-              <option value={name}>{name}</option>
-            ))}
-          </select>
-        </label>
-      </div>
-      {previewError && <div class="preview-error">{previewError}</div>}
-      {groupSelected && selectedColors.length > 0 && (
-        <div class="scale-card selected-card">
-          <div class="scale-card-head">
-            <h3 class="group-title">Selected</h3>
-            <span class="scale-usage">
-              {selectedColors.length} color{selectedColors.length === 1 ? '' : 's'}
-            </span>
-          </div>
-          <div class="group-members">{selectedColors.map(renderMember)}</div>
+            Batch export
+          </mds-button>
+          <Check type="switch" checked={groupSelected} onChecked={setGroupSelected}>
+            Group selected
+          </Check>
         </div>
+        <span class="groups-selection-export">
+          <Field label="Select by export">
+            <Select
+              size="md"
+              value={exportPick}
+              placeholder="Choose an export"
+              options={exportNames.map((name) => ({ value: name, label: name }))}
+              onValue={(value) => {
+                setExportPick(value);
+                if (value) onSelectByExport(value);
+              }}
+            />
+          </Field>
+        </span>
+      </div>
+      {previewError && <mds-banner variant="error">{previewError}</mds-banner>}
+      {groupSelected && selectedColors.length > 0 && (
+        <mds-card class="groups-card">
+          <mds-card-header>
+            <span class="groups-card-title">
+              <mds-text typography="part" tag="h2">
+                Selected
+              </mds-text>
+              <mds-text typography="detail" tag="p" class="studio-muted">
+                {plural(selectedColors.length, 'color')}
+              </mds-text>
+            </span>
+          </mds-card-header>
+          <mds-card-content>
+            <div class="groups-members">{selectedColors.map(renderMember)}</div>
+          </mds-card-content>
+        </mds-card>
       )}
       {[...groups.entries()].map(([groupName, colors]) => {
         const groupConfig = config.groups?.[groupName] ?? {};
@@ -178,76 +216,75 @@ export function GroupsManager({
         // when grouping, the selected colors are shown in the section above
         const members = groupSelected ? colors.filter((c) => !selected.has(c.name)) : colors;
         return (
-          <div class="scale-card">
-            <div class="scale-card-head">
-              <h3 class="group-title">{groupName}</h3>
-              <span class="scale-usage">
-                {colors.length} color{colors.length === 1 ? '' : 's'}
+          <mds-card class="groups-card" key={groupName}>
+            <mds-card-header>
+              <span class="groups-card-title">
+                <mds-text typography="part" tag="h2">
+                  {groupName}
+                </mds-text>
+                <mds-text typography="detail" tag="p" class="studio-muted">
+                  {plural(colors.length, 'color')}
+                </mds-text>
               </span>
-              <div class="group-selects">
-                <label>
-                  formula
-                  <select
+            </mds-card-header>
+            <mds-card-content>
+              <div class="groups-settings">
+                <Field label="Formula">
+                  <Select
+                    size="md"
                     value={groupConfig.formula ?? ''}
-                    onChange={(e) => {
-                      const value = (e.target as HTMLSelectElement).value;
+                    options={[
+                      { value: '', label: `inherit (${config.formula ?? 'wcag3'})` },
+                      { value: 'wcag2', label: 'wcag2' },
+                      { value: 'wcag3', label: 'wcag3' },
+                    ]}
+                    onValue={(value) =>
                       onUpdateGroup(groupName, {
                         ...groupConfig,
                         formula: (value || undefined) as Formula | undefined,
-                      });
-                    }}
-                  >
-                    <option value="">inherit ({config.formula ?? 'wcag3'})</option>
-                    <option value="wcag2">wcag2</option>
-                    <option value="wcag3">wcag3</option>
-                  </select>
-                </label>
-                <label>
-                  ratios
-                  <select
-                    value={groupConfig.ratios ?? ''}
-                    onChange={(e) => {
-                      const value = (e.target as HTMLSelectElement).value;
-                      onUpdateGroup(groupName, {
-                        ...groupConfig,
-                        ratios: value || undefined,
-                      });
-                    }}
-                  >
-                    <option value="">inherit (default)</option>
-                    {scaleNamesFor(effectiveFormula).map((name) => (
-                      <option value={name}>{labelFor(effectiveFormula, name)}</option>
-                    ))}
-                  </select>
-                </label>
-                <label>
-                  export
-                  <input
-                    type="text"
-                    value={(groupConfig.export ?? []).join(', ')}
-                    placeholder="e.g. palette, default"
-                    onChange={(e) => {
-                      const groups = (e.target as HTMLInputElement).value
-                        .split(',')
-                        .map((entry) => entry.trim())
-                        .filter(Boolean);
-                      onUpdateGroup(groupName, {
-                        ...groupConfig,
-                        export: groups.length ? groups : undefined,
-                      });
-                    }}
+                      })
+                    }
                   />
-                </label>
+                </Field>
+                <Field label="Ratios">
+                  <Select
+                    size="md"
+                    value={groupConfig.ratios ?? ''}
+                    options={[
+                      { value: '', label: 'inherit (default)' },
+                      ...scaleNamesFor(effectiveFormula).map((name) => ({
+                        value: name,
+                        label: labelFor(effectiveFormula, name),
+                      })),
+                    ]}
+                    onValue={(value) =>
+                      onUpdateGroup(groupName, { ...groupConfig, ratios: value || undefined })
+                    }
+                  />
+                </Field>
+                <div class="groups-settings-export">
+                  <Field label="Export">
+                    <TextInput
+                      size="md"
+                      commit="leave"
+                      value={(groupConfig.export ?? []).join(', ')}
+                      placeholder="e.g. palette, default"
+                      onValue={(text) => commitExport(groupName, groupConfig, text)}
+                    />
+                  </Field>
+                </div>
               </div>
-            </div>
-            <div class="group-members">
-              {members.length > 0 ? (
-                members.map(renderMember)
-              ) : (
-                <p class="group-empty">all colors moved to the Selected section</p>
-              )}
-            </div>
-          </div>
+              <div class="groups-members">
+                {members.length > 0 ? (
+                  members.map(renderMember)
+                ) : (
+                  <mds-text typography="detail" tag="p" class="studio-muted">
+                    All the colors of the group are in the Selected section.
+                  </mds-text>
+                )}
+              </div>
+            </mds-card-content>
+          </mds-card>
         );
       })}
     </div>

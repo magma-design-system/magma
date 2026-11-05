@@ -5,6 +5,7 @@ import {
   createColorTokens,
   type MagmaConfig,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
+import './diff.css';
 
 // The diff compares the palette generated from the edited config against the
 // one generated from the committed configuration (.magma-design-tokensrc.json,
@@ -80,19 +81,23 @@ function diffColor(
   };
 }
 
+// one mode of a colour: its label, then its steps. The steps are data, each in its own colour
+// inline; a changed step is ringed twice, so the ring reads on a light step and on a dark one
 function DiffRow({ label, cells }: { label: string; cells: DiffCell[] }) {
   return (
-    <div class="diff-row">
-      <span class="scale-label">{label}</span>
-      <div class="diff-cells">
+    <div class="diffs-mode">
+      <mds-text typography="caption" tag="p" class="studio-muted">
+        {label}
+      </mds-text>
+      <div class="diffs-ramp">
         {cells.map((cell) => (
           <div
-            class={`diff-cell${cell.changed ? ' changed' : ''}`}
+            class={`diffs-step${cell.changed ? ' diffs-step-changed' : ''}`}
             style={{ background: cell.value }}
             title={
               cell.changed
                 ? cell.from
-                  ? `${cell.step}: ${cell.from} to ${cell.value}${cell.deltaE !== undefined ? ` (deltaE ${cell.deltaE.toFixed(1)})` : ''}`
+                  ? `${cell.step}: ${cell.from} to ${cell.value}${cell.deltaE !== undefined ? ` (\u0394E ${cell.deltaE.toFixed(1)})` : ''}`
                   : `${cell.step}: added (${cell.value})`
                 : `${cell.step}: ${cell.value} (unchanged)`
             }
@@ -102,6 +107,14 @@ function DiffRow({ label, cells }: { label: string; cells: DiffCell[] }) {
     </div>
   );
 }
+
+// the badge of a colour: how far it moved when it changed, a diff's own colours when it is new or
+// gone (added green, removed red, changed amber)
+const BADGE_VARIANT: Record<ColorDiff['status'], string> = {
+  changed: 'warning',
+  new: 'success',
+  removed: 'error',
+};
 
 export function DiffView({ config }: { config: MagmaConfig }) {
   const baseline = useMemo(() => paletteOf(initialConfigJson as unknown as MagmaConfig), []);
@@ -131,43 +144,49 @@ export function DiffView({ config }: { config: MagmaConfig }) {
     return out;
   }, [baseline, current]);
 
-  if (error) return <div class="preview-error">{error}</div>;
+  if (error) return <mds-banner variant="error">{error}</mds-banner>;
 
   const changed = diffs.filter((d) => d.status === 'changed').length;
   const added = diffs.filter((d) => d.status === 'new').length;
   const removed = diffs.filter((d) => d.status === 'removed').length;
 
   return (
-    <div class="diff-view">
-      <p class="scales-hint">
+    <div class="diffs-page">
+      <mds-text typography="detail" tag="p" class="diffs-hint studio-muted">
         Differences between the current palette and the one generated from the committed
         configuration. Changed steps are outlined; the badge shows the largest perceptual distance
         (deltaE) across the color.
-      </p>
-      <div class="diff-summary">
-        {diffs.length === 0 ? (
-          <span>No differences from the committed configuration.</span>
-        ) : (
-          <span>
-            {changed} changed, {added} new, {removed} removed
-          </span>
-        )}
-      </div>
+      </mds-text>
+      <mds-text typography="detail" tag="p" role="status">
+        {diffs.length === 0
+          ? 'No differences from the committed configuration.'
+          : `${changed} changed, ${added} new, ${removed} removed`}
+      </mds-text>
       {diffs.map((d) => (
-        <div class="scale-card diff-card">
-          <div class="scale-card-head">
-            <h3 class="group-title">{d.path}</h3>
-            <span class={`diff-badge diff-${d.status}`}>
-              {d.status === 'new'
-                ? 'new'
-                : d.status === 'removed'
-                  ? 'removed'
-                  : `deltaE ${d.maxDeltaE.toFixed(1)} - ${d.changedCount} step${d.changedCount === 1 ? '' : 's'}`}
-            </span>
-          </div>
-          <DiffRow label="light" cells={d.light} />
-          <DiffRow label="dark" cells={d.dark} />
-        </div>
+        <mds-card class="diffs-card" key={d.path}>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">
+              {d.path}
+            </mds-text>
+            <mds-badge
+              variant={BADGE_VARIANT[d.status]}
+              tone="weak"
+              label={
+                d.status === 'new'
+                  ? 'new'
+                  : d.status === 'removed'
+                    ? 'removed'
+                    : `\u0394E ${d.maxDeltaE.toFixed(1)} - ${d.changedCount} step${d.changedCount === 1 ? '' : 's'}`
+              }
+            />
+          </mds-card-header>
+          <mds-card-content>
+            <div class="diffs-modes">
+              <DiffRow label="light" cells={d.light} />
+              <DiffRow label="dark" cells={d.dark} />
+            </div>
+          </mds-card-content>
+        </mds-card>
       ))}
     </div>
   );
