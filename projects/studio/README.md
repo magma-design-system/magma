@@ -23,7 +23,7 @@ sections, in the order of the work (#693, decided 2026-11-05):
 | Section | Pages | What it is |
 | --- | --- | --- |
 | **Colors** (a menu) | Palette, Contrast scales, Semantic surface, Themes, Groups, then Contrast check and Diffs | the tokens playground that used to live in `design-tokens` (#695), one page per view; the menu opens with the verdict of the contrast gate on the configuration being edited, and the button of the section counts the pairs that fail it (#698) |
-| **Theme** | one page | the theme on a scene of a product in an iframe: over it a header of what the theme is checked under (the view, the mode, the width of the frame, the contrast), at the bottom the bar of what is edited: the theme to show, then one button per axis (typography, shape, density, depth, the preferences of the person, dimension) |
+| **Theme** | one page | the theme on a scene of a product in an iframe, the whole section, and a bar at the bottom: the theme to show, one button per axis (typography, shape, density, depth, the preferences of the person, dimension), then the ruler of the preview (the view and the width of the frame) |
 | **Behavior** (a menu) | Design language, Patterns, Blocks | what Magma decided and the layer of a product, read-only; placeholders until their turn (#693, "The plan") |
 
 Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
@@ -42,9 +42,10 @@ dogfooding constraint"). An axis of the bar opens its controls in an `mds-dropdo
 button, and the bar shows only the axes with controls: today the preferences, the others come back
 with theirs (#696).
 Their dropdown holds controls of the studio, not the `mds-pref-*` themselves, which would write on
-the document of the studio: each choice is set on the hidden `mds-pref-*` of every frame
-(`src/scene-prefs.tsx`), whose modes, English words and defaults are those of the components
-(`test/scene-prefs.test.mts` holds them to the sources).
+the document of the studio: the mode and the contrast are written on the `<html>` of every frame,
+the other choices are set on its hidden `mds-pref-*` (`src/scene-prefs.tsx`); their modes, English
+words and defaults are those of the components (`test/scene-prefs.test.mts` holds them to the
+sources).
 
 The select offers the themes of the configuration being edited, the ones the Themes page lists
 (each tint with a surface, the base first), and the frame paints them: the studio writes into it,
@@ -54,17 +55,18 @@ each theme, printed by the code that writes the files Magma ships (`colors-rgb.c
 Magma ships none by that name. The choices made on the Themes page, the name of a theme, the
 accents it repoints and the colour modes it is used in, are the studio's (`src/theme-choices.ts`):
 the frame paints the themes as that page exports them, and a theme of one mode is seen in that
-mode only, the other choices of the header off and `pref-theme-scheme-<mode>` on the frame, as
+mode only, the other modes of the preferences off and `pref-theme-scheme-<mode>` on the frame, as
 mds-pref-theme writes it. They are kept in the storage of the studio beside the draft, so a reload
 keeps them, until the configuration keeps the themes itself (#694).
 
-The header over the frame holds what the theme is checked under, not what is edited (#697): the
-view (Scenes or Groups, below), the mode (light, dark, or both side by side, two frames that
-scroll together), the width of the frame (the room of the section, or a breakpoint of Magma,
-`--breakpoint-desktop`, `-tablet`, `-mobile`, where its layouts change) and the contrast. The mode
-and the contrast are not exported: the header writes them on the `<html>` of each frame as the
-preferences of Magma do (`applyFrame`), and the panel of the scene has neither, since a mode
-stored in the origin would bring the two frames to the same one.
+What the theme is checked under, not what is edited (#697), opens from the same bar, so the frame
+takes the whole section (2026-11-06): the mode (light, dark, or both side by side, two frames that
+scroll together) and the contrast head the dropdown of the preferences of the person; the ruler
+opens the preview, the view (Scenes or Groups, below) and the width of the frame (the room of the
+section, or a breakpoint of Magma, `--breakpoint-desktop`, `-tablet`, `-mobile`, where its layouts
+change). The mode and the contrast are not exported: the studio writes them on the `<html>` of
+each frame as the preferences of Magma do (`applyFrame`), and the panel of the scene has neither,
+since a mode stored in the origin would bring the two frames to the same one.
 
 The scene is a demo of the components, as the one of the daisyUI theme generator (#697, Scenes):
 the desk of an office of a back office, one card per task side by side in columns, so a theme is

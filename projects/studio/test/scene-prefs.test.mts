@@ -6,10 +6,14 @@ import { expect, test, vi } from 'vitest'
 
 import animationWords from '../../stencil/src/components/mds-pref-animation/meta/locale.en.json'
 import consumptionWords from '../../stencil/src/components/mds-pref-consumption/meta/locale.en.json'
+import contrastWords from '../../stencil/src/components/mds-pref-contrast/meta/locale.en.json'
+import modeWords from '../../stencil/src/components/mds-pref-mode/meta/locale.en.json'
 import {
   ANIMATIONS,
   CONSUMPTIONS,
+  CONTRASTS,
   DEFAULT_PREFS,
+  MODES,
   applyPrefs,
   type Choice,
 } from '../src/scene-prefs.js'
@@ -22,6 +26,8 @@ const here = dirname(fileURLToPath(import.meta.url))
 const source = (path: string) => readFileSync(join(here, '../../stencil/src', path), 'utf8')
 const animation = source('components/mds-pref-animation/mds-pref-animation.tsx')
 const consumption = source('components/mds-pref-consumption/mds-pref-consumption.tsx')
+const mode = source('components/mds-pref-mode/mds-pref-mode.tsx')
+const contrast = source('components/mds-pref-contrast/mds-pref-contrast.tsx')
 const scene = readFileSync(join(here, '../scene.html'), 'utf8')
 
 /** The modes a component draws, in their order: the argument of each `handleModeClick`. */
@@ -63,6 +69,26 @@ test('each mode says the word the component says for it', () => {
       expect(component).toMatch(new RegExp(`'?${one.mode}'?: \\{[^}]*label: '${one.word}'`))
     }
   }
+})
+
+test('the mode and the contrast are those of each component but its system, with its words and icons', () => {
+  /** The icons a component imports: it draws some by its state, `selected ? a : b`. */
+  const imported = (component: string) => [...component.matchAll(/import \w+ from '@icon\/(.+)\.svg'/g)].map((match) => match[1])
+  const cases: Array<[ReadonlyArray<Choice<string>>, Record<string, string>, string]> = [
+    [MODES.filter((one) => one.mode !== 'both'), modeWords, mode],
+    [CONTRASTS, contrastWords, contrast],
+  ]
+  for (const [choices, words, component] of cases) {
+    // no system: the studio sets the mode and the contrast of a frame
+    expect(choices.map((one) => one.mode)).toEqual(drawnModes(component).filter((one) => one !== 'system'))
+    for (const one of choices) {
+      expect(words[one.word]).toBeTypeOf('string')
+      expect(component).toMatch(new RegExp(`'?${one.mode}'?: \\{[^}]*label: '${one.word}'`))
+      expect(imported(component)).toContain(one.icon)
+    }
+  }
+  // the studio's own mode, both side by side in two frames, comes last
+  expect(MODES.map((one) => one.mode)).toEqual(['light', 'dark', 'both'])
 })
 
 test('the scene starts from what each component applies with nothing chosen', () => {
