@@ -26,8 +26,8 @@ body { background: var(--bg); min-width: 960px; }
 .studio-product-version { color: rgb(var(--magma-text-muted)); margin-block-start: calc(var(--spacing) * 200); text-transform: uppercase; }
 .studio-dropdown { display: grid; gap: var(--magma-rhythm-inline); min-width: 240px; }
 .studio-dropdown-head { display: flex; }
-/* the preferences of the scene in the dropdown of their axis (scene-prefs.tsx): the label over its control, as mds-pref draws them */
-.studio-prefs { display: grid; gap: var(--magma-rhythm-between-fields); min-width: 280px; padding: var(--magma-rhythm-inset); }
+/* the preferences of the scene in the dropdown of their axis (scene-prefs.tsx): the label over its control, as mds-pref draws them; the inset is the one of mds-dropdown */
+.studio-prefs { display: grid; gap: var(--magma-rhythm-between-fields); min-width: 280px; }
 .studio-pref { display: grid; gap: var(--magma-rhythm-label-control); }
 .studio-menu { display: grid; gap: var(--magma-rhythm-inline); padding: var(--magma-rhythm-inset); }
 .studio-menu-title { color: rgb(var(--magma-text-muted)); }
