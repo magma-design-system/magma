@@ -5,7 +5,7 @@ import gimpTemplate from '@maggioli-design-system/design-tokens/src/formats/gimp
 import {
   ifEquals,
   leadZero,
-  rgbChannel,
+  rgbColor,
   gimpRgbChannel,
 } from '@maggioli-design-system/design-tokens/src/formats/helpers.js';
 import { darkSchemeTemplateData as dark } from '@maggioli-design-system/design-tokens/src/formats/dark-scheme.js';
@@ -22,7 +22,7 @@ type TokenTree = { color: Record<string, unknown> };
 const handlebars = Handlebars.create();
 handlebars.registerHelper('ifEquals', ifEquals);
 handlebars.registerHelper('leadZero', leadZero);
-handlebars.registerHelper('rgbChannel', rgbChannel);
+handlebars.registerHelper('rgbColor', rgbColor);
 handlebars.registerHelper('gimpRgbChannel', gimpRgbChannel);
 
 const renderHex = handlebars.compile(hexTemplate);
@@ -39,7 +39,7 @@ export function cssHex(properties: TokenTree, date: string): string {
   return lowerHex(renderHex({ properties, dark, version, date }));
 }
 
-/** CSS custom properties with space-separated RGB channels. */
+/** CSS custom properties with rgb() colors (light + dark theme selectors). */
 export function cssRgb(properties: TokenTree, date: string): string {
   return renderRgb({ properties, dark, version, date });
 }

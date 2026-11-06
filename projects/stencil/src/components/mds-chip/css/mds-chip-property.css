@@ -11,7 +11,7 @@
 
 @property --mds-chip-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-overlay));
+  initial-value: var(--magma-surface-overlay);
   syntax: '<color>';
 }
 
@@ -23,19 +23,19 @@
 
 @property --mds-chip-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-muted));
+  initial-value: var(--magma-text-muted);
   syntax: '<color>';
 }
 
 @property --mds-chip-icon-background {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-fg));
+  initial-value: var(--magma-accent-fg);
   syntax: '<color>';
 }
 
 @property --mds-chip-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }
 

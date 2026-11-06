@@ -135,12 +135,12 @@ Use `strategy="disabled"` when you want to position the badge yourself with util
 
 #### Styling Customization via CSS Custom Properties
 
-Customize the badge only through its public `--mds-notification-*` CSS custom properties, the ink color and the size; the fill and the ring of the dot come from the component, the fill from its `variant`. Set them on the host element or a parent selector. Use the Magma color tokens with `rgb(var(--<token>))` so dark mode and high-contrast stay consistent.
+Customize the badge only through its public `--mds-notification-*` CSS custom properties, the ink color and the size; the fill and the ring of the dot come from the component, the fill from its `variant`. Set them on the host element or a parent selector. Use the Magma color tokens with `var(--<token>)` so dark mode and high-contrast stay consistent.
 
 ```css
 /* Badge piu' grande, inchiostro abbinato al riempimento di stato */
 .header-nav mds-notification {
-  --mds-notification-color: rgb(var(--magma-danger-on-emphasis));
+  --mds-notification-color: var(--magma-danger-on-emphasis);
   --mds-notification-size: 18px;
 }
 ```

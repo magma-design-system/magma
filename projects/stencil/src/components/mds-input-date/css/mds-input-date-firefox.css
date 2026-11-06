@@ -31,6 +31,6 @@
   }
 
   :host(:not([slot])) .input:disabled ~ .action-open-calendar-wrapper {
-    background-color: rgb(var(--magma-wash-soft));
+    background-color: var(--magma-wash-soft);
   }
 }

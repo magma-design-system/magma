@@ -9,7 +9,7 @@ import {
   ifTailwindFontSizeProp,
   kebabCase,
   leadZero,
-  rgbChannel,
+  rgbColor,
   tailwindFontSize,
 } from '../helpers';
 
@@ -29,7 +29,7 @@ const sharedKeys = (groupA: object, groupB: object): string[] =>
 
 Handlebars.registerHelper('ifEquals', ifEquals);
 Handlebars.registerHelper('leadZero', leadZero);
-Handlebars.registerHelper('rgbChannel', rgbChannel);
+Handlebars.registerHelper('rgbColor', rgbColor);
 Handlebars.registerHelper('kebabCase', kebabCase);
 Handlebars.registerHelper('ifTailwindFontSizeProp', ifTailwindFontSizeProp);
 Handlebars.registerHelper('tailwindFontSize', tailwindFontSize);

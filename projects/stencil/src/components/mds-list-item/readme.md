@@ -129,7 +129,7 @@ Use the documented `::part(icon)` surface to tint or resize the leading icon. Pr
 
 ```css
 .status-list mds-list-item::part(icon) {
-  fill: rgb(var(--magma-success-fg));
+  fill: var(--magma-success-fg);
 }
 ```
 
@@ -224,7 +224,7 @@ mds-list-item >>> .icon {
 
 /* CORRECT */
 mds-list-item::part(icon) {
-  fill: rgb(var(--magma-danger-fg));
+  fill: var(--magma-danger-fg);
 }
 ```
 

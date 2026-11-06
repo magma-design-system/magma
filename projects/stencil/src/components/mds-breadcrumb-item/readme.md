@@ -81,18 +81,18 @@ Listen to `mdsBreadcrumbItemSelect` on the item, or to `mdsBreadcrumbChange`, wh
 
 #### Styling Button States
 
-Restyle the button through the `button` part: it is the item's `<mds-button>`, so it takes the public `--mds-button-*` custom properties. Target the hover state with `:hover` on the part and the selected one with the item's `selected` attribute, and use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode keeps working.
+Restyle the button through the `button` part: it is the item's `<mds-button>`, so it takes the public `--mds-button-*` custom properties. Target the hover state with `:hover` on the part and the selected one with the item's `selected` attribute, and use semantic color roles wrapped in `var(--magma-<role>)` so dark mode keeps working.
 
 ```css
 .sidebar-nav mds-breadcrumb-item::part(button) {
-  --mds-button-color: rgb(var(--magma-text-muted));
+  --mds-button-color: var(--magma-text-muted);
 }
 .sidebar-nav mds-breadcrumb-item::part(button):hover {
-  --mds-button-color: rgb(var(--magma-text-default));
+  --mds-button-color: var(--magma-text-default);
 }
 .sidebar-nav mds-breadcrumb-item[selected]::part(button) {
-  --mds-button-background: rgb(var(--magma-accent-surface-subtle));
-  --mds-button-color: rgb(var(--magma-accent-fg));
+  --mds-button-background: var(--magma-accent-surface-subtle);
+  --mds-button-color: var(--magma-accent-fg);
 }
 ```
 
@@ -206,7 +206,7 @@ mds-breadcrumb-item >>> .icon {
 
 /* CORRECT */
 mds-breadcrumb-item::part(button) {
-  --mds-button-color: rgb(var(--magma-accent-fg));
+  --mds-button-color: var(--magma-accent-fg);
 }
 ```
 

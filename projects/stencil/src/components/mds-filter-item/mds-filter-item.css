@@ -11,16 +11,16 @@
 :host {
   --mds-filter-item-transition-duration: var(--duration-200);
   --private-filter-item-transition-duration: var(--mds-filter-item-transition-duration);
-  --mds-filter-item-count-background-default: rgb(var(--magma-wash-strong));
-  --mds-filter-item-count-color-default: rgb(var(--magma-text-default));
-  --mds-filter-item-count-background-selected: rgb(var(--magma-surface-inverse-muted));
-  --mds-filter-item-count-color-selected: rgb(var(--magma-on-inverse));
+  --mds-filter-item-count-background-default: var(--magma-wash-strong);
+  --mds-filter-item-count-color-default: var(--magma-text-default);
+  --mds-filter-item-count-background-selected: var(--magma-surface-inverse-muted);
+  --mds-filter-item-count-color-selected: var(--magma-on-inverse);
 
   @apply focus-bounce;
 
   align-items: center;
   border-radius: var(--magma-radius-full);
-  color: rgb(var(--magma-text-muted));
+  color: var(--magma-text-muted);
   cursor: pointer;
   display: flex;
   fill: currentcolor;
@@ -69,7 +69,7 @@ mds-text {
  * the hover feedback of a control that answers */
 
 :host([disabled]:not([disabled='false'])) {
-  color: rgb(var(--magma-text-disabled));
+  color: var(--magma-text-disabled);
   pointer-events: none;
 }
 
@@ -81,7 +81,7 @@ mds-text {
 
 :host([selected]:not([selected='false'])),
 :host(:hover) {
-  background-color: rgb(var(--magma-surface-overlay));
+  background-color: var(--magma-surface-overlay);
 }
 
 :host(:hover) {
@@ -89,7 +89,7 @@ mds-text {
 }
 
 :host([selected]:not([selected='false'])) {
-  color: rgb(var(--magma-text-default));
+  color: var(--magma-text-default);
 }
 
 :host([selected]:not([selected='false'])) .count {

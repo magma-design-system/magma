@@ -323,7 +323,7 @@ mds-price-table-features-cell::part(cell-wrapper) {
 
 /* CORRECT */
 mds-price-table-features-cell::part(icon) {
-  fill: rgb(var(--magma-success-fg));
+  fill: var(--magma-success-fg);
 }
 ```
 

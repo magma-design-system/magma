@@ -133,12 +133,12 @@ A `type="text"` cell accepts arbitrary HTML in its slot, so you can pair the val
 
 #### Styling Customization
 
-Override the row's resting background and text colors through the public `--mds-price-table-features-row-*` CSS custom properties; the hover state is set by the component. Always name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working.
+Override the row's resting background and text colors through the public `--mds-price-table-features-row-*` CSS custom properties; the hover state is set by the component. Always name a semantic role, `var(--magma-<role>)` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working.
 
 ```css
 .pricing-section mds-price-table-features-row {
-  --mds-price-table-features-row-background: rgb(var(--magma-surface-muted));
-  --mds-price-table-features-row-color: rgb(var(--magma-text-muted));
+  --mds-price-table-features-row-background: var(--magma-surface-muted);
+  --mds-price-table-features-row-color: var(--magma-text-muted);
 }
 ```
 
@@ -230,8 +230,8 @@ mds-price-table-features-row >>> .internal-row-class {
 ```css
 /* CORRECT */
 mds-price-table-features-row {
-  --mds-price-table-features-row-background: rgb(var(--magma-surface-muted));
-  --mds-price-table-features-row-color: rgb(var(--magma-text-muted));
+  --mds-price-table-features-row-background: var(--magma-surface-muted);
+  --mds-price-table-features-row-color: var(--magma-text-muted);
 }
 ```
 

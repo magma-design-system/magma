@@ -28,17 +28,17 @@
   --mds-push-notification-item-duration: var(--duration-300);
   --private-push-notification-item-duration: var(--mds-push-notification-item-duration);
   --mds-push-notification-item-icon-background-color: transparent;
-  --mds-push-notification-item-icon-color: rgb(var(--magma-text-subtle));
+  --mds-push-notification-item-icon-color: var(--magma-text-subtle);
   --mds-push-notification-item-message-line-clamp: 2;
   --mds-push-notification-item-shadow: var(--shadow-sm-sharp);
   --mds-push-notification-item-subject-line-clamp: 1;
   --mds-push-notification-item-timing-function: var(--ease-in-out-quint);
 
   align-items: flex-start;
-  background-color: rgb(var(--magma-surface-overlay));
+  background-color: var(--magma-surface-overlay);
   border-radius: var(--magma-radius-lg);
   box-shadow: var(--mds-push-notification-item-shadow);
-  color: rgb(var(--magma-text-default));
+  color: var(--magma-text-default);
   corner-shape: var(--magma-corner-shape);
   display: flex;
   gap: --spacing(400);
@@ -104,7 +104,7 @@
 
 .close-button:focus-visible,
 .close-button:hover {
-  fill: rgb(var(--magma-text-muted));
+  fill: var(--magma-text-muted);
   opacity: 1;
 }
 

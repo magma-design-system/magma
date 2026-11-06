@@ -11,12 +11,12 @@
 
 @property --mds-input-field-message-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-soft));
+  initial-value: var(--magma-wash-soft);
   syntax: '<color>';
 }
 
 @property --mds-input-field-message-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-muted));
+  initial-value: var(--magma-text-muted);
   syntax: '<color>';
 }

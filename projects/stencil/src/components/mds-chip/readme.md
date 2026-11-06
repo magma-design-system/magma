@@ -180,17 +180,17 @@ Set `disabled` to dim the chip and block it: a clickable label leaves the tab or
 
 #### Styling Customization
 
-Style the chip only through its public `--mds-chip-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode, named themes and high contrast keep working. When `selected` is set the component swaps each property for a selected value of its own, which is not public. A property set on the host from outside wins over that swap: scope the resting values to `:not([selected])`, and set the same public properties on `[selected]` to restyle the selected state.
+Style the chip only through its public `--mds-chip-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `var(--magma-<role>)` so dark mode, named themes and high contrast keep working. When `selected` is set the component swaps each property for a selected value of its own, which is not public. A property set on the host from outside wins over that swap: scope the resting values to `:not([selected])`, and set the same public properties on `[selected]` to restyle the selected state.
 
 ```css
 .filtri-categoria mds-chip:not([selected]) {
-  --mds-chip-background: rgb(var(--magma-accent-surface));
-  --mds-chip-color: rgb(var(--magma-accent-fg));
+  --mds-chip-background: var(--magma-accent-surface);
+  --mds-chip-color: var(--magma-accent-fg);
 }
 
 .filtri-categoria mds-chip[selected] {
-  --mds-chip-background: rgb(var(--magma-accent-emphasis));
-  --mds-chip-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-chip-background: var(--magma-accent-emphasis);
+  --mds-chip-color: var(--magma-accent-on-emphasis);
 }
 ```
 
@@ -272,7 +272,7 @@ mds-chip >>> .button-delete {
 
 /* CORRECT */
 mds-chip {
-  --mds-chip-icon-background: rgb(var(--magma-danger-emphasis));
+  --mds-chip-icon-background: var(--magma-danger-emphasis);
 }
 ```
 

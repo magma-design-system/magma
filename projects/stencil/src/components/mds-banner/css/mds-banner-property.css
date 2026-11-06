@@ -11,13 +11,13 @@
 
 @property --mds-banner-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-overlay));
+  initial-value: var(--magma-surface-overlay);
   syntax: '<color>';
 }
 
 @property --mds-banner-cockade-background {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-surface));
+  initial-value: var(--magma-accent-surface);
   syntax: '<color>';
 }
 
@@ -29,7 +29,7 @@
 
 @property --mds-banner-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-default));
+  initial-value: var(--magma-text-default);
   syntax: '<color>';
 }
 
@@ -41,13 +41,13 @@
 
 @property --mds-banner-headline-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis-active));
+  initial-value: var(--magma-accent-emphasis-active);
   syntax: '<color>';
 }
 
 @property --mds-banner-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-fg));
+  initial-value: var(--magma-accent-fg);
   syntax: '<color>';
 }
 

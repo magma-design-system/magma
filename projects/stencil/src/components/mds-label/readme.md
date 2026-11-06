@@ -128,12 +128,12 @@ Choose `typography` to match the surrounding text hierarchy. The default `captio
 
 #### Styling Customization
 
-Style the label only through its public `--mds-label-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the label only through its public `--mds-label-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `var(--<token>)` so dark mode and high-contrast modes keep working.
 
 ```css
 .categoria-speciale mds-label {
-  --mds-label-background: rgb(var(--label-orchid-08));
-  --mds-label-color: rgb(var(--label-orchid-02));
+  --mds-label-background: var(--label-orchid-08);
+  --mds-label-color: var(--label-orchid-02);
 }
 ```
 
@@ -219,8 +219,8 @@ mds-label >>> .text {
 
 /* CORRECT */
 mds-label {
-  --mds-label-background: rgb(var(--label-blue-08));
-  --mds-label-color: rgb(var(--label-blue-02));
+  --mds-label-background: var(--label-blue-08);
+  --mds-label-color: var(--label-blue-02);
 }
 ```
 

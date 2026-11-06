@@ -20,34 +20,34 @@
 
 :host([current]:not([current='false'])[tone='strong']),
 :host([current]:not([current='false'])[tone='box']) {
-  --mds-button-background: rgb(var(--private-button-fill));
-  --mds-button-border-color-rgb: var(--private-button-fill);
+  --mds-button-background: var(--private-button-fill);
+  --mds-button-border-color: var(--private-button-fill);
   --mds-button-border-width: 0;
 
   filter: none;
 }
 
 :host([current]:not([current='false'])[tone='weak']) {
-  --mds-button-background: rgb(var(--private-button-current-wash));
-  --mds-button-border-color-rgb: var(--private-button-current-wash);
+  --mds-button-background: var(--private-button-current-wash);
+  --mds-button-border-color: var(--private-button-current-wash);
   --mds-button-border-width: 0;
-  --mds-button-color: rgb(var(--private-button-ink));
+  --mds-button-color: var(--private-button-ink);
 
-  fill: rgb(var(--private-button-ink));
+  fill: var(--private-button-ink);
 }
 
 /* the ring at rest: the width of mds-button.css, the opacity of the tone sheet */
 
 :host([current]:not([current='false'])[tone='outline']) {
-  --mds-button-background: rgb(var(--private-button-text-wash));
+  --mds-button-background: var(--private-button-text-wash);
   --mds-button-border-opacity: var(--mds-button-border-tone-outline-opacity);
   --mds-button-border-width: --spacing(50);
-  --mds-button-color: rgb(var(--private-button-outline-ink));
+  --mds-button-color: var(--private-button-outline-ink);
 }
 
 :host([current]:not([current='false'])[tone='text']) {
-  --mds-button-background: rgb(var(--private-button-text-wash));
-  --mds-button-color: rgb(var(--private-button-text-ink));
+  --mds-button-background: var(--private-button-text-wash);
+  --mds-button-color: var(--private-button-text-ink);
 }
 
 /* one weight heavier than the size gives (mds-button-label.css): bold for action, black for the

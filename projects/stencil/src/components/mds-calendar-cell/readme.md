@@ -102,8 +102,8 @@ The cells live in the calendar's shadow DOM, so their public `--mds-calendar-cel
 ```css
 .booking-calendar mds-calendar {
   --mds-calendar-cell-other-month-visibility: hidden;
-  --mds-calendar-cell-background: rgb(var(--magma-wash-soft));
-  --mds-calendar-cell-color: rgb(var(--magma-text-muted));
+  --mds-calendar-cell-background: var(--magma-wash-soft);
+  --mds-calendar-cell-color: var(--magma-text-muted);
 }
 ```
 
@@ -156,7 +156,7 @@ mds-calendar-cell >>> .inner-dot {
 /* CORRECT */
 mds-calendar {
   --mds-calendar-cell-other-month-visibility: hidden;
-  --mds-calendar-cell-background: rgb(var(--magma-wash-soft));
+  --mds-calendar-cell-background: var(--magma-wash-soft);
 }
 ```
 

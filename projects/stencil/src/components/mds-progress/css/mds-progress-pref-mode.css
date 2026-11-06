@@ -6,60 +6,60 @@
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])),
 :host([pref-theme-scheme='dark']) {
-  --mds-progress-color: rgb(var(--magma-accent-fg));
+  --mds-progress-color: var(--magma-accent-fg);
 
   &:host([variant='primary']) {
-    --mds-progress-color: rgb(var(--magma-accent-fg));
+    --mds-progress-color: var(--magma-accent-fg);
   }
 
   &:host([variant='error']) {
-    --mds-progress-color: rgb(var(--magma-danger-emphasis));
-    --mds-progress-background: rgb(var(--magma-danger-wash-base));
+    --mds-progress-color: var(--magma-danger-emphasis);
+    --mds-progress-background: var(--magma-danger-wash-base);
   }
 
   &:host([variant='warning']) {
-    --mds-progress-color: rgb(var(--magma-warning-emphasis));
-    --mds-progress-background: rgb(var(--magma-warning-wash-base));
+    --mds-progress-color: var(--magma-warning-emphasis);
+    --mds-progress-background: var(--magma-warning-wash-base);
   }
 
   &:host([variant='success']) {
-    --mds-progress-color: rgb(var(--magma-success-emphasis));
-    --mds-progress-background: rgb(var(--magma-success-wash-base));
+    --mds-progress-color: var(--magma-success-emphasis);
+    --mds-progress-background: var(--magma-success-wash-base);
   }
 
   &:host([variant='info']) {
-    --mds-progress-color: rgb(var(--magma-info-emphasis));
-    --mds-progress-background: rgb(var(--magma-info-wash-base));
+    --mds-progress-color: var(--magma-info-emphasis);
+    --mds-progress-background: var(--magma-info-wash-base);
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
-    --mds-progress-color: rgb(var(--magma-accent-fg));
+    --mds-progress-color: var(--magma-accent-fg);
 
     &:host([variant='primary']) {
-      --mds-progress-color: rgb(var(--magma-accent-fg));
+      --mds-progress-color: var(--magma-accent-fg);
     }
 
     &:host([variant='error']) {
-      --mds-progress-color: rgb(var(--magma-danger-emphasis));
-      --mds-progress-background: rgb(var(--magma-danger-wash-base));
+      --mds-progress-color: var(--magma-danger-emphasis);
+      --mds-progress-background: var(--magma-danger-wash-base);
     }
 
     &:host([variant='warning']) {
-      --mds-progress-color: rgb(var(--magma-warning-emphasis));
-      --mds-progress-background: rgb(var(--magma-warning-wash-base));
+      --mds-progress-color: var(--magma-warning-emphasis);
+      --mds-progress-background: var(--magma-warning-wash-base);
     }
 
     &:host([variant='success']) {
-      --mds-progress-color: rgb(var(--magma-success-emphasis));
-      --mds-progress-background: rgb(var(--magma-success-wash-base));
+      --mds-progress-color: var(--magma-success-emphasis);
+      --mds-progress-background: var(--magma-success-wash-base);
     }
 
     &:host([variant='info']) {
-      --mds-progress-color: rgb(var(--magma-info-emphasis));
-      --mds-progress-background: rgb(var(--magma-info-wash-base));
+      --mds-progress-color: var(--magma-info-emphasis);
+      --mds-progress-background: var(--magma-info-wash-base);
     }
   }
 }

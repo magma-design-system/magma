@@ -151,15 +151,15 @@ To open or close the drawer from external code - for instance after route naviga
 
 #### Styling the Hamburger Icon Color
 
-`mds-header-bar` has no public CSS custom property. Inside an `mds-header`, the hamburger takes the header's public `--mds-header-color`: set it on the header. To color the hamburger of a bar used on its own, set `fill` on its documented `hamburger` part. Use a semantic color role wrapped with `rgb(var(--magma-<role>))` so dark-mode works automatically.
+`mds-header-bar` has no public CSS custom property. Inside an `mds-header`, the hamburger takes the header's public `--mds-header-color`: set it on the header. To color the hamburger of a bar used on its own, set `fill` on its documented `hamburger` part. Use a semantic color role wrapped with `var(--magma-<role>)` so dark-mode works automatically.
 
 ```css
 mds-header {
-  --mds-header-color: rgb(var(--magma-accent-fg));
+  --mds-header-color: var(--magma-accent-fg);
 }
 
 mds-header-bar::part(hamburger) {
-  fill: rgb(var(--magma-accent-fg));
+  fill: var(--magma-accent-fg);
 }
 ```
 
@@ -176,7 +176,7 @@ mds-header-bar::part(actions) {
 /* Visually highlight the hamburger button in a branded theme */
 mds-header-bar::part(hamburger) {
   border-radius: var(--magma-radius-md);
-  background-color: rgb(var(--magma-accent-surface));
+  background-color: var(--magma-accent-surface);
 }
 ```
 
@@ -256,8 +256,8 @@ mds-header-bar::part(icon) {
 
 /* CORRECT */
 mds-header-bar::part(hamburger) {
-  background-color: rgb(var(--magma-wash-base));
-  fill: rgb(var(--magma-accent-fg));
+  background-color: var(--magma-wash-base);
+  fill: var(--magma-accent-fg);
 }
 ```
 

@@ -11,13 +11,13 @@
 
 @property --mds-input-upload-drag-area-background-color {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-overlay));
+  initial-value: var(--magma-surface-overlay);
   syntax: '<color>';
 }
 
 @property --mds-input-upload-drag-area-background-color-on-drag {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-soft));
+  initial-value: var(--magma-wash-soft);
   syntax: '<color>';
 }
 

@@ -12,7 +12,7 @@
 :host {
   --mds-card-gap: var(--magma-rhythm-title-content);
   --mds-card-padding: var(--magma-rhythm-inset);
-  --mds-card-background: rgb(var(--magma-surface-raised));
+  --mds-card-background: var(--magma-surface-raised);
 
   background-color: var(--mds-card-background);
   border-radius: var(--magma-radius-2xl);

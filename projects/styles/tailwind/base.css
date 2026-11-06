@@ -21,8 +21,8 @@
     @apply font-info
       text-info-detail;
 
-    background-color: rgb(var(--magma-surface-default));
-    color: rgb(var(--magma-text-default));
+    background-color: var(--magma-surface-default);
+    color: var(--magma-text-default);
   }
 
   /* color-scheme follows the palette, so the browser's own UI (scrollbars, form
@@ -76,7 +76,7 @@
      * was invalid at computed-value time and a link inherited the body colour.
      * `accent-emphasis`, not `accent-fg`: 5.04:1 on white and 4.50:1 on the page
      * surface, where fg sits at 3.92 and 3.51. */
-    color: rgb(var(--magma-accent-emphasis));
+    color: var(--magma-accent-emphasis);
   }
 
   h1,

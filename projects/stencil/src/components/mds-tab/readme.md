@@ -251,12 +251,12 @@ Mark an individual tab as unavailable with `disabled`. The parent's selection me
 
 #### Styling Customization
 
-Style the component only through its public `--mds-tab-*` CSS custom properties: the background, margin and shadow of the tab strip and the columns of the vertical layout. The colours and shadows of the items and the timing of the transitions are not part of them. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the component only through its public `--mds-tab-*` CSS custom properties: the background, margin and shadow of the tab strip and the columns of the vertical layout. The colours and shadows of the items and the timing of the transitions are not part of them. Set them on the host or a parent selector; use semantic color roles via `var(--magma-<role>)` so dark mode and high-contrast modes keep working.
 
 ```css
 .scheda-primaria mds-tab {
-  --mds-tab-tabs-background: rgb(var(--magma-accent-surface));
-  --mds-tab-tabs-wrapper-shadow: 0 0 0 calc(var(--spacing) * 50) rgb(var(--magma-accent-border)) inset;
+  --mds-tab-tabs-background: var(--magma-accent-surface);
+  --mds-tab-tabs-wrapper-shadow: 0 0 0 calc(var(--spacing) * 50) var(--magma-accent-border) inset;
 }
 ```
 
@@ -439,10 +439,10 @@ mds-tab::part(tabs-wrapper) {
 
 /* CORRECT */
 mds-tab {
-  --mds-tab-tabs-background: rgb(var(--magma-accent-surface));
+  --mds-tab-tabs-background: var(--magma-accent-surface);
 }
 mds-tab::part(tabs) {
-  outline: 2px solid rgb(var(--magma-accent-border));
+  outline: 2px solid var(--magma-accent-border);
 }
 ```
 

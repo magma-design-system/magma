@@ -81,19 +81,6 @@ interface Token {
 
 const oneLine = (value: string): string => value.replace(/\s+/g, ' ').trim();
 
-/*
-  A palette token holds a bare rgb triplet (`112 85 4`), because it is meant to be read
-  as `rgb(var(--label-yellow-03))`. No editor can preview that: a triplet is not a color,
-  the color only exists once rgb() wraps it, and VS Code's own color support returns
-  nothing for `rgb(var(--x))` even when the token is declared in the same file. Wrapping
-  the triplet HERE, in a file no browser ever loads, is what gives the whole palette a
-  real swatch in the completion list and on hover. The token's own value is still the
-  triplet - this file is a view for editors, and its header says so.
-*/
-const TRIPLET = /^\d{1,3} \d{1,3} \d{1,3}$/;
-
-const previewable = (value: string): string => (TRIPLET.test(value) ? `rgb(${value})` : value);
-
 const collect = async (source: Source): Promise<Token[]> => {
   const file = source.file as string;
   const root = postcss.parse(await readFile(file, 'utf8'), { from: file });
@@ -297,11 +284,6 @@ const HEADER = [
   '  browser. It is the single source to point an editor at, so that every Magma token',
   '  appears exactly once in a var() completion, in scale order, with its value.',
   '',
-  '  One deliberate difference from the real stylesheets: a palette token whose value is',
-  '  a bare rgb triplet is written here as rgb(<triplet>), so that editors can show its',
-  '  actual color. The token itself still holds the triplet, to be read as',
-  '  rgb(var(--label-yellow-03)).',
-  '',
   '  With CSS Var Complete (phoenisx.cssvar):',
   '    "cssvar.files": [',
   '      "node_modules/@maggioli-design-system/styles/dist/css/tokens.editor.css"',
@@ -351,7 +333,7 @@ const main = async (): Promise<void> => {
         globalDescription(cssPath(token.name)) ??
         cssOnlyDescription(token.name);
       chunks.push(
-        `    ${token.name}: ${previewable(token.value)};${description ? ` /* ${description} */` : ''}`,
+        `    ${token.name}: ${token.value};${description ? ` /* ${description} */` : ''}`,
       );
     }
   }

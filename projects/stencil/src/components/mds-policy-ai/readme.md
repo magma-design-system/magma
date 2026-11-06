@@ -123,12 +123,12 @@ mds-policy-ai::part(card) {
 
 /* A border on the chip itself: chip-wrapper would reach its dropdown too */
 mds-policy-ai::part(chip) {
-  border: 1px solid rgb(var(--magma-accent-ai-border));
+  border: 1px solid var(--magma-accent-ai-border);
 }
 
 /* An AI tint for the banner surface */
 mds-policy-ai::part(banner) {
-  --mds-banner-background: rgb(var(--magma-accent-ai-surface));
+  --mds-banner-background: var(--magma-accent-ai-surface);
 }
 ```
 

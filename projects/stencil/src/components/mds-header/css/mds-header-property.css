@@ -48,6 +48,6 @@
 
 @property --mds-header-modal-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }

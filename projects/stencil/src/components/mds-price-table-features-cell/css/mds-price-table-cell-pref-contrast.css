@@ -4,18 +4,18 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-01));
-  --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-02));
-  --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--magma-text-default));
-  --mds-price-table-features-cell-icon-unsupported-color: rgb(var(--magma-text-default));
+  --mds-price-table-features-cell-icon-supported-color-hover: var(--label-green-01);
+  --mds-price-table-features-cell-icon-supported-color: var(--label-green-02);
+  --mds-price-table-features-cell-icon-unsupported-color-hover: var(--magma-text-default);
+  --mds-price-table-features-cell-icon-unsupported-color: var(--magma-text-default);
 }
 
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-price-table-features-cell-icon-supported-color-hover: rgb(var(--label-green-01));
-    --mds-price-table-features-cell-icon-supported-color: rgb(var(--label-green-02));
-    --mds-price-table-features-cell-icon-unsupported-color-hover: rgb(var(--magma-text-default));
-    --mds-price-table-features-cell-icon-unsupported-color: rgb(var(--magma-text-default));
+    --mds-price-table-features-cell-icon-supported-color-hover: var(--label-green-01);
+    --mds-price-table-features-cell-icon-supported-color: var(--label-green-02);
+    --mds-price-table-features-cell-icon-unsupported-color-hover: var(--magma-text-default);
+    --mds-price-table-features-cell-icon-unsupported-color: var(--magma-text-default);
   }
 }

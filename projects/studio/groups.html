@@ -44,7 +44,7 @@
         gap: var(--magma-rhythm-between-fields);
       }
       .groups-muted {
-        color: rgb(var(--magma-text-muted));
+        color: var(--magma-text-muted);
       }
       .groups-row {
         display: flex;
@@ -94,7 +94,7 @@
         align-content: start;
         justify-items: start;
         padding: var(--magma-rhythm-inset);
-        border: thin solid rgb(var(--magma-border-default));
+        border: thin solid var(--magma-border-default);
         border-radius: var(--magma-radius-lg);
         corner-shape: var(--magma-corner-shape);
       }
@@ -349,10 +349,10 @@
         'surfaces',
         ['sunken', 'muted', 'default', 'raised', 'overlay']
           .map(
-            (surface) => `<div class="groups-box" style="background: rgb(var(--magma-surface-${surface}))">
+            (surface) => `<div class="groups-box" style="background: var(--magma-surface-${surface})">
               ${caption(`surface-${surface}`)}
               ${['default', 'muted', 'subtle', 'disabled']
-                .map((text) => `<mds-text typography="detail" style="color: rgb(var(--magma-text-${text}))">Text ${text}</mds-text>`)
+                .map((text) => `<mds-text typography="detail" style="color: var(--magma-text-${text})">Text ${text}</mds-text>`)
                 .join('')}
               <mds-link href="#">A link</mds-link>
               <mds-badge variant="info" label="info"></mds-badge>
@@ -363,7 +363,7 @@
       fill(
         'borders',
         ['muted', 'default', 'strong']
-          .map((border) => `<div class="groups-box" style="border-color: rgb(var(--magma-border-${border}))">${caption(`border-${border}`)}</div>`)
+          .map((border) => `<div class="groups-box" style="border-color: var(--magma-border-${border})">${caption(`border-${border}`)}</div>`)
           .join(''),
       );
       matrix('banners', lists.banner, (variant, tone) => `<mds-banner variant="${variant}" tone="${tone}" headline="${variant}"></mds-banner>`);

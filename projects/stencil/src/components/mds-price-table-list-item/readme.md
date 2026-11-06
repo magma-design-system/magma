@@ -117,15 +117,15 @@ The full compound pattern: `<mds-price-table-list>` with header, items, a price,
 
 #### Styling Customization
 
-`<mds-price-table-list-item>` has no public CSS custom property: the supported and unsupported icons take their colors from the component, the supported one also while the pointer is over the item. For a targeted override, style the documented `::part(icon)`, with the reflected `supported` attribute to tell the two apart. Name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast keep working.
+`<mds-price-table-list-item>` has no public CSS custom property: the supported and unsupported icons take their colors from the component, the supported one also while the pointer is over the item. For a targeted override, style the documented `::part(icon)`, with the reflected `supported` attribute to tell the two apart. Name a semantic role, `var(--magma-<role>)` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast keep working.
 
 ```css
 .promo-column mds-price-table-list-item[supported]::part(icon) {
-  fill: rgb(var(--magma-accent-fg));
+  fill: var(--magma-accent-fg);
 }
 
 .promo-column mds-price-table-list-item:not([supported])::part(icon) {
-  fill: rgb(var(--magma-text-subtle));
+  fill: var(--magma-text-subtle);
 }
 ```
 
@@ -186,7 +186,7 @@ mds-price-table-list-item >>> .icon {
 
 /* CORRECT */
 mds-price-table-list-item::part(icon) {
-  fill: rgb(var(--magma-success-fg));
+  fill: var(--magma-success-fg);
 }
 ```
 

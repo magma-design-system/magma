@@ -40,9 +40,9 @@
   --private-button-text-wash: var(--magma-accent-surface-subtle);
   --private-button-text-ink-active: var(--private-button-text-ink);
   --private-button-current-wash: var(--magma-accent-surface-selected);
-  --mds-button-background: rgb(var(--private-button-fill));
-  --mds-button-border-color-rgb: var(--private-button-fill);
-  --mds-button-color: rgb(var(--private-button-on-fill));
+  --mds-button-background: var(--private-button-fill);
+  --mds-button-border-color: var(--private-button-fill);
+  --mds-button-color: var(--private-button-on-fill);
 }
 
 :host([variant='ai']) {
@@ -58,42 +58,42 @@
 /* the tones, strong (and box) at rest in the :host rule above */
 
 :host([tone='strong']:hover) {
-  --mds-button-background: rgb(var(--private-button-fill-hover));
-  --mds-button-border-color-rgb: var(--private-button-fill-hover);
+  --mds-button-background: var(--private-button-fill-hover);
+  --mds-button-border-color: var(--private-button-fill-hover);
 }
 
 :host([tone='weak']) {
-  --mds-button-background: rgb(var(--private-button-wash));
-  --mds-button-border-color-rgb: var(--private-button-wash);
-  --mds-button-color: rgb(var(--private-button-ink));
+  --mds-button-background: var(--private-button-wash);
+  --mds-button-border-color: var(--private-button-wash);
+  --mds-button-color: var(--private-button-ink);
 
-  fill: rgb(var(--private-button-ink));
+  fill: var(--private-button-ink);
 }
 
 :host([tone='weak']:hover) {
-  --mds-button-background: rgb(var(--private-button-wash-hover));
-  --mds-button-border-color-rgb: var(--private-button-wash-hover-ring);
-  --mds-button-color: rgb(var(--private-button-ink-hover));
+  --mds-button-background: var(--private-button-wash-hover);
+  --mds-button-border-color: var(--private-button-wash-hover-ring);
+  --mds-button-color: var(--private-button-ink-hover);
 }
 
 :host([tone='outline']) {
-  --mds-button-border-color-rgb: var(--private-button-outline);
-  --mds-button-color: rgb(var(--private-button-outline-ink));
+  --mds-button-border-color: var(--private-button-outline);
+  --mds-button-color: var(--private-button-outline-ink);
 }
 
 :host([tone='outline']:hover) {
-  --mds-button-color: rgb(var(--private-button-text-ink));
+  --mds-button-color: var(--private-button-text-ink);
 }
 
 :host([tone='text']) {
-  --mds-button-color: rgb(var(--private-button-text-ink));
+  --mds-button-color: var(--private-button-text-ink);
 }
 
 :host([tone='text']:hover) {
-  --mds-button-background: rgb(var(--private-button-text-wash));
-  --mds-button-color: rgb(var(--private-button-text-ink-hover));
+  --mds-button-background: var(--private-button-text-wash);
+  --mds-button-color: var(--private-button-text-ink-hover);
 }
 
 :host([tone='text'][active]) {
-  --mds-button-color: rgb(var(--private-button-text-ink-active));
+  --mds-button-color: var(--private-button-text-ink-active);
 }

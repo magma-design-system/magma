@@ -13,14 +13,14 @@
 :host {
 
   /* private */
-  --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, rgb(var(--magma-surface-overlay)));
+  --mds-avatar-stack-item-background: var(--mds-avatar-stack-background, var(--magma-surface-overlay));
   --mds-avatar-stack-item-count-background-color: var(
     --mds-avatar-stack-count-background-color,
-    rgb(var(--magma-wash-base))
+    var(--magma-wash-base)
   );
   --mds-avatar-stack-item-count-color: var(
     --mds-avatar-stack-count-color,
-    rgb(var(--magma-text-subtle))
+    var(--magma-text-subtle)
   );
 
   /* apply: default to the md variant for standalone use; inside a stack the

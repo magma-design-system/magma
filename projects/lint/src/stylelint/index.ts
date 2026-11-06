@@ -123,8 +123,8 @@ const noRawColor: Rule = (primary, secondary) => (root, result) => {
         message: noRawColorMessages.rejected(
           literal,
           SHADOW.test(decl.prop)
-            ? 'draw a shadow with rgb(var(--magma-shadow-ink) / <alpha>)'
-            : 'paint with a role, rgb(var(--magma-*))',
+            ? 'draw a shadow with color-mix(in srgb, var(--magma-shadow-ink) <N>%, transparent)'
+            : 'paint with a role, var(--magma-*)',
         ),
       });
   });
@@ -133,13 +133,13 @@ noRawColor.ruleName = noRawColorName;
 noRawColor.messages = noRawColorMessages;
 noRawColor.meta = metaOf(
   'no-raw-color',
-  'A stylesheet paints with a role, rgb(var(--magma-*)), not with a colour literal (hex, rgb(), hsl() and the other colour functions).',
+  'A stylesheet paints with a role, var(--magma-*), not with a colour literal (hex, rgb(), hsl() and the other colour functions).',
 );
 
 const noColorSchemeName = 'magma/no-color-scheme-override';
 const noColorSchemeMessages = ruleMessages(noColorSchemeName, {
   rejected: () =>
-    'Unexpected prefers-color-scheme query: it follows the OS, not the mode the user picked in Magma (mds-pref-mode). The roles, rgb(var(--magma-*)), already follow both: paint with them; for a deliberate choice that differs per mode, use the dark variant of the Magma Tailwind theme (dark:, @variant dark), which follows the Magma mode (agents/theming.md)',
+    'Unexpected prefers-color-scheme query: it follows the OS, not the mode the user picked in Magma (mds-pref-mode). The roles, var(--magma-*), already follow both: paint with them; for a deliberate choice that differs per mode, use the dark variant of the Magma Tailwind theme (dark:, @variant dark), which follows the Magma mode (agents/theming.md)',
 });
 
 const noColorSchemeOverride: Rule = (primary) => (root, result) => {

@@ -239,7 +239,7 @@ mds-button part icon
 mds-button part label
 mds-button css --mds-button-await-duration INTERNAL
 mds-button css --mds-button-background
-mds-button css --mds-button-border-color-rgb INTERNAL
+mds-button css --mds-button-border-color INTERNAL
 mds-button css --mds-button-border-default-opacity INTERNAL
 mds-button css --mds-button-border-high-contrast-hover-width INTERNAL
 mds-button css --mds-button-border-high-contrast-width INTERNAL
@@ -436,7 +436,7 @@ mds-dropdown css --mds-dropdown-backdrop-duration INTERNAL
 mds-dropdown css --mds-dropdown-backdrop-z-index
 mds-dropdown css --mds-dropdown-background
 mds-dropdown css --mds-dropdown-drop-shadow INTERNAL
-mds-dropdown css --mds-dropdown-drop-shadow-color-rgb INTERNAL
+mds-dropdown css --mds-dropdown-drop-shadow-color INTERNAL
 mds-dropdown css --mds-dropdown-duration INTERNAL
 mds-dropdown css --mds-dropdown-ease INTERNAL
 mds-dropdown css --mds-dropdown-mouseover-delay
@@ -718,7 +718,7 @@ mds-input css --mds-input-tip-background
 mds-input css --mds-input-tip-horizontal-offset INTERNAL
 mds-input css --mds-input-tip-horizontal-offset-focused INTERNAL
 mds-input css --mds-input-tip-vertical-offset INTERNAL
-mds-input css --mds-input-variant-color-rgb
+mds-input css --mds-input-variant-color
 mds-input-date encapsulation shadow
 mds-input-date prop accessibleName (attr aria-label): string | undefined
 mds-input-date prop delay (attr delay) [reflect]: number = 500
@@ -742,10 +742,9 @@ mds-input-date css --mds-input-date-background
 mds-input-date css --mds-input-date-field-background-empty INTERNAL
 mds-input-date css --mds-input-date-field-color-empty INTERNAL
 mds-input-date css --mds-input-date-icon-color INTERNAL
-mds-input-date css --mds-input-date-icon-color-rgb INTERNAL
 mds-input-date css --mds-input-date-ring
 mds-input-date css --mds-input-date-shadow
-mds-input-date css --mds-input-date-variant-color-rgb
+mds-input-date css --mds-input-date-variant-color
 mds-input-date css --mds-input-tip-background
 mds-input-date css --mds-input-tip-horizontal-offset INTERNAL
 mds-input-date css --mds-input-tip-horizontal-offset-focused INTERNAL
@@ -774,7 +773,7 @@ mds-input-date-range css --mds-input-date-range-fields-gap
 mds-input-date-range css --mds-input-date-range-icon-color INTERNAL
 mds-input-date-range css --mds-input-date-range-ring
 mds-input-date-range css --mds-input-date-range-shadow
-mds-input-date-range css --mds-input-date-range-variant-color-rgb
+mds-input-date-range css --mds-input-date-range-variant-color
 mds-input-date-range-preselection encapsulation shadow
 mds-input-date-range-preselection prop end (attr end) [reflect]: string | undefined
 mds-input-date-range-preselection prop selected (attr selected) [reflect, mutable]: boolean | undefined
@@ -852,7 +851,7 @@ mds-input-select css --mds-input-select-arrow-icon-hover-background-color INTERN
 mds-input-select css --mds-input-select-arrow-icon-hover-color INTERNAL
 mds-input-select css --mds-input-select-ring
 mds-input-select css --mds-input-select-shadow
-mds-input-select css --mds-input-select-variant-color-rgb
+mds-input-select css --mds-input-select-variant-color
 mds-input-switch encapsulation shadow
 mds-input-switch prop autofocus (attr autofocus) [reflect]: boolean
 mds-input-switch prop checked (attr checked) [reflect, mutable]: boolean | undefined

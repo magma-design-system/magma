@@ -5,25 +5,25 @@
 
 :host([variant='google']),
 :host([variant='google'][tone]) {
-  --mds-button-background: rgb(var(--tone-neutral-seed));
+  --mds-button-background: var(--tone-neutral-seed);
   --mds-button-border-hover-opacity: 0.5;
   --mds-button-border-hover-width: --spacing(50);
   --mds-button-border-opacity: 0.2;
   --mds-button-border-width: --spacing(25);
-  --mds-button-color: rgb(var(--magma-text-muted));
+  --mds-button-color: var(--magma-text-muted);
 
   /* a ring (0 0 0 1px), not a shadow: it outlines the button in the text ink, so it
    * stays light around the black button in dark */
-  --mds-button-border-color-rgb: var(--magma-text-default);
+  --mds-button-border-color: var(--magma-text-default);
   --private-button-ink: var(--magma-text-muted);
 
   box-shadow: 0 0 0 var(--mds-button-border-width)
-    rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
+    color-mix(in srgb, var(--mds-button-border-color) calc(var(--mds-button-border-opacity) * 100%), transparent);
 }
 
 :host([variant='google']:hover),
 :host([variant='google'][tone]:hover) {
-  --mds-button-background: rgb(var(--tone-neutral-seed));
+  --mds-button-background: var(--tone-neutral-seed);
   --mds-button-border-width: var(--mds-button-border-hover-width);
   --mds-button-border-opacity: var(--mds-button-border-hover-opacity);
 }
@@ -34,16 +34,16 @@
 
 :host([variant='apple']),
 :host([variant='apple'][tone]) {
-  --mds-button-background: rgb(var(--magma-surface-inverse));
-  --mds-button-color: rgb(var(--magma-on-inverse));
+  --mds-button-background: var(--magma-surface-inverse);
+  --mds-button-color: var(--magma-on-inverse);
   --mds-button-border-width: 0;
-  --mds-button-border-color-rgb: var(--magma-surface-inverse);
+  --mds-button-border-color: var(--magma-surface-inverse);
   --private-button-ink: var(--magma-on-inverse);
 }
 
 :host([variant='apple']:hover),
 :host([variant='apple'][tone]:hover) {
-  --mds-button-background: rgb(var(--magma-surface-inverse));
+  --mds-button-background: var(--magma-surface-inverse);
   --mds-button-border-opacity: 1;
 }
 

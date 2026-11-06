@@ -3,10 +3,9 @@
  * @prop --mds-input-date-background: Public. The background of the date input
  * @prop --mds-input-date-field-background-empty: The background when the date field is empty
  * @prop --mds-input-date-field-color-empty: The text/icon color when the date field is empty
- * @prop --mds-input-date-icon-color-rgb: Deprecated, read by nothing: the icon takes `--mds-input-date-icon-color`.
  * @prop --mds-input-date-ring: Public. The focus ring of the date input
  * @prop --mds-input-date-shadow: Public. The shadow applied to the date input
- * @prop --mds-input-date-variant-color-rgb: Public. The base RGB value for the date input variant
+ * @prop --mds-input-date-variant-color: Public. The base color of the date input variant
  * @prop --mds-input-tip-horizontal-offset: The horizontal offset for the input tip
  * @prop --mds-input-tip-horizontal-offset-focused: The horizontal offset when the input tip is focused
  * @prop --mds-input-tip-vertical-offset: The vertical offset for the input tip
@@ -16,13 +15,13 @@
 /* ❌ Not supported
 @property --mds-input-date-ring {
   inherits: false;
-  initial-value: 0 0 0 1px rgb(var(--mds-input-date-variant-color-rgb) / 0.1);
+  initial-value: 0 0 0 1px color-mix(in srgb, var(--mds-input-date-variant-color) 10%, transparent);
   syntax: "<box-shadow>";
 }
 
 @property --mds-input-date-shadow {
   inherits: false;
-  initial-value: 0 1px 3px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1), 0 1px 2px 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
+  initial-value: 0 1px 3px 0 color-mix(in srgb, var(--mds-input-date-variant-color) 10%, transparent), 0 1px 2px 0 color-mix(in srgb, var(--mds-input-date-variant-color) 6%, transparent);
   syntax: "<box-shadow>";
 }
 */
@@ -34,22 +33,24 @@
   --private-input-date-height: --spacing(1200);
   --private-input-date-padding-inline: --spacing(400);
   --private-input-date-calendar-area: --spacing(1200);
-  --mds-input-date-icon-color: rgb(var(--magma-accent-fg));
+  --mds-input-date-icon-color: var(--magma-accent-fg);
 
   /* a field stands a step off its surface: overlay on a page, the step below inside an overlay
      surface, which passes it as --magma-field-fill (#1193) */
-  --mds-input-date-background: rgb(var(--magma-field-fill, var(--magma-surface-overlay)));
-  --mds-input-date-field-background-empty: rgb(var(--magma-danger-wash-soft));
-  --mds-input-date-field-color-empty: rgb(var(--magma-danger-text-default));
-  --mds-input-date-ring: 0 0 0 1px rgb(var(--mds-input-date-variant-color-rgb) / 0.1);
+  --mds-input-date-background: var(--magma-field-fill, var(--magma-surface-overlay));
+  --mds-input-date-field-background-empty: var(--magma-danger-wash-soft);
+  --mds-input-date-field-color-empty: var(--magma-danger-text-default);
+  --mds-input-date-ring: 0 0 0 1px color-mix(in srgb, var(--mds-input-date-variant-color) 10%, transparent);
   --mds-input-date-shadow:
-    0 1px --spacing(75) 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
-    0 1px --spacing(50) 0 rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
-  --mds-input-date-variant-color-rgb: 0 0 0;
+    0 1px --spacing(75) 0 color-mix(in srgb, var(--mds-input-date-variant-color) 10%, transparent),
+    0 1px --spacing(50) 0 color-mix(in srgb, var(--mds-input-date-variant-color) 6%, transparent);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-date-variant-color: rgb(0 0 0);
   --mds-input-tip-horizontal-offset: --spacing(100);
   --mds-input-tip-horizontal-offset-focused: --spacing(1000);
   --mds-input-tip-vertical-offset: --spacing(100);
-  --mds-input-tip-background: rgb(var(--magma-surface-inverse-muted));
+  --mds-input-tip-background: var(--magma-surface-inverse-muted);
   --mds-input-date-transition-duration: var(--duration-300);
 
   /* private */
@@ -62,7 +63,7 @@
     var(--magma-radius-2xl),
     var(--magma-corner-cap) * var(--private-input-date-height)
   );
-  color: rgb(var(--magma-text-default));
+  color: var(--magma-text-default);
   container-type: inline-size;
   corner-shape: var(--magma-corner-shape);
   display: flex;
@@ -127,17 +128,17 @@
 :host(:focus-within) .input {
   @apply outline-hidden transition-cosmetic;
 
-  --mds-input-date-ring: 0 0 0 --spacing(75) rgb(var(--mds-input-date-variant-color-rgb) / 1);
+  --mds-input-date-ring: 0 0 0 --spacing(75) var(--mds-input-date-variant-color);
   --mds-input-date-shadow:
-    0 --spacing(100) --spacing(150) --spacing(75) rgb(var(--mds-input-date-variant-color-rgb) / 0.1),
-    0 --spacing(50) --spacing(100) -1px rgb(var(--mds-input-date-variant-color-rgb) / 0.06);
+    0 --spacing(100) --spacing(150) --spacing(75) color-mix(in srgb, var(--mds-input-date-variant-color) 10%, transparent),
+    0 --spacing(50) --spacing(100) -1px color-mix(in srgb, var(--mds-input-date-variant-color) 6%, transparent);
 
   transition-duration: var(--duration-300);
   transition-timing-function: var(--ease-out-expo);
 }
 
 .input::placeholder {
-  color: rgb(var(--magma-text-subtle));
+  color: var(--magma-text-subtle);
 }
 
 .input::-webkit-outer-spin-button,
@@ -148,12 +149,12 @@
 }
 
 .input:disabled {
-  background-color: rgb(var(--magma-wash-soft));
+  background-color: var(--magma-wash-soft);
 }
 
 .input:disabled,
 .input:disabled::placeholder {
-  color: rgb(var(--magma-text-disabled));
+  color: var(--magma-text-disabled);
 }
 
 .action-open-calendar-wrapper {

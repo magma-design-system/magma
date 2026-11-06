@@ -121,7 +121,7 @@ The inner progress bar is exposed as the `progress-bar` shadow part. Use it to a
 
 ```css
 .hero-metric mds-benchmark-bar::part(progress-bar) {
-  --mds-progress-color: rgb(var(--magma-accent-ai-fg));
+  --mds-progress-color: var(--magma-accent-ai-fg);
 }
 ```
 
@@ -193,7 +193,7 @@ mds-benchmark-bar >>> mds-progress {
 
 /* CORRECT */
 .my-context mds-benchmark-bar::part(progress-bar) {
-  --mds-progress-color: rgb(var(--magma-accent-fg));
+  --mds-progress-color: var(--magma-accent-fg);
 }
 ```
 

@@ -58,10 +58,10 @@ describe('mds-pref-theme-item', () => {
       // the active theme, and the preview the styles of editorial publish, with values of their own
       const page = document.createElement('style');
       page.textContent = `:root {
-        --magma-wash-base: 7 8 9;
-        --magma-accent-emphasis: 10 11 12;
-        --magma-preview-editorial-wash: 1 2 3;
-        --magma-preview-editorial-accent: 4 5 6;
+        --magma-wash-base: rgb(7 8 9);
+        --magma-accent-emphasis: rgb(10 11 12);
+        --magma-preview-editorial-wash: rgb(1 2 3);
+        --magma-preview-editorial-accent: rgb(4 5 6);
       }`;
       beforeAll(() => document.head.append(page));
       afterAll(() => page.remove());

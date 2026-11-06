@@ -47,26 +47,26 @@
 :host {
   --mds-input-switch-animation-timing-adjust: 1.4;
   --mds-input-switch-animation-timing-function: var(--ease-in-out-quad);
-  --mds-input-switch-box-color-enabled-checked: rgb(var(--magma-accent-emphasis));
-  --mds-input-switch-box-color-enabled-unchecked: rgb(var(--magma-border-strong));
-  --mds-input-switch-box-color-disabled-checked: rgb(var(--magma-wash-strong));
-  --mds-input-switch-box-color-disabled-unchecked: rgb(var(--magma-wash-strong));
+  --mds-input-switch-box-color-enabled-checked: var(--magma-accent-emphasis);
+  --mds-input-switch-box-color-enabled-unchecked: var(--magma-border-strong);
+  --mds-input-switch-box-color-disabled-checked: var(--magma-wash-strong);
+  --mds-input-switch-box-color-disabled-unchecked: var(--magma-wash-strong);
   --mds-input-switch-box-padding-lg: --spacing(100);
   --mds-input-switch-box-padding-md: --spacing(100);
   --mds-input-switch-box-padding-sm: --spacing(100);
   --mds-input-switch-box-padding: var(--mds-input-switch-box-padding-md);
   --mds-input-switch-duration: var(--duration-300);
-  --mds-input-switch-icon-color-checked-disabled: rgb(var(--magma-text-disabled));
-  --mds-input-switch-icon-color-checked: rgb(var(--magma-accent-emphasis));
-  --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--magma-text-disabled));
-  --mds-input-switch-icon-color-indeterminate: rgb(var(--magma-text-disabled));
-  --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--magma-text-disabled));
-  --mds-input-switch-icon-color-unchecked: rgb(var(--magma-text-subtle));
+  --mds-input-switch-icon-color-checked-disabled: var(--magma-text-disabled);
+  --mds-input-switch-icon-color-checked: var(--magma-accent-emphasis);
+  --mds-input-switch-icon-color-indeterminate-disabled: var(--magma-text-disabled);
+  --mds-input-switch-icon-color-indeterminate: var(--magma-text-disabled);
+  --mds-input-switch-icon-color-unchecked-disabled: var(--magma-text-disabled);
+  --mds-input-switch-icon-color-unchecked: var(--magma-text-subtle);
   --mds-input-switch-icon-explicit-color: var(--mds-input-switch-icon-color-checked);
-  --mds-input-switch-toggle-color-enabled-checked: rgb(var(--magma-text-on-emphasis));
-  --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--magma-wash-soft));
-  --mds-input-switch-toggle-color-disabled-checked: rgb(var(--magma-text-on-emphasis));
-  --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--magma-text-on-emphasis));
+  --mds-input-switch-toggle-color-enabled-checked: var(--magma-text-on-emphasis);
+  --mds-input-switch-toggle-color-enabled-unchecked: var(--magma-wash-soft);
+  --mds-input-switch-toggle-color-disabled-checked: var(--magma-text-on-emphasis);
+  --mds-input-switch-toggle-color-disabled-unchecked: var(--magma-text-on-emphasis);
   --mds-input-switch-toggle-container-size: calc(
     calc(var(--mds-input-switch-toggle-size-md) * 2) +
       calc(var(--mds-input-switch-box-padding-md) * 2)

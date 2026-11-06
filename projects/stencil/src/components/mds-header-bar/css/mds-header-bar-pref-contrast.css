@@ -6,7 +6,7 @@
 :host([pref-contrast='more']) {
   --mds-header-bar-hamburger-color: var(
     --mds-header-icon-color,
-    var(--mds-header-color, rgb(var(--magma-text-default)))
+    var(--mds-header-color, var(--magma-text-default))
   );
 
   box-shadow: var(--shadow-ring-strong-2), var(--shadow-2xl);
@@ -17,7 +17,7 @@
   :host(:not([pref-contrast])) {
     --mds-header-bar-hamburger-color: var(
       --mds-header-icon-color,
-      var(--mds-header-color, rgb(var(--magma-text-default)))
+      var(--mds-header-color, var(--magma-text-default))
     );
 
     box-shadow: var(--shadow-ring-strong-2), var(--shadow-2xl);

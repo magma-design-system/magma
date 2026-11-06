@@ -107,27 +107,27 @@
       },
       "ring": {
         "description": "1px ring, base intensity - a border drawn with box-shadow, not a shadow",
-        "value": "0 0 0 1px rgb(var(--tone-neutral-01) / 0.3)"
+        "value": "0 0 0 1px color-mix(in srgb, var(--tone-neutral-01) 30%, transparent)"
       },
       "ring-2": {
         "description": "2px ring, base intensity",
-        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.3)"
+        "value": "0 0 0 2px color-mix(in srgb, var(--tone-neutral-01) 30%, transparent)"
       },
       "ring-weak": {
         "description": "1px ring, faint",
-        "value": "0 0 0 1px rgb(var(--tone-neutral-01) / 0.15)"
+        "value": "0 0 0 1px color-mix(in srgb, var(--tone-neutral-01) 15%, transparent)"
       },
       "ring-weak-2": {
         "description": "2px ring, faint",
-        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.15)"
+        "value": "0 0 0 2px color-mix(in srgb, var(--tone-neutral-01) 15%, transparent)"
       },
       "ring-strong-2": {
         "description": "2px ring, marked - the high-contrast affordance",
-        "value": "0 0 0 2px rgb(var(--tone-neutral-01) / 0.6)"
+        "value": "0 0 0 2px color-mix(in srgb, var(--tone-neutral-01) 60%, transparent)"
       },
       "ring-strong-4": {
         "description": "4px ring, marked",
-        "value": "0 0 0 4px rgb(var(--tone-neutral-01) / 0.6)"
+        "value": "0 0 0 4px color-mix(in srgb, var(--tone-neutral-01) 60%, transparent)"
       }
     }
   }

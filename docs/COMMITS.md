@@ -73,7 +73,7 @@ A breaking commit says what a consumer has to change in a `BREAKING CHANGE:` foo
 ```
 refactor(stencil)!: rename the bare tone custom properties
 
-BREAKING CHANGE: replace rgb(var(--tone-<family>)) with rgb(var(--tone-<family>-seed)).
+BREAKING CHANGE: replace var(--tone-<family>) with var(--tone-<family>-seed).
 ```
 
 The footer may wrap over several lines, which the notes join into one. A wrapped line must not start with a word followed by a colon (`component: updates are automatic`): the parser reads it as a new footer, and the note stops at the line before.

@@ -34,8 +34,8 @@
   --mds-push-notification-items-timing-function: var(--ease-in-out-quint);
   --mds-push-notification-background: linear-gradient(
     to right,
-    rgb(var(--magma-surface-sunken) / 0) 0%,
-    rgb(var(--magma-surface-sunken) / 0.85) 100%
+    color-mix(in srgb, var(--magma-surface-sunken) 0%, transparent) 0%,
+    color-mix(in srgb, var(--magma-surface-sunken) 85%, transparent) 100%
   );
 
   @apply ease-in-out-expo

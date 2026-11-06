@@ -18,36 +18,36 @@
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])),
 :host([pref-theme-scheme='dark']) {
-  --mds-input-switch-box-color-enabled-checked: rgb(var(--magma-accent-emphasis));
-  --mds-input-switch-box-color-enabled-unchecked: rgb(var(--magma-border-default));
-  --mds-input-switch-box-color-disabled-checked: rgb(var(--magma-wash-strong));
-  --mds-input-switch-box-color-disabled-unchecked: rgb(var(--magma-wash-strong));
-  --mds-input-switch-toggle-color-enabled-checked: rgb(var(--magma-text-on-emphasis));
-  --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--magma-text-default));
-  --mds-input-switch-toggle-color-disabled-checked: rgb(var(--magma-text-on-emphasis));
-  --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--magma-text-disabled));
-  --mds-input-switch-icon-color-checked: rgb(var(--magma-accent-border));
-  --mds-input-switch-icon-color-unchecked: rgb(var(--magma-border-default));
-  --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--magma-wash-strong));
-  --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--magma-text-disabled));
-  --mds-input-switch-icon-color-indeterminate: rgb(var(--magma-text-disabled));
+  --mds-input-switch-box-color-enabled-checked: var(--magma-accent-emphasis);
+  --mds-input-switch-box-color-enabled-unchecked: var(--magma-border-default);
+  --mds-input-switch-box-color-disabled-checked: var(--magma-wash-strong);
+  --mds-input-switch-box-color-disabled-unchecked: var(--magma-wash-strong);
+  --mds-input-switch-toggle-color-enabled-checked: var(--magma-text-on-emphasis);
+  --mds-input-switch-toggle-color-enabled-unchecked: var(--magma-text-default);
+  --mds-input-switch-toggle-color-disabled-checked: var(--magma-text-on-emphasis);
+  --mds-input-switch-toggle-color-disabled-unchecked: var(--magma-text-disabled);
+  --mds-input-switch-icon-color-checked: var(--magma-accent-border);
+  --mds-input-switch-icon-color-unchecked: var(--magma-border-default);
+  --mds-input-switch-icon-color-unchecked-disabled: var(--magma-wash-strong);
+  --mds-input-switch-icon-color-indeterminate-disabled: var(--magma-text-disabled);
+  --mds-input-switch-icon-color-indeterminate: var(--magma-text-disabled);
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
-    --mds-input-switch-box-color-enabled-checked: rgb(var(--magma-accent-emphasis));
-    --mds-input-switch-box-color-enabled-unchecked: rgb(var(--magma-border-default));
-    --mds-input-switch-box-color-disabled-checked: rgb(var(--magma-wash-strong));
-    --mds-input-switch-box-color-disabled-unchecked: rgb(var(--magma-wash-strong));
-    --mds-input-switch-toggle-color-enabled-checked: rgb(var(--magma-text-on-emphasis));
-    --mds-input-switch-toggle-color-enabled-unchecked: rgb(var(--magma-text-default));
-    --mds-input-switch-toggle-color-disabled-checked: rgb(var(--magma-text-on-emphasis));
-    --mds-input-switch-toggle-color-disabled-unchecked: rgb(var(--magma-text-disabled));
-    --mds-input-switch-icon-color-checked: rgb(var(--magma-accent-border));
-    --mds-input-switch-icon-color-unchecked: rgb(var(--magma-border-default));
-    --mds-input-switch-icon-color-unchecked-disabled: rgb(var(--magma-wash-strong));
-    --mds-input-switch-icon-color-indeterminate-disabled: rgb(var(--magma-text-disabled));
-    --mds-input-switch-icon-color-indeterminate: rgb(var(--magma-text-disabled));
+    --mds-input-switch-box-color-enabled-checked: var(--magma-accent-emphasis);
+    --mds-input-switch-box-color-enabled-unchecked: var(--magma-border-default);
+    --mds-input-switch-box-color-disabled-checked: var(--magma-wash-strong);
+    --mds-input-switch-box-color-disabled-unchecked: var(--magma-wash-strong);
+    --mds-input-switch-toggle-color-enabled-checked: var(--magma-text-on-emphasis);
+    --mds-input-switch-toggle-color-enabled-unchecked: var(--magma-text-default);
+    --mds-input-switch-toggle-color-disabled-checked: var(--magma-text-on-emphasis);
+    --mds-input-switch-toggle-color-disabled-unchecked: var(--magma-text-disabled);
+    --mds-input-switch-icon-color-checked: var(--magma-accent-border);
+    --mds-input-switch-icon-color-unchecked: var(--magma-border-default);
+    --mds-input-switch-icon-color-unchecked-disabled: var(--magma-wash-strong);
+    --mds-input-switch-icon-color-indeterminate-disabled: var(--magma-text-disabled);
+    --mds-input-switch-icon-color-indeterminate: var(--magma-text-disabled);
   }
 }

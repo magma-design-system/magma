@@ -10,7 +10,7 @@
     `:root[data-theme-depth='flat']`) changes. A token the CSS computes from a changed
     one (an elevation from `--depth`) is restated with its new value.
 
-  A value that names one token (`var(--radius-squircle-md)`, `rgb(var(--label-sky-09))`)
+  A value that names one token (`var(--radius-squircle-md)`, `var(--label-sky-09)`)
   is an alias, of a design-tokens token or of another global; the rest is resolved to a
   DTCG value, and `cssValue` keeps the CSS where it was computed. A value DTCG has no
   type for (a keyword, an enumeration) is listed in the `cssOnly` extension of its group,
@@ -240,13 +240,10 @@ const varParts = (inside: string): [string, string | undefined] => {
     : [inside.slice(0, comma).trim(), inside.slice(comma + 1).trim()];
 };
 
-/** The token a value names on its own: `var(--x)`, or `rgb(var(--x))` for a color. */
-const aliasTarget = (css: string): { name: string; color: boolean } | undefined => {
-  const match = /^(rgb\()?var\((--[a-z0-9-]+)\s*(?:,[^()]*(?:\([^()]*\))?[^()]*)?\)(\))?$/.exec(
-    css,
-  );
-  if (!match || Boolean(match[1]) !== Boolean(match[3])) return undefined;
-  return { name: match[2], color: Boolean(match[1]) };
+/** The token a value names on its own: `var(--x)`, with or without a fallback. */
+const aliasTarget = (css: string): { name: string } | undefined => {
+  const match = /^var\((--[a-z0-9-]+)\s*(?:,[^()]*(?:\([^()]*\))?[^()]*)?\)$/.exec(css);
+  return match ? { name: match[1] } : undefined;
 };
 
 /** `calc()` of a product, the only form the globals use: `calc(2px * 1)`, `calc(0.06 * 0)`. */
@@ -265,22 +262,29 @@ const calc = (inside: string): string => {
 };
 
 const NUMBER = /^-?\d*\.?\d+$/;
-const CHANNELS = /^(\d{1,3}) (\d{1,3}) (\d{1,3})$/;
+const RGB = /^rgb\((\d{1,3}) (\d{1,3}) (\d{1,3})(?: \/ (\d*\.?\d+))?\)$/;
+/** A color faded with transparent, the form a token with an alpha takes since #918. */
+const MIX = /^color-mix\(in srgb, (rgb\([^()]*\)) (\d*\.?\d+)%, transparent\)$/;
+const COLOR =
+  /^(transparent|rgb\([^()]*\)|color-mix\(in srgb, rgb\([^()]*\) [\d.]+%, transparent\))$/;
 const STROKE_STYLE = 'solid|dashed|dotted|double|groove|ridge|outset|inset';
 
-const channelColor = (css: string): DtcgColor => {
-  const match = CHANNELS.exec(css);
-  if (!match) throw new Error(`Not r g b channels: ${css}`);
-  return rgbColor(match.slice(1).map(Number) as [number, number, number]);
-};
-
-/** `transparent`, `rgb(r g b)` or `rgb(r g b / a)`. */
+/**
+ * `transparent`, `rgb(r g b)`, `rgb(r g b / a)`, or one of them faded with
+ * `color-mix(in srgb, <color> N%, transparent)`, which keeps the channels and scales
+ * the alpha.
+ */
 const cssColor = (css: string): DtcgColor => {
   if (css === 'transparent') return rgbColor([0, 0, 0], 0);
-  const match = /^rgb\((\d{1,3} \d{1,3} \d{1,3})(?: \/ (\d*\.?\d+))?\)$/.exec(css);
-  if (!match) throw new Error(`Not an rgb() color: ${css}`);
-  const color = channelColor(match[1]);
-  return match[2] === undefined ? color : rgbColor(channelsOf(color), Number(match[2]));
+  const mix = MIX.exec(css);
+  if (mix) {
+    const color = cssColor(mix[1]);
+    return rgbColor(channelsOf(color), round(((color.alpha ?? 1) * Number(mix[2])) / 100, 6));
+  }
+  const match = RGB.exec(css);
+  if (!match) throw new Error(`Not an rgb() or color-mix() color: ${css}`);
+  const channels = match.slice(1, 4).map(Number) as [number, number, number];
+  return rgbColor(channels, match[4] === undefined ? undefined : Number(match[4]));
 };
 
 const channelsOf = (color: DtcgColor): [number, number, number] =>
@@ -292,8 +296,8 @@ const noVariables = (name: string): never => {
 
 /**
  * The DTCG type and value of a resolved CSS value. The registration's syntax decides
- * when there is one; `<integer>+` is the channel triplet a color is published as. A
- * value with no syntax is read by its shape. `undefined`: DTCG has no type for it.
+ * when there is one; a value with no syntax is read by its shape. `undefined`: DTCG
+ * has no type for it.
  */
 const typed = (
   syntax: string | undefined,
@@ -309,8 +313,6 @@ const typed = (
       return { $type: 'dimension', $value: dimension(css) };
     case '<color>':
       return { $type: 'color', $value: cssColor(css) };
-    case '<integer>+':
-      return { $type: 'color', $value: channelColor(css) };
     case undefined:
       break;
     default:
@@ -318,7 +320,7 @@ const typed = (
   }
   if (NUMBER.test(css)) return { $type: 'number', $value: Number(css) };
   if (/^-?\d*\.?\d+(px|rem)$/.test(css)) return { $type: 'dimension', $value: dimension(css) };
-  if (/^(transparent|rgb\([^()]*\))$/.test(css)) return { $type: 'color', $value: cssColor(css) };
+  if (COLOR.test(css)) return { $type: 'color', $value: cssColor(css) };
   if (/rgb\(/.test(css) && /\d(px|rem)/.test(css)) {
     const layers = shadow(css, noVariables);
     return { $type: 'shadow', $value: layers.length === 1 ? layers[0] : layers };
@@ -375,7 +377,7 @@ export function buildGlobals({ sheets, base }: GlobalsInputs): GlobalsOutput {
             if (own !== undefined) return resolve(own, [...seen, name]);
             const dt = published.get(name);
             if (dt && dt.$type === 'color' && typeof dt.$value === 'object')
-              return channelsOf(dt.$value as DtcgColor).join(' ');
+              return `rgb(${channelsOf(dt.$value as DtcgColor).join(' ')})`;
             if (fallback !== undefined) return resolve(fallback, seen);
             throw new Error(`var(${name}) resolves to nothing`);
           }),
@@ -405,7 +407,7 @@ export function buildGlobals({ sheets, base }: GlobalsInputs): GlobalsOutput {
 
       const target = aliasTarget(css);
       const link = target && aliasOf(target.name);
-      if (link && (!target.color || link.$type === 'color')) out = { kind: 'token', ...link };
+      if (link) out = { kind: 'token', ...link };
 
       // `<width> <style> <color>`: a border, whose color stays an alias when it is one
       const border = new RegExp(`^(\\S+) (${STROKE_STYLE}) (.+)$`).exec(css);

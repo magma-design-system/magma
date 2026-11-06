@@ -167,7 +167,7 @@ Style the accordion only through its public `--mds-accordion-*` CSS custom prope
 
 ```css
 .custom-faq mds-accordion {
-  --mds-accordion-color: rgb(var(--magma-text-default));
+  --mds-accordion-color: var(--magma-text-default);
   --mds-accordion-padding-selected: calc(var(--spacing) * 600) 0 calc(var(--spacing) * 800) 0;
   --mds-accordion-padding-unselected: calc(var(--spacing) * 400) 0;
 }
@@ -283,7 +283,7 @@ mds-accordion-item::part(spinner) {
 
 /* CORRECT */
 mds-accordion {
-  --mds-accordion-color: rgb(var(--magma-text-default));
+  --mds-accordion-color: var(--magma-text-default);
 }
 mds-accordion-item::part(label) {
   font-style: italic;

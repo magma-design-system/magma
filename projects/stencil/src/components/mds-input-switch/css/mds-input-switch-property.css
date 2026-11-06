@@ -17,25 +17,25 @@
 
 @property --mds-input-switch-box-color-disabled-checked {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-strong));
+  initial-value: var(--magma-wash-strong);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-box-color-disabled-unchecked {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-strong));
+  initial-value: var(--magma-wash-strong);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-box-color-enabled-checked {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
+  initial-value: var(--magma-accent-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-box-color-enabled-unchecked {
   inherits: true;
-  initial-value: rgb(var(--magma-border-strong));
+  initial-value: var(--magma-border-strong);
   syntax: '<color>';
 }
 
@@ -71,67 +71,67 @@
 
 @property --mds-input-switch-icon-color-checked {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
+  initial-value: var(--magma-accent-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-color-checked-disabled {
   inherits: true;
-  initial-value: rgb(var(--magma-text-disabled));
+  initial-value: var(--magma-text-disabled);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-color-indeterminate {
   inherits: true;
-  initial-value: rgb(var(--magma-text-disabled));
+  initial-value: var(--magma-text-disabled);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-color-indeterminate-disabled {
   inherits: true;
-  initial-value: rgb(var(--magma-text-disabled));
+  initial-value: var(--magma-text-disabled);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-color-unchecked {
   inherits: true;
-  initial-value: rgb(var(--magma-text-subtle));
+  initial-value: var(--magma-text-subtle);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-color-unchecked-disabled {
   inherits: true;
-  initial-value: rgb(var(--magma-text-disabled));
+  initial-value: var(--magma-text-disabled);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-icon-explicit-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
+  initial-value: var(--magma-accent-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-toggle-color-disabled-checked {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-toggle-color-disabled-unchecked {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-toggle-color-enabled-checked {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-input-switch-toggle-color-enabled-unchecked {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-soft));
+  initial-value: var(--magma-wash-soft);
   syntax: '<color>';
 }
 

@@ -2497,7 +2497,7 @@
     {
      "name": "--mds-input-variant-color-rgb",
      "annotation": "prop",
-     "docs": "The raw RGB channels used for variant-driven styling.",
+     "docs": "The color the variant styles derive from.",
      "visibility": "public"
     }
    ]

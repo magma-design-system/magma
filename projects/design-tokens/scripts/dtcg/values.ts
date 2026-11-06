@@ -111,26 +111,45 @@ const splitTopLevel = (value: string): string[] => {
 };
 
 /**
+ * A color faded to a percentage: `color-mix(in srgb, <color> N%, transparent)`, where
+ * the color is a token (`var(--name)`) or a literal `rgb()`.
+ */
+const MIX =
+  /color-mix\(in srgb, (?:var\((--[a-z0-9-]+)\)|rgba?\(([\d\s.,/]+)\)) (\d*\.?\d+)%, transparent\)/;
+
+/** A literal color: `rgb(r g b)`, `rgb(r g b / a)` or `rgb(r, g, b)`. */
+const LITERAL_RGB = /rgba?\(([\d\s.,/]+)\)/;
+
+/** Mixing with `transparent` in srgb keeps the channels and scales the alpha. */
+const faded = (color: DtcgColor, percent: string): DtcgColor =>
+  rgbColor(colorChannels(color), round(((color.alpha ?? 1) * Number(percent)) / 100, 6));
+
+/**
  * A CSS `box-shadow` as DTCG shadow layers. Accepts the forms Magma writes: the color
- * first or last, `inset`, two to four lengths, and colors as `rgb(r g b / a)`.
- * `channels` resolves a color written as `rgb(var(--name) / a)`: it receives the
- * custom property name and returns its `r g b` channels in the mode being built.
+ * first or last, `inset`, two to four lengths, and colors as a literal `rgb(r g b / a)`
+ * or faded with `color-mix(in srgb, <color> N%, transparent)`, which scales only the
+ * alpha. `channels` resolves a token there: it receives the custom property name and
+ * returns its `r g b` channels in the mode being built. Any other color
+ * (`rgb(var(--name) / a)`, invalid since the tokens hold full colors) throws.
  */
 export const shadow = (
   css: string,
   channels: (name: string) => [number, number, number],
 ): DtcgShadowLayer[] =>
   splitTopLevel(css).map((layer) => {
-    const color = /rgba?\(([^()]*(?:\([^()]*\))?[^()]*)\)/.exec(layer);
-    if (!color) throw new Error(`Shadow layer without an rgb() color: ${layer}`);
-    const words = layer.replace(color[0], ' ').trim().split(/\s+/);
+    const mix = MIX.exec(layer);
+    const literal = mix ? null : LITERAL_RGB.exec(layer);
+    const found = mix ?? literal;
+    if (!found) throw new Error(`Shadow layer without an rgb() or a color-mix() color: ${layer}`);
+    const words = layer.replace(found[0], ' ').trim().split(/\s+/);
     const inset = words[0] === 'inset' || words[words.length - 1] === 'inset';
     const lengths = words.filter((word) => word !== 'inset').map(dimension);
     if (lengths.length < 2 || lengths.length > 4)
       throw new Error(`Shadow layer needs 2 to 4 lengths: ${layer}`);
     const zero: DtcgDimension = { value: 0, unit: 'px' };
+    const mixed = mix && (mix[1] ? rgbColor(channels(mix[1])) : literalColor(mix[2]));
     const out: DtcgShadowLayer = {
-      color: shadowColor(color[1], channels),
+      color: mixed ? faded(mixed, mix![3]) : literalColor(literal![1]),
       offsetX: lengths[0],
       offsetY: lengths[1],
       blur: lengths[2] ?? zero,
@@ -140,15 +159,9 @@ export const shadow = (
     return out;
   });
 
-/** The inside of `rgb(...)`: `r g b / a`, `r, g, b`, or `var(--name) / a`. */
-const shadowColor = (
-  inside: string,
-  channels: (name: string) => [number, number, number],
-): DtcgColor => {
+/** The inside of a literal `rgb(...)`: `r g b / a` or `r, g, b`. */
+const literalColor = (inside: string): DtcgColor => {
   const [rgb, alpha] = inside.split('/').map((part) => part.trim());
-  const variable = /^var\((--[a-z0-9-]+)\)$/.exec(rgb);
-  const values = variable
-    ? channels(variable[1])
-    : (rgb.split(/[\s,]+/).map(Number) as [number, number, number]);
+  const values = rgb.split(/[\s,]+/).map(Number) as [number, number, number];
   return rgbColor(values, alpha === undefined ? undefined : Number(alpha));
 };

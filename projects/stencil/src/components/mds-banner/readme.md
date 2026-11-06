@@ -195,14 +195,14 @@ When `dismissible` is set and the banner lives inside an `<mds-modal>`, activati
 
 #### CSS Custom Property Customization
 
-Override appearance only through the public `--mds-banner-*` custom properties. Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Override appearance only through the public `--mds-banner-*` custom properties. Set them on the host or a parent selector; use semantic color roles via `var(--magma-<role>)` so dark mode and high-contrast modes keep working.
 
 ```css
 .featured-notice mds-banner {
-  --mds-banner-background: rgb(var(--magma-accent-emphasis));
-  --mds-banner-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-banner-background: var(--magma-accent-emphasis);
+  --mds-banner-color: var(--magma-accent-on-emphasis);
   --mds-banner-radius: var(--magma-radius-sm);
-  --mds-banner-shadow: 0 4px 16px rgb(var(--magma-shadow-ink) / 0.15);
+  --mds-banner-shadow: 0 4px 16px color-mix(in srgb, var(--magma-shadow-ink) 15%, transparent);
 }
 ```
 

@@ -11,6 +11,6 @@
 
 @property --mds-price-table-list-separator-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-muted) / 0.5);
+  initial-value: color-mix(in srgb, var(--magma-text-muted) 50%, transparent);
   syntax: '<color>';
 }

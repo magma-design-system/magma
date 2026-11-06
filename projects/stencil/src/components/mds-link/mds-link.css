@@ -20,7 +20,7 @@
 
 :host {
   --mds-link-background-hover: color-mix(in srgb, currentcolor 12%, transparent);
-  --mds-link-color: rgb(var(--magma-accent-fg));
+  --mds-link-color: var(--magma-accent-fg);
   --mds-link-icon-gap: --spacing(100);
   --mds-link-icon-size: --spacing(400);
   --mds-link-transition-duration: var(--duration-500);

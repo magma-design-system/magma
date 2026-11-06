@@ -275,11 +275,11 @@ Use `readonly` when the value should be visible but not editable. A persistent t
 
 #### Styling Customization
 
-Style the input only through its public `--mds-input-*` CSS custom properties. Set them on the host or a parent selector. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the input only through its public `--mds-input-*` CSS custom properties. Set them on the host or a parent selector. Use the semantic color roles via `var(--magma-<role>)` so dark mode and high-contrast modes keep working.
 
 ```css
 .search-bar mds-input {
-  --mds-input-background: rgb(var(--magma-wash-base));
+  --mds-input-background: var(--magma-wash-base);
 }
 
 /* Textarea: fixed height, allow resize */
@@ -420,8 +420,8 @@ mds-input >>> .input {
 
 /* CORRECT */
 mds-input {
-  --mds-input-ring: 0 0 0 2px rgb(var(--magma-danger-border));
-  --mds-input-background: rgb(var(--magma-danger-wash-base));
+  --mds-input-ring: 0 0 0 2px var(--magma-danger-border);
+  --mds-input-background: var(--magma-danger-wash-base);
 }
 mds-input::part(field) {
   font-style: italic;
@@ -592,7 +592,7 @@ Type: `Promise<void>`
 | `--mds-input-tip-horizontal-offset`         | The default horizontal offset applied to the input tip               |
 | `--mds-input-tip-horizontal-offset-focused` | The horizontal offset applied when the input tip is focused          |
 | `--mds-input-tip-vertical-offset`           | The vertical offset applied to the input tip                         |
-| `--mds-input-variant-color-rgb`             | Public. The raw RGB channels used for variant-driven styling.        |
+| `--mds-input-variant-color`                 | Public. The color the variant styles derive from.                    |
 
 
 ## Dependencies

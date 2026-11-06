@@ -124,7 +124,7 @@ Tint the help icon to match a surrounding context using the documented `::part(i
 ```css
 /* Match the icon color to a warning banner context */
 .banner-warning mds-help::part(icon) {
-  fill: rgb(var(--magma-warning-text-default));
+  fill: var(--magma-warning-text-default);
 }
 ```
 
@@ -159,7 +159,7 @@ mds-help >>> mds-icon {
 
 /* CORRECT */
 mds-help::part(icon) {
-  fill: rgb(var(--magma-warning-text-default));
+  fill: var(--magma-warning-text-default);
 }
 ```
 

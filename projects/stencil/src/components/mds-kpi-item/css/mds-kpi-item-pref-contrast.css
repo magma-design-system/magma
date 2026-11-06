@@ -5,7 +5,7 @@
 
 :host([pref-contrast='more']) {
   box-shadow: var(--shadow-lg), var(--shadow-ring);
-  color: rgb(var(--magma-text-default));
+  color: var(--magma-text-default);
 
   .info {
     box-shadow: var(--shadow-ring);
@@ -16,7 +16,7 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     box-shadow: var(--shadow-lg), var(--shadow-ring);
-    color: rgb(var(--magma-text-default));
+    color: var(--magma-text-default);
 
     .info {
       box-shadow: var(--shadow-ring);

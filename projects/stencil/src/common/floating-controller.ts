@@ -444,8 +444,9 @@ export interface BackdropStyle {
 export class Backdrop {
   private readonly defaultBackdropId = 'magma-backdrop';
   private readonly backdropBackgroundVisible =
-    'rgba(var(--magma-backdrop-color, 0 0 0) / var(--magma-backdrop-opacity, 0.1))';
-  private readonly backdropBackgroundHidden = 'rgba(var(--magma-backdrop-color, 0 0 0) / 0)';
+    'color-mix(in srgb, var(--magma-backdrop-color, rgb(0 0 0)) calc(var(--magma-backdrop-opacity, 0.1) * 100%), transparent)';
+  private readonly backdropBackgroundHidden =
+    'color-mix(in srgb, var(--magma-backdrop-color, rgb(0 0 0)) 0%, transparent)';
 
   private readonly backdropId: string;
   private readonly cssBackdropZIndex: string;

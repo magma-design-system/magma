@@ -11,7 +11,7 @@
 
 @property --mds-input-date-range-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-overlay));
+  initial-value: var(--magma-surface-overlay);
   syntax: '<color>';
 }
 
@@ -35,12 +35,14 @@
 
 @property --mds-input-date-range-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
+  initial-value: var(--magma-accent-emphasis);
   syntax: '<color>';
 }
 
-@property --mds-input-date-range-variant-color-rgb {
+@property --mds-input-date-range-variant-color {
   inherits: true;
-  initial-value: 0 0 0;
-  syntax: '<integer>+';
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  initial-value: rgb(0 0 0);
+  syntax: '<color>';
 }

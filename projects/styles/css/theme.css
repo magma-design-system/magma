@@ -35,14 +35,14 @@
   /*
     Elevation shadows for the raised / overlay surface roles. Consume with
     `box-shadow: var(--mds-elevation-raised)`. Colour comes from
-    --magma-backdrop-color (channel triplet) so it stays themeable.
+    --magma-backdrop-color so it stays themeable.
   */
   --mds-elevation-raised:
-    0 calc(1px * var(--depth)) calc(2px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.06 * var(--depth))),
-    0 calc(2px * var(--depth)) calc(8px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.08 * var(--depth)));
+    0 calc(1px * var(--depth)) calc(2px * var(--depth)) color-mix(in srgb, var(--magma-backdrop-color) calc(0.06 * var(--depth) * 100%), transparent),
+    0 calc(2px * var(--depth)) calc(8px * var(--depth)) color-mix(in srgb, var(--magma-backdrop-color) calc(0.08 * var(--depth) * 100%), transparent);
   --mds-elevation-overlay:
-    0 calc(4px * var(--depth)) calc(12px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.12 * var(--depth))),
-    0 calc(8px * var(--depth)) calc(24px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.16 * var(--depth)));
+    0 calc(4px * var(--depth)) calc(12px * var(--depth)) color-mix(in srgb, var(--magma-backdrop-color) calc(0.12 * var(--depth) * 100%), transparent),
+    0 calc(8px * var(--depth)) calc(24px * var(--depth)) color-mix(in srgb, var(--magma-backdrop-color) calc(0.16 * var(--depth) * 100%), transparent);
 }
 
 /* Flat variant of the depth axis (set --depth directly for anything between). */

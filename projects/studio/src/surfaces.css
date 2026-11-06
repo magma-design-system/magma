@@ -12,13 +12,13 @@
 }
 
 .surfaces-muted {
-  color: rgb(var(--magma-text-muted));
+  color: var(--magma-text-muted);
 }
 
 /* the code named in the running text, set apart from the words around it */
 
 .surfaces mds-text code {
-  background-color: rgb(var(--magma-wash-soft));
+  background-color: var(--magma-wash-soft);
   border-radius: var(--magma-radius-xs);
   corner-shape: var(--magma-corner-shape);
   font-family: var(--font-code);
@@ -29,8 +29,8 @@
 
 .surfaces-card {
   align-content: start;
-  background-color: rgb(var(--magma-surface-raised));
-  border: thin solid rgb(var(--magma-border-muted));
+  background-color: var(--magma-surface-raised);
+  border: thin solid var(--magma-border-muted);
   border-radius: var(--magma-radius-lg);
   corner-shape: var(--magma-corner-shape);
   display: grid;
@@ -71,11 +71,11 @@
 
 .surfaces-family {
   align-items: center;
-  background-color: rgb(var(--magma-surface-overlay));
+  background-color: var(--magma-surface-overlay);
   border: calc(var(--spacing) * 50) solid transparent;
   border-radius: var(--magma-radius-full);
   box-shadow: var(--shadow-sm-sharp);
-  color: rgb(var(--magma-text-subtle));
+  color: var(--magma-text-subtle);
   cursor: pointer;
   display: inline-flex;
   font: inherit;
@@ -85,12 +85,12 @@
 }
 
 .surfaces-family:hover {
-  border-color: rgb(var(--magma-border-default));
+  border-color: var(--magma-border-default);
 }
 
 .surfaces-family[aria-pressed='true'] {
-  border-color: rgb(var(--magma-accent-emphasis));
-  color: rgb(var(--magma-text-default));
+  border-color: var(--magma-accent-emphasis);
+  color: var(--magma-text-default);
 }
 
 /* a family with no flag of its own, following its group's opt-in */
@@ -151,7 +151,7 @@
 }
 
 .surfaces-column {
-  color: rgb(var(--magma-text-muted));
+  color: var(--magma-text-muted);
 }
 
 /* a container, so the two modes stand side by side only where the column has room */
@@ -187,7 +187,7 @@
 /* the boxes of a mode: the canvas and the surfaces on it, painted with the generated colours */
 
 .surfaces-canvas {
-  border: thin solid rgb(var(--magma-border-muted));
+  border: thin solid var(--magma-border-muted);
   border-radius: var(--magma-radius-md);
   corner-shape: var(--magma-corner-shape);
   display: flex;
@@ -263,7 +263,7 @@
 
 .surfaces-chart {
   align-content: start;
-  border: thin solid rgb(var(--magma-border-muted));
+  border: thin solid var(--magma-border-muted);
   border-radius: var(--magma-radius-md);
   corner-shape: var(--magma-corner-shape);
   display: grid;
@@ -277,7 +277,7 @@
 }
 
 .surfaces-chart-empty {
-  border: thin solid rgb(var(--magma-border-muted));
+  border: thin solid var(--magma-border-muted);
   border-radius: var(--magma-radius-md);
   corner-shape: var(--magma-corner-shape);
   padding: var(--magma-rhythm-inline);
@@ -295,17 +295,17 @@
 /* the step that carries a text role */
 
 .surfaces-chart-row[data-pick] {
-  background-color: rgb(var(--magma-accent-surface-subtle));
+  background-color: var(--magma-accent-surface-subtle);
 }
 
 .surfaces-chart-mode {
-  color: rgb(var(--magma-text-muted));
+  color: var(--magma-text-muted);
   grid-column: span 2;
 }
 
 .surfaces-chart-sample {
   align-items: center;
-  border: thin solid rgb(var(--magma-border-muted));
+  border: thin solid var(--magma-border-muted);
   border-radius: var(--magma-radius-xs);
   corner-shape: var(--magma-corner-shape);
   display: flex;
@@ -318,12 +318,12 @@
 }
 
 .surfaces-chart-step code {
-  color: rgb(var(--magma-text-muted));
+  color: var(--magma-text-muted);
   font-family: var(--font-code);
 }
 
 .surfaces-chart-picks {
-  color: rgb(var(--magma-accent-fg));
+  color: var(--magma-accent-fg);
   font-weight: 700;
 }
 
@@ -334,19 +334,19 @@
 }
 
 .surfaces-chart-line {
-  border-inline-start: thin dashed rgb(var(--magma-border-default));
+  border-inline-start: thin dashed var(--magma-border-default);
   inset-block: 0;
   position: absolute;
 }
 
 .surfaces-chart-tick {
-  color: rgb(var(--magma-text-subtle));
+  color: var(--magma-text-subtle);
   position: absolute;
   translate: -50% 0;
 }
 
 .surfaces-chart-fill {
-  background-color: rgb(var(--magma-wash-strong));
+  background-color: var(--magma-wash-strong);
   border-radius: var(--magma-radius-xs);
   inset-block: 30%;
   inset-inline-start: 0;
@@ -354,10 +354,10 @@
 }
 
 .surfaces-chart-row[data-pick] .surfaces-chart-fill {
-  background-color: rgb(var(--magma-accent-emphasis));
+  background-color: var(--magma-accent-emphasis);
 }
 
 .surfaces-chart-lc {
-  color: rgb(var(--magma-text-muted));
+  color: var(--magma-text-muted);
   text-align: end;
 }

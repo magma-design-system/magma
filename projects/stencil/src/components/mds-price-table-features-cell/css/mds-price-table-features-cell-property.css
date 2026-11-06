@@ -17,19 +17,19 @@
 
 @property --mds-price-table-features-cell-border-color {
   inherits: true;
-  initial-value: rgb(var(--magma-border-muted));
+  initial-value: var(--magma-border-muted);
   syntax: '<color>';
 }
 
 @property --mds-price-table-features-cell-icon-supported-color {
   inherits: true;
-  initial-value: rgb(var(--label-green-06));
+  initial-value: var(--label-green-06);
   syntax: '<color>';
 }
 
 @property --mds-price-table-features-cell-icon-unsupported-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-disabled));
+  initial-value: var(--magma-text-disabled);
   syntax: '<color>';
 }
 

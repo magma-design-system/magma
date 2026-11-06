@@ -11,18 +11,18 @@
 
 @property --mds-usage-border-color {
   inherits: true;
-  initial-value: rgb(var(--magma-info-border-strong));
+  initial-value: var(--magma-info-border-strong);
   syntax: '<color>';
 }
 
 @property --mds-usage-header-background {
   inherits: true;
-  initial-value: rgb(var(--magma-info-border-strong));
+  initial-value: var(--magma-info-border-strong);
   syntax: '<color>';
 }
 
 @property --mds-usage-header-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }

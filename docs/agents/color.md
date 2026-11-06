@@ -31,16 +31,16 @@ tinted theme and gains no contrast when the user asks for more.
 
 ## One token, two faces
 
-Every role is a CSS custom property holding an RGB channel triplet, and a Tailwind color
-of the same role.
+Every role is a CSS custom property holding a full color (`rgb(r g b)`), and a Tailwind
+color of the same role.
 
 ```css
-/* plain CSS: always inside rgb(), alpha with the slash syntax */
+/* plain CSS: read the role with var(), fade it with color-mix() */
 .panel {
-  background: rgb(var(--magma-surface-raised));
-  color: rgb(var(--magma-text-default));
-  border: 1px solid rgb(var(--magma-border-muted));
-  box-shadow: 0 2px 8px rgb(var(--magma-shadow-ink) / 0.12);
+  background: var(--magma-surface-raised);
+  color: var(--magma-text-default);
+  border: 1px solid var(--magma-border-muted);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--magma-shadow-ink) 12%, transparent);
 }
 ```
 
@@ -158,7 +158,7 @@ measured.
 
 Only when the colour encodes data rather than an interface role:
 
-- `label-*` (`bg-label-sky-09`, `rgb(var(--label-orchid-04))`): a category, a tag, a
+- `label-*` (`bg-label-sky-09`, `var(--label-orchid-04)`): a category, a tag, a
   colour the user picked;
 - `brand-*`: Maggioli brand identity;
 - `--tone-neutral-seed` (`#fff` in light, `#000` in dark): the rare pure extreme, a

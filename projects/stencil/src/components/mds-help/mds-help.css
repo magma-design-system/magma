@@ -24,7 +24,7 @@
   /* stylelint-disable-next-line magma/token-values -- 250ms no --duration-* step says it */
   --mds-help-tooltip-delay: 0.25s;
 
-  color: rgb(var(--magma-text-muted));
+  color: var(--magma-text-muted);
   cursor: help;
   display: inline-flex;
   fill: currentcolor;

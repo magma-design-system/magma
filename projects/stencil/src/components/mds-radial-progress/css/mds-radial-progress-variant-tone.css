@@ -1,12 +1,12 @@
 :host([variant='light']) {
-  --mds-radial-progress-color: rgb(var(--magma-text-muted));
-  --mds-radial-progress-background: rgb(var(--magma-wash-base));
+  --mds-radial-progress-color: var(--magma-text-muted);
+  --mds-radial-progress-background: var(--magma-wash-base);
 }
 
 :host([variant='dark']) {
-  --mds-radial-progress-color: rgb(var(--magma-on-inverse));
-  --mds-radial-progress-background: rgb(var(--magma-surface-inverse));
-  --mds-radial-progress-text-background: rgb(var(--magma-on-inverse) / 0.15);
+  --mds-radial-progress-color: var(--magma-on-inverse);
+  --mds-radial-progress-background: var(--magma-surface-inverse);
+  --mds-radial-progress-text-background: color-mix(in srgb, var(--magma-on-inverse) 15%, transparent);
 
-  color: rgb(var(--magma-on-inverse));
+  color: var(--magma-on-inverse);
 }

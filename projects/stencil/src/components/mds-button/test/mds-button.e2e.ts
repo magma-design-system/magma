@@ -1195,12 +1195,18 @@ describe('mds-button', () => {
 
       // the colour of a role of the button (mds-button-variant.css), as the background reads it:
       // a button at rest next to this one would do, but the pointer a test left behind hovers it
-      const role = (button: Element, name: string) =>
-        `rgb(${getComputedStyle(button)
+      // the custom property keeps the colour as the build wrote it (`#d0d0d0` once minified): a
+      // probe turns it into the spelling of a computed background, `rgb(208, 208, 208)`
+      const role = (button: Element, name: string) => {
+        const probe = document.createElement('span');
+        probe.style.backgroundColor = getComputedStyle(button)
           .getPropertyValue(`--private-button-${name}`)
-          .trim()
-          .split(/\s+/)
-          .join(', ')})`;
+          .trim();
+        document.body.append(probe);
+        const { backgroundColor } = getComputedStyle(probe);
+        probe.remove();
+        return backgroundColor;
+      };
 
       const current = async (variant: string, tone: string) => {
         const { root } = await render(
@@ -1228,7 +1234,7 @@ describe('mds-button', () => {
           expect(backgroundColor).not.toBe(role(root, 'wash'));
           expect(boxShadow).toMatch(/ 0px$/);
 
-          document.documentElement.style.setProperty(`--magma-${name}`, '1 2 3');
+          document.documentElement.style.setProperty(`--magma-${name}`, 'rgb(1 2 3)');
           await settled();
 
           expect(getComputedStyle(root).backgroundColor).toBe('rgb(1, 2, 3)');

@@ -13,17 +13,17 @@
  */
 
 :host {
-  --mds-calendar-day-number-color: rgb(var(--magma-text-default));
+  --mds-calendar-day-number-color: var(--magma-text-default);
   --mds-calendar-cell-gap: --spacing(50);
   --mds-calendar-cell-other-month-visibility: visible;
   --mds-calendar-border-radius: var(--magma-radius-lg);
-  --mds-calendar-background: rgb(var(--magma-surface-raised));
+  --mds-calendar-background: var(--magma-surface-raised);
   --mds-calendar-padding: --spacing(400);
   --mds-calendar-select-month-or-year-height: --spacing(900);
   --mds-calendar-select-month-or-year-width: --spacing(5600);
   --mds-calendar-max-width: --spacing(12000);
 
-  background-color: rgb(var(--magma-wash-base));
+  background-color: var(--magma-wash-base);
   border-radius: var(--mds-calendar-border-radius);
   corner-shape: var(--magma-corner-shape);
   cursor: auto;
@@ -77,7 +77,7 @@ nav {
 
 .select-month-or-year {
   align-items: stretch;
-  background-color: rgb(var(--magma-wash-base));
+  background-color: var(--magma-wash-base);
   block-size: var(--mds-calendar-select-month-or-year-height);
 
   /* a control of the height of a button: capped as mds-button's (#913) */

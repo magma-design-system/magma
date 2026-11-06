@@ -11,7 +11,7 @@
   @apply ease-in-out-quart;
 
   align-items: center;
-  color: rgb(var(--magma-accent-fg));
+  color: var(--magma-accent-fg);
   display: inline-flex;
   height: --spacing(1200);
   justify-content: center;

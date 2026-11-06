@@ -51,9 +51,9 @@ const rgbCommaSeparatedChannel = (value: string) => {
   return `${color.red}, ${color.green}, ${color.blue}`;
 };
 
-const rgbChannel = (value: string) => {
+const rgbColor = (value: string) => {
   const color = hexRgb(value);
-  return `${color.red} ${color.green} ${color.blue}`;
+  return `rgb(${color.red} ${color.green} ${color.blue})`;
 };
 
 const gimpRgbChannel = (value: string) => {
@@ -139,7 +139,7 @@ export {
   pixelToEm,
   pixelToRem,
   pixelToScale,
-  rgbChannel,
+  rgbColor,
   rgbCommaSeparatedChannel,
   safeString,
   stripText,

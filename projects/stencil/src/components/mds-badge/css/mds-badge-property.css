@@ -11,13 +11,13 @@
 
 @property --mds-badge-background {
   inherits: true;
-  initial-value: rgb(var(--label-sky-09));
+  initial-value: var(--label-sky-09);
   syntax: '<color>';
 }
 
 @property --mds-badge-border-color {
   inherits: true;
-  initial-value: rgb(var(--label-sky-06));
+  initial-value: var(--label-sky-06);
   syntax: '<color>';
 }
 
@@ -29,7 +29,7 @@
 
 @property --mds-badge-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }
 

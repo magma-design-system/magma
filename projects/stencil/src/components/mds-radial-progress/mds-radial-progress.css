@@ -9,10 +9,10 @@
  */
 
 :host {
-  --mds-radial-progress-background: rgb(var(--magma-wash-base));
-  --mds-radial-progress-color: rgb(var(--magma-accent-fg));
+  --mds-radial-progress-background: var(--magma-wash-base);
+  --mds-radial-progress-color: var(--magma-accent-fg);
   --mds-radial-progress-text-background-shadow: var(--shadow-sm-sharp);
-  --mds-radial-progress-text-background: rgb(var(--magma-surface-overlay));
+  --mds-radial-progress-text-background: var(--magma-surface-overlay);
   --mds-radial-progress-text-suffix: '%';
   --mds-radial-progress: 0%;
 

@@ -249,7 +249,7 @@ because no role could hold their value. Adopting the band is a 1:1 rename at ide
 
 `--magma-shadow-ink`, the colour of a projected shadow. It publishes a COLOUR, not a shadow: a
 component composes it with its own geometry and alpha, e.g.
-`drop-shadow(0 4px 3px rgb(var(--magma-shadow-ink) / 0.15))`.
+`drop-shadow(0 4px 3px color-mix(in srgb, var(--magma-shadow-ink) 15%, transparent))`.
 
 | Mode | Value | Named on |
 |---|---|---|
@@ -321,7 +321,7 @@ page: under `cool` step `02` is `#232b35` instead of `#2a2a2a`. Named on `--tone
 directly they would stay a static grey while everything around them retints - which is what
 the dark variants had silently lost when they left `--magma-scale-*` for these roles (#731).
 
-A ring drawn on an inverse fill (`--mds-button-border-color-rgb`) names the fill's role, so
+A ring drawn on an inverse fill (`--mds-button-border-color`) names the fill's role, so
 fill and ring cannot drift apart. The pure-inversion `light` variants stay on
 `--tone-neutral-seed` (the paper of the mode), which is not an inverse role.
 
@@ -511,8 +511,8 @@ Components keep their existing `--mds-<comp>-*` custom properties and change onl
 DEFAULT to point at a semantic role. Example:
 
 ```css
-/* before */ .card { background: rgb(var(--tone-neutral)); }
-/* after  */ .card { background: rgb(var(--magma-surface-raised)); }
+/* before */ .card { background: var(--tone-neutral); }
+/* after  */ .card { background: var(--magma-surface-raised); }
 ```
 
 Role mapping: page/body -> `surface-default`; card/panel -> `surface-raised`;
@@ -868,7 +868,7 @@ The semantic layer is `--magma-*`, NOT `--mds-*`: it is authored and owned by
 `--magma-text-muted` never collides with a component prop like
 `--mds-text-selection-color` (from the `mds-text` component). A component adopts
 the system by pointing its `--mds-<comp>-*` default at a `--magma-*` role, e.g.
-`--mds-card-background: rgb(var(--magma-surface-raised))`.
+`--mds-card-background: var(--magma-surface-raised)`.
 
 ## 12. Migration
 

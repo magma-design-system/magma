@@ -45,12 +45,12 @@
 
 @property --mds-stepper-bar-scrollbar-thumb-background {
   inherits: true;
-  initial-value: rgb(var(--magma-border-strong));
+  initial-value: var(--magma-border-strong);
   syntax: '<color>';
 }
 
 @property --mds-stepper-bar-scrollbar-track-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-strong));
+  initial-value: var(--magma-wash-strong);
   syntax: '<color>';
 }

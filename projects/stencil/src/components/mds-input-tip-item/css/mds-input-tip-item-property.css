@@ -11,18 +11,18 @@
 
 @property --mds-input-tip-item-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-inverse-muted));
+  initial-value: var(--magma-surface-inverse-muted);
   syntax: '<color>';
 }
 
 @property --mds-input-tip-item-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-input-tip-item-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }

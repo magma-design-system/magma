@@ -7,7 +7,7 @@
   --mds-input-select-ring: var(--shadow-ring-strong-2);
 
   .input {
-    color: rgb(var(--magma-text-default));
+    color: var(--magma-text-default);
   }
 }
 
@@ -17,7 +17,7 @@
     --mds-input-select-ring: var(--shadow-ring-strong-2);
 
     .input {
-      color: rgb(var(--magma-text-default));
+      color: var(--magma-text-default);
     }
   }
 }

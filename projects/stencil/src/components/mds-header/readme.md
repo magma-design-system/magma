@@ -196,11 +196,11 @@ Use the `setOpened()` method to open or close the mobile menu from JavaScript - 
 
 #### Styling Customization
 
-Customize the header through its public `--mds-header-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast continue to work. `--mds-header-color` also colors the icons, the hamburger of the child `mds-header-bar` included.
+Customize the header through its public `--mds-header-*` CSS custom properties. Use the semantic color roles via `var(--magma-<role>)` so dark mode and high-contrast continue to work. `--mds-header-color` also colors the icons, the hamburger of the child `mds-header-bar` included.
 
 ```css
 mds-header {
-  --mds-header-color: rgb(var(--magma-text-muted));
+  --mds-header-color: var(--magma-text-muted);
   --mds-header-z-index: 200;
 }
 

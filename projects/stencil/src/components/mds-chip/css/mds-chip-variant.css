@@ -6,16 +6,16 @@
    the other elevated objects, not marked like a flat pill (spec 6.1b). */
 
 :host {
-  --mds-chip-background: rgb(var(--magma-surface-overlay));
-  --mds-chip-background-selected: rgb(var(--magma-surface-overlay));
+  --mds-chip-background: var(--magma-surface-overlay);
+  --mds-chip-background-selected: var(--magma-surface-overlay);
   --mds-chip-border: transparent;
   --mds-chip-border-selected: transparent;
-  --mds-chip-color: rgb(var(--magma-text-subtle));
-  --mds-chip-color-selected: rgb(var(--magma-text-subtle));
-  --mds-chip-icon-background: rgb(var(--magma-accent-fg));
-  --mds-chip-icon-background-selected: rgb(var(--magma-accent-fg));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-color: var(--magma-text-subtle);
+  --mds-chip-color-selected: var(--magma-text-subtle);
+  --mds-chip-icon-background: var(--magma-accent-fg);
+  --mds-chip-icon-background-selected: var(--magma-accent-fg);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
   --mds-chip-shadow: var(--shadow-sm-sharp);
   --mds-chip-shadow-selected: var(--shadow-sm-sharp);
 }
@@ -40,309 +40,309 @@
 /* variant */
 
 :host([variant='primary'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--magma-accent-emphasis));
-  --mds-chip-icon-background: rgb(var(--magma-accent-fg));
-  --mds-chip-icon-background-selected: rgb(var(--magma-accent-fg));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--magma-accent-emphasis);
+  --mds-chip-icon-background: var(--magma-accent-fg);
+  --mds-chip-icon-background-selected: var(--magma-accent-fg);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='primary'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--magma-accent-border));
-  --mds-chip-icon-background: rgb(var(--magma-accent-surface));
-  --mds-chip-icon-background-selected: rgb(var(--magma-accent-surface));
-  --mds-chip-icon-color: rgb(var(--magma-accent-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-accent-emphasis));
+  --mds-chip-border-selected: var(--magma-accent-border);
+  --mds-chip-icon-background: var(--magma-accent-surface);
+  --mds-chip-icon-background-selected: var(--magma-accent-surface);
+  --mds-chip-icon-color: var(--magma-accent-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-accent-emphasis);
 }
 
 :host([variant='secondary'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--magma-accent-emphasis));
-  --mds-chip-icon-background: rgb(var(--magma-accent-fg));
-  --mds-chip-icon-background-selected: rgb(var(--magma-accent-fg));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--magma-accent-emphasis);
+  --mds-chip-icon-background: var(--magma-accent-fg);
+  --mds-chip-icon-background-selected: var(--magma-accent-fg);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='secondary'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--magma-accent-border));
-  --mds-chip-icon-background: rgb(var(--magma-accent-surface));
-  --mds-chip-icon-background-selected: rgb(var(--magma-accent-surface));
-  --mds-chip-icon-color: rgb(var(--magma-accent-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-accent-emphasis));
+  --mds-chip-border-selected: var(--magma-accent-border);
+  --mds-chip-icon-background: var(--magma-accent-surface);
+  --mds-chip-icon-background-selected: var(--magma-accent-surface);
+  --mds-chip-icon-color: var(--magma-accent-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-accent-emphasis);
 }
 
 :host([variant='ai'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--magma-accent-ai-emphasis));
-  --mds-chip-icon-background: rgb(var(--magma-accent-ai-fg));
-  --mds-chip-icon-background-selected: rgb(var(--magma-accent-ai-fg));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--magma-accent-ai-emphasis);
+  --mds-chip-icon-background: var(--magma-accent-ai-fg);
+  --mds-chip-icon-background-selected: var(--magma-accent-ai-fg);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='ai'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--magma-accent-ai-border));
-  --mds-chip-icon-background: rgb(var(--magma-accent-ai-surface));
-  --mds-chip-icon-background-selected: rgb(var(--magma-accent-ai-surface));
-  --mds-chip-icon-color: rgb(var(--magma-accent-ai-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-accent-ai-emphasis));
+  --mds-chip-border-selected: var(--magma-accent-ai-border);
+  --mds-chip-icon-background: var(--magma-accent-ai-surface);
+  --mds-chip-icon-background-selected: var(--magma-accent-ai-surface);
+  --mds-chip-icon-color: var(--magma-accent-ai-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-accent-ai-emphasis);
 }
 
 /* state */
 
 :host([variant='success'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--magma-success-emphasis));
-  --mds-chip-icon-background: rgb(var(--magma-success-emphasis));
-  --mds-chip-icon-background-selected: rgb(var(--magma-success-emphasis));
-  --mds-chip-icon-color: rgb(var(--magma-success-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-success-on-emphasis));
+  --mds-chip-border-selected: var(--magma-success-emphasis);
+  --mds-chip-icon-background: var(--magma-success-emphasis);
+  --mds-chip-icon-background-selected: var(--magma-success-emphasis);
+  --mds-chip-icon-color: var(--magma-success-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-success-on-emphasis);
 }
 
 :host([variant='success'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--magma-success-border-strong));
-  --mds-chip-icon-background: rgb(var(--magma-success-wash-base));
-  --mds-chip-icon-background-selected: rgb(var(--magma-success-wash-base));
-  --mds-chip-icon-color: rgb(var(--magma-success-text-default));
-  --mds-chip-icon-color-selected: rgb(var(--magma-success-text-default));
+  --mds-chip-border-selected: var(--magma-success-border-strong);
+  --mds-chip-icon-background: var(--magma-success-wash-base);
+  --mds-chip-icon-background-selected: var(--magma-success-wash-base);
+  --mds-chip-icon-color: var(--magma-success-text-default);
+  --mds-chip-icon-color-selected: var(--magma-success-text-default);
 }
 
 :host([variant='warning'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--magma-warning-emphasis));
-  --mds-chip-icon-background: rgb(var(--magma-warning-emphasis));
-  --mds-chip-icon-background-selected: rgb(var(--magma-warning-emphasis));
-  --mds-chip-icon-color: rgb(var(--magma-warning-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-warning-on-emphasis));
+  --mds-chip-border-selected: var(--magma-warning-emphasis);
+  --mds-chip-icon-background: var(--magma-warning-emphasis);
+  --mds-chip-icon-background-selected: var(--magma-warning-emphasis);
+  --mds-chip-icon-color: var(--magma-warning-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-warning-on-emphasis);
 }
 
 :host([variant='warning'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--magma-warning-border-strong));
-  --mds-chip-icon-background: rgb(var(--magma-warning-wash-base));
-  --mds-chip-icon-background-selected: rgb(var(--magma-warning-wash-base));
-  --mds-chip-icon-color: rgb(var(--magma-warning-text-default));
-  --mds-chip-icon-color-selected: rgb(var(--magma-warning-text-default));
+  --mds-chip-border-selected: var(--magma-warning-border-strong);
+  --mds-chip-icon-background: var(--magma-warning-wash-base);
+  --mds-chip-icon-background-selected: var(--magma-warning-wash-base);
+  --mds-chip-icon-color: var(--magma-warning-text-default);
+  --mds-chip-icon-color-selected: var(--magma-warning-text-default);
 }
 
 :host([variant='error'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--magma-danger-emphasis));
-  --mds-chip-icon-background: rgb(var(--magma-danger-emphasis));
-  --mds-chip-icon-background-selected: rgb(var(--magma-danger-emphasis));
-  --mds-chip-icon-color: rgb(var(--magma-danger-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-danger-on-emphasis));
+  --mds-chip-border-selected: var(--magma-danger-emphasis);
+  --mds-chip-icon-background: var(--magma-danger-emphasis);
+  --mds-chip-icon-background-selected: var(--magma-danger-emphasis);
+  --mds-chip-icon-color: var(--magma-danger-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-danger-on-emphasis);
 }
 
 :host([variant='error'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--magma-danger-border-strong));
-  --mds-chip-icon-background: rgb(var(--magma-danger-wash-base));
-  --mds-chip-icon-background-selected: rgb(var(--magma-danger-wash-base));
-  --mds-chip-icon-color: rgb(var(--magma-danger-text-default));
-  --mds-chip-icon-color-selected: rgb(var(--magma-danger-text-default));
+  --mds-chip-border-selected: var(--magma-danger-border-strong);
+  --mds-chip-icon-background: var(--magma-danger-wash-base);
+  --mds-chip-icon-background-selected: var(--magma-danger-wash-base);
+  --mds-chip-icon-color: var(--magma-danger-text-default);
+  --mds-chip-icon-color-selected: var(--magma-danger-text-default);
 }
 
 :host([variant='info'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--magma-info-emphasis));
-  --mds-chip-icon-background: rgb(var(--magma-info-emphasis));
-  --mds-chip-icon-background-selected: rgb(var(--magma-info-emphasis));
-  --mds-chip-icon-color: rgb(var(--magma-info-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-info-on-emphasis));
+  --mds-chip-border-selected: var(--magma-info-emphasis);
+  --mds-chip-icon-background: var(--magma-info-emphasis);
+  --mds-chip-icon-background-selected: var(--magma-info-emphasis);
+  --mds-chip-icon-color: var(--magma-info-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-info-on-emphasis);
 }
 
 :host([variant='info'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--magma-info-border-strong));
-  --mds-chip-icon-background: rgb(var(--magma-info-wash-base));
-  --mds-chip-icon-background-selected: rgb(var(--magma-info-wash-base));
-  --mds-chip-icon-color: rgb(var(--magma-info-text-default));
-  --mds-chip-icon-color-selected: rgb(var(--magma-info-text-default));
+  --mds-chip-border-selected: var(--magma-info-border-strong);
+  --mds-chip-icon-background: var(--magma-info-wash-base);
+  --mds-chip-icon-background-selected: var(--magma-info-wash-base);
+  --mds-chip-icon-color: var(--magma-info-text-default);
+  --mds-chip-icon-color-selected: var(--magma-info-text-default);
 }
 
 /* label */
 
 :host([variant='amaranth'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-amaranth-04));
-  --mds-chip-icon-background: rgb(var(--label-amaranth-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-amaranth-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-amaranth-04);
+  --mds-chip-icon-background: var(--label-amaranth-05);
+  --mds-chip-icon-background-selected: var(--label-amaranth-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='amaranth'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-amaranth-06));
-  --mds-chip-icon-background: rgb(var(--label-amaranth-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-amaranth-09));
-  --mds-chip-icon-color: rgb(var(--label-amaranth-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-amaranth-04));
+  --mds-chip-border-selected: var(--label-amaranth-06);
+  --mds-chip-icon-background: var(--label-amaranth-09);
+  --mds-chip-icon-background-selected: var(--label-amaranth-09);
+  --mds-chip-icon-color: var(--label-amaranth-04);
+  --mds-chip-icon-color-selected: var(--label-amaranth-04);
 }
 
 :host([variant='aqua'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-aqua-04));
-  --mds-chip-icon-background: rgb(var(--label-aqua-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-aqua-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-aqua-04);
+  --mds-chip-icon-background: var(--label-aqua-05);
+  --mds-chip-icon-background-selected: var(--label-aqua-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='aqua'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-aqua-06));
-  --mds-chip-icon-background: rgb(var(--label-aqua-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-aqua-09));
-  --mds-chip-icon-color: rgb(var(--label-aqua-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-aqua-04));
+  --mds-chip-border-selected: var(--label-aqua-06);
+  --mds-chip-icon-background: var(--label-aqua-09);
+  --mds-chip-icon-background-selected: var(--label-aqua-09);
+  --mds-chip-icon-color: var(--label-aqua-04);
+  --mds-chip-icon-color-selected: var(--label-aqua-04);
 }
 
 :host([variant='blue'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-blue-04));
-  --mds-chip-icon-background: rgb(var(--label-blue-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-blue-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-blue-04);
+  --mds-chip-icon-background: var(--label-blue-05);
+  --mds-chip-icon-background-selected: var(--label-blue-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='blue'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-blue-06));
-  --mds-chip-icon-background: rgb(var(--label-blue-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-blue-09));
-  --mds-chip-icon-color: rgb(var(--label-blue-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-blue-04));
+  --mds-chip-border-selected: var(--label-blue-06);
+  --mds-chip-icon-background: var(--label-blue-09);
+  --mds-chip-icon-background-selected: var(--label-blue-09);
+  --mds-chip-icon-color: var(--label-blue-04);
+  --mds-chip-icon-color-selected: var(--label-blue-04);
 }
 
 :host([variant='green'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-green-04));
-  --mds-chip-icon-background: rgb(var(--label-green-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-green-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-green-04);
+  --mds-chip-icon-background: var(--label-green-05);
+  --mds-chip-icon-background-selected: var(--label-green-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='green'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-green-06));
-  --mds-chip-icon-background: rgb(var(--label-green-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-green-09));
-  --mds-chip-icon-color: rgb(var(--label-green-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-green-04));
+  --mds-chip-border-selected: var(--label-green-06);
+  --mds-chip-icon-background: var(--label-green-09);
+  --mds-chip-icon-background-selected: var(--label-green-09);
+  --mds-chip-icon-color: var(--label-green-04);
+  --mds-chip-icon-color-selected: var(--label-green-04);
 }
 
 :host([variant='lime'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-lime-04));
-  --mds-chip-icon-background: rgb(var(--label-lime-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-lime-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-lime-04);
+  --mds-chip-icon-background: var(--label-lime-05);
+  --mds-chip-icon-background-selected: var(--label-lime-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='lime'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-lime-06));
-  --mds-chip-icon-background: rgb(var(--label-lime-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-lime-09));
-  --mds-chip-icon-color: rgb(var(--label-lime-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-lime-04));
+  --mds-chip-border-selected: var(--label-lime-06);
+  --mds-chip-icon-background: var(--label-lime-09);
+  --mds-chip-icon-background-selected: var(--label-lime-09);
+  --mds-chip-icon-color: var(--label-lime-04);
+  --mds-chip-icon-color-selected: var(--label-lime-04);
 }
 
 :host([variant='orange'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-orange-04));
-  --mds-chip-icon-background: rgb(var(--label-orange-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-orange-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-orange-04);
+  --mds-chip-icon-background: var(--label-orange-05);
+  --mds-chip-icon-background-selected: var(--label-orange-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='orange'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-orange-06));
-  --mds-chip-icon-background: rgb(var(--label-orange-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-orange-09));
-  --mds-chip-icon-color: rgb(var(--label-orange-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-orange-04));
+  --mds-chip-border-selected: var(--label-orange-06);
+  --mds-chip-icon-background: var(--label-orange-09);
+  --mds-chip-icon-background-selected: var(--label-orange-09);
+  --mds-chip-icon-color: var(--label-orange-04);
+  --mds-chip-icon-color-selected: var(--label-orange-04);
 }
 
 :host([variant='orchid'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-orchid-04));
-  --mds-chip-icon-background: rgb(var(--label-orchid-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-orchid-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-orchid-04);
+  --mds-chip-icon-background: var(--label-orchid-05);
+  --mds-chip-icon-background-selected: var(--label-orchid-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='orchid'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-orchid-06));
-  --mds-chip-icon-background: rgb(var(--label-orchid-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-orchid-09));
-  --mds-chip-icon-color: rgb(var(--label-orchid-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-orchid-04));
+  --mds-chip-border-selected: var(--label-orchid-06);
+  --mds-chip-icon-background: var(--label-orchid-09);
+  --mds-chip-icon-background-selected: var(--label-orchid-09);
+  --mds-chip-icon-color: var(--label-orchid-04);
+  --mds-chip-icon-color-selected: var(--label-orchid-04);
 }
 
 :host([variant='purple'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-purple-04));
-  --mds-chip-icon-background: rgb(var(--label-purple-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-purple-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-purple-04);
+  --mds-chip-icon-background: var(--label-purple-05);
+  --mds-chip-icon-background-selected: var(--label-purple-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='purple'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-purple-06));
-  --mds-chip-icon-background: rgb(var(--label-purple-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-purple-09));
-  --mds-chip-icon-color: rgb(var(--label-purple-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-purple-04));
+  --mds-chip-border-selected: var(--label-purple-06);
+  --mds-chip-icon-background: var(--label-purple-09);
+  --mds-chip-icon-background-selected: var(--label-purple-09);
+  --mds-chip-icon-color: var(--label-purple-04);
+  --mds-chip-icon-color-selected: var(--label-purple-04);
 }
 
 :host([variant='red'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-red-04));
-  --mds-chip-icon-background: rgb(var(--label-red-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-red-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-red-04);
+  --mds-chip-icon-background: var(--label-red-05);
+  --mds-chip-icon-background-selected: var(--label-red-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='red'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-red-06));
-  --mds-chip-icon-background: rgb(var(--label-red-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-red-09));
-  --mds-chip-icon-color: rgb(var(--label-red-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-red-04));
+  --mds-chip-border-selected: var(--label-red-06);
+  --mds-chip-icon-background: var(--label-red-09);
+  --mds-chip-icon-background-selected: var(--label-red-09);
+  --mds-chip-icon-color: var(--label-red-04);
+  --mds-chip-icon-color-selected: var(--label-red-04);
 }
 
 :host([variant='sky'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-sky-04));
-  --mds-chip-icon-background: rgb(var(--label-sky-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-sky-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-sky-04);
+  --mds-chip-icon-background: var(--label-sky-05);
+  --mds-chip-icon-background-selected: var(--label-sky-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='sky'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-sky-06));
-  --mds-chip-icon-background: rgb(var(--label-sky-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-sky-09));
-  --mds-chip-icon-color: rgb(var(--label-sky-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-sky-04));
+  --mds-chip-border-selected: var(--label-sky-06);
+  --mds-chip-icon-background: var(--label-sky-09);
+  --mds-chip-icon-background-selected: var(--label-sky-09);
+  --mds-chip-icon-color: var(--label-sky-04);
+  --mds-chip-icon-color-selected: var(--label-sky-04);
 }
 
 :host([variant='violet'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-violet-04));
-  --mds-chip-icon-background: rgb(var(--label-violet-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-violet-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-violet-04);
+  --mds-chip-icon-background: var(--label-violet-05);
+  --mds-chip-icon-background-selected: var(--label-violet-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='violet'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-violet-06));
-  --mds-chip-icon-background: rgb(var(--label-violet-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-violet-09));
-  --mds-chip-icon-color: rgb(var(--label-violet-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-violet-04));
+  --mds-chip-border-selected: var(--label-violet-06);
+  --mds-chip-icon-background: var(--label-violet-09);
+  --mds-chip-icon-background-selected: var(--label-violet-09);
+  --mds-chip-icon-color: var(--label-violet-04);
+  --mds-chip-icon-color-selected: var(--label-violet-04);
 }
 
 :host([variant='yellow'][tone='strong']) {
-  --mds-chip-border-selected: rgb(var(--label-yellow-04));
-  --mds-chip-icon-background: rgb(var(--label-yellow-05));
-  --mds-chip-icon-background-selected: rgb(var(--label-yellow-05));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-border-selected: var(--label-yellow-04);
+  --mds-chip-icon-background: var(--label-yellow-05);
+  --mds-chip-icon-background-selected: var(--label-yellow-05);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
 }
 
 :host([variant='yellow'][tone='weak']) {
-  --mds-chip-border-selected: rgb(var(--label-yellow-06));
-  --mds-chip-icon-background: rgb(var(--label-yellow-09));
-  --mds-chip-icon-background-selected: rgb(var(--label-yellow-09));
-  --mds-chip-icon-color: rgb(var(--label-yellow-04));
-  --mds-chip-icon-color-selected: rgb(var(--label-yellow-04));
+  --mds-chip-border-selected: var(--label-yellow-06);
+  --mds-chip-icon-background: var(--label-yellow-09);
+  --mds-chip-icon-background-selected: var(--label-yellow-09);
+  --mds-chip-icon-color: var(--label-yellow-04);
+  --mds-chip-icon-color-selected: var(--label-yellow-04);
 }

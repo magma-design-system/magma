@@ -17,7 +17,7 @@
 .palette-list {
   position: relative;
   align-content: start;
-  border-inline-end: thin solid rgb(var(--magma-border-muted));
+  border-inline-end: thin solid var(--magma-border-muted);
   display: grid;
   gap: var(--magma-rhythm-between-fields);
   grid-area: sidebar;
@@ -72,7 +72,7 @@
 
 .palette-item-button::part(icon) {
   fill: var(--palette-swatch);
-  stroke: rgb(var(--magma-border-default));
+  stroke: var(--magma-border-default);
   stroke-width: calc(var(--spacing) * 25);
 }
 
@@ -174,7 +174,7 @@
 }
 
 .preview-card.light {
-  border: thin solid rgb(var(--magma-border-muted));
+  border: thin solid var(--magma-border-muted);
   background: white;
 }
 
@@ -339,7 +339,7 @@
 
   .palette-side-frame {
     aspect-ratio: 9 / 16;
-    border: thin solid rgb(var(--magma-border-muted));
+    border: thin solid var(--magma-border-muted);
     border-radius: var(--magma-radius-lg);
     corner-shape: var(--magma-corner-shape);
     display: block;
@@ -402,7 +402,7 @@
    the fields up to the width of a form, Dark above Light on tracks of one width */
 
 .palette-ends {
-  border: thin solid rgb(var(--magma-border-muted));
+  border: thin solid var(--magma-border-muted);
   border-radius: var(--magma-radius-sm);
   corner-shape: var(--magma-corner-shape);
   display: grid;
@@ -481,7 +481,7 @@
 
 .palette-weight {
   align-items: end;
-  background-color: rgb(var(--magma-surface-sunken));
+  background-color: var(--magma-surface-sunken);
   block-size: 100%;
   border-radius: var(--magma-radius-xs);
   corner-shape: var(--magma-corner-shape);
@@ -490,7 +490,7 @@
 }
 
 .palette-weight-fill {
-  background-color: rgb(var(--magma-accent-emphasis));
+  background-color: var(--magma-accent-emphasis);
   border-radius: var(--magma-radius-xs);
   corner-shape: var(--magma-corner-shape);
   inline-size: 100%;
@@ -525,9 +525,9 @@
     var(--magma-corner-cap) * var(--palette-picker-height)
   );
 
-  background-color: rgb(var(--magma-surface-default));
+  background-color: var(--magma-surface-default);
   block-size: var(--palette-picker-height);
-  border: thin solid rgb(var(--magma-border-default));
+  border: thin solid var(--magma-border-default);
   border-radius: var(--palette-picker-radius);
   corner-shape: var(--magma-corner-shape);
   cursor: pointer;

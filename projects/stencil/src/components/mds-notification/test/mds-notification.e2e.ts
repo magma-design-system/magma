@@ -177,8 +177,8 @@ describe('mds-notification variant', () => {
   ])(
     'paints the $variant dot with the fill of the $hue status and its ink',
     async ({ variant, hue }) => {
-      html.style.setProperty(`--magma-${hue}-emphasis`, '1 2 3');
-      html.style.setProperty(`--magma-${hue}-on-emphasis`, '4 5 6');
+      html.style.setProperty(`--magma-${hue}-emphasis`, 'rgb(1 2 3)');
+      html.style.setProperty(`--magma-${hue}-on-emphasis`, 'rgb(4 5 6)');
       const { root } = await render(
         `<mds-notification variant="${variant}" value="3" strategy="disabled"></mds-notification>`,
       );
@@ -189,7 +189,7 @@ describe('mds-notification variant', () => {
   );
 
   it('is the danger colour it always had by default', async () => {
-    html.style.setProperty('--magma-danger-emphasis', '1 2 3');
+    html.style.setProperty('--magma-danger-emphasis', 'rgb(1 2 3)');
     const { root } = await render(
       '<mds-notification value="3" strategy="disabled"></mds-notification>',
     );

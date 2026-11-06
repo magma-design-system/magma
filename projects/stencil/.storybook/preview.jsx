@@ -174,9 +174,9 @@ const parameters = {
   backgrounds: {
     options: {
       white: { name: 'White', value: 'rgb(255 255 255)' },
-      light: { name: 'Light', value: 'rgb(var(--tone-neutral-10, 248 248 248))' },
-      grey: { name: 'Grey', value: 'rgb(var(--tone-neutral-06, 162 162 162))' },
-      dark: { name: 'Dark', value: 'rgb(var(--tone-neutral-01, 33 33 33))' },
+      light: { name: 'Light', value: 'var(--tone-neutral-10, rgb(248 248 248))' },
+      grey: { name: 'Grey', value: 'var(--tone-neutral-06, rgb(162 162 162))' },
+      dark: { name: 'Dark', value: 'var(--tone-neutral-01, rgb(33 33 33))' },
       black: { name: 'Black', value: 'rgb(0 0 0)' },
     },
   },

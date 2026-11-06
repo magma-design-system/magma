@@ -13,13 +13,11 @@
    leaves them invalid, and the active theme shows instead */
 
 :host {
-  --mds-pref-theme-item-color-background: rgb(var(--private-theme-wash, var(--magma-wash-base)));
-  --mds-pref-theme-item-color-status-error: rgb(var(--magma-danger-emphasis));
-  --mds-pref-theme-item-color-status-success: rgb(var(--magma-success-emphasis));
-  --mds-pref-theme-item-color-status-warning: rgb(var(--magma-warning-emphasis));
-  --mds-pref-theme-item-color-variant-primary: rgb(
-    var(--private-theme-accent, var(--magma-accent-emphasis))
-  );
+  --mds-pref-theme-item-color-background: var(--private-theme-wash, var(--magma-wash-base));
+  --mds-pref-theme-item-color-status-error: var(--magma-danger-emphasis);
+  --mds-pref-theme-item-color-status-success: var(--magma-success-emphasis);
+  --mds-pref-theme-item-color-status-warning: var(--magma-warning-emphasis);
+  --mds-pref-theme-item-color-variant-primary: var(--private-theme-accent, var(--magma-accent-emphasis));
 
   align-items: center;
   cursor: pointer;

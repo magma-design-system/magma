@@ -6,14 +6,14 @@
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])),
 :host([pref-theme-scheme='dark']) {
-  --mds-tab-bar-item-color: rgb(var(--magma-text-subtle));
-  --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-emphasis-active));
+  --mds-tab-bar-item-color: var(--magma-text-subtle);
+  --mds-tab-bar-item-color-selected: var(--magma-accent-emphasis-active);
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
-    --mds-tab-bar-item-color: rgb(var(--magma-text-subtle));
-    --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-emphasis-active));
+    --mds-tab-bar-item-color: var(--magma-text-subtle);
+    --mds-tab-bar-item-color-selected: var(--magma-accent-emphasis-active);
   }
 }

@@ -7,12 +7,12 @@
 :host {
   --mds-header-bar-hamburger-color: var(
     --mds-header-icon-color,
-    var(--mds-header-color, rgb(var(--magma-text-muted)))
+    var(--mds-header-color, var(--magma-text-muted))
   );
   --mds-header-bar-transition-duration: var(--duration-500);
   --private-header-bar-transition-duration: var(--mds-header-bar-transition-duration);
 
-  background-color: rgb(var(--magma-surface-raised));
+  background-color: var(--magma-surface-raised);
   box-shadow: var(--shadow-md-sharp);
   display: flex;
   interpolate-size: allow-keywords; /* not supported yet https://youtu.be/JN-nme9oF10 */

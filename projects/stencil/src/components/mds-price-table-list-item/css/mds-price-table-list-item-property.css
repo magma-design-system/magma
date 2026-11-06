@@ -11,19 +11,19 @@
 
 @property --mds-price-table-list-item-supported-icon-color {
   inherits: true;
-  initial-value: rgb(var(--label-green-06));
+  initial-value: var(--label-green-06);
   syntax: '<color>';
 }
 
 @property --mds-price-table-list-item-supported-icon-color-hover {
   inherits: true;
-  initial-value: rgb(var(--label-green-05));
+  initial-value: var(--label-green-05);
   syntax: '<color>';
 }
 
 @property --mds-price-table-list-item-unsupported-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-disabled));
+  initial-value: var(--magma-text-disabled);
   syntax: '<color>';
 }
 

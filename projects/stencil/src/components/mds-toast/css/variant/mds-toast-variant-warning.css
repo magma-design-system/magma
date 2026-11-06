@@ -1,14 +1,14 @@
 :host([variant='warning']),
 :host([variant='warning'][tone='strong']) {
-  --mds-toast-background: rgb(var(--magma-warning-wash-base));
-  --mds-toast-color: rgb(var(--magma-warning-text-muted));
+  --mds-toast-background: var(--magma-warning-wash-base);
+  --mds-toast-color: var(--magma-warning-text-muted);
   --mds-toast-shadow: var(--shadow-lg-sharp);
-  --mds-toast-icon-color: rgb(var(--magma-warning-text-default));
+  --mds-toast-icon-color: var(--magma-warning-text-default);
 }
 
 :host([variant='warning'][tone='weak']) {
-  --mds-toast-background: rgb(var(--magma-warning-wash-soft));
-  --mds-toast-color: rgb(var(--magma-warning-text-subtle));
+  --mds-toast-background: var(--magma-warning-wash-soft);
+  --mds-toast-color: var(--magma-warning-text-subtle);
   --mds-toast-shadow: var(--shadow-sm-sharp);
-  --mds-toast-icon-color: rgb(var(--magma-warning-text-default));
+  --mds-toast-icon-color: var(--magma-warning-text-default);
 }

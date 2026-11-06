@@ -9,7 +9,7 @@
   --mds-input-ring: var(--shadow-ring-2);
 
   .counter-button:hover {
-    --mds-button-background: rgb(var(--magma-wash-strong));
+    --mds-button-background: var(--magma-wash-strong);
   }
 }
 
@@ -19,7 +19,7 @@
     --mds-input-ring: var(--shadow-ring-2);
 
     .counter-button:hover {
-      --mds-button-background: rgb(var(--magma-wash-strong));
+      --mds-button-background: var(--magma-wash-strong);
     }
   }
 }

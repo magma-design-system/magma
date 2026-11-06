@@ -14,33 +14,33 @@
 :host {
   --mds-breadcrumb-item-arrow-depth-color: var(
     --mds-breadcrumb-arrow-depth-color,
-    rgb(var(--magma-text-subtle))
+    var(--magma-text-subtle)
   );
   --mds-breadcrumb-item-button-background-selected: var(
     --mds-breadcrumb-button-background-selected,
-    rgb(var(--mds-breadcrumb-item-button-border-color-rgb-selected))
+    var(--mds-breadcrumb-item-button-border-color-selected)
   );
   --mds-breadcrumb-item-button-background-hover: var(
     --mds-breadcrumb-button-background-hover,
-    rgb(var(--mds-breadcrumb-item-button-border-color-rgb-hover))
+    var(--mds-breadcrumb-item-button-border-color-hover)
   );
   --mds-breadcrumb-item-button-background: var(--mds-breadcrumb-button-background, transparent);
-  --mds-breadcrumb-item-button-border-color-rgb-selected: var(--magma-wash-base);
-  --mds-breadcrumb-item-button-border-color-rgb-hover: var(--magma-wash-soft);
-  --mds-breadcrumb-item-button-border-color-rgb: var(
-    --mds-breadcrumb-item-button-border-color-rgb-hover
+  --mds-breadcrumb-item-button-border-color-selected: var(--magma-wash-base);
+  --mds-breadcrumb-item-button-border-color-hover: var(--magma-wash-soft);
+  --mds-breadcrumb-item-button-border-color: var(
+    --mds-breadcrumb-item-button-border-color-hover
   );
   --mds-breadcrumb-item-button-color-selected: var(
     --mds-breadcrumb-button-color-selected,
-    rgb(var(--magma-text-default))
+    var(--magma-text-default)
   );
   --mds-breadcrumb-item-button-color-hover: var(
     --mds-breadcrumb-button-color-hover,
-    rgb(var(--magma-text-default))
+    var(--magma-text-default)
   );
   --mds-breadcrumb-item-button-color: var(
     --mds-breadcrumb-button-color,
-    rgb(var(--magma-text-default))
+    var(--magma-text-default)
   );
   --mds-breadcrumb-item-button-border-radius: var(--magma-radius-full);
 
@@ -56,20 +56,20 @@
 
 :host mds-button {
   --mds-button-background: var(--mds-breadcrumb-item-button-background);
-  --mds-button-border-color-rgb: var(--mds-breadcrumb-item-button-border-color-rgb);
+  --mds-button-border-color: var(--mds-breadcrumb-item-button-border-color);
   --mds-button-color: var(--mds-breadcrumb-item-button-color);
   --mds-button-radius: var(--mds-breadcrumb-item-button-border-radius);
 }
 
 :host mds-button:hover {
   --mds-button-background: var(--mds-breadcrumb-item-button-background-hover);
-  --mds-button-border-color-rgb: var(--mds-breadcrumb-item-button-border-color-rgb-hover);
+  --mds-button-border-color: var(--mds-breadcrumb-item-button-border-color-hover);
   --mds-button-color: var(--mds-breadcrumb-item-button-color-hover);
 }
 
 :host([selected]) mds-button {
   --mds-button-background: var(--mds-breadcrumb-item-button-background-selected);
-  --mds-button-border-color-rgb: var(--mds-breadcrumb-item-button-border-color-rgb-selected);
+  --mds-button-border-color: var(--mds-breadcrumb-item-button-border-color-selected);
   --mds-button-color: var(--mds-breadcrumb-item-button-color-selected);
 
   pointer-events: none;

@@ -102,7 +102,7 @@ components do (`mds-card` uses `--shadow-md-sharp`, `mds-modal` `--shadow-2xl`):
 
 ```css
 .panel {
-  background: rgb(var(--magma-surface-raised));
+  background: var(--magma-surface-raised);
   box-shadow: var(--shadow-md-sharp);
 }
 ```
@@ -126,7 +126,7 @@ fallback. A surface of your own that paints `overlay` passes it the same way:
 .panel {
   --magma-field-fill: var(--magma-surface-default);
 
-  background: rgb(var(--magma-surface-overlay));
+  background: var(--magma-surface-overlay);
 }
 ```
 

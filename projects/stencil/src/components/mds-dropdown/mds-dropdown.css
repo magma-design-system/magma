@@ -5,7 +5,7 @@
  * @prop --mds-dropdown-backdrop-duration: Sets the duration of the fade of the backdrop shown with the `backdrop` attribute, the one of the page backdrop by default.
  * @prop --mds-dropdown-backdrop-z-index: Public. Sets the z-index of the backdrop shown with the `backdrop` attribute, the one of the page backdrop by default.
  * @prop --mds-dropdown-background: Public. Sets the background-color of the dropdown.
- * @prop --mds-dropdown-drop-shadow-color-rgb: Sets the color used for the dropdown shadow
+ * @prop --mds-dropdown-drop-shadow-color: Sets the color used for the dropdown shadow
  * @prop --mds-dropdown-drop-shadow: Sets the drop-shadow of the dropdown.
  * @prop --mds-dropdown-duration: Sets the duration of the dropdown animation.
  * @prop --mds-dropdown-ease: Sets the easing of the dropdown animation.
@@ -25,25 +25,25 @@
   --mds-dropdown-backdrop-duration: var(--magma-backdrop-animation-duration);
   --private-dropdown-backdrop-duration: var(--mds-dropdown-backdrop-duration);
   --mds-dropdown-backdrop-z-index: var(--magma-backdrop-z-index);
-  --mds-dropdown-background: rgb(var(--magma-surface-overlay));
+  --mds-dropdown-background: var(--magma-surface-overlay);
 
   /* overlay: the fields inside take the step below (#1193) */
   --magma-field-fill: var(--magma-surface-default);
-  --mds-dropdown-drop-shadow-color-rgb: var(--magma-shadow-ink);
+  --mds-dropdown-drop-shadow-color: var(--magma-shadow-ink);
 
   /* multiplies the alpha of the default shadow: 3 in dark (css/mds-dropdown-pref-mode.css) */
   --private-dropdown-shadow-strength: 1;
   --mds-dropdown-drop-shadow: drop-shadow(
       0 --spacing(250) --spacing(200)
-        rgb(var(--mds-dropdown-drop-shadow-color-rgb) / calc(0.05 * var(--private-dropdown-shadow-strength)))
+        color-mix(in srgb, var(--mds-dropdown-drop-shadow-color) calc(0.05 * var(--private-dropdown-shadow-strength) * 100%), transparent)
     )
     drop-shadow(
       0 --spacing(100) --spacing(75)
-        rgb(var(--mds-dropdown-drop-shadow-color-rgb) / calc(0.15 * var(--private-dropdown-shadow-strength)))
+        color-mix(in srgb, var(--mds-dropdown-drop-shadow-color) calc(0.15 * var(--private-dropdown-shadow-strength) * 100%), transparent)
     )
     drop-shadow(
       0 0 1px
-        rgb(var(--mds-dropdown-drop-shadow-color-rgb) / calc(0.15 * var(--private-dropdown-shadow-strength)))
+        color-mix(in srgb, var(--mds-dropdown-drop-shadow-color) calc(0.15 * var(--private-dropdown-shadow-strength) * 100%), transparent)
     );
   --mds-dropdown-duration: var(--duration-500);
   --private-dropdown-duration: var(--mds-dropdown-duration);

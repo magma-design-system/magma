@@ -39,7 +39,7 @@
 
 .diffs-step {
   block-size: 2lh;
-  border: thin solid rgb(var(--magma-border-default));
+  border: thin solid var(--magma-border-default);
   border-radius: var(--magma-radius-sm);
   box-sizing: border-box;
   flex: 1;
@@ -50,6 +50,6 @@
    dark one */
 
 .diffs-step-changed {
-  border: medium solid rgb(var(--magma-surface-default));
-  outline: medium solid rgb(var(--magma-text-default));
+  border: medium solid var(--magma-surface-default);
+  outline: medium solid var(--magma-text-default);
 }

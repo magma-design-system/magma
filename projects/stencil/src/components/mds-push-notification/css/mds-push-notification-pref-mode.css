@@ -8,9 +8,9 @@
 :host([pref-theme-scheme='dark']) {
   --mds-push-notification-background: linear-gradient(
     to right,
-    rgb(var(--magma-backdrop-color) / 0) 0%,
-    rgb(var(--magma-backdrop-color) / 0.5) 20%,
-    rgb(var(--magma-backdrop-color) / 0.85) 100%
+    color-mix(in srgb, var(--magma-backdrop-color) 0%, transparent) 0%,
+    color-mix(in srgb, var(--magma-backdrop-color) 50%, transparent) 20%,
+    color-mix(in srgb, var(--magma-backdrop-color) 85%, transparent) 100%
   );
 }
 
@@ -19,9 +19,9 @@
   :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
     --mds-push-notification-background: linear-gradient(
       to right,
-      rgb(var(--magma-backdrop-color) / 0) 0%,
-      rgb(var(--magma-backdrop-color) / 0.5) 20%,
-      rgb(var(--magma-backdrop-color) / 0.85) 100%
+      color-mix(in srgb, var(--magma-backdrop-color) 0%, transparent) 0%,
+      color-mix(in srgb, var(--magma-backdrop-color) 50%, transparent) 20%,
+      color-mix(in srgb, var(--magma-backdrop-color) 85%, transparent) 100%
     );
   }
 }

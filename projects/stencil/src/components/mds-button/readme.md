@@ -303,12 +303,12 @@ The `notification` slot accepts an `<mds-notification>`. This is the documented 
 
 #### Styling Customization
 
-Style the button only through its documented `--mds-button-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode, named themes and high contrast keep working.
+Style the button only through its documented `--mds-button-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `var(--magma-<role>)` so dark mode, named themes and high contrast keep working.
 
 ```css
 .featured-action mds-button {
-  --mds-button-background: rgb(var(--magma-accent-emphasis));
-  --mds-button-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-button-background: var(--magma-accent-emphasis);
+  --mds-button-color: var(--magma-accent-on-emphasis);
   --mds-button-radius: var(--magma-radius-lg);
   --mds-button-gap: calc(var(--spacing) * 300);
 }
@@ -502,11 +502,11 @@ mds-button::part(spinner) {
 
 /* CORRECT */
 mds-button {
-  --mds-button-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-button-color: var(--magma-accent-on-emphasis);
   --mds-button-radius: var(--magma-radius-lg);
 }
 mds-button::part(icon) {
-  fill: rgb(var(--magma-warning-fg));
+  fill: var(--magma-warning-fg);
 }
 ```
 
@@ -560,7 +560,7 @@ mds-button::part(icon) {
 | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `--mds-button-await-duration`                   | Sets the duration of the rotation of the spinner await component                                                                                                                                                                           |
 | `--mds-button-background`                       | Public. Sets the background-color of the component                                                                                                                                                                                         |
-| `--mds-button-border-color-rgb`                 | Sets the color of the border of the component (based on box-shadow declaration)                                                                                                                                                            |
+| `--mds-button-border-color`                     | Sets the color of the border of the component (based on box-shadow declaration)                                                                                                                                                            |
 | `--mds-button-border-default-opacity`           | Sets the default opacity of the border color of the component (based on box-shadow declaration)                                                                                                                                            |
 | `--mds-button-border-high-contrast-hover-width` | Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles.                                                                                                          |
 | `--mds-button-border-high-contrast-width`       | Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles.                                                                                                          |

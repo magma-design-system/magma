@@ -23,14 +23,14 @@
 
 @property --mds-button-background {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
+  initial-value: var(--magma-accent-emphasis);
   syntax: '<color>';
 }
 
-@property --mds-button-border-color-rgb {
+@property --mds-button-border-color {
   inherits: true;
   initial-value: var(--magma-accent-emphasis);
-  syntax: '<number>+';
+  syntax: '<color>';
 }
 
 @property --mds-button-border-default-opacity {
@@ -77,7 +77,7 @@
 
 @property --mds-button-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }
 

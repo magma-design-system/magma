@@ -127,9 +127,9 @@ Use the footer to display computed totals or aggregated values that summarize th
 
 ```css
 .bilancio-table mds-table {
-  --mds-table-background: rgb(var(--magma-surface-raised));
+  --mds-table-background: var(--magma-surface-raised);
   --mds-table-cell-padding: calc(var(--spacing) * 300);
-  --mds-table-color: rgb(var(--magma-text-default));
+  --mds-table-color: var(--magma-text-default);
 }
 ```
 
@@ -207,12 +207,12 @@ Using the native `<tfoot>` inside `mds-table` bypasses the shared CSS token casc
 ```css
 /* INCORRECT */
 mds-table-footer >>> :host {
-  background: rgb(var(--magma-surface-raised));
+  background: var(--magma-surface-raised);
 }
 
 /* CORRECT */
 mds-table {
-  --mds-table-background: rgb(var(--magma-surface-raised));
+  --mds-table-background: var(--magma-surface-raised);
   --mds-table-cell-padding: calc(var(--spacing) * 300);
 }
 ```

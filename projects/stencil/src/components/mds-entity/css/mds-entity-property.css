@@ -11,31 +11,31 @@
 
 @property --mds-entity-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-raised));
+  initial-value: var(--magma-surface-raised);
   syntax: '<color>';
 }
 
 @property --mds-entity-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-default));
+  initial-value: var(--magma-text-default);
   syntax: '<color>';
 }
 
 @property --mds-entity-detail-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-muted));
+  initial-value: var(--magma-text-muted);
   syntax: '<color>';
 }
 
 @property --mds-entity-icon-background {
   inherits: true;
-  initial-value: rgb(var(--label-blue-09));
+  initial-value: var(--label-blue-09);
   syntax: '<color>';
 }
 
 @property --mds-entity-icon-color {
   inherits: true;
-  initial-value: rgb(var(--label-blue-04));
+  initial-value: var(--label-blue-04);
   syntax: '<color>';
 }
 

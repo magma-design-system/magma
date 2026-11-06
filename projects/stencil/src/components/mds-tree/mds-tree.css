@@ -44,31 +44,31 @@
   --mds-tree-actions-border-radius: var(--magma-radius-lg);
   --mds-tree-actions-gap: --spacing(50);
   --mds-tree-label-default-background: transparent;
-  --mds-tree-label-hover-background: rgb(var(--magma-wash-soft));
-  --mds-tree-label-icon-default-color: rgb(var(--magma-accent-emphasis));
+  --mds-tree-label-hover-background: var(--magma-wash-soft);
+  --mds-tree-label-icon-default-color: var(--magma-accent-emphasis);
   --mds-tree-label-icon-hover-color: var(--mds-tree-label-icon-default-color);
   --mds-tree-line-clamp: 2;
-  --mds-tree-branch-border-color: rgb(var(--magma-border-default));
+  --mds-tree-branch-border-color: var(--magma-border-default);
   --mds-tree-branch-use-rounded-border: true;
   --mds-tree-branch-border-size: --spacing(50);
-  --mds-tree-branch-dot-default-color: rgb(var(--magma-border-default));
-  --mds-tree-branch-dot-expanded-color: rgb(var(--magma-border-strong));
+  --mds-tree-branch-dot-default-color: var(--magma-border-default);
+  --mds-tree-branch-dot-expanded-color: var(--magma-border-strong);
   --mds-tree-toggle-gap: --spacing(100);
-  --mds-tree-toggle-icon-async-background: rgb(var(--magma-wash-base));
-  --mds-tree-toggle-icon-async-color: rgb(var(--magma-accent-fg));
-  --mds-tree-toggle-icon-chevron-default-background: rgb(var(--magma-accent-emphasis));
-  --mds-tree-toggle-icon-chevron-default-color: rgb(var(--magma-text-on-emphasis));
+  --mds-tree-toggle-icon-async-background: var(--magma-wash-base);
+  --mds-tree-toggle-icon-async-color: var(--magma-accent-fg);
+  --mds-tree-toggle-icon-chevron-default-background: var(--magma-accent-emphasis);
+  --mds-tree-toggle-icon-chevron-default-color: var(--magma-text-on-emphasis);
   --mds-tree-toggle-icon-chevron-expanded-background: var(
     --mds-tree-toggle-icon-chevron-default-background
   );
   --mds-tree-toggle-icon-chevron-expanded-color: var(--mds-tree-toggle-icon-chevron-default-color);
-  --mds-tree-toggle-icon-folder-default-background: rgb(var(--magma-wash-strong));
-  --mds-tree-toggle-icon-folder-default-color: rgb(var(--magma-accent-emphasis));
+  --mds-tree-toggle-icon-folder-default-background: var(--magma-wash-strong);
+  --mds-tree-toggle-icon-folder-default-color: var(--magma-accent-emphasis);
   --mds-tree-toggle-icon-folder-expanded-color: var(--mds-tree-toggle-icon-folder-default-color);
   --mds-tree-toggle-icon-position-right-default-background: transparent;
-  --mds-tree-toggle-icon-position-right-default-color: rgb(var(--magma-text-subtle));
+  --mds-tree-toggle-icon-position-right-default-color: var(--magma-text-subtle);
   --mds-tree-toggle-icon-position-right-expanded-background: transparent;
-  --mds-tree-toggle-icon-position-right-expanded-color: rgb(var(--magma-text-subtle));
+  --mds-tree-toggle-icon-position-right-expanded-color: var(--magma-text-subtle);
   --mds-tree-transition-duration: var(--duration-300);
   --mds-tree-transition-timing-function: var(--ease-in-out-expo);
 

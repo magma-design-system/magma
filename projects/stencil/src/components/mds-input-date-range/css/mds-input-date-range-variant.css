@@ -1,64 +1,76 @@
 :host {
-  --mds-input-date-range-icon-color: rgb(var(--magma-accent-emphasis));
-  --mds-input-date-range-variant-color-rgb: 0 0 0;
+  --mds-input-date-range-icon-color: var(--magma-accent-emphasis);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-date-range-variant-color: rgb(0 0 0);
 }
 
 :host(:focus-within) {
-  --mds-input-date-range-icon-color: rgb(var(--magma-accent-fg));
-  --mds-input-date-range-variant-color-rgb: var(--magma-accent-emphasis);
+  --mds-input-date-range-icon-color: var(--magma-accent-fg);
+  --mds-input-date-range-variant-color: var(--magma-accent-emphasis);
 }
 
 :host([variant='ai']) {
-  --mds-input-date-range-icon-color: rgb(var(--magma-accent-ai-emphasis));
-  --mds-input-tip-background: rgb(var(--magma-accent-ai-fg));
-  --mds-input-date-range-variant-color-rgb: 0 0 0;
+  --mds-input-date-range-icon-color: var(--magma-accent-ai-emphasis);
+  --mds-input-tip-background: var(--magma-accent-ai-fg);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-date-range-variant-color: rgb(0 0 0);
 }
 
 :host([variant='ai']:focus-within) {
-  --mds-input-date-range-icon-color: rgb(var(--magma-accent-ai-fg));
-  --mds-input-date-range-variant-color-rgb: var(--magma-accent-ai-emphasis);
+  --mds-input-date-range-icon-color: var(--magma-accent-ai-fg);
+  --mds-input-date-range-variant-color: var(--magma-accent-ai-emphasis);
 }
 
 :host([variant='info']) {
-  --mds-input-date-range-icon-color: rgb(var(--magma-info-emphasis));
-  --mds-input-tip-background: rgb(var(--magma-info-emphasis));
-  --mds-input-date-range-variant-color-rgb: 0 0 0;
+  --mds-input-date-range-icon-color: var(--magma-info-emphasis);
+  --mds-input-tip-background: var(--magma-info-emphasis);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-date-range-variant-color: rgb(0 0 0);
 }
 
 :host([variant='info']:focus-within) {
-  --mds-input-date-range-icon-color: rgb(var(--magma-info-emphasis));
-  --mds-input-date-range-variant-color-rgb: var(--magma-info-emphasis);
+  --mds-input-date-range-icon-color: var(--magma-info-emphasis);
+  --mds-input-date-range-variant-color: var(--magma-info-emphasis);
 }
 
 :host([variant='success']) {
-  --mds-input-date-range-icon-color: rgb(var(--magma-success-emphasis));
-  --mds-input-tip-background: rgb(var(--magma-success-emphasis));
-  --mds-input-date-range-variant-color-rgb: 0 0 0;
+  --mds-input-date-range-icon-color: var(--magma-success-emphasis);
+  --mds-input-tip-background: var(--magma-success-emphasis);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-date-range-variant-color: rgb(0 0 0);
 }
 
 :host([variant='success']:focus-within) {
-  --mds-input-date-range-icon-color: rgb(var(--magma-success-emphasis));
-  --mds-input-date-range-variant-color-rgb: var(--magma-success-emphasis);
+  --mds-input-date-range-icon-color: var(--magma-success-emphasis);
+  --mds-input-date-range-variant-color: var(--magma-success-emphasis);
 }
 
 :host([variant='warning']) {
-  --mds-input-date-range-icon-color: rgb(var(--magma-warning-emphasis));
-  --mds-input-tip-background: rgb(var(--magma-warning-emphasis));
-  --mds-input-date-range-variant-color-rgb: 0 0 0;
+  --mds-input-date-range-icon-color: var(--magma-warning-emphasis);
+  --mds-input-tip-background: var(--magma-warning-emphasis);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-date-range-variant-color: rgb(0 0 0);
 }
 
 :host([variant='warning']:focus-within) {
-  --mds-input-date-range-icon-color: rgb(var(--magma-warning-emphasis));
-  --mds-input-date-range-variant-color-rgb: var(--magma-warning-emphasis);
+  --mds-input-date-range-icon-color: var(--magma-warning-emphasis);
+  --mds-input-date-range-variant-color: var(--magma-warning-emphasis);
 }
 
 :host([variant='error']) {
-  --mds-input-date-range-icon-color: rgb(var(--magma-danger-emphasis));
-  --mds-input-tip-background: rgb(var(--magma-danger-emphasis));
-  --mds-input-date-range-variant-color-rgb: 0 0 0;
+  --mds-input-date-range-icon-color: var(--magma-danger-emphasis);
+  --mds-input-tip-background: var(--magma-danger-emphasis);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-date-range-variant-color: rgb(0 0 0);
 }
 
 :host([variant='error']:focus-within) {
-  --mds-input-date-range-icon-color: rgb(var(--magma-danger-emphasis));
-  --mds-input-date-range-variant-color-rgb: var(--magma-danger-emphasis);
+  --mds-input-date-range-icon-color: var(--magma-danger-emphasis);
+  --mds-input-date-range-variant-color: var(--magma-danger-emphasis);
 }

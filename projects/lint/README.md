@@ -114,7 +114,7 @@ picked by hand. The tools of the MCP server, which answer from this core, have t
   classes of `@apply` as those of markup
   (`projects/codemod/fixtures/css/apply-semantic-utility-classes`), to a role class, the fix
   `no-raw-palette-classes` gives and `no-raw-color` (a colour literal, fixed with
-  `rgb(var(--magma-*))`) does not; one name also keeps one switch for one finding. Of
+  `var(--magma-*)`) does not; one name also keeps one switch for one finding. Of
   `inline-templates.ts`, the inline `template` of an Angular component is read through the
   inline-template processor of angular-eslint (`agents/lint.md`); HTML written as a string in
   a script (`el.innerHTML`) is not, since ESLint parses a script with a script parser, which

@@ -126,14 +126,14 @@ step only follows the mode.
 
 ```css
 .panel {
-  background: rgb(var(--magma-surface-raised));
-  color: rgb(var(--magma-text-default));
+  background: var(--magma-surface-raised);
+  color: var(--magma-text-default);
 }
 ```
 
 The values come from `dist/css/semantic.css`, the Tailwind utilities from
 `dist/tailwind/theme.css`. Every role of the Tailwind bridge carries its light default as
-the fallback of its `var()` (`rgb(var(--magma-surface-default, 242 242 242))`): Tailwind
+the fallback of its `var()` (`var(--magma-surface-default, rgb(242 242 242))`): Tailwind
 IntelliSense reads a utility's colour only from that literal, so the semantic utilities get
 a swatch in the editor. Without `semantic.css` they paint that light default, in every mode:
 the file is still required. The roles, their pairing rules and the Magma 1 -> 2 map are
@@ -152,7 +152,7 @@ import '@maggioli-design-system/styles/dist/css/colors-rgb.css';
 ```
 
 The web components, the Tailwind utilities and the semantic layer read the palette as
-custom properties in rgb channel format (`rr gg bb`). `colors-rgb.css` holds every group;
+custom properties holding full colors (`rgb(r g b)`). `colors-rgb.css` holds every group;
 the per-group files (`colors-rgb-{tones,status,label,brand,default,theme}.css`) exist for
 a custom setup, and the semantic roles need at least `default` (the `--variant-*` accents)
 and `theme` (the `--surface-*`, `--border-*` and `--text-*` families) besides `tones` and
@@ -163,7 +163,7 @@ interface role (a `label-*` category, a `brand-*` identity). Outside tailwind:
 
 ```css
 .selector {
-  color: rgb(var(--label-sky-04));
+  color: var(--label-sky-04);
 }
 ```
 
@@ -273,12 +273,6 @@ Fontsource supports [variable fonts][fontsource-var-fonts].
 holds every public token exactly once - the scales, motion, palette, semantic layer,
 globals and the tokens of every component - with each default resolved to a literal, and
 it is ordered: a scale runs from its smallest step up, a palette keeps its ramp order.
-
-One deliberate difference from the real stylesheets: a palette token whose value is a bare
-rgb triplet is written as `rgb(<triplet>)`, so an editor can show its actual color. No
-editor can preview `rgb(var(--label-yellow-03))` - a triplet is not a color, and VS Code's
-own color support returns nothing for that shape even when the token is in the same file.
-The token itself still holds the triplet, to be read as `rgb(var(--label-yellow-03))`.
 
 Why a generated file rather than the real stylesheets. Editors discover custom properties
 by walking declarations, so the `@property` registrations that publish the `--mds-*`

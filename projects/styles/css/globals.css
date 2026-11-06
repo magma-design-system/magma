@@ -107,8 +107,8 @@
 
 @property --magma-backdrop-color {
   inherits: true;
-  initial-value: 0 0 0;
-  syntax: '<integer>+';
+  initial-value: rgb(0 0 0);
+  syntax: '<color>';
 }
 
 /* The ink drawn on the backdrop / overlay scrim (the modal close icon). The
@@ -117,8 +117,8 @@
    Override it together with --magma-backdrop-color. */
 @property --magma-on-backdrop {
   inherits: true;
-  initial-value: 252 252 252;
-  syntax: '<integer>+';
+  initial-value: rgb(252 252 252);
+  syntax: '<color>';
 }
 
 @property --magma-outline-blur-color {
@@ -135,8 +135,8 @@
 
 @property --magma-overlay-color {
   inherits: true;
-  initial-value: 0 0 0;
-  syntax: '<integer>+';
+  initial-value: rgb(0 0 0);
+  syntax: '<color>';
 }
 
 @property --magma-selection-background {
@@ -260,7 +260,7 @@
   */
   --magma-backdrop-animation-duration: 300ms;
   --magma-backdrop-blur: 4px;
-  --magma-backdrop-color: 0 0 0;
+  --magma-backdrop-color: rgb(0 0 0);
   --magma-backdrop-opacity: 0.1;
   --magma-backdrop-z-index: 4000;
   --magma-context-menu-z-index: 8000;
@@ -269,24 +269,24 @@
   --magma-header-z-index: 1000;
   --magma-modal-z-index: 3000;
   --magma-notification-z-index: 2000;
-  --magma-on-backdrop: 252 252 252;
+  --magma-on-backdrop: rgb(252 252 252);
   --magma-outline-animation-duration: 1.5s;
   --magma-outline-blur-color: transparent;
   --magma-outline-blur-offset: 6px;
-  --magma-outline-focus-color: rgb(var(--tone-neutral-05, 0 0 0));
+  --magma-outline-focus-color: var(--tone-neutral-05, rgb(0 0 0));
   --magma-outline-focus-offset: 2px;
   --magma-overlay-opacity: 0.5;
-  --magma-selection-background: rgb(var(--label-sky-09));
-  --magma-selection-color: rgb(var(--label-sky-01));
+  --magma-selection-background: var(--label-sky-09);
+  --magma-selection-color: var(--label-sky-01);
   --magma-theme-overlay-z-index: 7000;
   --magma-tooltip-z-index: 6000;
   --magma-view-transition-navigation: auto;
 
   /* Derived properties */
-  --magma-backdrop: rgb(var(--magma-backdrop-color) / var(--magma-backdrop-opacity));
+  --magma-backdrop: color-mix(in srgb, var(--magma-backdrop-color) calc(var(--magma-backdrop-opacity) * 100%), transparent);
   --magma-outline-blur: 2px solid var(--magma-outline-blur-color);
   --magma-outline-focus: 2px solid var(--magma-outline-focus-color);
   --magma-overlay-blur: var(--magma-backdrop-blur);
   --magma-overlay-color: var(--magma-backdrop-color);
-  --magma-overlay: rgb(var(--magma-overlay-color) / var(--magma-overlay-opacity));
+  --magma-overlay: color-mix(in srgb, var(--magma-overlay-color) calc(var(--magma-overlay-opacity) * 100%), transparent);
 }

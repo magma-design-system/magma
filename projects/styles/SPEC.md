@@ -109,8 +109,8 @@ like `--magma-text-muted` from colliding with a component prop like
 One source, two faces - the same token in plain CSS or as a Tailwind utility:
 
 ```css
-/* plain CSS - always the rgb() wrapper (tokens are channel triplets) */
-.card { background: rgb(var(--magma-surface-raised)); color: rgb(var(--magma-text-default)); }
+/* plain CSS - a token is a full color, read it with var() */
+.card { background: var(--magma-surface-raised); color: var(--magma-text-default); }
 ```
 
 ```html
@@ -155,8 +155,8 @@ inverts between light and dark, so its states are named roles
 The palette primitives (`bg-tone-neutral-03`, `--status-error-05`, ...) stay published.
 They are right only for a colour that encodes data rather than a role (`label-*`,
 `brand-*`) and for the pure extreme `--tone-<family>-seed`; the bare `--tone-<family>`
-of Magma 1 no longer exists (it is `-seed`). Outside Tailwind use the same `rgb()`
-wrapper: `rgb(var(--label-sky-04) / 0.15)`.
+of Magma 1 no longer exists (it is `-seed`). Outside Tailwind read them with `var()`, and
+fade one with `color-mix(in srgb, var(--label-sky-04) 15%, transparent)`.
 
 ## Theming axes
 
@@ -474,10 +474,10 @@ Each of them, and its group, says in one line what it is for in `scripts/dtcg/de
 | `--magma-corner-cap`       | `0.5`                                        | The part of its height a corner may take, for the controls whose radius is past half their height; `0.2915` where `corner-shape` cannot be drawn (see Corner geometry) |
 | `--magma-disabled-opacity` | `0.5`                                        | Opacity of disabled components  |
 | `--magma-backdrop-opacity` | `0.1`                                        | Opacity of modal backdrops      |
-| `--magma-on-backdrop`      | `252 252 252`                                | Ink drawn on the backdrop / overlay scrim (the modal close icon); fixed in both modes because the scrim is. Override it together with `--magma-backdrop-color` |
+| `--magma-on-backdrop`      | `rgb(252 252 252)`                           | Ink drawn on the backdrop / overlay scrim (the modal close icon); fixed in both modes because the scrim is. Override it together with `--magma-backdrop-color` |
 | `--magma-outline-focus`    | `2px solid var(--magma-outline-focus-color)` | Focus ring style                |
-| `--magma-backdrop-color` / `--magma-backdrop-blur` | `0 0 0` / `4px` | Scrim colour (channel triplet) and blur behind modals and drawers |
-| `--magma-selection-background` / `--magma-selection-color` | `rgb(var(--label-sky-09))` / `rgb(var(--label-sky-01))` | Text selection |
+| `--magma-backdrop-color` / `--magma-backdrop-blur` | `rgb(0 0 0)` / `4px` | Scrim colour and blur behind modals and drawers |
+| `--magma-selection-background` / `--magma-selection-color` | `var(--label-sky-09)` / `var(--label-sky-01)` | Text selection |
 | `--magma-<layer>-z-index`  | header `1000`, notification `2000`, modal `3000`, backdrop `4000`, dropdown `5000`, tooltip `6000`, theme-overlay `7000`, context-menu `8000` | The stacking scale of the floating layers; slot your own layers between them |
 
 Example override:
@@ -499,7 +499,7 @@ These globals, the corner axis and the depth axis are also published as DTCG 202
 the top-level blocks of `css/globals.css`, `build/css/corner.css` and `css/theme.css`:
 `:root` is the `globals` set, and each `[data-<axis>='<value>']` block becomes a context
 of the `<axis>` modifier. A value that names one token is an alias; the `@property`
-syntax gives the type of the rest (`<integer>+` is a channel triplet, so a color), and an
+syntax gives the type of the rest (a `<color>` also when it is faded with `color-mix()`), and an
 enumeration or `*` lands in `cssOnly`. A declaration in any other kind of block (an
 `@media`, another selector) makes the build fail rather than drop the token: model the
 new block in `scripts/dtcg/globals.ts` first. `test/dtcg-globals.test.mts` compares the

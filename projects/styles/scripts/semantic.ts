@@ -78,13 +78,13 @@ const bridge = model.base.flatMap(({ decls }) => decls).filter((decl) => decl.tw
 const bridgeCss = (lookup: Tokens): string => {
   const unresolved: string[] = [];
   const body = bridge.map(({ name, tw }) => {
-    const triplet = resolveValue(`var(--${name})`, lookup, '0.0025rem').replace(/\s+/g, ' ').trim();
-    if (!/^\d{1,3} \d{1,3} \d{1,3}$/.test(triplet)) unresolved.push(`--${name} -> ${triplet}`);
-    return `  --color-${tw}: rgb(var(--${name}, ${triplet}));`;
+    const color = resolveValue(`var(--${name})`, lookup, '0.0025rem').replace(/\s+/g, ' ').trim();
+    if (!/^rgb\(\d{1,3} \d{1,3} \d{1,3}\)$/.test(color)) unresolved.push(`--${name} -> ${color}`);
+    return `  --color-${tw}: var(--${name}, ${color});`;
   });
   if (unresolved.length) {
     throw new Error(
-      `${unresolved.length} semantic role(s) do not resolve to an rgb triplet for the bridge fallback:\n` +
+      `${unresolved.length} semantic role(s) do not resolve to an rgb() color for the bridge fallback:\n` +
         unresolved.map((u) => `  ${u}`).join('\n'),
     );
   }

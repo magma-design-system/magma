@@ -7,7 +7,7 @@
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])),
 :host([pref-theme-scheme='dark']) {
   .action-close {
-    --mds-button-color: rgb(var(--magma-text-default));
+    --mds-button-color: var(--magma-text-default);
   }
 }
 
@@ -15,7 +15,7 @@
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
     .action-close {
-      --mds-button-color: rgb(var(--magma-text-default));
+      --mds-button-color: var(--magma-text-default);
     }
   }
 }

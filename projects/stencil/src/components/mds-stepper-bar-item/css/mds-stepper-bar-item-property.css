@@ -11,7 +11,7 @@
 
 @property --mds-stepper-bar-item-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-muted));
+  initial-value: var(--magma-text-muted);
   syntax: '<color>';
 }
 
@@ -25,37 +25,37 @@
 
 @property --mds-stepper-bar-item-icon-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-strong));
+  initial-value: var(--magma-wash-strong);
   syntax: '<color>';
 }
 
 @property --mds-stepper-bar-item-icon-background-current {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
+  initial-value: var(--magma-accent-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-stepper-bar-item-icon-background-done {
   inherits: true;
-  initial-value: rgb(var(--magma-success-emphasis));
+  initial-value: var(--magma-success-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-stepper-bar-item-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-subtle));
+  initial-value: var(--magma-text-subtle);
   syntax: '<color>';
 }
 
 @property --mds-stepper-bar-item-icon-color-current {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-stepper-bar-item-icon-color-done {
   inherits: true;
-  initial-value: rgb(var(--magma-success-on-emphasis));
+  initial-value: var(--magma-success-on-emphasis);
   syntax: '<color>';
 }
 
@@ -67,13 +67,13 @@
 
 @property --mds-stepper-bar-item-progress-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-strong));
+  initial-value: var(--magma-wash-strong);
   syntax: '<color>';
 }
 
 @property --mds-stepper-bar-item-progress-color {
   inherits: true;
-  initial-value: rgb(var(--magma-success-emphasis));
+  initial-value: var(--magma-success-emphasis);
   syntax: '<color>';
 }
 

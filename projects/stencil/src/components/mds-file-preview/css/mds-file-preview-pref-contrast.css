@@ -4,7 +4,7 @@
  * `system` and no controller follow the OS via @media. Cross-browser, no :host-context. */
 
 :host([pref-contrast='more']) {
-  --mds-file-preview-color: rgb(var(--magma-text-default));
+  --mds-file-preview-color: var(--magma-text-default);
 
   box-shadow: var(--shadow-ring-2);
 }
@@ -12,7 +12,7 @@
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-file-preview-color: rgb(var(--magma-text-default));
+    --mds-file-preview-color: var(--magma-text-default);
 
     box-shadow: var(--shadow-ring-2);
   }

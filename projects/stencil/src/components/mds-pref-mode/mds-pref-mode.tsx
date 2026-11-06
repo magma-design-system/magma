@@ -38,8 +38,9 @@ export class MdsPrefMode {
 
   private readonly localStorageAlias: string = 'mdsPrefMode';
   private readonly customPropertyAlias: string = '--magma-pref-mode';
-  private readonly overlayBackgroundVisible = 'rgb(var(--magma-surface-default))';
-  private readonly overlayBackgroundHidden = 'rgb(var(--magma-surface-default) / 0)';
+  private readonly overlayBackgroundVisible = 'var(--magma-surface-default)';
+  private readonly overlayBackgroundHidden =
+    'color-mix(in srgb, var(--magma-surface-default) 0%, transparent)';
   private cssOverlayShowDuration: string = '300';
   private cssOverlayFadeoutDuration: string = '200';
   private cssOverlayZIndex: string = '6000';

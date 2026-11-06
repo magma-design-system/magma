@@ -15,7 +15,7 @@
    * did by hand. The host `pref-*` attributes are a REFLECTION of the root classes
    * (see resolve() in @common/preference), so the global layer is always in sync
    * with them - a component on a promoted role needs no sheet of its own. */
-  --mds-separator-background: rgb(var(--magma-border-default));
+  --mds-separator-background: var(--magma-border-default);
 
   background-color: var(--mds-separator-background);
   border-radius: var(--magma-radius-full);

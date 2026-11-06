@@ -53,9 +53,9 @@ Every ramp has a numeric ladder (`-01` ... `-10`) plus `-seed`. This is a **cont
 
 ```css
 /* tone-porcelain ladder in light mode */
---tone-porcelain-01: 4 5 6; /* highest contrast */
---tone-porcelain-03: 61 73 91; /* secondary text level */
---tone-porcelain-08: 201 208 219; /* low contrast - fills, borders */
+--tone-porcelain-01: rgb(4 5 6); /* highest contrast */
+--tone-porcelain-03: rgb(61 73 91); /* secondary text level */
+--tone-porcelain-08: rgb(201 208 219); /* low contrast - fills, borders */
 ```
 
 **Rule of thumb**: low numbers are high contrast, high numbers are low contrast; `-seed` is the pure extreme of the mode (`#fff` light, `#000` dark), not a surface. The roles pick the steps for you: the neutral text default sits on `-01`, the muted text on `-03`. The exact range per family is documented in [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md).
@@ -65,36 +65,38 @@ Every ramp has a numeric ladder (`-01` ... `-10`) plus `-seed`. This is a **cont
 | Surface                     | Syntax                                                                   | When to use                                                                                                        |
 | --------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
 | **Tailwind role utility**   | `bg-surface-raised`, `text-fg-muted`, `border-border-default`            | **Default** in app code (needs `styles/dist/tailwind/theme.css`, see [`agents/assets.md`](./agents/assets.md))     |
-| **CSS role var**            | `rgb(var(--magma-surface-raised))`, `rgb(var(--magma-text-muted) / 0.5)` | Plain CSS, component CSS vars, alpha                                                                               |
-| **Primitive utility / var** | `bg-label-sky-09`, `rgb(var(--label-orchid-04))`                         | Only for colours that encode data or brand identity                                                                |
+| **CSS role var**            | `var(--magma-surface-raised)`, `color-mix(in srgb, var(--magma-text-muted) 50%, transparent)` | Plain CSS, component CSS vars, alpha                                                                               |
+| **Primitive utility / var** | `bg-label-sky-09`, `var(--label-orchid-04)`                         | Only for colours that encode data or brand identity                                                                |
 | **SCSS variables**          | `$color-tone-neutral-light-3` (hex, one variable per mode)               | Legacy SCSS consumers only: no dark flip, no theme                                                                 |
 | **JS**                      | `@maggioli-design-system/design-tokens` exports `{ palette }`            | The Tailwind 3 colour functions behind the JS preset; Tailwind 3 only                                              |
 | **DTCG JSON**               | `@maggioli-design-system/design-tokens/dist/dtcg/`, `@maggioli-design-system/styles/dist/dtcg/` | To read the tokens, not to paint with them: documentation, design tools, other platforms (every global token, modes, themes, contrast; the styles globals and its corner and depth axes; each role and group of the semantic layer with its `$description`) |
 | **Tailwind map**            | `@maggioli-design-system/styles/dist/tailwind/consumption.json`          | To document or check the Tailwind side: per token, its `@theme` variable, description, utilities and variants, the spacing multiplier, every Magma `@utility` |
 | **JSON**                    | `@maggioli-design-system/design-tokens/dist/json/`                       | Design tools (Figma tokens)                                                                                        |
 | **Android, iOS, Flutter**   | `design-tokens/dist/android/colors.xml`, `dist/ios-swift/*.swift`, `dist/flutter/colors.dart` | Native apps: colours only, both modes as separate names, the roles per family (`surface_neutral_*`), no theme or contrast switch (design-tokens README, "Native platforms") |
-| **Hex CSS files**           | `colors-hex-*.css` imports                                               | Only when the consumer cannot evaluate the `rgb(var(--...))` wrapper - never in Tailwind or web component contexts |
+| **Hex CSS files**           | `colors-hex-*.css` imports                                               | Only when the consumer cannot evaluate the `var(--...)` wrapper - never in Tailwind or web component contexts |
 
-### Why RGB and not hex by default
+### Full colours
 
-The CSS custom properties hold **space-separated RGB components**, not full colour values:
+The CSS custom properties hold **full colours**, written `rgb(r g b)`:
 
 ```css
 :root {
-  --tone-neutral-03: 73 73 73; /* not #494949, not rgb(73,73,73) */
+  --tone-neutral-03: rgb(73 73 73);
 }
 ```
 
-This lets you compose alpha at the call site:
+A token is a valid colour wherever CSS takes one, and a transparency is composed at the call site, mixing the token with `transparent` in `srgb` (which scales only its alpha):
 
 ```css
 .foo {
-  background: rgb(var(--magma-accent-emphasis) / 0.15); /* tint */
-  color: rgb(var(--magma-text-muted)); /* solid */
+  background: color-mix(in srgb, var(--magma-accent-emphasis) 15%, transparent); /* tint */
+  color: var(--magma-text-muted); /* solid */
 }
 ```
 
-The hex variants (`colors-hex-*.css`) are pre-rendered for consumers that can't do the `rgb(var(--...))` evaluation. Don't import them in Tailwind- or web-component-based apps.
+`rgb(var(--x))` and `rgb(var(--x) / 0.15)` are the forms of Magma 2, when a token held bare channels (`73 73 73`): since Magma 3 (#918) they are invalid CSS, and the declaration is dropped without an error.
+
+The hex variants (`colors-hex-*.css`, `--hex-*` names) are pre-rendered for consumers that can't do the `var(--...)` evaluation. Don't import them in Tailwind- or web-component-based apps.
 
 ## Dark mode, themes and contrast
 
@@ -123,9 +125,9 @@ Visual reference is in Storybook - the colour scales are rendered live in [`proj
 
 - Raw Tailwind colour primitives (`bg-white`, `bg-gray-500`, `text-red-700`) - use the role utilities (`bg-surface-default`, `text-fg-muted`)
 - Painting the interface with a primitive ramp (`bg-tone-neutral-09`, `text-status-error-03`) - it ignores the named theme and the contrast preference; use the role
-- Literal `rgba(...)` values - use the `rgb(var(--...) / alpha)` wrapper
+- Literal `rgba(...)` values - fade a role with `color-mix(in srgb, var(--magma-...) <N>%, transparent)`
 - Hard-coded hex codes in component styles - token-only
-- Importing `colors-hex-*.css` in Tailwind / web-component projects - only the RGB format works with the system
+- Importing `colors-hex-*.css` in Tailwind / web-component projects - only `colors-rgb*.css` feeds the components and the utilities
 - Manual dark-mode media queries - the palette flips for you
 - Picking a `label-*` colour for status communication - use the status roles
 - Painting everything with the accent - its weight is for calls to action and the most important affordances
@@ -139,5 +141,5 @@ Visual reference is in Storybook - the colour scales are rendered live in [`proj
 | Internal token structure, levels, naming rules, build | [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md)     |
 | Tailwind classes, CSS custom property exposure        | [`projects/styles/SPEC.md`](../projects/styles/SPEC.md)                   |
 | The live colour ladder gallery                        | Storybook -> "Common tests" -> "Color scale"                              |
-| Specific token values (RGB triplets)                  | `projects/styles/dist/css/colors-rgb-*.css` (after `nx run styles:build`) |
+| Specific token values (`rgb()` colours)               | `projects/styles/dist/css/colors-rgb-*.css` (after `nx run styles:build`) |
 | Hex equivalents (legacy consumers)                    | `projects/styles/dist/css/colors-hex-*.css` (after `nx run styles:build`) |

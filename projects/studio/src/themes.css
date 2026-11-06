@@ -11,13 +11,13 @@
 }
 
 .themes-muted {
-  color: rgb(var(--magma-text-muted));
+  color: var(--magma-text-muted);
 }
 
 /* the code named in the running text, set apart from the words around it */
 
 .themes mds-text code {
-  background-color: rgb(var(--magma-wash-soft));
+  background-color: var(--magma-wash-soft);
   border-radius: var(--magma-radius-xs);
   corner-shape: var(--magma-corner-shape);
   font-family: var(--font-code);
@@ -44,8 +44,8 @@
 
 .themes-card {
   align-content: start;
-  background-color: rgb(var(--magma-surface-raised));
-  border: thin solid rgb(var(--magma-border-muted));
+  background-color: var(--magma-surface-raised);
+  border: thin solid var(--magma-border-muted);
   border-radius: var(--magma-radius-lg);
   container: theme / inline-size;
   corner-shape: var(--magma-corner-shape);
@@ -68,7 +68,7 @@
 }
 
 .themes-attr {
-  color: rgb(var(--magma-text-muted));
+  color: var(--magma-text-muted);
   font-family: var(--font-code);
   font-size: var(--text-size-info-tip);
 }
@@ -142,10 +142,10 @@
 }
 
 .themes-export {
-  background-color: rgb(var(--magma-surface-sunken));
-  border: thin solid rgb(var(--magma-border-muted));
+  background-color: var(--magma-surface-sunken);
+  border: thin solid var(--magma-border-muted);
   border-radius: var(--magma-radius-md);
-  color: rgb(var(--magma-text-default));
+  color: var(--magma-text-default);
   corner-shape: var(--magma-corner-shape);
   font-family: var(--font-code);
   font-size: var(--text-size-info-tip);

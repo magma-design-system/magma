@@ -11,6 +11,6 @@
 
 @property --mds-header-bar-hamburger-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-muted));
+  initial-value: var(--magma-text-muted);
   syntax: '<color>';
 }

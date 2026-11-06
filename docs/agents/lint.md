@@ -240,22 +240,22 @@ Tailwind theme, which follows the Magma mode ([`theming.md`](theming.md)).
 /* INCORRECT */
 @media (prefers-color-scheme: dark) {
   .panel {
-    background: rgb(var(--magma-surface-overlay));
+    background: var(--magma-surface-overlay);
   }
 }
 
 /* CORRECT */
 .panel {
-  background: rgb(var(--magma-surface-raised));
+  background: var(--magma-surface-raised);
 }
 ```
 
 ### no-raw-color
 
 A hex, `rgb()`, `hsl()`, `oklch()` or other colour literal where a role belongs. A colour that
-names a token is fine (`rgb(var(--magma-text-muted) / 0.5)`), and so are the keywords
+names a token is fine (`color-mix(in srgb, var(--magma-text-muted) 50%, transparent)`), and so are the keywords
 (`currentColor`, `transparent`). In a shadow the hint is the shadow ink,
-`rgb(var(--magma-shadow-ink) / <alpha>)`. Not read: `mask` and `mask-image`, and the
+`color-mix(in srgb, var(--magma-shadow-ink) <N>%, transparent)`. Not read: `mask` and `mask-image`, and the
 `initial-value` of an `@property`.
 
 Not reported either: the public custom properties marked **Static** in a component's
@@ -287,12 +287,12 @@ and an arbitrary value that reads one (`bg-[var(--mds-<name>)]`, `bg-(--mds-<nam
 ```css
 /* INCORRECT: internal, it may change in any release */
 mds-chip {
-  --mds-chip-icon-color: rgb(var(--magma-accent-fg));
+  --mds-chip-icon-color: var(--magma-accent-fg);
 }
 
 /* CORRECT: a public custom property of the chip */
 mds-chip {
-  --mds-chip-icon-background: rgb(var(--magma-accent-surface));
+  --mds-chip-icon-background: var(--magma-accent-surface);
 }
 ```
 
