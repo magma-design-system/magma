@@ -178,6 +178,30 @@ content="none">` into them and the studio does not ask `/api/config`. Editing st
 draft in the localStorage of the browser, and the work leaves by its downloads (the zip of the
 tokens, the config, the CSS of the themes), as when the studio runs without its command.
 
+### Covers
+
+How the studio shows in a tab and on other sites, as the docs site does for itself
+(magma-design-system/docs, `agents/architecture.md`, "Covers"):
+
+- **Favicons.** `favicons.ts`, a plugin of Vite, draws them with `sharp` from the Magma mark of
+  `identity`, the one of the bar: the SVG for the tabs (white on a dark scheme), the ICO for the
+  browsers without SVG favicons, the touch icon of iOS on white, the icons and the manifest of
+  Android. It serves them under `favicons/` to the dev server, writes them there into the build
+  and links them from the studio, relative to the page; the pages of the frames have none.
+- **The preview of a link.** `index.html` holds the Open Graph tags LinkedIn, chats and Twitter
+  read: the title, the description (the same as the `description` of the page), the address of
+  the studio on Pages and its cover, both absolute, as those sites ask.
+- **The cover.** `public/covers/og-1200x630.png`, the `og:image`, copied by the build as it is,
+  so its address never changes: `<use>-<width>x<height>.png`, as the covers of the docs site.
+  `nx run studio:cover` (`cover.ts`) takes it again from the built studio in the Playwright
+  Chromium, at 1200 by 630 with the motion reduced: the Palette on the primary colour by default,
+  or another recipe (`npx tsx cover.ts theme-light /tmp/cover.png` in `projects/studio`). Take it
+  again when the studio changes the way it looks, before a link to it is shared.
+
+A site caches the preview of an address the first time it reads it: after a new cover, ask it to
+read the page again (LinkedIn: the Post Inspector) before sharing. `test/share.test.mts` holds the
+favicons to the sizes each host asks for and the tags to the cover the build holds.
+
 ## The contrast gate
 
 The studio runs the APCA contrast gate of design-tokens in the browser, on the configuration being

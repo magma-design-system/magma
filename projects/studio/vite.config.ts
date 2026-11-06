@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { magmaVendor } from './vendor.ts';
+import { studioFavicons } from './favicons.ts';
 
 // the generator sources of design-tokens are .mts files imported with .mjs
 // specifiers (node/tsc convention); vite needs help mapping the extension
@@ -25,7 +26,7 @@ const root = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
   root,
-  plugins: [resolveMts(), magmaVendor(root)],
+  plugins: [resolveMts(), magmaVendor(root), studioFavicons()],
   oxc: {
     jsx: { runtime: 'automatic', importSource: 'preact' },
   },
