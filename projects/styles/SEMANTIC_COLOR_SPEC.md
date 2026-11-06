@@ -2,7 +2,8 @@
 
 Status: DRAFT (issue #570 / epic #328). This document is the contract shared by the
 generative work in `projects/design-tokens` and the semantic work in `projects/styles`.
-Numbers marked "proposed" are tuned in the playground (issue #571) before they are frozen.
+Numbers marked "proposed" are tuned in the studio (`projects/studio`, the tokens playground of
+issue #571) before they are frozen.
 
 ASCII only. Arrows are written `->`.
 
@@ -112,7 +113,7 @@ surface(family, mode, role) = oklch( L[mode][role], C_family * taper(L), H_famil
 
 GOTCHA: OKLCH lightness compresses the dark end. `L 16%` is `#0d0d0d` (near black), not
 `#161616`. A comfortable dark canvas `#161616` is `L 20%`. Pick by perceptual step and
-verify the hex; this is what the playground preview is for.
+verify the hex; this is what the preview of the studio is for.
 
 ### 5.2 Config
 
@@ -582,7 +583,10 @@ corner geometry (`data-corner-shape`), carries no colour and is documented in `S
   2.0.0 and stay until the next major, marked `deprecated` in the config: a comment above
   their block, `$deprecated` on their preview tokens, the description of the DTCG `theme`
   modifier. The contrast gate verifies every theme that repoints something in its own
-  family and accents, not only the base layer.
+  family and accents, not only the base layer. `business` and `editorial` are files in the
+  public theme format (`design-tokens/themes/<name>.json`, #694) that `semantic.config.ts`
+  reads: `business` is the base, so `:root` takes its tint and its accents
+  (design-tokens SPEC.md, "Themes: the public format").
 
   **Every theme publishes its preview** on `:root`, whatever the active theme:
   `--magma-preview-<name>-wash` (the `base` wash step of its ramp, what `--magma-wash-base`
@@ -591,6 +595,25 @@ corner geometry (`data-corner-shape`), carries no colour and is documented in `S
   24px swatch cannot scope one; both colours are ramp steps, so they flip with the mode.
   `mds-pref-theme-item` reads the ones of its `name`, and shows the active theme for a theme
   that publishes none.
+
+  **A theme can lock the mode (#1274).** A theme file lists the colour modes it can be used
+  in (`color.modes`, light and dark when it says nothing). A theme of one mode declares it
+  first in its block, `--magma-color-modes: dark` (or `light`); a theme of both declares
+  nothing, so `business` and `editorial` print what they did. The declaration does not flip
+  the palette by itself: `mds-pref-theme` reads it on `<html>` once it has written
+  `data-theme-name` and writes `pref-theme-scheme-<mode>`, the class every sheet that flips
+  with the palette already obeys (the palette and the dark block of this layer through
+  `darkScheme`, the `dark:` variant, `color-scheme` in `base.css`, the `*-pref-mode.css`
+  sheets of the components) and that locks `mds-pref-mode` to the theme's mode. The theme
+  declares, the class applies: one path for the themes Magma ships and for the ones a
+  product keeps, since the studio export prints the block with the same `namedThemeCss`.
+  Putting the theme's name in the `darkScheme` lists instead would have needed no script,
+  but only for the themes Magma compiles: a product's theme cannot join the palette sheet,
+  its `dark:` would not see it, and the components would still need the class. A page that
+  applies a theme without `mds-pref-theme` writes the class itself next to
+  `data-theme-name`. A theme locked to light stays light with the OS dark and no `mds-pref`
+  on the page too: the no-controller selector of `darkScheme` excludes
+  `pref-theme-scheme-light` like the system one.
 
   `--magma-tint-scale-*` is internal to the layer and deliberately NOT bridged to Tailwind:
   it is the retint mechanism, not a vocabulary. Publishing `--color-scale-09` utilities
@@ -788,7 +811,7 @@ and `subtle` to `muted`, and the hierarchy between them is kept one step up.
 Neutral family (C = 0), as `theme.surfaces` / `theme.borders` of
 `design-tokens/.magma-design-tokensrc.json` set it (measured 2026-10-08). Lc is
 `text-default` on the surface (`#fcfcfc` dark / `#050505` light), apca-w3. Tuned in the
-playground: re-measure after a retune.
+studio: re-measure after a retune.
 
 | Role | DARK  L / hex / Lc | LIGHT  L / hex / Lc |
 |---|---|---|
@@ -926,5 +949,5 @@ Epic: #328.
 - Table "gabbia": decorative borders -> `border-muted` (soft, no 3:1 floor) or zebra;
   only state borders stay full contrast (section 9.2).
 
-Remaining to tune in the playground (issue #571): the exact L / hex / border-delta values
+Remaining to tune in the studio (issue #571): the exact L / hex / border-delta values
 in section 10.

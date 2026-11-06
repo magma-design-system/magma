@@ -3,6 +3,7 @@ import {
   accentInfix,
   accentTintDecls,
   contrastTintDecls,
+  cssDecl,
   emphasisStateSteps,
   hueContrastDecls,
   roleDescription,
@@ -12,6 +13,7 @@ import {
   type SemanticDecl,
   type ThemeDef,
 } from './semantic.config';
+import { lockedMode, type ColorMode } from './src/lib/theme-manifest.mjs';
 
 /**
  * The semantic color layer (A9) as data: which custom property each `--magma-*`
@@ -45,6 +47,12 @@ export interface SemanticTheme {
   decls: SemanticDecl[];
   /** The contrast promotions restated in the theme's own family, under the theme's scope. */
   contrast: SemanticDecl[];
+  /**
+   * The one colour mode the theme can be used in (#1274), absent when it takes both: its block
+   * declares it as `--magma-color-modes`, which `mds-pref-theme` turns into the
+   * `pref-theme-scheme-<mode>` class every sheet that flips with the palette obeys.
+   */
+  mode?: ColorMode;
   /**
    * `--magma-preview-<name>-{wash,accent}`, declared on `:root` whatever the active theme: the
    * colours a picker shows for this theme (#692). Every theme has them, the base one included.
@@ -307,7 +315,7 @@ const accentSection = (accentRole: string, family: string): SemanticSection => {
       // tint pointers (internal; repointed per theme, not bridged to Tailwind): the
       // quintet steps + interaction states (spec 6.6 accent exception), each an
       // existing ramp step so it mode-flips and retints per theme like the quintet.
-      // Shared with the theme overrides + playground via accentTintDecls().
+      // Shared with the theme overrides + the studio via accentTintDecls().
       ...accentTintDecls(accentRole, family),
       accent('surface'),
       accent('fg'),
@@ -357,14 +365,13 @@ const contrastDecls = (): SemanticDecl[] => [
 // accent it overrides - so a theme retints background, foreground AND accents in
 // one swap. A theme that changes nothing (base tint, no accent override) emits
 // nothing. String shorthand == surface family only (back-compat).
-const normalizeTheme = (
-  def: ThemeDef,
-): { surface?: string; accents?: Record<string, string>; scale?: string; deprecated?: string } =>
+const normalizeTheme = (def: ThemeDef): Exclude<ThemeDef, string> =>
   typeof def === 'string' ? { surface: def } : def;
 
 // The names mds-pref-theme accepts (its `handleNameChange`): the preview custom properties
 // carry the name, so a name that is no CSS identifier part would emit a broken declaration.
-const THEME_NAME = /^[a-z]+(-[a-z]+)*$/;
+// The studio checks the name a person gives a theme against it.
+export const THEME_NAME = /^[a-z]+(-[a-z]+)*$/;
 
 /**
  * What a picker shows for a theme (#692): the wash its pills take (the `base` wash step of its
@@ -398,11 +405,16 @@ const previewOf = (
   ];
 };
 
-const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
+/**
+ * One named theme expanded from its definition: what `semanticModel` does for each entry of
+ * `themes`, and what the studio (projects/studio) does for the themes it edits.
+ */
+export const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
   if (!THEME_NAME.test(name)) {
     throw new Error(`semantic.config: the theme "${name}" is not lowercase kebab-case`);
   }
-  const { surface, accents: accentOverride, scale, deprecated } = normalizeTheme(def);
+  const { surface, accents: accentOverride, scale, modes, deprecated } = normalizeTheme(def);
+  const mode = lockedMode(modes);
   const retints = Boolean(surface && surface !== tint);
   const ramp = retints ? scaleFamily(surface, scale) : undefined;
   const decls: SemanticDecl[] = [];
@@ -437,7 +449,15 @@ const themeOf = (name: string, def: ThemeDef): SemanticTheme => {
     accentOverride?.accent ?? accents.accent,
     deprecated,
   );
-  return { name, ramp, decls, contrast, preview, ...(deprecated ? { deprecated } : {}) };
+  return {
+    name,
+    ramp,
+    decls,
+    contrast,
+    preview,
+    ...(mode ? { mode } : {}),
+    ...(deprecated ? { deprecated } : {}),
+  };
 };
 
 /**
@@ -489,4 +509,57 @@ export function semanticModel(): SemanticModel {
     contrast: contrastDecls(),
     themes: Object.entries(themes).map(([name, def]) => themeOf(name, def)),
   };
+}
+
+// Two selectors per scope, the same shape the global dark layer uses (see the
+// design-tokens css-vars-rgb template) and the per-component `*-pref-contrast.css`
+// sheets: the explicit `pref-contrast-more` class published by mds-pref-contrast,
+// then an @media block covering `pref-contrast-system` and a page with no mds-pref
+// controller at all. An explicit `pref-contrast-no-preference` matches neither, so
+// opting out keeps the base steps.
+/**
+ * The contrast blocks for one scope. `scope` is an extra `:root` qualifier (empty
+ * for the base layer, `[data-theme-name='x']` for a named theme). Empty string when
+ * nothing is promoted.
+ */
+export function contrastBlocks(scope: string, decls: SemanticDecl[]): string {
+  const rules = decls.map(cssDecl);
+  if (!rules.length) return '';
+  return [
+    `:root${scope}.pref-contrast-${CONTRAST_LEVEL} {`,
+    rules.join('\n'),
+    '}',
+    '',
+    `@media (prefers-contrast: ${CONTRAST_LEVEL}) {`,
+    `  :root${scope}.pref-contrast-system,`,
+    `  :root${scope}:not([data-magma-pref]) {`,
+    rules.map((rule) => `  ${rule}`).join('\n'),
+    '  }',
+    '}',
+  ].join('\n');
+}
+
+/**
+ * Where the block of a theme says the one mode it can be used in (#1274): `dark` or `light`, as
+ * `color-scheme` spells it. `mds-pref-theme` reads it on `<html>` once it has written
+ * `data-theme-name`, and writes the `pref-theme-scheme-<mode>` class the palette, the dark
+ * block, the `dark:` variant, `color-scheme` and the component sheets already obey: the theme
+ * declares, the class applies, so a product's theme locks its mode the way Magma's do. A theme
+ * for both modes declares nothing.
+ */
+export const COLOR_MODES_PROPERTY = '--magma-color-modes';
+
+/**
+ * The CSS of one named theme (spec 8): its `:root[data-theme-name]` block (its mode first, when
+ * it has one), then its own contrast blocks; a deprecated theme says why it goes on the line
+ * above. Empty when the theme changes nothing (the base tint, no accent override, both modes).
+ * The styles generator prints `themes.css` with it and the studio its export, so the two cannot
+ * drift.
+ */
+export function namedThemeCss({ name, decls, contrast, mode, deprecated }: SemanticTheme): string {
+  const scope = `[data-theme-name='${name}']`;
+  const rules = [...(mode ? [`  ${COLOR_MODES_PROPERTY}: ${mode};`] : []), ...decls.map(cssDecl)];
+  const block = rules.length ? `:root${scope} {\n${rules.join('\n')}\n}` : '';
+  const body = [block, contrastBlocks(scope, contrast)].filter(Boolean).join('\n\n');
+  return body && deprecated ? `/* ${name}, deprecated: ${deprecated}. */\n${body}` : body;
 }

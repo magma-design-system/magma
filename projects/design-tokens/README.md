@@ -30,9 +30,10 @@ flowchart LR
   DTCG -.->|"dist/dtcg"| DOCS(["docs site, design tools"])
   SD -.->|"android, ios-swift, flutter"| NATIVE(["native apps"])
   SD -.->|"dist/json"| FIGMA(["Figma variables"])
+  GEN & MODEL -->|"src/lib, semantic.model.ts, run in the browser"| STU["studio<br/>the tokens playground"]
   GEN -.->|"npx magma-design-tokens"| PROD(["a product palette"])
   class LINT tooling
-  class GEN,TOK,SD,MODEL,DTCG,ST,FIGMA,PROD visual
+  class GEN,TOK,SD,MODEL,DTCG,ST,STU,FIGMA,PROD visual
   class WC components
   class DOCS,NATIVE outside
   class dt area
@@ -176,10 +177,9 @@ npx magma-design-tokens
 | `--export-tokens`            | `-t`  | export palette as JSON design tokens format                                     |
 | `--outTokensDir [tokensDir]` |       | Directory path for JSON tokens, required if `--export-tokens` is presents       |
 | `--dry-run`                  |       | With `--export-tokens`: print the JSON tokens to stdout instead of writing them  |
-| `--port [port]`              | `-p`  | Port for the `ui` command playground server (default `5178`)                    |
 
-`npx magma-design-tokens ui` starts the playground on your configuration instead (see
-[UI command](#ui-command)).
+The CLI has no subcommands: `npx magma-design-tokens ui`, which served the tokens playground, was
+removed in version 16 (see [Playground](#playground)).
 
 ## Configuration file
 
@@ -215,7 +215,7 @@ The package ships a JSON Schema for the configuration at `dist/config/magma-desi
 }
 ```
 
-The same schema is the single source of truth for runtime validation: the `ui` command rejects an invalid `PUT /api/config`, and the playground refuses to load a config that does not match it.
+The same schema is the single source of truth for runtime validation: the Magma studio, which edits this configuration, refuses to load a config that does not match it.
 
 ### Configuration
 
@@ -375,14 +375,14 @@ You can rotate the hue of the darkest and lightest steps of a scale with the `hu
 
 - `dark` and `light` are rotations in OKLCH degrees (range -180 to 180) applied at full intensity to the physically darkest and lightest steps of the scale, in both light and dark theme mode. Small angles (10-45) refine the shades in the classic hue shifting style; large ones deliberately bend the ends of the scale toward another color family.
 - `curve` controls the intensity of the shift across the scale. Each step gets a weight from 0 (no shift) to 100 (full angle). It accepts:
-  - a preset: `"smooth"` (default, the shift fades in linearly outside the central third of the scale) or `"hard"` (full shift outside the central third);
-  - parameters: `{ "deadZone": 0.5, "easing": "linear" }` where `deadZone` is the fraction of the center-to-edge distance left untouched and `easing` is `"linear"` or `"step"`;
+  - a preset: `"smooth"` (default, every step shifts, linearly from nothing at the centre to the full angle at the ends, so the turn of the hue runs soft across the scale; the same as `{ "deadZone": 0, "easing": "linear" }`) or `"hard"` (full shift outside the central third);
+  - parameters: `{ "deadZone": 0.5, "easing": "linear" }` where `deadZone` is the fraction of the center-to-edge distance left untouched and `easing` is `"linear"`, `"step"` (the full shift outside the dead zone) or a named easing: a family (`sine`, `quad`, `cubic`, `quart`, `quint`, `expo`, `circ`) as `-in` (the shift gathers at the ends), `-out` (it rises at once) or `-in-out`, for example `"quad-in"`;
   - an explicit array of weights, resampled to the scale length when needed, for example `[100, 66, 33, 0, 0, 0, 0, 33, 66, 100]`.
 
 With 10 steps the presets resolve to:
 
 ```
-smooth: [100, 67, 33, 0, 0, 0, 0, 33, 67, 100]
+smooth: [100, 78, 56, 33, 11, 11, 33, 56, 78, 100]
 hard:   [100, 100, 100, 0, 0, 0, 0, 100, 100, 100]
 ```
 
@@ -397,7 +397,7 @@ figma-magma-colors-light.tokens.json
 figma-magma-colors-dark.tokens.json
 ```
 
-In Figma, create a variable collection and import each file into its own mode (Light / Dark). Steps keep their numeric keys (`1`..`10`) and the base color is exposed as `seed`. The playground offers the same pair as a zip via **download > Figma tokens (DTCG)**, generated in the browser from the same mapping so it matches the build output.
+In Figma, create a variable collection and import each file into its own mode (Light / Dark). Steps keep their numeric keys (`1`..`10`) and the base color is exposed as `seed`. The Magma studio offers the same pair as a zip via **download > Figma tokens (DTCG)**, generated in the browser from the same mapping so it matches the build output.
 
 The non-color sizing/number tokens are still exported in the legacy Figma "Import/Export Variables" plugin format (`dist/json/figma-magma-tokens.json`); moving them to DTCG is tracked separately.
 
@@ -405,57 +405,10 @@ These files follow an earlier DTCG draft (colors as hex strings) and cover the p
 
 ### Playground
 
-A local UI to explore and tune the configuration with live palette previews:
-
-```bash
-nx run design-tokens:playground
-# or, without nx:
-npm run playground -w projects/design-tokens
-```
-
-It opens a Vite dev server (port 5177) that loads `.magma-design-tokensrc.json` and runs the real token generator in the browser, so every preview matches the build output exactly. The UI has five views: **colors** (the two-column editor: color list on the left, editing and live light/dark scale previews with achieved contrast on the right; `neutral` is selected by default when present), **contrast scales**, **themes** (opt families into the surface engine, tune the surface/border/text levels, and preview each opted family as a named theme with its accent assignment and contrast checks), **groups** and **diff**. Selecting a color from the sidebar while in contrast scales keeps you there, since the scale samples follow the selected color.
-
-The **diff** view compares the current palette against the one generated from the committed configuration (the bundled `.magma-design-tokensrc.json`): it lists the colors whose steps changed - outlining each changed step and badging the color with the largest perceptual distance (deltaE) - plus any colors added or removed. The generated token files under `tokens/color/generated/` are build artifacts and not committed, so the committed config is the baseline.
-
-The playground works with any configuration, not just the repo one: **load config** opens a `.magma-design-tokensrc.json` from disk and **copy JSON** copies the edited configuration to the clipboard. The **download** menu offers:
-
-- **All tokens (zip)** — the configuration, the generated JSON tokens (whole palette + one file per export group) and the CSS and GIMP renders, mirroring the `dist` layout;
-- **Figma tokens (DTCG)** — the color palette in the W3C DTCG format, one file per theme mode, zipped together (see [Figma export](#figma-export-dtcg));
-- **Config (json)** — just the `.magma-design-tokensrc.json`;
-- **CSS tokens** — `colors-hex.css` / `colors-rgb.css` for the whole palette plus one pair per export group;
-- **GIMP palette** — `colors.gpl` for the whole palette plus one `.gpl` per export group.
-
-CSS and GIMP respect export diversification: they emit the whole palette and one file per export group. When that yields more than one file the download is a zip (`magma-css.zip`, `magma-gimp.zip`); a single file downloads directly. The outputs are produced in the browser from the same Handlebars templates the build uses, so they match the CLI output. Editing is in-memory only: nothing touches the repo files.
-
-A reload keeps the work: the playground mirrors it to the browser's localStorage as a draft, stamped with the configuration it was made on (the bundled one, or the file the [UI command](#ui-command) serves). When that configuration changed after the draft was saved (edited, removed, or another file), a draft with no edits of its own gives way to it, and a draft with edits shows why and asks: **use the file on disk** (or **use the bundled config**) or **keep the draft**. Saving stays off until you pick, so the draft cannot overwrite the newer file by mistake.
-
-New colors are created from a dialog: pick the value and the name auto-completes underneath from the "Name That Color" vocabulary (via [color-namer](https://github.com/colorjs/color-namer), ~1500 names, kebab-cased: e.g. `persian-green`); choose the token group, confirm, and the playground lands on the new color already selected. Names are made unique with a numeric suffix when needed. Auto-naming keeps following the picker in the editor too, but only for names assigned by the playground itself: a name typed by the user, or any name coming from a loaded configuration, is never touched. Picking a value already used by another color raises a warning.
-
-The **groups** view manages `ratios`, `formula` and `export` per token group (writing the `groups` section of the configuration), with a compact preview of every member color; colors overriding the group individually are flagged. The per-color fields in the editor default to inheriting from the group.
-
-A *group selected* toggle lifts the ticked colors into a dedicated **Selected** section at the top, lining their scales up next to each other for quick comparison; the rest stay in their group cards below. Nothing is hidden, only reorganized.
-
-It also supports batch export editing across groups: tick colors (or pick an existing export from *select by export* to load every color that uses it) and open **batch export**. The dialog previews the picked colors, lets you untick any to drop them, and then either saves an export value onto the selection or downloads a zip of just that selection's tokens.
-
-The **contrast scales** view manages the ratio scales of the configuration: add, duplicate, rename or delete custom scales (the built-in ones, `default` first of all, are always available) and inspect the distribution of the stops on a horizontal axis. A usage panel at the top picks a scale and lists every color resolving to it, ordered by group; clicking a color makes it the sample for all the scale previews. Each scale has a distribution mode: pick an easing (`linear`, `ease-in`, `ease-out`, `ease-in-out`) and the stops regenerate live from steps/min/max, or go `manual` by dragging a marker or editing a stop directly. Scale values are contrast against the theme background (0 = on the background, max = strongest contrast), so the same scale yields dark-on-light in light mode and light-on-dark in dark mode. Every color picks its scale with the `ratios` field in the editor.
-
-### UI command
-
-The `ui` command serves the built playground from the published package and wires it to the local configuration on disk, so editing and persisting no longer needs a checkout of this repo:
-
-```sh
-npx magma-design-tokens ui
-# custom port and configuration path
-npx magma-design-tokens ui --port 4000 --config ./tokens/color.json
-```
-
-It starts a small server (default port `5178`) that both serves the playground and exposes a local API:
-
-- `GET /api/config` reads the configuration via the same lookup as the CLI (respecting `--config`);
-- `PUT /api/config` writes it back with a stable key order, ASCII-only output and a trailing newline, so saves produce clean git diffs. It only writes JSON rc files: a configuration found in a JavaScript module (`.magma-design-tokensrc.js`, `magma-design-tokens.config.mjs`, ...) or in the `magma-design-tokens` key of `package.json` is refused with `409`, since a save would replace it with bare JSON;
-- `POST /api/build` runs the full token generation on disk, honouring the `--outDir` / `--generate` / `--export-tokens` flags passed to `ui`.
-
-In this mode the playground loads the on-disk configuration on start and swaps **copy JSON** for a **save** button that persists to the resolved file; a `*` marks unsaved changes. With a JavaScript or `package.json` configuration the button reads **read-only** and a notice under the toolbar says why: edit that file by hand, or take the edits out with **download > Config (json)** and move to a `.magma-design-tokensrc.json`. The **download** menu gains **Build tokens on disk** to trigger the build endpoint. Run standalone (`nx run design-tokens:playground` or `npm run playground -w projects/design-tokens`) the API is absent and the playground keeps its in-memory, copy/download-only behaviour.
+The tokens playground left this package in version 16: it is now the Magma studio, an app of the
+[Magma repository](https://github.com/magma-design-system/magma/tree/main/projects/studio) that
+runs the generator of this package in the browser (`nx run studio:serve`). The `ui` command,
+which served the playground from this package and saved the configuration on disk, went with it.
 
 ### Cli example
 

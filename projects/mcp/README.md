@@ -58,11 +58,13 @@ flowchart LR
   SI & EXT -.->|"find_icon"| TOOLS
   PROJ -.->|"check_setup"| CHECKS
   PROJ -.->|"render_preview"| RENDER
+  RENDER -->|"stylesheetImports, loaderOf, fileOf"| STU["studio<br/>its pages load Magma as a render does"]
   SERVER <-.->|"bin magma-mcp, stdio"| CLIENT(["agent client<br/>Claude Code, VS Code, Cursor"])
   class TOOLS,CHECKS,RENDER,SERVER,CLIENT,CP ai
   class ID,SI,EXT assets
   class WC,BUILD components
   class LINT,SERVE tooling
+  class STU visual
   class PROJ outside
   class mcp area
   classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79

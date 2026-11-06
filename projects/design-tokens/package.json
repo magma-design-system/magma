@@ -22,10 +22,9 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "npm run clean && npm run build-style-dictionary && npm run build-figma-tokens && npm run build-cli && npm run build-playground",
+    "build": "npm run clean && npm run build-style-dictionary && npm run build-figma-tokens && npm run build-cli",
     "build-figma-tokens": "tsx scripts/generate-figma-tokens.ts",
     "build-cli": "tsc --project tsconfig.cli.json",
-    "build-playground": "vite build --config playground/vite.config.ts",
     "build-style-dictionary": "tsx scripts/build.ts",
     "clean": "tsx scripts/clean.ts",
     "contrast": "tsx scripts/check-contrast.ts",
@@ -33,8 +32,7 @@
     "cli": "npm run clean && npm run build-cli && npm run postbuild && node ./dist/src/cli.mjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "test": "vitest --run",
-    "playground": "vite --config playground/vite.config.ts"
+    "test": "vitest --run"
   },
   "main": "dist/js/tailwind-colors-css-vars.js",
   "files": [
@@ -56,12 +54,6 @@
     "hsluv": "1.0.2",
     "lilconfig": "3.1.4",
     "style-dictionary": "3.9.2"
-  },
-  "devDependencies": {
-    "color-namer": "1.4.0",
-    "fflate": "0.8.3",
-    "preact": "11.1.1",
-    "vite": "8.3.6"
   },
   "repository": {
     "type": "git",

@@ -102,9 +102,9 @@ describe('mds-pref', () => {
       root.querySelector<HTMLElement>('mds-pref-theme-item[name="cool"]')!.click();
       await settle(waitForChanges);
 
-      expect(root.querySelector<HTMLMdsPrefModeElement>('mds-pref-mode')!.lockedScheme).toBe(
-        'light',
-      );
+      const mode = root.querySelector<HTMLMdsPrefModeElement>('mds-pref-mode')!.shadowRoot!;
+      expect(mode.querySelector('.item--light')).toHaveAttribute('selected');
+      expect(mode.querySelector('.item--dark')).toHaveAttribute('disabled');
     });
 
     it('keeps asking for a reload', async () => {
@@ -135,7 +135,9 @@ describe('mds-pref', () => {
     });
   });
 
-  describe('lock-dark coordination', () => {
+  // The lock reaches mds-pref-mode through the scheme the theme writes on <html> (#1274): the
+  // panel no longer passes it down, so it holds for a mode control anywhere on the page
+  describe('the lock of a single-mode theme', () => {
     // `cool` stands in for a light-only theme here; only its `scheme` matters
     const markup = `
       <mds-pref>
@@ -151,20 +153,19 @@ describe('mds-pref', () => {
       pref.querySelector<HTMLElement>(`mds-pref-theme-item[name="${name}"]`)?.click();
     };
 
-    it('locks the dark item when a light-only theme is selected, without touching the stored mode preference', async () => {
+    it('shows the light mode when a light-only theme is selected, without touching the stored mode preference', async () => {
       const { root, waitForChanges } = await render(markup);
 
       clickVariant(root, 'cool');
       await waitForChanges();
 
-      const theme = root.querySelector<HTMLMdsPrefModeElement>('mds-pref-mode')!;
-      const dark = theme.shadowRoot!.querySelector('.item--dark');
-      expect(theme).toHaveAttribute('locked-scheme');
-      expect(theme.lockedScheme).toBe('light');
-      expect(dark).toHaveAttribute('disabled');
+      const mode = root.querySelector<HTMLMdsPrefModeElement>('mds-pref-mode')!;
+      expect(mode.shadowRoot!.querySelector('.item--light')).toHaveAttribute('selected');
+      expect(mode.shadowRoot!.querySelector('.item--dark')).toHaveAttribute('disabled');
+      expect(mode).not.toHaveAttribute('locked-scheme');
 
       // the mode preference is preserved on both the prop and localStorage
-      expect(theme.mode).toBe('dark');
+      expect(mode.mode).toBe('dark');
       expect(localStorage.getItem('mdsPrefMode')).toBe('dark');
     });
 
@@ -173,14 +174,13 @@ describe('mds-pref', () => {
 
       clickVariant(root, 'cool');
       await waitForChanges();
-      const theme = root.querySelector<HTMLMdsPrefModeElement>('mds-pref-mode')!;
-      expect(theme).toHaveAttribute('locked-scheme');
-
       clickVariant(root, 'default');
       await waitForChanges();
 
-      expect(theme).not.toHaveAttribute('locked-scheme');
-      expect(theme.shadowRoot!.querySelector('.item--dark')).not.toHaveAttribute('disabled');
+      const mode = root.querySelector<HTMLMdsPrefModeElement>('mds-pref-mode')!.shadowRoot!;
+      expect(mode.querySelector('.item--dark')).toHaveAttribute('selected');
+      expect(mode.querySelector('.item--dark')).not.toHaveAttribute('disabled');
+      expect(mode.querySelector('.item--light')).not.toHaveAttribute('disabled');
     });
   });
 

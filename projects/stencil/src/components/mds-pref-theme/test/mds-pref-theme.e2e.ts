@@ -254,6 +254,73 @@ describe('mds-pref-theme', () => {
     });
   });
 
+  // #1274: a theme file lists its colour modes, its block in themes.css says the one it locks
+  describe('a theme that declares one mode', () => {
+    let sheet: HTMLStyleElement;
+
+    beforeEach(() => {
+      // what themes.css prints for a theme whose file says `"modes": ["dark"]`
+      sheet = document.createElement('style');
+      sheet.textContent = ":root[data-theme-name='night'] { --magma-color-modes: dark; }";
+      document.head.append(sheet);
+    });
+
+    afterEach(() => {
+      sheet.remove();
+      document.documentElement.style.removeProperty('--magma-pref-theme-scheme');
+    });
+
+    const markup = (scheme = 'all') => `
+      <mds-pref-theme name="business">
+        <mds-pref-theme-item name="business"></mds-pref-theme-item>
+        <mds-pref-theme-item name="night" scheme="${scheme}"></mds-pref-theme-item>
+      </mds-pref-theme>`;
+
+    it('is applied in that mode, and the pick of the item is what is stored', async () => {
+      const { root, waitForChanges } = await render(markup());
+      const changes = vi.fn();
+      root.addEventListener('mdsPrefThemeChange', changes);
+
+      root.querySelector<HTMLElement>('mds-pref-theme-item[name="night"]')!.click();
+      await waitForChanges();
+
+      const html = document.documentElement;
+      expect(html).toHaveAttribute('data-theme-name', 'night');
+      expect(html).toHaveClass('pref-theme-scheme-dark');
+      expect(html).not.toHaveClass('pref-theme-scheme-all');
+      expect(html.style.getPropertyValue('--magma-pref-theme-scheme')).toBe('dark');
+      expect(changes).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { name: 'night', scheme: 'dark' } }),
+      );
+      // the storage keeps the pick: a theme that stops declaring the mode is not held to it
+      expect(localStorage.getItem(THEME_SCHEME_STORAGE_KEY)).toBe('all');
+    });
+
+    it('wins over the scheme of the item', async () => {
+      const { root, waitForChanges } = await render(markup('light'));
+
+      root.querySelector<HTMLElement>('mds-pref-theme-item[name="night"]')!.click();
+      await waitForChanges();
+
+      expect(document.documentElement).toHaveClass('pref-theme-scheme-dark');
+      expect(document.documentElement).not.toHaveClass('pref-theme-scheme-light');
+    });
+
+    it('is applied in that mode on load, and leaves it for a theme of both modes', async () => {
+      localStorage.setItem(THEME_NAME_STORAGE_KEY, 'night');
+      const { root, waitForChanges } = await render(markup());
+      const html = document.documentElement;
+      expect(html).toHaveClass('pref-theme-scheme-dark');
+
+      root.querySelector<HTMLElement>('mds-pref-theme-item[name="business"]')!.click();
+      await waitForChanges();
+
+      expect(html).toHaveAttribute('data-theme-name', 'business');
+      expect(html).toHaveClass('pref-theme-scheme-all');
+      expect(html).not.toHaveClass('pref-theme-scheme-dark');
+    });
+  });
+
   // #826: the items got their listener once, on load: an item added later did nothing when picked
   it('applies the theme of an item added after load when it is picked', async () => {
     const { root, waitForChanges } = await render(

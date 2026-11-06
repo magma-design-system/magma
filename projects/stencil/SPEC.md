@@ -100,6 +100,7 @@ Two facts agents must keep in mind before touching these files:
 
 - Do not reach for `:host-context()`: it is **Chromium-only** (not Firefox, not Safari). The refinements once written with it applied in Chromium alone, which is why `mds-pref-mode` used to force Safari to light. `@container style()` is no way out either: it crashes WebKit in the shadow + slotted + inherited-custom-property case.
 - `system`, and a page with no controller, follow the OS: pair the rule for the explicit choice with an `@media (prefers-color-scheme: dark)` block for `:host([pref-mode='system'])` and `:host(:not([pref-mode]))`, as `mds-tab-pref-mode.css` does. A refinement that can be a token resolved at `:root` needs no host attribute at all: the value of an inherited custom property (e.g. `var(--magma-surface-default)`) crosses the shadow boundary inward and flips with the global palette.
+- A theme can lock the mode (`pref-theme-scheme`, #1274), and a dark refinement turns dark where the palette does (`darkScheme` in `design-tokens/src/formats/dark-scheme.ts`): `[pref-mode='dark']` carries `:not([pref-theme-scheme='light'])` and its rule also lists the same selector with `[pref-theme-scheme='dark']` in its place; `[pref-mode='system']`, and `:not([pref-mode])` in the dark `@media` block, carry `:not([pref-theme-scheme='light'])`. `src/common/test/pref-mode-sheets.spec.ts` holds every sheet to it. `mds-pref-mode` reads the same scheme from the store and shows the theme's mode, with the other items disabled.
 
 ## Tone and variant system
 

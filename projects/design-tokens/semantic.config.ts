@@ -22,18 +22,37 @@
  *  - text role values are the by-target `--text-*` primitives (A7, section 9),
  *    reached via the tint-text pointers so the foreground retints with its surface;
  *  - the colored-hue quintet uses fixed steps (section 6.4/6.5).
+ *
+ * The themes Magma ships are data, not entries of this file: `themes/<name>.json`, in the
+ * public theme format (`src/lib/theme-manifest.mts`, #694), read below.
  */
+
+import businessTheme from './themes/business.json';
+import editorialTheme from './themes/editorial.json';
+import {
+  readTheme,
+  themeDefOf,
+  type ColorMode,
+  type ThemeManifest,
+} from './src/lib/theme-manifest.mjs';
 
 /**
  * A named theme's cosmetic override (spec 8). The string shorthand names only
  * the surface family (back-compat); the object form can also repoint individual
  * accents, so a theme retints its accents the same way it retints surfaces.
+ * `modes` lists the colour modes the theme can be used in (#1274); left out, both.
  * `deprecated` keeps a shipped name working until the next major and says why it
  * goes: the theme still emits its block, and the outputs mark it.
  */
 export type ThemeDef =
   | string
-  | { surface?: string; accents?: Record<string, string>; scale?: string; deprecated?: string };
+  | {
+      surface?: string;
+      accents?: Record<string, string>;
+      scale?: string;
+      modes?: readonly ColorMode[];
+      deprecated?: string;
+    };
 
 /**
  * A contrast preference level that carries role promotions (spec 9.3). Only `more`
@@ -55,7 +74,10 @@ export type ContrastPromotion = {
 };
 
 export interface SemanticConfig {
-  /** Active default tint family; surfaces/borders/text resolve from it (spec 8). */
+  /**
+   * Tint family of the base `:root`; surfaces/borders/text resolve from it (spec 8). It is the
+   * tint of `business`, the base theme (`themes/business.json`).
+   */
   tint: string;
   /** Elevation/prominence surface roles, from `--surface-<tint>-<role>` (A1). */
   surfaceRoles: readonly string[];
@@ -229,7 +251,9 @@ export interface SemanticConfig {
    * axes (spacing, radii, shadow) attach under the same `data-theme-name`. Every
    * theme also publishes its preview, `--magma-preview-<name>-{wash,accent}`, so a
    * picker can show a theme that is not the active one (#692). Names are
-   * lowercase kebab-case, the names `mds-pref-theme` accepts.
+   * lowercase kebab-case, the names `mds-pref-theme` accepts. The shipped themes
+   * come from their files (`themes/<name>.json`, the public format of #694, through
+   * `themeDefOf`); the deprecated ones stay entries of this file.
    */
   themes: Record<string, ThemeDef>;
   /**
@@ -245,8 +269,28 @@ export interface SemanticConfig {
   contrast?: Partial<Record<ContrastLevel, ContrastPromotion>>;
 }
 
+/**
+ * The accent roles of the layer and the family each one takes when no theme repoints it. The
+ * roles belong to the system, not to a theme: a theme file repoints them (`color.accents`), it
+ * never adds one.
+ */
+const ACCENT_DEFAULTS: Record<string, string> = {
+  accent: 'variant-primary',
+  ai: 'variant-ai',
+};
+
+/** A theme file Magma ships, validated, and checked against the accent roles of the layer. */
+const shipped = (file: unknown): ThemeManifest => readTheme(file, Object.keys(ACCENT_DEFAULTS));
+
+// The two themes of the products (#692), named by their use so they survive a rebrand:
+// `business` for the management software, `editorial` for the publishing side. `business` IS
+// the base: `:root` takes its tint and its accents, so it repoints nothing and emits no rule,
+// and every other theme keeps what it does not set from it.
+const business = shipped(businessTheme);
+const editorial = shipped(editorialTheme);
+
 export const semantic: SemanticConfig = {
-  tint: 'neutral',
+  tint: business.color.tint,
   surfaceRoles: ['sunken', 'muted', 'default', 'raised', 'overlay'],
   borderRoles: ['muted', 'default', 'strong'],
   textRoles: ['default', 'muted', 'subtle', 'disabled'],
@@ -280,10 +324,7 @@ export const semantic: SemanticConfig = {
   // emphasisMuted: 13 component declarations were already painting step 03 as the
   // weak dark fill (badge, banner/toast weak, the input-tip bubble) - #731.
   neutralHueSteps: { fg: '03', border: '06', emphasis: '02', emphasisMuted: '03' },
-  accents: {
-    accent: 'variant-primary',
-    ai: 'variant-ai',
-  },
+  accents: { ...ACCENT_DEFAULTS, ...business.color.accents },
   accentStateSteps: {
     // emphasis band (solid fill): hover/active go one/two steps STRONGER. Shared
     // with the colored hues via emphasisStateSteps() - the same two steps, so a
@@ -304,17 +345,16 @@ export const semantic: SemanticConfig = {
     // moves to a mix of rest and hover with full colours (#918).
     'surface-selected': '10',
   },
-  // The two themes of the products (#692), named by their use so they survive a rebrand:
-  // `business` for the management software, `editorial` for the publishing side. The base
-  // comes first: the DTCG export takes the first theme that repoints nothing as its default.
+  // The base comes first: the DTCG export takes the first theme that repoints nothing as its
+  // default. `editorial` takes the accent of the Maggioli Editore brand through
+  // variant.secondary, its alias, kept when the accents were collapsed to {accent, ai} (#606).
   themes: {
-    business: 'neutral', // base :root (== tint); emits no override rule
-    // the warm family, and the accent of the Maggioli Editore brand (variant.secondary is its
-    // alias, kept when the accents were collapsed to {accent, ai} for this theme, #606)
-    editorial: { surface: 'bisque', accents: { accent: 'variant-secondary' } },
-    // Shipped since magma 2.0.0, so they stay until the next major (#692).
+    [business.name]: business.color.tint, // the base: tint and accents are already on :root
+    [editorial.name]: themeDefOf(editorial),
+    // Shipped since magma 2.0.0, so they stay until the next major (#692). They stay entries of
+    // this file: a deprecated theme is no starting point, so it gets no file of the format.
     default: {
-      surface: 'neutral',
+      surface: business.color.tint,
       deprecated:
         'the old name of business: mds-pref-theme still writes it until the next major, when its default becomes business',
     },
@@ -363,7 +403,7 @@ export const scaleStepList = (): string[] =>
  * group (`tone.neutral` becomes `--surface-neutral-*`) while the ramp keeps it
  * (`--tone-neutral-09`), and the group is NOT recoverable from the surface name - so
  * `tone` is assumed, which is exactly right today because a theme must be a tint
- * (the playground restricts theme candidates to the `tone` group: a theme repoints
+ * (the studio restricts theme candidates to the `tone` group: a theme repoints
  * the whole neutral scaffolding). A future theme drawn from another group states its
  * ramp explicitly, e.g. `blue: { surface: 'blue', scale: 'label-blue' }`.
  */
@@ -372,7 +412,7 @@ export const scaleFamily = (surface: string, scale?: string): string => scale ??
 /**
  * One declaration of the semantic layer, `--<name>: var(--<ref>);`, as data. Every
  * generated output reads these instead of printing its own: the stylesheets of the
- * styles package (`scripts/semantic.ts`), the playground theme export and the DTCG
+ * styles package (`scripts/semantic.ts`), the theme export of the studio and the DTCG
  * export of this package, so a role cannot point at one primitive in the CSS and at
  * another in the JSON. Names are written without the leading `--`.
  */
@@ -533,8 +573,8 @@ export const scaleTintDecls = (family: string): SemanticDecl[] =>
 
 /**
  * The `--magma-tint-scale-*` lines pointing the ramp at one family. SHARED for the
- * same reason as `accentTintOverride`: the styles generator and the playground theme
- * export must emit byte-identical CSS.
+ * same reason as `accentTintOverride`: the styles generator and the theme export of
+ * the studio must emit byte-identical CSS.
  */
 export const scaleTintOverride = (family: string): string[] => scaleTintDecls(family).map(cssDecl);
 
@@ -574,8 +614,8 @@ export const accentTintDecls = (role: string, family: string): SemanticDecl[] =>
  * interaction states, prefixed per `accentInfix` (general accent = no infix,
  * `ai` = `ai-`). `on-emphasis` is family-independent (the seed) so it is not
  * repointed. SHARED so the styles generator (`scripts/semantic.ts`, both the base
- * layer and each named-theme override) and the playground theme export
- * (`playground/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
+ * layer and each named-theme override) and the theme export of the studio
+ * (`projects/studio/src/themes.tsx`) emit byte-identical CSS - a theme repoints an
  * accent exactly the way the base layer declares it.
  */
 export const accentTintOverride = (role: string, family: string): string[] =>

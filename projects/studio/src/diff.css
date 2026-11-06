@@ -1,0 +1,55 @@
+/*
+  The Diffs page (diff.tsx): the colours whose steps moved against the committed configuration, one
+  card each, the light and the dark ramp one under the other. The steps are data: each keeps its
+  own colour inline, only their frame and the ring of a changed step follow the tokens.
+*/
+
+.diffs-page {
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+}
+
+.diffs-hint {
+  max-inline-size: var(--magma-width-reading);
+}
+
+/* the two modes of a colour: the labels in one column, so the ramps start at the same place */
+
+.diffs-modes {
+  align-items: center;
+  display: grid;
+  gap: var(--magma-rhythm-inline);
+  grid-template-columns: max-content minmax(0, 1fr);
+}
+
+.diffs-mode {
+  display: contents;
+}
+
+/* the steps side by side, each a tile of its own (rhythm/inline), so the ring of a changed step
+   stands apart from its neighbours */
+
+.diffs-ramp {
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+}
+
+/* each step with the thin ring of a swatch (studio-swatch), so a step as light or as dark as the
+   card keeps its edge */
+
+.diffs-step {
+  block-size: 2lh;
+  border: thin solid rgb(var(--magma-border-default));
+  border-radius: var(--magma-radius-sm);
+  box-sizing: border-box;
+  flex: 1;
+  min-inline-size: 0;
+}
+
+/* a changed step: a ring of the surface inside one of the text, readable on a light step and on a
+   dark one */
+
+.diffs-step-changed {
+  border: medium solid rgb(var(--magma-surface-default));
+  outline: medium solid rgb(var(--magma-text-default));
+}

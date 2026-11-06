@@ -62,7 +62,8 @@ describe('the dark: variant', () => {
     ])
     expect(selectorList(paletteSystem!.selector)).toEqual([
       ':root:not(.pref-theme-scheme-light).pref-mode-system',
-      ':root:not([data-magma-pref])',
+      // a light-only theme stays light on a page with no mds-pref controller too (#1274)
+      ':root:not(.pref-theme-scheme-light):not([data-magma-pref])',
     ])
   })
 

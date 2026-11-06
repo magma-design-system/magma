@@ -99,6 +99,26 @@ keep in step.
 - **Held by**: the lint tests hold `USE_OF_UTILITY` to the roots of the `--color` namespace, in
   the fixtures and in the built map.
 
+## The mode of a theme
+
+- **What**: `--magma-color-modes`, the one colour mode (`light` or `dark`) a theme can be used
+  in, declared first in its `:root[data-theme-name]` block of `themes.css` and of the studio
+  export; a theme of both modes declares nothing.
+- **Produced by**: design-tokens, `namedThemeCss` and `COLOR_MODES_PROPERTY` of
+  `semantic.model.ts`, from `color.modes` of the theme file; the styles build prints
+  `themes.css` with it.
+- **Contract**: [`projects/styles/SEMANTIC_COLOR_SPEC.md`](../projects/styles/SEMANTIC_COLOR_SPEC.md),
+  section 8 ("A theme can lock the mode"); the field in
+  [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md), "Themes: the public
+  format".
+- **Read by**: `mds-pref-theme` (`COLOR_MODES_PROPERTY` and `lockedSchemeOf` of
+  `projects/stencil/src/common/preference.ts`), which writes `pref-theme-scheme-<mode>` from it.
+- **Held by**: `test/theme-manifest.test.mts` of design-tokens (the block of a single-mode
+  theme, the shipped themes declare nothing); `src/common/test/preference-modes.spec.ts` of
+  stencil (the name the producer exports, the values read); the `mds-pref-theme` e2e;
+  `test/themes.test.mts` of the studio (the export of a theme of one mode, the base one under its
+  name, each choice of the modes a value of `color.modes`).
+
 ## Icon slugs
 
 - **What**: the name `mds-icon` fetches, `mi/<variant>/<name>`, `mdi/<name>` or `mgg/<name>`,
@@ -259,12 +279,15 @@ keep in step.
   [`projects/mcp/README.md`](../projects/mcp/README.md), "Where each answer comes from" (what
   a render loads, and when it is ready).
 - **Read by**: the MCP `render_preview` (`projects/mcp/src/render.ts`, `render-page.ts`);
-  `mcp:serve.previews` (`projects/mcp/scripts/serve-previews.ts`), on the same page.
+  `mcp:serve.previews` (`projects/mcp/scripts/serve-previews.ts`), on the same page; the pages
+  of the studio (`projects/studio/vendor.ts`), through `stylesheetImports`, `loaderOf` and
+  `fileOf` of the render, with paths relative to the page.
 - **Held by**: the `render_preview` tests: `STYLESHEETS` and `TAILWIND` equal the blocks of the
   guide, the Magma utilities compile on the classes of the markup, the widths
   and the themes come from the installed styles, and `mds-button` renders hydrated and
   representative on the build of this repository (the `consumer-lint` job, on the build
-  artifact).
+  artifact); `projects/studio/test/vendor.test.mts` (the imports of a page of the studio in the
+  order and the layers of the list, the files served from the installed packages).
 
 ## The sources of the wrappers
 

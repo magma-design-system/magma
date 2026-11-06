@@ -48,6 +48,7 @@ module.exports = {
         'mcp',
         'stencil',
         'storybook',
+        'studio',
         'styles',
         'svg-icons',
       ].concat(webComponents),

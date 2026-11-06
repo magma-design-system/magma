@@ -11,9 +11,8 @@ export interface GenerateOptions {
 }
 
 /**
- * Run the full token generation from a color configuration. Shared by the CLI
- * entry point and the `ui` command's build endpoint so both produce identical
- * output on disk.
+ * Run the full token generation from a color configuration: what the CLI entry
+ * point writes on disk.
  */
 export async function runGeneration (config: MagmaConfig, opts: GenerateOptions): Promise<void> {
   const { tokens, exportGroups } = createColorTokens(config)

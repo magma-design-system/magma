@@ -4,7 +4,8 @@
  * The close icon still needs a dark-mode value: it sits over the dark scrim, not
  * over the modal surface, so it does not follow the surface flip. */
 
-:host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
+:host([pref-mode='dark']:not([pref-theme-scheme='light'])),
+:host([pref-theme-scheme='dark']) {
   .action-close {
     --mds-button-color: rgb(var(--magma-text-default));
   }
@@ -12,7 +13,7 @@
 
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
-  :host(:not([pref-mode])) {
+  :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
     .action-close {
       --mds-button-color: rgb(var(--magma-text-default));
     }

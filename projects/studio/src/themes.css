@@ -1,0 +1,155 @@
+/*
+  The Themes page (themes.tsx): one card per theme, its name, its accents, the modes it offers and
+  its two modes in view, then the export. Spaces from the rhythm, colours from the semantic roles
+  (docs/agents/patterns/rhythm.md, surfaces.md); the boxes of the modes paint the colours the
+  configuration generates inline, so only their frame is written here.
+*/
+
+.themes {
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+}
+
+.themes-muted {
+  color: rgb(var(--magma-text-muted));
+}
+
+/* the code named in the running text, set apart from the words around it */
+
+.themes mds-text code {
+  background-color: rgb(var(--magma-wash-soft));
+  border-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
+  font-family: var(--font-code);
+  padding-inline: calc(var(--spacing) * 100);
+}
+
+/*
+  The cards side by side, each at least as wide as a short field (half the column of a form,
+  widths/field), sharing the row: a theme alone takes the row, and its two modes stand side by
+  side in it.
+*/
+
+.themes-grid {
+  align-items: start;
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, calc(var(--magma-width-form) / 2)), 1fr)
+  );
+}
+
+/* a card: a part of the page on a raised surface, its title and its content inside one inset */
+
+.themes-card {
+  align-content: start;
+  background-color: rgb(var(--magma-surface-raised));
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-lg);
+  container: theme / inline-size;
+  corner-shape: var(--magma-corner-shape);
+  display: grid;
+  gap: var(--magma-rhythm-between-fields);
+  min-inline-size: 0;
+  padding: var(--magma-rhythm-inset);
+}
+
+.themes-head {
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+}
+
+.themes-title {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing) * 200);
+}
+
+.themes-attr {
+  color: rgb(var(--magma-text-muted));
+  font-family: var(--font-code);
+  font-size: var(--text-size-info-tip);
+}
+
+/*
+  The settings of a theme: its accents on one row, its modes under the first of them, as wide; one
+  under the other in a narrow card. The accents share the columns of the settings (subgrid), so
+  the modes line up with them.
+*/
+
+.themes-settings {
+  column-gap: var(--magma-rhythm-inline);
+  display: grid;
+  row-gap: var(--magma-rhythm-between-fields);
+}
+
+.themes-accents {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  row-gap: var(--magma-rhythm-between-fields);
+}
+
+@container theme (width >= 20rem) {
+  .themes-settings {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.themes-accent {
+  align-content: start;
+  display: grid;
+  gap: var(--magma-rhythm-label-control);
+  justify-items: start;
+}
+
+.themes-accent > mds-input-field {
+  justify-self: stretch;
+}
+
+/* the two modes one under the other, each the canvas of Semantic surface (SurfaceCanvas) with
+   the accents of the theme under it */
+
+.themes-modes {
+  display: grid;
+  gap: var(--magma-rhythm-inline);
+}
+
+.themes-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing) * 200);
+}
+
+.themes-sample {
+  align-items: center;
+  display: flex;
+  gap: calc(var(--spacing) * 100);
+}
+
+.themes-sample-pill,
+.themes-sample-soft {
+  border-radius: var(--magma-radius-sm);
+  corner-shape: var(--magma-corner-shape);
+  font-weight: 700;
+  padding: calc(var(--spacing) * 100) calc(var(--spacing) * 200);
+}
+
+.themes-sample-pill {
+  text-transform: capitalize;
+}
+
+.themes-export {
+  background-color: rgb(var(--magma-surface-sunken));
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-md);
+  color: rgb(var(--magma-text-default));
+  corner-shape: var(--magma-corner-shape);
+  font-family: var(--font-code);
+  font-size: var(--text-size-info-tip);
+  overflow-x: auto;
+  padding: var(--magma-rhythm-inline);
+  white-space: pre;
+}
