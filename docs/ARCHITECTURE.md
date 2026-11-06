@@ -403,7 +403,7 @@ Color values in CSS must always use the RGB format with the `rgb()` wrapper:
 
 ```css
 /* correct — supports opacity modifiers */
-color: rgb(var(--tone-neutral-03));
+color: var(--tone-neutral-03);
 
 /* incorrect — hex vars cannot be used with opacity */
 color: var(--tone-neutral-03);

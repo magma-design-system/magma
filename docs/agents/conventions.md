@@ -205,12 +205,12 @@ names, `>>>` or `/deep/` break on any release.
 mds-button { --mds-button-radius: var(--magma-radius-full); }
 
 .featured-card mds-button {
-  --mds-button-background: rgb(var(--magma-accent-emphasis));
+  --mds-button-background: var(--magma-accent-emphasis);
   --mds-button-radius: var(--magma-radius-lg);
 }
 
 /* CORRECT, deep customisation: `icon` is a documented part of mds-button */
-mds-button::part(icon) { fill: rgb(var(--magma-accent-fg)); }
+mds-button::part(icon) { fill: var(--magma-accent-fg); }
 
 /* INCORRECT - internal nodes are not API */
 mds-button >>> .internal { color: red; }

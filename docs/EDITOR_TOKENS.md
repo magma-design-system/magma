@@ -74,10 +74,6 @@ Four properties of the output are load-bearing, not cosmetic:
   numbers in the same unit is sorted ascending: `--radius-none 0px` through
   `--radius-full 1000px`.
 - **every value on one line.** See [Traps](#traps).
-- **palette triplets written as `rgb(112 85 4)`.** A palette token holds a bare triplet,
-  to be read as `rgb(var(--label-yellow-03))`, and no editor can preview that: a triplet
-  is not a color. Wrapping it in the generated file - which no browser loads - is what
-  gives 726 of the tokens a real swatch. The token itself still holds the triplet.
 
 Deliberately out: `--private-*` (a component's internal wiring, declared in the file that
 uses it, where same-document completion already covers it), the `colors-hex-*` sheets (the
@@ -129,7 +125,7 @@ the files it governs: the map of the repository's `.vscode/settings.json`,
 | `vunguyentuan.vscode-css-variables`    | **remove it.** Hardcodes `sortText: "z"` on every item, so VS Code falls back to alphabetical (`--radius-2xl` before `--radius-3xs`), and declares no trigger characters, so the list never opens by itself. Also duplicates every entry alongside the other extension. |
 | `bradlc.vscode-tailwindcss`            | **keep it.** It completes `@theme` names inside `var(` when it has resolved a v4 design system, index-sorted with resolved values - but those cover only 52 of the 1120 tokens the components use, so it is a complement, not an alternative. Do not also feed those files to `cssvar`. |
 | `bierner.color-info`                   | **disable for CSS** (`"colorInfo.languages": []`). It matches CSS named colors inside identifiers, so hovering `--label-yellow-03` (really `112 85 4`, a dark olive) shows pure yellow.                                     |
-| VS Code built-in CSS                   | Completes `var()` only from the **current document** (an `@property` in the same file counts), and `css.customData` does not feed `var()` at all - it only completes a token NAME in property position. `findDocumentColors` returns nothing for `rgb(var(--x))`, even when the token is declared in the same file. |
+| VS Code built-in CSS                   | Completes `var()` only from the **current document** (an `@property` in the same file counts), and `css.customData` does not feed `var()` at all - it only completes a token NAME in property position. `findDocumentColors` returns nothing for `var(--x)`, even when the token is declared in the same file. |
 
 ## Traps
 
@@ -145,9 +141,9 @@ the files it governs: the map of the repository's `.vscode/settings.json`,
   every value onto one line. Do not add the component sheets to `cssvar.files`.
 - **No swatch on a fallback chain.** The color provider scans each line with
   `/var\s*\((.*?)\)/g`, so on
-  `var(--magma-selection-background, rgb(var(--label-yellow-09)))` it captures
-  `--magma-selection-background, rgb(var(--label-yellow-09` as one name, finds nothing, and
-  draws nothing. Simple `rgb(var(--x))` is fine.
+  `var(--magma-selection-background, var(--label-yellow-09))` it captures
+  `--magma-selection-background, var(--label-yellow-09` as one name, finds nothing, and
+  draws nothing. A simple `var(--x)` is fine.
 - **The generated sheet must exist.** It lives in `dist/`, which is gitignored: a fresh
   clone has no completion until `nx run styles:build` has run once.
 - **Never import `tokens.editor.css`.** It holds light-theme defaults only, so loading it

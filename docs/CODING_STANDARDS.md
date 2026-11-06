@@ -125,7 +125,7 @@ The rules below are the ones that constrain authoring decisions. Many additional
 /* ✅ correct */
 .foo {
   background-color: rgb(255 255 255);
-  color: rgb(var(--tone-neutral-03) / 0.5);
+  color: color-mix(in srgb, var(--tone-neutral-03) 50%, transparent);
 }
 
 /* 🚫 wrong */
@@ -174,8 +174,8 @@ In the component sheets `magma/token-values` also rejects `px`, `rem`, `s` and `
 | a length: `16px`, `1rem`, `3px`, `-8px`  | `--spacing(N)`, N = px x 25 or rem x 400: `--spacing(400)`, `--spacing(400)`, `--spacing(75)`, `--spacing(-200)` |
 | a radius                                 | a `var(--magma-radius-*)` step                                                                                |
 | a duration on the scale: `300ms`, `0.5s` | `var(--duration-300)`, `var(--duration-500)` (the steps are 75, 100, 150, 200, 300, 500, 700 and 1000 ms)    |
-| a colour: `#c4c4c4`, `rgb(73 73 73)`     | a role in the RGB wrapper, whose alpha may stay a literal: `rgb(var(--magma-border-default))`, `rgb(var(--magma-text-muted) / 0.5)` |
-| a black shadow: `rgb(0 0 0 / 0.1)`       | `rgb(var(--magma-shadow-ink) / 0.1)`; a black backdrop or scrim is `rgb(var(--magma-backdrop-color) / <alpha>)` |
+| a colour: `#c4c4c4`, `rgb(73 73 73)`     | a role in the RGB wrapper, whose alpha may stay a literal: `var(--magma-border-default)`, `color-mix(in srgb, var(--magma-text-muted) 50%, transparent)` |
+| a black shadow: `rgb(0 0 0 / 0.1)`       | `color-mix(in srgb, var(--magma-shadow-ink) 10%, transparent)`; a black backdrop or scrim is `color-mix(in srgb, var(--magma-backdrop-color) <N>%, transparent)` |
 
 Not reported: `0` (`0s` keeps its unit, a `<time>` needs it), the `1px` hairline and the `1px` floor of `minmax(1px, 1fr)`, the colours of `mask` and `mask-image` (a mask reads only their alpha), `url()`, and the conditions of `@media` and `@container`, where `var()` is not allowed. The units the plugin does not own (`%`, `fr`, `vw`, `lh`, `deg`) pass. The `initial-value` of a `-property.css` registration is checked too: `projects/styles/scripts/properties.ts` folds `var()` and `--spacing()` down to the literal the registration needs.
 
@@ -309,7 +309,7 @@ When writing or editing code in this monorepo:
 - **CSS authoring**:
   - Use `rgb(r g b / a)` modern syntax with numeric alpha; never named colors, never `hsl`/`lch`, never short hex
   - Use `px`, `rem`, `%`, `vh`/`vw` for sizing; never `em`/`cm`/`in`/`mm`/`pc`/`pt`
-  - In component sheets, lengths, durations and colours come from the tokens (`--spacing(N)`, `var(--magma-radius-*)`, `var(--duration-*)`, `rgb(var(--magma-*) / a)`); a literal only for `0` and the `1px` hairline (`magma/token-values`)
+  - In component sheets, lengths, durations and colours come from the tokens (`--spacing(N)`, `var(--magma-radius-*)`, `var(--duration-*)`, `color-mix(in srgb, var(--magma-*) a, transparent)`); a literal only for `0` and the `1px` hairline (`magma/token-values`)
   - Sort declarations alphabetically; custom props first; one declaration per line
   - Use specific `background-*` properties, never the `background` shorthand
   - No vendor prefixes (except `-webkit-overflow-scrolling`)
