@@ -613,7 +613,7 @@ export const CurrentIcons = {
         .filter((icon) => getComputedStyle(icon).display !== 'none')
         .map((icon) => icon.name);
     const here = await canvas.findByRole('link', { name: 'Pratiche' });
-    const view = canvasElement.querySelector<HTMLElement>('mds-button[label="Elenco"]')!;
+    const view = canvasElement.querySelector('mds-button[label="Elenco"]') as HTMLElement;
 
     await waitFor(() => expect(shown(here)).toEqual(['mi/baseline/folder']));
     expect(shown(canvas.getByRole('link', { name: 'Home' }))).toEqual(['mi/outline/home']);
