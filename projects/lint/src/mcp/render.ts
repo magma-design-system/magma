@@ -156,9 +156,21 @@ const packageOf = (module: string): string => {
 /** The lazy loader of the components, in the magma package: what a <script type="module"> loads. */
 const LOADER = 'dist/magma-components/magma-components.esm.js';
 
-/** The loader of the context (the tests), else the one of the installed magma; its chunks sit beside it. */
-const loaderOf = (context: ToolContext): string =>
+/**
+ * The loader of the context (the tests), else the one of the installed magma; its chunks sit
+ * beside it. Exported for the page of the studio (projects/studio), which loads Magma as a
+ * render does.
+ */
+export const loaderOf = (context: ToolContext): string =>
   context.loader ?? path.join(magmaRoot(context.settings), LOADER);
+
+/**
+ * The version of the Magma installed where the render runs, from its package.json; undefined
+ * when it cannot be read. The image of a render carries it, and the studio shows it in its bar.
+ */
+export const magmaVersion = (context: ToolContext): string | undefined =>
+  readJsonFile<{ version?: string }>(path.join(magmaRoot(context.settings), 'package.json'))
+    ?.version;
 
 /** The path mds-icon fetches the icons from, set the way agents/assets.md gives (the sessionStorage key). */
 export const ICON_PATH = '/svg/';
@@ -338,16 +350,24 @@ export type PageOptions = Pick<Options, 'markup' | 'wholePage' | 'prefMode' | 't
   utilities?: string;
 };
 
-/** The page: the stylesheets of a consumer, the loader of the components, the markup. */
-export const pageOf = (context: ToolContext, options: PageOptions): string => {
-  // each module as Node resolves it from the project: a bare `normalize.css` is its main file
-  const imports = STYLESHEETS.flatMap(({ module, layer }) => {
+/**
+ * The `@import` of each stylesheet of a consumer page, in its layer, at `base` followed by the
+ * package and the file (`fileOf` serves `/node_modules/`). Each module as Node resolves it from
+ * the project: a bare `normalize.css` is its main file. The studio (projects/studio) imports the
+ * same list under a path relative to its page.
+ */
+export const stylesheetImports = (context: ToolContext, base = '/node_modules/'): string[] =>
+  STYLESHEETS.flatMap(({ module, layer }) => {
     const file = resolvePackage(context, module);
     const dir = packageDir(context, packageOf(module));
     if (!file || !dir) return [];
-    const url = `/node_modules/${packageOf(module)}/${path.relative(dir, file).split(path.sep).join('/')}`;
+    const url = `${base}${packageOf(module)}/${path.relative(dir, file).split(path.sep).join('/')}`;
     return [`@import url('${url}') layer(${layer});`];
   });
+
+/** The page: the stylesheets of a consumer, the loader of the components, the markup. */
+export const pageOf = (context: ToolContext, options: PageOptions): string => {
+  const imports = stylesheetImports(context);
   const lang = options.lang ? ` lang="${options.lang}"` : '';
   const theme = options.theme ? ` data-theme-name="${options.theme}"` : '';
   const pref = options.prefMode ? ` data-magma-pref class="pref-mode-${options.prefMode}"` : '';
@@ -567,9 +587,7 @@ export const render = async (
   context: ToolContext,
   options: Options,
 ): Promise<Array<Image & { png: Buffer }>> => {
-  const version =
-    readJsonFile<{ version: string }>(path.join(magmaRoot(context.settings), 'package.json'))
-      ?.version ?? '';
+  const version = magmaVersion(context) ?? '';
   const { html, untailwinded } = await pageFor(context, options);
   const out = path.join(context.root, PREVIEW_DIR);
   mkdirSync(out, { recursive: true });
@@ -901,9 +919,7 @@ export const renderPreview = (context: ToolContext): Tool => ({
       ...(typeof theme === 'string' ? { theme } : {}),
       ...(pageLang ? { lang: pageLang } : {}),
     });
-    const version =
-      readJsonFile<{ version: string }>(path.join(magmaRoot(context.settings), 'package.json'))
-        ?.version ?? 'unknown';
+    const version = magmaVersion(context) ?? 'unknown';
     return withImages(
       {
         magma: version,

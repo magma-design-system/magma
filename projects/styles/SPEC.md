@@ -173,7 +173,9 @@ Four independent axes on `<html>`, on top of the semantic layer:
   `editorial`, `bisque` with the Maggioli Editore accent (`variant-secondary`). `default`
   (the old name of `business`), `cool` and `warm` stay until the next major, deprecated.
   All of them are generated into `dist/css/themes.css` from the `themes` map of
-  `semantic.config.ts`, which also opens with the preview of every theme on `:root`,
+  `semantic.config.ts`, which reads `business` and `editorial` from their files in
+  design-tokens (`themes/<name>.json`, the public theme format of #694). The sheet also opens
+  with the preview of every theme on `:root`,
   `--magma-preview-<name>-{wash,accent}`: what `mds-pref-theme-item` shows for a theme
   that is not the active one. The contrast gate verifies every theme in its own family
   and accents.

@@ -1,0 +1,103 @@
+/*
+  The Groups page (groups.tsx): the selection of the batch, then one card per token group, each
+  with its settings (formula, ratios, export) and its colours, one row each. The rows of a card are
+  one grid, so the names, the metadata and the ramps line up within the card. The ramps are data:
+  each step keeps its own colour inline, only their frame follows the tokens. The page takes the
+  width of the frame it stands in, as the head of the page does.
+*/
+
+.groups-page {
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+}
+
+.groups-hint {
+  max-inline-size: var(--magma-width-reading);
+}
+
+/* the bar of the selection: how many are selected, the batch action, the view of the selection;
+   the selection by export at the end of the row, its label above it, so the row lines up on the
+   bottom of its controls */
+
+.groups-selection {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-between-fields);
+  justify-content: space-between;
+}
+
+.groups-selection-bar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-inline) var(--magma-rhythm-between-fields);
+}
+
+/* a short field: half the column of a form */
+
+.groups-selection-export {
+  inline-size: calc(var(--magma-width-form) / 2);
+}
+
+/* the title of a card and how many colours it holds, side by side */
+
+.groups-card-title {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-inline);
+}
+
+/* the settings of a group: three short fields side by side, each half the column of a form */
+
+.groups-settings {
+  display: grid;
+  gap: var(--magma-rhythm-inline);
+  grid-template-columns: repeat(3, minmax(0, calc(var(--magma-width-form) / 2)));
+}
+
+/* the colours of a group: the selection with the name, the metadata, the ramp. The first two
+   columns take half the column of a form when they fit in it, so the ramps of every card start
+   at the same place; a name longer than that widens its column, the metadata wraps */
+
+.groups-members {
+  align-items: center;
+  display: grid;
+  gap: var(--magma-rhythm-inline) var(--magma-rhythm-between-fields);
+  grid-template-columns:
+    minmax(max-content, calc(var(--magma-width-form) / 2))
+    minmax(0, calc(var(--magma-width-form) / 2))
+    minmax(0, 1fr);
+}
+
+.groups-members > mds-text {
+  grid-column: 1 / -1;
+}
+
+.groups-member {
+  display: contents;
+}
+
+.groups-member-check {
+  align-items: center;
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+}
+
+.groups-member-name {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--magma-rhythm-inline);
+}
+
+.groups-ramp {
+  border-radius: var(--magma-radius-sm);
+  display: flex;
+  overflow: hidden;
+}
+
+.groups-ramp-step {
+  block-size: 1lh;
+  flex: 1;
+}

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Magma studio, scene</title>
+    <!--
+      The scene the Theme section shows in its iframe: a page of a product, made of Magma
+      components only, so a theme set on its <html> (data-theme-name) and the preferences of its
+      own panel (mds-pref, which writes on its own document) move the scene and leave the studio
+      alone (#695, "The dogfooding constraint"). The scenes of #697 replace it.
+      The plain CSS below takes every value from the tokens of the installed Magma.
+    -->
+    <style>
+      .scene-main {
+        display: grid;
+        gap: var(--magma-rhythm-between-sections);
+        max-width: var(--magma-width-page);
+        margin-inline: auto;
+        padding: var(--magma-rhythm-between-sections) var(--magma-width-page-gutter);
+      }
+      .scene-head,
+      .scene-section {
+        display: grid;
+        gap: var(--magma-rhythm-title-content);
+      }
+      .scene-card {
+        display: grid;
+        gap: var(--magma-rhythm-between-fields);
+        max-width: var(--magma-width-form);
+        padding: var(--magma-rhythm-inset);
+        border: 1px solid rgb(var(--magma-border-muted));
+        border-radius: var(--magma-radius-lg);
+        background: rgb(var(--magma-surface-raised));
+      }
+      .scene-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--magma-rhythm-inline);
+        align-items: center;
+      }
+      .scene-muted {
+        color: rgb(var(--magma-text-muted));
+      }
+      /* the preferences of the scene, opened from the bar of the studio */
+      .scene-pref {
+        position: fixed;
+        z-index: var(--magma-dropdown-z-index);
+        inset-block-start: var(--magma-rhythm-inset);
+        inset-inline-end: var(--magma-rhythm-inset);
+        padding: var(--magma-rhythm-inset);
+        border-radius: var(--magma-radius-2xl);
+        background: rgb(var(--magma-surface-overlay));
+        box-shadow: var(--shadow-box-lg);
+      }
+      .scene-pref[hidden] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <mds-header>
+      <mds-header-bar>
+        <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
+        <mds-button slot="nav" href="#" aria-current="page" variant="dark" tone="weak">Pratiche</mds-button>
+        <mds-button slot="nav" href="#" variant="dark" tone="text">Contatti</mds-button>
+        <mds-button slot="nav" href="#" variant="dark" tone="text">Scadenze</mds-button>
+      </mds-header-bar>
+    </mds-header>
+    <main class="scene-main">
+      <header class="scene-head">
+        <mds-text typography="page" tag="h1">Pratiche</mds-text>
+        <mds-text typography="detail" tag="p" class="scene-muted">Le pratiche che i cittadini inviano agli uffici.</mds-text>
+      </header>
+      <mds-banner variant="info" headline="Tre pratiche arrivate oggi">Aspettano di essere assegnate a un ufficio.</mds-banner>
+      <section class="scene-section">
+        <mds-text typography="section" tag="h2">Nuova pratica</mds-text>
+        <div class="scene-card">
+          <mds-input-field label="Richiedente">
+            <mds-input value="Mario Rossi"></mds-input>
+          </mds-input-field>
+          <mds-input-field label="Ufficio">
+            <mds-input-select>
+              <option>Anagrafe</option>
+              <option>Stato civile</option>
+            </mds-input-select>
+          </mds-input-field>
+          <div class="scene-row">
+            <mds-badge variant="success" label="Completa"></mds-badge>
+            <mds-badge variant="warning" label="In scadenza"></mds-badge>
+            <mds-badge variant="error" label="Respinta"></mds-badge>
+          </div>
+          <div class="scene-row">
+            <mds-button variant="dark" tone="text">Annulla</mds-button>
+            <mds-button tone="strong">Invia la pratica</mds-button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <aside id="studio-pref" class="scene-pref" hidden aria-label="Preferenze">
+      <mds-pref>
+        <mds-pref-language>
+          <mds-pref-language-item code="it"></mds-pref-language-item>
+          <mds-pref-language-item code="en"></mds-pref-language-item>
+        </mds-pref-language>
+        <mds-pref-mode></mds-pref-mode>
+        <mds-pref-contrast></mds-pref-contrast>
+        <mds-pref-animation></mds-pref-animation>
+        <mds-pref-consumption></mds-pref-consumption>
+      </mds-pref>
+    </aside>
+  </body>
+</html>

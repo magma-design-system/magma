@@ -1,0 +1,190 @@
+/*
+  The frame of the studio: the shell (src/shell.tsx), the Theme section and the frame of the pages
+  of Colors (src/app.tsx). The document itself, its font and its colours, is the one of Magma
+  (styles/base.css); each page keeps its rules in the sheet beside its module, all from the tokens
+  (src/magma.css). A length the rhythm has no relation for is a step of the spacing scale of Magma,
+  calc(var(--spacing) * N), as the components write --spacing(N).
+*/
+
+/*
+  The shell: the bar, then the section, the whole height of the window. The document never
+  scrolls: the regions of a page do (.content, .studio-page, the list of the Palette), each the
+  containing block of what it positions, so nothing inside them (the hidden name of a slider,
+  magma.css) reaches past the window and makes the window scroll too.
+*/
+.studio {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: clip;
+}
+
+.studio-header {
+  flex: none;
+}
+
+.studio-section {
+  flex: 1;
+  min-height: 0;
+}
+
+.studio-section[hidden] {
+  display: none;
+}
+
+.studio-product {
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* the name of the studio, the version of the Magma it runs on set apart below it */
+.studio-product-name {
+  display: grid;
+}
+
+.studio-product-version {
+  margin-block-start: calc(var(--spacing) * 200);
+  color: rgb(var(--magma-text-muted));
+  text-transform: uppercase;
+}
+
+.studio-dropdown {
+  display: grid;
+  gap: var(--magma-rhythm-inline);
+  min-width: calc(var(--spacing) * 6000);
+}
+
+.studio-dropdown-head {
+  display: flex;
+}
+
+.studio-menu {
+  display: grid;
+  gap: var(--magma-rhythm-inline);
+  padding: var(--magma-rhythm-inset);
+}
+
+.studio-menu-title {
+  color: rgb(var(--magma-text-muted));
+}
+
+.studio-menu-link {
+  justify-content: start;
+  width: 100%;
+}
+
+.studio-muted {
+  color: rgb(var(--magma-text-muted));
+}
+
+/* the head of a page: the page-header block, the title and its line, then the actions */
+.studio-page-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-inline);
+  align-items: start;
+  justify-content: space-between;
+  padding: var(--magma-rhythm-inset) var(--magma-width-page-gutter);
+}
+
+.studio-page-title {
+  display: grid;
+  flex: 1 1 calc(var(--spacing) * 9000);
+  gap: var(--magma-rhythm-title-content);
+  min-width: 0;
+}
+
+.studio-page-actions {
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+  align-items: center;
+}
+
+.studio-page {
+  position: relative;
+  display: grid;
+  gap: var(--magma-rhythm-between-sections);
+  align-content: start;
+  padding-block-end: var(--magma-rhythm-between-sections);
+  overflow-y: auto;
+}
+
+.studio-page > mds-banner {
+  max-width: var(--magma-width-reading);
+  margin-inline: var(--magma-width-page-gutter);
+}
+
+/* the Theme section: the scene full screen, its controls floating over it */
+.studio-theme {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.studio-scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* the edge one step past the gap between the controls (400 against 300), so the bar does not
+   read as one more gap; the select and the buttons both size md (vittorio, 2026-11-05) */
+.studio-toolbar {
+  position: absolute;
+  inset-block-end: var(--magma-rhythm-inset);
+  inset-inline-start: 50%;
+  display: flex;
+  gap: var(--magma-rhythm-inline);
+  align-items: center;
+  padding: calc(var(--spacing) * 400);
+  background: rgb(var(--magma-surface-overlay));
+  border-radius: var(--magma-radius-2xl);
+  box-shadow: var(--shadow-box-lg);
+  translate: -50% 0;
+}
+
+.studio-toolbar mds-input-select {
+  min-width: calc(var(--spacing) * 5000);
+}
+
+/* the host of mds-button sets align-self: flex-start, which beats align-items of the bar */
+.studio-toolbar mds-button {
+  align-self: center;
+}
+
+/* the pages of Colors: the list of the Palette beside the region that scrolls, or that region
+   alone; the head of the page and the notices are the first things of the region, so they
+   scroll with the page and head the larger column (vittorio, 2026-11-05) */
+.layout {
+  display: grid;
+  grid-template: 'sidebar content' 1fr / calc(var(--spacing) * 6000) 1fr;
+  height: 100%;
+}
+
+.layout.no-sidebar {
+  grid-template: 'content' 1fr / 1fr;
+}
+
+.content {
+  position: relative;
+  grid-area: content;
+  padding: var(--magma-rhythm-inset) var(--magma-width-page-gutter)
+    var(--magma-rhythm-between-sections);
+  overflow-y: auto;
+}
+
+/* inside the region the head takes its spaces from it: none of its own around it, the space of a
+   section below it */
+.content > .studio-page-head {
+  padding: 0;
+  margin-block-end: var(--magma-rhythm-between-sections);
+}
+
+.studio-notice {
+  max-width: var(--magma-width-reading);
+  margin-block-end: var(--magma-rhythm-between-sections);
+}

@@ -62,7 +62,7 @@ export const SOURCES = {
 } as const;
 export type SourceName = keyof typeof SOURCES;
 
-/** The port when none is asked: one no other server of the repository takes (6006 Storybook, 5177 the tokens playground). */
+/** The port when none is asked: one no other server of the repository takes (6006 Storybook, 5177 the studio). */
 export const PORT = 5180;
 
 export interface Stage {

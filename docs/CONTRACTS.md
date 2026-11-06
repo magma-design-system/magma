@@ -254,12 +254,15 @@ keep in step.
   [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes from" (what
   a render loads, and when it is ready).
 - **Read by**: the MCP `render_preview` (`projects/lint/src/mcp/render.ts`, `render-page.ts`);
-  `lint:serve.previews` (`projects/lint/scripts/serve-previews.ts`), on the same page.
+  `lint:serve.previews` (`projects/lint/scripts/serve-previews.ts`), on the same page; the pages
+  of the studio (`projects/studio/vendor.ts`), through `stylesheetImports`, `loaderOf` and
+  `fileOf` of the render, with paths relative to the page.
 - **Held by**: the `render_preview` tests: `STYLESHEETS` and `TAILWIND` equal the blocks of the
   guide, the Magma utilities compile on the classes of the markup, the widths
   and the themes come from the installed styles, and `mds-button` renders hydrated and
   representative on the build of this repository (the `consumer-lint` job, on the build
-  artifact).
+  artifact); `projects/studio/test/vendor.test.mts` (the imports of a page of the studio in the
+  order and the layers of the list, the files served from the installed packages).
 
 ## The sources of the wrappers
 

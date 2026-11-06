@@ -43,7 +43,7 @@ The scope is **required** for every commit (except `revert`). The allowed scopes
 
 ```
 claude-plugin, codemod, design-tokens, icons, identity, lint, lit, magma, magma-angular,
-magma-react, stencil, storybook, styles, svg-icons
+magma-react, stencil, storybook, studio, styles, svg-icons
 ```
 
 Use the project scope when the change touches the project as a whole or several components inside it.
@@ -58,7 +58,7 @@ Use the component scope when the change is isolated to a single component.
 
 ### Scopes and releases
 
-Each package is released from the commits of its own scopes: `design-tokens`, `icons`, `identity`, `styles`, `svg-icons`, and for `magma` the scopes `magma`, `stencil`, `react`, `lit`, `storybook`, `lint` (the consumer lint ships inside it) and every `mds-*` component. `claude-plugin` releases nothing: the plugin is served from `main` (`projects/claude-plugin/README.md`). A commit that changes several packages can list several scopes separated by a comma, and then counts for every package listed, both for the version bump and in the release notes:
+Each package is released from the commits of its own scopes: `design-tokens`, `icons`, `identity`, `styles`, `svg-icons`, and for `magma` the scopes `magma`, `stencil`, `react`, `lit`, `storybook`, `lint` (the consumer lint ships inside it) and every `mds-*` component. `claude-plugin` releases nothing: the plugin is served from `main` (`projects/claude-plugin/README.md`). Nor does `studio`: it is an app of this repository, not a package (`projects/studio/README.md`). A commit that changes several packages can list several scopes separated by a comma, and then counts for every package listed, both for the version bump and in the release notes:
 
 ```
 feat(design-tokens,styles): give the neutral pills a wash band

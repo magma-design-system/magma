@@ -18,14 +18,11 @@ import { getColorsConfig } from '../src/lib/utils.mjs';
 import { createColorTokens, type MagmaConfig } from '../src/lib/color.mjs';
 import { semantic } from '../semantic.config.js';
 import {
-  aliasesFromConfig,
   applyBaseline,
   buildBaseline,
-  evaluatePairs,
-  evaluateTheme,
   formatRow,
   formatTable,
-  themeMappingsFromConfig,
+  gatePairs,
   type Baseline,
   type ColorTree,
   type PairResult,
@@ -57,13 +54,7 @@ async function main() {
   const rc = await getColorsConfig();
   if (!rc) throw new Error('contrast-gate: base config not found (.magma-design-tokensrc.json)');
   const tree = (createColorTokens(rc.config as MagmaConfig).tokens as { color: ColorTree }).color;
-  const aliases = aliasesFromConfig(semantic);
-
-  const base = evaluatePairs(tree, aliases);
-  const themes = themeMappingsFromConfig(semantic, semantic.themes).map((theme) => ({
-    name: theme.name,
-    results: evaluateTheme(tree, theme),
-  }));
+  const { base, themes } = gatePairs(tree, semantic, semantic.themes);
   const results = [...base, ...themes.flatMap((theme) => theme.results)];
   // the theme of a row, which formatRow does not print: the prefix of its key
   const row = (r: PairResult) =>

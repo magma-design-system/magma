@@ -2,7 +2,7 @@
 
 ## 1. System Overview
 
-Magma is a monorepo managed with NX and npm workspaces. It is composed of eleven projects: eight are published as npm packages under the `@maggioli-design-system` scope, `lint` ships inside `magma` and `claude-plugin` is served from `main`. The projects have a strict one-directional dependency graph: no circular dependencies are allowed. The overview draws that graph as Nx computes it (`nx graph`), with an arrow from each project to the projects that depend on it.
+Magma is a monorepo managed with NX and npm workspaces. It is composed of twelve projects: eight are published as npm packages under the `@maggioli-design-system` scope, `lint` ships inside `magma`, `claude-plugin` is served from `main` and `studio` is an app of this repository. The projects have a strict one-directional dependency graph: no circular dependencies are allowed. The overview draws that graph as Nx computes it (`nx graph`), with an arrow from each project to the projects that depend on it.
 
 ```mermaid
 graph TD
@@ -17,9 +17,14 @@ graph TD
   AN["stencil-angular<br/>@maggioli-design-system/magma-angular"]
   CM["codemod<br/>@maggioli-design-system/magma-codemods"]
   CP["claude-plugin<br/>served from main"]
+  SD["studio<br/>an app, not on npm"]
 
   DT --> ST
   DT --> WC
+  DT --> SD
+  WC --> SD
+  ID --> SD
+  LINT --> SD
   ST --> WC
   SI --> WC
   SI --> IC
@@ -31,7 +36,7 @@ graph TD
   RE -->|"imported by its React fixtures"| CM
   class LINT,CP ai
   class ID,SI,IC assets
-  class DT,ST visual
+  class DT,ST,SD visual
   class WC,RE,AN components
   class CM tooling
   classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
@@ -49,6 +54,24 @@ graph TD
 > icons — into a font. `icons` is the only sub-project the web components do not depend on: they
 > read the SVGs directly.
 
+### Magma as an external vendor
+
+Wherever the system uses the Magma components (a tool, a preview, an app), it takes them, with
+the stylesheets they need ([`agents/assets.md`](agents/assets.md)), from the Magma installed where
+it runs, as the docs site does, and never bundles a copy (decided on #695):
+
+- **No cycle.** A bundle that holds no component does not need `stencil` built first, so the tool
+  can ship inside the `magma` package, as the lint does, and `stencil` is a dependency only of the
+  page that hosts it in this repository.
+- **The version of the reader.** Inside a project the tool runs on the Magma the project has
+  installed, so what it shows is that version's.
+- **One module.** The docs site, a project and an internal page mount the same code; only where
+  Magma comes from changes.
+
+The MCP server follows it already: `render_preview` loads the lazy loader of the installed
+`magma`, and the previews of the patterns run on the version the reader has. The studio (2.10)
+follows it too.
+
 ### Diagrams of the projects
 
 The README of every project draws, in its `Architecture` section, the parts of the project and
@@ -62,6 +85,7 @@ what it reads from and gives to the others:
 [`stencil`](../projects/stencil/README.md#architecture),
 [`stencil-angular`](../projects/stencil-angular/README.md#architecture),
 [`stencil-react`](../projects/stencil-react/README.md#architecture),
+[`studio`](../projects/studio/README.md#architecture),
 [`styles`](../projects/styles/README.md#architecture),
 [`svg-icons`](../projects/svg-icons/README.md#architecture).
 
@@ -255,6 +279,36 @@ The skills are procedures that defer to the installed version (the MCP server, t
 ### 2.9 `codemod`
 
 The `@maggioli-design-system/magma-codemods` package (`projects/codemod`): it migrates consumer code from v1 to v2, rewriting HTML, React, Angular templates (external and inline) and CSS/SCSS, and reports what needs a human decision. Its rules are a manifest (`src/manifest/manifest.ts`), drafted from the `documentation.json` of the two versions; one module per surface (`src/surfaces/`) decides where an attribute or a class is written, the forms the class rules of the lint read too ([`docs/CONTRACTS.md`](CONTRACTS.md)). The contributor notes are [`projects/codemod/README.md`](../projects/codemod/README.md).
+
+### 2.10 `studio`
+
+The studio of Magma (`projects/studio`, epic #693): an app where whoever installs Magma defines a
+theme from a UI, and later the rest of a product's definition (Foundation, Patterns, Blocks). It
+is not an npm package. It began as the tokens playground of `design-tokens`, moved here whole
+(#695): `nx run studio:serve` on port 5177, `build`, `test`; the `studio` workflow builds and
+tests it when it or `design-tokens` changes.
+
+- **The engine stays in `design-tokens`.** The studio imports the sources of the generator
+  (`createColorTokens`, the surface and text engines, the contrast gate), `semantic.config.ts`,
+  `semantic.model.ts` and the theme files (`design-tokens/themes/`) and runs them in the browser.
+  They stay there because the builds of `design-tokens` and `styles` read them: moving them would
+  make `design-tokens` depend on the studio.
+- **No copy of the engine's data.** What the studio shows comes from `design-tokens`: the default
+  balances from `.magma-design-tokensrc.json`, the text floors from `DEFAULT_TARGETS` of the
+  contrast gate, the CSS of a theme from `namedThemeCss` of `semantic.model.ts`, the same function
+  the styles generator prints `themes.css` with.
+- **Magma as an external vendor** (section 1): the studio never bundles the Magma components nor
+  their stylesheets. Its pages load them as a render of the MCP server does, with the code of the
+  render (`stylesheetImports`, `loaderOf`, `fileOf` of `projects/lint/src/mcp/render.ts`), from
+  the installed magma: in this repository the build of `stencil`, an implicit dependency.
+- **The shell** follows the app-shell block: three sections, Colors (the pages of the playground,
+  from a menu that opens with the verdict of the contrast gate), Theme (the theme full screen in an
+  iframe, its controls over it) and Behavior (design language, patterns, blocks, from a menu). A
+  section that opens its pages from a menu is a case the app-shell block does not have yet.
+- **Two hosts, one app** (#695): the docs site mounts it with nothing to install, and a command of
+  the `magma` package serves it inside a project, on its `magma/` folder.
+
+The views and how to run it: [`projects/studio/README.md`](../projects/studio/README.md).
 
 ---
 
