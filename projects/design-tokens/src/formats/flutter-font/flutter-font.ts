@@ -9,7 +9,7 @@ import {
   ifEquals,
   leadZero,
   pascalCase,
-  rgbChannel,
+  rgbColor,
   safeString,
   ifDartTextStyleProp,
 } from '../helpers';
@@ -22,7 +22,7 @@ Handlebars.registerHelper('getFirstFont', firstArrayElement);
 Handlebars.registerHelper('ifEquals', ifEquals);
 Handlebars.registerHelper('leadZero', leadZero);
 Handlebars.registerHelper('pascalCase', pascalCase);
-Handlebars.registerHelper('rgbChannel', rgbChannel);
+Handlebars.registerHelper('rgbColor', rgbColor);
 Handlebars.registerHelper('safeString', safeString);
 Handlebars.registerHelper('ifDartTextStyleProp', ifDartTextStyleProp);
 Handlebars.registerHelper('getArrayFontName', (value) => {

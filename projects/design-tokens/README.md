@@ -120,7 +120,7 @@ Every token carries `$extensions["it.maggioli.magma"]`:
 
 Where the JSON and the CSS write a value differently:
 
-- **Colors**: the CSS publishes channels (`--tone-neutral-08: 208 208 208`, read as `rgb(var(--tone-neutral-08))`); the JSON gives sRGB components and the hex.
+- **Colors**: the CSS publishes full colors (`--tone-neutral-08: rgb(208 208 208)`, read as `var(--tone-neutral-08)`); the JSON gives sRGB components and the hex.
 - **Letter spacing**: the CSS writes it in `em`, which DTCG does not allow; the JSON gives it in `rem` at the style's own font size, and keeps the `em` in `cssValue`.
 - **Line height** of a `typography` token: a multiplier of the font size, as DTCG defines it. The `line-height` token of the style keeps the length.
 - **Aspect ratios**: a `number` (`5/3` becomes `1.6666666666666667`); `cssValue` keeps the ratio.

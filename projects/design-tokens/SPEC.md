@@ -46,18 +46,23 @@ semantic    ->  role-based alias         (styles, --magma-*, e.g. --magma-text-d
 component   ->  component-scoped var     (magma, e.g. --mds-button-background)
 ```
 
-## Color format: always RGB
+## Color format: full colors
 
-All color tokens are distributed in **RGB channel format** (not hex). This is intentional: it enables Tailwind and plain CSS to compose opacity modifiers without a separate variable.
+Every color token holds a full color, written `rgb(r g b)` (`--tone-neutral-03: rgb(61 61 61)`), so it is a valid `<color>` wherever CSS takes one. A token with a transparency is mixed with `transparent` in `srgb`, which scales only its alpha and keeps its channels.
 
 ```css
 /* correct */
+color: var(--tone-neutral-03);
+background: color-mix(in srgb, var(--tone-neutral-03) 50%, transparent);
+
+/* incorrect - the token is already a color, rgb() around it is invalid CSS */
 color: rgb(var(--tone-neutral-03));
 background: rgb(var(--tone-neutral-03) / 0.5);
-
-/* incorrect - hex vars cannot use opacity modifiers */
-color: var(--tone-neutral-03-hex);
 ```
+
+`alpha(from var(--x) / 0.5)` says the same in fewer words, but the browser floor of `.browserslistrc` (Chrome 112, Firefox 121, Safari 16.5) does not have it, nor the relative color syntax (`rgb(from ...)`); `color-mix()` is inside it. When `alpha()` enters the floor, the `color-mix()` forms move to it (#918).
+
+Before #918 (magma 3) the tokens held bare channels (`61 61 61`), read as `rgb(var(--x))`.
 
 ## Scale convention
 

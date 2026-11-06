@@ -83,7 +83,7 @@ export function getStyleDictionaryColorConfigAllPlatforms(
             destination: 'colors-hex.css',
           },
           {
-            format: 'css/vars-rgb-channels',
+            format: 'css/vars-rgb',
             destination: 'colors-rgb.css',
           },
           {

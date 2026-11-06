@@ -104,7 +104,9 @@ const dark = cssBlock('colors-rgb.css', ':root:not(.pref-theme-scheme-light).pre
 const scale = cssBlock('typography.css', ':root {')
 const motion = cssBlock('transitions.css', ':root {')
 const channels = (block: Map<string, string>) => (name: string) =>
-  block.get(name)!.split(' ').map(Number) as [number, number, number]
+  block.get(name)!.match(/^rgb\((\d+) (\d+) (\d+)\)$/)!.slice(1).map(Number) as [number, number, number]
+/** A DTCG color written the way colors-rgb.css writes a palette token: `rgb(r g b)`. */
+const cssRgb = (color: DtcgColor): string => `rgb(${colorChannels(color).join(' ')})`
 
 const base = readJson('base.tokens.json')
 const baseTokens = walk(base)
@@ -145,11 +147,16 @@ describe('values', () => {
     const [inset, second] = shadow('inset 0 2px 4px 0 rgb(0 0 0 / 0.05), inset 0 0 0 1px rgb(0 0 0 / 0.01)', none)
     expect(inset.inset).toBe(true)
     expect(second.spread).toEqual({ value: 1, unit: 'px' })
-    const [ring] = shadow('0 0 0 1px rgb(var(--tone-neutral-01) / 0.3)', (name) => {
+    const [ring] = shadow('0 0 0 1px color-mix(in srgb, var(--tone-neutral-01) 30%, transparent)', (name) => {
       expect(name).toBe('--tone-neutral-01')
       return [5, 5, 5]
     })
     expect(ring.color).toEqual({ colorSpace: 'srgb', components: [0.0196, 0.0196, 0.0196], hex: '#050505', alpha: 0.3 })
+    // a literal color faded the same way: the elevations of styles, with --depth resolved
+    const [lift] = shadow('0 1px 2px color-mix(in srgb, rgb(0 0 0) 6%, transparent)', none)
+    expect(lift.color).toEqual({ colorSpace: 'srgb', components: [0, 0, 0], hex: '#000000', alpha: 0.06 })
+    // a token holds a full color since #918: rgb() around it is invalid CSS, not a shadow
+    expect(() => shadow('0 0 0 1px rgb(var(--tone-neutral-01) / 0.3)', () => [5, 5, 5])).toThrow(/color-mix/)
   })
 })
 
@@ -254,7 +261,7 @@ describe('values match the stylesheets', () => {
       for (const [path, token] of walk(tree).filter(([path]) => path[0] === 'palette')) {
         const color = resolveValue(tree, token.$value) as DtcgColor
         const css = ext(token).css!
-        expect(colorChannels(color).join(' '), `${mode} ${path.join('.')}`).toBe(block.get(css) ?? light.get(css))
+        expect(cssRgb(color), `${mode} ${path.join('.')}`).toBe(block.get(css) ?? light.get(css))
       }
   })
 
@@ -317,21 +324,20 @@ describe('values match the stylesheets', () => {
 
   test('the ring shadows follow the dark palette', () => {
     const ring = resolveValue(darkTree, lookup(darkTree, 'shadow.ring').$value) as { color: DtcgColor }
-    expect(colorChannels(ring.color).join(' ')).toBe(dark.get('--tone-neutral-01'))
+    expect(cssRgb(ring.color)).toBe(dark.get('--tone-neutral-01'))
   })
 
   // a ring is a line around an element and flips; a projected shadow does not (#790)
   test('the shadow ink is the ink extreme in light and pure black in dark, in every theme', () => {
-    const ink = (tree: Node) =>
-      colorChannels(resolveValue(tree, lookup(tree, 'magma.shadow.ink').$value) as DtcgColor).join(' ')
+    const ink = (tree: Node) => cssRgb(resolveValue(tree, lookup(tree, 'magma.shadow.ink').$value) as DtcgColor)
     expect(ink(lightTree)).toBe(light.get('--tone-neutral-01'))
-    for (const { name } of semanticModel().themes) expect(ink(scenario('dark', name)), name).toBe('0 0 0')
+    for (const { name } of semanticModel().themes) expect(ink(scenario('dark', name)), name).toBe('rgb(0 0 0)')
   })
 
   // The semantic layer, resolved the way the browser cascades semantic.css and
   // themes.css: base and the preview of every theme, then the dark ink, the base
   // contrast block, the theme block and the theme's own contrast block. Each role
-  // ends on a palette custom property, whose channels come from colors-rgb.css.
+  // ends on a palette custom property, whose color comes from colors-rgb.css.
   const model = semanticModel()
   const scenarios = ['light', 'dark'].flatMap((mode) =>
     model.themes.flatMap(({ name }) => [false, true].map((contrast) => ({ mode, theme: name, contrast }))))
@@ -348,9 +354,9 @@ describe('values match the stylesheets', () => {
     ]
     const vars = new Map(cascade.map(({ name, ref }) => [name, ref]))
     const palette = mode === 'dark' ? dark : light
-    const cssChannels = (name: string): string => {
+    const cssColor = (name: string): string => {
       const ref = vars.get(name)
-      if (ref) return cssChannels(ref)
+      if (ref) return cssColor(ref)
       return palette.get(`--${name}`) ?? light.get(`--${name}`)!
     }
     const tree = scenario(mode, contrast ? `${theme}-contrast-more` : theme)
@@ -360,7 +366,7 @@ describe('values match the stylesheets', () => {
     for (const [path, token] of roles) {
       const name = ext(token).css!.slice(2)
       const color = resolveValue(tree, token.$value) as DtcgColor
-      expect(colorChannels(color).join(' '), `${path.join('.')} (--${name})`).toBe(cssChannels(name))
+      expect(cssRgb(color), `${path.join('.')} (--${name})`).toBe(cssColor(name))
     }
   })
 })

@@ -5,14 +5,16 @@ Do not edit directly
 Generated at {{ date }}
 */
 
+// The token holds a full colour: an opacity mixes it with transparent, which in srgb
+// scales only its alpha (the same pixels as the old `rgb(var(--x) / a)`).
 const getColor = (cssVar, { opacityVariable, opacityValue }) => {
   if (opacityValue !== undefined) {
-    return `rgb(var(--${cssVar}) / ${opacityValue})`
+    return `color-mix(in srgb, var(--${cssVar}) calc(${opacityValue} * 100%), transparent)`
   }
   if (opacityVariable !== undefined) {
-    return `rgb(var(--${cssVar}) / var(${opacityVariable}, 1))`
+    return `color-mix(in srgb, var(--${cssVar}) calc(var(${opacityVariable}, 1) * 100%), transparent)`
   }
-  return `rgb(var(--${cssVar}))`
+  return `var(--${cssVar})`
 }
 
 const palette = {

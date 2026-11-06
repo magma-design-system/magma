@@ -25,7 +25,7 @@ export function getBrandColorConfig(
             destination: `colors-hex-${fileName}.css`,
           },
           {
-            format: 'css/vars-rgb-channels',
+            format: 'css/vars-rgb',
             destination: `colors-rgb-${fileName}.css`,
           },
         ],
