@@ -165,6 +165,15 @@ export function ThemesManager({ config }: ThemesManagerProps) {
   const opted = Object.keys(surfaces).filter(
     (family) => texts[family] && !reservedFamilies.has(family),
   );
+  // the ramp a theme repoints is `tone-<family>` by default (scaleFamily, semantic.config.ts); a
+  // family of another group names its own (spec section 8: `{ surface: 'blue', scale: 'label-blue' }`)
+  const groupOf = new Map(
+    config.colors.map((color) => [color.name.split('.')[1], color.name.split('.')[0]]),
+  );
+  const scaleOf = (family: string): string | undefined => {
+    const group = groupOf.get(family);
+    return group && group !== 'tone' ? `${group}-${family}` : undefined;
+  };
   const extras = opted.filter((family) => family !== semantic.tint);
   const previewFamilies = [...(opted.includes(semantic.tint) ? [semantic.tint] : []), ...extras];
 
@@ -211,9 +220,15 @@ export function ThemesManager({ config }: ThemesManagerProps) {
         ([role, variant]) => variant !== semantic.accents[role],
       ),
     );
+    const scale = scaleOf(family);
     try {
       return namedThemeCss(
-        themeOf(name, { surface: family, accents: accentOverrides, modes: modesFor(family) }),
+        themeOf(name, {
+          surface: family,
+          accents: accentOverrides,
+          modes: modesFor(family),
+          ...(scale && { scale }),
+        }),
       );
     } catch (error) {
       return `/* ${name}: ${error instanceof Error ? error.message : String(error)} */`;

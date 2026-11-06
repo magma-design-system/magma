@@ -55,6 +55,13 @@ test('a theme is drawn from a family of any group, one created in the studio too
   for (const status of ['info', 'success', 'error', 'warning']) {
     expect(families.some((family) => family.includes(status))).toBe(false)
   }
+
+  // a family of another group repoints its own ramp, never a `tone-` ramp that does not exist
+  const exported = exportOf()
+  const block = (name: string) => exported.match(new RegExp(`:root\\[data-theme-name='${name}'\\] \\{[^}]*\\}`))?.[0] ?? ''
+  expect(block('blue')).toContain('--label-blue-')
+  expect(block('blue')).not.toContain('--tone-blue-')
+  expect(block('ocean')).toContain('--product-ocean-')
 })
 
 test('the export repoints the tint ramp for every non-base theme', () => {
