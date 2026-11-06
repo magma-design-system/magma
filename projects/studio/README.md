@@ -155,7 +155,7 @@ the code that writes `themes.css`.
 ```mermaid
 flowchart LR
   DT["design-tokens<br/>src/lib, semantic.model.ts, .magma-design-tokensrc.json"]
-  LINT["lint<br/>src/mcp/render.ts"]
+  MCP["mcp<br/>src/render.ts"]
   WC["stencil<br/>dist/magma-components"]
   ID["identity<br/>logo-magma.svg"]
   subgraph stu["studio<br/>an app, not on npm"]
@@ -171,13 +171,13 @@ flowchart LR
     APP --> OUT
   end
   DT -->|"createColorTokens, gatePairs, themeOf, namedThemeCss"| APP
-  LINT -->|"stylesheetImports, loaderOf, fileOf"| VEN
+  MCP -->|"stylesheetImports, loaderOf, fileOf"| VEN
   WC -->|"the lazy loader"| VEN
   ID -->|"the logo of the bar"| SHELL
   VEN -.->|"node_modules/, svg/, components/"| SHELL
   OUT -.->|"download"| AUTHOR(["the author of a theme"])
   class DT,APP,SURF,OUT,SHELL,VEN,SCENE visual
-  class LINT ai
+  class MCP ai
   class WC components
   class ID assets
   class AUTHOR outside
