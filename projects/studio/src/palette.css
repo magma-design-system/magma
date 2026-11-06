@@ -97,21 +97,37 @@
   inline-size: 100%;
 }
 
-/* ---- the detail: the family selected, then the settings of the configuration ---- */
+/* ---- the detail: the family selected, its ramps, then the settings of the configuration ----
+   the title of the family, its ramps, its fields, then the settings of the whole configuration
+   after a separator: the space after each is its own (title-content, between-groups,
+   between-sections), so the grid has no gap of its own. The frame is the container of the two
+   columns of the detail (the rule after the ramps). */
+
+.palette-detail-frame {
+  container: palette-detail / inline-size;
+}
 
 .palette-detail {
   align-content: start;
+  column-gap: var(--magma-rhythm-between-groups);
   display: grid;
-  gap: var(--magma-rhythm-between-sections);
 }
 
-/* the family: its title, then its editor (its ramps, then its fields and its hue shifting); the
-   container of the two columns of the editor (the rule after the editor) */
+.palette-detail > .palette-title-row {
+  margin-block-end: var(--magma-rhythm-title-content);
+}
+
+.palette-detail > .palette-ramps,
+.palette-detail > .palette-ramps-error {
+  margin-block-end: var(--magma-rhythm-between-groups);
+}
+
+.palette-detail > mds-separator {
+  margin-block: var(--magma-rhythm-between-sections);
+}
 
 .palette-color {
-  container: palette-color / inline-size;
   display: grid;
-  gap: var(--magma-rhythm-title-content);
 }
 
 .palette-title-row {
@@ -251,44 +267,47 @@
   }
 }
 
-.palette-editor,
-.palette-config {
+.palette-editor {
   display: grid;
   gap: var(--magma-rhythm-between-groups);
   min-inline-size: 0;
 }
 
 /*
-  Where the family has the room, its settings on the start and its ramps beside them, held in view
-  while the settings scroll, so each change shows on the ramps at once: the settings want the
-  column of a form (about 30rem, widths/reading), the two ramps laid upright side by side about
-  26rem (two of 12rem and their gap), the gap between them the rest of about 60rem. In that column
-  the ramps are under 45rem, so upright (the rule above), and side by side. Narrower, one column,
-  the ramps first: in a row from 45rem, upright under it, side by side while each keeps the room
-  of a step laid flat (about 12rem), one over the other under that.
+  Where the detail has the room, the family and the settings of the whole configuration on the
+  start and the ramps beside them, held in view while either scrolls, so each change shows on the
+  ramps at once (vittorio, 2026-11-06): the settings want the column of a form (about 30rem,
+  widths/reading), the two ramps laid upright side by side about 26rem (two of 12rem and their
+  gap), the gap between them the rest of about 60rem. The ramps span the five rows of the start
+  column (the title, the family, its menu, the separator, the settings of the configuration); in
+  that column they are under 45rem, so upright (the rule above), and side by side. Narrower, one
+  column in the order of the page, the ramps after the title: in a row from 45rem, upright under
+  it, side by side while each keeps the room of a step laid flat (about 12rem), one over the other
+  under that.
 */
 
-@container palette-color (width >= 60rem) {
-  .palette-editor {
+@container palette-detail (width >= 60rem) {
+  .palette-detail {
     align-items: start;
     grid-template-columns: minmax(0, 1fr) 26rem;
   }
 
-  .palette-config {
+  .palette-detail > * {
     grid-column: 1;
-    grid-row: 1;
   }
 
-  .palette-editor > .palette-ramps {
+  .palette-detail > .palette-ramps,
+  .palette-detail > .palette-ramps-error {
     grid-column: 2;
-    grid-row: 1;
+    grid-row: 1 / span 5;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     inset-block-start: var(--magma-rhythm-inset);
+    margin-block-end: 0;
     position: sticky;
   }
 }
 
-@container palette-color (width < 45rem) {
+@container palette-detail (width < 45rem) {
   .palette-ramps {
     align-items: start;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
