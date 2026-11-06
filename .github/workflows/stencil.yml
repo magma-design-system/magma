@@ -293,6 +293,9 @@ jobs:
         with:
           name: stencil-build
           path: projects
+      # an artifact does not keep the file modes: give the magma-mcp bin back
+      # the mode the build gives it (the publish builds, it uses no artifact)
+      - run: chmod +x projects/stencil/dist/mcp/cli.js
       - run: npx nx run lint:test
       - run: npx nx run mcp:test
 
