@@ -101,7 +101,7 @@ Notes:
 | -------------- | ------------------------------------ | ------------------- |
 | Magma 2        | `magma-codemods --path ./src`        | v2 -> v3            |
 | Magma 1        | `magma-codemods --path ./src --from 1` | v1 -> v2, then v2 -> v3 |
-| Magma 1, to stop at Magma 2 | `npx @maggioli-design-system/magma-codemods@1 --path ./src` | v1 -> v2 |
+| Magma 1, to stop at Magma 2 | `npx @maggioli-design-system/magma-codemods@2 --path ./src` | v1 -> v2 |
 
 The jump is chosen, never guessed: the version of magma installed in the project cannot tell where the code
 stands (a product may upgrade the packages before or after the rewrite), and the v1 -> v2 rules are not harmless
@@ -489,3 +489,8 @@ Two dedicated, independent GitHub Actions workflows (not part of the shared sema
 - **`codemods-publish.yml`** — manual (`workflow_dispatch`): build + test → bump (`patch|minor|major|pre*`,
   with a selectable prerelease id) → `npm publish` via OIDC trusted publishing → push the tag
   `magma-codemods@<version>`. No commit is pushed to `main` (tag-only). Run it with `dry-run: true` first.
+
+**The major follows the Magma it migrates to**: `2.x` migrates to Magma 2 (2.0.0, published on 2026-10-01 with
+the v1 -> v2 manifest), `3.x` to Magma 3. A release that adds a jump is a `major` bump, which the workflow takes
+from the highest version on npm. The `version` of `package.json` is not the published one, since the workflow
+pushes a tag and no commit: read it with `npm view @maggioli-design-system/magma-codemods versions`.
