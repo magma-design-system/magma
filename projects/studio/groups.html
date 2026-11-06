@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Magma studio, groups</title>
+    <!--
+      The Groups view the Theme section shows in its iframe (#697): the components by their role
+      in the composition, the vocabulary of the dimension axis, so the preview explains the
+      controls beside it. The groups and their members are the ones of the draft of that axis
+      (#691, projects/styles/draft/theme-dimension-design.md, section 3 "The three groups", on the
+      branch 691-dimension-axis-draft) until the axis lands and says them itself:
+        container: card, modal, banner, accordion, dropdown, tooltip, table;
+        control: button, input, select, textarea, tab;
+        marker: checkbox, switch, badge, chip, avatar, dot.
+      Each at every variant, tone and state the component publishes (magma.api.txt), so a theme
+      is checked where it breaks: a hue on a themed surface, text at every prominence, borders at
+      every level, a disabled state, a solid emphasis fill. The focus ring is not drawn on load: a
+      frame that took the focus would take it from the studio; Tab into the frame to see it.
+      The window of a dialog stands for the modal, which would cover the frame.
+
+      Like scene.html, a document of its own: the theme, the mode and the contrast come from the
+      header of the Theme section (shell.tsx, applyFrame). The plain CSS below takes every value
+      from the tokens of the installed Magma; the script writes the matrices from their lists.
+    -->
+    <style>
+      .groups-main {
+        display: grid;
+        gap: var(--magma-rhythm-between-sections);
+        max-width: var(--magma-width-page);
+        margin-inline: auto;
+        padding: var(--magma-rhythm-between-groups) var(--magma-width-page-gutter);
+      }
+      .groups-section {
+        display: grid;
+        gap: var(--magma-rhythm-between-groups);
+      }
+      .groups-head,
+      .groups-part {
+        display: grid;
+        gap: var(--magma-rhythm-title-content);
+      }
+      .groups-part {
+        gap: var(--magma-rhythm-between-fields);
+      }
+      .groups-muted {
+        color: rgb(var(--magma-text-muted));
+      }
+      .groups-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--magma-rhythm-inline);
+        align-items: center;
+      }
+      /* a matrix: the names of the columns over it, the name of each row before it */
+      .groups-matrix {
+        display: grid;
+        grid-template-columns: repeat(calc(var(--groups-columns) + 1), max-content);
+        gap: var(--magma-rhythm-inline);
+        align-items: center;
+        justify-content: start;
+        justify-items: start;
+        overflow-x: auto;
+      }
+      /* the banners take the width of their column, which their text needs */
+      .groups-matrix.groups-wide {
+        grid-template-columns: max-content repeat(var(--groups-columns), minmax(0, 1fr));
+        justify-content: stretch;
+        justify-items: stretch;
+      }
+      /* the rows of one tone: its name, then every variant in it */
+      .groups-tones {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: var(--magma-rhythm-inline);
+        align-items: center;
+      }
+      .groups-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--magma-width-form) * 2 / 3)), 1fr));
+        gap: var(--magma-rhythm-between-containers);
+        align-items: start;
+      }
+      .groups-fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--magma-width-form) / 2)), 1fr));
+        gap: var(--magma-rhythm-between-fields) var(--magma-rhythm-between-containers);
+        align-items: start;
+      }
+      /* the surfaces, each with the text of every prominence, a link and a badge on it */
+      .groups-box {
+        display: grid;
+        gap: calc(var(--spacing) * 100);
+        align-content: start;
+        justify-items: start;
+        padding: var(--magma-rhythm-inset);
+        border: thin solid rgb(var(--magma-border-default));
+        border-radius: var(--magma-radius-lg);
+        corner-shape: var(--magma-corner-shape);
+      }
+      /* the window of a dialog at its width, then the dropdown and the tooltip open under their
+         triggers beside it, room kept for them below */
+      .groups-floating {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--magma-rhythm-between-groups) calc(var(--spacing) * 4800);
+        align-items: start;
+        padding-block-end: calc(var(--spacing) * 4800);
+      }
+      .groups-floating > mds-banner {
+        flex: 0 1 var(--magma-width-dialog);
+      }
+      .groups-pref {
+        position: fixed;
+        z-index: var(--magma-dropdown-z-index);
+        inset-block-start: var(--magma-rhythm-inset);
+        inset-inline-end: var(--magma-rhythm-inset);
+        padding: var(--magma-rhythm-inset);
+        border-radius: var(--magma-radius-2xl);
+        background: rgb(var(--magma-surface-overlay));
+        box-shadow: var(--shadow-box-lg);
+      }
+      .groups-pref[hidden] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="groups-main">
+      <header class="groups-head">
+        <mds-text typography="page" tag="h1">Groups</mds-text>
+        <mds-text typography="detail" tag="p" class="groups-muted">
+          The components by their role in the composition: what holds content, what the person acts with, what is read at a glance.
+        </mds-text>
+      </header>
+
+      <section class="groups-section" aria-labelledby="container">
+        <header class="groups-head">
+          <mds-text id="container" typography="section" tag="h2">Container</mds-text>
+          <mds-text typography="detail" tag="p" class="groups-muted">Card, banner, accordion, table, dropdown, tooltip, and the window of a dialog.</mds-text>
+        </header>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Surfaces, text and borders</mds-text>
+          <div class="groups-cards" data-surfaces></div>
+          <div class="groups-cards" data-borders></div>
+        </div>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Card, accordion, table</mds-text>
+          <div class="groups-cards">
+            <mds-card>
+              <mds-card-header>
+                <mds-text typography="part" tag="h4">Card</mds-text>
+              </mds-card-header>
+              <mds-card-content>
+                <mds-text typography="detail">An item of a set, its boundary on a raised surface.</mds-text>
+              </mds-card-content>
+              <mds-card-footer>
+                <mds-button variant="dark" tone="outline">Cancel</mds-button>
+                <mds-button>Save</mds-button>
+              </mds-card-footer>
+            </mds-card>
+            <mds-accordion>
+              <mds-accordion-item label="Open" typography="h6" selected>
+                <mds-text typography="detail">The content of an open item.</mds-text>
+              </mds-accordion-item>
+              <mds-accordion-item label="Closed" typography="h6">
+                <mds-text typography="detail">Hidden.</mds-text>
+              </mds-accordion-item>
+            </mds-accordion>
+            <mds-table selectable>
+              <mds-table-header>
+                <mds-table-header-cell label="Name"></mds-table-header-cell>
+                <mds-table-header-cell label="State"></mds-table-header-cell>
+              </mds-table-header>
+              <mds-table-body>
+                <mds-table-row selected>
+                  <mds-table-cell><mds-text typography="detail">Selected row</mds-text></mds-table-cell>
+                  <mds-table-cell><mds-badge variant="success" label="Done"></mds-badge></mds-table-cell>
+                </mds-table-row>
+                <mds-table-row>
+                  <mds-table-cell><mds-text typography="detail">Row</mds-text></mds-table-cell>
+                  <mds-table-cell><mds-badge variant="warning" label="Open"></mds-badge></mds-table-cell>
+                </mds-table-row>
+                <mds-table-row>
+                  <mds-table-cell><mds-text typography="detail">Row</mds-text></mds-table-cell>
+                  <mds-table-cell><mds-badge variant="error" label="Late"></mds-badge></mds-table-cell>
+                </mds-table-row>
+              </mds-table-body>
+            </mds-table>
+          </div>
+        </div>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Banner, by variant and tone</mds-text>
+          <div class="groups-matrix groups-wide" data-banners></div>
+        </div>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Dialog window, dropdown, tooltip</mds-text>
+          <div class="groups-floating">
+            <mds-banner variant="light" tone="box" headline="Window of a dialog" dismissible>
+              A form, a choice, a confirmation.
+              <mds-button slot="action" variant="dark" tone="outline" size="sm">Cancel</mds-button>
+              <mds-button slot="action" size="sm">Confirm</mds-button>
+            </mds-banner>
+            <mds-button id="groups-menu" variant="dark" tone="weak" icon="mi/baseline/more-vert">Menu</mds-button>
+            <mds-dropdown target="#groups-menu" placement="bottom-start" visible>
+              <mds-button variant="dark" tone="text" icon="mi/baseline/edit">Rename</mds-button>
+              <mds-button variant="error" tone="text" icon="mi/baseline/delete">Delete</mds-button>
+            </mds-dropdown>
+            <mds-button id="groups-tip" variant="dark" tone="outline" icon="mi/baseline/info">Tooltip</mds-button>
+            <mds-tooltip target="#groups-tip" placement="bottom" strategy="absolute" visible>The text of a tooltip</mds-tooltip>
+          </div>
+        </div>
+      </section>
+
+      <section class="groups-section" aria-labelledby="control">
+        <header class="groups-head">
+          <mds-text id="control" typography="section" tag="h2">Control</mds-text>
+          <mds-text typography="detail" tag="p" class="groups-muted">Button, input, select, textarea, tab.</mds-text>
+        </header>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Button, by variant and tone</mds-text>
+          <div class="groups-matrix" data-buttons></div>
+        </div>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Button, by size</mds-text>
+          <div class="groups-row">
+            <mds-button size="sm">Small</mds-button>
+            <mds-button size="md">Medium</mds-button>
+            <mds-button size="lg">Large</mds-button>
+            <mds-button size="xl">Extra large</mds-button>
+            <mds-button icon="mi/baseline/add" aria-label="Add"></mds-button>
+          </div>
+        </div>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Fields, by state</mds-text>
+          <div class="groups-fields" data-fields></div>
+        </div>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Select, textarea, date, number, tab</mds-text>
+          <div class="groups-fields">
+            <mds-input-field label="Select">
+              <mds-input-select>
+                <option>First</option>
+                <option>Second</option>
+              </mds-input-select>
+            </mds-input-field>
+            <mds-input-field label="Textarea">
+              <mds-input type="textarea" placeholder="Write here"></mds-input>
+            </mds-input-field>
+            <mds-input-field label="Date">
+              <mds-input-date value="2026-11-06"></mds-input-date>
+            </mds-input-field>
+            <mds-input-field label="Number">
+              <mds-input type="number" value="12"></mds-input>
+            </mds-input-field>
+          </div>
+          <mds-tab>
+            <mds-tab-item label="Selected" selected></mds-tab-item>
+            <mds-tab-item label="Tab"></mds-tab-item>
+            <mds-tab-item label="Disabled" disabled></mds-tab-item>
+          </mds-tab>
+        </div>
+      </section>
+
+      <section class="groups-section" aria-labelledby="marker">
+        <header class="groups-head">
+          <mds-text id="marker" typography="section" tag="h2">Marker</mds-text>
+          <mds-text typography="detail" tag="p" class="groups-muted">Checkbox, switch, badge, chip, label, avatar, dot.</mds-text>
+        </header>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Checkbox, radio, switch</mds-text>
+          <div class="groups-row">
+            <mds-input-switch type="checkbox" checked>Checked</mds-input-switch>
+            <mds-input-switch type="checkbox">Unchecked</mds-input-switch>
+            <mds-input-switch type="checkbox" indeterminate>Indeterminate</mds-input-switch>
+            <mds-input-switch type="checkbox" checked disabled>Disabled</mds-input-switch>
+          </div>
+          <div class="groups-row">
+            <mds-input-switch type="radio" name="groups-radio" checked>Chosen</mds-input-switch>
+            <mds-input-switch type="radio" name="groups-radio">Not chosen</mds-input-switch>
+            <mds-input-switch type="radio" name="groups-radio-off" disabled>Disabled</mds-input-switch>
+          </div>
+          <div class="groups-row">
+            <mds-input-switch type="switch" checked>On</mds-input-switch>
+            <mds-input-switch type="switch">Off</mds-input-switch>
+            <mds-input-switch type="switch" checked disabled>Disabled</mds-input-switch>
+          </div>
+        </div>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Badge, by tone</mds-text>
+          <div class="groups-tones" data-badges></div>
+        </div>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Chip, by tone and state</mds-text>
+          <div class="groups-tones" data-chips></div>
+        </div>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Label, by tone</mds-text>
+          <div class="groups-tones" data-labels></div>
+        </div>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Avatar, by tone</mds-text>
+          <div class="groups-tones" data-avatars></div>
+        </div>
+        <div class="groups-part">
+          <mds-text typography="part" tag="h3">Dot, by variant</mds-text>
+          <div class="groups-row" data-dots></div>
+        </div>
+      </section>
+    </main>
+    <!-- the panel of the preferences, as on the scene: neither mode nor contrast, the header sets them -->
+    <aside id="studio-pref" class="groups-pref" hidden aria-label="Preferences">
+      <mds-pref>
+        <mds-pref-language>
+          <mds-pref-language-item code="it"></mds-pref-language-item>
+          <mds-pref-language-item code="en"></mds-pref-language-item>
+        </mds-pref-language>
+        <mds-pref-animation></mds-pref-animation>
+        <mds-pref-consumption></mds-pref-consumption>
+      </mds-pref>
+    </aside>
+    <script type="module">
+      // The variants and tones each component publishes (magma.api.txt), less the ones of a brand
+      // (apple, google): the matrices below are written from these lists.
+      const HUES = ['amaranth', 'aqua', 'blue', 'green', 'lime', 'orange', 'orchid', 'purple', 'red', 'sky', 'violet', 'yellow'];
+      const STATES = ['info', 'success', 'warning', 'error'];
+      const lists = {
+        banner: { variants: ['primary', 'ai', ...STATES, 'dark', 'light'], tones: ['weak', 'strong', 'box'] },
+        button: { variants: ['primary', 'secondary', 'ai', ...STATES, 'dark', 'light'], tones: ['strong', 'weak', 'outline', 'text', 'box'] },
+        badge: { variants: [...STATES, 'dark', 'light', ...HUES], tones: ['weak', 'strong', 'outline'] },
+        chip: { variants: ['primary', 'secondary', 'ai', ...STATES, 'dark', ...HUES], tones: ['weak', 'strong'] },
+        label: { variants: [...STATES, ...HUES], tones: ['weak', 'strong'] },
+        avatar: { variants: ['primary', ...STATES, ...HUES], tones: ['weak', 'strong'] },
+      };
+      const caption = (text) => `<mds-text typography="caption" class="groups-muted">${text}</mds-text>`;
+      const fill = (name, html) => {
+        document.querySelector(`[data-${name}]`).innerHTML = html;
+      };
+      // a matrix of variants by tones, a column more for the disabled state of the first tone
+      const matrix = (name, { variants, tones }, cell, disabled) => {
+        const columns = disabled ? [...tones, 'disabled'] : tones;
+        const element = document.querySelector(`[data-${name}]`);
+        element.style.setProperty('--groups-columns', columns.length);
+        element.innerHTML = [
+          '<span></span>',
+          ...columns.map(caption),
+          ...variants.flatMap((variant) => [
+            caption(variant),
+            ...tones.map((tone) => cell(variant, tone, '')),
+            ...(disabled ? [cell(variant, tones[0], ' disabled')] : []),
+          ]),
+        ].join('');
+      };
+      // one row per tone: its name, then every variant in it
+      const tonesOf = (name, { variants, tones }, cell, extra = '') =>
+        fill(
+          name,
+          tones
+            .map((tone) => caption(tone) + `<div class="groups-row">${variants.map((variant) => cell(variant, tone)).join('')}</div>`)
+            .join('') + extra,
+        );
+
+      fill(
+        'surfaces',
+        ['sunken', 'muted', 'default', 'raised', 'overlay']
+          .map(
+            (surface) => `<div class="groups-box" style="background: rgb(var(--magma-surface-${surface}))">
+              ${caption(`surface-${surface}`)}
+              ${['default', 'muted', 'subtle', 'disabled']
+                .map((text) => `<mds-text typography="detail" style="color: rgb(var(--magma-text-${text}))">Text ${text}</mds-text>`)
+                .join('')}
+              <mds-link href="#">A link</mds-link>
+              <mds-badge variant="info" label="info"></mds-badge>
+            </div>`,
+          )
+          .join(''),
+      );
+      fill(
+        'borders',
+        ['muted', 'default', 'strong']
+          .map((border) => `<div class="groups-box" style="border-color: rgb(var(--magma-border-${border}))">${caption(`border-${border}`)}</div>`)
+          .join(''),
+      );
+      matrix('banners', lists.banner, (variant, tone) => `<mds-banner variant="${variant}" tone="${tone}" headline="${variant}"></mds-banner>`);
+      matrix('buttons', lists.button, (variant, tone, disabled) => `<mds-button variant="${variant}" tone="${tone}"${disabled}>${variant}</mds-button>`, true);
+      fill(
+        'fields',
+        [
+          ['Empty', '', ' placeholder="Placeholder"'],
+          ['Filled', '', ' value="A value"'],
+          ...['error', 'warning', 'success', 'info', 'ai'].map((variant) => [variant, variant, ` value="A value" variant="${variant}"`]),
+          ['Disabled', '', ' value="A value" disabled'],
+          ['Read only', '', ' value="A value" readonly'],
+        ]
+          .map(
+            ([label, variant, attributes]) =>
+              `<mds-input-field label="${label}"${variant ? ` variant="${variant}" message="The message of the ${variant} state"` : ''}><mds-input${attributes}></mds-input></mds-input-field>`,
+          )
+          .join(''),
+      );
+      tonesOf('badges', lists.badge, (variant, tone) => `<mds-badge variant="${variant}" tone="${tone}" label="${variant}"></mds-badge>`);
+      tonesOf(
+        'chips',
+        lists.chip,
+        (variant, tone) => `<mds-chip variant="${variant}" tone="${tone}" icon="mi/baseline/label" label="${variant}"></mds-chip>`,
+        caption('state') +
+          `<div class="groups-row">
+            <mds-chip label="selectable" selectable></mds-chip>
+            <mds-chip label="selected" selectable selected></mds-chip>
+            <mds-chip label="deletable" deletable tone="weak"></mds-chip>
+            <mds-chip label="disabled" disabled></mds-chip>
+          </div>`,
+      );
+      tonesOf('labels', lists.label, (variant, tone) => `<mds-label variant="${variant}" tone="${tone}" label="${variant}"></mds-label>`);
+      // an icon, not initials: initials pick the colour of the person and override the variant
+      tonesOf('avatars', lists.avatar, (variant, tone) => `<mds-avatar variant="${variant}" tone="${tone}" icon="mi/baseline/person" aria-label="${variant}"></mds-avatar>`);
+      fill(
+        'dots',
+        STATES.map(
+          (variant) => `<mds-button variant="dark" tone="weak">${variant}<mds-notification slot="notification" variant="${variant}" value="3" strategy="disabled"></mds-notification></mds-button>`,
+        ).join(''),
+      );
+    </script>
+  </body>
+</html>
