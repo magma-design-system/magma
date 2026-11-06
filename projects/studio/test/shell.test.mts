@@ -48,6 +48,12 @@ test('the bar names the three sections, Colors and Behavior opening their pages 
     'Palette', 'Contrast scales', 'Semantic surface', 'Themes', 'Groups', 'Diffs',
   ])
   expect(links(colors).find(({ current }) => current === 'page')?.href).toBe('#/colors/groups')
+  // the outline icons, the filled one for the page shown
+  const icons = [...colors.querySelectorAll('mds-button[href]')].map((link) => link.getAttribute('icon'))
+  expect(icons).toEqual([
+    'mi/outline/palette', 'mi/outline/contrast', 'mi/outline/account-tree', 'mi/outline/theater-comedy',
+    'mi/baseline/workspaces', 'mi/outline/difference',
+  ])
   expect(links(behavior).map(({ text }) => text)).toEqual(['Design language', 'Patterns', 'Blocks'])
   // the verdict of the contrast gate heads the Colors menu, once the configuration is judged
   const badge = await vi.waitFor(() => {
