@@ -32,8 +32,9 @@ jobs:
       path: projects/stencil/**
       # the react/angular wrappers are built and tree-shake-checked by this workflow, the
       # shared agent guides of docs/agents ship inside the packages and are checked by
-      # usage-docs, and the consumer lint of projects/lint is compiled into magma's dist/lint
-      extra-path: '{projects/stencil-*/**,docs/agents/**,projects/lint/**}'
+      # usage-docs, and the consumer lint of projects/lint and the MCP server of projects/mcp
+      # are compiled into magma's dist/lint and dist/mcp
+      extra-path: '{projects/stencil-*/**,docs/agents/**,projects/lint/**,projects/mcp/**}'
       nx-project: stencil
       artifact-paths: |
         projects/design-tokens/dist
@@ -262,11 +263,13 @@ jobs:
           path: projects
       - run: npx nx run stencil:check.types
 
-  # The consumer lint and the MCP server (projects/lint, #1102, #1107) ship inside
-  # magma: stencil:build compiles them into dist/lint and runs lint:build first, as
-  # an implicit dependency. Their tests run on fixtures cut from the real data, but
-  # one: render_preview (#1180) renders mds-button on the build artifact, driving the
-  # Google Chrome of the runner; lint:build comes from the Nx cache of `magma / build`.
+  # The consumer lint (projects/lint, #1102) and the MCP server (projects/mcp, #1107,
+  # #1244) ship inside magma: stencil:build compiles them into dist/lint and dist/mcp and
+  # runs lint:build and mcp:build first, as implicit dependencies. Their tests run on
+  # fixtures cut from the real data, but the ones on the build artifact: render_preview
+  # (#1180) renders mds-button on it, driving the Google Chrome of the runner, and the
+  # compiled server answers from dist/mcp; lint:build and mcp:build come from the Nx cache
+  # of `magma / build`. One job for both, the check the ruleset of main requires.
   # A red job here is a red stencil run, which publish.yml refuses to release.
   consumer-lint:
     needs: [magma]
@@ -291,6 +294,7 @@ jobs:
           name: stencil-build
           path: projects
       - run: npx nx run lint:test
+      - run: npx nx run mcp:test
 
   # Guards the tree-shaking of the three published packages: a consumer that
   # imports one component must not end up shipping all 115. Needs all three

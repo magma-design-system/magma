@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "noEmit": false,
+    // the declarations of lint:build, not the sources of lint: tsc compiles only what is under
+    // rootDir, and the emitted modules keep importing the exports of magma
+    "paths": {
+      "@maggioli-design-system/magma/lint": ["../lint/dist/index.d.ts"],
+      "@maggioli-design-system/magma/eslint": ["../lint/dist/eslint/index.d.ts"],
+      "@maggioli-design-system/magma/stylelint/recommended": ["../lint/dist/stylelint/recommended.d.ts"],
+      "@maggioli-design-system/magma/stylelint/strict": ["../lint/dist/stylelint/strict.d.ts"]
+    }
+  },
+  "include": ["src"]
+}

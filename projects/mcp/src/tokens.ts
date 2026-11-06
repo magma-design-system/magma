@@ -4,8 +4,7 @@
   the descriptions, the aliases) and the consumption map of styles (how Tailwind reads each
   token): the light values of the base sets, the ones a role is matched on.
 */
-import { loadPalette, readData } from '../core/data.js';
-import { utilityOf } from '../core/checks.js';
+import { loadPalette, readData, utilityOf } from '@maggioli-design-system/magma/lint';
 import { readFileSync } from 'node:fs';
 import { distance, parseColor, toHex, type Rgb } from './color.js';
 import { GAP, GAP_SCHEMA, resolvePackage, wordsOf, type ToolContext } from './context.js';

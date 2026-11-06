@@ -7,7 +7,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { MagmaSettings } from '../core/data.js';
+import type { MagmaSettings } from '@maggioli-design-system/magma/lint';
 
 export interface ToolContext {
   /** The project the agent works in: the directory the client starts the server in by default. */

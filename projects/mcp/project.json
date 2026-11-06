@@ -1,0 +1,7 @@
+{
+  "name": "mcp",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "type": "library",
+  "tags": ["type:lib", "axis:ai"],
+  "implicitDependencies": ["lint", "!stencil"]
+}

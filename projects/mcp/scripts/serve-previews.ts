@@ -4,7 +4,7 @@
   them live: open a file in the editor, save it, and the browser shows the page again.
 
   The page of a stage is the page render_preview renders (pageOf and fileOf of
-  ../src/mcp/render.ts): the stylesheets in the order and the layers of agents/assets.md, the
+  ../src/render.ts): the stylesheets in the order and the layers of agents/assets.md, the
   loader of the components, the mi/, mdi/ and mgg/ icons from the packages. In this
   repository the packages are the workspace, so the build of projects/stencil and
   projects/styles. One page for both, never a second copy of it: what is fixed here is what
@@ -35,8 +35,8 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import type { AddressInfo } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { parsePreview, type Preview } from '../src/core/patterns.js';
-import { resolvePackage, type ToolContext } from '../src/mcp/context.js';
+import { parsePreview, type Preview } from '@maggioli-design-system/magma/lint';
+import { resolvePackage, type ToolContext } from '../src/context.js';
 import {
   breakpointsOf,
   DEFAULT_WIDTH,
@@ -50,7 +50,7 @@ import {
   tailwindOf,
   themesOf,
   TYPES,
-} from '../src/mcp/render.js';
+} from '../src/render.js';
 
 /** The root of this repository. */
 export const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
@@ -179,7 +179,7 @@ export const EDITOR_ENTRY = 'tailwind.css';
  * file of this machine, untracked: whole paths.
  */
 export const editorEntryOf = (context: ToolContext): string =>
-  `/* Written by nx run lint:serve.previews from TAILWIND (projects/lint/src/mcp/render.ts):
+  `/* Written by nx run mcp:serve.previews from TAILWIND (projects/mcp/src/render.ts):
    the Tailwind entry point of a stage, for the editor (docs/EDITOR_TOKENS.md). */
 ${TAILWIND.replace(/@import '([^']+)'/g, (whole, id: string) => {
   const file = resolvePackage(context, id);
@@ -513,7 +513,7 @@ export const servePreviews = async ({
   };
 };
 
-/** The command: nx run lint:serve.previews [-- --port <n>] [--previews <dir>] [--drafts <dir>]. */
+/** The command: nx run mcp:serve.previews [-- --port <n>] [--previews <dir>] [--drafts <dir>]. */
 const main = async () => {
   const args = process.argv.slice(2);
   const option = (name: string) => {
@@ -544,7 +544,7 @@ const main = async () => {
     (error: NodeJS.ErrnoException) => {
       console.error(
         error.code === 'EADDRINUSE'
-          ? `Port ${port} is taken: nx run lint:serve.previews -- --port <another>`
+          ? `Port ${port} is taken: nx run mcp:serve.previews -- --port <another>`
           : error,
       );
       process.exit(1);
