@@ -2,7 +2,12 @@ import path from 'path';
 import postcss, { AcceptedPlugin } from 'postcss';
 import tailwindPostcss from '@tailwindcss/postcss';
 import { debug } from '../debug/logger';
-import { getMinifyPlugins, getPostcssPlugins, stripCommentsPlugin } from './postcss';
+import {
+  dropColorMixPolyfillPlugin,
+  getMinifyPlugins,
+  getPostcssPlugins,
+  stripCommentsPlugin,
+} from './postcss';
 import { PluginConfigurationOptions } from '..';
 
 function applyRawEscaping(css: string) {
@@ -43,6 +48,8 @@ async function getPostcssPluginsWithTailwind(
   const plugins: AcceptedPlugin[] = [
     ...before,
     tailwindPostcss(tailwindPluginConfiguration),
+    // before anything merges rules: see the plugin
+    dropColorMixPolyfillPlugin(),
     ...after,
   ];
 
