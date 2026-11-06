@@ -3,6 +3,13 @@ import { useLanguage } from '@test/language';
 import { createSlottedChild, describeConditionalSlot } from '@test/slot';
 import { page, userEvent } from 'vitest/browser';
 
+// a press on the backdrop counts only once the window has finished its entry (#1266): the cases
+// that dismiss from the backdrop take this promise before opening, and wait for it
+const entered = (root: HTMLMdsModalElement): Promise<void> =>
+  new Promise((resolve) => {
+    root.addEventListener('mdsModalShow', () => resolve(), { once: true });
+  });
+
 describe('mds-modal', () => {
   it('renders', async () => {
     const { root } = await render('<mds-modal></mds-modal>');
@@ -20,9 +27,14 @@ describe('mds-modal', () => {
   });
 
   it('can be closed', async () => {
-    const { root, waitForChanges } = await render('<mds-modal opened="true"></mds-modal>');
+    const { root, waitForChanges } = await render<HTMLMdsModalElement>('<mds-modal></mds-modal>');
 
-    expect(root.getAttribute('opened')).not.toBe('false');
+    const shown = entered(root);
+    root.opened = true;
+    await waitForChanges();
+    await shown;
+
+    expect(root).toHaveAttribute('opened');
 
     // The native <dialog> fills the viewport and centers the window, so a click
     // on a corner lands on the backdrop area (target === dialog), which dismisses
@@ -87,8 +99,10 @@ describe('mds-modal', () => {
     });
 
     it('releases the body when the modal is dismissed', async () => {
-      const stage = await render('<mds-modal>Text</mds-modal>');
+      const stage = await render<HTMLMdsModalElement>('<mds-modal>Text</mds-modal>');
+      const shown = entered(stage.root);
       const root = await openOn(stage);
+      await shown;
 
       expect(document.body.style.overflow).toBe('hidden');
 
@@ -232,6 +246,78 @@ describe('mds-modal', () => {
 
       expect(root).toHaveAttribute('opened');
     });
+  });
+
+  // #1266: the browser sends a click to the nearest common ancestor of the press and the release,
+  // so a press in a field released on the backdrop (selecting its text by dragging) was a click
+  // on the <dialog>, and closed the modal
+  describe('a press and a release on two sides of the window', () => {
+    const open = async (markup: string) => {
+      const stage = await render<HTMLMdsModalElement>(markup);
+      const shown = entered(stage.root);
+      stage.root.opened = true;
+      await stage.waitForChanges();
+      await shown;
+      return {
+        ...stage,
+        dialog: stage.root.shadowRoot!.querySelector('dialog')!,
+        field: stage.root.querySelector('input')!,
+      };
+    };
+
+    it('leaves the modal open when the press in a field is released on the backdrop', async () => {
+      const { root, waitForChanges, dialog, field } = await open(
+        '<mds-modal position="right"><input value="Some text to select"></mds-modal>',
+      );
+
+      // the corner of the dialog, far from the window on the right: the backdrop
+      await userEvent.dragAndDrop(field, dialog, { targetPosition: { x: 5, y: 5 } });
+      await waitForChanges();
+
+      expect(root).toHaveAttribute('opened');
+    });
+
+    it('leaves the modal open when the press on the backdrop is released in a field', async () => {
+      const { root, waitForChanges, dialog, field } = await open(
+        '<mds-modal position="right"><input value="Some text to select"></mds-modal>',
+      );
+
+      await userEvent.dragAndDrop(dialog, field, { sourcePosition: { x: 5, y: 5 } });
+      await waitForChanges();
+
+      expect(root).toHaveAttribute('opened');
+    });
+
+    it('closes the modal when the press and the release are both on the backdrop', async () => {
+      const { root, waitForChanges, dialog } = await open(
+        '<mds-modal position="right"><input value="Some text to select"></mds-modal>',
+      );
+
+      await userEvent.dragAndDrop(dialog, dialog, {
+        sourcePosition: { x: 5, y: 5 },
+        targetPosition: { x: 5, y: 40 },
+      });
+      await waitForChanges();
+
+      expect(root).not.toHaveAttribute('opened');
+    });
+  });
+
+  // #1266: while the window slides in, the place where it is going to stop is still backdrop, so
+  // a click aimed at a field of the window closed the modal
+  it('ignores a press on the backdrop while the window is still coming in', async () => {
+    // a slow entry, so that the click lands well before the window has stopped
+    const { root, waitForChanges } = await render<HTMLMdsModalElement>(
+      '<mds-modal position="right" style="--mds-modal-transition-duration: 5s"></mds-modal>',
+    );
+
+    root.opened = true;
+    await waitForChanges();
+    const dialog = root.shadowRoot!.querySelector('dialog')!;
+    await userEvent.click(dialog, { position: { x: 5, y: 5 } });
+    await waitForChanges();
+
+    expect(root).toHaveAttribute('opened');
   });
 
   // #803: a position set in the same task as opened, the way a framework wrapper sets its props,

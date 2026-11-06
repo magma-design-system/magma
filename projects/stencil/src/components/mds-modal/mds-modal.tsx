@@ -65,6 +65,12 @@ export class MdsModal {
   private touchStartX: number;
   private touchStartY: number;
   private touchMargin: number = 50;
+  // from showModal() until the window has stopped (stopIntroAnimationWindow): a press on the
+  // backdrop does not count, the place where the window is going to stop is still backdrop (#1266)
+  private entering = false;
+  // the press and the release of the next click, each on the backdrop or not (#1266)
+  private pressedOnBackdrop = false;
+  private releasedOnBackdrop = false;
 
   @Element() host: HTMLMdsModalElement;
   @State() hasBottom = false;
@@ -107,7 +113,8 @@ export class MdsModal {
   /**
    * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked.
    * If `strict` is selected only the close button can dismiss the component via UI.
-   * If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
+   * If `relaxed` is selected the component can be dismissed also by clicking the backdrop area: a click
+   * pressed and released on the backdrop, once the window has finished its entry.
    */
   @Prop({ reflect: true }) readonly interaction: ModalInteractionType = 'relaxed';
 
@@ -140,6 +147,7 @@ export class MdsModal {
   };
 
   private stopIntroAnimationWindow = (): void => {
+    this.entering = false;
     this.setContentOverflow('auto');
     this.showEvent.emit();
     clearTimeout(this.animationDelayTimeout);
@@ -193,6 +201,7 @@ export class MdsModal {
   };
 
   private animateOpenWindow = (): void => {
+    this.entering = true;
     this.setContentOverflow('hidden');
     clearTimeout(this.animationDelayTimeout);
     // Fallback only: `handleWindowTransitionEnd` is the primary settle. The
@@ -339,13 +348,27 @@ export class MdsModal {
     }
   };
 
+  // The target of a press or a release that is the dialog itself, not its window contents, is
+  // the backdrop area.
+  private handleBackdropPointerDown = (e: PointerEvent): void => {
+    this.pressedOnBackdrop = !this.entering && e.target === this.dialogEl;
+  };
+
+  private handleBackdropPointerUp = (e: PointerEvent): void => {
+    this.releasedOnBackdrop = e.target === this.dialogEl;
+  };
+
+  // The browser sends a click to the nearest common ancestor of the press and the release: a
+  // press in a field of the window released on the backdrop, or the other way round, is a click
+  // on the dialog too. The modal closes only when both were on the backdrop (#1266).
   private handleBackdropClick = (e: Event): void => {
+    const fromBackdrop = this.pressedOnBackdrop && this.releasedOnBackdrop;
+    this.pressedOnBackdrop = false;
+    this.releasedOnBackdrop = false;
     if (this.interaction === 'strict') {
       return;
     }
-    // A click whose target is the dialog itself (not its window contents) is a
-    // click on the backdrop area.
-    if (e.target === this.dialogEl) {
+    if (fromBackdrop && e.target === this.dialogEl) {
       this.opened = undefined;
     }
   };
@@ -357,6 +380,11 @@ export class MdsModal {
     if (this.interaction === 'strict') {
       return;
     }
+    this.opened = undefined;
+  };
+
+  // the built-in close button dismisses the modal whatever the interaction
+  private handleCloseClick = (): void => {
     this.opened = undefined;
   };
 
@@ -416,12 +444,10 @@ export class MdsModal {
           class="dialog"
           part="dialog"
           ref={(el?: HTMLElement) => (this.dialogEl = el as HTMLDialogElement)}
-          onClick={(e: Event) => {
-            this.handleBackdropClick(e);
-          }}
-          onCancel={(e: Event) => {
-            this.handleCancel(e);
-          }}
+          onPointerDown={this.handleBackdropPointerDown}
+          onPointerUp={this.handleBackdropPointerUp}
+          onClick={this.handleBackdropClick}
+          onCancel={this.handleCancel}
         >
           <slot name="window" onSlotchange={this.updateSlots} />
           {!this.hasWindow && (
@@ -453,9 +479,7 @@ export class MdsModal {
               variant="light"
               tone="text"
               size="xl"
-              onClick={() => {
-                this.opened = undefined;
-              }}
+              onClick={this.handleCloseClick}
               part="action-close"
             ></mds-button>
           )}
