@@ -59,9 +59,12 @@ export type ThemeMode = "light" | "dark";
 // just wraps around to the other direction
 const MAX_ANGLE = 180;
 
-// the named curves; the studio offers them, plus a custom one, from here
+// the named curves; the studio offers them, plus a custom one, from here. smooth, the default,
+// shifts every step, from nothing at the centre to the full angle at the ends, so the turn of the
+// hue runs soft across the whole scale; it is where a custom curve starts (vittorio, 2026-11-06).
+// hard keeps the central third untouched and gives the full angle to the rest.
 export const CURVE_PRESETS: Record<"smooth" | "hard", Required<HueShiftCurveParams>> = {
-  smooth: { deadZone: 1 / 3, easing: "linear" },
+  smooth: { deadZone: 0, easing: "linear" },
   hard: { deadZone: 1 / 3, easing: "step" },
 };
 

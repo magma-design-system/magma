@@ -12,8 +12,10 @@ import {
 import { createColorTokens, MagmaConfig } from '../src/lib/color.mjs'
 import { contrast } from '../src/lib/leonardo/index.js'
 
-test('smooth preset fades the shift in from both ends', () => {
-  expect(resolveCurveWeights('smooth', 10)).toEqual([100, 67, 33, 0, 0, 0, 0, 33, 67, 100])
+test('smooth preset shifts every step, from the centre to the full angle at both ends', () => {
+  expect(resolveCurveWeights('smooth', 10)).toEqual([100, 78, 56, 33, 11, 11, 33, 56, 78, 100])
+  // where a custom curve starts in the studio: no dead zone, a linear ramp
+  expect(resolveCurveWeights('smooth', 10)).toEqual(resolveCurveWeights({ deadZone: 0, easing: 'linear' }, 10))
 })
 
 test('hard preset applies the full shift outside the dead zone', () => {
@@ -102,14 +104,17 @@ test('angles above the safety limit are rejected', () => {
   expect(resolveStepAngles({ dark: -120, curve: 'hard' }, 10, 'light').at(-1)).toBe(-120)
 })
 
+// a curve that keeps the central third untouched, the smooth preset until 2026-11-06
+const THIRD_DEAD_ZONE = { deadZone: 1 / 3, easing: 'linear' } as const
+
 test('steps sharing an angle are grouped on a single scale', () => {
-  const groups = groupStepsByAngle({ dark: -18, light: 10, curve: 'smooth' }, 10, 'light')
+  const groups = groupStepsByAngle({ dark: -18, light: 10, curve: THIRD_DEAD_ZONE }, 10, 'light')
   const zeroGroup = groups.find((group) => group.angle === 0)
   expect(zeroGroup?.stepIndices).toEqual([3, 4, 5, 6])
   // every step is covered exactly once
   const covered = groups.flatMap((group) => group.stepIndices).sort((a, b) => a - b)
   expect(covered).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-  // smooth curve with asymmetric angles: 7 distinct scales instead of 10
+  // a dead zone with asymmetric angles: 7 distinct scales instead of 10
   expect(groups).toHaveLength(7)
 })
 
@@ -123,7 +128,7 @@ const SHIFTED_CONFIG: MagmaConfig = {
     {
       color: '#00379E',
       name: 'variant.primary',
-      hueShift: { dark: -20, light: 15, curve: 'smooth' },
+      hueShift: { dark: -20, light: 15, curve: THIRD_DEAD_ZONE },
     },
   ],
   formula: 'wcag2',
@@ -154,7 +159,7 @@ test('hueShift leaves dead-zone steps untouched and shifts the ends', () => {
     const baseScale = scaleOf(base.tokens, mode)
     const shiftedScale = scaleOf(shifted.tokens, mode)
     expect(shiftedScale).toHaveLength(baseScale.length)
-    // smooth curve on 10 steps: token indices 4..7 (steps in the dead zone)
+    // a dead zone of a third on 10 steps: token indices 4..7 (steps in the dead zone)
     // are identical to the baseline
     for (const index of [3, 4, 5, 6]) {
       expect(shiftedScale[index]).toBe(baseScale[index])
