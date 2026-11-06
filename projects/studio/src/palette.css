@@ -39,61 +39,58 @@
   padding-inline: var(--magma-rhythm-inline);
 }
 
+/* the names of the families are tokens: as written, no capital first letter */
+
 .palette-list-items {
+  --mds-button-label-transform: none;
+
   display: grid;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* a row: the swatch, the name, a badge; a native button painted with the roles */
+/* a row: a button of Magma, its swatch the icon, a badge on its end in the same cell */
 
 .palette-item {
   align-items: center;
-  background-color: transparent;
-  border: thin solid transparent;
-  border-radius: var(--magma-radius-sm);
-  color: rgb(var(--magma-text-default));
-  corner-shape: var(--magma-corner-shape);
-  cursor: pointer;
-  display: flex;
-  font: inherit;
-  gap: var(--magma-rhythm-inline);
+  display: grid;
+}
+
+.palette-item > * {
+  grid-area: 1 / 1;
+}
+
+.palette-item-button {
   inline-size: 100%;
-  padding: calc(var(--spacing) * 200) var(--magma-rhythm-inline);
-  text-align: start;
+  justify-content: start;
 }
 
-/* a hover is a grey that reads in both modes, a wash; the family shown is a selected row, the
-   tinted surface of the accent (color.md) */
+/* the swatch: the colour of the family fills the circle of the icon, through the part icon that
+   mds-button documents (it has no custom property for the colour of its icon); a ring of the
+   default border keeps a light or an empty swatch visible in both modes, as .studio-swatch */
 
-.palette-item:hover {
-  background-color: rgb(var(--magma-wash-soft));
-  border-color: transparent;
+.palette-item-button::part(icon) {
+  fill: var(--palette-swatch);
+  stroke: rgb(var(--magma-border-default));
+  stroke-width: calc(var(--spacing) * 25);
 }
 
-.palette-item[aria-current='true'] {
-  background-color: rgb(var(--magma-accent-surface));
-}
+/* the badge says what the title of the button says: the click goes through it to the button */
 
-.palette-item[aria-current='true']:hover {
-  background-color: rgb(var(--magma-accent-surface-hover));
-}
+.palette-item-badge {
+  justify-self: end;
+  margin-inline-end: var(--magma-rhythm-inline);
+  pointer-events: none;
 
-.palette-item:focus-visible {
-  outline: var(--magma-outline-focus);
-  outline-offset: var(--magma-outline-focus-offset);
+  /* mds-button is positioned: a static badge would sit under the fill of the weak tone */
+  position: relative;
 }
 
 /* a family the configuration leaves out of the build */
 
 .palette-item-off {
   opacity: var(--magma-disabled-opacity);
-}
-
-.palette-item-name {
-  flex: 1;
-  min-inline-size: 0;
 }
 
 .palette-add {
@@ -108,12 +105,9 @@
   gap: var(--magma-rhythm-between-sections);
 }
 
-.palette-color {
-  display: grid;
-  gap: var(--magma-rhythm-between-groups);
-}
+/* the family: its title, then its editor (its fields, its ramps, its hue shifting) */
 
-.palette-color-head {
+.palette-color {
   display: grid;
   gap: var(--magma-rhythm-title-content);
 }
@@ -225,10 +219,12 @@
   );
 }
 
-/* the switches of the form, on a row of their own under the fields */
+/* the switches of the form in the next cell of the grid, level with the controls of the fields
+   beside them: the height of a control of Magma, a step of the spacing (48px) */
 
 .palette-switches {
-  grid-column: 1 / -1;
+  align-self: end;
+  min-block-size: calc(var(--spacing) * 1200);
 }
 
 /* a group of fields: a fieldset with no border and no inset, its legend the title of the group
@@ -246,12 +242,71 @@
   padding: 0 0 var(--magma-rhythm-title-content);
 }
 
+/* the group of the hue shifting of a family takes the focus from the banner of a reference */
+
+.palette-group:focus-visible {
+  outline: var(--magma-outline-focus);
+  outline-offset: var(--magma-outline-focus-offset);
+}
+
+/* the two ends of a hue shift and their link in one box (app.tsx, HueShiftEditor): the whole row of
+   the fields up to the width of a form, Dark above Light on tracks of one width */
+
+.palette-ends {
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-sm);
+  corner-shape: var(--magma-corner-shape);
+  display: grid;
+  gap: var(--magma-rhythm-between-fields);
+  padding: var(--magma-rhythm-inset);
+}
+
+/* the head of the box: its title, the link at the end */
+
+.palette-ends-head {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-inline);
+  justify-content: space-between;
+}
+
+.palette-ends-head mds-input-select {
+  inline-size: calc(var(--magma-width-form) / 3);
+}
+
+/* a group with no fields (the hue shifting of a reference): its title above its banner, as the
+   legend of a fieldset */
+
+.palette-group-note {
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+}
+
 /* the content of the group in one box, the fieldset never laid out as a grid of children that
    come and go (app.tsx, HueShiftEditor: a Chromium trap) */
 
 .palette-group-content {
+  container: fields / inline-size;
   display: grid;
   gap: var(--magma-rhythm-between-fields);
+}
+
+/* the box of the two ends and the bars under it: cells of the grid of the fields from its first
+   line, two columns where the row holds two, the whole row where it holds one. Two columns start
+   at two short fields and their gap: 56ch is --magma-width-form (--magma-width-reading) and 24px
+   --magma-rhythm-between-fields, written out since a container query reads no custom property */
+
+.palette-ends,
+.palette-weights {
+  grid-column: 1 / -1;
+}
+
+@container fields (width >= calc(56ch + 24px)) {
+  .palette-ends,
+  .palette-weights {
+    grid-column: 1 / span 2;
+  }
 }
 
 /* the choice of the dialog reads as a field: its legend is a label above the radios; its
@@ -273,7 +328,6 @@
   block-size: 3lh;
   display: flex;
   gap: var(--magma-rhythm-inline);
-  max-inline-size: var(--magma-width-form);
 }
 
 .palette-weight {

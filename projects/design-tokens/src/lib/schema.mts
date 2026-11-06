@@ -1,4 +1,5 @@
 import { Ajv, type ErrorObject } from 'ajv'
+import { HUE_SHIFT_EASINGS } from './hue-shift.mjs'
 
 // Interpolation colorspaces Leonardo accepts: the schema enum, and the choices
 // the studio (projects/studio) offers
@@ -101,7 +102,7 @@ const hueShift = {
           additionalProperties: false,
           properties: {
             deadZone: { type: 'number' },
-            easing: { enum: ['linear', 'step'] },
+            easing: { enum: HUE_SHIFT_EASINGS },
           },
         },
       ],

@@ -4,6 +4,7 @@ import chroma from 'chroma-js'
 import {
   groupStepsByAngle,
   hasHueShift,
+  HUE_SHIFT_EASINGS,
   resolveCurveWeights,
   resolveStepAngles,
   rotateHue,
@@ -24,6 +25,29 @@ test('parametric curve honors deadZone and easing', () => {
   expect(resolveCurveWeights({ deadZone: 0 }, 3)).toEqual([100, 0, 100])
 })
 
+test('a named easing ramps the shift along its curve', () => {
+  // quad-in: the shift gathers at the ends of the scale
+  expect(resolveCurveWeights({ deadZone: 0, easing: 'quad-in' }, 10)).toEqual([100, 60, 31, 11, 1, 1, 11, 31, 60, 100])
+  // quad-out: it rises at once, never under the linear ramp
+  const linear = resolveCurveWeights({ deadZone: 0, easing: 'linear' }, 10)
+  resolveCurveWeights({ deadZone: 0, easing: 'quad-out' }, 10).forEach((weight, i) => {
+    expect(weight).toBeGreaterThanOrEqual(linear[i])
+  })
+})
+
+test('every easing keeps the dead zone, the full shift at the ends and the symmetry', () => {
+  for (const easing of HUE_SHIFT_EASINGS) {
+    const weights = resolveCurveWeights({ deadZone: 1 / 3, easing }, 10)
+    expect([weights[0], weights[9]]).toEqual([100, 100])
+    expect(weights.slice(3, 7)).toEqual([0, 0, 0, 0])
+    expect(weights).toEqual([...weights].reverse())
+    for (const weight of weights) {
+      expect(weight).toBeGreaterThanOrEqual(0)
+      expect(weight).toBeLessThanOrEqual(100)
+    }
+  }
+})
+
 test('explicit weight arrays pass through when length matches', () => {
   const weights = [100, 66, 33, 0, 0, 0, 0, 33, 66, 100]
   expect(resolveCurveWeights(weights, 10)).toEqual(weights)
@@ -37,6 +61,7 @@ test('curve validation rejects bad input', () => {
   expect(() => resolveCurveWeights('bogus' as never, 10)).toThrow(/preset/)
   expect(() => resolveCurveWeights([120], 10)).toThrow(/\[0, 100\]/)
   expect(() => resolveCurveWeights({ deadZone: 1.2 }, 10)).toThrow(/deadZone/)
+  expect(() => resolveCurveWeights({ easing: 'bounce' as never }, 10)).toThrow(/easing/)
   expect(() => resolveCurveWeights('smooth', 1)).toThrow(/at least 2 steps/)
 })
 

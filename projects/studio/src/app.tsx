@@ -1,3 +1,4 @@
+import type { ComponentChildren } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import initialConfigJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
 import DEFAULT_COLOR_CONFIG from '@maggioli-design-system/design-tokens/src/config/default-color.json';
@@ -28,9 +29,11 @@ import { DiffView } from './diff.js';
 import { BatchExportModal } from './batch.js';
 import {
   CURVE_PRESETS,
+  HUE_SHIFT_EASINGS,
   hasHueShift,
   resolveCurveWeights,
   type HueShiftConfig,
+  type HueShiftEasing,
 } from '@maggioli-design-system/design-tokens/src/lib/hue-shift.mjs';
 import { generateScales, singleColorConfig, type ColorScales, type Step } from './generator.js';
 import { ScalesManager, type RatioSet, type ScaleOrigin } from './scales.js';
@@ -49,10 +52,17 @@ import {
   type StudioDraft,
 } from './draft.js';
 import { Check, Field, Range, Select, TextInput, type Option } from './magma.js';
+import { HUE_ENDS, endsOf, moveEnd, type HueEnds } from './hue-ends.js';
 import './palette.css';
 // the named curves of the engine, then a custom one edited by its parameters
 type CurvePreset = keyof typeof CURVE_PRESETS;
 type CurveKind = CurvePreset | 'custom';
+
+/** A custom curve starts with no dead zone and a linear ramp (vittorio, 2026-11-05). */
+const CUSTOM_CURVE_START = { deadZone: 0, easing: 'linear' } as const;
+
+/** The ramps of a custom curve: every easing the engine takes, in its order (easing.mts). */
+const EASING_OPTIONS: Option[] = HUE_SHIFT_EASINGS.map((name) => ({ value: name, label: name }));
 const CURVE_KINDS: CurveKind[] = [...(Object.keys(CURVE_PRESETS) as CurvePreset[]), 'custom'];
 
 type CloneableConfig = MagmaConfig & Record<string, unknown>;
@@ -89,6 +99,21 @@ function resolveBaseColor(config: MagmaConfig, color: ColorConfig): string | und
   if (color.color) return color.color;
   if (!color.alias) return undefined;
   return config.colors.find((c) => c.name === color.alias)?.color;
+}
+
+// what the badge of a row in the list says, and the title of its button: a reference (ref); a hue
+// shift of its own over a global one (hs+, vittorio 2026-11-05); a hue shift, its own or the global
+// one it inherits (hs); nothing
+function badgeOf(
+  config: MagmaConfig,
+  color: ColorConfig,
+): { label: string; title: string } | undefined {
+  if (isAliasColor(color)) return { label: 'ref', title: `alias -> ${color.alias}` };
+  if (hasHueShift(color.hueShift) && hasHueShift(config.hueShift))
+    return { label: 'hs+', title: 'hue shifting of its own, over the global one' };
+  if (hasHueShift(color.hueShift ?? config.hueShift))
+    return { label: 'hs', title: 'hue shifting active' };
+  return undefined;
 }
 
 // neutral is the reference color of the system: select it when present
@@ -167,9 +192,29 @@ interface HueShiftEditorProps {
    */
   allowInherit?: boolean;
   globalActive?: boolean;
+  /** The id of the group, for the one of a family: the banner of a reference opens it. */
+  id?: string;
+  /**
+   * The title of the group: the one of the whole configuration says so, apart from the one of
+   * the family on the same page (vittorio, 2026-11-05)
+   */
+  title?: string;
 }
 
-function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShiftEditorProps) {
+/**
+ * The group of the hue shifting of the family selected: the banner of a reference brings it into
+ * view and gives it the focus (tabindex -1), the next Tab reaching its Mode.
+ */
+const HUE_SHIFT_GROUP = 'palette-hue-shift';
+
+function HueShiftEditor({
+  value,
+  onChange,
+  allowInherit,
+  globalActive,
+  id,
+  title = 'Hue shifting',
+}: HueShiftEditorProps) {
   const mode: HueShiftMode =
     value === undefined
       ? allowInherit
@@ -183,7 +228,7 @@ function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShif
   const light = value?.light ?? 0;
   const curve = value?.curve ?? 'smooth';
   const curveKind: CurveKind = typeof curve === 'string' ? curve : 'custom';
-  // a custom curve starts from the default (smooth) one of the engine
+  // what a custom curve leaves out is the default (smooth) one of the engine, as it generates it
   const { deadZone: defaultDeadZone, easing: defaultEasing } = CURVE_PRESETS.smooth;
   const deadZone =
     typeof curve === 'object' && !Array.isArray(curve)
@@ -204,8 +249,17 @@ function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShif
 
   const patch = (partial: Partial<HueShiftConfig>) => onChange({ dark, light, curve, ...partial });
 
+  // how the two ends move together (hue-ends.ts): read back from the ends at the start, kept by
+  // the editor while the person works (the configuration has no place for it)
+  const [ends, setEnds] = useState<HueEnds>(() => endsOf(dark, light));
+  // the title of the box of the ends, one per editor: the family and the global one share a page
+  const endsTitle = `${id ?? 'palette-global-hue-shift'}-ends`;
+  const moveTo = (end: 'dark' | 'light', next: number) =>
+    patch(moveEnd(ends, { dark, light }, end, next));
+
   const setMode = (next: HueShiftMode) => {
-    if (next === 'custom') onChange({ dark: -18, light: 10, curve: 'smooth' });
+    if (next === 'custom')
+      onChange({ ...moveEnd(ends, { dark: -18, light: 10 }, 'dark', -18), curve: 'smooth' });
     else if (next === 'off') onChange(allowInherit ? { dark: 0, light: 0 } : undefined);
     else onChange(undefined);
   };
@@ -223,10 +277,10 @@ function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShif
   // one box of the fieldset: Chromium, given a new child of a fieldset in the frame a select of
   // Magma changes, drops the box of that select until its style is computed again
   return (
-    <fieldset class="palette-group">
+    <fieldset class="palette-group" id={id} tabIndex={id ? -1 : undefined}>
       <legend>
         <mds-text typography="group" tag="span">
-          Hue shifting
+          {title}
         </mds-text>
       </legend>
       <div class="palette-group-content">
@@ -240,31 +294,13 @@ function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShif
           </Field>
           {enabled && (
             <>
-              <Field label="Dark (degrees)">
-                <Range
-                  value={dark}
-                  min={-180}
-                  max={180}
-                  label="Dark (degrees)"
-                  onValue={(next) => patch({ dark: next })}
-                />
-              </Field>
-              <Field label="Light (degrees)">
-                <Range
-                  value={light}
-                  min={-180}
-                  max={180}
-                  label="Light (degrees)"
-                  onValue={(next) => patch({ light: next })}
-                />
-              </Field>
               <Field label="Curve">
                 <Select
                   value={curveKind}
                   options={CURVE_KINDS.map((kind) => ({ value: kind, label: kind }))}
                   onValue={(kind) =>
                     patch({
-                      curve: kind === 'custom' ? { deadZone, easing } : (kind as CurvePreset),
+                      curve: kind === 'custom' ? CUSTOM_CURVE_START : (kind as CurvePreset),
                     })
                   }
                 />
@@ -284,35 +320,76 @@ function HueShiftEditor({ value, onChange, allowInherit, globalActive }: HueShif
                   <Field label="Easing">
                     <Select
                       value={easing}
-                      options={[
-                        { value: 'linear', label: 'linear' },
-                        { value: 'step', label: 'step' },
-                      ]}
+                      options={EASING_OPTIONS}
                       onValue={(next) =>
-                        patch({ curve: { deadZone, easing: next as 'linear' | 'step' } })
+                        patch({ curve: { deadZone, easing: next as HueShiftEasing } })
                       }
                     />
                   </Field>
                 </>
               )}
+              {/* the two ends and their link in one box, the whole row of the fields up to the
+                  width of a form: Dark above Light on tracks of one width, so the handles show
+                  the link (in a column: linked; symmetric about the middle: mirror), the link in
+                  the head of the box (vittorio, 2026-11-05) */}
+              <div class="palette-ends" role="group" aria-labelledby={endsTitle}>
+                <div class="palette-ends-head">
+                  <mds-text id={endsTitle} typography="label" tag="p">
+                    The two ends
+                  </mds-text>
+                  <Select
+                    label="Ends"
+                    value={ends}
+                    options={HUE_ENDS}
+                    onValue={(next) => {
+                      setEnds(next as HueEnds);
+                      // the light end takes the link at once, from the dark one
+                      const aligned = moveEnd(next as HueEnds, { dark, light }, 'dark', dark);
+                      if (aligned.light !== light) patch(aligned);
+                    }}
+                  />
+                </div>
+                <Field label="Dark (degrees)">
+                  <Range
+                    value={dark}
+                    min={-180}
+                    max={180}
+                    label="Dark (degrees)"
+                    onValue={(next) => moveTo('dark', next)}
+                  />
+                </Field>
+                <Field label="Light (degrees)">
+                  <Range
+                    value={light}
+                    min={-180}
+                    max={180}
+                    label="Light (degrees)"
+                    onValue={(next) => moveTo('light', next)}
+                  />
+                </Field>
+              </div>
+              {/* the intensity of the shift per step, under the box and as wide */}
+              {weights && (
+                <div
+                  class="palette-weights"
+                  role="img"
+                  aria-label="Shift intensity per step (10-step scale)"
+                  title="shift intensity per step (10-step scale)"
+                >
+                  {weights.map((weight) => (
+                    <div class="palette-weight">
+                      {/* the height of a bar is the datum it draws */}
+                      <div
+                        class="palette-weight-fill"
+                        style={{ height: `${Math.max(weight, 2)}%` }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </>
           )}
         </div>
-        {enabled && weights && (
-          <div
-            class="palette-weights"
-            role="img"
-            aria-label="Shift intensity per step (10-step scale)"
-            title="shift intensity per step (10-step scale)"
-          >
-            {weights.map((weight) => (
-              <div class="palette-weight">
-                {/* the height of a bar is the datum it draws */}
-                <div class="palette-weight-fill" style={{ height: `${Math.max(weight, 2)}%` }} />
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </fieldset>
   );
@@ -374,6 +451,13 @@ interface ColorEditorProps {
   onChange: (patch: Partial<ColorConfig> | { hueShift: undefined }) => void;
   /** fired when the color picker is released (change, not live input) */
   onColorCommit: (hex: string) => void;
+  /** a reference: opens the hue shifting of the family it points at */
+  onOpenSource: () => void;
+  /**
+   * The ramps of the family, between its fields and its hue shifting: in view of the controls
+   * that change them while the person moves them (vittorio, 2026-11-05)
+   */
+  preview: ComponentChildren;
 }
 
 function ColorEditor({
@@ -390,6 +474,8 @@ function ColorEditor({
   resolvedColor,
   onChange,
   onColorCommit,
+  onOpenSource,
+  preview,
 }: ColorEditorProps) {
   const exportField = (
     <CommitText
@@ -472,10 +558,34 @@ function ColorEditor({
           {exportField}
           <div class="studio-row palette-switches">{disabledField}</div>
         </div>
+        {preview}
         <mds-text tag="p" class="studio-muted">
           Reference to {color.alias}: this family re-exports the resolved scale of the source. Base
           color, hue shift, ratios and formula are defined by the source, not here.
         </mds-text>
+        {/* the group a family has in this place, for a reference a banner that says where its hue
+            shifting is set: an info banner, its action in the variant of the banner, strong
+            (docs/agents/patterns/actions.md, banner). The action opens the group of the source and
+            changes nothing in the configuration (vittorio, 2026-11-05) */}
+        {targetKnown && (
+          <section class="palette-group palette-group-note" aria-labelledby="palette-reference-hue">
+            <mds-text id="palette-reference-hue" typography="group" tag="h3">
+              Hue shifting
+            </mds-text>
+            <mds-banner variant="info">
+              The hue shifting of a reference is the one of the family it points at, {color.alias}:
+              set it there, and every reference to it follows.
+              <mds-button
+                slot="action"
+                type="button"
+                variant="info"
+                tone="strong"
+                label={`Open ${color.alias}`}
+                onClick={onOpenSource}
+              ></mds-button>
+            </mds-banner>
+          </section>
+        )}
       </div>
     );
   }
@@ -543,11 +653,14 @@ function ColorEditor({
           {disabledField}
         </div>
       </div>
+      {preview}
       <HueShiftEditor
+        key={color.name}
         value={color.hueShift}
         onChange={(hueShift) => onChange({ hueShift })}
         allowInherit
         globalActive={hasGlobalShift}
+        id={HUE_SHIFT_GROUP}
       />
     </div>
   );
@@ -704,8 +817,23 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
     }
   }, [view, JSON.stringify(config)]);
 
+  // the hue shifting of the family a reference points at, opened from the banner of the
+  // reference: once the family renders, its group comes into view and takes the focus
+  const openHueShiftRef = useRef(false);
+  useEffect(() => {
+    if (!openHueShiftRef.current) return;
+    openHueShiftRef.current = false;
+    const group = document.getElementById(HUE_SHIFT_GROUP);
+    group?.scrollIntoView({ block: 'start' });
+    group?.focus({ preventScroll: true });
+  }, [selectedName]);
+
+  // the variants first, at the top of the list: the first of them is where the work starts
+  // (vittorio, 2026-11-05); the other groups in the order of the configuration
   const groups = useMemo(() => {
     const map = new Map<string, ColorConfig[]>();
+    if (config.colors.some((color) => color.name.split('.')[0] === 'variant'))
+      map.set('variant', []);
     config.colors.forEach((color) => {
       const group = color.name.split('.')[0];
       if (!map.has(group)) map.set(group, []);
@@ -1265,48 +1393,44 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
                 {group}
               </mds-text>
               <ul class="palette-list-items">
-                {colors.map((color) => (
-                  <li>
-                    {/* until Magma has a list and detail: #1262. Native buttons painted with the
-                        tokens, the family shown in the detail marked by aria-current */}
-                    <button
-                      type="button"
-                      class={`palette-item${color.disabled ? ' palette-item-off' : ''}`}
-                      aria-current={color.name === selectedName ? 'true' : undefined}
-                      onClick={() => {
-                        setSelectedName(color.name);
-                        // the scales view works on the selected color: switching
-                        // color must not leave it
-                        if (view !== 'scales') setView('colors');
-                      }}
-                    >
-                      <span
-                        class="studio-swatch"
-                        style={{ background: resolveBaseColor(config, color) }}
-                      />
-                      <mds-text typography="detail" tag="span" class="palette-item-name">
-                        {color.name.split('.')[1]}
-                      </mds-text>
-                      {isAliasColor(color) ? (
+                {colors.map((color) => {
+                  const badge = badgeOf(config, color);
+                  return (
+                    <li class={`palette-item${color.disabled ? ' palette-item-off' : ''}`}>
+                      {/* until Magma has a list and detail: #1262. A button of Magma per family,
+                        as the links of the menus of the shell: the family shown in the detail
+                        marked by aria-current and the weak tone; its swatch the icon, painted
+                        with --palette-swatch (palette.css) */}
+                      <mds-button
+                        type="button"
+                        icon="mdi/circle"
+                        variant="dark"
+                        tone={color.name === selectedName ? 'weak' : 'text'}
+                        aria-current={color.name === selectedName ? 'true' : undefined}
+                        class="palette-item-button"
+                        style={{ '--palette-swatch': resolveBaseColor(config, color) }}
+                        label={color.name.split('.')[1]}
+                        title={badge?.title}
+                        onClick={() => {
+                          setSelectedName(color.name);
+                          // the scales view works on the selected color: switching
+                          // color must not leave it
+                          if (view !== 'scales') setView('colors');
+                        }}
+                      ></mds-button>
+                      {/* the slot of mds-button takes text only: the badge sits on the end of the
+                        row, the button under it takes the click and says the badge in its title */}
+                      {badge && (
                         <mds-badge
                           variant="dark"
                           tone="weak"
-                          label="ref"
-                          title={`alias -> ${color.alias}`}
+                          label={badge.label}
+                          class="palette-item-badge"
                         ></mds-badge>
-                      ) : (
-                        hasHueShift(color.hueShift ?? config.hueShift) && (
-                          <mds-badge
-                            variant="dark"
-                            tone="weak"
-                            label="hs"
-                            title="hue shifting active"
-                          ></mds-badge>
-                        )
                       )}
-                    </button>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
@@ -1679,26 +1803,24 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
         {view === 'colors' && selected && (
           <div class="palette-detail">
             <section class="palette-color" aria-labelledby="palette-color-title">
-              <div class="palette-color-head">
-                <div class="palette-title-row">
-                  <mds-text id="palette-color-title" typography="section" tag="h2">
-                    {selected.name}
-                  </mds-text>
-                  {/* the actions of the family in its menu, Delete last after a separator
-                      (docs/agents/patterns/actions.md, destructive-in-menu) */}
-                  <mds-button
-                    id="palette-color-actions"
-                    type="button"
-                    icon="mi/baseline/more-vert"
-                    variant="dark"
-                    tone="text"
-                    aria-label={`Actions of ${selected.name}`}
-                  ></mds-button>
-                </div>
-                <Preview scales={selectedScales} error={selectedError} />
+              <div class="palette-title-row">
+                <mds-text id="palette-color-title" typography="section" tag="h2">
+                  {selected.name}
+                </mds-text>
+                {/* the actions of the family in its menu, Delete last after a separator
+                    (docs/agents/patterns/actions.md, destructive-in-menu) */}
+                <mds-button
+                  id="palette-color-actions"
+                  type="button"
+                  icon="mi/baseline/more-vert"
+                  variant="dark"
+                  tone="text"
+                  aria-label={`Actions of ${selected.name}`}
+                ></mds-button>
               </div>
               <ColorEditor
                 color={selected}
+                preview={<Preview scales={selectedScales} error={selectedError} />}
                 hasGlobalShift={config.hueShift !== undefined}
                 scaleNames={scaleNamesFor(selected)}
                 labelFor={(name) => scaleLabel(resolveFormula(selected, config), name)}
@@ -1710,6 +1832,11 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
                 aliasTargets={aliasTargets}
                 resolvedColor={resolveBaseColor(config, selected)}
                 onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
+                onOpenSource={() => {
+                  if (!selected.alias) return;
+                  openHueShiftRef.current = true;
+                  setSelectedName(selected.alias);
+                }}
                 onChange={(patch) => {
                   // a name typed by the user opts the color out of auto-naming
                   if ('name' in patch) autoNamedRef.current.delete(selected.name);
@@ -1778,8 +1905,13 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
                 ></mds-button>
               </div>
             </mds-dropdown>
-            {/* the settings of the whole configuration, open at first as the native details was */}
-            <mds-details opened class="palette-global">
+            {/* the settings of the family apart from the ones of the whole configuration
+                (vittorio, 2026-11-05) */}
+            <mds-separator></mds-separator>
+            {/* the settings of the whole configuration, closed at first: the page opens on the family
+                and its own hue shifting, not on the global one with the same fields (vittorio,
+                2026-11-05) */}
+            <mds-details class="palette-global">
               <mds-text slot="title" typography="part" tag="span">
                 Global settings
               </mds-text>
@@ -1811,6 +1943,7 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
                   </div>
                 </div>
                 <HueShiftEditor
+                  title="Global hue shifting"
                   value={config.hueShift}
                   onChange={(hueShift) =>
                     updateConfig((draft) => {

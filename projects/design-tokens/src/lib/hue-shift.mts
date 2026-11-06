@@ -1,7 +1,15 @@
 import chroma from "chroma-js";
+import { EASINGS, EASING_NAMES, type EasingName } from "./easing.mjs";
 import type { RgbHexColor } from "./leonardo/index.js";
 
-export type HueShiftEasing = "linear" | "step";
+/**
+ * The ramp of the shift outside the dead zone: one of the named easings (easing.mts), "linear"
+ * fading the shift in evenly, or "step", the full shift on every step outside the dead zone.
+ */
+export type HueShiftEasing = EasingName | "step";
+
+/** Every easing a hue shift curve accepts: the schema and the studio read them from here. */
+export const HUE_SHIFT_EASINGS: HueShiftEasing[] = [...EASING_NAMES, "step"];
 
 export interface HueShiftCurveParams {
   /**
@@ -10,7 +18,8 @@ export interface HueShiftCurveParams {
    */
   deadZone?: number;
   /**
-   * Ramp shape outside the dead zone: "linear" fades the shift in,
+   * Ramp shape outside the dead zone: "linear" fades the shift in evenly,
+   * a named easing ("quad-in", "sine-in-out", ...) along its curve, and
    * "step" applies the full shift to every step outside the dead zone.
    */
   easing?: HueShiftEasing;
@@ -75,9 +84,9 @@ function normalizeCurve(
       `hueShift curve deadZone must be in the [0, 1) range, got ${deadZone}`,
     );
   }
-  if (easing !== "linear" && easing !== "step") {
+  if (!HUE_SHIFT_EASINGS.includes(easing)) {
     throw new Error(
-      `hueShift curve easing must be "linear" or "step", got "${easing}"`,
+      `hueShift curve easing must be one of ${HUE_SHIFT_EASINGS.join(", ")}, got "${easing}"`,
     );
   }
   return { deadZone, easing };
@@ -133,7 +142,7 @@ export function resolveCurveWeights(
     const distance = Math.abs(position - 0.5) * 2;
     if (distance <= deadZone + epsilon) return 0;
     if (easing === "step") return 100;
-    return Math.round((100 * (distance - deadZone)) / (1 - deadZone));
+    return Math.round(100 * EASINGS[easing]((distance - deadZone) / (1 - deadZone)));
   });
 }
 
