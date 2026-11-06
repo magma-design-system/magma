@@ -7,10 +7,10 @@
   narrow, never contradict an "Always true" rule.
 
   The domains of the design language (#1189: rhythm, density, actions, titles, surfaces,
-  widths) are files of the same format, of a third kind, `foundation`: the rules of composition
-  the patterns and blocks stand on. Their relations are the cases, the principle each rule
-  serves is `serves`, where a rule lives is `carried-by` (and `carried-by-planned`, for a
-  carrier not built yet), and a pattern cites them as it cites the rules of another pattern;
+  widths) are files of the same format, of a third kind, `design-language`: the rules of
+  composition the patterns and blocks stand on. Their relations are the cases, the principle
+  each rule serves is `serves`, where a rule lives is `carried-by` (and `carried-by-planned`,
+  for a carrier not built yet), and a pattern cites them as it cites the rules of another pattern;
   a case names the ones it and its preview rely on in `rules` (#1198).
 
   A building block (`block`, #1210) is a section of a page that comes back in the same
@@ -18,6 +18,10 @@
   `regions` in the order of the page instead of `cases`, each saying when it shows, and
   `used-by`, the patterns it comes back in; each of its situations has an id, the name of its
   preview (2026-11-03).
+
+  The three kinds together, the design language, the building blocks and the patterns, are
+  Behavior: how an interface is put together and behaves, next to how it looks (its colors and
+  its theme), as the header of the studio names them (#695, #1253).
 
   The format is written in docs/PATTERNS.md, "The format"; the decisions behind it are on
   #1174 and, for the domains, on #1189 and #1196. This module holds what every reader shares: parsing a file, the checks that need no
@@ -34,13 +38,22 @@ import type { ComponentInfo, StyleInfo, ThemeNames } from './data.js';
 export const PATTERN_STATUSES = ['candidate', 'draft', 'decided'] as const;
 /**
  * A pattern is a flow of components over time; a building block, a section of the page that
- * comes back in two patterns or more (#1210); a foundation file, a domain of the design
- * language, the rules of composition both stand on (#1189), named after the Foundation item of
- * the docs site, where the domains go.
+ * comes back in two patterns or more (#1210); a domain of the design language, the rules of
+ * composition both stand on (#1189).
  */
-export const PATTERN_KINDS = ['pattern', 'block', 'foundation'] as const;
-/** The kind of a domain of the design language: it has no group, Foundation is its place. */
-export const FOUNDATION = 'foundation';
+export const PATTERN_KINDS = ['pattern', 'block', 'design-language'] as const;
+/**
+ * The kind of a domain of the design language: it has no group, the design language is its
+ * place. Named after what the files are, not after the item of the docs site that holds them
+ * (#1253): it was `foundation` in magma 2.11 and before, after the Foundation item of the site,
+ * where the domains go; but Foundation there is the umbrella of the decisions Magma stands on
+ * (principles, accessibility, color, typography, illustration, content), and the design
+ * language is one group of it, Design language. Only this value is read: the core reads the
+ * files of its own release, and no product layer has a domain. What may meet an older magma
+ * names both until the next major: the skills of the Claude Code plugin, which main serves,
+ * and the docs site.
+ */
+export const DESIGN_LANGUAGE = 'design-language';
 /**
  * The kind of a building block: regions in the order of the page instead of cases, and the
  * patterns it comes back in (#1210). A section becomes a block when it comes back in two or
@@ -51,8 +64,8 @@ export const BLOCK = 'block';
 export const BLOCK_USED_BY = 2;
 /**
  * The principles a rule of a domain serves (`serves`): the four of Magma, as the docs site
- * writes them (src/content/docs/foundation/principles.md of magma-design-system/docs), which
- * asks every decision of Foundation to say the one it serves.
+ * writes them (src/content/docs/foundation/principles.md of magma-design-system/docs, the four
+ * principles behind every decision of Magma), where each decision says the one it serves.
  */
 export const PRINCIPLES = ['inclusive', 'enabling', 'intuitive', 'flexible'] as const;
 /**
@@ -78,10 +91,10 @@ export const MAGMA_LAYER = 'magma';
 export const NONE_WHEN_LEFT_OUT = 'decision';
 
 /** The keys only the cases and the rules of a domain have: the principle, where it lives. */
-const FOUNDATION_KEYS = ['serves', 'carried-by', 'carried-by-planned'] as const;
+const DOMAIN_KEYS = ['serves', 'carried-by', 'carried-by-planned'] as const;
 /** The keys of each kind of entry that are not variables: no variable may take their names. */
 const ENTRY_KEYS = {
-  case: ['id', 'where', 'use', 'see', 'magma-gap', 'rules', ...FOUNDATION_KEYS],
+  case: ['id', 'where', 'use', 'see', 'magma-gap', 'rules', ...DOMAIN_KEYS],
   gap: ['note'],
   'not-applicable': ['why'],
 } as const;
@@ -127,7 +140,7 @@ const RULE_KEYS = new Set([
   'lint-planned',
   'note',
   'from',
-  ...FOUNDATION_KEYS,
+  ...DOMAIN_KEYS,
 ]);
 const CHOICE_KEYS = new Set(['id', 'default', 'may']);
 /** The keys of a situation; `id` only in a block, where it names the preview of the situation. */
@@ -219,7 +232,7 @@ export interface Pattern {
   aliases?: string[];
   kind: Kind;
   title: string;
-  /** One of PATTERN_GROUPS; a domain of Foundation has none. */
+  /** One of PATTERN_GROUPS; a domain of the design language has none. */
   group?: string;
   layer: string;
   status: Status;
@@ -586,11 +599,11 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
   const say = (message: string) => errors.push(message);
   for (const key of Object.keys(data)) if (!PATTERN_KEYS.has(key)) say(`unknown field ${key}`);
 
-  const isDomain = data.kind === FOUNDATION;
+  const isDomain = data.kind === DESIGN_LANGUAGE;
   for (const key of ['id', 'title', 'group', 'layer', 'status', 'need', 'kind'] as const)
     if (key === 'group' && isDomain) {
       if (data.group !== undefined)
-        say('a domain of Foundation has no group: Foundation is its place');
+        say('a domain of the design language has no group: the design language is its place');
     } else if (!isString(data[key])) say(`${key} is required, as text`);
   if (isString(data.id) && !ID.test(data.id)) say(`id ${data.id} is not kebab-case`);
   if (file && isString(data.id) && path.basename(file) !== `${data.id}.md`)
@@ -678,9 +691,11 @@ export const formatErrors = ({ file, data }: PatternFile<Pattern>): string[] => 
   // the principle and the carriers of a case or a rule of a domain; a pattern has neither
   const grounded = (one: Grounded | undefined, label: string, rule = false) => {
     if (!isDomain) {
-      for (const key of FOUNDATION_KEYS)
+      for (const key of DOMAIN_KEYS)
         if (one?.[key] !== undefined)
-          say(`${label}: ${key} belongs to a domain of Foundation (kind ${FOUNDATION})`);
+          say(
+            `${label}: ${key} belongs to a domain of the design language (kind ${DESIGN_LANGUAGE})`,
+          );
       return;
     }
     const serves = [one?.serves ?? []].flat();
@@ -1067,7 +1082,7 @@ export const domainRule = (
   id: string,
 ): CitedRule | undefined => {
   const source = patterns.get(from);
-  if (source?.kind !== FOUNDATION) return undefined;
+  if (source?.kind !== DESIGN_LANGUAGE) return undefined;
   const own = source['always-true']?.find((one) => one.id === id && !one.from);
   if (own) return { ...own, rule: own.rule ?? '', from };
   const relation = source.cases?.find((one) => one.id === id);
@@ -1129,7 +1144,7 @@ export const rulesOfComponent = (patterns: Pattern[], tag: string): CitedRule[] 
     });
   const writes = (one: Case) => (one.use ?? []).some((text) => parseUse(text)?.tag === tag);
   return patterns
-    .filter((one) => one.kind === FOUNDATION && one.status !== 'candidate')
+    .filter((one) => one.kind === DESIGN_LANGUAGE && one.status !== 'candidate')
     .sort((a, b) => a.id.localeCompare(b.id))
     .flatMap((domain) =>
       [
@@ -1175,8 +1190,10 @@ export const linkErrors = (patterns: Pattern[]): Map<string, string[]> => {
         const where = `case ${one.id}: rules ${text}`;
         const source = byId.get(ref.from);
         if (!source) toPattern(where, ref.from);
-        else if (source.kind !== FOUNDATION)
-          say(`${where}: ${ref.from} is not a domain of Foundation (kind ${FOUNDATION})`);
+        else if (source.kind !== DESIGN_LANGUAGE)
+          say(
+            `${where}: ${ref.from} is not a domain of the design language (kind ${DESIGN_LANGUAGE})`,
+          );
         else if (source === pattern) say(`${where}: a domain does not cite its own rules`);
         else if (!domainRule(byId, ref.from, ref.id))
           say(`${where}: ${ref.from} has no rule nor case ${ref.id} of its own`);
@@ -1203,10 +1220,10 @@ export const linkErrors = (patterns: Pattern[]): Map<string, string[]> => {
       const source = byId.get(rule.from);
       const cited = source?.['always-true']?.find((one) => one.id === rule.id);
       const relation =
-        source?.kind === FOUNDATION && (source.cases ?? []).some((one) => one.id === rule.id);
+        source?.kind === DESIGN_LANGUAGE && (source.cases ?? []).some((one) => one.id === rule.id);
       if (source && !relation && (!cited || cited.from))
         say(
-          source.kind === FOUNDATION
+          source.kind === DESIGN_LANGUAGE
             ? `always-true ${rule.id}: ${rule.from} has no rule nor case ${rule.id} of its own`
             : `always-true ${rule.id}: ${rule.from} has no rule ${rule.id} of its own`,
         );
@@ -1381,7 +1398,7 @@ export const projectErrors = (
 export interface ListEntry {
   id: string;
   title: string;
-  /** None for a domain of Foundation. */
+  /** None for a domain of the design language. */
   group?: string;
   kind: string;
   status: string;
@@ -1390,13 +1407,17 @@ export interface ListEntry {
   validatedOn: string[];
 }
 
-/** The kinds in the order of the rail of the docs site: Foundation, Building blocks, Patterns. */
-const KIND_ORDER: readonly string[] = [FOUNDATION, BLOCK, 'pattern'];
+/**
+ * The kinds in the order of the rail of the docs site: the design language (a group of
+ * Foundation), Building blocks, Patterns.
+ */
+const KIND_ORDER: readonly string[] = [DESIGN_LANGUAGE, BLOCK, 'pattern'];
 
 /**
- * One line per file: the domains of Foundation first, then the building blocks, then the
- * patterns, as the rail of the docs site puts Foundation before Building blocks and Patterns;
- * within a kind by group in the order of PATTERN_GROUPS, then by id.
+ * One line per file: the domains of the design language first, then the building blocks, then
+ * the patterns, as the rail of the docs site puts Foundation, which holds the design language,
+ * before Building blocks and Patterns; within a kind by group in the order of PATTERN_GROUPS,
+ * then by id.
  */
 export const listPatterns = (patterns: Pattern[]): ListEntry[] => {
   const order = Object.keys(PATTERN_GROUPS);
@@ -1491,7 +1512,7 @@ const ruleOf = (rule: Rule, patterns: Map<string, Pattern>): Rule => {
   const own = source?.['always-true']?.find((one) => one.id === rule.id);
   if (own) return { ...own, from: rule.from };
   const relation =
-    source?.kind === FOUNDATION ? source.cases?.find((one) => one.id === rule.id) : undefined;
+    source?.kind === DESIGN_LANGUAGE ? source.cases?.find((one) => one.id === rule.id) : undefined;
   return relation ? { id: rule.id, rule: relation.where, from: rule.from } : rule;
 };
 
@@ -1518,7 +1539,7 @@ export const renderSections = (
   const { byId } = indexPatterns(patterns);
   const variables = pattern.variables ?? {};
   // a domain says of each rule the principle it serves and where it lives
-  const isDomain = pattern.kind === FOUNDATION;
+  const isDomain = pattern.kind === DESIGN_LANGUAGE;
   const grounded = (one: Grounded) => (isDomain ? [cell(servesOf(one)), carriersOf(one)] : []);
   const groundedHead = isDomain ? ['Serves', 'Carried by'] : [];
   // the rules of the domains a case relies on, once one case names them (#1198)
@@ -1768,7 +1789,7 @@ export const bodyErrors = (
 /*
   The previews of the cases (#1186): one file per case, previews/<pattern>/<case>.html beside
   the patterns, the stage the docs site, a decision and render_preview show; a rule of a domain
-  of Foundation may have one too, previews/<domain>/<rule>.html, and a case or a rule more
+  of the design language may have one too, previews/<domain>/<rule>.html, and a case or a rule more
   examples, <id>.2.html, <id>.3.html, with no gap (the choices of the maintainer on #1221: a
   rule that an example chosen live shows, actions/stacked, and another context or another length
   of the words, to show what the case keeps the same and what it lets vary). A building block
@@ -2035,9 +2056,9 @@ export const previewImageErrors = (
   return found;
 };
 
-/** The rules of a domain of Foundation that may have a preview: its own, never one it cites (#1221). */
+/** The rules of a domain of the design language that may have a preview: its own, never one it cites (#1221). */
 export const ownRules = (pattern: Pattern): string[] =>
-  pattern.kind === FOUNDATION
+  pattern.kind === DESIGN_LANGUAGE
     ? (pattern['always-true'] ?? []).filter((one) => !one.from).map((one) => one.id)
     : [];
 
@@ -2071,7 +2092,7 @@ export const previewLinkErrors = (
           error = `${one.pattern} has no situation ${one.id}: its situations are ${situations.join(', ') || 'none with an id'}`;
       } else if (!cases.includes(one.id) && !rules.includes(one.id))
         error =
-          pattern.kind === FOUNDATION
+          pattern.kind === DESIGN_LANGUAGE
             ? `${one.pattern} has no case nor rule ${one.id}: its cases are ${cases.join(', ')}, its rules ${rules.join(', ') || 'none'}`
             : `${one.pattern} has no case ${one.id}: its cases are ${cases.join(', ')}`;
       if (!error && one.example > 1 && !previewOf(previews, one.pattern, one.id, one.example - 1))
@@ -2088,8 +2109,8 @@ export const previewLinkErrors = (
  * What has no preview yet, the candidates aside: each case of a pattern, as <pattern>/<case>,
  * and each situation of a decided building block, as <block>/<situation> (the maintainer's
  * choice on 2026-11-03; a draft block may still change its situations), in the order of the
- * files. Not the domains of Foundation: a case of a domain may have a preview, and widths is
- * the pilot (#1189), so the ones a domain lacks are not listed until it is weighed.
+ * files. Not the domains of the design language: a case of a domain may have a preview,
+ * and widths is the pilot (#1189), so the ones a domain lacks are not listed until it is weighed.
  */
 export const missingPreviews = (patterns: Pattern[], previews: Preview[]): string[] =>
   patterns.flatMap((one) => {

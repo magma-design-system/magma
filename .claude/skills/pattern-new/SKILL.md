@@ -23,8 +23,8 @@ their `need`, `keywords` and `situations` in `docs/agents/patterns/`):
 
 Then ask, as a multiple choice, whether it is a pattern (a flow of components over time), a
 building block (a section of the page that comes back in the same arrangement; `docs/PATTERNS.md`,
-"A building block") or a domain of Foundation (a rule of composition the patterns stand on: a
-space, a weight, a style, a surface, a width; `docs/PATTERNS.md`, "A domain of Foundation"). A
+"A building block") or a domain of the design language (a rule of composition the patterns stand on: a
+space, a weight, a style, a surface, a width; `docs/PATTERNS.md`, "A domain of the design language"). A
 block is never designed in advance: it needs two defined patterns that lay out the same section
 (its `used-by`); with fewer, write the section inside the pattern and say so.
 
@@ -35,7 +35,7 @@ Work on a branch of its own, off `main` (`docs/WORKFLOW.md`), never on `main`. T
 ```bash
 npx nx run stencil:generate.pattern <id> --group <group> --need "<the need>"
 npx nx run stencil:generate.pattern <id> --kind block --group <group> --need "<the need>"  # a block
-npx nx run stencil:generate.pattern <id> --kind foundation --need "<what it settles>"  # a domain
+npx nx run stencil:generate.pattern <id> --kind design-language --need "<what it settles>"  # a domain
 ```
 
 ## 3. Research, then write

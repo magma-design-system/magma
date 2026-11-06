@@ -39,7 +39,7 @@ For each Magma component in the changed code:
 
 For each flow in the changed code that tells the person something or makes them wait or decide (a message, a confirmation, an empty, a loading or a failed part): `get_pattern` with the values of its variables, then check that the code follows the case it returns, the rules of the design language it lists in `rules`, and the "Always true" rules of the pattern. A flow that no pattern covers is a decision to report, not a finding.
 
-For the composition (the space between elements, and the other rules of the design language): the domains of Foundation, which `get_pattern` lists first (kind `foundation`), each read with `get_guide` by its id (`rhythm`). A space that is not the step of its relation, or a value of its own, is a finding, with the rule (`rhythm/<id>`) and the step to write.
+For the composition (the space between elements, and the other rules of how the parts stand together): the domains of the design language, which `get_pattern` lists first (kind `design-language`; `foundation` with magma 2.11 and before), each read with `get_guide` by its id (`rhythm`). A space that is not the step of its relation, or a value of its own, is a finding, with the rule (`rhythm/<id>`) and the step to write.
 
 ## 3. The report
 

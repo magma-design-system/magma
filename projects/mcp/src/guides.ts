@@ -1,8 +1,8 @@
 /*
   get_guide: one section of the guides the magma package ships (AGENTS.md and agents/*.md),
   instead of a whole file: the list of guides, the headings of one, or the text of one section.
-  The domains of Foundation (agents/patterns/<id>.md of kind foundation, #1189) are guides too,
-  the rules of composition of the design language (#1198): named by their id, read without
+  The domains of the design language (agents/patterns/<id>.md of kind design-language, #1189)
+  are guides too, its rules of composition (#1198): named by their id, read without
   their frontmatter, the data get_pattern answers from; a domain names the previews of its
   cases and of its rules (#1221), which render_preview renders by case or rule.
 */
@@ -10,7 +10,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import {
   magmaRoot,
-  FOUNDATION,
+  DESIGN_LANGUAGE,
   ownRules,
   readPatternDir,
   readPreviews,
@@ -23,7 +23,7 @@ interface Guide {
   name: string;
   /** Its text: the file of a guide, the body of a domain. */
   read: () => string;
-  /** `foundation` for a domain. */
+  /** `design-language` for a domain. */
   kind?: string;
   /** For a domain, the previews of its cases and of its rules, in the order of the folder. */
   previews?: GuidePreview[];
@@ -55,7 +55,7 @@ const guidesOf = (context: ToolContext): Guide[] => {
   // after the guides, by id; a guide of the same name comes first, the domain stays patterns/<id>
   const previews = readPreviews(patternsDir(context));
   for (const { data, body } of readPatternDir(patternsDir(context)))
-    if (data.kind === FOUNDATION) {
+    if (data.kind === DESIGN_LANGUAGE) {
       const rules = ownRules(data);
       const mine: GuidePreview[] = previews
         .filter((one) => one.pattern === data.id)
@@ -68,7 +68,7 @@ const guidesOf = (context: ToolContext): Guide[] => {
       guides.push({
         name: data.id,
         read: () => body,
-        kind: FOUNDATION,
+        kind: DESIGN_LANGUAGE,
         ...(mine.length ? { previews: mine } : {}),
       });
     }
@@ -104,7 +104,7 @@ export const getGuide = (context: ToolContext): Tool => ({
   name: 'get_guide',
   title: 'Read a Magma guide',
   description:
-    'The guides Magma ships for agents (installation, conventions, color, typography, theming, lint...) and the domains of Foundation, the rules of composition of the design language (kind foundation, such as rhythm: the space between elements): without arguments the list with their sections, with a guide its headings (a domain also the previews of its cases and rules, for render_preview), with a guide and a section the text of that section only. Read the section you need, not the whole file.',
+    'The guides Magma ships for agents (installation, conventions, color, typography, theming, lint...) and the domains of the design language, the rules of composition (kind design-language, such as rhythm: the space between elements): without arguments the list with their sections, with a guide its headings (a domain also the previews of its cases and rules, for render_preview), with a guide and a section the text of that section only. Read the section you need, not the whole file.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -129,7 +129,10 @@ export const getGuide = (context: ToolContext): Tool => ({
             name: { type: 'string' },
             title: { type: 'string' },
             sections: { type: 'array', items: { type: 'string' } },
-            kind: { type: 'string', description: 'foundation: a domain of the design language.' },
+            kind: {
+              type: 'string',
+              description: 'design-language: a domain of the design language.',
+            },
           },
           required: ['name', 'title', 'sections'],
         },
@@ -192,7 +195,7 @@ export const getGuide = (context: ToolContext): Tool => ({
       .toLowerCase();
     const found =
       guides.find((one) => one.name.toLowerCase() === name) ??
-      guides.find((one) => one.kind === FOUNDATION && `patterns/${one.name}` === name);
+      guides.find((one) => one.kind === DESIGN_LANGUAGE && `patterns/${one.name}` === name);
     if (!found)
       throw new ToolError(
         `No guide ${guide}: the guides are ${guides.map((one) => one.name).join(', ')}.`,

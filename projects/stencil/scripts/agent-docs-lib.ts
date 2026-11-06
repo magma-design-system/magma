@@ -566,7 +566,7 @@ ${rows.join('\n')}
 export interface PatternEntry {
   id: string;
   title: string;
-  /** pattern, block or foundation; a domain of Foundation has no group. */
+  /** pattern, block or design-language; a domain of the design language has no group. */
   kind?: string;
   group?: string;
   status: string;
@@ -575,8 +575,8 @@ export interface PatternEntry {
 }
 
 /**
- * The body of agents/patterns.md: the domains of Foundation first (#1196), the rules of
- * composition the patterns stand on, then the building blocks (#1210), the sections of a page
+ * The body of agents/patterns.md: the domains of the design language first (#1196), the rules
+ * of composition the patterns stand on, then the building blocks (#1210), the sections of a page
  * they come back in, then a section of patterns per group, in the order of `groups`; each
  * linked to its file in agents/patterns/, with its need and where it stands (#1174). A section
  * with nothing in it is left out.
@@ -601,10 +601,10 @@ export function renderPatternCatalogue(
 ${rows.map(row).join('\n')}
 `
       : '';
-  const isDomain = (one: PatternEntry) => one.kind === 'foundation';
+  const isDomain = (one: PatternEntry) => one.kind === 'design-language';
   const isBlock = (one: PatternEntry) => one.kind === 'block';
   return [
-    section('Foundation', 'Domain', patterns.filter(isDomain)),
+    section('Design language', 'Domain', patterns.filter(isDomain)),
     section('Building blocks', 'Block', patterns.filter(isBlock)),
     ...Object.entries(groups).map(([group, title]) =>
       section(

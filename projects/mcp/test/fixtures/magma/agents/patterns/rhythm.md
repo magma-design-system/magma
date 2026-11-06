@@ -1,6 +1,6 @@
 ---
 id: rhythm
-kind: foundation
+kind: design-language
 title: Rhythm
 layer: magma
 status: decided

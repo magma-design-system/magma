@@ -1,9 +1,9 @@
 ---
-# A domain of Foundation, the design language (#1189): the format and the commands are in
-# docs/PATTERNS.md, "A domain of Foundation". The check says what is still missing:
+# A domain of the design language (#1189): the format and the commands are in
+# docs/PATTERNS.md, "A domain of the design language". The check says what is still missing:
 # nx run stencil:check.patterns (after nx run stencil:build).
 id: {{id}}
-kind: foundation
+kind: design-language
 title: {{title}}
 layer: magma
 status: draft

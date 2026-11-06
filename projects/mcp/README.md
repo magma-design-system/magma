@@ -177,7 +177,7 @@ answer comes from".
   paths only, for a client that cannot run the stage, and only the files that exist, since a
   magma built before them has none and a path to nothing would send the client after a file
   that is not there. The pattern does not repeat them on each case: they follow the path of the
-  preview. The preview of a rule of a domain of Foundation: `get_pattern` names its path on the
+  preview. The preview of a rule of a domain of the design language: `get_pattern` names its path on the
   rule and on the rules of an answer, `get_guide` lists the previews of a domain with the kind
   of each, case or rule, and `render_preview` takes `rule`, telling a rule asked as a case
   apart.

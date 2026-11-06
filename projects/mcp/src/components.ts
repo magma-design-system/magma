@@ -1,8 +1,8 @@
 /*
   The component tools: find the one that fits a need, read its API, and write it in HTML,
   React or Angular. Everything comes from the documentation.json of the installed magma; the
-  rules of the design language that govern a component, from the domains of Foundation it
-  ships in agents/patterns/ (#1198).
+  rules of the design language that govern a component, from the domains it ships in
+  agents/patterns/ (#1198).
 */
 import { existsSync } from 'node:fs';
 import path from 'node:path';
@@ -129,7 +129,7 @@ export const getComponent = (context: ToolContext): Tool => ({
   name: 'get_component',
   title: 'Read the API of a Magma component',
   description:
-    'The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), the files of its usage guide (examples, mistakes), and in rules the rules of the design language that govern it (the relations and rules of the domains of Foundation it carries or that write it, each with its domain and its text; the whole domain with get_guide). Use it before writing the component.',
+    'The API of one Magma component in the installed version: props with their type, allowed values and default, events with their detail, methods, slots, parts and public CSS custom properties (the only ones a product sets; the internal ones are counted, they may change in any release), the files of its usage guide (examples, mistakes), and in rules the rules of the design language that govern it (the relations and rules of the domains of the design language it carries or that write it, each with its domain and its text; the whole domain with get_guide). Use it before writing the component.',
   inputSchema: {
     type: 'object',
     properties: {

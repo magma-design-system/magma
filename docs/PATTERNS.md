@@ -8,22 +8,28 @@ default, the same in every product, so that the agents of the products ask for i
 
 The domains of the design language (rhythm, density, actions, titles, surfaces, widths: #1189)
 are files of the same format, of a third kind: the rules of composition the patterns stand on
-(A domain of Foundation, below). The building blocks are files of the same format too: the
-sections of a page that come back in the same arrangement in two patterns or more (A building
-block, below).
+(A domain of the design language, below). The building blocks are files of the same format too:
+the sections of a page that come back in the same arrangement in two patterns or more (A
+building block, below).
+
+The three kinds together, the design language, the building blocks and the patterns, are
+**Behavior**: how an interface is put together and behaves, next to how it looks (its colors
+and its theme). The header of the studio names them so (#695). On the docs site, Foundation is
+the umbrella of the decisions Magma stands on (principles, accessibility, color, typography,
+illustration, content), and the design language is one group of it, Design language (#1253).
 
 ## Where it lives
 
 | What | Where |
 | --- | --- |
 | The patterns, one file each | `docs/agents/patterns/<id>.md`, written by the maintainers of Magma |
-| The domains of Foundation, one file each | the same folder, `kind: foundation`: one catalogue, told apart by kind |
+| The domains of the design language, one file each | the same folder, `kind: design-language`: one catalogue, told apart by kind |
 | The building blocks, one file each | the same folder, `kind: block` |
 | The preview of each case | `docs/agents/patterns/previews/<id>/<case>.html` (#1186); of a rule of a domain `<domain>/<rule>.html`, and the other examples of a case or a rule `<case>.2.html`, `<case>.3.html` (#1221) |
 | What ships | `agents/patterns/<id>.md`, the previews in `agents/patterns/previews/` and the catalogue `agents/patterns.md` in the three entry packages, written by `projects/stencil/scripts/sync-agent-docs.ts` before the build |
 | Who reads them | the `get_pattern` tool of the MCP server, the `ui` and `review` skills of the Claude Code plugin, the agents of the products, the docs site |
 | The format and its checks | `projects/lint/src/core/patterns.ts`, which ships inside `magma` |
-| The template | `projects/stencil/template/pattern.md`; for a domain, `projects/stencil/template/foundation.md`; for a block, `projects/stencil/template/block.md` |
+| The template | `projects/stencil/template/pattern.md`; for a domain, `projects/stencil/template/design-language.md`; for a block, `projects/stencil/template/block.md` |
 | The contributor skills | `.claude/skills/pattern-new`, `pattern-change`, `pattern-preview`, `pattern-list` (not in the plugin that ships) |
 | A product layer | `magma/patterns/<id>.md` in the product's own repository |
 
@@ -52,7 +58,7 @@ A Markdown file: the frontmatter is the data, the body is for people and agents 
 | --- | --- |
 | `id` | Kebab-case, the file name. A contract: the products and their agents cite it. |
 | `aliases` | The old ids after a rename. A reference to an alias fails the check; `get_pattern` resolves it. |
-| `kind` | `pattern`; `block` for a building block, a section of a page that comes back in two patterns or more; `foundation` for a domain of the design language. |
+| `kind` | `pattern`; `block` for a building block, a section of a page that comes back in two patterns or more; `design-language` for a domain of the design language (`foundation` in magma 2.11 and before, #1253). |
 | `title`, `group`, `layer` | The group is one of `navigation`, `data`, `input`, `messages-and-states`, `ai` (the groups of the docs site); a domain has none. The layer is `magma`. |
 | `status` | `candidate` (a need Magma knows, not defined: only `id`, `kind`, `title`, `group`, `layer`, `need`), `draft`, `decided` (no gaps left). |
 | `need` | What the person must do or know, in one sentence, with no component in it. |
@@ -78,15 +84,25 @@ Open choices and Situations are written from the frontmatter by the generator: e
 never those sections. When to use it, What decides it and Decisions are required, and Layout
 in a block.
 
-## A domain of Foundation
+## A domain of the design language
 
 A domain of the design language (#1189) says how the parts stand together: the space between
 two elements, which action weighs more, the style of a title, when a surface, how wide. It is
-a file of the format with `kind: foundation`, named after the Foundation item of the docs site
-where the domains go, and it is read, listed, searched and checked as a pattern is. What
-changes:
+a file of the format with `kind: design-language`, and it is read, listed, searched and checked
+as a pattern is.
 
-- **No group**: Foundation is its place. The list and the catalogue put the domains first.
+The kind is named after what the files are, not after the item of the docs site that holds them
+(#1253). It was `foundation` in magma 2.11 and before, after the Foundation item of the site,
+where the domains go; but Foundation there is the umbrella, and the domains are one group of it,
+Design language, next to Base, Design and Content. The core reads only `design-language`: it
+reads the files of its own release, and no product layer has a domain. What may meet an older
+magma names both until the next major: the skills of the Claude Code plugin, which `main`
+serves, and the docs site.
+
+What changes from a pattern:
+
+- **No group**: the design language is its place. The list and the catalogue put the domains
+  first.
 - **The variables of the context, not of a situation**: for the rhythm the relation between two
   elements, for the actions the region and the role of the action. Every combination has one
   answer, and the coverage proves it as for a pattern.
@@ -94,7 +110,8 @@ changes:
   open choices of a domain (density, for one). `where` gives the answer, with the value of
   today.
 - **`serves`** on each case and each rule: the principle it serves, one of the four of the
-  docs site (Principles), which asks every decision of Foundation to name the one it serves.
+  docs site (Principles), the principles behind every decision of Magma, each of which names
+  the one it serves.
 - **`carried-by`** on a case or a rule: where it lives, strongest first. The kind of a carrier
   is read from its form, as a `use` is:
 
@@ -337,12 +354,12 @@ Without Claude:
 ```bash
 nx run stencil:generate.pattern <id> --group <group> --need "<the need>"  # a draft from the template
 nx run stencil:generate.pattern <id> --kind block --group <group> --need "<the need>"  # a block
-nx run stencil:generate.pattern <id> --kind foundation --need "<what it settles>"  # a domain
+nx run stencil:generate.pattern <id> --kind design-language --need "<what it settles>"  # a domain
 nx run stencil:generate.pattern -- --sync     # the generated parts, from the frontmatter
 nx run stencil:check.patterns                 # after nx run stencil:build
 nx run mcp:serve.previews                    # the previews and the drafts, live, after the build
 nx run stencil:list.patterns -- --status candidate
-nx run stencil:list.patterns -- --kind foundation
+nx run stencil:list.patterns -- --kind design-language
 ```
 
 ## Changing one

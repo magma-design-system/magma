@@ -1,9 +1,9 @@
 ---
-# A domain of Foundation, the design language (#1189): the format and the commands are in
-# docs/PATTERNS.md, "A domain of Foundation". The check says what is still missing:
+# A domain of the design language (#1189): the format and the commands are in
+# docs/PATTERNS.md, "A domain of the design language". The check says what is still missing:
 # nx run stencil:check.patterns (after nx run stencil:build).
 id: titles
-kind: foundation
+kind: design-language
 title: Titles
 layer: magma
 status: decided
@@ -206,3 +206,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-30 | The title of an item of an accordion is `h6`, the title of a part (`part`); the default of `mds-accordion-item` moves from `h5`. | An accordion stands in a section, and the title of the section (`h5`) has to stand above its items. Rejected: `h5`, the default of today, where the section and its questions read as one level. Chosen live. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6526696932 |
 | 2026-10-30 | The titles are carried by role names: `typography="<role>"` on `mds-text`, `text-title-<role>` without components, one token per role, `--text-size-title-<role>` (`by-role`). | The role reads in the code, so a check can tell a section from a dialog though both are `h5`, and a theme moves one role in one place. Rejected: the style of the level written by hand from the table, with a lint on the pairs of tag and style, the form the previews got wrong. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6526876032 |
 | 2026-10-31 | The file of the domain: a case per role, `one-h1` and `tag-is-structure` written here from the Typography page of the docs site, which keeps the reasons around them. | The issue of the five domains (#1197): the rules the agents do not read on the docs site move into the package. |
+| 2026-11-05 | The kind of the domain is `design-language`, no longer `foundation`. | Named after what the file is, a domain of the design language, not after the item of the docs site that holds it: Foundation there is the umbrella of the decisions Magma stands on (principles, accessibility, color, typography, illustration, content), and the design language is one group of it. The design language, the building blocks and the patterns together are Behavior, as the header of the studio names them (#1253). |
