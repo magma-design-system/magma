@@ -84,7 +84,7 @@ Fa uso della libreria [@maggioli-design-system/styles](https://www.npmjs.com/pac
 
 One build makes the whole package: the slug dictionary, the guides for agents, the components
 through the output targets of Stencil (which also write the sources of the React and Angular
-wrappers), the docs of each component, the API snapshot, the lint with its MCP server, and the
+wrappers), the docs of each component, the API snapshot, the lint and the MCP server, and the
 images of the previews of the patterns, rendered on the components just built (#1243: the build
 needs a browser, as `render_preview` does).
 
@@ -95,17 +95,19 @@ flowchart LR
   SI["svg-icons<br/>dist/iconsauce.json"]
   AGD["docs/agents<br/>the guides, the patterns"]
   LINT["lint<br/>its sources"]
+  MCP["mcp<br/>its sources"]
   ID["identity<br/>logo-magma.svg"]
   subgraph wc["stencil<br/>package @maggioli-design-system/magma"]
     BUILD["stencil build<br/>117 mds-* components, build.icons"]
     DOCS["agent docs, API snapshot<br/>sync-agent-docs, component-docs"]
-    BL["scripts/build-lint.ts<br/>dist/lint"]
+    BL["scripts/build-lint.ts<br/>dist/lint, dist/mcp"]
     IMG["scripts/preview-images.ts<br/>the images of the previews"]
     BUILD --> DOCS --> IMG
   end
   DT & ST & SI --> BUILD
   AGD --> DOCS
-  LINT & ID --> BL
+  LINT & MCP & ID --> BL
+  MCP -->|"renderPreviewImages"| IMG
   BUILD -->|"src/, one module per tag"| RE["stencil-react"]
   BUILD -->|"stencil-generated/"| AN["stencil-angular"]
   BUILD -.->|"./components, ./loader, ./hydrate, ./services"| APP(["consumer app"])
@@ -115,11 +117,11 @@ flowchart LR
   DOCS -.->|"documentation.json"| SITE(["docs site"])
   IMG -.->|"agents/patterns/previews/*.webp"| SITE
   BL -.->|"./eslint, ./stylelint, magma-mcp"| AGENT
-  class AGD,LINT,DOCS,BL,IMG,AGENT ai
+  class AGD,MCP,DOCS,BL,IMG,AGENT ai
   class SI,ID assets
   class DT,ST visual
   class BUILD,RE,AN components
-  class CM,RISK tooling
+  class LINT,CM,RISK tooling
   class APP,SITE outside
   class wc area
   classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79

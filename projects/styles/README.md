@@ -26,10 +26,10 @@ flowchart LR
   TW -->|"@reference"| WC["stencil<br/>component sheets"]
   GENS -->|"generate.semantic"| CM["codemod<br/>semantic table"]
   SHEETS & GENS & TW -.->|"dist/css, dist/tailwind"| APP(["consumer app"])
-  DATA -.->|"consumption.json, dist/dtcg"| LINT["lint<br/>core, MCP server"]
+  DATA -.->|"consumption.json, dist/dtcg"| LINT["lint<br/>core: the rules, the MCP server"]
   DATA -.->|"consumption.json, dist/dtcg"| DOCS(["docs site"])
   DATA -.->|"tokens.editor.css"| EDITOR(["editor autocomplete"])
-  class LINT ai
+  class LINT tooling
   class DT,GENS,SHEETS,TW,DATA visual
   class WC components
   class CM,EDITOR tooling

@@ -26,7 +26,7 @@ starts the server of the magma version installed in the project.
 
 ```mermaid
 flowchart LR
-  LINT["lint<br/>src/mcp: toolsOf"]
+  MCP["mcp<br/>src/server.ts: toolsOf"]
   AG["docs/agents<br/>SPEC.md, lint.md"]
   CM["codemod<br/>package.json"]
   MKT[".claude-plugin/marketplace.json<br/>at the repository root"]
@@ -36,12 +36,12 @@ flowchart LR
     MAN[".claude-plugin/plugin.json<br/>.mcp.json: npx --no magma-mcp"]
     GEN --> SK
   end
-  LINT & AG & CM --> GEN
+  MCP & AG & CM --> GEN
   MKT --> MAN
   SERVER["stencil<br/>package magma, installed: magma-mcp"] <-.->|"tool calls, stdio"| CC(["Claude Code in the consumer project"])
   MAN -.->|"magma@magma, starts the server"| CC
   SK -.->|"loaded on demand"| CC
-  class LINT,AG,MKT,GEN,SK,MAN,CC ai
+  class MCP,AG,MKT,GEN,SK,MAN,CC ai
   class SERVER components
   class CM tooling
   class cp area
@@ -114,7 +114,7 @@ terminal session with `/plugin marketplace add magma-design-system/magma`, then
 
 1. Edit its template. What a skill lists is filled in by the generator, never copied: the
    package of each target (`docs/agents/SPEC.md`), the tools of the MCP server
-   (`projects/lint/src/mcp`), the rules of the lint (`docs/agents/lint.md`), the codemod
+   (`projects/mcp/src`), the rules of the lint (`docs/agents/lint.md`), the codemod
    (`projects/codemod/package.json`). `$ARGUMENTS` is what the person wrote after the command.
 2. `nx run claude-plugin:build` writes the skills; commit them with the template.
 3. `nx run claude-plugin:check` fails when a skill is out of date or breaks the Agent Skills

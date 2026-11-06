@@ -24,7 +24,7 @@ flowchart LR
   SVGO -->|"dist/svg, group maggioli"| IC["icons<br/>the font"]
   DICT -->|"dist/iconsauce.json"| WC["stencil<br/>build.icons, Storybook"]
   SVGO -.->|"dist/svg, served by the app at its icon path"| ICON["mds-icon<br/>fetches path + slug.svg"]
-  SVGO -.->|"dist/svg"| MCP["lint<br/>MCP server: find_icon"]
+  SVGO -.->|"dist/svg"| MCP["mcp<br/>find_icon"]
   class MCP ai
   class SRC,SVGO,DICT,IC assets
   class WC,ICON components
