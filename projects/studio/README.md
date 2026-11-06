@@ -206,7 +206,10 @@ The studio loads `.magma-design-tokensrc.json` of `design-tokens` and runs the r
 generator in the browser, so every preview matches the build output exactly. Colors has six
 pages: **Palette** (the two-column editor: color list on the left, editing and live light/dark
 scale previews with achieved contrast on the right; `neutral` is selected by default when
-present), **Contrast scales**, **Semantic surface** (opt families into the surface engine, tune
+present; where the detail has the room, the ramps stand upright beside the family and the global
+settings, held in view while they scroll, and Ramps / Theme swaps them for the theme the family
+backs on the scene, small as a phone, light or dark, painted with the configuration at every
+change, `src/palette-side.tsx`), **Contrast scales**, **Semantic surface** (opt families into the surface engine, tune
 the surface/border/text levels), **Themes** (each opted family, status aside, as a named theme, with its accent
 assignment, its colour modes and contrast checks), **Groups** and **Diffs**. Selecting a color from the sidebar while in contrast scales
 keeps you there, since the scale samples follow the selected color.
