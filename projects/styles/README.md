@@ -24,7 +24,8 @@ flowchart LR
   DT --> GENS
   DT --> DATA
   TW -->|"@reference"| WC["stencil<br/>component sheets"]
-  GENS -->|"generate.semantic"| CM["codemod<br/>semantic table"]
+  GENS -->|"generate.semantic"| CM["codemod<br/>semantic table, colour list"]
+  DATA -->|"dist/dtcg, generate.colors"| CM
   SHEETS & GENS & TW -.->|"dist/css, dist/tailwind"| APP(["consumer app"])
   DATA -.->|"consumption.json, dist/dtcg"| LINT["lint<br/>core: the rules, the MCP server"]
   DATA -.->|"consumption.json, dist/dtcg"| DOCS(["docs site"])
