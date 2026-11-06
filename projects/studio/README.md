@@ -44,9 +44,12 @@ The select offers the themes of the configuration being edited, the ones the The
 over the stylesheets of the installed Magma, the palette of the configuration and the block of
 each theme, printed by the code that writes the files Magma ships (`colors-rgb.css` and
 `themes.css`, `src/scene-css.ts`). So `porcelain` is a theme of the bundled configuration though
-Magma ships none by that name. A theme takes the name of the theme Magma draws from its family,
-else the name of the family: the name given on the Themes page stays in that page until the
-configuration keeps it.
+Magma ships none by that name. The choices made on the Themes page, the name of a theme, the
+accents it repoints and the colour modes it is used in, are the studio's (`src/theme-choices.ts`):
+the frame paints the themes as that page exports them, and a theme of one mode is seen in that
+mode only, the other choices of the header off and `pref-theme-scheme-<mode>` on the frame, as
+mds-pref-theme writes it. They are kept in the storage of the studio beside the draft, so a reload
+keeps them, until the configuration keeps the themes itself (#694).
 
 The header over the frame holds what the theme is checked under, not what is edited (#697): the
 view (Scenes or Groups, below), the mode (light, dark, or both side by side, two frames that

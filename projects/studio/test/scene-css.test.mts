@@ -17,10 +17,21 @@ test('the themes of a configuration are the tints with a surface, the base first
   // porcelain has a surface in the bundled configuration, and no theme of Magma is drawn from it
   // but the deprecated cool: the theme takes the name of its family
   expect(style.themes).toEqual([
-    { name: 'business', family: 'neutral' },
-    { name: 'porcelain', family: 'porcelain' },
-    { name: 'editorial', family: 'bisque' },
+    { name: 'business', family: 'neutral', modes: ['light', 'dark'] },
+    { name: 'porcelain', family: 'porcelain', modes: ['light', 'dark'] },
+    { name: 'editorial', family: 'bisque', modes: ['light', 'dark'] },
   ])
+})
+
+test('the choices of the Themes page reach the frame: the name, and a theme of one mode with its lock', () => {
+  const style = sceneStyle(config, {
+    names: { porcelain: 'cold-desk' },
+    accents: {},
+    modes: { porcelain: ['dark'] },
+  })!
+  expect(style.themes[1]).toEqual({ name: 'cold-desk', family: 'porcelain', modes: ['dark'] })
+  // the block the export of the Themes page prints, the lock first
+  expect(style.css).toMatch(/:root\[data-theme-name='cold-desk'\] \{\n {2}--magma-color-modes: dark;/)
 })
 
 test('the frame gets the palette of the configuration and the block of every theme but the base', () => {
@@ -48,11 +59,11 @@ test('a frame follows the theme, the mode and the contrast it is given, not thos
   const html = scene.documentElement
   expect(html.getAttribute('data-theme-name')).toBe('editorial')
   expect(html.hasAttribute('data-magma-pref')).toBe(true)
-  expect([...html.classList].sort()).toEqual(['pref-contrast-no-preference', 'pref-mode-dark'])
+  expect([...html.classList].sort()).toEqual(['pref-contrast-no-preference', 'pref-mode-dark', 'pref-theme-scheme-all'])
   expect(scene.querySelectorAll('style#studio-configuration')).toHaveLength(1)
 
   applyFrame(scene, { theme: 'business', scheme: 'light', contrast: true, css: 'b {}' })
-  expect([...html.classList].sort()).toEqual(['pref-contrast-more', 'pref-mode-light'])
+  expect([...html.classList].sort()).toEqual(['pref-contrast-more', 'pref-mode-light', 'pref-theme-scheme-all'])
   expect(scene.querySelectorAll('style#studio-configuration')).toHaveLength(1)
   expect(scene.getElementById('studio-configuration')?.textContent).toBe('b {}')
 

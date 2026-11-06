@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config';
+import { COLOR_MODES } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
 import logo from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma.svg?url';
 import { App } from './app.js';
 import { readDraft } from './draft.js';
 import { gateVerdict, type GateVerdict } from './gate.js';
 import { sceneStyle } from './scene-css.js';
+import { useThemeChoices } from './theme-choices.js';
 import {
   BEHAVIOR_PAGES,
   COLORS_PAGES,
@@ -310,6 +312,9 @@ const PREF_CLASSES = [
   'pref-contrast-more',
   'pref-contrast-no-preference',
   'pref-contrast-system',
+  'pref-theme-scheme-light',
+  'pref-theme-scheme-dark',
+  'pref-theme-scheme-all',
 ];
 
 /**
@@ -327,7 +332,15 @@ export function applyFrame(
     scheme,
     contrast,
     css,
-  }: { theme: string; scheme: Scheme; contrast: boolean; css?: string },
+    modes = COLOR_MODES,
+  }: {
+    theme: string;
+    scheme: Scheme;
+    contrast: boolean;
+    css?: string;
+    /** The colour modes of the theme: one of them is its lock, as mds-pref-theme writes it. */
+    modes?: readonly Scheme[];
+  },
 ) {
   const html = scene.documentElement;
   html.setAttribute('data-theme-name', theme);
@@ -336,6 +349,7 @@ export function applyFrame(
   html.classList.add(
     `pref-mode-${scheme}`,
     contrast ? 'pref-contrast-more' : 'pref-contrast-no-preference',
+    `pref-theme-scheme-${modes.length === 1 ? modes[0] : 'all'}`,
   );
   // the palette and the themes of the configuration (scene-css.ts), over the stylesheets of the
   // installed Magma: an unlayered rule wins over their layers, whatever their order
@@ -366,14 +380,22 @@ const CONFIGURATION_STYLE = 'studio-configuration';
 function ThemePage({ config }: { config: MagmaConfig | null }) {
   const frames = useRef<Array<HTMLIFrameElement | null>>([]);
   const select = useRef<HTMLElement>(null);
-  const scene = useMemo(() => (config ? sceneStyle(config) : null), [config]);
+  // the choices of the Themes page (names, accents, modes) shape the themes the frame paints
+  const choices = useThemeChoices();
+  const scene = useMemo(() => (config ? sceneStyle(config, choices) : null), [config, choices]);
   const names = scene?.themes.map((one) => one.name) ?? PREVIEW_THEMES;
   const [chosen, setTheme] = useState(PREVIEW_THEMES[0]);
   const theme = names.includes(chosen) ? chosen : names[0];
+  // a theme of one mode is seen in that mode only: the other is no way to check it (#1274)
+  const themeModes: readonly Scheme[] =
+    scene?.themes.find((one) => one.name === theme)?.modes ?? COLOR_MODES;
+  const offers = (view: ModeView) =>
+    view === 'both' ? themeModes.length > 1 : themeModes.includes(view);
   const [panel, setPanel] = useState<Axis | null>(null);
   const [view, setView] = useState<View>('scenes');
   const page = VIEWS.find((one) => one.id === view)!;
-  const [mode, setMode] = useState<ModeView>('light');
+  const [picked, setMode] = useState<ModeView>('light');
+  const mode: ModeView = offers(picked) ? picked : themeModes[0];
   const [contrast, setContrast] = useState(false);
   const [width, setWidth] = useState<Width>('full');
   const [loaded, setLoaded] = useState(0);
@@ -394,7 +416,7 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
     schemes.forEach((scheme, index) => {
       const frame = frames.current[index]?.contentDocument;
       if (!frame?.documentElement) return;
-      applyFrame(frame, { theme, scheme, contrast, css: scene?.css });
+      applyFrame(frame, { theme, scheme, contrast, css: scene?.css, modes: themeModes });
       const pref = frame.getElementById('studio-pref');
       if (pref) pref.hidden = index > 0 || panel !== 'preferences';
     });
@@ -461,6 +483,8 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
                 label={view.label}
                 value={view.id}
                 selected={view.id === mode}
+                disabled={!offers(view.id)}
+                title={offers(view.id) ? undefined : `${titleOf(theme)} is ${themeModes[0]} only`}
               ></mds-filter-item>
             ))}
           </mds-filter>
