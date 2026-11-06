@@ -61,15 +61,16 @@
   display: flex;
 }
 
-/* the preferences of the scene in the dropdown of their axis (scene-prefs.tsx): the label over
-   its control, as mds-pref draws them; the inset is the one of mds-dropdown */
-.studio-prefs {
+/* a panel of controls in a dropdown of the bar of the Theme section, the preferences of the scene
+   (scene-prefs.tsx) or the preview (shell.tsx): each choice its label over its control, as
+   mds-pref draws them; the inset is the one of mds-dropdown */
+.studio-panel {
   display: grid;
   gap: var(--magma-rhythm-between-fields);
   min-width: calc(var(--spacing) * 7000);
 }
 
-.studio-pref {
+.studio-choice {
   display: grid;
   gap: var(--magma-rhythm-label-control);
 }
@@ -139,36 +140,13 @@
   margin-inline: var(--magma-width-page-gutter);
 }
 
-/* the Theme section: the header of what the theme is checked under, the frames under it, the
-   bar of the theme floating over them */
+/* the Theme section: the frames, the whole section, the bar of the theme floating over them */
 .studio-theme {
   position: relative;
   display: grid;
   flex: 1;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   min-height: 0;
-}
-
-.studio-theme-head {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--magma-rhythm-inline);
-  align-items: center;
-  justify-content: space-between;
-  padding: calc(var(--spacing) * 300) var(--magma-width-page-gutter);
-  border-block-end: thin solid rgb(var(--magma-border-muted));
-  background: rgb(var(--magma-surface-raised));
-}
-
-.studio-theme-checks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--magma-rhythm-inline);
-  align-items: center;
-}
-
-.studio-theme-checks mds-input-select {
-  min-width: 200px;
 }
 
 /* full width: the frames share the room, a thin line between the two modes; at a breakpoint:

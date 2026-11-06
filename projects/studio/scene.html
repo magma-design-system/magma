@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,9 +15,9 @@
       once: a hue on a themed surface, text at every prominence, borders, a disabled state, the
       solid fills of the main actions, the colours of the states. The cards are items of a set
       (docs/agents/patterns/surfaces.md, card); the columns fill top to bottom, each card whole.
-      The mode and the contrast are set by the header of the Theme section (shell.tsx,
-      applyFrame), so the panel of the preferences has neither: a stored mode would bring the two
-      frames side by side to the same one.
+      The mode and the contrast are set by the studio on the <html> of each frame (shell.tsx,
+      applyFrame), so the panel of the preferences of this page has neither: a stored mode would
+      bring the two frames side by side to the same one.
       The plain CSS below takes every value from the tokens of the installed Magma.
     -->
     <style>
@@ -97,32 +97,34 @@
     </style>
   </head>
   <body>
-    <mds-header>
+    <!-- the bar of the product, inline: a box of its page under the bar of the studio, so the two
+      never read as one (vittorio, 2026-11-06) -->
+    <mds-header appearance="inline">
       <mds-header-bar>
-        <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
-        <mds-button slot="nav" href="#" aria-current="page" variant="dark" tone="weak">Scrivania</mds-button>
-        <mds-button slot="nav" href="#" variant="dark" tone="text">Pratiche</mds-button>
-        <mds-button slot="nav" href="#" variant="dark" tone="text">Scadenze</mds-button>
+        <mds-text typography="h6" tag="p">Registry services</mds-text>
+        <mds-button slot="nav" href="#" aria-current="page" variant="dark" tone="weak">Desk</mds-button>
+        <mds-button slot="nav" href="#" variant="dark" tone="text">Requests</mds-button>
+        <mds-button slot="nav" href="#" variant="dark" tone="text">Deadlines</mds-button>
       </mds-header-bar>
     </mds-header>
     <main class="scene-main">
       <header class="scene-head">
-        <mds-text typography="page" tag="h1">Scrivania</mds-text>
-        <mds-text typography="detail" tag="p" class="scene-muted">Le pratiche, gli appuntamenti e le comunicazioni dell'ufficio anagrafe.</mds-text>
+        <mds-text typography="page" tag="h1">Desk</mds-text>
+        <mds-text typography="detail" tag="p" class="scene-muted">The requests, the appointments and the messages of the registry office.</mds-text>
       </header>
 
       <!-- the request in hand: its steps want the width of the page, the stepper centres the
            current one and would push the first out of a column -->
       <mds-card>
         <mds-card-header>
-          <mds-text typography="part" tag="h2">Pratica 2026/0118, cambio di residenza</mds-text>
+          <mds-text typography="part" tag="h2">Request 2026/0118, change of address</mds-text>
         </mds-card-header>
         <mds-card-content>
           <mds-stepper-bar items-done="2">
-            <mds-stepper-bar-item badge step icon="mi/baseline/description" icon-checked="mi/baseline/done" label="Ricevuta"></mds-stepper-bar-item>
-            <mds-stepper-bar-item badge step icon="mi/baseline/pending-actions" icon-checked="mi/baseline/done" label="Istruttoria"></mds-stepper-bar-item>
-            <mds-stepper-bar-item badge step icon="mi/baseline/fact-check" icon-checked="mi/baseline/done" label="Accertamenti"></mds-stepper-bar-item>
-            <mds-stepper-bar-item badge step icon="mi/baseline/verified" icon-checked="mi/baseline/done" label="Chiusa"></mds-stepper-bar-item>
+            <mds-stepper-bar-item badge step icon="mi/baseline/description" icon-checked="mi/baseline/done" label="Received"></mds-stepper-bar-item>
+            <mds-stepper-bar-item badge step icon="mi/baseline/pending-actions" icon-checked="mi/baseline/done" label="Review"></mds-stepper-bar-item>
+            <mds-stepper-bar-item badge step icon="mi/baseline/fact-check" icon-checked="mi/baseline/done" label="Checks"></mds-stepper-bar-item>
+            <mds-stepper-bar-item badge step icon="mi/baseline/verified" icon-checked="mi/baseline/done" label="Closed"></mds-stepper-bar-item>
           </mds-stepper-bar>
         </mds-card-content>
       </mds-card>
@@ -131,34 +133,34 @@
         <!-- filters: a choice among states, the filters in force, the kinds with their counts -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Filtri</mds-text>
+            <mds-text typography="part" tag="h2">Filters</mds-text>
           </mds-card-header>
           <mds-card-content>
             <div class="scene-fields">
-              <mds-filter label="Stato">
-                <mds-filter-item label="Tutte" value="" count="44" selected></mds-filter-item>
-                <mds-filter-item label="Nuove" value="nuova" count="8"></mds-filter-item>
-                <mds-filter-item label="Chiuse" value="chiusa" count="16"></mds-filter-item>
+              <mds-filter label="Status">
+                <mds-filter-item label="All" value="" count="44" selected></mds-filter-item>
+                <mds-filter-item label="New" value="new" count="8"></mds-filter-item>
+                <mds-filter-item label="Closed" value="closed" count="16"></mds-filter-item>
               </mds-filter>
               <div class="scene-row">
-                <mds-chip label="Anagrafe" deletable tone="weak"></mds-chip>
-                <mds-chip label="Novembre" deletable tone="weak"></mds-chip>
+                <mds-chip label="Registry" deletable tone="weak"></mds-chip>
+                <mds-chip label="November" deletable tone="weak"></mds-chip>
               </div>
               <div class="scene-rows">
                 <div class="scene-spread">
-                  <mds-input-switch type="checkbox" checked>Cambi di residenza</mds-input-switch>
+                  <mds-input-switch type="checkbox" checked>Changes of address</mds-input-switch>
                   <mds-badge variant="dark" tone="strong" label="25"></mds-badge>
                 </div>
                 <div class="scene-spread">
-                  <mds-input-switch type="checkbox" checked>Certificati</mds-input-switch>
+                  <mds-input-switch type="checkbox" checked>Certificates</mds-input-switch>
                   <mds-badge variant="dark" tone="strong" label="3"></mds-badge>
                 </div>
                 <div class="scene-spread">
-                  <mds-input-switch type="checkbox">Iscrizioni</mds-input-switch>
+                  <mds-input-switch type="checkbox">Registrations</mds-input-switch>
                   <mds-badge variant="warning" tone="strong" label="0"></mds-badge>
                 </div>
                 <div class="scene-spread">
-                  <mds-input-switch type="checkbox" disabled>Carte d'identità</mds-input-switch>
+                  <mds-input-switch type="checkbox" disabled>Identity cards</mds-input-switch>
                   <mds-badge variant="dark" tone="weak" label="4"></mds-badge>
                 </div>
               </div>
@@ -171,43 +173,43 @@
           <mds-card-content>
             <div class="scene-fields">
               <mds-kpi>
-                <mds-kpi-item icon="mi/baseline/folder-open" label="1.240" description="Pratiche chiuse a novembre"></mds-kpi-item>
+                <mds-kpi-item icon="mi/baseline/folder-open" label="1,240" description="Requests closed in November"></mds-kpi-item>
               </mds-kpi>
-              <mds-text typography="detail" tag="p" class="scene-muted">Il 15% in più di ottobre, con lo stesso personale allo sportello.</mds-text>
+              <mds-text typography="detail" tag="p" class="scene-muted">15% more than in October, with the same staff at the counter.</mds-text>
             </div>
           </mds-card-content>
           <mds-card-footer>
-            <mds-button variant="dark" tone="outline">Grafici</mds-button>
-            <mds-button>Dettagli</mds-button>
+            <mds-button variant="dark" tone="outline">Charts</mds-button>
+            <mds-button>Details</mds-button>
           </mds-card-footer>
         </mds-card>
 
         <!-- states: the four messages a page shows -->
         <div class="scene-stack">
-          <mds-banner variant="info" headline="Nove nuovi messaggi">Tre arrivano dallo sportello telematico.</mds-banner>
-          <mds-banner variant="success" headline="Verifica completata">I dati del richiedente sono confermati.</mds-banner>
-          <mds-banner variant="warning" headline="Conferma la tua email">
-            Ti abbiamo scritto all'indirizzo dell'ufficio.
-            <mds-button slot="action" variant="warning" tone="outline" size="sm">Invia di nuovo</mds-button>
+          <mds-banner variant="info" headline="Nine new messages">Three come from the online counter.</mds-banner>
+          <mds-banner variant="success" headline="Check complete">The details of the applicant are confirmed.</mds-banner>
+          <mds-banner variant="warning" headline="Confirm your email">
+            We wrote to the address of the office.
+            <mds-button slot="action" variant="warning" tone="outline" size="sm">Send again</mds-button>
           </mds-banner>
-          <mds-banner variant="error" headline="Accesso negato">Non hai i permessi per l'archivio storico.</mds-banner>
+          <mds-banner variant="error" headline="Access denied">You have no permission for the historical archive.</mds-banner>
         </div>
 
         <!-- an appointment: a date, a search, a switch, a coloured note -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Agenda</mds-text>
+            <mds-text typography="part" tag="h2">Schedule</mds-text>
           </mds-card-header>
           <mds-card-content>
             <div class="scene-fields">
-              <mds-input-field label="Giorno">
+              <mds-input-field label="Day">
                 <mds-input-date value="2026-11-05"></mds-input-date>
               </mds-input-field>
-              <mds-input type="search" icon="mi/baseline/search" aria-label="Cerca un appuntamento" placeholder="Cerca un appuntamento"></mds-input>
-              <mds-input-switch type="switch" checked>Mostra tutta la giornata</mds-input-switch>
+              <mds-input type="search" icon="mi/baseline/search" aria-label="Search an appointment" placeholder="Search an appointment"></mds-input>
+              <mds-input-switch type="switch" checked>Show the whole day</mds-input-switch>
               <mds-note variant="blue">
-                <mds-text slot="title" typography="h6">Riunione di coordinamento</mds-text>
-                Il punto settimanale con lo stato civile e l'elettorale, alle 10.
+                <mds-text slot="title" typography="h6">Coordination meeting</mds-text>
+                The weekly catch-up with civil status and elections, at 10.
               </mds-note>
             </div>
           </mds-card-content>
@@ -216,29 +218,29 @@
         <!-- the latest requests and their states -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Pratiche recenti</mds-text>
+            <mds-text typography="part" tag="h2">Recent requests</mds-text>
           </mds-card-header>
           <mds-card-content>
             <div class="scene-rows">
               <div class="scene-spread">
                 <mds-text typography="detail">Giulia Bianchi</mds-text>
-                <mds-badge variant="info" label="Inviata"></mds-badge>
+                <mds-badge variant="info" label="Sent"></mds-badge>
               </div>
               <div class="scene-spread">
                 <mds-text typography="detail">Luca Ferri</mds-text>
-                <mds-badge variant="error" label="Respinta"></mds-badge>
+                <mds-badge variant="error" label="Rejected"></mds-badge>
               </div>
               <div class="scene-spread">
                 <mds-text typography="detail">Marco Rossi</mds-text>
-                <mds-badge variant="warning" label="In lavorazione"></mds-badge>
+                <mds-badge variant="warning" label="In progress"></mds-badge>
               </div>
               <div class="scene-spread">
                 <mds-text typography="detail">Anna Conti</mds-text>
-                <mds-badge variant="success" label="Chiusa"></mds-badge>
+                <mds-badge variant="success" label="Closed"></mds-badge>
               </div>
               <div class="scene-spread">
                 <mds-text typography="detail">Elena Ricci</mds-text>
-                <mds-badge variant="success" label="Chiusa"></mds-badge>
+                <mds-badge variant="success" label="Closed"></mds-badge>
               </div>
             </div>
           </mds-card-content>
@@ -252,11 +254,11 @@
           <mds-card-content>
             <div class="scene-figure">
               <div class="scene-stack">
-                <mds-text typography="caption" tag="p" class="scene-muted">Accessibilità del portale</mds-text>
-                <mds-text typography="h3" tag="p">91 su 100</mds-text>
-                <mds-badge variant="success" label="Tutto in ordine"></mds-badge>
+                <mds-text typography="caption" tag="p" class="scene-muted">Accessibility of the portal</mds-text>
+                <mds-text typography="h3" tag="p">91 out of 100</mds-text>
+                <mds-badge variant="success" label="All in order"></mds-badge>
               </div>
-              <mds-radial-progress progress="0.91" variant="success" aria-label="91 su 100"></mds-radial-progress>
+              <mds-radial-progress progress="0.91" variant="success" aria-label="91 out of 100"></mds-radial-progress>
             </div>
           </mds-card-content>
         </mds-card>
@@ -265,12 +267,12 @@
         <mds-card>
           <mds-card-content>
             <mds-tab>
-              <mds-tab-item label="Anagrafica"></mds-tab-item>
-              <mds-tab-item label="Documenti" selected></mds-tab-item>
-              <mds-tab-item label="Pagamenti"></mds-tab-item>
-              <div slot="content"><mds-text>Nome, residenza e stato di famiglia.</mds-text></div>
-              <div slot="content"><mds-text>Due documenti allegati alla pratica.</mds-text></div>
-              <div slot="content"><mds-text>Nessun pagamento dovuto.</mds-text></div>
+              <mds-tab-item label="Personal data"></mds-tab-item>
+              <mds-tab-item label="Documents" selected></mds-tab-item>
+              <mds-tab-item label="Payments"></mds-tab-item>
+              <div slot="content"><mds-text>Name, address and household.</mds-text></div>
+              <div slot="content"><mds-text>Two documents attached to the request.</mds-text></div>
+              <div slot="content"><mds-text>No payment due.</mds-text></div>
             </mds-tab>
           </mds-card-content>
         </mds-card>
@@ -278,26 +280,26 @@
         <!-- a new message: a bar of tools, a long text, its count, a draft and the main action -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Nuova comunicazione</mds-text>
+            <mds-text typography="part" tag="h2">New message</mds-text>
           </mds-card-header>
           <mds-card-content>
             <div class="scene-fields">
               <div class="scene-spread">
                 <div>
-                  <mds-button icon="mi/baseline/format-bold" variant="dark" tone="text" size="sm" aria-label="Grassetto"></mds-button>
-                  <mds-button icon="mi/baseline/format-italic" variant="dark" tone="text" size="sm" aria-label="Corsivo"></mds-button>
-                  <mds-button icon="mi/baseline/format-underlined" variant="dark" tone="text" size="sm" aria-label="Sottolineato"></mds-button>
+                  <mds-button icon="mi/baseline/format-bold" variant="dark" tone="text" size="sm" aria-label="Bold"></mds-button>
+                  <mds-button icon="mi/baseline/format-italic" variant="dark" tone="text" size="sm" aria-label="Italic"></mds-button>
+                  <mds-button icon="mi/baseline/format-underlined" variant="dark" tone="text" size="sm" aria-label="Underline"></mds-button>
                 </div>
-                <mds-button icon="mi/baseline/attach-file" variant="dark" tone="weak" size="sm">Allega</mds-button>
+                <mds-button icon="mi/baseline/attach-file" variant="dark" tone="weak" size="sm">Attach</mds-button>
               </div>
-              <mds-input-field label="Testo" message="1200 caratteri rimanenti">
-                <mds-input type="textarea" placeholder="Che cosa vuoi comunicare?"></mds-input>
+              <mds-input-field label="Text" message="1200 characters left">
+                <mds-input type="textarea" placeholder="What do you want to say?"></mds-input>
               </mds-input-field>
             </div>
           </mds-card-content>
           <mds-card-footer>
-            <mds-button variant="dark" tone="outline">Salva la bozza</mds-button>
-            <mds-button>Pubblica</mds-button>
+            <mds-button variant="dark" tone="outline">Save the draft</mds-button>
+            <mds-button>Publish</mds-button>
           </mds-card-footer>
         </mds-card>
 
@@ -305,8 +307,8 @@
         <mds-card>
           <mds-card-content>
             <div class="scene-row">
-              <mds-input class="scene-grow" type="search" icon="mi/baseline/search" aria-label="Cerca" placeholder="Numero o oggetto"></mds-input>
-              <mds-button>Cerca</mds-button>
+              <mds-input class="scene-grow" type="search" icon="mi/baseline/search" aria-label="Search" placeholder="Number or subject"></mds-input>
+              <mds-button>Search</mds-button>
             </div>
           </mds-card-content>
         </mds-card>
@@ -314,61 +316,61 @@
         <!-- a form: fields, an error, switches, the main action and a link -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Nuovo operatore</mds-text>
+            <mds-text typography="part" tag="h2">New operator</mds-text>
           </mds-card-header>
           <mds-card-content>
             <div class="scene-fields">
-              <mds-input-field label="Nome utente">
+              <mds-input-field label="Username">
                 <mds-input icon="mi/baseline/person" value="g.bianchi"></mds-input>
               </mds-input-field>
-              <mds-input-field label="Password" variant="error" message="Almeno 8 caratteri">
+              <mds-input-field label="Password" variant="error" message="At least 8 characters">
                 <mds-input type="password" icon="mi/baseline/key" value="abc" variant="error" aria-invalid="true"></mds-input>
               </mds-input-field>
-              <mds-input-switch type="switch" checked>Può firmare i certificati</mds-input-switch>
-              <mds-input-switch type="switch">Riceve le notifiche via email</mds-input-switch>
+              <mds-input-switch type="switch" checked>Can sign certificates</mds-input-switch>
+              <mds-input-switch type="switch">Gets notifications by email</mds-input-switch>
             </div>
           </mds-card-content>
           <mds-card-footer>
-            <mds-link href="#">Annulla</mds-link>
-            <mds-button>Crea l'operatore</mds-button>
+            <mds-link href="#">Cancel</mds-link>
+            <mds-button>Create the operator</mds-button>
           </mds-card-footer>
         </mds-card>
 
         <!-- an amount on a slider -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Diritti di segreteria</mds-text>
+            <mds-text typography="part" tag="h2">Administrative fees</mds-text>
           </mds-card-header>
           <mds-card-content>
-            <mds-input-range min="0" max="100" value="50">Importo massimo (euro)</mds-input-range>
+            <mds-input-range min="0" max="100" value="50">Maximum amount (euro)</mds-input-range>
           </mds-card-content>
         </mds-card>
 
         <!-- the archive: sections with their counts and a dot of news -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Archivio</mds-text>
+            <mds-text typography="part" tag="h2">Archive</mds-text>
           </mds-card-header>
           <mds-card-content>
             <div class="scene-rows">
               <div class="scene-spread">
-                <span><mds-icon class="scene-icon" name="mi/baseline/storage"></mds-icon><mds-text typography="detail">Registri</mds-text></span>
+                <span><mds-icon class="scene-icon" name="mi/baseline/storage"></mds-icon><mds-text typography="detail">Registers</mds-text></span>
                 <mds-text typography="detail" class="scene-muted">7</mds-text>
               </div>
               <div class="scene-spread">
-                <span><mds-icon class="scene-icon" name="mi/baseline/inventory-2"></mds-icon><mds-text typography="detail">Fascicoli</mds-text></span>
+                <span><mds-icon class="scene-icon" name="mi/baseline/inventory-2"></mds-icon><mds-text typography="detail">Files</mds-text></span>
                 <mds-text typography="detail" class="scene-muted">128</mds-text>
               </div>
               <div class="scene-spread">
-                <span><mds-icon class="scene-icon" name="mi/baseline/forum"></mds-icon><mds-text typography="detail">Messaggi</mds-text></span>
+                <span><mds-icon class="scene-icon" name="mi/baseline/forum"></mds-icon><mds-text typography="detail">Messages</mds-text></span>
                 <mds-badge variant="info" tone="strong" label="29"></mds-badge>
               </div>
               <div class="scene-spread">
-                <span><mds-icon class="scene-icon" name="mi/baseline/groups"></mds-icon><mds-text typography="detail">Operatori</mds-text></span>
+                <span><mds-icon class="scene-icon" name="mi/baseline/groups"></mds-icon><mds-text typography="detail">Operators</mds-text></span>
                 <mds-text typography="detail" class="scene-muted">12</mds-text>
               </div>
               <div class="scene-spread">
-                <span><mds-icon class="scene-icon" name="mi/baseline/settings"></mds-icon><mds-text typography="detail">Impostazioni</mds-text></span>
+                <span><mds-icon class="scene-icon" name="mi/baseline/settings"></mds-icon><mds-text typography="detail">Settings</mds-text></span>
               </div>
             </div>
           </mds-card-content>
@@ -377,7 +379,7 @@
         <!-- people: a stack of avatars, two entities with their details -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Il gruppo</mds-text>
+            <mds-text typography="part" tag="h2">The team</mds-text>
           </mds-card-header>
           <mds-card-content>
             <div class="scene-fields">
@@ -389,13 +391,13 @@
               </mds-avatar-stack>
               <mds-entity initials="gb" variant="primary">
                 <mds-text truncate="word" typography="h6">Giulia Bianchi</mds-text>
-                <mds-text truncate="word" slot="detail" typography="caption">Responsabile dell'ufficio</mds-text>
-                <mds-badge slot="detail" variant="success" label="In servizio"></mds-badge>
+                <mds-text truncate="word" slot="detail" typography="caption">Head of the office</mds-text>
+                <mds-badge slot="detail" variant="success" label="On duty"></mds-badge>
               </mds-entity>
               <mds-entity initials="lf" variant="orchid">
                 <mds-text truncate="word" typography="h6">Luca Ferri</mds-text>
-                <mds-text truncate="word" slot="detail" typography="caption">Sportello</mds-text>
-                <mds-badge slot="detail" variant="dark" label="In ferie"></mds-badge>
+                <mds-text truncate="word" slot="detail" typography="caption">Front desk</mds-text>
+                <mds-badge slot="detail" variant="dark" label="On leave"></mds-badge>
               </mds-entity>
             </div>
           </mds-card-content>
@@ -404,15 +406,15 @@
         <!-- files and an upload in progress -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Allegati</mds-text>
+            <mds-text typography="part" tag="h2">Attachments</mds-text>
           </mds-card-header>
           <mds-card-content>
             <div class="scene-fields">
-              <mds-file filename="Documento d'identità" suffix="pdf" description="240 KB"></mds-file>
-              <mds-file filename="Contratto di affitto" suffix="docx" description="1,2 MB"></mds-file>
+              <mds-file filename="Identity document" suffix="pdf" description="240 KB"></mds-file>
+              <mds-file filename="Rental contract" suffix="docx" description="1.2 MB"></mds-file>
               <div class="scene-stack">
-                <mds-text typography="caption" tag="p" class="scene-muted">Planimetria, 60%</mds-text>
-                <mds-progress progress="0.6" aria-label="Caricamento della planimetria"></mds-progress>
+                <mds-text typography="caption" tag="p" class="scene-muted">Floor plan, 60%</mds-text>
+                <mds-progress progress="0.6" aria-label="Uploading the floor plan"></mds-progress>
               </div>
             </div>
           </mds-card-content>
@@ -421,21 +423,21 @@
         <!-- the actions at each weight, and one that cannot run -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Azioni</mds-text>
+            <mds-text typography="part" tag="h2">Actions</mds-text>
           </mds-card-header>
           <mds-card-content>
             <div class="scene-fields">
               <div class="scene-row">
-                <mds-button>Invia</mds-button>
-                <mds-button tone="weak">Assegna</mds-button>
-                <mds-button tone="outline">Inoltra</mds-button>
-                <mds-button tone="text">Rimanda</mds-button>
+                <mds-button>Send</mds-button>
+                <mds-button tone="weak">Assign</mds-button>
+                <mds-button tone="outline">Forward</mds-button>
+                <mds-button tone="text">Postpone</mds-button>
               </div>
               <div class="scene-row">
-                <mds-button variant="dark" tone="outline">Annulla</mds-button>
-                <mds-button variant="error">Elimina</mds-button>
-                <mds-button variant="ai" icon="mi/baseline/insights">Riassumi</mds-button>
-                <mds-button disabled>Firma</mds-button>
+                <mds-button variant="dark" tone="outline">Cancel</mds-button>
+                <mds-button variant="error">Delete</mds-button>
+                <mds-button variant="ai" icon="mi/baseline/insights">Summarize</mds-button>
+                <mds-button disabled>Sign</mds-button>
               </div>
             </div>
           </mds-card-content>
@@ -444,16 +446,16 @@
         <!-- the kinds of request, each with its colour -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Categorie</mds-text>
+            <mds-text typography="part" tag="h2">Categories</mds-text>
           </mds-card-header>
           <mds-card-content>
             <div class="scene-row">
-              <mds-label variant="blue" label="Residenza"></mds-label>
-              <mds-label variant="green" label="Stato civile"></mds-label>
-              <mds-label variant="orange" label="Elettorale"></mds-label>
-              <mds-label variant="orchid" label="Cittadinanza"></mds-label>
-              <mds-label variant="aqua" tone="strong" label="Certificati"></mds-label>
-              <mds-label variant="red" tone="strong" label="Urgente"></mds-label>
+              <mds-label variant="blue" label="Residence"></mds-label>
+              <mds-label variant="green" label="Civil status"></mds-label>
+              <mds-label variant="orange" label="Elections"></mds-label>
+              <mds-label variant="orchid" label="Citizenship"></mds-label>
+              <mds-label variant="aqua" tone="strong" label="Certificates"></mds-label>
+              <mds-label variant="red" tone="strong" label="Urgent"></mds-label>
             </div>
           </mds-card-content>
         </mds-card>
@@ -461,18 +463,18 @@
         <!-- questions and answers -->
         <mds-card>
           <mds-card-header>
-            <mds-text typography="part" tag="h2">Domande frequenti</mds-text>
+            <mds-text typography="part" tag="h2">Frequently asked questions</mds-text>
           </mds-card-header>
           <mds-card-content>
             <mds-accordion>
-              <mds-accordion-item label="Quanto dura un cambio di residenza?" typography="h6" selected>
-                <mds-text>Due giorni lavorativi per la registrazione, 45 per gli accertamenti.</mds-text>
+              <mds-accordion-item label="How long does a change of address take?" typography="h6" selected>
+                <mds-text>Two working days to register it, 45 for the checks.</mds-text>
               </mds-accordion-item>
-              <mds-accordion-item label="Chi può chiedere un certificato?" typography="h6">
-                <mds-text>Chiunque, per i certificati anagrafici; l'interessato, per gli altri.</mds-text>
+              <mds-accordion-item label="Who can ask for a certificate?" typography="h6">
+                <mds-text>Anyone, for registry certificates; the person concerned, for the others.</mds-text>
               </mds-accordion-item>
-              <mds-accordion-item label="Come si paga?" typography="h6">
-                <mds-text>Con pagoPA, allo sportello o dal portale.</mds-text>
+              <mds-accordion-item label="How do I pay?" typography="h6">
+                <mds-text>With pagoPA, at the counter or on the portal.</mds-text>
               </mds-accordion-item>
             </mds-accordion>
           </mds-card-content>
@@ -482,7 +484,7 @@
     <!-- the preferences of the scene, never shown: the dropdown of the bar of the studio sets
       their attributes (scene-prefs.tsx), and they apply them on this document. No language: the
       dropdown has none, and a stored one would switch the scene with nothing to switch it back -->
-    <aside id="studio-pref" hidden aria-label="Preferenze">
+    <aside id="studio-pref" hidden aria-label="Preferences">
       <mds-pref>
         <mds-pref-animation></mds-pref-animation>
         <mds-pref-consumption></mds-pref-consumption>

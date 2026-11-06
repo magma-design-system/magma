@@ -9,6 +9,7 @@
     "serve": "vite",
     "build": "vite build",
     "build.site": "tsx site.ts",
+    "cover": "tsx cover.ts",
     "test": "vitest --run",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
@@ -23,6 +24,7 @@
     "handlebars": "4.7.10",
     "jsdom": "27.4.0",
     "preact": "11.1.1",
+    "sharp": "0.35.5",
     "vite": "8.3.6"
   },
   "repository": {
