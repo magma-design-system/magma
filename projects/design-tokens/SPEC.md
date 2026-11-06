@@ -219,6 +219,8 @@ engine as every other block of the layer.
 }
 ```
 
+A theme made for one colour mode says so: `"color": { "tint": "bisque", "modes": ["light"] }`.
+
 | Field | What it is |
 | --- | --- |
 | `format` | the version of the shape, `1`: a reader refuses a format it does not know instead of guessing |
@@ -226,12 +228,25 @@ engine as every other block of the layer.
 | `description` | what the theme is for, in one line |
 | `color.tint` | the family the neutral scaffolding takes: `--surface-<tint>-*`, `--border-<tint>-*`, `--text-<tint>-*` and the ramp `--tone-<tint>-*` |
 | `color.accents` | accent role -> the family it takes (`variant-secondary`); a role left out keeps the accent of the base, a role the layer does not have (`accents` of `semantic.config.ts`) is refused |
+| `color.modes` | the colour modes the theme can be used in, `light` and/or `dark` (the values of `color-scheme`); left out, both. A theme of one mode is applied in it whatever the person picked (#1274) |
 
 - **Intent, not output.** A theme names families and roles, never the generated colours: the
   CSS is generated from it, so a theme has one dialect, whoever holds it.
 - **`business` is the base.** `:root` takes its tint and its accents, so it emits no rule and a
   page with no `data-theme-name` is `business`. Every other theme keeps from it what it does
   not set.
+- **What a field may do to format 1.** A field joins format 1 when it is optional and leaving
+  it out means what a file without it meant before: every file of the format then reads the
+  same to an old reader and a new one. `color.modes` is such a field (left out, both modes,
+  as before). A reader older than the field refuses a file that sets it, because `color`
+  takes no field it does not name, so the theme is never read without its lock. A field that
+  changes what an existing one means, or that a theme cannot leave out, is format 2. Format 1
+  had not shipped when `modes` joined it (#1251, #1274).
+- **The mode is declared, not forced, by the CSS.** A theme of one mode prints
+  `--magma-color-modes: <mode>` first in its `:root[data-theme-name]` block (`namedThemeCss`,
+  `COLOR_MODES_PROPERTY` of `semantic.model.ts`); `mds-pref-theme` reads it and writes the
+  `pref-theme-scheme-<mode>` class the palette obeys. Why the class and not the theme's name
+  in the dark selectors: `projects/styles/SEMANTIC_COLOR_SPEC.md`, section 8.
 - **One schema.** `THEME_SCHEMA` in `src/lib/theme-manifest.mts`, published as
   `dist/config/magma-theme.schema.json`. `readTheme` validates a theme (and its accent roles
   against the layer) and `themeDefOf` turns it into a `ThemeDef`. A file that does not validate

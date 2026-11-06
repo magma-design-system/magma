@@ -13,13 +13,18 @@ import {
   namedThemeCss,
   themeOf,
 } from '@maggioli-design-system/design-tokens/semantic.model';
-import { REQUIRED_SURFACE_GROUPS, SurfaceCanvas } from './surfaces.js';
-import { Field, Select, TextInput } from './magma.js';
+import {
+  COLOR_MODES,
+  type ColorMode,
+} from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
+import { RESERVED_GROUPS, SurfaceCanvas } from './surfaces.js';
+import { Field, Select, TextInput, type Option } from './magma.js';
 import './themes.css';
 
 /**
  * Themes - a DERIVED section under surfaces (epic #328, spec 8). It reads the
- * families opted into a surface above: each one IS a theme. The default
+ * families opted into a surface above: each one IS a theme, whatever its group,
+ * except the status ones (RESERVED_GROUPS, surfaces.tsx). The default
  * (`semantic.tint`) is the base `:root`; every other opted family switches in
  * via `data-theme-name`, repointing the whole `--magma-tint-*` block (surface +
  * border + text) to that family. Text comes from the family's own scale (A7),
@@ -66,9 +71,22 @@ const variantHex = (
 /** per-theme accent assignment: theme family -> role -> variant family. */
 type AccentAssignment = Record<string, Record<string, string>>;
 
-/** A ThemeDef of semantic.config.ts as surface and accents (a string is the surface alone). */
+/** A ThemeDef of semantic.config.ts as surface, accents and modes (a string is the surface alone). */
 const defOf = (def: (typeof semantic.themes)[string]) =>
-  typeof def === 'string' ? { surface: def, accents: undefined, deprecated: undefined } : def;
+  typeof def === 'string'
+    ? { surface: def, accents: undefined, modes: undefined, deprecated: undefined }
+    : def;
+
+/**
+ * The colour modes a theme can be used in (#1274), as its select offers them. A value is the list
+ * of the modes as `color-scheme` writes it, since the modes are its values (`color.modes` of the
+ * theme file, theme-manifest.mts): both, the default of a theme that says nothing, or one alone.
+ */
+export const MODE_CHOICES: Option[] = [
+  { value: 'light dark', label: 'Light and dark' },
+  { value: 'light', label: 'Light only' },
+  { value: 'dark', label: 'Dark only' },
+];
 
 /**
  * The name of a theme is its own, not the name of the family it is drawn from (decided with
@@ -79,19 +97,21 @@ const defOf = (def: (typeof semantic.themes)[string]) =>
 export const RESERVED_THEME_NAMES: ReadonlySet<string> = new Set(Object.keys(semantic.themes));
 
 /**
- * The themes Magma ships, by the family they are drawn from: their name and their accents. The
- * deprecated ones are no starting point, so they are not offered.
+ * The themes Magma ships, by the family they are drawn from: their name, their accents and their
+ * modes. The deprecated ones are no starting point, so they are not offered.
  */
-const SHIPPED_BY_FAMILY: ReadonlyMap<string, { name: string; accents: Record<string, string> }> =
-  new Map(
-    Object.entries(semantic.themes)
-      .map(([name, def]) => ({ name, ...defOf(def) }))
-      .filter(({ deprecated }) => !deprecated)
-      .map(({ name, surface, accents }) => [
-        surface ?? semantic.tint,
-        { name, accents: accents ?? {} },
-      ]),
-  );
+const SHIPPED_BY_FAMILY: ReadonlyMap<
+  string,
+  { name: string; accents: Record<string, string>; modes: readonly ColorMode[] }
+> = new Map(
+  Object.entries(semantic.themes)
+    .map(([name, def]) => ({ name, ...defOf(def) }))
+    .filter(({ deprecated }) => !deprecated)
+    .map(({ name, surface, accents, modes }) => [
+      surface ?? semantic.tint,
+      { name, accents: accents ?? {}, modes: modes ?? COLOR_MODES },
+    ]),
+);
 
 /** Why a name a person gave a theme cannot be used, or null when it can. */
 export function themeNameProblem(name: string, family: string, names: Record<string, string>) {
@@ -135,30 +155,27 @@ export function ThemesManager({ config }: ThemesManagerProps) {
   // Every family opted into a surface above (text follows per A7); default first. Any group
   // backs a theme, a label or brand family a monochromatic one: "the groups organise names; they
   // do not gate what can back a theme" (styles/SEMANTIC_COLOR_SPEC.md, section 8). Save the
-  // families a required group carries with no flag of their own: status always generates
-  // surfaces, so its components get a text role legible on their own tint, and nobody chose
-  // those as themes; a status family opted in on its own is one (vittorio, 2026-11-05).
+  // reserved groups (RESERVED_GROUPS, surfaces.tsx), even a family opted in on its own: status
+  // always generates surfaces, so its components get a text role legible on their own tint, but
+  // a theme in a status colour would mix with the messages that colour carries (vittorio,
+  // 2026-11-06, over the opt-in exception of 2026-11-05).
+  const reservedFamilies = new Set(
+    config.colors
+      .filter((color) => RESERVED_GROUPS.has(color.name.split('.')[0]))
+      .map((color) => color.name.split('.')[1]),
+  );
+  const opted = Object.keys(surfaces).filter(
+    (family) => texts[family] && !reservedFamilies.has(family),
+  );
+  // the ramp a theme repoints is `tone-<family>` by default (scaleFamily, semantic.config.ts); a
+  // family of another group names its own (spec section 8: `{ surface: 'blue', scale: 'label-blue' }`)
   const groupOf = new Map(
     config.colors.map((color) => [color.name.split('.')[1], color.name.split('.')[0]]),
   );
-  const themeableFamilies = new Set(
-    config.colors
-      .filter((color) => !color.disabled)
-      .filter(
-        (color) =>
-          !(REQUIRED_SURFACE_GROUPS.has(color.name.split('.')[0]) && color.surface === undefined),
-      )
-      .map((color) => color.name.split('.')[1]),
-  );
-  // the ramp a theme repoints is `tone-<family>` by default; a family of another group names
-  // its own (spec section 8: `{ surface: 'blue', scale: 'label-blue' }`)
   const scaleOf = (family: string): string | undefined => {
     const group = groupOf.get(family);
     return group && group !== 'tone' ? `${group}-${family}` : undefined;
   };
-  const opted = Object.keys(surfaces).filter(
-    (family) => texts[family] && themeableFamilies.has(family),
-  );
   const extras = opted.filter((family) => family !== semantic.tint);
   const previewFamilies = [...(opted.includes(semantic.tint) ? [semantic.tint] : []), ...extras];
 
@@ -171,6 +188,12 @@ export function ThemesManager({ config }: ThemesManagerProps) {
     accents[family]?.[role] ??
     SHIPPED_BY_FAMILY.get(family)?.accents[role] ??
     semantic.accents[role];
+
+  // the colour modes of each theme (#1274; only the changes are stored, missing = the modes of the
+  // theme Magma ships from the family, then both)
+  const [modes, setModes] = useState<Record<string, readonly ColorMode[]>>({});
+  const modesFor = (family: string): readonly ColorMode[] =>
+    modes[family] ?? SHIPPED_BY_FAMILY.get(family)?.modes ?? COLOR_MODES;
 
   // the name of each theme: the shipped one for a family Magma draws a theme from, else the
   // one the person gives it, the family name until then
@@ -185,7 +208,8 @@ export function ThemesManager({ config }: ThemesManagerProps) {
 
   // export: the block of each non-default theme, expanded and printed by the code
   // that writes themes.css (design-tokens semantic.model.ts): the tint block of the
-  // family with its ramp, each reassigned accent, and the theme's own contrast blocks.
+  // family with its ramp, each reassigned accent, the theme's own contrast blocks and,
+  // for a theme of one mode, `--magma-color-modes` first.
   // A family whose name is no theme name (the model refuses it) says why instead.
   const themeCss = (family: string): string => {
     const name = nameOf(family);
@@ -198,15 +222,27 @@ export function ThemesManager({ config }: ThemesManagerProps) {
         ([role, variant]) => variant !== semantic.accents[role],
       ),
     );
+    const scale = scaleOf(family);
     try {
-      const scale = scaleOf(family);
       return namedThemeCss(
-        themeOf(name, { surface: family, accents: accentOverrides, ...(scale && { scale }) }),
+        themeOf(name, {
+          surface: family,
+          accents: accentOverrides,
+          modes: modesFor(family),
+          ...(scale && { scale }),
+        }),
       );
     } catch (error) {
       return `/* ${name}: ${error instanceof Error ? error.message : String(error)} */`;
     }
   };
+  // the base theme of one mode declares it under its own name, as every theme does: mds-pref-theme
+  // reads it from `:root[data-theme-name]` when it applies the theme. In `:root` the lock would
+  // reach every theme of both modes, which declares nothing. Both modes print nothing.
+  const baseModesCss = (): string =>
+    namedThemeCss(
+      themeOf(nameOf(semantic.tint), { surface: semantic.tint, modes: modesFor(semantic.tint) }),
+    );
   // the default family is the base :root: it emits no surface/border/text override,
   // but a repointed accent IS a base change, so surface it as a :root accent block.
   const defaultAccentCss = (): string => {
@@ -217,7 +253,9 @@ export function ThemesManager({ config }: ThemesManagerProps) {
     });
     return lines.length ? [':root {', ...lines, '}'].join('\n') : '';
   };
-  const exportCss = [defaultAccentCss(), ...extras.map(themeCss)].filter(Boolean).join('\n\n');
+  const exportCss = [defaultAccentCss(), baseModesCss(), ...extras.map(themeCss)]
+    .filter(Boolean)
+    .join('\n\n');
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try {
@@ -234,7 +272,8 @@ export function ThemesManager({ config }: ThemesManagerProps) {
   return (
     <div class="themes">
       <mds-text typography="detail" tag="p" class="themes-muted">
-        Each family opted into a surface (Semantic surface) is a theme with a name of its own:{' '}
+        Each family opted into a surface (Semantic surface), whatever its group, is a theme with a
+        name of its own, except the status ones, which would mix with the messages they colour:{' '}
         <code>{nameOf(semantic.tint)}</code>, drawn from <code>{semantic.tint}</code>, is the base{' '}
         <code>:root</code>, and every other one switches in via <code>data-theme-name</code>,
         repointing the whole <code>--magma-tint-*</code> block (surface + border + text) to its
@@ -270,6 +309,8 @@ export function ThemesManager({ config }: ThemesManagerProps) {
             seeds={seeds}
             accentFor={accentFor}
             onAccent={setAccent}
+            modes={modesFor(family)}
+            onModes={(next) => setModes((prev) => ({ ...prev, [family]: next }))}
           />
         ))}
       </div>
@@ -324,6 +365,9 @@ interface ThemeCardProps {
   seeds: Record<Mode, string>;
   accentFor: (family: string, role: string) => string;
   onAccent: (family: string, role: string, variant: string) => void;
+  /** The colour modes the theme can be used in. */
+  modes: readonly ColorMode[];
+  onModes: (modes: ColorMode[]) => void;
 }
 
 function ThemeCard({
@@ -339,6 +383,8 @@ function ThemeCard({
   seeds,
   accentFor,
   onAccent,
+  modes,
+  onModes,
 }: ThemeCardProps) {
   const hasScales = Boolean(surfaces[family] && texts[family]);
   const isDefault = family === semantic.tint;
@@ -384,31 +430,47 @@ function ThemeCard({
       {/* accent assignment: pick a variant per role. Every theme - including the
           default (:root) - can repoint an accent role to another variant; the roles
           themselves are fixed (never renamed or removed). On the default a change is
-          a BASE change (exported as a :root block), elsewhere a per-theme override. */}
+          a BASE change (exported as a :root block), elsewhere a per-theme override.
+          The accents on one row, the modes of the theme under them (vittorio, 2026-11-05). */}
       {hasScales && (
-        <div class="themes-accents" role="group" aria-label={`The accents of ${name || family}`}>
-          {ACCENT_ROLES.map((role) => {
-            const current = accentFor(family, role);
-            const isBase = current === semantic.accents[role];
-            return (
-              <div class="themes-accent">
-                <Field label={accentLabel(role)}>
-                  <Select
-                    size="md"
-                    value={current}
-                    onValue={(variant) => onAccent(family, role, variant)}
-                    options={variantFamilies.map((v) => ({
-                      value: v,
-                      label: `${v.replace('variant-', '')}${v === semantic.accents[role] ? ' (base)' : ''}`,
-                    }))}
-                  />
-                </Field>
-                {!isBase && (
-                  <mds-badge variant="info" label={isDefault ? 'changed' : 'override'}></mds-badge>
-                )}
-              </div>
-            );
-          })}
+        <div class="themes-settings">
+          <div class="themes-accents" role="group" aria-label={`The accents of ${name || family}`}>
+            {ACCENT_ROLES.map((role) => {
+              const current = accentFor(family, role);
+              const isBase = current === semantic.accents[role];
+              return (
+                <div class="themes-accent">
+                  <Field label={accentLabel(role)}>
+                    <Select
+                      size="md"
+                      value={current}
+                      onValue={(variant) => onAccent(family, role, variant)}
+                      options={variantFamilies.map((v) => ({
+                        value: v,
+                        label: `${v.replace('variant-', '')}${v === semantic.accents[role] ? ' (base)' : ''}`,
+                      }))}
+                    />
+                  </Field>
+                  {!isBase && (
+                    <mds-badge
+                      variant="info"
+                      label={isDefault ? 'changed' : 'override'}
+                    ></mds-badge>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <div class="themes-accent themes-modes-field">
+            <Field label="Modes">
+              <Select
+                size="md"
+                value={modes.join(' ')}
+                onValue={(value) => onModes(value.split(' ') as ColorMode[])}
+                options={MODE_CHOICES}
+              />
+            </Field>
+          </div>
         </div>
       )}
 
@@ -418,11 +480,13 @@ function ThemeCard({
         </mds-text>
       ) : (
         // the same canvas as Semantic surface, one mode under the other: the surfaces of the
-        // theme are in view (vittorio, 2026-11-05), the accents of the theme under each
+        // theme are in view (vittorio, 2026-11-05), the accents of the theme under each. A mode
+        // the theme does not offer stays in view, dimmed, and says so
         <div class="themes-modes">
           {MODES.map((mode) => {
             const s = surfaces[family][mode];
             const t = texts[family]?.[mode];
+            const offered = modes.includes(mode);
             return (
               <SurfaceCanvas
                 mode={mode}
@@ -431,6 +495,7 @@ function ThemeCard({
                 ink={t}
                 ownText
                 canvasText={hex(t, 'default')}
+                off={offered ? undefined : 'not offered by the theme'}
               >
                 {/* accents applied on THIS theme's surface, per mode. Each role: a
                     solid pill (emphasis fill + on-emphasis text) with its APCA Lc,

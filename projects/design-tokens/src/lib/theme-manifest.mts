@@ -15,6 +15,12 @@ import { formatError, type ValidationResult } from './schema.mjs'
   `format` is the version of this shape, not of Magma: a reader refuses a format it does not know
   instead of guessing. The dimensions other than colour (corner shape, dimension, depth) join
   `color` as groups of their own when Magma has them.
+
+  A field joins format 1 when it is optional and leaving it out means what a file without it
+  meant before, so every file of the format reads the same: `color.modes` (#1274) did. A reader
+  that predates such a field refuses a file that sets it, because `color` takes no field it does
+  not name, so the theme is never read without its constraint. A field that changes what an
+  existing one means, or that a theme cannot leave out, is a new format.
 */
 
 // The names `mds-pref-theme` accepts (its `handleNameChange`), the same check as THEME_NAME in
@@ -27,6 +33,13 @@ const family = { type: 'string', pattern: '^[a-z0-9]+(-[a-z0-9]+)*$' }
 
 // An accent role, a key of `accents` in semantic.config.ts (`accent`, `ai`).
 const accentRole = { pattern: '^[a-z]+(-[a-z]+)*$' }
+
+/**
+ * The colour modes a theme can be used in, the values of `color-scheme` (the mode values of
+ * `mds-pref-mode` other than `system`, which is a choice, not a mode).
+ */
+export const COLOR_MODES = ['light', 'dark'] as const
+export type ColorMode = (typeof COLOR_MODES)[number]
 
 // Published in dist/config as magma-theme.schema.json, for the editors and the validators of
 // the products that keep a theme.
@@ -52,6 +65,13 @@ export const THEME_SCHEMA = {
         tint: family,
         // accent role -> the family it takes; a role left out keeps the accent of the base
         accents: { type: 'object', propertyNames: accentRole, additionalProperties: family },
+        // the modes the theme can be used in; left out, both (#1274)
+        modes: {
+          type: 'array',
+          items: { type: 'string', enum: COLOR_MODES },
+          minItems: 1,
+          uniqueItems: true,
+        },
       },
     },
   },
@@ -66,6 +86,7 @@ export interface ThemeManifest {
   color: {
     tint: string,
     accents?: Record<string, string>,
+    modes?: ColorMode[],
   },
 }
 
@@ -108,12 +129,28 @@ export function readTheme (theme: unknown, accentRoles?: readonly string[]): The
 }
 
 /**
- * The entry `semantic.config.ts` keeps for a theme (its `ThemeDef`): the tint is what the config
- * calls the surface family, and the accents carry over as they are.
+ * The one mode a theme is locked to, or undefined when it can be used in both: what
+ * `--magma-color-modes` says in its CSS block and what `mds-pref-theme` turns into the
+ * `pref-theme-scheme-<mode>` class. Both modes listed, or none, is no lock.
  */
-export function themeDefOf ({ color: { tint, accents } }: ThemeManifest): {
+export function lockedMode (modes?: readonly ColorMode[]): ColorMode | undefined {
+  return modes?.length === 1 ? modes[0] : undefined
+}
+
+/**
+ * The entry `semantic.config.ts` keeps for a theme (its `ThemeDef`): the tint is what the config
+ * calls the surface family, the accents carry over as they are, and so does a single mode (a
+ * theme for both modes says nothing, as before the field).
+ */
+export function themeDefOf ({ color: { tint, accents, modes } }: ThemeManifest): {
   surface: string,
   accents?: Record<string, string>,
+  modes?: ColorMode[],
 } {
-  return accents ? { surface: tint, accents } : { surface: tint }
+  const mode = lockedMode(modes)
+  return {
+    surface: tint,
+    ...(accents ? { accents } : {}),
+    ...(mode ? { modes: [mode] } : {}),
+  }
 }

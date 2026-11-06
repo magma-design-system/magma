@@ -1,13 +1,15 @@
 /* The glow is an outline in the text ink, light on the dark page: see mds-dropdown-pref-contrast.css. */
 
-:host([pref-contrast='more'][pref-mode='dark']) {
+:host([pref-contrast='more'][pref-mode='dark']:not([pref-theme-scheme='light'])),
+:host([pref-contrast='more'][pref-theme-scheme='dark']) {
   --mds-dropdown-drop-shadow: drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.075))
     drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.45))
     drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.45));
 }
 
 @media (prefers-contrast: more) {
-  :host([pref-contrast='system'][pref-mode='dark']) {
+  :host([pref-contrast='system'][pref-mode='dark']:not([pref-theme-scheme='light'])),
+  :host([pref-contrast='system'][pref-theme-scheme='dark']) {
     --mds-dropdown-drop-shadow: drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.05))
       drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.3))
       drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.3));
@@ -15,7 +17,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :host([pref-contrast='more'][pref-mode='system']) {
+  :host([pref-contrast='more'][pref-mode='system']:not([pref-theme-scheme='light'])) {
     --mds-dropdown-drop-shadow: drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.05))
       drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.3))
       drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.3));
@@ -23,7 +25,7 @@
 }
 
 @media (prefers-contrast: more) and (prefers-color-scheme: dark) {
-  :host([pref-contrast='system'][pref-mode='system']) {
+  :host([pref-contrast='system'][pref-mode='system']:not([pref-theme-scheme='light'])) {
     --mds-dropdown-drop-shadow: drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.05))
       drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.3))
       drop-shadow(0 0 --spacing(100) rgb(var(--magma-text-default) / 0.3));

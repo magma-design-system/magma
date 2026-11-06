@@ -3,22 +3,18 @@
  * DOM, so the panel needs no dark background of its own.
  * The shadow does: the shadow ink is black in both modes (spec 6.1c, #790), and on the dark
  * canvas the light-mode alphas barely show, so dark triples them. The selectors mirror the
- * dark block of the semantic layer (mode dark or system + OS dark, unless the theme scheme
- * is light, or a dark theme scheme) and keep the specificity of the pref-contrast rules,
- * which come later and win. */
+ * dark block of the semantic layer (mode dark, or system or no controller with the OS dark,
+ * unless the theme is light only; or a theme locked to dark) and keep the specificity of the
+ * pref-contrast rules, which come later and win. */
 
-:host([pref-mode='dark']),
+:host([pref-mode='dark']:not([pref-theme-scheme='light'])),
 :host([pref-theme-scheme='dark']) {
   --private-dropdown-shadow-strength: 3;
 }
 
 @media (prefers-color-scheme: dark) {
-  :host([pref-mode='system']),
-  :host(:not([pref-mode])) {
+  :host([pref-mode='system']:not([pref-theme-scheme='light'])),
+  :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
     --private-dropdown-shadow-strength: 3;
   }
-}
-
-:host([pref-theme-scheme='light']) {
-  --private-dropdown-shadow-strength: 1;
 }

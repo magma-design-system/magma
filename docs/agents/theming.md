@@ -58,6 +58,13 @@ names, from the preview every theme publishes on the page (`--magma-preview-<nam
 semantic roles; a raw palette step stays as it is. Defining your own theme is not a
 consumer feature yet.
 
+A theme can be made for one colour mode only (`color.modes` of its file; `business` and
+`editorial` take both). `mds-pref-theme` applies such a theme in its mode, whatever the
+person picked, and `mds-pref-mode` shows that mode with its other choices locked; the
+person's own choice comes back with a theme of both modes. A page that writes
+`data-theme-name` by hand, with no `mds-pref-theme`, writes the lock too:
+`pref-theme-scheme-dark` or `pref-theme-scheme-light` on `<html>`.
+
 ## Surfaces and elevation
 
 Every neutral background is one of five surface levels. They are not five greys to pick

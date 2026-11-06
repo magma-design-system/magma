@@ -91,6 +91,26 @@ test('a family is a toggle button with the swatch of its colour', async () => {
   expect(info.querySelector('mds-badge')?.getAttribute('label')).toBe('via status')
 })
 
+test('the status families sit in a row of their own, under the others, saying they are never a theme', () => {
+  const lists = [...root.querySelectorAll('.surfaces-choices[role="group"]')]
+  const names = (label: string) =>
+    [...lists.find((list) => list.getAttribute('aria-label') === label)!.querySelectorAll('button.surfaces-family')].map(
+      (family) => family.textContent?.replace('via status', '').trim(),
+    )
+
+  const status = (initialConfig as MagmaConfig).colors
+    .filter((color) => color.name.startsWith('status.'))
+    .map((color) => color.name.split('.')[1])
+  expect(names('Status families')).toEqual(status)
+  expect(names('Surface families')).not.toEqual(expect.arrayContaining([status[0]]))
+  expect(names('Surface families')).toEqual(expect.arrayContaining(['porcelain', 'blue', 'maggioli']))
+
+  const reserved = root.querySelector('.surfaces-reserved')!
+  expect(reserved.textContent).toContain('never a theme')
+  const families = root.querySelector('.surfaces-choices[aria-label="Surface families"]')!
+  expect(families.compareDocumentPosition(reserved) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+})
+
 test('a slider of the levels writes the level of its role and mode', async () => {
   const surface = slider('Surfaces default, light')
   expect(surface.getAttribute('value')).toBe('96')

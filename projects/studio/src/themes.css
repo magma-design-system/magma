@@ -1,6 +1,6 @@
 /*
-  The Themes page (themes.tsx): one card per theme, its name, its accents and its two modes, then
-  the export. Spaces from the rhythm, colours from the semantic roles
+  The Themes page (themes.tsx): one card per theme, its name, its accents, the modes it offers and
+  its two modes in view, then the export. Spaces from the rhythm, colours from the semantic roles
   (docs/agents/patterns/rhythm.md, surfaces.md); the boxes of the modes paint the colours the
   configuration generates inline, so only their frame is written here.
 */
@@ -73,15 +73,27 @@
   font-size: var(--text-size-info-tip);
 }
 
-/* the accents one under the other in a narrow card, side by side where it has room */
+/*
+  The settings of a theme: its accents on one row, its modes under the first of them, as wide; one
+  under the other in a narrow card. The accents share the columns of the settings (subgrid), so
+  the modes line up with them.
+*/
+
+.themes-settings {
+  column-gap: var(--magma-rhythm-inline);
+  display: grid;
+  row-gap: var(--magma-rhythm-between-fields);
+}
 
 .themes-accents {
   display: grid;
-  gap: var(--magma-rhythm-inline);
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  row-gap: var(--magma-rhythm-between-fields);
 }
 
 @container theme (width >= 20rem) {
-  .themes-accents {
+  .themes-settings {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

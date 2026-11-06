@@ -29,18 +29,30 @@
 
 import businessTheme from './themes/business.json';
 import editorialTheme from './themes/editorial.json';
-import { readTheme, themeDefOf, type ThemeManifest } from './src/lib/theme-manifest.mjs';
+import {
+  readTheme,
+  themeDefOf,
+  type ColorMode,
+  type ThemeManifest,
+} from './src/lib/theme-manifest.mjs';
 
 /**
  * A named theme's cosmetic override (spec 8). The string shorthand names only
  * the surface family (back-compat); the object form can also repoint individual
  * accents, so a theme retints its accents the same way it retints surfaces.
+ * `modes` lists the colour modes the theme can be used in (#1274); left out, both.
  * `deprecated` keeps a shipped name working until the next major and says why it
  * goes: the theme still emits its block, and the outputs mark it.
  */
 export type ThemeDef =
   | string
-  | { surface?: string; accents?: Record<string, string>; scale?: string; deprecated?: string };
+  | {
+      surface?: string;
+      accents?: Record<string, string>;
+      scale?: string;
+      modes?: readonly ColorMode[];
+      deprecated?: string;
+    };
 
 /**
  * A contrast preference level that carries role promotions (spec 9.3). Only `more`

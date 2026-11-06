@@ -5,9 +5,10 @@ import { act } from 'preact/test-utils'
 
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
-import { namedThemeCss, themeOf } from '@maggioli-design-system/design-tokens/semantic.model'
+import { COLOR_MODES_PROPERTY, namedThemeCss, themeOf } from '@maggioli-design-system/design-tokens/semantic.model'
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config'
-import { RESERVED_THEME_NAMES, ThemesManager, themeNameProblem } from '../src/themes.js'
+import { validateTheme } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs'
+import { MODE_CHOICES, RESERVED_THEME_NAMES, ThemesManager, themeNameProblem } from '../src/themes.js'
 
 // The themes view of the studio: it builds the export CSS while rendering, so a throw anywhere
 // in that path (e.g. a helper used but never imported) silently drops the whole block from the
@@ -37,6 +38,30 @@ test('the themes view renders a card per theme, the base first, each named apart
   const editorial = cards.find((card) => card.querySelector('.themes-name')?.textContent === 'editorial')
   expect(editorial?.querySelector('.themes-family')?.textContent).toContain('bisque')
   expect(editorial?.querySelector('.themes-attr')?.textContent).toBe("data-theme-name='editorial'")
+})
+
+test('a theme is drawn from a family of any group, one created in the studio too, never from status', () => {
+  const config = JSON.parse(JSON.stringify(initialConfig)) as MagmaConfig
+  const blue = config.colors.find((color) => color.name === 'label.blue')!
+  blue.surface = true
+  config.colors.push({ ...blue, name: 'product.ocean' })
+  render(h(ThemesManager, { config }), root)
+
+  const families = cardsOf().map((card) => card.querySelector('.themes-family')?.textContent ?? '')
+  expect(families.some((family) => family.includes('blue'))).toBe(true)
+  expect(families.some((family) => family.includes('ocean'))).toBe(true)
+  // status carries surfaces (its group is on in the configuration), yet it is no theme
+  expect(config.groups?.status?.surface).toBe(true)
+  for (const status of ['info', 'success', 'error', 'warning']) {
+    expect(families.some((family) => family.includes(status))).toBe(false)
+  }
+
+  // a family of another group repoints its own ramp, never a `tone-` ramp that does not exist
+  const exported = exportOf()
+  const block = (name: string) => exported.match(new RegExp(`:root\\[data-theme-name='${name}'\\] \\{[^}]*\\}`))?.[0] ?? ''
+  expect(block('blue')).toContain('--label-blue-')
+  expect(block('blue')).not.toContain('--tone-blue-')
+  expect(block('ocean')).toContain('--product-ocean-')
 })
 
 test('the export repoints the tint ramp for every non-base theme', () => {
@@ -148,7 +173,7 @@ test('a family of any group opted into a surface is a theme, the ramp of its gro
   expect(block).not.toContain('tone-violet')
 })
 
-test('the families the status group carries are no themes, a status family opted in on its own is', () => {
+test('a status family is no theme, not even one opted in on its own', () => {
   const families = () => cardsOf().map((card) => card.querySelector('.themes-family')?.textContent ?? '')
   show()
   expect(families().some((family) => family.includes('info'))).toBe(false)
@@ -156,5 +181,70 @@ test('the families the status group carries are no themes, a status family opted
   const config = JSON.parse(JSON.stringify(initialConfig)) as MagmaConfig
   config.colors.find((color) => color.name === 'status.info')!.surface = true
   render(h(ThemesManager, { config }), root)
-  expect(families().some((family) => family.includes('info'))).toBe(true)
+  expect(families().some((family) => family.includes('info'))).toBe(false)
+})
+
+// The colour modes of a theme (#1274): both unless the theme says one, as `color.modes` of the theme
+// file. Each choice of the select is a list of modes the format takes.
+test('each choice of the modes is a value of color.modes in the theme format', () => {
+  expect(MODE_CHOICES.map((choice) => choice.label)).toEqual(['Light and dark', 'Light only', 'Dark only'])
+  for (const { value } of MODE_CHOICES) {
+    const theme = { format: 1, name: 'night', color: { tint: 'bisque', modes: value.split(' ') } }
+    expect(validateTheme(theme)).toEqual({ valid: true, errors: [] })
+  }
+})
+
+const canvasesOf = (card: Element) =>
+  [...card.querySelectorAll('.surfaces-canvas')].map((canvas) => ({
+    mode: canvas.querySelector('.surfaces-canvas-label')?.textContent?.split(' ')[0],
+    off: canvas.classList.contains('surfaces-canvas-off'),
+    label: canvas.querySelector('.surfaces-canvas-label')?.textContent ?? '',
+  }))
+
+test('a theme of one mode dims the other in its preview and declares the mode in the export', async () => {
+  show()
+
+  const editorial = cardsOf().find((card) => card.querySelector('.themes-name')?.textContent === 'editorial')!
+  const select = editorial.querySelector('.themes-modes-field mds-input-select')!
+  // under the accents, in the same settings
+  expect(select.closest('.themes-settings')?.querySelector('.themes-accents')).not.toBeNull()
+  expect(select.getAttribute('value')).toBe('light dark')
+  expect(canvasesOf(editorial).map(({ off }) => off)).toEqual([false, false])
+  const both = exportOf()
+  expect(both).not.toContain(COLOR_MODES_PROPERTY)
+
+  await emit(select, 'mdsInputSelectChange', { value: 'dark', values: ['dark'] })
+  expect(select.getAttribute('value')).toBe('dark')
+  const [light, dark] = canvasesOf(editorial)
+  expect(light).toMatchObject({ mode: 'light', off: true })
+  expect(light.label).toContain('not offered by the theme')
+  expect(dark).toMatchObject({ mode: 'dark', off: false })
+  // the block themes.css would print for the theme of one mode: the lock first, once
+  const locked = namedThemeCss(themeOf('editorial', { ...(semantic.themes.editorial as object), modes: ['dark'] }))
+  expect(locked).toMatch(new RegExp(`^:root\\[data-theme-name='editorial'\\] \\{\n  ${COLOR_MODES_PROPERTY}: dark;\n`))
+  expect(exportOf()).toContain(locked)
+  expect(exportOf().match(new RegExp(COLOR_MODES_PROPERTY, 'g'))).toHaveLength(1)
+  // the other cards keep both
+  for (const card of cardsOf().filter((card) => card !== editorial))
+    expect(canvasesOf(card).some(({ off }) => off)).toBe(false)
+
+  // both again: no lock, nothing dimmed, the export as before
+  await emit(select, 'mdsInputSelectChange', { value: 'light dark', values: ['light dark'] })
+  expect(canvasesOf(editorial).map(({ off }) => off)).toEqual([false, false])
+  expect(exportOf()).toBe(both)
+})
+
+test('the base theme of one mode declares it under its own name, never in :root', async () => {
+  show()
+
+  const base = cardsOf()[0]
+  const name = base.querySelector('.themes-name')!.textContent!
+  await emit(base.querySelector('.themes-modes-field mds-input-select')!, 'mdsInputSelectChange', {
+    value: 'light',
+    values: ['light'],
+  })
+  expect(canvasesOf(base).map(({ off }) => off)).toEqual([false, true])
+  // the base :root holds every theme: a lock there would reach the themes of both modes
+  expect(exportOf()).toContain(`:root[data-theme-name='${name}'] {\n  ${COLOR_MODES_PROPERTY}: light;\n}`)
+  expect(exportOf()).not.toMatch(new RegExp(`^:root \\{[^}]*${COLOR_MODES_PROPERTY}`, 'm'))
 })
