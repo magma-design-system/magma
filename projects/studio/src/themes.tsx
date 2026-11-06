@@ -20,6 +20,9 @@ import {
 import { RESERVED_GROUPS, SurfaceCanvas } from './surfaces.js';
 import { Field, Select, TextInput, type Option } from './magma.js';
 import { type ThemeChoices, updateThemeChoices, useThemeChoices } from './theme-choices.js';
+import type { ExportAction } from './contrast.js';
+import type { GateReport, GateTheme } from './gate.js';
+import { ThemeVerdict } from './verdict.js';
 import './themes.css';
 
 /**
@@ -205,9 +208,17 @@ export function themesExportCss(
 
 interface ThemesManagerProps {
   config: MagmaConfig;
+  /** The contrast gate on the configuration: each card says the verdict of its theme per mode. */
+  report?: GateReport;
+  /** Runs an export, asking first while the gate fails (app.tsx); without it, it just runs. */
+  guard?: (action: ExportAction) => void;
 }
 
-export function ThemesManager({ config }: ThemesManagerProps) {
+export function ThemesManager({
+  config,
+  report,
+  guard = (action) => action.run(),
+}: ThemesManagerProps) {
   // generate once; read the per-family surface/text/border/variant role sets
   const [surfaces, texts, borders, variants, seeds, genError] = useMemo(() => {
     try {
@@ -326,6 +337,7 @@ export function ThemesManager({ config }: ThemesManagerProps) {
             seeds={seeds}
             accentFor={accentFor}
             onAccent={setAccent}
+            gate={report?.themes.find((theme) => theme.family === family)}
             modes={modesFor(family)}
             onModes={(next) =>
               updateThemeChoices((prev) => ({ ...prev, modes: { ...prev.modes, [family]: next } }))
@@ -353,7 +365,7 @@ export function ThemesManager({ config }: ThemesManagerProps) {
               tone="outline"
               size="md"
               icon={copied ? 'mi/baseline/check' : 'mi/baseline/content-copy'}
-              onClick={copy}
+              onClick={() => guard({ label: 'Copy CSS', verb: 'Copy', run: copy })}
               label={copied ? 'Copied' : 'Copy CSS'}
             ></mds-button>
           </div>
@@ -384,6 +396,8 @@ interface ThemeCardProps {
   seeds: Record<Mode, string>;
   accentFor: (family: string, role: string) => string;
   onAccent: (family: string, role: string, variant: string) => void;
+  /** What the contrast gate says of the theme, per mode. */
+  gate?: GateTheme;
   /** The colour modes the theme can be used in. */
   modes: readonly ColorMode[];
   onModes: (modes: ColorMode[]) => void;
@@ -402,6 +416,7 @@ function ThemeCard({
   seeds,
   accentFor,
   onAccent,
+  gate,
   modes,
   onModes,
 }: ThemeCardProps) {
@@ -428,6 +443,9 @@ function ThemeCard({
           drawn from <code>{family}</code>
         </mds-text>
         <code class="themes-attr">{isDefault ? ':root' : `data-theme-name='${name}'`}</code>
+        {/* the verdict of the contrast gate on the theme, per mode, live while it is edited:
+            its pairs are on the Contrast check page (#698) */}
+        <ThemeVerdict theme={gate} />
       </div>
 
       {!shipped && (

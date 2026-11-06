@@ -21,7 +21,7 @@ sections, in the order of the work (#693, decided 2026-11-05):
 
 | Section | Pages | What it is |
 | --- | --- | --- |
-| **Colors** (a menu) | Palette, Contrast scales, Semantic surface, Themes, Groups, then Diffs | the tokens playground that used to live in `design-tokens` (#695), one page per view; the menu opens with the verdict of the contrast gate on the configuration being edited |
+| **Colors** (a menu) | Palette, Contrast scales, Semantic surface, Themes, Groups, then Contrast check and Diffs | the tokens playground that used to live in `design-tokens` (#695), one page per view; the menu opens with the verdict of the contrast gate on the configuration being edited, and the button of the section counts the pairs that fail it (#698) |
 | **Theme** | one page | the theme on a scene of a product in an iframe: over it a header of what the theme is checked under (the view, the mode, the width of the frame, the contrast), at the bottom the bar of what is edited: the theme to show, then one button per axis (typography, shape, density, depth, the preferences of the person, dimension) |
 | **Behavior** (a menu) | Design language, Patterns, Blocks | what Magma decided and the layer of a product, read-only; placeholders until their turn (#693, "The plan") |
 
@@ -29,9 +29,10 @@ Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
 `#/behavior/patterns`, `src/routes.ts`), so the studio works from whatever folder serves it. The
 Colors pages stay mounted under the other sections, so their work is not lost; each opens with the
 head of the page-header block, the first thing of the region that scrolls (it scrolls with the
-page, and beside the list of the Palette it heads the larger column): the title, one line, then the actions (a menu with Reset and Load
-config, Copy JSON or Save, and last Download all tokens, a split button whose menu holds the
-other downloads).
+page, and beside the list of the Palette it heads the larger column): the title with the verdict
+of the contrast gate beside it, one line, then the actions (a menu with Reset and Load config,
+Copy JSON or Save, and last Download all tokens, a split button whose menu holds the other
+downloads).
 
 The Theme section shows the scene (`scene.html`) in an iframe, a document of its own: the theme is
 set on its `<html>` (`data-theme-name`), and the preferences of the person on its own `mds-pref-*`,
@@ -142,15 +143,55 @@ In this repository the installed magma is the build of `stencil`, so `serve` and
 first (an implicit dependency). A test holds the bundle to the rule: no component and no runtime
 of Stencil in `dist/assets`.
 
+## The contrast gate
+
+The studio runs the APCA contrast gate of design-tokens in the browser, on the configuration being
+edited, at every edit (#698, `src/gate.ts`): the pairs `nx run design-tokens:contrast` measures,
+with its targets and its baseline, through its own engine (`contrast-gate.ts`, driven by
+`semantic.config.ts`), so the studio and the CI judge a pair the same way: every text role on every
+surface (Lc 75 / 75 / 45 / 30), the on-emphasis text of each hue on its fill and the states of the
+fill (Lc 75 in light, 70 in dark), the text of the hues and of the neutral band on their washes,
+and the pairs the gate only reports (coloured text on the surfaces, the borders).
+
+What differs is which themes. The CI judges the themes Magma ships (`semantic.themes`); the studio
+judges the themes of the configuration it edits, as the Themes page defines and exports them
+(`configThemes` of `src/scene-css.ts`, the list the select of the Theme section offers): the base
+theme is the base layer of the gate, every other one a theme of the gate with its family, its ramp
+and the accents it repoints, keyed `<theme>:<pair>` as the CLI keys it, so the baseline accepts
+the same offenders. An accent the base theme repoints reaches the themes that leave it alone, as
+`:root` does in the CSS the page exports. On the configuration Magma builds with the studio
+measures the base and `editorial` exactly as the CLI does (`test/gate.test.mts` holds it).
+
+Every pair is measured in both modes, and judged in the modes its theme is used in: a theme of one
+mode (#1274) is never painted in the other, since `mds-pref-theme` locks it, so its pairs there say
+"not offered" and fail nothing.
+
+The verdict is in view while the configuration is edited: beside the title of every page of
+Colors (the status of the page-header block), as a count on the Colors button of the bar, which
+stays in view wherever the page scrolls (`mds-notification`), at the head of the Colors menu, and
+per mode on each card of the Themes page. The **Contrast check** page lists every pair of every
+theme, the two modes side by side with the sample of the two colours, the measure and its badge,
+one table per category of the gate; a switch keeps only the pairs below their target. The badges
+read as the previews of Semantic surface: `error` fails the build, `warning` is under a target the
+gate only reports, `info` is accepted by the baseline, a decorative border has no floor.
+
+A configuration that fails the gate is handed out only by choice, never by default: while it
+fails, every way out of the studio (the downloads, Build tokens on disk, Save, Copy JSON, Copy
+CSS of the Themes page, Export selection of a batch) opens a dialog first. Its question counts the
+pairs below target, its text names the action and the consequence and lists the first pairs, with
+a link to the Contrast check page; Cancel and Esc never export, and the action repeats its verb
+("Download anyway"), as `confirm-action` (`ask-first-many`) asks. The draft the studio keeps in the
+browser is no export: it is saved whatever the verdict.
+
 ## Architecture
 
 The studio runs the engine of `design-tokens` in the browser: it imports its sources (Vite turns
 the `.mjs` specifiers of the `.mts` files into the sources, and replaces `chalk` with a stub) and
 generates the palette, the surfaces and the themes on every edit. Nothing it shows is computed by
 a copy: the default balances are the `theme` block of `.magma-design-tokensrc.json`, the floors
-of the text roles those of the contrast gate, the verdict of the Colors menu the pairs of
-`gatePairs` judged against the baseline of design-tokens, and the export of a theme is printed by
-the code that writes `themes.css`.
+of the text roles those of the contrast gate, its verdict the pairs of `gatePairs` on the themes of
+the configuration judged against the baseline of design-tokens, and the export of a theme is
+printed by the code that writes `themes.css`.
 
 ```mermaid
 flowchart LR
@@ -162,21 +203,25 @@ flowchart LR
     SHELL["src/shell.tsx, src/routes.ts<br/>the bar, Colors, Theme, Behavior"]
     APP["src/app.tsx<br/>the pages of Colors"]
     SURF["src/surfaces.tsx, src/themes.tsx<br/>balances, themes, names"]
+    GATE["src/gate.ts, src/contrast.tsx<br/>the contrast gate, Contrast check"]
     OUT["src/formats.ts, src/batch.tsx<br/>zip, DTCG, CSS, GIMP, config"]
     VEN["vendor.ts<br/>serves Magma to the pages"]
     SCENE["scene.html<br/>the page the Theme section shows"]
     SHELL --> APP
     SHELL --> SCENE
     APP --> SURF
+    APP --> GATE
     APP --> OUT
+    SURF --> GATE
   end
-  DT -->|"createColorTokens, gatePairs, themeOf, namedThemeCss"| APP
+  DT -->|"createColorTokens, themeOf, namedThemeCss"| APP
+  DT -->|"gatePairs, applyBaseline, contrast-baseline.json"| GATE
   MCP -->|"stylesheetImports, loaderOf, fileOf"| VEN
   WC -->|"the lazy loader"| VEN
   ID -->|"the logo of the bar"| SHELL
   VEN -.->|"node_modules/, svg/, components/"| SHELL
   OUT -.->|"download"| AUTHOR(["the author of a theme"])
-  class DT,APP,SURF,OUT,SHELL,VEN,SCENE visual
+  class DT,APP,SURF,GATE,OUT,SHELL,VEN,SCENE visual
   class MCP ai
   class WC components
   class ID assets
@@ -203,7 +248,7 @@ the studio.
 ## The pages of Colors
 
 The studio loads `.magma-design-tokensrc.json` of `design-tokens` and runs the real token
-generator in the browser, so every preview matches the build output exactly. Colors has six
+generator in the browser, so every preview matches the build output exactly. Colors has seven
 pages: **Palette** (the two-column editor: color list on the left, editing and live light/dark
 scale previews with achieved contrast on the right; `neutral` is selected by default when
 present; where the detail has the room, the ramps stand upright beside the family and the global
@@ -211,7 +256,7 @@ settings, held in view while they scroll, and Ramps / Theme swaps them for the t
 backs on the scene, small as a phone, light or dark, painted with the configuration at every
 change, `src/palette-side.tsx`), **Contrast scales**, **Semantic surface** (opt families into the surface engine, tune
 the surface/border/text levels), **Themes** (each opted family, status aside, as a named theme, with its accent
-assignment, its colour modes and contrast checks), **Groups** and **Diffs**. Selecting a color from the sidebar while in contrast scales
+assignment, its colour modes and the verdict of the contrast gate per mode), **Groups**, **Contrast check** (every pair of the contrast gate, above) and **Diffs**. Selecting a color from the sidebar while in contrast scales
 keeps you there, since the scale samples follow the selected color.
 
 The **diff** view compares the current palette against the one generated from the committed

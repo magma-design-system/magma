@@ -39,6 +39,10 @@ import { ScalesManager, type RatioSet, type ScaleOrigin } from './scales.js';
 import { SurfaceManager, DEFAULT_THEME } from './surfaces.js';
 import { COLORS_PAGES, type ColorsView } from './routes.js';
 import { ThemesManager } from './themes.js';
+import { useThemeChoices } from './theme-choices.js';
+import { gateReport, type GateVerdict } from './gate.js';
+import { ContrastCheck, GateDialog, type ExportAction } from './contrast.js';
+import { GateBadge } from './verdict.js';
 import type { ThemeConfig } from '@maggioli-design-system/design-tokens/src/lib/surface.mjs';
 import { nearestColorName } from './color-names.js';
 import {
@@ -671,8 +675,10 @@ interface AppProps {
   view?: View;
   /** Opens a view: the shell follows its link. */
   onNavigate?: (view: View) => void;
-  /** The working config, on every change: the shell judges it with the contrast gate. */
+  /** The working config, on every change: the Theme section paints its themes. */
   onConfig?: (config: MagmaConfig) => void;
+  /** The verdict of the contrast gate on the working config, on every change: the Colors menu. */
+  onGate?: (verdict: GateVerdict) => void;
 }
 
 /** One line under the title of each view: what it holds. */
@@ -686,10 +692,12 @@ const VIEW_SUMMARY: Record<View, string> = {
   themes:
     'Each family with surfaces, status aside, is a theme: its name, its accents and the CSS that switches it in.',
   groups: 'The ratios, formula and export of each group of the configuration.',
+  contrast:
+    'Every pair the contrast gate judges, in each theme and both modes: what the build of Magma would say of this configuration.',
   diff: 'The palette against the configuration Magma builds with.',
 };
 
-export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
+export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps = {}) {
   // a persisted working state, restored once at mount, takes precedence over
   // the bundled defaults
   const bootDraft = useMemo(() => readDraft() as StudioDraft<View> | null, []);
@@ -916,10 +924,24 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
     return map;
   }, [view, scalesFormula, JSON.stringify(config), selectedName]);
 
-  // the shell judges the working config with the contrast gate
   useEffect(() => {
     onConfig?.(config);
   }, [config]);
+
+  // the contrast gate on the working config and the themes of the Themes page, at every edit
+  // (#698): the badge beside the title, the Contrast check page, the Colors menu, the exports
+  const choices = useThemeChoices();
+  const report = useMemo(() => gateReport(config, choices), [JSON.stringify(config), choices]);
+  useEffect(() => {
+    onGate?.(report.verdict);
+  }, [report]);
+
+  // an export while the gate fails asks first: never the silent default (#698)
+  const [pendingExport, setPendingExport] = useState<ExportAction | null>(null);
+  const guard = (action: ExportAction) => {
+    if (report.verdict.state === 'fail') setPendingExport(action);
+    else action.run();
+  };
 
   // mirror the working state to localStorage on every change, stamped with
   // the config it is made on. Until the start-up check has run, and while a
@@ -1640,9 +1662,14 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
             with the list of the families they head the larger column, not the whole width */}
         <header class="studio-page-head">
           <div class="studio-page-title">
-            <mds-text typography="page" tag="h1">
-              {COLORS_PAGES.find((page) => page.id === view)?.label}
-            </mds-text>
+            {/* the status of what is edited beside the title (page-header, `status`): the verdict
+                of the contrast gate, on every page of Colors */}
+            <div class="studio-page-name">
+              <mds-text typography="page" tag="h1">
+                {COLORS_PAGES.find((page) => page.id === view)?.label}
+              </mds-text>
+              <GateBadge verdict={report.verdict} />
+            </div>
             <mds-text typography="detail" tag="p" class="studio-muted">
               {VIEW_SUMMARY[view]}
             </mds-text>
@@ -1688,7 +1715,7 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
                 <mds-button
                   variant="dark"
                   tone="outline"
-                  onClick={saveConfig}
+                  onClick={() => guard({ label: 'Save', verb: 'Save', run: saveConfig })}
                   disabled={saving || !dirty || !!draftConflict}
                   title={savePath ?? undefined}
                   label={saving ? 'Saving...' : dirty ? 'Save *' : 'Saved'}
@@ -1698,7 +1725,7 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
               <mds-button
                 variant="dark"
                 tone="outline"
-                onClick={copyJson}
+                onClick={() => guard({ label: 'Copy JSON', verb: 'Copy', run: copyJson })}
                 label={copied ? 'Copied!' : 'Copy JSON'}
               ></mds-button>
             )}
@@ -1707,14 +1734,18 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
             <mds-button-dropdown
               icon="mi/outline/file-download"
               label="Download all tokens (zip)"
-              onmdsButtonDropdownClick={downloadZip}
+              onmdsButtonDropdownClick={() =>
+                guard({ label: 'Download all tokens (zip)', verb: 'Download', run: downloadZip })
+              }
             >
               {[
-                { label: 'Figma tokens (DTCG)', run: downloadFigmaDtcg },
-                { label: 'Config (json)', run: downloadJson },
-                { label: 'CSS tokens', run: downloadCss },
-                { label: 'GIMP palette', run: downloadGimp },
-                ...(serverMode ? [{ label: 'Build tokens on disk', run: buildTokens }] : []),
+                { label: 'Figma tokens (DTCG)', verb: 'Download', run: downloadFigmaDtcg },
+                { label: 'Config (json)', verb: 'Download', run: downloadJson },
+                { label: 'CSS tokens', verb: 'Download', run: downloadCss },
+                { label: 'GIMP palette', verb: 'Download', run: downloadGimp },
+                ...(serverMode
+                  ? [{ label: 'Build tokens on disk', verb: 'Build', run: buildTokens }]
+                  : []),
               ].map((item) => (
                 <mds-button
                   type="button"
@@ -1722,7 +1753,7 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
                   tone="text"
                   class="studio-menu-link"
                   label={item.label}
-                  onClick={item.run}
+                  onClick={() => guard(item)}
                 ></mds-button>
               ))}
             </mds-button-dropdown>
@@ -2084,7 +2115,7 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
           </>
         )}
         {/* Themes are DERIVED from the surfaces opt-in of the view above - same axis, one step down. */}
-        {view === 'themes' && <ThemesManager config={config} />}
+        {view === 'themes' && <ThemesManager config={config} report={report} guard={guard} />}
         {view === 'groups' && (
           <GroupsManager
             config={config}
@@ -2114,6 +2145,7 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
             onOpenBatch={openBatch}
           />
         )}
+        {view === 'contrast' && <ContrastCheck report={report} />}
         {view === 'diff' && <DiffView config={config} />}
       </main>
 
@@ -2123,8 +2155,31 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
           config={config}
           initialExport={batchModal.initialExport}
           onSave={saveBatch}
-          onExport={exportSelection}
+          onExport={(names) =>
+            guard({
+              label: 'Export selection',
+              verb: 'Export',
+              run: () => exportSelection(names),
+            })
+          }
           onClose={() => setBatchModal(null)}
+        />
+      )}
+
+      {pendingExport && (
+        <GateDialog
+          action={pendingExport}
+          report={report}
+          onCancel={() => setPendingExport(null)}
+          onConfirm={() => {
+            setPendingExport(null);
+            pendingExport.run();
+          }}
+          onReview={() => {
+            setPendingExport(null);
+            setBatchModal(null);
+            setView('contrast');
+          }}
         />
       )}
     </div>
