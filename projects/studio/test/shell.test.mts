@@ -3,6 +3,7 @@ import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 
 import { Studio } from '../src/shell.js'
+import { THEME_CHOICES_KEY, resetThemeChoices, updateThemeChoices } from '../src/theme-choices.js'
 
 // The shell of the studio: the bar names the three sections, each page is a link with the
 // current one marked (app-shell), and the Theme section shows the theme in its own document.
@@ -17,6 +18,7 @@ beforeEach(() => {
 })
 afterEach(() => {
   render(null, root)
+  resetThemeChoices()
   vi.unstubAllGlobals()
   location.hash = ''
 })
@@ -112,6 +114,26 @@ test('an axis opens its controls in a dropdown from its button, and says which o
   animations.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 0, value: 'reduce' }, bubbles: true }))
   await vi.waitFor(() => expect(animations.previousElementSibling?.textContent).toBe('Animations Disabled'))
   expect(animations.querySelector('mds-tab-item[value="reduce"]')?.hasAttribute('selected')).toBe(true)
+})
+
+test('a theme of one mode is seen in that mode only, the other choices of the header off', async () => {
+  updateThemeChoices((prev) => ({ ...prev, modes: { neutral: ['dark'] } }))
+  await at('#/theme')
+  // the base theme, business, locked to dark on the Themes page
+  await vi.waitFor(() => {
+    const frames = [...root.querySelectorAll('iframe.studio-scene')]
+    expect(frames.map((frame) => frame.getAttribute('title'))).toEqual(['The theme on a page of a product, dark mode'])
+  })
+  const [, modes] = [...root.querySelectorAll('.studio-theme-head mds-filter')]
+  const items = [...modes.querySelectorAll('mds-filter-item')]
+  expect(items.map((item) => [item.getAttribute('value'), item.hasAttribute('disabled'), item.hasAttribute('selected')]))
+    .toEqual([['light', true, false], ['dark', false, true], ['both', true, false]])
+  expect(items[0].getAttribute('title')).toBe('Business is dark only')
+})
+
+test('the choices of the Themes page outlive a reload', async () => {
+  updateThemeChoices((prev) => ({ ...prev, names: { porcelain: 'cold-desk' } }))
+  expect(JSON.parse(localStorage.getItem(THEME_CHOICES_KEY)!).names).toEqual({ porcelain: 'cold-desk' })
 })
 
 test('the header sets what the theme is checked under: both modes are two frames, the width a breakpoint', async () => {

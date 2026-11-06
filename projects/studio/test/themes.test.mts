@@ -9,6 +9,7 @@ import { COLOR_MODES_PROPERTY, namedThemeCss, themeOf } from '@maggioli-design-s
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config'
 import { validateTheme } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs'
 import { MODE_CHOICES, RESERVED_THEME_NAMES, ThemesManager, themeNameProblem } from '../src/themes.js'
+import { resetThemeChoices } from '../src/theme-choices.js'
 
 // The themes view of the studio: it builds the export CSS while rendering, so a throw anywhere
 // in that path (e.g. a helper used but never imported) silently drops the whole block from the
@@ -16,7 +17,10 @@ import { MODE_CHOICES, RESERVED_THEME_NAMES, ThemesManager, themeNameProblem } f
 
 const root = document.createElement('div')
 document.body.append(root)
-afterEach(() => render(null, root))
+afterEach(() => {
+  render(null, root)
+  resetThemeChoices()
+})
 
 const show = () => render(h(ThemesManager, { config: initialConfig as unknown as MagmaConfig }), root)
 
