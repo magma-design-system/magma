@@ -200,8 +200,8 @@ graph TD;
   mds-pref-animation --> mds-tab
   mds-pref-animation --> mds-tab-item
   mds-tab-item --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-pref-animation fill:#f9f,stroke:#333,stroke-width:4px
 ```

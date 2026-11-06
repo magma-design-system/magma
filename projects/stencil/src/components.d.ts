@@ -595,9 +595,17 @@ export namespace Components {
          */
         "href"?: string;
         /**
-          * The icon displayed in the button
+          * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their states
          */
         "icon"?: string;
+        /**
+          * The icon of the current button, in place of `icon`: the filled icon, say, of an `icon` drawn as an outline. It is the icon under the pointer too, unless `iconHover` says otherwise, so the pointer previews it on the buttons that are not current. It takes the place of `icon`: without `icon` it shows nothing
+         */
+        "iconCurrent"?: string;
+        /**
+          * The icon under the pointer, in place of `icon`, and `iconCurrent` when it is not set. Set it to the `icon` to keep the icon still under the pointer, when `iconCurrent` says something the click does not do (a check, say). A pointer that cannot hover, as a finger, never shows it. It takes the place of `icon`: without `icon` it shows nothing
+         */
+        "iconHover"?: string;
         /**
           * Specifies the horizontal position of the icon displayed in the button
           * @default 'left'
@@ -675,9 +683,17 @@ export namespace Components {
          */
         "href"?: string;
         /**
-          * The icon displayed in the button
+          * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their states
          */
         "icon"?: string;
+        /**
+          * The icon of the primary action when it is current, in place of `icon`, as `iconCurrent` does on `mds-button`: under the pointer too, unless `iconHover` says otherwise. Without `icon` it shows nothing
+         */
+        "iconCurrent"?: string;
+        /**
+          * The icon of the primary action under the pointer, in place of `icon`, and `iconCurrent` when it is not set, as `iconHover` does on `mds-button`. Without `icon` it shows nothing
+         */
+        "iconHover"?: string;
         /**
           * Specifies le text label of the component
          */
@@ -5998,9 +6014,17 @@ declare namespace LocalJSX {
          */
         "href"?: string;
         /**
-          * The icon displayed in the button
+          * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their states
          */
         "icon"?: string;
+        /**
+          * The icon of the current button, in place of `icon`: the filled icon, say, of an `icon` drawn as an outline. It is the icon under the pointer too, unless `iconHover` says otherwise, so the pointer previews it on the buttons that are not current. It takes the place of `icon`: without `icon` it shows nothing
+         */
+        "iconCurrent"?: string;
+        /**
+          * The icon under the pointer, in place of `icon`, and `iconCurrent` when it is not set. Set it to the `icon` to keep the icon still under the pointer, when `iconCurrent` says something the click does not do (a check, say). A pointer that cannot hover, as a finger, never shows it. It takes the place of `icon`: without `icon` it shows nothing
+         */
+        "iconHover"?: string;
         /**
           * Specifies the horizontal position of the icon displayed in the button
           * @default 'left'
@@ -6082,9 +6106,17 @@ declare namespace LocalJSX {
          */
         "href"?: string;
         /**
-          * The icon displayed in the button
+          * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their states
          */
         "icon"?: string;
+        /**
+          * The icon of the primary action when it is current, in place of `icon`, as `iconCurrent` does on `mds-button`: under the pointer too, unless `iconHover` says otherwise. Without `icon` it shows nothing
+         */
+        "iconCurrent"?: string;
+        /**
+          * The icon of the primary action under the pointer, in place of `icon`, and `iconCurrent` when it is not set, as `iconHover` does on `mds-button`. Without `icon` it shows nothing
+         */
+        "iconHover"?: string;
         /**
           * Specifies le text label of the component
          */
@@ -9193,6 +9225,8 @@ declare namespace LocalJSX {
         "label": string;
         "animation": TextAnimationType;
         "icon": string;
+        "iconCurrent": string;
+        "iconHover": string;
         "iconPosition": ButtonIconPositionType;
         "type": ButtonType;
         "name": string;
@@ -9212,6 +9246,8 @@ declare namespace LocalJSX {
         "label": string;
         "autoFocus": boolean;
         "icon": string;
+        "iconCurrent": string;
+        "iconHover": string;
         "type": ButtonType;
         "name": string;
         "value": string;

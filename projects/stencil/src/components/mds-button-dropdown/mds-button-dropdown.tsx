@@ -67,9 +67,23 @@ export class MdsButtonDropdown {
   @Prop() readonly autoFocus: boolean;
 
   /**
-   * The icon displayed in the button
+   * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their
+   * states
    */
   @Prop({ reflect: true, mutable: true }) icon?: string;
+
+  /**
+   * The icon of the primary action when it is current, in place of `icon`, as `iconCurrent` does
+   * on `mds-button`: under the pointer too, unless `iconHover` says otherwise. Without `icon` it
+   * shows nothing
+   */
+  @Prop() readonly iconCurrent?: string;
+
+  /**
+   * The icon of the primary action under the pointer, in place of `icon`, and `iconCurrent` when
+   * it is not set, as `iconHover` does on `mds-button`. Without `icon` it shows nothing
+   */
+  @Prop() readonly iconHover?: string;
 
   /**
    * The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form
@@ -191,6 +205,8 @@ export class MdsButtonDropdown {
           disabled={this.isDisabled()}
           href={this.href}
           icon={this.icon}
+          iconCurrent={this.iconCurrent}
+          iconHover={this.iconHover}
           onClick={this.primaryActionClick}
           size={this.size}
           target={this.target}

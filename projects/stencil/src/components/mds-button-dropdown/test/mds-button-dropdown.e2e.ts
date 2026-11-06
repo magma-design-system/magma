@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 import { useLanguage } from '@test/language';
 import { userEvent } from 'vitest/browser';
 
@@ -352,5 +353,20 @@ describe('mds-button-dropdown current', () => {
 
     await vi.waitFor(() => expect(window.location.hash).toBe('#records'));
     expect(clicks).toHaveLength(1);
+  });
+
+  // the icons of the states are the primary action's: the chevron keeps its arrow (#1264)
+  it('gives icon-current and icon-hover to the primary action only', async () => {
+    mockIconFetch();
+    const { root } = await render(
+      '<mds-button-dropdown label="Colors" icon="mi/outline/palette" icon-current="mi/baseline/palette" icon-hover="mi/baseline/check" current></mds-button-dropdown>',
+    );
+    const primary = primaryAction(root) as HTMLMdsButtonElement;
+    const arrow = chevron(root) as HTMLMdsButtonElement;
+
+    await vi.waitFor(() => expect(primary.iconCurrent).toBe('mi/baseline/palette'));
+    expect(primary.iconHover).toBe('mi/baseline/check');
+    expect(arrow.iconCurrent).toBeUndefined();
+    expect(arrow.iconHover).toBeUndefined();
   });
 });

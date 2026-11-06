@@ -347,8 +347,8 @@ The arc geometry is driven by the `angle-start`, `angle-end`, `radius`, and `dir
 ```mermaid
 graph TD;
   mds-radial-menu --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-radial-menu fill:#f9f,stroke:#333,stroke-width:4px
 ```

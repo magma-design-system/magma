@@ -314,8 +314,8 @@ graph TD;
   mds-keyboard --> mds-text
   mds-keyboard --> mds-button
   mds-keyboard --> mds-tooltip
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-tooltip --> mds-text
   style mds-keyboard fill:#f9f,stroke:#333,stroke-width:4px

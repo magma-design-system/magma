@@ -251,8 +251,8 @@ mds-radial-menu-item >>> .button {
 graph TD;
   mds-radial-menu-item --> mds-button
   mds-radial-menu-item --> mds-tooltip
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-tooltip --> mds-text
   style mds-radial-menu-item fill:#f9f,stroke:#333,stroke-width:4px

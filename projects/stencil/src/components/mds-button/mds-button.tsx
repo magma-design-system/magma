@@ -69,9 +69,26 @@ export class MdsButton {
   @Prop({ reflect: true }) readonly animation?: TextAnimationType = 'none';
 
   /**
-   * The icon displayed in the button
+   * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their
+   * states
    */
   @Prop({ reflect: true, mutable: true }) icon?: string;
+
+  /**
+   * The icon of the current button, in place of `icon`: the filled icon, say, of an `icon` drawn
+   * as an outline. It is the icon under the pointer too, unless `iconHover` says otherwise, so
+   * the pointer previews it on the buttons that are not current. It takes the place of `icon`:
+   * without `icon` it shows nothing
+   */
+  @Prop() readonly iconCurrent?: string;
+
+  /**
+   * The icon under the pointer, in place of `icon`, and `iconCurrent` when it is not set. Set it
+   * to the `icon` to keep the icon still under the pointer, when `iconCurrent` says something
+   * the click does not do (a check, say). A pointer that cannot hover, as a finger, never shows
+   * it. It takes the place of `icon`: without `icon` it shows nothing
+   */
+  @Prop() readonly iconHover?: string;
 
   /**
    * Specifies the horizontal position of the icon displayed in the button
@@ -413,6 +430,37 @@ export class MdsButton {
     this.km.detachClickBehavior();
   }
 
+  /**
+   * The icons of the button, one for each icon it shows: at rest `icon`, on the current button
+   * `iconCurrent`, under the pointer `iconHover`, which falls back on `iconCurrent` (#1264). Each
+   * carries the states it is the icon of, and the stylesheet hides the others
+   * (mds-button-icon-state.css): all of them are rendered, so an icon is fetched with the button
+   * and not the first time its state comes, blank until it arrives. Without `icon` there is
+   * none: the room of the icon is the one `icon` gives (mds-button-size.css), and an icon that
+   * came only in a state would move the label.
+   */
+  private renderIcons = () => {
+    const icon = this.icon ?? '';
+    if (icon === '') return null;
+    const current = this.iconCurrent || icon;
+    const states: [string, string][] = [
+      ['rest', icon],
+      ['current', current],
+      ['hover', this.iconHover || current],
+    ];
+    const icons = new Map<string, string[]>();
+    states.forEach(([state, name]) => icons.set(name, [...(icons.get(name) ?? []), state]));
+    return Array.from(icons, ([name, of]) => (
+      <mds-icon
+        aria-hidden="true"
+        class={`icon ${of.join(' ')}`}
+        key={name}
+        name={name}
+        part="icon"
+      />
+    ));
+  };
+
   private onSlotChangeHandler = (): void => {
     /* this should be removed in the future once slotted text is no longer used, use the label property instead */
     if ((this.label ?? '') !== '') return;
@@ -452,9 +500,7 @@ export class MdsButton {
         <div class="await">
           {this.hasAwaited && <mds-spinner class="spinner" running={this.await} />}
         </div>
-        {this.icon && this.iconPosition === 'left' && (
-          <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon" />
-        )}
+        {this.iconPosition === 'left' && this.renderIcons()}
         {this.animation === 'yugop' ? (
           <mds-text
             class="text"
@@ -476,9 +522,7 @@ export class MdsButton {
           </span>
         )}
         <slot name="notification" />
-        {this.icon && this.iconPosition === 'right' && (
-          <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon" />
-        )}
+        {this.iconPosition === 'right' && this.renderIcons()}
       </Host>
     );
   }

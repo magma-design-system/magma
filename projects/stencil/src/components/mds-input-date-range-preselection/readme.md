@@ -300,8 +300,8 @@ mds-input-date-range-preselection::part(button) {
 ```mermaid
 graph TD;
   mds-input-date-range-preselection --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-input-date-range-preselection fill:#f9f,stroke:#333,stroke-width:4px
 ```

@@ -338,8 +338,8 @@ graph TD;
   mds-status-bar --> mds-modal
   mds-status-bar --> mds-text
   mds-modal --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-status-bar fill:#f9f,stroke:#333,stroke-width:4px
 ```

@@ -36,6 +36,7 @@ The shared `variant` / `tone` ladders are defined in [`docs/agents/variants.md`]
 #### Other behavioral props
 
 - **`icon`** is an SVG filename slug from the Magma icon library; **`iconPosition`** places the glyph relative to the label (use `right` for forward-motion CTAs).
+- **`iconCurrent`** and **`iconHover`** take the place of `icon` in their state: `iconCurrent` on the current button, `iconHover` under the pointer, which falls back on `iconCurrent`. One attribute gives the common pair, an outline icon at rest and the filled one on the current button, which the pointer previews on the others. Set `iconHover` to the `icon` to keep the icon still under the pointer, when `iconCurrent` says something the click does not do (a check). A pointer that cannot hover, a finger, never shows `iconHover`; the current button shows `iconCurrent` under the pointer too. Both need `icon`, which gives the icon its room, and the name taken from the slug stays the one of `icon`. Write every slug out whole, as for `icon`: the icons a product serves are the ones read in its sources.
 - **`truncate`**: `word` (default) keeps the label on one line and cuts it with an ellipsis, `all` clamps it with `line-clamp` (one line in the button), `none` lets it wrap onto more lines.
 - **`animation`**: `yugop` progressively reveals characters; otherwise text renders immediately.
 - **The first letter** of the label is uppercased. For a name or an identifier that must stay as written (`rdsysadmin`), set `--mds-button-label-transform: none` on the button or on any ancestor: the property inherits, so it also reaches the buttons that other components, `mds-button-dropdown` among them, render in their shadow root.
@@ -174,6 +175,59 @@ Mark the button that leads to the view you are in with `current`: the section of
 <!-- the view of a switcher, with no page of its own: aria-current="true" -->
 <mds-button label="Lista" tone="weak" type="button" current></mds-button>
 <mds-button label="Mappa" tone="weak" type="button"></mds-button>
+```
+
+#### The Icon of Each State via `icon-current` and `icon-hover`
+
+`icon-current` takes the place of `icon` on the current button, and under the pointer too, which previews it on the other buttons: one attribute gives an outline icon at rest and the filled one on the view you are in. `icon-hover` sets the icon under the pointer on its own; set it to the `icon` to keep the icon still, when the icon of the current button says something the click does not do. Write the slugs out whole.
+
+```html
+<!-- outline at rest, filled on the current section and under the pointer -->
+<mds-button
+  slot="nav"
+  href="/pratiche"
+  variant="dark"
+  tone="text"
+  icon="mi/outline/folder"
+  icon-current="mi/baseline/folder"
+  current
+>Pratiche</mds-button>
+<mds-button
+  slot="nav"
+  href="/contatti"
+  variant="dark"
+  tone="text"
+  icon="mi/outline/contacts"
+  icon-current="mi/baseline/contacts"
+>Contatti</mds-button>
+
+<!-- a check on the current view, and none under the pointer: it would say the view is chosen -->
+<mds-button
+  label="Elenco"
+  tone="weak"
+  type="button"
+  icon="mi/baseline/view-list"
+  icon-current="mi/baseline/check"
+  icon-hover="mi/baseline/view-list"
+  current
+></mds-button>
+<mds-button
+  label="Griglia"
+  tone="weak"
+  type="button"
+  icon="mi/baseline/grid-view"
+  icon-current="mi/baseline/check"
+  icon-hover="mi/baseline/grid-view"
+></mds-button>
+
+<!-- another icon under the pointer only -->
+<mds-button
+  icon="mi/baseline/close"
+  icon-hover="mi/outline/close"
+  aria-label="Chiudi"
+  variant="dark"
+  tone="text"
+></mds-button>
 ```
 
 #### Async Loading via `await`
@@ -398,6 +452,27 @@ The button of the view you are in takes `current`. A tone switched by hand with 
 <mds-button href="/pratiche" variant="dark" tone="text" current>Pratiche</mds-button>
 ```
 
+#### Do Not Swap the Icon by Hand
+
+A listener that changes `icon` under the pointer fetches the new icon the first time it comes, so the button shows no icon until it arrives, and leaves it on what a finger tapped. A slug built at runtime is never served: the icons a product serves are the ones written in its sources. Use `icon-current` and `icon-hover`, with the slugs written out whole.
+
+```js
+// INCORRECT
+button.addEventListener('mouseenter', () => (button.icon = 'mi/baseline/folder'));
+button.addEventListener('mouseleave', () => (button.icon = 'mi/outline/folder'));
+button.icon = `mi/${here ? 'baseline' : 'outline'}/folder`;
+```
+
+```html
+<!-- CORRECT -->
+<mds-button
+  href="/pratiche"
+  icon="mi/outline/folder"
+  icon-current="mi/baseline/folder"
+  current
+>Pratiche</mds-button>
+```
+
 #### Do Not Use Legacy `ghost` or `quiet` Tone Values
 
 `tone="ghost"` and `tone="quiet"` were renamed in Magma 2.0 to `outline` and `text`. The old values are no longer accepted by the typed `ToneBoxVariantType` and silently fall back to the default tone.
@@ -448,7 +523,9 @@ mds-button::part(icon) {
 | `current`      | `current`       | Marks the button that leads to the view you are in, as the current section of a bar or the current view of a switcher, with a look of its own: an area that weighs less than the hover of its tone, never its ring, and a heavier label. `current`, or `current="page"`, is that view: the button neither navigates nor submits, a click and Enter do nothing, but it stays in the Tab order, announced with `aria-current` (`"page"` on a link, `"true"` otherwise). `current="section"` is a view inside it, as a record of its list: the same look, and the button stays a link that brings you back, announced with `aria-current="true"`. An `aria-current` written on the host stays as written. | `"page" \| "section" \| boolean \| undefined`                                                                                              | `undefined` |
 | `disabled`     | `disabled`      | Specifies if the component is disabled or not                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | `boolean \| undefined`                                                                                                                     | `undefined` |
 | `href`         | `href`          | Turns the button into a link to this URL: a real anchor in its shadow root, so the browser gives it what it gives every link (new tab on a modifier or middle click, the context menu, drag). A client-side router takes the plain clicks over once registered with `NavigationService.setHandler()` (from `@maggioli-design-system/magma/services`); without one, a click listener on the host can still cancel the navigation with `preventDefault()`.                                                                                                                                                                                                                                               | `string \| undefined`                                                                                                                      | `undefined` |
-| `icon`         | `icon`          | The icon displayed in the button                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `string \| undefined`                                                                                                                      | `undefined` |
+| `icon`         | `icon`          | The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their states                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `string \| undefined`                                                                                                                      | `undefined` |
+| `iconCurrent`  | `icon-current`  | The icon of the current button, in place of `icon`: the filled icon, say, of an `icon` drawn as an outline. It is the icon under the pointer too, unless `iconHover` says otherwise, so the pointer previews it on the buttons that are not current. It takes the place of `icon`: without `icon` it shows nothing                                                                                                                                                                                                                                                                                                                                                                                     | `string \| undefined`                                                                                                                      | `undefined` |
+| `iconHover`    | `icon-hover`    | The icon under the pointer, in place of `icon`, and `iconCurrent` when it is not set. Set it to the `icon` to keep the icon still under the pointer, when `iconCurrent` says something the click does not do (a check, say). A pointer that cannot hover, as a finger, never shows it. It takes the place of `icon`: without `icon` it shows nothing                                                                                                                                                                                                                                                                                                                                                   | `string \| undefined`                                                                                                                      | `undefined` |
 | `iconPosition` | `icon-position` | Specifies the horizontal position of the icon displayed in the button                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `"left" \| "right" \| undefined`                                                                                                           | `'left'`    |
 | `label`        | `label`         | The label of the button                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | `string \| undefined`                                                                                                                      | `undefined` |
 | `name`         | `name`          | The name sent with `value` to the form the button submits, as a native submit button does: buttons that submit the same form tell the receiver which one was chosen                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `string \| undefined`                                                                                                                      | `undefined` |
@@ -539,15 +616,15 @@ mds-button::part(icon) {
 
 ### Depends on
 
-- [mds-spinner](../mds-spinner)
 - [mds-icon](../mds-icon)
+- [mds-spinner](../mds-spinner)
 - [mds-text](../mds-text)
 
 ### Graph
 ```mermaid
 graph TD;
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-banner --> mds-button
   mds-breadcrumb --> mds-button

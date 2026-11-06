@@ -543,6 +543,84 @@ export const Current = {
   },
 };
 
+// the icon of each state (#1264): outline at rest, filled on the current section and under the
+// pointer, which previews it. The switcher of the views marks the current one with a check and
+// keeps the icons still under the pointer, icon-hover set to icon: a check there would say the
+// view is chosen before the click. The slugs are written out whole: iconsauce serves only the
+// ones it reads in the sources
+const TemplateCurrentIcons = () => (
+  <div class="grid gap-600">
+    <nav aria-label="Sezioni" class="flex flex-wrap gap-200">
+      <mds-button
+        href="#home"
+        variant="dark"
+        tone="text"
+        icon="mi/outline/home"
+        icon-current="mi/baseline/home"
+      >
+        Home
+      </mds-button>
+      <mds-button
+        href="#pratiche"
+        variant="dark"
+        tone="text"
+        icon="mi/outline/folder"
+        icon-current="mi/baseline/folder"
+        current
+      >
+        Pratiche
+      </mds-button>
+      <mds-button
+        href="#impostazioni"
+        variant="dark"
+        tone="text"
+        icon="mi/outline/settings"
+        icon-current="mi/baseline/settings"
+      >
+        Impostazioni
+      </mds-button>
+    </nav>
+    <div class="flex flex-wrap gap-200">
+      <mds-button
+        type="button"
+        tone="weak"
+        icon="mi/baseline/view-list"
+        icon-current="mi/baseline/check"
+        icon-hover="mi/baseline/view-list"
+        label="Elenco"
+        current
+      ></mds-button>
+      <mds-button
+        type="button"
+        tone="weak"
+        icon="mi/baseline/grid-view"
+        icon-current="mi/baseline/check"
+        icon-hover="mi/baseline/grid-view"
+        label="Griglia"
+      ></mds-button>
+    </div>
+  </div>
+);
+
+// the icons at rest and on the current button: the userEvent of the play dispatches events and
+// moves no pointer, so :hover never matches here; the icon under the pointer is tested with a
+// real one in mds-button.e2e.ts
+export const CurrentIcons = {
+  render: TemplateCurrentIcons,
+  play: async ({ canvas, canvasElement }) => {
+    const shown = (button: HTMLElement) =>
+      Array.from(button.shadowRoot!.querySelectorAll<HTMLMdsIconElement>('.icon'))
+        .filter((icon) => getComputedStyle(icon).display !== 'none')
+        .map((icon) => icon.name);
+    const here = await canvas.findByRole('link', { name: 'Pratiche' });
+    const view = canvasElement.querySelector<HTMLElement>('mds-button[label="Elenco"]')!;
+
+    await waitFor(() => expect(shown(here)).toEqual(['mi/baseline/folder']));
+    expect(shown(canvas.getByRole('link', { name: 'Home' }))).toEqual(['mi/outline/home']);
+    expect(shown(view)).toEqual(['mi/baseline/check']);
+  },
+};
+
 export const FormParticipation = {
   render: TemplateForm,
 

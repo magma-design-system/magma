@@ -413,8 +413,8 @@ graph TD;
   mds-banner --> mds-icon
   mds-banner --> mds-text
   mds-banner --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-policy-ai --> mds-banner
   style mds-banner fill:#f9f,stroke:#333,stroke-width:4px

@@ -202,8 +202,8 @@ graph TD;
   mds-pref-contrast --> mds-tab
   mds-pref-contrast --> mds-tab-item
   mds-tab-item --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-pref-contrast fill:#f9f,stroke:#333,stroke-width:4px
 ```

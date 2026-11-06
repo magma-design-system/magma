@@ -478,8 +478,8 @@ Type: `Promise<void>`
 ```mermaid
 graph TD;
   mds-tree-item --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-tree-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

@@ -221,6 +221,8 @@ mds-button prop current (attr current) [reflect]: "page" | "section" | boolean |
 mds-button prop disabled (attr disabled) [reflect, mutable]: boolean | undefined
 mds-button prop href (attr href) [reflect]: string | undefined
 mds-button prop icon (attr icon) [reflect, mutable]: string | undefined
+mds-button prop iconCurrent (attr icon-current): string | undefined
+mds-button prop iconHover (attr icon-hover): string | undefined
 mds-button prop iconPosition (attr icon-position) [reflect]: "left" | "right" | undefined = 'left'
 mds-button prop label (attr label) [reflect, mutable]: string | undefined
 mds-button prop name (attr name) [reflect]: string | undefined
@@ -259,6 +261,8 @@ mds-button-dropdown prop current (attr current) [reflect]: "page" | "section" | 
 mds-button-dropdown prop disabled (attr disabled) [reflect, mutable]: boolean | undefined
 mds-button-dropdown prop href (attr href) [reflect]: string | undefined
 mds-button-dropdown prop icon (attr icon) [reflect, mutable]: string | undefined
+mds-button-dropdown prop iconCurrent (attr icon-current): string | undefined
+mds-button-dropdown prop iconHover (attr icon-hover): string | undefined
 mds-button-dropdown prop label (attr label): string
 mds-button-dropdown prop name (attr name) [reflect]: string | undefined
 mds-button-dropdown prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'md'

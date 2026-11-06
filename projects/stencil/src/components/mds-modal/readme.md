@@ -466,8 +466,8 @@ Type: `Promise<void>`
 ```mermaid
 graph TD;
   mds-modal --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-header --> mds-modal
   mds-status-bar --> mds-modal

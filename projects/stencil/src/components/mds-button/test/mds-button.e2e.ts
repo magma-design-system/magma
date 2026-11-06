@@ -1,9 +1,16 @@
 import { render, vi } from '@stencil/vitest';
-import { userEvent } from 'vitest/browser';
+import { commands, userEvent } from 'vitest/browser';
 import { mockIconFetch } from '@test/fetch';
 import { createSlottedChild, itReadsTheSlottedLabelWhenLabelIsNull } from '@test/slot';
 import { NavigationService } from '@common/navigation';
 import { renderToString } from '@test/ssr';
+
+declare module 'vitest/browser' {
+  interface BrowserCommands {
+    // defined in vitest.config.mts, run in Node
+    emulateTouch: (touch: boolean) => Promise<void>;
+  }
+}
 
 /**
  * The awaiting spinner slides in over --duration-300 and the button's own width follows it,
@@ -1256,6 +1263,165 @@ describe('mds-button', () => {
 
         expect(getComputedStyle(root).backgroundColor).toBe(role(root, 'text-wash'));
       });
+    });
+  });
+
+  // icon at rest, icon-current on the current button, icon-hover under the pointer, which falls
+  // back on icon-current (#1264)
+  describe('the icon of each state', () => {
+    const icons = (button: Element) =>
+      Array.from(button.shadowRoot!.querySelectorAll<HTMLMdsIconElement>('.icon'));
+    const rendered = (button: Element) => icons(button).map((icon) => icon.name);
+    const shown = (button: Element) =>
+      icons(button)
+        .filter((icon) => getComputedStyle(icon).display !== 'none')
+        .map((icon) => icon.name);
+
+    const outline = 'mi/outline/palette';
+    const filled = 'mi/baseline/palette';
+    const check = 'mi/baseline/check';
+
+    // every case renders its button at the top of the page, where the last one may have left the
+    // pointer: park it in a corner (mds-input-select.e2e.ts says why userEvent.unhover is no help)
+    const park = async () => {
+      const corner = document.createElement('span');
+      corner.style.cssText = 'position: fixed; right: 0; bottom: 0; width: 8px; height: 8px';
+      document.body.append(corner);
+      await userEvent.hover(corner);
+      corner.remove();
+    };
+
+    beforeEach(async () => {
+      mockIconFetch();
+      await park();
+    });
+
+    it('renders one icon when the states have none of their own', async () => {
+      const { root } = await render(`<mds-button icon="${outline}" label="Colors"></mds-button>`);
+
+      expect(rendered(root)).toEqual([outline]);
+      expect(shown(root)).toEqual([outline]);
+    });
+
+    it('renders the icon of every state with the button, and shows icon at rest', async () => {
+      const { root } = await render(
+        `<mds-button icon="${outline}" icon-current="${filled}" icon-hover="${check}" label="Colors"></mds-button>`,
+      );
+
+      expect(rendered(root)).toEqual([outline, filled, check]);
+      expect(shown(root)).toEqual([outline]);
+    });
+
+    it('shows icon-current on the current button, and icon again when it is not', async () => {
+      const { root } = await render<HTMLMdsButtonElement>(
+        `<mds-button icon="${outline}" icon-current="${filled}" label="Colors" current></mds-button>`,
+      );
+      expect(shown(root)).toEqual([filled]);
+
+      root.current = 'false' as unknown as boolean;
+      await vi.waitFor(() => expect(shown(root)).toEqual([outline]));
+
+      root.current = 'section';
+      await vi.waitFor(() => expect(shown(root)).toEqual([filled]));
+    });
+
+    it('previews icon-current under the pointer when icon-hover is not set', async () => {
+      const { root } = await render(
+        `<mds-button icon="${outline}" icon-current="${filled}" label="Colors"></mds-button>`,
+      );
+
+      await userEvent.hover(root);
+      await vi.waitFor(() => expect(shown(root)).toEqual([filled]));
+
+      await park();
+      await vi.waitFor(() => expect(shown(root)).toEqual([outline]));
+    });
+
+    it('shows icon-hover under the pointer, in place of icon-current', async () => {
+      const { root } = await render(
+        `<mds-button icon="${outline}" icon-current="${filled}" icon-hover="${check}" label="Colors"></mds-button>`,
+      );
+
+      await userEvent.hover(root);
+
+      await vi.waitFor(() => expect(shown(root)).toEqual([check]));
+    });
+
+    it('keeps the icon still under the pointer with icon-hover set to icon', async () => {
+      const { root } = await render(
+        `<mds-button icon="${outline}" icon-current="${check}" icon-hover="${outline}" label="List"></mds-button>`,
+      );
+      expect(rendered(root)).toEqual([outline, check]);
+
+      await userEvent.hover(root);
+
+      expect(root.matches(':hover')).toBe(true);
+      expect(shown(root)).toEqual([outline]);
+    });
+
+    it('keeps icon-current under the pointer on a section you are inside of', async () => {
+      const { root } = await render(
+        `<mds-button href="#elsewhere" icon="${outline}" icon-current="${filled}" icon-hover="${check}" label="Colors" current="section"></mds-button>`,
+      );
+
+      await userEvent.hover(root);
+
+      expect(root.matches(':hover')).toBe(true);
+      expect(shown(root)).toEqual([filled]);
+    });
+
+    // a finger leaves :hover on what it tapped: a button that is not current would keep the icon
+    // of the current one
+    describe('to a pointer that cannot hover', () => {
+      beforeEach(() => commands.emulateTouch(true));
+      afterEach(() => commands.emulateTouch(false));
+
+      it('never shows icon-hover, even where :hover stays', async () => {
+        expect(window.matchMedia('(hover: none)').matches).toBe(true);
+        const { root } = await render(
+          `<mds-button icon="${outline}" icon-current="${filled}" label="Colors"></mds-button>`,
+        );
+
+        await userEvent.hover(root);
+
+        expect(root.matches(':hover')).toBe(true);
+        expect(shown(root)).toEqual([outline]);
+      });
+
+      it('still shows icon-current on the current button', async () => {
+        const { root } = await render(
+          `<mds-button icon="${outline}" icon-current="${filled}" label="Colors" current></mds-button>`,
+        );
+
+        expect(shown(root)).toEqual([filled]);
+      });
+    });
+
+    it('shows no icon of a state without icon, which gives the icon its room', async () => {
+      const { root } = await render(
+        `<mds-button icon-current="${filled}" icon-hover="${check}" label="Colors" current></mds-button>`,
+      );
+
+      expect(rendered(root)).toEqual([]);
+    });
+
+    it('names a button with no label after icon, in every state', async () => {
+      const { root } = await render(
+        `<mds-button icon="${outline}" icon-current="mi/baseline/brush" current></mds-button>`,
+      );
+
+      await vi.waitFor(() => expect(root).toEqualAttribute('title', 'palette'));
+    });
+
+    it('puts the spinner in place of every icon of a button with no label', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsButtonElement>(
+        `<mds-button icon="${outline}" icon-current="${filled}" title="Colors" current></mds-button>`,
+      );
+
+      root.await = true;
+      await waitForChanges();
+
+      expect(shown(root)).toEqual([]);
     });
   });
 

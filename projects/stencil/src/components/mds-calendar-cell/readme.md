@@ -232,8 +232,8 @@ mds-calendar {
 ```mermaid
 graph TD;
   mds-calendar-cell --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-calendar --> mds-calendar-cell
   style mds-calendar-cell fill:#f9f,stroke:#333,stroke-width:4px
