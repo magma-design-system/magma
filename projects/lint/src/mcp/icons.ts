@@ -91,6 +91,31 @@ export const slugFile = (folder: string, slug: string): string | undefined => {
   return undefined;
 };
 
+/**
+ * Every slug the installed sets serve, with its file: what `fileOf` of the render answers under
+ * `svg/`, for a host that serves files only and copies them (the studio on GitHub Pages,
+ * projects/studio/site.ts). A file of mdi or mgg is its slug, deprecated icons included, since
+ * `fileOf` serves them; a Material icon is a slug in each variant of MI_VARIANTS, its folder
+ * found by `slugFile`.
+ */
+export const slugFiles = (context: ToolContext): Array<[slug: string, file: string]> =>
+  (Object.keys(PACKAGES) as IconSet[]).flatMap((set) => {
+    const folder = folderOf(context, set);
+    if (!folder) return [];
+    const slugs =
+      set === 'mi'
+        ? iconsOf(context, set, folder).flatMap(({ name }) =>
+            MI_VARIANTS.map((variant) => `mi/${variant}/${name}`),
+          )
+        : readdirSync(folder)
+            .filter((file) => file.endsWith('.svg'))
+            .map((file) => `${set}/${file.slice(0, -4)}`);
+    return slugs.flatMap((slug): Array<[string, string]> => {
+      const file = slugFile(folder, slug);
+      return file && existsSync(file) ? [[slug, file]] : [];
+    });
+  });
+
 export const findIcon = (context: ToolContext): Tool => ({
   name: 'find_icon',
   title: 'Find a Magma icon slug',

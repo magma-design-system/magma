@@ -5,6 +5,7 @@
   "tags": ["type:app", "axis:visual"],
   "implicitDependencies": ["stencil"],
   "targets": {
-    "serve": { "dependsOn": ["^build"] }
+    "serve": { "dependsOn": ["^build"] },
+    "build.site": { "dependsOn": ["build"], "outputs": ["{projectRoot}/dist-site"] }
   }
 }

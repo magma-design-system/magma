@@ -53,7 +53,7 @@ flowchart LR
   STY -.->|"magma/stylelint"| PS(["Stylelint of the project"])
   MCP <-.->|"bin magma-mcp, stdio"| CLIENT(["agent client<br/>Claude Code, VS Code, Cursor"])
   MCP -->|"toolsOf"| CP["claude-plugin<br/>the skills list the tools"]
-  MCP -->|"render.ts: stylesheetImports, loaderOf, fileOf"| STU["studio<br/>its pages load Magma as a render does"]
+  MCP -->|"render.ts: stylesheetImports, loaderOf, fileOf; icons.ts: slugFiles"| STU["studio<br/>its pages load Magma as a render does"]
   class MCP,CLIENT,CP ai
   class SI,EXT assets
   class DT,ST,STU visual

@@ -22,12 +22,16 @@ jobs:
       extra-path: '{projects/design-tokens/**,projects/lint/src/**}'
       nx-project: studio
       # the tests read the builds the studio stands on, as the installed packages: the logo
-      # of identity, the stylesheets of styles, the loader and documentation.json of magma
+      # of identity, the stylesheets of styles, the loader and documentation.json of magma,
+      # the mgg icons of svg-icons (the static site writes them beside its pages)
       artifact-paths: |
         projects/studio/dist
         projects/identity/dist
         projects/styles/dist
         projects/stencil/dist
+        projects/svg-icons/dist
       artifact-download-path: projects
       run-tests: true
+      # the static site of the studio is opened in the Playwright Chromium (test/site.test.mts)
+      install-playwright-browsers: true
       test-working-directory: projects/studio

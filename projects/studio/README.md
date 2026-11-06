@@ -5,9 +5,10 @@ aware of every axis Magma has (epic #693). It is an app of this repository, not 
 not published on npm.
 
 ```bash
-nx run studio:serve    # the dev server, on http://localhost:5177 (builds the components first)
-nx run studio:build    # the static app, in dist/
-nx run studio:test     # Vitest, jsdom
+nx run studio:serve       # the dev server, on http://localhost:5177 (builds the components first)
+nx run studio:build       # the static app, in dist/
+nx run studio:build.site  # the site for a static host, in dist-site/: the app and the Magma it loads
+nx run studio:test        # Vitest, jsdom; the static site in the Playwright Chromium
 ```
 
 The port is pinned (`strictPort`): when 5177 is busy the studio is already running, so the server
@@ -136,11 +137,43 @@ an external vendor"), as a render of the MCP server does. `vendor.ts` uses the c
   (`loaderOf`), with paths relative to the page: `node_modules/`, `svg/`, `components/`;
 - the dev server and `vite preview` serve those three paths from the installed packages (`fileOf`);
 - the tags are written after Vite has processed the page, so the build leaves them as they are:
-  whoever hosts the built studio serves the same three paths beside it.
+  whoever hosts the built studio serves the same three paths beside it;
+- for a host that serves files only, `build.site` writes them as files (`site.ts`, below).
 
 In this repository the installed magma is the build of `stencil`, so `serve` and `build` build it
 first (an implicit dependency). A test holds the bundle to the rule: no component and no runtime
 of Stencil in `dist/assets`.
+
+## On GitHub Pages
+
+The studio of `main` is published at <https://magma-design-system.github.io/magma/studio/>,
+beside the Storybook (`magma/storybook/`), by the `deploy site` workflow
+(`.github/workflows/deploy-site.yml`): a repository has one Pages site, so both are built in the
+same run. The docs site links to it; a page links to a page of the studio by its hash, such as
+`studio/#/colors/palette` or `studio/#/theme`. Mounting the studio inside a page of the docs site
+(#693 "On the site", #695 "Two hosts, one app") is a later step.
+
+GitHub Pages serves files only, so `nx run studio:build.site` (`site.ts`) writes into
+`dist-site/` the build with, beside its pages, the files `fileOf` serves to the dev server:
+
+- `node_modules/`: the stylesheets each page imports and what they load in turn, the fonts of
+  `@fontsource` among them, followed from the pages of the build;
+- `components/`: the folder of the lazy loader of the installed magma, whole, since the loader
+  imports the chunk of each component as it first renders;
+- `svg/`: every icon slug of the installed sets (`slugFiles` of `projects/lint/src/mcp/icons.ts`):
+  the files of `mdi` and `mgg` as they are, the Material folders under the slugs of their
+  variants (`mi/outline/auto-awesome` is `auto_awesome/outline.svg`).
+
+A path a page asks for that the installed packages do not hold stops the site instead of
+publishing a 404, and so does an icon set that is not installed. `test/site.test.mts` serves the
+site as Pages does, files only and under `magma/studio/`, and opens the studio, the Theme section,
+the scene and the groups in Chromium: each loads its icons and fonts, and nothing it asks for is
+missing.
+
+There is no API beside the pages on Pages: the site writes `<meta name="magma-studio-api"
+content="none">` into them and the studio does not ask `/api/config`. Editing stays in memory, the
+draft in the localStorage of the browser, and the work leaves by its downloads (the zip of the
+tokens, the config, the CSS of the themes), as when the studio runs without its command.
 
 ## Architecture
 
@@ -164,6 +197,7 @@ flowchart LR
     SURF["src/surfaces.tsx, src/themes.tsx<br/>balances, themes, names"]
     OUT["src/formats.ts, src/batch.tsx<br/>zip, DTCG, CSS, GIMP, config"]
     VEN["vendor.ts<br/>serves Magma to the pages"]
+    SITE["site.ts<br/>the static site, dist-site/"]
     SCENE["scene.html<br/>the page the Theme section shows"]
     SHELL --> APP
     SHELL --> SCENE
@@ -172,15 +206,18 @@ flowchart LR
   end
   DT -->|"createColorTokens, gatePairs, themeOf, namedThemeCss"| APP
   LINT -->|"stylesheetImports, loaderOf, fileOf"| VEN
+  LINT -->|"fileOf, loaderOf, slugFiles"| SITE
   WC -->|"the lazy loader"| VEN
+  WC -->|"the lazy loader"| SITE
   ID -->|"the logo of the bar"| SHELL
   VEN -.->|"node_modules/, svg/, components/"| SHELL
+  SITE -.->|"deploy-site.yml"| PAGES(["GitHub Pages<br/>magma/studio/"])
   OUT -.->|"download"| AUTHOR(["the author of a theme"])
-  class DT,APP,SURF,OUT,SHELL,VEN,SCENE visual
+  class DT,APP,SURF,OUT,SHELL,VEN,SITE,SCENE visual
   class LINT ai
   class WC components
   class ID assets
-  class AUTHOR outside
+  class AUTHOR,PAGES outside
   class stu area
   classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
   classDef assets fill:#fff1d6,stroke:#bf8700,color:#5c3d00

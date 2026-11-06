@@ -1,0 +1,2 @@
+# the static site of the studio, written by site.ts (nx run studio:build.site)
+/dist-site

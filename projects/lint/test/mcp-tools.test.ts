@@ -17,9 +17,11 @@ import { readPreviews, webpSize } from '../src/core/patterns.js';
 import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
 import { distance, parseColor } from '../src/mcp/color.js';
 import { GAP } from '../src/mcp/context.js';
+import { folderOf, slugFiles } from '../src/mcp/icons.js';
 import {
   breakpointsOf,
   DEFAULT_WIDTH,
+  fileOf,
   LAYERS,
   MAX_SIDE,
   PREVIEW_DIR,
@@ -430,6 +432,22 @@ describe('the icon tool', () => {
     });
     expect(icons.map((icon: { slug: string }) => icon.slug)).toContain('mi/outline/rocket-launch');
     expect(icons.every((icon: { slug: string }) => !icon.slug.includes('_'))).toBe(true);
+  });
+
+  test('lists every slug the sets serve, each with the file fileOf serves it from', () => {
+    const files = slugFiles(context);
+    const of = (set: string) => files.filter(([slug]) => slug.startsWith(`${set}/`));
+    for (const [slug, file] of files) expect(fileOf(context, `/svg/${slug}.svg`)).toBe(file);
+    // the four variants of each Material folder, spelled with hyphens; every file of the others
+    expect(of('mi')).toHaveLength(readdirSync(folderOf(context, 'mi')!).length * 4);
+    expect(of('mi').map(([slug]) => slug)).toContain('mi/outline/auto-awesome');
+    expect(of('mi').every(([slug]) => !slug.includes('_'))).toBe(true);
+    expect(
+      of('mgg')
+        .map(([slug]) => slug)
+        .sort(),
+    ).toEqual(['mgg/abitazione-principale', 'mgg/ricerca-avanzata']);
+    expect(of('mdi').length).toBeGreaterThan(7000);
   });
 
   test('agrees with the slugs iconsauce serves, both ways', async () => {
