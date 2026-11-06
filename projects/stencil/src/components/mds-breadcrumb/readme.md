@@ -280,8 +280,8 @@ mds-breadcrumb::part(back) {
 ```mermaid
 graph TD;
   mds-breadcrumb --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-breadcrumb fill:#f9f,stroke:#333,stroke-width:4px
 ```

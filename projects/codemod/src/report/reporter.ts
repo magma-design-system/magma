@@ -5,7 +5,7 @@
  * failed to parse.
  */
 import chalk from 'chalk';
-import { renderMarkdown } from './markdown.js';
+import { type MarkdownOptions, renderMarkdown } from './markdown.js';
 import {
   type FileReport,
   type Finding,
@@ -80,8 +80,13 @@ export class Reporter {
   }
 
   /** Markdown worklist (see `markdown.ts`); links are relative to `baseDir`. */
-  toMarkdown(report: Report, baseDir: string, cwd = process.cwd()): string {
-    return renderMarkdown(report, { baseDir, cwd, errors: this.errors });
+  toMarkdown(
+    report: Report,
+    baseDir: string,
+    cwd = process.cwd(),
+    thresholds?: MarkdownOptions['thresholds'],
+  ): string {
+    return renderMarkdown(report, { baseDir, cwd, errors: this.errors, thresholds });
   }
 
   renderHuman(report: Report, options: { showDiff: boolean } = { showDiff: true }): string {

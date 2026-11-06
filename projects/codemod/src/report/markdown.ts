@@ -9,7 +9,9 @@
  *  3. A checklist per file, automatic changes folded away.
  */
 import { relative, resolve, sep } from 'node:path';
-import { type Finding, type Report } from './types.js';
+import { type SemanticThresholds } from '../manifest/schema.js';
+import { roleMeaning } from './role-meaning.js';
+import { type ContextHint, type Finding, type Report } from './types.js';
 
 export interface MarkdownOptions {
   /** Directory the links are relative to: where the Markdown file is written. */
@@ -18,6 +20,8 @@ export interface MarkdownOptions {
   cwd: string;
   /** Files that failed to parse. */
   errors?: Array<{ file: string; message: string }>;
+  /** The category L tiers the dE figures are marked against (default: the bundled manifest's). */
+  thresholds?: Pick<SemanticThresholds, 'exact' | 'near'>;
 }
 
 /** How to make each kind of decision, keyed by the finding's `reason`. */
@@ -44,7 +48,13 @@ const HOW_TO_DECIDE: Record<string, string> = {
 
 const code = (s: string): string => `\`${s.replace(/`/g, "'")}\``;
 const cell = (s: string): string => s.replace(/\|/g, '\\|');
-const dE = (n: number | undefined): string => (n === undefined ? '-' : n.toFixed(1));
+const html = (s: string): string =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+/** A file row: inline, so it shares the line with a task-list checkbox. */
+const ROW =
+  'display: inline-flex; gap: 0.75em; align-items: baseline; width: calc(100% - 2em); vertical-align: baseline';
+const PATH =
+  'flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap';
 const isSuggestion = (f: Finding): boolean => f.reason?.startsWith('suggested') ?? false;
 const isDecision = (f: Finding): boolean =>
   f.kind !== 'change' && f.token !== undefined && f.reason !== undefined;
@@ -53,7 +63,7 @@ interface Group {
   token: string;
   reason: string;
   finding: Finding;
-  where: Array<{ file: string; line?: number }>;
+  where: Array<{ file: string; line?: number; hint?: ContextHint; context?: string }>;
 }
 
 /** The deepest directory every path sits in. */
@@ -71,15 +81,33 @@ const commonDir = (paths: string[]): string => {
 };
 
 export const renderMarkdown = (report: Report, options: MarkdownOptions): string => {
+  const { exact, near } = options.thresholds ?? { exact: 0.5, near: 2 };
+  /** A dE figure with its verdict: identical, acceptable (not noticeable) or far. */
+  const dE = (n: number | undefined): string =>
+    n === undefined
+      ? '-'
+      : `${n <= exact ? '\u2705' : n <= near ? '\u26a0\ufe0f' : '\u26d4\ufe0f'} ${n.toFixed(1)}`;
   const abs = (file: string): string => resolve(options.cwd, file);
   const root = commonDir(report.files.map((f) => abs(f.file)));
-  const link = (file: string, line?: number): string => {
-    const shown = relative(root, abs(file)) || file;
-    const target = encodeURI(relative(options.baseDir, abs(file)) || file)
+  const target = (file: string): string =>
+    encodeURI(relative(options.baseDir, abs(file)) || file)
       .replace(/\(/g, '%28')
       .replace(/\)/g, '%29');
-    return `[${code(line ? `${shown}:${line}` : shown)}](${target}${line ? `#L${line}` : ''})`;
-  };
+  /**
+   * The file's path across the whole row, cut with an ellipsis when too long,
+   * and the link that opens it on the right. Inline HTML, since Markdown has no
+   * layout: where styles are stripped (e.g. GitHub) it reads as path + link.
+   */
+  const fileRef = (file: string): string =>
+    `<span style="${ROW}"><code style="${PATH}">${html(`./${relative(root, abs(file)) || file}`)}</code>` +
+    `<a href="${target(file)}" style="flex: none">Open file</a></span>`;
+  const lineLink = (file: string, line: number): string => `[L${line}](${target(file)}#L${line})`;
+  const at = (file: string, line?: number): string => (line ? `${lineLink(file, line)} ` : '');
+
+  /** Where a finding sits and, when the markup tells, the role it could be and how close it is (light). */
+  const placeOf = (f: Finding): string | undefined =>
+    f.context &&
+    `${f.context}${f.hint ? ` it could be a ${code(f.hint.value)} ${dE(f.hint.light)}` : ''}`;
 
   const groups = new Map<string, Group>();
   for (const file of report.files)
@@ -92,7 +120,7 @@ export const renderMarkdown = (report: Report, options: MarkdownOptions): string
         finding: f,
         where: [],
       };
-      group.where.push({ file: file.file, line: f.line });
+      group.where.push({ file: file.file, line: f.line, hint: f.hint, context: placeOf(f) });
       groups.set(key, group);
     }
   const byCount = (a: Group, b: Group): number =>
@@ -120,7 +148,10 @@ export const renderMarkdown = (report: Report, options: MarkdownOptions): string
       '',
       `${decisions.length} tokens in ${sites} places need a choice. Decide each token once: the same choice ` +
         'usually holds wherever it appears. Alternatives are ready to paste, best first; dE is the OKLab ' +
-        'distance from what the token painted (x100, about 2 is just noticeable).',
+        'distance from what the token painted (x100, about 2 is just noticeable): ' +
+        `\u2705 identical (up to ${exact}), \u26a0\ufe0f acceptable (up to ${near}), \u26d4\ufe0f far. ` +
+        'Alternative meaning is what the role is for in the system, not a reading of your element: the codemod only ' +
+        'sees the colour, so pick the alternative whose meaning matches what the element is.',
       '',
       '| # | Token | Why | Places |',
       '| --- | --- | --- | --- |',
@@ -137,12 +168,64 @@ export const renderMarkdown = (report: Report, options: MarkdownOptions): string
       if (how) out.push(`**How to decide:** ${how}`, '');
       const alternatives = d.finding.alternatives ?? [];
       if (alternatives.length > 0) {
-        out.push('| Alternative | dE light | dE dark |', '| --- | --- | --- |');
+        out.push(
+          '| Alternative | dE light | dE dark | Alternative meaning |',
+          '| --- | --- | --- | --- |',
+        );
         for (const a of alternatives)
-          out.push(`| ${cell(code(a.value))} | ${dE(a.light)} | ${dE(a.dark)} |`);
+          out.push(
+            `| ${cell(code(a.value))} | ${dE(a.light)} | ${dE(a.dark)} | ${cell(roleMeaning(a.value) ?? '-')} |`,
+          );
         out.push('');
       }
-      out.push(...d.where.map((w) => `- [ ] ${link(w.file, w.line)}`), '');
+      // one checkbox per file, its occurrences linked to the lines
+      const checklist = (where: Group['where']): string[] => {
+        const lines = new Map<string, Map<number, string | undefined>>();
+        for (const w of where) {
+          const list = lines.get(w.file) ?? new Map<number, string | undefined>();
+          if (w.line && !list.has(w.line)) list.set(w.line, w.context);
+          lines.set(w.file, list);
+        }
+        return [...lines].flatMap(([file, list]) => {
+          const sorted = [...list].sort((a, b) => a[0] - b[0]);
+          if (sorted.length === 0) return [`- [ ] ${fileRef(file)}`];
+          // where the markup was read, every occurrence with its context: on the
+          // Occurrences line when it is the only one, one per line otherwise
+          const one = ([l, context]: [number, string | undefined]): string =>
+            `${lineLink(file, l)}${context ? ` ${context}` : ''}`;
+          if (sorted.some(([, context]) => context))
+            return sorted.length === 1
+              ? [`- [ ] ${fileRef(file)}\\`, `  Occurrences ${one(sorted[0]!)}`]
+              : [
+                  `- [ ] ${fileRef(file)}\\`,
+                  '  Occurrences\\',
+                  ...sorted.map((o, k) => `  ${one(o)}${k < sorted.length - 1 ? '\\' : ''}`),
+                ];
+          return [
+            `- [ ] ${fileRef(file)}\\`,
+            `  Occurrences ${sorted.map(([l]) => lineLink(file, l)).join(' ')}`,
+          ];
+        });
+      };
+      // the places the markup points at one answer, batched under it
+      const byHint = new Map<string, Group['where']>();
+      for (const w of d.where)
+        if (w.hint) byHint.set(w.hint.value, [...(byHint.get(w.hint.value) ?? []), w]);
+      if (byHint.size === 0) out.push(...checklist(d.where));
+      else {
+        for (const [value, where] of [...byHint].sort((a, b) => b[1].length - a[1].length)) {
+          const why = [...new Set(where.map((w) => w.hint!.why))].join(', ');
+          out.push(
+            `**Likely ${code(value)}** ${dE(where[0]!.hint!.light)} (${where.length}): ${why}`,
+            '',
+            ...checklist(where),
+            '',
+          );
+        }
+        const rest = d.where.filter((w) => !w.hint);
+        if (rest.length > 0) out.push(`**No hint** (${rest.length})`, '', ...checklist(rest));
+      }
+      out.push('');
     }
   }
 
@@ -171,9 +254,8 @@ export const renderMarkdown = (report: Report, options: MarkdownOptions): string
     for (const file of touched) {
       const todo = file.findings.filter((f) => f.kind !== 'change');
       const done = file.findings.filter((f) => f.kind === 'change');
-      out.push(`### ${link(file.file)}`, '');
+      out.push(`### ${fileRef(file.file)}`, '');
       for (const f of todo) {
-        const at = f.line ? `L${f.line} ` : '';
         let text = f.message;
         if (isDecision(f) && isSuggestion(f)) {
           const to = f.alternatives?.[0]?.value;
@@ -186,7 +268,7 @@ export const renderMarkdown = (report: Report, options: MarkdownOptions): string
             : '';
           text = `${code(f.token!)}, ${ref ? `[${f.reason}](#${ref})` : f.reason}${alts}`;
         }
-        out.push(`- [ ] ${at}${text}`);
+        out.push(`- [ ] ${at(file.file, f.line)}${text}${placeOf(f) ? ` - ${placeOf(f)}` : ''}`);
       }
       if (todo.length > 0) out.push('');
       if (done.length > 0) {
@@ -194,12 +276,11 @@ export const renderMarkdown = (report: Report, options: MarkdownOptions): string
           `<details><summary>${report.dryRun ? 'Would be applied' : 'Applied'} automatically (${done.length})</summary>`,
           '',
           ...done.map((f) => {
-            const at = f.line ? `L${f.line} ` : '';
             const diff =
               f.before !== undefined && f.after !== undefined
                 ? `${code(f.before)} -> ${f.after ? code(f.after) : '(removed)'}: `
                 : '';
-            return `- ${at}${diff}${f.message}`;
+            return `- ${at(file.file, f.line)}${diff}${f.message}${f.context ? ` - ${f.context}` : ''}`;
           }),
           '',
           '</details>',
@@ -211,7 +292,7 @@ export const renderMarkdown = (report: Report, options: MarkdownOptions): string
 
   if (options.errors?.length) {
     out.push('## Parse errors', '');
-    for (const e of options.errors) out.push(`- ${link(e.file)}: ${e.message}`);
+    for (const e of options.errors) out.push(`- ${fileRef(e.file)}: ${e.message}`);
     out.push('');
   }
   return out.join('\n');

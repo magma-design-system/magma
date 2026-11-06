@@ -316,8 +316,8 @@ graph TD;
   mds-img --> mds-icon
   mds-img --> mds-text
   mds-img --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-avatar --> mds-img
   mds-file-preview --> mds-img

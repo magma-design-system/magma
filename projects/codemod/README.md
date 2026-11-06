@@ -90,9 +90,22 @@ A report to work through what the codemod left for you, written for a human rath
 1. **Decisions by token**: each class token that needs a choice appears once, however many files use it, with
    _how to decide_ (e.g. seed as a background: page -> `surface-default`, card -> `surface-raised`, popover ->
    `surface-overlay`), its ready-to-paste alternatives with their distance in light and dark, and a checkbox per
-   place it occurs (linked to the line).
+   file that uses it: the file's path, an `Open file` link, and its occurrences, each linked to the line.
+   Each alternative says what the role is for in the system (`Alternative meaning`). For a background the markup
+   can often tell which surface the element is, so the places are batched under a **Likely** answer with its
+   evidence (on `<body>`, inside `<MdsModal>`, with `shadow-xs`, `role="dialog"`...), the rest under **No hint**.
+   Every occurrence also says where it sits and, when the markup tells, the role it could be with how close it is
+   (on `<div>` inside `<MdsModal>` it could be a `bg-surface-overlay` plus its dE mark), in the decisions and in
+   the per-file checklist. A hint is never written: it only groups the places you confirm together. React only for
+   now. Every dE carries its category L tier, from the manifest's thresholds: identical (up to `exact`, 0.5),
+   acceptable (up to `near`, 2), far.
 2. **Suggestions**: the value matches a rerun with `--accept-semantic` would write, to review before accepting.
-3. **Files**: a checklist per file; the automatic changes are folded under each file.
+3. **Files**: a checklist per file (path and `Open file` link, every item linked to its line); the automatic
+   changes are folded under each file.
+
+Each file row is a line of inline HTML: the path takes the whole row (cut with an ellipsis when too long) and
+`Open file` sits on the right. Viewers that strip inline styles, like GitHub, show the path and the link side by
+side instead.
 
 Links are relative to the report's location, so write it inside the project:
 
