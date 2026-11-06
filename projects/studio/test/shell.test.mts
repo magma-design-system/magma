@@ -47,14 +47,14 @@ test('the bar names the three sections, Colors and Behavior opening their pages 
     ['#studio-colors', '#studio-behavior'].includes(String((menu as { target?: string }).target ?? menu.getAttribute('target'))),
   )
   expect(links(colors).map(({ text }) => text)).toEqual([
-    'Palette', 'Contrast scales', 'Semantic surface', 'Themes', 'Groups', 'Diffs',
+    'Palette', 'Contrast scales', 'Semantic surface', 'Themes', 'Groups', 'Contrast check', 'Diffs',
   ])
   expect(links(colors).find(({ current }) => current === 'page')?.href).toBe('#/colors/groups')
   // the outline icons, the filled one for the page shown
   const icons = [...colors.querySelectorAll('mds-button[href]')].map((link) => link.getAttribute('icon'))
   expect(icons).toEqual([
     'mi/outline/palette', 'mi/outline/contrast', 'mi/outline/account-tree', 'mi/outline/theater-comedy',
-    'mi/baseline/workspaces', 'mi/outline/difference',
+    'mi/baseline/workspaces', 'mi/outline/fact-check', 'mi/outline/difference',
   ])
   expect(links(behavior).map(({ text }) => text)).toEqual(['Design language', 'Patterns', 'Blocks'])
   // the verdict of the contrast gate heads the Colors menu, once the configuration is judged

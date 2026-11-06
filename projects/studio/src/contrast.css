@@ -1,0 +1,91 @@
+/*
+  The Contrast check page (contrast.tsx): a card per theme, a table per category of the gate, the
+  two modes of a pair side by side; and the dialog an export opens while the gate fails. Spaces from
+  the rhythm, widths from the widths, colours from the semantic roles (docs/agents/patterns/rhythm.md,
+  surfaces.md); the samples paint the colours of the pair inline, so only their frame is written
+  here.
+*/
+
+.contrast {
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+}
+
+.contrast-hint {
+  max-inline-size: var(--magma-width-reading);
+}
+
+.contrast-notice {
+  max-inline-size: var(--magma-width-reading);
+}
+
+.contrast-theme-head {
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+}
+
+.contrast-categories {
+  display: grid;
+  gap: var(--magma-rhythm-between-groups);
+}
+
+.contrast-category {
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+  min-inline-size: 0;
+}
+
+.contrast-category-head {
+  display: grid;
+  gap: var(--magma-rhythm-label-control);
+}
+
+/* the table takes the width of the card and scrolls inside it, its cells on one line (mds-table,
+   "Fill the Container and Let the Table Scroll") */
+
+.contrast-table {
+  inline-size: 100%;
+}
+
+.contrast-table mds-table-cell,
+.contrast-table mds-text {
+  text-wrap: nowrap;
+}
+
+/* a mode of a pair: the sample, the measure, the verdict */
+
+.contrast-cell {
+  align-items: center;
+  display: flex;
+  gap: calc(var(--spacing) * 200);
+}
+
+.contrast-cell-off {
+  opacity: var(--magma-disabled-opacity);
+}
+
+/* the two colours of the pair: the text on its background, or the border around it */
+
+.contrast-sample {
+  align-items: center;
+  block-size: 1.5lh;
+  border: medium solid transparent;
+  border-radius: var(--magma-radius-sm);
+  box-sizing: border-box;
+  corner-shape: var(--magma-corner-shape);
+  display: inline-flex;
+  flex: none;
+  font-weight: 700;
+  inline-size: 3lh;
+  justify-content: center;
+  outline: thin solid rgb(var(--magma-border-muted));
+}
+
+/* the pairs a failing export names */
+
+.contrast-failures {
+  display: grid;
+  gap: var(--magma-rhythm-label-control);
+  margin: 0;
+  padding-inline-start: calc(var(--spacing) * 500);
+}

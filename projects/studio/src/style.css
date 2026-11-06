@@ -110,6 +110,15 @@
   min-width: 0;
 }
 
+/* the title and the status of what is edited beside it, which wraps under it with no room
+   (page-header, `status`); side by side in one row (rhythm/inline) */
+.studio-page-name {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-inline);
+  align-items: center;
+}
+
 .studio-page-actions {
   display: flex;
   gap: var(--magma-rhythm-inline);

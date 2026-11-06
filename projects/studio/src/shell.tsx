@@ -5,7 +5,8 @@ import { COLOR_MODES } from '@maggioli-design-system/design-tokens/src/lib/theme
 import logo from '@maggioli-design-system/identity/dist/internal/magma-design-system/logo-magma.svg?url';
 import { App } from './app.js';
 import { readDraft } from './draft.js';
-import { gateVerdict, type GateVerdict } from './gate.js';
+import type { GateVerdict } from './gate.js';
+import { GateBadge } from './verdict.js';
 import { sceneStyle } from './scene-css.js';
 import { useThemeChoices } from './theme-choices.js';
 import { applyFrame, type Scheme } from './frame.js';
@@ -58,7 +59,8 @@ export function Studio() {
     if (route.section === 'colors') setColorsView(route.view);
   }, [route]);
   const [config, setConfig] = useState<MagmaConfig | null>(null);
-  const verdict = useMemo(() => (config ? gateVerdict(config) : null), [config]);
+  // the App judges the working config with the contrast gate at every edit (gate.ts)
+  const [verdict, setVerdict] = useState<GateVerdict | null>(null);
 
   return (
     <div class="studio">
@@ -68,38 +70,12 @@ export function Studio() {
           view={colorsView}
           onNavigate={(view) => navigate({ section: 'colors', view })}
           onConfig={setConfig}
+          onGate={setVerdict}
         />
       </div>
       {route.section === 'theme' && <ThemePage config={config} />}
       {route.section === 'behavior' && <BehaviorPageView page={route.page} />}
     </div>
-  );
-}
-
-/** The verdict of the contrast gate, first in the Colors menu. */
-function GateBadge({ verdict }: { verdict: GateVerdict | null }) {
-  if (!verdict) return null;
-  if (verdict.state === 'pass')
-    return (
-      <mds-badge
-        variant="success"
-        label="All contrasts are OK"
-        title={
-          verdict.accepted
-            ? `${verdict.accepted} known offender(s) accepted by the baseline of design-tokens`
-            : undefined
-        }
-      ></mds-badge>
-    );
-  if (verdict.state === 'fail')
-    return (
-      <mds-badge
-        variant="error"
-        label={`${verdict.violations} contrast${verdict.violations === 1 ? '' : 's'} below target`}
-      ></mds-badge>
-    );
-  return (
-    <mds-badge variant="warning" label="Contrast not measured" title={verdict.message}></mds-badge>
   );
 }
 
@@ -184,6 +160,15 @@ function StudioBar({ route, verdict }: { route: Route; verdict: GateVerdict | nu
             icon-position="right"
           >
             Colors
+            {/* the pairs that fail the contrast gate, on the section, in view wherever the
+                configuration is edited (#698); no pulse, the count moves with every edit */}
+            {verdict?.state === 'fail' && (
+              <mds-notification
+                slot="notification"
+                value={verdict.violations}
+                max={99}
+              ></mds-notification>
+            )}
           </mds-button>
           <mds-button
             slot="nav"

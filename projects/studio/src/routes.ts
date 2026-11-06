@@ -12,7 +12,8 @@ import { useEffect, useState } from 'preact/hooks';
 */
 
 /** The views of the Colors section; the ids are the ones a saved draft carries. */
-export type ColorsView = 'colors' | 'scales' | 'surface' | 'themes' | 'groups' | 'diff';
+export type ColorsView =
+  'colors' | 'scales' | 'surface' | 'themes' | 'groups' | 'contrast' | 'diff';
 export type BehaviorPage = 'design-language' | 'patterns' | 'blocks';
 
 export type Route =
@@ -41,7 +42,16 @@ export const COLORS_PAGES: MenuItem<ColorsView>[] = [
   },
   { id: 'themes', slug: 'themes', label: 'Themes', icon: 'mi/baseline/theater-comedy' },
   { id: 'groups', slug: 'groups', label: 'Groups', icon: 'mi/baseline/workspaces' },
-  { id: 'diff', slug: 'diffs', label: 'Diffs', icon: 'mi/baseline/difference', apart: true },
+  // the pages that check the work against what Magma builds: the contrast gate, the committed
+  // palette
+  {
+    id: 'contrast',
+    slug: 'contrast-check',
+    label: 'Contrast check',
+    icon: 'mi/baseline/fact-check',
+    apart: true,
+  },
+  { id: 'diff', slug: 'diffs', label: 'Diffs', icon: 'mi/baseline/difference' },
 ];
 
 export const BEHAVIOR_PAGES: MenuItem<BehaviorPage>[] = [
