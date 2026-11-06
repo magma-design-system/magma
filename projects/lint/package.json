@@ -34,7 +34,6 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "serve.previews": "tsx scripts/serve-previews.ts",
     "test": "vitest run",
     "lint": "eslint ."
   },
@@ -44,8 +43,7 @@
   },
   "devDependencies": {
     "@angular-eslint/template-parser": "22.5.0",
-    "@html-eslint/parser": "0.67.0",
-    "@modelcontextprotocol/sdk": "1.32.2"
+    "@html-eslint/parser": "0.67.0"
   },
   "repository": {
     "type": "git",

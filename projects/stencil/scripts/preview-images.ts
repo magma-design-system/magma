@@ -6,7 +6,7 @@
   a decision that cannot run live. In magma only, the package get_pattern and the docs site
   read: the wrappers depend on it.
 
-  The render is the one of render_preview (projects/lint/src/mcp/render.ts) on the components
+  The render is the one of render_preview (projects/mcp/src/render.ts) on the components
   this build made, and an image with a problem fails the build, so no image ships that its check
   did not pass; it is written all the same, to be looked at. Needs playwright-core and a browser
   of the machine (Google Chrome, Microsoft Edge or the Chromium of `npx playwright install
@@ -17,7 +17,7 @@ import { writeFileSync } from 'fs';
 import { availableParallelism } from 'os';
 import { join, relative } from 'path';
 import { previewImageFile, readPreviews } from '../../lint/src/core/patterns';
-import { renderPreviewImages } from '../../lint/src/mcp/render';
+import { renderPreviewImages } from '../../mcp/src/render';
 import { PROJECT_DIR } from './meta';
 
 const REPO = join(PROJECT_DIR, '../..');
@@ -43,7 +43,7 @@ renderPreviewImages({ root: REPO, settings: { root: REPO } }, previews, CONCURRE
     }
     if (failed.length) {
       console.error(
-        `${failed.length} problem(s) in the images of the previews (render_preview checks them the same way; npx nx run lint:serve.previews shows a preview live):\n${failed
+        `${failed.length} problem(s) in the images of the previews (render_preview checks them the same way; npx nx run mcp:serve.previews shows a preview live):\n${failed
           .map((one) => `  - ${one}`)
           .join('\n')}`,
       );

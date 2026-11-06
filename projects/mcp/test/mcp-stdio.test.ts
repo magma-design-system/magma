@@ -18,8 +18,11 @@ let client: Client;
 beforeAll(async () => {
   const transport = new StdioClientTransport({
     command: path.join(repository, 'node_modules/.bin/tsx'),
+    // the tsconfig of this project: its paths take the imports of the lint to its sources
     args: [
-      path.join(here, '../src/mcp/cli.ts'),
+      '--tsconfig',
+      path.join(here, '../tsconfig.json'),
+      path.join(here, '../src/cli.ts'),
       '--root',
       context.root,
       '--documentation',

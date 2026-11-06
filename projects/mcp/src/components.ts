@@ -6,9 +6,14 @@
 */
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { magmaRoot, propInfo, readData } from '../core/data.js';
-import { tagOf } from '../core/element.js';
-import { readPatternDir, rulesOfComponent } from '../core/patterns.js';
+import {
+  magmaRoot,
+  propInfo,
+  readData,
+  tagOf,
+  readPatternDir,
+  rulesOfComponent,
+} from '@maggioli-design-system/magma/lint';
 import { ToolError, type Tool } from './protocol.js';
 import { firstSentence, GAP, GAP_SCHEMA, pascalOf, wordsOf, type ToolContext } from './context.js';
 import { patternsDir, RULE_SCHEMA } from './patterns.js';

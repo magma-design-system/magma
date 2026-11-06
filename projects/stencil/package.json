@@ -8,7 +8,7 @@
   "es2017": "dist/esm/index.mjs",
   "types": "dist/types/components.d.ts",
   "bin": {
-    "magma-mcp": "dist/lint/mcp/cli.js"
+    "magma-mcp": "dist/mcp/cli.js"
   },
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
@@ -78,6 +78,7 @@
     "./agents/*": "./agents/*",
     "./CHANGELOG.md": "./CHANGELOG.md",
     "./dist/documentation.json": "./dist/documentation.json",
+    "./dist/mcp/tools.json": "./dist/mcp/tools.json",
     "./dist/lint/mcp/tools.json": "./dist/lint/mcp/tools.json",
     "./dist/collection/components/*.md": "./dist/collection/components/*.md",
     "./dist/collection/components/*/documentation.json": "./dist/collection/components/*/documentation.json",

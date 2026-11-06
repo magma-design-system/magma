@@ -111,9 +111,9 @@ the files it governs: the map of the repository's `.vscode/settings.json`,
 
 - **The stories** take the entry point of Storybook.
 - **The previews and their drafts** take `.claude/previews/tailwind.css`, which
-  `nx run lint:serve.previews` writes when it starts (#1220): the entry point of
+  `nx run mcp:serve.previews` writes when it starts (#1220): the entry point of
   `agents/assets.md` that the page of a stage compiles (`TAILWIND` of
-  `projects/lint/src/mcp/render.ts`), each import resolved to the file the page reads. The
+  `projects/mcp/src/render.ts`), each import resolved to the file the page reads. The
   editor then completes the very classes the page gives rules to, on the build of the
   checkout that runs the server, even when the editor has another checkout open (one on an
   older build of `projects/styles` lacks the rhythm utilities). The file is untracked and

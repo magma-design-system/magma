@@ -6,7 +6,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { magmaRoot } from '../core/data.js';
+import { magmaRoot } from '@maggioli-design-system/magma/lint';
 import { readJsonFile, type ToolContext } from './context.js';
 import { checkMarkup, checkSetup } from './checks.js';
 import { findComponent, getComponent, getUsage } from './components.js';
@@ -46,13 +46,13 @@ export const toolsOf = (context: ToolContext): Tool[] =>
 
 /**
  * The tools as data, the answer of `tools/list`: a definition reads nothing of the project, so
- * any context gives the same. The stencil build writes it into dist/lint/mcp/tools.json.
+ * any context gives the same. The stencil build writes it into dist/mcp/tools.json.
  */
 export const toolsList = (context: ToolContext) => toolList(toolsOf(context));
 
 /**
  * The Magma mark, the icon a client may show next to the server: the stencil build copies it
- * from the build of identity beside this module (dist/lint/mcp/icon.svg). None from the sources.
+ * from the build of identity beside this module (dist/mcp/icon.svg). None from the sources.
  */
 const iconsOf = () => {
   const file = path.join(path.dirname(fileURLToPath(import.meta.url)), 'icon.svg');

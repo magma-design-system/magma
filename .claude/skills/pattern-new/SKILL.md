@@ -88,7 +88,7 @@ For each case, its preview: follow `.claude/skills/pattern-preview/SKILL.md` for
 
 ## 7. The pull request
 
-Run `npx nx run stencil:check.usage-docs` and `npx nx run lint:test` too, commit
+Run `npx nx run stencil:check.usage-docs`, `npx nx run lint:test` and `npx nx run mcp:test` too, commit
 (`feat(magma): add the pattern <id>`; ASCII only, `docs/COMMITS.md`), check `origin/main` in its
 own step and merge it if it moved, push the branch and open a pull request into `main` with the
 decisions taken. Never merge it. Report the Magma gaps found, one proposed issue each.

@@ -15,7 +15,7 @@ import path from 'node:path';
 import { chromium, type Browser } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 
-import { parsePreview } from '../src/core/patterns.js';
+import { parsePreview } from '@maggioli-design-system/magma/lint';
 import {
   breakpointsOf,
   INIT_SCRIPT,
@@ -26,7 +26,7 @@ import {
   TAILWIND,
   tailwindOf,
   themesOf,
-} from '../src/mcp/render.js';
+} from '../src/render.js';
 import {
   EDITOR_ENTRY,
   editorEntryOf,
