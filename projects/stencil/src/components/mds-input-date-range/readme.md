@@ -398,8 +398,8 @@ graph TD;
   mds-input-date-range --> mds-dropdown
   mds-calendar --> mds-button
   mds-calendar --> mds-calendar-cell
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-calendar-cell --> mds-button
   style mds-input-date-range fill:#f9f,stroke:#333,stroke-width:4px

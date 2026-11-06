@@ -1,0 +1,27 @@
+/* The icon of each state (#1264): the button renders one icon for each one it shows, and each
+ * carries the states it is the icon of, rest, current and hover (mds-button.tsx). Every rule
+ * here only hides, one state at a time, so nothing undoes the await sheet, which hides the icon
+ * of a button with no label.
+ *
+ * The current button shows its own under the pointer too: current="page" takes no pointer, and
+ * current="section" keeps its look there (mds-button-current.css). The icon of the hover needs
+ * a pointer that hovers, (hover: hover) in Media Queries 4: a finger leaves :hover on what it
+ * tapped, and a button that is not current would keep the icon of the current one. (hover:
+ * none) is the other value of the feature, which has two. */
+
+:host([current]:not([current='false'])) .icon:not(.current) {
+  display: none;
+}
+
+@media (hover: hover) {
+  :host(:not(:hover, [current]:not([current='false']))) .icon:not(.rest),
+  :host(:hover:not([current]:not([current='false']))) .icon:not(.hover) {
+    display: none;
+  }
+}
+
+@media (hover: none) {
+  :host(:not([current]:not([current='false']))) .icon:not(.rest) {
+    display: none;
+  }
+}

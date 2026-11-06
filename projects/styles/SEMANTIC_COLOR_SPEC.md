@@ -388,7 +388,7 @@ accent owns the bare namespace and every other role infixes its name (`accentInf
 `--magma-accent-emphasis`, `--magma-accent-ai-emphasis`, never `--magma-accent-accent-*`. A
 secondary accent is not a role: a different brand colour is a named theme repointing the
 accent (section 8). Each accent carries the quintet plus the states of 6.6 (`emphasis-hover`,
-`emphasis-active`, `surface-hover`, `surface-subtle`), all resolved through
+`emphasis-active`, `surface-hover`, `surface-subtle`, `surface-selected`), all resolved through
 `--magma-tint-accent-*` so a theme can repoint them, and its `fg` is step `03` (6.5). The
 accents publish no wash / text / border ladders: those below belong to the status hues.
 `--magma-border-focus` follows the accent named in `borderFocus`.
@@ -488,6 +488,7 @@ generates and mode-flips:
 | `--magma-<hue>-emphasis-active` | `02` | two steps stronger |
 | `--magma-accent-surface-hover` (`--magma-accent-ai-*` alike) | `08` | accent surface band, one step stronger |
 | `--magma-accent-surface-subtle` (`--magma-accent-ai-*` alike) | `10` | accent surface band, one step lighter |
+| `--magma-accent-surface-selected` (`--magma-accent-ai-*` alike) | `10` | accent surface band, the action of the view you are in: lighter than the hover (#1269). No step lies between rest and hover; with full colours (#918) it becomes a mix of the two. The emphasis band has no selected step: 04 is the rest, 05 fails `-on-emphasis` |
 
 The emphasis band belongs to every hue that HAS a solid fill - the accents and the colored
 hues alike - and comes from ONE definition (`emphasisStateSteps()` in `semantic.config.ts`),

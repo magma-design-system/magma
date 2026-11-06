@@ -35,6 +35,21 @@ export interface Finding {
   reason?: string;
   /** Ready-to-paste replacements for `token`, best first. */
   alternatives?: Alternative[];
+  /** What the element probably is, read from the markup around the token (never written). */
+  hint?: ContextHint;
+  /** Where the token sits, as Markdown: ``on `<div>` inside `<MdsModal>` ``. */
+  context?: string;
+}
+
+/** A likely answer to a decision, from the element's context: `inside <MdsModal>`. */
+export interface ContextHint {
+  /** The replacement it points to, written like an alternative. */
+  value: string;
+  /** The evidence, as Markdown: ``inside `<MdsModal>` ``. */
+  why: string;
+  /** OKLab deltaE x100 of `value` from what the token painted, like an alternative's. */
+  light: number;
+  dark?: number;
 }
 
 /** One possible replacement for a reported class token. */

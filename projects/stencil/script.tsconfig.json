@@ -14,7 +14,16 @@
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "strictNullChecks": true,
-    "target": "esnext"
+    "target": "esnext",
+    // the MCP server (projects/mcp) imports the lint through the exports of magma, which take
+    // only an import; these scripts run as CommonJS, so they resolve them to the sources of
+    // projects/lint, as the server's own tsconfig does (preview-images.ts renders with it)
+    "paths": {
+      "@maggioli-design-system/magma/lint": ["../lint/src/index.ts"],
+      "@maggioli-design-system/magma/eslint": ["../lint/src/eslint/index.ts"],
+      "@maggioli-design-system/magma/stylelint/recommended": ["../lint/src/stylelint/recommended.ts"],
+      "@maggioli-design-system/magma/stylelint/strict": ["../lint/src/stylelint/strict.ts"]
+    }
   },
   "include": ["scripts"],
   "exclude": ["node_modules", "src"]

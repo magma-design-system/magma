@@ -400,8 +400,8 @@ graph TD;
   mds-input-date --> mds-input-tip-item
   mds-input-date --> mds-dropdown
   mds-input-date --> mds-calendar
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-input-tip-item --> mds-text
   mds-calendar --> mds-button

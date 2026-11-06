@@ -30,11 +30,11 @@ variables:
 
 regions:
   - { id: product, required: true, what: "the name of the application at the start of the bar, as text; a product may put its logo in its place (logo)", use: ["mds-text typography=h6 tag=p"] }
-  - { id: sections, when: { sections: few }, what: "the sections of the application in the order of the work, each a link to its page or, with several pages, the button of its menu (section-menus), the current one marked: aria-current=page and a look of its own; in the bar from the width of the desktop, in the menu under it", use: ["mds-button slot=nav href variant=dark tone=text"] }
-  - { id: section-menus, when: { sections: few, section-pages: several }, what: "a section with several pages: in the bar, a button named after the section with an arrow at its end, which only opens the panel of its pages, right after it: the pages as links in the order of the work, the main page of the section first, the current one marked; the button of the section that holds the current page is marked too, aria-current=true and the look of the current section", use: ["mds-button slot=nav icon=mi/baseline/expand-more icon-position=right variant=dark tone=text", "mds-dropdown slot=nav role=group placement=bottom-start strategy=fixed", "mds-button href variant=dark tone=text"] }
+  - { id: sections, when: { sections: few }, what: "the sections of the application in the order of the work, each a link to its page or, with several pages, the button of its menu (section-menus), the current one marked with current, or current=section on a page inside it (a record of its list, a page of its menu); in the bar from the width of the desktop, in the menu under it", use: ["mds-button slot=nav href variant=dark tone=text current"] }
+  - { id: section-menus, when: { sections: few, section-pages: several }, what: "a section with several pages: in the bar, a button named after the section with an arrow at its end, which only opens the panel of its pages, right after it: the pages as links in the order of the work, the main page of the section first, the current one marked with current; the button of the section that holds the current page is marked with current=section", use: ["mds-button slot=nav icon=mi/baseline/expand-more icon-position=right variant=dark tone=text current", "mds-dropdown slot=nav role=group placement=bottom-start strategy=fixed", "mds-button href variant=dark tone=text current"] }
   - { id: person, when: { person: signed-in }, what: "the last element of the bar: a button named after the person signed in, which opens their menu: their name, Profilo, then Esci after a separator", use: ["mds-button slot=nav icon variant=dark tone=text", "mds-dropdown", "mds-separator"] }
   - { id: sign-in, when: { person: guest }, what: "the last element of the bar: Accedi, a link to the sign-in", use: ["mds-button slot=nav href variant=dark tone=outline"] }
-  - { id: menu, what: "the menu of the bar, opened by its button: the sections, the current one marked, a section with several pages as a group of its pages under its name, a separator before and after it; then after a separator the name of the person, Profilo and Esci, or Accedi, which keeps its outline; under the width of the desktop with few sections, at every width with many", use: ["mds-header menu", "mds-button href variant=dark tone=text", "mds-button href variant=dark tone=outline", "mds-text typography=detail tag=p", "mds-separator"] }
+  - { id: menu, what: "the menu of the bar, opened by its button: the sections, the current one marked with current as in the bar, a section with several pages as a group of its pages under its name, a separator before and after it; then after a separator the name of the person, Profilo and Esci, or Accedi, which keeps its outline; under the width of the desktop with few sections, at every width with many", use: ["mds-header menu", "mds-button href variant=dark tone=text current", "mds-button href variant=dark tone=outline", "mds-text typography=detail tag=p", "mds-separator"] }
   - { id: main, required: true, what: "the content of the page, under the bar: one main in the frame of the page, its header first (page-header), then its sections" }
 
 always-true:
@@ -42,13 +42,13 @@ always-true:
     rule: "The application has one bar: mds-header with one mds-header-bar, first in the page; the page starts under it, with no room reserved by hand."
     checked-by: review
   - id: sections-are-links
-    rule: "The sections are links to their pages (mds-button with href), the current one marked with aria-current=\"page\"; a section with several pages opens a menu of links instead (link-or-menu); never a button that runs a script to change page."
+    rule: "The sections are links to their pages (mds-button with href), the current one marked with current, or current=\"section\" on a page inside it; a section with several pages opens a menu of links instead (link-or-menu); never a button that runs a script to change page, never aria-current or a tone set by hand."
     checked-by: review
   - id: link-or-menu
     rule: "A section is a link to its page or the button of a menu of its pages, never both: the button only opens the menu and carries an arrow at its end (icon-position=\"right\"), and the main page of the section is the first entry of the menu."
     checked-by: review
   - id: current-in-menu
-    rule: "The section that holds the current page is marked on its button, aria-current=\"true\" and the look of the current section, and the page in its menu with aria-current=\"page\": the bar says where the person is with the menu closed."
+    rule: "The section that holds the current page is marked on its button with current=\"section\", and the page in its menu with current: the bar says where the person is with the menu closed."
     checked-by: review
   - id: menu-of-links
     rule: "The menu of a section is navigation, not a menu of actions: mds-dropdown with role=\"group\", right after the button of the section in the nav slot, its pages links in the order of Tab; never the default role=\"menu\", which belongs to the menu of the person."
@@ -121,11 +121,11 @@ A region shows where its When holds, in this order: a required one always, the o
 | Region | When | Required | What | Use |
 | --- | --- | --- | --- | --- |
 | `product` | any | yes | the name of the application at the start of the bar, as text; a product may put its logo in its place (logo) | `mds-text typography=h6 tag=p` |
-| `sections` | sections: few |  | the sections of the application in the order of the work, each a link to its page or, with several pages, the button of its menu (section-menus), the current one marked: aria-current=page and a look of its own; in the bar from the width of the desktop, in the menu under it | `mds-button slot=nav href variant=dark tone=text` |
-| `section-menus` | sections: few; section-pages: several |  | a section with several pages: in the bar, a button named after the section with an arrow at its end, which only opens the panel of its pages, right after it: the pages as links in the order of the work, the main page of the section first, the current one marked; the button of the section that holds the current page is marked too, aria-current=true and the look of the current section | `mds-button slot=nav icon=mi/baseline/expand-more icon-position=right variant=dark tone=text`, `mds-dropdown slot=nav role=group placement=bottom-start strategy=fixed`, `mds-button href variant=dark tone=text` |
+| `sections` | sections: few |  | the sections of the application in the order of the work, each a link to its page or, with several pages, the button of its menu (section-menus), the current one marked with current, or current=section on a page inside it (a record of its list, a page of its menu); in the bar from the width of the desktop, in the menu under it | `mds-button slot=nav href variant=dark tone=text current` |
+| `section-menus` | sections: few; section-pages: several |  | a section with several pages: in the bar, a button named after the section with an arrow at its end, which only opens the panel of its pages, right after it: the pages as links in the order of the work, the main page of the section first, the current one marked with current; the button of the section that holds the current page is marked with current=section | `mds-button slot=nav icon=mi/baseline/expand-more icon-position=right variant=dark tone=text current`, `mds-dropdown slot=nav role=group placement=bottom-start strategy=fixed`, `mds-button href variant=dark tone=text current` |
 | `person` | person: signed-in |  | the last element of the bar: a button named after the person signed in, which opens their menu: their name, Profilo, then Esci after a separator | `mds-button slot=nav icon variant=dark tone=text`, `mds-dropdown`, `mds-separator` |
 | `sign-in` | person: guest |  | the last element of the bar: Accedi, a link to the sign-in | `mds-button slot=nav href variant=dark tone=outline` |
-| `menu` | any |  | the menu of the bar, opened by its button: the sections, the current one marked, a section with several pages as a group of its pages under its name, a separator before and after it; then after a separator the name of the person, Profilo and Esci, or Accedi, which keeps its outline; under the width of the desktop with few sections, at every width with many | `mds-header menu`, `mds-button href variant=dark tone=text`, `mds-button href variant=dark tone=outline`, `mds-text typography=detail tag=p`, `mds-separator` |
+| `menu` | any |  | the menu of the bar, opened by its button: the sections, the current one marked with current as in the bar, a section with several pages as a group of its pages under its name, a separator before and after it; then after a separator the name of the person, Profilo and Esci, or Accedi, which keeps its outline; under the width of the desktop with few sections, at every width with many | `mds-header menu`, `mds-button href variant=dark tone=text current`, `mds-button href variant=dark tone=outline`, `mds-text typography=detail tag=p`, `mds-separator` |
 | `main` | any | yes | the content of the page, under the bar: one main in the frame of the page, its header first (page-header), then its sections |  |
 
 ## Layout
@@ -171,9 +171,9 @@ These hold in every product: a product layer cannot change them.
 | Id | Rule | Checked by |
 | --- | --- | --- |
 | `one-bar` | The application has one bar: mds-header with one mds-header-bar, first in the page; the page starts under it, with no room reserved by hand. | review |
-| `sections-are-links` | The sections are links to their pages (mds-button with href), the current one marked with aria-current="page"; a section with several pages opens a menu of links instead (link-or-menu); never a button that runs a script to change page. | review |
+| `sections-are-links` | The sections are links to their pages (mds-button with href), the current one marked with current, or current="section" on a page inside it; a section with several pages opens a menu of links instead (link-or-menu); never a button that runs a script to change page, never aria-current or a tone set by hand. | review |
 | `link-or-menu` | A section is a link to its page or the button of a menu of its pages, never both: the button only opens the menu and carries an arrow at its end (icon-position="right"), and the main page of the section is the first entry of the menu. | review |
-| `current-in-menu` | The section that holds the current page is marked on its button, aria-current="true" and the look of the current section, and the page in its menu with aria-current="page": the bar says where the person is with the menu closed. | review |
+| `current-in-menu` | The section that holds the current page is marked on its button with current="section", and the page in its menu with current: the bar says where the person is with the menu closed. | review |
 | `menu-of-links` | The menu of a section is navigation, not a menu of actions: mds-dropdown with role="group", right after the button of the section in the nav slot, its pages links in the order of Tab; never the default role="menu", which belongs to the menu of the person. | review |
 | `every-width` | Every section and every page of a section is reached at every width: in the bar from the width of the desktop, in the menu of the bar under it, the pages of a section under its name; never menu="none" on a bar with sections. | review |
 | `person-named` | The button of the person is named after them ("Account di Mario Rossi") and their menu opens with their name: the person always sees who is signed in. | review |
@@ -211,8 +211,11 @@ Situations every application has, each with the regions it shows: they give the 
 
 - `mds-header-bar` draws the `nav` landmark around its `nav` slot; the content of the page is
   the one `main` landmark.
-- The current section carries `aria-current="page"` on its `mds-button`, which keeps the role
-  of link on its host; its look is not the only sign of it.
+- The current section is `current` on its `mds-button`, which writes `aria-current="page"` and
+  keeps the role of link on its host: on the page of the section it does nothing when clicked,
+  but stays in the Tab order, so the keyboard reaches where it is. On a page inside the section,
+  a record of its list, it is `current="section"`: `aria-current="true"`, and still a link back
+  to the list. Its look is not only a colour: the label is bold.
 - The button of the person has an `aria-label` that names them, and opens its menu with
   `mds-dropdown`, a `menu` by default: the arrows walk its entries, Esc closes it and gives the
   focus back to the button.
@@ -222,8 +225,9 @@ Situations every application has, each with the regions it shows: they give the 
   and `aria-controls` on the button of the section, which names the panel (`aria-labelledby`).
   Enter opens the panel and leaves the focus on the button, Tab walks the pages, since the panel
   comes right after the button, and Esc closes it and gives the focus back to the button.
-- The button of the section that holds the current page carries `aria-current="true"`, not
-  `"page"`: it is not the page; the page in its menu carries `aria-current="page"`.
+- The button of the section that holds the current page is `current="section"`, which writes
+  `aria-current="true"`, not `"page"`: it is not the page, and it still opens its menu. The page
+  in its menu is `current`, `aria-current="page"`, and does nothing when clicked.
 - In the menu of the bar, a section with several pages is a `role="group"` named by its name
   (`aria-labelledby`).
 - The menu of the bar opens in the `mds-modal` of `mds-header`, whose button Magma names
@@ -242,9 +246,6 @@ Situations every application has, each with the regions it shows: they give the 
 
 ## Magma gaps
 
-- `mds-button` has no state for the current section of a bar: `active` is the pressed look, which
-  the button clears when the pointer is released. The look of the current section is a decision
-  of the round of the building blocks, written with the props Magma has: `tone="weak"`, a filled shape, which still stands at 1.45:1 against the bar in the light mode and 2.48:1 in the dark, under the 3:1 of a state.
 - No side navigation: with many sections, the menu of the bar holds them at every width, and
   they are not in view beside the page.
 - No link that skips the bar to the content: a screen reader jumps to the `main` landmark, a
@@ -266,4 +267,5 @@ Situations every application has, each with the regions it shows: they give the 
 | 2026-11-03 | The application shell is a block: the bar and the frame of the page come back in `list-with-filters`, `record-detail`, `empty-state` and `message-placement` | The round of the building blocks: every whole-page preview wrote them by hand, each a little differently; the docs site already names the app shell among the building blocks (`plan/DIRECTION.md`, Patterns section, Navigation). |
 | 2026-11-03 | The sections are links with the current one marked, and they reach a phone through the menu of the bar | The previews had buttons with no address, no current section and `menu="none"`, which hides every section under the width of the desktop (`nav="desktop"` is the default of `mds-header`). |
 | 2026-11-03 | The current section is `variant="dark" tone="weak"`, the others `tone="text"`, in the bar and in the menu | A filled shape, not only a colour: `primary text` (B) changed only the ink, and in the dark mode the accent is near the other sections (1.22:1), so the current one could not be seen. Neither reaches 3:1 against the bar: a Magma gap. The maintainer's choice A in the review of round 3. |
-| 2026-11-05 | A section with several pages opens them from a menu (`section-pages: several`): a button with an arrow at its end that only opens it, an `mds-dropdown role="group"` right after it, the section marked on its button and the page in the menu; the menu of the bar holds every page under the name of its section; a section is a link or a menu, never both | The studio of Magma (#695, PR #1255) is the first application whose sections hold several pages. The maintainer chose from live renders of one back office: every page under its section in the menu of the bar (A), one tap away, over sections that open inside the menu with `mds-details` (B, two taps); a section that only opens its menu, its main page first (A), over a link with an arrow beside it (B: two small targets side by side, and `mds-button-dropdown`, the split button of Magma, has no `tone="text"`). `role="group"` and not `menu`: the menu of a section is the navigation of a site, which the WAI-ARIA APG writes as a disclosure of links (Disclosure Navigation Menu); Enter, Tab and Esc verified on Magma 2.11.0. |
+| 2026-11-05 | The current section is `current` on its `mds-button` (`current="section"` on a page inside it), which replaces `tone="weak"` and `aria-current` written by hand | The Magma gap closed by #1264: one look for every product, an area that weighs less than the hover of the tone (for `tone="text"` the wash of its hover, `wash-soft` on the bar) and a bold label, which marks the state where the area stays under 3:1. The section of the page on screen does nothing when clicked, so it never reloads the page; on a record it stays a link back to the list. The maintainer's choices on live renders. |
+| 2026-11-05 | A section with several pages opens them from a menu (`section-pages: several`): a button with an arrow at its end that only opens it, an `mds-dropdown role="group"` right after it, the section marked on its button with `current="section"` and the page in the menu with `current`; the menu of the bar holds every page under the name of its section; a section is a link or a menu, never both | The studio of Magma (#695, PR #1255) is the first application whose sections hold several pages. The maintainer chose from live renders of one back office: every page under its section in the menu of the bar (A), one tap away, over sections that open inside the menu with `mds-details` (B, two taps); a section that only opens its menu, its main page first (A), over a link with an arrow beside it (B: two small targets side by side, and `mds-button-dropdown`, the split button of Magma, has no `tone="text"`). `role="group"` and not `menu`: the menu of a section is the navigation of a site, which the WAI-ARIA APG writes as a disclosure of links (Disclosure Navigation Menu); Enter, Tab and Esc verified on Magma 2.11.0. |

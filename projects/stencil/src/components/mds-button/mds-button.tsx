@@ -1,4 +1,5 @@
 import {
+  ButtonCurrentType,
   ButtonIconPositionType,
   ButtonSizeType,
   ButtonTargetType,
@@ -11,7 +12,7 @@ import { ToneBoxVariantType } from '@type/tone';
 
 import { TypographyType } from '@type/typography';
 import { buttonSizeTypographyVariant } from './meta/variants';
-import { setAttributeIfEmpty, unslugName } from '@common/aria';
+import { currentOf, setAttributeIfEmpty, unslugName } from '@common/aria';
 import { isIconFormatIsBase64, isIconFormatIsSVG } from '@common/icon';
 import { TypographyTruncateType } from '@type/text';
 import { readSlottedLabel, sanitizeLabel } from '@common/slot';
@@ -45,6 +46,8 @@ export class MdsButton {
   private hasAwaited = false;
   // whether the title on the host is the one the button took from its icon slug
   private iconTitle = false;
+  // whether the aria-current on the host is the one the button wrote from current
+  private ownAriaCurrent = false;
 
   @Element() host: HTMLMdsButtonElement;
 
@@ -66,9 +69,26 @@ export class MdsButton {
   @Prop({ reflect: true }) readonly animation?: TextAnimationType = 'none';
 
   /**
-   * The icon displayed in the button
+   * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their
+   * states
    */
   @Prop({ reflect: true, mutable: true }) icon?: string;
+
+  /**
+   * The icon of the current button, in place of `icon`: the filled icon, say, of an `icon` drawn
+   * as an outline. It is the icon under the pointer too, unless `iconHover` says otherwise, so
+   * the pointer previews it on the buttons that are not current. It takes the place of `icon`:
+   * without `icon` it shows nothing
+   */
+  @Prop() readonly iconCurrent?: string;
+
+  /**
+   * The icon under the pointer, in place of `icon`, and `iconCurrent` when it is not set. Set it
+   * to the `icon` to keep the icon still under the pointer, when `iconCurrent` says something
+   * the click does not do (a check, say). A pointer that cannot hover, as a finger, never shows
+   * it. It takes the place of `icon`: without `icon` it shows nothing
+   */
+  @Prop() readonly iconHover?: string;
 
   /**
    * Specifies the horizontal position of the icon displayed in the button
@@ -136,6 +156,18 @@ export class MdsButton {
   @Prop() readonly target: ButtonTargetType = 'self';
 
   /**
+   * Marks the button that leads to the view you are in, as the current section of a bar or the
+   * current view of a switcher, with a look of its own: an area that weighs less than the hover of
+   * its tone, never its ring, and a heavier label. `current`, or
+   * `current="page"`, is that view: the button neither navigates nor submits, a click and Enter do
+   * nothing, but it stays in the Tab order, announced with `aria-current` (`"page"` on a link,
+   * `"true"` otherwise). `current="section"` is a view inside it, as a record of its list: the
+   * same look, and the button stays a link that brings you back, announced with
+   * `aria-current="true"`. An `aria-current` written on the host stays as written.
+   */
+  @Prop({ reflect: true }) readonly current?: ButtonCurrentType;
+
+  /**
    * Specifies if the text shoud be truncated or should behave as a normal text
    */
   @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word';
@@ -165,13 +197,19 @@ export class MdsButton {
     this.syncClickBehavior();
   }
 
+  @Watch('current')
+  currentChanged(): void {
+    this.syncClickBehavior();
+    this.syncAriaCurrent();
+  }
+
   /**
    * Enter, and Space unless the button is a link, click the button as the pointer does: never
-   * while it is disabled or awaiting. A busy button keeps the focus it had, but a second Enter
-   * does not submit again.
+   * while it is disabled or awaiting, nor on the view you are in. A busy button keeps the focus
+   * it had, but a second Enter does not submit again.
    */
   private syncClickBehavior = (): void => {
-    if (this.disabled || this.await) {
+    if (this.disabled || this.await || this.isCurrentView()) {
       this.km.detachClickBehavior();
       return;
     }
@@ -205,7 +243,26 @@ export class MdsButton {
     }
     this.handleTypeChange(this.isLink() ? 'link' : (this.type ?? ''));
     this.syncClickBehavior();
+    this.syncAriaCurrent();
   }
+
+  /**
+   * The current button tells the assistive technology where you are, as the paginator and the
+   * breadcrumb do: `page` for the link to the page you are on, `true` for a view that is not a
+   * page of its own and for a section you are inside of (#1264). An aria-current the author
+   * wrote, `step` or `date` say, is theirs and stays.
+   */
+  private syncAriaCurrent = (): void => {
+    if (this.host.hasAttribute('aria-current') && !this.ownAriaCurrent) return;
+    const current = currentOf(this.current);
+    if (!current) {
+      if (this.ownAriaCurrent) this.host.removeAttribute('aria-current');
+      this.ownAriaCurrent = false;
+      return;
+    }
+    this.host.setAttribute('aria-current', current === 'page' && this.isLink() ? 'page' : 'true');
+    this.ownAriaCurrent = true;
+  };
 
   @Watch('variant')
   handleVariantChange(newValue?: ButtonVariantType): void {
@@ -219,17 +276,17 @@ export class MdsButton {
     }
   }
 
-  // an awaiting button takes no pointer, but the click of a script or of an assistive
-  // technology still reaches it: it must not submit the form a second time
+  // an awaiting button, and the one of the view you are in, take no pointer, but the click of a
+  // script or of an assistive technology still reaches them: it must not submit the form
   private handleRequestSubmitForm = (e: MouseEvent) => {
     e.preventDefault();
-    if (this.await) return;
+    if (this.await || this.isCurrentView()) return;
     if (this.internals.form) requestSubmitAs(this.internals.form, this.name, this.value);
   };
 
   private handleReset = (e: MouseEvent) => {
     e.preventDefault();
-    if (this.await) return;
+    if (this.await || this.isCurrentView()) return;
     this.internals.form?.reset();
   };
 
@@ -242,6 +299,10 @@ export class MdsButton {
   };
 
   private isLink = (): boolean => (this.href ?? '') !== '';
+
+  // the button of the view you are in does nothing: going there again would only reload it. A
+  // section you are inside of stays a link back to it (#1264)
+  private isCurrentView = (): boolean => currentOf(this.current) === 'page';
 
   // a link the browser opens in a new tab or window: asked by the button, or by the user
   private opensElsewhere = (event: MouseEvent): boolean =>
@@ -259,6 +320,11 @@ export class MdsButton {
    */
   private handleLinkClick = (event: MouseEvent): void => {
     if (!this.isLink() || this.disabled || this.await) return;
+    if (this.isCurrentView()) {
+      // the anchor takes no pointer then (mds-button-current.css): this is the click of a script
+      event.preventDefault();
+      return;
+    }
     const href = this.href ?? '';
     if (this.anchor && event.composedPath().includes(this.anchor)) {
       if (this.opensElsewhere(event) || !NavigationService.canHandle(href, event)) return;
@@ -323,6 +389,7 @@ export class MdsButton {
 
     this.syncIconName();
     setAttributeIfEmpty(this.host, 'role', this.isLink() ? 'link' : 'button');
+    this.syncAriaCurrent();
   }
 
   /**
@@ -363,6 +430,37 @@ export class MdsButton {
     this.km.detachClickBehavior();
   }
 
+  /**
+   * The icons of the button, one for each icon it shows: at rest `icon`, on the current button
+   * `iconCurrent`, under the pointer `iconHover`, which falls back on `iconCurrent` (#1264). Each
+   * carries the states it is the icon of, and the stylesheet hides the others
+   * (mds-button-icon-state.css): all of them are rendered, so an icon is fetched with the button
+   * and not the first time its state comes, blank until it arrives. Without `icon` there is
+   * none: the room of the icon is the one `icon` gives (mds-button-size.css), and an icon that
+   * came only in a state would move the label.
+   */
+  private renderIcons = () => {
+    const icon = this.icon ?? '';
+    if (icon === '') return null;
+    const current = this.iconCurrent || icon;
+    const states: [string, string][] = [
+      ['rest', icon],
+      ['current', current],
+      ['hover', this.iconHover || current],
+    ];
+    const icons = new Map<string, string[]>();
+    states.forEach(([state, name]) => icons.set(name, [...(icons.get(name) ?? []), state]));
+    return Array.from(icons, ([name, of]) => (
+      <mds-icon
+        aria-hidden="true"
+        class={`icon ${of.join(' ')}`}
+        key={name}
+        name={name}
+        part="icon"
+      />
+    ));
+  };
+
   private onSlotChangeHandler = (): void => {
     /* this should be removed in the future once slotted text is no longer used, use the label property instead */
     if ((this.label ?? '') !== '') return;
@@ -402,9 +500,7 @@ export class MdsButton {
         <div class="await">
           {this.hasAwaited && <mds-spinner class="spinner" running={this.await} />}
         </div>
-        {this.icon && this.iconPosition === 'left' && (
-          <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon" />
-        )}
+        {this.iconPosition === 'left' && this.renderIcons()}
         {this.animation === 'yugop' ? (
           <mds-text
             class="text"
@@ -426,9 +522,7 @@ export class MdsButton {
           </span>
         )}
         <slot name="notification" />
-        {this.icon && this.iconPosition === 'right' && (
-          <mds-icon aria-hidden="true" class="icon" name={this.icon} part="icon" />
-        )}
+        {this.iconPosition === 'right' && this.renderIcons()}
       </Host>
     );
   }

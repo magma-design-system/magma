@@ -226,8 +226,8 @@ The component emits `mdsPrefLanguageItemSelect` (or the parent emits `mdsPrefLan
 ```mermaid
 graph TD;
   mds-pref-language-item --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-pref-language-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

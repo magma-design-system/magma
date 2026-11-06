@@ -275,8 +275,8 @@ graph TD;
   mds-chip --> mds-icon
   mds-chip --> mds-text
   mds-chip --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-banner --> mds-icon
   mds-banner --> mds-text

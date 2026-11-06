@@ -412,8 +412,8 @@ graph TD;
   mds-input-switch --> mds-text
   mds-table-header-cell --> mds-button
   mds-table-header-cell --> mds-text
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-table-header fill:#f9f,stroke:#333,stroke-width:4px
 ```

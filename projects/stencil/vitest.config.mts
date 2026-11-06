@@ -45,6 +45,22 @@ const emulateReducedMotion: BrowserCommand<[motion: 'reduce' | 'no-preference' |
   await context.page.emulateMedia({ reducedMotion: motion });
 };
 
+// a pointer that cannot hover, a finger's, as the page sees it ((hover: none)), false back to the
+// mouse of the desktop frame. The emulateMedia of Playwright has no hover feature: the touch
+// emulation of Chromium, through the DevTools protocol, sets it with the pointer. The emulation
+// lasts as long as the session that set it, so each page keeps one
+type DevToolsSession = { send: (method: string, params: object) => Promise<unknown> };
+const touchSessions = new WeakMap<object, DevToolsSession>();
+const emulateTouch: BrowserCommand<[touch: boolean]> = async (context, touch) => {
+  const { page } = context;
+  let session = touchSessions.get(page);
+  if (!session) {
+    session = await page.context().newCDPSession(page);
+    touchSessions.set(page, session);
+  }
+  await session.send('Emulation.setTouchEmulationEnabled', { enabled: touch });
+};
+
 // @stencil/vitest does not read the tsconfig `paths`: mirror the aliases of stencil.config.ts
 const alias = [
   { find: /^@common\/(.*)$/, replacement: src('src/common') },
@@ -101,7 +117,13 @@ export default defineVitestConfig({
             viewport: { width: 1280, height: 800 },
             screenshotFailures: false,
             instances: [{ browser: 'chromium' }],
-            commands: { renderToString, compileTailwind, emulateColorScheme, emulateReducedMotion },
+            commands: {
+              renderToString,
+              compileTailwind,
+              emulateColorScheme,
+              emulateReducedMotion,
+              emulateTouch,
+            },
           },
         },
       },

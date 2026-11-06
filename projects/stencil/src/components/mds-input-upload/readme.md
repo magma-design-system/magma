@@ -414,8 +414,8 @@ graph TD;
   mds-input-upload --> mds-tab
   mds-input-upload --> mds-tab-item
   mds-input-upload --> mds-file-preview
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-progress --> mds-radial-progress
   mds-radial-progress --> mds-icon

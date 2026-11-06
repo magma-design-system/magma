@@ -6,8 +6,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "tsx scripts/skills.ts write",
-    "check": "tsx scripts/skills.ts check",
+    "build": "tsx --tsconfig ../mcp/tsconfig.json scripts/skills.ts write",
+    "check": "tsx --tsconfig ../mcp/tsconfig.json scripts/skills.ts check",
     "lint": "eslint scripts"
   },
   "repository": {

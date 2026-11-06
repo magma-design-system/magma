@@ -1,9 +1,16 @@
 import { render, vi } from '@stencil/vitest';
-import { userEvent } from 'vitest/browser';
+import { commands, userEvent } from 'vitest/browser';
 import { mockIconFetch } from '@test/fetch';
 import { createSlottedChild, itReadsTheSlottedLabelWhenLabelIsNull } from '@test/slot';
 import { NavigationService } from '@common/navigation';
 import { renderToString } from '@test/ssr';
+
+declare module 'vitest/browser' {
+  interface BrowserCommands {
+    // defined in vitest.config.mts, run in Node
+    emulateTouch: (touch: boolean) => Promise<void>;
+  }
+}
 
 /**
  * The awaiting spinner slides in over --duration-300 and the button's own width follows it,
@@ -1011,6 +1018,410 @@ describe('mds-button', () => {
       await userEvent.keyboard('{Enter}');
 
       expect(clicks).toHaveLength(1);
+    });
+  });
+
+  // the button that leads to the view you are in (#1264)
+  describe('the current button', () => {
+    // the host follows a click of its own on the next task: wait past it to see nothing happen
+    const settle = () => new Promise((resolve) => setTimeout(resolve, 50));
+    // the colours transition over --duration-200: read them once it is over
+    const settled = () => new Promise((resolve) => setTimeout(resolve, 400));
+
+    afterEach(() => {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    });
+
+    describe('tells the assistive technology where you are', () => {
+      it.each([
+        ['the page a link leads to', 'href="#here" current', 'page'],
+        ['the page, named', 'href="#here" current="page"', 'page'],
+        ['a view that is not a page of its own', 'current', 'true'],
+        ['a section you are inside of', 'href="#here" current="section"', 'true'],
+      ])('as aria-current: %s', async (_, attributes, expected) => {
+        const { root } = await render(`<mds-button label="Here" ${attributes}></mds-button>`);
+
+        expect(root).toEqualAttribute('aria-current', expected);
+      });
+
+      it.each(['', 'current="false"'])('says nothing without current: %s', async (attributes) => {
+        const { root } = await render(`<mds-button label="Here" ${attributes}></mds-button>`);
+
+        expect(root).not.toHaveAttribute('aria-current');
+      });
+
+      it('follows current and href as they change, and drops what it wrote', async () => {
+        const button = await mountButton((b) => {
+          b.label = 'Here';
+          b.current = true;
+        });
+        expect(button).toEqualAttribute('aria-current', 'true');
+
+        button.href = '#here';
+        await vi.waitFor(() => expect(button).toEqualAttribute('aria-current', 'page'));
+
+        button.current = 'section';
+        await vi.waitFor(() => expect(button).toEqualAttribute('aria-current', 'true'));
+
+        button.current = false;
+        await vi.waitFor(() => expect(button).not.toHaveAttribute('aria-current'));
+      });
+
+      it('leaves an aria-current the author wrote', async () => {
+        const { root } = await render<HTMLMdsButtonElement>(
+          '<mds-button label="Step 2" current aria-current="step"></mds-button>',
+        );
+        expect(root).toEqualAttribute('aria-current', 'step');
+
+        root.current = undefined;
+        await settle();
+
+        expect(root).toEqualAttribute('aria-current', 'step');
+      });
+    });
+
+    describe('of the view you are in', () => {
+      const link = () =>
+        render<HTMLMdsButtonElement>(
+          '<mds-button href="#elsewhere" label="Here" current></mds-button>',
+        );
+
+      it('stays in the Tab order: not disabled, not hidden', async () => {
+        const { root } = await link();
+
+        root.focus();
+
+        expect(document.activeElement).toBe(root);
+        expect(root).toEqualAttribute('tabindex', '0');
+        expect(root).not.toHaveAttribute('aria-disabled');
+        expect(root).not.toHaveAttribute('disabled');
+      });
+
+      it('takes no pointer, as the selected page of the paginator', async () => {
+        const { root } = await link();
+        const { left, top, width, height } = root.getBoundingClientRect();
+
+        expect(getComputedStyle(root).pointerEvents).toBe('none');
+        expect(document.elementFromPoint(left + width / 2, top + height / 2)).not.toBe(root);
+      });
+
+      it('follows the link neither on Enter nor on the click of a script', async () => {
+        const { root } = await link();
+
+        root.focus();
+        await userEvent.keyboard('{Enter}');
+        root.click();
+        await settle();
+
+        expect(window.location.hash).toBe('');
+      });
+
+      it('neither submits nor resets its form', async () => {
+        const { root: form } = await render<HTMLFormElement>(
+          `<form>
+            <input name="q" value="kept">
+            <mds-button label="Search" current></mds-button>
+            <mds-button label="Clear" type="reset" current></mds-button>
+          </form>`,
+        );
+        const submits = recordSubmits(form);
+        const [search, clear] = Array.from(form.querySelectorAll('mds-button'));
+        form.querySelector('input')!.value = 'typed';
+
+        search.focus();
+        await userEvent.keyboard('{Enter}');
+        search.click();
+        clear.click();
+        await settle();
+
+        expect(submits).toHaveLength(0);
+        expect(form.querySelector('input')!.value).toBe('typed');
+      });
+    });
+
+    describe('of a section you are inside of', () => {
+      it('stays a link that brings you back, from the pointer and the keyboard', async () => {
+        const { root } = await render(
+          '<mds-button href="#elsewhere" label="Contacts" current="section"></mds-button>',
+        );
+
+        await userEvent.click(root);
+        await vi.waitFor(() => expect(window.location.hash).toBe('#elsewhere'));
+
+        window.history.replaceState(null, '', window.location.pathname);
+        root.focus();
+        await userEvent.keyboard('{Enter}');
+        await vi.waitFor(() => expect(window.location.hash).toBe('#elsewhere'));
+      });
+
+      it('keeps its look under the pointer', async () => {
+        const { root } = await render(
+          '<mds-button href="#elsewhere" label="Contacts" tone="weak" current="section"></mds-button>',
+        );
+        await settled();
+        const before = getComputedStyle(root).backgroundColor;
+
+        await userEvent.hover(root);
+        await settled();
+
+        expect(getComputedStyle(root).backgroundColor).toBe(before);
+        expect(getComputedStyle(root).boxShadow).toMatch(/ 0px$/);
+      });
+    });
+
+    describe('its look', () => {
+      const weightOf = (button: Element) =>
+        getComputedStyle(button.shadowRoot!.querySelector('.text')!).fontWeight;
+
+      it.each([
+        ['md', '500', '700'],
+        ['lg', '700', '900'],
+      ])('makes the label of %s one weight heavier', async (size, rest, current) => {
+        const { root } = await render(
+          `<div><mds-button size="${size}" label="Rest"></mds-button><mds-button size="${size}" label="Here" current></mds-button></div>`,
+        );
+        await vi.waitFor(() => expect(root.querySelectorAll('[hydrated]')).toHaveLength(2));
+        const [other, here] = Array.from(root.querySelectorAll('mds-button'));
+
+        expect(weightOf(other)).toBe(rest);
+        expect(weightOf(here)).toBe(current);
+      });
+
+      it('keeps the weight of its size with current="false"', async () => {
+        const { root } = await render('<mds-button label="Here" current="false"></mds-button>');
+
+        expect(weightOf(root)).toBe('500');
+      });
+
+      // the colour of a role of the button (mds-button-variant.css), as the background reads it:
+      // a button at rest next to this one would do, but the pointer a test left behind hovers it
+      const role = (button: Element, name: string) =>
+        `rgb(${getComputedStyle(button)
+          .getPropertyValue(`--private-button-${name}`)
+          .trim()
+          .split(/\s+/)
+          .join(', ')})`;
+
+      const current = async (variant: string, tone: string) => {
+        const { root } = await render(
+          `<mds-button variant="${variant}" tone="${tone}" label="Here" current></mds-button>`,
+        );
+        await settled();
+        return root;
+      };
+
+      // the area halfway between rest and hover, until full colours: the selected wash of the
+      // family, a role of the tokens (#1269). The page of the tests loads no semantic layer, so
+      // the button paints the fallback of the role; a value set on the page for the role proves
+      // it reads the role itself
+      describe('weak', () => {
+        afterEach(() => document.documentElement.removeAttribute('style'));
+
+        it.each([
+          ['primary', 'accent-surface-selected'],
+          ['ai', 'accent-ai-surface-selected'],
+          ['error', 'danger-wash-soft'],
+          ['info', 'info-wash-soft'],
+        ])('paints %s with the selected wash %s, without the ring', async (variant, name) => {
+          const root = await current(variant, 'weak');
+          const { backgroundColor, boxShadow } = getComputedStyle(root);
+          expect(backgroundColor).not.toBe(role(root, 'wash'));
+          expect(boxShadow).toMatch(/ 0px$/);
+
+          document.documentElement.style.setProperty(`--magma-${name}`, '1 2 3');
+          await settled();
+
+          expect(getComputedStyle(root).backgroundColor).toBe('rgb(1, 2, 3)');
+        });
+      });
+
+      // their hover keeps the area, and so does the current button: its bold label marks it
+      it.each([
+        ['dark', 'weak', 'wash'],
+        ['light', 'weak', 'wash'],
+        ...['primary', 'dark', 'light', 'error', 'ai'].map((variant) => [
+          variant,
+          'strong',
+          'fill',
+        ]),
+      ])('keeps %s %s on its area at rest, without the ring', async (variant, tone, rest) => {
+        const root = await current(variant, tone);
+        const { backgroundColor, boxShadow } = getComputedStyle(root);
+
+        expect(backgroundColor).toBe(role(root, rest));
+        expect(boxShadow).toMatch(/ 0px$/);
+      });
+
+      // no area at rest: the wash of their hover
+      it.each(
+        ['primary', 'dark', 'light', 'error'].flatMap((variant) => [
+          [variant, 'text'],
+          [variant, 'outline'],
+        ]),
+      )('gives %s %s the wash of its hover', async (variant, tone) => {
+        const root = await current(variant, tone);
+
+        expect(getComputedStyle(root).backgroundColor).toBe(role(root, 'text-wash'));
+      });
+    });
+  });
+
+  // icon at rest, icon-current on the current button, icon-hover under the pointer, which falls
+  // back on icon-current (#1264)
+  describe('the icon of each state', () => {
+    const icons = (button: Element) =>
+      Array.from(button.shadowRoot!.querySelectorAll<HTMLMdsIconElement>('.icon'));
+    const rendered = (button: Element) => icons(button).map((icon) => icon.name);
+    const shown = (button: Element) =>
+      icons(button)
+        .filter((icon) => getComputedStyle(icon).display !== 'none')
+        .map((icon) => icon.name);
+
+    const outline = 'mi/outline/palette';
+    const filled = 'mi/baseline/palette';
+    const check = 'mi/baseline/check';
+
+    // every case renders its button at the top of the page, where the last one may have left the
+    // pointer: park it in a corner (mds-input-select.e2e.ts says why userEvent.unhover is no help)
+    const park = async () => {
+      const corner = document.createElement('span');
+      corner.style.cssText = 'position: fixed; right: 0; bottom: 0; width: 8px; height: 8px';
+      document.body.append(corner);
+      await userEvent.hover(corner);
+      corner.remove();
+    };
+
+    beforeEach(async () => {
+      mockIconFetch();
+      await park();
+    });
+
+    it('renders one icon when the states have none of their own', async () => {
+      const { root } = await render(`<mds-button icon="${outline}" label="Colors"></mds-button>`);
+
+      expect(rendered(root)).toEqual([outline]);
+      expect(shown(root)).toEqual([outline]);
+    });
+
+    it('renders the icon of every state with the button, and shows icon at rest', async () => {
+      const { root } = await render(
+        `<mds-button icon="${outline}" icon-current="${filled}" icon-hover="${check}" label="Colors"></mds-button>`,
+      );
+
+      expect(rendered(root)).toEqual([outline, filled, check]);
+      expect(shown(root)).toEqual([outline]);
+    });
+
+    it('shows icon-current on the current button, and icon again when it is not', async () => {
+      const { root } = await render<HTMLMdsButtonElement>(
+        `<mds-button icon="${outline}" icon-current="${filled}" label="Colors" current></mds-button>`,
+      );
+      expect(shown(root)).toEqual([filled]);
+
+      root.current = 'false' as unknown as boolean;
+      await vi.waitFor(() => expect(shown(root)).toEqual([outline]));
+
+      root.current = 'section';
+      await vi.waitFor(() => expect(shown(root)).toEqual([filled]));
+    });
+
+    it('previews icon-current under the pointer when icon-hover is not set', async () => {
+      const { root } = await render(
+        `<mds-button icon="${outline}" icon-current="${filled}" label="Colors"></mds-button>`,
+      );
+
+      await userEvent.hover(root);
+      await vi.waitFor(() => expect(shown(root)).toEqual([filled]));
+
+      await park();
+      await vi.waitFor(() => expect(shown(root)).toEqual([outline]));
+    });
+
+    it('shows icon-hover under the pointer, in place of icon-current', async () => {
+      const { root } = await render(
+        `<mds-button icon="${outline}" icon-current="${filled}" icon-hover="${check}" label="Colors"></mds-button>`,
+      );
+
+      await userEvent.hover(root);
+
+      await vi.waitFor(() => expect(shown(root)).toEqual([check]));
+    });
+
+    it('keeps the icon still under the pointer with icon-hover set to icon', async () => {
+      const { root } = await render(
+        `<mds-button icon="${outline}" icon-current="${check}" icon-hover="${outline}" label="List"></mds-button>`,
+      );
+      expect(rendered(root)).toEqual([outline, check]);
+
+      await userEvent.hover(root);
+
+      expect(root.matches(':hover')).toBe(true);
+      expect(shown(root)).toEqual([outline]);
+    });
+
+    it('keeps icon-current under the pointer on a section you are inside of', async () => {
+      const { root } = await render(
+        `<mds-button href="#elsewhere" icon="${outline}" icon-current="${filled}" icon-hover="${check}" label="Colors" current="section"></mds-button>`,
+      );
+
+      await userEvent.hover(root);
+
+      expect(root.matches(':hover')).toBe(true);
+      expect(shown(root)).toEqual([filled]);
+    });
+
+    // a finger leaves :hover on what it tapped: a button that is not current would keep the icon
+    // of the current one
+    describe('to a pointer that cannot hover', () => {
+      beforeEach(() => commands.emulateTouch(true));
+      afterEach(() => commands.emulateTouch(false));
+
+      it('never shows icon-hover, even where :hover stays', async () => {
+        expect(window.matchMedia('(hover: none)').matches).toBe(true);
+        const { root } = await render(
+          `<mds-button icon="${outline}" icon-current="${filled}" label="Colors"></mds-button>`,
+        );
+
+        await userEvent.hover(root);
+
+        expect(root.matches(':hover')).toBe(true);
+        expect(shown(root)).toEqual([outline]);
+      });
+
+      it('still shows icon-current on the current button', async () => {
+        const { root } = await render(
+          `<mds-button icon="${outline}" icon-current="${filled}" label="Colors" current></mds-button>`,
+        );
+
+        expect(shown(root)).toEqual([filled]);
+      });
+    });
+
+    it('shows no icon of a state without icon, which gives the icon its room', async () => {
+      const { root } = await render(
+        `<mds-button icon-current="${filled}" icon-hover="${check}" label="Colors" current></mds-button>`,
+      );
+
+      expect(rendered(root)).toEqual([]);
+    });
+
+    it('names a button with no label after icon, in every state', async () => {
+      const { root } = await render(
+        `<mds-button icon="${outline}" icon-current="mi/baseline/brush" current></mds-button>`,
+      );
+
+      await vi.waitFor(() => expect(root).toEqualAttribute('title', 'palette'));
+    });
+
+    it('puts the spinner in place of every icon of a button with no label', async () => {
+      const { root, waitForChanges } = await render<HTMLMdsButtonElement>(
+        `<mds-button icon="${outline}" icon-current="${filled}" title="Colors" current></mds-button>`,
+      );
+
+      root.await = true;
+      await waitForChanges();
+
+      expect(shown(root)).toEqual([]);
     });
   });
 

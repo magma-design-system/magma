@@ -259,8 +259,8 @@ graph TD;
   mds-input --> mds-input-tip-item
   mds-input --> mds-icon
   mds-input --> mds-spinner
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-input-tip-item --> mds-text
   style mds-input-otp fill:#f9f,stroke:#333,stroke-width:4px

@@ -423,8 +423,8 @@ A strip is either a `tablist` of tabs, each controlling a panel, or a navigation
 ```mermaid
 graph TD;
   mds-tab-item --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-input-upload --> mds-tab-item
   mds-pref-animation --> mds-tab-item

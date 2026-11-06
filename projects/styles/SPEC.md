@@ -130,7 +130,7 @@ every other role keeps its name.
 | Border (4) | `--magma-border-{muted,default,strong,focus}` | `border-border-*` |
 | Shadow ink | `--magma-shadow-ink` - the colour of a projected shadow | `shadow-shadow-ink` |
 | Neutral hue | `--magma-neutral-{fg,border}` | `text-neutral-fg`, `border-neutral-border` |
-| Accents | `--magma-accent-*` and `--magma-accent-ai-*`: `{surface,surface-subtle,surface-hover,fg,border,emphasis,emphasis-hover,emphasis-active,on-emphasis}` | `bg-accent-emphasis`, `text-accent-ai-fg`, ... |
+| Accents | `--magma-accent-*` and `--magma-accent-ai-*`: `{surface,surface-subtle,surface-hover,surface-selected,fg,border,emphasis,emphasis-hover,emphasis-active,on-emphasis}` | `bg-accent-emphasis`, `text-accent-ai-fg`, ... |
 | Status hues | `--magma-<hue>-{wash-{soft,base,strong},text-{default,muted,subtle,disabled},border-{muted,default,strong},emphasis,emphasis-hover,emphasis-active,on-emphasis}` | `bg-danger-wash-base`, `text-danger-fg-default`, ... |
 | Status shortcuts | `--magma-<hue>-{surface,fg,border}` = `wash-base` / `text-default` / `border-default` | `bg-<hue>-surface`, `text-<hue>-fg`, `border-<hue>-border` |
 

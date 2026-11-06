@@ -1,4 +1,5 @@
 import { render, vi } from '@stencil/vitest';
+import { mockIconFetch } from '@test/fetch';
 import { useLanguage } from '@test/language';
 import { userEvent } from 'vitest/browser';
 
@@ -293,5 +294,79 @@ describe('mds-button-dropdown chevron and primary action', () => {
     await vi.waitFor(() => {
       expect(root.shadowRoot!.activeElement).toBe(primaryAction(root));
     });
+  });
+});
+
+// the primary action that leads to the view you are in (#1264)
+describe('mds-button-dropdown current', () => {
+  const menu = (dropdown: Element): HTMLMdsDropdownElement =>
+    dropdown.shadowRoot!.querySelector<HTMLMdsDropdownElement>('mds-dropdown')!;
+  const settle = () => new Promise((resolve) => setTimeout(resolve, 50));
+
+  afterEach(() => {
+    window.history.replaceState(null, '', window.location.pathname + window.location.search);
+  });
+
+  it('announces the primary action only; the chevron takes the look and keeps opening the menu', async () => {
+    const { root, waitForChanges } = await render(
+      '<mds-button-dropdown label="Records" href="#records" current><mds-button label="Archive"></mds-button></mds-button-dropdown>',
+    );
+    const primary = primaryAction(root);
+    const arrow = chevron(root);
+    await vi.waitFor(() => expect(primary).toEqualAttribute('aria-current', 'page'));
+
+    expect(arrow).toEqualAttribute('aria-current', 'false');
+    expect(arrow).toHaveAttribute('current');
+
+    await userEvent.click(arrow);
+    await waitForChanges();
+    expect(menu(root).visible).toBe(true);
+  });
+
+  it('neither navigates nor emits from the view you are in', async () => {
+    const { root } = await render(
+      '<mds-button-dropdown label="Records" href="#records" current></mds-button-dropdown>',
+    );
+    const clicks: Event[] = [];
+    root.addEventListener('mdsButtonDropdownClick', (event) => clicks.push(event));
+    const primary = primaryAction(root);
+
+    primary.focus();
+    await userEvent.keyboard('{Enter}');
+    primary.click();
+    await settle();
+
+    expect(clicks).toHaveLength(0);
+    expect(window.location.hash).toBe('');
+  });
+
+  it('keeps the primary action of a section a link back, which emits', async () => {
+    const { root } = await render(
+      '<mds-button-dropdown label="Records" href="#records" current="section"></mds-button-dropdown>',
+    );
+    const clicks: Event[] = [];
+    root.addEventListener('mdsButtonDropdownClick', (event) => clicks.push(event));
+    const primary = primaryAction(root);
+    await vi.waitFor(() => expect(primary).toEqualAttribute('aria-current', 'true'));
+
+    await userEvent.click(primary);
+
+    await vi.waitFor(() => expect(window.location.hash).toBe('#records'));
+    expect(clicks).toHaveLength(1);
+  });
+
+  // the icons of the states are the primary action's: the chevron keeps its arrow (#1264)
+  it('gives icon-current and icon-hover to the primary action only', async () => {
+    mockIconFetch();
+    const { root } = await render(
+      '<mds-button-dropdown label="Colors" icon="mi/outline/palette" icon-current="mi/baseline/palette" icon-hover="mi/baseline/check" current></mds-button-dropdown>',
+    );
+    const primary = primaryAction(root) as HTMLMdsButtonElement;
+    const arrow = chevron(root) as HTMLMdsButtonElement;
+
+    await vi.waitFor(() => expect(primary.iconCurrent).toBe('mi/baseline/palette'));
+    expect(primary.iconHover).toBe('mi/baseline/check');
+    expect(arrow.iconCurrent).toBeUndefined();
+    expect(arrow.iconHover).toBeUndefined();
   });
 });

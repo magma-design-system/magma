@@ -17,8 +17,12 @@ import {
   SyntaxKind,
   ts,
   type JsxAttribute,
+  type JsxElement,
   type JsxExpression,
+  type JsxOpeningElement,
+  type JsxSelfClosingElement,
   type Node,
+  type StringLiteral,
 } from 'ts-morph';
 import {
   type BooleanInvertRule,
@@ -49,6 +53,7 @@ import {
   type AttrValue,
 } from './shared/value-model.js';
 import { applyEdits, type Edit } from './shared/edits.js';
+import { describeElement, type ElementContext, type ElementNode } from './shared/context-hint.js';
 import { type Finding } from '../report/types.js';
 import { ruleEnabled, type TransformContext, type TransformResult } from './shared/transform.js';
 
@@ -56,6 +61,55 @@ const jsxStringFor = (text: string): string =>
   /["&<>\n]/.test(text) ? `{${JSON.stringify(text)}}` : `"${text}"`;
 
 const collapseWhitespace = (s: string): string => s.replace(/\s+/g, ' ').trim();
+
+/** A JSX element as the context hints see it: its tag and literal `role`. */
+const elementNodeOf = (opening: JsxOpeningElement | JsxSelfClosingElement): ElementNode => {
+  const role = opening
+    .getAttributes()
+    .find(
+      (a): a is JsxAttribute =>
+        a.getKind() === SyntaxKind.JsxAttribute &&
+        (a as JsxAttribute).getNameNode().getText() === 'role',
+    )
+    ?.getInitializer();
+  return {
+    tag: opening.getTagNameNode().getText(),
+    ...(role?.getKind() === SyntaxKind.StringLiteral
+      ? { role: (role as StringLiteral).getLiteralText() }
+      : {}),
+  };
+};
+
+/**
+ * The element a `className` sits on, the elements around it (nearest first)
+ * and every class literal of the attribute, for the category L context hints.
+ */
+const elementContextOf = (attr: JsxAttribute): ElementContext | undefined => {
+  const opening = attr.getParent()?.getParent();
+  if (
+    !opening ||
+    (opening.getKind() !== SyntaxKind.JsxOpeningElement &&
+      opening.getKind() !== SyntaxKind.JsxSelfClosingElement)
+  )
+    return undefined;
+  const self = opening as JsxOpeningElement | JsxSelfClosingElement;
+  const ancestors = self
+    .getAncestors()
+    .filter((n): n is JsxElement => n.getKind() === SyntaxKind.JsxElement)
+    .map((n) => n.getOpeningElement())
+    .filter((o) => o !== self)
+    .map(elementNodeOf);
+  const init = attr.getInitializer();
+  const literals = init
+    ? [
+        ...(init.getKind() === SyntaxKind.StringLiteral ? [init as StringLiteral] : []),
+        ...init.getDescendantsOfKind(SyntaxKind.StringLiteral),
+        ...init.getDescendantsOfKind(SyntaxKind.NoSubstitutionTemplateLiteral),
+      ]
+    : [];
+  const classes = literals.flatMap((l) => l.getLiteralText().split(/\s+/).filter(Boolean));
+  return { ...elementNodeOf(self), ancestors, classes };
+};
 
 export const transformReact = (
   source: string,
@@ -407,9 +461,14 @@ export const transformReact = (
   // reported instead.
   const classRules = classRulesOf(manifest);
   if (hasClassRules(classRules)) {
-    const rewriteLiteralContent = (node: Node, partial: boolean): void => {
+    const rewriteLiteralContent = (
+      node: Node,
+      partial: boolean,
+      element?: ElementContext,
+    ): void => {
       const inner = source.slice(node.getStart() + 1, node.getEnd() - 1);
       const line = node.getStartLineNumber();
+      const context = element ? { context: describeElement(element) } : {};
       const result = rewriteClassList(
         inner,
         classRules,
@@ -420,6 +479,7 @@ export const transformReact = (
             surface: 'react',
             file: ctx.file,
             line,
+            ...context,
             ruleId: entry.id,
             message: 'rename utility class',
             before,
@@ -431,6 +491,7 @@ export const transformReact = (
               surface: 'react',
               file: ctx.file,
               line,
+              ...context,
               ruleId: entry.id,
               message: entry.rule.note,
             });
@@ -442,14 +503,23 @@ export const transformReact = (
             surface: 'react',
             file: ctx.file,
             line,
+            ...context,
             ruleId: entry.id,
             message: `\`${token}\`: ${entry.rule.message}`,
           });
         },
         {
           options: ctx.semantic,
-          emit: (f) => findings.push({ ...f, surface: 'react', file: ctx.file, line }),
+          emit: (f) =>
+            findings.push({
+              ...f,
+              ...context,
+              surface: 'react',
+              file: ctx.file,
+              line,
+            }),
           partial,
+          element,
         },
       );
       if (result.changed)
@@ -465,8 +535,9 @@ export const transformReact = (
       if (name !== 'className' && name !== 'class') continue;
       const init = attr.getInitializer();
       if (!init) continue;
+      const element = elementContextOf(attr);
       if (isPlainLiteral(init)) {
-        rewriteLiteralContent(init, false);
+        rewriteLiteralContent(init, false, element);
         continue;
       }
       if (init.getKind() !== SyntaxKind.JsxExpression) continue;
@@ -479,7 +550,7 @@ export const transformReact = (
       ];
       // `className={'a b'}` is still the whole value; anything inside a call or
       // a ternary is one fragment of it.
-      for (const literal of literals) rewriteLiteralContent(literal, literal !== expr);
+      for (const literal of literals) rewriteLiteralContent(literal, literal !== expr, element);
       const templates = [
         ...(expr.getKind() === SyntaxKind.TemplateExpression ? [expr as Node] : []),
         ...expr.getDescendantsOfKind(SyntaxKind.TemplateExpression),

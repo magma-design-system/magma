@@ -261,8 +261,8 @@ graph TD;
   mds-pref-theme --> mds-tab-item
   mds-pref-theme --> mds-dropdown
   mds-tab-item --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-pref-theme fill:#f9f,stroke:#333,stroke-width:4px
 ```
