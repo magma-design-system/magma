@@ -1,7 +1,7 @@
 /*
   Magma as an external vendor (docs/ARCHITECTURE.md, section 1): the pages of the studio load the
   components and their stylesheets from the Magma installed where the studio runs, never from its
-  bundle. They load them as a render of the MCP server does (projects/lint, src/mcp/render.ts;
+  bundle. They load them as a render of the MCP server does (projects/mcp, src/render.ts;
   "The page a render loads" in docs/CONTRACTS.md): the stylesheets of agents/assets.md in their
   layers, the lazy loader of the installed magma, the icons of the installed sets, each resolved by
   the same code.
@@ -15,7 +15,7 @@
 import { createReadStream } from 'node:fs';
 import path from 'node:path';
 import type { Connect, Plugin } from 'vite';
-import type { ToolContext } from '../lint/src/mcp/context.ts';
+import type { ToolContext } from '../mcp/src/context.ts';
 import {
   LAYERS,
   TYPES,
@@ -23,7 +23,7 @@ import {
   loaderOf,
   magmaVersion,
   stylesheetImports,
-} from '../lint/src/mcp/render.ts';
+} from '../mcp/src/render.ts';
 
 /** The version of the installed magma for the bar of the studio; none when it cannot be read. */
 const versionTag = (version: string | undefined) =>

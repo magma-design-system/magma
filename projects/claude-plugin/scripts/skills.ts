@@ -3,12 +3,15 @@
   skills/<name>/SKILL.md (#1114). What a skill lists comes from where it is decided, never
   from a copy kept by hand:
   - the package of each target: the "Pick your target" table of docs/agents/SPEC.md;
-  - the tools of the magma MCP server: their names and descriptions in projects/lint;
+  - the tools of the magma MCP server: their names and descriptions in projects/mcp;
   - the rules of the lint: the first sentence of each rule in docs/agents/lint.md;
   - the codemod: the name and the command of projects/codemod/package.json.
 
-    tsx scripts/skills.ts write   regenerate the skills
-    tsx scripts/skills.ts check   fail when a skill is out of date, or breaks the format
+    nx run claude-plugin:build    regenerate the skills (tsx scripts/skills.ts write)
+    nx run claude-plugin:check    fail when a skill is out of date, or breaks the format
+
+  Both run tsx with the tsconfig of projects/mcp: its paths take the imports of the lint the
+  server makes, through the exports of magma, to the sources of projects/lint.
 
   The check also holds each SKILL.md to the portable keys of the Agent Skills format
   (https://agentskills.io/specification): name equal to its folder, a description of at most
@@ -17,7 +20,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { toolsOf } from '../../lint/src/mcp/server.js';
+import { toolsOf } from '../../mcp/src/server.js';
 
 const PLUGIN = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY = path.resolve(PLUGIN, '../..');

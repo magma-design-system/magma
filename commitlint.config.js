@@ -45,6 +45,7 @@ module.exports = {
         'magma',
         'magma-react',
         'magma-angular',
+        'mcp',
         'stencil',
         'storybook',
         'studio',

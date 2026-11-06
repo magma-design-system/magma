@@ -1,0 +1,25 @@
+{
+  "name": "@maggioli-design-system/mcp",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The MCP server of Magma (magma-mcp), which answers an agent from the data of the installed version. Not published on its own: the stencil build compiles it into @maggioli-design-system/magma (dist/mcp), which runs it as its magma-mcp command.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "serve.previews": "tsx scripts/serve-previews.ts",
+    "test": "vitest run",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magma-design-system/magma.git",
+    "directory": "projects/mcp"
+  }
+}

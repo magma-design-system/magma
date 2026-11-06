@@ -57,7 +57,7 @@ done
 
 # the internal manifests, without build outputs, archived packages and test
 # fixtures: a fixture can take the name of a real package at a version of its
-# own (projects/lint/test/fixtures/magma is a fake magma)
+# own (projects/mcp/test/fixtures/magma is a fake magma)
 ENTRIES=$(find projects -name package.json \
             -not -path '*/node_modules/*' -not -path '*/dist/*' -not -path '*/deprecated/*' -not -path '*/fixtures/*' \
             -exec jq -c --arg path {} '{name, version, path: $path}' {} \; | jq -s -c .)

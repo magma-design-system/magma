@@ -77,9 +77,10 @@ jobs:
               - 'projects/styles/**'
               - 'projects/svg-icons/**'
               # the studio: its sources, the code that loads Magma into its
-              # pages (render.ts and icons.ts of the MCP server) and the logo
-              # of its bar
+              # pages (render.ts and icons.ts of the MCP server, on the lint)
+              # and the logo of its bar
               - 'projects/studio/**'
+              - 'projects/mcp/src/**'
               - 'projects/lint/src/**'
               - 'projects/identity/**'
               - 'package-lock.json'

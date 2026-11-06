@@ -5,7 +5,7 @@
 
   The pages load Magma from three paths relative to them (vendor.ts): `node_modules/`,
   `components/` and `svg/`. The dev server and `vite preview` answer them with `fileOf` of the
-  render (projects/lint/src/mcp/render.ts); here each path a page can ask for is written as the
+  render (projects/mcp/src/render.ts); here each path a page can ask for is written as the
   file `fileOf` answers it with, so both hosts serve the same Magma:
 
   - `node_modules/`: the stylesheets each page imports, and what they import and load in turn
@@ -31,9 +31,9 @@ import {
 } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { ToolContext } from '../lint/src/mcp/context.ts';
-import { slugFiles } from '../lint/src/mcp/icons.ts';
-import { ICON_PATH, fileOf, loaderOf } from '../lint/src/mcp/render.ts';
+import type { ToolContext } from '../mcp/src/context.ts';
+import { slugFiles } from '../mcp/src/icons.ts';
+import { ICON_PATH, fileOf, loaderOf } from '../mcp/src/render.ts';
 
 /** The tag that tells the studio there is no API beside the page: `hasApi` of src/app.tsx reads it. */
 const API_META = '<meta name="magma-studio-api" content="none">';

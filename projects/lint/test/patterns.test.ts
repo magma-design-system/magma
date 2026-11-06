@@ -46,7 +46,14 @@ import {
   type PatternFile,
   type Situation,
 } from '../src/core/patterns.js';
-import { data } from './mcp-context.js';
+
+/** The data of the fixtures, cut from the real packages. */
+const fixtures = path.join(import.meta.dirname, 'fixtures');
+const data = {
+  documentation: path.join(fixtures, 'documentation.json'),
+  tokens: path.join(fixtures, 'design-tokens/base.tokens.json'),
+  consumption: path.join(fixtures, 'styles/consumption.json'),
+};
 
 const SOURCES = path.join(import.meta.dirname, '../../../docs/agents/patterns');
 const LAYER = path.join(

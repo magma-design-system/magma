@@ -20,7 +20,7 @@ import {
 } from './pr-risk-lib';
 import { inScope } from '../../../scripts/release/commit-scopes.mjs';
 
-const MAGMA = 'magma|stencil|react|lit|storybook|lint|mds-*';
+const MAGMA = 'magma|stencil|react|lit|storybook|lint|mcp|mds-*';
 
 describe('fileTier', () => {
   it.each([
@@ -480,6 +480,8 @@ describe('release scope (scripts/release/commit-scopes.mjs)', () => {
     ['feat(design-tokens,styles): a', false],
     ['docs(magma): a', true],
     ['feat(lint): a', true],
+    ['fix(mcp): a', true],
+    ['feat(claude-plugin): a', false],
     ['feat: no scope', false],
     ['revert: feat(mds-button): a', true],
   ])('%s counts for magma: %s', (message, counts) => {

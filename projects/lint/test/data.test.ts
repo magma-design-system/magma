@@ -8,7 +8,7 @@ import { loadComponents, loadPalette, loadStyles, locate, propInfo } from '../sr
 const fixtures = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures');
 const settings = {
   root: fixtures,
-  documentation: 'magma/data/documentation.json',
+  documentation: 'documentation.json',
   tokens: 'design-tokens/base.tokens.json',
   consumption: 'styles/consumption.json',
 };

@@ -3,7 +3,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { expect, test } from 'vitest'
 
-import { LAYERS, STYLESHEETS } from '../../lint/src/mcp/render.ts'
+import { LAYERS, STYLESHEETS } from '../../mcp/src/render.ts'
 import { magmaVendor } from '../vendor.ts'
 
 // The pages of the studio load Magma as a render of the MCP server does, from the Magma

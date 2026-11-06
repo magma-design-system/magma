@@ -129,7 +129,7 @@ with its issue until the component lands:
 The studio never bundles the Magma components nor their stylesheets: its pages load them from the
 Magma installed where the studio runs ([`ARCHITECTURE.md`](../../docs/ARCHITECTURE.md), "Magma as
 an external vendor"), as a render of the MCP server does. `vendor.ts` uses the code of the render
-(`projects/lint/src/mcp/render.ts`; "The page a render loads" in
+(`projects/mcp/src/render.ts`; "The page a render loads" in
 [`CONTRACTS.md`](../../docs/CONTRACTS.md)):
 
 - each page imports the stylesheets of `agents/assets.md` in their layers (`stylesheetImports`),
@@ -160,7 +160,7 @@ GitHub Pages serves files only, so `nx run studio:build.site` (`site.ts`) writes
   `@fontsource` among them, followed from the pages of the build;
 - `components/`: the folder of the lazy loader of the installed magma, whole, since the loader
   imports the chunk of each component as it first renders;
-- `svg/`: every icon slug of the installed sets (`slugFiles` of `projects/lint/src/mcp/icons.ts`):
+- `svg/`: every icon slug of the installed sets (`slugFiles` of `projects/mcp/src/icons.ts`):
   the files of `mdi` and `mgg` as they are, the Material folders under the slugs of their
   variants (`mi/outline/auto-awesome` is `auto_awesome/outline.svg`).
 
@@ -188,7 +188,7 @@ the code that writes `themes.css`.
 ```mermaid
 flowchart LR
   DT["design-tokens<br/>src/lib, semantic.model.ts, .magma-design-tokensrc.json"]
-  LINT["lint<br/>src/mcp/render.ts"]
+  MCP["mcp<br/>src/render.ts"]
   WC["stencil<br/>dist/magma-components"]
   ID["identity<br/>logo-magma.svg"]
   subgraph stu["studio<br/>an app, not on npm"]
@@ -205,8 +205,8 @@ flowchart LR
     APP --> OUT
   end
   DT -->|"createColorTokens, gatePairs, themeOf, namedThemeCss"| APP
-  LINT -->|"stylesheetImports, loaderOf, fileOf"| VEN
-  LINT -->|"fileOf, loaderOf, slugFiles"| SITE
+  MCP -->|"stylesheetImports, loaderOf, fileOf"| VEN
+  MCP -->|"fileOf, loaderOf, slugFiles"| SITE
   WC -->|"the lazy loader"| VEN
   WC -->|"the lazy loader"| SITE
   ID -->|"the logo of the bar"| SHELL
@@ -214,7 +214,7 @@ flowchart LR
   SITE -.->|"deploy-site.yml"| PAGES(["GitHub Pages<br/>magma/studio/"])
   OUT -.->|"download"| AUTHOR(["the author of a theme"])
   class DT,APP,SURF,OUT,SHELL,VEN,SITE,SCENE visual
-  class LINT ai
+  class MCP ai
   class WC components
   class ID assets
   class AUTHOR,PAGES outside

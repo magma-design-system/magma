@@ -33,7 +33,7 @@ export interface Tool {
 
 /**
  * The answer of `tools/list`: what a client learns of each tool. The stencil build writes the
- * same object into dist/lint/mcp/tools.json, for the documentation.
+ * same object into dist/mcp/tools.json, for the documentation.
  */
 export const toolList = (tools: Tool[]) => ({
   tools: tools.map(({ name, title, description, inputSchema, outputSchema, annotations }) => ({

@@ -13,7 +13,7 @@ import recommended from '../src/stylelint/recommended.js';
 import strict from '../src/stylelint/strict.js';
 
 const fixtures = path.join(path.dirname(fileURLToPath(import.meta.url)), 'fixtures');
-const data = { documentation: path.join(fixtures, 'magma/data/documentation.json') };
+const data = { documentation: path.join(fixtures, 'documentation.json') };
 const palette = {
   tokens: path.join(fixtures, 'design-tokens/base.tokens.json'),
   consumption: path.join(fixtures, 'styles/consumption.json'),

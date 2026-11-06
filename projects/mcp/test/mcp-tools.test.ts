@@ -13,11 +13,11 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, test } from 'vitest';
 
-import { readPreviews, webpSize } from '../src/core/patterns.js';
-import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/mcp/checks.js';
-import { distance, parseColor } from '../src/mcp/color.js';
-import { GAP } from '../src/mcp/context.js';
-import { folderOf, slugFiles } from '../src/mcp/icons.js';
+import { readPreviews, webpSize } from '@maggioli-design-system/magma/lint';
+import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/checks.js';
+import { distance, parseColor } from '../src/color.js';
+import { GAP } from '../src/context.js';
+import { folderOf, slugFiles } from '../src/icons.js';
 import {
   breakpointsOf,
   DEFAULT_WIDTH,
@@ -33,16 +33,19 @@ import {
   TAILWIND,
   tailwindOf,
   themesOf,
-} from '../src/mcp/render.js';
-import { createServer, INSTRUCTIONS, toolsList, toolsOf } from '../src/mcp/server.js';
-import { tokensOf, USE_OF_UTILITY } from '../src/mcp/tokens.js';
-import { context, data, fixtures } from './mcp-context.js';
+} from '../src/render.js';
+import { createServer, INSTRUCTIONS, toolsList, toolsOf } from '../src/server.js';
+import { tokensOf, USE_OF_UTILITY } from '../src/tokens.js';
+import { context, data, fixtures, magma as fakeMagma } from './mcp-context.js';
 
 /** Every slug the iconsauce plugins serve, dumped by the stencil build (projects/stencil/SPEC.md, Icons). */
 const ICONS_DICTIONARY = path.join(
   import.meta.dirname,
   '../../stencil/src/fixtures/icons-dictionary.json',
 );
+
+/** The fake magma of the fixtures, as the tools name its files: from the root of the fixture project. */
+const MAGMA = path.relative(context.root, fakeMagma);
 
 const tools = Object.fromEntries(toolsOf(context).map((tool) => [tool.name, tool]));
 // the tests read the structured content of each tool freely
@@ -75,7 +78,7 @@ test('the tools as data are the answer of tools/list, whatever the project', asy
     id: 1,
     result: toolsList(context),
   });
-  // what the stencil build writes into dist/lint/mcp/tools.json, from no project at all
+  // what the stencil build writes into dist/mcp/tools.json, from no project at all
   expect(toolsList({ root: tmpdir(), settings: {} })).toEqual(toolsList(context));
 });
 
@@ -168,7 +171,7 @@ describe('the component tools', () => {
     ]);
     // a domain that writes mds-button in a relation, and carries a rule on it
     const magma = mkdtempSync(path.join(tmpdir(), 'magma-rules-'));
-    cpSync(path.join(fixtures, 'magma'), magma, { recursive: true });
+    cpSync(fakeMagma, magma, { recursive: true });
     writeFileSync(
       path.join(magma, 'agents/patterns/actions.md'),
       [
@@ -525,7 +528,7 @@ describe('the guide tool', () => {
       {
         id: 'shared-inset',
         kind: 'rule',
-        file: '../magma/agents/patterns/previews/rhythm/shared-inset.html',
+        file: `${MAGMA}/agents/patterns/previews/rhythm/shared-inset.html`,
       },
     ]);
     const cases = await run('get_guide', { guide: 'rhythm', section: 'cases' });
@@ -683,7 +686,7 @@ describe('the pattern tool', () => {
   });
 
   test('a case Magma has a preview of names it; the answer for a situation gives the stage', async () => {
-    const file = '../magma/agents/patterns/previews/message-placement/action-failed-in-place.html';
+    const file = `${MAGMA}/agents/patterns/previews/message-placement/action-failed-in-place.html`;
     const { pattern } = await run('get_pattern', { id: 'message-placement' });
     const byId = (id: string) => pattern.cases.find((one: { id: string }) => one.id === id);
     expect(byId('action-failed-in-place').preview).toBe(file);
@@ -705,7 +708,7 @@ describe('the pattern tool', () => {
 
   // #1243: the images the build makes beside each preview, by path, for a client with no browser
   test('the preview of an answer names its images when the package has them', async () => {
-    const previews = '../magma/agents/patterns/previews/message-placement';
+    const previews = `${MAGMA}/agents/patterns/previews/message-placement`;
     const { answer } = await run('get_pattern', {
       id: 'message-placement',
       situation: { about: 'action', outcome: 'failure', place: 'on-screen', timing: 'now' },
@@ -724,7 +727,7 @@ describe('the pattern tool', () => {
 
   // #1221: a rule of a domain may have a preview, and a case more examples
   test('a case names its other examples, a domain the previews of its rules', async () => {
-    const previews = '../magma/agents/patterns/previews';
+    const previews = `${MAGMA}/agents/patterns/previews`;
     const { pattern } = await run('get_pattern', { id: 'message-placement' });
     expect(pattern.cases.find((one: { id: string }) => one.id === 'region-info')).toMatchObject({
       preview: `${previews}/message-placement/region-info.html`,
@@ -761,7 +764,7 @@ describe('the pattern tool', () => {
   test('the answer for a situation lists the rules of the domains its case relies on', async () => {
     // a magma whose case names rules, and whose pattern cites one for every case
     const magma = mkdtempSync(path.join(tmpdir(), 'magma-rules-'));
-    cpSync(path.join(fixtures, 'magma'), magma, { recursive: true });
+    cpSync(fakeMagma, magma, { recursive: true });
     const file = path.join(magma, 'agents/patterns/message-placement.md');
     writeFileSync(
       file,
@@ -824,7 +827,7 @@ describe('the pattern tool', () => {
   test('a building block answers a situation with its regions, in the order of the page', async () => {
     // a magma that ships a block beside its patterns
     const magma = mkdtempSync(path.join(tmpdir(), 'magma-block-'));
-    cpSync(path.join(fixtures, 'magma'), magma, { recursive: true });
+    cpSync(fakeMagma, magma, { recursive: true });
     writeFileSync(
       path.join(magma, 'agents/patterns/head.md'),
       [
@@ -884,7 +887,7 @@ describe('the pattern tool', () => {
 
   test('a building block gives the preview of the situation the values match exactly', async () => {
     const magma = mkdtempSync(path.join(tmpdir(), 'magma-block-'));
-    cpSync(path.join(fixtures, 'magma'), magma, { recursive: true });
+    cpSync(fakeMagma, magma, { recursive: true });
     writeFileSync(
       path.join(magma, 'agents/patterns/head.md'),
       [
@@ -1624,7 +1627,7 @@ describe('render_preview', () => {
   // the round of the building blocks (2026-11-03): a block is asked by the id of a situation
   test('a situation of a building block with no preview is refused, naming the ones with one', async () => {
     const magma = mkdtempSync(path.join(tmpdir(), 'magma-block-render-'));
-    cpSync(path.join(fixtures, 'magma'), magma, { recursive: true });
+    cpSync(fakeMagma, magma, { recursive: true });
     writeFileSync(
       path.join(magma, 'agents/patterns/head.md'),
       [

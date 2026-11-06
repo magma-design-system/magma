@@ -8,7 +8,7 @@ import {
   toolList,
   withImages,
   type Tool,
-} from '../src/mcp/protocol.js';
+} from '../src/protocol.js';
 
 const echo: Tool = {
   name: 'echo',
