@@ -73,7 +73,9 @@ the desk of an office of a back office, one card per task side by side in column
 judged on most of Magma at once: a hue on a themed surface, text at every prominence, borders, a
 disabled state, the solid fills of the main actions, the colours of the states. The steps of the
 request in hand take the width of the page above the columns: `mds-stepper-bar` centres the
-current step and would push the first out of a column.
+current step and would push the first out of a column. Its bar is the `inline` appearance of
+`mds-header`, a box of the page under the bar of the studio, so the two never read as one; its
+words are English, as the studio's (2026-11-06).
 
 The Groups view (`groups.html`) shows the components by their role in the composition, the
 vocabulary of the dimension axis, so the preview explains the controls beside it: `container`
