@@ -2222,7 +2222,7 @@ export namespace Components {
          */
         "hideBackdrop"?: boolean;
         /**
-          * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
+          * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by clicking the backdrop area: a click pressed and released on the backdrop, once the window has finished its entry.
           * @default 'relaxed'
          */
         "interaction": ModalInteractionType;
@@ -7701,7 +7701,7 @@ declare namespace LocalJSX {
          */
         "hideBackdrop"?: boolean;
         /**
-          * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by cliccking the backdrop area.
+          * Specifies if the component can be closed with close button, or also if the backdrop background is cliccked. If `strict` is selected only the close button can dismiss the component via UI. If `relaxed` is selected the component can be dismissed also by clicking the backdrop area: a click pressed and released on the backdrop, once the window has finished its entry.
           * @default 'relaxed'
          */
         "interaction"?: ModalInteractionType;
