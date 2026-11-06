@@ -1,7 +1,8 @@
 # @maggioli-design-system/magma-codemods
 
 Codemods to migrate consumer code of [`@maggioli-design-system/magma`](https://www.npmjs.com/package/@maggioli-design-system/magma)
-from **v1** to **v2**. They rewrite HTML, React (JSX/TSX), Angular templates (external `.html` and inline
+to its next major: without options from **v2** to **v3**, and with `--from 1` from **v1**, through v2 (see
+[Which jump](#which-jump)). They rewrite HTML, React (JSX/TSX), Angular templates (external `.html` and inline
 `@Component({ template })`) and CSS/SCSS, applying the breaking changes automatically and reporting the cases that
 need a human decision.
 
@@ -9,17 +10,20 @@ ESM package, Node ≥ 22.
 
 ## Architecture
 
-The rules are a manifest, drafted from the `documentation.json` of a v1 and a v2 build and
-reviewed by hand, plus a table from raw colours to roles; one module per surface finds where an
-attribute or a class is written. The lint reads classes in the same forms.
+The rules are one manifest per jump: v1 to v2, drafted from the `documentation.json` of a v1 and
+a v2 build and reviewed by hand, with a table from raw colours to roles; v2 to v3, written by
+hand, with the list of the custom properties Magma publishes as colours, generated from the DTCG
+sets of design-tokens and styles. One module per surface finds where an attribute, a class or a
+declaration is written. The lint reads classes in the same forms.
 
 ```mermaid
 flowchart LR
   WC["stencil<br/>documentation.json, v1 and v2"]
-  ST["styles<br/>dist, with v1 design-tokens"]
+  DT["design-tokens<br/>DTCG sets"]
+  ST["styles<br/>dist, DTCG globals, with v1 design-tokens"]
   RE["stencil-react<br/>MdsX"]
   subgraph cm["codemod<br/>package @maggioli-design-system/magma-codemods"]
-    RULES["src/manifest, src/semantic<br/>v1 to v2 rules, colour to role"]
+    RULES["src/manifest, src/semantic<br/>v1 to v2 and v2 to v3 rules, colour lists"]
     SURF["src/surfaces<br/>html, react, angular, css"]
     RUN["src/cli.ts, src/index.ts<br/>applies the rules, src/report"]
     FIX["fixtures/<br/>cases per rule and surface"]
@@ -27,12 +31,13 @@ flowchart LR
     SURF --> RUN
   end
   WC -->|"generate.candidate"| RULES
-  ST -->|"generate.semantic"| RULES
+  ST -->|"generate.semantic, generate.colors"| RULES
+  DT -->|"generate.colors"| RULES
   RE -->|"React fixtures"| FIX
   SURF -->|"the forms of a class"| LINT["lint<br/>class rules"]
-  RUN -.->|"magma-codemods: diff, reports"| APP(["consumer code on Magma 1"])
+  RUN -.->|"magma-codemods: diff, reports"| APP(["consumer code on Magma 2 or 1"])
   class LINT tooling
-  class ST visual
+  class DT,ST visual
   class WC,RE components
   class RULES,SURF,RUN,FIX tooling
   class APP outside
@@ -61,6 +66,7 @@ By default the tool runs in **dry-run** (prints a coloured diff + a summary, wri
 apply the changes in place.
 
 ```
+--from <1|2>                                 the major the code is on (default: 2), see Which jump
 --framework <react|angular|html|css|auto>   surface (default: auto, inferred from the extension)
 --path <file|dir>                            file or directory to scan (repeatable; positional args also work)
 --dry-run                                    print a diff and report, write nothing (DEFAULT)
@@ -70,18 +76,42 @@ apply the changes in place.
 --report <path>                              write the JSON report
 --report-md <path>                           write a Markdown worklist: decisions by token, suggestions, checklist per file
 --only <ruleId,...> / --skip <ruleId,...>    run/skip specific rules (see the ids in the report)
---manifest <path>                            override the bundled manifest (JSON)
---accept-semantic <exact|near>               write the raw palette -> semantic role matches (L) up to this tier
---keep-dark-overrides                        L: match on light AND dark instead of dropping the dark: overrides
+--manifest <path>                            replace the bundled jumps with one manifest (JSON)
+--accept-semantic <exact|near>               v1 -> v2: write the raw palette -> semantic role matches (L) up to this tier
+--keep-dark-overrides                        v1 -> v2, L: match on light AND dark instead of dropping the dark: overrides
 -h, --help
 ```
 
 Notes:
 
-- `auto` maps `.css/.scss → css`, `.tsx/.jsx → react`, `.ts → Angular inline templates`, `.html → html`. For
-  **Angular external templates** (`.html`), pass `--framework angular`.
+- `auto` maps `.css/.scss -> css`, `.tsx/.jsx/.js/.mjs/.cjs -> react`, `.ts -> Angular inline templates and
+  styles`, `.html/.astro -> html`. For **Angular external templates** (`.html`), pass `--framework angular`. The
+  `.js` files are read for their JSX and for the strings category N reports (a Tailwind 3 config, a colour built in
+  code). An Astro component is read as HTML: its markup, its `style` attributes and its `<style>` elements
+  (`lang="scss"` with the SCSS parser); its frontmatter and its `{...}` expressions are text.
 - `--write` refuses to run on a dirty git working tree unless `--force`, so the undo is always `git checkout`.
 - `node_modules`, `dist`, `.git`, `build`, `.next` and `coverage` are ignored by default.
+- A file the design-tokens CLI generated into the project (`magma-design-tokens --outDir`, recognised by the banner
+  `@magma-design-system/design-tokens vX ... Do not edit directly` its templates write) is reported once and left as
+  it is: regenerate it with the design-tokens of the target major instead.
+
+### Which jump
+
+| The code is on | Run                                  | Applies             |
+| -------------- | ------------------------------------ | ------------------- |
+| Magma 2        | `magma-codemods --path ./src`        | v2 -> v3            |
+| Magma 1        | `magma-codemods --path ./src --from 1` | v1 -> v2, then v2 -> v3 |
+| Magma 1, to stop at Magma 2 | `npx @maggioli-design-system/magma-codemods@1 --path ./src` | v1 -> v2 |
+
+The jump is chosen, never guessed: the version of magma installed in the project cannot tell where the code
+stands (a product may upgrade the packages before or after the rewrite), and the v1 -> v2 rules are not harmless
+on Magma 2 code, since the behaviour guards add attributes that keep the Magma 1 defaults. Never pass `--from 1`
+on code already on Magma 2.
+
+With `--from 1` each jump reads what the previous one wrote, in memory: a file gets one diff, from what it was to
+what Magma 3 needs, and every finding of the report names its jump (`[2 -> 3 global/colorToken]`, and `(2 -> 3)`
+in the Markdown worklist). A v1 -> v2 flag that the second jump makes moot is dropped: the v1 -> v2 rename of an
+input colour to its `-rgb` name asks for a conversion to channels, which Magma 3 takes back.
 
 ### Markdown worklist (`--report-md`)
 
@@ -113,7 +143,72 @@ Links are relative to the report's location, so write it inside the project:
 npx @maggioli-design-system/magma-codemods --path ./src --report-md ./magma-migration.md
 ```
 
-## Migration matrix
+## Migration matrix: Magma 2 -> 3
+
+The breaking changes of Magma 3 (epic #1292), one category per part; each part adds its rules to
+`src/manifest/manifest-v3.ts` in its own pull request.
+
+| #   | Category                      | What it does                                                                                                                                                                      | Confidence |
+| --- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| N   | Colour tokens (#918)          | a colour token is a full colour, no longer three channels: its reads through `rgb()` become `var()` or `color-mix()`, its channel definitions `rgb()`, and the input properties that took channels lose their `-rgb`. See below | safe; strings and unread values: report |
+
+### Colour tokens (N)
+
+Magma 3 writes every colour token as a colour (`--magma-accent-fg: rgb(0 85 204)`), where Magma 2 wrote its three
+channels (`0 85 204`) to be read with `rgb(var(--x))`. Around a colour, that read is `rgb(rgb(...))`, invalid at
+computed-value time: no error, the background turns transparent, the text inherits its colour. The codemod
+rewrites the reads and the definitions:
+
+| Magma 2                                  | Magma 3                                                              |
+| ---------------------------------------- | -------------------------------------------------------------------- |
+| `rgb(var(--x))`, `rgb(var(--x) / 1)`     | `var(--x)`                                                           |
+| `rgb(var(--x) / 0.15)`, `/ 15%`          | `color-mix(in srgb, var(--x) 15%, transparent)`                      |
+| `rgb(var(--x) / var(--a))`               | `color-mix(in srgb, var(--x) calc(var(--a) * 100%), transparent)`    |
+| `rgb(var(--x) / calc(E))`                | `color-mix(in srgb, var(--x) calc(E * 100%), transparent)`           |
+| `rgb(var(--x, 0 0 0))`                   | `var(--x, rgb(0 0 0))`, along the whole fallback chain               |
+| `--x: 0 0 0` (a Magma colour set by you) | `--x: rgb(0 0 0)`; `var(--magma-*)` and a colour stay as written     |
+| `--mds-input-variant-color-rgb: 0 85 204` | `--mds-input-variant-color: rgb(0 85 204)`                          |
+
+Mixing with transparent in srgb scales only the alpha, so each rewrite paints what the triplet painted: the same
+rewrite ran on the sources of this repository in #918 (2751 rewrites, no difference in the rendered colours).
+
+- **Only Magma's colours.** `--x` is one of the custom properties Magma publishes as colours: every colour token of
+  the DTCG sets of design-tokens and styles (`src/manifest/color-tokens.generated.ts`, 530 names, the backdrop
+  globals `--magma-backdrop-color`, `--magma-overlay-color`, `--magma-on-backdrop` included), plus the component
+  properties that took channels. A variable of your own read with `rgb(var(--my-color))` is left as it is.
+- **The renamed properties**, as the API snapshot of #918 records them: `--mds-input-variant-color-rgb`,
+  `--mds-input-date-variant-color-rgb`, `--mds-input-date-range-variant-color-rgb`,
+  `--mds-input-select-variant-color-rgb` (public) and `--mds-button-border-color-rgb`,
+  `--mds-dropdown-drop-shadow-color-rgb` (internal: renamed and flagged, since the v1 -> v2 codemod wrote them into
+  products) lose their `-rgb`, at their definitions and in their `var()` references. `--mds-modal-overlay-color`
+  and `--magma-field-fill` (the fill a surface passes down to its fields) keep their name and take a colour too.
+  `--mds-input-date-icon-color-rgb`, deprecated and read by nothing, is gone: reported.
+- **Where.** CSS and SCSS (declarations, Sass variables, the arguments of a mixin), a `<style>` element, inline
+  styles (HTML and Angular `style`, React style objects and strings, Angular `[style.x]`, `[style.--x]`,
+  `[ngStyle]`, `[style]`), Angular `@Component({ styles })`, and Tailwind arbitrary values wherever the class rules
+  read a class (`bg-[rgb(var(--magma-surface-raised))]` -> `bg-[var(--magma-surface-raised)]`, with `_` for the
+  spaces: `color-mix(in_srgb,var(--x)_50%,transparent)`). The inline styles also get the custom-property renames
+  of category G, on every jump.
+- **Tailwind arbitrary values**, the type of the result, checked on the compiler of each Tailwind (4.3.4 and
+  3.4.17): `color-mix()` is a colour on every colour utility; a bare `var()` is a colour on all of them except, in
+  Tailwind 4, `shadow`, `inset-shadow`, `drop-shadow` and `text-shadow`, which read it as the whole shadow. There
+  the codemod writes the type hint, `shadow-[color:var(--magma-shadow-ink)]`; a hint already written stays.
+
+Reported, not rewritten:
+
+- `rgba(var(--x), a)`: the comma syntax around channels painted nothing in Magma 2 already; the report gives the
+  `color-mix()` to write.
+- An alpha the codemod cannot read (a Sass variable, `attr()`), and a definition whose value may hold channels of
+  your own (`--magma-backdrop-color: var(--brand-rgb)`, a Sass value, an expression of the script).
+- A fallback that may hold channels (`rgb(var(--magma-accent, var(--brand-rgb)))` is rewritten, the fallback is
+  flagged), and a variable of yours whose fallback is a Magma colour (`rgb(var(--brand-rgb, var(--magma-accent)))`).
+- A colour built in a string of the script (`.ts`, `.tsx`, `.js`: a style computed in code, `setProperty`, a
+  Tailwind 3 config), and an attribute other than `class` and `style` (`fill`, a component prop): the report gives
+  the rewrite when it can read the whole string (`'rgb(var(--magma-accent) / <alpha-value>)'` ->
+  `'color-mix(in srgb, var(--magma-accent) calc(<alpha-value> * 100%), transparent)'`, the form the Magma 3
+  preset writes).
+
+## Migration matrix: Magma 1 -> 2
 
 | #   | Category                        | What it does                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Confidence                    |
 | --- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
@@ -297,7 +392,8 @@ mode control was, with no error.
 
 ## What it cannot rewrite (reported, not changed)
 
-These are surfaced under the **dynamic / manual** category in the report:
+These are surfaced under the **dynamic / manual** category in the report (for category N, see its own list
+above):
 
 - React **spread props** (`<MdsButton {...props} />`), aliased components, computed prop names.
 - Dynamic enum values (`tone={expr}` / `[tone]="expr"`).
@@ -312,10 +408,21 @@ These are surfaced under the **dynamic / manual** category in the report:
 - Angular `@Component({ host })` bindings are intentionally left untouched (rewriting a consumer component's own
   host with `mds-*` rules is rarely correct).
 
-Out of scope entirely (all surfaces work on markup/templates only):
+Not seen at all:
+
+- A variable of yours that holds a Magma colour and is read through `rgb()`: `--brand: var(--magma-accent)` then
+  `rgb(var(--brand) / 0.5)`. In Magma 2 `--brand` held channels, in Magma 3 a colour, and the read paints nothing;
+  the codemod does not follow your variables. Search your sheets for `rgb(var(` once the run is done.
+- A renamed property inside a Tailwind arbitrary value (`bg-[rgb(var(--mds-input-variant-color-rgb))]`): the
+  renames of category G apply to declarations only.
+- The files of other formats: `.vue`, `.svelte`, `.mdx`, data files (`.json`), and the frontmatter of an Astro
+  component. Search them for `rgb(var(--` by hand.
+
+Out of scope entirely (all surfaces work on markup/templates and styles only):
 
 - **Imperative code**: `el.backdrop = false`, `setAttribute('cockade', …)`, `addEventListener('mdsX', …)`
-  in plain JS/TS is never rewritten or reported.
+  in plain JS/TS is never rewritten or reported; the one exception is a string that reads a Magma colour through
+  `rgb()` (category N), reported with the rewrite to make.
 - **`updateLang()` removal**: v2 removed the public `updateLang()` method from every localized component —
   components now react automatically when `<html lang>` changes (or via `mds-pref-language`). Calls like
   `el.updateLang()` live in imperative code, which these codemods do not scan: delete them by hand, no
@@ -331,6 +438,19 @@ Out of scope entirely (all surfaces work on markup/templates only):
 npx nx run codemod:build      # tsc → dist/
 npx nx run codemod:test       # jest (ESM)
 ```
+
+### Regenerating the colour list (N)
+
+```bash
+# build design-tokens and styles first
+npx nx run codemod:generate.colors
+```
+
+It reads every `*.tokens.json` of `projects/design-tokens/dist/dtcg` and `projects/styles/dist/dtcg`, keeps the
+tokens typed `color` (their own `$type` or their group's) and writes their custom properties into
+`src/manifest/color-tokens.generated.ts` (`src/manifest/color-token-source.ts` holds the criterion). The names are
+the same in Magma 2 and 3, so either build works. When the sets are built, `manifest-v3.test.ts` fails until the
+committed list matches them: re-run the command after a tokens change and review the diff.
 
 ### Regenerating the semantic colour table (L)
 

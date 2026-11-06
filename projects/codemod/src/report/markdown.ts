@@ -80,6 +80,12 @@ const commonDir = (paths: string[]): string => {
   return first.slice(0, n).join(sep);
 };
 
+/** `2 -> 3`, or every step of a chain: `1.12.0 -> 2.0.0 -> 3`. */
+export const versions = (report: Report, arrow = '->'): string =>
+  report.jumps && report.jumps.length > 1
+    ? [...report.jumps.map((j) => j.split(' -> ')[0]), report.toVersion].join(` ${arrow} `)
+    : `${report.fromVersion} ${arrow} ${report.toVersion}`;
+
 export const renderMarkdown = (report: Report, options: MarkdownOptions): string => {
   const { exact, near } = options.thresholds ?? { exact: 0.5, near: 2 };
   /** A dE figure with its verdict: identical, acceptable (not noticeable) or far. */
@@ -133,7 +139,7 @@ export const renderMarkdown = (report: Report, options: MarkdownOptions): string
   const out: string[] = [
     '# Magma codemods report',
     '',
-    `${report.fromVersion} -> ${report.toVersion}, ${report.dryRun ? 'dry-run (no files written)' : 'written'}. ` +
+    `${versions(report)}, ${report.dryRun ? 'dry-run (no files written)' : 'written'}. ` +
       `${s.filesScanned} files scanned, ${s.filesChanged} changed: ${s.changes} changes, ${s.warnings} warnings, ` +
       `${s.flags} flags, ${s.dynamic} to migrate by hand, ${s.errors} parse errors.` +
       (root ? ` Paths are relative to ${code(root)}.` : ''),
@@ -249,6 +255,9 @@ export const renderMarkdown = (report: Report, options: MarkdownOptions): string
   }
 
   const touched = report.files.filter((f) => f.findings.length > 0);
+  /** In a chain, the jump of each item: `(2 -> 3)`. */
+  const jumpOf = (f: Finding): string =>
+    (report.jumps?.length ?? 0) > 1 && f.jump ? ` (${f.jump})` : '';
   if (touched.length > 0) {
     out.push('## Files', '');
     for (const file of touched) {
@@ -267,8 +276,13 @@ export const renderMarkdown = (report: Report, options: MarkdownOptions): string
             ? `: ${f.alternatives.map((a) => code(a.value)).join(' / ')}`
             : '';
           text = `${code(f.token!)}, ${ref ? `[${f.reason}](#${ref})` : f.reason}${alts}`;
+        } else if (f.before !== undefined && f.after !== undefined) {
+          // a rewrite to make by hand, ready to paste
+          text = `${f.message}: ${code(f.before)} -> ${code(f.after)}`;
         }
-        out.push(`- [ ] ${at(file.file, f.line)}${text}${placeOf(f) ? ` - ${placeOf(f)}` : ''}`);
+        out.push(
+          `- [ ] ${at(file.file, f.line)}${text}${jumpOf(f)}${placeOf(f) ? ` - ${placeOf(f)}` : ''}`,
+        );
       }
       if (todo.length > 0) out.push('');
       if (done.length > 0) {
@@ -280,7 +294,7 @@ export const renderMarkdown = (report: Report, options: MarkdownOptions): string
               f.before !== undefined && f.after !== undefined
                 ? `${code(f.before)} -> ${f.after ? code(f.after) : '(removed)'}: `
                 : '';
-            return `- ${at(file.file, f.line)}${diff}${f.message}${f.context ? ` - ${f.context}` : ''}`;
+            return `- ${at(file.file, f.line)}${diff}${f.message}${jumpOf(f)}${f.context ? ` - ${f.context}` : ''}`;
           }),
           '',
           '</details>',

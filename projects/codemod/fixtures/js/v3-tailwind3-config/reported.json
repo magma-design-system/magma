@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "dynamic",
+    "line": 6,
+    "contains": "color-mix(in srgb, var(--magma-accent) calc(<alpha-value> * 100%), transparent)"
+  },
+  {
+    "kind": "dynamic",
+    "line": 7,
+    "contains": "var(--magma-surface-raised)"
+  }
+]

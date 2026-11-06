@@ -288,3 +288,59 @@ export const ensureAttrManifest: Manifest = {
     },
   },
 };
+
+/**
+ * The v2 -> v3 counterpart of {@link testManifest}: a handful of colour names
+ * (category N, the real list is generated), the `-rgb` rename of two inputs and
+ * a removal, so the fixtures pin the rewrite whatever the generated list holds.
+ */
+export const testManifestV3: Manifest = {
+  fromVersion: '2',
+  toVersion: '3',
+  global: {
+    colorTokens: {
+      kind: 'colorToken',
+      names: [
+        'magma-accent',
+        'magma-backdrop-color',
+        'magma-on-backdrop',
+        'magma-overlay-color',
+        'magma-shadow-ink',
+        'magma-surface-raised',
+        'tone-neutral-09',
+        'mds-input-date-variant-color',
+        'mds-input-variant-color',
+        'mds-modal-overlay-color',
+      ],
+    },
+  },
+  components: {
+    'mds-input': {
+      tag: 'mds-input',
+      react: 'MdsInput',
+      rules: [
+        {
+          kind: 'cssVarRename',
+          from: 'mds-input-variant-color-rgb',
+          to: 'mds-input-variant-color',
+        },
+      ],
+    },
+    'mds-input-date': {
+      tag: 'mds-input-date',
+      react: 'MdsInputDate',
+      rules: [
+        {
+          kind: 'cssVarRename',
+          from: 'mds-input-date-variant-color-rgb',
+          to: 'mds-input-date-variant-color',
+        },
+        {
+          kind: 'cssVarRemove',
+          name: 'mds-input-date-icon-color-rgb',
+          message: '`--mds-input-date-icon-color-rgb` is gone in Magma 3',
+        },
+      ],
+    },
+  },
+};

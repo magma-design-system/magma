@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "dynamic",
+    "line": 18,
+    "contains": "color-mix(in srgb, var(--magma-accent) 10%, transparent)"
+  },
+  {
+    "kind": "dynamic",
+    "line": 23,
+    "contains": "an alpha with `color-mix()`"
+  }
+]

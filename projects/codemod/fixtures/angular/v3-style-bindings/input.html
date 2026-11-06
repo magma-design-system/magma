@@ -1,0 +1,10 @@
+<div style="color: rgb(var(--magma-accent)); --magma-overlay-color: 255 255 255">Static</div>
+<div [style.background-color]="'rgb(var(--magma-surface-raised) / 0.5)'">Property</div>
+<div [style.--magma-backdrop-color]="'0 0 0'">Custom property</div>
+<mds-input [style.--mds-input-variant-color-rgb]="dark ? '0 0 0' : '255 255 255'"></mds-input>
+<div [ngStyle]="{ 'color': 'rgb(var(--magma-accent) / 0.5)', '--magma-overlay-color': '0 0 0' }">Object</div>
+<div [ngStyle]="{ color: dark ? 'rgb(var(--magma-accent))' : 'rgb(var(--magma-on-backdrop))' }">Ternary</div>
+<div [style]="'border-color: rgb(var(--magma-accent))'">Declarations</div>
+<div class="bg-[rgb(var(--magma-surface-raised))]" [ngClass]="{ 'text-[rgb(var(--magma-accent))]': on }">Classes</div>
+<div [style.--magma-backdrop-color]="scrim">Unread</div>
+<svg><path fill="rgb(var(--magma-accent))"></path></svg>

@@ -33,12 +33,23 @@ import { getByTag, ruleId, rulesForComponent } from '../manifest/registry.js';
 import {
   classRulesOf,
   hasClassRules,
+  mentionsClassRule,
   rewriteClassList,
   type SemanticHooks,
   type ClassRenameEntry,
   type ClassReportEntry,
 } from './shared/class-ops.js';
 import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
+import { readsColorToken, rewriteColorReads } from './shared/color-ops.js';
+import {
+  declarationRulesOf,
+  hasDeclarationRules,
+  migrateProperty,
+  migrateStyleText,
+  migrateValue,
+  reportUnreadColorValue,
+} from './shared/declaration-ops.js';
+import { type ClassFinding } from './shared/semantic-ops.js';
 import { bareTrue, dynamic, stringLiteral, type AttrValue } from './shared/value-model.js';
 import { applyEdits, type Edit } from './shared/edits.js';
 import { type Finding } from '../report/types.js';
@@ -49,7 +60,17 @@ interface Span {
   end: { offset: number };
 }
 
+/** The 1-based line of a span: the Angular compiler counts its lines from 0. */
+const lineOf = (span: Span): number | undefined =>
+  span.start.line === undefined ? undefined : span.start.line + 1;
+
 const collapseWhitespace = (s: string): string => s.replace(/\s+/g, ' ').trim();
+/** A quoted string literal of a binding expression: quote, body. */
+const LITERAL_RE = /(['"`])((?:\\.|(?!\1)[^\\])*)\1/g;
+const LITERAL_WHOLE_RE = /^(['"`])((?:\\.|(?!\1)[^\\])*)\1$/;
+/** The CSS spelling of a style key: `backgroundColor` -> `background-color`. */
+const cssName = (key: string): string =>
+  key.startsWith('--') ? key : key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
 const escapeAttr = (s: string): string => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 
 export const transformAngular = (
@@ -67,6 +88,22 @@ export const transformAngular = (
   const edits: Edit[] = [];
   const findings: Finding[] = [];
   const classRules = classRulesOf(manifest);
+  const declarations = declarationRulesOf(manifest);
+
+  /** An attribute that reads a Magma colour through rgb(), with the rewrite to make. */
+  const reportAttributeColor = (name: string, value: string, atLine?: number): void => {
+    const colors = declarations.colors!;
+    const rewrite = rewriteColorReads(value, colors, () => undefined);
+    findings.push({
+      kind: 'dynamic',
+      surface: 'angular',
+      file: ctx.file,
+      line: atLine,
+      ruleId: colors.id,
+      message: `\`${name}\` reads a Magma colour through \`rgb()\`, and Magma 3 makes the token a colour: rewrite it by hand`,
+      ...(rewrite.changed ? { before: value, after: rewrite.value } : {}),
+    });
+  };
 
   const text = (span: Span): string => source.slice(span.start.offset, span.end.offset);
   const removeSpanEdit = (span: Span): Edit => {
@@ -90,7 +127,7 @@ export const transformAngular = (
     const tag = el.name;
     const statics = el.attributes as TmplAstTextAttribute[];
     const inputs = el.inputs as TmplAstBoundAttribute[];
-    const line = (el.startSourceSpan as Span).start.line;
+    const line = lineOf(el.startSourceSpan as Span);
 
     const findStatic = (name: string): TmplAstTextAttribute | undefined =>
       statics.find((a) => a.name === name);
@@ -169,7 +206,7 @@ export const transformAngular = (
       const classAttr = findStatic('class');
       if (classAttr?.valueSpan) {
         const span = classAttr.valueSpan as Span;
-        const atLine = (classAttr.sourceSpan as Span).start.line;
+        const atLine = lineOf(classAttr.sourceSpan as Span);
         const result = rewriteClassList(
           text(span),
           classRules,
@@ -186,7 +223,7 @@ export const transformAngular = (
         const keySpan = input.keySpan as Span | undefined;
         if (!keySpan) continue;
         const key = text(keySpan);
-        const atLine = (input.sourceSpan as Span).start.line;
+        const atLine = lineOf(input.sourceSpan as Span);
         if (key.startsWith('class.')) {
           const token = key.slice('class.'.length);
           const rename = classRules.renames.get(token);
@@ -207,7 +244,7 @@ export const transformAngular = (
         const span = input.valueSpan as Span | undefined;
         if (!span) continue;
         const raw = text(span);
-        if (!classRules.candidateRe?.test(raw)) continue;
+        if (!mentionsClassRule(classRules, raw)) continue;
         let exprChanged = false;
         const newRaw = raw.replace(
           /(['"`])((?:\\.|(?!\1)[^\\])*)\1/g,
@@ -229,6 +266,102 @@ export const transformAngular = (
         );
         if (exprChanged)
           edits.push({ start: span.start.offset, end: span.end.offset, text: newRaw });
+      }
+    }
+
+    // Global: the declarations of an inline style on any element (G, N): the
+    // static `style`, `[style.x]` / `[style.x.unit]` / `[style.--x]` bindings,
+    // and the string literals of `[ngStyle]` / `[style]` / `[attr.style]`.
+    if (hasDeclarationRules(declarations)) {
+      const enabled = (id: string): boolean => ruleEnabled(ctx, id);
+      const emitAt =
+        (atLine: number | undefined) =>
+        (f: ClassFinding): void => {
+          findings.push({ ...f, surface: 'angular', file: ctx.file, line: atLine });
+        };
+      const quiet = (): void => undefined;
+
+      const styleAttr = findStatic('style');
+      if (styleAttr?.valueSpan) {
+        const span = styleAttr.valueSpan as Span;
+        const atLine = lineOf(styleAttr.sourceSpan as Span);
+        const result = migrateStyleText(text(span), declarations, enabled, emitAt(atLine));
+        if (result.changed)
+          edits.push({ start: span.start.offset, end: span.end.offset, text: result.value });
+      }
+
+      for (const input of inputs) {
+        const keySpan = input.keySpan as Span | undefined;
+        const span = input.valueSpan as Span | undefined;
+        if (!keySpan || !span) continue;
+        const key = text(keySpan);
+        const atLine = lineOf(input.sourceSpan as Span);
+        const raw = text(span);
+        if (key.startsWith('style.')) {
+          // `style.--x`, `style.background-color`, `style.backgroundColor`, `style.width.px`
+          const name = key.slice('style.'.length);
+          const written = name.startsWith('--') ? name : cssName(name.replace(/\.[a-z%]+$/i, ''));
+          const prop = migrateProperty(written, declarations, enabled, emitAt(atLine));
+          if (prop !== written)
+            edits.push({
+              start: keySpan.start.offset,
+              end: keySpan.end.offset,
+              text: `style.${prop}`,
+            });
+          let literals = 0;
+          const next = raw.replace(LITERAL_RE, (match, quote: string, body: string) => {
+            literals++;
+            const value = migrateValue(prop, body, declarations, enabled, emitAt(atLine));
+            return value !== body ? `${quote}${value}${quote}` : match;
+          });
+          if (literals === 0)
+            reportUnreadColorValue(prop, raw, declarations, enabled, emitAt(atLine));
+          if (next !== raw)
+            edits.push({ start: span.start.offset, end: span.end.offset, text: next });
+          continue;
+        }
+        if (key !== 'ngStyle' && key !== 'style' && key !== 'attr.style') continue;
+        const whole = LITERAL_WHOLE_RE.exec(raw.trim());
+        if (whole && key !== 'ngStyle') {
+          // `[style]="'color: ...; --x: ...'"`: a declaration list
+          const result = migrateStyleText(whole[2]!, declarations, enabled, emitAt(atLine));
+          if (result.changed) {
+            const at = span.start.offset + raw.indexOf(whole[0]) + 1;
+            edits.push({ start: at, end: at + whole[2]!.length, text: result.value });
+          }
+          continue;
+        }
+        // a style object: a quoted key followed by `:` is a property, a literal
+        // after `key:` is its value, any other literal is read for its colours
+        const next = raw.replace(LITERAL_RE, (match, quote: string, body: string, at: number) => {
+          // a key sits after `{` or `,` (not the first branch of a ternary, also followed by `:`)
+          if (/^\s*:/.test(raw.slice(at + match.length)) && /(^|[{,])\s*$/.test(raw.slice(0, at))) {
+            if (!body.startsWith('--')) return match;
+            const prop = migrateProperty(body, declarations, enabled, emitAt(atLine));
+            return prop !== body ? `${quote}${prop}${quote}` : match;
+          }
+          const keyBefore = /(?:(['"])([^'"]+)\1|([\w$-]+))\s*:\s*$/.exec(raw.slice(0, at));
+          const written = keyBefore ? (keyBefore[2] ?? keyBefore[3])! : '';
+          const plain = written.startsWith('--')
+            ? written
+            : cssName(written.replace(/\.[a-z%]+$/i, ''));
+          const prop = migrateProperty(plain, declarations, enabled, quiet);
+          const value = migrateValue(prop, body, declarations, enabled, emitAt(atLine));
+          return value !== body ? `${quote}${value}${quote}` : match;
+        });
+        if (next !== raw)
+          edits.push({ start: span.start.offset, end: span.end.offset, text: next });
+      }
+    }
+
+    // N: another attribute (`fill`, `stop-color`, a component input) that reads a
+    // Magma colour through rgb() is reported: the codemod does not know what it takes.
+    const colors = declarations.colors;
+    if (colors && ruleEnabled(ctx, colors.id)) {
+      for (const attr of statics) {
+        if (attr.name === 'class' || attr.name === 'style' || !attr.valueSpan) continue;
+        if (!readsColorToken(colors, attr.value)) continue;
+        reportAttributeColor(attr.name, attr.value, lineOf(attr.sourceSpan as Span));
       }
     }
 
@@ -323,7 +456,7 @@ export const transformAngular = (
           kind: 'warn',
           surface: 'angular',
           file: ctx.file,
-          line: (child.startSourceSpan as Span).start.line,
+          line: lineOf(child.startSourceSpan as Span),
           ruleId: id,
           component: tag,
           message: `the \`${rule.from}\` slot of ${tag} was removed in v2; migrate the slotted content manually`,

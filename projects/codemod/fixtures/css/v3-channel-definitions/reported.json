@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "dynamic",
+    "line": 25,
+    "contains": "write `rgb(var(--brand-rgb))`"
+  },
+  {
+    "kind": "dynamic",
+    "line": 26,
+    "contains": "check `0 0 0 / 0.5`"
+  }
+]

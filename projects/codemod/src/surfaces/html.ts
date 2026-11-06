@@ -6,7 +6,9 @@
  * removal (C, inline comment), enum remap (A/E), the preferred slot→attr
  * lift (F2, e.g. `mds-button` text → `label`), and removed named slots (F,
  * children using them are reported). The global `slot="default"` removal (F)
- * applies to any element.
+ * applies to any element, and so do the declarations of a `style` attribute
+ * (custom-property renames G, colour tokens N) and the stylesheet of a
+ * `<style>` element (the CSS surface).
  */
 import { parseFragment } from 'parse5';
 import {
@@ -22,6 +24,13 @@ import {
 } from '../manifest/schema.js';
 import { getByTag, ruleId, rulesForComponent } from '../manifest/registry.js';
 import { classRulesOf, hasClassRules, rewriteClassList } from './shared/class-ops.js';
+import {
+  declarationRulesOf,
+  hasDeclarationRules,
+  migrateStyleText,
+} from './shared/declaration-ops.js';
+import { readsColorToken, rewriteColorReads } from './shared/color-ops.js';
+import { transformCss } from './css.js';
 import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
 import { bareTrue, stringLiteral, type AttrValue } from './shared/value-model.js';
 import { applyEdits, lineIndentAt, type Edit } from './shared/edits.js';
@@ -81,9 +90,28 @@ export const transformHtml = (
   const edits: Edit[] = [];
   const findings: Finding[] = [];
   const classRules = classRulesOf(manifest);
+  const declarations = declarationRulesOf(manifest);
 
   const pushFinding = (f: Finding): void => {
     findings.push(f);
+  };
+
+  /** The value of an attribute as written in the source (entities and all), and where it sits. */
+  const rawAttrValue = (loc: {
+    startOffset: number;
+    endOffset: number;
+  }): { value: string; start: number; end: number } | null => {
+    const raw = source.slice(loc.startOffset, loc.endOffset);
+    const parsed = parseRawAttr(raw);
+    if (!parsed.hasValue) return null;
+    const open = raw.indexOf(parsed.quote) + 1;
+    const close = raw.lastIndexOf(parsed.quote);
+    if (open <= 0 || close <= open) return null;
+    return {
+      value: raw.slice(open, close),
+      start: loc.startOffset + open,
+      end: loc.startOffset + close,
+    };
   };
 
   /** Remove an attribute (and one leading space) by its source location. */
@@ -195,6 +223,69 @@ export const transformHtml = (
       }
     }
 
+    // Global: the declarations of an inline `style` on any element (G, N).
+    if (hasDeclarationRules(declarations) && hasAttr('style') && attrLocs['style']) {
+      const l = attrLocs['style'];
+      const attr = rawAttrValue(l);
+      if (attr) {
+        const result = migrateStyleText(
+          attr.value,
+          declarations,
+          (id) => ruleEnabled(ctx, id),
+          (f) => pushFinding({ ...f, surface: 'html', file: ctx.file, line: l.startLine }),
+        );
+        if (result.changed) edits.push({ start: attr.start, end: attr.end, text: result.value });
+      }
+    }
+
+    // N: another attribute (`fill`, `stop-color`, a component prop) that reads a
+    // Magma colour through rgb() is reported: the codemod does not know what it takes.
+    const colors = declarations.colors;
+    if (colors && ruleEnabled(ctx, colors.id)) {
+      for (const attr of attrs) {
+        if (attr.name === 'class' || attr.name === 'style') continue;
+        if (!readsColorToken(colors, attr.value)) continue;
+        const rewrite = rewriteColorReads(attr.value, colors, () => undefined);
+        pushFinding({
+          kind: 'dynamic',
+          surface: 'html',
+          file: ctx.file,
+          line: attrLocs[attr.name]?.startLine,
+          ruleId: colors.id,
+          message: `\`${attr.name}\` reads a Magma colour through \`rgb()\`, and Magma 3 makes the token a colour: rewrite it by hand`,
+          ...(rewrite.changed ? { before: attr.value, after: rewrite.value } : {}),
+        });
+      }
+    }
+
+    // A `<style>` element: its stylesheet is the CSS surface's.
+    if (tag === 'style') {
+      const text = (node.childNodes ?? []).find((c) => c.nodeName === '#text');
+      const textLoc = text?.sourceCodeLocation;
+      if (textLoc) {
+        const css = source.slice(textLoc.startOffset, textLoc.endOffset);
+        const baseLine = textLoc.startLine ?? 1;
+        try {
+          // `<style lang="scss">` (Astro, Vue) takes the SCSS parser
+          const lang = getAttr('lang')?.value ?? '';
+          const result = transformCss(css, manifest, ctx, { scss: /^s[ac]ss$/i.test(lang) });
+          for (const f of result.findings)
+            pushFinding({ ...f, line: f.line ? baseLine + f.line - 1 : baseLine });
+          if (result.changed)
+            edits.push({ start: textLoc.startOffset, end: textLoc.endOffset, text: result.output });
+        } catch (error) {
+          // template syntax inside the stylesheet: the rest of the page still migrates
+          pushFinding({
+            kind: 'dynamic',
+            surface: 'css',
+            file: ctx.file,
+            line: baseLine,
+            message: `cannot parse this <style> element (${(error as Error).message}); migrate it by hand`,
+          });
+        }
+      }
+    }
+
     const component = getByTag(manifest, tag);
     if (!component) return;
 
@@ -226,7 +317,8 @@ export const transformHtml = (
         case 'tagRename':
           applyTagRename(rule, id);
           break;
-        // slotRename/cssVarRename/cssVarRemove/partRename/eventRename: not applicable to plain HTML attributes.
+        // slotRename/cssVarRename/cssVarRemove/partRename/eventRename/colorToken: not
+        // applicable to the attributes of an mds-* element (style is handled above).
         default:
           break;
       }

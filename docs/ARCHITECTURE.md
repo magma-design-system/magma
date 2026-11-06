@@ -287,7 +287,7 @@ The skills are procedures that defer to the installed version (the MCP server, t
 
 ### 2.10 `codemod`
 
-The `@maggioli-design-system/magma-codemods` package (`projects/codemod`): it migrates consumer code from v1 to v2, rewriting HTML, React, Angular templates (external and inline) and CSS/SCSS, and reports what needs a human decision. Its rules are a manifest (`src/manifest/manifest.ts`), drafted from the `documentation.json` of the two versions; one module per surface (`src/surfaces/`) decides where an attribute or a class is written, the forms the class rules of the lint read too ([`docs/CONTRACTS.md`](CONTRACTS.md)). The contributor notes are [`projects/codemod/README.md`](../projects/codemod/README.md).
+The `@maggioli-design-system/magma-codemods` package (`projects/codemod`): it migrates consumer code from v2 to v3, or from v1 through v2 with `--from 1` (the jump is chosen, never guessed from the installed version), rewriting HTML, React, Angular templates (external and inline) and CSS/SCSS, and reports what needs a human decision. Its rules are one manifest per jump (`src/manifest/manifests.ts`): v1 to v2 drafted from the `documentation.json` of the two versions, v2 to v3 written by hand with the colour tokens listed from the DTCG sets of design-tokens and styles; one module per surface (`src/surfaces/`) decides where an attribute, a class or a declaration is written, the forms the class rules of the lint read too ([`docs/CONTRACTS.md`](CONTRACTS.md)). The contributor notes are [`projects/codemod/README.md`](../projects/codemod/README.md).
 
 ### 2.10 `studio`
 

@@ -1,0 +1,51 @@
+/* the reads of a Magma colour through rgb(), every alpha form */
+.reads {
+  color: rgb(var(--magma-accent));
+  background: rgb(var(--magma-surface-raised) / 0.5);
+  border-color: rgb(var(--magma-accent) / 15%);
+  outline-color: rgba(var(--magma-accent) / .08);
+  caret-color: rgb( var(--magma-accent) );
+  fill: RGB(var(--magma-accent));
+}
+
+/* an opaque alpha says nothing once the token is a colour */
+.opaque {
+  color: rgb(var(--magma-accent) / 1);
+  background: rgb(var(--magma-accent) / 100%);
+}
+
+/* alpha from a variable or an expression */
+.computed {
+  background: rgb(var(--magma-backdrop-color) / var(--magma-backdrop-opacity));
+  box-shadow: 0 0 0 1px rgb(var(--magma-shadow-ink) / calc(0.06 * var(--depth)));
+  border-color: rgb(var(--magma-accent) / calc(var(--a) + 0.1));
+}
+
+/* fallback chains: a triplet fallback becomes rgb(), a Magma fallback is a colour too */
+.fallbacks {
+  color: rgb(var(--magma-accent, 0 0 0));
+  background: rgb(var(--magma-accent, var(--magma-surface-raised, 255 255 255)) / 0.5);
+  border-color: rgb(var(--magma-accent, #000));
+}
+
+/* several reads in one value, inside other functions */
+.composite {
+  background: linear-gradient(rgb(var(--magma-accent)), rgb(var(--tone-neutral-09) / 0));
+  box-shadow: 0 1px 2px rgb(var(--magma-shadow-ink) / 0.2), 0 0 0 1px rgb(var(--magma-accent));
+  color: rgb(var(--magma-accent)) !important;
+}
+
+/* a product's own triplet variable stays */
+.product {
+  color: rgb(var(--brand-rgb));
+  background: rgb(var(--brand-rgb) / 0.5);
+  border-color: rgb(255 0 0 / 0.5);
+}
+
+/* reported, not rewritten */
+.reported {
+  color: rgba(var(--magma-accent), 0.5);
+  background: rgb(var(--brand-rgb, var(--magma-accent)));
+  border-color: rgb(var(--magma-accent, var(--brand-rgb)));
+  outline-color: rgb(var(--magma-accent) / attr(data-alpha number));
+}

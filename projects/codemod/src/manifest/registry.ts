@@ -47,6 +47,7 @@ export const ruleId = (tag: string, rule: Rule): string => {
     case 'ensureAttr':
       return `${tag}/${rule.kind}/${rule.attr.prop}`;
     case 'tagRename':
+    case 'colorToken':
       return `${tag}/${rule.kind}`;
     case 'classSemantic':
       return `${tag}/${rule.kind}/${rule.channel}`;
@@ -141,3 +142,31 @@ export const tagRenamesOf = (manifest: Manifest): Map<string, TagRenameRule> => 
   }
   return renames;
 };
+
+/** The rule kinds a surface applies to an element's markup (attributes, slots, tag), not to CSS. */
+const MARKUP_KINDS: ReadonlySet<Rule['kind']> = new Set([
+  'propRename',
+  'propRemove',
+  'enumRemap',
+  'booleanInvert',
+  'slotRemove',
+  'slotRename',
+  'slotToAttr',
+  'ensureAttr',
+  'tagRename',
+  'eventRename',
+]);
+
+/**
+ * Whether a component has rules on its markup. The reports that tell the
+ * reader to check an element by hand (spread props, a template with `${}`)
+ * are about these rules: a jump whose rules on a component are CSS only (its
+ * custom properties) has nothing to check there.
+ */
+export const hasMarkupRules = (manifest: Manifest, component: ComponentManifest): boolean =>
+  rulesForComponent(manifest, component).some((rule) => MARKUP_KINDS.has(rule.kind));
+
+/** Whether any element of the manifest has rules on its markup, `slot="default"` included. */
+export const manifestHasMarkupRules = (manifest: Manifest): boolean =>
+  manifest.global.removeDefaultSlot === true ||
+  Object.values(manifest.components).some((component) => hasMarkupRules(manifest, component));

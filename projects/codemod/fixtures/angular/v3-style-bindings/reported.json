@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "dynamic",
+    "line": 9,
+    "contains": "check what `scrim` holds"
+  },
+  {
+    "kind": "dynamic",
+    "line": 10,
+    "contains": "var(--magma-accent)"
+  }
+]

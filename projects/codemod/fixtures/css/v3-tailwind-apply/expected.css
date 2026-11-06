@@ -1,0 +1,11 @@
+.card {
+  @apply bg-[var(--magma-surface-raised)] hover:text-[color-mix(in_srgb,var(--magma-accent)_50%,transparent)];
+}
+
+.halo {
+  @apply shadow-[color:var(--magma-shadow-ink)] ring-[color-mix(in_srgb,var(--magma-accent)_25%,transparent)];
+}
+
+.product {
+  @apply bg-[rgb(var(--brand-rgb))] p-400;
+}

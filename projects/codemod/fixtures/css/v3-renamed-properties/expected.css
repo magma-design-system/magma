@@ -1,0 +1,22 @@
+/* the input properties that took channels lose their -rgb and take a colour */
+mds-input.brand {
+  --mds-input-variant-color: rgb(0 85 204);
+}
+
+mds-input-date.brand {
+  --mds-input-date-variant-color: var(--magma-accent);
+}
+
+.read {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--mds-input-variant-color) 20%, transparent);
+}
+
+/* a component property that kept its name and took channels */
+mds-modal {
+  --mds-modal-overlay-color: rgb(0 0 0);
+}
+
+/* gone in Magma 3: reported */
+mds-input-date {
+  --mds-input-date-icon-color-rgb: 255 0 0;
+}

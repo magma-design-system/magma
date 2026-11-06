@@ -206,6 +206,6 @@ a role with the same light value; switch to the role and delete the `dark:` over
 | `variant-primary-03` / `-06` | text / border | `accent-fg` / `accent-border` |
 
 `variant-ai-*` maps the same way onto `accent-ai-*`. The codemod
-(`@maggioli-design-system/magma-codemods`, `--accept-semantic=exact`) applies this table
+(`@maggioli-design-system/magma-codemods`, `--from 1 --accept-semantic=exact` on Magma 1 code) applies this table
 to markup, `clsx()`, Angular bindings and `@apply`, and reports what a value cannot
 decide.

@@ -1,5 +1,6 @@
 /**
- * Programmatic entry point for the Magma v1 → v2 codemods.
+ * Programmatic entry point for the Magma codemods: v2 -> v3 by default, v1 -> v2
+ * -> v3 with `from: 1` (`src/manifest/manifests.ts`).
  *
  * The CLI (`src/cli.ts`) is a thin wrapper around {@link runMigration}.
  */
@@ -7,11 +8,17 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, extname, resolve } from 'node:path';
 import { convertPathToPattern, globby } from 'globby';
-import { manifest as bundledManifest } from './manifest/manifest.js';
+import {
+  chainFrom,
+  DEFAULT_FROM,
+  type FromMajor,
+  jumpName,
+  supersededFlags,
+} from './manifest/manifests.js';
 import { type Manifest } from './manifest/schema.js';
 import { unifiedDiff } from './report/diff.js';
 import { Reporter } from './report/reporter.js';
-import { type FileReport, type Report, type Surface } from './report/types.js';
+import { type FileReport, type Finding, type Report, type Surface } from './report/types.js';
 import { transformAngular } from './surfaces/angular.js';
 import { transformCss } from './surfaces/css.js';
 import { transformHtml } from './surfaces/html.js';
@@ -41,7 +48,12 @@ export interface MigrationOptions {
   ignore?: string[];
   only?: string[];
   skip?: string[];
-  /** Override the bundled manifest with a JSON file. */
+  /**
+   * The major the code is on (default 2): 2 runs v2 -> v3, 1 runs v1 -> v2 then
+   * v2 -> v3, each jump on what the previous one wrote.
+   */
+  from?: FromMajor;
+  /** Override the bundled jumps with one manifest, a JSON file. */
   manifestPath?: string;
   /** Write the JSON report to this path. */
   reportPath?: string;
@@ -66,7 +78,10 @@ const DEFAULT_IGNORE = [
   '**/coverage/**',
 ];
 
-const EXTENSIONS = ['html', 'htm', 'tsx', 'jsx', 'ts', 'css', 'scss'];
+// `.js` / `.mjs` / `.cjs`: JSX written in `.js` files, and the strings of a
+// Tailwind 3 config or of code that builds a colour (category N reports them).
+// `.astro`: a component of markup and `<style>`, read as HTML (its frontmatter is text).
+const EXTENSIONS = ['html', 'htm', 'astro', 'tsx', 'jsx', 'ts', 'js', 'mjs', 'cjs', 'css', 'scss'];
 
 interface Route {
   surface: Surface;
@@ -99,12 +114,22 @@ export const routeFile = (file: string, framework: Framework): Route | null => {
     case 'auto':
     default:
       if (ext === '.css' || ext === '.scss') return css;
-      if (ext === '.tsx' || ext === '.jsx') return react;
+      if (['.tsx', '.jsx', '.js', '.mjs', '.cjs'].includes(ext)) return react;
       if (ext === '.ts') return inline;
-      if (ext === '.html' || ext === '.htm') return html;
+      if (ext === '.html' || ext === '.htm' || ext === '.astro') return html;
       return null;
   }
 };
+
+/**
+ * The banner the design-tokens build writes at the top of its outputs
+ * (`projects/design-tokens/src/formats/<format>/template.hbs`), which its CLI also
+ * writes into a product (`magma-design-tokens --outDir`). Such a file is
+ * regenerated with the design-tokens of the target major, never migrated by
+ * hand: it is reported once and left as it is.
+ */
+const GENERATED_TOKENS =
+  /^\s*\/\*[\s\S]*?@magma-design-system\/design-tokens v([\w.-]+)[\s\S]*?Do not edit directly[\s\S]*?\*\//;
 
 const isGitClean = (cwd: string): boolean | 'not-a-repo' => {
   try {
@@ -119,8 +144,10 @@ const isGitClean = (cwd: string): boolean | 'not-a-repo' => {
   }
 };
 
-const loadManifest = (manifestPath?: string): Manifest =>
-  manifestPath ? (JSON.parse(readFileSync(manifestPath, 'utf8')) as Manifest) : bundledManifest;
+const loadManifests = (options: MigrationOptions): Manifest[] =>
+  options.manifestPath
+    ? [JSON.parse(readFileSync(options.manifestPath, 'utf8')) as Manifest]
+    : chainFrom(options.from ?? DEFAULT_FROM);
 
 /** Expand the input paths into a concrete, de-duplicated file list. */
 export const collectFiles = async (
@@ -158,7 +185,10 @@ export const collectFiles = async (
 export const runMigration = async (options: MigrationOptions): Promise<MigrationRun> => {
   const cwd = options.cwd ?? process.cwd();
   const write = options.write === true;
-  const manifest = loadManifest(options.manifestPath);
+  const manifests = loadManifests(options);
+  const first = manifests[0]!;
+  const last = manifests[manifests.length - 1]!;
+  const superseded = supersededFlags(manifests);
 
   if (write && options.force !== true) {
     const clean = isGitClean(cwd);
@@ -170,8 +200,9 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
   }
 
   const reporter = new Reporter({
-    fromVersion: manifest.fromVersion,
-    toVersion: manifest.toVersion,
+    fromVersion: first.fromVersion,
+    toVersion: last.toVersion,
+    jumps: manifests.map(jumpName),
     dryRun: !write,
   });
   const ctxBase = {
@@ -196,23 +227,52 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
       });
       continue;
     }
+    const generated = GENERATED_TOKENS.exec(source);
+    if (generated) {
+      reporter.addFile({
+        file,
+        surface: route.surface,
+        changed: false,
+        findings: [
+          {
+            kind: 'dynamic',
+            surface: route.surface,
+            file,
+            line: 1,
+            message: `generated by the design-tokens CLI (design-tokens ${generated[1]}): not migrated; regenerate it with the design-tokens of Magma ${last.toVersion.split('.')[0]}`,
+          },
+        ],
+      });
+      continue;
+    }
     try {
-      const result = route.run(source, manifest, { file, ...ctxBase });
+      // Each jump reads what the previous one wrote; the file gets one diff,
+      // from what it was to what the last jump left.
+      let output = source;
+      const findings: Finding[] = [];
+      for (const manifest of manifests) {
+        const result = route.run(output, manifest, { file, ...ctxBase });
+        const jump = jumpName(manifest);
+        for (const f of result.findings) {
+          const moot = manifest !== last && f.kind === 'flag' && superseded.has(f.ruleId ?? '');
+          if (!moot) findings.push({ ...f, jump });
+        }
+        if (result.changed) output = result.output;
+      }
+      const changed = output !== source;
       const fileReport: FileReport = {
         file,
         surface: route.surface,
-        changed: result.changed,
-        findings: result.findings,
-        diff: result.changed ? unifiedDiff(file, source, result.output) : undefined,
+        changed,
+        findings,
+        diff: changed ? unifiedDiff(file, source, output) : undefined,
       };
       reporter.addFile(fileReport);
       if (
-        result.findings.some(
-          (f) => f.kind === 'change' && f.ruleId?.startsWith('global/classSemantic/'),
-        )
+        findings.some((f) => f.kind === 'change' && f.ruleId?.startsWith('global/classSemantic/'))
       )
         reporter.addNote(SEMANTIC_CSS_NOTE);
-      if (write && result.changed) writeFileSync(file, result.output);
+      if (write && changed) writeFileSync(file, output);
     } catch (error) {
       reporter.addError({ file, surface: route.surface, message: (error as Error).message });
     }
@@ -228,7 +288,7 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
         report,
         dirname(target),
         cwd,
-        manifest.global.semanticClasses?.thresholds,
+        manifests.find((m) => m.global.semanticClasses)?.global.semanticClasses?.thresholds,
       ),
     );
   }
@@ -238,4 +298,5 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
 export * from './report/types.js';
 export { exitCode } from './report/reporter.js';
 export type { Manifest } from './manifest/schema.js';
+export type { FromMajor } from './manifest/manifests.js';
 export type { SemanticOptions } from './surfaces/shared/semantic-ops.js';

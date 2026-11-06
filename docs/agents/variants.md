@@ -24,7 +24,7 @@ the colour you happen to want.
 > Magma 2.0 breaking rename of `tone`: `ghost` -> `outline`; `quiet` -> `text` on
 > `mds-button`, `mds-radial-menu` and `mds-radial-menu-item` (the only components with a
 > `text` tone), `quiet` -> `weak` everywhere else. The codemod
-> (`@maggioli-design-system/magma-codemods`) applies both.
+> (`@maggioli-design-system/magma-codemods`, `--from 1` on Magma 1 code) applies both.
 
 ## Variants
 

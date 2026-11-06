@@ -1,0 +1,27 @@
+/* a Magma colour set by the product: channels become a colour */
+:root {
+  --magma-backdrop-color: rgb(0 0 0);
+  --magma-overlay-color: rgb(255, 255, 255);
+  --magma-on-backdrop: rgb(255 255 255) !important;
+  --tone-neutral-09: rgb(12.5 20 30);
+  --magma-shadow-ink: var(--magma-accent, rgb(5 5 5));
+}
+
+/* already a colour, or a Magma colour: stays */
+.theme {
+  --magma-accent: #0055cc;
+  --magma-surface-raised: var(--tone-neutral-09);
+  --magma-on-backdrop: var(--magma-accent);
+  --magma-backdrop-color: inherit;
+}
+
+/* a product variable, even written as channels, stays */
+.product {
+  --brand-rgb: 0 85 204;
+}
+
+/* a value that may hold channels of the product: reported */
+.reported {
+  --magma-backdrop-color: var(--brand-rgb);
+  --magma-overlay-color: 0 0 0 / 0.5;
+}

@@ -13,6 +13,7 @@
  * being rewritten.
  */
 import {
+  Node,
   Project,
   SyntaxKind,
   ts,
@@ -21,7 +22,6 @@ import {
   type JsxExpression,
   type JsxOpeningElement,
   type JsxSelfClosingElement,
-  type Node,
   type StringLiteral,
 } from 'ts-morph';
 import {
@@ -39,11 +39,28 @@ import {
 import {
   getByReactName,
   getByTag,
+  hasMarkupRules,
   ruleId,
   rulesForComponent,
   tagRenamesOf,
 } from '../manifest/registry.js';
-import { classRulesOf, hasClassRules, rewriteClassList } from './shared/class-ops.js';
+import {
+  classRulesOf,
+  hasClassRules,
+  mentionsClassRule,
+  rewriteClassList,
+} from './shared/class-ops.js';
+import { colorRulesOf } from './shared/color-ops.js';
+import { reportColorStrings } from './shared/color-strings.js';
+import {
+  declarationRulesOf,
+  hasDeclarationRules,
+  migrateProperty,
+  migrateStyleText,
+  migrateValue,
+  reportUnreadColorValue,
+} from './shared/declaration-ops.js';
+import { type ClassFinding } from './shared/semantic-ops.js';
 import { invertBoolean, remapEnum } from './shared/attribute-ops.js';
 import {
   bareTrue,
@@ -155,14 +172,14 @@ export const transformReact = (
       jsxAttrs.find((a) => a.getNameNode().getText() === name);
     const hasAttr = (name: string): boolean => findAttr(name) !== undefined;
 
-    if (hasSpread) {
+    if (hasSpread && hasMarkupRules(manifest, component)) {
       findings.push({
         kind: 'dynamic',
         surface: 'react',
         file: ctx.file,
         line,
         component: tag,
-        message: `<${tagName}> uses spread props ({...}); verify v2 props by hand`,
+        message: `<${tagName}> uses spread props ({...}); verify its props against Magma ${manifest.toVersion.split('.')[0]} by hand`,
       });
     }
 
@@ -460,12 +477,15 @@ export const transformReact = (
   // substitution templates can split a class across chunks, so they are
   // reported instead.
   const classRules = classRulesOf(manifest);
+  /** The literals a class or a style rule already read: the colour string report skips them. */
+  const handled = new Set<number>();
   if (hasClassRules(classRules)) {
     const rewriteLiteralContent = (
       node: Node,
       partial: boolean,
       element?: ElementContext,
     ): void => {
+      handled.add(node.getStart());
       const inner = source.slice(node.getStart() + 1, node.getEnd() - 1);
       const line = node.getStartLineNumber();
       const context = element ? { context: describeElement(element) } : {};
@@ -556,7 +576,8 @@ export const transformReact = (
         ...expr.getDescendantsOfKind(SyntaxKind.TemplateExpression),
       ];
       for (const template of templates) {
-        if (!classRules.candidateRe?.test(template.getText())) continue;
+        handled.add(template.getStart());
+        if (!mentionsClassRule(classRules, template.getText())) continue;
         findings.push({
           kind: 'dynamic',
           surface: 'react',
@@ -567,6 +588,101 @@ export const transformReact = (
       }
     }
   }
+
+  // Global: the declarations of a `style` attribute on ANY JSX element (G, N):
+  // a style object (`style={{ color: '...', '--x': '...' }}`, its keys in the
+  // React spelling) or a declaration string (`style="color: ..."`, Preact and
+  // Stencil JSX). A value written as an expression has its string literals read
+  // as values of its property; anything else is left to the string report.
+  const declarations = declarationRulesOf(manifest);
+  if (hasDeclarationRules(declarations)) {
+    const enabled = (id: string): boolean => ruleEnabled(ctx, id);
+    const emitAt =
+      (line: number) =>
+      (f: ClassFinding): void => {
+        findings.push({ ...f, surface: 'react', file: ctx.file, line });
+      };
+    const inner = (node: Node): { text: string; start: number; end: number } => ({
+      text: source.slice(node.getStart() + 1, node.getEnd() - 1),
+      start: node.getStart() + 1,
+      end: node.getEnd() - 1,
+    });
+    const isPlain = (node: Node): boolean =>
+      node.getKind() === SyntaxKind.StringLiteral ||
+      node.getKind() === SyntaxKind.NoSubstitutionTemplateLiteral;
+    /** The CSS spelling of a style-object key: `backgroundColor` -> `background-color`, `--x` as is. */
+    const cssName = (key: string): string =>
+      key.startsWith('--') ? key : key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
+
+    for (const attr of sf.getDescendantsOfKind(SyntaxKind.JsxAttribute)) {
+      if (attr.getNameNode().getText() !== 'style') continue;
+      const init = attr.getInitializer();
+      if (!init) continue;
+      const line = attr.getStartLineNumber();
+      if (isPlain(init)) {
+        handled.add(init.getStart());
+        const value = inner(init);
+        const result = migrateStyleText(value.text, declarations, enabled, emitAt(line));
+        if (result.changed) edits.push({ start: value.start, end: value.end, text: result.value });
+        continue;
+      }
+      if (init.getKind() !== SyntaxKind.JsxExpression) continue;
+      const object = (init as JsxExpression).getExpression();
+      if (!object || !Node.isObjectLiteralExpression(object)) continue;
+      for (const property of object.getProperties()) {
+        if (!Node.isPropertyAssignment(property)) continue;
+        let nameNode: Node = property.getNameNode();
+        if (Node.isComputedPropertyName(nameNode)) nameNode = nameNode.getExpression();
+        // `['--x' as string]`, the usual way to type a custom property in TS
+        while (
+          Node.isAsExpression(nameNode) ||
+          Node.isSatisfiesExpression(nameNode) ||
+          Node.isParenthesizedExpression(nameNode)
+        )
+          nameNode = nameNode.getExpression();
+        const key = Node.isIdentifier(nameNode)
+          ? nameNode.getText()
+          : isPlain(nameNode)
+            ? inner(nameNode).text
+            : null;
+        const value = property.getInitializer();
+        if (key === null || !value) continue;
+        const atLine = property.getStartLineNumber();
+        // the key once (a renamed custom property, G), then each literal of the
+        // value under the new name
+        const prop = migrateProperty(cssName(key), declarations, enabled, emitAt(atLine));
+        if (prop !== cssName(key) && isPlain(nameNode)) {
+          const keyText = inner(nameNode);
+          edits.push({ start: keyText.start, end: keyText.end, text: prop });
+        }
+        if (isPlain(value)) {
+          handled.add(value.getStart());
+          const text = inner(value);
+          const next = migrateValue(prop, text.text, declarations, enabled, emitAt(atLine));
+          if (next !== text.text) edits.push({ start: text.start, end: text.end, text: next });
+          continue;
+        }
+        const literals = [
+          ...value.getDescendantsOfKind(SyntaxKind.StringLiteral),
+          ...value.getDescendantsOfKind(SyntaxKind.NoSubstitutionTemplateLiteral),
+        ];
+        if (literals.length === 0)
+          reportUnreadColorValue(prop, value.getText(), declarations, enabled, emitAt(atLine));
+        for (const literal of literals) {
+          handled.add(literal.getStart());
+          const text = inner(literal);
+          const next = migrateValue(prop, text.text, declarations, enabled, emitAt(atLine));
+          if (next !== text.text) edits.push({ start: text.start, end: text.end, text: next });
+        }
+      }
+    }
+  }
+
+  // N: a colour built in a string of the script (a style computed in code, a
+  // Tailwind 3 config, a `setProperty` call) is reported with the rewrite to
+  // make, never rewritten: the codemod cannot see how the string is used.
+  const colors = colorRulesOf(manifest);
+  if (colors && ruleEnabled(ctx, colors.id)) reportColorStrings(sf, colors, handled, ctx, findings);
 
   // K: tag renames. A separate pass over the tag names, so a component the
   // manifest does not otherwise touch is renamed too. Every rename is looked up

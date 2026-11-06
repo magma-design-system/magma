@@ -26,13 +26,14 @@ flowchart LR
   end
   SD & MODEL & DTCG -->|"dist/css, dist/dtcg, semantic model"| ST["styles"]
   DTCG -->|"dist/dtcg"| WC["stencil<br/>usage docs check"]
+  DTCG -->|"dist/dtcg, generate.colors"| CM["codemod<br/>colour list"]
   DTCG -.->|"dist/dtcg"| LINT["lint<br/>core: the rules, the MCP server"]
   DTCG -.->|"dist/dtcg"| DOCS(["docs site, design tools"])
   SD -.->|"android, ios-swift, flutter"| NATIVE(["native apps"])
   SD -.->|"dist/json"| FIGMA(["Figma variables"])
   GEN & MODEL -->|"src/lib, semantic.model.ts, run in the browser"| STU["studio<br/>the tokens playground"]
   GEN -.->|"npx magma-design-tokens"| PROD(["a product palette"])
-  class LINT tooling
+  class LINT,CM tooling
   class GEN,TOK,SD,MODEL,DTCG,ST,STU,FIGMA,PROD visual
   class WC components
   class DOCS,NATIVE outside

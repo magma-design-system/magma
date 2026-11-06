@@ -5,7 +5,7 @@
  * failed to parse.
  */
 import chalk from 'chalk';
-import { type MarkdownOptions, renderMarkdown } from './markdown.js';
+import { type MarkdownOptions, renderMarkdown, versions } from './markdown.js';
 import {
   type FileReport,
   type Finding,
@@ -25,6 +25,8 @@ export interface ReporterMeta {
   fromVersion: string;
   toVersion: string;
   dryRun: boolean;
+  /** The jumps of the run, in order (`2 -> 3`); with more than one, each finding shows its own. */
+  jumps?: string[];
 }
 
 export class Reporter {
@@ -60,6 +62,7 @@ export class Reporter {
     return {
       fromVersion: this.meta.fromVersion,
       toVersion: this.meta.toVersion,
+      ...(this.meta.jumps ? { jumps: [...this.meta.jumps] } : {}),
       dryRun: this.meta.dryRun,
       files: this.files,
       summary,
@@ -96,7 +99,8 @@ export class Reporter {
       if (!file.changed && file.findings.length === 0) continue;
       out.push(chalk.bold.underline(file.file));
       if (options.showDiff && file.diff) out.push(colorizeDiff(file.diff));
-      for (const finding of file.findings) out.push(`  ${renderFinding(finding)}`);
+      const chained = (report.jumps?.length ?? 0) > 1;
+      for (const finding of file.findings) out.push(`  ${renderFinding(finding, chained)}`);
       out.push('');
     }
 
@@ -126,10 +130,11 @@ const KIND_GLYPH: Record<FindingKind, string> = {
   dynamic: '✋',
 };
 
-const renderFinding = (finding: Finding): string => {
+const renderFinding = (finding: Finding, chained = false): string => {
   const color = KIND_LABEL[finding.kind];
   const loc = finding.line ? chalk.dim(`:${finding.line}`) : '';
-  const rule = finding.ruleId ? chalk.dim(` [${finding.ruleId}]`) : '';
+  const jump = chained && finding.jump ? `${finding.jump} ` : '';
+  const rule = finding.ruleId || jump ? chalk.dim(` [${jump}${finding.ruleId ?? ''}]`) : '';
   const head = `${color(KIND_GLYPH[finding.kind])}${loc} ${finding.message}${rule}`;
   if (finding.before !== undefined && finding.after !== undefined) {
     return `${head}\n      ${chalk.red(finding.before)} ${chalk.dim('→')} ${chalk.green(finding.after)}`;
@@ -153,7 +158,7 @@ const renderSummary = (report: Report): string => {
   const s = report.summary;
   const mode = report.dryRun ? chalk.yellow('dry-run (no files written)') : chalk.green('write');
   const parts = [
-    `${chalk.bold('Magma codemods')} ${report.fromVersion} → ${report.toVersion}  ${chalk.dim(`[${mode}]`)}`,
+    `${chalk.bold('Magma codemods')} ${versions(report)}  ${chalk.dim(`[${mode}]`)}`,
     `  files scanned : ${s.filesScanned}`,
     `  files changed : ${s.filesChanged}`,
     `  changes       : ${chalk.green(String(s.changes))}`,
