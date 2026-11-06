@@ -427,7 +427,7 @@ describe('no-internal-tokens', () => {
     ],
     invalid: [
       {
-        code: '<div style="--mds-chip-icon-color: rgb(var(--magma-accent-fg))"></div>',
+        code: '<div style="--mds-chip-icon-color: var(--magma-accent-fg)"></div>',
         filename: filename.html,
         errors: [{ message: internal }],
       },

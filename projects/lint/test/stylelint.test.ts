@@ -35,7 +35,9 @@ describe('colorLiterals', () => {
   });
 
   test('lets roles, keywords and urls through', () => {
-    expect(colorLiterals('rgb(var(--magma-text-muted) / 0.5)')).toEqual([]);
+    expect(colorLiterals('color-mix(in srgb, var(--magma-text-muted) 50%, transparent)')).toEqual(
+      [],
+    );
     expect(colorLiterals('rgb(from var(--magma-accent-fg) r g b / 0.4)')).toEqual([]);
     expect(colorLiterals('currentColor transparent inherit')).toEqual([]);
     expect(colorLiterals('url(#fff) var(--x, #fff)')).toEqual([]);
@@ -50,13 +52,15 @@ describe('magma/no-raw-color', () => {
     });
     expect(warnings).toHaveLength(2);
     expect(warnings[0]!.text).toMatch(/Unexpected colour literal "#333": paint with a role/);
-    expect(warnings[1]!.text).toMatch(/rgb\(var\(--magma-shadow-ink\) \/ <alpha>\)/);
+    expect(warnings[1]!.text).toMatch(
+      /color-mix\(in srgb, var\(--magma-shadow-ink\) <N>%, transparent\)/,
+    );
   });
 
   test('lets roles, masks and registrations through', async () => {
     const warnings = await lint(
       [
-        '.a { color: rgb(var(--magma-text-muted)); mask-image: linear-gradient(#000, transparent); }',
+        '.a { color: var(--magma-text-muted); mask-image: linear-gradient(#000, transparent); }',
         "@property --x { syntax: '<color>'; inherits: true; initial-value: #fff; }",
       ].join('\n'),
       { 'magma/no-raw-color': true },
@@ -167,7 +171,7 @@ describe('magma/no-raw-palette-classes', () => {
 describe('magma/no-color-scheme-override', () => {
   test('rejects a prefers-color-scheme query', async () => {
     const warnings = await lint(
-      '@media (prefers-color-scheme: dark) { .a { color: rgb(var(--magma-text-muted)); } }\n@media (min-width: 40rem) { .b { color: inherit; } }',
+      '@media (prefers-color-scheme: dark) { .a { color: var(--magma-text-muted); } }\n@media (min-width: 40rem) { .b { color: inherit; } }',
       { 'magma/no-color-scheme-override': true },
     );
     expect(warnings.map(({ rule }) => rule)).toEqual(['magma/no-color-scheme-override']);

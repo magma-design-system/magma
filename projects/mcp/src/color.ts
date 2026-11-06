@@ -60,8 +60,8 @@ const fromOklab = ([L, a, b]: Rgb): Rgb => {
 };
 
 /**
- * A CSS colour written as a literal: hex, `rgb()`, `hsl()`, `oklch()`; the channel triplet
- * Magma publishes (`5 5 5`) too. Undefined for anything else.
+ * A CSS colour written as a literal: hex, `rgb()`, `hsl()`, `oklch()`; a bare channel triplet
+ * (`5 5 5`, the form Magma 2 published) too. Undefined for anything else.
  */
 export const parseColor = (input: string): Rgb | undefined => {
   const text = input.trim().toLowerCase();

@@ -258,7 +258,7 @@
      "it.maggioli.magma": {
       "css": "--mds-elevation-raised",
       "tier": "semantic",
-      "cssValue": "0 calc(1px * var(--depth)) calc(2px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.06 * var(--depth))), 0 calc(2px * var(--depth)) calc(8px * var(--depth)) rgb(var(--magma-backdrop-color) / calc(0.08 * var(--depth)))"
+      "cssValue": "0 calc(1px * var(--depth)) calc(2px * var(--depth)) color-mix(in srgb, var(--magma-backdrop-color) calc(0.06 * var(--depth) * 100%), transparent), 0 calc(2px * var(--depth)) calc(8px * var(--depth)) color-mix(in srgb, var(--magma-backdrop-color) calc(0.08 * var(--depth) * 100%), transparent)"
      }
     }
    }
