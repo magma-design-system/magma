@@ -1,0 +1,1793 @@
+// The twelve tools of the MCP server on fixtures cut from the real data, and the mi and mdi icon
+// sets installed in this repository.
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { describe, expect, test } from 'vitest';
+
+import { readPreviews, webpSize } from '@maggioli-design-system/magma/lint';
+import { checkSetup, mcpEntries, pluginEnabled, satisfies } from '../src/checks.js';
+import { distance, parseColor } from '../src/color.js';
+import { GAP } from '../src/context.js';
+import {
+  breakpointsOf,
+  DEFAULT_WIDTH,
+  LAYERS,
+  MAX_SIDE,
+  PREVIEW_DIR,
+  render,
+  renderPreview,
+  renderPreviewImages,
+  pageOf,
+  STYLESHEETS,
+  TAILWIND,
+  tailwindOf,
+  themesOf,
+} from '../src/render.js';
+import { createServer, INSTRUCTIONS, toolsList, toolsOf } from '../src/server.js';
+import { tokensOf, USE_OF_UTILITY } from '../src/tokens.js';
+import { context, data, fixtures, magma as fakeMagma } from './mcp-context.js';
+
+/** Every slug the iconsauce plugins serve, dumped by the stencil build (projects/stencil/SPEC.md, Icons). */
+const ICONS_DICTIONARY = path.join(
+  import.meta.dirname,
+  '../../stencil/src/fixtures/icons-dictionary.json',
+);
+
+/** The fake magma of the fixtures, as the tools name its files: from the root of the fixture project. */
+const MAGMA = path.relative(context.root, fakeMagma);
+
+const tools = Object.fromEntries(toolsOf(context).map((tool) => [tool.name, tool]));
+// the tests read the structured content of each tool freely
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Result = Record<string, any>;
+const run = async (name: string, args: Record<string, unknown> = {}): Promise<Result> =>
+  tools[name]!.run(args);
+
+test('the server has its twelve tools', () => {
+  expect(Object.keys(tools).sort()).toEqual([
+    'check_markup',
+    'check_setup',
+    'explain_class',
+    'find_component',
+    'find_icon',
+    'get_component',
+    'get_guide',
+    'get_pattern',
+    'get_usage',
+    'list_tokens',
+    'render_preview',
+    'suggest_role',
+  ]);
+});
+
+test('the tools as data are the answer of tools/list, whatever the project', async () => {
+  const { handle } = createServer(context);
+  expect(await handle({ jsonrpc: '2.0', id: 1, method: 'tools/list' })).toEqual({
+    jsonrpc: '2.0',
+    id: 1,
+    result: toolsList(context),
+  });
+  // what the stencil build writes into dist/mcp/tools.json, from no project at all
+  expect(toolsList({ root: tmpdir(), settings: {} })).toEqual(toolsList(context));
+});
+
+describe('a question Magma has nothing for', () => {
+  test('a search that matches nothing says it is a gap to report', async () => {
+    const nothing = 'zzqxv';
+    expect(await run('find_component', { query: nothing })).toEqual({ components: [], gap: GAP });
+    expect(await run('list_tokens', { query: nothing })).toMatchObject({ tokens: [], gap: GAP });
+    expect(await run('find_icon', { query: nothing })).toMatchObject({ icons: [], gap: GAP });
+    // an answer is no gap
+    expect(await run('find_component', { query: 'a date range picker' })).not.toHaveProperty('gap');
+    expect(await run('find_icon', { query: 'delete' })).not.toHaveProperty('gap');
+  });
+
+  test('the instructions and the answers point at a section the reporting guide has', () => {
+    const section = 'A tool or an answer the MCP server is missing';
+    expect(INSTRUCTIONS).toContain(`get_guide reporting`);
+    expect(INSTRUCTIONS).toContain(section);
+    expect(GAP).toContain(section);
+    const guide = readFileSync(
+      path.join(import.meta.dirname, '../../../docs/agents/reporting.md'),
+      'utf8',
+    );
+    expect(guide).toMatch(new RegExp(`^## \\d+\\. ${section}$`, 'm'));
+  });
+});
+
+describe('the component tools', () => {
+  test('find_component ranks the component a need describes first', async () => {
+    const { components } = await run('find_component', { query: 'a date range picker' });
+    expect(components[0].tag).toBe('mds-input-date-range');
+    expect(components[0].summary).toMatch(/\.$/);
+  });
+
+  test('get_component gives the values, events and docs of a component, by tag or wrapper name', async () => {
+    const button = await run('get_component', { tag: 'MdsButton' });
+    expect(button.tag).toBe('mds-button');
+    expect(button.props.find((prop: { name: string }) => prop.name === 'variant')).toMatchObject({
+      attribute: 'variant',
+      values: expect.arrayContaining(['primary', 'error']),
+      default: "'primary'",
+    });
+    expect(button.slots.map((slot: { name: string }) => slot.name)).toContain('default');
+    expect(button.cssProperties.map((style: { name: string }) => style.name)).toEqual([
+      '--mds-button-background',
+      '--mds-button-color',
+      '--mds-button-gap',
+      '--mds-button-label-transform',
+      '--mds-button-radius',
+    ]);
+    expect(button.internalCssProperties).toBe(11);
+    const book = await run('get_component', { tag: 'mds-book' });
+    expect(book.rules).toEqual([]);
+    expect(book.cssProperties).toContainEqual(
+      expect.objectContaining({ name: '--mds-book-spine-color', static: true }),
+    );
+    const input = await run('get_component', { tag: 'mds-input' });
+    expect(input.events.map((event: { name: string }) => event.name)).toContain('mdsInputChange');
+    await expect(run('get_component', { tag: 'mds-buton' })).rejects.toThrow(
+      /No component mds-buton/,
+    );
+  });
+
+  test('get_component lists the shipped docs of the component: its API, examples and mistakes', async () => {
+    // a magma package with the shipped docs of mds-button beside its documentation.json
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-docs-'));
+    const documentation = path.join(root, 'data/documentation.json');
+    mkdirSync(path.dirname(documentation), { recursive: true });
+    writeFileSync(documentation, readFileSync(data.documentation));
+    const dir = path.join(root, 'dist/collection/components/mds-button');
+    mkdirSync(dir, { recursive: true });
+    for (const name of ['AGENTS.md', 'examples.md', 'mistakes.md'])
+      writeFileSync(path.join(dir, name), '');
+    const settings = { ...context.settings, documentation };
+    const getComponent = toolsOf({ ...context, settings }).find(
+      (tool) => tool.name === 'get_component',
+    )!;
+    const { files } = (await getComponent.run({ tag: 'mds-button' })) as Result;
+    expect(files).toEqual({
+      api: path.join(dir, 'AGENTS.md'),
+      examples: path.join(dir, 'examples.md'),
+      mistakes: path.join(dir, 'mistakes.md'),
+    });
+  });
+
+  test('get_component names the rules of the domains that govern the component', async () => {
+    const { rules } = await run('get_component', { tag: 'mds-banner' });
+    expect(rules).toEqual([
+      expect.objectContaining({ id: 'inset', from: 'rhythm', serves: 'intuitive' }),
+    ]);
+    // a domain that writes mds-button in a relation, and carries a rule on it
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-rules-'));
+    cpSync(fakeMagma, magma, { recursive: true });
+    writeFileSync(
+      path.join(magma, 'agents/patterns/actions.md'),
+      [
+        '---',
+        'id: actions',
+        'kind: foundation',
+        'title: Actions',
+        'layer: magma',
+        'status: decided',
+        'need: Weigh the actions of a region.',
+        'variables: { weight: { values: [main, other], means: "how much the action weighs" } }',
+        'cases:',
+        '  - { id: main, weight: main, where: "the main action", use: ["mds-button variant=primary"], serves: intuitive }',
+        '  - { id: other, weight: other, where: "any other action", serves: intuitive }',
+        'always-true:',
+        '  - { id: one-main, rule: "One main action per region.", serves: intuitive, checked-by: review, carried-by-planned: [mds-button] }',
+        '  - { id: by-hand, rule: "Written by hand.", serves: intuitive, checked-by: review }',
+        '---',
+        '# Actions',
+      ].join('\n'),
+    );
+    const settings = {
+      ...context.settings,
+      documentation: path.join(magma, 'data/documentation.json'),
+    };
+    const tool = toolsOf({ ...context, settings }).find((one) => one.name === 'get_component')!;
+    const button = (await tool.run({ tag: 'mds-button' })) as Result;
+    expect(button.rules).toEqual([
+      {
+        id: 'main',
+        from: 'actions',
+        rule: 'the main action',
+        use: ['mds-button variant=primary'],
+        serves: 'intuitive',
+      },
+      {
+        id: 'one-main',
+        from: 'actions',
+        rule: 'One main action per region.',
+        serves: 'intuitive',
+        'checked-by': 'review',
+        'carried-by-planned': ['mds-button'],
+      },
+    ]);
+    const banner = (await tool.run({ tag: 'mds-banner' })) as Result;
+    expect(
+      banner.rules.map((one: { from: string; id: string }) => `${one.from}/${one.id}`),
+    ).toEqual(['rhythm/inset']);
+  });
+
+  test('get_usage writes props and events as each framework does', async () => {
+    const react = await run('get_usage', { tag: 'mds-input', framework: 'react' });
+    expect(react.import).toBe("import { MdsInput } from '@maggioli-design-system/magma-react';");
+    expect(
+      react.events.find((event: { name: string }) => event.name === 'mdsInputChange').written,
+    ).toMatch(/^onMdsInputChange=/);
+    const angular = await run('get_usage', { tag: 'mds-button', framework: 'angular' });
+    expect(angular.props.find((prop: { name: string }) => prop.name === 'disabled').written).toBe(
+      '[disabled]="isOn"',
+    );
+    const html = await run('get_usage', { tag: 'mds-button', framework: 'html' });
+    expect(html.import).toMatch(/defineCustomElementMdsButton/);
+    expect(html.example).toMatch(/^<mds-button label="value"/);
+    expect(html.example).not.toMatch(/addEventListener/);
+  });
+});
+
+describe('the token tools', () => {
+  test('list_tokens finds a role by what it is for, with its class and value', async () => {
+    const { tokens } = await run('list_tokens', { query: 'secondary text' });
+    expect(tokens[0]).toMatchObject({
+      css: '--magma-text-muted',
+      tier: 'semantic',
+      classes: ['text-fg-muted'],
+    });
+    expect(tokens[0].value).toMatch(/^#[0-9a-f]{6}$/);
+    // the words of the need weigh more than a word of the name
+    expect((await run('list_tokens', { query: 'card background' })).tokens[0].css).toBe(
+      '--magma-surface-raised',
+    );
+    const radius = await run('list_tokens', { query: 'radius', tier: 'all' });
+    expect(
+      radius.tokens.some((token: { classes: string[] }) => token.classes.includes('rounded-md')),
+    ).toBe(true);
+  });
+
+  test('suggest_role finds the role of a raw step, a literal or a class, by use', async () => {
+    const muted = await run('suggest_role', { color: 'text-tone-neutral-03' });
+    expect(muted.use).toBe('text');
+    expect(muted.roles[0]).toMatchObject({ css: '--magma-text-muted', distance: 0 });
+    const page = await run('suggest_role', { color: '#ffffff', use: 'background' });
+    expect(page.roles[0].class).toMatch(/^bg-/);
+    await expect(run('suggest_role', { color: 'not a colour' })).rejects.toThrow(
+      /Cannot read a colour/,
+    );
+  });
+
+  test('explain_class says what a class reads, and the traps', async () => {
+    const trap = await run('explain_class', { class: 'p-4' });
+    expect(trap).toMatchObject({
+      kind: 'spacing-step',
+      suggestion: expect.stringMatching(/write p-400/),
+    });
+    expect(await run('explain_class', { class: 'p-400' })).not.toHaveProperty('suggestion');
+    expect(await run('explain_class', { class: 'hover:bg-surface-raised/50' })).toMatchObject({
+      kind: 'token',
+      tokens: [{ css: '--magma-surface-raised' }],
+    });
+    expect(await run('explain_class', { class: 'bg-tone-neutral-03' })).toMatchObject({
+      kind: 'raw-palette',
+    });
+    expect(await run('explain_class', { class: 'bg-white' })).toMatchObject({
+      kind: 'tailwind-palette',
+    });
+    expect(await run('explain_class', { class: 'text-title-h3' })).toMatchObject({
+      kind: 'magma-utility',
+    });
+    expect(await run('explain_class', { class: 'w-[13px]' })).toMatchObject({ kind: 'arbitrary' });
+    expect(await run('explain_class', { class: 'flex' })).toMatchObject({ kind: 'other' });
+  });
+
+  test('every value reads as CSS, by its DTCG type', async () => {
+    const byCss = Object.fromEntries(
+      tokensOf(context)
+        .filter((entry) => entry.css)
+        .map((entry) => [entry.css, entry.value]),
+    );
+    // shadows: one layer per item, inset first, a colour with its alpha
+    expect(byCss['--shadow-xs']).toBe('0px 1px 2px 0px rgb(0 0 0 / 0.05)');
+    expect(byCss['--shadow-highlight-strong']).toBe(
+      '0px 0px 0px 2px rgb(0 0 0 / 0.4), 0px 4px 6px -1px rgb(0 0 0 / 0.65)',
+    );
+    expect(byCss['--shadow-inset-sm']).toMatch(
+      /^inset 0px 2px 4px 0px rgb\(0 0 0 \/ 0\.05\), inset /,
+    );
+    // an alias of a shadow, a border whose colour is an alias
+    expect(byCss['--shadow-sharp']).toBe(byCss['--shadow-sm-sharp']);
+    expect(byCss['--magma-outline-blur']).toBe('2px solid rgb(0 0 0 / 0)');
+    // where the CSS writes it differently, the cssValue the package records
+    expect(byCss['--mds-elevation-raised']).toMatch(/^0 calc\(1px \* var\(--depth\)\)/);
+    expect(byCss['--aspect-book']).toBe('1/1.4');
+    expect(byCss['--text-size-title-h1--letter-spacing']).toBe('-0.025em');
+    expect(byCss['--ease-in-back']).toMatch(/^cubic-bezier\(/);
+    expect(byCss['--font-code']).toBe("'Roboto Mono', 'Courier New', monospace");
+
+    const { tokens } = await run('list_tokens', { query: 'shadow', tier: 'all' });
+    expect(tokens.some((token: { value?: string }) => token.value?.includes('[object'))).toBe(
+      false,
+    );
+    expect(await run('explain_class', { class: 'shadow-highlight-strong' })).toMatchObject({
+      tokens: [{ css: '--shadow-highlight-strong', value: byCss['--shadow-highlight-strong'] }],
+    });
+  });
+
+  /** No value is garbage, and only the types CSS has no single value for have none. */
+  const expectCssValues = (entries: ReturnType<typeof tokensOf>) => {
+    const bad = entries.filter(
+      (entry) =>
+        (entry.value === undefined && !['typography', 'gradient'].includes(entry.type)) ||
+        /\[object|undefined|NaN/.test(entry.value ?? ''),
+    );
+    expect(bad.map((entry) => `${entry.path} (${entry.type}): ${entry.value}`)).toEqual([]);
+  };
+
+  test('the fixtures hold a token of every shape the published data has', () => {
+    expectCssValues(tokensOf(context));
+  });
+
+  // the build of design-tokens and styles, when there is one: a shape the fixtures miss fails here
+  const built = {
+    tokens: path.join(import.meta.dirname, '../../design-tokens/dist/dtcg/base.tokens.json'),
+    globals: path.join(import.meta.dirname, '../../styles/dist/dtcg/globals.tokens.json'),
+    consumption: path.join(import.meta.dirname, '../../styles/dist/tailwind/consumption.json'),
+  };
+  test.skipIf(!Object.values(built).every((file) => existsSync(file)))(
+    'every token of the built data reads as CSS',
+    () => {
+      expectCssValues(tokensOf({ ...context, settings: { ...context.settings, ...built } }));
+      const roots = JSON.parse(readFileSync(built.consumption, 'utf8')).namespaces['--color']
+        .utilities as string[];
+      expect(roots.filter((root) => !USE_OF_UTILITY[root] && !root.startsWith('mask-'))).toEqual(
+        [],
+      );
+    },
+  );
+
+  test('suggest_role keeps the utility and the opacity of a class, a shadow too', async () => {
+    // a coloured glow takes a fill role, as a shadow class
+    const glow = await run('suggest_role', { color: 'shadow-variant-primary-03/80' });
+    expect(glow.use).toBe('shadow');
+    expect(glow.roles[0]).toMatchObject({
+      css: '--magma-accent-emphasis-hover',
+      class: 'shadow-accent-emphasis-hover/80',
+      distance: 0,
+    });
+    expect(
+      (await run('suggest_role', { color: 'hover:border-tone-neutral-03/50' })).roles[0].class,
+    ).toMatch(/^border-.+\/50$/);
+    // the role made for a projected shadow is a candidate of the shadow use only
+    const ink = await run('suggest_role', { color: '--magma-shadow-ink', use: 'shadow' });
+    expect(ink.roles[0]).toMatchObject({ css: '--magma-shadow-ink', class: 'shadow-shadow-ink' });
+    expect(
+      (await run('suggest_role', { color: '--magma-shadow-ink' })).roles.map(
+        (role: { css: string }) => role.css,
+      ),
+    ).not.toContain('--magma-shadow-ink');
+    await expect(run('suggest_role', { color: 'mask-t-from-gray-100' })).rejects.toThrow(
+      /only the alpha/,
+    );
+  });
+
+  test('every colour utility says what it paints', () => {
+    const roots = JSON.parse(readFileSync(data.consumption, 'utf8')).namespaces['--color']
+      .utilities as string[];
+    expect(roots.filter((root) => !USE_OF_UTILITY[root] && !root.startsWith('mask-'))).toEqual([]);
+  });
+
+  test('the colour arithmetic reads CSS colours', () => {
+    expect(parseColor('#fff')).toEqual([1, 1, 1]);
+    expect(parseColor('rgb(0 0 0 / 0.5)')).toEqual([0, 0, 0]);
+    expect(parseColor('5 5 5')).toEqual([5 / 255, 5 / 255, 5 / 255]);
+    expect(distance(parseColor('oklch(1 0 0)')!, [1, 1, 1])).toBeLessThan(0.001);
+    expect(parseColor('nope')).toBeUndefined();
+  });
+});
+
+describe('the icon tool', () => {
+  test('finds slugs by meaning in the installed sets', async () => {
+    const { icons, sets } = await run('find_icon', { query: 'delete' });
+    expect(sets.find((set: { set: string }) => set.set === 'mi').installed).toBe(true);
+    expect(icons.map((icon: { slug: string }) => icon.slug)).toContain('mi/baseline/delete');
+    const mgg = await run('find_icon', { query: 'ricerca', set: 'mgg' });
+    expect(mgg.icons).toEqual([
+      { slug: 'mgg/ricerca-avanzata', set: 'mgg', name: 'ricerca-avanzata' },
+    ]);
+  });
+
+  test('checks a slug and names the near ones when it does not exist', async () => {
+    expect(await run('find_icon', { slug: 'mi/baseline/send' })).toMatchObject({ exists: true });
+    const missing = await run('find_icon', { slug: 'mi/baseline/sendd' });
+    expect(missing.exists).toBe(false);
+    expect(missing.icons.map((icon: { name: string }) => icon.name)).toContain('send');
+  });
+
+  test('spells a multi-word Material slug with hyphens, as iconsauce serves it', async () => {
+    // the file is auto_awesome/outline.svg, the slug mi/outline/auto-awesome
+    expect(await run('find_icon', { slug: 'mi/outline/auto-awesome' })).toMatchObject({
+      exists: true,
+    });
+    const folderSpelling = await run('find_icon', { slug: 'mi/outline/auto_awesome' });
+    expect(folderSpelling.exists).toBe(false);
+    expect(folderSpelling.icons[0]).toEqual({
+      slug: 'mi/outline/auto-awesome',
+      set: 'mi',
+      name: 'auto-awesome',
+    });
+    const { icons } = await run('find_icon', {
+      query: 'rocket launch',
+      set: 'mi',
+      variant: 'outline',
+    });
+    expect(icons.map((icon: { slug: string }) => icon.slug)).toContain('mi/outline/rocket-launch');
+    expect(icons.every((icon: { slug: string }) => !icon.slug.includes('_'))).toBe(true);
+  });
+
+  test('agrees with the slugs iconsauce serves, both ways', async () => {
+    const dictionary = new Set(JSON.parse(readFileSync(ICONS_DICTIONARY, 'utf8')) as string[]);
+    const missing: string[] = [];
+    for (const slug of dictionary)
+      if (/^(mi|mdi)\//.test(slug) && !(await run('find_icon', { slug })).exists)
+        missing.push(slug);
+    expect(missing).toEqual([]);
+    for (const variant of ['baseline', 'outline', 'round', 'sharp']) {
+      const { icons } = await run('find_icon', { query: 'circle', variant, limit: 10_000 });
+      expect(icons.length).toBeGreaterThan(50);
+      expect(
+        icons
+          .map((icon: { slug: string }) => icon.slug)
+          .filter((slug: string) => !dictionary.has(slug)),
+      ).toEqual([]);
+    }
+  });
+
+  test('names only the Material variants iconsauce serves', async () => {
+    // @material-icons/svg has twotone.svg, iconsauce never writes it
+    expect(await run('find_icon', { slug: 'mi/twotone/send' })).toMatchObject({ exists: false });
+    await expect(run('find_icon', { query: 'send', variant: 'twotone' })).rejects.toThrow(
+      /baseline, outline, round, sharp/,
+    );
+  });
+});
+
+describe('the guide tool', () => {
+  test('lists the guides, the headings of one, the text of one section', async () => {
+    const { guides } = await run('get_guide');
+    expect(guides.map((guide: { name: string }) => guide.name)).toEqual([
+      'AGENTS',
+      'color',
+      'lint',
+      'rhythm',
+    ]);
+    const lint = await run('get_guide', { guide: 'lint.md' });
+    expect(lint.sections.map((section: { heading: string }) => section.heading)).toContain(
+      'Run it after writing',
+    );
+    const section = await run('get_guide', { guide: 'lint', section: 'set it up' });
+    expect(section.text).toMatch(/^## Set it up\n/);
+    expect(section.text).toMatch(/### React/);
+    expect(section.text).not.toMatch(/Run it after writing/);
+    await expect(run('get_guide', { guide: 'nope' })).rejects.toThrow(
+      /the guides are AGENTS, color, lint, rhythm/,
+    );
+  });
+
+  test('serves the domains of Foundation by their id, without their frontmatter', async () => {
+    const { guides } = await run('get_guide');
+    expect(guides.at(-1)).toEqual({
+      name: 'rhythm',
+      title: 'Rhythm',
+      kind: 'foundation',
+      sections: [
+        'When to use it',
+        'What decides it',
+        'Cases',
+        'Always true',
+        'Situations',
+        'Magma gaps',
+        'Decisions',
+      ],
+    });
+    expect(guides[0]).not.toHaveProperty('kind');
+    const rhythm = await run('get_guide', { guide: 'rhythm' });
+    expect(rhythm).toMatchObject({ guide: 'rhythm', title: 'Rhythm' });
+    // the path under agents/ names it too
+    expect(await run('get_guide', { guide: 'agents/patterns/rhythm.md' })).toEqual(rhythm);
+    // the previews of its cases and of its rules, for render_preview (#1221)
+    expect(rhythm.previews).toEqual([
+      {
+        id: 'shared-inset',
+        kind: 'rule',
+        file: `${MAGMA}/agents/patterns/previews/rhythm/shared-inset.html`,
+      },
+    ]);
+    const cases = await run('get_guide', { guide: 'rhythm', section: 'cases' });
+    expect(cases.text).toMatch(/^## Cases\n/);
+    expect(cases.text).toContain('| `between-fields` | relation: between-fields | `gap-600`');
+    expect(cases.text).not.toMatch(/^id: rhythm$/m);
+  });
+});
+
+describe('the pattern tool', () => {
+  test('without arguments the list, as get_guide lists the guides', async () => {
+    const { patterns } = await run('get_pattern');
+    // the domains of Foundation first, then by group in the order of the docs site, then by id
+    expect(patterns.map((one: { id: string }) => one.id)).toEqual([
+      'rhythm',
+      'consent-and-legal',
+      'confirm-action',
+      'message-placement',
+    ]);
+    expect(patterns[0]).toMatchObject({ kind: 'foundation', status: 'decided' });
+    expect(patterns[3]).toMatchObject({
+      title: 'Where a message goes',
+      group: 'messages-and-states',
+      status: 'decided',
+      validatedOn: [],
+    });
+  });
+
+  test('a need finds the patterns that answer it; none is a gap', async () => {
+    const { patterns, gap } = await run('get_pattern', {
+      need: 'tell the user a save failed, try again',
+    });
+    expect(patterns[0].id).toBe('message-placement');
+    expect(gap).toBeUndefined();
+    expect(await run('get_pattern', { need: 'zzqxv' })).toEqual({ patterns: [], gap: GAP });
+  });
+
+  test('a pattern comes with the layer of the project applied, its rules untouched', async () => {
+    const { pattern } = await run('get_pattern', { id: 'message-placement' });
+    expect(pattern.layers).toEqual(['magma', 'example-backoffice']);
+    expect(pattern['open-choices'][0]).toMatchObject({
+      id: 'success-toast-duration',
+      default: '5000 ms',
+      value: 8000,
+      'narrowed-by': 'example-backoffice',
+    });
+    expect(pattern['always-true'].map((rule: { id: string }) => rule.id)).toContain(
+      'toast-action-stays',
+    );
+    expect(pattern.situations.at(-1)).toMatchObject({
+      case: 'action-done-elsewhere',
+      layer: 'example-backoffice',
+    });
+    expect(pattern.sections).toContain('Behaviour over time');
+  });
+
+  test('a layer that narrows an "Always true" rule is not applied, and says why', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-layer-'));
+    mkdirSync(path.join(root, 'magma/patterns'), { recursive: true });
+    writeFileSync(
+      path.join(root, 'magma/patterns/message-placement.md'),
+      '---\nid: message-placement\nextends: magma:message-placement\nlayer: rogue\nnarrows:\n  toast-action-stays: false\n---\n',
+    );
+    const tool = toolsOf({ ...context, root }).find((one) => one.name === 'get_pattern')!;
+    const result = (await tool.run({ id: 'message-placement' })) as Result;
+    expect(result.pattern.layers).toEqual(['magma']);
+    expect(result.layerErrors).toEqual([
+      'magma/patterns/message-placement.md: narrows toast-action-stays: an "Always true" rule holds in every product, a layer cannot change it',
+    ]);
+  });
+
+  test("without arguments it says what is wrong in the project's folder; a broken file breaks nothing", async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-layer-'));
+    const dir = path.join(root, 'magma/patterns');
+    mkdirSync(dir, { recursive: true });
+    const layer = (id: string, rest = '') =>
+      `---\nid: ${id}\nextends: magma:${id}\nlayer: backoffice\n${rest}---\n`;
+    writeFileSync(path.join(dir, 'confirm-action.md'), '---\nid: [\n---\n');
+    writeFileSync(
+      path.join(dir, 'consent-and-legal.md'),
+      '---\nid: consent-and-legal\nkind: pattern\ntitle: Ours\ngroup: input\nlayer: backoffice\nstatus: candidate\nneed: A need.\n---\n',
+    );
+    writeFileSync(path.join(dir, 'loading.md'), layer('loading'));
+    writeFileSync(
+      path.join(dir, 'message-placement.md'),
+      layer('message-placement', 'narrows:\n  success-toast-duration: 8000\n'),
+    );
+    writeFileSync(path.join(dir, 'placement-again.md'), layer('message-placement'));
+    writeFileSync(
+      path.join(dir, 'quick-export.md'),
+      '---\nid: quick-export\nkind: pattern\ntitle: Quick export\ngroup: data\nlayer: backoffice\nstatus: candidate\nneed: Export a list.\n---\n',
+    );
+    const tool = toolsOf({ ...context, root }).find((one) => one.name === 'get_pattern')!;
+
+    const list = (await tool.run({})) as Result;
+    expect(list.patterns.map((one: { id: string }) => one.id)).toContain('quick-export');
+    expect(list.layerErrors).toEqual([
+      expect.stringMatching(/^magma\/patterns\/confirm-action\.md: not read: /),
+      'magma/patterns/consent-and-legal.md: Magma has a pattern consent-and-legal: extend it (extends: magma:consent-and-legal)',
+      'magma/patterns/loading.md: Magma has no pattern loading',
+      'magma/patterns/placement-again.md: message-placement.md extends message-placement too: one layer per pattern',
+    ]);
+
+    // the first layer of a pattern holds, so it is applied; the broken file of another is named
+    const placement = (await tool.run({ id: 'message-placement' })) as Result;
+    expect(placement.pattern.layers).toEqual(['magma', 'backoffice']);
+    expect(placement.layerErrors).toBeUndefined();
+    const confirm = (await tool.run({ id: 'confirm-action' })) as Result;
+    expect(confirm.pattern.layers).toEqual(['magma']);
+    expect(confirm.layerErrors).toEqual([
+      expect.stringMatching(/^magma\/patterns\/confirm-action\.md: not read: /),
+    ]);
+    // a pattern of the project under an id Magma has never replaces Magma's
+    const consent = (await tool.run({ id: 'consent-and-legal' })) as Result;
+    expect(consent.pattern.title).not.toBe('Ours');
+  });
+
+  test('the values of the variables give the case to follow', async () => {
+    const placement = { about: 'action', outcome: 'failure', place: 'off-screen', timing: 'now' };
+    expect(await run('get_pattern', { id: 'message-placement', situation: placement })).toEqual({
+      id: 'message-placement',
+      answer: expect.objectContaining({
+        kind: 'case',
+        id: 'action-failed-elsewhere',
+        use: ['mds-toast variant=error duration=0 dismissible'],
+      }),
+    });
+    // not enough to decide: the cases still possible, and the variables that tell them apart
+    const open = await run('get_pattern', {
+      id: 'message-placement',
+      situation: { about: 'action', outcome: 'success' },
+    });
+    expect(open.candidates.map((one: { id?: string }) => one.id)).toEqual([
+      'action-done-elsewhere',
+      'action-done-in-page',
+      'action-done-in-part',
+      'action-later',
+    ]);
+    expect(open.missing.map((one: { variable: string }) => one.variable)).toEqual([
+      'place',
+      'timing',
+      'scope',
+    ]);
+    expect(
+      await run('get_pattern', {
+        id: 'message-placement',
+        situation: { about: 'field', place: 'off-screen' },
+      }),
+    ).toMatchObject({
+      answer: { kind: 'not-applicable', why: 'a message about a field goes with its field' },
+    });
+    await expect(
+      run('get_pattern', { id: 'message-placement', situation: { about: 'page' } }),
+    ).rejects.toThrow('about of message-placement is one of field, region, action, application');
+  });
+
+  test('a case Magma has a preview of names it; the answer for a situation gives the stage', async () => {
+    const file = `${MAGMA}/agents/patterns/previews/message-placement/action-failed-in-place.html`;
+    const { pattern } = await run('get_pattern', { id: 'message-placement' });
+    const byId = (id: string) => pattern.cases.find((one: { id: string }) => one.id === id);
+    expect(byId('action-failed-in-place').preview).toBe(file);
+    expect(byId('field-error').preview).toBeUndefined();
+    const { answer } = await run('get_pattern', {
+      id: 'message-placement',
+      situation: { about: 'action', outcome: 'failure', place: 'on-screen', timing: 'now' },
+    });
+    expect(answer).toMatchObject({
+      id: 'action-failed-in-place',
+      preview: {
+        file,
+        try: 'Press Salva: the error shows above the form, and what was written stays.',
+      },
+    });
+    expect(answer.preview.markup).toMatch(/^<div[\s\S]*<mds-banner id="message" variant="error"/);
+    expect(answer.preview.markup).not.toMatch(/<!--/);
+  });
+
+  // #1243: the images the build makes beside each preview, by path, for a client with no browser
+  test('the preview of an answer names its images when the package has them', async () => {
+    const previews = `${MAGMA}/agents/patterns/previews/message-placement`;
+    const { answer } = await run('get_pattern', {
+      id: 'message-placement',
+      situation: { about: 'action', outcome: 'failure', place: 'on-screen', timing: 'now' },
+    });
+    expect(answer.preview.images).toEqual({
+      light: `${previews}/action-failed-in-place.light.webp`,
+      dark: `${previews}/action-failed-in-place.dark.webp`,
+    });
+    // a magma built before the images, as region-info is in the fixtures, names none
+    const before = await run('get_pattern', {
+      id: 'message-placement',
+      situation: { about: 'region', outcome: 'info' },
+    });
+    expect(before.answer.preview).not.toHaveProperty('images');
+  });
+
+  // #1221: a rule of a domain may have a preview, and a case more examples
+  test('a case names its other examples, a domain the previews of its rules', async () => {
+    const previews = `${MAGMA}/agents/patterns/previews`;
+    const { pattern } = await run('get_pattern', { id: 'message-placement' });
+    expect(pattern.cases.find((one: { id: string }) => one.id === 'region-info')).toMatchObject({
+      preview: `${previews}/message-placement/region-info.html`,
+      examples: [`${previews}/message-placement/region-info.2.html`],
+    });
+    const { answer } = await run('get_pattern', {
+      id: 'message-placement',
+      situation: { about: 'region', outcome: 'info' },
+    });
+    expect(answer).toMatchObject({
+      id: 'region-info',
+      preview: { file: `${previews}/message-placement/region-info.html` },
+      examples: [`${previews}/message-placement/region-info.2.html`],
+    });
+    const rhythm = (await run('get_pattern', { id: 'rhythm' })).pattern;
+    const rule = (id: string) => rhythm['always-true'].find((one: { id: string }) => one.id === id);
+    expect(rule('shared-inset').preview).toBe(`${previews}/rhythm/shared-inset.html`);
+    expect(rule('step-ratio')).not.toHaveProperty('preview');
+  });
+
+  test('one section, a candidate as a gap, an unknown id', async () => {
+    const section = await run('get_pattern', { id: 'confirm-action', section: 'behaviour' });
+    expect(section).toMatchObject({ id: 'confirm-action', section: 'Behaviour over time' });
+    expect(section.text).toMatch(/^- On the action: `await`/);
+    expect(await run('get_pattern', { id: 'consent-and-legal' })).toMatchObject({
+      pattern: { id: 'consent-and-legal', status: 'candidate' },
+      gap: expect.stringContaining('no default for it yet'),
+    });
+    await expect(run('get_pattern', { id: 'nope' })).rejects.toThrow(
+      'No pattern nope: the patterns are confirm-action, consent-and-legal, message-placement, rhythm',
+    );
+  });
+
+  test('the answer for a situation lists the rules of the domains its case relies on', async () => {
+    // a magma whose case names rules, and whose pattern cites one for every case
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-rules-'));
+    cpSync(fakeMagma, magma, { recursive: true });
+    const file = path.join(magma, 'agents/patterns/message-placement.md');
+    writeFileSync(
+      file,
+      readFileSync(file, 'utf8')
+        .replace(
+          /^( {2}- \{ id: action-failed-in-place,.*?) \}$/m,
+          '$1, rules: [rhythm/inset, rhythm/inline, rhythm/shared-inset] }',
+        )
+        .replace(/^always-true:\n/m, 'always-true:\n  - { id: ladder-only, from: rhythm }\n'),
+    );
+    const settings = {
+      ...context.settings,
+      documentation: path.join(magma, 'data/documentation.json'),
+    };
+    const tool = toolsOf({ ...context, settings }).find((one) => one.name === 'get_pattern')!;
+    const placement = { about: 'action', outcome: 'failure', place: 'on-screen', timing: 'now' };
+    const { answer } = (await tool.run({
+      id: 'message-placement',
+      situation: placement,
+    })) as Result;
+    expect(answer).toMatchObject({ id: 'action-failed-in-place', preview: expect.any(Object) });
+    // the rules of the case, then those of the pattern, with their text and where they live
+    expect(answer.rules).toEqual([
+      {
+        id: 'inset',
+        from: 'rhythm',
+        rule: '`p-600` inside a container of a part (a card, a banner, a note, a dropdown, the window of a dialog), shared by its regions',
+        serves: 'intuitive',
+        'carried-by': ['mds-banner', 'mds-note', 'mds-dropdown'],
+        'carried-by-planned': ['--magma-rhythm-inset', 'p-inset'],
+      },
+      expect.objectContaining({
+        id: 'inline',
+        from: 'rhythm',
+        rule: expect.stringMatching(/^`gap-300` between elements side by side/),
+      }),
+      // a rule with a preview names its path (#1221)
+      expect.objectContaining({
+        id: 'shared-inset',
+        from: 'rhythm',
+        preview: expect.stringMatching(/agents\/patterns\/previews\/rhythm\/shared-inset\.html$/),
+      }),
+      expect.objectContaining({
+        id: 'ladder-only',
+        from: 'rhythm',
+        rule: expect.stringMatching(/^Every space between the elements/),
+        serves: ['intuitive', 'flexible'],
+        'checked-by': 'review',
+      }),
+    ]);
+    // every other case gets the rule its pattern cites; with none, an answer has no rules
+    const elsewhere = { ...placement, place: 'off-screen' };
+    const other = (await tool.run({ id: 'message-placement', situation: elsewhere })) as Result;
+    expect(other.answer.rules.map((one: { id: string }) => one.id)).toEqual(['ladder-only']);
+    expect(
+      (await run('get_pattern', { id: 'message-placement', situation: placement })).answer,
+    ).not.toHaveProperty('rules');
+  });
+
+  test('a building block answers a situation with its regions, in the order of the page', async () => {
+    // a magma that ships a block beside its patterns
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-block-'));
+    cpSync(fakeMagma, magma, { recursive: true });
+    writeFileSync(
+      path.join(magma, 'agents/patterns/head.md'),
+      [
+        '---',
+        'id: head',
+        'kind: block',
+        'title: Head',
+        'group: navigation',
+        'layer: magma',
+        'status: decided',
+        'need: The person sees what the page is about.',
+        'principle: The head names the page.',
+        'keywords: [head]',
+        'used-by: [confirm-action, message-placement]',
+        'validated-on: []',
+        'variables:',
+        '  level: { values: [top, nested], means: "where the page sits" }',
+        'regions:',
+        '  - { id: back, when: { level: nested }, what: "a link to the page above" }',
+        '  - { id: title, required: true, what: "the heading of the page", use: ["mds-text tag=h1"] }',
+        'always-true:',
+        '  - { id: inline, from: rhythm }',
+        'situations:',
+        '  - { id: list, situation: A list, level: top }',
+        '---',
+        '',
+        '# Head',
+        '',
+      ].join('\n'),
+    );
+    const settings = {
+      ...context.settings,
+      documentation: path.join(magma, 'data/documentation.json'),
+    };
+    const tool = toolsOf({ ...context, settings }).find((one) => one.name === 'get_pattern')!;
+    const list = (await tool.run({})) as Result;
+    expect(list.patterns.map((one: { kind: string }) => one.kind).slice(0, 2)).toEqual([
+      'foundation',
+      'block',
+    ]);
+    const nested = (await tool.run({ id: 'head', situation: { level: 'nested' } })) as Result;
+    expect(nested.answer.kind).toBe('regions');
+    expect(nested.answer.regions.map((one: { id: string }) => one.id)).toEqual(['back', 'title']);
+    expect(nested.answer.rules.map((one: { id: string }) => one.id)).toEqual(['inline']);
+    expect(nested).not.toHaveProperty('missing');
+    // a variable still unknown: the regions that show anyway, and those that wait on it
+    const open = (await tool.run({ id: 'head', situation: {} })) as Result;
+    expect(open.answer.regions.map((one: { id: string }) => one.id)).toEqual(['title']);
+    expect(open.candidates.map((one: { id: string }) => one.id)).toEqual(['back']);
+    expect(open.missing).toEqual([
+      { variable: 'level', values: ['top', 'nested'], means: 'where the page sits' },
+    ]);
+    expect(() => tool.run({ id: 'head', situation: { level: 'deep' } })).toThrow(
+      'level of head is one of top, nested, not deep.',
+    );
+  });
+
+  test('a building block gives the preview of the situation the values match exactly', async () => {
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-block-'));
+    cpSync(fakeMagma, magma, { recursive: true });
+    writeFileSync(
+      path.join(magma, 'agents/patterns/head.md'),
+      [
+        '---',
+        'id: head',
+        'kind: block',
+        'title: Head',
+        'group: navigation',
+        'layer: magma',
+        'status: decided',
+        'need: The person sees what the page is about.',
+        'principle: The head names the page.',
+        'keywords: [head]',
+        'used-by: [confirm-action, message-placement]',
+        'validated-on: []',
+        'variables:',
+        '  level: { values: [top, nested], means: "where the page sits" }',
+        'regions:',
+        '  - { id: back, when: { level: nested }, what: "a link to the page above" }',
+        '  - { id: title, required: true, what: "the heading of the page" }',
+        'always-true: []',
+        'situations:',
+        '  - { id: list, situation: A list, level: top }',
+        '  - { id: item, situation: An item of the list, level: nested }',
+        '  - { id: sub-list, situation: A list under an item, level: nested }',
+        '---',
+        '',
+        '# Head',
+        '',
+      ].join('\n'),
+    );
+    const stages = path.join(magma, 'agents/patterns/previews/head');
+    mkdirSync(stages, { recursive: true });
+    for (const name of ['list', 'list.2', 'item', 'sub-list'])
+      writeFileSync(
+        path.join(stages, `${name}.html`),
+        `<!--\ntry: Look at the head of ${name}.\n-->\n<mds-text tag="h1">${name}</mds-text>\n`,
+      );
+    const settings = {
+      ...context.settings,
+      documentation: path.join(magma, 'data/documentation.json'),
+    };
+    const tool = toolsOf({ ...context, settings }).find((one) => one.name === 'get_pattern')!;
+    const at = (name: string) => path.relative(context.root, path.join(stages, `${name}.html`));
+    // one situation on these values: its preview, as a case gives its own, and its other examples
+    const top = (await tool.run({ id: 'head', situation: { level: 'top' } })) as Result;
+    expect(top.answer).toMatchObject({
+      kind: 'regions',
+      preview: {
+        file: at('list'),
+        try: 'Look at the head of list.',
+        markup: '<mds-text tag="h1">list</mds-text>\n',
+      },
+      examples: [at('list.2')],
+    });
+    expect(top.answer.regions.map((one: { id: string }) => one.id)).toEqual(['title']);
+    // two on the same values: the first in the file is the stage, the other in examples
+    const nested = (await tool.run({ id: 'head', situation: { level: 'nested' } })) as Result;
+    expect(nested.answer.preview.file).toBe(at('item'));
+    expect(nested.answer.examples).toEqual([at('sub-list')]);
+    // a variable still unknown: no preview, the regions that wait on it
+    const open = (await tool.run({ id: 'head', situation: {} })) as Result;
+    expect(open.answer).not.toHaveProperty('preview');
+    expect(open.answer).not.toHaveProperty('examples');
+    expect(open.missing.map((one: { variable: string }) => one.variable)).toEqual(['level']);
+    // the block names the preview of each situation, as a pattern names those of its cases
+    const { pattern } = (await tool.run({ id: 'head' })) as Result;
+    expect(pattern.situations).toEqual([
+      {
+        id: 'list',
+        situation: 'A list',
+        level: 'top',
+        preview: at('list'),
+        examples: [at('list.2')],
+      },
+      { id: 'item', situation: 'An item of the list', level: 'nested', preview: at('item') },
+      {
+        id: 'sub-list',
+        situation: 'A list under an item',
+        level: 'nested',
+        preview: at('sub-list'),
+      },
+    ]);
+  });
+});
+
+describe('the check tools', () => {
+  test('check_markup lints a snippet with the parser of its language', async () => {
+    const html = await run('check_markup', {
+      code: '<mds-banner tone="outline"></mds-banner>',
+      language: 'html',
+    });
+    expect(html.findings).toEqual([
+      expect.objectContaining({ rule: 'magma/valid-attribute-values', severity: 'error', line: 1 }),
+    ]);
+    const angular = await run('check_markup', {
+      code: '<mds-button [attr.disabled]="false">Go</mds-button>',
+      language: 'angular',
+    });
+    expect(angular.findings.map((finding: { rule: string }) => finding.rule)).toEqual([
+      'magma/no-false-boolean',
+    ]);
+    const jsx = await run('check_markup', {
+      code: 'const a = <div className="bg-white" />;',
+      language: 'jsx',
+      preset: 'recommended',
+    });
+    expect(jsx.findings).toEqual([
+      expect.objectContaining({ rule: 'magma/no-raw-palette-classes', severity: 'warning' }),
+    ]);
+    const css = await run('check_markup', { code: '.a { color: #333; }', language: 'css' });
+    expect(css.findings).toEqual([
+      expect.objectContaining({ rule: 'magma/no-raw-color', severity: 'error' }),
+    ]);
+    const tokens = await run('check_markup', {
+      code: 'mds-book { --mds-book-spine-color: #123a6b; --mds-book-paper-color: #fff; }',
+      language: 'css',
+    });
+    expect(tokens.findings.map((finding: { rule: string }) => finding.rule).sort()).toEqual([
+      'magma/no-internal-tokens',
+      'magma/no-raw-color',
+    ]);
+    // the palette rule reads the tokens and the consumption map of the context
+    const apply = await run('check_markup', {
+      code: '.a { @apply p-400 bg-tone-neutral-03; }',
+      language: 'css',
+      preset: 'recommended',
+    });
+    expect(apply.findings).toEqual([
+      expect.objectContaining({
+        rule: 'magma/no-raw-palette-classes',
+        severity: 'warning',
+        message: expect.stringMatching(/^bg-tone-neutral-03 paints with a raw Magma step/),
+      }),
+    ]);
+    expect(
+      (
+        await run('check_markup', {
+          code: '<mds-button label="Go"></mds-button>',
+          language: 'html',
+        })
+      ).findings,
+    ).toEqual([]);
+    await expect(run('check_markup', { code: '<div', language: 'jsx' })).rejects.toThrow(
+      /does not parse as jsx/,
+    );
+  });
+
+  test('check_setup lists what the integration of the project misses', async () => {
+    const setup = await run('check_setup');
+    const byId = Object.fromEntries(
+      setup.checks.map((check: { id: string; ok: boolean; detail: string }) => [check.id, check]),
+    );
+    expect(setup.ok).toBe(false);
+    expect(byId['design-tokens']).toMatchObject({
+      ok: false,
+      detail: expect.stringMatching(/is not a dependency/),
+    });
+    expect(byId.fonts).toMatchObject({
+      ok: false,
+      detail: expect.stringMatching(/@fontsource\/merriweather/),
+    });
+    expect(byId['icon-path'].ok).toBe(true);
+    expect(byId['lint-eslint'].ok).toBe(true);
+    expect(byId['lint-stylelint'].ok).toBe(false);
+    expect(byId.mcp.ok).toBe(true);
+  });
+
+  /** The checks of check_setup on a project made of `files`. */
+  const setupOf = async (files: Record<string, string>) => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-setup-'));
+    for (const [name, text] of Object.entries({ 'package.json': '{}', ...files })) {
+      mkdirSync(path.dirname(path.join(root, name)), { recursive: true });
+      writeFileSync(path.join(root, name), text);
+    }
+    const { checks } = (await checkSetup({ ...context, root }).run({})) as Result;
+    return Object.fromEntries(
+      checks.map((check: { id: string; ok: boolean; detail: string }) => [check.id, check]),
+    );
+  };
+
+  test('check_setup accepts every way the guides set the icon path, and only those', async () => {
+    // every line of a code block of the guides that sets the path, from the guides themselves
+    const repo = path.join(import.meta.dirname, '../../..');
+    const guides = [
+      ...readdirSync(path.join(repo, 'docs/agents')).map((name) => `docs/agents/${name}`),
+      ...readdirSync(path.join(repo, 'projects/stencil/src/components/mds-icon/usage')).map(
+        (name) => `projects/stencil/src/components/mds-icon/usage/${name}`,
+      ),
+    ].filter((name) => name.endsWith('.md'));
+    const ways = guides.flatMap((name) =>
+      [...readFileSync(path.join(repo, name), 'utf8').matchAll(/```\w*\n([\s\S]*?)```/g)]
+        .flatMap(([, body]) => body!.split('\n'))
+        .filter((line) => /setSvgPath\(|setItem\('mdsIconSvgPath'/.test(line))
+        .map((line) => line.replace(/^\s*(\/\/ or: )?/, '')),
+    );
+    expect(ways.some((line) => line.startsWith('IconsSetService.setSvgPath('))).toBe(true);
+    expect(ways.some((line) => line.includes('sessionStorage.setItem('))).toBe(true);
+    for (const line of new Set(ways))
+      expect((await setupOf({ 'src/main.ts': line }))['icon-path'], line).toMatchObject({
+        ok: true,
+      });
+
+    // a name mds-icon never reads
+    expect(
+      (await setupOf({ 'src/main.ts': "window.mdsIconSvgPath = '/svg/';" }))['icon-path'],
+    ).toMatchObject({
+      ok: false,
+      detail: expect.stringMatching(/reads the path only from IconsSetService.setSvgPath\(\)/),
+    });
+  });
+
+  test('check_setup reads the lint preset from every file ESLint and Stylelint load', async () => {
+    const eslint = "import magma from '@maggioli-design-system/magma/eslint';";
+    const stylelint = "extends: ['@maggioli-design-system/magma/stylelint/recommended']";
+    for (const name of ['eslint.config.mts', 'eslint.config.cts'])
+      expect((await setupOf({ [name]: eslint }))['lint-eslint'].ok, name).toBe(true);
+    for (const name of ['.stylelintrc.yml', '.config/stylelintrc.json', 'stylelint.config.ts'])
+      expect((await setupOf({ [name]: stylelint }))['lint-stylelint'].ok, name).toBe(true);
+    const inPackage = await setupOf({
+      'package.json': JSON.stringify({
+        stylelint: { extends: ['@maggioli-design-system/magma/stylelint/recommended'] },
+      }),
+      // package.json comes first: Stylelint never reads this file
+      'stylelint.config.mjs': 'export default {};',
+    });
+    expect(inPackage['lint-stylelint'].ok).toBe(true);
+    // the file the tool loads is the first it finds
+    expect(
+      (await setupOf({ '.stylelintrc.json': '{}', 'stylelint.config.mjs': stylelint }))[
+        'lint-stylelint'
+      ].ok,
+    ).toBe(false);
+  });
+
+  test('an entry that starts magma-mcp with npx without --no is unsafe', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-mcp-'));
+    const file = path.join(dir, 'mcp.json');
+    const entries = (config: unknown) => {
+      writeFileSync(file, JSON.stringify(config));
+      return mcpEntries(file);
+    };
+    expect(entries({ mcpServers: { magma: { command: 'npx', args: ['magma-mcp'] } } })).toEqual([
+      { safe: false },
+    ]);
+    expect(
+      entries({ servers: { magma: { command: 'npx', args: ['--no', 'magma-mcp'] } } }),
+    ).toEqual([{ safe: true }]);
+    expect(entries({ mcpServers: { magma: { command: 'node_modules/.bin/magma-mcp' } } })).toEqual([
+      { safe: true },
+    ]);
+    expect(entries({ mcpServers: { other: { command: 'npx', args: ['other-mcp'] } } })).toEqual([]);
+  });
+
+  test('the mcp servers of OpenCode 2 and 1 start magma-mcp when local and on', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-opencode-'));
+    const file = path.join(dir, 'opencode.json');
+    const entries = (mcp: unknown) => {
+      writeFileSync(file, JSON.stringify({ $schema: 'https://opencode.ai/config.json', mcp }));
+      return mcpEntries(file);
+    };
+    const safe = { type: 'local', command: ['npx', '--no', 'magma-mcp'] };
+    // OpenCode 2: the servers under mcp.servers
+    expect(entries({ servers: { magma: safe } })).toEqual([{ safe: true }]);
+    expect(
+      entries({ servers: { magma: { type: 'local', command: ['npx', 'magma-mcp'] } } }),
+    ).toEqual([{ safe: false }]);
+    expect(entries({ servers: { magma: { ...safe, disabled: true } } })).toEqual([]);
+    // OpenCode 1: the servers right under mcp, still read by OpenCode 2, a server named servers too
+    expect(entries({ magma: safe, timeout: { startup: 1000 } })).toEqual([{ safe: true }]);
+    expect(entries({ servers: safe })).toEqual([{ safe: true }]);
+    expect(entries({ magma: { ...safe, enabled: false } })).toEqual([]);
+    // magma-mcp serves on stdio: a remote server, or an entry with only enabled, is not it
+    expect(entries({ magma: { type: 'remote', url: 'http://localhost/magma-mcp' } })).toEqual([]);
+    expect(entries({ magma: { enabled: true } })).toEqual([]);
+  });
+
+  test('the configuration of OpenCode is read as JSONC, the others as JSON', async () => {
+    const jsonc = `{
+      // the server of Magma
+      "mcp": {
+        "servers": {
+          /* one, "local" */
+          "magma": { "type": "local", "command": ["npx", "--no", "magma-mcp"], },
+          "docs": { "type": "remote", "url": "https://example.com/mcp,}" },
+        },
+      },
+    }`;
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-jsonc-'));
+    const file = path.join(dir, 'opencode.jsonc');
+    writeFileSync(file, jsonc);
+    expect(mcpEntries(file, { jsonc: true })).toEqual([{ safe: true }]);
+    expect(mcpEntries(file)).toEqual([]);
+    expect((await setupOf({ 'opencode.jsonc': jsonc })).mcp.ok).toBe(true);
+  });
+
+  test('check_setup finds magma-mcp in the configuration of OpenCode', async () => {
+    // the configuration of #1183, where the check said no client starts magma-mcp
+    const opencode = JSON.stringify({
+      mcp: {
+        servers: {
+          magma: { type: 'local', command: ['npx', '--no', 'magma-mcp'] },
+        },
+      },
+    });
+    for (const name of ['opencode.json', 'opencode.jsonc', '.opencode/opencode.jsonc'])
+      expect((await setupOf({ [name]: opencode })).mcp, name).toMatchObject({
+        ok: true,
+        detail: `${name} starts magma-mcp.`,
+      });
+    expect(
+      (
+        await setupOf({
+          'opencode.json': JSON.stringify({
+            mcp: { magma: { type: 'local', command: ['npx', 'magma-mcp'] } },
+          }),
+        })
+      ).mcp,
+    ).toMatchObject({
+      ok: false,
+      detail: expect.stringContaining(
+        'Write "command": ["npx", "--no", "magma-mcp"] in opencode.json.',
+      ),
+    });
+    expect((await setupOf({})).mcp).toMatchObject({
+      ok: false,
+      detail: expect.stringContaining('opencode.json for OpenCode'),
+    });
+  });
+
+  test('the Magma plugin counts as enabled only from enabledPlugins', () => {
+    const dir = mkdtempSync(path.join(tmpdir(), 'magma-plugin-'));
+    const file = path.join(dir, 'settings.json');
+    writeFileSync(file, JSON.stringify({ enabledPlugins: { 'magma@magma': true } }));
+    expect(pluginEnabled(file)).toBe(true);
+    writeFileSync(file, JSON.stringify({ enabledPlugins: { 'magma@magma': false } }));
+    expect(pluginEnabled(file)).toBe(false);
+    expect(pluginEnabled(path.join(dir, 'missing.json'))).toBe(false);
+  });
+
+  test('satisfies reads the ranges magma declares', () => {
+    expect(satisfies('15.4.0', '^15.2.2')).toBe(true);
+    expect(satisfies('16.0.0', '^15.2.2')).toBe(false);
+    expect(satisfies('15.2.1', '^15.2.2')).toBe(false);
+    expect(satisfies('2.6.0', '>=2.5.0')).toBe(true);
+    expect(satisfies('1.2.9', '~1.2.3')).toBe(true);
+  });
+});
+
+describe('the named themes of the installed styles', () => {
+  /** A project whose styles ship `css` as dist/css/themes.css. */
+  const projectWith = (css: string) => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-themes-'));
+    const styles = path.join(root, 'node_modules/@maggioli-design-system/styles');
+    mkdirSync(path.join(styles, 'dist/css'), { recursive: true });
+    writeFileSync(path.join(styles, 'package.json'), '{"name":"@maggioli-design-system/styles"}');
+    writeFileSync(path.join(styles, 'dist/css/themes.css'), css);
+    return { ...context, root };
+  };
+
+  // the base theme emits no rule of its own, only its preview (#692)
+  test('lists the themes with a preview first, the base one included, then the rules', () => {
+    const themes = projectWith(
+      [
+        ':root {',
+        '  --magma-preview-business-wash: var(--tone-neutral-09);',
+        '  --magma-preview-business-accent: var(--variant-primary-04);',
+        '  --magma-preview-editorial-wash: var(--tone-bisque-09);',
+        '}',
+        ":root[data-theme-name='editorial'] { --magma-tint-default: var(--surface-bisque-default); }",
+        ":root[data-theme-name='cool'] { --magma-tint-default: var(--surface-porcelain-default); }",
+      ].join('\n'),
+    );
+    expect(themesOf(themes)).toEqual(['business', 'editorial', 'cool']);
+  });
+
+  test('reads the rules alone of a themes.css older than the previews', () => {
+    const themes = projectWith(
+      ":root[data-theme-name='cool'] { --magma-tint-default: var(--surface-porcelain-default); }",
+    );
+    expect(themesOf(themes)).toEqual(['cool']);
+  });
+});
+
+describe('render_preview', () => {
+  // the stand-in loader of the fixtures (mds-fixture hydrates, mds-stuck never does, mds-fail
+  // throws), a project of its own for the images, the styles installed in this repository
+  const root = mkdtempSync(path.join(tmpdir(), 'magma-render-'));
+  const loader = path.join(fixtures, 'components/magma-components.esm.js');
+  const renderContext = { ...context, root, loader };
+  const preview = renderPreview(renderContext);
+  /** A short render: a fixture that never hydrates would hold the default budget. */
+  const shoot = async (markup: string, options: { widths?: number[]; height?: number } = {}) => {
+    const [image] = await render(renderContext, {
+      markup,
+      widths: options.widths ?? [480],
+      mode: 'light',
+      ...(options.height ? { height: options.height } : {}),
+      timeout: 3000,
+    });
+    return image!;
+  };
+  const kinds = (image: { problems: Array<{ kind: string }> }) =>
+    image.problems.map((one) => one.kind);
+  /** The size a PNG declares in its IHDR chunk. */
+  const sizeOf = (file: string) => {
+    const png = readFileSync(file);
+    return { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
+  };
+
+  test('loads the stylesheets of agents/assets.md, in its order and layers', () => {
+    const guide = readFileSync(
+      path.join(import.meta.dirname, '../../../docs/agents/assets.md'),
+      'utf8',
+    );
+    const block = guide.split('### Import order (mandatory)')[1]!.split('```')[1]!;
+    const imports = [...block.matchAll(/^@import '([^']+)' layer\((\w+)\);/gm)].map((one) => ({
+      module: one[1]!,
+      layer: one[2]!,
+    }));
+    expect(STYLESHEETS).toEqual(imports);
+    expect(block).toContain(LAYERS);
+  });
+
+  test('compiles the Tailwind entry of agents/assets.md on the classes of the markup', async () => {
+    const guide = readFileSync(
+      path.join(import.meta.dirname, '../../../docs/agents/assets.md'),
+      'utf8',
+    );
+    const block = guide.split('### Tailwind (optional)')[1]!.split('```')[1]!;
+    expect(TAILWIND.split('\n')).toEqual(
+      block.split('\n').filter((one) => one.startsWith('@import')),
+    );
+    const css = (await tailwindOf(
+      renderContext,
+      '<mds-dropdown class="p-0 max-w-form dark:bg-surface-sunken">Salva</mds-dropdown>',
+    ))!;
+    expect(css).toMatch(/\.p-0 \{\s*padding: 0px;/);
+    expect(css).toMatch(/\.max-w-form \{\s*max-width: var\(--container-form\);/);
+    // dark: on the Magma mode, not the system's only (#1100)
+    expect(css).toMatch(
+      /\.dark\\:bg-surface-sunken:where\(:root:not\(\.pref-theme-scheme-light\)\.pref-mode-dark/,
+    );
+    // a token that names no utility gives nothing
+    expect(css).not.toContain('Salva');
+    // in the page, after the stylesheets of the consumer
+    const page = pageOf(renderContext, { markup: '<div class="p-0"></div>', utilities: css });
+    expect(page.indexOf(css)).toBeGreaterThan(page.lastIndexOf('@import url('));
+    expect(
+      await tailwindOf({ ...renderContext, tailwind: false }, '<div class="p-0"></div>'),
+    ).toBeUndefined();
+  });
+
+  test('classes in a project without Tailwind 4 are a problem of the image', async () => {
+    const [image] = await render(
+      { ...renderContext, tailwind: false },
+      {
+        markup: '<mds-fixture class="p-0">Salva</mds-fixture>',
+        widths: [480],
+        mode: 'light',
+        timeout: 3000,
+      },
+    );
+    expect(image!.problems).toEqual([
+      expect.objectContaining({
+        kind: 'asset',
+        detail: expect.stringContaining('the project has no Tailwind 4'),
+      }),
+    ]);
+    // classes with a style element of their own are not Tailwind's
+    const [styled] = await render(
+      { ...renderContext, tailwind: false },
+      {
+        markup: '<style>.own { padding: 0 }</style><mds-fixture class="own">Salva</mds-fixture>',
+        widths: [480],
+        mode: 'light',
+        timeout: 3000,
+      },
+    );
+    expect(styled!.problems).toEqual([]);
+  }, 30_000);
+
+  test('a page whose script never yields ends the render in its time, not a hang', async () => {
+    // the loop starts once the page has loaded: the page answers no call of the driver after
+    // it, and Chrome takes no image of it, so the render ends with an error that names why
+    const started = Date.now();
+    await expect(
+      render(renderContext, {
+        markup:
+          '<mds-fixture>Salva</mds-fixture><script>addEventListener("load", () => setTimeout(() => { for (;;); }))</script>',
+        widths: [480],
+        mode: 'light',
+        timeout: 3000,
+      }),
+    ).rejects.toThrow(/did not answer in 3000 ms/);
+    expect(Date.now() - started).toBeLessThan(15_000);
+  }, 30_000);
+
+  test('a markup that renders well is representative: the image, its file and no problem', async () => {
+    const result = await preview.run({ markup: '<mds-fixture>Salva</mds-fixture>', widths: [480] });
+    expect(result).toMatchObject({ magma: '2.5.1', mode: 'light', representative: true });
+    const [image] = result.images as Array<{
+      file: string;
+      width: number;
+      height: number;
+      problems: unknown[];
+    }>;
+    expect(image!.problems).toEqual([]);
+    expect(image!.file.startsWith(path.join(root, PREVIEW_DIR))).toBe(true);
+    // as tall as the content: the 24 px around the markup and the fixture
+    expect(sizeOf(image!.file)).toEqual({ width: 480, height: image!.height });
+    expect(image!.height).toBeLessThan(120);
+    // a render waits up to its own budget (TIMEOUT, 15 s, then the settle) on a busy runner
+  }, 60_000);
+
+  test('names each problem with the element it is in', async () => {
+    const stuck = await shoot('<mds-stuck>Ciao</mds-stuck>');
+    expect(stuck.problems).toContainEqual(
+      expect.objectContaining({ kind: 'not-hydrated', element: 'mds-stuck "Ciao"' }),
+    );
+    expect(stuck.representative).toBe(false);
+
+    const unknown = await shoot('<mds-nope>Ciao</mds-nope>');
+    expect(unknown.problems).toContainEqual(
+      expect.objectContaining({ kind: 'unknown-component', element: 'mds-nope "Ciao"' }),
+    );
+
+    const fail = await shoot('<mds-fail></mds-fail>');
+    expect(fail.problems).toContainEqual(
+      expect.objectContaining({
+        kind: 'console-error',
+        detail: expect.stringContaining('mds-fail cannot render'),
+      }),
+    );
+
+    const zero = await shoot(
+      '<mds-fixture style="display: block; width: 0; padding: 0; overflow: hidden">Salva</mds-fixture>',
+    );
+    expect(zero.problems).toContainEqual(
+      expect.objectContaining({ kind: 'zero-size', element: 'mds-fixture "Salva"' }),
+    );
+    // a box of nothing where the content stands out of it by design: an empty region fixed on
+    // the viewport (mds-toast-region), an overlay shown in the top layer or closed (mds-status-bar)
+    for (const away of [
+      '<mds-fixture style="position: fixed; inset: auto 0 0; display: flex; padding: 0"></mds-fixture>',
+      '<mds-layer open>Salva</mds-layer>',
+      '<mds-layer>Salva</mds-layer>',
+    ])
+      expect(kinds(await shoot(away))).not.toContain('zero-size');
+
+    const word = await shoot(
+      '<div style="width: 40px; overflow-wrap: anywhere">Straordinariamente</div>',
+    );
+    expect(word.problems).toContainEqual(
+      expect.objectContaining({
+        kind: 'broken-word',
+        detail: expect.stringContaining('"Straordinariamente"'),
+      }),
+    );
+    // a line that breaks between words breaks no word
+    expect(
+      kinds(await shoot('<div style="width: 80px">Salva e chiudi la scheda</div>')),
+    ).not.toContain('broken-word');
+  }, 60_000);
+
+  test('catches a blank or grey region: a component whose content does not show, an empty image', async () => {
+    // the text painted in the colour of the fixture's own background
+    const hidden = await shoot('<mds-fixture style="color: #2563eb">Salva</mds-fixture>');
+    expect(hidden.problems).toContainEqual(
+      expect.objectContaining({
+        kind: 'flat',
+        element: 'mds-fixture "Salva"',
+        detail: expect.stringContaining('#2563eb'),
+      }),
+    );
+    const empty = await shoot('<p hidden>Nothing shows</p>');
+    expect(empty.problems).toContainEqual(
+      expect.objectContaining({
+        kind: 'flat',
+        detail: expect.stringMatching(/^The whole image is one flat colour/),
+      }),
+    );
+    // a component with no content of its own may be one colour
+    expect(kinds(await shoot('<mds-fixture></mds-fixture>'))).not.toContain('flat');
+    // nor one hidden by visibility, which keeps the place of what shows later
+    expect(
+      kinds(await shoot('<p>Ciao</p><mds-fixture style="visibility: hidden">Salva</mds-fixture>')),
+    ).not.toContain('flat');
+    // nor one another element covers, as the window of a dialog covers the page under it
+    const layer = 'position: fixed; inset: 0; display: grid; align-items: end; background: #fff';
+    expect(
+      kinds(await shoot(`<mds-fixture>Salva</mds-fixture><div style="${layer}">Coperto</div>`)),
+    ).not.toContain('flat');
+  }, 60_000);
+
+  test('judges the components a scroll container shows whole, not those it cuts or hides', async () => {
+    // a row that scrolls: Uno shows whole, of Due only its padding, Tre stands past the edge of
+    // the row but inside the image, where the image shows the page
+    const fixture = (text: string, color = '#fff') =>
+      `<mds-fixture style="flex: none; box-sizing: border-box; width: 100px; color: ${color}">${text}</mds-fixture>`;
+    const row = await shoot(
+      `<div style="display: flex; width: 108px; overflow-x: auto">${fixture('Uno', '#2563eb')}${fixture('Due')}${fixture('Tre')}</div>`,
+    );
+    const flat = row.problems.filter((one) => one.kind === 'flat');
+    expect(flat).toEqual([expect.objectContaining({ element: 'mds-fixture [1 of 3] "Uno"' })]);
+  }, 60_000);
+
+  test('serves only the installed packages, offline, and reports what did not load', async () => {
+    const [icon] = readdirSync(path.join(fixtures, 'icons/mgg'));
+    const image = await shoot(
+      `<img src="https://example.com/logo.png" alt="Logo" width="40" height="40">
+<script>fetch('/svg/mgg/${icon}'); fetch('/svg/mgg/no-such-icon.svg'); fetch('/node_modules/vitest/package.json');</script>`,
+    );
+    const details = image.problems.filter((one) => one.kind === 'asset').map((one) => one.detail);
+    expect(details).toContainEqual(
+      expect.stringContaining('https://example.com/logo.png was not loaded'),
+    );
+    expect(details).toContainEqual(
+      expect.stringContaining('The icon mgg/no-such-icon is not in the icon sets'),
+    );
+    expect(details).toContainEqual(expect.stringContaining('/node_modules/vitest/package.json'));
+    expect(details.join()).not.toContain(icon);
+    expect(image.problems).toContainEqual(
+      expect.objectContaining({
+        kind: 'asset',
+        element: 'img',
+        detail: expect.stringContaining('did not load'),
+      }),
+    );
+  }, 30_000);
+
+  test('reports a font with no face loaded, and content cut at the longest side', async () => {
+    const font = await shoot('<p style="font-family: \'Nope Sans\', sans-serif">Testo</p>');
+    expect(font.problems).toContainEqual(
+      expect.objectContaining({ kind: 'font', detail: expect.stringContaining('Nope Sans') }),
+    );
+    const tall = await shoot(`<div style="height: ${MAX_SIDE + 500}px">Lungo</div>`);
+    expect(kinds(tall)).toContain('cut');
+    expect(sizeOf(tall.file).height).toBe(MAX_SIDE);
+  }, 30_000);
+
+  test('renders in the mode asked: prefers-color-scheme of the page', async () => {
+    const markup =
+      "<script>console.error(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')</script>";
+    const [dark] = await render(renderContext, {
+      markup,
+      widths: [480],
+      mode: 'dark',
+      timeout: 3000,
+    });
+    expect(dark!.problems).toContainEqual({ kind: 'console-error', detail: 'dark' });
+  }, 30_000);
+
+  test('reads the widths and the themes from the installed styles, and refuses the rest', async () => {
+    const breakpoints = breakpointsOf(renderContext);
+    expect(breakpoints[DEFAULT_WIDTH]).toBeTypeOf('number');
+    const result = await preview.run({
+      markup: '<mds-fixture>Salva</mds-fixture>',
+      widths: ['mobile'],
+    });
+    expect((result.images as Array<{ width: number }>)[0]!.width).toBe(breakpoints.mobile);
+    await expect(preview.run({ markup: 'x', widths: ['huge'] })).rejects.toThrow(
+      /No breakpoint huge: the installed styles name .*desktop/,
+    );
+    await expect(preview.run({ markup: 'x', widths: [100] })).rejects.toThrow(/from 320 to 2000/);
+    await expect(preview.run({ markup: 'x', widths: [400, 500, 600, 700, 800] })).rejects.toThrow(
+      /At most 4/,
+    );
+    await expect(preview.run({ markup: 'x', theme: 'neon' })).rejects.toThrow(
+      new RegExp(`No theme neon: the installed styles name ${themesOf(renderContext).join(', ')}`),
+    );
+    await expect(preview.run({ markup: 'x', lang: '"><script>' })).rejects.toThrow(
+      /lang is a language tag/,
+    );
+    await expect(preview.run({ markup: ' ' })).rejects.toThrow(/Give the markup/);
+  }, 30_000);
+
+  test('renders the preview of a case, at the height it declares', async () => {
+    const result = await preview.run({
+      pattern: 'message-placement',
+      case: 'region-info',
+      widths: [480],
+    });
+    expect(result).toMatchObject({
+      representative: true,
+      preview: {
+        pattern: 'message-placement',
+        case: 'region-info',
+        file: expect.stringMatching(
+          /agents\/patterns\/previews\/message-placement\/region-info\.html$/,
+        ),
+        try: 'Look at the message in the region.',
+      },
+    });
+    const [image] = result.images as Array<{ file: string; height: number }>;
+    expect(image!.height).toBe(300);
+    expect(sizeOf(image!.file)).toEqual({ width: 480, height: 300 });
+  }, 30_000);
+
+  // #1221: the preview of a rule of a domain, and another example of a case
+  test('renders the preview of a rule of a domain, and another example of a case', async () => {
+    const rule = await preview.run({ pattern: 'rhythm', rule: 'shared-inset', widths: [480] });
+    expect(rule).toMatchObject({
+      representative: true,
+      preview: {
+        pattern: 'rhythm',
+        rule: 'shared-inset',
+        file: expect.stringMatching(/agents\/patterns\/previews\/rhythm\/shared-inset\.html$/),
+      },
+    });
+    expect(rule.preview).not.toHaveProperty('case');
+    const second = await preview.run({
+      pattern: 'message-placement',
+      case: 'region-info',
+      example: 2,
+      widths: [480],
+    });
+    expect(second).toMatchObject({
+      preview: {
+        case: 'region-info',
+        example: 2,
+        try: 'Look at the message in the region, with longer words.',
+      },
+    });
+  }, 30_000);
+
+  test('a rule asked as a case, a missing example, a rule with no preview, are refused', async () => {
+    await expect(preview.run({ pattern: 'rhythm', case: 'shared-inset' })).rejects.toThrow(
+      'shared-inset is a rule of rhythm, not a case: give rule.',
+    );
+    await expect(preview.run({ pattern: 'rhythm', rule: 'inline' })).rejects.toThrow(
+      'inline is a case of rhythm, not a rule: give case.',
+    );
+    await expect(preview.run({ pattern: 'rhythm', rule: 'step-ratio' })).rejects.toThrow(
+      'No preview of the rule step-ratio of rhythm: the rules with one are shared-inset.',
+    );
+    await expect(preview.run({ pattern: 'rhythm', rule: 'nope' })).rejects.toThrow(
+      'rhythm has no rule nope of its own: its rules are step-ratio, shared-inset, ladder-only.',
+    );
+    await expect(
+      preview.run({ pattern: 'message-placement', case: 'region-info', example: 3 }),
+    ).rejects.toThrow(
+      'The case region-info of message-placement has 2 examples: example is 1 to 2.',
+    );
+    await expect(
+      preview.run({ pattern: 'message-placement', case: 'region-info', rule: 'x' }),
+    ).rejects.toThrow('Give case or rule: not both.');
+    await expect(
+      preview.run({ pattern: 'message-placement', case: 'region-info', example: 0 }),
+    ).rejects.toThrow('example is a whole number from 1, the first example.');
+  });
+
+  // the round of the building blocks (2026-11-03): a block is asked by the id of a situation
+  test('a situation of a building block with no preview is refused, naming the ones with one', async () => {
+    const magma = mkdtempSync(path.join(tmpdir(), 'magma-block-render-'));
+    cpSync(fakeMagma, magma, { recursive: true });
+    writeFileSync(
+      path.join(magma, 'agents/patterns/head.md'),
+      [
+        '---',
+        'id: head',
+        'kind: block',
+        'title: Head',
+        'group: navigation',
+        'layer: magma',
+        'status: decided',
+        'need: The person sees what the page is about.',
+        'principle: The head names the page.',
+        'keywords: [head]',
+        'used-by: [confirm-action, message-placement]',
+        'validated-on: []',
+        'variables:',
+        '  level: { values: [top, nested], means: "where the page sits" }',
+        'regions:',
+        '  - { id: title, required: true, what: "the heading of the page" }',
+        'always-true: []',
+        'situations:',
+        '  - { id: list, situation: A list, level: top }',
+        '  - { id: item, situation: An item of the list, level: nested }',
+        '---',
+        '',
+        '# Head',
+        '',
+      ].join('\n'),
+    );
+    mkdirSync(path.join(magma, 'agents/patterns/previews/head'), { recursive: true });
+    writeFileSync(
+      path.join(magma, 'agents/patterns/previews/head/list.html'),
+      '<!--\ntry: Look at the head.\n-->\n<mds-fixture></mds-fixture>\n',
+    );
+    const settings = {
+      ...renderContext.settings,
+      documentation: path.join(magma, 'data/documentation.json'),
+    };
+    const block = renderPreview({ ...renderContext, settings });
+    await expect(block.run({ pattern: 'head', case: 'item' })).rejects.toThrow(
+      'No preview of the situation item of head: the situations with one are list.',
+    );
+  });
+
+  test('a case with no preview, or markup and a case together, are refused', async () => {
+    await expect(
+      preview.run({ pattern: 'message-placement', case: 'field-error' }),
+    ).rejects.toThrow(
+      'No preview of the case field-error of message-placement: the cases with one are action-failed-in-place, region-info.',
+    );
+    await expect(preview.run({ pattern: 'confirm-action', case: 'ask-first' })).rejects.toThrow(
+      'confirm-action has no preview of its cases in this magma yet.',
+    );
+    await expect(preview.run({ pattern: 'nope', case: 'x' })).rejects.toThrow(
+      /^No pattern nope in this magma: the patterns are /,
+    );
+    await expect(preview.run({ pattern: 'message-placement' })).rejects.toThrow(
+      'Give both pattern and case, to render the preview of a case, or pattern and rule for a rule of a domain.',
+    );
+    await expect(
+      preview.run({
+        markup: '<mds-fixture>x</mds-fixture>',
+        pattern: 'message-placement',
+        case: 'region-info',
+      }),
+    ).rejects.toThrow('Give markup, or pattern and case: not both.');
+    await expect(preview.run({})).rejects.toThrow(
+      'Give the markup to render, or pattern and case.',
+    );
+  });
+
+  test('answers tools/call with the images as image content, after the text', async () => {
+    const { handle } = createServer(renderContext);
+    const answer = (await handle({
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'tools/call',
+      params: {
+        name: 'render_preview',
+        arguments: { markup: '<mds-fixture>Salva</mds-fixture>', widths: [480, 640] },
+      },
+    })) as Result;
+    const { content, structuredContent } = answer.result;
+    expect(content.map((one: { type: string }) => one.type)).toEqual(['text', 'image', 'image']);
+    expect(content[1]).toMatchObject({
+      mimeType: 'image/png',
+      data: expect.stringMatching(/^iVBORw0KGgo/),
+    });
+    // the structured content, and its text, carry the files and never the image data
+    expect(JSON.stringify(structuredContent)).not.toContain('iVBORw0KGgo');
+    expect(JSON.parse(content[0].text)).toEqual(structuredContent);
+  }, 30_000);
+});
+
+// the components of the build of this repository: the real hydration, the real styles
+const BUILT = path.join(
+  import.meta.dirname,
+  '../../stencil/dist/magma-components/magma-components.esm.js',
+);
+describe.skipIf(!existsSync(BUILT) && !process.env.CI)('render_preview on the built magma', () => {
+  test('mds-button hydrates, shows its label and looks different in dark mode', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-render-built-'));
+    const built = { root, settings: { root } };
+    const markup = '<mds-button>Salva</mds-button>';
+    const [light] = await render(built, { markup, widths: [480], mode: 'light' });
+    const [dark] = await render(built, { markup, widths: [480], mode: 'dark' });
+    expect(light!.problems).toEqual([]);
+    expect(dark!.problems).toEqual([]);
+    expect(readFileSync(light!.file).equals(readFileSync(dark!.file))).toBe(false);
+  }, 60_000);
+
+  test('every preview of a case Magma ships renders representative', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-render-previews-'));
+    const built = { root, settings: { root } };
+    const previews = readPreviews(path.join(import.meta.dirname, '../../../docs/agents/patterns'));
+    expect(previews.length).toBeGreaterThan(0);
+    for (const one of previews) {
+      const [image] = await render(built, {
+        markup: one.markup,
+        widths: [480],
+        mode: 'light',
+        lang: 'it',
+        ...(one.height ? { height: one.height } : {}),
+        ...(one.wholePage ? { wholePage: true } : {}),
+      });
+      const name = `${one.pattern}/${one.id}${one.example > 1 ? `.${one.example}` : ''}`;
+      expect({ preview: name, problems: image!.problems }).toEqual({ preview: name, problems: [] });
+    }
+    // one render a preview, about a second each: 108 previews since the round of the blocks
+  }, 300_000);
+
+  // #1243: the images the build of magma ships, each preview light and dark in one frame
+  test('a preview renders into its two images of the frame, checked and encoded as WebP', async () => {
+    const root = mkdtempSync(path.join(tmpdir(), 'magma-render-images-'));
+    const built = { root, settings: { root } };
+    const previews = readPreviews(
+      path.join(import.meta.dirname, '../../../docs/agents/patterns'),
+    ).filter(
+      (one) =>
+        (one.pattern === 'actions' && one.id === 'primary') ||
+        // 1043 px of content in a frame of 600: what the edge cuts is no problem
+        (one.pattern === 'list-with-filters' && one.id === 'find-and-open'),
+    );
+    expect(previews).toHaveLength(2);
+    const images = await renderPreviewImages(built, previews);
+    expect(
+      images.map((one) => ({
+        preview: `${one.preview.pattern}/${one.preview.id}`,
+        mode: one.mode,
+        size: webpSize(one.webp),
+        problems: one.problems,
+      })),
+    ).toEqual(
+      ['actions/primary', 'list-with-filters/find-and-open'].flatMap((preview) =>
+        ['light', 'dark'].map((mode) => ({
+          preview,
+          mode,
+          size: { width: 1440, height: 900 },
+          problems: [],
+        })),
+      ),
+    );
+    expect(images[0]!.webp.equals(images[1]!.webp)).toBe(false);
+  }, 60_000);
+});

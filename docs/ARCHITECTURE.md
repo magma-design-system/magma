@@ -2,7 +2,7 @@
 
 ## 1. System Overview
 
-Magma is a monorepo managed with NX and npm workspaces. It is composed of eleven projects: eight are published as npm packages under the `@maggioli-design-system` scope, `lint` ships inside `magma` and `claude-plugin` is served from `main`. The projects have a strict one-directional dependency graph: no circular dependencies are allowed. The overview draws that graph as Nx computes it (`nx graph`), with an arrow from each project to the projects that depend on it.
+Magma is a monorepo managed with NX and npm workspaces. It is composed of thirteen projects: eight are published as npm packages under the `@maggioli-design-system` scope, `lint` and `mcp` ship inside `magma`, `claude-plugin` is served from `main` and `studio` is an app of this repository. The projects have a strict one-directional dependency graph: no circular dependencies are allowed. The overview draws that graph as Nx computes it (`nx graph`), with an arrow from each project to the projects that depend on it.
 
 ```mermaid
 graph TD
@@ -12,28 +12,36 @@ graph TD
   IC["icons<br/>@maggioli-design-system/icons"]
   ST["styles<br/>@maggioli-design-system/styles"]
   LINT["lint<br/>inside magma, dist/lint"]
+  MCP["mcp<br/>inside magma, dist/mcp"]
   WC["stencil<br/>@maggioli-design-system/magma"]
   RE["stencil-react<br/>@maggioli-design-system/magma-react"]
   AN["stencil-angular<br/>@maggioli-design-system/magma-angular"]
   CM["codemod<br/>@maggioli-design-system/magma-codemods"]
   CP["claude-plugin<br/>served from main"]
+  SD["studio<br/>an app, not on npm"]
 
   DT --> ST
   DT --> WC
+  DT --> SD
+  WC --> SD
+  ID --> SD
+  MCP --> SD
   ST --> WC
   SI --> WC
   SI --> IC
   ID --> WC
   LINT --> WC
-  LINT --> CP
+  LINT --> MCP
+  MCP --> WC
+  MCP --> CP
   WC --> RE
   WC --> AN
   RE -->|"imported by its React fixtures"| CM
-  class LINT,CP ai
+  class MCP,CP ai
   class ID,SI,IC assets
-  class DT,ST visual
+  class DT,ST,SD visual
   class WC,RE,AN components
-  class CM tooling
+  class LINT,CM tooling
   classDef ai fill:#efe5ff,stroke:#8250df,color:#3e1f79
   classDef assets fill:#fff1d6,stroke:#bf8700,color:#5c3d00
   classDef visual fill:#dcf5ec,stroke:#1a7f64,color:#0b4a3a
@@ -49,6 +57,24 @@ graph TD
 > icons — into a font. `icons` is the only sub-project the web components do not depend on: they
 > read the SVGs directly.
 
+### Magma as an external vendor
+
+Wherever the system uses the Magma components (a tool, a preview, an app), it takes them, with
+the stylesheets they need ([`agents/assets.md`](agents/assets.md)), from the Magma installed where
+it runs, as the docs site does, and never bundles a copy (decided on #695):
+
+- **No cycle.** A bundle that holds no component does not need `stencil` built first, so the tool
+  can ship inside the `magma` package, as the lint does, and `stencil` is a dependency only of the
+  page that hosts it in this repository.
+- **The version of the reader.** Inside a project the tool runs on the Magma the project has
+  installed, so what it shows is that version's.
+- **One module.** The docs site, a project and an internal page mount the same code; only where
+  Magma comes from changes.
+
+The MCP server follows it already: `render_preview` loads the lazy loader of the installed
+`magma`, and the previews of the patterns run on the version the reader has. The studio (2.10)
+follows it too.
+
 ### Diagrams of the projects
 
 The README of every project draws, in its `Architecture` section, the parts of the project and
@@ -59,9 +85,11 @@ what it reads from and gives to the others:
 [`icons`](../projects/icons/README.md#architecture),
 [`identity`](../projects/identity/README.md#architecture),
 [`lint`](../projects/lint/README.md#architecture),
+[`mcp`](../projects/mcp/README.md#architecture),
 [`stencil`](../projects/stencil/README.md#architecture),
 [`stencil-angular`](../projects/stencil-angular/README.md#architecture),
 [`stencil-react`](../projects/stencil-react/README.md#architecture),
+[`studio`](../projects/studio/README.md#architecture),
 [`styles`](../projects/styles/README.md#architecture),
 [`svg-icons`](../projects/svg-icons/README.md#architecture).
 
@@ -202,7 +230,9 @@ reset → vendor → theme → base → components → utilities → overrides
 Dark mode is handled via palette-level CSS custom properties. Activation classes on `<html>`:
 - `pref-mode-light / dark` - manual mode
 - `pref-mode-system` - follows OS preference (as a page with no `mds-pref` controller does)
-- `pref-theme-scheme-dark / light / all` - a named theme locked to one scheme wins over the mode
+- `pref-theme-scheme-dark / light / all` - a named theme locked to one scheme wins over the mode;
+  `mds-pref-theme` writes it from the mode the theme declares in its block
+  (`--magma-color-modes`, from `color.modes` of the theme file), or else from the item's `scheme`
 
 The selectors the palette turns dark on are one list (`darkScheme`,
 `projects/design-tokens/src/formats/dark-scheme.ts`), printed by the palette templates, the
@@ -235,26 +265,59 @@ The consumer lint (`projects/lint`, #1102): the ESLint and Stylelint rules that 
 
 One core reads the data of the installed packages, never a list written by hand: the props and their values from the `documentation.json` beside it, the raw palette steps from the DTCG base set (`design-tokens`) and the colour utilities from `consumption.json` (`styles`), both resolved from where magma is installed. On top of it, the template rules (`valid-attribute-values`, `no-false-boolean`, `accessible-name`, `no-deprecated`, `no-raw-palette-classes`, `no-internal-tokens`) with one adapter per parser (HTML, JSX, Angular templates), which reads a class in every form the codemod migrates, the CSS rules (`no-raw-color`, `no-color-scheme-override`, the consumer side of the `magma/token-values` rule of the component sheets; `no-internal-tokens` and `no-raw-palette-classes` on declarations and the classes of `@apply`), and `recommended` / `strict` presets.
 
-The same project holds the MCP server (#1107): the `magma-mcp` command of magma
-(`dist/lint/mcp/cli.js`), which answers an agent's questions from the same data (ten
-read-only tools: components, usage per framework, tokens and roles, classes, icon slugs, guide
-sections, the lint on a snippet, the integration of the project). Its protocol, JSON-RPC over
-stdio, is written in the project, so magma carries no MCP SDK; its icon is the Magma mark of
-identity, which `stencil` therefore also builds after.
-
 Its tests run on fixtures cut from the real data, in the `consumer-lint` job of the stencil
-workflow (on the `lint:build` of the same run), the server's
-through the official MCP client. The consumer guides are [`docs/agents/lint.md`](agents/lint.md) and [`docs/agents/mcp.md`](agents/mcp.md), shipped as `agents/lint.md` and `agents/mcp.md`, which the packages' `AGENTS.md` sets up at bootstrap; the contributor notes are [`projects/lint/README.md`](../projects/lint/README.md).
+workflow (on the `lint:build` of the same run). The consumer guide is [`docs/agents/lint.md`](agents/lint.md), shipped as `agents/lint.md`, which the packages' `AGENTS.md` sets up at bootstrap; the contributor notes are [`projects/lint/README.md`](../projects/lint/README.md). The MCP server reads the same data through this core, and runs these rules: section 2.8.
 
-### 2.8 `claude-plugin`
+### 2.8 `mcp`
 
-The Claude Code plugin of Magma (`projects/claude-plugin`, #1114): the skills that run a whole job (`/magma:setup`, `/magma:review`, `/magma:migrate`, `/magma:pattern-layer`, and `ui`, which Claude loads by itself for UI work) and the entry that starts the MCP server of section 2.7. It is not an npm package: `.claude-plugin/marketplace.json` at the repository root is the marketplace `magma`, whose plugin is this folder, so Claude Code reads it from `main`. A consumer project registers it for its team in its `.claude/settings.json`, which the bootstrap of the packages' `AGENTS.md` writes.
+The MCP server (`projects/mcp`, #1107, a project of its own since #1244): the `magma-mcp` command of magma
+(`dist/mcp/cli.js`), which answers an agent's questions from the data of the installed version (twelve
+tools: components, usage per framework, tokens and roles, classes, icon slugs, guide
+sections, patterns, the lint on a snippet, the integration of the project, an image of the markup; all read-only but the render). It is not a package of its own either: the stencil build compiles it into `@maggioli-design-system/magma` (`dist/mcp`, `scripts/build-lint.ts`), with nothing beside the compiled modules but the files it reads (its icon, `tools.json`); `stencil` lists `mcp` as an implicit dependency, as it does `lint`. It reads the data and runs the rules through the lint, as any other tool does, by the exports of magma (`./lint`, `./eslint`, `./stylelint/*`), which `mcp` depends on and which never imports it. Its protocol, JSON-RPC over
+stdio, is written in the project, so magma carries no MCP SDK; its icon is the Magma mark of
+identity, which `stencil` therefore also builds after. The tools are also written as data, `dist/mcp/tools.json` (and at `dist/lint/mcp/tools.json`, where the docs site reads them, until it reads the new path).
+
+Its tests run on fixtures cut from the real data, the ones the lint reads too and the ones only the server reads, in the `consumer-lint` job of the stencil workflow after those of the lint, through the official MCP client, and on the build artifact (a render of the built components, the server as the package ships it). The consumer guide is [`docs/agents/mcp.md`](agents/mcp.md), shipped as `agents/mcp.md`; the contributor notes are [`projects/mcp/README.md`](../projects/mcp/README.md).
+
+### 2.9 `claude-plugin`
+
+The Claude Code plugin of Magma (`projects/claude-plugin`, #1114): the skills that run a whole job (`/magma:setup`, `/magma:review`, `/magma:migrate`, `/magma:pattern-layer`, and `ui`, which Claude loads by itself for UI work) and the entry that starts the MCP server of section 2.8. It is not an npm package: `.claude-plugin/marketplace.json` at the repository root is the marketplace `magma`, whose plugin is this folder, so Claude Code reads it from `main`. A consumer project registers it for its team in its `.claude/settings.json`, which the bootstrap of the packages' `AGENTS.md` writes.
 
 The skills are procedures that defer to the installed version (the MCP server, the shipped guides), so the plugin follows `main` with no version of its own. They are generated from `templates/` with what they list taken from the code and the guides (the packages per target, the tools of the server, the rules of the lint, the codemod), and the `claude-plugin-ci` workflow fails when one is out of date or breaks the Agent Skills format. How to change one: [`projects/claude-plugin/README.md`](../projects/claude-plugin/README.md).
 
-### 2.9 `codemod`
+### 2.10 `codemod`
 
 The `@maggioli-design-system/magma-codemods` package (`projects/codemod`): it migrates consumer code from v1 to v2, rewriting HTML, React, Angular templates (external and inline) and CSS/SCSS, and reports what needs a human decision. Its rules are a manifest (`src/manifest/manifest.ts`), drafted from the `documentation.json` of the two versions; one module per surface (`src/surfaces/`) decides where an attribute or a class is written, the forms the class rules of the lint read too ([`docs/CONTRACTS.md`](CONTRACTS.md)). The contributor notes are [`projects/codemod/README.md`](../projects/codemod/README.md).
+
+### 2.10 `studio`
+
+The studio of Magma (`projects/studio`, epic #693): an app where whoever installs Magma defines a
+theme from a UI, and later the rest of a product's definition (Foundation, Patterns, Blocks). It
+is not an npm package. It began as the tokens playground of `design-tokens`, moved here whole
+(#695): `nx run studio:serve` on port 5177, `build`, `test`; the `studio` workflow builds and
+tests it when it or `design-tokens` changes.
+
+- **The engine stays in `design-tokens`.** The studio imports the sources of the generator
+  (`createColorTokens`, the surface and text engines, the contrast gate), `semantic.config.ts`,
+  `semantic.model.ts` and the theme files (`design-tokens/themes/`) and runs them in the browser.
+  They stay there because the builds of `design-tokens` and `styles` read them: moving them would
+  make `design-tokens` depend on the studio.
+- **No copy of the engine's data.** What the studio shows comes from `design-tokens`: the default
+  balances from `.magma-design-tokensrc.json`, the text floors from `DEFAULT_TARGETS` of the
+  contrast gate, the CSS of a theme from `namedThemeCss` of `semantic.model.ts`, the same function
+  the styles generator prints `themes.css` with.
+- **Magma as an external vendor** (section 1): the studio never bundles the Magma components nor
+  their stylesheets. Its pages load them as a render of the MCP server does, with the code of the
+  render (`stylesheetImports`, `loaderOf`, `fileOf` of `projects/mcp/src/render.ts`), from
+  the installed magma: in this repository the build of `stencil`, an implicit dependency.
+- **The shell** follows the app-shell block: three sections, Colors (the pages of the playground,
+  from a menu that opens with the verdict of the contrast gate), Theme (the theme full screen in an
+  iframe, its controls over it) and Behavior (design language, patterns, blocks, from a menu). A
+  section that opens its pages from a menu is a case the app-shell block does not have yet.
+- **Two hosts, one app** (#695): the docs site mounts it with nothing to install, and a command of
+  the `magma` package serves it inside a project, on its `magma/` folder.
+
+The views and how to run it: [`projects/studio/README.md`](../projects/studio/README.md).
 
 ---
 
@@ -397,7 +460,7 @@ maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dr
 
 | Piece | Where | What it does |
 |---|---|---|
-| Package CI | `.github/workflows/{design-tokens,icons,identity,styles,svg-icons,stencil}.yml` over `_package-pipeline.yml` | change detection (path filter, everything on `merge_group`) → build (artifact kept one day) → test, on pull requests and in the merge queue: the merge-group run is the CI of the commit that lands on `main`. The build job keeps the Nx cache under `.nx` with one key per Nx project and commit; `stencil.yml` adds the wrapper builds and tests (on that cache), the `check.*` guards and `consumer-lint`, the tests of `projects/lint` |
+| Package CI | `.github/workflows/{design-tokens,icons,identity,styles,svg-icons,stencil}.yml` over `_package-pipeline.yml` | change detection (path filter, everything on `merge_group`) → build (artifact kept one day) → test, on pull requests and in the merge queue: the merge-group run is the CI of the commit that lands on `main`. The build job keeps the Nx cache under `.nx` with one key per Nx project and commit; `stencil.yml` adds the wrapper builds and tests (on that cache), the `check.*` guards and `consumer-lint`, the tests of `projects/lint` and `projects/mcp` |
 | Lint | `lint.yml` | `npm run lint` on the whole monorepo, then `nx run magma:check.diagrams` (the README diagrams against the project graph), same triggers |
 | Review level | `pr-risk.yml` + `projects/stencil/scripts/pr-risk.ts` | `risk-*` label, the semver check of `magma.api.txt` against the commits' declared release |
 | Release and publish | `publish.yml` over `semantic-release.yml` + `scripts/release/*` + `scripts/set-release-version.sh` | `workflow_dispatch` on `main`: `package` (`all` or one), `channel` (`stable`/`beta`), `dry-run`, `tag` (an existing release published again); the CI of the commit checked, the plan before the approval, versions from the conventional commits of each package's scopes (semantic-release dry-run), pins, lock, `CHANGELOG.md` (git-cliff), tags, GitHub releases, then the build of the selected packages and one `npm publish` per package with OIDC trusted publishing (a package is skipped when its version is already on npm) |

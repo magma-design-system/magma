@@ -333,8 +333,8 @@ graph TD;
   mds-img --> mds-icon
   mds-img --> mds-text
   mds-img --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-entity fill:#f9f,stroke:#333,stroke-width:4px
 ```

@@ -470,8 +470,8 @@ Type: `Promise<void>`
 ```mermaid
 graph TD;
   mds-push-notification --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-push-notification fill:#f9f,stroke:#333,stroke-width:4px
 ```

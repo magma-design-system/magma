@@ -210,6 +210,39 @@ describe('password mask', () => {
     expect(maskStyle.borderBottomRightRadius).toBe('0px');
   });
 
+  // #1284: an icon, or the spinner of await, moves the text of the field after it; the dots of
+  // the mask move with the text instead of being drawn under the icon
+  describe('next to an icon', () => {
+    const rectOf = (selector: string): DOMRect =>
+      mdsInput.shadowRoot!.querySelector(selector)!.getBoundingClientRect();
+
+    /** How far the dots start from where the native input starts its text. */
+    const dotsFromText = (): number => {
+      const input = mdsInput.shadowRoot!.querySelector('input')!;
+      const textStart =
+        input.getBoundingClientRect().left + parseFloat(getComputedStyle(input).paddingLeft);
+      return rectOf('.password-mask-items').left - textStart;
+    };
+
+    it.each([
+      ['lg', 'icon="mdi/key"', '.icon'],
+      ['md', 'icon="mdi/key"', '.icon'],
+      ['sm', 'icon="mdi/key"', '.icon'],
+      ['lg', 'await', '.await'],
+      ['sm', 'await', '.await'],
+    ])('starts the dots after it in size %s with %s', async (size, attribute, selector) => {
+      await setup(`<mds-input type="password" value="secret" size="${size}"></mds-input>`);
+      const withoutIcon = dotsFromText();
+
+      await setup(
+        `<mds-input type="password" value="secret" size="${size}" ${attribute}></mds-input>`,
+      );
+
+      expect(rectOf('.password-mask-items').left).toBeGreaterThanOrEqual(rectOf(selector).right);
+      expect(dotsFromText()).toBe(withoutIcon);
+    });
+  });
+
   // #913: the radius of a field is capped at a part of its height like mds-button's; a
   // textarea is taller, nobody clamps it
   describe('the radius', () => {

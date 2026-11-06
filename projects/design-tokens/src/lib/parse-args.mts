@@ -31,27 +31,33 @@ const args = arg({
   '--dry-run': Boolean,
   '--export-tokens': Boolean,
   '--generate': outputTypeHandler,
-  '--port': Number,
   // alias
   '-c': '--config',
   '-d': '--outDir',
   '-g': '--generate',
   '-t': '--export-tokens',
-  '-p': '--port',
 })
 
 interface CliOptions {
-  command?: string,
   config?: string,
   outDir?: string,
   outTokensDir?: string,
   dryRun?: boolean,
   exportTokens?: boolean,
   generate?: string[],
-  port?: number,
 }
 
 export function parseArgs (): CliOptions {
+
+  // the CLI has no subcommands: `ui`, which served the tokens playground, left with
+  // design-tokens 16 when the playground moved into the Magma studio (projects/studio)
+  if (args._.length > 0) {
+    const [command] = args._
+    console.error(command === 'ui'
+      ? 'the ui command was removed in design-tokens 16: the playground is now the Magma studio'
+      : `unknown command ${command}: magma-design-tokens takes options only`)
+    process.exit(1)
+  }
 
   if (args['--generate'] === null){
     console.log('invalid output type inserted, valid types are: ', OUTPUT_PLATFORM)
@@ -64,15 +70,11 @@ export function parseArgs (): CliOptions {
   }
 
   return {
-    // the first positional selects a subcommand (e.g. `ui`); its absence keeps
-    // the default token-generation behaviour
-    command: args._[0],
     config: args['--config'],
     outDir: args['--outDir'],
     dryRun: args['--dry-run'],
     exportTokens: args['--export-tokens'],
     outTokensDir: args['--outTokensDir'],
     generate: args['--generate'],
-    port: args['--port'],
   }
 }

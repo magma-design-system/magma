@@ -1,6 +1,6 @@
 ---
 name: pattern-preview
-description: Make the previews a Magma pattern of this repository lacks (docs/agents/patterns/previews/<id>/<case>.html, #1186) - for each case with none, two options rendered with the real components, shown to the maintainer as a decision, the chosen one saved as the preview of the case. Use when a maintainer asks for the previews of a pattern, when check.patterns lists cases with no preview, at the end of pattern-new and pattern-change, and when a maintainer wants to adjust a preview or a draft by hand, live (lint:serve.previews).
+description: Make the previews a Magma pattern of this repository lacks (docs/agents/patterns/previews/<id>/<case>.html, #1186) - for each case with none, two options rendered with the real components, shown to the maintainer as a decision, the chosen one saved as the preview of the case. Use when a maintainer asks for the previews of a pattern, when check.patterns lists cases with no preview, at the end of pattern-new and pattern-change, and when a maintainer wants to adjust a preview or a draft by hand, live (mcp:serve.previews).
 argument-hint: <id> [case]
 ---
 
@@ -31,7 +31,7 @@ Read the case in `docs/agents/patterns/<id>.md`: its values, `where`, `use` and 
 rules of "Always true" it must not break. Read the usage files of the components it names
 (`projects/stencil/src/components/<tag>/usage/`). Then write two stages, each a preview in the
 format, as drafts in `.claude/previews/<id>/<case>-1.html` and `<case>-2.html` (untracked,
-where `lint:serve.previews` shows them; never in `docs/` before the choice):
+where `mcp:serve.previews` shows them; never in `docs/` before the choice):
 
 - both do what the case says, with the components and attributes of its `use`;
 - they differ on something the case leaves open (where exactly, the words, what sets it off),
@@ -61,7 +61,7 @@ Show the two options as the client allows, the recommended one first:
   Under the cards the free answer, with "Prova". The top right of the widget stays empty: the
   client draws its menu there. The CDN serves the published release: say so when the branch
   changed a component the preview uses. The widget compiles no Tailwind: show an option whose
-  stage has Tailwind classes with `render_preview` or `lint:serve.previews` (step 4), or the
+  stage has Tailwind classes with `render_preview` or `mcp:serve.previews` (step 4), or the
   widget shows it without their rules.
 - **With `render_preview`** of the Magma MCP server: one image per option, attached where the
   client does not show it.
@@ -86,7 +86,7 @@ the recommended stage of each.
 When the maintainer wants to adjust a stage by hand (its look, its words, its spacing) rather
 than describe the change, or asks to see the drafts in the editor:
 
-1. Start `npx nx run lint:serve.previews` in the background (after `npx nx run
+1. Start `npx nx run mcp:serve.previews` in the background (after `npx nx run
    stencil:build` when `projects/stencil/dist` is missing; `-- --port <n>` when 5180 is
    taken). It serves the previews and the drafts on the page `render_preview` renders, on the
    local build (`docs/PATTERNS.md`, "Editing one live").
@@ -105,19 +105,19 @@ than describe the change, or asks to see the drafts in the editor:
 ```bash
 npx nx run stencil:build
 npx nx run stencil:check.patterns
-npx nx run lint:test
+npx nx run mcp:test
 ```
 
 until no preview is wrong: the build renders every preview into the two images magma ships
 beside it (`<case>.light.webp`, `<case>.dark.webp`, #1243) and fails on a problem of an image,
 naming the preview; the check reads the file and fails on a preview without its images in the
-build; the lint tests render every preview on the build too and fail on a problem of the image
+build; the tests of mcp render every preview on the build too and fail on a problem of the image
 (`render_preview` with `pattern` and `case` shows one). The images are made, never written by
 hand nor committed. Then the next case, from step 2.
 
 ## 6. The pull request
 
-Run `npx nx run stencil:check.usage-docs` and `npx nx run lint:test` too, commit
+Run `npx nx run stencil:check.usage-docs`, `npx nx run lint:test` and `npx nx run mcp:test` too, commit
 (`feat(magma): the previews of the cases of <id>`; ASCII only, `docs/COMMITS.md`), check
 `origin/main` in its own step and merge it if it moved, push the branch and open a pull request
 into `main` with the choices taken. Never merge it. Called from `pattern-new` or

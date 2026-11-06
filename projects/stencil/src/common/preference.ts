@@ -49,6 +49,25 @@ const preferenceStore = createStore<PreferenceState>({ language: 'en' });
 const MODE_VALUES = PREFERENCE_VALUES.mode;
 
 /**
+ * Where the block of a named theme says the one colour mode it can be used in (#1274):
+ * `COLOR_MODES_PROPERTY` of design-tokens/semantic.model.ts, which prints it into `themes.css`
+ * (projects/styles/SEMANTIC_COLOR_SPEC.md, section 8). A theme for both modes declares nothing.
+ */
+const COLOR_MODES_PROPERTY = '--magma-color-modes';
+
+/**
+ * The scheme a theme's declared modes lock it to: `light` or `dark` when the value names that one
+ * mode, nothing when it names both, none, or a mode the format does not have (it lists the values
+ * of `color-scheme`, `light` and `dark`).
+ */
+const lockedSchemeOf = (modes: string): 'light' | 'dark' | undefined => {
+  const listed = modes.trim().split(/\s+/).filter(Boolean);
+  if (listed.length !== 1) return undefined;
+  const [mode] = listed;
+  return mode === 'light' || mode === 'dark' ? mode : undefined;
+};
+
+/**
  * Carry the v1 storage keys over to the v2 ones, once, before any controller
  * reads them.
  *
@@ -145,4 +164,11 @@ const prefersReducedMotion = (): boolean => {
   );
 };
 
-export { MODE_VALUES, migrateLegacyPreferenceStorage, preferenceStore, prefersReducedMotion };
+export {
+  COLOR_MODES_PROPERTY,
+  MODE_VALUES,
+  lockedSchemeOf,
+  migrateLegacyPreferenceStorage,
+  preferenceStore,
+  prefersReducedMotion,
+};

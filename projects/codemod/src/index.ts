@@ -222,7 +222,15 @@ export const runMigration = async (options: MigrationOptions): Promise<Migration
   if (options.reportPath) writeFileSync(options.reportPath, reporter.toJSON(report));
   if (options.reportMarkdownPath) {
     const target = resolve(cwd, options.reportMarkdownPath);
-    writeFileSync(target, reporter.toMarkdown(report, dirname(target), cwd));
+    writeFileSync(
+      target,
+      reporter.toMarkdown(
+        report,
+        dirname(target),
+        cwd,
+        manifest.global.semanticClasses?.thresholds,
+      ),
+    );
   }
   return { report, reporter };
 };

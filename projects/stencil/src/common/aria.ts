@@ -80,8 +80,21 @@ const hashRandomValue = (value?: string): string => {
   return hash(randomValue.toString());
 };
 
+/**
+ * What the `current` of a button says (#1264): 'page' is the view the button leads to, the one you
+ * are in; 'section' is a view inside it, a record of its list. The attribute alone (an empty
+ * string), `true` and any other value are the view itself; `false`, the string "false" (a
+ * reflected attribute keeps it) and no value mark nothing.
+ */
+const currentOf = (value: unknown): 'page' | 'section' | undefined => {
+  if (value === undefined || value === null || value === false || value === 'false')
+    return undefined;
+  return value === 'section' ? 'section' : 'page';
+};
+
 export {
   addIdRef,
+  currentOf,
   hashRandomValue,
   hashValue,
   removeAttributesIf,

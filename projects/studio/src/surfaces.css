@@ -1,0 +1,363 @@
+/*
+  The Semantic surface page (surfaces.tsx): the opt-in of the groups and the families, the levels
+  beside a sticky preview, the preview of one family. Spaces from the rhythm, colours from the
+  semantic roles (docs/agents/patterns/rhythm.md, surfaces.md); the preview boxes paint the
+  colours the configuration generates inline, so only their frame is written here.
+*/
+
+.surfaces {
+  container: surfaces / inline-size;
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+}
+
+.surfaces-muted {
+  color: rgb(var(--magma-text-muted));
+}
+
+/* the code named in the running text, set apart from the words around it */
+
+.surfaces mds-text code {
+  background-color: rgb(var(--magma-wash-soft));
+  border-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
+  font-family: var(--font-code);
+  padding-inline: calc(var(--spacing) * 100);
+}
+
+/* a card: a part of the page on a raised surface, its title and its content inside one inset */
+
+.surfaces-card {
+  align-content: start;
+  background-color: rgb(var(--magma-surface-raised));
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-lg);
+  corner-shape: var(--magma-corner-shape);
+  display: grid;
+  gap: var(--magma-rhythm-between-fields);
+  min-inline-size: 0;
+  padding: var(--magma-rhythm-inset);
+}
+
+.surfaces-head {
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+}
+
+.surfaces-choices {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-inline);
+}
+
+.surfaces-choice {
+  align-items: center;
+  display: inline-flex;
+  gap: calc(var(--spacing) * 200);
+}
+
+/* the status families, a group of their own under those that become themes: the space between
+   two groups sets them apart, no boundary (docs/agents/patterns/surfaces.md); the card puts the
+   space between two fields above it, the margin adds the rest */
+
+.surfaces-reserved {
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+  margin-block-start: calc(var(--magma-rhythm-between-groups) - var(--magma-rhythm-between-fields));
+}
+
+/* a family to opt in: the look of mds-chip, with the swatch of its colour (#1263) */
+
+.surfaces-family {
+  align-items: center;
+  background-color: rgb(var(--magma-surface-overlay));
+  border: calc(var(--spacing) * 50) solid transparent;
+  border-radius: var(--magma-radius-full);
+  box-shadow: var(--shadow-sm-sharp);
+  color: rgb(var(--magma-text-subtle));
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: calc(var(--spacing) * 200);
+  min-block-size: calc(var(--spacing) * 800);
+  padding-inline: calc(var(--spacing) * 300);
+}
+
+.surfaces-family:hover {
+  border-color: rgb(var(--magma-border-default));
+}
+
+.surfaces-family[aria-pressed='true'] {
+  border-color: rgb(var(--magma-accent-emphasis));
+  color: rgb(var(--magma-text-default));
+}
+
+/* a family with no flag of its own, following its group's opt-in */
+
+.surfaces-family[data-inherited] {
+  border-style: dashed;
+}
+
+/* the levels beside the preview where the page has room, one under the other where it has not */
+
+.surfaces-workbench {
+  align-items: start;
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+}
+
+@container surfaces (width >= 70rem) {
+  .surfaces-workbench {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* .content is the scroll container: the preview stays in view while the levels scroll */
+
+  .surfaces-preview {
+    position: sticky;
+    top: 0;
+  }
+}
+
+.surfaces-levels {
+  display: grid;
+  gap: var(--magma-rhythm-between-groups);
+}
+
+.surfaces-level-group {
+  border: 0;
+  margin: 0;
+  min-inline-size: 0;
+  padding: 0;
+}
+
+.surfaces-level-group legend {
+  margin-block-end: var(--magma-rhythm-title-content);
+  padding: 0;
+}
+
+/* the role, then one slider per mode: the same three columns in every group, so they line up */
+
+.surfaces-level-grid {
+  align-items: center;
+  display: grid;
+  gap: var(--magma-rhythm-label-control) var(--magma-rhythm-between-fields);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.surfaces-role {
+  display: grid;
+}
+
+.surfaces-column {
+  color: rgb(var(--magma-text-muted));
+}
+
+/* a container, so the two modes stand side by side only where the column has room */
+
+.surfaces-preview {
+  container: preview / inline-size;
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+  min-inline-size: 0;
+}
+
+.surfaces-preview-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-inline);
+}
+
+.surfaces-preview-controls > mds-input-field {
+  flex: 1 1 0;
+}
+
+.surfaces-modes {
+  display: grid;
+  gap: var(--magma-rhythm-inline);
+}
+
+@container preview (width >= 40rem) {
+  .surfaces-modes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* the boxes of a mode: the canvas and the surfaces on it, painted with the generated colours */
+
+.surfaces-canvas {
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-md);
+  corner-shape: var(--magma-corner-shape);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-size-info-tip);
+  gap: calc(var(--spacing) * 200);
+  line-height: normal;
+  min-inline-size: 0;
+  padding: var(--magma-rhythm-inline);
+}
+
+.surfaces-canvas code {
+  font-family: var(--font-code);
+}
+
+/* a mode out of use (a theme that does not offer it, Themes): in view, dimmed */
+
+.surfaces-canvas-off {
+  opacity: var(--magma-disabled-opacity);
+}
+
+.surfaces-boxes {
+  display: flex;
+  gap: calc(var(--spacing) * 200);
+}
+
+.surfaces-box {
+  border-radius: var(--magma-radius-sm);
+  box-shadow: var(--preview-shadow, none);
+  corner-shape: var(--magma-corner-shape);
+  flex: 1;
+  padding: calc(var(--spacing) * 200);
+}
+
+.surfaces-box--raised {
+  display: grid;
+  gap: calc(var(--spacing) * 200);
+}
+
+.surfaces-texts {
+  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 100);
+}
+
+.surfaces-text {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing) * 200);
+}
+
+.surfaces-borders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--spacing) * 200);
+}
+
+/* the border of the role is the data: the chip draws it at the width the interface does */
+
+.surfaces-border {
+  align-items: center;
+  border: thin solid;
+  border-radius: var(--magma-radius-sm);
+  corner-shape: var(--magma-corner-shape);
+  display: inline-flex;
+  gap: calc(var(--spacing) * 200);
+  padding: calc(var(--spacing) * 100) calc(var(--spacing) * 200);
+}
+
+/* Testi: the worst-case Lc of each tone step, the targets as lines across the bars */
+
+.surfaces-chart {
+  align-content: start;
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-md);
+  corner-shape: var(--magma-corner-shape);
+  display: grid;
+  font-size: var(--text-size-info-tip);
+  font-variant-numeric: tabular-nums;
+  gap: calc(var(--spacing) * 100) calc(var(--spacing) * 200);
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  line-height: normal;
+  min-inline-size: 0;
+  padding: var(--magma-rhythm-inline);
+}
+
+.surfaces-chart-empty {
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-md);
+  corner-shape: var(--magma-corner-shape);
+  padding: var(--magma-rhythm-inline);
+}
+
+.surfaces-chart-row {
+  align-items: center;
+  border-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
+/* the step that carries a text role */
+
+.surfaces-chart-row[data-pick] {
+  background-color: rgb(var(--magma-accent-surface-subtle));
+}
+
+.surfaces-chart-mode {
+  color: rgb(var(--magma-text-muted));
+  grid-column: span 2;
+}
+
+.surfaces-chart-sample {
+  align-items: center;
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-xs);
+  corner-shape: var(--magma-corner-shape);
+  display: flex;
+  justify-content: center;
+  padding-inline: calc(var(--spacing) * 150);
+}
+
+.surfaces-chart-step {
+  display: grid;
+}
+
+.surfaces-chart-step code {
+  color: rgb(var(--magma-text-muted));
+  font-family: var(--font-code);
+}
+
+.surfaces-chart-picks {
+  color: rgb(var(--magma-accent-fg));
+  font-weight: 700;
+}
+
+.surfaces-chart-track {
+  align-self: stretch;
+  min-block-size: 1lh;
+  position: relative;
+}
+
+.surfaces-chart-line {
+  border-inline-start: thin dashed rgb(var(--magma-border-default));
+  inset-block: 0;
+  position: absolute;
+}
+
+.surfaces-chart-tick {
+  color: rgb(var(--magma-text-subtle));
+  position: absolute;
+  translate: -50% 0;
+}
+
+.surfaces-chart-fill {
+  background-color: rgb(var(--magma-wash-strong));
+  border-radius: var(--magma-radius-xs);
+  inset-block: 30%;
+  inset-inline-start: 0;
+  position: absolute;
+}
+
+.surfaces-chart-row[data-pick] .surfaces-chart-fill {
+  background-color: rgb(var(--magma-accent-emphasis));
+}
+
+.surfaces-chart-lc {
+  color: rgb(var(--magma-text-muted));
+  text-align: end;
+}

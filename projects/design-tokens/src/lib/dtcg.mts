@@ -2,7 +2,7 @@
 // Group (DTCG) format (`$type` / `$value` / `$description`). DTCG has no
 // concept of modes, so light and dark are emitted as separate token files;
 // in Figma each file is imported into a mode of the same variable collection.
-// Kept pure (no fs) so the CLI build script and the browser playground share
+// Kept pure (no fs) so the CLI build script and the studio in the browser share
 // one mapping and produce identical output.
 
 interface TokenValue {

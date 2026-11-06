@@ -1,6 +1,6 @@
 Di seguito l'uso dei token e delle configurazioni di Style Dictionary che li trasformano nei formati di output. `scripts/build.ts` le esegue in quest'ordine: colori, `typography.json`, `tailwind3.json`, `screens.json`, `tailwind4.json`, `transitions.json`.
 
-> Nota: le due configurazioni in ts (`sd-color-all-platforms.config.ts`, `sd-brand-color.config.ts`) non leggono file: ricevono l'albero dei colori in memoria da `createColorTokens` (`src/lib/color.mts`), il primo intero, il secondo un gruppo di export alla volta. I file in `tokens/color/generated/` sono SCRITTI dalla build (per `generate-figma-tokens` e come baseline del diff del playground), non letti da queste configurazioni.
+> Nota: le due configurazioni in ts (`sd-color-all-platforms.config.ts`, `sd-brand-color.config.ts`) non leggono file: ricevono l'albero dei colori in memoria da `createColorTokens` (`src/lib/color.mts`), il primo intero, il secondo un gruppo di export alla volta. I file in `tokens/color/generated/` sono SCRITTI dalla build (per `generate-figma-tokens` e come baseline della vista diff dello studio), non letti da queste configurazioni.
 
 ### Configurazioni -> file usati
 

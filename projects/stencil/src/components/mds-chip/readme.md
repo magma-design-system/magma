@@ -370,8 +370,8 @@ graph TD;
   mds-chip --> mds-icon
   mds-chip --> mds-text
   mds-chip --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-policy-ai --> mds-chip
   style mds-chip fill:#f9f,stroke:#333,stroke-width:4px

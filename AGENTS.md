@@ -19,9 +19,9 @@ Always use **npm**, never Yarn.
 
 Full rules: `docs/WORKFLOW.md`. Critical constraints for agents:
 
-1. **Never merge into `main` around the queue, never release** - `main` is the only long-lived branch; merging or pushing into it is a manual governance step. Opening a pull request into `main` from your own branch is fine; never merge it, enable auto-merge on it or add it to the merge queue: a maintainer does, with a green pipeline only (a red check is never bypassed, whatever the size of the change), and nobody merges `main` into a branch just to make it mergeable. When the queue removes your pull request (a red check or a conflict), merge `main` into the branch, resolve, rebuild the generated files, run lint and tests, and push. Never open a pull request whose head is `main` (the repository deletes the head branch of a merged pull request). Releases are manual too: a maintainer dispatches the `publish` workflow on `main` (`package` all or one, `channel` stable or beta, or `tag` to publish an existing release again, approved through the `release` environment; it releases, builds and publishes in one run); you may run it with `dry-run: true` to show the plan, nothing more. Before a maintainer queues or auto-merges a pull request, check that no dispatched publish is running (`gh run list --workflow publish.yml --event workflow_dispatch --status in_progress`): a merge that lands on `main` during a stable release makes it fail; warn and wait for the run to end.
-2. **One branch per unit of work** - every feature, fix, refactor, etc. lives on its own dedicated branch, branched off `main`. Never work directly on `main`.
-3. **Link every branch to its issue** - create work branches from their GitHub issue (Development section button or `gh issue develop <n> --base main`) so they appear in the issue's Development section; a matching name alone does not link. At the latest, the PR body must declare `Closes #<issue>`.
+1. **Never merge into `main` around the queue, never release** - `main` is the trunk, and the branch of an epic (point 2) the only other branch that lives longer than a pull request; merging or pushing into it is a manual governance step. Opening a pull request into `main` from your own branch is fine; never merge it, enable auto-merge on it or add it to the merge queue: a maintainer does, with a green pipeline only (a red check is never bypassed, whatever the size of the change), and nobody merges `main` into a branch just to make it mergeable. When the queue removes your pull request (a red check or a conflict), merge `main` into the branch, resolve, rebuild the generated files, run lint and tests, and push. Never open a pull request whose head is `main` (the repository deletes the head branch of a merged pull request). Releases are manual too: a maintainer dispatches the `publish` workflow on `main` (`package` all or one, `channel` stable or beta, or `tag` to publish an existing release again, approved through the `release` environment; it releases, builds and publishes in one run); you may run it with `dry-run: true` to show the plan, nothing more. Before a maintainer queues or auto-merges a pull request, check that no dispatched publish is running (`gh run list --workflow publish.yml --event workflow_dispatch --status in_progress`): a merge that lands on `main` during a stable release makes it fail; warn and wait for the run to end.
+2. **One branch per unit of work, one branch per epic** - every feature, fix, refactor, etc. lives on its own dedicated branch, branched off `main`. Never work directly on `main`. Work that needs more than one issue gets an epic (its parts are sub-issues) and a branch of its own, off `main`: each part branches off the branch of the epic and comes back to it with its own pull request, which a person merges; the epic lands in `main` with one pull request that closes every part. Never stack pull requests on each other's branches, and never leave a part only in a worktree: it is done once merged into the branch of the epic.
+3. **Link every branch to its issue** - create work branches from their GitHub issue (Development section button or `gh issue develop <n> --base main`, `--base <epic branch>` for a part of an epic) so they appear in the issue's Development section; a matching name alone does not link. At the latest, the PR body must declare `Closes #<issue>`.
 4. **Sync with `main` before pushing** - when committing with intent to push, first check for new commits on `main`; if present, merge `main` into your branch, run the tests, and only then push (always to your branch's own remote, never to `main`).
 5. **Label issues by origin** - an issue opened for a problem found in another project carries its `prd-<project>` label (`prd-docs` for the docs site, `prd-mindy` for Mindy) next to the `prg-*` package labels; a new project's label goes into `.github/ISSUE_TEMPLATE/labels.yml` first, or the next `label-sync` run deletes it.
 
@@ -47,7 +47,7 @@ The lint and the checks catch most of these; do not write them in the first plac
 - An `@prop` written without `Public.` at the start of its description: it is internal, and products may not set it. Mark it public only when a product needs it and no role, theme or prop gives it; `Public, static.` for one that takes a value of its own (`projects/stencil/SPEC.md`).
 - Editing a generated file: a component's `readme.md` (edit its `usage/*.md` and the JSDoc), `magma.api.txt` (rebuild), the packages' `AGENTS.md` and `agents/` (edit `docs/agents/`), the sections Cases, Always true, Open choices and Situations of a pattern (edit its frontmatter, then `nx run stencil:generate.pattern -- --sync`).
 - The commit types `doc` and `refact`: write `docs` and `refactor`, with a scope (`docs/COMMITS.md`).
-- A choice with no source: a spelling, a default branch or the forms of input a check accepts, guessed instead of read from where it is decided (the guide the check enforces, the installed data, the upstream package, the specification). Find the source (for data another project produces, its entry in `docs/CONTRACTS.md`), write the criterion next to the code and in the project's doc (for the lint and the MCP server, "Where each answer comes from" in `projects/lint/README.md`), test it on the real data, and let the case the source does not cover answer "unknown" instead of falling through to a default.
+- A choice with no source: a spelling, a default branch or the forms of input a check accepts, guessed instead of read from where it is decided (the guide the check enforces, the installed data, the upstream package, the specification). Find the source (for data another project produces, its entry in `docs/CONTRACTS.md`), write the criterion next to the code and in the project's doc (for the lint and the MCP server, "Where each answer comes from" in `projects/lint/README.md` and `projects/mcp/README.md`), test it on the real data, and let the case the source does not cover answer "unknown" instead of falling through to a default.
 
 ## Commands
 
@@ -65,7 +65,8 @@ nx run icons:check.dictionary                        # verify dictionary.json ma
 nx run icons:add.icons --auto                        # map new SVG sources into the dictionary
 nx run stencil:build                                 # build web components
 nx run stencil:storybook.start                       # start Storybook
-nx run design-tokens:playground                      # start the tokens config playground (port 5177)
+nx run studio:serve                                  # start the studio, the tokens playground (port 5177)
+nx run studio:test                                   # the studio's tests (Vitest, jsdom)
 
 nx run stencil:generate mds-component-name           # scaffold a new component
 nx run stencil:test                                  # run the unit and browser tests (Vitest)
@@ -79,8 +80,10 @@ nx run stencil:list.patterns                         # the patterns by group, wi
 nx run stencil-react:test                            # run the React wrapper tests (Vitest browser + node projects)
 nx run stencil-angular:test                          # run the Angular wrapper tests (Vitest in jsdom, Angular unit-test builder)
 nx run lint:build                                    # build the consumer lint (shipped in magma as ./eslint and ./stylelint)
-nx run lint:test                                     # its tests: the rules on HTML, JSX, Angular and CSS, the MCP server through the official client
-nx run lint:serve.previews                           # edit the previews of the patterns live: the page of render_preview on the local build, reloaded on save
+nx run lint:test                                     # its tests: the rules on HTML, JSX, Angular and CSS, the patterns core
+nx run mcp:build                                     # build the MCP server (shipped in magma as the magma-mcp command)
+nx run mcp:test                                      # its tests: the twelve tools, the command through the official client, the server as magma ships it
+nx run mcp:serve.previews                            # edit the previews of the patterns live: the page of render_preview on the local build, reloaded on save
 nx run claude-plugin:build                           # regenerate the skills of the Claude Code plugin from projects/claude-plugin/templates
 nx run claude-plugin:check                           # fail when a skill is out of date or breaks the Agent Skills format (also run in CI)
 nx run magma:check.diagrams                          # fail when a README diagram or the overview of docs/ARCHITECTURE.md misses a link of the Nx project graph (also run in CI)
@@ -94,16 +97,18 @@ design-tokens    →  no internal dependencies
 identity         →  no internal dependencies
 svg-icons        →  no internal dependencies
 lint             →  no internal dependencies (it reads the data of the installed packages)
+mcp              →  lint (the server reads the data and runs the rules through the lint)
 icons            →  svg-icons (the webfont, not used by the components)
 styles           →  design-tokens
-stencil          →  design-tokens, styles, svg-icons, lint, identity
+stencil          →  design-tokens, styles, svg-icons, lint, mcp, identity
 stencil-react    →  stencil (wrapper sources generated by the stencil build)
 stencil-angular  →  stencil (wrapper sources generated by the stencil build)
 codemod          →  none to build (Nx draws an edge to stencil-react from the imports of its React fixtures)
-claude-plugin    →  lint (the skills are generated from the tools of the MCP server)
+claude-plugin    →  mcp (the skills are generated from the tools of the MCP server)
+studio           →  design-tokens, mcp (runs the engine in the browser; its pages load Magma as a render of the server does, never bundled)
 ```
 
-`lint` (the consumer ESLint and Stylelint rules and the MCP server) ships inside `magma`: the stencil build compiles it into `dist/lint`, so `stencil` depends on it, and on `identity` for the server's icon. `codemod` is the `magma-codemods` package; `claude-plugin` releases nothing, `main` serves it.
+`studio` is an app, not a package: it releases nothing. `lint` (the consumer ESLint and Stylelint rules) and `mcp` (the MCP server) ship inside `magma`: the stencil build compiles them into `dist/lint` and `dist/mcp`, so `stencil` depends on both, and on `identity` for the server's icon. The server reaches the lint through the exports of magma (`./lint`, `./eslint`, `./stylelint/*`), as an outside tool does; the lint never imports it. `codemod` is the `magma-codemods` package; `claude-plugin` releases nothing, `main` serves it.
 
 What one project produces and another reads (`documentation.json`, the token data, icon slugs, the guides, the class surfaces) has its contract written by the producer: [`docs/CONTRACTS.md`](docs/CONTRACTS.md) lists each artifact, its section, its readers and its check.
 
@@ -136,8 +141,9 @@ What one project produces and another reads (`documentation.json`, the token dat
 | CSS and Tailwind 4 styles: semantic classes, anti-patterns, dark mode                  | `projects/styles/SPEC.md`                        |
 | Web components, contributor rules: entry points, tree-shaking, token fallbacks, icons, tests, usage docs, scaffolding | `projects/stencil/SPEC.md` |
 | The consumer lint shipped in magma (`magma/eslint`, `magma/stylelint`): setup per target, what each rule catches; how it is built and how to add a rule | `docs/agents/lint.md`; `projects/lint/README.md` |
-| The MCP server shipped in magma (`magma-mcp`): client setup, the tools; how to add one | `docs/agents/mcp.md`; `projects/lint/README.md` |
+| The MCP server shipped in magma (`magma-mcp`): client setup, the tools; how to add one | `docs/agents/mcp.md`; `projects/mcp/README.md` |
 | The Claude Code plugin of Magma (skills `/magma:setup`, `/magma:review`, `/magma:migrate`, `/magma:pattern-layer`, `ui`, and the MCP server): how a project gets it, how to change a skill | `docs/agents/mcp.md`; `projects/claude-plugin/README.md` |
+| The studio of Magma (the tokens playground, a theme authored from a UI): how to run it, its views, what it reads from design-tokens | `projects/studio/README.md` |
 | Single component: intent, examples, mistakes (authored)                                | `projects/stencil/src/components/<name>/usage/*.md` |
 | Single component: API + usage as shipped (generated by the build)                      | `projects/stencil/dist/collection/components/<name>/AGENTS.md` |
 

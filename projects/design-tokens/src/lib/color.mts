@@ -237,7 +237,7 @@ export function resolveRatios(
   const warnKey = `${formula}:${scaleName}`;
   if (!warnedRatioScales.has(warnKey)) {
     // only truly out-of-range targets are logged; near-ceiling (info) is left
-    // to the playground band so normal scales (top step ~102) do not spam
+    // to the band the studio shows so normal scales (top step ~102) do not spam
     const issues = validateRatioScale(scale, formula).filter(
       (issue) => issue.severity === "warn",
     );

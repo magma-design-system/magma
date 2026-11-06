@@ -1,0 +1,445 @@
+/*
+  get_pattern: the patterns Magma ships (agents/patterns/<id>.md, #1174), the solution to a
+  task that spans components: where a message goes, when to ask before acting, an empty, a
+  waiting or a failed part. Without arguments the list, as get_guide lists the guides; with a
+  need the patterns that answer it; with a pattern its data; with the values of its variables
+  the one case for the situation. A product layer in the project (magma/patterns/<id>.md)
+  narrows the open choices and adds situations; it never changes an "Always true" rule. A case
+  Magma has a preview of (agents/patterns/previews/<id>/<case>.html, #1186) names it: the path
+  in the pattern, the stage itself and what to try in it in the answer for a situation, with
+  the rules of the domains of Foundation the case relies on (#1198). A rule of a domain may have
+  a preview too, and a case or a rule more examples (<id>.2.html, #1221): the pattern names
+  their paths, the answer the paths of the other examples and of the previews of its rules. A
+  building block (#1210) answers a situation with its regions, in the order of the page, and
+  has a preview per situation, named after its id (previews/<block>/<situation>.html, the
+  maintainer's choice on 2026-11-03): when the values match a situation exactly, every variable
+  given, the answer carries its preview as a case answer does. The preview of an answer names its
+  images too (<case>.light.webp and <case>.dark.webp beside it, #1243), the path and not the
+  bytes, for a client that cannot run the stage; a magma before them has none, and names none.
+*/
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import {
+  loadComponents,
+  magmaRoot,
+  BLOCK,
+  FOUNDATION,
+  MAGMA_LAYER,
+  answer,
+  examplesOf,
+  extendedId,
+  indexPatterns,
+  isLayer,
+  listPatterns,
+  PREVIEW_IMAGE_MODES,
+  previewImageFile,
+  previewOf,
+  projectErrors,
+  rulesOfCase,
+  readPatternDir,
+  readPreviews,
+  readProjectDir,
+  regionsFor,
+  resolveLayer,
+  situationsMatching,
+  splitBody,
+  type Case,
+  type CitedRule,
+  type Layer,
+  type Pattern,
+  type PatternFile,
+  type Preview,
+} from '@maggioli-design-system/magma/lint';
+import { ToolError, type Tool } from './protocol.js';
+import { GAP, GAP_SCHEMA, wordsOf, type ToolContext } from './context.js';
+
+/** Where a product keeps its layer, in its own repository (#1174, "The code: the plan"). */
+export const PRODUCT_LAYER_DIR = 'magma/patterns';
+
+/** Where the installed magma ships its patterns and the domains of Foundation. */
+export const patternsDir = (context: ToolContext) =>
+  path.join(magmaRoot(context.settings), 'agents', 'patterns');
+
+const string = { type: 'string' };
+const strings = { type: 'array', items: string };
+const object = { type: 'object' };
+
+/** A rule or a relation of a domain as an answer cites it (CitedRule of the core). */
+export const RULE_SCHEMA = {
+  type: 'object',
+  properties: {
+    id: string,
+    from: { type: 'string', description: 'The domain of Foundation, such as rhythm.' },
+    rule: {
+      type: 'string',
+      description: 'The rule, or for a relation of the domain the answer it gives.',
+    },
+    serves: { anyOf: [string, strings] },
+    use: strings,
+    'carried-by': strings,
+    'carried-by-planned': strings,
+    'checked-by': string,
+    lint: string,
+    'lint-planned': string,
+    note: string,
+    preview: { type: 'string', description: 'The path of its preview, when it has one.' },
+  },
+  required: ['id', 'from', 'rule'],
+};
+
+interface Read {
+  patterns: PatternFile[];
+  /** The layer files of the project, by the Magma id they extend: the first file by name. */
+  layers: Map<string, PatternFile<Layer>>;
+  /** The product's own patterns, but for one under an id Magma has. */
+  own: PatternFile[];
+  /** What is wrong in the project's folder, by file, a file that does not parse among them. */
+  problems: Map<string, string[]>;
+  /** The previews of the cases Magma ships. */
+  previews: Preview[];
+}
+
+const read = (context: ToolContext): Read => {
+  const shipped = patternsDir(context);
+  const patterns = readPatternDir(shipped);
+  const { byId, aliases } = indexPatterns(patterns.map((one) => one.data));
+  const { files, unreadable } = readProjectDir(path.join(context.root, PRODUCT_LAYER_DIR));
+  const layers = new Map<string, PatternFile<Layer>>();
+  const own: PatternFile[] = [];
+  for (const file of files) {
+    if (isLayer(file.data)) {
+      const id = extendedId(file.data) ?? file.data.id;
+      if (!layers.has(id)) layers.set(id, file as PatternFile<Layer>);
+    } else if (!byId.has(file.data.id) && !aliases.has(file.data.id)) own.push(file as PatternFile);
+  }
+  const problems = files.length
+    ? projectErrors(
+        files,
+        patterns.map((one) => one.data),
+        loadComponents(context.settings),
+      )
+    : new Map<string, string[]>();
+  for (const [file, error] of unreadable) problems.set(file, [error]);
+  return { patterns, layers, own, problems, previews: readPreviews(shipped) };
+};
+
+/** A preview as the answer for a situation gives it: where it is, its images, what to try, the stage. */
+const previewIn = (context: ToolContext, preview: Preview) => {
+  const images = Object.fromEntries(
+    PREVIEW_IMAGE_MODES.flatMap((mode) => {
+      const file = previewImageFile(preview.file, mode);
+      return existsSync(file) ? [[mode, path.relative(context.root, file)]] : [];
+    }),
+  );
+  return {
+    file: path.relative(context.root, preview.file),
+    ...(Object.keys(images).length ? { images } : {}),
+    try: preview.try,
+    ...(preview.height ? { height: preview.height } : {}),
+    ...(preview.wholePage ? { wholePage: true } : {}),
+    markup: preview.markup,
+  };
+};
+
+/**
+ * The paths of the previews of a case or a rule, as the pattern names them: `preview` the first
+ * example, `examples` the others in order (<id>.2.html, ...), render_preview's `example` 2 on.
+ */
+export const previewPaths = (
+  context: ToolContext,
+  previews: Preview[],
+  pattern: string,
+  id: string,
+): { preview?: string; examples?: string[] } => {
+  const [first, ...more] = examplesOf(previews, pattern, id).map((one) =>
+    path.relative(context.root, one.file),
+  );
+  return first ? { preview: first, ...(more.length ? { examples: more } : {}) } : {};
+};
+
+/** The problems of the project's files, each with the file it is in. */
+const problemsIn = (context: ToolContext, problems: Map<string, string[]>, files: string[]) => {
+  const found = files.flatMap((file) =>
+    (problems.get(file) ?? []).map((one) => `${path.relative(context.root, file)}: ${one}`),
+  );
+  return found.length ? { layerErrors: found } : {};
+};
+
+/** The words of a pattern a need is matched against, by weight. */
+const scoreOf = (pattern: Pattern, words: string[]): number => {
+  const of = (text: unknown) => new Set(wordsOf([text].flat().join(' ')));
+  const keywords = of(pattern.keywords ?? []);
+  const title = of(pattern.title);
+  const rest = of([pattern.need, ...(pattern.situations ?? []).map((one) => one.situation)]);
+  return words.reduce(
+    (score, word) =>
+      score + (keywords.has(word) ? 3 : 0) + (title.has(word) ? 2 : 0) + (rest.has(word) ? 1 : 0),
+    0,
+  );
+};
+
+/** What a candidate answers: Magma knows the need, no default covers it yet. */
+export const CANDIDATE =
+  'A candidate: Magma knows this need and has no default for it yet. Do not present a choice of yours as the Magma default: tell the user which choice you made and why. ' +
+  GAP;
+
+export const getPattern = (context: ToolContext): Tool => ({
+  name: 'get_pattern',
+  title: 'Read a Magma pattern',
+  description:
+    'The patterns Magma ships: the solution to a task across components (where a message goes, confirming an action, an empty, a loading or a failed part), the same in every product; first the domains of Foundation (kind foundation), the rules of composition every pattern stands on (the space between elements, ...), then the building blocks (kind block), the sections of a page that come back in several patterns (the page header). Without arguments the list, and in layerErrors what is wrong in the layer this project keeps in magma/patterns/; with need the patterns for it; with id the pattern (its variables, cases, always-true rules and open choices, with the layer of this project applied); with id and situation, the values of its variables you know, the one case to follow (with its preview when Magma has one: the stage, as markup, what to try in it and the paths of its images, light and dark, to show where the stage cannot run, and in rules the rules of the domains it relies on, each with its domain, its text and the path of its preview; the other examples of the case in examples), or which variables are still to settle; for a block, the regions that show, in the order of the page, and when the values match one of its situations, every variable given, the preview of that situation as for a case (the stage, what to try, the other examples); with id and section the text of that section. Ask before building a flow or the head of a page, and follow the case or the regions it gives and its rules.',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      id: { type: 'string', description: 'A pattern, such as "message-placement".' },
+      need: {
+        type: 'string',
+        description: 'The task in words, such as "tell the user a save failed".',
+      },
+      situation: {
+        type: 'object',
+        description:
+          'With id: the values of the variables of the pattern you know, such as {"about": "action", "outcome": "failure"}.',
+        additionalProperties: { type: 'string' },
+      },
+      section: {
+        type: 'string',
+        description: 'With id: a section of the pattern, such as "Behaviour over time".',
+      },
+    },
+  },
+  outputSchema: {
+    type: 'object',
+    properties: {
+      patterns: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: string,
+            title: string,
+            group: string,
+            kind: string,
+            status: string,
+            layer: string,
+            need: string,
+            validatedOn: strings,
+          },
+          // a domain of Foundation (kind foundation) has no group
+          required: ['id', 'title', 'kind', 'status', 'need'],
+        },
+      },
+      pattern: object,
+      id: string,
+      renamedFrom: string,
+      layerErrors: strings,
+      answer: object,
+      candidates: { type: 'array', items: object },
+      missing: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: { variable: string, values: strings, means: string },
+          required: ['variable', 'values'],
+        },
+      },
+      section: string,
+      text: string,
+      gap: GAP_SCHEMA,
+    },
+  },
+  run: ({ id, need, situation, section }) => {
+    const { patterns, layers, own, problems, previews } = read(context);
+    if (!patterns.length)
+      throw new ToolError('This magma ships no patterns (agents/patterns/): update it.');
+    // a rule or a relation of a domain an answer cites, with the path of its preview (#1221)
+    const withPreview = (rule: CitedRule) => {
+      const { preview } = previewPaths(context, previews, rule.from, rule.id);
+      return preview ? { ...rule, preview } : rule;
+    };
+    const all = [...patterns, ...own].map((one) => one.data);
+
+    if (typeof id !== 'string' || !id.trim()) {
+      if (typeof need === 'string' && need.trim()) {
+        const words = wordsOf(need);
+        const found = all
+          .map((one) => ({ one, score: scoreOf(one, words) }))
+          .filter(({ score }) => score > 0)
+          .sort((a, b) => b.score - a.score || a.one.id.localeCompare(b.one.id))
+          .slice(0, 5)
+          .map(({ one }) => one);
+        const listed = listPatterns(found).sort(
+          (a, b) =>
+            found.findIndex((one) => one.id === a.id) - found.findIndex((one) => one.id === b.id),
+        );
+        return {
+          patterns: listed,
+          ...(found.some((one) => one.status !== 'candidate') ? {} : { gap: GAP }),
+        };
+      }
+      return {
+        patterns: listPatterns(all),
+        ...problemsIn(context, problems, [...problems.keys()].sort()),
+      };
+    }
+
+    const { byId, aliases } = indexPatterns(all);
+    const wanted = id.trim();
+    const realId = byId.has(wanted) ? wanted : aliases.get(wanted);
+    const file = [...patterns, ...own].find((one) => one.data.id === realId);
+    if (!realId || !file)
+      throw new ToolError(
+        `No pattern ${wanted}: the patterns are ${all.map((one) => one.id).join(', ')}. Search them with need.`,
+      );
+    const renamed = realId !== wanted ? { renamedFrom: wanted } : {};
+    const base = file.data;
+    if (base.status === 'candidate')
+      return {
+        pattern: {
+          id: base.id,
+          title: base.title,
+          group: base.group,
+          status: base.status,
+          need: base.need,
+        },
+        ...renamed,
+        gap: CANDIDATE,
+      };
+
+    // the layer of this project, applied only when it holds to the rules of a layer; without
+    // one, the file named after the pattern may be a layer that does not parse
+    const layerFile = base.layer === MAGMA_LAYER ? layers.get(base.id) : undefined;
+    const projectFile =
+      base.layer === MAGMA_LAYER
+        ? (layerFile?.file ?? path.join(context.root, PRODUCT_LAYER_DIR, `${base.id}.md`))
+        : file.file;
+    const resolved = resolveLayer(
+      base,
+      layerFile && !problems.has(layerFile.file) ? layerFile.data : undefined,
+    );
+    const mine = problemsIn(context, problems, [projectFile]);
+
+    if (typeof section === 'string' && section.trim()) {
+      const { sections } = splitBody(file.body);
+      const lower = section.trim().toLowerCase();
+      const found =
+        sections.find((one) => one.heading.toLowerCase() === lower) ??
+        sections.find((one) => one.heading.toLowerCase().includes(lower));
+      if (!found)
+        throw new ToolError(
+          `No section "${section}" in ${base.id}: its sections are ${sections.map((one) => one.heading).join('; ')}.`,
+        );
+      return { id: base.id, ...renamed, section: found.heading, text: found.text.trim() };
+    }
+
+    if (situation && typeof situation === 'object' && !Array.isArray(situation)) {
+      const known = Object.fromEntries(
+        Object.entries(situation).map(([name, value]) => [name, String(value)]),
+      );
+      const variables = base.variables ?? {};
+      const missingOf = (names: string[]) =>
+        names.map((name) => ({
+          variable: name,
+          values: variables[name]!.values,
+          means: variables[name]!.means,
+        }));
+      if (base.kind === BLOCK) {
+        // a block: the regions that show, and those that wait on a variable still unknown
+        let regions;
+        try {
+          regions = regionsFor(base, known);
+        } catch (error) {
+          throw new ToolError((error as Error).message);
+        }
+        const rules = rulesOfCase(base, {}, all).map(withPreview);
+        // the preview of the situation the values match exactly, as a case gives its own: the
+        // first in the file is the stage, its other examples and the previews of the next ones
+        // that match the same values are the examples (2026-11-03)
+        const [stage, ...more] = situationsMatching(base, known).flatMap((one) =>
+          examplesOf(previews, base.id, one.id),
+        );
+        return {
+          id: base.id,
+          ...renamed,
+          ...mine,
+          answer: {
+            kind: 'regions',
+            regions: regions.regions,
+            ...(rules.length ? { rules } : {}),
+            ...(stage ? { preview: previewIn(context, stage) } : {}),
+            ...(more.length
+              ? { examples: more.map((one) => path.relative(context.root, one.file)) }
+              : {}),
+          },
+          ...(regions.missing.length
+            ? { candidates: regions.depends, missing: missingOf(regions.missing) }
+            : {}),
+        };
+      }
+      let result;
+      try {
+        result = answer(base, known);
+      } catch (error) {
+        throw new ToolError((error as Error).message);
+      }
+      const missing = missingOf(result.missing);
+      const hits = result.hits.map(({ kind, entry }) => ({ kind, ...entry }));
+      if (hits.length === 1 && !missing.length) {
+        const { kind, entry } = result.hits[0]!;
+        const isCase = kind === 'case';
+        const preview = isCase ? previewOf(previews, base.id, String(entry.id)) : undefined;
+        const examples = isCase
+          ? previewPaths(context, previews, base.id, String(entry.id)).examples
+          : undefined;
+        // the rules of the domains the case relies on, with their text, in place of their ids,
+        // and the path of the preview of the ones that have one
+        const rules = isCase ? rulesOfCase(base, entry as Case, all).map(withPreview) : [];
+        return {
+          id: base.id,
+          ...renamed,
+          ...mine,
+          answer: {
+            kind,
+            ...entry,
+            ...(rules.length ? { rules } : {}),
+            ...(preview ? { preview: previewIn(context, preview) } : {}),
+            ...(examples ? { examples } : {}),
+          },
+          ...(kind === 'gap' ? { gap: GAP } : {}),
+        };
+      }
+      return { id: base.id, ...renamed, ...mine, candidates: hits, missing };
+    }
+
+    const { sections } = splitBody(file.body);
+    const cases = resolved.cases?.map((one) => ({
+      ...one,
+      ...previewPaths(context, previews, base.id, one.id),
+    }));
+    // a situation of a block has a preview, named after its id, as a case (2026-11-03)
+    const situations =
+      base.kind === BLOCK
+        ? resolved.situations?.map((one) =>
+            one.id ? { ...one, ...previewPaths(context, previews, base.id, one.id) } : one,
+          )
+        : undefined;
+    // a rule of a domain of its own may have a preview too (#1221), never one it cites
+    const rules =
+      base.kind === FOUNDATION
+        ? resolved['always-true']?.map((one) =>
+            one.from ? one : { ...one, ...previewPaths(context, previews, base.id, one.id) },
+          )
+        : undefined;
+    return {
+      pattern: {
+        ...resolved,
+        ...(cases ? { cases } : {}),
+        ...(situations ? { situations } : {}),
+        ...(rules ? { 'always-true': rules } : {}),
+        sections: sections.map((one) => one.heading),
+      },
+      ...renamed,
+      ...mine,
+    };
+  },
+});
