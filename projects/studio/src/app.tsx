@@ -52,6 +52,7 @@ import {
 } from './draft.js';
 import { Check, Field, Range, Select, TextInput, type Option } from './magma.js';
 import { HUE_ENDS, endsOf, moveEnd, type HueEnds } from './hue-ends.js';
+import { PaletteSide } from './palette-side.js';
 import './palette.css';
 // the named curves of the engine, then a custom one edited by its parameters
 type CurvePreset = keyof typeof CURVE_PRESETS;
@@ -1819,7 +1820,11 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
               </div>
               {/* the ramps of the family, beside its fields and the settings of the whole
                 configuration, in view of every control that changes them (palette.css) */}
-              <Preview scales={selectedScales} error={selectedError} />
+              <PaletteSide
+                config={config}
+                family={selected.name.split('.')[1]}
+                ramps={<Preview scales={selectedScales} error={selectedError} />}
+              />
               <section class="palette-color" aria-labelledby="palette-color-title">
                 <ColorEditor
                   color={selected}
