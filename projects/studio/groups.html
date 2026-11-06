@@ -110,19 +110,6 @@
       .groups-floating > mds-banner {
         flex: 0 1 var(--magma-width-dialog);
       }
-      .groups-pref {
-        position: fixed;
-        z-index: var(--magma-dropdown-z-index);
-        inset-block-start: var(--magma-rhythm-inset);
-        inset-inline-end: var(--magma-rhythm-inset);
-        padding: var(--magma-rhythm-inset);
-        border-radius: var(--magma-radius-2xl);
-        background: rgb(var(--magma-surface-overlay));
-        box-shadow: var(--shadow-box-lg);
-      }
-      .groups-pref[hidden] {
-        display: none;
-      }
     </style>
   </head>
   <body>
@@ -308,13 +295,11 @@
         </div>
       </section>
     </main>
-    <!-- the panel of the preferences, as on the scene: neither mode nor contrast, the header sets them -->
-    <aside id="studio-pref" class="groups-pref" hidden aria-label="Preferences">
+    <!-- the preferences of the page, never shown, as on the scene: the dropdown of the bar of the
+      studio sets their attributes (scene-prefs.tsx), and they apply them on this document. Neither
+      mode nor contrast, the header sets them; no language, the dropdown has none -->
+    <aside id="studio-pref" hidden aria-label="Preferences">
       <mds-pref>
-        <mds-pref-language>
-          <mds-pref-language-item code="it"></mds-pref-language-item>
-          <mds-pref-language-item code="en"></mds-pref-language-item>
-        </mds-pref-language>
         <mds-pref-animation></mds-pref-animation>
         <mds-pref-consumption></mds-pref-consumption>
       </mds-pref>

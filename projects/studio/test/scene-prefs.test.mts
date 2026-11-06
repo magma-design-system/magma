@@ -70,8 +70,15 @@ test('the scene starts from what each component applies with nothing chosen', ()
   expect(DEFAULT_PREFS.consumption).toBe(/defaultMode: ConsumptionModeType = '([^']+)'/.exec(consumption)![1])
 })
 
-test('the scene holds no language: the dropdown sets none, and a stored one could not be undone', () => {
-  expect(scene).not.toContain('<mds-pref-language')
+test('each page a frame loads holds the preferences the dropdown sets, and no language', () => {
+  // the pages of VIEWS (shell.tsx): a language the dropdown does not set, stored by the origin,
+  // would switch the page with nothing to switch it back
+  for (const page of ['scene.html', 'groups.html']) {
+    const html = readFileSync(join(here, '..', page), 'utf8')
+    expect(html, page).toContain('<mds-pref-animation')
+    expect(html, page).toContain('<mds-pref-consumption')
+    expect(html, page).not.toContain('<mds-pref-language')
+  }
 })
 
 test('the preferences are set on the mds-pref-* of the scene, only when they change', () => {
