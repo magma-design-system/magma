@@ -1,0 +1,21 @@
+// Sass: a variable, a mixin argument, nested rules
+$accent: var(--magma-accent);
+$scrim: color-mix(in srgb, var(--magma-backdrop-color) 40%, transparent);
+
+@mixin tint($color) {
+  background: $color;
+}
+
+.panel {
+  @include tint(color-mix(in srgb, var(--magma-surface-raised) 90%, transparent));
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--magma-accent) 50%, transparent);
+  }
+}
+
+// reported: a Sass alpha, a Sass value for a Magma colour
+.reported {
+  background: rgb(var(--magma-accent) / $alpha);
+  --magma-backdrop-color: #{$black-channels};
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "dynamic",
+    "line": 19,
+    "contains": "rgb(var(--magma-accent) / $alpha)"
+  },
+  {
+    "kind": "dynamic",
+    "line": 20,
+    "contains": "write `rgb(#{$black-channels})`"
+  }
+]

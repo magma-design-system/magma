@@ -1,0 +1,51 @@
+/* the reads of a Magma colour through rgb(), every alpha form */
+.reads {
+  color: var(--magma-accent);
+  background: color-mix(in srgb, var(--magma-surface-raised) 50%, transparent);
+  border-color: color-mix(in srgb, var(--magma-accent) 15%, transparent);
+  outline-color: color-mix(in srgb, var(--magma-accent) 8%, transparent);
+  caret-color: var(--magma-accent);
+  fill: var(--magma-accent);
+}
+
+/* an opaque alpha says nothing once the token is a colour */
+.opaque {
+  color: var(--magma-accent);
+  background: var(--magma-accent);
+}
+
+/* alpha from a variable or an expression */
+.computed {
+  background: color-mix(in srgb, var(--magma-backdrop-color) calc(var(--magma-backdrop-opacity) * 100%), transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--magma-shadow-ink) calc(0.06 * var(--depth) * 100%), transparent);
+  border-color: color-mix(in srgb, var(--magma-accent) calc((var(--a) + 0.1) * 100%), transparent);
+}
+
+/* fallback chains: a triplet fallback becomes rgb(), a Magma fallback is a colour too */
+.fallbacks {
+  color: var(--magma-accent, rgb(0 0 0));
+  background: color-mix(in srgb, var(--magma-accent, var(--magma-surface-raised, rgb(255 255 255))) 50%, transparent);
+  border-color: var(--magma-accent, #000);
+}
+
+/* several reads in one value, inside other functions */
+.composite {
+  background: linear-gradient(var(--magma-accent), color-mix(in srgb, var(--tone-neutral-09) 0%, transparent));
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--magma-shadow-ink) 20%, transparent), 0 0 0 1px var(--magma-accent);
+  color: var(--magma-accent) !important;
+}
+
+/* a product's own triplet variable stays */
+.product {
+  color: rgb(var(--brand-rgb));
+  background: rgb(var(--brand-rgb) / 0.5);
+  border-color: rgb(255 0 0 / 0.5);
+}
+
+/* reported, not rewritten */
+.reported {
+  color: rgba(var(--magma-accent), 0.5);
+  background: rgb(var(--brand-rgb, var(--magma-accent)));
+  border-color: var(--magma-accent, var(--brand-rgb));
+  outline-color: rgb(var(--magma-accent) / attr(data-alpha number));
+}

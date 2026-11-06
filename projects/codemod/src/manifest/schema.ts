@@ -215,6 +215,26 @@ export interface VariantRenameRule {
   media: string;
 }
 
+/**
+ * Category N (Magma 2 -> 3, #918) - a colour custom property holds a full colour
+ * (`rgb(r g b)`), no longer its three channels (`r g b`). A read
+ * `rgb(var(--x))` becomes `var(--x)`, `rgb(var(--x) / a)` becomes
+ * `color-mix(in srgb, var(--x) N%, transparent)`, and a definition written as
+ * channels, `--x: r g b`, becomes `--x: rgb(r g b)`. Only for the names listed:
+ * a product's own triplet variable, read with `rgb(var(--my-x))`, stays as it
+ * is. Applied in CSS/SCSS, inline styles and Tailwind arbitrary values; a
+ * colour built in a TypeScript or JavaScript string is reported.
+ */
+export interface ColorTokenRule {
+  kind: 'colorToken';
+  /**
+   * Without the leading `--`: every custom property Magma publishes as a
+   * colour, by its v3 name (the DTCG colour tokens of design-tokens and styles,
+   * plus the component properties that took channels).
+   */
+  names: readonly string[];
+}
+
 /** Category H — rename a shadow part referenced in `::part()`. */
 export interface PartRenameRule {
   kind: 'partRename';
@@ -284,7 +304,8 @@ export type Rule =
   | PartRenameRule
   | EventRenameRule
   | TagRenameRule
-  | EnsureAttrRule;
+  | EnsureAttrRule
+  | ColorTokenRule;
 
 export type RuleKind = Rule['kind'];
 
@@ -346,6 +367,12 @@ export interface GlobalRules {
     rules: Array<ClassSemanticRule | ClassSemanticReportRule>;
     thresholds: SemanticThresholds;
   };
+  /**
+   * The colour custom properties that became full colours (category N, v2 ->
+   * v3): their reads and channel definitions, in CSS/SCSS, inline styles and
+   * Tailwind arbitrary values.
+   */
+  colorTokens?: ColorTokenRule;
 }
 
 export interface Manifest {

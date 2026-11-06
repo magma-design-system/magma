@@ -1,0 +1,22 @@
+[
+  {
+    "kind": "dynamic",
+    "line": 47,
+    "contains": "rgba(var(--magma-accent), 0.5)"
+  },
+  {
+    "kind": "dynamic",
+    "line": 48,
+    "contains": "read `var(--brand-rgb, var(--magma-accent))`"
+  },
+  {
+    "kind": "flag",
+    "line": 49,
+    "contains": "write `rgb(var(--brand-rgb))`"
+  },
+  {
+    "kind": "dynamic",
+    "line": 50,
+    "contains": "rgb(var(--magma-accent) / attr(data-alpha number))"
+  }
+]

@@ -11,6 +11,10 @@
  * Category L (raw palette -> semantic roles, `semantic-ops.ts`) runs on the same
  * class list after the renames, because it has to see the whole list at once:
  * a light class and its `dark:` override are decided together.
+ *
+ * Category N (v2 -> v3) rewrites an arbitrary value that reads a listed colour
+ * through `rgb()` (`bg-[rgb(var(--magma-x))]`, `color-ops.ts`); its findings go
+ * through the same `emit` hook as the variant renames.
  */
 import {
   type ClassRenameRule,
@@ -19,6 +23,7 @@ import {
   type VariantRenameRule,
 } from '../../manifest/schema.js';
 import { ruleId } from '../../manifest/registry.js';
+import { type ColorRules, colorRulesOf, rewriteArbitraryColor } from './color-ops.js';
 import { type ElementContext } from './context-hint.js';
 import {
   type ClassFinding,
@@ -52,7 +57,9 @@ export interface ClassRules {
   reports: Map<string, ClassReportEntry>;
   /** Category L, when the manifest declares it. */
   semantic: SemanticRules | null;
-  /** Cheap probe: does this chunk of source mention any migrated class at all? */
+  /** Category N, when the manifest declares it. */
+  colors: ColorRules | null;
+  /** Cheap probe: does this chunk of source mention any migrated class at all? (N has its own.) */
   candidateRe: RegExp | null;
 }
 
@@ -93,6 +100,7 @@ export const classRulesOf = (manifest: Manifest): ClassRules => {
     variants,
     reports,
     semantic,
+    colors: colorRulesOf(manifest),
     candidateRe: probes.length > 0 ? new RegExp(probes.join('|')) : null,
   };
   cache.set(manifest, rules);
@@ -103,7 +111,12 @@ export const hasClassRules = (rules: ClassRules): boolean =>
   rules.renames.size > 0 ||
   rules.reports.size > 0 ||
   rules.variants.size > 0 ||
-  rules.semantic !== null;
+  rules.semantic !== null ||
+  rules.colors !== null;
+
+/** Cheap probe: does this chunk of source mention a migrated class, or a colour read of N? */
+export const mentionsClassRule = (rules: ClassRules, text: string): boolean =>
+  (rules.candidateRe?.test(text) ?? false) || (rules.colors?.probe.test(text) ?? false);
 
 /**
  * Rename the variant segments of a token prefix (`mobile:hover:` ->
@@ -218,7 +231,7 @@ export const rewriteClassList = (
   onReport: (entry: ClassReportEntry, token: string) => void,
   semantic?: SemanticHooks,
 ): ClassListResult => {
-  if (!rules.candidateRe || !rules.candidateRe.test(value)) return { value, changed: false };
+  if (!mentionsClassRule(rules, value)) return { value, changed: false };
   let changed = false;
   const parts = value.split(/(\s+)/);
   const tokens: SemanticToken[] = [];
@@ -245,6 +258,24 @@ export const rewriteClassList = (
     }
     const current = parts[i]!;
     const { prefix, bang, base, modifier, trailingBang } = split;
+    // N: an arbitrary value that reads a listed colour through `rgb()`
+    if (rules.colors && enabled(rules.colors.id)) {
+      const colors = rules.colors;
+      const next = rewriteArbitraryColor(`${base}${modifier}`, colors, (f) => semantic?.emit(f));
+      if (next !== null) {
+        const after = `${prefix}${bang}${next}${trailingBang}`;
+        parts[i] = after;
+        changed = true;
+        semantic?.emit({
+          kind: 'change',
+          ruleId: colors.id,
+          message: 'read the colour token as a colour',
+          before: current,
+          after,
+        });
+        continue;
+      }
+    }
     // A fraction (`mx-2/12`) is a whole utility name, not a base + opacity
     // modifier: it is looked up as written first.
     const whole = modifier ? rules.renames.get(`${base}${modifier}`) : undefined;

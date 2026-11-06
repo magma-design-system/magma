@@ -1,0 +1,22 @@
+[
+  {
+    "kind": "dynamic",
+    "line": 14,
+    "contains": "check what `overlay` holds"
+  },
+  {
+    "kind": "dynamic",
+    "line": 3,
+    "contains": "color-mix(in srgb, var(--magma-accent) 50%, transparent)"
+  },
+  {
+    "kind": "dynamic",
+    "line": 22,
+    "contains": "var(--magma-accent)"
+  },
+  {
+    "kind": "dynamic",
+    "line": 4,
+    "contains": "an alpha with `color-mix()`"
+  }
+]

@@ -21,6 +21,8 @@ export interface Finding {
   column?: number;
   /** The rule that produced (or would have produced) this finding. */
   ruleId?: string;
+  /** The jump the rule belongs to, `2 -> 3`: a run from Magma 1 applies two. */
+  jump?: string;
   /** Component tag, e.g. `mds-dropdown`. */
   component?: string;
   message: string;
@@ -84,6 +86,8 @@ export interface ReportSummary {
 export interface Report {
   fromVersion: string;
   toVersion: string;
+  /** The jumps applied in order, `1.12.0 -> 2.0.0` then `2 -> 3`, as the findings name them. */
+  jumps?: string[];
   dryRun: boolean;
   files: FileReport[];
   summary: ReportSummary;

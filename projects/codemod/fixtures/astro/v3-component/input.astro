@@ -1,0 +1,23 @@
+---
+// the frontmatter is TypeScript: read as text, neither rewritten nor reported
+const { tone = 'raised' } = Astro.props;
+const deep = items.length < limit ? 'rgb(var(--magma-accent))' : '';
+---
+
+<section class="p-400 bg-[rgb(var(--magma-surface-raised))]" style={{ color: tone }}>
+  <slot />
+</section>
+
+<style lang="scss">
+  section {
+    border-color: rgb(var(--tone-neutral-09) / 0.5);
+
+    &:hover {
+      color: rgb(var(--magma-accent));
+    }
+  }
+</style>
+
+<style>
+  :global(.halo) { box-shadow: 0 0 0 2px rgb(var(--magma-shadow-ink) / 0.1); }
+</style>
