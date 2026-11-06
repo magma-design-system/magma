@@ -170,3 +170,26 @@ test('a draft made on the file still on disk is restored without asking', async 
   expect(root.querySelector('.draft-conflict')).toBeNull()
   expect(storedDraft().config).toEqual(edits)
 })
+
+test('on the static site the studio asks no API and edits in memory', async () => {
+  // the tag site.ts writes into the pages of the site on GitHub Pages
+  const meta = Object.assign(document.createElement('meta'), { name: 'magma-studio-api', content: 'none' })
+  document.head.append(meta)
+  const asked: string[] = []
+  vi.stubGlobal('fetch', async (url: string) => {
+    asked.push(url)
+    return new Response(JSON.stringify({ path: PATH, config: changed, readOnly: null }))
+  })
+  try {
+    render(h(App, {}), root)
+    // the start-up check ran on the bundled config, the source of a studio with no API
+    await vi.waitFor(() => {
+      expect(storedDraft().source).toEqual({ path: null, hash: hashText(diskJson) })
+    })
+    expect(asked).toEqual([])
+    expect(button('Copy JSON')).toBeDefined()
+    expect(button('Save')).toBeUndefined()
+  } finally {
+    meta.remove()
+  }
+})

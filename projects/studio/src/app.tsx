@@ -73,6 +73,14 @@ type CloneableConfig = MagmaConfig & Record<string, unknown>;
 // drafts saved before the views were split keep working
 type View = ColorsView;
 
+/**
+ * Whether an API may stand beside the page. The static site of the studio (site.ts, the site
+ * on GitHub Pages) says in its pages that none does, `<meta name="magma-studio-api"
+ * content="none">`: asking there would only log a 404, and editing stays in memory.
+ */
+const hasApi = (): boolean =>
+  document.querySelector('meta[name="magma-studio-api"]')?.getAttribute('content') !== 'none';
+
 // the color list on the left drives only the per-color views (edit a color,
 // sample its contrast scales). Surfaces, groups and diff operate on the whole
 // config, so the column - and its always-present selection - is hidden there.
@@ -953,8 +961,10 @@ export function App({ view: routedView, onNavigate, onConfig }: AppProps = {}) {
         readOnly?: string | null;
       } | null = null;
       try {
-        const res = await fetch('/api/config');
-        if (res.ok) served = await res.json();
+        if (hasApi()) {
+          const res = await fetch('/api/config');
+          if (res.ok) served = await res.json();
+        }
       } catch {
         // not served by a command: the source is the bundled default
       }
