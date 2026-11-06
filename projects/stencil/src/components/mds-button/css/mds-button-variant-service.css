@@ -50,18 +50,22 @@
 /* Theme preference (service variants). The component reflects the resolved theme
  * mode + scheme from <html> onto its host as pref-mode + pref-theme-scheme (see
  * subscribePreference in @common/preference); `dark` is explicit, `system` and no
- * controller follow the OS via @media, the scheme axis gates it. Cross-browser. */
+ * controller follow the OS via @media, the scheme axis gates it. Cross-browser.
+ *
+ * No `[tone]` twin here, unlike the rules above: the parent already outweighs every rule
+ * that sets these properties ((0,5,0), (0,6,0) on hover, against (0,4,0) at most, the
+ * outline of `current`), and the build flattens each nested selector into
+ * `:is(<every parent>):host(...)`, so a twin repeats the whole list of parents in a sheet
+ * that every pre-rendered button carries (the window of gzip, mds-button.e2e.ts). */
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])),
 :host([pref-theme-scheme='dark']) {
-  &:host([variant='google']),
-  &:host([variant='google'][tone]) {
+  &:host([variant='google']) {
     --mds-button-border-width: --spacing(50);
     --mds-button-border-opacity: 0.3;
   }
 
-  &:host([variant='google']:hover),
-  &:host([variant='google'][tone]:hover) {
+  &:host([variant='google']:hover) {
     --mds-button-border-opacity: 0.5;
   }
 }
@@ -69,14 +73,12 @@
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
-    &:host([variant='google']),
-    &:host([variant='google'][tone]) {
+    &:host([variant='google']) {
       --mds-button-border-width: --spacing(50);
       --mds-button-border-opacity: 0.3;
     }
 
-    &:host([variant='google']:hover),
-    &:host([variant='google'][tone]:hover) {
+    &:host([variant='google']:hover) {
       --mds-button-border-opacity: 0.5;
     }
   }
