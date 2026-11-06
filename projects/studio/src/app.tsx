@@ -522,146 +522,153 @@ function ColorEditor({
     // message too, and a field reused with no message gets the empty string from Preact
     return (
       <div class="palette-editor" key="reference">
-        <div class="palette-fields">
-          <CommitText
-            key={isBuiltin ? 'built-in-name' : 'name'}
-            label="Name"
-            value={color.name}
-            disabled={isBuiltin}
-            message={isBuiltin ? 'Built-in variant: it cannot be renamed' : undefined}
-            onCommit={(name) => onChange({ name })}
-          />
-          <Field label="Reference">
-            <Select
-              value={color.alias ?? ''}
-              options={references}
-              onValue={(alias) => onChange({ alias })}
-            />
-          </Field>
-          {/* a read-only datum: a label and its value (docs/agents/patterns/labels-and-values.md) */}
-          <dl class="palette-value">
-            <div>
-              <mds-text typography="label" tag="dt" class="studio-muted">
-                Resolves to
-              </mds-text>
-              <mds-text tag="dd">
-                <span class="palette-resolved">
-                  <span
-                    class="studio-swatch"
-                    style={{ background: resolvedColor ?? 'transparent' }}
-                  />
-                  {resolvedColor ?? 'unresolved'}
-                </span>
-              </mds-text>
-            </div>
-          </dl>
-          {exportField}
-          <div class="studio-row palette-switches">{disabledField}</div>
-        </div>
         {preview}
-        <mds-text tag="p" class="studio-muted">
-          Reference to {color.alias}: this family re-exports the resolved scale of the source. Base
-          color, hue shift, ratios and formula are defined by the source, not here.
-        </mds-text>
-        {/* the group a family has in this place, for a reference a banner that says where its hue
+        <div class="palette-config">
+          <div class="palette-fields">
+            <CommitText
+              key={isBuiltin ? 'built-in-name' : 'name'}
+              label="Name"
+              value={color.name}
+              disabled={isBuiltin}
+              message={isBuiltin ? 'Built-in variant: it cannot be renamed' : undefined}
+              onCommit={(name) => onChange({ name })}
+            />
+            <Field label="Reference">
+              <Select
+                value={color.alias ?? ''}
+                options={references}
+                onValue={(alias) => onChange({ alias })}
+              />
+            </Field>
+            {/* a read-only datum: a label and its value (docs/agents/patterns/labels-and-values.md) */}
+            <dl class="palette-value">
+              <div>
+                <mds-text typography="label" tag="dt" class="studio-muted">
+                  Resolves to
+                </mds-text>
+                <mds-text tag="dd">
+                  <span class="palette-resolved">
+                    <span
+                      class="studio-swatch"
+                      style={{ background: resolvedColor ?? 'transparent' }}
+                    />
+                    {resolvedColor ?? 'unresolved'}
+                  </span>
+                </mds-text>
+              </div>
+            </dl>
+            {exportField}
+            <div class="studio-row palette-switches">{disabledField}</div>
+          </div>
+          <mds-text tag="p" class="studio-muted">
+            Reference to {color.alias}: this family re-exports the resolved scale of the source.
+            Base color, hue shift, ratios and formula are defined by the source, not here.
+          </mds-text>
+          {/* the group a family has in this place, for a reference a banner that says where its hue
             shifting is set: an info banner, its action in the variant of the banner, strong
             (docs/agents/patterns/actions.md, banner). The action opens the group of the source and
             changes nothing in the configuration (vittorio, 2026-11-05) */}
-        {targetKnown && (
-          <section class="palette-group palette-group-note" aria-labelledby="palette-reference-hue">
-            <mds-text id="palette-reference-hue" typography="group" tag="h3">
-              Hue shifting
-            </mds-text>
-            <mds-banner variant="info">
-              The hue shifting of a reference is the one of the family it points at, {color.alias}:
-              set it there, and every reference to it follows.
-              <mds-button
-                slot="action"
-                type="button"
-                variant="info"
-                tone="strong"
-                label={`Open ${color.alias}`}
-                onClick={onOpenSource}
-              ></mds-button>
-            </mds-banner>
-          </section>
-        )}
+          {targetKnown && (
+            <section
+              class="palette-group palette-group-note"
+              aria-labelledby="palette-reference-hue"
+            >
+              <mds-text id="palette-reference-hue" typography="group" tag="h3">
+                Hue shifting
+              </mds-text>
+              <mds-banner variant="info">
+                The hue shifting of a reference is the one of the family it points at, {color.alias}
+                : set it there, and every reference to it follows.
+                <mds-button
+                  slot="action"
+                  type="button"
+                  variant="info"
+                  tone="strong"
+                  label={`Open ${color.alias}`}
+                  onClick={onOpenSource}
+                ></mds-button>
+              </mds-banner>
+            </section>
+          )}
+        </div>
       </div>
     );
   }
 
   return (
     <div class="palette-editor" key="own">
-      <div class="palette-fields">
-        <CommitText label="Name" value={color.name} onCommit={(name) => onChange({ name })} />
-        <Field label="Base color" message={color.color}>
-          {/* until Magma has a colour field: #1260 */}
-          <input
-            type="color"
-            class="palette-picker"
-            value={color.color}
-            onInput={(e) =>
-              onChange({ color: (e.target as HTMLInputElement).value as ColorConfig['color'] })
-            }
-            onChange={(e) => onColorCommit((e.target as HTMLInputElement).value)}
-          />
-        </Field>
-        <Field label="Ratios">
-          <Select
-            value={color.ratios ?? ''}
-            options={[
-              { value: '', label: `inherit (${inheritedRatios})` },
-              ...scaleNames.map((preset) => ({ value: preset, label: labelFor(preset) })),
-            ]}
-            onValue={(ratios) => onChange({ ratios: ratios || undefined })}
-          />
-        </Field>
-        <Field label="Formula">
-          <Select
-            value={color.formula ?? ''}
-            options={[
-              { value: '', label: `inherit (${inheritedFormula})` },
-              { value: 'wcag2', label: 'wcag2' },
-              { value: 'wcag3', label: 'wcag3' },
-            ]}
-            onValue={(formula) =>
-              onChange({ formula: (formula || undefined) as ColorConfig['formula'] })
-            }
-          />
-        </Field>
-        <Field label="Colorspace">
-          <Select
-            value={color.colorspace ?? ''}
-            options={[
-              { value: '', label: 'inherit' },
-              ...COLORSPACES.map((space) => ({ value: space, label: space })),
-            ]}
-            onValue={(colorspace) =>
-              onChange({ colorspace: (colorspace || undefined) as ColorConfig['colorspace'] })
-            }
-          />
-        </Field>
-        {exportField}
-        <div class="studio-row palette-switches">
-          <Check
-            type="switch"
-            checked={color.smooth ?? false}
-            onChecked={(checked) => onChange({ smooth: checked || undefined })}
-          >
-            Smooth
-          </Check>
-          {disabledField}
-        </div>
-      </div>
       {preview}
-      <HueShiftEditor
-        key={color.name}
-        value={color.hueShift}
-        onChange={(hueShift) => onChange({ hueShift })}
-        allowInherit
-        globalActive={hasGlobalShift}
-        id={HUE_SHIFT_GROUP}
-      />
+      <div class="palette-config">
+        <div class="palette-fields">
+          <CommitText label="Name" value={color.name} onCommit={(name) => onChange({ name })} />
+          <Field label="Base color" message={color.color}>
+            {/* until Magma has a colour field: #1260 */}
+            <input
+              type="color"
+              class="palette-picker"
+              value={color.color}
+              onInput={(e) =>
+                onChange({ color: (e.target as HTMLInputElement).value as ColorConfig['color'] })
+              }
+              onChange={(e) => onColorCommit((e.target as HTMLInputElement).value)}
+            />
+          </Field>
+          <Field label="Ratios">
+            <Select
+              value={color.ratios ?? ''}
+              options={[
+                { value: '', label: `inherit (${inheritedRatios})` },
+                ...scaleNames.map((preset) => ({ value: preset, label: labelFor(preset) })),
+              ]}
+              onValue={(ratios) => onChange({ ratios: ratios || undefined })}
+            />
+          </Field>
+          <Field label="Formula">
+            <Select
+              value={color.formula ?? ''}
+              options={[
+                { value: '', label: `inherit (${inheritedFormula})` },
+                { value: 'wcag2', label: 'wcag2' },
+                { value: 'wcag3', label: 'wcag3' },
+              ]}
+              onValue={(formula) =>
+                onChange({ formula: (formula || undefined) as ColorConfig['formula'] })
+              }
+            />
+          </Field>
+          <Field label="Colorspace">
+            <Select
+              value={color.colorspace ?? ''}
+              options={[
+                { value: '', label: 'inherit' },
+                ...COLORSPACES.map((space) => ({ value: space, label: space })),
+              ]}
+              onValue={(colorspace) =>
+                onChange({ colorspace: (colorspace || undefined) as ColorConfig['colorspace'] })
+              }
+            />
+          </Field>
+          {exportField}
+          <div class="studio-row palette-switches">
+            <Check
+              type="switch"
+              checked={color.smooth ?? false}
+              onChecked={(checked) => onChange({ smooth: checked || undefined })}
+            >
+              Smooth
+            </Check>
+            {disabledField}
+          </div>
+        </div>
+        <HueShiftEditor
+          key={color.name}
+          value={color.hueShift}
+          onChange={(hueShift) => onChange({ hueShift })}
+          allowInherit
+          globalActive={hasGlobalShift}
+          id={HUE_SHIFT_GROUP}
+        />
+      </div>
     </div>
   );
 }

@@ -105,9 +105,11 @@
   gap: var(--magma-rhythm-between-sections);
 }
 
-/* the family: its title, then its editor (its fields, its ramps, its hue shifting) */
+/* the family: its title, then its editor (its ramps, then its fields and its hue shifting); the
+   container of the two columns of the editor (the rule after the editor) */
 
 .palette-color {
+  container: palette-color / inline-size;
   display: grid;
   gap: var(--magma-rhythm-title-content);
 }
@@ -126,9 +128,11 @@
   display: grid;
 }
 
-/* the light and the dark ramp, two cards of data */
+/* the light and the dark ramp, two cards of data, one over the other while each holds its steps in
+   a row (the container of the rule after the steps) */
 
 .palette-ramps {
+  container: ramps / inline-size;
   display: grid;
   gap: var(--magma-rhythm-between-containers);
 }
@@ -201,9 +205,94 @@
   font-size: var(--text-size-info-tip);
 }
 
-.palette-editor {
+/*
+  A ramp stands in a row while every step keeps its text whole: a step needs its hex, six
+  characters of code at the size of a tip, and a margin, about 3.5rem; ten steps, the seed, the
+  name of the mode and the inset of the card make about 45rem. Under it the steps would squash, so
+  each ramp turns vertical: one step a row, the contrast at its start and the hex at its end, the
+  seed under them. Whether the two upright ramps stand side by side is the rule of the editor
+  below: a container cannot query itself.
+*/
+
+@container ramps (width < 45rem) {
+  .preview-card {
+    padding: var(--magma-rhythm-inline);
+  }
+
+  .scale-row {
+    align-items: stretch;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 200);
+  }
+
+  .scale-label {
+    inline-size: auto;
+  }
+
+  /* in a column the cells keep their height: a basis of 0 under overflow: hidden would fold them */
+
+  .scale-cells {
+    flex: none;
+    flex-direction: column;
+  }
+
+  .scale-cell {
+    block-size: calc(var(--spacing) * 900);
+    flex: none;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-inline: calc(var(--spacing) * 300);
+  }
+
+  .scale-cell.seed {
+    flex: none;
+    margin-block-start: var(--magma-rhythm-inline);
+    margin-inline-start: 0;
+  }
+}
+
+.palette-editor,
+.palette-config {
   display: grid;
   gap: var(--magma-rhythm-between-groups);
+  min-inline-size: 0;
+}
+
+/*
+  Where the family has the room, its settings on the start and its ramps beside them, held in view
+  while the settings scroll, so each change shows on the ramps at once: the settings want the
+  column of a form (about 30rem, widths/reading), the two ramps laid upright side by side about
+  26rem (two of 12rem and their gap), the gap between them the rest of about 60rem. In that column
+  the ramps are under 45rem, so upright (the rule above), and side by side. Narrower, one column,
+  the ramps first: in a row from 45rem, upright under it, side by side while each keeps the room
+  of a step laid flat (about 12rem), one over the other under that.
+*/
+
+@container palette-color (width >= 60rem) {
+  .palette-editor {
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr) 26rem;
+  }
+
+  .palette-config {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .palette-editor > .palette-ramps {
+    grid-column: 2;
+    grid-row: 1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    inset-block-start: var(--magma-rhythm-inset);
+    position: sticky;
+  }
+}
+
+@container palette-color (width < 45rem) {
+  .palette-ramps {
+    align-items: start;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  }
 }
 
 /* the fields side by side, each as wide as a short field (half the column of a form, widths.md),
