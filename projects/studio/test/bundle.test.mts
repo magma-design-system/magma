@@ -23,7 +23,7 @@ test.skipIf(!built)('the bundle holds no component of Magma, no runtime of Stenc
 })
 
 test.skipIf(!built)('each page loads Magma from beside it, untouched by the build', () => {
-  for (const page of ['index.html', 'scene.html']) {
+  for (const page of ['index.html', 'scene.html', 'groups.html']) {
     const html = readFileSync(`${dist}${page}`, 'utf8')
     expect(html).toContain('<script type="module" src="components/magma-components.esm.js"></script>')
     expect(html).toContain("@import url('node_modules/")

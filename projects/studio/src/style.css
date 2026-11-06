@@ -61,6 +61,19 @@
   display: flex;
 }
 
+/* the preferences of the scene in the dropdown of their axis (scene-prefs.tsx): the label over
+   its control, as mds-pref draws them; the inset is the one of mds-dropdown */
+.studio-prefs {
+  display: grid;
+  gap: var(--magma-rhythm-between-fields);
+  min-width: calc(var(--spacing) * 7000);
+}
+
+.studio-pref {
+  display: grid;
+  gap: var(--magma-rhythm-label-control);
+}
+
 .studio-menu {
   display: grid;
   gap: var(--magma-rhythm-inline);
@@ -117,18 +130,79 @@
   margin-inline: var(--magma-width-page-gutter);
 }
 
-/* the Theme section: the scene full screen, its controls floating over it */
+/* the Theme section: the header of what the theme is checked under, the frames under it, the
+   bar of the theme floating over them */
 .studio-theme {
   position: relative;
+  display: grid;
   flex: 1;
+  grid-template-rows: auto minmax(0, 1fr);
   min-height: 0;
+}
+
+.studio-theme-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-inline);
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--spacing) * 300) var(--magma-width-page-gutter);
+  border-block-end: thin solid rgb(var(--magma-border-muted));
+  background: rgb(var(--magma-surface-raised));
+}
+
+.studio-theme-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-inline);
+  align-items: center;
+}
+
+.studio-theme-checks mds-input-select {
+  min-width: 200px;
+}
+
+/* full width: the frames share the room, a thin line between the two modes; at a breakpoint:
+   each frame as wide as it, framed on the canvas, the row scrolling when two do not fit */
+.studio-frames {
+  display: flex;
+  justify-content: safe center;
+  min-height: 0;
+  overflow-x: auto;
 }
 
 .studio-scene {
   display: block;
-  width: 100%;
-  height: 100%;
+  flex: 1 1 0;
+  min-width: 0;
   border: 0;
+}
+
+.studio-frames[data-width='full'] .studio-scene + .studio-scene {
+  border-inline-start: thin solid rgb(var(--magma-border-muted));
+}
+
+.studio-frames:not([data-width='full']) {
+  gap: var(--magma-rhythm-between-containers);
+  padding: var(--magma-rhythm-between-containers);
+}
+
+.studio-frames:not([data-width='full']) .studio-scene {
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-lg);
+  corner-shape: var(--magma-corner-shape);
+}
+
+.studio-frames[data-width='desktop'] .studio-scene {
+  flex: 0 0 var(--breakpoint-desktop);
+}
+
+.studio-frames[data-width='tablet'] .studio-scene {
+  flex: 0 0 var(--breakpoint-tablet);
+}
+
+.studio-frames[data-width='mobile'] .studio-scene {
+  flex: 0 0 var(--breakpoint-mobile);
 }
 
 /* the edge one step past the gap between the controls (400 against 300), so the bar does not

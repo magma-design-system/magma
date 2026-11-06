@@ -5,33 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Magma studio, scene</title>
     <!--
-      The scene the Theme section shows in its iframe: a page of a product, made of Magma
-      components only, so a theme set on its <html> (data-theme-name) and the preferences of its
-      own panel (mds-pref, which writes on its own document) move the scene and leave the studio
-      alone (#695, "The dogfooding constraint"). The scenes of #697 replace it.
+      The scene the Theme section shows in its iframe: the desk of an office of a product, made of
+      Magma components only, so a theme set on its <html> (data-theme-name) and the preferences of
+      its own panel (mds-pref, which writes on its own document) move the scene and leave the
+      studio alone (#695, "The dogfooding constraint").
+
+      It is a demo of the components as the one of the daisyUI theme generator (#697, Scenes): one
+      card per task of the desk, side by side in columns, so a theme is judged on most of Magma at
+      once: a hue on a themed surface, text at every prominence, borders, a disabled state, the
+      solid fills of the main actions, the colours of the states. The cards are items of a set
+      (docs/agents/patterns/surfaces.md, card); the columns fill top to bottom, each card whole.
+      The mode and the contrast are set by the header of the Theme section (shell.tsx,
+      applyFrame), so the panel of the preferences has neither: a stored mode would bring the two
+      frames side by side to the same one.
       The plain CSS below takes every value from the tokens of the installed Magma.
     -->
     <style>
       .scene-main {
         display: grid;
-        gap: var(--magma-rhythm-between-sections);
+        gap: var(--magma-rhythm-between-groups);
         max-width: var(--magma-width-page);
         margin-inline: auto;
-        padding: var(--magma-rhythm-between-sections) var(--magma-width-page-gutter);
+        padding: var(--magma-rhythm-between-groups) var(--magma-width-page-gutter);
       }
       .scene-head,
-      .scene-section {
+      .scene-stack {
         display: grid;
         gap: var(--magma-rhythm-title-content);
       }
-      .scene-card {
+      .scene-figure .scene-stack {
+        justify-items: start;
+      }
+      .scene-grow {
+        flex: 1 1 0;
+        min-inline-size: 0;
+      }
+      /* the cards in columns at least two thirds of a form wide, as many as the frame holds */
+      .scene-grid {
+        columns: calc(var(--magma-width-form) * 2 / 3);
+        column-gap: var(--magma-rhythm-between-containers);
+      }
+      .scene-grid > * {
+        break-inside: avoid;
+        margin-block-end: var(--magma-rhythm-between-containers);
+      }
+      .scene-fields {
         display: grid;
         gap: var(--magma-rhythm-between-fields);
-        max-width: var(--magma-width-form);
-        padding: var(--magma-rhythm-inset);
-        border: 1px solid rgb(var(--magma-border-muted));
-        border-radius: var(--magma-radius-lg);
-        background: rgb(var(--magma-surface-raised));
       }
       .scene-row {
         display: flex;
@@ -39,22 +59,40 @@
         gap: var(--magma-rhythm-inline);
         align-items: center;
       }
+      /* a row whose last item goes to the end: a name and its state, a count */
+      .scene-spread {
+        display: flex;
+        gap: var(--magma-rhythm-inline);
+        align-items: center;
+        justify-content: space-between;
+      }
+      .scene-spread > :first-child {
+        display: flex;
+        gap: var(--magma-rhythm-inline);
+        align-items: center;
+        min-inline-size: 0;
+      }
+      .scene-rows {
+        display: grid;
+      }
+      .scene-rows > * {
+        padding-block: calc(var(--spacing) * 200);
+        border-block-end: thin solid rgb(var(--magma-border-muted));
+      }
+      .scene-rows > :last-child {
+        border-block-end: 0;
+      }
       .scene-muted {
         color: rgb(var(--magma-text-muted));
       }
-      /* the preferences of the scene, opened from the bar of the studio */
-      .scene-pref {
-        position: fixed;
-        z-index: var(--magma-dropdown-z-index);
-        inset-block-start: var(--magma-rhythm-inset);
-        inset-inline-end: var(--magma-rhythm-inset);
-        padding: var(--magma-rhythm-inset);
-        border-radius: var(--magma-radius-2xl);
-        background: rgb(var(--magma-surface-overlay));
-        box-shadow: var(--shadow-box-lg);
+      .scene-icon {
+        color: rgb(var(--magma-text-muted));
       }
-      .scene-pref[hidden] {
-        display: none;
+      .scene-figure {
+        display: flex;
+        gap: var(--magma-rhythm-inline);
+        align-items: center;
+        justify-content: space-between;
       }
     </style>
   </head>
@@ -62,49 +100,390 @@
     <mds-header>
       <mds-header-bar>
         <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
-        <mds-button slot="nav" href="#" aria-current="page" variant="dark" tone="weak">Pratiche</mds-button>
-        <mds-button slot="nav" href="#" variant="dark" tone="text">Contatti</mds-button>
+        <mds-button slot="nav" href="#" aria-current="page" variant="dark" tone="weak">Scrivania</mds-button>
+        <mds-button slot="nav" href="#" variant="dark" tone="text">Pratiche</mds-button>
         <mds-button slot="nav" href="#" variant="dark" tone="text">Scadenze</mds-button>
       </mds-header-bar>
     </mds-header>
     <main class="scene-main">
       <header class="scene-head">
-        <mds-text typography="page" tag="h1">Pratiche</mds-text>
-        <mds-text typography="detail" tag="p" class="scene-muted">Le pratiche che i cittadini inviano agli uffici.</mds-text>
+        <mds-text typography="page" tag="h1">Scrivania</mds-text>
+        <mds-text typography="detail" tag="p" class="scene-muted">Le pratiche, gli appuntamenti e le comunicazioni dell'ufficio anagrafe.</mds-text>
       </header>
-      <mds-banner variant="info" headline="Tre pratiche arrivate oggi">Aspettano di essere assegnate a un ufficio.</mds-banner>
-      <section class="scene-section">
-        <mds-text typography="section" tag="h2">Nuova pratica</mds-text>
-        <div class="scene-card">
-          <mds-input-field label="Richiedente">
-            <mds-input value="Mario Rossi"></mds-input>
-          </mds-input-field>
-          <mds-input-field label="Ufficio">
-            <mds-input-select>
-              <option>Anagrafe</option>
-              <option>Stato civile</option>
-            </mds-input-select>
-          </mds-input-field>
-          <div class="scene-row">
-            <mds-badge variant="success" label="Completa"></mds-badge>
-            <mds-badge variant="warning" label="In scadenza"></mds-badge>
-            <mds-badge variant="error" label="Respinta"></mds-badge>
-          </div>
-          <div class="scene-row">
-            <mds-button variant="dark" tone="text">Annulla</mds-button>
-            <mds-button tone="strong">Invia la pratica</mds-button>
-          </div>
+
+      <!-- the request in hand: its steps want the width of the page, the stepper centres the
+           current one and would push the first out of a column -->
+      <mds-card>
+        <mds-card-header>
+          <mds-text typography="part" tag="h2">Pratica 2026/0118, cambio di residenza</mds-text>
+        </mds-card-header>
+        <mds-card-content>
+          <mds-stepper-bar items-done="2">
+            <mds-stepper-bar-item badge step icon="mi/baseline/description" icon-checked="mi/baseline/done" label="Ricevuta"></mds-stepper-bar-item>
+            <mds-stepper-bar-item badge step icon="mi/baseline/pending-actions" icon-checked="mi/baseline/done" label="Istruttoria"></mds-stepper-bar-item>
+            <mds-stepper-bar-item badge step icon="mi/baseline/fact-check" icon-checked="mi/baseline/done" label="Accertamenti"></mds-stepper-bar-item>
+            <mds-stepper-bar-item badge step icon="mi/baseline/verified" icon-checked="mi/baseline/done" label="Chiusa"></mds-stepper-bar-item>
+          </mds-stepper-bar>
+        </mds-card-content>
+      </mds-card>
+
+      <div class="scene-grid">
+        <!-- filters: a choice among states, the filters in force, the kinds with their counts -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Filtri</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <div class="scene-fields">
+              <mds-filter label="Stato">
+                <mds-filter-item label="Tutte" value="" count="44" selected></mds-filter-item>
+                <mds-filter-item label="Nuove" value="nuova" count="8"></mds-filter-item>
+                <mds-filter-item label="Chiuse" value="chiusa" count="16"></mds-filter-item>
+              </mds-filter>
+              <div class="scene-row">
+                <mds-chip label="Anagrafe" deletable tone="weak"></mds-chip>
+                <mds-chip label="Novembre" deletable tone="weak"></mds-chip>
+              </div>
+              <div class="scene-rows">
+                <div class="scene-spread">
+                  <mds-input-switch type="checkbox" checked>Cambi di residenza</mds-input-switch>
+                  <mds-badge variant="dark" tone="strong" label="25"></mds-badge>
+                </div>
+                <div class="scene-spread">
+                  <mds-input-switch type="checkbox" checked>Certificati</mds-input-switch>
+                  <mds-badge variant="dark" tone="strong" label="3"></mds-badge>
+                </div>
+                <div class="scene-spread">
+                  <mds-input-switch type="checkbox">Iscrizioni</mds-input-switch>
+                  <mds-badge variant="warning" tone="strong" label="0"></mds-badge>
+                </div>
+                <div class="scene-spread">
+                  <mds-input-switch type="checkbox" disabled>Carte d'identità</mds-input-switch>
+                  <mds-badge variant="dark" tone="weak" label="4"></mds-badge>
+                </div>
+              </div>
+            </div>
+          </mds-card-content>
+        </mds-card>
+
+        <!-- figures: a count with its trend, two actions -->
+        <mds-card>
+          <mds-card-content>
+            <div class="scene-fields">
+              <mds-kpi>
+                <mds-kpi-item icon="mi/baseline/folder-open" label="1.240" description="Pratiche chiuse a novembre"></mds-kpi-item>
+              </mds-kpi>
+              <mds-text typography="detail" tag="p" class="scene-muted">Il 15% in più di ottobre, con lo stesso personale allo sportello.</mds-text>
+            </div>
+          </mds-card-content>
+          <mds-card-footer>
+            <mds-button variant="dark" tone="outline">Grafici</mds-button>
+            <mds-button>Dettagli</mds-button>
+          </mds-card-footer>
+        </mds-card>
+
+        <!-- states: the four messages a page shows -->
+        <div class="scene-stack">
+          <mds-banner variant="info" headline="Nove nuovi messaggi">Tre arrivano dallo sportello telematico.</mds-banner>
+          <mds-banner variant="success" headline="Verifica completata">I dati del richiedente sono confermati.</mds-banner>
+          <mds-banner variant="warning" headline="Conferma la tua email">
+            Ti abbiamo scritto all'indirizzo dell'ufficio.
+            <mds-button slot="action" variant="warning" tone="outline" size="sm">Invia di nuovo</mds-button>
+          </mds-banner>
+          <mds-banner variant="error" headline="Accesso negato">Non hai i permessi per l'archivio storico.</mds-banner>
         </div>
-      </section>
+
+        <!-- an appointment: a date, a search, a switch, a coloured note -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Agenda</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <div class="scene-fields">
+              <mds-input-field label="Giorno">
+                <mds-input-date value="2026-11-05"></mds-input-date>
+              </mds-input-field>
+              <mds-input type="search" icon="mi/baseline/search" aria-label="Cerca un appuntamento" placeholder="Cerca un appuntamento"></mds-input>
+              <mds-input-switch type="switch" checked>Mostra tutta la giornata</mds-input-switch>
+              <mds-note variant="blue">
+                <mds-text slot="title" typography="h6">Riunione di coordinamento</mds-text>
+                Il punto settimanale con lo stato civile e l'elettorale, alle 10.
+              </mds-note>
+            </div>
+          </mds-card-content>
+        </mds-card>
+
+        <!-- the latest requests and their states -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Pratiche recenti</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <div class="scene-rows">
+              <div class="scene-spread">
+                <mds-text typography="detail">Giulia Bianchi</mds-text>
+                <mds-badge variant="info" label="Inviata"></mds-badge>
+              </div>
+              <div class="scene-spread">
+                <mds-text typography="detail">Luca Ferri</mds-text>
+                <mds-badge variant="error" label="Respinta"></mds-badge>
+              </div>
+              <div class="scene-spread">
+                <mds-text typography="detail">Marco Rossi</mds-text>
+                <mds-badge variant="warning" label="In lavorazione"></mds-badge>
+              </div>
+              <div class="scene-spread">
+                <mds-text typography="detail">Anna Conti</mds-text>
+                <mds-badge variant="success" label="Chiusa"></mds-badge>
+              </div>
+              <div class="scene-spread">
+                <mds-text typography="detail">Elena Ricci</mds-text>
+                <mds-badge variant="success" label="Chiusa"></mds-badge>
+              </div>
+            </div>
+          </mds-card-content>
+          <mds-card-footer>
+            <mds-paginator pages="5" current-page="2"></mds-paginator>
+          </mds-card-footer>
+        </mds-card>
+
+        <!-- a score on a radial progress -->
+        <mds-card>
+          <mds-card-content>
+            <div class="scene-figure">
+              <div class="scene-stack">
+                <mds-text typography="caption" tag="p" class="scene-muted">Accessibilità del portale</mds-text>
+                <mds-text typography="h3" tag="p">91 su 100</mds-text>
+                <mds-badge variant="success" label="Tutto in ordine"></mds-badge>
+              </div>
+              <mds-radial-progress progress="0.91" variant="success" aria-label="91 su 100"></mds-radial-progress>
+            </div>
+          </mds-card-content>
+        </mds-card>
+
+        <!-- tabs and their panels -->
+        <mds-card>
+          <mds-card-content>
+            <mds-tab>
+              <mds-tab-item label="Anagrafica"></mds-tab-item>
+              <mds-tab-item label="Documenti" selected></mds-tab-item>
+              <mds-tab-item label="Pagamenti"></mds-tab-item>
+              <div slot="content"><mds-text>Nome, residenza e stato di famiglia.</mds-text></div>
+              <div slot="content"><mds-text>Due documenti allegati alla pratica.</mds-text></div>
+              <div slot="content"><mds-text>Nessun pagamento dovuto.</mds-text></div>
+            </mds-tab>
+          </mds-card-content>
+        </mds-card>
+
+        <!-- a new message: a bar of tools, a long text, its count, a draft and the main action -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Nuova comunicazione</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <div class="scene-fields">
+              <div class="scene-spread">
+                <div>
+                  <mds-button icon="mi/baseline/format-bold" variant="dark" tone="text" size="sm" aria-label="Grassetto"></mds-button>
+                  <mds-button icon="mi/baseline/format-italic" variant="dark" tone="text" size="sm" aria-label="Corsivo"></mds-button>
+                  <mds-button icon="mi/baseline/format-underlined" variant="dark" tone="text" size="sm" aria-label="Sottolineato"></mds-button>
+                </div>
+                <mds-button icon="mi/baseline/attach-file" variant="dark" tone="weak" size="sm">Allega</mds-button>
+              </div>
+              <mds-input-field label="Testo" message="1200 caratteri rimanenti">
+                <mds-input type="textarea" placeholder="Che cosa vuoi comunicare?"></mds-input>
+              </mds-input-field>
+            </div>
+          </mds-card-content>
+          <mds-card-footer>
+            <mds-button variant="dark" tone="outline">Salva la bozza</mds-button>
+            <mds-button>Pubblica</mds-button>
+          </mds-card-footer>
+        </mds-card>
+
+        <!-- a search and its action -->
+        <mds-card>
+          <mds-card-content>
+            <div class="scene-row">
+              <mds-input class="scene-grow" type="search" icon="mi/baseline/search" aria-label="Cerca" placeholder="Numero o oggetto"></mds-input>
+              <mds-button>Cerca</mds-button>
+            </div>
+          </mds-card-content>
+        </mds-card>
+
+        <!-- a form: fields, an error, switches, the main action and a link -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Nuovo operatore</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <div class="scene-fields">
+              <mds-input-field label="Nome utente">
+                <mds-input icon="mi/baseline/person" value="g.bianchi"></mds-input>
+              </mds-input-field>
+              <mds-input-field label="Password" variant="error" message="Almeno 8 caratteri">
+                <mds-input type="password" icon="mi/baseline/key" value="abc" variant="error" aria-invalid="true"></mds-input>
+              </mds-input-field>
+              <mds-input-switch type="switch" checked>Può firmare i certificati</mds-input-switch>
+              <mds-input-switch type="switch">Riceve le notifiche via email</mds-input-switch>
+            </div>
+          </mds-card-content>
+          <mds-card-footer>
+            <mds-link href="#">Annulla</mds-link>
+            <mds-button>Crea l'operatore</mds-button>
+          </mds-card-footer>
+        </mds-card>
+
+        <!-- an amount on a slider -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Diritti di segreteria</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <mds-input-range min="0" max="100" value="50">Importo massimo (euro)</mds-input-range>
+          </mds-card-content>
+        </mds-card>
+
+        <!-- the archive: sections with their counts and a dot of news -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Archivio</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <div class="scene-rows">
+              <div class="scene-spread">
+                <span><mds-icon class="scene-icon" name="mi/baseline/storage"></mds-icon><mds-text typography="detail">Registri</mds-text></span>
+                <mds-text typography="detail" class="scene-muted">7</mds-text>
+              </div>
+              <div class="scene-spread">
+                <span><mds-icon class="scene-icon" name="mi/baseline/inventory-2"></mds-icon><mds-text typography="detail">Fascicoli</mds-text></span>
+                <mds-text typography="detail" class="scene-muted">128</mds-text>
+              </div>
+              <div class="scene-spread">
+                <span><mds-icon class="scene-icon" name="mi/baseline/forum"></mds-icon><mds-text typography="detail">Messaggi</mds-text></span>
+                <mds-badge variant="info" tone="strong" label="29"></mds-badge>
+              </div>
+              <div class="scene-spread">
+                <span><mds-icon class="scene-icon" name="mi/baseline/groups"></mds-icon><mds-text typography="detail">Operatori</mds-text></span>
+                <mds-text typography="detail" class="scene-muted">12</mds-text>
+              </div>
+              <div class="scene-spread">
+                <span><mds-icon class="scene-icon" name="mi/baseline/settings"></mds-icon><mds-text typography="detail">Impostazioni</mds-text></span>
+              </div>
+            </div>
+          </mds-card-content>
+        </mds-card>
+
+        <!-- people: a stack of avatars, two entities with their details -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Il gruppo</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <div class="scene-fields">
+              <!-- one letter each: the next avatar of the stack covers the second -->
+              <mds-avatar-stack total="7">
+                <mds-avatar-stack-item initials="g" variant="primary"></mds-avatar-stack-item>
+                <mds-avatar-stack-item initials="l" variant="orchid"></mds-avatar-stack-item>
+                <mds-avatar-stack-item initials="m" variant="aqua"></mds-avatar-stack-item>
+              </mds-avatar-stack>
+              <mds-entity initials="gb" variant="primary">
+                <mds-text truncate="word" typography="h6">Giulia Bianchi</mds-text>
+                <mds-text truncate="word" slot="detail" typography="caption">Responsabile dell'ufficio</mds-text>
+                <mds-badge slot="detail" variant="success" label="In servizio"></mds-badge>
+              </mds-entity>
+              <mds-entity initials="lf" variant="orchid">
+                <mds-text truncate="word" typography="h6">Luca Ferri</mds-text>
+                <mds-text truncate="word" slot="detail" typography="caption">Sportello</mds-text>
+                <mds-badge slot="detail" variant="dark" label="In ferie"></mds-badge>
+              </mds-entity>
+            </div>
+          </mds-card-content>
+        </mds-card>
+
+        <!-- files and an upload in progress -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Allegati</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <div class="scene-fields">
+              <mds-file filename="Documento d'identità" suffix="pdf" description="240 KB"></mds-file>
+              <mds-file filename="Contratto di affitto" suffix="docx" description="1,2 MB"></mds-file>
+              <div class="scene-stack">
+                <mds-text typography="caption" tag="p" class="scene-muted">Planimetria, 60%</mds-text>
+                <mds-progress progress="0.6" aria-label="Caricamento della planimetria"></mds-progress>
+              </div>
+            </div>
+          </mds-card-content>
+        </mds-card>
+
+        <!-- the actions at each weight, and one that cannot run -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Azioni</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <div class="scene-fields">
+              <div class="scene-row">
+                <mds-button>Invia</mds-button>
+                <mds-button tone="weak">Assegna</mds-button>
+                <mds-button tone="outline">Inoltra</mds-button>
+                <mds-button tone="text">Rimanda</mds-button>
+              </div>
+              <div class="scene-row">
+                <mds-button variant="dark" tone="outline">Annulla</mds-button>
+                <mds-button variant="error">Elimina</mds-button>
+                <mds-button variant="ai" icon="mi/baseline/insights">Riassumi</mds-button>
+                <mds-button disabled>Firma</mds-button>
+              </div>
+            </div>
+          </mds-card-content>
+        </mds-card>
+
+        <!-- the kinds of request, each with its colour -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Categorie</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <div class="scene-row">
+              <mds-label variant="blue" label="Residenza"></mds-label>
+              <mds-label variant="green" label="Stato civile"></mds-label>
+              <mds-label variant="orange" label="Elettorale"></mds-label>
+              <mds-label variant="orchid" label="Cittadinanza"></mds-label>
+              <mds-label variant="aqua" tone="strong" label="Certificati"></mds-label>
+              <mds-label variant="red" tone="strong" label="Urgente"></mds-label>
+            </div>
+          </mds-card-content>
+        </mds-card>
+
+        <!-- questions and answers -->
+        <mds-card>
+          <mds-card-header>
+            <mds-text typography="part" tag="h2">Domande frequenti</mds-text>
+          </mds-card-header>
+          <mds-card-content>
+            <mds-accordion>
+              <mds-accordion-item label="Quanto dura un cambio di residenza?" typography="h6" selected>
+                <mds-text>Due giorni lavorativi per la registrazione, 45 per gli accertamenti.</mds-text>
+              </mds-accordion-item>
+              <mds-accordion-item label="Chi può chiedere un certificato?" typography="h6">
+                <mds-text>Chiunque, per i certificati anagrafici; l'interessato, per gli altri.</mds-text>
+              </mds-accordion-item>
+              <mds-accordion-item label="Come si paga?" typography="h6">
+                <mds-text>Con pagoPA, allo sportello o dal portale.</mds-text>
+              </mds-accordion-item>
+            </mds-accordion>
+          </mds-card-content>
+        </mds-card>
+      </div>
     </main>
-    <aside id="studio-pref" class="scene-pref" hidden aria-label="Preferenze">
+    <!-- the preferences of the scene, never shown: the dropdown of the bar of the studio sets
+      their attributes (scene-prefs.tsx), and they apply them on this document. No language: the
+      dropdown has none, and a stored one would switch the scene with nothing to switch it back -->
+    <aside id="studio-pref" hidden aria-label="Preferenze">
       <mds-pref>
-        <mds-pref-language>
-          <mds-pref-language-item code="it"></mds-pref-language-item>
-          <mds-pref-language-item code="en"></mds-pref-language-item>
-        </mds-pref-language>
-        <mds-pref-mode></mds-pref-mode>
-        <mds-pref-contrast></mds-pref-contrast>
         <mds-pref-animation></mds-pref-animation>
         <mds-pref-consumption></mds-pref-consumption>
       </mds-pref>
