@@ -24,8 +24,8 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { magmaRoot } from '../core/data.js';
 import {
+  magmaRoot,
   BLOCK,
   examplesOf,
   indexPatterns,
@@ -38,7 +38,7 @@ import {
   situationIds,
   type Preview,
   type PreviewImageMode,
-} from '../core/patterns.js';
+} from '@maggioli-design-system/magma/lint';
 import { packageDir, readJsonFile, resolvePackage, type ToolContext } from './context.js';
 import { folderOf, slugFile } from './icons.js';
 import { ToolError, withImages, type Tool } from './protocol.js';

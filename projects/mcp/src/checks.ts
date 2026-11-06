@@ -9,8 +9,8 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import magma from '../eslint/index.js';
-import { magmaRoot } from '../core/data.js';
+import magma from '@maggioli-design-system/magma/eslint';
+import { magmaRoot } from '@maggioli-design-system/magma/lint';
 import { packageDir, readJsonFile, type ToolContext } from './context.js';
 import { tokensOf } from './tokens.js';
 import { ToolError, type Tool } from './protocol.js';
@@ -158,8 +158,8 @@ export const checkMarkup = (context: ToolContext): Tool => ({
         );
       // loaded only here: the server runs without Stylelint until CSS is asked for
       const config = (severities === 'strict'
-        ? await import('../stylelint/strict.js')
-        : await import('../stylelint/recommended.js')
+        ? await import('@maggioli-design-system/magma/stylelint/strict')
+        : await import('@maggioli-design-system/magma/stylelint/recommended')
       ).default as unknown as Record<string, unknown>;
       const { results } = await stylelint.lint({
         code,

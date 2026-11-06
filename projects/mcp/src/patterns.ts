@@ -19,8 +19,9 @@
 */
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { loadComponents, magmaRoot } from '../core/data.js';
 import {
+  loadComponents,
+  magmaRoot,
   BLOCK,
   FOUNDATION,
   MAGMA_LAYER,
@@ -48,7 +49,7 @@ import {
   type Pattern,
   type PatternFile,
   type Preview,
-} from '../core/patterns.js';
+} from '@maggioli-design-system/magma/lint';
 import { ToolError, type Tool } from './protocol.js';
 import { GAP, GAP_SCHEMA, wordsOf, type ToolContext } from './context.js';
 

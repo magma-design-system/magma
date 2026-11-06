@@ -115,7 +115,7 @@ of `command`).
 
 `check_markup` uses the ESLint, Stylelint and template parsers the project installed with
 the lint ([`lint.md`](lint.md)). The same definitions, for a tool that documents them, are in
-`@maggioli-design-system/magma/dist/lint/mcp/tools.json`: what `tools/list` answers.
+`@maggioli-design-system/magma/dist/mcp/tools.json`: what `tools/list` answers.
 
 ## When to call them
 

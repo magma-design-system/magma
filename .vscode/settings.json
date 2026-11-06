@@ -27,7 +27,7 @@
   // .nx/cache, the dist folders, the worktrees) and no project claims the sources: no
   // completion and no hover. An @source in the entry point of Storybook is not enough
   // (measured 2026-10-21). The entry point of the previews and the drafts is written by
-  // nx run lint:serve.previews when it starts (#1220); until then it is missing, and the
+  // nx run mcp:serve.previews when it starts (#1220); until then it is missing, and the
   // extension skips it (measured 2026-11-01).
   "tailwindCSS.experimental.configFile": {
     "projects/stencil/.storybook/styles.css": "projects/stencil/src/**",

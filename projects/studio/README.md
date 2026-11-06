@@ -128,7 +128,7 @@ with its issue until the component lands:
 The studio never bundles the Magma components nor their stylesheets: its pages load them from the
 Magma installed where the studio runs ([`ARCHITECTURE.md`](../../docs/ARCHITECTURE.md), "Magma as
 an external vendor"), as a render of the MCP server does. `vendor.ts` uses the code of the render
-(`projects/lint/src/mcp/render.ts`; "The page a render loads" in
+(`projects/mcp/src/render.ts`; "The page a render loads" in
 [`CONTRACTS.md`](../../docs/CONTRACTS.md)):
 
 - each page imports the stylesheets of `agents/assets.md` in their layers (`stylesheetImports`),

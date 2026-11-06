@@ -31,7 +31,7 @@ flowchart LR
   RE -->|"React fixtures"| FIX
   SURF -->|"the forms of a class"| LINT["lint<br/>class rules"]
   RUN -.->|"magma-codemods: diff, reports"| APP(["consumer code on Magma 1"])
-  class LINT ai
+  class LINT tooling
   class ST visual
   class WC,RE components
   class RULES,SURF,RUN,FIX tooling

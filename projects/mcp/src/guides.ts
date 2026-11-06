@@ -8,8 +8,13 @@
 */
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { magmaRoot } from '../core/data.js';
-import { FOUNDATION, ownRules, readPatternDir, readPreviews } from '../core/patterns.js';
+import {
+  magmaRoot,
+  FOUNDATION,
+  ownRules,
+  readPatternDir,
+  readPreviews,
+} from '@maggioli-design-system/magma/lint';
 import { ToolError, type Tool } from './protocol.js';
 import { patternsDir } from './patterns.js';
 import type { ToolContext } from './context.js';
