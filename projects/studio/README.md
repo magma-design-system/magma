@@ -32,10 +32,15 @@ head of the page-header block: the title, one line, then the actions (a menu wit
 config, Copy JSON or Save, and Download last).
 
 The Theme section shows the scene (`scene.html`) in an iframe, a document of its own: the theme is
-set on its `<html>` (`data-theme-name`), and the preferences of the person live in its own
-`mds-pref` panel, which writes on its own document. Both move the scene and leave the studio alone
-(#695, "The dogfooding constraint"). Only the preferences have a panel; the panels of the other
-axes come with #696.
+set on its `<html>` (`data-theme-name`), and the preferences of the person on its own `mds-pref-*`,
+which apply them on that document. Both move the scene and leave the studio alone (#695, "The
+dogfooding constraint"). An axis of the bar opens its controls in an `mds-dropdown` from its
+button, and the bar shows only the axes with controls: today the preferences, the others come back
+with theirs (#696).
+Their dropdown holds controls of the studio, not the `mds-pref-*` themselves, which would write on
+the document of the studio: each choice is set on the hidden `mds-pref-*` of every frame
+(`src/scene-prefs.tsx`), whose modes, English words and defaults are those of the components
+(`test/scene-prefs.test.mts` holds them to the sources).
 
 The select offers the themes of the configuration being edited, the ones the Themes page lists
 (each tint with a surface, the base first), and the frame paints them: the studio writes into it,

@@ -94,20 +94,6 @@
         align-items: center;
         justify-content: space-between;
       }
-      /* the preferences of the scene, opened from the bar of the studio */
-      .scene-pref {
-        position: fixed;
-        z-index: var(--magma-dropdown-z-index);
-        inset-block-start: var(--magma-rhythm-inset);
-        inset-inline-end: var(--magma-rhythm-inset);
-        padding: var(--magma-rhythm-inset);
-        border-radius: var(--magma-radius-2xl);
-        background: rgb(var(--magma-surface-overlay));
-        box-shadow: var(--shadow-box-lg);
-      }
-      .scene-pref[hidden] {
-        display: none;
-      }
     </style>
   </head>
   <body>
@@ -493,12 +479,11 @@
         </mds-card>
       </div>
     </main>
-    <aside id="studio-pref" class="scene-pref" hidden aria-label="Preferenze">
+    <!-- the preferences of the scene, never shown: the dropdown of the bar of the studio sets
+      their attributes (scene-prefs.tsx), and they apply them on this document. No language: the
+      dropdown has none, and a stored one would switch the scene with nothing to switch it back -->
+    <aside id="studio-pref" hidden aria-label="Preferenze">
       <mds-pref>
-        <mds-pref-language>
-          <mds-pref-language-item code="it"></mds-pref-language-item>
-          <mds-pref-language-item code="en"></mds-pref-language-item>
-        </mds-pref-language>
         <mds-pref-animation></mds-pref-animation>
         <mds-pref-consumption></mds-pref-consumption>
       </mds-pref>

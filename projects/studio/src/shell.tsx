@@ -7,6 +7,13 @@ import { readDraft } from './draft.js';
 import { gateVerdict, type GateVerdict } from './gate.js';
 import { sceneStyle } from './scene-css.js';
 import {
+  applyPrefs,
+  DEFAULT_PREFS,
+  PREFS_TITLE,
+  ScenePrefsPanel,
+  type ScenePrefs,
+} from './scene-prefs.js';
+import {
   BEHAVIOR_PAGES,
   COLORS_PAGES,
   HOME,
@@ -241,8 +248,14 @@ const AXES = [
   { id: 'dimension', label: 'Dimension', icon: 'mi/baseline/straighten' },
 ] as const;
 type Axis = (typeof AXES)[number]['id'];
-/** The axes with a panel today; the others come with the axis panel (#696). */
+/**
+ * The axes with a panel today, the only ones the bar shows: an axis with nothing to set is no
+ * control. The others come back with their panel (#696); shape (`data-corner-shape`) and depth
+ * (`--depth`) are already in Magma, typography, density and dimension not yet.
+ */
 const READY: ReadonlySet<Axis> = new Set(['preferences']);
+/** The button of an axis, the caller its dropdown opens from. */
+const axisId = (axis: Axis): string => `studio-axis-${axis}`;
 
 /**
  * The themes the studio previews: the ones Magma ships, without the names kept until the next
@@ -349,9 +362,10 @@ const CONFIGURATION_STYLE = 'studio-configuration';
 /**
  * The Theme section: the theme on a scene of a product in an iframe, the header of what it is
  * checked under over it, the bar of the theme and its axes at the bottom. The scene is a document
- * of its own: what is set on its <html> and the preferences of its own panel move it and leave
- * the studio alone (#695, "The dogfooding constraint"). Both modes are two frames side by side,
- * scrolled together; the panel of the preferences opens in the first. The select offers the
+ * of its own: what is set on its <html> and on its own preferences moves it and leaves the studio
+ * alone (#695, "The dogfooding constraint"). Both modes are two frames side by side, scrolled
+ * together; an axis opens its controls in a dropdown from its button, and the choices of the
+ * preferences reach every frame (scene-prefs.tsx). The select offers the
  * themes of the configuration the person edits, which the frame paints (scene-css.ts); until the
  * configuration is loaded, the themes Magma ships.
  */
@@ -362,7 +376,9 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
   const names = scene?.themes.map((one) => one.name) ?? PREVIEW_THEMES;
   const [chosen, setTheme] = useState(PREVIEW_THEMES[0]);
   const theme = names.includes(chosen) ? chosen : names[0];
+  // the axis whose dropdown is open, for the tone of its button
   const [panel, setPanel] = useState<Axis | null>(null);
+  const [prefs, setPrefs] = useState<ScenePrefs>(DEFAULT_PREFS);
   const [view, setView] = useState<View>('scenes');
   const page = VIEWS.find((one) => one.id === view)!;
   const [mode, setMode] = useState<ModeView>('light');
@@ -387,10 +403,9 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
       const frame = frames.current[index]?.contentDocument;
       if (!frame?.documentElement) return;
       applyFrame(frame, { theme, scheme, contrast, css: scene?.css });
-      const pref = frame.getElementById('studio-pref');
-      if (pref) pref.hidden = index > 0 || panel !== 'preferences';
+      applyPrefs(frame, prefs);
     });
-  }, [theme, panel, mode, contrast, scene, loaded]);
+  }, [theme, prefs, mode, contrast, scene, loaded]);
 
   // the frames side by side scroll together, so the same card is in view in both modes: the
   // frame the person scrolls leads, the other jumps to it (the scene scrolls smoothly, and a
@@ -499,21 +514,29 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
             <option value={name}>{titleOf(name)}</option>
           ))}
         </mds-input-select>
-        {AXES.map((axis) => (
+        {AXES.filter((axis) => READY.has(axis.id)).map((axis) => (
           <mds-button
+            id={axisId(axis.id)}
             icon={axis.icon}
             variant="dark"
             tone={panel === axis.id ? 'strong' : 'text'}
             aria-label={axis.label}
-            aria-pressed={panel === axis.id ? 'true' : 'false'}
-            disabled={!READY.has(axis.id)}
-            title={
-              READY.has(axis.id) ? axis.label : `${axis.label}: comes with the axis panel (#696)`
-            }
-            onClick={() => setPanel((open) => (open === axis.id ? null : axis.id))}
+            title={axis.label}
           ></mds-button>
         ))}
       </div>
+      {/* the controls of an axis open from its button, above the bar; a group, not a menu */}
+      <mds-dropdown
+        target={`#${axisId('preferences')}`}
+        placement="top"
+        strategy="fixed"
+        role="group"
+        aria-labelledby={PREFS_TITLE}
+        onmdsDropdownVisible={() => setPanel('preferences')}
+        onmdsDropdownHide={() => setPanel((open) => (open === 'preferences' ? null : open))}
+      >
+        <ScenePrefsPanel prefs={prefs} onChange={setPrefs} />
+      </mds-dropdown>
     </div>
   );
 }

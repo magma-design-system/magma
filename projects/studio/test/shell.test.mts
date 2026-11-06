@@ -70,9 +70,42 @@ test('the Theme section shows the theme in a document of its own, its controls o
     const options = [...root.querySelectorAll('.studio-toolbar mds-input-select option')]
     expect(options.map((option) => option.getAttribute('value'))).toEqual(['business', 'porcelain', 'editorial'])
   })
+  // only the axes with something to set: the others wait for their panel, out of sight (#696)
   const axes = [...root.querySelectorAll('.studio-toolbar mds-button')]
-  expect(axes.filter((axis) => !axis.hasAttribute('disabled')).map((axis) => axis.getAttribute('aria-label')))
-    .toEqual(['Preferences of the person'])
+  expect(axes.map((axis) => axis.getAttribute('aria-label'))).toEqual(['Preferences of the person'])
+  expect(axes.some((axis) => axis.hasAttribute('disabled'))).toBe(false)
+})
+
+test('an axis opens its controls in a dropdown from its button, and says which one is open', async () => {
+  await at('#/theme')
+  const button = await vi.waitFor(() => {
+    const found = root.querySelector('.studio-toolbar mds-button[aria-label="Preferences of the person"]')
+    if (!found) throw new Error('no bar yet')
+    return found
+  })
+  // the dropdown is not inside the bar, a toolbar of controls, and anchors to the button
+  const dropdown = root.querySelector(`mds-dropdown[target="#${button.id}"]`)!
+  expect(dropdown).not.toBeNull()
+  expect(dropdown.closest('.studio-toolbar')).toBeNull()
+  expect(dropdown.getAttribute('placement')).toBe('top')
+  // a panel of controls, not a menu: mds-dropdown leaves its contents alone; its title names it
+  expect(dropdown.getAttribute('role')).toBe('group')
+  const title = dropdown.querySelector(`#${dropdown.getAttribute('aria-labelledby')}`)!
+  expect(title.textContent).toBe('Accessibility')
+  expect(title.nextElementSibling?.tagName).toBe('MDS-SEPARATOR')
+  expect([...dropdown.querySelectorAll('mds-input-select, mds-tab')].map((one) => one.getAttribute('aria-label')))
+    .toEqual(['Animations', 'Consumption'])
+
+  dropdown.dispatchEvent(new CustomEvent('mdsDropdownVisible', { bubbles: true }))
+  await vi.waitFor(() => expect(button.getAttribute('tone')).toBe('strong'))
+  dropdown.dispatchEvent(new CustomEvent('mdsDropdownHide', { bubbles: true }))
+  await vi.waitFor(() => expect(button.getAttribute('tone')).toBe('text'))
+
+  // a choice is the state of the studio: the panel says it, every frame receives it
+  const animations = dropdown.querySelector('mds-tab[aria-label="Animations"]')!
+  animations.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 0, value: 'reduce' }, bubbles: true }))
+  await vi.waitFor(() => expect(animations.previousElementSibling?.textContent).toBe('Animations Disabled'))
+  expect(animations.querySelector('mds-tab-item[value="reduce"]')?.hasAttribute('selected')).toBe(true)
 })
 
 test('the header sets what the theme is checked under: both modes are two frames, the width a breakpoint', async () => {
