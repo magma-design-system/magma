@@ -1,13 +1,18 @@
-# Publishes the Storybook of `main` to GitHub Pages, at
-# https://magma-design-system.github.io/magma/storybook/, on every push to
-# `main` (a merged pull request included) that changes what the Storybook
-# shows. The previous host (magma.maggiolicloud.it, .deploy/) needs a runner
-# inside the Maggioli network and stopped updating with the move away from
-# GitLab CI.
+# Publishes the site of `main` to GitHub Pages, on every push to `main` (a
+# merged pull request included) that changes what it shows:
+#
+# - the Storybook, at https://magma-design-system.github.io/magma/storybook/;
+# - the studio (projects/studio, #695), at
+#   https://magma-design-system.github.io/magma/studio/, the address the docs
+#   site links to (decided on #693 "On the site", 2026-11-06).
+#
+# The previous host of the Storybook (magma.maggiolicloud.it, .deploy/) needs a
+# runner inside the Maggioli network and stopped updating with the move away
+# from GitLab CI.
 #
 # publish.yml dispatches it after a release of svg-icons: the chore(release)
-# commit is pushed with [skip ci] and the mds-icon story shows the svg-icons
-# version read from its manifest.
+# commit is pushed with [skip ci], the mds-icon story shows the svg-icons
+# version read from its manifest and the studio serves its icons.
 #
 # The stencil workflow built and tested the same commit in the merge queue (a
 # commit landed by the queue keeps the SHA of its merge-group run), the stories
@@ -18,10 +23,17 @@
 # an artifact expired after a day) the components are built and the stories
 # tested here before publishing.
 #
-# A repository has a single Pages site and every deploy replaces it whole:
-# Storybook lives in storybook/ and the root redirects to it, leaving room
-# for the studio (#695) next to it.
-name: deploy storybook
+# The studio is built on the same components: its pages load Magma from beside
+# them, so `studio:build.site` writes the installed Magma they ask for next to
+# the build (projects/studio/site.ts) and fails on a file it cannot find. Its
+# site is tested in the studio workflow, in the merge queue. On GitHub Pages it
+# has no API to save to: it edits in memory, keeps a draft in the browser and
+# downloads what it makes.
+#
+# A repository has a single Pages site and every deploy replaces it whole: both
+# are built in this workflow, Storybook in storybook/ and the studio in studio/;
+# the root redirects to storybook/.
+name: deploy site
 
 on:
   push:
@@ -50,7 +62,7 @@ jobs:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     outputs:
-      changed: ${{ steps.filter.outputs.storybook }}
+      changed: ${{ steps.filter.outputs.site }}
     steps:
       - uses: actions/checkout@v7
       - uses: dorny/paths-filter@v3
@@ -59,13 +71,20 @@ jobs:
           # diff against the commit before the push instead of the default branch
           base: ${{ github.ref_name }}
           filters: |
-            storybook:
+            site:
               - 'projects/stencil/**'
               - 'projects/design-tokens/**'
               - 'projects/styles/**'
               - 'projects/svg-icons/**'
+              # the studio: its sources, the code that loads Magma into its
+              # pages (render.ts and icons.ts of the MCP server, on the lint)
+              # and the logo of its bar
+              - 'projects/studio/**'
+              - 'projects/mcp/src/**'
+              - 'projects/lint/src/**'
+              - 'projects/identity/**'
               - 'package-lock.json'
-              - '.github/workflows/deploy-storybook.yml'
+              - '.github/workflows/deploy-site.yml'
 
   build:
     needs: [changes]
@@ -119,7 +138,7 @@ jobs:
               STATE=$(jq -r --arg name "magma / $JOB" '.[$name] // ""' <<< "$JOBS")
               case "$STATE" in
                 "completed failure" | "completed timed_out")
-                  echo "::error::magma / $JOB of stencil run $RUN_ID failed: Storybook is not published"
+                  echo "::error::magma / $JOB of stencil run $RUN_ID failed: the site is not published"
                   exit 1
                   ;;
                 "completed success") ;;
@@ -187,10 +206,18 @@ jobs:
         working-directory: projects/stencil
         run: npm run test-storybook
       - run: npx nx run stencil:storybook.build
+      # the studio, without the dependencies of its build: Nx would build stencil
+      # again, its cache not knowing the downloaded artifact. The artifact holds
+      # the builds of styles, svg-icons and stencil, not identity, the logo of
+      # the bar (a cache hit when stencil was built above)
+      - run: npx nx run identity:build
+      - run: npx nx run studio:build --excludeTaskDependencies
+      - run: npx nx run studio:build.site --excludeTaskDependencies
       - name: Assemble the site
         run: |
           mkdir _site
           mv projects/stencil/dist-storybook _site/storybook
+          mv projects/studio/dist-site _site/studio
           cat > _site/index.html <<'EOF'
           <!doctype html>
           <html lang="en">

@@ -371,20 +371,21 @@ jobs:
   storybook:
     needs: [release]
     # the chore(release) commit is pushed with [skip ci], so the push of a
-    # release runs no Storybook deploy; the mds-icon story shows the version
-    # of svg-icons read from its manifest, so a release of svg-icons deploys
-    # the Storybook of the release commit on request (a beta releases magma
-    # only). The deploy builds and tests the commit itself, there being no
-    # stencil run of it, and its build supersedes the one of the parent push
+    # release runs no site deploy; the mds-icon story shows the version of
+    # svg-icons read from its manifest and the studio serves its icons, so a
+    # release of svg-icons deploys the site (Storybook and studio) of the
+    # release commit on request (a beta releases magma only). The deploy
+    # builds and tests the commit itself, there being no stencil run of it,
+    # and its build supersedes the one of the parent push
     if: ${{ !cancelled() && needs.release.result == 'success' && contains(needs.release.outputs.release-tags, 'svg-icons@') }}
     runs-on: ubuntu-latest
     permissions:
-      actions: write # the workflow_dispatch of deploy-storybook.yml
+      actions: write # the workflow_dispatch of deploy-site.yml
     steps:
-      - name: Dispatch the Storybook deploy of the release commit
+      - name: Dispatch the site deploy of the release commit
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run deploy-storybook.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"
+        run: gh workflow run deploy-site.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME"
 
   publish:
     needs: [packages, approve, release]
