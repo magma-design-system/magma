@@ -8,6 +8,7 @@
   "scripts": {
     "serve": "vite",
     "build": "vite build",
+    "build.site": "tsx site.ts",
     "test": "vitest --run",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"

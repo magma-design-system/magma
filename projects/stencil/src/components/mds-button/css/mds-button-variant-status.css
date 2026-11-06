@@ -1,4 +1,5 @@
-/* The status variants, in the roles of mds-button-variant.css */
+/* The status variants, in the roles of mds-button-variant.css. A hue says the selected area of
+ * its wash by intensity, wash-soft, lighter than the wash-strong of its hover (#1269) */
 
 :host([variant='info']),
 :host([variant='success']),
@@ -13,6 +14,7 @@
   --private-button-fill-hover: var(--magma-info-emphasis-hover);
   --private-button-on-fill: var(--magma-info-on-emphasis);
   --private-button-wash: var(--magma-info-wash-base);
+  --private-button-current-wash: var(--magma-info-wash-soft);
   --private-button-wash-hover: var(--magma-info-wash-strong);
   --private-button-ink: var(--magma-info-text-subtle);
   --private-button-ink-hover: var(--magma-info-text-default);
@@ -25,6 +27,7 @@
   --private-button-fill-hover: var(--magma-success-emphasis-hover);
   --private-button-on-fill: var(--magma-success-on-emphasis);
   --private-button-wash: var(--magma-success-wash-base);
+  --private-button-current-wash: var(--magma-success-wash-soft);
   --private-button-wash-hover: var(--magma-success-wash-strong);
   --private-button-ink: var(--magma-success-text-subtle);
   --private-button-ink-hover: var(--magma-success-text-default);
@@ -37,6 +40,7 @@
   --private-button-fill-hover: var(--magma-warning-emphasis-hover);
   --private-button-on-fill: var(--magma-warning-on-emphasis);
   --private-button-wash: var(--magma-warning-wash-base);
+  --private-button-current-wash: var(--magma-warning-wash-soft);
   --private-button-wash-hover: var(--magma-warning-wash-strong);
   --private-button-ink: var(--magma-warning-text-subtle);
   --private-button-ink-hover: var(--magma-warning-text-default);
@@ -49,6 +53,7 @@
   --private-button-fill-hover: var(--magma-danger-emphasis-hover);
   --private-button-on-fill: var(--magma-danger-on-emphasis);
   --private-button-wash: var(--magma-danger-wash-base);
+  --private-button-current-wash: var(--magma-danger-wash-soft);
   --private-button-wash-hover: var(--magma-danger-wash-strong);
   --private-button-ink: var(--magma-danger-text-subtle);
   --private-button-ink-hover: var(--magma-danger-text-default);

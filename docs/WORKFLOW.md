@@ -4,7 +4,7 @@ This document is the canonical reference for how work flows through this reposit
 
 ## 1. Never merge into `main` around the queue, never release by hand
 
-`main` is the only long-lived branch: the trunk every branch starts from, the branch the merge queue feeds, the branch Storybook deploys from and the branch every package releases from. It is a protected governance target. **Agents must never merge into `main`, add a pull request to its merge queue, enable auto-merge on one, push to it directly or start a release.** These steps are a maintainer's.
+`main` is the trunk every branch starts from, directly or through the branch of an epic (rule 2), which lives until its epic lands: the branch the merge queue feeds, the branch Storybook deploys from and the branch every package releases from. It is a protected governance target. **Agents must never merge into `main`, add a pull request to its merge queue, enable auto-merge on one, push to it directly or start a release.** These steps are a maintainer's.
 
 An agent may prepare work up to (and including) a feature branch pushed to its own remote and a pull request opened from it into `main`, but merging that pull request - the promotion of the work into `main` - is a human decision.
 
@@ -16,7 +16,7 @@ An agent may prepare work up to (and including) a feature branch pushed to its o
 - Adding a pull request to the queue is a merge: a maintainer's decision, never an agent's, like auto-merge.
 - When the queue removes a pull request (a red check in its group, or a conflict with `main`), it goes back to its author: merge `main` into the branch, resolve the conflicts, regenerate the generated files (readmes, `magma.api.txt`, `components.d.ts`) with a build instead of merging them by hand, run lint and tests (rule 4), push, and the maintainer queues it again.
 - In a merge group every package pipeline builds and tests, whatever the pull requests change (the `changes` gate of `_package-pipeline.yml` lets everything through on `merge_group`): the group is the last gate before `main`.
-- The merge-group run is the CI of the commit that lands on `main`: the queue merges the very commit it tested (same SHA), so the package pipelines and `lint` run on pull requests and in the queue only, and nothing runs again on the push. `publish.yml` checks that run before a release, `deploy-storybook.yml` reuses its `stencil-build` artifact.
+- The merge-group run is the CI of the commit that lands on `main`: the queue merges the very commit it tested (same SHA), so the package pipelines and `lint` run on pull requests and in the queue only, and nothing runs again on the push. `publish.yml` checks that run before a release, `deploy-site.yml` reuses its `stencil-build` artifact.
 - **Not while a release runs.** Before adding a pull request to the queue or enabling auto-merge, check that no dispatched `publish` run is in progress (`gh run list --workflow publish.yml --event workflow_dispatch --status in_progress`): a merge that lands on `main` between the dispatch of a stable release and its push makes the release fail (nothing is tagged, the maintainer re-runs it). The automatic icon releases of its `push` trigger rebase and retry instead. An agent asked to prepare such a merge warns and waits for the run to end.
 
 `main` cannot be deleted (the `no-deletion` ruleset, with no bypass) and takes merge commits only. Both rules come from history: the repository deletes the head branch of every merged pull request, which is how `main` disappeared on 2026-10-16 when a pull request opened from it (#954) was merged; and that same pull request was merged with a rebase, which left the tagged release commit out of the history. **Never open a pull request whose head is `main`.**
@@ -38,15 +38,25 @@ Every package releases from `main`, by hand, with the `publish` workflow: "Run w
 
 Every unit of work (feature, fix, refactor, chore, etc.) must be carried out on its own dedicated branch, never directly on `main`.
 
-- Branch off the current `main`.
+- Branch off the current `main`, or off the branch of its epic when the work is a part of one (below).
 - Use a descriptive branch name that reflects the work (for example `537-feat-governance-rules`).
 - Keep unrelated changes on separate branches.
+
+### Work of more than one issue: an epic and its branch
+
+Work that needs more than one issue gets an epic: an issue whose parts are its sub-issues, and a branch of its own where they converge. The parts are tested together there before anything reaches `main`, so no part is lost on the way, and the work lands with one pull request instead of one per part. Pull requests stacked on each other's branches are not used: a chain hides which parts are together (a part that lived only in a worktree went unnoticed in one, #693) and costs a turn of the merge queue per link, each retargeted and synced.
+
+- The branch of the epic starts from the epic issue (`gh issue develop <epic> --base main`), so it is linked to it and closes it when it lands.
+- The branch of each part starts from the branch of the epic (`gh issue develop <part> --base <epic branch>`) and comes back to it with a pull request of its own, reviewed on its own, with a green pipeline. A person merges it, as for `main`; an agent opens it. A part is done when it is merged into the branch of the epic, not when it is pushed.
+- The branch of the epic syncs with `main` (rule 4) before each part is merged into it and before its pull request into `main`; a part syncs with the branch of its epic.
+- The pull request of the epic into `main` goes through the merge queue like any other (rule 1) and lists every part it resolves, the keyword repeated for each (rule 3): GitHub closes an issue only on a merge into the default branch, so the parts stay open until the epic lands.
+- Work of one issue branches from `main` as before. A part a product needs before the epic ends leaves the epic: an issue of its own, off `main`, which the branch of the epic then takes with its next sync.
 
 ## 3. Every branch starts from an issue and is linked to it
 
 Every unit of work must be tracked by a GitHub issue, and its branch must be linked to that issue so the work is discoverable from the issue's Development section.
 
-- Create the branch **from the issue itself**: the "Create a branch" button in the issue's Development section, or `gh issue develop <issue-number> --base main`. Both produce a branch named `<issue-number>-<slug>` that GitHub links automatically.
+- Create the branch **from the issue itself**: the "Create a branch" button in the issue's Development section, or `gh issue develop <issue-number> --base main` (`--base <epic branch>` for a part of an epic, rule 2). Both produce a branch named `<issue-number>-<slug>` that GitHub links automatically.
 - A matching branch name alone does **not** create the link: `123-my-feature` created by hand is not connected to issue #123.
 - If a branch was created manually anyway, establish the link at PR time at the latest: the PR body must contain a closing keyword referencing the issue (`Closes #123`).
 - PR bodies always reference their issue with a closing keyword, even when the branch is already linked. If the PR resolves more than one issue (e.g. a branch that stacks several units of work), list **every** resolved issue and **repeat the keyword for each one** (`Closes #12, closes #34`, not `Closes #12, #34`): GitHub only closes an issue that carries its own keyword, so a bare `#34` silently stays open after the merge. Use a non-closing reference (`Refs #56`) for issues that are related but NOT resolved by the PR (e.g. the tracking epic).
@@ -62,6 +72,8 @@ When you commit with the intention of pushing, follow this order before the push
 4. Only if the tests pass, push your branch **to its own remote branch** (never to `main`).
 
 If lint or the tests fail after merging `main`, stop and resolve the failures before pushing; do not push a branch that is broken against the latest `main`.
+
+A part of an epic follows the same order against the branch of its epic, which in turn syncs with `main` (rule 2).
 
 ## 5. Cover every behaviour change with a test
 
@@ -112,6 +124,10 @@ An issue opened for a problem found in another project (the docs site, a consume
 | Action                                          | Allowed for an agent?                                    |
 | ----------------------------------------------- | -------------------------------------------------------- |
 | Create a dedicated branch off `main`            | Yes, linked to its issue (see rule 3)                    |
+| Create the branch of a part off the branch of its epic | Yes, linked to the part (rule 2)                  |
+| Open a pull request from a part into the branch of its epic | Yes, with `Closes #<part>` in the body (rules 2, 3) |
+| Merge a part into the branch of its epic        | No - a person merges it, with a green pipeline (rule 2)  |
+| Stack a pull request on the branch of another one | No - the parts of a work converge on the branch of its epic (rule 2) |
 | Commit and push to that branch's own remote     | Yes, after syncing with `main` and passing lint and tests |
 | Merge `main` into your feature branch           | Yes (to stay current before a push)                      |
 | Open a pull request from it into `main`         | Yes, with `Closes #<issue>` in the body (see rule 3)     |

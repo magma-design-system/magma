@@ -19,6 +19,11 @@ export type ButtonSizeType = (typeof buttonSizeDictionary)[number];
 export const tabSizeDictionary = ['sm', 'md'] as const;
 export type TabSizeType = (typeof tabSizeDictionary)[number];
 
+// `true` (the attribute alone) is 'page', the view the button leads to; 'section' is a view
+// inside it (#1264): `currentOf()` in @common/aria reads them
+export const buttonCurrentDictionary = ['page', 'section'] as const;
+export type ButtonCurrentType = boolean | (typeof buttonCurrentDictionary)[number];
+
 export const buttonIconPositionDictionary = ['left', 'right'] as const;
 export type ButtonIconPositionType = (typeof buttonIconPositionDictionary)[number];
 
@@ -38,16 +43,10 @@ export const buttonToneFullVariantDictionary = [
 ] as const;
 
 export type ButtonVariantType =
-  | 'apple'
-  | 'google'
-  | ThemeLuminanceVariantType
-  | ThemeBrandVariantType
-  | ThemeStatusVariantType;
+  'apple' | 'google' | ThemeLuminanceVariantType | ThemeBrandVariantType | ThemeStatusVariantType;
 
 export type ButtonDropdownVariantType =
-  | ThemeLuminanceVariantType
-  | ThemeBrandVariantType
-  | ThemeStatusVariantType;
+  ThemeLuminanceVariantType | ThemeBrandVariantType | ThemeStatusVariantType;
 
 export const buttonDropdownVariantDictionary: ButtonDropdownVariantType[] = [
   ...themeLuminanceVariantDictionary,

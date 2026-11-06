@@ -8,7 +8,7 @@
 #
 # The callers run on pull requests and in the merge queue. A commit landed by
 # the queue keeps the SHA of its merge-group run, so that run is the CI of the
-# commit on main (publish.yml checks it, deploy-storybook.yml reuses its
+# commit on main (publish.yml checks it, deploy-site.yml reuses its
 # artifact) and nothing runs again on the push.
 #
 # The build job keeps the Nx cache under a key of its own Nx project and commit,
@@ -57,7 +57,7 @@ on:
         type: boolean
         default: false
       build-storybook:
-        description: Also run `npm run storybook.build` in test-working-directory (the static site the deploy storybook workflow publishes)
+        description: Also run `npm run storybook.build` in test-working-directory (the static Storybook the deploy site workflow publishes)
         type: boolean
         default: false
     outputs:

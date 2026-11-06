@@ -905,7 +905,7 @@ export class MdsInput {
           ></mds-button>
         )}
         {this.type === 'password' && !this.isPasswordVisible && this.value?.length > 0 && (
-          <div class="password-mask">
+          <div class={clsx('password-mask', (this.icon ?? this.await) && 'has-icon')}>
             <div class="password-mask-items" part="password-mask-items">
               {Array.from({ length: this.value.length }).map((_, index) => (
                 <div key={index} class="password-mask-item" part="password-mask-item"></div>

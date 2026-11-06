@@ -351,8 +351,8 @@ Type: `Promise<void>`
 graph TD;
   mds-calendar --> mds-button
   mds-calendar --> mds-calendar-cell
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-calendar-cell --> mds-button
   mds-input-date --> mds-calendar

@@ -1,0 +1,62 @@
+/* The current button (#1264), the one that leads to the view you are in. Its area sits halfway
+ * between the rest and the hover of its tone, so the hover of the other buttons still weighs
+ * more. No ramp step lies there (#1269): until full colours (#918) the area is the nearest one
+ * the roles give. Weak takes the selected wash of its family (surface-selected for an accent,
+ * wash-soft for a status hue); strong keeps its fill at rest, as no step of that band is lighter
+ * than the hover and other than the rest; outline and text, which have no area at rest, take
+ * the wash of their hover. A variant whose hover keeps the area (dark and light weak, light
+ * strong) keeps it too. Never the hover ring. The area alone stays under the 3:1 of a state
+ * (WCAG 1.4.11): the label is one weight heavier, which reads without it. The look holds on
+ * hover and while pressed.
+ *
+ * The view itself (current, current="page") takes no pointer, as the selected page of
+ * mds-paginator-item and mds-breadcrumb-item: no click, no hover, no anchor under the pointer.
+ * The keyboard keeps it in the Tab order (mds-button.tsx). */
+
+:host([current]:not([current='false'], [current='section'])) {
+  cursor: default;
+  pointer-events: none;
+}
+
+:host([current]:not([current='false'])[tone='strong']),
+:host([current]:not([current='false'])[tone='box']) {
+  --mds-button-background: rgb(var(--private-button-fill));
+  --mds-button-border-color-rgb: var(--private-button-fill);
+  --mds-button-border-width: 0;
+
+  filter: none;
+}
+
+:host([current]:not([current='false'])[tone='weak']) {
+  --mds-button-background: rgb(var(--private-button-current-wash));
+  --mds-button-border-color-rgb: var(--private-button-current-wash);
+  --mds-button-border-width: 0;
+  --mds-button-color: rgb(var(--private-button-ink));
+
+  fill: rgb(var(--private-button-ink));
+}
+
+/* the ring at rest: the width of mds-button.css, the opacity of the tone sheet */
+
+:host([current]:not([current='false'])[tone='outline']) {
+  --mds-button-background: rgb(var(--private-button-text-wash));
+  --mds-button-border-opacity: var(--mds-button-border-tone-outline-opacity);
+  --mds-button-border-width: --spacing(50);
+  --mds-button-color: rgb(var(--private-button-outline-ink));
+}
+
+:host([current]:not([current='false'])[tone='text']) {
+  --mds-button-background: rgb(var(--private-button-text-wash));
+  --mds-button-color: rgb(var(--private-button-text-ink));
+}
+
+/* one weight heavier than the size gives (mds-button-label.css): bold for action, black for the
+   bold of lg; xl is black already, and keeps only the area */
+
+:host([current]:not([current='false'])) .text {
+  @apply font-bold;
+}
+
+:host([current]:not([current='false'])[size='lg']) .text {
+  @apply font-black;
+}

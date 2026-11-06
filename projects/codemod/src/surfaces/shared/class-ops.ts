@@ -19,6 +19,7 @@ import {
   type VariantRenameRule,
 } from '../../manifest/schema.js';
 import { ruleId } from '../../manifest/registry.js';
+import { type ElementContext } from './context-hint.js';
 import {
   type ClassFinding,
   type SemanticOptions,
@@ -197,6 +198,8 @@ export interface SemanticHooks {
   emit: (finding: ClassFinding) => void;
   /** The list is one fragment of a class expression, not the whole value. */
   partial?: boolean;
+  /** The element the list sits on, for the context hints of the background decisions. */
+  element?: ElementContext;
 }
 
 /**
@@ -277,6 +280,7 @@ export const rewriteClassList = (
       enabled,
       semantic.emit,
       semantic.partial,
+      semantic.element,
     );
     for (const [i, text] of replace) parts[i] = text;
     if (replace.size > 0 || remove.size > 0) changed = true;

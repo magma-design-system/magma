@@ -331,10 +331,19 @@ export const semantic: SemanticConfig = {
     // status button and an accent button behave identically.
     'emphasis-hover': '03',
     'emphasis-active': '02',
+    // No `emphasis-selected` yet (#1269): the selected state weighs LESS than the hover, and
+    // no step of this band does: 04 is the rest (a state on the base fill kills it), 03 the
+    // hover, and on 05 -on-emphasis falls under its floor (see the note above). It comes
+    // with full colours, as a mix of rest and hover (#918).
     // surface band (subtle fill): hover one step stronger, subtle one lighter.
     // Accent-only: a hue says this with washSteps.
     'surface-hover': '08',
     'surface-subtle': '10',
+    // selected (#1269): the action of the view you are in, an area that weighs LESS than the
+    // hover. No step lies between rest and hover: 10 is the only one lighter than the hover
+    // that differs from the rest (the step of subtle; a hue says it with wash-soft). Its value
+    // moves to a mix of rest and hover with full colours (#918).
+    'surface-selected': '10',
   },
   // The base comes first: the DTCG export takes the first theme that repoints nothing as its
   // default. `editorial` takes the accent of the Maggioli Editore brand through
@@ -493,6 +502,8 @@ export const accentRoleDescriptions: Record<string, string> = {
   surface: 'A background tinted with <accent>: a selected row or chip.',
   'surface-subtle': 'A background tinted with <accent>, lighter.',
   'surface-hover': 'A background tinted with <accent>, hovered.',
+  'surface-selected':
+    'A background tinted with <accent> on the action of the view you are in, lighter than its hover.',
   fg: 'Text or an icon in <accent> on a neutral surface, such as a link.',
   border: 'A border tinted with <accent>.',
 };

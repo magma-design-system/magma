@@ -59,6 +59,7 @@ flowchart LR
   PROJ -.->|"check_setup"| CHECKS
   PROJ -.->|"render_preview"| RENDER
   RENDER -->|"stylesheetImports, loaderOf, fileOf"| STU["studio<br/>its pages load Magma as a render does"]
+  TOOLS -->|"icons.ts: slugFiles"| STU
   SERVER <-.->|"bin magma-mcp, stdio"| CLIENT(["agent client<br/>Claude Code, VS Code, Cursor"])
   class TOOLS,CHECKS,RENDER,SERVER,CLIENT,CP ai
   class ID,SI,EXT assets

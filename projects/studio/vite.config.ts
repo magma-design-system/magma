@@ -58,5 +58,7 @@ export default defineConfig({
   },
   test: {
     include: ['test/**/*.test.mts'],
+    // the effects of Preact after a paint, scheduled with no global of jsdom (test/setup.mts)
+    setupFiles: ['test/setup.mts'],
   },
 });

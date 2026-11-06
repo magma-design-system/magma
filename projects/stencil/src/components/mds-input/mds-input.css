@@ -84,6 +84,11 @@
   --private-input-toggle-padding: --spacing(1000);
   --private-input-toggle-area: --spacing(1200);
 
+  /* where the text starts after an icon: the field and the password mask both start there */
+  --private-input-icon-padding: calc(
+    var(--private-input-icon-offset-inline) + var(--private-input-icon-size) + --spacing(200)
+  );
+
   border-radius: var(--mds-input-border-radius);
   container-type: inline-size;
   corner-shape: var(--magma-corner-shape);
@@ -189,15 +194,11 @@
 }
 
 .input.has-icon {
-  padding-left: calc(
-    var(--private-input-icon-offset-inline) + var(--private-input-icon-size) + --spacing(200)
-  );
+  padding-left: var(--private-input-icon-padding);
 }
 
 .input.has-right-icon {
-  padding-right: calc(
-    var(--private-input-icon-offset-inline) + var(--private-input-icon-size) + --spacing(200)
-  );
+  padding-right: var(--private-input-icon-padding);
 }
 
 .await,
