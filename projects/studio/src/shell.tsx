@@ -409,39 +409,41 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
   return (
     <div class="studio-theme">
       <div class="studio-theme-head" role="toolbar" aria-label="Preview">
-        <mds-filter
+        <mds-tab
           aria-label="View"
-          onmdsFilterChange={(event: CustomEvent<{ value?: string }>) => {
+          onmdsTabChange={(event: CustomEvent<{ id: number; value?: string }>) => {
             const value = event.detail?.value as View | undefined;
             if (value) setView(value);
           }}
         >
           {VIEWS.map((one) => (
-            <mds-filter-item
+            <mds-tab-item
+              type="button"
               label={one.label}
               value={one.id}
               selected={one.id === view}
-            ></mds-filter-item>
+            ></mds-tab-item>
           ))}
-        </mds-filter>
+        </mds-tab>
         <div class="studio-theme-checks">
-          <mds-filter
+          <mds-tab
             aria-label="Mode"
-            onmdsFilterChange={(event: CustomEvent<{ value?: string }>) => {
+            onmdsTabChange={(event: CustomEvent<{ id: number; value?: string }>) => {
               const value = event.detail?.value as ModeView | undefined;
               if (value) setMode(value);
             }}
           >
             {MODE_VIEWS.map((view) => (
-              <mds-filter-item
+              <mds-tab-item
+                type="button"
                 label={view.label}
                 value={view.id}
                 selected={view.id === mode}
                 disabled={!offers(view.id)}
                 title={offers(view.id) ? undefined : `${titleOf(theme)} is ${themeModes[0]} only`}
-              ></mds-filter-item>
+              ></mds-tab-item>
             ))}
-          </mds-filter>
+          </mds-tab>
           <mds-input-select
             aria-label="Width of the frame"
             size="md"

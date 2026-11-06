@@ -124,8 +124,8 @@ test('a theme of one mode is seen in that mode only, the other choices of the he
     const frames = [...root.querySelectorAll('iframe.studio-scene')]
     expect(frames.map((frame) => frame.getAttribute('title'))).toEqual(['The theme on a page of a product, dark mode'])
   })
-  const [, modes] = [...root.querySelectorAll('.studio-theme-head mds-filter')]
-  const items = [...modes.querySelectorAll('mds-filter-item')]
+  const [, modes] = [...root.querySelectorAll('.studio-theme-head mds-tab')]
+  const items = [...modes.querySelectorAll('mds-tab-item')]
   expect(items.map((item) => [item.getAttribute('value'), item.hasAttribute('disabled'), item.hasAttribute('selected')]))
     .toEqual([['light', true, false], ['dark', false, true], ['both', true, false]])
   expect(items[0].getAttribute('title')).toBe('Business is dark only')
@@ -143,17 +143,17 @@ test('the header sets what the theme is checked under: both modes are two frames
     if (!found) throw new Error('no header yet')
     return found
   })
-  const [views, modes] = [...head.querySelectorAll('mds-filter')]
-  expect([...views.querySelectorAll('mds-filter-item')].map((item) => item.getAttribute('value')))
+  const [views, modes] = [...head.querySelectorAll('mds-tab')]
+  expect([...views.querySelectorAll('mds-tab-item')].map((item) => item.getAttribute('value')))
     .toEqual(['scenes', 'groups'])
-  views.dispatchEvent(new CustomEvent('mdsFilterChange', { detail: { value: 'groups' }, bubbles: true }))
+  views.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 1, value: 'groups' }, bubbles: true }))
   await vi.waitFor(() => expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('groups.html'))
-  views.dispatchEvent(new CustomEvent('mdsFilterChange', { detail: { value: 'scenes' }, bubbles: true }))
+  views.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 0, value: 'scenes' }, bubbles: true }))
   await vi.waitFor(() => expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('scene.html'))
 
-  expect([...modes.querySelectorAll('mds-filter-item')].map((item) => item.getAttribute('value')))
+  expect([...modes.querySelectorAll('mds-tab-item')].map((item) => item.getAttribute('value')))
     .toEqual(['light', 'dark', 'both'])
-  modes.dispatchEvent(new CustomEvent('mdsFilterChange', { detail: { value: 'both' }, bubbles: true }))
+  modes.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 2, value: 'both' }, bubbles: true }))
   await vi.waitFor(() => expect(root.querySelectorAll('iframe.studio-scene')).toHaveLength(2))
   expect([...root.querySelectorAll('iframe.studio-scene')].map((frame) => frame.getAttribute('title')))
     .toEqual(['The theme on a page of a product, light mode', 'The theme on a page of a product, dark mode'])
