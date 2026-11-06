@@ -40,45 +40,51 @@ export interface SceneStyle {
 type FamilyModes = Record<string, unknown>;
 
 /**
- * The themes of a configuration are the families the Themes page lists (themes.tsx): each family
- * of any group opted into a surface, its text included, the base family first, save the ones a
- * required group (status) carries with no flag of their own; a family that is not a tone repoints
- * the ramp of its group (`label-violet`). A theme whose name the model refuses is left out of the
- * select: the Themes page says why.
+ * The ramp a theme drawn from a family repoints: `tone-<family>` by default, which the model
+ * names itself, and the ramp of its group for a family of another group (`label-violet`, spec
+ * section 8: `{ surface: 'blue', scale: 'label-blue' }`).
  */
-export function sceneStyle(
-  config: MagmaConfig,
-  choices: ThemeChoices = NO_THEME_CHOICES,
-): SceneStyle | null {
-  let color: Record<string, unknown>;
-  let tokens: Parameters<typeof cssRgb>[0];
-  try {
-    tokens = createColorTokens(JSON.parse(JSON.stringify(config))).tokens as typeof tokens;
-    color = tokens.color;
-  } catch {
-    return null;
-  }
-  const surfaces = (color.surface as Record<string, FamilyModes>) ?? {};
-  const texts = (color.text as Record<string, FamilyModes>) ?? {};
+export function scaleOfFamily(config: MagmaConfig): (family: string) => string | undefined {
   const groupOf = new Map(
     config.colors.map((one) => [one.name.split('.')[1], one.name.split('.')[0]]),
   );
+  return (family) => {
+    const group = groupOf.get(family);
+    return group && group !== 'tone' ? `${group}-${family}` : undefined;
+  };
+}
+
+/** The families that back a theme, the base first; the extras are the ones not the base. */
+function themeFamilies(config: MagmaConfig, color: Record<string, unknown>) {
+  const surfaces = (color.surface as Record<string, FamilyModes>) ?? {};
+  const texts = (color.text as Record<string, FamilyModes>) ?? {};
   // the families of a reserved group are never a theme, as on the Themes page (themes.tsx)
   const reserved = new Set(
     config.colors
       .filter((one) => RESERVED_GROUPS.has(one.name.split('.')[0]))
       .map((one) => one.name.split('.')[1]),
   );
-  const scaleOf = (family: string): string | undefined => {
-    const group = groupOf.get(family);
-    return group && group !== 'tone' ? `${group}-${family}` : undefined;
-  };
   const families = Object.keys(surfaces).filter((family) => texts[family] && !reserved.has(family));
   const extras = families.filter((family) => family !== semantic.tint);
   const ordered = [...(families.includes(semantic.tint) ? [semantic.tint] : []), ...extras];
+  return { extras, ordered };
+}
 
+/**
+ * The themes of a configuration are the families the Themes page lists (themes.tsx): each family
+ * of any group opted into a surface, its text included, the base family first, save the ones a
+ * required group (status) carries with no flag of their own. A theme whose name the model refuses
+ * is left out: the Themes page says why. `color` is the tree the configuration generates. The
+ * select of the Theme section offers them, and the contrast gate judges them (gate.ts).
+ */
+export function configThemes(
+  config: MagmaConfig,
+  color: Record<string, unknown>,
+  choices: ThemeChoices = NO_THEME_CHOICES,
+): ConfigTheme[] {
+  const { extras, ordered } = themeFamilies(config, color);
   const givenNames = givenNamesOf(extras, choices);
-  const themes: ConfigTheme[] = ordered
+  return ordered
     .filter(
       (family) =>
         family === semantic.tint ||
@@ -90,8 +96,22 @@ export function sceneStyle(
       family,
       modes: modesOfTheme(family, choices),
     }));
+}
+
+/** The themes of a configuration, for the select, and the CSS that paints them in the frame. */
+export function sceneStyle(
+  config: MagmaConfig,
+  choices: ThemeChoices = NO_THEME_CHOICES,
+): SceneStyle | null {
+  let tokens: Parameters<typeof cssRgb>[0];
+  try {
+    tokens = createColorTokens(JSON.parse(JSON.stringify(config))).tokens as typeof tokens;
+  } catch {
+    return null;
+  }
+  const { extras } = themeFamilies(config, tokens.color);
   return {
-    themes,
-    css: [cssRgb(tokens, ''), themesExportCss(extras, choices, scaleOf)].join('\n\n'),
+    themes: configThemes(config, tokens.color, choices),
+    css: [cssRgb(tokens, ''), themesExportCss(extras, choices, scaleOfFamily(config))].join('\n\n'),
   };
 }
