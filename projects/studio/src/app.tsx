@@ -58,8 +58,11 @@ import './palette.css';
 type CurvePreset = keyof typeof CURVE_PRESETS;
 type CurveKind = CurvePreset | 'custom';
 
-/** A custom curve starts with no dead zone and a linear ramp (vittorio, 2026-11-05). */
-const CUSTOM_CURVE_START = { deadZone: 0, easing: 'linear' } as const;
+/**
+ * A custom curve starts from smooth, the default: no dead zone and a linear ramp, so a person who
+ * turns to custom changes the curve they were looking at (vittorio, 2026-11-05 and 2026-11-06).
+ */
+const CUSTOM_CURVE_START = CURVE_PRESETS.smooth;
 
 /** The ramps of a custom curve: every easing the engine takes, in its order (easing.mts). */
 const EASING_OPTIONS: Option[] = HUE_SHIFT_EASINGS.map((name) => ({ value: name, label: name }));
