@@ -94,7 +94,7 @@
 
 :host(:hover) .input,
 :host(:focus-within) .input {
-  --mds-input-select-ring: 0 0 0 --spacing(75) color-mix(in srgb, var(--mds-input-select-variant-color) 100%, transparent);
+  --mds-input-select-ring: 0 0 0 --spacing(75) var(--mds-input-select-variant-color);
 }
 
 .input {

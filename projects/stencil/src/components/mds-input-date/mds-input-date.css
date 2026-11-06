@@ -128,7 +128,7 @@
 :host(:focus-within) .input {
   @apply outline-hidden transition-cosmetic;
 
-  --mds-input-date-ring: 0 0 0 --spacing(75) color-mix(in srgb, var(--mds-input-date-variant-color) 100%, transparent);
+  --mds-input-date-ring: 0 0 0 --spacing(75) var(--mds-input-date-variant-color);
   --mds-input-date-shadow:
     0 --spacing(100) --spacing(150) --spacing(75) color-mix(in srgb, var(--mds-input-date-variant-color) 10%, transparent),
     0 --spacing(50) --spacing(100) -1px color-mix(in srgb, var(--mds-input-date-variant-color) 6%, transparent);
