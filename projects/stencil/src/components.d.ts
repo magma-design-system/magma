@@ -21,7 +21,7 @@ import { LoadingType } from "./type/loading";
 import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 import { TextAnimationType } from "./components/mds-text/meta/types";
-import { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
+import { ButtonCurrentType, ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -110,7 +110,7 @@ export { LoadingType } from "./type/loading";
 export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event-detail";
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 export { TextAnimationType } from "./components/mds-text/meta/types";
-export { ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
+export { ButtonCurrentType, ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
 export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
@@ -583,6 +583,10 @@ export namespace Components {
          */
         "await"?: boolean;
         /**
+          * Marks the button that leads to the view you are in, as the current section of a bar or the current view of a switcher, with a look of its own: an area that weighs less than the hover of its tone, never its ring, and a heavier label. `current`, or `current="page"`, is that view: the button neither navigates nor submits, a click and Enter do nothing, but it stays in the Tab order, announced with `aria-current` (`"page"` on a link, `"true"` otherwise). `current="section"` is a view inside it, as a record of its list: the same look, and the button stays a link that brings you back, announced with `aria-current="true"`. An `aria-current` written on the host stays as written.
+         */
+        "current"?: ButtonCurrentType;
+        /**
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
@@ -591,9 +595,17 @@ export namespace Components {
          */
         "href"?: string;
         /**
-          * The icon displayed in the button
+          * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their states
          */
         "icon"?: string;
+        /**
+          * The icon of the current button, in place of `icon`: the filled icon, say, of an `icon` drawn as an outline. It is the icon under the pointer too, unless `iconHover` says otherwise, so the pointer previews it on the buttons that are not current. It takes the place of `icon`: without `icon` it shows nothing
+         */
+        "iconCurrent"?: string;
+        /**
+          * The icon under the pointer, in place of `icon`, and `iconCurrent` when it is not set. Set it to the `icon` to keep the icon still under the pointer, when `iconCurrent` says something the click does not do (a check, say). A pointer that cannot hover, as a finger, never shows it. It takes the place of `icon`: without `icon` it shows nothing
+         */
+        "iconHover"?: string;
         /**
           * Specifies the horizontal position of the icon displayed in the button
           * @default 'left'
@@ -659,6 +671,10 @@ export namespace Components {
          */
         "await"?: boolean;
         /**
+          * Marks the primary action as the one that leads to the view you are in, as `current` does on `mds-button`: `current` (or `current="page"`) is that view, and the primary action neither navigates nor submits nor emits `mdsButtonDropdownClick`; `current="section"` is a view inside it, and the primary action stays a link back. Both halves take the look; only the primary action is announced with `aria-current`, the chevron keeps opening the menu
+         */
+        "current"?: ButtonCurrentType;
+        /**
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
@@ -667,9 +683,17 @@ export namespace Components {
          */
         "href"?: string;
         /**
-          * The icon displayed in the button
+          * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their states
          */
         "icon"?: string;
+        /**
+          * The icon of the primary action when it is current, in place of `icon`, as `iconCurrent` does on `mds-button`: under the pointer too, unless `iconHover` says otherwise. Without `icon` it shows nothing
+         */
+        "iconCurrent"?: string;
+        /**
+          * The icon of the primary action under the pointer, in place of `icon`, and `iconCurrent` when it is not set, as `iconHover` does on `mds-button`. Without `icon` it shows nothing
+         */
+        "iconHover"?: string;
         /**
           * Specifies le text label of the component
          */
@@ -5974,6 +5998,10 @@ declare namespace LocalJSX {
          */
         "await"?: boolean;
         /**
+          * Marks the button that leads to the view you are in, as the current section of a bar or the current view of a switcher, with a look of its own: an area that weighs less than the hover of its tone, never its ring, and a heavier label. `current`, or `current="page"`, is that view: the button neither navigates nor submits, a click and Enter do nothing, but it stays in the Tab order, announced with `aria-current` (`"page"` on a link, `"true"` otherwise). `current="section"` is a view inside it, as a record of its list: the same look, and the button stays a link that brings you back, announced with `aria-current="true"`. An `aria-current` written on the host stays as written.
+         */
+        "current"?: ButtonCurrentType;
+        /**
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
@@ -5986,9 +6014,17 @@ declare namespace LocalJSX {
          */
         "href"?: string;
         /**
-          * The icon displayed in the button
+          * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their states
          */
         "icon"?: string;
+        /**
+          * The icon of the current button, in place of `icon`: the filled icon, say, of an `icon` drawn as an outline. It is the icon under the pointer too, unless `iconHover` says otherwise, so the pointer previews it on the buttons that are not current. It takes the place of `icon`: without `icon` it shows nothing
+         */
+        "iconCurrent"?: string;
+        /**
+          * The icon under the pointer, in place of `icon`, and `iconCurrent` when it is not set. Set it to the `icon` to keep the icon still under the pointer, when `iconCurrent` says something the click does not do (a check, say). A pointer that cannot hover, as a finger, never shows it. It takes the place of `icon`: without `icon` it shows nothing
+         */
+        "iconHover"?: string;
         /**
           * Specifies the horizontal position of the icon displayed in the button
           * @default 'left'
@@ -6054,6 +6090,10 @@ declare namespace LocalJSX {
          */
         "await"?: boolean;
         /**
+          * Marks the primary action as the one that leads to the view you are in, as `current` does on `mds-button`: `current` (or `current="page"`) is that view, and the primary action neither navigates nor submits nor emits `mdsButtonDropdownClick`; `current="section"` is a view inside it, and the primary action stays a link back. Both halves take the look; only the primary action is announced with `aria-current`, the chevron keeps opening the menu
+         */
+        "current"?: ButtonCurrentType;
+        /**
           * Specifies if the component is disabled or not
          */
         "disabled"?: boolean;
@@ -6066,9 +6106,17 @@ declare namespace LocalJSX {
          */
         "href"?: string;
         /**
-          * The icon displayed in the button
+          * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their states
          */
         "icon"?: string;
+        /**
+          * The icon of the primary action when it is current, in place of `icon`, as `iconCurrent` does on `mds-button`: under the pointer too, unless `iconHover` says otherwise. Without `icon` it shows nothing
+         */
+        "iconCurrent"?: string;
+        /**
+          * The icon of the primary action under the pointer, in place of `icon`, and `iconCurrent` when it is not set, as `iconHover` does on `mds-button`. Without `icon` it shows nothing
+         */
+        "iconHover"?: string;
         /**
           * Specifies le text label of the component
          */
@@ -9177,6 +9225,8 @@ declare namespace LocalJSX {
         "label": string;
         "animation": TextAnimationType;
         "icon": string;
+        "iconCurrent": string;
+        "iconHover": string;
         "iconPosition": ButtonIconPositionType;
         "type": ButtonType;
         "name": string;
@@ -9189,12 +9239,15 @@ declare namespace LocalJSX {
         "await": boolean;
         "href": string;
         "target": ButtonTargetType;
+        "current": string;
         "truncate": TypographyTruncateType;
     }
     interface MdsButtonDropdownAttributes {
         "label": string;
         "autoFocus": boolean;
         "icon": string;
+        "iconCurrent": string;
+        "iconHover": string;
         "type": ButtonType;
         "name": string;
         "value": string;
@@ -9206,6 +9259,7 @@ declare namespace LocalJSX {
         "await": boolean;
         "href": string;
         "target": ButtonTargetType;
+        "current": string;
         "truncate": TypographyTruncateType;
     }
     interface MdsCalendarAttributes {

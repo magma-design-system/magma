@@ -1,6 +1,7 @@
 import { h } from '@stencil/core';
 import { iconsDictionary } from '@type/icon';
 import {
+  buttonCurrentDictionary,
   buttonVariantDictionary,
   buttonSizeDictionary,
   buttonTargetDictionary,
@@ -31,6 +32,13 @@ export default {
       type: { name: 'string' },
       description: 'Specifies if the text is animated when it is rendered',
       options: textAnimateDictionary,
+      control: { type: 'select' },
+    },
+    current: {
+      type: { name: 'string' },
+      description:
+        'Marks the button that leads to the view you are in: `page` (or the attribute alone) is that view, inert; `section` is a view inside it, still a link',
+      options: buttonCurrentDictionary,
       control: { type: 'select' },
     },
     disabled: {
@@ -489,6 +497,128 @@ export const Target = {
 
 export const Notifications = {
   render: TemplateNotifications,
+};
+
+// the button that leads to the view you are in (#1264): the sections of a bar as links, then a
+// switcher in every tone, with the current one in the middle
+const TemplateCurrent = () => (
+  <div class="grid gap-600">
+    <nav aria-label="Sezioni" class="flex flex-wrap gap-200">
+      <mds-button href="#pratiche" variant="dark" tone="text" current>
+        Pratiche
+      </mds-button>
+      <mds-button href="#contatti" variant="dark" tone="text">
+        Contatti
+      </mds-button>
+      <mds-button href="#scadenze" variant="dark" tone="text">
+        Scadenze
+      </mds-button>
+    </nav>
+    {toneBoxVariantDictionary.map((tone) => (
+      <div key={tone} class="flex flex-wrap items-center gap-200">
+        <mds-text typography="detail" class="w-1600 text-fg-muted">
+          {tone}
+        </mds-text>
+        {['Giorno', 'Settimana', 'Mese'].map((label) => (
+          <mds-button
+            key={label}
+            tone={tone}
+            type="button"
+            label={label}
+            current={label === 'Settimana' ? true : undefined}
+          ></mds-button>
+        ))}
+      </div>
+    ))}
+  </div>
+);
+
+export const Current = {
+  render: TemplateCurrent,
+  play: async ({ canvas }) => {
+    const here = (await canvas.findByRole('link', { name: 'Pratiche' })) as HTMLMdsButtonElement;
+    await waitFor(() => expect(here).toHaveAttribute('aria-current', 'page'));
+    expect(here).toHaveAttribute('tabindex', '0');
+    expect(canvas.getByRole('link', { name: 'Contatti' })).not.toHaveAttribute('aria-current');
+  },
+};
+
+// the icon of each state (#1264): outline at rest, filled on the current section and under the
+// pointer, which previews it. The switcher of the views marks the current one with a check and
+// keeps the icons still under the pointer, icon-hover set to icon: a check there would say the
+// view is chosen before the click. The slugs are written out whole: iconsauce serves only the
+// ones it reads in the sources
+const TemplateCurrentIcons = () => (
+  <div class="grid gap-600">
+    <nav aria-label="Sezioni" class="flex flex-wrap gap-200">
+      <mds-button
+        href="#home"
+        variant="dark"
+        tone="text"
+        icon="mi/outline/home"
+        icon-current="mi/baseline/home"
+      >
+        Home
+      </mds-button>
+      <mds-button
+        href="#pratiche"
+        variant="dark"
+        tone="text"
+        icon="mi/outline/folder"
+        icon-current="mi/baseline/folder"
+        current
+      >
+        Pratiche
+      </mds-button>
+      <mds-button
+        href="#impostazioni"
+        variant="dark"
+        tone="text"
+        icon="mi/outline/settings"
+        icon-current="mi/baseline/settings"
+      >
+        Impostazioni
+      </mds-button>
+    </nav>
+    <div class="flex flex-wrap gap-200">
+      <mds-button
+        type="button"
+        tone="weak"
+        icon="mi/baseline/view-list"
+        icon-current="mi/baseline/check"
+        icon-hover="mi/baseline/view-list"
+        label="Elenco"
+        current
+      ></mds-button>
+      <mds-button
+        type="button"
+        tone="weak"
+        icon="mi/baseline/grid-view"
+        icon-current="mi/baseline/check"
+        icon-hover="mi/baseline/grid-view"
+        label="Griglia"
+      ></mds-button>
+    </div>
+  </div>
+);
+
+// the icons at rest and on the current button: the userEvent of the play dispatches events and
+// moves no pointer, so :hover never matches here; the icon under the pointer is tested with a
+// real one in mds-button.e2e.ts
+export const CurrentIcons = {
+  render: TemplateCurrentIcons,
+  play: async ({ canvas, canvasElement }) => {
+    const shown = (button: HTMLElement) =>
+      Array.from(button.shadowRoot!.querySelectorAll<HTMLMdsIconElement>('.icon'))
+        .filter((icon) => getComputedStyle(icon).display !== 'none')
+        .map((icon) => icon.name);
+    const here = await canvas.findByRole('link', { name: 'Pratiche' });
+    const view = canvasElement.querySelector('mds-button[label="Elenco"]') as HTMLElement;
+
+    await waitFor(() => expect(shown(here)).toEqual(['mi/baseline/folder']));
+    expect(shown(canvas.getByRole('link', { name: 'Home' }))).toEqual(['mi/outline/home']);
+    expect(shown(view)).toEqual(['mi/baseline/check']);
+  },
 };
 
 export const FormParticipation = {

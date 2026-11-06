@@ -2,7 +2,10 @@
  * paper of the mode, --tone-neutral-seed (#fff light / #000 dark), dark in the
  * ink of the mode. The seed is the intended value here, not a surface: no
  * elevation role is paper in both modes (SEMANTIC_COLOR_SPEC 10 and 15).
- * In the roles of mds-button-variant.css. */
+ * In the roles of mds-button-variant.css.
+ *
+ * Both keep the wash of weak on hover: the current button, halfway between rest and hover,
+ * keeps it too, and its bold label marks it (#1264). */
 
 :host([variant='light']) {
   --private-button-fill: var(--tone-neutral-seed);
@@ -17,6 +20,7 @@
   --private-button-text-ink: var(--private-button-outline);
   --private-button-text-ink-hover: var(--magma-on-inverse);
   --private-button-text-wash: var(--magma-surface-inverse-muted);
+  --private-button-current-wash: var(--private-button-wash);
 }
 
 :host([variant='dark']) {
@@ -31,4 +35,5 @@
   --private-button-text-ink: var(--private-button-ink);
   --private-button-text-ink-hover: var(--private-button-ink);
   --private-button-text-wash: var(--magma-wash-soft);
+  --private-button-current-wash: var(--private-button-wash);
 }

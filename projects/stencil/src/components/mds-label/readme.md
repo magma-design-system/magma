@@ -271,8 +271,8 @@ mds-label {
 graph TD;
   mds-label --> mds-text
   mds-label --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-label fill:#f9f,stroke:#333,stroke-width:4px
 ```

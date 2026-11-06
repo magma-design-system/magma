@@ -341,8 +341,8 @@ mds-table-header-cell::part(action) {
 graph TD;
   mds-table-header-cell --> mds-button
   mds-table-header-cell --> mds-text
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   mds-table-header --> mds-table-header-cell
   style mds-table-header-cell fill:#f9f,stroke:#333,stroke-width:4px
