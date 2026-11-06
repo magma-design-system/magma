@@ -206,3 +206,33 @@ describe('category L: generated colour table and manifest', () => {
     }
   });
 });
+
+describe('category L: context hints', () => {
+  const hinted = (value: string, tag: string): ClassFinding[] => {
+    const findings: ClassFinding[] = [];
+    rewriteClassList(
+      value,
+      classRulesOf(manifest),
+      () => true,
+      () => undefined,
+      () => undefined,
+      {
+        options: { accept: 'none', keepDarkOverrides: false },
+        emit: (f) => findings.push(f),
+        element: { tag, ancestors: [], classes: value.split(' ') },
+      },
+    );
+    return findings;
+  };
+
+  it('hints a background decision, keeping the variants and the modifier', () => {
+    const [f] = hinted('hover:bg-tone-neutral-seed/80', 'body');
+    expect(f!.hint).toMatchObject({ value: 'hover:bg-surface-default/80', why: 'on `<body>`' });
+  });
+
+  it('gives no hint to text, to suggestions or without an element', () => {
+    expect(hinted('text-status-error-04', 'body')[0]!.hint).toBeUndefined();
+    expect(hinted('bg-tone-neutral-09', 'body')[0]!.hint).toBeUndefined();
+    expect(run('bg-tone-neutral-seed').findings[0]!.hint).toBeUndefined();
+  });
+});

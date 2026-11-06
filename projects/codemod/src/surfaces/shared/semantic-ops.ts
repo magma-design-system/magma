@@ -33,7 +33,8 @@ import {
   type SemanticThresholds,
 } from '../../manifest/schema.js';
 import { ruleId } from '../../manifest/registry.js';
-import { type Alternative, type FindingKind } from '../../report/types.js';
+import { type Alternative, type ContextHint, type FindingKind } from '../../report/types.js';
+import { type ElementContext, surfaceHint } from './context-hint.js';
 
 /** How far category L may write. */
 export interface SemanticOptions {
@@ -58,6 +59,7 @@ export interface ClassFinding {
   token?: string;
   reason?: string;
   alternatives?: Alternative[];
+  hint?: ContextHint;
 }
 
 export interface SemanticRules {
@@ -252,6 +254,8 @@ export const migrateSemanticTokens = (
   emit: (finding: ClassFinding) => void,
   /** The list is one fragment of the class value (a `clsx()` argument, an `[ngClass]` key). */
   partial = false,
+  /** The element the list sits on, when the surface can tell: feeds the context hints. */
+  element?: ElementContext,
 ): SemanticOutcome => {
   const outcome: SemanticOutcome = { replace: new Map(), remove: new Set() };
   const { table, thresholds } = rules;
@@ -381,7 +385,28 @@ export const migrateSemanticTokens = (
     const original = [base, ...darks].map((t) => t.raw).join(' ');
     const alternatives = alternativesOf(base, candidates, thresholds.cutoff);
     const others = listAlternatives(alternatives, thresholds.cutoff);
-    const decide = (reason: string) => ({ token: original, reason, alternatives });
+    // the surface role the markup points at, measured like an alternative
+    // (it may rank below the three listed)
+    const hintOf = (reason: string): { hint?: ContextHint } => {
+      if (!element || rule.channel !== 'background' || reason.startsWith('suggested')) return {};
+      const h = surfaceHint(element);
+      const c = h && candidates.find((x) => x.role === `surface-${h.role}`);
+      if (!h || !c) return {};
+      return {
+        hint: {
+          value: recolor(base, c.role),
+          why: h.why,
+          light: round(c.light),
+          dark: round(c.dark),
+        },
+      };
+    };
+    const decide = (reason: string) => ({
+      token: original,
+      reason,
+      alternatives,
+      ...hintOf(reason),
+    });
     if (!best) continue;
 
     if (rule.channel === 'background' && base.color.endsWith('-seed')) {
