@@ -293,7 +293,19 @@ export const Password = {
 
   args: {
     type: 'password',
-    placeholder: 'Insert a pasword',
+    placeholder: 'Insert a password',
+  },
+};
+
+/** The dots that mask the password start after the icon, where the text of the field starts. */
+export const PasswordWithIcon = {
+  render: Template,
+
+  args: {
+    type: 'password',
+    icon: 'mdi/key',
+    placeholder: 'Insert a password',
+    value: 'secret',
   },
 };
 
