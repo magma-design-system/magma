@@ -47,11 +47,9 @@ function field (label: string, scope: ParentNode = root): Element {
   return found
 }
 
-/** The row of a family in the list, by its name in the group. */
-function item (name: string): HTMLButtonElement {
-  const found = [...root.querySelectorAll<HTMLButtonElement>('.palette-list button')].find(
-    (one) => one.querySelector('mds-text')?.textContent?.trim() === name,
-  )
+/** The button of a family in the list, by its name in the group. */
+function item (name: string): HTMLElement {
+  const found = root.querySelector<HTMLElement>(`.palette-list mds-button[label="${name}"]`)
   if (!found) throw new Error(`no family ${name} in the list`)
   return found
 }
@@ -63,10 +61,18 @@ const switchLabelled = (label: string, scope: ParentNode) =>
   [...scope.querySelectorAll('mds-input-switch')].find((one) => one.textContent?.trim() === label)!
 
 test('the list marks the family shown and opens another one', async () => {
+  // the variants first, at the top of the list
+  expect(root.querySelector('.palette-list-group > mds-text')?.textContent?.trim()).toBe('variant')
+  // a family is a button of Magma, its swatch the icon
+  expect(item('neutral').getAttribute('icon')).toBe('mdi/circle')
+  expect(item('neutral').getAttribute('tone')).toBe('weak')
   expect(item('neutral').getAttribute('aria-current')).toBe('true')
+  expect(item('info').getAttribute('tone')).toBe('text')
   expect(item('info').hasAttribute('aria-current')).toBe(false)
-  // the references carry their badge
-  expect(item('primary').querySelector('mds-badge')?.getAttribute('label')).toBe('ref')
+  // the references carry their badge, on the end of their row
+  expect(item('primary').parentElement?.querySelector('mds-badge')?.getAttribute('label')).toBe(
+    'ref',
+  )
 
   item('info').click()
   await vi.waitFor(() => expect(heading()).toBe('status.info'))
@@ -128,6 +134,20 @@ test('Smooth switches the colour, and the one of the global settings the configu
   await vi.waitFor(() => expect(color('tone.neutral')?.smooth).toBe(true))
   expect(latest().smooth).toBeFalsy()
 
+  // the global settings start closed: the page opens on the family, not on the settings of all;
+  // their hue shifting says it is the global one, apart from the one of the family
+  expect(root.querySelector('.palette-global')?.hasAttribute('opened')).toBe(false)
+  // a separator sets them apart from the settings of the family
+  expect(root.querySelector('.palette-global')?.previousElementSibling?.localName).toBe(
+    'mds-separator',
+  )
+  expect(
+    root.querySelector('.palette-global .palette-group legend')?.textContent?.trim(),
+  ).toBe('Global hue shifting')
+  expect(root.querySelector('.palette-color .palette-group legend')?.textContent?.trim()).toBe(
+    'Hue shifting',
+  )
+
   emit(switchLabelled('Smooth', root.querySelector('.palette-global')!), 'mdsInputSwitchChange', {
     name: '',
     checked: true,
@@ -143,14 +163,115 @@ test('a custom hue shift shows its sliders and writes what they give', async () 
     value: 'custom',
     values: ['custom'],
   })
+  // the ends start mirrored, the default link
   await vi.waitFor(() =>
-    expect(color('tone.neutral')?.hueShift).toEqual({ dark: -18, light: 10, curve: 'smooth' }),
+    expect(color('tone.neutral')?.hueShift).toEqual({ dark: -18, light: 18, curve: 'smooth' }),
   )
   await vi.waitFor(() => expect(group.querySelectorAll('mds-input-range')).toHaveLength(2))
   expect(group.querySelector('.palette-weights')).not.toBeNull()
 
   emit(field('Dark (degrees)', group).querySelector('mds-input-range')!, 'mdsInputRangeChange', -30)
   await vi.waitFor(() => expect(color('tone.neutral')?.hueShift?.dark).toBe(-30))
+})
+
+test('a hue shift of its own over a global one shows hs+, an inherited one hs', async () => {
+  const badge = (name: string) => item(name).parentElement?.querySelector('mds-badge')?.getAttribute('label')
+  const custom = (scope: Element) =>
+    emit(field('Mode', scope).querySelector('mds-input-select')!, 'mdsInputSelectChange', {
+      value: 'custom',
+      values: ['custom'],
+    })
+
+  // the global hue shift: every family inherits it
+  custom(root.querySelector('.palette-global')!)
+  await vi.waitFor(() => expect(latest().hueShift).toBeDefined())
+  await vi.waitFor(() => expect(badge('info')).toBe('hs'))
+
+  // a hue shift of its own on top of it
+  custom(root.querySelector('.palette-color .palette-group')!)
+  await vi.waitFor(() => expect(badge('neutral')).toBe('hs+'))
+  expect(item('neutral').getAttribute('title')).toBe('hue shifting of its own, over the global one')
+  expect(badge('info')).toBe('hs')
+})
+
+test('a custom curve starts with no dead zone and a linear ramp, and offers every easing', async () => {
+  const group = root.querySelector('.palette-color .palette-group')!
+  emit(field('Mode', group).querySelector('mds-input-select')!, 'mdsInputSelectChange', {
+    value: 'custom',
+    values: ['custom'],
+  })
+  await vi.waitFor(() => expect(group.querySelectorAll('mds-input-range')).toHaveLength(2))
+  emit(field('Curve', group).querySelector('mds-input-select')!, 'mdsInputSelectChange', {
+    value: 'custom',
+    values: ['custom'],
+  })
+  await vi.waitFor(() =>
+    expect(color('tone.neutral')?.hueShift?.curve).toEqual({ deadZone: 0, easing: 'linear' }),
+  )
+  await vi.waitFor(() => expect(() => field('Easing', group)).not.toThrow())
+  const easings = [...field('Easing', group).querySelectorAll('option')].map((one) => one.value)
+  expect(easings).toEqual(expect.arrayContaining(['linear', 'quad-in', 'sine-in-out', 'step']))
+
+  emit(field('Easing', group).querySelector('mds-input-select')!, 'mdsInputSelectChange', {
+    value: 'cubic-out',
+    values: ['cubic-out'],
+  })
+  await vi.waitFor(() =>
+    expect(color('tone.neutral')?.hueShift?.curve).toEqual({ deadZone: 0, easing: 'cubic-out' }),
+  )
+})
+
+test('the ends of a custom hue shift move on their own, mirrored or linked', async () => {
+  const group = root.querySelector('.palette-color .palette-group')!
+  emit(field('Mode', group).querySelector('mds-input-select')!, 'mdsInputSelectChange', {
+    value: 'custom',
+    values: ['custom'],
+  })
+  await vi.waitFor(() => expect(group.querySelectorAll('mds-input-range')).toHaveLength(2))
+  // the link sits in the head of the box of the two ends, named Ends
+  const link = () => group.querySelector('.palette-ends mds-input-select[aria-label="Ends"]')!
+  const ends = (value: string) =>
+    emit(link(), 'mdsInputSelectChange', {
+      value,
+      values: [value],
+    })
+  const move = (label: string, value: number) =>
+    emit(field(label, group).querySelector('mds-input-range')!, 'mdsInputRangeChange', value)
+  const shift = () => color('tone.neutral')?.hueShift
+
+  // mirror, the link a hue shift starts from: the light end follows the dark one, opposite
+  await vi.waitFor(() => expect(shift()).toMatchObject({ dark: -18, light: 18 }))
+  expect(link().getAttribute('value')).toBe('mirror')
+  move('Dark (degrees)', 44)
+  await vi.waitFor(() => expect(shift()).toMatchObject({ dark: 44, light: -44 }))
+
+  // linked: the two ends go the same way, whichever moves
+  ends('linked')
+  await vi.waitFor(() => expect(shift()).toMatchObject({ dark: 44, light: 44 }))
+  move('Light (degrees)', 12)
+  await vi.waitFor(() => expect(shift()).toMatchObject({ dark: 12, light: 12 }))
+
+  // free: an end moves alone, once the field says so (the ends themselves do not change)
+  ends('free')
+  await vi.waitFor(() => expect(link().getAttribute('value')).toBe('free'))
+  move('Dark (degrees)', -5)
+  await vi.waitFor(() => expect(shift()).toMatchObject({ dark: -5, light: 12 }))
+})
+
+test('a reference says its hue shifting is the one of its source, and opens it', async () => {
+  // jsdom lays nothing out: the group comes into view in a browser only
+  Element.prototype.scrollIntoView = vi.fn()
+  item('primary').click()
+  await vi.waitFor(() => expect(heading()).toBe('variant.primary'))
+  const source = color('variant.primary')!.alias!
+  const note = root.querySelector('.palette-group-note')!
+  expect(note.querySelector('mds-banner')?.getAttribute('variant')).toBe('info')
+
+  magmaButton(`Open ${source}`, note)!.click()
+  await vi.waitFor(() => expect(heading()).toBe(source))
+  await vi.waitFor(() =>
+    expect(document.activeElement).toBe(root.querySelector('#palette-hue-shift')),
+  )
 })
 
 test('a built-in reference changes its target, and keeps its name and its place', async () => {

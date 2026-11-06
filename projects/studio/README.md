@@ -108,7 +108,7 @@ with its issue until the component lands:
 | --- | --- | --- |
 | a colour field | the base colour of a family, New color | #1260 |
 | a range of several values | the axis of a contrast scale | #1261 |
-| a list and its detail | the families of the Palette | #1262 |
+| a list and its detail | the families of the Palette (each an `mds-button`, its swatch the icon `mdi/circle` painted through `::part(icon)`) | #1262 |
 | a chip with a colour swatch | the families of Semantic surface (the usage of a scale draws the swatch as the icon of an `mds-chip`, `swatchIcon`) | #1263 |
 
 ## Magma from the installed one
@@ -272,7 +272,8 @@ rename or delete custom scales (the built-in ones, `default` first of all, are a
 and inspect the distribution of the stops on a horizontal axis. A usage panel at the top picks a
 scale and lists every color resolving to it, ordered by group; clicking a color makes it the
 sample for all the scale previews. Each scale has a distribution mode: pick an easing (`linear`,
-`ease-in`, `ease-out`, `ease-in-out`) and the stops regenerate live from steps/min/max, or go
+or a family from `sine` to `circ` as `-in`, `-out` or `-in-out`: the named easings of the engine,
+`easing.mts`, which the hue shift ramps with too) and the stops regenerate live from steps/min/max, or go
 `manual` by dragging a marker or editing a stop directly. Scale values are contrast against the
 theme background (0 = on the background, max = strongest contrast), so the same scale yields
 dark-on-light in light mode and light-on-dark in dark mode. Every color picks its scale with the

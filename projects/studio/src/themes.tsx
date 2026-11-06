@@ -17,7 +17,7 @@ import {
   COLOR_MODES,
   type ColorMode,
 } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
-import { SurfaceCanvas } from './surfaces.js';
+import { REQUIRED_SURFACE_GROUPS, SurfaceCanvas } from './surfaces.js';
 import { Field, Select, TextInput, type Option } from './magma.js';
 import './themes.css';
 
@@ -151,17 +151,30 @@ export function ThemesManager({ config }: ThemesManagerProps) {
     }
   }, [JSON.stringify(config)]);
 
-  // Every family opted into a surface above (text follows per A7); default first.
-  // THEMEABLE families only: a theme repoints the whole neutral scaffolding, so it
-  // only makes sense for a TINT. Since groups can opt in wholesale, non-tint
-  // families now carry surfaces too (status does, so its components get a text
-  // role guaranteed legible on their own tint) - and those must not show up here
-  // as selectable themes, or you could set the whole UI to "success".
+  // Every family opted into a surface above (text follows per A7); default first. Any group
+  // backs a theme, a label or brand family a monochromatic one: "the groups organise names; they
+  // do not gate what can back a theme" (styles/SEMANTIC_COLOR_SPEC.md, section 8). Save the
+  // families a required group carries with no flag of their own: status always generates
+  // surfaces, so its components get a text role legible on their own tint, and nobody chose
+  // those as themes; a status family opted in on its own is one (vittorio, 2026-11-05).
+  const groupOf = new Map(
+    config.colors.map((color) => [color.name.split('.')[1], color.name.split('.')[0]]),
+  );
   const themeableFamilies = new Set(
     config.colors
-      .filter((color) => !color.disabled && color.name.split('.')[0] === 'tone')
+      .filter((color) => !color.disabled)
+      .filter(
+        (color) =>
+          !(REQUIRED_SURFACE_GROUPS.has(color.name.split('.')[0]) && color.surface === undefined),
+      )
       .map((color) => color.name.split('.')[1]),
   );
+  // the ramp a theme repoints is `tone-<family>` by default; a family of another group names
+  // its own (spec section 8: `{ surface: 'blue', scale: 'label-blue' }`)
+  const scaleOf = (family: string): string | undefined => {
+    const group = groupOf.get(family);
+    return group && group !== 'tone' ? `${group}-${family}` : undefined;
+  };
   const opted = Object.keys(surfaces).filter(
     (family) => texts[family] && themeableFamilies.has(family),
   );
@@ -212,8 +225,14 @@ export function ThemesManager({ config }: ThemesManagerProps) {
       ),
     );
     try {
+      const scale = scaleOf(family);
       return namedThemeCss(
-        themeOf(name, { surface: family, accents: accentOverrides, modes: modesFor(family) }),
+        themeOf(name, {
+          surface: family,
+          accents: accentOverrides,
+          modes: modesFor(family),
+          ...(scale && { scale }),
+        }),
       );
     } catch (error) {
       return `/* ${name}: ${error instanceof Error ? error.message : String(error)} */`;

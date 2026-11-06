@@ -8,6 +8,11 @@ import {
   CONTRAST_RANGE,
   classifyRatioTarget,
 } from '@maggioli-design-system/design-tokens/src/lib/contrast-range.js';
+import {
+  EASINGS,
+  EASING_FAMILIES,
+  type EasingFn,
+} from '@maggioli-design-system/design-tokens/src/lib/easing.mjs';
 import { Field, Select, TextInput, swatchIcon, type Option } from './magma.js';
 import './scales.css';
 
@@ -80,28 +85,8 @@ const plural = (count: number, word: string) => `${count} ${word}${count === 1 ?
 // The values are contrast against the theme background, not lightness:
 // 0 sits on the background, the maximum is the strongest contrast (dark in
 // light mode, light in dark mode). Distributions are expressed as easing
-// functions over that axis; dragging or typing a stop switches to manual.
-type EasingFn = (t: number) => number;
-
-const EASE_IN: Record<string, EasingFn> = {
-  sine: (t) => 1 - Math.cos((t * Math.PI) / 2),
-  quad: (t) => t * t,
-  cubic: (t) => t ** 3,
-  quart: (t) => t ** 4,
-  quint: (t) => t ** 5,
-  expo: (t) => (t === 0 ? 0 : 2 ** (10 * t - 10)),
-  circ: (t) => 1 - Math.sqrt(1 - t * t),
-};
-
-// every family expands to in / out / in-out (Penner-style)
-const EASINGS: Record<string, EasingFn> = { linear: (t) => t };
-const EASING_FAMILIES: Record<string, string[]> = { linear: ['linear'] };
-Object.entries(EASE_IN).forEach(([family, easeIn]) => {
-  EASINGS[`${family}-in`] = easeIn;
-  EASINGS[`${family}-out`] = (t) => 1 - easeIn(1 - t);
-  EASINGS[`${family}-in-out`] = (t) => (t < 0.5 ? easeIn(2 * t) / 2 : 1 - easeIn(2 * (1 - t)) / 2);
-  EASING_FAMILIES[family] = [`${family}-in`, `${family}-out`, `${family}-in-out`];
-});
+// functions over that axis, the named easings of the engine (easing.mts, which the hue shift ramps
+// its weights with too); dragging or typing a stop switches to manual.
 
 export type EasingName = string;
 
@@ -259,7 +244,8 @@ function DistributionControls({
   const [max, setMax] = useState(values[values.length - 1] ?? axis.max);
 
   const apply = (easingName: EasingName, s = steps, lo = min, hi = max) => {
-    const fn = EASINGS[easingName];
+    // a name the select offers, or manual, which has no function
+    const fn = (EASINGS as Record<string, EasingFn | undefined>)[easingName];
     if (!fn) return;
     const generated = Array.from({ length: s }, (_, i) => {
       const t = s === 1 ? 1 : i / (s - 1);

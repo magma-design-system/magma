@@ -3,6 +3,7 @@ import { createColorTokens } from '@maggioli-design-system/design-tokens/src/lib
 import { semantic } from '@maggioli-design-system/design-tokens/semantic.config';
 import { namedThemeCss, themeOf } from '@maggioli-design-system/design-tokens/semantic.model';
 import { cssRgb } from './formats.js';
+import { REQUIRED_SURFACE_GROUPS } from './surfaces.js';
 import { SHIPPED_BY_FAMILY } from './themes.js';
 
 /*
@@ -29,8 +30,10 @@ export interface SceneStyle {
 type FamilyModes = Record<string, unknown>;
 
 /**
- * The themes of a configuration are the families the Themes page lists (themes.tsx): each tint
- * opted into a surface, its text included, the base family first. A theme takes the name and the
+ * The themes of a configuration are the families the Themes page lists (themes.tsx): each family
+ * of any group opted into a surface, its text included, the base family first, save the ones a
+ * required group (status) carries with no flag of their own; a family that is not a tone repoints
+ * the ramp of its group (`label-violet`). A theme takes the name and the
  * accents of the theme Magma draws from its family, else the name of the family: the name a
  * person gives a theme on the Themes page lives in that page until the configuration keeps it.
  * A theme whose name is no theme name is left out, as the model refuses it.
@@ -46,12 +49,23 @@ export function sceneStyle(config: MagmaConfig): SceneStyle | null {
   }
   const surfaces = (color.surface as Record<string, FamilyModes>) ?? {};
   const texts = (color.text as Record<string, FamilyModes>) ?? {};
-  const tints = new Set(
+  const groupOf = new Map(
+    config.colors.map((one) => [one.name.split('.')[1], one.name.split('.')[0]]),
+  );
+  const themeable = new Set(
     config.colors
-      .filter((one) => !one.disabled && one.name.split('.')[0] === 'tone')
+      .filter((one) => !one.disabled)
+      .filter(
+        (one) =>
+          !(REQUIRED_SURFACE_GROUPS.has(one.name.split('.')[0]) && one.surface === undefined),
+      )
       .map((one) => one.name.split('.')[1]),
   );
-  const families = Object.keys(surfaces).filter((family) => texts[family] && tints.has(family));
+  const scaleOf = (family: string): string | undefined => {
+    const group = groupOf.get(family);
+    return group && group !== 'tone' ? `${group}-${family}` : undefined;
+  };
+  const families = Object.keys(surfaces).filter((family) => texts[family] && themeable.has(family));
   const ordered = [
     ...(families.includes(semantic.tint) ? [semantic.tint] : []),
     ...families.filter((family) => family !== semantic.tint),
@@ -67,7 +81,17 @@ export function sceneStyle(config: MagmaConfig): SceneStyle | null {
       continue;
     }
     try {
-      blocks.push(namedThemeCss(themeOf(name, { surface: family, accents: shipped?.accents })));
+      const scale = scaleOf(family);
+      blocks.push(
+        namedThemeCss(
+          themeOf(name, {
+            surface: family,
+            accents: shipped?.accents,
+            modes: shipped?.modes,
+            ...(scale && { scale }),
+          }),
+        ),
+      );
       themes.push({ name, family });
     } catch {
       /* not a theme name: the model refuses it, the Themes page says why */
