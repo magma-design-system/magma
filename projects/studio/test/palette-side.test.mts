@@ -22,9 +22,9 @@ afterEach(() => {
 
 const show = (family: string) =>
   render(h(PaletteSide, { config, family, ramps: h('div', { class: 'palette-ramps' }) }), root)
-const filters = () => [...root.querySelectorAll('.palette-side-head mds-filter')]
+const filters = () => [...root.querySelectorAll('.palette-side-head mds-tab')]
 const choose = (filter: Element, value: string) =>
-  filter.dispatchEvent(new CustomEvent('mdsFilterChange', { detail: { value }, bubbles: true }))
+  filter.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 0, value }, bubbles: true }))
 
 test('the side shows the ramps first, the theme in a frame on request, and remembers it', async () => {
   show('neutral')
@@ -65,7 +65,7 @@ test('a theme of one mode is seen in that mode only', async () => {
       'The theme editorial on a page of a product, dark mode',
     ),
   )
-  const items = [...filters()[1].querySelectorAll('mds-filter-item')]
+  const items = [...filters()[1].querySelectorAll('mds-tab-item')]
   expect(items.map((item) => [item.getAttribute('value'), item.hasAttribute('disabled')])).toEqual([
     ['light', true],
     ['dark', false],

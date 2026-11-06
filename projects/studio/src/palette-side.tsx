@@ -81,31 +81,33 @@ export function PaletteSide({
   return (
     <aside class="palette-side" data-show={show} aria-label="The family, as ramps or as a theme">
       <div class="palette-side-head" role="toolbar" aria-label="The side of the Palette">
-        <mds-filter
+        <mds-tab
           aria-label="Show"
-          onmdsFilterChange={(event: CustomEvent<{ value?: string }>) => {
+          onmdsTabChange={(event: CustomEvent<{ id: number; value?: string }>) => {
             const value = event.detail?.value as Show | undefined;
             if (value) choose(value);
           }}
         >
           {SHOWS.map((one) => (
-            <mds-filter-item
+            <mds-tab-item
+              type="button"
               label={one.label}
               value={one.id}
               selected={one.id === show}
-            ></mds-filter-item>
+            ></mds-tab-item>
           ))}
-        </mds-filter>
+        </mds-tab>
         {show === 'theme' && (
-          <mds-filter
+          <mds-tab
             aria-label="Mode"
-            onmdsFilterChange={(event: CustomEvent<{ value?: string }>) => {
+            onmdsTabChange={(event: CustomEvent<{ id: number; value?: string }>) => {
               const value = event.detail?.value as Scheme | undefined;
               if (value) setScheme(value);
             }}
           >
             {SCHEMES.map((one) => (
-              <mds-filter-item
+              <mds-tab-item
+                type="button"
                 label={one.label}
                 value={one.id}
                 selected={one.id === scheme}
@@ -113,9 +115,9 @@ export function PaletteSide({
                 title={
                   modes.includes(one.id) || !theme ? undefined : `${theme.name} is ${modes[0]} only`
                 }
-              ></mds-filter-item>
+              ></mds-tab-item>
             ))}
-          </mds-filter>
+          </mds-tab>
         )}
       </div>
       {ramps}
