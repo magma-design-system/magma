@@ -21,7 +21,7 @@ The `<mds-separator>` web component is the visual divider of the Magma Design Sy
 
 #### Properties & Visual Configurations
 
-The component defines no configurable props. The only intended customization point is the CSS custom property **`--mds-separator-background`** (default `rgb(var(--magma-border-default))`) that overrides the divider color; set it to a semantic color role so the divider keeps following the mode and the contrast preference.
+The component defines no configurable props. The only intended customization point is the CSS custom property **`--mds-separator-background`** (default `var(--magma-border-default)`) that overrides the divider color; set it to a semantic color role so the divider keeps following the mode and the contrast preference.
 
 For the semantic color roles the default value draws from, see [`docs/agents/color.md`](../../../../../../docs/agents/color.md).
 
@@ -86,11 +86,11 @@ Use `<mds-separator>` to separate groups of content inside a card region. `<mds-
 
 #### Custom Separator Color
 
-Override the divider color through the single documented CSS custom property `--mds-separator-background`. Use a semantic color role wrapped in `rgb(var(--magma-<role>))` so dark-mode and high-contrast variants keep working.
+Override the divider color through the single documented CSS custom property `--mds-separator-background`. Use a semantic color role wrapped in `var(--magma-<role>)` so dark-mode and high-contrast variants keep working.
 
 ```css
 .sezione-speciale mds-separator {
-  --mds-separator-background: rgb(var(--magma-accent-border));
+  --mds-separator-background: var(--magma-accent-border);
 }
 ```
 
@@ -150,7 +150,7 @@ The component defines no slots and accepts no children. Placing text or elements
 
 #### Do Not Override Color with a Raw CSS Value
 
-Setting `--mds-separator-background` to a literal hex or RGB value without using a semantic color role breaks dark mode and high-contrast adaptation. Always wrap the value in `rgb(var(--magma-<role>))`.
+Setting `--mds-separator-background` to a literal hex or RGB value without using a semantic color role breaks dark mode and high-contrast adaptation. Always set it to a role, `var(--magma-<role>)`.
 
 ```css
 /* INCORRECT */
@@ -160,7 +160,7 @@ mds-separator {
 
 /* CORRECT */
 mds-separator {
-  --mds-separator-background: rgb(var(--magma-border-muted));
+  --mds-separator-background: var(--magma-border-muted);
 }
 ```
 
@@ -179,7 +179,7 @@ mds-separator >>> :host {
 /* Only --mds-separator-background is the supported override.
    Layout constraints such as height are not part of its styling API. */
 mds-separator {
-  --mds-separator-background: rgb(var(--magma-accent-border));
+  --mds-separator-background: var(--magma-accent-border);
 }
 ```
 

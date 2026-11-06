@@ -13,7 +13,7 @@
   }
 
   .item {
-    --mds-paginator-item-background-hover: rgb(var(--magma-surface-default));
+    --mds-paginator-item-background-hover: var(--magma-surface-default);
     --mds-paginator-item-shadow-hover: var(--shadow-ring-2) inset;
     --mds-paginator-item-shadow: none;
   }
@@ -35,7 +35,7 @@
     }
 
     .item {
-      --mds-paginator-item-background-hover: rgb(var(--magma-surface-default));
+      --mds-paginator-item-background-hover: var(--magma-surface-default);
       --mds-paginator-item-shadow-hover: var(--shadow-ring-2) inset;
       --mds-paginator-item-shadow: none;
     }

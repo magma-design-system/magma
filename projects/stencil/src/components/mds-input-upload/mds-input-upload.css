@@ -11,25 +11,25 @@
 /* ❌ Not supported
 @property --mds-input-upload-drag-area-border-on-drag {
   inherits: false;
-  initial-value: 3px dashed rgb(var(--magma-border-strong));
+  initial-value: 3px dashed var(--magma-border-strong);
   syntax: "<border>";
 }
 
 @property --mds-input-upload-drag-area-border {
   inherits: false;
-  initial-value: 3px dashed rgb(var(--magma-border-default));
+  initial-value: 3px dashed var(--magma-border-default);
   syntax: "<border>";
 }
 */
 
 :host {
-  --mds-input-upload-drag-area-background-color-on-drag: rgb(var(--magma-wash-soft));
+  --mds-input-upload-drag-area-background-color-on-drag: var(--magma-wash-soft);
 
   /* a field stands a step off its surface: overlay on a page, the step below inside an overlay
      surface, which passes it as --magma-field-fill (#1193) */
-  --mds-input-upload-drag-area-background-color: rgb(var(--magma-field-fill, var(--magma-surface-overlay)));
-  --mds-input-upload-drag-area-border-on-drag: --spacing(75) dashed rgb(var(--magma-border-strong));
-  --mds-input-upload-drag-area-border: --spacing(75) dashed rgb(var(--magma-border-default));
+  --mds-input-upload-drag-area-background-color: var(--magma-field-fill, var(--magma-surface-overlay));
+  --mds-input-upload-drag-area-border-on-drag: --spacing(75) dashed var(--magma-border-strong);
+  --mds-input-upload-drag-area-border: --spacing(75) dashed var(--magma-border-default);
   --mds-input-upload-min-cols: 3;
 
   @apply grid-cols-full;
@@ -54,7 +54,7 @@
   /*
     actually there is no way to custom background-image url
     paramter which not allows to pass custom properties inside
-    --stroke-color: rgb(var(--magma-border-default));
+    --stroke-color: var(--magma-border-default);
     --stroke-dashoffset: 8;
     --stroke-line-width: 8;
     --stroke-width: 5;
@@ -80,29 +80,29 @@
 .icon {
   @apply svg;
 
-  fill: rgb(var(--magma-text-muted));
+  fill: var(--magma-text-muted);
   width: --spacing(600);
 }
 
 .action {
   border-radius: var(--magma-radius-full);
-  fill: rgb(var(--magma-text-subtle));
+  fill: var(--magma-text-subtle);
   height: auto;
   padding: --spacing(150);
 }
 
 .action--cancel-upload:focus-visible,
 .action--cancel-upload:hover {
-  --mds-button-background: rgb(var(--magma-danger-wash-base));
+  --mds-button-background: var(--magma-danger-wash-base);
 
-  fill: rgb(var(--magma-danger-emphasis));
+  fill: var(--magma-danger-emphasis);
 }
 
 .action--retry-upload:focus-visible,
 .action--retry-upload:hover {
-  --mds-button-background: rgb(var(--magma-success-wash-base));
+  --mds-button-background: var(--magma-success-wash-base);
 
-  fill: rgb(var(--magma-success-emphasis));
+  fill: var(--magma-success-emphasis);
 }
 
 .main-action {

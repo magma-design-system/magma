@@ -4,21 +4,21 @@
    state. `error` is the danger hue, and the colour the dot had before it had a variant. */
 
 :host([variant='error']) {
-  --mds-notification-color: rgb(var(--magma-danger-on-emphasis));
-  --mds-notification-dot-background: rgb(var(--magma-danger-emphasis));
+  --mds-notification-color: var(--magma-danger-on-emphasis);
+  --mds-notification-dot-background: var(--magma-danger-emphasis);
 }
 
 :host([variant='info']) {
-  --mds-notification-color: rgb(var(--magma-info-on-emphasis));
-  --mds-notification-dot-background: rgb(var(--magma-info-emphasis));
+  --mds-notification-color: var(--magma-info-on-emphasis);
+  --mds-notification-dot-background: var(--magma-info-emphasis);
 }
 
 :host([variant='success']) {
-  --mds-notification-color: rgb(var(--magma-success-on-emphasis));
-  --mds-notification-dot-background: rgb(var(--magma-success-emphasis));
+  --mds-notification-color: var(--magma-success-on-emphasis);
+  --mds-notification-dot-background: var(--magma-success-emphasis);
 }
 
 :host([variant='warning']) {
-  --mds-notification-color: rgb(var(--magma-warning-on-emphasis));
-  --mds-notification-dot-background: rgb(var(--magma-warning-emphasis));
+  --mds-notification-color: var(--magma-warning-on-emphasis);
+  --mds-notification-dot-background: var(--magma-warning-emphasis);
 }

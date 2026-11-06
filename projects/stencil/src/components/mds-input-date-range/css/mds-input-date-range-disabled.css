@@ -2,11 +2,11 @@
 
 :host([disabled]:not([disabled='false'])),
 :host(:disabled:not([disabled='false'])) {
-  color: rgb(var(--magma-text-disabled));
+  color: var(--magma-text-disabled);
   cursor: default;
 }
 
 :host([disabled]:not([disabled='false'])) .inputs,
 :host(:disabled:not([disabled='false'])) .inputs {
-  background-color: rgb(var(--magma-wash-soft));
+  background-color: var(--magma-wash-soft);
 }

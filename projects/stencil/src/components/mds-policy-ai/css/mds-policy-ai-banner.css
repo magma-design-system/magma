@@ -1,4 +1,4 @@
 .banner {
-  --mds-banner-cockade-background: rgb(var(--magma-accent-ai-fg));
-  --mds-banner-icon-color: rgb(var(--magma-accent-ai-surface-subtle));
+  --mds-banner-cockade-background: var(--magma-accent-ai-fg);
+  --mds-banner-icon-color: var(--magma-accent-ai-surface-subtle);
 }

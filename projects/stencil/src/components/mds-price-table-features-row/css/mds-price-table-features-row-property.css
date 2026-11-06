@@ -17,18 +17,18 @@
 
 @property --mds-price-table-features-row-background-hover {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-soft));
+  initial-value: var(--magma-wash-soft);
   syntax: '<color>';
 }
 
 @property --mds-price-table-features-row-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-subtle));
+  initial-value: var(--magma-text-subtle);
   syntax: '<color>';
 }
 
 @property --mds-price-table-features-row-color-hover {
   inherits: true;
-  initial-value: rgb(var(--magma-text-default));
+  initial-value: var(--magma-text-default);
   syntax: '<color>';
 }

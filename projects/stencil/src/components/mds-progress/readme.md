@@ -155,12 +155,12 @@ async function runTask() {
 
 #### Styling Customization
 
-Override the documented `--mds-progress-*` CSS custom properties for one-off visual tweaks. Name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode keeps working.
+Override the documented `--mds-progress-*` CSS custom properties for one-off visual tweaks. Name a semantic role, `var(--magma-<role>)` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode keeps working.
 
 ```css
 .upload-widget mds-progress {
-  --mds-progress-background: rgb(var(--magma-wash-base));
-  --mds-progress-color: rgb(var(--magma-accent-emphasis-hover));
+  --mds-progress-background: var(--magma-wash-base);
+  --mds-progress-color: var(--magma-accent-emphasis-hover);
   --mds-progress-thickness: 16px;
   --mds-progress-radius: var(--magma-radius-sm);
   --mds-progress-duration: 400ms;
@@ -247,7 +247,7 @@ mds-progress >>> .progress {
 
 /* CORRECT - use the CSS custom property */
 mds-progress {
-  --mds-progress-color: rgb(var(--magma-accent-emphasis-hover));
+  --mds-progress-color: var(--magma-accent-emphasis-hover);
 }
 
 /* CORRECT - use the documented part only when a property is insufficient */

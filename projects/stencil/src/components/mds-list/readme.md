@@ -118,7 +118,7 @@ Reach the icon or text nodes through the documented `::part(icon)` and `::part(t
 ```css
 /* Tint the leading icon of every item in a warning context */
 .alert-list mds-list-item::part(icon) {
-  fill: rgb(var(--magma-warning-fg));
+  fill: var(--magma-warning-fg);
 }
 ```
 

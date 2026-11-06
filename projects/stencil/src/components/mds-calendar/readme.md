@@ -148,7 +148,7 @@ Adjust the calendar appearance only through the public `--mds-calendar-*` CSS cu
 
 ```css
 .booking-widget mds-calendar {
-  --mds-calendar-background: rgb(var(--magma-surface-muted));
+  --mds-calendar-background: var(--magma-surface-muted);
   --mds-calendar-border-radius: var(--magma-radius-xl);
   --mds-calendar-padding: calc(var(--spacing) * 500);
   --mds-calendar-cell-other-month-visibility: hidden;
@@ -257,7 +257,7 @@ mds-calendar::part(cell) {
 
 /* CORRECT */
 mds-calendar {
-  --mds-calendar-background: rgb(var(--magma-surface-muted));
+  --mds-calendar-background: var(--magma-surface-muted);
   --mds-calendar-border-radius: var(--magma-radius-xl);
   --mds-calendar-cell-other-month-visibility: hidden;
 }

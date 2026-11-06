@@ -6,10 +6,10 @@
  */
 
 :host {
-  --mds-input-field-message-color: rgb(var(--magma-text-muted));
-  --mds-input-field-message-background: rgb(var(--magma-wash-soft));
+  --mds-input-field-message-color: var(--magma-text-muted);
+  --mds-input-field-message-background: var(--magma-wash-soft);
 
-  color: rgb(var(--magma-text-default));
+  color: var(--magma-text-default);
   corner-shape: var(--magma-corner-shape);
   display: grid;
 

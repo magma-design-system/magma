@@ -102,14 +102,14 @@ Always set the text with the `label` prop on `<mds-breadcrumb-item>`: the item h
 
 #### Styling Customization via CSS Custom Properties
 
-`mds-breadcrumb` has no public CSS custom property: style it with its props, the `button` part of its items and the semantic roles. The item colors, the selected item's included, and the separator arrow follow the semantic color roles of the theme, so dark mode and high-contrast modes keep working with no override. To retheme the whole trail at once, target the `button` part of every child `<mds-breadcrumb-item>` from a parent selector: the part is the item's `<mds-button>`, so it takes the public `--mds-button-*` custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))`.
+`mds-breadcrumb` has no public CSS custom property: style it with its props, the `button` part of its items and the semantic roles. The item colors, the selected item's included, and the separator arrow follow the semantic color roles of the theme, so dark mode and high-contrast modes keep working with no override. To retheme the whole trail at once, target the `button` part of every child `<mds-breadcrumb-item>` from a parent selector: the part is the item's `<mds-button>`, so it takes the public `--mds-button-*` custom properties. Use semantic color roles wrapped in `var(--magma-<role>)`.
 
 ```css
 .sidebar-nav mds-breadcrumb-item::part(button) {
-  --mds-button-color: rgb(var(--magma-accent-fg));
+  --mds-button-color: var(--magma-accent-fg);
 }
 .sidebar-nav mds-breadcrumb-item[selected]::part(button) {
-  --mds-button-color: rgb(var(--magma-text-default));
+  --mds-button-color: var(--magma-text-default);
 }
 ```
 

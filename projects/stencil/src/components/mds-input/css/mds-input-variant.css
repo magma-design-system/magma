@@ -1,64 +1,76 @@
 :host {
-  --mds-input-icon-color: rgb(var(--magma-accent-emphasis));
-  --mds-input-variant-color-rgb: 0 0 0;
+  --mds-input-icon-color: var(--magma-accent-emphasis);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-variant-color: rgb(0 0 0);
 }
 
 :host(:focus) {
-  --mds-input-icon-color: rgb(var(--magma-accent-fg));
-  --mds-input-variant-color-rgb: var(--magma-accent-emphasis);
+  --mds-input-icon-color: var(--magma-accent-fg);
+  --mds-input-variant-color: var(--magma-accent-emphasis);
 }
 
 :host([variant='ai']) {
-  --mds-input-icon-color: rgb(var(--magma-accent-ai-emphasis));
-  --mds-input-tip-background: rgb(var(--magma-accent-ai-fg));
-  --mds-input-variant-color-rgb: 0 0 0;
+  --mds-input-icon-color: var(--magma-accent-ai-emphasis);
+  --mds-input-tip-background: var(--magma-accent-ai-fg);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-variant-color: rgb(0 0 0);
 }
 
 :host([variant='ai']:focus) {
-  --mds-input-icon-color: rgb(var(--magma-accent-ai-fg));
-  --mds-input-variant-color-rgb: var(--magma-accent-ai-emphasis);
+  --mds-input-icon-color: var(--magma-accent-ai-fg);
+  --mds-input-variant-color: var(--magma-accent-ai-emphasis);
 }
 
 :host([variant='info']) {
-  --mds-input-icon-color: rgb(var(--magma-info-emphasis));
-  --mds-input-tip-background: rgb(var(--magma-info-emphasis));
-  --mds-input-variant-color-rgb: 0 0 0;
+  --mds-input-icon-color: var(--magma-info-emphasis);
+  --mds-input-tip-background: var(--magma-info-emphasis);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-variant-color: rgb(0 0 0);
 }
 
 :host([variant='info']:focus) {
-  --mds-input-icon-color: rgb(var(--magma-info-emphasis));
-  --mds-input-variant-color-rgb: var(--magma-info-emphasis);
+  --mds-input-icon-color: var(--magma-info-emphasis);
+  --mds-input-variant-color: var(--magma-info-emphasis);
 }
 
 :host([variant='success']) {
-  --mds-input-icon-color: rgb(var(--magma-success-emphasis));
-  --mds-input-tip-background: rgb(var(--magma-success-emphasis));
-  --mds-input-variant-color-rgb: 0 0 0;
+  --mds-input-icon-color: var(--magma-success-emphasis);
+  --mds-input-tip-background: var(--magma-success-emphasis);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-variant-color: rgb(0 0 0);
 }
 
 :host([variant='success']:focus) {
-  --mds-input-icon-color: rgb(var(--magma-success-emphasis));
-  --mds-input-variant-color-rgb: var(--magma-success-emphasis);
+  --mds-input-icon-color: var(--magma-success-emphasis);
+  --mds-input-variant-color: var(--magma-success-emphasis);
 }
 
 :host([variant='warning']) {
-  --mds-input-icon-color: rgb(var(--magma-warning-emphasis));
-  --mds-input-tip-background: rgb(var(--magma-warning-emphasis));
-  --mds-input-variant-color-rgb: 0 0 0;
+  --mds-input-icon-color: var(--magma-warning-emphasis);
+  --mds-input-tip-background: var(--magma-warning-emphasis);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-variant-color: rgb(0 0 0);
 }
 
 :host([variant='warning']:focus) {
-  --mds-input-icon-color: rgb(var(--magma-warning-emphasis));
-  --mds-input-variant-color-rgb: var(--magma-warning-emphasis);
+  --mds-input-icon-color: var(--magma-warning-emphasis);
+  --mds-input-variant-color: var(--magma-warning-emphasis);
 }
 
 :host([variant='error']) {
-  --mds-input-icon-color: rgb(var(--magma-danger-emphasis));
-  --mds-input-tip-background: rgb(var(--magma-danger-emphasis));
-  --mds-input-variant-color-rgb: 0 0 0;
+  --mds-input-icon-color: var(--magma-danger-emphasis);
+  --mds-input-tip-background: var(--magma-danger-emphasis);
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  --mds-input-variant-color: rgb(0 0 0);
 }
 
 :host([variant='error']:focus) {
-  --mds-input-icon-color: rgb(var(--magma-danger-emphasis));
-  --mds-input-variant-color-rgb: var(--magma-danger-emphasis);
+  --mds-input-icon-color: var(--magma-danger-emphasis);
+  --mds-input-variant-color: var(--magma-danger-emphasis);
 }

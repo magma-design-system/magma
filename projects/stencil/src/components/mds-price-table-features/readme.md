@@ -171,11 +171,11 @@ Tune the cell spacing through the public `--mds-price-table-features-padding` CS
 }
 ```
 
-To style the header band independently, target the documented `header` shadow part; name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working:
+To style the header band independently, target the documented `header` shadow part; name a semantic role, `var(--magma-<role>)` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)), so dark mode and high-contrast modes keep working:
 
 ```css
 .pricing-section mds-price-table-features::part(header) {
-  background: rgb(var(--magma-wash-base));
+  background: var(--magma-wash-base);
 }
 ```
 
@@ -321,7 +321,7 @@ mds-price-table-features {
   --mds-price-table-features-padding: calc(var(--spacing) * 400);
 }
 mds-price-table-features::part(header) {
-  background: rgb(var(--magma-wash-base));
+  background: var(--magma-wash-base);
 }
 ```
 

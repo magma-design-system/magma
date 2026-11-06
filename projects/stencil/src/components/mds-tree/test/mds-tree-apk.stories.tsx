@@ -36,7 +36,7 @@ const TemplateNavigationMenu = () => {
         <mds-tree-item
           label="Protocollazione documenti"
           style={{
-            '--mds-tree-label-hover-background': 'rgb(var(--variant-primary-10))',
+            '--mds-tree-label-hover-background': 'var(--variant-primary-10)',
           }}
         >
           <mds-tree-item label="Attività protocollo generale">
@@ -188,7 +188,7 @@ const TemplateWorkflow = () => (
     toggle-position="left"
     actions="visible"
     style={{
-      '--mds-tree-toggle-icon-folder-default-color': 'rgb(var(--magma-text-subtle))',
+      '--mds-tree-toggle-icon-folder-default-color': 'var(--magma-text-subtle)',
     }}
   >
     <mds-tree-item label="Nr: 144 Data: 29/01/2025 (DIREZIONE GENERALE)">

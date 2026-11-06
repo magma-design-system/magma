@@ -1,39 +1,39 @@
 :host([variant='error']) {
-  --mds-avatar-background-color: rgb(var(--magma-danger-emphasis));
-  --mds-avatar-color: rgb(var(--magma-danger-on-emphasis));
+  --mds-avatar-background-color: var(--magma-danger-emphasis);
+  --mds-avatar-color: var(--magma-danger-on-emphasis);
 
   &:host([tone='weak']) {
-    --mds-avatar-background-color: rgb(var(--magma-danger-wash-base));
-    --mds-avatar-color: rgb(var(--magma-danger-text-default));
+    --mds-avatar-background-color: var(--magma-danger-wash-base);
+    --mds-avatar-color: var(--magma-danger-text-default);
   }
 }
 
 :host([variant='warning']) {
-  --mds-avatar-background-color: rgb(var(--magma-warning-emphasis));
-  --mds-avatar-color: rgb(var(--magma-warning-on-emphasis));
+  --mds-avatar-background-color: var(--magma-warning-emphasis);
+  --mds-avatar-color: var(--magma-warning-on-emphasis);
 
   &:host([tone='weak']) {
-    --mds-avatar-background-color: rgb(var(--magma-warning-wash-base));
-    --mds-avatar-color: rgb(var(--magma-warning-text-default));
+    --mds-avatar-background-color: var(--magma-warning-wash-base);
+    --mds-avatar-color: var(--magma-warning-text-default);
   }
 }
 
 :host([variant='info']) {
-  --mds-avatar-background-color: rgb(var(--magma-info-emphasis));
-  --mds-avatar-color: rgb(var(--magma-info-on-emphasis));
+  --mds-avatar-background-color: var(--magma-info-emphasis);
+  --mds-avatar-color: var(--magma-info-on-emphasis);
 
   &:host([tone='weak']) {
-    --mds-avatar-background-color: rgb(var(--magma-info-wash-base));
-    --mds-avatar-color: rgb(var(--magma-info-text-default));
+    --mds-avatar-background-color: var(--magma-info-wash-base);
+    --mds-avatar-color: var(--magma-info-text-default);
   }
 }
 
 :host([variant='success']) {
-  --mds-avatar-background-color: rgb(var(--magma-success-emphasis));
-  --mds-avatar-color: rgb(var(--magma-success-on-emphasis));
+  --mds-avatar-background-color: var(--magma-success-emphasis);
+  --mds-avatar-color: var(--magma-success-on-emphasis);
 
   &:host([tone='weak']) {
-    --mds-avatar-background-color: rgb(var(--magma-success-wash-base));
-    --mds-avatar-color: rgb(var(--magma-success-text-default));
+    --mds-avatar-background-color: var(--magma-success-wash-base);
+    --mds-avatar-color: var(--magma-success-text-default);
   }
 }

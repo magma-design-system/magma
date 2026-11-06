@@ -23,13 +23,13 @@
 
 @property --mds-input-select-arrow-icon-blur-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
+  initial-value: var(--magma-accent-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-input-select-arrow-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis));
+  initial-value: var(--magma-accent-emphasis);
   syntax: '<color>';
 }
 
@@ -41,12 +41,14 @@
 
 @property --mds-input-select-arrow-icon-hover-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-fg));
+  initial-value: var(--magma-accent-fg);
   syntax: '<color>';
 }
 
-@property --mds-input-select-variant-color-rgb {
+@property --mds-input-select-variant-color {
   inherits: true;
-  initial-value: 0 0 0;
-  syntax: '<integer>+';
+
+  /* stylelint-disable-next-line magma/token-values -- black at rest, the literal the channels 0 0 0 held before #918: its role is a follow-up */
+  initial-value: rgb(0 0 0);
+  syntax: '<color>';
 }

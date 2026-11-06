@@ -11,13 +11,13 @@
 
 @property --mds-toast-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-inverse));
+  initial-value: var(--magma-surface-inverse);
   syntax: '<color>';
 }
 
 @property --mds-toast-color {
   inherits: true;
-  initial-value: rgb(var(--magma-on-inverse));
+  initial-value: var(--magma-on-inverse);
   syntax: '<color>';
 }
 
@@ -29,7 +29,7 @@
 
 @property --mds-toast-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-on-inverse));
+  initial-value: var(--magma-on-inverse);
   syntax: '<color>';
 }
 

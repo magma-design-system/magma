@@ -6,18 +6,18 @@
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])),
 :host([pref-theme-scheme='dark']) {
-  --mds-price-table-list-separator-color: rgb(var(--magma-text-default) / 0.5);
+  --mds-price-table-list-separator-color: color-mix(in srgb, var(--magma-text-default) 50%, transparent);
 
-  background-color: rgb(var(--label-green-09));
+  background-color: var(--label-green-09);
   box-shadow: var(--shadow-ring);
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
-    --mds-price-table-list-separator-color: rgb(var(--magma-text-default) / 0.5);
+    --mds-price-table-list-separator-color: color-mix(in srgb, var(--magma-text-default) 50%, transparent);
 
-    background-color: rgb(var(--label-green-09));
+    background-color: var(--label-green-09);
     box-shadow: var(--shadow-ring);
   }
 }

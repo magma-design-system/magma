@@ -55,10 +55,17 @@ describe('mds-input-select', () => {
 
       const fill = await paintedFill(arrow);
       const arrowStyle = getComputedStyle(arrow);
-      // one is a computed `fill` and the other the value of a custom property, so
-      // the same colour arrives spelled `rgb(36, 103, 231)` on one side and
-      // `rgb(36 103 231)` on the other
-      const colore = (value: string) => value.replace(/[\s,]+/g, ' ').trim();
+      // one is a computed `fill` and the other the value of a custom property, so the same
+      // colour arrives spelled `rgb(36, 103, 231)` on one side and as the build wrote it
+      // (`#2467e7` once minified) on the other: a probe spells both the computed way
+      const colore = (value: string) => {
+        const probe = document.createElement('span');
+        probe.style.color = value.trim();
+        document.body.append(probe);
+        const { color } = getComputedStyle(probe);
+        probe.remove();
+        return color;
+      };
 
       // the date drives its own icon through --mds-button-color, so the comparison
       // is against the value that reaches the button, not against a literal

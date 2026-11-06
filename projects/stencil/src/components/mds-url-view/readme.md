@@ -119,12 +119,12 @@ Listen for `mdsUrlViewClose` to update application state when the user clicks th
 
 #### Styling Customization
 
-Style the component only through its public `--mds-url-view-*` CSS custom properties: the background, the text colour, the radius and the shadow of the container. Set them on the host or on a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the component only through its public `--mds-url-view-*` CSS custom properties: the background, the text colour, the radius and the shadow of the container. Set them on the host or on a parent selector; use the semantic color roles via `var(--magma-<role>)` so dark mode and high-contrast modes keep working.
 
 ```css
 .anteprima-documento mds-url-view {
-  --mds-url-view-background: rgb(var(--magma-wash-base));
-  --mds-url-view-color: rgb(var(--magma-text-default));
+  --mds-url-view-background: var(--magma-wash-base);
+  --mds-url-view-color: var(--magma-text-default);
   --mds-url-view-radius: var(--magma-radius-lg);
   --mds-url-view-shadow: var(--shadow-xl);
 }
@@ -202,8 +202,8 @@ mds-url-view >>> .iframe {
 
 /* CORRECT */
 mds-url-view {
-  --mds-url-view-background: rgb(var(--magma-accent-surface));
-  --mds-url-view-color: rgb(var(--magma-accent-fg));
+  --mds-url-view-background: var(--magma-accent-surface);
+  --mds-url-view-color: var(--magma-accent-fg);
 }
 ```
 

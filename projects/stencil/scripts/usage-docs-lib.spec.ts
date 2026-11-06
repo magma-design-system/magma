@@ -104,7 +104,7 @@ describe('checkUsageDoc', () => {
       '',
       fence(
         'css',
-        'mds-button {\n  --mds-button-radius: var(--magma-radius-md);\n}\nmds-button::part(icon) { fill: rgb(var(--magma-accent-emphasis)); }',
+        'mds-button {\n  --mds-button-radius: var(--magma-radius-md);\n}\nmds-button::part(icon) { fill: var(--magma-accent-emphasis); }',
       ),
       '',
       fence('javascript', "el.addEventListener('mdsInputChange', () => {});"),
@@ -201,8 +201,8 @@ describe('checkUsageDoc', () => {
     const css = [
       'mds-button {',
       '  --mds-button-radius: var(--radius-md);',
-      '  --mds-button-nope: rgb(var(--tone-neutral-03));',
-      '  color: rgb(var(--tone-neutral));',
+      '  --mds-button-nope: var(--tone-neutral-03);',
+      '  color: var(--tone-neutral);',
       '}',
     ].join('\n');
     expect(kinds(fence('css', css))).toEqual([
@@ -217,7 +217,7 @@ describe('checkUsageDoc', () => {
     const css = [
       'mds-button {',
       '  --mds-button-radius: var(--magma-radius-md);',
-      '  --mds-button-icon-color: rgb(var(--magma-accent-emphasis));',
+      '  --mds-button-icon-color: var(--magma-accent-emphasis);',
       '  --mds-button-private: 0;',
       '}',
     ].join('\n');
@@ -273,7 +273,7 @@ describe('checkUsageDoc', () => {
     expect(kinds(fence('html', html.join('\n')))).toEqual([]);
     const css = [
       '/* INCORRECT */',
-      'mds-button >>> .x { color: rgb(var(--tone-neutral-03)); }',
+      'mds-button >>> .x { color: var(--tone-neutral-03); }',
       '/* CORRECT */',
       'mds-button {}',
     ];

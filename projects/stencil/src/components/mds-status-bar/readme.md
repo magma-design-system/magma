@@ -141,7 +141,7 @@ Set `overflow="auto"` to prevent the page from scrolling while the status bar is
 
 #### Styling Customization
 
-Customize the bar only through its public `--mds-status-bar-*` CSS custom properties and the exposed `::part()` names (`status-bar`, `status-bar-area`, `actions`); the backdrop behind the bar is set by the component. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
+Customize the bar only through its public `--mds-status-bar-*` CSS custom properties and the exposed `::part()` names (`status-bar`, `status-bar-area`, `actions`); the backdrop behind the bar is set by the component. Use semantic color roles via `var(--magma-<role>)` so dark mode keeps working.
 
 ```css
 mds-status-bar {
@@ -149,7 +149,7 @@ mds-status-bar {
 }
 
 mds-status-bar::part(status-bar) {
-  border: 1px solid rgb(var(--magma-border-default));
+  border: 1px solid var(--magma-border-default);
 }
 ```
 
@@ -230,7 +230,7 @@ mds-status-bar {
   --mds-status-bar-max-width: 640px;
 }
 mds-status-bar::part(status-bar) {
-  border: 1px solid rgb(var(--magma-border-default));
+  border: 1px solid var(--magma-border-default);
 }
 ```
 

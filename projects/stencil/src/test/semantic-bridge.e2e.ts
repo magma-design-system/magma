@@ -5,7 +5,7 @@ import bridge from '../../../styles/dist/tailwind/semantic.css?raw';
 
 /**
  * The Tailwind bridge of the semantic layer writes every role with its light default as the
- * fallback of its var(): `--color-surface-default: rgb(var(--magma-surface-default, 242 242
+ * fallback of its var(): `--color-surface-default: var(--magma-surface-default, rgb(242 242
  * 242))`. Tailwind IntelliSense reads the colour of a utility only from that literal, so the
  * fallback is what the editor shows next to `bg-surface-default`. It has to be the colour the
  * role really has on a light page, or the swatch lies.
@@ -14,7 +14,7 @@ describe('the fallbacks of the semantic Tailwind bridge', () => {
   const html = document.documentElement;
   let sheet: HTMLStyleElement;
 
-  const roles = [...bridge.matchAll(/rgb\(var\(--(magma-[a-z0-9-]+), (\d+ \d+ \d+)\)\)/g)].map(
+  const roles = [...bridge.matchAll(/var\(--(magma-[a-z0-9-]+), (rgb\(\d+ \d+ \d+\))\)/g)].map(
     ([, role, fallback]) => ({ role, fallback }),
   );
 
@@ -50,8 +50,8 @@ describe('the fallbacks of the semantic Tailwind bridge', () => {
     const wrong = roles
       .map(({ role, fallback }) => ({
         role,
-        fallback: colourOf(`rgb(${fallback})`),
-        page: colourOf(`rgb(var(--${role}))`),
+        fallback: colourOf(fallback),
+        page: colourOf(`var(--${role})`),
       }))
       .filter(({ fallback, page }) => fallback !== page);
     probe.remove();

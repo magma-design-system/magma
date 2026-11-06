@@ -11,36 +11,36 @@
 
 @property --mds-img-background {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis-hover));
+  initial-value: var(--magma-accent-emphasis-hover);
   syntax: '<color>';
 }
 
 @property --mds-img-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-surface));
+  initial-value: var(--magma-accent-surface);
   syntax: '<color>';
 }
 
 @property --mds-img-error-background {
   inherits: true;
-  initial-value: rgb(var(--magma-danger-wash-base));
+  initial-value: var(--magma-danger-wash-base);
   syntax: '<color>';
 }
 
 @property --mds-img-error-color {
   inherits: true;
-  initial-value: rgb(var(--magma-danger-text-default));
+  initial-value: var(--magma-danger-text-default);
   syntax: '<color>';
 }
 
 @property --mds-img-error-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-danger-text-default));
+  initial-value: var(--magma-danger-text-default);
   syntax: '<color>';
 }
 
 @property --mds-img-icon-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-border));
+  initial-value: var(--magma-accent-border);
   syntax: '<color>';
 }

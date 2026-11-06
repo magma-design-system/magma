@@ -1,102 +1,102 @@
 :host([variant='primary'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--magma-accent-surface));
-  --mds-file-preview-icon-color: rgb(var(--magma-accent-emphasis));
+  --mds-file-preview-icon-background: var(--magma-accent-surface);
+  --mds-file-preview-icon-color: var(--magma-accent-emphasis);
 }
 
 :host([variant='info'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--magma-info-wash-base));
-  --mds-file-preview-icon-color: rgb(var(--magma-info-text-default));
-  --mds-file-preview-color: rgb(var(--magma-info-text-subtle));
+  --mds-file-preview-icon-background: var(--magma-info-wash-base);
+  --mds-file-preview-icon-color: var(--magma-info-text-default);
+  --mds-file-preview-color: var(--magma-info-text-subtle);
 }
 
 :host([variant='success'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--magma-success-wash-base));
-  --mds-file-preview-icon-color: rgb(var(--magma-success-text-default));
-  --mds-file-preview-color: rgb(var(--magma-success-text-subtle));
+  --mds-file-preview-icon-background: var(--magma-success-wash-base);
+  --mds-file-preview-icon-color: var(--magma-success-text-default);
+  --mds-file-preview-color: var(--magma-success-text-subtle);
 }
 
 :host([variant='warning'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--magma-warning-wash-base));
-  --mds-file-preview-icon-color: rgb(var(--magma-warning-text-default));
-  --mds-file-preview-color: rgb(var(--magma-warning-text-subtle));
+  --mds-file-preview-icon-background: var(--magma-warning-wash-base);
+  --mds-file-preview-icon-color: var(--magma-warning-text-default);
+  --mds-file-preview-color: var(--magma-warning-text-subtle);
 }
 
 :host([variant='error'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--magma-danger-wash-base));
-  --mds-file-preview-icon-color: rgb(var(--magma-danger-text-default));
-  --mds-file-preview-color: rgb(var(--magma-danger-text-subtle));
+  --mds-file-preview-icon-background: var(--magma-danger-wash-base);
+  --mds-file-preview-icon-color: var(--magma-danger-text-default);
+  --mds-file-preview-color: var(--magma-danger-text-subtle);
 }
 
 :host([variant='amaranth'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-amaranth-09));
-  --mds-file-preview-icon-color: rgb(var(--label-amaranth-04));
-  --mds-file-preview-color: rgb(var(--label-amaranth-03));
+  --mds-file-preview-icon-background: var(--label-amaranth-09);
+  --mds-file-preview-icon-color: var(--label-amaranth-04);
+  --mds-file-preview-color: var(--label-amaranth-03);
 }
 
 :host([variant='aqua'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-aqua-09));
-  --mds-file-preview-icon-color: rgb(var(--label-aqua-04));
-  --mds-file-preview-color: rgb(var(--label-aqua-03));
+  --mds-file-preview-icon-background: var(--label-aqua-09);
+  --mds-file-preview-icon-color: var(--label-aqua-04);
+  --mds-file-preview-color: var(--label-aqua-03);
 }
 
 :host([variant='blue'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-blue-09));
-  --mds-file-preview-icon-color: rgb(var(--label-blue-04));
-  --mds-file-preview-color: rgb(var(--label-blue-03));
+  --mds-file-preview-icon-background: var(--label-blue-09);
+  --mds-file-preview-icon-color: var(--label-blue-04);
+  --mds-file-preview-color: var(--label-blue-03);
 }
 
 :host([variant='green'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-green-09));
-  --mds-file-preview-icon-color: rgb(var(--label-green-04));
-  --mds-file-preview-color: rgb(var(--label-green-03));
+  --mds-file-preview-icon-background: var(--label-green-09);
+  --mds-file-preview-icon-color: var(--label-green-04);
+  --mds-file-preview-color: var(--label-green-03);
 }
 
 :host([variant='lime'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-lime-09));
-  --mds-file-preview-icon-color: rgb(var(--label-lime-04));
-  --mds-file-preview-color: rgb(var(--label-lime-03));
+  --mds-file-preview-icon-background: var(--label-lime-09);
+  --mds-file-preview-icon-color: var(--label-lime-04);
+  --mds-file-preview-color: var(--label-lime-03);
 }
 
 :host([variant='orange'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-orange-09));
-  --mds-file-preview-icon-color: rgb(var(--label-orange-04));
-  --mds-file-preview-color: rgb(var(--label-orange-03));
+  --mds-file-preview-icon-background: var(--label-orange-09);
+  --mds-file-preview-icon-color: var(--label-orange-04);
+  --mds-file-preview-color: var(--label-orange-03);
 }
 
 :host([variant='orchid'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-orchid-09));
-  --mds-file-preview-icon-color: rgb(var(--label-orchid-04));
-  --mds-file-preview-color: rgb(var(--label-orchid-03));
+  --mds-file-preview-icon-background: var(--label-orchid-09);
+  --mds-file-preview-icon-color: var(--label-orchid-04);
+  --mds-file-preview-color: var(--label-orchid-03);
 }
 
 :host([variant='purple'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-purple-09));
-  --mds-file-preview-icon-color: rgb(var(--label-purple-04));
-  --mds-file-preview-color: rgb(var(--label-purple-03));
+  --mds-file-preview-icon-background: var(--label-purple-09);
+  --mds-file-preview-icon-color: var(--label-purple-04);
+  --mds-file-preview-color: var(--label-purple-03);
 }
 
 :host([variant='red'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-red-09));
-  --mds-file-preview-icon-color: rgb(var(--label-red-04));
-  --mds-file-preview-color: rgb(var(--label-red-03));
+  --mds-file-preview-icon-background: var(--label-red-09);
+  --mds-file-preview-icon-color: var(--label-red-04);
+  --mds-file-preview-color: var(--label-red-03);
 }
 
 :host([variant='sky'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-sky-09));
-  --mds-file-preview-icon-color: rgb(var(--label-sky-04));
-  --mds-file-preview-color: rgb(var(--label-sky-03));
+  --mds-file-preview-icon-background: var(--label-sky-09);
+  --mds-file-preview-icon-color: var(--label-sky-04);
+  --mds-file-preview-color: var(--label-sky-03);
 }
 
 :host([variant='violet'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-violet-09));
-  --mds-file-preview-icon-color: rgb(var(--label-violet-04));
-  --mds-file-preview-color: rgb(var(--label-violet-03));
+  --mds-file-preview-icon-background: var(--label-violet-09);
+  --mds-file-preview-icon-color: var(--label-violet-04);
+  --mds-file-preview-color: var(--label-violet-03);
 }
 
 :host([variant='yellow'][message]) {
-  --mds-file-preview-icon-background: rgb(var(--label-yellow-09));
-  --mds-file-preview-icon-color: rgb(var(--label-yellow-04));
-  --mds-file-preview-color: rgb(var(--label-yellow-03));
+  --mds-file-preview-icon-background: var(--label-yellow-09);
+  --mds-file-preview-icon-color: var(--label-yellow-04);
+  --mds-file-preview-color: var(--label-yellow-03);
 }
 
 /* contrast + variant. The component reflects the resolved contrast mode from
@@ -105,105 +105,105 @@
 
 :host([pref-contrast='more']) {
   &:host([variant='primary'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--magma-accent-surface-subtle));
-    --mds-file-preview-icon-color: rgb(var(--magma-accent-emphasis-active));
-    --mds-file-preview-color: rgb(var(--magma-accent-emphasis-active));
+    --mds-file-preview-icon-background: var(--magma-accent-surface-subtle);
+    --mds-file-preview-icon-color: var(--magma-accent-emphasis-active);
+    --mds-file-preview-color: var(--magma-accent-emphasis-active);
   }
 
   &:host([variant='info'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--magma-info-wash-soft));
-    --mds-file-preview-icon-color: rgb(var(--magma-info-text-muted));
-    --mds-file-preview-color: rgb(var(--magma-info-text-default));
+    --mds-file-preview-icon-background: var(--magma-info-wash-soft);
+    --mds-file-preview-icon-color: var(--magma-info-text-muted);
+    --mds-file-preview-color: var(--magma-info-text-default);
   }
 
   &:host([variant='success'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--magma-success-wash-soft));
-    --mds-file-preview-icon-color: rgb(var(--magma-success-text-muted));
-    --mds-file-preview-color: rgb(var(--magma-success-text-default));
+    --mds-file-preview-icon-background: var(--magma-success-wash-soft);
+    --mds-file-preview-icon-color: var(--magma-success-text-muted);
+    --mds-file-preview-color: var(--magma-success-text-default);
   }
 
   &:host([variant='warning'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--magma-warning-wash-soft));
-    --mds-file-preview-icon-color: rgb(var(--magma-warning-text-muted));
-    --mds-file-preview-color: rgb(var(--magma-warning-text-default));
+    --mds-file-preview-icon-background: var(--magma-warning-wash-soft);
+    --mds-file-preview-icon-color: var(--magma-warning-text-muted);
+    --mds-file-preview-color: var(--magma-warning-text-default);
   }
 
   &:host([variant='error'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--magma-danger-wash-soft));
-    --mds-file-preview-icon-color: rgb(var(--magma-danger-text-muted));
-    --mds-file-preview-color: rgb(var(--magma-danger-text-default));
+    --mds-file-preview-icon-background: var(--magma-danger-wash-soft);
+    --mds-file-preview-icon-color: var(--magma-danger-text-muted);
+    --mds-file-preview-color: var(--magma-danger-text-default);
   }
 
   &:host([variant='amaranth'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-amaranth-10));
-    --mds-file-preview-icon-color: rgb(var(--label-amaranth-02));
-    --mds-file-preview-color: rgb(var(--label-amaranth-01));
+    --mds-file-preview-icon-background: var(--label-amaranth-10);
+    --mds-file-preview-icon-color: var(--label-amaranth-02);
+    --mds-file-preview-color: var(--label-amaranth-01);
   }
 
   &:host([variant='aqua'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-aqua-10));
-    --mds-file-preview-icon-color: rgb(var(--label-aqua-02));
-    --mds-file-preview-color: rgb(var(--label-aqua-01));
+    --mds-file-preview-icon-background: var(--label-aqua-10);
+    --mds-file-preview-icon-color: var(--label-aqua-02);
+    --mds-file-preview-color: var(--label-aqua-01);
   }
 
   &:host([variant='blue'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-blue-10));
-    --mds-file-preview-icon-color: rgb(var(--label-blue-02));
-    --mds-file-preview-color: rgb(var(--label-blue-01));
+    --mds-file-preview-icon-background: var(--label-blue-10);
+    --mds-file-preview-icon-color: var(--label-blue-02);
+    --mds-file-preview-color: var(--label-blue-01);
   }
 
   &:host([variant='green'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-green-10));
-    --mds-file-preview-icon-color: rgb(var(--label-green-02));
-    --mds-file-preview-color: rgb(var(--label-green-01));
+    --mds-file-preview-icon-background: var(--label-green-10);
+    --mds-file-preview-icon-color: var(--label-green-02);
+    --mds-file-preview-color: var(--label-green-01);
   }
 
   &:host([variant='lime'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-lime-10));
-    --mds-file-preview-icon-color: rgb(var(--label-lime-02));
-    --mds-file-preview-color: rgb(var(--label-lime-01));
+    --mds-file-preview-icon-background: var(--label-lime-10);
+    --mds-file-preview-icon-color: var(--label-lime-02);
+    --mds-file-preview-color: var(--label-lime-01);
   }
 
   &:host([variant='orange'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-orange-10));
-    --mds-file-preview-icon-color: rgb(var(--label-orange-02));
-    --mds-file-preview-color: rgb(var(--label-orange-01));
+    --mds-file-preview-icon-background: var(--label-orange-10);
+    --mds-file-preview-icon-color: var(--label-orange-02);
+    --mds-file-preview-color: var(--label-orange-01);
   }
 
   &:host([variant='orchid'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-orchid-10));
-    --mds-file-preview-icon-color: rgb(var(--label-orchid-02));
-    --mds-file-preview-color: rgb(var(--label-orchid-01));
+    --mds-file-preview-icon-background: var(--label-orchid-10);
+    --mds-file-preview-icon-color: var(--label-orchid-02);
+    --mds-file-preview-color: var(--label-orchid-01);
   }
 
   &:host([variant='purple'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-purple-10));
-    --mds-file-preview-icon-color: rgb(var(--label-purple-02));
-    --mds-file-preview-color: rgb(var(--label-purple-01));
+    --mds-file-preview-icon-background: var(--label-purple-10);
+    --mds-file-preview-icon-color: var(--label-purple-02);
+    --mds-file-preview-color: var(--label-purple-01);
   }
 
   &:host([variant='red'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-red-10));
-    --mds-file-preview-icon-color: rgb(var(--label-red-02));
-    --mds-file-preview-color: rgb(var(--label-red-01));
+    --mds-file-preview-icon-background: var(--label-red-10);
+    --mds-file-preview-icon-color: var(--label-red-02);
+    --mds-file-preview-color: var(--label-red-01);
   }
 
   &:host([variant='sky'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-sky-10));
-    --mds-file-preview-icon-color: rgb(var(--label-sky-02));
-    --mds-file-preview-color: rgb(var(--label-sky-01));
+    --mds-file-preview-icon-background: var(--label-sky-10);
+    --mds-file-preview-icon-color: var(--label-sky-02);
+    --mds-file-preview-color: var(--label-sky-01);
   }
 
   &:host([variant='violet'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-violet-10));
-    --mds-file-preview-icon-color: rgb(var(--label-violet-02));
-    --mds-file-preview-color: rgb(var(--label-violet-01));
+    --mds-file-preview-icon-background: var(--label-violet-10);
+    --mds-file-preview-icon-color: var(--label-violet-02);
+    --mds-file-preview-color: var(--label-violet-01);
   }
 
   &:host([variant='yellow'][message]) {
-    --mds-file-preview-icon-background: rgb(var(--label-yellow-10));
-    --mds-file-preview-icon-color: rgb(var(--label-yellow-02));
-    --mds-file-preview-color: rgb(var(--label-yellow-01));
+    --mds-file-preview-icon-background: var(--label-yellow-10);
+    --mds-file-preview-icon-color: var(--label-yellow-02);
+    --mds-file-preview-color: var(--label-yellow-01);
   }
 }
 
@@ -211,105 +211,105 @@
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
     &:host([variant='primary'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--magma-accent-surface-subtle));
-      --mds-file-preview-icon-color: rgb(var(--magma-accent-emphasis-active));
-      --mds-file-preview-color: rgb(var(--magma-accent-emphasis-active));
+      --mds-file-preview-icon-background: var(--magma-accent-surface-subtle);
+      --mds-file-preview-icon-color: var(--magma-accent-emphasis-active);
+      --mds-file-preview-color: var(--magma-accent-emphasis-active);
     }
 
     &:host([variant='info'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--magma-info-wash-soft));
-      --mds-file-preview-icon-color: rgb(var(--magma-info-text-muted));
-      --mds-file-preview-color: rgb(var(--magma-info-text-default));
+      --mds-file-preview-icon-background: var(--magma-info-wash-soft);
+      --mds-file-preview-icon-color: var(--magma-info-text-muted);
+      --mds-file-preview-color: var(--magma-info-text-default);
     }
 
     &:host([variant='success'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--magma-success-wash-soft));
-      --mds-file-preview-icon-color: rgb(var(--magma-success-text-muted));
-      --mds-file-preview-color: rgb(var(--magma-success-text-default));
+      --mds-file-preview-icon-background: var(--magma-success-wash-soft);
+      --mds-file-preview-icon-color: var(--magma-success-text-muted);
+      --mds-file-preview-color: var(--magma-success-text-default);
     }
 
     &:host([variant='warning'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--magma-warning-wash-soft));
-      --mds-file-preview-icon-color: rgb(var(--magma-warning-text-muted));
-      --mds-file-preview-color: rgb(var(--magma-warning-text-default));
+      --mds-file-preview-icon-background: var(--magma-warning-wash-soft);
+      --mds-file-preview-icon-color: var(--magma-warning-text-muted);
+      --mds-file-preview-color: var(--magma-warning-text-default);
     }
 
     &:host([variant='error'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--magma-danger-wash-soft));
-      --mds-file-preview-icon-color: rgb(var(--magma-danger-text-muted));
-      --mds-file-preview-color: rgb(var(--magma-danger-text-default));
+      --mds-file-preview-icon-background: var(--magma-danger-wash-soft);
+      --mds-file-preview-icon-color: var(--magma-danger-text-muted);
+      --mds-file-preview-color: var(--magma-danger-text-default);
     }
 
     &:host([variant='amaranth'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-amaranth-10));
-      --mds-file-preview-icon-color: rgb(var(--label-amaranth-02));
-      --mds-file-preview-color: rgb(var(--label-amaranth-01));
+      --mds-file-preview-icon-background: var(--label-amaranth-10);
+      --mds-file-preview-icon-color: var(--label-amaranth-02);
+      --mds-file-preview-color: var(--label-amaranth-01);
     }
 
     &:host([variant='aqua'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-aqua-10));
-      --mds-file-preview-icon-color: rgb(var(--label-aqua-02));
-      --mds-file-preview-color: rgb(var(--label-aqua-01));
+      --mds-file-preview-icon-background: var(--label-aqua-10);
+      --mds-file-preview-icon-color: var(--label-aqua-02);
+      --mds-file-preview-color: var(--label-aqua-01);
     }
 
     &:host([variant='blue'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-blue-10));
-      --mds-file-preview-icon-color: rgb(var(--label-blue-02));
-      --mds-file-preview-color: rgb(var(--label-blue-01));
+      --mds-file-preview-icon-background: var(--label-blue-10);
+      --mds-file-preview-icon-color: var(--label-blue-02);
+      --mds-file-preview-color: var(--label-blue-01);
     }
 
     &:host([variant='green'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-green-10));
-      --mds-file-preview-icon-color: rgb(var(--label-green-02));
-      --mds-file-preview-color: rgb(var(--label-green-01));
+      --mds-file-preview-icon-background: var(--label-green-10);
+      --mds-file-preview-icon-color: var(--label-green-02);
+      --mds-file-preview-color: var(--label-green-01);
     }
 
     &:host([variant='lime'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-lime-10));
-      --mds-file-preview-icon-color: rgb(var(--label-lime-02));
-      --mds-file-preview-color: rgb(var(--label-lime-01));
+      --mds-file-preview-icon-background: var(--label-lime-10);
+      --mds-file-preview-icon-color: var(--label-lime-02);
+      --mds-file-preview-color: var(--label-lime-01);
     }
 
     &:host([variant='orange'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-orange-10));
-      --mds-file-preview-icon-color: rgb(var(--label-orange-02));
-      --mds-file-preview-color: rgb(var(--label-orange-01));
+      --mds-file-preview-icon-background: var(--label-orange-10);
+      --mds-file-preview-icon-color: var(--label-orange-02);
+      --mds-file-preview-color: var(--label-orange-01);
     }
 
     &:host([variant='orchid'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-orchid-10));
-      --mds-file-preview-icon-color: rgb(var(--label-orchid-02));
-      --mds-file-preview-color: rgb(var(--label-orchid-01));
+      --mds-file-preview-icon-background: var(--label-orchid-10);
+      --mds-file-preview-icon-color: var(--label-orchid-02);
+      --mds-file-preview-color: var(--label-orchid-01);
     }
 
     &:host([variant='purple'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-purple-10));
-      --mds-file-preview-icon-color: rgb(var(--label-purple-02));
-      --mds-file-preview-color: rgb(var(--label-purple-01));
+      --mds-file-preview-icon-background: var(--label-purple-10);
+      --mds-file-preview-icon-color: var(--label-purple-02);
+      --mds-file-preview-color: var(--label-purple-01);
     }
 
     &:host([variant='red'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-red-10));
-      --mds-file-preview-icon-color: rgb(var(--label-red-02));
-      --mds-file-preview-color: rgb(var(--label-red-01));
+      --mds-file-preview-icon-background: var(--label-red-10);
+      --mds-file-preview-icon-color: var(--label-red-02);
+      --mds-file-preview-color: var(--label-red-01);
     }
 
     &:host([variant='sky'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-sky-10));
-      --mds-file-preview-icon-color: rgb(var(--label-sky-02));
-      --mds-file-preview-color: rgb(var(--label-sky-01));
+      --mds-file-preview-icon-background: var(--label-sky-10);
+      --mds-file-preview-icon-color: var(--label-sky-02);
+      --mds-file-preview-color: var(--label-sky-01);
     }
 
     &:host([variant='violet'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-violet-10));
-      --mds-file-preview-icon-color: rgb(var(--label-violet-02));
-      --mds-file-preview-color: rgb(var(--label-violet-01));
+      --mds-file-preview-icon-background: var(--label-violet-10);
+      --mds-file-preview-icon-color: var(--label-violet-02);
+      --mds-file-preview-color: var(--label-violet-01);
     }
 
     &:host([variant='yellow'][message]) {
-      --mds-file-preview-icon-background: rgb(var(--label-yellow-10));
-      --mds-file-preview-icon-color: rgb(var(--label-yellow-02));
-      --mds-file-preview-color: rgb(var(--label-yellow-01));
+      --mds-file-preview-icon-background: var(--label-yellow-10);
+      --mds-file-preview-icon-color: var(--label-yellow-02);
+      --mds-file-preview-color: var(--label-yellow-01);
     }
   }
 }

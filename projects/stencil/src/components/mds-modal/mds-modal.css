@@ -42,7 +42,7 @@
     --mds-modal-transition-timing-funciton,
     var(--ease-in-out-quint)
   );
-  --mds-modal-window-background: rgb(var(--magma-surface-overlay));
+  --mds-modal-window-background: var(--magma-surface-overlay);
 
   /* overlay: the fields inside take the step below (#1193) */
   --magma-field-fill: var(--magma-surface-default);
@@ -91,7 +91,7 @@
    * retint included. */
   color: inherit;
   display: none;
-  fill: rgb(var(--magma-text-on-emphasis));
+  fill: var(--magma-text-on-emphasis);
   height: auto;
   inset: 0;
   justify-content: center;
@@ -130,7 +130,7 @@
  */
 
 .dialog::backdrop {
-  background-color: rgb(var(--mds-modal-overlay-color) / 0);
+  background-color: color-mix(in srgb, var(--mds-modal-overlay-color) 0%, transparent);
   transition-behavior: allow-discrete;
   transition-duration: var(--private-modal-transition-duration);
   transition-property: background-color, overlay, display;

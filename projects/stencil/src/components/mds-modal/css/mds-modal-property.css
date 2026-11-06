@@ -21,12 +21,10 @@
   syntax: '<length>';
 }
 
-/* syntax corrected from '<color>': the value is an RGB triplet, not a color. */
-
 @property --mds-modal-overlay-color {
   inherits: true;
   initial-value: var(--magma-overlay-color);
-  syntax: '<number>+';
+  syntax: '<color>';
 }
 
 @property --mds-modal-overlay-opacity {
@@ -43,7 +41,7 @@
 
 @property --mds-modal-window-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-overlay));
+  initial-value: var(--magma-surface-overlay);
   syntax: '<color>';
 }
 

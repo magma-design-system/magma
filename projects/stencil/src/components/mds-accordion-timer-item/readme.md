@@ -148,12 +148,12 @@ Listen for `mdsAccordionTimerItemClickSelect` to detect user-initiated selection
 
 #### Styling Customization
 
-Style the item only through its public `--mds-accordion-timer-item-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Note that `--mds-accordion-timer-item-color` is also inherited from the parent's `--mds-accordion-timer-color` counterpart - setting it on the parent applies to all items at once.
+Style the item only through its public `--mds-accordion-timer-item-*` CSS custom properties. Use semantic color roles wrapped in `var(--magma-<role>)` so dark mode and high-contrast modes keep working. Note that `--mds-accordion-timer-item-color` is also inherited from the parent's `--mds-accordion-timer-color` counterpart - setting it on the parent applies to all items at once.
 
 ```css
 /* Customise a single item by targeting its host */
 .featured-section mds-accordion-timer-item {
-  --mds-accordion-timer-item-color: rgb(var(--magma-accent-fg));
+  --mds-accordion-timer-item-color: var(--magma-accent-fg);
 }
 ```
 
@@ -267,7 +267,7 @@ mds-accordion-timer-item::part(spinner) {
 
 /* CORRECT */
 mds-accordion-timer-item {
-  --mds-accordion-timer-item-color: rgb(var(--magma-accent-fg));
+  --mds-accordion-timer-item-color: var(--magma-accent-fg);
 }
 mds-accordion-timer-item::part(label) {
   font-weight: 600;

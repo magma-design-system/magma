@@ -1,10 +1,10 @@
 :host([variant='primary'][tone='strong']) {
-  --mds-push-notification-item-icon-background-color: rgb(var(--magma-accent-fg));
-  --mds-push-notification-item-icon-color: rgb(var(--magma-accent-surface-subtle));
+  --mds-push-notification-item-icon-background-color: var(--magma-accent-fg);
+  --mds-push-notification-item-icon-color: var(--magma-accent-surface-subtle);
 }
 
 :host([variant='primary']),
 :host([variant='primary'][tone='weak']) {
-  --mds-push-notification-item-icon-background-color: rgb(var(--magma-accent-surface));
-  --mds-push-notification-item-icon-color: rgb(var(--magma-accent-fg));
+  --mds-push-notification-item-icon-background-color: var(--magma-accent-surface);
+  --mds-push-notification-item-icon-color: var(--magma-accent-fg);
 }

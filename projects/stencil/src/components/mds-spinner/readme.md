@@ -119,7 +119,7 @@ The spinner stroke inherits `color` from the host, so you can recolour it withou
 
 ```css
 .status-warning-spinner mds-spinner {
-  color: rgb(var(--magma-warning-text-default));
+  color: var(--magma-warning-text-default);
 }
 ```
 
@@ -197,7 +197,7 @@ mds-spinner >>> .await-icon svg {
 
 /* CORRECT */
 mds-spinner {
-  color: rgb(var(--magma-danger-text-default));
+  color: var(--magma-danger-text-default);
 }
 ```
 

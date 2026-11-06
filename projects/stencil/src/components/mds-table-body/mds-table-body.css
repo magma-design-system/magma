@@ -9,11 +9,11 @@
  */
 
 :host {
-  --mds-table-body-background-hover: var(--mds-table-background-alt, rgb(var(--magma-surface-raised)));
-  --mds-table-body-background: var(--mds-table-background, rgb(var(--magma-surface-default)));
+  --mds-table-body-background-hover: var(--mds-table-background-alt, var(--magma-surface-raised));
+  --mds-table-body-background: var(--mds-table-background, var(--magma-surface-default));
   --mds-table-body-background-alt: var(--mds-table-body-background-hover);
-  --mds-table-body-color-alt: var(--mds-table-color-alt, rgb(var(--magma-text-muted)));
-  --mds-table-body-color: var(--mds-table-color, rgb(var(--magma-text-default)));
+  --mds-table-body-color-alt: var(--mds-table-color-alt, var(--magma-text-muted));
+  --mds-table-body-color: var(--mds-table-color, var(--magma-text-default));
 
   /* internal: a row at rest paints the body colour instead of nothing, so a row that turns
      selected or hovered goes from one full colour to another, and its transition never shows

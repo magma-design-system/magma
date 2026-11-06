@@ -9,9 +9,9 @@
  */
 
 :host {
-  --mds-avatar-background-color-pending: rgb(var(--magma-wash-strong));
-  --mds-avatar-background-color: rgb(var(--magma-accent-emphasis));
-  --mds-avatar-color: rgb(var(--magma-accent-surface-subtle));
+  --mds-avatar-background-color-pending: var(--magma-wash-strong);
+  --mds-avatar-background-color: var(--magma-accent-emphasis);
+  --mds-avatar-color: var(--magma-accent-surface-subtle);
   --mds-avatar-radius: var(--magma-radius-full);
   --mds-avatar-initials-padding: 20%;
   --mds-avatar-transition-duration: var(--duration-200);

@@ -121,7 +121,7 @@ Change the color through `--mds-link-color`, with a semantic role, so dark mode,
 
 ```css
 .legal-note mds-link {
-  --mds-link-color: rgb(var(--magma-text-muted));
+  --mds-link-color: var(--magma-text-muted);
 }
 ```
 

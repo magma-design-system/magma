@@ -11,7 +11,7 @@
 
 @property --mds-video-wall-noise-background-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis-hover) / 0.8);
+  initial-value: color-mix(in srgb, var(--magma-accent-emphasis-hover) 80%, transparent);
   syntax: '<color>';
 }
 

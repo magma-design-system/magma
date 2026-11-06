@@ -102,12 +102,12 @@ document.querySelector('mds-note').addEventListener('mdsNoteDelete', () => {
 
 #### Styling Customization via CSS Custom Properties
 
-Customize the note only through the public `--mds-note-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Customize the note only through the public `--mds-note-*` CSS custom properties. Set them on the host or a parent selector; use Magma color tokens via `var(--<token>)` so dark mode and high-contrast modes keep working.
 
 ```css
 .featured-note mds-note {
-  --mds-note-background: rgb(var(--label-orchid-09));
-  --mds-note-color: rgb(var(--label-orchid-02));
+  --mds-note-background: var(--label-orchid-09);
+  --mds-note-color: var(--label-orchid-02);
 }
 ```
 
@@ -221,8 +221,8 @@ mds-note {
 
 /* CORRECT */
 mds-note {
-  --mds-note-background: rgb(var(--label-yellow-09));
-  --mds-note-color: rgb(var(--label-yellow-02));
+  --mds-note-background: var(--label-yellow-09);
+  --mds-note-color: var(--label-yellow-02);
 }
 ```
 

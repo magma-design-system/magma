@@ -124,11 +124,11 @@ Place `<mds-quote>` inside [`mds-card-content`](../../mds-card-content) to embed
 
 #### Color Customization via Host Styles
 
-`<mds-quote>` inherits `color` from its host context. Override the text color by setting a semantic color role on the host element. Always use `rgb(var(--magma-<role>))` so dark mode, named themes and high-contrast modes keep working.
+`<mds-quote>` inherits `color` from its host context. Override the text color by setting a semantic color role on the host element. Always use `var(--magma-<role>)` so dark mode, named themes and high-contrast modes keep working.
 
 ```css
 .featured-testimonial mds-quote {
-  color: rgb(var(--magma-text-default));
+  color: var(--magma-text-default);
 }
 ```
 

@@ -11,60 +11,54 @@
 
 @property --mds-date-range-preselection-default-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-strong) / 0);
+  initial-value: color-mix(in srgb, var(--magma-wash-strong) 0%, transparent);
   syntax: '<color>';
 }
-
-/* syntax corrected from '<color>': the value is an RGB triplet, not a color. */
 
 @property --mds-date-range-preselection-default-border {
   inherits: true;
   initial-value: var(--magma-border-default);
-  syntax: '<number>+';
+  syntax: '<color>';
 }
 
 @property --mds-date-range-preselection-default-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-muted));
+  initial-value: var(--magma-text-muted);
   syntax: '<color>';
 }
 
 @property --mds-date-range-preselection-hover-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-soft));
+  initial-value: var(--magma-wash-soft);
   syntax: '<color>';
 }
-
-/* syntax corrected from '<color>': the value is an RGB triplet, not a color. */
 
 @property --mds-date-range-preselection-hover-border {
   inherits: true;
   initial-value: var(--magma-wash-soft);
-  syntax: '<number>+';
+  syntax: '<color>';
 }
 
 @property --mds-date-range-preselection-hover-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-muted));
+  initial-value: var(--magma-text-muted);
   syntax: '<color>';
 }
 
 @property --mds-date-range-preselection-selected-background {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-emphasis-hover));
+  initial-value: var(--magma-accent-emphasis-hover);
   syntax: '<color>';
 }
-
-/* syntax corrected from '<color>': the value is an RGB triplet, not a color. */
 
 @property --mds-date-range-preselection-selected-border {
   inherits: true;
   initial-value: var(--magma-accent-emphasis-hover);
-  syntax: '<number>+';
+  syntax: '<color>';
 }
 
 @property --mds-date-range-preselection-selected-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }

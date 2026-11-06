@@ -11,7 +11,7 @@
 
 @property --mds-status-bar-backdrop {
   inherits: true;
-  initial-value: rgb(var(--magma-text-default) / 0.1);
+  initial-value: color-mix(in srgb, var(--magma-text-default) 10%, transparent);
   syntax: '<color>';
 }
 

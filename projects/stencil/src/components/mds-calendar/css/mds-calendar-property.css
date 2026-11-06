@@ -16,7 +16,7 @@
 
 @property --mds-calendar-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-raised));
+  initial-value: var(--magma-surface-raised);
   syntax: '<color>';
 }
 

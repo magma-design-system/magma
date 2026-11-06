@@ -112,12 +112,12 @@ Use `count` to render a "+N" overflow badge for the last slot in an avatar stack
 
 #### Styling Customization
 
-Style the avatar only through its public `--mds-avatar-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes work correctly.
+Style the avatar only through its public `--mds-avatar-*` CSS custom properties. Use semantic color roles wrapped in `var(--magma-<role>)` so dark mode and high-contrast modes work correctly.
 
 ```css
 .profilo-utente mds-avatar {
-  --mds-avatar-background-color: rgb(var(--magma-accent-emphasis));
-  --mds-avatar-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-avatar-background-color: var(--magma-accent-emphasis);
+  --mds-avatar-color: var(--magma-accent-on-emphasis);
   --mds-avatar-radius: var(--magma-radius-md);
 
   corner-shape: var(--magma-corner-shape);
@@ -215,8 +215,8 @@ mds-avatar >>> .initials-text {
 
 /* CORRECT */
 mds-avatar {
-  --mds-avatar-background-color: rgb(var(--magma-accent-emphasis));
-  --mds-avatar-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-avatar-background-color: var(--magma-accent-emphasis);
+  --mds-avatar-color: var(--magma-accent-on-emphasis);
 }
 ```
 

@@ -130,12 +130,12 @@ Set `width` and `height` (as string pixel values) to reserve layout space and pr
 
 #### Styling Customization
 
-Style the component through its public `--mds-img-*` CSS custom properties. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working.
+Style the component through its public `--mds-img-*` CSS custom properties. Use the semantic color roles wrapped in `var(--magma-<role>)` so dark mode and high-contrast modes keep working.
 
 ```css
 .card-copertina mds-img {
-  --mds-img-background: rgb(var(--magma-accent-emphasis-hover));
-  --mds-img-color: rgb(var(--magma-accent-surface));
+  --mds-img-background: var(--magma-accent-emphasis-hover);
+  --mds-img-color: var(--magma-accent-surface);
 }
 ```
 

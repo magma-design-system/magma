@@ -141,12 +141,12 @@ new MutationObserver(() => {
 
 #### Styling Customization
 
-Adjust colors and padding only through the public `--mds-keyboard-*` CSS custom properties; the keys take their colours from the theme. Use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode continues to work.
+Adjust colors and padding only through the public `--mds-keyboard-*` CSS custom properties; the keys take their colours from the theme. Use the semantic color roles via `var(--magma-<role>)` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode continues to work.
 
 ```css
 .custom-keyboard mds-keyboard {
-  --mds-keyboard-background: rgb(var(--magma-surface-inverse));
-  --mds-keyboard-color: rgb(var(--magma-on-inverse));
+  --mds-keyboard-background: var(--magma-surface-inverse);
+  --mds-keyboard-color: var(--magma-on-inverse);
   --mds-keyboard-padding: calc(var(--spacing) * 300);
 }
 ```
@@ -241,7 +241,7 @@ The component inserts a styled `+` between consecutive keys automatically. Addin
 
 #### Do Not Customize Colors with Raw CSS Values Instead of Tokens
 
-Setting `--mds-keyboard-background` or `--mds-keyboard-color` to a raw hex or `rgba()` literal bypasses the palette layer and breaks dark mode. Always use a semantic color role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
+Setting `--mds-keyboard-background` or `--mds-keyboard-color` to a raw hex or `rgba()` literal bypasses the palette layer and breaks dark mode. Always use a semantic color role, `var(--magma-<role>)` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
 
 ```css
 /* INCORRECT */
@@ -252,8 +252,8 @@ mds-keyboard {
 
 /* CORRECT */
 mds-keyboard {
-  --mds-keyboard-background: rgb(var(--magma-surface-inverse));
-  --mds-keyboard-color: rgb(var(--magma-on-inverse));
+  --mds-keyboard-background: var(--magma-surface-inverse);
+  --mds-keyboard-color: var(--magma-on-inverse);
 }
 ```
 

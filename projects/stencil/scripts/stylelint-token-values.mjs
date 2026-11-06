@@ -4,9 +4,11 @@ import stylelint from 'stylelint';
   magma/token-values: a component sheet takes its lengths, durations and colours from the tokens
   (SPEC.md, Authoring rules, "Values come from the tokens"), so a px, rem, s or ms literal in a
   declaration value is an error, and so is a colour written as a literal: a hex, or an rgb() or
-  hsl() whose channels are numbers. A colour is a role in the RGB wrapper,
-  `rgb(var(--magma-text-muted) / 0.5)`, whose alpha may be a literal. em and ex are already
-  rejected by unit-disallowed-list, named colours by color-named.
+  hsl() whose channels are numbers. A colour is a role, `var(--magma-text-muted)`, faded with
+  `color-mix(in srgb, var(--magma-text-muted) 50%, transparent)`, whose percentage may be a
+  literal. A token holds a full colour (#918), so rgb() or hsl() around one is invalid CSS and
+  an error too. em and ex are already rejected by unit-disallowed-list, named colours by
+  color-named.
 
   Not reported:
     - 0, which no token needs to say (and a <time> cannot drop its unit: `0s` stays);
@@ -28,6 +30,8 @@ const ruleName = 'magma/token-values';
 
 const messages = ruleMessages(ruleName, {
   rejected: (literal, hint) => `Unexpected literal "${literal}": ${hint}`,
+  wrapped: (wrapper) =>
+    `Unexpected "${wrapper}" around a token: a token is a full colour, write var(--magma-*), faded with color-mix(in srgb, var(--magma-*) <N>%, transparent)`,
 });
 
 const meta = {
@@ -50,9 +54,11 @@ const DURATION_STEPS = new Set([75, 100, 150, 200, 300, 500, 700, 1000]);
 // --spacing(N) is N * 0.0025rem: 25 steps per px, 400 per rem
 const SPACING_STEPS_PER_UNIT = { px: 25, rem: 400 };
 
-// a hex colour, or the opening of an rgb() / hsl() whose first channel is a number: the token
-// wrapper rgb(var(--magma-*) / a) starts with var() and passes
+// a hex colour, or the opening of an rgb() / hsl() whose first channel is a number
 const COLOR = /#[0-9a-f]{3,8}(?![\w-])|\b(?:rgba?|hsla?)\(\s*(?=[+-]?[\d.])/gi;
+
+// the opening of an rgb() / hsl() around a var(): the channel wrapper of the tokens before #918
+const WRAPPED = /\b(?:rgba?|hsla?)\(\s*(?=var\()/gi;
 
 // a mask reads only the alpha of its colours: no role to name there
 const MASK = /^(?:-webkit-)?mask(?:-image)?$/i;
@@ -83,8 +89,8 @@ const colorAt = (value, index, opening) => {
  */
 const colorHint = (prop, literal) =>
   SHADOW.test(prop) && /^rgba?\(\s*0[\s,]+0[\s,]+0\b/i.test(literal)
-    ? 'a shadow is rgb(var(--magma-shadow-ink) / <alpha>)'
-    : 'paint with a role, rgb(var(--magma-*) / <alpha>)';
+    ? 'a shadow is color-mix(in srgb, var(--magma-shadow-ink) <N>%, transparent)'
+    : 'paint with a role, var(--magma-*), faded with color-mix(in srgb, var(--magma-*) <N>%, transparent)';
 
 /**
  * The token that says a literal, as a hint for the message.
@@ -139,6 +145,17 @@ const ruleFunction = (primary) => (root, result) => {
         endIndex: valueIndex + match.index + literal.length,
         index: valueIndex + match.index,
         message: messages.rejected(literal, colorHint(decl.prop, literal)),
+        node: decl,
+        result,
+        ruleName,
+      });
+    }
+    for (const match of value.matchAll(WRAPPED)) {
+      const wrapper = colorAt(value, match.index, match[0]);
+      report({
+        endIndex: valueIndex + match.index + wrapper.length,
+        index: valueIndex + match.index,
+        message: messages.wrapped(wrapper),
         node: decl,
         result,
         ruleName,

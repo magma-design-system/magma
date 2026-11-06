@@ -60,7 +60,7 @@
   );
   --private-calendar-cell-color: var(
     --mds-calendar-cell-color,
-    var(--mds-calendar-day-number-color, rgb(var(--magma-text-default)))
+    var(--mds-calendar-day-number-color, var(--magma-text-default))
   );
   --private-calendar-cell-other-month-background: var(
     --mds-calendar-cell-other-month-background,
@@ -68,7 +68,7 @@
   );
   --private-calendar-cell-other-month-color: var(
     --mds-calendar-cell-other-month-color,
-    rgb(var(--magma-text-disabled))
+    var(--magma-text-disabled)
   );
   --private-calendar-cell-disabled-background: var(
     --mds-calendar-cell-disabled-background,
@@ -76,7 +76,7 @@
   );
   --private-calendar-cell-disabled-color: var(
     --mds-calendar-cell-disabled-color,
-    rgb(var(--magma-text-disabled))
+    var(--magma-text-disabled)
   );
   --private-calendar-cell-weekend-background: var(
     --mds-calendar-cell-weekend-background,
@@ -84,7 +84,7 @@
   );
   --private-calendar-cell-weekend-color: var(
     --mds-calendar-cell-weekend-color,
-    rgb(var(--magma-text-subtle))
+    var(--magma-text-subtle)
   );
 
   /* radius */
@@ -100,100 +100,100 @@
   /* today */
   --private-calendar-cell-preselection-today-background: var(
     --mds-calendar-cell-preselection-today-background,
-    rgb(var(--magma-accent-surface))
+    var(--magma-accent-surface)
   );
   --private-calendar-cell-preselection-today-color: var(
     --mds-calendar-cell-preselection-today-color,
-    rgb(var(--magma-accent-fg))
+    var(--magma-accent-fg)
   );
 
   /* preselection */
 
   --private-calendar-cell-preselection-current-month-background: var(
     --mds-calendar-cell-preselection-current-month-background,
-    rgb(var(--magma-accent-surface-hover))
+    var(--magma-accent-surface-hover)
   );
   --private-calendar-cell-preselection-current-month-color: var(
     --mds-calendar-cell-preselection-current-month-color,
-    rgb(var(--magma-text-disabled))
+    var(--magma-text-disabled)
   );
   --private-calendar-cell-preselection-current-month-boundaries-color: var(
     --mds-calendar-cell-preselection-current-month-boundaries-color,
-    rgb(var(--magma-text-disabled))
+    var(--magma-text-disabled)
   );
   --private-calendar-cell-preselection-current-month-boundaries-background: var(
     --mds-calendar-cell-preselection-current-month-boundaries-background,
-    rgb(var(--magma-accent-surface-subtle))
+    var(--magma-accent-surface-subtle)
   );
   --private-calendar-cell-preselection-other-month-background: var(
     --mds-calendar-cell-preselection-other-month-background,
-    rgb(var(--magma-accent-surface))
+    var(--magma-accent-surface)
   );
   --private-calendar-cell-preselection-other-month-color: var(
     --mds-calendar-cell-preselection-other-month-color,
-    rgb(var(--magma-text-disabled))
+    var(--magma-text-disabled)
   );
   --private-calendar-cell-preselection-other-month-boundaries-color: var(
     --mds-calendar-cell-preselection-other-month-boundaries-color,
-    rgb(var(--magma-text-disabled))
+    var(--magma-text-disabled)
   );
   --private-calendar-cell-preselection-other-month-boundaries-background: var(
     --mds-calendar-cell-preselection-other-month-boundaries-background,
-    rgb(var(--magma-surface-raised))
+    var(--magma-surface-raised)
   );
 
   /* selection */
 
   --private-calendar-cell-selection-current-month-background: var(
     --mds-calendar-cell-selection-current-month-background,
-    rgb(var(--magma-accent-emphasis))
+    var(--magma-accent-emphasis)
   );
   --private-calendar-cell-selection-current-month-color: var(
     --mds-calendar-cell-selection-current-month-color,
-    rgb(var(--magma-text-on-emphasis))
+    var(--magma-text-on-emphasis)
   );
   --private-calendar-cell-selection-current-month-boundaries-background: var(
     --mds-calendar-cell-selection-current-month-boundaries-background,
-    rgb(var(--magma-surface-raised))
+    var(--magma-surface-raised)
   );
   --private-calendar-cell-selection-current-month-boundaries-color: var(
     --mds-calendar-cell-selection-current-month-boundaries-color,
-    rgb(var(--magma-text-muted))
+    var(--magma-text-muted)
   );
   --private-calendar-cell-selection-current-month-weekend-background: var(
     --mds-calendar-cell-selection-current-month-weekend-background,
-    rgb(var(--magma-accent-emphasis-hover))
+    var(--magma-accent-emphasis-hover)
   );
 
   /* inside a range the weekend keeps its step of the band and takes the text of the selection:
    * the muted accent-border it took read 3.15:1 in light, 2.16:1 in dark (#1142) */
   --private-calendar-cell-selection-current-month-weekend-color: var(
     --mds-calendar-cell-selection-current-month-weekend-color,
-    rgb(var(--magma-text-on-emphasis))
+    var(--magma-text-on-emphasis)
   );
   --private-calendar-cell-selection-current-month-weekend-boundaries-background: var(
     --mds-calendar-cell-selection-current-month-weekend-boundaries-background,
-    rgb(var(--magma-accent-emphasis-hover))
+    var(--magma-accent-emphasis-hover)
   );
   --private-calendar-cell-selection-current-month-weekend-boundaries-color: var(
     --mds-calendar-cell-selection-current-month-weekend-boundaries-color,
-    rgb(var(--magma-text-muted))
+    var(--magma-text-muted)
   );
   --private-calendar-cell-selection-other-month-background: var(
     --mds-calendar-cell-selection-other-month-background,
-    rgb(var(--magma-accent-surface-hover))
+    var(--magma-accent-surface-hover)
   );
   --private-calendar-cell-selection-other-month-color: var(
     --mds-calendar-cell-selection-other-month-color,
-    rgb(var(--magma-text-subtle))
+    var(--magma-text-subtle)
   );
   --private-calendar-cell-selection-other-month-boundaries-background: var(
     --mds-calendar-cell-selection-other-month-boundaries-background,
-    rgb(var(--magma-accent-surface-subtle))
+    var(--magma-accent-surface-subtle)
   );
   --private-calendar-cell-selection-other-month-boundaries-color: var(
     --mds-calendar-cell-selection-other-month-boundaries-color,
-    rgb(var(--magma-text-disabled))
+    var(--magma-text-disabled)
   );
 
   align-items: center;

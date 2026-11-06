@@ -29,12 +29,12 @@
 
 @property --mds-text-selection-background {
   inherits: true;
-  initial-value: rgb(var(--label-sky-09));
+  initial-value: var(--label-sky-09);
   syntax: '<color>';
 }
 
 @property --mds-text-selection-color {
   inherits: true;
-  initial-value: rgb(var(--label-sky-01));
+  initial-value: var(--label-sky-01);
   syntax: '<color>';
 }

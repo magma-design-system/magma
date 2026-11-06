@@ -11,19 +11,19 @@
 
 @property --mds-note-background {
   inherits: true;
-  initial-value: rgb(var(--label-yellow-10));
+  initial-value: var(--label-yellow-10);
   syntax: '<color>';
 }
 
 @property --mds-note-color {
   inherits: true;
-  initial-value: rgb(var(--label-yellow-02));
+  initial-value: var(--label-yellow-02);
   syntax: '<color>';
 }
 
 @property --mds-note-fold-color {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-soft));
+  initial-value: var(--magma-wash-soft);
   syntax: '<color>';
 }
 

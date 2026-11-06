@@ -11,7 +11,7 @@
 
 @property --mds-dropdown-arrow-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-overlay));
+  initial-value: var(--magma-surface-overlay);
   syntax: '<color>';
 }
 
@@ -29,14 +29,14 @@
 
 @property --mds-dropdown-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-overlay));
+  initial-value: var(--magma-surface-overlay);
   syntax: '<color>';
 }
 
-@property --mds-dropdown-drop-shadow-color-rgb {
+@property --mds-dropdown-drop-shadow-color {
   inherits: true;
   initial-value: var(--magma-shadow-ink);
-  syntax: '<number>+';
+  syntax: '<color>';
 }
 
 @property --mds-dropdown-duration {

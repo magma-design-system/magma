@@ -11,19 +11,19 @@
 
 @property --mds-avatar-background-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-fg));
+  initial-value: var(--magma-accent-fg);
   syntax: '<color>';
 }
 
 @property --mds-avatar-background-color-pending {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-strong));
+  initial-value: var(--magma-wash-strong);
   syntax: '<color>';
 }
 
 @property --mds-avatar-color {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-surface-subtle));
+  initial-value: var(--magma-accent-surface-subtle);
   syntax: '<color>';
 }
 

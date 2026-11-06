@@ -10,7 +10,7 @@ import { useEffect, useState, type ReactNode } from 'react';
  * gains contrast upstream and no component sheet is involved.
  *
  * What this page is for:
- *  - SEE the promotion: every specimen reads the real `rgb(var(--magma-*))`, so
+ *  - SEE the promotion: every specimen reads the real `var(--magma-*)`, so
  *    flipping contrast repaints the page live;
  *  - PROVE it: the promotions table probes the computed value of each role with
  *    and without the class, so a role that does not actually move is visible as
@@ -41,7 +41,7 @@ const CONTRAST_REF_A11Y = {
 
 // -- token accessors -------------------------------------------------------
 
-const magmaVar = (token: string): string => `rgb(var(--magma-${token}))`;
+const magmaVar = (token: string): string => `var(--magma-${token})`;
 const surfaceVar = (role: string): string => magmaVar(`surface-${role}`);
 const textVar = (role: string): string => magmaVar(`text-${role}`);
 const borderVar = (role: string): string => magmaVar(`border-${role}`);
@@ -279,7 +279,7 @@ const Chip = ({ label, kind }: { label: string; kind: 'moved' | 'same' }) => (
   </span>
 );
 
-const ValueCell = ({ channels }: { channels: string }) => (
+const ValueCell = ({ color }: { color: string }) => (
   <div class="flex gap-100 items-center">
     <span
       class="inline-block rounded-sm"
@@ -287,11 +287,11 @@ const ValueCell = ({ channels }: { channels: string }) => (
         width: '20px',
         height: '20px',
         flex: '0 0 auto',
-        background: `rgb(${channels})`,
+        background: color,
         border: `1px solid ${borderVar('muted')}`,
       }}
     />
-    <Code>{channels || '-'}</Code>
+    <Code>{color || '-'}</Code>
   </div>
 );
 
@@ -319,10 +319,10 @@ const PromotionRow = ({
         )}
       </td>
       <td class="p-200">
-        <ValueCell channels={probe.base} />
+        <ValueCell color={probe.base} />
       </td>
       <td class="p-200">
-        <ValueCell channels={probe.more} />
+        <ValueCell color={probe.more} />
       </td>
       <td class="p-200">
         {role.borrows === null ? (

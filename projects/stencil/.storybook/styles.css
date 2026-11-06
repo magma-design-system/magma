@@ -30,8 +30,8 @@
       ease-in-out;
 
     /* the tokens are channel triplets: they only make a colour inside rgb() */
-    background-color: rgb(var(--magma-surface-default));
-    color: rgb(var(--magma-text-default));
+    background-color: var(--magma-surface-default);
+    color: var(--magma-text-default);
   }
 
   /* The docs pages are Storybook's own typography, already capped at 1000px by its

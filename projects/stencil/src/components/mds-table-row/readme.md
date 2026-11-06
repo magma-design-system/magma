@@ -170,13 +170,13 @@ Set `interactive` on the parent `<mds-table>` to enable per-row hover highlights
 
 #### Styling Customization
 
-A row takes its colours from the parent `mds-table-body` (and `mds-table`), and its hover, selected and sorted colours and the spacing of its actions follow its states. Restyle the rows through the public `--mds-table-body-*` or `--mds-table-*` properties of the parents. Use the semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes stay consistent.
+A row takes its colours from the parent `mds-table-body` (and `mds-table`), and its hover, selected and sorted colours and the spacing of its actions follow its states. Restyle the rows through the public `--mds-table-body-*` or `--mds-table-*` properties of the parents. Use the semantic color roles wrapped in `var(--magma-<role>)` so dark mode and high-contrast modes stay consistent.
 
 ```css
 /* Branded colours for the rows of a table */
 .tabella-brand mds-table-body {
-  --mds-table-body-background: rgb(var(--magma-surface-raised));
-  --mds-table-body-color: rgb(var(--magma-text-default));
+  --mds-table-body-background: var(--magma-surface-raised);
+  --mds-table-body-color: var(--magma-text-default);
 }
 ```
 
@@ -315,8 +315,8 @@ Buttons in the `action` slot render without visible labels. An `<mds-button>` th
 ```css
 /* INCORRECT */
 mds-table-row {
-  background-color: rgb(var(--magma-surface-raised));
-  color: rgb(var(--magma-text-default));
+  background-color: var(--magma-surface-raised);
+  color: var(--magma-text-default);
 }
 mds-table-row::part(actions) {
   gap: 4px;
@@ -324,8 +324,8 @@ mds-table-row::part(actions) {
 
 /* CORRECT */
 mds-table-body {
-  --mds-table-body-background: rgb(var(--magma-surface-raised));
-  --mds-table-body-color: rgb(var(--magma-text-default));
+  --mds-table-body-background: var(--magma-surface-raised);
+  --mds-table-body-color: var(--magma-text-default);
 }
 ```
 

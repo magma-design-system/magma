@@ -112,7 +112,7 @@ The `content` overlay div is exposed as the `content` shadow part. Use it for la
 ```css
 .card-destacada mds-card-media::part(content) {
   align-items: flex-start;
-  background: linear-gradient(to top, rgb(var(--magma-backdrop-color) / 0.7), transparent);
+  background: linear-gradient(to top, color-mix(in srgb, var(--magma-backdrop-color) 70%, transparent), transparent);
   padding: calc(var(--spacing) * 600);
 }
 ```

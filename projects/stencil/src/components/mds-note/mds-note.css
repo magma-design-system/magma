@@ -10,9 +10,9 @@
  */
 
 :host {
-  --mds-note-background: rgb(var(--label-yellow-10));
-  --mds-note-color: rgb(var(--label-yellow-02));
-  --mds-note-fold-color: rgb(var(--magma-wash-soft));
+  --mds-note-background: var(--label-yellow-10);
+  --mds-note-color: var(--label-yellow-02);
+  --mds-note-fold-color: var(--magma-wash-soft);
   --mds-note-fold-size: --spacing(1000);
   --mds-note-selection-background: var(--magma-selection-background);
   --mds-note-selection-color: var(--magma-selection-color);
@@ -79,7 +79,7 @@
 }
 
 .button-close:hover {
-  background-color: rgb(var(--magma-surface-overlay) / 0.5);
+  background-color: color-mix(in srgb, var(--magma-surface-overlay) 50%, transparent);
 }
 
 @import './css/mds-note-variants.css';

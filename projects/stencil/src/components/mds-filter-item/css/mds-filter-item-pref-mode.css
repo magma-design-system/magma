@@ -6,10 +6,10 @@
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])),
 :host([pref-theme-scheme='dark']) {
-  background-color: rgb(var(--magma-wash-soft));
+  background-color: var(--magma-wash-soft);
 
   &:host([selected]:not([selected='false'])) {
-    background-color: rgb(var(--magma-wash-strong));
+    background-color: var(--magma-wash-strong);
     box-shadow: var(--shadow-ring);
   }
 
@@ -21,10 +21,10 @@
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
-    background-color: rgb(var(--magma-wash-soft));
+    background-color: var(--magma-wash-soft);
 
     &:host([selected]:not([selected='false'])) {
-      background-color: rgb(var(--magma-wash-strong));
+      background-color: var(--magma-wash-strong);
       box-shadow: var(--shadow-ring);
     }
 

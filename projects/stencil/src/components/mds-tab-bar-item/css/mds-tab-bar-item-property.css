@@ -11,7 +11,7 @@
 
 @property --mds-tab-bar-item-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-soft));
+  initial-value: var(--magma-wash-soft);
   syntax: '<color>';
 }
 
@@ -23,12 +23,12 @@
 
 @property --mds-tab-bar-item-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-subtle));
+  initial-value: var(--magma-text-subtle);
   syntax: '<color>';
 }
 
 @property --mds-tab-bar-item-color-selected {
   inherits: true;
-  initial-value: rgb(var(--magma-accent-fg));
+  initial-value: var(--magma-accent-fg);
   syntax: '<color>';
 }

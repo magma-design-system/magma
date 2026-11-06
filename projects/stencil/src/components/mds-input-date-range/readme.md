@@ -140,11 +140,11 @@ By default the calendar closes 500 ms after a complete range is picked. Set `del
 
 #### Styling Customization
 
-Style the component only through its public `--mds-input-date-range-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and themes keep working.
+Style the component only through its public `--mds-input-date-range-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `var(--magma-<role>)` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and themes keep working.
 
 ```css
 .filtro-avanzato mds-input-date-range {
-  --mds-input-date-range-background: rgb(var(--magma-surface-sunken));
+  --mds-input-date-range-background: var(--magma-surface-sunken);
   --mds-input-date-range-fields-gap: 0 calc(var(--spacing) * 400);
 }
 ```
@@ -377,7 +377,7 @@ Type: `Promise<void>`
 | `--mds-input-date-range-icon-color`                     | Sets the icon color of the component                                            |
 | `--mds-input-date-range-ring`                           | Public. Sets the box-shadow of the component's input to perform the ring effect |
 | `--mds-input-date-range-shadow`                         | Public. Sets the box-shadow of the component's input                            |
-| `--mds-input-date-range-variant-color-rgb`              | Public. Sets the variant colors of the component                                |
+| `--mds-input-date-range-variant-color`                  | Public. Sets the variant colors of the component                                |
 
 
 ## Dependencies

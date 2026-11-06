@@ -171,7 +171,7 @@ mds-accordion {
 
 /* Or target a single item directly */
 .sidebar mds-accordion-item {
-  --mds-accordion-item-color: rgb(var(--magma-text-default));
+  --mds-accordion-item-color: var(--magma-text-default);
 }
 ```
 

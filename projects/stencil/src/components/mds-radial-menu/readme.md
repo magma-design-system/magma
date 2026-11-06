@@ -167,7 +167,7 @@ Use the `size` prop to resize the trigger button and all items simultaneously. D
 
 #### Styling Customization
 
-Style the component through its public `--mds-radial-menu-*` CSS custom properties. Use semantic color roles wrapped in `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. The radius can come from a stylesheet too, through `--mds-radial-menu-radius` set on the element: the `radius` prop, when set, writes the same property inline and wins over the stylesheet. The angles have no public CSS custom property: set them with the `angle-start` and `angle-end` props (see Fan Layout with Angle Range above).
+Style the component through its public `--mds-radial-menu-*` CSS custom properties. Use semantic color roles wrapped in `var(--magma-<role>)` so dark mode and high-contrast modes keep working. The radius can come from a stylesheet too, through `--mds-radial-menu-radius` set on the element: the `radius` prop, when set, writes the same property inline and wins over the stylesheet. The angles have no public CSS custom property: set them with the `angle-start` and `angle-end` props (see Fan Layout with Angle Range above).
 
 ```css
 .my-context mds-radial-menu {

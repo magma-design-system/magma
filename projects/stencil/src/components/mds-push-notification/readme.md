@@ -211,7 +211,7 @@ Use `variant` and `tone` on the item to reflect the semantic nature of the notif
 
 #### Styling Customization via CSS Custom Properties
 
-Override the fade-out delay, the gap between items, and the panel background through the public `--mds-push-notification-*` properties; the intro and outro motion of the items is set by the component. Set them on the host or a parent selector; for colours name a semantic role, `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
+Override the fade-out delay, the gap between items, and the panel background through the public `--mds-push-notification-*` properties; the intro and outro motion of the items is set by the component. Set them on the host or a parent selector; for colours name a semantic role, `var(--magma-<role>)` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)).
 
 ```css
 mds-push-notification {
@@ -219,8 +219,8 @@ mds-push-notification {
   --mds-push-notification-fadeout-delay: 0.5s;
   --mds-push-notification-background: linear-gradient(
     to right,
-    rgb(var(--magma-surface-overlay) / 0) 0%,
-    rgb(var(--magma-surface-overlay) / 0.95) 100%
+    color-mix(in srgb, var(--magma-surface-overlay) 0%, transparent) 0%,
+    color-mix(in srgb, var(--magma-surface-overlay) 95%, transparent) 100%
   );
 }
 ```
@@ -322,7 +322,7 @@ mds-push-notification::part(content) {
 
 /* CORRECT */
 mds-push-notification {
-  --mds-push-notification-background: rgb(var(--magma-surface-overlay) / 0.9);
+  --mds-push-notification-background: color-mix(in srgb, var(--magma-surface-overlay) 90%, transparent);
   --mds-push-notification-gap: calc(var(--spacing) * 300);
 }
 mds-push-notification::part(notifications) {

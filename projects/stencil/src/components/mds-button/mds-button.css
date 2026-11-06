@@ -4,7 +4,7 @@
 /**
  * @prop --mds-button-await-duration: Sets the duration of the rotation of the spinner await component
  * @prop --mds-button-background: Public. Sets the background-color of the component
- * @prop --mds-button-border-color-rgb: Sets the color of the border of the component (based on box-shadow declaration)
+ * @prop --mds-button-border-color: Sets the color of the border of the component (based on box-shadow declaration)
  * @prop --mds-button-border-default-opacity: Sets the default opacity of the border color of the component (based on box-shadow declaration)
  * @prop --mds-button-border-high-contrast-hover-width: Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles.
  * @prop --mds-button-border-high-contrast-width: Deprecated, read by nothing: the button has no high contrast border of its own, the contrast preference acts on the colour roles.
@@ -54,7 +54,7 @@
   background-color: var(--mds-button-background);
   border-radius: var(--mds-button-radius);
   box-shadow: 0 0 0 var(--mds-button-border-width)
-    rgb(var(--mds-button-border-color-rgb) / var(--mds-button-border-opacity));
+    color-mix(in srgb, var(--mds-button-border-color) calc(var(--mds-button-border-opacity) * 100%), transparent);
   box-sizing: border-box;
   color: var(--mds-button-color);
   corner-shape: var(--mds-button-corner-shape, var(--magma-corner-shape));

@@ -18,7 +18,7 @@ import { useState, type ReactNode } from 'react';
  *  - the inverse-surface role: the neutral fill that flips with the mode
  *    (`surface-inverse` / `on-inverse`, formerly `neutral-emphasis` / `-on-emphasis`).
  *
- * Every swatch reads the REAL token (`rgb(var(--magma-*))`), so the page is live
+ * Every swatch reads the REAL token (`var(--magma-*)`), so the page is live
  * and follows the root theme - flip it with the header switch.
  */
 export default {
@@ -39,7 +39,7 @@ const TOKEN_REF_A11Y = {
 
 // -- token accessors -------------------------------------------------------
 
-const magmaVar = (token: string): string => `rgb(var(--magma-${token}))`;
+const magmaVar = (token: string): string => `var(--magma-${token})`;
 const surfaceVar = (role: string): string => magmaVar(`surface-${role}`);
 const textVar = (role: string): string => magmaVar(`text-${role}`);
 const borderVar = (role: string): string => magmaVar(`border-${role}`);

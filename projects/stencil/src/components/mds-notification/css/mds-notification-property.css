@@ -11,13 +11,13 @@
 
 @property --mds-notification-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }
 
 @property --mds-notification-dot-background {
   inherits: true;
-  initial-value: rgb(var(--magma-danger-emphasis));
+  initial-value: var(--magma-danger-emphasis);
   syntax: '<color>';
 }
 
@@ -35,7 +35,7 @@
 
 @property --mds-notification-ring-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-on-emphasis));
+  initial-value: var(--magma-text-on-emphasis);
   syntax: '<color>';
 }
 

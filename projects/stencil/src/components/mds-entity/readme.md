@@ -140,12 +140,12 @@ Combine `await` with `icon` and `variant` to drive a state machine: show the spi
 
 #### Styling Customization
 
-Style the entity only through its public `--mds-entity-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. The avatar takes its colours from `variant` and `tone`, not from a custom property.
+Style the entity only through its public `--mds-entity-*` CSS custom properties. Set them on the host or a parent selector; use the semantic color roles via `var(--magma-<role>)` so dark mode and high-contrast modes keep working. The avatar takes its colours from `variant` and `tone`, not from a custom property.
 
 ```css
 .entity-highlight mds-entity {
-  --mds-entity-background: rgb(var(--magma-accent-surface));
-  --mds-entity-color: rgb(var(--magma-accent-fg));
+  --mds-entity-background: var(--magma-accent-surface);
+  --mds-entity-color: var(--magma-accent-fg);
 }
 ```
 
@@ -261,8 +261,8 @@ mds-entity >>> mds-avatar {
 
 /* CORRECT */
 mds-entity {
-  --mds-entity-background: rgb(var(--magma-accent-surface));
-  --mds-entity-color: rgb(var(--magma-accent-fg));
+  --mds-entity-background: var(--magma-accent-surface);
+  --mds-entity-color: var(--magma-accent-fg);
 }
 ```
 

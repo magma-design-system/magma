@@ -39,10 +39,10 @@ const TOKEN_REF_A11Y = {
 
 // -- token accessors -------------------------------------------------------
 
-const surfaceVar = (role: string): string => `rgb(var(--magma-surface-${role}))`;
-const textVar = (role: string): string => `rgb(var(--magma-text-${role}))`;
-const borderVar = (role: string): string => `rgb(var(--magma-border-${role}))`;
-const hueVar = (hue: string, role: string): string => `rgb(var(--magma-${hue}-${role}))`;
+const surfaceVar = (role: string): string => `var(--magma-surface-${role})`;
+const textVar = (role: string): string => `var(--magma-text-${role})`;
+const borderVar = (role: string): string => `var(--magma-border-${role})`;
+const hueVar = (hue: string, role: string): string => `var(--magma-${hue}-${role})`;
 
 // The five surface roles (spec 6.1), low -> high on the elevation axis.
 const SURFACES: { role: string; use: string }[] = [

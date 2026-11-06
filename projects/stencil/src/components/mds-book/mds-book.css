@@ -13,11 +13,11 @@
  */
 
 :host {
-  --mds-book-color: rgb(var(--magma-accent-emphasis));
+  --mds-book-color: var(--magma-accent-emphasis);
 
   /* stylelint-disable-next-line magma/token-values -- paper, the one colour of the physical object that no role says: it stays paper in dark mode, as the cover image stays the same picture */
   --mds-book-paper-color: rgb(250 248 242);
-  --mds-book-text-color: rgb(var(--magma-accent-on-emphasis));
+  --mds-book-text-color: var(--magma-accent-on-emphasis);
   --mds-book-publisher-color: var(--mds-book-text-color);
 
   /* the thickness of a page, in millimetres: the bulky paper of a short book, the thin paper
@@ -101,7 +101,7 @@
      of 200 px would be, rather than as wide as nothing, which is what its containment says */
   contain-intrinsic-inline-size: --spacing(5000);
   container-type: inline-size;
-  filter: drop-shadow(0 1.2cqi 2cqi rgb(var(--magma-shadow-ink) / 0.08));
+  filter: drop-shadow(0 1.2cqi 2cqi color-mix(in srgb, var(--magma-shadow-ink) 8%, transparent));
   position: relative;
 }
 
@@ -186,11 +186,11 @@
    it is in sight. Painted once: only its opacity follows the pose. */
 
 .floor {
-  background-color: rgb(var(--magma-shadow-ink) / 0.27);
+  background-color: color-mix(in srgb, var(--magma-shadow-ink) 27%, transparent);
   border-radius: 1cqi;
   box-shadow:
-    0 0 3cqi 0.6cqi rgb(var(--magma-shadow-ink) / 0.34),
-    0 0 9cqi 2cqi rgb(var(--magma-shadow-ink) / 0.1);
+    0 0 3cqi 0.6cqi color-mix(in srgb, var(--magma-shadow-ink) 34%, transparent),
+    0 0 9cqi 2cqi color-mix(in srgb, var(--magma-shadow-ink) 10%, transparent);
   left: 0;
   pointer-events: none;
   position: absolute;
@@ -276,7 +276,7 @@
    changes with the pose, which the compositor applies without painting the face again. */
 
 .shade {
-  background-color: rgb(var(--magma-shadow-ink));
+  background-color: var(--magma-shadow-ink);
   inset: 0;
   opacity: calc(max(0, var(--private-book-light) * -1) * 0.24);
   pointer-events: none;
@@ -322,7 +322,7 @@
   background-image:
     linear-gradient(
       to right,
-      rgb(var(--magma-shadow-ink) / 0.12),
+      color-mix(in srgb, var(--magma-shadow-ink) 12%, transparent),
       transparent 1.2cqi,
       color-mix(in srgb, var(--mds-book-paper-color) 18%, transparent) 1.6cqi,
       transparent 2.4cqi
@@ -344,9 +344,9 @@
   background-image:
     linear-gradient(
       to right,
-      rgb(var(--magma-shadow-ink) / 0.2),
-      rgb(var(--magma-shadow-ink) / 0.04) 2.6cqi,
-      rgb(var(--magma-shadow-ink) / 0.32) 3.4cqi,
+      color-mix(in srgb, var(--magma-shadow-ink) 20%, transparent),
+      color-mix(in srgb, var(--magma-shadow-ink) 4%, transparent) 2.6cqi,
+      color-mix(in srgb, var(--magma-shadow-ink) 32%, transparent) 3.4cqi,
       color-mix(in srgb, var(--mds-book-paper-color) 28%, transparent) 4cqi,
       transparent 5cqi
     ),
@@ -524,11 +524,11 @@
    pages, darker toward them */
 
 .endpaper {
-  background-color: color-mix(in srgb, var(--mds-book-paper-color), rgb(var(--magma-shadow-ink)) 5%);
+  background-color: color-mix(in srgb, var(--mds-book-paper-color), var(--magma-shadow-ink) 5%);
   background-image: linear-gradient(
     var(--private-book-endpaper-fall),
     transparent,
-    rgb(var(--magma-shadow-ink) / 0.22)
+    color-mix(in srgb, var(--magma-shadow-ink) 22%, transparent)
   );
 }
 
@@ -584,16 +584,16 @@
   background-image:
     linear-gradient(
       to bottom,
-      rgb(var(--magma-shadow-ink) / 0.16),
+      color-mix(in srgb, var(--magma-shadow-ink) 16%, transparent),
       transparent 22%,
       transparent 78%,
-      rgb(var(--magma-shadow-ink) / 0.16)
+      color-mix(in srgb, var(--magma-shadow-ink) 16%, transparent)
     ),
     var(--private-book-grain),
     repeating-linear-gradient(
       to bottom,
       transparent 0 0.45cqi,
-      color-mix(in srgb, var(--mds-book-paper-color), rgb(var(--magma-shadow-ink)) 9%) 0.45cqi
+      color-mix(in srgb, var(--mds-book-paper-color), var(--magma-shadow-ink) 9%) 0.45cqi
         0.55cqi
     );
   height: var(--private-book-pages);
@@ -624,7 +624,7 @@
 .pages-bottom::before {
   background-image: repeating-linear-gradient(
     to bottom,
-    rgb(var(--magma-shadow-ink) / 0.55) 0 0.35cqi,
+    color-mix(in srgb, var(--magma-shadow-ink) 55%, transparent) 0 0.35cqi,
     var(--mds-book-paper-color) 0.35cqi 0.7cqi
   );
   bottom: 0;
@@ -640,16 +640,16 @@
   background-image:
     linear-gradient(
       to right,
-      rgb(var(--magma-shadow-ink) / 0.16),
+      color-mix(in srgb, var(--magma-shadow-ink) 16%, transparent),
       transparent 22%,
       transparent 78%,
-      rgb(var(--magma-shadow-ink) / 0.16)
+      color-mix(in srgb, var(--magma-shadow-ink) 16%, transparent)
     ),
     var(--private-book-grain),
     repeating-linear-gradient(
       to right,
       transparent 0 0.45cqi,
-      color-mix(in srgb, var(--mds-book-paper-color), rgb(var(--magma-shadow-ink)) 9%) 0.45cqi
+      color-mix(in srgb, var(--mds-book-paper-color), var(--magma-shadow-ink) 9%) 0.45cqi
         0.55cqi
     );
 }
@@ -778,10 +778,10 @@
   background-image:
     linear-gradient(
       to right,
-      rgb(var(--magma-shadow-ink) / 0.1),
+      color-mix(in srgb, var(--magma-shadow-ink) 10%, transparent),
       transparent 0.6cqi,
       transparent calc(100% - 0.6cqi),
-      rgb(var(--magma-shadow-ink) / 0.1)
+      color-mix(in srgb, var(--magma-shadow-ink) 10%, transparent)
     ),
     var(--private-book-wrap);
   background-position:
@@ -856,7 +856,7 @@
   opacity: clamp(0, (var(--private-book-pages-mm) - 5) * 2, 1);
 
   /* the text sits on a picture whose colour nobody chose for it */
-  text-shadow: 0 0 0.3lh rgb(var(--magma-shadow-ink) / 0.4);
+  text-shadow: 0 0 0.3lh color-mix(in srgb, var(--magma-shadow-ink) 40%, transparent);
 
   /* top to bottom, as ISO 6357 recommends for the title on a spine */
   writing-mode: vertical-rl;

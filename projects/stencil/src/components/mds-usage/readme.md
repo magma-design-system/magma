@@ -148,17 +148,17 @@ The default slot accepts any HTML or Magma components. Use this to annotate a fu
 
 #### Styling Customization
 
-`mds-usage` has no public CSS custom property: its border and header colours follow the `variant` (`do`, `dont`, `info`, `warn`). When an annotation needs other colours, style the documented `header`, `icon` and `label` parts, and use the semantic color roles via `rgb(var(--magma-<role>))` to keep dark mode working.
+`mds-usage` has no public CSS custom property: its border and header colours follow the `variant` (`do`, `dont`, `info`, `warn`). When an annotation needs other colours, style the documented `header`, `icon` and `label` parts, and use the semantic color roles via `var(--magma-<role>)` to keep dark mode working.
 
 ```css
 .docs-callout mds-usage::part(header) {
-  background-color: rgb(var(--magma-accent-ai-emphasis));
+  background-color: var(--magma-accent-ai-emphasis);
 }
 .docs-callout mds-usage::part(icon) {
-  fill: rgb(var(--magma-accent-ai-on-emphasis));
+  fill: var(--magma-accent-ai-on-emphasis);
 }
 .docs-callout mds-usage::part(label) {
-  color: rgb(var(--magma-accent-ai-on-emphasis));
+  color: var(--magma-accent-ai-on-emphasis);
 }
 ```
 
@@ -236,15 +236,15 @@ The default slot is the body of the block. Placing a heading or label string the
 ```css
 /* INCORRECT */
 mds-usage >>> .header {
-  background: rgb(var(--magma-accent-ai-emphasis));
+  background: var(--magma-accent-ai-emphasis);
 }
 
 /* CORRECT */
 mds-usage::part(header) {
-  background-color: rgb(var(--magma-accent-ai-emphasis));
+  background-color: var(--magma-accent-ai-emphasis);
 }
 mds-usage::part(label) {
-  color: rgb(var(--magma-accent-ai-on-emphasis));
+  color: var(--magma-accent-ai-on-emphasis);
 }
 ```
 

@@ -135,12 +135,12 @@ The default `"option"` is the smaller scale and suits dense contexts such as tab
 
 #### Styling Customization
 
-Style the badge only through its public `--mds-badge-*` CSS custom properties. Use Magma color tokens via `rgb(var(--<token>))` so dark mode and high-contrast modes keep working.
+Style the badge only through its public `--mds-badge-*` CSS custom properties. Use Magma color tokens via `var(--<token>)` so dark mode and high-contrast modes keep working.
 
 ```css
 .custom-tag mds-badge {
-  --mds-badge-background: rgb(var(--label-orchid-09));
-  --mds-badge-color: rgb(var(--label-orchid-02));
+  --mds-badge-background: var(--label-orchid-09);
+  --mds-badge-color: var(--label-orchid-02);
 }
 ```
 
@@ -231,8 +231,8 @@ mds-badge >>> span {
 
 /* CORRECT */
 mds-badge {
-  --mds-badge-background: rgb(var(--label-violet-09));
-  --mds-badge-color: rgb(var(--label-violet-02));
+  --mds-badge-background: var(--label-violet-09);
+  --mds-badge-color: var(--label-violet-02);
 }
 ```
 

@@ -95,11 +95,11 @@ When `pages` is `1` only the first/last item and the arrows appear (the scrollab
 
 #### Styling the Page Strip Background
 
-Override `--mds-paginator-background` on the host to change the background of the scrollable pages area. Use a Magma color token wrapped in `rgb(var(...))` so dark mode keeps working.
+Override `--mds-paginator-background` on the host to change the background of the scrollable pages area. Use a Magma color token wrapped in `var(...)` so dark mode keeps working.
 
 ```css
 .mia-tabella mds-paginator {
-  --mds-paginator-background: rgb(var(--magma-wash-strong));
+  --mds-paginator-background: var(--magma-wash-strong);
 }
 ```
 
@@ -209,7 +209,7 @@ mds-paginator >>> mds-paginator-item {
 
 /* CORRECT */
 mds-paginator {
-  --mds-paginator-background: rgb(var(--magma-wash-strong));
+  --mds-paginator-background: var(--magma-wash-strong);
   --mds-paginator-item-radius: var(--magma-radius-sm);
 }
 ```

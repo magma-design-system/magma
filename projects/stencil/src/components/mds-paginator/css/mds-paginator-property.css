@@ -11,7 +11,7 @@
 
 @property --mds-paginator-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-base));
+  initial-value: var(--magma-wash-base);
   syntax: '<color>';
 }
 

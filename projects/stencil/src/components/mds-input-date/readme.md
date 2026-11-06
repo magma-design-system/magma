@@ -179,12 +179,12 @@ When the host carries a `slot` attribute, the component renders only the bare na
 
 #### Styling Customization
 
-Style the component only through its public `--mds-input-date-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast work automatically.
+Style the component only through its public `--mds-input-date-*` CSS custom properties. Use the semantic color roles via `var(--magma-<role>)` so dark mode and high-contrast work automatically.
 
 ```css
 .booking-widget mds-input-date {
-  --mds-input-date-background: rgb(var(--magma-wash-base));
-  --mds-input-date-ring: 0 0 0 2px rgb(var(--magma-border-focus) / 0.5);
+  --mds-input-date-background: var(--magma-wash-base);
+  --mds-input-date-ring: 0 0 0 2px color-mix(in srgb, var(--magma-border-focus) 50%, transparent);
 }
 ```
 
@@ -271,7 +271,7 @@ mds-input-date >>> .input {
 
 /* CORRECT */
 mds-input-date {
-  --mds-input-date-ring: 0 0 0 2px rgb(var(--magma-danger-border) / 0.8);
+  --mds-input-date-ring: 0 0 0 2px color-mix(in srgb, var(--magma-danger-border) 80%, transparent);
 }
 mds-input-date::part(input-date) {
   font-size: var(--text-size-info-caption);
@@ -366,20 +366,19 @@ Type: `Promise<void>`
 
 ## CSS Custom Properties
 
-| Name                                        | Description                                                                |
-| ------------------------------------------- | -------------------------------------------------------------------------- |
-| `--mds-input-date-background`               | Public. The background of the date input                                   |
-| `--mds-input-date-field-background-empty`   | The background when the date field is empty                                |
-| `--mds-input-date-field-color-empty`        | The text/icon color when the date field is empty                           |
-| `--mds-input-date-icon-color`               | The color of the date input icon                                           |
-| `--mds-input-date-icon-color-rgb`           | Deprecated, read by nothing: the icon takes `--mds-input-date-icon-color`. |
-| `--mds-input-date-ring`                     | Public. The focus ring of the date input                                   |
-| `--mds-input-date-shadow`                   | Public. The shadow applied to the date input                               |
-| `--mds-input-date-variant-color-rgb`        | Public. The base RGB value for the date input variant                      |
-| `--mds-input-tip-background`                | Public. The background of the input tip                                    |
-| `--mds-input-tip-horizontal-offset`         | The horizontal offset for the input tip                                    |
-| `--mds-input-tip-horizontal-offset-focused` | The horizontal offset when the input tip is focused                        |
-| `--mds-input-tip-vertical-offset`           | The vertical offset for the input tip                                      |
+| Name                                        | Description                                         |
+| ------------------------------------------- | --------------------------------------------------- |
+| `--mds-input-date-background`               | Public. The background of the date input            |
+| `--mds-input-date-field-background-empty`   | The background when the date field is empty         |
+| `--mds-input-date-field-color-empty`        | The text/icon color when the date field is empty    |
+| `--mds-input-date-icon-color`               | The color of the date input icon                    |
+| `--mds-input-date-ring`                     | Public. The focus ring of the date input            |
+| `--mds-input-date-shadow`                   | Public. The shadow applied to the date input        |
+| `--mds-input-date-variant-color`            | Public. The base color of the date input variant    |
+| `--mds-input-tip-background`                | Public. The background of the input tip             |
+| `--mds-input-tip-horizontal-offset`         | The horizontal offset for the input tip             |
+| `--mds-input-tip-horizontal-offset-focused` | The horizontal offset when the input tip is focused |
+| `--mds-input-tip-vertical-offset`           | The vertical offset for the input tip               |
 
 
 ## Dependencies

@@ -60,18 +60,19 @@ describe('magma/token-values', () => {
 }`;
 
     expect(await lint(css)).toEqual([
-      'Unexpected literal "rgb(255 255 255 / var(--o, 0.5))": paint with a role, rgb(var(--magma-*) / <alpha>) (magma/token-values)',
-      'Unexpected literal "rgb(73 73 73)": paint with a role, rgb(var(--magma-*) / <alpha>) (magma/token-values)',
-      'Unexpected literal "hsl(0 0% 50% / 0.5)": paint with a role, rgb(var(--magma-*) / <alpha>) (magma/token-values)',
-      'Unexpected literal "rgb(0 0 0 / 0.1)": a shadow is rgb(var(--magma-shadow-ink) / <alpha>) (magma/token-values)',
-      'Unexpected literal "#100": paint with a role, rgb(var(--magma-*) / <alpha>) (magma/token-values)',
+      'Unexpected literal "rgb(255 255 255 / var(--o, 0.5))": paint with a role, var(--magma-*), faded with color-mix(in srgb, var(--magma-*) <N>%, transparent) (magma/token-values)',
+      'Unexpected literal "rgb(73 73 73)": paint with a role, var(--magma-*), faded with color-mix(in srgb, var(--magma-*) <N>%, transparent) (magma/token-values)',
+      'Unexpected literal "hsl(0 0% 50% / 0.5)": paint with a role, var(--magma-*), faded with color-mix(in srgb, var(--magma-*) <N>%, transparent) (magma/token-values)',
+      'Unexpected literal "rgb(0 0 0 / 0.1)": a shadow is color-mix(in srgb, var(--magma-shadow-ink) <N>%, transparent) (magma/token-values)',
+      'Unexpected literal "#100": paint with a role, var(--magma-*), faded with color-mix(in srgb, var(--magma-*) <N>%, transparent) (magma/token-values)',
     ]);
   });
 
-  it('lets through a role in the RGB wrapper, colour keywords and the colours of a mask', async () => {
+  it('lets through a role, faded or not, colour keywords and the colours of a mask', async () => {
     const css = `:host {
   background-color: transparent;
-  color: rgb(var(--magma-text-muted) / 0.5);
+  border-color: var(--magma-border-default);
+  color: color-mix(in srgb, var(--magma-text-muted) 50%, transparent);
   fill: currentColor;
   mask-image: linear-gradient(rgb(0 0 0 / 1), transparent);
   -webkit-mask-image: linear-gradient(#000000, transparent);
@@ -80,10 +81,23 @@ describe('magma/token-values', () => {
     expect(await lint(css)).toEqual([]);
   });
 
+  // a token holds a full colour since #918: the channel wrapper of before is invalid CSS
+  it('rejects rgb() and hsl() around a token', async () => {
+    const css = `:host {
+  color: rgb(var(--magma-text-muted));
+  box-shadow: 0 0 0 1px rgb(var(--magma-border-default) / 0.5);
+}`;
+
+    expect(await lint(css)).toEqual([
+      'Unexpected "rgb(var(--magma-text-muted))" around a token: a token is a full colour, write var(--magma-*), faded with color-mix(in srgb, var(--magma-*) <N>%, transparent) (magma/token-values)',
+      'Unexpected "rgb(var(--magma-border-default) / 0.5)" around a token: a token is a full colour, write var(--magma-*), faded with color-mix(in srgb, var(--magma-*) <N>%, transparent) (magma/token-values)',
+    ]);
+  });
+
   it('lets through zero, the 1px hairline, tokens and the units it does not own', async () => {
     const css = `:host {
   --mds-a-duration: 0s;
-  border: 1px solid rgb(var(--magma-border-default));
+  border: 1px solid var(--magma-border-default);
   grid-template-columns: repeat(auto-fit, minmax(1px, 1fr));
   margin: 0 --spacing(400) --spacing(-200);
   translate: 0 -1px;

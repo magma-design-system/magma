@@ -29,16 +29,16 @@
 */
 
 :host {
-  --mds-banner-background: rgb(var(--magma-surface-overlay));
+  --mds-banner-background: var(--magma-surface-overlay);
 
   /* overlay: the fields inside take the step below (#1193) */
   --magma-field-fill: var(--magma-surface-default);
-  --mds-banner-cockade-background: rgb(var(--magma-wash-base));
+  --mds-banner-cockade-background: var(--magma-wash-base);
   --mds-banner-cockade-distance: --spacing(600);
-  --mds-banner-color: rgb(var(--magma-text-default));
+  --mds-banner-color: var(--magma-text-default);
   --mds-banner-content-gap: --spacing(400);
   --mds-banner-headline-color: var(--mds-banner-color);
-  --mds-banner-icon-color: rgb(var(--magma-text-subtle));
+  --mds-banner-icon-color: var(--magma-text-subtle);
   --mds-banner-radius: var(--magma-radius-2xl);
   --mds-banner-shadow: none;
   --mds-banner-transition-duration: var(--duration-300);

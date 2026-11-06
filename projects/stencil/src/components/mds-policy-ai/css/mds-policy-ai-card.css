@@ -1,7 +1,7 @@
 .mini-card {
   @apply grid-cols-full;
 
-  background-color: rgb(var(--magma-surface-raised));
+  background-color: var(--magma-surface-raised);
   border-radius: var(--magma-radius-lg);
   box-shadow: var(--shadow-sm-sharp);
   corner-shape: var(--magma-corner-shape);
@@ -14,11 +14,11 @@
    pill, out of the corner axis; the square top corners lose nothing to the clamp */
 
 .mini-card-icon {
-  background-color: rgb(var(--magma-accent-ai-fg));
+  background-color: var(--magma-accent-ai-fg);
   border-radius: var(--magma-radius-full);
   border-top-left-radius: var(--magma-radius-none);
   border-top-right-radius: var(--magma-radius-none);
-  fill: rgb(var(--magma-accent-ai-surface-subtle));
+  fill: var(--magma-accent-ai-surface-subtle);
   height: --spacing(600);
   margin-top: --spacing(-400);
   padding: --spacing(100);

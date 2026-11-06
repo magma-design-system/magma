@@ -5,13 +5,13 @@
  */
 
 :host {
-  --mds-price-table-list-separator-color: rgb(var(--magma-text-muted) / 0.5);
+  --mds-price-table-list-separator-color: color-mix(in srgb, var(--magma-text-muted) 50%, transparent);
   --mds-price-table-list-transition-duration: var(--duration-200);
   --private-price-table-list-transition-duration: var(--mds-price-table-list-transition-duration);
 
   @apply ease-in-out;
 
-  background-color: rgb(var(--label-green-10));
+  background-color: var(--label-green-10);
   border-radius: var(--magma-radius-xl);
   corner-shape: var(--magma-corner-shape);
   display: grid;

@@ -144,12 +144,12 @@ Bind `progress` to a reactive state value. When the prop changes, the component 
 
 #### CSS Custom Property Customization
 
-Color the component with `variant` first. When a context needs its own colors, set the documented `--mds-radial-progress-*` CSS custom properties on the element itself (its defaults and its variants are declared on its own host, so a value set on an ancestor does not reach it), naming semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. `--mds-radial-progress-text-suffix` is the text after the number, a CSS string (`'%'` by default).
+Color the component with `variant` first. When a context needs its own colors, set the documented `--mds-radial-progress-*` CSS custom properties on the element itself (its defaults and its variants are declared on its own host, so a value set on an ancestor does not reach it), naming semantic color roles via `var(--magma-<role>)` so dark mode and high-contrast modes keep working. `--mds-radial-progress-text-suffix` is the text after the number, a CSS string (`'%'` by default).
 
 ```css
 .storage-quota mds-radial-progress {
-  --mds-radial-progress-color: rgb(var(--magma-accent-emphasis));
-  --mds-radial-progress-background: rgb(var(--magma-wash-soft));
+  --mds-radial-progress-color: var(--magma-accent-emphasis);
+  --mds-radial-progress-background: var(--magma-wash-soft);
   --mds-radial-progress-text-suffix: '';
 }
 ```
@@ -166,7 +166,7 @@ mds-radial-progress::part(value-container) {
 
 /* Tint the icon independently from the ring color */
 mds-radial-progress::part(icon) {
-  fill: rgb(var(--magma-warning-text-default));
+  fill: var(--magma-warning-text-default);
 }
 ```
 
@@ -236,7 +236,7 @@ Inline `style` bypasses `variant` and the Magma color roles, breaking dark-mode 
 ```css
 /* CORRECT for deeper customization: a documented property naming a color role */
 .my-context mds-radial-progress {
-  --mds-radial-progress-color: rgb(var(--magma-warning-fg));
+  --mds-radial-progress-color: var(--magma-warning-fg);
 }
 ```
 

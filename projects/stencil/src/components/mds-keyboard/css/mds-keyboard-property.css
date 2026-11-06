@@ -11,43 +11,43 @@
 
 @property --mds-keyboard-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-strong));
+  initial-value: var(--magma-wash-strong);
   syntax: '<color>';
 }
 
 @property --mds-keyboard-background-default {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-strong));
+  initial-value: var(--magma-wash-strong);
   syntax: '<color>';
 }
 
 @property --mds-keyboard-background-fail {
   inherits: true;
-  initial-value: rgb(var(--magma-danger-wash-base));
+  initial-value: var(--magma-danger-wash-base);
   syntax: '<color>';
 }
 
 @property --mds-keyboard-background-pass {
   inherits: true;
-  initial-value: rgb(var(--magma-success-wash-base));
+  initial-value: var(--magma-success-wash-base);
   syntax: '<color>';
 }
 
 @property --mds-keyboard-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-subtle));
+  initial-value: var(--magma-text-subtle);
   syntax: '<color>';
 }
 
 @property --mds-keyboard-fill-fail {
   inherits: true;
-  initial-value: rgb(var(--magma-danger-text-default));
+  initial-value: var(--magma-danger-text-default);
   syntax: '<color>';
 }
 
 @property --mds-keyboard-fill-pass {
   inherits: true;
-  initial-value: rgb(var(--magma-success-text-default));
+  initial-value: var(--magma-success-text-default);
   syntax: '<color>';
 }
 

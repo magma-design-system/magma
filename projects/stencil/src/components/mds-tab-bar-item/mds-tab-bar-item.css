@@ -9,10 +9,10 @@
  */
 
 :host {
-  --mds-tab-bar-item-background: rgb(var(--magma-wash-soft));
+  --mds-tab-bar-item-background: var(--magma-wash-soft);
   --mds-tab-bar-item-background-selected: transparent;
-  --mds-tab-bar-item-color: rgb(var(--magma-text-subtle));
-  --mds-tab-bar-item-color-selected: rgb(var(--magma-accent-fg));
+  --mds-tab-bar-item-color: var(--magma-text-subtle);
+  --mds-tab-bar-item-color-selected: var(--magma-accent-fg);
   --mds-tab-bar-item-transition-duration: var(--duration-200);
   --private-tab-bar-item-transition-duration: var(--mds-tab-bar-item-transition-duration);
 

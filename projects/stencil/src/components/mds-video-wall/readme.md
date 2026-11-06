@@ -189,7 +189,7 @@ The noise overlay is inside the Shadow DOM and has no public CSS custom property
 ```css
 /* INCORRECT */
 mds-video-wall >>> .noise {
-  background-color: rgb(var(--magma-danger-emphasis-hover) / 0.5);
+  background-color: color-mix(in srgb, var(--magma-danger-emphasis-hover) 50%, transparent);
 }
 ```
 

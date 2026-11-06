@@ -6,7 +6,7 @@
 :host([pref-contrast='more']) {
   --mds-push-notification-item-shadow: var(--shadow-ring-strong-2) inset;
 
-  color: rgb(var(--magma-text-default));
+  color: var(--magma-text-default);
 }
 
 @media (prefers-contrast: more) {
@@ -14,6 +14,6 @@
   :host(:not([pref-contrast])) {
     --mds-push-notification-item-shadow: var(--shadow-ring-strong-2) inset;
 
-    color: rgb(var(--magma-text-default));
+    color: var(--magma-text-default);
   }
 }

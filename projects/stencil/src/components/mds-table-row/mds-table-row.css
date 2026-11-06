@@ -10,10 +10,10 @@
  */
 
 :host {
-  --mds-table-row-color-hover: var(--mds-table-color, rgb(var(--magma-text-default)));
-  --mds-table-row-color-alt: var(--mds-table-color-alt, rgb(var(--magma-text-default)));
-  --mds-table-row-background-hover: var(--mds-table-background, rgb(var(--magma-surface-default)));
-  --mds-table-row-background-alt: var(--mds-table-background-alt, rgb(var(--magma-surface-default)));
+  --mds-table-row-color-hover: var(--mds-table-color, var(--magma-text-default));
+  --mds-table-row-color-alt: var(--mds-table-color-alt, var(--magma-text-default));
+  --mds-table-row-background-hover: var(--mds-table-background, var(--magma-surface-default));
+  --mds-table-row-background-alt: var(--mds-table-background-alt, var(--magma-surface-default));
   --mds-table-row-actions-gap: var(--mds-table-actions-gap, --spacing(400));
   --mds-table-row-transition-duration: var(--duration-200);
 

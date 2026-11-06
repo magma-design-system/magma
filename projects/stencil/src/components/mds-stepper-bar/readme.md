@@ -180,7 +180,7 @@ When the stepper bar lives inside a padded card or panel, use `--mds-stepper-bar
 
 #### Styling the Gap
 
-Set the item spacing through the public `--mds-stepper-bar-*` CSS custom properties; the scrollbar of the indicator track is styled by the component. Use semantic color roles via `rgb(var(--magma-<role>))` for any colour you set, so dark mode and high-contrast keep working.
+Set the item spacing through the public `--mds-stepper-bar-*` CSS custom properties; the scrollbar of the indicator track is styled by the component. Use semantic color roles via `var(--magma-<role>)` for any colour you set, so dark mode and high-contrast keep working.
 
 ```css
 mds-stepper-bar {
@@ -195,7 +195,7 @@ The two documented shadow parts - `items` (the indicator track wrapper) and `con
 ```css
 mds-stepper-bar::part(items) {
   padding-block: calc(var(--spacing) * 400);
-  border-bottom: 1px solid rgb(var(--magma-border-muted));
+  border-bottom: 1px solid var(--magma-border-muted);
 }
 
 mds-stepper-bar::part(contents) {

@@ -14,19 +14,19 @@
  */
 
 :host {
-  --mds-breadcrumb-arrow-depth-color: rgb(var(--magma-text-subtle));
+  --mds-breadcrumb-arrow-depth-color: var(--magma-text-subtle);
   --mds-breadcrumb-button-background-disabled: transparent;
-  --mds-breadcrumb-button-background-hover: rgb(var(--magma-wash-soft));
-  --mds-breadcrumb-button-background-selected: rgb(var(--magma-wash-base));
+  --mds-breadcrumb-button-background-hover: var(--magma-wash-soft);
+  --mds-breadcrumb-button-background-selected: var(--magma-wash-base);
   --mds-breadcrumb-button-background: transparent;
-  --mds-breadcrumb-button-color-hover: rgb(var(--magma-text-default));
+  --mds-breadcrumb-button-color-hover: var(--magma-text-default);
 
   /* the two deprecated names of the selected colour are read only when an author sets them */
   --mds-breadcrumb-button-color-selected: var(
     --mds-breadcrumb-button-color-current,
-    var(--mds-breadcrumb-current-button-color, rgb(var(--magma-text-default)))
+    var(--mds-breadcrumb-current-button-color, var(--magma-text-default))
   );
-  --mds-breadcrumb-button-color: rgb(var(--magma-text-default));
+  --mds-breadcrumb-button-color: var(--magma-text-default);
 
   @apply hide-scrollbar;
 

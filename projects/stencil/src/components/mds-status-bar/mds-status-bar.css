@@ -19,7 +19,7 @@
 
   /* a translucent tray of the text ink, darker than the page in light and lighter in dark
    * like a wash: not a projected shadow, so not --magma-shadow-ink */
-  --mds-status-bar-backdrop: rgb(var(--magma-text-default) / 0.1);
+  --mds-status-bar-backdrop: color-mix(in srgb, var(--magma-text-default) 10%, transparent);
   --mds-status-bar-backdrop-filter: blur(--spacing(250));
 
   display: block;
@@ -52,7 +52,7 @@ mds-modal {
   --magma-field-fill: var(--magma-surface-default);
 
   align-items: flex-start;
-  background-color: rgb(var(--magma-surface-overlay));
+  background-color: var(--magma-surface-overlay);
   border-radius: var(--magma-radius-lg);
   box-shadow: var(--shadow-md);
   box-sizing: border-box;

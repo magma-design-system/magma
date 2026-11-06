@@ -8,9 +8,9 @@
  */
 
 :host {
-  --mds-file-preview-icon-color: rgb(var(--magma-text-subtle));
-  --mds-file-preview-color: rgb(var(--magma-text-subtle));
-  --mds-file-preview-icon-background: rgb(var(--magma-wash-soft));
+  --mds-file-preview-icon-color: var(--magma-text-subtle);
+  --mds-file-preview-color: var(--magma-text-subtle);
+  --mds-file-preview-icon-background: var(--magma-wash-soft);
   --mds-file-transition-duration: var(--duration-200);
   --private-file-transition-duration: var(--mds-file-transition-duration);
   --private-icon-download-offset: 10%;
@@ -18,10 +18,10 @@
   @apply focus-bounce;
 
   align-items: stretch;
-  background-color: rgb(var(--magma-surface-raised));
+  background-color: var(--magma-surface-raised);
   border-radius: var(--magma-radius-xl);
   box-shadow: var(--shadow-outline-weak);
-  color: rgb(var(--magma-text-subtle));
+  color: var(--magma-text-subtle);
   corner-shape: var(--magma-corner-shape);
   cursor: pointer;
   display: inline-flex;
@@ -135,7 +135,7 @@
 .description {
   @apply truncate;
 
-  color: rgb(var(--magma-text-disabled));
+  color: var(--magma-text-disabled);
   min-width: 0px;
 }
 
@@ -149,7 +149,7 @@
 .downloaded {
   @apply svg;
 
-  fill: rgb(var(--magma-success-emphasis));
+  fill: var(--magma-success-emphasis);
 }
 
 @import './css/mds-file-format.css';

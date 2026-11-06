@@ -7,14 +7,14 @@
 
 :host([pref-mode='dark']:not([pref-theme-scheme='light'])),
 :host([pref-theme-scheme='dark']) {
-  --private-keyboard-tray: rgb(var(--magma-wash-soft));
-  --mds-keyboard-color: rgb(var(--magma-text-default));
+  --private-keyboard-tray: var(--magma-wash-soft);
+  --mds-keyboard-color: var(--magma-text-default);
   --mds-keyboard-illumination-dark-opacity: 0.5;
   --mds-keyboard-illumination-light-opacity: 0.15;
 
   /* stylelint-disable magma/token-values -- the white glow around the keyboard and its keys in dark: light, not a role */
   --mds-keyboard-illumination-shadow: 0 0 --spacing(75) 0 rgb(255 255 255 / 0.5);
-  --mds-keyboard-key-background: rgb(var(--magma-wash-strong));
+  --mds-keyboard-key-background: var(--magma-wash-strong);
   --mds-keyboard-key-illumination-dark-opacity: 0.5;
   --mds-keyboard-key-illumination-light-opacity: 0.15;
   --mds-keyboard-key-illumination-shadow: 0 0 1px 0 rgb(255 255 255 / 0.5);
@@ -25,14 +25,14 @@
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
   :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
-    --private-keyboard-tray: rgb(var(--magma-wash-soft));
-    --mds-keyboard-color: rgb(var(--magma-text-default));
+    --private-keyboard-tray: var(--magma-wash-soft);
+    --mds-keyboard-color: var(--magma-text-default);
     --mds-keyboard-illumination-dark-opacity: 0.5;
     --mds-keyboard-illumination-light-opacity: 0.15;
 
     /* stylelint-disable magma/token-values -- the white glow around the keyboard and its keys in dark: light, not a role */
     --mds-keyboard-illumination-shadow: 0 0 --spacing(75) 0 rgb(255 255 255 / 0.5);
-    --mds-keyboard-key-background: rgb(var(--magma-wash-strong));
+    --mds-keyboard-key-background: var(--magma-wash-strong);
     --mds-keyboard-key-illumination-dark-opacity: 0.5;
     --mds-keyboard-key-illumination-light-opacity: 0.15;
     --mds-keyboard-key-illumination-shadow: 0 0 1px 0 rgb(255 255 255 / 0.5);

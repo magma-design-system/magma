@@ -128,12 +128,12 @@ Set `short` on a field whose answer is short (a house number, a postcode, a tax 
 
 #### Styling Customization
 
-Adjust the message area colors through the two documented `--mds-input-field-*` CSS custom properties. Use the semantic color roles via `rgb(var(--magma-<role>))` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and high-contrast modes keep working.
+Adjust the message area colors through the two documented `--mds-input-field-*` CSS custom properties. Use the semantic color roles via `var(--magma-<role>)` ([`docs/agents/color.md`](../../../../../../docs/agents/color.md)) so dark mode and high-contrast modes keep working.
 
 ```css
 .field-highlight mds-input-field {
-  --mds-input-field-message-color: rgb(var(--magma-accent-fg));
-  --mds-input-field-message-background: rgb(var(--magma-accent-surface));
+  --mds-input-field-message-color: var(--magma-accent-fg);
+  --mds-input-field-message-background: var(--magma-accent-surface);
 }
 ```
 
@@ -269,8 +269,8 @@ mds-input-field >>> .message {
 
 /* CORRECT */
 mds-input-field {
-  --mds-input-field-message-color: rgb(var(--magma-danger-text-muted));
-  --mds-input-field-message-background: rgb(var(--magma-danger-wash-base));
+  --mds-input-field-message-color: var(--magma-danger-text-muted);
+  --mds-input-field-message-background: var(--magma-danger-wash-base);
 }
 ```
 

@@ -8,12 +8,12 @@
  * mode in high contrast and as the page anywhere else. */
 
 :host([pref-contrast='more']) {
-  --mds-chip-background: rgb(var(--magma-surface-default));
-  --mds-chip-color: rgb(var(--magma-text-default));
-  --mds-chip-color-selected: rgb(var(--magma-text-default));
-  --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
-  --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-  --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+  --mds-chip-background: var(--magma-surface-default);
+  --mds-chip-color: var(--magma-text-default);
+  --mds-chip-color-selected: var(--magma-text-default);
+  --mds-chip-icon-background-selected: var(--magma-accent-emphasis-hover);
+  --mds-chip-icon-color: var(--magma-text-on-emphasis);
+  --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
   --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
 
   box-shadow: var(--shadow-ring-2);
@@ -22,12 +22,12 @@
 @media (prefers-contrast: more) {
   :host([pref-contrast='system']),
   :host(:not([pref-contrast])) {
-    --mds-chip-background: rgb(var(--magma-surface-default));
-    --mds-chip-color: rgb(var(--magma-text-default));
-    --mds-chip-color-selected: rgb(var(--magma-text-default));
-    --mds-chip-icon-background-selected: rgb(var(--magma-accent-emphasis-hover));
-    --mds-chip-icon-color: rgb(var(--magma-text-on-emphasis));
-    --mds-chip-icon-color-selected: rgb(var(--magma-text-on-emphasis));
+    --mds-chip-background: var(--magma-surface-default);
+    --mds-chip-color: var(--magma-text-default);
+    --mds-chip-color-selected: var(--magma-text-default);
+    --mds-chip-icon-background-selected: var(--magma-accent-emphasis-hover);
+    --mds-chip-icon-color: var(--magma-text-on-emphasis);
+    --mds-chip-icon-color-selected: var(--magma-text-on-emphasis);
     --mds-chip-opacity-disabled: var(--opacity-disabled, 0.6);
 
     box-shadow: var(--shadow-ring-2);

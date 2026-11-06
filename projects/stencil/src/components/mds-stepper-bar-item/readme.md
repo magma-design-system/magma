@@ -219,11 +219,11 @@ Lower the `typography` prop (default `h6`) when horizontal space is tight or whe
 
 #### Styling Customization
 
-Style items only through the public `--mds-stepper-bar-item-*` CSS custom properties: the text colour and the minimum width. The icon and progress colours follow the state the parent sets (queued, current, done) and are not set by the page. Use semantic color roles via `rgb(var(--magma-<role>))` so dark mode and high-contrast modes keep working. Target the `::part(badge)` surface only when a deep visual override of the badge wrapper is required.
+Style items only through the public `--mds-stepper-bar-item-*` CSS custom properties: the text colour and the minimum width. The icon and progress colours follow the state the parent sets (queued, current, done) and are not set by the page. Use semantic color roles via `var(--magma-<role>)` so dark mode and high-contrast modes keep working. Target the `::part(badge)` surface only when a deep visual override of the badge wrapper is required.
 
 ```css
 .checkout-flow mds-stepper-bar-item {
-  --mds-stepper-bar-item-color: rgb(var(--magma-text-muted));
+  --mds-stepper-bar-item-color: var(--magma-text-muted);
   --mds-stepper-bar-item-min-width: 160px;
 }
 ```
@@ -315,7 +315,7 @@ mds-stepper-bar-item::part(progress) {
 
 /* CORRECT */
 mds-stepper-bar-item {
-  --mds-stepper-bar-item-color: rgb(var(--magma-text-default));
+  --mds-stepper-bar-item-color: var(--magma-text-default);
   --mds-stepper-bar-item-min-width: 160px;
 }
 ```

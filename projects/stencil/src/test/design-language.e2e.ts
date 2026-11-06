@@ -335,7 +335,7 @@ describe('the fill of a field', () => {
 
       expect(fields).toHaveLength(2);
       for (const field of fields)
-        expect(fillOf(field), field.localName).toBe(colourOf(`rgb(var(--magma-surface-${step}))`));
+        expect(fillOf(field), field.localName).toBe(colourOf(`var(--magma-surface-${step})`));
     });
   });
 });

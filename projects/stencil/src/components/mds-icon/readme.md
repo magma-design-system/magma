@@ -152,7 +152,7 @@ The single documented shadow part is `svg` - the `<i>` wrapper around the inline
 
 ```css
 mds-icon::part(svg) {
-  filter: drop-shadow(0 1px 2px rgb(var(--magma-shadow-ink) / 0.3));
+  filter: drop-shadow(0 1px 2px color-mix(in srgb, var(--magma-shadow-ink) 30%, transparent));
 }
 ```
 
@@ -238,7 +238,7 @@ mds-icon .icon {
 
 /* CORRECT */
 mds-icon {
-  fill: rgb(var(--magma-danger-fg));
+  fill: var(--magma-danger-fg);
 }
 mds-icon::part(svg) {
   transform: rotate(45deg);

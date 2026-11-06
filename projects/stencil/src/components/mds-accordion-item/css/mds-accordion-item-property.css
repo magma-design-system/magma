@@ -23,7 +23,7 @@
 
 @property --mds-accordion-item-border-color {
   inherits: true;
-  initial-value: rgb(var(--magma-border-default));
+  initial-value: var(--magma-border-default);
   syntax: '<color>';
 }
 
@@ -35,13 +35,13 @@
 
 @property --mds-accordion-item-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-muted));
+  initial-value: var(--magma-text-muted);
   syntax: '<color>';
 }
 
 @property --mds-accordion-item-description-color {
   inherits: true;
-  initial-value: rgb(var(--magma-text-default));
+  initial-value: var(--magma-text-default);
   syntax: '<color>';
 }
 

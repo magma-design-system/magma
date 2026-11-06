@@ -11,24 +11,24 @@
 
 @property --mds-filter-item-count-background-default {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-strong));
+  initial-value: var(--magma-wash-strong);
   syntax: '<color>';
 }
 
 @property --mds-filter-item-count-background-selected {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-inverse-muted));
+  initial-value: var(--magma-surface-inverse-muted);
   syntax: '<color>';
 }
 
 @property --mds-filter-item-count-color-default {
   inherits: true;
-  initial-value: rgb(var(--magma-text-default));
+  initial-value: var(--magma-text-default);
   syntax: '<color>';
 }
 
 @property --mds-filter-item-count-color-selected {
   inherits: true;
-  initial-value: rgb(var(--magma-on-inverse));
+  initial-value: var(--magma-on-inverse);
   syntax: '<color>';
 }

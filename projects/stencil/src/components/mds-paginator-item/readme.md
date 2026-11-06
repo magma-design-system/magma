@@ -98,7 +98,7 @@ The items live in the shadow DOM of the parent `mds-paginator`, so the public `-
 
 ```css
 mds-paginator {
-  --mds-paginator-background: rgb(var(--magma-wash-strong));
+  --mds-paginator-background: var(--magma-wash-strong);
   --mds-paginator-item-size: calc(var(--spacing) * 800);
 }
 ```
@@ -189,8 +189,8 @@ mds-paginator-item >>> .text {
 
 /* CORRECT */
 mds-paginator {
-  --mds-paginator-background: rgb(var(--magma-wash-strong));
-  --mds-paginator-item-color: rgb(var(--magma-text-muted));
+  --mds-paginator-background: var(--magma-wash-strong);
+  --mds-paginator-item-color: var(--magma-text-muted);
 }
 ```
 

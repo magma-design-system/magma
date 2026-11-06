@@ -35,13 +35,13 @@
 
 @property --mds-tab-scroll-scrollbar-thumb-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-inverse) / 0.3);
+  initial-value: color-mix(in srgb, var(--magma-surface-inverse) 30%, transparent);
   syntax: '<color>';
 }
 
 @property --mds-tab-scroll-scrollbar-track-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-base));
+  initial-value: var(--magma-wash-base);
   syntax: '<color>';
 }
 
@@ -55,7 +55,7 @@
 
 @property --mds-tab-tabs-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-soft));
+  initial-value: var(--magma-wash-soft);
   syntax: '<color>';
 }
 
@@ -97,7 +97,7 @@
 
 @property --mds-tab-tabs-wrapper-shadow-color {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-soft));
+  initial-value: var(--magma-wash-soft);
   syntax: '<color>';
 }
 

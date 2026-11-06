@@ -9,8 +9,8 @@
  */
 
 :host {
-  --mds-text-selection-background: rgb(var(--label-sky-09));
-  --mds-text-selection-color: rgb(var(--label-sky-01));
+  --mds-text-selection-background: var(--label-sky-09);
+  --mds-text-selection-color: var(--label-sky-01);
   --mds-text-line-clamp: 3;
   --mds-text-animation-speed: 0.5;
   --mds-text-animation-placeholder-char: ' ';
@@ -223,10 +223,10 @@
 :host([tag='code']) {
   @apply ease-in-out;
 
-  background-color: rgb(var(--magma-wash-base));
+  background-color: var(--magma-wash-base);
   border-radius: var(--magma-radius-3xs);
-  box-shadow: rgb(var(--magma-border-default)) 0 0 0 1px;
-  color: rgb(var(--magma-text-muted));
+  box-shadow: var(--magma-border-default) 0 0 0 1px;
+  color: var(--magma-text-muted);
   corner-shape: var(--magma-corner-shape);
   padding-block: --spacing(25);
   padding-inline: --spacing(100);

@@ -11,7 +11,7 @@
 
 @property --mds-label-background {
   inherits: true;
-  initial-value: rgb(var(--label-blue-08));
+  initial-value: var(--label-blue-08);
   syntax: '<color>';
 }
 
@@ -23,36 +23,36 @@
 
 @property --mds-label-button-background-hover {
   inherits: true;
-  initial-value: rgb(var(--label-blue-08));
+  initial-value: var(--label-blue-08);
   syntax: '<color>';
 }
 
 @property --mds-label-button-icon-color {
   inherits: true;
-  initial-value: rgb(var(--label-blue-04));
+  initial-value: var(--label-blue-04);
   syntax: '<color>';
 }
 
 @property --mds-label-color {
   inherits: true;
-  initial-value: rgb(var(--label-blue-02));
+  initial-value: var(--label-blue-02);
   syntax: '<color>';
 }
 
 @property --mds-label-icon-color {
   inherits: true;
-  initial-value: rgb(var(--label-blue-02));
+  initial-value: var(--label-blue-02);
   syntax: '<color>';
 }
 
 @property --mds-label-selection-background {
   inherits: true;
-  initial-value: rgb(var(--label-blue-06));
+  initial-value: var(--label-blue-06);
   syntax: '<color>';
 }
 
 @property --mds-label-selection-color {
   inherits: true;
-  initial-value: rgb(var(--label-blue-10));
+  initial-value: var(--label-blue-10);
   syntax: '<color>';
 }

@@ -112,17 +112,17 @@ Size is not set per item - it is set once on the parent with `size` (`sm`, `md`,
 
 #### Styling Customization
 
-Style individual items through their public `--mds-avatar-stack-item-*` CSS custom properties, or control the whole stack at once via the parent's public `--mds-avatar-stack-background` (the item ring color inherits from it). Use semantic color roles with `rgb(var(--magma-<role>))` so dark mode keeps working.
+Style individual items through their public `--mds-avatar-stack-item-*` CSS custom properties, or control the whole stack at once via the parent's public `--mds-avatar-stack-background` (the item ring color inherits from it). Use semantic color roles with `var(--magma-<role>)` so dark mode keeps working.
 
 ```css
 /* Override the separator ring color for the whole stack */
 .collab-panel mds-avatar-stack {
-  --mds-avatar-stack-background: rgb(var(--magma-surface-raised));
+  --mds-avatar-stack-background: var(--magma-surface-raised);
 }
 
 /* Override the separator ring color of a single item */
 .collab-panel mds-avatar-stack-item.highlight {
-  --mds-avatar-stack-item-background: rgb(var(--magma-accent-emphasis));
+  --mds-avatar-stack-item-background: var(--magma-accent-emphasis);
 }
 ```
 

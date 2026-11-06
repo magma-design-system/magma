@@ -35,13 +35,13 @@
 
 @property --mds-horizontal-scroll-dot-area-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-strong));
+  initial-value: var(--magma-wash-strong);
   syntax: '<color>';
 }
 
 @property --mds-horizontal-scroll-dot-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-overlay));
+  initial-value: var(--magma-surface-overlay);
   syntax: '<color>';
 }
 
@@ -89,12 +89,12 @@
 
 @property --mds-horizontal-scroll-scrollbar-thumb-background {
   inherits: true;
-  initial-value: rgb(var(--magma-surface-inverse) / 0.3);
+  initial-value: color-mix(in srgb, var(--magma-surface-inverse) 30%, transparent);
   syntax: '<color>';
 }
 
 @property --mds-horizontal-scroll-scrollbar-track-background {
   inherits: true;
-  initial-value: rgb(var(--magma-wash-base));
+  initial-value: var(--magma-wash-base);
   syntax: '<color>';
 }

@@ -139,11 +139,11 @@ Assign the `opened` property to drive the disclosure from code - for example to 
 
 #### CSS Customization
 
-`mds-details` has no public CSS custom property: style it with its props, its parts and the semantic roles. The icon colors and the open/close transition follow the theme. Set colors on the documented parts with the semantic color roles via `rgb(var(--magma-<role>))` so dark mode, named themes and high contrast keep working.
+`mds-details` has no public CSS custom property: style it with its props, its parts and the semantic roles. The icon colors and the open/close transition follow the theme. Set colors on the documented parts with the semantic color roles via `var(--magma-<role>)` so dark mode, named themes and high contrast keep working.
 
 ```css
 .custom-faq mds-details::part(header) {
-  background: rgb(var(--magma-surface-muted));
+  background: var(--magma-surface-muted);
 }
 ```
 
@@ -278,7 +278,7 @@ mds-details >>> .header {
 
 /* CORRECT */
 mds-details::part(header) {
-  background: rgb(var(--magma-surface-muted));
+  background: var(--magma-surface-muted);
 }
 ```
 

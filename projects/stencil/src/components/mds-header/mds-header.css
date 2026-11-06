@@ -39,7 +39,7 @@
 :host {
   --mds-header-hidden-bar-translate-inline: translateY(-150%);
   --mds-header-hidden-bar-translate-stripe: translateY(-110%);
-  --mds-header-modal-icon-color: rgb(var(--magma-text-on-emphasis));
+  --mds-header-modal-icon-color: var(--magma-text-on-emphasis);
   --mds-header-backdrop-blur-strength: --spacing(50);
   --mds-header-backdrop-height: --spacing(1600);
   --mds-header-backdrop-show: true;
@@ -48,8 +48,8 @@
   --mds-header-inline-margin: --spacing(600);
   --mds-header-backdrop-background-image: linear-gradient(
     to top,
-    rgb(var(--magma-backdrop-color) / 0),
-    rgb(var(--magma-backdrop-color) / 0.15)
+    color-mix(in srgb, var(--magma-backdrop-color) 0%, transparent),
+    color-mix(in srgb, var(--magma-backdrop-color) 15%, transparent)
   );
 
   /* private custom properties */
@@ -58,14 +58,14 @@
   /* --mds-header-color and --mds-header-icon-color have no default on this host: mds-header-bar
      reads them through a fallback for its hamburger, which keeps its own default colour, and a
      value declared here would always win that fallback */
-  color: var(--mds-header-color, rgb(var(--magma-text-default)));
+  color: var(--mds-header-color, var(--magma-text-default));
 
   /* the header stands in the flow and stays put while the page scrolls (#1189, surfaces/band):
      the page starts under its bar, with no number to keep in step with its height. Sticky holds
      inside the box of the parent, so it is the host, the child of the page, that sticks; its own
      box holds the margins of the floating bar (flow-root) */
   display: flow-root;
-  fill: var(--mds-header-icon-color, var(--mds-header-color, rgb(var(--magma-text-default))));
+  fill: var(--mds-header-icon-color, var(--mds-header-color, var(--magma-text-default)));
 
   /* the box of the header lets the clicks through: around the floating bar and where the hidden
      bar was (auto-hide), only what it draws takes them */

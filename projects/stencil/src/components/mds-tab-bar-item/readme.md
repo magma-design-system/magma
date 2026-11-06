@@ -123,12 +123,12 @@ Use `typography="option"` for a slightly more prominent label when the tab bar s
 
 #### Styling Customization
 
-Override colors through the two public `--mds-tab-bar-item-*` CSS custom properties, the background and the text colour of the item at rest (the selected item keeps its accent colouring). Set them on the host or a parent selector; use semantic color roles via `rgb(var(--magma-<role>))` so dark mode keeps working.
+Override colors through the two public `--mds-tab-bar-item-*` CSS custom properties, the background and the text colour of the item at rest (the selected item keeps its accent colouring). Set them on the host or a parent selector; use semantic color roles via `var(--magma-<role>)` so dark mode keeps working.
 
 ```css
 .app-bottom-nav mds-tab-bar-item {
-  --mds-tab-bar-item-background: rgb(var(--magma-wash-base));
-  --mds-tab-bar-item-color: rgb(var(--magma-text-muted));
+  --mds-tab-bar-item-background: var(--magma-wash-base);
+  --mds-tab-bar-item-color: var(--magma-text-muted);
 }
 ```
 
