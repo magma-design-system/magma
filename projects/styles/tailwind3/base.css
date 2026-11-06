@@ -5,8 +5,8 @@ body {
   @apply font-info
     text-info-detail;
 
-  background-color: rgb(var(--magma-surface-default, theme('colors.surface-neutral-default')));
-  color: rgb(var(--magma-text-default, theme('colors.text-neutral-default')));
+  background-color: var(--magma-surface-default, theme('colors.surface-neutral-default'));
+  color: var(--magma-text-default, theme('colors.text-neutral-default'));
 }
 
 ::selection {
@@ -30,7 +30,7 @@ a {
   /* no theme() fallback: the accent roles are theme aliases with no raw twin in
    * the palette, and `colors.theme-default-02-primary-text` never existed there
    * either - the fallback was as dead as the custom property. */
-  color: rgb(var(--magma-accent-emphasis));
+  color: var(--magma-accent-emphasis);
 }
 
 h1,

@@ -270,20 +270,22 @@ describe('values match the stylesheets', () => {
   test.each(scenarios)('corner $corner, depth $depth', ({ corner, depth }) => {
     const tree = scenario({ 'corner-shape': corner, 'theme-depth': depth })
     const css = cssValues(corner, depth)
-    const paletteChannels = (name: string) => {
+    /** A DTCG color written the way the CSS writes an opaque one: `rgb(r g b)`. */
+    const cssRgb = (color: DtcgColor) => `rgb(${colorChannels(color).join(' ')})`
+    const paletteColor = (name: string) => {
       const palette = walk(tree).find(([, token]) => ext(token).css === name)!
-      return colorChannels(resolveValue(tree, palette[1].$value) as DtcgColor).join(' ')
+      return cssRgb(resolveValue(tree, palette[1].$value) as DtcgColor)
     }
-    const channelsOf = (value: string): string => {
+    const colorOf = (value: string): string => {
       const own = /^var\((--[\w-]+)\)$/.exec(value)
-      return own ? channelsOf(css.get(own[1])!) : value
+      return own ? colorOf(css.get(own[1])!) : value
     }
 
     for (const [path, token] of walk(globals)) {
       const name = ext(token).css!
       const current = lookup(tree, path.join('.'))
       const value = css.get(name)!
-      const alias = /^(?:rgb\()?var\((--[\w-]+)[^)]*\)\)?$/.exec(value)
+      const alias = /^var\((--[\w-]+)(?:,[^()]*(?:\([^()]*\))?[^()]*)?\)$/.exec(value)
       if (alias) {
         // the JSON names the same token the CSS does
         expect(typeof current.$value, `${name}: ${value}`).toBe('string')
@@ -303,14 +305,15 @@ describe('values match the stylesheets', () => {
         }
         case 'color': {
           const color = resolved as DtcgColor
-          // `rgb(var(--a) / var(--b))`, `transparent` or the `r g b` a color is published as
-          const derived = /^rgb\(var\((--[\w-]+)\) \/ var\((--[\w-]+)\)\)$/.exec(value)
+          // a color faded by an opacity token, `transparent` or the `rgb(r g b)` it is written as
+          const derived =
+            /^color-mix\(in srgb, var\((--[\w-]+)\) calc\(var\((--[\w-]+)\) \* 100%\), transparent\)$/.exec(value)
           if (derived) {
-            expect(colorChannels(color).join(' '), name).toBe(channelsOf(css.get(derived[1])!))
+            expect(cssRgb(color), name).toBe(colorOf(css.get(derived[1])!))
             expect(color.alpha, name).toBe(Number(css.get(derived[2])))
             expect(ext(current).cssValue, name).toBe(value)
           } else if (value === 'transparent') expect(color.alpha, name).toBe(0)
-          else expect(colorChannels(color).join(' '), name).toBe(value)
+          else expect(cssRgb(color), name).toBe(value)
           break
         }
         case 'border': {
@@ -325,8 +328,10 @@ describe('values match the stylesheets', () => {
           // the elevation terms are products of --depth: work them out at this depth
           const at = Number(css.get('--depth'))
           const literal = value
+            .replace(/calc\(([\d.]+) \* var\(--depth\) \* 100%\)/g, (_, n: string) =>
+              `${Number((Number(n) * at * 100).toFixed(6))}%`)
             .replace(/calc\(([\d.]+)(px)? \* var\(--depth\)\)/g, (_, n: string, unit = '') => `${Number(n) * at}${unit}`)
-            .replace(/var\((--[\w-]+)\)/g, (_, ref: string) => channelsOf(css.get(ref) ?? paletteChannels(ref)))
+            .replace(/var\((--[\w-]+)\)/g, (_, ref: string) => colorOf(css.get(ref) ?? paletteColor(ref)))
           const layers = shadow(literal, () => { throw new Error(`${name}: unresolved var()`) })
           expect(resolved, name).toEqual(layers.length === 1 ? layers[0] : layers)
           expect(ext(current).cssValue, name).toBe(value)
