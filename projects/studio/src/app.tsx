@@ -571,7 +571,7 @@ const VIEW_SUMMARY: Record<View, string> = {
   surface:
     'The families that generate surfaces, and the balances: the lightness of the surfaces and borders, the targets of the text.',
   themes:
-    'Each family with surfaces is a theme: its name, its accents and the CSS that switches it in.',
+    'Each family with surfaces, status aside, is a theme: its name, its accents and the CSS that switches it in.',
   groups: 'The ratios, formula and export of each group of the configuration.',
   diff: 'The palette against the configuration Magma builds with.',
 };

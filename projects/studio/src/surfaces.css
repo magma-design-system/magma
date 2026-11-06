@@ -57,6 +57,16 @@
   gap: calc(var(--spacing) * 200);
 }
 
+/* the status families, a group of their own under those that become themes: the space between
+   two groups sets them apart, no boundary (docs/agents/patterns/surfaces.md); the card puts the
+   space between two fields above it, the margin adds the rest */
+
+.surfaces-reserved {
+  display: grid;
+  gap: var(--magma-rhythm-title-content);
+  margin-block-start: calc(var(--magma-rhythm-between-groups) - var(--magma-rhythm-between-fields));
+}
+
 /* a family to opt in: the look of mds-chip, with the swatch of its colour (#1263) */
 
 .surfaces-family {

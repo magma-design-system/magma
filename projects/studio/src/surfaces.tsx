@@ -160,14 +160,18 @@ function familyOf(color: ColorConfig): string {
 }
 
 /**
- * Groups that MUST generate surfaces, shown checked and locked. `status` is
- * mandatory because a status component (banner, toast, badge) paints text on its
- * own tinted background, and that pair only has a contrast guarantee when the
- * family carries generated `--text-*` roles (text-role picks the step against the
- * WORST of the family's surfaces). Left optional, a status family would fall back
- * to hand-picked ramp steps in each component - which is what it does today.
+ * Groups RESERVED to the status messages: the group of the `status-*` families the
+ * coloured hues of semantic.config.ts (`hues`) draw from. Their families MUST
+ * generate surfaces, shown checked and locked: a status component (banner, toast,
+ * badge) paints text on its own tinted background, and that pair only has a contrast
+ * guarantee when the family carries generated `--text-*` roles (text-role picks the
+ * step against the WORST of the family's surfaces). Left optional, a status family
+ * would fall back to hand-picked ramp steps in each component - which is what it does
+ * today. And they never become a theme (themes.tsx): a theme repaints the whole
+ * interface, so a page painted in a status colour would mix with the messages that
+ * colour carries. Every other group, one created in the studio included, can be one.
  */
-const REQUIRED_SURFACE_GROUPS = new Set(['status']);
+export const RESERVED_GROUPS = new Set(['status']);
 
 /**
  * Groups that can never be a surface seed. `variant.*` is an alias-only accent
@@ -213,6 +217,10 @@ export function SurfaceManager({
     (color) => !color.disabled && !EXCLUDED_SURFACE_GROUPS.has(groupOf(color)),
   );
   const surfaceGroups = [...new Set(surfaceColors.map(groupOf))];
+  // the reserved families go under the others, in a row of their own that says why
+  // they never become a theme
+  const themeColors = surfaceColors.filter((color) => !RESERVED_GROUPS.has(groupOf(color)));
+  const reservedColors = surfaceColors.filter((color) => RESERVED_GROUPS.has(groupOf(color)));
   // B5: the preview column shows one panel at a time (manual tab switch); surface boxes
   // lead by default, so editing surface levels shows their effect without a tab change
   const [previewTab, setPreviewTab] = useState<PreviewTab>('surface');
@@ -277,6 +285,30 @@ export function SurfaceManager({
     number | { step: number }
   >;
 
+  // a family to opt in, the same in the list of the themes and in the reserved row
+  const familyButton = (color: ColorConfig) => {
+    const group = groupOf(color);
+    const on = resolveSurfaceOptIn(config, color) !== undefined;
+    const inherited = color.surface === undefined && Boolean(config.groups?.[group]?.surface);
+    // until mds-chip has a colour swatch: #1263
+    return (
+      <button
+        type="button"
+        class="surfaces-family"
+        aria-pressed={on ? 'true' : 'false'}
+        data-inherited={inherited ? '' : undefined}
+        title={inherited ? `${color.name} (follows the ${group} group)` : color.name}
+        onClick={() => onToggleSurface(color.name, !on)}
+      >
+        <span class="studio-swatch" style={{ background: color.color }} />
+        <mds-text typography="caption" tag="span">
+          {familyOf(color)}
+        </mds-text>
+        {inherited && <mds-badge variant="dark" label={`via ${group}`}></mds-badge>}
+      </button>
+    );
+  };
+
   return (
     <div class="surfaces" style={{ '--preview-shadow': shadowValue }}>
       <mds-text typography="detail" tag="p" class="surfaces-muted">
@@ -284,7 +316,7 @@ export function SurfaceManager({
         mode and per role. Opt a family in below; the shared ramp is the same for every family (the
         tint comes from each family's key color). The active default tint is chosen in{' '}
         <code>styles</code>, not here. Every family you opt in here also becomes a theme on the
-        Themes page.
+        Themes page, whatever its group, except the status ones.
       </mds-text>
 
       {/* Section 1a: opt-in by GROUP - the coarse switch. A group opts every one of
@@ -301,7 +333,7 @@ export function SurfaceManager({
         </div>
         <div class="surfaces-choices" role="group" aria-label="Surface groups">
           {surfaceGroups.map((group) => {
-            const required = REQUIRED_SURFACE_GROUPS.has(group);
+            const required = RESERVED_GROUPS.has(group);
             return (
               <span
                 class="surfaces-choice"
@@ -336,34 +368,25 @@ export function SurfaceManager({
           </mds-text>
           <mds-text typography="caption" tag="p" class="surfaces-muted">
             Refine the groups above per family: a family with no flag of its own follows its group.
-            The tints you opt in here are also the ones that become themes.
+            Each one you opt in here also becomes a theme.
           </mds-text>
         </div>
         <div class="surfaces-choices" role="group" aria-label="Surface families">
-          {surfaceColors.map((color) => {
-            const group = groupOf(color);
-            const on = resolveSurfaceOptIn(config, color) !== undefined;
-            const inherited =
-              color.surface === undefined && Boolean(config.groups?.[group]?.surface);
-            // until mds-chip has a colour swatch: #1263
-            return (
-              <button
-                type="button"
-                class="surfaces-family"
-                aria-pressed={on ? 'true' : 'false'}
-                data-inherited={inherited ? '' : undefined}
-                title={inherited ? `${color.name} (follows the ${group} group)` : color.name}
-                onClick={() => onToggleSurface(color.name, !on)}
-              >
-                <span class="studio-swatch" style={{ background: color.color }} />
-                <mds-text typography="caption" tag="span">
-                  {familyOf(color)}
-                </mds-text>
-                {inherited && <mds-badge variant="dark" label={`via ${group}`}></mds-badge>}
-              </button>
-            );
-          })}
+          {themeColors.map(familyButton)}
         </div>
+        {reservedColors.length > 0 && (
+          <div class="surfaces-reserved">
+            <mds-text typography="caption" tag="p" class="surfaces-muted">
+              <strong>Status, never a theme.</strong> These families generate surfaces so that
+              banners, toasts and badges get a text role legible on their own tint; a theme drawn
+              from one would paint the whole interface in a status colour, and the page would mix
+              with the messages that colour carries.
+            </mds-text>
+            <div class="surfaces-choices" role="group" aria-label="Status families">
+              {reservedColors.map(familyButton)}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* B4: lightness levels (left) sit beside the preview (right); the families

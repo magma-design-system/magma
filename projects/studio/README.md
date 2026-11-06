@@ -42,7 +42,11 @@ preferences have a panel; the panels of the other axes come with #696, the scene
 The **Themes** page shows each theme on the canvas of Semantic surface (`SurfaceCanvas`), the light
 mode over the dark one, each with the accents of the theme, and names each theme apart from the
 family it is drawn from: `editorial` is drawn
-from `bisque`. The names of the themes Magma ships (`semantic.config.ts`, `themes`) are reserved,
+from `bisque`. A theme can be drawn from a family of any group, one created in the studio
+included, except `status` (`RESERVED_GROUPS` of `src/surfaces.tsx`): its families always generate
+surfaces, so that banners, toasts and badges get a text role legible on their own tint, but a theme
+in a status colour would mix with the messages that colour carries; Semantic surface lists them in
+a row of their own, under the others, and says so. The names of the themes Magma ships (`semantic.config.ts`, `themes`) are reserved,
 the deprecated ones included, so a theme of a product never takes one, and a name is lowercase
 words joined by hyphens (`THEME_NAME` of `semantic.model.ts`). Under its accents a theme says the
 colour modes it can be used in, the `color.modes` of a theme file (#1274): light and dark, the
@@ -158,7 +162,7 @@ generator in the browser, so every preview matches the build output exactly. Col
 pages: **Palette** (the two-column editor: color list on the left, editing and live light/dark
 scale previews with achieved contrast on the right; `neutral` is selected by default when
 present), **Contrast scales**, **Semantic surface** (opt families into the surface engine, tune
-the surface/border/text levels), **Themes** (each opted family as a named theme, with its accent
+the surface/border/text levels), **Themes** (each opted family, status aside, as a named theme, with its accent
 assignment, its colour modes and contrast checks), **Groups** and **Diffs**. Selecting a color from the sidebar while in contrast scales
 keeps you there, since the scale samples follow the selected color.
 

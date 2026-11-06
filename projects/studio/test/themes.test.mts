@@ -40,6 +40,23 @@ test('the themes view renders a card per theme, the base first, each named apart
   expect(editorial?.querySelector('.themes-attr')?.textContent).toBe("data-theme-name='editorial'")
 })
 
+test('a theme is drawn from a family of any group, one created in the studio too, never from status', () => {
+  const config = JSON.parse(JSON.stringify(initialConfig)) as MagmaConfig
+  const blue = config.colors.find((color) => color.name === 'label.blue')!
+  blue.surface = true
+  config.colors.push({ ...blue, name: 'product.ocean' })
+  render(h(ThemesManager, { config }), root)
+
+  const families = cardsOf().map((card) => card.querySelector('.themes-family')?.textContent ?? '')
+  expect(families.some((family) => family.includes('blue'))).toBe(true)
+  expect(families.some((family) => family.includes('ocean'))).toBe(true)
+  // status carries surfaces (its group is on in the configuration), yet it is no theme
+  expect(config.groups?.status?.surface).toBe(true)
+  for (const status of ['info', 'success', 'error', 'warning']) {
+    expect(families.some((family) => family.includes(status))).toBe(false)
+  }
+})
+
 test('the export repoints the tint ramp for every non-base theme', () => {
   show()
 

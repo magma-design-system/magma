@@ -17,13 +17,14 @@ import {
   COLOR_MODES,
   type ColorMode,
 } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
-import { SurfaceCanvas } from './surfaces.js';
+import { RESERVED_GROUPS, SurfaceCanvas } from './surfaces.js';
 import { Field, Select, TextInput, type Option } from './magma.js';
 import './themes.css';
 
 /**
  * Themes - a DERIVED section under surfaces (epic #328, spec 8). It reads the
- * families opted into a surface above: each one IS a theme. The default
+ * families opted into a surface above: each one IS a theme, whatever its group,
+ * except the status ones (RESERVED_GROUPS, surfaces.tsx). The default
  * (`semantic.tint`) is the base `:root`; every other opted family switches in
  * via `data-theme-name`, repointing the whole `--magma-tint-*` block (surface +
  * border + text) to that family. Text comes from the family's own scale (A7),
@@ -152,18 +153,17 @@ export function ThemesManager({ config }: ThemesManagerProps) {
   }, [JSON.stringify(config)]);
 
   // Every family opted into a surface above (text follows per A7); default first.
-  // THEMEABLE families only: a theme repoints the whole neutral scaffolding, so it
-  // only makes sense for a TINT. Since groups can opt in wholesale, non-tint
-  // families now carry surfaces too (status does, so its components get a text
-  // role guaranteed legible on their own tint) - and those must not show up here
-  // as selectable themes, or you could set the whole UI to "success".
-  const themeableFamilies = new Set(
+  // Any group can be a theme, one created in the studio included, EXCEPT the reserved
+  // ones (RESERVED_GROUPS, surfaces.tsx): status carries surfaces so its components
+  // get a text role legible on their own tint, but a theme drawn from it would paint
+  // the whole UI "success" and mix with the messages that colour carries.
+  const reservedFamilies = new Set(
     config.colors
-      .filter((color) => !color.disabled && color.name.split('.')[0] === 'tone')
+      .filter((color) => RESERVED_GROUPS.has(color.name.split('.')[0]))
       .map((color) => color.name.split('.')[1]),
   );
   const opted = Object.keys(surfaces).filter(
-    (family) => texts[family] && themeableFamilies.has(family),
+    (family) => texts[family] && !reservedFamilies.has(family),
   );
   const extras = opted.filter((family) => family !== semantic.tint);
   const previewFamilies = [...(opted.includes(semantic.tint) ? [semantic.tint] : []), ...extras];
@@ -255,7 +255,8 @@ export function ThemesManager({ config }: ThemesManagerProps) {
   return (
     <div class="themes">
       <mds-text typography="detail" tag="p" class="themes-muted">
-        Each family opted into a surface (Semantic surface) is a theme with a name of its own:{' '}
+        Each family opted into a surface (Semantic surface), whatever its group, is a theme with a
+        name of its own, except the status ones, which would mix with the messages they colour:{' '}
         <code>{nameOf(semantic.tint)}</code>, drawn from <code>{semantic.tint}</code>, is the base{' '}
         <code>:root</code>, and every other one switches in via <code>data-theme-name</code>,
         repointing the whole <code>--magma-tint-*</code> block (surface + border + text) to its
