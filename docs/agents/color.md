@@ -104,6 +104,7 @@ weight every other action takes is the domain [`actions`](patterns/actions.md).
 | `--magma-accent-on-emphasis` | `text-accent-on-emphasis` | text and icons on the fill |
 | `--magma-accent-surface` | `bg-accent-surface` | tinted background: a selected row or chip |
 | `--magma-accent-surface-subtle` / `-surface-hover` | `bg-accent-surface-*` | the tinted background, lighter / hovered |
+| `--magma-accent-surface-selected` | `bg-accent-surface-selected` | the tinted background of the action of the view you are in (`mds-button current`): lighter than its hover. A status hue says it with `-wash-soft`; the solid fill has no selected step yet (#918) |
 | `--magma-accent-fg` | `text-accent-fg` | accent text or icon on a neutral surface (a link) |
 | `--magma-accent-border` | `border-accent-border` | tinted border |
 
