@@ -11,7 +11,9 @@ import {
 } from '@stencil/core';
 import miBaselineKeyboardArrowDown from '@icon/mi/baseline/keyboard-arrow-down.svg';
 import { requestSubmitAs } from '@common/form';
+import { currentOf } from '@common/aria';
 import {
+  ButtonCurrentType,
   ButtonSizeType,
   ButtonTargetType,
   ButtonType,
@@ -65,9 +67,23 @@ export class MdsButtonDropdown {
   @Prop() readonly autoFocus: boolean;
 
   /**
-   * The icon displayed in the button
+   * The icon displayed in the button; `iconCurrent` and `iconHover` take its place in their
+   * states
    */
   @Prop({ reflect: true, mutable: true }) icon?: string;
+
+  /**
+   * The icon of the primary action when it is current, in place of `icon`, as `iconCurrent` does
+   * on `mds-button`: under the pointer too, unless `iconHover` says otherwise. Without `icon` it
+   * shows nothing
+   */
+  @Prop() readonly iconCurrent?: string;
+
+  /**
+   * The icon of the primary action under the pointer, in place of `icon`, and `iconCurrent` when
+   * it is not set, as `iconHover` does on `mds-button`. Without `icon` it shows nothing
+   */
+  @Prop() readonly iconHover?: string;
 
   /**
    * The type of the primary action: with `'submit'` or `'reset'` it submits or resets the form
@@ -128,6 +144,15 @@ export class MdsButtonDropdown {
   @Prop() readonly target: ButtonTargetType = 'self';
 
   /**
+   * Marks the primary action as the one that leads to the view you are in, as `current` does on
+   * `mds-button`: `current` (or `current="page"`) is that view, and the primary action neither
+   * navigates nor submits nor emits `mdsButtonDropdownClick`; `current="section"` is a view inside
+   * it, and the primary action stays a link back. Both halves take the look; only the primary
+   * action is announced with `aria-current`, the chevron keeps opening the menu
+   */
+  @Prop({ reflect: true }) readonly current?: ButtonCurrentType;
+
+  /**
    * Specifies if the text shoud be truncated or should behave as a normal text
    */
   @Prop({ reflect: true }) readonly truncate?: TypographyTruncateType = 'word';
@@ -154,7 +179,8 @@ export class MdsButtonDropdown {
   }
 
   private primaryActionClick = (): void => {
-    if (this.isDisabled() || this.await) return;
+    // the primary action of the view you are in takes no pointer: this is the click of a script
+    if (this.isDisabled() || this.await || currentOf(this.current) === 'page') return;
     this.clickEvent.emit();
 
     const { form } = this.internals;
@@ -175,9 +201,12 @@ export class MdsButtonDropdown {
           active={this.active}
           class="dropdown-primary-action"
           await={this.await}
+          current={this.current}
           disabled={this.isDisabled()}
           href={this.href}
           icon={this.icon}
+          iconCurrent={this.iconCurrent}
+          iconHover={this.iconHover}
           onClick={this.primaryActionClick}
           size={this.size}
           target={this.target}
@@ -186,11 +215,15 @@ export class MdsButtonDropdown {
           variant={this.variant}
           label={this.label}
         ></mds-button>
-        {/* the chevron only opens the menu: the link is the primary action's (#798) */}
+        {/* the chevron only opens the menu: the link is the primary action's (#798). It takes the
+            look of the current button, as a section, which keeps it working, and no aria-current:
+            the place you are in is the primary action's (#1264) */}
         <mds-button
           active={this.active}
+          aria-current={currentOf(this.current) ? 'false' : undefined}
           aria-label={this.t.get('moreActions')}
           await={this.await}
+          current={currentOf(this.current) ? 'section' : undefined}
           class="dropdown-action"
           disabled={this.isDisabled()}
           icon={miBaselineKeyboardArrowDown}

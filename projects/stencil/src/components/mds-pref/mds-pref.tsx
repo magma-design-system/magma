@@ -5,8 +5,6 @@ import localeEn from './meta/locale.en.json';
 import localeEs from './meta/locale.es.json';
 import localeIt from './meta/locale.it.json';
 import { TabSizeType } from '@type/button';
-import { PreferenceThemeSchemeType } from '@type/preference';
-import { MdsPrefThemeEventDetail } from '@event/theme';
 import { MdsPrefChangeEventDetail } from '@event/preference';
 
 // The mounted instances: `data-magma-pref` stays on <html> while any of them is, so
@@ -104,7 +102,6 @@ export class MdsPref {
 
   componentDidLoad(): void {
     this.loaded = true;
-    this.applyInitialSchemeLock();
   }
 
   disconnectedCallback(): void {
@@ -126,29 +123,6 @@ export class MdsPref {
       this.showReload = true;
     }
   }
-
-  // The lock coordination drives the visible-mode UI (the controller mode is hidden
-  // via CSS), so it does not depend on the controller prop.
-  @Listen('mdsPrefThemeChange')
-  handleThemeChange(e: CustomEvent<MdsPrefThemeEventDetail>): void {
-    this.applySchemeLock(e.detail?.scheme);
-  }
-
-  /**
-   * Cross-lane coordination: a scheme-constrained theme locks the matching mode
-   * item in `mds-pref-mode`. This is a UI concern only - it never writes the
-   * stored mode preference, which the theme's `scheme` overrides at render time.
-   */
-  private applySchemeLock = (scheme?: PreferenceThemeSchemeType): void => {
-    const modeEl = this.host.querySelector('mds-pref-mode') as HTMLMdsPrefModeElement | null;
-    if (!modeEl) return;
-    modeEl.lockedScheme = scheme === 'light' || scheme === 'dark' ? scheme : undefined;
-  };
-
-  private applyInitialSchemeLock = (): void => {
-    const themeEl = this.host.querySelector('mds-pref-theme') as HTMLMdsPrefThemeElement | null;
-    this.applySchemeLock(themeEl?.scheme);
-  };
 
   render() {
     return (

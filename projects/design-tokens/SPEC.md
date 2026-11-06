@@ -133,7 +133,7 @@ overrides levels for one family. One opted-in family yields `--surface-<family>-
 (3 roles: muted, default, strong), each flipping per mode like the tones. They
 ship in the `theme` export group (`colors-rgb-theme.css`) and in the aggregate
 `colors-rgb.css`. The values above are the repo config (`.magma-design-tokensrc.json`),
-tuned in the playground; the measured ladder is in `SEMANTIC_COLOR_SPEC.md` section 10.
+tuned in the studio (`projects/studio`); the measured ladder is in `SEMANTIC_COLOR_SPEC.md` section 10.
 
 ## Text-role engine (by-target / A7, issue #591)
 
@@ -201,6 +201,62 @@ printed but never gate. The same check runs in the vitest suite
 (`test/contrast-gate.test.mts`), so CI enforces it through `npm test`. The A9
 contract (`semantic.config.ts`) lives in this package; the styles workflow
 watches it via `extra-path` so its generated layer stays in sync.
+
+## Themes: the public format (#694)
+
+A theme is data. The themes Magma ships are files, `themes/<name>.json`, in the format a
+product keeps in its own `magma/themes/<name>.json`: what Magma asks of the products, it uses
+first. `semantic.config.ts` reads them and turns each into the `ThemeDef` the model expands, so
+`themes.css`, the contrast gate and the DTCG theme sets come from the files through the same
+engine as every other block of the layer.
+
+```json
+{
+  "format": 1,
+  "name": "editorial",
+  "description": "For the publishing side: the warm bisque family and the accent of the Maggioli Editore brand.",
+  "color": { "tint": "bisque", "accents": { "accent": "variant-secondary" } }
+}
+```
+
+A theme made for one colour mode says so: `"color": { "tint": "bisque", "modes": ["light"] }`.
+
+| Field | What it is |
+| --- | --- |
+| `format` | the version of the shape, `1`: a reader refuses a format it does not know instead of guessing |
+| `name` | lowercase kebab-case, the names `mds-pref-theme` accepts; a file is named after it |
+| `description` | what the theme is for, in one line |
+| `color.tint` | the family the neutral scaffolding takes: `--surface-<tint>-*`, `--border-<tint>-*`, `--text-<tint>-*` and the ramp `--tone-<tint>-*` |
+| `color.accents` | accent role -> the family it takes (`variant-secondary`); a role left out keeps the accent of the base, a role the layer does not have (`accents` of `semantic.config.ts`) is refused |
+| `color.modes` | the colour modes the theme can be used in, `light` and/or `dark` (the values of `color-scheme`); left out, both. A theme of one mode is applied in it whatever the person picked (#1274) |
+
+- **Intent, not output.** A theme names families and roles, never the generated colours: the
+  CSS is generated from it, so a theme has one dialect, whoever holds it.
+- **`business` is the base.** `:root` takes its tint and its accents, so it emits no rule and a
+  page with no `data-theme-name` is `business`. Every other theme keeps from it what it does
+  not set.
+- **What a field may do to format 1.** A field joins format 1 when it is optional and leaving
+  it out means what a file without it meant before: every file of the format then reads the
+  same to an old reader and a new one. `color.modes` is such a field (left out, both modes,
+  as before). A reader older than the field refuses a file that sets it, because `color`
+  takes no field it does not name, so the theme is never read without its lock. A field that
+  changes what an existing one means, or that a theme cannot leave out, is format 2. Format 1
+  had not shipped when `modes` joined it (#1251, #1274).
+- **The mode is declared, not forced, by the CSS.** A theme of one mode prints
+  `--magma-color-modes: <mode>` first in its `:root[data-theme-name]` block (`namedThemeCss`,
+  `COLOR_MODES_PROPERTY` of `semantic.model.ts`); `mds-pref-theme` reads it and writes the
+  `pref-theme-scheme-<mode>` class the palette obeys. Why the class and not the theme's name
+  in the dark selectors: `projects/styles/SEMANTIC_COLOR_SPEC.md`, section 8.
+- **One schema.** `THEME_SCHEMA` in `src/lib/theme-manifest.mts`, published as
+  `dist/config/magma-theme.schema.json`. `readTheme` validates a theme (and its accent roles
+  against the layer) and `themeDefOf` turns it into a `ThemeDef`. A file that does not validate
+  stops every build that reads the layer.
+- **The deprecated themes** (`default`, `cool`, `warm`) stay entries of `semantic.config.ts`
+  until the next major: a deprecated theme is no starting point, so it gets no file.
+- **Not in the format yet** (#694): the balances (the shared `theme` block of the rc), a family
+  of the theme's own (the standalone mode), the theme in a link and the `locked` flag.
+- **The keeper:** `test/theme-manifest.test.mts` holds every file of `themes/` to the schema, to
+  its file name and to the config, so a file the config does not import fails it.
 
 ## Typography tokens
 
@@ -317,7 +373,8 @@ Colors can also declare an optional `hueShift` field (`{ "dark": -18, "light": 1
 | `dist/flutter/colors-*.dart` | the same colors split by group, under the same two class names | one of them instead of `colors.dart` |
 | `dist/flutter/fonts.dart` | Flutter `TextStyle`s; does not compile (`fontSize: 48px`, the fallback fonts unquoted) | none |
 | `dist/gimp/colors.gpl` | GIMP palette | GIMP, Inkscape (light) |
-| `dist/config/magma-design-tokensrc.schema.json` | JSON Schema | editors, the CLI `ui` command |
+| `dist/config/magma-design-tokensrc.schema.json` | JSON Schema | editors, the studio |
+| `dist/config/magma-theme.schema.json` | JSON Schema of a theme (#694) | the `magma/themes/<name>.json` of a product |
 
 ## Anti-patterns
 

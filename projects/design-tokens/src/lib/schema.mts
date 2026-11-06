@@ -1,7 +1,9 @@
 import { Ajv, type ErrorObject } from 'ajv'
+import { HUE_SHIFT_EASINGS } from './hue-shift.mjs'
 
-// Interpolation colorspaces Leonardo accepts (kept in sync with the playground)
-const COLORSPACES = [
+// Interpolation colorspaces Leonardo accepts: the schema enum, and the choices
+// the studio (projects/studio) offers
+export const COLORSPACES = [
   'HSL', 'OKLCH', 'LCH', 'LAB', 'OKLAB', 'CAM02', 'CAM02p', 'HSLuv', 'RGB', 'HSV',
 ]
 
@@ -100,7 +102,7 @@ const hueShift = {
           additionalProperties: false,
           properties: {
             deadZone: { type: 'number' },
-            easing: { enum: ['linear', 'step'] },
+            easing: { enum: HUE_SHIFT_EASINGS },
           },
         },
       ],
@@ -109,8 +111,8 @@ const hueShift = {
 }
 
 // The JSON Schema for `.magma-design-tokensrc.json`. Single source of truth for
-// hand-editing (editor autocomplete via `$schema`), the `ui` server and the
-// playground validation.
+// hand-editing (editor autocomplete via `$schema`) and the validation of the
+// studio (projects/studio).
 export const CONFIG_SCHEMA = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   $id: 'https://magma-design-system.github.io/magma-design-tokensrc.schema.json',
@@ -212,14 +214,15 @@ export interface ValidationResult {
 const ajv = new Ajv({ allErrors: true })
 const validate = ajv.compile(CONFIG_SCHEMA)
 
-function formatError (error: ErrorObject): string {
+/** One Ajv error as a line: where it is in the document, and what is wrong there. */
+export function formatError (error: ErrorObject): string {
   const path = error.instancePath || '(root)'
   return `${path} ${error.message ?? 'is invalid'}`
 }
 
 /**
- * Validate a design-tokens configuration against CONFIG_SCHEMA. Shared by the
- * CLI `ui` server and the playground so both reject the same inputs.
+ * Validate a design-tokens configuration against CONFIG_SCHEMA: the studio
+ * refuses a configuration that does not match it.
  */
 export function validateConfig (config: unknown): ValidationResult {
   const valid = validate(config) as boolean

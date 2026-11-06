@@ -22,7 +22,7 @@ The `<mds-pref-theme-item>` web component is a single selectable theme entry ins
 #### Properties & Visual Configurations
 
 - **`name`**: The theme identifier reported to the parent and matched against the parent's active `name` to compute initial selection. Use a simple or kebab-case string; the named themes are `business`, the base theme, and `editorial` ([`docs/agents/theming.md`](../../../../../../docs/agents/theming.md)). `default`, `cool` and `warm` still work and are deprecated: they leave at the next major. The parent validates the lowercase/kebab format and ignores an invalid name with a console warning.
-- **`scheme`**: Declares which color schemes the theme supports - `all` (default, both light and dark), or `light` / `dark` to force a single mode. This value travels with the selection event and is applied by the parent when the item is chosen.
+- **`scheme`**: Declares which color schemes the theme supports - `all` (default, both light and dark), or `light` / `dark` to force a single mode. This value travels with the selection event and is applied by the parent when the item is chosen, unless the theme declares its own mode in its stylesheet (`color.modes` of its file), which wins.
 - **`selected`**: Reflects whether this item is the active theme. The parent sets it on every item when it loads and on each pick, so a value set by hand is overwritten.
 
 
@@ -238,8 +238,8 @@ mds-pref-theme-item[name="editorial"] {
 ```mermaid
 graph TD;
   mds-pref-theme-item --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-pref-theme-item fill:#f9f,stroke:#333,stroke-width:4px
 ```

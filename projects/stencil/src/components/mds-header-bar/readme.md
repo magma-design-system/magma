@@ -363,8 +363,8 @@ Type: `Promise<void>`
 ```mermaid
 graph TD;
   mds-header-bar --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-header-bar fill:#f9f,stroke:#333,stroke-width:4px
 ```

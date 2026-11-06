@@ -334,8 +334,8 @@ Slotted items without a declared width collapse to zero or stretch unpredictably
 ```mermaid
 graph TD;
   mds-horizontal-scroll --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-horizontal-scroll fill:#f9f,stroke:#333,stroke-width:4px
 ```

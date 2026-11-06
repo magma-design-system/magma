@@ -15,13 +15,14 @@
  * helpers in projects/design-tokens/src/lib/contrast-gate.ts; do not restore
  * without measuring again. */
 
-:host([pref-mode='dark']:not([pref-theme-scheme='light'])) {
+:host([pref-mode='dark']:not([pref-theme-scheme='light'])),
+:host([pref-theme-scheme='dark']) {
   box-shadow: var(--shadow-ring);
 }
 
 @media (prefers-color-scheme: dark) {
   :host([pref-mode='system']:not([pref-theme-scheme='light'])),
-  :host(:not([pref-mode])) {
+  :host(:not([pref-mode]):not([pref-theme-scheme='light'])) {
     box-shadow: var(--shadow-ring);
   }
 }

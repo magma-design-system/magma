@@ -20,6 +20,7 @@ The `<mds-pref-mode>` web component is the mode preference control of the Magma 
 - **`mdsPrefChange` event**: Emits `mdsPrefChange` with `{ preference: 'mode' }` once per change, after the new mode is applied; a pick of the mode already active and the first application on load do not emit it. It bubbles up to `<mds-pref>`; a mode change needs no reload, so it raises no reload notice.
 - **Instances stay in sync**: Instances mounted together (a hidden `<mds-pref controller>` and a visible settings panel) share the applied mode: a pick in one is mirrored by the others, which neither apply it again nor emit `mdsPrefChange`. A `pref-mode-*` class written on `<html>` by other code is mirrored the same way.
 - **System mode**: The `system` choice follows the OS `prefers-color-scheme` media query to resolve the effective light/dark scheme.
+- **Theme lock**: Under a theme that can be used in one mode only (`pref-theme-scheme-light` or `-dark` on `<html>`, written by `mds-pref-theme` from the mode the theme declares), the control shows that mode selected and disables the other two items: the page is in that mode whatever was picked. The stored choice is left alone and comes back with a theme of both modes.
 
 #### Properties & Visual Configurations
 
@@ -121,7 +122,7 @@ Common incorrect uses of `<mds-pref-mode>`. Each entry pairs the wrong form with
 
 #### Do Not Use `<mds-pref-mode>` Outside `<mds-pref>`
 
-`<mds-pref-mode>` is a compound child: `<mds-pref>` forwards `size` changes to it and locks the mode item that a scheme-constrained `<mds-pref-theme>` forbids (it sets `lockedScheme`). As a standalone widget it still applies and persists the mode, but nothing coordinates it with the theme.
+`<mds-pref-mode>` is a compound child: `<mds-pref>` forwards `size` changes to it. As a standalone widget it still applies and persists the mode, and it still follows a theme of one mode, which it reads from `<html>`; only the forwarding of `size` is lost.
 
 ```html
 <!-- INCORRECT -->
@@ -216,12 +217,12 @@ mds-pref-mode {
 
 ## Properties
 
-| Property       | Attribute       | Description                                                                                                                                                                                                                                                                                                                                                     | Type                                         | Default     |
-| -------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ----------- |
-| `lockedScheme` | `locked-scheme` | Locks the mode items forbidden by a scheme-constrained theme, without touching the stored preference: `light` disables the explicit `dark` item, `dark` disables the explicit `light` item, `all` (or unset) locks nothing; the `system` item is never locked. Set by the `mds-pref` controller from the active theme's `scheme`; not meant to be set directly. | `"all" \| "dark" \| "light" \| undefined`    | `undefined` |
-| `mode`         | `mode`          | Specifies the preference mode                                                                                                                                                                                                                                                                                                                                   | `"dark" \| "light" \| "system" \| undefined` | `undefined` |
-| `size`         | `size`          | Sets the size of the component items nested inside it                                                                                                                                                                                                                                                                                                           | `"md" \| "sm" \| undefined`                  | `undefined` |
-| `transition`   | `transition`    | Specifies the transition of switching from a mode to another one                                                                                                                                                                                                                                                                                                | `"flash" \| "none" \| "smooth"`              | `'smooth'`  |
+| Property       | Attribute       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Type                                         | Default     |
+| -------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ----------- |
+| `lockedScheme` | `locked-scheme` | Locks the mode choice to one mode, `light` or `dark`: the control shows that mode selected and disables the other two items, without touching the stored preference, which comes back when the lock goes. `all` locks nothing. Unset, the control follows the active theme: a theme that can be used in one mode only (`pref-theme-scheme-light` or `-dark` on `<html>`, written by `mds-pref-theme` from the mode the theme declares, #1274) locks it the same way. Not meant to be set directly. | `"all" \| "dark" \| "light" \| undefined`    | `undefined` |
+| `mode`         | `mode`          | Specifies the preference mode                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `"dark" \| "light" \| "system" \| undefined` | `undefined` |
+| `size`         | `size`          | Sets the size of the component items nested inside it                                                                                                                                                                                                                                                                                                                                                                                                                                              | `"md" \| "sm" \| undefined`                  | `undefined` |
+| `transition`   | `transition`    | Specifies the transition of switching from a mode to another one                                                                                                                                                                                                                                                                                                                                                                                                                                   | `"flash" \| "none" \| "smooth"`              | `'smooth'`  |
 
 
 ## Events
@@ -255,8 +256,8 @@ graph TD;
   mds-pref-mode --> mds-tab
   mds-pref-mode --> mds-tab-item
   mds-tab-item --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-pref-mode fill:#f9f,stroke:#333,stroke-width:4px
 ```

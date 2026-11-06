@@ -5,6 +5,7 @@ import { DIST_DIR, CSS_TOKENS_DIR, TOKENS_DIR } from './meta';
 import { copy } from 'fs-extra';
 import { logDirectoryCopied } from '../../../scripts/log';
 import { CONFIG_SCHEMA } from '../src/lib/schema.mjs';
+import { THEME_SCHEMA } from '../src/lib/theme-manifest.mjs';
 
 const copyDir = async (src: string, dest: string) => {
   await copy(src, path.join(dest, path.basename(src)))
@@ -55,4 +56,9 @@ fs.mkdirSync(schemaDir, { recursive: true });
 fs.writeFileSync(
   path.join(schemaDir, 'magma-design-tokensrc.schema.json'),
   JSON.stringify(CONFIG_SCHEMA, null, 2) + '\n',
+);
+// and the schema of a theme (#694), for the `magma/themes/<name>.json` of a product
+fs.writeFileSync(
+  path.join(schemaDir, 'magma-theme.schema.json'),
+  JSON.stringify(THEME_SCHEMA, null, 2) + '\n',
 );

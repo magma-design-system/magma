@@ -76,7 +76,7 @@ keep in step.
   "Token data (DTCG)", with the list of the values the JSON and the CSS write differently;
   [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md) for the levels and the
   naming.
-- **Read by**: the token tools of the MCP server (`projects/lint/src/mcp/tokens.ts`: the value
+- **Read by**: the token tools of the MCP server (`projects/mcp/src/tokens.ts`: the value
   is `cssValue`, else the DTCG value by its type), the lint core (the raw palette steps; the
   custom properties a domain of the design language names as carriers, `css` of the tokens that
   are not internal and of the `cssOnly` entries), the DTCG globals of styles (their aliases), the
@@ -98,6 +98,26 @@ keep in step.
   colour utility paints), the docs site.
 - **Held by**: the lint tests hold `USE_OF_UTILITY` to the roots of the `--color` namespace, in
   the fixtures and in the built map.
+
+## The mode of a theme
+
+- **What**: `--magma-color-modes`, the one colour mode (`light` or `dark`) a theme can be used
+  in, declared first in its `:root[data-theme-name]` block of `themes.css` and of the studio
+  export; a theme of both modes declares nothing.
+- **Produced by**: design-tokens, `namedThemeCss` and `COLOR_MODES_PROPERTY` of
+  `semantic.model.ts`, from `color.modes` of the theme file; the styles build prints
+  `themes.css` with it.
+- **Contract**: [`projects/styles/SEMANTIC_COLOR_SPEC.md`](../projects/styles/SEMANTIC_COLOR_SPEC.md),
+  section 8 ("A theme can lock the mode"); the field in
+  [`projects/design-tokens/SPEC.md`](../projects/design-tokens/SPEC.md), "Themes: the public
+  format".
+- **Read by**: `mds-pref-theme` (`COLOR_MODES_PROPERTY` and `lockedSchemeOf` of
+  `projects/stencil/src/common/preference.ts`), which writes `pref-theme-scheme-<mode>` from it.
+- **Held by**: `test/theme-manifest.test.mts` of design-tokens (the block of a single-mode
+  theme, the shipped themes declare nothing); `src/common/test/preference-modes.spec.ts` of
+  stencil (the name the producer exports, the values read); the `mds-pref-theme` e2e;
+  `test/themes.test.mts` of the studio (the export of a theme of one mode, the base one under its
+  name, each choice of the modes a value of `color.modes`).
 
 ## Icon slugs
 
@@ -173,19 +193,21 @@ keep in step.
   `.claude/skills/`); `projects/stencil/scripts/sync-agent-docs.ts` copies them into the entry
   packages and writes the catalogue; `projects/stencil/scripts/preview-images.ts`, the last step
   of the build of magma, renders the images of the previews (`renderPreviewImages` of
-  `projects/lint/src/mcp/render.ts`, the frame `PREVIEW_IMAGE` of the core).
+  `projects/mcp/src/render.ts`, the frame `PREVIEW_IMAGE` of the core).
 - **Contract**: [`docs/PATTERNS.md`](PATTERNS.md), "The format", "A domain of the design
   language", "The preview of a case" and "Product layers"; the reader side in
   `projects/lint/src/core/patterns.ts` and
-  [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes from".
+  [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes from" (what
+  `get_pattern` answers of them: [`projects/mcp/README.md`](../projects/mcp/README.md), the same
+  section).
 - **Read by**: `get_pattern` and `render_preview` (the previews of a case and of a rule of a
   domain, by example) of the MCP server, `get_guide` (each domain as a guide, with its previews) and `get_component` (the rules of the domains that govern
   a component), the `ui`, `review` and `pattern-layer` skills of the Claude Code plugin, `pr-risk`
   (`patternChanges` of `projects/stencil/scripts/pr-risk-lib.ts`), the agents of the products,
   the docs site (the previews: magma-design-system/docs#89; the images, in the cards of the
   galleries: magma-design-system/docs#101), `get_pattern` again (the paths of the images, in
-  `images` on the preview of an answer), `lint:serve.previews` (the previews, live,
-  `projects/lint/scripts/serve-previews.ts`).
+  `images` on the preview of an answer), `mcp:serve.previews` (the previews, live,
+  `projects/mcp/scripts/serve-previews.ts`).
 - **Held by**: `check.patterns` (the format, every combination in one case, the components,
   attributes, lint rules and links named, the rules of the domains a case names, the carriers
   of a domain in the release and the planned ones not yet, the generated sections; a product's folder with
@@ -196,7 +218,7 @@ keep in step.
   and no image of no preview);
   the build of magma itself, which fails on an image with a problem;
   `check.usage-docs` on their bodies; `test/patterns.test.ts` of `projects/lint` on the files
-  of the repository, and `test/mcp-tools.test.ts`, which renders every preview on the build and
+  of the repository, and `test/mcp-tools.test.ts` of `projects/mcp`, which renders every preview on the build and
   fails on a problem of the image, and renders two into their images; `pr-risk` sets the review
   level to contract on a change to what a pattern promises.
 
@@ -217,15 +239,18 @@ keep in step.
 ## What the lint and the MCP server say about themselves
 
 - **What**: the description and the URL of each rule (`meta.docs` of an ESLint rule, `meta` of a
-  Stylelint one), and the tools of the server as data, `dist/lint/mcp/tools.json`, the answer of
-  `tools/list`.
-- **Produced by**: `projects/lint`; `projects/stencil/scripts/build-lint.ts` writes `tools.json`
-  from the compiled server.
-- **Contract**: [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes
-  from".
+  Stylelint one), and the tools of the server as data, `dist/mcp/tools.json`, the answer of
+  `tools/list`. The same file is also at `dist/lint/mcp/tools.json`, where the docs site has read
+  it since #1127, until the site reads the new path (#1244): the site first, then this path goes.
+- **Produced by**: `projects/lint` (the rules) and `projects/mcp` (the tools);
+  `projects/stencil/scripts/build-lint.ts` writes `tools.json` from the compiled server.
+- **Contract**: [`projects/lint/README.md`](../projects/lint/README.md) and
+  [`projects/mcp/README.md`](../projects/mcp/README.md), "Where each answer comes from".
 - **Read by**: the docs site, the reports of ESLint and Stylelint, the MCP clients.
 - **Held by**: the lint tests (every rule has a description, the URL of the installed release
-  and a heading of `docs/agents/lint.md`; `toolsList` equals the `tools/list` answer).
+  and a heading of `docs/agents/lint.md`); the tests of mcp (`toolsList` equals the
+  `tools/list` answer; on the build, both files equal `toolsList` and the compiled server
+  answers them).
 
 ## Commit scopes and releases
 
@@ -252,15 +277,18 @@ keep in step.
   `themes.css`).
 - **Contract**: [`docs/agents/assets.md`](agents/assets.md), "Import order (mandatory)", "Tell
   mds-icon where the icons are" and "Tailwind (optional)";
-  [`projects/lint/README.md`](../projects/lint/README.md), "Where each answer comes from" (what
+  [`projects/mcp/README.md`](../projects/mcp/README.md), "Where each answer comes from" (what
   a render loads, and when it is ready).
-- **Read by**: the MCP `render_preview` (`projects/lint/src/mcp/render.ts`, `render-page.ts`);
-  `lint:serve.previews` (`projects/lint/scripts/serve-previews.ts`), on the same page.
+- **Read by**: the MCP `render_preview` (`projects/mcp/src/render.ts`, `render-page.ts`);
+  `mcp:serve.previews` (`projects/mcp/scripts/serve-previews.ts`), on the same page; the pages
+  of the studio (`projects/studio/vendor.ts`), through `stylesheetImports`, `loaderOf` and
+  `fileOf` of the render, with paths relative to the page.
 - **Held by**: the `render_preview` tests: `STYLESHEETS` and `TAILWIND` equal the blocks of the
   guide, the Magma utilities compile on the classes of the markup, the widths
   and the themes come from the installed styles, and `mds-button` renders hydrated and
   representative on the build of this repository (the `consumer-lint` job, on the build
-  artifact).
+  artifact); `projects/studio/test/vendor.test.mts` (the imports of a page of the studio in the
+  order and the layers of the list, the files served from the installed packages).
 
 ## The sources of the wrappers
 
@@ -278,11 +306,11 @@ of one of them changes what it decides, the code and the line that cites it chan
 
 | Source | Decides | Cited in |
 | --- | --- | --- |
-| The iconsauce plugins (`@iconsauce/material-icons` and the others) | the slug grammar and the Material variants | `projects/lint/src/mcp/icons.ts`, `docs/agents/assets.md` |
-| DTCG Format Module 2025.10 | the types and composite types of the token data, and their CSS | `projects/lint/src/mcp/tokens.ts`, the design-tokens README |
-| ESLint 9 (`FLAT_CONFIG_FILENAMES`), Stylelint 16 with the search places of cosmiconfig 9 | which configuration file each tool loads | `projects/lint/src/mcp/checks.ts` |
-| Tailwind 4, through the consumption map | the colour utilities, and the CSS property each one writes | `projects/lint/src/mcp/tokens.ts` |
-| MCP specification 2025-11-25 | the protocol of the server, the image content of a result | `projects/lint/src/mcp/protocol.ts` |
-| Playwright (playwright.dev/docs/browsers, docs/api) | the browser channels a render tries, the API floor of the peer range (1.9) | `projects/lint/src/mcp/render.ts` |
-| Claude Code (CHANGELOG 2.1.122, MCP docs), Anthropic vision docs | the 2000 px cap on a side of an image, the 25,000 tokens of a tool result | `projects/lint/src/mcp/render.ts` |
+| The iconsauce plugins (`@iconsauce/material-icons` and the others) | the slug grammar and the Material variants | `projects/mcp/src/icons.ts`, `docs/agents/assets.md` |
+| DTCG Format Module 2025.10 | the types and composite types of the token data, and their CSS | `projects/mcp/src/tokens.ts`, the design-tokens README |
+| ESLint 9 (`FLAT_CONFIG_FILENAMES`), Stylelint 16 with the search places of cosmiconfig 9 | which configuration file each tool loads | `projects/mcp/src/checks.ts` |
+| Tailwind 4, through the consumption map | the colour utilities, and the CSS property each one writes | `projects/mcp/src/tokens.ts` |
+| MCP specification 2025-11-25 | the protocol of the server, the image content of a result | `projects/mcp/src/protocol.ts` |
+| Playwright (playwright.dev/docs/browsers, docs/api) | the browser channels a render tries, the API floor of the peer range (1.9) | `projects/mcp/src/render.ts` |
+| Claude Code (CHANGELOG 2.1.122, MCP docs), Anthropic vision docs | the 2000 px cap on a side of an image, the 25,000 tokens of a tool result | `projects/mcp/src/render.ts` |
 | Claude Code memory docs | how `CLAUDE.md` and `AGENTS.md` load, nested ones included | `CLAUDE.md` |

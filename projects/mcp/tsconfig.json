@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "lib": ["esnext"],
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "target": "ESNext",
+    "outDir": "dist",
+    "declaration": false,
+    "sourceMap": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "types": ["node"],
+    // the server imports the lint through the exports of magma, as installed (dist/lint); in this
+    // repository they are the sources of projects/lint, so tests and tsx need no build of magma
+    "paths": {
+      "@maggioli-design-system/magma/lint": ["../lint/src/index.ts"],
+      "@maggioli-design-system/magma/eslint": ["../lint/src/eslint/index.ts"],
+      "@maggioli-design-system/magma/stylelint/recommended": ["../lint/src/stylelint/recommended.ts"],
+      "@maggioli-design-system/magma/stylelint/strict": ["../lint/src/stylelint/strict.ts"]
+    }
+  },
+  "include": ["src", "scripts", "test"],
+  "exclude": ["node_modules", "dist", "test/fixtures"]
+}

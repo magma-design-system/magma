@@ -263,7 +263,7 @@ try: Press Salva: the error shows above the form, and what was written stays.
   `check.patterns` fails on a preview without its two images of the frame in the build, or on
   an image of no preview. Since the build of magma reads `docs/agents/`, a change there alone
   builds magma again (its Nx inputs), so the images follow their stage.
-- **Editing one live.** `nx run lint:serve.previews` serves the previews, and the drafts not
+- **Editing one live.** `nx run mcp:serve.previews` serves the previews, and the drafts not
   chosen yet in `.claude/previews/<folder>/<name>.html` (untracked, the same format), at
   `http://localhost:5180/`. The page of each stage is the page `render_preview` renders, on the
   local build (`projects/stencil/dist`, `projects/styles/dist`: `nx run stencil:build` first).
@@ -345,7 +345,7 @@ With Claude Code on this repository:
 - `/pattern-change <id>`: shows why the current answer was decided, asks whether the change is
   the default or one product's layer, keeps the old id on a rename;
 - `/pattern-preview <id>`: for each case with no preview, shows two options live and saves the
-  one the maintainer chooses; its drafts and the saved previews open in `lint:serve.previews`,
+  one the maintainer chooses; its drafts and the saved previews open in `mcp:serve.previews`,
   for the maintainer to adjust by hand;
 - `/pattern-list`: the list, read only.
 
@@ -357,7 +357,7 @@ nx run stencil:generate.pattern <id> --kind block --group <group> --need "<the n
 nx run stencil:generate.pattern <id> --kind design-language --need "<what it settles>"  # a domain
 nx run stencil:generate.pattern -- --sync     # the generated parts, from the frontmatter
 nx run stencil:check.patterns                 # after nx run stencil:build
-nx run lint:serve.previews                    # the previews and the drafts, live, after the build
+nx run mcp:serve.previews                    # the previews and the drafts, live, after the build
 nx run stencil:list.patterns -- --status candidate
 nx run stencil:list.patterns -- --kind design-language
 ```

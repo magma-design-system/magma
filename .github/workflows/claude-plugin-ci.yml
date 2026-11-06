@@ -9,6 +9,8 @@ on:
     paths:
       - 'projects/claude-plugin/**'
       - '.claude-plugin/**'
+      - 'projects/mcp/src/**'
+      - 'projects/mcp/tsconfig.json'
       - 'projects/lint/src/**'
       - 'docs/agents/**'
       - 'projects/codemod/package.json'
@@ -17,6 +19,8 @@ on:
     paths:
       - 'projects/claude-plugin/**'
       - '.claude-plugin/**'
+      - 'projects/mcp/src/**'
+      - 'projects/mcp/tsconfig.json'
       - 'projects/lint/src/**'
       - 'docs/agents/**'
       - 'projects/codemod/package.json'

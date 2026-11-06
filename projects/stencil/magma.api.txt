@@ -217,9 +217,12 @@ mds-button prop active (attr active) [reflect, mutable]: boolean
 mds-button prop animation (attr animation) [reflect]: "none" | "yugop" | undefined = 'none'
 mds-button prop autoFocus (attr auto-focus): boolean
 mds-button prop await (attr await) [reflect, mutable]: boolean | undefined
+mds-button prop current (attr current) [reflect]: "page" | "section" | boolean | undefined
 mds-button prop disabled (attr disabled) [reflect, mutable]: boolean | undefined
 mds-button prop href (attr href) [reflect]: string | undefined
 mds-button prop icon (attr icon) [reflect, mutable]: string | undefined
+mds-button prop iconCurrent (attr icon-current): string | undefined
+mds-button prop iconHover (attr icon-hover): string | undefined
 mds-button prop iconPosition (attr icon-position) [reflect]: "left" | "right" | undefined = 'left'
 mds-button prop label (attr label) [reflect, mutable]: string | undefined
 mds-button prop name (attr name) [reflect]: string | undefined
@@ -254,9 +257,12 @@ mds-button-dropdown encapsulation shadow
 mds-button-dropdown prop active (attr active) [reflect, mutable]: boolean
 mds-button-dropdown prop autoFocus (attr auto-focus): boolean
 mds-button-dropdown prop await (attr await) [reflect, mutable]: boolean | undefined
+mds-button-dropdown prop current (attr current) [reflect]: "page" | "section" | boolean | undefined
 mds-button-dropdown prop disabled (attr disabled) [reflect, mutable]: boolean | undefined
 mds-button-dropdown prop href (attr href) [reflect]: string | undefined
 mds-button-dropdown prop icon (attr icon) [reflect, mutable]: string | undefined
+mds-button-dropdown prop iconCurrent (attr icon-current): string | undefined
+mds-button-dropdown prop iconHover (attr icon-hover): string | undefined
 mds-button-dropdown prop label (attr label): string
 mds-button-dropdown prop name (attr name) [reflect]: string | undefined
 mds-button-dropdown prop size (attr size) [reflect]: "lg" | "md" | "sm" | "xl" = 'md'
@@ -1747,12 +1753,13 @@ type BibliographyRelationshipType = 'author' | 'external';
 type BookBindingType = 'paperback' | 'hardcover' | 'none';
 type BookFormatType = 'auto' | 'a4' | 'a5' | 'b5' | `${number}x${number}`;
 type BookPoseType = 'spine' | 'fore-edge' | 'front' | 'lying' | 'lying-turned';
-type ButtonDropdownVariantType = | ThemeLuminanceVariantType | ThemeBrandVariantType | ThemeStatusVariantType;
+type ButtonCurrentType = boolean | (typeof buttonCurrentDictionary)[number];
+type ButtonDropdownVariantType = ThemeLuminanceVariantType | ThemeBrandVariantType | ThemeStatusVariantType;
 type ButtonIconPositionType = "left" | "right"
 type ButtonSizeType = "sm" | "md" | "lg" | "xl"
 type ButtonTargetType = "blank" | "self"
 type ButtonType = (typeof buttonTypeDictionary)[number] | 'a';
-type ButtonVariantType = | 'apple' | 'google' | ThemeLuminanceVariantType | ThemeBrandVariantType | ThemeStatusVariantType;
+type ButtonVariantType = 'apple' | 'google' | ThemeLuminanceVariantType | ThemeBrandVariantType | ThemeStatusVariantType;
 type CalendarCellSelectionOrieintationType = 'both' | 'horizontal' | 'vertical';
 type CalendarCellSelectionPositionType = 'end' | 'middle' | 'none' | 'start' | 'single';
 type CalendarCellType = 'other' | 'current' | 'weekend';

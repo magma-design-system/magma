@@ -23,55 +23,95 @@ describe('mds-pref-mode', () => {
     html.style.removeProperty('--magma-pref-mode');
   });
 
-  it('locks only the dark item when locked-scheme is light', async () => {
+  /** The state of the three items, light / system / dark: selected, disabled. */
+  const items = (root: HTMLElement) =>
+    ['light', 'system', 'dark'].map((mode) => {
+      const item = root.shadowRoot!.querySelector(`.item--${mode}`)!;
+      return {
+        mode,
+        selected: item.hasAttribute('selected'),
+        disabled: item.hasAttribute('disabled'),
+      };
+    });
+
+  // #1274: under a theme of one mode the page is in that mode whatever was picked, so the control
+  // shows it, and the other two items lead nowhere
+  it('shows light and locks the rest when locked-scheme is light', async () => {
     const { root } = await render(
-      '<mds-pref-mode mode="light" locked-scheme="light"></mds-pref-mode>',
-    );
-
-    const shadow = root.shadowRoot!;
-    expect(shadow.querySelector('.item--dark')).toHaveAttribute('disabled');
-    expect(shadow.querySelector('.item--light')).not.toHaveAttribute('disabled');
-    expect(shadow.querySelector('.item--system')).not.toHaveAttribute('disabled');
-  });
-
-  it('locks only the light item when locked-scheme is dark', async () => {
-    const { root } = await render(
-      '<mds-pref-mode mode="dark" locked-scheme="dark"></mds-pref-mode>',
-    );
-
-    const shadow = root.shadowRoot!;
-    expect(shadow.querySelector('.item--light')).toHaveAttribute('disabled');
-    expect(shadow.querySelector('.item--dark')).not.toHaveAttribute('disabled');
-    expect(shadow.querySelector('.item--system')).not.toHaveAttribute('disabled');
-  });
-
-  it('locks nothing when locked-scheme is absent', async () => {
-    const { root } = await render('<mds-pref-mode mode="light"></mds-pref-mode>');
-
-    const shadow = root.shadowRoot!;
-    expect(shadow.querySelector('.item--light')).not.toHaveAttribute('disabled');
-    expect(shadow.querySelector('.item--system')).not.toHaveAttribute('disabled');
-    expect(shadow.querySelector('.item--dark')).not.toHaveAttribute('disabled');
-  });
-
-  it('keeps the stored mode preference: a locked dark item stays selected and clicking it is a no-op', async () => {
-    const { root, waitForChanges } = await render<HTMLMdsPrefModeElement>(
       '<mds-pref-mode mode="dark" locked-scheme="light"></mds-pref-mode>',
     );
-    const dark = root.shadowRoot!.querySelector<HTMLElement>('.item--dark')!;
 
-    // the stored preference (dark) is preserved and reflected as selected, but locked
+    expect(items(root)).toEqual([
+      { mode: 'light', selected: true, disabled: false },
+      { mode: 'system', selected: false, disabled: true },
+      { mode: 'dark', selected: false, disabled: true },
+    ]);
+  });
+
+  it('shows dark and locks the rest when locked-scheme is dark', async () => {
+    const { root } = await render(
+      '<mds-pref-mode mode="light" locked-scheme="dark"></mds-pref-mode>',
+    );
+
+    expect(items(root)).toEqual([
+      { mode: 'light', selected: false, disabled: true },
+      { mode: 'system', selected: false, disabled: true },
+      { mode: 'dark', selected: true, disabled: false },
+    ]);
+  });
+
+  it('locks nothing when locked-scheme is absent and the theme takes both modes', async () => {
+    const { root } = await render('<mds-pref-mode mode="light"></mds-pref-mode>');
+
+    expect(items(root)).toEqual([
+      { mode: 'light', selected: true, disabled: false },
+      { mode: 'system', selected: false, disabled: false },
+      { mode: 'dark', selected: false, disabled: false },
+    ]);
+  });
+
+  it('keeps the stored mode preference under a lock: no item changes it', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsPrefModeElement>(
+      '<mds-pref-mode mode="dark" locked-scheme="light" transition="none"></mds-pref-mode>',
+    );
+
+    for (const mode of ['light', 'system', 'dark']) {
+      root.shadowRoot!.querySelector<HTMLElement>(`.item--${mode}`)!.click();
+      await waitForChanges();
+    }
+
     expect(root.mode).toBe('dark');
-    expect(dark).toHaveAttribute('selected');
-    expect(dark).toHaveAttribute('disabled');
     expect(localStorage.getItem('mdsPrefMode')).toBe('dark');
+    expect(document.documentElement).toHaveClass('pref-mode-dark');
+  });
 
-    // clicking the locked item must not change the mode nor the stored preference
-    dark.click();
+  it('follows the scheme of the active theme, and gives the pick back when it goes', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsPrefModeElement>(
+      '<mds-pref-mode mode="light"></mds-pref-mode>',
+    );
+    const html = document.documentElement;
+    const label = () => root.shadowRoot!.querySelector('.info')!.textContent;
+    const lightLabel = label();
+
+    // what mds-pref-theme writes for a theme that declares the dark mode only
+    html.classList.add('pref-theme-scheme-dark');
     await waitForChanges();
 
-    expect(root.mode).toBe('dark');
-    expect(localStorage.getItem('mdsPrefMode')).toBe('dark');
+    expect(items(root).map(({ selected, disabled }) => [selected, disabled])).toEqual([
+      [false, true],
+      [false, true],
+      [true, false],
+    ]);
+    expect(label()).not.toBe(lightLabel);
+    expect(root.mode).toBe('light');
+
+    html.classList.replace('pref-theme-scheme-dark', 'pref-theme-scheme-all');
+    await waitForChanges();
+
+    expect(items(root)[0]).toEqual({ mode: 'light', selected: true, disabled: false });
+    expect(items(root)[2]).toEqual({ mode: 'dark', selected: false, disabled: false });
+    expect(label()).toBe(lightLabel);
+    expect(localStorage.getItem('mdsPrefMode')).toBe('light');
   });
 
   // #789: an app-wide controller next to a settings page used to revert the

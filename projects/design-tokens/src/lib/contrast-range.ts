@@ -37,7 +37,7 @@ export type RatioIssueKind = 'above-max' | 'near-max' | 'dead-zone' | 'below-min
  * `warn`  = out-of-range: the step clamps to a pure extreme or collapses to the
  *           background (genuinely broken). resolveRatios logs these.
  * `info`  = near-ceiling: reachable but very close to the extreme. Surfaced by
- *           the playground band, not logged (would be noisy on normal scales).
+ *           the band the studio shows, not logged (would be noisy on normal scales).
  */
 export type RatioIssueSeverity = 'warn' | 'info';
 

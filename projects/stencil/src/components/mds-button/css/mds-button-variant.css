@@ -18,6 +18,8 @@
  *   text-ink-hover  text: ink on hover
  *   text-wash       text: background on hover
  *   text-ink-active text: ink while active
+ *   current-wash    weak: background of the current button (mds-button-current.css), the
+ *                   selected role of the family; a variant whose hover keeps the wash keeps it
  *
  * The tone rules stay at or below the specificity of the service variants, which come after
  * and set the public properties themselves, and of the tone sheet, which comes last. */
@@ -37,6 +39,7 @@
   --private-button-text-ink-hover: var(--private-button-fill);
   --private-button-text-wash: var(--magma-accent-surface-subtle);
   --private-button-text-ink-active: var(--private-button-text-ink);
+  --private-button-current-wash: var(--magma-accent-surface-selected);
   --mds-button-background: rgb(var(--private-button-fill));
   --mds-button-border-color-rgb: var(--private-button-fill);
   --mds-button-color: rgb(var(--private-button-on-fill));
@@ -49,6 +52,7 @@
   --private-button-wash-hover: var(--magma-accent-ai-surface-hover);
   --private-button-text-ink: var(--magma-accent-ai-emphasis-active);
   --private-button-text-wash: var(--magma-accent-ai-surface-subtle);
+  --private-button-current-wash: var(--magma-accent-ai-surface-selected);
 }
 
 /* the tones, strong (and box) at rest in the :host rule above */

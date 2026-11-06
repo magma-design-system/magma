@@ -1,0 +1,11 @@
+{
+  "format": 1,
+  "name": "editorial",
+  "description": "For the publishing side: the warm bisque family and the accent of the Maggioli Editore brand.",
+  "color": {
+    "tint": "bisque",
+    "accents": {
+      "accent": "variant-secondary"
+    }
+  }
+}

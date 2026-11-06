@@ -1,0 +1,8 @@
+{
+  "format": 1,
+  "name": "business",
+  "description": "For the management software: the neutral family and the Maggioli accent. The base of the layer: a page with no theme is business.",
+  "color": {
+    "tint": "neutral"
+  }
+}

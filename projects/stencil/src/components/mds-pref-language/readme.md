@@ -292,8 +292,8 @@ graph TD;
   mds-pref-language --> mds-tab-item
   mds-pref-language --> mds-dropdown
   mds-tab-item --> mds-button
-  mds-button --> mds-spinner
   mds-button --> mds-icon
+  mds-button --> mds-spinner
   mds-button --> mds-text
   style mds-pref-language fill:#f9f,stroke:#333,stroke-width:4px
 ```
