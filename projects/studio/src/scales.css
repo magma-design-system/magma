@@ -13,11 +13,11 @@
 }
 
 .scales-muted {
-  color: rgb(var(--magma-text-muted));
+  color: var(--magma-text-muted);
 }
 
 .scales-page code {
-  background-color: rgb(var(--magma-surface-muted));
+  background-color: var(--magma-surface-muted);
   border-radius: var(--magma-radius-xs);
   font-family: var(--font-code);
   padding-inline: calc(var(--spacing) * 100);
@@ -119,7 +119,7 @@
 }
 
 .scales-track {
-  background-color: rgb(var(--magma-border-muted));
+  background-color: var(--magma-border-muted);
   block-size: calc(var(--spacing) * 100);
   border-radius: var(--magma-radius-full);
   inset-block-start: calc(var(--scales-line) + var(--scales-marker) / 2 - var(--spacing) * 50);
@@ -132,7 +132,7 @@
 .scales-band {
   background-image: repeating-linear-gradient(
     45deg,
-    rgb(var(--magma-danger-wash-strong)) 0 calc(var(--spacing) * 125),
+    var(--magma-danger-wash-strong) 0 calc(var(--spacing) * 125),
     transparent calc(var(--spacing) * 125) calc(var(--spacing) * 250)
   );
   block-size: var(--scales-marker);
@@ -143,7 +143,7 @@
 }
 
 .scales-band-edge {
-  border-inline-start: thin solid rgb(var(--magma-danger-border));
+  border-inline-start: thin solid var(--magma-danger-border);
   inset-block: calc(var(--scales-line) - var(--spacing) * 100)
     calc(var(--scales-line) + var(--scales-tick) - var(--spacing) * 100);
   pointer-events: none;
@@ -152,13 +152,13 @@
 
 .scales-tick {
   block-size: var(--scales-tick);
-  border-inline-start: thin solid rgb(var(--magma-border-default));
+  border-inline-start: thin solid var(--magma-border-default);
   inset-block-start: calc(var(--scales-line) + var(--scales-marker));
   position: absolute;
 }
 
 .scales-tick span {
-  color: rgb(var(--magma-text-muted));
+  color: var(--magma-text-muted);
   inset-block-start: 100%;
   position: absolute;
   translate: -50% 0;
@@ -166,9 +166,9 @@
 }
 
 .scales-marker {
-  background-color: rgb(var(--magma-accent-emphasis));
+  background-color: var(--magma-accent-emphasis);
   block-size: var(--scales-marker);
-  border: calc(var(--spacing) * 50) solid rgb(var(--magma-surface-raised));
+  border: calc(var(--spacing) * 50) solid var(--magma-surface-raised);
   border-radius: var(--magma-radius-full);
   box-shadow: var(--shadow-sm);
   cursor: ew-resize;
@@ -183,7 +183,7 @@
 }
 
 .scales-value {
-  color: rgb(var(--magma-text-default));
+  color: var(--magma-text-default);
   inset-block-end: 100%;
   inset-inline-start: 50%;
   position: absolute;
@@ -194,19 +194,19 @@
 /* a stop out of the band: warn where the step breaks, info where it nears the extreme */
 
 .scales-marker[data-severity='warn'] {
-  background-color: rgb(var(--magma-danger-emphasis));
+  background-color: var(--magma-danger-emphasis);
 }
 
 .scales-marker[data-severity='warn'] .scales-value {
-  color: rgb(var(--magma-danger-text-default));
+  color: var(--magma-danger-text-default);
 }
 
 .scales-marker[data-severity='info'] {
-  background-color: rgb(var(--magma-warning-emphasis));
+  background-color: var(--magma-warning-emphasis);
 }
 
 .scales-marker[data-severity='info'] .scales-value {
-  color: rgb(var(--magma-warning-text-default));
+  color: var(--magma-warning-text-default);
 }
 
 /* the stops: a number field each, its remove button beside it, then Add step */
@@ -246,7 +246,7 @@
 
 .scales-sample {
   block-size: calc(var(--spacing) * 500);
-  border: thin solid rgb(var(--magma-border-muted));
+  border: thin solid var(--magma-border-muted);
   border-radius: var(--magma-radius-sm);
   display: flex;
   overflow: hidden;
