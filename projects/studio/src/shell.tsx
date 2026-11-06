@@ -91,6 +91,14 @@ function GateBadge({ verdict }: { verdict: GateVerdict | null }) {
   );
 }
 
+/**
+ * The icon of a link of a menu: the outline one, the filled one (baseline) for the page shown, so
+ * the current page reads at a glance beside its weak tone (vittorio, 2026-11-06). routes.ts names
+ * the baseline icon; Material draws some the same in both sets (contrast, pattern).
+ */
+export const menuIcon = (icon: string, current: boolean): string =>
+  current ? icon : icon.replace('/baseline/', '/outline/');
+
 /** The links of a menu, the current one marked; a page apart comes after a separator. */
 function MenuLinks<Id extends string>({
   items,
@@ -108,7 +116,7 @@ function MenuLinks<Id extends string>({
           {item.apart && <mds-separator></mds-separator>}
           <mds-button
             href={hrefOf(routeOf(item.id))}
-            icon={item.icon}
+            icon={menuIcon(item.icon, item.id === current)}
             variant="dark"
             tone={item.id === current ? 'weak' : 'text'}
             aria-current={item.id === current ? 'page' : undefined}
