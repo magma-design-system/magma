@@ -134,3 +134,27 @@ test('a theme shows the canvas of Semantic surface per mode, its accents on each
     expect(canvas.querySelector('.themes-samples')).not.toBeNull()
   }
 })
+
+test('a family of any group opted into a surface is a theme, the ramp of its group in the export', () => {
+  const config = JSON.parse(JSON.stringify(initialConfig)) as MagmaConfig
+  config.colors.find((color) => color.name === 'label.violet')!.surface = true
+  render(h(ThemesManager, { config }), root)
+
+  const violet = cardsOf().find((card) => card.querySelector('.themes-family')?.textContent?.includes('violet'))
+  expect(violet).toBeDefined()
+  // its ramp is label-violet, not a tone-violet that does not exist
+  const block = exportOf().match(/:root\[data-theme-name='violet'\] \{[^}]*\}/)?.[0] ?? ''
+  expect(block).toContain('var(--label-violet-01)')
+  expect(block).not.toContain('tone-violet')
+})
+
+test('the families the status group carries are no themes, a status family opted in on its own is', () => {
+  const families = () => cardsOf().map((card) => card.querySelector('.themes-family')?.textContent ?? '')
+  show()
+  expect(families().some((family) => family.includes('info'))).toBe(false)
+
+  const config = JSON.parse(JSON.stringify(initialConfig)) as MagmaConfig
+  config.colors.find((color) => color.name === 'status.info')!.surface = true
+  render(h(ThemesManager, { config }), root)
+  expect(families().some((family) => family.includes('info'))).toBe(true)
+})

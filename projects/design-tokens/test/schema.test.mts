@@ -84,3 +84,13 @@ test('an invalid formula enum value is rejected', () => {
     validateConfig({ formula: 'wcag9', colors: [{ color: '#fff', name: 'a.b' }] }).valid,
   ).toBe(false)
 })
+
+test('a hue shift curve takes the named easings, and no other', () => {
+  const config = (easing: string) => ({
+    colors: [{ color: '#94a3b8', name: 'tone.porcelain', hueShift: { dark: -18, light: 18, curve: { deadZone: 0, easing } } }],
+  })
+  for (const easing of ['linear', 'step', 'quad-in', 'sine-in-out', 'circ-out']) {
+    expect(validateConfig(config(easing)).valid).toBe(true)
+  }
+  expect(validateConfig(config('bounce')).valid).toBe(false)
+})

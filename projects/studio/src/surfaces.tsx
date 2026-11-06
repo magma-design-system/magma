@@ -167,7 +167,7 @@ function familyOf(color: ColorConfig): string {
  * WORST of the family's surfaces). Left optional, a status family would fall back
  * to hand-picked ramp steps in each component - which is what it does today.
  */
-const REQUIRED_SURFACE_GROUPS = new Set(['status']);
+export const REQUIRED_SURFACE_GROUPS = new Set(['status']);
 
 /**
  * Groups that can never be a surface seed. `variant.*` is an alias-only accent
