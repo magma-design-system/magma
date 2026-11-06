@@ -309,6 +309,12 @@ tests it when it or `design-tokens` changes.
   section that opens its pages from a menu is a case the app-shell block does not have yet.
 - **Two hosts, one app** (#695): the docs site mounts it with nothing to install, and a command of
   the `magma` package serves it inside a project, on its `magma/` folder.
+- **Published beside the Storybook**: the studio of `main` is on GitHub Pages at
+  `magma-design-system.github.io/magma/studio/`, built by `deploy-site.yml` with the Storybook
+  (section 6), and the docs site links to it (decided on #693, 2026-11-06; mounting it in a page
+  of the docs site is a later step). `studio:build.site` writes beside its pages, as files, the
+  installed Magma that `fileOf` serves to the dev server; there is no API there, so the studio
+  edits in memory and its work leaves by download.
 
 The views and how to run it: [`projects/studio/README.md`](../projects/studio/README.md).
 
@@ -430,11 +436,11 @@ feature branch ──PR──▶ merge queue of main ──merge commit──▶
                               │                                 │
                               ▼                    ┌────────────┴──────────────┐
                        CI of the commit            ▼                           ▼
-                       (design-tokens, icons,   publish.yml, push trigger   deploy storybook
-                        identity, styles,       (icons and svg-icons,       (GitHub Pages, from the
-                        svg-icons, stencil,      automatic: chore(release)   stencil-build artifact
-                        lint: the merge-group    commit pushed to main       of the merge-group run)
-                        run, on the SHA that     with a rebase-retry, tags,
+                       (design-tokens, icons,   publish.yml, push trigger   deploy site
+                        identity, styles,       (icons and svg-icons,       (GitHub Pages: Storybook
+                        svg-icons, stencil,      automatic: chore(release)   and studio, from the
+                        lint: the merge-group    commit pushed to main       stencil-build artifact
+                        run, on the SHA that     with a rebase-retry, tags,  of the merge-group run)
                         then lands on main)      GitHub releases, build ──▶ npm)
 
 maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dry-run, tag)
@@ -458,7 +464,7 @@ maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dr
 | Review level | `pr-risk.yml` + `projects/stencil/scripts/pr-risk.ts` | `risk-*` label, the semver check of `magma.api.txt` against the commits' declared release |
 | Release and publish | `publish.yml` over `semantic-release.yml` + `scripts/release/*` + `scripts/set-release-version.sh` | `workflow_dispatch` on `main`: `package` (`all` or one), `channel` (`stable`/`beta`), `dry-run`, `tag` (an existing release published again); the CI of the commit checked, the plan before the approval, versions from the conventional commits of each package's scopes (semantic-release dry-run), pins, lock, `CHANGELOG.md` (git-cliff), tags, GitHub releases, then the build of the selected packages and one `npm publish` per package with OIDC trusted publishing (a package is skipped when its version is already on npm) |
 | Automatic icon releases | the `push` trigger of `publish.yml` | on every push to `main`: the same chain for `icons` and `svg-icons`, without approval; a rejected push is rebased and retried |
-| Storybook | `deploy-storybook.yml` | the static Storybook of `main` to GitHub Pages, from the merge-group `stencil` run of the same commit (its `magma / test` verdict, its `stencil-build` artifact; a commit without one is built and tested there); also dispatched by `publish.yml` after a release of `svg-icons` (the `mds-icon` story shows its version; the `chore(release)` commit runs no workflow of its own) |
+| Pages site | `deploy-site.yml` | the site of `main` to GitHub Pages, whole at every deploy: the static Storybook in `storybook/` (the root redirects to it) and the studio in `studio/` (`studio:build.site`, the app with the Magma its pages load beside them); from the merge-group `stencil` run of the same commit (its `magma / test` verdict, its `stencil-build` artifact; a commit without one is built and tested there); also dispatched by `publish.yml` after a release of `svg-icons` (the `mds-icon` story shows its version and the studio serves its icons; the `chore(release)` commit runs no workflow of its own) |
 | Local rehearsal | `scripts/test-release.sh` | the release plan of a commit on either channel, in a throwaway clone, nothing pushed |
 
 Protections, set on GitHub and documented here because they shape the flow:

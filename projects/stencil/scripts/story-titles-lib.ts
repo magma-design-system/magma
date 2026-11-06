@@ -120,7 +120,7 @@ export function storyTitleErrors(components: ComponentTaxonomy[], pages: StoryPa
 }
 
 /**
- * The published Storybook, where deploy-storybook.yml puts the Storybook of `main` (GitHub
+ * The published Storybook, where deploy-site.yml puts the Storybook of `main` (GitHub
  * Pages, since the move away from GitLab CI). A docs page opens at `?path=/docs/<id>`.
  */
 export const STORYBOOK_URL = 'https://magma-design-system.github.io/magma/storybook/';
