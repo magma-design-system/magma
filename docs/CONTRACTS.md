@@ -43,7 +43,9 @@ keep in step.
 - **Read by**: the lint core (`projects/lint/src/core/data.ts`), the component tools of the MCP
   server, the per-component `AGENTS.md` (`component-docs.ts`), `check.usage-docs`, the codemod
   manifest ([`projects/codemod/README.md`](../projects/codemod/README.md), "Regenerating the
-  manifest from the docs"), the docs site. The docs site reads `usage` in
+  manifest from the docs"), the studio (`projects/studio/magma-api.ts`: the `variant` and the
+  `tone` of each component, for the previews of a colour), the docs site. The docs site reads
+  `usage` in
   `src/loaders/components.ts` of `magma-design-system/docs`: the description is the overview of
   a component, the other two its sub-pages, and the first example its preview; it leaves out a
   name it does not know.
@@ -160,10 +162,14 @@ keep in step.
 - **Contract**: [`docs/agents/SPEC.md`](agents/SPEC.md) (the entry point and the targets);
   [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md), "Per-component usage docs".
 - **Read by**: the agents of consumer projects, the MCP `get_guide`, the skills of the Claude
-  Code plugin (`projects/claude-plugin/scripts/skills.ts`), the docs site.
+  Code plugin (`projects/claude-plugin/scripts/skills.ts`), the docs site; the studio reads the
+  tables of the section Variants of `docs/agents/variants.md` and of its section Tones, from the
+  repository (`projects/studio/src/paints.ts`: the colour variants, their kinds, the order of
+  the tones).
 - **Held by**: `check.usage-docs` (every symbol a guide names exists); `component-docs.ts` fails
   the build on a relative link of a shipped guide that does not resolve inside its package;
-  `agent-docs-lib.spec.ts`; `nx run claude-plugin:check`.
+  `agent-docs-lib.spec.ts`; `nx run claude-plugin:check`; for the studio,
+  `projects/studio/test/paints.test.mts` (the kinds and the tones it reads).
 
 ## The patterns
 

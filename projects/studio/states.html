@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Magma studio, states</title>
+    <!--
+      The states of a colour beside a contrast scale (scales.tsx, #1308): the components the
+      family paints at every tone they publish, an action also hovered, pressed, selected and
+      disabled, so the scale is judged on them while it is edited. The studio writes them into
+      <main> (states.ts) and sets the theme, the mode and the palette of the family solved on the
+      scale on <html>, as it does for the scene (frame.ts): a document of its own, so the palette
+      moves this page and leaves the studio alone.
+      The plain CSS below takes every value from the tokens of the installed Magma.
+    -->
+    <style>
+      .states-main {
+        display: grid;
+        gap: var(--magma-rhythm-between-containers);
+        padding: var(--magma-rhythm-inset);
+      }
+      .states-muted {
+        color: rgb(var(--magma-text-muted));
+      }
+      /* an action: a row per state, a column per tone, the names of both at the edges */
+      .states-grid {
+        display: grid;
+        gap: var(--magma-rhythm-inline);
+        grid-template-columns: max-content repeat(var(--states-tones), max-content);
+        align-items: center;
+        justify-items: start;
+        overflow-x: auto;
+      }
+      .states-stack {
+        display: grid;
+        gap: var(--magma-rhythm-between-containers);
+      }
+      .states-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--magma-rhythm-inline);
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="states" class="states-main"></main>
+  </body>
+</html>

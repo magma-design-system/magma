@@ -30,7 +30,7 @@ const root = document.createElement('div')
 document.body.append(root)
 afterEach(() => act(() => render(null, root)))
 
-function show () {
+function show (selectedName = config.colors[1].name) {
   const spies = {
     onChangeScale: vi.fn(),
     onAddScale: vi.fn(),
@@ -48,7 +48,7 @@ function show () {
       ratioSet,
       builtinScales: ['default', 'tint'],
       sampleScales: new Map(),
-      selectedName: config.colors[1].name,
+      selectedName,
       labelFor: (name: string) => name,
       originFor: (name: string) => (name === 'custom-1' ? 'custom' : 'builtin'),
       onSelectColor: spies.onSelectColor,
@@ -255,4 +255,39 @@ test('the usage panel picks a scale and samples its first color', () => {
   // the formula is a Magma select too
   emit(root.querySelector('.scales-formula mds-input-select')!, 'mdsInputSelectChange', { value: 'wcag2' })
   expect(spies.onFormulaChange).toHaveBeenCalledWith('wcag2')
+})
+
+// the states beside each scale (#1308): jsdom loads no page in the frames, the test reads the
+// line over the cards and the frames the page writes
+const frames = () => [...root.querySelectorAll('iframe.scales-states')].map((frame) => frame.getAttribute('title'))
+const statesLine = () => root.querySelector('.scales-states-head mds-text')?.textContent
+
+test('beside each scale, the states of the sample colour, in one mode for the page', () => {
+  show('status.error')
+  expect(statesLine()).toBe(
+    'Beside each scale, error solved on it paints the components it paints, in the theme business.',
+  )
+  expect(frames()).toEqual([
+    'The states of status.error on the scale default, light mode',
+    'The states of status.error on the scale tint, light mode',
+    'The states of status.error on the scale custom-1, light mode',
+  ])
+  expect(card('tint').querySelector('.scales-card-pair > iframe.scales-states')).not.toBeNull()
+  emit(root.querySelector('.scales-states-head mds-tab')!, 'mdsTabChange', { id: 1, value: 'dark' })
+  expect(frames().every((title) => title?.endsWith('dark mode'))).toBe(true)
+})
+
+test('an alias follows no scale, and a family that paints nothing has no states', () => {
+  show('variant.primary')
+  expect(statesLine()).toBe(
+    'variant.primary takes the ramp of brand.maggioli whatever its scale: the states of brand.maggioli show beside its scales.',
+  )
+  expect(frames()).toEqual([])
+  act(() => render(null, root))
+  show('brand.rnd')
+  expect(statesLine()).toBe(
+    'brand.rnd paints no component of Magma: no variant of a component takes it, no theme points an accent at it and no theme is drawn from it.',
+  )
+  expect(frames()).toEqual([])
+  expect(root.querySelector('.scales-states-head mds-tab')).toBeNull()
 })

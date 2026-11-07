@@ -131,7 +131,9 @@
 }
 
 .palette-side-head,
-.palette-side-frame {
+.palette-side-note,
+.palette-side-frame,
+.palette-side-none {
   display: none;
 }
 
@@ -337,7 +339,8 @@
     display: none;
   }
 
-  .palette-side-frame {
+  .palette-side-frame,
+  .palette-side-none {
     aspect-ratio: 9 / 16;
     border: thin solid rgb(var(--magma-border-muted));
     border-radius: var(--magma-radius-lg);
@@ -345,6 +348,18 @@
     display: block;
     inline-size: 100%;
     max-block-size: 75dvh;
+  }
+
+  /* what the family paints, over the page that shows it (palette-side.tsx, paints.ts); a family
+     that paints nothing says so where the page would be, at the inset of a card */
+
+  .palette-side-note {
+    color: rgb(var(--magma-text-muted));
+    display: block;
+  }
+
+  .palette-side-none {
+    padding: var(--magma-rhythm-inset);
   }
 }
 

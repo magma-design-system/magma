@@ -1863,7 +1863,7 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
                 configuration, in view of every control that changes them (palette.css) */}
               <PaletteSide
                 config={config}
-                family={selected.name.split('.')[1]}
+                family={selected.name}
                 ramps={<Preview scales={selectedScales} error={selectedError} />}
               />
               <section class="palette-color" aria-labelledby="palette-color-title">

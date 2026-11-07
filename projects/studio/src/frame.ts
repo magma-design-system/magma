@@ -71,3 +71,20 @@ export function applyFrame(
 }
 
 const CONFIGURATION_STYLE = 'studio-configuration';
+
+/**
+ * Marks on a page the elements that paint with the family the Palette edits (palette-side.tsx,
+ * paints.ts): `data-studio-painted` on each of them, and on <html> `data-studio-paints` with the
+ * family, under which the page puts first what holds them (scene.html). A family that marks
+ * nothing, or none, leaves the page as it is. The tags marked, in the order of the page.
+ */
+export function markPainted(page: Document, family: string | undefined, selector: string) {
+  page.querySelectorAll('[data-studio-painted]').forEach((one) => {
+    one.removeAttribute('data-studio-painted');
+  });
+  const found = family && selector ? [...page.querySelectorAll(selector)] : [];
+  found.forEach((one) => one.setAttribute('data-studio-painted', ''));
+  if (found.length > 0) page.documentElement.setAttribute('data-studio-paints', family!);
+  else page.documentElement.removeAttribute('data-studio-paints');
+  return found.map((one) => one.localName);
+}

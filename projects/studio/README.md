@@ -145,6 +145,12 @@ In this repository the installed magma is the build of `stencil`, so `serve` and
 first (an implicit dependency). A test holds the bundle to the rule: no component and no runtime
 of Stencil in `dist/assets`.
 
+What the studio reads of the API of that magma, it reads at build time: `magma-api.ts` takes the
+`variant` and the `tone` of each component from its `documentation.json` (as the lint and the MCP
+server read it, `readData`) and hands the pages these two props alone, as the virtual module
+`virtual:magma-api`, not the megabytes of the documentation. A magma with no documentation gives no
+component, and the previews of a colour say that it paints none.
+
 ## On GitHub Pages
 
 The studio of `main` is published at <https://magma-design-system.github.io/magma/studio/>,
@@ -239,26 +245,29 @@ flowchart LR
     GATE["src/gate.ts, src/contrast.tsx<br/>the contrast gate, Contrast check"]
     OUT["src/formats.ts, src/batch.tsx<br/>zip, DTCG, CSS, GIMP, config"]
     VEN["vendor.ts<br/>serves Magma to the pages"]
+    API["magma-api.ts<br/>the variant and tone of each component"]
     SITE["site.ts<br/>the static site, dist-site/"]
-    SCENE["scene.html<br/>the page the Theme section shows"]
+    SCENE["scene.html, states.html<br/>the pages the frames show"]
     SHELL --> APP
     SHELL --> SCENE
     APP --> SURF
     APP --> GATE
     APP --> OUT
     SURF --> GATE
+    API --> APP
   end
   DT -->|"createColorTokens, themeOf, namedThemeCss"| APP
   DT -->|"gatePairs, applyBaseline, contrast-baseline.json"| GATE
   MCP -->|"stylesheetImports, loaderOf, fileOf"| VEN
   MCP -->|"fileOf, loaderOf, slugFiles"| SITE
   WC -->|"the lazy loader"| VEN
+  WC -->|"documentation.json"| API
   WC -->|"the lazy loader"| SITE
   ID -->|"the logo of the bar"| SHELL
   VEN -.->|"node_modules/, svg/, components/"| SHELL
   SITE -.->|"deploy-site.yml"| PAGES(["GitHub Pages<br/>magma/studio/"])
   OUT -.->|"download"| AUTHOR(["the author of a theme"])
-  class DT,APP,SURF,GATE,OUT,SHELL,VEN,SITE,SCENE visual
+  class DT,APP,SURF,GATE,OUT,SHELL,VEN,API,SITE,SCENE visual
   class MCP ai
   class WC components
   class ID assets
@@ -289,9 +298,10 @@ generator in the browser, so every preview matches the build output exactly. Col
 pages: **Palette** (the two-column editor: color list on the left, editing and live light/dark
 scale previews with achieved contrast on the right; `neutral` is selected by default when
 present; where the detail has the room, the ramps stand upright beside the family and the global
-settings, held in view while they scroll, and Ramps / Theme swaps them for the theme the family
-backs on the scene, small as a phone, light or dark, painted with the configuration at every
-change, `src/palette-side.tsx`), **Contrast scales**, **Semantic surface** (opt families into the surface engine, tune
+settings, held in view while they scroll, and Ramps / Theme swaps them for the scene, small as a
+phone, light or dark, painted with the configuration at every change, in the theme of the family
+and with the elements it paints first in the page, below; `src/palette-side.tsx`), **Contrast
+scales**, **Semantic surface** (opt families into the surface engine, tune
 the surface/border/text levels), **Themes** (each opted family, status aside, as a named theme, with its accent
 assignment, its colour modes and the verdict of the contrast gate per mode), **Groups**, **Contrast check** (every pair of the contrast gate, above) and **Diffs**. Selecting a color from the sidebar while in contrast scales
 keeps you there, since the scale samples follow the selected color.
@@ -375,3 +385,41 @@ or a family from `sine` to `circ` as `-in`, `-out` or `-in-out`: the named easin
 theme background (0 = on the background, max = strongest contrast), so the same scale yields
 dark-on-light in light mode and light-on-dark in dark mode. Every color picks its scale with the
 `ratios` field in the editor.
+
+Beside each card, where the page has the room (60rem, as the side of the Palette), the sample
+colour solved on the scale paints the components it paints in a page of their own (`states.html`,
+`src/states.ts`): the action and the message of its variant, `mds-button` at every tone and in
+every state (at rest, hovered, pressed with `active`, selected with `current`, disabled) and
+`mds-banner` at every tone; a variant neither takes, a label, shows `mds-badge` and `mds-label`.
+The tones are those the documentation gives each component, in the order of
+`docs/agents/variants.md`. No prop gives the hover: the page copies the `:hover` rules of the
+component's own shadow sheet under an attribute (`forceHover`), so the hover is the component's.
+One mode at a time, chosen once over the cards; narrower, the states go under the card. An alias
+takes the ramp of its source whatever its scale, so it shows none and names its source.
+
+### What a colour paints
+
+The previews of a colour, the scene beside the Palette and the states beside a contrast scale,
+show the components a change of the family moves (#1308, `src/paints.ts`), each link read where
+it is decided:
+
+| Link | Source |
+| --- | --- |
+| a component paints with a colour through its `variant`, the values it takes and its default | `documentation.json` of the installed magma (`magma-api.ts`) |
+| which values of a `variant` are colours, and of which kind: accent, status, neutral, label, identity; a `variant` that takes anything else is no colour (`mds-text` has one of typography) | the tables of the section Variants of `docs/agents/variants.md` |
+| a status and a label paint with their own family: `status.error` is the `error` variant, `label.red` the `red` one | "Paints with" of the same guide, the mapping of `docs/agents/color.md` |
+| `primary` and `secondary` paint with the family the theme points the accent role at, `ai` with the one of the `ai` role; secondary renders exactly like primary | the same guide; `accents` of `semantic.config.ts`, repointed by a theme file or on the Themes page (`accentOfTheme`) |
+| the family a theme is drawn from paints its neutral scaffolding, the surfaces of the whole page and the `dark` and `light` variants | `docs/agents/color.md`, `data-theme-name` retints the neutral scaffolding |
+| an alias paints what its source paints: `variant.primary` is `brand.maggioli`, `variant.ai` is `label.violet` | the alias re-exports the resolved ramp of its source (`color.mts`) |
+
+The theme a family is seen in is the one drawn from it, else the first whose accents point at it
+(`variant.secondary` is seen in `editorial`), else the base. The scene puts first, at full
+colour, the cards that hold an element of the family and, in each card, the row that holds it,
+the element staying where it is in its row (`markPainted` of `src/frame.ts`, the rules under
+`data-studio-paints` in `scene.html`); the surfaces of a theme are the whole page, and nothing
+moves. A line over the scene says what the family paints. A family that reaches none of these
+(`brand.rnd`) says so where the scene or the states would be, instead of a page that would not
+move. The scene carries every label colour, so each label family has an element to show.
+
+What this does not see: a component that paints with the accent with no `variant` of its own
+(the switch, the tab, the stepper) is not counted, its colour being no choice of the product.
