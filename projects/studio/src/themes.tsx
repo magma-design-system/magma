@@ -289,7 +289,7 @@ export function ThemesManager({
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
     } catch {
-      /* clipboard blocked - the CSS is shown below to copy by hand */
+      /* clipboard blocked - the CSS opens below to copy by hand */
     }
   };
 
@@ -315,8 +315,9 @@ export function ThemesManager({
         </mds-text>
       )}
 
-      {/* Preview: default + derived themes, side by side */}
-      <div class="themes-grid">
+      {/* Preview: default + derived themes, one under the other, each a row of its settings and
+          its two modes where the page has room (vittorio, 2026-11-07) */}
+      <div class="themes-list">
         {previewFamilies.map((family) => (
           <ThemeCard
             family={family}
@@ -346,7 +347,8 @@ export function ThemesManager({
         ))}
       </div>
 
-      {/* Export */}
+      {/* Export: its header and the copy always in view, the CSS closed under them until it is
+          opened (vittorio, 2026-11-07); Copy CSS takes it closed too */}
       {extras.length > 0 && (
         <div class="themes-card">
           <div class="themes-head">
@@ -369,7 +371,12 @@ export function ThemesManager({
               label={copied ? 'Copied' : 'Copy CSS'}
             ></mds-button>
           </div>
-          <pre class="themes-export">{exportCss}</pre>
+          <mds-details class="themes-export-details">
+            <mds-text slot="title" typography="detail" tag="span">
+              The CSS of the themes
+            </mds-text>
+            <pre class="themes-export">{exportCss}</pre>
+          </mds-details>
         </div>
       )}
     </div>
@@ -427,98 +434,105 @@ function ThemeCard({
   const variantFamilies = Object.keys(variants).map((k) => `variant-${k}`);
   return (
     <div class="themes-card">
-      <div class="themes-head">
-        <div class="themes-title">
-          <mds-text typography="part" tag="h2" class="themes-name">
-            {name || family}
+      {/* what the theme is and its settings, the first column of its row */}
+      <div class="themes-info">
+        <div class="themes-head">
+          <div class="themes-title">
+            <mds-text typography="part" tag="h2" class="themes-name">
+              {name || family}
+            </mds-text>
+            {isDefault && <mds-badge variant="dark" label="base"></mds-badge>}
+            {shipped && (
+              <span title="a theme Magma ships: its name is reserved">
+                <mds-badge variant="dark" label="shipped"></mds-badge>
+              </span>
+            )}
+          </div>
+          <mds-text typography="caption" tag="p" class="themes-family themes-muted">
+            drawn from <code>{family}</code>
           </mds-text>
-          {isDefault && <mds-badge variant="dark" label="base"></mds-badge>}
-          {shipped && (
-            <span title="a theme Magma ships: its name is reserved">
-              <mds-badge variant="dark" label="shipped"></mds-badge>
-            </span>
-          )}
-        </div>
-        <mds-text typography="caption" tag="p" class="themes-family themes-muted">
-          drawn from <code>{family}</code>
-        </mds-text>
-        <code class="themes-attr">{isDefault ? ':root' : `data-theme-name='${name}'`}</code>
-        {/* the verdict of the contrast gate on the theme, per mode, live while it is edited:
+          <code class="themes-attr">{isDefault ? ':root' : `data-theme-name='${name}'`}</code>
+          {/* the verdict of the contrast gate on the theme, per mode, live while it is edited:
             its pairs are on the Contrast check page (#698) */}
-        <ThemeVerdict theme={gate} />
-      </div>
-
-      {!shipped && (
-        <div class="themes-name-field">
-          <Field
-            label="Name"
-            message={nameProblem ?? undefined}
-            variant={nameProblem ? 'error' : undefined}
-          >
-            <TextInput
-              value={name}
-              variant={nameProblem ? 'error' : undefined}
-              onValue={(value) => onName(value.trim())}
-            />
-          </Field>
+          <ThemeVerdict theme={gate} />
         </div>
-      )}
 
-      {/* accent assignment: pick a variant per role. Every theme - including the
+        {!shipped && (
+          <div class="themes-name-field">
+            <Field
+              label="Name"
+              message={nameProblem ?? undefined}
+              variant={nameProblem ? 'error' : undefined}
+            >
+              <TextInput
+                value={name}
+                variant={nameProblem ? 'error' : undefined}
+                onValue={(value) => onName(value.trim())}
+              />
+            </Field>
+          </div>
+        )}
+
+        {/* accent assignment: pick a variant per role. Every theme - including the
           default (:root) - can repoint an accent role to another variant; the roles
           themselves are fixed (never renamed or removed). On the default a change is
           a BASE change (exported as a :root block), elsewhere a per-theme override.
           The accents on one row, the modes of the theme under them (vittorio, 2026-11-05). */}
-      {hasScales && (
-        <div class="themes-settings">
-          <div class="themes-accents" role="group" aria-label={`The accents of ${name || family}`}>
-            {ACCENT_ROLES.map((role) => {
-              const current = accentFor(family, role);
-              const isBase = current === semantic.accents[role];
-              return (
-                <div class="themes-accent">
-                  <Field label={accentLabel(role)}>
-                    <Select
-                      size="md"
-                      value={current}
-                      onValue={(variant) => onAccent(family, role, variant)}
-                      options={variantFamilies.map((v) => ({
-                        value: v,
-                        label: `${v.replace('variant-', '')}${v === semantic.accents[role] ? ' (base)' : ''}`,
-                      }))}
-                    />
-                  </Field>
-                  {!isBase && (
-                    <mds-badge
-                      variant="info"
-                      label={isDefault ? 'changed' : 'override'}
-                    ></mds-badge>
-                  )}
-                </div>
-              );
-            })}
+        {hasScales && (
+          <div class="themes-settings">
+            <div
+              class="themes-accents"
+              role="group"
+              aria-label={`The accents of ${name || family}`}
+            >
+              {ACCENT_ROLES.map((role) => {
+                const current = accentFor(family, role);
+                const isBase = current === semantic.accents[role];
+                return (
+                  <div class="themes-accent">
+                    <Field label={accentLabel(role)}>
+                      <Select
+                        size="md"
+                        value={current}
+                        onValue={(variant) => onAccent(family, role, variant)}
+                        options={variantFamilies.map((v) => ({
+                          value: v,
+                          label: `${v.replace('variant-', '')}${v === semantic.accents[role] ? ' (base)' : ''}`,
+                        }))}
+                      />
+                    </Field>
+                    {!isBase && (
+                      <mds-badge
+                        variant="info"
+                        label={isDefault ? 'changed' : 'override'}
+                      ></mds-badge>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <div class="themes-accent themes-modes-field">
+              <Field label="Modes">
+                <Select
+                  size="md"
+                  value={modes.join(' ')}
+                  onValue={(value) => onModes(value.split(' ') as ColorMode[])}
+                  options={MODE_CHOICES}
+                />
+              </Field>
+            </div>
           </div>
-          <div class="themes-accent themes-modes-field">
-            <Field label="Modes">
-              <Select
-                size="md"
-                value={modes.join(' ')}
-                onValue={(value) => onModes(value.split(' ') as ColorMode[])}
-                options={MODE_CHOICES}
-              />
-            </Field>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {!hasScales ? (
         <mds-text typography="caption" tag="p" class="themes-muted">
           <code>{family}</code> has no surface+text scale.
         </mds-text>
       ) : (
-        // the same canvas as Semantic surface, one mode under the other: the surfaces of the
-        // theme are in view (vittorio, 2026-11-05), the accents of the theme under each. A mode
-        // the theme does not offer stays in view, dimmed, and says so
+        // the same canvas as Semantic surface per mode: the surfaces of the theme are in view
+        // (vittorio, 2026-11-05), the accents of the theme under each. A mode the theme does not
+        // offer stays in view, dimmed, and says so
         <div class="themes-modes">
           {MODES.map((mode) => {
             const s = surfaces[family][mode];

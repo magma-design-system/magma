@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { afterEach, expect, test } from 'vitest'
+import { afterEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 import { act } from 'preact/test-utils'
 
@@ -24,7 +24,7 @@ afterEach(() => {
 
 const show = () => render(h(ThemesManager, { config: initialConfig as unknown as MagmaConfig }), root)
 
-const cardsOf = () => [...root.querySelectorAll('.themes-grid > .themes-card')]
+const cardsOf = () => [...root.querySelectorAll('.themes-list > .themes-card')]
 const exportOf = () => root.querySelector('.themes-export')?.textContent ?? ''
 const emit = (element: Element, type: string, detail: unknown) =>
   act(() => {
@@ -94,6 +94,28 @@ test('the export prints each theme as themes.css does: the shipped ones by their
   expect(exported).toContain(":root[data-theme-name='editorial'].pref-contrast-more {")
 })
 
+test('the export keeps its CSS closed under its header, and Copy CSS takes it closed', async () => {
+  const writeText = vi.fn<(text: string) => Promise<void>>(async () => {})
+  Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
+  show()
+
+  const details = root.querySelector('mds-details.themes-export-details')!
+  expect(details.hasAttribute('opened')).toBe(false)
+  expect(details.querySelector('[slot="title"]')?.textContent).toBe('The CSS of the themes')
+  expect(details.querySelector('.themes-export')?.textContent).toBe(exportOf())
+  // the header and the copy stay in view, outside what closes
+  const card = details.closest('.themes-card')!
+  const copy = card.querySelector('mds-button')!
+  expect(details.contains(copy)).toBe(false)
+  expect(details.contains(card.querySelector('.themes-head'))).toBe(false)
+
+  await act(async () => {
+    copy.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+  })
+  expect(writeText).toHaveBeenCalledWith(exportOf() + '\n')
+  Reflect.deleteProperty(navigator, 'clipboard')
+})
+
 test('a theme of the person never takes a name Magma ships, nor a name already given', () => {
   for (const name of ['business', 'editorial', 'default', 'cool', 'warm'])
     expect(RESERVED_THEME_NAMES.has(name)).toBe(true)
@@ -149,8 +171,11 @@ test('an accent is a Magma select: another variant marks the override and repoin
 
 test('a theme shows the canvas of Semantic surface per mode, its accents on each', () => {
   show()
-  const card = root.querySelector('.themes-grid > .themes-card')!
-  const canvases = [...card.querySelectorAll('.surfaces-canvas')]
+  const card = cardsOf()[0]
+  // two parts, the columns of its row: what the theme is with its settings, then its modes
+  expect([...card.children].map((part) => part.className)).toEqual(['themes-info', 'themes-modes'])
+  expect(card.querySelector('.themes-info > .themes-settings')).not.toBeNull()
+  const canvases = [...card.querySelectorAll('.themes-modes > .surfaces-canvas')]
   expect(canvases.map((one) => one.querySelector('.surfaces-canvas-label')?.textContent?.split(' ')[0])).toEqual([
     'light',
     'dark',

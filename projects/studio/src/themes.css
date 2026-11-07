@@ -1,8 +1,8 @@
 /*
   The Themes page (themes.tsx): one card per theme, its name, its accents, the modes it offers and
-  its two modes in view, then the export. Spaces from the rhythm, colours from the semantic roles
-  (docs/agents/patterns/rhythm.md, surfaces.md); the boxes of the modes paint the colours the
-  configuration generates inline, so only their frame is written here.
+  its two modes in view, then the export, its CSS closed. Spaces from the rhythm, colours from the
+  semantic roles (docs/agents/patterns/rhythm.md, surfaces.md); the boxes of the modes paint the
+  colours the configuration generates inline, so only their frame is written here.
 */
 
 .themes {
@@ -25,25 +25,23 @@
 }
 
 /*
-  The cards side by side, each at least as wide as a short field (half the column of a form,
-  widths/field), sharing the row: a theme alone takes the row, and its two modes stand side by
-  side in it.
+  The themes one under the other (vittorio, 2026-11-07): where the page has room, each card is a
+  row of three columns, what the theme is and its settings, its light mode, its dark mode, so a
+  mode of every theme stands in the same column; in a narrow page a card is one column, its
+  settings over its two modes.
 */
 
-.themes-grid {
-  align-items: start;
+.themes-list {
+  container: themes / inline-size;
   display: grid;
   gap: var(--magma-rhythm-between-containers);
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(min(100%, calc(var(--magma-width-form) / 2)), 1fr)
-  );
 }
 
 /* a card: a part of the page on a raised surface, its title and its content inside one inset */
 
 .themes-card {
   align-content: start;
+  align-items: start;
   background-color: rgb(var(--magma-surface-raised));
   border: thin solid rgb(var(--magma-border-muted));
   border-radius: var(--magma-radius-lg);
@@ -53,6 +51,27 @@
   gap: var(--magma-rhythm-between-fields);
   min-inline-size: 0;
   padding: var(--magma-rhythm-inset);
+}
+
+/*
+  Three columns once each has 20rem, the width at which the settings put two accents on one row:
+  3 x 20rem, the gap after the settings (between-fields, 600 = 1.5rem), the gap between the modes
+  (inline, 300 = 0.75rem) and the inset of the card on both sides (600 = 1.5rem each) make
+  65.25rem of the list, rounded up. The settings take one part of the row, the two modes two.
+*/
+
+@container themes (width >= 66rem) {
+  .themes-list > .themes-card {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  }
+}
+
+.themes-info {
+  align-content: start;
+  container: theme-info / inline-size;
+  display: grid;
+  gap: var(--magma-rhythm-between-fields);
+  min-inline-size: 0;
 }
 
 .themes-head {
@@ -92,7 +111,7 @@
   row-gap: var(--magma-rhythm-between-fields);
 }
 
-@container theme (width >= 20rem) {
+@container theme-info (width >= 20rem) {
   .themes-settings {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -109,12 +128,20 @@
   justify-self: stretch;
 }
 
-/* the two modes one under the other, each the canvas of Semantic surface (SurfaceCanvas) with
-   the accents of the theme under it */
+/* the two modes, each the canvas of Semantic surface (SurfaceCanvas) with the accents of the
+   theme under it: side by side once each has 20rem (2 x 20rem and the gap between them, inline,
+   300 = 0.75rem, rounded up), one under the other in a narrower card */
 
 .themes-modes {
   display: grid;
   gap: var(--magma-rhythm-inline);
+  min-inline-size: 0;
+}
+
+@container theme (width >= 41rem) {
+  .themes-modes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .themes-samples {
@@ -139,6 +166,14 @@
 
 .themes-sample-pill {
   text-transform: capitalize;
+}
+
+/* the CSS of the export, closed under its header: mds-details lays its content out at the width
+   of what it holds, a grid on the host keeps the code to the width of the card, scrolling */
+
+.themes-export-details {
+  display: grid;
+  min-inline-size: 0;
 }
 
 .themes-export {

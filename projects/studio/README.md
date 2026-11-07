@@ -356,7 +356,10 @@ theme, under its name, drawn from its family, with its reassigned accents and it
 blocks, printed by `namedThemeCss` of `design-tokens/semantic.model.ts`, the function that writes
 `themes.css`: the block of `editorial` is the one `themes.css` ships. A theme of one mode
 declares it first in its block (`--magma-color-modes`, read by `mds-pref-theme`); the base theme
-declares it under its own name too, since a lock in `:root` would reach every theme.
+declares it under its own name too, since a lock in `:root` would reach every theme. The page
+lists the themes one under the other, each a row of three columns where the page has room (its
+settings, its light mode, its dark mode), a single column on a phone; the CSS of the export stays
+closed under its header until it is opened, and **Copy CSS** takes it closed too.
 
 A reload keeps the work: the studio mirrors it to the browser's localStorage as a draft, stamped
 with the configuration it was made on (the bundled one, or the file a server serves). When that

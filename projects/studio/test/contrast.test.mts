@@ -262,7 +262,7 @@ test('the Themes page says the verdict of each theme per mode, and its export as
     }),
     root,
   )
-  const card = root.querySelector('.themes-grid > .themes-card')!
+  const card = root.querySelector('.themes-list > .themes-card')!
   expect([...card.querySelectorAll('[aria-label^="The contrast gate"] mds-badge')].map((badge) => badge.getAttribute('label'))).toEqual([
     `light: ${report.themes[0].failing.light} below target`,
     `dark: ${report.themes[0].failing.dark} below target`,
