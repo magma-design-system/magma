@@ -113,6 +113,7 @@ flowchart LR
   BUILD -.->|"./components, ./loader, ./hydrate, ./services"| APP(["consumer app"])
   BUILD -->|"dist/magma-components, loaded by its pages"| STU["studio"]
   DOCS -->|"documentation.json"| CM["codemod"]
+  DOCS -->|"documentation.json"| STU
   DOCS -->|"magma.api.txt"| RISK["check.pr-risk"]
   DOCS -.->|"AGENTS.md, agents/"| AGENT(["the agent of a consumer project"])
   DOCS -.->|"documentation.json"| SITE(["docs site"])
