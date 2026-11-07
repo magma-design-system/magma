@@ -34,6 +34,10 @@ Full rules: `docs/WORKFLOW.md` rule 5 and the Tests section of `projects/stencil
 - `*.spec.ts` for logic that does not need a rendered component, `*.e2e.ts` for anything that needs the live DOM. How to write and run them: `projects/stencil/HOWTO.md`.
 - **Storybook (`*.stories.tsx`)** adds the visual, interaction (`play` + `storybook/test`) and accessibility (addon-a11y) tests, and the integration scenarios with several components on one page. Add or update a story when necessary; it complements the Vitest tests, it does not replace them. Run them with `nx run stencil:test-storybook` (the `storybook` project of `vitest.config.mts`, via `@storybook/addon-vitest`).
 
+## Closing a unit of work
+
+Before its pull request, bring the agent context up to date with what the branch changed, and keep what every session loads small: `/context-review` in Claude Code, the same steps by hand otherwise (`docs/WORKFLOW.md` rule 8). `nx run magma:check.agent-context` holds what a machine can see, in CI too.
+
 ## Mistakes agents make here
 
 The lint and the checks catch most of these; do not write them in the first place:
@@ -87,6 +91,7 @@ nx run mcp:serve.previews                            # edit the previews of the 
 nx run claude-plugin:build                           # regenerate the skills of the Claude Code plugin from projects/claude-plugin/templates
 nx run claude-plugin:check                           # fail when a skill is out of date or breaks the Agent Skills format (also run in CI)
 nx run magma:check.diagrams                          # fail when a README diagram or the overview of docs/ARCHITECTURE.md misses a link of the Nx project graph (also run in CI)
+nx run magma:check.agent-context                     # fail when the agent context written by hand misses the repository (links, index, commands, counts, copies) or every session loads more than its budget (also run in CI)
 npm run lint                                         # ESLint + Stylelint on every project (also run in CI)
 ```
 
@@ -130,7 +135,7 @@ What one project produces and another reads (`documentation.json`, the token dat
 | How one project works and what it shares with the others (files, exports, commands): its diagram, and how to keep it current | `projects/<name>/README.md`, section Architecture; `docs/ARCHITECTURE.md`, "Diagrams of the projects" |
 | Lint rules for TypeScript/JS and CSS authoring (ESLint + Stylelint)                    | `docs/CODING_STANDARDS.md`                       |
 | Commit message convention: allowed types, scopes, special rules                        | `docs/COMMITS.md`                                |
-| Contribution workflow and git governance: branching, merge queue, releases, tests, issue labels | `docs/WORKFLOW.md`                      |
+| Contribution workflow and git governance: branching, merge queue, releases, tests, issue labels, closing a unit of work | `docs/WORKFLOW.md`                      |
 | Writing and running tests: Vitest spec, e2e, storybook (play + a11y) and wrapper tests | `projects/stencil/HOWTO.md`                      |
 | Navigable catalogue of all 117 components, which per-component file to read, authoring usage docs | `docs/COMPONENTS.md`                  |
 | Writing or changing a pattern (a task across components, shipped as `agents/patterns/<id>.md`): the method, the format, the preview of each case, the check, product layers; the skills `/pattern-new`, `/pattern-change`, `/pattern-preview`, `/pattern-list` | `docs/PATTERNS.md` |
