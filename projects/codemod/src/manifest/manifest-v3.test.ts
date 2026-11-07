@@ -4,7 +4,14 @@ import { fileURLToPath } from 'node:url';
 import { transformCss } from '../surfaces/css.js';
 import { collectColorTokens } from './color-token-source.js';
 import { colorTokenNames } from './color-tokens.generated.js';
-import { manifestV3 } from './manifest-v3.js';
+import {
+  LOGICAL_ROOTS,
+  MEASURES,
+  manifestV3,
+  SIZE_ROOTS,
+  SPACING_ROOTS,
+  SPACING_STEPS,
+} from './manifest-v3.js';
 import { chainFrom, DEFAULT_FROM, JUMPS, supersededFlags } from './manifests.js';
 
 const PROJECTS = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -103,6 +110,78 @@ describe('the v2 -> v3 manifest', () => {
     expect(
       result.findings.some((f) => f.kind === 'flag' && f.message.includes('internal property')),
     ).toBe(true);
+  });
+});
+
+describe('category P: the t-shirt names leave spacing (#1061)', () => {
+  const classes = manifestV3.global.classes!;
+  const renames = new Map(
+    classes.flatMap((rule) => (rule.kind === 'classRename' ? [[rule.from, rule.to]] : [])),
+  );
+  const reports = new Set(
+    classes.flatMap((rule) => (rule.kind === 'classReport' ? [rule.name] : [])),
+  );
+
+  it('rewrites a spacing utility to the step of the same value, and leaves the container sizes', () => {
+    expect(renames.get('p-md')).toBe('p-400');
+    expect(renames.get('gap-y-3xl')).toBe('gap-y-1600');
+    expect(renames.get('-m-xs')).toBe('-m-100');
+    expect(renames.get('h-lg')).toBe('h-600');
+    expect(renames.get('w-none')).toBe('w-0');
+    expect(renames.get('inline-none')).toBe('inline-0');
+    for (const name of ['w-xs', 'max-w-2xl', 'basis-md', 'max-w-none', 'leading-md', 'max-w-text'])
+      expect(renames.has(name) || reports.has(name)).toBe(false);
+    for (const to of renames.values()) expect(to).toMatch(/^-?[a-z-]+-\d+$/);
+  });
+
+  it('reports what changes value', () => {
+    for (const name of [
+      'inline-2xl',
+      'min-inline-sm',
+      'max-inline-xs',
+      'max-inline-none',
+      'leading-none',
+      'p-prose',
+      'gap-text',
+      '-m-title',
+    ])
+      expect(reports.has(name)).toBe(true);
+    expect(reports.has('w-prose')).toBe(false);
+  });
+
+  it('renames the custom properties of the measures', () => {
+    const v2 =
+      '.article { max-width: var(--spacing-text); --spacing-prose: 60ch; gap: var(--spacing-md); }';
+    expect(transformCss(v2, manifestV3, { file: 'v2.css' }).output).toBe(
+      '.article { max-width: var(--container-text); --container-prose: 60ch; gap: var(--spacing-md); }',
+    );
+  });
+
+  // The roots and their partition come from the consumption map of styles (CI builds it
+  // before the codemod tests): a Tailwind or theme change that moves them fails here.
+  const MAP = join(PROJECTS, 'styles', 'dist', 'tailwind', 'consumption.json');
+  (existsSync(MAP) ? it : it.skip)('matches the consumption map of the built theme', () => {
+    const map = JSON.parse(readFileSync(MAP, 'utf8')) as {
+      tokens: Record<string, { namespace: string | null; key?: string | null }>;
+      namespaces: Record<string, { utilities: string[] }>;
+      spacing: { utilities: string[]; keys: string[] };
+    };
+    expect([...SPACING_ROOTS].sort()).toEqual([...map.namespaces['--spacing']!.utilities].sort());
+    // no named step of spacing, no measure, is a theme key any more
+    const gone: string[] = [...Object.keys(SPACING_STEPS), ...MEASURES];
+    expect(map.spacing.keys.filter((key) => gone.includes(key))).toEqual([]);
+    // every step written is a class of the theme
+    for (const to of renames.values())
+      expect(map.spacing.utilities).toContain(to.slice(0, to.lastIndexOf('-')));
+    // the size roots are the container's, the leading scale has every t-shirt key
+    const roots: readonly string[] = SPACING_ROOTS;
+    expect(
+      map.namespaces['--container']!.utilities.filter((root) => roots.includes(root)).sort(),
+    ).toEqual([...SIZE_ROOTS, ...LOGICAL_ROOTS].sort());
+    const leading = Object.values(map.tokens).flatMap(({ namespace, key }) =>
+      namespace === '--leading' && key ? [key] : [],
+    );
+    expect(leading).toEqual(expect.arrayContaining(Object.keys(SPACING_STEPS).slice(1)));
   });
 });
 

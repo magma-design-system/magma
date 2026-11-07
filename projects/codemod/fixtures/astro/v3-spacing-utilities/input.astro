@@ -1,0 +1,11 @@
+---
+const { dense } = Astro.props;
+---
+
+<section class="flex gap-lg p-md">
+  <slot />
+</section>
+
+<style>
+  section { max-width: var(--spacing-text); }
+</style>

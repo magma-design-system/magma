@@ -151,6 +151,7 @@ The breaking changes of Magma 3 (epic #1292), one category per part; each part a
 | #   | Category                      | What it does                                                                                                                                                                      | Confidence |
 | --- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
 | N   | Colour tokens (#918)          | a colour token is a full colour, no longer three channels: its reads through `rgb()` become `var()` or `color-mix()`, its channel definitions `rgb()`, and the input properties that took channels lose their `-rgb`. See below | safe; strings and unread values: report |
+| P   | Spacing steps (#1061)         | a t-shirt name is a container size, spacing a numeric step: a spacing utility with a t-shirt name becomes the step of the same value (`p-md` -> `p-400`), under every variant; `var(--spacing-prose)` becomes `var(--container-prose)`. See below | safe; a class whose value changes: report |
 
 ### Colour tokens (N)
 
@@ -207,6 +208,42 @@ Reported, not rewritten:
   the rewrite when it can read the whole string (`'rgb(var(--magma-accent) / <alpha-value>)'` ->
   `'color-mix(in srgb, var(--magma-accent) calc(<alpha-value> * 100%), transparent)'`, the form the Magma 3
   preset writes).
+
+### Spacing steps (P)
+
+Magma 3 publishes no named step of spacing in its Tailwind theme: a t-shirt name (`xs` ... `4xl`) is always a
+container size, spacing always a numeric step, the step times `--spacing` (0.0025rem). In Magma 2 `2xl` was the 48px
+spacing step on `p-2xl` and `inline-2xl` and the 640px container on `max-w-2xl`. The codemod rewrites a spacing
+utility to the step of the same value, under any variant and important marker, on every root that reads spacing
+(`p`, `m`, `gap`, `space`, `inset`, `translate`, `scroll-m`, `h`, `size`, `block`, ..., the negative ones too):
+
+| Magma 2 | `none` | `xs`  | `sm`  | `md`  | `lg`  | `xl`  | `2xl`  | `3xl`  | `4xl`  |
+| ------- | ------ | ----- | ----- | ----- | ----- | ----- | ------ | ------ | ------ |
+| Magma 3 | `0`    | `100` | `200` | `400` | `600` | `800` | `1200` | `1600` | `2400` |
+
+`gap-lg` -> `gap-600`, `hover:-mt-xs` -> `hover:-mt-100`, `w-none` -> `w-0`. The step is the primitive the name
+pointed at (`md` is `size.400`, 16px, and `p-400` is 400 times 0.0025rem, the same 16px), so a rewrite paints what
+the old class painted.
+
+- **Left as they are.** `w-*`, `min-w-*`, `max-w-*` and `basis-*` with a t-shirt name were container sizes already
+  (#1060: `max-w-2xl` is 640px in both); `max-w-none` sets no limit in both; `leading-*` reads its own scale of line
+  heights.
+- **The measures of text** (`phrase`, `prose`, `text`, `title`) are container widths: `max-w-text` and `w-prose`
+  keep their class and their value, and their custom properties are renamed (`var(--spacing-text)` ->
+  `var(--container-text)`) in CSS, SCSS and inline styles.
+- **The named steps as custom properties** (`var(--spacing-md)`) stay: `typography.css` still declares them.
+- **Where the rules come from.** The roots are the `namespaces["--spacing"].utilities` of the consumption map of
+  styles, and the classes left alone those where the Magma 2 map says another variable wins; the test holds them to
+  the built map.
+
+Reported, not rewritten:
+
+- A logical size with a t-shirt name, `inline-*`, `min-inline-*`, `max-inline-*`: it read the spacing step, it reads
+  the container (`inline-2xl` was 48px and is 640px). Keep it for the container, or write the step (`inline-1200`).
+- `leading-none` and `max-inline-none`: in Magma 2 the spacing step `none` won over Tailwind's own class, so they
+  were 0; in Magma 3 they are `line-height: 1` and no limit.
+- A measure on a spacing utility (`p-prose`, `gap-text`): no class in Magma 3. The report gives
+  `p-(--container-prose)`, which keeps the value.
 
 ## Migration matrix: Magma 1 -> 2
 
@@ -413,8 +450,11 @@ Not seen at all:
 - A variable of yours that holds a Magma colour and is read through `rgb()`: `--brand: var(--magma-accent)` then
   `rgb(var(--brand) / 0.5)`. In Magma 2 `--brand` held channels, in Magma 3 a colour, and the read paints nothing;
   the codemod does not follow your variables. Search your sheets for `rgb(var(` once the run is done.
-- A renamed property inside a Tailwind arbitrary value (`bg-[rgb(var(--mds-input-variant-color-rgb))]`): the
-  renames of category G apply to declarations only.
+- A renamed property inside a Tailwind arbitrary value (`bg-[rgb(var(--mds-input-variant-color-rgb))]`,
+  `max-w-(--spacing-prose)`): the renames of category G apply to declarations only.
+- A named step of spacing read through Tailwind's theme functions in a sheet of yours, `--theme(--spacing-md)` or
+  `theme(spacing.md)`: Tailwind stops the build on it ("Could not resolve value for theme function"), so it shows
+  up by itself; write `--spacing(400)`.
 - The files of other formats: `.vue`, `.svelte`, `.mdx`, data files (`.json`), and the frontmatter of an Astro
   component. Search them for `rgb(var(--` by hand.
 

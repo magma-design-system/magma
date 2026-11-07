@@ -1,0 +1,20 @@
+.toolbar {
+  @apply flex gap-400 p-600 hover:px-800 md:-mt-100;
+}
+
+/* a t-shirt name on a size utility was the container already: left as it is */
+.column {
+  @apply w-xs max-w-2xl max-w-none leading-md;
+}
+
+/* reported: the logical size reads the container now, a measure makes no padding */
+.reported {
+  @apply inline-2xl p-prose;
+}
+
+.article {
+  max-width: var(--container-text);
+  margin-block: var(--spacing-lg);
+  --container-prose: 60ch;
+  @apply gap-y-1600 w-0;
+}

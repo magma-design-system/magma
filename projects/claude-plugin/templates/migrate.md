@@ -27,6 +27,8 @@ npx {{codemod}} --from 2 --path src --report-md magma-migration.md
 
 Read `magma-migration.md`: what the codemod cannot decide alone is listed by token and by file. For Magma 3 that is mostly colours: a colour token is a full colour, no longer three channels, so `rgb(var(--magma-x))` becomes `var(--magma-x)` and an alpha a `color-mix()`; a colour built in a string of the scripts, a value that may hold channels of the project's own, and `rgba(var(--x), a)` are reported with the rewrite to make.
 
+The spacing utilities with a t-shirt name become numeric steps (`p-md` -> `p-400`): a t-shirt name is a container size in Magma 3. A class whose value changes is reported instead: a logical size with a t-shirt name (`inline-2xl` was the spacing step and is the container), `leading-none` and `max-inline-none` (0 in Magma 2), and a measure of text used as a spacing step (`p-prose`, no class in Magma 3). Keep the class when the new value is the one meant, otherwise write what the report gives.
+
 ## 3. Write
 
 ```bash
