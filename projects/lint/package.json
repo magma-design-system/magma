@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@angular-eslint/template-parser": "22.5.0",
-    "@html-eslint/parser": "0.67.0"
+    "@html-eslint/parser": "0.68.0"
   },
   "repository": {
     "type": "git",
