@@ -69,4 +69,4 @@ None
 - [ ] Updated the relevant `SPEC.md` (and `docs/ARCHITECTURE.md` if system-wide)
 - [ ] When a project starts or stops reading what another produces (a file, an export, a command), the `Architecture` diagram in the README of both is updated (`nx run magma:check.diagrams`)
 - [ ] The agent context is up to date with the branch: reviewed with `/context-review` or its steps by hand (`docs/WORKFLOW.md` rule 8), and `nx run magma:check.agent-context` passes
-- [ ] I am **not** merging this into `main` myself, nor adding it to the merge queue - that is a maintainer's step
+- [ ] Nothing merges this, nor adds it to the merge queue, before a maintainer approves it - by hand, or by telling an agent to (`docs/WORKFLOW.md` rule 1)

@@ -476,12 +476,15 @@ maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dr
 
 Protections, set on GitHub and documented here because they shape the flow:
 
-- ruleset `main`: pull request required, the 23 CI checks required, merge queue (merge commits
+- ruleset `main`: pull request required, the 24 CI checks required, merge queue (merge commits
   only), no force push; the organisation admins bypass it, which is what lets the release token
   push the `chore(release)` commits;
 - ruleset `no-deletion`: `main` cannot be deleted, by anybody (no bypass). The repository deletes
   the head branch of every merged pull request, so a pull request opened from `main` would
   otherwise delete it on merge (it happened, #954);
+- no ruleset on the branch of an epic: a pull request into it has the plain merge button and no
+  merge queue, so the order of its parts is the one `nx run magma:epic.status` shows, and who
+  merges them is rule 1 and rule 2 of `docs/WORKFLOW.md`;
 - environment `release`: required reviewers for a real release (the dry-run needs none);
   deployments from `main` only;
 - environment `github-pages`: deployments from `main` only.

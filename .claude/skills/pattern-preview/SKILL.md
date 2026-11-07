@@ -120,5 +120,5 @@ hand nor committed. Then the next case, from step 2.
 Run `npx nx run stencil:check.usage-docs`, `npx nx run lint:test` and `npx nx run mcp:test` too, commit
 (`feat(magma): the previews of the cases of <id>`; ASCII only, `docs/COMMITS.md`), check
 `origin/main` in its own step and merge it if it moved, push the branch and open a pull request
-into `main` with the choices taken. Never merge it. Called from `pattern-new` or
+into `main` with the choices taken. Never merge it on your own initiative. Called from `pattern-new` or
 `pattern-change`, the previews go in their pull request instead.
