@@ -1,3 +1,4 @@
+import { typographyHeadingTagDictionary } from '@type/text';
 import { typographyReadDictionary } from '@type/typography';
 import { h } from '@stencil/core';
 
@@ -22,6 +23,13 @@ export default {
       control: { type: 'range', step: 0.01, min: 0, max: 1 },
       type: { name: 'number' },
       description: 'A value between 0 and 100 that rapresents the status progress',
+    },
+    tag: {
+      type: { name: 'string' },
+      description:
+        'Specifies the heading level of the title, the level of its place in the outline of the page: left out, the item is not a heading',
+      options: typographyHeadingTagDictionary,
+      control: { type: 'select' },
     },
     typography: {
       type: { name: 'string' },

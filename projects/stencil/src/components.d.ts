@@ -7,6 +7,7 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
 import { TypographyInfoType, TypographyInputType, TypographyLabelType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTechnicalType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
+import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 import { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 import { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
@@ -22,7 +23,6 @@ import { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event
 import { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 import { TextAnimationType } from "./components/mds-text/meta/types";
 import { ButtonCurrentType, ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
-import { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 import { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 import { MdsChipEvent } from "./components/mds-chip/meta/interface";
 import { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
@@ -96,6 +96,7 @@ import { UsageType } from "./components/mds-usage/meta/types";
 import { NoiseType, PreloadType } from "./components/mds-video-wall/meta/types";
 export { MdsAccordionEventDetail } from "./components/mds-accordion/meta/event-detail";
 export { TypographyInfoType, TypographyInputType, TypographyLabelType, TypographyReadingVariants, TypographyReadType, TypographySmallerType, TypographyTechnicalType, TypographyTitleType, TypographyTooltipType, TypographyType, TypographyVariants } from "./type/typography";
+export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { MdsAccordionItemEventDetail } from "./components/mds-accordion-item/meta/event-detail";
 export { MdsAccordionTimerEventDetail } from "./components/mds-accordion-timer/meta/event-detail";
 export { MdsAccordionTimerItemEventDetail } from "./components/mds-accordion-timer-item/meta/event-detail";
@@ -111,7 +112,6 @@ export { MdsBreadcrumbEventDetail } from "./components/mds-breadcrumb/meta/event
 export { MdsBreadcrumbItemEventDetail } from "./components/mds-breadcrumb-item/meta/event-detail";
 export { TextAnimationType } from "./components/mds-text/meta/types";
 export { ButtonCurrentType, ButtonDropdownVariantType, ButtonIconPositionType, ButtonSizeType, ButtonTargetType, ButtonType, ButtonVariantType, TabSizeType } from "./type/button";
-export { TypographyHeadingTagType, TypographyTagType, TypographyTruncateType } from "./type/text";
 export { CalendarCellSelectionOrieintationType, CalendarCellSelectionPositionType, CalendarCellType } from "./components/mds-calendar-cell/meta/types";
 export { MdsChipEvent } from "./components/mds-chip/meta/interface";
 export { DropdownInteractionType } from "./components/mds-dropdown/meta/types";
@@ -212,7 +212,11 @@ export namespace Components {
          */
         "selected"?: boolean;
         /**
-          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
+          * Specifies the heading level of the title, the level of its place in the outline of the page (`h3` under a section titled `h2`): the heading wraps the button that opens the item, as the Accordion pattern of the WAI-ARIA Authoring Practices does. Left out, the item is not a heading: only the page knows its place, and the level of the style would skip the levels in between
+         */
+        "tag"?: TypographyHeadingTagType;
+        /**
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). It is the style only: the level of the title in the outline is `tag`
           * @default 'h5'
          */
         "typography"?: TypographyTitleType;
@@ -254,7 +258,11 @@ export namespace Components {
          */
         "selected": boolean;
         /**
-          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
+          * Specifies the heading level of the title, the level of its place in the outline of the page (`h3` under a section titled `h2`): the heading wraps the button that opens the item, as the Accordion pattern of the WAI-ARIA Authoring Practices does. Left out, the item is not a heading: only the page knows its place, and the level of the style would skip the levels in between
+         */
+        "tag"?: TypographyHeadingTagType;
+        /**
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). It is the style only: the level of the title in the outline is `tag`
           * @default 'h5'
          */
         "typography": TypographyTitleType;
@@ -5595,7 +5603,11 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
         /**
-          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
+          * Specifies the heading level of the title, the level of its place in the outline of the page (`h3` under a section titled `h2`): the heading wraps the button that opens the item, as the Accordion pattern of the WAI-ARIA Authoring Practices does. Left out, the item is not a heading: only the page knows its place, and the level of the style would skip the levels in between
+         */
+        "tag"?: TypographyHeadingTagType;
+        /**
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). It is the style only: the level of the title in the outline is `tag`
           * @default 'h5'
          */
         "typography"?: TypographyTitleType;
@@ -5657,7 +5669,11 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
         /**
-          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
+          * Specifies the heading level of the title, the level of its place in the outline of the page (`h3` under a section titled `h2`): the heading wraps the button that opens the item, as the Accordion pattern of the WAI-ARIA Authoring Practices does. Left out, the item is not a heading: only the page knows its place, and the level of the style would skip the levels in between
+         */
+        "tag"?: TypographyHeadingTagType;
+        /**
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). It is the style only: the level of the title in the outline is `tag`
           * @default 'h5'
          */
         "typography"?: TypographyTitleType;
@@ -9131,6 +9147,7 @@ declare namespace LocalJSX {
     }
     interface MdsAccordionItemAttributes {
         "typography": TypographyTitleType;
+        "tag": TypographyHeadingTagType;
         "selected": boolean;
         "label": string;
     }
@@ -9140,6 +9157,7 @@ declare namespace LocalJSX {
     }
     interface MdsAccordionTimerItemAttributes {
         "typography": TypographyTitleType;
+        "tag": TypographyHeadingTagType;
         "selected": boolean;
         "description": string;
         "duration": number;
