@@ -92,6 +92,7 @@ nx run claude-plugin:build                           # regenerate the skills of 
 nx run claude-plugin:check                           # fail when a skill is out of date or breaks the Agent Skills format (also run in CI)
 nx run magma:check.diagrams                          # fail when a README diagram or the overview of docs/ARCHITECTURE.md misses a link of the Nx project graph (also run in CI)
 nx run magma:check.agent-context                     # fail when the agent context written by hand misses the repository (links, index, commands, counts, copies) or every session loads more than its budget (also run in CI)
+nx run magma:epic.status --epic=<n>                 # an epic as a table in merge order, with the next action (read only; its tests: magma:epic.test)
 npm run lint                                         # ESLint + Stylelint on every project (also run in CI)
 ```
 

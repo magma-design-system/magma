@@ -35,6 +35,20 @@
         ],
         "parallel": false
       }
+    },
+    "epic.status": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "tsx scripts/epic.ts"
+      }
+    },
+    "epic.test": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "tsx --test scripts/epic.spec.ts"
+      }
     }
   }
 }
