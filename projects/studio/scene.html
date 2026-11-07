@@ -94,6 +94,27 @@
         align-items: center;
         justify-content: space-between;
       }
+      /* the family the Palette edits, first (palette-side.tsx): the studio marks the elements
+         that paint with it (frame.ts, markPainted), and every list of the scene puts first what
+         holds one, the card in the page, the row in its card, the element staying where it is in
+         its row. The cards leave their columns, the frame of the Palette having the room of one,
+         and the messages of the stack go one by one, so the one of the family leads the others */
+      html[data-studio-paints] :is(.scene-grid, .scene-grid > .scene-stack) {
+        display: contents;
+      }
+      html[data-studio-paints] .scene-main {
+        row-gap: var(--magma-rhythm-between-containers);
+      }
+      html[data-studio-paints] .scene-grid > * {
+        margin-block-end: 0;
+      }
+      html[data-studio-paints] .scene-head {
+        order: -2;
+      }
+      html[data-studio-paints] :is(.scene-main, .scene-grid, .scene-stack, .scene-fields, .scene-rows)
+        > :is([data-studio-painted], :has([data-studio-painted])) {
+        order: -1;
+      }
     </style>
   </head>
   <body>
@@ -441,7 +462,8 @@
           </mds-card-content>
         </mds-card>
 
-        <!-- the kinds of request, each with its colour -->
+        <!-- the kinds of request, each with its colour: every label colour of Magma
+             (docs/agents/variants.md, Label), so the Palette has one to show for each family -->
         <mds-card>
           <mds-card-header>
             <mds-text typography="part" tag="h2">Categorie</mds-text>
@@ -452,6 +474,12 @@
               <mds-label variant="green" label="Stato civile"></mds-label>
               <mds-label variant="orange" label="Elettorale"></mds-label>
               <mds-label variant="orchid" label="Cittadinanza"></mds-label>
+              <mds-label variant="amaranth" label="Servizi sociali"></mds-label>
+              <mds-label variant="lime" label="Tributi"></mds-label>
+              <mds-label variant="purple" label="Protocollo"></mds-label>
+              <mds-label variant="sky" label="Scuola"></mds-label>
+              <mds-label variant="violet" label="Cultura"></mds-label>
+              <mds-label variant="yellow" label="Polizia locale"></mds-label>
               <mds-label variant="aqua" tone="strong" label="Certificati"></mds-label>
               <mds-label variant="red" tone="strong" label="Urgente"></mds-label>
             </div>

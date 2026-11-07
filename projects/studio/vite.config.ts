@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { magmaVendor } from './vendor.ts';
+import { magmaApi } from './magma-api.ts';
 
 // the generator sources of design-tokens are .mts files imported with .mjs
 // specifiers (node/tsc convention); vite needs help mapping the extension
@@ -25,7 +26,7 @@ const root = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
   root,
-  plugins: [resolveMts(), magmaVendor(root)],
+  plugins: [resolveMts(), magmaVendor(root), magmaApi()],
   oxc: {
     jsx: { runtime: 'automatic', importSource: 'preact' },
   },
@@ -41,12 +42,14 @@ export default defineConfig({
   build: {
     outDir: fileURLToPath(new URL('./dist', import.meta.url)),
     emptyOutDir: true,
-    // the studio, and the pages the Theme section shows in its iframe: the scene and the groups
+    // the studio, and the pages it shows in an iframe: the scene and the groups of the Theme
+    // section, the states of a colour beside a contrast scale
     rollupOptions: {
       input: {
         main: fileURLToPath(new URL('./index.html', import.meta.url)),
         scene: fileURLToPath(new URL('./scene.html', import.meta.url)),
         groups: fileURLToPath(new URL('./groups.html', import.meta.url)),
+        states: fileURLToPath(new URL('./states.html', import.meta.url)),
       },
     },
   },

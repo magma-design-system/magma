@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'preact/hooks';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import type { Formula, MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import {
   resolveFormula,
@@ -13,7 +13,13 @@ import {
   EASING_FAMILIES,
   type EasingFn,
 } from '@maggioli-design-system/design-tokens/src/lib/easing.mjs';
+import { COLOR_MODES } from '@maggioli-design-system/design-tokens/src/lib/theme-manifest.mjs';
+import { applyFrame, type Scheme } from './frame.js';
 import { Field, Select, TextInput, swatchIcon, type Option } from './magma.js';
+import { paintedBy, type Painted } from './paints.js';
+import { sceneStyle, type ConfigTheme } from './scene-css.js';
+import { forceHover, settled, statesMarkup, statesPlan } from './states.js';
+import { useThemeChoices, type ThemeChoices } from './theme-choices.js';
 import './scales.css';
 
 /*
@@ -23,6 +29,11 @@ import './scales.css';
   distribution, mds-modal for the rename and for the confirmation of a delete. The axis of the
   stops stays native: Magma has no range of several values yet (#1261). The colours of the usage
   panel are selectable mds-chips, their swatch the icon (swatchIcon, until #1263).
+
+  Beside each card, where the page has the room, the sample colour solved on the scale paints the
+  components it paints in every state (states.ts, #1308), in one mode at a time, chosen once for
+  the page as the side of the Palette chooses it (decided with vittorio, 2026-11-07); narrower,
+  the states go under the card.
 */
 
 export interface RatioSet {
@@ -435,6 +446,110 @@ const closeMenu = (event: Event) => {
   if (menu) menu.visible = false;
 };
 
+const SCHEMES: ReadonlyArray<{ id: Scheme; label: string }> = [
+  { id: 'light', label: 'Light' },
+  { id: 'dark', label: 'Dark' },
+];
+
+/**
+ * The configuration with the sample family solved on a scale, as the sample under each axis is
+ * (app.tsx, sampleScales): the scale and the formula of the page, no hue shift of its own.
+ */
+export function onScale(
+  config: MagmaConfig,
+  family: string,
+  scale: string,
+  formula: Formula,
+): MagmaConfig {
+  return {
+    ...config,
+    colors: config.colors.map((color) =>
+      color.name === family ? { ...color, ratios: scale, formula, hueShift: undefined } : color,
+    ),
+  };
+}
+
+interface ScaleStatesProps {
+  config: MagmaConfig;
+  family: string;
+  scale: string;
+  formula: Formula;
+  painted: Painted;
+  theme: ConfigTheme;
+  scheme: Scheme;
+  choices: ThemeChoices;
+}
+
+/**
+ * The states of the sample family solved on a scale: the page of the states (states.html), set as
+ * the frame of the Palette is (frame.ts), as tall as what it shows.
+ */
+function ScaleStates({
+  config,
+  family,
+  scale,
+  formula,
+  painted,
+  theme,
+  scheme,
+  choices,
+}: ScaleStatesProps) {
+  const frame = useRef<HTMLIFrameElement>(null);
+  const forced = useRef(new WeakSet<object>());
+  const [loaded, setLoaded] = useState(0);
+  const [height, setHeight] = useState<number>();
+  const css = useMemo(
+    () => sceneStyle(onScale(config, family, scale, formula), choices)?.css,
+    [config, family, scale, formula, choices],
+  );
+  const plan = useMemo(() => statesPlan(painted), [painted]);
+  const markup = plan ? statesMarkup(plan) : '';
+
+  useEffect(() => {
+    const page = frame.current?.contentDocument;
+    const main = page?.getElementById('states');
+    if (!page || !main) return;
+    applyFrame(page, { theme: theme.name, scheme, contrast: false, css, modes: theme.modes });
+    if (main.dataset.markup !== markup) {
+      main.innerHTML = markup;
+      main.dataset.markup = markup;
+    }
+    // an iframe takes no height from what it holds: the bottom of the states is its height, read
+    // again when the frame narrows or widens and the messages wrap otherwise
+    const view = page.defaultView;
+    const measure = () =>
+      setHeight(
+        Math.ceil(
+          main.getBoundingClientRect().bottom +
+            (view?.scrollY ?? 0) +
+            parseFloat(view?.getComputedStyle(page.body).marginBlockEnd ?? '0'),
+        ),
+      );
+    let live = true;
+    void settled(page).then(() => {
+      if (!live) return;
+      forceHover(page, forced.current);
+      measure();
+    });
+    view?.addEventListener('resize', measure);
+    return () => {
+      live = false;
+      view?.removeEventListener('resize', measure);
+    };
+  }, [css, theme.name, scheme, markup, loaded]);
+
+  return (
+    <iframe
+      ref={frame}
+      class="scales-states"
+      src="states.html"
+      title={`The states of ${family} on the scale ${scale}, ${scheme} mode`}
+      style={height ? { blockSize: `${height}px` } : undefined}
+      onLoad={() => setLoaded((count) => count + 1)}
+    />
+  );
+}
+
 interface ScalesManagerProps {
   config: MagmaConfig;
   formula: Formula;
@@ -517,6 +632,21 @@ export function ScalesManager({
     value: name,
     label: labelFor(name),
   }));
+
+  // what the sample paints, in the theme it is seen in (paints.ts), and the mode of its states
+  const choices = useThemeChoices();
+  const themes = useMemo(() => sceneStyle(config, choices)?.themes ?? [], [config, choices]);
+  const painted = useMemo(
+    () => paintedBy(selectedName, { config, themes, choices }),
+    [selectedName, config, themes, choices],
+  );
+  // an alias takes the ramp of its source whatever its scale (color.mts): no scale moves it
+  const source = config.colors.find((color) => color.name === selectedName)?.alias;
+  const statesTheme = painted.variants.length > 0 && !source ? painted.theme : undefined;
+  const [picked, setScheme] = useState<Scheme>('light');
+  const modes: readonly Scheme[] = statesTheme?.modes ?? COLOR_MODES;
+  const scheme: Scheme = modes.includes(picked) ? picked : modes[0];
+  const sampleName = selectedName.split('.')[1] ?? selectedName;
 
   return (
     <div class="scales-page">
@@ -609,6 +739,38 @@ export function ScalesManager({
         </mds-card-content>
       </mds-card>
 
+      <div class="scales-states-head" role="toolbar" aria-label="The states beside the scales">
+        <mds-text typography="detail" tag="p" class="scales-muted">
+          {source
+            ? `${selectedName} takes the ramp of ${source} whatever its scale: the states of ${source} show beside its scales.`
+            : statesTheme
+              ? `Beside each scale, ${sampleName} solved on it paints the components it paints, in the theme ${statesTheme.name}.`
+              : `${selectedName} paints no component of Magma: no variant of a component takes it, no theme points an accent at it and no theme is drawn from it.`}
+        </mds-text>
+        {statesTheme && (
+          <mds-tab
+            aria-label="Mode"
+            onmdsTabChange={(event: CustomEvent<{ id: number; value?: string }>) => {
+              const value = event.detail?.value as Scheme | undefined;
+              if (value) setScheme(value);
+            }}
+          >
+            {SCHEMES.map((one) => (
+              <mds-tab-item
+                type="button"
+                label={one.label}
+                value={one.id}
+                selected={one.id === scheme}
+                disabled={!modes.includes(one.id)}
+                title={
+                  modes.includes(one.id) ? undefined : `${statesTheme.name} is ${modes[0]} only`
+                }
+              ></mds-tab-item>
+            ))}
+          </mds-tab>
+        )}
+      </div>
+
       {Object.keys(ratioSet).map((name, cardIndex) => {
         const values = ratioSet[name];
         const axis = axisFor(formula, values);
@@ -620,137 +782,153 @@ export function ScalesManager({
         const step = axis.precision === 0 ? 1 : 0.01;
         return (
           <div class="scales-card" key={name}>
-            <mds-card>
-              <mds-card-header>
-                <div class="scales-card-title">
-                  <mds-text typography="part" tag="h2">
-                    {name}
-                  </mds-text>
-                  {origin !== 'custom' && (
-                    <mds-badge
-                      variant={origin === 'builtin-overridden' ? 'info' : 'dark'}
-                      label={origin === 'builtin-overridden' ? 'Built-in, overridden' : 'Built-in'}
-                      title={
-                        origin === 'builtin-overridden'
-                          ? 'shipped with magma; shown here because your config overrides its stops'
-                          : 'shipped with magma; shown even though it is not in your config'
-                      }
-                    ></mds-badge>
-                  )}
-                  <mds-text typography="detail" class="scales-muted">
-                    {plural(values.length, 'step')}, used by {plural(usedBy, 'color')}
-                  </mds-text>
-                </div>
-                <mds-button
-                  slot="action"
-                  id={menuId}
-                  type="button"
-                  icon="mi/baseline/more-vert"
-                  variant="dark"
-                  tone="text"
-                  aria-label={`Actions of the scale ${name}`}
-                ></mds-button>
-              </mds-card-header>
-              <mds-card-content>
-                <div class="scales-card-body">
-                  <DistributionStrip
-                    values={values}
-                    axis={axis}
-                    formula={formula}
-                    onChange={(next) => manualChange(name, next)}
-                  />
-
-                  <div class="scales-stops" role="group" aria-label={`The steps of ${name}`}>
-                    {values.map((value, index) => (
-                      <div class="scales-stop">
-                        <CommitInput
-                          type="number"
-                          size="md"
-                          label={`Step ${index + 1}`}
-                          min={axis.min}
-                          max={axis.max}
-                          step={step}
-                          value={String(value)}
-                          onCommit={(raw) => {
-                            const typed = numberOf(raw);
-                            if (typed === null) return;
-                            const clamped = Math.min(axis.max, Math.max(axis.min, typed));
-                            const next = [...values];
-                            next[index] = roundTo(clamped, axis.precision);
-                            manualChange(
-                              name,
-                              next.sort((a, b) => a - b),
-                            );
-                          }}
-                        />
-                        <mds-button
-                          type="button"
-                          icon="mi/baseline/close"
-                          size="sm"
-                          variant="dark"
-                          tone="text"
-                          aria-label={`Remove step ${index + 1}`}
-                          title="remove step"
-                          disabled={values.length <= 2}
-                          onClick={() =>
-                            manualChange(
-                              name,
-                              values.filter((_, i) => i !== index),
-                            )
-                          }
-                        ></mds-button>
-                      </div>
-                    ))}
-                    <mds-button
-                      type="button"
-                      icon="mi/baseline/add"
-                      size="md"
-                      variant="dark"
-                      tone="outline"
-                      title="insert a step in the widest gap"
-                      onClick={() => {
-                        let gapIndex = 0;
-                        let gapSize = -1;
-                        for (let i = 0; i < values.length - 1; i++) {
-                          if (values[i + 1] - values[i] > gapSize) {
-                            gapSize = values[i + 1] - values[i];
-                            gapIndex = i;
-                          }
+            <div class="scales-card-pair">
+              <mds-card>
+                <mds-card-header>
+                  <div class="scales-card-title">
+                    <mds-text typography="part" tag="h2">
+                      {name}
+                    </mds-text>
+                    {origin !== 'custom' && (
+                      <mds-badge
+                        variant={origin === 'builtin-overridden' ? 'info' : 'dark'}
+                        label={
+                          origin === 'builtin-overridden' ? 'Built-in, overridden' : 'Built-in'
                         }
-                        const inserted = roundTo(
-                          (values[gapIndex] + values[gapIndex + 1]) / 2,
-                          axis.precision,
-                        );
-                        const next = [...values];
-                        next.splice(gapIndex + 1, 0, inserted);
-                        manualChange(name, next);
-                      }}
-                    >
-                      Add step
-                    </mds-button>
+                        title={
+                          origin === 'builtin-overridden'
+                            ? 'shipped with magma; shown here because your config overrides its stops'
+                            : 'shipped with magma; shown even though it is not in your config'
+                        }
+                      ></mds-badge>
+                    )}
+                    <mds-text typography="detail" class="scales-muted">
+                      {plural(values.length, 'step')}, used by {plural(usedBy, 'color')}
+                    </mds-text>
                   </div>
+                  <mds-button
+                    slot="action"
+                    id={menuId}
+                    type="button"
+                    icon="mi/baseline/more-vert"
+                    variant="dark"
+                    tone="text"
+                    aria-label={`Actions of the scale ${name}`}
+                  ></mds-button>
+                </mds-card-header>
+                <mds-card-content>
+                  <div class="scales-card-body">
+                    <DistributionStrip
+                      values={values}
+                      axis={axis}
+                      formula={formula}
+                      onChange={(next) => manualChange(name, next)}
+                    />
 
-                  <DistributionControls
-                    axis={axis}
-                    values={values}
-                    easing={easings[name] ?? 'manual'}
-                    onEasingChange={(easing) => setEasing(name, easing)}
-                    onApply={(next) => onChangeScale(name, next)}
-                  />
-
-                  {sample && (
-                    <div
-                      class="scales-sample"
-                      title="selected color rendered with this scale, ordered like the axis: 0 (background side) to max contrast"
-                    >
-                      {[...sample].reverse().map((value) => (
-                        <div class="scales-sample-cell" style={{ background: value }} />
+                    <div class="scales-stops" role="group" aria-label={`The steps of ${name}`}>
+                      {values.map((value, index) => (
+                        <div class="scales-stop">
+                          <CommitInput
+                            type="number"
+                            size="md"
+                            label={`Step ${index + 1}`}
+                            min={axis.min}
+                            max={axis.max}
+                            step={step}
+                            value={String(value)}
+                            onCommit={(raw) => {
+                              const typed = numberOf(raw);
+                              if (typed === null) return;
+                              const clamped = Math.min(axis.max, Math.max(axis.min, typed));
+                              const next = [...values];
+                              next[index] = roundTo(clamped, axis.precision);
+                              manualChange(
+                                name,
+                                next.sort((a, b) => a - b),
+                              );
+                            }}
+                          />
+                          <mds-button
+                            type="button"
+                            icon="mi/baseline/close"
+                            size="sm"
+                            variant="dark"
+                            tone="text"
+                            aria-label={`Remove step ${index + 1}`}
+                            title="remove step"
+                            disabled={values.length <= 2}
+                            onClick={() =>
+                              manualChange(
+                                name,
+                                values.filter((_, i) => i !== index),
+                              )
+                            }
+                          ></mds-button>
+                        </div>
                       ))}
+                      <mds-button
+                        type="button"
+                        icon="mi/baseline/add"
+                        size="md"
+                        variant="dark"
+                        tone="outline"
+                        title="insert a step in the widest gap"
+                        onClick={() => {
+                          let gapIndex = 0;
+                          let gapSize = -1;
+                          for (let i = 0; i < values.length - 1; i++) {
+                            if (values[i + 1] - values[i] > gapSize) {
+                              gapSize = values[i + 1] - values[i];
+                              gapIndex = i;
+                            }
+                          }
+                          const inserted = roundTo(
+                            (values[gapIndex] + values[gapIndex + 1]) / 2,
+                            axis.precision,
+                          );
+                          const next = [...values];
+                          next.splice(gapIndex + 1, 0, inserted);
+                          manualChange(name, next);
+                        }}
+                      >
+                        Add step
+                      </mds-button>
                     </div>
-                  )}
-                </div>
-              </mds-card-content>
-            </mds-card>
+
+                    <DistributionControls
+                      axis={axis}
+                      values={values}
+                      easing={easings[name] ?? 'manual'}
+                      onEasingChange={(easing) => setEasing(name, easing)}
+                      onApply={(next) => onChangeScale(name, next)}
+                    />
+
+                    {sample && (
+                      <div
+                        class="scales-sample"
+                        title="selected color rendered with this scale, ordered like the axis: 0 (background side) to max contrast"
+                      >
+                        {[...sample].reverse().map((value) => (
+                          <div class="scales-sample-cell" style={{ background: value }} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </mds-card-content>
+              </mds-card>
+              {statesTheme && (
+                <ScaleStates
+                  config={config}
+                  family={selectedName}
+                  scale={name}
+                  formula={formula}
+                  painted={painted}
+                  theme={statesTheme}
+                  scheme={scheme}
+                  choices={choices}
+                />
+              )}
+            </div>
             {/* outside the card: mds-card clips what overflows it */}
             <mds-dropdown target={`#${menuId}`} placement="bottom-end" strategy="fixed">
               <div class="scales-menu">

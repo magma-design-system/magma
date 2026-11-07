@@ -7,6 +7,7 @@
 */
 
 .scales-page {
+  container: scales-page / inline-size;
   display: grid;
   gap: var(--magma-rhythm-between-containers);
   max-inline-size: var(--magma-width-page);
@@ -258,4 +259,41 @@
 
 .scales-add {
   justify-self: start;
+}
+
+/*
+  The states of the sample colour on each scale (states.ts): the line that says what they show
+  and the mode, then beside each card its page of states, as tall as what it shows and as wide as
+  the side of the Palette (26rem, palette.css), which holds an action at every tone and state.
+  Where the page has the room of a card and of the states (60rem, the width at which the Palette
+  sets its side beside the detail), they stand beside the card; narrower, under it.
+*/
+
+.scales-states-head {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--magma-rhythm-inline) var(--magma-rhythm-between-fields);
+  justify-content: space-between;
+}
+
+.scales-card-pair {
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.scales-states {
+  border: thin solid rgb(var(--magma-border-muted));
+  border-radius: var(--magma-radius-lg);
+  corner-shape: var(--magma-corner-shape);
+  display: block;
+  inline-size: 100%;
+}
+
+@container scales-page (width >= 60rem) {
+  .scales-card-pair {
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr) calc(var(--spacing) * 10400);
+  }
 }
