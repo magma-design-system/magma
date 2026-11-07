@@ -1,0 +1,12 @@
+[
+  {
+    "kind": "flag",
+    "line": 5,
+    "contains": "typography=\"h5\""
+  },
+  {
+    "kind": "dynamic",
+    "line": 8,
+    "contains": "${} interpolation"
+  }
+]

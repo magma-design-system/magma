@@ -16,7 +16,7 @@ import { Component } from '@angular/core';
 })
 export class CardComponent {
   tint = 'rgb(var(--magma-accent) / 0.1)';
-  // no markup rule in this jump: a template with ${} is not reported
+  // no markup rule on mds-badge in this jump: a template with ${} is not reported
   badge = `<mds-badge label="${this.label}"></mds-badge>`;
 
   paint(el: HTMLElement): void {
