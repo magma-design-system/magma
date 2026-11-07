@@ -292,7 +292,8 @@ export const ensureAttrManifest: Manifest = {
 /**
  * The v2 -> v3 counterpart of {@link testManifest}: a handful of colour names
  * (category N, the real list is generated), the `-rgb` rename of two inputs and
- * a removal, so the fixtures pin the rewrite whatever the generated list holds.
+ * a removal, so the fixtures pin the rewrite whatever the generated list holds;
+ * and the report of the item that leaves its `typography` out (category O).
  */
 export const testManifestV3: Manifest = {
   fromVersion: '2',
@@ -315,6 +316,21 @@ export const testManifestV3: Manifest = {
     },
   },
   components: {
+    'mds-accordion-item': {
+      tag: 'mds-accordion-item',
+      react: 'MdsAccordionItem',
+      rules: [
+        {
+          kind: 'ensureAttr',
+          attr: { attr: 'typography', prop: 'typography' },
+          value: 'h5',
+          unless: [{ attr: 'typography', prop: 'typography' }],
+          reportOnly: true,
+          confidence: 'review',
+          reason: 'the title of the item is h6 by default in Magma 3',
+        },
+      ],
+    },
     'mds-input': {
       tag: 'mds-input',
       react: 'MdsInput',

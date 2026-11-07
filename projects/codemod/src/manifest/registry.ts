@@ -166,7 +166,18 @@ const MARKUP_KINDS: ReadonlySet<Rule['kind']> = new Set([
 export const hasMarkupRules = (manifest: Manifest, component: ComponentManifest): boolean =>
   rulesForComponent(manifest, component).some((rule) => MARKUP_KINDS.has(rule.kind));
 
-/** Whether any element of the manifest has rules on its markup, `slot="default"` included. */
-export const manifestHasMarkupRules = (manifest: Manifest): boolean =>
-  manifest.global.removeDefaultSlot === true ||
-  Object.values(manifest.components).some((component) => hasMarkupRules(manifest, component));
+/**
+ * The start tags of the elements whose markup the jump rewrites or reports, as
+ * one expression: a template the codemod cannot parse (`${}`) is reported when
+ * it holds one. Every `mds-*` tag when `slot="default"` is dropped from any
+ * element (v1 -> v2); otherwise the tags of the components with markup rules,
+ * so the one rule of v2 -> v3 on the items of an accordion (#1218) does not
+ * report every template with an `mds-*` element. `undefined` when none.
+ */
+export const markupTagRe = (manifest: Manifest): RegExp | undefined => {
+  if (manifest.global.removeDefaultSlot === true) return /<mds-[a-z-]/;
+  const tags = Object.values(manifest.components)
+    .filter((component) => hasMarkupRules(manifest, component))
+    .map((component) => component.tag);
+  return tags.length > 0 ? new RegExp(`<(?:${tags.join('|')})(?![a-z0-9-])`) : undefined;
+};

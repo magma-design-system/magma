@@ -27,7 +27,7 @@ npx @maggioli-design-system/magma-codemods --from 2 --path src --report-md magma
 
 `magma-codemods` prints a diff and a summary and writes nothing by default. With `--from 1` it runs Magma 1 -> 2, then Magma 2 -> 3 on what the first jump wrote, and each finding names its jump. If it rejects `--from`, the codemod npm serves is older than the jump to Magma 3: stop and tell the person.
 
-Read `magma-migration.md`: what the codemod cannot decide alone is listed by token and by file. For Magma 3 that is mostly colours: a colour token is a full colour, no longer three channels, so `rgb(var(--magma-x))` becomes `var(--magma-x)` and an alpha a `color-mix()`; a colour built in a string of the scripts, a value that may hold channels of the project's own, and `rgba(var(--x), a)` are reported with the rewrite to make.
+Read `magma-migration.md`: what the codemod cannot decide alone is listed by token and by file. For Magma 3 that is mostly colours: a colour token is a full colour, no longer three channels, so `rgb(var(--magma-x))` becomes `var(--magma-x)` and an alpha a `color-mix()`; a colour built in a string of the scripts, a value that may hold channels of the project's own, and `rgba(var(--x), a)` are reported with the rewrite to make. An item of an accordion that leaves `typography` out is flagged too: its title is `h6` in Magma 3, the style of a part, no longer `h5`. Leave it out, so the item follows the design language; write `typography="h5"` only when the person wants the look of Magma 2 back.
 
 ## 3. Write
 

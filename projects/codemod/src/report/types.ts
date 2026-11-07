@@ -7,7 +7,10 @@ export type FindingKind =
   | 'change'
   /** A removed prop: an inline comment is injected and the consumer warned. */
   | 'warn'
-  /** Applied but needs a look: enum literal outside the v2 set, CSS value-format change. */
+  /**
+   * Applied but needs a look: enum literal outside the v2 set, CSS value-format change, a new
+   * default that applies with no rewrite (`ensureAttr` with `reportOnly`).
+   */
   | 'flag'
   /** Dynamic / unanalyzable usage the tool cannot rewrite safely — manual action required. */
   | 'dynamic';

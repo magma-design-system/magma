@@ -470,9 +470,10 @@ export const transformHtml = (
         rule.value === undefined
           ? rule.attr.attr
           : `${rule.attr.attr}="${escapeHtmlAttr(rule.value)}"`;
-      edits.push({ start: insertAt, end: insertAt, text: ` ${after}` });
+      // reportOnly: the new default stays, the report names the attribute that keeps the old one
+      if (!rule.reportOnly) edits.push({ start: insertAt, end: insertAt, text: ` ${after}` });
       pushFinding({
-        kind: 'change',
+        kind: rule.reportOnly ? 'flag' : 'change',
         surface: 'html',
         file: ctx.file,
         line: loc.startLine,

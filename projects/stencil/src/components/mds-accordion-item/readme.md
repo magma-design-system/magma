@@ -24,7 +24,7 @@ The `<mds-accordion-item>` web component is a single collapsible panel of the Ma
 
 - **`label`** sets the always-visible header text shown whether the item is open or closed.
 - **`selected`** controls whether the panel is expanded; leave it to the parent to manage in coordinated accordions, or set it initially to have a panel start open.
-- **`typography`** picks the title style applied to the header label, defaulting to `h5`. An item is a part of the page, and the title of a part is styled as `h6` (`titles/part` of the design language): write `typography="h6"` until the default moves with the next major (#1218). `action` gives a compact, control-like header. The header is rendered inside a `<button>`, whose content is presentational, so the value is a style only: assistive technology does not announce it as a heading, and the outline of the page comes from the title above the accordion.
+- **`typography`** picks the title style applied to the header label, defaulting to `h6`: an item is a part of the page, and the title of a part is styled as `h6` (`titles/part` of the design language), so leave it out. `h5`, the default up to Magma 2, keeps the old look (#1218). `action` gives a compact, control-like header. The header is rendered inside a `<button>`, whose content is presentational, so the value is a style only: assistive technology does not announce it as a heading, and the outline of the page comes from the title above the accordion.
 
 
 ### 2. Examples
@@ -99,15 +99,15 @@ Set the parent `disable-close` attribute to prevent the user from collapsing an 
 
 #### The Title of an Item Is a Part
 
-An item is a part of the page, whose title is styled as `h6` (`titles/part`): write `typography="h6"`, until the default moves from `h5` with the next major (#1218). The level in the outline comes from the title of the section that holds the accordion, written by its role; the label sits inside the button that opens the item, so `typography` is a style only. Use `action` for a compact, control-like header.
+An item is a part of the page, whose title is styled as `h6` (`titles/part`), the default: leave `typography` out. The level in the outline comes from the title of the section that holds the accordion, written by its role; the label sits inside the button that opens the item, so `typography` is a style only. Use `action` for a compact, control-like header.
 
 ```html
 <mds-text typography="section" tag="h2">Domande frequenti</mds-text>
 <mds-accordion>
-  <mds-accordion-item label="Come gestisco gli aggiornamenti?" typography="h6">
+  <mds-accordion-item label="Come gestisco gli aggiornamenti?">
     <mds-text>Ogni release e' documentata nel changelog con note di migrazione.</mds-text>
   </mds-accordion-item>
-  <mds-accordion-item label="Posso personalizzare i colori?" typography="h6">
+  <mds-accordion-item label="Posso personalizzare i colori?">
     <mds-text>Si', tramite i CSS custom properties esposti da ogni componente.</mds-text>
   </mds-accordion-item>
 </mds-accordion>
@@ -311,11 +311,11 @@ The item already is a styled disclosure widget. Nesting a native `<details>` ins
 
 ## Properties
 
-| Property             | Attribute    | Description                                                                                                                                                                                                                                                                                               | Type                                                                    | Default     |
-| -------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------- |
-| `label` _(required)_ | `label`      | Specifies the title shown when the component is closed or selected                                                                                                                                                                                                                                        | `string`                                                                | `undefined` |
-| `selected`           | `selected`   | Specifies if the component item is selected or not                                                                                                                                                                                                                                                        | `boolean \| undefined`                                                  | `undefined` |
-| `typography`         | `typography` | Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| undefined` | `'h5'`      |
+| Property             | Attribute    | Description                                                                                                                                                                                                                                                                                                  | Type                                                                    | Default     |
+| -------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- | ----------- |
+| `label` _(required)_ | `label`      | Specifies the title shown when the component is closed or selected                                                                                                                                                                                                                                           | `string`                                                                | `undefined` |
+| `selected`           | `selected`   | Specifies if the component item is selected or not                                                                                                                                                                                                                                                           | `boolean \| undefined`                                                  | `undefined` |
+| `typography`         | `typography` | Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189), the default since Magma 3 (#1218); `h5` keeps the look of Magma 2. The title sits inside the button that opens the item, so this is its style only, never a level of the outline | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| undefined` | `'h6'`      |
 
 
 ## Events

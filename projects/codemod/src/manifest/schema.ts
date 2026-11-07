@@ -272,6 +272,11 @@ export interface EventRenameRule {
  * when a v2 default flips relative to v1: e.g. `mds-dropdown` auto-placement was
  * off by default in v1 but is on in v2, so adding `disable-auto-placement` to
  * dropdowns that never set it preserves the v1 behavior.
+ *
+ * With `reportOnly` the same elements are reported and nothing is written: the
+ * new default is the look the major brings, and the report tells where it
+ * changes and which attribute keeps the old one (`mds-accordion-item`, v2 -> v3,
+ * #1218).
  */
 export interface EnsureAttrRule {
   kind: 'ensureAttr';
@@ -281,6 +286,8 @@ export interface EnsureAttrRule {
   value?: string;
   /** Skip the insertion when any of these props is already on the element. */
   unless: PropId[];
+  /** Report the element as a `flag` instead of adding the attribute. */
+  reportOnly?: boolean;
   confidence: Confidence;
   /** Human-readable reason, shown in the report. */
   reason: string;

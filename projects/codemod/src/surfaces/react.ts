@@ -219,9 +219,10 @@ export const transformReact = (
       const nameEnd = opening.getTagNameNode().getEnd();
       const after =
         rule.value === undefined ? nameOf(rule.attr) : `${nameOf(rule.attr)}="${rule.value}"`;
-      edits.push({ start: nameEnd, end: nameEnd, text: ` ${after}` });
+      // reportOnly: the new default stays, the report names the attribute that keeps the old one
+      if (!rule.reportOnly) edits.push({ start: nameEnd, end: nameEnd, text: ` ${after}` });
       findings.push({
-        kind: 'change',
+        kind: rule.reportOnly ? 'flag' : 'change',
         surface: 'react',
         file: ctx.file,
         line,

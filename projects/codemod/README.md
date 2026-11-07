@@ -151,8 +151,7 @@ The breaking changes of Magma 3 (epic #1292), one category per part; each part a
 | #   | Category                      | What it does                                                                                                                                                                      | Confidence |
 | --- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
 | N   | Colour tokens (#918)          | a colour token is a full colour, no longer three channels: its reads through `rgb()` become `var()` or `color-mix()`, its channel definitions `rgb()`, and the input properties that took channels lose their `-rgb`. See below | safe; strings and unread values: report |
-
-### Colour tokens (N)
+| O   | Title of an accordion item (#1218) | the title of `mds-accordion-item` and `mds-accordion-timer-item` is `h6` by default, no longer `h5`: an item that leaves `typography` out is reported, nothing is written. See below | report |
 
 Magma 3 writes every colour token as a colour (`--magma-accent-fg: rgb(0 85 204)`), where Magma 2 wrote its three
 channels (`0 85 204`) to be read with `rgb(var(--x))`. Around a colour, that read is `rgb(rgb(...))`, invalid at
@@ -207,6 +206,26 @@ Reported, not rewritten:
   the rewrite when it can read the whole string (`'rgb(var(--magma-accent) / <alpha-value>)'` ->
   `'color-mix(in srgb, var(--magma-accent) calc(<alpha-value> * 100%), transparent)'`, the form the Magma 3
   preset writes).
+
+### Title of an accordion item (O)
+
+An item of an accordion is a part of the page, and the title of a part is `h6` (`titles/part` of the design
+language, #1189): in Magma 3 the default `typography` of `mds-accordion-item` and `mds-accordion-timer-item` moves
+from `h5` (20px, weight 900, the style of a section) to `h6` (16px, weight 700). The new default is the point of
+the change, so the codemod writes nothing: each item that leaves `typography` out is flagged, with
+`typography="h5"` as the attribute that keeps the look of Magma 2; an item that writes it, as an attribute or a
+binding (`typography={level}`, `[typography]="level"`), is left alone.
+
+| Magma 2 (in your code)                   | After the codemod   | In Magma 3                          |
+| ---------------------------------------- | ------------------- | ----------------------------------- |
+| `<mds-accordion-item label="...">`       | the same, flagged   | title `h6`                          |
+| `<mds-accordion-item typography="h6">`   | the same            | title `h6`                          |
+| `<mds-accordion-item typography="h5">`   | the same            | title `h5`, the Magma 2 look        |
+
+Unlike the guards of the visual defaults of v1 -> v2 (`mds-banner variant="light"`, `mds-label truncate="none"`),
+writing `h5` into every item would keep each migrated product off the decision (chosen on #1218). Skip the
+reports with `--skip mds-accordion-item/ensureAttr/typography` and
+`--skip mds-accordion-timer-item/ensureAttr/typography`.
 
 ## Migration matrix: Magma 1 -> 2
 
@@ -404,7 +423,8 @@ above):
   that renders elements (`{selected ? <b>{label}</b> : label}`): `label` takes a string.
 - A light class and its `dark:` override in **different fragments** of a class expression (two `clsx()` arguments,
   two `[ngClass]` keys): category L decides one string at a time.
-- Inline templates / HTML in template literals that contain `${…}` interpolation.
+- Inline templates / HTML in template literals that contain `${...}` interpolation, when they hold an element the
+  jump has markup rules on: any `mds-*` element from Magma 1, the items of an accordion from Magma 2 (O).
 - Angular `@Component({ host })` bindings are intentionally left untouched (rewriting a consumer component's own
   host with `mds-*` rules is rarely correct).
 
