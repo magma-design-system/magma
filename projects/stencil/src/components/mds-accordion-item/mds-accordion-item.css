@@ -49,6 +49,15 @@
   margin-top: 0;
 }
 
+/* the heading of the outline that wraps the button (tag): a box of the layout like the button
+   it holds, with no margin or font of its own */
+
+.heading {
+  display: grid;
+  font: inherit;
+  margin: 0;
+}
+
 .action {
   @apply focus-bounce;
 

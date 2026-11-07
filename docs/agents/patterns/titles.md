@@ -47,8 +47,8 @@ cases:
     carried-by: [text-title-dialog, --text-size-title-dialog, mds-text typography=dialog]
   - id: part
     role: part
-    where: "the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner, mds-push-notification-item, mds-file); an item of an accordion is a part, `h6` by default"
-    use: ["mds-text typography=part", "mds-accordion-item"]
+    where: "the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner, mds-push-notification-item, mds-file); an item of an accordion is a part, `h6` by default, its `tag` the level of its place (`h3` under a section `h2`)"
+    use: ["mds-text typography=part", "mds-accordion-item tag"]
     serves: intuitive
     carried-by: [mds-banner, mds-push-notification-item, mds-file, text-title-part, --text-size-title-part, mds-text typography=part]
   - id: group
@@ -121,7 +121,7 @@ A case that leaves a variable out holds for any of its values.
 | `page` | role: page | the style `h3` (30px), the tag `h1` | `mds-text typography=page tag=h1` | intuitive | `text-title-page`, `--text-size-title-page`, `mds-text typography=page` |
 | `section` | role: section | the style `h5` (20px), the tag of its place in the outline (`h2` under the page) | `mds-text typography=section tag=h2` | intuitive | `text-title-section`, `--text-size-title-section`, `mds-text typography=section` |
 | `dialog` | role: dialog | the style `h5`, the headline of the window; the dialog takes its name from aria-label on mds-modal, since the headline is hidden from screen readers. mds-banner draws its headline in h6 today (#1192) | `mds-modal aria-label`, `mds-banner slot=window headline` | intuitive | `text-title-dialog`, `--text-size-title-dialog`, `mds-text typography=dialog` |
-| `part` | role: part | the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner, mds-push-notification-item, mds-file); an item of an accordion is a part, `h6` by default | `mds-text typography=part`, `mds-accordion-item` | intuitive | `mds-banner`, `mds-push-notification-item`, `mds-file`, `text-title-part`, `--text-size-title-part`, `mds-text typography=part` |
+| `part` | role: part | the style `h6` (16px, weight 700), the tag of its place (`h2` under the page, `h3` in a section); the components that draw a part give it already (the headline of mds-banner, mds-push-notification-item, mds-file); an item of an accordion is a part, `h6` by default, its `tag` the level of its place (`h3` under a section `h2`) | `mds-text typography=part`, `mds-accordion-item tag` | intuitive | `mds-banner`, `mds-push-notification-item`, `mds-file`, `text-title-part`, `--text-size-title-part`, `mds-text typography=part` |
 | `group` | role: group | a `fieldset` with no border and no inset of its own, its title the `legend` in the style `h6`: not a heading of the page; `field-group` on the fieldset draws it, the legend `gap-title-content` (300) from its first field |  | inclusive, intuitive | `field-group`, `text-title-group`, `--text-size-title-group` |
 
 No gaps: every combination has a case or is not applicable.
@@ -179,8 +179,12 @@ Situations every application has, each with its case: they give the examples, th
   groups to the outline of the page; a heading with no `fieldset` drops the group.
 - The headline of the window of a dialog is hidden from screen readers: the dialog takes its
   name from `aria-label` on `mds-modal`.
-- The title of an item of an accordion sits inside the button that opens it, so it is not a
-  heading of the page: its `typography` is a style only.
+- The title of an item of an accordion is a heading of the page only with the level of its
+  place, `tag="h3"` under a section `h2`: the heading wraps the button that opens the item, as
+  the Accordion pattern of the WAI-ARIA Authoring Practices does, and its `typography` is the
+  style only. Left out, the item is a button, out of the outline. A heading inside the button
+  is invalid HTML (a button holds phrasing content), and Chromium still lists it among the
+  headings at the level of its style, skipping the levels in between.
 
 ## Magma gaps
 
@@ -189,9 +193,6 @@ Situations every application has, each with its case: they give the examples, th
 - The examples of `mds-card-header` give 13 titles `h5` with no `tag`, so a card renders an
   `<h5>` and skips the levels in between; `mds-note` does the same in 4 of its 7: they take
   `h6` with the tag of their place (#1189, the examples of the components aligned).
-- The items of `mds-accordion` are not in the headings of the page; the Accordion pattern of
-  the WAI-ARIA Authoring Practices wraps each button in a heading with its level. Whether they
-  should be, with a tag of their own apart from the style, is a question of the component.
 - The Typography page of the docs site says the style `h1` is the title of the page: it moves
   to this ladder with the pull request of the docs site that reads the domains, before this
   domain is released (#1197).
@@ -207,3 +208,4 @@ Situations every application has, each with its case: they give the examples, th
 | 2026-10-30 | The titles are carried by role names: `typography="<role>"` on `mds-text`, `text-title-<role>` without components, one token per role, `--text-size-title-<role>` (`by-role`). | The role reads in the code, so a check can tell a section from a dialog though both are `h5`, and a theme moves one role in one place. Rejected: the style of the level written by hand from the table, with a lint on the pairs of tag and style, the form the previews got wrong. https://github.com/magma-design-system/magma/issues/1189#issuecomment-6526876032 |
 | 2026-10-31 | The file of the domain: a case per role, `one-h1` and `tag-is-structure` written here from the Typography page of the docs site, which keeps the reasons around them. | The issue of the five domains (#1197): the rules the agents do not read on the docs site move into the package. |
 | 2026-11-05 | The kind of the domain is `design-language`, no longer `foundation`. | Named after what the file is, a domain of the design language, not after the item of the docs site that holds it: Foundation there is the umbrella of the decisions Magma stands on (principles, accessibility, color, typography, illustration, content), and the design language is one group of it. The design language, the building blocks and the patterns together are Behavior, as the header of the studio names them (#1253). |
+| 2026-11-07 | The title of an item of an accordion is a heading of the page only with `tag`, the level of its place: the heading wraps the button that opens the item, and the label is a `span` whatever its style. Left out, the item is a button, out of the outline. | The Accordion pattern of the WAI-ARIA Authoring Practices, and the button holds phrasing content only: the `h6` the label rendered inside it was invalid HTML, and Chromium listed it among the headings at the level of its style (h2 then h6, axe `heading-order`). No default level: only the page knows the place of the item. Rejected: the items never headings, where whoever navigates by headings cannot reach them. Chosen on the real component, with its proof (the accessibility tree of Chromium). https://github.com/magma-design-system/magma/issues/1304 |

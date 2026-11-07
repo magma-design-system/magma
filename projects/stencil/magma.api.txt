@@ -16,6 +16,7 @@ mds-accordion css --mds-accordion-padding-unselected
 mds-accordion-item encapsulation shadow
 mds-accordion-item prop label (attr label) [required]: string
 mds-accordion-item prop selected (attr selected) [reflect, mutable]: boolean | undefined
+mds-accordion-item prop tag (attr tag): "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | undefined
 mds-accordion-item prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | undefined = 'h5'
 mds-accordion-item event mdsAccordionItemChange: MdsAccordionItemEventDetail [bubbles, cancelable, composed]
 mds-accordion-item event mdsAccordionItemSelect: MdsAccordionItemEventDetail [bubbles, cancelable, composed]
@@ -46,6 +47,7 @@ mds-accordion-timer-item prop description (attr description) [required]: string
 mds-accordion-timer-item prop duration (attr duration) [reflect]: number | undefined
 mds-accordion-timer-item prop progress (attr progress): number = 0
 mds-accordion-timer-item prop selected (attr selected) [reflect]: boolean = false
+mds-accordion-timer-item prop tag (attr tag): "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | undefined
 mds-accordion-timer-item prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" = 'h5'
 mds-accordion-timer-item prop uuid (attr uuid): number = 0
 mds-accordion-timer-item event mdsAccordionTimerItemClickSelect: MdsAccordionTimerItemEventDetail [bubbles, cancelable, composed]
@@ -1778,15 +1780,15 @@ interface FileError { filename: string; errorMessage: string; }
 type FloatingUIPlacement = "left" | "right" | "bottom" | "bottom-end" | "bottom-start" | "left-end" | "left-start" | "right-end" | "right-start" | "top" | "top-end" | "top-start"
 type FloatingUIRelation = "label" | "description"
 type FloatingUIStrategy = "absolute" | "fixed"
-type HeaderBarMenuType = "none" | "all" | "desktop" | "mobile"
-type HeaderBarNavType = "none" | "all" | "desktop" | "mobile"
+type HeaderBarMenuType = "all" | "none" | "desktop" | "mobile"
+type HeaderBarNavType = "all" | "none" | "desktop" | "mobile"
 type HorizontalActionsAnimationType = "slide" | "fade"
 type InputControlsIconType = "arrow" | "arithmetic"
 type InputControlsLayoutType = "horizontal" | "vertical"
 type InputSizeType = "sm" | "md" | "lg"
 type InputSwitchSizeType = 'sm' | 'md' | 'lg';
 type InputSwitchType = 'checkbox' | 'radio' | 'switch';
-type InputTextType = "number" | "text" | "time" | "email" | "tel" | "url" | "date" | "password" | "search" | "textarea" | "cc" | "cf" | "isbn" | "piva"
+type InputTextType = "number" | "time" | "text" | "email" | "tel" | "url" | "date" | "password" | "search" | "textarea" | "cc" | "cf" | "isbn" | "piva"
 type InputTipItemVariantType = "text" | "required" | "disabled" | "count-almost" | "count-almost-full" | "count-empty" | "count-full" | "count-incomplete" | "readonly" | "required-success"
 type InputTipPositionType = 'top' | 'bottom';
 type Interaction = 'click' | 'rightclick';
@@ -1847,7 +1849,7 @@ type NotificationItemPreviewType = 'avatar' | 'image';
 type PolicyAiVariant = 'icon' | 'chip' | 'card' | 'banner';
 type PreferenceCornerShapeChoiceType = "default" | "bevel" | "notch" | "round" | "scoop" | "square" | "squircle"
 type PreferenceModeType = "dark" | "light" | "system"
-type PreferenceThemeSchemeType = "dark" | "light" | "all"
+type PreferenceThemeSchemeType = "all" | "dark" | "light"
 type PreferenceThemeTransitionType = "none" | "flash" | "smooth"
 type PreloadType = 'auto' | 'metadata' | 'none';
 type PriceTableFeaturesCellType = 'custom' | 'label' | 'supported' | 'text' | 'unsupported';
@@ -1883,11 +1885,11 @@ type TypographyLabelType = "label" | "option"
 type TypographyReadType = "caption" | "detail" | "paragraph"
 type TypographyReadingVariants = "info" | "read"
 type TypographySmallerType = "option" | "tip"
-type TypographyTagType = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "label" | "code" | "strong" | "abbr" | "address" | "article" | "b" | "bdo" | "blockquote" | "cite" | "dd" | "del" | "details" | "dfn" | "div" | "dl" | "dt" | "em" | "figcaption" | "i" | "ins" | "kbd" | "legend" | "li" | "mark" | "ol" | "p" | "pre" | "q" | "rb" | "rt" | "ruby" | "s" | "samp" | "small" | "span" | "sub" | "summary" | "sup" | "time" | "u" | "ul" | "var"
+type TypographyTagType = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "label" | "code" | "abbr" | "address" | "article" | "b" | "bdo" | "blockquote" | "cite" | "dd" | "del" | "details" | "dfn" | "div" | "dl" | "dt" | "em" | "figcaption" | "i" | "ins" | "kbd" | "legend" | "li" | "mark" | "ol" | "p" | "pre" | "q" | "rb" | "rt" | "ruby" | "s" | "samp" | "small" | "span" | "strong" | "sub" | "summary" | "sup" | "time" | "u" | "ul" | "var"
 type TypographyTechnicalType = "label" | "option"
 type TypographyTitleType = "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
 type TypographyTooltipType = "caption" | "detail" | "tip"
-type TypographyTruncateType = "none" | "all" | "word"
+type TypographyTruncateType = "all" | "none" | "word"
 type TypographyType = "action" | "caption" | "snippet" | "detail" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "hack" | "label" | "option" | "paragraph" | "tip"
 type TypographyVariants = "title" | "info" | "read" | "code"
 type UsageType = 'do' | 'dont' | 'info' | 'warn';
