@@ -200,9 +200,10 @@ describe('what Tailwind compiles', () => {
     expect([...map.spacing.keys, ...map.spacing.steps].sort()).toEqual(keys.sort())
   })
 
-  // what a consumer gets: a t-shirt name is a container size on w-, min-w-, max-w- and
-  // basis-, a spacing step on the spacing utilities, and max-w-none sets no limit (#1057)
-  test('a size utility with a t-shirt name is a container size, max-w-none is none', () => {
+  // what a consumer gets: a t-shirt name is a container size on every size utility, the
+  // logical ones included, max-w-none sets no limit, and spacing takes the numeric steps: the
+  // theme has no named step of spacing, and the measures of text are container widths (#1061)
+  test('a t-shirt name is a container size, spacing a numeric step, max-w-none is none', () => {
     const reads: Record<string, string> = {
       'max-w-2xl': '--container-2xl',
       'max-w-md': '--container-md',
@@ -211,30 +212,41 @@ describe('what Tailwind compiles', () => {
       'min-w-lg': '--container-lg',
       'basis-md': '--container-md',
       'max-w-5xl': '--container-5xl',
-      'p-md': '--spacing-md',
-      'gap-lg': '--spacing-lg',
-      'h-lg': '--spacing-lg',
+      'inline-2xl': '--container-2xl',
+      'min-inline-sm': '--container-sm',
+      'max-inline-xs': '--container-xs',
+      'max-w-text': '--container-text',
+      'w-prose': '--container-prose',
     }
-    const classes = [...Object.keys(reads), 'max-w-none']
+    const classes = [...Object.keys(reads), 'max-w-none', 'p-600', 'gap-400']
     const css = compile(classes)
     const set = Object.fromEntries(classes.map((name, index) => [name, lastValue(css[index])]))
     expect(set).toEqual({
       ...Object.fromEntries(Object.entries(reads).map(([name, token]) => [name, themeVariables.get(token)])),
       'max-w-none': 'none',
+      'p-600': 'calc(var(--spacing) * 600)',
+      'gap-400': 'calc(var(--spacing) * 400)',
     })
     expect(set['max-w-2xl']).toBe('640px')
-    expect(themeVariables.get('--spacing-2xl')).toBe('48px')
+    expect(set['inline-2xl']).toBe('640px')
+    // a t-shirt name or a measure on a spacing utility is no class
+    const gone = ['p-md', 'gap-lg', 'h-lg', '-m-xs', 'w-none', 'p-prose', 'gap-text']
+    expect(compile(gone)).toEqual(gone.map(() => null))
   })
 
   // the facts the README states
-  test('text roles are fg-, containers reach the size utilities through aliases, breakpoints are variants', () => {
+  test('text roles are fg-, containers reach every size utility, breakpoints are variants', () => {
     expect(map.tokens['--magma-text-muted']).toMatchObject({ theme: '--color-fg-muted', namespace: '--color', key: 'fg-muted' })
     expect(map.namespaces['--color'].utilities).toEqual(expect.arrayContaining(['bg', 'border', 'text']))
-    // max-w-xs reads --max-width-xs, the container; the logical inline-xs still reads spacing
-    expect(map.tokens['--container-xs'].aliases).toEqual(['--flex-basis-xs', '--max-width-xs', '--min-width-xs', '--width-xs'])
-    expect(map.tokens['--container-xs'].shadowed).toEqual({ inline: '--spacing-xs', 'max-inline': '--spacing-xs', 'min-inline': '--spacing-xs' })
-    expect(map.tokens['--spacing-xs'].shadowed).toMatchObject({ 'max-w': '--max-width-xs', w: '--width-xs' })
-    expect(map.keywords['--max-width-none']).toEqual({ value: 'none', namespace: '--max-width', key: 'none' })
+    // max-w-xs and inline-xs read the container itself: no alias, no other variable wins
+    expect(map.tokens['--container-xs']).toEqual({ theme: '--container-xs', namespace: '--container', key: 'xs' })
+    expect(map.namespaces['--container'].utilities).toEqual(expect.arrayContaining(['basis', 'inline', 'max-inline', 'max-w', 'min-inline', 'min-w', 'w']))
+    expect(map.keywords).toEqual({})
+    // the named keys of spacing are the relations of the rhythm, the measures are container keys
+    expect(map.spacing.keys).toEqual(expect.arrayContaining(['between-fields', 'inset']))
+    expect(map.spacing.keys.filter((key) => /^(none|x*s|sm|md|lg|\d?xl|phrase|prose|text|title)$/.test(key))).toEqual([])
+    expect(map.tokens['--spacing-xs']).toBeUndefined()
+    expect(map.tokens['--container-prose']).toMatchObject({ namespace: '--container', key: 'prose' })
     expect(map.tokens['--container-5xl'].shadowed).toBeUndefined()
     expect(map.namespaces['--breakpoint']).toMatchObject({ utilities: [], variants: expect.arrayContaining(['*', 'max-*']) })
     expect(map.tokens['--border-xs'].namespace).toBeNull()

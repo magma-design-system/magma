@@ -1,0 +1,4 @@
+[
+  { "kind": "warn", "line": 12, "contains": "write `inline-1200` to keep the step" },
+  { "kind": "warn", "line": 12, "contains": "write `p-(--container-prose)` to keep the value" }
+]

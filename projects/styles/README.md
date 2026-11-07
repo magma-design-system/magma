@@ -377,22 +377,22 @@ token of `tokens.editor.css`. Every group and token of `globals.tokens.json` has
   root of `namespaces[namespace].utilities` (`text-fg-muted`, `bg-fg-muted`,
   `border-fg-muted`, ...), its variants the patterns of `namespaces[namespace].variants`
   with the key for `*` (`max-tablet:`, `@md:`).
-- **`aliases`**: the `@theme` variables that republish the token whole for the utilities
-  of another namespace. `w-*`, `min-w-*`, `max-w-*` and `basis-*` read their own
-  namespace, then spacing, then container, so for the keys both scales have (`xs` ...
-  `4xl`) `--container-xs` comes with `--width-xs`, `--max-width-xs`, ...: `max-w-xs` is
-  the 320px container, not the 4px spacing step.
+- **`aliases`**: the `@theme` variables that republish the token whole (`var()` of its
+  `@theme` variable) for the utilities of another namespace; a class that reads one reads
+  the token. The theme has none today: a t-shirt name is a container size on every size
+  utility (`max-w-xs`, `inline-xs`) because spacing has no key of that name (#1061), so the
+  size namespaces that pointed at the container (#1060) are gone.
 - **`shadowed`**: the roots (or variant patterns) where that class reads another
-  variable, and which one (`null`: none of the theme). `--container-xs` has
-  `"inline": "--spacing-xs"`: the logical utilities have no namespace of their own, so
-  `inline-xs` is 4px; the container is `inline-(--container-xs)`. A class or variant that
-  Tailwind compiles to nothing is shadowed by `null` too: `--container-form` (`max-w-form`,
-  #1189) has `"@*": null`, since its value is a `var()` and a container query cannot read one.
+  variable, and which one (`null`: none of the theme). `--container-prose` has
+  `"max-w": "--max-width-prose"`: `max-w-prose` is Tailwind's own 65ch, the same value. A
+  class or variant that Tailwind compiles to nothing is shadowed by `null` too:
+  `--magma-width-form` (`max-w-form`, #1189) has `"@*": null`, since its value is a `var()`
+  and a container query cannot read one.
 - **`description`**: what the token is for, the `$description` of its DTCG token, or of its
   `cssOnly` entry for a value DTCG cannot type (`--magma-width-form`).
 - **`keywords`**: the `@theme` variables that hold a CSS keyword and publish no token.
-  `--max-width-none: none` makes `max-w-none` set no limit, where the spacing step would
-  set `0px`.
+  None today: `max-w-none` is Tailwind's own and sets no limit, since spacing has no step
+  `none` to win over it (#1061).
 - **`namespace: null`**: no utility reads the variable. Tailwind 4 has no `--border-*`
   or `--duration-*` namespace, so `border-xs` does not exist and `duration-200` is
   Tailwind's own 200ms, not the token: write `border-(length:--border-xs)`.
@@ -400,8 +400,8 @@ token of `tokens.editor.css`. Every group and token of `globals.tokens.json` has
   `--<variable>--<property>` (`--text-size-title-h1--line-height`).
 - **`spacing`**: `--spacing: 0.0025rem` multiplies every numeric step, so `gap-400` is
   `400 x 0.0025rem = 1rem`. `utilities` lists the roots that take a step, `keys` the named
-  ones (`xs` ... `4xl`, `phrase`, `prose`, ...), `steps` the numeric keys the theme
-  publishes explicitly.
+  ones, the relations of the rhythm (`between-fields`, `inset`, ...; no t-shirt name, #1061),
+  `steps` the numeric keys the theme publishes explicitly.
 - **`utilities`**: every `@utility` of `dist/tailwind/*.css` and of the design-tokens
   sheets they import, with where it is defined, what it `@apply`s, the tokens and the
   Tailwind theme variables it reads (`text-title-h1` reads Tailwind's `--font-weight-black`)

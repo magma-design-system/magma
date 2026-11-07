@@ -99,13 +99,39 @@ describe('widths', () => {
 
   // #1204: max-w-text, the cap of the reset on p, li and figcaption, is the reading measure
   test('the measure of text points at the reading measure, in both sheets', () => {
-    expect(vars.get('--spacing-text')).toBe('var(--magma-width-reading, 56ch)')
-    expect(theme.get('--spacing-text')).toBe('var(--magma-width-reading, 56ch)')
+    expect(vars.get('--container-text')).toBe('var(--magma-width-reading, 56ch)')
+    expect(theme.get('--container-text')).toBe('var(--magma-width-reading, 56ch)')
   })
 
   test('the Tailwind 3 preset measures text at the same 56ch', () => {
     const props = readFileSync(resolve(DIST, 'js', 'tailwind-props.js'), 'utf8')
     expect([...props.matchAll(/'text': '([^']+)'/g)].map((m) => m[1])).toEqual(['56ch', '56ch'])
+  })
+})
+
+// #1061: a t-shirt name is a container size, spacing a numeric step. The theme publishes no
+// named step of spacing, so max-w-2xl and inline-2xl read the container with no alias; the
+// named steps stay CSS variables, and the measures of text are container widths
+describe('the spacing and container keys of the theme', () => {
+  test('the only spacing keys are the multiplier and the bridges of the rhythm', () => {
+    const spacing = [...theme.keys()].filter((name) => name.startsWith('--spacing-'))
+    expect(theme.get('--spacing')).toBe('0.0025rem')
+    expect(spacing.sort()).toEqual(Object.keys(RHYTHM).map((id) => `--spacing-${id}`).sort())
+  })
+
+  test('no size namespace republishes the container', () => {
+    expect([...theme.keys()].filter((name) => /^--(width|min-width|max-width|flex-basis)-/.test(name))).toEqual([])
+  })
+
+  test('the named steps stay CSS variables of typography.css', () => {
+    expect(['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'].map((key) => vars.get(`--spacing-${key}`)))
+      .toEqual(['0px', '4px', '8px', '16px', '24px', '32px', '48px', '64px', '96px'])
+  })
+
+  test('the measures of text are container widths in both sheets', () => {
+    for (const sheet of [vars, theme])
+      expect(['phrase', 'prose', 'title'].map((key) => sheet.get(`--container-${key}`))).toEqual(['50ch', '65ch', '30ch'])
+    expect([...vars.keys(), ...theme.keys()].filter((name) => /^--spacing-(phrase|prose|text|title)$/.test(name))).toEqual([])
   })
 })
 
@@ -171,7 +197,7 @@ describe('the roles in the DTCG export', () => {
   })
 
   test('the measure of text points at the reading measure, with no DTCG type', () => {
-    const text = at('spacing').$extensions[NAMESPACE].cssOnly!.find(({ css }) => css === '--spacing-text')
+    const text = at('container').$extensions[NAMESPACE].cssOnly!.find(({ css }) => css === '--container-text')
     expect(text?.value).toBe('var(--magma-width-reading, 56ch)')
   })
 })

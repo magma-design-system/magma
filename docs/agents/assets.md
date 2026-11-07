@@ -101,12 +101,11 @@ the `text-title-*` / `text-info-*` / `text-read-*` / `text-code-*` utilities,
 Spacing and sizes:
 
 - write spacing with the numeric steps, the step times `--spacing` (0.0025rem):
-  `p-600` is 1.5rem, `gap-400` 1rem;
-- a t-shirt name on `w-*`, `min-w-*`, `max-w-*` and `basis-*` is a container size:
-  `max-w-2xl` is 640px, `w-xs` 320px, `basis-md` 448px, and `max-w-none` sets no limit;
-- the logical `inline-*`, `min-inline-*` and `max-inline-*` still read the spacing step of
-  that name (`inline-2xl` is 48px): for a container width write
-  `inline-(--container-2xl)`.
+  `p-600` is 1.5rem, `gap-400` 1rem; a t-shirt name is no spacing step (`p-md` is no class);
+- a t-shirt name on a size utility is a container size: `max-w-2xl` is 640px, `w-xs` 320px,
+  `basis-md` 448px, `inline-2xl` 640px, and `max-w-none` sets no limit;
+- the measures of text are container sizes too: `max-w-text` (the reading measure),
+  `max-w-prose`, `max-w-phrase`, `max-w-title`.
 
 Do not use the JS preset (`presets: [require('@maggioli-design-system/styles')]`) with
 Tailwind 4: it is the Tailwind 3 path (with the layers in
