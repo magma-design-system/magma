@@ -212,8 +212,8 @@ export namespace Components {
          */
         "selected"?: boolean;
         /**
-          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
-          * @default 'h5'
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189), the default since Magma 3 (#1218); `h5` keeps the look of Magma 2. The title sits inside the button that opens the item, so this is its style only, never a level of the outline
+          * @default 'h6'
          */
         "typography"?: TypographyTitleType;
     }
@@ -254,8 +254,8 @@ export namespace Components {
          */
         "selected": boolean;
         /**
-          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
-          * @default 'h5'
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189), the default since Magma 3 (#1218); `h5` keeps the look of Magma 2. The title sits inside the button that opens the item, so this is its style only, never a level of the outline
+          * @default 'h6'
          */
         "typography": TypographyTitleType;
         /**
@@ -5595,8 +5595,8 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
         /**
-          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
-          * @default 'h5'
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189), the default since Magma 3 (#1218); `h5` keeps the look of Magma 2. The title sits inside the button that opens the item, so this is its style only, never a level of the outline
+          * @default 'h6'
          */
         "typography"?: TypographyTitleType;
     }
@@ -5657,8 +5657,8 @@ declare namespace LocalJSX {
          */
         "selected"?: boolean;
         /**
-          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline
-          * @default 'h5'
+          * Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189), the default since Magma 3 (#1218); `h5` keeps the look of Magma 2. The title sits inside the button that opens the item, so this is its style only, never a level of the outline
+          * @default 'h6'
          */
         "typography"?: TypographyTitleType;
         /**

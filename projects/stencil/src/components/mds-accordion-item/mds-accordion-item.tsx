@@ -22,11 +22,11 @@ export class MdsAccordionItem {
 
   /**
    * Specifies the typography of the title. An item is a part of the page, whose title is
-   * styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next
-   * major (#1218). The title sits inside the button that opens the item, so this is its style
+   * styled as `h6` (`titles/part`, #1189), the default since Magma 3 (#1218); `h5` keeps the
+   * look of Magma 2. The title sits inside the button that opens the item, so this is its style
    * only, never a level of the outline
    */
-  @Prop() readonly typography?: TypographyTitleType = 'h5';
+  @Prop() readonly typography?: TypographyTitleType = 'h6';
 
   /**
    * Specifies if the component item is selected or not

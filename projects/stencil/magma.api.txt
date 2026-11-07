@@ -16,7 +16,7 @@ mds-accordion css --mds-accordion-padding-unselected
 mds-accordion-item encapsulation shadow
 mds-accordion-item prop label (attr label) [required]: string
 mds-accordion-item prop selected (attr selected) [reflect, mutable]: boolean | undefined
-mds-accordion-item prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | undefined = 'h5'
+mds-accordion-item prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | undefined = 'h6'
 mds-accordion-item event mdsAccordionItemChange: MdsAccordionItemEventDetail [bubbles, cancelable, composed]
 mds-accordion-item event mdsAccordionItemSelect: MdsAccordionItemEventDetail [bubbles, cancelable, composed]
 mds-accordion-item event mdsAccordionItemUnselect: MdsAccordionItemEventDetail [bubbles, cancelable, composed]
@@ -46,7 +46,7 @@ mds-accordion-timer-item prop description (attr description) [required]: string
 mds-accordion-timer-item prop duration (attr duration) [reflect]: number | undefined
 mds-accordion-timer-item prop progress (attr progress): number = 0
 mds-accordion-timer-item prop selected (attr selected) [reflect]: boolean = false
-mds-accordion-timer-item prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" = 'h5'
+mds-accordion-timer-item prop typography (attr typography): "action" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" = 'h6'
 mds-accordion-timer-item prop uuid (attr uuid): number = 0
 mds-accordion-timer-item event mdsAccordionTimerItemClickSelect: MdsAccordionTimerItemEventDetail [bubbles, cancelable, composed]
 mds-accordion-timer-item event mdsAccordionTimerItemMouseEnterSelect: MdsAccordionTimerItemEventDetail [bubbles, cancelable, composed]
