@@ -245,6 +245,68 @@ describe('mds-button-dropdown truncate', () => {
   });
 });
 
+// actions/stacked (#1189) stretches every labelled action of a row: the host gives the width to
+// its main action and keeps the chevron at its own size at the end, with none of its fill past
+// them; at its own width nothing moves (#1313)
+describe('mds-button-dropdown stretched', () => {
+  const splitButton = (style = '') =>
+    `<mds-button-dropdown label="Scarica" style="${style}"><mds-button label="Scarica come CSS"></mds-button></mds-button-dropdown>`;
+
+  const box = (element: Element): DOMRect => element.getBoundingClientRect();
+
+  const hydrated = (root: Element) =>
+    vi.waitFor(() => {
+      for (const component of root.querySelectorAll('mds-button-dropdown, :scope > mds-button')) {
+        expect(component).toHaveAttribute('hydrated');
+      }
+      for (const dropdown of root.querySelectorAll('mds-button-dropdown')) {
+        expect(primaryAction(dropdown)).toHaveAttribute('hydrated');
+        expect(chevron(dropdown)).toHaveAttribute('hydrated');
+      }
+    });
+
+  it('keeps its own width where nothing stretches it, its main action as wide as a button', async () => {
+    const { root } = await render<HTMLElement>(
+      `<div>${splitButton()}<mds-button label="Scarica"></mds-button></div>`,
+    );
+    await hydrated(root);
+    const dropdown = root.querySelector('mds-button-dropdown')!;
+    const button = root.querySelector(':scope > mds-button')!;
+
+    expect(box(primaryAction(dropdown)).width).toBeCloseTo(box(button).width, 0);
+    expect(box(dropdown).width).toBeCloseTo(
+      box(primaryAction(dropdown)).width + box(chevron(dropdown)).width,
+      0,
+    );
+  });
+
+  // the three ways the rows of Magma stretch an action: mds-card-footer and mds-status-bar, a
+  // product's own row, mds-banner
+  it.each([
+    ['align-self in a column', 'display: flex; flex-direction: column', 'align-self: stretch'],
+    ['a width', '', 'width: 100%'],
+    ['a flex-basis in a row that wraps', 'display: flex; flex-wrap: wrap', 'flex-basis: 100%'],
+  ])('spreads its main action across the width it gets from %s', async (_, row, stretch) => {
+    const { root } = await render<HTMLElement>(
+      `<div><div style="width: 20rem; ${row}">${splitButton(stretch)}</div>${splitButton()}</div>`,
+    );
+    await hydrated(root);
+    const [stretched, intrinsic] = Array.from(root.querySelectorAll('mds-button-dropdown'));
+    const host = box(stretched);
+    const primary = box(primaryAction(stretched));
+    const arrow = box(chevron(stretched));
+    const label = box(primaryAction(stretched).shadowRoot!.querySelector('[part="label"]')!);
+
+    expect(host.width).toBeCloseTo(box(stretched.parentElement!).width, 0);
+    expect(primary.left).toBeCloseTo(host.left, 0);
+    expect(arrow.left).toBeCloseTo(primary.right, 0);
+    expect(arrow.right).toBeCloseTo(host.right, 0);
+    expect(arrow.width).toBeCloseTo(box(chevron(intrinsic)).width, 0);
+    // the label stays in the middle of the main action, as in a stretched mds-button
+    expect(label.left + label.width / 2).toBeCloseTo(primary.left + primary.width / 2, 0);
+  });
+});
+
 describe('mds-button-dropdown chevron and primary action', () => {
   const menu = (dropdown: Element): HTMLMdsDropdownElement =>
     dropdown.shadowRoot!.querySelector<HTMLMdsDropdownElement>('mds-dropdown')!;

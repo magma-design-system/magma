@@ -40,9 +40,14 @@ mds-button {
   --mds-button-border-tone-weak-hover-width: 0;
 }
 
+/* a host stretched by its row (actions/stacked: align-self, a width, a flex-basis) gives its free
+   width to the main action, whose label mds-button centres, and the chevron stays at its own
+   size at the end; at its own width the host has none to give, so nothing moves (#1313) */
+
 .dropdown-primary-action {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
+  flex-grow: 1;
 }
 
 .dropdown-action {

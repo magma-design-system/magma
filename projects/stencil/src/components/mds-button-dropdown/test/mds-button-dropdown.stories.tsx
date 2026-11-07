@@ -172,3 +172,39 @@ export const FormActions = {
     await expect(await canvas.findByText('draft')).toBeInTheDocument();
   },
 };
+
+// actions/stacked (#1189): under 380px of its container the row stacks and stretches every
+// labelled action; the component gives the width to its primary action, the chevron at the end
+// (#1313)
+const TemplateStackedRow = (args) => (
+  <div class="@container w-full max-w-[320px]">
+    <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+      <mds-button variant="dark" tone="outline" label="Copia JSON"></mds-button>
+      <mds-button-dropdown {...args}>
+        <mds-button variant="dark" tone="text" label="Scarica come CSS"></mds-button>
+        <mds-button variant="dark" tone="text" label="Scarica come JSON"></mds-button>
+      </mds-button-dropdown>
+    </div>
+  </div>
+);
+
+export const StackedRow = {
+  render: TemplateStackedRow,
+
+  args: {
+    label: 'Scarica',
+    icon: 'mi/baseline/download',
+  },
+  play: async ({ canvasElement }) => {
+    const dropdown = canvasElement.querySelector('mds-button-dropdown')!;
+    await waitFor(() => expect(dropdown).toHaveAttribute('hydrated'));
+    const chevron = dropdown.shadowRoot!.querySelector('.dropdown-action')!;
+    const row = dropdown.parentElement!.getBoundingClientRect();
+
+    await waitFor(() => {
+      const host = dropdown.getBoundingClientRect();
+      expect(host.width).toBeCloseTo(row.width, 0);
+      expect(chevron.getBoundingClientRect().right).toBeCloseTo(host.right, 0);
+    });
+  },
+};
