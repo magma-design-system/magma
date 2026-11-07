@@ -58,3 +58,4 @@ jobs:
       - run: npm run lint
       - run: npx nx run magma:check.diagrams
       - run: npx nx run magma:check.agent-context
+      - run: npx nx run magma:epic.test
