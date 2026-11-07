@@ -289,7 +289,7 @@ The skills are procedures that defer to the installed version (the MCP server, t
 
 The `@maggioli-design-system/magma-codemods` package (`projects/codemod`): it migrates consumer code from v1 to v2, rewriting HTML, React, Angular templates (external and inline) and CSS/SCSS, and reports what needs a human decision. Its rules are a manifest (`src/manifest/manifest.ts`), drafted from the `documentation.json` of the two versions; one module per surface (`src/surfaces/`) decides where an attribute or a class is written, the forms the class rules of the lint read too ([`docs/CONTRACTS.md`](CONTRACTS.md)). The contributor notes are [`projects/codemod/README.md`](../projects/codemod/README.md).
 
-### 2.10 `studio`
+### 2.11 `studio`
 
 The studio of Magma (`projects/studio`, epic #693): an app where whoever installs Magma defines a
 theme from a UI, and later the rest of a product's definition (Foundation, Patterns, Blocks). It
