@@ -92,6 +92,13 @@ test.skipIf(!built).each([
     })
     tab.on('pageerror', (error) => problems.push(`page: ${error.message}`))
     await tab.goto(`${origin}${BASE}${page}`, { waitUntil: 'networkidle' })
+    // mds-icon asks for an icon only once its component has rendered and IndexedDB has said it
+    // holds no copy: on a runner with a slow disk that answer comes after the network has been
+    // idle for 500 ms, and counted at networkidle the icons were none (#1312: IndexedDB delayed
+    // by a second reproduces it). The test waits for the first one instead
+    await expect
+      .poll(() => served.some((one) => one.startsWith(`${BASE}svg/`)), { timeout: 30_000 })
+      .toBe(true)
     const fonts = await tab.evaluate(async () => {
       await document.fonts.ready
       return [...document.fonts].filter((font) => font.status === 'loaded').map((font) => font.family)
