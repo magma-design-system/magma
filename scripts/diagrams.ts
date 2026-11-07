@@ -50,11 +50,26 @@ export interface Diagram {
   classDefs: Map<string, string>;
 }
 
-/** The part of the graph of `nx graph --file` the check reads. */
+/** The part of the graph of `nx graph --file` the checks read (this one, and agent-context.ts its targets). */
 export interface ProjectGraph {
-  nodes: Record<string, { data: { root: string; tags?: string[] } }>;
+  nodes: Record<
+    string,
+    { data: { root: string; tags?: string[]; targets?: Record<string, unknown> } }
+  >;
   dependencies: Record<string, Array<{ target: string }>>;
 }
+
+/** The project graph Nx computes for the repository at `root`, the one the build order follows. */
+export const readProjectGraph = (root: string): ProjectGraph => {
+  const folder = mkdtempSync(path.join(tmpdir(), 'magma-graph-'));
+  const file = path.join(folder, 'graph.json');
+  try {
+    execFileSync('npx', ['nx', 'graph', `--file=${file}`], { cwd: root, stdio: 'ignore' });
+    return (JSON.parse(readFileSync(file, 'utf8')) as { graph: ProjectGraph }).graph;
+  } finally {
+    rmSync(folder, { recursive: true, force: true });
+  }
+};
 
 /** The section of docs/ARCHITECTURE.md that holds the overview. */
 export const OVERVIEW = { file: 'docs/ARCHITECTURE.md', section: '1. System Overview' };
@@ -216,9 +231,13 @@ export const colourErrors = (diagram: Diagram, axisOf: Map<string, string>): str
     const axes = diagram.classes.get(id) ?? [];
     const axis = axes[0];
     if (axes.length !== 1 || !(AXES as readonly string[]).includes(axis))
-      errors.push(`node ${id} needs one axis (${AXES.join(', ')}), it has ${axes.join(', ') || 'none'}`);
+      errors.push(
+        `node ${id} needs one axis (${AXES.join(', ')}), it has ${axes.join(', ') || 'none'}`,
+      );
     else if (axisOf.has(firstLine(label)) && axisOf.get(firstLine(label)) !== axis)
-      errors.push(`node ${id} stands for ${firstLine(label)}, whose axis is ${axisOf.get(firstLine(label))}, not ${axis}`);
+      errors.push(
+        `node ${id} stands for ${firstLine(label)}, whose axis is ${axisOf.get(firstLine(label))}, not ${axis}`,
+      );
   }
   for (const id of diagram.subgraphs.keys()) {
     const axes = diagram.classes.get(id) ?? [];
@@ -254,9 +273,11 @@ export const mermaidBlocks = (markdown: string): string[] =>
 
 /** The project each node stands for, by id: nodes whose first line is not a project are left out. */
 const projectNodes = (diagram: Diagram, projects: string[]): Map<string, string> =>
-  new Map([...diagram.nodes].filter(([, label]) => projects.includes(firstLine(label))).map(
-    ([id, label]) => [id, firstLine(label)],
-  ));
+  new Map(
+    [...diagram.nodes]
+      .filter(([, label]) => projects.includes(firstLine(label)))
+      .map(([id, label]) => [id, firstLine(label)]),
+  );
 
 /** What the check finds wrong in the diagrams, given the graph and a reader of the repository. */
 export const checkDiagrams = (
@@ -337,7 +358,9 @@ export const checkDiagrams = (
     );
     for (const link of links)
       if (!arrows.has(link))
-        errors.push(`${OVERVIEW.file}: the overview misses the arrow ${link.replace('>', ' --> ')}`);
+        errors.push(
+          `${OVERVIEW.file}: the overview misses the arrow ${link.replace('>', ' --> ')}`,
+        );
     for (const arrow of arrows)
       if (!links.has(arrow))
         errors.push(
@@ -349,24 +372,16 @@ export const checkDiagrams = (
 
 const main = () => {
   const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-  const folder = mkdtempSync(path.join(tmpdir(), 'magma-graph-'));
-  const file = path.join(folder, 'graph.json');
-  try {
-    execFileSync('npx', ['nx', 'graph', `--file=${file}`], { cwd: root, stdio: 'ignore' });
-    const { graph } = JSON.parse(readFileSync(file, 'utf8')) as { graph: ProjectGraph };
-    const errors = checkDiagrams(graph, (name) => {
-      const at = path.join(root, name);
-      return existsSync(at) ? readFileSync(at, 'utf8') : undefined;
-    });
-    if (errors.length) {
-      console.error(errors.map((error) => `  ${error}`).join('\n'));
-      process.exitCode = 1;
-      return;
-    }
-    console.info('OK - the diagrams of the READMEs and the overview match the project graph');
-  } finally {
-    rmSync(folder, { recursive: true, force: true });
+  const errors = checkDiagrams(readProjectGraph(root), (name) => {
+    const at = path.join(root, name);
+    return existsSync(at) ? readFileSync(at, 'utf8') : undefined;
+  });
+  if (errors.length) {
+    console.error(errors.map((error) => `  ${error}`).join('\n'));
+    process.exitCode = 1;
+    return;
   }
+  console.info('OK - the diagrams of the READMEs and the overview match the project graph');
 };
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) main();

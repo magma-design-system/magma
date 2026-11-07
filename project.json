@@ -24,6 +24,17 @@
         "commands": ["tsx --test scripts/diagrams.spec.ts", "tsx scripts/diagrams.ts"],
         "parallel": false
       }
+    },
+    "check.agent-context": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "commands": [
+          "tsx --test scripts/agent-context.spec.ts",
+          "tsx --tsconfig projects/mcp/tsconfig.json scripts/agent-context.ts"
+        ],
+        "parallel": false
+      }
     }
   }
 }
