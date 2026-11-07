@@ -432,9 +432,10 @@ export const transformAngular = (
       const insertAt = startSpan.end.offset - 1;
       const after =
         rule.value === undefined ? rule.attr.attr : `${rule.attr.attr}="${escapeAttr(rule.value)}"`;
-      edits.push({ start: insertAt, end: insertAt, text: ` ${after}` });
+      // reportOnly: the new default stays, the report names the attribute that keeps the old one
+      if (!rule.reportOnly) edits.push({ start: insertAt, end: insertAt, text: ` ${after}` });
       findings.push({
-        kind: 'change',
+        kind: rule.reportOnly ? 'flag' : 'change',
         surface: 'angular',
         file: ctx.file,
         line,

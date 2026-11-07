@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { transformCss } from '../surfaces/css.js';
+import { transformHtml } from '../surfaces/html.js';
 import { collectColorTokens } from './color-token-source.js';
 import { colorTokenNames } from './color-tokens.generated.js';
 import {
@@ -110,6 +111,30 @@ describe('the v2 -> v3 manifest', () => {
     expect(
       result.findings.some((f) => f.kind === 'flag' && f.message.includes('internal property')),
     ).toBe(true);
+  });
+
+  // #1218: the new default h6 is the change, so nothing is written and each item that leaves
+  // typography out is reported with the attribute that keeps the Magma 2 look
+  it('reports the items whose title moves to h6 and writes nothing', () => {
+    const v2 = [
+      '<mds-accordion>',
+      '  <mds-accordion-item label="Uno"></mds-accordion-item>',
+      '  <mds-accordion-item label="Due" typography="h6"></mds-accordion-item>',
+      '</mds-accordion>',
+      '<mds-accordion-timer>',
+      '  <mds-accordion-timer-item description="Tre"></mds-accordion-timer-item>',
+      '  <mds-accordion-timer-item description="Quattro" typography="h5"></mds-accordion-timer-item>',
+      '</mds-accordion-timer>',
+    ].join('\n');
+    const result = transformHtml(v2, manifestV3, { file: 'faq.html' });
+    expect(result.changed).toBe(false);
+    expect(result.output).toBe(v2);
+    expect(
+      result.findings.map(({ kind, line, component, after }) => ({ kind, line, component, after })),
+    ).toEqual([
+      { kind: 'flag', line: 2, component: 'mds-accordion-item', after: 'typography="h5"' },
+      { kind: 'flag', line: 6, component: 'mds-accordion-timer-item', after: 'typography="h5"' },
+    ]);
   });
 });
 

@@ -19,6 +19,9 @@
  *    to bring them back. `--mds-input-date-icon-color-rgb`, deprecated and read
  *    by nothing, is gone.
  *
+ * #1218, category O: the title of an item of an accordion is `h6` by default,
+ * no longer `h5`. Reported, not rewritten, see {@link titleOfAPart}.
+ *
  * #1061, category P: a t-shirt name is a container size, spacing a numeric
  * step. The Tailwind theme of Magma 3 publishes no named step of spacing (the
  * CSS variables `--spacing-none` ... `--spacing-4xl` of typography.css stay),
@@ -36,6 +39,7 @@ import {
   type ClassRenameRule,
   type ClassReportRule,
   type CssVarRenameRule,
+  type EnsureAttrRule,
   type Manifest,
 } from './schema.js';
 
@@ -71,6 +75,29 @@ const dropRgb = (name: string, note?: string): CssVarRenameRule => ({
 
 const INTERNAL =
   'an internal property: products may not set it, and Magma may change it without a major; style the component through its public properties';
+
+/**
+ * The default of `typography` on the items of `mds-accordion` and
+ * `mds-accordion-timer` moves from `h5`, the style of a section, to `h6`, the
+ * style of a part (`titles/part` of the design language, #1189; the API
+ * snapshot of #1218, `magma.api.txt`). The new default is the reason of the
+ * change, so an item that leaves `typography` out is reported with the
+ * attribute that keeps the Magma 2 look, and nothing is written; an item that
+ * writes it, statically or bound, is left alone. Chosen on #1218 (2026-11-07)
+ * over the guard of the v1 -> v2 visual defaults (`mds-banner variant="light"`,
+ * `mds-label truncate="none"`): writing `typography="h5"` into every item would
+ * keep each migrated product off the decision.
+ */
+const titleOfAPart = (): EnsureAttrRule => ({
+  kind: 'ensureAttr',
+  attr: { attr: 'typography', prop: 'typography' },
+  value: 'h5',
+  unless: [{ attr: 'typography', prop: 'typography' }],
+  reportOnly: true,
+  confidence: 'review',
+  reason:
+    'the title of the item is h6 by default in Magma 3, the style of a part (it was h5, the style of a section); write typography="h5" to keep the look of Magma 2',
+});
 
 /**
  * The named steps of spacing in Magma 2, each with the numeric step of the same
@@ -314,6 +341,16 @@ export const manifestV3: Manifest = {
     cssVars: spacingRules.cssVars,
   },
   components: {
+    'mds-accordion-item': {
+      tag: 'mds-accordion-item',
+      react: 'MdsAccordionItem',
+      rules: [titleOfAPart()],
+    },
+    'mds-accordion-timer-item': {
+      tag: 'mds-accordion-timer-item',
+      react: 'MdsAccordionTimerItem',
+      rules: [titleOfAPart()],
+    },
     'mds-button': {
       tag: 'mds-button',
       react: 'MdsButton',

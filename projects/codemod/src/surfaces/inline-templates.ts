@@ -18,7 +18,7 @@
  * correct, so it is left for manual review.
  */
 import { Node, Project, SyntaxKind, ts } from 'ts-morph';
-import { manifestHasMarkupRules } from '../manifest/registry.js';
+import { markupTagRe } from '../manifest/registry.js';
 import { type Manifest } from '../manifest/schema.js';
 import { type Finding } from '../report/types.js';
 import { applyEdits, type Edit } from './shared/edits.js';
@@ -31,8 +31,6 @@ import { transformCss } from './css.js';
 import { transformHtml } from './html.js';
 import { ruleEnabled } from './shared/transform.js';
 import { type TransformContext, type TransformResult } from './shared/transform.js';
-
-const MDS_TAG_RE = /<mds-[a-z-]/;
 
 type SubTransform = (source: string, manifest: Manifest, ctx: TransformContext) => TransformResult;
 
@@ -54,11 +52,11 @@ export const transformInlineTemplates = (
 
   // A literal is worth parsing when it contains mds-* markup OR mentions a
   // migrated utility class (J) — those live on any element, not just mds-*.
-  // (an mds-* tag counts when the jump has rules on the markup of an element)
+  // (an mds-* tag counts when the jump has rules on the markup of that element)
   const classRules = classRulesOf(manifest);
-  const markup = manifestHasMarkupRules(manifest);
+  const markupTags = markupTagRe(manifest);
   const relevant = (chunk: string): boolean =>
-    (markup && MDS_TAG_RE.test(chunk)) || (classRules.candidateRe?.test(chunk) ?? false);
+    (markupTags?.test(chunk) ?? false) || (classRules.candidateRe?.test(chunk) ?? false);
   // ... or, for the rules of a declaration (G, N), markup with a `style`
   // attribute or element, or with a colour read in a class
   const colors = colorRulesOf(manifest);

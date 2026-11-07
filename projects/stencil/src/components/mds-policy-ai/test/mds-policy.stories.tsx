@@ -84,7 +84,7 @@ const TemplateCustomCard = (args) => (
       </div>
     </div>
     <div class="grid">
-      <mds-text typography="h4">FAQ</mds-text>
+      <mds-text typography="section">FAQ</mds-text>
       <mds-accordion>
         <mds-accordion-item label="Sapiente earum neque amet temporibus ipsam?">
           <mds-text typography="detail">
