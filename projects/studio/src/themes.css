@@ -144,6 +144,32 @@
   }
 }
 
+/*
+  A mode: its canvas, then the link that tests the theme in it, the action that closes it, at the
+  end of its container (actions/place) and content-actions apart. Under the threshold of
+  actions/stacked, --magma-container-actions, the link takes the whole width: 380px written out,
+  since a container query reads no var() and the sheets of the studio do not run through the
+  Tailwind theme that bridges it.
+*/
+
+.themes-mode {
+  align-content: start;
+  container: theme-mode / inline-size;
+  display: grid;
+  gap: var(--magma-rhythm-content-actions);
+  min-inline-size: 0;
+}
+
+.themes-test {
+  justify-self: end;
+}
+
+@container theme-mode (width < 380px) {
+  .themes-test {
+    justify-self: stretch;
+  }
+}
+
 .themes-samples {
   display: flex;
   flex-wrap: wrap;

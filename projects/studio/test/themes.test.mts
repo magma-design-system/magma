@@ -175,7 +175,7 @@ test('a theme shows the canvas of Semantic surface per mode, its accents on each
   // two parts, the columns of its row: what the theme is with its settings, then its modes
   expect([...card.children].map((part) => part.className)).toEqual(['themes-info', 'themes-modes'])
   expect(card.querySelector('.themes-info > .themes-settings')).not.toBeNull()
-  const canvases = [...card.querySelectorAll('.themes-modes > .surfaces-canvas')]
+  const canvases = [...card.querySelectorAll('.themes-modes > .themes-mode > .surfaces-canvas')]
   expect(canvases.map((one) => one.querySelector('.surfaces-canvas-label')?.textContent?.split(' ')[0])).toEqual([
     'light',
     'dark',
@@ -187,6 +187,46 @@ test('a theme shows the canvas of Semantic surface per mode, its accents on each
     expect(canvas.querySelectorAll('.surfaces-text mds-badge').length).toBeGreaterThan(0)
     expect(canvas.querySelector('.themes-samples')).not.toBeNull()
   }
+})
+
+// Each mode of a theme links to the Theme section, the theme in that mode (vittorio, 2026-11-07):
+// the person tests the theme where it is shown on a product
+const testsOf = (card: Element) =>
+  [...card.querySelectorAll('.themes-mode > mds-button.themes-test')].map((link) => ({
+    href: link.getAttribute('href'),
+    label: link.getAttribute('label'),
+    name: link.getAttribute('aria-label'),
+  }))
+
+test('each mode of a theme links to the Theme section, that theme in that mode', async () => {
+  show()
+
+  const editorial = cardsOf().find((card) => card.querySelector('.themes-name')?.textContent === 'editorial')!
+  expect(testsOf(editorial)).toEqual([
+    { href: '#/theme/editorial/light', label: 'Test in light', name: 'Test in light, editorial' },
+    { href: '#/theme/editorial/dark', label: 'Test in dark', name: 'Test in dark, editorial' },
+  ])
+  // under the canvas of its mode, outside it: the canvas paints the colours of the theme
+  for (const link of editorial.querySelectorAll('.themes-test')) {
+    expect(link.previousElementSibling?.classList.contains('surfaces-canvas')).toBe(true)
+    expect(link.closest('.surfaces-canvas')).toBeNull()
+  }
+  expect(testsOf(cardsOf()[0]).map(({ href }) => href)).toEqual(['#/theme/business/light', '#/theme/business/dark'])
+
+  // a mode the theme does not offer: the section cannot show the theme in it, no link
+  await emit(editorial.querySelector('.themes-modes-field mds-input-select')!, 'mdsInputSelectChange', {
+    value: 'dark',
+    values: ['dark'],
+  })
+  expect(testsOf(editorial).map(({ href }) => href)).toEqual(['#/theme/editorial/dark'])
+
+  // a theme of the person links by the name given; a name the section refuses, no link at all
+  const card = cardsOf().find((each) => each.querySelector('.themes-name-field') !== null)!
+  const input = card.querySelector('.themes-name-field mds-input')!
+  await emit(input, 'mdsInputChange', { value: 'my-product' })
+  expect(testsOf(card).map(({ href }) => href)).toEqual(['#/theme/my-product/light', '#/theme/my-product/dark'])
+  await emit(input, 'mdsInputChange', { value: 'editorial' })
+  expect(testsOf(card)).toEqual([])
 })
 
 test('a family of any group opted into a surface is a theme, the ramp of its group in the export', () => {

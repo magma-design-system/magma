@@ -23,6 +23,7 @@ import { type ThemeChoices, updateThemeChoices, useThemeChoices } from './theme-
 import type { ExportAction } from './contrast.js';
 import type { GateReport, GateTheme } from './gate.js';
 import { ThemeVerdict } from './verdict.js';
+import { hrefOf } from './routes.js';
 import './themes.css';
 
 /**
@@ -429,6 +430,8 @@ function ThemeCard({
 }: ThemeCardProps) {
   const hasScales = Boolean(surfaces[family] && texts[family]);
   const isDefault = family === semantic.tint;
+  // the Theme section lists the themes whose name is valid, and the base (configThemes)
+  const testable = isDefault || !nameProblem;
   // every variant family in the palette is a pickable accent - not just the ones a
   // role defaults to (so a theme can repoint an accent to e.g. variant-secondary).
   const variantFamilies = Object.keys(variants).map((k) => `variant-${k}`);
@@ -532,56 +535,73 @@ function ThemeCard({
       ) : (
         // the same canvas as Semantic surface per mode: the surfaces of the theme are in view
         // (vittorio, 2026-11-05), the accents of the theme under each. A mode the theme does not
-        // offer stays in view, dimmed, and says so
+        // offer stays in view, dimmed, and says so. Under each canvas, the link that tests the
+        // theme in that mode in the Theme section (vittorio, 2026-11-07), outside the canvas, which
+        // paints the colours of the theme and not the ones the button reads on; a mode not offered,
+        // or a theme whose name the Theme section refuses, has none, as the section cannot show it
         <div class="themes-modes">
           {MODES.map((mode) => {
             const s = surfaces[family][mode];
             const t = texts[family]?.[mode];
             const offered = modes.includes(mode);
             return (
-              <SurfaceCanvas
-                mode={mode}
-                s={s}
-                b={borders[family]?.[mode]}
-                ink={t}
-                ownText
-                canvasText={hex(t, 'default')}
-                off={offered ? undefined : 'not offered by the theme'}
-              >
-                {/* accents applied on THIS theme's surface, per mode. Each role: a
+              <div class="themes-mode">
+                <SurfaceCanvas
+                  mode={mode}
+                  s={s}
+                  b={borders[family]?.[mode]}
+                  ink={t}
+                  ownText
+                  canvasText={hex(t, 'default')}
+                  off={offered ? undefined : 'not offered by the theme'}
+                >
+                  {/* accents applied on THIS theme's surface, per mode. Each role: a
                     solid pill (emphasis fill + on-emphasis text) with its APCA Lc,
                     plus the soft surface tint chip (accent-<role>-surface / -fg). */}
-                <div class="themes-samples">
-                  {ACCENT_ROLES.map((role) => {
-                    const variant = accentFor(family, role);
-                    const emphasis = variantHex(variants, variant, mode, ACCENT_STEPS.emphasis);
-                    // the fill ink: the seed in light, the canvas in dark (spec 6.5)
-                    const onEmph =
-                      mode === 'dark' && semantic.onEmphasisDark
-                        ? hex(s, semantic.onEmphasisDark)
-                        : seeds[mode];
-                    const aSurface = variantHex(variants, variant, mode, ACCENT_STEPS.surface);
-                    const aFg = variantHex(variants, variant, mode, ACCENT_STEPS.fg);
-                    return (
-                      <span class="themes-sample">
-                        <span
-                          class="themes-sample-pill"
-                          style={{ background: emphasis, color: onEmph }}
-                        >
-                          {role}
+                  <div class="themes-samples">
+                    {ACCENT_ROLES.map((role) => {
+                      const variant = accentFor(family, role);
+                      const emphasis = variantHex(variants, variant, mode, ACCENT_STEPS.emphasis);
+                      // the fill ink: the seed in light, the canvas in dark (spec 6.5)
+                      const onEmph =
+                        mode === 'dark' && semantic.onEmphasisDark
+                          ? hex(s, semantic.onEmphasisDark)
+                          : seeds[mode];
+                      const aSurface = variantHex(variants, variant, mode, ACCENT_STEPS.surface);
+                      const aFg = variantHex(variants, variant, mode, ACCENT_STEPS.fg);
+                      return (
+                        <span class="themes-sample">
+                          <span
+                            class="themes-sample-pill"
+                            style={{ background: emphasis, color: onEmph }}
+                          >
+                            {role}
+                          </span>
+                          <span
+                            class="themes-sample-soft"
+                            style={{ background: aSurface, color: aFg }}
+                          >
+                            Aa
+                          </span>
+                          <code>Lc {apcaLc(onEmph, emphasis).toFixed(0)}</code>
                         </span>
-                        <span
-                          class="themes-sample-soft"
-                          style={{ background: aSurface, color: aFg }}
-                        >
-                          Aa
-                        </span>
-                        <code>Lc {apcaLc(onEmph, emphasis).toFixed(0)}</code>
-                      </span>
-                    );
-                  })}
-                </div>
-              </SurfaceCanvas>
+                      );
+                    })}
+                  </div>
+                </SurfaceCanvas>
+                {offered && testable && (
+                  <mds-button
+                    class="themes-test"
+                    href={hrefOf({ section: 'theme', theme: name, mode })}
+                    icon="mi/baseline/format-size"
+                    variant="dark"
+                    tone="outline"
+                    size="md"
+                    label={`Test in ${mode}`}
+                    aria-label={`Test in ${mode}, ${name}`}
+                  ></mds-button>
+                )}
+              </div>
             );
           })}
         </div>

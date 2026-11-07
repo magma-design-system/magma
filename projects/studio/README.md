@@ -28,6 +28,9 @@ sections, in the order of the work (#693, decided 2026-11-05):
 
 Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
 `#/behavior/patterns`, `src/routes.ts`), so the studio works from whatever folder serves it. The
+Theme section may name the theme and the mode it opens on, `#/theme/editorial/dark`, and its
+address follows the choices made there, replaced in place, so a reload or a link shows the same
+theme in the same mode. The
 Colors pages stay mounted under the other sections, so their work is not lost; each opens with the
 head of the page-header block, the first thing of the region that scrolls (it scrolls with the
 page, and beside the list of the Palette it heads the larger column): the title with the verdict
@@ -358,8 +361,10 @@ blocks, printed by `namedThemeCss` of `design-tokens/semantic.model.ts`, the fun
 declares it first in its block (`--magma-color-modes`, read by `mds-pref-theme`); the base theme
 declares it under its own name too, since a lock in `:root` would reach every theme. The page
 lists the themes one under the other, each a row of three columns where the page has room (its
-settings, its light mode, its dark mode), a single column on a phone; the CSS of the export stays
-closed under its header until it is opened, and **Copy CSS** takes it closed too.
+settings, its light mode, its dark mode), a single column on a phone. Under each mode, **Test in
+light** and **Test in dark** open the Theme section on that theme in that mode; a mode the theme
+does not offer, or a name the Theme section refuses, has none. The CSS of the export stays closed
+under its header until it is opened, and **Copy CSS** takes it closed too.
 
 A reload keeps the work: the studio mirrors it to the browser's localStorage as a draft, stamped
 with the configuration it was made on (the bundled one, or the file a server serves). When that

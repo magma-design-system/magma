@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'preact/hooks';
+import { THEME_NAME } from '@maggioli-design-system/design-tokens/semantic.model';
+import { MODES, type ModeView } from './scene-prefs.js';
 
 /*
   The pages of the studio and their addresses. Every page is a link (the app-shell block of
@@ -16,9 +18,15 @@ export type ColorsView =
   'colors' | 'scales' | 'surface' | 'themes' | 'groups' | 'contrast' | 'diff';
 export type BehaviorPage = 'design-language' | 'patterns' | 'blocks';
 
+/**
+ * The Theme section may name the theme it opens on and the mode it shows it in,
+ * `#/theme/editorial/dark`: a link of the Themes page sends the person there to test a theme
+ * (vittorio, 2026-11-07), and the address follows the choices made in the section. The modes are
+ * the ones the section offers (`MODES`, scene-prefs.tsx).
+ */
 export type Route =
   | { section: 'colors'; view: ColorsView }
-  | { section: 'theme' }
+  | { section: 'theme'; theme?: string; mode?: ModeView }
   | { section: 'behavior'; page: BehaviorPage };
 
 export interface MenuItem<Id extends string> {
@@ -70,7 +78,10 @@ export const HOME: Route = { section: 'colors', view: 'colors' };
 
 /** The address of a page, as a link writes it: `#/colors/palette`. */
 export function hrefOf(route: Route): string {
-  if (route.section === 'theme') return '#/theme';
+  if (route.section === 'theme') {
+    if (!route.theme) return '#/theme';
+    return route.mode ? `#/theme/${route.theme}/${route.mode}` : `#/theme/${route.theme}`;
+  }
   if (route.section === 'colors')
     return `#/colors/${COLORS_PAGES.find((page) => page.id === route.view)!.slug}`;
   return `#/behavior/${BEHAVIOR_PAGES.find((page) => page.id === route.page)!.slug}`;
@@ -78,8 +89,17 @@ export function hrefOf(route: Route): string {
 
 /** The page of an address, or undefined when it names none. */
 export function routeOf(hash: string): Route | undefined {
-  const [section, slug] = hash.replace(/^#\/?/, '').split('/');
-  if (section === 'theme' && !slug) return { section: 'theme' };
+  const [section, slug, ...rest] = hash.replace(/^#\/?/, '').split('/');
+  if (section === 'theme') {
+    if (!slug) return rest.length ? undefined : { section: 'theme' };
+    // a theme by its name, as a theme is named (THEME_NAME of design-tokens), then a mode: the
+    // section says which themes the configuration has, and opens on the first for another name
+    const [mode, ...more] = rest;
+    if (!THEME_NAME.test(slug) || more.length) return undefined;
+    if (mode === undefined) return { section: 'theme', theme: slug };
+    const view = MODES.find((one) => one.mode === mode)?.mode;
+    return view && { section: 'theme', theme: slug, mode: view };
+  }
   if (section === 'colors') {
     const page = COLORS_PAGES.find((one) => one.slug === slug);
     return page && { section: 'colors', view: page.id };

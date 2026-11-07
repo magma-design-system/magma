@@ -24,6 +24,24 @@ test('the addresses read as the menus name the pages', () => {
 })
 
 test('an address that names no page is no route', () => {
-  for (const hash of ['', '#', '#/colors', '#/colors/nothing', '#/theme/more', '#/foundation'])
+  for (const hash of ['', '#', '#/colors', '#/colors/nothing', '#/foundation'])
+    expect(routeOf(hash)).toBeUndefined()
+})
+
+// The Theme section may name the theme it opens on and the mode it shows it in: the links of the
+// Themes page that test a theme in a mode (vittorio, 2026-11-07)
+test('the Theme section names a theme and a mode in its address, which lead back to them', () => {
+  const tests: Route[] = [
+    { section: 'theme', theme: 'editorial' },
+    { section: 'theme', theme: 'editorial', mode: 'light' },
+    { section: 'theme', theme: 'my-product', mode: 'dark' },
+    { section: 'theme', theme: 'business', mode: 'both' },
+  ]
+  for (const route of tests) expect(routeOf(hrefOf(route))).toEqual(route)
+  expect(hrefOf({ section: 'theme', theme: 'editorial', mode: 'dark' })).toBe('#/theme/editorial/dark')
+  // a mode with no theme names nothing more than the section
+  expect(hrefOf({ section: 'theme', mode: 'dark' })).toBe('#/theme')
+  // a name a theme cannot take (THEME_NAME of design-tokens), a mode the section has not, more
+  for (const hash of ['#/theme/My-Theme', '#/theme/editorial/sepia', '#/theme/editorial/dark/more', '#/theme//dark'])
     expect(routeOf(hash)).toBeUndefined()
 })

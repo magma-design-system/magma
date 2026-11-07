@@ -77,7 +77,9 @@ export function Studio() {
           onGate={setVerdict}
         />
       </div>
-      {route.section === 'theme' && <ThemePage config={config} />}
+      {route.section === 'theme' && (
+        <ThemePage config={config} theme={route.theme} mode={route.mode} />
+      )}
       {route.section === 'behavior' && <BehaviorPageView page={route.page} />}
     </div>
   );
@@ -379,16 +381,30 @@ function PreviewPanel({
  * the preview, open their controls in a dropdown from their button, and the choices of the
  * preferences reach every frame (scene-prefs.tsx). The select offers the
  * themes of the configuration the person edits, which the frame paints (scene-css.ts); until the
- * configuration is loaded, the themes Magma ships.
+ * configuration is loaded, the themes Magma ships. The address may name the theme and the mode
+ * the section opens on (a link of the Themes page, routes.ts), and it follows the choices made
+ * here, so it always names the theme in view.
  */
-function ThemePage({ config }: { config: MagmaConfig | null }) {
+function ThemePage({
+  config,
+  theme: askedTheme,
+  mode: askedMode,
+}: {
+  config: MagmaConfig | null;
+  /** The theme the address names. */
+  theme?: string;
+  /** The mode the address names. */
+  mode?: ModeView;
+}) {
   const frames = useRef<Array<HTMLIFrameElement | null>>([]);
   const select = useRef<HTMLElement>(null);
   // the choices of the Themes page (names, accents, modes) shape the themes the frame paints
   const choices = useThemeChoices();
   const scene = useMemo(() => (config ? sceneStyle(config, choices) : null), [config, choices]);
   const names = scene?.themes.map((one) => one.name) ?? PREVIEW_THEMES;
-  const [chosen, setTheme] = useState(PREVIEW_THEMES[0]);
+  // the theme asked for is kept while the configuration loads: a theme of the person is among the
+  // names only then
+  const [chosen, setTheme] = useState(askedTheme ?? PREVIEW_THEMES[0]);
   const theme = names.includes(chosen) ? chosen : names[0];
   // a theme of one mode is seen in that mode only: the other is no way to check it (#1274)
   const themeModes: readonly Scheme[] =
@@ -406,12 +422,26 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
   const [prefs, setPrefs] = useState<ScenePrefs>(DEFAULT_PREFS);
   const [view, setView] = useState<View>('scenes');
   const page = VIEWS.find((one) => one.id === view)!;
-  const [picked, setMode] = useState<ModeView>('light');
+  const [picked, setMode] = useState<ModeView>(askedMode ?? 'light');
   const mode: ModeView = offers(picked) ? picked : themeModes[0];
   const [contrast, setContrast] = useState<ContrastMode>('no-preference');
   const [width, setWidth] = useState<Width>('full');
   const [loaded, setLoaded] = useState(0);
   const schemes: Scheme[] = mode === 'both' ? ['light', 'dark'] : [mode];
+
+  // another address while the section is open (back, forward, a link typed) chooses again. Only
+  // another one: the address the section opened on is its first state already, and an effect runs
+  // after a paint, so applying that one again would undo a choice made before it
+  const seen = useRef({ theme: askedTheme, mode: askedMode });
+  useEffect(() => {
+    if (askedTheme && askedTheme !== seen.current.theme) setTheme(askedTheme);
+    if (askedMode && askedMode !== seen.current.mode) setMode(askedMode);
+    seen.current = { theme: askedTheme, mode: askedMode };
+  }, [askedTheme, askedMode]);
+  // the address names what was chosen, replaced in place: a choice is no page to go back to
+  useEffect(() => {
+    history.replaceState(null, '', hrefOf({ section: 'theme', theme: chosen, mode: picked }));
+  }, [chosen, picked, askedTheme, askedMode]);
 
   useEffect(() => {
     const element = select.current;
