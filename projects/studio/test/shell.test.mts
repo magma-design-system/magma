@@ -141,6 +141,31 @@ test('a theme of one mode is seen in that mode only, the other modes of the pref
     .toEqual(['Business is dark only', 'Dark', 'Business is dark only'])
 })
 
+test('an address that names a theme and a mode opens the section on them, and follows the choices made there', async () => {
+  await at('#/theme/editorial/dark')
+  const select = await vi.waitFor(() => {
+    const found = root.querySelector('.studio-toolbar mds-input-select')
+    expect(found?.getAttribute('value')).toBe('editorial')
+    return found!
+  })
+  // the mode is a preference of the person, in the dropdown of the preferences
+  const modes = root.querySelector('mds-dropdown[target="#studio-axis-preferences"] mds-tab[aria-label="Mode"]')!
+  expect([...modes.querySelectorAll('mds-tab-item')].map((item) => item.hasAttribute('selected')))
+    .toEqual([false, true, false])
+  expect([...root.querySelectorAll('iframe.studio-scene')].map((frame) => frame.getAttribute('title')))
+    .toEqual(['The theme on a page of a product, dark mode'])
+
+  // a choice made in the section goes into the address in place: no page to go back to
+  const entries = history.length
+  modes.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 2, value: 'both' }, bubbles: true }))
+  await vi.waitFor(() => expect(location.hash).toBe('#/theme/editorial/both'))
+  // porcelain, a theme of the configuration only: in the select once the configuration is loaded
+  await vi.waitFor(() => expect(select.querySelector('option[value="porcelain"]')).not.toBeNull())
+  select.dispatchEvent(new CustomEvent('mdsInputSelectChange', { detail: { value: 'porcelain' }, bubbles: true }))
+  await vi.waitFor(() => expect(location.hash).toBe('#/theme/porcelain/both'))
+  expect(history.length).toBe(entries)
+})
+
 test('the choices of the Themes page outlive a reload', async () => {
   updateThemeChoices((prev) => ({ ...prev, names: { porcelain: 'cold-desk' } }))
   expect(JSON.parse(localStorage.getItem(THEME_CHOICES_KEY)!).names).toEqual({ porcelain: 'cold-desk' })
