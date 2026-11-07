@@ -15,7 +15,7 @@ Usage:
 Without --from the code is taken to be on Magma 2 and migrated to Magma 3. Code still on
 Magma 1 passes --from 1: the v1 -> v2 rules run first, then v2 -> v3. Never run the v1 -> v2
 rules on Magma 2 code: they add attributes that keep the Magma 1 defaults. To stop at
-Magma 2, run magma-codemods@1.
+Magma 2, run magma-codemods@2, the release that migrates to it.
 
 Options:
   --from <1|2>                                 the major the code is on (default: 2)
