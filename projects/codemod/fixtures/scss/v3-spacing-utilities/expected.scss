@@ -1,0 +1,11 @@
+// Sass: nested rules, a variable that reads a measure
+$measure: var(--container-prose);
+
+.toolbar {
+  @apply flex gap-400;
+  max-width: $measure;
+
+  &:hover {
+    @apply px-600 -mb-200;
+  }
+}

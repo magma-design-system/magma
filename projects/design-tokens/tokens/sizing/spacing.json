@@ -27,18 +27,6 @@
     },
     "4xl": {
       "value": "{sizing.primitive.2400}"
-    },
-    "phrase": {
-      "value": "50ch"
-    },
-    "prose": {
-      "value": "65ch"
-    },
-    "text": {
-      "value": "var(--magma-width-reading, {role.width.reading})"
-    },
-    "title": {
-      "value": "30ch"
     }
   },
   "container": {
@@ -83,6 +71,18 @@
     },
     "7xl": {
       "value": "{sizing.primitive.32000}"
+    },
+    "phrase": {
+      "value": "50ch"
+    },
+    "prose": {
+      "value": "65ch"
+    },
+    "text": {
+      "value": "var(--magma-width-reading, {role.width.reading})"
+    },
+    "title": {
+      "value": "30ch"
     }
   }
 }

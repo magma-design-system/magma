@@ -1,0 +1,6 @@
+[
+  { "kind": "warn", "line": 3, "contains": "the container `--container-2xl` in Magma 3" },
+  { "kind": "warn", "line": 3, "contains": "write `max-inline-0` to keep 0" },
+  { "kind": "warn", "line": 3, "contains": "in Magma 3 it is `line-height: 1`" },
+  { "kind": "warn", "line": 4, "contains": "`p-prose`: a measure of text" }
+]

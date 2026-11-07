@@ -463,31 +463,23 @@ export function buildDtcg({
     ['spacing', '$root'],
     token('dimension', dimension(scale), { css: '--spacing', tier: 'primitive' }),
   );
-  for (const [key, { value }] of entries('spacing')) {
-    const css = `--spacing-${key}`;
-    const literal = interpolated(value);
-    // a measure in ch, or one that points at a role (the text measure, var() of
-    // --magma-width-reading), has no DTCG type
-    if (!typed(literal)) {
-      keepCssOnly('spacing', css, literal);
-      continue;
+  // the named steps of spacing, and the container widths with the measures of text (#1061
+  // moved them from spacing): a measure in ch, or one that points at a role (the text
+  // measure, var() of --magma-width-reading), has no DTCG type
+  for (const group of ['spacing', 'container'])
+    for (const [key, { value }] of entries(group)) {
+      const css = `--${group}-${key}`;
+      const literal = interpolated(value);
+      if (!typed(literal)) {
+        keepCssOnly(group, css, literal);
+        continue;
+      }
+      put(
+        base,
+        [group, key],
+        token('dimension', sourceAlias(value) ?? dimension(literal), { css, tier: 'primitive' }),
+      );
     }
-    put(
-      base,
-      ['spacing', key],
-      token('dimension', sourceAlias(value) ?? dimension(literal), { css, tier: 'primitive' }),
-    );
-  }
-
-  for (const [key, { value }] of entries('container'))
-    put(
-      base,
-      ['container', key],
-      token('dimension', sourceAlias(value) ?? dimension(String(resolved(value))), {
-        css: `--container-${key}`,
-        tier: 'primitive',
-      }),
-    );
 
   // the roles of the design language (#1189), next to the colour roles: the space of each
   // relation of the rhythm (`--magma-rhythm-*`), an alias of the size step it takes, and the

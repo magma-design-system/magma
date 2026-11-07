@@ -6,6 +6,7 @@
  *
  * Do not use at runtime — the CLI bundles `manifest.ts`.
  */
+import { spacingRules } from './manifest-v3.js';
 import { type Manifest } from './schema.js';
 
 export const testManifest: Manifest = {
@@ -293,7 +294,9 @@ export const ensureAttrManifest: Manifest = {
  * The v2 -> v3 counterpart of {@link testManifest}: a handful of colour names
  * (category N, the real list is generated), the `-rgb` rename of two inputs and
  * a removal, so the fixtures pin the rewrite whatever the generated list holds;
- * and the report of the item that leaves its `typography` out (category O).
+ * and the report of the item that leaves its `typography` out (category O); and the
+ * rules of category P as the real manifest builds them, which read no generated
+ * data.
  */
 export const testManifestV3: Manifest = {
   fromVersion: '2',
@@ -314,6 +317,8 @@ export const testManifestV3: Manifest = {
         'mds-modal-overlay-color',
       ],
     },
+    classes: spacingRules.classes,
+    cssVars: spacingRules.cssVars,
   },
   components: {
     'mds-accordion-item': {

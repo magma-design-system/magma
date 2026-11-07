@@ -228,10 +228,11 @@ const main = async (): Promise<void> => {
 
   /**
    * The theme variable another one republishes whole, under the namespace of other
-   * utilities: `--max-width-2xl: var(--container-2xl)` makes `max-w-2xl` read the
-   * container instead of the spacing step (#1057). It is an alias of that token. A
-   * variable that is a token of its own is none, though it points at another: a title by
-   * role, `--text-size-title-page: var(--text-size-title-h3)` (#1189).
+   * utilities: it is an alias of that token. The theme has none since #1061; #1057 had
+   * `--max-width-2xl: var(--container-2xl)`, so that `max-w-2xl` read the container
+   * instead of a spacing step of the same name. A variable that is a token of its own is
+   * none, though it points at another: a title by role,
+   * `--text-size-title-page: var(--text-size-title-h3)` (#1189).
    */
   const aliasOf = ({ name, value }: ThemeVariable): string | undefined => {
     if (tokenNames.has(name)) return undefined;
@@ -243,7 +244,7 @@ const main = async (): Promise<void> => {
     const target = aliasOf(variable);
     if (target) aliases.set(target, [...(aliases.get(target) ?? []), variable.name]);
   }
-  /** A theme variable that holds a CSS keyword, no token: `--max-width-none: none`. */
+  /** A theme variable that holds a CSS keyword, no token (none since #1061; #1057 had `--max-width-none: none`). */
   const isKeyword = ({ name, value }: ThemeVariable): boolean =>
     !tokenNames.has(name) && /^[a-z]+(-[a-z]+)*$/.test(value);
 
