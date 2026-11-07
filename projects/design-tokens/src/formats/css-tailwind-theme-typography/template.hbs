@@ -51,13 +51,17 @@ Generated at {{ date }}
   {{/each}}
 {{/each}}
 
-{{!-- spacing --}}
+{{!-- spacing: the multiplier only, so every spacing utility takes a numeric step (p-600 is 600
+  times it). The named steps of the spacing group (none, xs ... 4xl) stay CSS variables of
+  typography.css and are not theme keys: Tailwind reads w-*, max-w-*, basis-* and the logical
+  inline-* in spacing before container, so a t-shirt name in spacing made max-w-2xl 48px
+  instead of the 640px container and inline-2xl a spacing step. A t-shirt name is a container
+  size, spacing a numeric step (#1061, phase 2 of #1057) --}}
   --spacing: {{properties.spacing-scale.value}};
-{{#each properties.spacing as | spacing |}}
-  --spacing-{{@key}}: {{spacing.value}};
-{{/each}}
 
-{{!-- container with --}}
+{{!-- container width, with the measures of text (phrase, prose, text, title, in ch): a measure
+  is a width, as the column of a form is, so max-w-text reads it here; and as a container key it
+  makes no spacing utility (p-prose, gap-text), which a line length is not (#1061) --}}
 {{#each properties.container as | container |}}
   --container-{{@key}}: {{container.value}};
 {{/each}}
@@ -77,18 +81,6 @@ Generated at {{ date }}
 {{#each properties.role.container as | size |}}
   --container-{{@key}}: {{size.value}};
 {{/each}}
-
-{{!-- size utilities: w-*, min-w-*, max-w-* and basis-* read their own namespace, then
-  spacing, then container. A key spacing and container share (2xl) is a container size:
-  point the own namespace at it, or the spacing step wins (max-w-2xl would be 48px).
-  max-w-none is none, not spacing's 0px (#1057) --}}
-{{#each (sharedKeys properties.spacing properties.container) as | key |}}
-  --width-{{key}}: var(--container-{{key}});
-  --min-width-{{key}}: var(--container-{{key}});
-  --max-width-{{key}}: var(--container-{{key}});
-  --flex-basis-{{key}}: var(--container-{{key}});
-{{/each}}
-  --max-width-none: none;
 
 {{!-- screens breakpoint --}}
 {{#each properties.screen as | screen |}}

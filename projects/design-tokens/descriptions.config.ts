@@ -93,9 +93,9 @@ export const tokenDescriptions: Record<string, string> = {
   leading:
     'Line heights as lengths, from 2xs (10px) to 4xl (48px), which the typography styles name.',
   spacing:
-    'Spacing: --spacing is the step of the numeric utilities (p-400 is 400 times it, 16px); none to 4xl are named steps of the size scale; phrase, prose, text and title are line lengths in ch.',
+    'Spacing: --spacing is the step of the numeric utilities (p-400 is 400 times it, 16px); none to 4xl are named steps of the size scale, CSS variables only: no utility reads them, write p-400, not p-md.',
   container:
-    'Widths for layout boxes, from 4xs (128px) to 7xl (1280px): what a size name means on w-*, max-w-*, min-w-* and basis-*.',
+    'Widths for layout boxes, from 4xs (128px) to 7xl (1280px): what a size name means on w-*, max-w-*, min-w-*, basis-* and the logical inline-*; phrase, prose, text and title are line lengths in ch (max-w-text).',
   breakpoint:
     'The screen widths where the layout changes, from mobile (480px) to tv (1920px): the minimum of each range behind the mobile: to tv: prefixes.',
   aspect: 'Aspect ratios for media and frames, width over height: book is an alias of a4.',
