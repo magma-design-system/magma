@@ -32,6 +32,7 @@ Full rules: `docs/WORKFLOW.md` rule 5 and the Tests section of `projects/stencil
 - **Every behaviour change ships with a test that covers it**, in the same branch, so the change is protected against regressions: props, events, methods, rendered DOM, keyboard/focus handling, form participation, validation, state transitions.
 - **Pure style changes are exempt**: padding, margin, colours, radius, typography and similar CSS-only adjustments.
 - `*.spec.ts` for logic that does not need a rendered component, `*.e2e.ts` for anything that needs the live DOM. How to write and run them: `projects/stencil/HOWTO.md`.
+- **Showing work to test**: asked to test or to see the work, end with a table `Title | What to test | URL`: `nx run magma:test.urls` gives the pages of what the branch changes; write what to test from its commits and diff, keep the addresses as printed. Build and test results go in a table too. For an epic, `/epic` builds its preview first.
 - **Storybook (`*.stories.tsx`)** adds the visual, interaction (`play` + `storybook/test`) and accessibility (addon-a11y) tests, and the integration scenarios with several components on one page. Add or update a story when necessary; it complements the Vitest tests, it does not replace them. Run them with `nx run stencil:test-storybook` (the `storybook` project of `vitest.config.mts`, via `@storybook/addon-vitest`).
 
 ## Closing a unit of work
@@ -93,6 +94,8 @@ nx run claude-plugin:check                           # fail when a skill is out 
 nx run magma:check.diagrams                          # fail when a README diagram or the overview of docs/ARCHITECTURE.md misses a link of the Nx project graph (also run in CI)
 nx run magma:check.agent-context                     # fail when the agent context written by hand misses the repository (links, index, commands, counts, copies) or every session loads more than its budget (also run in CI)
 nx run magma:epic.status --epic=<n>                 # an epic as a table in merge order, with the next action (read only; its tests: magma:epic.test)
+nx run magma:epic.preview --epic=<n>                # rebuild the local preview of an epic (its branch + every open part, never pushed) and say what it holds
+nx run magma:test.urls                              # the pages to open to test what the branch changes (Storybook from its index, the studio, the previews)
 npm run lint                                         # ESLint + Stylelint on every project (also run in CI)
 ```
 
