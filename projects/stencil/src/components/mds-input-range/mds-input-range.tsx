@@ -187,7 +187,7 @@ export class MdsInputRange {
         pref-theme-scheme={preferenceStore.state['theme-scheme']}
       >
         <header class="header" part="header">
-          <mds-text class="label" typography="label">
+          <mds-text class="label" truncate="word" typography="label">
             <slot />
           </mds-text>
           <mds-text class="value" typography="label">

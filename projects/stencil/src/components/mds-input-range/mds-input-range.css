@@ -33,6 +33,11 @@
 
   display: grid;
   gap: --spacing(200);
+
+  /* one column as wide as the host, never as its content: an implicit auto column grew to the
+   * min-content of the label and of the native input, and the parts overflowed a narrower host
+   * (#1314) */
+  grid-template-columns: minmax(0, 1fr);
   transition-duration: var(--private-input-range-transition-duration);
   transition-property: color;
   transition-timing-function: var(--ease-out-sine);
@@ -43,9 +48,10 @@
   gap: --spacing(200);
 }
 
-.label {
-  @apply truncate;
+/* truncate on the host gave no ellipsis: the text sits in a block of the shadow root of
+ * mds-text, which truncates it itself (truncate="word") */
 
+.label {
   min-width: 0;
 }
 
@@ -75,6 +81,10 @@
   flex-grow: 1;
   height: --spacing(400);
   margin: 0;
+
+  /* a native range input is 129 px wide in Chromium, and the automatic minimum of a flex item
+   * kept it so in a narrower track */
+  min-width: 0;
   z-index: 20;
 }
 
