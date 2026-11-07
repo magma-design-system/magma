@@ -80,6 +80,45 @@ test('the list marks the family shown and opens another one', async () => {
   expect(item('neutral').hasAttribute('aria-current')).toBe(false)
 })
 
+test('where the list stands above the page, its bar names the family shown and folds the list', async () => {
+  // the bar is drawn only where the list stands above the page (palette.css, measured in a real
+  // browser by site.test.mts): here its state, which the sheet follows
+  const bar = root.querySelector<HTMLElement>('.palette-list-bar > mds-button')!
+  const list = root.querySelector('.palette-list')!
+  const open = () => list.classList.contains('palette-list-open')
+  expect(bar.getAttribute('label')).toBe('tone.neutral')
+  expect(bar.getAttribute('aria-controls')).toBe(list.id)
+  expect(bar.getAttribute('aria-expanded')).toBe('false')
+  expect(bar.getAttribute('icon')).toBe('mi/baseline/expand-more')
+  expect(open()).toBe(false)
+
+  bar.click()
+  await vi.waitFor(() => expect(bar.getAttribute('aria-expanded')).toBe('true'))
+  expect(bar.getAttribute('icon')).toBe('mi/baseline/expand-less')
+  expect(open()).toBe(true)
+
+  // choosing a family shows it and folds the list again
+  item('info').click()
+  await vi.waitFor(() => expect(heading()).toBe('status.info'))
+  expect(bar.getAttribute('label')).toBe('status.info')
+  expect(bar.getAttribute('aria-expanded')).toBe('false')
+  expect(open()).toBe(false)
+
+  // the bar alone folds it too, the family unchanged
+  bar.click()
+  await vi.waitFor(() => expect(open()).toBe(true))
+  bar.click()
+  await vi.waitFor(() => expect(open()).toBe(false))
+  expect(heading()).toBe('status.info')
+})
+
+test('the pages on the whole configuration have neither the list nor its bar', async () => {
+  render(h(App, { view: 'surface', onConfig: (config: MagmaConfig) => configs.push(config) }), root)
+  await vi.waitFor(() => expect(root.querySelector('.layout.no-sidebar')).not.toBeNull())
+  expect(root.querySelector('.palette-list')).toBeNull()
+  expect(root.querySelector('.palette-list-bar')).toBeNull()
+})
+
 test('a name is handed over when the person leaves the field or presses Enter, not at every key', async () => {
   const name = field('Name').querySelector('mds-input')!
   // the person types in the field, which has the focus

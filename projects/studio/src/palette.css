@@ -20,7 +20,8 @@
   border-inline-end: thin solid rgb(var(--magma-border-muted));
   display: grid;
   gap: var(--magma-rhythm-between-fields);
-  grid-area: sidebar;
+  grid-column: 1;
+  grid-row: 1 / -1;
   min-block-size: 0;
   overflow-y: auto;
 
@@ -28,6 +29,59 @@
      the page; at the top the space of the region beside it, so Add color stands level with the
      title of the page, its focus ring inside the area the list scrolls */
   padding: var(--magma-rhythm-inset) var(--magma-rhythm-inline);
+}
+
+/*
+  The list stands beside the page while the page keeps the room of the row of actions of its head
+  (--magma-container-actions, 23.75rem) inside its gutters (--magma-width-page-gutter, 1.5rem on
+  each side): with the list (15rem, the column above) that is 41.75rem of the layout. The cards of
+  the pages are narrower (16rem at most, scales.css), so they fit too. Under it the list goes
+  above the page, folded into a bar with the family selected (app.tsx): its button opens the list
+  in place of the page, as a menu, and choosing a family folds it again. The bar has the inline
+  padding of the list, so its button lines up with the rows. Literals, since a container query
+  reads no var().
+*/
+
+.palette-list-bar {
+  display: none;
+}
+
+@container colors-layout (width < 41.75rem) {
+  .palette-list-bar {
+    border-block-end: thin solid rgb(var(--magma-border-muted));
+    display: block;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    padding: var(--magma-rhythm-inline);
+  }
+
+  /* the name of the family as written, as in the list */
+
+  .palette-list-toggle {
+    --mds-button-label-transform: none;
+
+    inline-size: 100%;
+    justify-content: space-between;
+  }
+
+  .palette-list {
+    border-inline-end: 0;
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .palette-list:not(.palette-list-open) {
+    display: none;
+  }
+
+  .palette-list ~ .content {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .palette-list-open ~ .content {
+    display: none;
+  }
 }
 
 .palette-list-group {
