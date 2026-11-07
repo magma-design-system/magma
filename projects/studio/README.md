@@ -33,7 +33,9 @@ head of the page-header block, the first thing of the region that scrolls (it sc
 page, and beside the list of the Palette it heads the larger column): the title with the verdict
 of the contrast gate beside it, one line, then the actions (a menu with Reset and Load config,
 Copy JSON or Save, and last Download all tokens, a split button whose menu holds the other
-downloads).
+downloads). Under 380 px of the head (on a phone) the actions stack, as `actions/stacked` has
+them: the menu at its own size first, Copy JSON at the full width, Download last (its split button
+keeps its own width: its main action has no part to widen it).
 
 The Theme section shows the scene (`scene.html`) in an iframe, a document of its own: the theme is
 set on its `<html>` (`data-theme-name`), and the preferences of the person on its own `mds-pref-*`,
@@ -294,7 +296,12 @@ backs on the scene, small as a phone, light or dark, painted with the configurat
 change, `src/palette-side.tsx`), **Contrast scales**, **Semantic surface** (opt families into the surface engine, tune
 the surface/border/text levels), **Themes** (each opted family, status aside, as a named theme, with its accent
 assignment, its colour modes and the verdict of the contrast gate per mode), **Groups**, **Contrast check** (every pair of the contrast gate, above) and **Diffs**. Selecting a color from the sidebar while in contrast scales
-keeps you there, since the scale samples follow the selected color.
+keeps you there, since the scale samples follow the selected color. The list stands beside the
+page while the page keeps the room of the row of actions of its head (41.75rem of the layout);
+narrower, on a phone, it goes above the page, folded into a bar with the family selected and an
+arrow: the bar opens the list in place of the page, and choosing a family folds it again
+(`src/palette.css`, #1311). On Semantic surface, under 30.25rem of the page, each role of the
+levels stands over its two sliders instead of beside them.
 
 The **diff** view compares the current palette against the one generated from the committed
 configuration (the bundled `.magma-design-tokensrc.json`): it lists the colors whose steps

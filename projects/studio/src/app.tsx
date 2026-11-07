@@ -719,6 +719,9 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
   );
   const [ownView, setOwnView] = useState<View>(() => bootDraft?.view ?? 'colors');
   const view = routedView ?? ownView;
+  // the list of the families opened where it stands folded above the page (narrow, palette.css);
+  // where it stands beside the page it is always in view and this changes nothing
+  const [listOpen, setListOpen] = useState(false);
   // the pages of Colors share the region that scrolls: a page opens at its top, never at the
   // scroll the page before it left there
   const content = useRef<HTMLElement>(null);
@@ -1393,8 +1396,31 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
 
   return (
     <div class={`layout${showSidebar ? '' : ' no-sidebar'}`}>
+      {/* where the list stands above the page, folded into the family selected: its arrow at the
+          end, as the sections of the bar that open a menu (app-shell); hidden where the list
+          stands beside the page (palette.css) */}
       {showSidebar && (
-        <aside class="palette-list" aria-label="The families of colour">
+        <div class="palette-list-bar">
+          <mds-button
+            type="button"
+            icon={listOpen ? 'mi/baseline/expand-less' : 'mi/baseline/expand-more'}
+            icon-position="right"
+            variant="dark"
+            tone="weak"
+            class="palette-list-toggle"
+            label={selectedName}
+            aria-expanded={listOpen ? 'true' : 'false'}
+            aria-controls="palette-list"
+            onClick={() => setListOpen(!listOpen)}
+          ></mds-button>
+        </div>
+      )}
+      {showSidebar && (
+        <aside
+          id="palette-list"
+          class={`palette-list${listOpen ? ' palette-list-open' : ''}`}
+          aria-label="The families of colour"
+        >
           {/* the main action of the list, a part of the page: primary outline (actions.md,
               part-primary), the primary strong being Download in the head of the page. At the
               top of the list, in view on loading: at the end it sat under some thirty families,
@@ -1445,6 +1471,7 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
                         title={badge?.title}
                         onClick={() => {
                           setSelectedName(color.name);
+                          setListOpen(false);
                           // the scales view works on the selected color: switching
                           // color must not leave it
                           if (view !== 'scales') setView('colors');
