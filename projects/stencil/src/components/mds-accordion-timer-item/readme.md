@@ -24,7 +24,8 @@ The `<mds-accordion-timer-item>` web component is the single collapsible panel o
 #### Properties & Visual Configurations
 
 - **`description`** (required): the title text shown on the header in both open and closed states; it also supplies the accessible label of the content region.
-- **`typography`**: picks the title style of the header text, defaulting to `h5`. An item is a part of the page, styled as `h6` (`titles/part` of the design language): write `typography="h6"` until the default moves with the next major (#1218). The header sits inside the button that opens the item, so the value is a style only, never a level of the outline.
+- **`typography`**: picks the title style of the header text, defaulting to `h5`. An item is a part of the page, styled as `h6` (`titles/part` of the design language): write `typography="h6"` until the default moves with the next major (#1218). The value is a style only: the header is a `<span>` inside the `<button>` that opens the item, whatever its style.
+- **`tag`**: puts the title in the outline of the page, at the level of its place: `tag="h3"` under a section titled `h2`. The heading wraps the button, as the Accordion pattern of the WAI-ARIA Authoring Practices does. Left out, the item is not a heading: the component cannot know its place, and the level of its style (`h6`) would skip the levels in between.
 - **`selected`**: marks this item as the open one. You normally set it on a single item to define the initial open panel; thereafter the parent owns it.
 - **`duration`**: an optional per-item override (in ms) for how long this item stays open before the parent auto-advances, overriding the parent's global `duration` for this item only.
 - **`progress`** and **`uuid`** are managed by the parent at runtime; do not set them manually.
@@ -87,19 +88,21 @@ Set `duration` (in milliseconds) on a single item to give it a different display
 
 #### The Title of an Item Is a Part
 
-An item is a part of the page, whose title is styled as `h6` (`titles/part`): write `typography="h6"`, until the default moves from `h5` with the next major (#1218). The level in the outline comes from the title of the section that holds the accordion, written by its role; the header sits inside the button that opens the item, so `typography` is a style only.
+An item is a part of the page, whose title is styled as `h6` (`titles/part`): write `typography="h6"`, until the default moves from `h5` with the next major (#1218). `typography` is the style only; `tag` gives the level of the title in the outline, one below the title of the section that holds the accordion (`h3` under an `h2`).
 
 ```html
 <mds-text typography="section" tag="h2">Come funziona</mds-text>
 <mds-accordion-timer>
-  <mds-accordion-timer-item description="Argomento principale" typography="h6">
+  <mds-accordion-timer-item description="Argomento principale" typography="h6" tag="h3">
     <mds-text>Contenuto dell'argomento principale.</mds-text>
   </mds-accordion-timer-item>
-  <mds-accordion-timer-item description="Sotto-argomento" typography="h6">
+  <mds-accordion-timer-item description="Sotto-argomento" typography="h6" tag="h3">
     <mds-text>Approfondimento del sotto-argomento.</mds-text>
   </mds-accordion-timer-item>
 </mds-accordion-timer>
 ```
+
+The heading wraps the button that opens the item, as the Accordion pattern of the WAI-ARIA Authoring Practices does. Left out, `tag` leaves the item a button only, out of the outline; never write the level of the style (`tag="h6"` under an `h2`), which skips the levels in between.
 
 #### Rich Slotted Content
 
@@ -298,14 +301,15 @@ mds-accordion-timer-item::part(label) {
 
 ## Properties
 
-| Property                   | Attribute     | Description                                                                                                                                                                                                                                                                                               | Type                                                       | Default     |
-| -------------------------- | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
-| `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or opened                                                                                                                                                                                                                                          | `string`                                                   | `undefined` |
-| `duration`                 | `duration`    | Specifies the duration of the single component when selected, it overrides the global duration of itself only                                                                                                                                                                                             | `number \| undefined`                                      | `undefined` |
-| `progress`                 | `progress`    | The progress of the item's countdown, from 0 to 1: mds-accordion-timer writes it while the item is selected and sets it back to 0 when the next item takes over                                                                                                                                           | `number`                                                   | `0`         |
-| `selected`                 | `selected`    | Specifies if the accordion item is opened or not                                                                                                                                                                                                                                                          | `boolean`                                                  | `false`     |
-| `typography`               | `typography`  | Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). The title sits inside the button that opens the item, so this is its style only, never a level of the outline | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"` | `'h5'`      |
-| `uuid`                     | `uuid`        | Used automatically by MdsAccordionTimer wrapper to handle it's siblings                                                                                                                                                                                                                                   | `number`                                                   | `0`         |
+| Property                   | Attribute     | Description                                                                                                                                                                                                                                                                                                                                                                          | Type                                                        | Default     |
+| -------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- | ----------- |
+| `description` _(required)_ | `description` | Specifies the title shown when the accordion is closed or opened                                                                                                                                                                                                                                                                                                                     | `string`                                                    | `undefined` |
+| `duration`                 | `duration`    | Specifies the duration of the single component when selected, it overrides the global duration of itself only                                                                                                                                                                                                                                                                        | `number \| undefined`                                       | `undefined` |
+| `progress`                 | `progress`    | The progress of the item's countdown, from 0 to 1: mds-accordion-timer writes it while the item is selected and sets it back to 0 when the next item takes over                                                                                                                                                                                                                      | `number`                                                    | `0`         |
+| `selected`                 | `selected`    | Specifies if the accordion item is opened or not                                                                                                                                                                                                                                                                                                                                     | `boolean`                                                   | `false`     |
+| `tag`                      | `tag`         | Specifies the heading level of the title, the level of its place in the outline of the page (`h3` under a section titled `h2`): the heading wraps the button that opens the item, as the Accordion pattern of the WAI-ARIA Authoring Practices does. Left out, the item is not a heading: only the page knows its place, and the level of the style would skip the levels in between | `"h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6" \| undefined` | `undefined` |
+| `typography`               | `typography`  | Specifies the typography of the title. An item is a part of the page, whose title is styled as `h6` (`titles/part`, #1189): write `h6` until the default moves with the next major (#1218). It is the style only: the level of the title in the outline is `tag`                                                                                                                     | `"action" \| "h1" \| "h2" \| "h3" \| "h4" \| "h5" \| "h6"`  | `'h5'`      |
+| `uuid`                     | `uuid`        | Used automatically by MdsAccordionTimer wrapper to handle it's siblings                                                                                                                                                                                                                                                                                                              | `number`                                                    | `0`         |
 
 
 ## Events
@@ -350,14 +354,14 @@ mds-accordion-timer-item::part(label) {
 
 ### Depends on
 
-- [mds-progress](../mds-progress)
 - [mds-text](../mds-text)
+- [mds-progress](../mds-progress)
 
 ### Graph
 ```mermaid
 graph TD;
-  mds-accordion-timer-item --> mds-progress
   mds-accordion-timer-item --> mds-text
+  mds-accordion-timer-item --> mds-progress
   mds-progress --> mds-radial-progress
   mds-radial-progress --> mds-icon
   mds-radial-progress --> mds-text
