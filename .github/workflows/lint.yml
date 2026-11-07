@@ -10,7 +10,9 @@
 # The same job holds the architecture diagrams of the READMEs to the project graph
 # of Nx (`nx run magma:check.diagrams`, docs/ARCHITECTURE.md, "Diagrams of the
 # projects"): a diagram can go stale from a change to any project, so it runs on
-# every pull request, like the lint.
+# every pull request, like the lint. So does the check of the agent context written
+# by hand (`nx run magma:check.agent-context`, docs/WORKFLOW.md, rule 8): a rename
+# anywhere can leave a link, a command or a count behind in a document.
 name: lint
 
 on:
@@ -55,3 +57,4 @@ jobs:
       - run: npm ci --prefer-offline
       - run: npm run lint
       - run: npx nx run magma:check.diagrams
+      - run: npx nx run magma:check.agent-context

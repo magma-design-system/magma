@@ -119,6 +119,14 @@ An issue opened for a problem found in another project (the docs site, a consume
 - A new project gets its label before its first issue: add `prd-<project>` (short, lowercase, kebab-case) to the Origin section of `.github/ISSUE_TEMPLATE/labels.yml`, in the same colour, and create it on the repository with the same name, colour and description (`gh label create`, or the `label-sync` workflow). A label that exists only on GitHub is deleted by the next `label-sync` run, which removes every label the file does not list.
 - The description reads `Reported from <project> (<repository>)`: agents working inside a consumer project find their label by matching the repository name. They follow `docs/agents/reporting.md`, shipped in the `magma`, `magma-react` and `magma-angular` packages as `agents/reporting.md`, and never create a label themselves: when their project has none, the issue body names the project and proposes its `prd-<project>` name, and a maintainer adds that label as above.
 
+## 8. Close a unit of work with its agent context
+
+The context agents read is part of the work: a branch that changes what a document describes brings the document along, in the same branch, before its pull request; and it keeps what every session loads small, so that the context helps the next task instead of crowding it.
+
+- **What a machine can see** is held by `nx run magma:check.agent-context` (`scripts/agent-context.ts`), run by the `lint` workflow: the links and the paths of the index of `AGENTS.md` resolve, every `nx run` cited names a target of the project graph, every project and project skill is in `AGENTS.md`, the counts written by hand match their source, the copies of the commit types and scopes match `commitlint.config.js`, and what every session loads (`CLAUDE.md` with `AGENTS.md`, the descriptions of the project skills) stays within its budget.
+- **What needs judgement** is a review of the diff of the branch: the index, the contracts (`docs/CONTRACTS.md`), the mistakes of `AGENTS.md`, the READMEs, SPECs and guides that describe what changed, and how the context is split (a procedure for one kind of task out of what every session loads, one fact in one place, no count written by hand that a change will make wrong). In Claude Code the skill `/context-review` runs it; its steps (`.claude/skills/context-review/SKILL.md`) are written for any agent, and the others follow them by hand.
+- The pull request says what the review changed, with the line the check printed (what every session loads, against the budget). A restructuring larger than the branch is a proposal to the maintainer, not a change on the branch.
+
 ## Summary for agents
 
 | Action                                          | Allowed for an agent?                                    |
@@ -131,6 +139,7 @@ An issue opened for a problem found in another project (the docs site, a consume
 | Commit and push to that branch's own remote     | Yes, after syncing with `main` and passing lint and tests |
 | Merge `main` into your feature branch           | Yes (to stay current before a push)                      |
 | Open a pull request from it into `main`         | Yes, with `Closes #<issue>` in the body (see rule 3)     |
+| Open a pull request without reviewing the agent context | No - review it first: `/context-review`, or its steps by hand (rule 8) |
 | Open a pull request whose head is `main`        | No - never: its merge deletes `main` (rule 1)            |
 | Change a component's behaviour without a test   | No - add or update a `spec` / `e2e` test (see rule 5)    |
 | Ship an API removal without declaring the break | No - `!` or a `BREAKING CHANGE:` footer (see rule 6)     |
