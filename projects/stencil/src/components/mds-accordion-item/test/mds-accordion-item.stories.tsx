@@ -1,4 +1,5 @@
 import { h } from '@stencil/core';
+import { typographyHeadingTagDictionary } from '@type/text';
 import { typographyReadDictionary } from '@type/typography';
 
 export default {
@@ -12,6 +13,13 @@ export default {
     selected: {
       type: { name: 'boolean' },
       description: 'Specifies if the accordion item is opened or not',
+    },
+    tag: {
+      type: { name: 'string' },
+      description:
+        'Specifies the heading level of the title, the level of its place in the outline of the page: left out, the item is not a heading',
+      options: typographyHeadingTagDictionary,
+      control: { type: 'select' },
     },
     typography: {
       type: { name: 'string' },
@@ -55,4 +63,25 @@ export const Selected = {
     selected: true,
     label: 'Blipbug',
   },
+};
+
+// the outline the guides write (usage/2. Examples.md): the items under the title h2 of their
+// section are its parts, styled h6 and headings h3 (tag), the button inside the heading; the
+// title stands gap-title-content (300) above them
+export const InTheOutline = {
+  render: () => (
+    <div class="grid gap-300">
+      <mds-text typography="section" tag="h2">
+        Domande frequenti
+      </mds-text>
+      <mds-accordion>
+        <mds-accordion-item label="Come gestisco gli aggiornamenti?" typography="h6" tag="h3">
+          <mds-text>Ogni release e' documentata nel changelog con note di migrazione.</mds-text>
+        </mds-accordion-item>
+        <mds-accordion-item label="Posso personalizzare i colori?" typography="h6" tag="h3">
+          <mds-text>Si', tramite i CSS custom properties esposti da ogni componente.</mds-text>
+        </mds-accordion-item>
+      </mds-accordion>
+    </div>
+  ),
 };
