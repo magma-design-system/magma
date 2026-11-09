@@ -59,7 +59,7 @@ test.skipIf(!built)('the studio links its favicons beside it, the pages of the f
     'favicons/manifest.webmanifest',
   ])
   for (const name of Object.keys(FAVICONS)) expect(existsSync(`${dist}favicons/${name}`), name).toBe(true)
-  for (const page of ['scene.html', 'groups.html'])
+  for (const page of ['scene.html', 'groups.html', 'hero.html'])
     expect(readFileSync(`${dist}${page}`, 'utf8')).not.toContain('favicons/')
 })
 

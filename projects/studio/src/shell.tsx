@@ -7,7 +7,9 @@ import { App } from './app.js';
 import { readDraft } from './draft.js';
 import type { GateVerdict } from './gate.js';
 import { GateBadge } from './verdict.js';
+import { ConfigItems, type ConfigAction } from './config-menu.js';
 import { sceneStyle } from './scene-css.js';
+import { StartPage } from './start.js';
 import { useThemeChoices } from './theme-choices.js';
 import { applyFrame, type Scheme } from './frame.js';
 
@@ -37,16 +39,21 @@ import {
 } from './routes.js';
 
 /*
-  The shell of the studio (#695): the bar of the application and its three sections, built with
-  the components of the Magma installed where the studio runs (vendor.ts). The bar follows the
+  The shell of the studio (#695): the bar of the application and its three sections, the Start
+  page before them, built with the components of the Magma installed where the studio runs
+  (vendor.ts). The bar follows the
   app-shell block of Magma; Colors and Behavior open their pages from a menu, a case the block
-  does not have yet (#695).
+  does not have yet (#695). Config, after them, is a menu of actions, not a section: it brings a
+  configuration in and takes it out from any section (config-menu.tsx).
 */
 
-/** The page a start with no address opens: the view of the Colors section the draft was on. */
-function startRoute(): Route {
+/**
+ * The view of the Colors section the draft was on, if any: the Colors pages start on it, and the
+ * Start page offers to continue there. A start with no address opens the Start page (HOME).
+ */
+function draftView(): ColorsView | undefined {
   const view = readDraft()?.view as ColorsView | undefined;
-  return COLORS_PAGES.some((page) => page.id === view) ? { section: 'colors', view: view! } : HOME;
+  return COLORS_PAGES.some((page) => page.id === view) ? view : undefined;
 }
 
 /** The version of the Magma the studio runs on, written into the page by vendor.ts. */
@@ -54,29 +61,38 @@ const magmaVersionOf = () =>
   document.querySelector<HTMLMetaElement>('meta[name="magma-version"]')?.content || undefined;
 
 export function Studio() {
-  const route = useRoute(startRoute());
-  // the Colors view stays mounted under the other sections, so its work is not lost
+  const route = useRoute(HOME);
+  // the page of Colors to continue on: the one of the draft, then the last one opened
+  const [resume, setResume] = useState<ColorsView | undefined>(draftView);
+  // the Colors view stays mounted under the other sections, so its work is not lost; under the
+  // Start page it stays on the view of the draft, which it keeps saving
   const [colorsView, setColorsView] = useState<ColorsView>(
-    route.section === 'colors' ? route.view : 'colors',
+    route.section === 'colors' ? route.view : (resume ?? 'colors'),
   );
   useEffect(() => {
-    if (route.section === 'colors') setColorsView(route.view);
+    if (route.section !== 'colors') return;
+    setColorsView(route.view);
+    setResume(route.view);
   }, [route]);
   const [config, setConfig] = useState<MagmaConfig | null>(null);
   // the App judges the working config with the contrast gate at every edit (gate.ts)
   const [verdict, setVerdict] = useState<GateVerdict | null>(null);
+  // what the Config menu of the bar runs, the App's, which holds the configuration
+  const [configActions, setConfigActions] = useState<ConfigAction[]>([]);
 
   return (
     <div class="studio">
-      <StudioBar route={route} verdict={verdict} />
+      <StudioBar route={route} verdict={verdict} configActions={configActions} />
       <div class="studio-section" hidden={route.section !== 'colors'}>
         <App
           view={colorsView}
           onNavigate={(view) => navigate({ section: 'colors', view })}
           onConfig={setConfig}
           onGate={setVerdict}
+          onConfigActions={setConfigActions}
         />
       </div>
+      {route.section === 'start' && <StartPage draftView={resume} />}
       {route.section === 'theme' && (
         <ThemePage config={config} theme={route.theme} mode={route.mode} />
       )}
@@ -127,9 +143,22 @@ function MenuLinks<Id extends string>({
 const colorsRoute = (view: ColorsView): Route => ({ section: 'colors', view });
 const behaviorRoute = (page: BehaviorPage): Route => ({ section: 'behavior', page });
 
-function StudioBar({ route, verdict }: { route: Route; verdict: GateVerdict | null }) {
+function StudioBar({
+  route,
+  verdict,
+  configActions,
+}: {
+  route: Route;
+  verdict: GateVerdict | null;
+  configActions: ConfigAction[];
+}) {
   const colorsMenu = useRef<HTMLElement & { visible?: boolean }>(null);
   const behaviorMenu = useRef<HTMLElement & { visible?: boolean }>(null);
+  const configMenu = useRef<HTMLElement & { visible?: boolean }>(null);
+  // an action of the Config menu closes it, unless the action keeps it open to say what it did
+  const ranConfig = (action: ConfigAction) => {
+    if (!action.keepOpen && configMenu.current) configMenu.current.visible = false;
+  };
   // following a link of a menu closes it
   useEffect(() => {
     for (const menu of [colorsMenu.current, behaviorMenu.current]) if (menu) menu.visible = false;
@@ -195,6 +224,16 @@ function StudioBar({ route, verdict }: { route: Route; verdict: GateVerdict | nu
           >
             Behavior
           </mds-button>
+          <mds-button
+            slot="nav"
+            id="studio-config"
+            variant="dark"
+            tone="text"
+            icon="mi/baseline/expand-more"
+            icon-position="right"
+          >
+            Config
+          </mds-button>
         </mds-header-bar>
         <nav slot="menu" class="studio-menu" aria-label="Studio">
           <mds-text typography="detail" tag="p" class="studio-menu-title">
@@ -217,6 +256,11 @@ function StudioBar({ route, verdict }: { route: Route; verdict: GateVerdict | nu
             Behavior
           </mds-text>
           <MenuLinks items={BEHAVIOR_PAGES} current={behaviorPage} routeOf={behaviorRoute} />
+          <mds-separator></mds-separator>
+          <mds-text typography="detail" tag="p" class="studio-menu-title">
+            Config
+          </mds-text>
+          <ConfigItems actions={configActions} />
         </nav>
       </mds-header>
       <mds-dropdown ref={colorsMenu} target="#studio-colors" placement="bottom" strategy="fixed">
@@ -236,6 +280,16 @@ function StudioBar({ route, verdict }: { route: Route; verdict: GateVerdict | nu
       >
         <div class="studio-dropdown">
           <MenuLinks items={BEHAVIOR_PAGES} current={behaviorPage} routeOf={behaviorRoute} />
+        </div>
+      </mds-dropdown>
+      <mds-dropdown
+        ref={configMenu}
+        target="#studio-config"
+        placement="bottom-end"
+        strategy="fixed"
+      >
+        <div class="studio-dropdown">
+          <ConfigItems actions={configActions} onRun={ranConfig} />
         </div>
       </mds-dropdown>
     </>

@@ -26,6 +26,9 @@ sections, in the order of the work (#693, decided 2026-11-05):
 | **Theme** | one page | the theme on a scene of a product in an iframe, the whole section, and a bar at the bottom: the theme to show, one button per axis (typography, shape, density, depth, the preferences of the person, dimension), then the ruler of the preview (the view and the width of the frame) |
 | **Behavior** (a menu) | Design language, Patterns, Blocks | what Magma decided and the layer of a product, read-only; placeholders until their turn (#693, "The plan") |
 
+Before them comes the **Start page** (`#/start`, below): a start with no address opens it, and
+the name of the studio at the start of the bar links to it.
+
 Every page is a link with an address in the hash (`#/colors/palette`, `#/theme`,
 `#/behavior/patterns`, `src/routes.ts`), so the studio works from whatever folder serves it. The
 Theme section may name the theme and the mode it opens on, `#/theme/editorial/dark`, and its
@@ -34,11 +37,12 @@ theme in the same mode. The
 Colors pages stay mounted under the other sections, so their work is not lost; each opens with the
 head of the page-header block, the first thing of the region that scrolls (it scrolls with the
 page, and beside the list of the Palette it heads the larger column): the title with the verdict
-of the contrast gate beside it, one line, then the actions (a menu with Reset and Load config,
-Copy JSON or Save, and last Download all tokens, a split button whose menu holds the other
-downloads). Under 380 px of the head (on a phone) the actions stack, as `actions/stacked` has
-them: the menu at its own size first, Copy JSON at the full width, Download last (its split button
-keeps its own width: its main action has no part to widen it).
+of the contrast gate beside it, one line, then the actions: Reset, in view since it is the only
+one left, and Save, last, when a command serves the studio. Under 380 px of the head (on a phone)
+the actions stack at the full width, as `actions/stacked` has them, Save at the bottom. What brings a configuration in and takes it out is not an action of a page but the
+**Config** menu of the bar, after the sections (`src/config-menu.tsx`): the actions are the App's,
+which holds the configuration, and the bar draws them, in its dropdown and in the menu of a narrow
+window, each with the format it reads or hands over in a badge.
 
 The Theme section shows the scene (`scene.html`) in an iframe, a document of its own: the theme is
 set on its `<html>` (`data-theme-name`), and the preferences of the person on its own `mds-pref-*`,
@@ -107,6 +111,45 @@ the deprecated ones included, so a theme of a product never takes one, and a nam
 words joined by hyphens (`THEME_NAME` of `semantic.model.ts`). Under its accents a theme says the
 colour modes it can be used in, the `color.modes` of a theme file (#1274): light and dark, the
 default, light only or dark only; the mode it does not offer stays in view, dimmed.
+
+## The Start page
+
+The first page of the studio (`src/start.tsx`) is an introduction, not a tool: it says what the
+studio is for, the steps of the work and what each section changes, in three parts:
+
+- **the hero**: what the studio is for and what it offers (`FEATURES`, each line with its source
+  in the code, an `mds-list`), on a band of the accent, beside a short play. A banner of a product
+  (`hero.html`, an `mds-banner` of a back office with its text, its icon and its actions) in an
+  iframe its own size is painted with the configuration Magma builds with, drawn pale at two
+  levels: its text targets (`theme.text`, the balances of Semantic surface) lowered under every
+  floor of the contrast gate (`POOR_TARGETS`, 45, 30, 22 and 15 against the floors 75, 75, 45 and
+  30), and the ramp of its accent family faded (`PALE_RAMP`, its contrast ratios at 0.6 of
+  themselves, a scale of the configuration). Three trays on the default surface come out from
+  behind the banner, one at a time, with a light elastic movement: over it, the problem; under it,
+  the fix, while the targets and the ramp come back to those of Magma in eight steps; then a
+  smaller tray that says the issues are fixed, with **Replay**. The fix shows three indicators,
+  Texts, Icons and Actions, each the pair of the gate that holds what the banner paints (`CHECKS`,
+  the source of each beside it), and an `mds-progress` of the pairs brought back over their floor
+  (`solved`), red while every indicator is under its floor, yellow once one meets it, green when
+  the gate passes (`tone`). Each step runs what an edit on the pages of Colors runs
+  (`src/start-demo.ts`), so nothing the play shows is drawn by hand; the last step is the
+  committed configuration, untouched. The play runs once, in under five seconds (`PLAY_MS`), so
+  it needs no pause (WCAG 2.2.2); Replay plays it again and gets the focus back at the end. The
+  banner stays where it is, the room of its trays kept, so the band never changes height. Its
+  figures are hidden from assistive technologies, the trays back behind the banner are `inert`,
+  and a caption hidden from the eye says what the play shows. With less motion asked
+  (`prefers-reduced-motion`) the play does not run by itself and the trays do not move. The
+  elastic is a `linear()` curve of `start.css`, a light bounce beside it to compare
+  (`--start-ease-tray`); the banner is a document of its own (`applyFrame`), its height read by
+  the hero, which CSS cannot give an iframe;
+- **the steps of the work**: start from a configuration (the first step offers to continue on the
+  page of Colors the draft was on, else it opens the palette), change it at its level, keep the
+  gate green, judge it on a product and take it;
+- **the levels**, from the finest to the broadest, each built on the one before: Colour (Palette,
+  Contrast scales, Groups), Role (Semantic surface), Theme (Themes), Product (the Theme section),
+  Composition (Behavior), each with what a change acts on, what it reaches and its pages; the
+  checks (Contrast check, Diffs) in the line under them. `test/start.test.mts` holds every page of
+  the bar to a link of the page, so a new page needs its level.
 
 ## The pages in Magma
 
@@ -272,7 +315,7 @@ flowchart LR
   WC["stencil<br/>dist/magma-components"]
   ID["identity<br/>logo-magma.svg"]
   subgraph stu["studio<br/>an app, not on npm"]
-    SHELL["src/shell.tsx, src/routes.ts<br/>the bar, Colors, Theme, Behavior"]
+    SHELL["src/shell.tsx, src/routes.ts, src/start.tsx<br/>the bar, Start, Colors, Theme, Behavior"]
     APP["src/app.tsx<br/>the pages of Colors"]
     SURF["src/surfaces.tsx, src/themes.tsx<br/>balances, themes, names"]
     GATE["src/gate.ts, src/contrast.tsx<br/>the contrast gate, Contrast check"]
@@ -280,9 +323,10 @@ flowchart LR
     VEN["vendor.ts<br/>serves Magma to the pages"]
     API["magma-api.ts<br/>the variant and tone of each component"]
     SITE["site.ts<br/>the static site, dist-site/"]
-    SCENE["scene.html, states.html<br/>the pages the frames show"]
+    SCENE["scene.html, states.html, hero.html<br/>the pages the frames show"]
     SHELL --> APP
     SHELL --> SCENE
+    SHELL --> GATE
     APP --> SURF
     APP --> GATE
     APP --> OUT
@@ -351,19 +395,26 @@ changed - outlining each changed step and badging the color with the largest per
 `design-tokens/tokens/color/generated/` are build artifacts and not committed, so the committed
 config is the baseline.
 
-The studio works with any configuration, not just the repo one: **Load config** (in the menu of
-the head of the page) opens a `.magma-design-tokensrc.json` from disk and **Copy JSON** copies the
-edited configuration to the clipboard. **Download all tokens (zip)** is the main action of the
-page, a split button (`mds-button-dropdown`) whose menu offers the other downloads:
+The studio works with any configuration, not just the repo one. The **Config** menu of the bar,
+open from any section, brings one in and takes it out; the badge of each action names the format:
 
-- **All tokens (zip)**, the main action - the configuration, the generated JSON tokens (whole palette + one file
-  per export group) and the CSS and GIMP renders, mirroring the `dist` layout of `design-tokens`;
-- **Figma tokens (DTCG)** - the color palette in the W3C DTCG format, one file per theme mode,
-  zipped together (the "Figma export" of the `design-tokens` README);
-- **Config (json)** - just the `.magma-design-tokensrc.json`;
-- **CSS tokens** - `colors-hex.css` / `colors-rgb.css` for the whole palette plus one pair per
-  export group;
-- **GIMP palette** - `colors.gpl` for the whole palette plus one `.gpl` per export group.
+- **Import config** (json) - opens a `.magma-design-tokensrc.json` from disk; an error shows on
+  the pages of Colors, which the import opens;
+- **Copy JSON** - copies the edited configuration to the clipboard (the menu stays open to say
+  Copied!);
+- **Download all tokens** (misc) - the configuration, the generated JSON tokens (whole palette +
+  one file per export group) and the CSS and GIMP renders, mirroring the `dist` layout of
+  `design-tokens`;
+- **Download config** (json) - just the `.magma-design-tokensrc.json`;
+- **Download Figma tokens** (DTCG) - the color palette in the W3C DTCG format, one file per theme
+  mode, zipped together (the "Figma export" of the `design-tokens` README);
+- **Download CSS tokens** (css) - `colors-hex.css` / `colors-rgb.css` for the whole palette plus
+  one pair per export group;
+- **Download GIMP palette** (gpl) - `colors.gpl` for the whole palette plus one `.gpl` per export
+  group.
+
+The dialog of the contrast gate opens over the whole studio (on `document.body`), so an export
+from Start, Theme or Behavior asks as one from Colors does.
 
 CSS and GIMP respect export diversification: they emit the whole palette and one file per export
 group. When that yields more than one file the download is a zip (`magma-css.zip`,
@@ -392,8 +443,8 @@ the draft cannot overwrite the newer file by mistake.
 
 Served by a command that answers `GET` / `PUT /api/config` and `POST /api/build` (the `ui` command
 of `design-tokens` did it until version 16; the command of the studio comes with #695), the
-studio loads the configuration on disk, swaps **Copy JSON** for **Save** and adds **Build tokens on
-disk** to the Download menu. Run on its own, the API is absent and editing stays in memory.
+studio loads the configuration on disk, adds **Save** to the head of the pages of Colors and
+**Build tokens on disk** to the Config menu. Run on its own, the API is absent and editing stays in memory.
 
 New colors are created from a dialog: pick the value and the name auto-completes underneath from
 the "Name That Color" vocabulary (via [color-namer](https://github.com/colorjs/color-namer), ~1500

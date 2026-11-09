@@ -90,6 +90,29 @@
   width: 100%;
 }
 
+/* an action of the Config menu (config-menu.tsx): the badge of its format over the end of its
+   button, which the click goes through; wide enough that the longest label stops before it. The
+   badge on a layer of its own: the button paints its hover over what comes after it, and a format
+   that vanishes on hover draws the eye away from the label */
+
+.studio-config-item {
+  align-items: center;
+  display: grid;
+  min-width: calc(var(--spacing) * 8000);
+}
+
+.studio-config-item > * {
+  grid-area: 1 / 1;
+}
+
+.studio-config-item > mds-badge {
+  justify-self: end;
+  margin-inline-end: var(--magma-rhythm-inline);
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
 .studio-muted {
   color: rgb(var(--magma-text-muted));
 }
@@ -128,11 +151,10 @@
 
 /*
   Under 380 px of the head (--magma-container-actions, 23.75rem) the actions stack at the full
-  width, in the order of the row, the main one at the bottom and the icon-only menu at its own size
-  at the start (page-header, Layout; actions/stacked); above it the row stays on one line. The
-  head is not a container: one would be the containing block of the menus of its actions
-  (position: fixed under layout containment) inside the region that scrolls, which would scroll
-  them, clip them and widen it. The layout is the container instead: the head is as wide as it,
+  width, in the order of the row, the main one at the bottom (page-header, Layout;
+  actions/stacked); above it the row stays on one line. The layout is the container, not the
+  head, which would be the containing block of anything fixed its actions open (position: fixed
+  under layout containment) inside the region that scrolls: the head is as wide as it,
   less the gutters of the page (--magma-width-page-gutter, 1.5rem on each side), wherever the list
   of the families stands (beside the page only from 41.75rem, palette.css), so 23.75rem of head
   is 26.75rem of layout. Literals, since a container query reads no var().
@@ -148,14 +170,6 @@
 
   .studio-page-actions > * {
     align-self: stretch;
-  }
-
-  /* the menu at its own size; so the split button of Download, whose main action has no part to
-     widen it: stretched, its host would show its fill past its two buttons */
-
-  .studio-page-actions > #studio-more,
-  .studio-page-actions > mds-button-dropdown {
-    align-self: start;
   }
 }
 

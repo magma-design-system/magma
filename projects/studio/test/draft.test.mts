@@ -181,13 +181,16 @@ test('on the static site the studio asks no API and edits in memory', async () =
     return new Response(JSON.stringify({ path: PATH, config: changed, readOnly: null }))
   })
   try {
-    render(h(App, {}), root)
+    let actions: Array<{ id: string }> = []
+    render(h(App, { onConfigActions: (handed: Array<{ id: string }>) => (actions = handed) }), root)
     // the start-up check ran on the bundled config, the source of a studio with no API
     await vi.waitFor(() => {
       expect(storedDraft().source).toEqual({ path: null, hash: hashText(diskJson) })
     })
     expect(asked).toEqual([])
-    expect(button('Copy JSON')).toBeDefined()
+    // the configuration leaves by the Config menu of the bar, with nothing to save or build
+    expect(actions.map(({ id }) => id)).toContain('copy')
+    expect(actions.map(({ id }) => id)).not.toContain('build')
     expect(button('Save')).toBeUndefined()
   } finally {
     meta.remove()

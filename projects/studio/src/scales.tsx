@@ -704,11 +704,9 @@ export function ScalesManager({
               <dl class="scales-groups">
                 {[...involved.entries()].map(([group, colors]) => (
                   <div class="scales-group" key={group}>
-                    <dt>
-                      <mds-text typography="label" class="scales-muted">
-                        {group}
-                      </mds-text>
-                    </dt>
+                    <mds-text typography="label" tag="dt" class="scales-muted">
+                      {group}
+                    </mds-text>
                     <dd class="scales-chips">
                       {colors.map((color) => (
                         <mds-chip

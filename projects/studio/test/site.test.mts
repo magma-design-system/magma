@@ -65,11 +65,12 @@ afterAll(async () => {
   if (out) rmSync(out, { recursive: true, force: true })
 })
 
-// the studio on its first page and on the Theme section, which shows the scene in an iframe,
-// and the two pages that section shows; each with the documents it loads (the folder of the
-// site is the studio, as the links of the docs site give it)
+// the studio on its first page, the Start page, whose hero paints a page of a product in an
+// iframe, and on the Theme section, which shows the scene in an iframe, and the pages those
+// frames show; each with the documents it loads (the folder of the site is the studio, as the
+// links of the docs site give it)
 test.skipIf(!built).each([
-  ['', ['']],
+  ['', ['', 'hero.html']],
   ['#/theme', ['', 'scene.html']],
   ['scene.html', ['scene.html']],
   ['groups.html', ['groups.html']],

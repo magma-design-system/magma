@@ -4,6 +4,7 @@ import { h, render } from 'preact'
 
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { App } from '../src/app.js'
+import type { ConfigAction } from '../src/config-menu.js'
 import { nearestColorName } from '../src/color-names.js'
 
 // The Palette page in Magma: the list of the families, the editor of the one selected, its menu,
@@ -15,6 +16,8 @@ const root = document.createElement('div')
 document.body.append(root)
 
 let configs: MagmaConfig[] = []
+// the actions of the Config menu of the bar, as the App hands them to it
+let actions: ConfigAction[] = []
 const latest = (): MagmaConfig => configs[configs.length - 1]
 const color = (name: string) => latest().colors.find((one) => one.name === name)
 
@@ -23,8 +26,17 @@ beforeEach(async () => {
   vi.stubGlobal('fetch', () => Promise.reject(new Error('no server')))
   localStorage.clear()
   configs = []
-  render(h(App, { onConfig: (config: MagmaConfig) => configs.push(config) }), root)
+  actions = []
+  render(
+    h(App, {
+      onConfig: (config: MagmaConfig) => configs.push(config),
+      onConfigActions: (handed: ConfigAction[]) => (actions = handed),
+    }),
+    root,
+  )
   await vi.waitFor(() => expect(heading()).toBe('tone.neutral'))
+  // the actions of the Config menu are handed by an effect, after the paint
+  await vi.waitFor(() => expect(actions.length).toBeGreaterThan(0))
 })
 
 afterEach(() => {
@@ -421,18 +433,27 @@ test('choosing a reference in the dialog makes a reference in the variant group'
   expect(heading()).toBe('variant.sky')
 })
 
-test('Download all tokens is the main action of the head, the other downloads in its menu', async () => {
-  const split = root.querySelector('mds-button-dropdown')!
-  expect(split.getAttribute('label')).toBe('Download all tokens (zip)')
-  expect(split.getAttribute('icon')).toBe('mi/outline/file-download')
-  expect([...split.querySelectorAll('mds-button')].map((item) => item.getAttribute('label'))).toEqual([
-    'Figma tokens (DTCG)',
-    'Config (json)',
-    'CSS tokens',
-    'GIMP palette',
+test('the head of a page keeps Reset in view; the Config menu brings the configuration in and takes it out', async () => {
+  // nothing that imports or exports is left in the head, and no menu for one action
+  const head = root.querySelector('.studio-page-actions')!
+  expect(head.querySelector('mds-button-dropdown')).toBeNull()
+  expect([...head.querySelectorAll('mds-button')].map((one) => one.getAttribute('label'))).toEqual([
+    'Reset',
+  ])
+  expect(root.querySelector('#studio-more')).toBeNull()
+
+  // the actions, in their order, each with the format it reads or hands over
+  expect(actions.map(({ label, format }) => [label, format])).toEqual([
+    ['Import config', 'json'],
+    ['Copy JSON', undefined],
+    ['Download all tokens', 'misc'],
+    ['Download config', 'json'],
+    ['Download Figma tokens', 'DTCG'],
+    ['Download CSS tokens', 'css'],
+    ['Download GIMP palette', 'gpl'],
   ])
 
-  // the primary action of the split button downloads the zip of every token
+  // each download hands over the file it says
   const files: string[] = []
   vi.stubGlobal('URL', Object.assign(Object.create(URL), {
     createObjectURL: () => 'blob:tokens',
@@ -444,11 +465,34 @@ test('Download all tokens is the main action of the head, the other downloads in
       files.push(this.download)
     })
   try {
-    emit(split, 'mdsButtonDropdownClick')
-    await vi.waitFor(() => expect(files).toEqual(['magma-design-tokens.zip']))
+    for (const id of ['zip', 'config', 'figma']) actions.find((one) => one.id === id)!.run()
+    await vi.waitFor(() =>
+      expect(files).toEqual([
+        'magma-design-tokens.zip',
+        'magma-design-tokensrc.json',
+        'magma-figma-dtcg.zip',
+      ]),
+    )
   } finally {
     click.mockRestore()
   }
+  // Import config opens the file picker of the App
+  const picker = root.querySelector<HTMLInputElement>('input[type="file"]')!
+  const opened = vi.spyOn(picker, 'click').mockImplementation(() => undefined)
+  actions.find((one) => one.id === 'import')!.run()
+  expect(opened).toHaveBeenCalled()
+})
+
+test('Reset, in view, takes the configuration back to the one Magma builds with once it has an edit', async () => {
+  const reset = () => root.querySelector<HTMLElement>('#studio-reset')!
+  // nothing to discard on the configuration of Magma
+  expect(reset().hasAttribute('disabled')).toBe(true)
+  magmaButton('Duplicate')!.click()
+  await vi.waitFor(() => expect(color('tone.neutral-copy')).toBeDefined())
+  await vi.waitFor(() => expect(reset().hasAttribute('disabled')).toBe(false))
+  reset().click()
+  await vi.waitFor(() => expect(color('tone.neutral-copy')).toBeUndefined())
+  expect(reset().hasAttribute('disabled')).toBe(true)
 })
 
 test('a page of Colors opens at its top, not at the scroll the page before it left', async () => {

@@ -274,7 +274,7 @@ export function ContrastCheck({ report }: { report: GateReport }) {
 
 /** Something that hands the configuration out of the studio: a download, a save, a copy. */
 export interface ExportAction {
-  /** What the action is called where the person chose it: `Download all tokens (zip)`. */
+  /** What the action is called where the person chose it: `Download all tokens`. */
   label: string;
   /** Its verb, which the button of the dialog repeats: `Download`. */
   verb: string;
@@ -320,16 +320,14 @@ export function GateDialog({
             {action.label} hands out a configuration that fails the contrast gate of design-tokens:
             the build of Magma would refuse it, and these pairs are hard to read.
           </mds-text>
-          <ul class="contrast-failures">
+          <mds-list class="contrast-failures">
             {failures.slice(0, NAMED_FAILURES).map(({ theme, cell }) => (
-              <li>
-                <mds-text typography="caption" tag="span">
-                  {theme}, {cell.mode}: <code>{cell.fgToken}</code> on <code>{cell.bgToken}</code>,{' '}
-                  {measure(cell, cell.achieved)} under {cell.target}
-                </mds-text>
-              </li>
+              <mds-list-item typography="caption">
+                {theme}, {cell.mode}: <code>{cell.fgToken}</code> on <code>{cell.bgToken}</code>,{' '}
+                {measure(cell, cell.achieved)} under {cell.target}
+              </mds-list-item>
             ))}
-          </ul>
+          </mds-list>
           {failures.length > NAMED_FAILURES && (
             <mds-text typography="caption" tag="p" class="studio-muted">
               and {failures.length - NAMED_FAILURES} more

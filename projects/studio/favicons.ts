@@ -8,7 +8,7 @@
   The plugin serves them under `favicons/` (the dev server), writes them there into the build and
   links them from the <head> of the studio, relative to the page, so the built studio finds them
   wherever it is mounted (vite.config.ts, `base`). The pages of the frames (scene.html,
-  groups.html) are never a tab of their own: no link there.
+  groups.html, hero.html) are never a tab of their own: no link there.
 */
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
