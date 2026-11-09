@@ -16,6 +16,12 @@ export interface DraftSource {
   hash: string | null;
 }
 
+/**
+ * The scales a configuration writes (its `ratios`), by formula, then by name: a null entry deletes
+ * a built-in scale (app.tsx).
+ */
+export type LoadedRatios = Record<string, Record<string, number[] | null>>;
+
 export interface StudioDraft<View extends string = string> {
   config: MagmaConfig & Record<string, unknown>;
   selectedName: string;
@@ -24,6 +30,11 @@ export interface StudioDraft<View extends string = string> {
   source?: DraftSource;
   /** whether the draft config differs from its source config */
   edited?: boolean;
+  /**
+   * The scales of the configuration last loaded, what the Reset of a scale takes it back to
+   * (app.tsx, #1330); missing in drafts written before it.
+   */
+  loadedRatios?: LoadedRatios;
 }
 
 export type DraftDecision =

@@ -243,6 +243,12 @@
   inline-size: calc(var(--spacing) * 3200);
 }
 
+/* Reset stands on the line of the fields, as tall as their controls (size lg): mds-button sets
+   itself at the start of a row */
+.scales-distribution > mds-button {
+  align-self: end;
+}
+
 /* the selected colour drawn with the scale: data, its cells painted inline */
 
 .scales-sample {

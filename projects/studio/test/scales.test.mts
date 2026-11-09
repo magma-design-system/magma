@@ -7,6 +7,7 @@ import { act } from 'preact/test-utils'
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { ScalesManager, type RatioSet } from '../src/scales.js'
+import { App } from '../src/app.js'
 
 // The Contrast scales page is written in Magma: its stops, its distribution and its menus are
 // mds-* components. jsdom does not upgrade them, so the test dispatches the events they emit and
@@ -46,6 +47,8 @@ function show (selectedName = config.colors[1].name) {
       config,
       formula: 'wcag3',
       ratioSet,
+      // the scales as loaded: what Reset takes a scale back to
+      loaded: SCALES,
       builtinScales: ['default', 'tint'],
       sampleScales: new Map(),
       selectedName,
@@ -291,3 +294,115 @@ test('an alias follows no scale, and a family that paints nothing has no states'
   expect(frames()).toEqual([])
   expect(root.querySelector('.scales-states-head mds-tab')).toBeNull()
 })
+
+// Reset beside the distribution (#1330): back to the steps of the configuration loaded, on manual
+const reset = (name: string) =>
+  [...card(name).querySelectorAll<HTMLElement>('.scales-distribution mds-button')].find(
+    (button) => button.textContent?.trim() === 'Reset',
+  )!
+const easing = (name: string) =>
+  card(name).querySelector('.scales-distribution mds-input-select')?.getAttribute('value')
+
+test('Reset takes a scale back to the steps it was loaded with, once they changed', () => {
+  const spies = show()
+  // nothing to take back yet
+  expect(reset('default').hasAttribute('disabled')).toBe(true)
+  expect(reset('default').getAttribute('title')).toBe('default holds the steps of the loaded configuration')
+  expect(reset('default').getAttribute('variant')).toBe('dark')
+  expect(reset('default').getAttribute('tone')).toBe('outline')
+  // a stop typed, one removed, one added
+  emit(stop('default', 1), 'mdsInputChange', { value: '12' })
+  click(card('default').querySelector<HTMLElement>('mds-button[aria-label="Remove step 10"]')!)
+  expect(stops('default')).toEqual(['12', '16', '23', '34', '45', '66', '74', '84', '92'])
+  expect(reset('default').hasAttribute('disabled')).toBe(false)
+  click(reset('default'))
+  expect(spies.onChangeScale).toHaveBeenLastCalledWith('default', SCALES.default)
+  expect(stops('default')).toEqual(SCALES.default.map(String))
+  expect(easing('default')).toBe('manual')
+  expect(reset('default').hasAttribute('disabled')).toBe(true)
+  // the other scales are left alone
+  expect(stops('tint')).toEqual(SCALES.tint.map(String))
+})
+
+test('Reset takes a scale back to manual after an easing regenerated it', () => {
+  show()
+  // linear from 10 to 90 in five steps gives the same stops: the easing alone turns Reset on
+  emit(card('tint').querySelector('.scales-distribution mds-input-select')!, 'mdsInputSelectChange', { value: 'linear' })
+  expect(stops('tint')).toEqual(SCALES.tint.map(String))
+  expect(reset('tint').hasAttribute('disabled')).toBe(false)
+  emit(card('tint').querySelector('mds-input-field[label="Steps"] mds-input')!, 'mdsInputChange', { value: '3' })
+  expect(stops('tint')).toEqual(['10', '50', '90'])
+  click(reset('tint'))
+  expect(stops('tint')).toEqual(SCALES.tint.map(String))
+  expect(easing('tint')).toBe('manual')
+  expect(card('tint').querySelector('mds-input-field[label="Steps"]')).toBeNull()
+  expect(reset('tint').hasAttribute('disabled')).toBe(true)
+  // an easing picked again starts from the five stops on screen, not from the three typed before
+  emit(card('tint').querySelector('.scales-distribution mds-input-select')!, 'mdsInputSelectChange', { value: 'quad-in' })
+  expect(stops('tint')).toEqual(['10', '15', '30', '55', '90'])
+  expect(card('tint').querySelector('mds-input-field[label="Steps"] mds-input')?.getAttribute('value')).toBe('5')
+})
+
+test('Reset is off on a scale the loaded configuration did not have', () => {
+  show()
+  click(menuItem('tint', 'Duplicate'))
+  expect(stops('custom-2')).toEqual(SCALES.tint.map(String))
+  expect(reset('custom-2').hasAttribute('disabled')).toBe(true)
+  expect(reset('custom-2').getAttribute('title')).toBe('the loaded configuration has no scale named custom-2')
+})
+
+// the whole studio mounts twice and solves every scale and the gate at each edit: a loaded CI
+// runner takes seconds where a laptop takes one (the heavy tests of start.test.mts wait as long)
+const SLOW = { timeout: 10_000 }
+
+test('after an import, Reset takes a scale back to the steps of the file imported, over a reload too', async () => {
+  // not served by a command: the studio starts from the configuration it bundles
+  vi.stubGlobal('fetch', () => Promise.reject(new Error('no server')))
+  localStorage.clear()
+  try {
+    const studio = () => h(App, { view: 'scales' })
+    act(() => render(studio(), root))
+    const builtin = ['8', '16', '23', '34', '45', '66', '74', '84', '92', '100']
+    await vi.waitFor(() => expect(stops('default')).toEqual(builtin), SLOW)
+    expect(reset('default').hasAttribute('disabled')).toBe(true)
+
+    // a configuration with a default scale of its own, imported from the Config menu
+    const imported = [5, 15, 25, 35, 45, 55, 65, 75, 85, 95]
+    // the File of jsdom has no text(): the studio reads only the name and the text of the file
+    const json = JSON.stringify({ ...base, ratios: { wcag3: { default: imported } } })
+    const file = { name: 'product.json', text: async () => json }
+    const picker = root.querySelector<HTMLInputElement>('input[type="file"]')!
+    Object.defineProperty(picker, 'files', { configurable: true, value: [file] })
+    await act(async () => {
+      picker.dispatchEvent(new Event('change'))
+    })
+    await vi.waitFor(() => expect(stops('default')).toEqual(imported.map(String)), SLOW)
+    expect(reset('default').hasAttribute('disabled')).toBe(true)
+
+    // edited, then reset: the steps of the file, not the built-in ones
+    emit(stop('default', 1), 'mdsInputChange', { value: '9' })
+    expect(stops('default')[0]).toBe('9')
+    click(reset('default'))
+    expect(stops('default')).toEqual(imported.map(String))
+    expect(reset('default').hasAttribute('disabled')).toBe(true)
+
+    // a reload restores the draft, and with it what was loaded
+    emit(stop('default', 1), 'mdsInputChange', { value: '9' })
+    // the draft is written by an effect, after the paint
+    await vi.waitFor(() => expect(localStorage.getItem('magma-design-tokens:playground:draft')).toContain('"loadedRatios"'), SLOW)
+    act(() => render(null, root))
+    act(() => render(studio(), root))
+    await vi.waitFor(() => expect(stops('default')[0]).toBe('9'), SLOW)
+    click(reset('default'))
+    expect(stops('default')).toEqual(imported.map(String))
+
+    // the Reset of the page loads the bundled configuration again: its steps are the loaded ones
+    emit(stop('default', 1), 'mdsInputChange', { value: '9' })
+    click(root.querySelector<HTMLElement>('#studio-reset')!)
+    await vi.waitFor(() => expect(stops('default')).toEqual(builtin), SLOW)
+    expect(reset('default').hasAttribute('disabled')).toBe(true)
+  } finally {
+    localStorage.clear()
+    vi.unstubAllGlobals()
+  }
+}, 30_000)

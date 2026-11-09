@@ -30,6 +30,14 @@
         align-items: center;
         justify-items: start;
         overflow-x: auto;
+        /* a scroller clips what its items draw past their box (the ring of an outline, the shadow
+           of a box, the focus ring), the other axis too: room for them as wide as the inset of
+           the page, given back by the margin, so the grid reaches the edges of the frame and the
+           rhythm stays */
+        margin-block-end: calc(-1 * var(--magma-rhythm-inset));
+        margin-inline-end: calc(-1 * var(--magma-rhythm-inset));
+        padding-block-end: var(--magma-rhythm-inset);
+        padding-inline-end: var(--magma-rhythm-inset);
       }
       .states-stack {
         display: grid;

@@ -56,6 +56,7 @@ import {
   reconcileDraft,
   writeDraft,
   type DraftSource,
+  type LoadedRatios,
   type StudioDraft,
 } from './draft.js';
 import { Check, Field, Range, Select, TextInput, type Option } from './magma.js';
@@ -96,6 +97,23 @@ const COLOR_LIST_VIEWS = new Set<View>(['colors', 'scales']);
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
+}
+
+/** The scales a configuration writes, a copy of its own that later edits leave alone. */
+const ratiosOf = (config: MagmaConfig): LoadedRatios =>
+  clone((config.ratios ?? {}) as LoadedRatios);
+
+/**
+ * The scales of a formula as the generator merges them: the entries a configuration writes over
+ * the built-in ones, a null entry (a built-in deleted) left out.
+ */
+function scalesOf(ratios: LoadedRatios | MagmaConfig['ratios'], formula: Formula): RatioSet {
+  return Object.fromEntries(
+    Object.entries({
+      ...(DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[formula],
+      ...(ratios?.[formula] ?? {}),
+    }).filter(([, values]) => Array.isArray(values)),
+  ) as RatioSet;
 }
 
 // an alias family references another family instead of solving its own palette:
@@ -724,6 +742,14 @@ export function App({
   const [config, setConfig] = useState<CloneableConfig>(() =>
     bootDraft ? bootDraft.config : clone(initialConfigJson as unknown as CloneableConfig),
   );
+  // the scales of the configuration last loaded, what the Reset of a scale takes it back to
+  // (#1330): the one the studio opens with (the bundled one, or the file a command serves), the
+  // one imported from the Config menu, the one the Reset of the page brings back. A save loads
+  // nothing: what the person saves are edits of what was loaded. The draft keeps them over a
+  // reload; a draft written before it was made on the source of the start-up check below
+  const [loadedRatios, setLoadedRatios] = useState<LoadedRatios>(
+    () => bootDraft?.loadedRatios ?? ratiosOf(initialConfigJson as unknown as MagmaConfig),
+  );
   const [selectedName, setSelectedName] = useState<string>(() =>
     bootDraft
       ? bootDraft.selectedName
@@ -879,13 +905,7 @@ export function App({
   // effective ratio scales: config entries layered over the built-in ones,
   // exactly like the generator merges them. A null entry in the config is
   // the sentinel for a deleted built-in scale and is filtered out.
-  const ratioSetFor = (formula: Formula): RatioSet =>
-    Object.fromEntries(
-      Object.entries({
-        ...(DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[formula],
-        ...(config.ratios?.[formula] ?? {}),
-      }).filter(([, values]) => Array.isArray(values)),
-    );
+  const ratioSetFor = (formula: Formula): RatioSet => scalesOf(config.ratios, formula);
   const ratioSet = ratioSetFor(scalesFormula);
   const builtinScales = Object.keys(
     (DEFAULT_COLOR_CONFIG.ratios as Record<Formula, RatioSet>)[scalesFormula],
@@ -976,7 +996,14 @@ export function App({
   useEffect(() => {
     if (!origin) return;
     if (draftConflict) {
-      writeDraft({ config, selectedName, view, source: bootDraft?.source, edited: true });
+      writeDraft({
+        config,
+        selectedName,
+        view,
+        source: bootDraft?.source,
+        edited: true,
+        loadedRatios,
+      });
       return;
     }
     const edited = JSON.stringify(config) !== origin.json;
@@ -986,8 +1013,9 @@ export function App({
       view,
       source: { path: origin.path, hash: origin.hash },
       edited,
+      loadedRatios,
     });
-  }, [JSON.stringify(config), selectedName, view, origin, draftConflict]);
+  }, [JSON.stringify(config), selectedName, view, origin, draftConflict, loadedRatios]);
 
   // when served by a command, adopt the on-disk config and enable
   // saving; in both modes, check a restored draft against the config it was
@@ -1029,6 +1057,7 @@ export function App({
       const decision = reconcileDraft(bootDraft, source, json);
       if (decision.use === 'source' && (bootDraft || fileConfig)) {
         setConfig(sourceConfig);
+        setLoadedRatios(ratiosOf(sourceConfig));
         setSelectedName((name) =>
           sourceConfig.colors.some((c) => c.name === name)
             ? name
@@ -1041,6 +1070,8 @@ export function App({
           label: fileConfig ? 'Use the file on disk' : 'Use the bundled config',
         });
       }
+      // a draft written before drafts kept what was loaded (#1330) was made on this source
+      if (bootDraft && !bootDraft.loadedRatios) setLoadedRatios(ratiosOf(sourceConfig));
       setOrigin({ ...source, json });
     })();
     return () => {
@@ -1053,6 +1084,7 @@ export function App({
     if (useSource) {
       const next = draftConflict.config;
       setConfig(next);
+      setLoadedRatios(ratiosOf(next));
       setSelectedName((name) =>
         next.colors.some((c) => c.name === name) ? name : defaultSelected(next.colors),
       );
@@ -1124,6 +1156,7 @@ export function App({
         throw new Error(errors.slice(0, 3).join('; ') || 'it does not match the schema');
       }
       setConfig(parsed);
+      setLoadedRatios(ratiosOf(parsed));
       setSelectedName(defaultSelected(parsed.colors));
       setView('colors');
       setLoadError(null);
@@ -1493,6 +1526,7 @@ export function App({
               clearDraft();
               const base = clone(initialConfigJson as unknown as CloneableConfig);
               setConfig(base);
+              setLoadedRatios(ratiosOf(base));
               setSelectedName(defaultSelected(base.colors));
               setView('colors');
               setLoadError(null);
@@ -2038,6 +2072,7 @@ export function App({
             config={config}
             formula={scalesFormula}
             ratioSet={ratioSet}
+            loaded={scalesOf(loadedRatios, scalesFormula)}
             builtinScales={builtinScales}
             sampleScales={sampleScales}
             selectedName={selectedName}
