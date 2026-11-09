@@ -479,8 +479,13 @@ scale and lists every color resolving to it, ordered by group; clicking a color 
 sample for all the scale previews. Each scale has a distribution mode: pick an easing (`linear`,
 or a family from `sine` to `circ` as `-in`, `-out` or `-in-out`: the named easings of the engine,
 `easing.mts`, which the hue shift ramps with too) and the stops regenerate live from steps/min/max, or go
-`manual` by dragging a marker or editing a stop directly. Scale values are contrast against the
-theme background (0 = on the background, max = strongest contrast), so the same scale yields
+`manual` by dragging a marker or editing a stop directly; picked from `manual`, an easing starts
+from the stops on screen. **Reset**, beside the distribution, takes a scale back to the steps of
+the configuration last loaded, on `manual`: the one the studio opened with (the bundled one, or
+the file a command serves), the one imported from the Config menu, or the one the Reset of the
+page brings back; a save loads nothing. It is off when the scale holds those steps already, and on
+a scale that configuration did not have; the draft keeps what was loaded over a reload (#1330).
+Scale values are contrast against the theme background (0 = on the background, max = strongest contrast), so the same scale yields
 dark-on-light in light mode and light-on-dark in dark mode. Every color picks its scale with the
 `ratios` field in the editor.
 

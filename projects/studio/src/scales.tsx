@@ -1,3 +1,4 @@
+import type { ComponentChildren } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import type { Formula, MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import {
@@ -92,6 +93,9 @@ function numberOf(raw: string): number | null {
 }
 
 const plural = (count: number, word: string) => `${count} ${word}${count === 1 ? '' : 's'}`;
+
+const sameStops = (a: number[], b: number[]) =>
+  a.length === b.length && a.every((value, index) => value === b[index]);
 
 // The values are contrast against the theme background, not lightness:
 // 0 sits on the background, the maximum is the strongest contrast (dark in
@@ -236,6 +240,8 @@ interface DistributionControlsProps {
   easing: EasingName;
   onEasingChange: (easing: EasingName) => void;
   onApply: (values: number[]) => void;
+  /** The actions of the row, after its fields: the Reset of the scale. */
+  children?: ComponentChildren;
 }
 
 /**
@@ -249,6 +255,7 @@ function DistributionControls({
   easing,
   onEasingChange,
   onApply,
+  children,
 }: DistributionControlsProps) {
   const [steps, setSteps] = useState(values.length);
   const [min, setMin] = useState(values[0] ?? axis.min);
@@ -290,7 +297,19 @@ function DistributionControls({
           options={EASING_OPTIONS}
           onValue={(next) => {
             onEasingChange(next);
-            if (next !== 'manual') apply(next);
+            if (next === 'manual') return;
+            if (easing !== 'manual') {
+              apply(next);
+              return;
+            }
+            // from manual, the fields of the easing start from the stops it replaces, those
+            // dragged, typed or reset since, not from the ones they held before (#1330)
+            const lo = values[0] ?? axis.min;
+            const hi = values[values.length - 1] ?? axis.max;
+            setSteps(values.length);
+            setMin(lo);
+            setMax(hi);
+            apply(next, values.length, lo, hi);
           }}
         />
       </Field>
@@ -324,6 +343,7 @@ function DistributionControls({
           />
         </>
       )}
+      {children}
     </div>
   );
 }
@@ -555,6 +575,11 @@ interface ScalesManagerProps {
   formula: Formula;
   ratioSet: RatioSet;
   /**
+   * The scales of the configuration last loaded (app.tsx): what the Reset of a scale takes it back
+   * to (#1330). A scale it has no entry for, added or renamed since, has nothing to go back to.
+   */
+  loaded: RatioSet;
+  /**
    * Scales shipped with the generator: deleting one writes a null entry in
    * the config (the generator would merge it back from its defaults) and
    * renaming is not allowed.
@@ -578,6 +603,7 @@ export function ScalesManager({
   config,
   formula,
   ratioSet,
+  loaded,
   builtinScales,
   sampleScales,
   selectedName,
@@ -656,7 +682,8 @@ export function ScalesManager({
           <em>against the theme background</em>: 0 sits on the background, the maximum is the
           strongest contrast (dark in light mode, light in dark mode). Colors pick a scale with
           their <code>ratios</code> field; the <code>default</code> scale is mandatory. Pick a
-          distribution easing, or drag the markers / edit the numbers to go manual.
+          distribution easing, or drag the markers / edit the numbers to go manual; Reset takes a
+          scale back to the steps of the configuration loaded.
         </mds-text>
         <div class="scales-formula">
           <Field label="Formula">
@@ -778,6 +805,16 @@ export function ScalesManager({
         const sample = sampleScales.get(name);
         const menuId = `scales-more-${cardIndex}`;
         const step = axis.precision === 0 ? 1 : 0.01;
+        const easing = easings[name] ?? 'manual';
+        const loadedStops = loaded[name];
+        // Reset is off where it would change nothing, as the Reset of the page is (app.tsx): the
+        // scale holds the stops it was loaded with, on manual, or the configuration loaded has no
+        // scale of this name. The title says which
+        const resetOff = !loadedStops
+          ? `the loaded configuration has no scale named ${name}`
+          : easing === 'manual' && sameStops(values, loadedStops)
+            ? `${name} holds the steps of the loaded configuration`
+            : null;
         return (
           <div class="scales-card" key={name}>
             <div class="scales-card-pair">
@@ -896,10 +933,26 @@ export function ScalesManager({
                     <DistributionControls
                       axis={axis}
                       values={values}
-                      easing={easings[name] ?? 'manual'}
-                      onEasingChange={(easing) => setEasing(name, easing)}
+                      easing={easing}
+                      onEasingChange={(next) => setEasing(name, next)}
                       onApply={(next) => onChangeScale(name, next)}
-                    />
+                    >
+                      <mds-button
+                        type="button"
+                        icon="mi/baseline/restart-alt"
+                        size="lg"
+                        variant="dark"
+                        tone="outline"
+                        disabled={resetOff !== null}
+                        title={
+                          resetOff ??
+                          `back to the steps of ${name} in the loaded configuration, distribution manual`
+                        }
+                        onClick={() => loadedStops && manualChange(name, [...loadedStops])}
+                      >
+                        Reset
+                      </mds-button>
+                    </DistributionControls>
 
                     {sample && (
                       <div
