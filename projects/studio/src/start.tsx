@@ -89,20 +89,17 @@ const verdictLine = (verdict: GateVerdict): string =>
       : 'Contrast not measured';
 
 /**
- * The play: its moment and the step on screen. Each step is computed once, after the paint that
- * asked for it; while the problem is read, the steps of the fix are computed ahead, one a task, so
- * the fix keeps its time and the engine does not run while a tray moves. `banner` says the banner
- * is on screen, painted: the first tray waits for it, or it would come out from behind nothing.
+ * The play: its moment and the step on screen. Each step is computed once for the page
+ * (demoStep), after the paint that asked for it; while the problem is read, the steps of the fix
+ * are computed ahead, one a task, so the fix keeps its time and the engine does not run while a
+ * tray moves. `banner` says the banner is on screen, painted: the first tray waits for it, or it
+ * would come out from behind nothing.
  */
 function usePlay(banner: boolean) {
   const [phase, setPhase] = useState<Phase>(() => (lessMotion() ? 'fixed' : 'ready'));
   const [step, setStep] = useState(() => (lessMotion() ? DEMO_STEPS : 0));
   const [shown, setShown] = useState<DemoStep | undefined>();
-  const computed = useRef(new Map<number, DemoStep | undefined>());
-  const compute = (one: number) => {
-    if (!computed.current.has(one)) computed.current.set(one, demoStep(one));
-    return computed.current.get(one);
-  };
+  const compute = demoStep;
 
   useEffect(() => {
     const timer = setTimeout(() => setShown(compute(step)), 0);

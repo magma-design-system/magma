@@ -191,10 +191,22 @@ const failingOf = (verdict: GateVerdict): number =>
 let poorFailing: number | undefined;
 
 /**
- * Everything the hero shows at a step, computed by the engine of the studio. Undefined when the
- * configuration cannot be generated, which the committed one always can.
+ * The steps computed so far, each once while the page lives: the configurations of the demo never
+ * change, so Replay, a return to the Start page and every test of a file share them, and the
+ * engine runs nine times, not nine at every play.
+ */
+const computedSteps = new Map<number, DemoStep | undefined>();
+
+/**
+ * Everything the hero shows at a step, computed by the engine of the studio once (computedSteps).
+ * Undefined when the configuration cannot be generated, which the committed one always can.
  */
 export function demoStep(step: number): DemoStep | undefined {
+  if (!computedSteps.has(step)) computedSteps.set(step, computeStep(step));
+  return computedSteps.get(step);
+}
+
+function computeStep(step: number): DemoStep | undefined {
   const config = demoConfig(step);
   const scene = sceneStyle(config);
   if (!scene) return undefined;

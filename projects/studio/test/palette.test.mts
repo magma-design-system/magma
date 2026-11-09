@@ -320,10 +320,13 @@ test('a reference says its hue shifting is the one of its source, and opens it',
 
   magmaButton(`Open ${source}`, note)!.click()
   await vi.waitFor(() => expect(heading()).toBe(source))
-  await vi.waitFor(() =>
-    expect(document.activeElement).toBe(root.querySelector('#palette-hue-shift')),
+  // an effect moves the focus after the render of the family, which a runner shared with the
+  // engine of other files makes slow (375 ms on main, past a second beside the Start page)
+  await vi.waitFor(
+    () => expect(document.activeElement).toBe(root.querySelector('#palette-hue-shift')),
+    { timeout: 3_000 },
   )
-})
+}, 10_000)
 
 test('a built-in reference changes its target, and keeps its name and its place', async () => {
   item('primary').click()
