@@ -66,4 +66,4 @@ a renamed case has its images only after it, and `check.patterns` fails on one w
 
 Then commit (`feat(magma): ...` for a new rule or case, `fix(magma): ...` for a wrong one;
 ASCII only), check `origin/main` in its own step and merge it if it moved, push the branch and
-open a pull request into `main` with the decisions. Never merge it.
+open a pull request into `main` with the decisions. Never merge it on your own initiative.

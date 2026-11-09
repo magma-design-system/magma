@@ -93,6 +93,73 @@ describe('in a disabled fieldset', () => {
   });
 });
 
+// The native range input has a width of its own, 129 px in Chromium. As a flex item it did not
+// shrink under it, and the implicit auto column of the host grew to it: in a narrower host the
+// header and the track overflowed it (#1314)
+describe('in a narrow host', () => {
+  const parts = ['.header', '.range', '.track', '.field'];
+
+  /** How far each part reaches past the right edge of its host, in px. */
+  const overflow = (range: HTMLElement): Record<string, number> => {
+    const right = range.getBoundingClientRect().right;
+    return Object.fromEntries(
+      parts.map((part) => [
+        part,
+        Math.max(
+          0,
+          Math.round(range.shadowRoot!.querySelector(part)!.getBoundingClientRect().right - right),
+        ),
+      ]),
+    );
+  };
+
+  const inside = Object.fromEntries(parts.map((part) => [part, 0]));
+
+  it('keeps its parts inside a host of 80 px, and ends its label in an ellipsis', async () => {
+    const { root } = await render(
+      '<div style="width: 80px"><mds-input-range value="40">Opacity of the surface</mds-input-range></div>',
+    );
+    const range = root.querySelector('mds-input-range')!;
+    // the text of the label, in the shadow root of its mds-text
+    const text = range
+      .shadowRoot!.querySelector('.label')!
+      .shadowRoot!.querySelector<HTMLElement>('.text')!;
+
+    expect(range.getBoundingClientRect().width).toBe(80);
+    expect(overflow(range)).toEqual(inside);
+    expect(text.scrollWidth).toBeGreaterThan(text.clientWidth);
+    expect(getComputedStyle(text).textOverflow).toBe('ellipsis');
+  });
+
+  // a column of 1fr is as wide as the min-content of what it holds, at least
+  it('shrinks to the columns of a narrow grid', async () => {
+    const { root } = await render(
+      `<div style="display: grid; grid-template-columns: repeat(3, 1fr); width: 240px">
+        <mds-input-range>Red</mds-input-range>
+        <mds-input-range>Green</mds-input-range>
+        <mds-input-range>Blue</mds-input-range>
+      </div>`,
+    );
+
+    for (const range of root.querySelectorAll('mds-input-range')) {
+      expect(range.getBoundingClientRect().width).toBe(80);
+      expect(overflow(range)).toEqual(inside);
+    }
+  });
+
+  it('keeps the track as wide as the host where there is room', async () => {
+    const { root } = await render(
+      '<div style="width: 320px"><mds-input-range value="40">Opacity</mds-input-range></div>',
+    );
+    const range = root.querySelector('mds-input-range')!;
+    const width = (part: string): number =>
+      range.shadowRoot!.querySelector(part)!.getBoundingClientRect().width;
+
+    expect(width('.track')).toBe(320);
+    expect(width('.field')).toBe(320);
+  });
+});
+
 // #1073: in dark the thumb took accent-emphasis, the colour of its ring and of the progress:
 // thumb, ring and progress were one shape and the thumb could not be seen. #1141: then it took
 // text-default, as light as the progress (1.61:1): over the progress it was gone again

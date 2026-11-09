@@ -4,6 +4,44 @@ Every release of `@maggioli-design-system/magma`, newest first. Each section is 
 release with the same tag, written by git-cliff from the conventional commits of the
 package.
 
+## [magma@2.12.0] - 2026-11-06
+
+### Bug Fixes
+
+- *(mds-modal)* A press in the window released on the backdrop no longer closes the modal
+- *(magma)* Turn the dark refinements of the components on where the palette turns dark
+- *(mds-input)* Start the password mask after the icon
+- *(mds-button)* Keep the dark service variants inside the window of gzip
+- *(lint)* Render_preview answers within the timeout of its page
+
+### Changes
+
+- *(magma)* The domains of composition are kind design-language, no longer foundation
+
+### Documentation
+
+- *(mds-pref-theme)* Name the block of themes.css, not its internal property
+- *(mcp)* The README of mcp, apart from the one of lint
+- *(magma)* Mark the current section of the app-shell with current
+- *(magma)* An epic gets a branch where the issues of its work converge
+
+### Features
+
+- *(studio,lint)* The bar of the studio says the version of the Magma it runs on
+- *(magma)* Apply a theme in the mode it declares, and show that mode in mds-pref-mode
+- *(mcp)* The MCP server in a project of its own, shipped in magma as dist/mcp
+- *(mds-button,mds-button-dropdown)* Mark the button of the view you are in with current
+- *(mds-button,mds-button-dropdown)* An icon for the current button and one under the pointer
+- *(magma)* A section of the app shell that opens its pages from a menu
+
+### Refactor
+
+- *(design-tokens,lint)* Share the gate, the theme name rule and the page of a render
+
+### Styling
+
+- *(mds-button)* Paint the current area with the selected roles, lighter than the hover
+
 ## [magma@2.11.0] - 2026-11-04
 
 ### Bug Fixes

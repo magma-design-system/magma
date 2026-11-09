@@ -289,7 +289,7 @@ The skills are procedures that defer to the installed version (the MCP server, t
 
 The `@maggioli-design-system/magma-codemods` package (`projects/codemod`): it migrates consumer code from v1 to v2, rewriting HTML, React, Angular templates (external and inline) and CSS/SCSS, and reports what needs a human decision. Its rules are a manifest (`src/manifest/manifest.ts`), drafted from the `documentation.json` of the two versions; one module per surface (`src/surfaces/`) decides where an attribute or a class is written, the forms the class rules of the lint read too ([`docs/CONTRACTS.md`](CONTRACTS.md)). The contributor notes are [`projects/codemod/README.md`](../projects/codemod/README.md).
 
-### 2.10 `studio`
+### 2.11 `studio`
 
 The studio of Magma (`projects/studio`, epic #693): an app where whoever installs Magma defines a
 theme from a UI, and later the rest of a product's definition (Foundation, Patterns, Blocks). It
@@ -467,7 +467,7 @@ maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dr
 | Piece | Where | What it does |
 |---|---|---|
 | Package CI | `.github/workflows/{design-tokens,icons,identity,styles,svg-icons,stencil}.yml` over `_package-pipeline.yml` | change detection (path filter, everything on `merge_group`) → build (artifact kept one day) → test, on pull requests and in the merge queue: the merge-group run is the CI of the commit that lands on `main`. The build job keeps the Nx cache under `.nx` with one key per Nx project and commit; `stencil.yml` adds the wrapper builds and tests (on that cache), the `check.*` guards and `consumer-lint`, the tests of `projects/lint` and `projects/mcp` |
-| Lint | `lint.yml` | `npm run lint` on the whole monorepo, then `nx run magma:check.diagrams` (the README diagrams against the project graph), same triggers |
+| Lint | `lint.yml` | `npm run lint` on the whole monorepo, then `nx run magma:check.diagrams` (the README diagrams against the project graph) and `nx run magma:check.agent-context` (the agent context written by hand against the repository, `docs/WORKFLOW.md` rule 8), same triggers |
 | Review level | `pr-risk.yml` + `projects/stencil/scripts/pr-risk.ts` | `risk-*` label, the semver check of `magma.api.txt` against the commits' declared release |
 | Release and publish | `publish.yml` over `semantic-release.yml` + `scripts/release/*` + `scripts/set-release-version.sh` | `workflow_dispatch` on `main`: `package` (`all` or one), `channel` (`stable`/`beta`), `dry-run`, `tag` (an existing release published again); the CI of the commit checked, the plan before the approval, versions from the conventional commits of each package's scopes (semantic-release dry-run), pins, lock, `CHANGELOG.md` (git-cliff), tags, GitHub releases, then the build of the selected packages and one `npm publish` per package with OIDC trusted publishing (a package is skipped when its version is already on npm) |
 | Automatic icon releases | the `push` trigger of `publish.yml` | on every push to `main`: the same chain for `icons` and `svg-icons`, without approval; a rejected push is rebased and retried |
@@ -476,12 +476,15 @@ maintainer: "Run workflow" publish.yml on main (package: all or one, channel, dr
 
 Protections, set on GitHub and documented here because they shape the flow:
 
-- ruleset `main`: pull request required, the 23 CI checks required, merge queue (merge commits
+- ruleset `main`: pull request required, the 24 CI checks required, merge queue (merge commits
   only), no force push; the organisation admins bypass it, which is what lets the release token
   push the `chore(release)` commits;
 - ruleset `no-deletion`: `main` cannot be deleted, by anybody (no bypass). The repository deletes
   the head branch of every merged pull request, so a pull request opened from `main` would
   otherwise delete it on merge (it happened, #954);
+- no ruleset on the branch of an epic: a pull request into it has the plain merge button and no
+  merge queue, so the order of its parts is the one `nx run magma:epic.status` shows, and who
+  merges them is rule 1 and rule 2 of `docs/WORKFLOW.md`;
 - environment `release`: required reviewers for a real release (the dry-run needs none);
   deployments from `main` only;
 - environment `github-pages`: deployments from `main` only.

@@ -146,6 +146,30 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/*
+  The three columns stand side by side while each holds a slider at the width mds-input-range
+  does not shrink under (129 px, the default width of its native range input in Chromium): three
+  of them, two gaps (--magma-rhythm-between-fields, 1.5rem) and the inset of the card on both sides
+  (--magma-rhythm-inset, 1.5rem) make 30.25rem of the page; under 70rem the card of the levels is
+  the whole width of the page (the rule of the workbench above), over it about half, still wider.
+  Under it each role stands over its sliders, the two modes side by side, the empty corner of the
+  head dropped. Literals, since a container query reads no var().
+*/
+
+@container surfaces (width < 30.25rem) {
+  .surfaces-level-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .surfaces-level-grid > .surfaces-role {
+    grid-column: 1 / -1;
+  }
+
+  .surfaces-level-grid > span:first-child {
+    display: none;
+  }
+}
+
 .surfaces-role {
   display: grid;
 }

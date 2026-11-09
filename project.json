@@ -24,6 +24,49 @@
         "commands": ["tsx --test scripts/diagrams.spec.ts", "tsx scripts/diagrams.ts"],
         "parallel": false
       }
+    },
+    "check.agent-context": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "commands": [
+          "tsx --test scripts/agent-context.spec.ts",
+          "tsx --tsconfig projects/mcp/tsconfig.json scripts/agent-context.ts"
+        ],
+        "parallel": false
+      }
+    },
+    "epic.status": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "tsx scripts/epic.ts"
+      }
+    },
+    "epic.preview": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "tsx scripts/epic-preview.ts"
+      }
+    },
+    "test.urls": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "tsx --tsconfig projects/mcp/tsconfig.json scripts/test-urls.ts"
+      }
+    },
+    "epic.test": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "commands": [
+          "tsx --test scripts/epic.spec.ts scripts/epic-preview.spec.ts",
+          "tsx --tsconfig projects/mcp/tsconfig.json --test scripts/test-urls.spec.ts"
+        ],
+        "parallel": false
+      }
     }
   }
 }

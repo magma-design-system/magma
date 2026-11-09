@@ -21,6 +21,7 @@ The `<mds-button-dropdown>` web component is a split-button control of the Magma
 - **Disabled / await states**: Because these flags pass through to both buttons, disabling or putting the control in an awaiting state affects the action and the trigger together. A disabled `<fieldset>` around the component disables both halves the same way, without setting `disabled`.
 - **Primary action event**: `mdsButtonDropdownClick` fires when the primary action is clicked or activated from the keyboard, and not while the component is `disabled` or awaiting. The chevron and the menu items do not fire it. A native `click` listener on the component also runs for the menu items, whose clicks bubble to it, so listen for `mdsButtonDropdownClick` to run the primary action in JavaScript.
 - **Dropdown part**: The internal dropdown is exposed as the `dropdown` shadow part for external styling of the menu surface.
+- **Width**: The component keeps its own width, its primary action as wide as an `<mds-button>` with the same label. A row that stretches it, as `actions/stacked` does under `--magma-container-actions` (380px) in `<mds-card-footer>`, `<mds-banner>`, `<mds-status-bar>` or a row of your own (`align-self: stretch`, a `width`, a `flex-basis`), gives the free width to the primary action, its label in the middle, and keeps the chevron at its own size at the end: the two halves still read as one button, with no fill past them.
 
 #### Properties & Visual Configurations
 
@@ -180,6 +181,22 @@ When your code handles the submit, build the form data with `event.submitter`, a
   <mds-button href="https://example.com/doc/edit" target="blank" variant="dark" tone="text" label="Modifica"></mds-button>
   <mds-button href="https://example.com/doc/history" target="blank" variant="dark" tone="text" label="Cronologia"></mds-button>
 </mds-button-dropdown>
+```
+
+#### In a Row of Actions That Stacks
+
+Stretch the component as any other action of the row: under `--magma-container-actions` of its container (`@max-actions:`), `actions/stacked` puts every labelled button at the full width, and the component gives that width to its primary action, the chevron staying at the end. No part or custom property is needed.
+
+```html
+<div class="@container">
+  <div class="flex justify-end gap-inline @max-actions:flex-col @max-actions:*:self-stretch">
+    <mds-button variant="dark" tone="outline" label="Copia JSON"></mds-button>
+    <mds-button-dropdown label="Scarica" icon="mi/baseline/download">
+      <mds-button variant="dark" tone="text" label="Scarica come CSS"></mds-button>
+      <mds-button variant="dark" tone="text" label="Scarica come JSON"></mds-button>
+    </mds-button-dropdown>
+  </div>
+</div>
 ```
 
 #### Styling Customization

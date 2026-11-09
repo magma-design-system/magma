@@ -126,6 +126,39 @@
   align-items: center;
 }
 
+/*
+  Under 380 px of the head (--magma-container-actions, 23.75rem) the actions stack at the full
+  width, in the order of the row, the main one at the bottom and the icon-only menu at its own size
+  at the start (page-header, Layout; actions/stacked); above it the row stays on one line. The
+  head is not a container: one would be the containing block of the menus of its actions
+  (position: fixed under layout containment) inside the region that scrolls, which would scroll
+  them, clip them and widen it. The layout is the container instead: the head is as wide as it,
+  less the gutters of the page (--magma-width-page-gutter, 1.5rem on each side), wherever the list
+  of the families stands (beside the page only from 41.75rem, palette.css), so 23.75rem of head
+  is 26.75rem of layout. Literals, since a container query reads no var().
+*/
+
+@container colors-layout (width < 26.75rem) {
+  .studio-page-actions {
+    flex-basis: 100%;
+    flex-direction: column;
+  }
+
+  /* the host of mds-button sets align-self: flex-start, which beats align-items */
+
+  .studio-page-actions > * {
+    align-self: stretch;
+  }
+
+  /* the menu at its own size; so the split button of Download, whose main action has no part to
+     widen it: stretched, its host would show its fill past its two buttons */
+
+  .studio-page-actions > #studio-more,
+  .studio-page-actions > mds-button-dropdown {
+    align-self: start;
+  }
+}
+
 .studio-page {
   position: relative;
   display: grid;
@@ -221,18 +254,23 @@
    alone; the head of the page and the notices are the first things of the region, so they
    scroll with the page and head the larger column (vittorio, 2026-11-05) */
 .layout {
+  container: colors-layout / inline-size;
   display: grid;
-  grid-template: 'sidebar content' 1fr / calc(var(--spacing) * 6000) 1fr;
+
+  /* a row for the list above the page, empty while the list stands beside it (the rule of the
+     list in palette.css): each child takes its lines, since a container cannot query itself */
+  grid-template: auto minmax(0, 1fr) / calc(var(--spacing) * 6000) 1fr;
   height: 100%;
 }
 
 .layout.no-sidebar {
-  grid-template: 'content' 1fr / 1fr;
+  grid-template-columns: 1fr;
 }
 
 .content {
   position: relative;
-  grid-area: content;
+  grid-column: -2 / -1;
+  grid-row: 1 / -1;
   padding: var(--magma-rhythm-inset) var(--magma-width-page-gutter)
     var(--magma-rhythm-between-sections);
   overflow-y: auto;
