@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { createPortal } from 'preact/compat';
+// the portal of the core: preact/compat would rewrite the events of the whole studio
+// (onChange of an input into onInput, onFocus into onfocusin) the moment it is imported
+import { createPortal } from 'preact';
 import initialConfigJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
 import DEFAULT_COLOR_CONFIG from '@maggioli-design-system/design-tokens/src/config/default-color.json';
 import { zipSync } from 'fflate';
