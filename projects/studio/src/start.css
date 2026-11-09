@@ -96,7 +96,7 @@
   the band never changes height while they come and go. The tray over the banner and the trays
   under it share their row each; a tray back behind the banner (no data-open) sits under it,
   hidden by it, then hidden for good once it is there. A tray comes out with an elastic movement,
-  after the one before it went back (--duration-200), in --duration-500: TRAY_MS of start.tsx.
+  after the one before it went back (--duration-150), in --duration-500: TRAY_MS of start.tsx.
 
   The elastic is light, a spring that passes its place by 8 % once and settles; Magma has no
   elastic easing (its --ease-out-back passes once, with no spring). The bounce beside it is the
@@ -196,7 +196,7 @@
 
   .start-tray[data-open] {
     transition:
-      transform var(--duration-500) var(--start-ease-tray) var(--duration-200),
+      transform var(--duration-500) var(--start-ease-tray) var(--duration-150),
       visibility 0s;
   }
 }

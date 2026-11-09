@@ -38,16 +38,20 @@ import {
 */
 
 /**
- * How long a tray takes to come out, after the one before it went back: --duration-200 of delay
+ * How long a tray takes to come out, after the one before it went back: --duration-150 of delay
  * and --duration-500 of movement in start.css.
  */
-export const TRAY_MS = 700;
+export const TRAY_MS = 650;
 /** How long the problem stays out, once its tray is out, to be read. */
-export const PROBLEM_MS = 1200;
-/** How long each step of the fix stays. */
-export const STEP_MS = 130;
-/** How long the banner stays fixed with its figures before the last tray says so. */
-export const SETTLE_MS = 300;
+export const PROBLEM_MS = 1100;
+/** How long each step of the fix stays: the bar fills in about half a second. */
+export const STEP_MS = 90;
+/**
+ * How long the banner stays fixed with its figures, the bar full, before the last tray says so:
+ * time to read the three indicators green (vittorio, 2026-11-09). The longest hold of the play,
+ * paid by the steps of the bar and the delay of the trays, so the play stays under five seconds.
+ */
+export const SETTLE_MS = 900;
 /**
  * The whole play, from the first tray coming out to the last one out: the problem, the tray of the
  * fix, its steps after the first, the settle, the last tray. Under five seconds, so no pause, with
