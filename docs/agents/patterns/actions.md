@@ -37,7 +37,7 @@ cases:
   - id: primary
     region: [page, dialog]
     role: main
-    where: "`variant=\"primary\" tone=\"strong\"`, the default of mds-button, one per view at most: the view and its parts count, the actions of a banner do not (they belong to its state); a page made only of cards, each with its own action, has none"
+    where: "`variant=\"primary\" tone=\"strong\"`, the default of mds-button, one per view at most: the view and its parts count, the actions of a banner do not (they belong to its state); a page made only of cards, each with its own action, has none; on the band that introduces a page, where `primary` vanishes into the fill, `variant=\"light\" tone=\"strong\"` (`surfaces/intro-band`)"
     use: ["mds-button variant=primary tone=strong"]
     serves: intuitive
     carried-by: [mds-button]
@@ -50,7 +50,7 @@ cases:
   - id: secondary
     region: [page, part, dialog]
     role: secondary
-    where: "`variant=\"dark\" tone=\"outline\"`, right before the main action"
+    where: "`variant=\"dark\" tone=\"outline\"`, right before the main action; on the band that introduces a page `variant=\"light\" tone=\"outline\"` (`surfaces/intro-band`)"
     use: ["mds-button variant=dark tone=outline"]
     serves: intuitive
   - id: remove
@@ -210,9 +210,9 @@ A case that leaves a variable out holds for any of its values.
 
 | Case | When | Where | Use | Serves | Carried by |
 | --- | --- | --- | --- | --- | --- |
-| `primary` | region: page or dialog; role: main | `variant="primary" tone="strong"`, the default of mds-button, one per view at most: the view and its parts count, the actions of a banner do not (they belong to its state); a page made only of cards, each with its own action, has none | `mds-button variant=primary tone=strong` | intuitive | `mds-button` |
+| `primary` | region: page or dialog; role: main | `variant="primary" tone="strong"`, the default of mds-button, one per view at most: the view and its parts count, the actions of a banner do not (they belong to its state); a page made only of cards, each with its own action, has none; on the band that introduces a page, where `primary` vanishes into the fill, `variant="light" tone="strong"` (`surfaces/intro-band`) | `mds-button variant=primary tone=strong` | intuitive | `mds-button` |
 | `part-primary` | region: part; role: main | `variant="primary" tone="outline"`, in the accent one tone under strong; a part whose action is the primary action of the view (the only card of a sign-in page) keeps `strong` | `mds-button variant=primary tone=outline` | intuitive | the guide |
-| `secondary` | region: page or part or dialog; role: secondary | `variant="dark" tone="outline"`, right before the main action | `mds-button variant=dark tone=outline` | intuitive | the guide |
+| `secondary` | region: page or part or dialog; role: secondary | `variant="dark" tone="outline"`, right before the main action; on the band that introduces a page `variant="light" tone="outline"` (`surfaces/intro-band`) | `mds-button variant=dark tone=outline` | intuitive | the guide |
 | `remove` | region: page or part; role: destructive; severity: remove | next to the item, a neutral icon button `variant="dark" tone="text"` whose aria-label names the item; no confirmation: a toast says what was removed and offers Ripristina (`toast`) | `mds-button variant=dark tone=text icon aria-label` | enabling | the guide |
 | `destructive-in-menu` | region: page or part; role: destructive; severity: delete | in the contextual menu of the entity, the last entry after an mds-separator: Elimina `variant="error" tone="text"` with its icon; the confirmation is a dialog (`confirm`) | `mds-separator`, `mds-button variant=error tone=text icon` | enabling | the guide |
 | `danger-zone` | region: page or part; role: destructive; severity: delete-with-consequences | in the danger zone of the page or of the settings of the entity: the last section, with a border of its own, one row per action with its title, its consequence written next to it and its button `variant="error" tone="outline"`; the confirmation is a dialog that lists what goes with the entity and asks to type its name or number (`confirm`) | `mds-button variant=error tone=outline` | enabling | the guide |

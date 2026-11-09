@@ -1,0 +1,66 @@
+<!--
+try: Look at the band under the bar: the colour of the accent, the whole width, everything on it in one ink; the card on it keeps the text of its own surface, and the page under the band is the canvas again.
+height: 600
+whole-page: true
+-->
+<mds-header>
+  <mds-header-bar>
+    <mds-text typography="h6" tag="p">Servizi demografici</mds-text>
+    <mds-button slot="nav" href="#" variant="dark" tone="text">Accedi</mds-button>
+  </mds-header-bar>
+</mds-header>
+<main>
+  <section aria-labelledby="titolo" class="@container bg-accent-emphasis fill-current py-between-sections text-accent-on-emphasis">
+    <div class="page-frame grid items-center gap-between-groups @3xl:grid-cols-[minmax(0,5fr)_minmax(0,4fr)] @3xl:gap-x-between-sections">
+      <div class="grid gap-between-groups">
+        <div class="grid gap-title-content">
+          <mds-text id="titolo" typography="page" tag="h1">Le pratiche anagrafiche, senza fila</mds-text>
+          <mds-text typography="detail" tag="p">Certificati, cambi di residenza e carta di identità: la richiesta parte da qui, a qualsiasi ora, e la segui fino alla fine.</mds-text>
+        </div>
+        <ul role="list" class="m-0 grid list-none gap-label-control p-0">
+          <li class="flex items-start gap-inline">
+            <mds-icon name="mi/baseline/check-circle" class="shrink-0"></mds-icon>
+            <mds-text typography="detail" tag="span">I certificati subito, con il bollo digitale</mds-text>
+          </li>
+          <li class="flex items-start gap-inline">
+            <mds-icon name="mi/baseline/check-circle" class="shrink-0"></mds-icon>
+            <mds-text typography="detail" tag="span">Lo stato della pratica, passo per passo</mds-text>
+          </li>
+          <li class="flex items-start gap-inline">
+            <mds-icon name="mi/baseline/check-circle" class="shrink-0"></mds-icon>
+            <mds-text typography="detail" tag="span">Lo sportello solo quando serve, su appuntamento</mds-text>
+          </li>
+        </ul>
+        <div class="flex flex-wrap gap-inline">
+          <mds-button href="#" variant="light" tone="outline">Come funziona</mds-button>
+          <mds-button href="#" variant="light" tone="strong">Inizia una richiesta</mds-button>
+        </div>
+      </div>
+      <mds-card class="text-fg-default">
+        <mds-card-header>
+          <mds-text typography="part" tag="h2">I più richiesti</mds-text>
+        </mds-card-header>
+        <mds-card-content>
+          <ul role="list" class="m-0 grid list-none gap-between-fields p-0">
+            <li class="grid gap-label-control">
+              <mds-text typography="detail" tag="span">Certificato di residenza</mds-text>
+              <mds-text typography="caption" tag="span" class="text-fg-muted">Subito, in PDF</mds-text>
+            </li>
+            <li class="grid gap-label-control">
+              <mds-text typography="detail" tag="span">Cambio di residenza</mds-text>
+              <mds-text typography="caption" tag="span" class="text-fg-muted">Entro 45 giorni</mds-text>
+            </li>
+            <li class="grid gap-label-control">
+              <mds-text typography="detail" tag="span">Carta di identità</mds-text>
+              <mds-text typography="caption" tag="span" class="text-fg-muted">Su appuntamento</mds-text>
+            </li>
+          </ul>
+        </mds-card-content>
+      </mds-card>
+    </div>
+  </section>
+  <section class="page-frame grid gap-title-content py-between-sections">
+    <mds-text typography="section" tag="h2">Come funziona</mds-text>
+    <mds-text typography="detail" tag="p" class="text-fg-muted">Scegli il servizio, compila la richiesta, ricevi l'esito qui e per email.</mds-text>
+  </section>
+</main>
