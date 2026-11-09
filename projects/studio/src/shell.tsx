@@ -15,8 +15,12 @@ export { applyFrame, type Scheme } from './frame.js';
 import {
   applyPrefs,
   DEFAULT_PREFS,
+  Modes,
   PREFS_TITLE,
   ScenePrefsPanel,
+  type Choice,
+  type ContrastMode,
+  type ModeView,
   type ScenePrefs,
 } from './scene-prefs.js';
 import {
@@ -73,7 +77,9 @@ export function Studio() {
           onGate={setVerdict}
         />
       </div>
-      {route.section === 'theme' && <ThemePage config={config} />}
+      {route.section === 'theme' && (
+        <ThemePage config={config} theme={route.theme} mode={route.mode} />
+      )}
       {route.section === 'behavior' && <BehaviorPageView page={route.page} />}
     </div>
   );
@@ -254,6 +260,10 @@ type Axis = (typeof AXES)[number]['id'];
 const READY: ReadonlySet<Axis> = new Set(['preferences']);
 /** The button of an axis, the caller its dropdown opens from. */
 const axisId = (axis: Axis): string => `studio-axis-${axis}`;
+/** The button of the preview, after the axes: a ruler (vittorio, 2026-11-06). */
+const PREVIEW_ID = 'studio-preview';
+/** A dropdown of the bar: the one of an axis, or the one of the preview. */
+type Panel = Axis | 'preview';
 
 /**
  * The themes the studio previews: the ones Magma ships, without the names kept until the next
@@ -266,17 +276,12 @@ export const PREVIEW_THEMES = Object.entries(semantic.themes)
 const titleOf = (name: string): string => name.charAt(0).toUpperCase() + name.slice(1);
 
 /*
-  What the author checks the theme UNDER, apart from what they edit: the header over the frame
-  holds it, the bar at the bottom holds the theme and its axes (#697, "The right column"). The
-  mode and the contrast are not exported: they are the preferences of the person.
+  What the author checks the theme UNDER, apart from what they edit (#697, "The right column"),
+  opens from the bar at the bottom too, beside the theme and its axes, so the frame takes the
+  whole section (vittorio, 2026-11-06): the mode and the contrast with the preferences of the
+  person, the view and the width of the frame in the dropdown of the preview. The mode and the
+  contrast are not exported: they are the preferences of the person.
 */
-
-type ModeView = Scheme | 'both';
-const MODE_VIEWS: ReadonlyArray<{ id: ModeView; label: string }> = [
-  { id: 'light', label: 'Light' },
-  { id: 'dark', label: 'Dark' },
-  { id: 'both', label: 'Both' },
-];
 
 /**
  * The views of the same theme (#697), each a page of its own in the frame: Scenes, compositions
@@ -292,11 +297,16 @@ type View = (typeof VIEWS)[number]['id'];
 /**
  * The widths of the frame: the room of the section, or a breakpoint of Magma (tokens/screen,
  * docs/TOKENS.md), the widths its layouts change at, so the frame shows the layout from that
- * breakpoint up. style.css sizes the frame with `--breakpoint-<id>`; the label reads the same
- * property, so it never names a width the frame does not have.
+ * breakpoint up. style.css sizes the frame with `--breakpoint-<id>`; the word of a width reads the
+ * same property, so it never names a width the frame does not have.
  */
-const WIDTHS = ['full', 'desktop', 'tablet', 'mobile'] as const;
-type Width = (typeof WIDTHS)[number];
+type Width = 'full' | 'desktop' | 'tablet' | 'mobile';
+const WIDTHS: ReadonlyArray<Choice<Width>> = [
+  { mode: 'full', word: 'full', icon: 'mi/baseline/width-full' },
+  { mode: 'desktop', word: 'desktop', icon: 'mi/baseline/desktop-windows' },
+  { mode: 'tablet', word: 'tablet', icon: 'mi/baseline/tablet-mac' },
+  { mode: 'mobile', word: 'mobile', icon: 'mi/baseline/smartphone' },
+];
 const widthLabel = (width: Width): string => {
   if (width === 'full') return 'Full width';
   const value = getComputedStyle(document.documentElement)
@@ -304,42 +314,134 @@ const widthLabel = (width: Width): string => {
     .trim();
   return value ? `${titleOf(width)} (${value})` : titleOf(width);
 };
+/** The words of the choice of the width (`Modes`): its name, and each width. */
+const widthWords = (): Record<string, string> => ({
+  label: 'Width',
+  ...Object.fromEntries(WIDTHS.map(({ mode }) => [mode, widthLabel(mode)])),
+});
+
+/** The id of the title of the panel of the preview, which names the dropdown that holds it. */
+const PREVIEW_TITLE = 'studio-preview-title';
 
 /**
- * The Theme section: the theme on a scene of a product in an iframe, the header of what it is
- * checked under over it, the bar of the theme and its axes at the bottom. The scene is a document
- * of its own: what is set on its <html> and on its own preferences moves it and leaves the studio
- * alone (#695, "The dogfooding constraint"). Both modes are two frames side by side, scrolled
- * together; an axis opens its controls in a dropdown from its button, and the choices of the
+ * The panel of the preview, behind the ruler of the bar: the view the frame shows, the page it
+ * opens beside the name of the choice, then the width of the frame, drawn as the panel of the
+ * preferences draws its choices (scene-prefs.tsx).
+ */
+function PreviewPanel({
+  view,
+  onView,
+  width,
+  onWidth,
+}: {
+  view: View;
+  onView: (view: View) => void;
+  width: Width;
+  onWidth: (width: Width) => void;
+}) {
+  const page = VIEWS.find((one) => one.id === view)!;
+  return (
+    <div class="studio-panel">
+      <mds-text id={PREVIEW_TITLE} typography="h6" tag="h2">
+        Preview
+      </mds-text>
+      <mds-separator></mds-separator>
+      <div class="studio-choice">
+        <mds-text typography="caption" tag="p">
+          <b>View</b> {page.title}
+        </mds-text>
+        <mds-tab
+          fill
+          aria-label="View"
+          onmdsTabChange={(event: CustomEvent<{ id: number; value?: string }>) => {
+            const value = event.detail?.value as View | undefined;
+            if (value) onView(value);
+          }}
+        >
+          {VIEWS.map((one) => (
+            <mds-tab-item
+              type="button"
+              label={one.label}
+              value={one.id}
+              selected={one.id === view}
+            ></mds-tab-item>
+          ))}
+        </mds-tab>
+      </div>
+      <Modes words={widthWords()} choices={WIDTHS} value={width} onValue={onWidth} />
+    </div>
+  );
+}
+
+/**
+ * The Theme section: the theme on a scene of a product in an iframe, the whole section, and the
+ * bar at the bottom: the theme, its axes, the preview. The scene is a document of its own: what is
+ * set on its <html> and on its own preferences moves it and leaves the studio alone (#695, "The
+ * dogfooding constraint"). Both modes are two frames side by side, scrolled together; an axis, and
+ * the preview, open their controls in a dropdown from their button, and the choices of the
  * preferences reach every frame (scene-prefs.tsx). The select offers the
  * themes of the configuration the person edits, which the frame paints (scene-css.ts); until the
- * configuration is loaded, the themes Magma ships.
+ * configuration is loaded, the themes Magma ships. The address may name the theme and the mode
+ * the section opens on (a link of the Themes page, routes.ts), and it follows the choices made
+ * here, so it always names the theme in view.
  */
-function ThemePage({ config }: { config: MagmaConfig | null }) {
+function ThemePage({
+  config,
+  theme: askedTheme,
+  mode: askedMode,
+}: {
+  config: MagmaConfig | null;
+  /** The theme the address names. */
+  theme?: string;
+  /** The mode the address names. */
+  mode?: ModeView;
+}) {
   const frames = useRef<Array<HTMLIFrameElement | null>>([]);
   const select = useRef<HTMLElement>(null);
   // the choices of the Themes page (names, accents, modes) shape the themes the frame paints
   const choices = useThemeChoices();
   const scene = useMemo(() => (config ? sceneStyle(config, choices) : null), [config, choices]);
   const names = scene?.themes.map((one) => one.name) ?? PREVIEW_THEMES;
-  const [chosen, setTheme] = useState(PREVIEW_THEMES[0]);
+  // the theme asked for is kept while the configuration loads: a theme of the person is among the
+  // names only then
+  const [chosen, setTheme] = useState(askedTheme ?? PREVIEW_THEMES[0]);
   const theme = names.includes(chosen) ? chosen : names[0];
   // a theme of one mode is seen in that mode only: the other is no way to check it (#1274)
   const themeModes: readonly Scheme[] =
     scene?.themes.find((one) => one.name === theme)?.modes ?? COLOR_MODES;
   const offers = (view: ModeView) =>
     view === 'both' ? themeModes.length > 1 : themeModes.includes(view);
-  // the axis whose dropdown is open, for the tone of its button
-  const [panel, setPanel] = useState<Axis | null>(null);
+  const modeOff = (view: ModeView) =>
+    offers(view) ? undefined : `${titleOf(theme)} is ${themeModes[0]} only`;
+  // the dropdown open, for the tone of its button
+  const [panel, setPanel] = useState<Panel | null>(null);
+  const tracks = (id: Panel) => ({
+    onmdsDropdownVisible: () => setPanel(id),
+    onmdsDropdownHide: () => setPanel((open) => (open === id ? null : open)),
+  });
   const [prefs, setPrefs] = useState<ScenePrefs>(DEFAULT_PREFS);
   const [view, setView] = useState<View>('scenes');
   const page = VIEWS.find((one) => one.id === view)!;
-  const [picked, setMode] = useState<ModeView>('light');
+  const [picked, setMode] = useState<ModeView>(askedMode ?? 'light');
   const mode: ModeView = offers(picked) ? picked : themeModes[0];
-  const [contrast, setContrast] = useState(false);
+  const [contrast, setContrast] = useState<ContrastMode>('no-preference');
   const [width, setWidth] = useState<Width>('full');
   const [loaded, setLoaded] = useState(0);
   const schemes: Scheme[] = mode === 'both' ? ['light', 'dark'] : [mode];
+
+  // another address while the section is open (back, forward, a link typed) chooses again. Only
+  // another one: the address the section opened on is its first state already, and an effect runs
+  // after a paint, so applying that one again would undo a choice made before it
+  const seen = useRef({ theme: askedTheme, mode: askedMode });
+  useEffect(() => {
+    if (askedTheme && askedTheme !== seen.current.theme) setTheme(askedTheme);
+    if (askedMode && askedMode !== seen.current.mode) setMode(askedMode);
+    seen.current = { theme: askedTheme, mode: askedMode };
+  }, [askedTheme, askedMode]);
+  // the address names what was chosen, replaced in place: a choice is no page to go back to
+  useEffect(() => {
+    history.replaceState(null, '', hrefOf({ section: 'theme', theme: chosen, mode: picked }));
+  }, [chosen, picked, askedTheme, askedMode]);
 
   useEffect(() => {
     const element = select.current;
@@ -356,7 +458,13 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
     schemes.forEach((scheme, index) => {
       const frame = frames.current[index]?.contentDocument;
       if (!frame?.documentElement) return;
-      applyFrame(frame, { theme, scheme, contrast, css: scene?.css, modes: themeModes });
+      applyFrame(frame, {
+        theme,
+        scheme,
+        contrast: contrast === 'more',
+        css: scene?.css,
+        modes: themeModes,
+      });
       applyPrefs(frame, prefs);
     });
   }, [theme, prefs, mode, contrast, scene, loaded]);
@@ -393,68 +501,6 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
 
   return (
     <div class="studio-theme">
-      <div class="studio-theme-head" role="toolbar" aria-label="Preview">
-        <mds-tab
-          aria-label="View"
-          onmdsTabChange={(event: CustomEvent<{ id: number; value?: string }>) => {
-            const value = event.detail?.value as View | undefined;
-            if (value) setView(value);
-          }}
-        >
-          {VIEWS.map((one) => (
-            <mds-tab-item
-              type="button"
-              label={one.label}
-              value={one.id}
-              selected={one.id === view}
-            ></mds-tab-item>
-          ))}
-        </mds-tab>
-        <div class="studio-theme-checks">
-          <mds-tab
-            aria-label="Mode"
-            onmdsTabChange={(event: CustomEvent<{ id: number; value?: string }>) => {
-              const value = event.detail?.value as ModeView | undefined;
-              if (value) setMode(value);
-            }}
-          >
-            {MODE_VIEWS.map((view) => (
-              <mds-tab-item
-                type="button"
-                label={view.label}
-                value={view.id}
-                selected={view.id === mode}
-                disabled={!offers(view.id)}
-                title={offers(view.id) ? undefined : `${titleOf(theme)} is ${themeModes[0]} only`}
-              ></mds-tab-item>
-            ))}
-          </mds-tab>
-          <mds-input-select
-            aria-label="Width of the frame"
-            size="md"
-            value={width}
-            onmdsInputSelectChange={(event: CustomEvent<{ value?: string }>) => {
-              const value = event.detail?.value as Width | undefined;
-              if (value) setWidth(value);
-            }}
-          >
-            {WIDTHS.map((one) => (
-              <option value={one} selected={one === width}>
-                {widthLabel(one)}
-              </option>
-            ))}
-          </mds-input-select>
-          <mds-input-switch
-            type="switch"
-            checked={contrast}
-            onmdsInputSwitchChange={(event: CustomEvent<{ checked: boolean }>) =>
-              setContrast(event.detail.checked)
-            }
-          >
-            More contrast
-          </mds-input-switch>
-        </div>
-      </div>
       <div class="studio-frames" data-width={width}>
         {schemes.map((scheme, index) => (
           <iframe
@@ -482,18 +528,44 @@ function ThemePage({ config }: { config: MagmaConfig | null }) {
             title={axis.label}
           ></mds-button>
         ))}
+        <mds-button
+          id={PREVIEW_ID}
+          icon="mi/outline/straighten"
+          variant="dark"
+          tone={panel === 'preview' ? 'strong' : 'text'}
+          aria-label="Preview"
+          title="Preview"
+        ></mds-button>
       </div>
-      {/* the controls of an axis open from its button, above the bar; a group, not a menu */}
+      {/* the controls of an axis, and those of the preview, open from their button above the
+          bar; a group, not a menu */}
       <mds-dropdown
         target={`#${axisId('preferences')}`}
         placement="top"
         strategy="fixed"
         role="group"
         aria-labelledby={PREFS_TITLE}
-        onmdsDropdownVisible={() => setPanel('preferences')}
-        onmdsDropdownHide={() => setPanel((open) => (open === 'preferences' ? null : open))}
+        {...tracks('preferences')}
       >
-        <ScenePrefsPanel prefs={prefs} onChange={setPrefs} />
+        <ScenePrefsPanel
+          mode={mode}
+          onMode={setMode}
+          modeOff={modeOff}
+          contrast={contrast}
+          onContrast={setContrast}
+          prefs={prefs}
+          onChange={setPrefs}
+        />
+      </mds-dropdown>
+      <mds-dropdown
+        target={`#${PREVIEW_ID}`}
+        placement="top"
+        strategy="fixed"
+        role="group"
+        aria-labelledby={PREVIEW_TITLE}
+        {...tracks('preview')}
+      >
+        <PreviewPanel view={view} onView={setView} width={width} onWidth={setWidth} />
       </mds-dropdown>
     </div>
   );

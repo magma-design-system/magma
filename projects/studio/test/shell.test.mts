@@ -66,22 +66,28 @@ test('the bar names the three sections, Colors and Behavior opening their pages 
   expect(badge.getAttribute('label')).toBe('All contrasts are OK')
 })
 
-test('the Theme section shows the theme in a document of its own, its controls over it', async () => {
+test('the Theme section shows the theme in a document of its own, its controls in a bar over it', async () => {
   await at('#/theme')
-  await vi.waitFor(() => {
-    if (!root.querySelector('.studio-theme')) throw new Error('no theme page yet')
+  const page = await vi.waitFor(() => {
+    const found = root.querySelector('.studio-theme')
+    if (!found) throw new Error('no theme page yet')
+    return found
   })
   expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('scene.html')
+  // nothing over the frames: what the theme is checked under opens from the bar at the bottom too
+  expect(page.firstElementChild?.classList.contains('studio-frames')).toBe(true)
   // the themes of the configuration, once it is loaded: porcelain is one, though Magma ships none
   // by that name
   await vi.waitFor(() => {
     const options = [...root.querySelectorAll('.studio-toolbar mds-input-select option')]
     expect(options.map((option) => option.getAttribute('value'))).toEqual(['business', 'porcelain', 'editorial'])
   })
-  // only the axes with something to set: the others wait for their panel, out of sight (#696)
-  const axes = [...root.querySelectorAll('.studio-toolbar mds-button')]
-  expect(axes.map((axis) => axis.getAttribute('aria-label'))).toEqual(['Preferences of the person'])
-  expect(axes.some((axis) => axis.hasAttribute('disabled'))).toBe(false)
+  // only the axes with something to set: the others wait for their panel, out of sight (#696);
+  // then the ruler of the preview
+  const buttons = [...root.querySelectorAll('.studio-toolbar mds-button')]
+  expect(buttons.map((button) => button.getAttribute('aria-label'))).toEqual(['Preferences of the person', 'Preview'])
+  expect(buttons.map((button) => button.getAttribute('icon'))).toEqual(['mi/baseline/accessibility', 'mi/outline/straighten'])
+  expect(buttons.some((button) => button.hasAttribute('disabled'))).toBe(false)
 })
 
 test('an axis opens its controls in a dropdown from its button, and says which one is open', async () => {
@@ -101,8 +107,9 @@ test('an axis opens its controls in a dropdown from its button, and says which o
   const title = dropdown.querySelector(`#${dropdown.getAttribute('aria-labelledby')}`)!
   expect(title.textContent).toBe('Accessibility')
   expect(title.nextElementSibling?.tagName).toBe('MDS-SEPARATOR')
+  // the mode and the contrast first, the words of mds-pref-mode and mds-pref-contrast
   expect([...dropdown.querySelectorAll('mds-input-select, mds-tab')].map((one) => one.getAttribute('aria-label')))
-    .toEqual(['Animations', 'Consumption'])
+    .toEqual(['Mode', 'Contrast', 'Animations', 'Consumption'])
 
   dropdown.dispatchEvent(new CustomEvent('mdsDropdownVisible', { bubbles: true }))
   await vi.waitFor(() => expect(button.getAttribute('tone')).toBe('strong'))
@@ -116,7 +123,7 @@ test('an axis opens its controls in a dropdown from its button, and says which o
   expect(animations.querySelector('mds-tab-item[value="reduce"]')?.hasAttribute('selected')).toBe(true)
 })
 
-test('a theme of one mode is seen in that mode only, the other choices of the header off', async () => {
+test('a theme of one mode is seen in that mode only, the other modes of the preferences off', async () => {
   updateThemeChoices((prev) => ({ ...prev, modes: { neutral: ['dark'] } }))
   await at('#/theme')
   // the base theme, business, locked to dark on the Themes page
@@ -124,11 +131,39 @@ test('a theme of one mode is seen in that mode only, the other choices of the he
     const frames = [...root.querySelectorAll('iframe.studio-scene')]
     expect(frames.map((frame) => frame.getAttribute('title'))).toEqual(['The theme on a page of a product, dark mode'])
   })
-  const [, modes] = [...root.querySelectorAll('.studio-theme-head mds-tab')]
+  const modes = root.querySelector('mds-dropdown[target="#studio-axis-preferences"] mds-tab[aria-label="Mode"]')!
+  expect(modes.previousElementSibling?.textContent).toBe('Mode Dark')
   const items = [...modes.querySelectorAll('mds-tab-item')]
   expect(items.map((item) => [item.getAttribute('value'), item.hasAttribute('disabled'), item.hasAttribute('selected')]))
     .toEqual([['light', true, false], ['dark', false, true], ['both', true, false]])
-  expect(items[0].getAttribute('title')).toBe('Business is dark only')
+  // the reason is the title of a mode off, the word of the mode the title of the others
+  expect(items.map((item) => item.getAttribute('title')))
+    .toEqual(['Business is dark only', 'Dark', 'Business is dark only'])
+})
+
+test('an address that names a theme and a mode opens the section on them, and follows the choices made there', async () => {
+  await at('#/theme/editorial/dark')
+  const select = await vi.waitFor(() => {
+    const found = root.querySelector('.studio-toolbar mds-input-select')
+    expect(found?.getAttribute('value')).toBe('editorial')
+    return found!
+  })
+  // the mode is a preference of the person, in the dropdown of the preferences
+  const modes = root.querySelector('mds-dropdown[target="#studio-axis-preferences"] mds-tab[aria-label="Mode"]')!
+  expect([...modes.querySelectorAll('mds-tab-item')].map((item) => item.hasAttribute('selected')))
+    .toEqual([false, true, false])
+  expect([...root.querySelectorAll('iframe.studio-scene')].map((frame) => frame.getAttribute('title')))
+    .toEqual(['The theme on a page of a product, dark mode'])
+
+  // a choice made in the section goes into the address in place: no page to go back to
+  const entries = history.length
+  modes.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 2, value: 'both' }, bubbles: true }))
+  await vi.waitFor(() => expect(location.hash).toBe('#/theme/editorial/both'))
+  // porcelain, a theme of the configuration only: in the select once the configuration is loaded
+  await vi.waitFor(() => expect(select.querySelector('option[value="porcelain"]')).not.toBeNull())
+  select.dispatchEvent(new CustomEvent('mdsInputSelectChange', { detail: { value: 'porcelain' }, bubbles: true }))
+  await vi.waitFor(() => expect(location.hash).toBe('#/theme/porcelain/both'))
+  expect(history.length).toBe(entries)
 })
 
 test('the choices of the Themes page outlive a reload', async () => {
@@ -136,32 +171,64 @@ test('the choices of the Themes page outlive a reload', async () => {
   expect(JSON.parse(localStorage.getItem(THEME_CHOICES_KEY)!).names).toEqual({ porcelain: 'cold-desk' })
 })
 
-test('the header sets what the theme is checked under: both modes are two frames, the width a breakpoint', async () => {
+test('the preferences set the mode and the contrast: both modes are two frames', async () => {
   await at('#/theme')
-  const head = await vi.waitFor(() => {
-    const found = root.querySelector('.studio-theme-head')
-    if (!found) throw new Error('no header yet')
+  const dropdown = await vi.waitFor(() => {
+    const found = root.querySelector('mds-dropdown[target="#studio-axis-preferences"]')
+    if (!found) throw new Error('no bar yet')
     return found
   })
-  const [views, modes] = [...head.querySelectorAll('mds-tab')]
-  expect([...views.querySelectorAll('mds-tab-item')].map((item) => item.getAttribute('value')))
-    .toEqual(['scenes', 'groups'])
-  views.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 1, value: 'groups' }, bubbles: true }))
-  await vi.waitFor(() => expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('groups.html'))
-  views.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 0, value: 'scenes' }, bubbles: true }))
-  await vi.waitFor(() => expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('scene.html'))
-
-  expect([...modes.querySelectorAll('mds-tab-item')].map((item) => item.getAttribute('value')))
-    .toEqual(['light', 'dark', 'both'])
+  const modes = dropdown.querySelector('mds-tab[aria-label="Mode"]')!
+  expect([...modes.querySelectorAll('mds-tab-item')].map((item) => [item.getAttribute('value'), item.getAttribute('icon')]))
+    .toEqual([['light', 'mi/baseline/light-mode'], ['dark', 'mi/baseline/dark-mode'], ['both', 'mi/baseline/compare']])
   modes.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 2, value: 'both' }, bubbles: true }))
   await vi.waitFor(() => expect(root.querySelectorAll('iframe.studio-scene')).toHaveLength(2))
   expect([...root.querySelectorAll('iframe.studio-scene')].map((frame) => frame.getAttribute('title')))
     .toEqual(['The theme on a page of a product, light mode', 'The theme on a page of a product, dark mode'])
+  expect(modes.previousElementSibling?.textContent).toBe('Mode Light and dark')
 
-  const width = head.querySelector('mds-input-select')!
-  expect([...width.querySelectorAll('option')].map((option) => option.getAttribute('value')))
+  const contrast = dropdown.querySelector('mds-tab[aria-label="Contrast"]')!
+  expect(contrast.previousElementSibling?.textContent).toBe('Contrast Default')
+  contrast.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 0, value: 'more' }, bubbles: true }))
+  await vi.waitFor(() => expect(contrast.previousElementSibling?.textContent).toBe('Contrast More'))
+  expect(contrast.querySelector('mds-tab-item[value="more"]')?.hasAttribute('selected')).toBe(true)
+})
+
+test('the ruler opens the preview: the view the frame shows, its width a breakpoint', async () => {
+  await at('#/theme')
+  const button = await vi.waitFor(() => {
+    const found = root.querySelector('.studio-toolbar mds-button[aria-label="Preview"]')
+    if (!found) throw new Error('no bar yet')
+    return found
+  })
+  // a panel of controls above the bar, out of it, named by its title, as the one of an axis
+  const dropdown = root.querySelector(`mds-dropdown[target="#${button.id}"]`)!
+  expect(dropdown.closest('.studio-toolbar')).toBeNull()
+  expect([dropdown.getAttribute('placement'), dropdown.getAttribute('role')]).toEqual(['top', 'group'])
+  const title = dropdown.querySelector(`#${dropdown.getAttribute('aria-labelledby')}`)!
+  expect(title.textContent).toBe('Preview')
+  expect(title.nextElementSibling?.tagName).toBe('MDS-SEPARATOR')
+  dropdown.dispatchEvent(new CustomEvent('mdsDropdownVisible', { bubbles: true }))
+  await vi.waitFor(() => expect(button.getAttribute('tone')).toBe('strong'))
+  dropdown.dispatchEvent(new CustomEvent('mdsDropdownHide', { bubbles: true }))
+  await vi.waitFor(() => expect(button.getAttribute('tone')).toBe('text'))
+
+  // the view: its name beside the page it opens
+  const views = dropdown.querySelector('mds-tab[aria-label="View"]')!
+  expect([...views.querySelectorAll('mds-tab-item')].map((item) => item.getAttribute('label')))
+    .toEqual(['Scenes', 'Groups'])
+  views.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 1, value: 'groups' }, bubbles: true }))
+  await vi.waitFor(() => expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('groups.html'))
+  expect(views.previousElementSibling?.textContent).toBe('View The theme on every component')
+  views.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 0, value: 'scenes' }, bubbles: true }))
+  await vi.waitFor(() => expect(root.querySelector('iframe.studio-scene')?.getAttribute('src')).toBe('scene.html'))
+
+  // the width: the room of the section, or a breakpoint of Magma
+  const width = dropdown.querySelector('mds-tab[aria-label="Width"]')!
+  expect([...width.querySelectorAll('mds-tab-item')].map((item) => item.getAttribute('value')))
     .toEqual(['full', 'desktop', 'tablet', 'mobile'])
-  width.dispatchEvent(new CustomEvent('mdsInputSelectChange', { detail: { value: 'tablet' }, bubbles: true }))
+  expect(width.previousElementSibling?.textContent).toBe('Width Full width')
+  width.dispatchEvent(new CustomEvent('mdsTabChange', { detail: { id: 2, value: 'tablet' }, bubbles: true }))
   await vi.waitFor(() => expect(root.querySelector('.studio-frames')?.getAttribute('data-width')).toBe('tablet'))
 })
 

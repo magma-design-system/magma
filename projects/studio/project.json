@@ -6,6 +6,7 @@
   "implicitDependencies": ["stencil"],
   "targets": {
     "serve": { "dependsOn": ["^build"] },
-    "build.site": { "dependsOn": ["build"], "outputs": ["{projectRoot}/dist-site"] }
+    "build.site": { "dependsOn": ["build"], "outputs": ["{projectRoot}/dist-site"] },
+    "cover": { "dependsOn": ["build"] }
   }
 }

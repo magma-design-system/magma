@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { afterEach, expect, test } from 'vitest'
+import { afterEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 import { act } from 'preact/test-utils'
 
@@ -24,7 +24,7 @@ afterEach(() => {
 
 const show = () => render(h(ThemesManager, { config: initialConfig as unknown as MagmaConfig }), root)
 
-const cardsOf = () => [...root.querySelectorAll('.themes-grid > .themes-card')]
+const cardsOf = () => [...root.querySelectorAll('.themes-list > .themes-card')]
 const exportOf = () => root.querySelector('.themes-export')?.textContent ?? ''
 const emit = (element: Element, type: string, detail: unknown) =>
   act(() => {
@@ -94,6 +94,28 @@ test('the export prints each theme as themes.css does: the shipped ones by their
   expect(exported).toContain(":root[data-theme-name='editorial'].pref-contrast-more {")
 })
 
+test('the export keeps its CSS closed under its header, and Copy CSS takes it closed', async () => {
+  const writeText = vi.fn<(text: string) => Promise<void>>(async () => {})
+  Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
+  show()
+
+  const details = root.querySelector('mds-details.themes-export-details')!
+  expect(details.hasAttribute('opened')).toBe(false)
+  expect(details.querySelector('[slot="title"]')?.textContent).toBe('The CSS of the themes')
+  expect(details.querySelector('.themes-export')?.textContent).toBe(exportOf())
+  // the header and the copy stay in view, outside what closes
+  const card = details.closest('.themes-card')!
+  const copy = card.querySelector('mds-button')!
+  expect(details.contains(copy)).toBe(false)
+  expect(details.contains(card.querySelector('.themes-head'))).toBe(false)
+
+  await act(async () => {
+    copy.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+  })
+  expect(writeText).toHaveBeenCalledWith(exportOf() + '\n')
+  Reflect.deleteProperty(navigator, 'clipboard')
+})
+
 test('a theme of the person never takes a name Magma ships, nor a name already given', () => {
   for (const name of ['business', 'editorial', 'default', 'cool', 'warm'])
     expect(RESERVED_THEME_NAMES.has(name)).toBe(true)
@@ -149,8 +171,11 @@ test('an accent is a Magma select: another variant marks the override and repoin
 
 test('a theme shows the canvas of Semantic surface per mode, its accents on each', () => {
   show()
-  const card = root.querySelector('.themes-grid > .themes-card')!
-  const canvases = [...card.querySelectorAll('.surfaces-canvas')]
+  const card = cardsOf()[0]
+  // two parts, the columns of its row: what the theme is with its settings, then its modes
+  expect([...card.children].map((part) => part.className)).toEqual(['themes-info', 'themes-modes'])
+  expect(card.querySelector('.themes-info > .themes-settings')).not.toBeNull()
+  const canvases = [...card.querySelectorAll('.themes-modes > .themes-mode > .surfaces-canvas')]
   expect(canvases.map((one) => one.querySelector('.surfaces-canvas-label')?.textContent?.split(' ')[0])).toEqual([
     'light',
     'dark',
@@ -162,6 +187,46 @@ test('a theme shows the canvas of Semantic surface per mode, its accents on each
     expect(canvas.querySelectorAll('.surfaces-text mds-badge').length).toBeGreaterThan(0)
     expect(canvas.querySelector('.themes-samples')).not.toBeNull()
   }
+})
+
+// Each mode of a theme links to the Theme section, the theme in that mode (vittorio, 2026-11-07):
+// the person tests the theme where it is shown on a product
+const testsOf = (card: Element) =>
+  [...card.querySelectorAll('.themes-mode > mds-button.themes-test')].map((link) => ({
+    href: link.getAttribute('href'),
+    label: link.getAttribute('label'),
+    name: link.getAttribute('aria-label'),
+  }))
+
+test('each mode of a theme links to the Theme section, that theme in that mode', async () => {
+  show()
+
+  const editorial = cardsOf().find((card) => card.querySelector('.themes-name')?.textContent === 'editorial')!
+  expect(testsOf(editorial)).toEqual([
+    { href: '#/theme/editorial/light', label: 'Test in light', name: 'Test in light, editorial' },
+    { href: '#/theme/editorial/dark', label: 'Test in dark', name: 'Test in dark, editorial' },
+  ])
+  // under the canvas of its mode, outside it: the canvas paints the colours of the theme
+  for (const link of editorial.querySelectorAll('.themes-test')) {
+    expect(link.previousElementSibling?.classList.contains('surfaces-canvas')).toBe(true)
+    expect(link.closest('.surfaces-canvas')).toBeNull()
+  }
+  expect(testsOf(cardsOf()[0]).map(({ href }) => href)).toEqual(['#/theme/business/light', '#/theme/business/dark'])
+
+  // a mode the theme does not offer: the section cannot show the theme in it, no link
+  await emit(editorial.querySelector('.themes-modes-field mds-input-select')!, 'mdsInputSelectChange', {
+    value: 'dark',
+    values: ['dark'],
+  })
+  expect(testsOf(editorial).map(({ href }) => href)).toEqual(['#/theme/editorial/dark'])
+
+  // a theme of the person links by the name given; a name the section refuses, no link at all
+  const card = cardsOf().find((each) => each.querySelector('.themes-name-field') !== null)!
+  const input = card.querySelector('.themes-name-field mds-input')!
+  await emit(input, 'mdsInputChange', { value: 'my-product' })
+  expect(testsOf(card).map(({ href }) => href)).toEqual(['#/theme/my-product/light', '#/theme/my-product/dark'])
+  await emit(input, 'mdsInputChange', { value: 'editorial' })
+  expect(testsOf(card)).toEqual([])
 })
 
 test('a family of any group opted into a surface is a theme, the ramp of its group in the export', () => {
