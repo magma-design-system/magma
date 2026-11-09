@@ -351,6 +351,10 @@ test('Reset is off on a scale the loaded configuration did not have', () => {
   expect(reset('custom-2').getAttribute('title')).toBe('the loaded configuration has no scale named custom-2')
 })
 
+// the whole studio mounts twice and solves every scale and the gate at each edit: a loaded CI
+// runner takes seconds where a laptop takes one (the heavy tests of start.test.mts wait as long)
+const SLOW = { timeout: 10_000 }
+
 test('after an import, Reset takes a scale back to the steps of the file imported, over a reload too', async () => {
   // not served by a command: the studio starts from the configuration it bundles
   vi.stubGlobal('fetch', () => Promise.reject(new Error('no server')))
@@ -359,7 +363,7 @@ test('after an import, Reset takes a scale back to the steps of the file importe
     const studio = () => h(App, { view: 'scales' })
     act(() => render(studio(), root))
     const builtin = ['8', '16', '23', '34', '45', '66', '74', '84', '92', '100']
-    await vi.waitFor(() => expect(stops('default')).toEqual(builtin))
+    await vi.waitFor(() => expect(stops('default')).toEqual(builtin), SLOW)
     expect(reset('default').hasAttribute('disabled')).toBe(true)
 
     // a configuration with a default scale of its own, imported from the Config menu
@@ -372,7 +376,7 @@ test('after an import, Reset takes a scale back to the steps of the file importe
     await act(async () => {
       picker.dispatchEvent(new Event('change'))
     })
-    await vi.waitFor(() => expect(stops('default')).toEqual(imported.map(String)))
+    await vi.waitFor(() => expect(stops('default')).toEqual(imported.map(String)), SLOW)
     expect(reset('default').hasAttribute('disabled')).toBe(true)
 
     // edited, then reset: the steps of the file, not the built-in ones
@@ -385,20 +389,20 @@ test('after an import, Reset takes a scale back to the steps of the file importe
     // a reload restores the draft, and with it what was loaded
     emit(stop('default', 1), 'mdsInputChange', { value: '9' })
     // the draft is written by an effect, after the paint
-    await vi.waitFor(() => expect(localStorage.getItem('magma-design-tokens:playground:draft')).toContain('"loadedRatios"'))
+    await vi.waitFor(() => expect(localStorage.getItem('magma-design-tokens:playground:draft')).toContain('"loadedRatios"'), SLOW)
     act(() => render(null, root))
     act(() => render(studio(), root))
-    await vi.waitFor(() => expect(stops('default')[0]).toBe('9'))
+    await vi.waitFor(() => expect(stops('default')[0]).toBe('9'), SLOW)
     click(reset('default'))
     expect(stops('default')).toEqual(imported.map(String))
 
     // the Reset of the page loads the bundled configuration again: its steps are the loaded ones
     emit(stop('default', 1), 'mdsInputChange', { value: '9' })
     click(root.querySelector<HTMLElement>('#studio-reset')!)
-    await vi.waitFor(() => expect(stops('default')).toEqual(builtin))
+    await vi.waitFor(() => expect(stops('default')).toEqual(builtin), SLOW)
     expect(reset('default').hasAttribute('disabled')).toBe(true)
   } finally {
     localStorage.clear()
     vi.unstubAllGlobals()
   }
-})
+}, 30_000)
