@@ -1452,6 +1452,120 @@ export function App({
   // color, so the picker column is dropped and the content spans full width
   const showSidebar = COLOR_LIST_VIEWS.has(view);
 
+  // the head of the page and what keeps the configuration from loading or saving: the first
+  // things of the region that scrolls, or, on Semantic surface, the start of its first column
+  // (surfaces.tsx), where the opt-in of the surfaces stands beside it on a wide page
+  const pageTop = (
+    <>
+      <header class="studio-page-head">
+        <div class="studio-page-title">
+          {/* the status of what is edited beside the title (page-header, `status`): the verdict
+              of the contrast gate, on every page of Colors */}
+          <div class="studio-page-name">
+            <mds-text typography="page" tag="h1">
+              {COLORS_PAGES.find((page) => page.id === view)?.label}
+            </mds-text>
+            <GateBadge verdict={report.verdict} />
+          </div>
+          <mds-text typography="detail" tag="p" class="studio-muted">
+            {VIEW_SUMMARY[view]}
+          </mds-text>
+        </div>
+        {/* the actions of the page (the page-header block of Magma): Reset in view, the one
+            action left once the menu of the others had nothing else (vittorio, 2026-11-09), then
+            Save when a command serves the studio, last. What brings a configuration in and takes
+            it out is the Config menu of the bar (shell.tsx, config-menu.tsx) */}
+        <div class="studio-page-actions">
+          {statusMsg && (
+            <mds-text typography="caption" tag="span" class="studio-muted" role="status">
+              {statusMsg}
+            </mds-text>
+          )}
+          <mds-button
+            id="studio-reset"
+            icon="mi/baseline/restart-alt"
+            variant="dark"
+            tone="text"
+            label="Reset"
+            title="Discard the loaded configuration and every local change, back to the one Magma builds with"
+            disabled={!canReset}
+            onClick={() => {
+              clearDraft();
+              const base = clone(initialConfigJson as unknown as CloneableConfig);
+              setConfig(base);
+              setSelectedName(defaultSelected(base.colors));
+              setView('colors');
+              setLoadError(null);
+            }}
+          ></mds-button>
+          <input
+            ref={fileInput}
+            type="file"
+            accept=".json,application/json"
+            hidden
+            onChange={(e) => {
+              const input = e.target as HTMLInputElement;
+              const file = input.files?.[0];
+              if (file) loadConfigFile(file);
+              input.value = '';
+            }}
+          />
+          {/* the texts that change go in `label`: mds-button reads its slotted text only once */}
+          {serverMode &&
+            (saveRefusal ? (
+              <mds-button
+                variant="dark"
+                tone="outline"
+                disabled
+                title={saveRefusal}
+                label={dirty ? 'Read-only *' : 'Read-only'}
+              ></mds-button>
+            ) : (
+              <mds-button
+                variant="dark"
+                tone="outline"
+                onClick={() => guard({ label: 'Save', verb: 'Save', run: saveConfig })}
+                disabled={saving || !dirty || !!draftConflict}
+                title={savePath ?? undefined}
+                label={saving ? 'Saving...' : dirty ? 'Save *' : 'Saved'}
+              ></mds-button>
+            ))}
+        </div>
+      </header>
+
+      {/* what keeps the configuration from loading or saving, above the page */}
+      {loadError ? (
+        <mds-banner class="studio-notice" variant="error">
+          {loadError}
+        </mds-banner>
+      ) : draftConflict ? (
+        <mds-banner class="studio-notice draft-conflict" variant="warning">
+          {draftConflict.reason}, and the draft restored from this browser has edits of its own.
+          <mds-button
+            slot="action"
+            type="button"
+            variant="dark"
+            tone="outline"
+            label={draftConflict.label}
+            onClick={() => resolveDraftConflict(true)}
+          ></mds-button>
+          <mds-button
+            slot="action"
+            type="button"
+            label="Keep the draft"
+            onClick={() => resolveDraftConflict(false)}
+          ></mds-button>
+        </mds-banner>
+      ) : (
+        saveRefusal && (
+          <mds-banner class="studio-notice" variant="info">
+            Saving is off: {saveRefusal}
+          </mds-banner>
+        )
+      )}
+    </>
+  );
+
   return (
     <div class={`layout${showSidebar ? '' : ' no-sidebar'}`}>
       {/* where the list stands above the page, folded into the family selected: its arrow at the
@@ -1752,115 +1866,7 @@ export function App({
       )}
 
       <main class="content" ref={content}>
-        {/* the head of the page and what keeps the configuration from loading or saving: the
-            first things of the region that scrolls, so they scroll with the page, and on a page
-            with the list of the families they head the larger column, not the whole width */}
-        <header class="studio-page-head">
-          <div class="studio-page-title">
-            {/* the status of what is edited beside the title (page-header, `status`): the verdict
-                of the contrast gate, on every page of Colors */}
-            <div class="studio-page-name">
-              <mds-text typography="page" tag="h1">
-                {COLORS_PAGES.find((page) => page.id === view)?.label}
-              </mds-text>
-              <GateBadge verdict={report.verdict} />
-            </div>
-            <mds-text typography="detail" tag="p" class="studio-muted">
-              {VIEW_SUMMARY[view]}
-            </mds-text>
-          </div>
-          {/* the actions of the page (the page-header block of Magma): Reset in view, the one
-              action left once the menu of the others had nothing else (vittorio, 2026-11-09), then
-              Save when a command serves the studio, last. What brings a configuration in and takes
-              it out is the Config menu of the bar (shell.tsx, config-menu.tsx) */}
-          <div class="studio-page-actions">
-            {statusMsg && (
-              <mds-text typography="caption" tag="span" class="studio-muted" role="status">
-                {statusMsg}
-              </mds-text>
-            )}
-            <mds-button
-              id="studio-reset"
-              icon="mi/baseline/restart-alt"
-              variant="dark"
-              tone="text"
-              label="Reset"
-              title="Discard the loaded configuration and every local change, back to the one Magma builds with"
-              disabled={!canReset}
-              onClick={() => {
-                clearDraft();
-                const base = clone(initialConfigJson as unknown as CloneableConfig);
-                setConfig(base);
-                setSelectedName(defaultSelected(base.colors));
-                setView('colors');
-                setLoadError(null);
-              }}
-            ></mds-button>
-            <input
-              ref={fileInput}
-              type="file"
-              accept=".json,application/json"
-              hidden
-              onChange={(e) => {
-                const input = e.target as HTMLInputElement;
-                const file = input.files?.[0];
-                if (file) loadConfigFile(file);
-                input.value = '';
-              }}
-            />
-            {/* the texts that change go in `label`: mds-button reads its slotted text only once */}
-            {serverMode &&
-              (saveRefusal ? (
-                <mds-button
-                  variant="dark"
-                  tone="outline"
-                  disabled
-                  title={saveRefusal}
-                  label={dirty ? 'Read-only *' : 'Read-only'}
-                ></mds-button>
-              ) : (
-                <mds-button
-                  variant="dark"
-                  tone="outline"
-                  onClick={() => guard({ label: 'Save', verb: 'Save', run: saveConfig })}
-                  disabled={saving || !dirty || !!draftConflict}
-                  title={savePath ?? undefined}
-                  label={saving ? 'Saving...' : dirty ? 'Save *' : 'Saved'}
-                ></mds-button>
-              ))}
-          </div>
-        </header>
-
-        {/* what keeps the configuration from loading or saving, above the page */}
-        {loadError ? (
-          <mds-banner class="studio-notice" variant="error">
-            {loadError}
-          </mds-banner>
-        ) : draftConflict ? (
-          <mds-banner class="studio-notice draft-conflict" variant="warning">
-            {draftConflict.reason}, and the draft restored from this browser has edits of its own.
-            <mds-button
-              slot="action"
-              type="button"
-              variant="dark"
-              tone="outline"
-              label={draftConflict.label}
-              onClick={() => resolveDraftConflict(true)}
-            ></mds-button>
-            <mds-button
-              slot="action"
-              type="button"
-              label="Keep the draft"
-              onClick={() => resolveDraftConflict(false)}
-            ></mds-button>
-          </mds-banner>
-        ) : (
-          saveRefusal && (
-            <mds-banner class="studio-notice" variant="info">
-              Saving is off: {saveRefusal}
-            </mds-banner>
-          )
-        )}
+        {view !== 'surface' && pageTop}
 
         {view === 'colors' && selected && (
           <div class="palette-detail-frame">
@@ -2095,6 +2101,7 @@ export function App({
         {view === 'surface' && (
           <>
             <SurfaceManager
+              head={pageTop}
               config={config}
               onToggleSurface={(colorName, on) =>
                 updateConfig((draft) => {

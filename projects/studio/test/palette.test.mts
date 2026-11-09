@@ -131,6 +131,23 @@ test('the pages on the whole configuration have neither the list nor its bar', a
   expect(root.querySelector('.palette-list-bar')).toBeNull()
 })
 
+// Semantic surface starts its first column with the head of the page, so the opt-in of the
+// surfaces can stand beside it on a wide page (surfaces.css); the other pages keep it first in
+// the region that scrolls
+test('the head of Semantic surface leads its first column, beside the opt-in; elsewhere it heads the region', async () => {
+  // the Palette of beforeEach: the head is a child of the region
+  expect(root.querySelectorAll('.studio-page-head')).toHaveLength(1)
+  expect(root.querySelector('.studio-page-head')?.parentElement?.classList.contains('content')).toBe(true)
+  render(h(App, { view: 'surface', onConfig: (config: MagmaConfig) => configs.push(config) }), root)
+  await vi.waitFor(() => expect(root.querySelector('.surfaces-lead .studio-page-head')).not.toBeNull())
+  expect(root.querySelectorAll('.studio-page-head')).toHaveLength(1)
+  const top = root.querySelector('.surfaces-top')!
+  expect([...top.children].map((one) => one.className)).toEqual(['surfaces-lead', 'surfaces-optin'])
+  expect(top.querySelectorAll('.surfaces-optin > .surfaces-card')).toHaveLength(2)
+  // Reset stays with the head
+  expect(root.querySelector('.surfaces-lead #studio-reset')).not.toBeNull()
+})
+
 test('a name is handed over when the person leaves the field or presses Enter, not at every key', async () => {
   const name = field('Name').querySelector('mds-input')!
   // the person types in the field, which has the focus

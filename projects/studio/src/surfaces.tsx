@@ -187,6 +187,11 @@ const PREVIEW_TABS: { id: PreviewTab; label: string; icon: string }[] = [
 ];
 
 interface SurfaceManagerProps {
+  /**
+   * The head of the page and its notices, which the App draws (app.tsx, `pageTop`): the start of
+   * the first column, so the opt-in of the surfaces can stand beside it on a wide page.
+   */
+  head?: ComponentChildren;
   config: MagmaConfig;
   /** toggle the per-color surface opt-in flag */
   onToggleSurface: (colorName: string, on: boolean) => void;
@@ -201,6 +206,7 @@ type RoleSet = Record<string, { value: string }>;
 type FamilyModes = { light: RoleSet; dark: RoleSet };
 
 export function SurfaceManager({
+  head,
   config,
   onToggleSurface,
   onToggleGroupSurface,
@@ -311,82 +317,91 @@ export function SurfaceManager({
 
   return (
     <div class="surfaces" style={{ '--preview-shadow': shadowValue }}>
-      <mds-text typography="detail" tag="p" class="surfaces-muted">
-        Surfaces and borders are placed by perceptual <em>lightness</em> in OKLCH (not APCA), per
-        mode and per role. Opt a family in below; the shared ramp is the same for every family (the
-        tint comes from each family's key color). The active default tint is chosen in{' '}
-        <code>styles</code>, not here. Every family you opt in here also becomes a theme on the
-        Themes page, whatever its group, except the status ones.
-      </mds-text>
-
-      {/* Section 1a: opt-in by GROUP - the coarse switch. A group opts every one of
-        its families in at once; the per-family list below refines it. */}
-      <div class="surfaces-card">
-        <div class="surfaces-head">
-          <mds-text typography="part" tag="h2">
-            Surface groups
-          </mds-text>
-          <mds-text typography="caption" tag="p" class="surfaces-muted">
-            A whole group at once: every family in it generates a <code>--surface-*</code>,{' '}
-            <code>--border-*</code> and <code>--text-*</code> scale.
+      {/* the start of the page: its head and what the page is, then the opt-in of the surfaces,
+          beside them where the page is wide (surfaces.css), so what can be done is in view
+          before the page scrolls (vittorio, 2026-11-09) */}
+      <div class="surfaces-top">
+        <div class="surfaces-lead">
+          {head}
+          <mds-text typography="detail" tag="p" class="surfaces-muted">
+            Surfaces and borders are placed by perceptual <em>lightness</em> in OKLCH (not APCA),
+            per mode and per role. Opt a family in below; the shared ramp is the same for every
+            family (the tint comes from each family's key color). The active default tint is chosen
+            in <code>styles</code>, not here. Every family you opt in here also becomes a theme on
+            the Themes page, whatever its group, except the status ones.
           </mds-text>
         </div>
-        <div class="surfaces-choices" role="group" aria-label="Surface groups">
-          {surfaceGroups.map((group) => {
-            const required = RESERVED_GROUPS.has(group);
-            return (
-              <span
-                class="surfaces-choice"
-                title={
-                  required
-                    ? `${group} always generates surfaces: its components paint text on their own tinted background, so the pair needs a generated text role to be legible by construction`
-                    : undefined
-                }
-              >
-                <mds-chip
-                  label={group}
-                  selectable
-                  selected={required || Boolean(config.groups?.[group]?.surface)}
-                  disabled={required}
-                  onmdsChipSelect={(event: CustomEvent<{ selected?: boolean }>) =>
-                    onToggleGroupSurface(group, Boolean(event.detail?.selected))
-                  }
-                ></mds-chip>
-                {required && <mds-badge variant="dark" label="always on"></mds-badge>}
-              </span>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Section 1b: opt-in by FAMILY - the refinement. A family with no flag of its
-        own follows its group; turning one on or off writes an explicit override. */}
-      <div class="surfaces-card">
-        <div class="surfaces-head">
-          <mds-text typography="part" tag="h2">
-            Surface families
-          </mds-text>
-          <mds-text typography="caption" tag="p" class="surfaces-muted">
-            Refine the groups above per family: a family with no flag of its own follows its group.
-            Each one you opt in here also becomes a theme.
-          </mds-text>
-        </div>
-        <div class="surfaces-choices" role="group" aria-label="Surface families">
-          {themeColors.map(familyButton)}
-        </div>
-        {reservedColors.length > 0 && (
-          <div class="surfaces-reserved">
-            <mds-text typography="caption" tag="p" class="surfaces-muted">
-              <strong>Status, never a theme.</strong> These families generate surfaces so that
-              banners, toasts and badges get a text role legible on their own tint; a theme drawn
-              from one would paint the whole interface in a status colour, and the page would mix
-              with the messages that colour carries.
-            </mds-text>
-            <div class="surfaces-choices" role="group" aria-label="Status families">
-              {reservedColors.map(familyButton)}
+        <div class="surfaces-optin">
+          {/* Section 1a: opt-in by GROUP - the coarse switch. A group opts every one of
+            its families in at once; the per-family list below refines it. */}
+          <div class="surfaces-card">
+            <div class="surfaces-head">
+              <mds-text typography="part" tag="h2">
+                Surface groups
+              </mds-text>
+              <mds-text typography="caption" tag="p" class="surfaces-muted">
+                A whole group at once: every family in it generates a <code>--surface-*</code>,{' '}
+                <code>--border-*</code> and <code>--text-*</code> scale.
+              </mds-text>
+            </div>
+            <div class="surfaces-choices" role="group" aria-label="Surface groups">
+              {surfaceGroups.map((group) => {
+                const required = RESERVED_GROUPS.has(group);
+                return (
+                  <span
+                    class="surfaces-choice"
+                    title={
+                      required
+                        ? `${group} always generates surfaces: its components paint text on their own tinted background, so the pair needs a generated text role to be legible by construction`
+                        : undefined
+                    }
+                  >
+                    <mds-chip
+                      label={group}
+                      selectable
+                      selected={required || Boolean(config.groups?.[group]?.surface)}
+                      disabled={required}
+                      onmdsChipSelect={(event: CustomEvent<{ selected?: boolean }>) =>
+                        onToggleGroupSurface(group, Boolean(event.detail?.selected))
+                      }
+                    ></mds-chip>
+                    {required && <mds-badge variant="dark" label="always on"></mds-badge>}
+                  </span>
+                );
+              })}
             </div>
           </div>
-        )}
+
+          {/* Section 1b: opt-in by FAMILY - the refinement. A family with no flag of its
+            own follows its group; turning one on or off writes an explicit override. */}
+          <div class="surfaces-card">
+            <div class="surfaces-head">
+              <mds-text typography="part" tag="h2">
+                Surface families
+              </mds-text>
+              <mds-text typography="caption" tag="p" class="surfaces-muted">
+                Refine the groups above per family: a family with no flag of its own follows its
+                group. Each one you opt in here also becomes a theme.
+              </mds-text>
+            </div>
+            <div class="surfaces-choices" role="group" aria-label="Surface families">
+              {themeColors.map(familyButton)}
+            </div>
+            {reservedColors.length > 0 && (
+              <div class="surfaces-reserved">
+                <mds-text typography="caption" tag="p" class="surfaces-muted">
+                  <strong>Status, never a theme.</strong> These families generate surfaces so that
+                  banners, toasts and badges get a text role legible on their own tint; a theme
+                  drawn from one would paint the whole interface in a status colour, and the page
+                  would mix with the messages that colour carries.
+                </mds-text>
+                <div class="surfaces-choices" role="group" aria-label="Status families">
+                  {reservedColors.map(familyButton)}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* B4: lightness levels (left) sit beside the preview (right); the families

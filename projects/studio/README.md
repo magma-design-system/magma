@@ -385,7 +385,11 @@ keeps you there, since the scale samples follow the selected color. The list sta
 page while the page keeps the room of the row of actions of its head (41.75rem of the layout);
 narrower, on a phone, it goes above the page, folded into a bar with the family selected and an
 arrow: the bar opens the list in place of the page, and choosing a family folds it again
-(`src/palette.css`, #1311). On Semantic surface, under 30.25rem of the page, each role of the
+(`src/palette.css`, #1311). On Semantic surface the head of the page (`pageTop` of the App)
+starts the first column of the page with its text, so the opt-in of the surfaces stands beside it
+where the page is wide: from 64rem the lead beside the two cards, one over the other; from 90rem
+three columns, the lead, Surface groups and Surface families, so the levels and the preview are in
+view before the page scrolls (`src/surfaces.css`). Under 30.25rem of the page each role of the
 levels stands over its two sliders instead of beside them.
 
 The **diff** view compares the current palette against the one generated from the committed
