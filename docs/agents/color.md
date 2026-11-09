@@ -93,13 +93,16 @@ shadow in light, and how themes and high contrast move them: [`theming.md`](them
 ### Accent: actions and selection
 
 Two accents with the same nine roles: `accent` (the brand action colour) and `accent-ai`
-(AI-driven features). A named theme can repoint them. The interface is neutral, so the
-accent stays rare: a view has one primary action in it (`actions/primary`), and which
-weight every other action takes is the domain [`actions`](patterns/actions.md).
+(AI-driven features). A named theme can repoint them. The interface is neutral where the
+person works, so the accent stays rare: a view has one primary action in it
+(`actions/primary`), and which weight every other action takes is the domain
+[`actions`](patterns/actions.md). Only the band that introduces a page takes colour:
+`accent-emphasis`, everything on it in `accent-on-emphasis`
+([`surfaces/intro-band`](patterns/surfaces.md)).
 
 | Token | Tailwind | Use |
 | --- | --- | --- |
-| `--magma-accent-emphasis` | `bg-accent-emphasis` | solid fill: the primary action |
+| `--magma-accent-emphasis` | `bg-accent-emphasis` | solid fill: the primary action, the band that introduces a page |
 | `--magma-accent-emphasis-hover` / `-emphasis-active` | `hover:bg-accent-emphasis-hover` | the fill hovered / pressed |
 | `--magma-accent-on-emphasis` | `text-accent-on-emphasis` | text and icons on the fill |
 | `--magma-accent-surface` | `bg-accent-surface` | tinted background: a selected row or chip |
