@@ -312,20 +312,54 @@ test('the ends of a custom hue shift move on their own, mirrored or linked', asy
 test('a reference says its hue shifting is the one of its source, and opens it', async () => {
   // jsdom lays nothing out: the group comes into view in a browser only
   Element.prototype.scrollIntoView = vi.fn()
-  item('primary').click()
-  await vi.waitFor(() => expect(heading()).toBe('variant.primary'))
-  const source = color('variant.primary')!.alias!
-  const note = root.querySelector('.palette-group-note')!
-  expect(note.querySelector('mds-banner')?.getAttribute('variant')).toBe('info')
+  // what happens to the focus, told in the message of the test if it never lands on the group
+  // (it did not in CI, on a runner where every focus came late, then never)
+  const trace: string[] = []
+  const nameOf = (el: unknown) =>
+    el instanceof Element ? `${el.localName}${el.id ? `#${el.id}` : ''}` : String(el)
+  const focusOf = HTMLElement.prototype.focus
+  const focus = vi
+    .spyOn(HTMLElement.prototype, 'focus')
+    .mockImplementation(function (this: HTMLElement, ...args: [FocusOptions?]) {
+      trace.push(`focus ${nameOf(this)} connected=${this.isConnected}`)
+      return focusOf.apply(this, args)
+    })
+  const byId = document.getElementById.bind(document)
+  const lookup = vi.spyOn(document, 'getElementById').mockImplementation((id: string) => {
+    const found = byId(id)
+    if (id === 'palette-hue-shift') trace.push(`getElementById ${id}: ${found ? 'found' : 'null'}`)
+    return found
+  })
+  const focusIn = (event: FocusEvent) => trace.push(`focusin ${nameOf(event.target)}`)
+  const focusOut = (event: FocusEvent) =>
+    trace.push(`focusout ${nameOf(event.target)} to ${nameOf(event.relatedTarget)}`)
+  document.addEventListener('focusin', focusIn)
+  document.addEventListener('focusout', focusOut)
+  try {
+    item('primary').click()
+    await vi.waitFor(() => expect(heading()).toBe('variant.primary'))
+    const source = color('variant.primary')!.alias!
+    const note = root.querySelector('.palette-group-note')!
+    expect(note.querySelector('mds-banner')?.getAttribute('variant')).toBe('info')
 
-  magmaButton(`Open ${source}`, note)!.click()
-  await vi.waitFor(() => expect(heading()).toBe(source))
-  // an effect moves the focus after the render of the family, which a runner shared with the
-  // engine of other files makes slow (375 ms on main, past a second beside the Start page)
-  await vi.waitFor(
-    () => expect(document.activeElement).toBe(root.querySelector('#palette-hue-shift')),
-    { timeout: 3_000 },
-  )
+    trace.push('open the source')
+    magmaButton(`Open ${source}`, note)!.click()
+    await vi.waitFor(() => expect(heading()).toBe(source))
+    trace.push(`heading ${source}`)
+    await vi.waitFor(
+      () =>
+        expect(
+          document.activeElement,
+          `active ${nameOf(document.activeElement)}; ${trace.join('; ')}`,
+        ).toBe(root.querySelector('#palette-hue-shift')),
+      { timeout: 3_000 },
+    )
+  } finally {
+    focus.mockRestore()
+    lookup.mockRestore()
+    document.removeEventListener('focusin', focusIn)
+    document.removeEventListener('focusout', focusOut)
+  }
 }, 10_000)
 
 test('a built-in reference changes its target, and keeps its name and its place', async () => {
