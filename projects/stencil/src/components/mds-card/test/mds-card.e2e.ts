@@ -252,4 +252,36 @@ describe('mds-card', () => {
       'rgb(1, 2, 3)',
     );
   });
+
+  // #1327: the card set no colour, and on the band of an introduction its text took the ink of
+  // the band, white on its own white surface
+  describe('the text', () => {
+    it('takes the text of its surface, not the colour of what it stands on', async () => {
+      const { root } = await render(`
+        <div style="color: rgb(250 250 250); --magma-text-default: 1 2 3">
+          <mds-card>
+            <mds-card-content>Testo</mds-card-content>
+          </mds-card>
+        </div>`);
+      const card = root.querySelector('mds-card')!;
+
+      expect(getComputedStyle(card).color).toBe('rgb(1, 2, 3)');
+      expect(getComputedStyle(card.querySelector('mds-card-content')!).color).toBe('rgb(1, 2, 3)');
+    });
+
+    it('takes the colour of --mds-card-color', async () => {
+      const { root } = await render(`
+        <mds-card style="--mds-card-color: rgb(4 5 6)">
+          <mds-card-content>Testo</mds-card-content>
+        </mds-card>`);
+
+      expect(getComputedStyle(root.querySelector('mds-card-content')!).color).toBe('rgb(4, 5, 6)');
+    });
+
+    it('gives way to a colour set on its host', async () => {
+      const { root } = await render(`<mds-card style="color: rgb(7 8 9)"></mds-card>`);
+
+      expect(getComputedStyle(root).color).toBe('rgb(7, 8, 9)');
+    });
+  });
 });

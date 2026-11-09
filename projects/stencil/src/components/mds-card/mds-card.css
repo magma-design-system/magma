@@ -2,6 +2,7 @@
 
 /**
  * @prop --mds-card-background: Public. Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`)
+ * @prop --mds-card-color: Public. Sets the text color of the card, inherited by its regions, `--magma-text-default` by default: set it together with `--mds-card-background`, so the text keeps reading on the surface
  * @prop --mds-card-gap: Public. Sets the space between the regions of the card, `--magma-rhythm-title-content` by default; the footer keeps at least `--magma-rhythm-content-actions` from the region before it
  * @prop --mds-card-padding: Public. Sets the inset of the card, shared by its regions, `--magma-rhythm-inset` by default; the media region reaches out of it to the edges it touches
  */
@@ -9,14 +10,21 @@
 /* one inset shared by the regions, which pad nothing of their own: the title of a card stands
    nearer to its content than to the edge (#1189, rhythm/inset and rhythm/shared-inset) */
 
+/* the card paints its own surface, so it sets the text of that surface too, the pair the contrast
+   gate measures: its content no longer takes the colour of what the card stands on, as the ink of
+   the band of an introduction (#1327, surfaces/intro-band). A colour set on the host from outside
+   still wins over :host */
+
 :host {
   --mds-card-gap: var(--magma-rhythm-title-content);
   --mds-card-padding: var(--magma-rhythm-inset);
   --mds-card-background: rgb(var(--magma-surface-raised));
+  --mds-card-color: rgb(var(--magma-text-default));
 
   background-color: var(--mds-card-background);
   border-radius: var(--magma-radius-2xl);
   box-shadow: var(--shadow-md-sharp);
+  color: var(--mds-card-color);
   container-name: mds-card;
   container-type: inline-size;
   corner-shape: var(--magma-corner-shape);

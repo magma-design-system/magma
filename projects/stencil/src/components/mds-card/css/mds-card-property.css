@@ -14,6 +14,12 @@
       would substitute a static light value there whenever mds-card is absent.
 */
 
+@property --mds-card-color {
+  inherits: true;
+  initial-value: rgb(var(--magma-text-default));
+  syntax: '<color>';
+}
+
 @property --mds-card-gap {
   inherits: true;
   initial-value: var(--magma-rhythm-title-content);
