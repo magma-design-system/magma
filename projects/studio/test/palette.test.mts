@@ -312,55 +312,36 @@ test('the ends of a custom hue shift move on their own, mirrored or linked', asy
 test('a reference says its hue shifting is the one of its source, and opens it', async () => {
   // jsdom lays nothing out: the group comes into view in a browser only
   Element.prototype.scrollIntoView = vi.fn()
-  // what happens to the focus, told in the message of the test if it never lands on the group
-  // (it did not in CI, on a runner where every focus came late, then never)
-  const trace: string[] = []
-  const nameOf = (el: unknown) =>
-    el instanceof Element ? `${el.localName}${el.id ? `#${el.id}` : ''}` : String(el)
-  const focusOf = HTMLElement.prototype.focus
-  const focus = vi
-    .spyOn(HTMLElement.prototype, 'focus')
-    .mockImplementation(function (this: HTMLElement, ...args: [FocusOptions?]) {
-      trace.push(`focus ${nameOf(this)} connected=${this.isConnected}`)
-      return focusOf.apply(this, args)
-    })
-  const byId = document.getElementById.bind(document)
-  const lookup = vi.spyOn(document, 'getElementById').mockImplementation((id: string) => {
-    const found = byId(id)
-    if (id === 'palette-hue-shift') trace.push(`getElementById ${id}: ${found ? 'found' : 'null'}`)
-    return found
-  })
-  const focusIn = (event: FocusEvent) => trace.push(`focusin ${nameOf(event.target)}`)
-  const focusOut = (event: FocusEvent) =>
-    trace.push(`focusout ${nameOf(event.target)} to ${nameOf(event.relatedTarget)}`)
-  document.addEventListener('focusin', focusIn)
-  document.addEventListener('focusout', focusOut)
-  try {
-    item('primary').click()
-    await vi.waitFor(() => expect(heading()).toBe('variant.primary'))
-    const source = color('variant.primary')!.alias!
-    const note = root.querySelector('.palette-group-note')!
-    expect(note.querySelector('mds-banner')?.getAttribute('variant')).toBe('info')
+  item('primary').click()
+  await vi.waitFor(() => expect(heading()).toBe('variant.primary'))
+  const source = color('variant.primary')!.alias!
+  const note = root.querySelector('.palette-group-note')!
+  expect(note.querySelector('mds-banner')?.getAttribute('variant')).toBe('info')
 
-    trace.push('open the source')
-    magmaButton(`Open ${source}`, note)!.click()
-    await vi.waitFor(() => expect(heading()).toBe(source))
-    trace.push(`heading ${source}`)
-    await vi.waitFor(
-      () =>
-        expect(
-          document.activeElement,
-          `active ${nameOf(document.activeElement)}; ${trace.join('; ')}`,
-        ).toBe(root.querySelector('#palette-hue-shift')),
-      { timeout: 3_000 },
-    )
-  } finally {
-    focus.mockRestore()
-    lookup.mockRestore()
-    document.removeEventListener('focusin', focusIn)
-    document.removeEventListener('focusout', focusOut)
-  }
-}, 10_000)
+  magmaButton(`Open ${source}`, note)!.click()
+  await vi.waitFor(() => expect(heading()).toBe(source))
+  await vi.waitFor(() =>
+    expect(document.activeElement).toBe(root.querySelector('#palette-hue-shift')),
+  )
+})
+
+// the request to open the hue shifting is for the source family: the effects of the render
+// before it, still pending when the person clicks (a slow machine, a quick hand), run at the start
+// of the next render and must leave it for the render of the source (seen in CI on #1326)
+test('the source opens with the focus on its hue shifting even while the effects of the reference are pending', async () => {
+  Element.prototype.scrollIntoView = vi.fn()
+  item('primary').click()
+  // the render runs in a microtask, its effects after the paint, in a task: stop between the two
+  await Promise.resolve()
+  await Promise.resolve()
+  expect(heading()).toBe('variant.primary')
+  const source = color('variant.primary')!.alias!
+  magmaButton(`Open ${source}`, root.querySelector('.palette-group-note')!)!.click()
+  await vi.waitFor(() => expect(heading()).toBe(source))
+  await vi.waitFor(() =>
+    expect(document.activeElement).toBe(root.querySelector('#palette-hue-shift')),
+  )
+})
 
 test('a built-in reference changes its target, and keeps its name and its place', async () => {
   item('primary').click()

@@ -848,14 +848,18 @@ export function App({
   }, [view, JSON.stringify(config)]);
 
   // the hue shifting of the family a reference points at, opened from the banner of the
-  // reference: once the family renders, its group comes into view and takes the focus
-  const openHueShiftRef = useRef(false);
+  // reference: once that family renders, its group comes into view and takes the focus. The
+  // request names the family: the effects of the render before it, still pending when the person
+  // clicks (a slow machine, a quick hand), run at the start of the next render, before the family
+  // is drawn, and must leave the request to the render of the family (seen in CI on #1326)
+  const openHueShiftRef = useRef<string | null>(null);
   useEffect(() => {
-    if (!openHueShiftRef.current) return;
-    openHueShiftRef.current = false;
+    if (openHueShiftRef.current !== selectedName) return;
     const group = document.getElementById(HUE_SHIFT_GROUP);
-    group?.scrollIntoView({ block: 'start' });
-    group?.focus({ preventScroll: true });
+    if (!group) return;
+    openHueShiftRef.current = null;
+    group.scrollIntoView({ block: 'start' });
+    group.focus({ preventScroll: true });
   }, [selectedName]);
 
   // the variants first, at the top of the list: the first of them is where the work starts
@@ -1899,7 +1903,7 @@ export function App({
                   onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
                   onOpenSource={() => {
                     if (!selected.alias) return;
-                    openHueShiftRef.current = true;
+                    openHueShiftRef.current = selected.alias;
                     setSelectedName(selected.alias);
                   }}
                   onChange={(patch) => {
