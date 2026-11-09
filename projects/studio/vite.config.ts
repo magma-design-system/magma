@@ -44,13 +44,15 @@ export default defineConfig({
     outDir: fileURLToPath(new URL('./dist', import.meta.url)),
     emptyOutDir: true,
     // the studio, and the pages it shows in an iframe: the scene and the groups of the Theme
-    // section, the states of a colour beside a contrast scale
+    // section, the states of a colour beside a contrast scale, the page of a product the hero of
+    // the Start page paints
     rollupOptions: {
       input: {
         main: fileURLToPath(new URL('./index.html', import.meta.url)),
         scene: fileURLToPath(new URL('./scene.html', import.meta.url)),
         groups: fileURLToPath(new URL('./groups.html', import.meta.url)),
         states: fileURLToPath(new URL('./states.html', import.meta.url)),
+        hero: fileURLToPath(new URL('./hero.html', import.meta.url)),
       },
     },
   },

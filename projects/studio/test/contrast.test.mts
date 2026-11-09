@@ -6,6 +6,7 @@ import { act } from 'preact/test-utils'
 import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
 import type { MagmaConfig } from '@maggioli-design-system/design-tokens/src/lib/color.mjs'
 import { App } from '../src/app.js'
+import type { ConfigAction } from '../src/config-menu.js'
 import { Studio } from '../src/shell.js'
 import { ContrastCheck } from '../src/contrast.js'
 import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/draft.js'
@@ -55,11 +56,18 @@ const storeDraft = (draft: MagmaConfig, view = 'colors') => {
 }
 
 /** The pages of Colors restored on a draft of a configuration. */
+// the actions of the Config menu of the bar, as the App hands them to it
+let actions: ConfigAction[] = []
+const runAction = (id: string) => act(() => actions.find((action) => action.id === id)!.run())
+
 const openOn = async (draft: MagmaConfig, view = 'colors') => {
   storeDraft(draft, view)
-  render(h(App, {}), root)
+  actions = []
+  render(h(App, { onConfigActions: (handed: ConfigAction[]) => (actions = handed) }), root)
   await vi.waitFor(() => {
     if (!root.querySelector('.studio-page-name')) throw new Error('no page yet')
+    // handed by an effect, after the paint
+    if (!actions.length) throw new Error('no actions yet')
   })
 }
 
@@ -72,8 +80,9 @@ const row = (theme: string, pair: string) =>
 const cell = (theme: string, pair: string, mode: string) =>
   badgeOf(row(theme, pair)?.querySelector(`mds-table-cell[data-mode="${mode}"]`))
 const show = (report: GateReport) => render(h(ContrastCheck, { report }), root)
+// over the whole document: the dialog of the gate opens on document.body
 const magmaButton = (label: string) =>
-  root.querySelector<HTMLElement>(`mds-button[label="${label}"]`)
+  document.querySelector<HTMLElement>(`mds-button[label="${label}"]`)
 
 test('the Contrast check page shows every pair of every theme, its two modes side by side', () => {
   const report = gateReport(config())
@@ -197,41 +206,36 @@ test('while the gate fails, an export asks first: Cancel never exports, the verb
     .mockImplementation(function (this: HTMLAnchorElement) {
       files.push(this.download)
     })
-  const download = () =>
-    act(() => {
-      root.querySelector('mds-button-dropdown')!.dispatchEvent(
-        new CustomEvent('mdsButtonDropdownClick', { bubbles: true }),
-      )
-    })
+  const download = () => runAction('zip')
   try {
     await download()
-    const dialog = root.querySelector('mds-modal')!
+    const dialog = document.querySelector('mds-modal')!
     expect(dialog).not.toBeNull()
     expect(dialog.getAttribute('aria-label')).toMatch(/^Export with \d+ contrasts below target\?$/)
-    expect(dialog.textContent).toContain('Download all tokens (zip) hands out a configuration that fails')
+    expect(dialog.textContent).toContain('Download all tokens hands out a configuration that fails')
     // the first pairs, named by their theme, mode and measure
-    expect(dialog.querySelector('.contrast-failures li')?.textContent).toMatch(
+    expect(dialog.querySelector('.contrast-failures mds-list-item')?.textContent).toMatch(
       /^business, light: text-\w+ on surface-\w+, Lc [\d.]+ under \d+$/,
     )
     expect(files).toEqual([])
 
     await act(() => magmaButton('Cancel')!.click())
-    expect(root.querySelector('mds-modal')).toBeNull()
+    expect(document.querySelector('mds-modal')).toBeNull()
     expect(files).toEqual([])
 
     await download()
     await act(() => magmaButton('Download anyway')!.click())
-    expect(root.querySelector('mds-modal')).toBeNull()
+    expect(document.querySelector('mds-modal')).toBeNull()
     expect(files).toEqual(['magma-design-tokens.zip'])
 
     // every way out asks: a download of the menu, the copy of the configuration
     files.length = 0
-    await act(() => magmaButton('Config (json)')!.click())
-    expect(root.querySelector('mds-modal')?.textContent).toContain('Config (json) hands out')
+    await runAction('config')
+    expect(document.querySelector('mds-modal')?.textContent).toContain('Download config hands out')
     expect(files).toEqual([])
     await act(() => magmaButton('Cancel')!.click())
-    await act(() => magmaButton('Copy JSON')!.click())
-    expect(root.querySelector('mds-modal')?.textContent).toContain('Copy JSON hands out')
+    await runAction('copy')
+    expect(document.querySelector('mds-modal')?.textContent).toContain('Copy JSON hands out')
     expect(magmaButton('Copy anyway')).not.toBeNull()
   } finally {
     click.mockRestore()
@@ -240,13 +244,9 @@ test('while the gate fails, an export asks first: Cancel never exports, the verb
 
 test('the dialog leads to every pair, on the Contrast check page', async () => {
   await openOn(failing())
-  await act(() => {
-    root.querySelector('mds-button-dropdown')!.dispatchEvent(
-      new CustomEvent('mdsButtonDropdownClick', { bubbles: true }),
-    )
-  })
+  await runAction('zip')
   await act(() => magmaButton('See every pair')!.click())
-  expect(root.querySelector('mds-modal')).toBeNull()
+  expect(document.querySelector('mds-modal')).toBeNull()
   expect(root.querySelector('h1, [tag="h1"]')?.textContent).toBe('Contrast check')
   expect(root.querySelectorAll('.contrast-theme').length).toBeGreaterThan(0)
 })

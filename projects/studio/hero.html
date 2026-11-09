@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Magma studio, a banner of a product</title>
+    <!--
+      The banner of a product the Start page shows in its hero (start.tsx): an mds-banner of a back
+      office, with its text, its icon and its actions, painted with the configuration of the demo,
+      which the hero draws pale and brings back (start-demo.ts). The three indicators under it read
+      the pairs of the contrast gate that hold what it paints: its text, its icon, its main action
+      (CHECKS of start-demo.ts). A document of its own, as the scene of the Theme section
+      (frame.ts): the palette written on its <html> moves this page and leaves the studio alone
+      (#695, "The dogfooding constraint").
+
+      The page is the banner and nothing else, so the frame of the hero is the banner: the frame
+      takes the height of the page (start.tsx) and draws the shadow, which the banner would cast
+      outside the frame, where it is clipped; --mds-banner-shadow and --mds-banner-radius are
+      public properties of mds-banner.
+    -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: transparent;
+      }
+      mds-banner {
+        --mds-banner-shadow: none;
+      }
+    </style>
+  </head>
+  <body>
+    <mds-banner icon="mi/outline/info" headline="Send the request to the officer?" dismissible>
+      The request of Laura Bianchi, the extension of a house in Via Roma 12, goes to Marco Rossi,
+      who answers within 30 days. You can add documents to it until then.
+      <mds-button slot="action" variant="primary" tone="outline">Cancel</mds-button>
+      <mds-button
+        slot="action"
+        variant="primary"
+        tone="strong"
+        icon="mi/outline/email"
+        icon-position="right"
+        >Send</mds-button
+      >
+    </mds-banner>
+  </body>
+</html>

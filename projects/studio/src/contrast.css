@@ -81,11 +81,9 @@
   outline: thin solid rgb(var(--magma-border-muted));
 }
 
-/* the pairs a failing export names */
+/* the pairs a failing export names, a list of Magma that draws its own bullets */
 
 .contrast-failures {
   display: grid;
   gap: var(--magma-rhythm-label-control);
-  margin: 0;
-  padding-inline-start: calc(var(--spacing) * 500);
 }

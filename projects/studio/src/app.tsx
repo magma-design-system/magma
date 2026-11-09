@@ -1,4 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+// the portal of the core: preact/compat would rewrite the events of the whole studio
+// (onChange of an input into onInput, onFocus into onfocusin) the moment it is imported
+import { createPortal } from 'preact';
 import initialConfigJson from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json';
 import DEFAULT_COLOR_CONFIG from '@maggioli-design-system/design-tokens/src/config/default-color.json';
 import { zipSync } from 'fflate';
@@ -15,6 +18,7 @@ import {
   resolveRatiosName,
 } from '@maggioli-design-system/design-tokens/src/lib/color.mjs';
 import { cssHex, cssRgb, gimpPalette } from './formats.js';
+import type { ConfigAction } from './config-menu.js';
 import {
   COLORSPACES,
   validateConfig,
@@ -687,6 +691,8 @@ interface AppProps {
   onConfig?: (config: MagmaConfig) => void;
   /** The verdict of the contrast gate on the working config, on every change: the Colors menu. */
   onGate?: (verdict: GateVerdict) => void;
+  /** The actions of the Config menu of the bar, whenever one changes (config-menu.tsx). */
+  onConfigActions?: (actions: ConfigAction[]) => void;
 }
 
 /** One line under the title of each view: what it holds. */
@@ -705,7 +711,13 @@ const VIEW_SUMMARY: Record<View, string> = {
   diff: 'The palette against the configuration Magma builds with.',
 };
 
-export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps = {}) {
+export function App({
+  view: routedView,
+  onNavigate,
+  onConfig,
+  onGate,
+  onConfigActions,
+}: AppProps = {}) {
   // a persisted working state, restored once at mount, takes precedence over
   // the bundled defaults
   const bootDraft = useMemo(() => readDraft() as StudioDraft<View> | null, []);
@@ -729,13 +741,12 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
     if (content.current) content.current.scrollTop = 0;
   }, [view]);
   const setView = onNavigate ?? setOwnView;
-  // the menus of the head of the page, closed once one of their actions ran
+  // the picker of Import config (the Config menu of the bar)
   const fileInput = useRef<HTMLInputElement>(null);
-  const moreMenu = useRef<HTMLElement & { visible?: boolean }>(null);
-  // the menu of the colour selected, closed as well once one of its actions ran
+  // the menu of the colour selected, closed once one of its actions ran
   const colorMenu = useRef<HTMLElement & { visible?: boolean }>(null);
   const closeMenus = () => {
-    for (const menu of [moreMenu.current, colorMenu.current]) if (menu) menu.visible = false;
+    if (colorMenu.current) colorMenu.current.visible = false;
   };
   const [copied, setCopied] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -837,14 +848,18 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
   }, [view, JSON.stringify(config)]);
 
   // the hue shifting of the family a reference points at, opened from the banner of the
-  // reference: once the family renders, its group comes into view and takes the focus
-  const openHueShiftRef = useRef(false);
+  // reference: once that family renders, its group comes into view and takes the focus. The
+  // request names the family: the effects of the render before it, still pending when the person
+  // clicks (a slow machine, a quick hand), run at the start of the next render, before the family
+  // is drawn, and must leave the request to the render of the family (seen in CI on #1326)
+  const openHueShiftRef = useRef<string | null>(null);
   useEffect(() => {
-    if (!openHueShiftRef.current) return;
-    openHueShiftRef.current = false;
+    if (openHueShiftRef.current !== selectedName) return;
     const group = document.getElementById(HUE_SHIFT_GROUP);
-    group?.scrollIntoView({ block: 'start' });
-    group?.focus({ preventScroll: true });
+    if (!group) return;
+    openHueShiftRef.current = null;
+    group.scrollIntoView({ block: 'start' });
+    group.focus({ preventScroll: true });
   }, [selectedName]);
 
   // the variants first, at the top of the list: the first of them is where the work starts
@@ -1116,6 +1131,8 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
       setLoadError(
         `Could not load ${file.name}: ${error instanceof Error ? error.message : String(error)}`,
       );
+      // the error is a banner of the pages of Colors: an import from another section opens them
+      setView(view);
     }
   };
 
@@ -1313,6 +1330,47 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
     }
   };
 
+  // the actions of the Config menu of the bar (config-menu.tsx; vittorio, 2026-11-09): what
+  // brings a configuration in, then what takes it out, each through the gate before it leaves. The
+  // bar holds the list it was last handed; a click runs the action of the latest render, so the
+  // list changes only when a label or the set does
+  const configRuns = useRef<Record<string, () => void>>({});
+  configRuns.current = {
+    import: () => fileInput.current?.click(),
+    copy: () => guard({ label: 'Copy JSON', verb: 'Copy', run: copyJson }),
+    zip: () => guard({ label: 'Download all tokens', verb: 'Download', run: downloadZip }),
+    config: () => guard({ label: 'Download config', verb: 'Download', run: downloadJson }),
+    figma: () =>
+      guard({ label: 'Download Figma tokens', verb: 'Download', run: downloadFigmaDtcg }),
+    css: () => guard({ label: 'Download CSS tokens', verb: 'Download', run: downloadCss }),
+    gimp: () => guard({ label: 'Download GIMP palette', verb: 'Download', run: downloadGimp }),
+    build: () => guard({ label: 'Build tokens on disk', verb: 'Build', run: buildTokens }),
+  };
+  const configActions = useMemo<ConfigAction[]>(() => {
+    const run = (id: string) => () => configRuns.current[id]?.();
+    const download = 'mi/outline/file-download';
+    // the badge says what is read or handed over: the file (json, css, gpl), the format of the
+    // tokens (DTCG), misc for the zip of all of them (vittorio, 2026-11-09)
+    return [
+      { id: 'import', label: 'Import config', format: 'json', icon: 'mi/baseline/upload-file' },
+      {
+        id: 'copy',
+        label: copied ? 'Copied!' : 'Copy JSON',
+        icon: 'mi/baseline/content-copy',
+        keepOpen: true,
+      },
+      { id: 'zip', label: 'Download all tokens', format: 'misc', icon: download, apart: true },
+      { id: 'config', label: 'Download config', format: 'json', icon: download },
+      { id: 'figma', label: 'Download Figma tokens', format: 'DTCG', icon: download },
+      { id: 'css', label: 'Download CSS tokens', format: 'css', icon: download },
+      { id: 'gimp', label: 'Download GIMP palette', format: 'gpl', icon: download },
+      ...(serverMode
+        ? [{ id: 'build', label: 'Build tokens on disk', icon: 'mi/baseline/build', apart: true }]
+        : []),
+    ].map((action) => ({ ...action, run: run(action.id) }));
+  }, [copied, serverMode]);
+  useEffect(() => onConfigActions?.(configActions), [configActions]);
+
   const toggleBatch = (name: string) =>
     setBatchSelection((prev) => {
       const next = new Set(prev);
@@ -1393,6 +1451,120 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
   // the surfaces/groups/diff views work on the whole config, not a single
   // color, so the picker column is dropped and the content spans full width
   const showSidebar = COLOR_LIST_VIEWS.has(view);
+
+  // the head of the page and what keeps the configuration from loading or saving: the first
+  // things of the region that scrolls, or, on Semantic surface, the start of its first column
+  // (surfaces.tsx), where the opt-in of the surfaces stands beside it on a wide page
+  const pageTop = (
+    <>
+      <header class="studio-page-head">
+        <div class="studio-page-title">
+          {/* the status of what is edited beside the title (page-header, `status`): the verdict
+              of the contrast gate, on every page of Colors */}
+          <div class="studio-page-name">
+            <mds-text typography="page" tag="h1">
+              {COLORS_PAGES.find((page) => page.id === view)?.label}
+            </mds-text>
+            <GateBadge verdict={report.verdict} />
+          </div>
+          <mds-text typography="detail" tag="p" class="studio-muted">
+            {VIEW_SUMMARY[view]}
+          </mds-text>
+        </div>
+        {/* the actions of the page (the page-header block of Magma): Reset in view, the one
+            action left once the menu of the others had nothing else (vittorio, 2026-11-09), then
+            Save when a command serves the studio, last. What brings a configuration in and takes
+            it out is the Config menu of the bar (shell.tsx, config-menu.tsx) */}
+        <div class="studio-page-actions">
+          {statusMsg && (
+            <mds-text typography="caption" tag="span" class="studio-muted" role="status">
+              {statusMsg}
+            </mds-text>
+          )}
+          <mds-button
+            id="studio-reset"
+            icon="mi/baseline/restart-alt"
+            variant="dark"
+            tone="text"
+            label="Reset"
+            title="Discard the loaded configuration and every local change, back to the one Magma builds with"
+            disabled={!canReset}
+            onClick={() => {
+              clearDraft();
+              const base = clone(initialConfigJson as unknown as CloneableConfig);
+              setConfig(base);
+              setSelectedName(defaultSelected(base.colors));
+              setView('colors');
+              setLoadError(null);
+            }}
+          ></mds-button>
+          <input
+            ref={fileInput}
+            type="file"
+            accept=".json,application/json"
+            hidden
+            onChange={(e) => {
+              const input = e.target as HTMLInputElement;
+              const file = input.files?.[0];
+              if (file) loadConfigFile(file);
+              input.value = '';
+            }}
+          />
+          {/* the texts that change go in `label`: mds-button reads its slotted text only once */}
+          {serverMode &&
+            (saveRefusal ? (
+              <mds-button
+                variant="dark"
+                tone="outline"
+                disabled
+                title={saveRefusal}
+                label={dirty ? 'Read-only *' : 'Read-only'}
+              ></mds-button>
+            ) : (
+              <mds-button
+                variant="dark"
+                tone="outline"
+                onClick={() => guard({ label: 'Save', verb: 'Save', run: saveConfig })}
+                disabled={saving || !dirty || !!draftConflict}
+                title={savePath ?? undefined}
+                label={saving ? 'Saving...' : dirty ? 'Save *' : 'Saved'}
+              ></mds-button>
+            ))}
+        </div>
+      </header>
+
+      {/* what keeps the configuration from loading or saving, above the page */}
+      {loadError ? (
+        <mds-banner class="studio-notice" variant="error">
+          {loadError}
+        </mds-banner>
+      ) : draftConflict ? (
+        <mds-banner class="studio-notice draft-conflict" variant="warning">
+          {draftConflict.reason}, and the draft restored from this browser has edits of its own.
+          <mds-button
+            slot="action"
+            type="button"
+            variant="dark"
+            tone="outline"
+            label={draftConflict.label}
+            onClick={() => resolveDraftConflict(true)}
+          ></mds-button>
+          <mds-button
+            slot="action"
+            type="button"
+            label="Keep the draft"
+            onClick={() => resolveDraftConflict(false)}
+          ></mds-button>
+        </mds-banner>
+      ) : (
+        saveRefusal && (
+          <mds-banner class="studio-notice" variant="info">
+            Saving is off: {saveRefusal}
+          </mds-banner>
+        )
+      )}
+    </>
+  );
 
   return (
     <div class={`layout${showSidebar ? '' : ' no-sidebar'}`}>
@@ -1694,179 +1866,7 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
       )}
 
       <main class="content" ref={content}>
-        {/* the head of the page and what keeps the configuration from loading or saving: the
-            first things of the region that scrolls, so they scroll with the page, and on a page
-            with the list of the families they head the larger column, not the whole width */}
-        <header class="studio-page-head">
-          <div class="studio-page-title">
-            {/* the status of what is edited beside the title (page-header, `status`): the verdict
-                of the contrast gate, on every page of Colors */}
-            <div class="studio-page-name">
-              <mds-text typography="page" tag="h1">
-                {COLORS_PAGES.find((page) => page.id === view)?.label}
-              </mds-text>
-              <GateBadge verdict={report.verdict} />
-            </div>
-            <mds-text typography="detail" tag="p" class="studio-muted">
-              {VIEW_SUMMARY[view]}
-            </mds-text>
-          </div>
-          {/* the actions of the page (the page-header block of Magma): the menu of the others
-              first, the secondary used most, the main one last in the strong tone */}
-          <div class="studio-page-actions">
-            {statusMsg && (
-              <mds-text typography="caption" tag="span" class="studio-muted" role="status">
-                {statusMsg}
-              </mds-text>
-            )}
-            <mds-button
-              id="studio-more"
-              icon="mi/baseline/more-horiz"
-              variant="dark"
-              tone="text"
-              aria-label="More actions"
-            ></mds-button>
-            <input
-              ref={fileInput}
-              type="file"
-              accept=".json,application/json"
-              hidden
-              onChange={(e) => {
-                const input = e.target as HTMLInputElement;
-                const file = input.files?.[0];
-                if (file) loadConfigFile(file);
-                input.value = '';
-              }}
-            />
-            {/* the texts that change go in `label`: mds-button reads its slotted text only once */}
-            {serverMode ? (
-              saveRefusal ? (
-                <mds-button
-                  variant="dark"
-                  tone="outline"
-                  disabled
-                  title={saveRefusal}
-                  label={dirty ? 'Read-only *' : 'Read-only'}
-                ></mds-button>
-              ) : (
-                <mds-button
-                  variant="dark"
-                  tone="outline"
-                  onClick={() => guard({ label: 'Save', verb: 'Save', run: saveConfig })}
-                  disabled={saving || !dirty || !!draftConflict}
-                  title={savePath ?? undefined}
-                  label={saving ? 'Saving...' : dirty ? 'Save *' : 'Saved'}
-                ></mds-button>
-              )
-            ) : (
-              <mds-button
-                variant="dark"
-                tone="outline"
-                onClick={() => guard({ label: 'Copy JSON', verb: 'Copy', run: copyJson })}
-                label={copied ? 'Copied!' : 'Copy JSON'}
-              ></mds-button>
-            )}
-            {/* the main action of the page: the zip of every token, the other downloads in the
-                menu of its split button (vittorio, 2026-11-05) */}
-            <mds-button-dropdown
-              icon="mi/outline/file-download"
-              label="Download all tokens (zip)"
-              onmdsButtonDropdownClick={() =>
-                guard({ label: 'Download all tokens (zip)', verb: 'Download', run: downloadZip })
-              }
-            >
-              {[
-                { label: 'Figma tokens (DTCG)', verb: 'Download', run: downloadFigmaDtcg },
-                { label: 'Config (json)', verb: 'Download', run: downloadJson },
-                { label: 'CSS tokens', verb: 'Download', run: downloadCss },
-                { label: 'GIMP palette', verb: 'Download', run: downloadGimp },
-                ...(serverMode
-                  ? [{ label: 'Build tokens on disk', verb: 'Build', run: buildTokens }]
-                  : []),
-              ].map((item) => (
-                <mds-button
-                  type="button"
-                  variant="dark"
-                  tone="text"
-                  class="studio-menu-link"
-                  label={item.label}
-                  onClick={() => guard(item)}
-                ></mds-button>
-              ))}
-            </mds-button-dropdown>
-          </div>
-          <mds-dropdown
-            ref={moreMenu}
-            target="#studio-more"
-            placement="bottom-end"
-            strategy="fixed"
-          >
-            <div class="studio-dropdown">
-              <mds-button
-                icon="mi/baseline/restart-alt"
-                variant="dark"
-                tone="text"
-                class="studio-menu-link"
-                title="discard the loaded config and any local changes, back to the built-in default"
-                disabled={!canReset}
-                onClick={() => {
-                  closeMenus();
-                  clearDraft();
-                  const base = clone(initialConfigJson as unknown as CloneableConfig);
-                  setConfig(base);
-                  setSelectedName(defaultSelected(base.colors));
-                  setView('colors');
-                  setLoadError(null);
-                }}
-              >
-                Reset
-              </mds-button>
-              <mds-button
-                icon="mi/baseline/upload-file"
-                variant="dark"
-                tone="text"
-                class="studio-menu-link"
-                onClick={() => {
-                  closeMenus();
-                  fileInput.current?.click();
-                }}
-              >
-                Load config
-              </mds-button>
-            </div>
-          </mds-dropdown>
-        </header>
-
-        {/* what keeps the configuration from loading or saving, above the page */}
-        {loadError ? (
-          <mds-banner class="studio-notice" variant="error">
-            {loadError}
-          </mds-banner>
-        ) : draftConflict ? (
-          <mds-banner class="studio-notice draft-conflict" variant="warning">
-            {draftConflict.reason}, and the draft restored from this browser has edits of its own.
-            <mds-button
-              slot="action"
-              type="button"
-              variant="dark"
-              tone="outline"
-              label={draftConflict.label}
-              onClick={() => resolveDraftConflict(true)}
-            ></mds-button>
-            <mds-button
-              slot="action"
-              type="button"
-              label="Keep the draft"
-              onClick={() => resolveDraftConflict(false)}
-            ></mds-button>
-          </mds-banner>
-        ) : (
-          saveRefusal && (
-            <mds-banner class="studio-notice" variant="info">
-              Saving is off: {saveRefusal}
-            </mds-banner>
-          )
-        )}
+        {view !== 'surface' && pageTop}
 
         {view === 'colors' && selected && (
           <div class="palette-detail-frame">
@@ -1909,7 +1909,7 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
                   onColorCommit={(hex) => autoNameColor(selectedIndex, hex)}
                   onOpenSource={() => {
                     if (!selected.alias) return;
-                    openHueShiftRef.current = true;
+                    openHueShiftRef.current = selected.alias;
                     setSelectedName(selected.alias);
                   }}
                   onChange={(patch) => {
@@ -2101,6 +2101,7 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
         {view === 'surface' && (
           <>
             <SurfaceManager
+              head={pageTop}
               config={config}
               onToggleSurface={(colorName, on) =>
                 updateConfig((draft) => {
@@ -2203,22 +2204,26 @@ export function App({ view: routedView, onNavigate, onConfig, onGate }: AppProps
         />
       )}
 
-      {pendingExport && (
-        <GateDialog
-          action={pendingExport}
-          report={report}
-          onCancel={() => setPendingExport(null)}
-          onConfirm={() => {
-            setPendingExport(null);
-            pendingExport.run();
-          }}
-          onReview={() => {
-            setPendingExport(null);
-            setBatchModal(null);
-            setView('contrast');
-          }}
-        />
-      )}
+      {/* on document.body: the Config menu of the bar exports from any section, while the App
+          stays hidden under the ones that are not Colors */}
+      {pendingExport &&
+        createPortal(
+          <GateDialog
+            action={pendingExport}
+            report={report}
+            onCancel={() => setPendingExport(null)}
+            onConfirm={() => {
+              setPendingExport(null);
+              pendingExport.run();
+            }}
+            onReview={() => {
+              setPendingExport(null);
+              setBatchModal(null);
+              setView('contrast');
+            }}
+          />,
+          document.body,
+        )}
     </div>
   );
 }

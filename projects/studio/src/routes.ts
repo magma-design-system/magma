@@ -11,6 +11,9 @@ import { MODES, type ModeView } from './scene-prefs.js';
   - Colors: the views of the tokens playground, each a page of its own;
   - Theme: the theme full screen, with its controls over it;
   - Behavior: the design language, the patterns and the blocks.
+  Before them the Start page (start.tsx): what the studio does, the steps of the work and what
+  each section changes; the name of the studio at the start of the bar (app-shell, `product`)
+  links to it.
 */
 
 /** The views of the Colors section; the ids are the ones a saved draft carries. */
@@ -25,6 +28,7 @@ export type BehaviorPage = 'design-language' | 'patterns' | 'blocks';
  * the ones the section offers (`MODES`, scene-prefs.tsx).
  */
 export type Route =
+  | { section: 'start' }
   | { section: 'colors'; view: ColorsView }
   | { section: 'theme'; theme?: string; mode?: ModeView }
   | { section: 'behavior'; page: BehaviorPage };
@@ -73,11 +77,15 @@ export const BEHAVIOR_PAGES: MenuItem<BehaviorPage>[] = [
   { id: 'blocks', slug: 'blocks', label: 'Blocks', icon: 'mi/baseline/widgets' },
 ];
 
-/** The first page of the studio: the palette, where the work starts. */
-export const HOME: Route = { section: 'colors', view: 'colors' };
+/**
+ * The first page of the studio: the Start page, which says what the studio does and where each
+ * change is made, before the work starts on the palette. A start with no address opens it.
+ */
+export const HOME: Route = { section: 'start' };
 
 /** The address of a page, as a link writes it: `#/colors/palette`. */
 export function hrefOf(route: Route): string {
+  if (route.section === 'start') return '#/start';
   if (route.section === 'theme') {
     if (!route.theme) return '#/theme';
     return route.mode ? `#/theme/${route.theme}/${route.mode}` : `#/theme/${route.theme}`;
@@ -90,6 +98,7 @@ export function hrefOf(route: Route): string {
 /** The page of an address, or undefined when it names none. */
 export function routeOf(hash: string): Route | undefined {
   const [section, slug, ...rest] = hash.replace(/^#\/?/, '').split('/');
+  if (section === 'start') return slug === undefined ? { section: 'start' } : undefined;
   if (section === 'theme') {
     if (!slug) return rest.length ? undefined : { section: 'theme' };
     // a theme by its name, as a theme is named (THEME_NAME of design-tokens), then a mode: the

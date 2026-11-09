@@ -25,6 +25,63 @@
   padding-inline: calc(var(--spacing) * 100);
 }
 
+/*
+  The start of the page: its head and what the page is (the lead), then the opt-in of the surfaces.
+  One under the other on a narrow page; where it is wide, the lead beside the opt-in, and wider
+  still the two cards of the opt-in side by side, the families the wider: what can be done is in
+  view before the page scrolls, the levels and the preview sooner (vittorio, 2026-11-09). 64rem
+  holds the lead at a reading measure beside the cards; 90rem holds the four groups in their card
+  beside the families. Literals, since a container query reads no var().
+*/
+
+.surfaces-top {
+  align-items: start;
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+}
+
+.surfaces-lead {
+  align-content: start;
+  display: grid;
+  gap: var(--magma-rhythm-between-sections);
+}
+
+/* the head of the page and its notices in the lead: its spaces, none of their own (style.css
+   gives them those of the region, where they are its children) */
+
+.surfaces-lead > .studio-page-head,
+.surfaces-lead > .studio-notice {
+  margin: 0;
+  padding: 0;
+}
+
+.surfaces-optin {
+  align-items: start;
+  display: grid;
+  gap: var(--magma-rhythm-between-containers);
+}
+
+@container surfaces (width >= 64rem) {
+  .surfaces-top {
+    column-gap: var(--magma-rhythm-between-sections);
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  }
+
+  .surfaces-lead {
+    gap: var(--magma-rhythm-between-groups);
+  }
+}
+
+@container surfaces (width >= 90rem) {
+  .surfaces-top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  }
+
+  .surfaces-optin {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 5fr);
+  }
+}
+
 /* a card: a part of the page on a raised surface, its title and its content inside one inset */
 
 .surfaces-card {

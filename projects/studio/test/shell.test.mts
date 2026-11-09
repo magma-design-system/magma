@@ -2,6 +2,8 @@
 import { afterEach, beforeEach, expect, test, vi } from 'vitest'
 import { h, render } from 'preact'
 
+import initialConfig from '@maggioli-design-system/design-tokens/.magma-design-tokensrc.json'
+import { DRAFT_STORAGE_KEY, hashText, type StudioDraft } from '../src/draft.js'
 import { Studio } from '../src/shell.js'
 import { THEME_CHOICES_KEY, resetThemeChoices, updateThemeChoices } from '../src/theme-choices.js'
 
@@ -37,10 +39,10 @@ const links = (scope: Element | null) =>
     current: link.getAttribute('aria-current'),
   }))
 
-test('the bar names the three sections, Colors and Behavior opening their pages from a menu', async () => {
+test('the bar names the three sections, Colors and Behavior opening their pages from a menu, then Config', async () => {
   await at('#/colors/groups')
   const nav = [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')]
-  expect(nav.map((one) => one.textContent?.trim())).toEqual(['Colors', 'Theme', 'Behavior'])
+  expect(nav.map((one) => one.textContent?.trim())).toEqual(['Colors', 'Theme', 'Behavior', 'Config'])
   expect(nav[0].getAttribute('tone')).toBe('weak')
 
   const [colors, behavior] = [...root.querySelectorAll('mds-dropdown')].filter((menu) =>
@@ -64,6 +66,98 @@ test('the bar names the three sections, Colors and Behavior opening their pages 
     return found
   })
   expect(badge.getAttribute('label')).toBe('All contrasts are OK')
+})
+
+// Config, after the sections of the bar, a menu of actions (config-menu.tsx): it brings a
+// configuration in and takes it out from any section, each action with the format of what it reads
+// or hands over in a badge the click goes through; the menu of a narrow window lists them too
+test('the Config menu of the bar imports and exports the configuration from any section', async () => {
+  await at('#/theme')
+  const menu = [...root.querySelectorAll('mds-dropdown')].find(
+    (one) => String((one as { target?: string }).target ?? one.getAttribute('target')) === '#studio-config',
+  )!
+  const items = () =>
+    [...menu.querySelectorAll('.studio-config-item')].map((item) => [
+      item.querySelector('mds-button')?.getAttribute('label'),
+      item.querySelector('mds-badge')?.getAttribute('label') ?? null,
+    ])
+  await vi.waitFor(() => expect(items().length).toBeGreaterThan(0))
+  expect(items()).toEqual([
+    ['Import config', 'json'],
+    ['Copy JSON', null],
+    ['Download all tokens', 'misc'],
+    ['Download config', 'json'],
+    ['Download Figma tokens', 'DTCG'],
+    ['Download CSS tokens', 'css'],
+    ['Download GIMP palette', 'gpl'],
+  ])
+  // the format is part of the name of the action, its badge hidden
+  const figma = menu.querySelector('mds-button[data-action="figma"]')!
+  expect(figma.getAttribute('aria-label')).toBe('Download Figma tokens, DTCG')
+  expect(figma.parentElement?.querySelector('mds-badge')?.getAttribute('aria-hidden')).toBe('true')
+  // the take-outs after a separator
+  expect(menu.querySelectorAll('mds-separator').length).toBe(1)
+  // and in the menu of a narrow window
+  const narrow = root.querySelector('nav.studio-menu')!
+  expect([...narrow.querySelectorAll('.studio-config-item mds-button')].map((one) => one.getAttribute('label')))
+    .toContain('Import config')
+  // a download from the Theme section hands over its file
+  const files: string[] = []
+  vi.stubGlobal('URL', Object.assign(Object.create(URL), {
+    createObjectURL: () => 'blob:tokens',
+    revokeObjectURL: () => undefined,
+  }))
+  const click = vi
+    .spyOn(HTMLAnchorElement.prototype, 'click')
+    .mockImplementation(function (this: HTMLAnchorElement) {
+      files.push(this.download)
+    })
+  try {
+    menu.querySelector<HTMLElement>('mds-button[data-action="config"]')!.click()
+    await vi.waitFor(() => expect(files).toEqual(['magma-design-tokensrc.json']))
+  } finally {
+    click.mockRestore()
+    vi.unstubAllGlobals()
+  }
+})
+
+// The Start page comes before the sections (start.tsx): a start with no address opens it, the
+// name of the studio links back to it, and its first step opens the palette, or the page of
+// Colors the draft was on
+test('a start with no address opens the Start page, which the name of the studio links to', async () => {
+  await at('')
+  await vi.waitFor(() => expect(location.hash).toBe('#/start'))
+  const start = root.querySelector('main.start')
+  expect(start?.querySelector('mds-text[tag="h1"]')?.textContent?.trim()).toBe('The theme of your product, readable by everyone')
+  expect(root.querySelector('a.studio-product')?.getAttribute('href')).toBe('#/start')
+  // no section of the bar is the one on screen, and Config is no section
+  const nav = [...root.querySelectorAll('mds-header-bar > mds-button[slot="nav"]')]
+  expect(nav.map((one) => one.getAttribute('tone'))).toEqual(['text', 'text', 'text', 'text'])
+  expect(links(start).find(({ text }) => text === 'Open the palette')?.href).toBe('#/colors/palette')
+})
+
+test('the Start page offers to continue on the page of Colors the draft was on', async () => {
+  const draft: StudioDraft = {
+    config: initialConfig as StudioDraft['config'],
+    selectedName: 'tone.neutral',
+    view: 'scales',
+    source: { path: null, hash: hashText(JSON.stringify(initialConfig)) },
+  }
+  localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft))
+  await at('#/start')
+  const start = root.querySelector('main.start')
+  expect(links(start).find(({ text }) => text?.startsWith('Continue on'))).toEqual({
+    text: 'Continue on Contrast scales',
+    href: '#/colors/contrast-scales',
+    current: null,
+  })
+  // the page last opened, once the person has opened one
+  location.hash = '#/colors/groups'
+  await vi.waitFor(() => expect(root.querySelector('main.start')).toBeNull())
+  location.hash = '#/start'
+  await vi.waitFor(() =>
+    expect(links(root.querySelector('main.start')).map(({ text }) => text)).toContain('Continue on Groups'),
+  )
 })
 
 test('the Theme section shows the theme in a document of its own, its controls in a bar over it', async () => {
