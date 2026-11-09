@@ -320,8 +320,11 @@ test('a reference says its hue shifting is the one of its source, and opens it',
 
   magmaButton(`Open ${source}`, note)!.click()
   await vi.waitFor(() => expect(heading()).toBe(source))
-  await vi.waitFor(() =>
-    expect(document.activeElement).toBe(root.querySelector('#palette-hue-shift')),
+  // an effect moves the focus once the family renders, after the paint: on a loaded runner the
+  // engine of the renders before it can hold it past the second waitFor gives by default
+  await vi.waitFor(
+    () => expect(document.activeElement).toBe(root.querySelector('#palette-hue-shift')),
+    { timeout: 5_000 },
   )
 })
 

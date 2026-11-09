@@ -185,7 +185,8 @@ test('Replay plays it again from the problem, and the focus comes back to it at 
   await vi.waitFor(() => expect(verdict()).toMatch(/below target$/))
   await vi.waitFor(() => expect(open()).toEqual(['fixed']), { timeout: 10_000 })
   expect(verdict()).toBe('All contrasts are OK')
-  expect(document.activeElement).toBe(replay())
+  // an effect moves it, after the paint: late on a loaded runner
+  await vi.waitFor(() => expect(document.activeElement).toBe(replay()), { timeout: 5_000 })
 }, 30_000)
 
 test('with less motion asked, the play does not run by itself: the banner stands fixed, with Replay', async () => {
