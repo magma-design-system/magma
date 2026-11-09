@@ -22,6 +22,7 @@ The `<mds-card>` web component is the surface container of the Magma Design Syst
 - **The media reaches the edges it touches**: `<mds-card-media>` leaves the inset on the sides where it meets the edge of the card: both sides when the regions are stacked, the top too when no header stands above it, the top, the bottom and the start when it stands beside the content. From the other regions it stands 300, as they do from each other (`rhythm/media-bleed`).
 - **The actions stand apart**: The footer stands `--magma-rhythm-content-actions` (600) from the region before it, as the row of actions of a form or of a dialog: the actions act on the whole card, not on its last line (`rhythm/content-actions`).
 - **The footer closes the card**: The footer region sits at the bottom of the card whatever the other regions are. When the card is taller than its parts (a media taller than header and footer together, or a grid row that stretches a set of cards to one height) and there is no content to take the free space, that space stays above the footer, in the card's background.
+- **The card sets the text of its own surface**: It paints `surface-raised` and sets its `color` to `text-default`, the pair the contrast gate measures, so its regions inherit the text of the card, not the colour of what the card stands on: on a band of colour (`surfaces/intro-band`) its text keeps reading without a reset. A `text-*` class or a `color` on the host still wins.
 - **Slot regions are fixed**: Only the four named regions are rendered; there is no default (unnamed) slot, so loose text or elements without a recognized slot/tag are not laid out.
 
 #### Properties & Visual Configurations
@@ -30,7 +31,7 @@ The `<mds-card>` web component is the surface container of the Magma Design Syst
 
 - **`disableAutoGrid`** (default `false`) toggles the intrinsic responsive grid. Leave it off to let the card own the placement and reflow of its regions; set it to opt out of the managed grid and lay the slotted content out yourself.
 
-The inset and the gap follow the rhythm roles, so a density theme moves them with every other space. `--mds-card-padding` and `--mds-card-gap` override them for a set of cards, with another rhythm role, never a step; the background of the card and of its regions is `--mds-card-background`.
+The inset and the gap follow the rhythm roles, so a density theme moves them with every other space. `--mds-card-padding` and `--mds-card-gap` override them for a set of cards, with another rhythm role, never a step; the background of the card and of its regions is `--mds-card-background`, its text `--mds-card-color`: set them together, so the text keeps reading on the surface.
 
 
 ### 2. Examples
@@ -168,12 +169,17 @@ Set `disable-auto-grid` to opt out of the managed responsive grid. The regions s
 
 #### Styling Customization via CSS Custom Properties
 
-The card already takes its inset and its gap from the rhythm roles (`--magma-rhythm-inset`, `--magma-rhythm-title-content`), and a density theme moves them. Set `--mds-card-gap` and `--mds-card-padding` on the host or a parent selector only to give a set of cards another relation of the rhythm, written as its role, never as a step. `--mds-card-background` recolors the card and its regions together; name a surface role so dark mode keeps working.
+The card already takes its inset and its gap from the rhythm roles (`--magma-rhythm-inset`, `--magma-rhythm-title-content`), and a density theme moves them. Set `--mds-card-gap` and `--mds-card-padding` on the host or a parent selector only to give a set of cards another relation of the rhythm, written as its role, never as a step. `--mds-card-background` recolors the card and its regions together, `--mds-card-color` their text (`text-default` by default); name a surface role and the text role that reads on it, so dark mode keeps working.
 
 ```css
 .scheda-dati mds-card {
   --mds-card-gap: var(--magma-rhythm-between-fields);
   --mds-card-background: rgb(var(--magma-surface-overlay));
+}
+
+.scheda-invertita mds-card {
+  --mds-card-background: rgb(var(--magma-surface-inverse));
+  --mds-card-color: rgb(var(--magma-on-inverse));
 }
 ```
 
@@ -236,7 +242,7 @@ Compound children (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds
 
 #### Do Not Pierce the Shadow DOM with Undocumented Selectors
 
-The only supported customization surface is `--mds-card-background`, `--mds-card-gap`, `--mds-card-padding`, and `::part(layout)`. Targeting internal class names with `>>>`, `/deep/`, or any selector that reaches inside the shadow root couples your code to implementation details and will break on minor releases.
+The only supported customization surface is `--mds-card-background`, `--mds-card-color`, `--mds-card-gap`, `--mds-card-padding`, and `::part(layout)`. Targeting internal class names with `>>>`, `/deep/`, or any selector that reaches inside the shadow root couples your code to implementation details and will break on minor releases.
 
 ```css
 /* INCORRECT */
@@ -367,11 +373,12 @@ The card pads its regions once, with its inset. A padding on a region, or on a p
 
 ## CSS Custom Properties
 
-| Name                    | Description                                                                                                                                                                             |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-card-background` | Public. Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`)                                           |
-| `--mds-card-gap`        | Public. Sets the space between the regions of the card, `--magma-rhythm-title-content` by default; the footer keeps at least `--magma-rhythm-content-actions` from the region before it |
-| `--mds-card-padding`    | Public. Sets the inset of the card, shared by its regions, `--magma-rhythm-inset` by default; the media region reaches out of it to the edges it touches                                |
+| Name                    | Description                                                                                                                                                                                  |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--mds-card-background` | Public. Sets the background color of the card and of its regions (`mds-card-header`, `mds-card-media`, `mds-card-content`, `mds-card-footer`)                                                |
+| `--mds-card-color`      | Public. Sets the text color of the card, inherited by its regions, `--magma-text-default` by default: set it together with `--mds-card-background`, so the text keeps reading on the surface |
+| `--mds-card-gap`        | Public. Sets the space between the regions of the card, `--magma-rhythm-title-content` by default; the footer keeps at least `--magma-rhythm-content-actions` from the region before it      |
+| `--mds-card-padding`    | Public. Sets the inset of the card, shared by its regions, `--magma-rhythm-inset` by default; the media region reaches out of it to the edges it touches                                     |
 
 
 ----------------------------------------------
