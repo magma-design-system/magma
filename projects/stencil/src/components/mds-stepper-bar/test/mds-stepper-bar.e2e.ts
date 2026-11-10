@@ -94,4 +94,20 @@ describe('mds-stepper-bar', () => {
       expect(items[0]).toHaveAttribute('current');
     });
   });
+
+  // the id is the page's: a label association or a deep link points at it (#680, entry 33)
+  it('keeps the id of an item written in the markup, and writes none of its own', async () => {
+    const { root, waitForChanges } = await render<HTMLMdsStepperBarElement>(`
+      <mds-stepper-bar items-done="2">
+        <mds-stepper-bar-item id="step-account" value="first" label="First"></mds-stepper-bar-item>
+        <mds-stepper-bar-item value="second" label="Second"></mds-stepper-bar-item>
+      </mds-stepper-bar>
+    `);
+    await waitForChanges();
+    const items = root.querySelectorAll('mds-stepper-bar-item');
+
+    expect(items[0].id).toBe('step-account');
+    expect(items[1]).not.toHaveAttribute('id');
+    expect(document.getElementById('step-account')).toBe(items[0]);
+  });
 });
