@@ -6,6 +6,10 @@
 #   https://magma-design-system.github.io/magma/studio/, the address the docs
 #   site links to (decided on #693 "On the site", 2026-11-06).
 #
+# Both folders are addresses magma ships: `storybook` and `studio` at the top of
+# its documentation.json (projects/stencil/scripts/story-titles-lib.ts, #1294).
+# Moving one moves them: story-titles-lib.spec.ts fails until they agree.
+#
 # The previous host of the Storybook (magma.maggiolicloud.it, .deploy/) needs a
 # runner inside the Maggioli network and stopped updating with the move away
 # from GitLab CI.

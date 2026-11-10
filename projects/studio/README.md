@@ -264,6 +264,12 @@ same run. The docs site links to it; a page links to a page of the studio by its
 `studio/#/colors/palette` or `studio/#/theme`. Mounting the studio inside a page of the docs site
 (#693 "On the site", #695 "Two hosts, one app") is a later step.
 
+Magma says this address to whoever installs it: `studio` at the top of its `documentation.json`
+(`STUDIO_URL` of `projects/stencil/scripts/story-titles-lib.ts`, #1294), for the docs site and the
+agents of the products; the agent guide of theming links it too. Moving the studio moves the folder of `deploy-site.yml`, the
+`og:url` of `index.html` and that constant together: `story-titles-lib.spec.ts` fails on the
+first two out of step with the third.
+
 GitHub Pages serves files only, so `nx run studio:build.site` (`site.ts`) writes into
 `dist-site/` the build with, beside its pages, the files `fileOf` serves to the dev server:
 

@@ -25,7 +25,11 @@ keep in step.
   methods, slots, parts, and the CSS custom properties with their contract (`visibility`
   public or internal, `static`). Beside them, where each component is in the published
   Storybook: `storybook` at the top is its address, `storybook` on a component the id of its
-  docs page, which opens at `<storybook>?path=/docs/<id>` (#1148). And `usage` on each
+  docs page, which opens at `<storybook>?path=/docs/<id>` (#1148). Beside it, `studio` is the
+  address of the published studio, whose pages open at `<studio>#/<page>` (`#/theme`,
+  `#/colors/palette`, #1294). Both are folders of the GitHub Pages site of the repository, where
+  `deploy-site.yml` publishes the site of `main`, and both stand at the top of the
+  `documentation.json` of each component too. And `usage` on each
   component: its hand-written files, keyed by the file name without `.md`, `1. Description`,
   `2. Examples` and `3. Mistakes` (the number only sets the order; `USAGE_FILES` in
   `projects/stencil/scripts/agent-docs-lib.ts`), their links rewritten for the shipped layout.
@@ -36,7 +40,9 @@ keep in step.
   `projects/stencil/scripts/component-docs.ts`, which moves the public mark of each `@prop`
   into `visibility` and `static`, and reads the Storybook ids from the stories files
   (`scripts/story-titles-lib.ts`, the id of the meta or its title, through Storybook's own
-  `toId`).
+  `toId`). The addresses at the top are `PUBLISHED_SITE` of the same file: the Pages site read
+  from `repository.url` of the package, the folders the ones `deploy-site.yml` moves the two
+  builds into.
 - **Contract**: [`projects/stencil/SPEC.md`](../projects/stencil/SPEC.md), "Authoring rules"
   (the styling API and the public mark) and "Per-component usage docs" (the usage files);
   [`docs/ARCHITECTURE.md`](ARCHITECTURE.md), 3.5.
@@ -48,11 +54,16 @@ keep in step.
   `usage` in
   `src/loaders/components.ts` of `magma-design-system/docs`: the description is the overview of
   a component, the other two its sub-pages, and the first example its preview; it leaves out a
-  name it does not know.
+  name it does not know. It links the Storybook from `storybook`, and the studio from a
+  constant of its own (`STUDIO` in `src/lib/nav.mjs`) until a release of magma carries
+  `studio`.
 - **Held by**: `component-docs.ts` fails the build on a mark it cannot read
   (`style-contract-lib.spec.ts`), on a component with no Storybook page of its own
   (`story-titles-lib.spec.ts`) and on a usage file outside `USAGE_FILES`
   (`agent-docs-lib.spec.ts`); `check.usage-docs`; `check.api-snapshot`.
+  `story-titles-lib.spec.ts` holds `storybook` and `studio` to the folders of `deploy-site.yml`,
+  the studio to the `og:url` of its page and to its link in `docs/agents/theming.md`, and reads
+  both in the built file.
 
 ## `magma.api.txt` (magma)
 
