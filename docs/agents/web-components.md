@@ -83,8 +83,14 @@ location.
 Before components hydrate (see [`assets.md`](assets.md) section 3):
 
 ```javascript
-window.sessionStorage.setItem('mdsIconSvgPath', '/svg/');
+import { IconsSetService } from '@maggioli-design-system/magma';
+
+IconsSetService.setSvgPath('/svg/');
 ```
+
+Without a bundler, import it from the served `dist/index.js` (the same module), or set
+the `mdsIconSvgPath` key of `sessionStorage`, which needs no import where the browser
+allows storage.
 
 Serve the icons at that path with one of the routes of [`assets.md`](assets.md) section 3
 (iconsauce or the copy script, which also install the icon packages): with Vite the
@@ -163,8 +169,9 @@ merging into what the project already has, and run both after every change.
   pointless; never call it after manually defining the same tags.
 - Do not mix `/loader` and `/components` in the same app: they are two separate
   builds of the same components, and loading both doubles the bytes.
-- `mdsIconSvgPath` must be set before the first `mds-icon` renders, or icons will
-  fetch from the wrong path. If you set it late, dispatch
+- Set the icon path before the first `mds-icon` renders, or icons will fetch from the
+  wrong path. `IconsSetService.setSvgPath()` reloads the icons already mounted; after a
+  late write of the `sessionStorage` key, dispatch
   `window.dispatchEvent(new CustomEvent('mdsIconSvgPathUpdate'))` to refresh.
 - The default slot accepts plain text only unless a component's own `AGENTS.md` says
   otherwise - see [`conventions.md`](conventions.md).

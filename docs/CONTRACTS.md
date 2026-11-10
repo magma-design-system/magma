@@ -141,9 +141,10 @@ keep in step.
 
 - **What**: where `mds-icon` fetches the SVG files from.
 - **Produced by**: `IconsSetService`
-  (`projects/stencil/src/components/mds-icon/services/icons-set.service.ts`), which reads
-  `setSvgPath()` (of the service, or the method of an `mds-icon`) and, as a fallback, the
-  `mdsIconSvgPath` key of `sessionStorage`. Nothing else.
+  (`projects/stencil/src/components/mds-icon/services/icons-set.service.ts`, exported from the
+  package root), which reads `setSvgPath()` (of the service, or the method of an `mds-icon`)
+  and, as a fallback, the `mdsIconSvgPath` key of `sessionStorage`. Nothing else; the order
+  between them is in the JSDoc of `IconsSetController`.
 - **Contract**: the `mds-icon` usage docs, `2. Examples.md`;
   [`docs/agents/assets.md`](agents/assets.md), "Tell mds-icon where the icons are".
 - **Read by**: the MCP `check_setup` (`icon-path`).

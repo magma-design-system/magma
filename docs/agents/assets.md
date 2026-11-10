@@ -297,15 +297,16 @@ the Angular CLI that is an `assets` entry in `angular.json`:
 Set the public URL of the folder the icons are served from, before the first `mds-icon`
 renders. Two ways:
 
-- `IconsSetService.setSvgPath('/svg/')`, imported from
-  `@maggioli-design-system/magma/services` (recommended): sets the path in code, without
-  `sessionStorage`, and reloads the icons already mounted.
-- the `mdsIconSvgPath` key in `sessionStorage`, a one-liner the install tracks use. Some
+- `IconsSetService.setSvgPath('/svg/')`, imported from `@maggioli-design-system/magma`
+  (recommended): sets the path in code, without `sessionStorage`, wins over the key below
+  and reloads the icons already mounted. On a server it stores nothing: call it in code the
+  browser runs. `@maggioli-design-system/magma/services` is the same module.
+- the `mdsIconSvgPath` key in `sessionStorage`, a one-liner that needs no import. Some
   browsers block storage (private windows, sandboxed iframes, storage partitioning): there
   only `IconsSetService` works.
 
 ```javascript
-import { IconsSetService } from '@maggioli-design-system/magma/services';
+import { IconsSetService } from '@maggioli-design-system/magma';
 
 IconsSetService.setSvgPath('/svg/');
 // or: window.sessionStorage.setItem('mdsIconSvgPath', '/svg/');

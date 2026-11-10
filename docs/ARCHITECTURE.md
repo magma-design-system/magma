@@ -175,11 +175,13 @@ Asset categories:
 
 ### 2.3 `svg-icons`
 
-The full SVG icon library. Icons are referenced by filename slug inside components via the `icon` prop. The `mds-icon` component fetches them at runtime from a path configured via `sessionStorage`.
+The full SVG icon library. Icons are referenced by filename slug inside components via the `icon` prop. The `mds-icon` component fetches them at runtime from a path the consumer sets once with `IconsSetService.setSvgPath()` (the `mdsIconSvgPath` key of `sessionStorage` still works where the browser allows storage).
 
 ```javascript
 // Required setup in every consumer application
-window.sessionStorage.setItem('mdsIconSvgPath', 'assets/img/svg/');
+import { IconsSetService } from '@maggioli-design-system/magma';
+
+IconsSetService.setSvgPath('/svg/');
 ```
 
 Icons follow a semantic slug naming convention (e.g. `action-email-send`, `status-warning`). See `projects/svg-icons/svg/` for the full list.

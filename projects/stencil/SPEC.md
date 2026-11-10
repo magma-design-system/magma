@@ -16,8 +16,8 @@ Every published entry point is tree-shakeable except the lazy loader, which regi
 | `magma`         | `/components/mds-button.js`                                       | one component per file                                                                             | ✅                                |
 | `magma`         | `/loader`                                                         | `defineCustomElements()`, registers everything lazily                                              | ❌ by design                      |
 | `magma`         | `/hydrate`                                                        | `renderToString()` for SSR (server-only bundle)                                                    | ❌ by design (server bundle)      |
-| `magma`         | `.`                                                               | lazy runtime + `IconsSetService`, `NavigationService` (no components)                              | n/a                               |
-| `magma`         | `/services`                                                       | `IconsSetService`, `NavigationService`                                                             | n/a                               |
+| `magma`         | `.`                                                               | lazy runtime + `IconsSetService`, `NavigationService` (no components), types of the components     | n/a                               |
+| `magma`         | `/services`                                                       | the same module as `.`, for code written against it                                                | n/a                               |
 | `magma`         | `/AGENTS.md`, `/agents/*`                                         | the agent docs (install guide, `docs/agents/` fragments)                                           | n/a                               |
 | `magma`         | `/dist/documentation.json`, `/dist/collection/components/<tag>/*` | the docs JSON, and per component `AGENTS.md`, `examples.md`, `mistakes.md`, `documentation.json` | n/a                               |
 | `magma-react`   | `.`                                                               | barrel of `Mds*` React wrappers                                                                    | ✅                                |
@@ -36,6 +36,8 @@ import { MdsButton } from '@maggioli-design-system/magma-react';
 // Angular - standalone, self-registering
 import { MdsButton } from '@maggioli-design-system/magma-angular';
 ```
+
+The guides import the services from `.`, not from `/services`: TypeScript reads the types of the root under every `moduleResolution`, those of a subpath of `exports` only under one that reads that field (`node10` does not). The root re-exports the types of the components too, as types only, so it gives what `dist/types/components.d.ts` gave before ([`src/index.ts`](src/index.ts)).
 
 ### What keeps this working
 
@@ -124,7 +126,7 @@ At build time iconsauce emits the resolved icons through one of two output strat
 1. **Single icon font** bundling every referenced icon, or
 2. **Reorganised SVG files** mirroring the slug path - `mi/baseline/close` becomes `public/assets/mi/baseline/close.svg`
 
-**Magma uses strategy 2** (files). At runtime, `mds-icon` fetches `<mdsIconSvgPath><slug>.svg` from a path the host app configures (recommended via `sessionStorage` - see [`src/components/mds-icon/readme.md`](src/components/mds-icon/readme.md) for the `IconsSetService.setSvgPath` / `setSvgPath` / `mdsIconSvgPathUpdate` alternatives).
+**Magma uses strategy 2** (files). At runtime, `mds-icon` fetches `<mdsIconSvgPath><slug>.svg` from a path the host app configures: `IconsSetService.setSvgPath()`, imported from the package root, is the recommended way; the `mdsIconSvgPath` key of `sessionStorage` and the `setSvgPath` method of an element are the alternatives, and the `mdsIconSvgPathUpdate` event reloads the mounted icons after a late write of the key (see [`src/components/mds-icon/readme.md`](src/components/mds-icon/readme.md); the order between them is in the JSDoc of `IconsSetController`).
 
 ### Why iconsauce (not inline SVG or direct icon-lib imports)
 
@@ -147,7 +149,9 @@ Never inline `<svg>` literals in a component template, and never import from an 
 Minimum host-app setup:
 
 ```javascript
-window.sessionStorage.setItem('mdsIconSvgPath', '/svg/');
+import { IconsSetService } from '@maggioli-design-system/magma';
+
+IconsSetService.setSvgPath('/svg/');
 ```
 
 `mds-icon` also accepts a base64-encoded data URI or a raw `<svg>` string as `name`, for dynamic icons coming from an API.
