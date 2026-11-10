@@ -24,6 +24,80 @@ describe('mds-dropdown', () => {
     expect(root).toHaveAttribute('hydrated');
   });
 
+  // #1336: the native offsetParent never returns a node of a shadow tree the panel is not in, so
+  // a panel held by a positioned part of a component (the window of mds-modal, the menu of
+  // mds-header) was placed against the page, as far from its caller as the part is from the page
+  describe('placed under its caller', () => {
+    const PANEL =
+      '<mds-dropdown id="panel" target="#caller" placement="bottom" disable-auto-placement visible>Panel</mds-dropdown>';
+    // a part of a component away from the corner of the page, positioned, that slots its children
+    if (!customElements.get('test-positioned-part')) {
+      customElements.define(
+        'test-positioned-part',
+        class extends HTMLElement {
+          constructor() {
+            super();
+            this.attachShadow({ mode: 'open' }).innerHTML =
+              '<div style="position: relative; margin: 100px 0 0 300px; height: 300px"><slot></slot></div>';
+          }
+        },
+      );
+    }
+    // a control that keeps its caller and its panel in its own shadow root, as mds-pref-language
+    if (!customElements.get('test-shadow-control')) {
+      customElements.define(
+        'test-shadow-control',
+        class extends HTMLElement {
+          constructor() {
+            super();
+            this.attachShadow({ mode: 'open' }).innerHTML =
+              `<mds-button id="caller" label="Open"></mds-button>${PANEL}`;
+          }
+        },
+      );
+    }
+
+    const expectUnder = async (scope: ParentNode): Promise<void> => {
+      const caller = scope.querySelector('#caller') as HTMLElement;
+      const panel = scope.querySelector('#panel') as HTMLElement;
+      await vi.waitFor(() => {
+        expect(panel).toHaveAttribute('data-floating-placed');
+      });
+      // the opening scales the panel: measured mid-way it reads off the place it was given
+      panel.getAnimations({ subtree: true }).forEach((animation) => animation.finish());
+      const from = caller.getBoundingClientRect();
+      const box = panel.getBoundingClientRect();
+      expect(Math.abs(box.left + box.width / 2 - (from.left + from.width / 2))).toBeLessThan(2);
+      expect(box.top).toBeGreaterThanOrEqual(from.bottom);
+      expect(box.top - from.bottom).toBeLessThan(40);
+    };
+
+    // away from the edge of the page, as the parts below, so no shift moves the panel
+    it('in a positioned box of the page', async () => {
+      const { root } = await render(
+        `<div style="position: relative; margin: 100px 0 0 300px; height: 300px"><mds-button id="caller" label="Open"></mds-button>${PANEL}</div>`,
+      );
+
+      await expectUnder(root);
+    });
+
+    it('slotted into a positioned part of a shadow tree', async () => {
+      const { root } = await render(
+        `<test-positioned-part><mds-button id="caller" label="Open"></mds-button>${PANEL}</test-positioned-part>`,
+      );
+
+      await expectUnder(root);
+    });
+
+    it('in the shadow root of a control slotted into a positioned part', async () => {
+      const { root } = await render(
+        '<test-positioned-part><test-shadow-control></test-shadow-control></test-positioned-part>',
+      );
+
+      await expectUnder(root.querySelector('test-shadow-control')!.shadowRoot!);
+    });
+  });
+
   describe('opening pivot', () => {
     it('places a dropdown that is visible from the markup', async () => {
       const { root } = await stage(

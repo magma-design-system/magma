@@ -7,6 +7,7 @@ import {
   MiddlewareData,
   offset,
   Placement,
+  platform,
   shift,
 } from '@floating-ui/dom';
 import { FloatingUIPlacement, FloatingUIRelation, FloatingUIStrategy } from '@type/floating-ui';
@@ -59,6 +60,47 @@ const HASPOPUP_ROLES = ['dialog', 'grid', 'listbox', 'menu', 'tree'];
  */
 const CALLER_ROLES = ['button', 'combobox', 'link', 'menuitem', 'tab', 'treeitem'];
 const NATIVE_CALLERS = ['A', 'BUTTON', 'INPUT', 'SELECT', 'SUMMARY', 'TEXTAREA'];
+
+/** The parent of a node where the layout finds it: the slot it is assigned to, the host of its shadow root. */
+const flatTreeParent = (node: Node): Node | null => {
+  if (node instanceof Element && node.assignedSlot) return node.assignedSlot;
+  if (node.parentNode instanceof ShadowRoot) return node.parentNode.host;
+  return node.parentNode;
+};
+
+/**
+ * The offset parent of an element in the composed tree, the box the layout places it against: the
+ * nearest ancestor across slots and shadow roots that is positioned or filtered, else `body`; none
+ * when an ancestor is not displayed. The native `offsetParent` never returns a node of a shadow tree
+ * the element is not inside, so a panel slotted into a positioned part of a component (the window
+ * of mds-modal, the menu of mds-header) or rendered in the shadow root of a control slotted there
+ * (mds-pref-language in that menu) was placed against the page while that part held it, and landed
+ * as far from its caller as the part is from the page (#1336). Floating UI takes such a function in
+ * place of the native property (`platform.getOffsetParent`, "Shadow DOM" in its docs); the rule is
+ * the one of composed-offset-position, the ponyfill those docs point to, written here instead of a
+ * dependency. Floating UI then skips the static table elements and falls back to the containing
+ * block, as it does with the native one.
+ */
+export const composedOffsetParent = (element: Element): Element | null => {
+  for (let node: Node | null = element; node; node = flatTreeParent(node)) {
+    if (node instanceof Element && getComputedStyle(node).display === 'none') return null;
+  }
+  for (let node = flatTreeParent(element); node; node = flatTreeParent(node)) {
+    if (!(node instanceof Element)) continue;
+    const style = getComputedStyle(node);
+    // a node with display: contents is no box of the layout
+    if (style.display === 'contents') continue;
+    if (style.position !== 'static' || style.filter !== 'none') return node;
+    if (node.tagName === 'BODY') return node;
+  }
+  return null;
+};
+
+/** The platform of Floating UI with the offset parent of the composed tree. */
+const composedPlatform = {
+  ...platform,
+  getOffsetParent: (element: Element) => platform.getOffsetParent(element, composedOffsetParent),
+};
 
 export class FloatingController {
   private _caller: HTMLElement;
@@ -364,6 +406,7 @@ export class FloatingController {
     computePosition(this._caller, this._host, {
       middleware,
       placement: this._host.placement,
+      platform: composedPlatform,
       strategy: this._host.strategy,
     }).then(({ x, y, placement, middlewareData }) => {
       // The first placement must land instantly: until it happens the panel has no
