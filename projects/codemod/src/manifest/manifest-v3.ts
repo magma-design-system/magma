@@ -354,6 +354,15 @@ export const removals: Record<string, Rule[]> = {
   // `deletable` was the old name of `dismissible` on three components only
   // (#1145): `mds-chip`, `mds-note` and the others keep it, they remove a value.
   'mds-banner': [deletableToDismissible()],
+  // the two old names of the colour of the selected item, both read as fallbacks of the new one
+  'mds-breadcrumb': [
+    'mds-breadcrumb-button-color-current',
+    'mds-breadcrumb-current-button-color',
+  ].map((from): Rule => ({
+    kind: 'cssVarRename',
+    from,
+    to: 'mds-breadcrumb-button-color-selected',
+  })),
   'mds-push-notification-item': [deletableToDismissible()],
   // a number in `size` was the row count of the list, which is `rows` since magma 2.3.0; `size`
   // keeps the height of the field, `sm`, `md`, `lg`

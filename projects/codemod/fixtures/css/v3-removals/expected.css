@@ -1,0 +1,8 @@
+/* the old names of the colour of the selected item of a breadcrumb */
+mds-breadcrumb.brand {
+  --mds-breadcrumb-button-color-selected: var(--magma-accent-fg);
+}
+
+mds-breadcrumb.legacy {
+  --mds-breadcrumb-button-color-selected: var(--magma-text-default);
+}

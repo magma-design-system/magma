@@ -256,18 +256,16 @@ mds-breadcrumb::part(back) {
 
 ## CSS Custom Properties
 
-| Name                                          | Description                                                                                                                                  |
-| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--mds-breadcrumb-arrow-depth-color`          | Sets the color of the arrow icon that separates buttons                                                                                      |
-| `--mds-breadcrumb-button-background`          | Sets the background color of the button                                                                                                      |
-| `--mds-breadcrumb-button-background-disabled` | Sets the background color of the back arrow button when it's disabled, on the first item                                                     |
-| `--mds-breadcrumb-button-background-hover`    | Sets the background color of the button when the mouse is over it                                                                            |
-| `--mds-breadcrumb-button-background-selected` | Sets the background color of the button of the selected item                                                                                 |
-| `--mds-breadcrumb-button-color`               | Sets the text color of the button                                                                                                            |
-| `--mds-breadcrumb-button-color-current`       | Deprecated, use `--mds-breadcrumb-button-color-selected`; read only when that one is not set                                                 |
-| `--mds-breadcrumb-button-color-hover`         | Sets the text color of the button when the mouse is over it                                                                                  |
-| `--mds-breadcrumb-button-color-selected`      | Sets the text color of the button of the selected item                                                                                       |
-| `--mds-breadcrumb-current-button-color`       | Deprecated, use `--mds-breadcrumb-button-color-selected`; read only when neither that one nor `--mds-breadcrumb-button-color-current` is set |
+| Name                                          | Description                                                                              |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `--mds-breadcrumb-arrow-depth-color`          | Sets the color of the arrow icon that separates buttons                                  |
+| `--mds-breadcrumb-button-background`          | Sets the background color of the button                                                  |
+| `--mds-breadcrumb-button-background-disabled` | Sets the background color of the back arrow button when it's disabled, on the first item |
+| `--mds-breadcrumb-button-background-hover`    | Sets the background color of the button when the mouse is over it                        |
+| `--mds-breadcrumb-button-background-selected` | Sets the background color of the button of the selected item                             |
+| `--mds-breadcrumb-button-color`               | Sets the text color of the button                                                        |
+| `--mds-breadcrumb-button-color-hover`         | Sets the text color of the button when the mouse is over it                              |
+| `--mds-breadcrumb-button-color-selected`      | Sets the text color of the button of the selected item                                   |
 
 
 ## Dependencies

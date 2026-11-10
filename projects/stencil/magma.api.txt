@@ -195,10 +195,8 @@ mds-breadcrumb css --mds-breadcrumb-button-background-disabled INTERNAL
 mds-breadcrumb css --mds-breadcrumb-button-background-hover INTERNAL
 mds-breadcrumb css --mds-breadcrumb-button-background-selected INTERNAL
 mds-breadcrumb css --mds-breadcrumb-button-color INTERNAL
-mds-breadcrumb css --mds-breadcrumb-button-color-current INTERNAL
 mds-breadcrumb css --mds-breadcrumb-button-color-hover INTERNAL
 mds-breadcrumb css --mds-breadcrumb-button-color-selected INTERNAL
-mds-breadcrumb css --mds-breadcrumb-current-button-color INTERNAL
 mds-breadcrumb-item encapsulation shadow
 mds-breadcrumb-item prop label (attr label) [reflect]: string | undefined
 mds-breadcrumb-item prop selected (attr selected) [reflect, mutable]: boolean | undefined

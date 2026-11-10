@@ -6,11 +6,9 @@
  * @prop --mds-breadcrumb-button-background-hover: Sets the background color of the button when the mouse is over it
  * @prop --mds-breadcrumb-button-background-selected: Sets the background color of the button of the selected item
  * @prop --mds-breadcrumb-button-background: Sets the background color of the button
- * @prop --mds-breadcrumb-button-color-current: Deprecated, use `--mds-breadcrumb-button-color-selected`; read only when that one is not set
  * @prop --mds-breadcrumb-button-color-hover: Sets the text color of the button when the mouse is over it
  * @prop --mds-breadcrumb-button-color-selected: Sets the text color of the button of the selected item
  * @prop --mds-breadcrumb-button-color: Sets the text color of the button
- * @prop --mds-breadcrumb-current-button-color: Deprecated, use `--mds-breadcrumb-button-color-selected`; read only when neither that one nor `--mds-breadcrumb-button-color-current` is set
  */
 
 :host {
@@ -20,12 +18,7 @@
   --mds-breadcrumb-button-background-selected: var(--magma-wash-base);
   --mds-breadcrumb-button-background: transparent;
   --mds-breadcrumb-button-color-hover: var(--magma-text-default);
-
-  /* the two deprecated names of the selected colour are read only when an author sets them */
-  --mds-breadcrumb-button-color-selected: var(
-    --mds-breadcrumb-button-color-current,
-    var(--mds-breadcrumb-current-button-color, var(--magma-text-default))
-  );
+  --mds-breadcrumb-button-color-selected: var(--magma-text-default);
   --mds-breadcrumb-button-color: var(--magma-text-default);
 
   @apply hide-scrollbar;
