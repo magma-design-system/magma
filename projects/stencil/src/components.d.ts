@@ -8694,7 +8694,7 @@ declare namespace LocalJSX {
          */
         "interactive"?: boolean;
         /**
-          * Emits when the selection of a `selectable` table changes, with the index and the value of each selected row
+          * Emits when the selection of a `selectable` table changes, with the index and the value of each selected row. It announces changes only: not the rows that arrive already `selected` (in the markup on load, or rendered later), which the table counts all the same, as a native control fires no `change` for its initial value
          */
         "onMdsTableSelectionChange"?: (event: MdsTableCustomEvent<MdsTableSelectionEventDetail>) => void;
         /**

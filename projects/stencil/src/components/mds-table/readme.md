@@ -17,8 +17,8 @@ The `<mds-table>` web component is the root container of the Magma Design System
 
 - **Compound parent**: The default slot must hold `mds-table-header` / `mds-table-body` / `mds-table-footer`; `<mds-table>` pushes its own `interactive` and `selectable` state onto every `mds-table-row` and the header/body. It is not used standalone.
 - **Selection model**: When `selectable` is set, rows expose a checkbox; the component aggregates the selected rows, mirrors the count to the header's tristate control, and flags that a selection exists so it is visible to CSS and consumers.
-- **Selection event**: Emits `mdsTableSelectionChange` (bubbles, composed) carrying `{ rows }`, an array of `{ index, value }` for every selected row. It follows every change of a row's `selected`, from its checkbox or from code, and `selectAll(select?)`; changes made together are announced once. Both are no-ops unless `selectable` is true.
-- **Live children**: Rows added or removed at runtime are re-wired with the table's interactive and selectable state, so dynamically added rows behave consistently.
+- **Selection event**: Emits `mdsTableSelectionChange` (bubbles, composed) carrying `{ rows }`, an array of `{ index, value }` for every selected row. It follows every change of a row's `selected`, from its checkbox or from code, and `selectAll(select?)`; changes made together are announced once. Rows that arrive already `selected` (in the markup on load, or rendered later) are counted but not announced, as a native control fires no `change` for its initial value. Both are no-ops unless `selectable` is true.
+- **Live children**: Rows added or removed at runtime are re-wired with the table's interactive and selectable state and counted in the selection, so dynamically added rows behave consistently.
 - **Action overflow**: When rows carry a `[slot="action"]`, rows flip into an overlaid-action mode once content exceeds the visible width. Rows and actions added after the first load are followed too: the header gains its Actions column and the new rows the overlay.
 - **Localization**: Resolves its display language from the page (`<html lang>`: `el`/`en`/`es`/`it`, otherwise `en`) for the batch-actions label.
 
@@ -233,6 +233,27 @@ Set `selectable` to add a checkbox to each row. Listen for `mdsTableSelectionCha
     // e.detail.rows => [{ index: 0, value: 'usr-001' }, ...]
   });
 </script>
+```
+
+#### Rows Selected on Load
+
+Write `selected` on the rows that start selected, such as a selection the page restores. The table counts them when it loads, as after a click: the header box turns indeterminate (checked when every row is selected) and the bar of the batch actions shows how many. Rows rendered later already `selected` are counted the same way. `mdsTableSelectionChange` is not emitted for them, as a native control fires no `change` for its initial value: the application wrote them, so it already knows them.
+
+```html
+<mds-table selectable>
+  <mds-table-header>
+    <mds-table-header-cell label="Pratica"></mds-table-header-cell>
+  </mds-table-header>
+  <mds-table-body>
+    <mds-table-row value="2026/0097" selected>
+      <mds-table-cell><mds-text typography="detail">Iscrizione anagrafica</mds-text></mds-table-cell>
+    </mds-table-row>
+    <mds-table-row value="2026/0094">
+      <mds-table-cell><mds-text typography="detail">Certificato di residenza</mds-text></mds-table-cell>
+    </mds-table-row>
+  </mds-table-body>
+  <mds-button slot="batch-action" variant="primary" tone="outline" size="sm">Archivia</mds-button>
+</mds-table>
 ```
 
 #### Programmatic Select All
@@ -523,9 +544,9 @@ Selection state is communicated via the `mdsTableSelectionChange` custom event. 
 
 ## Events
 
-| Event                     | Description                                                                                                 | Type                                        |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| `mdsTableSelectionChange` | Emits when the selection of a `selectable` table changes, with the index and the value of each selected row | `CustomEvent<MdsTableSelectionEventDetail>` |
+| Event                     | Description                                                                                                                                                                                                                                                                                                                      | Type                                        |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| `mdsTableSelectionChange` | Emits when the selection of a `selectable` table changes, with the index and the value of each selected row. It announces changes only: not the rows that arrive already `selected` (in the markup on load, or rendered later), which the table counts all the same, as a native control fires no `change` for its initial value | `CustomEvent<MdsTableSelectionEventDetail>` |
 
 
 ## Methods

@@ -366,6 +366,114 @@ describe('mds-table', () => {
       expect(seen).toEqual([['uno']]);
     });
   });
+
+  // a row written with `selected` showed its box ticked, but the table counted only the changes
+  // of `selected`: the header box and the bar waited for the first click (#1230). The rows that
+  // arrive selected are counted and not announced, as a native control fires no `change` for its
+  // initial value.
+  describe('rows that arrive already selected', () => {
+    const withSelected = (...values: string[]): string =>
+      values.reduce(
+        (html, value) =>
+          html.replace(
+            `<mds-table-row value="${value}">`,
+            `<mds-table-row value="${value}" selected>`,
+          ),
+        TABLE,
+      );
+
+    const headerBox = (root: HTMLElement): HTMLMdsInputSwitchElement | null =>
+      root.querySelector('mds-table-header')!.shadowRoot!.querySelector('mds-input-switch');
+
+    const bar = (root: HTMLElement): Element =>
+      root.shadowRoot!.querySelector('.batch-actions-wrapper')!;
+
+    // on the document, from before the table loads: render() resolves after it
+    const seen: string[][] = [];
+    const listener = (event: Event): void => {
+      seen.push(
+        (event as CustomEvent<{ rows: { value: string }[] }>).detail.rows.map((row) => row.value),
+      );
+    };
+    beforeEach(() => {
+      seen.length = 0;
+      document.addEventListener('mdsTableSelectionChange', listener);
+    });
+    afterEach(() => document.removeEventListener('mdsTableSelectionChange', listener));
+
+    it('are counted on load: the bar shows and the header box turns indeterminate', async () => {
+      const { root } = await render(withSelected('due'));
+
+      await vi.waitFor(() => expect(counter(root)).toBe('1'));
+      expect(bar(root)).toHaveClass('batch-actions-wrapper--has-selected-rows');
+      expect(root).toHaveAttribute('selection');
+      await vi.waitFor(() => expect(headerBox(root)?.indeterminate).toBe(true));
+      expect(headerBox(root)!.checked).toBeFalsy();
+      expect(seen).toEqual([]);
+    });
+
+    it('tick the header box when they are every row', async () => {
+      const { root } = await render(withSelected('uno', 'due', 'tre'));
+
+      await vi.waitFor(() => expect(headerBox(root)?.checked).toBe(true));
+      expect(headerBox(root)!.indeterminate).toBeFalsy();
+      expect(headerBox(root)).toHaveAttribute('title', 'Deselect all rows');
+      expect(counter(root)).toBe('3');
+      expect(seen).toEqual([]);
+    });
+
+    it('are part of what the next click announces', async () => {
+      const { root, waitForChanges } = await render(withSelected('due'));
+      await vi.waitFor(() => expect(counter(root)).toBe('1'));
+
+      toggleRow(root, 0);
+      await waitForChanges();
+
+      expect(seen).toEqual([['uno', 'due']]);
+      expect(counter(root)).toBe('2');
+    });
+
+    it('are counted when they are rendered after the first load', async () => {
+      const { root } = await render(TABLE);
+
+      root
+        .querySelector('mds-table-body')!
+        .insertAdjacentHTML(
+          'beforeend',
+          '<mds-table-row value="quattro" selected><mds-table-cell>Quattro</mds-table-cell></mds-table-row>',
+        );
+
+      await vi.waitFor(() => expect(counter(root)).toBe('1'));
+      await vi.waitFor(() => expect(headerBox(root)?.indeterminate).toBe(true));
+      expect(seen).toEqual([]);
+    });
+
+    it('leave the count when they leave the table', async () => {
+      // the count kept a row taken off the page until the next click
+      const { root } = await render(withSelected('uno', 'due'));
+      await vi.waitFor(() => expect(counter(root)).toBe('2'));
+
+      root.querySelector('mds-table-row[value="due"]')!.remove();
+
+      await vi.waitFor(() => expect(counter(root)).toBe('1'));
+      root.querySelector('mds-table-row[value="uno"]')!.remove();
+      await vi.waitFor(() => expect(counter(root)).toBe('0'));
+      expect(bar(root)).not.toHaveClass('batch-actions-wrapper--has-selected-rows');
+      expect(root).not.toHaveAttribute('selection');
+      expect(seen).toEqual([]);
+    });
+
+    it('are counted when the table becomes selectable', async () => {
+      const { root } = await render<HTMLMdsTableElement>(
+        withSelected('due').replace('<mds-table selectable>', '<mds-table>'),
+      );
+
+      root.selectable = true;
+
+      await vi.waitFor(() => expect(counter(root)).toBe('1'));
+      expect(seen).toEqual([]);
+    });
+  });
 });
 
 // disconnectedCallback took the scroll listener off the host, which never had it (#823)
