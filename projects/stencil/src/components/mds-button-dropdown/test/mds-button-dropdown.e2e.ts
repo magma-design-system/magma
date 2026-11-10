@@ -307,6 +307,35 @@ describe('mds-button-dropdown stretched', () => {
   });
 });
 
+// the outer corners of the two buttons are the corners of the host, the radius they had on their
+// own; mds-button-group flattens them on the host, which ::slotted reaches (#1340)
+describe('mds-button-dropdown corners', () => {
+  const radii = (element: Element): number[] => {
+    const style = getComputedStyle(element);
+    return [
+      style.borderTopLeftRadius,
+      style.borderTopRightRadius,
+      style.borderBottomRightRadius,
+      style.borderBottomLeftRadius,
+    ].map((value) => parseFloat(value) || 0);
+  };
+
+  it('rounds the outer corners of its two buttons as its host, the inner ones flat', async () => {
+    const { root } = await render<HTMLElement>(
+      '<mds-button-dropdown label="Scarica"><mds-button label="Scarica come CSS"></mds-button></mds-button-dropdown>',
+    );
+    await vi.waitFor(() => {
+      expect(primaryAction(root)).toHaveAttribute('hydrated');
+      expect(chevron(root)).toHaveAttribute('hydrated');
+    });
+    const [radius] = radii(root);
+
+    expect(radius).toBeGreaterThan(0);
+    expect(radii(primaryAction(root))).toEqual([radius, 0, 0, radius]);
+    expect(radii(chevron(root))).toEqual([0, radius, radius, 0]);
+  });
+});
+
 describe('mds-button-dropdown chevron and primary action', () => {
   const menu = (dropdown: Element): HTMLMdsDropdownElement =>
     dropdown.shadowRoot!.querySelector<HTMLMdsDropdownElement>('mds-dropdown')!;

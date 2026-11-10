@@ -57,6 +57,38 @@ describe('mds-button-group', () => {
       expect([flat(tl2), flat(bl2)]).toEqual([true, true]);
     });
 
+    // #1340: ::slotted reaches the host of the dropdown, not the two buttons inside it, whose
+    // corners are the ones drawn; they take their outer corners from the host
+    it.each([
+      [
+        'after a button: its main action flat, its chevron round at the end',
+        '<mds-button label="Esporta CSV"></mds-button><mds-button-dropdown label="Altro"></mds-button-dropdown>',
+        '.dropdown-primary-action',
+        '.dropdown-action',
+      ],
+      [
+        'before a button: its chevron flat, its main action round at the start',
+        '<mds-button-dropdown label="Altro"></mds-button-dropdown><mds-button label="Esporta CSV"></mds-button>',
+        '.dropdown-action',
+        '.dropdown-primary-action',
+      ],
+    ])('joins an mds-button-dropdown %s', async (_, members, joined, outer) => {
+      const { root } = await render(`<mds-button-group>${members}</mds-button-group>`);
+      const dropdown = root.querySelector('mds-button-dropdown')!;
+      const [joinedButton, outerButton] = [joined, outer].map((inner) =>
+        dropdown.shadowRoot!.querySelector(inner)!,
+      );
+      await vi.waitFor(() => {
+        for (const button of [joinedButton, outerButton])
+          expect(button).toHaveAttribute('hydrated');
+      });
+      const [tl, tr, br, bl] = corners(outerButton);
+
+      // flat on the side of the button of the group and on the inner side of the dropdown
+      expect(corners(joinedButton).every(flat)).toBe(true);
+      expect((outer === '.dropdown-action' ? [tr, br] : [tl, bl]).every(round)).toBe(true);
+    });
+
     it('ignores an element that is not a member when it decides the edges', async () => {
       const { root } = await render(
         '<mds-button-group><span></span><mds-button label="Only"></mds-button></mds-button-group>',
