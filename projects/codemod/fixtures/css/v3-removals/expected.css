@@ -6,3 +6,8 @@ mds-breadcrumb.brand {
 mds-breadcrumb.legacy {
   --mds-breadcrumb-button-color-selected: var(--magma-text-default);
 }
+
+/* read by nothing in Magma 2 already: reported */
+mds-button.contrast {
+  --mds-button-border-high-contrast-width: 2px;
+}

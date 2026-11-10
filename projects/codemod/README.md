@@ -279,6 +279,7 @@ text of a prop, the description of a custom property).
 | `async` on `mds-tree`, which had no effect                            | `async` on each `mds-tree-item` that loads its children | removed, reported |
 | a number in `size` of `mds-input-select`, the row count of the list    | `rows` (`size` keeps `sm`, `md`, `lg`) | rewritten; an expression: reported |
 | `--mds-breadcrumb-button-color-current`, `--mds-breadcrumb-current-button-color` | `--mds-breadcrumb-button-color-selected` | rewritten |
+| `--mds-button-border-high-contrast-width`, `--mds-button-border-high-contrast-hover-width`, read by nothing | none | reported |
 
 `deletable` stays on the components where it is the right word, because they remove a value: `mds-chip`,
 `mds-note` and the others are left alone.

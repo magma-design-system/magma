@@ -238,8 +238,6 @@ mds-button css --mds-button-await-duration INTERNAL
 mds-button css --mds-button-background
 mds-button css --mds-button-border-color INTERNAL
 mds-button css --mds-button-border-default-opacity INTERNAL
-mds-button css --mds-button-border-high-contrast-hover-width INTERNAL
-mds-button css --mds-button-border-high-contrast-width INTERNAL
 mds-button css --mds-button-border-hover-opacity INTERNAL
 mds-button css --mds-button-border-opacity INTERNAL
 mds-button css --mds-button-border-tone-outline-hover-width INTERNAL

@@ -366,6 +366,16 @@ export const removals: Record<string, Rule[]> = {
   'mds-push-notification-item': [deletableToDismissible()],
   // a number in `size` was the row count of the list, which is `rows` since magma 2.3.0; `size`
   // keeps the height of the field, `sm`, `md`, `lg`
+  // read by nothing: the contrast preference acts on the colour roles, the button has no border of
+  // its own for it
+  'mds-button': [
+    'mds-button-border-high-contrast-hover-width',
+    'mds-button-border-high-contrast-width',
+  ].map((name): Rule => ({
+    kind: 'cssVarRemove',
+    name,
+    message: `\`--${name}\` is gone in Magma 3: it was deprecated and read by nothing, the contrast preference acts on the colour roles; remove it`,
+  })),
   'mds-input-select': [
     {
       kind: 'propRename',
