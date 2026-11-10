@@ -147,10 +147,10 @@
               </mds-card-footer>
             </mds-card>
             <mds-accordion>
-              <mds-accordion-item label="Open" typography="h6" selected>
+              <mds-accordion-item label="Open item" typography="h6" selected>
                 <mds-text typography="detail">The content of an open item.</mds-text>
               </mds-accordion-item>
-              <mds-accordion-item label="Closed" typography="h6">
+              <mds-accordion-item label="Closed item" typography="h6">
                 <mds-text typography="detail">Hidden.</mds-text>
               </mds-accordion-item>
             </mds-accordion>
@@ -343,7 +343,7 @@
             (surface) => `<div class="groups-box" style="background: rgb(var(--magma-surface-${surface}))">
               ${caption(`surface-${surface}`)}
               ${['default', 'muted', 'subtle', 'disabled']
-                .map((text) => `<mds-text typography="detail" style="color: rgb(var(--magma-text-${text}))">Text ${text}</mds-text>`)
+                .map((text) => `<mds-text typography="detail" style="color: rgb(var(--magma-text-${text}))">text-${text}</mds-text>`)
                 .join('')}
               <mds-link href="#">A link</mds-link>
               <mds-badge variant="info" label="info"></mds-badge>

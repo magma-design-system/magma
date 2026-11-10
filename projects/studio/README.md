@@ -45,16 +45,18 @@ which holds the configuration, and the bar draws them, in its dropdown and in th
 window, each with the format it reads or hands over in a badge.
 
 The Theme section shows the scene (`scene.html`) in an iframe, a document of its own: the theme is
-set on its `<html>` (`data-theme-name`), and the preferences of the person on its own `mds-pref-*`,
-which apply them on that document. Both move the scene and leave the studio alone (#695, "The
+set on its `<html>` (`data-theme-name`), and so are the preferences of the person, as the
+`mds-pref-*` of Magma write them. Both move the scene and leave the studio alone (#695, "The
 dogfooding constraint"). An axis of the bar opens its controls in an `mds-dropdown` from its
 button, and the bar shows only the axes with controls: today the preferences, the others come back
 with theirs (#696).
 Their dropdown holds controls of the studio, not the `mds-pref-*` themselves, which would write on
-the document of the studio: the mode and the contrast are written on the `<html>` of every frame,
-the other choices are set on its hidden `mds-pref-*` (`src/scene-prefs.tsx`); their modes, English
-words and defaults are those of the components (`test/scene-prefs.test.mts` holds them to the
-sources).
+the document of the studio: every choice is written on the `<html>` of every frame, the mode and
+the contrast by `applyFrame`, the animations and the consumption by `applyPrefs`
+(`src/scene-prefs.tsx`), as the components write them. The scene holds no `mds-pref-*` of its own:
+it would keep its choice in the storage of the origin, which the frames share with the studio's own
+preferences (#1336, "Languages" below). Their modes, words and defaults are those of the components
+(`test/scene-prefs.test.mts` holds them to the sources).
 
 The select offers the themes of the configuration being edited, the ones the Themes page lists
 (each tint with a surface, the base first), and the frame paints them: the studio writes into it,
@@ -84,7 +86,7 @@ disabled state, the solid fills of the main actions, the colours of the states. 
 request in hand take the width of the page above the columns: `mds-stepper-bar` centres the
 current step and would push the first out of a column. Its bar is the `inline` appearance of
 `mds-header`, a box of the page under the bar of the studio, so the two never read as one; its
-words are English, as the studio's (2026-11-06).
+words are written in English and shown in the language of the studio ("Languages" below).
 
 The Groups view (`groups.html`) shows the components by their role in the composition, the
 vocabulary of the dimension axis, so the preview explains the controls beside it: `container`
@@ -111,6 +113,56 @@ the deprecated ones included, so a theme of a product never takes one, and a nam
 words joined by hyphens (`THEME_NAME` of `semantic.model.ts`). Under its accents a theme says the
 colour modes it can be used in, the `color.modes` of a theme file (#1274): light and dark, the
 default, light only or dark only; the mode it does not offer stays in view, dimmed.
+
+## Languages
+
+The studio speaks English and Italian (#1336). The menu at the end of the bar, at every width,
+holds the preferences of the person: the language first, the one people asked for, then the mode,
+the contrast and the animations, the `mds-pref-*` of Magma in an `mds-pref` with `live-language`.
+On a window narrower than the `tablet` breakpoint, where the bar hides its sections, the menu holds
+them above the preferences (`src/style.css`, held to `screen.tablet.min` by `test/shell.test.mts`).
+No theme (the studio edits themes, it does not wear one) and no consumption.
+
+- **Where the language lives**: `<html lang>`, which `mds-pref-language` writes and every Magma
+  component follows. The studio follows it at once (`useLang` of `src/i18n.ts`), so a change of
+  language needs no reload, and `live-language` tells `mds-pref` so. The first language is the one
+  the person chose, else Italian on a browser in Italian, else English (`startLanguage`): the page
+  ships `lang="en"`, which `mds-pref-language` reads before the browser. A stored language the
+  studio has no texts for is dropped: the Storybook, on the same origin, may have stored `es`.
+- **How a text is written**: in English where it is used, in `t('...')`; the Italian catalogue
+  (`src/i18n-it.ts`) maps the English. A text kept in data is marked `msg('...')` and translated
+  where it is drawn, a count takes `plural()`, and a sentence with a link inside it takes `rich()`,
+  translated whole so Italian orders its own words. `test/i18n.test.mts` reads the sources and
+  fails on a text with no Italian, an Italian text no source uses, placeholders that differ and a
+  text of the interface written outside `t()`. The tests of the pages run in English.
+- **Components that read their text once**: `mds-button` and `mds-badge` copy the text of their
+  slot into their `label` once, so the studio writes their text in `label`; `mds-input-switch` and
+  `mds-input-range` read theirs once into the name of their control, so one that holds a translated
+  text is keyed by the language and mounts again when it changes (the same test checks both).
+- **The previews**: `hero.html`, `scene.html` and `groups.html` are sample pages written in English.
+  `applyFrame` writes the language of the studio on their `<html>`, which their Magma components
+  follow, puts the Italian of their texts in place of the English and follows a change of language
+  at once (`src/i18n-previews.ts`, `src/i18n-it-previews.ts`, held to the pages by
+  `test/i18n-previews.test.mts`). The names of the components and the values of their API (a
+  variant, a tone, a role) stay as Magma writes them, and so do proper names.
+- **The words**: the studio speaks to the person with "tu", as the Italian of Magma does. The words
+  that come back on every page keep one form (agreed with vittorio, 2026-11-10):
+
+| English | Italian |
+| --- | --- |
+| Colors, Theme, Behavior, Config | Colori, Tema, Regole, Configurazione |
+| target, floor | obiettivo, soglia |
+| contrast gate, pair | verifica del contrasto, coppia |
+| ramp, step, family, group | rampa, gradino, famiglia, gruppo |
+| role, surface, border, accent, tint | ruolo, superficie, bordo, accento, tinta |
+| hue, hue shift, lightness | tonalità, spostamento di tonalità, luminosità |
+| mode, light, dark | modalità, chiaro, scuro |
+| draft, preview, scene | bozza, anteprima, scena |
+| the configuration Magma builds with | la configurazione con cui si compila Magma |
+| known offender | eccezione nota |
+
+Behavior is Regole, not Comportamento: its pages are rules (of composition, patterns, blocks), and
+Comportamento beside Configurazione does not fit the bar at its narrowest width with sections.
 
 ## The Start page
 
